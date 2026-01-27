@@ -25,6 +25,11 @@ function detectOS(ua: string): string {
   if (/Windows NT 6\.1/i.test(ua)) return 'Windows 7';
   if (/Windows/i.test(ua)) return 'Windows';
 
+  // iOS checks must come before macOS since iOS UAs contain "Mac OS X"
+  if (/iPhone/i.test(ua)) return 'iOS (iPhone)';
+  if (/iPad/i.test(ua)) return 'iOS (iPad)';
+  if (/iPod/i.test(ua)) return 'iOS (iPod)';
+
   if (/Mac OS X 10[._](\d+)/i.test(ua)) {
     const match = ua.match(/Mac OS X 10[._](\d+)/i);
     if (match) {
@@ -37,10 +42,6 @@ function detectOS(ua: string): string {
   }
   if (/Mac OS X/i.test(ua)) return 'macOS';
   if (/Macintosh/i.test(ua)) return 'macOS';
-
-  if (/iPhone/i.test(ua)) return 'iOS (iPhone)';
-  if (/iPad/i.test(ua)) return 'iOS (iPad)';
-  if (/iPod/i.test(ua)) return 'iOS (iPod)';
 
   if (/Android (\d+)/i.test(ua)) {
     const match = ua.match(/Android (\d+)/i);
@@ -68,8 +69,18 @@ function detectBrowser(ua: string): string {
     return match ? `Opera ${match[1]}` : 'Opera';
   }
 
+  // Brave/Vivaldi must come before Chrome since they include Chrome tokens
+  if (/Brave/i.test(ua)) return 'Brave';
+  if (/Vivaldi/i.test(ua)) return 'Vivaldi';
+
   if (/Chrome\/(\d+)/i.test(ua) && !/Chromium/i.test(ua)) {
     const match = ua.match(/Chrome\/(\d+)/i);
+    return match ? `Chrome ${match[1]}` : 'Chrome';
+  }
+
+  // CriOS is Chrome on iOS
+  if (/CriOS\/(\d+)/i.test(ua)) {
+    const match = ua.match(/CriOS\/(\d+)/i);
     return match ? `Chrome ${match[1]}` : 'Chrome';
   }
 
@@ -87,9 +98,6 @@ function detectBrowser(ua: string): string {
     const match = ua.match(/(?:MSIE |rv:)(\d+)/i);
     return match ? `Internet Explorer ${match[1]}` : 'Internet Explorer';
   }
-
-  if (/Brave/i.test(ua)) return 'Brave';
-  if (/Vivaldi/i.test(ua)) return 'Vivaldi';
 
   return 'Unknown Browser';
 }
@@ -109,8 +117,9 @@ function detectDevice(ua: string): string {
 
   if (/Macintosh|Mac OS X/i.test(ua)) return 'Mac';
   if (/Windows/i.test(ua)) return 'Windows PC';
-  if (/Linux/i.test(ua)) return 'Linux PC';
+  // CrOS must come before Linux since ChromeOS UAs contain "Linux"
   if (/CrOS/i.test(ua)) return 'Chromebook';
+  if (/Linux/i.test(ua)) return 'Linux PC';
 
   if (/Mobile/i.test(ua)) return 'Mobile Device';
   if (/Tablet/i.test(ua)) return 'Tablet';
