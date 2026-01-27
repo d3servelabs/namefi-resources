@@ -41,6 +41,11 @@ export const FreeClaimsNotification =
 
       const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
+      const safeRecipientName =
+        recipientName && recipientName.trim().length > 0
+          ? recipientName
+          : 'there';
+
       const upvoteClaims = claimsGranted.filter(
         (claim) => claim.source === 'UPVOTE',
       );
@@ -49,7 +54,7 @@ export const FreeClaimsNotification =
       );
 
       const messageMarkdown =
-        `Hi ${recipientName ?? 'there'},\n\n` +
+        `Hi ${safeRecipientName},\n\n` +
         `You've got something special waiting for you! We're excited to let you know that you've earned **${pluralize('free claim', totalClaimsGranted, true)}** for **${parentDomain}** domains through our "**${campaignName}**" campaign.\n\n` +
         `**Here's what you've unlocked:**`;
 

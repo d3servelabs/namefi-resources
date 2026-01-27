@@ -100,6 +100,11 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     const mixed =
       domainLdhRenewSucceeded.length > 0 && domainLdhRenewFailed.length > 0;
 
+    const safeRecipientName =
+      recipientName && recipientName.trim().length > 0
+        ? recipientName
+        : 'there';
+
     let introText = '';
     if (allSucceeded) {
       introText =
@@ -112,9 +117,11 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     } else if (mixed) {
       introText =
         "We've renewed some of your domains, but a few need your attention:";
+    } else {
+      introText = "Here's an update about your domain renewal:";
     }
 
-    const messageMarkdown = `Hi ${recipientName ?? 'there'},\n\n${introText}`;
+    const messageMarkdown = `Hi ${safeRecipientName},\n\n${introText}`;
 
     const emailTitle = allSucceeded
       ? '[Namefi] Your Domain Renewal is Complete'

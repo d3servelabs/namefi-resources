@@ -9,6 +9,7 @@ import * as styles from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { NamefiEmailLinks } from '../email-links';
 import { Card } from '../components/card';
+import punycode from 'punycode';
 
 export type DomainExportCompleteProps = {
   recipientName?: string;
@@ -43,11 +44,16 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
   }) => {
     const txUrl = getTxExplorerUrl(chainId, nftBurnTxHash);
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
+    const unicodeDomain = punycode.toUnicode(domainName);
+    const displayDomain =
+      unicodeDomain !== domainName
+        ? `${unicodeDomain} (${domainName})`
+        : domainName;
 
     return (
       <NamefiEmailContainer title={title}>
         <Text style={styles.paragraph}>
-          Your domain <strong>{domainName}</strong> has been successfully
+          Your domain <strong>{displayDomain}</strong> has been successfully
           exported and is now free to use with any registrar you choose.
         </Text>
 
@@ -76,8 +82,8 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
           </Text>
         </Card>
         <Text style={styles.paragraph}>
-          It was great having <strong>{domainName}</strong> with us. We hope to
-          see you again soon!
+          It was great having <strong>{displayDomain}</strong> with us. We hope
+          to see you again soon!
         </Text>
 
         <Button
