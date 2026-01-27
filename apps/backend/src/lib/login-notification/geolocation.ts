@@ -1,6 +1,18 @@
 import { logger } from '#lib/logger';
 import type { GeoLocationResult } from './types';
 
+function isPrivate172Address(ipAddress: string): boolean {
+  if (!ipAddress.startsWith('172.')) {
+    return false;
+  }
+  const parts = ipAddress.split('.');
+  if (parts.length < 2) {
+    return false;
+  }
+  const secondOctet = Number.parseInt(parts[1], 10);
+  return secondOctet >= 16 && secondOctet <= 31;
+}
+
 interface IpApiResponse {
   status: string;
   country: string;
@@ -28,7 +40,7 @@ export async function getGeolocationFromIp(
     ipAddress === '::1' ||
     ipAddress.startsWith('192.168.') ||
     ipAddress.startsWith('10.') ||
-    ipAddress.startsWith('172.')
+    isPrivate172Address(ipAddress)
   ) {
     return defaultResult;
   }

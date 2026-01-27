@@ -19,6 +19,9 @@ export interface LoginNotificationRequest {
 
 const loginNotificationSubject = new Subject<LoginNotificationRequest>();
 
+const recentlyProcessedSessions = new Set<string>();
+const SESSION_DEDUP_TTL_MS = 10 * 60 * 1000;
+
 loginNotificationSubject
   .pipe(
     filter((request) => shouldSendNotification(request)),
@@ -40,6 +43,15 @@ loginNotificationSubject
   });
 
 function shouldSendNotification(request: LoginNotificationRequest): boolean {
+  if (recentlyProcessedSessions.has(request.sessionId)) {
+    return false;
+  }
+
+  recentlyProcessedSessions.add(request.sessionId);
+  setTimeout(() => {
+    recentlyProcessedSessions.delete(request.sessionId);
+  }, SESSION_DEDUP_TTL_MS);
+
   if (request.isNewUser) {
     return true;
   }
@@ -97,10 +109,8 @@ async function processLoginNotification(
     return;
   }
 
-  const [geolocation, parsedUserAgent] = await Promise.all([
-    getGeolocationFromIp(ipAddress),
-    Promise.resolve(parseUserAgent(userAgent)),
-  ]);
+  const geolocation = await getGeolocationFromIp(ipAddress);
+  const parsedUserAgent = parseUserAgent(userAgent);
 
   const sessionInfo: LoginSessionInfo = {
     sessionId,

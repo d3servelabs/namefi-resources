@@ -8,7 +8,6 @@ export type LoginNotificationProps = {
   loginMethod: string;
   ipAddress: string;
   geolocation: string;
-  userAgent: string;
   os: string;
   browser: string;
   device: string;
@@ -21,7 +20,6 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
     loginMethod,
     ipAddress,
     geolocation,
-    userAgent,
     os,
     browser,
     device,
@@ -108,8 +106,6 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
     loginMethod: 'Email',
     ipAddress: '192.168.1.1',
     geolocation: 'San Francisco, California, United States',
-    userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
     os: 'macOS Catalina or later',
     browser: 'Chrome 120',
     device: 'Mac',

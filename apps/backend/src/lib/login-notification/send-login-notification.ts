@@ -32,7 +32,6 @@ export async function sendLoginNotificationEmail({
       loginMethod: sessionInfo.loginMethod,
       ipAddress: sessionInfo.ipAddress,
       geolocation: geolocationString,
-      userAgent: sessionInfo.userAgent,
       os: sessionInfo.os,
       browser: sessionInfo.browser,
       device: sessionInfo.device,
