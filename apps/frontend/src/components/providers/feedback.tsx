@@ -325,7 +325,22 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
         new Date(state.lastMilestonePromptedAt);
 
       if (!options?.force) {
-        // For milestone triggers, use 30-day cooldown
+        // Check general cooldowns first (applies to all triggers including milestones)
+        // This prevents multiple feedback prompts appearing close together
+        if (
+          lastPrompted &&
+          now.getTime() - lastPrompted.getTime() < FEEDBACK_PROMPT_COOLDOWN_MS
+        ) {
+          return false;
+        }
+        if (
+          lastDismissed &&
+          now.getTime() - lastDismissed.getTime() < FEEDBACK_PROMPT_COOLDOWN_MS
+        ) {
+          return false;
+        }
+
+        // For milestone triggers, also check the 30-day milestone-specific cooldown
         if (isMilestoneTrigger(trigger)) {
           if (
             lastMilestonePrompted &&
@@ -335,24 +350,11 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
             return false;
           }
         } else {
-          // For non-milestone triggers, use the original cooldown logic
+          // For non-milestone triggers, also check submission cooldown
           if (
             combinedLastSubmittedAt &&
             now.getTime() - combinedLastSubmittedAt.getTime() <
               FEEDBACK_REASK_INTERVAL_MS
-          ) {
-            return false;
-          }
-          if (
-            lastPrompted &&
-            now.getTime() - lastPrompted.getTime() < FEEDBACK_PROMPT_COOLDOWN_MS
-          ) {
-            return false;
-          }
-          if (
-            lastDismissed &&
-            now.getTime() - lastDismissed.getTime() <
-              FEEDBACK_PROMPT_COOLDOWN_MS
           ) {
             return false;
           }
