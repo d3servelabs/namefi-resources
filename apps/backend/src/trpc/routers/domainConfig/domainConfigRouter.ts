@@ -69,6 +69,8 @@ import type { DomainRegistration } from '@namefi-astra/registrars/lib/abstract-r
 import type { WithRegistrar } from '@namefi-astra/registrars/registrars/main-registrar';
 import { config } from '#lib/env';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
+import { audit, createAuditRecord, ResourceType } from '#lib/auditor';
+import { isNotNil } from 'ramda';
 
 /**
  * Unified EIP-712 type definitions for domain actions.
@@ -721,11 +723,58 @@ export const domainConfigRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      return await updateDomainPreferencesAndConfig(
-        input.domainName,
-        ctx.user.id,
-        input.domainPreferencesAndConfig,
-      );
+      const autoRenewEnabled =
+        input.domainPreferencesAndConfig.autoRenewEnabled;
+      const otherConfig = {
+        forwardTo: input.domainPreferencesAndConfig.forwardTo,
+        autoEnsEnabled: input.domainPreferencesAndConfig.autoEnsEnabled,
+        autoParkEnabled: input.domainPreferencesAndConfig.autoParkEnabled,
+      };
+      const auditAutoRenew = isNotNil(autoRenewEnabled);
+      const auditOtherConfigs = Object.values(otherConfig).some(isNotNil);
+      try {
+        await updateDomainPreferencesAndConfig(
+          input.domainName,
+          ctx.user.id,
+          input.domainPreferencesAndConfig,
+        );
+
+        if (auditAutoRenew) {
+          audit(
+            createAuditRecord({
+              actorType: 'user',
+              actorId: ctx.user.id,
+              resourceType: ResourceType.DOMAIN,
+              resourceId: input.domainName,
+              action: 'update_auto_renew',
+              extraInput: {
+                autoRenewEnabled,
+              },
+            }),
+          );
+        }
+
+        if (auditOtherConfigs) {
+          audit(
+            createAuditRecord({
+              actorType: 'user',
+              actorId: ctx.user.id,
+              resourceType: ResourceType.DOMAIN,
+              resourceId: input.domainName,
+              action: 'update_config',
+              extraInput: {
+                ...otherConfig,
+              },
+            }),
+          );
+        }
+      } catch (error) {
+        logger.error(
+          { error },
+          'Error updating domain preferences and config:',
+        );
+        throw error;
+      }
     }),
 
   /**
