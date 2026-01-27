@@ -49,9 +49,9 @@ export const FreeClaimsNotification =
       );
 
       const messageMarkdown =
-        `Hi ${recipientName ?? ''},\n\n` +
-        `Great news! You've been granted **${pluralize('free claim', totalClaimsGranted, true)}** for **${parentDomain}** domains as part of our "**${campaignName}**" campaign.\n\n` +
-        `**Here's what you earned:**`;
+        `Hi ${recipientName ?? 'there'},\n\n` +
+        `You've got something special waiting for you! We're excited to let you know that you've earned **${pluralize('free claim', totalClaimsGranted, true)}** for **${parentDomain}** domains through our "**${campaignName}**" campaign.\n\n` +
+        `**Here's what you've unlocked:**`;
 
       const claimSummary = React.useMemo(() => {
         const summary: string[] = [];

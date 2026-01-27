@@ -36,12 +36,17 @@ export const DomainRenewFailedToCharge =
 
       const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
+      const domainText =
+        domainsToRenew.length === 1
+          ? 'your domain'
+          : `your ${domainsToRenew.length} domains`;
+
       const messageMarkdown =
-        `Hi ${recipientName},\n\n` +
-        'While renewing the following domains, We failed to process the payment.';
+        `Hi ${recipientName || 'there'},\n\n` +
+        `We tried to renew ${domainText}, but the payment didn't go through. No worries - your domains are still safe for now, and we want to help you get this sorted out.`;
 
       return (
-        <NamefiEmailContainer title="[Namefi] Important: Domain Renewal Payment Failed">
+        <NamefiEmailContainer title="Quick Action Needed: Payment Issue">
           <div style={{ ...styles.paragraph, marginBottom: '8px' }}>
             <ReactMarkdown
               rehypePlugins={[
@@ -160,8 +165,11 @@ export const DomainRenewFailedToCharge =
             </div>
           </div>
           <div style={{ ...styles.paragraph, marginTop: '8px' }}>
-            <span style={{ fontWeight: 'bold' }}>Action Required: </span>
-            <span>Please update your payment methods.</span>
+            <span style={{ fontWeight: 'bold' }}>What you can do: </span>
+            <span>
+              Update your payment method or add funds to your NFSC balance, and
+              we'll take care of the rest.
+            </span>
           </div>
           <Button
             style={styles.button}
@@ -170,8 +178,9 @@ export const DomainRenewFailedToCharge =
             Update Payment Methods
           </Button>
           <div style={{ ...styles.paragraph, marginTop: '8px' }}>
-            Failure to renew on time may risk the loss of your domains due to
-            expiration.
+            We want to make sure you don't lose your domains - they're important
+            to us too! If you need any help, just reach out to
+            support@namefi.io.
           </div>
         </NamefiEmailContainer>
       );

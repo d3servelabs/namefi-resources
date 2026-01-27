@@ -85,17 +85,23 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       (item) => item.type === 'IMPORT',
     );
 
-    let introMessage = `Your order ${orderId} has been processed.`;
+    // Determine the primary operation type for better messaging
+    const hasImports = items.some((item) => item.type === 'IMPORT');
+    const hasRegistrations = items.some((item) => item.type === 'REGISTER');
+    const hasRenewals = items.some((item) => item.type === 'RENEW');
+
+    let introMessage = '';
 
     if (failedItems.length > 0 && successfulItems.length > 0) {
-      introMessage = `Your order ${orderId} has been partially processed.`;
-    } else if (failedItems.length > 0) {
-      introMessage = `Your order ${orderId} failed to process.`;
-    } else if (processingItems.length > 0) {
-      introMessage = `Your order ${orderId} is still processing.`;
-    }
-
-    if (
+      introMessage =
+        "We've completed processing your order, though some items need your attention.";
+    } else if (failedItems.length > 0 && successfulItems.length === 0) {
+      introMessage =
+        "We ran into some issues with your order. Don't worry - we're here to help you sort this out.";
+    } else if (processingItems.length > 0 && successfulItems.length === 0) {
+      introMessage =
+        "Your order is on its way! We're working on it and will update you soon.";
+    } else if (
       successfulRegistrations.length > 0 &&
       failedItems.length === 0 &&
       processingItems.length === 0
@@ -104,19 +110,56 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         const domain = getDomainWithIdn(
           successfulRegistrations[0].normalizedDomainName,
         );
-        introMessage = `Congratulations! Your domain **${domain}** has been successfully registered and is ready for use.`;
+        introMessage = `Great news! **${domain}** is officially yours. Your new domain is ready and waiting for you to make it shine.`;
       } else {
-        introMessage = `Congratulations! Your **${successfulRegistrations.length} domains** have been successfully registered and are ready for use.`;
+        introMessage = `Exciting news! Your **${successfulRegistrations.length} new domains** are officially yours. They're all set up and ready for you to start building.`;
       }
+    } else if (hasImports && successfulItems.length > 0) {
+      if (successfulItems.length === 1) {
+        const domain = getDomainWithIdn(
+          successfulItems[0].normalizedDomainName,
+        );
+        introMessage = `Welcome home! **${domain}** has been successfully imported to Namefi. Your domain is now part of the family.`;
+      } else {
+        introMessage = `Welcome home! Your **${successfulItems.length} domains** have been successfully imported to Namefi.`;
+      }
+    } else if (hasRenewals && successfulItems.length > 0) {
+      introMessage =
+        "You're all set! Your domain renewal is complete, so you can keep doing what you do best.";
+    } else {
+      introMessage = "Your order has been processed. Here's what happened:";
     }
 
     const messageMarkdown =
-      `Hi ${recipientName ?? ''},\n\n` +
-      introMessage +
-      ' Here are the details:';
+      `Hi ${recipientName ?? 'there'},\n\n` + introMessage;
+
+    // Generate a more user-friendly email title based on order outcome
+    const getEmailTitle = () => {
+      if (failedItems.length > 0 && successfulItems.length === 0) {
+        return 'We Need Your Attention';
+      }
+      if (processingItems.length > 0 && successfulItems.length === 0) {
+        return 'Your Order is Being Processed';
+      }
+      if (hasImports && successfulItems.length > 0) {
+        return successfulItems.length === 1
+          ? `Welcome to Namefi, ${getDomainWithIdn(successfulItems[0].normalizedDomainName)}!`
+          : 'Your Domains Have Arrived!';
+      }
+      if (hasRenewals && successfulItems.length > 0) {
+        return 'Your Domain Renewal is Complete';
+      }
+      if (successfulRegistrations.length === 1) {
+        return `${getDomainWithIdn(successfulRegistrations[0].normalizedDomainName)} is Yours!`;
+      }
+      if (successfulRegistrations.length > 1) {
+        return 'Your New Domains Are Ready!';
+      }
+      return 'Your Order Update';
+    };
 
     return (
-      <NamefiEmailContainer title="[Namefi] Order Processed Report">
+      <NamefiEmailContainer title={getEmailTitle()}>
         <ReactMarkdown
           rehypePlugins={[
             [
@@ -266,8 +309,8 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
             ]}
           >
             {refund && refund.amountInUsd > 0
-              ? `A refund of $${refund.amountInUsd.toFixed(2)} has been ${refund.status === 'SUCCEEDED' ? 'processed' : refund.status === 'FAILED' ? 'failed' : 'initiated'} to your original payment method. For failed items, please try again or contact support@namefi.io if the problem persists.`
-              : 'For failed items, please try again or contact support@namefi.io if the problem persists.'}
+              ? `We've ${refund.status === 'SUCCEEDED' ? 'refunded' : refund.status === 'FAILED' ? 'attempted to refund' : 'started processing a refund of'} **$${refund.amountInUsd.toFixed(2)}** to your original payment method. If you'd like to try again or need any help, we're just an email away at support@namefi.io.`
+              : "If you'd like to try again or need any help, we're just an email away at support@namefi.io."}
           </ReactMarkdown>
         )}
 

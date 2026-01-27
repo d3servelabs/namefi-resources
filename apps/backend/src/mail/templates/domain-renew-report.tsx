@@ -92,11 +92,38 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
       orderId,
     } = props;
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
-    const messageMarkdown =
-      `Hi ${recipientName ?? ''},\n\n` +
-      'We performed the renewal for the following domains';
+
+    const allSucceeded =
+      domainLdhRenewSucceeded.length > 0 && domainLdhRenewFailed.length === 0;
+    const allFailed =
+      domainLdhRenewFailed.length > 0 && domainLdhRenewSucceeded.length === 0;
+    const mixed =
+      domainLdhRenewSucceeded.length > 0 && domainLdhRenewFailed.length > 0;
+
+    let introText = '';
+    if (allSucceeded) {
+      introText =
+        domainLdhRenewSucceeded.length === 1
+          ? "Great news! Your domain has been renewed and you're all set for another year."
+          : "Great news! Your domains have been renewed and you're all set for another year.";
+    } else if (allFailed) {
+      introText =
+        "We ran into some issues while renewing your domains. Here's what happened:";
+    } else if (mixed) {
+      introText =
+        "We've renewed some of your domains, but a few need your attention:";
+    }
+
+    const messageMarkdown = `Hi ${recipientName ?? 'there'},\n\n${introText}`;
+
+    const emailTitle = allSucceeded
+      ? 'Your Domain Renewal is Complete'
+      : allFailed
+        ? 'Action Needed: Domain Renewal Issue'
+        : 'Domain Renewal Update';
+
     return (
-      <NamefiEmailContainer title="[Namefi] Domain Expiration and Renewal Notice">
+      <NamefiEmailContainer title={emailTitle}>
         <div style={{ ...styles.text }}>
           <ReactMarkdown
             rehypePlugins={[

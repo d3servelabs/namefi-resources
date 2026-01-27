@@ -86,7 +86,7 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
       availableBalanceInNfsc,
       availableOffChainPaymentMethodsPublicIdentifiers,
       paymentPreparationSummary,
-      title = 'Domain Expiration and Renewal Notice',
+      title = 'Your Domain Renewal Reminder',
     } = props;
 
     const manualRenewalDomains =
@@ -127,13 +127,26 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
     const showPaymentMethodBreakdown =
       expectedPayments && expectedPayments.length > 0;
 
+    // Generate friendly intro message based on situation
+    const getIntroMessage = () => {
+      if (showDomainsRenewingToday && showPaymentMethodBreakdown) {
+        return "Good news - we're about to renew your domains and everything is set up perfectly.";
+      }
+      if (showDomainsRenewingToday) {
+        return 'Just a heads up - some of your domains are coming up for renewal soon.';
+      }
+      if (showUpcomingAutomaticRenewals) {
+        return 'We wanted to give you a friendly reminder about your upcoming domain renewals.';
+      }
+      return '';
+    };
+
     return (
       <NamefiEmailContainer title={title}>
         <div style={{ ...styles.text }}>
           Hi {recipientName || 'there'},<br />
           <br />
-          {showIntroStatement &&
-            'Some domains in your account are due for renewal'}
+          {showIntroStatement && getIntroMessage()}
         </div>
         {/* Show payment issue warning if payment preparation failed or insufficient funds */}
         {showPaymentIssueWarning && (

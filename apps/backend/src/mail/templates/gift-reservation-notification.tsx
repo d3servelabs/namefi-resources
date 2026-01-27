@@ -81,12 +81,12 @@ export const GiftReservationNotification =
           : '';
 
       const headline = gift
-        ? "🎉 **You've received a gift!**"
-        : '🔒 **A name has been reserved for you!**';
+        ? "**You've received a gift!**"
+        : '**A name has been reserved just for you!**';
 
       const intro = gift
-        ? `**${gifterName}** has gifted you a free domain for ${nameText}.`
-        : `A free claim for ${nameText} has been reserved for your account.`;
+        ? `**${gifterName}** wanted you to have something special - a free domain for ${nameText}. How thoughtful!`
+        : `Great news! A free claim for ${nameText} has been set aside especially for you.`;
 
       const messageMarkdown =
         `${greeting},\n\n` +

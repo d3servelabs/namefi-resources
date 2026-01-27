@@ -39,15 +39,15 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
     domainName,
     chainId,
     nftBurnTxHash,
-    title = 'Domain Export Completed',
+    title = 'Your Domain Export is Complete',
   }) => {
     const txUrl = getTxExplorerUrl(chainId, nftBurnTxHash);
 
     return (
       <NamefiEmailContainer title={title}>
         <Text style={styles.paragraph}>
-          ✅ Your domain <strong>{domainName}</strong> has been successfully
-          exported.
+          Your domain <strong>{domainName}</strong> has been successfully
+          exported and is now free to use with any registrar you choose.
         </Text>
 
         <Card
@@ -62,22 +62,25 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
           <Text
             style={{ ...styles.paragraph, fontSize: '12px', fontWeight: '400' }}
           >
-            The Namefi NFT for this domain has been burned as part of the export
-            process.{' '}
+            As part of the export, we've burned the Namefi NFT for this domain.{' '}
             {txUrl && (
               <a href={txUrl} style={styles.anchor}>
-                View Transaction
+                View the transaction
               </a>
             )}
             <br />
-            You can always import it back to Namefi again to receive a new NFT.
+            Changed your mind? You can always bring it back to Namefi and mint a
+            fresh NFT anytime.
             <br />
           </Text>
         </Card>
-        <Text style={styles.paragraph}>Thank you for using Namefi!</Text>
+        <Text style={styles.paragraph}>
+          It was great having <strong>{domainName}</strong> with us. We hope to
+          see you again soon!
+        </Text>
 
         <Button style={styles.button} href={'https://namefi.io'}>
-          Get Another Domain
+          Explore More Domains
         </Button>
       </NamefiEmailContainer>
     );

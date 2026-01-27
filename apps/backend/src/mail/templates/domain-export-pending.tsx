@@ -19,30 +19,26 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
   ({
     domainName,
     supportsApprovingExport,
-    title = 'Domain Export Request Received',
+    title = 'Export Request for Your Domain',
   }) => {
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
     return (
       <NamefiEmailContainer title={title}>
         <Text style={styles.paragraph}>
-          We received an export request for your domain{' '}
-          <strong>{domainName}</strong>.
+          We've received a request to export <strong>{domainName}</strong> from
+          Namefi.
         </Text>
 
         <Text style={styles.paragraph}>
-          <strong>
-            <span className="font-medium text-amber-600">
-              [Attention Needed]
-            </span>
-          </strong>{' '}
-          If you did not request this, please contact support immediately.
+          <strong>Didn't request this?</strong> Please contact us at
+          support@namefi.io right away - we'll help you secure your domain.
         </Text>
 
         {supportsApprovingExport && (
           <Card variant="info">
             <Text style={styles.paragraph}>
-              ℹ️ You can approve or reject this export request from your
-              dashboard.
+              You're in control. You can approve or cancel this export request
+              from your dashboard whenever you're ready.
             </Text>
 
             <Button
@@ -52,25 +48,26 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
               })}
               style={styles.button}
             >
-              Manage Export in Dashboard
+              Review Export Request
             </Button>
           </Card>
         )}
 
         {!supportsApprovingExport && (
           <Text style={styles.paragraph}>
-            The export will proceed automatically unless rejected.
+            This export will proceed automatically. If you need to stop it,
+            please reach out to us as soon as possible.
           </Text>
         )}
 
         <Text style={styles.paragraph}>
-          <strong>What happens next?</strong>
+          <strong>Here's what to expect:</strong>
         </Text>
         <Text style={styles.paragraph}>
-          • If the export completes, your domain will leave Namefi
-          <br />• The associated NFT will be burned once the export is confirmed
-          <br />• You will receive a confirmation email when the export is
-          complete
+          Once the export is complete, your domain will be transferred out of
+          Namefi and the associated NFT will be burned. Don't worry - we'll send
+          you a confirmation email when everything is done, and you can always
+          bring your domain back to Namefi in the future.
         </Text>
       </NamefiEmailContainer>
     );

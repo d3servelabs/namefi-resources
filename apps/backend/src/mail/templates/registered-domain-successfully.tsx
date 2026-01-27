@@ -20,16 +20,19 @@ export const RegisteredDomainSuccessfully =
 
       return (
         <NamefiEmailContainer
-          title={`[Namefi] Domain(${domainUnicodeName}) Registered Successfully`}
+          title={`Congratulations! ${domainUnicodeName} is Yours!`}
         >
-          <Text style={paragraph}>Thank you for using Namefi.</Text>
-
-          <Text style={{ ...paragraph, display: 'inline' }}>
-            Your newly acquired domain{' '}
+          <Text style={paragraph}>
+            You did it! Your new domain is officially registered and ready to
+            go.
           </Text>
+
+          <Text style={{ ...paragraph, display: 'inline' }}>Say hello to </Text>
           <Code>{domainUnicodeName}</Code>
           <Text style={{ ...paragraph, display: 'inline' }}>
-            is ready for you
+            {' '}
+            - it's all yours now. Whether you're building a website, setting up
+            email, or just securing your perfect name, you're ready to start.
           </Text>
           <GoToDashboard />
           <Button
@@ -39,7 +42,7 @@ export const RegisteredDomainSuccessfully =
               poweredByNamefiDomain,
             })}
           >
-            Go To Domain({domainUnicodeName}) Settings
+            Set Up {domainUnicodeName}
           </Button>
         </NamefiEmailContainer>
       );
