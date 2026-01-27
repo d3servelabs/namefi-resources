@@ -42,6 +42,7 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
     title = '[Namefi] Your Domain Export is Complete',
   }) => {
     const txUrl = getTxExplorerUrl(chainId, nftBurnTxHash);
+    const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
     return (
       <NamefiEmailContainer title={title}>
@@ -81,9 +82,7 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
 
         <Button
           style={styles.button}
-          href={NamefiEmailLinks.domains({
-            poweredByNamefiDomain: usePoweredByNamefiDomain(),
-          })}
+          href={NamefiEmailLinks.domains({ poweredByNamefiDomain })}
         >
           Explore More Domains
         </Button>

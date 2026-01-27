@@ -164,11 +164,13 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
     // Generate a more user-friendly email title based on order outcome
     // Priority order matches intro message: failed > processing > imports > renewals > registrations
     const getEmailTitle = () => {
-      if (failedItems.length > 0 && successfulItems.length === 0) {
+      if (failedItems.length > 0) {
         const failedDomainsTitleText = formatDomainList(
           failedItems.map((item) => item.normalizedDomainName),
         ).titleText;
-        return `[Namefi] We Need Your Attention: ${failedDomainsTitleText}`;
+        return successfulItems.length > 0
+          ? `[Namefi] Action Needed: ${failedDomainsTitleText}`
+          : `[Namefi] We Need Your Attention: ${failedDomainsTitleText}`;
       }
       if (processingItems.length > 0) {
         const processingDomainsTitleText = formatDomainList(
