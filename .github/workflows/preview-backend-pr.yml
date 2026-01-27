@@ -46,10 +46,56 @@ jobs:
               ;;
           esac
 
+  detect-synchronize-type:
+    name: Detect Synchronize Event Type
+    needs: head-branch-gate
+    if: needs.head-branch-gate.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      is_new_commit: ${{ steps.detect-type.outputs.is_new_commit }}
+      is_force_push: ${{ steps.detect-type.outputs.is_force_push }}
+      should_use_turbo_detection: ${{ steps.detect-type.outputs.should_use_turbo_detection }}
+    steps:
+      - name: Detect synchronize event type
+        id: detect-type
+        shell: bash
+        run: |
+          set -euo pipefail
+          EVENT_ACTION="${{ github.event.action }}"
+          BEFORE_SHA="${{ github.event.before }}"
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+
+          echo "Event action: $EVENT_ACTION"
+          echo "Before SHA: $BEFORE_SHA"
+          echo "Base SHA: $BASE_SHA"
+
+          if [[ "$EVENT_ACTION" != "synchronize" ]]; then
+            echo "Not a synchronize event (action: $EVENT_ACTION), skipping turbo detection optimization"
+            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
+            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+            echo "should_use_turbo_detection=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # For synchronize events, determine if it's a new commit or force push
+          # New commit: before SHA exists and is different from base SHA
+          # Force push: before SHA does not exist or is the same as base SHA
+          if [[ -n "$BEFORE_SHA" && "$BEFORE_SHA" != "$BASE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            echo "Synchronize event detected as NEW COMMIT"
+            echo "is_new_commit=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+            echo "should_use_turbo_detection=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Synchronize event detected as FORCE PUSH"
+            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
+            echo "is_force_push=true" >> "$GITHUB_OUTPUT"
+            echo "should_use_turbo_detection=false" >> "$GITHUB_OUTPUT"
+          fi
+
   detect-changes:
     name: Detect Backend Changes
-    needs: head-branch-gate
     timeout-minutes: 2
+    needs: [head-branch-gate, detect-synchronize-type]
     if: needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     outputs:
@@ -59,29 +105,34 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 32
-      - name: Compare the before and after SHAs
-        run: |
-          BEFORE_SHA=${{ github.event.pull_request.before }}
-          AFTER_SHA=${{ github.event.pull_request.after }}
-          echo "Comparing changes from $BEFORE_SHA to $AFTER_SHA"
-          # Example: List changed files
-          git diff --name-only $BEFORE_SHA $AFTER_SHA
 
       - name: Detect Turbo changes
         id: turbo-changes
+        if: needs.detect-synchronize-type.outputs.should_use_turbo_detection == 'true'
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: "...[${{ github.event.pull_request.base.sha }}]"
+          filter: "...[${{ github.event.before }}]"
 
       - name: Check backend changes
         id: check
         run: |
-          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/backend' ) }}"
+          SHOULD_USE_TURBO="${{ needs.detect-synchronize-type.outputs.should_use_turbo_detection }}"
+          
+          if [[ "$SHOULD_USE_TURBO" == "true" ]]; then
+            # For new commits on synchronize events, use turbo detection
+            HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages || '[]'), '@namefi-astra/backend' ) }}"
+            echo "Using turbo detection for synchronize event (new commit)"
+          else
+            # For force pushes, opened, or reopened events, always consider as having changes
+            HAS_BACKEND_CHANGES="true"
+            echo "Skipping turbo detection (force push, opened, or reopened event)"
+          fi
+          
           echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
           if [[ "$HAS_BACKEND_CHANGES" == "true" ]]; then
-            echo "Backend changes detected"
+            echo "Backend changes detected - will proceed with deployment"
           else
-            echo "No backend changes detected"
+            echo "No backend changes detected - will skip deployment"
           fi
 
   build-backend:
