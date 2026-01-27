@@ -77,7 +77,7 @@ function shouldSendNotification(request: LoginNotificationRequest): boolean {
 async function processLoginNotification(
   request: LoginNotificationRequest,
 ): Promise<void> {
-  const { user, sessionId, ipAddress, userAgent } = request;
+  const { user, sessionId, ipAddress, userAgent, tokenIssuedAt } = request;
 
   let userEmail: string | undefined;
   let loginMethod = 'Unknown Method';
@@ -127,7 +127,7 @@ async function processLoginNotification(
     browser: parsedUserAgent.browser,
     device: parsedUserAgent.device,
     geolocation,
-    timestamp: new Date(),
+    timestamp: tokenIssuedAt,
   };
 
   await sendLoginNotificationEmail({
