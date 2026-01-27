@@ -56,7 +56,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 16
+          fetch-depth: 32
       - name: Compare the before and after SHAs
         run: |
           BEFORE_SHA=${{ github.event.pull_request.before }}
@@ -174,7 +174,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 16
+          fetch-depth: 32
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2

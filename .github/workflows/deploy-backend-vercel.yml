@@ -46,7 +46,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 8
+          fetch-depth: 32
 
       - name: Determine before commit
         id: determine-before-commit
@@ -152,7 +152,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 32
 
       - name: Check if tag exists for this commit
         id: check

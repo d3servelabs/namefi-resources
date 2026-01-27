@@ -75,7 +75,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 32
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -270,7 +270,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
+          fetch-depth: 32
 
       - name: Read and increment versions
         id: version
@@ -352,7 +352,7 @@ jobs:
             frontendPkg.version = frontendVersion;
             fs.writeFileSync(frontendPkgPath, JSON.stringify(frontendPkg, null, 2) + '\n');
             console.log(`✅ Updated frontend version to ${frontendVersion}`);
-      
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -395,9 +395,9 @@ jobs:
           git commit -m "$COMMIT_MESSAGE"
 
           echo "✅ Changes committed locally"
-                    
+
           git tag -a "$TAG_NAME" -m "Release: $VERSION_STRING"
-          
+
 
           echo "✅ Created release tag: $TAG_NAME"
 
