@@ -35,7 +35,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const appDir = path.join(projectRoot, 'apps', 'frontend');
 
-const DEFAULT_ROUTES = ['/', '/tlds', '/newsletter', '/ai-brand-generator'];
+const DEFAULT_ROUTES = ['/', '/domains', '/ai-brand-generator'];
 
 function parseArgs(argv: string[]): Partial<Options> {
   const args: Partial<Options> = {};
