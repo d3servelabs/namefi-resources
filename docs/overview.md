@@ -665,70 +665,81 @@ app.use(async (...args) => {
 
 ## API Reference
 
-### tRPC Routers
+The backend exposes multiple API layers for different use cases: a tRPC API for the frontend application, an OpenAPI/REST API for external integrations, and various HTTP endpoints for specific services.
 
-#### App Router
+### OpenAPI/REST API (External)
 
-The main tRPC router that aggregates all sub-routers:
+The primary externally callable API is available at `/v-next/` with OpenAPI documentation. This API is designed for third-party integrations and programmatic access.
 
-```typescript
-// apps/backend/src/trpc/routers/appRouter.ts
-export const appRouter = createTRPCRouter({
-  dnsRecords: dnsRecordsRouter,
-  users: usersRouter,
-  carts: cartsRouter,
-  payments: paymentsRouter,
-  search: searchRouter,
-  registry: registryRouter,
-  orders: ordersRouter,
-});
-```
+**Base URLs:**
+- Development: `https://backend.astra.namefi.dev/v-next/`
+- Production: `https://backend.astra.namefi.io/v-next/`
 
-#### DNS Records Router
+**Documentation:** Interactive API documentation is available at `/v-next/openapi/doc`
 
-Handles DNS record management:
+**Authentication:** Supports Bearer token and API key (`x-api-key` header) authentication.
 
-```typescript
-// apps/backend/src/trpc/routers/dnsRecordsRouter.ts
-export const dnsRecordsRouter = createTRPCRouter({
-  list: authenticatedProcedure
-    .input(z.object({ domain: z.string() }))
-    .query(async ({ ctx, input }) => {
-      // Implementation details
-    }),
-  
-  create: authenticatedProcedure
-    .input(createDnsRecordSchema)
-    .mutation(async ({ ctx, input }) => {
-      // Implementation details
-    }),
-  
-  // Other procedures
-});
-```
+**Available Endpoints:**
 
-#### Orders Router
+| Category | Description |
+|----------|-------------|
+| **search** | Domain availability search and suggestions |
+| **orders** | Order creation, status, and instant buy operations |
+| **dnsRecords** | DNS record CRUD operations |
+| **user** | User profile and domain ownership data |
+| **balance** | NFSC token balance queries |
 
-Handles order management:
+### Public HTTP Endpoints
 
-```typescript
-// apps/backend/src/trpc/routers/ordersRouter.ts
-export const ordersRouter = createTRPCRouter({
-  create: authenticatedProcedure
-    .input(createOrderSchema)
-    .mutation(async ({ ctx, input }) => {
-      // Implementation details
-    }),
-  
-  getOrder: authenticatedProcedure
-    .input(z.object({ orderId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      // Implementation details
-    }),
-  
-  // Other procedures
-});
-```
+These endpoints are accessible without user authentication (some require API keys for rate limiting):
+
+| Path | Description |
+|------|-------------|
+| `GET /v1/availability` | Check domain availability (single domain) |
+| `POST /v1/availability/bulk` | Check availability for multiple domains (up to 200) |
+| `GET /v1/public/tlds` | Get TLD pricing table |
+| `POST /v1/public/ai/generate-logo` | Generate AI logo for a domain (requires API key) |
+| `GET /v1/public/ai/generations/:id` | Retrieve a generated logo (requires API key) |
+
+### Webhook Endpoints
+
+| Path | Description |
+|------|-------------|
+| `POST /webhooks/nft-activity` | Alchemy webhook for NFT activity notifications |
+
+### tRPC API (Internal)
+
+The tRPC API at `/trpc/*` is primarily used by the frontend application. It provides type-safe communication between the frontend and backend.
+
+**Available Routers:**
+
+| Router | Description |
+|--------|-------------|
+| **admin** | Administrative operations and user management |
+| **ai** | AI-powered domain suggestions and branding |
+| **apiKeys** | API key management |
+| **auth** | Authentication operations |
+| **freeClaims** | Free domain claim processing |
+| **pbnReservations** | Powered by NameFI subdomain reservations |
+| **analytics** | Analytics and tracking |
+| **bigQueryAudit** | Audit log queries |
+| **config** | Application configuration |
+| **dnsRecords** | DNS record management |
+| **users** | User profile and domain ownership |
+| **carts** | Shopping cart operations |
+| **payments** | Payment processing (Stripe, NFSC) |
+| **search** | Domain search and availability |
+| **registry** | Domain registry operations |
+| **orders** | Order management and history |
+| **domainConfig** | Domain configuration (DNSSEC, nameservers) |
+| **hunt** | Domain hunting/discovery features |
+| **share** | Domain sharing functionality |
+| **wishlist** | Domain wishlist management |
+| **pbnOwner** | Powered by NameFI owner operations |
+| **newsletter** | Newsletter subscription management |
+| **feedback** | User feedback collection |
+| **dnsCache** | DNS cache management |
+| **version** | API version information |
 
 ## Development Guide
 
