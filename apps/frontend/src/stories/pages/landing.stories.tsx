@@ -38,7 +38,7 @@ function StoryProviders({ children }: { children: ReactNode }) {
     <OriginProvider originInfo={mockOriginRuntime}>
       <TrpcProvider>
         <NuqsAdapter>
-          <ConsentManagerProvider options={{ mode: 'opt-in' }}>
+          <ConsentManagerProvider options={{ mode: 'offline' }}>
             <PreAuthSignalsProvider>
               <InteractionLoggersProvider>
                 <WishlistProvider>
