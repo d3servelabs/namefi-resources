@@ -19,7 +19,7 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
   ({
     domainName,
     supportsApprovingExport,
-    title = 'Export Request for Your Domain',
+    title = '[Namefi] Export Request for Your Domain',
   }) => {
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
     return (

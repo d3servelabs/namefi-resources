@@ -46,7 +46,7 @@ export const DomainRenewFailedToCharge =
         `We tried to renew ${domainText}, but the payment didn't go through. No worries - your domains are still safe for now, and we want to help you get this sorted out.`;
 
       return (
-        <NamefiEmailContainer title="Quick Action Needed: Payment Issue">
+        <NamefiEmailContainer title="[Namefi] Quick Action Needed: Payment Issue">
           <div style={{ ...styles.paragraph, marginBottom: '8px' }}>
             <ReactMarkdown
               rehypePlugins={[

@@ -20,7 +20,7 @@ export const RegisteredDomainSuccessfully =
 
       return (
         <NamefiEmailContainer
-          title={`Congratulations! ${domainUnicodeName} is Yours!`}
+          title={`[Namefi] Congratulations! ${domainUnicodeName} is Yours!`}
         >
           <Text style={paragraph}>
             You did it! Your new domain is officially registered and ready to

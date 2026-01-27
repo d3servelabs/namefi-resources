@@ -86,7 +86,7 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
       availableBalanceInNfsc,
       availableOffChainPaymentMethodsPublicIdentifiers,
       paymentPreparationSummary,
-      title = 'Your Domain Renewal Reminder',
+      title = '[Namefi] Your Domain Renewal Reminder',
     } = props;
 
     const manualRenewalDomains =

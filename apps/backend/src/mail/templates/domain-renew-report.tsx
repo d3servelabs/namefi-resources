@@ -117,10 +117,10 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     const messageMarkdown = `Hi ${recipientName ?? 'there'},\n\n${introText}`;
 
     const emailTitle = allSucceeded
-      ? 'Your Domain Renewal is Complete'
+      ? '[Namefi] Your Domain Renewal is Complete'
       : allFailed
-        ? 'Action Needed: Domain Renewal Issue'
-        : 'Domain Renewal Update';
+        ? '[Namefi] Action Needed: Domain Renewal Issue'
+        : '[Namefi] Domain Renewal Update';
 
     return (
       <NamefiEmailContainer title={emailTitle}>

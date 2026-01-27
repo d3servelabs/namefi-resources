@@ -39,7 +39,7 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
     domainName,
     chainId,
     nftBurnTxHash,
-    title = 'Your Domain Export is Complete',
+    title = '[Namefi] Your Domain Export is Complete',
   }) => {
     const txUrl = getTxExplorerUrl(chainId, nftBurnTxHash);
 

@@ -136,26 +136,26 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
     // Generate a more user-friendly email title based on order outcome
     const getEmailTitle = () => {
       if (failedItems.length > 0 && successfulItems.length === 0) {
-        return 'We Need Your Attention';
+        return '[Namefi] We Need Your Attention';
       }
       if (processingItems.length > 0 && successfulItems.length === 0) {
-        return 'Your Order is Being Processed';
+        return '[Namefi] Your Order is Being Processed';
       }
       if (hasImports && successfulItems.length > 0) {
         return successfulItems.length === 1
-          ? `Welcome to Namefi, ${getDomainWithIdn(successfulItems[0].normalizedDomainName)}!`
-          : 'Your Domains Have Arrived!';
+          ? `[Namefi] Welcome to Namefi, ${getDomainWithIdn(successfulItems[0].normalizedDomainName)}!`
+          : '[Namefi] Your Domains Have Arrived!';
       }
       if (hasRenewals && successfulItems.length > 0) {
-        return 'Your Domain Renewal is Complete';
+        return '[Namefi] Your Domain Renewal is Complete';
       }
       if (successfulRegistrations.length === 1) {
-        return `${getDomainWithIdn(successfulRegistrations[0].normalizedDomainName)} is Yours!`;
+        return `[Namefi] ${getDomainWithIdn(successfulRegistrations[0].normalizedDomainName)} is Yours!`;
       }
       if (successfulRegistrations.length > 1) {
-        return 'Your New Domains Are Ready!';
+        return '[Namefi] Your New Domains Are Ready!';
       }
-      return 'Your Order Update';
+      return '[Namefi] Your Order Update';
     };
 
     return (
