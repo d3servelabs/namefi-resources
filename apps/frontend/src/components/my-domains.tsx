@@ -620,11 +620,10 @@ function MyDomainsTable(props: {
         const domainName = domain.normalizedDomainName;
         if (!domainName || prev.has(domainName)) continue;
 
-        // Use autoRenewEnabled from the backend if available
-        if (domain.autoRenewEnabled !== undefined) {
-          next.set(domainName, domain.autoRenewEnabled);
-          changed = true;
-        }
+        // Always add domain to cache, defaulting to false if autoRenewEnabled is undefined
+        // This ensures the cache is populated for all domains so bulk state calculation works correctly
+        next.set(domainName, domain.autoRenewEnabled ?? false);
+        changed = true;
       }
 
       return changed ? next : prev;
