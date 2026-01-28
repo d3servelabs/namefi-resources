@@ -33,9 +33,15 @@ const mockOriginRuntime: OriginRuntime = {
   },
 };
 
-function StoryProviders({ children }: { children: ReactNode }) {
+function StoryProviders({
+  children,
+  origin,
+}: {
+  children: ReactNode;
+  origin: OriginRuntime;
+}) {
   return (
-    <OriginProvider originInfo={mockOriginRuntime}>
+    <OriginProvider originInfo={origin}>
       <TrpcProvider>
         <NuqsAdapter>
           <ConsentManagerProvider options={{ mode: 'offline' }}>
@@ -73,8 +79,8 @@ const meta = {
   },
   tags: ['autodocs'],
   decorators: [
-    (Story) => (
-      <StoryProviders>
+    (Story, context) => (
+      <StoryProviders origin={context.args.origin ?? mockOriginRuntime}>
         <Story />
       </StoryProviders>
     ),
