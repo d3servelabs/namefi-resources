@@ -7,11 +7,13 @@ import {
   useRef,
   type RefObject,
   type ReactNode,
+  type ErrorInfo,
 } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { motion, useInView } from 'motion/react';
+import { ErrorBoundary } from '@suspensive/react';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card } from '@/components/ui/shadcn/card';
 import {
@@ -933,6 +935,14 @@ const BackersSection = () => {
   );
 };
 
+const logFaqError = (error: Error, info: ErrorInfo) => {
+  console.error(
+    '[LandingMarketing:FaqSection] ErrorBoundary caught an error',
+    error,
+    info,
+  );
+};
+
 const FaqSection = () => (
   <section className="space-y-10">
     <SectionHeading
@@ -941,18 +951,23 @@ const FaqSection = () => (
     />
     <Accordion type="multiple" className="space-y-4">
       {FAQS.map((faq, index) => (
-        <AccordionItem
+        <ErrorBoundary
           key={faq.question}
-          value={`faq-${index}`}
-          className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur"
+          fallback={<></>}
+          onError={logFaqError}
         >
-          <AccordionTrigger className="px-6 py-5 text-left text-lg font-medium">
-            {faq.question}
-          </AccordionTrigger>
-          <AccordionContent className="px-6 pb-6 text-base">
-            {faq.answer}
-          </AccordionContent>
-        </AccordionItem>
+          <AccordionItem
+            value={`faq-${index}`}
+            className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur"
+          >
+            <AccordionTrigger className="px-6 py-5 text-left text-lg font-medium">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="px-6 pb-6 text-base">
+              {faq.answer}
+            </AccordionContent>
+          </AccordionItem>
+        </ErrorBoundary>
       ))}
     </Accordion>
   </section>

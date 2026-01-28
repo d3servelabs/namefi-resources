@@ -40,6 +40,7 @@ import {
   useMemo,
   useState,
   type ComponentProps,
+  type ErrorInfo,
 } from 'react';
 import { CurrentUserAvatar } from '../user-avatar';
 import {
@@ -479,9 +480,17 @@ const joinNavItemGroups = compose<
   filter(compose(isNotEmpty, filter(both(isNotNil, Boolean)))), // Remove nulls and empty arrays
 );
 
+const logUserDropdownItemError = (error: Error, info: ErrorInfo) => {
+  console.error(
+    '[UserDropdownItem] ErrorBoundary caught an error',
+    error,
+    info,
+  );
+};
+
 const UserDropdownItem = ({ item }: { item: UserDropdownItemProps }) => {
   return (
-    <ErrorBoundary fallback={<></>}>
+    <ErrorBoundary fallback={<></>} onError={logUserDropdownItemError}>
       <UserDropdownItemInner item={item} />
     </ErrorBoundary>
   );
