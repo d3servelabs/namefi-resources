@@ -5,13 +5,17 @@ import { FreeMintsGuidanceProvider } from '@/components/providers/free-mints-gui
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
-import { TrpcProvider } from '@/components/providers/trpc';
 import { CartProvider } from '@/components/providers/cart';
 import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import type { ReactNode } from 'react';
+import { type ReactNode, createContext, useContext } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { TRPCProvider } from '@/lib/trpc';
+import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import type { AppRouter } from '@namefi-astra/backend/trpc';
+import superjson from 'superjson';
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
@@ -33,16 +37,161 @@ const mockOriginRuntime: OriginRuntime = {
   },
 };
 
+type OrderItem = {
+  id: string;
+  orderId: string;
+  normalizedDomainName: string;
+  amountInUsdCents: number;
+  durationInYears: number;
+  type: 'REGISTER' | 'IMPORT' | 'RENEW';
+  registrar: string;
+  status: 'CREATED' | 'PROCESSING' | 'SUCCEEDED' | 'FAILED' | null;
+  createdAt: Date;
+  updatedAt: Date;
+  encryptionKeyId: string | null;
+  encryptedEppAuthorizationCode: string | null;
+  metadata: Record<string, unknown>;
+};
+
+const mockOrderItems: OrderItem[] = [
+  {
+    id: '1',
+    orderId: 'order-1',
+    normalizedDomainName: 'example.com',
+    amountInUsdCents: 1299,
+    durationInYears: 1,
+    type: 'REGISTER',
+    registrar: 'DynadotGdg',
+    status: 'SUCCEEDED',
+    createdAt: new Date('2026-01-15T10:30:00Z'),
+    updatedAt: new Date('2026-01-15T10:35:00Z'),
+    encryptionKeyId: null,
+    encryptedEppAuthorizationCode: null,
+    metadata: {},
+  },
+  {
+    id: '2',
+    orderId: 'order-2',
+    normalizedDomainName: 'mywebsite.io',
+    amountInUsdCents: 3999,
+    durationInYears: 2,
+    type: 'REGISTER',
+    registrar: 'DynadotGdg',
+    status: 'PROCESSING',
+    createdAt: new Date('2026-01-20T14:00:00Z'),
+    updatedAt: new Date('2026-01-20T14:00:00Z'),
+    encryptionKeyId: null,
+    encryptedEppAuthorizationCode: null,
+    metadata: {},
+  },
+  {
+    id: '3',
+    orderId: 'order-3',
+    normalizedDomainName: 'blockchain.xyz',
+    amountInUsdCents: 2499,
+    durationInYears: 1,
+    type: 'IMPORT',
+    registrar: 'R53',
+    status: 'FAILED',
+    createdAt: new Date('2026-01-10T08:15:00Z'),
+    updatedAt: new Date('2026-01-10T08:20:00Z'),
+    encryptionKeyId: null,
+    encryptedEppAuthorizationCode: null,
+    metadata: {},
+  },
+  {
+    id: '4',
+    orderId: 'order-4',
+    normalizedDomainName: 'coolstartup.dev',
+    amountInUsdCents: 1599,
+    durationInYears: 1,
+    type: 'RENEW',
+    registrar: 'DynadotRegular',
+    status: 'SUCCEEDED',
+    createdAt: new Date('2026-01-25T16:45:00Z'),
+    updatedAt: new Date('2026-01-25T16:50:00Z'),
+    encryptionKeyId: null,
+    encryptedEppAuthorizationCode: null,
+    metadata: {},
+  },
+];
+
+type MockAuthState = {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  orderItems: OrderItem[];
+  isOrdersLoading: boolean;
+};
+
+const MockAuthContext = createContext<MockAuthState>({
+  isAuthenticated: true,
+  isLoading: false,
+  orderItems: [],
+  isOrdersLoading: false,
+});
+
+export const useMockAuth = () => useContext(MockAuthContext);
+
+function createMockQueryClient(mockState: MockAuthState) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: Number.POSITIVE_INFINITY,
+      },
+    },
+  });
+
+  if (!mockState.isLoading && mockState.isAuthenticated) {
+    queryClient.setQueryData(
+      [['orders', 'getOrderItems'], { type: 'query' }],
+      mockState.orderItems,
+    );
+  }
+
+  return queryClient;
+}
+
+function MockTrpcProvider({
+  children,
+  mockState,
+}: {
+  children: ReactNode;
+  mockState: MockAuthState;
+}) {
+  const queryClient = createMockQueryClient(mockState);
+  const trpcClient = createTRPCClient<AppRouter>({
+    links: [
+      httpBatchLink({
+        url: 'http://localhost:3000/trpc',
+        transformer: superjson,
+      }),
+    ],
+  });
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+        <MockAuthContext.Provider value={mockState}>
+          {children}
+        </MockAuthContext.Provider>
+      </TRPCProvider>
+    </QueryClientProvider>
+  );
+}
+
 function StoryProviders({
   children,
   origin,
+  mockState,
 }: {
   children: ReactNode;
   origin: OriginRuntime;
+  mockState: MockAuthState;
 }) {
   return (
     <OriginProvider originInfo={origin}>
-      <TrpcProvider>
+      <MockTrpcProvider mockState={mockState}>
         <NuqsAdapter>
           <ConsentManagerProvider options={{ mode: 'offline' }}>
             <PreAuthSignalsProvider>
@@ -60,12 +209,23 @@ function StoryProviders({
             </PreAuthSignalsProvider>
           </ConsentManagerProvider>
         </NuqsAdapter>
-      </TrpcProvider>
+      </MockTrpcProvider>
     </OriginProvider>
   );
 }
 
-const meta = {
+const defaultMockState: MockAuthState = {
+  isAuthenticated: true,
+  isLoading: false,
+  orderItems: mockOrderItems,
+  isOrdersLoading: false,
+};
+
+type StoryArgs = {
+  mockState?: MockAuthState;
+};
+
+const meta: Meta<StoryArgs> = {
   title: 'Pages/My Orders',
   component: OrdersPage,
   parameters: {
@@ -78,16 +238,139 @@ const meta = {
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    mockState: {
+      control: 'object',
+      description: 'Mock authentication and data state',
+    },
+  },
   decorators: [
-    (Story) => (
-      <StoryProviders origin={mockOriginRuntime}>
+    (Story, context) => (
+      <StoryProviders
+        origin={mockOriginRuntime}
+        mockState={context.args.mockState ?? defaultMockState}
+      >
         <Story />
       </StoryProviders>
     ),
   ],
-} satisfies Meta<typeof OrdersPage>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<StoryArgs>;
 
-export const Default: Story = {};
+export const WithOrders: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderItems: mockOrderItems,
+      isOrdersLoading: false,
+    },
+  },
+};
+
+export const EmptyState: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderItems: [],
+      isOrdersLoading: false,
+    },
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: true,
+      orderItems: [],
+      isOrdersLoading: true,
+    },
+  },
+};
+
+export const Unauthenticated: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: false,
+      isLoading: false,
+      orderItems: [],
+      isOrdersLoading: false,
+    },
+  },
+};
+
+export const MixedStatuses: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderItems: [
+        {
+          id: '1',
+          orderId: 'order-1',
+          normalizedDomainName: 'success-domain.com',
+          amountInUsdCents: 1299,
+          durationInYears: 1,
+          type: 'REGISTER' as const,
+          registrar: 'DynadotGdg',
+          status: 'SUCCEEDED' as const,
+          createdAt: new Date('2026-01-15T10:30:00Z'),
+          updatedAt: new Date('2026-01-15T10:35:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: {},
+        },
+        {
+          id: '2',
+          orderId: 'order-2',
+          normalizedDomainName: 'processing-domain.io',
+          amountInUsdCents: 2999,
+          durationInYears: 1,
+          type: 'REGISTER' as const,
+          registrar: 'DynadotGdg',
+          status: 'PROCESSING' as const,
+          createdAt: new Date('2026-01-20T14:00:00Z'),
+          updatedAt: new Date('2026-01-20T14:00:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: {},
+        },
+        {
+          id: '3',
+          orderId: 'order-3',
+          normalizedDomainName: 'failed-domain.xyz',
+          amountInUsdCents: 1999,
+          durationInYears: 1,
+          type: 'IMPORT' as const,
+          registrar: 'R53',
+          status: 'FAILED' as const,
+          createdAt: new Date('2026-01-10T08:15:00Z'),
+          updatedAt: new Date('2026-01-10T08:20:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: {},
+        },
+        {
+          id: '4',
+          orderId: 'order-4',
+          normalizedDomainName: 'created-domain.dev',
+          amountInUsdCents: 1599,
+          durationInYears: 1,
+          type: 'RENEW' as const,
+          registrar: 'DynadotRegular',
+          status: 'CREATED' as const,
+          createdAt: new Date('2026-01-25T16:45:00Z'),
+          updatedAt: new Date('2026-01-25T16:50:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: {},
+        },
+      ],
+      isOrdersLoading: false,
+    },
+  },
+};
