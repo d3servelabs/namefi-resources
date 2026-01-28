@@ -15,6 +15,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
+import type { OrderItemSelect } from '@namefi-astra/db';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import superjson from 'superjson';
 
 const mockOriginRuntime: OriginRuntime = {
@@ -37,28 +39,14 @@ const mockOriginRuntime: OriginRuntime = {
   },
 };
 
-type OrderItem = {
-  id: string;
-  orderId: string;
-  normalizedDomainName: string;
-  amountInUsdCents: number;
-  durationInYears: number;
-  type: 'REGISTER' | 'IMPORT' | 'RENEW';
-  registrar: string;
-  status: 'CREATED' | 'PROCESSING' | 'SUCCEEDED' | 'FAILED' | null;
-  createdAt: Date;
-  updatedAt: Date;
-  encryptionKeyId: string | null;
-  encryptedEppAuthorizationCode: string | null;
-  metadata: Record<string, unknown>;
-};
+type OrderItem = OrderItemSelect;
 
 const mockOrderItems: OrderItem[] = [
   {
     id: '1',
     orderId: 'order-1',
-    normalizedDomainName: 'example.com',
-    amountInUsdCents: 1299,
+    normalizedDomainName: 'example.com' as NamefiNormalizedDomain,
+    amountInUSDCents: 1299,
     durationInYears: 1,
     type: 'REGISTER',
     registrar: 'DynadotGdg',
@@ -72,8 +60,8 @@ const mockOrderItems: OrderItem[] = [
   {
     id: '2',
     orderId: 'order-2',
-    normalizedDomainName: 'mywebsite.io',
-    amountInUsdCents: 3999,
+    normalizedDomainName: 'mywebsite.io' as NamefiNormalizedDomain,
+    amountInUSDCents: 3999,
     durationInYears: 2,
     type: 'REGISTER',
     registrar: 'DynadotGdg',
@@ -87,8 +75,8 @@ const mockOrderItems: OrderItem[] = [
   {
     id: '3',
     orderId: 'order-3',
-    normalizedDomainName: 'blockchain.xyz',
-    amountInUsdCents: 2499,
+    normalizedDomainName: 'blockchain.xyz' as NamefiNormalizedDomain,
+    amountInUSDCents: 2499,
     durationInYears: 1,
     type: 'IMPORT',
     registrar: 'R53',
@@ -102,8 +90,8 @@ const mockOrderItems: OrderItem[] = [
   {
     id: '4',
     orderId: 'order-4',
-    normalizedDomainName: 'coolstartup.dev',
-    amountInUsdCents: 1599,
+    normalizedDomainName: 'coolstartup.dev' as NamefiNormalizedDomain,
+    amountInUSDCents: 1599,
     durationInYears: 1,
     type: 'RENEW',
     registrar: 'DynadotRegular',
@@ -312,8 +300,8 @@ export const MixedStatuses: Story = {
         {
           id: '1',
           orderId: 'order-1',
-          normalizedDomainName: 'success-domain.com',
-          amountInUsdCents: 1299,
+          normalizedDomainName: 'success-domain.com' as NamefiNormalizedDomain,
+          amountInUSDCents: 1299,
           durationInYears: 1,
           type: 'REGISTER' as const,
           registrar: 'DynadotGdg',
@@ -327,8 +315,9 @@ export const MixedStatuses: Story = {
         {
           id: '2',
           orderId: 'order-2',
-          normalizedDomainName: 'processing-domain.io',
-          amountInUsdCents: 2999,
+          normalizedDomainName:
+            'processing-domain.io' as NamefiNormalizedDomain,
+          amountInUSDCents: 2999,
           durationInYears: 1,
           type: 'REGISTER' as const,
           registrar: 'DynadotGdg',
@@ -342,8 +331,8 @@ export const MixedStatuses: Story = {
         {
           id: '3',
           orderId: 'order-3',
-          normalizedDomainName: 'failed-domain.xyz',
-          amountInUsdCents: 1999,
+          normalizedDomainName: 'failed-domain.xyz' as NamefiNormalizedDomain,
+          amountInUSDCents: 1999,
           durationInYears: 1,
           type: 'IMPORT' as const,
           registrar: 'R53',
@@ -357,8 +346,8 @@ export const MixedStatuses: Story = {
         {
           id: '4',
           orderId: 'order-4',
-          normalizedDomainName: 'created-domain.dev',
-          amountInUsdCents: 1599,
+          normalizedDomainName: 'created-domain.dev' as NamefiNormalizedDomain,
+          amountInUSDCents: 1599,
           durationInYears: 1,
           type: 'RENEW' as const,
           registrar: 'DynadotRegular',
