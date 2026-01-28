@@ -5,9 +5,10 @@ import {
   useLogout as usePrivyLogout,
   type LoginModalOptions,
   type User as PrivyUser,
+  type PrivyInterface,
 } from '@privy-io/react-auth';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useContext, createContext } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
@@ -21,8 +22,12 @@ import { useConsentIdentify } from './use-consent-identify';
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
 
+export const MockPrivy = createContext<PrivyInterface | null>(null);
+
 export function useAuth() {
-  const { authenticated, ready, user: originalPrivyUser } = usePrivy();
+  const mockPrivy = useContext(MockPrivy);
+  const privy = usePrivy();
+  const { authenticated, ready, user: originalPrivyUser } = mockPrivy ?? privy;
   const { isSkipAuthActive } = useSkipAuth();
 
   const trpc = useTRPC();

@@ -104,7 +104,8 @@ const FEATURE_FLAGS_ITEMS: FeatureFlagDefinition[] = [
  * To Add NavItems to the UserDropdown, go to @see {getUserDropdownItems}
  */
 
-export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
+export const UserDropdown = ErrorBoundary.with(
+  { fallback: <div>Error</div> },
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
     {
       forceExpanded = true,
@@ -324,8 +325,8 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
         </AnimatePresence>
       </div>
     );
-  });
-
+  }) as ForwardRefExoticComponent<UserDropdownProps>,
+);
 UserDropdown.displayName = 'UserDropdown';
 
 type BalanceBreakdownDialogProps = {

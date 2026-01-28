@@ -10,14 +10,17 @@ import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { type ReactNode, createContext, useContext } from 'react';
+import { type ReactNode, createContext } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
-import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import superjson from 'superjson';
+import { createMockLink } from '@/lib/trpc/mock';
+import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
+import { MockPrivy } from '@/hooks/use-auth';
+import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
@@ -118,9 +121,7 @@ const MockAuthContext = createContext<MockAuthState>({
   isOrdersLoading: false,
 });
 
-const useMockAuth = () => useContext(MockAuthContext);
-
-function createMockQueryClient(mockState: MockAuthState) {
+function createMockQueryClient() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -129,13 +130,6 @@ function createMockQueryClient(mockState: MockAuthState) {
       },
     },
   });
-
-  if (!mockState.isLoading && mockState.isAuthenticated) {
-    queryClient.setQueryData(
-      [['orders', 'getOrderItems'], { type: 'query' }],
-      mockState.orderItems,
-    );
-  }
 
   return queryClient;
 }
@@ -147,12 +141,27 @@ function MockTrpcProvider({
   children: ReactNode;
   mockState: MockAuthState;
 }) {
-  const queryClient = createMockQueryClient(mockState);
+  const queryClient = createMockQueryClient();
   const trpcClient = createTRPCClient<AppRouter>({
     links: [
-      httpBatchLink({
-        url: 'http://localhost:3000/trpc',
-        transformer: superjson,
+      createMockLink({
+        isAuthenticated: mockState.isAuthenticated,
+        getMockData: (options) => {
+          if (options.op.path === 'orders.getOrderItems') {
+            if (mockState.isOrdersLoading || mockState.isLoading) {
+              return new Promise<any>(() => {});
+            }
+            return Promise.resolve([null, mockState.orderItems] as const);
+          }
+          return Promise.resolve([
+            {
+              textCode: 'BAD_REQUEST',
+              httpStatus: 400,
+              message: 'unknown path',
+            },
+            null,
+          ] as const);
+        },
       }),
     ],
   });
@@ -178,27 +187,38 @@ function StoryProviders({
   mockState: MockAuthState;
 }) {
   return (
-    <OriginProvider originInfo={origin}>
-      <MockTrpcProvider mockState={mockState}>
-        <NuqsAdapter>
-          <ConsentManagerProvider options={{ mode: 'offline' }}>
-            <PreAuthSignalsProvider>
-              <InteractionLoggersProvider>
-                <WishlistProvider>
-                  <CartProvider>
-                    <SidebarProvider defaultOpen={false}>
-                      <FreeMintsGuidanceProvider>
-                        {children}
-                      </FreeMintsGuidanceProvider>
-                    </SidebarProvider>
-                  </CartProvider>
-                </WishlistProvider>
-              </InteractionLoggersProvider>
-            </PreAuthSignalsProvider>
-          </ConsentManagerProvider>
-        </NuqsAdapter>
-      </MockTrpcProvider>
-    </OriginProvider>
+    <MockPrivy.Provider
+      value={
+        {
+          ready: !mockState.isLoading,
+          authenticated: mockState.isAuthenticated,
+        } as any
+      }
+    >
+      <AdminFeatureFlagsProvider>
+        <OriginProvider originInfo={origin}>
+          <MockTrpcProvider mockState={mockState}>
+            <NuqsAdapter>
+              <ConsentManagerProvider options={{ mode: 'offline' }}>
+                <PreAuthSignalsProvider>
+                  <InteractionLoggersProvider>
+                    <WishlistProvider>
+                      <CartProvider>
+                        <SidebarProvider defaultOpen={false}>
+                          <FreeMintsGuidanceProvider>
+                            {children}
+                          </FreeMintsGuidanceProvider>
+                        </SidebarProvider>
+                      </CartProvider>
+                    </WishlistProvider>
+                  </InteractionLoggersProvider>
+                </PreAuthSignalsProvider>
+              </ConsentManagerProvider>
+            </NuqsAdapter>
+          </MockTrpcProvider>
+        </OriginProvider>
+      </AdminFeatureFlagsProvider>
+    </MockPrivy.Provider>
   );
 }
 
@@ -237,6 +257,8 @@ const meta: Meta<StoryArgs> = {
       origin={mockOriginRuntime}
       mockState={args.mockState ?? defaultMockState}
     >
+      <ReactQueryDevtoolsWrapper />
+
       <OrdersPage />
     </StoryProviders>
   ),
