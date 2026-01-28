@@ -1,0 +1,49 @@
+---
+description: Storybook rules for *.stories.tsx exports and TRPC mocking
+globs: "**/*.stories.tsx"
+alwaysApply: false
+---
+
+# Storybook Stories Rules
+
+## Export Rules (Strict)
+
+- Named exports must be `const` stories typed as `Story`
+- Use `type Story = StoryObj<StoryArgs>` and `export const Example: Story = { ... }`
+- Do not export helpers, functions, data, or components from `*.stories.tsx`
+- `export default meta` is allowed and required for Storybook
+
+If shared helpers or fixtures are needed, keep them file-local or move them to a separate module and import them (do not export them from the story file).
+
+## Mocking TRPC for Page Stories
+
+Use the mock link in `apps/frontend/src/lib/trpc/mock.ts`, as demonstrated in `apps/frontend/src/stories/pages/my-orders.stories.tsx`.
+
+### Pattern
+
+1. Create a `QueryClient` with `retry: false` and `staleTime: Infinity`.
+2. Build a `trpcClient` with `createTRPCClient` and `createMockLink`.
+3. Provide `isAuthenticated` (and optionally `user` or `impersonationData`).
+4. In `getMockData`, switch on `opts.op.path` and return a tuple:
+   - Success: `[null, data]`
+   - Error: `[{ textCode, httpStatus, message }, null]`
+   - Loading: `new Promise(() => {})` to keep the request pending
+5. Wrap the page with `QueryClientProvider` and `TRPCProvider`, then any app providers required by the page.
+
+```tsx
+const trpcClient = createTRPCClient<AppRouter>({
+  links: [
+    createMockLink({
+      isAuthenticated: true,
+      getMockData: async (opts) => {
+        if (opts.op.path === 'orders.getOrderItems') {
+          return [null, mockOrderItems];
+        }
+        return [{ textCode: 'BAD_REQUEST', httpStatus:400, message: 'unknown path' }, {}];
+      },
+    }),
+  ],
+});
+```
+
+If you need an unauthenticated state, set `isAuthenticated: false` so `createMockLink` returns `UNAUTHORIZED` for protected procedures.
