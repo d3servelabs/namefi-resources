@@ -707,9 +707,15 @@ These endpoints are accessible without user authentication (some require API key
 |------|-------------|
 | `POST /webhooks/nft-activity` | Alchemy webhook for NFT activity notifications |
 
-### tRPC API (Internal)
+### tRPC API (Frontend)
 
-The tRPC API at `/trpc/*` is primarily used by the frontend application. It provides type-safe communication between the frontend and backend.
+The tRPC API at `/trpc/*` is the primary API used by the Namefi Astra frontend application. It provides type-safe communication between the frontend and backend with full TypeScript inference.
+
+**Base URLs:**
+- Development: `https://backend.astra.namefi.dev/trpc/`
+- Production: `https://backend.astra.namefi.io/trpc/`
+
+**Authentication:** Uses Privy authentication tokens passed via the `Authorization` header.
 
 **Available Routers:**
 
