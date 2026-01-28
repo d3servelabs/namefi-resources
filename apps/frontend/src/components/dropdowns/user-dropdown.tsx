@@ -16,6 +16,7 @@ import {
   type ChainBalance,
 } from '@/hooks/use-user-chain-balances';
 import type { NavItem } from '@/lib/types/nav-item';
+import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress, shortage } from '@/lib/string';
 import { getUserDisplayName } from '@/lib/user';
@@ -481,11 +482,7 @@ const joinNavItemGroups = compose<
 );
 
 const logUserDropdownItemError = (error: Error, info: ErrorInfo) => {
-  console.error(
-    '[UserDropdownItem] ErrorBoundary caught an error',
-    error,
-    info,
-  );
+  reportReactBoundaryError('UserDropdownItem', error, info);
 };
 
 const UserDropdownItem = ({ item }: { item: UserDropdownItemProps }) => {

@@ -10,6 +10,7 @@ import {
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import type { NavItem } from '@/lib/types/nav-item';
+import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ErrorInfo, FC, HTMLAttributes } from 'react';
@@ -21,7 +22,7 @@ export type SidebarItemsProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 const logSidebarItemsError = (error: Error, info: ErrorInfo) => {
-  console.error('[SidebarItems] ErrorBoundary caught an error', error, info);
+  reportReactBoundaryError('SidebarItems', error, info);
 };
 
 export const SidebarItems: FC<SidebarItemsProps> = ({

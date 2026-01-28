@@ -22,6 +22,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/shadcn/accordion';
+import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import { cn } from '@/lib/cn';
 import {
   ArrowRight,
@@ -936,11 +937,7 @@ const BackersSection = () => {
 };
 
 const logFaqError = (error: Error, info: ErrorInfo) => {
-  console.error(
-    '[LandingMarketing:FaqSection] ErrorBoundary caught an error',
-    error,
-    info,
-  );
+  reportReactBoundaryError('LandingMarketing:FaqSection', error, info);
 };
 
 const FaqSection = () => (
