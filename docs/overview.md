@@ -747,6 +747,314 @@ The tRPC API at `/trpc/*` is the primary API used by the Namefi Astra frontend a
 | **dnsCache** | DNS cache management |
 | **version** | API version information |
 
+#### Detailed tRPC Endpoint Reference
+
+The following sections document each tRPC router's endpoints with their input parameters and source code locations. Endpoints are categorized by authentication level: **public** (no auth required), **protected** (requires Privy auth), **admin** (requires admin permissions), or **owner** (requires domain ownership).
+
+##### search Router
+Source: [`apps/backend/src/trpc/routers/searchRouter.ts`](../apps/backend/src/trpc/routers/searchRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `isDomainAvailable` | query | public/protected | `{ domain: string }` | Check if a domain is available for registration |
+| `getClubsCategoriesWithStats` | query | public/protected | none | Get club categories with statistics |
+| `getDomainSuggestions` | query | public | `{ query: string, tlds?: string[] }` | Get domain name suggestions based on query |
+| `streamDomainAvailability` | subscription | public/protected | `{ domains: string[] }` | Stream availability status for multiple domains |
+| `checkFreeClaimEligibility` | query | protected | `{ domain: string }` | Check if user is eligible for free domain claim |
+
+##### orders Router
+Source: [`apps/backend/src/trpc/routers/ordersRouter.ts`](../apps/backend/src/trpc/routers/ordersRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `createOrder` | mutation | protected | `{ items: OrderItem[], paymentMethod: string }` | Create a new order |
+| `getOrder` | query | protected | `{ orderId: string }` | Get order details by ID |
+| `getOrderItems` | query | protected | `{ orderId: string }` | Get items in an order |
+| `getOrderProgress` | query | protected | `{ orderId: string }` | Get order processing progress |
+| `createOrderV2` | mutation | protected | `{ items: OrderItem[], paymentMethod: string }` | Create order (v2 with enhanced features) |
+| `instantBuy` | mutation | protected | `{ domain: string, paymentMethod: string }` | Quick purchase a domain |
+
+##### carts Router
+Source: [`apps/backend/src/trpc/routers/cartsRouter.ts`](../apps/backend/src/trpc/routers/cartsRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getItems` | query | protected | none | Get all items in user's cart |
+| `addItems` | mutation | protected | `{ items: CartItem[] }` | Add items to cart |
+| `updateItem` | mutation | protected | `{ itemId: string, updates: object }` | Update a cart item |
+| `removeItem` | mutation | protected | `{ itemId: string }` | Remove item from cart |
+| `clear` | mutation | protected | none | Clear all items from cart |
+
+##### users Router
+Source: [`apps/backend/src/trpc/routers/usersRouter.ts`](../apps/backend/src/trpc/routers/usersRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getUser` | query | protected | none | Get current user profile |
+| `getMyPermissions` | query | protected | none | Get user's permissions |
+| `getCurrentUserDomains` | query | protected | `{ page?, limit? }` | Get domains owned by current user |
+| `requestNfscFaucet` | mutation | public | `{ walletAddress: string }` | Request NFSC tokens from faucet |
+| `getNfscFaucetStatus` | query | public | `{ walletAddress: string }` | Check faucet request status |
+| `updatePrivyCustomMetadata` | mutation | protected | `{ metadata: object }` | Update user's Privy metadata |
+| `getUserQualifiesForDomainNamePromo` | query | protected | `{ domain: string }` | Check promo eligibility |
+| `getImpersonationStatus` | query | protected | none | Get current impersonation status |
+| `impersonateUser` | mutation | admin | `{ userId: string }` | Impersonate another user (admin only) |
+| `stopImpersonating` | mutation | protected | none | Stop impersonating |
+
+##### dnsRecords Router
+Source: [`apps/backend/src/trpc/routers/dnsRecordsRouter.ts`](../apps/backend/src/trpc/routers/dnsRecordsRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getRecords` | query | public | `{ domain: string }` | Get DNS records for a domain |
+| `createDnsRecord` | mutation | protected | `{ domain: string, record: DnsRecord }` | Create a DNS record |
+| `updateRecord` | mutation | protected | `{ domain: string, recordId: string, record: DnsRecord }` | Update a DNS record |
+| `deleteRecord` | mutation | protected | `{ domain: string, recordId: string }` | Delete a DNS record |
+| `updateRecords` | mutation | protected | `{ domain: string, records: DnsRecord[] }` | Batch update DNS records |
+| `createRecords` | mutation | protected | `{ domain: string, records: DnsRecord[] }` | Batch create DNS records |
+| `deleteRecords` | mutation | protected | `{ domain: string, recordIds: string[] }` | Batch delete DNS records |
+| `parkDomain` | mutation | protected | `{ domain: string }` | Set parking DNS records |
+
+##### payments Router
+Source: [`apps/backend/src/trpc/routers/paymentsRouter.ts`](../apps/backend/src/trpc/routers/paymentsRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `createCustomerSession` | mutation | protected | none | Create Stripe customer session |
+| `createSetupIntent` | mutation | protected | none | Create Stripe setup intent |
+| `deletePaymentMethod` | mutation | protected | `{ paymentMethodId: string }` | Delete a saved payment method |
+| `getPaymentMethods` | query | protected | none | Get user's saved payment methods |
+
+##### ai Router
+Source: [`apps/backend/src/trpc/routers/aiRouter.ts`](../apps/backend/src/trpc/routers/aiRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `generateLogo` | mutation | protected | `{ domain: string, type: string, style: string, model?: string }` | Generate AI logo for domain |
+| `generatePoster` | mutation | protected | `{ domain: string, collateralType?: string, model?: string }` | Generate marketing poster |
+| `getGenerationsByDomain` | query | protected | `{ domain: string }` | Get AI generations for a domain |
+| `getUserDomains` | query | protected | none | Get domains with AI generations |
+| `getUserGenerationsFiltered` | query | protected | `{ types?: string[], domains?: string[], limit?: number }` | Get filtered AI generations |
+| `getGenerationsByType` | query | protected | `{ domain: string, type: string }` | Get generations by type |
+| `getFeaturedAndRecentGenerations` | query | public | none | Get featured and recent generations |
+| `getGenerationById` | query | public | `{ id: string }` | Get generation by ID |
+| `deleteGeneration` | mutation | protected | `{ id: string }` | Delete an AI generation |
+| `getInternalGenerationsByDomain` | query | public | `{ domain: string }` | Get internal generations for domain |
+| `getInternalGenerationsByDomains` | query | public | `{ domains: string[] }` | Get internal generations for multiple domains |
+| `getUserGenerationUsage` | query | protected | none | Get user's generation usage stats |
+
+##### apiKeys Router
+Source: [`apps/backend/src/trpc/routers/apiKeysRouter.ts`](../apps/backend/src/trpc/routers/apiKeysRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getSigningTypes` | query | protected | none | Get EIP-712 signing types for API key operations |
+| `list` | query | protected | none | List user's API keys |
+| `create` | mutation | protected | `{ signature: string, payload: CreateApiKeyPayload }` | Create new API key (requires EIP-712 signature) |
+| `revoke` | mutation | protected | `{ signature: string, payload: RevokeApiKeyPayload }` | Revoke an API key (requires EIP-712 signature) |
+| `updateName` | mutation | protected | `{ signature: string, payload: UpdateNamePayload }` | Update API key name (requires EIP-712 signature) |
+| `getById` | query | protected | `{ keyId: string }` | Get API key by ID |
+
+##### auth Router
+Source: [`apps/backend/src/trpc/routers/authRouter.ts`](../apps/backend/src/trpc/routers/authRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getSigningDomain` | query | public | none | Get EIP-712 domain configuration for signing |
+
+##### freeClaims Router
+Source: [`apps/backend/src/trpc/routers/freeClaimsRouter.ts`](../apps/backend/src/trpc/routers/freeClaimsRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `checkEligibility` | query | protected | `{ groupOrCampaignKey: string, normalizedDomainName: string }` | Check free claim eligibility |
+| `processClaim` | mutation | protected | `{ normalizedDomainName: string, recipientWalletAddress: string, durationInYears: number, registrarKey: string }` | Process a free claim |
+| `getDomainClaimStatus` | query | protected | `{ domainName: string, claimId?: string }` | Get claim workflow status |
+| `searchWorkflows` | query | protected | `{ domainName?: string, groupOrCampaignKey?: string, limit?: number }` | Search free claim workflows |
+| `processClaimWithTransaction` | mutation | protected | `{ normalizedDomainName: string, recipientWalletAddress: string, registrarKey: string }` | Process claim with transaction |
+| `getUserClaims` | query | protected | none | Get user's free claims |
+
+##### registry Router
+Source: [`apps/backend/src/trpc/routers/registryRouter.ts`](../apps/backend/src/trpc/routers/registryRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getDomainListInfo` | query | public/protected | `{ domains: string[] }` | Get info for multiple domains |
+| `getDomainInfo` | query | public/protected | `{ domain: string }` | Get info for a single domain |
+| `getTldPricingTable` | query | public/protected | none | Get TLD pricing information |
+| `getDomainsByOwner` | query | public | `{ identifier: string }` | Get domains by wallet address or ENS name |
+| `queryDomain` | query | public/protected | `{ query: string, parentDomains?: string[] }` | Generate domain suggestions |
+| `get0xDotCityPercentageRollout` | query | public | none | Get 0x.city rollout percentage |
+
+##### config Router
+Source: [`apps/backend/src/trpc/routers/configRouter.ts`](../apps/backend/src/trpc/routers/configRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `allowedChains` | query | public | none | Get list of allowed blockchain chains |
+
+##### domainConfig Router
+Source: [`apps/backend/src/trpc/routers/domainConfig/domainConfigRouter.ts`](../apps/backend/src/trpc/routers/domainConfig/domainConfigRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getDomainDetails` | query | protected | `{ domainName: string }` | Get domain configuration details |
+| `getDomainRenewalDetails` | query | protected | `{ normalizedDomainName: string }` | Get domain renewal information |
+| `changeDomainNameservers` | mutation | protected | `{ signature: string, payload: DomainActionPayload }` | Change nameservers (requires EIP-712 signature) |
+| `resetDomainNameservers` | mutation | protected | `{ signature: string, payload: DomainActionPayload }` | Reset to Namefi nameservers (requires EIP-712 signature) |
+| `queryActiveNameserversChangeWorkflow` | query | protected | `{ domainName: string }` | Query active nameserver change workflow |
+| `getDomainSupportedFeatures` | query | protected | `{ normalizedDomainName: string }` | Get supported features for domain |
+| `getDomainPreferences` | query | protected | `{ normalizedDomainName: string }` | Get domain preferences |
+| `updateDomainPreferences` | mutation | protected | `{ normalizedDomainName: string, preferences: object }` | Update domain preferences |
+| `getDomainExportStatus` | query | protected | `{ domainName: string }` | Get domain export status |
+| `enableDomainExport` | mutation | protected | `{ signature: string, payload: DomainActionPayload }` | Enable domain export |
+| `approveDomainExport` | mutation | protected | `{ signature: string, payload: DomainActionPayload }` | Approve domain export |
+| `rejectDomainExport` | mutation | protected | `{ signature: string, payload: DomainActionPayload }` | Reject domain export |
+| `getAuthCode` | mutation | protected | `{ signature: string, payload: DomainActionPayload }` | Get domain auth code for transfer |
+| `getMyDomainsWithExpirationStatus` | query | protected | `{ page?, limit? }` | Get user's domains with expiration info |
+| `dnssec.*` | nested | protected | various | DNSSEC management (see domainDnssec router) |
+
+##### domainDnssec Router (nested under domainConfig.dnssec)
+Source: [`apps/backend/src/trpc/routers/domainConfig/domainDnssecRouter.ts`](../apps/backend/src/trpc/routers/domainConfig/domainDnssecRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getDomainDnssecDetails` | query | protected | `{ domainName: string }` | Get DNSSEC status and details |
+| `enableDnssec` | mutation | protected | `{ domainName: string }` | Enable DNSSEC for domain |
+| `disableDnssec` | mutation | protected | `{ domainName: string }` | Disable DNSSEC for domain |
+| `associateDelegationSigner` | mutation | protected | `{ domainName: string, signingConfig: DnssecConfig }` | Associate delegation signer |
+| `getActiveDnssecOperationWorkflows` | query | protected | `{ domainName: string }` | Get active DNSSEC workflows |
+
+##### hunt Router
+Source: [`apps/backend/src/trpc/routers/hunt/huntRouter.ts`](../apps/backend/src/trpc/routers/hunt/huntRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `submitDomain` | mutation | protected | `{ domainName: string }` | Submit a domain for hunting |
+| `removeDomain` | mutation | protected | `{ domainName: string }` | Remove a submitted domain |
+| `getMySubmittedDomains` | query | protected | `{ offset?: number, limit?: number }` | Get user's submitted domains |
+| `getMyUpvotedDomains` | query | protected | `{ offset?: number, limit?: number }` | Get user's upvoted domains |
+| `getTrendingDomainsPublic` | query | public | `{ offset?, limit?, timeRange?, extension? }` | Get trending domains (public) |
+| `getTrendingDomains` | query | protected | `{ offset?, limit?, timeRange?, extension? }` | Get trending domains with user data |
+| `upvote` | mutation | protected | `{ domainName: string }` | Upvote a domain |
+| `unvote` | mutation | protected | `{ domainName: string }` | Remove upvote from domain |
+| `checkDomainOwnership` | query | protected | `{ domainName: string }` | Check if user submitted domain |
+| `getDomainDetail` | query | protected | `{ domainName: string }` | Get domain details with user data |
+| `getDomainDetailPublic` | query | public | `{ domainName: string }` | Get domain details (public) |
+| `getCampaignPublic` | query | public | `{ campaignKey: string, offset?, limit? }` | Get campaign details (public) |
+| `getCampaign` | query | protected | `{ campaignKey: string, offset?, limit? }` | Get campaign with user data |
+| `getPeriodAwards` | query | public | `{ type: string, periodKey: string, offset?, limit? }` | Get period awards |
+| `getDomainAwards` | query | public | `{ domainName: string }` | Get awards for a domain |
+
+##### share Router
+Source: [`apps/backend/src/trpc/routers/shareRouter.ts`](../apps/backend/src/trpc/routers/shareRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `submitShare` | mutation | protected | `{ normalizedDomainName: string, postUrl: string, sharedUrl: string, campaignKey?: string }` | Submit a social share |
+| `submitShareAnonymous` | mutation | public | `{ normalizedDomainName: string, postUrl: string, sharedUrl: string, campaignKey?: string }` | Submit anonymous share |
+| `hasUserShared` | query | protected | `{ normalizedDomainName: string }` | Check if user has shared domain |
+
+##### wishlist Router
+Source: [`apps/backend/src/trpc/routers/wishlistRouter.ts`](../apps/backend/src/trpc/routers/wishlistRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `addToWishlist` | mutation | protected | `[{ normalizedDomainName: string }]` | Add domains to wishlist |
+| `removeFromWishlist` | mutation | protected | `[{ normalizedDomainName: string }]` | Remove domains from wishlist |
+| `getWishlistDomains` | query | protected | none | Get user's wishlisted domains |
+
+##### newsletter Router
+Source: [`apps/backend/src/trpc/routers/newsletterRouter.ts`](../apps/backend/src/trpc/routers/newsletterRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `subscribe` | mutation | public | `{ email: string, name?: string, from: string, attributes?: object, altcha: string }` | Subscribe to newsletter |
+
+##### feedback Router
+Source: [`apps/backend/src/trpc/routers/feedbackRouter.ts`](../apps/backend/src/trpc/routers/feedbackRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `submit` | mutation | public | `{ rating: number, message?: string, feedbackId?: string, path?: string }` | Submit feedback |
+| `claimAnonymous` | mutation | protected | `{ feedbackIds: string[] }` | Claim anonymous feedback entries |
+
+##### pbnIssuanceReservations Router
+Source: [`apps/backend/src/trpc/routers/pbnIssuanceReservationsRouter.ts`](../apps/backend/src/trpc/routers/pbnIssuanceReservationsRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `create` | mutation | owner | `{ pbnDomain: string, recipientEmail?: string, exactDomainName?: string, parentDomain?: string, ... }` | Create subdomain reservation |
+| `listByCreator` | query | owner | `{ status?: string, issueFreeClaim?: boolean, pbnDomain?: string }` | List reservations by creator |
+| `cancel` | mutation | owner | `{ reservationId: string }` | Cancel a reservation |
+| `createBulk` | mutation | owner | `{ pbnDomain: string, items: ReservationItem[], sendEmail?: boolean }` | Create bulk reservations |
+
+##### poweredByNamefiOwner Router
+Source: [`apps/backend/src/trpc/routers/poweredByNamefiOwnerRouter.ts`](../apps/backend/src/trpc/routers/poweredByNamefiOwnerRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `isUserAPoweredByNamefiOwner` | query | protected | none | Check if user owns any PBN domains |
+| `isUserOwnerOf` | query | protected | `{ normalizedDomainName: string }` | Check if user owns specific domain |
+| `getAnalyticsDashboardOverview` | query | owner | `{ startDate: string, endDate: string, publicSuffixPlusOne: string }` | Get analytics dashboard |
+| `listOwnedDomains` | query | owner | none | List user's PBN domains |
+| `updateDomain` | mutation | owner | `{ normalizedDomainName: string, ... }` | Update PBN domain settings |
+| `orderItemsHistory` | query | owner | `{ page?, limit?, normalizedDomainName? }` | Get order history for PBN |
+| `revenue` | query | owner | `{ from?: Date, to?: Date, normalizedDomainName?, interval? }` | Get revenue data |
+| `revenueByDomain` | query | owner | `{ from?: Date, to?: Date }` | Get revenue by domain |
+| `getReservedWords` | query | owner | `{ normalizedDomainName: string }` | Get reserved words for domain |
+| `validateReservedWords` | query | owner | `{ normalizedDomainName: string, words: string[] }` | Validate reserved words |
+| `addReservedWords` | mutation | owner | `{ normalizedDomainName: string, words: string[] }` | Add reserved words |
+| `removeReservedWords` | mutation | owner | `{ normalizedDomainName: string, words: string[] }` | Remove reserved words |
+
+##### analytics Router
+Source: [`apps/backend/src/trpc/routers/analyticsRouter.ts`](../apps/backend/src/trpc/routers/analyticsRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `getDashboardOverview` | query | admin | `{ startDate: string, endDate: string, publicSuffix?, publicSuffixPlusOne? }` | Get DNS analytics dashboard |
+| `getByPublicSuffix` | query | admin | `{ limit?: number, startDate: string, endDate: string }` | Get queries by public suffix |
+| `getByPublicSuffixPlusOne` | query | admin | `{ limit?: number, startDate: string, endDate: string }` | Get queries by public suffix+1 |
+| `getFullReportByRecordName` | query | admin | `{ startDate: string, endDate: string, domainName: string }` | Get full report by record name |
+| `getParsedReportByRecordName` | query | admin | `{ startDate: string, endDate: string, domainName: string }` | Get parsed report by record name |
+
+##### dnsCache Router
+Source: [`apps/backend/src/trpc/routers/dnsCacheRouter.ts`](../apps/backend/src/trpc/routers/dnsCacheRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `listServers` | query | public | none | List configured DNS cache servers |
+| `flushCache` | mutation | public | `{ zone: string, recordType?: string, altcha: string }` | Flush DNS cache (with Altcha verification) |
+| `flushCacheAdmin` | mutation | admin | `{ zone: string, recordType?: string, serverNames?: string[] }` | Flush DNS cache (admin) |
+| `getServerStats` | query | admin | `{ serverName: string }` | Get cache stats for server |
+| `dumpServerCache` | query | admin | `{ serverName: string, page?, limit?, cacheType? }` | Dump cache contents |
+| `flushAllOnServer` | mutation | admin | `{ serverName: string }` | Flush all cache on server |
+| `flushAllServers` | mutation | admin | none | Flush all cache on all servers |
+| `getCombinedStats` | query | admin | `{ serverNames: string[] }` | Get combined stats for servers |
+| `testConnectivity` | query | admin | `{ serverNames: string[] }` | Test connectivity to servers |
+
+##### bigQueryAudit Router
+Source: [`apps/backend/src/trpc/routers/bigQueryAuditRouter.ts`](../apps/backend/src/trpc/routers/bigQueryAuditRouter.ts)
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `list` | query | admin | `{ pageSize?: number, pageToken?: string, orderBy?: string, filters?: object }` | List audit logs |
+
+##### admin Router
+Source: [`apps/backend/src/trpc/routers/adminRouter.ts`](../apps/backend/src/trpc/routers/adminRouter.ts)
+
+The admin router contains numerous endpoints for administrative operations including NFT management, user management, workflow management, and system operations. Key endpoints include:
+
+| Endpoint | Type | Auth | Input | Description |
+|----------|------|------|-------|-------------|
+| `isUserAdmin` | query | protected | none | Check if current user has admin access |
+| `getNftsWithExpirationStatus` | query | admin | `{ page, limit, sortBy, sortOrder, filterBy, searchTerm }` | Get NFTs with expiration status |
+| `burnNft` | mutation | admin | `{ normalizedDomainName: string, chainId: number }` | Burn an expired NFT |
+| `getBurnWorkflowStatus` | query | admin | `{ normalizedDomainName: string, chainId: number }` | Get burn workflow status |
+| `getActiveBurnWorkflows` | query | admin | none | Get all active burn workflows |
+
+Additional admin sub-routers include `schedules`, `poweredByNamefi`, `permissions`, `nfsc`, and `eppTesting`.
+
 ## Development Guide
 
 ### Local Development Setup
