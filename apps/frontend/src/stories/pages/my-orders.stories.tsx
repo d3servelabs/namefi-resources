@@ -118,7 +118,7 @@ const MockAuthContext = createContext<MockAuthState>({
   isOrdersLoading: false,
 });
 
-export const useMockAuth = () => useContext(MockAuthContext);
+const useMockAuth = () => useContext(MockAuthContext);
 
 function createMockQueryClient(mockState: MockAuthState) {
   const queryClient = new QueryClient({
