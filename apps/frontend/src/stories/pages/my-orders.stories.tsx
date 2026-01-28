@@ -232,16 +232,14 @@ const meta: Meta<StoryArgs> = {
       description: 'Mock authentication and data state',
     },
   },
-  decorators: [
-    (Story, context) => (
-      <StoryProviders
-        origin={mockOriginRuntime}
-        mockState={context.args.mockState ?? defaultMockState}
-      >
-        <Story />
-      </StoryProviders>
-    ),
-  ],
+  render: (args) => (
+    <StoryProviders
+      origin={mockOriginRuntime}
+      mockState={args.mockState ?? defaultMockState}
+    >
+      <OrdersPage />
+    </StoryProviders>
+  ),
 };
 
 export default meta;
