@@ -1,0 +1,155 @@
+name: Frontend Dev Benchmark
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
+
+jobs:
+  benchmark:
+    name: Run Frontend Dev Benchmark
+    runs-on: blacksmith-8vcpu-ubuntu-2404
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: |
+          # required because infisical binary is not linked on the first run
+          bun install
+          bun install
+
+      - name: Run dev benchmark
+        env:
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
+          INFISICAL_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
+        run: |
+          BENCH_REPORT="apps/frontend/.benchmarks/next-dev-bench-ci-${{ github.run_id }}.md"
+          echo "BENCH_REPORT=$BENCH_REPORT" >> "$GITHUB_ENV"
+          bun scripts/bench-frontend-dev.ts --runs 3 --output "$BENCH_REPORT"
+
+      - name: Post averages to Slack
+        if: ${{ success() }}
+        env:
+          BENCH_REPORT: ${{ env.BENCH_REPORT }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+  
+          report_path = os.environ.get("BENCH_REPORT")
+          if not report_path or not os.path.exists(report_path):
+            raise SystemExit("Benchmark report missing")
+  
+          with open(report_path, "r", encoding="utf-8") as handle:
+            lines = handle.read().splitlines()
+  
+          start_index = None
+          for idx, line in enumerate(lines):
+            if line.strip() == "## Averages":
+              start_index = idx + 1
+              break
+  
+          if start_index is None:
+            raise SystemExit("Averages section not found")
+  
+          avg_lines = []
+          for line in lines[start_index:]:
+            if line.startswith("## "):
+              break
+            avg_lines.append(line)
+  
+          while avg_lines and avg_lines[0].strip() == "":
+            avg_lines.pop(0)
+          while avg_lines and avg_lines[-1].strip() == "":
+            avg_lines.pop()
+  
+          avg_table = "\n".join(avg_lines).strip()
+  
+          runs = ""
+          for line in lines:
+            if line.strip().startswith("- Runs:"):
+              runs = line.split(":", 1)[-1].strip()
+              break
+  
+          full_sha = os.environ.get("GITHUB_SHA", "")
+          sha = full_sha[:7]
+          repo = os.environ.get("GITHUB_REPOSITORY", "")
+          run_id = os.environ.get("GITHUB_RUN_ID", "")
+          server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+          run_url = f"{server_url}/{repo}/actions/runs/{run_id}" if repo and run_id else ""
+  
+          header = "Frontend dev benchmark (main)"
+  
+          meta_bits = []
+          if repo:
+            repo_url = f"{server_url}/{repo}"
+            meta_bits.append(f"*Repo:* <{repo_url}|{repo}>")
+          if runs:
+            meta_bits.append(f"*Runs:* {runs}")
+          if sha:
+            if full_sha and repo:
+              commit_url = f"{server_url}/{repo}/commit/{full_sha}"
+              meta_bits.append(f"*Commit:* <{commit_url}|{sha}>")
+            else:
+              meta_bits.append(f"*Commit:* {sha}")
+          if run_url:
+            meta_bits.append(f"*Run:* <{run_url}|View run>")
+  
+          blocks = [
+            {"type": "section", "text": {"type": "mrkdwn", "text": f"*{header}*"}},
+          ]
+          if meta_bits:
+            blocks.append(
+              {
+                "type": "context",
+                "elements": [{"type": "mrkdwn", "text": " • ".join(meta_bits)}],
+              }
+            )
+          if avg_table:
+            blocks.append({"type": "divider"})
+            blocks.append(
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": f"*Averages*\n```\n{avg_table}\n```",
+                },
+              }
+            )
+  
+          payload = json.dumps({"text": header, "blocks": blocks})
+          webhook = os.environ.get("SLACK_WEBHOOK_URL")
+          if not webhook:
+            print("SLACK_WEBHOOK_URL not configured, skipping notification")
+            raise SystemExit(0)
+  
+          req = urllib.request.Request(
+            webhook,
+            data=payload.encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+          )
+          with urllib.request.urlopen(req) as response:
+            response.read()
+          PY
