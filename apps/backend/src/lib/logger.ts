@@ -174,6 +174,42 @@ function getStreams(): StreamsArray {
 _logger.assign = _bindLogData;
 
 /**
+ * Valid log levels for pino logger
+ */
+export const LOG_LEVELS = [
+  'fatal',
+  'error',
+  'warn',
+  'info',
+  'debug',
+  'trace',
+  'silent',
+] as const;
+
+export type LogLevel = (typeof LOG_LEVELS)[number];
+
+/**
+ * Gets the current log level
+ * @returns The current log level
+ */
+export function getLogLevel(): LogLevel {
+  return _logger.level as LogLevel;
+}
+
+/**
+ * Sets the log level dynamically
+ * @param level - The new log level to set
+ * @returns true if the level was set successfully, false if invalid level
+ */
+export function setLogLevel(level: string): boolean {
+  if (!LOG_LEVELS.includes(level as LogLevel)) {
+    return false;
+  }
+  _logger.level = level;
+  return true;
+}
+
+/**
  * !!IMPORTANT!! don't add async bindings to this function, use the `assign` method instead
  * because it could leek context if it's called outside of a request;
  * Creates a new logger with the given bindings.

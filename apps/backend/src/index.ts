@@ -29,6 +29,7 @@ import { altchaRouter } from './routers/altcha';
 import { publicRouter } from './routers/public';
 import { providersRouter } from './routers/openapi';
 import { monitorsRouter } from './routers/monitors';
+import { logLevelRouter } from './routers/log-level';
 
 type HonoVariables = {
   requestId: string;
@@ -119,6 +120,7 @@ app.route('/altcha', altchaRouter);
 app.route('/monitors', monitorsRouter);
 app.route('v-next', providersRouter);
 app.route('/c15t', c15tRouter);
+app.route('/log-level', logLevelRouter);
 
 app.get('/configfi', (c) => {
   return c.json({

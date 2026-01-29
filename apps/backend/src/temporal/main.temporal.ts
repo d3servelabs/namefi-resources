@@ -10,6 +10,7 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config, secrets } from '#lib/env';
 import workersRouter from './workers.router';
+import { logLevelRouter } from '../routers/log-level';
 
 async function main() {
   await initWorkers();
@@ -21,6 +22,7 @@ async function main() {
   app.use(logger());
 
   app.route('/workers', workersRouter);
+  app.route('/log-level', logLevelRouter);
 
   app.get('/configfi', (c) => {
     return c.json({
