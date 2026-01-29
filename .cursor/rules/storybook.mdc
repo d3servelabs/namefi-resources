@@ -47,3 +47,60 @@ const trpcClient = createTRPCClient<AppRouter>({
 ```
 
 If you need an unauthenticated state, set `isAuthenticated: false` so `createMockLink` returns `UNAUTHORIZED` for protected procedures.
+
+## Error States with useSuspenseQuery
+
+Components that use `useSuspenseQuery` (from TanStack Query) throw errors to the nearest error boundary instead of returning `{ error }` like regular `useQuery`. This affects how you test error states in Storybook:
+
+### Problem
+
+When your mock returns an error tuple `[{ textCode, httpStatus, message }, null]` for a component using `useSuspenseQuery`, the error is thrown as a `TRPCClientError`. Without an error boundary, this crashes the story and prevents Chromatic from capturing it.
+
+### Solution
+
+Wrap the component in an error boundary for the ErrorState story variant:
+
+```tsx
+class StoryErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: ReactNode; fallback: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
+export const ErrorState: Story = {
+  args: { mockState: { hasError: true, /* ... */ } },
+  render: (args) => (
+    <StoryProviders mockState={args.mockState}>
+      <StoryErrorBoundary
+        fallback={
+          <div className="text-destructive">Failed to load data</div>
+        }
+      >
+        <MyPage />
+      </StoryErrorBoundary>
+    </StoryProviders>
+  ),
+};
+```
+
+### Key Points
+
+- Only the ErrorState story needs the error boundary wrapper
+- Other stories (Default, Loading, Empty) can use the default render function
+- The fallback UI should match the app's error handling patterns
+- This allows Chromatic to capture the error state without crashing
