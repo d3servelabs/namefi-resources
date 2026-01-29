@@ -36,6 +36,8 @@ const mockWagmiConfig = createConfig({
   },
 });
 
+// TODO: Extract mockOriginRuntime to a shared story utilities file to reduce duplication
+// with landing.stories.tsx and my-orders.stories.tsx
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
   thirdPartyHostname: null,
@@ -109,7 +111,7 @@ const mockDomainPreferencesAndConfig = {
   autoRenewEnabled: true,
 };
 
-const mockDomainDetails = (domainName: string) => ({
+const mockDomainDetails = (domainName: string, isExpired: boolean) => ({
   supportsDnssec: true,
   contacts: {
     registrantContact: {
@@ -131,9 +133,9 @@ const mockDomainDetails = (domainName: string) => ({
   },
   nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
   registrarKey: 'DynadotGdg',
-  expirationTime: new Date(
-    Date.now() + 365 * 24 * 60 * 60 * 1000,
-  ).toISOString(),
+  expirationTime: isExpired
+    ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+    : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
   domainName,
   creationTime: new Date('2024-01-01').toISOString(),
   autoRenewOption: 'AUTOMATIC',
@@ -141,6 +143,7 @@ const mockDomainDetails = (domainName: string) => ({
 
 const mockDomainExportDetails = (state: MockDomainState) => ({
   exportEnabled: state.domainExportEnabled,
+  supportsExport: state.domainExportEnabled,
   exportRequestedAt: null,
   exportApprovedAt: null,
   exportStatus: 'NOT_REQUESTED',
@@ -155,11 +158,17 @@ const mockPendingTransfer = (state: MockDomainState) =>
     ? {
         id: 'transfer-123',
         domainName: state.domainName,
-        status: 'PENDING_APPROVAL',
+        status: 'pending',
         requestedAt: new Date().toISOString(),
+        requestingRegistrarId: 'external-registrar-123',
+        actionDate: new Date(
+          Date.now() + 7 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
       }
     : null;
 
+// TODO: Extract createMockQueryClient to a shared story utilities file to reduce duplication
+// with my-orders.stories.tsx
 function createMockQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -202,7 +211,7 @@ function MockTrpcProvider({
             case 'domainConfig.getDomainDetails':
               return Promise.resolve([
                 null,
-                mockDomainDetails(mockState.domainName),
+                mockDomainDetails(mockState.domainName, mockState.isExpired),
               ] as const);
             case 'domainConfig.getDomainExportDetails':
               return Promise.resolve([
