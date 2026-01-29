@@ -58,6 +58,7 @@ export function InstantBuyModal({
   const router = useRouter();
   const defaultChainId = useDefaultChainId();
   const defaultNfscPaymentProvider = getPaymentProviderForChain(defaultChainId);
+  const [isLinkedOrUserConfirmed, setIsLinkedOrUserConfirmed] = useState(true);
 
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
@@ -132,8 +133,8 @@ export function InstantBuyModal({
   }, [isInstantBuyPending, isRedirecting, selectedNftWalletAddress]);
 
   const submitOrderDisabled = useMemo(() => {
-    return !selectedNftWalletAddress;
-  }, [selectedNftWalletAddress]);
+    return !selectedNftWalletAddress || !isLinkedOrUserConfirmed;
+  }, [selectedNftWalletAddress, isLinkedOrUserConfirmed]);
 
   const isDisabled = useMemo(
     () => isRedirecting || isInstantBuyPending,
@@ -256,6 +257,8 @@ export function InstantBuyModal({
                 disabled={isDisabled}
                 onChainIdChange={handleNftChainIdChange}
                 selectedChainId={selectedNftChainId}
+                isLinkedOrUserConfirmed={isLinkedOrUserConfirmed}
+                onIsLinkedOrUserConfirmationChange={setIsLinkedOrUserConfirmed}
               />
 
               {/* Payment */}

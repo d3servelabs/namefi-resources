@@ -90,6 +90,7 @@ export default function CartPage() {
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
   >(null);
+  const [unlinkedWalletConfirmed, setUnlinkedWalletConfirmed] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -462,10 +463,15 @@ export default function CartPage() {
     if (multiPayment.enabled) {
       return !multiPayment.isValid;
     }
-    return !(paymentMethodSelected && selectedNftWalletAddress);
+    return !(
+      paymentMethodSelected &&
+      selectedNftWalletAddress &&
+      unlinkedWalletConfirmed
+    );
   }, [
     paymentMethodSelected,
     selectedNftWalletAddress,
+    unlinkedWalletConfirmed,
     isCartUpdating,
     isCartLoading,
     multiPayment,
@@ -758,6 +764,8 @@ export default function CartPage() {
                 onWalletAddressChange={handleNftWalletAddressChange}
                 selectedWalletAddress={selectedNftWalletAddress}
                 disabled={isDisabled}
+                isLinkedOrUserConfirmed={unlinkedWalletConfirmed}
+                onIsLinkedOrUserConfirmationChange={setUnlinkedWalletConfirmed}
               />
             )}
 

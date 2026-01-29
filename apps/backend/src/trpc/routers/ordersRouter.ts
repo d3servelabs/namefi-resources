@@ -321,6 +321,9 @@ export const ordersRouter = createTRPCRouter({
       const items = await db
         .select({
           ...getTableColumns(orderItemsTable),
+          nftWalletAddress: ordersTable.nftWalletAddress,
+          nftChainId: ordersTable.nftChainId,
+          orderMetadata: ordersTable.metadata,
         })
         .from(orderItemsTable)
         .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))

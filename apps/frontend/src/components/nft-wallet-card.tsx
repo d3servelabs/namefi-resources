@@ -15,6 +15,7 @@ import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { Loader2, CheckCircle2, Copy, Check, Info } from 'lucide-react';
+import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import { useEnsAddress } from 'wagmi';
 import {
   Tooltip,
@@ -25,13 +26,6 @@ import {
 import { Button } from '@/components/ui/shadcn/button';
 import { toast } from 'sonner';
 import { useDefaultChainId } from '@/hooks/use-allowed-chains';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/shadcn/select';
 
 type EnsCandidate = {
   original: string;
@@ -57,6 +51,8 @@ export interface NftWalletCardProps {
   disabled?: boolean;
   onChainIdChange?: (chainId: number) => void;
   selectedChainId?: number;
+  isLinkedOrUserConfirmed: boolean;
+  onIsLinkedOrUserConfirmationChange: (confirmed: boolean) => void;
 }
 
 export function NftWalletCard({
@@ -65,6 +61,8 @@ export function NftWalletCard({
   disabled,
   onChainIdChange,
   selectedChainId,
+  isLinkedOrUserConfirmed: unlinkedWalletConfirmed,
+  onIsLinkedOrUserConfirmationChange: onUnlinkedWalletConfirmationChange,
 }: NftWalletCardProps) {
   const defaultChainId = useDefaultChainId();
   const [inputValue, setInputValue] = useState<string>(
@@ -278,6 +276,28 @@ export function NftWalletCard({
     [onWalletAddressChange],
   );
 
+  const isSelectedWalletLinked = useMemo(() => {
+    if (!selectedWalletAddress) {
+      return true;
+    }
+    if (!linkedWalletsReady) {
+      return true;
+    }
+    const normalizedSelected = selectedWalletAddress.toLowerCase();
+    return linkedWalletAddresses.some(
+      (address) => address.toLowerCase() === normalizedSelected,
+    );
+  }, [linkedWalletAddresses, linkedWalletsReady, selectedWalletAddress]);
+
+  const showUnlinkedWalletWarning =
+    Boolean(selectedWalletAddress) &&
+    linkedWalletsReady &&
+    !isSelectedWalletLinked;
+
+  useEffect(() => {
+    onUnlinkedWalletConfirmationChange(!showUnlinkedWalletWarning);
+  }, [onUnlinkedWalletConfirmationChange, showUnlinkedWalletWarning]);
+
   const baseHelpMessage =
     'Paste a wallet address or ENS name to receive your domains.';
 
@@ -490,6 +510,35 @@ export function NftWalletCard({
           icon={leadingIcon}
         />
       </div>
+      {showUnlinkedWalletWarning && (
+        <div className="mt-3 flex flex-col gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-200">
+          <div className="flex items-start gap-2">
+            <Info className="mt-0.5 h-4 w-4 text-emerald-500" />
+            <p>
+              Purchasing for another wallet? This domain won&apos;t appear under{' '}
+              <span className="font-semibold text-nowrap whitespace-nowrap">
+                "My Domains"
+              </span>{' '}
+              in this account.
+            </p>
+          </div>
+          <label
+            className="flex items-center gap-2 text-sm font-medium"
+            htmlFor="unlinked-wallet-confirm-checkbox"
+          >
+            <Checkbox
+              id="unlinked-wallet-confirm-checkbox"
+              checked={unlinkedWalletConfirmed}
+              onCheckedChange={(checked) => {
+                onUnlinkedWalletConfirmationChange(checked === true);
+              }}
+            />
+            <span>
+              I&apos;m purchasing for a wallet not linked to this account.
+            </span>
+          </label>
+        </div>
+      )}
     </CartCard>
   );
 }

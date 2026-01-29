@@ -64,6 +64,7 @@ export default function CartPage() {
   >(null);
   const [selectedNftChainId, setSelectedNftChainId] =
     useState<number>(defaultChainId);
+  const [isLinkedOrUserConfirmed, setIsLinkedOrUserConfirmed] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -166,11 +167,18 @@ export default function CartPage() {
   ]);
 
   const submitOrderDisabled = useMemo(() => {
-    if (isCartUpdating || isCartLoading) {
-      return true;
-    }
-    return !selectedNftWalletAddress;
-  }, [selectedNftWalletAddress, isCartUpdating, isCartLoading]);
+    return (
+      isCartUpdating ||
+      isCartLoading ||
+      !selectedNftWalletAddress ||
+      !isLinkedOrUserConfirmed
+    );
+  }, [
+    selectedNftWalletAddress,
+    isLinkedOrUserConfirmed,
+    isCartUpdating,
+    isCartLoading,
+  ]);
 
   const logSubmitOrder = useCallback(
     ({ success }: { success: boolean }) => {
@@ -380,6 +388,8 @@ export default function CartPage() {
                 disabled={isDisabled}
                 onChainIdChange={handleNftChainIdChange}
                 selectedChainId={selectedNftChainId}
+                isLinkedOrUserConfirmed={isLinkedOrUserConfirmed}
+                onIsLinkedOrUserConfirmationChange={setIsLinkedOrUserConfirmed}
               />
             )}
 

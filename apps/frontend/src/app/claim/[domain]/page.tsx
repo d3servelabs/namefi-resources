@@ -25,6 +25,7 @@ export default function ClaimPage() {
   const router = useRouter();
   const params = useParams<{ domain: string }>();
   const rawDomainParam = params?.domain ?? '';
+  const [isLinkedOrUserConfirmed, setIsLinkedOrUserConfirmed] = useState(true);
 
   // Validate normalized domain via shared schema
   const parsed = namefiNormalizedDomainSchema.safeParse(rawDomainParam);
@@ -283,6 +284,8 @@ export default function ClaimPage() {
             onWalletAddressChange={setSelectedWalletAddress}
             selectedWalletAddress={selectedWalletAddress}
             disabled={isClaimPending}
+            isLinkedOrUserConfirmed={isLinkedOrUserConfirmed}
+            onIsLinkedOrUserConfirmationChange={setIsLinkedOrUserConfirmed}
           />
         ) : null}
 
@@ -300,7 +303,8 @@ export default function ClaimPage() {
               isClaimPending ||
               !availabilityInfo ||
               !isEligible ||
-              !selectedWalletAddress
+              !selectedWalletAddress ||
+              !isLinkedOrUserConfirmed
             }
             onClick={handleSubmitClaim}
             size="lg"

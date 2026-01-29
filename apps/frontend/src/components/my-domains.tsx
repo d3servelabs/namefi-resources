@@ -22,6 +22,7 @@ import {
 } from '@/components/table/filters';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
+import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import {
   useDomainRenewal,
   type RenewalResult,
@@ -43,6 +44,7 @@ import { triggerCelebrationAtPosition } from '@/components/my-domains/confetti-c
 import { AutoRenewToggle } from '@/components/my-domains/auto-renew-toggle';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -134,6 +136,7 @@ import {
 } from 'lucide-react';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
+type OtherWalletOrderItem = AppRouterOutput['orders']['getOrderItems'][number];
 
 const truncateWalletAddress = (address: string): string => {
   if (address.length <= 10) return address;
@@ -497,6 +500,47 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
         </Link>
       </Button>
     </EmptyPlaceholder>
+  );
+};
+
+const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
+  items,
+}) => {
+  return (
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Domain</TableHead>
+            <TableHead>NFT Wallet</TableHead>
+            <TableHead className="w-[160px]">Order</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell className="font-medium">
+                {item.normalizedDomainName}
+              </TableCell>
+              <TableCell>
+                <AddressWithChain
+                  address={item.nftWalletAddress}
+                  chainId={item.nftChainId}
+                />
+              </TableCell>
+              <TableCell>
+                <Button variant="outline" size="sm" asChild={true}>
+                  <Link href={`/orders/${item.orderId}/details`}>
+                    <ExternalLink className="h-4 w-4 mr-1" />
+                    View order
+                  </Link>
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 
@@ -1867,6 +1911,8 @@ export default function MyDomains() {
 
 const MyDomainsContent = () => {
   const trpc = useTRPC();
+  const { linkedWalletAddresses, linkedWalletsReady } =
+    useLinkedWalletAddresses();
   const { data: _domains } = useSuspenseQuery(
     trpc.users.getCurrentUserDomains.queryOptions(),
   );
@@ -1881,6 +1927,37 @@ const MyDomainsContent = () => {
       ['CREATED', 'PROCESSING'].includes(item.status ?? ''),
     );
   }, [orderItems]);
+
+  const ownedDomainNames = useMemo(
+    () => new Set(_domains.map((domain) => domain.normalizedDomainName)),
+    [_domains],
+  );
+
+  const otherWalletOrderItems = useMemo(() => {
+    if (!orderItems) {
+      return [];
+    }
+    if (!linkedWalletsReady) {
+      return [];
+    }
+    const linkedWalletSet = new Set(
+      linkedWalletAddresses.map((address) => address.toLowerCase()),
+    );
+    return orderItems.filter((item) => {
+      if (item.status !== orderStatusSchema.enum.SUCCEEDED) {
+        return false;
+      }
+      if (!item.nftWalletAddress) {
+        return false;
+      }
+      if (ownedDomainNames.has(item.normalizedDomainName)) {
+        return false;
+      }
+      return !linkedWalletSet.has(item.nftWalletAddress.toLowerCase());
+    });
+  }, [linkedWalletAddresses, linkedWalletsReady, orderItems, ownedDomainNames]);
+
+  const hasOtherWalletOrders = otherWalletOrderItems.length > 0;
 
   const { activeDomains, inactiveDomains } = useMemo(() => {
     const { activeDomains, expiredDomains, otherDomains } = groupBy(
@@ -1913,7 +1990,8 @@ const MyDomainsContent = () => {
   if (
     activeDomains.length === 0 &&
     inactiveDomains.length === 0 &&
-    processingOrderItems.length === 0
+    processingOrderItems.length === 0 &&
+    otherWalletOrderItems.length === 0
   ) {
     return <MyDomainsEmptyPlaceholder />;
   }
@@ -1943,6 +2021,9 @@ const MyDomainsContent = () => {
           <TabsTrigger value="previously-owned">
             Previously Owned Domains
           </TabsTrigger>
+          {hasOtherWalletOrders && (
+            <TabsTrigger value="other-wallets">On Other Wallets</TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value="active" className="mt-4">
@@ -1966,6 +2047,12 @@ const MyDomainsContent = () => {
             <MyDomainsTable kind="inactive" domains={inactiveDomains} />
           )}
         </TabsContent>
+
+        {hasOtherWalletOrders && (
+          <TabsContent value="other-wallets" className="mt-4">
+            <OtherWalletOrdersTable items={otherWalletOrderItems} />
+          </TabsContent>
+        )}
 
         <TabsContent value="previously-owned" className="mt-4">
           <MyPreviouslyOwnedDomainsContent />

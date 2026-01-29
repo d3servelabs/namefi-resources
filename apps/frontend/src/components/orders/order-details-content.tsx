@@ -50,6 +50,7 @@ import {
 import { NetworkLogo } from '@/components/network-logo';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
+import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
 
@@ -80,6 +81,8 @@ export function OrderDetailsContent({ id }: { id: string }) {
     }, 2000);
   };
   const trpc = useTRPC();
+  const { linkedWalletAddresses, linkedWalletsReady } =
+    useLinkedWalletAddresses();
 
   const {
     data: orderDetails,
@@ -102,6 +105,19 @@ export function OrderDetailsContent({ id }: { id: string }) {
     },
   });
   const { order, payments = [], items } = orderDetails ?? {};
+  const recipientWalletAddress = order?.nftWalletAddress ?? null;
+  const isRecipientLinked = useMemo(() => {
+    if (!recipientWalletAddress) {
+      return true;
+    }
+    if (!linkedWalletsReady) {
+      return true;
+    }
+    const normalizedRecipient = recipientWalletAddress.toLowerCase();
+    return linkedWalletAddresses.some(
+      (address) => address.toLowerCase() === normalizedRecipient,
+    );
+  }, [linkedWalletAddresses, linkedWalletsReady, recipientWalletAddress]);
   const [isTechModalOpen, setIsTechModalOpen] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(
     null,
@@ -301,7 +317,22 @@ export function OrderDetailsContent({ id }: { id: string }) {
 
               <div className="flex items-center justify-between h-8">
                 <span className="font-medium">NFT Wallet</span>
+
                 <div className="flex items-center gap-2">
+                  {recipientWalletAddress && !isRecipientLinked && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild={true}>
+                          <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600">
+                            <Info className="h-3.5 w-3.5" />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>This wallet isn't linked to your account.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
                   {!!order.nftChainId && (
                     <NetworkLogo
                       className="size-4"
@@ -309,11 +340,12 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     />
                   )}
                   <span className="text-sm text-gray-500">
-                    {order.nftWalletAddress
-                      ? getShortAddress(order.nftWalletAddress)
+                    {recipientWalletAddress
+                      ? getShortAddress(recipientWalletAddress)
                       : '-'}
                   </span>
-                  {!!order.nftWalletAddress && (
+
+                  {!!recipientWalletAddress && (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild={true}>
@@ -322,10 +354,9 @@ export function OrderDetailsContent({ id }: { id: string }) {
                             size="icon"
                             className="h-8 w-8"
                             onClick={() => {
-                              const walletAddress = order.nftWalletAddress;
-                              if (!walletAddress) return;
+                              if (!recipientWalletAddress) return;
                               copyToClipboard(
-                                walletAddress,
+                                recipientWalletAddress,
                                 'recipientWalletAddress',
                               );
                             }}
@@ -789,6 +820,7 @@ function PaymentDetailsModal({
   const trpc = useTRPC();
   const { data: payment, isLoading } = useQuery({
     ...trpc.orders.getPaymentMethodDetails.queryOptions({
+      // Reuse existing endpoint to fetch method details
       paymentId: paymentId ?? '',
     }),
     enabled: !!paymentId && isAuthenticated,
@@ -1043,14 +1075,7 @@ function ItemDetailsModal({
               field="duration"
               onCopy={(t) => navigator.clipboard.writeText(t)}
             />
-            {item.encryptionKeyId && (
-              <InfoRow
-                label="Encryption Key ID"
-                value={item.encryptionKeyId}
-                field="encryptionKeyId"
-                onCopy={(t) => navigator.clipboard.writeText(t)}
-              />
-            )}
+
             {mintTransaction && tokenId ? (
               <MintTokenRow
                 label="Minted NFT"
