@@ -7,9 +7,9 @@ on:
       - synchronize
       - reopened
     branches-ignore:
-    - prod
-    - gtmq_spec_* # GraphiteMergeQueue
-    - "*_nopreview_*"
+      - prod
+      - gtmq_spec_* # GraphiteMergeQueue
+      - "*_nopreview_*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -23,6 +23,7 @@ env:
 jobs:
   head-branch-gate:
     name: Check Head Branch Ignore Rules
+    timeout-minutes: 2
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.gate.outputs.should_run }}
@@ -48,6 +49,7 @@ jobs:
   detect-changes:
     name: Detect Backend Changes
     needs: head-branch-gate
+    timeout-minutes: 2
     if: needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     outputs:
@@ -87,6 +89,7 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
+    timeout-minutes: 10
     permissions:
       contents: read
       id-token: write
@@ -166,6 +169,7 @@ jobs:
   prepare-database:
     name: Prepare Neon Branch
     needs: detect-changes
+    timeout-minutes: 5
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
@@ -236,12 +240,13 @@ jobs:
     name: Deploy Backend Preview
     needs: [detect-changes, build-backend, prepare-database]
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     outputs:
-        revision_tag_url: ${{ steps.tagged-url.outputs.revision_tag_url }}
+      revision_tag_url: ${{ steps.tagged-url.outputs.revision_tag_url }}
     steps:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -268,7 +273,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
         with:
-          install_components: 'beta'
+          install_components: "beta"
 
       # - name: Remove existing tagged revision (manual)
       #   run: |
@@ -339,11 +344,10 @@ jobs:
           fi
           echo "revision_tag_url=$REVISION_TAG_URL" >> $GITHUB_OUTPUT
 
-
-
   redeploy-vercel-preview:
     name: Redeploy Vercel Preview
     needs: [deploy-preview]
+    timeout-minutes: 10
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
     runs-on: ubuntu-latest
     permissions:
