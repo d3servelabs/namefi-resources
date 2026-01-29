@@ -46,7 +46,7 @@ jobs:
         run: |
           BENCH_REPORT="apps/frontend/.benchmarks/next-dev-bench-ci-${{ github.run_id }}.md"
           echo "BENCH_REPORT=$BENCH_REPORT" >> "$GITHUB_ENV"
-          bun scripts/bench-frontend-dev.ts --runs 3 --output "$BENCH_REPORT"
+          bun scripts/bench-frontend-dev.ts --runs 1 --log-dev-output --output "$BENCH_REPORT"
 
       - name: Post averages to Slack
         if: ${{ success() }}

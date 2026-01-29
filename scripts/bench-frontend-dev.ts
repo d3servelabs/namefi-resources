@@ -29,6 +29,7 @@ type Options = {
   phaseTimeoutMs: number;
   outputDir: string;
   outputFile: string;
+  logDevOutput: boolean;
 };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -67,6 +68,8 @@ function parseArgs(argv: string[]): Partial<Options> {
     } else if (arg === '--output') {
       args.outputFile = argv[i + 1];
       i += 1;
+    } else if (arg === '--log-dev-output') {
+      args.logDevOutput = true;
     }
   }
   return args;
@@ -261,6 +264,11 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
   const logLines: string[] = [];
   let buffer = '';
 
+  const logPath = path.join(
+    options.outputDir,
+    `run-${index.toString().padStart(2, '0')}.log`,
+  );
+
   const child = spawn(options.devCmd, {
     shell: true,
     cwd: appDir,
@@ -281,45 +289,71 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
     }
   };
 
-  child.stdout?.on('data', onChunk);
-  child.stderr?.on('data', onChunk);
+  const onStdout = (chunk: Buffer) => {
+    if (options.logDevOutput) {
+      process.stdout.write(chunk);
+    }
+    onChunk(chunk);
+  };
 
-  await waitForReady(logLines, child, options.timeoutMs);
+  const onStderr = (chunk: Buffer) => {
+    if (options.logDevOutput) {
+      process.stderr.write(chunk);
+    }
+    onChunk(chunk);
+  };
 
-  const coldStart = logLines.length;
-  await hitRoutes(options.baseUrl, options.routes, options.phaseTimeoutMs);
-  const coldEnd = await waitForRoutes(
-    logLines,
-    options.routes,
-    coldStart,
-    options.phaseTimeoutMs,
-  );
+  child.stdout?.on('data', onStdout);
+  child.stderr?.on('data', onStderr);
 
-  const hotStart = logLines.length;
-  await hitRoutes(options.baseUrl, options.routes, options.phaseTimeoutMs);
-  const hotEnd = await waitForRoutes(
-    logLines,
-    options.routes,
-    hotStart,
-    options.phaseTimeoutMs,
-  );
+  try {
+    await waitForReady(logLines, child, options.timeoutMs);
 
-  const cold = parseSegment(logLines.slice(coldStart, coldEnd), options.routes);
-  const hot = parseSegment(logLines.slice(hotStart, hotEnd), options.routes);
+    const coldStart = logLines.length;
+    await hitRoutes(options.baseUrl, options.routes, options.phaseTimeoutMs);
+    const coldEnd = await waitForRoutes(
+      logLines,
+      options.routes,
+      coldStart,
+      options.phaseTimeoutMs,
+    );
 
-  const logPath = path.join(
-    options.outputDir,
-    `run-${index.toString().padStart(2, '0')}.log`,
-  );
-  await fs.writeFile(logPath, logLines.join('\n'));
+    const hotStart = logLines.length;
+    await hitRoutes(options.baseUrl, options.routes, options.phaseTimeoutMs);
+    const hotEnd = await waitForRoutes(
+      logLines,
+      options.routes,
+      hotStart,
+      options.phaseTimeoutMs,
+    );
 
-  child.kill('SIGTERM');
-  await sleep(1000);
-  if (child.exitCode === null) {
-    child.kill('SIGKILL');
+    const cold = parseSegment(
+      logLines.slice(coldStart, coldEnd),
+      options.routes,
+    );
+    const hot = parseSegment(logLines.slice(hotStart, hotEnd), options.routes);
+
+    if (buffer.length > 0) {
+      logLines.push(buffer.replace(/\r$/, ''));
+      buffer = '';
+    }
+    await fs.writeFile(logPath, logLines.join('\n'));
+
+    return { cold, hot, logPath };
+  } catch (error) {
+    if (buffer.length > 0) {
+      logLines.push(buffer.replace(/\r$/, ''));
+      buffer = '';
+    }
+    await fs.writeFile(logPath, logLines.join('\n'));
+    throw error;
+  } finally {
+    child.kill('SIGTERM');
+    await sleep(1000);
+    if (child.exitCode === null) {
+      child.kill('SIGKILL');
+    }
   }
-
-  return { cold, hot, logPath };
 }
 
 function renderTable(results: RouteResult, unit: 's' | 'ms') {
@@ -400,6 +434,7 @@ async function main() {
     phaseTimeoutMs: args.phaseTimeoutMs ?? 300_000,
     outputDir,
     outputFile,
+    logDevOutput: args.logDevOutput ?? false,
   };
 
   const machine = {
