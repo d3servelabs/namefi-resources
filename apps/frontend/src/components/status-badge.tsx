@@ -64,6 +64,15 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
             Partially Completed
           </Badge>
         );
+      case 'REQUIRES_ACTION':
+        return (
+          <Badge
+            variant="outline"
+            className="border-amber-300 bg-amber-200 text-amber-800 hover:bg-amber-100"
+          >
+            Waiting For User
+          </Badge>
+        );
       case 'PENDING':
         return (
           <Badge

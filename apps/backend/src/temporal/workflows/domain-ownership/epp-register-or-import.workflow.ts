@@ -11,11 +11,19 @@ import {
   notMatchAny,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
+import {
+  TEMPORAL_ENUMS,
+  TEMPORAL_QUEUES,
+  shortRunningOpts,
+} from '../../shared';
 import {
   catchAndAlertLocally,
   typedProxyActivities,
 } from '../../shared/workflow-helpers';
+import {
+  extendDomainRegistrationWorkflow,
+  type ExtendDomainRegistrationWorkflowInput,
+} from './extend-registration.workflow';
 
 interface EppRegisterOrImportWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -180,6 +188,9 @@ export async function eppRegisterOrImportWorkflow(
       });
     }
 
+    if (registrarOperationStatus === OperationStatus.SUCCESSFUL) {
+      await extendDomainRegistrationIfNeeded(input);
+    }
     return getDomainDetails(input.normalizedDomainName as PunycodeDomainName);
   } catch (error: any) {
     workflow.log.error(error);
@@ -550,4 +561,78 @@ async function determineRequiredAction({
   }
 
   return 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+}
+
+/**
+ *
+ * From Devin
+ */
+async function extendDomainRegistrationIfNeeded(
+  input: EppRegisterOrImportWorkflowInput,
+) {
+  const isImport = input.operationType === 'IMPORT';
+  // For multi-year imports, EPP transfer only adds 1 year.
+  // We need to perform additional renewal operations for years 2+.
+  // If the renewal fails, we alert admins but still return success for the transfer portion.
+  // The domain will have 1 year instead of the requested duration - admins must manually resolve.
+  if (isImport && input.durationInYears > 1) {
+    const additionalYears = input.durationInYears - 1;
+    workflow.log.info(
+      `Multi-year import: performing ${additionalYears} additional year(s) of renewal after transfer`,
+    );
+
+    try {
+      const renewalInput: ExtendDomainRegistrationWorkflowInput = {
+        ownerAddress: input.recipientWalletAddress,
+        normalizedDomainName: input.normalizedDomainName,
+        durationInYears: additionalYears,
+        userId: input.userId ?? '', // TODO(Devin): userId is required by ExtendDomainRegistrationWorkflowInput but unused in helper functions. Consider making it optional in the type definition.
+        updateDomainIndex: true, // Update index after renewal to reflect the new expiration
+      };
+
+      await workflow.executeChild(extendDomainRegistrationWorkflow, {
+        args: [renewalInput],
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowId: extendDomainRegistrationWorkflow.generateId(renewalInput),
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        parentClosePolicy: 'REQUEST_CANCEL',
+      });
+    } catch (renewalError: any) {
+      // Transfer succeeded but renewal failed - this is a partial success scenario.
+      // Alert admins so they can manually extend the domain or issue a refund for the renewal portion.
+      workflow.log.error(
+        `Multi-year import partial failure: transfer succeeded but renewal failed for ${input.normalizedDomainName}`,
+        { renewalError },
+      );
+
+      // Wrap alert in try-catch to ensure alerting errors don't fail the workflow.
+      // The transfer succeeded, so we must preserve that outcome.
+      try {
+        await criticalAlertNamefi({
+          workflowInfo: workflow.workflowInfo(),
+          message: 'Multi-year Import Partial Failure',
+          level: 'error',
+          input,
+          transferSucceeded: true,
+          renewalsSucceeded: false,
+          requestedYears: input.durationInYears,
+          completedYears: 1,
+          failedRenewalYears: additionalYears,
+          renewalError: renewalError?.message || String(renewalError),
+        });
+      } catch (alertError: any) {
+        workflow.log.error(
+          'Failed to send critical alert for multi-year import partial failure',
+          {
+            alertError: alertError?.message || String(alertError),
+            renewalError: renewalError?.message || String(renewalError),
+            normalizedDomainName: input.normalizedDomainName,
+          },
+        );
+      }
+
+      // Continue to return domain details - the transfer succeeded so the domain exists with 1 year.
+      // Admins will be notified to manually resolve the missing renewal years.
+    }
+  }
 }

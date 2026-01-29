@@ -35,6 +35,8 @@ import {
   Loader2,
   Info,
   ExternalLink,
+  InfoIcon,
+  XCircleIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -46,11 +48,18 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogCancel,
+  AlertDialogTrigger,
 } from '@/components/ui/shadcn/alert-dialog';
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from '@/components/ui/shadcn/alert';
 import { NetworkLogo } from '@/components/network-logo';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import { cn } from '@/lib/cn';
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
 
@@ -125,6 +134,11 @@ export function OrderDetailsContent({ id }: { id: string }) {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const orderMintTransactions = order?.metadata?.mintTransactions;
+
+  const requiredActionItems = useMemo(() => {
+    if (!items || items.length === 0) return [] as OrderItemSelect[];
+    return items.filter((item) => item.metadata?.requiredAction);
+  }, [items]);
 
   const mintTransactionsList = useMemo(() => {
     if (!order || !Array.isArray(items) || items.length === 0) {
@@ -285,185 +299,294 @@ export function OrderDetailsContent({ id }: { id: string }) {
   return (
     <PageShell>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Left Column - Order + Payments */}
-        <div className="space-y-4">
-          <CartCard title="Order" className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-6 right-6 h-8 w-8"
-              onClick={() => setIsTechModalOpen(true)}
-              title="View order details"
+        <div className="grid grid-cols-1 gap-4">
+          {requiredActionItems.length > 0 && items ? (
+            <Alert
+              variant="warning"
+              className="w-full border border-amber-500/30 bg-amber-800/20"
             >
-              <Info size={16} />
-            </Button>
-            <div className="relative flex flex-col gap-1 mt-2">
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Status</span>
-                <div className="flex items-center">
-                  {order.status ? (
-                    <StatusBadge status={order.status} type="order" />
-                  ) : (
-                    <span>-</span>
-                  )}
+              <AlertTitle className="font-semibold">
+                {' '}
+                Action required
+              </AlertTitle>
+              <AlertDescription>
+                <div className="w-full flex flex-row flex-wrap justify-between items-start ">
+                  <div>
+                    {requiredActionItems.length === items?.length ? (
+                      requiredActionItems.length === 1 ? (
+                        <p>
+                          <span>
+                            The domain{' '}
+                            <span className="font-semibold">
+                              {requiredActionItems[0].normalizedDomainName}
+                            </span>{' '}
+                            requires further action from your side.
+                          </span>
+                          <br />
+                          <span className="mt-2">
+                            {requiredActionItems[0].metadata?.requiredAction
+                              ? getRequiredActionText(
+                                  requiredActionItems[0].metadata
+                                    .requiredAction,
+                                )
+                              : ''}
+                          </span>
+                        </p>
+                      ) : (
+                        'All items in this order require further action from your side.'
+                      )
+                    ) : (
+                      `${requiredActionItems.length} of ${items?.length} items in this order require further action from your side.`
+                    )}
+                  </div>
+
+                  <AlertDialog>
+                    <AlertDialogTrigger
+                      onClick={
+                        requiredActionItems.length === items?.length &&
+                        requiredActionItems.length === 1
+                          ? (e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              setSelectedItemId(requiredActionItems[0].id);
+                            }
+                          : undefined
+                      }
+                    >
+                      <InfoIcon className="h-4 w-4" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="max-w-2xl">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Action Required</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Some items in this order require action. Please review
+                          the details and take necessary actions.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogDescription>
+                        <div className="flex flex-col gap-2 py-3">
+                          {requiredActionItems?.map((item) => {
+                            return (
+                              <button
+                                type="button"
+                                key={item.id}
+                                onClick={() => setSelectedItemId(item.id)}
+                                className="w-full text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-base font-medium break-all">
+                                    {item.normalizedDomainName}
+                                  </span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                                      {humanizeItemType(item.type)}
+                                    </span>
+                                    <StatusBadge
+                                      status={'REQUIRES_ACTION'}
+                                      type="order"
+                                    />
+                                  </div>
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <div className="flex flex-row justify-end w-full">
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        </div>
+                      </AlertDialogDescription>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </AlertDescription>
+            </Alert>
+          ) : null}
+          {/* Left Column - Order + Payments */}
+          <div className="space-y-4">
+            <CartCard title="Order" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-6 right-6 h-8 w-8"
+                onClick={() => setIsTechModalOpen(true)}
+                title="View order details"
+              >
+                <Info size={16} />
+              </Button>
+              <div className="relative flex flex-col gap-1 mt-2">
+                <div className="flex items-center justify-between h-8">
+                  <span className="font-medium">Status</span>
+                  <div className="flex items-center">
+                    {order.status ? (
+                      <StatusBadge status={order.status} type="order" />
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between h-8">
+                  <span className="font-medium">Placed At</span>
+                  <span className="text-sm text-gray-500">
+                    {format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between h-8">
+                  <span className="font-medium">NFT Wallet</span>
+
+                  <div className="flex items-center gap-2">
+                    {recipientWalletAddress && !isRecipientLinked && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild={true}>
+                            <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600">
+                              <Info className="h-3.5 w-3.5" />
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>This wallet isn't linked to your account.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                    {!!order.nftChainId && (
+                      <NetworkLogo
+                        className="size-4"
+                        network={order.nftChainId}
+                      />
+                    )}
+                    <span className="text-sm text-gray-500">
+                      {recipientWalletAddress
+                        ? getShortAddress(recipientWalletAddress)
+                        : '-'}
+                    </span>
+
+                    {!!recipientWalletAddress && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild={true}>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => {
+                                if (!recipientWalletAddress) return;
+                                copyToClipboard(
+                                  recipientWalletAddress,
+                                  'recipientWalletAddress',
+                                );
+                              }}
+                            >
+                              {copiedFields.recipientWalletAddress ? (
+                                <Check size={16} />
+                              ) : (
+                                <ClipboardCopy size={16} />
+                              )}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {copiedFields.recipientWalletAddress
+                                ? 'Copied!'
+                                : 'Copy Wallet Address'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </div>
+                </div>
+
+                <div className="my-2">
+                  <Separator className="opacity-50" />
+                </div>
+                <div className="font-medium mb-2">Payments</div>
+
+                <div className="flex flex-col gap-3">
+                  {payments.map((payment, index) => (
+                    <PaymentSummaryCard
+                      key={payment.id}
+                      payment={payment}
+                      index={index}
+                      singlePayment={singlePayment}
+                      onClick={() => setSelectedPaymentId(payment.id)}
+                    />
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Placed At</span>
-                <span className="text-sm text-gray-500">
-                  {format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
+            </CartCard>
+          </div>
+
+          {/* Right Column - Order Items */}
+          <div className="h-fit">
+            <CartCard title="Order Items">
+              <div className="flex flex-col gap-3 mt-6">
+                {items?.map((item) => {
+                  const mintTransaction =
+                    item.metadata?.mintTransaction ??
+                    orderMintTransactions?.[item.id];
+                  const tokenId = getTokenIdFromDomainName(
+                    item.normalizedDomainName,
+                  );
+                  const requiredAction = item.metadata?.requiredAction;
+                  const chainId = order.nftChainId ?? null;
+                  return (
+                    <button
+                      type="button"
+                      key={item.id}
+                      onClick={() => setSelectedItemId(item.id)}
+                      className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-base font-medium break-all">
+                          {item.normalizedDomainName}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                            {humanizeItemType(item.type)}
+                          </span>
+                          {requiredAction ? (
+                            <StatusBadge
+                              status={'REQUIRES_ACTION'}
+                              type="order"
+                            />
+                          ) : item.status ? (
+                            <StatusBadge status={item.status} type="order" />
+                          ) : (
+                            <span>-</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mt-2 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Amount</span>
+                          <span className="font-medium">
+                            {formatAmountInUSD(item.amountInUSDCents, true)}
+                          </span>
+                        </div>
+                        {mintTransaction && tokenId ? (
+                          <MintTokenRow
+                            label="Minted NFT"
+                            chainId={chainId}
+                            tokenId={tokenId}
+                          />
+                        ) : null}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="mt-6">
+                <Separator />
+              </div>
+              <div className="flex items-center justify-between pt-4">
+                <span className="text-xl font-medium">Total</span>
+                <span className="text-xl font-bold">
+                  {formatAmountInUSD(order.amountInUSDCents, true)}
                 </span>
               </div>
-
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">NFT Wallet</span>
-
-                <div className="flex items-center gap-2">
-                  {recipientWalletAddress && !isRecipientLinked && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild={true}>
-                          <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600">
-                            <Info className="h-3.5 w-3.5" />
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>This wallet isn't linked to your account.</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                  {!!order.nftChainId && (
-                    <NetworkLogo
-                      className="size-4"
-                      network={order.nftChainId}
-                    />
-                  )}
-                  <span className="text-sm text-gray-500">
-                    {recipientWalletAddress
-                      ? getShortAddress(recipientWalletAddress)
-                      : '-'}
-                  </span>
-
-                  {!!recipientWalletAddress && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild={true}>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => {
-                              if (!recipientWalletAddress) return;
-                              copyToClipboard(
-                                recipientWalletAddress,
-                                'recipientWalletAddress',
-                              );
-                            }}
-                          >
-                            {copiedFields.recipientWalletAddress ? (
-                              <Check size={16} />
-                            ) : (
-                              <ClipboardCopy size={16} />
-                            )}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            {copiedFields.recipientWalletAddress
-                              ? 'Copied!'
-                              : 'Copy Wallet Address'}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                </div>
-              </div>
-
-              <div className="my-2">
-                <Separator className="opacity-50" />
-              </div>
-              <div className="font-medium mb-2">Payments</div>
-
-              <div className="flex flex-col gap-3">
-                {payments.map((payment, index) => (
-                  <PaymentSummaryCard
-                    key={payment.id}
-                    payment={payment}
-                    index={index}
-                    singlePayment={singlePayment}
-                    onClick={() => setSelectedPaymentId(payment.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </CartCard>
-        </div>
-
-        {/* Right Column - Order Items */}
-        <div className="h-fit">
-          <CartCard title="Order Items">
-            <div className="flex flex-col gap-3 mt-6">
-              {items?.map((item) => {
-                const mintTransaction =
-                  item.metadata?.mintTransaction ??
-                  orderMintTransactions?.[item.id];
-                const tokenId = getTokenIdFromDomainName(
-                  item.normalizedDomainName,
-                );
-                const chainId = order.nftChainId ?? null;
-                return (
-                  <button
-                    type="button"
-                    key={item.id}
-                    onClick={() => setSelectedItemId(item.id)}
-                    className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-base font-medium break-all">
-                        {item.normalizedDomainName}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
-                          {humanizeItemType(item.type)}
-                        </span>
-                        {item.status ? (
-                          <StatusBadge status={item.status} type="order" />
-                        ) : (
-                          <span>-</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="mt-2 text-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Amount</span>
-                        <span className="font-medium">
-                          {formatAmountInUSD(item.amountInUSDCents, true)}
-                        </span>
-                      </div>
-                      {mintTransaction && tokenId ? (
-                        <MintTokenRow
-                          label="Minted NFT"
-                          chainId={chainId}
-                          tokenId={tokenId}
-                        />
-                      ) : null}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="mt-6">
-              <Separator />
-            </div>
-            <div className="flex items-center justify-between pt-4">
-              <span className="text-xl font-medium">Total</span>
-              <span className="text-xl font-bold">
-                {formatAmountInUSD(order.amountInUSDCents, true)}
-              </span>
-            </div>
-          </CartCard>
+            </CartCard>
+          </div>
         </div>
       </div>
 
@@ -784,16 +907,20 @@ function InfoRow({
   value,
   field,
   onCopy,
+  labelClassName,
 }: {
   label: string;
   value: string | number | null | undefined;
   field: string;
   onCopy: (text: string, field: string) => void;
+  labelClassName?: string;
 }) {
   const display = value ?? '-';
   return (
     <div className="flex items-center justify-between gap-3 py-1">
-      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className={cn('text-sm text-muted-foreground', labelClassName)}>
+        {label}
+      </span>
       <div className="flex items-center gap-2">
         <span className="text-sm break-all">{display}</span>
         <Button
@@ -1040,7 +1167,7 @@ function ItemDetailsModal({
     : null;
   return (
     <AlertDialog open={!!itemId} onOpenChange={() => onOpenChange(null)}>
-      <AlertDialogContent className="max-w-xl">
+      <AlertDialogContent className="!max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Item details</AlertDialogTitle>
           <AlertDialogDescription>
@@ -1075,7 +1202,15 @@ function ItemDetailsModal({
               field="duration"
               onCopy={(t) => navigator.clipboard.writeText(t)}
             />
-
+            {item.metadata?.requiredAction && (
+              <InfoRow
+                label="Required Action"
+                labelClassName="font-semibold text-amber-700"
+                value={getRequiredActionText(item.metadata?.requiredAction)}
+                field="requiredAction"
+                onCopy={(t) => navigator.clipboard.writeText(t)}
+              />
+            )}
             {mintTransaction && tokenId ? (
               <MintTokenRow
                 label="Minted NFT"
@@ -1092,4 +1227,14 @@ function ItemDetailsModal({
       </AlertDialogContent>
     </AlertDialog>
   );
+}
+function getRequiredActionText(requiredAction?: string | null) {
+  switch (requiredAction) {
+    case 'EPP_AUTH_CODE_UPDATE_REQUIRED':
+      return 'Provide a new auth code to continue the import.';
+    case 'EPP_UNLOCK_REQUIRED':
+      return 'Confirm the domain is unlocked at your current registrar.';
+    default:
+      return null;
+  }
 }
