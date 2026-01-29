@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { UserWalletAvatar, CurrentUserAvatar } from '@/components/user-avatar';
+import { UserWalletAvatar } from '@/components/user-avatar';
 import { MockPrivy } from '@/hooks/use-auth';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -32,15 +32,7 @@ function createMockQueryClient() {
   });
 }
 
-function StoryProviders({
-  children,
-  isAuthenticated = false,
-  walletAddress,
-}: {
-  children: ReactNode;
-  isAuthenticated?: boolean;
-  walletAddress?: string;
-}) {
+function StoryProviders({ children }: { children: ReactNode }) {
   const queryClient = createMockQueryClient();
 
   return (
@@ -48,13 +40,8 @@ function StoryProviders({
       value={
         {
           ready: true,
-          authenticated: isAuthenticated,
-          user: isAuthenticated
-            ? {
-                id: 'mock-user-id',
-                wallet: walletAddress ? { address: walletAddress } : null,
-              }
-            : null,
+          authenticated: false,
+          user: null,
         } as any
       }
     >
@@ -150,18 +137,6 @@ export const NoAddress: Story = {
     address: undefined,
     fallback: 'NA',
   },
-};
-
-function CurrentUserAvatarStory() {
-  return (
-    <StoryProviders isAuthenticated={true} walletAddress={MOCK_WALLET_ADDRESS}>
-      <CurrentUserAvatar />
-    </StoryProviders>
-  );
-}
-
-export const CurrentUser: Story = {
-  render: () => <CurrentUserAvatarStory />,
 };
 
 function MultipleAvatarsStory() {
