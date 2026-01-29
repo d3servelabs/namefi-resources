@@ -216,6 +216,23 @@ function MockTrpcProvider({
                 null,
                 mockPendingTransfer(mockState),
               ] as const);
+            // Mutation handlers for interactive testing
+            case 'domainConfig.updateDomainPreferencesAndConfig':
+              return Promise.resolve([null, { success: true }] as const);
+            case 'domainConfig.requestDomainExport':
+              return Promise.resolve([
+                null,
+                { success: true, exportRequestedAt: new Date().toISOString() },
+              ] as const);
+            case 'domainConfig.getAuthCode':
+              return Promise.resolve([
+                null,
+                { authCode: 'MOCK-AUTH-CODE-12345' },
+              ] as const);
+            case 'domainConfig.approveTransfer':
+              return Promise.resolve([null, { success: true }] as const);
+            case 'domainConfig.rejectTransfer':
+              return Promise.resolve([null, { success: true }] as const);
             default:
               return Promise.resolve([
                 {
@@ -260,6 +277,7 @@ function StoryProviders({
   return (
     <MockPrivy.Provider
       value={
+        // Partial mock of Privy context - only ready/authenticated states needed for story
         {
           ready: !mockState.isLoading,
           authenticated: mockState.isAuthenticated,
