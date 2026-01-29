@@ -196,25 +196,23 @@ export const NoAddress: Story = {
 
 function MultipleAvatarsStory() {
   return (
-    <StoryProviders>
-      <div className="flex gap-4 items-center">
-        <UserWalletAvatar
-          address={MOCK_WALLET_ADDRESS}
-          fallback="V1"
-          className="size-8"
-        />
-        <UserWalletAvatar
-          address={MOCK_WALLET_ADDRESS_2}
-          fallback="V2"
-          className="size-10"
-        />
-        <UserWalletAvatar
-          address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
-          fallback="V3"
-          className="size-12"
-        />
-      </div>
-    </StoryProviders>
+    <div className="flex gap-4 items-center">
+      <UserWalletAvatar
+        address={MOCK_WALLET_ADDRESS}
+        fallback="V1"
+        className="size-8"
+      />
+      <UserWalletAvatar
+        address={MOCK_WALLET_ADDRESS_2}
+        fallback="V2"
+        className="size-10"
+      />
+      <UserWalletAvatar
+        address="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
+        fallback="V3"
+        className="size-12"
+      />
+    </div>
   );
 }
 
