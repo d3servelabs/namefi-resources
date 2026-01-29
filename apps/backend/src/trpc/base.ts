@@ -28,7 +28,7 @@ import { canUserAccessAdminPanel, privyClient } from './utils';
 import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
-import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
+import { requireUserAuth } from '#lib/auth';
 import { triggerLoginNotification } from '#lib/login-notification';
 import {
   audit,
@@ -759,6 +759,7 @@ export type TrpcContextWithSignedPayload = TrpcContextWithUser & {
  * Configuration for creating an EIP-712 signed payload procedure.
  */
 export interface SignedPayloadProcedureConfig<
+  Input,
   TTypes extends Record<string, Array<{ name: string; type: string }>>,
   TPrimaryType extends keyof TTypes & string,
 > {
@@ -770,11 +771,15 @@ export interface SignedPayloadProcedureConfig<
    * Function to extract the payload data from the procedure input.
    * The input will have { signature: string, payload: T } shape.
    */
-  getPayloadFromInput: (input: unknown) => Record<string, unknown>;
+  getPayloadFromInput: (input: Input) => Record<string, unknown>;
+  /**
+   * Function to extract the chainId from the procedure input payload.
+   */
+  getChainIdFromInput: (input: Input) => Promise<number | bigint>;
   /**
    * Function to extract the signature from the procedure input.
    */
-  getSignatureFromInput: (input: unknown) => string;
+  getSignatureFromInput: (input: Input) => string;
 }
 
 /**
@@ -801,18 +806,21 @@ export interface SignedPayloadProcedureConfig<
  *   primaryType: 'DeleteAsset',
  *   getPayloadFromInput: (input) => (input as any).payload,
  *   getSignatureFromInput: (input) => (input as any).signature,
+ *   getChainIdFromInput: (input) => (input as any).chainId,
  * });
  */
 export function createSignedPayloadProcedure<
+  Input,
   TTypes extends Record<string, Array<{ name: string; type: string }>>,
   TPrimaryType extends keyof TTypes & string,
->(config: SignedPayloadProcedureConfig<TTypes, TPrimaryType>) {
+>(config: SignedPayloadProcedureConfig<Input, TTypes, TPrimaryType>) {
   return protectedProcedure.use(async ({ ctx, next, getRawInput }) => {
-    const rawInput = await getRawInput();
+    const rawInput = (await getRawInput()) as Input;
 
     // Extract signature and payload from input
     const signature = config.getSignatureFromInput(rawInput);
     const payload = config.getPayloadFromInput(rawInput);
+    const chainId = await config.getChainIdFromInput(rawInput);
 
     if (!signature) {
       throw new TRPCError({
@@ -827,7 +835,10 @@ export function createSignedPayloadProcedure<
       types: config.types,
       primaryType: config.primaryType,
       message: payload,
-      domain: NAMEFI_EIP712_DOMAIN,
+      domain: {
+        ...NAMEFI_EIP712_DOMAIN,
+        chainId,
+      },
     });
 
     if (!verificationResult.valid || !verificationResult.recoveredAddress) {
@@ -889,11 +900,6 @@ export function createSignedPayloadProcedure<
     });
   });
 }
-
-/**
- * Re-export for convenience when defining EIP-712 types in routers.
- */
-export { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
 
 /**
  * Admin procedure

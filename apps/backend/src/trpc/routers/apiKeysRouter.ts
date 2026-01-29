@@ -6,10 +6,10 @@ import {
   createTRPCRouter,
   protectedProcedure,
   createSignedPayloadProcedure,
-  NAMEFI_EIP712_DOMAIN,
 } from '../base';
 import { logger } from '#lib/logger';
 import { generatePlainApiKey } from '#lib/auth/api-key-plain';
+import { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
 
 /**
  * EIP-712 types for creating an API key
@@ -112,6 +112,7 @@ const createApiKeyProcedure = createSignedPayloadProcedure({
     (input as z.infer<typeof createApiKeyInputSchema>).payload,
   getSignatureFromInput: (input) =>
     (input as z.infer<typeof createApiKeyInputSchema>).signature,
+  getChainIdFromInput: async () => 1, // TODO: support other chains
 });
 
 /**
@@ -124,6 +125,7 @@ const revokeApiKeyProcedure = createSignedPayloadProcedure({
     (input as z.infer<typeof revokeApiKeyInputSchema>).payload,
   getSignatureFromInput: (input) =>
     (input as z.infer<typeof revokeApiKeyInputSchema>).signature,
+  getChainIdFromInput: async () => 1, // TODO: support other chains or allow cross-chain
 });
 
 /**
@@ -136,6 +138,7 @@ const updateApiKeyNameProcedure = createSignedPayloadProcedure({
     (input as z.infer<typeof updateApiKeyNameInputSchema>).payload,
   getSignatureFromInput: (input) =>
     (input as z.infer<typeof updateApiKeyNameInputSchema>).signature,
+  getChainIdFromInput: async (input) => 1, // TODO: support other chains or allow cross-chain
 });
 
 export const apiKeysRouter = createTRPCRouter({
@@ -145,7 +148,10 @@ export const apiKeysRouter = createTRPCRouter({
    */
   getSigningTypes: protectedProcedure.query(() => {
     return {
-      domain: NAMEFI_EIP712_DOMAIN,
+      domain: {
+        ...NAMEFI_EIP712_DOMAIN,
+        chainId: 1, // TODO: support other chains or allow cross-chain
+      },
       types: {
         createApiKey: CREATE_API_KEY_EIP712_TYPES,
         revokeApiKey: REVOKE_API_KEY_EIP712_TYPES,

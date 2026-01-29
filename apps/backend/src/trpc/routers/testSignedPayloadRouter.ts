@@ -34,6 +34,7 @@ export const testSignedPayloadRouter = createTRPCRouter({
       (input as { payload: { message: string; timestamp: number } }).payload,
     getSignatureFromInput: (input: unknown) =>
       (input as { signature: string }).signature,
+    getChainIdFromInput: async () => 1,
   })
     .input(
       z.object({

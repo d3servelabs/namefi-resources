@@ -145,10 +145,12 @@ function createDomainActionProcedure(expectedAction: DomainAction) {
   return createSignedPayloadProcedure({
     types: DOMAIN_ACTION_EIP712_TYPES,
     primaryType: 'DomainAction',
-    getPayloadFromInput: (input: unknown) =>
-      (input as z.infer<typeof domainActionInputSchema>).payload,
-    getSignatureFromInput: (input: unknown) =>
-      (input as z.infer<typeof domainActionInputSchema>).signature,
+    getPayloadFromInput: (input: z.infer<typeof domainActionInputSchema>) =>
+      input.payload,
+    getSignatureFromInput: (input: z.infer<typeof domainActionInputSchema>) =>
+      input.signature,
+    getChainIdFromInput: (input: z.infer<typeof domainActionInputSchema>) =>
+      getDomainChain(input.payload.domainName),
   }).use(async ({ ctx, next, getRawInput }) => {
     const rawInput = (await getRawInput()) as z.infer<
       typeof domainActionInputSchema
@@ -953,7 +955,10 @@ export const domainConfigRouter = createTRPCRouter({
 
       const nft = await db
         .with(namefiNftOwnersCte)
-        .select({ ownerAddress: namefiNftOwnersView.ownerAddress })
+        .select({
+          ownerAddress: namefiNftOwnersView.ownerAddress,
+          chainId: namefiNftOwnersView.chainId,
+        })
         .from(namefiNftOwnersView)
         .where(eq(namefiNftOwnersView.normalizedDomainName, input.domainName))
         .limit(1);
@@ -967,6 +972,7 @@ export const domainConfigRouter = createTRPCRouter({
 
       return {
         ownerWalletAddress: nft[0].ownerAddress,
+        nft: nft[0],
       };
     }),
 
