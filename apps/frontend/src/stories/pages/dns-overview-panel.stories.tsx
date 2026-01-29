@@ -16,8 +16,8 @@ import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { createMockLink } from '@/lib/trpc/mock';
-import { MockPrivy } from '@/hooks/use-auth';
+import { createMockLink } from '@/lib/mock/trpc';
+import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { WagmiProvider } from 'wagmi';
 import { createConfig, http } from 'wagmi';
@@ -284,13 +284,13 @@ function StoryProviders({
   mockState: MockDomainState;
 }) {
   return (
-    <MockPrivy.Provider
+    <MockPrivyProvider
       value={
         // Partial mock of Privy context - only ready/authenticated states needed for story
         {
           ready: !mockState.isLoading,
           authenticated: mockState.isAuthenticated,
-        } as any
+        }
       }
     >
       <WagmiProvider config={mockWagmiConfig}>
@@ -320,7 +320,7 @@ function StoryProviders({
           </OriginProvider>
         </AdminFeatureFlagsProvider>
       </WagmiProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 

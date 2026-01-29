@@ -17,9 +17,9 @@ import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { createMockLink } from '@/lib/trpc/mock';
+import { createMockLink } from '@/lib/mock/trpc';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
-import { MockPrivy } from '@/hooks/use-auth';
+import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 
 const mockOriginRuntime: OriginRuntime = {
@@ -187,13 +187,11 @@ function StoryProviders({
   mockState: MockAuthState;
 }) {
   return (
-    <MockPrivy.Provider
-      value={
-        {
-          ready: !mockState.isLoading,
-          authenticated: mockState.isAuthenticated,
-        } as any
-      }
+    <MockPrivyProvider
+      value={{
+        ready: !mockState.isLoading,
+        authenticated: mockState.isAuthenticated,
+      }}
     >
       <AdminFeatureFlagsProvider>
         <OriginProvider originInfo={origin}>
@@ -218,7 +216,7 @@ function StoryProviders({
           </MockTrpcProvider>
         </OriginProvider>
       </AdminFeatureFlagsProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 

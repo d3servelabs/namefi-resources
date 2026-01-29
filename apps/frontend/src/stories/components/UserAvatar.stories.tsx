@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { UserWalletAvatar, CurrentUserAvatar } from '@/components/user-avatar';
-import { MockPrivy } from '@/hooks/use-auth';
+import { MockPrivyProvider } from '@/lib/mock/privy';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
@@ -10,7 +10,7 @@ import { mock } from 'wagmi/connectors';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
-import { createMockLink } from '@/lib/trpc/mock';
+import { createMockLink } from '@/lib/mock/trpc';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 
 const MOCK_WALLET_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
@@ -41,7 +41,7 @@ function StoryProviders({ children }: { children: ReactNode }) {
   const queryClient = createMockQueryClient();
 
   return (
-    <MockPrivy.Provider
+    <MockPrivyProvider
       value={
         {
           ready: true,
@@ -55,7 +55,7 @@ function StoryProviders({ children }: { children: ReactNode }) {
           {children}
         </QueryClientProvider>
       </WagmiProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 
@@ -77,7 +77,7 @@ function AuthenticatedStoryProviders({
   });
 
   return (
-    <MockPrivy.Provider
+    <MockPrivyProvider
       value={
         {
           ready: true,
@@ -99,7 +99,7 @@ function AuthenticatedStoryProviders({
           </TRPCProvider>
         </QueryClientProvider>
       </WagmiProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 

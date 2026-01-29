@@ -17,13 +17,13 @@ If shared helpers or fixtures are needed, keep them file-local or move them to a
 
 ## Mocking TRPC for Page Stories
 
-Use the mock link in `apps/frontend/src/lib/trpc/mock.ts`, as demonstrated in `apps/frontend/src/stories/pages/my-orders.stories.tsx`.
+Use the mock link in `apps/frontend/src/lib/mock/trpc.ts` (imported as `@/lib/mock/trpc`), as demonstrated in `apps/frontend/src/stories/pages/my-orders.stories.tsx`.
 
 ### Pattern
 
 1. Create a `QueryClient` with `retry: false` and `staleTime: Infinity`.
 2. Build a `trpcClient` with `createTRPCClient` and `createMockLink`.
-3. Provide `isAuthenticated` (and optionally `user` or `impersonationData`).
+3. Provide `isAuthenticated` (and optionally `user` or `impersonationData` for built-in `users.getUser` and `users.getImpersonationStatus` mocks).
 4. In `getMockData`, switch on `opts.op.path` and return a tuple:
    - Success: `[null, data]`
    - Error: `[{ textCode, httpStatus, message }, null]`
@@ -39,14 +39,17 @@ const trpcClient = createTRPCClient<AppRouter>({
         if (opts.op.path === 'orders.getOrderItems') {
           return [null, mockOrderItems];
         }
-        return [{ textCode: 'BAD_REQUEST', httpStatus:400, message: 'unknown path' }, {}];
+        return [
+          { textCode: 'BAD_REQUEST', httpStatus: 400, message: 'unknown path' },
+          null,
+        ];
       },
     }),
   ],
 });
 ```
 
-If you need an unauthenticated state, set `isAuthenticated: false` so `createMockLink` returns `UNAUTHORIZED` for protected procedures.
+If you need an unauthenticated state, set `isAuthenticated: false`. `createMockLink` returns `UNAUTHORIZED` for `users.getUser` and `users.getImpersonationStatus`; for other protected procedures return an `UNAUTHORIZED` error tuple from `getMockData`.
 
 ## Error States with useSuspenseQuery
 
@@ -134,7 +137,7 @@ const meta: Meta<typeof MyComponent> = {
 
 Components using `useAuth()` require multiple providers. Here's the typical provider stack for authenticated component stories:
 
-1. **MockPrivy.Provider** - Mocks Privy authentication state
+1. **MockPrivyProvider** - Mocks Privy authentication state (from `@/lib/mock/privy`)
 2. **WagmiProvider** - Required for wallet-related hooks
 3. **QueryClientProvider** - Required for React Query
 4. **TRPCProvider** - Required for TRPC hooks (useAuth uses useTRPC internally)
@@ -143,11 +146,11 @@ Components using `useAuth()` require multiple providers. Here's the typical prov
 Example authenticated provider setup:
 
 ```tsx
-import { MockPrivy } from '@/hooks/use-auth';
+import { MockPrivyProvider, privyMockUser } from '@/lib/mock/privy';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
-import { createMockLink } from '@/lib/trpc/mock';
+import { createMockLink } from '@/lib/mock/trpc';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 
 function AuthenticatedStoryProviders({
@@ -170,16 +173,20 @@ function AuthenticatedStoryProviders({
   });
 
   return (
-    <MockPrivy.Provider
+    <MockPrivyProvider
       value={{
         ready: true,
         authenticated: true,
         user: {
-          id: 'mock-user-id',
-          wallet: { address: walletAddress },
-          linkedAccounts: [{ type: 'wallet', address: walletAddress }],
+          ...privyMockUser,
+          wallet: { ...privyMockUser.wallet, address: walletAddress },
+          linkedAccounts: privyMockUser.linkedAccounts.map((account) =>
+            account.type === 'wallet'
+              ? { ...account, address: walletAddress }
+              : account,
+          ),
         },
-      } as any}
+      }}
     >
       <WagmiProvider config={mockWagmiConfig}>
         <QueryClientProvider client={queryClient}>
@@ -190,7 +197,7 @@ function AuthenticatedStoryProviders({
           </TRPCProvider>
         </QueryClientProvider>
       </WagmiProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 ```
@@ -202,4 +209,4 @@ When a story fails with errors like "invariant expected app router to be mounted
 1. **Next.js navigation hooks** - Add `nextjs.appDirectory: true` to parameters
 2. **TRPC hooks** - Wrap with `TRPCProvider` and mocked `trpcClient`
 3. **Consent hooks** - Wrap with `ConsentManagerProvider options={{ mode: 'offline' }}`
-4. **Auth hooks** - Wrap with `MockPrivy.Provider` with appropriate auth state
+4. **Auth hooks** - Wrap with `MockPrivyProvider` with appropriate auth state

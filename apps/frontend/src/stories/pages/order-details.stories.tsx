@@ -23,9 +23,9 @@ import type {
   UserSelect,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { createMockLink } from '@/lib/trpc/mock';
+import { createMockLink } from '@/lib/mock/trpc';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
-import { MockPrivy } from '@/hooks/use-auth';
+import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 
 const mockOriginRuntime: OriginRuntime = {
@@ -204,7 +204,7 @@ function StoryProviders({
   mockState: MockState;
 }) {
   return (
-    <MockPrivy.Provider
+    <MockPrivyProvider
       value={
         {
           ready: !mockState.isLoading,
@@ -235,7 +235,7 @@ function StoryProviders({
           </MockTrpcProvider>
         </OriginProvider>
       </AdminFeatureFlagsProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 

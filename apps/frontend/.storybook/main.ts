@@ -25,5 +25,19 @@ const config: StorybookConfig = {
   ],
   framework: getAbsolutePath('@storybook/nextjs-vite'),
   staticDirs: ['../public'],
+  build: {
+    test: {
+      disableSourcemaps: false,
+    },
+  },
+  viteFinal: async (config) => {
+    config.build = {
+      ...(config.build ?? {}),
+      minify: false,
+      cssMinify: false,
+      sourcemap: 'inline',
+    };
+    return config;
+  },
 };
 export default config;

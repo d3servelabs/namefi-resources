@@ -16,9 +16,9 @@ import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { createMockLink } from '@/lib/trpc/mock';
+import { createMockLink } from '@/lib/mock/trpc';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
-import { MockPrivy } from '@/hooks/use-auth';
+import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import type { UnifiedCartItem, UseCart } from '@/hooks/use-cart';
 import { WagmiProvider } from 'wagmi';
@@ -231,25 +231,11 @@ function StoryProviders({
   const mockCartValue = createMockCartContext(mockState);
 
   return (
-    <MockPrivy.Provider
-      value={
-        {
-          ready: !mockState.isLoading,
-          authenticated: mockState.isAuthenticated,
-          user: mockState.isAuthenticated
-            ? {
-                id: 'did:privy:cmcjax6ya00123z0nch67ge9x',
-                linkedAccounts: [
-                  {
-                    type: 'wallet',
-                    chainType: 'ethereum',
-                    address: '0x1234567890abcdef1234567890abcdef12345678',
-                  },
-                ],
-              }
-            : null,
-        } as any
-      }
+    <MockPrivyProvider
+      value={{
+        ready: !mockState.isLoading,
+        authenticated: mockState.isAuthenticated,
+      }}
     >
       <WagmiProvider config={mockWagmiConfig}>
         <AdminFeatureFlagsProvider>
@@ -276,7 +262,7 @@ function StoryProviders({
           </OriginProvider>
         </AdminFeatureFlagsProvider>
       </WagmiProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 

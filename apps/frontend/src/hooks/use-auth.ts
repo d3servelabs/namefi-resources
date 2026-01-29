@@ -5,10 +5,9 @@ import {
   useLogout as usePrivyLogout,
   type LoginModalOptions,
   type User as PrivyUser,
-  type PrivyInterface,
 } from '@privy-io/react-auth';
 import { useQuery, type AnyUseQueryOptions } from '@tanstack/react-query';
-import { useMemo, useContext, createContext } from 'react';
+import { useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
@@ -18,14 +17,13 @@ import { TRPCClientError } from '@trpc/client';
 import { useConsentManager } from '@c15t/nextjs';
 import { useSkipAuth, SKIP_AUTH_MOCK_USER } from './use-skip-auth';
 import { useConsentIdentify } from './use-consent-identify';
+import { useMockPrivy } from '@/lib/mock/privy';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
 
-export const MockPrivy = createContext<PrivyInterface | null>(null);
-
 export function useAuth() {
-  const mockPrivy = useContext(MockPrivy);
+  const mockPrivy = useMockPrivy();
   const privy = usePrivy();
   const { authenticated, ready, user: originalPrivyUser } = mockPrivy ?? privy;
   const { isSkipAuthActive } = useSkipAuth();
