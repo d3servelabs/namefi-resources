@@ -10,7 +10,7 @@ import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { type ReactNode, createContext, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
@@ -103,38 +103,18 @@ const mockCartItems: UnifiedCartItem[] = [
   },
 ];
 
-const mockDomainAvailabilityInfo = [
-  {
-    domain: 'example.com',
-    available: true,
-    registrarKey: 'DynadotGdg',
+function createMockDomainAvailabilityInfo(cartItems: UnifiedCartItem[]) {
+  return cartItems.map((item) => ({
+    domain: item.normalizedDomainName,
+    available: item.type === 'REGISTER',
+    registrarKey: item.registrar,
     pricing: {
-      registerPriceInUsd: 12.99,
-      renewPriceInUsd: 12.99,
-      importPriceInUsd: 12.99,
+      registerPriceInUsd: item.amountInUSDCents / 100,
+      renewPriceInUsd: item.amountInUSDCents / 100,
+      importPriceInUsd: item.amountInUSDCents / 100,
     },
-  },
-  {
-    domain: 'mywebsite.io',
-    available: true,
-    registrarKey: 'DynadotGdg',
-    pricing: {
-      registerPriceInUsd: 39.99,
-      renewPriceInUsd: 39.99,
-      importPriceInUsd: 39.99,
-    },
-  },
-  {
-    domain: 'blockchain.xyz',
-    available: false,
-    registrarKey: 'R53',
-    pricing: {
-      registerPriceInUsd: 24.99,
-      renewPriceInUsd: 24.99,
-      importPriceInUsd: 24.99,
-    },
-  },
-];
+  }));
+}
 
 type MockCartState = {
   isAuthenticated: boolean;
@@ -142,13 +122,6 @@ type MockCartState = {
   cartItems: UnifiedCartItem[];
   isCartLoading: boolean;
 };
-
-const MockAuthContext = createContext<MockCartState>({
-  isAuthenticated: true,
-  isLoading: false,
-  cartItems: [],
-  isCartLoading: false,
-});
 
 function createMockQueryClient() {
   return new QueryClient({
@@ -181,7 +154,10 @@ function MockTrpcProvider({
             return Promise.resolve([null, mockState.cartItems] as const);
           }
           if (options.op.path === 'registry.getDomainListInfo') {
-            return Promise.resolve([null, mockDomainAvailabilityInfo] as const);
+            return Promise.resolve([
+              null,
+              createMockDomainAvailabilityInfo(mockState.cartItems),
+            ] as const);
           }
           if (
             options.op.path ===
@@ -211,9 +187,7 @@ function MockTrpcProvider({
   return (
     <QueryClientProvider client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-        <MockAuthContext.Provider value={mockState}>
-          {children}
-        </MockAuthContext.Provider>
+        {children}
       </TRPCProvider>
     </QueryClientProvider>
   );
