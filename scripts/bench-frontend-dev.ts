@@ -103,6 +103,36 @@ async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function waitForExit(child: ReturnType<typeof spawn>, timeoutMs: number) {
+  return await new Promise<boolean>((resolve) => {
+    if (child.exitCode !== null) {
+      resolve(true);
+      return;
+    }
+    const timer = setTimeout(() => resolve(false), timeoutMs);
+    child.once('exit', () => {
+      clearTimeout(timer);
+      resolve(true);
+    });
+  });
+}
+
+function killProcessTree(
+  child: ReturnType<typeof spawn>,
+  signal: NodeJS.Signals,
+) {
+  if (!child.pid) return;
+  if (process.platform === 'win32') {
+    child.kill(signal);
+    return;
+  }
+  try {
+    process.kill(-child.pid, signal);
+  } catch {
+    child.kill(signal);
+  }
+}
+
 async function waitForReady(
   lines: string[],
   child: ReturnType<typeof spawn>,
@@ -272,6 +302,7 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
   const child = spawn(options.devCmd, {
     shell: true,
     cwd: appDir,
+    detached: process.platform !== 'win32',
     env: {
       ...process.env,
     },
@@ -348,10 +379,11 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
     await fs.writeFile(logPath, logLines.join('\n'));
     throw error;
   } finally {
-    child.kill('SIGTERM');
-    await sleep(1000);
-    if (child.exitCode === null) {
-      child.kill('SIGKILL');
+    killProcessTree(child, 'SIGTERM');
+    const exited = await waitForExit(child, 5000);
+    if (!exited || child.exitCode === null) {
+      killProcessTree(child, 'SIGKILL');
+      await waitForExit(child, 5000);
     }
   }
 }
@@ -495,6 +527,7 @@ async function main() {
 
   await fs.writeFile(outputFile, `${lines.join('\n')}\n`);
   console.log(`Benchmark report written to ${outputFile}`);
+  process.exit(0);
 }
 
 main().catch((error) => {
