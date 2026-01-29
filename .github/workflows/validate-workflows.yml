@@ -12,6 +12,8 @@ env:
   ENVIRONMENT: test
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TYPECHECK_CONCURRENCY: 8
+  TURBO_CHECKERROR_CONCURRENCY: 8
 
 jobs:
   validate-workflow-exports:
