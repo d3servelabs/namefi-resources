@@ -86,6 +86,18 @@ jobs:
             avg_lines.pop()
   
           avg_table = "\n".join(avg_lines).strip()
+
+          rows = []
+          if avg_table:
+            for line in avg_table.splitlines():
+              if not line.startswith("|"):
+                continue
+              if line.strip().startswith("| ---"):
+                continue
+              columns = [col.strip() for col in line.split("|") if col.strip()]
+              if not columns or columns[0].lower() == "route":
+                continue
+              rows.append(columns)
   
           runs = ""
           for line in lines:
@@ -127,17 +139,25 @@ jobs:
                 "elements": [{"type": "mrkdwn", "text": " • ".join(meta_bits)}],
               }
             )
-          if avg_table:
+          if rows:
             blocks.append({"type": "divider"})
             blocks.append(
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": f"*Averages*\n```\n{avg_table}\n```",
-                },
-              }
+              {"type": "section", "text": {"type": "mrkdwn", "text": "*Averages*"}}
             )
+            for row in rows:
+              padded = row + ["n/a"] * (7 - len(row))
+              cold = f"{padded[1]} | {padded[2]} | {padded[3]}"
+              hot = f"{padded[4]} | {padded[5]} | {padded[6]}"
+              blocks.append(
+                {
+                  "type": "section",
+                  "text": {"type": "mrkdwn", "text": f"*{padded[0]}*"},
+                  "fields": [
+                    {"type": "mrkdwn", "text": f"*Cold*\\n{cold}"},
+                    {"type": "mrkdwn", "text": f"*Hot*\\n{hot}"},
+                  ],
+                }
+              )
   
           payload = json.dumps({"text": header, "blocks": blocks})
           webhook = os.environ.get("SLACK_WEBHOOK_URL")
