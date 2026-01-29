@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite';
 import '@/app/globals.css';
-import { defaultChromaticModes, viewportModes } from './modes';
+import { defaultChromaticModes, storybookViewports } from './modes';
 
 const preview: Preview = {
   parameters: {
@@ -23,20 +23,7 @@ const preview: Preview = {
      * Provides viewport switching in the Storybook UI.
      */
     viewport: {
-      viewports: {
-        'macbook-pro-16': {
-          name: 'MacBook Pro 16.2" M3',
-          styles: { width: '1800px', height: '1163px' },
-        },
-        'macbook-air-13': {
-          name: 'MacBook Air 13.6" M4',
-          styles: { width: '1280px', height: '832px' },
-        },
-        'iphone-17': {
-          name: 'iPhone 17',
-          styles: { width: '402px', height: '874px' },
-        },
-      },
+      viewports: storybookViewports,
       defaultViewport: 'macbook-air-13',
     },
 
