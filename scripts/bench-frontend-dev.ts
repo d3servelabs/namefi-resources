@@ -385,7 +385,7 @@ async function main() {
   const baseUrl = args.baseUrl ?? 'https://localhost:5050';
   const devCmd =
     args.devCmd ??
-    'INFISICAL_TOKEN=$INFISICAL_TOKEN infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun dev -- --experimental-https';
+    '../../node_modules/.bin/infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun dev -- --experimental-https';
   const outputDir = path.join(appDir, '.benchmarks');
   await fs.mkdir(outputDir, { recursive: true });
   const outputFile =
