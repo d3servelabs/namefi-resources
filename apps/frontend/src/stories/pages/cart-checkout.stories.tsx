@@ -21,6 +21,22 @@ import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import { MockPrivy } from '@/hooks/use-auth';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import type { UnifiedCartItem, UseCart } from '@/hooks/use-cart';
+import { WagmiProvider } from 'wagmi';
+import { createConfig, http } from 'wagmi';
+import { mainnet, sepolia, base } from 'wagmi/chains';
+import { mock } from 'wagmi/connectors';
+
+const MOCK_WALLET_ADDRESS = '0x1234567890123456789012345678901234567890';
+
+const mockWagmiConfig = createConfig({
+  chains: [mainnet, sepolia, base],
+  connectors: [mock({ accounts: [MOCK_WALLET_ADDRESS as `0x${string}`] })],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [base.id]: http(),
+  },
+});
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
@@ -258,29 +274,31 @@ function StoryProviders({
         } as any
       }
     >
-      <AdminFeatureFlagsProvider>
-        <OriginProvider originInfo={origin}>
-          <MockTrpcProvider mockState={mockState}>
-            <NuqsAdapter>
-              <ConsentManagerProvider options={{ mode: 'offline' }}>
-                <PreAuthSignalsProvider>
-                  <InteractionLoggersProvider>
-                    <WishlistProvider>
-                      <CartContext.Provider value={mockCartValue}>
-                        <SidebarProvider defaultOpen={false}>
-                          <FreeMintsGuidanceProvider>
-                            {children}
-                          </FreeMintsGuidanceProvider>
-                        </SidebarProvider>
-                      </CartContext.Provider>
-                    </WishlistProvider>
-                  </InteractionLoggersProvider>
-                </PreAuthSignalsProvider>
-              </ConsentManagerProvider>
-            </NuqsAdapter>
-          </MockTrpcProvider>
-        </OriginProvider>
-      </AdminFeatureFlagsProvider>
+      <WagmiProvider config={mockWagmiConfig}>
+        <AdminFeatureFlagsProvider>
+          <OriginProvider originInfo={origin}>
+            <MockTrpcProvider mockState={mockState}>
+              <NuqsAdapter>
+                <ConsentManagerProvider options={{ mode: 'offline' }}>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      <WishlistProvider>
+                        <CartContext.Provider value={mockCartValue}>
+                          <SidebarProvider defaultOpen={false}>
+                            <FreeMintsGuidanceProvider>
+                              {children}
+                            </FreeMintsGuidanceProvider>
+                          </SidebarProvider>
+                        </CartContext.Provider>
+                      </WishlistProvider>
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
+                </ConsentManagerProvider>
+              </NuqsAdapter>
+            </MockTrpcProvider>
+          </OriginProvider>
+        </AdminFeatureFlagsProvider>
+      </WagmiProvider>
     </MockPrivy.Provider>
   );
 }
