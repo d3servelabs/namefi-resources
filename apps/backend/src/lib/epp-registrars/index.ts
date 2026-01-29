@@ -7,7 +7,7 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import type { AbstractRegistrarService } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { eq, inArray } from 'drizzle-orm';
 import { secrets, config } from '#lib/env';
-import { logger } from '#lib/logger';
+import { createLogger, logger } from '#lib/logger';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
@@ -70,6 +70,7 @@ export const sldRegistrar = createRegistrarService({
       return {};
     }
   },
+  customLogger: createLogger({ context: 'EppRegistrarsService' }),
   redisClientOptions: secrets.LIMITER_REDIS_HOST
     ? {
         host: secrets.LIMITER_REDIS_HOST,

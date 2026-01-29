@@ -91,6 +91,7 @@ const DEFAULT_HOOKS = {
 export class DynadotRegistrarService extends AbstractRegistrarService {
   readonly logger: pino.Logger;
   private readonly client: Dynadot;
+  private readonly accountType: 'super_bulk' | 'bulk' | 'regular';
   getClient() {
     return this.client;
   }
@@ -173,6 +174,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       accountType: config.accountType,
       connection: config.connection,
     });
+    this.accountType = config.accountType || 'regular';
     this.cache.on('expired', async () => {
       this.logger.info('prices cache expired');
       await this.getTldPrices();
@@ -972,7 +974,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     if (queries.length === 0) {
       return [];
     }
-    const batchSize = 100;
+    const batchSize = this.accountType === 'super_bulk' ? 100 : 1;
     const batches = splitEvery(batchSize, queries);
     const nonPremiumPrices =
       await this._bulkGetNonPremiumDomainPriceDetails(queries);

@@ -1,5 +1,5 @@
 import { assertNotNil, matchAny, resolve } from '@namefi-astra/utils';
-import pino from 'pino';
+import pino, { type BaseLogger } from 'pino';
 import {
   assoc,
   flatten,
@@ -69,7 +69,7 @@ type RegistrarWithTldPricing = AbstractRegistrarService<Registrars> & {
 const injectRegistrar = assoc('registrarKey');
 
 export class RegistrarService extends AbstractRegistrarService {
-  logger = pino({ name: RegistrarService.name });
+  logger: BaseLogger;
   private readonly domainToRegistrar: Map<
     PunycodeDomainName,
     { registrarKey?: Registrars; found: boolean }
@@ -87,9 +87,13 @@ export class RegistrarService extends AbstractRegistrarService {
     private readonly getRegistrarKeysFromExistingDomains?: (
       domains: PunycodeDomainName[],
     ) => Promise<Record<PunycodeDomainName, Registrars>>,
+    config?: {
+      customLogger?: BaseLogger;
+    },
   ) {
     super('main');
     this.registrars = registrars;
+    this.logger = config?.customLogger ?? pino({ name: RegistrarService.name });
   }
 
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
@@ -372,6 +376,7 @@ export class RegistrarService extends AbstractRegistrarService {
           );
         }
       });
+
       const responsesByRegistrar: Record<Registrars, DomainQueryResult[]> =
         pickBy(isNotNil, promises);
 
@@ -868,6 +873,7 @@ export function createRegistrarService(config: {
   registrars: (
     connection?: Bottleneck.IORedisConnection,
   ) => Record<Registrars, AbstractRegistrarService<Registrars>>;
+  customLogger?: BaseLogger;
 }): RegistrarService {
   const connection = config.redisClientOptions
     ? new Bottleneck.IORedisConnection({
@@ -879,5 +885,6 @@ export function createRegistrarService(config: {
     config.registrars(connection),
     config.getRegistrarKeyForExistingDomain,
     config.getRegistrarKeysForExistingDomains,
+    { customLogger: config.customLogger },
   );
 }
