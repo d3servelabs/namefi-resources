@@ -175,7 +175,13 @@ export function ServerDetailModal({
                 <h3 className="text-lg font-semibold">Cache Statistics</h3>
 
                 <div className="flex items-center gap-2">
-                  <Select value={autoRefresh} onValueChange={setAutoRefresh}>
+                  <Select
+                    value={autoRefresh}
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      setAutoRefresh(value);
+                    }}
+                  >
                     <SelectTrigger className="w-[80px] h-6">
                       <SelectValue />
                     </SelectTrigger>
@@ -224,12 +230,12 @@ export function ServerDetailModal({
                 <div className="flex gap-2">
                   {showCacheEntries && (
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                          <ChevronDown className="h-4 w-4 ml-2" />
-                        </Button>
+                      <DropdownMenuTrigger
+                        render={<Button variant="outline" size="sm" />}
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                        <ChevronDown className="h-4 w-4 ml-2" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem onClick={handleDownloadDump}>

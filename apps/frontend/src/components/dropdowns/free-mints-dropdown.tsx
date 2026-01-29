@@ -84,41 +84,43 @@ export function FreeMintsDropdown({
           className={cn('inline-flex', className)}
         >
           <DropdownMenu>
-            <DropdownMenuTrigger asChild={true}>
-              <HeaderActionButton
-                actionVariant="pill"
-                disableBackdropBlur={disableBackdropBlur}
-                className="pr-6"
-                aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
+            <DropdownMenuTrigger
+              render={
+                <HeaderActionButton
+                  actionVariant="pill"
+                  disableBackdropBlur={disableBackdropBlur}
+                  className="pr-6"
+                  aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
+                />
+              }
+            >
+              <Gift className="size-[18px]" />
+              <motion.span
+                className="relative whitespace-nowrap"
+                style={{
+                  ['--x' as unknown as string]: '125%',
+                  maskImage:
+                    'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
+                  WebkitMaskImage:
+                    'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
+                }}
+                animate={{
+                  ['--x' as unknown as string]: '-125%',
+                }}
+                transition={SHINY_TEXT_TRANSITION}
               >
-                <Gift className="size-[18px]" />
-                <motion.span
-                  className="relative whitespace-nowrap"
-                  style={{
-                    ['--x' as unknown as string]: '125%',
-                    maskImage:
-                      'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
-                    WebkitMaskImage:
-                      'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
-                  }}
-                  animate={{
-                    ['--x' as unknown as string]: '-125%',
-                  }}
-                  transition={SHINY_TEXT_TRANSITION}
-                >
-                  <span className="relative">
-                    Free {availableCount === 1 ? 'Mint' : 'Mints'}
-                  </span>
-                </motion.span>
-                <span className={HEADER_BADGE_CLASS}>
-                  <NumberFlow value={availableCount} />
+                <span className="relative">
+                  Free {availableCount === 1 ? 'Mint' : 'Mints'}
                 </span>
-              </HeaderActionButton>
+              </motion.span>
+              <span className={HEADER_BADGE_CLASS}>
+                <NumberFlow value={availableCount} />
+              </span>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuLabel>Free Mints</DropdownMenuLabel>
-              <DropdownMenuSeparator />
               <DropdownMenuGroup>
+                <DropdownMenuLabel>Free Mints</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {availableFreeMints.map((freeMint) => (
                   <DropdownMenuItem
                     key={freeMint.id}
@@ -143,10 +145,11 @@ export function FreeMintsDropdown({
                 ))}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild={true}>
-                <Button className="w-full" variant="default" asChild={true}>
-                  <Link href="/free-mints">View All Free Mints</Link>
-                </Button>
+              <DropdownMenuItem
+                render={<Link href="/free-mints" />}
+                className="bg-primary text-primary-foreground justify-center hover:bg-primary/80 focus:bg-primary/80"
+              >
+                View All Free Mints
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

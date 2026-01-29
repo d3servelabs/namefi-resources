@@ -161,15 +161,19 @@ export const DomainDetail = ({
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4">
-              <Button variant="outline" asChild={true}>
-                <Link
-                  href={`https://${domainName}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLinkIcon className="h-4 w-4" />
-                  Visit Domain
-                </Link>
+              <Button
+                render={
+                  <Link
+                    href={`https://${domainName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+                nativeButton={false}
+                variant="outline"
+              >
+                <ExternalLinkIcon className="h-4 w-4" />
+                Visit Domain
               </Button>
             </div>
           </CardContent>

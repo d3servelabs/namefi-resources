@@ -156,19 +156,21 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                   <div className="flex items-center gap-2">
                     {/* Auto-Renew Toggle */}
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-muted/30">
-                          <span className="text-xs text-muted-foreground">
-                            Auto
-                          </span>
-                          <BulkAutoRenewToggle
-                            state={bulkAutoRenewState}
-                            onStateChange={onBulkAutoRenewToggle}
-                            disabled={selectedDomainCount === 0}
-                            isLoading={isTogglingAutoRenew}
-                            ariaLabel={`Bulk auto-renew for ${selectedDomainCount} domain${selectedDomainCount !== 1 ? 's' : ''}`}
-                          />
-                        </div>
+                      <TooltipTrigger
+                        render={
+                          <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-muted/30" />
+                        }
+                      >
+                        <span className="text-xs text-muted-foreground">
+                          Auto
+                        </span>
+                        <BulkAutoRenewToggle
+                          state={bulkAutoRenewState}
+                          onStateChange={onBulkAutoRenewToggle}
+                          disabled={selectedDomainCount === 0}
+                          isLoading={isTogglingAutoRenew}
+                          ariaLabel={`Bulk auto-renew for ${selectedDomainCount} domain${selectedDomainCount !== 1 ? 's' : ''}`}
+                        />
                       </TooltipTrigger>
                       <TooltipContent>
                         {bulkAutoRenewState === 'mixed'
@@ -186,17 +188,19 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
 
                     {/* Renew Now */}
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={handleRenewNow}
-                          className="h-8 w-8 hover:bg-muted"
-                          disabled={renewableDomainsCount === 0}
-                          aria-label={`Renew ${renewableDomainsCount} domain${renewableDomainsCount !== 1 ? 's' : ''}`}
-                        >
-                          <CalendarPlus className="w-4 h-4" />
-                        </Button>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleRenewNow}
+                            className="h-8 w-8 hover:bg-muted"
+                            disabled={renewableDomainsCount === 0}
+                            aria-label={`Renew ${renewableDomainsCount} domain${renewableDomainsCount !== 1 ? 's' : ''}`}
+                          />
+                        }
+                      >
+                        <CalendarPlus className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>
                         Renew {renewableDomainsCount} domain
@@ -210,46 +214,52 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                     />
 
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => onBatchAction('web')}
-                          className="h-8 w-8"
-                          aria-label="Set Web Records"
-                        >
-                          <Globe className="w-4 h-4" />
-                        </Button>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => onBatchAction('web')}
+                            className="h-8 w-8"
+                            aria-label="Set Web Records"
+                          />
+                        }
+                      >
+                        <Globe className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>Set Web Records</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => onBatchAction('forward')}
-                          className="h-8 w-8"
-                          aria-label="Set URL Forwarding"
-                        >
-                          <LinkIcon className="w-4 h-4" />
-                        </Button>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => onBatchAction('forward')}
+                            className="h-8 w-8"
+                            aria-label="Set URL Forwarding"
+                          />
+                        }
+                      >
+                        <LinkIcon className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>Set URL Forwarding</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => onBatchAction('ens')}
-                          className="h-8 w-8"
-                          aria-label="Set ENS Record"
-                        >
-                          <Hexagon className="w-4 h-4" />
-                        </Button>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => onBatchAction('ens')}
+                            className="h-8 w-8"
+                            aria-label="Set ENS Record"
+                          />
+                        }
+                      >
+                        <Hexagon className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>Set ENS Record</TooltipContent>
                     </Tooltip>

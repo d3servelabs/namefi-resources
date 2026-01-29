@@ -48,37 +48,37 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                   <SidebarMenuButton
                     tooltip={item.title}
                     isActive={isRouteActive(item, pathname)}
-                    asChild={true}
+                    render={
+                      <Link
+                        href={item.href}
+                        target={item.target}
+                        onClick={() => {
+                          if (isMobile) {
+                            setOpenMobile(false);
+                          }
+                        }}
+                        className="relative"
+                      />
+                    }
                   >
-                    <Link
-                      href={item.href}
-                      target={item.target}
-                      onClick={() => {
-                        if (isMobile) {
-                          setOpenMobile(false);
-                        }
-                      }}
-                      className="relative"
-                    >
-                      {Icon && <Icon />}
-                      <span className="whitespace-nowrap">{item.title}</span>
-                      {item.badge &&
-                        item.badge.content != null &&
-                        item.badge.content !== 0 &&
-                        item.badge.content !== '0' && (
-                          <Badge
-                            className="absolute text-secondary-foreground bg-brand-primary flex items-center justify-center rounded-full p-0 transition-all duration-200 ease-in-out z-10
-                        h-5 w-5 min-w-5 right-0 top-1/2 -translate-y-1/2
+                    {Icon && <Icon />}
+                    <span className="whitespace-nowrap">{item.title}</span>
+                    {item.badge &&
+                      item.badge.content != null &&
+                      item.badge.content !== 0 &&
+                      item.badge.content !== '0' && (
+                        <Badge
+                          className="absolute text-secondary-foreground bg-brand-primary flex items-center justify-center rounded-full p-0 transition-all duration-200 ease-in-out z-10
+                        h-5 w-5 min-w-5 right-2 top-1/2 -translate-y-1/2
                         group-data-[collapsible=icon]:h-2 group-data-[collapsible=icon]:w-2 group-data-[collapsible=icon]:min-w-2
                         group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1
                         group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:translate-y-0"
-                          >
-                            <span className="group-data-[collapsible=icon]:hidden">
-                              {item.badge.content}
-                            </span>
-                          </Badge>
-                        )}
-                    </Link>
+                        >
+                          <span className="group-data-[collapsible=icon]:hidden">
+                            {item.badge.content}
+                          </span>
+                        </Badge>
+                      )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </ErrorBoundary>

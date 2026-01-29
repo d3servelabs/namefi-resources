@@ -471,24 +471,26 @@ function GalleryHeader({
       {isYoursActive && (
         <div className="flex items-center gap-2.5 overflow-x-auto whitespace-nowrap">
           <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                role="combobox"
-                aria-expanded={false}
-                className="h-9 w-56 justify-between rounded-lg bg-muted/30 px-3 text-sm font-medium"
-              >
-                <span className="flex items-center gap-2">
-                  <Building2 className="h-4 w-4 text-muted-foreground" />
-                  {selectedBrands.length > 0
-                    ? `${selectedBrands.length} selected`
-                    : 'Brands'}
-                </span>
-                <ChevronDown className="ml-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
-              </Button>
+            <PopoverTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  role="combobox"
+                  aria-expanded={false}
+                  className="h-9 w-56 justify-between rounded-lg bg-muted/30 px-3 text-sm font-medium"
+                />
+              }
+            >
+              <span className="flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-muted-foreground" />
+                {selectedBrands.length > 0
+                  ? `${selectedBrands.length} selected`
+                  : 'Brands'}
+              </span>
+              <ChevronDown className="ml-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
             </PopoverTrigger>
-            <PopoverContent className="w-64 p-0" align="end">
+            <PopoverContent className="w-64 p-0" align="end" sideOffset={8}>
               <Command className="rounded-lg bg-popover text-popover-foreground">
                 <CommandInput
                   placeholder="Search brand..."
@@ -525,9 +527,10 @@ function GalleryHeader({
 
           <Select
             value={typeFilter}
-            onValueChange={(value) =>
-              onTypeChange(value as GalleryFilters['type'])
-            }
+            onValueChange={(value) => {
+              if (!value) return;
+              onTypeChange(value as GalleryFilters['type']);
+            }}
           >
             <SelectTrigger className="h-9 w-48 justify-between rounded-lg bg-muted/30 px-3 text-sm font-medium">
               <div className="flex items-center gap-2">
@@ -535,7 +538,11 @@ function GalleryHeader({
                 <SelectValue />
               </div>
             </SelectTrigger>
-            <SelectContent align="end">
+            <SelectContent
+              align="end"
+              sideOffset={8}
+              alignItemWithTrigger={false}
+            >
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="logo">Logo</SelectItem>
               <SelectItem value="marketing">Poster</SelectItem>

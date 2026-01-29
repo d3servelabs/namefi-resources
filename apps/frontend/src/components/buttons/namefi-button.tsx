@@ -1,12 +1,8 @@
 import { cn } from '@/lib/cn';
-import type { VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
-import { Button, type buttonVariants } from '../ui/shadcn/button';
+import { Button } from '../ui/shadcn/button';
 
-type NamefiButtonProps = ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  };
+type NamefiButtonProps = ComponentProps<typeof Button>;
 
 export function NamefiButton({
   children,

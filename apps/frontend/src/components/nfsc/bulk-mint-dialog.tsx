@@ -224,7 +224,10 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
                 </Label>
                 <Select
                   value={chainId.toString()}
-                  onValueChange={(v) => setChainId(Number.parseInt(v, 10))}
+                  onValueChange={(v) => {
+                    if (!v) return;
+                    setChainId(Number.parseInt(v, 10));
+                  }}
                 >
                   <SelectTrigger id="chain">
                     <SelectValue />

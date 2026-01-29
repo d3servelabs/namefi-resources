@@ -250,62 +250,64 @@ export const UserDropdown = ErrorBoundary.with(
               layout
             >
               <DropdownMenu>
-                <DropdownMenuTrigger asChild={true}>
-                  <HeaderActionButton
-                    actionVariant={actionVariant}
-                    disableBackdropBlur={disableBackdropBlur}
-                    stretch={shouldStretch}
-                    className={expandedPaddingClass}
+                <DropdownMenuTrigger
+                  render={
+                    <HeaderActionButton
+                      actionVariant={actionVariant}
+                      disableBackdropBlur={disableBackdropBlur}
+                      stretch={shouldStretch}
+                      className={expandedPaddingClass}
+                    />
+                  }
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.28, ease: 'easeOut' },
+                    }}
+                    className="shrink-0"
+                    layout
                   >
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.28, ease: 'easeOut' },
-                      }}
-                      className="shrink-0"
-                      layout
-                    >
-                      <CurrentUserAvatar />
-                    </motion.div>
-                    {isExpanded && (
-                      <>
-                        <motion.span
-                          className="hidden text-sm md:block"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{
-                            opacity: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.24,
-                              ease: 'easeOut',
-                              delay: 0.03,
-                            },
-                          }}
-                          layout
-                        >
-                          {shortage(name, 11)}
-                        </motion.span>
-                        <motion.span
-                          className="ml-auto"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{
-                            opacity: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.24,
-                              ease: 'easeOut',
-                              delay: 0.05,
-                            },
-                          }}
-                          layout
-                        >
-                          <MoreHorizontalIcon className="h-5 w-5" />
-                        </motion.span>
-                      </>
-                    )}
-                  </HeaderActionButton>
+                    <CurrentUserAvatar />
+                  </motion.div>
+                  {isExpanded && (
+                    <>
+                      <motion.span
+                        className="hidden text-sm md:block"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          transition: {
+                            duration: 0.24,
+                            ease: 'easeOut',
+                            delay: 0.03,
+                          },
+                        }}
+                        layout
+                      >
+                        {shortage(name, 11)}
+                      </motion.span>
+                      <motion.span
+                        className="ml-auto"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          transition: {
+                            duration: 0.24,
+                            ease: 'easeOut',
+                            delay: 0.05,
+                          },
+                        }}
+                        layout
+                      >
+                        <MoreHorizontalIcon className="h-5 w-5" />
+                      </motion.span>
+                    </>
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   {items.map((item, index) =>
@@ -427,12 +429,13 @@ function BalanceBreakdownDialog({
         </div>
         <DialogFooter className="flex flex-col gap-2 sm:flex-row">
           <Button
-            asChild
             variant="secondary"
             className="w-full sm:flex-1"
             onClick={() => onOpenChange(false)}
+            render={<Link href="/payment-methods" />}
+            nativeButton={false}
           >
-            <Link href="/payment-methods">Go to Payment Methods</Link>
+            Go to Payment Methods
           </Button>
           <Button
             className="w-full sm:flex-1"
@@ -499,11 +502,12 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
   switch (item.type) {
     case 'link':
       return (
-        <DropdownMenuItem asChild={true} {...item.customProps}>
-          <Link href={item.href}>
-            {Icon && <Icon className="mr-2 h-4 w-4" />}
-            <span>{item.title}</span>
-          </Link>
+        <DropdownMenuItem
+          render={<Link href={item.href} />}
+          {...item.customProps}
+        >
+          {Icon && <Icon className="mr-2 h-4 w-4" />}
+          <span>{item.title}</span>
         </DropdownMenuItem>
       );
     case 'custom':
@@ -658,6 +662,7 @@ function LogoutDropdownItem() {
           icon: LogOutIcon,
           customProps: {
             className: 'text-red-500',
+            closeOnClick: false,
           },
         }}
       />

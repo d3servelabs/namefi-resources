@@ -39,12 +39,21 @@ export function Unauthorized({
         <CardContent>
           <div className="flex flex-col space-y-2 sm:space-x-2 sm:space-y-0 gap-2">
             {!isAuthenticated && !isAuthLoading && (
-              <Button className="w-full" asChild={true}>
-                <Link href={authUrl}>Sign In</Link>
+              <Button
+                render={<Link href={authUrl} />}
+                nativeButton={false}
+                className="w-full"
+              >
+                Sign In
               </Button>
             )}
-            <Button variant="outline" className="w-full" asChild={true}>
-              <Link href={homeUrl}>Go to Home</Link>
+            <Button
+              render={<Link href={homeUrl} />}
+              nativeButton={false}
+              variant="outline"
+              className="w-full"
+            >
+              Go to Home
             </Button>
           </div>
         </CardContent>

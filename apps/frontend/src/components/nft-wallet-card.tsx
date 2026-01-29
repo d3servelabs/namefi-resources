@@ -239,7 +239,15 @@ export function NftWalletCard({
   ]);
 
   const handleWalletAddressChange = useCallback(
-    (value: string) => {
+    (value: string | null) => {
+      if (!value) {
+        setInputValue('');
+        setError(null);
+        setEnsCandidate(null);
+        setEnsStatus({ status: 'idle' });
+        onWalletAddressChange(null);
+        return;
+      }
       setInputValue(value);
       const trimmed = value.trim();
 
@@ -409,7 +417,7 @@ export function NftWalletCard({
   }, [statusMeta.address, copiedAddress]);
 
   const helpContent = (
-    <TooltipProvider delayDuration={100}>
+    <TooltipProvider delay={100}>
       <div className="flex flex-col gap-1 text-muted-foreground">
         <span className="flex items-center gap-2 text-sm">
           <Info className="size-4" aria-hidden="true" />
@@ -426,10 +434,12 @@ export function NftWalletCard({
           {statusMeta.icon}
           {statusMeta.address ? (
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button type="button" variant="link" className="px-0">
-                  {statusMeta.message}
-                </Button>
+              <TooltipTrigger
+                render={
+                  <Button type="button" variant="link" className="px-0" />
+                }
+              >
+                {statusMeta.message}
               </TooltipTrigger>
               <TooltipContent side="top" align="start" sideOffset={8}>
                 <div className="flex flex-col gap-2">

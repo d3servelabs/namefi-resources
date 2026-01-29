@@ -247,11 +247,9 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Add Free Claim
-        </Button>
+      <DialogTrigger render={<Button className="flex items-center gap-2" />}>
+        <Plus className="h-4 w-4" />
+        Add Free Claim
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -579,14 +577,16 @@ function DeleteClaimDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-destructive hover:text-destructive"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
+      <AlertDialogTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-destructive hover:text-destructive"
+          />
+        }
+      >
+        <Trash2 className="h-4 w-4" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -663,7 +663,8 @@ function FreeClaimsContent() {
     setPage(newPage);
   }, []);
 
-  const handleLimitChange = useCallback((newLimit: string) => {
+  const handleLimitChange = useCallback((newLimit: string | null) => {
+    if (!newLimit) return;
     setLimit(Number.parseInt(newLimit));
     setPage(1);
   }, []);
@@ -710,7 +711,10 @@ function FreeClaimsContent() {
               <Label>Status</Label>
               <Select
                 value={status}
-                onValueChange={(value: any) => setStatus(value)}
+                onValueChange={(value: any) => {
+                  if (!value) return;
+                  setStatus(value);
+                }}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -728,7 +732,10 @@ function FreeClaimsContent() {
               <Label>Sort By</Label>
               <Select
                 value={sortBy}
-                onValueChange={(value: any) => setSortBy(value)}
+                onValueChange={(value: any) => {
+                  if (!value) return;
+                  setSortBy(value);
+                }}
               >
                 <SelectTrigger>
                   <SelectValue />

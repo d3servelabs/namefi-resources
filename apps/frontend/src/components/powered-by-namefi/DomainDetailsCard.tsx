@@ -65,18 +65,20 @@ export function DomainDetailsCard({
         {ALLOW_EDIT && (
           <div className="flex items-center gap-2">
             <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant={domain.enabled ? 'secondary' : 'default'}
-                  size="sm"
-                >
-                  {domain.enabled ? (
-                    <PauseIcon className="h-4 w-4 mr-1" />
-                  ) : (
-                    <CheckIcon className="h-4 w-4 mr-1" />
-                  )}
-                  {domain.enabled ? 'Disable' : 'Enable'}
-                </Button>
+              <AlertDialogTrigger
+                render={
+                  <Button
+                    variant={domain.enabled ? 'secondary' : 'default'}
+                    size="sm"
+                  />
+                }
+              >
+                {domain.enabled ? (
+                  <PauseIcon className="h-4 w-4 mr-1" />
+                ) : (
+                  <CheckIcon className="h-4 w-4 mr-1" />
+                )}
+                {domain.enabled ? 'Disable' : 'Enable'}
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>

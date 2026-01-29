@@ -348,6 +348,7 @@ export function PosterGenerator({
                       <Select
                         value={field.value}
                         onValueChange={(val) => {
+                          if (!val) return;
                           field.onChange(val as Model);
                           setOpenPanel(null);
                         }}
@@ -391,6 +392,7 @@ export function PosterGenerator({
                       <Select
                         value={field.value}
                         onValueChange={(val) => {
+                          if (!val) return;
                           field.onChange(val);
                           setOpenPanel(null);
                         }}

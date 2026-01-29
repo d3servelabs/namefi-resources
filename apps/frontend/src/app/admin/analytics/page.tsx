@@ -119,7 +119,10 @@ function AnalyticsPageContent() {
   });
 
   // Auto-update related filters when one changes
-  const handlePublicSuffixChange = (newSuffix: string) => {
+  const handlePublicSuffixChange = (newSuffix: string | null) => {
+    if (!newSuffix) {
+      return;
+    }
     if (newSuffix === '__clear__') {
       setPublicSuffixFilter('');
       // When clearing public suffix, also clear domain since it would be inconsistent
@@ -135,7 +138,10 @@ function AnalyticsPageContent() {
     }
   };
 
-  const handleDomainChange = (newDomain: string) => {
+  const handleDomainChange = (newDomain: string | null) => {
+    if (!newDomain) {
+      return;
+    }
     if (newDomain === '__clear__') {
       setDomainFilter('');
       return;

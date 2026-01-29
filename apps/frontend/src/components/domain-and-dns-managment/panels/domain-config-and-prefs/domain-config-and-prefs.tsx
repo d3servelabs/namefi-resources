@@ -301,8 +301,20 @@ export const DomainConfigAndPrefsForm = ({
                 dnssecDetails?.supportsDnssec ? undefined : (
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger asChild={true}>
-                        <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+                      <TooltipTrigger
+                        render={(props) => (
+                          <span
+                            {...props}
+                            className={cn(
+                              'inline-flex h-4 w-4 text-zinc-500 cursor-help',
+                              props.className,
+                            )}
+                          >
+                            <Info className="h-4 w-4" />
+                          </span>
+                        )}
+                      >
+                        {}
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>

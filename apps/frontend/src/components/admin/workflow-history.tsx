@@ -113,7 +113,8 @@ function WorkflowHistoryContent() {
     return `${uiUrl}/namespaces/${namespace}/workflows/${workflowId}${runId ? `/${runId}` : ''}`;
   };
 
-  const handleDaysChange = useCallback((value: '1' | '3' | '7') => {
+  const handleDaysChange = useCallback((value: '1' | '3' | '7' | null) => {
+    if (!value) return;
     setDays(value);
     setPage(1);
     setNextPageToken(undefined);
@@ -121,7 +122,8 @@ function WorkflowHistoryContent() {
   }, []);
 
   const handleWorkflowTypeChange = useCallback(
-    (value: 'all' | 'burn' | 'fix' | 'extend') => {
+    (value: 'all' | 'burn' | 'fix' | 'extend' | null) => {
+      if (!value) return;
       setWorkflowType(value);
       setPage(1);
       setNextPageToken(undefined);
@@ -130,7 +132,8 @@ function WorkflowHistoryContent() {
     [],
   );
 
-  const handleLimitChange = useCallback((value: string) => {
+  const handleLimitChange = useCallback((value: string | null) => {
+    if (!value) return;
     setLimit(Number(value));
     setPage(1);
     setNextPageToken(undefined);
@@ -461,15 +464,15 @@ function WorkflowHistoryContent() {
                         <Td className="text-sm">
                           <TooltipProvider>
                             <Tooltip>
-                              <TooltipTrigger asChild>
-                                <span className="cursor-help">
-                                  {workflow.startTime
-                                    ? formatDistanceToNow(
-                                        new Date(workflow.startTime),
-                                        { addSuffix: true },
-                                      )
-                                    : 'N/A'}
-                                </span>
+                              <TooltipTrigger
+                                render={<span className="cursor-help" />}
+                              >
+                                {workflow.startTime
+                                  ? formatDistanceToNow(
+                                      new Date(workflow.startTime),
+                                      { addSuffix: true },
+                                    )
+                                  : 'N/A'}
                               </TooltipTrigger>
                               <TooltipContent>
                                 <p>{formatDate(workflow.startTime)}</p>
@@ -506,14 +509,16 @@ function WorkflowHistoryContent() {
                           {workflow.error ? (
                             <TooltipProvider>
                               <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Badge
-                                    variant="destructive"
-                                    className="cursor-help"
-                                  >
-                                    <AlertCircle className="h-3 w-3 mr-1" />
-                                    Error
-                                  </Badge>
+                                <TooltipTrigger
+                                  render={
+                                    <Badge
+                                      variant="destructive"
+                                      className="cursor-help"
+                                    />
+                                  }
+                                >
+                                  <AlertCircle className="h-3 w-3 mr-1" />
+                                  Error
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
                                   <p className="text-xs">{workflow.error}</p>

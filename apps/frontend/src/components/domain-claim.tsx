@@ -205,11 +205,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
         <p className="text-gray-300 mb-2">
           Follow the steps below to see if you qualify
         </p>
-        <Accordion
-          type="single"
-          collapsible={true}
-          className="w-full rounded-lg p-4 border "
-        >
+        <Accordion className="w-full rounded-lg p-4 border ">
           <AccordionItem value="item-1">
             <AccordionTrigger>Sign In</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
@@ -229,8 +225,13 @@ export const DomainClaim: FC<DomainClaimProps> = ({
                 visiting your profile page. For now, usernames that start with
                 "0x" qualify you for the promo.
               </p>
-              <Button asChild={true} size={'sm'} className="w-fit">
-                <Link href={'/profile'}>Visit Profile Page</Link>
+              <Button
+                render={<Link href="/profile" />}
+                nativeButton={false}
+                size="sm"
+                className="w-fit"
+              >
+                Visit Profile Page
               </Button>
             </AccordionContent>
           </AccordionItem>

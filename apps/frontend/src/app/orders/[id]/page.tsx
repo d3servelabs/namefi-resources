@@ -550,12 +550,17 @@ export default function OrderPage({ params }: OrderPageProps) {
           <NamefiButton
             variant="outline"
             className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
-            asChild={true}
+            render={<Link href={`/orders/${id}/details`} />}
+            nativeButton={false}
           >
-            <Link href={`/orders/${id}/details`}>View full details</Link>
+            View full details
           </NamefiButton>
-          <NamefiButton className="flex-1" asChild={true}>
-            <Link href="/">Back to home</Link>
+          <NamefiButton
+            className="flex-1"
+            render={<Link href="/" />}
+            nativeButton={false}
+          >
+            Back to home
           </NamefiButton>
         </div>
       </div>

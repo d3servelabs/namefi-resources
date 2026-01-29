@@ -52,7 +52,8 @@ export const EditableCell = ({
     }
   }, [isEditing]);
 
-  const handleSelectChange = (newValue: string) => {
+  const handleSelectChange = (newValue: string | null) => {
+    if (!newValue) return;
     setValue(newValue);
     onSave(newValue);
     setIsEditing(false);

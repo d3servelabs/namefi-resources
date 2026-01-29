@@ -223,7 +223,10 @@ function AdminDnsCachePage() {
                 <Label htmlFor="recordType">Record Type</Label>
                 <Select
                   value={recordType}
-                  onValueChange={setRecordType}
+                  onValueChange={(value) => {
+                    if (!value) return;
+                    setRecordType(value);
+                  }}
                   disabled={flushMutation.isPending}
                 >
                   <SelectTrigger id="recordType">

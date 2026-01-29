@@ -74,8 +74,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           DNSSEC Management
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger asChild={true}>
-                <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+              <TooltipTrigger
+                render={
+                  <span className="inline-flex h-4 w-4 text-zinc-500 cursor-help" />
+                }
+              >
+                <Info className="h-4 w-4" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>
@@ -331,12 +335,16 @@ function DnssecProgressModal({
     <Dialog open={open} onOpenChange={setOpen}>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild={true}>
-            <DialogTrigger asChild={true}>
-              <Button variant="ghost" size="icon" className="h-6 w-6">
-                <Info className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
+          <TooltipTrigger
+            render={
+              <DialogTrigger
+                render={
+                  <Button variant="ghost" size="icon" className="h-6 w-6" />
+                }
+              />
+            }
+          >
+            <Info className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
             <p>View progress details</p>
@@ -489,14 +497,16 @@ export const DnssecPanelAction = ({
     <div className="flex items-center gap-2 justify-between">
       {isUsingNamefiSigning ? (
         <AlertDialog>
-          <AlertDialogTrigger asChild={true}>
-            <LoadingButton
-              disabled={disableAllButtons}
-              isLoading={disableNamefiSigning.isPending}
-              loadingText="Disabling..."
-            >
-              <ShieldMinusIcon width={20} height={20} /> Disable Namefi Signing
-            </LoadingButton>
+          <AlertDialogTrigger
+            render={
+              <LoadingButton
+                disabled={disableAllButtons}
+                isLoading={disableNamefiSigning.isPending}
+                loadingText="Disabling..."
+              />
+            }
+          >
+            <ShieldMinusIcon width={20} height={20} /> Disable Namefi Signing
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -514,9 +524,9 @@ export const DnssecPanelAction = ({
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => disableNamefiSigning.mutate({ domainName })}
-                asChild={true}
+                variant="destructive"
               >
-                <Button variant={'destructive'}>Confirm and Disable</Button>
+                Confirm and Disable
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

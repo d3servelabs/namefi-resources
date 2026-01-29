@@ -57,23 +57,23 @@ export function AddressWithChain({
   return (
     <div className={cn('flex items-center gap-2', className)} {...props}>
       <Tooltip>
-        <TooltipTrigger asChild={true}>
-          <span className="inline-flex items-center gap-2">
-            <span className="relative shrink-0">
-              <UserWalletAvatar
-                address={address}
-                className="size-6 rounded-full"
-              />
-              {showChainBadge && chainId ? (
-                <span className="absolute -bottom-1 -right-1 rounded-full border border-background bg-background">
-                  <NetworkLogo network={chainId} className="w-3.5 h-3.5" />
-                </span>
-              ) : null}
-            </span>
-            <span className="hidden lg:inline font-mono text-sm">{short}</span>
-            <span className="hidden md:inline lg:hidden font-mono text-sm">
-              {mobileShort}
-            </span>
+        <TooltipTrigger
+          render={<span className="inline-flex items-center gap-2" />}
+        >
+          <span className="relative shrink-0">
+            <UserWalletAvatar
+              address={address}
+              className="size-6 rounded-full"
+            />
+            {showChainBadge && chainId ? (
+              <span className="absolute -bottom-1 -right-1 rounded-full border border-background bg-background">
+                <NetworkLogo network={chainId} className="w-3.5 h-3.5" />
+              </span>
+            ) : null}
+          </span>
+          <span className="hidden lg:inline font-mono text-sm">{short}</span>
+          <span className="hidden md:inline lg:hidden font-mono text-sm">
+            {mobileShort}
           </span>
         </TooltipTrigger>
         <TooltipContent sideOffset={6}>
@@ -82,16 +82,23 @@ export function AddressWithChain({
       </Tooltip>
 
       <Tooltip>
-        <TooltipTrigger asChild={true}>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="rounded-full p-1 hover:bg-muted"
-            aria-label="Copy address"
-          >
-            <CopyIcon className="h-3 w-3" />
-          </button>
-        </TooltipTrigger>
+        <TooltipTrigger
+          render={(props) => (
+            <button
+              {...props}
+              type="button"
+              onClick={(event) => {
+                props.onClick?.(event);
+                if (event.defaultPrevented) return;
+                handleCopy();
+              }}
+              className={cn('rounded-full p-1 hover:bg-muted', props.className)}
+              aria-label="Copy address"
+            >
+              <CopyIcon className="h-3 w-3" />
+            </button>
+          )}
+        />
         <TooltipContent sideOffset={6}>Copy</TooltipContent>
       </Tooltip>
     </div>

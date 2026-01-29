@@ -368,12 +368,10 @@ function OrderItemsTable() {
         cell: ({ row }) => (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="text-sm cursor-help">
-                  {formatDistanceToNow(new Date(row.original.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
+              <TooltipTrigger render={<span className="text-sm cursor-help" />}>
+                {formatDistanceToNow(new Date(row.original.createdAt), {
+                  addSuffix: true,
+                })}
               </TooltipTrigger>
               <TooltipContent>
                 <p>{formatDate(new Date(row.original.createdAt), 'PPpp')}</p>

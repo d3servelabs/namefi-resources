@@ -29,42 +29,36 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarMenu>
         <Collapsible
-          asChild={true}
           defaultOpen={true}
           className="w-full group/collapsible"
+          render={<SidebarMenuItem />}
         >
-          <SidebarMenuItem>
-            <CollapsibleTrigger asChild={true}>
-              <SidebarMenuButton>
-                <History className="size-4" />
-                <span className="whitespace-nowrap">{name}</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenuSub>
-                  {domains.map((domain) => {
-                    const href = `/domains/${domain}`;
-                    return (
-                      <SidebarMenuItem key={domain}>
-                        <SidebarMenuButton
-                          tooltip={domain}
-                          isActive={href === pathname}
-                          asChild={true}
-                        >
-                          <Link href={href}>
-                            <Globe className="size-4" />
-                            <span className="truncate">{domain}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenuSub>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarMenuItem>
+          <CollapsibleTrigger render={<SidebarMenuButton />}>
+            <History className="size-4" />
+            <span className="whitespace-nowrap">{name}</span>
+            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarGroupContent>
+              <SidebarMenuSub>
+                {domains.map((domain) => {
+                  const href = `/domains/${domain}`;
+                  return (
+                    <SidebarMenuItem key={domain}>
+                      <SidebarMenuButton
+                        tooltip={domain}
+                        isActive={href === pathname}
+                        render={<Link href={href} />}
+                      >
+                        <Globe className="size-4" />
+                        <span className="truncate">{domain}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenuSub>
+            </SidebarGroupContent>
+          </CollapsibleContent>
         </Collapsible>
       </SidebarMenu>
     </SidebarGroup>

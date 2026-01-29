@@ -147,15 +147,17 @@ export function ColumnFilter({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant={isActive ? 'default' : 'ghost'}
-          size="sm"
-          className="h-7 gap-1"
-        >
-          <Filter className="h-3 w-3" />
-          {isActive && <span className="sr-only">Filter active</span>}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant={isActive ? 'default' : 'ghost'}
+            size="sm"
+            className="h-7 gap-1"
+          />
+        }
+      >
+        <Filter className="h-3 w-3" />
+        {isActive && <span className="sr-only">Filter active</span>}
       </PopoverTrigger>
       <PopoverContent className="w-80" align="start">
         <div className="space-y-4">
@@ -172,7 +174,10 @@ export function ColumnFilter({
             </label>
             <Select
               value={operator}
-              onValueChange={(v) => setOperator(v as FilterOperator)}
+              onValueChange={(value) => {
+                if (!value) return;
+                setOperator(value as FilterOperator);
+              }}
             >
               <SelectTrigger>
                 <SelectValue id="filter-operator" />
@@ -197,7 +202,10 @@ export function ColumnFilter({
             {filterType === 'select' && options ? (
               <Select
                 value={filterValue}
-                onValueChange={(v) => setFilterValue(v)}
+                onValueChange={(value) => {
+                  if (value == null) return;
+                  setFilterValue(value);
+                }}
               >
                 <SelectTrigger id="filter-value">
                   <SelectValue placeholder="Select..." />

@@ -535,16 +535,14 @@ export function FilterPanel({
 
   return (
     <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="sm">
-          <FilterIcon className="h-4 w-4 mr-2" />
-          Filters
-          {activeFilterCount > 0 && (
-            <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-600 rounded-full">
-              {activeFilterCount}
-            </span>
-          )}
-        </Button>
+      <SheetTrigger render={<Button variant="outline" size="sm" />}>
+        <FilterIcon className="h-4 w-4 mr-2" />
+        Filters
+        {activeFilterCount > 0 && (
+          <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-600 rounded-full">
+            {activeFilterCount}
+          </span>
+        )}
       </SheetTrigger>
       <SheetContent side="left" className="overflow-y-auto px-8 pt-2">
         <SheetHeader>
@@ -632,21 +630,23 @@ export function FilterPanel({
               <div>
                 <Label className="text-sm font-medium mb-2">Start Date</Label>
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        'w-full justify-start text-left font-normal',
-                        !startDate && 'text-muted-foreground',
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {startDate ? (
-                        format(startDate, 'PPP')
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
+                  <PopoverTrigger
+                    render={
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !startDate && 'text-muted-foreground',
+                        )}
+                      />
+                    }
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {startDate ? (
+                      format(startDate, 'PPP')
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
@@ -662,21 +662,23 @@ export function FilterPanel({
               <div>
                 <Label className="text-sm font-medium mb-2">End Date</Label>
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        'w-full justify-start text-left font-normal',
-                        !endDate && 'text-muted-foreground',
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {endDate ? (
-                        format(endDate, 'PPP')
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                    </Button>
+                  <PopoverTrigger
+                    render={
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !endDate && 'text-muted-foreground',
+                        )}
+                      />
+                    }
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {endDate ? (
+                      format(endDate, 'PPP')
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar

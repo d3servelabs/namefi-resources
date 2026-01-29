@@ -22,7 +22,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { ChevronDown, CircleCheck, CircleX, Loader2 } from 'lucide-react';
 import { pluck } from 'ramda';
-import { type ReactNode, useCallback } from 'react';
+import { type ReactElement, type ReactNode, useCallback } from 'react';
 import { toast } from 'sonner';
 
 export type DeleteRecordDialogProps = {
@@ -104,11 +104,7 @@ export const DeleteRecordDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {children ? (
-        <DialogTrigger asChild={true}>{children}</DialogTrigger>
-      ) : (
-        false
-      )}
+      {children ? <DialogTrigger render={children as ReactElement} /> : false}
       <DialogContent className="sm:max-w-[500px] bg-zinc-950 border-zinc-800">
         <DialogHeader>
           <DialogTitle className="text-xl">Delete records?</DialogTitle>
@@ -124,17 +120,19 @@ export const DeleteRecordDialog = ({
               <h4 className="text-sm font-medium">
                 delete {recordCount} {recordCount === 1 ? 'record' : 'records'}
               </h4>
-              <CollapsibleTrigger asChild={true}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="p-0 h-6 w-6 hover:bg-transparent"
-                >
-                  <ChevronDown
-                    className={`h-5 w-5 text-zinc-400 transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}
+              <CollapsibleTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="p-0 h-6 w-6 hover:bg-transparent"
                   />
-                  <span className="sr-only">Toggle</span>
-                </Button>
+                }
+              >
+                <ChevronDown
+                  className={`h-5 w-5 text-zinc-400 transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}
+                />
+                <span className="sr-only">Toggle</span>
               </CollapsibleTrigger>
             </div>
             <CollapsibleContent>

@@ -117,11 +117,7 @@ const CountryDropdownComponent = (
         )}
         <ChevronDown size={16} />
       </PopoverTrigger>
-      <PopoverContent
-        collisionPadding={10}
-        side="bottom"
-        className="min-w-[--radix-popper-anchor-width] p-0"
-      >
+      <PopoverContent side="bottom" className="min-w-[--anchor-width] p-0">
         <Command className="w-full max-h-[200px] sm:max-h-[270px]">
           <CommandList ref={commandListRef}>
             <div className="sticky top-0 z-10 bg-popover">

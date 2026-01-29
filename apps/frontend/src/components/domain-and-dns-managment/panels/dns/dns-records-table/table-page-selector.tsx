@@ -18,7 +18,10 @@ export const TablePageSelector = ({
       <span className="text-sm text-zinc-500">Rows per page:</span>
       <Select
         value={pageSize.toString()}
-        onValueChange={(value) => onPageSizeChange(Number.parseInt(value))}
+        onValueChange={(value) => {
+          if (!value) return;
+          onPageSizeChange(Number.parseInt(value));
+        }}
       >
         <SelectTrigger className="h-8 w-20">
           <SelectValue />

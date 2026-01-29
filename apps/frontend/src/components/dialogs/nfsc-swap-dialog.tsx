@@ -124,7 +124,8 @@ export default function NFSCSwapDialog(props: Props) {
   }, []);
 
   const handleChainChange = useCallback(
-    (value: string) => {
+    (value: string | null) => {
+      if (!value) return;
       const selectedChainId = Number.parseInt(value, 10);
       if (switchChain && selectedChainId !== chainId) {
         switchChain(

@@ -185,7 +185,10 @@ function FilterField({
         </label>
         <Select
           value={operator}
-          onValueChange={(v) => setOperator(v as FilterOperator)}
+          onValueChange={(v) => {
+            if (!v) return;
+            setOperator(v as FilterOperator);
+          }}
         >
           <SelectTrigger id={`filter-operator-${columnId}`} className="h-9">
             <SelectValue />
@@ -208,7 +211,10 @@ function FilterField({
           Value
         </label>
         {config.type === 'select' && config.options ? (
-          <Select value={filterValue} onValueChange={(v) => setFilterValue(v)}>
+          <Select
+            value={filterValue}
+            onValueChange={(v) => setFilterValue(v ?? '')}
+          >
             <SelectTrigger id={`filter-value-${columnId}`} className="h-9">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
@@ -312,7 +318,10 @@ function CustomFilter({ filter }: { filter: CustomFilterField }) {
           Value
         </label>
         {filter.type === 'select' && filter.options ? (
-          <Select value={localValue} onValueChange={(v) => setLocalValue(v)}>
+          <Select
+            value={localValue}
+            onValueChange={(v) => setLocalValue(v ?? '')}
+          >
             <SelectTrigger className="h-9">
               <SelectValue placeholder={filter.placeholder || 'Select...'} />
             </SelectTrigger>
@@ -468,7 +477,7 @@ export function TableFilterPanel({
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <Accordion type="multiple" className="w-full">
+              <Accordion multiple className="w-full">
                 {customFilters.map((filter) => {
                   const isActive =
                     filter.value !== undefined && filter.value !== '';
@@ -523,7 +532,7 @@ export function TableFilterPanel({
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <Accordion type="multiple" className="w-full">
+              <Accordion multiple className="w-full">
                 {Object.entries(filterConfig).map(([columnId, config]) => {
                   const filterValue = getFilterValue(columnId);
                   const isActive = !!filterValue;

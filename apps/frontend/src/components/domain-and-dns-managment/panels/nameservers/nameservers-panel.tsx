@@ -103,8 +103,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           Nameservers Management
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger asChild={true}>
-                <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+              <TooltipTrigger
+                render={
+                  <span className="inline-flex h-4 w-4 text-zinc-500 cursor-help" />
+                }
+              >
+                <Info className="h-4 w-4" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Nameservers direct traffic to your domain</p>
@@ -768,12 +772,16 @@ function NameserversProgressModal({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild={true}>
-            <DialogTrigger asChild={true}>
-              <Button variant="ghost" size="icon" className="h-6 w-6">
-                <Info className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
+          <TooltipTrigger
+            render={
+              <DialogTrigger
+                render={
+                  <Button variant="ghost" size="icon" className="h-6 w-6" />
+                }
+              />
+            }
+          >
+            <Info className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
             <p>View progress details</p>

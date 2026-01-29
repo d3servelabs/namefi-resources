@@ -221,23 +221,20 @@ function SingleConditionEditor({
 
   const renderCombobox = () => (
     <Popover open={comboboxOpen} onOpenChange={setComboboxOpen} modal>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={comboboxOpen}
-          className="h-9 w-full justify-between font-normal px-3"
-        >
-          {localValue || 'Enter value...'}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-[300px] p-0"
-        align="start"
-        collisionPadding={10}
-        side="bottom"
+      <PopoverTrigger
+        render={
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={comboboxOpen}
+            className="h-9 w-full justify-between font-normal px-3"
+          />
+        }
       >
+        {localValue || 'Enter value...'}
+        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      </PopoverTrigger>
+      <PopoverContent className="w-[300px] p-0" align="start" side="bottom">
         <Command>
           <CommandInput
             placeholder="Type value..."
@@ -323,7 +320,10 @@ function SingleConditionEditor({
       <div className="flex flex-row gap-2 flex-1 space-y-2">
         <Select
           value={condition.operator}
-          onValueChange={(v) => handleOperatorChange(v as FilterOperators)}
+          onValueChange={(v) => {
+            if (!v) return;
+            handleOperatorChange(v as FilterOperators);
+          }}
         >
           <SelectTrigger className="h-6 w-28">
             <SelectValue />

@@ -96,7 +96,10 @@ export function DnsRecordForm({
                   Type <span className="text-red-500">*</span>
                 </FormLabel>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    if (!value) return;
+                    field.onChange(value);
+                  }}
                   defaultValue={field.value}
                   disabled={disabled}
                 >
@@ -127,9 +130,10 @@ export function DnsRecordForm({
                 <FormLabel className="text-sm text-zinc-400">TTL</FormLabel>
                 <div className="flex">
                   <Select
-                    onValueChange={(value) =>
-                      field.onChange(Number.parseInt(value, 10))
-                    }
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      field.onChange(Number.parseInt(value, 10));
+                    }}
                     defaultValue={field.value.toString()}
                     disabled={disabled}
                   >

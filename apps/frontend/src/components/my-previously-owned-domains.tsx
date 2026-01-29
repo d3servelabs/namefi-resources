@@ -306,15 +306,20 @@ function MyPreviouslyOwnedDomainsTable() {
           return (
             <div className="flex gap-2">
               {explorerUrl ? (
-                <Button variant="outline" size="sm" asChild={true}>
-                  <Link
-                    href={explorerUrl}
-                    aria-label={`View transaction for ${domainName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-1" /> View Transaction
-                  </Link>
+                <Button
+                  render={
+                    <Link
+                      href={explorerUrl}
+                      aria-label={`View transaction for ${domainName}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    />
+                  }
+                  nativeButton={false}
+                  variant="outline"
+                  size="sm"
+                >
+                  <ExternalLink className="w-4 h-4 mr-1" /> View Transaction
                 </Button>
               ) : null}
             </div>
@@ -458,17 +463,19 @@ function MyPreviouslyOwnedDomainsTable() {
           </Select>
 
           <DropdownMenu>
-            <DropdownMenuTrigger asChild={true}>
-              <Button
-                variant="outline"
-                className="min-w-[220px] justify-between text-left"
-              >
-                <span className="text-sm font-medium">Reason</span>
-                <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                  {reasonFilterSummary}
-                  <ChevronDown className="h-4 w-4 opacity-60" />
-                </span>
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="outline"
+                  className="min-w-[220px] justify-between text-left"
+                />
+              }
+            >
+              <span className="text-sm font-medium">Reason</span>
+              <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                {reasonFilterSummary}
+                <ChevronDown className="h-4 w-4 opacity-60" />
+              </span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
               {reasonFilterOptions.map((option) => {

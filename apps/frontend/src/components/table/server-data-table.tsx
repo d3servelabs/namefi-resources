@@ -39,6 +39,8 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -359,44 +361,46 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
 
           {/* Column Visibility Toggle */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <ColumnsIcon className="h-3 w-3 mr-1" />
-                Columns
-                <Badge variant="outline" className="ml-1">
-                  {table.getVisibleFlatColumns().length}/
-                  {table.getAllColumns().length}
-                </Badge>
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="outline" size="sm" />}
+            >
+              <ColumnsIcon className="h-3 w-3 mr-1" />
+              Columns
+              <Badge variant="outline" className="ml-1">
+                {table.getVisibleFlatColumns().length}/
+                {table.getAllColumns().length}
+              </Badge>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[180px]">
-              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {visibilityColumns.map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              ))}
-              {onResetPreferences && (
-                <>
-                  <DropdownMenuSeparator />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start text-xs font-normal"
-                    onClick={onResetPreferences}
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {visibilityColumns.map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                    onSelect={(e) => e.preventDefault()}
                   >
-                    <RotateCcwIcon className="h-3 w-3 mr-2" />
-                    Reset to defaults
-                  </Button>
-                </>
-              )}
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+                {onResetPreferences && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="w-full justify-start text-xs font-normal"
+                      onSelect={() => onResetPreferences()}
+                    >
+                      <RotateCcwIcon className="h-3 w-3 mr-2" />
+                      Reset to defaults
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

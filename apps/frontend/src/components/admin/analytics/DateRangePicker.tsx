@@ -46,7 +46,10 @@ export default function DateRangePicker({
       range.startDate === value.startDate && range.endDate === value.endDate,
   );
 
-  const handlePresetChange = (presetValue: string) => {
+  const handlePresetChange = (presetValue: string | null) => {
+    if (!presetValue) {
+      return;
+    }
     if (presetValue === 'custom') {
       setIsCustom(true);
       return;
@@ -75,11 +78,9 @@ export default function DateRangePicker({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm">
-          <CalendarIcon className="h-4 w-4 mr-2" />
-          {currentPreset ? currentPreset.label : 'Custom Range'}
-        </Button>
+      <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+        <CalendarIcon className="h-4 w-4 mr-2" />
+        {currentPreset ? currentPreset.label : 'Custom Range'}
       </PopoverTrigger>
       <PopoverContent className="w-80" align="end">
         <div className="space-y-4">

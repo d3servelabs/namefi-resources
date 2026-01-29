@@ -342,15 +342,17 @@ export function GenerationDetailsClient({
                   open={deleteDialogOpen}
                   onOpenChange={setDeleteDialogOpen}
                 >
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="destructive"
-                      className="w-full"
-                      disabled={deleteMutation.isPending}
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
-                    </Button>
+                  <AlertDialogTrigger
+                    render={
+                      <Button
+                        variant="destructive"
+                        className="w-full"
+                        disabled={deleteMutation.isPending}
+                      />
+                    }
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>

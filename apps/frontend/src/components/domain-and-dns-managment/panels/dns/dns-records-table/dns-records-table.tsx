@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -313,32 +314,34 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   const columnVisibilityDropdown = useMemo(
     () => (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild={true}>
-          <Button variant="outline" className="ml-2">
-            <SlidersHorizontal className="mr-2 h-4 w-4" />
-            Columns
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" className="ml-2" />}
+        >
+          <SlidersHorizontal className="mr-2 h-4 w-4" />
+          Columns
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {table
-            .getAllColumns()
-            .filter((column) => column.id !== 'select' && column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(value)}
-                >
-                  {column.id === 'ttl'
-                    ? 'TTL'
-                    : column.id.charAt(0).toUpperCase() + column.id.slice(1)}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {table
+              .getAllColumns()
+              .filter((column) => column.id !== 'select' && column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(value)}
+                  >
+                    {column.id === 'ttl'
+                      ? 'TTL'
+                      : column.id.charAt(0).toUpperCase() + column.id.slice(1)}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
@@ -349,35 +352,37 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   const filterDropdown = useMemo(
     () => (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild={true}>
-          <Button variant="outline" className="ml-2">
-            <Filter className="mr-2 h-4 w-4" />
-            Filter
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" className="ml-2" />}
+        >
+          <Filter className="mr-2 h-4 w-4" />
+          Filter
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Filter by Type</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {DNS_RECORD_TYPES.map((type) => (
-            <DropdownMenuCheckboxItem
-              key={type}
-              checked={typeFilter.includes(type)}
-              onCheckedChange={() => handleTypeFilterChange(type)}
-            >
-              {type}
-            </DropdownMenuCheckboxItem>
-          ))}
-          {typeFilter.length > 0 && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => setTypeFilter([])}
-                className="text-red-500"
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Filter by Type</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {DNS_RECORD_TYPES.map((type) => (
+              <DropdownMenuCheckboxItem
+                key={type}
+                checked={typeFilter.includes(type)}
+                onCheckedChange={() => handleTypeFilterChange(type)}
               >
-                Clear Filters
-              </DropdownMenuItem>
-            </>
-          )}
+                {type}
+              </DropdownMenuCheckboxItem>
+            ))}
+            {typeFilter.length > 0 && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => setTypeFilter([])}
+                  className="text-red-500"
+                >
+                  Clear Filters
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
@@ -388,28 +393,30 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   const exportImportDropdown = useMemo(
     () => (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild={true}>
-          <Button variant="outline" className="ml-2 hidden">
-            <Settings className="mr-2 h-4 w-4" />
-            Actions
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" className="ml-2 hidden" />}
+        >
+          <Settings className="mr-2 h-4 w-4" />
+          Actions
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Table Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Download className="mr-2 h-4 w-4" />
-            Export Records
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Upload className="mr-2 h-4 w-4" />
-            Import Records
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Clipboard className="mr-2 h-4 w-4" />
-            Copy as Zone File
-          </DropdownMenuItem>
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Table Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Download className="mr-2 h-4 w-4" />
+              Export Records
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Upload className="mr-2 h-4 w-4" />
+              Import Records
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Clipboard className="mr-2 h-4 w-4" />
+              Copy as Zone File
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     ),

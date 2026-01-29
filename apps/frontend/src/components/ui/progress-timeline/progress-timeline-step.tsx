@@ -94,28 +94,30 @@ export function ProgressTimelineStep({
   return (
     <li>
       <Collapsible defaultOpen={status === 'IN_PROGRESS'}>
-        <CollapsibleTrigger asChild>
-          <button
-            type="button"
-            className={cn(
-              'flex w-full items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors text-left group',
-              isActive
-                ? 'border-brand-primary/30 bg-brand-primary/5'
-                : 'bg-muted/10 hover:bg-muted/20',
-            )}
-          >
-            <span className="mt-0.5">
-              <ProgressTimelineIcon status={status} />
-            </span>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-foreground">{label}</p>
-              <p className="text-xs text-muted-foreground">{helper}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <StepStatusPill status={status} />
-              <ChevronRight className="size-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-90" />
-            </div>
-          </button>
+        <CollapsibleTrigger
+          render={
+            <button
+              type="button"
+              className={cn(
+                'flex w-full items-start gap-3 rounded-lg border border-transparent px-3 py-2 transition-colors text-left group',
+                isActive
+                  ? 'border-brand-primary/30 bg-brand-primary/5'
+                  : 'bg-muted/10 hover:bg-muted/20',
+              )}
+            />
+          }
+        >
+          <span className="mt-0.5">
+            <ProgressTimelineIcon status={status} />
+          </span>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-foreground">{label}</p>
+            <p className="text-xs text-muted-foreground">{helper}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <StepStatusPill status={status} />
+            <ChevronRight className="size-4 text-muted-foreground transition-transform duration-200 group-data-[panel-open]:rotate-90" />
+          </div>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <ul className="ml-6 mt-1 space-y-1 border-l-2 border-muted/30 pl-4">

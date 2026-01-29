@@ -369,7 +369,10 @@ export function CreateApiKeyDialog({
                   <Label htmlFor="keyType">Key Type</Label>
                   <Select
                     value={keyType}
-                    onValueChange={(value) => setKeyType(value as KeyType)}
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      setKeyType(value as KeyType);
+                    }}
                   >
                     <SelectTrigger id="keyType">
                       <SelectValue />
@@ -515,7 +518,13 @@ export function CreateApiKeyDialog({
                 {/* Expiration */}
                 <div className="space-y-2">
                   <Label htmlFor="expiration">Expiration</Label>
-                  <Select value={expiresIn} onValueChange={setExpiresIn}>
+                  <Select
+                    value={expiresIn}
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      setExpiresIn(value);
+                    }}
+                  >
                     <SelectTrigger id="expiration">
                       <SelectValue />
                     </SelectTrigger>

@@ -36,7 +36,8 @@ export function SelectWallet({
   const isMobile = useIsMobile();
 
   const handleValueChange = useCallback(
-    (value: string) => {
+    (value: string | null) => {
+      if (!value) return;
       setSelectedWalletAddress(value);
       onValueChange(value);
     },
@@ -96,7 +97,10 @@ export function SelectChain({
   return (
     <Select
       disabled={selectTriggerDisabled}
-      onValueChange={onValueChange}
+      onValueChange={(value) => {
+        if (!value) return;
+        onValueChange(value);
+      }}
       defaultValue={`${DefaultPaymentChainId}`}
     >
       <SelectTrigger>

@@ -118,10 +118,10 @@ export default function OrdersPage() {
           {showWarning && (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="inline-flex cursor-help">
-                    <Info className="h-3.5 w-3.5 text-amber-500" />
-                  </span>
+                <TooltipTrigger
+                  render={<span className="inline-flex cursor-help" />}
+                >
+                  <Info className="h-3.5 w-3.5 text-amber-500" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{unlinkedWalletTooltip}</p>
@@ -238,12 +238,11 @@ export default function OrdersPage() {
                         variant="outline"
                         size="sm"
                         className="w-full"
-                        asChild
+                        render={<Link href={`/orders/${item.orderId}`} />}
+                        nativeButton={false}
                       >
-                        <Link href={`/orders/${item.orderId}`}>
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          View Details
-                        </Link>
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        View Details
                       </Button>
                     </MobileTableItemActions>
                   </MobileTableItem>

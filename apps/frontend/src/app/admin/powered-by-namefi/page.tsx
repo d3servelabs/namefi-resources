@@ -329,11 +329,9 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
               open={isCreateDialogOpen}
               onOpenChange={setIsCreateDialogOpen}
             >
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Domain
-                </Button>
+              <DialogTrigger render={<Button />}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Domain
               </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
@@ -383,7 +381,10 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
               </div>
               <Select
                 value={sortBy}
-                onValueChange={(value: typeof sortBy) => setSortBy(value)}
+                onValueChange={(value: typeof sortBy | null) => {
+                  if (!value) return;
+                  setSortBy(value);
+                }}
               >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Sort by" />
@@ -502,10 +503,10 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                         <TableCell>
                           <div className="flex items-center space-x-2">
                             <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
+                              <DropdownMenuTrigger
+                                render={<Button variant="ghost" size="sm" />}
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
                                 {/* Enable/Disable Toggle */}
@@ -567,18 +568,21 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
 
                                 {/* Configuration Dialog */}
                                 <Dialog>
-                                  <DialogTrigger asChild>
-                                    <DropdownMenuItem
-                                      onSelect={(e) => e.preventDefault()}
-                                      onClick={() =>
-                                        setSelectedDomain(
-                                          domain.normalizedDomainName,
-                                        )
-                                      }
-                                    >
-                                      <Settings className="h-4 w-4 mr-2" />
-                                      DNS Configuration
-                                    </DropdownMenuItem>
+                                  <DialogTrigger
+                                    render={
+                                      <DropdownMenuItem
+                                        onSelect={(e) => e.preventDefault()}
+                                        onClick={() =>
+                                          setSelectedDomain(
+                                            domain.normalizedDomainName,
+                                          )
+                                        }
+                                        closeOnClick={false}
+                                      />
+                                    }
+                                  >
+                                    <Settings className="h-4 w-4 mr-2" />
+                                    DNS Configuration
                                   </DialogTrigger>
                                   <DialogContent className="!max-w-screen-xl w-full">
                                     <DialogHeader>

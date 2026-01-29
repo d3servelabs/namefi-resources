@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { CircleCheck, CircleX, Loader2, Plus } from 'lucide-react';
 import {
+  type ReactElement,
   type ReactNode,
   useCallback,
   useEffect,
@@ -289,11 +290,7 @@ export function AddEditRecordsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {children ? (
-        <DialogTrigger asChild={true}>{children}</DialogTrigger>
-      ) : (
-        false
-      )}
+      {children ? <DialogTrigger render={children as ReactElement} /> : false}
       <DialogContent className="sm:max-w-[900px] bg-zinc-950 border-zinc-800">
         <DialogHeader>
           <DialogTitle className="text-xl">

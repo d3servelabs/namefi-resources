@@ -120,20 +120,26 @@ export const DnsOverviewPanel = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
           {(isInLateRenewalPeriod || isInGraceRestorationPeriod) &&
             (canAttemptRenewal ? (
-              <Alert variant="warning" className="col-span-2">
+              <Alert
+                variant="default"
+                className="col-span-2 border-amber-500/30 bg-amber-500/10 text-amber-200"
+              >
                 <AlertOctagon />
                 <AlertTitle>Domain Expired</AlertTitle>
-                <AlertDescription>
+                <AlertDescription className="text-amber-200/80">
                   Your domain has expired. You can still submit a request to
                   renew the domain and it might go through depending on the
                   TLD(.com, .org, ...)
                 </AlertDescription>
               </Alert>
             ) : (
-              <Alert variant="warning" className="col-span-2">
+              <Alert
+                variant="default"
+                className="col-span-2 border-amber-500/30 bg-amber-500/10 text-amber-200"
+              >
                 <AlertOctagon />
                 <AlertTitle>Domain Expired</AlertTitle>
-                <AlertDescription>
+                <AlertDescription className="text-amber-200/80">
                   Your domain has expired. You can contact support to check if
                   it can be restored (this might not be possible for all
                   TLDs(.com, .org, ...))
@@ -620,8 +626,12 @@ export const DomainExportSection = ({
             {!domainExportDetails.supportsExport && (
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+                  <TooltipTrigger
+                    render={
+                      <span className="inline-flex h-4 w-4 text-zinc-500 cursor-help" />
+                    }
+                  >
+                    <Info className="h-4 w-4" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>{domainExportDetails.message}</p>

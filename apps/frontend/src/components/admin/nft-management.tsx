@@ -251,7 +251,16 @@ function NftManagementContent() {
   }, [applyFilters]);
 
   const handleFilterChange = useCallback(
-    (value: 'all' | 'expired' | 'canBurn' | 'dateMismatch' | 'missingData') => {
+    (
+      value:
+        | 'all'
+        | 'expired'
+        | 'canBurn'
+        | 'dateMismatch'
+        | 'missingData'
+        | null,
+    ) => {
+      if (!value) return;
       setFilterBy(value);
       setHasUnappliedChanges(true);
     },
@@ -260,15 +269,22 @@ function NftManagementContent() {
 
   const handleSortByChange = useCallback(
     (
-      value: 'domainName' | 'nftExpiration' | 'domainExpiration' | 'chainId',
+      value:
+        | 'domainName'
+        | 'nftExpiration'
+        | 'domainExpiration'
+        | 'chainId'
+        | null,
     ) => {
+      if (!value) return;
       setSortBy(value);
       setHasUnappliedChanges(true);
     },
     [],
   );
 
-  const handleSortOrderChange = useCallback((value: 'asc' | 'desc') => {
+  const handleSortOrderChange = useCallback((value: 'asc' | 'desc' | null) => {
+    if (!value) return;
     setSortOrder(value);
     setHasUnappliedChanges(true);
   }, []);
@@ -278,7 +294,8 @@ function NftManagementContent() {
     setHasUnappliedChanges(true);
   }, []);
 
-  const handleLimitChange = useCallback((value: string) => {
+  const handleLimitChange = useCallback((value: string | null) => {
+    if (!value) return;
     setLimit(Number(value));
     setPage(1);
   }, []);
@@ -368,7 +385,7 @@ function NftManagementContent() {
         </DialogHeader>
 
         <div className="space-y-4">
-          <Accordion type="multiple" defaultValue={['burn', 'fix', 'extend']}>
+          <Accordion multiple defaultValue={['burn', 'fix', 'extend']}>
             {/* Burn Workflows */}
             <AccordionItem value="burn">
               <AccordionTrigger className="text-left">
@@ -964,18 +981,18 @@ function NftManagementContent() {
                                         nft.chainId,
                                       ) ? (
                                         <AlertDialog>
-                                          <AlertDialogTrigger asChild>
-                                            <Button
-                                              variant="secondary"
-                                              size="sm"
-                                              disabled={isBurning}
-                                              className="flex items-center gap-1 text-xs border-red-200 text-red-300 hover:bg-red-800/30 bg-red-900/10 hover:text-red-600"
-                                            >
-                                              <Flame className="h-3 w-3" />
-                                              {isBurning
-                                                ? 'Burning...'
-                                                : 'Burn'}
-                                            </Button>
+                                          <AlertDialogTrigger
+                                            render={
+                                              <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                disabled={isBurning}
+                                                className="flex items-center gap-1 text-xs border-red-200 text-red-300 hover:bg-red-800/30 bg-red-900/10 hover:text-red-600"
+                                              />
+                                            }
+                                          >
+                                            <Flame className="h-3 w-3" />
+                                            {isBurning ? 'Burning...' : 'Burn'}
                                           </AlertDialogTrigger>
                                           <AlertDialogContent>
                                             <AlertDialogHeader>
@@ -1026,16 +1043,18 @@ function NftManagementContent() {
                                         </AlertDialog>
                                       ) : (
                                         <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <Button
-                                              variant="outline"
-                                              size="sm"
-                                              disabled
-                                              className="flex items-center gap-1 text-xs border-red-200 text-red-400 opacity-50"
-                                            >
-                                              <Flame className="h-3 w-3" />
-                                              Burn
-                                            </Button>
+                                          <TooltipTrigger
+                                            render={
+                                              <Button
+                                                variant="outline"
+                                                size="sm"
+                                                disabled
+                                                className="flex items-center gap-1 text-xs border-red-200 text-red-400 opacity-50"
+                                              />
+                                            }
+                                          >
+                                            <Flame className="h-3 w-3" />
+                                            Burn
                                           </TooltipTrigger>
                                           <TooltipContent>
                                             <p>
@@ -1073,16 +1092,18 @@ function NftManagementContent() {
                                       </Button>
                                     ) : (
                                       <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button
-                                            variant="outline"
-                                            size="sm"
-                                            disabled
-                                            className="flex items-center gap-1 text-xs"
-                                          >
-                                            <AlertTriangle className="h-3 w-3" />
-                                            Cannot Fix
-                                          </Button>
+                                        <TooltipTrigger
+                                          render={
+                                            <Button
+                                              variant="outline"
+                                              size="sm"
+                                              disabled
+                                              className="flex items-center gap-1 text-xs"
+                                            />
+                                          }
+                                        >
+                                          <AlertTriangle className="h-3 w-3" />
+                                          Cannot Fix
                                         </TooltipTrigger>
                                         <TooltipContent>
                                           <p>
@@ -1096,16 +1117,18 @@ function NftManagementContent() {
                                   {/* Renew Action - Only show for valid domains (not burnable and no missing data) */}
                                   {!nft.canBurn && !hasMissingData && (
                                     <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Button
-                                          variant="outline"
-                                          size="sm"
-                                          disabled
-                                          className="flex items-center gap-1 text-xs"
-                                        >
-                                          <RefreshCw className="h-3 w-3" />
-                                          Renew
-                                        </Button>
+                                      <TooltipTrigger
+                                        render={
+                                          <Button
+                                            variant="outline"
+                                            size="sm"
+                                            disabled
+                                            className="flex items-center gap-1 text-xs"
+                                          />
+                                        }
+                                      >
+                                        <RefreshCw className="h-3 w-3" />
+                                        Renew
                                       </TooltipTrigger>
                                       <TooltipContent>
                                         <p>

@@ -217,15 +217,17 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                   {SHOW_COPY && (
                     <TooltipProvider>
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => handleCopyKeyPrefix(key.keyPrefix)}
-                            aria-label="Copy key prefix"
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
+                        <TooltipTrigger
+                          render={
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => handleCopyKeyPrefix(key.keyPrefix)}
+                              aria-label="Copy key prefix"
+                            />
+                          }
+                        >
+                          <Copy className="h-4 w-4" />
                         </TooltipTrigger>
                         <TooltipContent>Copy key prefix</TooltipContent>
                       </Tooltip>
@@ -235,15 +237,19 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                   {key.isActive && (
                     <TooltipProvider>
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            onClick={() => handleRevokeClick(key.id, key.name)}
-                            aria-label="Revoke API key"
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
+                        <TooltipTrigger
+                          render={
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() =>
+                                handleRevokeClick(key.id, key.name)
+                              }
+                              aria-label="Revoke API key"
+                            />
+                          }
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
                         </TooltipTrigger>
                         <TooltipContent>Revoke API key</TooltipContent>
                       </Tooltip>

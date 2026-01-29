@@ -159,7 +159,7 @@ export function DrizzlerFilterPanel({
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <Accordion type="multiple" className="w-full">
+              <Accordion multiple className="w-full">
                 {customFilterConfigsArray.map(([fieldId, field]) => {
                   const filterForField = getFilterForField('custom', fieldId);
                   const isActive = !!filterForField;
@@ -235,7 +235,7 @@ export function DrizzlerFilterPanel({
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <Accordion type="multiple" className="w-full">
+              <Accordion multiple className="w-full">
                 {columnFilterConfigsArray.map(([fieldId, field]) => {
                   const filterForField = getFilterForField('column', fieldId);
                   const isActive = !!filterForField;

@@ -267,14 +267,18 @@ export const DomainManagement: FC<DomainManagementProps> = ({
               }}
             />
             {domainSupportedFeatures.domainManagement.config.redirectTo ? (
-              <Button variant="outline" asChild={true}>
-                <Link
-                  href={
-                    domainSupportedFeatures.domainManagement.config.redirectTo
-                  }
-                >
-                  Redirect to Registrar
-                </Link>
+              <Button
+                render={
+                  <Link
+                    href={
+                      domainSupportedFeatures.domainManagement.config.redirectTo
+                    }
+                  />
+                }
+                nativeButton={false}
+                variant="outline"
+              >
+                Redirect to Registrar
               </Button>
             ) : undefined}
           </div>

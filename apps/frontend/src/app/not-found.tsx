@@ -11,8 +11,8 @@ export default function NotFoundPage() {
       <p className="mb-8 text-muted-foreground">
         Oops! The page you&#39;re looking for doesn&#39;t exist.
       </p>
-      <Button asChild={true}>
-        <Link href="/">Go to Home Page</Link>
+      <Button render={<Link href="/" />} nativeButton={false}>
+        Go to Home Page
       </Button>
     </div>
   );

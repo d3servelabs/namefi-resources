@@ -9,7 +9,7 @@ import {
 import { useTRPC } from '@/lib/trpc';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation } from '@tanstack/react-query';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactElement, type ReactNode, useEffect, useState } from 'react';
 import { StripeProvider } from '@/components/providers/stripe';
 import { AddPaymentMethodForm } from './add-payment-method-form';
 
@@ -56,9 +56,10 @@ export function AddPaymentMethodDialog({
       open={showAddPaymentMethodDialog}
       onOpenChange={(open) => !disabled && onOpenChange(open)}
     >
-      <DialogTrigger disabled={disabled} asChild={true}>
-        {dialogTrigger}
-      </DialogTrigger>
+      <DialogTrigger
+        disabled={disabled}
+        render={dialogTrigger as ReactElement}
+      />
       <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%]">
         <DialogHeader>
           <DialogTitle>Payment Method Details</DialogTitle>

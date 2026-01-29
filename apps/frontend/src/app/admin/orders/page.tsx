@@ -259,12 +259,10 @@ function OrdersTable() {
         cell: ({ row }) => (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="text-sm cursor-help">
-                  {formatDistanceToNow(new Date(row.original.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
+              <TooltipTrigger render={<span className="text-sm cursor-help" />}>
+                {formatDistanceToNow(new Date(row.original.createdAt), {
+                  addSuffix: true,
+                })}
               </TooltipTrigger>
               <TooltipContent>
                 <p>{formatDate(new Date(row.original.createdAt), 'PPpp')}</p>
@@ -302,11 +300,14 @@ function OrdersTable() {
         id: 'actions',
         header: '',
         cell: ({ row }) => (
-          <Button variant="outline" size="sm" asChild>
-            <Link href={`/orders/${row.original.id}`}>
-              <ExternalLink className="h-4 w-4 mr-2" />
-              View
-            </Link>
+          <Button
+            render={<Link href={`/orders/${row.original.id}`} />}
+            nativeButton={false}
+            variant="outline"
+            size="sm"
+          >
+            <ExternalLink className="h-4 w-4 mr-2" />
+            View
           </Button>
         ),
         size: 100,

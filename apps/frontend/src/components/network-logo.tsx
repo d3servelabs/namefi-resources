@@ -36,41 +36,43 @@ export const NetworkLogo = ({
   return (
     <TooltipProvider>
       <Tooltip defaultOpen={false}>
-        <TooltipTrigger asChild>
-          <div
-            {...props}
-            className={cn(
-              'w-12 h-12',
-              'aspect-square rounded-full text-center bg-card flex items-center justify-center',
-              testnet && 'grayscale',
-              props.className,
-            )}
-          >
-            {networkId && ETH_NETWORKS.includes(networkId) ? (
-              <EthNetwork className={cn('w-full h-full')} />
-            ) : networkId && BASE_NETWORKS.includes(networkId) ? (
-              <BaseNetwork className={cn('w-full h-full')} />
-            ) : networkId ? (
-              <NetworkIcon
-                variant="branded"
-                chainId={networkId}
-                className={cn('w-full h-full')}
+        <TooltipTrigger
+          render={
+            <div
+              {...props}
+              className={cn(
+                'w-12 h-12',
+                'aspect-square rounded-full text-center bg-card flex items-center justify-center',
+                testnet && 'grayscale',
+                props.className,
+              )}
+            />
+          }
+        >
+          {networkId && ETH_NETWORKS.includes(networkId) ? (
+            <EthNetwork className={cn('w-full h-full')} />
+          ) : networkId && BASE_NETWORKS.includes(networkId) ? (
+            <BaseNetwork className={cn('w-full h-full')} />
+          ) : networkId ? (
+            <NetworkIcon
+              variant="branded"
+              chainId={networkId}
+              className={cn('w-full h-full')}
+            />
+          ) : (
+            <div
+              className={cn(
+                'flex items-center justify-center h-full w-full text-primary',
+                missingNetworkClassName,
+              )}
+            >
+              <AlertTriangleIcon
+                width={50}
+                height={50}
+                className={'w-7/12 h-7/12 aspect-square'}
               />
-            ) : (
-              <div
-                className={cn(
-                  'flex items-center justify-center h-full w-full text-primary',
-                  missingNetworkClassName,
-                )}
-              >
-                <AlertTriangleIcon
-                  width={50}
-                  height={50}
-                  className={'w-7/12 h-7/12 aspect-square'}
-                />
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </TooltipTrigger>
         <TooltipContent>
           <p>{networkName}</p>

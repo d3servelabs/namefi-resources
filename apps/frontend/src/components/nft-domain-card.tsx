@@ -78,30 +78,31 @@ export function NftDomainCard({
         ) : (
           <NamefiButton
             className="w-full mt-4"
-            asChild={true}
             disabled={!isCompleted}
+            render={
+              <Link
+                href={
+                  domainAction === 'manage'
+                    ? manageTarget
+                    : `https://${item.fullDomain}`
+                }
+                target={domainAction === 'manage' ? undefined : '_blank'}
+                tabIndex={isCompleted ? 0 : -1}
+              />
+            }
+            nativeButton={false}
           >
-            <Link
-              href={
-                domainAction === 'manage'
-                  ? manageTarget
-                  : `https://${item.fullDomain}`
-              }
-              target={domainAction === 'manage' ? undefined : '_blank'}
-              tabIndex={isCompleted ? 0 : -1}
-            >
-              {domainAction === 'manage' ? (
-                <>
-                  <Settings className="mr-1 h-4 w-4" />
-                  {manageLabel}
-                </>
-              ) : (
-                viewDomainButtonText
-              )}
-              {domainAction === 'manage' ? null : (
-                <ExternalLink className="w-3.5 h-3.5" />
-              )}
-            </Link>
+            {domainAction === 'manage' ? (
+              <>
+                <Settings className="mr-1 h-4 w-4" />
+                {manageLabel}
+              </>
+            ) : (
+              viewDomainButtonText
+            )}
+            {domainAction === 'manage' ? null : (
+              <ExternalLink className="w-3.5 h-3.5" />
+            )}
           </NamefiButton>
         )
       ) : null}
@@ -109,15 +110,20 @@ export function NftDomainCard({
         <NamefiButton
           variant="ghost"
           className="w-full mt-2 bg-black/[0.03] border-white/10"
-          asChild={true}
+          render={
+            <Link
+              href={explorerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            />
+          }
+          nativeButton={false}
         >
-          <Link href={explorerUrl} target="_blank" rel="noopener noreferrer">
-            {item.chainId !== null ? (
-              <NetworkLogo className="size-4" network={item.chainId} />
-            ) : null}
-            {viewNftButtonText}
-            <ExternalLink className="w-3.5 h-3.5" />
-          </Link>
+          {item.chainId !== null ? (
+            <NetworkLogo className="size-4" network={item.chainId} />
+          ) : null}
+          {viewNftButtonText}
+          <ExternalLink className="w-3.5 h-3.5" />
         </NamefiButton>
       ) : null}
     </CartCard>

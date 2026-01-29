@@ -128,16 +128,16 @@ export const SearchModeTabs: FC<{
       onValueChange={handleValueChange}
       className="mx-auto h-10 md:h-12 w-full max-w-60 md:max-w-80"
     >
-      <TabsList className="grid h-full w-full grid-cols-2 rounded-full border border-white/12 bg-neutral-900/80 p-0.5 backdrop-blur-md">
+      <TabsList className="!grid !h-full !w-full grid-cols-2 !rounded-full border border-white/12 bg-neutral-900/80 !p-0.5 backdrop-blur-md">
         <TabsTrigger
           value={SearchMode.REGISTER}
-          className="h-full rounded-full px-3 text-sm font-medium transition data-[state=active]:bg-white data-[state=active]:text-black data-[state=inactive]:text-muted-foreground md:px-4 md:text-base"
+          className="!h-full !rounded-full !border-0 !py-0 px-3 text-sm font-medium !text-muted-foreground transition !shadow-none data-active:!bg-white/10 data-active:!text-white data-active:!shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] after:hidden md:px-4 md:text-base"
         >
           Register
         </TabsTrigger>
         <TabsTrigger
           value={SearchMode.IMPORT}
-          className="h-full rounded-full px-3 text-sm font-medium transition data-[state=active]:bg-white data-[state=active]:text-black data-[state=inactive]:text-muted-foreground md:px-4 md:text-base"
+          className="!h-full !rounded-full !border-0 !py-0 px-3 text-sm font-medium !text-muted-foreground transition !shadow-none data-active:!bg-white/10 data-active:!text-white data-active:!shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] after:hidden md:px-4 md:text-base"
         >
           Import
         </TabsTrigger>
@@ -304,15 +304,218 @@ domain3.com`;
   return (
     <>
       <Tooltip open={isFreeMintGuidanceVisible}>
-        <TooltipTrigger asChild>
-          <motion.div
-            ref={containerRef}
-            className={cn(
-              'mx-auto flex w-full max-w-3xl gap-3 border border-white/14 bg-[#14161D] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color,box-shadow,background-color] duration-200 focus-within:border-brand-primary/60 focus-within:bg-[#171A24] focus-within:ring-2 focus-within:ring-brand-primary/35 focus-within:ring-offset-2 focus-within:ring-offset-[#0B0F16] focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_32px_color-mix(in_srgb,_var(--brand-primary)_35%,_transparent)]',
-              isImportMode
-                ? 'flex-col rounded-2xl pl-4 pr-4 pt-4 pb-2'
-                : 'items-center rounded-full pl-4 pr-2 py-2',
+        <TooltipTrigger
+          render={
+            <motion.div
+              ref={containerRef}
+              className={cn(
+                'mx-auto flex w-full max-w-3xl gap-3 border border-white/14 bg-[#14161D] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color,box-shadow,background-color] duration-200 focus-within:border-brand-primary/60 focus-within:bg-[#171A24] focus-within:ring-2 focus-within:ring-brand-primary/35 focus-within:ring-offset-2 focus-within:ring-offset-[#0B0F16] focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_32px_color-mix(in_srgb,_var(--brand-primary)_35%,_transparent)]',
+                isImportMode
+                  ? 'flex-col rounded-2xl pl-4 pr-4 pt-4 pb-2'
+                  : 'items-center rounded-full pl-4 pr-2 py-2',
+              )}
+              layout
+              transition={{
+                layout: {
+                  type: 'tween',
+                  duration: 0.35,
+                  ease: [0.4, 0, 0.2, 1],
+                },
+              }}
+            />
+          }
+        >
+          <AnimatePresence mode="wait">
+            {isImportMode ? (
+              <motion.div
+                key="textarea-container"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-1 flex-col gap-3 w-full"
+                layout
+              >
+                <div className="flex items-start gap-3">
+                  {isLoading ? (
+                    <Loader2 className="invisible md:visible h-5 w-5 shrink-0 animate-spin text-white/70 mt-1" />
+                  ) : (
+                    <SearchIcon className="invisible md:visible h-5 w-5 shrink-0 text-white/70 mt-1" />
+                  )}
+                  <div className="relative flex-1">
+                    <motion.div
+                      ref={textareaWrapperRef}
+                      className="overflow-hidden"
+                      layout
+                      transition={{
+                        layout: {
+                          type: 'tween',
+                          duration: 0.3,
+                          ease: [0.4, 0, 0.2, 1],
+                        },
+                      }}
+                      style={{
+                        transition: 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        willChange: 'height',
+                      }}
+                    >
+                      <Textarea
+                        ref={textareaRef}
+                        name="search-textarea"
+                        placeholder={importPlaceholder}
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        onPaste={intercept}
+                        onKeyDown={(e) => {
+                          // Allow Enter for newlines in textarea, but Ctrl/Cmd+Enter to submit
+                          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                            e.preventDefault();
+                            handleSearchClick();
+                          }
+                        }}
+                        className="min-h-[120px] max-h-[300px] resize-y border-0 px-0 text-base text-white placeholder:text-white/55 placeholder:whitespace-pre-line focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg !bg-transparent w-full"
+                        rows={4}
+                        style={{
+                          height: 'auto',
+                          overflow: 'hidden',
+                        }}
+                      />
+                    </motion.div>
+                    {query.length > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2 h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white z-10"
+                        onClick={() => setQuery('')}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="input-container"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-1 items-center gap-3 w-full"
+                layout
+              >
+                {isLoading ? (
+                  <Loader2 className="invisible md:visible h-5 w-5 shrink-0 animate-spin text-white/70" />
+                ) : (
+                  <SearchIcon className="invisible md:visible h-5 w-5 shrink-0 text-white/70" />
+                )}
+                <Input
+                  ref={inputRef}
+                  name="search-input"
+                  placeholder="Search for a domain..."
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onPaste={intercept}
+                  onKeyDown={(e) => {
+                    // Only intercept newline insertion; ordinary keystrokes can proceed
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      // For both modes, Enter should trigger a search with the existing query
+                      handleSearchClick();
+                    }
+                  }}
+                  className="h-10 md:h-12 min-w-0 flex-1 border-0 px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg bg-transparent!"
+                />
+                {query.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white"
+                    onClick={() => setQuery('')}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+                <AnimatePresence initial={false} mode="popLayout">
+                  {isFirstPartyOrigin &&
+                    searchMode === SearchMode.REGISTER &&
+                    parentDomain && (
+                      <motion.div
+                        key="parent-domain-pill"
+                        initial={{ opacity: 0, x: 16 }}
+                        animate={{
+                          opacity: 1,
+                          x: 0,
+                          transition: { duration: 0.22, ease: 'easeOut' },
+                        }}
+                        exit={{
+                          opacity: 0,
+                          x: 16,
+                          transition: { duration: 0.18, ease: 'easeIn' },
+                        }}
+                        className="flex items-center gap-2.5"
+                        layout
+                        transition={{
+                          layout: {
+                            type: 'tween',
+                            duration: 0.22,
+                            ease: 'easeOut',
+                          },
+                        }}
+                      >
+                        <Separator
+                          orientation="vertical"
+                          className="h-8! w-px! rounded-full bg-white/50"
+                        />
+                        <Badge
+                          variant="secondary"
+                          className="flex h-8 items-center gap-1.5 rounded-full bg-white/14 pl-3 pr-1.5 text-sm text-white"
+                        >
+                          <AnimatePresence initial={false} mode="wait">
+                            <motion.span
+                              key={parentDomain}
+                              initial={{ opacity: 0 }}
+                              animate={{
+                                opacity: 1,
+                                transition: {
+                                  duration: 0.15,
+                                  ease: 'easeOut',
+                                },
+                              }}
+                              exit={{
+                                opacity: 0,
+                                transition: {
+                                  duration: 0.12,
+                                  ease: 'easeIn',
+                                },
+                              }}
+                              className="max-w-[200px] truncate whitespace-nowrap"
+                            >
+                              .{parentDomain}
+                            </motion.span>
+                          </AnimatePresence>
+                          {onClearParentDomain && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              aria-label="Clear parent domain"
+                              onClick={
+                                clearParentDomainAndDismissFreeMintGuidance
+                              }
+                              className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 p-0 text-white/80 transition hover:bg-white/30 hover:text-white"
+                            >
+                              <X className="size-2.5" />
+                            </Button>
+                          )}
+                        </Badge>
+                      </motion.div>
+                    )}
+                </AnimatePresence>
+              </motion.div>
             )}
+          </AnimatePresence>
+          <motion.div
+            className={cn('shrink-0', isImportMode ? 'self-end mb-2' : '')}
             layout
             transition={{
               layout: {
@@ -322,231 +525,29 @@ domain3.com`;
               },
             }}
           >
-            <AnimatePresence mode="wait">
-              {isImportMode ? (
-                <motion.div
-                  key="textarea-container"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-1 flex-col gap-3 w-full"
-                  layout
-                >
-                  <div className="flex items-start gap-3">
-                    {isLoading ? (
-                      <Loader2 className="invisible md:visible h-5 w-5 shrink-0 animate-spin text-white/70 mt-1" />
-                    ) : (
-                      <SearchIcon className="invisible md:visible h-5 w-5 shrink-0 text-white/70 mt-1" />
-                    )}
-                    <div className="relative flex-1">
-                      <motion.div
-                        ref={textareaWrapperRef}
-                        className="overflow-hidden"
-                        layout
-                        transition={{
-                          layout: {
-                            type: 'tween',
-                            duration: 0.3,
-                            ease: [0.4, 0, 0.2, 1],
-                          },
-                        }}
-                        style={{
-                          transition:
-                            'height 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                          willChange: 'height',
-                        }}
-                      >
-                        <Textarea
-                          ref={textareaRef}
-                          name="search-textarea"
-                          placeholder={importPlaceholder}
-                          value={query}
-                          onChange={(event) => setQuery(event.target.value)}
-                          onPaste={intercept}
-                          onKeyDown={(e) => {
-                            // Allow Enter for newlines in textarea, but Ctrl/Cmd+Enter to submit
-                            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                              e.preventDefault();
-                              handleSearchClick();
-                            }
-                          }}
-                          className="min-h-[120px] max-h-[300px] resize-y border-0 px-0 text-base text-white placeholder:text-white/55 placeholder:whitespace-pre-line focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg !bg-transparent w-full"
-                          rows={4}
-                          style={{
-                            height: 'auto',
-                            overflow: 'hidden',
-                          }}
-                        />
-                      </motion.div>
-                      {query.length > 0 && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="absolute top-2 right-2 h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white z-10"
-                          onClick={() => setQuery('')}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="input-container"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-1 items-center gap-3 w-full"
-                  layout
-                >
-                  {isLoading ? (
-                    <Loader2 className="invisible md:visible h-5 w-5 shrink-0 animate-spin text-white/70" />
-                  ) : (
-                    <SearchIcon className="invisible md:visible h-5 w-5 shrink-0 text-white/70" />
-                  )}
-                  <Input
-                    ref={inputRef}
-                    name="search-input"
-                    placeholder="Search for a domain..."
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    onPaste={intercept}
-                    onKeyDown={(e) => {
-                      // Only intercept newline insertion; ordinary keystrokes can proceed
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        // For both modes, Enter should trigger a search with the existing query
-                        handleSearchClick();
-                      }
-                    }}
-                    className="h-10 md:h-12 min-w-0 flex-1 border-0 px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg bg-transparent!"
-                  />
-                  {query.length > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white"
-                      onClick={() => setQuery('')}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
-                  <AnimatePresence initial={false} mode="popLayout">
-                    {isFirstPartyOrigin &&
-                      searchMode === SearchMode.REGISTER &&
-                      parentDomain && (
-                        <motion.div
-                          key="parent-domain-pill"
-                          initial={{ opacity: 0, x: 16 }}
-                          animate={{
-                            opacity: 1,
-                            x: 0,
-                            transition: { duration: 0.22, ease: 'easeOut' },
-                          }}
-                          exit={{
-                            opacity: 0,
-                            x: 16,
-                            transition: { duration: 0.18, ease: 'easeIn' },
-                          }}
-                          className="flex items-center gap-2.5"
-                          layout
-                          transition={{
-                            layout: {
-                              type: 'tween',
-                              duration: 0.22,
-                              ease: 'easeOut',
-                            },
-                          }}
-                        >
-                          <Separator
-                            orientation="vertical"
-                            className="h-8! w-px! rounded-full bg-white/50"
-                          />
-                          <Badge
-                            variant="secondary"
-                            className="flex h-8 items-center gap-1.5 rounded-full bg-white/14 pl-3 pr-1.5 text-sm text-white"
-                          >
-                            <AnimatePresence initial={false} mode="wait">
-                              <motion.span
-                                key={parentDomain}
-                                initial={{ opacity: 0 }}
-                                animate={{
-                                  opacity: 1,
-                                  transition: {
-                                    duration: 0.15,
-                                    ease: 'easeOut',
-                                  },
-                                }}
-                                exit={{
-                                  opacity: 0,
-                                  transition: {
-                                    duration: 0.12,
-                                    ease: 'easeIn',
-                                  },
-                                }}
-                                className="max-w-[200px] truncate whitespace-nowrap"
-                              >
-                                .{parentDomain}
-                              </motion.span>
-                            </AnimatePresence>
-                            {onClearParentDomain && (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                aria-label="Clear parent domain"
-                                onClick={
-                                  clearParentDomainAndDismissFreeMintGuidance
-                                }
-                                className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 p-0 text-white/80 transition hover:bg-white/30 hover:text-white"
-                              >
-                                <X className="size-2.5" />
-                              </Button>
-                            )}
-                          </Badge>
-                        </motion.div>
-                      )}
-                  </AnimatePresence>
-                </motion.div>
+            <NamefiButton
+              onClick={handleSearchClick}
+              className={cn(
+                'not-only:font-semibold md:h-12 h-10 shrink-0 rounded-full px-6 text-base shadow-none',
+                isMobile ? 'w-10' : '',
+                ctaClassName,
               )}
-            </AnimatePresence>
-            <motion.div
-              className={cn('shrink-0', isImportMode ? 'self-end mb-2' : '')}
-              layout
-              transition={{
-                layout: {
-                  type: 'tween',
-                  duration: 0.35,
-                  ease: [0.4, 0, 0.2, 1],
-                },
-              }}
+              title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
             >
-              <NamefiButton
-                onClick={handleSearchClick}
-                className={cn(
-                  'not-only:font-semibold md:h-12 h-10 shrink-0 rounded-full px-6 text-base shadow-none',
-                  isMobile ? 'w-10' : '',
-                  ctaClassName,
-                )}
-                title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
-              >
-                {isMobile ? (
-                  isLoading ? (
-                    <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
-                  ) : searchMode === SearchMode.IMPORT ? (
-                    <Download />
-                  ) : (
-                    <SearchIcon />
-                  )
+              {isMobile ? (
+                isLoading ? (
+                  <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
                 ) : searchMode === SearchMode.IMPORT ? (
-                  'Import'
+                  <Download />
                 ) : (
-                  'Search'
-                )}
-              </NamefiButton>
-            </motion.div>
+                  <SearchIcon />
+                )
+              ) : searchMode === SearchMode.IMPORT ? (
+                'Import'
+              ) : (
+                'Search'
+              )}
+            </NamefiButton>
           </motion.div>
         </TooltipTrigger>
         <TooltipContent

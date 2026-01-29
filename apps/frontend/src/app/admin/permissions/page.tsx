@@ -115,11 +115,9 @@ function ExistingUsers({
       </CardHeader>
       <CardContent>
         <Accordion
-          type="single"
-          collapsible
           className="w-full"
-          value={openUserId}
-          onValueChange={(val) => setOpenUserId(val)}
+          value={openUserId ? [openUserId] : []}
+          onValueChange={(val) => setOpenUserId(val[0] ?? '')}
         >
           <AnimatePresence initial={false}>
             {(existingUsers ?? []).map((u: any) => (
@@ -156,14 +154,16 @@ function ExistingUsers({
                             setConfirmUserId(open ? u.userId : null)
                           }
                         >
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => setConfirmUserId(u.userId)}
-                            >
-                              Revoke All Permissions
-                            </Button>
+                          <AlertDialogTrigger
+                            render={
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => setConfirmUserId(u.userId)}
+                              />
+                            }
+                          >
+                            Revoke All Permissions
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
@@ -178,16 +178,18 @@ function ExistingUsers({
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction asChild>
-                                <AsyncButton
-                                  onClick={async () => {
-                                    await deleteMutation.mutateAsync({
-                                      userId: u.userId,
-                                    });
-                                  }}
-                                >
-                                  Confirm Revoke
-                                </AsyncButton>
+                              <AlertDialogAction
+                                render={
+                                  <AsyncButton
+                                    onClick={async () => {
+                                      await deleteMutation.mutateAsync({
+                                        userId: u.userId,
+                                      });
+                                    }}
+                                  />
+                                }
+                              >
+                                Confirm Revoke
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>

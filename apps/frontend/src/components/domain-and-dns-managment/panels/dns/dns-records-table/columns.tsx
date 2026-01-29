@@ -26,18 +26,21 @@ export const SelectColumnHeader = ({
   context,
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
-}) => (
-  <Checkbox
-    checked={
-      context.table.getIsAllPageRowsSelected() ||
-      (context.table.getIsSomePageRowsSelected() && 'indeterminate')
-    }
-    onCheckedChange={(value) =>
-      context.table.toggleAllPageRowsSelected(!!value)
-    }
-    aria-label="Select all"
-  />
-);
+}) => {
+  const isAllSelected = context.table.getIsAllPageRowsSelected();
+  const isSomeSelected = context.table.getIsSomePageRowsSelected();
+
+  return (
+    <Checkbox
+      checked={isAllSelected}
+      indeterminate={!isAllSelected && isSomeSelected}
+      onCheckedChange={(value) =>
+        context.table.toggleAllPageRowsSelected(!!value)
+      }
+      aria-label="Select all"
+    />
+  );
+};
 export const SelectColumnCell = ({
   context,
 }: {
@@ -291,15 +294,11 @@ export const ActionsColumnCell = ({
       />
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild={true}>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setIsEditDialogOpen(true)}
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
+          <TooltipTrigger
+            render={<Button variant="ghost" size="icon" className="h-8 w-8" />}
+            onClick={() => setIsEditDialogOpen(true)}
+          >
+            <Edit className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
             <p>Edit record</p>
@@ -309,18 +308,14 @@ export const ActionsColumnCell = ({
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild={true}>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setIsDeleteDialogOpen(true)}
-              disabled={
-                record.rdata === 'by AutoPark™' || record.rdata === 'by System'
-              }
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+          <TooltipTrigger
+            render={<Button variant="ghost" size="icon" className="h-8 w-8" />}
+            onClick={() => setIsDeleteDialogOpen(true)}
+            disabled={
+              record.rdata === 'by AutoPark™' || record.rdata === 'by System'
+            }
+          >
+            <Trash2 className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
             <p>Delete record</p>
@@ -330,15 +325,13 @@ export const ActionsColumnCell = ({
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild={true}>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 hidden"
-              onClick={handleCopy}
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
+          <TooltipTrigger
+            render={
+              <Button variant="ghost" size="icon" className="h-8 w-8 hidden" />
+            }
+            onClick={handleCopy}
+          >
+            <Copy className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
             <p>Copy record</p>
@@ -348,10 +341,12 @@ export const ActionsColumnCell = ({
 
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild={true}>
-            <Button variant="ghost" size="icon" className="h-8 w-8 hidden">
-              <RotateCw className="h-4 w-4" />
-            </Button>
+          <TooltipTrigger
+            render={
+              <Button variant="ghost" size="icon" className="h-8 w-8 hidden" />
+            }
+          >
+            <RotateCw className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
             <p>Refresh record</p>

@@ -308,7 +308,10 @@ export function MultiGiftDialog({
               </Label>
               <Select
                 value={pbnDomain}
-                onValueChange={forcedPbnDomain ? () => {} : setPbnDomain}
+                onValueChange={(value) => {
+                  if (!value || forcedPbnDomain) return;
+                  setPbnDomain(value);
+                }}
               >
                 <SelectTrigger id="bulk-domain" disabled={!!forcedPbnDomain}>
                   <SelectValue placeholder="Select a domain you own" />
@@ -335,7 +338,14 @@ export function MultiGiftDialog({
               <Label className="text-sm font-medium" htmlFor="bulk-mode">
                 Mode
               </Label>
-              <Select value={mode} onValueChange={(v) => setMode(v as Mode)}>
+              <Select
+                value={mode}
+                onValueChange={(v) => {
+                  if (!v) return;
+                  setMode(v as Mode);
+                }}
+              >
+                {/* Base UI Select can emit null on clear; ignore that. */}
                 <SelectTrigger id="bulk-mode">
                   <SelectValue />
                 </SelectTrigger>
@@ -410,10 +420,12 @@ export function MultiGiftDialog({
                 Bulk Text Input
               </Label>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="text-xs px-1.5 py-0.5 rounded bg-muted cursor-default">
-                    ?
-                  </span>
+                <TooltipTrigger
+                  render={
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-muted cursor-default" />
+                  }
+                >
+                  ?
                 </TooltipTrigger>
                 <TooltipContent>
                   {mode === 'parent' ? (

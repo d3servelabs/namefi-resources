@@ -210,19 +210,21 @@ const RenewPricePremiumInfo: FC<{ domainName: string }> = ({ domainName }) => {
   const [open, setOpen] = useState(false);
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
-      <TooltipTrigger asChild={true}>
-        <button
-          type="button"
-          aria-label={`Renewal price info for ${domainName}`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setOpen((prev) => !prev);
-          }}
-          className="inline-flex size-4 items-center justify-center rounded-full border border-muted-foreground/40 text-[10px] font-semibold leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
-        >
-          !
-        </button>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            aria-label={`Renewal price info for ${domainName}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen((prev) => !prev);
+            }}
+            className="inline-flex size-4 items-center justify-center rounded-full border border-muted-foreground/40 text-[10px] font-semibold leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
+          />
+        }
+      >
+        !
       </TooltipTrigger>
       <TooltipContent sideOffset={6}>
         Premium domains may have a different renewal price.
@@ -354,9 +356,10 @@ const RenewNowModal: FC<RenewNowModalProps> = ({
             <Label htmlFor="renewal-years">Renewal Period</Label>
             <Select
               value={selectedYears.toString()}
-              onValueChange={(value) =>
-                setSelectedYears(Number.parseInt(value, 10))
-              }
+              onValueChange={(value) => {
+                if (!value) return;
+                setSelectedYears(Number.parseInt(value, 10));
+              }}
             >
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Select years" />
@@ -428,8 +431,8 @@ const ActionTooltip: FC<{ label: string; children: React.ReactNode }> = ({
 }) => {
   return (
     <Tooltip>
-      <TooltipTrigger asChild={true}>
-        <span className="inline-flex">{children}</span>
+      <TooltipTrigger render={<span className="inline-flex" />}>
+        {children}
       </TooltipTrigger>
       <TooltipContent sideOffset={6}>{label}</TooltipContent>
     </Tooltip>
@@ -529,11 +532,14 @@ const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
                 />
               </TableCell>
               <TableCell>
-                <Button variant="outline" size="sm" asChild={true}>
-                  <Link href={`/orders/${item.orderId}/details`}>
-                    <ExternalLink className="h-4 w-4 mr-1" />
-                    View order
-                  </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  render={<Link href={`/orders/${item.orderId}/details`} />}
+                  nativeButton={false}
+                >
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  View order
                 </Button>
               </TableCell>
             </TableRow>
@@ -1392,12 +1398,9 @@ function MyDomainsTable(props: {
         id: 'select',
         header: () => (
           <Checkbox
-            checked={
-              pageSelectionState.allSelected
-                ? true
-                : pageSelectionState.someSelected
-                  ? 'indeterminate'
-                  : false
+            checked={pageSelectionState.allSelected}
+            indeterminate={
+              pageSelectionState.someSelected && !pageSelectionState.allSelected
             }
             onCheckedChange={(value) =>
               handleToggleAllCurrentPage(value === true)
@@ -1439,17 +1442,28 @@ function MyDomainsTable(props: {
                 {domainName}
               </Link>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <a
-                    href={`https://${domainName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={`Visit ${domainName}`}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                <TooltipTrigger
+                  render={(props) => (
+                    <a
+                      {...props}
+                      href={`https://${domainName}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        'text-muted-foreground hover:text-foreground transition-colors',
+                        props.className,
+                      )}
+                      aria-label={`Visit ${domainName}`}
+                      onClick={(event) => {
+                        props.onClick?.(event);
+                        event.stopPropagation();
+                      }}
+                    >
+                      {props.children}
+                    </a>
+                  )}
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </TooltipTrigger>
                 <TooltipContent>Visit {domainName}</TooltipContent>
               </Tooltip>
@@ -1710,32 +1724,35 @@ function MyDomainsTable(props: {
                   actionButtonBaseClassName,
                   'hover:!text-blue-400',
                 )}
-                asChild={true}
+                render={
+                  <Link
+                    href={explorerUrl}
+                    aria-label={`View NFT for ${domainName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex justify-start items-center"
+                  />
+                }
+                nativeButton={false}
               >
-                <Link
-                  href={explorerUrl}
-                  aria-label={`View NFT for ${domainName}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-start items-center"
-                >
-                  <Compass className="w-4 h-4" />
-                </Link>
+                <Compass className="w-4 h-4" />
               </Button>
             ) : null;
 
           if (isMobile) {
             return (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
-                    aria-label={`Actions for ${domainName}`}
-                  >
-                    <MoreVertical className="w-4 h-4" />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
+                      aria-label={`Actions for ${domainName}`}
+                    />
+                  }
+                >
+                  <MoreVertical className="w-4 h-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {/* Renew button logic can be added here if needed for mobile, but it's in the column now */}

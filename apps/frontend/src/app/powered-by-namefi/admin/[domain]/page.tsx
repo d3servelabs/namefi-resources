@@ -171,32 +171,33 @@ function PbnDomainBreadcrumb({
     <Breadcrumb className="font-semibold text-2xl mb-6 mt-1">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
-          </BreadcrumbLink>
+          <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/powered-by-namefi/admin">Domains</Link>
+          <BreadcrumbLink render={<Link href="/powered-by-namefi/admin" />}>
+            Domains
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <BreadcrumbPage className="flex gap-1 font-semibold">
-                {domain} <ChevronDownIcon className="w-5 h-5 pt-1" />
-              </BreadcrumbPage>
+            <DropdownMenuTrigger
+              render={<BreadcrumbPage className="flex gap-1 font-semibold" />}
+            >
+              {domain} <ChevronDownIcon className="w-5 h-5 pt-1" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               {domainsQuery.data?.map((domain) => (
-                <DropdownMenuItem key={domain.normalizedDomainName} asChild>
-                  <Link
-                    href={`/powered-by-namefi/admin/${domain.normalizedDomainName}?tab=${activeTab}`}
-                  >
-                    {domain.normalizedDomainName}
-                  </Link>
+                <DropdownMenuItem
+                  key={domain.normalizedDomainName}
+                  render={
+                    <Link
+                      href={`/powered-by-namefi/admin/${domain.normalizedDomainName}?tab=${activeTab}`}
+                    />
+                  }
+                >
+                  {domain.normalizedDomainName}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -280,10 +281,13 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
   return (
     <PageShell padding="admin" className="space-y-6" gutter={false}>
       <div className="flex justify-end">
-        <Button asChild variant="outline" size="sm">
-          <Link href={`/powered-by-namefi/admin/${domain}/gifts`}>
-            <GiftIcon className="w-4 h-4 mr-2" /> Manage Gifts & Reservations
-          </Link>
+        <Button
+          render={<Link href={`/powered-by-namefi/admin/${domain}/gifts`} />}
+          nativeButton={false}
+          variant="outline"
+          size="sm"
+        >
+          <GiftIcon className="w-4 h-4 mr-2" /> Manage Gifts & Reservations
         </Button>
       </div>
 
@@ -324,12 +328,13 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
               />
               <Select
                 value={interval}
-                onValueChange={(v) =>
-                  setInterval(v as 'day' | 'week' | 'month')
-                }
+                onValueChange={(v) => {
+                  if (!v) return;
+                  setInterval(v as 'day' | 'week' | 'month');
+                }}
               >
                 <SelectTrigger className="w-36">
-                  <SelectValue placeholder="Group By" defaultValue="week" />
+                  <SelectValue placeholder="Group By" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="day">Daily</SelectItem>
@@ -362,8 +367,13 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Recent Orders (SUCCEEDED)</CardTitle>
-            <Button asChild variant="outline" size="sm">
-              <Link href={'?tab=orders'}>View All</Link>
+            <Button
+              render={<Link href="?tab=orders" />}
+              nativeButton={false}
+              variant="outline"
+              size="sm"
+            >
+              View All
             </Button>
           </div>
         </CardHeader>

@@ -7,13 +7,14 @@ import {
   HEADER_ACTION_BUTTON_NO_BLUR_CLASS,
   HEADER_ACTION_BUTTON_PILL_CLASS,
 } from '@/components/header.tokens';
-import { Button, type ButtonProps } from '@/components/ui/shadcn/button';
+import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/cn';
-import { forwardRef } from 'react';
+import { forwardRef, type ComponentProps } from 'react';
 
 export type HeaderActionVariant = 'icon' | 'pill';
 
-export interface HeaderActionButtonProps extends Omit<ButtonProps, 'variant'> {
+export interface HeaderActionButtonProps
+  extends Omit<ComponentProps<typeof Button>, 'variant'> {
   actionVariant?: HeaderActionVariant;
   disableBackdropBlur?: boolean;
   stretch?: boolean;

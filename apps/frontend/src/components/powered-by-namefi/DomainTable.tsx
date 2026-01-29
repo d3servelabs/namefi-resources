@@ -65,12 +65,17 @@ export function DomainTable({
                 {d.durationConstraints?.maxDurationInYears ?? 1}
               </td>
               <td className="py-2">
-                <Button size="sm" asChild variant={'secondary'}>
-                  <Link
-                    href={`/powered-by-namefi/admin/${d.normalizedDomainName}`}
-                  >
-                    View Details
-                  </Link>
+                <Button
+                  render={
+                    <Link
+                      href={`/powered-by-namefi/admin/${d.normalizedDomainName}`}
+                    />
+                  }
+                  nativeButton={false}
+                  size="sm"
+                  variant="secondary"
+                >
+                  View Details
                 </Button>
               </td>
             </tr>

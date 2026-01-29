@@ -10,6 +10,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -103,29 +104,31 @@ const AddRecordDropdownMenu = React.memo(
   }) => {
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild={true}>{children}</DropdownMenuTrigger>
+        <DropdownMenuTrigger render={children as React.ReactElement} />
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Record Types</DropdownMenuLabel>
-          {DNS_RECORD_TYPES.map((type, index) => {
-            const Icon =
-              RecordTypeIconMap[type as keyof typeof RecordTypeIconMap] ||
-              Database;
-            return (
-              <>
-                <DropdownMenuItem
-                  key={type}
-                  onClick={() => onAddRecordClicked(type)}
-                >
-                  <Icon className="mr-2 h-4 w-4" />
-                  <span>{type} Record</span>
-                </DropdownMenuItem>
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Record Types</DropdownMenuLabel>
+            {DNS_RECORD_TYPES.map((type, index) => {
+              const Icon =
+                RecordTypeIconMap[type as keyof typeof RecordTypeIconMap] ||
+                Database;
+              return (
+                <>
+                  <DropdownMenuItem
+                    key={type}
+                    onClick={() => onAddRecordClicked(type)}
+                  >
+                    <Icon className="mr-2 h-4 w-4" />
+                    <span>{type} Record</span>
+                  </DropdownMenuItem>
 
-                {index !== DNS_RECORD_TYPES.length - 1 && (
-                  <DropdownMenuSeparator key={`${type}-separator`} />
-                )}
-              </>
-            );
-          })}
+                  {index !== DNS_RECORD_TYPES.length - 1 && (
+                    <DropdownMenuSeparator key={`${type}-separator`} />
+                  )}
+                </>
+              );
+            })}
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     );

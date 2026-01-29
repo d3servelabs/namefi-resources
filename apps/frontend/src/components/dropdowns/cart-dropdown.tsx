@@ -106,32 +106,34 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
     return (
       <motion.div ref={ref} className={cn('', className)} {...rest} layout>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild={true}>
-            <MotionHeaderActionButton
-              actionVariant="icon"
-              disableBackdropBlur={disableBackdropBlur}
-              className="text-white/90"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              <AnimatePresence initial={false} mode="popLayout">
-                {items.length > 0 && (
-                  <motion.div
-                    key="cart-badge"
-                    className={HEADER_BADGE_CLASS}
-                    initial={{ opacity: 0, scale: 0.9, y: -6 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: -6 }}
-                  >
-                    <NumberFlow value={items.length} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </MotionHeaderActionButton>
+          <DropdownMenuTrigger
+            render={
+              <MotionHeaderActionButton
+                actionVariant="icon"
+                disableBackdropBlur={disableBackdropBlur}
+                className="text-white/90"
+              />
+            }
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <AnimatePresence initial={false} mode="popLayout">
+              {items.length > 0 && (
+                <motion.div
+                  key="cart-badge"
+                  className={HEADER_BADGE_CLASS}
+                  initial={{ opacity: 0, scale: 0.9, y: -6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -6 }}
+                >
+                  <NumberFlow value={items.length} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end">
-            <DropdownMenuLabel>My Cart</DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuLabel>My Cart</DropdownMenuLabel>
+              <DropdownMenuSeparator />
               {items.map((item) => (
                 <CartDropdownItem
                   key={item.id ?? item.normalizedDomainName}
@@ -149,16 +151,19 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
               <span>Total</span>
               <span>{formatAmountInUSD(totalAmountInUsdCents, true)}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild={true}>
+            <DropdownMenuItem className="p-0">
               <Button
                 className="w-full"
                 variant="default"
-                asChild={!isCartEmpty}
+                render={
+                  isCartEmpty ? undefined : (
+                    <Link href="/cart" onClick={logBeginCheckout} />
+                  )
+                }
+                nativeButton={isCartEmpty}
                 disabled={isCartEmpty}
               >
-                <Link href="/cart" onClick={logBeginCheckout}>
-                  Checkout
-                </Link>
+                Checkout
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>

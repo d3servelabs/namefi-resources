@@ -148,7 +148,8 @@ function DomainFieldWithSuggestions({
   );
 
   const handleSelectChange = useCallback(
-    (newValue: string) => {
+    (newValue: string | null) => {
+      if (!newValue) return;
       onChange(newValue);
     },
     [onChange],
@@ -179,9 +180,9 @@ function DomainFieldWithSuggestions({
               <SelectContent
                 align="end"
                 alignOffset={-12}
-                position="popper"
+                alignItemWithTrigger={false}
                 side="bottom"
-                sideOffset={10}
+                sideOffset={16}
                 style={{ width: width ? `${width}px` : undefined }}
               >
                 {domainOptions.map((domain) => (

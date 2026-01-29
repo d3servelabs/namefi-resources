@@ -187,7 +187,10 @@ export function CreateGiftDialog({
                 <FormItem>
                   <FormLabel>Your Domain</FormLabel>
                   <Select
-                    onValueChange={forcedPbnDomain ? () => {} : field.onChange}
+                    onValueChange={(value) => {
+                      if (!value || forcedPbnDomain) return;
+                      field.onChange(value);
+                    }}
                     defaultValue={forcedPbnDomain ?? field.value}
                   >
                     <FormControl>
@@ -248,7 +251,10 @@ export function CreateGiftDialog({
                 <FormItem>
                   <FormLabel>Gift Type</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      field.onChange(value);
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>

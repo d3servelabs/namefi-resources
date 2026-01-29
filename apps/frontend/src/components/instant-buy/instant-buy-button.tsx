@@ -56,25 +56,27 @@ export function InstantBuyButtonInner({
   return (
     <>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            onClick={handleClick}
-            disabled={disabled}
-            variant="outline"
-            size="default"
-            className={cn(
-              'group flex items-center justify-center px-1',
-              className,
-            )}
+        <TooltipTrigger
+          render={
+            <Button
+              variant="outline"
+              size="default"
+              className={cn(
+                'group flex items-center justify-center px-1',
+                className,
+              )}
+            />
+          }
+          onClick={handleClick}
+          disabled={disabled}
+        >
+          <Zap className="h-4 w-4 ml-1 group-hover:ml-0" />
+          <span
+            className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
+            style={{ transition: 'all 0.4s ease-in-out' }}
           >
-            <Zap className="h-4 w-4 ml-1 group-hover:ml-0" />
-            <span
-              className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
-              style={{ transition: 'all 0.4s ease-in-out' }}
-            >
-              Buy Now
-            </span>
-          </Button>
+            Buy Now
+          </span>
         </TooltipTrigger>
         <TooltipContent>
           <p>Purchase this domain instantly</p>

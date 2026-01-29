@@ -221,6 +221,7 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
         <Select
           value={status}
           onValueChange={(v) => {
+            if (!v) return;
             setStatus(v);
             table
               .getColumn('status')

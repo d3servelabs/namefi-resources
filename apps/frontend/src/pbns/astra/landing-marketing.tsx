@@ -946,7 +946,7 @@ const FaqSection = () => (
       title="FAQs"
       description="Answers to the most common questions about Namefi."
     />
-    <Accordion type="multiple" className="space-y-4">
+    <Accordion multiple className="space-y-4">
       {FAQS.map((faq, index) => (
         <ErrorBoundary
           key={faq.question}
@@ -1076,19 +1076,20 @@ export const MarketingSections = ({
           </p>
         </div>
         <Button
-          asChild
+          render={
+            <Link
+              href={`https://etherscan.io/address/${SMART_CONTRACT_ADDRESS}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2.5"
+            />
+          }
+          nativeButton={false}
           variant="default"
           className="group rounded-full bg-brand-primary px-8 py-3 text-base font-semibold shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:px-10"
         >
-          <Link
-            href={`https://etherscan.io/address/${SMART_CONTRACT_ADDRESS}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2.5"
-          >
-            View on Etherscan{' '}
-            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-          </Link>
+          View on Etherscan{' '}
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </Button>
       </Card>
     </motion.section>

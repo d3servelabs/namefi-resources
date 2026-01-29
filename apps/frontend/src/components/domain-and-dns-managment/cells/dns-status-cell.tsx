@@ -283,18 +283,20 @@ export function DnsStatusCell({
     >
       {/* NS */}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={() => !disabled && setActiveDialog('ns')}
-            className={cn(
-              'transition-colors hover:opacity-80',
-              disabled && 'cursor-not-allowed opacity-50',
-            )}
-            disabled={disabled}
-          >
-            <Server className={cn('w-4 h-4', nsColor)} />
-          </button>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className={cn(
+                'transition-colors hover:opacity-80',
+                disabled && 'cursor-not-allowed opacity-50',
+              )}
+            />
+          }
+          onClick={() => !disabled && setActiveDialog('ns')}
+          disabled={disabled}
+        >
+          <Server className={cn('w-4 h-4', nsColor)} />
         </TooltipTrigger>
         <TooltipContent>
           Nameservers:{' '}
@@ -306,18 +308,20 @@ export function DnsStatusCell({
 
       {/* Web */}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={() => !disabled && setActiveDialog('web')}
-            className={cn(
-              'transition-colors hover:opacity-80 cursor-pointer',
-              disabled && 'cursor-not-allowed opacity-50',
-            )}
-            disabled={disabled}
-          >
-            <Globe className={cn('w-4 h-4', webColor)} />
-          </button>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className={cn(
+                'transition-colors hover:opacity-80 cursor-pointer',
+                disabled && 'cursor-not-allowed opacity-50',
+              )}
+            />
+          }
+          onClick={() => !disabled && setActiveDialog('web')}
+          disabled={disabled}
+        >
+          <Globe className={cn('w-4 h-4', webColor)} />
         </TooltipTrigger>
         <TooltipContent>
           {status.isParkingEnabled
@@ -330,25 +334,27 @@ export function DnsStatusCell({
 
       {/* Forward */}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={() =>
-              !disabled && isForwardingEnabled && setActiveDialog('forward')
-            }
-            className={cn(
-              'transition-colors hover:opacity-80 cursor-pointer',
-              (disabled || !isForwardingEnabled) &&
-                'cursor-not-allowed opacity-50',
-            )}
-            disabled={disabled || !isForwardingEnabled}
-          >
-            {status.forwardTo ? (
-              <LinkIcon className={cn('w-4 h-4', forwardColor)} />
-            ) : (
-              <Unlink className={cn('w-4 h-4', forwardColor)} />
-            )}
-          </button>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className={cn(
+                'transition-colors hover:opacity-80 cursor-pointer',
+                (disabled || !isForwardingEnabled) &&
+                  'cursor-not-allowed opacity-50',
+              )}
+            />
+          }
+          onClick={() =>
+            !disabled && isForwardingEnabled && setActiveDialog('forward')
+          }
+          disabled={disabled || !isForwardingEnabled}
+        >
+          {status.forwardTo ? (
+            <LinkIcon className={cn('w-4 h-4', forwardColor)} />
+          ) : (
+            <Unlink className={cn('w-4 h-4', forwardColor)} />
+          )}
         </TooltipTrigger>
         <TooltipContent>
           {!isForwardingEnabled
@@ -361,18 +367,20 @@ export function DnsStatusCell({
 
       {/* MX */}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={() => !disabled && setActiveDialog('mx')}
-            className={cn(
-              'transition-colors hover:opacity-80 cursor-pointer',
-              disabled && 'cursor-not-allowed opacity-50',
-            )}
-            disabled={disabled}
-          >
-            <Mail className={cn('w-4 h-4', mxColor)} />
-          </button>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className={cn(
+                'transition-colors hover:opacity-80 cursor-pointer',
+                disabled && 'cursor-not-allowed opacity-50',
+              )}
+            />
+          }
+          onClick={() => !disabled && setActiveDialog('mx')}
+          disabled={disabled}
+        >
+          <Mail className={cn('w-4 h-4', mxColor)} />
         </TooltipTrigger>
         <TooltipContent>
           {status.hasMxRecords ? 'MX Records Configured' : 'No MX Records'}
@@ -381,18 +389,20 @@ export function DnsStatusCell({
 
       {/* ENS */}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={() => !disabled && setActiveDialog('ens')}
-            className={cn(
-              'transition-colors hover:opacity-80 cursor-pointer',
-              disabled && 'cursor-not-allowed opacity-50',
-            )}
-            disabled={disabled}
-          >
-            <Hexagon className={cn('w-4 h-4', ensColor)} />
-          </button>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className={cn(
+                'transition-colors hover:opacity-80 cursor-pointer',
+                disabled && 'cursor-not-allowed opacity-50',
+              )}
+            />
+          }
+          onClick={() => !disabled && setActiveDialog('ens')}
+          disabled={disabled}
+        >
+          <Hexagon className={cn('w-4 h-4', ensColor)} />
         </TooltipTrigger>
         <TooltipContent>
           {status.ensRecord ? status.ensRecord : 'No ENS Record'}
@@ -401,14 +411,16 @@ export function DnsStatusCell({
 
       {/* Manage Domain */}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            onClick={() => router.push(`/domains/${domainName}`)}
-            className="transition-colors hover:opacity-80 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 cursor-pointer"
-          >
-            <Ellipsis className="w-4 h-4" />
-          </button>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className="transition-colors hover:opacity-80 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 cursor-pointer"
+            />
+          }
+          onClick={() => router.push(`/domains/${domainName}`)}
+        >
+          <Ellipsis className="w-4 h-4" />
         </TooltipTrigger>
         <TooltipContent>Manage more DNS records</TooltipContent>
       </Tooltip>

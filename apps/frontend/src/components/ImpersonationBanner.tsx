@@ -88,17 +88,19 @@ export default function ImpersonationBanner() {
           </span>
         </div>
         <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              size="icon"
-              className="h-6 w-6"
-              title="More details"
-              aria-label="More details"
-              type="button"
-              variant="secondary"
-            >
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+          <DialogTrigger
+            render={
+              <Button
+                size="icon"
+                className="h-6 w-6"
+                title="More details"
+                aria-label="More details"
+                type="button"
+                variant="secondary"
+              />
+            }
+          >
+            <MoreHorizontal className="h-4 w-4" />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

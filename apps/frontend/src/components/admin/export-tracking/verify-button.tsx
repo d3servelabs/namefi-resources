@@ -79,11 +79,9 @@ export function VerifyButton({ record }: VerifyButtonProps) {
   return (
     <PermissionGate permissions={[Permission.WRITE_NFT]}>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button size="sm" variant="outline">
-            <CheckIcon className="h-4 w-4 mr-1" />
-            Verify
-          </Button>
+        <AlertDialogTrigger render={<Button size="sm" variant="outline" />}>
+          <CheckIcon className="h-4 w-4 mr-1" />
+          Verify
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

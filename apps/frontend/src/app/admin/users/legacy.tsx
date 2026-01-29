@@ -264,15 +264,20 @@ function UsersTable({
               <div className="ml-1 flex items-center">
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <a
-                        href={`mailto:${row.original.primaryEmail}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Send email to ${row.original.primaryEmail}`}
-                      >
-                        <Mail className="h-[14px] w-[14px]" />
-                      </a>
+                    <TooltipTrigger
+                      render={(props) => (
+                        <a
+                          {...props}
+                          href={`mailto:${row.original.primaryEmail}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Send email to ${row.original.primaryEmail}`}
+                        >
+                          {props.children}
+                        </a>
+                      )}
+                    >
+                      <Mail className="h-[14px] w-[14px]" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Send email to {row.original.primaryEmail}</p>
@@ -455,10 +460,14 @@ function UsersTable({
           return (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className={cn('font-medium cursor-help', colorClass)}>
-                    {relativeTime}
-                  </span>
+                <TooltipTrigger
+                  render={
+                    <span
+                      className={cn('font-medium cursor-help', colorClass)}
+                    />
+                  }
+                >
+                  {relativeTime}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{lastSignIn.toLocaleString()}</p>
@@ -526,22 +535,31 @@ function UsersTable({
               </PermissionGate>
             )}
             {!!row.original.primaryEmail && (
-              <Button className="group" size="sm" variant="secondary" asChild>
-                <a
-                  href={`mailto:${row.original.primaryEmail}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Send email"
-                  className="flex"
-                >
-                  <Mail className="h-4 w-4" />{' '}
-                  <span
-                    className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
-                    style={{ transition: 'all 0.8s allow-discrete' }}
+              <Button
+                className="group"
+                size="sm"
+                variant="secondary"
+                render={(props) => (
+                  <a
+                    {...props}
+                    href={`mailto:${row.original.primaryEmail}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Send email"
+                    className={cn('flex', props.className)}
                   >
-                    Send Email
-                  </span>
-                </a>
+                    {props.children}
+                  </a>
+                )}
+                nativeButton={false}
+              >
+                <Mail className="h-4 w-4" />{' '}
+                <span
+                  className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
+                  style={{ transition: 'all 0.8s allow-discrete' }}
+                >
+                  Send Email
+                </span>
               </Button>
             )}
           </div>
@@ -1107,16 +1125,18 @@ const CopyIconButton = ({
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            className={cn('rounded-full', classNames?.button)}
-            size="icon"
-            variant="ghost"
-            aria-label="Copy to clipboard"
-            onClick={handleCopy}
-          >
-            <Copy className={cn('h-4 w-4', classNames?.icon)} />
-          </Button>
+        <TooltipTrigger
+          render={
+            <Button
+              className={cn('rounded-full', classNames?.button)}
+              size="icon"
+              variant="ghost"
+              aria-label="Copy to clipboard"
+              onClick={handleCopy}
+            />
+          }
+        >
+          <Copy className={cn('h-4 w-4', classNames?.icon)} />
         </TooltipTrigger>
         <TooltipContent className={cn(classNames?.tooltipContent)}>
           <p>Copy To Clipboard</p>

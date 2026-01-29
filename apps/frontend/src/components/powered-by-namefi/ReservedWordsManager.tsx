@@ -311,11 +311,9 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
         <div className="flex items-center justify-between">
           <CardTitle>Protected Words Management</CardTitle>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Words
-              </Button>
+            <DialogTrigger render={<Button />}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Words
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -437,11 +435,11 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
                 open={isRemoveDialogOpen}
                 onOpenChange={setIsRemoveDialogOpen}
               >
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" size="sm">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Remove Selected ({wordsToRemove.length})
-                  </Button>
+                <AlertDialogTrigger
+                  render={<Button variant="destructive" size="sm" />}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Remove Selected ({wordsToRemove.length})
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -488,9 +486,10 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
             </div>
             <Select
               value={typeFilter}
-              onValueChange={(value: 'all' | 'custom' | 'system') =>
-                setTypeFilter(value)
-              }
+              onValueChange={(value: 'all' | 'custom' | 'system' | null) => {
+                if (!value) return;
+                setTypeFilter(value);
+              }}
             >
               <SelectTrigger className="w-full sm:w-32">
                 <SelectValue placeholder="Type" />
@@ -600,17 +599,19 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
                       <TableCell>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Badge
-                                variant={
-                                  item.type === 'custom'
-                                    ? 'default'
-                                    : 'secondary'
-                                }
-                                className="cursor-help"
-                              >
-                                {item.type === 'custom' ? 'Custom' : 'System'}
-                              </Badge>
+                            <TooltipTrigger
+                              render={
+                                <Badge
+                                  variant={
+                                    item.type === 'custom'
+                                      ? 'default'
+                                      : 'secondary'
+                                  }
+                                  className="cursor-help"
+                                />
+                              }
+                            >
+                              {item.type === 'custom' ? 'Custom' : 'System'}
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="max-w-xs">

@@ -101,7 +101,13 @@ export function CacheEntriesViewer({
             className="pl-9"
           />
         </div>
-        <Select value={currentFilter} onValueChange={onFilterChange}>
+        <Select
+          value={currentFilter}
+          onValueChange={(value) => {
+            if (!value) return;
+            onFilterChange(value);
+          }}
+        >
           <SelectTrigger className="w-[150px]">
             <SelectValue />
           </SelectTrigger>

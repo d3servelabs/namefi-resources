@@ -15,6 +15,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import {
   type KeyboardEvent,
+  type ReactElement,
   type ReactNode,
   useCallback,
   useState,
@@ -162,7 +163,7 @@ export const SubmitDomainDialog = ({
 
   return (
     <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
-      <DialogTrigger asChild={true}>{children}</DialogTrigger>
+      <DialogTrigger render={children as ReactElement} />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Submit a new domain</DialogTitle>

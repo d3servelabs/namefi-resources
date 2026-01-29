@@ -83,7 +83,8 @@ export function WalletEditableSelect({
   );
 
   const handleSelectChange = useCallback(
-    (newValue: string) => {
+    (newValue: string | null) => {
+      if (!newValue) return;
       setLocalValue({ input: newValue, selected: newValue });
       onValueChange(newValue);
     },
@@ -93,6 +94,9 @@ export function WalletEditableSelect({
   const allowChangeChain = useMemo(() => {
     return chains.length > 0 && onChainIdChange;
   }, [chains, onChainIdChange]);
+  const selectedChain = useMemo(() => {
+    return chains.find((chain) => chain.id === activeChainId);
+  }, [activeChainId, chains]);
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex items-center w-full">
@@ -100,13 +104,29 @@ export function WalletEditableSelect({
           <Select
             value={selectedChainId?.toString() ?? defaultChainId.toString()}
             onValueChange={(value) => {
+              if (!value) return;
               onChainIdChange?.(Number.parseInt(value));
             }}
           >
             <SelectTrigger className="h-12 py-5.5 mr-1">
-              <SelectValue placeholder="Select a Chain" />
+              <SelectValue placeholder="Select a Chain">
+                {selectedChain ? (
+                  <span className="flex items-center gap-2">
+                    <NetworkLogo
+                      network={selectedChain.id}
+                      className="size-4"
+                    />
+                    {selectedChain.name}
+                  </span>
+                ) : null}
+              </SelectValue>
             </SelectTrigger>
-            <SelectContent align="end">
+            <SelectContent
+              align="end"
+              sideOffset={8}
+              alignItemWithTrigger={false}
+              className="p-1"
+            >
               {chains.map((chain) => (
                 <SelectItem key={chain.id} value={chain.id.toString()}>
                   <NetworkLogo network={chain.id} className="size-4" />
@@ -145,10 +165,10 @@ export function WalletEditableSelect({
               <SelectContent
                 align="end"
                 alignOffset={-12}
-                position="popper"
+                alignItemWithTrigger={false}
                 side="bottom"
                 sideOffset={10}
-                className="min-w-[18rem]"
+                className="min-w-[18rem] p-1"
                 style={{
                   // Ensure the dropdown is readable even before the resize observer reports.
                   width: width ? `${width}px` : '28rem',

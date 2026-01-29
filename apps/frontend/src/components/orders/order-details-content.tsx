@@ -302,7 +302,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
         <div className="grid grid-cols-1 gap-4">
           {requiredActionItems.length > 0 && items ? (
             <Alert
-              variant="warning"
+              variant="default"
               className="w-full border border-amber-500/30 bg-amber-800/20"
             >
               <AlertTitle className="font-semibold">
@@ -438,10 +438,12 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     {recipientWalletAddress && !isRecipientLinked && (
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger asChild={true}>
-                            <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600">
-                              <Info className="h-3.5 w-3.5" />
-                            </span>
+                          <TooltipTrigger
+                            render={
+                              <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600" />
+                            }
+                          >
+                            <Info className="h-3.5 w-3.5" />
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>This wallet isn't linked to your account.</p>
@@ -464,25 +466,27 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     {!!recipientWalletAddress && (
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger asChild={true}>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => {
-                                if (!recipientWalletAddress) return;
-                                copyToClipboard(
-                                  recipientWalletAddress,
-                                  'recipientWalletAddress',
-                                );
-                              }}
-                            >
-                              {copiedFields.recipientWalletAddress ? (
-                                <Check size={16} />
-                              ) : (
-                                <ClipboardCopy size={16} />
-                              )}
-                            </Button>
+                          <TooltipTrigger
+                            render={
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => {
+                                  if (!recipientWalletAddress) return;
+                                  copyToClipboard(
+                                    recipientWalletAddress,
+                                    'recipientWalletAddress',
+                                  );
+                                }}
+                              />
+                            }
+                          >
+                            {copiedFields.recipientWalletAddress ? (
+                              <Check size={16} />
+                            ) : (
+                              <ClipboardCopy size={16} />
+                            )}
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>
@@ -747,15 +751,17 @@ function MintTokenRow({
         {explorerUrl && onCopyUrl ? (
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7"
-                  onClick={() => onCopyUrl(explorerUrl)}
-                >
-                  <ClipboardCopy size={14} />
-                </Button>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7"
+                    onClick={() => onCopyUrl(explorerUrl)}
+                  />
+                }
+              >
+                <ClipboardCopy size={14} />
               </TooltipTrigger>
               <TooltipContent>Copy Explorer URL</TooltipContent>
             </Tooltip>

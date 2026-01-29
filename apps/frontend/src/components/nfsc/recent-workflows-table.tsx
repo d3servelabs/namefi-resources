@@ -234,7 +234,10 @@ export function RecentWorkflowsTable() {
             <Label htmlFor="days-filter">Time Range:</Label>
             <Select
               value={days.toString()}
-              onValueChange={(v) => setDays(Number(v))}
+              onValueChange={(v) => {
+                if (!v) return;
+                setDays(Number(v));
+              }}
             >
               <SelectTrigger id="days-filter" className="w-[150px]">
                 <SelectValue />

@@ -118,7 +118,7 @@ export function HeaderMissingEmailWarning() {
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-      <PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
+      <PopoverTrigger render={triggerButton} />
       <PopoverContent className="w-80" align="end">
         <div className="space-y-3">
           <div className="flex items-start gap-3">

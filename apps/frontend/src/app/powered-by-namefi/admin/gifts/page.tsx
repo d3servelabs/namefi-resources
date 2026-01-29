@@ -192,9 +192,10 @@ export function GiftsManagementPage({
             <CardTitle>Your Gifts</CardTitle>
             <Select
               value={selectedStatus}
-              onValueChange={(value) =>
-                setSelectedStatus(value as UiStatus | 'ALL')
-              }
+              onValueChange={(value) => {
+                if (!value) return;
+                setSelectedStatus(value as UiStatus | 'ALL');
+              }}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by status" />
