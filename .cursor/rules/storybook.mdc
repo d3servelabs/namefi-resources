@@ -104,3 +104,102 @@ export const ErrorState: Story = {
 - Other stories (Default, Loading, Empty) can use the default render function
 - The fallback UI should match the app's error handling patterns
 - This allows Chromatic to capture the error state without crashing
+
+## Mocking Next.js Navigation for App Router Components
+
+Components that use hooks from `next/navigation` (like `useRouter`, `useSearchParams`, `usePathname`) require the Next.js app router context. The `@storybook/nextjs-vite` framework provides built-in mocking for these hooks.
+
+### Pattern
+
+Add the `nextjs` parameter to your story's meta configuration:
+
+```tsx
+const meta: Meta<typeof MyComponent> = {
+  title: 'Components/MyComponent',
+  component: MyComponent,
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/',
+        // Optional: mock search params
+        // searchParams: { key: 'value' },
+      },
+    },
+  },
+};
+```
+
+### Common Provider Dependencies
+
+Components using `useAuth()` require multiple providers. Here's the typical provider stack for authenticated component stories:
+
+1. **MockPrivy.Provider** - Mocks Privy authentication state
+2. **WagmiProvider** - Required for wallet-related hooks
+3. **QueryClientProvider** - Required for React Query
+4. **TRPCProvider** - Required for TRPC hooks (useAuth uses useTRPC internally)
+5. **ConsentManagerProvider** - Required for consent hooks (useAuth uses useConsentIdentify)
+
+Example authenticated provider setup:
+
+```tsx
+import { MockPrivy } from '@/hooks/use-auth';
+import { TRPCProvider } from '@/lib/trpc';
+import { createTRPCClient } from '@trpc/client';
+import type { AppRouter } from '@namefi-astra/backend/trpc';
+import { createMockLink } from '@/lib/trpc/mock';
+import { ConsentManagerProvider } from '@c15t/nextjs';
+
+function AuthenticatedStoryProviders({
+  children,
+  walletAddress,
+}: {
+  children: ReactNode;
+  walletAddress: string;
+}) {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+  });
+  const trpcClient = createTRPCClient<AppRouter>({
+    links: [
+      createMockLink({
+        isAuthenticated: true,
+        getMockData: async () => [null, {}] as const,
+      }),
+    ],
+  });
+
+  return (
+    <MockPrivy.Provider
+      value={{
+        ready: true,
+        authenticated: true,
+        user: {
+          id: 'mock-user-id',
+          wallet: { address: walletAddress },
+          linkedAccounts: [{ type: 'wallet', address: walletAddress }],
+        },
+      } as any}
+    >
+      <WagmiProvider config={mockWagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+            <ConsentManagerProvider options={{ mode: 'offline' }}>
+              {children}
+            </ConsentManagerProvider>
+          </TRPCProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </MockPrivy.Provider>
+  );
+}
+```
+
+### Debugging Provider Errors
+
+When a story fails with errors like "invariant expected app router to be mounted" or "must be used within a Provider", check:
+
+1. **Next.js navigation hooks** - Add `nextjs.appDirectory: true` to parameters
+2. **TRPC hooks** - Wrap with `TRPCProvider` and mocked `trpcClient`
+3. **Consent hooks** - Wrap with `ConsentManagerProvider options={{ mode: 'offline' }}`
+4. **Auth hooks** - Wrap with `MockPrivy.Provider` with appropriate auth state
