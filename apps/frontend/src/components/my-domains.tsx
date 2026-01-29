@@ -1646,10 +1646,18 @@ function MyDomainsTable(props: {
             'normalizedDomainName',
           ) as NamefiNormalizedDomain;
           const status = row.original.dnsStatus;
+          const chainId = row.original.chainId ?? null;
 
-          if (!status) return <span className="text-muted-foreground">-</span>;
+          if (!status || !chainId)
+            return <span className="text-muted-foreground">-</span>;
 
-          return <DnsStatusCell domainName={domainName} status={status} />;
+          return (
+            <DnsStatusCell
+              domainName={domainName}
+              status={status}
+              nftChainId={chainId}
+            />
+          );
         },
         size: 200,
       },

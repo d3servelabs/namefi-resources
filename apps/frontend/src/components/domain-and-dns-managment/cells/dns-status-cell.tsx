@@ -39,6 +39,7 @@ interface DnsStatusCellProps {
   domainName: NamefiNormalizedDomain;
   status: DnsStatus;
   disabled?: boolean;
+  nftChainId: number | bigint;
 }
 
 const NAMEFI_ASTRA_NAMESERVERS_PROD = [
@@ -119,6 +120,7 @@ interface DnsDialogsProps {
   currentForwardUrl: string | null;
   readOnly?: boolean;
   warningMessage?: string;
+  nftChainId: number | bigint;
 }
 
 function DnsDialogs({
@@ -128,6 +130,7 @@ function DnsDialogs({
   currentForwardUrl,
   readOnly,
   warningMessage,
+  nftChainId,
 }: DnsDialogsProps) {
   if (!activeDialog) return null;
 
@@ -138,6 +141,7 @@ function DnsDialogs({
           isOpen={true}
           onOpenChange={(open) => !open && setActiveDialog(null)}
           domainName={domainName}
+          nftChainId={nftChainId}
         />
       )}
 
@@ -196,6 +200,7 @@ export function DnsStatusCell({
   domainName,
   status,
   disabled,
+  nftChainId,
 }: DnsStatusCellProps) {
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -415,6 +420,7 @@ export function DnsStatusCell({
         currentForwardUrl={status.forwardTo}
         readOnly={isReadOnly}
         warningMessage={warningMessage}
+        nftChainId={nftChainId}
       />
     </div>
   );

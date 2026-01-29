@@ -13,10 +13,12 @@ export function NameserversDialog({
   isOpen,
   onOpenChange,
   domainName,
+  nftChainId,
 }: {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   domainName: string;
+  nftChainId: number | bigint;
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -24,7 +26,10 @@ export function NameserversDialog({
         <DialogHeader>
           <DialogTitle>Manage Nameservers</DialogTitle>
         </DialogHeader>
-        <NameserversPanelInner domainName={domainName as PunycodeDomainName} />
+        <NameserversPanelInner
+          domainName={domainName as PunycodeDomainName}
+          nftChainId={nftChainId}
+        />
       </DialogContent>
     </Dialog>
   );

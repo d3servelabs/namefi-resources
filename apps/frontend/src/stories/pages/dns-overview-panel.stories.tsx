@@ -342,7 +342,7 @@ function DnsOverviewPanelStory({ mockState }: StoryArgs) {
   const state = mockState ?? defaultMockState;
   return (
     <StoryProviders origin={mockOriginRuntime} mockState={state}>
-      <DnsOverviewPanel domain={state.domainName} />
+      <DnsOverviewPanel domain={state.domainName} nftChainId={1} />
     </StoryProviders>
   );
 }

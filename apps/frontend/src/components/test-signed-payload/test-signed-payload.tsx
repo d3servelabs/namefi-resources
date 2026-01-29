@@ -102,6 +102,7 @@ export function TestSignedPayload() {
         types: TEST_SIGNED_PAYLOAD_EIP712_TYPES,
         primaryType: 'TestPayload',
         message: payload,
+        chainId: 1,
       });
 
       // Send to backend

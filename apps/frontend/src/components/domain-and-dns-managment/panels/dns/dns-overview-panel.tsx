@@ -87,8 +87,10 @@ type DomainPreferencesAndConfig =
 
 export const DnsOverviewPanel = ({
   domain,
+  nftChainId,
 }: {
   domain: NamefiNormalizedDomain;
+  nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
   const {
@@ -147,10 +149,14 @@ export const DnsOverviewPanel = ({
             ))}
 
           {domainSupportedFeatures?.domainExport?.enabled && (
-            <DomainExportSection domain={domain} disabled={false} />
+            <DomainExportSection
+              domain={domain}
+              disabled={false}
+              nftChainId={nftChainId}
+            />
           )}
 
-          <PendingTransferSection domain={domain} />
+          <PendingTransferSection domain={domain} nftChainId={nftChainId} />
         </div>
       </CardContent>
     </Card>
@@ -416,9 +422,11 @@ export const RenewDomainButton = ({
 export const DomainExportSection = ({
   domain,
   disabled,
+  nftChainId,
 }: {
   domain: NamefiNormalizedDomain;
   disabled: boolean;
+  nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
@@ -456,6 +464,7 @@ export const DomainExportSection = ({
         types: DOMAIN_ACTION_EIP712_TYPES,
         primaryType: 'DomainAction',
         message: payload,
+        chainId: nftChainId,
       });
 
       await trpcClient.domainConfig.requestDomainExport.mutate({
@@ -511,6 +520,7 @@ export const DomainExportSection = ({
           types: DOMAIN_ACTION_EIP712_TYPES,
           primaryType: 'DomainAction',
           message: payload,
+          chainId: nftChainId,
         });
       } catch (error) {
         console.error(error);
@@ -691,8 +701,10 @@ export const DomainExportSection = ({
 
 export const PendingTransferSection = ({
   domain,
+  nftChainId,
 }: {
   domain: NamefiNormalizedDomain;
+  nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
@@ -748,6 +760,7 @@ export const PendingTransferSection = ({
         types: DOMAIN_ACTION_EIP712_TYPES,
         primaryType: 'DomainAction',
         message: payload,
+        chainId: nftChainId,
       });
 
       await trpcClient.domainConfig.approveTransfer.mutate({
@@ -788,6 +801,7 @@ export const PendingTransferSection = ({
         types: DOMAIN_ACTION_EIP712_TYPES,
         primaryType: 'DomainAction',
         message: payload,
+        chainId: nftChainId,
       });
 
       await trpcClient.domainConfig.rejectTransfer.mutate({

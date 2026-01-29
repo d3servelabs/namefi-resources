@@ -121,6 +121,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 export type DomainNameserversFormProps = {
   domainName: PunycodeDomainName;
   nameservers: Nameserver[];
+  nftChainId: number | bigint;
 };
 export type DomainNameserversFormData = {
   nameservers: Nameserver[];
@@ -130,6 +131,7 @@ const NameserversPanelForm = React.memo(
   function NameserversPanelForm({
     domainName,
     nameservers,
+    nftChainId,
   }: DomainNameserversFormProps) {
     const trpc = useTRPC();
     const [loadingOperation, setLoadingOperation] = useState<string | null>(
@@ -228,6 +230,7 @@ const NameserversPanelForm = React.memo(
           types: DOMAIN_ACTION_EIP712_TYPES,
           primaryType: 'DomainAction',
           message: payload,
+          chainId: nftChainId,
         });
 
         await trpcClient.domainConfig.resetDomainNameservers.mutate({
@@ -245,7 +248,7 @@ const NameserversPanelForm = React.memo(
       }
       await invalidateQueries();
       setLoadingOperation(null);
-    }, [trpcClient, domainName, invalidateQueries, signTypedData]);
+    }, [trpcClient, domainName, invalidateQueries, signTypedData, nftChainId]);
 
     const handleResetToNamefi = useCallback(async () => {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
@@ -320,6 +323,7 @@ const NameserversPanelForm = React.memo(
             types: DOMAIN_ACTION_EIP712_TYPES,
             primaryType: 'DomainAction',
             message: payload,
+            chainId: nftChainId,
           });
 
           await trpcClient.domainConfig.changeDomainNameservers.mutate({
@@ -586,8 +590,10 @@ function arrayEquals(a: Nameserver[], b: Nameserver[]) {
 
 export const NameserversPanelInner = ({
   domainName,
+  nftChainId,
 }: {
   domainName: PunycodeDomainName;
+  nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
 
@@ -628,6 +634,7 @@ export const NameserversPanelInner = ({
       <NameserversPanelForm
         domainName={domainName}
         nameservers={data?.nameservers ?? []}
+        nftChainId={nftChainId}
       />
     </Layout>
   );
@@ -635,8 +642,10 @@ export const NameserversPanelInner = ({
 
 export const NameserversPanel = ({
   domainName,
+  nftChainId,
 }: {
   domainName: PunycodeDomainName;
+  nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
   const {
@@ -666,7 +675,9 @@ export const NameserversPanel = ({
     return false;
   }
   if (nameserversManagement.enabled) {
-    return <NameserversPanelInner domainName={domainName} />;
+    return (
+      <NameserversPanelInner domainName={domainName} nftChainId={nftChainId} />
+    );
   }
   if (nameserversManagement.config.message) {
     return (

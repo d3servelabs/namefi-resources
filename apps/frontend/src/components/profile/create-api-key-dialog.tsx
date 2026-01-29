@@ -120,7 +120,7 @@ export function CreateApiKeyDialog({
   onSuccess,
 }: CreateApiKeyDialogProps) {
   const trpcClient = useTRPCClient();
-  const { signTypedData, isWalletConnected } = useSignTypedData();
+  const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
   const { address: activeWalletAddress } = useAccount();
   const walletConnectionRef = useRef<RequestWalletConnectionRef>(null);
@@ -275,6 +275,7 @@ export function CreateApiKeyDialog({
         types: CREATE_API_KEY_EIP712_TYPES,
         primaryType: 'CreateApiKey',
         message: signPayload,
+        chainId: 1,
       });
 
       // Create the API payload (arrays as actual arrays for tRPC)

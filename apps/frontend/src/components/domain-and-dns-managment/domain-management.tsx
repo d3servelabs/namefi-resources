@@ -81,6 +81,13 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       normalizedDomainName: domain,
     }),
   );
+  const {
+    data: { nft },
+  } = useSuspenseQuery(
+    trpc.domainConfig.getDomainOwnerWallet.queryOptions({
+      domainName: domain,
+    }),
+  );
 
   const {
     data: { features: domainSupportedFeatures },
@@ -214,7 +221,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
               {!isPbn && (
                 <TabsContent value="dns-overview">
-                  <DnsOverviewPanel domain={domain as PunycodeDomainName} />
+                  <DnsOverviewPanel
+                    domain={domain as PunycodeDomainName}
+                    nftChainId={nft.chainId}
+                  />
                 </TabsContent>
               )}
 
@@ -229,6 +239,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                   <div className="flex flex-col gap-4">
                     <NameserversPanel
                       domainName={domain as PunycodeDomainName}
+                      nftChainId={nft.chainId}
                     />
 
                     <DnssecPanel domainName={domain as PunycodeDomainName} />

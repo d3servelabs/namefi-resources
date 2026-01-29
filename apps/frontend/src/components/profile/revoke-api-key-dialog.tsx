@@ -101,6 +101,7 @@ export function RevokeApiKeyDialog({
         types: REVOKE_API_KEY_EIP712_TYPES,
         primaryType: 'RevokeApiKey',
         message: payload,
+        chainId: 1,
       });
 
       // Revoke the API key
