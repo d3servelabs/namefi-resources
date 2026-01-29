@@ -72,6 +72,7 @@ const nextConfig = {
       'motion/react',
     ],
   },
+  typedRoutes: true,
   env: {
     version: packageJson.version,
     name: packageJson.name,
