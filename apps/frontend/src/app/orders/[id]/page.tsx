@@ -30,10 +30,8 @@ import { useCartContext } from '@/components/providers/cart';
 import { useFeedback } from '@/components/providers/feedback';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { OrderNotFound } from '@/components/orders/order-not-found';
-import {
-  hasImportItems,
-  isImportOnlyOrder,
-} from '@/components/orders/import-order-status';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
+import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
 import { Button } from '@/components/ui/shadcn/button';
 import { Textarea } from '@/components/ui/shadcn/textarea';
@@ -84,14 +82,6 @@ const InternalAIGenerations = dynamic(
   { ssr: false },
 );
 
-const ImportOrderStatus = dynamic(
-  () =>
-    import('@/components/orders/import-order-status').then(
-      (mod) => mod.ImportOrderStatus,
-    ),
-  { ssr: false, loading: () => <Skeleton className="h-32 w-full" /> },
-);
-
 interface OrderPageProps {
   params: Promise<{ id: string }>;
 }
@@ -100,91 +90,99 @@ type OrderProgressStepId = NonNullable<
   AppRouterOutput['orders']['getOrderProgress']['state']
 >['steps'][number]['id'];
 
-const defaultProcessingCopy = {
-  title: 'Great! We are ready to secure your domain',
-  description: 'Hang on tight while we wrap things up.',
+type OrderItemCounts = {
+  importCount: number;
+  registerCount: number;
+  renewCount: number;
+  total: number;
 };
 
-const processingCopyByStep: Record<
-  OrderProgressStepId,
-  { title: string; description: string }
-> = {
-  'order-details': {
-    title: 'Checking your order details',
-    description: 'We are verifying your wallet and domain selections.',
-  },
-  payments: {
-    title: 'Collecting payment',
-    description:
-      'We are processing your payment. Blockchain payments may take 30+ seconds for transaction confirmation.',
-  },
-  items: {
-    title: 'Registering your domains',
-    description: 'Each domain is being submitted to the registrar.',
-  },
-  'post-processing': {
-    title: 'Finishing background tasks',
-    description:
-      'We are refreshing indexes and preparing your on-chain records.',
-  },
-  'final-status': {
-    title: 'Wrapping up your order',
-    description: 'We are applying the final status to your order.',
-  },
-  refund: {
-    title: 'Refunding any failed items',
-    description: 'Refunds are being initiated for domains we could not secure.',
-  },
-  notification: {
-    title: 'Sending confirmation',
-    description:
-      'We will email you the final summary once everything is ready.',
-  },
-};
+function getOrderItemCounts(items: OrderItemSelect[]): OrderItemCounts {
+  const activeItems = items.filter(
+    (item) => item.status !== 'FAILED' && item.status !== 'CANCELLED',
+  );
+  return {
+    importCount: activeItems.filter(
+      (item) => item.type === itemTypeSchema.enum.IMPORT,
+    ).length,
+    registerCount: activeItems.filter(
+      (item) => item.type === itemTypeSchema.enum.REGISTER,
+    ).length,
+    renewCount: activeItems.filter(
+      (item) => item.type === itemTypeSchema.enum.RENEW,
+    ).length,
+    total: activeItems.length,
+  };
+}
 
-const importProcessingCopyByStep: Record<
-  OrderProgressStepId,
-  { title: string; description: string }
-> = {
-  'order-details': {
-    title: 'Checking your import details',
-    description: 'We are verifying your wallet and domain selections.',
-  },
-  payments: {
-    title: 'Collecting payment',
-    description:
-      'We are processing your payment. Blockchain payments may take 30+ seconds for transaction confirmation.',
-  },
-  items: {
-    title: 'Initiating domain transfer',
-    description:
-      'We are submitting the transfer request to your current registrar.',
-  },
-  'post-processing': {
-    title: 'Transfer in progress',
-    description:
-      'Your old registrar will contact you to confirm the transfer. This typically takes 5-7 days.',
-  },
-  'final-status': {
-    title: 'Completing your import',
-    description:
-      'We are finalizing the transfer and preparing your domain NFT.',
-  },
-  refund: {
-    title: 'Refunding any failed items',
-    description: 'Refunds are being initiated for domains we could not import.',
-  },
-  notification: {
-    title: 'Sending confirmation',
-    description:
-      'We will email you the final summary once everything is ready.',
-  },
-};
+function getProcessingTitle(counts: OrderItemCounts): string {
+  const { importCount, registerCount, renewCount, total } = counts;
 
-const defaultImportProcessingCopy = {
-  title: 'Importing your domain',
-  description: 'We are initiating the transfer from your current registrar.',
-};
+  if (total === 0) return 'Processing your order';
+
+  const parts: string[] = [];
+
+  if (importCount > 0) {
+    parts.push(
+      `Importing ${importCount} ${importCount === 1 ? 'domain' : 'domains'}`,
+    );
+  }
+  if (registerCount > 0) {
+    parts.push(
+      `registering ${registerCount} ${registerCount === 1 ? 'domain' : 'domains'}`,
+    );
+  }
+  if (renewCount > 0) {
+    parts.push(
+      `renewing ${renewCount} ${renewCount === 1 ? 'domain' : 'domains'}`,
+    );
+  }
+
+  if (parts.length === 0) {
+    return `Processing ${total} ${total === 1 ? 'domain' : 'domains'}`;
+  }
+
+  if (parts.length === 1) {
+    return parts[0];
+  }
+
+  const lastPart = parts.pop();
+  return `${parts.join(', ')} and ${lastPart}`;
+}
+
+function getProcessingDescription(
+  counts: OrderItemCounts,
+  stepId: OrderProgressStepId | undefined,
+): string {
+  const { importCount, registerCount, total } = counts;
+
+  if (stepId === 'items') {
+    if (importCount > 0 && registerCount === 0) {
+      return 'We are submitting the import request. This typically takes 5-7 days. You can contact your old registrar to expedite. If the domain is locked, you may need to unlock it first.';
+    }
+    if (importCount > 0 && registerCount > 0) {
+      return 'We are registering your domains and submitting import requests. Imports typically take 5-7 days. You can contact your old registrar to expedite. If a domain is locked, you may need to unlock it first.';
+    }
+    return 'Each domain is being submitted to the registrar.';
+  }
+
+  if (stepId === 'post-processing') {
+    if (importCount > 0) {
+      return 'Your old registrar will contact you to confirm the import. This typically takes 5-7 days.';
+    }
+    return 'We are refreshing indexes and preparing your on-chain records.';
+  }
+
+  if (importCount > 0 && registerCount === 0) {
+    return 'We are initiating the import. This typically takes 5-7 days. You can contact your old registrar to expedite.';
+  }
+
+  if (importCount > 0 && registerCount > 0) {
+    return 'We are processing your domains. Imports typically take 5-7 days.';
+  }
+
+  return 'Hang on tight while we wrap things up.';
+}
 
 export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
@@ -269,18 +267,15 @@ export default function OrderPage({ params }: OrderPageProps) {
     enabled: isAuthenticated,
   });
 
-  const isImportOrder = useMemo(() => hasImportItems(items), [items]);
-  const isImportOnly = useMemo(() => isImportOnlyOrder(items), [items]);
+  const itemCounts = useMemo(() => getOrderItemCounts(items), [items]);
 
-  const activeProgressCopy = orderProgress.activeStep?.id
-    ? isImportOrder
-      ? (importProcessingCopyByStep[orderProgress.activeStep.id] ??
-        defaultImportProcessingCopy)
-      : (processingCopyByStep[orderProgress.activeStep.id] ??
-        defaultProcessingCopy)
-    : isImportOrder
-      ? defaultImportProcessingCopy
-      : defaultProcessingCopy;
+  const activeProgressCopy = useMemo(() => {
+    const stepId = orderProgress.activeStep?.id;
+    return {
+      title: getProcessingTitle(itemCounts),
+      description: getProcessingDescription(itemCounts, stepId),
+    };
+  }, [itemCounts, orderProgress.activeStep?.id]);
 
   const orderItems = useMemo(() => {
     if (!items) {
@@ -503,12 +498,7 @@ export default function OrderPage({ params }: OrderPageProps) {
           )}
         </div>
 
-        {viewState !== 'success' && !isFailedOrder && isImportOnly && (
-          <div className="mb-8">
-            <ImportOrderStatus items={items} />
-          </div>
-        )}
-        {viewState !== 'success' && !isFailedOrder && !isImportOnly && (
+        {viewState !== 'success' && !isFailedOrder && (
           <div className="mb-8">
             <OrderProgressTimeline
               progress={orderProgress.data ?? null}
@@ -516,7 +506,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             />
           </div>
         )}
-        {!isFailedOrder && (!isImportOnly || viewState === 'success') && (
+        {!isFailedOrder && (
           <div>
             <NftCarousel
               items={orderItems}

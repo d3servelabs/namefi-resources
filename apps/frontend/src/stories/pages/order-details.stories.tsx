@@ -679,3 +679,146 @@ export const FailedOrder: Story = {
     },
   },
 };
+
+export const MixedImportAndRegister: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 7996,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName:
+              'imported-domain.com' as NamefiNormalizedDomain,
+            type: 'IMPORT',
+            status: 'PROCESSING',
+            amountInUSDCents: 1999,
+          }),
+          createMockOrderItem({
+            id: 'item-2',
+            normalizedDomainName: 'new-domain.io' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1999,
+          }),
+          createMockOrderItem({
+            id: 'item-3',
+            normalizedDomainName: 'another-new.net' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1999,
+          }),
+          createMockOrderItem({
+            id: 'item-4',
+            normalizedDomainName: 'third-new.org' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1999,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 7996,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'visa',
+          last4: '4242',
+        },
+      ],
+    },
+  },
+};
+
+export const SingleImport: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 1999,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName:
+              'my-imported-domain.com' as NamefiNormalizedDomain,
+            type: 'IMPORT',
+            status: 'PROCESSING',
+            amountInUSDCents: 1999,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 1999,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'mastercard',
+          last4: '5555',
+        },
+      ],
+    },
+  },
+};
+
+export const SingleRegistration: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 1299,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName: 'my-new-domain.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'visa',
+          last4: '4242',
+        },
+      ],
+    },
+  },
+};
