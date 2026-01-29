@@ -228,9 +228,12 @@ function createMockCartContext(mockState: MockCartState): UseCart {
     removeItem: async () => mockState.cartItems,
     updateItem: async () => mockState.cartItems[0],
     clearCart: async () => [],
-    isDomainInCart: () => false,
+    isDomainInCart: (domain: string) =>
+      mockState.cartItems.some((item) => item.normalizedDomainName === domain),
     isDomainBusy: () => false,
-    getCartItemId: () => undefined,
+    getCartItemId: (domain: string) =>
+      mockState.cartItems.find((item) => item.normalizedDomainName === domain)
+        ?.id,
     refetchCart: async () => {},
     clearLocalCart: () => {},
     busy: {
