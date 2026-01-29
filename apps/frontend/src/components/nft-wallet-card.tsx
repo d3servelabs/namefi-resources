@@ -283,19 +283,6 @@ export function NftWalletCard({
 
   const statusMeta = useMemo(() => {
     switch (ensStatus.status) {
-      case 'address':
-        return {
-          message: `Ready to send to ${getShortAddress(ensStatus.address)}`,
-          icon: (
-            <CheckCircle2
-              className="size-4 text-emerald-500"
-              aria-hidden="true"
-            />
-          ),
-          className: 'text-emerald-500 dark:text-emerald-400',
-          address: ensStatus.address,
-          ensName: null,
-        };
       case 'resolving':
         return {
           message: `Resolving ${ensStatus.ensName}…`,
