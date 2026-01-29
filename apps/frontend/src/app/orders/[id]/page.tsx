@@ -7,8 +7,12 @@ import Link from 'next/link';
 import { TRPCClientError } from '@trpc/client';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { redirect } from 'next/navigation';
+import { AddressWithChain } from '@/components/address-with-chain';
 import { useAuth } from '@/hooks/use-auth';
-import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import {
+  useLinkedWalletAddresses,
+  useUserWalletAddresses,
+} from '@/hooks/use-user-wallet-addresses';
 import {
   getWorkflowProgressPhase,
   type WorkflowProgressPhase,
@@ -42,7 +46,7 @@ import {
   DialogTitle,
 } from '@/components/ui/shadcn/dialog';
 import { Label } from '@/components/ui/shadcn/label';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Info } from 'lucide-react';
 
 // Dynamically import heavy visualization components to reduce first-hit compile time
 const OrderProgressTimeline = dynamic(
@@ -186,6 +190,8 @@ export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
+  const { linkedWalletAddresses, linkedWalletsReady } =
+    useLinkedWalletAddresses();
   const trpc = useTRPC();
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [copiedField, setCopiedField] = useState<'message' | null>(null);
@@ -370,6 +376,7 @@ export default function OrderPage({ params }: OrderPageProps) {
   }, [orderItems]);
 
   const recipientWalletAddress = order?.nftWalletAddress ?? null;
+  const recipientChainId = order?.nftChainId ?? null;
   const isRecipientSelf = useMemo(() => {
     if (!recipientWalletAddress) return true;
     if (!userWalletsReady) return true;
@@ -378,6 +385,14 @@ export default function OrderPage({ params }: OrderPageProps) {
       (address) => address.toLowerCase() === normalizedRecipient,
     );
   }, [recipientWalletAddress, userWalletAddresses, userWalletsReady]);
+  const isRecipientLinked = useMemo(() => {
+    if (!recipientWalletAddress) return true;
+    if (!linkedWalletsReady) return true;
+    const normalizedRecipient = recipientWalletAddress.toLowerCase();
+    return linkedWalletAddresses.some(
+      (address) => address.toLowerCase() === normalizedRecipient,
+    );
+  }, [linkedWalletAddresses, linkedWalletsReady, recipientWalletAddress]);
 
   const shareManageMessage = useMemo(() => {
     if (!orderItems?.length) {
@@ -467,6 +482,23 @@ export default function OrderPage({ params }: OrderPageProps) {
               <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
                 {subheading}
               </p>
+              {recipientWalletAddress && (
+                <div className="mt-4 flex flex-col items-center gap-2 text-sm">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1">
+                    <span className="text-muted-foreground">NFT Wallet</span>
+                    <AddressWithChain
+                      address={recipientWalletAddress}
+                      chainId={recipientChainId}
+                    />
+                  </div>
+                  {!isRecipientLinked && (
+                    <div className="flex items-center gap-2 text-amber-600">
+                      <Info className="h-4 w-4" />
+                      <span>This wallet isn't linked to your account.</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
         </div>
