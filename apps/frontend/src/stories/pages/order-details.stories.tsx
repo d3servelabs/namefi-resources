@@ -10,7 +10,8 @@ import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { type ReactNode, createContext } from 'react';
+import { createContext } from 'react';
+import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
@@ -378,7 +379,7 @@ export const NotFound: Story = {
 export const Unauthorized: Story = {
   args: {
     mockState: {
-      isAuthenticated: true,
+      isAuthenticated: false,
       isLoading: false,
       orderDetails: null,
       isOrderLoading: false,
