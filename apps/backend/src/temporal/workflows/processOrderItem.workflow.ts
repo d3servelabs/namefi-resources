@@ -76,6 +76,8 @@ export async function processOrderItemWorkflow(
         encryptedEppAuthorizationCode,
         encryptionKeyId,
         durationInYears,
+        orderId: input.orderId,
+        orderItemId: input.itemId,
       };
       // Register or import the domain
       const acquireResult = await workflow.executeChild(acquireDomainWorkflow, {

@@ -53,7 +53,7 @@ export const defaultTaskQueueActivities = {
       );
     }
   },
-  getConfig: async (key: keyof typeof config) => config[key],
+  getConfig: async <K extends keyof typeof config>(key: K) => config[key],
   updateNamefiNftIndex,
   triggerUpdateNamefiNftIndex,
   triggerNamefiGptCronJob,

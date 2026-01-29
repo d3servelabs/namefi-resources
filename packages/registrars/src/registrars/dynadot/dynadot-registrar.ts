@@ -1139,44 +1139,62 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         const response = await this._getTransferStatus(domainNameLdh);
         assertNotNil(response, 'Response Failed');
         const latestStatus = response[0];
-        let status: OperationStatus;
-        let message: string | undefined;
-        switch (latestStatus.TransferStatus) {
-          case DynadotTransferStatus.NONE:
-            status = OperationStatus.SUBMITTED;
-            break;
-          case DynadotTransferStatus.WAITING:
-          case DynadotTransferStatus.Approved:
-            status = OperationStatus.IN_PROGRESS;
-            break;
-          case DynadotTransferStatus.LOCKED:
-            message = 'Cannot Import domain while it is locked';
-            status = OperationStatus.REQUIRES_ACTION;
-            break;
-          case DynadotTransferStatus.AUTH_CODE_NEEDED:
-            message = 'Authcode is invalid or missing';
-            status = OperationStatus.REQUIRES_ACTION;
-            break;
 
-          case DynadotTransferStatus.CANCELLED:
-          case DynadotTransferStatus.FAILED:
-            status = OperationStatus.FAILED;
-            break;
-
-          case DynadotTransferStatus.Transferred:
-            status = OperationStatus.SUCCESSFUL;
-            break;
-          default:
-            status = OperationStatus.ERROR;
-            break;
-        }
-        return Promise.resolve({
+        const baseRes = {
           type: operationType,
           operationId,
           response,
-          status,
-          message,
-        });
+        };
+
+        switch (latestStatus.TransferStatus) {
+          case DynadotTransferStatus.NONE:
+            return {
+              ...baseRes,
+              status: OperationStatus.SUBMITTED,
+            };
+          case DynadotTransferStatus.WAITING:
+          case DynadotTransferStatus.Approved:
+            return {
+              ...baseRes,
+              status: OperationStatus.IN_PROGRESS,
+            };
+          case DynadotTransferStatus.LOCKED:
+            return {
+              ...baseRes,
+              message: 'Cannot Import domain while it is locked',
+              status: OperationStatus.REQUIRES_ACTION,
+              metadata: {
+                actionType: 'EPP_UNLOCK_REQUIRED',
+              },
+            };
+          case DynadotTransferStatus.AUTH_CODE_NEEDED:
+            return {
+              ...baseRes,
+              message: 'Authcode is invalid or missing',
+              status: OperationStatus.REQUIRES_ACTION,
+              metadata: {
+                actionType: 'EPP_AUTH_CODE_UPDATE_REQUIRED',
+              },
+            };
+
+          case DynadotTransferStatus.CANCELLED:
+          case DynadotTransferStatus.FAILED:
+            return {
+              ...baseRes,
+              status: OperationStatus.FAILED,
+            };
+
+          case DynadotTransferStatus.Transferred:
+            return {
+              ...baseRes,
+              status: OperationStatus.SUCCESSFUL,
+            };
+          default:
+            return {
+              ...baseRes,
+              status: OperationStatus.ERROR,
+            };
+        }
       }
       case OperationType.RENEW_DOMAIN:
       case OperationType.DOMAIN_CHANGE_LOCK:

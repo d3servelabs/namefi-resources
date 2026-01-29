@@ -213,6 +213,8 @@ export async function processFreeClaimWorkflow(
       userId,
       registrarKey,
       durationInYears,
+      orderId: state.orderId,
+      orderItemId: state.orderItemId,
     };
 
     const acquireResult = await workflow.executeChild(acquireDomainWorkflow, {

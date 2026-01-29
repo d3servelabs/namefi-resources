@@ -250,6 +250,10 @@ export const configSchema = z.object({
    * Should be set for local/dev environments and left empty for production.
    */
   SKIP_AUTH_USER_ID: z.string().uuid().optional(),
+  USE_NEW_EPP_WORKFLOW: z
+    .string()
+    .default(process.env.USE_NEW_EPP_WORKFLOW ?? 'false')
+    .pipe(z.stringbool()),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

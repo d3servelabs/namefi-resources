@@ -1049,6 +1049,22 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
         const { isPending, isApproved, isRejected, message, response } =
           await this._getTransferStatus(domainNameLdh);
         let status: OperationStatus = OperationStatus.SUBMITTED;
+        const domainStatus = await this.getDomainStatus(domainNameLdh);
+        if (
+          domainStatus.includes('client transfer prohibited') ||
+          domainStatus.includes('clientTransferProhibited')
+        ) {
+          return {
+            status: OperationStatus.REQUIRES_ACTION,
+            type: operationType,
+            operationId,
+            response: { message, response },
+            message: 'Domain is locked',
+            metadata: {
+              actionType: 'EPP_UNLOCK_REQUIRED',
+            },
+          };
+        }
 
         if (isPending) {
           status = OperationStatus.IN_PROGRESS;

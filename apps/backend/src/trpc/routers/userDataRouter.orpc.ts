@@ -98,6 +98,9 @@ const orderItemMetadataSchema = z
         recordedAt: z.string(),
       })
       .optional(),
+    requiredAction: z
+      .enum(['EPP_UNLOCK_REQUIRED', 'EPP_AUTH_CODE_UPDATE_REQUIRED'])
+      .optional(),
   })
   .passthrough()
   .nullable()

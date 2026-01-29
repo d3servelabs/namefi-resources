@@ -9,14 +9,16 @@ import {
   orderItemsTable,
   paymentsTable,
   orderStatusSchema,
+  type OrderItemMetadata,
   type OrderMintTransactionMetadata,
 } from '@namefi-astra/db';
 import { eq, and, sql, inArray } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { sendGA4Event } from '#lib/ga4-measurement';
+import { NamefiEmailLinks } from '../../mail/email-links';
+import { sendStyledEmailNotificationForUser } from './notify.activities';
 import { config, secrets } from '#lib/env';
-import { Context } from '@temporalio/activity';
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -278,7 +280,54 @@ export async function recordOrderMintTransaction({
     'Recorded mint transaction metadata for order %s item %s',
     orderId,
     orderItemId,
+    txHash,
   );
+}
+
+export async function setOrderItemRequiredAction({
+  orderItemId,
+  orderId,
+  requiredAction,
+}: {
+  orderItemId: string;
+  orderId: string;
+  requiredAction: OrderItemMetadata['requiredAction'] | null;
+}) {
+  const [updatedOrderItem] = await db
+    .update(orderItemsTable)
+    .set({
+      metadata: requiredAction
+        ? sql`jsonb_set(
+            coalesce(${orderItemsTable.metadata}, '{}'::jsonb),
+            '{requiredAction}',
+            ${JSON.stringify(requiredAction)}::jsonb,
+            true
+          )`
+        : sql`(${orderItemsTable.metadata} - 'requiredAction')`,
+    })
+    .where(
+      and(
+        eq(orderItemsTable.id, orderItemId),
+        eq(orderItemsTable.orderId, orderId),
+      ),
+    )
+    .returning({ id: orderItemsTable.id });
+
+  if (!updatedOrderItem) {
+    throw new Error(
+      `Order item not found when setting required action (orderId=${orderId}, orderItemId=${orderItemId})`,
+    );
+  }
+
+  logger.info(
+    { orderId, orderItemId, requiredAction },
+    'Updated order item %s requiredAction to %s for order %s',
+    orderItemId,
+    requiredAction ?? 'none',
+    orderId,
+  );
+
+  return updatedOrderItem;
 }
 
 // Export activities as a namespace for easier import in workflow
@@ -290,6 +339,7 @@ export type OrderActivities = {
   trackDomainAcquisition: typeof trackDomainAcquisition;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
+  setOrderItemRequiredAction: typeof setOrderItemRequiredAction;
 };
 
 export type DomainRenewalResult = {
@@ -429,11 +479,10 @@ export interface SendOrderCompletionSlackAlertInput {
 export async function sendOrderCompletionSlackAlert(
   input: SendOrderCompletionSlackAlertInput,
 ): Promise<void> {
-  const ctx = Context.current();
   const webhookUrl = secrets.NAMEFI_COWBELL_SLACK_WEBHOOK_URL;
 
   if (!webhookUrl) {
-    ctx.log.warn(
+    logger.warn(
       'No order alert Slack webhook URL configured, skipping Slack notification',
     );
     return;
@@ -443,7 +492,7 @@ export async function sendOrderCompletionSlackAlert(
     (d) => d.status === 'SUCCEEDED',
   );
   if (succeededDomains.length === 0) {
-    ctx.log.info('No succeeded domains, skipping Slack notification');
+    logger.info('No succeeded domains, skipping Slack notification');
     return;
   }
 
@@ -513,11 +562,50 @@ export async function sendOrderCompletionSlackAlert(
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    ctx.log.info('Successfully sent order completion alert to Slack');
+    logger.info('Successfully sent order completion alert to Slack');
   } catch (error) {
-    ctx.log.error('Failed to send order completion alert to Slack', {
+    logger.error('Failed to send order completion alert to Slack', {
       error: error instanceof Error ? error.message : String(error),
     });
     throw error;
   }
+}
+type OrderRequiredAction = NonNullable<OrderItemMetadata['requiredAction']>;
+
+export async function sendOrderRequiresFurtherActionEmail({
+  normalizedDomainName,
+  userId,
+  orderId,
+  orderItemId,
+  requiredAction,
+  extraMessage,
+}: {
+  normalizedDomainName: string;
+  userId: string;
+  orderId: string;
+  orderItemId: string;
+  requiredAction: OrderRequiredAction;
+  extraMessage?: string;
+}) {
+  const message =
+    requiredAction === 'EPP_AUTH_CODE_UPDATE_REQUIRED'
+      ? `We need a new authorization code for **${normalizedDomainName}** to continue your import.\n\nPlease provide a new auth code in your order details so we can proceed.`
+      : `Your domain **${normalizedDomainName}** is locked and needs to be unlocked before we can continue.\n\nPlease unlock the domain at your current registrar, then confirm in your order details.`;
+
+  const orderDetailsLink = NamefiEmailLinks.orderDetails({
+    orderId: orderId,
+    poweredByNamefiDomain: null,
+    extraSearchParams: {
+      action: requiredAction,
+      domain: normalizedDomainName,
+    },
+  });
+
+  await sendStyledEmailNotificationForUser({
+    userId: userId,
+    title: '[Namefi] Action required to continue your order',
+    subject: '[Namefi] Action required to continue your order',
+    showGoToDashboard: false,
+    messageMarkdown: `${message}\n\n[Open order details](${orderDetailsLink})`,
+  });
 }

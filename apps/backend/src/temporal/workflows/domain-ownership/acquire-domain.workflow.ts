@@ -16,6 +16,7 @@ import { mintNamefiNFT } from '../mint.workflow';
 import { domainSetupWorkflow } from './domain-setup.workflow';
 import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
 import { resolve } from '../../../utils/resolve';
+import { eppRegisterOrImportWorkflow } from './epp-register-or-import.workflow';
 
 export interface AcquireDomainWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -27,21 +28,24 @@ export interface AcquireDomainWorkflowInput {
   registrarKey: Registrars;
   encryptedEppAuthorizationCode?: string | null;
   encryptionKeyId?: string | null;
+  orderId?: string;
+  orderItemId?: string;
 }
 
 export type AcquireDomainWorkflowOutput = {
   mintTxHash?: string;
 };
 
-const { generalAlertNamefi, criticalAlertNamefi } = typedProxyActivities({
-  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-  options: {
-    ...shortRunningOpts,
-    retry: {
-      maximumInterval: '1 minute',
+const { generalAlertNamefi, criticalAlertNamefi, getConfig } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+      retry: {
+        maximumInterval: '1 minute',
+      },
     },
-  },
-});
+  });
 
 const { getPoweredByNamefi3PDomains } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
@@ -174,24 +178,58 @@ async function _acquireSldDomain(input: AcquireDomainWorkflowInput) {
 
   let details: Awaited<ReturnType<typeof sldRegisterOrImportWorkflow>>;
   try {
-    details = await workflow.executeChild(sldRegisterOrImportWorkflow, {
-      args: [
+    if (workflow.patched('use-new-epp-workflow')) {
+      const useNewEppWorkflow = await getConfig('USE_NEW_EPP_WORKFLOW');
+
+      details = await workflow.executeChild(
+        useNewEppWorkflow
+          ? eppRegisterOrImportWorkflow
+          : sldRegisterOrImportWorkflow,
         {
-          operationType: input.operationType,
-          recipientWalletAddress: input.recipientWalletAddress,
-          chainId: input.chainId,
-          normalizedDomainName: input.normalizedDomainName,
-          durationInYears: input.durationInYears,
-          registrarKey: input.registrarKey,
-          encryptedEppAuthorizationCode: isImport
-            ? input.encryptedEppAuthorizationCode
-            : undefined,
-          encryptionKeyId: isImport ? input.encryptionKeyId : undefined,
+          args: [
+            {
+              operationType: input.operationType,
+              recipientWalletAddress: input.recipientWalletAddress,
+              chainId: input.chainId,
+              normalizedDomainName: input.normalizedDomainName,
+              durationInYears: input.durationInYears,
+              registrarKey: input.registrarKey,
+              encryptedEppAuthorizationCode: isImport
+                ? input.encryptedEppAuthorizationCode
+                : undefined,
+              encryptionKeyId: isImport ? input.encryptionKeyId : undefined,
+              orderId: input.orderId,
+              orderItemId: input.orderItemId,
+              userId: input.userId,
+            },
+          ],
+          workflowId: `eppRegisterOrImport-[${input.normalizedDomainName}]`,
+          workflowRunTimeout: isImport ? '21 days' : /* REGISTER */ '4 hours',
         },
-      ],
-      workflowId: `eppRegisterOrImport-[${input.normalizedDomainName}]`,
-      workflowRunTimeout: isImport ? '21 days' : /* REGISTER */ '4 hours',
-    });
+      );
+    } else {
+      details = await workflow.executeChild(sldRegisterOrImportWorkflow, {
+        args: [
+          {
+            operationType: input.operationType,
+            recipientWalletAddress: input.recipientWalletAddress,
+            chainId: input.chainId,
+            normalizedDomainName: input.normalizedDomainName,
+            durationInYears: input.durationInYears,
+            registrarKey: input.registrarKey,
+            encryptedEppAuthorizationCode: isImport
+              ? input.encryptedEppAuthorizationCode
+              : undefined,
+            encryptionKeyId: isImport ? input.encryptionKeyId : undefined,
+            orderId: input.orderId,
+            orderItemId: input.orderItemId,
+            userId: input.userId,
+          },
+        ],
+        workflowId: `eppRegisterOrImport-[${input.normalizedDomainName}]`,
+        workflowRunTimeout: isImport ? '21 days' : /* REGISTER */ '4 hours',
+      });
+    }
 
     return details;
   } catch (error: any) {

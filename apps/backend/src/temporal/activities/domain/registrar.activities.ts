@@ -26,7 +26,10 @@ import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
 import { camelCase, noCase } from 'change-case';
 import { config } from '#lib/env';
-import { CENTRALNIC_OTE_TLDS } from '#lib/epp-registrars/centralnic';
+import {
+  CENTRALNIC_OTE_TLDS,
+  getCentralnicRegistrar,
+} from '#lib/epp-registrars/centralnic';
 
 /**
  * Poll the removal status of the DS record
@@ -137,7 +140,7 @@ export async function pollRegisterOrImportDomainOperationStatus(
   normalizedDomainName: NamefiNormalizedDomain,
   registrarOperationId: string,
   registrarKey: Registrars,
-): Promise<OperationStatus> {
+): Promise<LongRunningOperationResult> {
   const ctx = Context.current();
   const domainName = toPunycodeDomainName(normalizedDomainName);
 
@@ -161,7 +164,7 @@ export async function pollRegisterOrImportDomainOperationStatus(
     throw new Error(`Operation status is ${response.status}`); // If the operation is still in progress, Temporal will retry the activity
   }
 
-  return response.status; // If the operation is done (or status is unknown), Temporal will complete the activity
+  return response; // If the operation is done (or status is unknown), Temporal will complete the activity
 }
 
 const ALLOW_EMAIL_LABELS = false;
@@ -370,7 +373,7 @@ export async function unlockEppDomain(
  * @returns Promise<GetLockStateResponse> The EPP lock state for the domain
  */
 export async function getEppLockState(
-  domainNameLdh: PunycodeDomainName,
+  domainNameLdh: PunycodeDomainName | NamefiNormalizedDomain,
 ): Promise<GetLockStateResponse> {
   logger.info(`Getting EPP lock state for domain: ${domainNameLdh}`);
 
@@ -399,7 +402,7 @@ export async function getEppLockState(
     [Error | null, GetLockStateResponse | null]
   > => {
     const [_error, status] = await resolve(
-      sldRegistrar.getDomainStatus(domainNameLdh),
+      sldRegistrar.getDomainStatus(toPunycodeDomainName(domainNameLdh)),
     );
     if (_error || !status) {
       logger.trace(
@@ -418,9 +421,15 @@ export async function getEppLockState(
     });
 
     const result: GetLockStateResponse = {
-      isAddPeriod: eppStatusRdap.includes('add period'),
-      isTransferPeriod: eppStatusRdap.includes('transfer period'),
-      locked: eppStatusRdap.includes('transfer prohibited'),
+      isAddPeriod: eppStatusRdap.some((status) =>
+        status.includes('add period'),
+      ),
+      isTransferPeriod: eppStatusRdap.some((status) =>
+        status.includes('transfer period'),
+      ),
+      locked: eppStatusRdap.some((status) =>
+        status.includes('transfer prohibited'),
+      ),
       status: eppStatusRdap,
     };
     return [null, result];
@@ -434,9 +443,52 @@ export async function getEppLockState(
     Registrars.CentralNic_OTE_01,
     Registrars.CentralNic_OTE_02,
   ].includes(config.CENTRALNIC_KEY as any);
+  const awayRegistrar = [
+    Registrars.CentralNic_OTE_01,
+    Registrars.CentralNic_OTE_02,
+  ].find((registrar) => registrar !== config.CENTRALNIC_KEY);
+
+  const getFromAwaySandboxRegistrar = async (): Promise<
+    [Error | null, GetLockStateResponse | null]
+  > => {
+    if (!awayRegistrar) return [Error('Away Registrar not setup'), null];
+    const registrar = getCentralnicRegistrar(awayRegistrar, undefined);
+    const [_error, status] = await resolve(
+      registrar.getDomainStatus(toPunycodeDomainName(domainNameLdh)),
+    );
+    if (_error || !status) {
+      logger.trace(
+        `Error getting domain status for domain: ${domainNameLdh}: ${_error.message}`,
+        _error.stack,
+      );
+      return [_error, null];
+    }
+    const eppStatusRdap = status.map((s) => {
+      const trimmedSnakeCase = s.trim().replaceAll(/\s+/g, '_');
+      const trimmedSnakeCaseLower = trimmedSnakeCase.includes('_')
+        ? trimmedSnakeCase.toLowerCase()
+        : trimmedSnakeCase;
+
+      return noCase(camelCase(trimmedSnakeCaseLower));
+    });
+
+    const result: GetLockStateResponse = {
+      isAddPeriod: eppStatusRdap.some((status) =>
+        status.includes('add period'),
+      ),
+      isTransferPeriod: eppStatusRdap.some((status) =>
+        status.includes('transfer period'),
+      ),
+      locked: eppStatusRdap.some((status) =>
+        status.includes('transfer prohibited'),
+      ),
+      status: eppStatusRdap,
+    };
+    return [null, result];
+  };
 
   const orderedCalls = centralNicSandboxEnabled
-    ? [getFromRegistrar, getFromPublic]
+    ? [getFromAwaySandboxRegistrar, getFromRegistrar]
     : [getFromPublic, getFromRegistrar];
 
   for (let i = 0; i < orderedCalls.length; i++) {
@@ -452,7 +504,7 @@ export async function getEppLockState(
 }
 
 export async function pollAndExpectEppLockStateChange(
-  domainNameLdh: PunycodeDomainName,
+  domainNameLdh: PunycodeDomainName | NamefiNormalizedDomain,
   newLockState: { locked: boolean },
 ): Promise<GetLockStateResponse> {
   const res = await getEppLockState(domainNameLdh);

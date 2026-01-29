@@ -23,14 +23,26 @@ import type {
 } from './data/suggestions';
 import type { PendingTransferInfo } from './data/transfer-status';
 
+type RequiresActionMetadata = {
+  actionType: 'EPP_UNLOCK_REQUIRED' | 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+};
 export type LongRunningOperationResult<T = any> = {
   operationId?: string | null;
-
-  status: OperationStatus;
   type: OperationType;
+  status: OperationStatus;
   message?: string;
   response: T;
-};
+  metadata?: {};
+} & (
+  | {
+      status: Exclude<OperationStatus, 'REQUIRES_ACTION'>;
+      metadata?: {};
+    }
+  | {
+      status: Extract<OperationStatus, 'REQUIRES_ACTION'>;
+      metadata: RequiresActionMetadata;
+    }
+);
 
 export type RegisterDomainInput = {
   domainName: PunycodeDomainName;

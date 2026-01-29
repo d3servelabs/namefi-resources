@@ -28,6 +28,9 @@ interface SldRegisterOrImportWorkflowInput {
   normalizedDomainName: NamefiNormalizedDomain;
   durationInYears: number;
   registrarKey: Registrars;
+  userId?: string | null;
+  orderId?: string | null;
+  orderItemId?: string | null;
 
   encryptionKeyId?: string | null;
   encryptedEppAuthorizationCode?: string | null;
@@ -137,11 +140,13 @@ export async function sldRegisterOrImportWorkflow(
     // If operations are saved -> we are good
     // If operations are not saved -> we need to reject the workflow and send an alert
 
-    registrarOperationStatus = await pollRegisterOrImportDomainOperationStatus(
-      input.normalizedDomainName,
-      registrarOperationId,
-      input.registrarKey,
-    );
+    registrarOperationStatus = (
+      await pollRegisterOrImportDomainOperationStatus(
+        input.normalizedDomainName,
+        registrarOperationId,
+        input.registrarKey,
+      )
+    ).status;
 
     workflow.deprecatePatch('add-support-for-requires-action');
     let nextAction: 'PROCEED' | 'FAIL' | null = null;

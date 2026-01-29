@@ -32,7 +32,7 @@ import {
   orderMetadataSchema,
   orderItemMetadataSchema,
 } from './schema';
-export type { OrderMintTransactionMetadata } from './schema';
+export type { OrderItemMetadata, OrderMintTransactionMetadata } from './schema';
 
 /**
  * Zod schemas for type-safe operations

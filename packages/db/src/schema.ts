@@ -223,10 +223,15 @@ export const postProcessOrderItemSchema = z
   .loose();
 
 export type PostProcessOrderItem = z.infer<typeof postProcessOrderItemSchema>;
+export const orderItemRequiredActionSchema = z.enum([
+  'EPP_UNLOCK_REQUIRED',
+  'EPP_AUTH_CODE_UPDATE_REQUIRED',
+]);
 
 export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
   mintTransaction: orderMintTransactionMetadataSchema.optional(),
   postProcessOrderItem: postProcessOrderItemSchema.optional(),
+  requiredAction: orderItemRequiredActionSchema.optional(),
 });
 
 export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;
