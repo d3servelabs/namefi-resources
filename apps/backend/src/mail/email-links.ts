@@ -1,6 +1,13 @@
 import { mapObjIndexed } from 'ramda';
 import { addPoweredByNamefiToUrl } from './components/powered-by-namefi-url-context';
 
+const baseUrl =
+  {
+    production: 'https://namefi.io',
+    development: 'https://namefi.dev',
+    local: 'http://localhost:5050',
+  }[process.env.ENVIRONMENT ?? ''] || 'https://namefi.io';
+
 /**
  * A record of functions that return urls with the powered by namefi domain added
  *
@@ -11,19 +18,19 @@ import { addPoweredByNamefiToUrl } from './components/powered-by-namefi-url-cont
  * ```
  */
 export const NamefiEmailLinks = withPoweredByNamefiDomain({
-  dashboard: () => 'https://namefi.io/m/user/domains',
-  domains: () => 'https://namefi.io/m/user/domains',
+  dashboard: () => `${baseUrl}/m/user/domains`,
+  domains: () => `${baseUrl}/m/user/domains`,
   domainSettings: (args: { domain: string }) =>
-    `https://namefi.io/m/user/domains/${encodeURIComponent(args.domain)}`,
-  ordersHistory: () => 'https://namefi.io/m/user/orders',
+    `${baseUrl}/m/user/domains/${encodeURIComponent(args.domain)}`,
+  ordersHistory: () => `${baseUrl}/m/user/orders`,
   orderDetails: (args: { orderId: string }) =>
-    `https://namefi.io/m/user/orders/${args.orderId}`,
+    `${baseUrl}/m/user/orders/${args.orderId}`,
 
-  paymentMethods: () => 'https://namefi.io/m/user/payment-methods',
-  rechargeNFSC: () => 'https://namefi.io/m/user/nfsc/recharge',
+  paymentMethods: () => `${baseUrl}/m/user/payment-methods`,
+  rechargeNFSC: () => `${baseUrl}/m/user/nfsc/recharge`,
 
-  emailSubscription: () => 'https://namefi.io/m/user/email/subscription',
-  freeMints: () => 'https://namefi.io/m/user/rewards/domains',
+  emailSubscription: () => `${baseUrl}/m/user/email/subscription`,
+  freeMints: () => `${baseUrl}/m/user/rewards/domains`,
 } as const);
 
 /**

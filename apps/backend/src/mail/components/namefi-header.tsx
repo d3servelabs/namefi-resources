@@ -14,7 +14,7 @@ export function NamefiHeader({
     <>
       <div className="flex items-center gap-2">
         <Img src={src} width="49" height="49" alt="Namefi" />
-        {!!title && <h1 style={styles.text}>Namefi - {title}</h1>}
+        {!!title && <h1 style={styles.text}>{title}</h1>}
       </div>
       <Hr style={styles.hr} />
     </>
