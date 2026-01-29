@@ -124,7 +124,7 @@ function getProcessingTitle(counts: OrderItemCounts): string {
 
   if (importCount > 0) {
     parts.push(
-      `Importing ${importCount} ${importCount === 1 ? 'domain' : 'domains'}`,
+      `importing ${importCount} ${importCount === 1 ? 'domain' : 'domains'}`,
     );
   }
   if (registerCount > 0) {
@@ -142,12 +142,19 @@ function getProcessingTitle(counts: OrderItemCounts): string {
     return `Processing ${total} ${total === 1 ? 'domain' : 'domains'}`;
   }
 
+  // Capitalize the first letter of the first part for proper sentence case
+  const firstPart = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+
   if (parts.length === 1) {
-    return parts[0];
+    return firstPart;
   }
 
-  const lastPart = parts.pop();
-  return `${parts.join(', ')} and ${lastPart}`;
+  const remainingParts = parts.slice(1);
+  const lastPart = remainingParts.pop();
+  if (remainingParts.length === 0) {
+    return `${firstPart} and ${lastPart}`;
+  }
+  return `${firstPart}, ${remainingParts.join(', ')} and ${lastPart}`;
 }
 
 function getProcessingDescription(
