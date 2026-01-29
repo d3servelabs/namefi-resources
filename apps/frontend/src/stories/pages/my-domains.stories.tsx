@@ -10,7 +10,12 @@ import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { type ReactNode, createContext } from 'react';
+import {
+  type ReactNode,
+  createContext,
+  Component,
+  type ErrorInfo,
+} from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
@@ -22,6 +27,40 @@ import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import { MockPrivy } from '@/hooks/use-auth';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import type { OrderItemSelect } from '@namefi-astra/db';
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class StoryErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Story error boundary caught error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
@@ -398,6 +437,29 @@ export const ErrorState: Story = {
       hasError: true,
     },
   },
+  render: (args) => (
+    <StoryProviders
+      origin={mockOriginRuntime}
+      mockState={args.mockState ?? defaultMockState}
+    >
+      <ReactQueryDevtoolsWrapper />
+      <StoryErrorBoundary
+        fallback={
+          <div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center">
+            <div className="text-destructive text-lg font-semibold mb-2">
+              Failed to load domains
+            </div>
+            <div className="text-muted-foreground text-sm">
+              An error occurred while fetching your domains. Please try again
+              later.
+            </div>
+          </div>
+        }
+      >
+        <MyDomainsPage />
+      </StoryErrorBoundary>
+    </StoryProviders>
+  ),
 };
 
 export const Unauthenticated: Story = {
