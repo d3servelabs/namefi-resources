@@ -87,7 +87,7 @@ export async function buildEmailTrackUrl(
       error: error instanceof Error ? error.message : 'Unable to sign token',
     };
   }
-
+  baseUrl.searchParams.set('id', 'email-open');
   baseUrl.searchParams.set('token', token);
 
   return { url: baseUrl.toString() };
@@ -137,8 +137,28 @@ export async function getEmailTrackDataFromUrl(
   }
 }
 
-export function EmailTrackingPixel({ trackingUrl }: { trackingUrl: string }) {
-  return <img src={trackingUrl} width="1" height="1" alt="" />;
+export function EmailTrackingPixel({
+  trackingUrl,
+  id = 'analytics',
+}: {
+  trackingUrl: string;
+  id?: string;
+}) {
+  return (
+    <img
+      src={trackingUrl}
+      id={id}
+      width="1"
+      height="1"
+      alt="namefi"
+      style={{
+        display: 'block',
+        maxHeight: '0px',
+        maxWidth: '0px',
+        overflow: 'hidden',
+      }}
+    />
+  );
 }
 
 export function withEmailTracking<T extends object>(
