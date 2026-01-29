@@ -10,7 +10,7 @@ import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { type ReactNode, createContext } from 'react';
+import { type ReactNode, createContext, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
@@ -168,7 +168,7 @@ function MockTrpcProvider({
   children: ReactNode;
   mockState: MockCartState;
 }) {
-  const queryClient = createMockQueryClient();
+  const [queryClient] = useState(() => createMockQueryClient());
   const trpcClient = createTRPCClient<AppRouter>({
     links: [
       createMockLink({
