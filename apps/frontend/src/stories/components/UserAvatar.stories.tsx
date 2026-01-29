@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { UserWalletAvatar } from '@/components/user-avatar';
+import { UserWalletAvatar, CurrentUserAvatar } from '@/components/user-avatar';
 import { MockPrivy } from '@/hooks/use-auth';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -7,6 +7,11 @@ import { WagmiProvider } from 'wagmi';
 import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia, base } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
+import { TRPCProvider } from '@/lib/trpc';
+import { createTRPCClient } from '@trpc/client';
+import type { AppRouter } from '@namefi-astra/backend/trpc';
+import { createMockLink } from '@/lib/trpc/mock';
+import { ConsentManagerProvider } from '@c15t/nextjs';
 
 const MOCK_WALLET_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const MOCK_WALLET_ADDRESS_2 = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';
@@ -54,11 +59,61 @@ function StoryProviders({ children }: { children: ReactNode }) {
   );
 }
 
+function AuthenticatedStoryProviders({
+  children,
+  walletAddress,
+}: {
+  children: ReactNode;
+  walletAddress: string;
+}) {
+  const queryClient = createMockQueryClient();
+  const trpcClient = createTRPCClient<AppRouter>({
+    links: [
+      createMockLink({
+        isAuthenticated: true,
+        getMockData: async () => [null, {}] as const,
+      }),
+    ],
+  });
+
+  return (
+    <MockPrivy.Provider
+      value={
+        {
+          ready: true,
+          authenticated: true,
+          user: {
+            id: 'mock-user-id',
+            wallet: { address: walletAddress },
+            linkedAccounts: [{ type: 'wallet', address: walletAddress }],
+          },
+        } as any
+      }
+    >
+      <WagmiProvider config={mockWagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+            <ConsentManagerProvider options={{ mode: 'offline' }}>
+              {children}
+            </ConsentManagerProvider>
+          </TRPCProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </MockPrivy.Provider>
+  );
+}
+
 const meta: Meta<typeof UserWalletAvatar> = {
   title: 'Components/UserAvatar',
   component: UserWalletAvatar,
   parameters: {
     layout: 'centered',
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/',
+      },
+    },
   },
   tags: ['autodocs'],
   decorators: [
@@ -165,4 +220,16 @@ function MultipleAvatarsStory() {
 
 export const MultipleAvatars: Story = {
   render: () => <MultipleAvatarsStory />,
+};
+
+function CurrentUserAvatarStory() {
+  return (
+    <AuthenticatedStoryProviders walletAddress={MOCK_WALLET_ADDRESS}>
+      <CurrentUserAvatar />
+    </AuthenticatedStoryProviders>
+  );
+}
+
+export const CurrentUser: Story = {
+  render: () => <CurrentUserAvatarStory />,
 };
