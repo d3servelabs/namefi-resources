@@ -1,14 +1,31 @@
 name: Chromatic
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      # Broad coverage on main to keep baselines current
+      - "packages/ui/**"
+      - "apps/frontend/src/**/*.ts"
+      - "apps/frontend/src/**/*.tsx"
+      - "apps/frontend/src/**/*.css"
+      # Exclude non-code files
+      - "!**/*.md"
+      - "!**/*.json"
+      - "!**/*.test.ts"
+      - "!**/*.test.tsx"
+      - "!**/*.spec.ts"
+      - "!**/*.spec.tsx"
   pull_request:
     branches-ignore:
       - prod
     paths:
+      # Restrictive for PRs - only components and UI
       - "packages/ui/**"
-      - "apps/frontend/src/app/globals.css"
-      - "apps/frontend/src/stories/**"
       - "apps/frontend/src/components/**"
+      - "apps/frontend/src/stories/**"
+      - "apps/frontend/src/app/globals.css"
 
 env:
   NODE_OPTIONS: --max-old-space-size=8192
@@ -42,7 +59,18 @@ jobs:
           bun install
 
       - name: Run Chromatic
-        run: ../../node_modules/.bin/infisical run --token=$INFISICAL_SERVICE_TOKEN --env=dev -- bun run chromatic --exit-once-uploaded --exit-zero-on-changes
+        run: |
+          CHROMATIC_FLAGS="--exit-once-uploaded"
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            # Auto-accept on main to update baselines
+            # Higher diff threshold (0.2 = 20% tolerance) for noise on main
+            CHROMATIC_FLAGS="$CHROMATIC_FLAGS --auto-accept-changes --diff-threshold 0.2"
+          else
+            # Allow changes on PRs without failing CI
+            # Stricter threshold for PRs to catch real changes
+            CHROMATIC_FLAGS="$CHROMATIC_FLAGS --exit-zero-on-changes --diff-threshold 0.05"
+          fi
+          ../../node_modules/.bin/infisical run --token=$INFISICAL_SERVICE_TOKEN --env=dev -- bun run chromatic $CHROMATIC_FLAGS
         working-directory: apps/frontend
         env:
           INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
