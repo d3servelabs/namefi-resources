@@ -151,10 +151,16 @@ jobs:
               blocks.append(
                 {
                   "type": "section",
-                  "text": {"type": "mrkdwn", "text": f"*{padded[0]}*"},
+                  "text": {"type": "mrkdwn", "text": f"*Route:* {padded[0]}"},
                   "fields": [
-                    {"type": "mrkdwn", "text": f"*Cold*\\n{cold}"},
-                    {"type": "mrkdwn", "text": f"*Hot*\\n{hot}"},
+                    {
+                      "type": "mrkdwn",
+                      "text": f"*Cold (total | compile | render)*\n{cold}",
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": f"*Hot (total | compile | render)*\n{hot}",
+                    },
                   ],
                 }
               )
