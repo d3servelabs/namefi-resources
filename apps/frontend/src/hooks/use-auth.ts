@@ -7,7 +7,7 @@ import {
   type User as PrivyUser,
   type PrivyInterface,
 } from '@privy-io/react-auth';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, type AnyUseQueryOptions } from '@tanstack/react-query';
 import { useMemo, useContext, createContext } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
@@ -36,46 +36,55 @@ export function useAuth() {
     return ready && !authenticated;
   }, [authenticated, ready]);
 
+  // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
+  const canPrefetchOrShouldFetch =
+    !definitelyNotAuthenticated && !isSkipAuthActive;
+  const isPrefetch = canPrefetchOrShouldFetch && !ready;
+
   const userQuery = useQuery(
-    trpc.users.getUser.queryOptions(undefined, {
-      // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
-      enabled: !definitelyNotAuthenticated && !isSkipAuthActive,
-      retry(failureCount, error) {
-        if (definitelyNotAuthenticated || failureCount > 2) {
-          return false;
-        }
-        if (
-          error instanceof TRPCClientError &&
-          error.data?.code === 'UNAUTHORIZED'
-        ) {
-          return false;
-        }
-        return true;
-      },
-      trpc: { context: { skipBatch: true } },
-    }),
+    handlePrefetchQueryKey(
+      isPrefetch,
+      trpc.users.getUser.queryOptions(undefined, {
+        enabled: canPrefetchOrShouldFetch,
+        retry(failureCount, error) {
+          if (definitelyNotAuthenticated || failureCount > 2) {
+            return false;
+          }
+          if (
+            error instanceof TRPCClientError &&
+            error.data?.code === 'UNAUTHORIZED'
+          ) {
+            return false;
+          }
+          return true;
+        },
+        trpc: { context: { skipBatch: true } },
+      }),
+    ),
   );
 
   const impersonation = useQuery(
-    trpc.users.getImpersonationStatus.queryOptions(undefined, {
-      // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
-      enabled: !definitelyNotAuthenticated && !isSkipAuthActive,
-      retry(failureCount, error) {
-        if (definitelyNotAuthenticated || failureCount > 1) {
-          return false;
-        }
-        if (
-          error instanceof TRPCClientError &&
-          error.data?.code === 'UNAUTHORIZED'
-        ) {
-          return false;
-        }
-        return failureCount < 3;
-      },
-      staleTime: 15_000,
-      refetchInterval: 30_000,
-      trpc: { context: { skipBatch: true } },
-    }),
+    handlePrefetchQueryKey(
+      isPrefetch,
+      trpc.users.getImpersonationStatus.queryOptions(undefined, {
+        enabled: canPrefetchOrShouldFetch,
+        retry(failureCount, error) {
+          if (definitelyNotAuthenticated || failureCount > 1) {
+            return false;
+          }
+          if (
+            error instanceof TRPCClientError &&
+            error.data?.code === 'UNAUTHORIZED'
+          ) {
+            return false;
+          }
+          return failureCount < 3;
+        },
+        staleTime: 15_000,
+        refetchInterval: 30_000,
+        trpc: { context: { skipBatch: true } },
+      }),
+    ),
   );
 
   const impersonationTargetPrivyUser = impersonation.data?.impersonating
@@ -247,4 +256,30 @@ export function useLogout(callbacks?: LogoutCallbacks) {
   const { logout } = usePrivyLogout(combinedCallbacks);
 
   return { logout };
+}
+
+/**
+ * This extends the query key
+ */
+function extendTrpcQueryKey<Q extends AnyUseQueryOptions>(
+  keys: unknown[],
+  query: Q,
+): Q {
+  const queryKey: unknown[] | undefined = query.queryKey
+    ? [...query.queryKey]
+    : undefined;
+  if (keys.length && queryKey) {
+    queryKey.push(...keys);
+  }
+  return {
+    ...query,
+    queryKey,
+  };
+}
+
+function handlePrefetchQueryKey<Q extends AnyUseQueryOptions>(
+  isPrefetch: boolean,
+  query: Q,
+): Q {
+  return extendTrpcQueryKey<Q>(isPrefetch ? [{ mode: 'prefetch' }] : [], query);
 }
