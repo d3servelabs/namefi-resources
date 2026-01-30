@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.check-label.outputs.should_run }}
+      is_force_preview: ${{ steps.check-label.outputs.is_force_preview }}
       pr_number: ${{ steps.check-label.outputs.pr_number }}
       head_sha: ${{ steps.check-label.outputs.head_sha }}
       base_sha: ${{ steps.check-label.outputs.base_sha }}
@@ -67,7 +68,8 @@ jobs:
             echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
             echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
             echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "Workflow dispatch - proceeding with deployment"
+            echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+            echo "Workflow dispatch - proceeding with deployment (force preview)"
             exit 0
           fi
 
@@ -82,30 +84,44 @@ jobs:
           echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
 
-          # For labeled events, check if the label added is 'preview'
+          # For labeled events, check if the label added is 'preview' or 'force-preview'
           if [[ "$EVENT_ACTION" == "labeled" ]]; then
             LABEL_NAME="${{ github.event.label.name }}"
             echo "Label added: $LABEL_NAME"
-            if [[ "$LABEL_NAME" == "preview" ]]; then
+            if [[ "$LABEL_NAME" == "force-preview" ]]; then
+              echo "Force-preview label added - proceeding with forced deployment"
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+            elif [[ "$LABEL_NAME" == "preview" ]]; then
               echo "Preview label added - proceeding with deployment"
               echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
             else
               echo "Non-preview label added - skipping"
               echo "should_run=false" >> "$GITHUB_OUTPUT"
+              echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
             fi
             exit 0
           fi
 
-          # For other events (opened, synchronize, reopened), check if PR has 'preview' label
+          # For other events (opened, synchronize, reopened), check if PR has 'preview' or 'force-preview' label
+          HAS_FORCE_PREVIEW_LABEL="${{ contains(github.event.pull_request.labels.*.name, 'force-preview') }}"
           HAS_PREVIEW_LABEL="${{ contains(github.event.pull_request.labels.*.name, 'preview') }}"
+          echo "PR has force-preview label: $HAS_FORCE_PREVIEW_LABEL"
           echo "PR has preview label: $HAS_PREVIEW_LABEL"
 
-          if [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
+          if [[ "$HAS_FORCE_PREVIEW_LABEL" == "true" ]]; then
+            echo "PR has force-preview label - proceeding with forced deployment"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
             echo "PR has preview label - proceeding"
             echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
           else
-            echo "PR does not have preview label - skipping"
+            echo "PR does not have preview or force-preview label - skipping"
             echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
           fi
 
   head-branch-gate:
@@ -227,6 +243,7 @@ jobs:
 
       - name: Detect Turbo changes
         id: turbo-changes
+        if: needs.preview-label-gate.outputs.is_force_preview != 'true'
         uses: ./.github/actions/detect-turbo-changes
         with:
           filter: "...[${{ needs.detect-synchronize-type.outputs.comparison_sha }}]"
@@ -234,11 +251,20 @@ jobs:
       - name: Check backend changes
         id: check
         run: |
+          IS_FORCE_PREVIEW="${{ needs.preview-label-gate.outputs.is_force_preview }}"
           COMPARISON_SHA="${{ needs.detect-synchronize-type.outputs.comparison_sha }}"
           IS_NEW_COMMIT="${{ needs.detect-synchronize-type.outputs.is_new_commit }}"
 
+          echo "Is force preview: $IS_FORCE_PREVIEW"
           echo "Comparing against SHA: $COMPARISON_SHA"
           echo "Is new commit: $IS_NEW_COMMIT"
+
+          # Force preview skips turbo detection and always deploys
+          if [[ "$IS_FORCE_PREVIEW" == "true" ]]; then
+            echo "Force preview enabled - skipping turbo detection, will deploy"
+            echo "has-backend-changes=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
           HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/backend' ) }}"
 
@@ -545,3 +571,108 @@ jobs:
           # options from meta githubCommitRef, githubCommitSha
           DEPLOYMENT_URL="$(vercel ls --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" -m githubCommitSha=${{ needs.preview-label-gate.outputs.head_sha }} --no-color --environment=preview 2>&1 | tail -1)"
           vercel redeploy --no-wait --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" "$DEPLOYMENT_URL"
+
+  workflow-summary:
+    name: Workflow Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [preview-label-gate, head-branch-gate, detect-synchronize-type, detect-changes, build-backend, prepare-database, deploy-preview, redeploy-vercel-preview]
+    steps:
+      - name: Generate workflow summary
+        env:
+          # Gate outputs
+          SHOULD_RUN: ${{ needs.preview-label-gate.outputs.should_run }}
+          IS_FORCE_PREVIEW: ${{ needs.preview-label-gate.outputs.is_force_preview }}
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+          HEAD_BRANCH_ALLOWED: ${{ needs.head-branch-gate.outputs.should_run }}
+          # Synchronize type outputs
+          IS_NEW_COMMIT: ${{ needs.detect-synchronize-type.outputs.is_new_commit }}
+          IS_FORCE_PUSH: ${{ needs.detect-synchronize-type.outputs.is_force_push }}
+          COMPARISON_SHA: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
+          # Change detection outputs
+          HAS_BACKEND_CHANGES: ${{ needs.detect-changes.outputs.has-backend-changes }}
+          # Deploy outputs
+          REVISION_TAG_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          # Job results
+          PREVIEW_LABEL_GATE_RESULT: ${{ needs.preview-label-gate.result }}
+          HEAD_BRANCH_GATE_RESULT: ${{ needs.head-branch-gate.result }}
+          DETECT_SYNC_TYPE_RESULT: ${{ needs.detect-synchronize-type.result }}
+          DETECT_CHANGES_RESULT: ${{ needs.detect-changes.result }}
+          BUILD_BACKEND_RESULT: ${{ needs.build-backend.result }}
+          PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
+          DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
+          REDEPLOY_VERCEL_RESULT: ${{ needs.redeploy-vercel-preview.result }}
+        run: |
+          set -euo pipefail
+
+          echo "## Preview Backend Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Build Summary Table
+          echo "### Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Preview Label Gate | $PREVIEW_LABEL_GATE_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Head Branch Gate | $HEAD_BRANCH_GATE_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Detect Synchronize Type | $DETECT_SYNC_TYPE_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Detect Changes | $DETECT_CHANGES_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build Backend | $BUILD_BACKEND_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Prepare Database | $PREPARE_DATABASE_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Deploy Preview | $DEPLOY_PREVIEW_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Redeploy Vercel | $REDEPLOY_VERCEL_RESULT |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Output Justification
+          echo "### Deployment Justification" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Determine why deployment happened or didn't happen
+          if [[ "$SHOULD_RUN" != "true" ]]; then
+            echo "**Deployment skipped**: PR does not have \`preview\` or \`force-preview\` label." >> $GITHUB_STEP_SUMMARY
+          elif [[ "$HEAD_BRANCH_ALLOWED" != "true" ]]; then
+            echo "**Deployment skipped**: Head branch \`$HEAD_REF\` matches ignore rules (prod, gtmq_spec_*, *_nopreview_*)." >> $GITHUB_STEP_SUMMARY
+          elif [[ "$IS_FORCE_PREVIEW" == "true" ]]; then
+            echo "**Deployment triggered**: Force preview enabled (via \`force-preview\` label or workflow_dispatch)." >> $GITHUB_STEP_SUMMARY
+            echo "- Turbo change detection was **skipped**" >> $GITHUB_STEP_SUMMARY
+            echo "- Deployment proceeds regardless of backend changes" >> $GITHUB_STEP_SUMMARY
+          elif [[ "$HAS_BACKEND_CHANGES" == "true" ]]; then
+            echo "**Deployment triggered**: Backend changes detected." >> $GITHUB_STEP_SUMMARY
+            if [[ "$IS_NEW_COMMIT" == "true" ]]; then
+              echo "- Event type: **New commit** (incremental change detection)" >> $GITHUB_STEP_SUMMARY
+              echo "- Compared against: before SHA (\`$COMPARISON_SHA\`)" >> $GITHUB_STEP_SUMMARY
+            elif [[ "$IS_FORCE_PUSH" == "true" ]]; then
+              echo "- Event type: **Force push** (full change detection)" >> $GITHUB_STEP_SUMMARY
+              echo "- Compared against: base SHA (\`$COMPARISON_SHA\`)" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- Event type: **PR opened/reopened/labeled** (full change detection)" >> $GITHUB_STEP_SUMMARY
+              echo "- Compared against: base SHA (\`$COMPARISON_SHA\`)" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "**Deployment skipped**: No backend changes detected." >> $GITHUB_STEP_SUMMARY
+            if [[ "$IS_NEW_COMMIT" == "true" ]]; then
+              echo "- Event type: **New commit** (incremental change detection)" >> $GITHUB_STEP_SUMMARY
+              echo "- Compared against: before SHA (\`$COMPARISON_SHA\`)" >> $GITHUB_STEP_SUMMARY
+            elif [[ "$IS_FORCE_PUSH" == "true" ]]; then
+              echo "- Event type: **Force push** (full change detection)" >> $GITHUB_STEP_SUMMARY
+              echo "- Compared against: base SHA (\`$COMPARISON_SHA\`)" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- Event type: **PR opened/reopened/labeled** (full change detection)" >> $GITHUB_STEP_SUMMARY
+              echo "- Compared against: base SHA (\`$COMPARISON_SHA\`)" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "- Turbo detected no changes to \`@namefi-astra/backend\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Preview URL if deployed
+          if [[ -n "$REVISION_TAG_URL" && "$REVISION_TAG_URL" != "" ]]; then
+            echo "### Preview URL" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Backend preview deployed at: $REVISION_TAG_URL" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "_PR #$PR_NUMBER | Branch: \`$HEAD_REF\`_" >> $GITHUB_STEP_SUMMARY
