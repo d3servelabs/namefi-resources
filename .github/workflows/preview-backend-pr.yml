@@ -519,11 +519,25 @@ jobs:
 
             REVISION_NAME="namefi-astra-backend-preview-$REVISION_SUFFIX"
 
-            while [[ $(gcloud run revisions describe "$REVISION_NAME" --project "${{ env.PROJECT_ID }}" --region "${{ env.REGION }}" --format='json' | jq -r '.status.conditions[] | select(.type == "Ready") | .status') != "True" ]]; do
-              echo "Waiting for revision to be ready..."
-              sleep 5
+            while true; do
+              READY_CONDITION=$(gcloud run revisions describe "$REVISION_NAME" --project "${{ env.PROJECT_ID }}" --region "${{ env.REGION }}" --format='json' | jq -r '.status.conditions[] | select(.type == "Ready")')
+              READY_STATUS=$(echo "$READY_CONDITION" | jq -r '.status')
+              READY_REASON=$(echo "$READY_CONDITION" | jq -r '.reason // empty')
+              READY_MESSAGE=$(echo "$READY_CONDITION" | jq -r '.message // empty')
+
+              if [[ "$READY_STATUS" == "True" ]]; then
+                echo "Revision is ready!"
+                break
+              elif [[ "$READY_STATUS" == "False" ]]; then
+                echo "Revision deployment failed!"
+                echo "Reason: $READY_REASON"
+                echo "Message: $READY_MESSAGE"
+                exit 1
+              else
+                echo "Waiting for revision to be ready... (status: $READY_STATUS)"
+                sleep 5
+              fi
             done
-            echo "Revision is ready!"
 
       - name: Get tagged URL
         id: tagged-url
