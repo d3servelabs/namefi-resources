@@ -23,9 +23,10 @@ import type {
   UserSelect,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { createMockLink } from '@/lib/trpc/mock';
+import { createMockLink } from '@/lib/mock/trpc';
+import type { ControlledLinkHandlerOptions } from '@samyx/trpc-utils';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
-import { MockPrivy } from '@/hooks/use-auth';
+import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { FeedbackProvider } from '@/components/providers/feedback';
 
@@ -123,7 +124,9 @@ function MockTrpcProvider({
     links: [
       createMockLink({
         isAuthenticated: mockState.isAuthenticated,
-        getMockData: (options) => {
+        getMockData: (
+          options: ControlledLinkHandlerOptions<unknown, unknown>,
+        ) => {
           const path = options.op.path;
 
           if (path === 'orders.getOrder') {
@@ -225,7 +228,7 @@ function StoryProviders({
   mockState: MockState;
 }) {
   return (
-    <MockPrivy.Provider
+    <MockPrivyProvider
       value={
         {
           ready: !mockState.isLoading,
@@ -256,7 +259,7 @@ function StoryProviders({
           </MockTrpcProvider>
         </OriginProvider>
       </AdminFeatureFlagsProvider>
-    </MockPrivy.Provider>
+    </MockPrivyProvider>
   );
 }
 
