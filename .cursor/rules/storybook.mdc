@@ -4,219 +4,35 @@ globs: "**/*.stories.tsx"
 alwaysApply: false
 ---
 
-# Storybook Stories Rules
+# Storybook Golden Rules
 
-## Next.js App Router Route Modules (Strict)
+These rules are strictly enforced for all `*.stories.tsx` files.
 
-- Do **not** import Next.js App Router route modules from `@/app/**` inside `*.stories.*`.
-  - Examples to avoid: `@/app/**/page`, `@/app/**/layout`, `@/app/**/loading`, `@/app/**/error`, `@/app/**/route`
-- **Why**: Storybook renders in the browser (client). App Router route modules may be Server Components and/or `async` (or involve thenables like `params: Promise<...>`), which triggers React’s runtime error: “An unknown Component is an async Client Component”.
-- **Preferred pattern**:
-  - Keep route modules (`app/**`) as composition/data-loading only.
-  - Extract the UI into a **sync** leaf component (e.g. `OrderPageView`) under `src/components/**` or `src/app/**/_components/**`.
-  - Stories should render the leaf component with plain props and the necessary providers/mocks.
+## 1. Never Import Route Modules
 
-## Export Rules (Strict)
+Do **not** import Next.js App Router route modules from `@/app/**` inside `*.stories.*`.
 
-- Named exports must be `const` stories typed as `Story`
-- Use `type Story = StoryObj<StoryArgs>` and `export const Example: Story = { ... }`
-- Do not export helpers, functions, data, or components from `*.stories.tsx`
-- `export default meta` is allowed and required for Storybook
+- Avoid: `@/app/**/page`, `@/app/**/layout`, `@/app/**/loading`, `@/app/**/error`, `@/app/**/route`
+- Instead: Extract UI into sync leaf components under `src/components/` or `src/app/**/_components/`
 
-If shared helpers or fixtures are needed, keep them file-local or move them to a separate module and import them (do not export them from the story file).
+## 2. Only Export Stories
 
-## Mocking TRPC for Page Stories
+- Named exports must be `const` typed as `Story`
+- Do not export helpers, functions, data, or components
+- `export default meta` is required
 
-Use the mock link in `apps/frontend/src/lib/mock/trpc.ts` (imported as `@/lib/mock/trpc`), as demonstrated in `apps/frontend/src/stories/pages/my-orders.stories.tsx`.
+## 3. Include Required Providers
 
-### Pattern
+Most components need providers. Common ones:
+- `WagmiProvider` for wallet hooks
+- `TRPCProvider` + `QueryClientProvider` for data fetching
+- `MockPrivyProvider` for auth
+- `ConsentManagerProvider` for consent hooks
 
-1. Create a `QueryClient` with `retry: false` and `staleTime: Infinity`.
-2. Build a `trpcClient` with `createTRPCClient` and `createMockLink`.
-3. Provide `isAuthenticated` (and optionally `user` or `impersonationData` for built-in `users.getUser` and `users.getImpersonationStatus` mocks).
-4. In `getMockData`, switch on `opts.op.path` and return a tuple:
-   - Success: `[null, data]`
-   - Error: `[{ textCode, httpStatus, message }, null]`
-   - Loading: `new Promise(() => {})` to keep the request pending
-5. Wrap the page with `QueryClientProvider` and `TRPCProvider`, then any app providers required by the page.
+## 4. Mock Next.js Navigation
 
-```tsx
-const trpcClient = createTRPCClient<AppRouter>({
-  links: [
-    createMockLink({
-      isAuthenticated: true,
-      getMockData: async (opts) => {
-        if (opts.op.path === 'orders.getOrderItems') {
-          return [null, mockOrderItems];
-        }
-        return [
-          { textCode: 'BAD_REQUEST', httpStatus: 400, message: 'unknown path' },
-          null,
-        ];
-      },
-    }),
-  ],
-});
-```
+Add `parameters.nextjs.appDirectory: true` for components using `next/navigation` hooks.
 
-If you need an unauthenticated state, set `isAuthenticated: false`. `createMockLink` returns `UNAUTHORIZED` for `users.getUser` and `users.getImpersonationStatus`; for other protected procedures return an `UNAUTHORIZED` error tuple from `getMockData`.
+---
 
-## Error States with useSuspenseQuery
-
-Components that use `useSuspenseQuery` (from TanStack Query) throw errors to the nearest error boundary instead of returning `{ error }` like regular `useQuery`. This affects how you test error states in Storybook:
-
-### Problem
-
-When your mock returns an error tuple `[{ textCode, httpStatus, message }, null]` for a component using `useSuspenseQuery`, the error is thrown as a `TRPCClientError`. Without an error boundary, this crashes the story and prevents Chromatic from capturing it.
-
-### Solution
-
-Wrap the component in an error boundary for the ErrorState story variant:
-
-```tsx
-class StoryErrorBoundary extends Component<
-  { children: ReactNode; fallback: ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { children: ReactNode; fallback: ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(_: Error) {
-    return { hasError: true };
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return this.props.fallback;
-    }
-    return this.props.children;
-  }
-}
-
-export const ErrorState: Story = {
-  args: { mockState: { hasError: true, /* ... */ } },
-  render: (args) => (
-    <StoryProviders mockState={args.mockState}>
-      <StoryErrorBoundary
-        fallback={
-          <div className="text-destructive">Failed to load data</div>
-        }
-      >
-        <MyPage />
-      </StoryErrorBoundary>
-    </StoryProviders>
-  ),
-};
-```
-
-### Key Points
-
-- Only the ErrorState story needs the error boundary wrapper
-- Other stories (Default, Loading, Empty) can use the default render function
-- The fallback UI should match the app's error handling patterns
-- This allows Chromatic to capture the error state without crashing
-
-## Mocking Next.js Navigation for App Router Components
-
-Components that use hooks from `next/navigation` (like `useRouter`, `useSearchParams`, `usePathname`) require the Next.js app router context. The `@storybook/nextjs-vite` framework provides built-in mocking for these hooks.
-
-### Pattern
-
-Add the `nextjs` parameter to your story's meta configuration:
-
-```tsx
-const meta: Meta<typeof MyComponent> = {
-  title: 'Components/MyComponent',
-  component: MyComponent,
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-      navigation: {
-        pathname: '/',
-        // Optional: mock search params
-        // searchParams: { key: 'value' },
-      },
-    },
-  },
-};
-```
-
-### Common Provider Dependencies
-
-Components using `useAuth()` require multiple providers. Here's the typical provider stack for authenticated component stories:
-
-1. **MockPrivyProvider** - Mocks Privy authentication state (from `@/lib/mock/privy`)
-2. **WagmiProvider** - Required for wallet-related hooks
-3. **QueryClientProvider** - Required for React Query
-4. **TRPCProvider** - Required for TRPC hooks (useAuth uses useTRPC internally)
-5. **ConsentManagerProvider** - Required for consent hooks (useAuth uses useConsentIdentify)
-
-Example authenticated provider setup:
-
-```tsx
-import { MockPrivyProvider, privyMockUser } from '@/lib/mock/privy';
-import { TRPCProvider } from '@/lib/trpc';
-import { createTRPCClient } from '@trpc/client';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
-import { createMockLink } from '@/lib/mock/trpc';
-import { ConsentManagerProvider } from '@c15t/nextjs';
-
-function AuthenticatedStoryProviders({
-  children,
-  walletAddress,
-}: {
-  children: ReactNode;
-  walletAddress: string;
-}) {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false, staleTime: Infinity } },
-  });
-  const trpcClient = createTRPCClient<AppRouter>({
-    links: [
-      createMockLink({
-        isAuthenticated: true,
-        getMockData: async () => [null, {}] as const,
-      }),
-    ],
-  });
-
-  return (
-    <MockPrivyProvider
-      value={{
-        ready: true,
-        authenticated: true,
-        user: {
-          ...privyMockUser,
-          wallet: { ...privyMockUser.wallet, address: walletAddress },
-          linkedAccounts: privyMockUser.linkedAccounts.map((account) =>
-            account.type === 'wallet'
-              ? { ...account, address: walletAddress }
-              : account,
-          ),
-        },
-      }}
-    >
-      <WagmiProvider config={mockWagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-            <ConsentManagerProvider options={{ mode: 'offline' }}>
-              {children}
-            </ConsentManagerProvider>
-          </TRPCProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </MockPrivyProvider>
-  );
-}
-```
-
-### Debugging Provider Errors
-
-When a story fails with errors like "invariant expected app router to be mounted" or "must be used within a Provider", check:
-
-1. **Next.js navigation hooks** - Add `nextjs.appDirectory: true` to parameters
-2. **TRPC hooks** - Wrap with `TRPCProvider` and mocked `trpcClient`
-3. **Consent hooks** - Wrap with `ConsentManagerProvider options={{ mode: 'offline' }}`
-4. **Auth hooks** - Wrap with `MockPrivyProvider` with appropriate auth state
+**Full guidance**: See [docs/dev-guides/storybook/README.md](../../../docs/dev-guides/storybook/README.md) for complete patterns, provider setup examples, and troubleshooting.
