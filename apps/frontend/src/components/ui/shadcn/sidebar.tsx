@@ -497,7 +497,7 @@ const sidebarMenuButtonVariants = cva(
 );
 
 function SidebarMenuButton({
-  render,
+  render: renderProp,
   isActive = false,
   variant = 'default',
   size = 'default',
@@ -510,6 +510,14 @@ function SidebarMenuButton({
     tooltip?: string | React.ComponentProps<typeof TooltipContent>;
   } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar();
+  const resolvedRender = tooltip
+    ? renderProp
+      ? (renderProps: React.ComponentProps<'button'>) => (
+          <TooltipTrigger {...renderProps} render={renderProp} />
+        )
+      : TooltipTrigger
+    : renderProp;
+
   const comp = useRender({
     defaultTagName: 'button',
     props: mergeProps<'button'>(
@@ -518,7 +526,7 @@ function SidebarMenuButton({
       },
       props,
     ),
-    render: !tooltip ? render : TooltipTrigger,
+    render: resolvedRender,
     state: {
       slot: 'sidebar-menu-button',
       sidebar: 'menu-button',

@@ -12,15 +12,44 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
+  useSidebar,
 } from '@/components/ui/shadcn/sidebar';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
 import { ChevronRight, Globe, History } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { FC, ReactElement } from 'react';
 
 interface RecentDomainsProps {
   name: string;
   domains: string[];
 }
+
+const SidebarDomainTooltip: FC<{
+  label: string;
+  children: ReactElement;
+}> = ({ label, children }) => {
+  const { state, isMobile } = useSidebar();
+
+  if (state !== 'collapsed' || isMobile) {
+    return children;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger render={<span className="flex w-full" />}>
+        {children}
+      </TooltipTrigger>
+      <TooltipContent side="right" align="center">
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
 
 export function SidebarDomains({ name, domains }: RecentDomainsProps) {
   const pathname = usePathname();
@@ -45,14 +74,15 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
                   const href = `/domains/${domain}`;
                   return (
                     <SidebarMenuItem key={domain}>
-                      <SidebarMenuButton
-                        tooltip={domain}
-                        isActive={href === pathname}
-                        render={<Link href={href} />}
-                      >
-                        <Globe className="size-4" />
-                        <span className="truncate">{domain}</span>
-                      </SidebarMenuButton>
+                      <SidebarDomainTooltip label={domain}>
+                        <SidebarMenuButton
+                          isActive={href === pathname}
+                          render={<Link href={href} />}
+                        >
+                          <Globe className="size-4" />
+                          <span className="truncate">{domain}</span>
+                        </SidebarMenuButton>
+                      </SidebarDomainTooltip>
                     </SidebarMenuItem>
                   );
                 })}
