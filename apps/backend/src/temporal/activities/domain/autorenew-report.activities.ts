@@ -146,9 +146,11 @@ export async function collectAutoRenewMetrics(
 
   // Calculate financial metrics
   metrics.totalAmountChargedInUsd = workflowResults.reduce(
-    (sum, result) => sum + (result.amountChargedInUsd || 0),
+    (sum, result) =>
+      sum + (result.status === 'success' ? result.amountChargedInUsd || 0 : 0),
     0,
   );
+
   metrics.totalAmountRefundedInUsd = workflowResults.reduce(
     (sum, result) => sum + (result.amountRefundedInUsd || 0),
     0,
@@ -311,36 +313,35 @@ export async function formatAutoRenewReport(
 
   const content = `## 📊 Auto-Renewal Overview
 
-**Date:** ${dateStr}
-**Total Users Processed:** ${metrics.totalUsersProcessed}
-**Total Domains Processed:** ${metrics.totalDomainsProcessed}
-**Success Rate:** ${successRate}%
-
-## 💰 Financial Summary
-
-**Total Amount Charged:** $${metrics.totalAmountChargedInUsd.toFixed(2)} USD
-**Total Amount Refunded:** $${metrics.totalAmountRefundedInUsd.toFixed(2)} USD
-**Net Revenue:** $${netRevenue.toFixed(2)} USD
-
-**Payment Methods Used:**
-${paymentBreakdown || '- No payments processed'}
+- **Date:** ${dateStr}
+- **Total Users With Domain Renewals Attempted:** ${metrics.totalUsersProcessed}
+- **Total Domain Renewals Attempted :** ${metrics.totalDomainsProcessed}
 
 ## ✅ Successful Renewals
 
-**Domains Successfully Renewed:** ${metrics.successfulRenewals} (${successRate}%)
-**Users with Successful Renewals:** ${metrics.totalUsersProcessed - (metrics.failureBreakdown?.failedToCharge || 0)}
+- **Domains Successfully Renewed:** ${metrics.successfulRenewals} (${successRate}%)
+- **Users with Successful Renewals:** ${metrics.totalUsersProcessed - (metrics.failureBreakdown?.failedToCharge || 0)}
+
+### Failure Breakdown:
+- **🔴 Failed to Charge:** ${metrics.failureBreakdown?.failedToCharge || 0} domains
+- **🟡 Registrar Errors:** ${metrics.failureBreakdown?.registrarErrors || 0} domains
+- **🟠 Missing Price Data:** ${metrics.failureBreakdown?.missingPriceData || 0} domains
+
 
 ### Registrar Breakdown:
 ${registrarStats || '- No registrar data available'}
 
 ## ❌ Failed Renewals
 
-**Total Failures:** ${metrics.failedRenewals} (${((metrics.failedRenewals / Math.max(metrics.totalDomainsProcessed, 1)) * 100).toFixed(1)}%)
+- **Total Failures:** ${metrics.failedRenewals} (${((metrics.failedRenewals / Math.max(metrics.totalDomainsProcessed, 1)) * 100).toFixed(1)}%)
 
-### Failure Breakdown:
-- **🔴 Failed to Charge:** ${metrics.failureBreakdown?.failedToCharge || 0} domains
-- **🟡 Registrar Errors:** ${metrics.failureBreakdown?.registrarErrors || 0} domains
-- **🟠 Missing Price Data:** ${metrics.failureBreakdown?.missingPriceData || 0} domains
+
+## 💰 Financial Summary
+
+- **Total Amount Charged:** $${metrics.totalAmountChargedInUsd.toFixed(2)} USD
+- **Total Amount Refunded:** $${metrics.totalAmountRefundedInUsd.toFixed(2)} USD
+- **Net Revenue:** $${netRevenue.toFixed(2)} USD
+
 
 ## 🚨 Critical Issues Requiring Action
 
