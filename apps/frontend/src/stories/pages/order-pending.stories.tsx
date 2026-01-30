@@ -10,7 +10,7 @@ import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { createContext } from 'react';
+import { createContext, Suspense } from 'react';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
@@ -350,7 +350,9 @@ function OrderPendingPageWrapper({ mockState }: StoryArgs) {
       mockState={mockState ?? defaultMockState}
     >
       <ReactQueryDevtoolsWrapper />
-      <OrderPage params={paramsPromise} />
+      <Suspense fallback={<div>Loading order...</div>}>
+        <OrderPage params={paramsPromise} />
+      </Suspense>
     </StoryProviders>
   );
 }
