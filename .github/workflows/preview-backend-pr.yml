@@ -6,13 +6,20 @@ on:
       - opened
       - synchronize
       - reopened
+      - labeled
     branches-ignore:
-      - prod
-      - gtmq_spec_* # GraphiteMergeQueue
-      - "*_nopreview_*"
+    - prod
+    - gtmq_spec_* # GraphiteMergeQueue
+    - "*_nopreview_*"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to deploy preview for'
+        required: true
+        type: number
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -21,9 +28,91 @@ env:
   REPO_NAME: ${{ vars.REPOSITORY_NAME }}
 
 jobs:
+  preview-label-gate:
+    name: Check Preview Label
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check-label.outputs.should_run }}
+      pr_number: ${{ steps.check-label.outputs.pr_number }}
+      head_sha: ${{ steps.check-label.outputs.head_sha }}
+      base_sha: ${{ steps.check-label.outputs.base_sha }}
+      head_ref: ${{ steps.check-label.outputs.head_ref }}
+    steps:
+      - name: Check preview label
+        id: check-label
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          EVENT_NAME="${{ github.event_name }}"
+          EVENT_ACTION="${{ github.event.action }}"
+
+          echo "Event name: $EVENT_NAME"
+          echo "Event action: $EVENT_ACTION"
+
+          # For workflow_dispatch, fetch PR details using the provided PR number
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            PR_NUMBER="${{ github.event.inputs.pr_number }}"
+            echo "Workflow dispatch triggered for PR #$PR_NUMBER"
+
+            # Fetch PR details using GitHub API
+            PR_DATA=$(gh api repos/${{ github.repository }}/pulls/$PR_NUMBER --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref}')
+            HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head_sha')
+            BASE_SHA=$(echo "$PR_DATA" | jq -r '.base_sha')
+            HEAD_REF=$(echo "$PR_DATA" | jq -r '.head_ref')
+
+            echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+            echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+            echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Workflow dispatch - proceeding with deployment"
+            exit 0
+          fi
+
+          # For pull_request events
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_REF="${{ github.event.pull_request.head.ref }}"
+
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+
+          # For labeled events, check if the label added is 'preview'
+          if [[ "$EVENT_ACTION" == "labeled" ]]; then
+            LABEL_NAME="${{ github.event.label.name }}"
+            echo "Label added: $LABEL_NAME"
+            if [[ "$LABEL_NAME" == "preview" ]]; then
+              echo "Preview label added - proceeding with deployment"
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "Non-preview label added - skipping"
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          # For other events (opened, synchronize, reopened), check if PR has 'preview' label
+          HAS_PREVIEW_LABEL="${{ contains(github.event.pull_request.labels.*.name, 'preview') }}"
+          echo "PR has preview label: $HAS_PREVIEW_LABEL"
+
+          if [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
+            echo "PR has preview label - proceeding"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "PR does not have preview label - skipping"
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
   head-branch-gate:
     name: Check Head Branch Ignore Rules
+    needs: preview-label-gate
     timeout-minutes: 2
+    if: needs.preview-label-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.gate.outputs.should_run }}
@@ -33,7 +122,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          HEAD_REF="${{ github.event.pull_request.head.ref }}"
+          HEAD_REF="${{ needs.preview-label-gate.outputs.head_ref }}"
 
           case "$HEAD_REF" in
             prod|gtmq_spec_*|*_nopreview_*)
@@ -48,7 +137,7 @@ jobs:
 
   detect-synchronize-type:
     name: Detect Synchronize Event Type
-    needs: head-branch-gate
+    needs: [preview-label-gate, head-branch-gate]
     if: needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     outputs:
@@ -61,13 +150,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          EVENT_NAME="${{ github.event_name }}"
           EVENT_ACTION="${{ github.event.action }}"
           BEFORE_SHA="${{ github.event.before }}"
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          # Use base_sha from preview-label-gate (supports both PR events and workflow_dispatch)
+          BASE_SHA="${{ needs.preview-label-gate.outputs.base_sha }}"
 
+          echo "Event name: $EVENT_NAME"
           echo "Event action: $EVENT_ACTION"
           echo "Before SHA: $BEFORE_SHA"
           echo "Base SHA: $BASE_SHA"
+
+          # For workflow_dispatch or labeled events, always compare against base SHA
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$EVENT_ACTION" == "labeled" ]]; then
+            echo "Event type: $EVENT_NAME/$EVENT_ACTION - will compare against base SHA"
+            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
+            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+            echo "comparison_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # For synchronize events, determine if it's a new commit or force push
           # New commit: before SHA exists and is different from base SHA
@@ -97,7 +198,7 @@ jobs:
   detect-changes:
     name: Detect Backend Changes
     timeout-minutes: 2
-    needs: [head-branch-gate, detect-synchronize-type]
+    needs: [preview-label-gate, head-branch-gate, detect-synchronize-type]
     if: needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     outputs:
@@ -119,12 +220,12 @@ jobs:
         run: |
           COMPARISON_SHA="${{ needs.detect-synchronize-type.outputs.comparison_sha }}"
           IS_NEW_COMMIT="${{ needs.detect-synchronize-type.outputs.is_new_commit }}"
-          
+
           echo "Comparing against SHA: $COMPARISON_SHA"
           echo "Is new commit: $IS_NEW_COMMIT"
-          
+
           HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/backend' ) }}"
-          
+
           echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
           if [[ "$HAS_BACKEND_CHANGES" == "true" ]]; then
             echo "Backend changes detected - will proceed with deployment"
@@ -216,8 +317,8 @@ jobs:
 
   prepare-database:
     name: Prepare Neon Branch
-    needs: detect-changes
     timeout-minutes: 5
+    needs: [preview-label-gate, detect-changes]
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
@@ -245,7 +346,7 @@ jobs:
 
       - name: Set Neon branch name
         id: branch-name
-        run: echo "branch_id=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+        run: echo "branch_id=pr-${{ needs.preview-label-gate.outputs.pr_number }}" >> $GITHUB_OUTPUT
 
       - name: Create Neon branch
         run: |
@@ -259,7 +360,7 @@ jobs:
       - name: Check for SQL migration changes
         id: check-sql-changes
         run: |
-          SQL_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
+          SQL_FILES=$(git diff --name-only ${{ needs.preview-label-gate.outputs.base_sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
           if [[ -n "$SQL_FILES" ]]; then
             echo "SQL files changed in this diff:"
             echo "$SQL_FILES"
@@ -286,7 +387,7 @@ jobs:
 
   deploy-preview:
     name: Deploy Backend Preview
-    needs: [detect-changes, build-backend, prepare-database]
+    needs: [preview-label-gate, detect-changes, build-backend, prepare-database]
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -325,7 +426,7 @@ jobs:
 
       # - name: Remove existing tagged revision (manual)
       #   run: |
-      #     TAG="pr-${{ github.event.pull_request.number }}"
+      #     TAG="pr-${{ needs.preview-label-gate.outputs.pr_number }}"
       #     gcloud run services update-traffic namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --remove-tags "$TAG" --quiet
       #     REVISION_NAME=$(gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="value(status.traffic[?tag='$TAG'].revisionName)")
       #     if [[ -n "$REVISION_NAME" ]]; then
@@ -339,6 +440,7 @@ jobs:
           DATABASE_URL: ${{ steps.connection-string.outputs.database_url }}
           INFISICAL_TOKEN: ${{ secrets.INFISICAL_DEV_SERVICE_TOKEN }}
           GCP_HSM_KEYRING_RESOURCE_NAME: ${{ secrets.GCP_HSM_KEYRING_RESOURCE_NAME }}
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
         run: |
           # --quiet flag seems to be not working
           gcloud config set core/disable_prompts True
@@ -349,9 +451,9 @@ jobs:
           echo "INFISICAL_TOKEN=\"$INFISICAL_TOKEN\""
           echo "GCP_HSM_KEYRING_RESOURCE_NAME=\"$GCP_HSM_KEYRING_RESOURCE_NAME\""
 
-          TAG="pr-${{ github.event.pull_request.number }}"
+          TAG="pr-$PR_NUMBER"
           SHORT_SHA="${GITHUB_SHA::7}"
-          REVISION_SUFFIX="pr-${{ github.event.pull_request.number }}-$SHORT_SHA"
+          REVISION_SUFFIX="pr-$PR_NUMBER-$SHORT_SHA"
           gcloud beta run deploy namefi-astra-backend-preview \
             --container "api" \
             --image "$NEW_IMAGE" \
@@ -383,8 +485,10 @@ jobs:
 
       - name: Get tagged URL
         id: tagged-url
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
         run: |
-          TAG="pr-${{ github.event.pull_request.number }}"
+          TAG="pr-$PR_NUMBER"
           REVISION_TAG_URL=$(gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="json" | jq -r ".status.traffic.[] | select(.tag == \"$TAG\") | .url" )
           if [[ -z "$REVISION_TAG_URL" ]]; then
             echo "Failed to resolve tagged URL for $TAG"
@@ -394,8 +498,8 @@ jobs:
 
   redeploy-vercel-preview:
     name: Redeploy Vercel Preview
-    needs: [deploy-preview]
     timeout-minutes: 10
+    needs: [preview-label-gate, deploy-preview]
     if: needs.detect-changes.outputs.has-backend-changes == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -414,7 +518,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
         run: |
           REVISION_TAG_URL="${{ needs.deploy-preview.outputs.revision_tag_url }}"
-          BRANCH_NAME="${{ github.head_ref }}"
+          BRANCH_NAME="${{ needs.preview-label-gate.outputs.head_ref }}"
           printf "%s" "$REVISION_TAG_URL" | vercel env add BACKEND_URL --force preview "$BRANCH_NAME" --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}"
 
       - name: Deploy Vercel
@@ -423,5 +527,5 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
         run: |
           # options from meta githubCommitRef, githubCommitSha
-          DEPLOYMENT_URL="$(vercel ls --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" -m githubCommitSha=${{ github.event.pull_request.head.sha }} --no-color --environment=preview 2>&1 | tail -1)"
+          DEPLOYMENT_URL="$(vercel ls --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" -m githubCommitSha=${{ needs.preview-label-gate.outputs.head_sha }} --no-color --environment=preview 2>&1 | tail -1)"
           vercel redeploy --no-wait --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" "$DEPLOYMENT_URL"
