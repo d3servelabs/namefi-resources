@@ -11,3 +11,51 @@ pre-push:
   commands:
     validate:
       run: bun validate
+
+post-checkout:
+  commands:
+    rulesync-post-checkout:
+      run: |
+        if [ -n "$CI" ]; then
+          exit 0
+        fi
+        if git rev-parse -q --verify HEAD@{1} >/dev/null; then
+          changed=$(git diff --name-only HEAD@{1} HEAD -- .rulesync rulesync.jsonc)
+        else
+          changed=$(git ls-tree -r --name-only HEAD -- .rulesync rulesync.jsonc)
+        fi
+        if [ -n "$changed" ]; then
+          bun run rulesync:generate
+        fi
+
+post-merge:
+  commands:
+    rulesync-post-merge:
+      run: |
+        if [ -n "$CI" ]; then
+          exit 0
+        fi
+        if git rev-parse -q --verify ORIG_HEAD >/dev/null; then
+          changed=$(git diff --name-only ORIG_HEAD HEAD -- .rulesync rulesync.jsonc)
+        else
+          changed=$(git diff --name-only HEAD~1 HEAD -- .rulesync rulesync.jsonc || true)
+        fi
+        if [ -n "$changed" ]; then
+          bun run rulesync:generate
+        fi
+
+post-rewrite:
+  commands:
+    rulesync-post-rewrite:
+      run: |
+        if [ -n "$CI" ]; then
+          exit 0
+        fi
+        if git rev-parse -q --verify ORIG_HEAD >/dev/null; then
+          changed=$(git diff --name-only ORIG_HEAD HEAD -- .rulesync rulesync.jsonc)
+        else
+          changed=$(git diff --name-only HEAD~1 HEAD -- .rulesync rulesync.jsonc || true)
+        fi
+        if [ -n "$changed" ]; then
+          bun run rulesync:generate
+        fi

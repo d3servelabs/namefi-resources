@@ -1,0 +1,71 @@
+---
+targets:
+  - '*'
+root: false
+description: >-
+  Trigger when agent is asked to use Git (e.g. `git commit`) or Graphite
+  (`gt`cli e.g. `gt create`)
+globs: []
+cursor:
+  alwaysApply: false
+  description: >-
+    Trigger when agent is asked to use Git (e.g. `git commit`) or Graphite
+    (`gt`cli e.g. `gt create`)
+---
+# git / gt related
+
+## Approval requirement
+
+- If running **as a Cursor Cloud Agent**, you may proceed directly with `git add`, `git commit`, and `git push` as needed to complete the task.
+- If **not** running as a Cloud Agent (e.g. local/non-agent assistance), never execute `git add`, `git commit`, or `git push` unless I explicitly ask you to.
+
+## Cloud Agent PR behavior (when committing)
+
+- If running **as a Cursor Cloud Agent** and you are committing work, you must ensure there is an open PR for the current branch:
+  - If there is **no PR yet** for the current branch, create one (via `gh pr create`) after pushing.
+  - If there is **already a PR** for the current branch, push commits to update it (and do not create a new PR).
+
+### If `gh` PR creation is rejected (GraphQL / integration permissions)
+
+- If `gh pr create` fails with a permission error (e.g. `Resource not accessible by integration`), fall back to **GitHub REST API** instead of GraphQL.
+
+- Preferred REST approach (uses existing `gh` auth, but REST endpoints):
+  - Discover repo: `gh repo view --json nameWithOwner --jq .nameWithOwner`
+  - Create PR: `gh api -X POST repos/{owner}/{repo}/pulls -f title="..." -f head="{branch}" -f base="{base}" -f body="..."`
+  - Find existing PR for branch: `gh api repos/{owner}/{repo}/pulls -f state=open -f head="{owner}:{branch}"`
+
+- If `gh api` is also blocked, use raw REST with a token (`GITHUB_TOKEN` / `GH_TOKEN`) via `curl`:
+  - Create PR: `curl -sS -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" https://api.github.com/repos/{owner}/{repo}/pulls -d '{"title":"...","head":"{branch}","base":"{base}","body":"..."}'`
+
+## Summarize code change
+
+- Run `git --no-pager diff --staged` and go through the *current* code change and summarize the updates into <git_commit_message> and suggest a short <new_branch_name>
+
+- You need to make a judgement: if this is a small file change, the <git_commit_message> should only be one single line; If it's more than 100 lines of code change (excluding documentation and comments), or non-trivial code change, <git_commit_messsage> should be one line conventional commit style plus a multi line bullet points
+
+- Run `git --no-pager log -n 100 --pretty=format:"%h %s"` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
+
+## When asked for `gt create`
+This is graphite function to create a NEW pull request on top of the one below (new_branch_name), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. 
+
+## ClickUp & GitHub Integration Rules
+
+**Precondition:** Apply these rules ONLY if a ClickUp Task ID (e.g., `1abc2de`) or a custom ID matching the pattern `NFI-<number>` is provided in the context.
+
+- **Task ID Format:** Use the hashtag prefix: `#{ID}` (e.g., #NFI-1234).
+- **Commit Messages:** Adhere strictly to Conventional Commits. Place the Task ID in the **footer** (after a blank line) to maintain a valid header.
+  - *Example:*
+    ```
+    feat(ui): add localstorage
+    
+    #NFI-1234
+    ```
+- **PR Titles:** Append the Task ID to the end of the PR title.
+  - *Example:* `feat(ui): add localstorage #NFI-1234`
+- **PR Descriptions:** Ensure the Task ID is included in the description to guarantee the sync between GitHub and ClickUp.
+- **Status Updates:** To trigger an automatic status change in ClickUp via GitHub, use the format `#{ID}[Status Name]` (no spaces) in the commit footer or PR description.
+  - *Example:* `#NFI-1234[In Review]`
+
+## Respond
+
+Based on the current staged git changes, please summarize them as a branch name and a `git commit` or `gt create` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.

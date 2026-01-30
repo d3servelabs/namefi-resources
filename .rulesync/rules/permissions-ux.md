@@ -1,0 +1,55 @@
+---
+targets:
+  - '*'
+root: false
+globs:
+  - apps/frontend/src/app/admin/**/*.tsx
+  - packages/utils/src/permissions.ts
+  - apps/backend/src/trpc/routers/admin/**/*.ts
+  - apps/backend/src/trpc/base.ts
+cursor:
+  globs:
+    - apps/frontend/src/app/admin/**/*.tsx
+    - packages/utils/src/permissions.ts
+    - apps/backend/src/trpc/routers/admin/**/*.ts
+    - apps/backend/src/trpc/base.ts
+---
+# Permissions UX and Data Model
+
+This project uses an ABAC-style permission system with TypeScript enums and a Postgres table. See [packages/utils/src/permissions.ts](mdc:packages/utils/src/permissions.ts).
+
+Key conventions:
+
+- Permission keys use the format `RESOURCE;;ACTION` except `SUPER_ADMIN`.
+- A hidden baseline permission `ADMIN_DASHBOARD;;READ` (enum key: `VIEW_ADMIN_DASHBOARD`) must exist for any user who has any permissions. It is not shown in the UI.
+
+Backend expectations (tRPC):
+
+- Prefer composing permission checks with `withRequiredPermissions`, or use builders `adminProcedureWithPermissions` / `auditedAdminProcedureWithPermissions` from [base.ts](mdc:apps/backend/src/trpc/base.ts).
+- `listAvailablePermissions` must only return visible permissions (hide `ADMIN_DASHBOARD;;READ`).
+- `grantPermissions` must auto-insert the hidden baseline permission and forbid granting `SUPER_ADMIN` unless the caller already has it.
+- `revokePermissions` must ensure the hidden baseline permission remains after revokes.
+- `deleteUserPermissions` must delete all rows for a user including the hidden baseline.
+- `getUserPermissions` must return all permissions for a user (including hidden baseline) and is admin-only; callers must have at least `VIEW_ADMIN_DASHBOARD`.
+- `listUsersWithPermissions` is intended to be admin-only; in this PR it is temporarily `protectedProcedure` (no admin gate). Document this as a temporary deviation and harden in a follow-up PR.
+- All mutating endpoints (grant/revoke/delete) must be audited: include actorId, targetUserId, delta (added/removed), full before/after sets, timestamp, and requestId/traceId.
+
+Frontend gating & UX:
+
+- Use `PermissionGate` with `permissions: Permission[]` and optional `gateMode: 'normal' | 'inverted'` for gating. Prefer arrays even for one permission.
+- In the admin landing grid, wrap each tile with the corresponding READ permission.
+- In the user dropdown, show “Admin Dashboard” only if `VIEW_ADMIN_DASHBOARD` is present.
+- Group permissions by `RESOURCE` (prefix before `;;`).
+- Within each group, render a first cell labeled “Manage” that toggles all visible actions in that group.
+- The `SUPER_ADMIN` group must never show “Manage”; it presents a single item only (disabled if the caller isn’t a super-admin).
+- Provide global “Select All” / “Deselect All” controls. These must not toggle `SUPER_ADMIN` for non-super-admin callers.
+- Show labels in Title Case (convert underscores to spaces, then Title Case).
+- Do not display the hidden baseline permission.
+- Show a loading skeleton for the grid while `listAvailablePermissions` or `getUserPermissions` are loading.
+Implementation rules:
+
+- Avoid hooks inline in JSX; extract any complex rendering into components.
+- Split the grouped permissions grid into:
+  - `PermissionGroupSection` (one resource section with Manage)
+  - `PermissionItem` (a single checkbox row)
+- Use `AsyncButton` with `mutateAsync` and `sonner` toasts for async actions.
