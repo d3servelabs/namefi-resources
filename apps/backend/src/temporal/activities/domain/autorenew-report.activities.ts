@@ -317,18 +317,14 @@ export async function formatAutoRenewReport(
 - **Total Users With Domain Renewals Attempted:** ${metrics.totalUsersProcessed}
 - **Total Domain Renewals Attempted :** ${metrics.totalDomainsProcessed}
 
-## ❌ Failed Renewals
-
-- **Total Failures:** ${metrics.failedRenewals} (${((metrics.failedRenewals / Math.max(metrics.totalDomainsProcessed, 1)) * 100).toFixed(1)}%)
-
 ### Failure Breakdown:
 - **🔴 Failed to Charge:** ${metrics.failureBreakdown?.failedToCharge || 0} domains
 - **🟡 Registrar Errors:** ${metrics.failureBreakdown?.registrarErrors || 0} domains
 - **🟠 Missing Price Data:** ${metrics.failureBreakdown?.missingPriceData || 0} domains
 
-## ✅ Successful Renewals
+## Successful Renewals
 
-- **Domains Successfully Renewed:** ${metrics.successfulRenewals} (${successRate}%)
+- **Domains Renewed:** ${metrics.successfulRenewals}
 
 ### Registrar Breakdown:
 ${registrarStats || '- No registrar data available'}
