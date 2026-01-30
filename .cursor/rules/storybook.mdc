@@ -6,6 +6,16 @@ alwaysApply: false
 
 # Storybook Stories Rules
 
+## Next.js App Router Route Modules (Strict)
+
+- Do **not** import Next.js App Router route modules from `@/app/**` inside `*.stories.*`.
+  - Examples to avoid: `@/app/**/page`, `@/app/**/layout`, `@/app/**/loading`, `@/app/**/error`, `@/app/**/route`
+- **Why**: Storybook renders in the browser (client). App Router route modules may be Server Components and/or `async` (or involve thenables like `params: Promise<...>`), which triggers React’s runtime error: “An unknown Component is an async Client Component”.
+- **Preferred pattern**:
+  - Keep route modules (`app/**`) as composition/data-loading only.
+  - Extract the UI into a **sync** leaf component (e.g. `OrderPageView`) under `src/components/**` or `src/app/**/_components/**`.
+  - Stories should render the leaf component with plain props and the necessary providers/mocks.
+
 ## Export Rules (Strict)
 
 - Named exports must be `const` stories typed as `Story`
