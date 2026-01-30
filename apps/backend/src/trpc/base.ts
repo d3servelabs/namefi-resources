@@ -570,19 +570,20 @@ function maybeNotifyLogin(params: {
   isNewUser: boolean;
   ctx: TrpcContext;
 }): void {
-  const { user, sessionId, tokenIssuedAt, isNewUser, ctx } = params;
-  if (sessionId && tokenIssuedAt) {
-    const ipAddress = ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
-    const userAgent = ctx.req?.header?.('User-Agent') ?? '';
-    triggerLoginNotification({
-      user,
-      sessionId,
-      ipAddress,
-      userAgent,
-      isNewUser,
-      tokenIssuedAt,
-    });
-  }
+  return; //todo
+  //   const { user, sessionId, tokenIssuedAt, isNewUser, ctx } = params;
+  //   if (sessionId && tokenIssuedAt) {
+  //     const ipAddress = ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
+  //     const userAgent = ctx.req?.header?.('User-Agent') ?? '';
+  //     triggerLoginNotification({
+  //       user,
+  //       sessionId,
+  //       ipAddress,
+  //       userAgent,
+  //       isNewUser,
+  //       tokenIssuedAt,
+  //     });
+  //   }
 }
 
 /**
