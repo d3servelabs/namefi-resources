@@ -145,6 +145,11 @@ jobs:
       is_force_push: ${{ steps.detect-type.outputs.is_force_push }}
       comparison_sha: ${{ steps.detect-type.outputs.comparison_sha }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+
       - name: Detect synchronize event type
         id: detect-type
         shell: bash
@@ -171,14 +176,25 @@ jobs:
           fi
 
           # For synchronize events, determine if it's a new commit or force push
-          # New commit: before SHA exists and is different from base SHA
-          # Force push: before SHA does not exist or is the same as base SHA
+          # New commit: before SHA exists, is different from base SHA, and the commit exists in the repo
+          # Force push: before SHA is empty, equals base SHA, is all zeros, or the commit doesn't exist
           #
           # The comparison_sha is the SHA to compare against for turbo detection:
           # - New commit: compare against before SHA (incremental change detection)
           # - Force push / opened / reopened: compare against base SHA (full change detection)
 
-          if [[ "$EVENT_ACTION" == "synchronize" && -n "$BEFORE_SHA" && "$BEFORE_SHA" != "$BASE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+          # Check if before SHA is valid and the commit exists in the repository
+          BEFORE_SHA_EXISTS="false"
+          if [[ -n "$BEFORE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            if git cat-file -e "$BEFORE_SHA" 2>/dev/null; then
+              BEFORE_SHA_EXISTS="true"
+              echo "Before SHA commit exists in repository"
+            else
+              echo "Before SHA commit does NOT exist in repository (likely force-pushed away)"
+            fi
+          fi
+
+          if [[ "$EVENT_ACTION" == "synchronize" && "$BEFORE_SHA_EXISTS" == "true" && "$BEFORE_SHA" != "$BASE_SHA" ]]; then
             echo "Synchronize event detected as NEW COMMIT - will compare against before SHA"
             echo "is_new_commit=true" >> "$GITHUB_OUTPUT"
             echo "is_force_push=false" >> "$GITHUB_OUTPUT"
