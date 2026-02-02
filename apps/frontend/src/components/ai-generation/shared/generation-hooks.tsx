@@ -14,6 +14,8 @@ import type { PosterFormData } from '../poster-generator';
 import type {
   ImageModel as Model,
   LogoStyleInput,
+  LogoTextTreatmentInput,
+  LogoTypographyInput,
   LogoTypeInput,
   MarketingCollateralTypeInput,
 } from '@namefi-astra/ai/types';
@@ -175,6 +177,8 @@ export const createLogoGenerationPayload = (data: LogoFormData) => {
     style: LogoStyleInput;
     description?: string;
     model: Model;
+    textTreatment?: LogoTextTreatmentInput;
+    typography?: LogoTypographyInput;
   } = {
     domain: data.domain,
     type: data.type,
@@ -184,6 +188,14 @@ export const createLogoGenerationPayload = (data: LogoFormData) => {
 
   if (data.description) {
     payload.description = data.description;
+  }
+
+  if (data.textTreatment && data.textTreatment !== 'let-ai-choose') {
+    payload.textTreatment = data.textTreatment;
+  }
+
+  if (data.typography && data.typography !== 'let-ai-choose') {
+    payload.typography = data.typography;
   }
 
   return payload;

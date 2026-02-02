@@ -17,6 +17,8 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 const logger = createLogger({ module: 'ai-router' });
 import {
+  LOGO_TEXT_TREATMENT_INPUT_IDS,
+  LOGO_TYPOGRAPHY_INPUT_IDS,
   LOGO_STYLE_INPUT_IDS,
   LOGO_TYPE_INPUT_IDS,
   MARKETING_COLLATERAL_TYPE_INPUT_IDS,
@@ -68,6 +70,8 @@ const generateLogoInputSchema = z.object({
   description: z.string().optional(),
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
+  textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS).optional(),
+  typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS).optional(),
   model: z
     .enum([
       'gpt-image-1',
@@ -109,13 +113,23 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        const { domain, description, type, style, model } = input;
+        const {
+          domain,
+          description,
+          type,
+          style,
+          model,
+          textTreatment,
+          typography,
+        } = input;
 
         const logoResult = await runLogoWorkflow({
           domain,
           description,
           preferredType: type,
           preferredStyle: style,
+          textTreatment,
+          typography,
           imageModel: model,
           storage: createStorageConfig(config.AI_BUCKET_FOLDERS.LOGOS),
         });
@@ -147,6 +161,8 @@ export const aiRouter = createTRPCRouter({
               logoType: type,
               logoStyle: style,
               description,
+              textTreatment,
+              typography,
             },
             output: {
               type: 'logo',

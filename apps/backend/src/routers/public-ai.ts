@@ -1,5 +1,7 @@
 import { db, publicAiGenerationsTable } from '@namefi-astra/db';
 import {
+  LOGO_TEXT_TREATMENT_INPUT_IDS,
+  LOGO_TYPOGRAPHY_INPUT_IDS,
   LOGO_STYLE_INPUT_IDS,
   LOGO_TYPE_INPUT_IDS,
   runLogoWorkflow,
@@ -38,6 +40,8 @@ const generateLogoInputSchema = z.object({
   description: z.string().optional(),
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
+  textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS).optional(),
+  typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS).optional(),
   model: z
     .enum([
       'gpt-image-1',
@@ -84,8 +88,16 @@ publicAiRouter.post('/generate-logo', async (c) => {
     );
   }
 
-  const { domain, description, type, style, model, externalUserId } =
-    parsedBody.data;
+  const {
+    domain,
+    description,
+    type,
+    style,
+    model,
+    externalUserId,
+    textTreatment,
+    typography,
+  } = parsedBody.data;
 
   try {
     const logoResult = await runLogoWorkflow({
@@ -93,6 +105,8 @@ publicAiRouter.post('/generate-logo', async (c) => {
       description,
       preferredType: type,
       preferredStyle: style,
+      textTreatment,
+      typography,
       imageModel: model,
       storage: logoStorageConfig,
     });
@@ -122,6 +136,8 @@ publicAiRouter.post('/generate-logo', async (c) => {
           logoStyle: style,
           description,
           imageModel: model,
+          textTreatment,
+          typography,
         },
         output: {
           type: 'logo',

@@ -10,6 +10,10 @@ import {
 } from '../prompts/image-system-prompts';
 import type { ImageModel } from '../types/generation';
 import type { LogoConceptSchema } from '../types/logo-schemas';
+import type {
+  LogoTextTreatmentInput,
+  LogoTypographyInput,
+} from '../types/logo-options';
 import { secrets } from '../env';
 
 const openai = createOpenAI({
@@ -240,6 +244,8 @@ export interface LogoGenerationInput {
   domain: NamefiNormalizedDomain;
   concept: LogoConceptSchema;
   model: ImageModel;
+  textTreatment?: LogoTextTreatmentInput;
+  typography?: LogoTypographyInput;
 }
 
 export async function generateLogoImage(input: LogoGenerationInput) {
@@ -248,6 +254,8 @@ export async function generateLogoImage(input: LogoGenerationInput) {
     domain: input.domain,
     logoType: input.concept.logoConcept.type,
     style: input.concept.logoConcept.style,
+    textTreatment: input.textTreatment,
+    typography: input.typography,
     model: input.model,
   });
 

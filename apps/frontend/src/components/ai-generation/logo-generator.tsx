@@ -9,7 +9,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/shadcn/form';
-import { LOGO_STYLES, LOGO_TYPES } from '@/lib/ai-generation-logo-options';
+import {
+  LOGO_STYLES,
+  LOGO_TEXT_TREATMENTS,
+  LOGO_TYPOGRAPHY,
+  LOGO_TYPES,
+} from '@/lib/ai-generation-logo-options';
 import { cn } from '@/lib/cn';
 import { Check, Sparkles } from 'lucide-react';
 import { z } from 'zod';
@@ -28,6 +33,8 @@ import {
 import type {
   ImageModel as Model,
   LogoStyleInput,
+  LogoTextTreatmentInput,
+  LogoTypographyInput,
   LogoTypeInput,
 } from '@namefi-astra/ai/types';
 import { Switch } from '@/components/ui/shadcn/switch';
@@ -35,6 +42,12 @@ import { Label } from '@/components/ui/shadcn/label';
 
 const logoTypeOptions = Object.keys(LOGO_TYPES) as LogoTypeInput[];
 const logoStyleOptions = Object.keys(LOGO_STYLES) as LogoStyleInput[];
+const logoTextTreatmentOptions = Object.keys(
+  LOGO_TEXT_TREATMENTS,
+) as LogoTextTreatmentInput[];
+const logoTypographyOptions = Object.keys(
+  LOGO_TYPOGRAPHY,
+) as LogoTypographyInput[];
 
 const logoFormSchema = baseFormSchema.extend({
   type: z
@@ -42,6 +55,19 @@ const logoFormSchema = baseFormSchema.extend({
     .default('let-ai-choose'),
   style: z
     .enum(logoStyleOptions as [LogoStyleInput, ...LogoStyleInput[]])
+    .default('let-ai-choose'),
+  textTreatment: z
+    .enum(
+      logoTextTreatmentOptions as [
+        LogoTextTreatmentInput,
+        ...LogoTextTreatmentInput[],
+      ],
+    )
+    .default('let-ai-choose'),
+  typography: z
+    .enum(
+      logoTypographyOptions as [LogoTypographyInput, ...LogoTypographyInput[]],
+    )
     .default('let-ai-choose'),
   model: z
     .enum([
@@ -85,6 +111,18 @@ export function LogoGenerator({
     return logoStyle ? logoStyle.name : style;
   };
 
+  const getTextTreatmentDisplay = (treatment: string) => {
+    const textTreatment =
+      LOGO_TEXT_TREATMENTS[treatment as keyof typeof LOGO_TEXT_TREATMENTS];
+    return textTreatment ? textTreatment.name : treatment;
+  };
+
+  const getTypographyDisplay = (typography: string) => {
+    const typographyOption =
+      LOGO_TYPOGRAPHY[typography as keyof typeof LOGO_TYPOGRAPHY];
+    return typographyOption ? typographyOption.name : typography;
+  };
+
   const getModelDisplay = (model: Model) => {
     if (model === 'gemini-3-pro-image-preview') return 'Gemini 3 Pro (preview)';
     if (model === 'gemini-2.5-flash-image') return 'Gemini 2.5 (legacy)';
@@ -98,6 +136,8 @@ export function LogoGenerator({
       type: LOGO_TYPES['let-ai-choose'].id,
       style: LOGO_STYLES['let-ai-choose'].id,
       description: '',
+      textTreatment: LOGO_TEXT_TREATMENTS['let-ai-choose'].id,
+      typography: LOGO_TYPOGRAPHY['let-ai-choose'].id,
       model: 'gpt-image-1.5' as Model,
     };
   }, [fixedDomain]);
@@ -120,6 +160,8 @@ export function LogoGenerator({
       {({ form, openPanel, setOpenPanel }) => {
         const selectedType = form.watch('type');
         const selectedStyle = form.watch('style');
+        const selectedTextTreatment = form.watch('textTreatment');
+        const selectedTypography = form.watch('typography');
         const selectedModel = form.watch('model');
 
         return (
@@ -155,6 +197,36 @@ export function LogoGenerator({
                               openPanel === 'style' ? null : 'style',
                             ),
                           isActive: openPanel === 'style',
+                        },
+                      ]
+                    : []),
+                  ...(showAdvanced
+                    ? [
+                        {
+                          key: 'text',
+                          label: 'Text',
+                          badge: selectedTextTreatment
+                            ? getTextTreatmentDisplay(selectedTextTreatment)
+                            : undefined,
+                          onClick: () =>
+                            setOpenPanel(openPanel === 'text' ? null : 'text'),
+                          isActive: openPanel === 'text',
+                        },
+                      ]
+                    : []),
+                  ...(showAdvanced
+                    ? [
+                        {
+                          key: 'typography',
+                          label: 'Typography',
+                          badge: selectedTypography
+                            ? getTypographyDisplay(selectedTypography)
+                            : undefined,
+                          onClick: () =>
+                            setOpenPanel(
+                              openPanel === 'typography' ? null : 'typography',
+                            ),
+                          isActive: openPanel === 'typography',
                         },
                       ]
                     : []),
@@ -308,6 +380,84 @@ export function LogoGenerator({
                           </Card>
                         ))}
                       </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Text Treatment Selection */}
+            {showAdvanced && openPanel === 'text' && (
+              <FormField
+                control={form.control}
+                name={'textTreatment'}
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel className="text-lg font-semibold">
+                      Choose text treatment
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          if (!val) return;
+                          field.onChange(val as LogoTextTreatmentInput);
+                          setOpenPanel(null);
+                        }}
+                      >
+                        <SelectTrigger className="w-full max-w-sm">
+                          <SelectValue placeholder="Select text treatment" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(LOGO_TEXT_TREATMENTS).map(
+                            ([key, treatment]) => (
+                              <SelectItem key={key} value={key}>
+                                {treatment.name}
+                              </SelectItem>
+                            ),
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Typography Selection */}
+            {showAdvanced && openPanel === 'typography' && (
+              <FormField
+                control={form.control}
+                name={'typography'}
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel className="text-lg font-semibold">
+                      Choose typography
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          if (!val) return;
+                          field.onChange(val as LogoTypographyInput);
+                          setOpenPanel(null);
+                        }}
+                      >
+                        <SelectTrigger className="w-full max-w-sm">
+                          <SelectValue placeholder="Select typography" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.entries(LOGO_TYPOGRAPHY).map(
+                            ([key, typography]) => (
+                              <SelectItem key={key} value={key}>
+                                {typography.name}
+                              </SelectItem>
+                            ),
+                          )}
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

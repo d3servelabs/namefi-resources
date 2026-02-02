@@ -8,7 +8,9 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { createRunId } from '../utils/files';
 import {
   LOGO_STYLE_INPUT_IDS,
+  LOGO_TEXT_TREATMENT_INPUT_IDS,
   LOGO_TYPE_INPUT_IDS,
+  LOGO_TYPOGRAPHY_INPUT_IDS,
 } from '../types/logo-options';
 import { logoConceptSchema, tokenUsageSchema } from '../types/logo-schemas';
 import { generateLogoStrategy } from '../agents/strategists';
@@ -22,12 +24,16 @@ const imageModelEnum = z.enum([
 ]);
 const logoTypeInputEnum = z.enum(LOGO_TYPE_INPUT_IDS);
 const logoStyleInputEnum = z.enum(LOGO_STYLE_INPUT_IDS);
+const logoTextTreatmentInputEnum = z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS);
+const logoTypographyInputEnum = z.enum(LOGO_TYPOGRAPHY_INPUT_IDS);
 
 export const logoWorkflowInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
   preferredType: logoTypeInputEnum.optional(),
   preferredStyle: logoStyleInputEnum.optional(),
+  textTreatment: logoTextTreatmentInputEnum.optional(),
+  typography: logoTypographyInputEnum.optional(),
   imageModel: imageModelEnum.default('gpt-image-1.5'),
   storage: z.custom<StorageConfig>(),
 });
@@ -68,6 +74,8 @@ export async function runLogoWorkflow(
     domain: input.domain,
     concept,
     model: input.imageModel,
+    textTreatment: input.textTreatment,
+    typography: input.typography,
   });
 
   if (!generated.imageBase64) {
