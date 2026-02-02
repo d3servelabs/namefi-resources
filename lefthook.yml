@@ -19,10 +19,18 @@ post-checkout:
         if [ -n "$CI" ]; then
           exit 0
         fi
-        if git rev-parse -q --verify HEAD@{1} >/dev/null; then
+        old_ref="${1:-}"
+        new_ref="${2:-}"
+        is_branch_checkout="${3:-}"
+        if [ "$is_branch_checkout" != "1" ]; then
+          exit 0
+        fi
+        if [ -n "$old_ref" ] && [ -n "$new_ref" ] && git rev-parse -q --verify "$old_ref" >/dev/null && git rev-parse -q --verify "$new_ref" >/dev/null; then
+          changed=$(git diff --name-only "$old_ref" "$new_ref" -- .rulesync rulesync.jsonc)
+        elif git rev-parse -q --verify HEAD@{1} >/dev/null; then
           changed=$(git diff --name-only HEAD@{1} HEAD -- .rulesync rulesync.jsonc)
         else
-          changed=$(git ls-tree -r --name-only HEAD -- .rulesync rulesync.jsonc)
+          changed=
         fi
         if [ -n "$changed" ]; then
           bun run rulesync:generate
@@ -37,8 +45,10 @@ post-merge:
         fi
         if git rev-parse -q --verify ORIG_HEAD >/dev/null; then
           changed=$(git diff --name-only ORIG_HEAD HEAD -- .rulesync rulesync.jsonc)
+        elif git rev-parse -q --verify HEAD@{1} >/dev/null; then
+          changed=$(git diff --name-only HEAD@{1} HEAD -- .rulesync rulesync.jsonc)
         else
-          changed=$(git diff --name-only HEAD~1 HEAD -- .rulesync rulesync.jsonc || true)
+          changed=
         fi
         if [ -n "$changed" ]; then
           bun run rulesync:generate
@@ -53,8 +63,10 @@ post-rewrite:
         fi
         if git rev-parse -q --verify ORIG_HEAD >/dev/null; then
           changed=$(git diff --name-only ORIG_HEAD HEAD -- .rulesync rulesync.jsonc)
+        elif git rev-parse -q --verify HEAD@{1} >/dev/null; then
+          changed=$(git diff --name-only HEAD@{1} HEAD -- .rulesync rulesync.jsonc)
         else
-          changed=$(git diff --name-only HEAD~1 HEAD -- .rulesync rulesync.jsonc || true)
+          changed=
         fi
         if [ -n "$changed" ]; then
           bun run rulesync:generate
