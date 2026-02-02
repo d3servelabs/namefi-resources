@@ -117,14 +117,6 @@ const nextConfig = {
         source: '/domain/:path*',
         destination: '/domains/:path*',
       },
-      {
-        source: '/docs',
-        destination: `${appConfig.DOCS_URL}/docs`,
-      },
-      {
-        source: '/docs/:path*',
-        destination: `${appConfig.DOCS_URL}/docs/:path*`,
-      },
     ];
   },
   async redirects() {
@@ -146,7 +138,7 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: '/public/docs/api',
+        source: '/docs',
         destination: process.env.API_DOCS_URL || 'https://docs.namefi.io/',
         permanent: false,
       },
