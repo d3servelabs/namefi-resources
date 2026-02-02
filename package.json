@@ -32,6 +32,7 @@
     "clean:workspaces": "turbo clean",
     "clean:root": "git clean -xdf node_modules out .turbo .next",
     "clean:all": "bun run clean:workspaces && bun run clean:root",
+    "prepare": "if [ -z \"$CI\" ]; then bun run lefthook install && bun run rulesync:generate; fi",
     "rulesync:generate": "bunx --yes rulesync@latest generate -c rulesync.jsonc",
     "fix-infisical": "bun --cwd node_modules/@infisical/cli preinstall",
     "link-infisical": "bun run scripts/link-infisical.ts",
