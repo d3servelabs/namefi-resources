@@ -13,7 +13,7 @@ import {
 } from '../mail/components/powered-by-namefi-url-context';
 import { NamefiEmailLinks } from '../mail/email-links';
 import {
-  buildEmailTrackUrl,
+  buildEmailAnalyticsUrl,
   withEmailTracking,
 } from '../mail/components/email-tracking';
 
@@ -45,10 +45,10 @@ const TestEmail = withEmailTracking(
 );
 // Start the process
 async function main(): Promise<void> {
-  const trackingUrl = await buildEmailTrackUrl({
+  const trackingUrl = await buildEmailAnalyticsUrl({
     trackUrl:
       'https://armipotent-servilely-sarita.ngrok-free.dev/v1/email/track/open/',
-    data: { userId: '1234567890', email: 'test@example.com' },
+    data: { userId: '1234567890', email: 'test@example.com' } as any,
   });
   console.log('trackingUrl', trackingUrl);
   const email = (

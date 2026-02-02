@@ -29,7 +29,9 @@ export interface BackendAnalyticsEventMap {
     order_status: string;
   };
 
-  order_finished_email_opened: CheckoutAnalyticsBaseParams;
+  order_finished_email_opened: CheckoutAnalyticsBaseParams & {
+    email_distinct_id?: string;
+  };
 }
 
 type CheckoutAnalyticsBaseParams = {

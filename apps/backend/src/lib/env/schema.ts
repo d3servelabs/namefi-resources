@@ -254,6 +254,7 @@ export const configSchema = z.object({
     .string()
     .default(process.env.USE_NEW_EPP_WORKFLOW ?? 'false')
     .pipe(z.stringbool()),
+  EMAIL_ANALYTICS_URL: z.url().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

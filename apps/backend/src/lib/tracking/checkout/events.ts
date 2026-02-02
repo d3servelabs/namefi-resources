@@ -66,7 +66,9 @@ type LogGaEventParkingReadyInput = CheckoutAnalyticsBaseInput & {
 type LogGaEventOrderFinishedEmailSentInput = CheckoutAnalyticsBaseInput & {
   orderStatus: OrderStatus;
 };
-type LogGaEventOrderFinishedEmailOpenedInput = CheckoutAnalyticsBaseInput;
+type LogGaEventOrderFinishedEmailOpenedInput = CheckoutAnalyticsBaseInput & {
+  emailId?: string;
+};
 
 type CheckoutEventBaseParams = {
   user_id?: string;
@@ -315,6 +317,7 @@ export async function gaEventOrderFinishedEmailOpened(
       name: 'order_finished_email_opened',
       params: {
         ...baseEventParams(input),
+        email_distinct_id: input.emailId,
       },
     },
     metadata: {

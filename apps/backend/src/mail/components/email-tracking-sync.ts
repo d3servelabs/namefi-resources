@@ -1,8 +1,8 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import type { EmailTrackingData } from './email-tracking';
+import type { EmailAnalyticsPayload } from './email-tracking';
 
 type EmailTrackingSyncPayload = {
-  data: EmailTrackingData;
+  data: EmailAnalyticsPayload;
   iat: number;
 };
 

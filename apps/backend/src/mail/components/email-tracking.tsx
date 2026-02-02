@@ -4,23 +4,35 @@ import { CompactSign, compactVerify } from 'jose';
 import React from 'react';
 import z from 'zod';
 
-type JsonPrimitive = string | number | boolean | null;
-type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };
+export const EmailAnalyticsPayloadSchema = z.discriminatedUnion('type', [
+  z.object({
+    nonce: z.string(),
+    type: z.literal('order_ready_count_only'),
+  }),
+  // this one is not used but it's left here as an example
+  z.object({
+    type: z.literal('order_ready'),
+    orderId: z.uuid(),
+    userId: z.uuid(),
+    emailAddress: z.email(),
+    nonce: z.string(),
+  }),
+]);
 
-export type EmailTrackingData = Record<string, JsonValue>;
+export type EmailAnalyticsPayload = z.infer<typeof EmailAnalyticsPayloadSchema>;
 
 export type EmailTrackingInfo = {
   trackUrl: string;
-  data: EmailTrackingData;
+  data: EmailAnalyticsPayload;
   issuedAt?: Date;
 };
 
-export type EmailTrackingUrlResult =
+export type EmailAnalyticsUrlResult =
   | { url: string; error?: undefined }
   | { url: null; error: string };
 
-export type EmailTrackingDecodeResult =
-  | { data: EmailTrackingData; issuedAt?: Date; error?: undefined }
+export type EmailAnalyticsDecodeResult =
+  | { data: EmailAnalyticsPayload; issuedAt?: Date; error?: undefined }
   | { data: null; error: string };
 
 type JwtHeader = {
@@ -28,11 +40,11 @@ type JwtHeader = {
   typ: 'JWT';
 };
 
-type EmailTrackingContextType = {
+type EmailAnalyticsContextType = {
   trackingUrl: string | null;
 };
 
-const EmailTrackingContext = React.createContext<EmailTrackingContextType>({
+const EmailAnalyticsContext = React.createContext<EmailAnalyticsContextType>({
   trackingUrl: null,
 });
 
@@ -41,25 +53,25 @@ export function EmailTrackingProvider(props: {
   children?: React.ReactNode;
 }) {
   return (
-    <EmailTrackingContext.Provider
+    <EmailAnalyticsContext.Provider
       value={{ trackingUrl: props.trackingUrl ?? null }}
     >
       {props.children}
-    </EmailTrackingContext.Provider>
+    </EmailAnalyticsContext.Provider>
   );
 }
 
 export function useEmailTrackingUrl(trackingUrl?: string | null) {
-  const context = React.useContext(EmailTrackingContext);
+  const context = React.useContext(EmailAnalyticsContext);
   if (!context) {
     return trackingUrl ?? null;
   }
   return trackingUrl ?? context.trackingUrl;
 }
 
-export async function buildEmailTrackUrl(
+export async function buildEmailAnalyticsUrl(
   trackingInfo: EmailTrackingInfo,
-): Promise<EmailTrackingUrlResult> {
+): Promise<EmailAnalyticsUrlResult> {
   const secret = secrets.EMAIL_TRACKING_JWT_SECRET;
   if (!secret) {
     return {
@@ -74,7 +86,7 @@ export async function buildEmailTrackUrl(
   }
 
   const issuedAt = trackingInfo.issuedAt ?? new Date();
-  const payload: EmailTrackingPayload = {
+  const payload: EmailAnalyticsJwtPayload = {
     data: trackingInfo.data,
     iat: Math.floor(issuedAt.getTime() / 1000),
   };
@@ -95,7 +107,7 @@ export async function buildEmailTrackUrl(
 
 export async function getEmailTrackDataFromUrl(
   urlOrToken: string,
-): Promise<EmailTrackingDecodeResult> {
+): Promise<EmailAnalyticsDecodeResult> {
   const secret = secrets.EMAIL_TRACKING_JWT_SECRET;
   if (!secret) {
     return {
@@ -115,7 +127,7 @@ export async function getEmailTrackDataFromUrl(
       return { data: null, error: 'Invalid tracking token' };
     }
 
-    const parsedPayload = safeJsonParse<EmailTrackingPayload>(
+    const parsedPayload = safeJsonParse<EmailAnalyticsJwtPayload>(
       new TextDecoder().decode(payload),
     );
     if (!parsedPayload || typeof parsedPayload !== 'object') {
@@ -177,8 +189,8 @@ export function withEmailTracking<T extends object>(
   return WrappedComponent;
 }
 
-type EmailTrackingPayload = {
-  data: EmailTrackingData;
+type EmailAnalyticsJwtPayload = {
+  data: EmailAnalyticsPayload;
   iat: number;
 };
 
@@ -187,7 +199,7 @@ const jwtHeader: JwtHeader = {
   typ: 'JWT',
 };
 
-async function signJwt(payload: EmailTrackingPayload, secret: string) {
+async function signJwt(payload: EmailAnalyticsJwtPayload, secret: string) {
   const encoder = new TextEncoder();
   return await new CompactSign(encoder.encode(JSON.stringify(payload)))
     .setProtectedHeader(jwtHeader)

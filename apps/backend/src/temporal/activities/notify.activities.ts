@@ -19,7 +19,9 @@ import * as workflow from '@temporalio/workflow';
 import { getStripePaymentMethodPublicIdentifier } from './payment.activities';
 import { resolve } from '@namefi-astra/utils';
 import { domainToUnicode } from 'node:url';
-import punycode from 'punycode';
+import { buildEmailAnalyticsUrl } from '../../mail/components/email-tracking';
+import { config } from '#lib/env';
+import { randomUUID } from 'node:crypto';
 
 export async function maybeGetUserEmail(
   userId: string,
@@ -247,6 +249,7 @@ export async function getProcessedOrderEmail({
     paymentMethodIdentifier,
     refund,
     poweredByNamefiDomain,
+    trackingUrl: await maybeGetOrderFinishedAnalyticsUrl(),
   });
 
   const html = await render(content);
@@ -256,6 +259,25 @@ export async function getProcessedOrderEmail({
     subject,
     content: { html, plain: plainText },
   };
+}
+
+async function maybeGetOrderFinishedAnalyticsUrl(): Promise<string | null> {
+  if (!config.EMAIL_ANALYTICS_URL) {
+    return null;
+  }
+
+  if (config.EMAIL_ANALYTICS_URL) {
+    try {
+      const analyticsUrlResult = await buildEmailAnalyticsUrl({
+        trackUrl: config.EMAIL_ANALYTICS_URL,
+        data: { nonce: randomUUID(), type: 'order_ready_count_only' },
+      });
+      return analyticsUrlResult.url;
+    } catch (error) {
+      logger.trace('Failed to build analytics URL:', error);
+    }
+  }
+  return null;
 }
 
 export async function notifyUserOrderProcessed(

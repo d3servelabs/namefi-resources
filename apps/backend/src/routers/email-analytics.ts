@@ -1,7 +1,11 @@
 import { Hono } from 'hono';
 import { createLogger } from '#lib/logger';
 import { gaEventOrderFinishedEmailOpened } from '#lib/tracking/checkout';
-import { getEmailTrackDataFromUrl } from '../mail/components/email-tracking';
+import {
+  EmailAnalyticsPayloadSchema,
+  getEmailTrackDataFromUrl,
+} from '../mail/components/email-tracking';
+import z from 'zod';
 
 const emailAnalyticsRouter = new Hono();
 const logger = createLogger({ context: 'EMAIL_ANALYTICS' });
@@ -20,13 +24,24 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
     logger.trace({ data: result.data, userAgent }, 'Email opened');
 
     const trackingData = result.data as Record<string, unknown>;
-    // const userId = getTrackingString(trackingData, ['userId', 'user_id']); // needs consent
-    const orderId = getTrackingString(trackingData, ['orderId', 'order_id']);
+    const parsed = EmailAnalyticsPayloadSchema.safeParse(trackingData);
 
-    void gaEventOrderFinishedEmailOpened({
-      // userId,
-      orderId,
-    });
+    if (parsed.success) {
+      switch (parsed.data.type) {
+        case 'order_ready_count_only':
+          await gaEventOrderFinishedEmailOpened({
+            emailId: parsed.data.nonce,
+          });
+          break;
+        case 'order_ready':
+          await gaEventOrderFinishedEmailOpened({
+            orderId: parsed.data.orderId,
+            userId: parsed.data.userId,
+            emailId: parsed.data.nonce,
+          });
+          break;
+      }
+    }
   } else {
     logger.trace({ error: result.error, userAgent }, 'Email open log failed');
   }
@@ -39,35 +54,5 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
     Expires: '0',
   });
 });
-
-function getTrackingValue(
-  data: Record<string, unknown>,
-  keys: string[],
-): unknown {
-  for (const key of keys) {
-    if (Object.hasOwn(data, key)) {
-      return data[key];
-    }
-  }
-  return undefined;
-}
-
-function toTrackingString(value: unknown): string | undefined {
-  if (typeof value === 'string') {
-    const trimmed = value.trim();
-    return trimmed ? trimmed : undefined;
-  }
-  if (typeof value === 'number' || typeof value === 'bigint') {
-    return String(value);
-  }
-  return undefined;
-}
-
-function getTrackingString(
-  data: Record<string, unknown>,
-  keys: string[],
-): string | undefined {
-  return toTrackingString(getTrackingValue(data, keys));
-}
 
 export { emailAnalyticsRouter };
