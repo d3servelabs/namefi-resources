@@ -69,3 +69,9 @@ This is graphite function to create a NEW pull request on top of the one below (
 ## Respond
 
 Based on the current staged git changes, please summarize them as a branch name and a `git commit` or `gt create` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.
+
+## PR Labels
+- If the PR needs a fully functional preview deployment for testing, add the label `preview`.
+  - `preview` will allow the preview deployment to be created automatically. But it will still validate if it's needed in the first place.
+  - If you want to force a preview deployment, add the label `force-preview`.
+    - `force-preview` will force the preview deployment to be created, regardless of whether it's needed or not.
