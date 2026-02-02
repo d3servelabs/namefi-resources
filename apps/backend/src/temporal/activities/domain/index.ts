@@ -7,10 +7,16 @@ import * as NameserversLib from '#lib/domains/nameservers';
 import {
   getNonUserSpecificDomainPreferencesAndConfig,
   updateDomainPreferencesAndConfig,
+  type UpdateDomainPreferencesAndConfig,
 } from '#lib/domains/domain-preferences';
+import {
+  gaEventParkingFinished,
+  gaEventDnsRecordsPropagated,
+} from '../../../lib/tracking/checkout';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
 import * as DnsActivities from './dns.activities';
+import * as ParkingActivities from './parking-tracking.activities';
 import * as DnssecActivities from './dnssec.activities';
 import * as RegistrarActivities from './registrar.activities';
 import { getDomainDurationConstraints } from '#lib/domains/duration-constraints/index';
@@ -56,9 +62,12 @@ export const DomainsActivities = {
   ...ExportTrackingActivities,
   // Bulk burn activities
   ...BulkBurnActivities,
+  ...ParkingActivities,
   updateDomainPreferencesAndConfig,
   getNonUserSpecificDomainPreferencesAndConfig,
   fillDefaultDomainConfig,
+  gaEventDnsRecordsPropagated,
+  gaEventParkingFinished,
 };
 
 export async function getDomainChain(
@@ -83,11 +92,13 @@ export async function getDomainChain(
 export async function fillDefaultDomainConfig(
   normalizedDomainName: NamefiNormalizedDomain,
   userId: string,
+  overrides: UpdateDomainPreferencesAndConfig = {},
 ) {
   return updateDomainPreferencesAndConfig(normalizedDomainName, userId, {
     autoEnsEnabled: false,
     autoParkEnabled: true,
     autoRenewEnabled: true,
     dnssecEnabled: false,
+    ...overrides,
   });
 }

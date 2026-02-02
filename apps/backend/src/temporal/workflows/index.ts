@@ -56,5 +56,6 @@ export * from './charge-prepared-payments.workflow';
 export * from './autorenew-daily-report.workflow';
 export * from './export-expiration-daily-report.workflow';
 export * from './domain-export-tracking.workflow';
+export * from './domain-parking-tracking.workflow';
 export * from './bulk-burn-expired-domains.workflow';
 export * from './generic/start-activity.workflow';

@@ -189,6 +189,14 @@ export const getDomainPreferencesAndConfig = async (
     forwardTo: domainConfig.forwardTo,
   };
 };
+export type UpdateDomainPreferencesAndConfig = Omit<
+  Partial<typeof domainUserPreferencesTable.$inferSelect>,
+  'userId' | 'normalizedDomainName' | 'id' | 'createdAt' | 'updatedAt'
+> &
+  Omit<
+    Partial<typeof domainConfigTable.$inferSelect>,
+    'normalizedDomainName' | 'id' | 'createdAt' | 'updatedAt'
+  >;
 
 /**
  * Update the domain config
@@ -198,14 +206,7 @@ export const getDomainPreferencesAndConfig = async (
 export const updateDomainPreferencesAndConfig = async (
   domainName: NamefiNormalizedDomain,
   userId: string,
-  domainPreferencesAndConfig: Omit<
-    Partial<typeof domainUserPreferencesTable.$inferSelect>,
-    'userId' | 'normalizedDomainName' | 'id' | 'createdAt' | 'updatedAt'
-  > &
-    Omit<
-      Partial<typeof domainConfigTable.$inferSelect>,
-      'normalizedDomainName' | 'id' | 'createdAt' | 'updatedAt'
-    >,
+  domainPreferencesAndConfig: UpdateDomainPreferencesAndConfig,
 ) => {
   const userDomainPreferencesColumns = keys(
     omit(

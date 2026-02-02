@@ -1,0 +1,88 @@
+import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+
+export interface DomainParkingTrackingWorkflowInput {
+  domainName: NamefiNormalizedDomain;
+  userId: string;
+  orderId?: string;
+  orderItemId?: string;
+  registrar?: string;
+  dnsProvider?: 'NAMEFI' | 'OTHER';
+}
+
+const pollingActivities = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: pollingOpts,
+});
+const standardActivities = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: shortRunningOpts,
+});
+
+const { pollDomainParkingResponse, pollDefaultNsPropagated } =
+  pollingActivities;
+const {
+  getNonUserSpecificDomainPreferencesAndConfig,
+  gaEventDnsRecordsPropagated,
+  gaEventParkingFinished,
+} = standardActivities;
+
+export async function domainParkingTrackingWorkflow(
+  input: DomainParkingTrackingWorkflowInput,
+): Promise<void> {
+  await Promise.allSettled([
+    _parkingPropagated(input),
+    _dnsRecordsPropagated(input),
+  ]);
+}
+
+async function _parkingPropagated(input: DomainParkingTrackingWorkflowInput) {
+  const { autoParkEnabled } =
+    await getNonUserSpecificDomainPreferencesAndConfig(input.domainName);
+
+  if (!autoParkEnabled) {
+    await gaEventParkingFinished({
+      userId: input.userId,
+      orderId: input.orderId,
+      orderItemId: input.orderItemId,
+      normalizedDomainName: input.domainName,
+      registrarKey: input.registrar,
+      optOut: true,
+      status: 'SUCCESS',
+    });
+    return;
+  }
+
+  await pollDomainParkingResponse({ domainName: input.domainName });
+
+  await gaEventParkingFinished({
+    userId: input.userId,
+    orderId: input.orderId,
+    orderItemId: input.orderItemId,
+    normalizedDomainName: input.domainName,
+    registrarKey: input.registrar,
+    optOut: false,
+    status: 'SUCCESS',
+  });
+}
+async function _dnsRecordsPropagated(
+  input: DomainParkingTrackingWorkflowInput,
+): Promise<void> {
+  await pollDefaultNsPropagated(input.domainName as PunycodeDomainName);
+
+  await gaEventDnsRecordsPropagated({
+    userId: input.userId,
+    orderId: input.orderId,
+    orderItemId: input.orderItemId,
+    normalizedDomainName: input.domainName,
+    dnsProvider: input.dnsProvider || 'NAMEFI',
+  });
+}
+
+domainParkingTrackingWorkflow.generateId = (
+  input: DomainParkingTrackingWorkflowInput,
+): string => {
+  return `domain-parking-tracking-[${input.domainName}]`;
+};
