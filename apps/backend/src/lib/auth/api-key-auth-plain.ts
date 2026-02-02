@@ -110,7 +110,7 @@ export async function authenticateWithPlainApiKey(
 
     return { success: false, error: 'Invalid API key' };
   } catch (error) {
-    logger.trace({ error }, 'Error authenticating with PLAIN API key');
+    logger.error({ error }, 'Error authenticating with PLAIN API key');
     return { success: false, error: 'Authentication failed' };
   }
 }

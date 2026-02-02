@@ -119,7 +119,7 @@ export async function verifyUserAuthAndGetUser(
             },
           });
         } catch (error) {
-          logger.fatal(
+          logger.error(
             { error, userId: user.id },
             'Failed to start dev signup NFSC mint workflow',
           );

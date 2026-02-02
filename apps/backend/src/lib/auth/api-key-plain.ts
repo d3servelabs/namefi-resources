@@ -90,7 +90,7 @@ export async function verifyPlainApiKey(
   try {
     return await bcrypt.compare(plainKey, storedHash);
   } catch (error) {
-    logger.trace({ error }, 'Error verifying API key');
+    logger.error({ error }, 'Error verifying API key');
     return false;
   }
 }

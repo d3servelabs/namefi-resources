@@ -107,7 +107,7 @@ monitorsRouter.get('/balance/onchain/signer', async (c) => {
     const res = await checkSignerBalances();
     return c.json(res);
   } catch (error) {
-    _logger.trace({ error }, 'Error fetching signer balances');
+    _logger.error({ error }, 'Error fetching signer balances');
     return c.json({ error: 'Internal Server Error' }, 500);
   }
 });
@@ -116,7 +116,7 @@ monitorsRouter.get('/balance/registrars/dynadot', async (c) => {
     const res = await checkAllDynadotBalances();
     return c.json(res);
   } catch (error) {
-    _logger.trace({ error }, 'Error fetching Dynadot balances');
+    _logger.error({ error }, 'Error fetching Dynadot balances');
     return c.json({ error: 'Internal Server Error' }, 500);
   }
 });

@@ -2458,11 +2458,11 @@ export const adminRouter = createTRPCRouter({
       // Trigger cache refresh (non-blocking)
       const [cacheRefreshResult, cacheStatus] = await Promise.all([
         triggerUpdatePrivyCache(false).catch((error) => {
-          logger.trace({ error }, 'Failed to trigger Privy cache refresh');
+          logger.warn({ error }, 'Failed to trigger Privy cache refresh');
           return null;
         }),
         getPrivyCacheStatus().catch((error) => {
-          logger.trace({ error }, 'Failed to get Privy cache status');
+          logger.warn({ error }, 'Failed to get Privy cache status');
           return null;
         }),
       ]);

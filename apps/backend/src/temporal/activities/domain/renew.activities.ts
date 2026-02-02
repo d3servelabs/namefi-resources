@@ -249,7 +249,7 @@ export async function getUserWithEvmWallets() {
 
       const userId = usersPrivyUserIdToNamefiUserIdMap.get(privyUser.id);
       if (!userId) {
-        logger.fatal(
+        logger.error(
           { privyUserId: privyUser.id },
           'User has no namefi user id',
         );
@@ -349,7 +349,7 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
       // Get NFT details for this domain
       const domainNft = domainNftMap.get(domain.normalizedDomainName);
       if (!domainNft) {
-        logger.fatal(
+        logger.error(
           { domainName: domain.normalizedDomainName },
           'Domain not found in nftDomains',
         );
@@ -359,7 +359,7 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
       // Get user details for the domain owner
       const user = walletToUserIdMap.get(domainNft.ownerAddress);
       if (!user) {
-        logger.fatal(
+        logger.error(
           {
             domainName: domain.normalizedDomainName,
             nftDomain: domainNft,
@@ -474,7 +474,7 @@ async function _getUserDomainsWithAutoRenewOption(
   }
   const privyUserResponse = await resolve(privyClient.getUserById(privyUserId));
   if (privyUserResponse.failed) {
-    logger.fatal(
+    logger.error(
       { privyUserId, userId, error: privyUserResponse.error },
       'Failed to get privy user',
     );
@@ -936,7 +936,7 @@ export async function getDomainsExpirationDatesFromIndex(
 
   const unknownDomainNames = groupedDomainNames.unknown ?? [];
   if (isNotEmpty(unknownDomainNames)) {
-    logger.fatal(
+    logger.error(
       { context: 'getDomainsExpirationDates', unknownDomainNames },
       'Unknown domain levels',
     );

@@ -645,7 +645,7 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         },
       });
     } catch (error) {
-      logger.trace({ error }, 'verifying user auth and creation');
+      logger.warn({ error }, 'verifying user auth and creation');
       throw new TRPCError({
         code: 'UNAUTHORIZED',
       });

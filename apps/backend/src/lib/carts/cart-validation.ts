@@ -617,7 +617,7 @@ async function _getDomainsExpirationDatesMap(
       (result) => result.status === 'rejected',
     );
     if (rejectedResults.length > 0) {
-      logger.fatal(
+      logger.error(
         { rejectedResults, context: 'getDomainsExpirationDatesMap' },
         'Error fetching domain details for domains',
       );

@@ -61,7 +61,7 @@ altchaRouter.get('/challenge', async (c) => {
     return c.json(challenge, 200, { 'Cache-Control': 'no-store' });
   } catch (error: any) {
     // Handle any errors that occur during challenge creation
-    _logger.warn({ error }, 'ALTCHA challenge creation failed');
+    _logger.error({ error }, 'ALTCHA challenge creation failed');
     return c.json({ error: 'Failed to create challenge' }, 500);
   }
 });
