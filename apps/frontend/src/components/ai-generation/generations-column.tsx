@@ -494,7 +494,7 @@ function GalleryHeader({
               <Command className="rounded-lg bg-popover text-popover-foreground">
                 <CommandInput
                   placeholder="Search brand..."
-                  className="px-3 py-2 text-sm focus-visible:ring-transparent border-none"
+                  className="border-none bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring-transparent"
                 />
                 <CommandList>
                   <CommandEmpty>No brands found.</CommandEmpty>
