@@ -152,7 +152,7 @@ const {
   getOrderDetailsOrThrow,
   updateOrderItemStatusOrThrow,
   updateOrderStatusOrThrow,
-  trackPaymentProcessed,
+  logGaEventPaymentProcessed,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -446,7 +446,7 @@ export async function processOrderWorkflow(
       updatePayment('CHARGED');
       setStepStatus('payments', 'COMPLETED');
       try {
-        await trackPaymentProcessed({
+        await logGaEventPaymentProcessed({
           userId: orderDetails.order.userId,
           orderId: input.orderId,
           amountInUsdCents: orderDetails.order.amountInUSDCents,
@@ -454,6 +454,7 @@ export async function processOrderWorkflow(
           paymentProviders: orderDetails.payments.map(
             (payment) => payment.paymentProvider,
           ),
+          status: 'SUCCESS',
         });
       } catch (error) {
         workflow.log.warn(
@@ -495,6 +496,24 @@ export async function processOrderWorkflow(
       );
       setStepStatus('payments', 'FAILED', 'Payment attempt failed');
       setPhase('FAILED');
+      try {
+        await logGaEventPaymentProcessed({
+          userId: orderDetails.order.userId,
+          orderId: input.orderId,
+          amountInUsdCents: orderDetails.order.amountInUSDCents,
+          paymentCount: orderDetails.payments.length,
+          paymentProviders: orderDetails.payments.map(
+            (payment) => payment.paymentProvider,
+          ),
+          status: 'FAILURE',
+        });
+      } catch (error) {
+        workflow.log.warn(
+          `Failed to track payment_processed event for order ${input.orderId}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
       throw error instanceof Error ? error : new Error(String(error));
     }
 

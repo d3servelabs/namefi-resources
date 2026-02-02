@@ -47,7 +47,7 @@ import { logger } from '#lib/logger';
 import { config } from '#lib/env';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
 import { getChain, CHAINS as chains } from '@namefi-astra/utils';
-import { trackOrderPlaced } from './ordersRouter';
+import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -296,7 +296,7 @@ const registerDomainWithRecords = async ({
 
     return order;
   });
-  void trackOrderPlaced({
+  void gaEventOrderPlaced({
     userId: ctx.user.id,
     orderId: order.id,
     amountUsdCents: order.amountInUSDCents,

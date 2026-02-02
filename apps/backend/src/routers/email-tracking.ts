@@ -18,7 +18,10 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
   if (result.data) {
     logger.info({ data: result.data, userAgent }, 'Email opened');
   } else {
-    logger.warn({ error: result.error, userAgent }, 'Email tracking failed');
+    logger.warn(
+      { error: new Error(result.error), userAgent },
+      'Email tracking failed',
+    );
   }
 
   return c.body(pixel, 200, {

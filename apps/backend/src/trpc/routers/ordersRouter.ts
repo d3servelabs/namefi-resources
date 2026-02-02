@@ -55,7 +55,7 @@ import { secrets } from '../../lib/env';
 import pMap from 'p-map';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
-import { sendGA4Event } from '#lib/ga4-measurement';
+import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 type PaymentMethodDetailsOnChain = {
@@ -88,40 +88,6 @@ type OrderProgressPayload = OrderProgressSnapshot & {
 };
 
 const workflowIdForOrder = (orderId: string) => `process-order-${orderId}`;
-
-export const trackOrderPlaced = async ({
-  userId,
-  orderId,
-  amountUsdCents,
-  itemCount,
-  paymentCount,
-  orderSource,
-}: {
-  userId: string;
-  orderId: string;
-  amountUsdCents: number;
-  itemCount: number;
-  paymentCount: number;
-  orderSource?: 'checkout' | 'instant_buy';
-}) => {
-  try {
-    await sendGA4Event({
-      userId,
-      event: {
-        name: 'order_placed',
-        params: {
-          order_id: orderId,
-          amount_usd_cents: amountUsdCents,
-          item_count: itemCount,
-          payment_count: paymentCount,
-          order_source: orderSource,
-        },
-      },
-    });
-  } catch (error) {
-    logger.warn({ error, orderId }, 'Failed to send GA order_placed event');
-  }
-};
 
 const ensureOrderOwnership = async (orderId: string, userId: string) => {
   const orderRecord = await db.query.ordersTable.findFirst({
@@ -290,7 +256,7 @@ export const ordersRouter = createTRPCRouter({
         }
         return order;
       });
-      void trackOrderPlaced({
+      void gaEventOrderPlaced({
         userId: ctx.user.id,
         orderId: order.id,
         amountUsdCents: order.amountInUSDCents,
@@ -545,7 +511,7 @@ export const ordersRouter = createTRPCRouter({
 
         return order;
       });
-      void trackOrderPlaced({
+      void gaEventOrderPlaced({
         userId: ctx.user.id,
         orderId: order.id,
         amountUsdCents: order.amountInUSDCents,
@@ -735,7 +701,7 @@ export const ordersRouter = createTRPCRouter({
 
         return order;
       });
-      void trackOrderPlaced({
+      void gaEventOrderPlaced({
         userId: ctx.user.id,
         orderId: order.id,
         amountUsdCents: order.amountInUSDCents,

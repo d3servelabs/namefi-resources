@@ -4,6 +4,10 @@ import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as DnssecLib from '#lib/domains/dnssec';
 import * as NameserversLib from '#lib/domains/nameservers';
+import {
+  getNonUserSpecificDomainPreferencesAndConfig,
+  updateDomainPreferencesAndConfig,
+} from '#lib/domains/domain-preferences';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
 import * as DnsActivities from './dns.activities';
@@ -23,7 +27,6 @@ import * as AutoRenewReportAttachmentActivities from './autorenew-report-attachm
 import * as ExportExpirationReportActivities from './export-expiration-report.activities';
 import * as ExportTrackingActivities from './export-tracking.activities';
 import * as BulkBurnActivities from './bulk-burn.activities';
-import { updateDomainPreferencesAndConfig } from '#lib/domains/domain-preferences';
 
 //TODO: add a check to see if name collision is happening
 export const DomainsActivities = {
@@ -54,6 +57,7 @@ export const DomainsActivities = {
   // Bulk burn activities
   ...BulkBurnActivities,
   updateDomainPreferencesAndConfig,
+  getNonUserSpecificDomainPreferencesAndConfig,
   fillDefaultDomainConfig,
 };
 

@@ -8,7 +8,6 @@ import { and, eq, inArray, sql } from 'drizzle-orm';
 import { assoc, isNotNil, map, pickBy, pluck } from 'ramda';
 import { z } from 'zod';
 import { logger } from '#lib/logger';
-import { sendGA4Event } from '#lib/ga4-measurement';
 import { queryActiveNameserversChangeWorkflow } from '#lib/domains/nameservers';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
@@ -600,24 +599,6 @@ export const dnsRecordsRouter = createTRPCRouter({
         input.normalizedDomainName,
         input.overrideExistingRecords,
       );
-
-      try {
-        await sendGA4Event({
-          userId: ctx.user.id,
-          event: {
-            name: 'parking_ready',
-            params: {
-              normalized_domain_name: input.normalizedDomainName,
-              override_existing_records: input.overrideExistingRecords,
-            },
-          },
-        });
-      } catch (error) {
-        logger.warn(
-          { error, domain: input.normalizedDomainName, userId: ctx.user.id },
-          'Failed to send GA parking_ready event',
-        );
-      }
 
       return result;
     }),

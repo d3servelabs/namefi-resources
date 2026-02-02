@@ -15,10 +15,16 @@ import {
 import { eq, and, sql, inArray } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
-import { sendGA4Event } from '#lib/ga4-measurement';
 import { NamefiEmailLinks } from '../../mail/email-links';
 import { sendStyledEmailNotificationForUser } from './notify.activities';
 import { config, secrets } from '#lib/env';
+import { ApplicationFailure } from '@temporalio/activity';
+import {
+  gaEventDomainAcquisitionFinished,
+  gaEventDomainAcquisitionStarted,
+  gaEventPaymentFailed,
+  gaEventPaymentSuccess,
+} from '#lib/tracking/checkout/events';
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -68,18 +74,20 @@ export async function updateOrderStatusOrThrow({
   return updatedOrder;
 }
 
-export async function trackPaymentProcessed({
+export async function logGaEventPaymentProcessed({
   userId,
   orderId,
   amountInUsdCents,
   paymentCount,
   paymentProviders,
+  status,
 }: {
   userId: string;
   orderId: string;
   amountInUsdCents: number;
   paymentCount: number;
   paymentProviders: PaymentProvider[];
+  status: 'SUCCESS' | 'FAILURE';
 }) {
   const uniqueProviders = Array.from(new Set(paymentProviders));
   const paymentProvider =
@@ -88,19 +96,29 @@ export async function trackPaymentProcessed({
     uniqueProviders.length > 1 ? uniqueProviders.join(',') : undefined;
 
   try {
-    await sendGA4Event({
-      userId,
-      event: {
-        name: 'payment_processed',
-        params: {
-          order_id: orderId,
-          amount_usd_cents: amountInUsdCents,
-          payment_count: paymentCount,
-          payment_provider: paymentProvider,
-          payment_providers: paymentProvidersParam,
-        },
-      },
-    });
+    if (status === 'SUCCESS') {
+      await gaEventPaymentSuccess({
+        userId,
+        orderId,
+        amountUsdCents: amountInUsdCents,
+        paymentCount,
+        paymentProvider,
+        paymentProviders: paymentProvidersParam,
+      });
+    } else if (status === 'FAILURE') {
+      await gaEventPaymentFailed({
+        userId,
+        orderId,
+        amountUsdCents: amountInUsdCents,
+        paymentCount,
+        paymentProvider,
+        paymentProviders: paymentProvidersParam,
+      });
+    } else {
+      throw new ApplicationFailure(
+        `Payment for order(${orderId}) is not Processed`,
+      );
+    }
   } catch (error) {
     logger.warn(
       { error, orderId, userId },
@@ -108,8 +126,7 @@ export async function trackPaymentProcessed({
     );
   }
 }
-
-export async function trackDomainAcquisition({
+export async function logGaEventDomainAcquisitionStarted({
   userId,
   orderId,
   orderItemId,
@@ -129,25 +146,63 @@ export async function trackDomainAcquisition({
   chainId?: number;
 }) {
   try {
-    await sendGA4Event({
+    await gaEventDomainAcquisitionStarted({
       userId,
-      event: {
-        name: 'domain_acquisition',
-        params: {
-          order_id: orderId,
-          order_item_id: orderItemId,
-          normalized_domain_name: normalizedDomainName,
-          operation_type: operationType,
-          registrar_key: registrarKey,
-          duration_years: durationInYears,
-          chain_id: chainId,
-        },
-      },
+      orderId,
+      orderItemId,
+      normalizedDomainName,
+      operationType,
+      registrarKey,
+      durationInYears,
+      chainId,
     });
   } catch (error) {
     logger.warn(
       { error, orderId, orderItemId, userId, normalizedDomainName },
-      'Failed to send GA domain_acquisition event',
+      'Failed to send GA domain_acquisition_started event',
+    );
+  }
+}
+
+export async function logGaEventDomainAcquisitionFinished({
+  userId,
+  orderId,
+  orderItemId,
+  normalizedDomainName,
+  operationType,
+  registrarKey,
+  durationInYears,
+  chainId,
+  status,
+  failureReason,
+}: {
+  userId: string;
+  orderId: string;
+  orderItemId: string;
+  normalizedDomainName: NamefiNormalizedDomain;
+  operationType: 'REGISTER' | 'IMPORT';
+  registrarKey?: string;
+  durationInYears?: number;
+  chainId?: number;
+  status: 'SUCCESS' | 'FAILURE';
+  failureReason?: string;
+}) {
+  try {
+    await gaEventDomainAcquisitionFinished(status, {
+      userId,
+      orderId,
+      orderItemId,
+      normalizedDomainName,
+      operationType,
+      registrarKey,
+      durationInYears,
+      chainId,
+      failureReason,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, orderItemId, userId, normalizedDomainName },
+      'Failed to send GA domain_acquisition_finished event',
     );
   }
 }
@@ -335,8 +390,9 @@ export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
   updateOrderItemStatusOrThrow: typeof updateOrderItemStatusOrThrow;
   updateOrderStatusOrThrow: typeof updateOrderStatusOrThrow;
-  trackPaymentProcessed: typeof trackPaymentProcessed;
-  trackDomainAcquisition: typeof trackDomainAcquisition;
+  logGaEventPaymentProcessed: typeof logGaEventPaymentProcessed;
+  logGaEventDomainAcquisitionStarted: typeof logGaEventDomainAcquisitionStarted;
+  logGaEventDomainAcquisitionFinished: typeof logGaEventDomainAcquisitionFinished;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
   setOrderItemRequiredAction: typeof setOrderItemRequiredAction;

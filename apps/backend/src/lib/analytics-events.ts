@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/style/useNamingConvention: GA4 recommends snake_case for event names and parameter keys */
+
 /**
  * Backend analytics event registry.
  *
@@ -10,68 +12,94 @@
  * GA4 recommends snake_case for event names and parameter keys
  */
 export interface BackendAnalyticsEventMap {
-  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
-  order_placed: OrderPlacedParams;
-  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
   user_begin_search: UserBeginSearchParams;
-  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+
+  order_placed: OrderPlacedParams;
+
   payment_processed: PaymentProcessedParams;
-  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
-  domain_acquisition: DomainAcquisitionParams;
-  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  payment_refunded: PaymentRefundedParams;
+
+  domain_acquisition_started: DomainAcquisitionStartedParams;
+  domain_acquisition_finished: DomainAcquisitionFinishedParams;
+
   dns_records_propagated: DnsRecordsPropagatedParams;
-  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
-  parking_ready: ParkingReadyParams;
+
+  parking_finished: ParkingReadyParams;
+
+  order_finished_email_sent: CheckoutAnalyticsBaseParams & {
+    order_status: string;
+  };
+
+  order_finished_email_opened: CheckoutAnalyticsBaseParams;
 }
 
-type OrderPlacedRequiredParams = {
-  [K in
-    | 'order_id'
-    | 'amount_usd_cents'
-    | 'item_count'
-    | 'payment_count']: K extends 'order_id' ? string : number;
+type CheckoutAnalyticsBaseParams = {
+  user_id?: string;
+  order_id?: string;
+  normalized_domain_name?: string;
+  order_item_id?: string;
 };
 
-type OrderPlacedOptionalParams = {
-  [K in 'order_source']?: 'checkout' | 'instant_buy';
-};
-
-type OrderPlacedParams = OrderPlacedRequiredParams & OrderPlacedOptionalParams;
-
-type UserBeginSearchParams = {
-  search_term: string;
-  parent_domain?: string;
-};
-
-type PaymentProcessedParams = {
+type OrderPlacedParams = CheckoutAnalyticsBaseParams & {
   order_id: string;
   amount_usd_cents: number;
+  item_count: number;
   payment_count: number;
-  payment_provider?: string;
-  payment_providers?: string;
+  order_source?: 'checkout' | 'instant_buy';
 };
 
-type DomainAcquisitionParams = {
-  order_id: string;
-  order_item_id: string;
+type PaymentProcessedParams = CheckoutAnalyticsBaseParams & {
+  amount_usd_cents?: number;
+  payment_provider?: string;
+  payment_providers?: string;
+  status: 'SUCCESS' | 'FAILURE' | 'TIMEOUT';
+  failure_reason?: string;
+  payment_count: number;
+};
+
+type PaymentRefundedParams = CheckoutAnalyticsBaseParams & {
+  amount_usd_cents?: number;
+  payment_provider?: string;
+  payment_providers?: string;
+  payment_count: number;
+  refund_type: 'FULL' | 'PARTIAL';
+  refund_amount_usd_cents?: number;
+};
+
+type DomainAcquisitionStartedParams = CheckoutAnalyticsBaseParams & {
   normalized_domain_name: string;
-  operation_type: 'REGISTER' | 'IMPORT';
   registrar_key?: string;
+  operation_type: 'REGISTER' | 'IMPORT';
   duration_years?: number;
   chain_id?: number;
 };
 
-type DnsRecordsPropagatedParams = {
-  order_id?: string;
-  order_item_id: string;
+type DomainAcquisitionFinishedParams = CheckoutAnalyticsBaseParams & {
   normalized_domain_name: string;
-  record_count: number;
-  action_types?: string;
+  status: 'SUCCESS' | 'FAILURE' | 'TIMEOUT';
+  failure_reason?: string;
+  registrar_key?: string;
+  operation_type: 'REGISTER' | 'IMPORT';
+  duration_years?: number;
+  chain_id?: number;
 };
 
-type ParkingReadyParams = {
+type ParkingReadyParams = CheckoutAnalyticsBaseParams & {
   normalized_domain_name: string;
-  override_existing_records?: boolean;
+  registrar_key?: string;
+  /** Whether the user opted out of parking */
+  opt_out: boolean;
+  status: 'SUCCESS' | 'TIMEOUT';
+};
+
+type DnsRecordsPropagatedParams = CheckoutAnalyticsBaseParams & {
+  normalized_domain_name: string;
+  dns_provider?: 'NAMEFI' | 'OTHER';
+};
+
+type UserBeginSearchParams = {
+  search_term: string;
+  parent_domain?: string;
 };
 
 export type BackendAnalyticsEventName =

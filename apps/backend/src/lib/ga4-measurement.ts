@@ -10,9 +10,7 @@ const logger = createLogger({ name: 'ga4-measurement' });
 const GA4_MEASUREMENT_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
 const GA4_DEBUG_ENDPOINT = 'https://www.google-analytics.com/debug/mp/collect';
 
-export type GA4Event<
-  EventName extends BackendAnalyticsEventName = BackendAnalyticsEventName,
-> = {
+export type GA4Event<EventName extends BackendAnalyticsEventName> = {
   name: EventName;
   params?: BackendAnalyticsEventParams<EventName>;
 };
@@ -25,7 +23,7 @@ export type GA4UserProperties = Record<
 >;
 
 export type SendGA4EventsInput = {
-  events: GA4Event[];
+  events: GA4Event<BackendAnalyticsEventName>[];
   clientId?: string;
   userId?: string;
   userProperties?: GA4UserProperties;
@@ -80,7 +78,9 @@ function buildUserProperties(
   );
 }
 
-function buildEvent(event: GA4Event): GA4Payload['events'][number] {
+function buildEvent<EventName extends BackendAnalyticsEventName>(
+  event: GA4Event<EventName>,
+): GA4Payload['events'][number] {
   const params = event.params ? stripUndefined(event.params) : undefined;
   return stripUndefined({
     name: event.name,
@@ -172,11 +172,13 @@ export async function sendGA4Events({
   }
 }
 
-export async function sendGA4Event({
+export async function sendGA4Event<
+  EventName extends BackendAnalyticsEventName,
+>({
   event,
   ...rest
 }: Omit<SendGA4EventsInput, 'events'> & {
-  event: GA4Event;
+  event: GA4Event<EventName>;
 }): Promise<void> {
   await sendGA4Events({ ...rest, events: [event] });
 }

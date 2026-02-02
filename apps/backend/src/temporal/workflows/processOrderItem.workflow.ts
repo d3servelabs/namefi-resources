@@ -41,7 +41,8 @@ export async function processOrderItemWorkflow(
     updateOrderItemStatusOrThrow,
     recordOrderMintTransaction,
     criticalAlertNamefi,
-    trackDomainAcquisition,
+    logGaEventDomainAcquisitionFinished,
+    logGaEventDomainAcquisitionStarted,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -66,6 +67,24 @@ export async function processOrderItemWorkflow(
         parentClosePolicy: 'REQUEST_CANCEL',
       });
     } else {
+      try {
+        await logGaEventDomainAcquisitionStarted({
+          userId,
+          orderId: input.orderId,
+          orderItemId: input.itemId,
+          normalizedDomainName,
+          operationType,
+          registrarKey,
+          durationInYears,
+          chainId,
+        });
+      } catch (error) {
+        workflow.log.warn(
+          `Failed to track domain_acquisition_started event for order item ${input.itemId}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
       const workflowInput: AcquireDomainWorkflowInput = {
         normalizedDomainName,
         chainId,
@@ -109,7 +128,7 @@ export async function processOrderItemWorkflow(
       }
 
       try {
-        await trackDomainAcquisition({
+        await logGaEventDomainAcquisitionFinished({
           userId,
           orderId: input.orderId,
           orderItemId: input.itemId,
@@ -118,10 +137,11 @@ export async function processOrderItemWorkflow(
           registrarKey,
           durationInYears,
           chainId,
+          status: 'SUCCESS',
         });
       } catch (error) {
         workflow.log.warn(
-          `Failed to track domain_acquisition event for order item ${input.itemId}: ${
+          `Failed to track domain_acquisition_finished event for order item ${input.itemId}: ${
             error instanceof Error ? error.message : String(error)
           }`,
         );
@@ -169,7 +189,27 @@ export async function processOrderItemWorkflow(
         }`,
       );
     }
-
+    if (operationType !== 'RENEW') {
+      try {
+        await logGaEventDomainAcquisitionFinished({
+          userId,
+          orderId: input.orderId,
+          orderItemId: input.itemId,
+          normalizedDomainName,
+          operationType,
+          registrarKey,
+          durationInYears,
+          chainId,
+          status: 'FAILURE',
+        });
+      } catch (error) {
+        workflow.log.warn(
+          `Failed to track domain_acquisition event for order item ${input.itemId}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
+    }
     throw ApplicationFailure.create({
       nonRetryable: true,
       message: `Process Order Item Failed: ${
