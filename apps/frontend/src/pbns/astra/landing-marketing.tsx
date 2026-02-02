@@ -527,7 +527,7 @@ const CONTRACTS = [
       'https://etherscan.io/token/0x0000000000c39a0f674c12a5e63eb8031b550b6f',
     basescanUrl:
       'https://basescan.org/address/0x0000000000c39a0f674c12a5e63eb8031b550b6f',
-    githubUrl: 'https://github.com/nicholascw/nfsc',
+    githubUrl: 'https://github.com/d3servelabs/namefi-contracts',
   },
   {
     name: 'Namefi NFT',
@@ -536,7 +536,7 @@ const CONTRACTS = [
       'https://etherscan.io/address/0x0000000000cf80e7cf8fa4480907f692177f8e06',
     basescanUrl:
       'https://basescan.org/token/0x0000000000cf80e7cf8fa4480907f692177f8e06',
-    githubUrl: 'https://github.com/nicholascw/namefi-contracts',
+    githubUrl: 'https://github.com/d3servelabs/namefi-contracts',
   },
 ] as const;
 
