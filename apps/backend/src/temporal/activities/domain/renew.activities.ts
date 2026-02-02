@@ -775,8 +775,10 @@ export async function sendEmailNotificationForRenewFailedToCharge({
  */
 export async function getRenewPriceByDomainInUsd({
   normalizeDomainNameList,
+  retriesForFailedDomains = 2,
 }: {
   normalizeDomainNameList: NamefiNormalizedDomain[];
+  retriesForFailedDomains?: number;
 }): Promise<Record<NamefiNormalizedDomain, number | null>> {
   logger.assign({ context: 'getRenewPriceByDomainInUsd' });
   const domainChargeAmounts: Record<NamefiNormalizedDomain, number | null> = {};
@@ -809,6 +811,21 @@ export async function getRenewPriceByDomainInUsd({
         message: `Failed to compute charges for domain ${domain}: ${error}`,
         nonRetryable: true,
       });
+    }
+  }
+
+  // Retry failed domains
+  if (retriesForFailedDomains > 0) {
+    const failedDomains = (
+      Object.keys(domainChargeAmounts) as NamefiNormalizedDomain[]
+    ).filter((domain) => domainChargeAmounts[domain] === null);
+
+    if (failedDomains.length > 0) {
+      const retryDomainChargeAmounts = await getRenewPriceByDomainInUsd({
+        normalizeDomainNameList: failedDomains,
+        retriesForFailedDomains: retriesForFailedDomains - 1,
+      });
+      Object.assign(domainChargeAmounts, retryDomainChargeAmounts);
     }
   }
 

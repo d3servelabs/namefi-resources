@@ -68,9 +68,15 @@ const { getDomainsUpForRenewalGroupedByOwner } = typedProxyActivities({
 export async function dailyDomainsUpcomingRenewalsWorkflow({
   dryRun = false,
   forceSendReport = false,
+  ownersIdFilter,
 }: {
   dryRun?: boolean;
   forceSendReport?: boolean;
+  /**
+   * Filter domains by owner ID
+   * Mainly for testing purposes
+   */
+  ownersIdFilter?: string[];
 } = {}) {
   const startTime = Date.now();
   workflow.log.info(
@@ -86,6 +92,9 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
   const results = await pMap(
     Object.keys(domainsUpForRenewalGroupedByOwner),
     async (userId) => {
+      if (ownersIdFilter && !ownersIdFilter.includes(userId)) {
+        return { status: 'skipped', userId };
+      }
       try {
         if (!domainsUpForRenewalGroupedByOwner[userId]) {
           workflow.log.error(
