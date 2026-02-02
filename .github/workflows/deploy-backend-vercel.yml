@@ -149,28 +149,36 @@ jobs:
     outputs:
       should_skip: ${{ steps.check.outputs.should_skip }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 32
-
       - name: Check if tag exists for this commit
         id: check
         run: |
           # Only check for duplicates on main branch push
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
-            # Get the current commit SHA
             COMMIT_SHA="${{ github.sha }}"
 
-            # Check if any astra/v* or astra/prod/v* tags point to this commit
-            TAGS=$(git tag --points-at $COMMIT_SHA | grep -E '^astra/(prod/)?v' || true)
+            # Wait a few seconds to allow tag push events to be registered
+            # This handles the race condition where tag and commit are pushed together
+            echo "Waiting 15 seconds to allow tag events to be registered..."
+            sleep 15
 
-            if [ ! -z "$TAGS" ]; then
-              echo "Found tags for this commit: $TAGS"
+            # Use git ls-remote to query tags from the remote directly
+            # This is more reliable than local git tag as it doesn't require fetching
+            # and reflects the current state of the remote repository
+            echo "Checking for tags pointing to commit $COMMIT_SHA..."
+            REMOTE_TAGS=$(git ls-remote --tags https://github.com/${{ github.repository }}.git 2>/dev/null || true)
+
+            # For lightweight tags: SHA appears directly with the tag ref
+            # For annotated tags: the dereferenced commit SHA appears with ^{} suffix
+            # We check both patterns to handle both tag types
+            MATCHING_TAGS=$(echo "$REMOTE_TAGS" | grep "^$COMMIT_SHA" | grep -E 'refs/tags/astra/(prod/)?v' || true)
+
+            if [ ! -z "$MATCHING_TAGS" ]; then
+              echo "Found tags for this commit via remote query:"
+              echo "$MATCHING_TAGS"
               echo "should_skip=true" >> $GITHUB_OUTPUT
               echo "Skipping workflow - tag-based deployment will handle this"
             else
-              echo "No tags found for this commit"
+              echo "No matching tags found for this commit"
               echo "should_skip=false" >> $GITHUB_OUTPUT
             fi
           else
