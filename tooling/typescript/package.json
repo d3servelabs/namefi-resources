@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@typescript/native-preview": "^7.0.0-dev.20260202.1"
   },
   "exports": {
     ".": "./tsconfig.json"

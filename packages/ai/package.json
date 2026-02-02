@@ -9,7 +9,7 @@
     "lint": "bun run typecheck",
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "validate:secrets": "bun run with-env src/env/index.ts",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",

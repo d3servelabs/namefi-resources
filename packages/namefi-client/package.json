@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "build": "tsup",
     "generate:contract": "bun run tsx ./scripts/minify-contract.ts",
     "check": "biome check .",

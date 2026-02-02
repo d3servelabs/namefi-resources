@@ -11,8 +11,7 @@
     "types": ["node"],
     "jsx": "react-jsx",
     "outDir": "./dist",
-    "rootDir": ".",
-    "baseUrl": "."
+    "rootDir": "."
   },
   "include": ["src/**/*.ts"]
 }
