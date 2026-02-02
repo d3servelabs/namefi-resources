@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "setup": "sleep 5s; bun i",
+    "archive": "rm -rf node_modules"
+  }
+}
