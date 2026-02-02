@@ -784,61 +784,33 @@ export async function processOrderWorkflow(
     }
 
     setStepStatus('notification', 'IN_PROGRESS');
-    if (workflow.patched('update-order-details-before-notification')) {
-      const updatedOrder = await getOrderDetailsOrThrow(input.orderId);
-      const notificationSummary = await _notifyUserOrderProcessed(
-        updatedOrder,
-        orderItemResults,
-        amountToRefund,
-      );
-      updateNotification({
-        status: notificationSummary.status,
-        message: notificationSummary.message,
-      });
+    workflow.deprecatePatch('update-order-details-before-notification');
+    const updatedOrder = await getOrderDetailsOrThrow(input.orderId);
+    const notificationSummary = await _notifyUserOrderProcessed(
+      updatedOrder,
+      orderItemResults,
+      amountToRefund,
+    );
+    updateNotification({
+      status: notificationSummary.status,
+      message: notificationSummary.message,
+    });
 
-      if (notificationSummary.status === 'FAILED') {
-        setStepStatus(
-          'notification',
-          'FAILED',
-          notificationSummary.message ??
-            'Unable to send confirmation at this time',
-        );
-      } else if (notificationSummary.status === 'SKIPPED') {
-        setStepStatus(
-          'notification',
-          'SKIPPED',
-          notificationSummary.message ?? 'Notification skipped',
-        );
-      } else {
-        setStepStatus('notification', 'COMPLETED');
-      }
+    if (notificationSummary.status === 'FAILED') {
+      setStepStatus(
+        'notification',
+        'FAILED',
+        notificationSummary.message ??
+          'Unable to send confirmation at this time',
+      );
+    } else if (notificationSummary.status === 'SKIPPED') {
+      setStepStatus(
+        'notification',
+        'SKIPPED',
+        notificationSummary.message ?? 'Notification skipped',
+      );
     } else {
-      const notificationSummary = await _notifyUserOrderProcessed(
-        orderDetails,
-        orderItemResults,
-        amountToRefund,
-      );
-      updateNotification({
-        status: notificationSummary.status,
-        message: notificationSummary.message,
-      });
-
-      if (notificationSummary.status === 'FAILED') {
-        setStepStatus(
-          'notification',
-          'FAILED',
-          notificationSummary.message ??
-            'Unable to send confirmation at this time',
-        );
-      } else if (notificationSummary.status === 'SKIPPED') {
-        setStepStatus(
-          'notification',
-          'SKIPPED',
-          notificationSummary.message ?? 'Notification skipped',
-        );
-      } else {
-        setStepStatus('notification', 'COMPLETED');
-      }
+      setStepStatus('notification', 'COMPLETED');
     }
 
     // Send Slack notification for order completion (non-blocking)
