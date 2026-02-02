@@ -62,7 +62,7 @@ export const logoConceptSchema = z.object({
       prompt: z
         .string()
         .describe(
-          "Image generation prompt following this pattern: '[Style/mood] logo for [brand type] named [Brand], [thematic suggestions], [color direction]. The logo should [values/emotions], [applications].' Keep it suggestive rather than prescriptive.",
+          "Image generation prompt following this pattern: '[Style/mood] logo for [brand type] named [Brand], [thematic suggestions], [color direction]. The logo should [values/emotions], [applications].' Keep it suggestive rather than prescriptive, and include typography + domain text handling if relevant.",
         ),
     })
     .describe(

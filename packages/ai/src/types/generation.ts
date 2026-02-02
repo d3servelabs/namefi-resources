@@ -5,6 +5,10 @@ import type {
   LogoStyleInput,
   LogoType,
   LogoTypeInput,
+  LogoTextTreatment,
+  LogoTextTreatmentInput,
+  LogoTypography,
+  LogoTypographyInput,
 } from './logo-options';
 import type { LanguageModelUsage } from 'ai';
 
@@ -97,12 +101,16 @@ export interface LogoConceptInput {
   brandDescription?: string;
   preferredType?: LogoTypeInput;
   preferredStyle?: LogoStyleInput;
+  preferredTextTreatment?: LogoTextTreatmentInput;
+  preferredTypography?: LogoTypographyInput;
 }
 
 export interface LogoGenerationInput
   extends BaseWorkflowStorageInput,
     LogoConceptInput {
   model: ImageModel;
+  textTreatment?: LogoTextTreatmentInput;
+  typography?: LogoTypographyInput;
 }
 
 export interface MarketingGenerationInput extends BaseWorkflowStorageInput {

@@ -137,14 +137,103 @@ export const LOGO_STYLES = {
   },
 } as const;
 
+export const LOGO_TEXT_TREATMENTS = {
+  'let-ai-choose': {
+    id: 'let-ai-choose',
+    name: 'Let AI Choose',
+    description: 'Smart text layout based on the brand',
+  },
+  'full-domain': {
+    id: 'full-domain',
+    name: 'Full Domain',
+    description: 'Use the full domain in one wordmark (brand.tld)',
+  },
+  'tld-subtle': {
+    id: 'tld-subtle',
+    name: 'TLD Subtle',
+    description: 'Brand name primary, TLD secondary and lighter/smaller',
+  },
+  'tld-highlight': {
+    id: 'tld-highlight',
+    name: 'TLD Highlight',
+    description: 'TLD or dot becomes a deliberate accent element',
+  },
+  'stacked-domain': {
+    id: 'stacked-domain',
+    name: 'Stacked Domain',
+    description: 'Brand on the first line, TLD on the second line',
+  },
+} as const;
+
+export const LOGO_TYPOGRAPHY = {
+  'let-ai-choose': {
+    id: 'let-ai-choose',
+    name: 'Let AI Choose',
+    description: 'Typography selected to fit the brand',
+  },
+  'geometric-sans': {
+    id: 'geometric-sans',
+    name: 'Geometric Sans',
+    description: 'Crisp geometry, modern and clean',
+  },
+  'humanist-sans': {
+    id: 'humanist-sans',
+    name: 'Humanist Sans',
+    description: 'Warm, friendly sans with organic curves',
+  },
+  serif: {
+    id: 'serif',
+    name: 'Serif',
+    description: 'Classic serifs with refined contrast',
+  },
+  'slab-serif': {
+    id: 'slab-serif',
+    name: 'Slab Serif',
+    description: 'Bold slab serifs with strong presence',
+  },
+  'rounded-sans': {
+    id: 'rounded-sans',
+    name: 'Rounded Sans',
+    description: 'Soft corners, approachable and playful',
+  },
+  monospace: {
+    id: 'monospace',
+    name: 'Monospace',
+    description: 'Structured, technical, and precise',
+  },
+  script: {
+    id: 'script',
+    name: 'Script',
+    description: 'Expressive letterforms with elegance',
+  },
+  display: {
+    id: 'display',
+    name: 'Display',
+    description: 'Distinctive, high-impact headline style',
+  },
+} as const;
+
 export type LogoTypeInput = keyof typeof LOGO_TYPES;
 export type LogoStyleInput = keyof typeof LOGO_STYLES;
+export type LogoTextTreatmentInput = keyof typeof LOGO_TEXT_TREATMENTS;
+export type LogoTypographyInput = keyof typeof LOGO_TYPOGRAPHY;
 
 export type LogoType = Exclude<LogoTypeInput, 'let-ai-choose'>;
 export type LogoStyle = Exclude<LogoStyleInput, 'let-ai-choose'>;
+export type LogoTextTreatment = Exclude<
+  LogoTextTreatmentInput,
+  'let-ai-choose'
+>;
+export type LogoTypography = Exclude<LogoTypographyInput, 'let-ai-choose'>;
 
 const logoTypeInputIds = Object.keys(LOGO_TYPES) as LogoTypeInput[];
 const logoStyleInputIds = Object.keys(LOGO_STYLES) as LogoStyleInput[];
+const logoTextTreatmentInputIds = Object.keys(
+  LOGO_TEXT_TREATMENTS,
+) as LogoTextTreatmentInput[];
+const logoTypographyInputIds = Object.keys(
+  LOGO_TYPOGRAPHY,
+) as LogoTypographyInput[];
 
 export const LOGO_TYPE_INPUT_IDS = logoTypeInputIds as [
   LogoTypeInput,
@@ -154,6 +243,14 @@ export const LOGO_STYLE_INPUT_IDS = logoStyleInputIds as [
   LogoStyleInput,
   ...LogoStyleInput[],
 ];
+export const LOGO_TEXT_TREATMENT_INPUT_IDS = logoTextTreatmentInputIds as [
+  LogoTextTreatmentInput,
+  ...LogoTextTreatmentInput[],
+];
+export const LOGO_TYPOGRAPHY_INPUT_IDS = logoTypographyInputIds as [
+  LogoTypographyInput,
+  ...LogoTypographyInput[],
+];
 
 export const LOGO_TYPE_RESOLVED_IDS = logoTypeInputIds.filter(
   (id): id is LogoType => id !== 'let-ai-choose',
@@ -161,3 +258,10 @@ export const LOGO_TYPE_RESOLVED_IDS = logoTypeInputIds.filter(
 export const LOGO_STYLE_RESOLVED_IDS = logoStyleInputIds.filter(
   (id): id is LogoStyle => id !== 'let-ai-choose',
 ) as [LogoStyle, ...LogoStyle[]];
+export const LOGO_TEXT_TREATMENT_RESOLVED_IDS =
+  logoTextTreatmentInputIds.filter(
+    (id): id is LogoTextTreatment => id !== 'let-ai-choose',
+  ) as [LogoTextTreatment, ...LogoTextTreatment[]];
+export const LOGO_TYPOGRAPHY_RESOLVED_IDS = logoTypographyInputIds.filter(
+  (id): id is LogoTypography => id !== 'let-ai-choose',
+) as [LogoTypography, ...LogoTypography[]];

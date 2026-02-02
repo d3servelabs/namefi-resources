@@ -137,5 +137,83 @@ export const LOGO_STYLES = {
   },
 } as const;
 
+export const LOGO_TEXT_TREATMENTS = {
+  'let-ai-choose': {
+    id: 'let-ai-choose',
+    name: 'Let AI Choose',
+    description: 'Smart text layout based on the brand',
+  },
+  'full-domain': {
+    id: 'full-domain',
+    name: 'Full Domain',
+    description: 'Use the full domain in one wordmark (brand.tld)',
+  },
+  'tld-subtle': {
+    id: 'tld-subtle',
+    name: 'TLD Subtle',
+    description: 'Brand name primary, TLD secondary and lighter/smaller',
+  },
+  'tld-highlight': {
+    id: 'tld-highlight',
+    name: 'TLD Highlight',
+    description: 'TLD or dot becomes a deliberate accent element',
+  },
+  'stacked-domain': {
+    id: 'stacked-domain',
+    name: 'Stacked Domain',
+    description: 'Brand on the first line, TLD on the second line',
+  },
+} as const;
+
+export const LOGO_TYPOGRAPHY = {
+  'let-ai-choose': {
+    id: 'let-ai-choose',
+    name: 'Let AI Choose',
+    description: 'Typography selected to fit the brand',
+  },
+  'geometric-sans': {
+    id: 'geometric-sans',
+    name: 'Geometric Sans',
+    description: 'Crisp geometry, modern and clean',
+  },
+  'humanist-sans': {
+    id: 'humanist-sans',
+    name: 'Humanist Sans',
+    description: 'Warm, friendly sans with organic curves',
+  },
+  serif: {
+    id: 'serif',
+    name: 'Serif',
+    description: 'Classic serifs with refined contrast',
+  },
+  'slab-serif': {
+    id: 'slab-serif',
+    name: 'Slab Serif',
+    description: 'Bold slab serifs with strong presence',
+  },
+  'rounded-sans': {
+    id: 'rounded-sans',
+    name: 'Rounded Sans',
+    description: 'Soft corners, approachable and playful',
+  },
+  monospace: {
+    id: 'monospace',
+    name: 'Monospace',
+    description: 'Structured, technical, and precise',
+  },
+  script: {
+    id: 'script',
+    name: 'Script',
+    description: 'Expressive letterforms with elegance',
+  },
+  display: {
+    id: 'display',
+    name: 'Display',
+    description: 'Distinctive, high-impact headline style',
+  },
+} as const;
+
 export type LogoType = keyof typeof LOGO_TYPES;
 export type LogoStyle = keyof typeof LOGO_STYLES;
+export type LogoTextTreatment = keyof typeof LOGO_TEXT_TREATMENTS;
+export type LogoTypography = keyof typeof LOGO_TYPOGRAPHY;

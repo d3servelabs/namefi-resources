@@ -47,6 +47,12 @@ import type { AppRouterOutput } from '@/lib/trpc';
 import { collateralLabels } from './ai-generation/poster-generator';
 import { useAuth } from '@/hooks/use-auth';
 import { useDeleteGeneration } from './ai-generation/shared/generation-hooks';
+import {
+  LOGO_STYLES,
+  LOGO_TEXT_TREATMENTS,
+  LOGO_TYPOGRAPHY,
+  LOGO_TYPES,
+} from '@/lib/ai-generation-logo-options';
 
 type GenerationData = AppRouterOutput['ai']['getGenerationById'];
 
@@ -206,6 +212,43 @@ export function GenerationDetailsClient({
       console.error('Download failed:', error);
     }
   }, [domain, generation?.type, generation?.url, generationId]);
+
+  const getTextTreatmentLabel = (value: string) =>
+    LOGO_TEXT_TREATMENTS[value as keyof typeof LOGO_TEXT_TREATMENTS]?.name ??
+    value;
+
+  const getTypographyLabel = (value: string) =>
+    LOGO_TYPOGRAPHY[value as keyof typeof LOGO_TYPOGRAPHY]?.name ?? value;
+
+  const getLogoTypeLabel = (value: string) =>
+    LOGO_TYPES[value as keyof typeof LOGO_TYPES]?.name ?? value;
+
+  const getLogoStyleLabel = (value: string) =>
+    LOGO_STYLES[value as keyof typeof LOGO_STYLES]?.name ?? value;
+
+  const logoStyleValue =
+    generation?.output?.type === 'logo'
+      ? generation.output.logoStyle
+      : generation?.input?.type === 'logo'
+        ? generation.input.logoStyle
+        : undefined;
+
+  const logoTypeValue =
+    generation?.output?.type === 'logo'
+      ? generation.output.logoType
+      : generation?.input?.type === 'logo'
+        ? generation.input.logoType
+        : undefined;
+
+  const textTreatmentValue =
+    generation?.input?.type === 'logo'
+      ? generation.input.textTreatment
+      : undefined;
+
+  const typographyValue =
+    generation?.input?.type === 'logo'
+      ? generation.input.typography
+      : undefined;
 
   const handleCopyLink = useCallback(async () => {
     try {
@@ -463,22 +506,33 @@ export function GenerationDetailsClient({
                   <div>
                     <span className="text-sm font-medium">Style:</span>
                     <Badge variant="outline" className="ml-2 capitalize">
-                      {(generation.output?.type === 'logo'
-                        ? generation.output.logoStyle
-                        : undefined) ??
-                        (generation.input?.type === 'logo'
-                          ? generation.input.logoStyle
-                          : undefined)}
+                      {logoStyleValue ? getLogoStyleLabel(logoStyleValue) : ''}
                     </Badge>
                   </div>
                   <div>
                     <span className="text-sm font-medium">Type:</span>
                     <Badge variant="outline" className="ml-2 capitalize">
-                      {generation.output?.type === 'logo'
-                        ? generation.output.logoType
-                        : undefined}
+                      {logoTypeValue ? getLogoTypeLabel(logoTypeValue) : ''}
                     </Badge>
                   </div>
+                  {textTreatmentValue && (
+                    <div>
+                      <span className="text-sm font-medium">
+                        Text treatment:
+                      </span>
+                      <Badge variant="outline" className="ml-2 capitalize">
+                        {getTextTreatmentLabel(textTreatmentValue)}
+                      </Badge>
+                    </div>
+                  )}
+                  {typographyValue && (
+                    <div>
+                      <span className="text-sm font-medium">Typography:</span>
+                      <Badge variant="outline" className="ml-2 capitalize">
+                        {getTypographyLabel(typographyValue)}
+                      </Badge>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}

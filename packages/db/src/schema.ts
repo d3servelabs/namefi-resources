@@ -841,6 +841,8 @@ export const aiGenerationsTable = pgTable(
           logoType: string;
           logoStyle: string;
           description?: string;
+          textTreatment?: string;
+          typography?: string;
         }
       | {
           type: 'marketing';
@@ -919,6 +921,8 @@ export const publicAiGenerationsTable = pgTable(
           logoStyle: string;
           description?: string;
           imageModel?: string;
+          textTreatment?: string;
+          typography?: string;
         }
       | {
           type: 'marketing';
@@ -997,6 +1001,8 @@ export const internalAiGenerationsTable = pgTable(
           logoType: string;
           logoStyle: string;
           description?: string;
+          textTreatment?: string;
+          typography?: string;
         }
       | {
           type: 'marketing';

@@ -40,7 +40,7 @@ export const collateralLabels: Record<MarketingCollateralTypeInput, string> = {
   apparel: 'Apparel',
   vehicle: 'Vehicle',
   product: 'Product',
-  let_ai_choose: 'Let AI choose',
+  let_ai_choose: 'Let AI Choose',
 };
 
 const posterFormSchema = baseFormSchema.extend({
@@ -402,7 +402,7 @@ export function PosterGenerator({
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="let_ai_choose">
-                            Let AI choose
+                            Let AI Choose
                           </SelectItem>
                           <SelectItem value="billboard">Billboard</SelectItem>
                           <SelectItem value="apparel">Apparel</SelectItem>

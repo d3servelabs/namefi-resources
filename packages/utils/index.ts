@@ -10,3 +10,4 @@ export * from './src/assert';
 export * from './src/permissions';
 export * from './src/domain-dates';
 export * from './src/nft-hash';
+export * from './src/parse-domain-name';
