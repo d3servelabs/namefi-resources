@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { createLogger } from '#lib/logger';
+import { gaEventOrderFinishedEmailOpened } from '#lib/tracking/checkout';
 import { getEmailTrackDataFromUrl } from '../mail/components/email-tracking';
 
 const emailAnalyticsRouter = new Hono();
@@ -16,9 +17,18 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
   const userAgent = c.req.header('user-agent');
 
   if (result.data) {
-    logger.info({ data: result.data, userAgent }, 'Email opened');
+    logger.trace({ data: result.data, userAgent }, 'Email opened');
+
+    const trackingData = result.data as Record<string, unknown>;
+    // const userId = getTrackingString(trackingData, ['userId', 'user_id']); // needs consent
+    const orderId = getTrackingString(trackingData, ['orderId', 'order_id']);
+
+    void gaEventOrderFinishedEmailOpened({
+      // userId,
+      orderId,
+    });
   } else {
-    logger.warn({ error: result.error, userAgent }, 'Email tracking failed');
+    logger.trace({ error: result.error, userAgent }, 'Email open log failed');
   }
 
   return c.body(pixel, 200, {
@@ -29,5 +39,35 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
     Expires: '0',
   });
 });
+
+function getTrackingValue(
+  data: Record<string, unknown>,
+  keys: string[],
+): unknown {
+  for (const key of keys) {
+    if (Object.hasOwn(data, key)) {
+      return data[key];
+    }
+  }
+  return undefined;
+}
+
+function toTrackingString(value: unknown): string | undefined {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed ? trimmed : undefined;
+  }
+  if (typeof value === 'number' || typeof value === 'bigint') {
+    return String(value);
+  }
+  return undefined;
+}
+
+function getTrackingString(
+  data: Record<string, unknown>,
+  keys: string[],
+): string | undefined {
+  return toTrackingString(getTrackingValue(data, keys));
+}
 
 export { emailAnalyticsRouter };

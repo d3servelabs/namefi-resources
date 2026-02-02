@@ -22,6 +22,8 @@ import { ApplicationFailure } from '@temporalio/activity';
 import {
   gaEventDomainAcquisitionFinished,
   gaEventDomainAcquisitionStarted,
+  gaEventOrderFinishedEmailOpened,
+  gaEventOrderFinishedEmailSent,
   gaEventPaymentFailed,
   gaEventPaymentSuccess,
 } from '#lib/tracking/checkout/events';
@@ -203,6 +205,53 @@ export async function logGaEventDomainAcquisitionFinished({
     logger.warn(
       { error, orderId, orderItemId, userId, normalizedDomainName },
       'Failed to send GA domain_acquisition_finished event',
+    );
+  }
+}
+
+export async function logGaEventOrderFinishedEmailSent({
+  userId,
+  orderId,
+  orderStatus,
+}: {
+  userId: string;
+  orderId?: string;
+  orderStatus: OrderStatus;
+}) {
+  try {
+    await gaEventOrderFinishedEmailSent({
+      userId,
+      orderId,
+      orderStatus,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId, orderStatus },
+      'Failed to send GA domain_ready_email_sent event',
+    );
+  }
+}
+
+export async function logGaEventOrderFinishedEmailOpened({
+  userId,
+  orderId,
+  orderItemId,
+  normalizedDomainName,
+}: {
+  userId: string;
+  orderId?: string;
+  orderItemId?: string;
+  normalizedDomainName?: NamefiNormalizedDomain;
+}) {
+  try {
+    await gaEventOrderFinishedEmailOpened({
+      userId,
+      orderId,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, orderItemId, userId, normalizedDomainName },
+      'Failed to send GA domain_ready_email_opened event',
     );
   }
 }
@@ -393,6 +442,8 @@ export type OrderActivities = {
   logGaEventPaymentProcessed: typeof logGaEventPaymentProcessed;
   logGaEventDomainAcquisitionStarted: typeof logGaEventDomainAcquisitionStarted;
   logGaEventDomainAcquisitionFinished: typeof logGaEventDomainAcquisitionFinished;
+  logGaEventOrderFinishedEmailSent: typeof logGaEventOrderFinishedEmailSent;
+  logGaEventOrderFinishedEmailOpened: typeof logGaEventOrderFinishedEmailOpened;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
   setOrderItemRequiredAction: typeof setOrderItemRequiredAction;

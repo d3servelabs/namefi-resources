@@ -153,6 +153,7 @@ const {
   updateOrderItemStatusOrThrow,
   updateOrderStatusOrThrow,
   logGaEventPaymentProcessed,
+  logGaEventOrderFinishedEmailSent,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -832,6 +833,10 @@ export async function processOrderWorkflow(
       setStepStatus('notification', 'COMPLETED');
     }
 
+    if (notificationSummary.status === 'SENT') {
+      await _trackOrderFinishedEmailSent(updatedOrder);
+    }
+
     // Send Slack notification for order completion (non-blocking)
     await catchAndAlertLocally(
       async () => {
@@ -1028,6 +1033,24 @@ async function _notifyUserOrderProcessed(
       status: 'FAILED',
       message,
     };
+  }
+}
+
+async function _trackOrderFinishedEmailSent(
+  orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
+): Promise<void> {
+  try {
+    await logGaEventOrderFinishedEmailSent({
+      userId: orderDetails.order.userId,
+      orderId: orderDetails.order.id,
+      orderStatus: orderDetails.order.status,
+    });
+  } catch (error) {
+    workflow.log.warn(
+      `Failed to track domain_ready_email_sent event for order ${orderDetails.order.id}: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
   }
 }
 
