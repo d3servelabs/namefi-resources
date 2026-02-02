@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/shadcn/accordion';
 import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import { cn } from '@/lib/cn';
+import EthNetwork from '@/components/chains/eth-network';
+import BaseNetwork from '@/components/chains/base-network';
 import {
   ArrowRight,
   BrainCircuit,
@@ -517,7 +519,26 @@ const COMMUNITY_LINKS = [
   },
 ] as const;
 
-const SMART_CONTRACT_ADDRESS = '0x0000000000cf80E7Cf8Fa4480907f692177f8e06';
+const CONTRACTS = [
+  {
+    name: '$NFSC',
+    address: '0x0000000000c39a0f674c12a5e63eb8031b550b6f',
+    etherscanUrl:
+      'https://etherscan.io/token/0x0000000000c39a0f674c12a5e63eb8031b550b6f',
+    basescanUrl:
+      'https://basescan.org/address/0x0000000000c39a0f674c12a5e63eb8031b550b6f',
+    githubUrl: 'https://github.com/nicholascw/nfsc',
+  },
+  {
+    name: 'Namefi NFT',
+    address: '0x0000000000cf80e7cf8fa4480907f692177f8e06',
+    etherscanUrl:
+      'https://etherscan.io/address/0x0000000000cf80e7cf8fa4480907f692177f8e06',
+    basescanUrl:
+      'https://basescan.org/token/0x0000000000cf80e7cf8fa4480907f692177f8e06',
+    githubUrl: 'https://github.com/nicholascw/namefi-contracts',
+  },
+] as const;
 
 type StoryPanel = {
   id: string;
@@ -1060,37 +1081,61 @@ export const MarketingSections = ({
       className="space-y-10"
     >
       <SectionHeading
-        title="Namefi smart contract"
-        description="Open source on Ethereum mainnet so anyone can verify every function."
+        title="Namefi smart contracts"
+        description="Open source on Ethereum and Base so anyone can verify every function."
       />
-      <Card className="flex flex-col gap-6 border-white/10 bg-white/[0.02] p-8 backdrop-blur md:flex-row md:items-center md:justify-between">
-        <div className="space-y-3">
-          <span className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
-            Contract address
-          </span>
-          <p className="break-words text-xl font-mono text-white">
-            {SMART_CONTRACT_ADDRESS}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Audited, transparent, and ready for builders.
-          </p>
+      <Card className="flex flex-col gap-6 border-white/10 bg-white/[0.02] p-8 backdrop-blur">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <span>We</span>
+          <span className="text-red-400">♥</span>
+          <span>opensource</span>
         </div>
-        <Button
-          render={
-            <Link
-              href={`https://etherscan.io/address/${SMART_CONTRACT_ADDRESS}`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2.5"
-            />
-          }
-          nativeButton={false}
-          variant="default"
-          className="group rounded-full bg-brand-primary px-8 py-3 text-base font-semibold shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:px-10"
-        >
-          View on Etherscan{' '}
-          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-        </Button>
+        <div className="space-y-6">
+          {CONTRACTS.map((contract) => (
+            <div
+              key={contract.address}
+              className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+            >
+              <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+                <span className="text-brand-primary font-semibold whitespace-nowrap">
+                  {contract.name}
+                </span>
+                <span className="text-muted-foreground break-all font-mono text-sm">
+                  {contract.address}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={contract.etherscanUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
+                >
+                  <EthNetwork className="h-4 w-4" />
+                  <span>ETH</span>
+                </Link>
+                <Link
+                  href={contract.basescanUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
+                >
+                  <BaseNetwork className="h-4 w-4" />
+                  <span>BASE</span>
+                </Link>
+                <Link
+                  href={contract.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
+                >
+                  <Github className="h-4 w-4" />
+                  <span>GitHub</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
       </Card>
     </motion.section>
 
