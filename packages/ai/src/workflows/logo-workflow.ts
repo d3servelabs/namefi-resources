@@ -60,12 +60,30 @@ export async function runLogoWorkflow(
   rawInput: LogoWorkflowInput,
 ): Promise<LogoWorkflowOutput> {
   const input = logoWorkflowInputSchema.parse(rawInput);
+  const preferredType =
+    input.preferredType && input.preferredType !== 'let-ai-choose'
+      ? input.preferredType
+      : undefined;
+  const preferredStyle =
+    input.preferredStyle && input.preferredStyle !== 'let-ai-choose'
+      ? input.preferredStyle
+      : undefined;
+  const preferredTextTreatment =
+    input.textTreatment && input.textTreatment !== 'let-ai-choose'
+      ? input.textTreatment
+      : undefined;
+  const preferredTypography =
+    input.typography && input.typography !== 'let-ai-choose'
+      ? input.typography
+      : undefined;
 
   const strategy = await generateLogoStrategy({
     domain: input.domain,
     description: input.description,
-    preferredType: input.preferredType,
-    preferredStyle: input.preferredStyle,
+    preferredType,
+    preferredStyle,
+    preferredTextTreatment,
+    preferredTypography,
   });
 
   const concept = logoConceptSchema.parse(strategy.object);
@@ -74,8 +92,8 @@ export async function runLogoWorkflow(
     domain: input.domain,
     concept,
     model: input.imageModel,
-    textTreatment: input.textTreatment,
-    typography: input.typography,
+    textTreatment: concept.logoConcept.textTreatment,
+    typography: concept.logoConcept.typography,
   });
 
   if (!generated.imageBase64) {

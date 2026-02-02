@@ -6,7 +6,11 @@ import type { MarketingCollateralTypeInput } from '../types/generation';
 import {
   LOGO_STYLES,
   LOGO_TYPES,
+  LOGO_TEXT_TREATMENTS,
+  LOGO_TYPOGRAPHY,
   type LogoStyleInput,
+  type LogoTextTreatmentInput,
+  type LogoTypographyInput,
   type LogoTypeInput,
 } from '../types/logo-options';
 import { collateralAnalysisSchema } from '../types/marketing-schemas';
@@ -30,19 +34,38 @@ const logoStyleInstructions = Object.values(LOGO_STYLES)
   .map((style) => `- ${style.id} → ${style.name}: ${style.description}`)
   .join('\n');
 
+const logoTextTreatmentInstructions = Object.values(LOGO_TEXT_TREATMENTS)
+  .filter((treatment) => treatment.id !== 'let-ai-choose')
+  .map(
+    (treatment) =>
+      `- ${treatment.id} → ${treatment.name}: ${treatment.description}`,
+  )
+  .join('\n');
+
+const logoTypographyInstructions = Object.values(LOGO_TYPOGRAPHY)
+  .filter((option) => option.id !== 'let-ai-choose')
+  .map((option) => `- ${option.id} → ${option.name}: ${option.description}`)
+  .join('\n');
+
 const logoStrategistAgent = new ToolLoopAgent({
   model: openai('gpt-5.2'),
   instructions: `${logoGenerationSystemPrompt}
 
 STRICT JSON OUTPUT RULES:
 - Return only JSON matching the supplied schema.
-- Use the exact ID values (lowercase, hyphenated) listed below for both logoConcept.type and logoConcept.style.
+- Use the exact ID values (lowercase, hyphenated) listed below for logoConcept.type, logoConcept.style, logoConcept.textTreatment, and logoConcept.typography.
 
 AVAILABLE LOGO TYPES (use the id on the left):
 ${logoTypeInstructions}
 
 AVAILABLE LOGO STYLES (use the id on the left):
-${logoStyleInstructions}`,
+${logoStyleInstructions}
+
+AVAILABLE TEXT TREATMENTS (use the id on the left):
+${logoTextTreatmentInstructions}
+
+AVAILABLE TYPOGRAPHY STYLES (use the id on the left):
+${logoTypographyInstructions}`,
   output: Output.object({ schema: logoConceptSchema }),
 });
 
@@ -78,6 +101,8 @@ export interface LogoStrategyInput {
   description?: string;
   preferredType?: LogoTypeInput;
   preferredStyle?: LogoStyleInput;
+  preferredTextTreatment?: LogoTextTreatmentInput;
+  preferredTypography?: LogoTypographyInput;
 }
 
 export async function generateLogoStrategy(
@@ -89,6 +114,8 @@ export async function generateLogoStrategy(
       description: input.description,
       logoType: input.preferredType,
       logoStyle: input.preferredStyle,
+      textTreatment: input.preferredTextTreatment,
+      typography: input.preferredTypography,
     }),
   });
 

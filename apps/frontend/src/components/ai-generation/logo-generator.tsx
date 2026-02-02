@@ -14,7 +14,12 @@ import {
   LOGO_TEXT_TREATMENTS,
   LOGO_TYPOGRAPHY,
   LOGO_TYPES,
-} from '@/lib/ai-generation-logo-options';
+  type ImageModel as Model,
+  type LogoStyleInput,
+  type LogoTextTreatmentInput,
+  type LogoTypographyInput,
+  type LogoTypeInput,
+} from '@namefi-astra/ai/types';
 import { cn } from '@/lib/cn';
 import { Check, Sparkles } from 'lucide-react';
 import { z } from 'zod';
@@ -30,13 +35,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/shadcn/select';
-import type {
-  ImageModel as Model,
-  LogoStyleInput,
-  LogoTextTreatmentInput,
-  LogoTypographyInput,
-  LogoTypeInput,
-} from '@namefi-astra/ai/types';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
 

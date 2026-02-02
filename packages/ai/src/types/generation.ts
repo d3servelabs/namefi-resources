@@ -49,6 +49,8 @@ export interface BaseConcept {
 export interface LogoConcept extends BaseConcept {
   type: LogoType;
   style: LogoStyle;
+  textTreatment: LogoTextTreatment;
+  typography: LogoTypography;
 }
 
 export interface MarketingConcept extends BaseConcept {

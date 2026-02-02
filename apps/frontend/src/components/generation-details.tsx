@@ -52,7 +52,7 @@ import {
   LOGO_TEXT_TREATMENTS,
   LOGO_TYPOGRAPHY,
   LOGO_TYPES,
-} from '@/lib/ai-generation-logo-options';
+} from '@namefi-astra/ai/types';
 
 type GenerationData = AppRouterOutput['ai']['getGenerationById'];
 
@@ -241,14 +241,18 @@ export function GenerationDetailsClient({
         : undefined;
 
   const textTreatmentValue =
-    generation?.input?.type === 'logo'
-      ? generation.input.textTreatment
-      : undefined;
+    generation?.output?.type === 'logo'
+      ? generation.output.textTreatment
+      : generation?.input?.type === 'logo'
+        ? generation.input.textTreatment
+        : undefined;
 
   const typographyValue =
-    generation?.input?.type === 'logo'
-      ? generation.input.typography
-      : undefined;
+    generation?.output?.type === 'logo'
+      ? generation.output.typography
+      : generation?.input?.type === 'logo'
+        ? generation.input.typography
+        : undefined;
 
   const handleCopyLink = useCallback(async () => {
     try {

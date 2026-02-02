@@ -169,6 +169,8 @@ export const aiRouter = createTRPCRouter({
               storagePath: logoResult.image.storagePath,
               logoType: resolvedConcept.type,
               logoStyle: resolvedConcept.style,
+              textTreatment: resolvedConcept.textTreatment,
+              typography: resolvedConcept.typography,
             },
             tokenUsage: aggregateTokenUsage,
           })

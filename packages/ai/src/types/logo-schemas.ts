@@ -4,6 +4,10 @@ import {
   LOGO_STYLES,
   LOGO_TYPE_RESOLVED_IDS,
   LOGO_STYLE_RESOLVED_IDS,
+  LOGO_TEXT_TREATMENTS,
+  LOGO_TYPOGRAPHY,
+  LOGO_TEXT_TREATMENT_RESOLVED_IDS,
+  LOGO_TYPOGRAPHY_RESOLVED_IDS,
 } from './logo-options';
 
 const filteredTypes = Object.values(LOGO_TYPES).filter(
@@ -20,8 +24,24 @@ const availableStyles = filteredStyles
   .map((style) => `'${style.name}' (${style.description})`)
   .join(', ');
 
+const filteredTextTreatments = Object.values(LOGO_TEXT_TREATMENTS).filter(
+  (treatment) => treatment.id !== 'let-ai-choose',
+);
+const availableTextTreatments = filteredTextTreatments
+  .map((treatment) => `'${treatment.name}' (${treatment.description})`)
+  .join(', ');
+
+const filteredTypography = Object.values(LOGO_TYPOGRAPHY).filter(
+  (option) => option.id !== 'let-ai-choose',
+);
+const availableTypography = filteredTypography
+  .map((option) => `'${option.name}' (${option.description})`)
+  .join(', ');
+
 const logoTypeResolvedEnum = z.enum(LOGO_TYPE_RESOLVED_IDS);
 const logoStyleResolvedEnum = z.enum(LOGO_STYLE_RESOLVED_IDS);
+const logoTextTreatmentResolvedEnum = z.enum(LOGO_TEXT_TREATMENT_RESOLVED_IDS);
+const logoTypographyResolvedEnum = z.enum(LOGO_TYPOGRAPHY_RESOLVED_IDS);
 
 export const tokenUsageSchema = z
   .object({
@@ -53,6 +73,12 @@ export const logoConceptSchema = z.object({
       ),
       style: logoStyleResolvedEnum.describe(
         `Design style from these options: ${availableStyles}. Select the style that best represents the brand identity.`,
+      ),
+      textTreatment: logoTextTreatmentResolvedEnum.describe(
+        `Text treatment from these options: ${availableTextTreatments}. Choose the lockup that best fits the brand.`,
+      ),
+      typography: logoTypographyResolvedEnum.describe(
+        `Typography direction from these options: ${availableTypography}. Choose the style that best fits the brand.`,
       ),
       concept: z
         .string()

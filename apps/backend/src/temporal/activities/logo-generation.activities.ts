@@ -171,6 +171,8 @@ export async function generateLogosForDomains(
             type: 'logo',
             logoType: logoResult.concept.logoConcept.type,
             logoStyle: logoResult.concept.logoConcept.style,
+            textTreatment: logoResult.concept.logoConcept.textTreatment,
+            typography: logoResult.concept.logoConcept.typography,
             description,
           },
           output: {
