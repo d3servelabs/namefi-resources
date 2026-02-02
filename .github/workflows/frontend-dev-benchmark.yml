@@ -46,7 +46,7 @@ jobs:
         run: |
           BENCH_REPORT="apps/frontend/.benchmarks/next-dev-bench-ci-${{ github.run_id }}.md"
           echo "BENCH_REPORT=$BENCH_REPORT" >> "$GITHUB_ENV"
-          bun scripts/bench-frontend-dev.ts --runs 1 --log-dev-output --output "$BENCH_REPORT"
+          bun scripts/bench-frontend-dev.ts --runs 3 --log-dev-output --output "$BENCH_REPORT"
 
       - name: Post averages to Slack
         if: ${{ success() }}
@@ -104,6 +104,22 @@ jobs:
             if line.strip().startswith("- Runs:"):
               runs = line.split(":", 1)[-1].strip()
               break
+
+          machine = {}
+          machine_start = None
+          for idx, line in enumerate(lines):
+            if line.strip() == "## Machine":
+              machine_start = idx + 1
+              break
+          if machine_start is not None:
+            for line in lines[machine_start:]:
+              if line.startswith("## "):
+                break
+              if not line.strip().startswith("- "):
+                continue
+              key, _, value = line[2:].partition(":")
+              if key and value:
+                machine[key.strip()] = value.strip()
   
           full_sha = os.environ.get("GITHUB_SHA", "")
           sha = full_sha[:7]
@@ -137,6 +153,20 @@ jobs:
               {
                 "type": "context",
                 "elements": [{"type": "mrkdwn", "text": " • ".join(meta_bits)}],
+              }
+            )
+          cpu_bits = []
+          if machine.get("CPU"):
+            cpu_bits.append(f"*CPU:* {machine['CPU']}")
+          if machine.get("Cores"):
+            cpu_bits.append(f"*Cores:* {machine['Cores']}")
+          if machine.get("RAM"):
+            cpu_bits.append(f"*RAM:* {machine['RAM']}")
+          if cpu_bits:
+            blocks.append(
+              {
+                "type": "context",
+                "elements": [{"type": "mrkdwn", "text": " • ".join(cpu_bits)}],
               }
             )
           if rows:
