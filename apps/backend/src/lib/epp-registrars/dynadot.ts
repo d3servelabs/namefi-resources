@@ -47,10 +47,20 @@ export const initDynadotRegistrars = (connection: any) => {
     overrideKey: Registrars.DynadotRegular,
     hooks: {
       afterFetchAllowedTlds: async (
-        regularAllowedTlds: PunycodeDomainName[],
+        regularDynadotAllowedTlds: PunycodeDomainName[],
       ) => {
         const gdgExistingTlds = await dynadotGdg.getAllowedParentDomains();
-        return regularAllowedTlds.filter((tld) => {
+        const regularDynadotTldsForExistingDomains = [
+          'com',
+          'net',
+          'org',
+          'click',
+          'cv',
+        ];
+        return regularDynadotAllowedTlds.filter((tld) => {
+          if (regularDynadotTldsForExistingDomains.includes(tld)) {
+            return true;
+          }
           return !(
             gdgExistingTlds.includes(tld) ||
             (config.CENTRALNIC_KEY === Registrars.CentralNic_OTE_01 &&
