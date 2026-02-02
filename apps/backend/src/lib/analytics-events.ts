@@ -23,7 +23,6 @@ export interface BackendAnalyticsEventMap {
   domain_acquisition_finished: DomainAcquisitionFinishedParams;
 
   dns_records_propagated: DnsRecordsPropagatedParams;
-
   parking_finished: ParkingReadyParams;
 
   order_finished_email_sent: CheckoutAnalyticsBaseParams & {

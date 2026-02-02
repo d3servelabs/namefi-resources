@@ -17,6 +17,7 @@ import { domainSetupWorkflow } from './domain-setup.workflow';
 import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
 import { resolve } from '../../../utils/resolve';
 import { eppRegisterOrImportWorkflow } from './epp-register-or-import.workflow';
+import { domainParkingTrackingWorkflow } from '../domain-parking-tracking.workflow';
 
 export interface AcquireDomainWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -65,14 +66,17 @@ export async function acquireDomainWorkflow(
 
   const { levels, parentDomain } = getDomainLevels(input.normalizedDomainName);
 
+  let registrarKey: string;
   let expirationTimeInSeconds: number;
   let failOnMintingError = false;
   if (levels.length === 2) {
     const details = await _acquireSldDomain(input);
+    registrarKey = details.registrarKey;
     expirationTimeInSeconds = getUnixTime(details.expirationTime);
   } else if (levels.length >= 3) {
     failOnMintingError = true; // Subdomains require NFT minting to be successful
     const allowedParentDomains = await getPoweredByNamefi3PDomains();
+
     if (
       !(
         parentDomain &&
@@ -87,6 +91,7 @@ export async function acquireDomainWorkflow(
     expirationTimeInSeconds = getUnixTime(
       addYears(new Date(), input.durationInYears),
     );
+    registrarKey = 'namefi';
   } else {
     throw workflow.ApplicationFailure.create({
       message: `Invalid domain name "${input.normalizedDomainName}", unsupported number of levels: ${levels.length}`,
@@ -119,12 +124,38 @@ export async function acquireDomainWorkflow(
             userId: input.userId,
             recipientWalletAddress: input.recipientWalletAddress,
             registrarKey: input.registrarKey,
+            options: {
+              autoPark: true,
+            },
           },
         ],
         workflowId: `domain-setup-${input.normalizedDomainName}`,
       }),
     ),
   ]);
+
+  const analyticsWorkflowStart = await resolve(
+    workflow.startChild(domainParkingTrackingWorkflow, {
+      taskQueue: TEMPORAL_QUEUES.DOMAINS,
+      args: [
+        {
+          domainName: input.normalizedDomainName,
+          userId: input.userId,
+          orderId: input.orderId,
+          orderItemId: input.orderItemId,
+          registrar: registrarKey,
+          dnsProvider: input.operationType === 'REGISTER' ? 'NAMEFI' : 'OTHER',
+        },
+      ],
+      workflowId: `domain-parking-dns-analytics-${input.normalizedDomainName}`,
+    }),
+  );
+  if (analyticsWorkflowStart.failed) {
+    await criticalAlertNamefi({
+      title: `Workflow Failed (domainParkingAnalytics) (${input.normalizedDomainName})`,
+      message: `Post Domain ${input.operationType} And Import Not Successful`,
+    });
+  }
 
   const mintResult = results[0];
   const errors = results

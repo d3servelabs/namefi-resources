@@ -70,7 +70,7 @@ const { sendRegisterOrImportRequestToNamefiRegistrar } = typedProxyActivities({
 
 export async function sldRegisterOrImportWorkflow(
   input: SldRegisterOrImportWorkflowInput,
-): Promise<DomainRegistration> {
+): ReturnType<typeof getDomainDetails> {
   if (notMatchAny(input.operationType, 'REGISTER', 'IMPORT')) {
     throw new Error(`Invalid operation type "${input.operationType}"`);
   }

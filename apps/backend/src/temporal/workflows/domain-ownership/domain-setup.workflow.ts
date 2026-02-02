@@ -20,6 +20,9 @@ export interface DomainSetupWorkflowInput {
   userId: string;
   recipientWalletAddress: ChecksumWalletAddress;
   registrarKey: Registrars;
+  options: {
+    autoPark: boolean;
+  };
 }
 
 const { generalAlertNamefi } = typedProxyActivities({
@@ -39,7 +42,9 @@ export async function domainSetupWorkflow(
     const { levels } = getDomainLevels(input.normalizedDomainName);
 
     try {
-      await fillDefaultDomainConfig(input.normalizedDomainName, input.userId);
+      await fillDefaultDomainConfig(input.normalizedDomainName, input.userId, {
+        autoParkEnabled: input.options.autoPark,
+      });
     } catch (e: any) {
       workflow.log.error(
         `Failed to set defaults ${input.normalizedDomainName}`,
