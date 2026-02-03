@@ -25,6 +25,7 @@ on:
       - "packages/ui/**"
       - "apps/frontend/src/components/**"
       - "apps/frontend/src/stories/**"
+      - "apps/frontend/src/pbns/**"
       - "apps/frontend/src/app/globals.css"
 
 env:
