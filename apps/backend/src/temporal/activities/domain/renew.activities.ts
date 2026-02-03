@@ -162,6 +162,13 @@ export async function getDomainsUpForRenewal(): Promise<
         domain.expirationTime,
         new Date(),
       );
+      if (
+        process.env.FORCE_AUTO_RENEW_WITH_CLUB === 'true' &&
+        (domain.normalizedDomainName.endsWith('.withharris.club') ||
+          domain.normalizedDomainName.endsWith('.withtrump.club'))
+      ) {
+        return true;
+      }
       return (
         daysToExpiration <= SEND_RENEW_REMINDERS_THRESHOLD &&
         daysToExpiration >= 0
@@ -381,6 +388,14 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
         autoRenewOption = domainUserPreference?.autoRenewEnabled
           ? RenewOption.AUTOMATIC
           : RenewOption.MANUAL;
+      }
+      if (
+        process.env.FORCE_AUTO_RENEW_WITH_CLUB === 'true' &&
+        isNil(domainUserPreferences) &&
+        (domain.normalizedDomainName.endsWith('.withharris.club') ||
+          domain.normalizedDomainName.endsWith('.withtrump.club'))
+      ) {
+        autoRenewOption = RenewOption.AUTOMATIC;
       }
 
       // Return complete domain info with owner details and preferences
