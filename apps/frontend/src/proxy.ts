@@ -51,7 +51,10 @@ const redirectRoutes = [
   {
     pattern: /^\/m\/user\/orders\/([^/]+)$/,
     getDestination: (pathname: string) => {
-      const params = extractPathParams(pathname, '/m/user/orders/[orderId]');
+      const params = extractPathParams(
+        pathname,
+        '/m/user/orders/[orderId]/details',
+      );
       return `/orders/${params.orderId}`;
     },
   },
