@@ -13,7 +13,7 @@ import {
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { fqdnLowercaseSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
 import { and, eq, sql } from 'drizzle-orm';
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
 import { isNotEmpty, isNotNil } from 'ramda';
 import { z } from 'zod';
 import { createLogger } from '#lib/logger';
@@ -24,6 +24,7 @@ import { matchAny } from '@namefi-astra/utils/match';
 import { config } from '#lib/env';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
+import { dnsRcodes } from '#lib/dns/rcodes';
 
 const _logger = createLogger({ context: 'NS-JSON' });
 
@@ -39,7 +40,15 @@ nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 const USE_MOCK_DNS_TABLE = false;
 
 const requestQuerySchema = z.object({
-  name: fqdnLowercaseSchema,
+  name: z.union([
+    fqdnLowercaseSchema,
+    z
+      .string()
+      .startsWith('*.')
+      .refine((val) => fqdnLowercaseSchema.safeParse(val.slice(2)).success, {
+        message: 'Wildcard domain must be a valid FQDN',
+      }),
+  ]),
   type: z
     .string()
     .superRefine((val, ctx) => {
@@ -65,65 +74,28 @@ nsJsonRouter.get('/', async (c) => {
   if (c.req.query('name') === '041.ai.') {
     _logger.assign({ heartbeat: true });
   }
-  const requestQueryResult = requestQuerySchema.safeParse(c.req.query());
 
-  if (!requestQueryResult.success) {
-    c.status(400);
+  const [maybeResponse, question] = await prepareDnsQuestion(c);
+  if (maybeResponse) {
+    return maybeResponse;
+  }
+  const { recordName, recordType, wildcard } = question;
+
+  if (wildcard) {
     return c.json({
-      error: 'Bad Request',
-      message: `Invalid parameters, expecting name and type but got errors. ${requestQueryResult.error.issues
-        .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-        .join(', ')}`,
+      RCODE: dnsRcodes.inverse.get('NXDOMAIN'),
+      Answer: [],
     });
   }
 
-  const { name: qname, type: qtype } = requestQueryResult.data;
-  /**
-   * https://www.rfc-editor.org/rfc/rfc8482#section-4.3
-   * Responding with `A` record for `ANY`
-   */
-  // convert qtype to RecordType (string enum)
-  const qTypeString =
-    qtype === dnsRecordTypeCodes.get('ANY')
-      ? 'A'
-      : dnsRecordTypeCodes.inverse.get(qtype);
-  const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
-
-  if (!qTypeEnumParseResult.success) {
-    if (qTypeString) {
-      return c.json({
-        RCODE: 0,
-        Answer: [],
-      });
-    }
-    c.status(412);
-    return c.json({
-      error: 'Precondition Failed',
-      message: `Invalid DNS record type: ${qTypeString}`,
-    });
-  }
-
-  const qTypeEnum = qTypeEnumParseResult.data;
-  let recordName: NamefiNormalizedDomain;
-  try {
-    recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
-  } catch (err) {
-    _logger.trace({ err }, 'Domain normalisation failed');
-    c.status(412);
-    return c.json({
-      error: 'Precondition Failed',
-      message: (err as Error).message,
-    });
-  }
-
-  const response = await getAnswerForDnsQuery(recordName, qTypeEnum);
+  const response = await getAnswerForDnsQuery(recordName, recordType);
   _logger.trace({ response }, 'Response from getAnswerForDnsQuery');
   if (response) {
     return c.json(response);
   }
 
   if (USE_MOCK_DNS_TABLE) {
-    const response = await getAnswerForDnsQueryMock(recordName, qTypeEnum);
+    const response = await getAnswerForDnsQueryMock(recordName, recordType);
     if (response) {
       return c.json(response);
     }
@@ -363,4 +335,97 @@ export async function getNsAndSoaRecords(
     RCODE: 0,
     Answer: qTypeEnum === 'NS' ? nsRecords : soaRecord,
   };
+}
+
+type PrepareDnsQuestionResult =
+  | [Response, null]
+  | [
+      null,
+      {
+        recordType: z.infer<typeof recordTypeEnum>;
+        recordName: NamefiNormalizedDomain;
+        wildcard: boolean;
+      },
+    ];
+export async function prepareDnsQuestion(
+  c: Context,
+): Promise<PrepareDnsQuestionResult> {
+  const requestQueryResult = requestQuerySchema.safeParse(c.req.query());
+
+  if (!requestQueryResult.success) {
+    c.status(412);
+    return [
+      c.json({
+        error: 'Precondition Failed',
+        message: `Invalid parameters, expecting name and type but got errors. ${requestQueryResult.error.issues
+          .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+          .join(', ')}`,
+      }),
+      null,
+    ];
+  }
+
+  const { name: qname, type: qtype } = requestQueryResult.data;
+  /**
+   * https://www.rfc-editor.org/rfc/rfc8482#section-4.3
+   * Responding with `A` record for `ANY`
+   */
+  // convert qtype to RecordType (string enum)
+  const qTypeString =
+    qtype === dnsRecordTypeCodes.get('ANY')
+      ? 'A'
+      : dnsRecordTypeCodes.inverse.get(qtype);
+  const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
+
+  if (!qTypeEnumParseResult.success) {
+    if (qTypeString) {
+      return [
+        c.json({
+          RCODE: 0,
+          Answer: [],
+        }),
+        null,
+      ];
+    }
+    c.status(412);
+    return [
+      c.json({
+        error: 'Precondition Failed',
+        message: `Invalid DNS record type: ${qTypeString}`,
+      }),
+      null,
+    ];
+  }
+
+  const qTypeEnum = qTypeEnumParseResult.data;
+  let recordName: NamefiNormalizedDomain;
+  let wildcard = false;
+
+  try {
+    if (qname.startsWith('*.')) {
+      recordName = fqdnLowercaseToNamefiNormalizedDomain(qname.slice(2));
+      wildcard = true;
+    } else {
+      recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
+    }
+  } catch (err) {
+    _logger.trace({ err }, 'Domain normalisation failed');
+    c.status(412);
+    return [
+      c.json({
+        error: 'Precondition Failed',
+        message: (err as Error).message,
+      }),
+      null,
+    ];
+  }
+
+  return [
+    null,
+    {
+      recordType: qTypeEnum,
+      recordName,
+      wildcard,
+    },
+  ];
 }
