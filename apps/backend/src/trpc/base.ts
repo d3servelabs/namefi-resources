@@ -224,7 +224,7 @@ export const createContext = async (
     process.env.ENVIRONMENT,
   );
   if (skipAuthTestUser) {
-    logger.info(
+    logger.debug(
       { skipAuthEmail: skipAuthTestUser.primaryEmail },
       'Skip auth header detected in dev environment',
     );

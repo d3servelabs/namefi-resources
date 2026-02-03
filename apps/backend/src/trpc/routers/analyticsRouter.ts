@@ -189,7 +189,7 @@ export async function getDashboardOverview(
     endDate: input.endDate,
   };
 
-  logger.info(
+  logger.debug(
     {
       dateRange,
       publicSuffix: input.publicSuffix,
@@ -347,7 +347,7 @@ export async function getFullReportByRecordName(
 
   const domainRegex = buildRecordNameRegex(input.domainName);
 
-  logger.info(
+  logger.debug(
     {
       dateRange,
       domainName: input.domainName,

@@ -28,7 +28,7 @@ interface DnssecResponse {
 // biome-ignore lint/suspicious/useAwait: <explanation>
 dnssecRouter.get('/', async (c) => {
   _logger.assign({ query: c.req.query() });
-  _logger.info('Received request');
+  _logger.debug('Received request');
 
   const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
 
@@ -59,7 +59,7 @@ dnssecRouter.get('/', async (c) => {
       ),
     );
 
-  _logger.info({ domainConfig }, 'Domain config found');
+  _logger.debug({ domainConfig }, 'Domain config found');
   if (domainConfig.length > 0) {
     return c.json({
       keyOwner: `${domainConfig[0].normalizedDomainName}.`,

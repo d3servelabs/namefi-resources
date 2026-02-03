@@ -111,14 +111,14 @@ async function processDomain(
     // Skip if already set to manual
     if (currentRenewOption === RenewOption.MANUAL) {
       result.success = true;
-      logger.info(
+      logger.debug(
         `Domain ${domain} (${registrar}) already has auto-renewal disabled`,
       );
       return result;
     }
 
     if (dryRun) {
-      logger.info(
+      logger.debug(
         `[DRY RUN] Would disable auto-renewal for ${domain} (${registrar})`,
       );
       result.success = true;
@@ -133,7 +133,7 @@ async function processDomain(
 
     if (operationResult.status === 'SUCCESSFUL') {
       result.success = true;
-      logger.info(
+      logger.debug(
         `Successfully disabled auto-renewal for ${domain} (${registrar})`,
       );
     } else {
@@ -218,7 +218,7 @@ async function main(): Promise<void> {
   try {
     const options = parseArgs();
 
-    logger.info('Starting auto-renewal disable script', {
+    logger.debug('Starting auto-renewal disable script', {
       dryRun: options.dryRun,
       targetRegistrar: options.registrar || 'all',
       concurrency: options.concurrency,
@@ -229,23 +229,23 @@ async function main(): Promise<void> {
     }
 
     // Get all domains from the specified registrar(s)
-    logger.info('Fetching domain list...');
+    logger.debug('Fetching domain list...');
     const allDomains = await sldRegistrar.listAllDomains(
       options.registrar ? { registrar: options.registrar } : undefined,
     );
 
-    logger.info(`Found ${allDomains.length} domains total`);
+    logger.debug(`Found ${allDomains.length} domains total`);
 
     // Filter domains that have auto-renewal enabled
     const domainsToProcess: Array<{ domain: string; registrar: string }> = [];
 
-    logger.info('Checking current auto-renewal status...');
+    logger.debug('Checking current auto-renewal status...');
     let checkedCount = 0;
 
     for (const domainInfo of allDomains) {
       checkedCount++;
       if (checkedCount % 50 === 0) {
-        logger.info(`Checked ${checkedCount}/${allDomains.length} domains...`);
+        logger.debug(`Checked ${checkedCount}/${allDomains.length} domains...`);
       }
 
       if (domainInfo.autoRenewOption === RenewOption.AUTOMATIC) {
@@ -256,7 +256,7 @@ async function main(): Promise<void> {
       }
     }
 
-    logger.info(
+    logger.debug(
       `Found ${domainsToProcess.length} domains with auto-renewal enabled`,
     );
 
@@ -288,7 +288,7 @@ async function main(): Promise<void> {
     const failedCount = results.filter((r) => !r.success).length;
 
     if (failedCount === 0) {
-      logger.info(
+      logger.debug(
         `${options.dryRun ? 'Dry run completed' : 'All operations completed'} successfully!`,
       );
       process.exit(0);

@@ -72,7 +72,7 @@ export const dnsCacheRouter = createTRPCRouter({
         });
       }
 
-      logger.info({ zone, recordType }, 'Public DNS cache flush request');
+      logger.debug({ zone, recordType }, 'Public DNS cache flush request');
 
       // Flush cache
       const actualRecordType = recordType === 'ALL' ? undefined : recordType;
@@ -104,7 +104,7 @@ export const dnsCacheRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { zone, recordType, serverNames } = input;
 
-      logger.info(
+      logger.debug(
         { userId: ctx.user.id, zone, recordType, serverNames },
         'Admin DNS cache flush request',
       );

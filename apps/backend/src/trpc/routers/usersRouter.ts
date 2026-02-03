@@ -1022,7 +1022,7 @@ export const usersRouter = createTRPCRouter({
       try {
         await syncSingleUserToListmonkActivity(ctx.user.id);
 
-        logger.info(
+        logger.debug(
           { userId: ctx.user.id, optIn: input.optIn },
           'Successfully synced user to Listmonk after opt-in change',
         );

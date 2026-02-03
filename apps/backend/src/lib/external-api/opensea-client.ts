@@ -20,7 +20,7 @@ class OpenSeaClient {
   async refreshNft(params: RefreshNftParams): Promise<unknown> {
     const { chainId, address, identifier } = params;
 
-    logger.info({ chainId, address, identifier }, 'Refreshing NFT metadata');
+    logger.debug({ chainId, address, identifier }, 'Refreshing NFT metadata');
 
     const chain = getChain(chainId);
     if (!chain) {

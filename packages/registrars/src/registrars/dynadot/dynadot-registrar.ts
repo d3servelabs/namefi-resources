@@ -137,7 +137,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     super(config.overrideKey ?? Registrars.DynadotGdg);
     this.logger =
       config.customLogger ?? pino({ name: DynadotRegistrarService.name });
-    this.logger.info('DynadotRegistrarService constructor');
+    this.logger.debug('DynadotRegistrarService constructor');
 
     let proxyOptions: ProxyOptions | undefined;
 
@@ -176,7 +176,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     });
     this.accountType = config.accountType || 'regular';
     this.cache.on('expired', async () => {
-      this.logger.info('prices cache expired');
+      this.logger.debug('prices cache expired');
       await this.getTldPrices();
     });
     this.hooks = {
@@ -185,7 +185,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
     this.getAllowedParentDomains()
       .then((tlds) => {
-        this.logger.info(
+        this.logger.debug(
           { tlds: tlds.length },
           'Dynadot allowed parent domains',
         );

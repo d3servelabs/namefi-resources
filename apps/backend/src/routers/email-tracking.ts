@@ -16,7 +16,7 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
   const userAgent = c.req.header('user-agent');
 
   if (result.data) {
-    logger.info({ data: result.data, userAgent }, 'Email opened');
+    logger.debug({ data: result.data, userAgent }, 'Email opened');
   } else {
     logger.warn(
       { error: new Error(result.error), userAgent },

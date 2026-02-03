@@ -126,7 +126,7 @@ please output in json without any format and style.
     // Validate using Zod schema
     const validatedResponse = aiAppraisalDataSchema.parse(parsedResponse);
 
-    logger.info(
+    logger.debug(
       { unicodeDomainName },
       'Successfully parsed and validated appraisal response',
     );

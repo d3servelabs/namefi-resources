@@ -74,10 +74,10 @@ export const searchRouter = createTRPCRouter({
       const startTime = performance.now();
       const categories = await getClubsCategoriesWithStats(parentDomain);
       const endTime = performance.now();
-      logger.info(
+      logger.debug(
         `[getClubsCategoriesWithStats] Time taken: ${endTime - startTime} milliseconds`,
       );
-      logger.info(
+      logger.debug(
         `[getClubsCategoriesWithStats] Number of categories: ${categories.length}`,
       );
       return categories;

@@ -270,7 +270,7 @@ export const apiKeysRouter = createTRPCRouter({
           createdAt: apiKeysTable.createdAt,
         });
 
-      logger.info(
+      logger.debug(
         { userId: ctx.user.id, keyId: newKey.id, keyType },
         'API key created',
       );
@@ -336,7 +336,7 @@ export const apiKeysRouter = createTRPCRouter({
           revokedAt: apiKeysTable.revokedAt,
         });
 
-      logger.info({ userId: ctx.user.id, keyId }, 'API key revoked');
+      logger.debug({ userId: ctx.user.id, keyId }, 'API key revoked');
 
       return revokedKey;
     }),
@@ -387,7 +387,7 @@ export const apiKeysRouter = createTRPCRouter({
           name: apiKeysTable.name,
         });
 
-      logger.info(
+      logger.debug(
         { userId: ctx.user.id, keyId, newName },
         'API key name updated',
       );

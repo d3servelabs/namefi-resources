@@ -12,7 +12,7 @@ import { logger } from '#lib/logger';
  * Test the argument parsing functionality
  */
 function testArgumentParsing(): void {
-  logger.info('Testing argument parsing...');
+  logger.debug('Testing argument parsing...');
 
   // Test cases
   const testCases = [
@@ -55,7 +55,7 @@ function testArgumentParsing(): void {
       );
 
       if (matches) {
-        logger.info(`✅ ${testCase.description}: PASSED`);
+        logger.debug(`✅ ${testCase.description}: PASSED`);
       } else {
         logger.error(`❌ ${testCase.description}: FAILED`, {
           expected: testCase.expected,
@@ -72,7 +72,7 @@ function testArgumentParsing(): void {
  * Test error handling in argument parsing
  */
 function testErrorHandling(): void {
-  logger.info('Testing error handling...');
+  logger.debug('Testing error handling...');
 
   const errorCases = [
     {
@@ -108,7 +108,7 @@ function testErrorHandling(): void {
         `❌ ${testCase.description}: Should have thrown an error but didn't`,
       );
     } catch (error) {
-      logger.info(
+      logger.debug(
         `✅ ${testCase.description}: Correctly threw error - ${error instanceof Error ? error.message : String(error)}`,
       );
     }
@@ -119,13 +119,13 @@ function testErrorHandling(): void {
  * Mock test for domain processing (without actually calling registrar APIs)
  */
 async function testDomainProcessingLogic(): Promise<void> {
-  logger.info('Testing domain processing logic...');
+  logger.debug('Testing domain processing logic...');
 
   // Note: This would require mocking the sldRegistrar to avoid actual API calls
   // For now, we'll just test that the function exists and has the right signature
 
   if (typeof processDomain === 'function') {
-    logger.info('✅ processDomain function exists and is callable');
+    logger.debug('✅ processDomain function exists and is callable');
   } else {
     logger.error('❌ processDomain function is not properly exported');
   }
@@ -135,14 +135,14 @@ async function testDomainProcessingLogic(): Promise<void> {
  * Run all tests
  */
 async function runTests(): Promise<void> {
-  logger.info('Starting disable-auto-renewal script tests...');
+  logger.debug('Starting disable-auto-renewal script tests...');
 
   try {
     testArgumentParsing();
     testErrorHandling();
     await testDomainProcessingLogic();
 
-    logger.info('✅ All tests completed!');
+    logger.debug('✅ All tests completed!');
   } catch (error) {
     logger.error('❌ Test suite failed:', error);
     process.exit(1);

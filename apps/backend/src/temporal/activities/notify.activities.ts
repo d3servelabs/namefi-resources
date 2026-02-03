@@ -363,7 +363,7 @@ export async function sendStyledEmailNotificationForUser({
       logger.error(`User ${userId} not found`);
       return { status: 'FAILED' };
     }
-    logger.info(`Sending styled email to user ${userId} (${userEmail})`);
+    logger.debug(`Sending styled email to user ${userId} (${userEmail})`);
 
     const populatedTemplate = React.createElement(GeneralStyledNotification, {
       title,

@@ -107,7 +107,7 @@ export const cartsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       _logger.assign({ method: 'addItems' });
 
-      _logger.info(
+      _logger.debug(
         {
           input: input.map((item) => ({
             normalizedDomainName: item.normalizedDomainName,

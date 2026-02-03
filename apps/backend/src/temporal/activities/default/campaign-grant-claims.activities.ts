@@ -64,7 +64,7 @@ export async function grantClaimAtomic(
     expirationDate,
   } = input;
 
-  logger.info(
+  logger.debug(
     { campaignKey, userId, source, sourceId },
     'Starting atomic claim grant',
   );
@@ -117,7 +117,7 @@ export async function grantClaimAtomic(
           })
           .returning();
 
-        logger.info(
+        logger.debug(
           {
             claimId: insertedClaim.id,
             userId,
@@ -148,7 +148,7 @@ export async function grantClaimAtomic(
         dbError.code === 'check_violation' ||
         error.message.includes('has reached the limit')
       ) {
-        logger.info(
+        logger.debug(
           { campaignKey, userId, source, sourceId },
           'User has reached claim limit for campaign (DB constraint)',
         );
@@ -157,7 +157,7 @@ export async function grantClaimAtomic(
 
       // Check for unique constraint violations (e.g., duplicate idempotency)
       if (dbError.code === '23505' || error.message.includes('duplicate')) {
-        logger.info(
+        logger.debug(
           { campaignKey, userId, source, sourceId },
           'Duplicate claim attempt (DB constraint)',
         );
@@ -190,13 +190,13 @@ export async function grantClaimAtomic(
 export async function sendNotifications(
   userBatches: UserNotificationBatch[],
 ): Promise<void> {
-  logger.info(
+  logger.debug(
     { userCount: userBatches.length },
     'Starting notification sending for claim grants',
   );
 
   if (userBatches.length === 0) {
-    logger.info('No users to notify');
+    logger.debug('No users to notify');
     return;
   }
 
@@ -313,7 +313,7 @@ export async function sendNotifications(
         },
       });
 
-      logger.info(
+      logger.debug(
         {
           userId: batch.userId,
           grantedCount: batch.grantedCount,
@@ -334,7 +334,7 @@ export async function sendNotifications(
     }
   }
 
-  logger.info(
+  logger.debug(
     { userCount: userBatches.length },
     'Notification sending completed',
   );

@@ -63,7 +63,7 @@ export const feedbackRouter = createTRPCRouter({
           });
         }
 
-        logger.info(
+        logger.debug(
           {
             userId,
             ipAddress,
@@ -98,7 +98,7 @@ export const feedbackRouter = createTRPCRouter({
         })
         .returning();
 
-      logger.info(
+      logger.debug(
         {
           userId,
           ipAddress,
@@ -143,7 +143,7 @@ export const feedbackRouter = createTRPCRouter({
           createdAt: feedbackResponsesTable.createdAt,
         });
 
-      logger.info(
+      logger.debug(
         {
           userId: ctx.user.id,
           ipAddress,

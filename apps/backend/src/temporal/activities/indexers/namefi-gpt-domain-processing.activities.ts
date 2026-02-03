@@ -23,7 +23,7 @@ export async function getAllDomainsNeedingProcessingForNamefiGpt(
   limit?: number,
   regenerateAll?: boolean,
 ) {
-  logger.info(
+  logger.debug(
     { limit, regenerateAll },
     'Getting all domains for AI processing',
   );
@@ -63,7 +63,7 @@ export async function getAllDomainsNeedingProcessingForNamefiGpt(
   }
 
   const domains = await query;
-  logger.info(
+  logger.debug(
     { count: domains.length, regenerateAll },
     'Retrieved domains for processing',
   );
@@ -129,7 +129,7 @@ export async function processSingleDomainForNamefiGpt(
  * Get domains that are dirty (need marketplace updates)
  */
 export async function getDirtyDomains(limit?: number) {
-  logger.info({ limit }, 'Getting dirty domains for marketplace updates');
+  logger.debug({ limit }, 'Getting dirty domains for marketplace updates');
 
   let query = db
     .with(namefiNftWithAiAnalysisCte)
@@ -147,7 +147,7 @@ export async function getDirtyDomains(limit?: number) {
   }
 
   const domains = await query;
-  logger.info({ count: domains.length }, 'Retrieved dirty domains');
+  logger.debug({ count: domains.length }, 'Retrieved dirty domains');
   return domains.map((domain) => ({
     ...domain,
     tokenId: domain.tokenId.toString(),

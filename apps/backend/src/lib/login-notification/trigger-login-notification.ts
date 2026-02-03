@@ -108,7 +108,7 @@ async function processLoginNotification(
   }
 
   if (!userEmail) {
-    logger.info(
+    logger.debug(
       { userId: user.id },
       'Skipping login notification - no email address found',
     );

@@ -158,7 +158,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
           : {}),
     });
 
-    this.logger.info(
+    this.logger.debug(
       {
         host: config.host,
         tlds: config.supportedTlds.length,
@@ -232,13 +232,13 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
       logParsed: this.config.logParsed ?? false,
       logger: {
         debug: (msg, meta) => logger.debug(meta, msg),
-        info: (msg, meta) => logger.info(meta, msg),
+        info: (msg, meta) => logger.debug(meta, msg),
         warn: (msg, meta) => logger.warn(meta, msg),
         error: (msg, meta) => logger.error(meta, msg),
       },
     });
 
-    this.logger.info('EPP client created with connection pool');
+    this.logger.debug('EPP client created with connection pool');
     return client;
   }
 
@@ -261,7 +261,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     if (this.client) {
       await closeClient(this.client);
       this.client = null;
-      this.logger.info('EPP client closed');
+      this.logger.debug('EPP client closed');
     }
   }
 

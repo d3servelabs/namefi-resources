@@ -53,7 +53,7 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName, years } = input;
 
-      logger.info({ domainName, years }, 'Creating domain on OTE2');
+      logger.debug({ domainName, years }, 'Creating domain on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
@@ -67,7 +67,7 @@ export const eppTestingRouter = createTRPCRouter({
           privacy: DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA,
         } satisfies RegisterDomainInput);
 
-        logger.info({ domainName, result }, 'Domain creation result');
+        logger.debug({ domainName, result }, 'Domain creation result');
 
         return {
           success: result.status === 'SUCCESSFUL',
@@ -95,7 +95,7 @@ export const eppTestingRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Getting domain info from OTE2');
+      logger.debug({ domainName }, 'Getting domain info from OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
@@ -139,13 +139,13 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Changing auth code on OTE2');
+      logger.debug({ domainName }, 'Changing auth code on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
         const authCode = await registrar.retrieveAuthCode(domainName);
 
-        logger.info({ domainName }, 'Auth code changed successfully');
+        logger.debug({ domainName }, 'Auth code changed successfully');
 
         return {
           success: true,
@@ -173,7 +173,7 @@ export const eppTestingRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Querying transfer status on OTE2');
+      logger.debug({ domainName }, 'Querying transfer status on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
@@ -220,7 +220,7 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName, authCode } = input;
 
-      logger.info({ domainName }, 'Requesting transfer on OTE2');
+      logger.debug({ domainName }, 'Requesting transfer on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
@@ -233,7 +233,7 @@ export const eppTestingRouter = createTRPCRouter({
           nameservers: [],
         } satisfies TransferDomainInput);
 
-        logger.info({ domainName, result }, 'Transfer request result');
+        logger.debug({ domainName, result }, 'Transfer request result');
 
         return {
           success:
@@ -274,13 +274,13 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Approving transfer on OTE2');
+      logger.debug({ domainName }, 'Approving transfer on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
         const result = await registrar.approveTransfer(domainName);
 
-        logger.info({ domainName, result }, 'Transfer approval result');
+        logger.debug({ domainName, result }, 'Transfer approval result');
 
         return {
           success: result.status === 'SUCCESSFUL',
@@ -320,13 +320,13 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Rejecting transfer on OTE2');
+      logger.debug({ domainName }, 'Rejecting transfer on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
         const result = await registrar.rejectTransfer(domainName);
 
-        logger.info({ domainName, result }, 'Transfer rejection result');
+        logger.debug({ domainName, result }, 'Transfer rejection result');
 
         return {
           success: result.status === 'SUCCESSFUL',
@@ -366,7 +366,7 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Locking domain on OTE2');
+      logger.debug({ domainName }, 'Locking domain on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
@@ -407,7 +407,7 @@ export const eppTestingRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Unlocking domain on OTE2');
+      logger.debug({ domainName }, 'Unlocking domain on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
@@ -438,7 +438,7 @@ export const eppTestingRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { domainName } = input;
 
-      logger.info({ domainName }, 'Checking domain availability on OTE2');
+      logger.debug({ domainName }, 'Checking domain availability on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();

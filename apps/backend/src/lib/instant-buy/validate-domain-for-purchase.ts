@@ -38,7 +38,7 @@ export async function validateDomainForInstantPurchase(
 ): Promise<ValidateDomainForPurchaseResult> {
   const { normalizedDomainName, durationInYears, user } = input;
 
-  logger.info(
+  logger.debug(
     { normalizedDomainName, durationInYears, userId: user?.id },
     'Validating domain for instant purchase',
   );
@@ -71,7 +71,7 @@ export async function validateDomainForInstantPurchase(
 
   // 2. Check domain is available for registration (not import)
   if (!domainInfo.availability) {
-    logger.info(
+    logger.debug(
       { normalizedDomainName, importable: domainInfo.importable },
       'Domain not available for registration',
     );
@@ -88,7 +88,7 @@ export async function validateDomainForInstantPurchase(
 
   // 3. Check domain is supported
   if (!domainInfo.supported) {
-    logger.info({ normalizedDomainName }, 'Domain TLD not supported');
+    logger.debug({ normalizedDomainName }, 'Domain TLD not supported');
     return {
       isValid: false,
       priceInUsdCents: 0,
@@ -103,7 +103,7 @@ export async function validateDomainForInstantPurchase(
   const maxDuration = domainInfo.durationValidationInYears?.max ?? 1;
 
   if (durationInYears < minDuration || durationInYears > maxDuration) {
-    logger.info(
+    logger.debug(
       { normalizedDomainName, durationInYears, minDuration, maxDuration },
       'Duration outside allowed range',
     );
@@ -163,7 +163,7 @@ export async function validateDomainForInstantPurchase(
     });
 
     if (!qualifiesForPromo) {
-      logger.info(
+      logger.debug(
         { normalizedDomainName, userId: user.id },
         'User does not qualify for promotional pricing',
       );
@@ -177,7 +177,7 @@ export async function validateDomainForInstantPurchase(
     }
   }
 
-  logger.info(
+  logger.debug(
     {
       normalizedDomainName,
       priceInUsdCents,

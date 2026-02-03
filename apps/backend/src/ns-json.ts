@@ -108,7 +108,7 @@ nsJsonRouter.get('/', async (c) => {
   try {
     recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
   } catch (err) {
-    _logger.warn({ err }, 'Domain normalisation failed');
+    _logger.trace({ err }, 'Domain normalisation failed');
     c.status(412);
     return c.json({
       error: 'Precondition Failed',
@@ -128,7 +128,7 @@ nsJsonRouter.get('/', async (c) => {
       return c.json(response);
     }
   }
-  _logger.info({
+  _logger.trace({
     error: new Error('Not Found'),
     message: 'No DNS record found for domain',
   });
@@ -279,7 +279,7 @@ export const getAnswerForDnsQueryMock = (
   if (!record) {
     return null;
   }
-  _logger.info({ foundRecord: record }, `Found DNS record ${qname} ${qtype}`);
+  _logger.trace({ foundRecord: record }, `Found DNS record ${qname} ${qtype}`);
 
   const result: DnsResponse = {
     RCODE: 0,

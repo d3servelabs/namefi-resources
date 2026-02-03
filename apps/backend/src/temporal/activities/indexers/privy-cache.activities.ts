@@ -95,10 +95,10 @@ export async function refreshPrivyUsersCache(): Promise<RefreshPrivyCacheResult>
 
   try {
     // Get fresh Privy data
-    logger.info('Fetching fresh Privy user data');
+    logger.debug('Fetching fresh Privy user data');
     const simplified = await buildSimplifiedPrivyUsers();
 
-    logger.info({ userCount: simplified.length }, 'Fetched Privy users');
+    logger.debug({ userCount: simplified.length }, 'Fetched Privy users');
 
     const now = new Date();
     const expiresAt = new Date(now.getTime() + PRIVY_CACHE_TTL_MS);
@@ -114,7 +114,7 @@ export async function refreshPrivyUsersCache(): Promise<RefreshPrivyCacheResult>
 
       if (!lockAcquired) {
         // Another process is refreshing, skip this attempt
-        logger.info('Another process is refreshing Privy table, skipping');
+        logger.debug('Another process is refreshing Privy table, skipping');
         throw new Error('Could not acquire lock - another refresh in progress');
       }
 
@@ -141,7 +141,7 @@ export async function refreshPrivyUsersCache(): Promise<RefreshPrivyCacheResult>
           });
       }
 
-      logger.info(
+      logger.debug(
         {
           count: simplified.length,
           expiresAt,

@@ -165,7 +165,7 @@ async function main(): Promise<void> {
   try {
     const options = parseArgs();
 
-    logger.info(`Executing ${options.action} action`, {
+    logger.debug(`Executing ${options.action} action`, {
       dryRun: options.dryRun,
       registrar: options.registrar,
       scheduleId: options.scheduleId,
@@ -175,8 +175,8 @@ async function main(): Promise<void> {
 
     switch (options.action) {
       case 'create': {
-        logger.info(`Creating schedule: ${schedule.config.scheduleId}`);
-        logger.info('Schedule configuration:', {
+        logger.debug(`Creating schedule: ${schedule.config.scheduleId}`);
+        logger.debug('Schedule configuration:', {
           name: schedule.config.name,
           description: schedule.config.description,
           cronExpressions: schedule.config.cronExpressions,
@@ -187,7 +187,7 @@ async function main(): Promise<void> {
 
         await schedule.submit();
 
-        logger.info(
+        logger.debug(
           `✅ Successfully created schedule: ${schedule.config.scheduleId}`,
         );
 
@@ -205,16 +205,16 @@ async function main(): Promise<void> {
       }
 
       case 'trigger': {
-        logger.info(`Triggering schedule: ${schedule.config.scheduleId}`);
+        logger.debug(`Triggering schedule: ${schedule.config.scheduleId}`);
         await schedule.trigger();
-        logger.info(
+        logger.debug(
           `✅ Successfully triggered schedule: ${schedule.config.scheduleId}`,
         );
         break;
       }
 
       case 'status': {
-        logger.info(
+        logger.debug(
           `Getting status for schedule: ${schedule.config.scheduleId}`,
         );
         const status = await schedule.getStatus();
@@ -251,25 +251,25 @@ async function main(): Promise<void> {
       }
 
       case 'pause': {
-        logger.info(`Pausing schedule: ${schedule.config.scheduleId}`);
+        logger.debug(`Pausing schedule: ${schedule.config.scheduleId}`);
         await schedule.pause('Paused via setup script');
-        logger.info(
+        logger.debug(
           `✅ Successfully paused schedule: ${schedule.config.scheduleId}`,
         );
         break;
       }
 
       case 'unpause': {
-        logger.info(`Unpausing schedule: ${schedule.config.scheduleId}`);
+        logger.debug(`Unpausing schedule: ${schedule.config.scheduleId}`);
         await schedule.unpause('Unpaused via setup script');
-        logger.info(
+        logger.debug(
           `✅ Successfully unpaused schedule: ${schedule.config.scheduleId}`,
         );
         break;
       }
 
       case 'delete': {
-        logger.info(`Deleting schedule: ${schedule.config.scheduleId}`);
+        logger.debug(`Deleting schedule: ${schedule.config.scheduleId}`);
 
         // Confirm deletion for production schedules
         if (!options.dryRun && !options.scheduleId) {
@@ -286,7 +286,7 @@ async function main(): Promise<void> {
         }
 
         await schedule.delete();
-        logger.info(
+        logger.debug(
           `✅ Successfully deleted schedule: ${schedule.config.scheduleId}`,
         );
         break;

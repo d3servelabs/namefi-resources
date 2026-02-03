@@ -74,7 +74,7 @@ export async function checkDomainTransferStatus(
   hasTransferPeriod: boolean;
 }> {
   const activityContext = Context.current();
-  logger.info({ domain }, 'Checking domain transfer status');
+  logger.debug({ domain }, 'Checking domain transfer status');
 
   activityContext.heartbeat({ domain, step: 'rdap_lookup' });
 
@@ -109,7 +109,7 @@ export async function checkDomainTransferStatus(
     }
 
     whoisData = rdapData;
-    logger.info(
+    logger.debug(
       { domain, eppStatuses, hasPendingTransfer, hasTransferPeriod },
       'RDAP lookup successful',
     );
@@ -138,7 +138,7 @@ export async function checkDomainTransferStatus(
           whoisText.includes('transferperiod');
       }
 
-      logger.info(
+      logger.debug(
         { domain, hasPendingTransfer, hasTransferPeriod },
         'WHOIS lookup successful',
       );
@@ -170,7 +170,7 @@ export async function isDomainInOurAccount(
   confirmed: boolean;
 }> {
   const activityContext = Context.current();
-  logger.info({ domain }, 'Checking if domain is in our account');
+  logger.debug({ domain }, 'Checking if domain is in our account');
 
   activityContext.heartbeat({ domain, step: 'checking_registrar' });
 
@@ -179,14 +179,14 @@ export async function isDomainInOurAccount(
     const domainDetails = await sldRegistrar.getDomainDetails(punyDomain);
 
     if (!domainDetails) {
-      logger.info({ domain }, 'Domain not found in our account');
+      logger.debug({ domain }, 'Domain not found in our account');
       return { inOurAccount: false, confirmed: true };
     }
 
     // If we can get domain details, it's in our account
     const registrarKey = domainDetails.registrarKey || undefined;
 
-    logger.info({ domain, registrarKey }, 'Domain found in our account');
+    logger.debug({ domain, registrarKey }, 'Domain found in our account');
     return { inOurAccount: true, registrarKey, confirmed: true };
   } catch (error) {
     logger.warn({ domain, error }, 'Error checking domain in account');
@@ -209,7 +209,7 @@ export async function getUnnotifiedExportStatusChanges(): Promise<
     statusChangedAt: Date;
   }>
 > {
-  logger.info('Getting unnotified export status changes');
+  logger.debug('Getting unnotified export status changes');
 
   const unnotified = await db
     .select({
@@ -224,7 +224,7 @@ export async function getUnnotifiedExportStatusChanges(): Promise<
     .from(domainExportTrackingTable)
     .where(eq(domainExportTrackingTable.userNotified, false));
 
-  logger.info({ count: unnotified.length }, 'Found unnotified status changes');
+  logger.debug({ count: unnotified.length }, 'Found unnotified status changes');
 
   return unnotified;
 }
@@ -239,7 +239,7 @@ export async function markExportTrackingAsNotified(
     return;
   }
 
-  logger.info(
+  logger.debug(
     { count: recordIds.length },
     'Marking export tracking records as notified',
   );
@@ -252,7 +252,7 @@ export async function markExportTrackingAsNotified(
     })
     .where(inArray(domainExportTrackingTable.id, recordIds));
 
-  logger.info({ count: recordIds.length }, 'Marked records as notified');
+  logger.debug({ count: recordIds.length }, 'Marked records as notified');
 }
 /**
  * Get all locked NFTs that need export tracking
@@ -266,7 +266,7 @@ export async function getLockedNftsForTracking(): Promise<
   }>
 > {
   const allowedChains = config.ALLOWED_CHAINS;
-  logger.info(
+  logger.debug(
     { allowedChains },
     'Getting locked NFTs for export tracking on allowed chains',
   );
@@ -286,7 +286,7 @@ export async function getLockedNftsForTracking(): Promise<
       ),
     );
 
-  logger.info({ count: lockedNfts.length }, 'Found locked NFTs');
+  logger.debug({ count: lockedNfts.length }, 'Found locked NFTs');
 
   return lockedNfts;
 }
@@ -358,12 +358,12 @@ export async function processSingleDomainExportStatus(input: {
   const { domain, chainId, ownerAddress } = input;
   const activityContext = Context.current();
 
-  logger.info({ domain, chainId }, 'Processing single domain export status');
+  logger.debug({ domain, chainId }, 'Processing single domain export status');
   activityContext.heartbeat({ domain, step: 'checking_status' });
 
   const accountCheck = await isDomainInOurAccount(domain);
   if (!accountCheck.confirmed) {
-    logger.info({ domain, accountCheck }, 'processSingleDomainExportStatus');
+    logger.debug({ domain, accountCheck }, 'processSingleDomainExportStatus');
 
     return {
       action: 'skipped',
@@ -390,7 +390,10 @@ export async function processSingleDomainExportStatus(input: {
   }
 
   if (!currentStatus) {
-    logger.info({ domain }, 'Locked NFT with no transfer indicators, skipping');
+    logger.debug(
+      { domain },
+      'Locked NFT with no transfer indicators, skipping',
+    );
     return { action: 'skipped' };
   }
 
@@ -428,7 +431,7 @@ export async function processSingleDomainExportStatus(input: {
         })
         .where(eq(domainExportTrackingTable.id, existingRecord.id));
 
-      logger.info(
+      logger.debug(
         {
           domain,
           previousStatus: existingRecord.status,
@@ -475,7 +478,7 @@ export async function processSingleDomainExportStatus(input: {
     registrarKey,
   });
 
-  logger.info(
+  logger.debug(
     { domain, status: currentStatus },
     'Created new export tracking record',
   );
@@ -502,7 +505,7 @@ export async function getPendingTransferDomains(): Promise<
     statusHistory: unknown;
   }>
 > {
-  logger.info('Getting pending transfer domains');
+  logger.debug('Getting pending transfer domains');
 
   const records = await db
     .select({
@@ -515,7 +518,7 @@ export async function getPendingTransferDomains(): Promise<
     .from(domainExportTrackingTable)
     .where(eq(domainExportTrackingTable.status, 'PENDING_TRANSFER'));
 
-  logger.info({ count: records.length }, 'Found pending transfer domains');
+  logger.debug({ count: records.length }, 'Found pending transfer domains');
 
   return records;
 }
@@ -538,13 +541,13 @@ export async function checkSinglePendingTransfer(input: {
   const { id, domain, chainId, currentStatus, statusHistory } = input;
   const activityContext = Context.current();
 
-  logger.info({ domain, id }, 'Checking pending transfer');
+  logger.debug({ domain, id }, 'Checking pending transfer');
   activityContext.heartbeat({ domain, step: 'checking_failure' });
 
   const transferStatus = await checkDomainTransferStatus(domain);
   const accountCheck = await isDomainInOurAccount(domain);
   if (!accountCheck.confirmed) {
-    logger.info({ domain, accountCheck }, 'checkSinglePendingTransfer');
+    logger.debug({ domain, accountCheck }, 'checkSinglePendingTransfer');
     return {
       action: 'undetermined',
     };
@@ -578,7 +581,7 @@ export async function checkSinglePendingTransfer(input: {
         })
         .where(eq(domainExportTrackingTable.id, id));
 
-      logger.info({ domain }, 'Transfer failed - domain back in our account');
+      logger.debug({ domain }, 'Transfer failed - domain back in our account');
       return { action: 'failed', newStatus: 'TRANSFER_FAILED' };
     }
 
@@ -611,7 +614,7 @@ export async function checkSinglePendingTransfer(input: {
       })
       .where(eq(domainExportTrackingTable.id, id));
 
-    logger.info(
+    logger.debug(
       { domain },
       'Transfer completed - domain no longer in our account',
     );
@@ -667,7 +670,7 @@ export interface ExportTrackingReportMetrics {
  * Collect export tracking metrics for report
  */
 export async function collectExportTrackingMetrics(): Promise<ExportTrackingReportMetrics> {
-  logger.info('Collecting export tracking metrics for report');
+  logger.debug('Collecting export tracking metrics for report');
 
   const allRecords = await db
     .select({
@@ -704,7 +707,7 @@ export async function collectExportTrackingMetrics(): Promise<ExportTrackingRepo
     domains: allRecords,
   };
 
-  logger.info(
+  logger.debug(
     {
       totalTracked: metrics.totalTracked,
       statusBreakdown: metrics.statusBreakdown,
@@ -778,7 +781,7 @@ function generateExportTrackingJSON(
 export async function sendExportTrackingReportEmail(
   metrics: ExportTrackingReportMetrics,
 ): Promise<void> {
-  logger.info('Sending export tracking report email');
+  logger.debug('Sending export tracking report email');
 
   try {
     const dateStr = format(metrics.reportDate, 'yyyy-MM-dd');
@@ -895,7 +898,7 @@ export async function sendExportTrackingReportEmail(
       attachments,
     });
 
-    logger.info(
+    logger.debug(
       {
         attachmentCount: attachments.length,
         recipient: 'reports+exports@d3serve.xyz',
@@ -935,7 +938,7 @@ export async function shouldBurnNft(input: {
 }> {
   const { domain, chainId } = input;
 
-  logger.info({ domain, chainId }, 'Checking NFT burn eligibility');
+  logger.debug({ domain, chainId }, 'Checking NFT burn eligibility');
 
   const records = await db
     .select({
@@ -959,13 +962,13 @@ export async function shouldBurnNft(input: {
   const record = records[0];
 
   if (!record) {
-    logger.info({ domain, chainId }, 'No tracking record found');
+    logger.debug({ domain, chainId }, 'No tracking record found');
     return { shouldBurn: false, reason: 'not_eligible' };
   }
 
   // Already burned
   if (record.nftBurnedAt) {
-    logger.info({ domain, chainId }, 'NFT already burned');
+    logger.debug({ domain, chainId }, 'NFT already burned');
     return {
       shouldBurn: false,
       reason: 'not_eligible',
@@ -975,7 +978,7 @@ export async function shouldBurnNft(input: {
 
   // Must be in TRANSFER_COMPLETED status
   if (record.status !== 'TRANSFER_COMPLETED') {
-    logger.info(
+    logger.debug(
       { domain, chainId, status: record.status },
       'Domain not in TRANSFER_COMPLETED status',
     );
@@ -988,7 +991,7 @@ export async function shouldBurnNft(input: {
 
   // Check client approval
   if (record.clientApprovedAt) {
-    logger.info({ domain, chainId }, 'Burn eligible: client approved');
+    logger.debug({ domain, chainId }, 'Burn eligible: client approved');
     return {
       shouldBurn: true,
       reason: 'client_approved',
@@ -998,7 +1001,7 @@ export async function shouldBurnNft(input: {
 
   // Check admin approval
   if (record.verifyingAdminId) {
-    logger.info({ domain, chainId }, 'Burn eligible: admin approved');
+    logger.debug({ domain, chainId }, 'Burn eligible: admin approved');
     return {
       shouldBurn: true,
       reason: 'admin_approved',
@@ -1013,7 +1016,7 @@ export async function shouldBurnNft(input: {
       record.confirmedOutOfAccountAt,
     );
     if (hoursOutOfAccount >= MIN_HOURS_FOR_TIME_BASED_BURN) {
-      logger.info(
+      logger.debug(
         { domain, chainId, hoursOutOfAccount },
         'Burn eligible: time-based confirmation (%d hours)',
         hoursOutOfAccount,
@@ -1024,7 +1027,7 @@ export async function shouldBurnNft(input: {
         trackingRecordId: record.id,
       };
     }
-    logger.info(
+    logger.debug(
       {
         domain,
         chainId,
@@ -1059,7 +1062,7 @@ export async function getDomainsEligibleForBurn(): Promise<
   }>
 > {
   const allowedChains = config.ALLOWED_CHAINS;
-  logger.info(
+  logger.debug(
     { allowedChains },
     'Getting domains eligible for NFT burning on allowed chains',
   );
@@ -1084,7 +1087,7 @@ export async function getDomainsEligibleForBurn(): Promise<
       ),
     );
 
-  logger.info(
+  logger.debug(
     { count: records.length },
     'Found domains eligible for burn check',
   );
@@ -1103,7 +1106,7 @@ export async function recordNftBurn(input: {
 }): Promise<void> {
   const { domain, chainId, txHash, error } = input;
 
-  logger.info({ domain, chainId, txHash, error }, 'Recording NFT burn result');
+  logger.debug({ domain, chainId, txHash, error }, 'Recording NFT burn result');
 
   if (txHash) {
     // Successful burn
@@ -1120,7 +1123,7 @@ export async function recordNftBurn(input: {
           eq(domainExportTrackingTable.chainId, chainId),
         ),
       );
-    logger.info({ domain, chainId, txHash }, 'Recorded successful NFT burn');
+    logger.debug({ domain, chainId, txHash }, 'Recorded successful NFT burn');
   } else if (error) {
     // Failed burn - we don't have a dedicated error column, so just log it
     logger.error({ domain, chainId, error }, 'NFT burn failed');
@@ -1137,11 +1140,14 @@ export async function sendPendingExportEmail(input: {
 }): Promise<{ sent: boolean }> {
   const { userId, domain, registrarKey } = input;
 
-  logger.info({ userId, domain, registrarKey }, 'Sending pending export email');
+  logger.debug(
+    { userId, domain, registrarKey },
+    'Sending pending export email',
+  );
 
   const email = await maybeGetUserEmail(userId);
   if (!email) {
-    logger.info(
+    logger.debug(
       { userId, domain },
       'No email found for user, skipping notification',
     );
@@ -1165,7 +1171,7 @@ export async function sendPendingExportEmail(input: {
     content: { html },
   });
 
-  logger.info({ userId, domain, email }, 'Pending export email sent');
+  logger.debug({ userId, domain, email }, 'Pending export email sent');
   return { sent: true };
 }
 
@@ -1180,14 +1186,14 @@ export async function sendExportCompleteEmail(input: {
 }): Promise<{ sent: boolean }> {
   const { userId, domain, chainId, nftBurnTxHash } = input;
 
-  logger.info(
+  logger.debug(
     { userId, domain, chainId, nftBurnTxHash },
     'Sending export complete email',
   );
 
   const email = await maybeGetUserEmail(userId);
   if (!email) {
-    logger.info(
+    logger.debug(
       { userId, domain },
       'No email found for user, skipping notification',
     );
@@ -1209,7 +1215,7 @@ export async function sendExportCompleteEmail(input: {
     content: { html },
   });
 
-  logger.info({ userId, domain, email }, 'Export complete email sent');
+  logger.debug({ userId, domain, email }, 'Export complete email sent');
   return { sent: true };
 }
 
@@ -1225,7 +1231,7 @@ export async function getUserIdFromOwnerAddress(
   // First, look up the Privy user by wallet address
   const privyUser = await privyClient.getUserByWalletAddress(ownerAddress);
   if (!privyUser) {
-    logger.info({ ownerAddress }, 'No Privy user found for wallet address');
+    logger.debug({ ownerAddress }, 'No Privy user found for wallet address');
     return null;
   }
 

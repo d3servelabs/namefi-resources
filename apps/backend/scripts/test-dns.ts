@@ -11,11 +11,11 @@ async function runDnsTest() {
   const namefiDevZone = 'namefi-dev';
   const defaultTtl = 300;
 
-  logger.info('Starting real-life DNS test for Google Cloud DNS client...');
+  logger.debug('Starting real-life DNS test for Google Cloud DNS client...');
 
   try {
     // Step 1: Check if record already exists (cleanup from previous runs)
-    logger.info(
+    logger.debug(
       { testDomain, zone: namefiDevZone },
       'Checking if test record already exists...',
     );
@@ -36,11 +36,11 @@ async function runDnsTest() {
         testTarget,
         defaultTtl,
       );
-      logger.info('Cleaned up existing test record');
+      logger.debug('Cleaned up existing test record');
     }
 
     // Step 2: Create CNAME record
-    logger.info(
+    logger.debug(
       { testDomain, testTarget, zone: namefiDevZone },
       'Creating CNAME record...',
     );
@@ -50,10 +50,13 @@ async function runDnsTest() {
       testTarget,
       defaultTtl,
     );
-    logger.info({ record: createdRecord }, 'Successfully created CNAME record');
+    logger.debug(
+      { record: createdRecord },
+      'Successfully created CNAME record',
+    );
 
     // Step 3: Validate record exists
-    logger.info(
+    logger.debug(
       { testDomain, zone: namefiDevZone },
       'Validating record exists...',
     );
@@ -66,20 +69,23 @@ async function runDnsTest() {
     if (!existsAfterCreate) {
       throw new Error('Record was not found after creation');
     }
-    logger.info('✓ Record validation passed - record exists');
+    logger.debug('✓ Record validation passed - record exists');
 
     // Step 4: List records to see the created record
-    logger.info({ zone: namefiDevZone }, 'Listing CNAME records...');
+    logger.debug({ zone: namefiDevZone }, 'Listing CNAME records...');
     const cnameRecords = await dnsClient.listRecords(namefiDevZone, 'CNAME');
     const ourRecord = cnameRecords.find((r) => r.name.includes(testDomain));
 
     if (!ourRecord) {
       throw new Error('Could not find our test record in the list');
     }
-    logger.info({ record: ourRecord }, '✓ Found our test record in CNAME list');
+    logger.debug(
+      { record: ourRecord },
+      '✓ Found our test record in CNAME list',
+    );
 
     // Step 5: Update/Edit the record (by deleting and recreating with new target)
-    logger.info(
+    logger.debug(
       { testDomain, updateTarget, zone: namefiDevZone },
       'Updating record with new target...',
     );
@@ -91,7 +97,7 @@ async function runDnsTest() {
       testTarget,
       defaultTtl,
     );
-    logger.info('Deleted old record');
+    logger.debug('Deleted old record');
 
     // Create with new target
     const updatedRecord = await dnsClient.createCnameRecord(
@@ -100,7 +106,10 @@ async function runDnsTest() {
       updateTarget,
       defaultTtl,
     );
-    logger.info({ record: updatedRecord }, 'Successfully updated CNAME record');
+    logger.debug(
+      { record: updatedRecord },
+      'Successfully updated CNAME record',
+    );
 
     // Step 6: Validate the update
     const recordsAfterUpdate = await dnsClient.listRecords(
@@ -120,10 +129,10 @@ async function runDnsTest() {
         `Updated record does not point to new target. Expected: ${updateTarget}., Got: ${updatedRecordInList.rrdatas}`,
       );
     }
-    logger.info('✓ Record update validation passed');
+    logger.debug('✓ Record update validation passed');
 
     // Step 7: Final cleanup - delete the test record
-    logger.info(
+    logger.debug(
       { testDomain, zone: namefiDevZone },
       'Cleaning up test record...',
     );
@@ -133,7 +142,7 @@ async function runDnsTest() {
       updateTarget,
       defaultTtl,
     );
-    logger.info('Successfully deleted test record');
+    logger.debug('Successfully deleted test record');
 
     // Step 8: Validate record is gone
     const existsAfterDelete = await dnsClient.recordExists(
@@ -145,26 +154,26 @@ async function runDnsTest() {
     if (existsAfterDelete) {
       throw new Error('Record still exists after deletion');
     }
-    logger.info(
+    logger.debug(
       '✓ Record deletion validation passed - record no longer exists',
     );
 
     // Success summary
-    logger.info('🎉 All DNS operations completed successfully!');
-    logger.info('Test summary:');
-    logger.info('  ✓ Created CNAME record');
-    logger.info('  ✓ Validated record creation');
-    logger.info('  ✓ Listed and found record');
-    logger.info('  ✓ Updated record with new target');
-    logger.info('  ✓ Validated record update');
-    logger.info('  ✓ Deleted record');
-    logger.info('  ✓ Validated record deletion');
+    logger.debug('🎉 All DNS operations completed successfully!');
+    logger.debug('Test summary:');
+    logger.debug('  ✓ Created CNAME record');
+    logger.debug('  ✓ Validated record creation');
+    logger.debug('  ✓ Listed and found record');
+    logger.debug('  ✓ Updated record with new target');
+    logger.debug('  ✓ Validated record update');
+    logger.debug('  ✓ Deleted record');
+    logger.debug('  ✓ Validated record deletion');
   } catch (error) {
     logger.error({ error }, '❌ DNS test failed');
 
     // Try to cleanup on error
     try {
-      logger.info('Attempting cleanup after error...');
+      logger.debug('Attempting cleanup after error...');
       const stillExists = await dnsClient.recordExists(
         namefiDevZone,
         testDomain,
@@ -177,7 +186,7 @@ async function runDnsTest() {
           testTarget,
           defaultTtl,
         );
-        logger.info('Cleanup completed');
+        logger.debug('Cleanup completed');
       }
     } catch (cleanupError) {
       logger.error({ error: cleanupError }, 'Failed to cleanup after error');
@@ -190,7 +199,7 @@ async function runDnsTest() {
 // Run the test
 runDnsTest()
   .then(() => {
-    logger.info('DNS integration test completed successfully');
+    logger.debug('DNS integration test completed successfully');
     process.exit(0);
   })
   .catch((error) => {

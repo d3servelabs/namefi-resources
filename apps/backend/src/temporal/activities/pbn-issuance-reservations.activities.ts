@@ -122,7 +122,7 @@ export async function createReservation(
     metadata = {},
   } = input;
 
-  logger.info(
+  logger.debug(
     { pbnDomain, recipientEmail, issueFreeClaim, reserveHold },
     'Creating reservation',
   );
@@ -305,7 +305,7 @@ export async function createReservation(
         })
         .where(eq(pbnIssuanceReservationsTable.id, reservation.id));
 
-      logger.info(
+      logger.debug(
         {
           reservationId: reservation.id,
           recipientEmail: normalizedRecipientEmail,
@@ -321,7 +321,7 @@ export async function createReservation(
     }
   }
 
-  logger.info(
+  logger.debug(
     { reservationId: reservation.id, emailSent },
     'Reservation created successfully',
   );
@@ -340,7 +340,7 @@ export async function processReservationsForUser(
 ): Promise<ProcessReservationsOutput> {
   const { userId, userEmail } = input;
 
-  logger.info({ userId, userEmail }, 'Processing reservations for user');
+  logger.debug({ userId, userEmail }, 'Processing reservations for user');
 
   try {
     let freeClaimsCreated = 0;
@@ -365,7 +365,7 @@ export async function processReservationsForUser(
           return [];
         }
 
-        logger.info(
+        logger.debug(
           {
             userId,
             userEmail,
@@ -423,7 +423,7 @@ export async function processReservationsForUser(
         return inserted;
       });
 
-      logger.info(
+      logger.debug(
         { userId, freeClaimsCreated: newFreeClaims.length },
         'Successfully converted reservation to free claim',
       );
@@ -435,7 +435,7 @@ export async function processReservationsForUser(
       );
     }
 
-    logger.info(
+    logger.debug(
       {
         userId,
         userEmail,
@@ -498,7 +498,7 @@ export async function cancelReservation(
   reservationId: string,
   cancelledBy: string,
 ): Promise<void> {
-  logger.info({ reservationId, cancelledBy }, 'Cancelling reservation');
+  logger.debug({ reservationId, cancelledBy }, 'Cancelling reservation');
 
   const existing = await db
     .select()
@@ -541,7 +541,7 @@ export async function cancelReservation(
     );
   }
 
-  logger.info({ reservationId }, 'Reservation cancelled successfully');
+  logger.debug({ reservationId }, 'Reservation cancelled successfully');
 }
 
 /**

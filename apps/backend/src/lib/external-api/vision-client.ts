@@ -7,7 +7,7 @@ const logger = createLogger({ module: 'vision-client' });
 export const VisionClient = {
   refreshMetadata: async (tokenId: string, contract: string) => {
     const url = `${config.VISION_API_URL}/v1/name/refresh`;
-    logger.info({ tokenId, contract }, 'Refreshing metadata for tokenId');
+    logger.debug({ tokenId, contract }, 'Refreshing metadata for tokenId');
 
     const response = await axios.post(
       url,

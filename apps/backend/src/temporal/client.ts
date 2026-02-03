@@ -30,7 +30,7 @@ export const createTemporalEphemeralConnection =
       context: 'Temporal',
     });
 
-    logger.info('Creating temporal ephemeral connection');
+    logger.debug('Creating temporal ephemeral connection');
     const connection = await Connection.connect({
       ...authOptions,
       address: config.TEMPORAL_API_URL,
@@ -38,6 +38,6 @@ export const createTemporalEphemeralConnection =
         'temporal-namespace': config.TEMPORAL_NAMESPACE,
       },
     });
-    logger.info('Temporal ephemeral connection created');
+    logger.debug('Temporal ephemeral connection created');
     return connection;
   };

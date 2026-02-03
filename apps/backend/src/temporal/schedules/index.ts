@@ -213,7 +213,7 @@ export async function submitAllSchedules(): Promise<void> {
     );
   }
 
-  logger.info(`Successfully submitted ${schedules.length} schedules`);
+  logger.debug(`Successfully submitted ${schedules.length} schedules`);
 }
 
 /**

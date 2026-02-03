@@ -46,7 +46,7 @@ function setupLimiter({
   });
 
   if (!limiters[id]) {
-    logger.info(
+    logger.debug(
       `Setting up limiter for ${id} with ${requestsPerSecond} requests per second`,
     );
 
@@ -70,7 +70,7 @@ function setupLimiter({
         error.message.includes('Threads Busy')
       ) {
         const delay = crypto.randomInt(retryDelay, retryDelay * 1.5);
-        logger.info(`Retrying job ${id} in ${delay}ms!`);
+        logger.debug(`Retrying job ${id} in ${delay}ms!`);
         return delay;
       }
     });
@@ -312,6 +312,7 @@ function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
           command,
           domain,
           params: omit(['command'], params ?? {}),
+          _bucket: 'dynadot-requests',
         },
         `${domain ? `Domain(${domain}) ` : ''}Command(${command}) Request Sent`,
       );
@@ -333,6 +334,7 @@ function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
           data: res.data,
           status: res.status,
           statusText: res.statusText,
+          _bucket: 'dynadot-requests',
         },
         `${domain ? `Domain(${domain}) ` : ''}Command(${command}) Response Received`,
       );

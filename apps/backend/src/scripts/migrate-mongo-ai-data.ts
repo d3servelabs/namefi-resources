@@ -71,7 +71,7 @@ Examples:
 async function main(): Promise<void> {
   const options = parseArgs();
 
-  logger.info(
+  logger.debug(
     {
       dryRun: options.dryRun,
       batchSize: options.batchSize,
@@ -80,7 +80,7 @@ async function main(): Promise<void> {
   );
 
   if (options.dryRun) {
-    logger.info(
+    logger.debug(
       {
         dryRun: options.dryRun,
         batchSize: options.batchSize,
@@ -100,7 +100,7 @@ async function main(): Promise<void> {
   };
 
   try {
-    logger.info(`Starting workflow with ID: ${workflowId}`);
+    logger.debug(`Starting workflow with ID: ${workflowId}`);
 
     const handle = await client.workflow.start('mongoAiMigrationWorkflow', {
       workflowId,
@@ -108,16 +108,16 @@ async function main(): Promise<void> {
       args: [workflowInput],
     });
 
-    logger.info(
+    logger.debug(
       `Workflow started successfully. Workflow ID: ${handle.workflowId}`,
     );
-    logger.info('Waiting for workflow to complete...');
+    logger.debug('Waiting for workflow to complete...');
 
     // Wait for workflow result
     const result: MongoAiMigrationWorkflowResult = await handle.result();
 
     // Display results
-    logger.info(
+    logger.debug(
       {
         success: result.success,
         totalProcessed: result.totalProcessed,
@@ -151,7 +151,7 @@ async function main(): Promise<void> {
     if (result.success) {
       console.log('\n✅ Migration completed successfully!');
       if (!options.dryRun && result.totalProcessed > 0) {
-        logger.info(
+        logger.debug(
           'Consider running verification checks on the migrated data',
         );
       }

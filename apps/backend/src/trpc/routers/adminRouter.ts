@@ -777,7 +777,7 @@ export const adminRouter = createTRPCRouter({
         // Send approval signal with selected domains
         await workflowHandle.signal(bulkBurnApprovalSignal, domainNames);
 
-        logger.info(
+        logger.debug(
           { workflowId, approvedCount: domainNames.length },
           'Bulk burn approval signal sent',
         );
@@ -828,7 +828,7 @@ export const adminRouter = createTRPCRouter({
         // Send cancellation signal
         await workflowHandle.signal(bulkBurnCancelSignal);
 
-        logger.info({ workflowId }, 'Bulk burn cancellation signal sent');
+        logger.debug({ workflowId }, 'Bulk burn cancellation signal sent');
 
         return {
           success: true,
@@ -2635,7 +2635,7 @@ export const adminRouter = createTRPCRouter({
     Permission.READ_USERS,
   ).mutation(async () => {
     try {
-      logger.info('Force refreshing Privy cache');
+      logger.debug('Force refreshing Privy cache');
 
       // Trigger the workflow with forceRefresh=true
       const result = await triggerUpdatePrivyCache(true);
@@ -3262,7 +3262,7 @@ export const adminRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { dryRun, maxBurns } = input;
 
-      logger.info(
+      logger.debug(
         { dryRun, maxBurns },
         'Starting burn expired domains operation',
       );
@@ -3270,7 +3270,7 @@ export const adminRouter = createTRPCRouter({
       try {
         // Step 1: Get expired domains from registrars
         const expiredDomains = await sldRegistrar.listExpiredDomains();
-        logger.info(
+        logger.debug(
           { count: expiredDomains.length },
           'Found expired domains from registrars',
         );
@@ -3371,7 +3371,7 @@ export const adminRouter = createTRPCRouter({
           );
 
         const nftData = await nftDataQuery;
-        logger.info(
+        logger.debug(
           { count: nftData.length },
           'Found NFT data for expired domains',
         );
@@ -3392,7 +3392,7 @@ export const adminRouter = createTRPCRouter({
             (!domain.canBurn && !domain.hasMissingData),
         );
 
-        logger.info(
+        logger.debug(
           {
             safeToBurn: safeToBurnDomains.length,
             skipped: skippedDomains.length,
@@ -3494,7 +3494,7 @@ export const adminRouter = createTRPCRouter({
               status: 'Started',
             });
 
-            logger.info(
+            logger.debug(
               {
                 domain: domain.normalizedDomainName,
                 chainId: domain.chainId,
@@ -3759,7 +3759,7 @@ export const adminRouter = createTRPCRouter({
         })
         .where(eq(domainExportTrackingTable.id, input.id));
 
-      logger.info(
+      logger.debug(
         {
           recordId: input.id,
           domain: record.normalizedDomainName,

@@ -673,7 +673,7 @@ export async function getStripeCustomerIdOrThrow(
   const user = await db.query.usersTable.findFirst({
     where: (usersTable, { eq }) => eq(usersTable.id, namefiUserId),
   });
-  logger.info({ user }, 'Retrieved User');
+  logger.debug({ user }, 'Retrieved User');
   if (!user) {
     throw new Error('User not found');
   }
@@ -715,7 +715,7 @@ export async function getDefaultStripePaymentMethodForNamefiUserOrThrow({
     await stripe.customers.retrieve(stripeCustomerId, {
       expand: ['invoice_settings.default_payment_method'],
     });
-  logger.info({ customer }, 'Retrieved Stripe Customer');
+  logger.debug({ customer }, 'Retrieved Stripe Customer');
 
   if (customer.deleted) {
     logger.warn(

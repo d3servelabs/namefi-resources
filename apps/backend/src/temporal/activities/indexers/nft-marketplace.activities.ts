@@ -15,7 +15,7 @@ export async function updateMarketplaceForDomain(
   chainId: number,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    logger.info({ tokenId, chainId }, 'Updating marketplace for domain');
+    logger.debug({ tokenId, chainId }, 'Updating marketplace for domain');
 
     const marketplaces = getMarketplacesForChain(chainId);
 
@@ -30,7 +30,7 @@ export async function updateMarketplaceForDomain(
       marketplaces.map(async (marketplace) => {
         try {
           await marketplace.updateNft(tokenIdHex, chainId);
-          logger.info(
+          logger.debug(
             { tokenId, marketplace: marketplace.name },
             'Updated marketplace',
           );

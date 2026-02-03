@@ -51,7 +51,7 @@ export async function sendLoginNotificationEmail({
       },
     });
 
-    logger.info(
+    logger.debug(
       { userEmail, sessionId: sessionInfo.sessionId },
       'Login notification email sent successfully',
     );

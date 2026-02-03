@@ -50,7 +50,7 @@ export async function flushDnsCache(
 
   const results = await Promise.allSettled(
     servers.map(async (server) => {
-      logger.info(
+      logger.debug(
         { serverName: server.name, zone: normalizedZone, recordType },
         'Flushing DNS cache via CoreDNS client',
       );
@@ -85,7 +85,7 @@ export async function flushDnsCache(
       // Access the response data correctly from openapi-fetch
       const flushResponse = data as any;
 
-      logger.info(
+      logger.debug(
         {
           serverName: server.name,
           zone: normalizedZone,

@@ -367,7 +367,7 @@ export class RegistrarService extends AbstractRegistrarService {
           }
           const res = await registrar.bulkSearch(queries);
 
-          this.logger.info(res, `Bulk search completed for ${registrar.key}`);
+          this.logger.debug(res, `Bulk search completed for ${registrar.key}`);
           return res;
         } catch (error) {
           this.logger.error(

@@ -689,7 +689,7 @@ export const ordersRouter = createTRPCRouter({
           });
         }
 
-        logger.info(
+        logger.debug(
           {
             orderId: order.id,
             domain: normalizedDomainName,
@@ -1067,6 +1067,6 @@ async function _removeCartItems(
       message: 'Cart items removal failed',
     });
   }
-  logger.info({ res }, 'Cart items removed');
+  logger.debug({ res }, 'Cart items removed');
   return res;
 }

@@ -251,7 +251,7 @@ async function ensurePrivyTableFresh(): Promise<void> {
           });
       }
 
-      logger.info(
+      logger.debug(
         { count: simplified.length, expiresAt },
         'Refreshed Privy users unlogged table with upsert',
       );

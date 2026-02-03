@@ -25,7 +25,7 @@ const listInput = z.object({
 
 export const bigQueryAuditRouter = createTRPCRouter({
   list: adminProcedure.input(listInput).query(async ({ input }) => {
-    logger.info('Listing audit logs');
+    logger.debug('Listing audit logs');
     const c = getBigQueryAuditClient();
     const serviceNames = config.BIGQUERY_AUDIT_SERVICE_NAMES;
 

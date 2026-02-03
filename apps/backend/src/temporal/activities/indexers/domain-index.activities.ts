@@ -33,13 +33,13 @@ export async function updateDomainIndex(): Promise<{
 }> {
   const startTime = Date.now();
 
-  logger.info('Starting domain index update');
+  logger.debug('Starting domain index update');
 
   try {
     // Fetch all domains from all registrars
     const domainsWithRegistrar = await sldRegistrar.listAllDomains();
 
-    logger.info('Fetched domains from registrars', {
+    logger.debug('Fetched domains from registrars', {
       totalDomains: domainsWithRegistrar.length,
       registrars: [...new Set(domainsWithRegistrar.map((d) => d.registrarKey))],
     });
@@ -103,7 +103,7 @@ export async function updateDomainIndex(): Promise<{
     ];
     const executionTimeMs = Date.now() - startTime;
 
-    logger.info('Domain index update completed successfully', {
+    logger.debug('Domain index update completed successfully', {
       totalDomains: domainsWithRegistrar.length,
       updatedDomains: updatedCount,
       registrarsProcessed,
@@ -132,7 +132,7 @@ export async function cleanupStaleIndexedDomains(
 }> {
   const startTime = Date.now();
 
-  logger.info('Starting cleanup of stale indexed domains', {
+  logger.debug('Starting cleanup of stale indexed domains', {
     olderThanHours,
   });
 
@@ -145,7 +145,7 @@ export async function cleanupStaleIndexedDomains(
 
     const deletedCount = result.rowCount ?? 0;
 
-    logger.info('Stale domain cleanup completed', {
+    logger.debug('Stale domain cleanup completed', {
       deletedCount,
       cutoffDate,
       executionTimeMs: Date.now() - startTime,
@@ -193,7 +193,7 @@ export async function updateDomainIndexRows(
 ): Promise<UpdateDomainIndexRowsOutput> {
   const startTime = Date.now();
 
-  logger.info(
+  logger.debug(
     {
       domainsToUpdate: domainUpdates.length,
     },
@@ -432,7 +432,7 @@ export async function backfillMissingNameserversAndDnssecInIndex(): Promise<Meta
   const { nameserversRemaining, dnssecRemaining } =
     await getMetadataBackfillCounts();
 
-  logger.info('Completed domain index metadata backfill', {
+  logger.debug('Completed domain index metadata backfill', {
     nameserversUpdated,
     dnssecUpdated,
     nameserversRemaining,

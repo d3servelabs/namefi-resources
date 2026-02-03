@@ -57,7 +57,7 @@ export async function mongoAiMigrationWorkflow(
 
   const { batchSize = 100, dryRun = false } = input;
 
-  logger.info('Starting MongoDB to PostgreSQL AI migration workflow', {
+  logger.debug('Starting MongoDB to PostgreSQL AI migration workflow', {
     batchSize,
     dryRun,
   });
@@ -69,7 +69,7 @@ export async function mongoAiMigrationWorkflow(
 
   try {
     // Step 1: Validate prerequisites
-    logger.info('Validating migration prerequisites...');
+    logger.debug('Validating migration prerequisites...');
     const prerequisites =
       await mongoAiMigrationActivities.validateAiMigrationPrerequisitesActivity();
 
@@ -79,13 +79,13 @@ export async function mongoAiMigrationWorkflow(
       throw new workflow.ApplicationFailure(errorMsg);
     }
 
-    logger.info('Prerequisites validation successful', {
+    logger.debug('Prerequisites validation successful', {
       mongodbAvailable: prerequisites.mongodbAvailable,
       postgresqlAvailable: prerequisites.postgresqlAvailable,
     });
 
     if (dryRun) {
-      logger.info('Dry run mode - skipping actual migration');
+      logger.debug('Dry run mode - skipping actual migration');
       const endTime = new Date();
 
       const report =
@@ -109,13 +109,13 @@ export async function mongoAiMigrationWorkflow(
     }
 
     // Step 2: Get total document count for progress tracking
-    logger.info('Counting MongoDB documents...');
+    logger.debug('Counting MongoDB documents...');
     const totalDocuments =
       await mongoAiMigrationActivities.countMongoAiDocumentsActivity();
-    logger.info(`Total documents to migrate: ${totalDocuments}`);
+    logger.debug(`Total documents to migrate: ${totalDocuments}`);
 
     if (totalDocuments === 0) {
-      logger.info('No documents to migrate');
+      logger.debug('No documents to migrate');
       const endTime = new Date();
 
       const report =
@@ -146,7 +146,7 @@ export async function mongoAiMigrationWorkflow(
       const batchNumber = Math.floor(skip / batchSize) + 1;
       const totalBatches = Math.ceil(totalDocuments / batchSize);
 
-      logger.info(
+      logger.debug(
         `Processing batch ${batchNumber}/${totalBatches} (skip: ${skip}, size: ${batchSize})`,
       );
 
@@ -159,7 +159,7 @@ export async function mongoAiMigrationWorkflow(
           );
 
         if (batch.length === 0) {
-          logger.info('Empty batch retrieved, stopping migration');
+          logger.debug('Empty batch retrieved, stopping migration');
           break;
         }
 
@@ -178,7 +178,7 @@ export async function mongoAiMigrationWorkflow(
         );
 
         if (newDomainNames.length > 0) {
-          logger.info(
+          logger.debug(
             `Resolving token IDs for ${newDomainNames.length} new domains`,
           );
           const newDomainTokenMap =
@@ -208,7 +208,7 @@ export async function mongoAiMigrationWorkflow(
           ((skip + batch.length) / totalDocuments) *
           100
         ).toFixed(1);
-        logger.info(
+        logger.debug(
           `Batch ${batchNumber} completed: ${result.successful}/${result.processed} successful (${progressPercent}% total progress)`,
         );
 
@@ -232,7 +232,7 @@ export async function mongoAiMigrationWorkflow(
     }
 
     // Step 4: Verify migration
-    logger.info('Verifying migration...');
+    logger.debug('Verifying migration...');
     const verification =
       await mongoAiMigrationActivities.verifyAiMigrationActivity();
 
@@ -244,7 +244,7 @@ export async function mongoAiMigrationWorkflow(
       });
       allErrors.push(verification.message);
     } else {
-      logger.info('Migration verification successful', {
+      logger.debug('Migration verification successful', {
         mongoCount: verification.mongoCount,
         postgresCount: verification.postgresCount,
       });
@@ -261,7 +261,7 @@ export async function mongoAiMigrationWorkflow(
         endTime,
       );
 
-    logger.info('Migration workflow completed', {
+    logger.debug('Migration workflow completed', {
       totalProcessed,
       totalSuccessful,
       totalFailed,

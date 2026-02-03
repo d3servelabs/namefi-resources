@@ -119,7 +119,7 @@ function setupLimiter({
     const id = jobInfo.options.id;
     logger.warn(`Job ${id} failed: ${error}`);
     if (jobInfo.retryCount > 3) {
-      logger.info('Job failed too many times, skipping');
+      logger.debug('Job failed too many times, skipping');
       return;
     }
 
@@ -182,7 +182,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   }) {
     super(Registrars.Route53);
     this.logger = customLogger ?? pino({ name: R53RegistrarService.name });
-    this.logger.info('R53RegistrarService constructor');
+    this.logger.debug('R53RegistrarService constructor');
     setupLimiter({ connection });
 
     this.client = new Route53DomainsClient({
@@ -195,15 +195,15 @@ export class R53RegistrarService extends AbstractRegistrarService {
 
     this.send = this.client.send.bind(this.client);
     limiter.ready().then(() => {
-      this.logger.info('Limiter ready');
+      this.logger.debug('Limiter ready');
 
       this.send = limiter.wrap(this.client.send.bind(this.client));
       this.cache.on('expired', async () => {
-        this.logger.info('prices cache expired');
+        this.logger.debug('prices cache expired');
         await this._updatePrices();
       });
       this.getAllowedParentDomains().then((tlds) => {
-        this.logger.info({ tlds: tlds.length }, 'R53 allowed parent domains');
+        this.logger.debug({ tlds: tlds.length }, 'R53 allowed parent domains');
       });
     });
   }
@@ -842,7 +842,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
       // or extracting from operation metadata if available
     }));
 
-    this.logger.info(
+    this.logger.debug(
       {
         totalOperations: expiredOperations.length,
         uniqueDomains: uniqueDomainNames.size,

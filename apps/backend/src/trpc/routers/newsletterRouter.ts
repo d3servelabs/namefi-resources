@@ -124,7 +124,7 @@ async function subscribeToNewsletter(
         });
       }
 
-      logger.info(
+      logger.debug(
         {
           email,
           subscriberId: existingSubscriber.id,
@@ -149,7 +149,7 @@ async function subscribeToNewsletter(
         preconfirm_subscriptions: isNamefiUserWithSameEmail, // NameFi users don't need confirmation
       });
 
-      logger.info(
+      logger.debug(
         {
           email,
           newsletterListId,
@@ -226,7 +226,7 @@ export const newsletterRouter = createTRPCRouter({
               .set({ subscribeToEmails: true })
               .where(eq(usersTable.id, ctx.user.id));
 
-            logger.info(
+            logger.debug(
               { userId: ctx.user.id, email },
               'Updated NameFi user subscribeToEmails to true',
             );

@@ -38,7 +38,7 @@ export function initializeAuthRegistry(): void {
   // Register PLAIN last (most general - uses X-API-Key)
   registerAuthMethod(plainAuthMethod);
 
-  logger.info('API key authentication registry initialized');
+  logger.debug('API key authentication registry initialized');
 }
 
 /**

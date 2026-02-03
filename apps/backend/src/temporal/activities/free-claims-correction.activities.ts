@@ -25,7 +25,7 @@ export async function getClaimsForCampaign(
 ): Promise<(typeof freeClaimsTable.$inferSelect)[]> {
   const { campaignKey, parentDomain } = input;
 
-  logger.info('Getting claims for campaign correction', {
+  logger.debug('Getting claims for campaign correction', {
     campaignKey,
     parentDomain,
   });
@@ -40,7 +40,7 @@ export async function getClaimsForCampaign(
       ),
     );
 
-  logger.info('Claims retrieved for correction', {
+  logger.debug('Claims retrieved for correction', {
     campaignKey,
     parentDomain,
     count: claims.length,
@@ -78,7 +78,7 @@ export async function sendFreeClaimsCorrectionEmail(
     totalClaimsGranted,
   } = input;
 
-  logger.info('Sending free claims correction email', {
+  logger.debug('Sending free claims correction email', {
     userId,
     campaignKey,
     incorrectParentDomain,
@@ -148,7 +148,7 @@ export async function sendFreeClaimsCorrectionEmail(
       },
     });
 
-    logger.info('Free claims correction email sent successfully', {
+    logger.debug('Free claims correction email sent successfully', {
       userId,
       email: userEmail,
       campaignKey,

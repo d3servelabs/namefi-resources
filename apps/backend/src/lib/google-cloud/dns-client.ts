@@ -77,7 +77,7 @@ export class GoogleCloudDnsClient {
         add: record,
       });
 
-      logger.info(
+      logger.debug(
         {
           zoneName,
           recordName: fullRecordName,
@@ -140,7 +140,7 @@ export class GoogleCloudDnsClient {
         delete: record,
       });
 
-      logger.info(
+      logger.debug(
         {
           zoneName,
           recordName: fullRecordName,
@@ -239,7 +239,7 @@ export class GoogleCloudDnsClient {
       try {
         const [metadata] = await change.getMetadata();
         if (metadata.status === 'done') {
-          logger.info({ zoneName, changeId }, 'DNS change completed');
+          logger.debug({ zoneName, changeId }, 'DNS change completed');
           return;
         }
 

@@ -303,7 +303,7 @@ export async function updateOrderAndItemStatusOrThrow({
     };
   });
 
-  logger.info(
+  logger.debug(
     { orderId, orderItemId, status },
     'Updated both order %s and order item %s to status %s',
     orderId,
@@ -379,7 +379,7 @@ export async function recordOrderMintTransaction({
     }
   });
 
-  logger.info(
+  logger.debug(
     { orderId, orderItemId, txHash },
     'Recorded mint transaction metadata for order %s item %s',
     orderId,
@@ -423,7 +423,7 @@ export async function setOrderItemRequiredAction({
     );
   }
 
-  logger.info(
+  logger.debug(
     { orderId, orderItemId, requiredAction },
     'Updated order item %s requiredAction to %s for order %s',
     orderItemId,
@@ -473,7 +473,7 @@ export async function createAutoRenewOrder({
   domainRenewResults,
   totalAmountInUsd,
 }: CreateAutoRenewOrderInput): Promise<{ orderId: string }> {
-  logger.info(
+  logger.debug(
     { userId, paymentIds, domainCount: domainRenewResults.length },
     'Creating auto-renew order for user %s with %d payments and %d domains',
     userId,
@@ -558,7 +558,7 @@ export async function createAutoRenewOrder({
 
   const order = { id: created.id } as const;
 
-  logger.info(
+  logger.debug(
     { orderId: order.id, successCount, failureCount },
     'Created auto-renew order %s with %d successes and %d failures',
     order.id,
@@ -599,7 +599,7 @@ export async function sendOrderCompletionSlackAlert(
     (d) => d.status === 'SUCCEEDED',
   );
   if (succeededDomains.length === 0) {
-    logger.info('No succeeded domains, skipping Slack notification');
+    logger.debug('No succeeded domains, skipping Slack notification');
     return;
   }
 
@@ -669,7 +669,7 @@ export async function sendOrderCompletionSlackAlert(
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    logger.info('Successfully sent order completion alert to Slack');
+    logger.debug('Successfully sent order completion alert to Slack');
   } catch (error) {
     logger.error('Failed to send order completion alert to Slack', {
       error: error instanceof Error ? error.message : String(error),

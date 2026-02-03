@@ -148,7 +148,7 @@ export async function validateTweet(
 
   const normalizedSharedUrl = normalizeUrlForComparison(sharedUrl);
   const rawLinks = Array.isArray(post.links) ? post.links : [];
-  logger.info(
+  logger.debug(
     {
       postUrl,
       sharedUrl,

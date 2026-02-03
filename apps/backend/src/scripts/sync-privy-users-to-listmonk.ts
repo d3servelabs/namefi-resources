@@ -99,7 +99,7 @@ class ListmonkClient {
         );
       }
 
-      logger.info(
+      logger.debug(
         { email: subscriber.email },
         'Successfully added subscriber to Listmonk',
       );
@@ -165,7 +165,7 @@ class ListmonkClient {
         );
       }
 
-      logger.info(
+      logger.debug(
         { email: subscriber.email },
         'Successfully updated subscriber in Listmonk',
       );
@@ -296,7 +296,7 @@ function privyUserToListmonkSubscriber(
 async function enrichPrivyUsersWithDbIds(
   privyUsers: User[],
 ): Promise<PrivyUserWithDbUser[]> {
-  logger.info(
+  logger.debug(
     { totalUsers: privyUsers.length },
     'Enriching Privy users with database IDs...',
   );
@@ -322,7 +322,7 @@ async function enrichPrivyUsersWithDbIds(
   }));
 
   const usersWithDbId = enrichedUsers.filter((user) => user.dbUserId).length;
-  logger.info(
+  logger.debug(
     {
       totalPrivyUsers: privyUsers.length,
       dbUsers: dbUsers.length,
@@ -339,12 +339,12 @@ async function enrichPrivyUsersWithDbIds(
  * Fetch all users from Privy
  */
 async function fetchAllPrivyUsers(): Promise<User[]> {
-  logger.info('Starting to fetch users from Privy...');
+  logger.debug('Starting to fetch users from Privy...');
 
   try {
     const users = await privyClient.getUsers();
 
-    logger.info(
+    logger.debug(
       { totalUsers: users.length },
       'Finished fetching all users from Privy',
     );
@@ -365,13 +365,13 @@ async function syncPrivyUsersToListmonk() {
       throw new Error('LISTMONK_PASSWORD environment variable is required');
     }
 
-    logger.info('Starting Privy to Listmonk sync...');
+    logger.debug('Starting Privy to Listmonk sync...');
 
     // Initialize Listmonk client
     const listmonk = new ListmonkClient(LISTMONK_CONFIG);
 
     // Test connection to Listmonk
-    logger.info('Testing connection to Listmonk...');
+    logger.debug('Testing connection to Listmonk...');
     const connected = await listmonk.testConnection();
     if (!connected) {
       throw new Error(
@@ -379,7 +379,7 @@ async function syncPrivyUsersToListmonk() {
       );
     }
 
-    logger.info('Successfully connected to Listmonk');
+    logger.debug('Successfully connected to Listmonk');
 
     // Fetch all users from Privy
     const privyUsers = await fetchAllPrivyUsers();
@@ -396,7 +396,7 @@ async function syncPrivyUsersToListmonk() {
         (subscriber): subscriber is ListmonkSubscriber => subscriber !== null,
       );
 
-    logger.info(
+    logger.debug(
       {
         totalPrivyUsers: privyUsers.length,
         enrichedUsers: enrichedUsers.length,
@@ -429,7 +429,7 @@ async function syncPrivyUsersToListmonk() {
       { concurrency: 20 },
     );
 
-    logger.info(
+    logger.debug(
       {
         totalSubscribers: subscribers.length,
         successCount,

@@ -75,7 +75,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
         },
       });
 
-      this.logger.info(
+      this.logger.debug(
         {
           scheduleId: this.config.scheduleId,
           name: this.config.name,
@@ -99,7 +99,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.trigger(overlapPolicy);
 
-      this.logger.info(
+      this.logger.debug(
         {
           scheduleId: this.config.scheduleId,
           overlapPolicy,
@@ -135,7 +135,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       // Update local config
       Object.assign(this.config, updates);
 
-      this.logger.info(
+      this.logger.debug(
         {
           scheduleId: this.config.scheduleId,
           updates,
@@ -156,7 +156,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.pause(reason);
 
-      this.logger.info(
+      this.logger.debug(
         {
           scheduleId: this.config.scheduleId,
           reason,
@@ -177,7 +177,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.unpause(reason);
 
-      this.logger.info(
+      this.logger.debug(
         {
           scheduleId: this.config.scheduleId,
           reason,
@@ -229,7 +229,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.delete();
 
-      this.logger.info(
+      this.logger.debug(
         {
           scheduleId: this.config.scheduleId,
         },

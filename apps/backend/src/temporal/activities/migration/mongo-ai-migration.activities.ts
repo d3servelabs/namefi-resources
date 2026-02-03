@@ -42,7 +42,7 @@ export async function validateAiMigrationPrerequisitesActivity(): Promise<{
 
   try {
     // Test MongoDB connection
-    logger.info('Validating MongoDB connection for AI migration...');
+    logger.debug('Validating MongoDB connection for AI migration...');
     const uri = secrets.LEGACY_DB_URL;
 
     const connection = await mongoose.createConnection(uri, {
@@ -50,7 +50,7 @@ export async function validateAiMigrationPrerequisitesActivity(): Promise<{
     });
     await connection.close();
     mongodbAvailable = true;
-    logger.info('MongoDB connection validated successfully');
+    logger.debug('MongoDB connection validated successfully');
   } catch (error) {
     const errorMsg = `MongoDB connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     logger.error(errorMsg);
@@ -59,10 +59,10 @@ export async function validateAiMigrationPrerequisitesActivity(): Promise<{
 
   try {
     // Test PostgreSQL connection by querying the AI analysis table
-    logger.info('Validating PostgreSQL connection for AI migration...');
+    logger.debug('Validating PostgreSQL connection for AI migration...');
     await db.select().from(domainAiAnalysisTable).limit(1);
     postgresqlAvailable = true;
-    logger.info('PostgreSQL connection validated successfully');
+    logger.debug('PostgreSQL connection validated successfully');
   } catch (error) {
     const errorMsg = `PostgreSQL connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     logger.error(errorMsg);
@@ -90,11 +90,11 @@ export async function countMongoAiDocumentsActivity(): Promise<number> {
   });
 
   try {
-    logger.info('Counting MongoDB AI documents...');
+    logger.debug('Counting MongoDB AI documents...');
     const collection = connection.collection('namefi-ai-collection');
 
     const totalCount = await collection.countDocuments();
-    logger.info({ totalCount }, 'MongoDB document count retrieved');
+    logger.debug({ totalCount }, 'MongoDB document count retrieved');
 
     return totalCount;
   } finally {
@@ -116,7 +116,7 @@ export async function getMongoAiDocumentBatchActivity(
   });
 
   try {
-    logger.info({ skip, batchSize }, 'Fetching MongoDB AI document batch');
+    logger.debug({ skip, batchSize }, 'Fetching MongoDB AI document batch');
     const collection = connection.collection('namefi-ai-collection');
 
     const documents = (await collection
@@ -125,7 +125,7 @@ export async function getMongoAiDocumentBatchActivity(
       .limit(batchSize)
       .toArray()) as MongoNamefiDocument[];
 
-    logger.info(
+    logger.debug(
       { count: documents.length },
       'MongoDB document batch retrieved',
     );
@@ -142,7 +142,7 @@ export async function getMongoAiDocumentBatchActivity(
 export async function resolveDomainsToTokenIdsActivity(
   domainNames: string[],
 ): Promise<Map<string, string>> {
-  logger.info(
+  logger.debug(
     { count: domainNames.length },
     'Resolving domain names to token IDs',
   );
@@ -169,7 +169,7 @@ export async function migrateAiDocumentBatchActivity(
   failed: number;
   errors: string[];
 }> {
-  logger.info(
+  logger.debug(
     { count: mongoDocuments.length },
     'Starting AI document batch migration',
   );
@@ -254,7 +254,7 @@ export async function migrateAiDocumentBatchActivity(
       });
 
       successful = pgData.length;
-      logger.info({ successful }, 'Batch migration completed successfully');
+      logger.debug({ successful }, 'Batch migration completed successfully');
     } catch (error) {
       const errorMsg = `Batch PostgreSQL insertion failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
       logger.error({ error }, errorMsg);
@@ -281,7 +281,7 @@ export async function verifyAiMigrationActivity(): Promise<{
   success: boolean;
   message: string;
 }> {
-  logger.info('Verifying AI migration...');
+  logger.debug('Verifying AI migration...');
 
   // Count MongoDB documents
   const uri = secrets.LEGACY_DB_URL;
@@ -310,7 +310,7 @@ export async function verifyAiMigrationActivity(): Promise<{
     ? 'Migration verification successful - counts match'
     : `Migration verification warning - counts don't match (MongoDB: ${mongoCount}, PostgreSQL: ${postgresCount})`;
 
-  logger.info({ mongoCount, postgresCount, success }, message);
+  logger.debug({ mongoCount, postgresCount, success }, message);
 
   return {
     mongoCount,
@@ -338,7 +338,7 @@ export async function generateAiMigrationReportActivity(
   duration: string;
   documentsPerSecond: number;
 }> {
-  logger.info('Generating AI migration report...');
+  logger.debug('Generating AI migration report...');
 
   const diffMs = endTime.getTime() - startTime.getTime();
   const durationMs = diffMs > 0 ? diffMs : 1;
@@ -358,6 +358,6 @@ export async function generateAiMigrationReportActivity(
     documentsPerSecond,
   };
 
-  logger.info(report, 'AI migration report generated');
+  logger.debug(report, 'AI migration report generated');
   return report;
 }

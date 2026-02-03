@@ -46,7 +46,7 @@ export const testSignedPayloadRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      logger.info(
+      logger.debug(
         {
           payload: input.payload,
           signerWalletAddress: ctx.signerWalletAddress,

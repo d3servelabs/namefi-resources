@@ -57,7 +57,7 @@ export async function validateAndUseClaim(
 ): Promise<ValidateAndUseClaimOutput> {
   const { userId, normalizedDomainName, tx: existingTx } = input;
 
-  logger.info(
+  logger.debug(
     { userId, normalizedDomainName },
     'Validating and using free claim',
   );
@@ -121,7 +121,7 @@ export async function validateAndUseClaim(
         })
         .where(eq(freeClaimsTable.id, claim.id));
 
-      logger.info(
+      logger.debug(
         {
           claimId: claim.id,
           userId,
@@ -280,7 +280,7 @@ export async function validateClaimAndOrder(
 ): Promise<ValidateClaimAndOrderOutput> {
   const { claimId, normalizedDomainName, orderId, orderItemId } = input;
 
-  logger.info(
+  logger.debug(
     { claimId, normalizedDomainName, orderId, orderItemId },
     'Validating existing free claim and order',
   );
@@ -310,7 +310,7 @@ export async function validateClaimAndOrder(
     return orderResult;
   }
 
-  logger.info(
+  logger.debug(
     {
       claimId,
       normalizedDomainName,
@@ -360,7 +360,7 @@ export async function createClaimOrder(
     tx: existingTx,
   } = input;
 
-  logger.info(
+  logger.debug(
     { userId, normalizedDomainName, claimId },
     'Creating free claim order',
   );
@@ -431,7 +431,7 @@ export async function createClaimOrder(
         throw new Error('Expected 1 order item');
       }
 
-      logger.info(
+      logger.debug(
         {
           orderId: order.id,
           orderItemId: orderItem.id,
@@ -479,7 +479,7 @@ export async function validateAndCreateClaimOrder(input: {
     tx: existingTx,
   } = input;
 
-  logger.info(
+  logger.debug(
     { userId, normalizedDomainName },
     'Validating and creating claim order using composed activities',
   );
@@ -522,7 +522,7 @@ export async function validateAndCreateClaimOrder(input: {
         tx,
       });
 
-      logger.info(
+      logger.debug(
         {
           claimId,
           orderId,
@@ -555,7 +555,7 @@ export interface RevertClaimInput {
 export async function revertClaim(input: RevertClaimInput): Promise<void> {
   const { claimId } = input;
 
-  logger.info({ claimId }, 'Reverting free claim');
+  logger.debug({ claimId }, 'Reverting free claim');
 
   await db.transaction(async (tx) => {
     // Lock the claim row to prevent concurrent state changes
@@ -608,7 +608,7 @@ export async function revertClaim(input: RevertClaimInput): Promise<void> {
       return;
     }
 
-    logger.info({ claimId }, 'Free claim reverted');
+    logger.debug({ claimId }, 'Free claim reverted');
   });
 }
 
@@ -627,7 +627,7 @@ export async function updateClaimRecord(
 ): Promise<void> {
   const { claimId, orderItemId, tx: existingTx } = input;
 
-  logger.info({ claimId, orderItemId }, 'Updating free claim record');
+  logger.debug({ claimId, orderItemId }, 'Updating free claim record');
 
   return $withTransaction(
     async (tx) => {
@@ -661,7 +661,7 @@ export async function updateClaimRecord(
         claim.existingOrderItemId &&
         claim.existingOrderItemId === orderItemId
       ) {
-        logger.info(
+        logger.debug(
           { claimId, orderItemId },
           'Free claim record already linked to order item',
         );
@@ -702,7 +702,7 @@ export async function updateClaimRecord(
         return;
       }
 
-      logger.info({ claimId, orderItemId }, 'Free claim record updated');
+      logger.debug({ claimId, orderItemId }, 'Free claim record updated');
     },
     undefined,
     existingTx,
@@ -722,7 +722,7 @@ export async function markClaimAsCompleted(
 ): Promise<void> {
   const { claimId } = input;
 
-  logger.info({ claimId }, 'Marking free claim as completed');
+  logger.debug({ claimId }, 'Marking free claim as completed');
 
   await db.transaction(async (tx) => {
     // Lock row for update
@@ -781,7 +781,7 @@ export async function markClaimAsCompleted(
       return;
     }
 
-    logger.info({ claimId }, 'Free claim marked as completed');
+    logger.debug({ claimId }, 'Free claim marked as completed');
   });
 }
 
@@ -805,7 +805,7 @@ export async function checkClaimEligibility(
 ): Promise<CheckClaimEligibilityOutput> {
   const { userId, normalizedDomainName, groupOrCampaignKey } = input;
 
-  logger.info(
+  logger.debug(
     { userId, groupOrCampaignKey, normalizedDomainName },
     'Checking free claim eligibility',
   );
@@ -847,7 +847,7 @@ export async function checkClaimEligibility(
     };
   }
 
-  logger.info(
+  logger.debug(
     {
       userId,
       normalizedDomainName,
@@ -872,7 +872,7 @@ export async function checkAnyClaimEligibility(input: {
 }): Promise<CheckClaimEligibilityOutput> {
   const { userId, normalizedDomainName } = input;
 
-  logger.info(
+  logger.debug(
     { userId, normalizedDomainName },
     'Checking any free claim eligibility for domain',
   );
@@ -913,7 +913,7 @@ export async function checkAnyClaimEligibility(input: {
     };
   }
 
-  logger.info(
+  logger.debug(
     {
       userId,
       normalizedDomainName,

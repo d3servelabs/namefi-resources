@@ -26,18 +26,18 @@ async function syncExpiredDomainsWithNftDates(
 ) {
   const { dryRun = false } = options;
   try {
-    logger.info('Starting sync of expired domains with NFT expiration dates');
+    logger.debug('Starting sync of expired domains with NFT expiration dates');
 
     // Step 1: Get expired domains from registrars
-    logger.info('Getting expired domains from registrars...');
+    logger.debug('Getting expired domains from registrars...');
     const expiredDomains = await sldRegistrar.listExpiredDomains();
-    logger.info(
+    logger.debug(
       { count: expiredDomains.length },
       'Found expired domains from registrars',
     );
 
     if (expiredDomains.length === 0) {
-      logger.info('No expired domains found, exiting');
+      logger.debug('No expired domains found, exiting');
       return {
         success: true,
         message: 'No expired domains found from registrars',
@@ -51,7 +51,7 @@ async function syncExpiredDomainsWithNftDates(
       WithRegistrar<{ domainName: PunycodeDomainName }>
     > = indexBy(prop('domainName'), expiredDomains);
     // Step 2: Get current indexed domains data and NFT expiration dates
-    logger.info('Querying indexed domains and NFT data...');
+    logger.debug('Querying indexed domains and NFT data...');
     const expiredDomainNames = expiredDomains.map((d) => d.domainName);
 
     // Process in batches to avoid overwhelming the database
@@ -83,7 +83,7 @@ async function syncExpiredDomainsWithNftDates(
 
       allDomainsWithNftData.push(...batchResults);
 
-      logger.info(
+      logger.debug(
         {
           processed: Math.min(i + batchSize, expiredDomainNames.length),
           total: expiredDomainNames.length,
@@ -92,7 +92,7 @@ async function syncExpiredDomainsWithNftDates(
       );
     }
 
-    logger.info(
+    logger.debug(
       { count: allDomainsWithNftData.length },
       'Found indexed domains with NFT data',
     );
@@ -134,10 +134,10 @@ async function syncExpiredDomainsWithNftDates(
       }
     }
 
-    logger.info(domainStats, 'Domain analysis completed');
+    logger.debug(domainStats, 'Domain analysis completed');
 
     if (domainsToUpdate.length === 0) {
-      logger.info('No domains need expiration date updates');
+      logger.debug('No domains need expiration date updates');
       return {
         success: true,
         message: 'No domains need expiration date updates',
@@ -149,7 +149,7 @@ async function syncExpiredDomainsWithNftDates(
     }
 
     if (dryRun) {
-      logger.info(
+      logger.debug(
         { count: domainsToUpdate.length },
         'DRY RUN: Would upsert these domains with NFT expiration dates',
       );
@@ -186,7 +186,7 @@ async function syncExpiredDomainsWithNftDates(
     }
 
     // Step 4: Update indexed domains table with NFT expiration dates
-    logger.info(
+    logger.debug(
       { count: domainsToUpdate.length },
       'Updating indexed domains with NFT expiration dates',
     );
@@ -223,7 +223,7 @@ async function syncExpiredDomainsWithNftDates(
         updatedCount++;
 
         if (updatedCount % 10 === 0) {
-          logger.info(
+          logger.debug(
             { updated: updatedCount, total: domainsToUpdate.length },
             'Upsert progress',
           );
@@ -254,7 +254,7 @@ async function syncExpiredDomainsWithNftDates(
       dryRun: false,
     };
 
-    logger.info(result, 'Sync completed');
+    logger.debug(result, 'Sync completed');
     console.log('\n=== Sync Results ===');
     console.log(`Processed: ${result.processedDomains} domains`);
     console.log(`Upserted: ${result.updatedDomains} domains`);

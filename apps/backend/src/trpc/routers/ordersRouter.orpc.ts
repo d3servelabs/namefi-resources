@@ -284,7 +284,7 @@ const registerDomainWithRecords = async ({
       });
     }
 
-    logger.info(
+    logger.debug(
       {
         orderId: order.id,
         domain: normalizedDomainName,

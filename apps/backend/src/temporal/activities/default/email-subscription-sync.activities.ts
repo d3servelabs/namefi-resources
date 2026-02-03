@@ -123,11 +123,11 @@ export async function fetchAndEnrichPrivyUsersActivity(): Promise<
     subscribeToEmails: boolean;
   }>
 > {
-  logger.info('Fetching users from Privy...');
+  logger.debug('Fetching users from Privy...');
 
   try {
     const privyUsers = await privyClient.getUsers();
-    logger.info(
+    logger.debug(
       { totalUsers: privyUsers.length },
       'Finished fetching all users from Privy',
     );
@@ -157,7 +157,7 @@ export async function fetchAndEnrichPrivyUsersActivity(): Promise<
     }));
 
     const usersWithDbId = enrichedUsers.filter((u) => u.dbUserId).length;
-    logger.info(
+    logger.debug(
       {
         totalPrivyUsers: privyUsers.length,
         dbUsers: dbUsers.length,
@@ -247,7 +247,7 @@ export async function syncUsersToListmonkActivity(
     { concurrency: 20 },
   );
 
-  logger.info(
+  logger.debug(
     {
       totalUsers: enrichedUsers.length,
       successCount,

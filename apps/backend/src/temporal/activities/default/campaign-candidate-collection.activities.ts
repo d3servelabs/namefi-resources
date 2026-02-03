@@ -28,7 +28,7 @@ const logger = createLogger({ module: 'campaign-candidate-collection' });
  */
 export async function collectUpvoteCandidates(): Promise<Candidate[]> {
   try {
-    logger.info('Starting collection of upvote candidates for campaign');
+    logger.debug('Starting collection of upvote candidates for campaign');
 
     // Query hunt_edges for UPVOTE actions on DOMAIN targets
     // Note: This assumes hunt_edges table structure - adjust column names as needed
@@ -52,7 +52,7 @@ export async function collectUpvoteCandidates(): Promise<Candidate[]> {
       domainName: row.domain_name,
     }));
 
-    logger.info(
+    logger.debug(
       { candidateCount: candidates.length },
       'Upvote candidates collection completed',
     );
@@ -72,7 +72,7 @@ export async function collectTweetShareCandidates(
   parentDomain: NamefiNormalizedDomain,
 ): Promise<Candidate[]> {
   try {
-    logger.info(
+    logger.debug(
       { campaignKey },
       'Starting collection of tweet share candidates for campaign',
     );
@@ -103,7 +103,7 @@ export async function collectTweetShareCandidates(
       postUrl: row.post_url,
     }));
 
-    logger.info(
+    logger.debug(
       { candidateCount: candidates.length },
       'Tweet share candidates collection completed',
     );
@@ -124,7 +124,7 @@ export async function getAllNewUpvoteCandidates(
   votingTargetDomain?: NamefiNormalizedDomain,
 ): Promise<Candidate[]> {
   try {
-    logger.info(
+    logger.debug(
       { campaignKey, parentDomain },
       'Getting new upvote candidates for campaign',
     );
@@ -172,7 +172,7 @@ export async function getAllNewUpvoteCandidates(
       domainName: row.domainName,
     }));
 
-    logger.info(
+    logger.debug(
       { campaignKey, candidateCount: candidates.length },
       'New upvote candidates collection completed',
     );
@@ -196,7 +196,7 @@ export async function getAllNewTweetShareCandidates(
   sharingTargetDomain?: NamefiNormalizedDomain,
 ): Promise<Candidate[]> {
   try {
-    logger.info(
+    logger.debug(
       { campaignKey, parentDomain },
       'Getting new tweet share candidates for campaign',
     );
@@ -249,7 +249,7 @@ export async function getAllNewTweetShareCandidates(
       postUrl: row.postUrl,
     }));
 
-    logger.info(
+    logger.debug(
       { campaignKey, candidateCount: candidates.length },
       'New tweet share candidates collection completed',
     );

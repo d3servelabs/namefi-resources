@@ -41,7 +41,7 @@ export const freeClaimsRouter = createTRPCRouter({
       const { user } = ctx;
       const { groupOrCampaignKey, normalizedDomainName } = input;
 
-      logger.info(
+      logger.debug(
         { userId: user.id, groupOrCampaignKey, normalizedDomainName },
         'Checking free claim eligibility',
       );
@@ -89,7 +89,7 @@ export const freeClaimsRouter = createTRPCRouter({
 
       const chainId = 8453; // Base chain ID
 
-      logger.info(
+      logger.debug(
         {
           userId: user.id,
           normalizedDomainName,
@@ -156,7 +156,7 @@ export const freeClaimsRouter = createTRPCRouter({
           },
         );
 
-        logger.info(
+        logger.debug(
           {
             workflowId: handle.workflowId,
             userId: user.id,
@@ -169,7 +169,7 @@ export const freeClaimsRouter = createTRPCRouter({
         const workflowResult = await handle.result();
 
         if (workflowResult.success) {
-          logger.info(
+          logger.debug(
             {
               workflowId: handle.workflowId,
               userId: user.id,
@@ -429,7 +429,7 @@ export const freeClaimsRouter = createTRPCRouter({
       const chainId = 8453; // Base chain ID
 
       const durationInYears = 1;
-      logger.info(
+      logger.debug(
         {
           userId: user.id,
           normalizedDomainName,
@@ -457,7 +457,7 @@ export const freeClaimsRouter = createTRPCRouter({
 
             const { orderId, orderItemId, claimId } = transactionResult;
 
-            logger.info(
+            logger.debug(
               {
                 claimId,
                 orderId,
@@ -511,7 +511,7 @@ export const freeClaimsRouter = createTRPCRouter({
           },
         );
 
-        logger.info(
+        logger.debug(
           result,
           'Free claim workflow started with pre-created claim and order',
         );
@@ -563,7 +563,7 @@ export const freeClaimsRouter = createTRPCRouter({
         });
 
         if (giftResult.freeClaimsCreated > 0) {
-          logger.info(
+          logger.debug(
             {
               userId: user.id,
               freeClaimsCreated: giftResult.freeClaimsCreated,

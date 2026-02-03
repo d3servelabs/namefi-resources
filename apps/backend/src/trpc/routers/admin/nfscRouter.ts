@@ -159,7 +159,7 @@ export const nfscRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { users, chainId, reason } = input;
 
-      logger.info(
+      logger.debug(
         {
           adminId: ctx.user.id,
           userCount: users.length,
@@ -222,7 +222,7 @@ export const nfscRouter = createTRPCRouter({
             status: 'started',
           });
 
-          logger.info(
+          logger.debug(
             {
               walletAddress: user.walletAddress,
               amount: user.amount,
@@ -262,7 +262,7 @@ export const nfscRouter = createTRPCRouter({
       const successCount = results.filter((r) => r.status === 'started').length;
       const errorCount = errors.length;
 
-      logger.info(
+      logger.debug(
         {
           adminId: ctx.user.id,
           totalUsers: users.length,

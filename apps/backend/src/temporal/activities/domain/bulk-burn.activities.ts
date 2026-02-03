@@ -35,7 +35,7 @@ export async function verifyDomainsForBulkBurn(
   domains: DomainToBurn[],
 ): Promise<VerifyDomainsForBulkBurnResult> {
   const activityContext = Context.current();
-  logger.info({ count: domains.length }, 'Verifying domains for bulk burn');
+  logger.debug({ count: domains.length }, 'Verifying domains for bulk burn');
 
   const startTime = Date.now();
   const now = new Date();
@@ -46,7 +46,7 @@ export async function verifyDomainsForBulkBurn(
     activityContext.heartbeat({ status: 'fetching registrar domains' });
     const registrarDomains = await sldRegistrar.listAllDomains();
 
-    logger.info(
+    logger.debug(
       { totalRegistrarDomains: registrarDomains.length },
       'Fetched all registrar domains',
     );
@@ -89,7 +89,7 @@ export async function verifyDomainsForBulkBurn(
     }
 
     const executionTime = Date.now() - startTime;
-    logger.info(
+    logger.debug(
       {
         totalDomains: domains.length,
         verifiedDomains: verifiedDomains.length,
@@ -118,7 +118,10 @@ export async function sendPendingBurnNotification(
   workflowId: string,
   domainCount: number,
 ): Promise<void> {
-  logger.info({ workflowId, domainCount }, 'Sending pending burn notification');
+  logger.debug(
+    { workflowId, domainCount },
+    'Sending pending burn notification',
+  );
 
   try {
     const baseUrl = config.APP_URL || 'https://namefi.io';
@@ -175,7 +178,7 @@ export async function sendPendingBurnNotification(
       },
     });
 
-    logger.info('Pending burn notification sent successfully');
+    logger.debug('Pending burn notification sent successfully');
   } catch (error) {
     logger.error({ error }, 'Failed to send pending burn notification');
     throw error;
@@ -196,7 +199,7 @@ export async function sendBulkBurnCompletionNotification(
     cancelled: boolean;
   },
 ): Promise<void> {
-  logger.info(
+  logger.debug(
     { workflowId, results },
     'Sending bulk burn completion notification',
   );
@@ -257,7 +260,7 @@ export async function sendBulkBurnCompletionNotification(
       },
     });
 
-    logger.info('Bulk burn completion notification sent successfully');
+    logger.debug('Bulk burn completion notification sent successfully');
   } catch (error) {
     logger.error({ error }, 'Failed to send completion notification');
     throw error;
@@ -272,7 +275,7 @@ export async function checkForExistingBulkBurnWorkflow(): Promise<{
   workflowId?: string;
   status?: string;
 }> {
-  logger.info('Checking for existing bulk burn workflow');
+  logger.debug('Checking for existing bulk burn workflow');
 
   try {
     // Query for workflows with the bulk burn prefix that are in RUNNING state
@@ -285,7 +288,7 @@ export async function checkForExistingBulkBurnWorkflow(): Promise<{
 
     // Get the first matching workflow
     for await (const workflow of workflows) {
-      logger.info(
+      logger.debug(
         { workflowId: workflow.workflowId, status: workflow.status },
         'Found existing bulk burn workflow',
       );
@@ -297,7 +300,7 @@ export async function checkForExistingBulkBurnWorkflow(): Promise<{
       };
     }
 
-    logger.info('No existing bulk burn workflow found');
+    logger.debug('No existing bulk burn workflow found');
     return { exists: false };
   } catch (error) {
     logger.error({ error }, 'Failed to check for existing workflow');

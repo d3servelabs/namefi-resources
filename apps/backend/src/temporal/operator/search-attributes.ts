@@ -133,7 +133,7 @@ export async function createMissingAttributes(
   missingAttributes: string[],
 ): Promise<void> {
   if (missingAttributes.length === 0) {
-    logger.info('✓ No missing search attributes to create');
+    logger.debug('✓ No missing search attributes to create');
     return;
   }
   const temporalConnection = await createTemporalEphemeralConnection();
@@ -146,7 +146,7 @@ export async function createMissingAttributes(
       const attrConfig = CUSTOM_SEARCH_ATTRIBUTES_MAP.get(attr);
       if (attrConfig) {
         attributesToCreate[attr] = typeMap[attrConfig.type];
-        logger.info(
+        logger.debug(
           `Creating search attribute '${attr}' (${attrConfig.type})...`,
         );
       }
@@ -157,7 +157,7 @@ export async function createMissingAttributes(
       searchAttributes: attributesToCreate,
     });
 
-    logger.info(
+    logger.debug(
       `✓ Successfully created ${missingAttributes.length} search attributes: ${missingAttributes.join(', ')}`,
     );
   } catch (error) {
@@ -174,17 +174,17 @@ export async function createMissingAttributes(
  */
 export async function validateAndCreateSearchAttributes(): Promise<boolean> {
   try {
-    logger.info('Validating search attributes...');
+    logger.debug('Validating search attributes...');
 
     const missingAttributes = await checkMissingAttributes();
 
     if (missingAttributes.length > 0) {
-      logger.info(
+      logger.debug(
         `Found ${missingAttributes.length} missing search attributes: ${missingAttributes.join(', ')}`,
       );
       await createMissingAttributes(missingAttributes);
     } else {
-      logger.info('✓ All required search attributes are present');
+      logger.debug('✓ All required search attributes are present');
     }
 
     // Double-check that everything was created successfully
@@ -196,7 +196,7 @@ export async function validateAndCreateSearchAttributes(): Promise<boolean> {
         `❌ Validation failed. Still missing: ${stillMissing.join(', ')}`,
       );
     } else {
-      logger.info('✓ Search attributes validation completed successfully');
+      logger.debug('✓ Search attributes validation completed successfully');
     }
 
     return isValid;

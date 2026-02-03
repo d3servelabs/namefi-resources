@@ -68,7 +68,7 @@ export async function getMongoUsersActivity(): Promise<
 > {
   const connection = await mongoose.createConnection(MONGODB_URI);
   try {
-    _logger.info('Connecting to MongoDB to fetch users...');
+    _logger.debug('Connecting to MongoDB to fetch users...');
 
     // Get all users from MongoDB
     const UserModel = connection.model(User.modelName, User.schema);
@@ -136,7 +136,7 @@ export async function getMongoUsersActivity(): Promise<
       ...usersWithoutPrimaryEmail,
     ];
 
-    _logger.info(`Found ${combinedUsers.length} distinct users in MongoDB`);
+    _logger.debug(`Found ${combinedUsers.length} distinct users in MongoDB`);
 
     return combinedUsers;
   } catch (error) {
@@ -184,7 +184,7 @@ export async function getUserDataActivity(
 ): Promise<UserMigrationData | null> {
   const connection = await mongoose.createConnection(MONGODB_URI);
   try {
-    _logger.info(`Getting user data for wallet: ${walletAddress}`);
+    _logger.debug(`Getting user data for wallet: ${walletAddress}`);
 
     // Get user data
     const UserModel = connection.model(User.modelName, User.schema);
@@ -234,7 +234,7 @@ export async function getUserDataActivity(
       })),
     };
 
-    _logger.info(
+    _logger.debug(
       `Retrieved user data for ${walletAddress}: ${userData.autoRenewPreferences.length} auto-renew preferences`,
     );
     return userData;
@@ -260,7 +260,7 @@ export async function preparePrivyUserAccounts(
     ),
   );
 
-  _logger.info(`Creating/finding Privy user for wallets: ${walletAddresses}`);
+  _logger.debug(`Creating/finding Privy user for wallets: ${walletAddresses}`);
   const newWalletAddresses = walletAddresses.filter(
     (walletAddress) => !existingUserByWallets[walletAddress],
   );
@@ -284,7 +284,7 @@ export async function preparePrivyUserAccounts(
     // check if user already exists for email
     const existingUserByEmail = await privyClient.getUserByEmail(primaryEmail);
     if (existingUserByEmail) {
-      _logger.info(`User already exists in Privy for email ${primaryEmail}`);
+      _logger.debug(`User already exists in Privy for email ${primaryEmail}`);
 
       existingPrivyUsers.push(existingUserByEmail);
       existingPrivyIds.push(existingUserByEmail.id);
@@ -292,7 +292,7 @@ export async function preparePrivyUserAccounts(
         type: 'email',
         address: primaryEmail,
       });
-      _logger.info(
+      _logger.debug(
         `Including verified email ${primaryEmail} in Privy user creation`,
       );
     }
@@ -350,7 +350,7 @@ export async function deleteExistingPrivyUserActivity(
     return;
   }
   const deletedUser = await privyClient.deleteUser(existingPrivyId);
-  _logger.info(
+  _logger.debug(
     `Deleted existing Privy user for wallet ${existingPrivyId}: ${deletedUser}`,
   );
 }
@@ -424,7 +424,7 @@ export async function createPrivyUserActivity(
 
     if (result.results?.[0]?.success) {
       const privyUserId = result.results[0].id;
-      _logger.info(`Created new Privy user: ${privyUserId}`);
+      _logger.debug(`Created new Privy user: ${privyUserId}`);
       return {
         privyUserId,
         existingPrivyId,
@@ -468,21 +468,21 @@ export async function createPostgresUserActivity(
       newPrivyUserId = oldPrivyId;
     }
 
-    _logger.info(
+    _logger.debug(
       `Creating PostgreSQL user for Privy ID: ${newPrivyUserId} ${oldPrivyId ? `replacing existing Privy ID: ${oldPrivyId}` : ''}`,
     );
     if (!newPrivyUserId) {
       throw new workflow.ApplicationFailure('newPrivyUserId is required');
     }
     if (oldPrivyId) {
-      _logger.info(`oldPrivyId is the same as privyUserId: ${oldPrivyId}`);
+      _logger.debug(`oldPrivyId is the same as privyUserId: ${oldPrivyId}`);
       const existingNamefiUser = await db.query.usersTable.findFirst({
         where: eq(usersTable.privyUserId, oldPrivyId),
       });
 
       if (existingNamefiUser) {
         if (existingNamefiUser.stripeCustomerId && _stripeCustomerId) {
-          _logger.info(
+          _logger.debug(
             {
               existingNamefiUser,
               _stripeCustomerId,
@@ -503,7 +503,7 @@ export async function createPostgresUserActivity(
           })
           .where(eq(usersTable.id, existingNamefiUser.id))
           .returning();
-        _logger.info(
+        _logger.debug(
           `updated PostgreSQL user ${existingNamefiUser.id} with stripeCustomerId: ${_stripeCustomerId}`,
         );
 
@@ -520,7 +520,7 @@ export async function createPostgresUserActivity(
       })
       .returning();
 
-    _logger.info(`Created new PostgreSQL user: ${newUser.id}`);
+    _logger.debug(`Created new PostgreSQL user: ${newUser.id}`);
     return newUser.id;
   } catch (error) {
     _logger.error(
@@ -539,10 +539,10 @@ export async function migrateContactDetailsActivity(
   contactDetails?: UserMigrationData['contactDetails'],
 ): Promise<number> {
   try {
-    _logger.info(`Migrating contact details for user: ${userId}`);
+    _logger.debug(`Migrating contact details for user: ${userId}`);
 
     if (!contactDetails) {
-      _logger.info(`No contact details to migrate for user ${userId}`);
+      _logger.debug(`No contact details to migrate for user ${userId}`);
       return 0;
     }
 
@@ -552,7 +552,7 @@ export async function migrateContactDetailsActivity(
     });
 
     if (existingContact) {
-      _logger.info(`Contact details already exist for user ${userId}`);
+      _logger.debug(`Contact details already exist for user ${userId}`);
       return 0;
     }
 
@@ -613,7 +613,7 @@ export async function migrateContactDetailsActivity(
       zipCode: contactDetails.zipCode || undefined,
       extraParams: contactDetails.extraParams || undefined,
     });
-    _logger.info(`Migrated contact details for user ${userId}`);
+    _logger.debug(`Migrated contact details for user ${userId}`);
     return 1;
   } catch (error) {
     _logger.error(
@@ -632,7 +632,7 @@ export async function migrateAutoRenewPreferencesActivity(
   preferences: Array<{ domainLdh: string; autoRenewOption: string }>,
 ): Promise<number> {
   try {
-    _logger.info(`Migrating auto-renew preferences for user: ${userId}`);
+    _logger.debug(`Migrating auto-renew preferences for user: ${userId}`);
 
     let migratedCount = 0;
 
@@ -651,7 +651,7 @@ export async function migrateAutoRenewPreferencesActivity(
           });
 
         if (existingPref) {
-          _logger.info(
+          _logger.debug(
             `Auto-renew preference already exists for user ${userId} and domain ${pref.domainLdh}`,
           );
           continue;
@@ -664,7 +664,7 @@ export async function migrateAutoRenewPreferencesActivity(
           autoRenewEnabled: pref.autoRenewOption === 'AUTOMATIC',
         });
 
-        _logger.info(
+        _logger.debug(
           `Migrated auto-renew preference for domain ${pref.domainLdh}`,
         );
         migratedCount++;
@@ -676,7 +676,7 @@ export async function migrateAutoRenewPreferencesActivity(
       }
     }
 
-    _logger.info(
+    _logger.debug(
       `Completed auto-renew preferences migration for user ${userId}: ${migratedCount} migrated`,
     );
     return migratedCount;
@@ -707,11 +707,11 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
 
   try {
     // Test MongoDB connection
-    _logger.info('Validating MongoDB connection...');
+    _logger.debug('Validating MongoDB connection...');
     const connection = await mongoose.createConnection(MONGODB_URI);
     await connection.close();
     mongodbAvailable = true;
-    _logger.info('MongoDB connection validated successfully');
+    _logger.debug('MongoDB connection validated successfully');
   } catch (error) {
     const errorMsg = `MongoDB connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     _logger.error(errorMsg);
@@ -720,11 +720,11 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
 
   try {
     // Test PostgreSQL connection
-    _logger.info('Validating PostgreSQL connection...');
+    _logger.debug('Validating PostgreSQL connection...');
     // Test by performing a simple query
     await db.select().from(usersTable).limit(1);
     postgresqlAvailable = true;
-    _logger.info('PostgreSQL connection validated successfully');
+    _logger.debug('PostgreSQL connection validated successfully');
   } catch (error) {
     const errorMsg = `PostgreSQL connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     _logger.error(errorMsg);
@@ -733,7 +733,7 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
 
   try {
     // Test Privy connection
-    _logger.info('Validating Privy connection...');
+    _logger.debug('Validating Privy connection...');
     const response = await fetch('https://auth.privy.io/api/v1/users/import', {
       method: 'POST',
       headers: {
@@ -755,7 +755,7 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
     }
 
     privyAvailable = true;
-    _logger.info('Privy connection validated successfully');
+    _logger.debug('Privy connection validated successfully');
   } catch (error) {
     const errorMsg = `Privy connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     _logger.error(errorMsg);
@@ -784,7 +784,7 @@ export async function getUserContactsWithVerifiedEmailsActivity(): Promise<
   }>
 > {
   try {
-    _logger.info('Getting user contacts with verified emails...');
+    _logger.debug('Getting user contacts with verified emails...');
 
     const userContactsWithVerifiedEmails = await db
       .select({
@@ -801,7 +801,7 @@ export async function getUserContactsWithVerifiedEmailsActivity(): Promise<
         ),
       );
 
-    _logger.info(
+    _logger.debug(
       `Found ${userContactsWithVerifiedEmails.length} user contacts with verified emails`,
     );
 
@@ -830,7 +830,7 @@ export async function checkPrivyUserEmailLinkingActivity(
   existingPrivyUser?: PrivyUser;
 }> {
   try {
-    _logger.info(
+    _logger.debug(
       `Checking email linking for Privy user ${privyUserId} with email ${email}`,
     );
 
@@ -852,7 +852,7 @@ export async function checkPrivyUserEmailLinkingActivity(
     );
 
     if (hasEmailLinked) {
-      _logger.info(
+      _logger.debug(
         `Email ${email} is already linked to Privy user ${privyUserId}`,
       );
       return {
@@ -902,7 +902,7 @@ export async function checkPrivyUserEmailLinkingActivity(
       };
     }
 
-    _logger.info(
+    _logger.debug(
       `Email ${email} is not linked to Privy user ${privyUserId} and is available for linking`,
     );
     return {
@@ -929,10 +929,10 @@ export async function deletePrivyUserActivity(privyUserId: string): Promise<{
   error?: string;
 }> {
   try {
-    _logger.info(`Deleting Privy user: ${privyUserId}`);
+    _logger.debug(`Deleting Privy user: ${privyUserId}`);
 
     await privyClient.deleteUser(privyUserId);
-    _logger.info(`Successfully deleted Privy user: ${privyUserId}`);
+    _logger.debug(`Successfully deleted Privy user: ${privyUserId}`);
 
     return {
       success: true,
@@ -960,7 +960,7 @@ export async function createPrivyUserWithEmailActivity(
   error?: string;
 }> {
   try {
-    _logger.info(
+    _logger.debug(
       `Creating new Privy user with email ${email} (replacing ${existingPrivyUser.id})`,
     );
 
@@ -1005,7 +1005,7 @@ export async function createPrivyUserWithEmailActivity(
 
     if (newPrivyUser?.id) {
       const newPrivyUserId = newPrivyUser.id;
-      _logger.info(
+      _logger.debug(
         `Successfully created new Privy user: ${newPrivyUserId} with email ${email}`,
       );
       return {
@@ -1041,7 +1041,7 @@ export async function updateUserPrivyIdActivity(
   newPrivyUserId: string,
 ): Promise<void> {
   try {
-    _logger.info(
+    _logger.debug(
       `Updating user ${userId} with new Privy user ID: ${newPrivyUserId}`,
     );
 
@@ -1050,7 +1050,7 @@ export async function updateUserPrivyIdActivity(
       .set({ privyUserId: newPrivyUserId })
       .where(eq(usersTable.id, userId));
 
-    _logger.info(
+    _logger.debug(
       `Successfully updated user ${userId} with new Privy user ID: ${newPrivyUserId}`,
     );
   } catch (error) {
@@ -1075,7 +1075,7 @@ export function generateMigrationReportActivity(): Promise<{
   estimatedCompletionTime?: string;
 }> {
   try {
-    _logger.info('Generating migration report...');
+    _logger.debug('Generating migration report...');
 
     // In a real implementation, you would query the database for actual statistics
     // For now, we'll return a placeholder report
@@ -1092,7 +1092,7 @@ export function generateMigrationReportActivity(): Promise<{
         (report.successfulMigrations / report.totalUsers) * 100;
     }
 
-    _logger.info('Migration report generated:', report);
+    _logger.debug('Migration report generated:', report);
     return Promise.resolve(report);
   } catch (error) {
     _logger.error('Failed to generate migration report:', error);

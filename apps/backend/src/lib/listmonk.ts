@@ -180,7 +180,7 @@ export class ListmonkClient {
             subscriberIds: [existingSubscriber.id],
             status: 'confirmed',
           });
-          logger.info(
+          logger.debug(
             {
               email: subscriber.email,
               listsConfirmed: listsToConfirm,
@@ -231,7 +231,7 @@ export class ListmonkClient {
         );
       }
 
-      logger.info(
+      logger.debug(
         { email: subscriber.email },
         'Successfully created new subscriber in Listmonk',
       );
@@ -269,7 +269,7 @@ export class ListmonkClient {
         );
       }
 
-      logger.info(
+      logger.debug(
         { email: updatedData.email, subscriberId: existingSubscriber.id },
         'Successfully updated existing subscriber in Listmonk',
       );
@@ -284,12 +284,12 @@ export class ListmonkClient {
       const existingSubscriber = await this.getSubscriberByEmail(email);
 
       if (!existingSubscriber) {
-        logger.info({ email }, 'Subscriber not found for unsubscribe');
+        logger.debug({ email }, 'Subscriber not found for unsubscribe');
         return;
       }
 
       if (!existingSubscriber.lists || existingSubscriber.lists.length === 0) {
-        logger.info({ email }, 'Subscriber not subscribed to any lists');
+        logger.debug({ email }, 'Subscriber not subscribed to any lists');
         return;
       }
 
@@ -299,7 +299,7 @@ export class ListmonkClient {
         subscriberIds: [existingSubscriber.id],
       });
 
-      logger.info(
+      logger.debug(
         { email, lists: existingSubscriber.lists },
         'Successfully unsubscribed subscriber from all lists',
       );
@@ -317,12 +317,12 @@ export class ListmonkClient {
       const existingSubscriber = await this.getSubscriberByUserId(userId);
 
       if (!existingSubscriber) {
-        logger.info({ userId }, 'Subscriber not found for unsubscribe');
+        logger.debug({ userId }, 'Subscriber not found for unsubscribe');
         return;
       }
 
       if (!existingSubscriber.lists || existingSubscriber.lists.length === 0) {
-        logger.info(
+        logger.debug(
           { userId, email: existingSubscriber.email },
           'Subscriber not subscribed to any lists',
         );
@@ -335,7 +335,7 @@ export class ListmonkClient {
         subscriberIds: [existingSubscriber.id],
       });
 
-      logger.info(
+      logger.debug(
         {
           userId,
           email: existingSubscriber.email,
@@ -547,7 +547,7 @@ export class ListmonkClient {
             listIds: subscriber.lists.map((list) => list.id),
             subscriberIds: [subscriber.id],
           });
-          logger.info(
+          logger.debug(
             {
               userId,
               subscriberId: subscriber.id,
@@ -559,7 +559,7 @@ export class ListmonkClient {
         }
       }
 
-      logger.info(
+      logger.debug(
         { userId, count: subscribers.length },
         'Successfully unsubscribed all subscribers by userId',
       );
@@ -606,7 +606,7 @@ export class ListmonkClient {
       };
 
       await this.$updateSubscriber(existingSubscriber, mergedData);
-      logger.info(
+      logger.debug(
         { userId, email: mergedData.email },
         'Successfully updated subscriber by userId',
       );
@@ -842,7 +842,7 @@ export class ListmonkClient {
         status: 'enabled',
         lists,
       });
-      logger.info(
+      logger.debug(
         { userId, email: subscriber.email, lists },
         'Created/updated subscriber with appropriate lists',
       );
@@ -886,7 +886,7 @@ export class ListmonkClient {
         subscriberIds: [existingSubscriber.id],
         status: 'confirmed',
       });
-      logger.info(
+      logger.debug(
         { userId, email: existingSubscriber.email, listsAdded: listsToAdd },
         'Added subscriber to lists',
       );
@@ -898,7 +898,7 @@ export class ListmonkClient {
         listIds: listsToRemove,
         subscriberIds: [existingSubscriber.id],
       });
-      logger.info(
+      logger.debug(
         {
           userId,
           email: existingSubscriber.email,
@@ -909,7 +909,7 @@ export class ListmonkClient {
     }
 
     if (listsToAdd.length === 0 && listsToRemove.length === 0) {
-      logger.info(
+      logger.debug(
         { userId, email: existingSubscriber.email },
         'No list membership changes needed',
       );

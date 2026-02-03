@@ -109,7 +109,7 @@ export const schedulesRouter = createTRPCRouter({
         }
 
         await schedule.submit();
-        logger.info({ scheduleId }, 'Schedule submitted successfully');
+        logger.debug({ scheduleId }, 'Schedule submitted successfully');
 
         return {
           success: true,
@@ -157,7 +157,7 @@ export const schedulesRouter = createTRPCRouter({
 
       try {
         await schedule.trigger();
-        logger.info({ scheduleId }, 'Schedule triggered successfully');
+        logger.debug({ scheduleId }, 'Schedule triggered successfully');
 
         return {
           success: true,
@@ -204,7 +204,7 @@ export const schedulesRouter = createTRPCRouter({
       }
       try {
         await schedule.pause();
-        logger.info({ scheduleId }, 'Schedule paused successfully');
+        logger.debug({ scheduleId }, 'Schedule paused successfully');
 
         return {
           success: true,
@@ -251,7 +251,7 @@ export const schedulesRouter = createTRPCRouter({
       }
       try {
         await schedule.unpause();
-        logger.info({ scheduleId }, 'Schedule unpaused successfully');
+        logger.debug({ scheduleId }, 'Schedule unpaused successfully');
 
         return {
           success: true,
@@ -299,7 +299,7 @@ export const schedulesRouter = createTRPCRouter({
 
       try {
         await schedule.delete();
-        logger.info({ scheduleId }, 'Schedule deleted successfully');
+        logger.debug({ scheduleId }, 'Schedule deleted successfully');
 
         return {
           success: true,

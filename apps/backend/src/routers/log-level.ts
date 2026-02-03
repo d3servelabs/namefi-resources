@@ -62,7 +62,7 @@ logLevelRouter.post('/', async (c) => {
     });
   }
 
-  logger.info({ newLevel: level }, 'Log level changed');
+  logger.debug({ newLevel: level }, 'Log level changed');
   return c.json({
     success: true,
     level: getLogLevel(),

@@ -262,7 +262,7 @@ export async function submitOperationToExtendRegistrationToRegistrar({
   const registration = await sldRegistrar.getDomainDetails(domainName);
   const currentExpirationDate = new Date(registration.expirationTime);
 
-  logger.info(`Submitting Request to renew domain ${domainName}`);
+  logger.debug(`Submitting Request to renew domain ${domainName}`);
 
   const renewReq = await resolve(
     sldRegistrar.renewDomain({
@@ -289,7 +289,7 @@ export async function submitOperationToExtendRegistrationToRegistrar({
     });
   }
 
-  logger.info('Renew Operation Succeeded Registrar Level');
+  logger.debug('Renew Operation Succeeded Registrar Level');
   return renewReq.result;
 }
 
@@ -350,9 +350,9 @@ export async function unlockEppDomain(
   operationId: string | null | undefined;
 }> {
   try {
-    logger.info(`Unlocking EPP domain: ${domainNameLdh}`);
+    logger.debug(`Unlocking EPP domain: ${domainNameLdh}`);
     const res = await sldRegistrar.setDomainLockState(domainNameLdh, false);
-    logger.info(`Unlocked EPP domain: ${domainNameLdh}`);
+    logger.debug(`Unlocked EPP domain: ${domainNameLdh}`);
     return {
       status: res.status,
       operationId: res.operationId,
@@ -375,7 +375,7 @@ export async function unlockEppDomain(
 export async function getEppLockState(
   domainNameLdh: PunycodeDomainName | NamefiNormalizedDomain,
 ): Promise<GetLockStateResponse> {
-  logger.info(`Getting EPP lock state for domain: ${domainNameLdh}`);
+  logger.debug(`Getting EPP lock state for domain: ${domainNameLdh}`);
 
   const getFromPublic = async (): Promise<
     [Error | null, GetLockStateResponse | null]

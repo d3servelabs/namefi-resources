@@ -73,7 +73,7 @@ export async function collectExportedDomainsMetrics(): Promise<
   ExportExpirationMetrics['exportedDomains']
 > {
   const activityContext = Context.current();
-  logger.info({ activityContext }, 'Collecting exported domains metrics');
+  logger.debug({ activityContext }, 'Collecting exported domains metrics');
 
   // Step 1: Get all locked NFTs (primary indicator of export)
   const lockedNfts = await db
@@ -87,7 +87,7 @@ export async function collectExportedDomainsMetrics(): Promise<
     .from(namefiNftView)
     .where(eq(namefiNftView.isLocked, true));
 
-  logger.info({ count: lockedNfts.length }, 'Found locked NFTs');
+  logger.debug({ count: lockedNfts.length }, 'Found locked NFTs');
 
   if (lockedNfts.length === 0) {
     return {
@@ -116,7 +116,7 @@ export async function collectExportedDomainsMetrics(): Promise<
     indexEntries.map((entry) => [entry.normalizedDomainName, entry]),
   );
 
-  logger.info(
+  logger.debug(
     { indexEntriesFound: indexEntries.length },
     'Loaded domain index entries',
   );
@@ -249,7 +249,7 @@ export async function collectExportedDomainsMetrics(): Promise<
       .sort(sortByNftExpiry),
   };
 
-  logger.info(
+  logger.debug(
     {
       total: result.total,
       pendingTransfer: result.pendingTransfer.length,
@@ -270,7 +270,7 @@ export async function collectExpiredDomainsMetrics(): Promise<
   ExportExpirationMetrics['expiredDomains']
 > {
   const activityContext = Context.current();
-  logger.info({ activityContext }, 'Collecting expired domains metrics');
+  logger.debug({ activityContext }, 'Collecting expired domains metrics');
 
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
@@ -287,7 +287,7 @@ export async function collectExpiredDomainsMetrics(): Promise<
     .from(namefiNftView)
     .where(lt(namefiNftView.expirationTime, thirtyDaysAgo));
 
-  logger.info({ count: expiredNfts.length }, 'Found expired NFTs (>30 days)');
+  logger.debug({ count: expiredNfts.length }, 'Found expired NFTs (>30 days)');
 
   if (expiredNfts.length === 0) {
     return {
@@ -325,7 +325,7 @@ export async function collectExpiredDomainsMetrics(): Promise<
     indexEntries.map((entry) => [entry.normalizedDomainName, entry]),
   );
 
-  logger.info(
+  logger.debug(
     { indexEntriesFound: indexEntries.length },
     'Loaded domain index entries for expired NFTs',
   );
@@ -406,7 +406,7 @@ export async function collectExpiredDomainsMetrics(): Promise<
     }
   }
 
-  logger.info({ count: readyToBurn.length }, 'Found domains ready to burn');
+  logger.debug({ count: readyToBurn.length }, 'Found domains ready to burn');
 
   // Sort by NFT expiration date (ascending)
   readyToBurn.sort(
@@ -423,7 +423,7 @@ export async function collectExpiredDomainsMetrics(): Promise<
  * Collect all metrics for the export/expiration report
  */
 export async function collectExportExpirationMetrics(): Promise<ExportExpirationMetrics> {
-  logger.info('Collecting export/expiration metrics');
+  logger.debug('Collecting export/expiration metrics');
 
   const [exportedDomains, expiredDomains] = await Promise.all([
     collectExportedDomainsMetrics(),
@@ -453,7 +453,7 @@ export async function collectExportExpirationMetrics(): Promise<ExportExpiration
     registrarBreakdown,
   };
 
-  logger.info(
+  logger.debug(
     {
       totalExported: exportedDomains.total,
       totalExpired: expiredDomains.total,
@@ -626,7 +626,7 @@ function formatExpiredDomainForJSON(domain: ExpiredDomainInfo) {
 export async function formatExportExpirationReport(
   metrics: ExportExpirationMetrics,
 ): Promise<{ title: string; content: string }> {
-  logger.info('Formatting export/expiration report');
+  logger.debug('Formatting export/expiration report');
 
   const { exportedDomains, expiredDomains, reportDate } = metrics;
 
@@ -774,7 +774,7 @@ export async function formatExportExpirationReport(
     }
   }
 
-  logger.info(
+  logger.debug(
     { titleLength: title.length, contentLength: content.length },
     'Report formatted',
   );
@@ -790,16 +790,16 @@ export async function sendExportExpirationReportToSlack(
   content: string,
 ): Promise<void> {
   if (!SEND_TO_SLACK_DIRECT) {
-    logger.info('Skipping Slack notification');
+    logger.debug('Skipping Slack notification');
     return;
   }
-  logger.info('Sending export/expiration report to Slack');
+  logger.debug('Sending export/expiration report to Slack');
 
   const webhookUrl = secrets.NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL;
 
   if (!webhookUrl) {
     logger.warn('No Slack webhook URL configured, skipping Slack notification');
-    logger.info('Report would have been sent', {
+    logger.debug('Report would have been sent', {
       title,
       contentLength: content.length,
     });
@@ -840,7 +840,7 @@ export async function sendExportExpirationReportToSlack(
       );
     }
 
-    logger.info('Report sent to Slack successfully');
+    logger.debug('Report sent to Slack successfully');
   } catch (error) {
     logger.error({ error }, 'Failed to send report to Slack');
     throw error;
@@ -855,7 +855,7 @@ export async function sendExportExpirationReportEmail(
   content: string,
   metrics: ExportExpirationMetrics,
 ): Promise<void> {
-  logger.info('Sending export/expiration report email');
+  logger.debug('Sending export/expiration report email');
 
   try {
     const html = await render(
@@ -910,7 +910,7 @@ export async function sendExportExpirationReportEmail(
       attachments,
     });
 
-    logger.info(
+    logger.debug(
       { attachmentCount: attachments.length },
       'Report email sent successfully with attachments',
     );

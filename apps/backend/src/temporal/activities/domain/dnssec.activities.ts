@@ -118,7 +118,7 @@ export async function pollDefaultNsPropagated(domainName: PunycodeDomainName) {
   if (foundNameservers.size === 0) {
     throw new Error(`No nameservers found for domain: ${domainName}`);
   }
-  _logger.info(`Nameservers found for domain: ${domainName}`);
+  _logger.debug(`Nameservers found for domain: ${domainName}`);
   (await getDefaultNameservers()).forEach((ns) => {
     if (!foundNameservers.has(ns)) {
       throw new Error(`Nameserver not found for domain: ${domainName}`);
