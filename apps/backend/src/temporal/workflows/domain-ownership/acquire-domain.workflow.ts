@@ -148,6 +148,7 @@ export async function acquireDomainWorkflow(
         },
       ],
       workflowId: `domain-parking-dns-analytics-${input.normalizedDomainName}`,
+      parentClosePolicy: 'ABANDON',
     }),
   );
   if (analyticsWorkflowStart.failed) {
