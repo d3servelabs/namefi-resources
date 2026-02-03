@@ -151,6 +151,8 @@ jobs:
     steps:
       - name: Check if tag exists for this commit
         id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Only check for duplicates on main branch push
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
@@ -161,19 +163,15 @@ jobs:
             echo "Waiting 15 seconds to allow tag events to be registered..."
             sleep 15
 
-            # Use git ls-remote to query tags from the remote directly
-            # This is more reliable than local git tag as it doesn't require fetching
-            # and reflects the current state of the remote repository
+            # Use GitHub API to query tags - this handles authentication automatically
+            # and is more reliable than git ls-remote in CI environments
             echo "Checking for tags pointing to commit $COMMIT_SHA..."
-            REMOTE_TAGS=$(git ls-remote --tags https://github.com/${{ github.repository }}.git 2>/dev/null || true)
-
-            # For lightweight tags: SHA appears directly with the tag ref
-            # For annotated tags: the dereferenced commit SHA appears with ^{} suffix
-            # We check both patterns to handle both tag types
-            MATCHING_TAGS=$(echo "$REMOTE_TAGS" | grep "^$COMMIT_SHA" | grep -E 'refs/tags/astra/(prod/)?v' || true)
+            
+            # Get all tags and filter for astra/v* or astra/prod/v* tags pointing to this commit
+            MATCHING_TAGS=$(gh api repos/${{ github.repository }}/tags --paginate --jq ".[] | select(.commit.sha == \"$COMMIT_SHA\") | .name" 2>/dev/null | grep -E '^astra/(prod/)?v' || true)
 
             if [ ! -z "$MATCHING_TAGS" ]; then
-              echo "Found tags for this commit via remote query:"
+              echo "Found tags for this commit via GitHub API:"
               echo "$MATCHING_TAGS"
               echo "should_skip=true" >> $GITHUB_OUTPUT
               echo "Skipping workflow - tag-based deployment will handle this"
