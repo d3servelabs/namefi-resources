@@ -1,4 +1,4 @@
-import { Subject, bufferTime, filter } from 'rxjs';
+import { Subject, bufferTime, distinct, filter } from 'rxjs';
 import { logger } from '#lib/logger';
 import { privyClient } from '../../trpc/utils';
 import { sendLoginNotificationEmail } from './send-login-notification';
@@ -7,6 +7,8 @@ import { parseUserAgent } from './user-agent-parser';
 import { detectLoginMethod } from './detect-login-method';
 import type { LoginSessionInfo } from './types';
 import type { UserSelect } from '@namefi-astra/db';
+import { keyvPostgres } from '#lib/keyv';
+import Keyv from 'keyv';
 
 export interface LoginNotificationRequest {
   user: UserSelect;
@@ -20,17 +22,18 @@ export interface LoginNotificationRequest {
 const loginNotificationSubject = new Subject<LoginNotificationRequest>();
 
 /**
- * In-memory session deduplication to prevent duplicate notification emails.
- * This works within a single process instance. For multi-instance deployments,
- * consider using a shared cache (e.g., Redis) with TTL for deduplication.
- * Current deployment model assumes single-instance backend processing.
+ * session deduplication to prevent duplicate notification emails.
  */
-const recentlyProcessedSessions = new Set<string>();
-const SESSION_DEDUP_TTL_MS = 10 * 60 * 1000;
+const SESSION_TTL_MS = 3600 * 1000; // keep session id in keyv for only one hour
+
+const recentlyProcessedSessions = new Keyv(keyvPostgres, {
+  namespace: 'login-notification',
+  ttl: SESSION_TTL_MS,
+});
 
 loginNotificationSubject
   .pipe(
-    filter((request) => shouldSendNotification(request)),
+    distinct((request) => request.sessionId),
     bufferTime(5000, null, 10),
   )
   .subscribe(async (requests) => {
@@ -48,36 +51,28 @@ loginNotificationSubject
     }
   });
 
-function shouldSendNotification(request: LoginNotificationRequest): boolean {
-  if (recentlyProcessedSessions.has(request.sessionId)) {
+async function shouldSendNotification(
+  request: LoginNotificationRequest,
+): Promise<boolean> {
+  if (await recentlyProcessedSessions.get(request.sessionId)) {
     return false;
   }
-
-  recentlyProcessedSessions.add(request.sessionId);
-  setTimeout(() => {
-    recentlyProcessedSessions.delete(request.sessionId);
-  }, SESSION_DEDUP_TTL_MS);
-
-  if (request.isNewUser) {
-    return true;
-  }
-
-  if (!request.user.lastSignInAt) {
-    return true;
-  }
-
-  const lastSignInTime = new Date(request.user.lastSignInAt).getTime();
-  const tokenIssuedTime = request.tokenIssuedAt.getTime();
-  const timeDifferenceMs = tokenIssuedTime - lastSignInTime;
-
-  const fiveMinutesMs = 5 * 60 * 1000;
-  return timeDifferenceMs > fiveMinutesMs;
+  await recentlyProcessedSessions.set(request.sessionId, true);
+  return true;
 }
 
 async function processLoginNotification(
   request: LoginNotificationRequest,
 ): Promise<void> {
   const { user, sessionId, ipAddress, userAgent, tokenIssuedAt } = request;
+
+  if (!(await shouldSendNotification(request))) {
+    logger.trace(
+      { sessionId, user: user.id },
+      'Notification already sent for this session',
+    );
+    return;
+  }
 
   let userEmail: string | undefined;
   let loginMethod = 'Unknown Method';

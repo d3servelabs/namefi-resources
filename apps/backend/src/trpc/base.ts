@@ -47,6 +47,7 @@ import { getPrivyUserLinkedEthereumChecksumWalletAddresses } from './utils';
 import type { ORPCMeta } from '@orpc/trpc';
 import type { AuthMethodResult } from '#lib/auth/auth-registry';
 import type { MiddlewareBuilder } from '@trpc/server/unstable-core-do-not-import';
+import { differenceInMinutes } from 'date-fns';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -570,20 +571,26 @@ function maybeNotifyLogin(params: {
   isNewUser: boolean;
   ctx: TrpcContext;
 }): void {
-  return; //todo
-  //   const { user, sessionId, tokenIssuedAt, isNewUser, ctx } = params;
-  //   if (sessionId && tokenIssuedAt) {
-  //     const ipAddress = ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
-  //     const userAgent = ctx.req?.header?.('User-Agent') ?? '';
-  //     triggerLoginNotification({
-  //       user,
-  //       sessionId,
-  //       ipAddress,
-  //       userAgent,
-  //       isNewUser,
-  //       tokenIssuedAt,
-  //     });
-  //   }
+  if (!config.ALLOW_LOGIN_NOTIFICATIONS) {
+    return;
+  }
+  const { user, sessionId, tokenIssuedAt, isNewUser, ctx } = params;
+  if (sessionId && tokenIssuedAt) {
+    const minutesSinceLogin = differenceInMinutes(new Date(), tokenIssuedAt);
+    if (minutesSinceLogin > 5) {
+      return;
+    }
+    const ipAddress = ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
+    const userAgent = ctx.req?.header?.('User-Agent') ?? '';
+    triggerLoginNotification({
+      user,
+      sessionId,
+      ipAddress,
+      userAgent,
+      isNewUser,
+      tokenIssuedAt,
+    });
+  }
 }
 
 /**
@@ -645,7 +652,7 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         },
       });
     } catch (error) {
-      logger.warn({ error }, 'verifying user auth and creation');
+      logger.trace({ error }, 'verifying user auth and creation');
       throw new TRPCError({
         code: 'UNAUTHORIZED',
       });
