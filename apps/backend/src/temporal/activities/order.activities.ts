@@ -10,10 +10,11 @@ import {
   paymentsTable,
   orderStatusSchema,
   type OrderItemMetadata,
+  paymentStatusSchema,
   type OrderMintTransactionMetadata,
 } from '@namefi-astra/db';
 import { eq, and, sql, inArray } from 'drizzle-orm';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { CHAINS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { NamefiEmailLinks } from '../../mail/email-links';
 import { sendStyledEmailNotificationForUser } from './notify.activities';
@@ -27,6 +28,7 @@ import {
   gaEventPaymentFailed,
   gaEventPaymentSuccess,
 } from '#lib/tracking/checkout/events';
+import { getPreferredEvmWalletAddressToBeCharged } from './payment.activities';
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -447,6 +449,7 @@ export type OrderActivities = {
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
   setOrderItemRequiredAction: typeof setOrderItemRequiredAction;
+  createFreeAutoRenewOrder: typeof createFreeAutoRenewOrder;
 };
 
 export type DomainRenewalResult = {
@@ -466,6 +469,21 @@ export type CreateAutoRenewOrderInput = {
   domainRenewResults: DomainRenewalResult[];
   totalAmountInUsd: number;
 };
+
+const FREE_POWERED_BY_NAMEFI_PARENT_DOMAINS = [
+  'withtrump.club',
+  'withharris.club',
+] as const;
+
+type FreePoweredByNamefiParentDomain =
+  (typeof FREE_POWERED_BY_NAMEFI_PARENT_DOMAINS)[number];
+
+const getPoweredByNamefiParentDomain = (
+  normalizedDomainName: NamefiNormalizedDomain,
+): FreePoweredByNamefiParentDomain | null =>
+  FREE_POWERED_BY_NAMEFI_PARENT_DOMAINS.find((parent) =>
+    normalizedDomainName.endsWith(`.${parent}`),
+  ) ?? null;
 
 export async function createAutoRenewOrder({
   userId,
@@ -561,6 +579,143 @@ export async function createAutoRenewOrder({
   logger.debug(
     { orderId: order.id, successCount, failureCount },
     'Created auto-renew order %s with %d successes and %d failures',
+    order.id,
+    successCount,
+    failureCount,
+  );
+
+  return { orderId: order.id };
+}
+
+export type CreateFreeAutoRenewOrderInput = {
+  userId: string;
+  domainRenewResults: DomainRenewalResult[];
+};
+
+export async function createFreeAutoRenewOrder({
+  userId,
+  domainRenewResults,
+}: CreateFreeAutoRenewOrderInput): Promise<{ orderId: string }> {
+  logger.info(
+    { userId, domainCount: domainRenewResults.length },
+    'Creating free auto-renew order for user %s with %d domains',
+    userId,
+    domainRenewResults.length,
+  );
+
+  if (domainRenewResults.length === 0) {
+    throw new Error('No domain renew results provided for free auto-renew');
+  }
+
+  const successCount = domainRenewResults.filter(
+    (r) => r.status === 'SUCCESS',
+  ).length;
+  const failureCount = domainRenewResults.filter(
+    (r) => r.status === 'FAILURE',
+  ).length;
+
+  const orderStatus =
+    successCount === 0
+      ? orderStatusSchema.enum.FAILED
+      : failureCount > 0
+        ? orderStatusSchema.enum.PARTIALLY_COMPLETED
+        : orderStatusSchema.enum.SUCCEEDED;
+
+  const poweredByNamefiParentDomains = Array.from(
+    new Set(
+      domainRenewResults
+        .map((result) =>
+          getPoweredByNamefiParentDomain(result.normalizedDomainName),
+        )
+        .filter((parent): parent is FreePoweredByNamefiParentDomain =>
+          Boolean(parent),
+        ),
+    ),
+  );
+
+  const orderItems = domainRenewResults.map((result) => {
+    const poweredByNamefiParentDomain = getPoweredByNamefiParentDomain(
+      result.normalizedDomainName,
+    );
+    return {
+      normalizedDomainName: result.normalizedDomainName,
+      amountInUSDCents: 0,
+      durationInYears: 1,
+      type: 'RENEW' as const,
+      registrar: result.registrarKey,
+      status:
+        result.status === 'SUCCESS'
+          ? orderStatusSchema.enum.SUCCEEDED
+          : orderStatusSchema.enum.FAILED,
+      metadata: {
+        autoRenew: true,
+        freeRenewal: true,
+        poweredByNamefi: true,
+        poweredByNamefiParentDomain: poweredByNamefiParentDomain ?? undefined,
+        renewalSummary: {
+          eppOperationStatus: result.eppOperationStatus,
+          txHash: result.txHash,
+          txStatus: result.txStatus,
+          error: result.error
+            ? {
+                message: result.error.message,
+                name: result.error.name,
+                stack: result.error.stack,
+              }
+            : undefined,
+        },
+      },
+    } satisfies CreateOrderItemInput;
+  });
+
+  const walletAddress = await getPreferredEvmWalletAddressToBeCharged(userId);
+
+  const order = await db.transaction(async (tx) => {
+    const [payment] = await tx
+      .insert(paymentsTable)
+      .values({
+        amountInUSDCents: 0,
+        status: paymentStatusSchema.enum.SUCCEEDED,
+        paymentProvider: 'NFSC_BASE',
+        nfscPaymentDetails: {
+          chainId: CHAINS.base.id,
+          walletAddress,
+        },
+      })
+      .returning();
+
+    if (!payment) {
+      throw new Error('Failed to create dummy payment for free auto-renew');
+    }
+
+    const created = await orderService.createOrderWithExistingMultiplePayments(
+      {
+        userId,
+        paymentIds: [payment.id],
+        status: orderStatus,
+        amountInUSDCents: 0,
+        metadata: {
+          autoRenew: true,
+          freeRenewal: true,
+          poweredByNamefi: true,
+          poweredByNamefiParentDomains,
+          renewalSummary: {
+            successCount,
+            failureCount,
+            totalAttempted: domainRenewResults.length,
+          },
+        },
+        items: orderItems,
+      },
+      { tx },
+    );
+
+    return { id: created.id } as const;
+  });
+
+  logger.info(
+    { orderId: order.id, successCount, failureCount },
+    'Created free auto-renew order %s with %d successes and %d failures',
     order.id,
     successCount,
     failureCount,

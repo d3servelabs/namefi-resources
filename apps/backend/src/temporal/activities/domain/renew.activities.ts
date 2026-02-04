@@ -91,13 +91,16 @@ export type DomainsUpForRenewalWithUserWithPrice = {
   userId: string;
 };
 
-export async function getDomainsUpForRenewal(): Promise<
+export async function getDomainsUpForRenewal(input?: {
+  allowExpired?: boolean;
+}): Promise<
   {
     normalizedDomainName: NamefiNormalizedDomain;
     expirationTime: Date;
     registrarKey: string;
   }[]
 > {
+  const allowExpired = input?.allowExpired ?? false;
   logger.assign({ component: 'getDomainsUpForRenewal' });
   logger.debug('Starting getDomainsUpForRenewal');
 
@@ -130,7 +133,7 @@ export async function getDomainsUpForRenewal(): Promise<
     return (
       allNftsMap.has(domain.domainName) && // Only include domains that are on an allowed chain and has NFT
       daysToExpiration <= SEND_RENEW_REMINDERS_THRESHOLD &&
-      daysToExpiration >= 0
+      (allowExpired || daysToExpiration >= 0)
     );
   });
   logger.debug(
@@ -171,7 +174,7 @@ export async function getDomainsUpForRenewal(): Promise<
       }
       return (
         daysToExpiration <= SEND_RENEW_REMINDERS_THRESHOLD &&
-        daysToExpiration >= 0
+        (allowExpired || daysToExpiration >= 0)
       );
     })
     .map((domain) => ({
@@ -297,13 +300,32 @@ export async function getUserWithEvmWallets() {
   };
 }
 
-export async function getDomainsUpForRenewalGroupedByOwner() {
+export async function getDomainsUpForRenewalGroupedByOwner(input?: {
+  parentDomains?: NamefiNormalizedDomain[];
+  allowExpired?: boolean;
+}) {
+  const parentDomains = input?.parentDomains ?? [];
+  const allowExpired = input?.allowExpired ?? false;
   logger.debug('Getting domains up for renewal grouped by owner');
   // Get both wallet-to-user mapping and domains that need renewal
   logger.debug('Fetching domains up for renewal');
-  const domainsUpForRenewal = await getDomainsUpForRenewal();
+  const domainsUpForRenewal = await getDomainsUpForRenewal({ allowExpired });
+  const filteredDomainsUpForRenewal = parentDomains.length
+    ? domainsUpForRenewal.filter((domain) =>
+        parentDomains.some(
+          (parentDomain) =>
+            domain.normalizedDomainName === parentDomain ||
+            domain.normalizedDomainName.endsWith(`.${parentDomain}`),
+        ),
+      )
+    : domainsUpForRenewal;
   logger.debug(
-    { domainsUpForRenewalCount: domainsUpForRenewal.length },
+    {
+      domainsUpForRenewalCount: domainsUpForRenewal.length,
+      filteredDomainsUpForRenewalCount: filteredDomainsUpForRenewal.length,
+      parentDomains,
+      allowExpired,
+    },
     'Fetched domains up for renewal',
   );
 
@@ -314,7 +336,12 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
     'Fetched wallet to user mapping',
   );
 
-  logger.debug(`Found ${domainsUpForRenewal.length} domains up for renewal`);
+  logger.debug(
+    `Found ${filteredDomainsUpForRenewal.length} domains up for renewal`,
+  );
+  if (filteredDomainsUpForRenewal.length === 0) {
+    return {};
+  }
   // Fetch NFT domain details for all domains up for renewal
   logger.debug('Fetching NFT domain details for all domains up for renewal');
   const nftDomains = await db
@@ -328,7 +355,9 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
     .where(
       inArray(
         namefiNftOwnersView.normalizedDomainName,
-        domainsUpForRenewal.map((domain) => domain.normalizedDomainName),
+        filteredDomainsUpForRenewal.map(
+          (domain) => domain.normalizedDomainName,
+        ),
       ),
     );
 
@@ -347,11 +376,11 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
 
   // Get user preferences for auto-renewal for all relevant domains and users
   const domainUserPreferencesMap = await _getDomainUserPreferencesMap(
-    pluck('normalizedDomainName', domainsUpForRenewal),
+    pluck('normalizedDomainName', filteredDomainsUpForRenewal),
   );
 
   // Process each domain to add owner details and auto-renewal preferences
-  const domainsUpForRenewalWithOwnerDetails = domainsUpForRenewal.map(
+  const domainsUpForRenewalWithOwnerDetails = filteredDomainsUpForRenewal.map(
     (domain) => {
       // Get NFT details for this domain
       const domainNft = domainNftMap.get(domain.normalizedDomainName);
