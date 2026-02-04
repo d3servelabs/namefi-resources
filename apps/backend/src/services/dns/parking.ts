@@ -1,12 +1,11 @@
 import { db, dnsRecordsTable } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { RecordType, recordSchema } from '@namefi-astra/zod-dns';
+import { RecordType, type recordSchema } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
 import { and, eq, inArray } from 'drizzle-orm';
-import { pluck } from 'ramda';
 import type { z } from 'zod';
 import { areRecordsEqual } from './helpers';
-import { validateZone } from './service';
+import { updateDomainConfig } from '#lib/domains/domain-preferences';
 /**
  * A collection of records that are considered parked
  */
@@ -97,31 +96,7 @@ export async function parkDomain(
     }
   }
 
-  await validateZone(normalizedDomainName, {
-    addedRecords: PARKED_DOMAIN_RECORDS,
-    deletedRecords: existingConflictingRecords.map((record) => ({
-      ...recordSchema.parse(record),
-      id: record.id,
-    })),
-  });
-
-  await db.transaction(async (tx) => {
-    await tx
-      .delete(dnsRecordsTable)
-      .where(
-        and(
-          eq(dnsRecordsTable.zoneName, normalizedDomainName),
-          inArray(dnsRecordsTable.id, pluck('id', existingConflictingRecords)),
-        ),
-      );
-    await tx
-      .insert(dnsRecordsTable)
-      .values(
-        PARKED_DOMAIN_RECORDS.map((record) => ({
-          ...record,
-          zoneName: normalizedDomainName,
-        })),
-      )
-      .returning();
+  await updateDomainConfig(normalizedDomainName, {
+    autoParkEnabled: true,
   });
 }
