@@ -79,7 +79,7 @@ function mapRcodesToNames(data: any) {
         };
       }
 
-      const rcodeName = dnsRcodes.get(rcode); // Use string key, not number
+      const rcodeName = dnsRcodes.inverse.get(rcode); // Use string key, not number
 
       // Format as: NOERROR(RCODE:0)
       const formattedValue = rcodeName

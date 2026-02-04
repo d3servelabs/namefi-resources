@@ -86,7 +86,7 @@ nsJsonRouter.get('/', async (c) => {
 
   if (wildcard) {
     return c.json({
-      RCODE: dnsRcodes.inverse.get('NXDOMAIN'),
+      RCODE: dnsRcodes.get('NXDOMAIN'),
       Answer: [],
     });
   }
