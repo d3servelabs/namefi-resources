@@ -988,6 +988,17 @@ export const domainConfigRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       const domainName = toPunycodeDomainName(input.domainName);
+      const parseResult = parseDomainName(domainName);
+      if (!parseResult.valid) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: `invalid-domain, ${domainName}`,
+          cause: parseResult,
+        });
+      }
+      if (parseResult.registryType === 'subdomain') {
+        return null;
+      }
       const pendingTransfer =
         await sldRegistrar.queryPendingTransfer(domainName);
       return pendingTransfer;
