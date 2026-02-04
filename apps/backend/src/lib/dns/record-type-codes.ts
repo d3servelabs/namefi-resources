@@ -1,6 +1,6 @@
 import { BiMap } from 'mnemonist';
 
-export const dnsRecordTypeCodes = BiMap.from({
+const _dnsRecordTypeCodes = {
   ANY: 255, // Any record
 
   // Most Common Record Types
@@ -61,4 +61,19 @@ export const dnsRecordTypeCodes = BiMap.from({
   TA: 32768, // DNSSEC Trust Authorities
   TKEY: 249, // Transaction Key
   TSIG: 250, // Transaction Signature
-}) as BiMap<string, number>;
+  /**
+   * Specified as part of the Sender Policy Framework protocol as an alternative
+   * to storing SPF data in TXT records, using the same format.
+   * It was discontinued in RFC 7208 due to widespread lack of support.
+   */
+  SPF: 99,
+} as const;
+export type DnsStringRecordTypeCode = keyof typeof _dnsRecordTypeCodes;
+
+export type DnsNumericRecordTypeCode =
+  (typeof _dnsRecordTypeCodes)[DnsStringRecordTypeCode];
+
+export const dnsRecordTypeCodes = BiMap.from(_dnsRecordTypeCodes) as BiMap<
+  DnsStringRecordTypeCode,
+  DnsNumericRecordTypeCode
+>;

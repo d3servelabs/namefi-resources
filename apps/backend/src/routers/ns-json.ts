@@ -17,9 +17,9 @@ import { Hono, type Context } from 'hono';
 import { isNotEmpty, isNotNil } from 'ramda';
 import { z } from 'zod';
 import { createLogger } from '#lib/logger';
-import { dnsRecordTypeCodes } from './lib/dns/record-type-codes';
-import type { DnsResponse, DnsTable } from './lib/dns/types';
-import { getAnswerForDnsQueryFromPreferences } from './lib/domains/domain-preferences';
+import { dnsRecordTypeCodes } from '../lib/dns/record-type-codes';
+import type { DnsResponse, DnsTable } from '../lib/dns/types';
+import { getAnswerForDnsQueryFromPreferences } from '../lib/domains/domain-preferences';
 import { matchAny } from '@namefi-astra/utils/match';
 import { config } from '#lib/env';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
@@ -75,7 +75,10 @@ nsJsonRouter.get('/', async (c) => {
     _logger.assign({ heartbeat: true });
   }
 
-  const [maybeResponse, question] = await prepareDnsQuestion(c);
+  const [maybeResponse, question] = await prepareDnsQuestion(
+    c.req.query() as { name: string; type: string },
+    c,
+  );
   if (maybeResponse) {
     return maybeResponse;
   }
@@ -348,9 +351,10 @@ type PrepareDnsQuestionResult =
       },
     ];
 export async function prepareDnsQuestion(
+  query: { name: string; type: string },
   c: Context,
 ): Promise<PrepareDnsQuestionResult> {
-  const requestQueryResult = requestQuerySchema.safeParse(c.req.query());
+  const requestQueryResult = requestQuerySchema.safeParse(query);
 
   if (!requestQueryResult.success) {
     c.status(412);
@@ -374,7 +378,7 @@ export async function prepareDnsQuestion(
   const qTypeString =
     qtype === dnsRecordTypeCodes.get('ANY')
       ? 'A'
-      : dnsRecordTypeCodes.inverse.get(qtype);
+      : dnsRecordTypeCodes.inverse.get(qtype as any);
   const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
 
   if (!qTypeEnumParseResult.success) {

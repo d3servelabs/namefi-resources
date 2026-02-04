@@ -1,11 +1,9 @@
-// Router for NS JSON
-
 import { db, domainConfigTable } from '@namefi-astra/db';
-import { fqdnLowercaseToNamefiNormalizedDomain } from '@namefi-astra/utils';
-import { fqdnLowercaseSchema } from '@namefi-astra/zod-dns';
 import { eq, ilike, or, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { createLogger } from '#lib/logger';
+import { prepareDnsQuestion } from './ns-json';
+import { dnsRecordTypeCodes } from '#lib/dns/record-type-codes';
 
 const _logger = createLogger({ context: 'DNSSEC' });
 
@@ -30,21 +28,24 @@ dnssecRouter.get('/', async (c) => {
   _logger.assign({ query: c.req.query() });
   _logger.debug('Received request');
 
-  const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
+  const [maybeResponse, question] = await prepareDnsQuestion(
+    {
+      name: c.req.query('name') || '',
+      type: dnsRecordTypeCodes.get('ANY')?.toString() || '',
+    },
+    c,
+  );
+  if (maybeResponse) {
+    return maybeResponse;
+  }
+  const { recordName, wildcard } = question;
 
-  if (!qnameResult.success) {
-    c.status(412);
+  if (wildcard) {
     return c.json({
-      error: 'Precondition Failed',
-      message: `Invalid parameters, expecting name and type but got errors. ${
-        qnameResult.error ? `name: ${qnameResult.error}` : ''
-      }`,
+      keyOwner: '.',
+      dnssecEnabled: false,
     });
   }
-
-  const qname = qnameResult.data;
-
-  const recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
 
   const domainConfig = await db
     .select()
