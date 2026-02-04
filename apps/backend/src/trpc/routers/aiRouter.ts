@@ -70,8 +70,8 @@ const generateLogoInputSchema = z.object({
   description: z.string().optional(),
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
-  textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS).optional(),
-  typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS).optional(),
+  textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS),
+  typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS),
   model: z
     .enum([
       'gpt-image-1',
@@ -135,6 +135,11 @@ export const aiRouter = createTRPCRouter({
         });
 
         const resolvedConcept = logoResult.concept.logoConcept;
+        const resolvedLogoType = resolvedConcept.type ?? type;
+        const resolvedLogoStyle = resolvedConcept.style ?? style;
+        const resolvedTextTreatment =
+          resolvedConcept.textTreatment ?? textTreatment;
+        const resolvedTypography = resolvedConcept.typography ?? typography;
 
         const aggregateTokenUsage = [
           {
@@ -167,10 +172,10 @@ export const aiRouter = createTRPCRouter({
             output: {
               type: 'logo',
               storagePath: logoResult.image.storagePath,
-              logoType: resolvedConcept.type,
-              logoStyle: resolvedConcept.style,
-              textTreatment: resolvedConcept.textTreatment,
-              typography: resolvedConcept.typography,
+              logoType: resolvedLogoType,
+              logoStyle: resolvedLogoStyle,
+              textTreatment: resolvedTextTreatment,
+              typography: resolvedTypography,
             },
             tokenUsage: aggregateTokenUsage,
           })

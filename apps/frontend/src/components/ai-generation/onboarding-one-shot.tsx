@@ -22,6 +22,8 @@ import {
 import type {
   ImageModel as Model,
   LogoStyleInput,
+  LogoTextTreatmentInput,
+  LogoTypographyInput,
   LogoTypeInput,
   MarketingCollateralTypeInput,
 } from '@namefi-astra/ai/types';
@@ -57,12 +59,16 @@ export function AIOnboardingOneShot({
       domain: NamefiNormalizedDomain;
       type: LogoTypeInput;
       style: LogoStyleInput;
+      textTreatment: LogoTextTreatmentInput;
+      typography: LogoTypographyInput;
       description?: string;
       model: Model;
     } = {
       domain: values.domain as NamefiNormalizedDomain,
       type: 'let-ai-choose',
       style: 'let-ai-choose',
+      textTreatment: 'let-ai-choose',
+      typography: 'let-ai-choose',
       description: values.description || undefined,
       model: 'gpt-image-1.5',
     };

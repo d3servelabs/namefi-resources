@@ -40,8 +40,8 @@ const generateLogoInputSchema = z.object({
   description: z.string().optional(),
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
-  textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS).optional(),
-  typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS).optional(),
+  textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS),
+  typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS),
   model: z
     .enum([
       'gpt-image-1',
@@ -124,6 +124,13 @@ publicAiRouter.post('/generate-logo', async (c) => {
       },
     ];
 
+    const resolvedConcept = logoResult.concept.logoConcept;
+    const resolvedLogoType = resolvedConcept.type ?? type;
+    const resolvedLogoStyle = resolvedConcept.style ?? style;
+    const resolvedTextTreatment =
+      resolvedConcept.textTreatment ?? textTreatment;
+    const resolvedTypography = resolvedConcept.typography ?? typography;
+
     const [record] = await db
       .insert(publicAiGenerationsTable)
       .values({
@@ -142,10 +149,10 @@ publicAiRouter.post('/generate-logo', async (c) => {
         output: {
           type: 'logo',
           storagePath: logoResult.image.storagePath,
-          logoType: logoResult.concept.logoConcept.type,
-          logoStyle: logoResult.concept.logoConcept.style,
-          textTreatment: logoResult.concept.logoConcept.textTreatment,
-          typography: logoResult.concept.logoConcept.typography,
+          logoType: resolvedLogoType,
+          logoStyle: resolvedLogoStyle,
+          textTreatment: resolvedTextTreatment,
+          typography: resolvedTypography,
           imageModel: logoResult.image.model,
         },
         tokenUsage,
@@ -160,10 +167,10 @@ publicAiRouter.post('/generate-logo', async (c) => {
       externalUserId,
       domain,
       type: record.type,
-      logoType: logoResult.concept.logoConcept.type,
-      logoStyle: logoResult.concept.logoConcept.style,
-      textTreatment: logoResult.concept.logoConcept.textTreatment,
-      typography: logoResult.concept.logoConcept.typography,
+      logoType: resolvedLogoType,
+      logoStyle: resolvedLogoStyle,
+      textTreatment: resolvedTextTreatment,
+      typography: resolvedTypography,
       model,
       url: logoResult.image.url,
       storagePath: logoResult.image.storagePath,

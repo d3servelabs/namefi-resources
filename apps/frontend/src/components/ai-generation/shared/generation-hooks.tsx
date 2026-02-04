@@ -177,25 +177,19 @@ export const createLogoGenerationPayload = (data: LogoFormData) => {
     style: LogoStyleInput;
     description?: string;
     model: Model;
-    textTreatment?: LogoTextTreatmentInput;
-    typography?: LogoTypographyInput;
+    textTreatment: LogoTextTreatmentInput;
+    typography: LogoTypographyInput;
   } = {
     domain: data.domain,
     type: data.type,
     style: data.style,
     model: data.model as Model,
+    textTreatment: data.textTreatment,
+    typography: data.typography,
   };
 
   if (data.description) {
     payload.description = data.description;
-  }
-
-  if (data.textTreatment && data.textTreatment !== 'let-ai-choose') {
-    payload.textTreatment = data.textTreatment;
-  }
-
-  if (data.typography && data.typography !== 'let-ai-choose') {
-    payload.typography = data.typography;
   }
 
   return payload;
