@@ -84,9 +84,11 @@ export type FreeRenewPoweredByNamefiDomainsResult = {
 export async function freeRenewPoweredByNamefiDomainsWorkflow({
   dryRun = false,
   allowExpired = false,
+  ownersIdFilter,
 }: {
   dryRun?: boolean;
   allowExpired?: boolean;
+  ownersIdFilter?: string[];
 } = {}): Promise<FreeRenewPoweredByNamefiDomainsResult> {
   const parentDomains = POWERED_BY_NAMEFI_PARENT_DOMAINS.map(
     (domain) => domain as NamefiNormalizedDomain,
@@ -103,11 +105,21 @@ export async function freeRenewPoweredByNamefiDomainsWorkflow({
     allowExpired,
     userCount: userIds.length,
     parentDomains,
+    ownersIdFilter,
   });
 
   const results = await pMap(
     userIds,
     async (userId): Promise<FreeRenewPoweredByNamefiDomainsUserResult> => {
+      if (ownersIdFilter && !ownersIdFilter.includes(userId)) {
+        return {
+          userId,
+          status: 'skipped',
+          domainsAttempted: [],
+          successes: [],
+          failures: [],
+        };
+      }
       const userDomains = domainsUpForRenewalGroupedByOwner[
         userId
       ] as UserDomainsUpForRenewal;
