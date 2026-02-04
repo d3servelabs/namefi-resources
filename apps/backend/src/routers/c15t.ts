@@ -61,6 +61,11 @@ const c15t = c15tInstance({
       logFn({ args }, message);
     },
   },
+  advanced: {
+    telemetry: {
+      disabled: true,
+    },
+  },
   adapter: drizzleAdapter({
     db,
     provider: 'postgresql',
