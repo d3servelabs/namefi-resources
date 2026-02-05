@@ -485,6 +485,12 @@ export const domainConfigRouter = createTRPCRouter({
                   showPanel: false,
                 },
               },
+              dnsManagement: {
+                enabled: true,
+                config: {
+                  showPanel: true,
+                },
+              },
               nameserversManagement: {
                 enabled: false,
                 config: {
