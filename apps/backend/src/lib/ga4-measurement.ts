@@ -1,3 +1,4 @@
+import os from 'node:os';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import type {
@@ -112,18 +113,20 @@ export async function sendGA4Events({
   timestampMicros,
   debug,
 }: SendGA4EventsInput): Promise<void> {
+  const resolvedClientId = clientId ?? generateGA4ClientId();
+
   if (!events.length) {
     throw new Error('GA4 event payload must include at least one event.');
   }
 
-  if (!clientId && !userId) {
+  if (!resolvedClientId) {
     throw new Error(
-      'GA4 Measurement Protocol requires clientId or userId to be provided.',
+      'GA4 Measurement Protocol requires clientId to be provided.',
     );
   }
 
   const payload: GA4Payload = stripUndefined({
-    client_id: clientId,
+    client_id: resolvedClientId,
     user_id: userId,
     events: events.map(buildEvent),
     user_properties: buildUserProperties(userProperties),
@@ -181,4 +184,41 @@ export async function sendGA4Event<
   event: GA4Event<EventName>;
 }): Promise<void> {
   await sendGA4Events({ ...rest, events: [event] });
+}
+
+const FALLBACK_GA4_CLIENT_IP = '127001001001';
+
+function getPrimaryIPv4Address(): string | undefined {
+  const interfaces = os.networkInterfaces();
+  for (const entries of Object.values(interfaces)) {
+    if (!entries) continue;
+    for (const entry of entries) {
+      if (entry.family !== 'IPv4' || entry.internal) continue;
+      return entry.address;
+    }
+  }
+  return undefined;
+}
+
+function encodeIPv4Address(address: string): string | undefined {
+  const parts = address.split('.');
+  if (parts.length !== 4) return undefined;
+
+  const encoded: string[] = [];
+  for (const part of parts) {
+    const value = Number(part);
+    if (!Number.isInteger(value) || value < 0 || value > 255) {
+      return undefined;
+    }
+    encoded.push(String(value).padStart(3, '0'));
+  }
+
+  return encoded.join('');
+}
+
+export function generateGA4ClientId(): string {
+  const address = getPrimaryIPv4Address();
+  const encodedAddress = address ? encodeIPv4Address(address) : undefined;
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  return `${encodedAddress ?? FALLBACK_GA4_CLIENT_IP}.${timestamp}`;
 }
