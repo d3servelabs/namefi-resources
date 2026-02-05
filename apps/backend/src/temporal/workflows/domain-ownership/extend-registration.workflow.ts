@@ -39,8 +39,8 @@ export type ExtendDomainRegistrationWorkflowInput = {
   updateDomainIndex?: boolean;
 };
 
-const { submitOperationToExtendRegistrationToRegistrar, getEppExpirationTime } =
-  typedProxyActivities({
+const { submitOperationToExtendRegistrationToRegistrar } = typedProxyActivities(
+  {
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: {
       ...shortRunningOpts,
@@ -48,7 +48,18 @@ const { submitOperationToExtendRegistrationToRegistrar, getEppExpirationTime } =
         maximumAttempts: 1,
       },
     },
-  });
+  },
+);
+const { getEppExpirationTime } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: {
+    ...shortRunningOpts,
+    retry: {
+      ...(shortRunningOpts.retry ?? {}),
+      maximumAttempts: 5,
+    },
+  },
+});
 
 const { updateDomainIndexRows, triggerUpdateDomainIndex } =
   typedProxyActivities({
