@@ -10,6 +10,7 @@ import type { NamefiSchedule, ScheduleGroup } from './types';
 // Import all schedule instances
 import { updateDomainIndexSchedule } from './update-domain-index';
 import { updatePrivyCacheSchedule } from './update-privy-cache';
+import { backfillNftWalletUsersSchedule } from './backfill-nft-wallet-users';
 
 import { createLogger } from '#lib/logger';
 
@@ -119,6 +120,8 @@ export const SCHEDULE_GROUP_REGISTRY: Record<string, ScheduleGroup> = {
 export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [updateDomainIndexSchedule.config.scheduleId]: updateDomainIndexSchedule,
   [updatePrivyCacheSchedule.config.scheduleId]: updatePrivyCacheSchedule,
+  [backfillNftWalletUsersSchedule.config.scheduleId]:
+    backfillNftWalletUsersSchedule,
   [emailSubscriptionSyncSchedule.config.scheduleId]:
     emailSubscriptionSyncSchedule,
   [nftManagementDailyReportSchedule.config.scheduleId]:
@@ -276,6 +279,7 @@ export async function getAllScheduleStatuses() {
 // Export individual schedules for backward compatibility and direct access
 export { updateDomainIndexSchedule };
 export { updatePrivyCacheSchedule };
+export { backfillNftWalletUsersSchedule };
 export { emailSubscriptionSyncSchedule };
 export { nftManagementDailyReportSchedule };
 export { exportExpirationDailyReportSchedule };
@@ -310,6 +314,12 @@ export {
   triggerUpdatePrivyCache,
   deleteScheduleForUpdatePrivyCache,
 } from './update-privy-cache';
+
+export {
+  submitScheduleForBackfillNftWalletUsers,
+  triggerBackfillNftWalletUsers,
+  deleteScheduleForBackfillNftWalletUsers,
+} from './backfill-nft-wallet-users';
 
 export {
   submitScheduleForEmailSubscriptionSync,

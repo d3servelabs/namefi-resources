@@ -6,11 +6,12 @@ import { initWorkers } from './workers';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { logger } from 'hono/logger';
+import { logger as HonoLogger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config, secrets } from '#lib/env';
 import workersRouter from './workers.router';
 import { logLevelRouter } from '../routers/log-level';
+import { logger } from '#lib/logger';
 
 async function main() {
   await initWorkers();
@@ -19,9 +20,10 @@ async function main() {
 
   app.use(cors());
   app.use(prettyJSON());
-  app.use(logger());
 
   app.route('/workers', workersRouter);
+
+  app.use(HonoLogger());
   app.route('/log-level', logLevelRouter);
 
   app.get('/configfi', (c) => {
@@ -51,20 +53,9 @@ async function main() {
       port: config.TEMPORAL_WORKER_PORT,
     },
     (info) => {
-      console.info('Server is running on port', info.port);
+      logger.info('Server is running on port', info.port);
     },
   );
-  // await temporalClient.workflow.start(freeClaimsCorrectionWorkflow, {
-  //   workflowId: 'free-claims-correction-workflow',
-  //   taskQueue: TEMPORAL_QUEUES.DEFAULT,
-  //   args: [{
-  //     campaignKey: '0xcity-promo-2025',
-  //     incorrectParentDomain: '0xcity.com' as NamefiNormalizedDomain,
-  //     correctParentDomain: '0x.city' as NamefiNormalizedDomain,
-  //     campaignName: '0x.city 2025 Promotion',
-  //   }],
-  // });
-  console.log('Workflow started');
 }
 
 main();

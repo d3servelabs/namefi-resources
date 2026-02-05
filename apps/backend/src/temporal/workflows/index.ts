@@ -50,6 +50,7 @@ export * from './logo-generation.workflow';
 export * from './multi-charge.workflow';
 export * from './multi-refund.workflow';
 export * from './update-privy-cache.workflow';
+export * from './backfill-nft-wallet-users.workflow';
 export * from './prepare-multi-payments-and-charge.workflow';
 export * from './test-workflows/test-multi-payments.workflow';
 export * from './prepare-multi-payments.workflow';

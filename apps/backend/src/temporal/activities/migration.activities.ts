@@ -1,10 +1,10 @@
-import { db } from '@namefi-astra/db';
+import { db, namefiNftCte, namefiNftView } from '@namefi-astra/db';
 import {
   domainUserPreferencesTable,
   userContactsTable,
   usersTable,
 } from '@namefi-astra/db/schema';
-import { and, eq, isNotNull } from 'drizzle-orm';
+import { and, eq, isNotNull, sql } from 'drizzle-orm';
 import mongoose from 'mongoose';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
@@ -13,6 +13,10 @@ import { privyClient } from '../../trpc/utils';
 import type { User as PrivyUser } from '@privy-io/server-auth';
 import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
+import {
+  ensurePrivyTableFresh,
+  privyUsersTableSchema,
+} from '../../trpc/routers/admin/privyUserCache';
 import * as workflow from '@temporalio/workflow';
 import * as changeKeys from 'change-case/keys';
 // @ts-expect-error
@@ -1096,6 +1100,124 @@ export function generateMigrationReportActivity(): Promise<{
     return Promise.resolve(report);
   } catch (error) {
     _logger.error('Failed to generate migration report:', error);
+    throw error;
+  }
+}
+
+export type NftWalletUserBackfillCandidates = {
+  totalWallets: number;
+  walletsMissingPrivyUser: string[];
+  privyUsersMissingDbUser: Array<{
+    walletAddress: string;
+    privyUserId: string;
+  }>;
+  ambiguousWallets: Array<{
+    walletAddress: string;
+    privyUserIds: string[];
+  }>;
+};
+
+export async function getNftWalletUserBackfillCandidatesActivity(): Promise<NftWalletUserBackfillCandidates> {
+  try {
+    _logger.debug('Ensuring Privy cache is fresh before wallet scan');
+    await ensurePrivyTableFresh();
+
+    const walletAddressExpr = sql<string>`LOWER(${namefiNftView.ownerAddress})`;
+
+    const rows = await db
+      .with(namefiNftCte)
+      .select({
+        walletAddress: walletAddressExpr.as('wallet_address'),
+        privyUserId: privyUsersTableSchema.privyUserId,
+        userId: usersTable.id,
+      })
+      .from(namefiNftView)
+      .leftJoin(
+        privyUsersTableSchema,
+        sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
+      )
+      .leftJoin(
+        usersTable,
+        eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+      )
+      .groupBy(
+        walletAddressExpr,
+        privyUsersTableSchema.privyUserId,
+        usersTable.id,
+      );
+
+    const walletMap = new Map<
+      string,
+      { privyUserIds: Set<string>; userIds: Set<string> }
+    >();
+
+    for (const row of rows) {
+      const walletAddress = row.walletAddress?.toLowerCase();
+      if (!walletAddress) continue;
+      const entry = walletMap.get(walletAddress) ?? {
+        privyUserIds: new Set<string>(),
+        userIds: new Set<string>(),
+      };
+      if (row.privyUserId) {
+        entry.privyUserIds.add(row.privyUserId);
+      }
+      if (row.userId) {
+        entry.userIds.add(row.userId);
+      }
+      walletMap.set(walletAddress, entry);
+    }
+
+    const walletsMissingPrivyUser: string[] = [];
+    const privyUsersMissingDbUser: Array<{
+      walletAddress: string;
+      privyUserId: string;
+    }> = [];
+    const ambiguousWallets: Array<{
+      walletAddress: string;
+      privyUserIds: string[];
+    }> = [];
+
+    for (const [walletAddress, entry] of walletMap.entries()) {
+      const privyUserIds = Array.from(entry.privyUserIds);
+      if (privyUserIds.length === 0) {
+        walletsMissingPrivyUser.push(walletAddress);
+        continue;
+      }
+      if (privyUserIds.length > 1) {
+        ambiguousWallets.push({ walletAddress, privyUserIds });
+        continue;
+      }
+      const privyUserId = privyUserIds[0];
+      if (entry.userIds.size === 0) {
+        privyUsersMissingDbUser.push({ walletAddress, privyUserId });
+        continue;
+      }
+      if (entry.userIds.size > 1) {
+        ambiguousWallets.push({ walletAddress, privyUserIds });
+      }
+    }
+
+    _logger.debug(
+      {
+        totalWallets: walletMap.size,
+        walletsMissingPrivyUser: walletsMissingPrivyUser.length,
+        privyUsersMissingDbUser: privyUsersMissingDbUser.length,
+        ambiguousWallets: ambiguousWallets.length,
+      },
+      'Computed NFT wallet backfill candidates',
+    );
+
+    return {
+      totalWallets: walletMap.size,
+      walletsMissingPrivyUser,
+      privyUsersMissingDbUser,
+      ambiguousWallets,
+    };
+  } catch (error) {
+    _logger.error(
+      { error },
+      'Failed to compute NFT wallet backfill candidates',
+    );
     throw error;
   }
 }
