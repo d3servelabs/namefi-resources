@@ -60,7 +60,7 @@ import { fromUnixTime } from 'date-fns';
 import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
-import { config } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { TEMPORAL_QUEUES } from '../../../temporal/shared/enums';
 import { temporalClient } from '../../../temporal/client';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -721,8 +721,13 @@ export async function sendEmailNotificationForRenewResult({
   const noFailedRenewals = domainLdhRenewFailed.length === 0;
   const noSuccessfullRenewals = domainLdhRenewSucceeded.length === 0;
 
-  if (noSuccessfullRenewals && noFailedRenewals) {
-    // Namefi Dev Team is already alerted as a part of renew report
+  if (noSuccessfullRenewals) {
+    // Namefi Dev Team is already alerted as a part of renew report as well
+    void sendAlertToSlack({
+      title: 'All Renewals failed for user',
+      message: `(${userEmail})(${userId})`,
+      extraData: {},
+    });
     return;
   }
 
@@ -1174,3 +1179,55 @@ export async function getLiveSldExpirationDate(normalizedDomainName: string) {
 }
 
 // #endregion
+
+export async function sendAlertToSlack(args: {
+  title: string;
+  extraData: any;
+  message: string;
+}): Promise<void> {
+  const { title, extraData, message, ...rest } = args;
+
+  const webhookUrl = secrets.NAMEFI_ALERT_SLACK_WEBHOOK_URL;
+
+  if (!webhookUrl) {
+    logger.warn('No Slack webhook URL configured, skipping Slack Alert');
+    return;
+  }
+
+  try {
+    const slackMessage = {
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: `[Alert] ${title}`,
+            emoji: true,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `Message: ${message}`,
+          },
+        },
+      ],
+    };
+
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(slackMessage),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+  } catch (error) {
+    logger.error({ error }, 'Failed to send alert to Slack');
+    throw error;
+  }
+}
