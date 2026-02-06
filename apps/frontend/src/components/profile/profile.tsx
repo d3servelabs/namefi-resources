@@ -42,17 +42,14 @@ export default function Profile() {
     rawPrivyUser: user,
     ready,
     isAuthenticated: authenticated,
+    isLoading,
   } = useAuth();
 
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
-    if (ready && !authenticated) {
+    if (ready && !isLoading && !authenticated) {
       router.push('/');
-    } else if (ready) {
-      setIsLoading(false);
     }
-  }, [ready, authenticated, router]);
+  }, [ready, authenticated, isLoading, router]);
 
   useEffect(() => {
     if (activeTab === defaultTab) {
