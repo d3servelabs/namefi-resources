@@ -113,6 +113,7 @@ export async function backfillNftWalletUsersWorkflow({
     })),
   ];
 
+  workflow.upsertMemo({ targets });
   if (targets.length === 0) {
     return {
       success: true,
