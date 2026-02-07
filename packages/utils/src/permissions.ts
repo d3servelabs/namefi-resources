@@ -8,6 +8,7 @@
 
 export enum Permission {
   SUPER_ADMIN = 'SUPER_ADMIN',
+  HIGH_RISK = 'HIGH_RISK', // This permission is added on need-to basis, in order to take quick and urgent actions on behalf of the user
 
   WRITE_PERMISSIONS = 'PERMISSIONS;;WRITE',
   READ_PERMISSIONS = 'PERMISSIONS;;READ',

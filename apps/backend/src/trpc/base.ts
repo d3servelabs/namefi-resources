@@ -349,7 +349,11 @@ const IMPERSONATION_ALLOWED_MUTATIONS = new Set<string>([
 
 const impersonationMutationGuard = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next, path, type }) => {
-    if (type === 'mutation' && ctx?.impersonation) {
+    if (
+      type === 'mutation' &&
+      ctx?.impersonation &&
+      !ctx?.userPermissions?.includes(Permission.HIGH_RISK)
+    ) {
       if (!IMPERSONATION_ALLOWED_MUTATIONS.has(path)) {
         throw new TRPCError({
           code: 'FORBIDDEN',
