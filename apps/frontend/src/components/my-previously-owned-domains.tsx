@@ -67,9 +67,7 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { range } from 'ramda';
-import { UserWalletAvatar } from '@/components/user-avatar';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { toast } from 'sonner';
+import { format } from 'date-fns';
 
 type PreviouslyOwnedDomainRow =
   AppRouterOutput['users']['getCurrentUserBurnedDomains'][number];
@@ -243,15 +241,22 @@ function MyPreviouslyOwnedDomainsTable() {
         header: 'Reason',
         cell: ({ row }) => {
           const defaultReason = row.getValue('removalReason') as string;
-          const isSepoliaExport =
-            row.original.removalType === 'domain_exported' &&
-            row.original.chainId === CHAINS.sepolia.id;
-          const label = isSepoliaExport
-            ? 'Domain Exported (Fake)'
-            : defaultReason;
-          const extraText = isSepoliaExport
-            ? 'Actual Reason: Removed From Test Chain'
-            : null;
+
+          let label = defaultReason;
+          let extraText: string | null = null;
+
+          switch (row.original.removalType) {
+            case 'domain_exported':
+              if (row.original.chainId === CHAINS.sepolia.id) {
+                label = 'Domain Exported (Fake)';
+                extraText = 'Actual Reason: Removed From Test Chain';
+              }
+              break;
+            case 'domain_expired':
+              if (row.original.expirationTimeAtRemoval) {
+                extraText = `Expired At: ${format(row.original.expirationTimeAtRemoval, 'MMM do yyyy, hh:mm aa')}`;
+              }
+          }
 
           return (
             <div className="flex flex-col gap-1">
