@@ -23,6 +23,7 @@ export enum DynadotCommand {
   get_contact = 'get_contact',
   get_account_balance = 'get_account_balance',
   list_domain = 'list_domain',
+  authorize_transfer_away = 'authorize_transfer_away',
 }
 
 export type DynadotCurrency = 'USD' | 'CNY' | 'GBP' | 'EUR' | 'INR' | 'CAD';

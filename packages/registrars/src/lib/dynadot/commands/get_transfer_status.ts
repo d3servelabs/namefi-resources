@@ -37,8 +37,8 @@ export const DynadotTransferStatus = Object.freeze({
   NONE: 'None',
   AUTH_CODE_NEEDED: 'Auth Code Needed',
   CANCELLED: 'Cancelled',
-  Approved: 'Approved',
-  Transferred: 'Transferred',
+  APPROVED: 'Approved',
+  TRANSFERRED: 'Transferred',
 });
 export type DynadotTransferStatus =
   (typeof DynadotTransferStatus)[keyof typeof DynadotTransferStatus];

@@ -95,6 +95,10 @@ import type {
   DynadotUnlockDomainCommandOutput,
   DynadotUnlockDomainCommandParams,
 } from './unlock_domain';
+import type {
+  DynadotAuthorizeTransferAwayCommandOutput,
+  DynadotAuthorizeTransferAwayCommandParams,
+} from './transfer/authorize_transfer_away';
 
 export * from './create_contact';
 export * from './domain_info';
@@ -121,6 +125,7 @@ export * from './cancel_transfer';
 export * from './get_ns';
 export * from './get_contact';
 export * from './unlock_domain';
+export * from './transfer/authorize_transfer_away';
 
 export type DynadotCommandsParams = Record<DynadotCommand, unknown> & {
   [DynadotCommand.search]: DynadotSearchCommandParams;
@@ -147,6 +152,7 @@ export type DynadotCommandsParams = Record<DynadotCommand, unknown> & {
   [DynadotCommand.get_account_balance]: DynadotGetAccountBalanceCommandParams;
   [DynadotCommand.list_domain]: DynadotListDomainCommandParams;
   [DynadotCommand.unlock_domain]: DynadotUnlockDomainCommandParams;
+  [DynadotCommand.authorize_transfer_away]: DynadotAuthorizeTransferAwayCommandParams;
 };
 export type DynadotCommandOutput = Record<DynadotCommand, unknown> & {
   [DynadotCommand.search]: DynadotSearchCommandOutput;
@@ -173,4 +179,5 @@ export type DynadotCommandOutput = Record<DynadotCommand, unknown> & {
   [DynadotCommand.get_account_balance]: DynadotGetAccountBalanceCommandOutput;
   [DynadotCommand.list_domain]: DynadotListDomainCommandOutput;
   [DynadotCommand.unlock_domain]: DynadotUnlockDomainCommandOutput;
+  [DynadotCommand.authorize_transfer_away]: DynadotAuthorizeTransferAwayCommandOutput;
 };

@@ -1155,7 +1155,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
               status: OperationStatus.SUBMITTED,
             };
           case DynadotTransferStatus.WAITING:
-          case DynadotTransferStatus.Approved:
+          case DynadotTransferStatus.APPROVED:
             return {
               ...baseRes,
               status: OperationStatus.IN_PROGRESS,
@@ -1186,7 +1186,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
               status: OperationStatus.FAILED,
             };
 
-          case DynadotTransferStatus.Transferred:
+          case DynadotTransferStatus.TRANSFERRED:
             return {
               ...baseRes,
               status: OperationStatus.SUCCESSFUL,
@@ -1357,24 +1357,219 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return [];
   }
 
+  /**
+   * get_transfer_status transfer_type:away
+   */
   async queryPendingTransfer(
-    _domainName: PunycodeDomainName,
+    domainName: PunycodeDomainName,
   ): Promise<PendingTransferInfo | null> {
-    // Dynadot does not support querying pending transfers via API
-    return null;
+    assertPunycodeDomainName(domainName);
+
+    try {
+      const response = await this.client.command(
+        DynadotCommand.get_transfer_status,
+        {
+          domain: domainName,
+          transfer_type: 'away',
+        },
+      );
+
+      if (responseFailed(response.GetTransferStatusResponse)) {
+        this.logger.debug(
+          { domainName, response: response.GetTransferStatusResponse },
+          'Dynadot transfer status query failed',
+        );
+        return null;
+      }
+
+      const transferList =
+        response.GetTransferStatusResponse.TransferList ?? [];
+      const latestTransfer = transferList.find(
+        (transfer) =>
+          !isDynadotTransferAwayTerminalStatus(transfer.TransferStatus),
+      );
+
+      if (!latestTransfer) {
+        return null;
+      }
+
+      const now = new Date();
+
+      return {
+        domainName,
+        status: toPendingTransferStatus(latestTransfer.TransferStatus),
+        requestingRegistrarId: 'external',
+        requestDate: now,
+        actionRegistrarId: this.key,
+        actionDate: now,
+        expirationDate: parseDynadotTransferExpirationDate(
+          latestTransfer.ExpirationDate,
+        ),
+      };
+    } catch (error) {
+      this.logger.debug({ error, domainName }, 'No pending transfer found');
+      return null;
+    }
   }
 
+  /**
+   * 1. get_transfer_status transfer_type:away (for order_id)
+   * 2. authorize_transfer_away authorize:approve
+   */
   async approveTransfer(
-    _domainName: PunycodeDomainName,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
-    throw new Error('Dynadot does not support transfer approval via API');
+    assertPunycodeDomainName(domainName);
+
+    const statusResponse = await this.client.command(
+      DynadotCommand.get_transfer_status,
+      {
+        domain: domainName,
+        transfer_type: 'away',
+      },
+    );
+    assertNot(
+      responseFailed(statusResponse.GetTransferStatusResponse),
+      'Response Failed',
+    );
+
+    const transferList =
+      statusResponse.GetTransferStatusResponse.TransferList ?? [];
+    const latestTransfer = transferList.find(
+      (transfer) =>
+        !isDynadotTransferAwayTerminalStatus(transfer.TransferStatus),
+    );
+    assertNotNil(latestTransfer, 'No pending transfer found');
+    assertNotNil(latestTransfer.OrderId, 'Transfer order id not found');
+
+    const response = await this.client.command(
+      DynadotCommand.authorize_transfer_away,
+      {
+        domain: domainName,
+        authorize: 'approve',
+        order_id: latestTransfer.OrderId,
+      },
+    );
+    assertNot(
+      responseFailed(response.AuthorizeTransferAwayResponse),
+      'Response Failed',
+    );
+
+    return {
+      type: OperationType.TRANSFER_APPROVE,
+      operationId: generateOperationId(
+        OperationType.TRANSFER_APPROVE,
+        domainName,
+      ),
+      status: getImmediateOperationStatus(
+        response.AuthorizeTransferAwayResponse,
+      ),
+      response,
+    };
   }
 
+  /**
+   * 1. get_transfer_status transfer_type:away (for order_id)
+   * 2. authorize_transfer_away authorize:deny
+   */
   async rejectTransfer(
-    _domainName: PunycodeDomainName,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
-    throw new Error('Dynadot does not support transfer rejection via API');
+    assertPunycodeDomainName(domainName);
+
+    const statusResponse = await this.client.command(
+      DynadotCommand.get_transfer_status,
+      {
+        domain: domainName,
+        transfer_type: 'away',
+      },
+    );
+    assertNot(
+      responseFailed(statusResponse.GetTransferStatusResponse),
+      'Response Failed',
+    );
+
+    const transferList =
+      statusResponse.GetTransferStatusResponse.TransferList ?? [];
+    const latestTransfer = transferList.find(
+      (transfer) =>
+        !isDynadotTransferAwayTerminalStatus(transfer.TransferStatus),
+    );
+    assertNotNil(latestTransfer, 'No pending transfer found');
+    assertNotNil(latestTransfer.OrderId, 'Transfer order id not found');
+
+    const response = await this.client.command(
+      DynadotCommand.authorize_transfer_away,
+      {
+        domain: domainName,
+        authorize: 'deny',
+        order_id: latestTransfer.OrderId,
+      },
+    );
+    assertNot(
+      responseFailed(response.AuthorizeTransferAwayResponse),
+      'Response Failed',
+    );
+
+    return {
+      type: OperationType.TRANSFER_REJECT,
+      operationId: generateOperationId(
+        OperationType.TRANSFER_REJECT,
+        domainName,
+      ),
+      status: getImmediateOperationStatus(
+        response.AuthorizeTransferAwayResponse,
+      ),
+      response,
+    };
   }
+}
+
+function isDynadotTransferAwayTerminalStatus(
+  status: DynadotTransferStatus | string,
+) {
+  return (
+    status === DynadotTransferStatus.NONE ||
+    status === DynadotTransferStatus.TRANSFERRED ||
+    status === DynadotTransferStatus.CANCELLED ||
+    status === DynadotTransferStatus.FAILED
+  );
+}
+
+function canDynadotTransferAwayBeStopped(
+  status: DynadotTransferStatus | string,
+) {
+  return (
+    status === DynadotTransferStatus.WAITING ||
+    status === DynadotTransferStatus.AUTH_CODE_NEEDED ||
+    status === DynadotTransferStatus.LOCKED
+  );
+}
+
+function toPendingTransferStatus(
+  status: DynadotTransferStatus | string,
+): PendingTransferInfo['status'] {
+  switch (status) {
+    case DynadotTransferStatus.APPROVED:
+      return 'clientApproved';
+    case DynadotTransferStatus.CANCELLED:
+      return 'clientCancelled';
+    case DynadotTransferStatus.FAILED:
+      return 'serverRejected';
+    default:
+      return 'pending';
+  }
+}
+
+function parseDynadotTransferExpirationDate(value?: `${number}`) {
+  if (!value) {
+    return undefined;
+  }
+  const timestamp = Number.parseInt(value, 10);
+  if (Number.isNaN(timestamp)) {
+    return undefined;
+  }
+  return new Date(timestamp);
 }
 
 function parsePriceForDomain(price: string | undefined | null) {
