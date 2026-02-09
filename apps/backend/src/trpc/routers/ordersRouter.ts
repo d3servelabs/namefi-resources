@@ -21,6 +21,7 @@ import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
 import { NegativeAmountInUsdCentsError } from '#services/payments/errors';
+import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import {
   orderService,
   type CreateOrderItemInput,
@@ -33,6 +34,8 @@ import {
   getOrderProgressQuery,
   type ProcessOrderWorkflowPublicState,
 } from '../../temporal/workflows/processOrder.workflow';
+import { eppRegisterOrImportProceed } from '../../temporal/workflows/domain-ownership/epp-register-or-import.workflow';
+import { sldRegisterOrImportProceed } from '../../temporal/workflows/domain-ownership/sld-register-or-import.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
@@ -279,6 +282,343 @@ export const ordersRouter = createTRPCRouter({
         });
       }
       return data;
+    }),
+
+  updateImportAuthCode: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order_item',
+      resourceId: input.orderItemId || '',
+      action: 'update_import_auth_code',
+      extraInput: {
+        orderId: input.orderId,
+        orderItemId: input.orderItemId,
+      },
+    }),
+  )
+    .input(
+      z.object({
+        orderId: z.string().min(1),
+        orderItemId: z.string().min(1),
+        eppAuthorizationCode: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { orderId, orderItemId, eppAuthorizationCode } = input;
+
+      await ensureOrderOwnership(orderId, ctx.user.id);
+
+      const orderItem = await db.query.orderItemsTable.findFirst({
+        where: and(
+          eq(orderItemsTable.id, orderItemId),
+          eq(orderItemsTable.orderId, orderId),
+        ),
+      });
+
+      if (!orderItem) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Order item not found',
+        });
+      }
+
+      if (orderItem.type !== itemTypeSchema.enum.IMPORT) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Auth code updates are only available for import items',
+        });
+      }
+
+      if (
+        orderItem.metadata?.requiredAction !== 'EPP_AUTH_CODE_UPDATE_REQUIRED'
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Auth code update is not required for this item',
+        });
+      }
+
+      if (!eppAuthorizationCode.trim()) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Auth code is required',
+        });
+      }
+
+      const { encryptedEppAuthorizationCode, encryptionKeyId } =
+        await encryptEppAuthCode(eppAuthorizationCode);
+
+      const updatedItems = await db
+        .update(orderItemsTable)
+        .set({
+          encryptedEppAuthorizationCode,
+          encryptionKeyId,
+        })
+        .where(
+          and(
+            eq(orderItemsTable.id, orderItemId),
+            eq(orderItemsTable.orderId, orderId),
+          ),
+        )
+        .returning({
+          id: orderItemsTable.id,
+          normalizedDomainName: orderItemsTable.normalizedDomainName,
+        });
+
+      if (updatedItems.length === 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Order item not found',
+        });
+      }
+
+      const normalizedDomainName = updatedItems[0].normalizedDomainName;
+
+      try {
+        await temporalClient.connection.ensureConnected();
+        const workflowId = `eppRegisterOrImport-[${normalizedDomainName}]`;
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        await handle.signal(eppRegisterOrImportProceed, {
+          actor: 'USER',
+          actorId: ctx.user.id,
+          action: 'PROCEED',
+        });
+      } catch (error) {
+        logger.error(
+          { error, orderId, orderItemId },
+          'Failed to signal import auth code update for order %s',
+          orderId,
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message:
+            'Auth code saved, but we could not resume the import yet. Please try again.',
+          cause: error,
+        });
+      }
+
+      return { success: true };
+    }),
+
+  cancelRequiredActionOrderItem: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order_item',
+      resourceId: input.orderItemId || '',
+      action: 'cancel_required_action',
+      extraInput: {
+        orderId: input.orderId,
+        orderItemId: input.orderItemId,
+      },
+    }),
+  )
+    .input(
+      z.object({
+        orderId: z.string().min(1),
+        orderItemId: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { orderId, orderItemId } = input;
+
+      await ensureOrderOwnership(orderId, ctx.user.id);
+
+      const orderItem = await db.query.orderItemsTable.findFirst({
+        where: and(
+          eq(orderItemsTable.id, orderItemId),
+          eq(orderItemsTable.orderId, orderId),
+        ),
+      });
+
+      if (!orderItem) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Order item not found',
+        });
+      }
+
+      if (!orderItem.metadata?.requiredAction) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This item does not require action',
+        });
+      }
+
+      const normalizedDomainName = orderItem.normalizedDomainName;
+      const workflowId = `eppRegisterOrImport-[${normalizedDomainName}]`;
+
+      try {
+        await temporalClient.connection.ensureConnected();
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        let workflowTypeName: string | undefined;
+
+        try {
+          const description = await handle.describe();
+          workflowTypeName = description.type;
+        } catch (error) {
+          logger.error(
+            { error, orderId, orderItemId, workflowId },
+            'Failed to load workflow details for order %s',
+            orderId,
+          );
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'This item is no longer awaiting action',
+            cause: error,
+          });
+        }
+
+        if (workflowTypeName === 'eppRegisterOrImportWorkflow') {
+          await handle.signal(eppRegisterOrImportProceed, {
+            actor: 'USER',
+            actorId: ctx.user.id,
+            action: 'CANCEL',
+          });
+        } else if (workflowTypeName === 'sldRegisterOrImportWorkflow') {
+          await handle.signal(sldRegisterOrImportProceed, { action: 'FAIL' });
+        } else {
+          logger.error(
+            { orderId, orderItemId, workflowId, workflowTypeName },
+            'Unsupported workflow type for required action cancellation',
+          );
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Unable to cancel this item right now',
+          });
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error(
+          { error, orderId, orderItemId, workflowId },
+          'Failed to cancel required action for order %s',
+          orderId,
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Unable to cancel this item right now',
+          cause: error,
+        });
+      }
+
+      return { success: true };
+    }),
+
+  confirmDomainUnlocked: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order_item',
+      resourceId: input.orderItemId || '',
+      action: 'confirm_domain_unlocked',
+      extraInput: {
+        orderId: input.orderId,
+        orderItemId: input.orderItemId,
+      },
+    }),
+  )
+    .input(
+      z.object({
+        orderId: z.string().min(1),
+        orderItemId: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { orderId, orderItemId } = input;
+
+      await ensureOrderOwnership(orderId, ctx.user.id);
+
+      const orderItem = await db.query.orderItemsTable.findFirst({
+        where: and(
+          eq(orderItemsTable.id, orderItemId),
+          eq(orderItemsTable.orderId, orderId),
+        ),
+      });
+
+      if (!orderItem) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Order item not found',
+        });
+      }
+
+      if (orderItem.metadata?.requiredAction !== 'EPP_UNLOCK_REQUIRED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Unlock confirmation is not required for this item',
+        });
+      }
+
+      const normalizedDomainName = orderItem.normalizedDomainName;
+      const workflowId = `eppRegisterOrImport-[${normalizedDomainName}]`;
+
+      try {
+        await temporalClient.connection.ensureConnected();
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        let workflowTypeName: string | undefined;
+
+        try {
+          const description = await handle.describe();
+          workflowTypeName = description.type;
+        } catch (error) {
+          logger.error(
+            { error, orderId, orderItemId, workflowId },
+            'Failed to load workflow details for order %s',
+            orderId,
+          );
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'This item is no longer awaiting action',
+            cause: error,
+          });
+        }
+
+        if (workflowTypeName === 'eppRegisterOrImportWorkflow') {
+          await handle.signal(eppRegisterOrImportProceed, {
+            actor: 'USER',
+            actorId: ctx.user.id,
+            action: 'PROCEED',
+          });
+        } else if (workflowTypeName === 'sldRegisterOrImportWorkflow') {
+          await handle.signal(sldRegisterOrImportProceed, {
+            action: 'PROCEED',
+          });
+        } else {
+          logger.error(
+            { orderId, orderItemId, workflowId, workflowTypeName },
+            'Unsupported workflow type for unlock confirmation',
+          );
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Unable to confirm unlock right now',
+          });
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error(
+          { error, orderId, orderItemId, workflowId },
+          'Failed to confirm domain unlock for order %s',
+          orderId,
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Unable to confirm unlock right now',
+          cause: error,
+        });
+      }
+
+      return { success: true };
     }),
 
   getOrderItems: protectedProcedure.query(

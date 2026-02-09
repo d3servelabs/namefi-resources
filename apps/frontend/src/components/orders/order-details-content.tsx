@@ -27,7 +27,7 @@ import {
   getNftExplorerUrl,
   getTokenIdFromDomainName,
 } from '@namefi-astra/utils/nft-hash';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { format } from 'date-fns';
 import {
@@ -40,7 +40,7 @@ import {
   XCircleIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -62,6 +62,9 @@ import { PageShell } from '@/components/page-shell';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { formatDuration, intervalToDuration, addSeconds } from 'date-fns';
 import { cn } from '@/lib/cn';
+import { PasswordInput } from '@/components/password-input';
+import { Label } from '@/components/ui/shadcn/label';
+import { toast } from 'sonner';
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
 
@@ -725,11 +728,13 @@ export function OrderDetailsContent({ id }: { id: string }) {
 
       {/* Item Details Modal */}
       <ItemDetailsModal
+        key={selectedItemId}
         itemId={selectedItemId}
         items={items}
         orderMintTransactions={orderMintTransactions}
         chainId={order.nftChainId ?? null}
         onOpenChange={setSelectedItemId}
+        orderId={order.id}
       />
     </PageShell>
   );
@@ -1162,13 +1167,18 @@ function ItemDetailsModal({
   orderMintTransactions,
   chainId,
   onOpenChange,
+  orderId,
 }: {
   itemId: string | null;
   items: OrderItemSelect[] | undefined;
   orderMintTransactions?: MintTransactionsByItemId;
   chainId: number | null;
   onOpenChange: (id: string | null) => void;
+  orderId: string;
 }) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [authCode, setAuthCode] = useState('');
   const item = items?.find((it: OrderItemSelect) => it.id === itemId);
   const mintTransaction = item
     ? (item.metadata?.mintTransaction ?? orderMintTransactions?.[item.id])
@@ -1176,6 +1186,92 @@ function ItemDetailsModal({
   const tokenId = item
     ? getTokenIdFromDomainName(item.normalizedDomainName)
     : null;
+  const requiredAction = item?.metadata?.requiredAction;
+  const isAuthCodeUpdateRequired =
+    item?.type === itemTypeSchema.enum.IMPORT &&
+    requiredAction === 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+  const isUnlockRequired = requiredAction === 'EPP_UNLOCK_REQUIRED';
+  const hasRequiredAction = Boolean(requiredAction);
+
+  const updateAuthCodeMutation = useMutation(
+    trpc.orders.updateImportAuthCode.mutationOptions({
+      onSuccess: async () => {
+        setAuthCode('');
+        toast.success('Auth code updated. We are resuming your import.');
+        await queryClient.invalidateQueries({
+          queryKey: trpc.orders.getOrder.queryKey({ orderId }),
+        });
+      },
+      onError: (error) => {
+        toast.error(error.message || 'Failed to update auth code');
+      },
+    }),
+  );
+
+  const confirmUnlockMutation = useMutation(
+    trpc.orders.confirmDomainUnlocked.mutationOptions({
+      onSuccess: async () => {
+        toast.success('Unlock confirmed. We are resuming the request.');
+        await queryClient.invalidateQueries({
+          queryKey: trpc.orders.getOrder.queryKey({ orderId }),
+        });
+      },
+      onError: (error) => {
+        toast.error(error.message || 'Failed to confirm unlock');
+      },
+    }),
+  );
+
+  const cancelRequiredActionMutation = useMutation(
+    trpc.orders.cancelRequiredActionOrderItem.mutationOptions({
+      onSuccess: async () => {
+        toast.success('Item cancelled. We are stopping the request.');
+        await queryClient.invalidateQueries({
+          queryKey: trpc.orders.getOrder.queryKey({ orderId }),
+        });
+      },
+      onError: (error) => {
+        toast.error(error.message || 'Failed to cancel item');
+      },
+    }),
+  );
+
+  const isActionPending =
+    updateAuthCodeMutation.isPending ||
+    cancelRequiredActionMutation.isPending ||
+    confirmUnlockMutation.isPending;
+
+  const handleAuthCodeSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!item) return;
+    const trimmedAuthCode = authCode.trim();
+    if (!trimmedAuthCode) {
+      toast.error('Enter the auth code to continue.');
+      return;
+    }
+    updateAuthCodeMutation.mutate({
+      orderId,
+      orderItemId: item.id,
+      eppAuthorizationCode: trimmedAuthCode,
+    });
+  };
+
+  const handleCancelRequiredAction = () => {
+    if (!item) return;
+    cancelRequiredActionMutation.mutate({
+      orderId,
+      orderItemId: item.id,
+    });
+  };
+
+  const handleConfirmUnlock = () => {
+    if (!item) return;
+    confirmUnlockMutation.mutate({
+      orderId,
+      orderItemId: item.id,
+    });
+  };
+
   return (
     <AlertDialog open={!!itemId} onOpenChange={() => onOpenChange(null)}>
       <AlertDialogContent className="!max-w-xl">
@@ -1229,6 +1325,104 @@ function ItemDetailsModal({
                 tokenId={tokenId}
                 onCopyUrl={(text) => navigator.clipboard.writeText(text)}
               />
+            ) : null}
+
+            {isUnlockRequired ? (
+              <div className="mt-4 space-y-3">
+                <Alert
+                  variant="default"
+                  className="border border-amber-500/30 bg-amber-800/20"
+                >
+                  <AlertTitle className="font-semibold">
+                    Domain unlock required
+                  </AlertTitle>
+                  <AlertDescription>
+                    Unlock the domain at your registrar, then confirm here so we
+                    can continue.
+                  </AlertDescription>
+                </Alert>
+                <Button
+                  type="button"
+                  onClick={handleConfirmUnlock}
+                  disabled={isActionPending}
+                >
+                  {confirmUnlockMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Confirming…
+                    </>
+                  ) : (
+                    'I unlocked the domain'
+                  )}
+                </Button>
+              </div>
+            ) : null}
+            {isAuthCodeUpdateRequired ? (
+              <div className="mt-4 space-y-3">
+                <Alert
+                  variant="default"
+                  className="border border-amber-500/30 bg-amber-800/20"
+                >
+                  <AlertTitle className="font-semibold">
+                    Auth code required
+                  </AlertTitle>
+                  <AlertDescription>
+                    Enter the new auth code from your registrar to continue the
+                    import.
+                  </AlertDescription>
+                </Alert>
+                <form className="space-y-3" onSubmit={handleAuthCodeSubmit}>
+                  <div className="space-y-2">
+                    <Label htmlFor="order-auth-code">Auth code</Label>
+                    <PasswordInput
+                      id="order-auth-code"
+                      value={authCode}
+                      onChange={(event) => setAuthCode(event.target.value)}
+                      placeholder="Enter auth code"
+                      autoComplete="off"
+                      disabled={isActionPending}
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={isActionPending || !authCode.trim()}
+                  >
+                    {updateAuthCodeMutation.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Updating…
+                      </>
+                    ) : (
+                      'Update auth code'
+                    )}
+                  </Button>
+                </form>
+              </div>
+            ) : null}
+            {hasRequiredAction ? (
+              <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/10 p-3 space-y-2">
+                <div className="text-sm font-semibold">Cancel this item</div>
+                <p className="text-sm text-muted-foreground">
+                  If you no longer want to proceed, canceling will stop
+                  processing this item.
+                </p>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleCancelRequiredAction}
+                  disabled={isActionPending}
+                >
+                  {cancelRequiredActionMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Canceling…
+                    </>
+                  ) : (
+                    'Cancel item'
+                  )}
+                </Button>
+              </div>
             ) : null}
           </div>
         ) : null}
