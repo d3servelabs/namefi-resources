@@ -396,27 +396,49 @@ export function LogoGenerator({
                       Choose text treatment
                     </FormLabel>
                     <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={(val) => {
-                          if (!val) return;
-                          field.onChange(val as LogoTextTreatmentInput);
-                          setOpenPanel(null);
-                        }}
-                      >
-                        <SelectTrigger className="w-full max-w-sm">
-                          <SelectValue placeholder="Select text treatment" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(LOGO_TEXT_TREATMENTS).map(
-                            ([key, treatment]) => (
-                              <SelectItem key={key} value={key}>
-                                {treatment.name}
-                              </SelectItem>
-                            ),
-                          )}
-                        </SelectContent>
-                      </Select>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {Object.entries(LOGO_TEXT_TREATMENTS).map(
+                          ([key, treatment]) => (
+                            <Card
+                              key={key}
+                              className={cn(
+                                'cursor-pointer transition-all hover:shadow-lg',
+                                field.value === key && 'ring-2 ring-orange-500',
+                              )}
+                              onClick={() => {
+                                field.onChange(key as LogoTextTreatmentInput);
+                                setOpenPanel(null);
+                              }}
+                            >
+                              <CardContent className="p-4">
+                                <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
+                                  <img
+                                    src={treatment.image}
+                                    alt={treatment.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                  {field.value === key && (
+                                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                                    </div>
+                                  )}
+                                  {key === 'let-ai-choose' && (
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                                      <Sparkles className="h-8 w-8 text-secondary-foreground" />
+                                    </div>
+                                  )}
+                                </div>
+                                <h4 className="font-medium text-sm mb-1">
+                                  {treatment.name}
+                                </h4>
+                                <p className="text-xs text-gray-500">
+                                  {treatment.description}
+                                </p>
+                              </CardContent>
+                            </Card>
+                          ),
+                        )}
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -435,27 +457,49 @@ export function LogoGenerator({
                       Choose typography
                     </FormLabel>
                     <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={(val) => {
-                          if (!val) return;
-                          field.onChange(val as LogoTypographyInput);
-                          setOpenPanel(null);
-                        }}
-                      >
-                        <SelectTrigger className="w-full max-w-sm">
-                          <SelectValue placeholder="Select typography" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(LOGO_TYPOGRAPHY).map(
-                            ([key, typography]) => (
-                              <SelectItem key={key} value={key}>
-                                {typography.name}
-                              </SelectItem>
-                            ),
-                          )}
-                        </SelectContent>
-                      </Select>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {Object.entries(LOGO_TYPOGRAPHY).map(
+                          ([key, typography]) => (
+                            <Card
+                              key={key}
+                              className={cn(
+                                'cursor-pointer transition-all hover:shadow-lg',
+                                field.value === key && 'ring-2 ring-orange-500',
+                              )}
+                              onClick={() => {
+                                field.onChange(key as LogoTypographyInput);
+                                setOpenPanel(null);
+                              }}
+                            >
+                              <CardContent className="p-4">
+                                <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
+                                  <img
+                                    src={typography.image}
+                                    alt={typography.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                  {field.value === key && (
+                                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                                    </div>
+                                  )}
+                                  {key === 'let-ai-choose' && (
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                                      <Sparkles className="h-8 w-8 text-secondary-foreground" />
+                                    </div>
+                                  )}
+                                </div>
+                                <h4 className="font-medium text-sm mb-1">
+                                  {typography.name}
+                                </h4>
+                                <p className="text-xs text-gray-500">
+                                  {typography.description}
+                                </p>
+                              </CardContent>
+                            </Card>
+                          ),
+                        )}
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

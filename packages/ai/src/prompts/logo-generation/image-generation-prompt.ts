@@ -112,22 +112,16 @@ function buildTypographyInstructions(
   style: LogoStyle,
 ) {
   switch (typography) {
-    case 'geometric-sans':
-      return 'Typography: Geometric sans with clean, circular geometry and consistent stroke widths.';
-    case 'humanist-sans':
-      return 'Typography: Humanist sans with subtle stroke variation and open counters.';
+    case 'sans-serif':
+      return 'Typography: Clean sans serif with balanced proportions and simple forms.';
     case 'serif':
       return 'Typography: Refined serif with elegant terminals and balanced contrast.';
     case 'slab-serif':
       return 'Typography: Bold slab serif with sturdy, rectangular serifs.';
-    case 'rounded-sans':
-      return 'Typography: Rounded sans with soft corners and friendly tone.';
     case 'monospace':
       return 'Typography: Monospace or mono-inspired with technical precision.';
     case 'script':
       return 'Typography: Script or hand-lettered style with smooth, confident strokes.';
-    case 'display':
-      return 'Typography: Display style with distinctive, high-impact letterforms.';
     default:
       return `Typography: Choose a distinctive, brand-appropriate style (avoid generic/default fonts). Suggested direction for ${style}: ${style === 'luxury' ? 'high-contrast serif or sleek minimalist sans' : style === 'classic' ? 'refined serif or traditional sans' : style === 'bold' ? 'heavy geometric sans or slab serif' : style === 'innovative' ? 'geometric or neo-grotesque sans' : style === 'retro' ? 'vintage display or slab serif' : style === 'fun-playful' ? 'rounded or playful display' : style === 'warm-inviting' ? 'humanist or rounded sans' : style === 'confidence' ? 'authoritative serif or balanced sans' : style === 'joy' ? 'friendly rounded sans' : style === 'peace' ? 'soft, airy sans or light serif' : style === 'purity' ? 'clean minimalist sans' : style === 'trust' ? 'stable humanist sans or classic serif' : 'bespoke letterforms aligned with the mood'}.`;
   }

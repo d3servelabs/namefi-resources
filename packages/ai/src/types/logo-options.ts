@@ -142,26 +142,31 @@ export const LOGO_TEXT_TREATMENTS = {
     id: 'let-ai-choose',
     name: 'Let AI Choose',
     description: 'Smart text layout based on the brand',
+    image: '/ai-brand-generator/ai-choice.svg',
   },
   'full-domain': {
     id: 'full-domain',
     name: 'Full Domain',
     description: 'Use the full domain in one wordmark (brand.tld)',
+    image: '/ai-brand-generator/text-treatments/full-domain.svg',
   },
   'tld-subtle': {
     id: 'tld-subtle',
     name: 'TLD Subtle',
     description: 'Brand name primary, TLD secondary and lighter/smaller',
+    image: '/ai-brand-generator/text-treatments/tld-subtle.svg',
   },
   'tld-highlight': {
     id: 'tld-highlight',
     name: 'TLD Highlight',
     description: 'TLD or dot becomes a deliberate accent element',
+    image: '/ai-brand-generator/text-treatments/tld-highlight.svg',
   },
   'stacked-domain': {
     id: 'stacked-domain',
     name: 'Stacked Domain',
     description: 'Brand on the first line, TLD on the second line',
+    image: '/ai-brand-generator/text-treatments/stacked-domain.svg',
   },
 } as const;
 
@@ -170,46 +175,37 @@ export const LOGO_TYPOGRAPHY = {
     id: 'let-ai-choose',
     name: 'Let AI Choose',
     description: 'Typography selected to fit the brand',
+    image: '/ai-brand-generator/ai-choice.svg',
   },
-  'geometric-sans': {
-    id: 'geometric-sans',
-    name: 'Geometric Sans',
-    description: 'Crisp geometry, modern and clean',
-  },
-  'humanist-sans': {
-    id: 'humanist-sans',
-    name: 'Humanist Sans',
-    description: 'Warm, friendly sans with organic curves',
+  'sans-serif': {
+    id: 'sans-serif',
+    name: 'Sans Serif',
+    description: 'Clean, modern, and easy to read',
+    image: '/ai-brand-generator/typography/sans-serif.svg',
   },
   serif: {
     id: 'serif',
     name: 'Serif',
-    description: 'Classic serifs with refined contrast',
+    description: 'Traditional, elegant, and trustworthy',
+    image: '/ai-brand-generator/typography/serif.svg',
   },
   'slab-serif': {
     id: 'slab-serif',
-    name: 'Slab Serif',
-    description: 'Bold slab serifs with strong presence',
-  },
-  'rounded-sans': {
-    id: 'rounded-sans',
-    name: 'Rounded Sans',
-    description: 'Soft corners, approachable and playful',
-  },
-  monospace: {
-    id: 'monospace',
-    name: 'Monospace',
-    description: 'Structured, technical, and precise',
+    name: 'Bold Serif',
+    description: 'Blocky serifs with strong structure',
+    image: '/ai-brand-generator/typography/slab-serif.svg',
   },
   script: {
     id: 'script',
     name: 'Script',
     description: 'Expressive letterforms with elegance',
+    image: '/ai-brand-generator/typography/script.svg',
   },
-  display: {
-    id: 'display',
-    name: 'Display',
-    description: 'Distinctive, high-impact headline style',
+  monospace: {
+    id: 'monospace',
+    name: 'Monospace',
+    description: 'Structured, technical, and precise',
+    image: '/ai-brand-generator/typography/monospace.svg',
   },
 } as const;
 
