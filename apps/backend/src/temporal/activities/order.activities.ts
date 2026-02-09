@@ -29,6 +29,7 @@ import {
   gaEventPaymentSuccess,
 } from '#lib/tracking/checkout/events';
 import { getPreferredEvmWalletAddressToBeCharged } from './payment.activities';
+import { sendAlertToSlack } from './domain/renew.activities';
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -849,6 +850,20 @@ export async function sendOrderRequiresFurtherActionEmail({
   requiredAction: OrderRequiredAction;
   extraMessage?: string;
 }) {
+  if (requiredAction === 'UNDETERMINED') {
+    return sendAlertToSlack({
+      message: `Item(${orderItemId}) in Order(${orderId}) requires admin interference`,
+      title: 'Admin Action Required',
+      extraData: {
+        normalizedDomainName,
+        userId,
+        orderId,
+        orderItemId,
+        requiredAction,
+        extraMessage,
+      },
+    });
+  }
   const message =
     requiredAction === 'EPP_AUTH_CODE_UPDATE_REQUIRED'
       ? `We need a new authorization code for **${normalizedDomainName}** to continue your import.\n\nPlease provide a new auth code in your order details so we can proceed.`

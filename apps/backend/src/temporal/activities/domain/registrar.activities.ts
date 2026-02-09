@@ -136,6 +136,65 @@ export async function sendRegisterOrImportRequestToNamefiRegistrar(
   });
 }
 
+export async function resubmitImportDomainRequestToNamefiRegistrar({
+  normalizedDomainName,
+  registrarKey,
+  encryptionKeyId,
+  encryptedEppAuthorizationCode,
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+  registrarKey: Registrars;
+  encryptionKeyId?: string | null;
+  encryptedEppAuthorizationCode?: string | null;
+}): Promise<LongRunningOperationResult> {
+  if (!(encryptedEppAuthorizationCode && encryptionKeyId)) {
+    throw new Error('EPP authorization code is required for import operations');
+  }
+
+  const domainName = toPunycodeDomainName(normalizedDomainName);
+  const authCode = await decryptEppAuthCode(
+    encryptedEppAuthorizationCode,
+    encryptionKeyId,
+  );
+
+  const contacts: DomainContacts = {
+    registrantContact: DEFAULT_CONTACT(
+      domainName,
+      'registrant',
+    ) as ContactEntity,
+    adminContact: DEFAULT_CONTACT(domainName, 'admin'),
+    technicalContact: DEFAULT_CONTACT(domainName, 'tech'),
+    billingContact: DEFAULT_CONTACT(domainName, 'tech'),
+  };
+
+  return sldRegistrar.resubmitImportDomainRequest(
+    {
+      domainName: domainName as PunycodeDomainName,
+      contacts,
+      privacy: DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
+      authCode,
+      nameservers: [],
+    },
+    { overrideRegistrar: registrarKey },
+  );
+}
+
+export async function cancelImportDomainRequestToNamefiRegistrar({
+  normalizedDomainName,
+  registrarKey,
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+  registrarKey: Registrars;
+}): Promise<LongRunningOperationResult> {
+  const domainName = toPunycodeDomainName(normalizedDomainName);
+  return sldRegistrar.cancelImportDomainRequest(
+    {
+      domainName: domainName as PunycodeDomainName,
+    },
+    { overrideRegistrar: registrarKey },
+  );
+}
+
 export async function pollRegisterOrImportDomainOperationStatus(
   normalizedDomainName: NamefiNormalizedDomain,
   registrarOperationId: string,

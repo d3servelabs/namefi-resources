@@ -226,6 +226,7 @@ export type PostProcessOrderItem = z.infer<typeof postProcessOrderItemSchema>;
 export const orderItemRequiredActionSchema = z.enum([
   'EPP_UNLOCK_REQUIRED',
   'EPP_AUTH_CODE_UPDATE_REQUIRED',
+  'UNDETERMINED',
 ]);
 
 export const orderItemMetadataSchema = cartItemMetadataSchema.extend({

@@ -48,6 +48,8 @@ import type {
   DomainQueryResult,
   LongRunningOperationResult,
   RegisterDomainInput,
+  ResubmitImportDomainRequestInput,
+  CancelImportDomainRequestInput,
   RenewDomainInput,
   TransferDomainInput,
 } from '#lib/abstract-registrar/registrar-service';
@@ -62,6 +64,7 @@ import {
   EPP_NAMESPACES,
   EPP_CLIENT_DOMAIN_STATUSES,
   EPP_ERROR_CODES,
+  isEppSuccessCode,
 } from './types';
 import {
   handleEppResult,
@@ -582,9 +585,85 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
         }),
       );
 
-      return handleEppResult(cmdResult, (data) =>
-        parseTransferResponse(data, domainName),
-      );
+      if (!cmdResult.ok) {
+        const msg = cmdResult.error?.message ?? 'EPP request failed';
+        const reason = cmdResult.error?.reason ?? 'unknown';
+        throw new Error(`EPP error (${reason}): ${msg}`);
+      }
+
+      const code = getResultCode(cmdResult.data);
+      const message = getResultMessage(cmdResult.data);
+
+      if (code !== undefined && !isEppSuccessCode(code)) {
+        if (code === EPP_ERROR_CODES.INVALID_AUTH_INFO) {
+          const actionType = 'EPP_AUTH_CODE_UPDATE_REQUIRED' as const;
+          const operationId = generateOperationId(
+            OperationType.TRANSFER_IN_DOMAIN,
+            domainName,
+            {
+              status: OperationStatus.REQUIRES_ACTION,
+              actionType,
+            },
+          );
+          return {
+            operationId,
+            status: OperationStatus.REQUIRES_ACTION,
+            type: OperationType.TRANSFER_IN_DOMAIN,
+            message,
+            response: {
+              resultCode: code,
+              resultMessage: message,
+            },
+            metadata: {
+              actionType,
+            } as const,
+          };
+        }
+
+        if (code === EPP_ERROR_CODES.OBJECT_STATUS_PROHIBITS) {
+          const actionType = 'EPP_UNLOCK_REQUIRED' as const;
+          const operationId = generateOperationId(
+            OperationType.TRANSFER_IN_DOMAIN,
+            domainName,
+            {
+              status: OperationStatus.REQUIRES_ACTION,
+              actionType,
+            },
+          );
+          return {
+            operationId,
+            status: OperationStatus.REQUIRES_ACTION,
+            type: OperationType.TRANSFER_IN_DOMAIN,
+            message,
+            response: {
+              resultCode: code,
+              resultMessage: message,
+            },
+            metadata: {
+              actionType,
+            } as const,
+          };
+        }
+
+        return {
+          operationId: generateOperationId(
+            OperationType.TRANSFER_IN_DOMAIN,
+            domainName,
+            {
+              status: OperationStatus.FAILED,
+            },
+          ),
+          status: OperationStatus.FAILED,
+          type: OperationType.TRANSFER_IN_DOMAIN,
+          message,
+          response: {
+            resultCode: code,
+            resultMessage: message,
+          },
+        };
+      }
+
+      return parseTransferResponse(cmdResult.data, domainName);
     });
 
     // On successful transfer, add to domain index
@@ -599,6 +678,29 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     }
 
     return result;
+  }
+
+  async resubmitImportDomainRequest(
+    args: ResubmitImportDomainRequestInput,
+  ): Promise<LongRunningOperationResult> {
+    return this.transferDomain(args);
+  }
+
+  async cancelImportDomainRequest(
+    args: CancelImportDomainRequestInput,
+  ): Promise<LongRunningOperationResult> {
+    const { domainName } = args;
+    assertPunycodeDomainName(domainName);
+
+    return this.executeCommand(async (client) => {
+      const cmdResult = await sendCommand(
+        client,
+        buildDomainTransferCommand({ name: domainName, op: 'cancel' }),
+      );
+      return handleEppResult(cmdResult, (data) =>
+        parseUpdateResponse(data, OperationType.TRANSFER_IN_DOMAIN, domainName),
+      );
+    });
   }
 
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
@@ -1062,7 +1164,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
             message: 'Domain is locked',
             metadata: {
               actionType: 'EPP_UNLOCK_REQUIRED',
-            },
+            } as const,
           };
         }
 

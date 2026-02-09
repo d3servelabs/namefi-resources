@@ -19,6 +19,7 @@ export enum DynadotCommand {
   set_privacy = 'set_privacy',
   create_contact = 'create_contact',
   get_transfer_auth_code = 'get_transfer_auth_code',
+  set_transfer_auth_code = 'set_transfer_auth_code',
   get_transfer_status = 'get_transfer_status',
   get_contact = 'get_contact',
   get_account_balance = 'get_account_balance',

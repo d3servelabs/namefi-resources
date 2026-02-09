@@ -43,9 +43,11 @@ import type {
   PricingDetails,
   RdapDomainStatus,
   RegisterDomainInput,
+  ResubmitImportDomainRequestInput,
+  CancelImportDomainRequestInput,
   RenewDomainInput,
   TransferDomainInput,
-  VerifyTransferInAuthCodeOutput,
+  VerifyImportAuthCodeOutput,
 } from '#lib/abstract-registrar';
 import {
   DomainAvailability,
@@ -145,6 +147,17 @@ function setupLimiter({
   limiter?.connection?.on('error', (error) => {
     logger.error({ error }, 'Redis connection error');
   });
+}
+
+function getRequiredActionFromMessage(message?: string) {
+  const lower = message?.toLowerCase() ?? '';
+  if (lower.includes('auth')) {
+    return 'EPP_AUTH_CODE_UPDATE_REQUIRED' as const;
+  }
+  if (lower.includes('lock') || lower.includes('transfer prohibited')) {
+    return 'EPP_UNLOCK_REQUIRED' as const;
+  }
+  return 'UNDETERMINED';
 }
 
 export class R53RegistrarService extends AbstractRegistrarService {
@@ -277,6 +290,40 @@ export class R53RegistrarService extends AbstractRegistrarService {
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
     const contacts = toR53ContactsMap(args.contacts);
+
+    const transferability = await this.send(
+      new CheckDomainTransferabilityCommand({
+        DomainName: domainName,
+        AuthCode: authCode,
+      }),
+    );
+    const transferabilityStatus =
+      transferability.Transferability?.Transferable ?? 'DONT_KNOW';
+    const transferabilityMessage = transferability.Message;
+
+    if (transferabilityStatus !== 'TRANSFERABLE') {
+      const actionType = getRequiredActionFromMessage(transferabilityMessage);
+
+      if (actionType) {
+        return {
+          type: OperationType.TRANSFER_IN_DOMAIN,
+          status: OperationStatus.REQUIRES_ACTION,
+          response: transferability,
+          message: transferabilityMessage,
+          metadata: {
+            actionType,
+          } as const,
+        };
+      }
+
+      return {
+        type: OperationType.TRANSFER_IN_DOMAIN,
+        status: OperationStatus.FAILED,
+        response: transferability,
+        message: transferabilityMessage,
+      };
+    }
+
     const input: TransferDomainCommandInput = {
       IdnLangCode: IdnLanguageCodeISO639_2(domainName),
       DomainName: domainName, // required
@@ -290,13 +337,49 @@ export class R53RegistrarService extends AbstractRegistrarService {
       PrivacyProtectTechContact: privacy,
       AuthCode: authCode,
     };
-    const response = await this.send(new TransferDomainCommand(input));
+    try {
+      const response = await this.send(new TransferDomainCommand(input));
+
+      return {
+        type: OperationType.TRANSFER_IN_DOMAIN,
+        operationId: response.OperationId,
+        status: OperationStatus.SUBMITTED,
+        response,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const actionType = getRequiredActionFromMessage(message);
+      if (actionType) {
+        return {
+          type: OperationType.TRANSFER_IN_DOMAIN,
+          status: OperationStatus.REQUIRES_ACTION,
+          response: { error },
+          message,
+          metadata: {
+            actionType,
+          } as const,
+        };
+      }
+      throw error;
+    }
+  }
+
+  async resubmitImportDomainRequest(
+    args: ResubmitImportDomainRequestInput,
+  ): Promise<LongRunningOperationResult<any>> {
+    return this.transferDomain(args);
+  }
+
+  async cancelImportDomainRequest(
+    args: CancelImportDomainRequestInput,
+  ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(args.domainName);
 
     return {
       type: OperationType.TRANSFER_IN_DOMAIN,
-      operationId: response.OperationId,
-      status: OperationStatus.SUBMITTED,
-      response,
+      status: OperationStatus.ERROR,
+      response: {},
+      message: 'Not supported',
     };
   }
 
@@ -315,7 +398,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   async verifyAuthCode(
     domainName: PunycodeDomainName,
     authCode: string,
-  ): Promise<VerifyTransferInAuthCodeOutput> {
+  ): Promise<VerifyImportAuthCodeOutput> {
     assertPunycodeDomainName(domainName);
 
     const response = await this.send(
@@ -972,6 +1055,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     throw new Error('Route53 does not support transfer rejection via API');
   }
 }
+
 type TldPrices = DomainPrice;
 export type GetDomainSuggestionsWithPricesOutput = {
   domainName: PunycodeDomainName;

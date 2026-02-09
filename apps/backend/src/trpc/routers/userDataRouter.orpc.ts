@@ -99,7 +99,11 @@ const orderItemMetadataSchema = z
       })
       .optional(),
     requiredAction: z
-      .enum(['EPP_UNLOCK_REQUIRED', 'EPP_AUTH_CODE_UPDATE_REQUIRED'])
+      .enum([
+        'EPP_UNLOCK_REQUIRED',
+        'EPP_AUTH_CODE_UPDATE_REQUIRED',
+        'UNDETERMINED',
+      ])
       .optional(),
   })
   .passthrough()

@@ -40,6 +40,10 @@ import type {
   DynadotGetTransferStatusCommandParams,
 } from './get_transfer_status';
 import type {
+  DynadotSetTransferAuthCodeCommandOutput,
+  DynadotSetTransferAuthCodeCommandParams,
+} from './transfer/set_transfer_auth_code';
+import type {
   DynadotListDomainCommandOutput,
   DynadotListDomainCommandParams,
 } from './list_domain';
@@ -119,6 +123,7 @@ export * from './tld_price';
 export * from './transfer';
 export * from './get_transfer_status';
 export * from './get_transfer_auth_code';
+export * from './transfer/set_transfer_auth_code';
 export * from './get_account_balance';
 export * from './list_domain';
 export * from './cancel_transfer';
@@ -147,6 +152,7 @@ export type DynadotCommandsParams = Record<DynadotCommand, unknown> & {
   [DynadotCommand.set_privacy]: DynadotSetPrivacyCommandParams;
   [DynadotCommand.create_contact]: DynadotCreateContactCommandParams;
   [DynadotCommand.get_transfer_auth_code]: DynadotGetTransferAuthCodeCommandParams;
+  [DynadotCommand.set_transfer_auth_code]: DynadotSetTransferAuthCodeCommandParams;
   [DynadotCommand.get_transfer_status]: DynadotGetTransferStatusCommandParams;
   [DynadotCommand.get_contact]: DynadotGetContactCommandParams;
   [DynadotCommand.get_account_balance]: DynadotGetAccountBalanceCommandParams;
@@ -174,6 +180,7 @@ export type DynadotCommandOutput = Record<DynadotCommand, unknown> & {
   [DynadotCommand.set_privacy]: DynadotSetPrivacyCommandOutput;
   [DynadotCommand.create_contact]: DynadotCreateContactCommandOutput;
   [DynadotCommand.get_transfer_auth_code]: DynadotGetTransferAuthCodeCommandOutput;
+  [DynadotCommand.set_transfer_auth_code]: DynadotSetTransferAuthCodeCommandOutput;
   [DynadotCommand.get_transfer_status]: DynadotGetTransferStatusCommandOutput;
   [DynadotCommand.get_contact]: DynadotGetContactCommandOutput;
   [DynadotCommand.get_account_balance]: DynadotGetAccountBalanceCommandOutput;

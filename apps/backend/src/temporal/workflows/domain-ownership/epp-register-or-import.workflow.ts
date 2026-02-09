@@ -1,4 +1,3 @@
-import type { DomainRegistration } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain';
 import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
 import type { LongRunningOperationResult } from '@namefi-astra/registrars/lib/abstract-registrar/registrar-service';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -53,6 +52,7 @@ const {
   generalAlertNamefi,
   setOrderItemRequiredAction,
   sendOrderRequiresFurtherActionEmail,
+  getOrderDetailsOrThrow,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -74,19 +74,23 @@ const { getDomainDetails } = typedProxyActivities({
   },
 });
 
-const { sendRegisterOrImportRequestToNamefiRegistrar, getEppLockState } =
-  typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-    options: {
-      startToCloseTimeout: '30 seconds',
-      retry: {
-        initialInterval: '5 seconds',
-        backoffCoefficient: 2,
-        maximumInterval: '1 minutes',
-        maximumAttempts: 5,
-      },
+const {
+  sendRegisterOrImportRequestToNamefiRegistrar,
+  getEppLockState,
+  resubmitImportDomainRequestToNamefiRegistrar,
+  cancelImportDomainRequestToNamefiRegistrar,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: {
+    startToCloseTimeout: '30 seconds',
+    retry: {
+      initialInterval: '5 seconds',
+      backoffCoefficient: 2,
+      maximumInterval: '1 minute',
+      maximumAttempts: 5,
     },
-  });
+  },
+});
 
 const hourlyPoll = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
@@ -100,6 +104,8 @@ const hourlyPoll = typedProxyActivities({
     },
   },
 });
+
+const AUTH_CODE_ACTION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000;
 
 const { criticalAlertNamefi } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -144,26 +150,27 @@ export async function eppRegisterOrImportWorkflow(
       input,
     });
 
-    const { registrarOperationId } = await submitRequestOrFail({
+    const { operationDetails } = await submitRequestOrFail({
       input,
     });
+    let registrarOperationResult = operationDetails;
 
-    let registrarOperationResult =
-      await pollRegisterOrImportDomainOperationStatus(
-        input.normalizedDomainName,
-        registrarOperationId,
-        input.registrarKey,
-      );
     let registrarOperationStatus = registrarOperationResult.status;
-
     // Loop until the registrar no longer requires user action.
     if (registrarOperationStatus === OperationStatus.REQUIRES_ACTION) {
       registrarOperationResult = await handleOperationRequiresFurtherAction({
         input,
         registrarOperationResult,
       });
-      registrarOperationStatus = registrarOperationResult.status;
+    } else if (registrarOperationResult.operationId) {
+      registrarOperationResult =
+        await pollRegisterOrImportDomainOperationStatus(
+          input.normalizedDomainName,
+          registrarOperationResult.operationId,
+          input.registrarKey,
+        );
     }
+    registrarOperationStatus = registrarOperationResult.status;
 
     if (registrarOperationStatus === OperationStatus.ERROR) {
       // Errors are reported to admins only; user-facing action is handled via REQUIRES_ACTION.
@@ -184,6 +191,7 @@ export async function eppRegisterOrImportWorkflow(
           `Type: ${registrarOperationResult.type}`,
           `Status: ${registrarOperationResult.status}`,
           `Message: ${registrarOperationResult.message}`,
+          'Thrown From: [eppRegisterOrImportWorflow]',
         ],
       });
     }
@@ -218,21 +226,11 @@ async function requireUnlockBeforeImportOrFail({
 }: {
   input: EppRegisterOrImportWorkflowInput;
 }) {
-  let nextAction: NextActionType | null = null;
-  let waitingForSignal = false;
-  let signalReceived: NextActionSignal | null = null;
-  workflow.setHandler(eppRegisterOrImportProceed, (signalInput) => {
-    if (!waitingForSignal) return;
-    waitingForSignal = false;
-    nextAction = signalInput.action;
-    signalReceived = signalInput;
-  });
-
+  const nextActionManager = createNextActionManager();
   let lockState: GetLockStateResponse;
   let count = 0;
 
   do {
-    nextAction = null;
     lockState = await getEppLockState(
       input.normalizedDomainName as PunycodeDomainName,
     );
@@ -247,25 +245,25 @@ async function requireUnlockBeforeImportOrFail({
           : 'Please unlock the domain before proceeding with the import.',
     });
 
-    waitingForSignal = true;
-    await Promise.race([
-      workflow.condition(() => nextAction !== null),
-      hourlyPoll.pollAndExpectEppLockStateChange(input.normalizedDomainName, {
-        locked: false,
-      }),
-    ]);
+    await waitForRequiredActionSignal({
+      input,
+      requiredAction: 'EPP_UNLOCK_REQUIRED',
+      nextActionManager,
+    });
 
-    if (nextAction === 'CANCEL') {
+    if (nextActionManager.getNextAction() === 'CANCEL') {
       throw workflow.ApplicationFailure.create({
         nonRetryable: true,
         message: 'Import requires EPP unlock confirmation',
         details: [
           {
-            signalReceived,
+            signalReceived: nextActionManager.getSignalReceived(),
           },
         ],
       });
     }
+
+    nextActionManager.resetNextAction();
 
     count++;
   } while (lockState.locked);
@@ -330,18 +328,81 @@ async function submitRequestOrFail({
         `Type: ${registrarRes.type}`,
         `Status: ${registrarRes.status}`,
         `Message: ${registrarRes.message}`,
+        'Thrown From: [submitRequestOrFail]',
       ],
     });
   }
 
-  const registrarOperationId = registrarRes.operationId;
-  if (!registrarOperationId) {
+  return { operationDetails: registrarRes };
+}
+
+async function waitForRequiredActionSignal({
+  input,
+  requiredAction,
+  nextActionManager,
+}: {
+  input: EppRegisterOrImportWorkflowInput;
+  requiredAction: OrderRequiredAction | null;
+  nextActionManager: ReturnType<typeof createNextActionManager>;
+}) {
+  const timeout = isAuthCodeUpdateRequired(requiredAction)
+    ? AUTH_CODE_ACTION_TIMEOUT_MS
+    : undefined;
+
+  const promises = [nextActionManager.waitForSignal(timeout)];
+  if (requiredAction === 'EPP_UNLOCK_REQUIRED') {
+    promises.push(
+      hourlyPoll.pollAndExpectEppLockStateChange(input.normalizedDomainName, {
+        locked: false,
+      }),
+    );
+  }
+
+  await Promise.race(promises);
+  nextActionManager.stopWaitingForSignalIfNeeded();
+}
+
+async function resubmitImportWithLatestAuthCode({
+  input,
+}: {
+  input: EppRegisterOrImportWorkflowInput;
+}): Promise<LongRunningOperationResult> {
+  if (!hasOrderTracking(input)) {
     throw workflow.ApplicationFailure.create({
       nonRetryable: true,
-      message: `Failed to request ${isImport ? 'import' : 'register'} domain information`,
+      message: 'Order tracking is required to resubmit import request',
     });
   }
-  return { registrarOperationId, operationDetails: registrarRes };
+
+  const orderDetails = await getOrderDetailsOrThrow(input.orderId);
+  const orderItem = orderDetails.items?.find(
+    (item) => item.id === input.orderItemId,
+  );
+
+  if (!orderItem) {
+    throw workflow.ApplicationFailure.create({
+      nonRetryable: true,
+      message: 'Order item not found for import resubmission',
+    });
+  }
+
+  let resubmitResult: LongRunningOperationResult;
+  try {
+    resubmitResult = await resubmitImportDomainRequestToNamefiRegistrar({
+      normalizedDomainName: input.normalizedDomainName,
+      registrarKey: input.registrarKey,
+      encryptedEppAuthorizationCode: orderItem.encryptedEppAuthorizationCode,
+      encryptionKeyId: orderItem.encryptionKeyId,
+    });
+  } catch (error) {
+    throw workflow.ApplicationFailure.create({
+      nonRetryable: true,
+      message: 'Failed to resubmit import request',
+      details: [error instanceof Error ? error.message : String(error)],
+    });
+  }
+
+  return resubmitResult;
 }
 
 async function handleOperationRequiresFurtherAction({
@@ -376,24 +437,8 @@ async function handleOperationRequiresFurtherAction({
 
   let registrarOperationResult = _registrarOperationResult;
   let registrarOperationStatus = registrarOperationResult.status;
-  const registrarOperationId = registrarOperationResult.operationId;
-  if (!registrarOperationId) {
-    throw new workflow.ApplicationFailure(
-      'Impossible state: Registrar operation ID is missing in handleOperationRequiresFurtherAction',
-    );
-  }
 
-  let nextAction: NextActionType | null = null;
-  let waitingForSignal = false;
-  let signalReceived: NextActionSignal | null = null;
-
-  workflow.setHandler(eppRegisterOrImportProceed, (signalInput) => {
-    if (!waitingForSignal) return;
-
-    waitingForSignal = false;
-    nextAction = signalInput.action;
-    signalReceived = signalInput;
-  });
+  const nextActionManager = createNextActionManager();
 
   let count = 0;
   do {
@@ -410,20 +455,18 @@ async function handleOperationRequiresFurtherAction({
       });
     }
 
-    waitingForSignal = true;
-    await Promise.race([
-      workflow.condition(() => nextAction !== null),
-      requiredAction === 'EPP_UNLOCK_REQUIRED'
-        ? hourlyPoll.pollAndExpectEppLockStateChange(
-            input.normalizedDomainName,
-            {
-              locked: false,
-            },
-          )
-        : new Promise(() => {}),
-    ]);
+    await waitForRequiredActionSignal({
+      input,
+      requiredAction,
+      nextActionManager,
+    });
 
-    if (nextAction === 'CANCEL') {
+    if (
+      nextActionManager.getNextAction() === 'CANCEL' ||
+      nextActionManager.didTimeout()
+    ) {
+      await handleCancelExistingImportRequest(input);
+
       throw workflow.ApplicationFailure.create({
         nonRetryable: true,
         message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
@@ -431,24 +474,40 @@ async function handleOperationRequiresFurtherAction({
           `Type: ${registrarOperationResult.type}`,
           `Status: ${registrarOperationResult.status}`,
           `Message: ${registrarOperationResult.message}`,
-          signalReceived,
+          'Thrown From: [handleOperationRequiresFurtherAction]',
+          nextActionManager.getSignalReceived(),
         ],
       });
     }
 
-    nextAction = null;
+    nextActionManager.resetNextAction();
     await clearRequiredAction({
       input,
     });
 
-    registrarOperationResult = await pollRegisterOrImportDomainOperationStatus(
-      input.normalizedDomainName,
-      registrarOperationId,
-      input.registrarKey,
+    // Resubmit the operation if needed and update the operationId
+    const newRegistrarOperationResult = await resubmitRequestIfNeeded(
+      requiredAction,
+      input,
     );
+
+    if (newRegistrarOperationResult) {
+      registrarOperationResult = newRegistrarOperationResult;
+    }
+
+    if (registrarOperationResult.operationId) {
+      registrarOperationResult =
+        await pollRegisterOrImportDomainOperationStatus(
+          input.normalizedDomainName,
+          registrarOperationResult.operationId,
+          input.registrarKey,
+        );
+    }
+
     registrarOperationStatus = registrarOperationResult.status;
     count++;
   } while (registrarOperationStatus === 'REQUIRES_ACTION');
+
   return registrarOperationResult;
 }
 
@@ -560,7 +619,7 @@ async function determineRequiredAction({
     return 'EPP_UNLOCK_REQUIRED';
   }
 
-  return 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+  return 'UNDETERMINED';
 }
 
 /**
@@ -633,6 +692,93 @@ async function extendDomainRegistrationIfNeeded(
 
       // Continue to return domain details - the transfer succeeded so the domain exists with 1 year.
       // Admins will be notified to manually resolve the missing renewal years.
+    }
+  }
+}
+
+function isAuthCodeUpdateRequired(
+  requiredAction: OrderRequiredAction | null,
+): requiredAction is 'EPP_AUTH_CODE_UPDATE_REQUIRED' {
+  return requiredAction === 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+}
+
+function createNextActionManager() {
+  let nextAction: NextActionType | null = null;
+  let waitingForSignal = false;
+  let signalReceived: NextActionSignal | null = null;
+  let timedOut = false;
+
+  workflow.setHandler(eppRegisterOrImportProceed, (signalInput) => {
+    if (!waitingForSignal) return;
+
+    waitingForSignal = false;
+    nextAction = signalInput.action;
+    signalReceived = signalInput;
+  });
+
+  return {
+    getNextAction: () => nextAction,
+    getSignalReceived: () => signalReceived,
+    resetNextAction: () => {
+      nextAction = null;
+    },
+    stopWaitingForSignalIfNeeded: () => {
+      waitingForSignal = false;
+    },
+    didTimeout: () => timedOut,
+    waitForSignal: (timeoutMs?: number) => {
+      waitingForSignal = true;
+      if (timeoutMs) {
+        return new Promise((resolve, _reject) => {
+          workflow
+            .condition(() => nextAction !== null, timeoutMs)
+            .then((res) => {
+              timedOut = !res;
+              resolve(res);
+            })
+            .catch(() => {
+              timedOut = true;
+              resolve(false);
+            });
+        });
+      }
+      return workflow.condition(() => nextAction !== null);
+    },
+  };
+}
+
+async function handleCancelExistingImportRequest(
+  input: EppRegisterOrImportWorkflowInput,
+) {
+  try {
+    await cancelImportDomainRequestToNamefiRegistrar({
+      normalizedDomainName: input.normalizedDomainName,
+      registrarKey: input.registrarKey,
+    });
+  } catch (error) {
+    void criticalAlertNamefi({
+      message: 'Failed to cancel import request',
+      extraData: {
+        normalizedDomainName: input.normalizedDomainName,
+        registrarKey: input.registrarKey,
+        error,
+      },
+    });
+  }
+}
+
+async function resubmitRequestIfNeeded(
+  requiredAction: OrderRequiredAction | null,
+  input: EppRegisterOrImportWorkflowInput,
+) {
+  if (isAuthCodeUpdateRequired(requiredAction)) {
+    try {
+      return await resubmitImportWithLatestAuthCode({
+        input,
+      });
+    } catch (error) {
+      await handleCancelExistingImportRequest(input);
+      throw error;
     }
   }
 }

@@ -46,9 +46,11 @@ import type {
   DomainQueryResult,
   LongRunningOperationResult,
   RegisterDomainInput,
+  ResubmitImportDomainRequestInput,
+  CancelImportDomainRequestInput,
   RenewDomainInput,
   TransferDomainInput,
-  VerifyTransferInAuthCodeOutput,
+  VerifyImportAuthCodeOutput,
 } from '#lib/abstract-registrar';
 import {
   type PunycodeDomainName,
@@ -305,6 +307,126 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  async resubmitImportDomainRequest(
+    args: ResubmitImportDomainRequestInput,
+  ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(args.domainName);
+
+    const statusResponse = await this.client.command(
+      DynadotCommand.get_transfer_status,
+      {
+        domain: args.domainName,
+        transfer_type: 'in',
+      },
+    );
+    assertNot(
+      responseFailed(statusResponse.GetTransferStatusResponse),
+      'Response Failed',
+    );
+
+    const transferList =
+      statusResponse.GetTransferStatusResponse.TransferList ?? [];
+    const activeTransfers = transferList.filter(
+      (transfer) =>
+        !isDynadotTransferAwayTerminalStatus(transfer.TransferStatus),
+    );
+
+    if (activeTransfers.length === 1) {
+      const activeTransfer = activeTransfers[0];
+      assertNotNil(activeTransfer, 'No pending transfer found');
+      assertNotNil(activeTransfer.OrderId, 'Transfer order id not found');
+
+      const updateResponse = await this.client.command(
+        DynadotCommand.set_transfer_auth_code,
+        {
+          domain: args.domainName,
+          order_id: activeTransfer.OrderId,
+          auth_code: args.authCode,
+        },
+      );
+
+      return {
+        type: OperationType.TRANSFER_IN_DOMAIN,
+        operationId: generateOperationId(
+          OperationType.TRANSFER_IN_DOMAIN,
+          args.domainName,
+        ),
+        status: responseFailed(updateResponse.SetTransferAuthCodeResponse)
+          ? OperationStatus.FAILED
+          : OperationStatus.IN_PROGRESS,
+        response: updateResponse,
+      };
+    }
+
+    if (activeTransfers.length > 0) {
+      await Promise.all(
+        activeTransfers.map(async (transfer) => {
+          assertNotNil(transfer.OrderId, 'Transfer order id not found');
+          return this.client.command(DynadotCommand.cancel_transfer, {
+            domain: args.domainName,
+            order_id: transfer.OrderId,
+          });
+        }),
+      );
+    }
+
+    return this.transferDomain(args);
+  }
+
+  async cancelImportDomainRequest(
+    args: CancelImportDomainRequestInput,
+  ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(args.domainName);
+
+    const statusResponse = await this.client.command(
+      DynadotCommand.get_transfer_status,
+      {
+        domain: args.domainName,
+        transfer_type: 'in',
+      },
+    );
+    assertNot(
+      responseFailed(statusResponse.GetTransferStatusResponse),
+      'Response Failed',
+    );
+
+    const transferList =
+      statusResponse.GetTransferStatusResponse.TransferList ?? [];
+
+    if (transferList.length === 0) {
+      return {
+        type: OperationType.TRANSFER_IN_DOMAIN,
+        status: OperationStatus.SUCCESSFUL,
+        response: {},
+        message: 'No pending transfer to cancel',
+      };
+    }
+
+    const cancelResponses = await Promise.all(
+      transferList.map(async (transfer) => {
+        assertNotNil(transfer.OrderId, 'Transfer order id not found');
+        return this.client.command(DynadotCommand.cancel_transfer, {
+          domain: args.domainName,
+          order_id: transfer.OrderId,
+        });
+      }),
+    );
+
+    const hasFailure = cancelResponses.some((response) =>
+      responseFailed(response.CancelTransferResponse),
+    );
+
+    return {
+      type: OperationType.TRANSFER_IN_DOMAIN,
+      operationId: generateOperationId(
+        OperationType.TRANSFER_IN_DOMAIN,
+        args.domainName,
+      ),
+      status: hasFailure ? OperationStatus.FAILED : OperationStatus.SUCCESSFUL,
+      response: cancelResponses,
+    };
+  }
+
   async renewAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
 
@@ -343,7 +465,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
   verifyAuthCode(
     domainName: PunycodeDomainName,
     authCode: string,
-  ): Promise<VerifyTransferInAuthCodeOutput> {
+  ): Promise<VerifyImportAuthCodeOutput> {
     return new Promise((resolve) => {
       resolve({
         transferable: true,
@@ -1194,7 +1316,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           default:
             return {
               ...baseRes,
-              status: OperationStatus.ERROR,
+              status: OperationStatus.REQUIRES_ACTION,
+              metadata: {
+                actionType: 'UNDETERMINED',
+              },
             };
         }
       }

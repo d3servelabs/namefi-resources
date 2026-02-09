@@ -36,6 +36,8 @@ import type {
   RegisterDomainInput,
   RenewDomainInput,
   TransferDomainInput,
+  ResubmitImportDomainRequestInput,
+  CancelImportDomainRequestInput,
   LongRunningOperationResult as iLongRunningOperationResult,
 } from '#lib/abstract-registrar/registrar-service';
 import { AbstractRegistrarService } from '#lib/abstract-registrar/registrar-service';
@@ -126,6 +128,30 @@ export class RegistrarService extends AbstractRegistrarService {
     return this._getRegistrar(args.registrarKey)
       .transferDomain(args)
       .then(injectRegistrar(args.registrarKey));
+  }
+
+  async resubmitImportDomainRequest(
+    args: ResubmitImportDomainRequestInput,
+    options?: { overrideRegistrar?: Registrars },
+  ): Promise<LongRunningOperationResult<any>> {
+    const provider = options?.overrideRegistrar
+      ? this._getRegistrar(options.overrideRegistrar)
+      : await this.getRegistrar(args.domainName);
+    return provider
+      .resubmitImportDomainRequest(args)
+      .then(injectRegistrar(provider.key));
+  }
+
+  async cancelImportDomainRequest(
+    args: CancelImportDomainRequestInput,
+    options?: { overrideRegistrar?: Registrars },
+  ): Promise<LongRunningOperationResult<any>> {
+    const provider = options?.overrideRegistrar
+      ? this._getRegistrar(options.overrideRegistrar)
+      : await this.getRegistrar(args.domainName);
+    return provider
+      .cancelImportDomainRequest(args)
+      .then(injectRegistrar(provider.key));
   }
 
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {

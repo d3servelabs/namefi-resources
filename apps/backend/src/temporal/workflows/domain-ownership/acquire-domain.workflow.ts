@@ -211,7 +211,7 @@ async function _acquireSldDomain(input: AcquireDomainWorkflowInput) {
   let details: Awaited<ReturnType<typeof sldRegisterOrImportWorkflow>>;
   try {
     if (workflow.patched('use-new-epp-workflow')) {
-      const useNewEppWorkflow = await getConfig('USE_NEW_EPP_WORKFLOW');
+      const useNewEppWorkflow = true;
 
       details = await workflow.executeChild(
         useNewEppWorkflow

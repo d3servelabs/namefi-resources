@@ -63,7 +63,8 @@ const previewConfig: PreviewConfig = {
   ALLOW_ALL_ORIGINS: process.env.ALLOW_ALL_ORIGINS
     ? process.env.ALLOW_ALL_ORIGINS?.toLowerCase() === 'true'
     : true,
-  DYNADOT_BASE_URL: 'https://dynadot.namefi.dev/api3.json',
+  DYNADOT_BASE_URL:
+    process.env.DYNADOT_BASE_URL || 'https://dynadot.namefi.dev/api3.json',
 
   DNSSEC_DNSKEY_PUBLIC_RECORD:
     'example.com. 3600 IN DNSKEY 257 3 13 g2sb5aS1wJZPanPqAeUzcb6pNM6h9ruKJb2ptCEtppMEBdmvVnS49wATr083ghefNvYN2tl552ICYiNxm2q54w==',

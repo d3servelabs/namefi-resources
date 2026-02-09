@@ -7,6 +7,7 @@ Overview
 Action Types
 - EPP_UNLOCK_REQUIRED: domain must be unlocked at current registrar.
 - EPP_AUTH_CODE_UPDATE_REQUIRED: user must provide a new authorization code.
+- UNDETERMINED
 
 Workflow Behavior
 - On IMPORT: check lock -> if locked, set requiredAction and wait for PROCEED signal -> recheck lock before sending transfer.

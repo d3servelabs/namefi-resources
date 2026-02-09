@@ -24,7 +24,10 @@ import type {
 import type { PendingTransferInfo } from './data/transfer-status';
 
 type RequiresActionMetadata = {
-  actionType: 'EPP_UNLOCK_REQUIRED' | 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+  actionType:
+    | 'EPP_UNLOCK_REQUIRED'
+    | 'EPP_AUTH_CODE_UPDATE_REQUIRED'
+    | 'UNDETERMINED';
 };
 export type LongRunningOperationResult<T = any> = {
   operationId?: string | null;
@@ -64,6 +67,11 @@ export type TransferDomainInput = {
   nameservers: Nameservers;
 };
 
+export type ResubmitImportDomainRequestInput = TransferDomainInput;
+export type CancelImportDomainRequestInput = {
+  domainName: PunycodeDomainName;
+};
+
 export type RenewDomainInput = {
   domainName: PunycodeDomainName;
   durationInYears: number;
@@ -75,7 +83,7 @@ export type RenewDomainInput = {
   currentExpirationDate: Date;
 };
 
-export type VerifyTransferInAuthCodeOutput = {
+export type VerifyImportAuthCodeOutput = {
   transferable: boolean;
   reason?: string;
   response: any;
@@ -106,6 +114,16 @@ export abstract class AbstractRegistrarService<T extends string = string> {
 
   abstract transferDomain(
     args: TransferDomainInput,
+    options?: any,
+  ): Promise<LongRunningOperationResult>;
+
+  abstract resubmitImportDomainRequest(
+    args: ResubmitImportDomainRequestInput,
+    options?: any,
+  ): Promise<LongRunningOperationResult>;
+
+  abstract cancelImportDomainRequest(
+    args: CancelImportDomainRequestInput,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
