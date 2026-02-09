@@ -9,6 +9,7 @@ import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type {
   PaymentSelect,
   OrderMintTransactionMetadata,
+  OrderItemMetadata,
 } from '@namefi-astra/db/types';
 import {
   Tooltip,
@@ -59,6 +60,7 @@ import { NetworkLogo } from '@/components/network-logo';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import { formatDuration, intervalToDuration, addSeconds } from 'date-fns';
 import { cn } from '@/lib/cn';
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
@@ -302,7 +304,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
         {requiredActionItems.length > 0 && items ? (
           <Alert
             variant="default"
-            className="w-full border border-amber-500/30 bg-amber-800/20"
+            className="w-full border border-amber-500/30 bg-amber-800/20 col-span-full"
           >
             <AlertTitle className="font-semibold"> Action required</AlertTitle>
             <AlertDescription>
@@ -528,6 +530,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   item.normalizedDomainName,
                 );
                 const requiredAction = item.metadata?.requiredAction;
+                const failureDetailsText =
+                  item.status === 'FAILED'
+                    ? getFailureDetailsText(item.metadata?.failureDetails)
+                    : null;
                 const chainId = order.nftChainId ?? null;
                 return (
                   <button
@@ -563,6 +569,11 @@ export function OrderDetailsContent({ id }: { id: string }) {
                           {formatAmountInUSD(item.amountInUSDCents, true)}
                         </span>
                       </div>
+                      {failureDetailsText ? (
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          {failureDetailsText}
+                        </div>
+                      ) : null}
                       {mintTransaction && tokenId ? (
                         <MintTokenRow
                           label="Minted NFT"
@@ -1237,4 +1248,46 @@ function getRequiredActionText(requiredAction?: string | null) {
     default:
       return null;
   }
+}
+
+function formatFailureDuration(timeoutMs?: number | null) {
+  if (!timeoutMs || timeoutMs <= 0) return null;
+  const now = new Date();
+  const interval = { start: now, end: addSeconds(now, timeoutMs / 1000) };
+  const duration = intervalToDuration(interval);
+  return formatDuration(duration, {
+    format: ['days', 'hours', 'minutes'],
+    zero: true,
+  });
+}
+
+function getFailureDetailsText(
+  failureDetails?: OrderItemMetadata['failureDetails'] | null,
+) {
+  if (!failureDetails) return null;
+
+  const { requiredAction, resolution, actor, timeoutMs } = failureDetails;
+  const isAuthCodeRequired = requiredAction === 'EPP_AUTH_CODE_UPDATE_REQUIRED';
+  const duration = formatFailureDuration(timeoutMs);
+
+  if (resolution === 'TIMEOUT') {
+    if (duration) {
+      return isAuthCodeRequired
+        ? `Auth code was not updated for ${duration}, so the order item was canceled.`
+        : `Domain stayed locked for ${duration}, so the order item was canceled.`;
+    }
+    return isAuthCodeRequired
+      ? 'Auth code update timed out, so the order item was canceled.'
+      : 'Domain stayed locked too long, so the order item was canceled.';
+  }
+
+  if (actor === 'ADMIN') {
+    return isAuthCodeRequired
+      ? 'Auth code update required and support canceled the request.'
+      : 'Domain was locked and support canceled the request.';
+  }
+
+  return isAuthCodeRequired
+    ? 'Auth code update required and you canceled the request.'
+    : 'Domain was locked and you canceled the request.';
 }

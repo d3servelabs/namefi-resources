@@ -51,6 +51,7 @@ export const eppRegisterOrImportProceed =
 const {
   generalAlertNamefi,
   setOrderItemRequiredAction,
+  convertRequiredActionToFailureReason,
   sendOrderRequiresFurtherActionEmail,
   getOrderDetailsOrThrow,
 } = typedProxyActivities({
@@ -105,7 +106,11 @@ const hourlyPoll = typedProxyActivities({
   },
 });
 
-const AUTH_CODE_ACTION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000;
+const TIMEOUT_BY_REQUIRED_ACTION = {
+  EPP_UNLOCK_REQUIRED: 7 * 24 * 60 * 60 * 1000, // 7 days
+  EPP_AUTH_CODE_UPDATE_REQUIRED: 7 * 24 * 60 * 60 * 1000, // 7 days
+  UNDETERMINED: undefined,
+} as const;
 
 const { criticalAlertNamefi } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -236,6 +241,8 @@ async function requireUnlockBeforeImportOrFail({
     );
     if (!lockState.locked) break;
 
+    const requiredAction: OrderRequiredAction = 'EPP_UNLOCK_REQUIRED';
+
     await notifyUserRequiredAction({
       input,
       requiredAction: 'EPP_UNLOCK_REQUIRED',
@@ -247,11 +254,31 @@ async function requireUnlockBeforeImportOrFail({
 
     await waitForRequiredActionSignal({
       input,
-      requiredAction: 'EPP_UNLOCK_REQUIRED',
+      requiredAction,
       nextActionManager,
     });
 
-    if (nextActionManager.getNextAction() === 'CANCEL') {
+    const isCancelled = nextActionManager.getNextAction() === 'CANCEL';
+    const didTimeout = nextActionManager.didTimeout();
+
+    if (isCancelled || didTimeout) {
+      const signalReceived = nextActionManager.getSignalReceived();
+      const timeoutMs =
+        didTimeout && requiredAction
+          ? TIMEOUT_BY_REQUIRED_ACTION[requiredAction]
+          : undefined;
+
+      if (requiredAction && hasOrderTracking(input)) {
+        await convertRequiredActionToFailureReason({
+          orderId: input.orderId,
+          orderItemId: input.orderItemId,
+          requiredAction,
+          resolution: didTimeout ? 'TIMEOUT' : 'USER_SIGNAL',
+          actor: signalReceived?.actor,
+          actorId: signalReceived?.actorId,
+          timeoutMs,
+        });
+      }
       throw workflow.ApplicationFailure.create({
         nonRetryable: true,
         message: 'Import requires EPP unlock confirmation',
@@ -345,8 +372,8 @@ async function waitForRequiredActionSignal({
   requiredAction: OrderRequiredAction | null;
   nextActionManager: ReturnType<typeof createNextActionManager>;
 }) {
-  const timeout = isAuthCodeUpdateRequired(requiredAction)
-    ? AUTH_CODE_ACTION_TIMEOUT_MS
+  const timeout = requiredAction
+    ? TIMEOUT_BY_REQUIRED_ACTION[requiredAction]
     : undefined;
 
   const promises = [nextActionManager.waitForSignal(timeout)];
@@ -461,11 +488,29 @@ async function handleOperationRequiresFurtherAction({
       nextActionManager,
     });
 
-    if (
-      nextActionManager.getNextAction() === 'CANCEL' ||
-      nextActionManager.didTimeout()
-    ) {
+    const isCancelled = nextActionManager.getNextAction() === 'CANCEL';
+    const didTimeout = nextActionManager.didTimeout();
+
+    if (isCancelled || didTimeout) {
       await handleCancelExistingImportRequest(input);
+
+      const signalReceived = nextActionManager.getSignalReceived();
+      const timeoutMs =
+        didTimeout && requiredAction
+          ? TIMEOUT_BY_REQUIRED_ACTION[requiredAction]
+          : undefined;
+
+      if (requiredAction && hasOrderTracking(input)) {
+        await convertRequiredActionToFailureReason({
+          orderId: input.orderId,
+          orderItemId: input.orderItemId,
+          requiredAction,
+          resolution: didTimeout ? 'TIMEOUT' : 'USER_SIGNAL',
+          actor: signalReceived?.actor,
+          actorId: signalReceived?.actorId,
+          timeoutMs,
+        });
+      }
 
       throw workflow.ApplicationFailure.create({
         nonRetryable: true,

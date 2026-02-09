@@ -229,10 +229,25 @@ export const orderItemRequiredActionSchema = z.enum([
   'UNDETERMINED',
 ]);
 
+export const orderItemFailureResolutionSchema = z.enum([
+  'USER_SIGNAL',
+  'TIMEOUT',
+]);
+
+export const orderItemFailureDetailsSchema = z.object({
+  requiredAction: orderItemRequiredActionSchema,
+  resolution: orderItemFailureResolutionSchema,
+  actor: z.enum(['USER', 'ADMIN']).optional(),
+  actorId: z.string().optional(),
+  timeoutMs: z.number().int().positive().optional(),
+  recordedAt: z.string(),
+});
+
 export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
   mintTransaction: orderMintTransactionMetadataSchema.optional(),
   postProcessOrderItem: postProcessOrderItemSchema.optional(),
   requiredAction: orderItemRequiredActionSchema.optional(),
+  failureDetails: orderItemFailureDetailsSchema.optional(),
 });
 
 export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;

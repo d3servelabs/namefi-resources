@@ -437,6 +437,67 @@ export async function setOrderItemRequiredAction({
   return updatedOrderItem;
 }
 
+export async function convertRequiredActionToFailureReason({
+  orderItemId,
+  orderId,
+  requiredAction,
+  resolution,
+  actor,
+  actorId,
+  timeoutMs,
+}: {
+  orderItemId: string;
+  orderId: string;
+  requiredAction: NonNullable<OrderItemMetadata['requiredAction']>;
+  resolution: NonNullable<OrderItemMetadata['failureDetails']>['resolution'];
+  actor?: NonNullable<OrderItemMetadata['failureDetails']>['actor'];
+  actorId?: string;
+  timeoutMs?: number;
+}) {
+  const recordedAt = new Date().toISOString();
+  const failureDetails = {
+    requiredAction,
+    resolution,
+    actor,
+    actorId,
+    timeoutMs,
+    recordedAt,
+  };
+
+  const [updatedOrderItem] = await db
+    .update(orderItemsTable)
+    .set({
+      metadata: sql`jsonb_set(
+        coalesce(${orderItemsTable.metadata}, '{}'::jsonb) - 'requiredAction',
+        '{failureDetails}',
+        ${JSON.stringify(failureDetails)}::jsonb,
+        true
+      )`,
+    })
+    .where(
+      and(
+        eq(orderItemsTable.id, orderItemId),
+        eq(orderItemsTable.orderId, orderId),
+      ),
+    )
+    .returning({ id: orderItemsTable.id });
+
+  if (!updatedOrderItem) {
+    throw new Error(
+      `Order item not found when recording failure details (orderId=${orderId}, orderItemId=${orderItemId})`,
+    );
+  }
+
+  logger.debug(
+    { orderId, orderItemId, failureDetails },
+    'Recorded failure details for order item %s on order %s',
+    orderItemId,
+    orderId,
+  );
+
+  return updatedOrderItem;
+}
+
 // Export activities as a namespace for easier import in workflow
 export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
@@ -450,6 +511,7 @@ export type OrderActivities = {
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
   setOrderItemRequiredAction: typeof setOrderItemRequiredAction;
+  convertRequiredActionToFailureReason: typeof convertRequiredActionToFailureReason;
   createFreeAutoRenewOrder: typeof createFreeAutoRenewOrder;
 };
 
