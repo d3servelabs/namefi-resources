@@ -521,9 +521,7 @@ export function GenerationDetailsClient({
                   </div>
                   {textTreatmentValue && (
                     <div>
-                      <span className="text-sm font-medium">
-                        Text treatment:
-                      </span>
+                      <span className="text-sm font-medium">TLD:</span>
                       <Badge variant="outline" className="ml-2 capitalize">
                         {getTextTreatmentLabel(textTreatmentValue)}
                       </Badge>

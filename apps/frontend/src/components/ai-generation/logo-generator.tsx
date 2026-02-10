@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: using <img> for tile previews */
 'use client';
 
 import { Card, CardContent } from '@/components/ui/shadcn/card';
@@ -21,12 +20,33 @@ import {
   type LogoTypeInput,
 } from '@namefi-astra/ai/types';
 import { cn } from '@/lib/cn';
-import { Check, Sparkles } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import {
+  Atom,
+  CaseSensitive,
+  Check,
+  Crown,
+  Disc,
+  Droplet,
+  Handshake,
+  Heart,
+  Image as ImageIcon,
+  Landmark,
+  Leaf,
+  PartyPopper,
+  ShieldCheck,
+  Shapes,
+  Smile,
+  Sparkles,
+  Square,
+  Sun,
+  Type,
+} from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import type { Generation } from './shared/types';
 import {
   Select,
@@ -46,6 +66,217 @@ const logoTextTreatmentOptions = Object.keys(
 const logoTypographyOptions = Object.keys(
   LOGO_TYPOGRAPHY,
 ) as LogoTypographyInput[];
+
+type TileConfig = {
+  icon: LucideIcon;
+  gradient: string;
+  iconClassName?: string;
+  accent?: ReactNode;
+};
+
+const LOGO_TYPE_TILES: Record<LogoTypeInput, TileConfig> = {
+  'let-ai-choose': {
+    icon: Sparkles,
+    gradient: 'bg-gradient-to-br from-slate-900 via-indigo-700 to-fuchsia-500',
+    iconClassName: 'text-white',
+    accent: (
+      <>
+        <span className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-white/10" />
+        <span className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full bg-white/10" />
+      </>
+    ),
+  },
+  'image-icon': {
+    icon: ImageIcon,
+    gradient: 'bg-gradient-to-br from-sky-200 via-cyan-200 to-blue-200',
+    iconClassName: 'text-slate-700',
+    accent: (
+      <span className="absolute right-6 top-6 h-6 w-6 rounded-full bg-yellow-200/70" />
+    ),
+  },
+  'abstract-icon': {
+    icon: Shapes,
+    gradient: 'bg-gradient-to-br from-violet-200 via-fuchsia-200 to-rose-200',
+    iconClassName: 'text-violet-700',
+    accent: (
+      <>
+        <span className="absolute left-5 top-6 h-8 w-8 rounded-full bg-white/40" />
+        <span className="absolute bottom-6 right-6 h-10 w-10 rounded-xl bg-white/30" />
+      </>
+    ),
+  },
+  wordmark: {
+    icon: Type,
+    gradient: 'bg-gradient-to-br from-slate-50 via-white to-slate-200',
+    iconClassName: 'text-slate-700',
+    accent: (
+      <>
+        <span className="absolute left-6 right-10 top-[62%] h-1 rounded-full bg-slate-900/10" />
+        <span className="absolute left-8 right-6 top-[72%] h-1 rounded-full bg-slate-900/10" />
+      </>
+    ),
+  },
+  'letter-mark': {
+    icon: CaseSensitive,
+    gradient: 'bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100',
+    iconClassName: 'text-amber-700',
+    accent: (
+      <span className="absolute left-6 top-6 h-14 w-14 rounded-full bg-white/40" />
+    ),
+  },
+  mascot: {
+    icon: Smile,
+    gradient: 'bg-gradient-to-br from-emerald-100 via-teal-100 to-cyan-100',
+    iconClassName: 'text-emerald-700',
+    accent: (
+      <>
+        <span className="absolute left-8 top-7 h-2 w-2 rounded-full bg-emerald-400/70" />
+        <span className="absolute right-8 top-7 h-2 w-2 rounded-full bg-emerald-400/70" />
+      </>
+    ),
+  },
+};
+
+const LOGO_STYLE_TILES: Record<LogoStyleInput, TileConfig> = {
+  'let-ai-choose': {
+    icon: Sparkles,
+    gradient: 'bg-gradient-to-br from-slate-900 via-indigo-700 to-fuchsia-500',
+    iconClassName: 'text-white',
+    accent: (
+      <>
+        <span className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-white/10" />
+        <span className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full bg-white/10" />
+      </>
+    ),
+  },
+  classic: {
+    icon: Landmark,
+    gradient: 'bg-gradient-to-br from-stone-200 via-amber-100 to-stone-100',
+    iconClassName: 'text-stone-700',
+    accent: (
+      <span className="absolute inset-3 rounded-xl border border-stone-400/30" />
+    ),
+  },
+  innovative: {
+    icon: Atom,
+    gradient: 'bg-gradient-to-br from-slate-900 via-blue-800 to-indigo-600',
+    iconClassName: 'text-white',
+    accent: (
+      <span className="absolute left-6 top-6 h-10 w-10 rounded-full border border-white/25" />
+    ),
+  },
+  bold: {
+    icon: Square,
+    gradient: 'bg-gradient-to-br from-orange-500 via-amber-500 to-yellow-400',
+    iconClassName: 'text-white',
+    accent: (
+      <span className="absolute bottom-0 right-0 h-16 w-16 bg-white/15" />
+    ),
+  },
+  luxury: {
+    icon: Crown,
+    gradient: 'bg-gradient-to-br from-neutral-900 via-neutral-800 to-amber-700',
+    iconClassName: 'text-amber-200',
+    accent: (
+      <span className="absolute inset-4 rounded-2xl border border-amber-200/30" />
+    ),
+  },
+  'warm-inviting': {
+    icon: Heart,
+    gradient: 'bg-gradient-to-br from-rose-200 via-orange-200 to-amber-100',
+    iconClassName: 'text-rose-600',
+    accent: (
+      <span className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/35" />
+    ),
+  },
+  'fun-playful': {
+    icon: PartyPopper,
+    gradient: 'bg-gradient-to-br from-pink-300 via-yellow-200 to-emerald-200',
+    iconClassName: 'text-rose-600',
+    accent: (
+      <>
+        <span className="absolute left-6 top-8 h-2 w-2 rounded-full bg-white/70" />
+        <span className="absolute right-8 top-6 h-3 w-3 rounded-full bg-white/60" />
+        <span className="absolute bottom-8 left-10 h-2 w-2 rounded-full bg-white/70" />
+      </>
+    ),
+  },
+  retro: {
+    icon: Disc,
+    gradient: 'bg-gradient-to-br from-amber-200 via-orange-200 to-rose-200',
+    iconClassName: 'text-rose-700',
+    accent: (
+      <>
+        <span className="absolute left-[-30%] top-[15%] h-6 w-[160%] rotate-6 bg-white/35" />
+        <span className="absolute left-[-30%] top-[42%] h-6 w-[160%] rotate-6 bg-white/25" />
+        <span className="absolute left-[-30%] top-[69%] h-6 w-[160%] rotate-6 bg-white/35" />
+      </>
+    ),
+  },
+  confidence: {
+    icon: ShieldCheck,
+    gradient: 'bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900',
+    iconClassName: 'text-white',
+    accent: (
+      <span className="absolute left-[-20%] top-[45%] h-10 w-[140%] -skew-y-6 bg-white/10" />
+    ),
+  },
+  joy: {
+    icon: Sun,
+    gradient: 'bg-gradient-to-br from-yellow-200 via-amber-200 to-orange-200',
+    iconClassName: 'text-amber-600',
+    accent: (
+      <span className="absolute -bottom-6 left-1/2 h-20 w-20 -translate-x-1/2 rounded-full bg-white/35" />
+    ),
+  },
+  peace: {
+    icon: Leaf,
+    gradient: 'bg-gradient-to-br from-sky-200 via-emerald-200 to-teal-200',
+    iconClassName: 'text-emerald-700',
+    accent: (
+      <>
+        <span className="absolute left-8 right-8 top-[62%] h-1 rounded-full bg-white/35" />
+        <span className="absolute left-10 right-6 top-[72%] h-1 rounded-full bg-white/35" />
+      </>
+    ),
+  },
+  purity: {
+    icon: Droplet,
+    gradient: 'bg-gradient-to-br from-slate-50 via-white to-slate-100',
+    iconClassName: 'text-slate-400',
+    accent: (
+      <span className="absolute inset-4 rounded-2xl border border-slate-200/60" />
+    ),
+  },
+  trust: {
+    icon: Handshake,
+    gradient: 'bg-gradient-to-br from-blue-200 via-sky-200 to-indigo-200',
+    iconClassName: 'text-slate-700',
+    accent: (
+      <span className="absolute inset-4 rounded-2xl border border-blue-600/20" />
+    ),
+  },
+};
+
+const TileGraphic = ({ tile }: { tile: TileConfig }) => {
+  const Icon = tile.icon;
+  return (
+    <div
+      className={cn(
+        'relative flex h-full w-full items-center justify-center overflow-hidden',
+        tile.gradient,
+      )}
+    >
+      {tile.accent}
+      <Icon
+        className={cn(
+          'relative z-10 h-11 w-11 drop-shadow-sm',
+          tile.iconClassName,
+        )}
+      />
+    </div>
+  );
+};
 
 const logoFormSchema = baseFormSchema.extend({
   type: z
@@ -202,7 +433,7 @@ export function LogoGenerator({
                     ? [
                         {
                           key: 'text',
-                          label: 'Text',
+                          label: 'TLD',
                           badge: selectedTextTreatment
                             ? getTextTreatmentDisplay(selectedTextTreatment)
                             : undefined,
@@ -293,21 +524,18 @@ export function LogoGenerator({
                           >
                             <CardContent className="p-4">
                               <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
-                                <img
-                                  src={type.image}
-                                  alt={type.name}
-                                  className="w-full h-full object-cover"
+                                <TileGraphic
+                                  tile={
+                                    LOGO_TYPE_TILES[key as LogoTypeInput] ??
+                                    LOGO_TYPE_TILES['let-ai-choose']
+                                  }
                                 />
-                                {field.value === key && (
-                                  <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                                  </div>
-                                )}
-                                {key === 'let-ai-choose' && (
-                                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                    <Sparkles className="h-8 w-8 text-secondary-foreground" />
-                                  </div>
-                                )}
+                                {field.value === key &&
+                                  key !== 'let-ai-choose' && (
+                                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                                    </div>
+                                  )}
                               </div>
                               <h4 className="font-medium text-sm mb-1">
                                 {type.name}
@@ -352,21 +580,18 @@ export function LogoGenerator({
                           >
                             <CardContent className="p-4">
                               <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
-                                <img
-                                  src={style.image}
-                                  alt={style.name}
-                                  className="w-full h-full object-cover"
+                                <TileGraphic
+                                  tile={
+                                    LOGO_STYLE_TILES[key as LogoStyleInput] ??
+                                    LOGO_STYLE_TILES['let-ai-choose']
+                                  }
                                 />
-                                {field.value === key && (
-                                  <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                                  </div>
-                                )}
-                                {key === 'let-ai-choose' && (
-                                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                    <Sparkles className="h-8 w-8 text-secondary-foreground" />
-                                  </div>
-                                )}
+                                {field.value === key &&
+                                  key !== 'let-ai-choose' && (
+                                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                                    </div>
+                                  )}
                               </div>
                               <h4 className="font-medium text-sm mb-1">
                                 {style.name}
@@ -385,7 +610,7 @@ export function LogoGenerator({
               />
             )}
 
-            {/* Text Treatment Selection */}
+            {/* TLD Treatment Selection */}
             {showAdvanced && openPanel === 'text' && (
               <FormField
                 control={form.control}
@@ -393,7 +618,7 @@ export function LogoGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose text treatment
+                      Choose a TLD treatment
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -412,21 +637,23 @@ export function LogoGenerator({
                             >
                               <CardContent className="p-4">
                                 <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
-                                  <img
-                                    src={treatment.image}
-                                    alt={treatment.name}
-                                    className="w-full h-full object-cover"
-                                  />
-                                  {field.value === key && (
-                                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                                    </div>
+                                  {key === 'let-ai-choose' ? (
+                                    <TileGraphic
+                                      tile={LOGO_STYLE_TILES['let-ai-choose']}
+                                    />
+                                  ) : (
+                                    <img
+                                      src={treatment.image}
+                                      alt={treatment.name}
+                                      className="w-full h-full object-cover"
+                                    />
                                   )}
-                                  {key === 'let-ai-choose' && (
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                      <Sparkles className="h-8 w-8 text-secondary-foreground" />
-                                    </div>
-                                  )}
+                                  {field.value === key &&
+                                    key !== 'let-ai-choose' && (
+                                      <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                                        <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                                      </div>
+                                    )}
                                 </div>
                                 <h4 className="font-medium text-sm mb-1">
                                   {treatment.name}
@@ -473,21 +700,23 @@ export function LogoGenerator({
                             >
                               <CardContent className="p-4">
                                 <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
-                                  <img
-                                    src={typography.image}
-                                    alt={typography.name}
-                                    className="w-full h-full object-cover"
-                                  />
-                                  {field.value === key && (
-                                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                                    </div>
+                                  {key === 'let-ai-choose' ? (
+                                    <TileGraphic
+                                      tile={LOGO_STYLE_TILES['let-ai-choose']}
+                                    />
+                                  ) : (
+                                    <img
+                                      src={typography.image}
+                                      alt={typography.name}
+                                      className="w-full h-full object-cover"
+                                    />
                                   )}
-                                  {key === 'let-ai-choose' && (
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                      <Sparkles className="h-8 w-8 text-secondary-foreground" />
-                                    </div>
-                                  )}
+                                  {field.value === key &&
+                                    key !== 'let-ai-choose' && (
+                                      <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                                        <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                                      </div>
+                                    )}
                                 </div>
                                 <h4 className="font-medium text-sm mb-1">
                                   {typography.name}
