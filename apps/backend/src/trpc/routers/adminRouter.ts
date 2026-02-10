@@ -11,6 +11,8 @@ import {
   namefiNftCte,
   namefiNftOwnersCte,
   domainExportTrackingTable,
+  domainConfigTable,
+  domainUserPreferencesTable,
 } from '@namefi-astra/db';
 import {
   buildWhereClause,
@@ -49,6 +51,7 @@ import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
 } from '#lib/namefi-registry';
+import { updateDomainPreferencesAndConfig } from '#lib/domains/domain-preferences';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import {
   getPrivyUserLinkedEthereumWalletAddresses,
@@ -70,6 +73,7 @@ import {
 } from '../utils';
 import {
   buildPrivySearchWhereClause,
+  ensurePrivyTableFresh,
   privyUsersTableSchema,
   userNftsCTE,
 } from './admin/privyUserCache';
@@ -2657,6 +2661,228 @@ export const adminRouter = createTRPCRouter({
       });
     }
   }),
+
+  listDomainPreferences: adminProcedureWithPermissions(
+    Permission.READ_DOMAIN_PREFERENCES,
+  )
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        pageSize: z.number().min(1).max(100).default(25),
+        filters: z.any().optional(),
+        sorting: z.any().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { page, pageSize, filters, sorting } = input;
+      const offset = (page - 1) * pageSize;
+
+      await ensurePrivyTableFresh();
+
+      const tableStructure = {
+        userId: usersTable.id,
+        normalizedDomainName: namefiNftView.normalizedDomainName,
+        ownerAddress: namefiNftView.ownerAddress,
+        chainId: namefiNftView.chainId,
+        autoRenewEnabled: sql<
+          string | null
+        >`${domainUserPreferencesTable.autoRenewEnabled}::text`,
+        autoEnsEnabled: sql<
+          string | null
+        >`${domainConfigTable.autoEnsEnabled}::text`,
+        autoParkEnabled: sql<
+          string | null
+        >`${domainConfigTable.autoParkEnabled}::text`,
+        forwardTo: domainConfigTable.forwardTo,
+      };
+
+      const baseQuery = db
+        .with(namefiNftCte)
+        .select({
+          userId: usersTable.id,
+          normalizedDomainName: namefiNftView.normalizedDomainName,
+          chainId: namefiNftView.chainId,
+          ownerAddress: namefiNftView.ownerAddress,
+          autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
+          autoEnsEnabled: domainConfigTable.autoEnsEnabled,
+          autoParkEnabled: domainConfigTable.autoParkEnabled,
+          forwardTo: domainConfigTable.forwardTo,
+        })
+        .from(privyUsersTableSchema)
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+        )
+        .innerJoin(
+          namefiNftView,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          domainConfigTable,
+          eq(
+            domainConfigTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          domainUserPreferencesTable,
+          and(
+            eq(
+              domainUserPreferencesTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            eq(domainUserPreferencesTable.userId, usersTable.id),
+          ),
+        )
+        .$dynamic();
+
+      const whereClauses: SQL[] = [];
+
+      if (filters) {
+        const drizzlerWhere = buildWhereClause(
+          tableStructure,
+          filters as FilterOptions<any>,
+        );
+        if (drizzlerWhere) {
+          whereClauses.push(drizzlerWhere);
+        }
+      }
+
+      let query = baseQuery;
+      if (whereClauses.length > 0) {
+        query = query.where(and(...whereClauses));
+      }
+
+      const orderByClauses = sorting
+        ? buildSortClause(tableStructure, sorting as SortOptions<any>)
+        : [asc(namefiNftView.normalizedDomainName)];
+
+      try {
+        const countQuery = db
+          .with(namefiNftCte)
+          .select({ count: sql<number>`COUNT(*)::int` })
+          .from(privyUsersTableSchema)
+          .leftJoin(
+            usersTable,
+            eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+          )
+          .innerJoin(
+            namefiNftView,
+            sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
+          )
+          .leftJoin(
+            domainConfigTable,
+            eq(
+              domainConfigTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+          )
+          .leftJoin(
+            domainUserPreferencesTable,
+            and(
+              eq(
+                domainUserPreferencesTable.normalizedDomainName,
+                namefiNftView.normalizedDomainName,
+              ),
+              eq(domainUserPreferencesTable.userId, usersTable.id),
+            ),
+          )
+          .$dynamic();
+
+        let countQueryWithWhere = countQuery;
+        if (whereClauses.length > 0) {
+          countQueryWithWhere = countQuery.where(and(...whereClauses));
+        }
+
+        const [rows, countRow] = await Promise.all([
+          query
+            .orderBy(...orderByClauses)
+            .limit(pageSize)
+            .offset(offset),
+          countQueryWithWhere,
+        ]);
+
+        const total = countRow[0]?.count ?? 0;
+
+        return {
+          data: rows,
+          pagination: {
+            page,
+            pageSize,
+            totalCount: total,
+            totalPages: Math.ceil(total / pageSize),
+          },
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to list domain preferences');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to list domain preferences',
+        });
+      }
+    }),
+
+  updateDomainPreferences: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_DOMAIN_PREFERENCES,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.DOMAIN,
+      resourceId: input.domainName,
+      action: 'update_domain_preferences',
+      extraInput: input,
+    }),
+  )
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+        domainPreferencesAndConfig: z.object({
+          forwardTo: z.string().optional(),
+          autoEnsEnabled: z.boolean().optional(),
+          autoParkEnabled: z.boolean().optional(),
+          autoRenewEnabled: z.boolean().optional(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ensurePrivyTableFresh();
+      const { domainName, domainPreferencesAndConfig } = input;
+
+      const ownerQuery = await db
+        .with(namefiNftCte)
+        .select({
+          normalizedDomainName: namefiNftView.normalizedDomainName,
+          userId: usersTable.id,
+          privyUserId: usersTable.privyUserId,
+        })
+        .from(privyUsersTableSchema)
+        .innerJoin(
+          namefiNftView,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .innerJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+        )
+        .where(eq(namefiNftView.normalizedDomainName, domainName))
+        .limit(1);
+      const owner = ownerQuery[0];
+      if (!owner || !owner.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: `You cannot change the config and preferences for this domain. domain(${domainName}) owner account is not found`,
+        });
+      }
+
+      await updateDomainPreferencesAndConfig(
+        domainName,
+        owner.userId,
+        domainPreferencesAndConfig,
+      );
+
+      return { success: true };
+    }),
 
   listOrderItems: adminProcedureWithPermissions(
     [Permission.READ_ORDERS, Permission.READ_USERS],

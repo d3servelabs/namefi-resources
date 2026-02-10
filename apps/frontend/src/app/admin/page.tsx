@@ -25,6 +25,7 @@ import {
   ArrowRightLeft,
   RefreshCw,
   ClipboardList,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -129,6 +130,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-amber-600',
         permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
         permissionsMode: 'some',
+      },
+      {
+        title: 'Domain Preferences',
+        description:
+          'Review and update your domain configuration and preferences.',
+        href: '/admin/domain-preferences',
+        icon: SlidersHorizontal,
+        iconBgColor: 'bg-emerald-100',
+        iconTextColor: 'text-emerald-600',
+        permissions: [Permission.READ_DOMAIN_PREFERENCES],
       },
       {
         title: 'Bulk Burn',
