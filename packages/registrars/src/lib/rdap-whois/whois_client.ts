@@ -1,10 +1,12 @@
 import { matchAny } from '@namefi-astra/utils/match';
 import axios from 'axios';
 import type { GetLockStateResponse } from './get-lock-state-response';
+import { toLower, map } from 'ramda';
 
 async function queryDomain(domain: string): Promise<WhoisJsonApi['WhoisData']> {
   const res = await axios.get(
     `https://whoisjsonapi.com/v1/${domain}?apiKey=${process.env.WHOIS_API_KEY}`,
+
     {
       timeout: 5000,
     },
@@ -26,17 +28,20 @@ async function queryDomainStatus(
 async function getLockState(domain: string): Promise<GetLockStateResponse> {
   const { status } = await queryDomainStatus(domain);
   const statusArray = status;
-  const prohibited = statusArray.some((value) =>
+  const lowercaseStatuses = map(toLower, statusArray);
+  const prohibited = lowercaseStatuses.some((value) =>
     matchAny(
-      value,
-      'serverTransferProhibited',
-      'serverUpdateProhibited',
-      'clientTransferProhibited',
-      'clientUpdateProhibited',
+      toLower(value),
+      toLower('serverTransferProhibited'),
+      toLower('serverUpdateProhibited'),
+      toLower('clientTransferProhibited'),
+      toLower('clientUpdateProhibited'),
     ),
   );
-  const isAddPeriod = statusArray.includes('addPeriod');
-  const isTransferPeriod = statusArray.includes('transferPeriod');
+  const isAddPeriod = lowercaseStatuses.includes(toLower('addPeriod'));
+  const isTransferPeriod = lowercaseStatuses.includes(
+    toLower('transferPeriod'),
+  );
 
   return {
     locked: prohibited,
