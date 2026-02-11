@@ -30,6 +30,7 @@ import { publicRouter } from './routers/public';
 import { providersRouter } from './routers/openapi';
 import { monitorsRouter } from './routers/monitors';
 import { logLevelRouter } from './routers/log-level';
+import { statsRouter } from './routers/stats';
 
 type HonoVariables = {
   requestId: string;
@@ -118,6 +119,7 @@ app.route('v1/public', publicRouter);
 app.route('/webhooks', webhooksRouter);
 app.route('/altcha', altchaRouter);
 app.route('/monitors', monitorsRouter);
+app.route('/stats', statsRouter);
 app.route('v-next', providersRouter);
 app.route('/c15t', c15tRouter);
 app.route('/log-level', logLevelRouter);
