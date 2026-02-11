@@ -179,6 +179,8 @@ const mockOrderItems: OrderItemSelect[] = [
     status: 'PROCESSING',
     createdAt: new Date('2026-01-28T10:30:00Z'),
     updatedAt: new Date('2026-01-28T10:30:00Z'),
+    startedAt: new Date('2026-01-28T10:30:00Z'),
+    finishedAt: new Date('2026-01-28T10:30:00Z'),
     encryptionKeyId: null,
     encryptedEppAuthorizationCode: null,
     metadata: {},

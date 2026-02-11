@@ -51,6 +51,25 @@ export async function processOrderItemWorkflow(
   });
 
   try {
+    if (workflow.patched('lifecycle-timestamps')) {
+      const [markProcessingError] = await resolve(
+        updateOrderItemStatusOrThrow({
+          orderItemId: input.itemId,
+          status: orderStatusSchema.enum.PROCESSING,
+        }),
+      );
+
+      if (markProcessingError) {
+        workflow.log.error(
+          `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.enum.PROCESSING}: ${
+            markProcessingError instanceof Error
+              ? markProcessingError.message
+              : String(markProcessingError)
+          }`,
+        );
+      }
+    }
+
     if (operationType === 'RENEW') {
       const workflowInput: ExtendDomainRegistrationWorkflowInput = {
         ownerAddress: recipientWalletAddress,

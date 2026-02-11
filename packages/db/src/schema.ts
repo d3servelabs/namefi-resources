@@ -44,6 +44,15 @@ const timestamps = {
 };
 
 /**
+ * Lifecycle timestamps for long-running business entities.
+ * startedAt tracks when processing begins; finishedAt tracks terminal completion.
+ */
+const lifecycleTimestamps = {
+  startedAt: timestamp('started_at'),
+  finishedAt: timestamp('finished_at'),
+};
+
+/**
  * Common columns for domain name storage
  * @property {text} normalizedDomainName - Normalized domain name in Namefi format
  * @see @namefi-astra/packages/utils/src/domain-name.ts
@@ -248,6 +257,7 @@ export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
   postProcessOrderItem: postProcessOrderItemSchema.optional(),
   requiredAction: orderItemRequiredActionSchema.optional(),
   failureDetails: orderItemFailureDetailsSchema.optional(),
+  backfilled_started_finished_at: z.boolean().optional(),
 });
 
 export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;
@@ -258,6 +268,7 @@ export const orderMetadataSchema = z
     mintTransactions: z
       .record(z.string(), orderMintTransactionMetadataSchema)
       .optional(),
+    backfilled_started_finished_at: z.boolean().optional(),
   })
   .loose();
 
@@ -316,6 +327,7 @@ export const paymentsTable = pgTable(
       paymentMethodId?: string;
     }>(),
     ...timestamps,
+    ...lifecycleTimestamps,
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
@@ -348,6 +360,7 @@ export const refundsTable = pgTable(
     chainId: integer('chain_id'),
     walletAddress: text('wallet_address'),
     ...timestamps,
+    ...lifecycleTimestamps,
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
@@ -382,6 +395,7 @@ export const ordersTable = pgTable(
     nftChainId: integer('nft_chain_id'),
     metadata: jsonb('metadata').$type<OrderMetadata>().default({}),
     ...timestamps,
+    ...lifecycleTimestamps,
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
@@ -411,6 +425,7 @@ export const orderItemsTable = pgTable(
     status: orderStatusEnum('status').default('CREATED'),
     metadata: jsonb('metadata').$type<OrderItemMetadata>().default({}),
     ...timestamps,
+    ...lifecycleTimestamps,
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),

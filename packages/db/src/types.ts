@@ -33,7 +33,8 @@ import {
   orderItemMetadataSchema,
 } from './schema';
 export type { OrderItemMetadata, OrderMintTransactionMetadata } from './schema';
-
+import type { PgUpdateSetSource } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 /**
  * Zod schemas for type-safe operations
  */
@@ -334,6 +335,253 @@ export type FreeClaimClaimingStatus = z.infer<
   typeof freeClaimClaimingStatusSchema
 >;
 
+/**
+ * Forces exhaustive status handling.
+ * Throws at runtime only if a new enum value is introduced without being handled.
+ */
+const assertNeverStatus = (value: never, statusType: string): never => {
+  throw new Error(`Unhandled ${statusType}: ${value as string}`);
+};
+
+/**
+ * Lifecycle transition decision for timestamp fields.
+ * - `shouldSetStartedAt`: initialize `startedAt` when entering active processing
+ * - `shouldSetFinishedAt`: stamp `finishedAt` when entering a terminal status
+ * - `shouldClearFinishedAt`: clear `finishedAt` when moving back to non-terminal states
+ */
+export type LifecycleTimestampTransition = Readonly<{
+  shouldSetStartedAt: boolean;
+  shouldSetFinishedAt: boolean;
+  shouldClearFinishedAt: boolean;
+}>;
+
+/**
+ * Returns true for terminal order statuses.
+ */
+export function isOrderStatusTerminal(status: OrderStatus): boolean {
+  switch (status) {
+    case orderStatusSchema.enum.CREATED:
+    case orderStatusSchema.enum.PROCESSING:
+      return false;
+    case orderStatusSchema.enum.SUCCEEDED:
+    case orderStatusSchema.enum.FAILED:
+    case orderStatusSchema.enum.CANCELLED:
+    case orderStatusSchema.enum.PARTIALLY_COMPLETED:
+      return true;
+    default:
+      // Ensure exhaustive matching
+      return assertNeverStatus(status, 'order status');
+  }
+}
+
+/**
+ * Maps an order status into lifecycle timestamp transition decisions.
+ */
+export function getOrderStatusLifecycleTransition(
+  status: OrderStatus,
+): LifecycleTimestampTransition {
+  switch (status) {
+    case orderStatusSchema.enum.CREATED:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: true,
+      };
+    case orderStatusSchema.enum.PROCESSING:
+      return {
+        shouldSetStartedAt: true,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: true,
+      };
+    case orderStatusSchema.enum.SUCCEEDED:
+    case orderStatusSchema.enum.FAILED:
+    case orderStatusSchema.enum.CANCELLED:
+    case orderStatusSchema.enum.PARTIALLY_COMPLETED:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: true,
+        shouldClearFinishedAt: false,
+      };
+    default:
+      return assertNeverStatus(status, 'order status');
+  }
+}
+
+/**
+ * Builds timestamp update values for order status transitions.
+ */
+export function buildOrderStatusLifecycleTransition(status: OrderStatus) {
+  if (status) {
+    const lifecycleTransitions = getOrderStatusLifecycleTransition(status);
+    return buildLifecycleTransitionTimestampsValues(lifecycleTransitions);
+  }
+  return {};
+}
+
+/**
+ * Returns true for terminal payment statuses.
+ */
+export function isPaymentStatusTerminal(status: PaymentStatus): boolean {
+  switch (status) {
+    case paymentStatusSchema.enum.CREATED:
+    case paymentStatusSchema.enum.PROCESSING:
+    case paymentStatusSchema.enum.REFUND_REQUESTED:
+    case paymentStatusSchema.enum.REQUIRES_CAPTURE:
+      return false;
+    case paymentStatusSchema.enum.SUCCEEDED:
+    case paymentStatusSchema.enum.FAILED:
+    case paymentStatusSchema.enum.CANCELLED:
+      return true;
+    default:
+      // Ensure exhaustive matching
+      return assertNeverStatus(status, 'payment status');
+  }
+}
+
+/**
+ * Maps a payment status into lifecycle timestamp transition decisions.
+ */
+export function getPaymentStatusLifecycleTransition(
+  status: PaymentStatus,
+): LifecycleTimestampTransition {
+  switch (status) {
+    case paymentStatusSchema.enum.CREATED:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: true,
+      };
+    case paymentStatusSchema.enum.PROCESSING:
+      return {
+        shouldSetStartedAt: true,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: true,
+      };
+    case paymentStatusSchema.enum.REFUND_REQUESTED:
+    case paymentStatusSchema.enum.REQUIRES_CAPTURE:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: false,
+      };
+    case paymentStatusSchema.enum.SUCCEEDED:
+    case paymentStatusSchema.enum.FAILED:
+    case paymentStatusSchema.enum.CANCELLED:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: true,
+        shouldClearFinishedAt: false,
+      };
+    default:
+      return assertNeverStatus(status, 'payment status');
+  }
+}
+
+/**
+ * Builds timestamp update values for payment status transitions.
+ */
+export function buildPaymentStatusLifecycleTransition(status: PaymentStatus) {
+  if (status) {
+    const lifecycleTransitions = getPaymentStatusLifecycleTransition(status);
+    return buildLifecycleTransitionTimestampsValues(lifecycleTransitions);
+  }
+  return {};
+}
+
+/**
+ * Returns true for terminal refund statuses.
+ */
+export function isRefundStatusTerminal(status: RefundStatus): boolean {
+  switch (status) {
+    case refundStatusSchema.enum.CREATED:
+    case refundStatusSchema.enum.PROCESSING:
+    case refundStatusSchema.enum.REQUIRES_ACTION:
+      return false;
+    case refundStatusSchema.enum.SUCCEEDED:
+    case refundStatusSchema.enum.FAILED:
+    case refundStatusSchema.enum.CANCELLED:
+      return true;
+    default:
+      // Ensure exhaustive matching
+      return assertNeverStatus(status, 'refund status');
+  }
+}
+
+/**
+ * Maps a refund status into lifecycle timestamp transition decisions.
+ */
+export function getRefundStatusLifecycleTransition(
+  status: RefundStatus,
+): LifecycleTimestampTransition {
+  switch (status) {
+    case refundStatusSchema.enum.CREATED:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: true,
+      };
+    case refundStatusSchema.enum.PROCESSING:
+      return {
+        shouldSetStartedAt: true,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: true,
+      };
+    case refundStatusSchema.enum.REQUIRES_ACTION:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: false,
+        shouldClearFinishedAt: false,
+      };
+    case refundStatusSchema.enum.SUCCEEDED:
+    case refundStatusSchema.enum.FAILED:
+    case refundStatusSchema.enum.CANCELLED:
+      return {
+        shouldSetStartedAt: false,
+        shouldSetFinishedAt: true,
+        shouldClearFinishedAt: false,
+      };
+    default:
+      return assertNeverStatus(status, 'refund status');
+  }
+}
+
+/**
+ * Builds timestamp update values for refund status transitions.
+ */
+export function buildRefundStatusLifecycleTransition(status: RefundStatus) {
+  if (status) {
+    const lifecycleTransitions = getRefundStatusLifecycleTransition(status);
+    return buildLifecycleTransitionTimestampsValues(lifecycleTransitions);
+  }
+  return {};
+}
+
+/**
+ * Generic timestamp update payload builder for lifecycle transitions.
+ *
+ * Uses unqualified `started_at`/`finished_at` column references so the output can
+ * be reused across multiple tables that share the same timestamp column names.
+ */
+export function buildLifecycleTransitionTimestampsValues(
+  lifecycleTransitions: LifecycleTimestampTransition,
+) {
+  const lifecycleTimestamps: Pick<
+    PgUpdateSetSource<typeof ordersTable>,
+    'startedAt' | 'finishedAt'
+  > = {};
+
+  if (lifecycleTransitions.shouldSetStartedAt) {
+    lifecycleTimestamps.startedAt = sql`coalesce(started_at, now())`;
+  }
+  if (lifecycleTransitions.shouldSetFinishedAt) {
+    lifecycleTimestamps.finishedAt = sql`now()`;
+  }
+  if (lifecycleTransitions.shouldClearFinishedAt) {
+    lifecycleTimestamps.finishedAt = null;
+  }
+
+  return lifecycleTimestamps;
+}
 export type NfscPaymentDetails = Exclude<
   z.infer<typeof paymentInsertSchema.shape.nfscPaymentDetails>,
   undefined | null

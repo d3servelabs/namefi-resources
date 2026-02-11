@@ -70,6 +70,13 @@ export async function chargeUserWorkflow({
     return { paymentStatus: updatedPayment.status };
   }
 
+  if (workflow.patched('lifecycle-timestamps')) {
+    await updatePayment({
+      id: paymentId,
+      status: paymentStatusSchema.enum.PROCESSING,
+    });
+  }
+
   // MARK: Execute Charge ChildWorkflow based on PaymentProvider
   if (paymentProvider === paymentProviderSchema.enum.STRIPE) {
     try {

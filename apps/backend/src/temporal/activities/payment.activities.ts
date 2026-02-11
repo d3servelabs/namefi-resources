@@ -27,7 +27,11 @@ import {
 } from '#services/payments/errors';
 import { PaymentMethodNotFoundError } from '#services/stripe-payments/errors';
 import type { CreateStripePaymentIntentInput } from '#services/stripe-payments/types';
-import type { PaymentProvider } from '@namefi-astra/db/types';
+import {
+  buildPaymentStatusLifecycleTransition,
+  buildRefundStatusLifecycleTransition,
+  type PaymentProvider,
+} from '@namefi-astra/db/types';
 import {
   CHAINS,
   checksumWalletAddressSchema,
@@ -344,12 +348,17 @@ export async function updatePayment({
   paymentProviderReferenceId,
   amountInUSDCents,
 }: UpdatePaymentInput) {
+  const lifecycleTimestamps = status
+    ? buildPaymentStatusLifecycleTransition(status)
+    : {};
+
   const [updatedPayment] = await db
     .update(paymentsTable)
     .set({
       status,
       paymentProviderReferenceId,
       amountInUSDCents,
+      ...lifecycleTimestamps,
     })
     .where(eq(paymentsTable.id, id))
     .returning({
@@ -453,11 +462,16 @@ export async function updateRefund({
   id,
   paymentProviderReferenceId,
 }: UpdateRefundInput) {
+  const lifecycleTimestamps = status
+    ? buildRefundStatusLifecycleTransition(status)
+    : {};
+
   const [updatedRefund] = await db
     .update(refundsTable)
     .set({
       status,
       paymentProviderReferenceId,
+      ...lifecycleTimestamps,
     })
     .where(eq(refundsTable.id, id))
     .returning({

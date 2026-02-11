@@ -554,6 +554,13 @@
       "when": 1769427479300,
       "tag": "0078_mute_leper_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 79,
+      "version": "7",
+      "when": 1770815608877,
+      "tag": "0079_good_quicksilver",
+      "breakpoints": true
     }
   ]
 }

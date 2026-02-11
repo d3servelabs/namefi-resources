@@ -292,6 +292,8 @@ function createMockOrder(overrides: Partial<OrderSelect> = {}): OrderSelect {
     metadata: undefined,
     createdAt: new Date('2026-01-15T10:30:00Z'),
     updatedAt: new Date('2026-01-15T10:35:00Z'),
+    startedAt: new Date('2026-01-15T10:30:00Z'),
+    finishedAt: new Date('2026-01-15T10:35:00Z'),
     ...overrides,
   };
 }
@@ -313,6 +315,8 @@ function createMockOrderItem(
     metadata: undefined,
     createdAt: new Date('2026-01-15T10:30:00Z'),
     updatedAt: new Date('2026-01-15T10:35:00Z'),
+    startedAt: new Date('2026-01-28T10:30:00Z'),
+    finishedAt: new Date('2026-01-28T10:30:00Z'),
     ...overrides,
   };
 }
@@ -331,6 +335,8 @@ function createMockPayment(
     stripePaymentDetails: null,
     createdAt: new Date('2026-01-15T10:30:00Z'),
     updatedAt: new Date('2026-01-15T10:35:00Z'),
+    startedAt: new Date('2026-01-28T10:30:00Z'),
+    finishedAt: new Date('2026-01-28T10:30:00Z'),
     ...overrides,
   };
 }

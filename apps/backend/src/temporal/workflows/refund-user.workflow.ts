@@ -49,6 +49,12 @@ export async function refundUserWorkflow({
     amountToRefundInUsdCents,
   });
 
+  if (workflow.patched('lifecycle-timestamps')) {
+    await updateRefund({
+      id: refundId,
+      status: 'PROCESSING',
+    });
+  }
   await updatePayment({
     id: paymentId,
     status: paymentStatusSchema.enum.REFUND_REQUESTED,
@@ -59,7 +65,10 @@ export async function refundUserWorkflow({
     paymentId,
   });
 
-  let refundStatus = status;
+  let refundStatus: RefundStatus = status;
+  if (workflow.patched('lifecycle-timestamps')) {
+    refundStatus = 'PROCESSING';
+  }
   let paymentProviderReferenceId: string | undefined;
 
   if (nfscPaymentDetails) {

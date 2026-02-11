@@ -1,4 +1,8 @@
-import type { OrderStatus, PaymentProvider } from '@namefi-astra/db/types';
+import {
+  buildOrderStatusLifecycleTransition,
+  type OrderStatus,
+  type PaymentProvider,
+} from '@namefi-astra/db/types';
 import {
   orderService,
   type CreateOrderItemInput,
@@ -46,6 +50,7 @@ export async function updateOrderItemStatusOrThrow({
     .update(orderItemsTable)
     .set({
       status,
+      ...buildOrderStatusLifecycleTransition(status),
     })
     .where(eq(orderItemsTable.id, orderItemId))
     .returning();
@@ -68,6 +73,7 @@ export async function updateOrderStatusOrThrow({
     .update(ordersTable)
     .set({
       status,
+      ...buildOrderStatusLifecycleTransition(status),
     })
     .where(eq(ordersTable.id, orderId))
     .returning();
@@ -272,12 +278,17 @@ export async function updateOrderAndItemStatusOrThrow({
   orderItemId: string;
   status: OrderStatus;
 }) {
+  const lifecycleTimestamps = buildOrderStatusLifecycleTransition(status);
+
   // Use a transaction to ensure both updates happen atomically
   const result = await db.transaction(async (tx) => {
     // Update order status
     const [updatedOrder] = await tx
       .update(ordersTable)
-      .set({ status })
+      .set({
+        status,
+        ...lifecycleTimestamps,
+      })
       .where(eq(ordersTable.id, orderId))
       .returning();
 
@@ -288,7 +299,10 @@ export async function updateOrderAndItemStatusOrThrow({
     // Update order item status
     const [updatedOrderItem] = await tx
       .update(orderItemsTable)
-      .set({ status })
+      .set({
+        status,
+        ...lifecycleTimestamps,
+      })
       .where(
         and(
           eq(orderItemsTable.id, orderItemId),
@@ -586,6 +600,8 @@ export async function createAutoRenewOrder({
       : failureCount > 0
         ? orderStatusSchema.enum.PARTIALLY_COMPLETED
         : orderStatusSchema.enum.SUCCEEDED;
+  const completedAt = new Date();
+
   // Create order items for each domain renewal result
   const orderItems = domainRenewResults.map(
     (result) =>
@@ -614,6 +630,8 @@ export async function createAutoRenewOrder({
               : undefined,
           },
         },
+        startedAt: completedAt,
+        finishedAt: completedAt,
       }) satisfies CreateOrderItemInput,
   );
 
@@ -623,6 +641,8 @@ export async function createAutoRenewOrder({
     paymentIds,
     status: orderStatus,
     amountInUSDCents: Math.round(totalAmountInUsd * 100),
+    startedAt: completedAt,
+    finishedAt: completedAt,
     metadata: {
       autoRenew: true,
       renewalSummary: {
@@ -683,6 +703,7 @@ export async function createFreeAutoRenewOrder({
       : failureCount > 0
         ? orderStatusSchema.enum.PARTIALLY_COMPLETED
         : orderStatusSchema.enum.SUCCEEDED;
+  const completedAt = new Date();
 
   const poweredByNamefiParentDomains = Array.from(
     new Set(
@@ -728,6 +749,8 @@ export async function createFreeAutoRenewOrder({
             : undefined,
         },
       },
+      startedAt: completedAt,
+      finishedAt: completedAt,
     } satisfies CreateOrderItemInput;
   });
 
@@ -739,6 +762,8 @@ export async function createFreeAutoRenewOrder({
       .values({
         amountInUSDCents: 0,
         status: paymentStatusSchema.enum.SUCCEEDED,
+        startedAt: completedAt,
+        finishedAt: completedAt,
         paymentProvider: 'NFSC_BASE',
         nfscPaymentDetails: {
           chainId: CHAINS.base.id,
@@ -757,6 +782,8 @@ export async function createFreeAutoRenewOrder({
         paymentIds: [payment.id],
         status: orderStatus,
         amountInUSDCents: 0,
+        startedAt: completedAt,
+        finishedAt: completedAt,
         metadata: {
           autoRenew: true,
           freeRenewal: true,
