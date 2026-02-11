@@ -10,7 +10,7 @@ import {
   createRecord,
   createRecordInputSchema,
   deleteRecord,
-  getZoneRecords,
+  getZoneRecordsWithManagedRecords,
   updateRecord,
   updateRecordInputSchema,
   validateZone,
@@ -53,7 +53,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
     )
     .output(z.array(dnsRecordSelectSchema))
     .query(({ input }) => {
-      return getZoneRecords(input.zoneName);
+      return getZoneRecordsWithManagedRecords(input.zoneName);
     }),
 
   /**

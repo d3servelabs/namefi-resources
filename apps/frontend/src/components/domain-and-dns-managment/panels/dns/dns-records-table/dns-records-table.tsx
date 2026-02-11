@@ -70,6 +70,7 @@ import {
   TypeColumnHeader,
   ValueColumnCell,
 } from './columns';
+import { isManagedDnsRecord } from './managed-records';
 import { TablePageSelector } from './table-page-selector';
 import { usePagination } from '../../../../../hooks/use-pagination';
 
@@ -223,7 +224,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   const table = useReactTable({
     data: dnsRecords.data ?? [],
     columns,
-    enableRowSelection: true,
+    enableRowSelection: (row) => !isManagedDnsRecord(row.original),
     getRowId: (row) => row.id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

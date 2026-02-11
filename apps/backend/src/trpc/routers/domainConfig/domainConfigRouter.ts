@@ -20,6 +20,7 @@ import {
   submitResetNameserversWorkflow,
   checkIfNameserversAreNamefiNameservers,
   checkIfNameserversAreLegacyNamefiNameservers,
+  getDomainNameserversFromIndex,
 } from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
 import {
@@ -467,233 +468,17 @@ export const domainConfigRouter = createTRPCRouter({
         }
 
         if (parsedDomainName.registryType === 'subdomain') {
-          const thirdPartyDomains = await getPoweredByNamefi3PDomains();
-
-          if (
-            !thirdPartyDomains.includes(parsedDomainName.immediateParentDomain)
-          ) {
-            throw new TRPCError({
-              code: 'BAD_REQUEST',
-              message: 'This domain is not supported',
-            });
-          }
-          return {
-            features: {
-              domainManagement: {
-                enabled: true,
-                config: {
-                  showPanel: false,
-                },
-              },
-              dnsManagement: {
-                enabled: true,
-                config: {
-                  showPanel: true,
-                },
-              },
-              nameserversManagement: {
-                enabled: false,
-                config: {
-                  showPanel: false,
-                  message: 'Not Allowed',
-                },
-              },
-              dnssecManagement: {
-                enabled: true,
-                config: {
-                  autoManaged: true,
-                  showPanel: true,
-                  message: `DNSSEC is automatically managed by Namefi for subdomains of ${parsedDomainName.immediateParentDomain}.`,
-                },
-              },
-              domainPreferencesManagement: {
-                enabled: true,
-                config: {
-                  showPanel: true,
-                },
-              },
-              domainExport: {
-                enabled: false,
-                config: {
-                  showPanel: false,
-                  message: 'Domain export is not available for subdomains.',
-                },
-              },
-            },
-          };
+          return getSupportedFeaturesForSubdomain(input.normalizedDomainName);
         }
 
-        const [expirationDate, nameserverRes] = await Promise.all([
-          getDomainsExpirationDatesFromIndex([input.normalizedDomainName]).then(
-            (expirationDates) => expirationDates[input.normalizedDomainName],
-          ),
-          resolve(
-            sldRegistrar.getNameServers(
-              toPunycodeDomainName(input.normalizedDomainName),
-            ),
-          ),
-        ]);
-
-        const isExpired = isDomainExpirationDatePassed(expirationDate);
-        const isInLateRenewalPeriod =
-          isDomainAssumedInLateRenewalPeriod(expirationDate);
-        const isInGraceRestorationPeriod =
-          isDomainAssumedInGraceRestorationPeriod(expirationDate);
-
-        const [error, nameservers] = nameserverRes;
-        if (error) {
-          if (isInLateRenewalPeriod || isInGraceRestorationPeriod) {
-            return {
-              canAttemptRenewal: false,
-              isInLateRenewalPeriod,
-              isInGraceRestorationPeriod,
-              features: {
-                domainManagement: {
-                  enabled: true,
-                  config: {
-                    showPanel: true,
-                    message:
-                      'You are in the late renewal period or grace restoration period. You can still manage your domain but some features are disabled.',
-                  },
-                },
-                dnsManagement: {
-                  enabled: false,
-                  config: {
-                    showPanel: false,
-                    message:
-                      'DNS management is not available in the late renewal period or grace restoration period.',
-                  },
-                },
-                nameserversManagement: {
-                  enabled: false,
-                  config: {
-                    showPanel: false,
-                    message:
-                      'Nameservers management is not available in the late renewal period or grace restoration period.',
-                  },
-                },
-                dnssecManagement: {
-                  enabled: false,
-                  config: {
-                    showPanel: false,
-                    message:
-                      'DNSSEC management is not available in the late renewal period or grace restoration period.',
-                  },
-                },
-                domainPreferencesManagement: {
-                  enabled: false,
-                  config: {
-                    showPanel: false,
-                    message:
-                      'Domain preferences management is not available in the late renewal period or grace restoration period.',
-                  },
-                },
-                domainExport: {
-                  enabled: false,
-                  config: {
-                    showPanel: false,
-                    message:
-                      'Domain export is not available in the late renewal period or grace restoration period.',
-                  },
-                },
-              },
-            };
-          }
-          throw error;
-        }
-        const isUsingOldNamefiNameservers =
-          checkIfNameserversAreLegacyNamefiNameservers(nameservers);
-
-        if (isUsingOldNamefiNameservers) {
-          return {
-            features: {
-              domainManagement: {
-                enabled: true,
-                config: {
-                  showPanel: true,
-                  message:
-                    'You are using the NamefiApp nameservers.<br /> Please head to the NamefiApp dashboard to manage your domain.',
-                  redirectTo: `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`,
-                  redirectToLabel: 'Redirect to NamefiApp',
-                },
-              },
-              dnssecManagement: {
-                enabled: false,
-                config: {
-                  showPanel: true,
-                  message:
-                    'You are using the legacy Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
-                  redirectTo: `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`,
-                  redirectToLabel: 'Redirect to NamefiApp',
-                },
-              },
-
-              nameserversManagement: {
-                enabled: true,
-                config: {
-                  showPanel: true,
-                },
-              },
-            },
-          };
+        if (parsedDomainName.registryType === 'traditional') {
+          return getSupportedFeaturesForEppDomain(input.normalizedDomainName);
         }
 
-        const isUsingNamefiNameservers =
-          checkIfNameserversAreNamefiNameservers(nameservers);
-
-        const disableAllFeatures = isExpired;
-        return {
-          canAttemptRenewal: true,
-          isInLateRenewalPeriod,
-          isInGraceRestorationPeriod,
-          features: {
-            domainManagement: {
-              enabled: true,
-              config: {
-                showPanel: true,
-              },
-            },
-            dnsManagement: {
-              enabled: isUsingNamefiNameservers && !disableAllFeatures,
-              config: {
-                showPanel: true && !disableAllFeatures,
-                message: isUsingNamefiNameservers
-                  ? undefined
-                  : 'You are using other nameservers. You need to head to your nameserver provider to manage your domain.',
-              },
-            },
-            nameserversManagement: {
-              enabled: true && !disableAllFeatures,
-              config: {
-                showPanel: true && !disableAllFeatures,
-              },
-            },
-            dnssecManagement: {
-              enabled: isUsingNamefiNameservers && !disableAllFeatures,
-              config: {
-                showPanel: true && !disableAllFeatures,
-                message: isUsingNamefiNameservers
-                  ? undefined
-                  : 'You are using other nameservers. You need to head to your nameserver provider to manage your dnssec.',
-              },
-            },
-            domainPreferencesManagement: {
-              enabled: isUsingNamefiNameservers && !disableAllFeatures,
-              config: {
-                showPanel: true && !disableAllFeatures,
-                message: isUsingNamefiNameservers
-                  ? undefined
-                  : 'You are using other nameservers. Domain preferences management is only available when using Namefi nameservers.',
-              },
-            },
-            domainExport: {
-              enabled: true && !disableAllFeatures,
-              config: {
-                showPanel: true && !disableAllFeatures,
-              },
-            },
-          },
-        };
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid domain name',
+        });
       } catch (error) {
         logger.error(error);
         throw new TRPCError({
@@ -1168,4 +953,341 @@ const areExportConditionsMet = async (domainName: NamefiNormalizedDomain) => {
   const readyToExport = nftIsLocked && !eppLock.locked;
 
   return readyToExport;
+};
+
+async function getSupportedFeaturesForSubdomain(
+  normalizedDomainName: NamefiNormalizedDomain,
+): Promise<DomainSupportedFeatureResponse> {
+  const parsedDomainName = parseDomainName(normalizedDomainName);
+  if (!parsedDomainName.valid) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `This domain(${normalizedDomainName}) is not valid`,
+    });
+  }
+  if (parsedDomainName.registryType === 'traditional') {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `This domain(${normalizedDomainName}) is not a subdomain`,
+    });
+  }
+
+  const thirdPartyDomains = await getPoweredByNamefi3PDomains();
+
+  if (!thirdPartyDomains.includes(parsedDomainName.immediateParentDomain)) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'This domain is not supported',
+    });
+  }
+  const [expirationDate] = await Promise.all([
+    getDomainsExpirationDatesFromIndex([normalizedDomainName]).then(
+      (expirationDates) => expirationDates[normalizedDomainName],
+    ),
+  ]);
+  const isExpired = isDomainExpirationDatePassed(expirationDate);
+  const isInLateRenewalPeriod =
+    isDomainAssumedInLateRenewalPeriod(expirationDate);
+  const isInGraceRestorationPeriod =
+    isDomainAssumedInGraceRestorationPeriod(expirationDate);
+  const disableAllFeatures = isExpired;
+  const isUsingNamefiNameservers = true;
+
+  return {
+    canAttemptRenewal: true,
+    isInLateRenewalPeriod,
+    isInGraceRestorationPeriod,
+    features: {
+      domainManagement: {
+        enabled: true,
+        config: {
+          showPanel: true,
+          message: isExpired ? 'Domain is expired' : undefined,
+          redirectTo: undefined,
+          redirectToLabel: undefined,
+        },
+      },
+      dnsManagement: {
+        enabled: isUsingNamefiNameservers && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+          message: isUsingNamefiNameservers
+            ? undefined
+            : 'You are using other nameservers. You need to head to your nameserver provider to manage your domain.',
+        },
+      },
+      nameserversManagement: {
+        enabled: false,
+        config: {
+          showPanel: false,
+          message: 'Not Allowed',
+        },
+      },
+      dnssecManagement: {
+        enabled: true,
+        config: {
+          autoManaged: true,
+          showPanel: true,
+          message: `DNSSEC is automatically managed by Namefi for subdomains of ${parsedDomainName.immediateParentDomain}.`,
+        },
+      },
+      domainPreferencesManagement: {
+        enabled: isUsingNamefiNameservers && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+          message: isUsingNamefiNameservers
+            ? undefined
+            : 'You are using other nameservers. Domain preferences management is only available when using Namefi nameservers.',
+        },
+      },
+      domainExport: {
+        enabled: false,
+        config: {
+          showPanel: false,
+          message: 'Domain export is not available for subdomains.',
+        },
+      },
+    },
+  };
+}
+
+async function getSupportedFeaturesForEppDomain(
+  normalizedDomainName: NamefiNormalizedDomain,
+): Promise<DomainSupportedFeatureResponse> {
+  const parsedDomainName = parseDomainName(normalizedDomainName);
+  if (!parsedDomainName.valid) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `This domain(${normalizedDomainName}) is not valid`,
+    });
+  }
+  if (parsedDomainName.registryType === 'subdomain') {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `This domain(${normalizedDomainName}) is a subdomain`,
+    });
+  }
+
+  const [expirationDate, nameserverRes] = await Promise.all([
+    getDomainsExpirationDatesFromIndex([normalizedDomainName]).then(
+      (expirationDates) => expirationDates[normalizedDomainName],
+    ),
+    resolve(getDomainNameserversFromIndex(normalizedDomainName)),
+  ]);
+
+  const isExpired = isDomainExpirationDatePassed(expirationDate);
+  const isInLateRenewalPeriod =
+    isDomainAssumedInLateRenewalPeriod(expirationDate);
+  const isInGraceRestorationPeriod =
+    isDomainAssumedInGraceRestorationPeriod(expirationDate);
+
+  const [error, nameserversIndexResult] = nameserverRes;
+  if (error || !nameserversIndexResult) {
+    if (isInLateRenewalPeriod || isInGraceRestorationPeriod) {
+      return {
+        canAttemptRenewal: false,
+        isInLateRenewalPeriod,
+        isInGraceRestorationPeriod,
+        features: {
+          domainManagement: {
+            enabled: true,
+            config: {
+              showPanel: true,
+              message:
+                'You are in the late renewal period or grace restoration period. You can still manage your domain but some features are disabled.',
+
+              redirectTo: undefined,
+              redirectToLabel: undefined,
+            },
+          },
+          dnsManagement: {
+            enabled: false,
+            config: {
+              showPanel: false,
+              message:
+                'DNS management is not available in the late renewal period or grace restoration period.',
+            },
+          },
+          nameserversManagement: {
+            enabled: false,
+            config: {
+              showPanel: false,
+              message:
+                'Nameservers management is not available in the late renewal period or grace restoration period.',
+            },
+          },
+          dnssecManagement: {
+            enabled: false,
+            config: {
+              showPanel: false,
+              message:
+                'DNSSEC management is not available in the late renewal period or grace restoration period.',
+            },
+          },
+          domainPreferencesManagement: {
+            enabled: false,
+            config: {
+              showPanel: false,
+              message:
+                'Domain preferences management is not available in the late renewal period or grace restoration period.',
+            },
+          },
+          domainExport: {
+            enabled: false,
+            config: {
+              showPanel: false,
+              message:
+                'Domain export is not available in the late renewal period or grace restoration period.',
+            },
+          },
+        },
+      };
+    }
+    throw error;
+  }
+  const { nameservers, isUsingNamefiNameservers } = nameserversIndexResult;
+  const isUsingOldNamefiNameservers =
+    checkIfNameserversAreLegacyNamefiNameservers(nameservers);
+  const disableAllFeatures = isExpired;
+
+  if (isUsingOldNamefiNameservers) {
+    return {
+      canAttemptRenewal: true,
+      isInLateRenewalPeriod,
+      isInGraceRestorationPeriod,
+      features: {
+        domainManagement: {
+          enabled: true,
+          config: {
+            showPanel: true,
+            message:
+              'You are using the NamefiApp nameservers.<br /> Please head to the NamefiApp dashboard to manage your domain.',
+            redirectTo: `https://app.namefi.io/dashboard/domains/${normalizedDomainName}`,
+            redirectToLabel: 'Redirect to NamefiApp',
+          },
+        },
+        dnsManagement: {
+          enabled: false,
+          config: {
+            showPanel: true,
+            message:
+              'You are using the legacy Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
+            redirectTo: `https://app.namefi.io/dashboard/domains/${normalizedDomainName}`,
+            redirectToLabel: 'Redirect to NamefiApp',
+          },
+        },
+        dnssecManagement: {
+          enabled: false,
+          config: {
+            showPanel: true,
+            message:
+              'You are using the legacy Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
+            redirectTo: `https://app.namefi.io/dashboard/domains/${normalizedDomainName}`,
+            redirectToLabel: 'Redirect to NamefiApp',
+          },
+        },
+        nameserversManagement: {
+          enabled: true,
+          config: {
+            showPanel: true,
+          },
+        },
+        domainPreferencesManagement: {
+          enabled: false,
+          config: {
+            showPanel: true,
+            message: isUsingNamefiNameservers
+              ? undefined
+              : 'You are using other nameservers. Domain preferences management is only available when using Namefi nameservers.',
+          },
+        },
+        domainExport: {
+          enabled: true && !disableAllFeatures,
+          config: {
+            showPanel: true && !disableAllFeatures,
+          },
+        },
+      },
+    };
+  }
+
+  return {
+    canAttemptRenewal: true,
+    isInLateRenewalPeriod,
+    isInGraceRestorationPeriod,
+    features: {
+      domainManagement: {
+        enabled: true,
+        config: {
+          showPanel: true,
+          message: undefined,
+          redirectTo: undefined,
+          redirectToLabel: undefined,
+        },
+      },
+      dnsManagement: {
+        enabled: isUsingNamefiNameservers && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+          message: isUsingNamefiNameservers
+            ? undefined
+            : 'You are using other nameservers. You need to head to your nameserver provider to manage your domain.',
+        },
+      },
+      nameserversManagement: {
+        enabled: true && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+        },
+      },
+      dnssecManagement: {
+        enabled: isUsingNamefiNameservers && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+          message: isUsingNamefiNameservers
+            ? undefined
+            : 'You are using other nameservers. You need to head to your nameserver provider to manage your dnssec.',
+        },
+      },
+      domainPreferencesManagement: {
+        enabled: isUsingNamefiNameservers && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+          message: isUsingNamefiNameservers
+            ? undefined
+            : 'You are using other nameservers. Domain preferences management is only available when using Namefi nameservers.',
+        },
+      },
+      domainExport: {
+        enabled: true && !disableAllFeatures,
+        config: {
+          showPanel: true && !disableAllFeatures,
+        },
+      },
+    },
+  };
+}
+
+type BaseFeatureConfig<T extends {} = {}> = {
+  enabled: boolean;
+  config: {
+    showPanel: boolean;
+    message?: string;
+    redirectTo?: string;
+    redirectToLabel?: string;
+  } & T;
+};
+type DomainSupportedFeatureResponse = {
+  canAttemptRenewal: boolean;
+  isInLateRenewalPeriod: boolean;
+  isInGraceRestorationPeriod: boolean;
+  features: DomainFeatureFlags;
+};
+type DomainFeatureFlags = {
+  domainManagement: BaseFeatureConfig;
+  dnsManagement: BaseFeatureConfig;
+  nameserversManagement: BaseFeatureConfig;
+  dnssecManagement: BaseFeatureConfig<{ autoManaged?: boolean }>;
+  domainPreferencesManagement: BaseFeatureConfig;
+  domainExport: BaseFeatureConfig;
 };

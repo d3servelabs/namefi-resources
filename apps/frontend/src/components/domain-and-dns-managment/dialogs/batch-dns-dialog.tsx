@@ -76,6 +76,15 @@ export function BatchDnsDialog({
             }),
           ),
         );
+        await Promise.all(
+          domains.map((domain) =>
+            queryClient.invalidateQueries({
+              queryKey: trpc.dnsRecords.getRecords.queryKey({
+                zoneName: domain,
+              }),
+            }),
+          ),
+        );
         toast.success(`Forwarding updated for ${domains.length} domains`);
       } else if (action === 'web') {
         if (!webRecordForm.isValid) return;

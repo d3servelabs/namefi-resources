@@ -205,9 +205,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           <TabsContent value="dns-setting">
             <Tabs value={currentTab} onValueChange={handleTabChange}>
               <TabsList className="mb-8">
-                {!isPbn && (
-                  <TabsTrigger value="dns-overview">DNS Overview</TabsTrigger>
-                )}
+                <TabsTrigger value="dns-overview">Domain Overview</TabsTrigger>
 
                 {showDnsTable && (
                   <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
@@ -219,14 +217,12 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                 )}
               </TabsList>
 
-              {!isPbn && (
-                <TabsContent value="dns-overview">
-                  <DnsOverviewPanel
-                    domain={domain as PunycodeDomainName}
-                    nftChainId={nft.chainId}
-                  />
-                </TabsContent>
-              )}
+              <TabsContent value="dns-overview">
+                <DnsOverviewPanel
+                  domain={domain as PunycodeDomainName}
+                  nftChainId={nft.chainId}
+                />
+              </TabsContent>
 
               {showDnsTable && (
                 <TabsContent value="dns-records">

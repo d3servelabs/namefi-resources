@@ -11,6 +11,7 @@ import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { Column, Row } from '@tanstack/react-table';
 import { Check, X } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { isManagedDnsRecord } from './managed-records';
 
 export interface EditableCellProps {
   value: string;
@@ -124,9 +125,7 @@ export const EditableCell = ({
       className="cursor-pointer hover:bg-zinc-800 p-1 rounded"
       onClick={() => {
         if (enabled) {
-          // Don't allow editing system records
-          const rdata = row.original.rdata;
-          if (rdata === 'by AutoPark™' || rdata === 'by System') {
+          if (isManagedDnsRecord(row.original)) {
             return;
           }
           setIsEditing(true);

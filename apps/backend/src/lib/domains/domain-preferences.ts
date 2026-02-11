@@ -14,7 +14,11 @@ import { TRPCError } from '@trpc/server';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 import type { PgTransaction } from 'drizzle-orm/pg-core';
 import { isNotNil, keys, omit, pick } from 'ramda';
-import { PARKED_DOMAIN_RECORDS } from '../../services/dns/parking';
+import {
+  ENS_TXT_PREFIX,
+  FORWARDING_TXT_PREFIX,
+  PARKED_DOMAIN_RECORDS,
+} from '../../services/dns/managed-records';
 import { privyClient } from '../../trpc/utils';
 import { dnsRecordTypeCodes } from '../dns/record-type-codes';
 import type { DnsResponse } from '../dns/types';
@@ -303,7 +307,7 @@ export const getAnswerForDnsQueryFromPreferences = async (
         name: recordName,
         type: dnsRecordTypeCodes.get(RecordType.TXT) as number,
         TTL: 60,
-        data: `"ENS1 dnsname.ens.eth ${preferences.ownerAddress}"`,
+        data: `"${ENS_TXT_PREFIX} ${preferences.ownerAddress}"`,
       });
     }
     if (isNotNil(forwardTo)) {
@@ -311,7 +315,7 @@ export const getAnswerForDnsQueryFromPreferences = async (
         name: recordName,
         type: dnsRecordTypeCodes.get(RecordType.TXT) as number,
         TTL: 60,
-        data: `"--nfi-redirect=${forwardTo}"`,
+        data: `"${FORWARDING_TXT_PREFIX}${forwardTo}"`,
       });
     }
   }

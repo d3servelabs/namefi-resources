@@ -6,23 +6,10 @@ import { and, eq, inArray } from 'drizzle-orm';
 import type { z } from 'zod';
 import { areRecordsEqual } from './helpers';
 import { updateDomainConfig } from '#lib/domains/domain-preferences';
-/**
- * A collection of records that are considered parked
- */
-export const PARKED_DOMAIN_RECORDS: z.infer<typeof recordSchema>[] = [
-  {
-    type: RecordType.A,
-    name: '@',
-    rdata: '24.199.74.33',
-    ttl: 60,
-  },
-  {
-    type: RecordType.AAAA,
-    name: '@',
-    rdata: '2604:a880:4:1d0::417:7000',
-    ttl: 60,
-  },
-];
+
+import { PARKED_DOMAIN_RECORDS } from './managed-records';
+import { validateZone } from './service';
+export { PARKED_DOMAIN_RECORDS } from './managed-records';
 
 /**
  * Helper function to get the records that are considered parked for a domain (meaning they match the PARKED_DOMAIN_RECORDS except for the rdata and ttl)

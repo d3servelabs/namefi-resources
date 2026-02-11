@@ -1,3 +1,15 @@
+import { useTRPC } from '@/lib/trpc';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/shadcn/alert-dialog';
+import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import { TooltipTrigger } from '@/components/ui/shadcn/tooltip';
@@ -5,6 +17,7 @@ import { TooltipContent } from '@/components/ui/shadcn/tooltip';
 import { Tooltip } from '@/components/ui/shadcn/tooltip';
 import { TooltipProvider } from '@/components/ui/shadcn/tooltip';
 import type { DnsRecordSelect } from '@namefi-astra/db';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { CellContext, HeaderContext } from '@tanstack/react-table';
 import {
   ArrowUpDown,
@@ -12,6 +25,7 @@ import {
   ChevronUp,
   Copy,
   Edit,
+  Loader2,
   RotateCw,
   Trash2,
 } from 'lucide-react';
@@ -21,6 +35,12 @@ import { AddEditRecordsDialog } from '../../../dialogs/add-edit-records-dialog';
 import { DeleteRecordDialog } from '../../../dialogs/delete-records-dialog';
 import { DNS_RECORD_TYPES, TTL_OPTIONS } from '../../../schemas';
 import { EditableCell } from './editable-cell';
+import {
+  getManagedDnsRecordMetadata,
+  getManagedRecordDisablePatch,
+  getManagedRecordLabel,
+  isManagedDnsRecord,
+} from './managed-records';
 
 export const SelectColumnHeader = ({
   context,
@@ -41,6 +61,7 @@ export const SelectColumnHeader = ({
     />
   );
 };
+
 export const SelectColumnCell = ({
   context,
 }: {
@@ -50,6 +71,7 @@ export const SelectColumnCell = ({
     checked={context.row.getIsSelected()}
     onCheckedChange={(value) => context.row.toggleSelected(!!value)}
     aria-label="Select row"
+    disabled={!context.row.getCanSelect()}
   />
 );
 
@@ -86,13 +108,13 @@ export const TypeColumnCell = ({
   onCellUpdate: (rowId: string, columnId: string, value: string) => void;
 }) => {
   const type = context.row.getValue('type') as string;
-  const rdata = context.row.original.rdata;
-  const isSystemRecord = rdata === 'by AutoPark™' || rdata === 'by System';
+  const managedLabel = getManagedRecordLabel(context.row.original);
+  const isManagedRecord = managedLabel !== null;
 
   return (
-    <div className="font-medium">
-      {isSystemRecord ? (
-        type
+    <div className="font-medium flex items-center gap-2">
+      {isManagedRecord ? (
+        <span>{type}</span>
       ) : (
         <EditableCell
           enabled={false}
@@ -100,12 +122,17 @@ export const TypeColumnCell = ({
           row={context.row}
           column={context.column}
           onSave={(value) => onCellUpdate(context.row.id, 'type', value)}
-          options={DNS_RECORD_TYPES.map((type) => ({
-            value: type,
-            label: type,
+          options={DNS_RECORD_TYPES.map((recordType) => ({
+            value: recordType,
+            label: recordType,
           }))}
           isSelectInput={true}
         />
+      )}
+      {managedLabel && (
+        <Badge variant="secondary" className="text-[10px] uppercase">
+          {managedLabel}
+        </Badge>
       )}
     </div>
   );
@@ -116,7 +143,6 @@ export const NameColumnHeader = ({
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
 }) => {
-  // Memoize the sort handler
   const handleSort = () => {
     context.column.toggleSorting(context.column.getIsSorted() === 'asc');
   };
@@ -149,10 +175,8 @@ export const NameColumnCell = ({
   onCellUpdate: (rowId: string, columnId: string, value: string) => void;
 }) => {
   const name = context.row.getValue('name') as string;
-  const rdata = context.row.original.rdata;
-  const isSystemRecord = rdata === 'by AutoPark™' || rdata === 'by System';
 
-  return isSystemRecord ? (
+  return isManagedDnsRecord(context.row.original) ? (
     name
   ) : (
     <EditableCell
@@ -173,12 +197,10 @@ export const ValueColumnCell = ({
   onCellUpdate: (rowId: string, columnId: string, value: string) => void;
 }) => {
   const value = context.row.getValue('rdata') as string;
-  const rdata = context.row.original.rdata;
-  const isSystemRecord = rdata === 'by AutoPark™' || rdata === 'by System';
 
   return (
     <div className="max-w-[300px] truncate">
-      {isSystemRecord ? (
+      {isManagedDnsRecord(context.row.original) ? (
         value
       ) : (
         <EditableCell
@@ -186,7 +208,9 @@ export const ValueColumnCell = ({
           value={value}
           row={context.row}
           column={context.column}
-          onSave={(value) => onCellUpdate(context.row.id, 'rdata', value)}
+          onSave={(nextValue) =>
+            onCellUpdate(context.row.id, 'rdata', nextValue)
+          }
         />
       )}
     </div>
@@ -198,7 +222,6 @@ export const TTLColumnHeader = ({
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
 }) => {
-  // Memoize the sort handler
   const handleSort = () => {
     context.column.toggleSorting(context.column.getIsSorted() === 'asc');
   };
@@ -230,22 +253,19 @@ export const TTLColumnCell = ({
   context: CellContext<DnsRecordSelect, any>;
   onCellUpdate: (rowId: string, columnId: string, value: string) => void;
 }) => {
-  const ttl = context.row.getValue('ttl') as string;
-  const rdata = context.row.original.rdata;
-  const isSystemRecord = rdata === 'by AutoPark™' || rdata === 'by System';
+  const ttl = context.row.getValue('ttl');
 
-  // Format TTL for display
   const formatTtl = (ttlValue: string) => {
     const option = TTL_OPTIONS.find((opt) => opt.value.toString() === ttlValue);
     return option ? option.label : ttlValue;
   };
 
-  return isSystemRecord ? (
-    formatTtl(ttl)
+  return isManagedDnsRecord(context.row.original) ? (
+    formatTtl(String(ttl))
   ) : (
     <EditableCell
       enabled={false}
-      value={ttl}
+      value={String(ttl)}
       row={context.row}
       column={context.column}
       onSave={(value) => onCellUpdate(context.row.id, 'ttl', value)}
@@ -264,11 +284,36 @@ export const ActionsColumnCell = ({
   context: CellContext<DnsRecordSelect, any>;
 }) => {
   const record = context.row.original;
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const managedMetadata = getManagedDnsRecordMetadata(record);
+  const managedDisablePatch = getManagedRecordDisablePatch(record);
+  const isManagedRecord = managedMetadata !== null;
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isManagedDeleteDialogOpen, setIsManagedDeleteDialogOpen] =
+    useState(false);
 
-  // Memoize the copy handler
+  const updateDomainPreferencesAndConfig = useMutation(
+    trpc.domainConfig.updateDomainPreferencesAndConfig.mutationOptions(),
+  );
+  const { data: domainPreferencesAndConfig } = useQuery(
+    trpc.domainConfig.getDomainPreferencesAndConfig.queryOptions(
+      {
+        domainName: record.zoneName,
+      },
+      {
+        enabled:
+          isManagedDeleteDialogOpen &&
+          managedMetadata?.managedBy === 'autoPark',
+      },
+    ),
+  );
+  const isForwardingEnabled = Boolean(
+    domainPreferencesAndConfig?.forwardTo?.trim(),
+  );
+
   const handleCopy = () => {
     const text = `${record.type} ${record.name} ${record.rdata} ${record.ttl}`;
     navigator.clipboard.writeText(text);
@@ -277,48 +322,167 @@ export const ActionsColumnCell = ({
     });
   };
 
+  const handleManagedDelete = async () => {
+    if (!managedDisablePatch) {
+      return;
+    }
+
+    try {
+      await updateDomainPreferencesAndConfig.mutateAsync({
+        domainName: record.zoneName,
+        domainPreferencesAndConfig: managedDisablePatch,
+      });
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: trpc.dnsRecords.getRecords.queryKey({
+            zoneName: record.zoneName,
+          }),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: trpc.domainConfig.getDomainPreferencesAndConfig.queryKey({
+            domainName: record.zoneName,
+          }),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: trpc.users.getCurrentUserDomains.queryKey(),
+        }),
+      ]);
+
+      const successMessage =
+        managedMetadata?.managedBy === 'autoPark'
+          ? 'Parking and forwarding disabled'
+          : managedMetadata?.managedBy === 'autoEns'
+            ? 'AutoENS disabled'
+            : 'Forwarding disabled';
+
+      toast.success(successMessage);
+      setIsManagedDeleteDialogOpen(false);
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Failed to update managed DNS settings',
+      );
+    }
+  };
+
+  const managedDeleteTitle =
+    managedMetadata?.managedBy === 'autoPark'
+      ? 'Disable parking records?'
+      : managedMetadata?.managedBy === 'autoEns'
+        ? 'Disable AutoENS record?'
+        : 'Disable forwarding record?';
+
+  const managedDeleteDescription =
+    managedMetadata?.managedBy === 'autoPark'
+      ? 'This row is managed by Domain Preferences. Disabling it turns off parking.'
+      : managedMetadata?.managedBy === 'autoEns'
+        ? 'This row is managed by Domain Preferences. Disabling it turns off AutoENS.'
+        : 'This row is managed by Domain Preferences. Disabling it clears forwarding.';
+
   return (
     <div className="flex items-center gap-2">
-      <AddEditRecordsDialog
-        mode="edit"
-        isOpen={isEditDialogOpen}
-        zoneName={record.zoneName}
-        records={[record]}
-        onOpenChange={setIsEditDialogOpen}
-      />
-      <DeleteRecordDialog
-        records={[record]}
-        zoneName={record.zoneName}
-        isOpen={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      />
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger
-            render={<Button variant="ghost" size="icon" className="h-8 w-8" />}
-            onClick={() => setIsEditDialogOpen(true)}
-          >
-            <Edit className="h-4 w-4" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Edit record</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {!isManagedRecord && (
+        <>
+          <AddEditRecordsDialog
+            mode="edit"
+            isOpen={isEditDialogOpen}
+            zoneName={record.zoneName}
+            records={[record]}
+            onOpenChange={setIsEditDialogOpen}
+          />
+          <DeleteRecordDialog
+            records={[record]}
+            zoneName={record.zoneName}
+            isOpen={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          />
+        </>
+      )}
+
+      {isManagedRecord && (
+        <AlertDialog
+          open={isManagedDeleteDialogOpen}
+          onOpenChange={setIsManagedDeleteDialogOpen}
+        >
+          <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+            <AlertDialogHeader>
+              <AlertDialogTitle>{managedDeleteTitle}</AlertDialogTitle>
+              <AlertDialogDescription className="space-y-2 text-zinc-400">
+                <p>{managedDeleteDescription}</p>
+                {managedMetadata?.managedBy === 'autoPark' &&
+                  isForwardingEnabled && (
+                    <p className="text-amber-500">
+                      Disabling parking records also disables forwarding.
+                    </p>
+                  )}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                disabled={updateDomainPreferencesAndConfig.isPending}
+              >
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                variant="destructive"
+                onClick={(event) => {
+                  event.preventDefault();
+                  void handleManagedDelete();
+                }}
+                disabled={updateDomainPreferencesAndConfig.isPending}
+              >
+                {updateDomainPreferencesAndConfig.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Disabling...
+                  </>
+                ) : (
+                  'Disable'
+                )}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+
+      {!isManagedRecord && (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button variant="ghost" size="icon" className="h-8 w-8" />
+              }
+              onClick={() => setIsEditDialogOpen(true)}
+            >
+              <Edit className="h-4 w-4" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Edit record</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
 
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger
             render={<Button variant="ghost" size="icon" className="h-8 w-8" />}
-            onClick={() => setIsDeleteDialogOpen(true)}
+            onClick={() =>
+              isManagedRecord
+                ? setIsManagedDeleteDialogOpen(true)
+                : setIsDeleteDialogOpen(true)
+            }
             disabled={
-              record.rdata === 'by AutoPark™' || record.rdata === 'by System'
+              isManagedRecord && updateDomainPreferencesAndConfig.isPending
             }
           >
             <Trash2 className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Delete record</p>
+            <p>
+              {isManagedRecord ? 'Disable managed record' : 'Delete record'}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

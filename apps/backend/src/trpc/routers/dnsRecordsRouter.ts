@@ -14,7 +14,7 @@ import {
   createRecord,
   createRecordInputSchema,
   deleteRecord,
-  getZoneRecords,
+  getZoneRecordsWithManagedRecords,
   updateRecord,
   updateRecordInputSchema,
   validateZone,
@@ -396,7 +396,7 @@ export const dnsRecordsRouter = createTRPCRouter({
     .query(({ input }) => {
       // In a real implementation, we may want to check permissions
       // before returning records, but for DNS we might allow public reading
-      return getZoneRecords(input.zoneName);
+      return getZoneRecordsWithManagedRecords(input.zoneName);
     }),
 
   /**

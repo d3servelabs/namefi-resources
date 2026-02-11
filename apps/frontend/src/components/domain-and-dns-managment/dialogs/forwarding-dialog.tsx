@@ -58,9 +58,16 @@ export function ForwardingDialog({
 
       toast.success('Forwarding URL updated');
 
-      await queryClient.invalidateQueries({
-        queryKey: trpc.users.getCurrentUserDomains.queryKey(),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: trpc.dnsRecords.getRecords.queryKey({
+            zoneName: domainName,
+          }),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: trpc.users.getCurrentUserDomains.queryKey(),
+        }),
+      ]);
 
       onOpenChange(false);
     } catch (error) {

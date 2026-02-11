@@ -44,6 +44,10 @@ const DEFAULT_VALUES: DnsRecordFormValues = {
   rdata: '',
   ttl: 60,
 };
+const SHORT_VALUE_TYPES = new Set<RecordType>(['A', 'AAAA', 'CNAME', 'NS']);
+
+const isShortValueType = (type: RecordType) => SHORT_VALUE_TYPES.has(type);
+
 const resolver = zodResolver(
   z
     .any()
@@ -69,142 +73,124 @@ export function DnsRecordForm({
   // Watch for form changes and notify parent
   const values = form.watch();
   const isValid = form.formState.isValid;
+  const selectedType = (values.type ?? DEFAULT_VALUES.type) as RecordType;
+  const zoneName = values.domain ?? '';
 
   useEffect(() => {
     const sanitizedValues = sanitizeDnsRecord(values);
     onValuesChange(sanitizedValues, isValid);
   }, [values, isValid, onValuesChange]);
 
-  // Memoize the value placeholder based on type
   const valuePlaceholder = useMemo(() => {
-    const type = form.getValues('type');
-    return type === 'A' ? '192.168.1.1' : 'example.com';
-  }, [form]);
+    if (selectedType === 'A') {
+      return '192.168.1.1';
+    }
 
-  const zoneName = useMemo(() => form.getValues('domain') ?? '', [form]);
+    if (selectedType === 'AAAA') {
+      return '2001:db8::1';
+    }
+
+    return 'example.com';
+  }, [selectedType]);
 
   return (
     <Form {...form}>
-      <div className="flex flex-row flex-wrap *:px-2 gap-y-2">
-        <div className="w-2/12">
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-zinc-400">
-                  Type <span className="text-red-500">*</span>
-                </FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    if (!value) return;
-                    field.onChange(value);
-                  }}
-                  defaultValue={field.value}
-                  disabled={disabled}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full bg-zinc-900 border-zinc-800">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {DNS_RECORD_TYPES.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-xs text-red-500" />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="w-2/12">
-          <FormField
-            control={form.control}
-            name="ttl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-zinc-400">TTL</FormLabel>
-                <div className="flex">
-                  <Select
-                    onValueChange={(value) => {
-                      if (!value) return;
-                      field.onChange(Number.parseInt(value, 10));
-                    }}
-                    defaultValue={field.value.toString()}
-                    disabled={disabled}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="bg-zinc-900 border-zinc-800">
-                        <SelectValue placeholder="Select TTL" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {TTL_OPTIONS.map((option) => (
-                        <SelectItem
-                          key={option.value}
-                          value={option.value.toString()}
-                        >
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {showRemoveButton && onRemove && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="ml-2"
-                      onClick={onRemove}
-                      type="button"
-                      aria-label={`Remove record ${index + 1}`}
-                      disabled={disabled}
+      <div className="grid grid-cols-1 gap-3 px-2 md:grid-cols-[minmax(7rem,0.65fr)_minmax(7rem,0.65fr)_minmax(16rem,1.25fr)_minmax(16rem,1fr)_auto] md:items-end">
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm text-zinc-400">
+                Type <span className="text-red-500">*</span>
+              </FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  if (!value) return;
+                  field.onChange(value);
+                }}
+                defaultValue={field.value}
+                disabled={disabled}
+              >
+                <FormControl>
+                  <SelectTrigger className="w-full bg-zinc-900 border-zinc-800">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {DNS_RECORD_TYPES.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage className="text-xs text-red-500" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="ttl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm text-zinc-400">TTL</FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  if (!value) return;
+                  field.onChange(Number.parseInt(value, 10));
+                }}
+                defaultValue={field.value.toString()}
+                disabled={disabled}
+              >
+                <FormControl>
+                  <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                    <SelectValue placeholder="Select TTL" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {TTL_OPTIONS.map((option) => (
+                    <SelectItem
+                      key={option.value}
+                      value={option.value.toString()}
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
-                <FormMessage className="text-xs text-red-500" />
-              </FormItem>
-            )}
-          />
-        </div>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage className="text-xs text-red-500" />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
-            <div
-              style={{
-                width: `clamp(${zoneName.length + 20}ch, ${Math.max(zoneName.length + (field.value?.length ?? 0), 1)}ch, calc(100% * 8/12))`,
-              }}
-            >
-              <FormItem>
-                <FormLabel className="text-sm text-zinc-400">Name</FormLabel>
-                <div className="flex flex-row flex-nowrap">
-                  <FormControl>
-                    <Input
-                      placeholder="www or @"
-                      className="bg-zinc-900 border-zinc-800 rounded-r-none"
-                      {...field}
-                      disabled={disabled}
-                    />
-                  </FormControl>
+            <FormItem>
+              <FormLabel className="text-sm text-zinc-400">Name</FormLabel>
+              <div className="flex flex-row flex-nowrap">
+                <FormControl>
                   <Input
-                    className="w-fit bg-zinc-900 border-zinc-800 border-l-0 rounded-l-none text-zinc-500"
-                    style={{
-                      width: `clamp(20ch, ${Math.max(zoneName.length + 20, 1)}ch, 100%)`,
-                    }}
-                    value={zoneName}
-                    readOnly={true}
+                    placeholder="www or @"
+                    className="bg-zinc-900 border-zinc-800 rounded-r-none"
+                    {...field}
+                    disabled={disabled}
                   />
-                </div>
-                <FormMessage className="text-xs text-red-500" />
-              </FormItem>
-            </div>
+                </FormControl>
+                <Input
+                  className="w-fit bg-zinc-900 border-zinc-800 border-l-0 rounded-l-none text-zinc-500"
+                  style={{
+                    width: `clamp(12ch, ${Math.max(zoneName.length + 2, 12)}ch, 100%)`,
+                  }}
+                  value={zoneName}
+                  readOnly={true}
+                />
+              </div>
+              <FormMessage className="text-xs text-red-500" />
+            </FormItem>
           )}
         />
 
@@ -212,28 +198,46 @@ export function DnsRecordForm({
           control={form.control}
           name="rdata"
           render={({ field }) => (
-            <div
-              style={{
-                width: `clamp(20ch, ${Math.max(field.value.length, 1)}ch, calc(100%))`,
-              }}
-            >
-              <FormItem>
-                <FormLabel className="text-sm text-zinc-400">
-                  Value <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
+            <FormItem>
+              <FormLabel className="text-sm text-zinc-400">
+                Value <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                {isShortValueType(selectedType) ? (
+                  <Input
+                    placeholder={valuePlaceholder}
+                    className="bg-zinc-900 border-zinc-800"
+                    {...field}
+                    disabled={disabled}
+                  />
+                ) : (
                   <Textarea
                     placeholder={valuePlaceholder}
                     className="bg-zinc-900 border-zinc-800"
                     {...field}
                     disabled={disabled}
                   />
-                </FormControl>
-                <FormMessage className="text-xs text-red-500" />
-              </FormItem>
-            </div>
+                )}
+              </FormControl>
+              <FormMessage className="text-xs text-red-500" />
+            </FormItem>
           )}
         />
+
+        {showRemoveButton && onRemove && (
+          <div className="flex md:justify-end md:pb-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onRemove}
+              type="button"
+              aria-label={`Remove record ${index + 1}`}
+              disabled={disabled}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </Form>
   );

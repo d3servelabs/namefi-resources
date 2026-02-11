@@ -1,4 +1,9 @@
-import { db, dnsRecordInsertSchema, dnsRecordsTable } from '@namefi-astra/db';
+import {
+  type DnsRecordSelect,
+  db,
+  dnsRecordInsertSchema,
+  dnsRecordsTable,
+} from '@namefi-astra/db';
 import {
   type NamefiNormalizedDomain,
   namefiNormalizedDomainSchema,
@@ -13,6 +18,15 @@ import { and, eq } from 'drizzle-orm';
 import { filter, isNotNil, mergeRight, pickBy } from 'ramda';
 import { z } from 'zod';
 import { areRecordsEqual } from './helpers';
+import {
+  MANAGED_DNS_CNAME_CONFLICT_CODE,
+  MANAGED_DNS_CNAME_MANAGED_CONFLICT_CODE,
+  MANAGED_DNS_PARKING_CONFLICT_CODE,
+  PARKED_DOMAIN_RECORDS,
+  buildManagedRecordsForState,
+  getDomainManagedDnsState,
+  getManagedRecordsForZone,
+} from './managed-records';
 
 export const updateRecordInputSchema = z.object({
   id: z.string(),
@@ -30,6 +44,57 @@ export const createRecordInputSchema = dnsRecordInsertSchema.pick({
   ttl: true,
   zoneName: true,
 });
+
+type ZoneRecordLike = {
+  name: string;
+  type: string;
+  rdata: string;
+  ttl: number;
+  class?: string;
+};
+
+function getRecordSetKey(record: ZoneRecordLike) {
+  return [
+    record.name,
+    record.type,
+    record.rdata,
+    record.ttl,
+    record.class ?? 'IN',
+  ].join('|');
+}
+
+function dedupeRecordsBySet<T extends ZoneRecordLike>(records: T[]) {
+  const seen = new Set<string>();
+  return records.filter((record) => {
+    const key = getRecordSetKey(record);
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+}
+
+function isApexName(name: string) {
+  return name === '@' || name === '';
+}
+
+function isApexParkingConflictCandidate(record: z.infer<typeof recordSchema>) {
+  if (!isApexName(record.name)) {
+    return false;
+  }
+  return record.type === 'A' || record.type === 'AAAA';
+}
+
+function isParkedApexRecord(record: z.infer<typeof recordSchema>) {
+  return PARKED_DOMAIN_RECORDS.some((parkedRecord) =>
+    areRecordsEqual(parkedRecord, record),
+  );
+}
+
+function normalizeRecordName(name: string) {
+  return name.trim().toLowerCase();
+}
 
 /**
  * Helper function to get a DNS record by ID and domain name.
@@ -76,6 +141,20 @@ export async function getZoneRecords(zoneName: NamefiNormalizedDomain) {
   return records;
 }
 
+export async function getZoneRecordsWithManagedRecords(
+  zoneName: NamefiNormalizedDomain,
+) {
+  const [zoneRecords, managedRecords] = await Promise.all([
+    getZoneRecords(zoneName),
+    getManagedRecordsForZone(zoneName),
+  ]);
+
+  return dedupeRecordsBySet<DnsRecordSelect>([
+    ...managedRecords,
+    ...zoneRecords,
+  ]);
+}
+
 /**
  * Helper function to validate a DNS zone with existing, updated, and new records
  * @param zoneName - The normalized domain name to validate zone for
@@ -101,7 +180,10 @@ export async function validateZone(
     updatedRecords = [],
     deletedRecords = [],
   } = changes;
-  const existingRecords = await getZoneRecords(zoneName);
+  const [existingRecords, managedState] = await Promise.all([
+    getZoneRecords(zoneName),
+    getDomainManagedDnsState(zoneName),
+  ]);
 
   // Replace updated records in existing records
   const updatedExistingRecords = filter(
@@ -122,8 +204,27 @@ export async function validateZone(
     }),
   );
 
-  // Combine existing (with updates) and new records
-  const allRecords = [
+  const updatedChangedRecords = filter(
+    isNotNil,
+    updatedRecords.map((update) => {
+      const existingRecord = existingRecords.find((r) => r.id === update.id);
+      if (!existingRecord) {
+        return null;
+      }
+      const merged = mergeRight(existingRecord, update);
+      return {
+        type: merged.type,
+        name: merged.name,
+        rdata: merged.rdata,
+        ttl: merged.ttl,
+      } satisfies z.infer<typeof recordSchema>;
+    }),
+  );
+
+  const managedRecords = buildManagedRecordsForState(zoneName, managedState);
+
+  // Combine existing (with updates), new records, and managed records.
+  const allRecords = dedupeRecordsBySet([
     ...updatedExistingRecords.map((record) => {
       return {
         type: record.type,
@@ -133,7 +234,87 @@ export async function validateZone(
       };
     }),
     ...addedRecords,
-  ];
+    ...managedRecords.map((record) => ({
+      type: record.type,
+      name: record.name,
+      rdata: record.rdata,
+      ttl: record.ttl,
+    })),
+  ]);
+
+  const cnameCandidates = [...addedRecords, ...updatedChangedRecords].filter(
+    (record) => record.type === 'CNAME',
+  );
+
+  if (cnameCandidates.length > 0) {
+    const nonManagedNonCnameRecords = [
+      ...updatedExistingRecords,
+      ...addedRecords,
+    ].filter((record) => record.type !== 'CNAME');
+    const managedNonCnameRecords = managedRecords.filter(
+      (record) => record.type !== 'CNAME',
+    );
+
+    let hasNonManagedConflict = false;
+    let hasManagedOnlyConflict = false;
+
+    for (const cnameCandidate of cnameCandidates) {
+      const cnameName = normalizeRecordName(cnameCandidate.name);
+
+      const hasNonManagedConflictForName = nonManagedNonCnameRecords.some(
+        (record) => {
+          return normalizeRecordName(record.name) === cnameName;
+        },
+      );
+
+      if (hasNonManagedConflictForName) {
+        hasNonManagedConflict = true;
+        continue;
+      }
+
+      const hasManagedConflictForName = managedNonCnameRecords.some(
+        (record) => {
+          return normalizeRecordName(record.name) === cnameName;
+        },
+      );
+
+      if (hasManagedConflictForName) {
+        hasManagedOnlyConflict = true;
+      }
+    }
+
+    if (hasNonManagedConflict) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `${MANAGED_DNS_CNAME_CONFLICT_CODE}: CNAME records cannot share a name with other record types. Delete conflicting records first.`,
+      });
+    }
+
+    if (hasManagedOnlyConflict) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `${MANAGED_DNS_CNAME_MANAGED_CONFLICT_CODE}: Disable managed records before adding this CNAME.`,
+      });
+    }
+  }
+
+  if (managedState.shouldServeParkingRecords) {
+    const parkingConflict = [...addedRecords, ...updatedChangedRecords].some(
+      (record) => {
+        if (!isApexParkingConflictCandidate(record)) {
+          return false;
+        }
+        return !isParkedApexRecord(record);
+      },
+    );
+
+    if (parkingConflict) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `${MANAGED_DNS_PARKING_CONFLICT_CODE}: Disable parking and forwarding before adding apex A/AAAA records.`,
+      });
+    }
+  }
 
   // Validate the entire zone
   await zoneSchema.parseAsync({

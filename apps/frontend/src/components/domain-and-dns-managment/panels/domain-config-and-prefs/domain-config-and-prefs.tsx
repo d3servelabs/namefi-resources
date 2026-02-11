@@ -3,6 +3,16 @@
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Button } from '@/components/ui/shadcn/button';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/shadcn/alert-dialog';
+import {
   Card,
   CardContent,
   CardHeader,
@@ -20,16 +30,40 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
+import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Info } from 'lucide-react';
+import { Info, Loader2 } from 'lucide-react';
 import { isNil } from 'ramda';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
+import { getManagedDnsRecordMetadata } from '../dns/dns-records-table/managed-records';
 
 type DomainPreferencesAndConfig =
   AppRouterOutput['domainConfig']['getDomainPreferencesAndConfig'];
+
+type DomainPreferencesEditableKey =
+  | 'autoEnsEnabled'
+  | 'autoParkEnabled'
+  | 'forwardTo'
+  | 'autoRenewEnabled';
+
+type DomainPreferencesUpdateInput = Pick<
+  DomainPreferencesAndConfig,
+  DomainPreferencesEditableKey
+>;
+
+type PendingPreferenceConflict = {
+  updatedDomainPreferencesAndConfig: DomainPreferencesUpdateInput;
+  recordsToDelete: DnsRecordSelect[];
+  hasApexCnameConflict: boolean;
+  hasApexAddressConflict: boolean;
+};
+
+function isApexRecordName(name: string) {
+  return name === '@' || name === '';
+}
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -221,26 +255,14 @@ export const DomainConfigAndPrefsForm = ({
   const queryClient = useQueryClient();
 
   const [isPending, setIsPending] = useState(false);
+  const [pendingPreferenceConflict, setPendingPreferenceConflict] =
+    useState<PendingPreferenceConflict | null>(null);
 
-  const handleChange =
-    (key: keyof DomainPreferencesAndConfig) => async (value: any) => {
-      const updatedDomainPreferencesAndConfig = {
-        autoEnsEnabled:
-          key === 'autoEnsEnabled'
-            ? value
-            : domainPreferencesAndConfig?.autoEnsEnabled,
-        autoParkEnabled:
-          key === 'autoParkEnabled'
-            ? value
-            : domainPreferencesAndConfig?.autoParkEnabled,
-        forwardTo:
-          key === 'forwardTo' ? value : domainPreferencesAndConfig?.forwardTo,
-        autoRenewEnabled:
-          key === 'autoRenewEnabled'
-            ? value
-            : domainPreferencesAndConfig?.autoRenewEnabled,
-      };
-
+  const applyDomainPreferencesUpdate = useCallback(
+    async (
+      updatedDomainPreferencesAndConfig: DomainPreferencesUpdateInput,
+      recordsToDelete: DnsRecordSelect[] = [],
+    ) => {
       try {
         setIsPending(true);
         const queryKey =
@@ -258,11 +280,30 @@ export const DomainConfigAndPrefsForm = ({
             ...updatedDomainPreferencesAndConfig,
           };
         });
+
+        if (recordsToDelete.length > 0) {
+          await trpcClient.dnsRecords.deleteRecords.mutate({
+            zoneName: domainName,
+            recordsIds: recordsToDelete.map((record) => record.id),
+          });
+        }
+
         await trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
           domainName,
           domainPreferencesAndConfig: updatedDomainPreferencesAndConfig,
         });
-        toast.success('Preferences updated');
+
+        toast.success(
+          recordsToDelete.length > 0
+            ? `Preferences updated and ${recordsToDelete.length} conflicting top-level record(s) removed`
+            : 'Preferences updated',
+        );
+
+        await queryClient.invalidateQueries({
+          queryKey: trpc.dnsRecords.getRecords.queryKey({
+            zoneName: domainName,
+          }),
+        });
         await queryClient.refetchQueries({
           queryKey: trpc.domainConfig.getDomainPreferencesAndConfig.queryKey({
             domainName,
@@ -273,6 +314,129 @@ export const DomainConfigAndPrefsForm = ({
       } finally {
         setIsPending(false);
       }
+    },
+    [
+      trpc.domainConfig.getDomainPreferencesAndConfig,
+      trpc.dnsRecords.getRecords,
+      domainName,
+      queryClient,
+      trpcClient.domainConfig.updateDomainPreferencesAndConfig,
+      trpcClient.dnsRecords.deleteRecords,
+    ],
+  );
+
+  const getPreferenceConflict = useCallback(
+    async (
+      key: DomainPreferencesEditableKey,
+      value: boolean | string | undefined,
+      updatedDomainPreferencesAndConfig: DomainPreferencesUpdateInput,
+    ): Promise<PendingPreferenceConflict | null> => {
+      const willEnableForwarding =
+        key === 'forwardTo' &&
+        typeof value === 'string' &&
+        value.trim().length > 0;
+      const willEnableAutoPark = key === 'autoParkEnabled' && value === true;
+      const willEnableAutoEns = key === 'autoEnsEnabled' && value === true;
+
+      const shouldCheckApexCnameConflict =
+        willEnableForwarding || willEnableAutoPark || willEnableAutoEns;
+      const shouldCheckApexAddressConflict =
+        willEnableForwarding || willEnableAutoPark;
+
+      if (!shouldCheckApexCnameConflict && !shouldCheckApexAddressConflict) {
+        return null;
+      }
+
+      const zoneRecords = await queryClient.fetchQuery(
+        trpc.dnsRecords.getRecords.queryOptions({ zoneName: domainName }),
+      );
+
+      const unmanagedApexRecords = zoneRecords.filter((record) => {
+        return (
+          isApexRecordName(record.name) &&
+          getManagedDnsRecordMetadata(record) === null
+        );
+      });
+
+      const apexCnameRecords = shouldCheckApexCnameConflict
+        ? unmanagedApexRecords.filter((record) => record.type === 'CNAME')
+        : [];
+      const apexAddressRecords = shouldCheckApexAddressConflict
+        ? unmanagedApexRecords.filter(
+            (record) => record.type === 'A' || record.type === 'AAAA',
+          )
+        : [];
+
+      const recordsById = new Map<string, DnsRecordSelect>();
+      for (const record of [...apexCnameRecords, ...apexAddressRecords]) {
+        recordsById.set(record.id, record);
+      }
+      const recordsToDelete = [...recordsById.values()];
+
+      if (recordsToDelete.length === 0) {
+        return null;
+      }
+
+      return {
+        updatedDomainPreferencesAndConfig,
+        recordsToDelete,
+        hasApexCnameConflict: apexCnameRecords.length > 0,
+        hasApexAddressConflict: apexAddressRecords.length > 0,
+      };
+    },
+    [domainName, queryClient, trpc.dnsRecords.getRecords],
+  );
+
+  const handleConfirmConflictResolution = useCallback(async () => {
+    if (!pendingPreferenceConflict) {
+      return;
+    }
+
+    await applyDomainPreferencesUpdate(
+      pendingPreferenceConflict.updatedDomainPreferencesAndConfig,
+      pendingPreferenceConflict.recordsToDelete,
+    );
+    setPendingPreferenceConflict(null);
+  }, [pendingPreferenceConflict, applyDomainPreferencesUpdate]);
+
+  const handleChange =
+    (key: DomainPreferencesEditableKey) =>
+    async (value: boolean | string | undefined) => {
+      const updatedDomainPreferencesAndConfig: DomainPreferencesUpdateInput = {
+        autoEnsEnabled: domainPreferencesAndConfig.autoEnsEnabled,
+        autoParkEnabled: domainPreferencesAndConfig.autoParkEnabled,
+        forwardTo: domainPreferencesAndConfig.forwardTo,
+        autoRenewEnabled: domainPreferencesAndConfig.autoRenewEnabled,
+      };
+
+      if (key === 'autoEnsEnabled' && typeof value === 'boolean') {
+        updatedDomainPreferencesAndConfig.autoEnsEnabled = value;
+      }
+
+      if (key === 'autoParkEnabled' && typeof value === 'boolean') {
+        updatedDomainPreferencesAndConfig.autoParkEnabled = value;
+      }
+
+      if (key === 'forwardTo') {
+        updatedDomainPreferencesAndConfig.forwardTo =
+          typeof value === 'string' ? value : undefined;
+      }
+
+      if (key === 'autoRenewEnabled' && typeof value === 'boolean') {
+        updatedDomainPreferencesAndConfig.autoRenewEnabled = value;
+      }
+
+      const conflict = await getPreferenceConflict(
+        key,
+        value,
+        updatedDomainPreferencesAndConfig,
+      );
+      if (conflict) {
+        setPendingPreferenceConflict(conflict);
+        return;
+      }
+
+      await applyDomainPreferencesUpdate(updatedDomainPreferencesAndConfig);
     };
 
   const isUsingNamefiSigning =
@@ -408,6 +572,59 @@ export const DomainConfigAndPrefsForm = ({
           propagate globally.
         </p>
       </div>
+
+      <AlertDialog
+        open={pendingPreferenceConflict !== null}
+        onOpenChange={(open) => {
+          if (!open && !isPending) {
+            setPendingPreferenceConflict(null);
+          }
+        }}
+      >
+        <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Remove conflicting top-level records?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2 text-zinc-400">
+              <p>
+                This preference change requires removing conflicting root
+                records on this domain.
+              </p>
+              {pendingPreferenceConflict?.hasApexCnameConflict && (
+                <p>Any top-level CNAME (`@`) record will be removed first.</p>
+              )}
+              {pendingPreferenceConflict?.hasApexAddressConflict && (
+                <p>Any top-level A/AAAA (`@`) records will be removed first.</p>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              disabled={isPending}
+              onClick={() => setPendingPreferenceConflict(null)}
+            >
+              Keep records
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={isPending}
+              onClick={(event) => {
+                event.preventDefault();
+                void handleConfirmConflictResolution();
+              }}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" /> Applying...
+                </>
+              ) : (
+                'Remove and continue'
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

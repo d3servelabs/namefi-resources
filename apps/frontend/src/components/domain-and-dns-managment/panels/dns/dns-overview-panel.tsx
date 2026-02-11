@@ -244,6 +244,11 @@ export const DomainRenewalSection = ({
           domainPreferencesAndConfig: updatedDomainPreferencesAndConfig,
         });
         toast.success('Preferences updated');
+        await queryClient.invalidateQueries({
+          queryKey: trpc.dnsRecords.getRecords.queryKey({
+            zoneName: domain,
+          }),
+        });
         await queryClient.refetchQueries({
           queryKey: trpc.domainConfig.getDomainPreferencesAndConfig.queryKey({
             domainName: domain,

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import type { DnsRecordSelect } from '@namefi-astra/db';
+import { isManagedDnsRecord } from '../panels/dns/dns-records-table/managed-records';
 
 interface EditDnsRecordsWrapperProps {
   isOpen: boolean;
@@ -82,7 +83,10 @@ export function EditDnsRecordsWrapper({
 
   const filteredRecords =
     records?.filter(
-      (r) => types.includes(r.type) && (!filterPredicate || filterPredicate(r)),
+      (r) =>
+        !isManagedDnsRecord(r) &&
+        types.includes(r.type) &&
+        (!filterPredicate || filterPredicate(r)),
     ) || [];
 
   const mode = filteredRecords.length > 0 ? 'edit' : 'add';
