@@ -63,6 +63,7 @@ import type {
   DynadotLockDomainCommandOutput,
   DynadotRegisterCommandOutput,
   DynadotRenewCommandOutput,
+  DynadotResponse,
   DynadotResponseCode,
   DynadotResponseStatus,
   DynadotSetRenewOptionCommandOutput,
@@ -264,7 +265,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       duration: args.durationInYears,
       no_renew_if_late_renew_fee_needed: 1,
     });
-    assertNot(responseFailed(response.RenewResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.RenewResponse);
     return {
       type: OperationType.RENEW_DOMAIN,
       operationId: generateOperationId(
@@ -1817,4 +1818,39 @@ function getRunningOperationStatus(response?: {
   return response?.Status === 'success' || response?.ResponseCode !== '-1'
     ? OperationStatus.IN_PROGRESS
     : OperationStatus.FAILED;
+}
+
+Error.stackTraceLimit = 100;
+class DynadotRegistrarError extends Error {
+  constructor(
+    public key: string,
+    public response: DynadotResponse<any, any>,
+    _message?: string,
+  ) {
+    const message =
+      _message ??
+      `[Dynadot:${key}][CODE:${response.ResponseCode.toString()}][Status:${response.Status ?? 'N/A'}]: ${response.Error ?? 'No Error Message'}`;
+    super(message);
+    this.name = `DynadotRegistrarError(${key})`;
+  }
+
+  static fromResponse<R extends DynadotResponse<any, any>>(
+    key: string,
+    response: R,
+  ) {
+    return new DynadotRegistrarError(key, response);
+  }
+
+  static generator(key: string) {
+    return <R extends DynadotResponse<any, any>>(response: R) =>
+      new DynadotRegistrarError(key, response);
+  }
+}
+function assertDynadotResponseNotFailed<R extends DynadotResponse<any, any>>(
+  key: string,
+  response: R,
+) {
+  if (responseFailed(response)) {
+    throw new DynadotRegistrarError(key, response);
+  }
 }
