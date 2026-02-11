@@ -21,6 +21,7 @@ import {
 } from '../../shared/workflow-helpers';
 import {
   extendDomainRegistrationWorkflow,
+  extendEppDomainRegistrationPostImportWorkflow,
   type ExtendDomainRegistrationWorkflowInput,
 } from './extend-registration.workflow';
 
@@ -694,13 +695,18 @@ async function extendDomainRegistrationIfNeeded(
         updateDomainIndex: true, // Update index after renewal to reflect the new expiration
       };
 
-      await workflow.executeChild(extendDomainRegistrationWorkflow, {
-        args: [renewalInput],
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: extendDomainRegistrationWorkflow.generateId(renewalInput),
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        parentClosePolicy: 'REQUEST_CANCEL',
-      });
+      await workflow.executeChild(
+        workflow.patched('fix-devin-using-wrong-workflow')
+          ? extendEppDomainRegistrationPostImportWorkflow
+          : extendDomainRegistrationWorkflow,
+        {
+          args: [renewalInput],
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          workflowId: extendDomainRegistrationWorkflow.generateId(renewalInput),
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        },
+      );
     } catch (renewalError: any) {
       // Transfer succeeded but renewal failed - this is a partial success scenario.
       // Alert admins so they can manually extend the domain or issue a refund for the renewal portion.

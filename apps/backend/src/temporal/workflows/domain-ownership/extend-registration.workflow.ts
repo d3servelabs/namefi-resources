@@ -234,6 +234,41 @@ export async function extendDomainRegistrationWorkflow({
   }
 }
 
+/**
+ * Extend EPP domain registration post import workflow
+ */
+export async function extendEppDomainRegistrationPostImportWorkflow({
+  durationInYears,
+  normalizedDomainName,
+  ownerAddress,
+  userId,
+}: ExtendDomainRegistrationWorkflowInput): Promise<{
+  eppOperationStatus: string;
+  newExpirationTime: string;
+}> {
+  const { levels } = getDomainLevels(normalizedDomainName);
+
+  let newExpirationTime: string | Date;
+  if (levels.length === 2) {
+    newExpirationTime = await _extendSldDomainAndReturnNewExpirationTime({
+      normalizedDomainName,
+      ownerAddress,
+      durationInYears,
+      userId,
+    });
+  } else {
+    throw workflow.ApplicationFailure.create({
+      message: `extendEppDomainRegistrationPostImportWorkflow: Invalid domain name "${normalizedDomainName}", domain is not an epp domains`,
+      nonRetryable: true,
+    });
+  }
+
+  return {
+    eppOperationStatus: 'SUCCESS',
+    newExpirationTime: newExpirationTime.toString(),
+  };
+}
+
 async function _updateDomainIndexAfterExtension({
   normalizedDomainName,
   nextExpirationTime,
@@ -276,7 +311,7 @@ async function _extendSldDomainAndReturnNewExpirationTime({
   durationInYears,
   chainId,
 }: Exclude<ExtendDomainRegistrationWorkflowInput, 'updateDomainIndex'> & {
-  chainId: number;
+  chainId?: number;
 }) {
   const { pollEppExtendRegistrationStatus } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
