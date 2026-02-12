@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { config } from '@/lib/env';
+import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '@/lib/env/consts';
 
 /**
  * @deprecated This utility is no longer the preferred approach for email redirects.
@@ -12,13 +13,7 @@ import { config } from '@/lib/env';
  */
 
 const isPoweredByNamefiDomains = (domain: string) => {
-  const poweredByNamefiDomains = ['0x.city'];
-
-  return (
-    poweredByNamefiDomains.includes(domain) ||
-    domain.endsWith('.cv') ||
-    domain.endsWith('.today')
-  ); //TODO: use actual logic here
+  return POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.includes(domain);
 };
 
 export type ResolvePathFunction = (args: {

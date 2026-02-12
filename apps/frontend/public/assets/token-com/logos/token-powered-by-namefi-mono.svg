@@ -1,0 +1,7 @@
+<svg width="360" height="52" viewBox="0 0 360 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="52" rx="10" fill="#0F172A"/>
+  <circle cx="30" cy="26" r="10" fill="#E2E8F0"/>
+  <path d="M30 16L36.8 22.8L30 37L23.2 22.8L30 16Z" fill="#0F172A"/>
+  <text x="50" y="31" fill="#E2E8F0" font-size="15" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-weight="700">token.com</text>
+  <text x="130" y="31" fill="#94A3B8" font-size="14" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">Powered by Namefi</text>
+</svg>

@@ -155,6 +155,12 @@
   --brand-tertiary: oklch(68.01% 0.1583 276.9);
 }
 
+[data-theme="token.com"] {
+  --brand-primary: oklch(74% 0.19 52);
+  --brand-secondary: oklch(72% 0.14 196);
+  --brand-tertiary: oklch(78% 0.13 145);
+}
+
 [data-theme$=".cv"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);

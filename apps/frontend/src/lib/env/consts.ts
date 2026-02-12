@@ -1,5 +1,6 @@
 export const POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES = [
   '0x.city',
+  'token.com',
   'taylor.cv',
   'ali.cv',
   'li.cv',

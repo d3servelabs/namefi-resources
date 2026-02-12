@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from './lib/env/consts';
 
 const isPoweredByNamefiDomains = (domain: string) => {
-  const poweredByNamefiDomains = ['0x.city'];
-  return (
-    poweredByNamefiDomains.includes(domain) ||
-    domain.endsWith('.cv') ||
-    domain.endsWith('.today')
-  ); //TODO: use actual logic here
+  return POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.includes(domain);
 };
 
 /**
