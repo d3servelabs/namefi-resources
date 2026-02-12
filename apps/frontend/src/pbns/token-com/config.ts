@@ -24,7 +24,7 @@ export const originConfig: OriginConfig = {
   },
   logo: {
     type: 'image',
-    image: '/assets/token-com/logos/token-logo.svg',
+    image: '/assets/token-com/logos/token-mark.svg',
     title: 'token.com',
     alt: 'token.com Logo',
   },

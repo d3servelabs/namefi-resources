@@ -30,6 +30,10 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   const { state: sidebarState, isMobile } = useSidebar();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const logo = originInfo.config.logo;
+  const isSvgAsset =
+    logo.type === 'image' &&
+    typeof logo.image === 'string' &&
+    logo.image.endsWith('.svg');
 
   useEffect(() => {
     if (lottieRef.current && logo?.type === 'lottie') {
@@ -60,7 +64,14 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
       )}
       {...rest}
     >
-      <div className="relative flex shrink-0 items-center justify-start h-7">
+      <div
+        className={cn(
+          'relative flex shrink-0 items-center',
+          logo.type === 'image'
+            ? 'h-7 w-7 justify-center'
+            : 'h-7 justify-start',
+        )}
+      >
         {logo.type === 'image' ? (
           <Image
             src={logo.image}
@@ -68,7 +79,8 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
             title={logo.title}
             width={28}
             height={28}
-            className="rounded-md object-contain w-full h-full"
+            className="size-full rounded-md object-contain"
+            unoptimized={isSvgAsset}
             priority={true}
           />
         ) : logo.type === 'lottie' ? (
@@ -86,12 +98,11 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
         ) : null}
       </div>
 
-      {sidebarState !== 'collapsed' ||
-        (isMobile && (
-          <span className="text-xl font-semibold transition-opacity duration-200 ease-in-out">
-            {logo.title}
-          </span>
-        ))}
+      {(sidebarState !== 'collapsed' || isMobile) && logo.title ? (
+        <span className="text-xl font-semibold transition-opacity duration-200 ease-in-out">
+          {logo.title}
+        </span>
+      ) : null}
     </Link>
   );
 });
