@@ -2,6 +2,8 @@ import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/valid
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import * as workflow from '@temporalio/workflow';
 
 export interface DomainParkingTrackingWorkflowInput {
   domainName: NamefiNormalizedDomain;
@@ -70,15 +72,41 @@ async function _parkingPropagated(input: DomainParkingTrackingWorkflowInput) {
 async function _dnsRecordsPropagated(
   input: DomainParkingTrackingWorkflowInput,
 ): Promise<void> {
-  await pollDefaultNsPropagated(input.domainName as PunycodeDomainName);
+  if (!workflow.patched('fix-dns-records-propagated')) {
+    await pollDefaultNsPropagated(input.domainName as PunycodeDomainName);
 
-  await gaEventDnsRecordsPropagated({
-    userId: input.userId,
-    orderId: input.orderId,
-    orderItemId: input.orderItemId,
-    normalizedDomainName: input.domainName,
-    dnsProvider: input.dnsProvider || 'NAMEFI',
-  });
+    await gaEventDnsRecordsPropagated({
+      userId: input.userId,
+      orderId: input.orderId,
+      orderItemId: input.orderItemId,
+      normalizedDomainName: input.domainName,
+      dnsProvider: input.dnsProvider || 'NAMEFI',
+    });
+  } else {
+    if (input.dnsProvider === 'OTHER') {
+      await gaEventDnsRecordsPropagated({
+        userId: input.userId,
+        orderId: input.orderId,
+        orderItemId: input.orderItemId,
+        normalizedDomainName: input.domainName,
+        dnsProvider: input.dnsProvider,
+      });
+      return;
+    }
+    const parsedDomainName = parseDomainName(input.domainName);
+    if (parsedDomainName.valid) {
+      if (parsedDomainName.registryType === 'traditional') {
+        await pollDefaultNsPropagated(input.domainName as PunycodeDomainName);
+      }
+      await gaEventDnsRecordsPropagated({
+        userId: input.userId,
+        orderId: input.orderId,
+        orderItemId: input.orderItemId,
+        normalizedDomainName: input.domainName,
+        dnsProvider: input.dnsProvider || 'NAMEFI',
+      });
+    }
+  }
 }
 
 domainParkingTrackingWorkflow.generateId = (
