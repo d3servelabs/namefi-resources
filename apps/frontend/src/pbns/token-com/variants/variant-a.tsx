@@ -394,15 +394,6 @@ function CTASection() {
           Check Availability
           <ArrowUpRight className="ml-2 h-5 w-5" />
         </Link>
-        <Link
-          href="#ticker-search"
-          className={cn(
-            buttonVariants({ size: 'lg' }),
-            'h-14 rounded-full bg-white px-10 text-lg font-bold text-[#18181B] hover:bg-gray-100',
-          )}
-        >
-          Contact Sales
-        </Link>
       </div>
     </section>
   );

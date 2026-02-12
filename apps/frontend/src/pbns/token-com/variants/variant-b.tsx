@@ -421,7 +421,7 @@ function MarketingSections() {
             href="#ticker-search"
             className="inline-flex items-center gap-2 rounded-md border-2 border-[#FF8C00] bg-[#FF8C00] px-4 py-2 text-xl text-[#1A1A1A] transition hover:bg-[#ff9b1f] md:text-2xl font-semibold"
           >
-            Request project.token.com
+            Check Availability
             <ArrowUpRight className="h-5 w-5" />
           </a>
         </div>
