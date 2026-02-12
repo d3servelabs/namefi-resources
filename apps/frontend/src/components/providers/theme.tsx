@@ -17,9 +17,7 @@ export function ThemeProvider({ children }: PropsWithChildren) {
       defaultTheme={
         originInfo.isFirstPartyOrigin
           ? 'astra'
-          : (originInfo.config.theme ??
-            originInfo.thirdPartyHostname ??
-            'fallback-thirdparty')
+          : (originInfo.thirdPartyHostname ?? 'astra')
       }
     >
       {children}

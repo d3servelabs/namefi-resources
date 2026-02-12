@@ -151,12 +151,6 @@ html[data-theme$=".today"] {
   --brand-tertiary: oklch(78.9% 0.154 211.53);
 }
 
-html[data-theme="fallback-thirdparty"] {
-  --brand-primary: oklch(78.9% 0.154 211.53);
-  --brand-secondary: oklch(78.9% 0.154 211.53);
-  --brand-tertiary: oklch(78.9% 0.154 211.53);
-}
-
 html[data-theme="pbn"] {
   --background: oklch(0.97 0.018 90);
   --foreground: oklch(0.275 0.026 255);
