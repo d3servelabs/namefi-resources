@@ -1,5 +1,6 @@
 import type { OriginConfigMap } from './types';
 import { originConfig as astraConfig } from '@/pbns/astra/config';
+import { originConfig as fallbackConfig } from '@/pbns/fallback-thirdparty/config';
 import { originConfig as zeroxCityConfig } from '@/pbns/0x-city/config';
 import { originConfig as taylorCvConfig } from '@/pbns/cv/names/taylor';
 import { originConfig as aliCvConfig } from '@/pbns/cv/names/ali';
@@ -32,4 +33,5 @@ export const originConfig: OriginConfigMap = {
     'available.today': availableTodayConfig,
     'discounts.today': discountsTodayConfig,
   },
+  fallbackThirdParty: fallbackConfig,
 };

@@ -75,6 +75,16 @@ export type OriginConfig = {
   pbnLogo?: PbnLogo;
   background?: Background;
   landingPage?: LandingPage;
+  /*
+   * Optional theme for the origin, if not specified, it will fallback to the a theme named by origin (if found) or default theme
+   */
+  theme?:
+    | 'pbn'
+    | 'fallback-thirdparty'
+    | 'astra'
+    | '.cv'
+    | '0x.city'
+    | '.today';
 };
 
 /**
@@ -83,6 +93,7 @@ export type OriginConfig = {
 export type OriginConfigMap = {
   firstParty: OriginConfig;
   thirdParty: Record<string, OriginConfig>;
+  fallbackThirdParty: ({ hostname }: { hostname: string }) => OriginConfig;
 };
 
 /**

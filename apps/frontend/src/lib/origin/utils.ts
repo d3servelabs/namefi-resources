@@ -59,7 +59,7 @@ function getOriginConfig(origin: string | null): OriginConfig {
     return originConfig.thirdParty[thirdPartyDomain];
   }
 
-  return originConfig.firstParty;
+  return originConfig.fallbackThirdParty({ hostname: origin });
 }
 
 export const getOriginInfo = (origin: string): OriginInfo => {
