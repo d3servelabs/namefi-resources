@@ -8,6 +8,7 @@ import {
   type ChecksumWalletAddress,
   type NamefiNormalizedDomain,
   notMatchAny,
+  parseDomainName,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import {
@@ -681,7 +682,25 @@ async function extendDomainRegistrationIfNeeded(
   // If the renewal fails, we alert admins but still return success for the transfer portion.
   // The domain will have 1 year instead of the requested duration - admins must manually resolve.
   if (isImport && input.durationInYears > 1) {
-    const additionalYears = input.durationInYears - 1;
+    let additionalYears = input.durationInYears - 1;
+
+    if (workflow.patched('special-renew-logic-ai-tld')) {
+      const extraDurationIncludedWithImportInYears =
+        getExtraDurationIncludedWithImportInYears(
+          input.normalizedDomainName,
+          input.registrarKey,
+        );
+      additionalYears =
+        input.durationInYears - extraDurationIncludedWithImportInYears;
+
+      if (additionalYears <= 0) {
+        workflow.log.info(
+          `Multi-year import: no additional years to renew after transfer, extraDurationIncludedWithImportInYears=${extraDurationIncludedWithImportInYears} years`,
+        );
+        return;
+      }
+    }
+
     workflow.log.info(
       `Multi-year import: performing ${additionalYears} additional year(s) of renewal after transfer`,
     );
@@ -832,4 +851,35 @@ async function resubmitRequestIfNeeded(
       throw error;
     }
   }
+}
+/**
+ *
+ * certain TLDs like .ai include extra duration with import
+ * and some tlds don't include extra duration with import
+ *
+ * WIP
+ */
+function getExtraDurationIncludedWithImportInYears(
+  domainName: NamefiNormalizedDomain,
+  registrarKey: string,
+) {
+  const parsedDomainName = parseDomainName(domainName);
+  if (!parsedDomainName.valid) {
+    throw workflow.ApplicationFailure.create({
+      type: 'InvalidDomainName',
+      message: 'Invalid domain name',
+      details: [
+        {
+          domainName,
+          registrarKey,
+        },
+      ],
+    });
+  }
+  const { immediateParentDomain } = parsedDomainName;
+  if (immediateParentDomain === 'ai') {
+    return 2;
+  }
+
+  return 1;
 }
