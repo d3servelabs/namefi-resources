@@ -9,7 +9,7 @@ export const keyvPostgres = new KeyvPostgres({
   table: 'default',
   useUnloggedTable: true,
 });
-export const defaultKeyv = new Keyv({ namespace: 'default' });
+export const defaultKeyv = new Keyv(keyvPostgres, { namespace: 'default' });
 
 defaultKeyv.on('error', (error) => {
   logger.error({ error }, 'Keyv error');
