@@ -1810,8 +1810,33 @@ function _dynadotTldPriceToDomainPricingDetails(
     );
   }
 
-  const importPrice: PricingDetails =
+  let importPrice: PricingDetails =
     singleYearPricingTemplate(importPriceAmount);
+
+  if (value.Tld === '.ai') {
+    // .ai import include 2 years renewal
+    const yearToStartAddingCharges = 3;
+
+    const addedPriceForExtraRenewals = range(0, 10).reduce((acc, index) => {
+      const durationInYears = index + 1;
+      let nextPrice = 0;
+
+      if (durationInYears >= yearToStartAddingCharges) {
+        const lastPrice = acc[acc.length - 1] ?? 0;
+        nextPrice = lastPrice + renewPriceAmount;
+      }
+
+      acc.push(nextPrice);
+      return acc;
+    }, [] as number[]);
+
+    const multiYearImportPriceAmount = addedPriceForExtraRenewals.map(
+      (addedPrice) =>
+        Number.parseFloat((importPriceAmount + addedPrice).toFixed(2)),
+    );
+
+    importPrice = multiYearPricingTemplate(multiYearImportPriceAmount);
+  }
 
   return {
     registrationPrice: registrationPrice,
@@ -1821,3 +1846,7 @@ function _dynadotTldPriceToDomainPricingDetails(
     restorationPrice: singleYearPricingTemplate(restorePriceAmount),
   } as DomainPricingDetails;
 }
+
+export const __INTERNAL__ = {
+  _dynadotTldPriceToDomainPricingDetails,
+};
