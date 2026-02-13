@@ -1824,12 +1824,10 @@ Error.stackTraceLimit = 100;
 class DynadotRegistrarError extends Error {
   constructor(
     public key: string,
-    public response: DynadotResponse<any, any>,
-    _message?: string,
+    _message: string,
+    public payload?: any,
   ) {
-    const message =
-      _message ??
-      `[Dynadot:${key}][CODE:${response.ResponseCode.toString()}][Status:${response.Status ?? 'N/A'}]: ${response.Error ?? 'No Error Message'}`;
+    const message = `[Dynadot:${key}] ${_message ?? 'No Error Message'}`;
     super(message);
     this.name = `DynadotRegistrarError(${key})`;
   }
@@ -1838,12 +1836,37 @@ class DynadotRegistrarError extends Error {
     key: string,
     response: R,
   ) {
-    return new DynadotRegistrarError(key, response);
+    return new DynadotFailedResponseError(key, response);
   }
 
   static generator(key: string) {
     return <R extends DynadotResponse<any, any>>(response: R) =>
-      new DynadotRegistrarError(key, response);
+      new DynadotFailedResponseError(key, response);
+  }
+}
+class DynadotFailedResponseError extends DynadotRegistrarError {
+  constructor(
+    key: string,
+    public response: DynadotResponse<any, any>,
+    _message?: string,
+  ) {
+    const message =
+      _message ??
+      `[CODE:${response?.ResponseCode?.toString()}][Status:${response?.Status ?? 'N/A'}]: ${response?.Error ?? 'No Error Message'}`;
+    super(key, message, response);
+    this.name = `DynadotFailedResponseError(${key})`;
+  }
+
+  static fromResponse<R extends DynadotResponse<any, any>>(
+    key: string,
+    response: R,
+  ) {
+    return new DynadotFailedResponseError(key, response);
+  }
+
+  static generator(key: string) {
+    return <R extends DynadotResponse<any, any>>(response: R) =>
+      new DynadotFailedResponseError(key, response);
   }
 }
 function assertDynadotResponseNotFailed<R extends DynadotResponse<any, any>>(
@@ -1851,6 +1874,6 @@ function assertDynadotResponseNotFailed<R extends DynadotResponse<any, any>>(
   response: R,
 ) {
   if (responseFailed(response)) {
-    throw new DynadotRegistrarError(key, response);
+    throw new DynadotFailedResponseError(key, response);
   }
 }
