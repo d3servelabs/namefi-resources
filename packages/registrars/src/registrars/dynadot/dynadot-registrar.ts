@@ -67,6 +67,7 @@ import type {
   DynadotResponseCode,
   DynadotResponseStatus,
   DynadotSetRenewOptionCommandOutput,
+  DynadotTldPriceDetails,
   ProxyOptions,
 } from '#lib/dynadot/index';
 import {
@@ -538,6 +539,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return response.DomainInfoResponse.DomainInfo;
   }
 
+  /**
+   *
+   * Dynadot doesn't provide orderId for registration orders, so we can't check the status of the order
+   * Instead, we can check if the domain is registered or not within the 30-minute window after submission as per Dynadot recommendation
+   */
   async _checkDomainRegister(
     domainName: PunycodeDomainName,
     operationId: string,
@@ -705,32 +711,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     }
     const prices = Object.fromEntries(
       response.TldPrice.map((value) => {
-        const registerPrice = Number.parseFloat(value.Price.Register);
-        const renewPrice = Number.parseFloat(value.Price.Renew);
-        const multiYearRegistrationPrice = range(0, 10).map(
-          (index) => registerPrice + renewPrice * index,
-        );
-
-        const registrationPrice =
-          renewPrice > registerPrice
-            ? multiYearPricingTemplate(multiYearRegistrationPrice)
-            : singleYearPricingTemplate(registerPrice);
-
         return [
-          value.Tld.replace(/^\./, ''),
-          {
-            registrationPrice: registrationPrice,
-            renewalPrice: singleYearPricingTemplate(
-              Number.parseFloat(value.Price.Renew),
-            ),
-            importPrice: singleYearPricingTemplate(
-              Number.parseFloat(value.Price.Transfer),
-            ),
-            changeOwnershipPrice: singleYearPricingTemplate(0),
-            restorationPrice: singleYearPricingTemplate(
-              Number.parseFloat(value.Price.Restore),
-            ),
-          } as DomainPricingDetails,
+          value.Tld.replace(/^\./g, ''),
+          _dynadotTldPriceToDomainPricingDetails(value, this.key),
         ];
       }),
     );
@@ -898,80 +881,6 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       ),
       status,
       response,
-    };
-  }
-  //TODO @note: remove this once we have a new search endpoint
-  private async _searchForDomainOld(
-    query: PunycodeDomainName,
-  ): Promise<DomainQueryResult> {
-    assertPunycodeDomainName(query);
-
-    const response = await this.client.command(DynadotCommand.search, {
-      currency: 'USD',
-      show_price: '1',
-      domain0: punycode.toASCII(query),
-    });
-    const nonPremiumPrices = await this._getNonPremiumDomainPriceDetails(
-      query,
-      {
-        useCachedValue: true,
-      },
-    );
-    assertNot(responseFailed(response.SearchResponse), 'Response Failed');
-    const firstSearchResult = head(response.SearchResponse.SearchResults);
-
-    if (
-      !isNil(firstSearchResult.DomainName) &&
-      firstSearchResult.DomainName.toLowerCase() === query.toLowerCase() &&
-      (firstSearchResult.Status === 'success' ||
-        firstSearchResult.Available === 'yes')
-    ) {
-      const { isPremium, priceDetails } = parseDomainPriceString(
-        firstSearchResult.Price,
-      );
-      let price: DomainPricingDetails = nonPremiumPrices;
-
-      if (isPremium) {
-        if (!(priceDetails?.registrationPrice && priceDetails?.renewalPrice)) {
-          throw new Error(
-            `Price Details not found for premium domain(${firstSearchResult.DomainName})`,
-          );
-        }
-        const registerPrice = priceDetails?.registrationPrice?.amount;
-        const renewPrice = priceDetails?.renewalPrice?.amount;
-        const multiYearRegistrationPrice = range(0, 10).map(
-          (index) => registerPrice + renewPrice * index,
-        );
-
-        const registrationPrice =
-          renewPrice > registerPrice
-            ? multiYearPricingTemplate(multiYearRegistrationPrice)
-            : singleYearPricingTemplate(registerPrice);
-        price = {
-          registrationPrice: registrationPrice,
-          renewalPrice: singleYearPricingTemplate(renewPrice),
-          importPrice: singleYearPricingTemplate(Number.NaN),
-        };
-      }
-
-      return {
-        domainName: toPunycodeDomainName(firstSearchResult.DomainName),
-        price,
-        isPremium,
-        available:
-          firstSearchResult.Available === 'yes'
-            ? DomainAvailability.AVAILABLE
-            : DomainAvailability.UNAVAILABLE,
-        supported: true,
-      };
-    }
-
-    return {
-      domainName: toPunycodeDomainName(query),
-      price: nonPremiumPrices, //todo!! figure out transfer price for premium domains
-      available: DomainAvailability.UNAVAILABLE,
-      isPremium: false,
-      supported: true,
     };
   }
 
@@ -1821,6 +1730,7 @@ function getRunningOperationStatus(response?: {
 }
 
 Error.stackTraceLimit = 100;
+
 class DynadotRegistrarError extends Error {
   constructor(
     public key: string,
@@ -1876,4 +1786,38 @@ function assertDynadotResponseNotFailed<R extends DynadotResponse<any, any>>(
   if (responseFailed(response)) {
     throw new DynadotFailedResponseError(key, response);
   }
+}
+
+function _dynadotTldPriceToDomainPricingDetails(
+  value: DynadotTldPriceDetails,
+  registrarKey = 'dynadot',
+): DomainPricingDetails {
+  const registerPriceAmount = Number.parseFloat(value.Price.Register);
+  const renewPriceAmount = Number.parseFloat(value.Price.Renew);
+  const importPriceAmount = Number.parseFloat(value.Price.Transfer);
+  const restorePriceAmount = Number.parseFloat(value.Price.Restore);
+
+  let registrationPrice: PricingDetails =
+    singleYearPricingTemplate(registerPriceAmount);
+
+  if (renewPriceAmount > registerPriceAmount) {
+    const multiYearRegistrationPriceAmount = range(0, 10).map(
+      (index) => registerPriceAmount + renewPriceAmount * index,
+    );
+
+    registrationPrice = multiYearPricingTemplate(
+      multiYearRegistrationPriceAmount,
+    );
+  }
+
+  const importPrice: PricingDetails =
+    singleYearPricingTemplate(importPriceAmount);
+
+  return {
+    registrationPrice: registrationPrice,
+    renewalPrice: singleYearPricingTemplate(renewPriceAmount),
+    importPrice,
+    changeOwnershipPrice: singleYearPricingTemplate(0),
+    restorationPrice: singleYearPricingTemplate(restorePriceAmount),
+  } as DomainPricingDetails;
 }

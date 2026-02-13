@@ -43,30 +43,32 @@ export type DynadotTldPriceCommandParams = {
     | 'RegistryDesc';
 };
 
+export type DynadotTldPriceDetails = {
+  Tld: `.${string}`;
+  Usage: `Usage`;
+  Price: {
+    Unit: `(Price/1 year)`;
+    Register: `${number}`;
+    Renew: `${number}`;
+    Transfer: `${number}`;
+    Restore: `${number}`;
+  };
+  Privacy: 'Yes' | `NO` | string;
+  GracePeriod: {
+    Unit: '(Grace Period/days)';
+    Renew: `${number}`;
+    Delete: `${number}`;
+  };
+  IDN: 'Yes' | `NO` | string;
+  Restrictions: '--' | string;
+};
+
 export type DynadotTldPriceCommandOutput = {
   TldPriceResponse: {
     ResponseCode: DynadotResponseCode;
     Status: 'success' | string;
     PriceLevel: 'Regular Pricing' | string;
     Currency: DynadotCurrency;
-    TldPrice: {
-      Tld: `.${string}`;
-      Usage: `Usage`;
-      Price: {
-        Unit: `(Price/1 year)`;
-        Register: `${number}`;
-        Renew: `${number}`;
-        Transfer: `${number}`;
-        Restore: `${number}`;
-      };
-      Privacy: 'Yes' | `NO` | string;
-      GracePeriod: {
-        Unit: '(Grace Period/days)';
-        Renew: `${number}`;
-        Delete: `${number}`;
-      };
-      IDN: 'Yes' | `NO` | string;
-      Restrictions: '--' | string;
-    }[];
+    TldPrice: DynadotTldPriceDetails[];
   };
 };
