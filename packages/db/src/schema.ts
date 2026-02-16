@@ -122,6 +122,11 @@ export const paymentProviderEnum = pgEnum('payment_provider', [
   'STRIPE',
 ] as const);
 
+export const emailCampaignSendStatusEnum = pgEnum(
+  'email_campaign_send_status',
+  ['PENDING', 'SENT', 'FAILED'] as const,
+);
+
 /**
  * Users table
  * Stores basic user information
@@ -273,6 +278,19 @@ export const orderMetadataSchema = z
   .loose();
 
 export type OrderMetadata = z.infer<typeof orderMetadataSchema>;
+
+export const emailCampaignSendMetadataSchema = z
+  .object({
+    variantIndex: z.number().int().min(0).optional(),
+    cartItemCount: z.number().int().min(0).optional(),
+    cartItemTotalUsdCents: z.number().int().min(0).optional(),
+    cartItemDomains: z.array(z.string().min(1)).optional(),
+  })
+  .strict();
+
+export type EmailCampaignSendMetadata = z.infer<
+  typeof emailCampaignSendMetadataSchema
+>;
 
 /**
  * Cart items table
@@ -431,6 +449,45 @@ export const orderItemsTable = pgTable(
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
     index('order_items_order_id_idx').on(table.orderId),
     index('order_items_status_idx').on(table.status),
+  ],
+);
+
+/**
+ * Email campaign sends table
+ * Tracks scheduled marketing email sends to prevent duplicates per period
+ */
+export const emailCampaignSendsTable = pgTable(
+  'email_campaign_sends',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    campaignKey: text('campaign_key').notNull(),
+    periodStart: timestamp('period_start').notNull(),
+    status: emailCampaignSendStatusEnum('status').notNull().default('PENDING'),
+    attemptCount: integer('attempt_count').notNull().default(0),
+    lastError: text('last_error'),
+    sentAt: timestamp('sent_at'),
+    metadata: jsonb('metadata').$type<EmailCampaignSendMetadata>().default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('email_campaign_sends_user_id_idx').on(table.userId),
+    index('email_campaign_sends_campaign_period_idx').on(
+      table.campaignKey,
+      table.periodStart,
+    ),
+    index('email_campaign_sends_status_idx').on(table.status),
+    unique('email_campaign_sends_user_campaign_period_unique').on(
+      table.userId,
+      table.campaignKey,
+      table.periodStart,
+    ),
+    check(
+      'email_campaign_sends_attempt_count_nonnegative',
+      sql`attempt_count >= 0`,
+    ),
   ],
 );
 

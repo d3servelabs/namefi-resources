@@ -20,6 +20,8 @@ import { exportExpirationDailyReportSchedule } from './export-expiration-daily-r
 import { domainExportTrackingSchedule } from './domain-export-tracking';
 import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
 import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-data-for-domains';
+import { cartDomainsPopularSchedule } from './cart-domains-popular';
+import { dreamDomainAwaitsSchedule } from './dream-domain-awaits';
 import { campaignAwardSchedule } from './hunt/campaign-award';
 import { campaignStatusSchedule } from './hunt/campaign-status';
 import {
@@ -134,6 +136,8 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
     updateNamefiNftIndexSchedule,
   [generateAndUpdateDataForDomainsSchedule.config.scheduleId]:
     generateAndUpdateDataForDomainsSchedule,
+  [cartDomainsPopularSchedule.config.scheduleId]: cartDomainsPopularSchedule,
+  [dreamDomainAwaitsSchedule.config.scheduleId]: dreamDomainAwaitsSchedule,
   [campaignAwardSchedule.config.scheduleId]: campaignAwardSchedule,
   [campaignStatusSchedule.config.scheduleId]: campaignStatusSchedule,
   [dailyAwardSchedule.config.scheduleId]: dailyAwardSchedule,
@@ -288,6 +292,8 @@ export { updateNamefiNftIndexSchedule };
 export { generateAndUpdateDataForDomainsSchedule };
 export { campaignAwardSchedule };
 export { campaignStatusSchedule };
+export { cartDomainsPopularSchedule } from './cart-domains-popular';
+export { dreamDomainAwaitsSchedule } from './dream-domain-awaits';
 export {
   dailyAwardSchedule,
   weeklyAwardSchedule,

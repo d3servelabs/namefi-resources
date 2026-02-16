@@ -22,5 +22,6 @@ export type MarketingWorkflowOutput = z.output<
 export const runLogoWorkflow = executeLogoWorkflow;
 export const runMarketingWorkflow = executeMarketingWorkflow;
 
+export * from './agents/dream-domain-suggestions';
 export * from './types/generation';
 export * from './types/logo-options';

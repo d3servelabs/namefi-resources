@@ -1,6 +1,7 @@
 import * as EmailSubscriptionSyncActivities from './email-subscription-sync.activities';
 import * as CampaignCandidateCollectionActivities from './campaign-candidate-collection.activities';
 import * as CampaignAutoGrantClaimsActivities from './campaign-grant-claims.activities';
+import * as EmailCampaignActivities from './email-campaigns.activities';
 import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { db } from '@namefi-astra/db';
@@ -15,6 +16,7 @@ export const defaultTaskQueueActivities = {
   ...EmailSubscriptionSyncActivities,
   ...CampaignCandidateCollectionActivities,
   ...CampaignAutoGrantClaimsActivities,
+  ...EmailCampaignActivities,
   getNamefiUsers: async () => {
     const users = await db.query.usersTable.findMany();
     return users;

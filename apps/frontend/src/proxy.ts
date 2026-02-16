@@ -45,6 +45,10 @@ const redirectRoutes = [
     getDestination: () => '/payment-methods?charge-nfsc=true',
   },
   {
+    pattern: /^\/m\/cart$/,
+    getDestination: () => '/cart',
+  },
+  {
     pattern: /^\/m\/user\/orders\/([^/]+)$/,
     getDestination: (pathname: string) => {
       const params = extractPathParams(

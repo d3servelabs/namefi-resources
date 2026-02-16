@@ -26,6 +26,7 @@ import {
   RefreshCw,
   ClipboardList,
   SlidersHorizontal,
+  Megaphone,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -232,6 +233,17 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-green-100',
         iconTextColor: 'text-green-600',
         permissions: [Permission.READ_ANALYTICS],
+      },
+      {
+        title: 'Email Campaigns',
+        description:
+          'Review eligible users and trigger marketing campaign sends.',
+        href: '/admin/email-campaigns',
+        icon: Megaphone,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.READ_USERS, Permission.READ_ORDERS],
+        permissionsMode: 'every',
       },
       {
         title: 'Email Templates',

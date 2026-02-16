@@ -18,6 +18,7 @@ const baseUrl =
  * ```
  */
 export const NamefiEmailLinks = withPoweredByNamefiDomain({
+  home: () => `${baseUrl}`,
   dashboard: () => `${baseUrl}/m/user/domains`,
   domains: () => `${baseUrl}/m/user/domains`,
   domainSettings: (args: { domain: string }) =>
@@ -28,6 +29,7 @@ export const NamefiEmailLinks = withPoweredByNamefiDomain({
 
   paymentMethods: () => `${baseUrl}/m/user/payment-methods`,
   rechargeNFSC: () => `${baseUrl}/m/user/nfsc/recharge`,
+  cart: () => `${baseUrl}/m/cart`,
 
   emailSubscription: () => `${baseUrl}/m/user/email/subscription`,
   freeMints: () => `${baseUrl}/m/user/rewards/domains`,

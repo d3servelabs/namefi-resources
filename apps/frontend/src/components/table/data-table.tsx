@@ -143,6 +143,8 @@ type DataTableProps<TData> = {
   customFilters?: CustomFilterField[];
   columnVisibility?: VisibilityState;
   onColumnVisibilityChange?: Dispatch<SetStateAction<VisibilityState>>;
+  emptyMessage?: string;
+  loadingMessage?: string;
 };
 
 export function DataTable<TData>(props: DataTableProps<TData>) {
@@ -164,6 +166,8 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     customFilters,
     columnVisibility,
     onColumnVisibilityChange,
+    emptyMessage = 'No audit logs found',
+    loadingMessage = 'Loading audit logs...',
   } = props;
 
   const [internalSorting, setInternalSorting] = useState<SortingState>([]);
@@ -492,7 +496,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
                     <Loader2Icon className="h-6 w-6 animate-spin mx-auto mb-2" />
-                    <p>Loading audit logs...</p>
+                    <p>{loadingMessage}</p>
                   </td>
                 </tr>
               ) : table.getRowModel().rows.length === 0 ? (
@@ -501,7 +505,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                     colSpan={columns.length}
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
-                    No audit logs found
+                    {emptyMessage}
                   </td>
                 </tr>
               ) : (

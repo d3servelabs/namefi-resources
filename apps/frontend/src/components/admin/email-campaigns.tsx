@@ -1,0 +1,664 @@
+'use client';
+
+import { useCallback, useMemo, useState } from 'react';
+import { useTRPC } from '@/lib/trpc';
+import type { AppRouterOutput } from '@/lib/trpc';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { PageShell } from '@/components/page-shell';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/shadcn/card';
+import { Button } from '@/components/ui/shadcn/button';
+import { Badge } from '@/components/ui/shadcn/badge';
+import { DataTable } from '@/components/table/data-table';
+import { formatAmountInUSD } from '@/lib/number';
+import {
+  EMAIL_CAMPAIGNS,
+  EMAIL_CAMPAIGN_KEYS,
+  type EmailCampaignKey,
+} from '@namefi-astra/common/email-campaigns';
+import { format } from 'date-fns';
+import {
+  ChevronDown,
+  ChevronRight,
+  Loader2,
+  RefreshCw,
+  Send,
+  Copy,
+} from 'lucide-react';
+import { toast } from 'sonner';
+import type { ColumnDef } from '@tanstack/react-table';
+import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/shadcn/table';
+
+const CAMPAIGNS = EMAIL_CAMPAIGNS;
+type CampaignKey = EmailCampaignKey;
+
+type EligibleUsersResponse =
+  AppRouterOutput['admin']['emailCampaigns']['getEligibleUsers'];
+type EligibleUser = EligibleUsersResponse['users'][number];
+type SendHistoryEntry = EligibleUser['sendHistory'][number];
+type ScheduleStatusResponse =
+  AppRouterOutput['admin']['emailCampaigns']['getScheduleStatus'];
+
+const formatDateTime = (value?: Date | null) =>
+  value ? format(value, 'MMM d, yyyy HH:mm') : '-';
+
+const formatDate = (value?: Date | null) =>
+  value ? format(value, 'MMM d, yyyy') : '-';
+
+const getStatusBadge = (status?: string | null) => {
+  if (!status) return <Badge variant="outline">-</Badge>;
+  if (status === 'SENT') return <Badge variant="default">Sent</Badge>;
+  if (status === 'PENDING') return <Badge variant="secondary">Pending</Badge>;
+  if (status === 'FAILED') return <Badge variant="destructive">Failed</Badge>;
+  return <Badge variant="outline">{status}</Badge>;
+};
+
+const getScheduleBadge = (paused?: boolean) => {
+  if (paused === undefined) return <Badge variant="outline">Unknown</Badge>;
+  if (paused) return <Badge variant="destructive">Paused</Badge>;
+  return <Badge variant="secondary">Active</Badge>;
+};
+
+function CampaignSendHistorySubrow({
+  sendHistory,
+}: {
+  sendHistory: SendHistoryEntry[];
+}) {
+  const sorted = useMemo(() => {
+    return [...sendHistory].sort((a, b) => {
+      const aTime = (a.sentAt ?? a.createdAt).getTime();
+      const bTime = (b.sentAt ?? b.createdAt).getTime();
+      return bTime - aTime;
+    });
+  }, [sendHistory]);
+
+  if (sorted.length === 0) {
+    return <div className="p-4 text-sm text-muted-foreground">No sends</div>;
+  }
+
+  return (
+    <div className="p-4">
+      <h4 className="text-sm font-medium mb-3">History</h4>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[180px]">Sent at</TableHead>
+            <TableHead className="w-[120px]">Status</TableHead>
+            <TableHead className="w-[180px]">Period start</TableHead>
+            <TableHead className="w-[120px]">Variant</TableHead>
+            <TableHead className="w-[120px]">Attempts</TableHead>
+            <TableHead>Error</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sorted.map((entry) => {
+            const variantLabel =
+              typeof entry.metadata.variantIndex === 'number'
+                ? `#${entry.metadata.variantIndex + 1}`
+                : '-';
+            return (
+              <TableRow key={entry.id}>
+                <TableCell className="text-xs">
+                  {formatDateTime(entry.sentAt ?? entry.createdAt)}
+                </TableCell>
+                <TableCell>{getStatusBadge(entry.status)}</TableCell>
+                <TableCell className="text-xs">
+                  {formatDateTime(entry.periodStart)}
+                </TableCell>
+                <TableCell className="text-xs">{variantLabel}</TableCell>
+                <TableCell className="text-xs">{entry.attemptCount}</TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {entry.lastError ?? '-'}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function CampaignSection({
+  title,
+  data,
+  isLoading,
+  scheduleStatus,
+  isScheduleLoading,
+  onToggleSchedule,
+  isTogglingSchedule,
+  pageSize,
+  onPageSizeChange,
+  columns,
+  emptyMessage,
+}: {
+  title: string;
+  data: EligibleUsersResponse | undefined;
+  isLoading: boolean;
+  scheduleStatus?: ScheduleStatusResponse;
+  isScheduleLoading?: boolean;
+  onToggleSchedule?: (paused?: boolean) => void;
+  isTogglingSchedule?: boolean;
+  pageSize: number;
+  onPageSizeChange: (value: number) => void;
+  columns: ColumnDef<EligibleUser>[];
+  emptyMessage: string;
+}) {
+  const eligibleCount = data?.users.length ?? 0;
+  const paused = scheduleStatus?.status.paused;
+  const scheduleLabel = isScheduleLoading
+    ? 'Loading'
+    : paused
+      ? 'Resume'
+      : 'Pause';
+  const scheduleDisabled =
+    isScheduleLoading || isTogglingSchedule || paused === undefined;
+
+  return (
+    <Card>
+      <CardHeader className="space-y-2">
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+          <div>
+            <CardTitle>{title}</CardTitle>
+            {data?.periodStart && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Period: {formatDate(data.periodStart)}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {getScheduleBadge(paused)}
+            <Badge variant="secondary" className="w-fit">
+              {eligibleCount} eligible
+            </Badge>
+            {onToggleSchedule && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onToggleSchedule(paused)}
+                disabled={scheduleDisabled}
+              >
+                {isTogglingSchedule || isScheduleLoading ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : null}
+                {scheduleLabel}
+              </Button>
+            )}
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <DataTable
+          columns={columns}
+          data={data?.users ?? []}
+          isLoading={isLoading}
+          pageSize={pageSize}
+          onPageSizeChange={onPageSizeChange}
+          renderSubRow={(row) => (
+            <CampaignSendHistorySubrow sendHistory={row.original.sendHistory} />
+          )}
+          getRowCanExpand={() => true}
+          emptyMessage={emptyMessage}
+          loadingMessage="Loading..."
+        />
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function AdminEmailCampaigns() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [cartPageSize, setCartPageSize] = useState(20);
+  const [dreamPageSize, setDreamPageSize] = useState(20);
+
+  const cartQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
+      campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+    }),
+  });
+
+  const dreamQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
+      campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+    }),
+  });
+
+  const cartScheduleQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getScheduleStatus.queryOptions({
+      campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+    }),
+  });
+
+  const dreamScheduleQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getScheduleStatus.queryOptions({
+      campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+    }),
+  });
+
+  const sendNowMutation = useMutation({
+    ...trpc.admin.emailCampaigns.sendNow.mutationOptions(),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
+          campaignKey: data.campaignKey,
+        }),
+      });
+    },
+    onError: (error) => {
+      toast.error(`Failed to send: ${error.message}`);
+    },
+  });
+
+  const pauseScheduleMutation = useMutation({
+    ...trpc.admin.emailCampaigns.pauseSchedule.mutationOptions(),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
+          campaignKey: data.campaignKey,
+        }),
+      });
+    },
+    onError: (error) => {
+      toast.error(`Failed to pause: ${error.message}`);
+    },
+  });
+
+  const resumeScheduleMutation = useMutation({
+    ...trpc.admin.emailCampaigns.resumeSchedule.mutationOptions(),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
+          campaignKey: data.campaignKey,
+        }),
+      });
+    },
+    onError: (error) => {
+      toast.error(`Failed to resume: ${error.message}`);
+    },
+  });
+
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
+        campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+      }),
+    });
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
+        campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+      }),
+    });
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
+        campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+      }),
+    });
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
+        campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+      }),
+    });
+  };
+
+  const handleSendNow = useCallback(
+    (campaignKey: CampaignKey, userId: string) => {
+      sendNowMutation.mutate({ campaignKey, userId });
+    },
+    [sendNowMutation],
+  );
+
+  const handleToggleSchedule = useCallback(
+    (campaignKey: CampaignKey, paused?: boolean) => {
+      if (paused) {
+        resumeScheduleMutation.mutate({ campaignKey });
+      } else {
+        pauseScheduleMutation.mutate({ campaignKey });
+      }
+    },
+    [pauseScheduleMutation, resumeScheduleMutation],
+  );
+
+  const handleCopyValue = useCallback(async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      toast.success('Copied to clipboard');
+    } catch (error) {
+      toast.error('Failed to copy');
+    }
+  }, []);
+
+  const cartScheduleStatus = cartScheduleQuery.data;
+  const dreamScheduleStatus = dreamScheduleQuery.data;
+
+  const isCartScheduleUpdating =
+    (pauseScheduleMutation.isPending &&
+      pauseScheduleMutation.variables?.campaignKey ===
+        EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR) ||
+    (resumeScheduleMutation.isPending &&
+      resumeScheduleMutation.variables?.campaignKey ===
+        EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR);
+
+  const isDreamScheduleUpdating =
+    (pauseScheduleMutation.isPending &&
+      pauseScheduleMutation.variables?.campaignKey ===
+        EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS) ||
+    (resumeScheduleMutation.isPending &&
+      resumeScheduleMutation.variables?.campaignKey ===
+        EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS);
+
+  // NOTE: See dreamColumns below for the parallel column configuration.
+  const cartColumns = useMemo<ColumnDef<EligibleUser>[]>(() => {
+    return [
+      {
+        id: 'expander',
+        header: '',
+        cell: ({ row }) => {
+          if (!row.getCanExpand()) return null;
+          const isExpanded = row.getIsExpanded();
+          return (
+            <button
+              type="button"
+              onClick={() => row.toggleExpanded()}
+              className="p-1 hover:bg-muted rounded transition-colors"
+              aria-label={isExpanded ? 'Collapse row' : 'Expand row'}
+              aria-pressed={isExpanded}
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+          );
+        },
+        size: 24,
+      },
+      {
+        accessorKey: 'email',
+        header: 'User',
+        cell: ({ row }) => {
+          return (
+            <div className="flex items-center gap-2">
+              {row.original.email ? (
+                <>
+                  <AutoTruncateTextV2
+                    initialCharactersCountToDisplay={20}
+                    minCharactersToDisplay={15}
+                    className="text-sm"
+                  >
+                    {row.original.email}
+                  </AutoTruncateTextV2>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyValue(row.original.email!)}
+                    className="p-1 hover:bg-muted rounded transition-colors"
+                    title="Copy email"
+                    aria-label="Copy email"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
+                </>
+              ) : (
+                <span className="text-muted-foreground">-</span>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'cartItemCount',
+        header: 'Cart items',
+        cell: ({ row }) => row.original.cartItemCount ?? 0,
+        size: 100,
+      },
+      {
+        accessorKey: 'cartItemTotalUsdCents',
+        header: 'Cart total (USD)',
+        cell: ({ row }) =>
+          formatAmountInUSD(row.original.cartItemTotalUsdCents ?? 0, true),
+        size: 120,
+      },
+      {
+        accessorKey: 'cartOldestAddedAt',
+        header: 'Oldest in cart',
+        cell: ({ row }) => formatDateTime(row.original.cartOldestAddedAt),
+        size: 160,
+      },
+      {
+        accessorKey: 'lastSentAt',
+        header: 'Last sent',
+        cell: ({ row }) => formatDateTime(row.original.lastSentAt),
+        size: 160,
+      },
+      {
+        accessorKey: 'lastSendStatus',
+        header: 'Last status',
+        cell: ({ row }) => getStatusBadge(row.original.lastSendStatus),
+        size: 120,
+      },
+      {
+        id: 'actions',
+        header: '',
+        cell: ({ row }) => {
+          const isSending =
+            sendNowMutation.isPending &&
+            sendNowMutation.variables?.campaignKey ===
+              EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR &&
+            sendNowMutation.variables?.userId === row.original.userId;
+
+          return (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                handleSendNow(
+                  EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+                  row.original.userId,
+                )
+              }
+              disabled={isSending}
+            >
+              {isSending ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              Send
+            </Button>
+          );
+        },
+        size: 140,
+      },
+    ];
+  }, [
+    handleCopyValue,
+    handleSendNow,
+    sendNowMutation.isPending,
+    sendNowMutation.variables,
+  ]);
+
+  // NOTE: See cartColumns above for the parallel column configuration.
+  const dreamColumns = useMemo<ColumnDef<EligibleUser>[]>(() => {
+    return [
+      {
+        id: 'expander',
+        header: '',
+        cell: ({ row }) => {
+          if (!row.getCanExpand()) return null;
+          const isExpanded = row.getIsExpanded();
+          return (
+            <button
+              type="button"
+              onClick={() => row.toggleExpanded()}
+              className="p-1 hover:bg-muted rounded transition-colors"
+              aria-label={isExpanded ? 'Collapse row' : 'Expand row'}
+              aria-pressed={isExpanded}
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+          );
+        },
+        size: 24,
+      },
+      {
+        accessorKey: 'email',
+        header: 'User',
+        cell: ({ row }) => {
+          return (
+            <div className="flex items-center gap-2">
+              {row.original.email ? (
+                <>
+                  <AutoTruncateTextV2
+                    initialCharactersCountToDisplay={20}
+                    minCharactersToDisplay={15}
+                    className="text-sm"
+                  >
+                    {row.original.email}
+                  </AutoTruncateTextV2>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyValue(row.original.email!)}
+                    className="p-1 hover:bg-muted rounded transition-colors"
+                    title="Copy email"
+                    aria-label="Copy email"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
+                </>
+              ) : (
+                <span className="text-muted-foreground">-</span>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'lastOrderAt',
+        header: 'Last purchase',
+        cell: ({ row }) => formatDateTime(row.original.lastOrderAt),
+        size: 160,
+      },
+      {
+        accessorKey: 'lastSentAt',
+        header: 'Last sent',
+        cell: ({ row }) => formatDateTime(row.original.lastSentAt),
+        size: 160,
+      },
+      {
+        accessorKey: 'lastSendStatus',
+        header: 'Last status',
+        cell: ({ row }) => getStatusBadge(row.original.lastSendStatus),
+        size: 120,
+      },
+      {
+        id: 'actions',
+        header: '',
+        cell: ({ row }) => {
+          const isSending =
+            sendNowMutation.isPending &&
+            sendNowMutation.variables?.campaignKey ===
+              EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS &&
+            sendNowMutation.variables?.userId === row.original.userId;
+
+          return (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                handleSendNow(
+                  EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+                  row.original.userId,
+                )
+              }
+              disabled={isSending}
+            >
+              {isSending ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              Send
+            </Button>
+          );
+        },
+        size: 140,
+      },
+    ];
+  }, [
+    handleCopyValue,
+    handleSendNow,
+    sendNowMutation.isPending,
+    sendNowMutation.variables,
+  ]);
+
+  return (
+    <PageShell padding="admin" className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Email Campaigns</h1>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleRefresh}
+          disabled={cartQuery.isFetching || dreamQuery.isFetching}
+        >
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Refresh
+        </Button>
+      </div>
+
+      <CampaignSection
+        title={CAMPAIGNS[0].title}
+        data={cartQuery.data}
+        isLoading={cartQuery.isLoading}
+        scheduleStatus={cartScheduleStatus}
+        isScheduleLoading={cartScheduleQuery.isLoading}
+        onToggleSchedule={(paused) =>
+          handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR, paused)
+        }
+        isTogglingSchedule={isCartScheduleUpdating}
+        pageSize={cartPageSize}
+        onPageSizeChange={setCartPageSize}
+        columns={cartColumns}
+        emptyMessage="No eligible users"
+      />
+
+      <CampaignSection
+        title={CAMPAIGNS[1].title}
+        data={dreamQuery.data}
+        isLoading={dreamQuery.isLoading}
+        scheduleStatus={dreamScheduleStatus}
+        isScheduleLoading={dreamScheduleQuery.isLoading}
+        onToggleSchedule={(paused) =>
+          handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS, paused)
+        }
+        isTogglingSchedule={isDreamScheduleUpdating}
+        pageSize={dreamPageSize}
+        onPageSizeChange={setDreamPageSize}
+        columns={dreamColumns}
+        emptyMessage="No eligible users"
+      />
+    </PageShell>
+  );
+}
