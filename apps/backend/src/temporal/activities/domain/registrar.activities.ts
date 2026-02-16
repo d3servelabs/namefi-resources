@@ -15,6 +15,7 @@ import {
   type NamefiNormalizedDomain,
   matchAny,
   resolve,
+  EppStatuses,
 } from '@namefi-astra/utils';
 import { ApplicationFailure, Context } from '@temporalio/activity';
 import * as workflow from '@temporalio/workflow';
@@ -553,7 +554,13 @@ export async function getEppLockState(
   for (let i = 0; i < orderedCalls.length; i++) {
     const [error, result] = await orderedCalls[i]();
     if (result) {
-      return result;
+      const status = EppStatuses.fromArrayOrThrow(result.status);
+      return {
+        isAddPeriod: status.hasStatus('add period'),
+        isTransferPeriod: status.hasStatus('transfer period'),
+        locked: status.hasClientOrServerStatus('transfer prohibited'),
+        status: status.getRdapStatuses(),
+      };
     }
     if (error && i === orderedCalls.length - 1) {
       throw error;
