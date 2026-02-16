@@ -11,3 +11,4 @@ export * from './src/permissions';
 export * from './src/domain-dates';
 export * from './src/nft-hash';
 export * from './src/parse-domain-name';
+export * from './src/epp/epp-status';
