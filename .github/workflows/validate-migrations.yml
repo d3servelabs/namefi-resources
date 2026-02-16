@@ -46,6 +46,35 @@ jobs:
             echo "has_sql_changes=false" >> $GITHUB_OUTPUT
           fi
 
+  check-duplicate-migration-indices:
+    name: Check Duplicate Migration Indices
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for duplicate numeric indices
+        run: |
+          MIGRATIONS_DIR="packages/db/src/migrations"
+          DUPLICATES=$(
+            ls "$MIGRATIONS_DIR"/*.sql 2>/dev/null \
+              | xargs -n1 basename \
+              | grep -oP '^\d+' \
+              | sort \
+              | uniq -d
+          )
+
+          if [[ -n "$DUPLICATES" ]]; then
+            echo "::error::Duplicate migration indices found:"
+            for IDX in $DUPLICATES; do
+              echo "::error::Index $IDX is used by multiple migrations:"
+              ls "$MIGRATIONS_DIR"/${IDX}_*.sql | xargs -n1 basename | sed 's/^/  /'
+            done
+            exit 1
+          fi
+
+          echo "No duplicate migration indices found."
+
   validate-migrations-run:
     name: Validate Migrations (Neon)
     needs: check-for-sql-changes
@@ -121,6 +150,7 @@ jobs:
     name: Validate DB Migrations
     needs:
       - check-for-sql-changes
+      - check-duplicate-migration-indices
       - validate-migrations-run
     if: always()
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
@@ -132,11 +162,18 @@ jobs:
 
           CHECK_RESULT="${{ needs.check-for-sql-changes.result }}"
           HAS_SQL="${{ needs.check-for-sql-changes.outputs.has_sql_changes }}"
+          DUPLICATE_RESULT="${{ needs.check-duplicate-migration-indices.result }}"
           RUN_RESULT="${{ needs.validate-migrations-run.result }}"
 
           echo "check-for-sql-changes.result=$CHECK_RESULT"
           echo "has_sql_changes=$HAS_SQL"
+          echo "check-duplicate-migration-indices.result=$DUPLICATE_RESULT"
           echo "validate-migrations-run.result=$RUN_RESULT"
+
+          if [[ "$DUPLICATE_RESULT" != "success" ]]; then
+            echo "Duplicate migration index check failed."
+            exit 1
+          fi
 
           if [[ "$CHECK_RESULT" != "success" ]]; then
             echo "SQL change detection job did not succeed; cannot determine whether to skip migration test."
