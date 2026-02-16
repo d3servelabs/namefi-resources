@@ -6,6 +6,27 @@ import { Loader2 } from 'lucide-react';
 import type { UnifiedCartItem as CartItem } from '@/hooks/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 
+function getAllowedDurationValuesForDomain(
+  domainName: string,
+  min: number,
+  max: number,
+) {
+  const labels = domainName.split('.');
+  const isSecondLevelAiDomain =
+    labels.length === 2 && labels[1]?.toLowerCase() === 'ai';
+
+  if (!isSecondLevelAiDomain) {
+    return undefined;
+  }
+
+  const allowedValues: number[] = [];
+  for (let value = min; value <= max; value += 2) {
+    allowedValues.push(value);
+  }
+
+  return allowedValues.length > 0 ? allowedValues : undefined;
+}
+
 // Component to handle duration controls for different cart item types
 export function CartItemDurationControl({
   item,
@@ -29,13 +50,22 @@ export function CartItemDurationControl({
     );
   }
 
+  const minYears = domainAvailabilityInfo?.durationValidationInYears?.min ?? 1;
+  const maxYears = domainAvailabilityInfo?.durationValidationInYears?.max ?? 10;
+  const allowedValues = getAllowedDurationValuesForDomain(
+    item.normalizedDomainName,
+    minYears,
+    maxYears,
+  );
+
   // For REGISTER and IMPORT items, use standard duration validation
   return (
     <DurationStepper
       value={item.durationInYears}
       onChange={(value) => onDurationChange(item.id, value)}
-      min={domainAvailabilityInfo?.durationValidationInYears?.min ?? 1}
-      max={domainAvailabilityInfo?.durationValidationInYears?.max ?? 10}
+      min={minYears}
+      max={maxYears}
+      allowedValues={allowedValues}
       disabled={isDisabled || !domainAvailabilityInfo}
       className="w-32"
     />
@@ -93,12 +123,19 @@ function RenewalDurationStepper({
     );
   }
 
+  const allowedValues = getAllowedDurationValuesForDomain(
+    item.normalizedDomainName,
+    constraints.minYears,
+    constraints.maxYears,
+  );
+
   return (
     <DurationStepper
       value={item.durationInYears}
       onChange={(value) => onDurationChange(item.id, value)}
       min={constraints.minYears}
       max={constraints.maxYears}
+      allowedValues={allowedValues}
       disabled={isDisabled}
       className="w-32"
     />
