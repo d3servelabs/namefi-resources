@@ -20,11 +20,16 @@ export async function getCartDomainsPopularEligibleUserIds({
   userIdFilter?: string[];
 }): Promise<string[]> {
   const periodStartDate = toDate(periodStart);
+  const cartItemMinAgeDays =
+    config.EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS;
   const hasEmailCondition = sql<boolean>`NULLIF(TRIM(${privyUsersTableSchema.email}), '') IS NOT NULL`;
   const conditions = [
     eq(usersTable.subscribeToEmails, true),
     hasEmailCondition,
-    lte(cartItemsTable.createdAt, sql`now() - interval '1 day'`),
+    lte(
+      cartItemsTable.createdAt,
+      sql`now() - (${cartItemMinAgeDays} * interval '1 day')`,
+    ),
     isNull(emailCampaignSendsTable.id),
   ];
 

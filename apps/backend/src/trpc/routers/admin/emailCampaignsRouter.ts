@@ -450,6 +450,8 @@ export const emailCampaignsRouter = createTRPCRouter({
       >();
 
       if (campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR) {
+        const cartItemMinAgeDays =
+          config.EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS;
         const cartStats = await db
           .select({
             userId: cartItemsTable.userId,
@@ -469,7 +471,10 @@ export const emailCampaignsRouter = createTRPCRouter({
           .where(
             and(
               inArray(cartItemsTable.userId, filteredUserIds),
-              lte(cartItemsTable.createdAt, sql`now() - interval '1 day'`),
+              lte(
+                cartItemsTable.createdAt,
+                sql`now() - (${cartItemMinAgeDays} * interval '1 day')`,
+              ),
             ),
           )
           .groupBy(cartItemsTable.userId);

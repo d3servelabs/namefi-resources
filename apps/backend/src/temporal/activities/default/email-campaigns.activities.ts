@@ -356,6 +356,8 @@ export async function sendCartDomainsPopularEmail({
   dryRun?: boolean;
 }): Promise<EmailCampaignSendResult> {
   const periodStartDate = toDate(periodStart);
+  const cartItemMinAgeDays =
+    config.EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS;
 
   if (!(await isUserSubscribedToEmails(userId))) {
     return { status: 'SKIPPED', reason: 'opted_out' };
@@ -371,7 +373,10 @@ export async function sendCartDomainsPopularEmail({
     .where(
       and(
         eq(cartItemsTable.userId, userId),
-        lte(cartItemsTable.createdAt, sql`now() - interval '1 day'`),
+        lte(
+          cartItemsTable.createdAt,
+          sql`now() - (${cartItemMinAgeDays} * interval '1 day')`,
+        ),
       ),
     )
     .orderBy(cartItemsTable.createdAt);

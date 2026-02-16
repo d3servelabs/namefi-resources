@@ -255,11 +255,14 @@ export const configSchema = z.object({
     .default(process.env.USE_NEW_EPP_WORKFLOW ?? 'false')
     .pipe(z.stringbool()),
   EMAIL_ANALYTICS_URL: z.url().optional(),
+  EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS: z
+    .number()
+    .positive()
+    .default(1),
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: z.number().default(1000),
   EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS: z
     .number()
-    .int()
-    .min(1)
+    .positive()
     .default(90),
   ALLOW_LOGIN_NOTIFICATIONS: z
     .boolean()

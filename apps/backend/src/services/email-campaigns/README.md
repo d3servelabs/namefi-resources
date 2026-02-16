@@ -18,7 +18,7 @@ System for scheduled marketing emails.
 
 | Key | Cadence | Schedule (UTC) | Eligibility Summary | Template |
 | --- | --- | --- | --- | --- |
-| `cart-domains-popular` | Weekly | Monday 16:00 (`0 16 * * 1`) | Subscribed, has email, cart items older than 1 day, not sent this period | `apps/backend/src/mail/templates/cart-domains-popular.tsx` |
+| `cart-domains-popular` | Weekly | Monday 16:00 (`0 16 * * 1`) | Subscribed, has email, cart items older than configured minimum age, not sent this period | `apps/backend/src/mail/templates/cart-domains-popular.tsx` |
 | `dream-domain-awaits` | Monthly | 1st day 16:00 (`0 16 1 * *`) | Subscribed, has email, no cart items, no qualifying purchases in lookback window, not sent this period | `apps/backend/src/mail/templates/dream-domain-awaits.tsx` |
 | `domain-traffic-surge` | Weekly | Tuesday 16:00 (`0 16 * * 2`) | Subscribed, has email, owns Namefi-managed domains with weekly traffic above threshold, not sent this period | `apps/backend/src/mail/templates/domain-traffic-surge.tsx` |
 
@@ -28,7 +28,7 @@ System for scheduled marketing emails.
 
 - `users.subscribe_to_emails = true`
 - Privy email present (non-empty)
-- At least one cart item older than 1 day
+- At least one cart item older than env-configured minimum age `EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS`
 - No `email_campaign_sends` for same `periodStart` with `SENT` or `PENDING`
 
 **Dream Domain Awaits**

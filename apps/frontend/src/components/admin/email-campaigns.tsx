@@ -513,7 +513,7 @@ export default function AdminEmailCampaigns() {
 
   const cartHighlights = useMemo(
     () => [
-      'Audience: users who opted in and still have cart items older than 24 hours.',
+      'Audience: users who opted in and still have cart items older than the configured minimum age.',
       'Send limit: one email per user each weekly cycle.',
     ],
     [],
