@@ -66,8 +66,11 @@ const formatLocalDateTime = (value?: Date | string | null) => {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return '-';
   return new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
     timeZoneName: 'short',
   }).format(date);
 };
@@ -84,7 +87,9 @@ const formatUtcDate = (value?: string | null) => {
   }
   const date = new Date(Date.UTC(year, month - 1, day, 12));
   return new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'medium',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
     timeZone: 'UTC',
   }).format(date);
 };
