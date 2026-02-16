@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/shadcn/card';
 import { Button } from '@/components/ui/shadcn/button';
 import { Badge } from '@/components/ui/shadcn/badge';
+import { Input } from '@/components/ui/shadcn/input';
 import { DataTable } from '@/components/table/data-table';
 import { formatAmountInUSD } from '@/lib/number';
 import {
@@ -32,10 +33,12 @@ import {
   Settings2,
   Send,
   Copy,
+  Search,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { ColumnDef } from '@tanstack/react-table';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { useDebounceValue } from 'usehooks-ts';
 import {
   Table,
   TableBody,
@@ -303,6 +306,9 @@ export default function AdminEmailCampaigns() {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 300);
+  const normalizedSearchTerm = debouncedSearchTerm.trim() || undefined;
   const [cartPageSize, setCartPageSize] = useState(20);
   const [dreamPageSize, setDreamPageSize] = useState(20);
   const [trafficPageSize, setTrafficPageSize] = useState(20);
@@ -310,18 +316,21 @@ export default function AdminEmailCampaigns() {
   const cartQuery = useQuery({
     ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
       campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+      searchTerm: normalizedSearchTerm,
     }),
   });
 
   const dreamQuery = useQuery({
     ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
       campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+      searchTerm: normalizedSearchTerm,
     }),
   });
 
   const trafficQuery = useQuery({
     ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
       campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+      searchTerm: normalizedSearchTerm,
     }),
   });
 
@@ -350,6 +359,7 @@ export default function AdminEmailCampaigns() {
       queryClient.invalidateQueries({
         queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
           campaignKey: data.campaignKey,
+          searchTerm: normalizedSearchTerm,
         }),
       });
     },
@@ -392,16 +402,19 @@ export default function AdminEmailCampaigns() {
     queryClient.invalidateQueries({
       queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
         campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+        searchTerm: normalizedSearchTerm,
       }),
     });
     queryClient.invalidateQueries({
       queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
         campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+        searchTerm: normalizedSearchTerm,
       }),
     });
     queryClient.invalidateQueries({
       queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
         campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+        searchTerm: normalizedSearchTerm,
       }),
     });
     queryClient.invalidateQueries({
@@ -915,23 +928,34 @@ export default function AdminEmailCampaigns() {
 
   return (
     <PageShell padding="admin" className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-3xl font-bold">Email Campaigns</h1>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleRefresh}
-          disabled={
-            cartQuery.isFetching ||
-            dreamQuery.isFetching ||
-            trafficQuery.isFetching
-          }
-        >
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh
-        </Button>
+        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
+          <div className="relative w-full sm:w-[360px]">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search by email, display name, or user ID..."
+              className="pl-9"
+            />
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={
+              cartQuery.isFetching ||
+              dreamQuery.isFetching ||
+              trafficQuery.isFetching
+            }
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <CampaignSection

@@ -10,7 +10,7 @@ import {
 } from '@namefi-astra/db';
 import type { EmailCampaignSendMetadata } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
-import { and, desc, eq, inArray, lte, sql } from 'drizzle-orm';
+import { and, desc, eq, ilike, inArray, lte, or, sql } from 'drizzle-orm';
 import { db } from '@namefi-astra/db';
 import {
   adminProcedureWithPermissions,
@@ -301,10 +301,13 @@ export const emailCampaignsRouter = createTRPCRouter({
     .input(
       z.object({
         campaignKey: emailCampaignKeySchema,
+        searchTerm: z.string().optional(),
       }),
     )
     .query(async ({ input }) => {
       const { campaignKey } = input;
+      const searchTerm = input.searchTerm?.trim() || undefined;
+      const searchTermLike = searchTerm ? `%${searchTerm}%` : undefined;
       const now = new Date();
       const periodStart = getPeriodStartForCampaign(campaignKey, now);
       const dreamOrderLookbackDays =
@@ -359,7 +362,35 @@ export const emailCampaignsRouter = createTRPCRouter({
           privyUsersTableSchema,
           eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
         )
-        .where(inArray(usersTable.id, eligibleUserIds));
+        .where(
+          and(
+            inArray(usersTable.id, eligibleUserIds),
+            ...(searchTermLike
+              ? [
+                  or(
+                    ilike(privyUsersTableSchema.email, searchTermLike),
+                    ilike(privyUsersTableSchema.displayName, searchTermLike),
+                    sql`${usersTable.id}::text ILIKE ${searchTermLike}`,
+                  ),
+                ]
+              : []),
+          ),
+        );
+
+      const filteredUserIds = users.map((user) => user.userId);
+
+      if (filteredUserIds.length === 0) {
+        const users: EligibleUserRow[] = [];
+        return {
+          campaignKey,
+          periodStart,
+          dreamOrderLookbackDays,
+          trafficWeeklyThreshold,
+          trafficWindowStartUtc: trafficDateRange?.startDate ?? null,
+          trafficWindowEndUtc: trafficDateRange?.endDate ?? null,
+          users,
+        };
+      }
 
       const sendHistoryRows = await db
         .select({
@@ -377,7 +408,7 @@ export const emailCampaignsRouter = createTRPCRouter({
         .where(
           and(
             eq(emailCampaignSendsTable.campaignKey, campaignKey),
-            inArray(emailCampaignSendsTable.userId, eligibleUserIds),
+            inArray(emailCampaignSendsTable.userId, filteredUserIds),
           ),
         )
         .orderBy(
@@ -437,7 +468,7 @@ export const emailCampaignsRouter = createTRPCRouter({
           .from(cartItemsTable)
           .where(
             and(
-              inArray(cartItemsTable.userId, eligibleUserIds),
+              inArray(cartItemsTable.userId, filteredUserIds),
               lte(cartItemsTable.createdAt, sql`now() - interval '1 day'`),
             ),
           )
@@ -462,7 +493,7 @@ export const emailCampaignsRouter = createTRPCRouter({
           .from(ordersTable)
           .where(
             and(
-              inArray(ordersTable.userId, eligibleUserIds),
+              inArray(ordersTable.userId, filteredUserIds),
               inArray(ordersTable.status, ['SUCCEEDED', 'PARTIALLY_COMPLETED']),
             ),
           )
@@ -492,7 +523,7 @@ export const emailCampaignsRouter = createTRPCRouter({
             namefiNftOwnersView,
             sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
           )
-          .where(inArray(usersTable.id, eligibleUserIds))
+          .where(inArray(usersTable.id, filteredUserIds))
           .groupBy(usersTable.id);
 
         for (const row of domainStats) {
