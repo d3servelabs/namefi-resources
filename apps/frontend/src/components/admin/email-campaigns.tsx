@@ -34,6 +34,7 @@ import {
   Send,
   Copy,
   Search,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -352,6 +353,25 @@ export default function AdminEmailCampaigns() {
     }),
   });
 
+  const updateSchedulePausedInCache = useCallback(
+    (campaignKey: CampaignKey, paused: boolean) => {
+      queryClient.setQueryData<ScheduleStatusResponse | undefined>(
+        trpc.admin.emailCampaigns.getScheduleStatus.queryKey({ campaignKey }),
+        (previous) => {
+          if (!previous?.status) return previous;
+          return {
+            ...previous,
+            status: {
+              ...previous.status,
+              paused,
+            },
+          };
+        },
+      );
+    },
+    [queryClient, trpc],
+  );
+
   const sendNowMutation = useMutation({
     ...trpc.admin.emailCampaigns.sendNow.mutationOptions(),
     onSuccess: (data) => {
@@ -372,6 +392,7 @@ export default function AdminEmailCampaigns() {
     ...trpc.admin.emailCampaigns.pauseSchedule.mutationOptions(),
     onSuccess: (data) => {
       toast.success(data.message);
+      updateSchedulePausedInCache(data.campaignKey, true);
       queryClient.invalidateQueries({
         queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
           campaignKey: data.campaignKey,
@@ -387,6 +408,7 @@ export default function AdminEmailCampaigns() {
     ...trpc.admin.emailCampaigns.resumeSchedule.mutationOptions(),
     onSuccess: (data) => {
       toast.success(data.message);
+      updateSchedulePausedInCache(data.campaignKey, false);
       queryClient.invalidateQueries({
         queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
           campaignKey: data.campaignKey,
@@ -939,8 +961,18 @@ export default function AdminEmailCampaigns() {
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
               placeholder="Search by email, display name, or user ID..."
-              className="pl-9"
+              className="pl-9 pr-9"
             />
+            {searchTerm.length > 0 ? (
+              <button
+                type="button"
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            ) : null}
           </div>
           <Button
             variant="outline"
