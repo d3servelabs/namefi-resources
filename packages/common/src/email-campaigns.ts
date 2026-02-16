@@ -7,6 +7,10 @@ export const EMAIL_CAMPAIGNS = [
     key: 'dream-domain-awaits',
     title: 'Winback',
   },
+  {
+    key: 'domain-traffic-surge',
+    title: 'Traffic Surge',
+  },
 ] as const;
 // NOTE: These are hardcoded today; consider sourcing from the DB in the future.
 
@@ -19,4 +23,5 @@ export const EMAIL_CAMPAIGN_KEY_LIST = EMAIL_CAMPAIGNS.map(
 export const EMAIL_CAMPAIGN_KEYS = {
   CART_DOMAINS_POPULAR: 'cart-domains-popular',
   DREAM_DOMAIN_AWAITS: 'dream-domain-awaits',
+  DOMAIN_TRAFFIC_SURGE: 'domain-traffic-surge',
 } as const satisfies Record<string, EmailCampaignKey>;

@@ -14,6 +14,7 @@ import { db } from '@namefi-astra/db';
 import { sendMail } from '../../../mail/mail-client';
 import { CartDomainsPopular } from '../../../mail/templates/cart-domains-popular';
 import { DreamDomainAwaits } from '../../../mail/templates/dream-domain-awaits';
+import { DomainTrafficSurge } from '../../../mail/templates/domain-traffic-surge';
 import {
   CART_DOMAINS_POPULAR_VARIANT_COUNT,
   getCartDomainsPopularVariant,
@@ -22,16 +23,26 @@ import {
   DREAM_DOMAIN_AWAITS_VARIANT_COUNT,
   getDreamDomainAwaitsVariant,
 } from '../../../mail/campaigns/dream-domain-awaits-variants';
+import {
+  DOMAIN_TRAFFIC_SURGE_VARIANT_COUNT,
+  getDomainTrafficSurgeVariant,
+} from '../../../mail/campaigns/domain-traffic-surge-variants';
 import { maybeGetUserEmail } from '../notify.activities';
 import {
   getCartDomainsPopularEligibleUserIds as getCartDomainsPopularEligibleUserIdsQuery,
   getDreamDomainAwaitsEligibleUserIds as getDreamDomainAwaitsEligibleUserIdsQuery,
 } from '../../../services/email-campaigns/eligibility';
+import {
+  type DomainTrafficCandidate,
+  getDomainTrafficCampaignCandidates,
+} from '../../../services/email-campaigns/domain-traffic';
 import { getDreamDomainAwaitsSuggestions } from '../../../lib/email-campaigns/dream-domain-suggestions';
 import { toDate } from '../../../services/email-campaigns/utils';
+import { config } from '#lib/env';
 
 const CART_DOMAINS_POPULAR_CAMPAIGN_KEY = 'cart-domains-popular';
 const DREAM_DOMAIN_AWAITS_CAMPAIGN_KEY = 'dream-domain-awaits';
+const DOMAIN_TRAFFIC_SURGE_CAMPAIGN_KEY = 'domain-traffic-surge';
 
 const ARCHIVE_BCC = ['customer-email-archive@d3serve.xyz'];
 
@@ -198,6 +209,101 @@ async function markCampaignSendSent(recordId: string) {
     .where(eq(emailCampaignSendsTable.id, recordId));
 }
 
+async function isUserSubscribedToEmails(userId: string): Promise<boolean> {
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.id, userId),
+    columns: {
+      subscribeToEmails: true,
+    },
+  });
+
+  return Boolean(user?.subscribeToEmails);
+}
+
+async function sendCampaignEmail({
+  userId,
+  periodStart,
+  campaignKey,
+  metadata,
+  totalVariants,
+  getVariant,
+  buildEmailContent,
+  errorLogMessage,
+}: {
+  userId: string;
+  periodStart: Date;
+  campaignKey: string;
+  metadata: EmailCampaignSendMetadata;
+  totalVariants: number;
+  getVariant: (variantIndex: number) => { variant: { subject: string } };
+  buildEmailContent: (args: {
+    variantIndex: number;
+    recipientName: string;
+    recipientEmail: string;
+  }) => React.ReactElement | Promise<React.ReactElement>;
+  errorLogMessage: string;
+}): Promise<EmailCampaignSendResult> {
+  const ctx = Context.current();
+
+  const record = await ensureCampaignSendRecord({
+    userId,
+    campaignKey,
+    periodStart,
+    metadata,
+    totalVariants,
+  });
+
+  if (record.status === 'SKIP') {
+    return { status: 'SKIPPED', reason: record.reason };
+  }
+
+  if (!record.recordId) {
+    return { status: 'FAILED', reason: 'missing_record' };
+  }
+
+  const recordId = record.recordId;
+  const variantIndex = record.variantIndex ?? 0;
+  const { variant: copyVariant } = getVariant(variantIndex);
+  const userEmail = await maybeGetUserEmail(userId);
+
+  if (!userEmail) {
+    await markCampaignSendFailed(recordId, 'missing_email');
+    return { status: 'FAILED', reason: 'missing_email' };
+  }
+
+  const fallbackRecipientName = userEmail.split('@')[0] || 'there';
+
+  try {
+    const emailContent = await buildEmailContent({
+      variantIndex,
+      recipientName: fallbackRecipientName,
+      recipientEmail: userEmail,
+    });
+
+    const html = await render(emailContent, { pretty: false });
+    const plain = await render(emailContent, { plainText: true });
+
+    await sendMail({
+      to: [userEmail],
+      bcc: ARCHIVE_BCC,
+      subject: copyVariant.subject,
+      content: { html, plain },
+    });
+
+    await markCampaignSendSent(recordId);
+    return { status: 'SENT' };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
+    ctx.log.error(errorLogMessage, {
+      userId,
+      error: errorMessage,
+    });
+    await markCampaignSendFailed(recordId, errorMessage);
+    throw error;
+  }
+}
+
 export async function getCartDomainsPopularEligibleUserIds({
   periodStart,
   userIdFilter,
@@ -224,6 +330,22 @@ export async function getDreamDomainAwaitsEligibleUserIds({
   });
 }
 
+export async function getDomainTrafficSurgeCandidates({
+  periodStart,
+  userIdFilter,
+  asOf,
+}: {
+  periodStart: Date | string;
+  userIdFilter?: string[];
+  asOf?: Date | string;
+}): Promise<DomainTrafficCandidate[]> {
+  return getDomainTrafficCampaignCandidates({
+    periodStart,
+    userIdFilter,
+    asOf,
+  });
+}
+
 export async function sendCartDomainsPopularEmail({
   userId,
   periodStart,
@@ -233,17 +355,9 @@ export async function sendCartDomainsPopularEmail({
   periodStart: Date | string;
   dryRun?: boolean;
 }): Promise<EmailCampaignSendResult> {
-  const ctx = Context.current();
   const periodStartDate = toDate(periodStart);
 
-  const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.id, userId),
-    columns: {
-      subscribeToEmails: true,
-    },
-  });
-
-  if (!user?.subscribeToEmails) {
+  if (!(await isUserSubscribedToEmails(userId))) {
     return { status: 'SKIPPED', reason: 'opted_out' };
   }
 
@@ -275,71 +389,30 @@ export async function sendCartDomainsPopularEmail({
     0,
   );
 
-  const record = await ensureCampaignSendRecord({
+  return sendCampaignEmail({
     userId,
-    campaignKey: CART_DOMAINS_POPULAR_CAMPAIGN_KEY,
     periodStart: periodStartDate,
+    campaignKey: CART_DOMAINS_POPULAR_CAMPAIGN_KEY,
     metadata: {
       cartItemCount: cartItems.length,
       cartItemTotalUsdCents: totalInUsdCents,
       cartItemDomains: cartItems.map((item) => item.domainNameLdh),
     },
     totalVariants: CART_DOMAINS_POPULAR_VARIANT_COUNT,
+    getVariant: getCartDomainsPopularVariant,
+    buildEmailContent: ({ recipientName, recipientEmail, variantIndex }) =>
+      React.createElement(CartDomainsPopular, {
+        recipientName,
+        recipientEmail,
+        cartItems: cartItems.map((item) => ({
+          domainNameLdh: item.domainNameLdh,
+          addedAt: item.addedAt,
+          priceInUsdCents: item.priceInUsdCents ?? undefined,
+        })),
+        variant: variantIndex,
+      }),
+    errorLogMessage: 'Failed to send cart domains popular email',
   });
-
-  if (record.status === 'SKIP') {
-    return { status: 'SKIPPED', reason: record.reason };
-  }
-
-  if (!record.recordId) {
-    return { status: 'FAILED', reason: 'missing_record' };
-  }
-
-  const recordId = record.recordId;
-  const variantIndex = record.variantIndex ?? 0;
-  const { variant: copyVariant } = getCartDomainsPopularVariant(variantIndex);
-  const userEmail = await maybeGetUserEmail(userId);
-
-  if (!userEmail) {
-    await markCampaignSendFailed(recordId, 'missing_email');
-    return { status: 'FAILED', reason: 'missing_email' };
-  }
-  const fallbackRecipientName = userEmail.split('@')[0] || 'there';
-
-  try {
-    const emailContent = React.createElement(CartDomainsPopular, {
-      recipientName: fallbackRecipientName,
-      recipientEmail: userEmail,
-      cartItems: cartItems.map((item) => ({
-        domainNameLdh: item.domainNameLdh,
-        addedAt: item.addedAt,
-        priceInUsdCents: item.priceInUsdCents ?? undefined,
-      })),
-      variant: variantIndex,
-    });
-
-    const html = await render(emailContent, { pretty: false });
-    const plain = await render(emailContent, { plainText: true });
-
-    await sendMail({
-      to: [userEmail],
-      bcc: ARCHIVE_BCC,
-      subject: copyVariant.subject,
-      content: { html, plain },
-    });
-
-    await markCampaignSendSent(recordId);
-    return { status: 'SENT' };
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error';
-    ctx.log.error('Failed to send cart domains popular email', {
-      userId,
-      error: errorMessage,
-    });
-    await markCampaignSendFailed(recordId, errorMessage);
-    throw error;
-  }
 }
 
 export async function sendDreamDomainAwaitsEmail({
@@ -351,17 +424,11 @@ export async function sendDreamDomainAwaitsEmail({
   periodStart: Date | string;
   dryRun?: boolean;
 }): Promise<EmailCampaignSendResult> {
-  const ctx = Context.current();
   const periodStartDate = toDate(periodStart);
+  const orderLookbackDays =
+    config.EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS;
 
-  const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.id, userId),
-    columns: {
-      subscribeToEmails: true,
-    },
-  });
-
-  if (!user?.subscribeToEmails) {
+  if (!(await isUserSubscribedToEmails(userId))) {
     return { status: 'SKIPPED', reason: 'opted_out' };
   }
 
@@ -378,7 +445,10 @@ export async function sendDreamDomainAwaitsEmail({
     where: and(
       eq(ordersTable.userId, userId),
       inArray(ordersTable.status, ['SUCCEEDED', 'PARTIALLY_COMPLETED']),
-      gte(ordersTable.createdAt, sql`now() - interval '3 months'`),
+      gte(
+        ordersTable.createdAt,
+        sql`now() - (${orderLookbackDays} * interval '1 day')`,
+      ),
     ),
     columns: { id: true },
   });
@@ -391,63 +461,73 @@ export async function sendDreamDomainAwaitsEmail({
     return { status: 'DRY_RUN' };
   }
 
-  const record = await ensureCampaignSendRecord({
+  return sendCampaignEmail({
     userId,
-    campaignKey: DREAM_DOMAIN_AWAITS_CAMPAIGN_KEY,
     periodStart: periodStartDate,
+    campaignKey: DREAM_DOMAIN_AWAITS_CAMPAIGN_KEY,
     metadata: {},
     totalVariants: DREAM_DOMAIN_AWAITS_VARIANT_COUNT,
+    getVariant: getDreamDomainAwaitsVariant,
+    buildEmailContent: async ({
+      recipientName,
+      recipientEmail,
+      variantIndex,
+    }) => {
+      const suggestedDomains = await getDreamDomainAwaitsSuggestions(userId);
+      return React.createElement(DreamDomainAwaits, {
+        recipientName,
+        recipientEmail,
+        variant: variantIndex,
+        suggestedDomains:
+          suggestedDomains.length > 0 ? suggestedDomains : undefined,
+      });
+    },
+    errorLogMessage: 'Failed to send dream domain awaits email',
   });
+}
 
-  if (record.status === 'SKIP') {
-    return { status: 'SKIPPED', reason: record.reason };
+export async function sendDomainTrafficSurgeEmail({
+  userId,
+  periodStart,
+  domains,
+  dryRun = false,
+}: {
+  userId: string;
+  periodStart: Date | string;
+  domains: DomainTrafficCandidate['domains'];
+  dryRun?: boolean;
+}): Promise<EmailCampaignSendResult> {
+  const periodStartDate = toDate(periodStart);
+
+  if (!(await isUserSubscribedToEmails(userId))) {
+    return { status: 'SKIPPED', reason: 'opted_out' };
   }
 
-  if (!record.recordId) {
-    return { status: 'FAILED', reason: 'missing_record' };
+  const limitedDomains = domains.slice(0, 5);
+
+  if (!limitedDomains || limitedDomains.length === 0) {
+    return { status: 'SKIPPED', reason: 'no_high_traffic_domains' };
   }
 
-  const recordId = record.recordId;
-  const variantIndex = record.variantIndex ?? 0;
-  const { variant: copyVariant } = getDreamDomainAwaitsVariant(variantIndex);
-  const userEmail = await maybeGetUserEmail(userId);
-
-  if (!userEmail) {
-    await markCampaignSendFailed(recordId, 'missing_email');
-    return { status: 'FAILED', reason: 'missing_email' };
+  if (dryRun) {
+    return { status: 'DRY_RUN' };
   }
-  const fallbackRecipientName = userEmail.split('@')[0] || 'there';
 
-  try {
-    const suggestedDomains = await getDreamDomainAwaitsSuggestions(userId);
-    const emailContent = React.createElement(DreamDomainAwaits, {
-      recipientName: fallbackRecipientName,
-      recipientEmail: userEmail,
-      variant: variantIndex,
-      suggestedDomains:
-        suggestedDomains.length > 0 ? suggestedDomains : undefined,
-    });
-
-    const html = await render(emailContent, { pretty: false });
-    const plain = await render(emailContent, { plainText: true });
-
-    await sendMail({
-      to: [userEmail],
-      bcc: ARCHIVE_BCC,
-      subject: copyVariant.subject,
-      content: { html, plain },
-    });
-
-    await markCampaignSendSent(recordId);
-    return { status: 'SENT' };
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error';
-    ctx.log.error('Failed to send dream domain awaits email', {
-      userId,
-      error: errorMessage,
-    });
-    await markCampaignSendFailed(recordId, errorMessage);
-    throw error;
-  }
+  return sendCampaignEmail({
+    userId,
+    periodStart: periodStartDate,
+    campaignKey: DOMAIN_TRAFFIC_SURGE_CAMPAIGN_KEY,
+    metadata: {},
+    totalVariants: DOMAIN_TRAFFIC_SURGE_VARIANT_COUNT,
+    getVariant: getDomainTrafficSurgeVariant,
+    buildEmailContent: ({ recipientName, recipientEmail, variantIndex }) =>
+      React.createElement(DomainTrafficSurge, {
+        recipientName,
+        recipientEmail,
+        variant: variantIndex,
+        domains: limitedDomains,
+        baselineThreshold: config.EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD,
+      }),
+    errorLogMessage: 'Failed to send domain traffic surge email',
+  });
 }

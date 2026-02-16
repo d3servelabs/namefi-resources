@@ -10,6 +10,7 @@ export type { EmailCampaignKey };
 export const EMAIL_CAMPAIGN_SCHEDULE_IDS: Record<EmailCampaignKey, string> = {
   [EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR]: 'cart-domains-popular-schedule',
   [EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS]: 'dream-domain-awaits-schedule',
+  [EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE]: 'domain-traffic-surge-schedule',
 };
 
 export const EMAIL_CAMPAIGN_CADENCE: Record<
@@ -18,4 +19,5 @@ export const EMAIL_CAMPAIGN_CADENCE: Record<
 > = {
   [EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR]: 'WEEKLY',
   [EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS]: 'MONTHLY',
+  [EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE]: 'WEEKLY',
 };

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import {
   cartItemsTable,
   emailCampaignSendsTable,
+  namefiNftOwnersCte,
+  namefiNftOwnersView,
   ordersTable,
   usersTable,
 } from '@namefi-astra/db';
@@ -24,8 +26,14 @@ import {
 import type { EmailCampaignKey } from '../../../services/email-campaigns/constants';
 import {
   getCartDomainsPopularEligibleUserIds,
+  getDomainTrafficSurgeEligibleUserIds,
   getDreamDomainAwaitsEligibleUserIds,
 } from '../../../services/email-campaigns/eligibility';
+import {
+  getDomainTrafficCampaignCandidates,
+  getRollingWeeklyTrafficDateRange,
+  type DomainTrafficCandidate,
+} from '../../../services/email-campaigns/domain-traffic';
 import {
   getMonthlyPeriodStartUtc,
   getWeeklyPeriodStartUtc,
@@ -34,7 +42,9 @@ import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { weeklyCartDomainsPopularWorkflow } from '#temporal/workflows/cart-domains-popular.workflow';
 import { monthlyDreamDomainAwaitsWorkflow } from '#temporal/workflows/dream-domain-awaits.workflow';
+import { weeklyDomainTrafficSurgeWorkflow } from '#temporal/workflows/domain-traffic-surge.workflow';
 import { logger } from '#lib/logger';
+import { config } from '#lib/env';
 import { ResourceType } from '#lib/auditor';
 import { SCHEDULE_REGISTRY } from '../../../temporal/schedules';
 
@@ -65,13 +75,21 @@ type EligibleUserRow = {
   cartOldestAddedAt?: Date | null;
   cartNewestAddedAt?: Date | null;
   lastOrderAt?: Date | null;
+  hasOwnedDomains?: boolean;
+  ownedDomainCount?: number;
+  trafficDomainCount?: number;
+  trafficTopDomain?: string | null;
+  trafficTopWeeklyQueries?: number | null;
 };
 
 function getPeriodStartForCampaign(
   campaignKey: EmailCampaignKey,
   now: Date,
 ): Date {
-  if (campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR) {
+  if (
+    campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR ||
+    campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE
+  ) {
     return getWeeklyPeriodStartUtc(now);
   }
 
@@ -94,15 +112,32 @@ function getScheduleForCampaign(campaignKey: EmailCampaignKey) {
   return { scheduleId, schedule };
 }
 
+function isScheduleNotConfiguredError(error: unknown): boolean {
+  const message =
+    error instanceof Error
+      ? error.message.toLowerCase()
+      : String(error).toLowerCase();
+  return message.includes('schedule') && message.includes('not found');
+}
+
 async function getEligibleUserIds(
   campaignKey: EmailCampaignKey,
   periodStart: Date,
   userIdFilter?: string[],
+  asOf?: Date,
 ): Promise<string[]> {
   if (campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR) {
     return getCartDomainsPopularEligibleUserIds({
       periodStart,
       userIdFilter,
+    });
+  }
+
+  if (campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE) {
+    return getDomainTrafficSurgeEligibleUserIds({
+      periodStart,
+      userIdFilter,
+      asOf,
     });
   }
 
@@ -123,12 +158,40 @@ export const emailCampaignsRouter = createTRPCRouter({
       const { scheduleId, schedule } = getScheduleForCampaign(
         input.campaignKey,
       );
-      const status = await schedule.getStatus();
-      return {
-        campaignKey: input.campaignKey,
-        scheduleId,
-        status,
-      };
+      try {
+        const status = await schedule.getStatus();
+        return {
+          campaignKey: input.campaignKey,
+          scheduleId,
+          isConfigured: true,
+          status,
+          message: null,
+        };
+      } catch (error) {
+        if (isScheduleNotConfiguredError(error)) {
+          logger.info(
+            { scheduleId, campaignKey: input.campaignKey },
+            'Campaign schedule is not configured in Temporal',
+          );
+          return {
+            campaignKey: input.campaignKey,
+            scheduleId,
+            isConfigured: false,
+            status: null,
+            message: 'Schedule is not set up in Temporal yet',
+          };
+        }
+
+        logger.error(
+          { error, scheduleId, campaignKey: input.campaignKey },
+          'Failed to get campaign schedule status',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to get campaign schedule status',
+          cause: error,
+        });
+      }
     }),
 
   pauseSchedule: auditedAdminProcedureWithPermissions(
@@ -152,14 +215,33 @@ export const emailCampaignsRouter = createTRPCRouter({
       const { scheduleId, schedule } = getScheduleForCampaign(
         input.campaignKey,
       );
-      await schedule.pause();
-      logger.debug({ scheduleId }, 'Campaign schedule paused');
-      return {
-        success: true,
-        message: 'Campaign schedule paused',
-        campaignKey: input.campaignKey,
-        scheduleId,
-      };
+      try {
+        await schedule.pause();
+        logger.debug({ scheduleId }, 'Campaign schedule paused');
+        return {
+          success: true,
+          message: 'Campaign schedule paused',
+          campaignKey: input.campaignKey,
+          scheduleId,
+        };
+      } catch (error) {
+        if (isScheduleNotConfiguredError(error)) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message:
+              'Schedule is not set up yet. Open Admin > Schedules and click Setup Schedule.',
+          });
+        }
+        logger.error(
+          { error, scheduleId, campaignKey: input.campaignKey },
+          'Failed to pause campaign schedule',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to pause campaign schedule',
+          cause: error,
+        });
+      }
     }),
 
   resumeSchedule: auditedAdminProcedureWithPermissions(
@@ -183,14 +265,33 @@ export const emailCampaignsRouter = createTRPCRouter({
       const { scheduleId, schedule } = getScheduleForCampaign(
         input.campaignKey,
       );
-      await schedule.unpause();
-      logger.debug({ scheduleId }, 'Campaign schedule resumed');
-      return {
-        success: true,
-        message: 'Campaign schedule resumed',
-        campaignKey: input.campaignKey,
-        scheduleId,
-      };
+      try {
+        await schedule.unpause();
+        logger.debug({ scheduleId }, 'Campaign schedule resumed');
+        return {
+          success: true,
+          message: 'Campaign schedule resumed',
+          campaignKey: input.campaignKey,
+          scheduleId,
+        };
+      } catch (error) {
+        if (isScheduleNotConfiguredError(error)) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message:
+              'Schedule is not set up yet. Open Admin > Schedules and click Setup Schedule.',
+          });
+        }
+        logger.error(
+          { error, scheduleId, campaignKey: input.campaignKey },
+          'Failed to resume campaign schedule',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to resume campaign schedule',
+          cause: error,
+        });
+      }
     }),
 
   getEligibleUsers: adminProcedureWithPermissions(
@@ -206,17 +307,42 @@ export const emailCampaignsRouter = createTRPCRouter({
       const { campaignKey } = input;
       const now = new Date();
       const periodStart = getPeriodStartForCampaign(campaignKey, now);
+      const dreamOrderLookbackDays =
+        campaignKey === EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS
+          ? config.EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS
+          : null;
+      const trafficWeeklyThreshold =
+        campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE
+          ? config.EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD
+          : null;
+      const trafficDateRange =
+        campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE
+          ? getRollingWeeklyTrafficDateRange(now)
+          : null;
+      const trafficCandidatesByUser = new Map<string, DomainTrafficCandidate>();
 
-      const eligibleUserIds = await getEligibleUserIds(
-        campaignKey,
-        periodStart,
-      );
+      const eligibleUserIds =
+        campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE
+          ? (
+              await getDomainTrafficCampaignCandidates({
+                periodStart,
+                asOf: now,
+              })
+            ).map((candidate) => {
+              trafficCandidatesByUser.set(candidate.userId, candidate);
+              return candidate.userId;
+            })
+          : await getEligibleUserIds(campaignKey, periodStart, undefined, now);
 
       if (eligibleUserIds.length === 0) {
         const users: EligibleUserRow[] = [];
         return {
           campaignKey,
           periodStart,
+          dreamOrderLookbackDays,
+          trafficWeeklyThreshold,
+          trafficWindowStartUtc: trafficDateRange?.startDate ?? null,
+          trafficWindowEndUtc: trafficDateRange?.endDate ?? null,
           users,
         };
       }
@@ -287,6 +413,10 @@ export const emailCampaignsRouter = createTRPCRouter({
       >();
 
       const orderStatsByUser = new Map<string, { lastOrderAt: Date | null }>();
+      const domainStatsByUser = new Map<
+        string,
+        { hasOwnedDomains: boolean; ownedDomainCount: number }
+      >();
 
       if (campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR) {
         const cartStats = await db
@@ -321,7 +451,7 @@ export const emailCampaignsRouter = createTRPCRouter({
             cartNewestAddedAt: row.cartNewestAddedAt ?? null,
           });
         }
-      } else {
+      } else if (campaignKey === EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS) {
         const orderStats = await db
           .select({
             userId: ordersTable.userId,
@@ -341,6 +471,35 @@ export const emailCampaignsRouter = createTRPCRouter({
         for (const row of orderStats) {
           orderStatsByUser.set(row.userId, {
             lastOrderAt: row.lastOrderAt ?? null,
+          });
+        }
+
+        const domainStats = await db
+          .with(namefiNftOwnersCte)
+          .select({
+            userId: usersTable.id,
+            ownedDomainCount:
+              sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
+                'owned_domain_count',
+              ),
+          })
+          .from(usersTable)
+          .innerJoin(
+            privyUsersTableSchema,
+            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+          )
+          .innerJoin(
+            namefiNftOwnersView,
+            sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          )
+          .where(inArray(usersTable.id, eligibleUserIds))
+          .groupBy(usersTable.id);
+
+        for (const row of domainStats) {
+          const count = row.ownedDomainCount ?? 0;
+          domainStatsByUser.set(row.userId, {
+            ownedDomainCount: count,
+            hasOwnedDomains: count > 0,
           });
         }
       }
@@ -373,10 +532,24 @@ export const emailCampaignsRouter = createTRPCRouter({
           };
         }
 
+        if (campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE) {
+          const trafficCandidate = trafficCandidatesByUser.get(user.userId);
+          const topTrafficDomain = trafficCandidate?.domains[0];
+          return {
+            ...base,
+            trafficDomainCount: trafficCandidate?.domains.length ?? 0,
+            trafficTopDomain: topTrafficDomain?.domain ?? null,
+            trafficTopWeeklyQueries: topTrafficDomain?.weeklyQueries ?? null,
+          };
+        }
+
         const orderStats = orderStatsByUser.get(user.userId);
+        const domainStats = domainStatsByUser.get(user.userId);
         return {
           ...base,
           lastOrderAt: orderStats?.lastOrderAt ?? null,
+          hasOwnedDomains: domainStats?.hasOwnedDomains ?? false,
+          ownedDomainCount: domainStats?.ownedDomainCount ?? 0,
         };
       });
 
@@ -390,6 +563,10 @@ export const emailCampaignsRouter = createTRPCRouter({
       return {
         campaignKey,
         periodStart,
+        dreamOrderLookbackDays,
+        trafficWeeklyThreshold,
+        trafficWindowStartUtc: trafficDateRange?.startDate ?? null,
+        trafficWindowEndUtc: trafficDateRange?.endDate ?? null,
         users: usersWithDetails,
       };
     }),
@@ -421,6 +598,7 @@ export const emailCampaignsRouter = createTRPCRouter({
         campaignKey,
         periodStart,
         [userId],
+        now,
       );
 
       if (!eligibleUserIds.includes(userId)) {
@@ -436,7 +614,9 @@ export const emailCampaignsRouter = createTRPCRouter({
         const workflow =
           campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR
             ? weeklyCartDomainsPopularWorkflow
-            : monthlyDreamDomainAwaitsWorkflow;
+            : campaignKey === EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE
+              ? weeklyDomainTrafficSurgeWorkflow
+              : monthlyDreamDomainAwaitsWorkflow;
 
         await temporalClient.workflow.start(workflow, {
           args: [

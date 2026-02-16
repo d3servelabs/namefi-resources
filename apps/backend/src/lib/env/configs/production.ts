@@ -57,6 +57,7 @@ const productionConfig: ConfigInput = {
   ],
   ALLOW_LIVE_REGISTRARS: true,
   EMAIL_ANALYTICS_URL: 'https://backend.astra.namefi.io/v1/email/track/open',
+  EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 1000,
 };
 
 export default productionConfig;

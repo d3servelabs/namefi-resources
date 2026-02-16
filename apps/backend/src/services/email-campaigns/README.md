@@ -19,7 +19,8 @@ System for scheduled marketing emails.
 | Key | Cadence | Schedule (UTC) | Eligibility Summary | Template |
 | --- | --- | --- | --- | --- |
 | `cart-domains-popular` | Weekly | Monday 16:00 (`0 16 * * 1`) | Subscribed, has email, cart items older than 1 day, not sent this period | `apps/backend/src/mail/templates/cart-domains-popular.tsx` |
-| `dream-domain-awaits` | Monthly | 1st day 16:00 (`0 16 1 * *`) | Subscribed, has email, no cart items, no qualifying purchases in 3 months, not sent this period | `apps/backend/src/mail/templates/dream-domain-awaits.tsx` |
+| `dream-domain-awaits` | Monthly | 1st day 16:00 (`0 16 1 * *`) | Subscribed, has email, no cart items, no qualifying purchases in lookback window, not sent this period | `apps/backend/src/mail/templates/dream-domain-awaits.tsx` |
+| `domain-traffic-surge` | Weekly | Tuesday 16:00 (`0 16 * * 2`) | Subscribed, has email, owns Namefi-managed domains with weekly traffic above threshold, not sent this period | `apps/backend/src/mail/templates/domain-traffic-surge.tsx` |
 
 ## Eligibility Criteria (Details)
 
@@ -35,7 +36,15 @@ System for scheduled marketing emails.
 - `users.subscribe_to_emails = true`
 - Privy email present (non-empty)
 - No cart items
-- No orders in last 3 months with status `SUCCEEDED` or `PARTIALLY_COMPLETED`
+- No orders in lookback window (`EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS`, default `90`) with status `SUCCEEDED` or `PARTIALLY_COMPLETED`
+- No `email_campaign_sends` for same `periodStart` with `SENT` or `PENDING`
+
+**Domain Traffic Surge**
+
+- `users.subscribe_to_emails = true`
+- Privy email present (non-empty)
+- Owns domains with `indexed_domains.is_using_namefi_nameservers = true`
+- DNS traffic for the last 7 complete days meets or exceeds the env-configured threshold `EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD`
 - No `email_campaign_sends` for same `periodStart` with `SENT` or `PENDING`
 
 ## Temporal Schedules
@@ -44,6 +53,7 @@ System for scheduled marketing emails.
 | --- | --- | --- |
 | `cart-domains-popular-schedule` | `apps/backend/src/temporal/schedules/cart-domains-popular.ts` | `0 16 * * 1` |
 | `dream-domain-awaits-schedule` | `apps/backend/src/temporal/schedules/dream-domain-awaits.ts` | `0 16 1 * *` |
+| `domain-traffic-surge-schedule` | `apps/backend/src/temporal/schedules/domain-traffic-surge.ts` | `0 16 * * 2` |
 
 ## Adding a New Campaign
 

@@ -7,8 +7,10 @@ import {
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { and, eq, gte, inArray, isNull, lte, sql } from 'drizzle-orm';
 import { db } from '@namefi-astra/db';
+import { config } from '#lib/env';
 import { EMAIL_CAMPAIGN_KEYS } from './constants';
 import { toDate } from './utils';
+import { getDomainTrafficCampaignCandidates } from './domain-traffic';
 
 export async function getCartDomainsPopularEligibleUserIds({
   periodStart,
@@ -64,6 +66,8 @@ export async function getDreamDomainAwaitsEligibleUserIds({
   userIdFilter?: string[];
 }): Promise<string[]> {
   const periodStartDate = toDate(periodStart);
+  const orderLookbackDays =
+    config.EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS;
   const hasEmailCondition = sql<boolean>`NULLIF(TRIM(${privyUsersTableSchema.email}), '') IS NOT NULL`;
   const conditions = [
     eq(usersTable.subscribeToEmails, true),
@@ -90,7 +94,10 @@ export async function getDreamDomainAwaitsEligibleUserIds({
       and(
         eq(ordersTable.userId, usersTable.id),
         inArray(ordersTable.status, ['SUCCEEDED', 'PARTIALLY_COMPLETED']),
-        gte(ordersTable.createdAt, sql`now() - interval '3 months'`),
+        gte(
+          ordersTable.createdAt,
+          sql`now() - (${orderLookbackDays} * interval '1 day')`,
+        ),
       ),
     )
     .leftJoin(
@@ -109,4 +116,21 @@ export async function getDreamDomainAwaitsEligibleUserIds({
     .groupBy(usersTable.id);
 
   return rows.map((row) => row.userId);
+}
+
+export async function getDomainTrafficSurgeEligibleUserIds({
+  periodStart,
+  userIdFilter,
+  asOf,
+}: {
+  periodStart: Date | string;
+  userIdFilter?: string[];
+  asOf?: Date | string;
+}): Promise<string[]> {
+  const candidates = await getDomainTrafficCampaignCandidates({
+    periodStart,
+    userIdFilter,
+    asOf,
+  });
+  return candidates.map((candidate) => candidate.userId);
 }

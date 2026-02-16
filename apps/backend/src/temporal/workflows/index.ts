@@ -49,6 +49,7 @@ export * from './weekly-disable-auto-renewal.workflow';
 export * from './logo-generation.workflow';
 export * from './cart-domains-popular.workflow';
 export * from './dream-domain-awaits.workflow';
+export * from './domain-traffic-surge.workflow';
 export * from './multi-charge.workflow';
 export * from './multi-refund.workflow';
 export * from './update-privy-cache.workflow';

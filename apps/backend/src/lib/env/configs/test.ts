@@ -30,6 +30,7 @@ const testConfig: ConfigInput = {
       baseUrl: 'http://ns3.namefi.dev:8181',
     },
   ],
+  EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 1000,
 };
 
 export default testConfig;

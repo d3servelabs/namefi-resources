@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTRPC } from '@/lib/trpc';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { PageShell } from '@/components/page-shell';
 import {
   Card,
@@ -25,7 +26,10 @@ import {
   ChevronDown,
   ChevronRight,
   Loader2,
+  Pause,
+  Play,
   RefreshCw,
+  Settings2,
   Send,
   Copy,
 } from 'lucide-react';
@@ -54,8 +58,36 @@ type ScheduleStatusResponse =
 const formatDateTime = (value?: Date | null) =>
   value ? format(value, 'MMM d, yyyy HH:mm') : '-';
 
-const formatDate = (value?: Date | null) =>
-  value ? format(value, 'MMM d, yyyy') : '-';
+const formatInteger = (value?: number | null) =>
+  typeof value === 'number' ? new Intl.NumberFormat().format(value) : '-';
+
+const formatLocalDateTime = (value?: Date | string | null) => {
+  if (!value) return '-';
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZoneName: 'short',
+  }).format(date);
+};
+
+const formatUtcDate = (value?: string | null) => {
+  if (!value) return '-';
+  const [year, month, day] = value.split('-').map(Number);
+  if (
+    !Number.isFinite(year) ||
+    !Number.isFinite(month) ||
+    !Number.isFinite(day)
+  ) {
+    return '-';
+  }
+  const date = new Date(Date.UTC(year, month - 1, day, 12));
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'medium',
+    timeZone: 'UTC',
+  }).format(date);
+};
 
 const getStatusBadge = (status?: string | null) => {
   if (!status) return <Badge variant="outline">-</Badge>;
@@ -63,12 +95,6 @@ const getStatusBadge = (status?: string | null) => {
   if (status === 'PENDING') return <Badge variant="secondary">Pending</Badge>;
   if (status === 'FAILED') return <Badge variant="destructive">Failed</Badge>;
   return <Badge variant="outline">{status}</Badge>;
-};
-
-const getScheduleBadge = (paused?: boolean) => {
-  if (paused === undefined) return <Badge variant="outline">Unknown</Badge>;
-  if (paused) return <Badge variant="destructive">Paused</Badge>;
-  return <Badge variant="secondary">Active</Badge>;
 };
 
 function CampaignSendHistorySubrow({
@@ -138,11 +164,13 @@ function CampaignSection({
   scheduleStatus,
   isScheduleLoading,
   onToggleSchedule,
+  onSetupSchedule,
   isTogglingSchedule,
   pageSize,
   onPageSizeChange,
   columns,
   emptyMessage,
+  highlights,
 }: {
   title: string;
   data: EligibleUsersResponse | undefined;
@@ -150,21 +178,43 @@ function CampaignSection({
   scheduleStatus?: ScheduleStatusResponse;
   isScheduleLoading?: boolean;
   onToggleSchedule?: (paused?: boolean) => void;
+  onSetupSchedule?: (scheduleId?: string) => void;
   isTogglingSchedule?: boolean;
   pageSize: number;
   onPageSizeChange: (value: number) => void;
   columns: ColumnDef<EligibleUser>[];
   emptyMessage: string;
+  highlights?: string[];
 }) {
   const eligibleCount = data?.users.length ?? 0;
-  const paused = scheduleStatus?.status.paused;
+  const paused = scheduleStatus?.status?.paused;
+  const isScheduleConfigured =
+    scheduleStatus?.isConfigured ?? (isScheduleLoading ? true : false);
+  const nextActionTime = scheduleStatus?.status?.nextActionTimes?.find(
+    (time) => new Date(time).getTime() > Date.now(),
+  );
+  const nextScheduledSend = !isScheduleConfigured
+    ? 'Not set up'
+    : paused
+      ? 'Paused'
+      : formatLocalDateTime(
+          nextActionTime ??
+            scheduleStatus?.status?.nextActionTimes?.[0] ??
+            null,
+        );
   const scheduleLabel = isScheduleLoading
     ? 'Loading'
     : paused
       ? 'Resume'
       : 'Pause';
   const scheduleDisabled =
-    isScheduleLoading || isTogglingSchedule || paused === undefined;
+    isScheduleLoading ||
+    isTogglingSchedule ||
+    paused === undefined ||
+    !isScheduleConfigured;
+  const setupMessage =
+    scheduleStatus?.message ??
+    'Schedule is not set up in Temporal yet. Open Schedules to configure it.';
 
   return (
     <Card>
@@ -174,16 +224,38 @@ function CampaignSection({
             <CardTitle>{title}</CardTitle>
             {data?.periodStart && (
               <p className="text-xs text-muted-foreground mt-1">
-                Period: {formatDate(data.periodStart)}
+                Cycle start (your local time):{' '}
+                {formatLocalDateTime(data.periodStart)}.
               </p>
             )}
+            <p className="text-xs text-muted-foreground mt-1">
+              Next scheduled send (your local time): {nextScheduledSend}.
+            </p>
+            {!isScheduleConfigured && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {setupMessage}
+              </p>
+            )}
+            {highlights?.map((line) => (
+              <p key={line} className="text-xs text-muted-foreground mt-1">
+                {line}
+              </p>
+            ))}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {getScheduleBadge(paused)}
             <Badge variant="secondary" className="w-fit">
               {eligibleCount} eligible
             </Badge>
-            {onToggleSchedule && (
+            {!isScheduleConfigured && onSetupSchedule ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onSetupSchedule(scheduleStatus?.scheduleId)}
+              >
+                <Settings2 className="h-4 w-4 mr-2" />
+                Set up schedule
+              </Button>
+            ) : onToggleSchedule ? (
               <Button
                 size="sm"
                 variant="outline"
@@ -192,10 +264,14 @@ function CampaignSection({
               >
                 {isTogglingSchedule || isScheduleLoading ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                ) : null}
+                ) : paused ? (
+                  <Play className="h-4 w-4 mr-2" />
+                ) : (
+                  <Pause className="h-4 w-4 mr-2" />
+                )}
                 {scheduleLabel}
               </Button>
-            )}
+            ) : null}
           </div>
         </div>
       </CardHeader>
@@ -219,10 +295,12 @@ function CampaignSection({
 }
 
 export default function AdminEmailCampaigns() {
+  const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [cartPageSize, setCartPageSize] = useState(20);
   const [dreamPageSize, setDreamPageSize] = useState(20);
+  const [trafficPageSize, setTrafficPageSize] = useState(20);
 
   const cartQuery = useQuery({
     ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
@@ -236,6 +314,12 @@ export default function AdminEmailCampaigns() {
     }),
   });
 
+  const trafficQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
+      campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+    }),
+  });
+
   const cartScheduleQuery = useQuery({
     ...trpc.admin.emailCampaigns.getScheduleStatus.queryOptions({
       campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
@@ -245,6 +329,12 @@ export default function AdminEmailCampaigns() {
   const dreamScheduleQuery = useQuery({
     ...trpc.admin.emailCampaigns.getScheduleStatus.queryOptions({
       campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+    }),
+  });
+
+  const trafficScheduleQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getScheduleStatus.queryOptions({
+      campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
     }),
   });
 
@@ -305,6 +395,11 @@ export default function AdminEmailCampaigns() {
       }),
     });
     queryClient.invalidateQueries({
+      queryKey: trpc.admin.emailCampaigns.getEligibleUsers.queryKey({
+        campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+      }),
+    });
+    queryClient.invalidateQueries({
       queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
         campaignKey: EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
       }),
@@ -312,6 +407,11 @@ export default function AdminEmailCampaigns() {
     queryClient.invalidateQueries({
       queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
         campaignKey: EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+      }),
+    });
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.emailCampaigns.getScheduleStatus.queryKey({
+        campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
       }),
     });
   };
@@ -334,6 +434,14 @@ export default function AdminEmailCampaigns() {
     [pauseScheduleMutation, resumeScheduleMutation],
   );
 
+  const handleSetupSchedule = useCallback(
+    (scheduleId?: string) => {
+      const hash = scheduleId ? `#${scheduleId}` : '';
+      router.push(`/admin/schedules${hash}`);
+    },
+    [router],
+  );
+
   const handleCopyValue = useCallback(async (value: string) => {
     try {
       await navigator.clipboard.writeText(value);
@@ -345,6 +453,48 @@ export default function AdminEmailCampaigns() {
 
   const cartScheduleStatus = cartScheduleQuery.data;
   const dreamScheduleStatus = dreamScheduleQuery.data;
+  const trafficScheduleStatus = trafficScheduleQuery.data;
+  const dreamLookbackDays = dreamQuery.data?.dreamOrderLookbackDays;
+  const trafficThreshold = trafficQuery.data?.trafficWeeklyThreshold;
+  const trafficWindowStartUtc = trafficQuery.data?.trafficWindowStartUtc;
+  const trafficWindowEndUtc = trafficQuery.data?.trafficWindowEndUtc;
+  const trafficWindowLabel =
+    trafficWindowStartUtc && trafficWindowEndUtc
+      ? `${formatUtcDate(trafficWindowStartUtc)} to ${formatUtcDate(trafficWindowEndUtc)} (UTC days)`
+      : 'Last 7 complete UTC days';
+  const dreamLookbackLabel =
+    typeof dreamLookbackDays === 'number'
+      ? `${dreamLookbackDays} days`
+      : 'the configured lookback window';
+  const trafficThresholdLabel =
+    typeof trafficThreshold === 'number'
+      ? formatInteger(trafficThreshold)
+      : 'the configured threshold';
+
+  const cartHighlights = useMemo(
+    () => [
+      'Audience: users who opted in and still have cart items older than 24 hours.',
+      'Send limit: one email per user each weekly cycle.',
+    ],
+    [],
+  );
+
+  const dreamHighlights = useMemo(
+    () => [
+      `Audience: users who opted in, have no cart items, and no successful purchase in ${dreamLookbackLabel}.`,
+      'Send limit: one email per user each monthly cycle.',
+    ],
+    [dreamLookbackLabel],
+  );
+
+  const trafficHighlights = useMemo(
+    () => [
+      `Audience: users with Namefi nameserver domains that crossed ${trafficThresholdLabel} DNS lookups in the latest full 7-day window.`,
+      `Traffic window checked: ${trafficWindowLabel}.`,
+      'Send limit: one email per user each weekly cycle.',
+    ],
+    [trafficThresholdLabel, trafficWindowLabel],
+  );
 
   const isCartScheduleUpdating =
     (pauseScheduleMutation.isPending &&
@@ -361,6 +511,14 @@ export default function AdminEmailCampaigns() {
     (resumeScheduleMutation.isPending &&
       resumeScheduleMutation.variables?.campaignKey ===
         EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS);
+
+  const isTrafficScheduleUpdating =
+    (pauseScheduleMutation.isPending &&
+      pauseScheduleMutation.variables?.campaignKey ===
+        EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE) ||
+    (resumeScheduleMutation.isPending &&
+      resumeScheduleMutation.variables?.campaignKey ===
+        EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE);
 
   // NOTE: See dreamColumns below for the parallel column configuration.
   const cartColumns = useMemo<ColumnDef<EligibleUser>[]>(() => {
@@ -553,6 +711,16 @@ export default function AdminEmailCampaigns() {
         },
       },
       {
+        accessorKey: 'hasOwnedDomains',
+        header: 'Has domains',
+        cell: ({ row }) => {
+          const hasDomains = row.original.hasOwnedDomains ?? false;
+          const count = row.original.ownedDomainCount ?? 0;
+          return hasDomains ? `Yes (${count})` : 'No';
+        },
+        size: 120,
+      },
+      {
         accessorKey: 'lastOrderAt',
         header: 'Last purchase',
         cell: ({ row }) => formatDateTime(row.original.lastOrderAt),
@@ -611,6 +779,135 @@ export default function AdminEmailCampaigns() {
     sendNowMutation.variables,
   ]);
 
+  const trafficColumns = useMemo<ColumnDef<EligibleUser>[]>(() => {
+    return [
+      {
+        id: 'expander',
+        header: '',
+        cell: ({ row }) => {
+          if (!row.getCanExpand()) return null;
+          const isExpanded = row.getIsExpanded();
+          return (
+            <button
+              type="button"
+              onClick={() => row.toggleExpanded()}
+              className="p-1 hover:bg-muted rounded transition-colors"
+              aria-label={isExpanded ? 'Collapse row' : 'Expand row'}
+              aria-pressed={isExpanded}
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+          );
+        },
+        size: 24,
+      },
+      {
+        accessorKey: 'email',
+        header: 'User',
+        cell: ({ row }) => {
+          return (
+            <div className="flex items-center gap-2">
+              {row.original.email ? (
+                <>
+                  <AutoTruncateTextV2
+                    initialCharactersCountToDisplay={20}
+                    minCharactersToDisplay={15}
+                    className="text-sm"
+                  >
+                    {row.original.email}
+                  </AutoTruncateTextV2>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyValue(row.original.email!)}
+                    className="p-1 hover:bg-muted rounded transition-colors"
+                    title="Copy email"
+                    aria-label="Copy email"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
+                </>
+              ) : (
+                <span className="text-muted-foreground">-</span>
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'trafficTopDomain',
+        header: 'Top domain',
+        cell: ({ row }) => row.original.trafficTopDomain ?? '-',
+        size: 180,
+      },
+      {
+        accessorKey: 'trafficTopWeeklyQueries',
+        header: 'Top domain lookups (7d)',
+        cell: ({ row }) => formatInteger(row.original.trafficTopWeeklyQueries),
+        size: 160,
+      },
+      {
+        accessorKey: 'trafficDomainCount',
+        header: 'Domains over threshold',
+        cell: ({ row }) => formatInteger(row.original.trafficDomainCount ?? 0),
+        size: 140,
+      },
+      {
+        accessorKey: 'lastSentAt',
+        header: 'Last sent',
+        cell: ({ row }) => formatDateTime(row.original.lastSentAt),
+        size: 160,
+      },
+      {
+        accessorKey: 'lastSendStatus',
+        header: 'Last status',
+        cell: ({ row }) => getStatusBadge(row.original.lastSendStatus),
+        size: 120,
+      },
+      {
+        id: 'actions',
+        header: '',
+        cell: ({ row }) => {
+          const isSending =
+            sendNowMutation.isPending &&
+            sendNowMutation.variables?.campaignKey ===
+              EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE &&
+            sendNowMutation.variables?.userId === row.original.userId;
+
+          return (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                handleSendNow(
+                  EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+                  row.original.userId,
+                )
+              }
+              disabled={isSending}
+            >
+              {isSending ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              Send
+            </Button>
+          );
+        },
+        size: 140,
+      },
+    ];
+  }, [
+    handleCopyValue,
+    handleSendNow,
+    sendNowMutation.isPending,
+    sendNowMutation.variables,
+  ]);
+
   return (
     <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
@@ -621,7 +918,11 @@ export default function AdminEmailCampaigns() {
           variant="outline"
           size="sm"
           onClick={handleRefresh}
-          disabled={cartQuery.isFetching || dreamQuery.isFetching}
+          disabled={
+            cartQuery.isFetching ||
+            dreamQuery.isFetching ||
+            trafficQuery.isFetching
+          }
         >
           <RefreshCw className="h-4 w-4 mr-2" />
           Refresh
@@ -637,11 +938,13 @@ export default function AdminEmailCampaigns() {
         onToggleSchedule={(paused) =>
           handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR, paused)
         }
+        onSetupSchedule={handleSetupSchedule}
         isTogglingSchedule={isCartScheduleUpdating}
         pageSize={cartPageSize}
         onPageSizeChange={setCartPageSize}
         columns={cartColumns}
         emptyMessage="No eligible users"
+        highlights={cartHighlights}
       />
 
       <CampaignSection
@@ -653,11 +956,31 @@ export default function AdminEmailCampaigns() {
         onToggleSchedule={(paused) =>
           handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS, paused)
         }
+        onSetupSchedule={handleSetupSchedule}
         isTogglingSchedule={isDreamScheduleUpdating}
         pageSize={dreamPageSize}
         onPageSizeChange={setDreamPageSize}
         columns={dreamColumns}
         emptyMessage="No eligible users"
+        highlights={dreamHighlights}
+      />
+
+      <CampaignSection
+        title={CAMPAIGNS[2].title}
+        data={trafficQuery.data}
+        isLoading={trafficQuery.isLoading}
+        scheduleStatus={trafficScheduleStatus}
+        isScheduleLoading={trafficScheduleQuery.isLoading}
+        onToggleSchedule={(paused) =>
+          handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE, paused)
+        }
+        onSetupSchedule={handleSetupSchedule}
+        isTogglingSchedule={isTrafficScheduleUpdating}
+        pageSize={trafficPageSize}
+        onPageSizeChange={setTrafficPageSize}
+        columns={trafficColumns}
+        emptyMessage="No eligible users"
+        highlights={trafficHighlights}
       />
     </PageShell>
   );

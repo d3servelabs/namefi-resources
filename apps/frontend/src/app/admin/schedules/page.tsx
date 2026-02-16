@@ -508,7 +508,7 @@ function ScheduleCard({
   const hasStatus = !!actualStatus;
 
   return (
-    <Card className="h-fit">
+    <Card id={scheduleConfig.scheduleId} className="h-fit">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">

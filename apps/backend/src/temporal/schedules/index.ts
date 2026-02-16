@@ -22,6 +22,7 @@ import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
 import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-data-for-domains';
 import { cartDomainsPopularSchedule } from './cart-domains-popular';
 import { dreamDomainAwaitsSchedule } from './dream-domain-awaits';
+import { domainTrafficSurgeSchedule } from './domain-traffic-surge';
 import { campaignAwardSchedule } from './hunt/campaign-award';
 import { campaignStatusSchedule } from './hunt/campaign-status';
 import {
@@ -138,6 +139,7 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
     generateAndUpdateDataForDomainsSchedule,
   [cartDomainsPopularSchedule.config.scheduleId]: cartDomainsPopularSchedule,
   [dreamDomainAwaitsSchedule.config.scheduleId]: dreamDomainAwaitsSchedule,
+  [domainTrafficSurgeSchedule.config.scheduleId]: domainTrafficSurgeSchedule,
   [campaignAwardSchedule.config.scheduleId]: campaignAwardSchedule,
   [campaignStatusSchedule.config.scheduleId]: campaignStatusSchedule,
   [dailyAwardSchedule.config.scheduleId]: dailyAwardSchedule,
