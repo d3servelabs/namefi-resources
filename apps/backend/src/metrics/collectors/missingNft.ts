@@ -4,9 +4,10 @@ import {
   namefiNftCte,
   namefiNftView,
 } from '@namefi-astra/db';
-import { and, eq, isNull, sql } from 'drizzle-orm';
+import { and, eq, isNull, sql, inArray } from 'drizzle-orm';
 import { register } from '../registry';
 import type { MetricsContext } from '../types';
+import { config } from '#lib/env';
 
 export const METRIC_NAME = 'namefi_domains_missing_nft_total';
 
@@ -32,6 +33,7 @@ export async function collectDomainsInRegistrarMissingNft(
     )
     .where(
       and(
+        inArray(namefiNftView.chainId, config.ALLOWED_CHAINS),
         eq(indexedDomainsTable.isMissingFromRegistrar, false),
         isNull(namefiNftView.normalizedDomainName),
       ),
