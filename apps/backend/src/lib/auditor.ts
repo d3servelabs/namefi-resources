@@ -127,11 +127,13 @@ export function createAuditRecord(
     id,
     actorType: params.actorType,
     actorId: params.actorId,
-    actorExtraInfo: _safeJson(params.actorExtraInfo),
+    actorExtraInfo: _onlyRecordType<AuditRecord['actorExtraInfo']>(
+      _safeJson(params.actorExtraInfo),
+    ),
     resourceType: params.resourceType,
     resourceId: params.resourceId,
     action: params.action,
-    extraInput: _safeJson(params.extraInput),
+    extraInput: _onlyRecordType(_safeJson(params.extraInput)),
     timestamp,
   };
 }
@@ -160,6 +162,13 @@ export function audit(
   metadata: Record<string, unknown> = {},
 ): AuditRecord {
   logger.info(asAuditLogPayload(record, metadata));
+  logger.info({
+    ...record,
+    extraInput: JSON.stringify(_safeJson(record.extraInput)),
+    actorExtraInfo: JSON.stringify(_safeJson(record.actorExtraInfo)),
+    metadata: JSON.stringify(_safeJson(metadata)),
+    stringified_audit_record: true,
+  });
   return record;
 }
 
@@ -187,4 +196,16 @@ function _safeJson(value: any) {
   }
 
   return result ?? { error: 'unserializable', value: String(value) };
+}
+
+function _onlyRecordType<T extends Record<string, unknown> | undefined>(
+  value: any,
+): T {
+  if (typeof value === 'object') {
+    if (Array.isArray(value)) {
+      return { type: 'array', array: value } as unknown as T;
+    }
+    return Object.keys(value).length > 0 ? value : ({} as T);
+  }
+  return { type: typeof value, value } as unknown as T;
 }
