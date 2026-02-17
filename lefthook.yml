@@ -10,7 +10,7 @@ pre-commit:
 pre-push:
   commands:
     validate:
-      run: bun validate
+      run: bun validate:pre-push
 
 post-checkout:
   commands:

@@ -64,6 +64,7 @@
     "sgr": "bun run scripts/run-sgr.ts scan *",
     "sgr:fix": "bun run scripts/run-sgr.ts scan --fix *",
     "validate": "concurrently -n 'typecheck,biome,sherif,sgr' -c 'blue.bold,green.bold,yellow.bold,red.bold' \"turbo typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-4}\" \"turbo check:error --concurrency ${TURBO_CHECKERROR_CONCURRENCY:-4}\" \"bun sherif\" \"bun sgr\"",
+    "validate:pre-push": "concurrently -n 'typecheck,biome,sherif' -c 'blue.bold,green.bold,yellow.bold' \"turbo typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-1}\" \"bun check:error\" \"bun sherif\"",
     "validate:secrets": "turbo validate:secrets",
     "knip": "bunx knip"
   },
