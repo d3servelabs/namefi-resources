@@ -231,7 +231,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       premium: searchRes.isPremium ? '1' : undefined,
     });
 
-    assertNot(responseFailed(response.RegisterResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.RegisterResponse);
 
     if (response.RegisterResponse.Status === 'success') {
       return {
@@ -296,7 +296,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       auth: authCode,
     });
 
-    assertNot(responseFailed(response.TransferResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.TransferResponse);
 
     return {
       type: OperationType.TRANSFER_IN_DOMAIN,
@@ -321,9 +321,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'in',
       },
     );
-    assertNot(
-      responseFailed(statusResponse.GetTransferStatusResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      statusResponse.GetTransferStatusResponse,
     );
 
     const transferList =
@@ -387,9 +387,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'in',
       },
     );
-    assertNot(
-      responseFailed(statusResponse.GetTransferStatusResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      statusResponse.GetTransferStatusResponse,
     );
 
     const transferList =
@@ -439,9 +439,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         new_code: 1,
       },
     );
-    assertNot(
-      responseFailed(response.GetTransferAuthCodeResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      response.GetTransferAuthCodeResponse,
     );
 
     return response.GetTransferAuthCodeResponse.AuthCode;
@@ -456,9 +456,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         domain: domainName,
       },
     );
-    assertNot(
-      responseFailed(response.GetTransferAuthCodeResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      response.GetTransferAuthCodeResponse,
     );
 
     return response.GetTransferAuthCodeResponse.AuthCode;
@@ -484,7 +484,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.lock_domain, {
       domain: domainName,
     });
-    assertNot(responseFailed(response.LockDomainResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.LockDomainResponse);
 
     return {
       type: OperationType.DOMAIN_CHANGE_LOCK,
@@ -509,7 +509,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
     });
 
-    assertNot(responseFailed(response.UnlockDomainResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.UnlockDomainResponse);
 
     return {
       type: OperationType.DOMAIN_CHANGE_LOCK,
@@ -532,10 +532,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
     });
 
-    assertNot(
-      responseFailed(response.DomainInfoResponse),
-      'Dynadot: Domain Info Response Failed',
-    );
+    assertDynadotResponseNotFailed(this.key, response.DomainInfoResponse);
     return response.DomainInfoResponse.DomainInfo;
   }
 
@@ -700,10 +697,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       currency: 'USD',
     });
 
-    assertNot(
-      responseFailed(commandResults.TldPriceResponse),
-      'Response Failed',
-    );
+    assertDynadotResponseNotFailed(this.key, commandResults.TldPriceResponse);
     const response = commandResults.TldPriceResponse;
 
     if (response.Currency !== 'USD') {
@@ -848,7 +842,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       digest: signingAttributes.digest,
     });
 
-    assertNot(responseFailed(response.SetDnssecResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.SetDnssecResponse);
     return {
       type: OperationType.ADD_DNSSEC,
       operationId: generateOperationId(OperationType.ADD_DNSSEC, domainName, {
@@ -868,7 +862,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.clear_dnssec, {
       domain_name: domainName,
     });
-    assertNot(responseFailed(response.ClearDnssecResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.ClearDnssecResponse);
     const status = getImmediateOperationStatus(response.ClearDnssecResponse);
     return {
       type: OperationType.REMOVE_DNSSEC,
@@ -917,7 +911,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       show_price: '1',
     });
     const allowedParentDomains = await this.getAllowedParentDomains();
-    assertNot(responseFailed(response.SearchResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.SearchResponse);
     const results = response.SearchResponse.SearchResults;
     return results.map((result) => {
       const domainName = toPunycodeDomainName(result.DomainName);
@@ -1062,7 +1056,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.get_contact, {
       contact_id: contactId,
     });
-    assertNot(responseFailed(response.GetContactResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.GetContactResponse);
     return response.GetContactResponse.GetContact;
   }
 
@@ -1122,7 +1116,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
     });
 
-    assertNot(responseFailed(response.GetNsResponse), 'Response Failed');
+    assertDynadotResponseNotFailed(this.key, response.GetNsResponse);
     const nameservers = Object.entries(response.GetNsResponse.NsContent ?? {})
       .filter(([key]) => key.toLowerCase().startsWith('host'))
       .map(compose(toPunycodeFqdn, prop(1)));
@@ -1138,9 +1132,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'in',
       },
     );
-    assertNot(
-      responseFailed(response.GetTransferStatusResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      response.GetTransferStatusResponse,
     );
     return response.GetTransferStatusResponse.TransferList;
   }
@@ -1463,9 +1457,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'away',
       },
     );
-    assertNot(
-      responseFailed(statusResponse.GetTransferStatusResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      statusResponse.GetTransferStatusResponse,
     );
 
     const transferList =
@@ -1485,9 +1479,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         order_id: latestTransfer.OrderId,
       },
     );
-    assertNot(
-      responseFailed(response.AuthorizeTransferAwayResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      response.AuthorizeTransferAwayResponse,
     );
 
     return {
@@ -1519,9 +1513,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'away',
       },
     );
-    assertNot(
-      responseFailed(statusResponse.GetTransferStatusResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      statusResponse.GetTransferStatusResponse,
     );
 
     const transferList =
@@ -1541,9 +1535,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         order_id: latestTransfer.OrderId,
       },
     );
-    assertNot(
-      responseFailed(response.AuthorizeTransferAwayResponse),
-      'Response Failed',
+    assertDynadotResponseNotFailed(
+      this.key,
+      response.AuthorizeTransferAwayResponse,
     );
 
     return {
