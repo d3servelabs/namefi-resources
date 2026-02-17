@@ -295,6 +295,7 @@ function createMockPayment(
     updatedAt: new Date('2026-01-15T10:35:00Z'),
     startedAt: new Date('2026-01-15T10:35:00Z'),
     finishedAt: new Date('2026-01-15T10:35:00Z'),
+    metadata: null,
     ...overrides,
   };
 }

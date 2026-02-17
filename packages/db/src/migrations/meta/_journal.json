@@ -568,6 +568,13 @@
       "when": 1771252841189,
       "tag": "0080_sleepy_mimic",
       "breakpoints": true
+    },
+    {
+      "idx": 81,
+      "version": "7",
+      "when": 1771281323552,
+      "tag": "0081_young_nightcrawler",
+      "breakpoints": true
     }
   ]
 }

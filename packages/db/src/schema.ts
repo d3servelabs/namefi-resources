@@ -323,6 +323,9 @@ export const cartItemsTable = pgTable(
   ],
 );
 
+export const paymentMetadataSchema = z.object({});
+export type PaymentMetadata = z.infer<typeof paymentMetadataSchema>;
+
 /**
  * Payments table
  * Stores payment transactions
@@ -344,6 +347,7 @@ export const paymentsTable = pgTable(
     stripePaymentDetails: jsonb('stripe_payment_details').$type<{
       paymentMethodId?: string;
     }>(),
+    metadata: jsonb('metadata').$type<PaymentMetadata>(),
     ...timestamps,
     ...lifecycleTimestamps,
   },
@@ -361,6 +365,8 @@ export const paymentsTable = pgTable(
   ],
 );
 
+export const refundsMetadataSchema = z.object({});
+export type RefundsMetadata = z.infer<typeof refundsMetadataSchema>;
 /**
  * Refunds table
  * Stores refund transactions linked to payments
@@ -377,6 +383,7 @@ export const refundsTable = pgTable(
     paymentProviderReferenceId: text('payment_provider_reference_id'),
     chainId: integer('chain_id'),
     walletAddress: text('wallet_address'),
+    metadata: jsonb('metadata').$type<RefundsMetadata>(),
     ...timestamps,
     ...lifecycleTimestamps,
   },
