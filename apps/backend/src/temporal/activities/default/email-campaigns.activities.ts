@@ -9,7 +9,7 @@ import {
   usersTable,
   type EmailCampaignSendMetadata,
 } from '@namefi-astra/db';
-import { and, desc, eq, gte, inArray, isNull, lte, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 import { db } from '@namefi-astra/db';
 import { sendMail } from '../../../mail/mail-client';
 import { CartDomainsPopular } from '../../../mail/templates/cart-domains-popular';
@@ -36,7 +36,7 @@ import {
   type DomainTrafficCandidate,
   getDomainTrafficCampaignCandidates,
 } from '../../../services/email-campaigns/domain-traffic';
-import { getDreamDomainAwaitsSuggestions } from '../../../lib/email-campaigns/dream-domain-suggestions';
+import { getUserDomainSuggestions } from '../../../lib/email-campaigns/domain-suggestions';
 import { toDate } from '../../../services/email-campaigns/utils';
 import { config } from '#lib/env';
 
@@ -478,7 +478,7 @@ export async function sendDreamDomainAwaitsEmail({
       recipientEmail,
       variantIndex,
     }) => {
-      const suggestedDomains = await getDreamDomainAwaitsSuggestions(userId);
+      const suggestedDomains = await getUserDomainSuggestions(userId);
       return React.createElement(DreamDomainAwaits, {
         recipientName,
         recipientEmail,
@@ -518,6 +518,8 @@ export async function sendDomainTrafficSurgeEmail({
     return { status: 'DRY_RUN' };
   }
 
+  const suggestedDomains = await getUserDomainSuggestions(userId);
+
   return sendCampaignEmail({
     userId,
     periodStart: periodStartDate,
@@ -531,6 +533,8 @@ export async function sendDomainTrafficSurgeEmail({
         recipientEmail,
         variant: variantIndex,
         domains: limitedDomains,
+        suggestedDomains:
+          suggestedDomains.length > 0 ? suggestedDomains : undefined,
         baselineThreshold: config.EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD,
       }),
     errorLogMessage: 'Failed to send domain traffic surge email',

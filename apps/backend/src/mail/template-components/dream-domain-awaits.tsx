@@ -9,7 +9,6 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
-import { Code } from '../components/code';
 import * as styles from '../styles';
 import { getDreamDomainAwaitsVariant } from '../campaigns/dream-domain-awaits-variants';
 
@@ -33,6 +32,12 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
   );
   const suggestedDomains = props.suggestedDomains ?? [];
   const hasSuggestions = suggestedDomains.length > 0;
+  const domainLinkStyle = {
+    ...styles.anchor,
+    textDecoration: 'underline',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+    fontSize: '14px',
+  };
 
   return (
     <NamefiEmailContainer title={copyVariant.title}>
@@ -51,7 +56,16 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
           <Card variant="success">
             {suggestedDomains.map((domain) => (
               <Text key={domain} style={{ ...styles.paragraph, margin: 0 }}>
-                - <Code>{domain}</Code>
+                -{' '}
+                <a
+                  href={NamefiEmailLinks.claimDomain({
+                    domain,
+                    poweredByNamefiDomain,
+                  })}
+                  style={domainLinkStyle}
+                >
+                  {domain}
+                </a>
               </Text>
             ))}
           </Card>

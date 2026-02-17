@@ -9,7 +9,6 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
-import { Code } from '../components/code';
 import * as styles from '../styles';
 import { getDomainTrafficSurgeVariant } from '../campaigns/domain-traffic-surge-variants';
 
@@ -23,6 +22,7 @@ export type DomainTrafficSurgeProps = {
     domain: NamefiNormalizedDomain;
     weeklyQueries: number;
   }>;
+  suggestedDomains?: NamefiNormalizedDomain[];
 };
 
 const tableStyles = {
@@ -48,6 +48,12 @@ const tableStyles = {
   mutedText: {
     color: '#6b7280',
     fontSize: '13px',
+  },
+  domainLink: {
+    ...styles.anchor,
+    textDecoration: 'underline',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+    fontSize: '14px',
   },
 };
 
@@ -83,6 +89,7 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
   const sortedDomains = [...props.domains].sort(
     (a, b) => b.weeklyQueries - a.weeklyQueries,
   );
+  const suggestedDomains = props.suggestedDomains ?? [];
 
   return (
     <NamefiEmailContainer title={copyVariant.title}>
@@ -118,7 +125,15 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
             return (
               <tr key={item.domain}>
                 <td style={tableStyles.cell}>
-                  <Code>{item.domain}</Code>
+                  <a
+                    href={NamefiEmailLinks.domainSettings({
+                      domain: item.domain,
+                      poweredByNamefiDomain,
+                    })}
+                    style={tableStyles.domainLink}
+                  >
+                    {item.domain}
+                  </a>
                 </td>
                 <td style={tableStyles.cell}>
                   <div style={{ fontWeight: 600 }}>{label}</div>
@@ -129,6 +144,37 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
           })}
         </tbody>
       </table>
+      {suggestedDomains.length > 0 ? (
+        <>
+          <Text style={{ ...styles.paragraph, marginTop: '8px' }}>
+            AI also found similar available names you may want to secure:
+          </Text>
+          <table style={{ ...tableStyles.table, marginTop: '8px' }}>
+            <thead>
+              <tr>
+                <th style={tableStyles.headerCell}>Suggested domain</th>
+              </tr>
+            </thead>
+            <tbody>
+              {suggestedDomains.map((domain) => (
+                <tr key={domain}>
+                  <td style={tableStyles.cell}>
+                    <a
+                      href={NamefiEmailLinks.claimDomain({
+                        domain,
+                        poweredByNamefiDomain,
+                      })}
+                      style={tableStyles.domainLink}
+                    >
+                      {domain}
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : null}
       <Text style={{ ...styles.paragraph, marginTop: '8px' }}>
         Based on activity we see on your Namefi-managed domains.
       </Text>
@@ -160,5 +206,9 @@ export const domainTrafficSurgePreviewBase: DomainTrafficSurgeProps = {
       domain: namefiNormalizedDomainSchema.parse('brightlabs.io'),
       weeklyQueries: 2380,
     },
+  ],
+  suggestedDomains: [
+    namefiNormalizedDomainSchema.parse('brightlabshq.com'),
+    namefiNormalizedDomainSchema.parse('brightlabsteam.com'),
   ],
 };

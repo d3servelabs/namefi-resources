@@ -8,7 +8,6 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
-import { Code } from '../components/code';
 import * as styles from '../styles';
 import { getCartDomainsPopularVariant } from '../campaigns/cart-domains-popular-variants';
 
@@ -57,6 +56,12 @@ const tableStyles = {
     fontSize: '13px',
     marginLeft: '6px',
   },
+  domainLink: {
+    ...styles.anchor,
+    textDecoration: 'underline',
+    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+    fontSize: '14px',
+  },
 };
 
 export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
@@ -101,7 +106,15 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
             return (
               <tr key={item.domainNameLdh}>
                 <td style={tableStyles.cell}>
-                  <Code>{display.primary}</Code>
+                  <a
+                    href={NamefiEmailLinks.claimDomain({
+                      domain: item.domainNameLdh,
+                      poweredByNamefiDomain,
+                    })}
+                    style={tableStyles.domainLink}
+                  >
+                    {display.primary}
+                  </a>
                   {display.unicode && (
                     <span style={tableStyles.mutedText}>
                       ({display.unicode})

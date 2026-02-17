@@ -47,6 +47,7 @@
     "dev:email:internal": "email dev --port ${EMAIL_PREVIEW_PORT:-3005} --dir src/mail/templates",
     "command:get-nft-updates": "tsx src/scripts/get-nft-updates.ts",
     "command:send-test-email": "tsx src/scripts/send-test-email.tsx",
+    "command:test-email-campaigns": "tsx src/scripts/test-email-campaigns.tsx",
     "command:trigger-nft-updates-workflow": "tsx src/scripts/trigger-nft-updates-workflow.ts",
     "command:trigger-nft-updates-schedule": "tsx src/scripts/trigger-nft-updates-schedule.ts",
     "command:email-templates": "tsx src/scripts/email-templates-cli.ts",

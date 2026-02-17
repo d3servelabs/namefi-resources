@@ -23,6 +23,8 @@ export const NamefiEmailLinks = withPoweredByNamefiDomain({
   domains: () => `${baseUrl}/m/user/domains`,
   domainSettings: (args: { domain: string }) =>
     `${baseUrl}/m/user/domains/${encodeURIComponent(args.domain)}`,
+  claimDomain: (args: { domain: string }) =>
+    `${baseUrl}/claim/${encodeURIComponent(args.domain)}`,
   ordersHistory: () => `${baseUrl}/m/user/orders`,
   orderDetails: (args: { orderId: string }) =>
     `${baseUrl}/m/user/orders/${args.orderId}`,

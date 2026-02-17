@@ -72,3 +72,26 @@ System for scheduled marketing emails.
 - `periodStart` is UTC and is the de-duplication boundary.
 - Variant rotation is stored in `email_campaign_sends.metadata.variantIndex`.
 - Manual sends use `userIdFilter` and `periodStartOverride`.
+
+## Live Smoke Testing (Winback + Surge)
+
+Use this to send real emails with mock campaign data through the production mail client.
+
+- Winback maps to `dream-domain-awaits` and can use live AI domain suggestions.
+- Surge maps to `domain-traffic-surge` and uses mock traffic domain stats.
+
+Run from `apps/backend`:
+
+```bash
+bun run command:test-email-campaigns --to you@example.com --campaign all
+```
+
+Useful options:
+
+- `--dry-run`: render templates but do not send.
+
+You can also run a gated live Vitest:
+
+```bash
+RUN_LIVE_EMAIL_CAMPAIGN_TESTS=1 LIVE_EMAIL_TO=you@example.com bun test src/scripts/test-email-campaigns.live.test.ts
+```

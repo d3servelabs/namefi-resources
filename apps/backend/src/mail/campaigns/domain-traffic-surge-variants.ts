@@ -12,11 +12,10 @@ const DOMAIN_TRAFFIC_SURGE_VARIANTS: DomainTrafficSurgeVariant[] = [
     title: '[Namefi] Your domains are heating up',
     subject: '[Namefi] Your domains are heating up',
     intro:
-      'We noticed a surge of interest on a few of your domains this past week. If you are planning a launch, now is a great time to capture the momentum.',
-    card: 'Quick win: point these domains to a live site or a simple landing page so visitors know where to go.',
-    cta: 'Review domains',
-    footer:
-      'Want help turning the momentum into sign-ups or sales? Reply and we will help.',
+      'A few of your domains picked up meaningful interest this week. When that happens, related names often start getting attention too.',
+    card: 'Steady move: keep your active domains pointed to live pages, and review similar available names while interest is rising.',
+    cta: 'Review your domains',
+    footer: 'No pressure, these are just options if they fit your roadmap.',
   },
 ];
 

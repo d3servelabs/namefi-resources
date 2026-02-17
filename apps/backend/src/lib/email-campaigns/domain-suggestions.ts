@@ -14,9 +14,9 @@ import {
 import { resolve } from '../../utils/resolve';
 import { generateDreamDomainSuggestions } from '@namefi-astra/ai';
 
-const logger = createLogger({ module: 'dream-domain-suggestions' });
+const logger = createLogger({ module: 'domain-suggestions' });
 
-export async function getDreamDomainAwaitsSuggestions(
+export async function getUserDomainSuggestions(
   userId: string,
 ): Promise<NamefiNormalizedDomain[]> {
   try {
@@ -26,7 +26,7 @@ export async function getDreamDomainAwaitsSuggestions(
     });
 
     if (!user?.privyUserId) {
-      logger.debug({ userId }, 'No privy user for dream domain suggestions');
+      logger.debug({ userId }, 'No privy user for domain suggestions');
       return [];
     }
 
@@ -37,7 +37,7 @@ export async function getDreamDomainAwaitsSuggestions(
     if (privyError || !privyUser) {
       logger.warn(
         { userId, error: privyError },
-        'Failed to load privy user for dream domain suggestions',
+        'Failed to load privy user for domain suggestions',
       );
       return [];
     }
@@ -50,7 +50,7 @@ export async function getDreamDomainAwaitsSuggestions(
     } catch (error) {
       logger.warn(
         { userId, error },
-        'Failed to derive wallet addresses for dream domain suggestions',
+        'Failed to derive wallet addresses for domain suggestions',
       );
       return [];
     }
@@ -104,7 +104,7 @@ export async function getDreamDomainAwaitsSuggestions(
 
     return suggestions;
   } catch (error) {
-    logger.error({ userId, error }, 'Failed to fetch dream domain suggestions');
+    logger.error({ userId, error }, 'Failed to fetch domain suggestions');
     return [];
   }
 }

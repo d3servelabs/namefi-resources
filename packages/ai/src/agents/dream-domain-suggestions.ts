@@ -12,9 +12,11 @@ const DEFAULT_MAX_PROMPT_DOMAINS = 5;
 const DEFAULT_MAX_SUGGESTIONS = 5;
 const DEFAULT_CANDIDATE_COUNT = 16;
 const DEFAULT_DOH_TIMEOUT_MS = 4000;
+const HTTP_PROTOCOL_REGEX = /^https?:\/\//;
+const URL_PATH_SPLIT_REGEX = /[/?#]/;
+const TRAILING_DOT_REGEX = /\.$/;
 
 const suggestionPayloadSchema = z.object({
-  theme: z.string().optional(),
   suggestions: z.array(z.string()).min(1),
 });
 
@@ -39,7 +41,6 @@ export type DreamDomainSuggestionOptions = {
 
 export type DreamDomainSuggestionResult = {
   suggestions: NamefiNormalizedDomain[];
-  theme?: string;
 };
 
 const sleep = (ms: number) =>
@@ -88,9 +89,9 @@ async function withRetries<T>(
 function normalizeCandidate(candidate: string): string | null {
   const trimmed = candidate.trim().toLowerCase();
   if (!trimmed) return null;
-  const withoutProtocol = trimmed.replace(/^https?:\/\//, '');
-  const withoutPath = withoutProtocol.split(/[/?#]/)[0] ?? '';
-  const withoutTrailingDot = withoutPath.replace(/\.$/, '');
+  const withoutProtocol = trimmed.replace(HTTP_PROTOCOL_REGEX, '');
+  const withoutPath = withoutProtocol.split(URL_PATH_SPLIT_REGEX)[0] ?? '';
+  const withoutTrailingDot = withoutPath.replace(TRAILING_DOT_REGEX, '');
   return withoutTrailingDot || null;
 }
 
@@ -122,7 +123,6 @@ Rules:
 
 JSON shape:
 {
-  "theme": "<short theme/category>",
   "suggestions": ["example.com", "example.io", ...]
 }
 `,
@@ -217,7 +217,7 @@ export async function generateDreamDomainSuggestions({
     return { suggestions: [] };
   }
 
-  const { payload, candidates } = await withRetries(
+  const { candidates } = await withRetries(
     () =>
       fetchCandidateDomains({
         ownedDomains,
@@ -234,7 +234,7 @@ export async function generateDreamDomainSuggestions({
   );
 
   if (filteredCandidates.length === 0) {
-    return { suggestions: [], theme: payload.theme };
+    return { suggestions: [] };
   }
 
   const suggestions: NamefiNormalizedDomain[] = [];
@@ -258,5 +258,5 @@ export async function generateDreamDomainSuggestions({
     }
   }
 
-  return { suggestions, theme: payload.theme };
+  return { suggestions };
 }

@@ -1,5 +1,5 @@
-// biome-ignore lint/correctness/noUnusedImports: required for react-email
-import type React from 'react';
+// biome-ignore lint/style/useImportType: required for react-email runtime
+import React from 'react';
 import * as styles from '../styles';
 
 const BACKGROUND_COLORS = {
