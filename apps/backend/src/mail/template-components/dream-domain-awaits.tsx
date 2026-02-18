@@ -40,10 +40,7 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
   };
 
   return (
-    <NamefiEmailContainer
-      title={copyVariant.title}
-      previewText={copyVariant.title}
-    >
+    <NamefiEmailContainer title={copyVariant.title}>
       <Text style={{ ...styles.paragraph, marginBottom: '12px' }}>
         Hi {safeRecipientName},
       </Text>

@@ -92,10 +92,7 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
   const suggestedDomains = props.suggestedDomains ?? [];
 
   return (
-    <NamefiEmailContainer
-      title={copyVariant.title}
-      previewText={copyVariant.title}
-    >
+    <NamefiEmailContainer title={copyVariant.title}>
       <Text style={{ ...styles.paragraph, marginBottom: '12px' }}>
         Hi {safeRecipientName},
       </Text>

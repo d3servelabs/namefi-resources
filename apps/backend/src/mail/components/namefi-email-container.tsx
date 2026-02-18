@@ -3,6 +3,7 @@ import {
   Container,
   Head,
   Html,
+  Preview,
   Section,
   Tailwind,
 } from '@react-email/components';
@@ -14,30 +15,16 @@ import { NamefiHeader } from './namefi-header';
 import React from 'react';
 import { isNotNil } from 'ramda';
 
-const threadSafePreviewStyle = {
-  display: 'none',
-  maxHeight: '0px',
-  maxWidth: '0px',
-  overflow: 'hidden',
-  opacity: 0,
-  color: 'transparent',
-  lineHeight: '1px',
-  fontSize: '1px',
-  msoHide: 'all',
-} as React.CSSProperties & { msoHide: string };
-
 export function NamefiEmailContainer({
   title,
   children,
   footer = 'default',
   header = 'default',
-  previewText = title,
 }: {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode | 'default' | undefined | null | false;
   header?: React.ReactNode | 'default' | undefined | null | false;
-  previewText?: string | false;
 }) {
   const trackingUrl = useEmailTrackingUrl();
   const trackingPixel = trackingUrl ? (
@@ -77,10 +64,8 @@ export function NamefiEmailContainer({
             `}
           </style>
         </Head>
+        <Preview>{title}</Preview>
         <Body style={styles.main}>
-          {previewText !== false ? (
-            <div style={threadSafePreviewStyle}>{previewText}</div>
-          ) : null}
           <Container style={styles.container}>
             <Section style={styles.box}>
               {isNotNil(header) &&
