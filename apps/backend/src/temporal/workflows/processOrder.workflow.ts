@@ -520,6 +520,45 @@ export async function processOrderWorkflow(
 
     setPhase('PROCESSING_ITEMS');
     setStepStatus('items', 'IN_PROGRESS');
+    const startLogoGenerationEarlier = workflow.patched(
+      'start-logo-generation-earlier',
+    );
+
+    if (startLogoGenerationEarlier) {
+      const orderDomainsForLogoPreview = Array.from(
+        new Set(
+          orderDetails.items.map(
+            (item) => item.normalizedDomainName as NamefiNormalizedDomain,
+          ),
+        ),
+      );
+
+      if (orderDomainsForLogoPreview.length > 0) {
+        await catchAndAlertLocally(
+          async () => {
+            await workflow.startChild(generateLogosForAliveNftsWorkflow, {
+              args: [
+                {
+                  model: 'gpt-image-1.5',
+                  domains: orderDomainsForLogoPreview,
+                },
+              ],
+              workflowId: `logo-gen-after-order-[${input.orderId}]`,
+              taskQueue: TEMPORAL_QUEUES.DEFAULT,
+              retry: { maximumAttempts: 1 },
+              parentClosePolicy: 'ABANDON',
+            });
+          },
+          {
+            message: `Failed to start logo generation for order ${input.orderId}`,
+            details: {
+              orderId: input.orderId,
+              domains: orderDomainsForLogoPreview,
+            },
+          },
+        );
+      }
+    }
 
     // Send early notification for orders containing import items
     // Import orders can take 5-7 days to complete, so we notify users immediately
@@ -649,22 +688,24 @@ export async function processOrderWorkflow(
     try {
       if (succeededItems.length > 0) {
         await postProcessOrder();
-        const purchasedDomains = succeededItems.map(
-          (item) => item.normalizedDomainName,
-        );
-        if (purchasedDomains.length > 0) {
-          await workflow.startChild(generateLogosForAliveNftsWorkflow, {
-            args: [
-              {
-                model: 'gpt-image-1.5',
-                domains: purchasedDomains,
-              },
-            ],
-            workflowId: `logo-gen-after-order-[${input.orderId}]`,
-            taskQueue: TEMPORAL_QUEUES.DEFAULT,
-            retry: { maximumAttempts: 1 },
-            parentClosePolicy: 'ABANDON',
-          });
+        if (!startLogoGenerationEarlier) {
+          const purchasedDomains = succeededItems.map(
+            (item) => item.normalizedDomainName,
+          );
+          if (purchasedDomains.length > 0) {
+            await workflow.startChild(generateLogosForAliveNftsWorkflow, {
+              args: [
+                {
+                  model: 'gpt-image-1.5',
+                  domains: purchasedDomains,
+                },
+              ],
+              workflowId: `logo-gen-after-order-[${input.orderId}]`,
+              taskQueue: TEMPORAL_QUEUES.DEFAULT,
+              retry: { maximumAttempts: 1 },
+              parentClosePolicy: 'ABANDON',
+            });
+          }
         }
       }
 
