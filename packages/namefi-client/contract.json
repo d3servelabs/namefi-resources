@@ -232,26 +232,26 @@
         }
       }
     },
-    "getUserCart": {
+    "requestNfscFaucet": {
       "~orpc": {
         "errorMap": {},
         "meta": {
           "route": {
-            "path": "/user/cart",
-            "method": "GET",
-            "tags": ["user", "cart"],
-            "operationId": "getUserCart",
-            "summary": "Get user cart",
-            "description": "Retrieve all items in the current user's shopping cart. Includes free claim eligibility information for each item."
+            "path": "/user/faucet",
+            "method": "POST",
+            "tags": ["user", "balance"],
+            "operationId": "requestNfscFaucet",
+            "summary": "Request NFSC faucet",
+            "description": "Request NFSC test tokens on Sepolia. Rate limited by user and wallet address."
           }
         },
         "route": {
-          "path": "/user/cart",
-          "method": "GET",
-          "tags": ["user", "cart"],
-          "operationId": "getUserCart",
-          "summary": "Get user cart",
-          "description": "Retrieve all items in the current user's shopping cart. Includes free claim eligibility information for each item."
+          "path": "/user/faucet",
+          "method": "POST",
+          "tags": ["user", "balance"],
+          "operationId": "requestNfscFaucet",
+          "summary": "Request NFSC faucet",
+          "description": "Request NFSC test tokens on Sepolia. Rate limited by user and wallet address."
         }
       }
     },
@@ -346,6 +346,29 @@
           "operationId": "registerDomain",
           "summary": "Instant Register domain",
           "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+        }
+      }
+    },
+    "registerWithRecords": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/orders/register-domain/records",
+            "method": "POST",
+            "tags": ["orders"],
+            "operationId": "registerWithRecords",
+            "summary": "Instant register domain with records",
+            "description": "Purchase a single domain instantly and apply DNS records after processing."
+          }
+        },
+        "route": {
+          "path": "/orders/register-domain/records",
+          "method": "POST",
+          "tags": ["orders"],
+          "operationId": "registerWithRecords",
+          "summary": "Instant register domain with records",
+          "description": "Purchase a single domain instantly and apply DNS records after processing."
         }
       }
     },

@@ -5,7 +5,7 @@
 
 > This package is still in alpha. APIs and behavior may change without notice.
 
-> For [Full docs](https://namefi.io/public/docs/api)
+> For [Full docs](https://namefi.io/docs)
 
 ## Table of Contents
 
