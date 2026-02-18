@@ -438,7 +438,13 @@ jobs:
   # Route traffic to Vercel deployment
   route-vercel-traffic:
     name: Route Traffic to Vercel
-    needs: [compute-env, deploy-vercel]
+    needs: [compute-env, deploy-vercel, deploy-backend-api, deploy-backend-temporal, migrate]
+    if: |-
+      !cancelled() &&
+      needs.deploy-vercel.result == 'success' &&
+      (needs.deploy-backend-api.result == 'success' || needs.deploy-backend-api.result == 'skipped') &&
+      (needs.deploy-backend-temporal.result == 'success' || needs.deploy-backend-temporal.result == 'skipped') &&
+      (needs.migrate.result == 'success' || needs.migrate.result == 'skipped')
     runs-on: "ubuntu-latest"
     steps:
       - name: Setup Bun
