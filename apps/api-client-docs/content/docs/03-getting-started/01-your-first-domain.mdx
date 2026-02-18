@@ -1,9 +1,12 @@
 ---
 title: Register A Domain
-description: Check availability and register a domain
+description: Check availability and register a domain with or without DNS records
 ---
 
-The example below checks availability and registers a domain if it is available.
+Before registering, make sure your account has enough NFSC.
+If you are testing, request faucet tokens first in the [Balance and Faucet guide](/docs/03-getting-started/02-your-balance).
+
+## Check availability and register
 
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
@@ -17,64 +20,84 @@ const client = createNamefiClient({
 });
 
 const domain = 'example.com';
-const {availability} = await client.search.checkAvailability({ domain });
+const availability = await client.search.checkAvailability({ domain });
 
-if (availability) {
-  const order = await client.orders.registerDomain({
-    normalizedDomainName: domain,
-    durationInYears: 1,
-  });
-
-  console.log('Registered', order.id);
+if (!availability.availability) {
+  throw new Error(`${domain} is not available`);
 }
-```
 
-Similar exmaple but with polling the order status
-
-```ts
-import { createNamefiClient } from "@namefi/api-client";
-import { setTimeout } from "node:timers/promises";
-
-const client = createNamefiClient({
-	authentication: {
-		apiKey: process.env.NAMEFI_API_KEY!,
-		type: "API_KEY",
-	},
-	logger: false,
+const order = await client.orders.registerDomain({
+  normalizedDomainName: domain,
+  durationInYears: 1,
 });
 
-const domain = "exmaple.com";
+console.log('Order created', order.id);
+```
 
-const start = Date.now();
-let end = Date.now();
+## Register with DNS records (`registerWithRecords`)
 
-const result = await client.search.checkAvailability({ domain });
+Use `registerWithRecords` if you want initial records applied as soon as the order finishes.
 
-if (result.availability) {
-	const sentOrder = await client.orders.registerDomain({
-		normalizedDomainName: domain,
-		durationInYears: 1,
-	});
+```ts
+import { createNamefiClient } from '@namefi/api-client';
 
-	console.timeLog("Order Sent", sentOrder.id);
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
 
+const order = await client.orders.registerWithRecords({
+  normalizedDomainName: 'example.com',
+  durationInYears: 1,
+  records: [
+    { name: '@', type: 'A', rdata: '203.0.113.10', ttl: 300 },
+    { name: 'www', type: 'CNAME', rdata: 'example.com.', ttl: 300 },
+  ],
+});
 
-	while (true) {
-		const { order } = await client.orders.getOrder({ orderId: sentOrder.id });
-		if (["PARTIALLY_COMPLETED", "PROCESSING"].includes(order.status)) {
-			console.timeLog(`Order(${sentOrder.id}) is in-progress`);
-		} else {
-			end = Date.now();
-			console.timeLog(`Order(${sentOrder.id}) is ${order.status}`);
-			break;
-		}
-		if(Date.now() - start > 60_000){
-			console.timeLog(`Timeout Order(${sentOrder.id}) is still ${order.status}`);
-			break;
-		}
-		await setTimeout(15_000);
-	}
-	console.log(`Total time = ${((end - start) / 1000).toFixed(3)}s`);
+console.log('Order created', order.id);
+```
+
+## Poll order status
+
+Order processing is asynchronous. Poll `orders.getOrder` until status is terminal.
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+import { setTimeout as sleep } from 'node:timers/promises';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: false,
+});
+
+const order = await client.orders.registerWithRecords({
+  normalizedDomainName: 'example.com',
+  durationInYears: 1,
+  records: [{ name: '@', type: 'A', rdata: '203.0.113.10', ttl: 300 }],
+});
+
+const terminalStatuses = new Set([
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELLED',
+  'PARTIALLY_COMPLETED',
+]);
+
+while (true) {
+  const current = await client.orders.getOrder({ orderId: order.id });
+  console.log(`Order ${order.id}:`, current.order.status);
+
+  if (terminalStatuses.has(current.order.status)) {
+    break;
+  }
+
+  await sleep(5_000);
 }
-
 ```

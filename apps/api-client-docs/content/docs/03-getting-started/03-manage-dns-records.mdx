@@ -1,0 +1,143 @@
+---
+title: Manage DNS Records
+description: Full flow for registering with records, reading existing records, and updating DNS
+---
+
+This guide covers the full DNS flow:
+1. Register a domain with initial records.
+2. Fetch the current zone records.
+3. Update existing records in batch.
+4. Create any missing records.
+5. Create any missing records.
+6. Verify final state.
+
+## End-to-end example
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+import { setTimeout as sleep } from 'node:timers/promises';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+const zoneName = 'example.com';
+
+// 1) Register domain and seed initial DNS records
+const order = await client.orders.registerWithRecords({
+  normalizedDomainName: zoneName,
+  durationInYears: 1,
+  records: [
+    { name: '@', type: 'A', rdata: '203.0.113.10', ttl: 300 },
+    { name: 'www', type: 'CNAME', rdata: 'example.com.', ttl: 300 },
+  ],
+});
+
+// 2) Wait for order processing to finish
+const terminalStatuses = new Set([
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELLED',
+  'PARTIALLY_COMPLETED',
+]);
+
+while (true) {
+  const current = await client.orders.getOrder({ orderId: order.id });
+  if (terminalStatuses.has(current.order.status)) {
+    console.log('Final order status:', current.order.status);
+    break;
+  }
+  await sleep(5_000);
+}
+
+// 3) Check existing records
+const existing = await client.dnsRecords.getRecords({ zoneName });
+console.table(
+  existing.map((r) => ({
+    id: r.id,
+    name: r.name,
+    type: r.type,
+    rdata: r.rdata,
+    ttl: r.ttl,
+  })),
+);
+
+// 4) Update existing records by ID
+const apexA = existing.find((r) => r.name === '@' && r.type === 'A');
+const wwwCname = existing.find((r) => r.name === 'www' && r.type === 'CNAME');
+
+const recordsToUpdate = [];
+
+if (apexA) {
+  recordsToUpdate.push({
+    id: apexA.id,
+    rdata: '198.51.100.42',
+    ttl: 300,
+  });
+}
+
+if (wwwCname) {
+  recordsToUpdate.push({
+    id: wwwCname.id,
+    rdata: 'example.com.',
+    ttl: 300,
+  });
+}
+
+if (recordsToUpdate.length > 0) {
+  await client.dnsRecords.updateRecords({
+    zoneName,
+    records: recordsToUpdate,
+  });
+}
+
+// 5) Create records that do not exist yet
+const recordsToCreate = [];
+
+if (!apexA) {
+  recordsToCreate.push({
+    name: '@',
+    type: 'A',
+    rdata: '198.51.100.42',
+    ttl: 300,
+  });
+}
+
+if (!wwwCname) {
+  recordsToCreate.push({
+    name: 'www',
+    type: 'CNAME',
+    rdata: 'example.com.',
+    ttl: 300,
+  });
+}
+
+if (recordsToCreate.length > 0) {
+  await client.dnsRecords.createRecords({
+    zoneName,
+    records: recordsToCreate,
+  });
+}
+
+// 6) Verify final records
+const finalRecords = await client.dnsRecords.getRecords({ zoneName });
+console.table(
+  finalRecords.map((r) => ({
+    name: r.name,
+    type: r.type,
+    rdata: r.rdata,
+    ttl: r.ttl,
+  })),
+);
+```
+
+## Notes
+
+- `updateRecords` only updates existing records and requires `id` for each record.
+- Use `getRecords` first, then build the update payload from returned IDs.
+- Use `createRecords` for records that do not exist yet.
+- All batch operations are scoped to one `zoneName` per request.

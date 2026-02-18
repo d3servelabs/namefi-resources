@@ -1,13 +1,49 @@
 ---
 title: Managing Your Balance
-description: Charge your NFSC balance and check totals
+description: Request faucet NFSC (test) and check your balance across chains
 ---
 
-## Charge Your Balance
+## Request NFSC Faucet (Test)
 
-Use the Namefi dashboard to fund your NFSC balance. A video walkthrough will be added here.
+Use `client.user.requestNfscFaucet` to request test NFSC.
+If you refer to this as `requestNFSC` internally, this is the client method to call.
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+const faucet = await client.user.requestNfscFaucet({});
+
+console.log('Status', faucet.status); // started
+console.log('Workflow ID', faucet.workflowId);
+console.log('Wallet', faucet.walletAddress);
+console.log('Next eligible at', faucet.nextEligibleAt);
+```
+
+To request for a specific linked wallet:
+
+```ts
+await client.user.requestNfscFaucet({
+  walletAddress: '0x1111111111111111111111111111111111111111',
+});
+```
+
+If you hit rate limits, the API returns `429` with the next eligible timestamp.
+
+## Top Up in Production
+
+Use the Namefi dashboard to top up NFSC in production environments.
 
 ## Check Your Balance
+
+Check balances with the API:
 
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
@@ -24,4 +60,10 @@ const balance = await client.balance.getBalance();
 
 console.log('Total USD', balance.totalBalanceInUsd);
 console.log('Total USD cents', balance.totalBalanceInUsdCents);
+
+for (const entry of balance.balances) {
+  console.log(
+    `${entry.chainName} (${entry.chainId}) - ${entry.walletAddress}: $${entry.balanceInUsd}`
+  );
+}
 ```
