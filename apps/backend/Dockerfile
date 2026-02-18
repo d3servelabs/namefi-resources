@@ -66,14 +66,15 @@ RUN npm run bundle:workflows
 FROM base AS runner
 WORKDIR /app
 
-# Copy package.json and built application
-COPY --from=backend_builder /app/apps/backend/package.json ./package.json
-COPY --from=backend_builder /app/apps/backend/dist ./dist
-COPY --from=temporal_builder /app/apps/backend/dist ./dist
 # Copy the infisical secret file
 COPY ./.infisical.json ./.infisical.json
 # Copy the node_modules
 COPY --from=deps_prod /app/node_modules ./node_modules
+
+# Copy package.json and built application
+COPY --from=backend_builder /app/apps/backend/package.json ./package.json
+COPY --from=backend_builder /app/apps/backend/dist ./dist
+COPY --from=temporal_builder /app/apps/backend/dist ./dist
 
 # Don't run as root
 RUN addgroup --system --gid 1001 nodejs
