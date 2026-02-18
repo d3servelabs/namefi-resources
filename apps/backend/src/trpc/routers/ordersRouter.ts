@@ -179,6 +179,9 @@ export const ordersRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
       const { cartItemIds } = input;
+      const gaEventTracking =
+        await orderService.shouldTrackOrderCheckoutFlowForUser(user.id);
+
       const cartItems = await db.query.cartItemsTable.findMany({
         where: and(
           inArray(cartItemsTable.id, cartItemIds),
@@ -244,6 +247,7 @@ export const ordersRouter = createTRPCRouter({
               {
                 orderId: order.id,
                 paymentsMetadata,
+                gaEventTracking,
               },
             ],
             taskQueue: TEMPORAL_QUEUES.DOMAINS,
@@ -259,14 +263,25 @@ export const ordersRouter = createTRPCRouter({
         }
         return order;
       });
-      void gaEventOrderPlaced({
-        userId: ctx.user.id,
-        orderId: order.id,
-        amountUsdCents: order.amountInUSDCents,
-        itemCount: order.items.length,
-        paymentCount: 1,
-        orderSource: 'checkout',
-      });
+      if (gaEventTracking.trackGaEvents) {
+        void gaEventOrderPlaced({
+          userId: ctx.user.id,
+          orderId: order.id,
+          amountUsdCents: order.amountInUSDCents,
+          itemCount: order.items.length,
+          paymentCount: 1,
+          orderSource: 'checkout',
+        });
+      } else {
+        logger.info(
+          {
+            orderId: order.id,
+            userId: ctx.user.id,
+            gaEventTracking,
+          },
+          'Skipping GA order_placed event because tracking is disabled',
+        );
+      }
       return order;
     }),
 
@@ -704,6 +719,8 @@ export const ordersRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { cartItemIds, payments, nftMetadata } = input;
+      const gaEventTracking =
+        await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id);
 
       const [error, privyUser] = await resolve(
         privyClient.getUserById(ctx.user.privyUserId),
@@ -835,6 +852,7 @@ export const ordersRouter = createTRPCRouter({
               {
                 orderId: order.id,
                 paymentsMetadata,
+                gaEventTracking,
               },
             ],
             taskQueue: TEMPORAL_QUEUES.DOMAINS,
@@ -851,14 +869,25 @@ export const ordersRouter = createTRPCRouter({
 
         return order;
       });
-      void gaEventOrderPlaced({
-        userId: ctx.user.id,
-        orderId: order.id,
-        amountUsdCents: order.amountInUSDCents,
-        itemCount: order.items.length,
-        paymentCount: payments.length,
-        orderSource: 'checkout',
-      });
+      if (gaEventTracking.trackGaEvents) {
+        void gaEventOrderPlaced({
+          userId: ctx.user.id,
+          orderId: order.id,
+          amountUsdCents: order.amountInUSDCents,
+          itemCount: order.items.length,
+          paymentCount: payments.length,
+          orderSource: 'checkout',
+        });
+      } else {
+        logger.info(
+          {
+            orderId: order.id,
+            userId: ctx.user.id,
+            gaEventTracking,
+          },
+          'Skipping GA order_placed event because tracking is disabled',
+        );
+      }
       return order;
     }),
 
@@ -894,6 +923,8 @@ export const ordersRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, durationInYears, payments, nftMetadata } =
         input;
+      const gaEventTracking =
+        await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id);
 
       // 1. Get user details from Privy
       const [error, privyUser] = await resolve(
@@ -1012,6 +1043,7 @@ export const ordersRouter = createTRPCRouter({
               {
                 orderId: order.id,
                 paymentsMetadata,
+                gaEventTracking,
               },
             ],
             taskQueue: TEMPORAL_QUEUES.DOMAINS,
@@ -1041,14 +1073,25 @@ export const ordersRouter = createTRPCRouter({
 
         return order;
       });
-      void gaEventOrderPlaced({
-        userId: ctx.user.id,
-        orderId: order.id,
-        amountUsdCents: order.amountInUSDCents,
-        itemCount: order.items.length,
-        paymentCount: payments.length,
-        orderSource: 'instant_buy',
-      });
+      if (gaEventTracking.trackGaEvents) {
+        void gaEventOrderPlaced({
+          userId: ctx.user.id,
+          orderId: order.id,
+          amountUsdCents: order.amountInUSDCents,
+          itemCount: order.items.length,
+          paymentCount: payments.length,
+          orderSource: 'instant_buy',
+        });
+      } else {
+        logger.info(
+          {
+            orderId: order.id,
+            userId: ctx.user.id,
+            gaEventTracking,
+          },
+          'Skipping GA order_placed event because tracking is disabled',
+        );
+      }
       return order;
     }),
 

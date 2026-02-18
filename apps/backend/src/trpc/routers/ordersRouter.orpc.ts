@@ -133,6 +133,10 @@ type RegisterDomainWithRecordsInput = {
   ctx: { user: { id: string; privyUserId: string } };
   input: RegisterDomainInput;
   postProcessOrderItem?: PostProcessOrderItem;
+  gaEventTracking?: {
+    trackGaEvents: boolean;
+    reason?: string;
+  };
 };
 
 const buildPostProcessOrderItem = (
@@ -145,6 +149,7 @@ const registerDomainWithRecords = async ({
   ctx,
   input,
   postProcessOrderItem,
+  gaEventTracking,
 }: RegisterDomainWithRecordsInput) => {
   const { normalizedDomainName, durationInYears } = input;
 
@@ -267,6 +272,7 @@ const registerDomainWithRecords = async ({
           {
             orderId: order.id,
             paymentsMetadata,
+            gaEventTracking,
           },
         ],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
@@ -296,14 +302,25 @@ const registerDomainWithRecords = async ({
 
     return order;
   });
-  void gaEventOrderPlaced({
-    userId: ctx.user.id,
-    orderId: order.id,
-    amountUsdCents: order.amountInUSDCents,
-    itemCount: order.items.length,
-    paymentCount: payments.length,
-    orderSource: 'instant_buy',
-  });
+  if (gaEventTracking?.trackGaEvents) {
+    void gaEventOrderPlaced({
+      userId: ctx.user.id,
+      orderId: order.id,
+      amountUsdCents: order.amountInUSDCents,
+      itemCount: order.items.length,
+      paymentCount: payments.length,
+      orderSource: 'instant_buy',
+    });
+  } else {
+    logger.info(
+      {
+        orderId: order.id,
+        userId: ctx.user.id,
+        gaEventTracking,
+      },
+      'Skipping GA order_placed event because tracking is disabled',
+    );
+  }
   return order;
 };
 
@@ -497,6 +514,8 @@ export const ordersRouterOrpc = createTRPCRouter({
               ],
             })
           : undefined;
+      const gaEventTracking =
+        await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id);
 
       return registerDomainWithRecords({
         ctx,
@@ -506,6 +525,7 @@ export const ordersRouterOrpc = createTRPCRouter({
           nftReceivinggWallet: input.nftReceivinggWallet,
         },
         postProcessOrderItem,
+        gaEventTracking,
       });
     }),
 

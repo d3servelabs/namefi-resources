@@ -166,6 +166,10 @@ export interface ProcessOrderWorkflowInput {
   paymentsMetadata: {
     [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
   };
+  gaEventTracking?: {
+    trackGaEvents: boolean;
+    reason?: string;
+  };
 }
 
 /**
@@ -185,6 +189,12 @@ export async function processOrderWorkflow(
     const info = workflow.workflowInfo();
     return info.unsafe?.now ? info.unsafe.now() : Date.now();
   };
+  const trackGaEvents = workflow.patched('toggle-tracking')
+    ? (input.gaEventTracking?.trackGaEvents ?? true)
+    : true;
+  const gaEventTrackingReason = workflow.patched('toggle-tracking')
+    ? (input.gaEventTracking?.reason ?? 'DEFAULT')
+    : undefined;
 
   const startedAt = temporalNow();
   const state: ProcessOrderWorkflowPublicState = {
@@ -446,23 +456,31 @@ export async function processOrderWorkflow(
       });
       updatePayment('CHARGED');
       setStepStatus('payments', 'COMPLETED');
-      try {
-        await logGaEventPaymentProcessed({
-          userId: orderDetails.order.userId,
+      if (trackGaEvents) {
+        try {
+          await logGaEventPaymentProcessed({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+            amountInUsdCents: orderDetails.order.amountInUSDCents,
+            paymentCount: orderDetails.payments.length,
+            paymentProviders: orderDetails.payments.map(
+              (payment) => payment.paymentProvider,
+            ),
+            status: 'SUCCESS',
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track payment_processed event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        workflow.log.info('Skipping GA event because tracking is disabled', {
           orderId: input.orderId,
-          amountInUsdCents: orderDetails.order.amountInUSDCents,
-          paymentCount: orderDetails.payments.length,
-          paymentProviders: orderDetails.payments.map(
-            (payment) => payment.paymentProvider,
-          ),
-          status: 'SUCCESS',
+          eventName: 'payment_processed',
+          gaEventTrackingReason,
         });
-      } catch (error) {
-        workflow.log.warn(
-          `Failed to track payment_processed event for order ${input.orderId}: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
       }
     } catch (error) {
       for (const item of orderDetails.items) {
@@ -497,23 +515,31 @@ export async function processOrderWorkflow(
       );
       setStepStatus('payments', 'FAILED', 'Payment attempt failed');
       setPhase('FAILED');
-      try {
-        await logGaEventPaymentProcessed({
-          userId: orderDetails.order.userId,
+      if (trackGaEvents) {
+        try {
+          await logGaEventPaymentProcessed({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+            amountInUsdCents: orderDetails.order.amountInUSDCents,
+            paymentCount: orderDetails.payments.length,
+            paymentProviders: orderDetails.payments.map(
+              (payment) => payment.paymentProvider,
+            ),
+            status: 'FAILURE',
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track payment_processed event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        workflow.log.info('Skipping GA event because tracking is disabled', {
           orderId: input.orderId,
-          amountInUsdCents: orderDetails.order.amountInUSDCents,
-          paymentCount: orderDetails.payments.length,
-          paymentProviders: orderDetails.payments.map(
-            (payment) => payment.paymentProvider,
-          ),
-          status: 'FAILURE',
+          eventName: 'payment_processed',
+          gaEventTrackingReason,
         });
-      } catch (error) {
-        workflow.log.warn(
-          `Failed to track payment_processed event for order ${input.orderId}: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
       }
       throw error instanceof Error ? error : new Error(String(error));
     }
@@ -622,6 +648,7 @@ export async function processOrderWorkflow(
               registrarKey: item.registrar,
               encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
               encryptionKeyId: item.encryptionKeyId,
+              gaEventTracking: input.gaEventTracking,
             },
           ],
           workflowId: `process-order-item-[${item.id}]`,
@@ -875,7 +902,10 @@ export async function processOrderWorkflow(
     }
 
     if (notificationSummary.status === 'SENT') {
-      await _trackOrderFinishedEmailSent(updatedOrder);
+      await _trackOrderFinishedEmailSent(updatedOrder, {
+        trackGaEvents,
+        reason: gaEventTrackingReason,
+      });
     }
 
     // Send Slack notification for order completion (non-blocking)
@@ -1079,7 +1109,22 @@ async function _notifyUserOrderProcessed(
 
 async function _trackOrderFinishedEmailSent(
   orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
+  gaEventTracking: {
+    trackGaEvents: boolean;
+    reason?: string;
+  },
 ): Promise<void> {
+  if (workflow.patched('toggle-tracking')) {
+    if (!gaEventTracking?.trackGaEvents) {
+      workflow.log.info('Skipping GA event because tracking is disabled', {
+        orderId: orderDetails.order.id,
+        eventName: 'domain_ready_email_sent',
+        gaEventTrackingReason: gaEventTracking.reason,
+      });
+      return;
+    }
+  }
+
   try {
     await logGaEventOrderFinishedEmailSent({
       userId: orderDetails.order.userId,

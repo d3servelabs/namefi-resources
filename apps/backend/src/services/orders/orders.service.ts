@@ -4,16 +4,21 @@ import {
   paymentsTable,
   orderItemsTable,
   $withTransaction,
+  usersTable,
 } from '@namefi-astra/db';
-import { and, eq, inArray, isNull } from 'drizzle-orm';
+import { and, eq, ilike, inArray, isNull } from 'drizzle-orm';
 import { OrderNotFoundError } from './errors';
 import type {
   OrderItemSelect,
   PaymentSelect,
   UserSelect,
 } from '@namefi-astra/db';
-import { indexBy, omit, prop } from 'ramda';
+import { indexBy, omit, pluck, prop, filter, isNotNil } from 'ramda';
 import type { OrderItemInsert, OrderInsert } from '@namefi-astra/db';
+import z from 'zod';
+import { defaultKeyv } from '#lib/keyv';
+import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
+import { logger } from '#lib/logger';
 
 type OrderRow = typeof ordersTable.$inferSelect;
 
@@ -49,10 +54,90 @@ export async function getOrderDetailsOrThrow(
   };
 }
 
+export const GA_EVENT_TRACKING_REASON_LITERALS = [
+  'DEFAULT',
+  'BACKFILL',
+  'TEST',
+  'PRIVACY',
+  'EXPERIMENT',
+  'INCIDENT_MITIGATION',
+  'INTERNAL', // requests coming from our team
+  'OTHER',
+] as const;
+
+export const gaEventTrackingReasonLiteralSchema = z.enum(
+  GA_EVENT_TRACKING_REASON_LITERALS,
+);
+
+export type GaEventTrackingReasonLiteral =
+  (typeof GA_EVENT_TRACKING_REASON_LITERALS)[number];
+
+export const gaEventTrackingReasonSchema = z
+  .string()
+  .trim()
+  .min(1, 'GA event tracking reason is required')
+  .max(200, 'GA event tracking reason must be at most 200 characters');
+
+export const gaEventTrackingSchema = z.object({
+  trackGaEvents: z.boolean(),
+  reason: gaEventTrackingReasonSchema.optional(),
+});
+
+let teamMembersPromise: Promise<string[] | null> | null = null;
+
+async function getTeamMembersIds(): Promise<string[] | null> {
+  try {
+    const cached = await defaultKeyv.get<string[]>('namefi-team-members');
+    if (cached) return cached;
+
+    // Reuse in-flight promise if exists
+    if (teamMembersPromise) return teamMembersPromise;
+
+    teamMembersPromise = (async () => {
+      const users = await db
+        .select({ userId: usersTable.id })
+        .from(privyUsersTableSchema)
+        .leftJoin(
+          usersTable,
+          eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+        )
+        .where(ilike(privyUsersTableSchema.email, '%@d3serve.xyz'));
+      const usersIds = filter(isNotNil, pluck('userId', users)) as string[];
+      await defaultKeyv.set<string[]>('namefi-team-members', usersIds);
+      teamMembersPromise = null;
+      return usersIds;
+    })();
+
+    return teamMembersPromise;
+  } catch (error) {
+    teamMembersPromise = null;
+    logger.warn({ error }, 'getTeamMemebersIds failed');
+  }
+  return null;
+}
+
+export async function shouldTrackOrderCheckoutFlowForUser(
+  userId: string,
+): Promise<z.infer<typeof gaEventTrackingSchema>> {
+  const namefiTeamMembersIds = await getTeamMembersIds();
+
+  if (namefiTeamMembersIds?.includes(userId)) {
+    return {
+      trackGaEvents: false,
+      reason: 'INTERNAL',
+    };
+  }
+
+  return {
+    trackGaEvents: true,
+  };
+}
+
 export const orderService = {
   getOrderDetailsOrThrow,
   createOrderWithExistingMultiplePayments,
   createOrderWithExistingSinglePayment,
+  shouldTrackOrderCheckoutFlowForUser,
 };
 
 // -------- Stage 2: Storage-agnostic write utilities --------

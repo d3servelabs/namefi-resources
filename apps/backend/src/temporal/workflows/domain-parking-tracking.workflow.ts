@@ -12,6 +12,10 @@ export interface DomainParkingTrackingWorkflowInput {
   orderItemId?: string;
   registrar?: string;
   dnsProvider?: 'NAMEFI' | 'OTHER';
+  gaEventTracking?: {
+    trackGaEvents: boolean;
+    reason?: string;
+  };
 }
 
 const pollingActivities = typedProxyActivities({
@@ -34,6 +38,24 @@ const {
 export async function domainParkingTrackingWorkflow(
   input: DomainParkingTrackingWorkflowInput,
 ): Promise<void> {
+  if (workflow.patched('toggle-tracking')) {
+    const trackGaEvents = input.gaEventTracking?.trackGaEvents ?? true;
+    const gaEventTrackingReason = input.gaEventTracking?.reason ?? 'DEFAULT';
+
+    if (!trackGaEvents) {
+      workflow.log.info(
+        'Skipping parking and DNS GA tracking because tracking is disabled',
+        {
+          domainName: input.domainName,
+          orderId: input.orderId,
+          orderItemId: input.orderItemId,
+          gaEventTrackingReason,
+        },
+      );
+      return;
+    }
+  }
+
   await Promise.allSettled([
     _parkingPropagated(input),
     _dnsRecordsPropagated(input),

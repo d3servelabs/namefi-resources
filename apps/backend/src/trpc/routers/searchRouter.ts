@@ -29,6 +29,7 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import { resolveNs } from 'node:dns/promises';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { gaEventUserBeginSearch } from '#lib/tracking/checkout/events';
+import { orderService } from '#services/orders/orders.service';
 
 export const searchRouter = createTRPCRouter({
   isDomainAvailable: authedOrPublicProcedure
@@ -43,13 +44,26 @@ export const searchRouter = createTRPCRouter({
       const { domain } = input;
       // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
       const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
-      if (ctx.user?.id || clientId) {
+      const gaEventTracking = ctx.user?.id
+        ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
+        : { trackGaEvents: true };
+
+      if ((ctx.user?.id || clientId) && gaEventTracking.trackGaEvents) {
         void gaEventUserBeginSearch({
           userId: ctx.user?.id,
           clientId,
           searchTerm: domain,
           parentDomain: ctx.poweredByNamefiDomain ?? undefined,
         });
+      } else if (!gaEventTracking.trackGaEvents) {
+        logger.info(
+          {
+            userId: ctx.user?.id,
+            domain,
+            gaEventTracking,
+          },
+          'Skipping GA user_begin_search event because tracking is disabled',
+        );
       }
 
       const availability = await getDomainListInfo([domain], ctx.user);
@@ -99,13 +113,29 @@ export const searchRouter = createTRPCRouter({
         input.parentDomain ?? ctx.poweredByNamefiDomain ?? undefined;
       // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
       const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
-      if (page === 1 && (ctx.user?.id || clientId)) {
+      const gaEventTracking = ctx.user?.id
+        ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
+        : { trackGaEvents: true };
+      if (
+        page === 1 &&
+        (ctx.user?.id || clientId) &&
+        gaEventTracking.trackGaEvents
+      ) {
         void gaEventUserBeginSearch({
           userId: ctx.user?.id,
           clientId,
           searchTerm: query.trim(),
           parentDomain,
         });
+      } else if (page === 1 && !gaEventTracking.trackGaEvents) {
+        logger.info(
+          {
+            userId: ctx.user?.id,
+            query: query.trim(),
+            gaEventTracking,
+          },
+          'Skipping GA user_begin_search event because tracking is disabled',
+        );
       }
       return generateDomainSuggestions(query, parentDomain, page, pageSize);
     }),
@@ -127,13 +157,25 @@ export const searchRouter = createTRPCRouter({
 
       // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
       const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
-      if (ctx.user?.id || clientId) {
+      const gaEventTracking = ctx.user?.id
+        ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
+        : { trackGaEvents: true };
+      if ((ctx.user?.id || clientId) && gaEventTracking.trackGaEvents) {
         void gaEventUserBeginSearch({
           userId: ctx.user?.id,
           clientId,
           searchTerm: domains[0],
           parentDomain: ctx.poweredByNamefiDomain ?? undefined,
         });
+      } else if (!gaEventTracking.trackGaEvents) {
+        logger.info(
+          {
+            userId: ctx.user?.id,
+            domain: domains[0],
+            gaEventTracking,
+          },
+          'Skipping GA user_begin_search event because tracking is disabled',
+        );
       }
 
       const firstDomainResult = await getDomainListInfoWithAbortSignal(

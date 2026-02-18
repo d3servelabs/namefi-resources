@@ -18,6 +18,10 @@ export interface ProcessOrderItemWorkflowInput
   operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
   orderId: string;
   itemId: string;
+  gaEventTracking?: {
+    trackGaEvents: boolean;
+    reason?: string;
+  };
 }
 
 /**
@@ -37,6 +41,12 @@ export async function processOrderItemWorkflow(
     encryptedEppAuthorizationCode,
     encryptionKeyId,
   } = input;
+  const trackGaEvents = workflow.patched('toggle-tracking')
+    ? (input.gaEventTracking?.trackGaEvents ?? true)
+    : true;
+  const gaEventTrackingReason = workflow.patched('toggle-tracking')
+    ? (input.gaEventTracking?.reason ?? 'DEFAULT')
+    : null;
   const {
     updateOrderItemStatusOrThrow,
     recordOrderMintTransaction,
@@ -49,6 +59,15 @@ export async function processOrderItemWorkflow(
       ...shortRunningOpts,
     },
   });
+
+  const logGaEventSkipped = (eventName: string) => {
+    workflow.log.info('Skipping GA event because tracking is disabled', {
+      orderId: input.orderId,
+      orderItemId: input.itemId,
+      eventName,
+      gaEventTrackingReason,
+    });
+  };
 
   try {
     if (workflow.patched('lifecycle-timestamps')) {
@@ -86,23 +105,27 @@ export async function processOrderItemWorkflow(
         parentClosePolicy: 'REQUEST_CANCEL',
       });
     } else {
-      try {
-        await logGaEventDomainAcquisitionStarted({
-          userId,
-          orderId: input.orderId,
-          orderItemId: input.itemId,
-          normalizedDomainName,
-          operationType,
-          registrarKey,
-          durationInYears,
-          chainId,
-        });
-      } catch (error) {
-        workflow.log.warn(
-          `Failed to track domain_acquisition_started event for order item ${input.itemId}: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
+      if (trackGaEvents) {
+        try {
+          await logGaEventDomainAcquisitionStarted({
+            userId,
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            normalizedDomainName,
+            operationType,
+            registrarKey,
+            durationInYears,
+            chainId,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track domain_acquisition_started event for order item ${input.itemId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('domain_acquisition_started');
       }
       const workflowInput: AcquireDomainWorkflowInput = {
         normalizedDomainName,
@@ -116,6 +139,7 @@ export async function processOrderItemWorkflow(
         durationInYears,
         orderId: input.orderId,
         orderItemId: input.itemId,
+        gaEventTracking: input.gaEventTracking,
       };
       // Register or import the domain
       const acquireResult = await workflow.executeChild(acquireDomainWorkflow, {
@@ -146,24 +170,28 @@ export async function processOrderItemWorkflow(
         }
       }
 
-      try {
-        await logGaEventDomainAcquisitionFinished({
-          userId,
-          orderId: input.orderId,
-          orderItemId: input.itemId,
-          normalizedDomainName,
-          operationType,
-          registrarKey,
-          durationInYears,
-          chainId,
-          status: 'SUCCESS',
-        });
-      } catch (error) {
-        workflow.log.warn(
-          `Failed to track domain_acquisition_finished event for order item ${input.itemId}: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
+      if (trackGaEvents) {
+        try {
+          await logGaEventDomainAcquisitionFinished({
+            userId,
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            normalizedDomainName,
+            operationType,
+            registrarKey,
+            durationInYears,
+            chainId,
+            status: 'SUCCESS',
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track domain_acquisition_finished event for order item ${input.itemId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('domain_acquisition_finished');
       }
     }
 
@@ -209,24 +237,28 @@ export async function processOrderItemWorkflow(
       );
     }
     if (operationType !== 'RENEW') {
-      try {
-        await logGaEventDomainAcquisitionFinished({
-          userId,
-          orderId: input.orderId,
-          orderItemId: input.itemId,
-          normalizedDomainName,
-          operationType,
-          registrarKey,
-          durationInYears,
-          chainId,
-          status: 'FAILURE',
-        });
-      } catch (error) {
-        workflow.log.warn(
-          `Failed to track domain_acquisition event for order item ${input.itemId}: ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
+      if (trackGaEvents) {
+        try {
+          await logGaEventDomainAcquisitionFinished({
+            userId,
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            normalizedDomainName,
+            operationType,
+            registrarKey,
+            durationInYears,
+            chainId,
+            status: 'FAILURE',
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track domain_acquisition event for order item ${input.itemId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('domain_acquisition_finished');
       }
     }
     throw ApplicationFailure.create({

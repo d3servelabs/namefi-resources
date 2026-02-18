@@ -31,6 +31,10 @@ export interface AcquireDomainWorkflowInput {
   encryptionKeyId?: string | null;
   orderId?: string;
   orderItemId?: string;
+  gaEventTracking?: {
+    trackGaEvents: boolean;
+    reason?: string;
+  };
 }
 
 export type AcquireDomainWorkflowOutput = {
@@ -145,6 +149,7 @@ export async function acquireDomainWorkflow(
           orderItemId: input.orderItemId,
           registrar: registrarKey,
           dnsProvider: input.operationType === 'REGISTER' ? 'NAMEFI' : 'OTHER',
+          gaEventTracking: input.gaEventTracking,
         },
       ],
       workflowId: `domain-parking-dns-analytics-${input.normalizedDomainName}`,
