@@ -31,6 +31,7 @@ import { providersRouter } from './routers/openapi';
 import { monitorsRouter } from './routers/monitors';
 import { logLevelRouter } from './routers/log-level';
 import { statsRouter } from './routers/stats';
+import { tlsRouter } from './routers/tls';
 
 type HonoVariables = {
   requestId: string;
@@ -111,8 +112,10 @@ app.use(
 
 app.route('v1/ns-json', nsJsonRouter);
 app.route('v1/dns/tracking', trackingRouter);
-app.route('v1/email', emailAnalyticsRouter);
+app.route('v1/tls', tlsRouter);
 app.route('v1/dnssec', dnssecRouter);
+
+app.route('v1/email', emailAnalyticsRouter);
 app.route('v1/availability', availabilityRouter);
 app.route('v1/public/ai', publicAiRouter);
 app.route('v1/public', publicRouter);
