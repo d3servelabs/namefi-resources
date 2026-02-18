@@ -277,6 +277,7 @@ export const getAnswerForDnsQueryMock = (
   return result;
 };
 
+export const SEPARATE_ZONES_FOR_SUBDOMAINS = false;
 export async function getNsAndSoaRecords(
   recordName: NamefiNormalizedDomain,
   qTypeEnum: RecordType,
@@ -292,10 +293,15 @@ export async function getNsAndSoaRecords(
   const parsedDomainName = parseDomainName(recordName);
   if (
     !parsedDomainName.valid ||
-    parsedDomainName.registryType !== 'traditional'
+    (!SEPARATE_ZONES_FOR_SUBDOMAINS &&
+      parsedDomainName.registryType === 'subdomain')
   ) {
     return null;
   }
+
+  /**
+   * Powered by namefi don't need a token to respond with nameservers
+   */
   const isPoweredByNamefi = (await getPoweredByNamefi3PDomains()).includes(
     recordName,
   );

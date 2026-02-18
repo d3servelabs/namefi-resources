@@ -2,8 +2,9 @@ import { db, domainConfigTable } from '@namefi-astra/db';
 import { eq, ilike, or, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { createLogger } from '#lib/logger';
-import { prepareDnsQuestion } from './ns-json';
+import { prepareDnsQuestion, SEPARATE_ZONES_FOR_SUBDOMAINS } from './ns-json';
 import { dnsRecordTypeCodes } from '#lib/dns/record-type-codes';
+import { parseDomainName } from '@namefi-astra/utils';
 
 const _logger = createLogger({ context: 'DNSSEC' });
 
@@ -62,9 +63,25 @@ dnssecRouter.get('/', async (c) => {
 
   _logger.debug({ domainConfig }, 'Domain config found');
   if (domainConfig.length > 0) {
+    const { normalizedDomainName, dnssecEnabled } = domainConfig[0];
+    let keyOwner = `${normalizedDomainName}.`;
+
+    if (!SEPARATE_ZONES_FOR_SUBDOMAINS) {
+      const parseResult = parseDomainName(normalizedDomainName);
+      if (!parseResult.valid) {
+        c.status(412);
+        return c.json({
+          message: 'invalid domain',
+        });
+      }
+      if (parseResult.registryType === 'subdomain') {
+        keyOwner = `${parseResult.immediateParentDomain}.`;
+      }
+    }
+
     return c.json({
-      keyOwner: `${domainConfig[0].normalizedDomainName}.`,
-      dnssecEnabled: domainConfig[0].dnssecEnabled,
+      keyOwner,
+      dnssecEnabled,
     });
   }
 
