@@ -178,10 +178,18 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
                 className="py-1 px-1"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                {domainNameLdh}{' '}
-                {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                  ? ''
-                  : `(${punycode.toUnicode(domainNameLdh)})`}
+                <a
+                  href={NamefiEmailLinks.domainSettings({
+                    domain: domainNameLdh,
+                    poweredByNamefiDomain,
+                  })}
+                  style={{ color: '#0066cc', textDecoration: 'underline' }}
+                >
+                  {domainNameLdh}{' '}
+                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                    ? ''
+                    : `(${punycode.toUnicode(domainNameLdh)})`}
+                </a>
               </td>
               <td
                 className="py-1 px-1"
@@ -212,10 +220,18 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
                 className="py-1 px-1"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                {domainNameLdh}{' '}
-                {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                  ? ''
-                  : `(${punycode.toUnicode(domainNameLdh)})`}
+                <a
+                  href={NamefiEmailLinks.domainSettings({
+                    domain: domainNameLdh,
+                    poweredByNamefiDomain,
+                  })}
+                  style={{ color: '#0066cc', textDecoration: 'underline' }}
+                >
+                  {domainNameLdh}{' '}
+                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                    ? ''
+                    : `(${punycode.toUnicode(domainNameLdh)})`}
+                </a>
               </td>
               <td
                 className="py-1 px-1"
