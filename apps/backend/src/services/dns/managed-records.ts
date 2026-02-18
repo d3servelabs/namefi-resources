@@ -53,6 +53,18 @@ export const PARKED_DOMAIN_RECORDS: z.infer<typeof recordSchema>[] = [
     rdata: '2604:a880:4:1d0::417:7000',
     ttl: 60,
   },
+  {
+    type: RecordType.CAA,
+    name: '@',
+    rdata: '0 issue "letsencrypt.org"',
+    ttl: 60,
+  },
+  {
+    type: RecordType.CAA,
+    name: '@',
+    rdata: '0 issue "zerossl.com"',
+    ttl: 60,
+  },
 ];
 
 function normalizeForwardTo(
