@@ -20,7 +20,6 @@ export * from './domain-ownership/domain-setup.workflow';
 export * from './domain-ownership/extend-registration.workflow';
 export * from './domain-ownership/sld-register-or-import.workflow';
 export * from './domain-ownership/epp-register-or-import.workflow';
-export * from './migration/migrate-zone-to-new-nameservers.workflow';
 export * from './monitor-stripe-refund-status.workflow';
 export * from './refund-stripe.workflow';
 export * from './autorenew-daily-emails.workflow';
