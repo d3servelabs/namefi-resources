@@ -80,7 +80,10 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
   );
 
   return (
-    <NamefiEmailContainer title={copyVariant.title}>
+    <NamefiEmailContainer
+      title={copyVariant.title}
+      previewText={copyVariant.title}
+    >
       <Text style={{ ...styles.paragraph, marginBottom: '12px' }}>
         Hi {safeRecipientName},
       </Text>

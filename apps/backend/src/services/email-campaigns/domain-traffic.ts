@@ -141,7 +141,7 @@ async function fetchWeeklyTrafficCountsForDomains({
           client.runReport({
             dateRanges: [dateRange],
             metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:domain' }],
+            dimensions: [{ name: 'customEvent:public_suffix_plus_one' }],
             dimensionFilter: {
               andGroup: {
                 expressions: [
@@ -156,7 +156,7 @@ async function fetchWeeklyTrafficCountsForDomains({
                   },
                   {
                     filter: {
-                      fieldName: 'customEvent:domain',
+                      fieldName: 'customEvent:public_suffix_plus_one',
                       inListFilter: {
                         values: chunk,
                       },
@@ -206,11 +206,13 @@ export async function getDomainTrafficCampaignCandidates({
   userIdFilter,
   thresholdOverride,
   asOf,
+  skipAlreadySentCheck = false,
 }: {
   periodStart: Date | string;
   userIdFilter?: string[];
   thresholdOverride?: number;
   asOf?: Date | string;
+  skipAlreadySentCheck?: boolean;
 }): Promise<DomainTrafficCandidate[]> {
   const periodStartDate = toDate(periodStart);
   const asOfDate = toDate(asOf ?? new Date());
@@ -230,8 +232,11 @@ export async function getDomainTrafficCampaignCandidates({
     eq(usersTable.subscribeToEmails, true),
     hasEmailCondition,
     eq(indexedDomainsTable.isUsingNamefiNameservers, true),
-    isNull(emailCampaignSendsTable.id),
   ];
+
+  if (!skipAlreadySentCheck) {
+    conditions.push(isNull(emailCampaignSendsTable.id));
+  }
 
   if (userIdFilter && userIdFilter.length > 0) {
     conditions.push(inArray(usersTable.id, userIdFilter));
@@ -290,8 +295,8 @@ export async function getDomainTrafficCampaignCandidates({
   const candidateDomains = Array.from(domainToUserIds.keys());
 
   const dateRange = getRollingWeeklyTrafficDateRange(asOfDate);
-  // NOTE: We query customEvent:domain so subdomains stay separate.
-  // If we later aggregate subdomain traffic into roots, adjust here.
+  // Query by public suffix + one so traffic is aggregated to the same unit as
+  // the owner analytics dashboard (domain + subdomains).
   const trafficCounts = await fetchWeeklyTrafficCountsForDomains({
     domains: candidateDomains,
     dateRange,

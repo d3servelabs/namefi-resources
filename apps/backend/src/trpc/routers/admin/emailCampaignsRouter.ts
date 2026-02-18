@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
   cartItemsTable,
   emailCampaignSendsTable,
+  indexedDomainsTable,
   namefiNftOwnersCte,
   namefiNftOwnersView,
   ordersTable,
@@ -77,9 +78,30 @@ type EligibleUserRow = {
   lastOrderAt?: Date | null;
   hasOwnedDomains?: boolean;
   ownedDomainCount?: number;
+  ownedDomains?: string[];
   trafficDomainCount?: number;
   trafficTopDomain?: string | null;
   trafficTopWeeklyQueries?: number | null;
+};
+
+type DomainTrafficSurgeFunnelDebugRow = {
+  userId: string;
+  email: string | null;
+  displayName: string | null;
+  createdAt: Date;
+  ownedDomainCount: number;
+  namefiNameserverDomainCount: number;
+  thresholdDomainCount: number;
+  thresholdTopDomain: string | null;
+  thresholdTopWeeklyQueries: number | null;
+  alreadySentThisCycle: boolean;
+  sendRecordStatus: string | null;
+  dropOffStage:
+    | 'ownership'
+    | 'nameservers'
+    | 'threshold'
+    | 'already_sent'
+    | 'eligible';
 };
 
 function getPeriodStartForCampaign(
@@ -446,7 +468,11 @@ export const emailCampaignsRouter = createTRPCRouter({
       const orderStatsByUser = new Map<string, { lastOrderAt: Date | null }>();
       const domainStatsByUser = new Map<
         string,
-        { hasOwnedDomains: boolean; ownedDomainCount: number }
+        {
+          hasOwnedDomains: boolean;
+          ownedDomainCount: number;
+          ownedDomains: string[];
+        }
       >();
 
       if (campaignKey === EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR) {
@@ -518,6 +544,11 @@ export const emailCampaignsRouter = createTRPCRouter({
               sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
                 'owned_domain_count',
               ),
+            ownedDomains: sql<
+              string[]
+            >`COALESCE(array_agg(DISTINCT ${namefiNftOwnersView.normalizedDomainName} ORDER BY ${namefiNftOwnersView.normalizedDomainName}), ARRAY[]::text[])`.as(
+              'owned_domains',
+            ),
           })
           .from(usersTable)
           .innerJoin(
@@ -533,9 +564,11 @@ export const emailCampaignsRouter = createTRPCRouter({
 
         for (const row of domainStats) {
           const count = row.ownedDomainCount ?? 0;
+          const ownedDomains = row.ownedDomains ?? [];
           domainStatsByUser.set(row.userId, {
             ownedDomainCount: count,
             hasOwnedDomains: count > 0,
+            ownedDomains,
           });
         }
       }
@@ -586,6 +619,7 @@ export const emailCampaignsRouter = createTRPCRouter({
           lastOrderAt: orderStats?.lastOrderAt ?? null,
           hasOwnedDomains: domainStats?.hasOwnedDomains ?? false,
           ownedDomainCount: domainStats?.ownedDomainCount ?? 0,
+          ownedDomains: domainStats?.ownedDomains ?? [],
         };
       });
 
@@ -604,6 +638,255 @@ export const emailCampaignsRouter = createTRPCRouter({
         trafficWindowStartUtc: trafficDateRange?.startDate ?? null,
         trafficWindowEndUtc: trafficDateRange?.endDate ?? null,
         users: usersWithDetails,
+      };
+    }),
+
+  getDomainTrafficSurgeFunnelDebug: adminProcedureWithPermissions(
+    Permission.READ_USERS,
+  )
+    .input(
+      z.object({
+        searchTerm: z.string().optional(),
+        limit: z.number().min(1).max(1000).default(250),
+      }),
+    )
+    .query(async ({ input }) => {
+      const searchTerm = input.searchTerm?.trim() || undefined;
+      const searchTermLike = searchTerm ? `%${searchTerm}%` : undefined;
+      const now = new Date();
+      const periodStart = getWeeklyPeriodStartUtc(now);
+      const trafficDateRange = getRollingWeeklyTrafficDateRange(now);
+      const trafficWeeklyThreshold =
+        config.EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD;
+      const hasEmailCondition = sql<boolean>`NULLIF(TRIM(${privyUsersTableSchema.email}), '') IS NOT NULL`;
+
+      const users = await db
+        .select({
+          userId: usersTable.id,
+          createdAt: usersTable.createdAt,
+          email: privyUsersTableSchema.email,
+          displayName: privyUsersTableSchema.displayName,
+        })
+        .from(usersTable)
+        .leftJoin(
+          privyUsersTableSchema,
+          eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+        )
+        .where(
+          and(
+            eq(usersTable.subscribeToEmails, true),
+            hasEmailCondition,
+            ...(searchTermLike
+              ? [
+                  or(
+                    ilike(privyUsersTableSchema.email, searchTermLike),
+                    ilike(privyUsersTableSchema.displayName, searchTermLike),
+                    sql`${usersTable.id}::text ILIKE ${searchTermLike}`,
+                  ),
+                ]
+              : []),
+          ),
+        )
+        .orderBy(desc(usersTable.createdAt))
+        .limit(input.limit);
+
+      if (users.length === 0) {
+        return {
+          periodStart,
+          trafficWeeklyThreshold,
+          trafficWindowStartUtc: trafficDateRange.startDate,
+          trafficWindowEndUtc: trafficDateRange.endDate,
+          summary: {
+            totalUsers: 0,
+            droppedAtOwnership: 0,
+            droppedAtNameservers: 0,
+            droppedAtThreshold: 0,
+            droppedAtAlreadySent: 0,
+            fullyEligible: 0,
+          },
+          users: [] as DomainTrafficSurgeFunnelDebugRow[],
+        };
+      }
+
+      const userIds = users.map((user) => user.userId);
+
+      const [
+        ownedDomainRows,
+        nameserverDomainRows,
+        thresholdCandidates,
+        sentRows,
+      ] = await Promise.all([
+        db
+          .with(namefiNftOwnersCte)
+          .select({
+            userId: usersTable.id,
+            ownedDomainCount:
+              sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
+                'owned_domain_count',
+              ),
+          })
+          .from(usersTable)
+          .innerJoin(
+            privyUsersTableSchema,
+            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+          )
+          .innerJoin(
+            namefiNftOwnersView,
+            sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          )
+          .where(inArray(usersTable.id, userIds))
+          .groupBy(usersTable.id),
+        db
+          .with(namefiNftOwnersCte)
+          .select({
+            userId: usersTable.id,
+            namefiNameserverDomainCount:
+              sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
+                'namefi_nameserver_domain_count',
+              ),
+          })
+          .from(usersTable)
+          .innerJoin(
+            privyUsersTableSchema,
+            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+          )
+          .innerJoin(
+            namefiNftOwnersView,
+            sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          )
+          .innerJoin(
+            indexedDomainsTable,
+            eq(
+              indexedDomainsTable.normalizedDomainName,
+              namefiNftOwnersView.normalizedDomainName,
+            ),
+          )
+          .where(
+            and(
+              inArray(usersTable.id, userIds),
+              eq(indexedDomainsTable.isUsingNamefiNameservers, true),
+            ),
+          )
+          .groupBy(usersTable.id),
+        getDomainTrafficCampaignCandidates({
+          periodStart,
+          userIdFilter: userIds,
+          asOf: now,
+          skipAlreadySentCheck: true,
+        }),
+        db
+          .select({
+            userId: emailCampaignSendsTable.userId,
+            status: emailCampaignSendsTable.status,
+          })
+          .from(emailCampaignSendsTable)
+          .where(
+            and(
+              eq(
+                emailCampaignSendsTable.campaignKey,
+                EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+              ),
+              eq(emailCampaignSendsTable.periodStart, periodStart),
+              inArray(emailCampaignSendsTable.userId, userIds),
+              inArray(emailCampaignSendsTable.status, ['SENT', 'PENDING']),
+            ),
+          ),
+      ]);
+
+      const ownedDomainsByUser = new Map<string, number>();
+      for (const row of ownedDomainRows) {
+        ownedDomainsByUser.set(row.userId, row.ownedDomainCount ?? 0);
+      }
+
+      const nameserverDomainsByUser = new Map<string, number>();
+      for (const row of nameserverDomainRows) {
+        nameserverDomainsByUser.set(
+          row.userId,
+          row.namefiNameserverDomainCount ?? 0,
+        );
+      }
+
+      const thresholdCandidatesByUser = new Map<
+        string,
+        DomainTrafficCandidate
+      >();
+      for (const candidate of thresholdCandidates) {
+        thresholdCandidatesByUser.set(candidate.userId, candidate);
+      }
+
+      const sentByUser = new Map<string, string>();
+      for (const row of sentRows) {
+        sentByUser.set(row.userId, row.status);
+      }
+
+      const funnelRows: DomainTrafficSurgeFunnelDebugRow[] = users.map(
+        (user) => {
+          const ownedDomainCount = ownedDomainsByUser.get(user.userId) ?? 0;
+          const namefiNameserverDomainCount =
+            nameserverDomainsByUser.get(user.userId) ?? 0;
+          const thresholdCandidate = thresholdCandidatesByUser.get(user.userId);
+          const thresholdDomainCount = thresholdCandidate?.domains.length ?? 0;
+          const topThresholdDomain = thresholdCandidate?.domains[0];
+          const sendRecordStatus = sentByUser.get(user.userId) ?? null;
+          const alreadySentThisCycle = Boolean(sendRecordStatus);
+
+          let dropOffStage: DomainTrafficSurgeFunnelDebugRow['dropOffStage'];
+          if (ownedDomainCount === 0) {
+            dropOffStage = 'ownership';
+          } else if (namefiNameserverDomainCount === 0) {
+            dropOffStage = 'nameservers';
+          } else if (thresholdDomainCount === 0) {
+            dropOffStage = 'threshold';
+          } else if (alreadySentThisCycle) {
+            dropOffStage = 'already_sent';
+          } else {
+            dropOffStage = 'eligible';
+          }
+
+          return {
+            userId: user.userId,
+            email: user.email ?? null,
+            displayName: user.displayName ?? null,
+            createdAt: user.createdAt,
+            ownedDomainCount,
+            namefiNameserverDomainCount,
+            thresholdDomainCount,
+            thresholdTopDomain: topThresholdDomain?.domain ?? null,
+            thresholdTopWeeklyQueries:
+              topThresholdDomain?.weeklyQueries ?? null,
+            alreadySentThisCycle,
+            sendRecordStatus,
+            dropOffStage,
+          };
+        },
+      );
+
+      const summary = {
+        totalUsers: funnelRows.length,
+        droppedAtOwnership: funnelRows.filter(
+          (row) => row.dropOffStage === 'ownership',
+        ).length,
+        droppedAtNameservers: funnelRows.filter(
+          (row) => row.dropOffStage === 'nameservers',
+        ).length,
+        droppedAtThreshold: funnelRows.filter(
+          (row) => row.dropOffStage === 'threshold',
+        ).length,
+        droppedAtAlreadySent: funnelRows.filter(
+          (row) => row.dropOffStage === 'already_sent',
+        ).length,
+        fullyEligible: funnelRows.filter(
+          (row) => row.dropOffStage === 'eligible',
+        ).length,
+      };
+
+      return {
+        periodStart,
+        trafficWeeklyThreshold,
+        trafficWindowStartUtc: trafficDateRange.startDate,
+        trafficWindowEndUtc: trafficDateRange.endDate,
+        summary,
+        users: funnelRows,
       };
     }),
 

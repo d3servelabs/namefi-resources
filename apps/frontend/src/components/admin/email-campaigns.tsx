@@ -48,6 +48,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/shadcn/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/shadcn/dialog';
 
 const CAMPAIGNS = EMAIL_CAMPAIGNS;
 type CampaignKey = EmailCampaignKey;
@@ -58,6 +65,14 @@ type EligibleUser = EligibleUsersResponse['users'][number];
 type SendHistoryEntry = EligibleUser['sendHistory'][number];
 type ScheduleStatusResponse =
   AppRouterOutput['admin']['emailCampaigns']['getScheduleStatus'];
+type TrafficFunnelDebugResponse =
+  AppRouterOutput['admin']['emailCampaigns']['getDomainTrafficSurgeFunnelDebug'];
+type TrafficFunnelDebugUser = TrafficFunnelDebugResponse['users'][number];
+type DreamOwnedDomainsModalState = {
+  userId: string;
+  email: string | null;
+  domains: string[];
+};
 
 const formatDateTime = (value?: Date | null) =>
   value ? format(value, 'MMM d, yyyy HH:mm') : '-';
@@ -104,6 +119,22 @@ const getStatusBadge = (status?: string | null) => {
   if (status === 'PENDING') return <Badge variant="secondary">Pending</Badge>;
   if (status === 'FAILED') return <Badge variant="destructive">Failed</Badge>;
   return <Badge variant="outline">{status}</Badge>;
+};
+
+const getDropOffStageBadge = (
+  stage: TrafficFunnelDebugUser['dropOffStage'],
+) => {
+  if (stage === 'eligible') return <Badge variant="default">Eligible</Badge>;
+  if (stage === 'already_sent') {
+    return <Badge variant="secondary">Already Sent</Badge>;
+  }
+  if (stage === 'ownership') {
+    return <Badge variant="outline">Dropped: Ownership</Badge>;
+  }
+  if (stage === 'nameservers') {
+    return <Badge variant="outline">Dropped: Nameservers</Badge>;
+  }
+  return <Badge variant="outline">Dropped: Threshold</Badge>;
 };
 
 function CampaignSendHistorySubrow({
@@ -313,6 +344,8 @@ export default function AdminEmailCampaigns() {
   const [cartPageSize, setCartPageSize] = useState(20);
   const [dreamPageSize, setDreamPageSize] = useState(20);
   const [trafficPageSize, setTrafficPageSize] = useState(20);
+  const [dreamOwnedDomainsModal, setDreamOwnedDomainsModal] =
+    useState<DreamOwnedDomainsModalState | null>(null);
 
   const cartQuery = useQuery({
     ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
@@ -332,6 +365,13 @@ export default function AdminEmailCampaigns() {
     ...trpc.admin.emailCampaigns.getEligibleUsers.queryOptions({
       campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
       searchTerm: normalizedSearchTerm,
+    }),
+  });
+
+  const trafficFunnelQuery = useQuery({
+    ...trpc.admin.emailCampaigns.getDomainTrafficSurgeFunnelDebug.queryOptions({
+      searchTerm: normalizedSearchTerm,
+      limit: 250,
     }),
   });
 
@@ -454,6 +494,13 @@ export default function AdminEmailCampaigns() {
         campaignKey: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
       }),
     });
+    queryClient.invalidateQueries({
+      queryKey:
+        trpc.admin.emailCampaigns.getDomainTrafficSurgeFunnelDebug.queryKey({
+          searchTerm: normalizedSearchTerm,
+          limit: 250,
+        }),
+    });
   };
 
   const handleSendNow = useCallback(
@@ -491,6 +538,14 @@ export default function AdminEmailCampaigns() {
     }
   }, []);
 
+  const handleOpenDreamOwnedDomains = useCallback((user: EligibleUser) => {
+    setDreamOwnedDomainsModal({
+      userId: user.userId,
+      email: user.email ?? null,
+      domains: [...(user.ownedDomains ?? [])],
+    });
+  }, []);
+
   const cartScheduleStatus = cartScheduleQuery.data;
   const dreamScheduleStatus = dreamScheduleQuery.data;
   const trafficScheduleStatus = trafficScheduleQuery.data;
@@ -510,6 +565,7 @@ export default function AdminEmailCampaigns() {
     typeof trafficThreshold === 'number'
       ? formatInteger(trafficThreshold)
       : 'the configured threshold';
+  const trafficFunnelSummary = trafficFunnelQuery.data?.summary;
 
   const cartHighlights = useMemo(
     () => [
@@ -756,7 +812,17 @@ export default function AdminEmailCampaigns() {
         cell: ({ row }) => {
           const hasDomains = row.original.hasOwnedDomains ?? false;
           const count = row.original.ownedDomainCount ?? 0;
-          return hasDomains ? `Yes (${count})` : 'No';
+          if (!hasDomains) return 'No';
+          return (
+            <button
+              type="button"
+              onClick={() => handleOpenDreamOwnedDomains(row.original)}
+              className="underline underline-offset-4 decoration-dotted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              aria-label={`View ${count} owned domains`}
+            >
+              {`Yes (${count})`}
+            </button>
+          );
         },
         size: 120,
       },
@@ -814,6 +880,7 @@ export default function AdminEmailCampaigns() {
     ];
   }, [
     handleCopyValue,
+    handleOpenDreamOwnedDomains,
     handleSendNow,
     sendNowMutation.isPending,
     sendNowMutation.variables,
@@ -949,100 +1016,265 @@ export default function AdminEmailCampaigns() {
   ]);
 
   return (
-    <PageShell padding="admin" className="space-y-6">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Email Campaigns</h1>
-        </div>
-        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
-          <div className="relative w-full sm:w-[360px]">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search by email, display name, or user ID..."
-              className="pl-9 pr-9"
-            />
-            {searchTerm.length > 0 ? (
-              <button
-                type="button"
-                onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                aria-label="Clear search"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            ) : null}
+    <>
+      <PageShell padding="admin" className="space-y-6">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Email Campaigns</h1>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-            disabled={
-              cartQuery.isFetching ||
-              dreamQuery.isFetching ||
-              trafficQuery.isFetching
-            }
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
+          <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
+            <div className="relative w-full sm:w-[360px]">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search by email, display name, or user ID..."
+                className="pl-9 pr-9"
+              />
+              {searchTerm.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label="Clear search"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              ) : null}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={
+                cartQuery.isFetching ||
+                dreamQuery.isFetching ||
+                trafficQuery.isFetching
+              }
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <CampaignSection
-        title={CAMPAIGNS[0].title}
-        data={cartQuery.data}
-        isLoading={cartQuery.isLoading}
-        scheduleStatus={cartScheduleStatus}
-        isScheduleLoading={cartScheduleQuery.isLoading}
-        onToggleSchedule={(paused) =>
-          handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR, paused)
-        }
-        onSetupSchedule={handleSetupSchedule}
-        isTogglingSchedule={isCartScheduleUpdating}
-        pageSize={cartPageSize}
-        onPageSizeChange={setCartPageSize}
-        columns={cartColumns}
-        emptyMessage="No eligible users"
-        highlights={cartHighlights}
-      />
+        <CampaignSection
+          title={CAMPAIGNS[0].title}
+          data={cartQuery.data}
+          isLoading={cartQuery.isLoading}
+          scheduleStatus={cartScheduleStatus}
+          isScheduleLoading={cartScheduleQuery.isLoading}
+          onToggleSchedule={(paused) =>
+            handleToggleSchedule(
+              EMAIL_CAMPAIGN_KEYS.CART_DOMAINS_POPULAR,
+              paused,
+            )
+          }
+          onSetupSchedule={handleSetupSchedule}
+          isTogglingSchedule={isCartScheduleUpdating}
+          pageSize={cartPageSize}
+          onPageSizeChange={setCartPageSize}
+          columns={cartColumns}
+          emptyMessage="No eligible users"
+          highlights={cartHighlights}
+        />
 
-      <CampaignSection
-        title={CAMPAIGNS[1].title}
-        data={dreamQuery.data}
-        isLoading={dreamQuery.isLoading}
-        scheduleStatus={dreamScheduleStatus}
-        isScheduleLoading={dreamScheduleQuery.isLoading}
-        onToggleSchedule={(paused) =>
-          handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS, paused)
-        }
-        onSetupSchedule={handleSetupSchedule}
-        isTogglingSchedule={isDreamScheduleUpdating}
-        pageSize={dreamPageSize}
-        onPageSizeChange={setDreamPageSize}
-        columns={dreamColumns}
-        emptyMessage="No eligible users"
-        highlights={dreamHighlights}
-      />
+        <CampaignSection
+          title={CAMPAIGNS[1].title}
+          data={dreamQuery.data}
+          isLoading={dreamQuery.isLoading}
+          scheduleStatus={dreamScheduleStatus}
+          isScheduleLoading={dreamScheduleQuery.isLoading}
+          onToggleSchedule={(paused) =>
+            handleToggleSchedule(
+              EMAIL_CAMPAIGN_KEYS.DREAM_DOMAIN_AWAITS,
+              paused,
+            )
+          }
+          onSetupSchedule={handleSetupSchedule}
+          isTogglingSchedule={isDreamScheduleUpdating}
+          pageSize={dreamPageSize}
+          onPageSizeChange={setDreamPageSize}
+          columns={dreamColumns}
+          emptyMessage="No eligible users"
+          highlights={dreamHighlights}
+        />
 
-      <CampaignSection
-        title={CAMPAIGNS[2].title}
-        data={trafficQuery.data}
-        isLoading={trafficQuery.isLoading}
-        scheduleStatus={trafficScheduleStatus}
-        isScheduleLoading={trafficScheduleQuery.isLoading}
-        onToggleSchedule={(paused) =>
-          handleToggleSchedule(EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE, paused)
-        }
-        onSetupSchedule={handleSetupSchedule}
-        isTogglingSchedule={isTrafficScheduleUpdating}
-        pageSize={trafficPageSize}
-        onPageSizeChange={setTrafficPageSize}
-        columns={trafficColumns}
-        emptyMessage="No eligible users"
-        highlights={trafficHighlights}
-      />
-    </PageShell>
+        <CampaignSection
+          title={CAMPAIGNS[2].title}
+          data={trafficQuery.data}
+          isLoading={trafficQuery.isLoading}
+          scheduleStatus={trafficScheduleStatus}
+          isScheduleLoading={trafficScheduleQuery.isLoading}
+          onToggleSchedule={(paused) =>
+            handleToggleSchedule(
+              EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+              paused,
+            )
+          }
+          onSetupSchedule={handleSetupSchedule}
+          isTogglingSchedule={isTrafficScheduleUpdating}
+          pageSize={trafficPageSize}
+          onPageSizeChange={setTrafficPageSize}
+          columns={trafficColumns}
+          emptyMessage="No eligible users"
+          highlights={trafficHighlights}
+        />
+
+        <Card>
+          <CardHeader className="space-y-2">
+            <CardTitle>Traffic Surge Funnel Debug</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              Per-user drop-off across ownership, nameserver, and threshold
+              gates for surge.
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Traffic window checked: {trafficWindowLabel}. Threshold:{' '}
+              {trafficThresholdLabel}.
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="secondary">
+                {trafficFunnelSummary?.totalUsers ?? 0} in scope
+              </Badge>
+              <Badge variant="outline">
+                ownership drop: {trafficFunnelSummary?.droppedAtOwnership ?? 0}
+              </Badge>
+              <Badge variant="outline">
+                nameserver drop:{' '}
+                {trafficFunnelSummary?.droppedAtNameservers ?? 0}
+              </Badge>
+              <Badge variant="outline">
+                threshold drop: {trafficFunnelSummary?.droppedAtThreshold ?? 0}
+              </Badge>
+              <Badge variant="secondary">
+                already sent: {trafficFunnelSummary?.droppedAtAlreadySent ?? 0}
+              </Badge>
+              <Badge variant="default">
+                eligible: {trafficFunnelSummary?.fullyEligible ?? 0}
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {trafficFunnelQuery.isLoading ? (
+              <div className="text-sm text-muted-foreground flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Loading surge funnel debug...
+              </div>
+            ) : (trafficFunnelQuery.data?.users.length ?? 0) === 0 ? (
+              <div className="text-sm text-muted-foreground">
+                No users matched the current search/filter.
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead className="w-[110px] text-right">
+                      Owned
+                    </TableHead>
+                    <TableHead className="w-[130px] text-right">
+                      Namefi NS
+                    </TableHead>
+                    <TableHead className="w-[120px] text-right">
+                      Over threshold
+                    </TableHead>
+                    <TableHead className="w-[200px]">Top domain</TableHead>
+                    <TableHead className="w-[140px] text-right">
+                      Top lookups
+                    </TableHead>
+                    <TableHead className="w-[120px]">Cycle status</TableHead>
+                    <TableHead className="w-[180px]">Funnel result</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {trafficFunnelQuery.data?.users.map((user) => (
+                    <TableRow key={user.userId}>
+                      <TableCell className="text-xs">
+                        <div className="flex items-center gap-2">
+                          <AutoTruncateTextV2
+                            initialCharactersCountToDisplay={24}
+                            minCharactersToDisplay={18}
+                            className="text-sm"
+                          >
+                            {user.email ?? user.userId}
+                          </AutoTruncateTextV2>
+                          <button
+                            type="button"
+                            onClick={() => handleCopyValue(user.userId)}
+                            className="p-1 hover:bg-muted rounded transition-colors"
+                            title="Copy user ID"
+                            aria-label="Copy user ID"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatInteger(user.ownedDomainCount)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatInteger(user.namefiNameserverDomainCount)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatInteger(user.thresholdDomainCount)}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {user.thresholdTopDomain ?? '-'}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatInteger(user.thresholdTopWeeklyQueries)}
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(user.sendRecordStatus)}
+                      </TableCell>
+                      <TableCell>
+                        {getDropOffStageBadge(user.dropOffStage)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+      </PageShell>
+
+      <Dialog
+        open={dreamOwnedDomainsModal !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDreamOwnedDomainsModal(null);
+          }
+        }}
+      >
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Owned Domains</DialogTitle>
+            <DialogDescription>
+              {dreamOwnedDomainsModal?.email ?? dreamOwnedDomainsModal?.userId}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="rounded-md border max-h-[60vh] overflow-y-auto">
+            {(dreamOwnedDomainsModal?.domains.length ?? 0) === 0 ? (
+              <p className="p-4 text-sm text-muted-foreground">
+                No owned domains found.
+              </p>
+            ) : (
+              <ul>
+                {dreamOwnedDomainsModal?.domains.map((domain) => (
+                  <li
+                    key={domain}
+                    className="px-4 py-2 text-sm border-b last:border-b-0"
+                  >
+                    <code>{domain}</code>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
