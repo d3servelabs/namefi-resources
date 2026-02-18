@@ -237,6 +237,15 @@ export const postProcessOrderItemSchema = z
   .loose();
 
 export type PostProcessOrderItem = z.infer<typeof postProcessOrderItemSchema>;
+
+export const legacyOrderItemMetadataSchema = z.object({
+  source: z.literal('legacy'),
+  type: z.literal('legacy-migration'),
+  legacyItemId: z.string().min(1, 'Legacy item ID is required'),
+  chainId: z.number().min(1, 'Chain ID must be positive'),
+  receivingWalletAddress: z.string().nullable(),
+});
+
 export const orderItemRequiredActionSchema = z.enum([
   'EPP_UNLOCK_REQUIRED',
   'EPP_AUTH_CODE_UPDATE_REQUIRED',
@@ -263,9 +272,32 @@ export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
   requiredAction: orderItemRequiredActionSchema.optional(),
   failureDetails: orderItemFailureDetailsSchema.optional(),
   backfilled_started_finished_at: z.boolean().optional(),
+  legacyOrderItemMetadata: legacyOrderItemMetadataSchema.optional(),
 });
 
 export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;
+
+// Metadata schemas for different data sources
+export const legacyOrderMetadataSchema = z.object({
+  source: z.literal('legacy'),
+  type: z.literal('legacy-migration'),
+  legacyOrderId: z.string().min(1, 'Legacy order ID is required'),
+  useNfscBalance: z.boolean(),
+  migratedAt: z.string().min(1, 'Migrated at date is required'),
+  legacyPaymentIntentId: z
+    .string()
+    .min(1, 'Legacy payment intent ID is required')
+    .optional(),
+  legacyPaymentDetails: z
+    .object({
+      status: z.string().min(1, 'Payment status is required'),
+      provider: z.string().min(1, 'Payment provider is required'),
+      paymentType: z.string().min(1, 'Payment type is required'),
+      txHash: z.string().optional(),
+      externalId: z.string().optional(),
+    })
+    .optional(),
+});
 
 export const orderMetadataSchema = z
   .object({
@@ -274,6 +306,7 @@ export const orderMetadataSchema = z
       .record(z.string(), orderMintTransactionMetadataSchema)
       .optional(),
     backfilled_started_finished_at: z.boolean().optional(),
+    legacyOrderMetadata: legacyOrderMetadataSchema.optional(),
   })
   .loose();
 
@@ -323,7 +356,50 @@ export const cartItemsTable = pgTable(
   ],
 );
 
-export const paymentMetadataSchema = z.object({});
+const legacyStripeRefundDetailSchema = z.object({
+  type: z.string().min(1, 'Type is required'),
+  paymentId: z.string().min(1, 'Payment ID is required'),
+  amountInUSDCents: z.number().min(0, 'Amount must be non-negative'),
+  status: z.string().min(1, 'Status is required'),
+  createdAt: z.string().min(1, 'Creation date is required'),
+  paymentProviderReferenceId: z
+    .string()
+    .min(1, 'Payment provider reference ID is required'),
+});
+
+const legacyStripeRefundSchema = z.object({
+  paymentIntentId: z.string().min(1, 'Payment intent ID is required'),
+  amount: z.number().min(0, 'Amount must be non-negative'),
+  fullRefund: z.boolean(),
+  totalRefundAmount: z
+    .number()
+    .min(0, 'Total refund amount must be non-negative'),
+  refundsDetails: z.array(legacyStripeRefundDetailSchema),
+});
+
+const legacyNfscRefundDetailSchema = z.object({
+  paymentId: z.string().min(1, 'Payment ID is required'),
+  amountInUSDCents: z.number().min(0, 'Amount must be non-negative'),
+  txHash: z.string().min(1, 'Transaction hash is required'),
+  chainId: z.number().optional(),
+  walletAddress: z.string().min(1, 'Wallet address is required').optional(),
+});
+
+const legacyPaymentIntentSchema = z.object({
+  id: z.string().min(1, 'Payment intent ID is required'),
+  amountinusdcents: z.number().min(0, 'Amount must be non-negative'),
+  externalid: z.string().nullable(),
+  paymenttype: z.string().min(1, 'Payment type is required'),
+  status: z.string().min(1, 'Status is required'),
+  txhash: z.string().nullable(),
+  modified: z.boolean().nullable(),
+  refundtxhash: z.string().nullable(),
+  stripeRefund: legacyStripeRefundSchema.optional(),
+});
+
+export const paymentMetadataSchema = z.object({
+  legacyPaymentMetadata: legacyPaymentIntentSchema.optional(),
+});
 export type PaymentMetadata = z.infer<typeof paymentMetadataSchema>;
 
 /**
@@ -365,7 +441,16 @@ export const paymentsTable = pgTable(
   ],
 );
 
-export const refundsMetadataSchema = z.object({});
+export const refundsMetadataSchema = z.object({
+  legacyRefundMetadata: z.union([
+    z.object({
+      stripeRefund: legacyStripeRefundSchema,
+    }),
+    z.object({
+      nfscRefund: legacyNfscRefundDetailSchema,
+    }),
+  ]),
+});
 export type RefundsMetadata = z.infer<typeof refundsMetadataSchema>;
 /**
  * Refunds table
