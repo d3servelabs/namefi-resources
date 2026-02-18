@@ -265,7 +265,15 @@ export const getAnswerForDnsQueryFromPreferences = async (
     Answer: [],
   };
 
-  if (!matchAny(qTypeEnum, RecordType.A, RecordType.AAAA, RecordType.TXT)) {
+  if (
+    !matchAny(
+      qTypeEnum,
+      RecordType.A,
+      RecordType.AAAA,
+      RecordType.TXT,
+      RecordType.CAA,
+    )
+  ) {
     logger.trace({ qTypeEnum }, 'No match for qTypeEnum');
     return null;
   }
@@ -286,7 +294,7 @@ export const getAnswerForDnsQueryFromPreferences = async (
       : null;
   if (
     (preferences.autoParkEnabled || isNotNil(forwardTo)) &&
-    matchAny(qTypeEnum, RecordType.A, RecordType.AAAA)
+    matchAny(qTypeEnum, RecordType.A, RecordType.AAAA, RecordType.CAA)
   ) {
     //Final Answer RCODE is 0
     return {
