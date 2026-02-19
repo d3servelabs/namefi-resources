@@ -13,3 +13,4 @@ export {
   burnedNamefiNftCte,
   transferLogsCte,
 } from './schemas/onchain-indexers';
+export { mapper } from './schemas/common';

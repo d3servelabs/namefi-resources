@@ -1,5 +1,10 @@
 import { Gauge } from 'prom-client';
-import { orderItemsTable, ordersTable, paymentsTable } from '@namefi-astra/db';
+import {
+  mapper,
+  orderItemsTable,
+  ordersTable,
+  paymentsTable,
+} from '@namefi-astra/db';
 import { and, eq, gte, inArray, sql } from 'drizzle-orm';
 import { register } from '../registry';
 import type { MetricsContext } from '../types';
@@ -127,22 +132,25 @@ async function loadDurationSamples(
   }
 
   const sourceExpr = sql<boolean>`COALESCE(bool_or(${orderItemsTable.type} = 'IMPORT'), false)`;
-  const orderFinishedAtExpr = sql<Date>`COALESCE(${ordersTable.finishedAt}, ${ordersTable.startedAt})`;
+  const orderFinishedAtExpr =
+    sql<Date>`COALESCE(${ordersTable.finishedAt}, ${ordersTable.startedAt})`.mapWith(
+      mapper.time,
+    );
   const firstPaymentExpr = sql<Date | null>`MIN(
     CASE WHEN ${paymentsTable.status} = 'SUCCEEDED'
       THEN COALESCE(${paymentsTable.finishedAt}, ${paymentsTable.startedAt})
       ELSE NULL
     END
-  )`;
+  )`.mapWith(mapper.time);
 
   const rows = await ctx.db
     .select({
       orderId: ordersTable.id,
       startedAt: ordersTable.startedAt,
       createdAt: ordersTable.createdAt,
-      effectiveFinishedAt: orderFinishedAtExpr,
+      effectiveFinishedAt: orderFinishedAtExpr.as('order_finished_at'),
       isImport: sourceExpr,
-      firstPaymentAt: firstPaymentExpr,
+      firstPaymentAt: firstPaymentExpr.as('first_payment_date'),
     })
     .from(ordersTable)
     .leftJoin(orderItemsTable, eq(orderItemsTable.orderId, ordersTable.id))

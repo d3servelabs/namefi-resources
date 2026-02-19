@@ -1,15 +1,9 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { sql } from 'drizzle-orm';
-import { pgView, QueryBuilder, timestamp } from 'drizzle-orm/pg-core';
+import { QueryBuilder } from 'drizzle-orm/pg-core';
 import { db } from '../../client';
-import { bigint, integer, text } from 'drizzle-orm/pg-core';
+import { mapper } from '../common';
 
-/**
- * A temporary view to map a timestamp to a timestamp
- */
-const mapper = pgView('mapper', {
-  time: timestamp('time_mapper').notNull(),
-}).existing();
 const qb = new QueryBuilder();
 
 /**
