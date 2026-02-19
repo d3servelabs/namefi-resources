@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server';
+import pMap from 'p-map';
 import { z } from 'zod';
 import {
   cartItemsTable,
@@ -18,6 +19,10 @@ import {
   auditedAdminProcedureWithPermissions,
   createTRPCRouter,
 } from '../../base';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../../utils';
 import { Permission } from '@namefi-astra/utils';
 import {
   EMAIL_CAMPAIGN_KEYS,
@@ -48,6 +53,7 @@ import { logger } from '#lib/logger';
 import { config } from '#lib/env';
 import { ResourceType } from '#lib/auditor';
 import { SCHEDULE_REGISTRY } from '../../../temporal/schedules';
+import { resolve } from '../../../utils/resolve';
 
 const emailCampaignKeySchema = z.enum(EMAIL_CAMPAIGN_KEY_LIST);
 
@@ -103,6 +109,121 @@ type DomainTrafficSurgeFunnelDebugRow = {
     | 'already_sent'
     | 'eligible';
 };
+
+type LiveOwnershipStats = {
+  ownedDomains: string[];
+  ownedDomainCount: number;
+  namefiNameserverDomainCount: number;
+};
+
+async function getLiveOwnershipStatsByUser({
+  users,
+}: {
+  users: Array<{ userId: string; privyUserId: string | null }>;
+}): Promise<Map<string, LiveOwnershipStats>> {
+  const entries = await pMap(
+    users,
+    async ({ userId, privyUserId }) => {
+      if (!privyUserId) {
+        return {
+          userId,
+          stats: {
+            ownedDomains: [],
+            ownedDomainCount: 0,
+            namefiNameserverDomainCount: 0,
+          },
+        };
+      }
+
+      const [privyError, privyUser] = await resolve(
+        privyClient.getUserById(privyUserId),
+      );
+      if (privyError || !privyUser) {
+        logger.warn(
+          { userId, privyUserId, error: privyError },
+          'Failed to load Privy user while computing ownership stats',
+        );
+        return {
+          userId,
+          stats: {
+            ownedDomains: [],
+            ownedDomainCount: 0,
+            namefiNameserverDomainCount: 0,
+          },
+        };
+      }
+
+      let walletAddresses: string[] = [];
+      try {
+        walletAddresses = getPrivyUserLinkedEthereumChecksumWalletAddresses({
+          privyUser,
+        });
+      } catch (error) {
+        logger.warn(
+          { userId, privyUserId, error },
+          'Failed to parse Privy wallets while computing ownership stats',
+        );
+        return {
+          userId,
+          stats: {
+            ownedDomains: [],
+            ownedDomainCount: 0,
+            namefiNameserverDomainCount: 0,
+          },
+        };
+      }
+
+      if (walletAddresses.length === 0) {
+        return {
+          userId,
+          stats: {
+            ownedDomains: [],
+            ownedDomainCount: 0,
+            namefiNameserverDomainCount: 0,
+          },
+        };
+      }
+
+      const ownedDomainRows = await db
+        .with(namefiNftOwnersCte)
+        .select({
+          normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
+          isUsingNamefiNameservers:
+            indexedDomainsTable.isUsingNamefiNameservers,
+        })
+        .from(namefiNftOwnersView)
+        .leftJoin(
+          indexedDomainsTable,
+          eq(
+            indexedDomainsTable.normalizedDomainName,
+            namefiNftOwnersView.normalizedDomainName,
+          ),
+        )
+        .where(inArray(namefiNftOwnersView.ownerAddress, walletAddresses));
+
+      const ownedDomainSet = new Set(
+        ownedDomainRows.map((row) => row.normalizedDomainName),
+      );
+      const nameserverDomainSet = new Set(
+        ownedDomainRows
+          .filter((row) => row.isUsingNamefiNameservers === true)
+          .map((row) => row.normalizedDomainName),
+      );
+
+      return {
+        userId,
+        stats: {
+          ownedDomains: Array.from(ownedDomainSet).sort(),
+          ownedDomainCount: ownedDomainSet.size,
+          namefiNameserverDomainCount: nameserverDomainSet.size,
+        },
+      };
+    },
+    { concurrency: 10 },
+  );
+
+  return new Map(entries.map((entry) => [entry.userId, entry.stats]));
+}
 
 function getPeriodStartForCampaign(
   campaignKey: EmailCampaignKey,
@@ -375,6 +496,7 @@ export const emailCampaignsRouter = createTRPCRouter({
       const users = await db
         .select({
           userId: usersTable.id,
+          privyUserId: usersTable.privyUserId,
           createdAt: usersTable.createdAt,
           email: privyUsersTableSchema.email,
           displayName: privyUsersTableSchema.displayName,
@@ -536,39 +658,18 @@ export const emailCampaignsRouter = createTRPCRouter({
           });
         }
 
-        const domainStats = await db
-          .with(namefiNftOwnersCte)
-          .select({
-            userId: usersTable.id,
-            ownedDomainCount:
-              sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
-                'owned_domain_count',
-              ),
-            ownedDomains: sql<
-              string[]
-            >`COALESCE(array_agg(DISTINCT ${namefiNftOwnersView.normalizedDomainName} ORDER BY ${namefiNftOwnersView.normalizedDomainName}), ARRAY[]::text[])`.as(
-              'owned_domains',
-            ),
-          })
-          .from(usersTable)
-          .innerJoin(
-            privyUsersTableSchema,
-            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
-          )
-          .innerJoin(
-            namefiNftOwnersView,
-            sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
-          )
-          .where(inArray(usersTable.id, filteredUserIds))
-          .groupBy(usersTable.id);
+        const liveOwnershipStatsByUser = await getLiveOwnershipStatsByUser({
+          users: users.map((user) => ({
+            userId: user.userId,
+            privyUserId: user.privyUserId ?? null,
+          })),
+        });
 
-        for (const row of domainStats) {
-          const count = row.ownedDomainCount ?? 0;
-          const ownedDomains = row.ownedDomains ?? [];
-          domainStatsByUser.set(row.userId, {
-            ownedDomainCount: count,
-            hasOwnedDomains: count > 0,
-            ownedDomains,
+        for (const [userId, stats] of liveOwnershipStatsByUser.entries()) {
+          domainStatsByUser.set(userId, {
+            ownedDomainCount: stats.ownedDomainCount,
+            hasOwnedDomains: stats.ownedDomainCount > 0,
+            ownedDomains: stats.ownedDomains,
           });
         }
       }
@@ -663,6 +764,7 @@ export const emailCampaignsRouter = createTRPCRouter({
       const users = await db
         .select({
           userId: usersTable.id,
+          privyUserId: usersTable.privyUserId,
           createdAt: usersTable.createdAt,
           email: privyUsersTableSchema.email,
           displayName: privyUsersTableSchema.displayName,
@@ -710,100 +812,44 @@ export const emailCampaignsRouter = createTRPCRouter({
 
       const userIds = users.map((user) => user.userId);
 
-      const [
-        ownedDomainRows,
-        nameserverDomainRows,
-        thresholdCandidates,
-        sentRows,
-      ] = await Promise.all([
-        db
-          .with(namefiNftOwnersCte)
-          .select({
-            userId: usersTable.id,
-            ownedDomainCount:
-              sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
-                'owned_domain_count',
+      const [liveOwnershipStatsByUser, thresholdCandidates, sentRows] =
+        await Promise.all([
+          getLiveOwnershipStatsByUser({
+            users: users.map((user) => ({
+              userId: user.userId,
+              privyUserId: user.privyUserId ?? null,
+            })),
+          }),
+          getDomainTrafficCampaignCandidates({
+            periodStart,
+            userIdFilter: userIds,
+            asOf: now,
+            skipAlreadySentCheck: true,
+          }),
+          db
+            .select({
+              userId: emailCampaignSendsTable.userId,
+              status: emailCampaignSendsTable.status,
+            })
+            .from(emailCampaignSendsTable)
+            .where(
+              and(
+                eq(
+                  emailCampaignSendsTable.campaignKey,
+                  EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
+                ),
+                eq(emailCampaignSendsTable.periodStart, periodStart),
+                inArray(emailCampaignSendsTable.userId, userIds),
+                inArray(emailCampaignSendsTable.status, ['SENT', 'PENDING']),
               ),
-          })
-          .from(usersTable)
-          .innerJoin(
-            privyUsersTableSchema,
-            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
-          )
-          .innerJoin(
-            namefiNftOwnersView,
-            sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
-          )
-          .where(inArray(usersTable.id, userIds))
-          .groupBy(usersTable.id),
-        db
-          .with(namefiNftOwnersCte)
-          .select({
-            userId: usersTable.id,
-            namefiNameserverDomainCount:
-              sql<number>`count(distinct ${namefiNftOwnersView.normalizedDomainName})`.as(
-                'namefi_nameserver_domain_count',
-              ),
-          })
-          .from(usersTable)
-          .innerJoin(
-            privyUsersTableSchema,
-            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
-          )
-          .innerJoin(
-            namefiNftOwnersView,
-            sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
-          )
-          .innerJoin(
-            indexedDomainsTable,
-            eq(
-              indexedDomainsTable.normalizedDomainName,
-              namefiNftOwnersView.normalizedDomainName,
             ),
-          )
-          .where(
-            and(
-              inArray(usersTable.id, userIds),
-              eq(indexedDomainsTable.isUsingNamefiNameservers, true),
-            ),
-          )
-          .groupBy(usersTable.id),
-        getDomainTrafficCampaignCandidates({
-          periodStart,
-          userIdFilter: userIds,
-          asOf: now,
-          skipAlreadySentCheck: true,
-        }),
-        db
-          .select({
-            userId: emailCampaignSendsTable.userId,
-            status: emailCampaignSendsTable.status,
-          })
-          .from(emailCampaignSendsTable)
-          .where(
-            and(
-              eq(
-                emailCampaignSendsTable.campaignKey,
-                EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
-              ),
-              eq(emailCampaignSendsTable.periodStart, periodStart),
-              inArray(emailCampaignSendsTable.userId, userIds),
-              inArray(emailCampaignSendsTable.status, ['SENT', 'PENDING']),
-            ),
-          ),
-      ]);
+        ]);
 
       const ownedDomainsByUser = new Map<string, number>();
-      for (const row of ownedDomainRows) {
-        ownedDomainsByUser.set(row.userId, row.ownedDomainCount ?? 0);
-      }
-
       const nameserverDomainsByUser = new Map<string, number>();
-      for (const row of nameserverDomainRows) {
-        nameserverDomainsByUser.set(
-          row.userId,
-          row.namefiNameserverDomainCount ?? 0,
-        );
+      for (const [userId, stats] of liveOwnershipStatsByUser.entries()) {
+        ownedDomainsByUser.set(userId, stats.ownedDomainCount);
+        nameserverDomainsByUser.set(userId, stats.namefiNameserverDomainCount);
       }
 
       const thresholdCandidatesByUser = new Map<

@@ -15,6 +15,11 @@ import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import { createGA4Client, type DateRange } from '#lib/analytics_client';
 import { config, secrets } from '#lib/env';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../../trpc/utils';
+import { resolve } from '../../utils/resolve';
 import { EMAIL_CAMPAIGN_KEYS } from './constants';
 import { toDate } from './utils';
 
@@ -231,7 +236,6 @@ export async function getDomainTrafficCampaignCandidates({
   const conditions = [
     eq(usersTable.subscribeToEmails, true),
     hasEmailCondition,
-    eq(indexedDomainsTable.isUsingNamefiNameservers, true),
   ];
 
   if (!skipAlreadySentCheck) {
@@ -242,28 +246,15 @@ export async function getDomainTrafficCampaignCandidates({
     conditions.push(inArray(usersTable.id, userIdFilter));
   }
 
-  // We only check analytics for domains that already pass all other criteria.
-  const candidateRows = await db
-    .with(namefiNftOwnersCte)
+  const candidateUsers = await db
     .select({
       userId: usersTable.id,
-      domainName: namefiNftOwnersView.normalizedDomainName,
+      privyUserId: usersTable.privyUserId,
     })
-    .from(namefiNftOwnersView)
-    .innerJoin(
-      indexedDomainsTable,
-      eq(
-        indexedDomainsTable.normalizedDomainName,
-        namefiNftOwnersView.normalizedDomainName,
-      ),
-    )
-    .innerJoin(
+    .from(usersTable)
+    .leftJoin(
       privyUsersTableSchema,
-      sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
-    )
-    .innerJoin(
-      usersTable,
-      eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+      eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
     )
     .leftJoin(
       emailCampaignSendsTable,
@@ -278,17 +269,96 @@ export async function getDomainTrafficCampaignCandidates({
       ),
     )
     .where(and(...conditions))
-    .groupBy(usersTable.id, namefiNftOwnersView.normalizedDomainName);
+    .groupBy(usersTable.id, usersTable.privyUserId);
 
-  if (candidateRows.length === 0) {
-    logger.debug('No candidate domains for traffic campaign');
+  if (candidateUsers.length === 0) {
+    logger.debug('No candidate users for traffic campaign');
     return [];
   }
 
+  const walletLookup = await pMap(
+    candidateUsers,
+    async ({ userId, privyUserId }) => {
+      if (!privyUserId) {
+        return { userId, walletAddresses: [] as string[] };
+      }
+
+      const [privyError, privyUser] = await resolve(
+        privyClient.getUserById(privyUserId),
+      );
+      if (privyError || !privyUser) {
+        logger.warn(
+          { userId, privyUserId, error: privyError },
+          'Failed to load Privy user for traffic campaign',
+        );
+        return { userId, walletAddresses: [] as string[] };
+      }
+
+      try {
+        const walletAddresses =
+          getPrivyUserLinkedEthereumChecksumWalletAddresses({
+            privyUser,
+          });
+        return { userId, walletAddresses };
+      } catch (error) {
+        logger.warn(
+          { userId, privyUserId, error },
+          'Failed to parse Privy wallets for traffic campaign',
+        );
+        return { userId, walletAddresses: [] as string[] };
+      }
+    },
+    { concurrency: 10 },
+  );
+
+  const walletToUserIds = new Map<string, Set<string>>();
+  for (const { userId, walletAddresses } of walletLookup) {
+    for (const walletAddress of walletAddresses) {
+      const userIds = walletToUserIds.get(walletAddress) ?? new Set<string>();
+      userIds.add(userId);
+      walletToUserIds.set(walletAddress, userIds);
+    }
+  }
+
+  const allWalletAddresses = Array.from(walletToUserIds.keys());
+  if (allWalletAddresses.length === 0) {
+    logger.debug('No wallet addresses available for traffic campaign users');
+    return [];
+  }
+
+  const candidateDomainRows = await db
+    .with(namefiNftOwnersCte)
+    .select({
+      domainName: namefiNftOwnersView.normalizedDomainName,
+      ownerAddress: namefiNftOwnersView.ownerAddress,
+    })
+    .from(namefiNftOwnersView)
+    .innerJoin(
+      indexedDomainsTable,
+      eq(
+        indexedDomainsTable.normalizedDomainName,
+        namefiNftOwnersView.normalizedDomainName,
+      ),
+    )
+    .where(
+      and(
+        inArray(namefiNftOwnersView.ownerAddress, allWalletAddresses),
+        eq(indexedDomainsTable.isUsingNamefiNameservers, true),
+      ),
+    )
+    .groupBy(
+      namefiNftOwnersView.normalizedDomainName,
+      namefiNftOwnersView.ownerAddress,
+    );
+
   const domainToUserIds = new Map<NamefiNormalizedDomain, Set<string>>();
-  for (const row of candidateRows) {
+  for (const row of candidateDomainRows) {
+    const usersForWallet = walletToUserIds.get(row.ownerAddress);
+    if (!usersForWallet || usersForWallet.size === 0) continue;
     const users = domainToUserIds.get(row.domainName) ?? new Set();
-    users.add(row.userId);
+    for (const userId of usersForWallet) {
+      users.add(userId);
+    }
     domainToUserIds.set(row.domainName, users);
   }
 

@@ -5,14 +5,14 @@ import {
   namefiNftOwnersView,
   usersTable,
 } from '@namefi-astra/db';
-import { eq, sql } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
+import { generateDreamDomainSuggestions } from '@namefi-astra/ai';
 import {
-  privyClient,
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
 } from '../../trpc/utils';
 import { resolve } from '../../utils/resolve';
-import { generateDreamDomainSuggestions } from '@namefi-astra/ai';
 
 const logger = createLogger({ module: 'domain-suggestions' });
 
@@ -66,9 +66,7 @@ export async function getUserDomainSuggestions(
         normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
       })
       .from(namefiNftOwnersView)
-      .where(
-        sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${walletAddresses}))`,
-      );
+      .where(inArray(namefiNftOwnersView.ownerAddress, walletAddresses));
 
     const ownedDomainNames = Array.from(
       new Set(ownedDomains.map((row) => row.normalizedDomainName)),
