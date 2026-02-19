@@ -561,7 +561,7 @@ export const aiRouter = createTRPCRouter({
   getInternalGenerationsByDomains: publicProcedure
     .input(
       z.object({
-        domains: z.array(namefiNormalizedDomainSchema).min(1),
+        domains: z.array(namefiNormalizedDomainSchema).min(1).max(200),
       }),
     )
     .query(async ({ input }) => {

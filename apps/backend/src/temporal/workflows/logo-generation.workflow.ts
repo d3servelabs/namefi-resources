@@ -68,6 +68,7 @@ export async function generateLogosForAliveNftsWorkflow(
   );
 
   let offset = startOffset;
+  let afterDomain: NamefiNormalizedDomain | undefined;
   let page = 0;
   let totalProcessed = 0;
   let totalSuccesses = 0;
@@ -97,7 +98,8 @@ export async function generateLogosForAliveNftsWorkflow(
 
     const domains = await listAliveNftDomains({
       limit: pageSize,
-      offset,
+      offset: skipExisting ? 0 : offset,
+      afterDomain: skipExisting ? afterDomain : undefined,
       skipExisting,
     });
     if (!domains.length) break;
@@ -116,8 +118,13 @@ export async function generateLogosForAliveNftsWorkflow(
     totalSuccesses += successes;
     totalFailures += failures;
 
-    // Advance pagination
-    offset += pageSize;
+    // Advance pagination. For skipExisting, use keyset cursor so inserts during
+    // this run do not shift later pages.
+    if (skipExisting) {
+      afterDomain = domains[domains.length - 1];
+    } else {
+      offset += pageSize;
+    }
     page += 1;
 
     // Backoff between pages (tunable if needed later)

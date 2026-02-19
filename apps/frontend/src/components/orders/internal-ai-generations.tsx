@@ -15,9 +15,14 @@ type InternalAIGenerations =
 type LogoPreviewProps = {
   domain: string;
   logoUrl?: string;
+  isLoading?: boolean;
 };
 
-const LogoPreview = ({ domain, logoUrl }: LogoPreviewProps) => {
+const LogoPreview = ({
+  domain,
+  logoUrl,
+  isLoading = false,
+}: LogoPreviewProps) => {
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
     logoUrl ? 'loading' : 'error',
   );
@@ -26,13 +31,15 @@ const LogoPreview = ({ domain, logoUrl }: LogoPreviewProps) => {
     setStatus(logoUrl ? 'loading' : 'error');
   }, [logoUrl]);
 
-  const isLoading = status === 'loading';
-  const showFallback = !logoUrl || status === 'error';
+  const isImageLoading = Boolean(logoUrl) && status === 'loading';
+  const isGenerating = isLoading && !logoUrl;
+  const showNoPreview = !logoUrl && !isLoading;
+  const showPreviewUnavailable = Boolean(logoUrl) && status === 'error';
 
   return (
     <div
       className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border border-white/10"
-      aria-busy={isLoading}
+      aria-busy={isImageLoading || isGenerating}
     >
       {logoUrl ? (
         <>
@@ -48,14 +55,22 @@ const LogoPreview = ({ domain, logoUrl }: LogoPreviewProps) => {
             onLoad={() => setStatus('loaded')}
             onError={() => setStatus('error')}
           />
-          {isLoading ? (
+          {isImageLoading ? (
             <Skeleton className="absolute inset-0 rounded-md" />
           ) : null}
         </>
       ) : null}
-      {showFallback ? (
+      {isGenerating ? (
+        <Skeleton className="absolute inset-0 rounded-md" />
+      ) : null}
+      {showNoPreview ? (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
-          {logoUrl ? 'Preview unavailable' : 'No preview'}
+          No preview
+        </div>
+      ) : null}
+      {showPreviewUnavailable ? (
+        <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
+          Preview unavailable
         </div>
       ) : null}
     </div>
@@ -65,9 +80,11 @@ const LogoPreview = ({ domain, logoUrl }: LogoPreviewProps) => {
 export const InternalAIGenerations = ({
   domains,
   internalAIGenerations,
+  isLoading = false,
 }: {
   domains: string[];
   internalAIGenerations?: InternalAIGenerations;
+  isLoading?: boolean;
 }) => {
   if (domains.length === 0) {
     return null;
@@ -97,7 +114,11 @@ export const InternalAIGenerations = ({
               key={`ai-starter-${domain}`}
               className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
             >
-              <LogoPreview domain={domain} logoUrl={logo?.url} />
+              <LogoPreview
+                domain={domain}
+                logoUrl={logo?.url}
+                isLoading={isLoading}
+              />
               <div className="mt-3 text-center text-sm truncate">{domain}</div>
             </div>
           );

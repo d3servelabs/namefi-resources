@@ -1,4 +1,4 @@
-import { and, gt, sql } from 'drizzle-orm';
+import { and, asc, gt, sql } from 'drizzle-orm';
 import {
   db,
   internalAiGenerationsTable,
@@ -6,6 +6,7 @@ import {
   namefiNftView,
 } from '@namefi-astra/db';
 import { config, secrets } from '#lib/env';
+import { createLogger } from '#lib/logger';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import pMap from 'p-map';
 import { createS3Client, type StorageConfig } from '@namefi-astra/storage';
@@ -15,6 +16,8 @@ import {
   type LogoTypeInput,
 } from '@namefi-astra/ai';
 import { Context } from '@temporalio/activity';
+
+const logger = createLogger({ module: 'logo-generation-activities' });
 
 export interface GenerateLogosForDomainsParams {
   domains: NamefiNormalizedDomain[];
@@ -33,29 +36,35 @@ export interface GenerateLogosForDomainsParams {
 export interface ListAliveNftDomainsParams {
   limit?: number;
   offset?: number;
+  afterDomain?: NamefiNormalizedDomain;
   skipExisting?: boolean; // if true, only list domains without an existing internal logo
 }
 
 export async function listAliveNftDomains({
   limit = 500,
   offset = 0,
+  afterDomain,
   skipExisting = false,
 }: ListAliveNftDomainsParams = {}): Promise<NamefiNormalizedDomain[]> {
-  const baseWhere = gt(namefiNftView.expirationTime, new Date());
-  const whereClause = skipExisting
-    ? and(
-        baseWhere,
-        sql`NOT EXISTS (SELECT 1 FROM ${internalAiGenerationsTable} AS i WHERE i.domain = ${namefiNftView.normalizedDomainName} AND i.type = 'logo')`,
-      )
-    : baseWhere;
+  const now = new Date();
+  const whereConditions = [gt(namefiNftView.expirationTime, now)];
+  if (afterDomain) {
+    whereConditions.push(gt(namefiNftView.normalizedDomainName, afterDomain));
+  }
+  if (skipExisting) {
+    whereConditions.push(
+      sql`NOT EXISTS (SELECT 1 FROM ${internalAiGenerationsTable} AS i WHERE i.domain = ${namefiNftView.normalizedDomainName} AND i.type = 'logo')`,
+    );
+  }
 
   const rows = await db
     .with(namefiNftCte)
     .select({ domain: namefiNftView.normalizedDomainName })
     .from(namefiNftView)
-    .where(whereClause)
+    .where(and(...whereConditions))
+    .orderBy(asc(namefiNftView.normalizedDomainName))
     .limit(limit)
-    .offset(offset);
+    .offset(afterDomain ? 0 : offset);
   return rows.map((r) => r.domain);
 }
 
@@ -188,6 +197,14 @@ export async function generateLogosForDomains(
 
         return { domain, ok: true } as const;
       } catch (e) {
+        logger.warn(
+          {
+            domain,
+            batchId,
+            error: e instanceof Error ? e.message : String(e),
+          },
+          'Failed to generate internal logo for domain',
+        );
         return {
           domain,
           ok: false,

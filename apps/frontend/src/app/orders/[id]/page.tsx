@@ -82,6 +82,9 @@ const InternalAIGenerations = dynamic(
   { ssr: false },
 );
 
+const INTERNAL_AI_POLL_INTERVAL_MS = 3_000;
+const INTERNAL_AI_POLL_TIMEOUT_MS = 120_000;
+
 interface OrderPageProps {
   params: Promise<{ id: string }>;
 }
@@ -89,6 +92,9 @@ interface OrderPageProps {
 type OrderProgressStepId = NonNullable<
   AppRouterOutput['orders']['getOrderProgress']['state']
 >['steps'][number]['id'];
+
+type InternalAIGenerationsByDomains =
+  AppRouterOutput['ai']['getInternalGenerationsByDomains'];
 
 type OrderItemCounts = {
   importCount: number;
@@ -191,6 +197,21 @@ function getProcessingDescription(
   return 'Hang on tight while we wrap things up.';
 }
 
+function hasLogoPreviewsForAllDomains(
+  domains: string[],
+  internalAiGenerations: InternalAIGenerationsByDomains | undefined,
+): boolean {
+  if (domains.length === 0) {
+    return true;
+  }
+
+  return domains.every((domain) =>
+    (internalAiGenerations?.[domain] ?? []).some((generation) => {
+      return generation.type === 'logo' && Boolean(generation.url);
+    }),
+  );
+}
+
 export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -257,6 +278,8 @@ export default function OrderPage({ params }: OrderPageProps) {
     order?.status === orderStatusSchema.enum.PARTIALLY_COMPLETED;
 
   const hasOrderDetails = Boolean(order);
+  const [hasInternalAiPollingTimedOut, setHasInternalAiPollingTimedOut] =
+    useState(false);
   const domainsRaw = items.map((it) => it.normalizedDomainName);
   const uniqueDomains = Array.from(new Set(domainsRaw));
   const { data: internalAiGenerations, refetch: refetchInternalAiGenerations } =
@@ -265,7 +288,50 @@ export default function OrderPage({ params }: OrderPageProps) {
         domains: uniqueDomains,
       }),
       enabled: uniqueDomains.length > 0,
+      refetchOnWindowFocus: false,
+      refetchInterval: (query) => {
+        if (
+          !isCompletedOrder ||
+          uniqueDomains.length === 0 ||
+          hasInternalAiPollingTimedOut
+        ) {
+          return false;
+        }
+
+        const queryData = query.state.data as
+          | InternalAIGenerationsByDomains
+          | undefined;
+        if (hasLogoPreviewsForAllDomains(uniqueDomains, queryData)) {
+          return false;
+        }
+
+        return INTERNAL_AI_POLL_INTERVAL_MS;
+      },
+      refetchIntervalInBackground: true,
     });
+  const hasLogoPreviews = hasLogoPreviewsForAllDomains(
+    uniqueDomains,
+    internalAiGenerations,
+  );
+  useEffect(() => {
+    if (!isCompletedOrder || uniqueDomains.length === 0 || hasLogoPreviews) {
+      setHasInternalAiPollingTimedOut(false);
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setHasInternalAiPollingTimedOut(true);
+    }, INTERNAL_AI_POLL_TIMEOUT_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isCompletedOrder, uniqueDomains.length, hasLogoPreviews]);
+  const isInternalAiGenerationsLoading =
+    isCompletedOrder &&
+    uniqueDomains.length > 0 &&
+    !hasLogoPreviews &&
+    !hasInternalAiPollingTimedOut;
 
   const isLoading = isAuthLoading || isOrderDetailsLoading;
 
@@ -539,6 +605,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             <InternalAIGenerations
               domains={uniqueDomains}
               internalAIGenerations={internalAiGenerations}
+              isLoading={isInternalAiGenerationsLoading}
             />
           </div>
         )}
