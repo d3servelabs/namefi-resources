@@ -57,10 +57,10 @@ import {
   collectOrdersTotal,
 } from './collectors/orders';
 import {
-  METRIC_NAME_ORDER_DURATION,
-  METRIC_NAME_ORDER_HANDLING_DURATION,
-  collectOrderDurationMetrics,
-  collectOrderHandlingDurationMetrics,
+  METRIC_NAME_ACTUAL_ORDER_PROCESSING,
+  METRIC_NAME_TOTAL_ORDER_DURATION,
+  collectActualOrderProcessingMetrics,
+  collectTotalOrderDurationMetrics,
 } from './collectors/durations';
 import {
   METRIC_NAME as USERS_WITH_WISHLIST_METRIC,
@@ -141,12 +141,12 @@ const collectors: CollectorEntry[] = [
     collect: collectPaymentsByStatusAndMethod,
   },
   {
-    metric: METRIC_NAME_ORDER_DURATION,
-    collect: collectOrderDurationMetrics,
+    metric: METRIC_NAME_TOTAL_ORDER_DURATION,
+    collect: collectTotalOrderDurationMetrics,
   },
   {
-    metric: METRIC_NAME_ORDER_HANDLING_DURATION,
-    collect: collectOrderHandlingDurationMetrics,
+    metric: METRIC_NAME_ACTUAL_ORDER_PROCESSING,
+    collect: collectActualOrderProcessingMetrics,
   },
   {
     metric: USERS_WITH_WISHLIST_METRIC,

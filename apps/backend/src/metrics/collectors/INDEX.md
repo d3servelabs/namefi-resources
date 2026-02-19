@@ -17,6 +17,6 @@
 | [`collectors/usersWithCart.ts`](./usersWithCart.ts) | `namefi_users_with_cart_total` | Users with at least one cart item. |
 | [`collectors/missingNft.ts`](./missingNft.ts) | `namefi_domains_missing_nft_total` | Domains present in registrar but missing NFT. |
 | [`collectors/missingInRegistrar.ts`](./missingInRegistrar.ts) | `namefi_domains_missing_in_registrar_total` | Domains with NFT but missing in registrar. |
-| [`collectors/orders.ts`](./orders.ts) | `namefi_orders_total` | Orders created in the last 24 hours grouped by source. |
+| [`collectors/orders.ts`](./orders.ts) | `namefi_orders_total` | Orders started in the last 24 hours grouped by source. |
 | [`collectors/payments.ts`](./payments.ts) | `namefi_payments_total` | Payment attempts in the last 24 hours grouped by status and method. |
-| [`collectors/durations.ts`](./durations.ts) | `namefi_order_duration_seconds_bucket`, `namefi_order_duration_seconds_sum`, `namefi_order_duration_seconds_count`, `namefi_order_handling_duration_seconds_bucket`, `namefi_order_handling_duration_seconds_sum`, `namefi_order_handling_duration_seconds_count` | Order duration and handling duration buckets, sums, and counts (last 24 hours). |
+| [`collectors/durations.ts`](./durations.ts) | `namefi_total_order_duration_seconds_bucket`, `namefi_total_order_duration_seconds_sum`, `namefi_total_order_duration_seconds_count`, `namefi_actual_order_processing_seconds_bucket`, `namefi_actual_order_processing_seconds_sum`, `namefi_actual_order_processing_seconds_count` | TotalOrderDuration and ActualOrderProcessing range buckets (`gte` + `le`), sums, and counts (last 24 hours). |
