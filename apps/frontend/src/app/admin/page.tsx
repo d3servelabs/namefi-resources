@@ -27,6 +27,7 @@ import {
   ClipboardList,
   SlidersHorizontal,
   Megaphone,
+  AlertTriangle,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -301,6 +302,15 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-sky-100',
         iconTextColor: 'text-sky-600',
         permissions: [Permission.FLUSH_DNS_CACHE],
+      },
+      {
+        title: 'Crash Testing',
+        description:
+          'Intentionally trigger a fatal client crash to validate Datadog error capture end to end.',
+        href: '/admin/crash-testing',
+        icon: AlertTriangle,
+        iconBgColor: 'bg-red-100',
+        iconTextColor: 'text-red-600',
       },
     ],
   },

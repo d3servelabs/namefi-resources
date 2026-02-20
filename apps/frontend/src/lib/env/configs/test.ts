@@ -20,6 +20,7 @@ const testConfig: ConfigInput = {
   ADDITIONAL_HOSTNAME_MAP: {},
   ALLOWED_CHAINS: [chains.sepolia.id],
   HUNT_CAMPAIGN_KEYS: ['XXXXXXXXXX'],
+  DATADOG_LOGS_SESSION_SAMPLE_RATE: 0,
 };
 
 export default testConfig;

@@ -24,15 +24,41 @@ import { useState } from 'react';
 import superjson from 'superjson';
 import { TRPCProvider } from '@/lib/trpc';
 
-if (process.env.NEXT_PUBLIC_DATADOG_LOGS_CLIENT_TOKEN) {
-  datadogLogs.init({
-    clientToken: process.env.NEXT_PUBLIC_DATADOG_LOGS_CLIENT_TOKEN,
-    site: 'us5.datadoghq.com',
-    service: `namefi-astra-frontend-${process.env.ENVIRONMENT}`,
-    forwardErrorsToLogs: true,
-    forwardConsoleLogs: ['error', 'info'],
-    sessionSampleRate: 100,
-  });
+function toDatadogError(error: unknown): Error {
+  if (error instanceof Error) {
+    return error;
+  }
+
+  if (typeof error === 'string') {
+    return new Error(error);
+  }
+
+  return new Error('Non-Error throwable received');
+}
+
+function buildDatadogErrorContext(error: unknown) {
+  if (error instanceof TRPCClientError) {
+    return {
+      errorName: error.name,
+      errorMessage: error.message,
+      trpcCode: error.data?.code,
+      trpcHttpStatus: error.data?.httpStatus,
+      trpcPath: error.data?.path,
+    };
+  }
+
+  if (error instanceof Error) {
+    return {
+      errorName: error.name,
+      errorMessage: error.message,
+    };
+  }
+
+  return {
+    nonErrorThrowable: true,
+    thrownType: typeof error,
+    thrownValue: String(error),
+  };
 }
 
 export function makeQueryClient() {
@@ -40,7 +66,14 @@ export function makeQueryClient() {
     defaultOptions: {
       mutations: {
         onError: (error) => {
-          datadogLogs.logger.error('Mutation error', error);
+          datadogLogs.logger.error(
+            'Mutation error',
+            {
+              source: 'trpc.mutation',
+              ...buildDatadogErrorContext(error),
+            },
+            toDatadogError(error),
+          );
         },
       },
       queries: {
@@ -56,7 +89,15 @@ export function makeQueryClient() {
             return true;
           }
 
-          datadogLogs.logger.error('Query error', error);
+          datadogLogs.logger.error(
+            'Query error',
+            {
+              source: 'trpc.query',
+              failureCount,
+              ...buildDatadogErrorContext(error),
+            },
+            toDatadogError(error),
+          );
           return false;
         },
         // With SSR, we usually want to set some default staleTime

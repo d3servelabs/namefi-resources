@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const configSchema = z.object({
   TYPE: z.enum(['development', 'production', 'local', 'preview']),
+  APP_VERSION: z.string().default('unknown'),
+  DEPLOY_COMMIT_SHA: z.string().default('unknown'),
   BACKEND_URL: z.url(),
   RESOURCES_URL: z.url(),
   DOCS_URL: z.url(),
@@ -25,12 +27,17 @@ export const configSchema = z.object({
   ADDITIONAL_HOSTNAME_MAP: z.record(z.string(), z.string()).default({}),
   ALLOWED_CHAINS: z.number().array().default([]),
   HUNT_CAMPAIGN_KEYS: z.string().array().default([]),
+  DATADOG_LOGS_CLIENT_TOKEN: z
+    .string()
+    .default('pub8e11bd5c37f5798e2df1b8b503c24ed8'),
+  DATADOG_LOGS_SESSION_SAMPLE_RATE: z.number().min(0).max(100).default(100),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
 
 export const serverSideSecretsSchema = z.object({
   API_AUTH_KEY: z.string(),
+  DATADOG_API_KEY: z.string().min(1),
 });
 
 export type SecretsInput = z.input<typeof serverSideSecretsSchema>;

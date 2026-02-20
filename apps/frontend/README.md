@@ -11,7 +11,7 @@ cp .env.template .env
 
 2. Update the `.env` file with your environment variables:
 ```
-ENVIRONMENT=development    # Options: local, development, production
+ENVIRONMENT=development    # Options: local, preview, development, production
 ```
 
 Note: Configuration is managed in two ways:

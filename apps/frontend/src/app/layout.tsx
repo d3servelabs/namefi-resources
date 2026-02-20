@@ -11,7 +11,7 @@ import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
-import DatadogRum from '@/components/datadog-rum';
+import DatadogObservability from '@/components/datadog-observability';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
 import SkipAuthBanner from '@/components/SkipAuthBanner';
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col',
         )}
       >
-        <DatadogRum />
+        <DatadogObservability />
         <Suspense>
           <Providers>
             <GoogleAnalyticsCookieConsentGated />

@@ -32,6 +32,7 @@ import { monitorsRouter } from './routers/monitors';
 import { logLevelRouter } from './routers/log-level';
 import { statsRouter } from './routers/stats';
 import { tlsRouter } from './routers/tls';
+import { browserLogsProxyRouter } from './routers/browser-logs-proxy';
 
 type HonoVariables = {
   requestId: string;
@@ -126,6 +127,7 @@ app.route('/stats', statsRouter);
 app.route('v-next', providersRouter);
 app.route('/c15t', c15tRouter);
 app.route('/log-level', logLevelRouter);
+app.route('/client-events', browserLogsProxyRouter);
 
 app.get('/configfi', (c) => {
   return c.json({

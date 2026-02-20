@@ -22,6 +22,7 @@ const developmentConfig: ConfigInput = {
   ),
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],
   HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
+  DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
 };
 
 export default developmentConfig;

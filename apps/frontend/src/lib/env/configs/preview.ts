@@ -36,6 +36,7 @@ const previewConfig: PreviewConfig = {
     ? process.env.HUNT_CAMPAIGN_KEYS.split(',')
     : ['cv-2025-07-16', 'cta-2025-07-16']
   ).map((campaign) => campaign.trim()),
+  DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
 };
 
 export default previewConfig;

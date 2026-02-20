@@ -5,6 +5,7 @@
  */
 import createMdx from '@next/mdx';
 import { createJiti } from 'jiti';
+import { withDatadogConfig } from './build/with-datadog-config.mjs';
 import packageJson from './package.json' with { type: 'json' };
 
 /** @type {import('jiti').Jiti} */
@@ -22,6 +23,12 @@ const withMDX = createMdx({
 
 /** @type {{ config: import('./src/lib/env/schema').ConfigInput }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
+const deployCommitSha = process.env.VERCEL_GIT_COMMIT_SHA || 'unknown';
+const loadedClientConfig = {
+  ...appConfig,
+  APP_VERSION: packageJson.version,
+  DEPLOY_COMMIT_SHA: deployCommitSha,
+};
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -37,7 +44,7 @@ const nextConfig = {
   ],
   compiler: {
     define: {
-      'process.env.LOADED_CONFIG': JSON.stringify(appConfig),
+      'process.env.LOADED_CONFIG': JSON.stringify(loadedClientConfig),
       'process.env.LOADED_CLIENT_SIDE_ENV': JSON.stringify(
         Object.fromEntries(
           Object.entries(process.env).filter(([key]) =>
@@ -77,6 +84,7 @@ const nextConfig = {
     version: packageJson.version,
     name: packageJson.name,
     ENVIRONMENT: process.env.ENVIRONMENT,
+    VERCEL_ENV: process.env.VERCEL_ENV,
   },
   typescript: {
     // Note: validate is run on CI with build
@@ -147,4 +155,4 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };
 
-export default withMDX(nextConfig);
+export default withDatadogConfig(withMDX(nextConfig));
