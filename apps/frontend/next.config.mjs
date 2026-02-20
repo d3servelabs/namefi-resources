@@ -84,7 +84,7 @@ const nextConfig = {
     version: packageJson.version,
     name: packageJson.name,
     ENVIRONMENT: process.env.ENVIRONMENT,
-    VERCEL_ENV: process.env.VERCEL_ENV,
+    VERCEL_TARGET_ENV: process.env.VERCEL_TARGET_ENV,
   },
   typescript: {
     // Note: validate is run on CI with build

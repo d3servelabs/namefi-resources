@@ -16,22 +16,7 @@ const SENSITIVE_QUERY_KEY_PATTERN =
   /(token|secret|pass(word)?|api[_-]?key|session|jwt|auth|code|state)/i;
 const logsSessionSampleRate = config.DATADOG_LOGS_SESSION_SAMPLE_RATE;
 
-type DatadogEnv = 'development' | 'production' | 'local' | 'preview';
-
-const resolveDatadogEnv = (): DatadogEnv => {
-  const vercelEnv = process.env.VERCEL_ENV;
-  if (
-    vercelEnv === 'development' ||
-    vercelEnv === 'preview' ||
-    vercelEnv === 'production'
-  ) {
-    return vercelEnv;
-  }
-
-  return config.TYPE;
-};
-
-const DATADOG_ENV = resolveDatadogEnv();
+const DATADOG_ENV = process.env.VERCEL_TARGET_ENV?.trim();
 
 const redactUrlQueryParams = (value: string) => {
   if (!value || !value.includes('?')) {

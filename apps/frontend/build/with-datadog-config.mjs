@@ -154,9 +154,8 @@ const runDatadogSourcemapUpload = ({
 }) => {
   const releaseVersion = process.env.VERCEL_GIT_COMMIT_SHA;
   const hasDatadogApiKey = Boolean(process.env.DATADOG_API_KEY);
-  const vercelEnv = process.env.VERCEL_ENV;
-  const buildEnvLabel = vercelEnv || 'unknown';
-  const failBuildOnUploadError = vercelEnv === 'production';
+  const buildEnvLabel = toTrimmedString(process.env.VERCEL_TARGET_ENV);
+  const failBuildOnUploadError = buildEnvLabel === 'production';
   const distRootCandidates = resolveDistRootCandidates({ projectDir, distDir });
   const sourceMapDirCandidates = distRootCandidates.map((distRoot) =>
     path.join(distRoot, 'static', 'chunks'),
@@ -235,6 +234,7 @@ const runDatadogSourcemapUpload = ({
         env: {
           ...process.env,
           DATADOG_SITE: process.env.DATADOG_SITE || DATADOG_DEFAULT_SITE,
+          DATADOG_ENV: buildEnvLabel,
         },
       },
     );
