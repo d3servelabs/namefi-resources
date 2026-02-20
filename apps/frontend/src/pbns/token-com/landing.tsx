@@ -4,14 +4,13 @@ import type { LandingComponent } from '@/components/search';
 import { useSearchParams } from 'next/navigation';
 import { TokenComVariantALanding } from './variants/variant-a';
 import { TokenComVariantBLanding } from './variants/variant-b';
-import { TokenComVariantCLanding } from './variants/variant-c';
 
-type VariantKey = 'a' | 'b' | 'c';
+type VariantKey = 'a' | 'b';
 
 const DEFAULT_VARIANT: VariantKey = 'a';
 
 function resolveVariant(rawVariant: string | null): VariantKey {
-  if (rawVariant === 'a' || rawVariant === 'b' || rawVariant === 'c') {
+  if (rawVariant === 'a' || rawVariant === 'b') {
     return rawVariant;
   }
 
@@ -24,10 +23,6 @@ export const Landing: LandingComponent = ({ origin }) => {
 
   if (variant === 'b') {
     return <TokenComVariantBLanding origin={origin} />;
-  }
-
-  if (variant === 'c') {
-    return <TokenComVariantCLanding origin={origin} />;
   }
 
   return <TokenComVariantALanding origin={origin} />;
