@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { protos } from '@google-analytics/data';
 import {
   getDashboardOverview,
+  getCheckoutFlowOverview,
   getFullReportByRecordName,
 } from './analyticsRouter';
 import { parseDnsAnalyticsReportData } from '#lib/analytics-parser';
@@ -13,7 +14,8 @@ vi.mock('../../lib/env', async () => {
     ...actual,
     secrets: {
       ...actual.secrets,
-      GA4_PROPERTY_ID: 'test-property-id',
+      GA4_DNS_PROPERTY_ID: 'test-property-id',
+      GA4_APP_PROPERTY_ID: 'test-app-property-id',
       GA4_KEY_FILE_PATH: undefined,
     },
   };
@@ -26,6 +28,22 @@ function row(
 ): protos.google.analytics.data.v1beta.IRow {
   return {
     dimensionValues: [{ value: dimValue }],
+    metricValues: [{ value: String(count) }],
+  } as any;
+}
+
+function row3(
+  firstDimValue: string,
+  secondDimValue: string,
+  thirdDimValue: string,
+  count: number,
+): protos.google.analytics.data.v1beta.IRow {
+  return {
+    dimensionValues: [
+      { value: firstDimValue },
+      { value: secondDimValue },
+      { value: thirdDimValue },
+    ],
     metricValues: [{ value: String(count) }],
   } as any;
 }
@@ -82,7 +100,7 @@ vi.mock('../../lib/analytics_client', () => {
   }
 
   return {
-    createGA4Client: (_config: any) => ({
+    createGA4DnsAnalyticsClient: (_config: any) => ({
       // The router calls client['runReport'] with a request object containing dimensions[0].name
       runReport: async (req: any) => {
         const dimName = req.dimensions?.[0]?.name ?? '';
@@ -93,6 +111,44 @@ vi.mock('../../lib/analytics_client', () => {
         makeResponse('customEvent:public_suffix'),
       getByPublicSuffixPlusOne: async (_dr: any, _limit: number) =>
         makeResponse('customEvent:public_suffix_plus_one'),
+    }),
+  };
+});
+
+vi.mock('#lib/tracking/checkout/analytics-client', () => {
+  return {
+    createCheckoutFlowGA4Client: (_config: any) => ({
+      getEventCounts: async () => {
+        return {
+          rows: [
+            row('user_begin_search', 1000),
+            row('order_placed', 700),
+            row('payment_processed', 650),
+            row('domain_acquisition_started', 640),
+            row('domain_acquisition_finished', 630),
+            row('dns_records_propagated', 520),
+            row('parking_finished', 500),
+            row('payment_refunded', 70),
+            row('order_finished_email_sent', 480),
+            row('order_finished_email_opened', 300),
+          ],
+        } as any;
+      },
+      getEventCountsByStatus: async () => {
+        return {
+          rows: [
+            row3('payment_processed', 'SUCCESS', '(not set)', 610),
+            row3('payment_processed', 'FAILURE', '(not set)', 40),
+            row3('domain_acquisition_finished', 'SUCCESS', '(not set)', 560),
+            row3('domain_acquisition_finished', 'FAILURE', '(not set)', 50),
+            row3('domain_acquisition_finished', 'TIMEOUT', '(not set)', 20),
+            row3('parking_finished', 'SUCCESS', '(not set)', 480),
+            row3('parking_finished', 'TIMEOUT', '(not set)', 20),
+            row3('order_finished_email_sent', '(not set)', 'COMPLETED', 420),
+            row3('order_finished_email_sent', '(not set)', 'FAILED', 60),
+          ],
+        } as any;
+      },
     }),
   };
 });
@@ -164,5 +220,66 @@ describe('Analytics Router + Parser (e2e-style)', () => {
     expect(
       parsed.topDomains.find((d) => d.domain === 'example.com')?.count,
     ).toBe(120);
+  });
+
+  it('returns parsed checkout flow overview for funnel and sankey charts', async () => {
+    const parsed = await getCheckoutFlowOverview({
+      startDate: '7daysAgo',
+      endDate: 'today',
+    });
+
+    expect(parsed.summary.beginSearchCount).toBe(1000);
+    expect(parsed.summary.orderPlacedCount).toBe(700);
+    expect(parsed.summary.domainAcquisitionFinishedSuccessCount).toBe(560);
+    expect(parsed.summary.refundedCount).toBe(70);
+    expect(parsed.summary.conversionRatePercent).toBe(70.0);
+    expect(parsed.summary.completionRatePercent).toBe(80.0);
+
+    expect(parsed.funnel[0]).toEqual({
+      eventName: 'user_begin_search',
+      label: 'Begin Search',
+      value: 1000,
+    });
+    expect(parsed.funnel[parsed.funnel.length - 1]).toEqual({
+      eventName: 'order_finished_email_opened',
+      label: 'Order Email Opened',
+      value: 300,
+    });
+
+    expect(parsed.sankeyDomainAcquisition.nodes.length).toBeGreaterThan(0);
+    expect(parsed.sankeyDomainAcquisition.links.length).toBeGreaterThan(0);
+    expect(parsed.sankeyCheckout.nodes.length).toBeGreaterThan(0);
+    expect(parsed.sankeyCheckout.links.length).toBeGreaterThan(0);
+
+    expect(
+      parsed.sankey.nodes.some(
+        (node) => node.id === 'domain_acquisition_finished__SUCCESS',
+      ),
+    ).toBe(true);
+    expect(
+      parsed.sankey.nodes.some(
+        (node) => node.id === 'domain_acquisition_finished__FAILURE',
+      ),
+    ).toBe(true);
+    expect(
+      parsed.sankey.nodes.some((node) =>
+        node.id.startsWith('order_finished_email_sent__'),
+      ),
+    ).toBe(true);
+
+    expect(
+      parsed.sankey.links.some(
+        (link) =>
+          link.source === 'domain_acquisition_finished__FAILURE' &&
+          link.target === 'payment_refunded',
+      ),
+    ).toBe(true);
+    expect(
+      parsed.sankey.links.some(
+        (link) =>
+          link.source === 'payment_refunded' &&
+          link.target.startsWith('order_finished_email_sent__'),
+      ),
+    ).toBe(true);
   });
 });

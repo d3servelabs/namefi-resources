@@ -14,6 +14,8 @@ import { secrets } from '../../lib/env';
 import { createLogger } from '#lib/logger';
 import { dnsRcodes } from '../../lib/dns/rcodes';
 import { parseDnsAnalyticsReportData } from '#lib/analytics-parser';
+import { createCheckoutFlowGA4Client } from '#lib/tracking/checkout/analytics-client';
+import { parseCheckoutFlowReportData } from '#lib/tracking/checkout/analytics-parser';
 
 const logger = createLogger({ module: 'analytics-router' });
 
@@ -147,6 +149,7 @@ function mapDnssecStatus(data: any) {
 }
 
 let client: ReturnType<typeof createGA4DnsAnalyticsClient>;
+let checkoutFlowClient: ReturnType<typeof createCheckoutFlowGA4Client>;
 // Create GA4 client
 function createClient() {
   if (client) {
@@ -164,6 +167,23 @@ function createClient() {
   return client;
 }
 
+function createCheckoutFlowClient() {
+  if (checkoutFlowClient) {
+    return checkoutFlowClient;
+  }
+
+  if (!secrets.GA4_APP_PROPERTY_ID) {
+    throw new Error('GA4_APP_PROPERTY_ID environment variable is required');
+  }
+
+  checkoutFlowClient = createCheckoutFlowGA4Client({
+    propertyId: secrets.GA4_APP_PROPERTY_ID,
+    keyFilename: secrets.GA4_KEY_FILE_PATH,
+  });
+
+  return checkoutFlowClient;
+}
+
 const gaDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const gaRelativeDayRegex = /^(today|yesterday|\d+daysAgo)$/;
 const gaDateToken = z
@@ -176,6 +196,37 @@ const dateRangeSchema = z.object({
   startDate: gaDateToken.default('7daysAgo'),
   endDate: gaDateToken.default('today'),
 });
+
+export const getCheckoutFlowOverviewInputSchema = z.object({
+  ...dateRangeSchema.shape,
+});
+
+export async function getCheckoutFlowOverview(
+  input: z.infer<typeof getCheckoutFlowOverviewInputSchema>,
+) {
+  const client = createCheckoutFlowClient();
+  const dateRange: DateRange = {
+    startDate: input.startDate,
+    endDate: input.endDate,
+  };
+
+  logger.debug({ dateRange }, 'Getting checkout flow overview');
+
+  try {
+    const [eventCounts, eventCountsByStatus] = await Promise.all([
+      client.getEventCounts(dateRange),
+      client.getEventCountsByStatus(dateRange),
+    ]);
+
+    return parseCheckoutFlowReportData({
+      eventCounts,
+      eventCountsByStatus,
+    });
+  } catch (error) {
+    logger.error({ error, dateRange }, 'Error getting checkout flow overview');
+    throw error;
+  }
+}
 
 export const getDashboardOverviewInputSchema = z.object({
   startDate: gaDateToken,
@@ -473,6 +524,14 @@ export const analyticsRouter = createTRPCRouter({
     .input(getDashboardOverviewInputSchema)
     .query(async ({ input }) => {
       return getDashboardOverview(input);
+    }),
+
+  getCheckoutFlowOverview: adminProcedureWithPermissions(
+    Permission.READ_ANALYTICS,
+  )
+    .input(getCheckoutFlowOverviewInputSchema)
+    .query(async ({ input }) => {
+      return getCheckoutFlowOverview(input);
     }),
 
   /**

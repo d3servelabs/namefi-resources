@@ -34,6 +34,160 @@ export interface BackendAnalyticsEventMap {
   };
 }
 
+export interface BackendAnalyticsCustomDimension {
+  parameterName: string;
+  displayName: string;
+  description: string;
+  scope: 'EVENT';
+}
+
+export const BACKEND_ANALYTICS_CUSTOM_DIMENSIONS = [
+  {
+    parameterName: 'search_term',
+    displayName: 'Search Term',
+    description: 'Original search term entered by the user.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'parent_domain',
+    displayName: 'Parent Domain',
+    description: 'Parent domain selected or inferred during search.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'user_id',
+    displayName: 'User ID',
+    description: 'Internal user identifier attached to checkout events.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'order_id',
+    displayName: 'Order ID',
+    description: 'Unique order identifier for checkout events.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'normalized_domain_name',
+    displayName: 'Normalized Domain Name',
+    description: 'Normalized domain associated with the checkout event.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'order_item_id',
+    displayName: 'Order Item ID',
+    description: 'Unique order item identifier associated with the event.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'amount_usd_cents',
+    displayName: 'Amount USD Cents',
+    description: 'Payment amount represented in USD cents.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'item_count',
+    displayName: 'Item Count',
+    description: 'Number of items present in the order.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'payment_count',
+    displayName: 'Payment Count',
+    description: 'Number of payment attempts or payments linked to the event.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'order_source',
+    displayName: 'Order Source',
+    description: 'Source of order placement such as checkout or instant buy.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'payment_provider',
+    displayName: 'Payment Provider',
+    description: 'Primary payment provider used for the transaction.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'payment_providers',
+    displayName: 'Payment Providers',
+    description: 'Comma-separated payment providers used for the transaction.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'status',
+    displayName: 'Status',
+    description: 'Event status such as SUCCESS, FAILURE, or TIMEOUT.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'failure_reason',
+    displayName: 'Failure Reason',
+    description: 'Failure reason when an operation does not succeed.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'refund_type',
+    displayName: 'Refund Type',
+    description: 'Refund type classification such as FULL or PARTIAL.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'refund_amount_usd_cents',
+    displayName: 'Refund Amount USD Cents',
+    description: 'Refund amount represented in USD cents.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'registrar_key',
+    displayName: 'Registrar Key',
+    description: 'Registrar key used for domain operations.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'operation_type',
+    displayName: 'Operation Type',
+    description: 'Domain operation type such as REGISTER or IMPORT.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'duration_years',
+    displayName: 'Duration Years',
+    description: 'Domain duration in years for acquisition operations.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'chain_id',
+    displayName: 'Chain ID',
+    description: 'Blockchain chain identifier used for minting operations.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'dns_provider',
+    displayName: 'DNS Provider',
+    description: 'DNS provider selected for domain configuration.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'opt_out',
+    displayName: 'Parking Opt Out',
+    description: 'Whether the user opted out of parking configuration.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'order_status',
+    displayName: 'Order Status',
+    description: 'Order status at the time the order finished email was sent.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'email_distinct_id',
+    displayName: 'Email Distinct ID',
+    description: 'Distinct identifier used for tracking order email opens.',
+    scope: 'EVENT',
+  },
+] as const satisfies readonly BackendAnalyticsCustomDimension[];
+
 type CheckoutAnalyticsBaseParams = {
   user_id?: string;
   order_id?: string;

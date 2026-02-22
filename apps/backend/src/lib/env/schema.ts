@@ -61,6 +61,7 @@ export const secretsSchema = z.object({
 
   // Google Analytics 4 configuration
   GA4_DNS_PROPERTY_ID: z.string().optional(),
+  GA4_APP_PROPERTY_ID: z.string().optional(),
   GA4_KEY_FILE_PATH: z.string().optional(),
   GA_MEASUREMENT_API_SECRET: z.string().optional(),
 

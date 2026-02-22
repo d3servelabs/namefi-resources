@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/shadcn/select';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
 import {
   RefreshCwIcon,
   TrendingUpIcon,
@@ -32,6 +33,7 @@ import { useQuery } from '@tanstack/react-query';
 
 // Chart components
 import DashboardOverview from '@/components/admin/analytics/DashboardOverview';
+import { CheckoutFlowOverview } from '@/components/admin/analytics/CheckoutFlowOverview';
 import DateRangePicker from '@/components/admin/analytics/DateRangePicker';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -42,6 +44,7 @@ function AnalyticsPageContent() {
     startDate: '7daysAgo',
     endDate: 'today',
   });
+  const [analyticsView, setAnalyticsView] = useState<'dns' | 'checkout'>('dns');
 
   const [publicSuffixFilter, setPublicSuffixFilter] = useState<string>('');
   const [domainFilter, setDomainFilter] = useState<string>('');
@@ -59,6 +62,18 @@ function AnalyticsPageContent() {
       ...dateRange,
       ...(publicSuffixFilter && { publicSuffix: publicSuffixFilter }),
       ...(domainFilter && { publicSuffixPlusOne: domainFilter }),
+    }),
+    placeholderData: (previousData) => previousData,
+  });
+
+  const {
+    data: checkoutFlowData,
+    refetch: refetchCheckoutFlow,
+    isLoading: isCheckoutFlowLoading,
+    isFetching: isCheckoutFlowFetching,
+  } = useQuery({
+    ...trpc.analytics.getCheckoutFlowOverview.queryOptions({
+      ...dateRange,
     }),
     placeholderData: (previousData) => previousData,
   });
@@ -87,8 +102,16 @@ function AnalyticsPageContent() {
   };
 
   const handleRefresh = () => {
-    refetchDashboard();
+    void Promise.all([refetchDashboard(), refetchCheckoutFlow()]);
   };
+
+  const handleAnalyticsViewChange = (value: string) => {
+    if (value === 'dns' || value === 'checkout') {
+      setAnalyticsView(value);
+    }
+  };
+
+  const isAnyFetching = isFetching || isCheckoutFlowFetching;
 
   const handleClearFilters = () => {
     setPublicSuffixFilter('');
@@ -172,10 +195,10 @@ function AnalyticsPageContent() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">
-            DNS Analytics Dashboard
+            Analytics Dashboard
           </h1>
           <p className="text-muted-foreground mt-1">
-            Comprehensive DNS query analytics and insights
+            DNS query analytics and checkout flow insights
           </p>
         </div>
 
@@ -185,272 +208,308 @@ function AnalyticsPageContent() {
             onClick={handleRefresh}
             variant="outline"
             size="sm"
-            disabled={isFetching}
+            disabled={isAnyFetching}
           >
-            {isFetching ? (
+            {isAnyFetching ? (
               <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
             ) : (
               <RefreshCwIcon className="h-4 w-4 mr-2" />
             )}
-            {isFetching ? 'Refreshing...' : 'Refresh'}
+            {isAnyFetching ? 'Refreshing...' : 'Refresh'}
           </Button>
         </div>
       </div>
 
-      {/* Filter Card */}
-      <Card className="relative">
-        {isFetching && (
-          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2Icon className="h-4 w-4 animate-spin" />
-              Updating data...
-            </div>
-          </div>
-        )}
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <FilterIcon className="h-5 w-5" />
-              Data Filters
-              {isFetching && (
-                <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
-              )}
-            </CardTitle>
-            {(publicSuffixFilter || domainFilter) && (
-              <Button
-                onClick={handleClearFilters}
-                variant="outline"
-                size="sm"
-                disabled={isFetching}
-              >
-                <XIcon className="h-4 w-4 mr-2" />
-                Clear Filters
-              </Button>
+      <Tabs value={analyticsView} onValueChange={handleAnalyticsViewChange}>
+        <TabsList>
+          <TabsTrigger value="dns">DNS Analytics</TabsTrigger>
+          <TabsTrigger value="checkout">Checkout Analytics</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      {analyticsView === 'dns' && (
+        <>
+          {/* Filter Card */}
+          <Card className="relative">
+            {isFetching && (
+              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2Icon className="h-4 w-4 animate-spin" />
+                  Updating data...
+                </div>
+              </div>
             )}
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Public Suffix Filter */}
-            <div className="space-y-2">
-              <Label htmlFor="public-suffix-filter">Public Suffix (TLD)</Label>
-              <Select
-                value={publicSuffixFilter}
-                onValueChange={handlePublicSuffixChange}
-                disabled={isFetching}
-              >
-                <SelectTrigger id="public-suffix-filter">
-                  <SelectValue placeholder="Choose a public suffix..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {publicSuffixFilter && (
-                    <SelectItem value="__clear__">
-                      Clear Public Suffix Filter
-                    </SelectItem>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <FilterIcon className="h-5 w-5" />
+                  Data Filters
+                  {isFetching && (
+                    <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
                   )}
-                  {availablePublicSuffixes?.map((row: any, index: number) => {
-                    const suffix = row.dimensionValues?.[0]?.value;
-                    const count = row.metricValues?.[0]?.value;
-                    return (
-                      <SelectItem
-                        key={`suffix-${suffix}-${index}`}
-                        value={suffix}
-                      >
-                        .{suffix} (
-                        {Number.parseInt(count || '0').toLocaleString()}{' '}
-                        queries)
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Domain Filter */}
-            <div className="space-y-2">
-              <Label htmlFor="domain-filter">Domain</Label>
-              <Select
-                value={domainFilter}
-                onValueChange={handleDomainChange}
-                disabled={isFetching}
-              >
-                <SelectTrigger id="domain-filter">
-                  <SelectValue placeholder="Choose a domain..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {domainFilter && (
-                    <SelectItem value="__clear__">
-                      Clear Domain Filter
-                    </SelectItem>
-                  )}
-                  {availableDomains?.map((row: any, index: number) => {
-                    const domain = row.dimensionValues?.[0]?.value;
-                    const count = row.metricValues?.[0]?.value;
-                    return (
-                      <SelectItem
-                        key={`domain-${domain}-${index}`}
-                        value={domain}
-                      >
-                        {domain} (
-                        {Number.parseInt(count || '0').toLocaleString()}{' '}
-                        queries)
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Active Filter Indicator */}
-          {(publicSuffixFilter || domainFilter) && (
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
-              <div className="flex flex-wrap items-center gap-2 text-sm">
-                <FilterIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                <span className="font-medium text-blue-900 dark:text-blue-100">
-                  Active Filters:
-                </span>
-                {publicSuffixFilter && (
-                  <span className="text-blue-700 dark:text-blue-300">
-                    Public Suffix:{' '}
-                    <span className="font-mono bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
-                      .{publicSuffixFilter}
-                    </span>
-                  </span>
-                )}
-                {publicSuffixFilter && domainFilter && (
-                  <span className="text-blue-500 dark:text-blue-400">•</span>
-                )}
-                {domainFilter && (
-                  <span className="text-blue-700 dark:text-blue-300">
-                    Domain:{' '}
-                    <span className="font-mono bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
-                      {domainFilter}
-                    </span>
-                  </span>
+                </CardTitle>
+                {(publicSuffixFilter || domainFilter) && (
+                  <Button
+                    onClick={handleClearFilters}
+                    variant="outline"
+                    size="sm"
+                    disabled={isFetching}
+                  >
+                    <XIcon className="h-4 w-4 mr-2" />
+                    Clear Filters
+                  </Button>
                 )}
               </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Public Suffix Filter */}
+                <div className="space-y-2">
+                  <Label htmlFor="public-suffix-filter">
+                    Public Suffix (TLD)
+                  </Label>
+                  <Select
+                    value={publicSuffixFilter}
+                    onValueChange={handlePublicSuffixChange}
+                    disabled={isFetching}
+                  >
+                    <SelectTrigger id="public-suffix-filter">
+                      <SelectValue placeholder="Choose a public suffix..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {publicSuffixFilter && (
+                        <SelectItem value="__clear__">
+                          Clear Public Suffix Filter
+                        </SelectItem>
+                      )}
+                      {availablePublicSuffixes?.map(
+                        (row: any, index: number) => {
+                          const suffix = row.dimensionValues?.[0]?.value;
+                          const count = row.metricValues?.[0]?.value;
+                          return (
+                            <SelectItem
+                              key={`suffix-${suffix}-${index}`}
+                              value={suffix}
+                            >
+                              .{suffix} (
+                              {Number.parseInt(count || '0').toLocaleString()}{' '}
+                              queries)
+                            </SelectItem>
+                          );
+                        },
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-      {/* Quick Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="relative">
-          {isFetching && (
-            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
-            </div>
-          )}
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Queries</CardTitle>
-            <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {dashboardData?.dailyVolume?.rows
-                ?.reduce(
-                  (sum: number, row: any) =>
-                    sum + Number.parseInt(row.metricValues?.[0]?.value || '0'),
-                  0,
-                )
-                ?.toLocaleString() || '0'}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Last {dateRange.startDate === '7daysAgo' ? '7 days' : 'period'}
-            </p>
-          </CardContent>
-        </Card>
+                {/* Domain Filter */}
+                <div className="space-y-2">
+                  <Label htmlFor="domain-filter">Domain</Label>
+                  <Select
+                    value={domainFilter}
+                    onValueChange={handleDomainChange}
+                    disabled={isFetching}
+                  >
+                    <SelectTrigger id="domain-filter">
+                      <SelectValue placeholder="Choose a domain..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {domainFilter && (
+                        <SelectItem value="__clear__">
+                          Clear Domain Filter
+                        </SelectItem>
+                      )}
+                      {availableDomains?.map((row: any, index: number) => {
+                        const domain = row.dimensionValues?.[0]?.value;
+                        const count = row.metricValues?.[0]?.value;
+                        return (
+                          <SelectItem
+                            key={`domain-${domain}-${index}`}
+                            value={domain}
+                          >
+                            {domain} (
+                            {Number.parseInt(count || '0').toLocaleString()}{' '}
+                            queries)
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-        <Card className="relative">
-          {isFetching && (
-            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
-            </div>
-          )}
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Unique Domains
-            </CardTitle>
-            <GlobeIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {dashboardData?.topDomains?.rows?.length?.toLocaleString() || '0'}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Different domains queried
-            </p>
-          </CardContent>
-        </Card>
+              {/* Active Filter Indicator */}
+              {(publicSuffixFilter || domainFilter) && (
+                <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="flex flex-wrap items-center gap-2 text-sm">
+                    <FilterIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <span className="font-medium text-blue-900 dark:text-blue-100">
+                      Active Filters:
+                    </span>
+                    {publicSuffixFilter && (
+                      <span className="text-blue-700 dark:text-blue-300">
+                        Public Suffix:{' '}
+                        <span className="font-mono bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
+                          .{publicSuffixFilter}
+                        </span>
+                      </span>
+                    )}
+                    {publicSuffixFilter && domainFilter && (
+                      <span className="text-blue-500 dark:text-blue-400">
+                        •
+                      </span>
+                    )}
+                    {domainFilter && (
+                      <span className="text-blue-700 dark:text-blue-300">
+                        Domain:{' '}
+                        <span className="font-mono bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
+                          {domainFilter}
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
-        <Card className="relative">
-          {isFetching && (
-            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
-            </div>
-          )}
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Cache Hit Rate
-            </CardTitle>
-            <PieChartIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {(() => {
-                const cacheData = dashboardData?.cacheHitRatio?.rows;
-                if (!cacheData || cacheData.length === 0) return 'N/A';
+          {/* Quick Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="relative">
+              {isFetching && (
+                <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+                  <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Queries
+                </CardTitle>
+                <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {dashboardData?.dailyVolume?.rows
+                    ?.reduce(
+                      (sum: number, row: any) =>
+                        sum +
+                        Number.parseInt(row.metricValues?.[0]?.value || '0'),
+                      0,
+                    )
+                    ?.toLocaleString() || '0'}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Last{' '}
+                  {dateRange.startDate === '7daysAgo' ? '7 days' : 'period'}
+                </p>
+              </CardContent>
+            </Card>
 
-                const hits =
-                  cacheData.find(
-                    (row: any) => row.dimensionValues?.[0]?.value === '1',
-                  )?.metricValues?.[0]?.value || 0;
+            <Card className="relative">
+              {isFetching && (
+                <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+                  <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Unique Domains
+                </CardTitle>
+                <GlobeIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {dashboardData?.topDomains?.rows?.length?.toLocaleString() ||
+                    '0'}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Different domains queried
+                </p>
+              </CardContent>
+            </Card>
 
-                const total = cacheData.reduce(
-                  (sum: number, row: any) =>
-                    sum + Number.parseInt(row.metricValues?.[0]?.value || '0'),
-                  0,
-                );
+            <Card className="relative">
+              {isFetching && (
+                <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+                  <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Cache Hit Rate
+                </CardTitle>
+                <PieChartIcon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {(() => {
+                    const cacheData = dashboardData?.cacheHitRatio?.rows;
+                    if (!cacheData || cacheData.length === 0) return 'N/A';
 
-                return total > 0
-                  ? `${((Number.parseInt(hits.toString()) / total) * 100).toFixed(1)}%`
-                  : 'N/A';
-              })()}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Queries served from cache
-            </p>
-          </CardContent>
-        </Card>
+                    const hits =
+                      cacheData.find(
+                        (row: any) => row.dimensionValues?.[0]?.value === '1',
+                      )?.metricValues?.[0]?.value || 0;
 
-        <Card className="relative">
-          {isFetching && (
-            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
-            </div>
-          )}
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Client IPs</CardTitle>
-            <BarChart3Icon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {dashboardData?.topClientIps?.rows?.length || 0}
-            </div>
-            <p className="text-xs text-muted-foreground">Unique client IPs</p>
-          </CardContent>
-        </Card>
-      </div>
+                    const total = cacheData.reduce(
+                      (sum: number, row: any) =>
+                        sum +
+                        Number.parseInt(row.metricValues?.[0]?.value || '0'),
+                      0,
+                    );
 
-      {/* Dashboard Overview */}
-      <DashboardOverview
-        data={dashboardData}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        dateRange={dateRange}
-      />
+                    return total > 0
+                      ? `${((Number.parseInt(hits.toString()) / total) * 100).toFixed(1)}%`
+                      : 'N/A';
+                  })()}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Queries served from cache
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative">
+              {isFetching && (
+                <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+                  <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Client IPs
+                </CardTitle>
+                <BarChart3Icon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {dashboardData?.topClientIps?.rows?.length || 0}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Unique client IPs
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <DashboardOverview
+            data={dashboardData}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            dateRange={dateRange}
+          />
+        </>
+      )}
+
+      {analyticsView === 'checkout' && (
+        <div className="mt-2">
+          <CheckoutFlowOverview
+            data={checkoutFlowData}
+            isLoading={isCheckoutFlowLoading}
+            isFetching={isCheckoutFlowFetching}
+          />
+        </div>
+      )}
     </PageShell>
   );
 }

@@ -2,6 +2,7 @@ import { createLogger } from '#lib/logger';
 
 const logger = createLogger({ module: 'analytics-parser' });
 
+// #region Public Types
 // Minimal GA4 RunReport response row shape we rely on
 export interface GaReportRow {
   dimensionValues?: Array<{ value?: string | null } | null> | null;
@@ -67,6 +68,10 @@ export interface ParseDnsAnalyticsOptions {
   ipDetailsLimit?: number;
 }
 
+// #endregion
+
+// #region Primitive Helpers
+
 function toInt(value: string | null | undefined): number {
   const parsed = Number.parseInt((value ?? '').toString(), 10);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -79,6 +84,10 @@ function safeGetDim(row: GaReportRow, index = 0): string {
 function safeGetMetric(row: GaReportRow, index = 0): number {
   return toInt(row?.metricValues?.[index]?.value ?? '0');
 }
+
+// #endregion
+
+// #region Report Mapping Helpers
 
 /**
  * Parse a GA4 report into an array of name/count pairs.
@@ -95,6 +104,10 @@ function parseNameCount(
   }));
 }
 
+// #endregion
+
+// #region Main Parser
+
 /**
  * Produce a frontend-friendly, typed view of the analytics reports.
  * Accepts the raw object returned by getDashboardOverview/getFullReportByRecordName.
@@ -104,7 +117,7 @@ export function parseDnsAnalyticsReportData(
   options?: ParseDnsAnalyticsOptions,
 ): DnsAnalyticsParsed {
   try {
-    // Totals and summary
+    // Stage 1: compute top-level summary counters.
     const totalQueries = (raw.dailyVolume.rows ?? []).reduce((sum, row) => {
       return sum + safeGetMetric(row, 0);
     }, 0);
@@ -112,7 +125,7 @@ export function parseDnsAnalyticsReportData(
     const uniqueDomains = (raw.topDomains.rows ?? []).length;
     const uniqueClientIps = (raw.topClientIps.rows ?? []).length;
 
-    // Cache hit breakdown
+    // Stage 2: compute cache hit/miss breakdown from boolean-ish values.
     let hits = 0;
     let misses = 0;
     for (const row of raw.cacheHitRatio.rows ?? []) {
@@ -131,6 +144,7 @@ export function parseDnsAnalyticsReportData(
     const denom = hits + misses;
     const cacheHitRatePercent = denom > 0 ? (hits / denom) * 100 : null;
 
+    // Stage 3: map each report into frontend-friendly arrays.
     // Top domains
     const topDomains = parseNameCount(raw.topDomains, (row) =>
       safeGetDim(row, 0),
@@ -172,6 +186,7 @@ export function parseDnsAnalyticsReportData(
     ).map((it) => ({ date: it.name, count: it.count }));
 
     // Public suffix and plus one
+    // Filter out empty/(not set) categories that are not useful in charts.
     const publicSuffix = parseNameCount(
       raw.publicSuffix,
       (row) => safeGetDim(row, 0) || '',
@@ -186,6 +201,7 @@ export function parseDnsAnalyticsReportData(
       .filter((it) => it.name && it.name !== '(not set)')
       .map((it) => ({ domain: it.name, count: it.count }));
 
+    // Stage 4: compose summary + full parsed payload.
     const summary: DnsAnalyticsSummary = {
       totalQueries,
       uniqueDomains,
@@ -197,6 +213,7 @@ export function parseDnsAnalyticsReportData(
     };
 
     if (options?.includeIpDetails) {
+      // Keep details bounded so accidental large payloads don't flood callers.
       const limit = Math.max(0, Math.min(100, options.ipDetailsLimit ?? 10));
       summary.topClientIpsDetails = topClientIps.slice(0, limit);
     }
@@ -224,8 +241,8 @@ export function parseDnsAnalyticsReportData(
 
     return parsed;
   } catch (error) {
+    // Fail closed with a stable minimal shape for UI callers.
     logger.warn({ error }, 'Failed to parse DNS analytics report data');
-    // Fail closed with minimal structure to avoid crashing callers
     return {
       summary: {
         totalQueries: 0,
@@ -246,3 +263,5 @@ export function parseDnsAnalyticsReportData(
     };
   }
 }
+
+// #endregion
