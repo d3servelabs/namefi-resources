@@ -60,7 +60,7 @@ export const secretsSchema = z.object({
   NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL: z.string().optional(),
 
   // Google Analytics 4 configuration
-  GA4_PROPERTY_ID: z.string().optional(),
+  GA4_DNS_PROPERTY_ID: z.string().optional(),
   GA4_KEY_FILE_PATH: z.string().optional(),
   GA_MEASUREMENT_API_SECRET: z.string().optional(),
 

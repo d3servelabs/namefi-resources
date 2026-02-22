@@ -6,7 +6,10 @@ import {
   withRequiredPermissions,
 } from '../base';
 import { namefiNormalizedDomainSchema, Permission } from '@namefi-astra/utils';
-import { createGA4Client, type DateRange } from '../../lib/analytics_client';
+import {
+  createGA4DnsAnalyticsClient,
+  type DateRange,
+} from '../../lib/analytics_client';
 import { secrets } from '../../lib/env';
 import { createLogger } from '#lib/logger';
 import { dnsRcodes } from '../../lib/dns/rcodes';
@@ -143,19 +146,19 @@ function mapDnssecStatus(data: any) {
   };
 }
 
-let client: ReturnType<typeof createGA4Client>;
+let client: ReturnType<typeof createGA4DnsAnalyticsClient>;
 // Create GA4 client
 function createClient() {
   if (client) {
     return client;
   }
 
-  if (!secrets.GA4_PROPERTY_ID) {
+  if (!secrets.GA4_DNS_PROPERTY_ID) {
     throw new Error('GA4_PROPERTY_ID environment variable is required');
   }
 
-  client = createGA4Client({
-    propertyId: secrets.GA4_PROPERTY_ID,
+  client = createGA4DnsAnalyticsClient({
+    propertyId: secrets.GA4_DNS_PROPERTY_ID,
     keyFilename: secrets.GA4_KEY_FILE_PATH,
   });
   return client;

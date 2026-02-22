@@ -22,7 +22,7 @@
 import { Command } from 'commander';
 import { select, confirm, input } from '@inquirer/prompts';
 import {
-  createGA4Client,
+  createGA4DnsAnalyticsClient,
   type DateRange,
   type AnalyticsConfig,
 } from '../lib/analytics_client';
@@ -38,7 +38,7 @@ const program = new Command();
 interface AnalyticsMethod {
   name: string;
   description: string;
-  method: keyof ReturnType<typeof createGA4Client>;
+  method: keyof ReturnType<typeof createGA4DnsAnalyticsClient>;
   defaultParams?: any[];
   /**
    * @default true
@@ -220,24 +220,24 @@ const analyticsMethods: AnalyticsMethod[] = [
     ],
   },
 ];
-let client: ReturnType<typeof createGA4Client>;
+let client: ReturnType<typeof createGA4DnsAnalyticsClient>;
 
 // Initialize GA4 client
-function createClient(): ReturnType<typeof createGA4Client> {
+function createClient(): ReturnType<typeof createGA4DnsAnalyticsClient> {
   if (client) {
     return client;
   }
 
-  if (!secrets.GA4_PROPERTY_ID) {
+  if (!secrets.GA4_DNS_PROPERTY_ID) {
     throw new Error('GA4_PROPERTY_ID environment variable is required');
   }
 
   const config: AnalyticsConfig = {
-    propertyId: secrets.GA4_PROPERTY_ID,
+    propertyId: secrets.GA4_DNS_PROPERTY_ID,
     keyFilename: secrets.GA4_KEY_FILE_PATH,
   };
 
-  client = createGA4Client(config);
+  client = createGA4DnsAnalyticsClient(config);
   return client;
 }
 
@@ -499,7 +499,7 @@ async function interactiveMode() {
     if (action === 'config') {
       console.log('\n🔧 Google Analytics Configuration:');
       console.log(
-        `Property ID: ${secrets.GA4_PROPERTY_ID || 'Not configured'}`,
+        `Property ID: ${secrets.GA4_DNS_PROPERTY_ID || 'Not configured'}`,
       );
       console.log(`Key File: ${secrets.GA4_KEY_FILE_PATH || 'Not configured'}`);
 

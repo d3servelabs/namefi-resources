@@ -13,7 +13,10 @@ import {
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
-import { createGA4Client, type DateRange } from '#lib/analytics_client';
+import {
+  createGA4DnsAnalyticsClient,
+  type DateRange,
+} from '#lib/analytics_client';
 import { config, secrets } from '#lib/env';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
@@ -39,19 +42,20 @@ export type DomainTrafficCandidate = {
   domains: DomainTrafficSignal[];
 };
 
-let cachedGa4Client: ReturnType<typeof createGA4Client> | null = null;
+let cachedGa4Client: ReturnType<typeof createGA4DnsAnalyticsClient> | null =
+  null;
 
 function getGa4Client() {
   if (cachedGa4Client) {
     return cachedGa4Client;
   }
 
-  if (!secrets.GA4_PROPERTY_ID) {
-    throw new Error('GA4_PROPERTY_ID is not configured');
+  if (!secrets.GA4_DNS_PROPERTY_ID) {
+    throw new Error('GA4_DNS_PROPERTY_ID is not configured');
   }
 
-  cachedGa4Client = createGA4Client({
-    propertyId: secrets.GA4_PROPERTY_ID,
+  cachedGa4Client = createGA4DnsAnalyticsClient({
+    propertyId: secrets.GA4_DNS_PROPERTY_ID,
     keyFilename: secrets.GA4_KEY_FILE_PATH,
   });
 
@@ -126,7 +130,7 @@ async function fetchWeeklyTrafficCountsForDomains({
 }): Promise<Map<NamefiNormalizedDomain, number>> {
   if (domains.length === 0) return new Map();
 
-  if (!secrets.GA4_PROPERTY_ID) {
+  if (!secrets.GA4_DNS_PROPERTY_ID) {
     logger.warn('GA4 is not configured; skipping traffic checks');
     return new Map();
   }

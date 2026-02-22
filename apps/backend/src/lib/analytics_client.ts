@@ -15,7 +15,7 @@ export interface AnalyticsConfig {
 
 type RunReportResponse = protos.google.analytics.data.v1beta.IRunReportResponse;
 
-export class GA4AnalyticsClient {
+export class GA4DnsAnalyticsClient {
   private client: BetaAnalyticsDataClient;
   private adminClient: AnalyticsAdminServiceClient;
   private propertyId: string;
@@ -569,8 +569,8 @@ export class GA4AnalyticsClient {
   }
 }
 
-export const createGA4Client = (
+export const createGA4DnsAnalyticsClient = (
   config: AnalyticsConfig,
-): GA4AnalyticsClient => {
-  return new GA4AnalyticsClient(config);
+): GA4DnsAnalyticsClient => {
+  return new GA4DnsAnalyticsClient(config);
 };
