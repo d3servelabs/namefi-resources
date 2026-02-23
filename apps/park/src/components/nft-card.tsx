@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
-import { ExternalLink, Lock } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 import { ParkShareMenu } from '@/components/share-menu';
 import { Button } from '@/components/ui/shadcn/button';
@@ -30,6 +30,14 @@ const CHAIN_BADGE_BY_NAME = {
     icon: '/assets/chains/ethereum-badge.svg',
   },
 } as const satisfies Record<string, { label: string; icon: string }>;
+
+const PBN_BACKGROUND_BY_APEX = {
+  '0x.city': '/assets/pbn/0x-city.png',
+} as const satisfies Record<string, string>;
+
+const PBN_MARK_BY_APEX = {
+  '0x.city': '/assets/pbn/powered-by-namefi-0xcity.svg',
+} as const satisfies Record<string, string>;
 
 function formatExpiry(expiration?: string | null): string | null {
   if (!expiration) return null;
@@ -71,6 +79,138 @@ function getWalletAvatarSrc(address?: string | null): string | null {
 function getChainBadge(chainName?: DomainDocument['chainName']) {
   if (!chainName) return null;
   return CHAIN_BADGE_BY_NAME[chainName] ?? null;
+}
+
+const ACTION_BUTTON_CLASS =
+  'h-10 w-full min-w-0 justify-center rounded-full border border-border/45 bg-white/[0.04] px-3 text-[0.82rem] font-medium text-foreground shadow-none hover:border-border/65 hover:bg-white/[0.08] sm:text-sm';
+
+function splitDomainForPbnOverlay(
+  domainName: string,
+  pbnApex?: string | null,
+): { primary: string; secondary: string | null } {
+  const sanitized = domainName.trim();
+  if (!sanitized) {
+    return { primary: 'this domain', secondary: null };
+  }
+
+  if (pbnApex) {
+    const pbnSuffix = `.${pbnApex}`;
+    if (sanitized.toLowerCase().endsWith(pbnSuffix.toLowerCase())) {
+      const withoutSuffix = sanitized.slice(0, -pbnSuffix.length).trim();
+      if (withoutSuffix) {
+        return { primary: withoutSuffix, secondary: pbnSuffix };
+      }
+    }
+  }
+
+  const [label, ...rest] = sanitized.split('.');
+  if (!rest.length || !label) {
+    return { primary: sanitized, secondary: null };
+  }
+
+  return { primary: label, secondary: `.${rest.join('.')}` };
+}
+
+interface ParkPbnArtworkContentProps {
+  domainName: string;
+  pbnApex: string;
+}
+
+function ParkPbnArtworkContent({
+  domainName,
+  pbnApex,
+}: ParkPbnArtworkContentProps) {
+  const pbnBackground = PBN_BACKGROUND_BY_APEX[pbnApex] ?? null;
+  const pbnMark = PBN_MARK_BY_APEX[pbnApex] ?? null;
+  const pbnDomainLabel = splitDomainForPbnOverlay(domainName, pbnApex);
+
+  return (
+    <>
+      {pbnBackground ? (
+        <Image
+          src={pbnBackground}
+          alt=""
+          aria-hidden={true}
+          fill={true}
+          className="object-cover opacity-42"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.34),transparent_56%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.28),transparent_62%)]" />
+      )}
+      <div className="absolute inset-0 bg-[linear-gradient(140deg,rgba(15,23,42,0.14)_0%,rgba(0,0,0,0.38)_70%)]" />
+      <div className="absolute left-4 top-4 z-10 inline-flex items-center rounded-[0.38rem] bg-black/52 px-1.5 py-1 backdrop-blur-sm">
+        {pbnMark ? (
+          <Image
+            src={pbnMark}
+            alt="Powered by Namefi"
+            width={82}
+            height={32}
+            className="h-5 w-auto"
+          />
+        ) : (
+          <Image
+            src="/powered-by-namefi.svg"
+            alt="Powered by Namefi"
+            width={127}
+            height={24}
+            className="h-4 w-auto"
+          />
+        )}
+      </div>
+      <div className="absolute inset-x-0 bottom-0 z-[3] h-[28%] bg-gradient-to-t from-black/68 via-black/22 to-transparent" />
+      <div className="absolute bottom-2 left-4 right-28 z-[4] text-white">
+        <p className="line-clamp-2 break-all text-[1.62rem] font-semibold leading-tight text-white/95 sm:text-[1.84rem]">
+          {pbnDomainLabel.primary}
+        </p>
+        {pbnDomainLabel.secondary ? (
+          <p className="line-clamp-1 break-all text-[1.02rem] font-medium text-white/84 sm:text-[1.14rem]">
+            {pbnDomainLabel.secondary}
+          </p>
+        ) : null}
+      </div>
+    </>
+  );
+}
+
+interface ParkDefaultArtworkContentProps {
+  domainName: string;
+  primaryImage: string | null;
+}
+
+function ParkDefaultArtworkContent({
+  domainName,
+  primaryImage,
+}: ParkDefaultArtworkContentProps) {
+  return (
+    <>
+      {primaryImage ? (
+        <div className="absolute inset-0 flex items-center justify-center">
+          {/* biome-ignore lint/performance/noImgElement: remote artwork URLs are served outside Next.js image optimization */}
+          <img
+            src={primaryImage}
+            alt={`Artwork for ${domainName}`}
+            loading="lazy"
+            className="h-full w-full object-contain p-0 sm:p-1"
+          />
+        </div>
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-black p-6 text-center">
+          <p className="max-w-[84%] break-all text-[1.32rem] font-semibold tracking-[0.02em] text-brand-primary/90 sm:text-[1.58rem]">
+            {domainName}
+          </p>
+        </div>
+      )}
+      <div className="absolute left-4 top-4 z-10 inline-flex items-center rounded-[0.38rem] bg-black/52 px-1.5 py-1 backdrop-blur-sm">
+        <Image
+          src="/logotype.svg"
+          alt="Namefi logo"
+          width={68}
+          height={22}
+          className="h-4 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
+        />
+      </div>
+    </>
+  );
 }
 
 interface ParkOwnerBlockProps {
@@ -156,6 +296,8 @@ interface ParkArtworkPreviewProps {
   domainName: string;
   chainName?: DomainDocument['chainName'];
   expiration?: string | null;
+  pbnApex?: string | null;
+  chainExplorerUrl?: string | null;
 }
 
 function ParkArtworkPreview({
@@ -163,60 +305,71 @@ function ParkArtworkPreview({
   domainName,
   chainName,
   expiration,
+  pbnApex,
+  chainExplorerUrl,
 }: ParkArtworkPreviewProps) {
   const chainBadge = getChainBadge(chainName);
   const expiry = formatExpiry(expiration);
+  const expiryBadgeClassName =
+    'absolute bottom-4 right-4 z-[4] inline-flex items-center gap-1.5 rounded-[calc(var(--radius)+1px)] bg-black/72 px-2 py-1.5 ring-1 ring-white/20 backdrop-blur';
+  const expiryBadgeContent = (
+    <>
+      {chainBadge ? (
+        <span className="inline-flex size-7 items-center justify-center rounded-full bg-black/65 ring-1 ring-white/20">
+          <Image
+            src={chainBadge.icon}
+            alt=""
+            aria-hidden={true}
+            width={16}
+            height={16}
+            className="size-4"
+          />
+        </span>
+      ) : null}
+      <div className="leading-tight">
+        <p className="text-[0.52rem] uppercase tracking-[0.12em] text-white/64">
+          Expires on
+        </p>
+        <p className="text-[0.72rem] font-medium text-white/92">{expiry}</p>
+      </div>
+    </>
+  );
 
   return (
     <div className="park-nft-asset-shell rounded-[1.5rem] p-[1px]">
       <div className="relative aspect-square w-full overflow-hidden rounded-[calc(1.5rem-1px)] bg-black">
-        <Image
-          src="/logotype.svg"
-          alt="Namefi logo"
-          width={68}
-          height={22}
-          className="absolute left-4 top-4 z-10 h-4 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
-        />
-        {primaryImage ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            {/* biome-ignore lint/performance/noImgElement: remote artwork URLs are served outside Next.js image optimization */}
-            <img
-              src={primaryImage}
-              alt={`Artwork for ${domainName}`}
-              loading="lazy"
-              className="h-full w-full object-contain p-0 sm:p-1"
-            />
-          </div>
+        {pbnApex ? (
+          <ParkPbnArtworkContent domainName={domainName} pbnApex={pbnApex} />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-black p-6 text-center">
-            <p className="max-w-[84%] break-all text-[1.32rem] font-semibold tracking-[0.02em] text-brand-primary/90 sm:text-[1.58rem]">
-              {domainName}
-            </p>
-          </div>
+          <ParkDefaultArtworkContent
+            domainName={domainName}
+            primaryImage={primaryImage}
+          />
         )}
-        {chainBadge ? (
-          <div className="absolute bottom-4 left-4 inline-flex size-9 items-center justify-center rounded-full bg-black/74 ring-1 ring-white/20 backdrop-blur">
-            <Image
-              src={chainBadge.icon}
-              alt={`${chainBadge.label} chain`}
-              width={20}
-              height={20}
-              className="size-5"
-            />
-          </div>
-        ) : null}
         {expiry ? (
-          <div className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-[calc(var(--radius)+1px)] bg-black/72 px-2 py-1.5 ring-1 ring-white/20 backdrop-blur">
-            <Lock className="size-3.5 text-brand-primary/90" />
-            <div className="leading-tight">
-              <p className="text-[0.52rem] uppercase tracking-[0.12em] text-white/64">
-                Expires on
-              </p>
-              <p className="text-[0.72rem] font-medium text-white/92">
-                {expiry}
-              </p>
-            </div>
-          </div>
+          chainExplorerUrl ? (
+            <Link
+              href={chainExplorerUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className={cn(
+                expiryBadgeClassName,
+                'transition hover:bg-black/82 hover:ring-white/32',
+              )}
+              aria-label={
+                chainBadge
+                  ? `Open ${chainBadge.label} explorer`
+                  : 'Open block explorer'
+              }
+              title={
+                chainBadge ? `Open ${chainBadge.label} explorer` : undefined
+              }
+            >
+              {expiryBadgeContent}
+            </Link>
+          ) : (
+            <div className={expiryBadgeClassName}>{expiryBadgeContent}</div>
+          )
         ) : null}
       </div>
     </div>
@@ -229,6 +382,8 @@ export interface ParkNftCardProps {
   ownerUrl: string | null;
   aiPreviewUrl?: string;
   host?: string;
+  pbnApex?: string | null;
+  chainExplorerUrl?: string | null;
 }
 
 export function ParkNftCard({
@@ -237,6 +392,8 @@ export function ParkNftCard({
   ownerUrl,
   aiPreviewUrl,
   host,
+  pbnApex,
+  chainExplorerUrl,
 }: ParkNftCardProps) {
   const owner = domain.currentOwner ?? null;
   const ownerDisplay = formatOwner(owner);
@@ -251,9 +408,23 @@ export function ParkNftCard({
     : `https://${shareBase.replace(LEADING_SLASHES_PATTERN, '')}`;
 
   const primaryImage = aiPreviewUrl ?? null;
+  const cardShellStyle = pbnApex
+    ? {
+        boxShadow:
+          '0px 34px 78px -58px color-mix(in srgb, var(--brand-primary) 62%, rgba(0,0,0,0.5)), 0px 0px 48px -38px color-mix(in srgb, var(--brand-secondary) 58%, transparent)',
+      }
+    : undefined;
 
   return (
-    <div className="group relative mx-auto w-full max-w-[27.5rem] overflow-hidden rounded-[1.55rem] border border-border/55 bg-background/70 shadow-[0px_34px_78px_-58px_rgba(0,0,0,0.88)]">
+    <div
+      className={cn(
+        'group relative mx-auto w-full max-w-[27.5rem] overflow-hidden rounded-[1.55rem] border',
+        pbnApex
+          ? 'border-brand-primary/40 bg-background/74'
+          : 'border-border/55 bg-background/70 shadow-[0px_34px_78px_-58px_rgba(0,0,0,0.88)]',
+      )}
+      style={cardShellStyle}
+    >
       <Card className="relative w-full overflow-hidden !rounded-[1.55rem] border-0 bg-background/85 shadow-none">
         <div className="pointer-events-none absolute inset-x-4 top-4 h-44 rounded-full bg-gradient-to-b from-brand-primary/20 via-transparent to-transparent blur-3xl" />
         <CardHeader className="relative space-y-5 pb-3">
@@ -270,6 +441,8 @@ export function ParkNftCard({
             domainName={domainName}
             chainName={domain.chainName}
             expiration={domain.expiration}
+            pbnApex={pbnApex}
+            chainExplorerUrl={chainExplorerUrl}
           />
 
           <div
@@ -279,11 +452,7 @@ export function ParkNftCard({
             )}
           >
             {followLink ? (
-              <Button
-                asChild
-                variant="secondary"
-                className="h-10 w-full min-w-0 justify-center rounded-full border border-border/45 bg-white/[0.04] px-3 text-[0.82rem] font-medium text-foreground shadow-none hover:bg-white/[0.1] sm:text-sm"
-              >
+              <Button asChild variant="outline" className={ACTION_BUTTON_CLASS}>
                 <Link
                   href={followLink}
                   target="_blank"
@@ -307,6 +476,7 @@ export function ParkNftCard({
               shareTarget={shareTarget}
               fullWidth={true}
               className="h-10"
+              buttonClassName={ACTION_BUTTON_CLASS}
             />
           </div>
         </CardContent>

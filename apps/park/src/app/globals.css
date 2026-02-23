@@ -186,6 +186,7 @@ html[data-theme="pbn"] {
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: clip;
   }
 }
 
@@ -259,18 +260,18 @@ html[data-theme="pbn"] {
     linear-gradient(to right, #000, #000),
     linear-gradient(
       315deg,
-      rgba(72, 229, 155, 0.42) 0%,
-      rgba(72, 229, 155, 0.12) 52%,
-      rgba(72, 229, 155, 0.42) 100%
+      color-mix(in srgb, var(--brand-primary) 42%, transparent) 0%,
+      color-mix(in srgb, var(--brand-primary) 12%, transparent) 52%,
+      color-mix(in srgb, var(--brand-primary) 42%, transparent) 100%
     ),
     linear-gradient(
       315deg,
-      rgba(0, 255, 135, 0.3) 0%,
-      rgba(72, 229, 155, 0) 33.33%,
-      rgba(72, 229, 155, 0) 66.67%,
-      rgba(0, 255, 135, 0.3) 100%
+      color-mix(in srgb, var(--brand-tertiary) 34%, transparent) 0%,
+      color-mix(in srgb, var(--brand-secondary) 0%, transparent) 33.33%,
+      color-mix(in srgb, var(--brand-secondary) 0%, transparent) 66.67%,
+      color-mix(in srgb, var(--brand-tertiary) 34%, transparent) 100%
     );
   box-shadow:
-    0 24px 64px -50px rgba(0, 255, 135, 0.6),
-    0 0 50px -42px rgba(0, 255, 135, 0.9);
+    0 24px 64px -50px color-mix(in srgb, var(--brand-primary) 60%, transparent),
+    0 0 50px -42px color-mix(in srgb, var(--brand-tertiary) 88%, transparent);
 }

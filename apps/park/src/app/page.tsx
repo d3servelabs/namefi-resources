@@ -2,12 +2,18 @@ import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import type { CSSProperties } from 'react';
 import { Footer } from '@/components/footer';
 import { ParkHeader } from '@/components/header';
 import { ParkNftCard } from '@/components/nft-card';
 import { Button } from '@/components/ui/shadcn/button';
 import { getInternalGenerationsByDomain } from '@/lib/ai';
 import { config } from '@/lib/env';
+import {
+  buildFrontendUrl,
+  getFrontendBaseUrl,
+  resolvePbnApex,
+} from '@/lib/frontend-url';
 import { getDomainQueryParam } from '@/lib/request';
 import {
   countDomainsByOwner,
@@ -16,10 +22,23 @@ import {
   getTagsByDomain,
 } from '@/lib/metadata';
 
+type MarketplaceKey =
+  | 'manage'
+  | 'opensea'
+  | 'magiceden'
+  | 'coinbasenft'
+  | 'looksrare'
+  | 'okx';
+
 type MarketplaceLink = {
+  key: MarketplaceKey;
   label: string;
   href: string;
-  description?: string;
+  logoSrc: string;
+  logoMutedSrc?: string;
+  logoWidth: number;
+  logoHeight: number;
+  logoClassName?: string;
 };
 
 interface PageData {
@@ -46,6 +65,76 @@ const DEFAULT_NAMEFI_NFT_ADDRESS =
   config.NAMEFI_NFT_ADDRESS ?? '0x0000000000cf80e7cf8fa4480907f692177f8e06';
 
 const GOOGLE_DOH_ENDPOINT = 'https://dns.google/resolve';
+const MARKETPLACE_META = {
+  manage: {
+    label: 'Manage on Namefi',
+    logoSrc: '/logotype.svg',
+    logoMutedSrc: '/logotype.svg',
+    logoWidth: 92,
+    logoHeight: 30,
+    logoClassName: 'h-5 w-auto opacity-85 sm:h-6',
+  },
+  opensea: {
+    label: 'OpenSea',
+    logoSrc: '/assets/marketplaces/opensea.svg',
+    logoMutedSrc: '/assets/marketplaces/opensea-gray.svg',
+    logoWidth: 112,
+    logoHeight: 30,
+    logoClassName: 'h-7 w-auto sm:h-8',
+  },
+  magiceden: {
+    label: 'Magic Eden',
+    logoSrc: '/assets/marketplaces/magiceden.svg',
+    logoMutedSrc: '/assets/marketplaces/magiceden-gray.svg',
+    logoWidth: 120,
+    logoHeight: 30,
+    logoClassName: 'h-7 w-auto sm:h-8',
+  },
+  coinbasenft: {
+    label: 'Coinbase NFT',
+    logoSrc: '/assets/marketplaces/coinbasenft.svg',
+    logoMutedSrc: '/assets/marketplaces/coinbasenft-gray.svg',
+    logoWidth: 124,
+    logoHeight: 30,
+    logoClassName: 'h-7 w-auto sm:h-8',
+  },
+  looksrare: {
+    label: 'LooksRare',
+    logoSrc: '/assets/marketplaces/looksrare.svg',
+    logoMutedSrc: '/assets/marketplaces/looksrare-gray.svg',
+    logoWidth: 118,
+    logoHeight: 30,
+    logoClassName: 'h-7 w-auto sm:h-8',
+  },
+  okx: {
+    label: 'OKX',
+    logoSrc: '/assets/marketplaces/okx.svg',
+    logoMutedSrc: '/assets/marketplaces/okx-gray.svg',
+    logoWidth: 80,
+    logoHeight: 30,
+    logoClassName: 'h-7 w-auto sm:h-8',
+  },
+} as const satisfies Record<
+  MarketplaceKey,
+  Omit<MarketplaceLink, 'key' | 'href'>
+>;
+const PBN_BRAND_TOKENS = {
+  '0x.city': {
+    '--brand-primary': 'oklch(51.06% 0.2301 277)',
+    '--brand-secondary': 'oklch(58.54% 0.2041 277.1)',
+    '--brand-tertiary': 'oklch(68.01% 0.1583 276.9)',
+  },
+  cv: {
+    '--brand-primary': 'oklch(71.4% 0.203 305.504)',
+    '--brand-secondary': 'oklch(71.4% 0.203 305.504)',
+    '--brand-tertiary': 'oklch(71.4% 0.203 305.504)',
+  },
+  today: {
+    '--brand-primary': 'oklch(78.9% 0.154 211.53)',
+    '--brand-secondary': 'oklch(78.9% 0.154 211.53)',
+    '--brand-tertiary': 'oklch(78.9% 0.154 211.53)',
+  },
+} as const;
 
 function stripPort(rawHost: string): string {
   if (rawHost.startsWith('[') && rawHost.endsWith(']')) {
@@ -109,26 +198,32 @@ function is0xCityDomain(ldh?: string | null): boolean {
   return Boolean(ldh?.endsWith('.0x.city'));
 }
 
-function buildFrontendUrl(pathname: string): string {
-  try {
-    return new URL(pathname, config.FRONTEND_URL).toString();
-  } catch {
-    return new URL(pathname, 'https://namefi.io').toString();
-  }
-}
-
-function buildOwnerDomainsUrl(owner?: string | null): string | null {
+function buildOwnerDomainsUrl(
+  owner: string | null | undefined,
+  frontendBaseUrl: string,
+): string | null {
   if (!owner) return null;
-  return buildFrontendUrl(`/owner/${encodeURIComponent(owner)}`);
+  return buildFrontendUrl(`/owner/${encodeURIComponent(owner)}`, {
+    baseUrl: frontendBaseUrl,
+  });
 }
 
-function buildManageDomainUrl(document: DomainDocument): string | null {
+function buildManageDomainUrl(
+  document: DomainDocument,
+  frontendBaseUrl: string,
+): string | null {
   const ldh = document.ldh;
   if (!ldh) return null;
+
   if (is0xCityDomain(ldh)) {
-    return `https://0x.city/domain/${ldh}`;
+    return buildFrontendUrl(`/domain/${encodeURIComponent(ldh)}`, {
+      baseUrl: frontendBaseUrl,
+    });
   }
-  return buildFrontendUrl(`/domains/${encodeURIComponent(ldh)}`);
+
+  return buildFrontendUrl(`/domains/${encodeURIComponent(ldh)}`, {
+    baseUrl: frontendBaseUrl,
+  });
 }
 
 function normalizeTokenId(tokenId?: string | null): string | null {
@@ -140,17 +235,28 @@ function normalizeTokenId(tokenId?: string | null): string | null {
   }
 }
 
-function buildMarketplaceLinks(document: DomainDocument): MarketplaceLink[] {
+function buildMarketplaceLinks(
+  document: DomainDocument,
+  frontendBaseUrl: string,
+): MarketplaceLink[] {
+  const toMarketplaceLink = (
+    key: MarketplaceKey,
+    href: string,
+  ): MarketplaceLink => ({
+    key,
+    href,
+    ...MARKETPLACE_META[key],
+  });
+
   const tokenId = normalizeTokenId(document.tokenId);
   const chain = document.chainName ?? 'ethereum';
 
   if (!tokenId) {
-    return [
-      {
-        label: 'Manage on Namefi',
-        href: buildFrontendUrl('/domains'),
-      },
-    ];
+    const manageDomainUrl =
+      buildManageDomainUrl(document, frontendBaseUrl) ??
+      buildFrontendUrl('/domains', { baseUrl: frontendBaseUrl });
+
+    return [toMarketplaceLink('manage', manageDomainUrl)];
   }
 
   const contract = DEFAULT_NAMEFI_NFT_ADDRESS;
@@ -169,29 +275,70 @@ function buildMarketplaceLinks(document: DomainDocument): MarketplaceLink[] {
   })();
 
   const items: MarketplaceLink[] = [
-    {
-      label: 'OpenSea',
-      href: `https://opensea.io/assets/${networkSlug}/${contract}/${tokenId}`,
-    },
-    {
-      label: 'Magic Eden',
-      href: `https://magiceden.io/collections/${networkSlug}/${contract}?evmItemDetailsModal=1%7E${contract}%7E${tokenId}`,
-    },
-    {
-      label: 'Coinbase NFT',
-      href: `https://nft.coinbase.com/nft/${networkSlug}/${contract}/${tokenId}`,
-    },
-    {
-      label: 'LooksRare',
-      href: `https://looksrare.org/collections/${contract}/${tokenId}`,
-    },
-    {
-      label: 'OKX',
-      href: `https://www.okx.com/web3/marketplace/nft/asset/${networkSlug}/${contract}/${tokenId}`,
-    },
+    toMarketplaceLink(
+      'opensea',
+      `https://opensea.io/assets/${networkSlug}/${contract}/${tokenId}`,
+    ),
+    toMarketplaceLink(
+      'magiceden',
+      `https://magiceden.io/collections/${networkSlug}/${contract}?evmItemDetailsModal=1%7E${contract}%7E${tokenId}`,
+    ),
+    toMarketplaceLink(
+      'coinbasenft',
+      `https://nft.coinbase.com/nft/${networkSlug}/${contract}/${tokenId}`,
+    ),
+    toMarketplaceLink(
+      'looksrare',
+      `https://looksrare.org/collections/${contract}/${tokenId}`,
+    ),
+    toMarketplaceLink(
+      'okx',
+      `https://www.okx.com/web3/marketplace/nft/asset/${networkSlug}/${contract}/${tokenId}`,
+    ),
   ];
 
   return items;
+}
+
+function buildChainExplorerUrl(document: DomainDocument): string | null {
+  const chain = document.chainName ?? 'ethereum';
+  const tokenId = normalizeTokenId(document.tokenId);
+  const contractAddress = DEFAULT_NAMEFI_NFT_ADDRESS;
+
+  const explorerBaseUrl = (() => {
+    switch (chain) {
+      case 'base':
+        return 'https://basescan.org';
+      case 'sepolia':
+        return 'https://sepolia.etherscan.io';
+      case 'goerli':
+        return 'https://goerli.etherscan.io';
+      default:
+        return 'https://etherscan.io';
+    }
+  })();
+
+  if (!tokenId) {
+    return `${explorerBaseUrl}/address/${contractAddress}`;
+  }
+
+  return `${explorerBaseUrl}/token/${contractAddress}?a=${encodeURIComponent(tokenId)}`;
+}
+
+function resolvePbnBrandStyle(
+  pbnApex?: string | null,
+): CSSProperties | undefined {
+  if (!pbnApex) return undefined;
+  if (pbnApex === '0x.city') {
+    return PBN_BRAND_TOKENS['0x.city'] as CSSProperties;
+  }
+  if (pbnApex.endsWith('.cv')) {
+    return PBN_BRAND_TOKENS.cv as CSSProperties;
+  }
+  if (pbnApex.endsWith('.today')) {
+    return PBN_BRAND_TOKENS.today as CSSProperties;
+  }
+  return undefined;
 }
 
 async function loadPageData(host: string): Promise<PageData> {
@@ -274,18 +421,27 @@ export default async function ParkPage({
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
   const host = await getRequestHost(domainFromQuery);
   const data = await loadPageData(host);
-  const manageUrl = buildManageDomainUrl(data.domainDocument);
-  const searchUrl = buildFrontendUrl('/');
+  const pbnApex = resolvePbnApex({
+    domain: data.domainDocument.ldh ?? host,
+    host,
+  });
+  const pbnBrandStyle = resolvePbnBrandStyle(pbnApex);
+  const frontendBaseUrl = getFrontendBaseUrl({
+    domain: data.domainDocument.ldh ?? host,
+    host,
+  });
+  const homeUrl = buildFrontendUrl('/', { baseUrl: frontendBaseUrl });
+  const manageUrl = buildManageDomainUrl(data.domainDocument, frontendBaseUrl);
+  const searchUrl = homeUrl;
   const ownerDomainsUrl = buildOwnerDomainsUrl(
     data.domainDocument.currentOwner,
+    frontendBaseUrl,
   );
-  const marketplaceLinks = buildMarketplaceLinks(data.domainDocument);
-  const displayName =
-    data.domainDocument.unicode ??
-    data.domainDocument.ldh ??
-    data.host ??
-    'Namefi Domain';
-
+  const marketplaceLinks = buildMarketplaceLinks(
+    data.domainDocument,
+    frontendBaseUrl,
+  );
+  const chainExplorerUrl = buildChainExplorerUrl(data.domainDocument);
   const description =
     data.domainDocument.explain ??
     'This domain is parked with Namefi. Explore ownership details and marketplace listings.';
@@ -306,16 +462,19 @@ export default async function ParkPage({
     .slice(0, 12);
 
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden bg-background text-foreground">
-      <ParkHeader searchUrl={searchUrl} />
-      <main className="flex-1 overflow-x-hidden">
+    <div
+      className="flex min-h-screen flex-col bg-background text-foreground"
+      style={pbnBrandStyle}
+    >
+      <ParkHeader homeUrl={homeUrl} searchUrl={searchUrl} />
+      <main className="flex-1">
         <section className="park-hero relative isolate px-6 pb-16 pt-10 sm:pb-20 sm:pt-12">
           <div className="mx-auto flex max-w-6xl flex-col gap-10 lg:gap-12">
-            <div className="space-y-7 py-2 text-center sm:space-y-8">
+            <div className="space-y-4 py-2 text-center sm:space-y-5">
               <div className="inline-flex flex-wrap items-center justify-center gap-2 text-[1.01rem] font-medium leading-relaxed text-foreground/88 sm:text-[1.15rem]">
                 <span>This domain is parked free courtesy of</span>
                 <Link
-                  href="https://namefi.io"
+                  href={homeUrl}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="inline-flex items-center transition hover:opacity-90"
@@ -329,7 +488,7 @@ export default async function ParkPage({
                   />
                 </Link>
               </div>
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+              <div className="flex flex-wrap items-center justify-center gap-3">
                 <Button
                   asChild
                   variant="outline"
@@ -362,6 +521,8 @@ export default async function ParkPage({
                 ownerUrl={ownerDomainsUrl}
                 aiPreviewUrl={aiPreview?.url}
                 host={host}
+                pbnApex={pbnApex}
+                chainExplorerUrl={chainExplorerUrl}
               />
               <div className="flex flex-col gap-8">
                 <div className="space-y-6 text-center lg:text-left">
@@ -378,10 +539,10 @@ export default async function ParkPage({
                         ))}
                       </div>
                     ) : null}
-                    <p className="mx-auto max-w-[44rem] text-balance text-[1.02rem] leading-[1.8] text-foreground/90 sm:text-[1.2rem] lg:mx-0">
+                    <p className="mx-auto max-w-[44rem] text-balance text-[1.02rem] leading-[1.8] font-semibold text-foreground/90 sm:text-[1.2rem] lg:mx-0">
                       {description}
                     </p>
-                    <p className="mx-auto max-w-[44rem] text-[0.98rem] leading-[1.7] text-foreground/63 italic sm:text-[1.08rem] lg:mx-0">
+                    <p className="mx-auto max-w-[44rem] text-[0.9rem] leading-[1.65] text-foreground/63 italic sm:text-[0.98rem] lg:mx-0">
                       {aiDisclaimer}
                     </p>
                   </div>
@@ -395,32 +556,41 @@ export default async function ParkPage({
           <div className="mx-auto max-w-6xl space-y-6">
             <div className="space-y-2 text-center lg:text-left">
               <h2 className="text-2xl font-semibold">
-                Where to trade {displayName}
+                Buy or see this domain on
               </h2>
-              <p className="text-muted-foreground">
-                Explore trusted venues curated by Namefi for buying or listing
-                this domain.
-              </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               {marketplaceLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group relative flex flex-col gap-2 rounded-2xl border border-border/60 bg-background/80 p-5 transition hover:-translate-y-0.5 hover:border-brand-primary/60 hover:shadow-lg"
+                  className="group relative overflow-hidden rounded-2xl border border-border/60 bg-background/80 transition hover:-translate-y-0.5 hover:border-brand-primary/65 hover:bg-background/88 hover:shadow-[0_24px_45px_-36px_color-mix(in_srgb,var(--brand-primary)_56%,transparent)]"
                 >
-                  <span className="text-sm font-semibold text-foreground">
-                    {link.label}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {link.description ??
-                      'Open the marketplace listing for this domain.'}
-                  </span>
-                  <span className="absolute right-5 top-5 text-sm text-muted-foreground transition group-hover:text-brand-primary">
-                    ↗
-                  </span>
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_65%_at_18%_0%,color-mix(in_srgb,var(--brand-primary)_16%,transparent),transparent_72%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative flex h-20 items-center justify-center px-4 sm:h-24 sm:px-5">
+                    <span className="sr-only">{`Open ${link.label}`}</span>
+                    <div className="relative inline-flex min-w-0 items-center justify-center">
+                      <Image
+                        src={link.logoMutedSrc ?? link.logoSrc}
+                        alt={`${link.label} logo`}
+                        width={link.logoWidth}
+                        height={link.logoHeight}
+                        className={`${link.logoClassName ?? 'h-5 w-auto'} transition-opacity duration-250 ${link.logoMutedSrc ? 'opacity-90 group-hover:opacity-0' : 'opacity-95'}`}
+                      />
+                      {link.logoMutedSrc ? (
+                        <Image
+                          src={link.logoSrc}
+                          alt=""
+                          aria-hidden
+                          width={link.logoWidth}
+                          height={link.logoHeight}
+                          className={`absolute transition-opacity duration-250 ${link.logoClassName ?? 'h-5 w-auto'} opacity-0 group-hover:opacity-100`}
+                        />
+                      ) : null}
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -428,7 +598,11 @@ export default async function ParkPage({
         </section>
       </main>
 
-      <Footer className="mt-auto" />
+      <Footer
+        className="mt-auto"
+        frontendBaseUrl={frontendBaseUrl}
+        pbnApex={pbnApex}
+      />
     </div>
   );
 }

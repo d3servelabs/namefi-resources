@@ -26,6 +26,7 @@ interface ParkShareMenuProps {
   shareTarget: string;
   className?: string;
   fullWidth?: boolean;
+  buttonClassName?: string;
 }
 
 export function ParkShareMenu({
@@ -33,6 +34,7 @@ export function ParkShareMenu({
   shareTarget,
   className,
   fullWidth = false,
+  buttonClassName,
 }: ParkShareMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -141,14 +143,15 @@ export function ParkShareMenu({
         className={cn(
           'h-full min-h-10 rounded-full border-border/45 bg-white/[0.03] px-4 text-[0.82rem] font-medium text-foreground shadow-none hover:border-border/65 hover:bg-white/[0.08] sm:text-sm',
           fullWidth && 'w-full justify-center',
+          buttonClassName,
         )}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         ref={triggerRef}
         onClick={() => setIsOpen((current) => !current)}
       >
-        Share
         <Share2 className="h-4 w-4" />
+        Share
       </Button>
 
       {isOpen && typeof document !== 'undefined'

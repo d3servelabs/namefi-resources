@@ -23,9 +23,11 @@ const LOGOS = {
 
 export function ParkHeader({
   className,
+  homeUrl = 'https://namefi.io',
   searchUrl = 'https://namefi.io',
 }: {
   className?: string;
+  homeUrl?: string;
   searchUrl?: string;
 }) {
   const origin = useOrigin();
@@ -41,7 +43,7 @@ export function ParkHeader({
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
         <Link
-          href="https://namefi.io"
+          href={homeUrl}
           target="_blank"
           rel="noreferrer noopener"
           className="flex items-center gap-3"
@@ -60,7 +62,7 @@ export function ParkHeader({
           href={searchUrl}
           target="_blank"
           rel="noreferrer noopener"
-          className="relative inline-flex h-10 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] px-4 text-sm font-semibold text-white transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:border-brand-primary/70 hover:bg-brand-primary/20 hover:shadow-[0_12px_34px_rgba(16,185,129,0.24)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black/80 supports-[backdrop-filter]:backdrop-blur-md"
+          className="relative inline-flex h-10 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] px-4 text-sm font-semibold text-white transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:border-brand-primary/70 hover:bg-brand-primary/20 hover:shadow-[0_12px_34px_color-mix(in_srgb,var(--brand-primary)_30%,transparent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black/80 supports-[backdrop-filter]:backdrop-blur-md"
         >
           Discover Domains
         </Link>

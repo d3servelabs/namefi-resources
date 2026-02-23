@@ -17,22 +17,38 @@ import {
   forwardRef,
   type HTMLAttributes,
 } from 'react';
-import { config } from '@/lib/env';
 import { useCookieConsent } from '@/hooks/use-cookie-consent';
 import { useOrigin } from '@/hooks/use-origin';
 import { cn } from '@/lib/cn';
+import { getPoweredByNamefiApex } from '@/lib/theme';
 
-export type FooterProps = HTMLAttributes<HTMLDivElement>;
+export type FooterProps = HTMLAttributes<HTMLDivElement> & {
+  frontendBaseUrl?: string;
+  pbnApex?: string | null;
+};
 
 const YEAR = new Date().getFullYear();
 const URL_PROTOCOL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
+const DEFAULT_PBN_LOGO = {
+  src: '/powered-by-namefi.svg',
+  alt: 'Powered by Namefi',
+  width: 127,
+  height: 24,
+  className: 'w-36',
+} as const;
 
-function buildFrontendUrl(pathname: string): string {
-  try {
-    return new URL(pathname, config.FRONTEND_URL).toString();
-  } catch {
-    return new URL(pathname, 'https://namefi.io').toString();
-  }
+const PBN_FOOTER_LOGOS = {
+  '0x.city': {
+    src: '/assets/pbn/powered-by-namefi-0xcity.svg',
+    alt: 'Powered by Namefi x 0x.city',
+    width: 104,
+    height: 40,
+    className: 'w-32',
+  },
+} as const;
+
+function buildHrefFromBase(pathname: string, baseUrl: string): string {
+  return new URL(pathname, baseUrl).toString();
 }
 
 const SOCIAL_LINKS = [
@@ -114,28 +130,33 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   HTMLDivElement,
   FooterProps
 >(function Footer(
-  { className, ...rest }: FooterProps,
+  { className, frontendBaseUrl, pbnApex, ...rest }: FooterProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const { openConsent } = useCookieConsent();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
+  const resolvedPbnApex =
+    pbnApex ?? getPoweredByNamefiApex(origin?.hostname ?? null);
+  const resolvedFrontendBaseUrl = frontendBaseUrl ?? 'https://namefi.io';
+  const pbnLogo = resolvedPbnApex
+    ? (PBN_FOOTER_LOGOS[resolvedPbnApex as keyof typeof PBN_FOOTER_LOGOS] ??
+      null)
+    : null;
 
-  const logo = isAstra
-    ? {
-        src: '/logotype.svg',
-        alt: 'Namefi Astra',
-        width: 132,
-        height: 43,
-        className: 'w-40',
-      }
-    : {
-        src: '/powered-by-namefi.svg',
-        alt: 'Powered by Namefi',
-        width: 127,
-        height: 24,
-        className: 'w-36',
-      };
+  const logo = pbnLogo
+    ? pbnLogo
+    : resolvedPbnApex
+      ? DEFAULT_PBN_LOGO
+      : isAstra
+        ? {
+            src: '/logotype.svg',
+            alt: 'Namefi Astra',
+            width: 132,
+            height: 43,
+            className: 'w-40',
+          }
+        : DEFAULT_PBN_LOGO;
 
   return (
     <footer
@@ -191,7 +212,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                     {(() => {
                       const resolvedHref = URL_PROTOCOL_PATTERN.test(href)
                         ? href
-                        : buildFrontendUrl(href);
+                        : buildHrefFromBase(href, resolvedFrontendBaseUrl);
                       return (
                         <Link
                           href={resolvedHref}
@@ -227,7 +248,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               Cookie Settings
             </button>
             <Link
-              href={buildFrontendUrl('/tos')}
+              href={buildHrefFromBase('/tos', resolvedFrontendBaseUrl)}
               className="text-white/70 transition hover:text-white"
             >
               Terms &amp; Conditions
