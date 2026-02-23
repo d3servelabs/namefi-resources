@@ -8,7 +8,7 @@ export const configSchema = z.object({
   NAMEFI_NFT_ADDRESS: z.string(),
   POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: z.string().array().default([]),
   ADDITIONAL_HOSTNAME_MAP: z.record(z.string(), z.string()).default({}),
-  FRONTEND_URL: z.string().url(),
+  FRONTEND_URL: z.url(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

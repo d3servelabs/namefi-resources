@@ -23,10 +23,10 @@ const LOGOS = {
 
 export function ParkHeader({
   className,
-  host,
+  searchUrl = 'https://namefi.io',
 }: {
   className?: string;
-  host?: string;
+  searchUrl?: string;
 }) {
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
@@ -35,11 +35,11 @@ export function ParkHeader({
   return (
     <header
       className={cn(
-        'sticky top-0 z-20 w-full border-b border-border/40 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/40',
+        'sticky top-0 z-30 w-full border-b border-white/10 bg-background/70 supports-[backdrop-filter]:bg-background/40 supports-[backdrop-filter]:backdrop-blur-2xl',
         className,
       )}
     >
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
         <Link
           href="https://namefi.io"
           target="_blank"
@@ -56,16 +56,14 @@ export function ParkHeader({
             priority={false}
           />
         </Link>
-        <div className="hidden items-center gap-3 text-xs text-muted-foreground sm:flex">
-          {host ? (
-            <>
-              <span className="rounded-full border border-border/60 px-3 py-1 text-[0.68rem] uppercase tracking-[0.18em]">
-                Parked Domain
-              </span>
-              <span className="font-medium text-foreground/80">{host}</span>
-            </>
-          ) : null}
-        </div>
+        <Link
+          href={searchUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="relative inline-flex h-10 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] px-4 text-sm font-semibold text-white transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out hover:border-brand-primary/70 hover:bg-brand-primary/20 hover:shadow-[0_12px_34px_rgba(16,185,129,0.24)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black/80 supports-[backdrop-filter]:backdrop-blur-md"
+        >
+          Discover Domains
+        </Link>
       </div>
     </header>
   );

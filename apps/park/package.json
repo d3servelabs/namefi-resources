@@ -11,9 +11,11 @@
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",
-    "check:unsafe": "biome check --write --unsafe ."
+    "check:unsafe": "biome check --write --unsafe .",
+    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun"
   },
   "dependencies": {
+    "@cfx-kit/wallet-avatar": "^0.0.5",
     "@namefi-astra/env": "workspace:*",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",

@@ -25,6 +25,15 @@ import { cn } from '@/lib/cn';
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
 const YEAR = new Date().getFullYear();
+const URL_PROTOCOL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
+
+function buildFrontendUrl(pathname: string): string {
+  try {
+    return new URL(pathname, config.FRONTEND_URL).toString();
+  } catch {
+    return new URL(pathname, 'https://namefi.io').toString();
+  }
+}
 
 const SOCIAL_LINKS = [
   {
@@ -71,7 +80,7 @@ const FOOTER_SECTIONS: Array<{
       { label: 'Domain Hunt', href: '/hunt' },
       {
         label: 'Newsletter',
-        href: `${config.FRONTEND_URL}/newsletter`,
+        href: '/newsletter',
         external: true,
       },
     ],
@@ -179,17 +188,24 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               <ul className="space-y-3 text-sm">
                 {section.links.map(({ label, href, external }) => (
                   <li key={label}>
-                    <Link
-                      href={href}
-                      target={external ? '_blank' : undefined}
-                      rel={external ? 'noreferrer noopener' : undefined}
-                      className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
-                    >
-                      <span>{label}</span>
-                      {external && (
-                        <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition group-hover:opacity-100" />
-                      )}
-                    </Link>
+                    {(() => {
+                      const resolvedHref = URL_PROTOCOL_PATTERN.test(href)
+                        ? href
+                        : buildFrontendUrl(href);
+                      return (
+                        <Link
+                          href={resolvedHref}
+                          target={external ? '_blank' : undefined}
+                          rel={external ? 'noreferrer noopener' : undefined}
+                          className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
+                        >
+                          <span>{label}</span>
+                          {external && (
+                            <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition group-hover:opacity-100" />
+                          )}
+                        </Link>
+                      );
+                    })()}
                   </li>
                 ))}
               </ul>
@@ -211,7 +227,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               Cookie Settings
             </button>
             <Link
-              href="/tos"
+              href={buildFrontendUrl('/tos')}
               className="text-white/70 transition hover:text-white"
             >
               Terms &amp; Conditions

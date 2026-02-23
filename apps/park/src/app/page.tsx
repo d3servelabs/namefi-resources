@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import punycode from 'punycode';
 import { Footer } from '@/components/footer';
 import { ParkHeader } from '@/components/header';
 import { ParkNftCard } from '@/components/nft-card';
@@ -109,13 +109,26 @@ function is0xCityDomain(ldh?: string | null): boolean {
   return Boolean(ldh?.endsWith('.0x.city'));
 }
 
+function buildFrontendUrl(pathname: string): string {
+  try {
+    return new URL(pathname, config.FRONTEND_URL).toString();
+  } catch {
+    return new URL(pathname, 'https://namefi.io').toString();
+  }
+}
+
+function buildOwnerDomainsUrl(owner?: string | null): string | null {
+  if (!owner) return null;
+  return buildFrontendUrl(`/owner/${encodeURIComponent(owner)}`);
+}
+
 function buildManageDomainUrl(document: DomainDocument): string | null {
   const ldh = document.ldh;
   if (!ldh) return null;
   if (is0xCityDomain(ldh)) {
     return `https://0x.city/domain/${ldh}`;
   }
-  return `https://app.namefi.io/dashboard/domains/${ldh}`;
+  return buildFrontendUrl(`/domains/${encodeURIComponent(ldh)}`);
 }
 
 function normalizeTokenId(tokenId?: string | null): string | null {
@@ -135,7 +148,7 @@ function buildMarketplaceLinks(document: DomainDocument): MarketplaceLink[] {
     return [
       {
         label: 'Manage on Namefi',
-        href: 'https://app.namefi.io/dashboard/domains',
+        href: buildFrontendUrl('/domains'),
       },
     ];
   }
@@ -179,35 +192,6 @@ function buildMarketplaceLinks(document: DomainDocument): MarketplaceLink[] {
   ];
 
   return items;
-}
-
-function buildNftSvgUrl(
-  document: DomainDocument,
-  host?: string | null,
-): string | null {
-  const base = config.NAMEFI_MD_API_ENDPOINT;
-  if (!base) return null;
-
-  const raw = document.ldh ?? host ?? document.unicode ?? null;
-  if (!raw) return null;
-
-  let ascii: string;
-  try {
-    ascii = punycode.toASCII(raw.toLowerCase());
-  } catch {
-    ascii = raw.toLowerCase();
-  }
-
-  try {
-    const url = new URL(base);
-    const chainSegment = document.chainName
-      ? `${document.chainName.toLowerCase()}/`
-      : '';
-    url.pathname = `${chainSegment}svg/${ascii}/image.svg`;
-    return url.toString();
-  } catch {
-    return null;
-  }
 }
 
 async function loadPageData(host: string): Promise<PageData> {
@@ -291,6 +275,10 @@ export default async function ParkPage({
   const host = await getRequestHost(domainFromQuery);
   const data = await loadPageData(host);
   const manageUrl = buildManageDomainUrl(data.domainDocument);
+  const searchUrl = buildFrontendUrl('/');
+  const ownerDomainsUrl = buildOwnerDomainsUrl(
+    data.domainDocument.currentOwner,
+  );
   const marketplaceLinks = buildMarketplaceLinks(data.domainDocument);
   const displayName =
     data.domainDocument.unicode ??
@@ -301,13 +289,10 @@ export default async function ParkPage({
   const description =
     data.domainDocument.explain ??
     'This domain is parked with Namefi. Explore ownership details and marketplace listings.';
+  const aiDisclaimer =
+    'Powered by Namefi AI™ (beta), could be inaccurate, not financial/trade advice. DYOR.';
 
   const aiPreview = data.aiGenerations.at(0);
-  const nftSvgUrl = buildNftSvgUrl(data.domainDocument, host);
-
-  const aiGallery = data.aiGenerations
-    .filter((generation) => Boolean(generation.url))
-    .slice(0, 6);
 
   const insightTags = [
     ...(data.domainDocument.highlights?.filter((item): item is string =>
@@ -321,69 +306,84 @@ export default async function ParkPage({
     .slice(0, 12);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <ParkHeader host={host} />
-      <main className="flex-1">
-        <section className="park-hero relative isolate px-6 pb-20 pt-16 sm:pt-24">
-          <div className="mx-auto flex max-w-6xl flex-col gap-12">
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:items-start">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-background text-foreground">
+      <ParkHeader searchUrl={searchUrl} />
+      <main className="flex-1 overflow-x-hidden">
+        <section className="park-hero relative isolate px-6 pb-16 pt-10 sm:pb-20 sm:pt-12">
+          <div className="mx-auto flex max-w-6xl flex-col gap-10 lg:gap-12">
+            <div className="space-y-7 py-2 text-center sm:space-y-8">
+              <div className="inline-flex flex-wrap items-center justify-center gap-2 text-[1.01rem] font-medium leading-relaxed text-foreground/88 sm:text-[1.15rem]">
+                <span>This domain is parked free courtesy of</span>
+                <Link
+                  href="https://namefi.io"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center transition hover:opacity-90"
+                >
+                  <Image
+                    src="/logotype.svg"
+                    alt="Namefi"
+                    width={104}
+                    height={34}
+                    className="h-6 w-auto sm:h-7"
+                  />
+                </Link>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-11 rounded-full border border-brand-primary/62 bg-background/72 px-7 text-[0.98rem] font-semibold tracking-[0.01em] text-foreground shadow-none transition hover:border-brand-primary hover:bg-brand-primary/12 sm:h-12 sm:px-9 sm:text-[1.05rem]"
+                >
+                  <Link href="#marketplaces">Buy this domain</Link>
+                </Button>
+                {manageUrl ? (
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-11 rounded-full border border-brand-primary/45 bg-background/72 px-7 text-[0.98rem] font-semibold tracking-[0.01em] text-foreground shadow-none transition hover:border-brand-primary/75 hover:bg-brand-primary/10 sm:h-12 sm:px-9 sm:text-[1.05rem]"
+                  >
+                    <Link
+                      href={manageUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Manage domain
+                    </Link>
+                  </Button>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,430px)_minmax(0,1fr)] lg:items-start">
               <ParkNftCard
                 domain={data.domainDocument}
                 domainsCountByOwner={data.domainsCountByOwner}
-                manageUrl={manageUrl}
+                ownerUrl={ownerDomainsUrl}
                 aiPreviewUrl={aiPreview?.url}
-                nftSvgUrl={nftSvgUrl}
                 host={host}
               />
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-8">
                 <div className="space-y-6 text-center lg:text-left">
-                  <div className="flex flex-wrap items-center justify-center gap-3 text-xs uppercase tracking-[0.24em] text-muted-foreground/80 lg:justify-start">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3 py-1 text-[0.68rem] font-semibold text-muted-foreground">
-                      Parked by Namefi
-                    </span>
-                  </div>
-                  <div className="space-y-4">
-                    <h1 className="text-balance text-4xl font-semibold sm:text-5xl">
-                      {displayName}
-                    </h1>
+                  <div className="space-y-5">
                     {insightTags.length ? (
-                      <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+                      <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                         {insightTags.map((tag) => (
                           <span
                             key={tag}
-                            className="inline-flex items-center rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground"
+                            className="inline-flex h-11 items-center rounded-full border border-brand-primary/50 bg-background/72 px-5 text-[1rem] font-semibold tracking-[0.01em] text-brand-primary"
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
                     ) : null}
-                    <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg lg:mx-0">
+                    <p className="mx-auto max-w-[44rem] text-balance text-[1.02rem] leading-[1.8] text-foreground/90 sm:text-[1.2rem] lg:mx-0">
                       {description}
                     </p>
-                  </div>
-                  <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
-                    <Button
-                      asChild
-                      className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-none transition hover:bg-primary/90"
-                    >
-                      <Link href="#marketplaces">Buy this domain</Link>
-                    </Button>
-                    {manageUrl ? (
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="rounded-full border-border/70 bg-background/70 px-8 py-3 text-sm font-semibold text-foreground shadow-none transition hover:border-brand-primary/60 hover:bg-background"
-                      >
-                        <Link
-                          href={manageUrl}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          Manage domain
-                        </Link>
-                      </Button>
-                    ) : null}
+                    <p className="mx-auto max-w-[44rem] text-[0.98rem] leading-[1.7] text-foreground/63 italic sm:text-[1.08rem] lg:mx-0">
+                      {aiDisclaimer}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -391,48 +391,7 @@ export default async function ParkPage({
           </div>
         </section>
 
-        {aiGallery.length ? (
-          <section className="px-6 pb-16">
-            <div className="mx-auto max-w-6xl space-y-6">
-              <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
-                <div className="space-y-2">
-                  <h2 className="text-xl font-semibold">AI gallery</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Visual explorations crafted by Namefi AI. Each render opens
-                    the original high-resolution preview.
-                  </p>
-                </div>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {aiGallery.map((generation) => (
-                  <Link
-                    key={generation.id ?? generation.url}
-                    href={generation.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="group flex flex-col gap-3 rounded-2xl border border-border/60 bg-background/80 p-3 transition hover:-translate-y-0.5 hover:border-brand-primary/60 hover:shadow-lg"
-                  >
-                    {/* biome-ignore lint/performance/noImgElement: remote AI images are served without Next image optimisation */}
-                    <img
-                      src={generation.url}
-                      alt={`Namefi AI preview ${generation.id ?? ''}`}
-                      loading="lazy"
-                      className="aspect-[4/5] w-full overflow-hidden rounded-xl border border-border/60 object-cover transition duration-500 group-hover:scale-[1.03]"
-                    />
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Namefi AI render</span>
-                      <span className="transition group-hover:text-brand-primary">
-                        View ↗
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        ) : null}
-
-        <section id="marketplaces" className="px-6 pb-16">
+        <section id="marketplaces" className="scroll-mt-28 px-6 pb-16">
           <div className="mx-auto max-w-6xl space-y-6">
             <div className="space-y-2 text-center lg:text-left">
               <h2 className="text-2xl font-semibold">
