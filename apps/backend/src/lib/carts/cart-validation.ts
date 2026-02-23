@@ -12,6 +12,7 @@ import {
 import {
   isDomainAssumedBeyondLateRenewalPeriod,
   type NamefiNormalizedDomain,
+  parseDomainName,
   switchCase,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
@@ -31,6 +32,7 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import { pluck } from 'ramda';
 import { logger } from '#lib/logger';
 import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/index';
+import { get3ldExpirationDateForDomainListFromIndex } from '#temporal/activities/domain/renew.activities';
 
 type CartItemsGroupedByType = Record<
   'registerCartItems' | 'importCartItems' | 'renewCartItems',
@@ -599,10 +601,25 @@ function _generateSummaryOfCartItemsChanges(
 async function _getDomainsExpirationDatesMap(
   domains: NamefiNormalizedDomain[],
 ): Promise<Map<NamefiNormalizedDomain, Date>> {
-  const { sldRegistrar } = await import('#lib/namefi-registry');
   if (isNotNil(domains) && isNotEmpty(domains)) {
-    const domainDetailsResults = await Promise.allSettled(
-      domains.map(async (domainName) => {
+    const { sldRegistrar } = await import('#lib/namefi-registry');
+
+    const {
+      eppDomains = [],
+      subDomains = [],
+      invalidDomains = [],
+    } = groupBy((domainName) => {
+      const parsedDomain = parseDomainName(domainName);
+      if (!parsedDomain.valid) {
+        return 'invalidDomains';
+      }
+      return parsedDomain.registryType === 'traditional'
+        ? 'eppDomains'
+        : 'subDomains';
+    }, domains);
+
+    const eppDomainsDetailsPromise = Promise.allSettled(
+      eppDomains.map(async (domainName) => {
         const domainDetails = await sldRegistrar.getDomainDetails(
           toPunycodeDomainName(domainName),
         );
@@ -613,24 +630,44 @@ async function _getDomainsExpirationDatesMap(
       }),
     );
 
-    const rejectedResults = domainDetailsResults.filter(
+    const [subDomainsDetailsResults, eppDomainsDetailsResults] =
+      await Promise.all([
+        get3ldExpirationDateForDomainListFromIndex(subDomains),
+        eppDomainsDetailsPromise,
+      ]);
+
+    const rejectedResults = eppDomainsDetailsResults.filter(
       (result) => result.status === 'rejected',
     );
-    if (rejectedResults.length > 0) {
+    if (rejectedResults.length > 0 || invalidDomains.length > 0) {
       logger.error(
-        { rejectedResults, context: 'getDomainsExpirationDatesMap' },
+        {
+          rejectedResults,
+          invalidDomains,
+          context: 'getDomainsExpirationDatesMap',
+        },
         'Error fetching domain details for domains',
       );
     }
 
-    return new Map(
-      domainDetailsResults
+    return new Map([
+      ...eppDomainsDetailsResults
         .filter((result) => result.status === 'fulfilled')
-        .map((result) => [
-          result.value.domain,
-          new Date(result.value.expirationTime),
-        ]),
-    );
+        .map(
+          (result) =>
+            [result.value.domain, new Date(result.value.expirationTime)] as [
+              NamefiNormalizedDomain,
+              Date,
+            ],
+        ),
+      ...subDomainsDetailsResults.map(
+        ({ normalizedDomainName, expirationDate }) =>
+          [normalizedDomainName, new Date(expirationDate)] as [
+            NamefiNormalizedDomain,
+            Date,
+          ],
+      ),
+    ]);
   }
   return new Map();
 }
