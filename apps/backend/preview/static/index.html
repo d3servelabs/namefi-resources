@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en" class="dark" data-theme="astra">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxy Override Router</title>
+    <meta name="description" content="Set proxy_override cookie to route Nginx upstreams." />
+
+    <!-- Tailwind CDN (v4 Play CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- shadcn-like tokens + a little motion (browser CDN friendly; no plugins/imports) -->
+    <style type="text/tailwindcss">
+      @custom-variant dark (&:is(.dark *));
+
+      @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --font-sans: var(--font-geist-sans);
+        --font-mono: var(--font-geist-mono);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
+        --radius-2xl: calc(var(--radius) + 8px);
+        --radius-3xl: calc(var(--radius) + 12px);
+        --radius-4xl: calc(var(--radius) + 16px);
+        --color-brand-primary: var(--brand-primary);
+        --color-brand-secondary: var(--brand-secondary);
+        --color-brand-tertiary: var(--brand-tertiary);
+      }
+
+      :root {
+        /* Fallback if Geist variables aren't set elsewhere */
+        --font-geist-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+
+        --background: oklch(0.145 0 0);
+        --foreground: oklch(0.985 0 0);
+        --card: oklch(0.205 0 0);
+        --card-foreground: oklch(0.985 0 0);
+        --popover: oklch(0.205 0 0);
+        --popover-foreground: oklch(0.985 0 0);
+        --primary: oklch(0.922 0 0);
+        --primary-foreground: oklch(0.205 0 0);
+        --secondary: oklch(0.269 0 0);
+        --secondary-foreground: oklch(0.985 0 0);
+        --muted: oklch(0.269 0 0);
+        --muted-foreground: oklch(0.708 0 0);
+        --accent: oklch(0.269 0 0);
+        --accent-foreground: oklch(0.985 0 0);
+        --destructive: oklch(0.704 0.191 22.216);
+        --border: oklch(1 0 0 / 10%);
+        --input: oklch(1 0 0 / 15%);
+        --ring: oklch(0.556 0 0);
+
+        --chart-1: oklch(0.488 0.243 264.376);
+        --chart-2: oklch(0.696 0.17 162.48);
+
+        --radius: 0.65rem;
+
+        --brand-primary: oklch(75.85% 0.1804 155.5);
+        --brand-secondary: oklch(75.85% 0.1804 155.5);
+        --brand-tertiary: oklch(75.85% 0.1804 155.5);
+
+        color-scheme: dark;
+      }
+
+      [data-theme="astra"] {
+        --brand-primary: oklch(75.85% 0.1804 155.5);
+        --brand-secondary: oklch(75.85% 0.1804 155.5);
+        --brand-tertiary: oklch(75.85% 0.1804 155.5);
+      }
+
+      [data-theme="0x.city"] {
+        --brand-primary: oklch(51.06% 0.2301 277);
+        --brand-secondary: oklch(58.54% 0.2041 277.1);
+        --brand-tertiary: oklch(68.01% 0.1583 276.9);
+      }
+
+      [data-theme="token.com"] {
+        --brand-primary: oklch(74% 0.19 52);
+        --brand-secondary: oklch(72% 0.14 196);
+        --brand-tertiary: oklch(78% 0.13 145);
+      }
+
+      html,
+      body {
+        scrollbar-gutter: stable both-edges;
+      }
+
+      @layer base {
+        * {
+          @apply border-border;
+        }
+
+        body {
+          @apply bg-background text-foreground;
+        }
+      }
+
+      /* Rotating ring highlight effect */
+      @property --ring-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+
+      @keyframes rotating-ring {
+        0% {
+          --ring-angle: 0deg;
+        }
+        100% {
+          --ring-angle: 360deg;
+        }
+      }
+
+      .highlight-effect {
+        position: relative;
+        border: 2px solid transparent;
+        --ring-color: var(--brand-primary);
+        --ring-color-2: color-mix(in oklch, var(--ring-color) 70%, black);
+        --duration: 4s;
+        background:
+          linear-gradient(var(--background), var(--background)) padding-box,
+          conic-gradient(
+              from var(--ring-angle, 0deg),
+              transparent 0deg,
+              transparent 70deg,
+              var(--ring-color) 90deg,
+              var(--ring-color-2) 110deg,
+              var(--ring-color) 130deg,
+              transparent 150deg,
+              transparent 360deg
+            )
+            border-box;
+        animation: rotating-ring var(--duration) linear;
+      }
+
+      .highlight-card {
+        --background: var(--card);
+      }
+
+      @keyframes fade-up {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @layer components {
+        .router-shell {
+          @apply mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14;
+        }
+
+        .router-hero {
+          @apply flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between;
+        }
+
+        .router-title {
+          @apply text-2xl font-semibold tracking-tight sm:text-3xl;
+        }
+
+        .router-subtitle {
+          @apply mt-2 max-w-2xl text-sm leading-6 text-muted-foreground;
+        }
+
+        .router-status {
+          @apply rounded-2xl border border-border bg-card p-4;
+        }
+
+        .router-card {
+          @apply relative w-full overflow-hidden rounded-2xl border border-border bg-card p-6 text-left shadow-sm transition;
+          @apply hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50;
+        }
+
+        .router-card--danger {
+          @apply hover:border-destructive;
+        }
+
+        .router-pill {
+          @apply inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs text-muted-foreground;
+        }
+
+        .router-badge {
+          @apply rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground;
+        }
+
+        .router-icon {
+          @apply flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-background;
+        }
+
+        .router-enter {
+          animation: fade-up 460ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+      }
+
+      .router-bg {
+        position: absolute;
+        inset: 0;
+        z-index: -10;
+        pointer-events: none;
+        background: var(--background);
+        background:
+          radial-gradient(
+            1200px circle at 15% 10%,
+            color-mix(in oklch, var(--brand-primary) 22%, transparent),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px circle at 85% 15%,
+            color-mix(in oklch, var(--chart-1) 16%, transparent),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px circle at 50% 85%,
+            color-mix(in oklch, var(--chart-2) 14%, transparent),
+            transparent 55%
+          );
+        opacity: 0.95;
+      }
+
+      .router-grid {
+        position: absolute;
+        inset: 0;
+        z-index: -10;
+        pointer-events: none;
+        background-image:
+          linear-gradient(to right, var(--border) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(800px circle at 50% 0%, #000 0%, transparent 70%);
+        opacity: 0.18;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .highlight-effect {
+          animation: none;
+        }
+
+        .router-enter {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen font-sans antialiased">
+    <div class="relative min-h-screen overflow-hidden">
+      <div class="router-bg"></div>
+      <div class="router-grid"></div>
+
+      <main class="router-shell">
+        <header class="router-hero router-enter">
+          <div>
+            <div class="router-pill">
+              <span class="h-1.5 w-1.5 rounded-full bg-brand-primary"></span>
+              nginx cookie router
+            </div>
+
+            <h1 class="router-title mt-3">Proxy override</h1>
+
+            <p class="router-subtitle">
+              Clicking a card sets
+              <code class="rounded-md border border-border bg-background px-1.5 py-0.5 font-mono text-xs"
+                >proxy_override</code>
+              for this host. Open this router via
+              <code class="rounded-md border border-border bg-background px-1.5 py-0.5 font-mono text-xs"
+                >?namefi_dev_mode_control=1</code>.
+            </p>
+          </div>
+
+          <div class="router-status">
+            <div class="text-xs text-muted-foreground">Current override</div>
+            <div class="mt-2 flex items-center gap-3">
+              <div
+                class="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1"
+              >
+                <span id="currentDot" class="h-2 w-2 rounded-full bg-muted-foreground"></span>
+                <span id="currentValue" class="font-mono text-xs text-foreground">not set</span>
+              </div>
+
+              <a
+                id="continueLink"
+                href="/"
+                class="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                >open /</a>
+            </div>
+          </div>
+        </header>
+
+        <noscript>
+          <div class="mt-8 rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
+            JavaScript is required to set cookies.
+          </div>
+        </noscript>
+
+        <section class="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2">
+          <button
+            type="button"
+            class="router-card router-enter"
+            style="animation-delay: 40ms"
+            data-router-card
+            data-key="api"
+            aria-pressed="false"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="router-icon">
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M8 9l-3 3 3 3" />
+                    <path d="M16 9l3 3-3 3" />
+                    <path d="M14 7l-4 10" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold leading-5">API</div>
+                  <div class="mt-1 font-mono text-xs text-muted-foreground">key=api</div>
+                </div>
+              </div>
+
+              <span class="router-badge hidden" data-status>active</span>
+            </div>
+
+            <p class="mt-4 text-sm leading-6 text-muted-foreground">
+              Sets <code class="font-mono">proxy_override=api</code>.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            class="router-card router-enter"
+            style="animation-delay: 90ms"
+            data-router-card
+            data-key="workers"
+            aria-pressed="false"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="router-icon">
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 7h10v10H7z" />
+                    <path d="M4 10V4h6" />
+                    <path d="M20 14v6h-6" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold leading-5">Temporal Workers</div>
+                  <div class="mt-1 font-mono text-xs text-muted-foreground">key=workers</div>
+                </div>
+              </div>
+
+              <span class="router-badge hidden" data-status>active</span>
+            </div>
+
+            <p class="mt-4 text-sm leading-6 text-muted-foreground">
+              Sets <code class="font-mono">proxy_override=workers</code>.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            class="router-card router-enter"
+            style="animation-delay: 140ms"
+            data-router-card
+            data-key="temporal-ui"
+            aria-pressed="false"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="router-icon">
+                  <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 8v5l3 2" />
+                    <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold leading-5">Temporal UI</div>
+                  <div class="mt-1 font-mono text-xs text-muted-foreground">key=temporal-ui</div>
+                </div>
+              </div>
+
+              <span class="router-badge hidden" data-status>active</span>
+            </div>
+
+            <p class="mt-4 text-sm leading-6 text-muted-foreground">
+              Sets <code class="font-mono">proxy_override=temporal-ui</code>.
+            </p>
+          </button>
+
+          <button
+            type="button"
+            class="router-card router-card--danger router-enter"
+            style="animation-delay: 190ms"
+            data-router-card
+            data-reset="1"
+            aria-pressed="false"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="router-icon">
+                  <svg
+                    class="h-5 w-5 text-destructive"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 12a9 9 0 0 1 15-6" />
+                    <path d="M18 6V3h3" />
+                    <path d="M21 12a9 9 0 0 1-15 6" />
+                    <path d="M6 18v3H3" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold leading-5">Reset</div>
+                  <div class="mt-1 font-mono text-xs text-muted-foreground">removes cookie</div>
+                </div>
+              </div>
+
+              <span class="router-badge hidden" data-status>default</span>
+            </div>
+
+            <p class="mt-4 text-sm leading-6 text-muted-foreground">
+              Deletes <code class="font-mono">proxy_override</code> (returns to default routing).
+            </p>
+          </button>
+        </section>
+
+        <footer
+          class="mt-10 text-xs text-muted-foreground sm:mt-12 router-enter"
+          style="animation-delay: 260ms"
+        >
+          Cookie attributes: <span class="font-mono">Path=/</span>,
+          <span class="font-mono">SameSite=Lax</span>, <span class="font-mono">Max-Age=2592000</span> (30d),
+          plus <span class="font-mono">Secure</span> on HTTPS.
+        </footer>
+      </main>
+
+      <div class="fixed bottom-4 left-1/2 z-50 w-[min(92vw,520px)] -translate-x-1/2 px-4">
+        <div
+          id="toast"
+          class="hidden rounded-2xl border border-border bg-card px-4 py-3 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.8)]"
+          role="status"
+          aria-live="polite"
+        >
+          <div id="toastText" class="text-sm text-card-foreground"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const COOKIE_NAME = "proxy_override";
+        const MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+
+        const cards = Array.from(document.querySelectorAll("[data-router-card]"));
+        const currentValueEl = document.getElementById("currentValue");
+        const currentDotEl = document.getElementById("currentDot");
+        const continueLinkEl = document.getElementById("continueLink");
+        const toastEl = document.getElementById("toast");
+        const toastTextEl = document.getElementById("toastText");
+
+        let toastTimer = null;
+
+        function getCookie(name) {
+          const raw = document.cookie || "";
+          const parts = raw.split(/;\s*/).filter(Boolean);
+
+          for (const part of parts) {
+            const idx = part.indexOf("=");
+            const k = idx === -1 ? part : part.slice(0, idx);
+            if (decodeURIComponent(k) !== name) continue;
+            return decodeURIComponent(idx === -1 ? "" : part.slice(idx + 1));
+          }
+          return null;
+        }
+
+        function setCookie(name, value, maxAgeSeconds) {
+          const bits = [
+            encodeURIComponent(name) + "=" + encodeURIComponent(value),
+            "Path=/",
+            "SameSite=Lax",
+            "Max-Age=" + String(maxAgeSeconds),
+          ];
+          if (location.protocol === "https:") bits.push("Secure");
+          document.cookie = bits.join("; ");
+        }
+
+        function deleteCookie(name) {
+          const bits = [encodeURIComponent(name) + "=", "Path=/", "SameSite=Lax", "Max-Age=0"];
+          if (location.protocol === "https:") bits.push("Secure");
+          document.cookie = bits.join("; ");
+        }
+
+        function safeSameOriginPath(maybeUrl) {
+          if (!maybeUrl) return null;
+          try {
+            const u = new URL(maybeUrl, location.href);
+            if (u.origin !== location.origin) return null;
+            return u.pathname + u.search + u.hash;
+          } catch {
+            return null;
+          }
+        }
+
+        function continueTarget() {
+          const url = new URL(location.href);
+          const next = url.searchParams.get("next") || url.searchParams.get("to");
+          return safeSameOriginPath(next) || "/";
+        }
+
+        function showToast(text) {
+          if (toastTimer) window.clearTimeout(toastTimer);
+          toastTextEl.textContent = text;
+          toastEl.classList.remove("hidden");
+          toastTimer = window.setTimeout(function () {
+            toastEl.classList.add("hidden");
+          }, 2200);
+        }
+
+        function render() {
+          const value = getCookie(COOKIE_NAME);
+          const activeKey = value && value.length ? value : null;
+
+          currentValueEl.textContent = activeKey ? COOKIE_NAME + "=" + activeKey : "not set";
+          currentDotEl.style.backgroundColor = activeKey
+            ? "var(--brand-primary)"
+            : "var(--muted-foreground)";
+
+          continueLinkEl.setAttribute("href", continueTarget());
+
+          for (const card of cards) {
+            const key = card.getAttribute("data-key");
+            const isReset = card.getAttribute("data-reset") === "1";
+            const isActive = isReset ? !activeKey : key === activeKey;
+
+            card.classList.toggle("highlight-effect", isActive);
+            card.classList.toggle("highlight-card", isActive);
+
+            const status = card.querySelector("[data-status]");
+            if (status) status.classList.toggle("hidden", !isActive);
+
+            card.setAttribute("aria-pressed", isActive ? "true" : "false");
+          }
+        }
+
+        function select(card) {
+          const isReset = card.getAttribute("data-reset") === "1";
+          const key = card.getAttribute("data-key");
+
+          if (isReset) {
+            deleteCookie(COOKIE_NAME);
+            showToast("Cleared " + COOKIE_NAME + " (default routing).");
+            render();
+            return;
+          }
+
+          if (!key) return;
+
+          setCookie(COOKIE_NAME, key, MAX_AGE_SECONDS);
+          showToast("Set " + COOKIE_NAME + "=" + key + ".");
+          render();
+        }
+
+        for (const card of cards) {
+          card.addEventListener("click", function () {
+            select(card);
+          });
+        }
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
