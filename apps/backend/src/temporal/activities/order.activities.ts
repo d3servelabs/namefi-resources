@@ -27,8 +27,14 @@ import { ApplicationFailure } from '@temporalio/activity';
 import {
   gaEventDomainAcquisitionFinished,
   gaEventDomainAcquisitionStarted,
+  gaEventOrderItemProcessingFinished,
+  gaEventOrderItemProcessingStarted,
   gaEventOrderFinishedEmailOpened,
   gaEventOrderFinishedEmailSent,
+  gaEventOrderItemsProcessingFinished,
+  gaEventOrderItemsProcessingStarted,
+  gaEventOrderProcessingFinished,
+  gaEventOrderProcessingStarted,
   gaEventPaymentFailed,
   gaEventPaymentSuccess,
 } from '#lib/tracking/checkout/events';
@@ -137,6 +143,176 @@ export async function logGaEventPaymentProcessed({
     );
   }
 }
+
+export async function logGaEventOrderProcessingStarted({
+  userId,
+  orderId,
+}: {
+  userId: string;
+  orderId: string;
+}) {
+  try {
+    await gaEventOrderProcessingStarted({
+      userId,
+      orderId,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId },
+      'Failed to send GA order_processing_started event',
+    );
+  }
+}
+
+export async function logGaEventOrderItemsProcessingStarted({
+  userId,
+  orderId,
+  itemsCount,
+}: {
+  userId: string;
+  orderId: string;
+  itemsCount: number;
+}) {
+  try {
+    await gaEventOrderItemsProcessingStarted({
+      userId,
+      orderId,
+      itemsCount,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId, itemsCount },
+      'Failed to send GA order_items_processing_started event',
+    );
+  }
+}
+
+export async function logGaEventOrderItemsProcessingFinished({
+  userId,
+  orderId,
+  itemsCount,
+  successItemsCount,
+  failedItemsCount,
+}: {
+  userId: string;
+  orderId: string;
+  itemsCount: number;
+  successItemsCount: number;
+  failedItemsCount: number;
+}) {
+  try {
+    await gaEventOrderItemsProcessingFinished({
+      userId,
+      orderId,
+      itemsCount,
+      successItemsCount,
+      failedItemsCount,
+    });
+  } catch (error) {
+    logger.warn(
+      {
+        error,
+        orderId,
+        userId,
+        itemsCount,
+        successItemsCount,
+        failedItemsCount,
+      },
+      'Failed to send GA order_items_processing_finished event',
+    );
+  }
+}
+
+export async function logGaEventOrderProcessingFinished({
+  userId,
+  orderId,
+  orderStatus,
+  refundNeeded,
+  refundType,
+}: {
+  userId: string;
+  orderId: string;
+  orderStatus: OrderStatus;
+  refundNeeded: boolean;
+  refundType: 'NONE' | 'FULL' | 'PARTIAL';
+}) {
+  try {
+    await gaEventOrderProcessingFinished({
+      userId,
+      orderId,
+      orderStatus,
+      refundNeeded,
+      refundType,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId, orderStatus, refundNeeded, refundType },
+      'Failed to send GA order_processing_finished event',
+    );
+  }
+}
+
+export async function logGaEventOrderItemProcessingStarted({
+  userId,
+  orderId,
+  orderItemId,
+  itemType,
+  domainName,
+}: {
+  userId: string;
+  orderId: string;
+  orderItemId: string;
+  itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
+  domainName: NamefiNormalizedDomain;
+}) {
+  try {
+    await gaEventOrderItemProcessingStarted({
+      userId,
+      orderId,
+      orderItemId,
+      itemType,
+      domainName,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, orderItemId, userId, itemType, domainName },
+      'Failed to send GA order_item_processing_started event',
+    );
+  }
+}
+
+export async function logGaEventOrderItemProcessingFinished({
+  userId,
+  orderId,
+  orderItemId,
+  itemType,
+  domainName,
+  itemStatus,
+}: {
+  userId: string;
+  orderId: string;
+  orderItemId: string;
+  itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
+  domainName: NamefiNormalizedDomain;
+  itemStatus: 'SUCCEEDED' | 'FAILED';
+}) {
+  try {
+    await gaEventOrderItemProcessingFinished({
+      userId,
+      orderId,
+      orderItemId,
+      itemType,
+      domainName,
+      itemStatus,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, orderItemId, userId, itemType, domainName, itemStatus },
+      'Failed to send GA order_item_processing_finished event',
+    );
+  }
+}
+
 export async function logGaEventDomainAcquisitionStarted({
   userId,
   orderId,
@@ -517,6 +693,12 @@ export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
   updateOrderItemStatusOrThrow: typeof updateOrderItemStatusOrThrow;
   updateOrderStatusOrThrow: typeof updateOrderStatusOrThrow;
+  logGaEventOrderProcessingStarted: typeof logGaEventOrderProcessingStarted;
+  logGaEventOrderItemsProcessingStarted: typeof logGaEventOrderItemsProcessingStarted;
+  logGaEventOrderItemsProcessingFinished: typeof logGaEventOrderItemsProcessingFinished;
+  logGaEventOrderProcessingFinished: typeof logGaEventOrderProcessingFinished;
+  logGaEventOrderItemProcessingStarted: typeof logGaEventOrderItemProcessingStarted;
+  logGaEventOrderItemProcessingFinished: typeof logGaEventOrderItemProcessingFinished;
   logGaEventPaymentProcessed: typeof logGaEventPaymentProcessed;
   logGaEventDomainAcquisitionStarted: typeof logGaEventDomainAcquisitionStarted;
   logGaEventDomainAcquisitionFinished: typeof logGaEventDomainAcquisitionFinished;

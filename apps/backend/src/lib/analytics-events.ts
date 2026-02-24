@@ -15,6 +15,12 @@ export interface BackendAnalyticsEventMap {
   user_begin_search: UserBeginSearchParams;
 
   order_placed: OrderPlacedParams;
+  order_processing_started: OrderProcessingStartedParams;
+  order_items_processing_started: OrderItemsProcessingStartedParams;
+  order_items_processing_finished: OrderItemsProcessingFinishedParams;
+  order_processing_finished: OrderProcessingFinishedParams;
+  order_item_processing_started: OrderItemProcessingStartedParams;
+  order_item_processing_finished: OrderItemProcessingFinishedParams;
 
   payment_processed: PaymentProcessedParams;
   payment_refunded: PaymentRefundedParams;
@@ -38,6 +44,14 @@ export interface BackendAnalyticsCustomDimension {
   parameterName: string;
   displayName: string;
   description: string;
+  scope: 'EVENT';
+}
+
+export interface BackendAnalyticsCustomMetric {
+  parameterName: string;
+  displayName: string;
+  description: string;
+  measurementUnit: 'STANDARD';
   scope: 'EVENT';
 }
 
@@ -133,6 +147,12 @@ export const BACKEND_ANALYTICS_CUSTOM_DIMENSIONS = [
     scope: 'EVENT',
   },
   {
+    parameterName: 'refund_needed',
+    displayName: 'Refund Needed',
+    description: 'Whether a refund is required for the order.',
+    scope: 'EVENT',
+  },
+  {
     parameterName: 'refund_amount_usd_cents',
     displayName: 'Refund Amount USD Cents',
     description: 'Refund amount represented in USD cents.',
@@ -181,12 +201,56 @@ export const BACKEND_ANALYTICS_CUSTOM_DIMENSIONS = [
     scope: 'EVENT',
   },
   {
+    parameterName: 'item_type',
+    displayName: 'Item Type',
+    description:
+      'Order item operation type such as REGISTER, IMPORT, or RENEW.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'domain_name',
+    displayName: 'Domain Name',
+    description: 'Normalized domain name associated with an order item event.',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'item_status',
+    displayName: 'Item Status',
+    description: 'Order item processing status such as SUCCEEDED or FAILED.',
+    scope: 'EVENT',
+  },
+  {
     parameterName: 'email_distinct_id',
     displayName: 'Email Distinct ID',
     description: 'Distinct identifier used for tracking order email opens.',
     scope: 'EVENT',
   },
 ] as const satisfies readonly BackendAnalyticsCustomDimension[];
+
+export const BACKEND_ANALYTICS_CUSTOM_METRICS = [
+  {
+    parameterName: 'items_count',
+    displayName: 'Items Count',
+    description: 'Total number of order items processed in the workflow.',
+    measurementUnit: 'STANDARD',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'success_items_count',
+    displayName: 'Success Items Count',
+    description:
+      'Number of order items that finished successfully in the workflow.',
+    measurementUnit: 'STANDARD',
+    scope: 'EVENT',
+  },
+  {
+    parameterName: 'failed_items_count',
+    displayName: 'Failed Items Count',
+    description: 'Number of order items that failed in the workflow.',
+    measurementUnit: 'STANDARD',
+    scope: 'EVENT',
+  },
+] as const satisfies readonly BackendAnalyticsCustomMetric[];
 
 type CheckoutAnalyticsBaseParams = {
   user_id?: string;
@@ -201,6 +265,34 @@ type OrderPlacedParams = CheckoutAnalyticsBaseParams & {
   item_count: number;
   payment_count: number;
   order_source?: 'checkout' | 'instant_buy';
+};
+
+type OrderProcessingStartedParams = CheckoutAnalyticsBaseParams;
+
+type OrderItemsProcessingStartedParams = CheckoutAnalyticsBaseParams & {
+  items_count: number;
+};
+
+type OrderItemsProcessingFinishedParams = CheckoutAnalyticsBaseParams & {
+  items_count: number;
+  success_items_count: number;
+  failed_items_count: number;
+};
+
+type OrderProcessingFinishedParams = CheckoutAnalyticsBaseParams & {
+  order_status: string;
+  refund_needed: boolean;
+  refund_type: 'NONE' | 'FULL' | 'PARTIAL';
+};
+
+type OrderItemProcessingStartedParams = CheckoutAnalyticsBaseParams & {
+  order_item_id: string;
+  item_type: 'REGISTER' | 'IMPORT' | 'RENEW';
+  domain_name: string;
+};
+
+type OrderItemProcessingFinishedParams = OrderItemProcessingStartedParams & {
+  item_status: 'SUCCEEDED' | 'FAILED';
 };
 
 type PaymentProcessedParams = CheckoutAnalyticsBaseParams & {

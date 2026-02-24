@@ -41,18 +41,18 @@ export async function processOrderItemWorkflow(
     encryptedEppAuthorizationCode,
     encryptionKeyId,
   } = input;
-  const trackGaEvents = workflow.patched('toggle-tracking')
-    ? (input.gaEventTracking?.trackGaEvents ?? true)
-    : true;
-  const gaEventTrackingReason = workflow.patched('toggle-tracking')
-    ? (input.gaEventTracking?.reason ?? 'DEFAULT')
-    : null;
+  workflow.deprecatePatch('toggle-tracking');
+  const trackGaEvents = input.gaEventTracking?.trackGaEvents ?? true;
+  const gaEventTrackingReason = input.gaEventTracking?.reason ?? 'DEFAULT';
+
   const {
     updateOrderItemStatusOrThrow,
     recordOrderMintTransaction,
     criticalAlertNamefi,
     logGaEventDomainAcquisitionFinished,
     logGaEventDomainAcquisitionStarted,
+    logGaEventOrderItemProcessingStarted,
+    logGaEventOrderItemProcessingFinished,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -86,6 +86,28 @@ export async function processOrderItemWorkflow(
               : String(markProcessingError)
           }`,
         );
+      }
+    }
+
+    if (workflow.patched('track-new-events-for-order-v1')) {
+      if (trackGaEvents) {
+        try {
+          await logGaEventOrderItemProcessingStarted({
+            userId,
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            itemType: operationType,
+            domainName: normalizedDomainName,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_item_processing_started event for order item ${input.itemId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('order_item_processing_started');
       }
     }
 
@@ -212,6 +234,29 @@ export async function processOrderItemWorkflow(
         }`,
       );
     }
+
+    if (workflow.patched('track-new-events-for-order-v1')) {
+      if (trackGaEvents) {
+        try {
+          await logGaEventOrderItemProcessingFinished({
+            userId,
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            itemType: operationType,
+            domainName: normalizedDomainName,
+            itemStatus: 'SUCCEEDED',
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_item_processing_finished event for order item ${input.itemId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('order_item_processing_finished');
+      }
+    }
   } catch (e) {
     workflow.log.error(
       `Failed to process order item ${input.itemId} for order ${input.orderId}: ${
@@ -235,6 +280,28 @@ export async function processOrderItemWorkflow(
             : String(updateStatusError)
         }`,
       );
+    }
+    if (workflow.patched('track-new-events-for-order-v1')) {
+      if (trackGaEvents) {
+        try {
+          await logGaEventOrderItemProcessingFinished({
+            userId,
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            itemType: operationType,
+            domainName: normalizedDomainName,
+            itemStatus: 'FAILED',
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_item_processing_finished event for order item ${input.itemId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('order_item_processing_finished');
+      }
     }
     if (operationType !== 'RENEW') {
       if (trackGaEvents) {

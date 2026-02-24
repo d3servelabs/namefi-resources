@@ -47,6 +47,10 @@ export const searchRouter = createTRPCRouter({
       const gaEventTracking = ctx.user?.id
         ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
         : { trackGaEvents: true };
+      const gaEventTrackingReason =
+        'reason' in gaEventTracking
+          ? (gaEventTracking.reason ?? 'DEFAULT')
+          : 'DEFAULT';
 
       if ((ctx.user?.id || clientId) && gaEventTracking.trackGaEvents) {
         void gaEventUserBeginSearch({
@@ -60,7 +64,8 @@ export const searchRouter = createTRPCRouter({
           {
             userId: ctx.user?.id,
             domain,
-            gaEventTracking,
+            eventName: 'user_begin_search',
+            gaEventTrackingReason,
           },
           'Skipping GA user_begin_search event because tracking is disabled',
         );
@@ -116,6 +121,10 @@ export const searchRouter = createTRPCRouter({
       const gaEventTracking = ctx.user?.id
         ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
         : { trackGaEvents: true };
+      const gaEventTrackingReason =
+        'reason' in gaEventTracking
+          ? (gaEventTracking.reason ?? 'DEFAULT')
+          : 'DEFAULT';
       if (
         page === 1 &&
         (ctx.user?.id || clientId) &&
@@ -132,7 +141,8 @@ export const searchRouter = createTRPCRouter({
           {
             userId: ctx.user?.id,
             query: query.trim(),
-            gaEventTracking,
+            eventName: 'user_begin_search',
+            gaEventTrackingReason,
           },
           'Skipping GA user_begin_search event because tracking is disabled',
         );
@@ -160,6 +170,10 @@ export const searchRouter = createTRPCRouter({
       const gaEventTracking = ctx.user?.id
         ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
         : { trackGaEvents: true };
+      const gaEventTrackingReason =
+        'reason' in gaEventTracking
+          ? (gaEventTracking.reason ?? 'DEFAULT')
+          : 'DEFAULT';
       if ((ctx.user?.id || clientId) && gaEventTracking.trackGaEvents) {
         void gaEventUserBeginSearch({
           userId: ctx.user?.id,
@@ -172,7 +186,8 @@ export const searchRouter = createTRPCRouter({
           {
             userId: ctx.user?.id,
             domain: domains[0],
-            gaEventTracking,
+            eventName: 'user_begin_search',
+            gaEventTrackingReason,
           },
           'Skipping GA user_begin_search event because tracking is disabled',
         );

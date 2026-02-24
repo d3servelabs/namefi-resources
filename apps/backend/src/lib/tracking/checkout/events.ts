@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/useNamingConvention: GA4 recommends snake_case for event names and parameter keys */
 import type { BackendAnalyticsEventName } from '#lib/analytics-events';
 import { sendGA4Event, type GA4Event } from '#lib/ga4-measurement';
 import { createLogger } from '#lib/logger';
@@ -21,6 +22,34 @@ type LogGaEventOrderPlacedInput = CheckoutAnalyticsBaseInput & {
   paymentCount: number;
   orderSource?: 'checkout' | 'instant_buy';
 };
+type LogGaEventOrderProcessingStartedInput = CheckoutAnalyticsBaseInput & {
+  orderId: string;
+};
+type LogGaEventOrderItemsProcessingStartedInput =
+  LogGaEventOrderProcessingStartedInput & {
+    itemsCount: number;
+  };
+type LogGaEventOrderItemsProcessingFinishedInput =
+  LogGaEventOrderItemsProcessingStartedInput & {
+    successItemsCount: number;
+    failedItemsCount: number;
+  };
+type LogGaEventOrderProcessingFinishedInput =
+  LogGaEventOrderProcessingStartedInput & {
+    orderStatus: OrderStatus;
+    refundNeeded: boolean;
+    refundType: 'NONE' | 'FULL' | 'PARTIAL';
+  };
+type LogGaEventOrderItemProcessingStartedInput = CheckoutAnalyticsBaseInput & {
+  orderId: string;
+  orderItemId: string;
+  itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
+  domainName: string;
+};
+type LogGaEventOrderItemProcessingFinishedInput =
+  LogGaEventOrderItemProcessingStartedInput & {
+    itemStatus: 'SUCCEEDED' | 'FAILED';
+  };
 
 type CheckoutAnalyticsPaymentsBaseInput = CheckoutAnalyticsBaseInput & {
   amountUsdCents?: number;
@@ -128,6 +157,126 @@ export async function gaEventOrderPlaced(
     },
     metadata: {
       orderId: input.orderId,
+    },
+  });
+}
+
+export async function gaEventOrderProcessingStarted(
+  input: LogGaEventOrderProcessingStartedInput,
+): Promise<void> {
+  return sendCheckoutEvent({
+    userId: input.userId,
+    event: {
+      name: 'order_processing_started',
+      params: {
+        ...baseEventParams(input),
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+    },
+  });
+}
+
+export async function gaEventOrderItemsProcessingStarted(
+  input: LogGaEventOrderItemsProcessingStartedInput,
+): Promise<void> {
+  return sendCheckoutEvent({
+    userId: input.userId,
+    event: {
+      name: 'order_items_processing_started',
+      params: {
+        ...baseEventParams(input),
+        items_count: input.itemsCount,
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+    },
+  });
+}
+
+export async function gaEventOrderItemsProcessingFinished(
+  input: LogGaEventOrderItemsProcessingFinishedInput,
+): Promise<void> {
+  return sendCheckoutEvent({
+    userId: input.userId,
+    event: {
+      name: 'order_items_processing_finished',
+      params: {
+        ...baseEventParams(input),
+        items_count: input.itemsCount,
+        success_items_count: input.successItemsCount,
+        failed_items_count: input.failedItemsCount,
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+    },
+  });
+}
+
+export async function gaEventOrderProcessingFinished(
+  input: LogGaEventOrderProcessingFinishedInput,
+): Promise<void> {
+  return sendCheckoutEvent({
+    userId: input.userId,
+    event: {
+      name: 'order_processing_finished',
+      params: {
+        ...baseEventParams(input),
+        order_status: input.orderStatus,
+        refund_needed: input.refundNeeded,
+        refund_type: input.refundType,
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+    },
+  });
+}
+
+export async function gaEventOrderItemProcessingStarted(
+  input: LogGaEventOrderItemProcessingStartedInput,
+): Promise<void> {
+  return sendCheckoutEvent({
+    userId: input.userId,
+    event: {
+      name: 'order_item_processing_started',
+      params: {
+        ...baseEventParams(input),
+        order_item_id: input.orderItemId,
+        item_type: input.itemType,
+        domain_name: input.domainName,
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+      orderItemId: input.orderItemId,
+      domainName: input.domainName,
+    },
+  });
+}
+
+export async function gaEventOrderItemProcessingFinished(
+  input: LogGaEventOrderItemProcessingFinishedInput,
+): Promise<void> {
+  return sendCheckoutEvent({
+    userId: input.userId,
+    event: {
+      name: 'order_item_processing_finished',
+      params: {
+        ...baseEventParams(input),
+        order_item_id: input.orderItemId,
+        item_type: input.itemType,
+        domain_name: input.domainName,
+        item_status: input.itemStatus,
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+      orderItemId: input.orderItemId,
+      domainName: input.domainName,
     },
   });
 }

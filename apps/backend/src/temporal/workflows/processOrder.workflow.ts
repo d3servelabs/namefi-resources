@@ -1,4 +1,8 @@
-import { orderStatusSchema, type OrderStatus } from '@namefi-astra/db/types';
+import {
+  orderStatusSchema,
+  type OrderSelect,
+  type OrderStatus,
+} from '@namefi-astra/db/types';
 import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,
@@ -15,6 +19,7 @@ import { multiChargeWorkflow } from './multi-charge.workflow';
 import { multiRefundWorkflow } from './multi-refund.workflow';
 import { postProcessOrderItemWorkflow } from './post-process-order-item.workflow';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import type { OrderWithPayments } from '#services/orders/orders.service';
 
 export type ProcessOrderWorkflowStepStatus =
   | 'PENDING'
@@ -48,19 +53,10 @@ export type ProcessOrderWorkflowItemStatus =
   | 'FAILED'
   | 'CANCELLED';
 
-// TODO: [HIGH-IMPACT BUG] Missing 'RENEW' type in ProcessOrderWorkflowItemProgress.
-// The itemTypeEnum in schema.ts defines three types: 'REGISTER', 'IMPORT', 'RENEW',
-// but this interface only includes 'REGISTER' | 'IMPORT'. This causes:
-// 1. Type assertion errors when processing RENEW orders (line ~353: item.type as 'REGISTER' | 'IMPORT')
-// 2. Incorrect workflow state tracking for renewal orders
-// 3. Potential runtime errors or silent failures when renewals are processed
-// Impact: High - Renewal orders may not be tracked correctly in the workflow state,
-// leading to incorrect order progress reporting and potential customer confusion.
-// Fix: Add 'RENEW' to the type union: type: 'REGISTER' | 'IMPORT' | 'RENEW'
 export interface ProcessOrderWorkflowItemProgress {
   itemId: string;
   domain: NamefiNormalizedDomain;
-  type: 'REGISTER' | 'IMPORT';
+  type: 'REGISTER' | 'IMPORT' | 'RENEW';
   durationInYears: number;
   registrarKey: string;
   status: ProcessOrderWorkflowItemStatus;
@@ -152,6 +148,10 @@ const {
   getOrderDetailsOrThrow,
   updateOrderItemStatusOrThrow,
   updateOrderStatusOrThrow,
+  logGaEventOrderProcessingStarted,
+  logGaEventOrderItemsProcessingStarted,
+  logGaEventOrderItemsProcessingFinished,
+  logGaEventOrderProcessingFinished,
   logGaEventPaymentProcessed,
   logGaEventOrderFinishedEmailSent,
 } = typedProxyActivities({
@@ -189,12 +189,9 @@ export async function processOrderWorkflow(
     const info = workflow.workflowInfo();
     return info.unsafe?.now ? info.unsafe.now() : Date.now();
   };
-  const trackGaEvents = workflow.patched('toggle-tracking')
-    ? (input.gaEventTracking?.trackGaEvents ?? true)
-    : true;
-  const gaEventTrackingReason = workflow.patched('toggle-tracking')
-    ? (input.gaEventTracking?.reason ?? 'DEFAULT')
-    : undefined;
+  workflow.deprecatePatch('toggle-tracking');
+  const trackGaEvents = input.gaEventTracking?.trackGaEvents ?? true;
+  const gaEventTrackingReason = input.gaEventTracking?.reason ?? 'DEFAULT';
 
   const startedAt = temporalNow();
   const state: ProcessOrderWorkflowPublicState = {
@@ -345,6 +342,14 @@ export async function processOrderWorkflow(
     orderId: input.orderId,
   });
 
+  const logGaEventSkipped = (eventName: string) => {
+    workflow.log.info('Skipping GA event because tracking is disabled', {
+      orderId: input.orderId,
+      eventName,
+      gaEventTrackingReason: gaEventTrackingReason ?? 'DEFAULT',
+    });
+  };
+
   try {
     setPhase('FETCHING_ORDER');
     setStepStatus('order-details', 'IN_PROGRESS');
@@ -371,7 +376,7 @@ export async function processOrderWorkflow(
         ensureItem({
           itemId: item.id,
           domain: item.normalizedDomainName as NamefiNormalizedDomain,
-          type: (item.type as 'REGISTER' | 'IMPORT') ?? 'REGISTER',
+          type: (item.type as 'REGISTER' | 'IMPORT' | 'RENEW') ?? 'REGISTER',
           durationInYears: item.durationInYears,
           registrarKey: item.registrar,
           status: 'PENDING',
@@ -433,6 +438,24 @@ export async function processOrderWorkflow(
       setPhase('FAILED');
       throw new workflow.ApplicationFailure('No payment found');
     }
+    if (workflow.patched('track-new-events-for-order-v1')) {
+      if (trackGaEvents) {
+        try {
+          await logGaEventOrderProcessingStarted({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_processing_started event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('order_processing_started');
+      }
+    }
 
     try {
       setPhase('CHARGING');
@@ -476,11 +499,9 @@ export async function processOrderWorkflow(
           );
         }
       } else {
-        workflow.log.info('Skipping GA event because tracking is disabled', {
-          orderId: input.orderId,
-          eventName: 'payment_processed',
-          gaEventTrackingReason,
-        });
+        if (workflow.patched('track-new-events-for-order-v1')) {
+          logGaEventSkipped('payment_processed');
+        }
       }
     } catch (error) {
       for (const item of orderDetails.items) {
@@ -535,11 +556,9 @@ export async function processOrderWorkflow(
           );
         }
       } else {
-        workflow.log.info('Skipping GA event because tracking is disabled', {
-          orderId: input.orderId,
-          eventName: 'payment_processed',
-          gaEventTrackingReason,
-        });
+        if (workflow.patched('track-new-events-for-order-v1')) {
+          logGaEventSkipped('payment_processed');
+        }
       }
       throw error instanceof Error ? error : new Error(String(error));
     }
@@ -626,6 +645,26 @@ export async function processOrderWorkflow(
       }
     }
 
+    if (workflow.patched('track-new-events-for-order-v1')) {
+      if (trackGaEvents) {
+        try {
+          await logGaEventOrderItemsProcessingStarted({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+            itemsCount: orderDetails.items.length,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_items_processing_started event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('order_items_processing_started');
+      }
+    }
+
     const orderItemPromises = orderDetails.items.map((item) => {
       updateItem(item.id, {
         status: 'PROCESSING',
@@ -644,7 +683,7 @@ export async function processOrderWorkflow(
               recipientWalletAddress: nftWalletAddress as ChecksumWalletAddress,
               chainId: nftChainId,
               userId: orderDetails.order.userId,
-              operationType: item.type as 'REGISTER' | 'IMPORT',
+              operationType: item.type as 'REGISTER' | 'IMPORT' | 'RENEW',
               registrarKey: item.registrar,
               encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
               encryptionKeyId: item.encryptionKeyId,
@@ -677,13 +716,54 @@ export async function processOrderWorkflow(
     const orderItemResults = await Promise.allSettled(orderItemPromises);
     recomputeSummary();
 
-    const failedItems = orderDetails.items.filter(
-      (_, index) => orderItemResults[index].status === 'rejected',
-    );
-    const succeededItems = orderDetails.items.filter(
-      (_, index) => orderItemResults[index].status === 'fulfilled',
+    const {
+      derivedOrderStatus,
+      derivedRefundNeeded,
+      derivedRefundType,
+      failedItems,
+      succeededItems,
+    } = _deriveOrderStatusAndRefundFromItemsResults(
+      orderDetails,
+      orderItemResults,
     );
 
+    if (workflow.patched('track-new-events-for-order-v1')) {
+      if (trackGaEvents) {
+        try {
+          await logGaEventOrderItemsProcessingFinished({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+            itemsCount: orderDetails.items.length,
+            successItemsCount: succeededItems.length,
+            failedItemsCount: failedItems.length,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_items_processing_finished event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+        try {
+          await logGaEventOrderProcessingFinished({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+            orderStatus: derivedOrderStatus,
+            refundNeeded: derivedRefundNeeded,
+            refundType: derivedRefundType,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track order_processing_finished event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('order_items_processing_finished');
+        logGaEventSkipped('order_processing_finished');
+      }
+    }
     if (failedItems.length === 0) {
       setStepStatus('items', 'COMPLETED', 'All domains secured successfully');
     } else if (succeededItems.length === 0) {
@@ -792,19 +872,19 @@ export async function processOrderWorkflow(
     setPhase('FINALIZING');
     setStepStatus('final-status', 'IN_PROGRESS');
 
-    if (failedItems.length === 0) {
+    if (derivedOrderStatus === orderStatusSchema.enum.SUCCEEDED) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.enum.SUCCEEDED,
+        status: derivedOrderStatus,
       });
-      updateOrderStatus(orderStatusSchema.enum.SUCCEEDED);
+      updateOrderStatus(derivedOrderStatus);
       setStepStatus('final-status', 'COMPLETED', 'Order completed');
-    } else if (succeededItems.length === 0) {
+    } else if (derivedOrderStatus === orderStatusSchema.enum.FAILED) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.enum.FAILED,
+        status: derivedOrderStatus,
       });
-      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      updateOrderStatus(derivedOrderStatus);
       setStepStatus(
         'final-status',
         'FAILED',
@@ -813,9 +893,9 @@ export async function processOrderWorkflow(
     } else {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.enum.PARTIALLY_COMPLETED,
+        status: derivedOrderStatus,
       });
-      updateOrderStatus(orderStatusSchema.enum.PARTIALLY_COMPLETED);
+      updateOrderStatus(derivedOrderStatus);
       setStepStatus(
         'final-status',
         'COMPLETED',
@@ -1246,4 +1326,37 @@ async function _sendOrderCompletionSlackAlert(
     workflowId,
     runId,
   });
+}
+
+function _deriveOrderStatusAndRefundFromItemsResults(
+  orderDetails: OrderWithPayments,
+  orderItemResults: PromiseSettledResult<void>[],
+) {
+  const failedItems = orderDetails.items.filter(
+    (_, index) => orderItemResults[index].status === 'rejected',
+  );
+  const succeededItems = orderDetails.items.filter(
+    (_, index) => orderItemResults[index].status === 'fulfilled',
+  );
+  const derivedOrderStatus =
+    failedItems.length === 0
+      ? orderStatusSchema.enum.SUCCEEDED
+      : succeededItems.length === 0
+        ? orderStatusSchema.enum.FAILED
+        : orderStatusSchema.enum.PARTIALLY_COMPLETED;
+  const derivedRefundType: 'NONE' | 'FULL' | 'PARTIAL' =
+    failedItems.length === 0
+      ? 'NONE'
+      : succeededItems.length === 0
+        ? 'FULL'
+        : 'PARTIAL';
+  const derivedRefundNeeded = derivedRefundType !== 'NONE';
+
+  return {
+    derivedOrderStatus,
+    derivedRefundType,
+    derivedRefundNeeded,
+    failedItems,
+    succeededItems,
+  };
 }
