@@ -176,16 +176,23 @@ async function fetchDnsTxtRecords(domain: string): Promise<string[]> {
   return payload.Answer.map((answer) => answer.data);
 }
 
+function stripQuotations(text: string): string {
+  return text.trim().replace(/(^"|^'|"$|'$)/g, '');
+}
+
 async function handleDnsRedirect(domain: string) {
   try {
     const records = await fetchDnsTxtRecords(domain);
     const redirectMarker = records.find((record) =>
-      record.startsWith('"--nfi-redirect='),
+      stripQuotations(record).startsWith('--nfi-redirect='),
     );
     if (!redirectMarker) {
       return;
     }
-    const redirectedUrl = redirectMarker.replace(/(^"|"$)/g, '').split('=')[1];
+    const redirectedUrl = stripQuotations(redirectMarker).replace(
+      /^--nfi-redirect=/,
+      '',
+    );
     if (redirectedUrl) {
       redirect(redirectedUrl);
     }
