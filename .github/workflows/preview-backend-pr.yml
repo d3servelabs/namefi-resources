@@ -434,7 +434,7 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
       issues: write
     outputs:
@@ -586,36 +586,40 @@ jobs:
               `  <tr><td><strong>Control Center URL</strong></td><td><a href="${revisionUrl}?namefi_dev_mode_control=1">Open control center</a></td></tr>`,
               '</table>',
             ].join('\n');
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              per_page: 100,
-            });
-
-            const existingComment = comments.find(
-              (comment) =>
-                comment.user?.login === 'github-actions[bot]' &&
-                comment.body?.includes(marker)
-            );
-
-            if (existingComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existingComment.id,
-                body,
-              });
-              core.info(`Updated backend preview comment on PR #${prNumber}`);
-            } else {
-              await github.rest.issues.createComment({
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body,
+                per_page: 100,
               });
-              core.info(`Created backend preview comment on PR #${prNumber}`);
+
+              const existingComment = comments.find(
+                (comment) =>
+                  comment.user?.login === 'github-actions[bot]' &&
+                  comment.body?.includes(marker)
+              );
+
+              if (existingComment) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: existingComment.id,
+                  body,
+                });
+                core.info(`Updated backend preview comment on PR #${prNumber}`);
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body,
+                });
+                core.info(`Created backend preview comment on PR #${prNumber}`);
+              }
+            }catch(error){
+              core.error('Could not comment URL');
+
             }
 
   redeploy-vercel-preview:
