@@ -35,13 +35,19 @@ type MarketplaceLink = {
   logoClassName?: string;
 };
 
-interface PageData {
-  domainDocument: DomainDocument;
-  domainsCountByOwner: number;
-  domainTags: string[];
-  aiGenerations: Awaited<ReturnType<typeof getInternalGenerationsByDomain>>;
-  host: string;
-}
+type PageData =
+  | {
+      type: 'park_page';
+      domainDocument: DomainDocument;
+      domainsCountByOwner: number;
+      domainTags: string[];
+      aiGenerations: Awaited<ReturnType<typeof getInternalGenerationsByDomain>>;
+      host: string;
+    }
+  | {
+      type: 'redirect_url';
+      redirectUrl: string;
+    };
 
 interface DnsAnswer {
   name: string;
@@ -166,7 +172,9 @@ function stripQuotations(text: string): string {
   return text.trim().replace(/(^"|^'|"$|'$)/g, '');
 }
 
-async function handleDnsRedirect(domain: string) {
+async function detectNamefiRedirectFromDnsRecords(
+  domain: string,
+): Promise<string | undefined> {
   try {
     const records = await fetchDnsTxtRecords(domain);
     const redirectMarker = records.find((record) =>
@@ -175,13 +183,11 @@ async function handleDnsRedirect(domain: string) {
     if (!redirectMarker) {
       return;
     }
-    const redirectedUrl = stripQuotations(redirectMarker).replace(
+    const redirectUrl = stripQuotations(redirectMarker).replace(
       /^--nfi-redirect=/,
       '',
     );
-    if (redirectedUrl) {
-      redirect(redirectedUrl);
-    }
+    return redirectUrl;
   } catch {
     // If DNS query fails we simply continue rendering the parking page.
   }
@@ -352,7 +358,13 @@ function resolvePbnBrandStyle(
 }
 
 async function loadPageData(host: string): Promise<PageData> {
-  await handleDnsRedirect(host);
+  const redirectUrl = await detectNamefiRedirectFromDnsRecords(host);
+  if (redirectUrl) {
+    return {
+      type: 'redirect_url',
+      redirectUrl,
+    };
+  }
 
   let domainDocument: DomainDocument | null = null;
   let fetchFailed = false;
@@ -401,6 +413,7 @@ async function loadPageData(host: string): Promise<PageData> {
   ]);
 
   return {
+    type: 'park_page',
     domainDocument: resolvedDocument,
     domainsCountByOwner: ownerCountResult,
     domainTags: tagsResult,
@@ -431,6 +444,10 @@ export default async function ParkPage({
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
   const host = await getRequestHost(domainFromQuery);
   const data = await loadPageData(host);
+  if (data.type === 'redirect_url') {
+    redirect(data.redirectUrl);
+    return <></>;
+  }
   const pbnApex = resolvePbnApex({
     domain: data.domainDocument.ldh ?? host,
     host,
