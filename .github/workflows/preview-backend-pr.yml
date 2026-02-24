@@ -436,6 +436,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      issues: write
     outputs:
       revision_tag_url: ${{ steps.tagged-url.outputs.revision_tag_url }}
     steps:
@@ -497,11 +498,16 @@ jobs:
           SHORT_SHA="${GITHUB_SHA::7}"
           REVISION_SUFFIX="pr-$PR_NUMBER-$SHORT_SHA"
           gcloud beta run deploy namefi-astra-backend-preview \
+            --container "gate-proxy" \
+            --image "us-central1-docker.pkg.dev/d3serve-labs/cloud-run-source-deploy/namefi-astra/preview-ngnix-proxy:latest" \
+            --port='80' --no-traffic \
+            --container "temporal" \
+            --image "us-central1-docker.pkg.dev/d3serve-labs/cloud-run-source-deploy/temporalio/temporal:1.5.1" \
+            --args="server,start-dev,--ip,0.0.0.0" \
             --container "api" \
             --image "$NEW_IMAGE" \
             --set-env-vars="DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
-            --port='3000' --no-traffic \
-            --container "worker" \
+            --container "workers" \
             --image "$NEW_IMAGE" \
             --set-env-vars="DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
             --revision-suffix "$REVISION_SUFFIX" \
@@ -551,6 +557,66 @@ jobs:
             exit 1
           fi
           echo "revision_tag_url=$REVISION_TAG_URL" >> $GITHUB_OUTPUT
+
+      - name: Comment revision URL on PR
+        if: steps.tagged-url.outputs.revision_tag_url != ''
+        uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          REVISION_TAG_URL: ${{ steps.tagged-url.outputs.revision_tag_url }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const revisionUrl = process.env.REVISION_TAG_URL;
+            const marker = '<!-- preview-backend-revision-url -->';
+
+            if (!prNumber || !revisionUrl) {
+              core.warning('Missing PR number or revision URL; skipping PR comment.');
+              return;
+            }
+
+            const body = [
+              marker,
+              '## Backend Preview Deployed ✅',
+              '',
+              '<table>',
+              '  <tr><td><strong>Service</strong></td><td>namefi-astra-backend-preview</td></tr>',
+              `  <tr><td><strong>Revision URL</strong></td><td><a href="${revisionUrl}">Open backend preview</a></td></tr>`,
+              `  <tr><td><strong>Control Center URL</strong></td><td><a href="${revisionUrl}?namefi_dev_mode_control=1">Open control center</a></td></tr>`,
+              '</table>',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = comments.find(
+              (comment) =>
+                comment.user?.login === 'github-actions[bot]' &&
+                comment.body?.includes(marker)
+            );
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              core.info(`Updated backend preview comment on PR #${prNumber}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+              core.info(`Created backend preview comment on PR #${prNumber}`);
+            }
 
   redeploy-vercel-preview:
     name: Redeploy Vercel Preview
