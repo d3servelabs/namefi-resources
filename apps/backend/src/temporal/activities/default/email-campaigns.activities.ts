@@ -518,7 +518,9 @@ export async function sendDomainTrafficSurgeEmail({
     return { status: 'DRY_RUN' };
   }
 
-  const suggestedDomains = await getUserDomainSuggestions(userId);
+  const suggestedDomains = await getUserDomainSuggestions(userId, {
+    ownedDomainFilter: limitedDomains.map((item) => item.domain),
+  });
 
   return sendCampaignEmail({
     userId,

@@ -16,8 +16,13 @@ import { resolve } from '../../utils/resolve';
 
 const logger = createLogger({ module: 'domain-suggestions' });
 
+type UserDomainSuggestionOptions = {
+  ownedDomainFilter?: NamefiNormalizedDomain[];
+};
+
 export async function getUserDomainSuggestions(
   userId: string,
+  options?: UserDomainSuggestionOptions,
 ): Promise<NamefiNormalizedDomain[]> {
   try {
     const user = await db.query.usersTable.findFirst({
@@ -77,8 +82,28 @@ export async function getUserDomainSuggestions(
       return [];
     }
 
+    const ownedDomainSet = new Set(ownedDomainNames);
+
+    const filteredOwnedDomainNames = options?.ownedDomainFilter?.length
+      ? Array.from(
+          new Set(
+            options.ownedDomainFilter.filter((domain) =>
+              ownedDomainSet.has(domain),
+            ),
+          ),
+        )
+      : ownedDomainNames;
+
+    if (filteredOwnedDomainNames.length === 0) {
+      logger.debug(
+        { userId },
+        'No matching owned domains after applying suggestion filter',
+      );
+      return [];
+    }
+
     const { suggestions } = await generateDreamDomainSuggestions({
-      ownedDomains: ownedDomainNames,
+      ownedDomains: filteredOwnedDomainNames,
       onLog: (level, message, meta) => {
         const payload = { userId, ...meta };
         switch (level) {
