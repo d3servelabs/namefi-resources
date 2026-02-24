@@ -22,13 +22,7 @@ import {
   getTagsByDomain,
 } from '@/lib/metadata';
 
-type MarketplaceKey =
-  | 'manage'
-  | 'opensea'
-  | 'magiceden'
-  | 'coinbasenft'
-  | 'looksrare'
-  | 'okx';
+type MarketplaceKey = 'manage' | 'opensea' | 'magiceden' | 'looksrare' | 'okx';
 
 type MarketplaceLink = {
   key: MarketplaceKey;
@@ -87,14 +81,6 @@ const MARKETPLACE_META = {
     logoSrc: '/assets/marketplaces/magiceden.svg',
     logoMutedSrc: '/assets/marketplaces/magiceden-gray.svg',
     logoWidth: 120,
-    logoHeight: 30,
-    logoClassName: 'h-7 w-auto sm:h-8',
-  },
-  coinbasenft: {
-    label: 'Coinbase NFT',
-    logoSrc: '/assets/marketplaces/coinbasenft.svg',
-    logoMutedSrc: '/assets/marketplaces/coinbasenft-gray.svg',
-    logoWidth: 124,
     logoHeight: 30,
     logoClassName: 'h-7 w-auto sm:h-8',
   },
@@ -268,7 +254,7 @@ function buildMarketplaceLinks(
 
   const contract = DEFAULT_NAMEFI_NFT_ADDRESS;
 
-  const networkSlug = (() => {
+  const openSeaNetworkSlug = (() => {
     switch (chain) {
       case 'base':
         return 'base';
@@ -281,28 +267,45 @@ function buildMarketplaceLinks(
     }
   })();
 
+  const magicEdenNetworkSlug =
+    chain === 'base' || chain === 'ethereum' ? chain : null;
+
+  const okxNetworkSlug =
+    chain === 'base' ? 'base' : chain === 'ethereum' ? 'eth' : null;
+
   const items: MarketplaceLink[] = [
     toMarketplaceLink(
       'opensea',
-      `https://opensea.io/assets/${networkSlug}/${contract}/${tokenId}`,
-    ),
-    toMarketplaceLink(
-      'magiceden',
-      `https://magiceden.io/collections/${networkSlug}/${contract}?evmItemDetailsModal=1%7E${contract}%7E${tokenId}`,
-    ),
-    toMarketplaceLink(
-      'coinbasenft',
-      `https://nft.coinbase.com/nft/${networkSlug}/${contract}/${tokenId}`,
-    ),
-    toMarketplaceLink(
-      'looksrare',
-      `https://looksrare.org/collections/${contract}/${tokenId}`,
-    ),
-    toMarketplaceLink(
-      'okx',
-      `https://www.okx.com/web3/marketplace/nft/asset/${networkSlug}/${contract}/${tokenId}`,
+      `https://opensea.io/item/${openSeaNetworkSlug}/${contract}/${tokenId}`,
     ),
   ];
+
+  if (magicEdenNetworkSlug) {
+    items.push(
+      toMarketplaceLink(
+        'magiceden',
+        `https://magiceden.io/collections/${magicEdenNetworkSlug}/${contract}?evmItemDetailsModal=1%7E${contract}%7E${tokenId}`,
+      ),
+    );
+  }
+
+  if (chain === 'ethereum') {
+    items.push(
+      toMarketplaceLink(
+        'looksrare',
+        `https://looksrare.org/collections/${contract}/${tokenId}`,
+      ),
+    );
+  }
+
+  if (okxNetworkSlug) {
+    items.push(
+      toMarketplaceLink(
+        'okx',
+        `https://www.okx.com/web3/nft/asset/${okxNetworkSlug}/${contract}/${tokenId}`,
+      ),
+    );
+  }
 
   return items;
 }

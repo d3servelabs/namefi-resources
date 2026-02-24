@@ -119,11 +119,6 @@ const SUPPORTING_PLATFORMS: LogoItem[] = [
     logo: '/assets/astra/logos/opensea.svg',
   },
   {
-    name: 'Vision',
-    href: 'https://vision.io/market?filter=%257B%2522protocol%2522%253A%2522namefi%2522%257D',
-    logo: '/assets/astra/logos/vision.svg',
-  },
-  {
     name: 'NFTFi',
     href: 'https://app.nftfi.com/collection/0x0000000000cf80e7cf8fa4480907f692177f8e06',
     logo: '/assets/astra/logos/nftfi.svg',
@@ -154,34 +149,9 @@ const SUPPORTING_PLATFORMS: LogoItem[] = [
     logo: '/assets/astra/logos/magiceden.svg',
   },
   {
-    name: 'Coinbase',
-    href: 'https://nft.coinbase.com/collection/ethereum/namefinft',
-    logo: '/assets/astra/logos/coinbase.svg',
-  },
-  {
     name: 'OKX',
-    href: 'https://www.okx.com/web3/marketplace/nft/collection/eth/namefinft',
+    href: 'https://www.okx.com/web3/nft/collection/eth/namefinft',
     logo: '/assets/astra/logos/okx.svg',
-  },
-  {
-    name: 'Pass',
-    href: 'https://www.pass.xyz/collection/ethereum/0x0000000000cf80e7cf8fa4480907f692177f8e06',
-    logo: '/assets/astra/logos/pass.svg',
-  },
-  {
-    name: 'Castle',
-    href: 'https://castle.link/marketplace/collection/ethereum/0x0000000000cf80e7cf8fa4480907f692177f8e06',
-    logo: '/assets/astra/logos/castle.svg',
-  },
-  {
-    name: 'Floor',
-    href: 'https://floor.social/search/NamefiNFT',
-    logo: '/assets/astra/logos/floor.svg',
-  },
-  {
-    name: 'X2Y2',
-    href: 'https://x2y2.io/collection/namefinft/items',
-    logo: '/assets/astra/logos/x2y2.svg',
   },
   {
     name: 'Rarible',
@@ -207,16 +177,6 @@ const SUPPORTING_PLATFORMS: LogoItem[] = [
     name: 'OpenSea Pro',
     href: 'https://pro.opensea.io/collection/namefinft',
     logo: '/assets/astra/logos/openseapro.svg',
-  },
-  {
-    name: 'NFTrade',
-    href: 'https://nftrade.com/collection/namefinft',
-    logo: '/assets/astra/logos/nftrade.svg',
-  },
-  {
-    name: "Sweep n'Flip",
-    href: 'https://app.sweepnflip.io/sweep?chainId=1&collectionSelected=0x0000000000cf80e7cf8fa4480907f692177f8e06',
-    logo: '/assets/astra/logos/sweepnflip.svg',
   },
 ];
 
