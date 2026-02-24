@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
 import { withAdminGuard } from '@/components/admin/admin-guard';
+import { config } from '@/lib/env';
 import {
   Card,
   CardContent,
@@ -22,6 +23,7 @@ import {
   ShoppingCart,
   Flame,
   Globe,
+  Server,
   ArrowRightLeft,
   RefreshCw,
   ClipboardList,
@@ -283,6 +285,19 @@ const ADMIN_SECTIONS: AdminSection[] = [
   {
     title: 'Developer Tools',
     items: [
+      ...(config.TYPE === 'preview'
+        ? [
+            {
+              title: 'Preview Server',
+              description:
+                'Open the preview control router to switch upstream routing to other preview servers (temporal-ui, workers).',
+              href: `${config.BACKEND_URL}?namefi_dev_mode_control=1`,
+              icon: Server,
+              iconBgColor: 'bg-emerald-100',
+              iconTextColor: 'text-emerald-600',
+            },
+          ]
+        : []),
       {
         title: 'EPP Testing (OTE2)',
         description:
