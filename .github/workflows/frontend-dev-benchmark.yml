@@ -11,8 +11,75 @@ env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
 
 jobs:
+  rate-limit:
+    name: Check Rate Limit
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    outputs:
+      should_skip: ${{ steps.check.outputs.should_skip }}
+    steps:
+      - name: Check recent workflow runs
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflowFile = 'frontend-dev-benchmark.yml';
+            const currentRunId = context.runId;
+            const now = Date.now();
+            const oneHourAgo = new Date(now - 60 * 60 * 1000).toISOString();
+            const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+
+            // Fetch completed and in-progress runs in the last 24 hours
+            const [completedRes, inProgressRes] = await Promise.all([
+              github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: workflowFile,
+                branch: 'main',
+                status: 'completed',
+                per_page: 100,
+                created: `>=${twentyFourHoursAgo}`,
+              }),
+              github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: workflowFile,
+                branch: 'main',
+                status: 'in_progress',
+                per_page: 100,
+                created: `>=${twentyFourHoursAgo}`,
+              }),
+            ]);
+
+            const allRuns = [
+              ...completedRes.data.workflow_runs,
+              ...inProgressRes.data.workflow_runs,
+            ].filter(run => run.id !== currentRunId);
+
+            const lastHourCount = allRuns.filter(
+              run => new Date(run.created_at) >= new Date(oneHourAgo)
+            ).length;
+            const last24hCount = allRuns.length;
+
+            core.info(`Runs in last hour (excl. current): ${lastHourCount}`);
+            core.info(`Runs in last 24h (excl. current): ${last24hCount}`);
+
+            if (lastHourCount >= 1) {
+              core.info('Skipping: workflow already ran in the last hour.');
+              core.setOutput('should_skip', 'true');
+            } else if (last24hCount >= 10) {
+              core.info(`Skipping: workflow already ran ${last24hCount} times in the last 24 hours.`);
+              core.setOutput('should_skip', 'true');
+            } else {
+              core.info('Rate limit OK - proceeding.');
+              core.setOutput('should_skip', 'false');
+            }
+
   benchmark:
     name: Run Frontend Dev Benchmark
+    needs: rate-limit
+    if: needs.rate-limit.outputs.should_skip != 'true'
     runs-on: blacksmith-8vcpu-ubuntu-2404
     timeout-minutes: 90
     steps:
@@ -57,34 +124,34 @@ jobs:
           import json
           import os
           import urllib.request
-  
+
           report_path = os.environ.get("BENCH_REPORT")
           if not report_path or not os.path.exists(report_path):
             raise SystemExit("Benchmark report missing")
-  
+
           with open(report_path, "r", encoding="utf-8") as handle:
             lines = handle.read().splitlines()
-  
+
           start_index = None
           for idx, line in enumerate(lines):
             if line.strip() == "## Averages":
               start_index = idx + 1
               break
-  
+
           if start_index is None:
             raise SystemExit("Averages section not found")
-  
+
           avg_lines = []
           for line in lines[start_index:]:
             if line.startswith("## "):
               break
             avg_lines.append(line)
-  
+
           while avg_lines and avg_lines[0].strip() == "":
             avg_lines.pop(0)
           while avg_lines and avg_lines[-1].strip() == "":
             avg_lines.pop()
-  
+
           avg_table = "\n".join(avg_lines).strip()
 
           rows = []
@@ -98,7 +165,7 @@ jobs:
               if not columns or columns[0].lower() == "route":
                 continue
               rows.append(columns)
-  
+
           runs = ""
           for line in lines:
             if line.strip().startswith("- Runs:"):
@@ -120,16 +187,16 @@ jobs:
               key, _, value = line[2:].partition(":")
               if key and value:
                 machine[key.strip()] = value.strip()
-  
+
           full_sha = os.environ.get("GITHUB_SHA", "")
           sha = full_sha[:7]
           repo = os.environ.get("GITHUB_REPOSITORY", "")
           run_id = os.environ.get("GITHUB_RUN_ID", "")
           server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
           run_url = f"{server_url}/{repo}/actions/runs/{run_id}" if repo and run_id else ""
-  
+
           header = "Frontend dev benchmark (main)"
-  
+
           meta_bits = []
           if repo:
             repo_url = f"{server_url}/{repo}"
@@ -144,7 +211,7 @@ jobs:
               meta_bits.append(f"*Commit:* {sha}")
           if run_url:
             meta_bits.append(f"*Run:* <{run_url}|View run>")
-  
+
           blocks = [
             {"type": "section", "text": {"type": "mrkdwn", "text": f"*{header}*"}},
           ]
@@ -194,13 +261,13 @@ jobs:
                   ],
                 }
               )
-  
+
           payload = json.dumps({"text": header, "blocks": blocks})
           webhook = os.environ.get("SLACK_WEBHOOK_URL")
           if not webhook:
             print("SLACK_WEBHOOK_URL not configured, skipping notification")
             raise SystemExit(0)
-  
+
           req = urllib.request.Request(
             webhook,
             data=payload.encode("utf-8"),
