@@ -1,24 +1,13 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import {
-  CalendarClock,
-  ExternalLink,
-  Loader2,
-  RefreshCcw,
-  UserRound,
-} from 'lucide-react';
+import { formatDistanceToNowStrict } from 'date-fns';
+import { ExternalLink, Loader2, RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
+import { Playfair_Display } from 'next/font/google';
 import { useEffect, useMemo, useRef } from 'react';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button, buttonVariants } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
+import { Button } from '@/components/ui/shadcn/button';
+import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { cn } from '@/lib/cn';
 import {
@@ -27,11 +16,15 @@ import {
   type MlsSalesFeedPage,
 } from '@/lib/mls/feed';
 
-const dateTimeFormatter = new Intl.DateTimeFormat('en-US', {
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
   dateStyle: 'medium',
-  timeStyle: 'short',
 });
 const LEADING_AT_SYMBOL = /^@/;
+const THREE_DAYS_IN_MS = 72 * 60 * 60 * 1000;
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+});
 
 const SKELETON_KEYS = [
   'mls-skeleton-1',
@@ -88,19 +81,13 @@ export function MlsFeed() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
+    <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
       <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-2">
-            <Badge variant="secondary" className="w-fit">
-              MLS Feed
-            </Badge>
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
               Domains For Sale On Twitter
             </h1>
-            <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-              Fresh listings with seller profiles, pricing, and direct links.
-            </p>
           </div>
           <Button
             variant="outline"
@@ -124,7 +111,7 @@ export function MlsFeed() {
         </div>
       </section>
 
-      <section className="mt-6 space-y-4">
+      <section className="mt-6 space-y-0">
         {isLoading ? <MlsFeedSkeleton /> : null}
 
         {isError && listings.length === 0 ? (
@@ -170,119 +157,85 @@ interface MlsFeedCardProps {
 
 function MlsFeedCard({ listing }: MlsFeedCardProps) {
   const sellerHandle = normalizeHandle(listing.seller.username);
+  const sellerLabel = sellerHandle ?? '@unknown';
   const sellerProfileUrl = getSellerProfileUrl(sellerHandle);
-  const sellerLabel = sellerHandle ?? listing.seller.displayName ?? 'Unknown';
-  const askingPriceLabel = listing.askingPrice
-    ? [listing.askingPrice, listing.askingCurrency].filter(Boolean).join(' ')
-    : null;
+  const domainUrl = getDomainUrl(listing.domain);
+  const askingCurrency = normalizeCurrency(listing.askingCurrency);
+  const askingPriceLabel = formatAskingPrice(
+    listing.askingPrice,
+    askingCurrency,
+  );
+  const postedLabel = formatPostedLabel(listing.postedAt);
+  const excerpt = formatExcerpt(listing.messageText);
+  const domainParts = splitDomainForDisplay(listing.domain);
 
   return (
-    <Card className="border-border/70 bg-gradient-to-br from-card via-card to-primary/5 shadow-md shadow-primary/5">
-      <CardHeader className="space-y-3">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="space-y-2">
-            <Badge
-              variant="outline"
-              className="border-primary/30 bg-primary/10 text-primary"
-            >
-              Twitter Listing
-            </Badge>
-            <CardTitle className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              {listing.domain}
-            </CardTitle>
-          </div>
-
-          <Badge
-            variant={askingPriceLabel ? 'secondary' : 'outline'}
-            className={cn(
-              'text-sm',
-              askingPriceLabel
-                ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-400'
-                : '',
-            )}
-          >
-            {askingPriceLabel ?? 'Price unavailable'}
-          </Badge>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-4">
-        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/70 px-2.5 py-1">
-            <CalendarClock className="size-3.5" />
-            Posted {formatDateTime(listing.postedAt)}
-          </span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/70 px-2.5 py-1">
-            <CalendarClock className="size-3.5" />
-            Listed {formatDateTime(listing.listedAt)}
-          </span>
-        </div>
-
-        <div className="rounded-xl border border-border/60 bg-background/60 p-4">
-          <p className="text-xs tracking-wide text-muted-foreground uppercase">
-            Seller
-          </p>
-
+    <Card className="bg-transparent shadow-none !py-0 !ring-0 border-b border-white/10 rounded-none">
+      <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
+        <div className="flex items-center gap-2 text-xs text-white/35 sm:text-sm">
           {sellerProfileUrl ? (
             <Link
               href={sellerProfileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+              className="truncate font-semibold text-white/50 transition-colors hover:text-white/70 hover:underline"
             >
-              <UserRound className="size-4" />
               {sellerLabel}
-              <ExternalLink className="size-3.5" />
             </Link>
           ) : (
-            <p className="mt-1 text-sm font-medium">{sellerLabel}</p>
+            <p className="truncate font-semibold text-white/50">
+              {sellerLabel}
+            </p>
           )}
+          <span aria-hidden={true}>•</span>
+          <time className="shrink-0" dateTime={listing.postedAt}>
+            {postedLabel}
+          </time>
         </div>
 
-        {listing.messageText ? (
-          <p className="rounded-xl border border-border/60 bg-background/50 p-4 text-sm leading-relaxed text-foreground/85">
-            {listing.messageText}
-          </p>
-        ) : null}
-      </CardContent>
-
-      <CardFooter className="border-t border-border/60 pt-4">
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-4 flex items-end justify-between gap-4">
           <Link
-            href={listing.sourceTweetUrl}
+            href={domainUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+            className="min-w-0 flex flex-wrap items-baseline gap-1.5 no-underline"
+            aria-label={`Open source post for ${listing.domain}`}
           >
-            View Tweet
-            <ExternalLink className="size-3.5" />
+            <h2
+              className={cn(
+                playfairDisplay.className,
+                'text-4xl leading-none text-white sm:text-[2.9rem]',
+              )}
+            >
+              {domainParts.label}
+            </h2>
+            {domainParts.tld ? (
+              <span className="font-sans text-[1.6rem] leading-none font-medium text-white/35 sm:text-[1.95rem]">
+                .{domainParts.tld}
+              </span>
+            ) : null}
           </Link>
 
-          {sellerProfileUrl ? (
-            <Link
-              href={sellerProfileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
-            >
-              Seller Profile
-              <ExternalLink className="size-3.5" />
-            </Link>
-          ) : null}
-
-          {listing.purchaseUrl ? (
-            <Link
-              href={listing.purchaseUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'default', size: 'sm' }))}
-            >
-              Purchase Link
-              <ExternalLink className="size-3.5" />
-            </Link>
+          {askingPriceLabel ? (
+            <p className="shrink-0 text-right text-lg font-semibold text-emerald-400 sm:text-xl">
+              {askingPriceLabel}
+            </p>
           ) : null}
         </div>
-      </CardFooter>
+
+        <div className="mt-6">
+          <Link
+            href={domainUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-w-0 max-w-[46%] items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60"
+            aria-label={`Open source post for ${listing.domain}`}
+          >
+            <span className="truncate">{excerpt}</span>
+            <ExternalLink className="size-3.5 shrink-0" />
+          </Link>
+        </div>
+      </CardContent>
     </Card>
   );
 }
@@ -295,23 +248,34 @@ function MlsFeedSkeleton({ compact = false }: MlsFeedSkeletonProps) {
   const keys = compact ? [SKELETON_KEYS[0], SKELETON_KEYS[1]] : SKELETON_KEYS;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-0">
       {keys.map((key) => (
-        <Card key={key} className="border-border/60">
-          <CardHeader className="space-y-3">
-            <Skeleton className="h-5 w-28 rounded-full" />
-            <Skeleton className="h-9 w-3/4" />
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Skeleton className="h-5 w-2/3" />
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-16 w-full" />
+        <Card
+          key={key}
+          className="bg-transparent shadow-none !py-0 !ring-0 border-b border-white/10 rounded-none"
+        >
+          <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-1.5 w-1.5 rounded-full" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+
+            <div className="mt-4 flex items-end justify-between gap-4">
+              <div className="min-w-0 flex items-end gap-1.5">
+                <Skeleton className="h-11 w-52 sm:w-64" />
+                <Skeleton className="h-8 w-14 sm:w-16" />
+              </div>
+              <Skeleton className="h-7 w-[4.5rem]" />
+            </div>
+
+            <div className="mt-6">
+              <div className="inline-flex min-w-0 max-w-[46%] items-center gap-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="size-3.5 shrink-0" />
+              </div>
+            </div>
           </CardContent>
-          <CardFooter className="gap-2 border-t border-border/50 pt-4">
-            <Skeleton className="h-8 w-24" />
-            <Skeleton className="h-8 w-28" />
-            <Skeleton className="h-8 w-28" />
-          </CardFooter>
         </Card>
       ))}
     </div>
@@ -375,10 +339,91 @@ function getSellerProfileUrl(handle: string | null) {
   return `https://x.com/${normalized}`;
 }
 
-function formatDateTime(value: string) {
+function getDomainUrl(domain: string) {
+  const normalized = domain.trim();
+  if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
+    return normalized;
+  }
+  return `https://${normalized}`;
+}
+
+function normalizeCurrency(value: string | null) {
+  const normalized = value?.trim().toUpperCase();
+  if (!normalized) {
+    return 'USD';
+  }
+  return normalized;
+}
+
+function formatAskingPrice(
+  price: string | null,
+  currency: string,
+): string | null {
+  const normalizedPrice = price?.trim();
+  if (!normalizedPrice) {
+    return null;
+  }
+
+  const numericPrice = Number(
+    normalizedPrice.replaceAll(',', '').replace('$', ''),
+  );
+  if (!Number.isFinite(numericPrice)) {
+    return normalizedPrice;
+  }
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'narrowSymbol',
+    maximumFractionDigits: Number.isInteger(numericPrice) ? 0 : 2,
+    minimumFractionDigits: Number.isInteger(numericPrice) ? 0 : 2,
+  }).format(numericPrice);
+}
+
+function splitDomainForDisplay(domain: string) {
+  const normalizedDomain = domain.trim();
+  const splitIndex = normalizedDomain.indexOf('.');
+
+  if (splitIndex <= 0 || splitIndex === normalizedDomain.length - 1) {
+    return { label: normalizedDomain, tld: null };
+  }
+
+  return {
+    label: normalizedDomain.slice(0, splitIndex),
+    tld: normalizedDomain.slice(splitIndex + 1),
+  };
+}
+
+function formatPostedLabel(value: string) {
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) {
     return 'Unknown';
   }
-  return dateTimeFormatter.format(parsed);
+
+  const now = new Date();
+  const diffMs = now.getTime() - parsed.getTime();
+  if (diffMs < 0) {
+    return dateFormatter.format(parsed);
+  }
+
+  if (diffMs < 60 * 1000) {
+    return 'just now';
+  }
+
+  if (diffMs <= THREE_DAYS_IN_MS) {
+    return formatDistanceToNowStrict(parsed, {
+      addSuffix: true,
+      roundingMethod: 'floor',
+    });
+  }
+
+  return dateFormatter.format(parsed);
+}
+
+function formatExcerpt(value: string | null) {
+  const normalized = value?.replace(/\s+/g, ' ').trim();
+  if (!normalized) {
+    return 'No excerpt available';
+  }
+  return normalized;
 }
