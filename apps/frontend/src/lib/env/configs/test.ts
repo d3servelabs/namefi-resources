@@ -4,6 +4,8 @@ import type { ConfigInput } from '../schema';
 const testConfig: ConfigInput = {
   TYPE: 'local',
   BACKEND_URL: 'http://localhost:3000',
+  MLS_PUBLIC_SALES_LISTINGS_URL:
+    'https://outbound.labs.namefi.io/api/public/sales/listings',
   RESOURCES_URL: 'https://localhost:3002',
   DOCS_URL: 'https://docs.namefi.dev',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://localhost:5050',

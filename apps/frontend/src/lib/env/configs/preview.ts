@@ -9,6 +9,8 @@ type PreviewConfig = {
 const previewConfig: PreviewConfig = {
   TYPE: 'preview',
   BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3000',
+  MLS_PUBLIC_SALES_LISTINGS_URL:
+    'https://outbound.labs.namefi.io/api/public/sales/listings',
   RESOURCES_URL: process.env.RESOURCES_URL || 'https://localhost:3002',
   DOCS_URL: process.env.DOCS_URL || 'https://localhost:3003',
   FIRST_PARTY_DEPLOYMENT_URL:

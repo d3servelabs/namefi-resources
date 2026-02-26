@@ -5,6 +5,8 @@ import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 const developmentConfig: ConfigInput = {
   TYPE: 'development',
   BACKEND_URL: 'https://backend.astra.namefi.dev',
+  MLS_PUBLIC_SALES_LISTINGS_URL:
+    'https://outbound.labs.namefi.io/api/public/sales/listings',
   RESOURCES_URL: 'https://r.namefi.dev',
   DOCS_URL: 'https://docs.namefi.dev',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://namefi.dev',
