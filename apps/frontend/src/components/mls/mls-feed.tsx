@@ -225,7 +225,7 @@ function MlsFeedCard({ listing }: MlsFeedCardProps) {
 
         <div className="mt-6">
           <Link
-            href={domainUrl}
+            href={listing.sourceTweetUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-w-0 max-w-[46%] items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60"
