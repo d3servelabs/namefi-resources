@@ -135,7 +135,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
   private readonly limiter: Bottleneck;
 
   constructor(config: CentralNicConfig) {
-    super(Registrars.CentralNic);
+    super(config.overrideRegistrarKey ?? Registrars.CentralNic);
     this.config = config;
     this.logger =
       config.customLogger ?? pino({ name: CentralNicRegistrarService.name });

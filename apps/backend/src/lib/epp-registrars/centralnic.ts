@@ -98,6 +98,7 @@ function getCentralnicRegistrarOte1(connection: any) {
     throw new Error('CentralNic credentials not set');
   }
   return new CentralNicRegistrarService({
+    overrideRegistrarKey: Registrars.CentralNic_OTE_01,
     clID: secrets.CENTRALNIC_CLID,
     pw: secrets.CENTRALNIC_PASS,
     supportedTlds: CENTRALNIC_OTE_TLDS,
@@ -139,6 +140,7 @@ function getCentralnicRegistrarOte2(connection: any) {
     throw new Error('CentralNic OTE2 credentials not set');
   }
   return new CentralNicRegistrarService({
+    overrideRegistrarKey: Registrars.CentralNic_OTE_02,
     clID: secrets.CENTRALNIC_OTE2_CLID,
     pw: secrets.CENTRALNIC_OTE2_PASS,
     supportedTlds: CENTRALNIC_OTE_TLDS,

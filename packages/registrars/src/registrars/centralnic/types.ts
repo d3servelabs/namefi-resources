@@ -2,6 +2,7 @@ import type Bottleneck from 'bottleneck';
 import type pino from 'pino';
 import type { DomainIndexFunctions } from './domain-index';
 import type { Nameservers } from '#lib/abstract-registrar/index';
+import type { Registrars } from '../registrars-keys';
 
 /**
  * Connection pool configuration.
@@ -33,6 +34,7 @@ export interface RateLimitConfig {
  * CentralNic EPP connection and authentication configuration.
  */
 export interface CentralNicConfig {
+  overrideRegistrarKey?: Registrars;
   /** EPP server hostname (e.g., "epp.centralnicregistry.com") */
   host: string;
   /** EPP server port (default: 700) */
