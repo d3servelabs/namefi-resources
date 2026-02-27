@@ -894,9 +894,31 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return results[0];
   }
 
+  isSupportedDomain(
+    domain: PunycodeDomainName,
+    options: {
+      allowedParentDomains: ReadonlySet<PunycodeDomainName>;
+      existingDomains?: ReadonlySet<PunycodeDomainName>;
+    },
+  ): boolean {
+    if (options.existingDomains?.has(domain)) {
+      return true;
+    }
+
+    const parsedDomain = parseDomainName(domain);
+    if (!parsedDomain.valid || isNil(parsedDomain.publicSuffix)) {
+      return false;
+    }
+
+    return options.allowedParentDomains.has(
+      toPunycodeDomainName(parsedDomain.publicSuffix),
+    );
+  }
+
   private async _bulkSearchBatch(
     batch: PunycodeDomainName[],
     nonPremiumPrices: Record<PunycodeDomainName, DomainPricingDetails | null>,
+    options?: { existingDomains?: ReadonlySet<PunycodeDomainName> },
   ): Promise<DomainQueryResult[]> {
     const domains = fromPairs(
       batch.map((domain, i) => [`domain${i}`, domain]),
@@ -910,12 +932,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       currency: 'USD',
       show_price: '1',
     });
-    const allowedParentDomains = await this.getAllowedParentDomains();
+    const allowedParentDomains = new Set(await this.getAllowedParentDomains());
     assertDynadotResponseNotFailed(this.key, response.SearchResponse);
     const results = response.SearchResponse.SearchResults;
     return results.map((result) => {
       const domainName = toPunycodeDomainName(result.DomainName);
-      const parsedResult = parseDomainName(domainName);
       const unavailableResult = {
         domainName: toPunycodeDomainName(result.DomainName),
         price: null,
@@ -925,10 +946,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       };
 
       if (
-        !parsedResult.valid ||
-        !allowedParentDomains.includes(
-          parsedResult.publicSuffix as PunycodeDomainName,
-        )
+        !this.isSupportedDomain(domainName, {
+          allowedParentDomains,
+          existingDomains: options?.existingDomains,
+        })
       ) {
         return {
           ...unavailableResult,
@@ -992,6 +1013,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
 
   async bulkSearch(
     queries: PunycodeDomainName[],
+    options?: { existingDomains?: PunycodeDomainName[] },
   ): Promise<DomainQueryResult[]> {
     if (queries.length === 0) {
       return [];
@@ -1002,11 +1024,14 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     }
     const batchSize = this.accountType === 'super_bulk' ? 100 : 1;
     const batches = splitEvery(batchSize, queries);
+    const existingDomains = new Set(options?.existingDomains ?? []);
     const nonPremiumPrices =
       await this._bulkGetNonPremiumDomainPriceDetails(queries);
 
     const results = await pMap(batches, async (batch) => {
-      return this._bulkSearchBatch(batch, nonPremiumPrices);
+      return this._bulkSearchBatch(batch, nonPremiumPrices, {
+        existingDomains,
+      });
     });
 
     return results.flat();

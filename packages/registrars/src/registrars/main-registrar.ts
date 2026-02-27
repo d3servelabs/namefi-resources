@@ -360,38 +360,73 @@ export class RegistrarService extends AbstractRegistrarService {
     queries: PunycodeDomainName[],
   ): Promise<WithRegistrar<DomainQueryResult>[]> {
     try {
-      const fallbackRegistrar = this.getAllowedRegistrars()[0];
+      const allowedRegistrars = this.getAllowedRegistrars();
+      const fallbackRegistrar = allowedRegistrars[0];
+      const allowedRegistrarsSet = new Set(allowedRegistrars);
       const registrarKeys =
         (await this._getRegistrarKeysFromExistingDomains(queries)) ?? {};
 
+      const buildUnavailableResult = (
+        domain: PunycodeDomainName,
+      ): DomainQueryResult => ({
+        domainName: domain,
+        price: null,
+        available: DomainAvailability.UNAVAILABLE,
+        isPremium: false,
+        supported: false,
+      });
+
+      const shouldQueryRegistrarForDomain = (
+        domain: PunycodeDomainName,
+        registrarKey: Registrars,
+      ) => {
+        const registrarForExistingDomain = registrarKeys[domain];
+        if (
+          isNotNil(registrarForExistingDomain) &&
+          allowedRegistrarsSet.has(registrarForExistingDomain)
+        ) {
+          return registrarForExistingDomain === registrarKey;
+        }
+
+        // For R53 we only search for existing domains and we don't search for new ones
+        if (registrarKey === Registrars.Route53) {
+          return false;
+        }
+
+        return true;
+      };
+
       const promises = await pProps(this.registrars, async (registrar) => {
         try {
-          if (registrar.key === Registrars.Route53) {
-            const route53ExistingDomains = queries.filter(
-              (domain) => registrarKeys[domain] === Registrars.Route53,
-            );
-            const route53Responses = await registrar.bulkSearch(
-              route53ExistingDomains,
-            );
-            const route53ResponsesMap = new Map(
-              route53Responses.map((response) => [
-                response.domainName,
-                response,
-              ]),
-            );
-            const res = queries.map(
-              (domain) =>
-                route53ResponsesMap.get(domain) ?? {
-                  domainName: domain,
-                  price: null,
-                  available: DomainAvailability.UNAVAILABLE,
-                  isPremium: false,
-                  supported: false,
-                },
-            );
-            return res;
+          const queriesForRegistrar = queries.filter((domain) =>
+            shouldQueryRegistrarForDomain(domain, registrar.key),
+          );
+          const existingDomainsForRegistrar = queriesForRegistrar.filter(
+            (domain) => registrarKeys[domain] === registrar.key,
+          );
+
+          if (queriesForRegistrar.length === 0) {
+            return queries.map(buildUnavailableResult);
           }
-          const res = await registrar.bulkSearch(queries);
+
+          const registrarResponses = await registrar.bulkSearch(
+            queriesForRegistrar,
+            {
+              existingDomains: existingDomainsForRegistrar,
+            },
+          );
+          const registrarResponsesMap = new Map(
+            registrarResponses.map((response) => [
+              response.domainName,
+              response,
+            ]),
+          );
+
+          const res = queries.map(
+            (domain) =>
+              registrarResponsesMap.get(domain) ??
+              buildUnavailableResult(domain),
+          );
 
           this.logger.debug(res, `Bulk search completed for ${registrar.key}`);
           return res;

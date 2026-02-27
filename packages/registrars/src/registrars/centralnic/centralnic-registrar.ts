@@ -287,15 +287,28 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     });
   }
 
-  isSupportedDomain(domain: string): boolean {
+  isSupportedDomain(
+    domain: PunycodeDomainName,
+    options?: { existingDomains?: ReadonlySet<PunycodeDomainName> },
+  ): boolean {
+    if (options?.existingDomains?.has(domain)) {
+      return true;
+    }
+
     return this.config.supportedTlds.some((tld) => domain.endsWith(`.${tld}`));
   }
 
-  async bulkSearch(_queries: string[]): Promise<DomainQueryResult[]> {
+  async bulkSearch(
+    _queries: string[],
+    options?: { existingDomains?: PunycodeDomainName[] },
+  ): Promise<DomainQueryResult[]> {
     const queries = _queries.map((q) =>
       toPunycodeDomainName(q.toLowerCase().trim()),
     );
-    const supportedDomains = queries.filter((q) => this.isSupportedDomain(q));
+    const existingDomains = new Set(options?.existingDomains ?? []);
+    const supportedDomains = queries.filter((q) =>
+      this.isSupportedDomain(q, { existingDomains }),
+    );
     this.logger.debug(`Bulk searching for ${queries.length} domains`);
     if (!queries.length) {
       return [];
@@ -323,7 +336,10 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
         const result = await sendCommand(client, command);
 
         return handleEppResult(result as any, (data) => {
-          const parsed = parseMultipleDomainCheckResponse(data, queries);
+          const parsed = parseMultipleDomainCheckResponse(
+            data,
+            supportedDomains,
+          );
           const mapped = new Map<string, DomainQueryResult>(
             parsed.map((res) => [res.domainName, res]),
           );
@@ -334,7 +350,9 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
                 domainName: q,
                 available: DomainAvailability.UNAVAILABLE,
                 isPremium: false,
-                supported: false,
+                supported: this.isSupportedDomain(q, {
+                  existingDomains,
+                }),
                 price: null,
               } satisfies DomainQueryResult),
           );

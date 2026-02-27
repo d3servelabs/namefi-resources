@@ -602,9 +602,14 @@ export class R53RegistrarService extends AbstractRegistrarService {
 
   async bulkSearch(
     queries: PunycodeDomainName[],
+    options?: { existingDomains?: PunycodeDomainName[] },
   ): Promise<DomainQueryResult[]> {
     const allowedParentDomains = new Set(await this.getAllowedParentDomains());
+    const existingDomains = new Set(options?.existingDomains ?? []);
     const { notSupported = [], supported = [] } = groupBy((query) => {
+      if (existingDomains.has(query)) {
+        return 'supported';
+      }
       const tld = getTldFromDomainName(query);
       if (isNil(tld) || !allowedParentDomains.has(tld)) {
         return 'notSupported';
@@ -624,9 +629,27 @@ export class R53RegistrarService extends AbstractRegistrarService {
       ]),
     );
 
-    const supportedResults = await pMap(supported, (query) =>
-      this.searchForDomain(query),
-    );
+    const supportedResults = await pMap(supported, async (query) => {
+      try {
+        return await this.searchForDomain(query);
+      } catch (error) {
+        this.logger.warn(
+          {
+            error,
+            query,
+            isExistingDomain: existingDomains.has(query),
+          },
+          'bulkSearch query failed, returning unavailable fallback',
+        );
+        return {
+          domainName: query,
+          price: null,
+          available: DomainAvailability.UNAVAILABLE,
+          isPremium: false,
+          supported: existingDomains.has(query),
+        };
+      }
+    });
     const supportedResultsMap = new Map(
       supportedResults.map((result) => [result.domainName, result]),
     );
