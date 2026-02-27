@@ -1,5 +1,6 @@
 import type { ConfigInput } from '../schema';
 import { base, mainnet } from 'viem/chains';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
 const productionConfig: ConfigInput = {
   LOG_LEVEL: 'debug',
@@ -58,6 +59,7 @@ const productionConfig: ConfigInput = {
   ALLOW_LIVE_REGISTRARS: true,
   CENTRALNIC_BALANCE_ENDPOINT:
     'https://registrar-console.centralnic.com/json/balance',
+  CENTRALNIC_KEY: Registrars.CentralNic,
   EMAIL_ANALYTICS_URL: 'https://backend.astra.namefi.io/v1/email/track/open',
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 500,
 };

@@ -109,6 +109,8 @@ export const secretsSchema = z.object({
   CENTRALNIC_OTE2_HOST: z.string().optional(),
   CENTRALNIC_OTE2_DEFAULT_REGISTRANT: z.string().optional(),
 
+  CENTRALNIC_DEFAULT_REGISTRANT: z.string().optional(),
+
   EPP_AUTH_GEN_PRIVATE_KEY: z
     .string()
     .optional()

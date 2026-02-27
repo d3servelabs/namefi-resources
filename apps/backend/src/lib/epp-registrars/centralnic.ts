@@ -177,13 +177,20 @@ function getCentralnicRegistrarLive(connection: any) {
   return new CentralNicRegistrarService({
     clID: secrets.CENTRALNIC_CLID,
     pw: secrets.CENTRALNIC_PASS,
-    supportedTlds: [],
+    supportedTlds: ['xyz'],
     tls: true,
     domainIndex: UnclaimedDomainsIndex(Registrars.CentralNic),
     host: secrets.CENTRALNIC_HOST,
     port: 700,
     logParsed: true,
-    defaultRegistrant: '', //TODO
+    defaultRegistrant: secrets.CENTRALNIC_DEFAULT_REGISTRANT ?? '',
+    defaultContacts: secrets.CENTRALNIC_DEFAULT_REGISTRANT
+      ? [
+          { type: 'admin', id: secrets.CENTRALNIC_DEFAULT_REGISTRANT },
+          { type: 'billing', id: secrets.CENTRALNIC_DEFAULT_REGISTRANT },
+          { type: 'tech', id: secrets.CENTRALNIC_DEFAULT_REGISTRANT },
+        ]
+      : undefined,
     customLogger: createLogger({
       registrar: Registrars.CentralNic,
     }) as any,
