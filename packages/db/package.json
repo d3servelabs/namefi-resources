@@ -5,7 +5,8 @@
     ".": "./src/index.ts",
     "./*": "./src/*.ts",
     "./types": "./src/types.ts",
-    "./schemas/internal": "./src/schemas/internal.ts"
+    "./schemas/internal": "./src/schemas/internal.ts",
+    "./schemas/managed-indexer-data": "./src/schemas/managed-indexer-data/index.ts"
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",

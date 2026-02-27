@@ -12,6 +12,7 @@ import {
   TEMPORAL_QUEUES,
   shortRunningOpts,
 } from '../../shared';
+import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { mintNamefiNFT } from '../mint.workflow';
 import { domainSetupWorkflow } from './domain-setup.workflow';
 import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
@@ -41,16 +42,20 @@ export type AcquireDomainWorkflowOutput = {
   mintTxHash?: string;
 };
 
-const { generalAlertNamefi, criticalAlertNamefi, getConfig } =
-  typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-      retry: {
-        maximumInterval: '1 minute',
-      },
+const {
+  generalAlertNamefi,
+  criticalAlertNamefi,
+  getConfig,
+  triggerSyncPonderIndex,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    ...shortRunningOpts,
+    retry: {
+      maximumInterval: '1 minute',
     },
-  });
+  },
+});
 
 const { getPoweredByNamefi3PDomains } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
@@ -196,6 +201,20 @@ export async function acquireDomainWorkflow(
   }
 
   const mintTxHash = mintResult.success ? mintResult.result : undefined;
+  if (workflow.patched('trigger-managed-index-update')) {
+    const isManagedIndexEnabled = await getConfig('PONDER_INDEXER_URL');
+    if (isManagedIndexEnabled && mintTxHash) {
+      void catchAndAlertLocally(triggerSyncPonderIndex, {
+        message:
+          'Failed to trigger update Namefi NFT index schedule after successful mint',
+        details: {
+          normalizedDomainName: input.normalizedDomainName,
+          mintTxHash,
+          workflowId: info.workflowId,
+        },
+      });
+    }
+  }
 
   return { mintTxHash };
 }

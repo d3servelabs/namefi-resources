@@ -39,6 +39,7 @@ import {
   weeklyDisableAutoRenewalDynadotGdgSchedule,
   weeklyDisableAutoRenewalDynadotRegularSchedule,
 } from './weekly-disable-auto-renewal';
+import { syncPonderIndexSchedule } from './sync-ponder-index';
 
 const logger = createLogger({ name: 'schedules' });
 
@@ -157,6 +158,7 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
     weeklyDisableAutoRenewalDynadotGdgSchedule,
   [weeklyDisableAutoRenewalDynadotRegularSchedule.config.scheduleId]:
     weeklyDisableAutoRenewalDynadotRegularSchedule,
+  [syncPonderIndexSchedule.config.scheduleId]: syncPonderIndexSchedule,
 };
 
 /**

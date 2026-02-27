@@ -11,6 +11,7 @@ import { triggerUpdateNamefiNftIndex } from '../../schedules/update-namefi-nft-i
 import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 import { getTemporalWorkflowRunUrl } from './get-workflow-url';
 import { Context } from '@temporalio/activity';
+import { triggerSyncPonderIndex } from '#temporal/schedules/sync-ponder-index';
 
 export const defaultTaskQueueActivities = {
   ...EmailSubscriptionSyncActivities,
@@ -58,6 +59,7 @@ export const defaultTaskQueueActivities = {
   getConfig: async <K extends keyof typeof config>(key: K) => config[key],
   updateNamefiNftIndex,
   triggerUpdateNamefiNftIndex,
+  triggerSyncPonderIndex,
   triggerNamefiGptCronJob,
   addCategoriesToDomainsWithNoCategories,
   getTemporalWorkflowRunUrl,

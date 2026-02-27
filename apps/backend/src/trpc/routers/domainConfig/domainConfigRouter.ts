@@ -468,11 +468,15 @@ export const domainConfigRouter = createTRPCRouter({
         }
 
         if (parsedDomainName.registryType === 'subdomain') {
-          return getSupportedFeaturesForSubdomain(input.normalizedDomainName);
+          return await getSupportedFeaturesForSubdomain(
+            input.normalizedDomainName,
+          );
         }
 
         if (parsedDomainName.registryType === 'traditional') {
-          return getSupportedFeaturesForEppDomain(input.normalizedDomainName);
+          return await getSupportedFeaturesForEppDomain(
+            input.normalizedDomainName,
+          );
         }
 
         throw new TRPCError({
@@ -484,6 +488,7 @@ export const domainConfigRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Error checking domain supported features',
+          cause: error,
         });
       }
     }),
@@ -1068,12 +1073,15 @@ async function getSupportedFeaturesForEppDomain(
     });
   }
 
-  const [expirationDate, nameserverRes] = await Promise.all([
-    getDomainsExpirationDatesFromIndex([normalizedDomainName]).then(
-      (expirationDates) => expirationDates[normalizedDomainName],
+  const [expirationDateRes, nameserverRes] = await Promise.all([
+    resolve(
+      getDomainsExpirationDatesFromIndex([normalizedDomainName]).then(
+        (expirationDates) => expirationDates[normalizedDomainName],
+      ),
     ),
     resolve(getDomainNameserversFromIndex(normalizedDomainName)),
   ]);
+  const expirationDate = expirationDateRes.result;
 
   const isExpired = isDomainExpirationDatePassed(expirationDate);
   const isInLateRenewalPeriod =

@@ -33,6 +33,7 @@ import { logLevelRouter } from './routers/log-level';
 import { statsRouter } from './routers/stats';
 import { tlsRouter } from './routers/tls';
 import { browserLogsProxyRouter } from './routers/browser-logs-proxy';
+import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema-def';
 
 type HonoVariables = {
   requestId: string;
@@ -148,6 +149,7 @@ app.get('/secretsfi', (c) => {
     ENVIRONMENT: process.env.ENVIRONMENT,
     config,
     secrets,
+    nftIndex: nftIndexSchema.schemaName,
   });
 });
 

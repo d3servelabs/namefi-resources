@@ -2,6 +2,8 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { sql } from 'drizzle-orm';
 import { pgView, QueryBuilder, timestamp } from 'drizzle-orm/pg-core';
 import { db } from '../../client';
+import { nftIndexSchema } from './schema-def';
+
 /**
  * A temporary view to map a timestamp to a timestamp
  */
@@ -41,7 +43,7 @@ export const transferLogsCte = qb.$with('transfer_logs_cte').as((qb) => {
         ),
       transactionHash: sql<string>`transaction_hash`.as('transaction_hash'),
     })
-    .from(sql`indexed_onchain_data."TransferLog"`);
+    .from(sql`${nftIndexSchema}."TransferLog"`);
 });
 
 async function _selectFromTransferLogsView() {

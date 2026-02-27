@@ -3,6 +3,7 @@ import { sql } from 'drizzle-orm';
 import { QueryBuilder } from 'drizzle-orm/pg-core';
 import { db } from '../../client';
 import { mapper } from '../common';
+import { nftIndexSchema } from './schema-def';
 
 const qb = new QueryBuilder();
 
@@ -43,7 +44,7 @@ export const burnedNamefiNftCte = qb.$with('burned_namefi_nft_cte').as((qb) => {
         .as('expiration_time_at_burn_date'),
       transactionHash: sql<string>`transaction_hash`.as('transaction_hash'),
     })
-    .from(sql`indexed_onchain_data."BurnedNamefiNftLog"`);
+    .from(sql`${nftIndexSchema}."BurnedNamefiNftLog"`);
 });
 
 async function _selectFromBurnedNamefiNftView() {

@@ -506,10 +506,10 @@ jobs:
             --args="server,start-dev,--ip,0.0.0.0" \
             --container "api" \
             --image "$NEW_IMAGE" \
-            --set-env-vars="DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
+            --set-env-vars="MANAGED_NFT_INDEX=true,DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
             --container "workers" \
             --image "$NEW_IMAGE" \
-            --set-env-vars="DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
+            --set-env-vars="MANAGED_NFT_INDEX=true,DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
             --revision-suffix "$REVISION_SUFFIX" \
             --no-traffic \
             --tag "$TAG" \

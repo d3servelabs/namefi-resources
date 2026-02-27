@@ -101,6 +101,21 @@ export const requireAuth = async (c: Context, next: Next) => {
     await next();
     return;
   }
+
+  // Check for API key authentication (service-to-service)
+  const apiKey = c.req.header('X-API-Key');
+  if (apiKey && secrets.PONDER_SERVICE_API_KEY) {
+    if (apiKey === secrets.PONDER_SERVICE_API_KEY) {
+      console.log('[requireAuth] Authenticated via API key');
+      c.set('user', { type: 'service', authenticated: true });
+      await next();
+      return;
+    }
+    console.log('[requireAuth] Invalid API key');
+    c.status(401);
+    return c.json({ error: 'Invalid API key' });
+  }
+
   let token: string | undefined | boolean;
   try {
     token = await getSignedCookie(c, secrets.PONDER_COOKIE_SECRET, COOKIE_NAME);

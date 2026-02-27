@@ -575,6 +575,13 @@
       "when": 1771281323552,
       "tag": "0081_young_nightcrawler",
       "breakpoints": true
+    },
+    {
+      "idx": 82,
+      "version": "7",
+      "when": 1771974450681,
+      "tag": "0082_managed_indexer_data_schema",
+      "breakpoints": true
     }
   ]
 }

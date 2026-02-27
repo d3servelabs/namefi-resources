@@ -119,6 +119,9 @@ export const secretsSchema = z.object({
   NAMEFI_ALERT_SLACK_WEBHOOK_URL: z.string().url().optional(),
   NAMEFI_COWBELL_SLACK_WEBHOOK_URL: z.string().url().optional(),
   DNS_CACHE_SERVERS_API_KEY: z.string().optional(),
+
+  // Ponder indexer API key for service-to-service sync
+  PONDER_INDEXER_API_KEY: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -271,6 +274,13 @@ export const configSchema = z.object({
       z.stringbool().safeParse(process.env.ALLOW_LOGIN_NOTIFICATIONS).data ??
         true,
     ),
+
+  /**
+   * URL of the Ponder indexer to sync from.
+   * When set, enables syncing on-chain data from a remote Ponder indexer
+   * instead of running a local Ponder instance.
+   */
+  PONDER_INDEXER_URL: z.string().url().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

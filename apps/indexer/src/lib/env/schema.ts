@@ -15,6 +15,11 @@ const _baseSecretsSchema = z.object({
   SMTP_USERNAME: z.string(),
   SMTP_PASSWORD: z.string(),
   BASE_SCHEMA: z.string().optional().default('indexer'),
+  /**
+   * API key for service-to-service authentication.
+   * Used by backend services to sync data from the Ponder indexer.
+   */
+  PONDER_SERVICE_API_KEY: z.string().optional(),
   CHAINS_CONFIG: zJson.optional().pipe(
     z
       .record(

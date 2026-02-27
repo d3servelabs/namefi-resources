@@ -3,6 +3,7 @@ import { eq, sql } from 'drizzle-orm';
 import { pgView, QueryBuilder, timestamp } from 'drizzle-orm/pg-core';
 import { db } from '../../client';
 import { bigint, boolean, integer, text } from 'drizzle-orm/pg-core';
+import { nftIndexSchema } from './schema-def';
 
 /**
  * A temporary view to map a timestamp to a timestamp
@@ -52,7 +53,7 @@ export const namefiNftCte = qb.$with('namefi_nft_cte').as((qb) => {
         'last_updated_timestamp',
       ),
     })
-    .from(sql`indexed_onchain_data."NamefiNft"`);
+    .from(sql`${nftIndexSchema}."NamefiNft"`);
 });
 
 /**

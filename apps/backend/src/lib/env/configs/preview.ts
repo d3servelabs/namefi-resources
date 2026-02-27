@@ -98,6 +98,7 @@ const previewConfig: PreviewConfig = {
     },
   ],
   SKIP_AUTH_USER_ID: '202832e8-304f-4f4a-81c9-df32fd1e5364',
+  PONDER_INDEXER_URL: 'https://indexer.namefi.dev',
 };
 
 export default previewConfig;
