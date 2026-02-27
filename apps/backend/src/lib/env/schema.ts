@@ -248,6 +248,7 @@ export const configSchema = z.object({
     )
     .default([]),
   ALLOW_LIVE_REGISTRARS: z.boolean().default(false),
+  CENTRALNIC_BALANCE_ENDPOINT: z.string().url().optional(),
   /**
    * User ID to use when skip_auth is enabled in local/development environments.
    * The backend will look up this user from the database.

@@ -78,6 +78,9 @@ const localConfig: ConfigInput = {
   EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS: 30 / 86_400,
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 10,
   EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS: 30 / 86_400,
+  CENTRALNIC_BALANCE_ENDPOINT:
+    process.env.CENTRALNIC_BALANCE_ENDPOINT ||
+    'https://registrar-console.ote.centralnicregistry.com/json/balance',
 };
 
 export default localConfig;
