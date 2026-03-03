@@ -34,6 +34,8 @@ import { statsRouter } from './routers/stats';
 import { tlsRouter } from './routers/tls';
 import { browserLogsProxyRouter } from './routers/browser-logs-proxy';
 import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema-def';
+import { rdapRouter } from './routers/rdap';
+import { whoisRouter } from './routers/whois';
 
 type HonoVariables = {
   requestId: string;
@@ -121,6 +123,8 @@ app.route('v1/email', emailAnalyticsRouter);
 app.route('v1/availability', availabilityRouter);
 app.route('v1/public/ai', publicAiRouter);
 app.route('v1/public', publicRouter);
+app.route('v1/rdap', rdapRouter);
+app.route('v1/whois', whoisRouter);
 app.route('/webhooks', webhooksRouter);
 app.route('/altcha', altchaRouter);
 app.route('/monitors', monitorsRouter);

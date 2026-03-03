@@ -241,6 +241,7 @@ export const configSchema = z.object({
       Registrars.CentralNic,
     ])
     .optional(),
+  RDAP_ENABLE_DUMMY_OBJECTS: z.boolean().default(true),
   DNS_CACHE_SERVERS: z
     .array(
       z.object({
