@@ -1,8 +1,14 @@
 function normalizeStatusKey(status: string): string {
-  return status
+  const normailzedString = status
     .trim()
     .toLowerCase()
     .replace(/[\s_-]+/g, '');
+
+  if (normailzedString === 'active') {
+    // the only status that has completely different semantics between both epp/rdap
+    return 'ok'; // TODO make it generic
+  }
+  return normailzedString;
 }
 
 type CanonicalStatus = {
@@ -19,7 +25,7 @@ const EPP_TO_RDAP_STATUS = {
   clientTransferProhibited: 'client transfer prohibited',
   clientUpdateProhibited: 'client update prohibited',
   inactive: 'inactive',
-  ok: 'ok',
+  ok: 'active', // different
   pendingCreate: 'pending create',
   pendingDelete: 'pending delete',
   pendingRenew: 'pending renew',
