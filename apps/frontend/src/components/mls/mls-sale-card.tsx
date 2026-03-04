@@ -19,9 +19,13 @@ const playfairDisplay = Playfair_Display({
 
 interface MlsSaleCardProps {
   listing: MlsSaleListing;
+  showOtherDomainsCount?: boolean;
 }
 
-export function MlsSaleCard({ listing }: MlsSaleCardProps) {
+export function MlsSaleCard({
+  listing,
+  showOtherDomainsCount = true,
+}: MlsSaleCardProps) {
   const sellerHandle = normalizeMlsHandle(listing.seller.username);
   const sellerLabel = sellerHandle ?? '@unknown';
   const sellerDetailsPath = getMlsHandlePath(sellerHandle);
@@ -56,13 +60,23 @@ export function MlsSaleCard({ listing }: MlsSaleCardProps) {
           <time className="shrink-0" dateTime={listing.postedAt}>
             {postedLabel}
           </time>
-          {otherDomainsCount > 0 ? (
+          {showOtherDomainsCount && otherDomainsCount > 0 ? (
             <>
               <span aria-hidden={true}>•</span>
-              <span>
-                {otherDomainsCount.toLocaleString()} other{' '}
-                {otherDomainsCount === 1 ? 'domain' : 'domains'}
-              </span>
+              {sellerDetailsPath ? (
+                <Link
+                  href={sellerDetailsPath}
+                  className="transition-colors hover:text-white/55 hover:underline"
+                >
+                  {otherDomainsCount.toLocaleString()} other{' '}
+                  {otherDomainsCount === 1 ? 'domain' : 'domains'}
+                </Link>
+              ) : (
+                <span>
+                  {otherDomainsCount.toLocaleString()} other{' '}
+                  {otherDomainsCount === 1 ? 'domain' : 'domains'}
+                </span>
+              )}
             </>
           ) : null}
         </div>

@@ -236,7 +236,11 @@ function MlsHandleListingsSection({
       />
 
       {listings.map((listing) => (
-        <MlsSaleCard key={listing.id} listing={listing} />
+        <MlsSaleCard
+          key={listing.id}
+          listing={listing}
+          showOtherDomainsCount={false}
+        />
       ))}
 
       <MlsHandlePagination
