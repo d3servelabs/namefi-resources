@@ -32,6 +32,8 @@ export const NamefiEmailLinks = withPoweredByNamefiDomain({
   paymentMethods: () => `${baseUrl}/m/user/payment-methods`,
   rechargeNFSC: () => `${baseUrl}/m/user/nfsc/recharge`,
   cart: () => `${baseUrl}/m/cart`,
+  addToCartFromUrl: (args: { domain: string }) =>
+    `${baseUrl}/m/cart?add_to_cart=${encodeURIComponent(args.domain)}`,
 
   emailSubscription: () => `${baseUrl}/m/user/email/subscription`,
   freeMints: () => `${baseUrl}/m/user/rewards/domains`,

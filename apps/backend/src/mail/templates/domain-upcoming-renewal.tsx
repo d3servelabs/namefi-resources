@@ -848,10 +848,7 @@ function DomainExpirationDateCell({
 
 function DomainNameCell({ domainNameLdh }: { domainNameLdh: string }) {
   return (
-    <a
-      href={`https://${domainNameLdh}`}
-      style={{ ...styles.text, textDecoration: 'none' }}
-    >
+    <span style={{ ...styles.text }}>
       {punycode.toUnicode(domainNameLdh) !== domainNameLdh ? (
         <span>
           {punycode.toUnicode(domainNameLdh)}
@@ -860,7 +857,7 @@ function DomainNameCell({ domainNameLdh }: { domainNameLdh: string }) {
       ) : (
         domainNameLdh
       )}
-    </a>
+    </span>
   );
 }
 

@@ -56,9 +56,8 @@ const tableStyles = {
     fontSize: '13px',
     marginLeft: '6px',
   },
-  domainLink: {
-    ...styles.anchor,
-    textDecoration: 'underline',
+  domainText: {
+    ...styles.text,
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
     fontSize: '14px',
   },
@@ -106,15 +105,7 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
             return (
               <tr key={item.domainNameLdh}>
                 <td style={tableStyles.cell}>
-                  <a
-                    href={NamefiEmailLinks.claimDomain({
-                      domain: item.domainNameLdh,
-                      poweredByNamefiDomain,
-                    })}
-                    style={tableStyles.domainLink}
-                  >
-                    {display.primary}
-                  </a>
+                  <span style={tableStyles.domainText}>{display.primary}</span>
                   {display.unicode && (
                     <span style={tableStyles.mutedText}>
                       ({display.unicode})

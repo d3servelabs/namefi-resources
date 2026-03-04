@@ -94,18 +94,10 @@ export const DomainRenewFailedToCharge =
                   className="py-1 px-1"
                   style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
                 >
-                  <a
-                    href={NamefiEmailLinks.domainSettings({
-                      domain: domainNameLdh,
-                      poweredByNamefiDomain,
-                    })}
-                    style={{ color: '#0066cc', textDecoration: 'underline' }}
-                  >
-                    {domainNameLdh}{' '}
-                    {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                      ? ''
-                      : `(${punycode.toUnicode(domainNameLdh)})`}
-                  </a>
+                  {domainNameLdh}{' '}
+                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                    ? ''
+                    : `(${punycode.toUnicode(domainNameLdh)})`}
                 </td>
                 <td
                   className="py-1 px-1"

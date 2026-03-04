@@ -32,11 +32,26 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
   );
   const suggestedDomains = props.suggestedDomains ?? [];
   const hasSuggestions = suggestedDomains.length > 0;
-  const domainLinkStyle = {
-    ...styles.anchor,
-    textDecoration: 'underline',
+  const domainTextStyle = {
+    ...styles.text,
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
     fontSize: '14px',
+  };
+  const suggestionsTableStyle = {
+    ...styles.text,
+    width: '100%',
+    borderCollapse: 'collapse' as const,
+  };
+  const addToCartLinkStyle = {
+    backgroundColor: '#14b8a6',
+    borderRadius: '6px',
+    color: '#ffffff',
+    display: 'inline-block',
+    fontSize: '12px',
+    fontWeight: 600,
+    padding: '6px 10px',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap' as const,
   };
 
   return (
@@ -54,20 +69,28 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
             ideas in the same family:
           </Text>
           <Card variant="success">
-            {suggestedDomains.map((domain) => (
-              <Text key={domain} style={{ ...styles.paragraph, margin: 0 }}>
-                -{' '}
-                <a
-                  href={NamefiEmailLinks.claimDomain({
-                    domain,
-                    poweredByNamefiDomain,
-                  })}
-                  style={domainLinkStyle}
-                >
-                  {domain}
-                </a>
-              </Text>
-            ))}
+            <table style={suggestionsTableStyle}>
+              <tbody>
+                {suggestedDomains.map((domain) => (
+                  <tr key={domain}>
+                    <td style={{ padding: '6px 0' }}>
+                      <span style={domainTextStyle}>{domain}</span>
+                    </td>
+                    <td style={{ padding: '6px 0', textAlign: 'right' }}>
+                      <a
+                        href={NamefiEmailLinks.addToCartFromUrl({
+                          domain,
+                          poweredByNamefiDomain,
+                        })}
+                        style={addToCartLinkStyle}
+                      >
+                        Add to Cart
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </Card>
         </>
       ) : null}

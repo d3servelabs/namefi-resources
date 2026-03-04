@@ -235,15 +235,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
             {items.map((item) => (
               <tr key={item.normalizedDomainName}>
                 <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                  <a
-                    href={NamefiEmailLinks.domainSettings({
-                      domain: item.normalizedDomainName,
-                      poweredByNamefiDomain,
-                    })}
-                    style={localStyles.domainLink}
-                  >
-                    {getDomainWithIdn(item.normalizedDomainName)}
-                  </a>
+                  {getDomainWithIdn(item.normalizedDomainName)}
                 </td>
                 <td style={localStyles.td}>{item.type}</td>
                 <td style={localStyles.td}>
@@ -525,10 +517,6 @@ const localStyles = {
     padding: '8px',
     backgroundColor: '#f5f5f5',
     textAlign: 'center',
-  },
-  domainLink: {
-    color: '#0066cc',
-    textDecoration: 'underline',
   },
 } as const;
 

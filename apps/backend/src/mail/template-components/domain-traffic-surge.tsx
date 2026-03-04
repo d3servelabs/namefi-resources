@@ -49,11 +49,21 @@ const tableStyles = {
     color: '#6b7280',
     fontSize: '13px',
   },
-  domainLink: {
-    ...styles.anchor,
-    textDecoration: 'underline',
+  domainText: {
+    ...styles.text,
     fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
     fontSize: '14px',
+  },
+  addToCartLink: {
+    backgroundColor: '#14b8a6',
+    borderRadius: '6px',
+    color: '#ffffff',
+    display: 'inline-block',
+    fontSize: '12px',
+    fontWeight: 600,
+    padding: '6px 10px',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap' as const,
   },
 };
 
@@ -125,15 +135,7 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
             return (
               <tr key={item.domain}>
                 <td style={tableStyles.cell}>
-                  <a
-                    href={NamefiEmailLinks.domainSettings({
-                      domain: item.domain,
-                      poweredByNamefiDomain,
-                    })}
-                    style={tableStyles.domainLink}
-                  >
-                    {item.domain}
-                  </a>
+                  <span style={tableStyles.domainText}>{item.domain}</span>
                 </td>
                 <td style={tableStyles.cell}>
                   <div style={{ fontWeight: 600 }}>{label}</div>
@@ -153,20 +155,24 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
             <thead>
               <tr>
                 <th style={tableStyles.headerCell}>Suggested domain</th>
+                <th style={tableStyles.headerCell}>Action</th>
               </tr>
             </thead>
             <tbody>
               {suggestedDomains.map((domain) => (
                 <tr key={domain}>
                   <td style={tableStyles.cell}>
+                    <span style={tableStyles.domainText}>{domain}</span>
+                  </td>
+                  <td style={{ ...tableStyles.cell, textAlign: 'right' }}>
                     <a
-                      href={NamefiEmailLinks.claimDomain({
+                      href={NamefiEmailLinks.addToCartFromUrl({
                         domain,
                         poweredByNamefiDomain,
                       })}
-                      style={tableStyles.domainLink}
+                      style={tableStyles.addToCartLink}
                     >
-                      {domain}
+                      Add to Cart
                     </a>
                   </td>
                 </tr>
