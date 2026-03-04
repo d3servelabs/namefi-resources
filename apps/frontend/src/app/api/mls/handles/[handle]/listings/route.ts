@@ -1,11 +1,12 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { config } from '@/lib/env';
 import {
   DEFAULT_MLS_FEED_LIMIT,
   MAX_MLS_FEED_LIMIT,
-  type MlsSalesFeedPage,
+  type MlsSalesByHandlePage,
 } from '@/lib/mls/feed';
-import { config } from '@/lib/env';
+import { normalizeMlsHandleSlug } from '@/lib/mls/handles';
 
 const upstreamListingSchema = z.object({
   id: z.string().min(1),
@@ -24,16 +25,27 @@ const upstreamListingSchema = z.object({
   listedAt: z.string().min(1),
 });
 
-const upstreamFeedSchema = z.object({
+const upstreamHandleFeedSchema = z.object({
+  handle: z.string().min(1),
+  seller: z.object({
+    authorId: z.string().nullable(),
+    username: z.string().nullable(),
+    displayName: z.string().nullable(),
+  }),
   rows: z.array(upstreamListingSchema),
   nextCursor: z.string().nullable(),
   hasMore: z.boolean(),
   limit: z.number().int().positive(),
+  totalDomains: z.number().int().nonnegative(),
 });
+const TRAILING_SLASHES_PATTERN = /\/+$/;
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ handle: string }> },
+) {
   const limit = clamp(
     parsePositiveInt(
       request.nextUrl.searchParams.get('limit'),
@@ -44,8 +56,14 @@ export async function GET(request: NextRequest) {
   );
   const cursor = request.nextUrl.searchParams.get('cursor')?.trim();
 
-  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
+  const resolvedParams = await params;
+  const normalizedHandle = normalizeMlsHandleSlug(resolvedParams.handle ?? '');
 
+  if (!normalizedHandle) {
+    return NextResponse.json({ error: 'Invalid MLS handle.' }, { status: 400 });
+  }
+
+  const upstreamUrl = buildUpstreamHandleUrl(normalizedHandle);
   upstreamUrl.searchParams.set('limit', String(limit));
   if (cursor) {
     upstreamUrl.searchParams.set('cursor', cursor);
@@ -60,32 +78,67 @@ export async function GET(request: NextRequest) {
     });
 
     if (!upstreamResponse.ok) {
+      const errorMessage = await extractErrorMessage(upstreamResponse);
+
+      if (upstreamResponse.status === 400) {
+        return NextResponse.json(
+          { error: errorMessage ?? 'Invalid MLS handle.' },
+          { status: 400 },
+        );
+      }
+
       return NextResponse.json(
-        { error: 'Failed to fetch the upstream MLS feed.' },
+        {
+          error:
+            errorMessage ?? 'Failed to fetch upstream MLS handle listings.',
+        },
         { status: 502 },
       );
     }
 
     const payload = await upstreamResponse.json();
-    const parsed = upstreamFeedSchema.safeParse(payload);
+    const parsed = upstreamHandleFeedSchema.safeParse(payload);
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Upstream MLS feed returned an invalid payload.' },
+        { error: 'Upstream MLS handle listings returned an invalid payload.' },
         { status: 502 },
       );
     }
 
-    return NextResponse.json(parsed.data satisfies MlsSalesFeedPage, {
+    return NextResponse.json(parsed.data satisfies MlsSalesByHandlePage, {
       headers: {
         'Cache-Control': 'no-store, max-age=0',
       },
     });
   } catch {
     return NextResponse.json(
-      { error: 'Unable to load MLS feed right now.' },
+      { error: 'Unable to load MLS handle listings right now.' },
       { status: 502 },
     );
+  }
+}
+
+function buildUpstreamHandleUrl(handle: string) {
+  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
+  const normalizedPath = upstreamUrl.pathname.replace(
+    TRAILING_SLASHES_PATTERN,
+    '',
+  );
+  const withoutListings = normalizedPath.endsWith('/listings')
+    ? normalizedPath.slice(0, -'/listings'.length)
+    : normalizedPath;
+
+  upstreamUrl.pathname = `${withoutListings}/handles/${encodeURIComponent(handle)}/listings`;
+  return upstreamUrl;
+}
+
+async function extractErrorMessage(response: Response) {
+  try {
+    const payload = (await response.json()) as { error?: string };
+    return payload.error;
+  } catch {
+    return null;
   }
 }
 

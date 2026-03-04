@@ -1,0 +1,438 @@
+'use client';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { ArrowLeft, Loader2, RefreshCcw } from 'lucide-react';
+import Link from 'next/link';
+import { type RefObject, useEffect, useMemo, useRef } from 'react';
+import { MlsSaleCard } from '@/components/mls/mls-sale-card';
+import { Button } from '@/components/ui/shadcn/button';
+import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import {
+  DEFAULT_MLS_FEED_LIMIT,
+  type MlsSaleListing,
+  type MlsSalesByHandlePage,
+} from '@/lib/mls/feed';
+import { normalizeMlsHandle, normalizeMlsHandleSlug } from '@/lib/mls/handles';
+
+const SKELETON_KEYS = [
+  'mls-handle-skeleton-1',
+  'mls-handle-skeleton-2',
+  'mls-handle-skeleton-3',
+  'mls-handle-skeleton-4',
+] as const;
+
+interface MlsHandleFeedProps {
+  username: string;
+}
+
+export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
+  const normalizedHandleSlug = normalizeMlsHandleSlug(username);
+  const hasValidHandle = Boolean(normalizedHandleSlug);
+  const fallbackHandle = normalizedHandleSlug
+    ? `@${normalizedHandleSlug}`
+    : '@unknown';
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  const {
+    data,
+    error,
+    isError,
+    isLoading,
+    isRefetching,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<MlsSalesByHandlePage, Error>({
+    queryKey: ['mls-feed-handle', normalizedHandleSlug],
+    enabled: hasValidHandle,
+    initialPageParam: null,
+    queryFn: ({ pageParam }) => {
+      if (!normalizedHandleSlug) {
+        throw new Error('Invalid MLS handle.');
+      }
+
+      return fetchMlsSalesByHandlePage(
+        normalizedHandleSlug,
+        typeof pageParam === 'string' ? pageParam : null,
+      );
+    },
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    staleTime: 15_000,
+    retry: 1,
+  });
+
+  const listings = useMemo(
+    () => data?.pages.flatMap((page) => page.rows) ?? [],
+    [data?.pages],
+  );
+  const firstPage = data?.pages[0];
+  const sellerHandle = normalizeMlsHandle(
+    firstPage?.seller.username ?? firstPage?.handle ?? fallbackHandle,
+  );
+  const sellerLabel = sellerHandle ?? fallbackHandle;
+  const totalDomains = firstPage?.totalDomains ?? 0;
+  const otherDomainsCount = Math.max(0, totalDomains - 1);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || !hasNextPage || isFetchingNextPage) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
+          void fetchNextPage();
+        }
+      },
+      { rootMargin: '500px 0px' },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  return (
+    <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
+      <MlsHandleHeader
+        sellerLabel={sellerLabel}
+        subtitle={getSellerSubtitle(hasValidHandle, otherDomainsCount)}
+        hasValidHandle={hasValidHandle}
+        isLoading={isLoading}
+        isRefetching={isRefetching}
+        onRefresh={() => {
+          void refetch();
+        }}
+      />
+
+      <MlsHandleListingsSection
+        hasValidHandle={hasValidHandle}
+        isLoading={isLoading}
+        isError={isError}
+        errorMessage={error?.message ?? 'Failed to load MLS seller listings.'}
+        listings={listings}
+        hasNextPage={Boolean(hasNextPage)}
+        isFetchingNextPage={isFetchingNextPage}
+        sentinelRef={sentinelRef}
+        onLoadMore={() => {
+          void fetchNextPage();
+        }}
+      />
+    </main>
+  );
+}
+
+interface MlsHandleHeaderProps {
+  sellerLabel: string;
+  subtitle: string;
+  hasValidHandle: boolean;
+  isLoading: boolean;
+  isRefetching: boolean;
+  onRefresh: () => void;
+}
+
+function MlsHandleHeader({
+  sellerLabel,
+  subtitle,
+  hasValidHandle,
+  isLoading,
+  isRefetching,
+  onRefresh,
+}: MlsHandleHeaderProps) {
+  return (
+    <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
+      <div className="space-y-3">
+        <Link
+          href="/mls/feed"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" />
+          Back to feed
+        </Link>
+
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              {sellerLabel}
+            </h1>
+            <p
+              className={
+                hasValidHandle
+                  ? 'text-sm text-muted-foreground'
+                  : 'text-sm text-destructive'
+              }
+            >
+              {subtitle}
+            </p>
+          </div>
+
+          <Button
+            variant="outline"
+            onClick={onRefresh}
+            disabled={!hasValidHandle || isLoading || isRefetching}
+          >
+            {isRefetching ? (
+              <span className="inline-flex items-center gap-2">
+                <Loader2 className="size-4 animate-spin" />
+                Refreshing
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2">
+                <RefreshCcw className="size-4" />
+                Refresh
+              </span>
+            )}
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+interface MlsHandleListingsSectionProps {
+  hasValidHandle: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage: string;
+  listings: MlsSaleListing[];
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  sentinelRef: RefObject<HTMLDivElement | null>;
+  onLoadMore: () => void;
+}
+
+function MlsHandleListingsSection({
+  hasValidHandle,
+  isLoading,
+  isError,
+  errorMessage,
+  listings,
+  hasNextPage,
+  isFetchingNextPage,
+  sentinelRef,
+  onLoadMore,
+}: MlsHandleListingsSectionProps) {
+  if (!hasValidHandle) {
+    return (
+      <section className="mt-6 space-y-0">
+        <MlsHandleInvalidHandleBanner />
+      </section>
+    );
+  }
+
+  const showEmptyState = !isLoading && !isError && listings.length === 0;
+  const showErrorState = isError && listings.length === 0;
+  const showEndOfFeed = !hasNextPage && listings.length > 0;
+
+  return (
+    <section className="mt-6 space-y-0">
+      <MlsHandleInitialState
+        isLoading={isLoading}
+        showErrorState={showErrorState}
+        errorMessage={errorMessage}
+      />
+
+      {listings.map((listing) => (
+        <MlsSaleCard key={listing.id} listing={listing} />
+      ))}
+
+      <MlsHandlePagination
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        sentinelRef={sentinelRef}
+        onLoadMore={onLoadMore}
+      />
+
+      <MlsHandleCompletionState
+        showEmptyState={showEmptyState}
+        showEndOfFeed={showEndOfFeed}
+      />
+    </section>
+  );
+}
+
+function MlsHandleInvalidHandleBanner() {
+  return (
+    <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+      This username is not valid.
+    </div>
+  );
+}
+
+interface MlsHandleInitialStateProps {
+  isLoading: boolean;
+  showErrorState: boolean;
+  errorMessage: string;
+}
+
+function MlsHandleInitialState({
+  isLoading,
+  showErrorState,
+  errorMessage,
+}: MlsHandleInitialStateProps) {
+  if (isLoading) {
+    return <MlsHandleFeedSkeleton />;
+  }
+
+  if (showErrorState) {
+    return (
+      <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+        {errorMessage}
+      </div>
+    );
+  }
+
+  return null;
+}
+
+interface MlsHandlePaginationProps {
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  sentinelRef: RefObject<HTMLDivElement | null>;
+  onLoadMore: () => void;
+}
+
+function MlsHandlePagination({
+  hasNextPage,
+  isFetchingNextPage,
+  sentinelRef,
+  onLoadMore,
+}: MlsHandlePaginationProps) {
+  return (
+    <>
+      {isFetchingNextPage ? <MlsHandleFeedSkeleton compact={true} /> : null}
+
+      {hasNextPage ? <div ref={sentinelRef} className="h-8" /> : null}
+
+      {hasNextPage && !isFetchingNextPage ? (
+        <div className="flex justify-center pt-2">
+          <Button variant="ghost" onClick={onLoadMore}>
+            Load more
+          </Button>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+interface MlsHandleCompletionStateProps {
+  showEmptyState: boolean;
+  showEndOfFeed: boolean;
+}
+
+function MlsHandleCompletionState({
+  showEmptyState,
+  showEndOfFeed,
+}: MlsHandleCompletionStateProps) {
+  if (showEmptyState) {
+    return (
+      <p className="py-6 text-center text-sm text-muted-foreground">
+        No listings found for this seller.
+      </p>
+    );
+  }
+
+  if (showEndOfFeed) {
+    return (
+      <p className="py-6 text-center text-xs tracking-wide text-muted-foreground uppercase">
+        End of seller listings
+      </p>
+    );
+  }
+
+  return null;
+}
+
+function getSellerSubtitle(hasValidHandle: boolean, otherDomainsCount: number) {
+  if (!hasValidHandle) {
+    return 'Invalid MLS handle.';
+  }
+
+  if (otherDomainsCount === 0) {
+    return 'No other domains listed by this seller yet.';
+  }
+
+  return `${otherDomainsCount.toLocaleString()} other ${otherDomainsCount === 1 ? 'domain' : 'domains'} listed by this seller.`;
+}
+
+interface MlsHandleFeedSkeletonProps {
+  compact?: boolean;
+}
+
+function MlsHandleFeedSkeleton({
+  compact = false,
+}: MlsHandleFeedSkeletonProps) {
+  const keys = compact ? [SKELETON_KEYS[0], SKELETON_KEYS[1]] : SKELETON_KEYS;
+
+  return (
+    <div className="space-y-0">
+      {keys.map((key) => (
+        <Card
+          key={key}
+          className="bg-transparent shadow-none !py-0 !ring-0 border-b border-white/10 rounded-none"
+        >
+          <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-1.5 w-1.5 rounded-full" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+
+            <div className="mt-4 flex items-end justify-between gap-4">
+              <div className="min-w-0 flex items-end gap-1.5">
+                <Skeleton className="h-11 w-52 sm:w-64" />
+                <Skeleton className="h-8 w-14 sm:w-16" />
+              </div>
+              <Skeleton className="h-7 w-[4.5rem]" />
+            </div>
+
+            <div className="mt-6">
+              <div className="inline-flex min-w-0 max-w-[46%] items-center gap-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="size-3.5 shrink-0" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+async function fetchMlsSalesByHandlePage(
+  handle: string,
+  cursor: string | null,
+): Promise<MlsSalesByHandlePage> {
+  const params = new URLSearchParams({
+    limit: String(DEFAULT_MLS_FEED_LIMIT),
+  });
+  if (cursor) {
+    params.set('cursor', cursor);
+  }
+
+  const response = await fetch(
+    `/api/mls/handles/${encodeURIComponent(handle)}/listings?${params.toString()}`,
+    {
+      cache: 'no-store',
+    },
+  );
+
+  if (!response.ok) {
+    let errorMessage = 'Failed to load MLS seller listings.';
+    try {
+      const errorPayload = (await response.json()) as { error?: string };
+      if (errorPayload.error) {
+        errorMessage = errorPayload.error;
+      }
+    } catch {
+      // keep default fallback message
+    }
+
+    throw new Error(errorMessage);
+  }
+
+  return (await response.json()) as MlsSalesByHandlePage;
+}
