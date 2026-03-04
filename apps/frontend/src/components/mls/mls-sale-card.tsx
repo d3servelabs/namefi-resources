@@ -2,6 +2,7 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
+import { MlsReportListingDialog } from '@/components/mls/mls-report-listing-dialog';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { cn } from '@/lib/cn';
 import type { MlsSaleListing } from '@/lib/mls/feed';
@@ -96,17 +97,24 @@ export function MlsSaleCard({ listing }: MlsSaleCardProps) {
           ) : null}
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           <Link
             href={listing.sourceTweetUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-w-0 max-w-[46%] items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60"
+            className="inline-flex min-w-0 max-w-full items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60 sm:max-w-[58%]"
             aria-label={`Open source post for ${listing.domain}`}
           >
             <span className="truncate">{excerpt}</span>
             <ExternalLink className="size-3.5 shrink-0" />
           </Link>
+
+          <div className="flex w-full items-center justify-end gap-1 sm:w-auto sm:shrink-0">
+            <MlsReportListingDialog
+              listingId={listing.id}
+              domain={listing.domain}
+            />
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -114,10 +122,19 @@ export function MlsSaleCard({ listing }: MlsSaleCardProps) {
 }
 
 function getDomainUrl(domain: string) {
-  const normalized = domain.trim();
+  return normalizeExternalUrl(domain) ?? `https://${domain.trim()}`;
+}
+
+function normalizeExternalUrl(value: string | null) {
+  const normalized = value?.trim();
+  if (!normalized) {
+    return null;
+  }
+
   if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
     return normalized;
   }
+
   return `https://${normalized}`;
 }
 
