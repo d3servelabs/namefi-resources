@@ -15,6 +15,7 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV ENVIRONMENT=production
 ENV NODE_OPTIONS="--max-old-space-size=2048"
+ENV CI="true"
 
 RUN apt-get update && apt-get install -y bash curl dnsutils
 
@@ -24,6 +25,7 @@ RUN apt-get update && apt-get install -y bash curl dnsutils
 # ##############################################################################
 #
 FROM oven/bun:1.3.1-debian AS deps_prod
+ENV CI="true"
 WORKDIR /app
 
 COPY . .
