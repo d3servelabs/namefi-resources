@@ -49,6 +49,7 @@ import { determinePayments, getUserChainBalances } from '../../lib/payments';
 import { getChain, CHAINS as chains } from '@namefi-astra/utils';
 import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
+import { getEip712MetaFromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -461,6 +462,10 @@ export const ordersRouterOrpc = createTRPCRouter({
     }),
   )
     .meta({
+      ...getEip712MetaFromZodSchema([
+        instantBuyInputSchema,
+        instantBuyDefaultWalletInputSchema,
+      ]),
       route: {
         path: '/orders/register-domain',
         method: 'POST',

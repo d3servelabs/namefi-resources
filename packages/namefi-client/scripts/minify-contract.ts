@@ -5,3 +5,4 @@ import { orpcRouter } from '@namefi-astra/backend/openapi';
 const minifiedRouter = minifyContractRouter(orpcRouter);
 
 fs.writeFileSync('./contract.json', JSON.stringify(minifiedRouter));
+process.exit(0);

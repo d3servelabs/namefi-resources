@@ -312,7 +312,9 @@ export function ctxRequirePermission(ctx: TrpcContext, permission: Permission) {
  */
 export const t = initTRPC
   .context<TrpcContext>()
-  .meta<ORPCMeta>()
+  .meta<
+    ORPCMeta & { eip712?: { input?: { acceptedPrimaryTypes?: string[] } } }
+  >()
   .create({
     transformer: superjson,
     errorFormatter({ shape, error }) {

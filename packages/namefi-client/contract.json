@@ -4,10 +4,23 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ZoneSelectEnvelope"],
+              "types": {
+                "ZoneSelect": [{ "name": "zoneName", "type": "string" }],
+                "ZoneSelectEnvelope": [
+                  { "name": "payload", "type": "ZoneSelect" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records",
             "method": "GET",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "getDnsRecords",
             "summary": "Get DNS records",
             "description": "Retrieve all DNS records for a specified domain zone. Returns an array of DNS records including A, AAAA, CNAME, MX, TXT, and other record types."
@@ -16,7 +29,7 @@
         "route": {
           "path": "/dns/records",
           "method": "GET",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "getDnsRecords",
           "summary": "Get DNS records",
           "description": "Retrieve all DNS records for a specified domain zone. Returns an array of DNS records including A, AAAA, CNAME, MX, TXT, and other record types."
@@ -27,10 +40,28 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["CreateDnsRecordEnvelope"],
+              "types": {
+                "CreateDnsRecord": [
+                  { "name": "name", "type": "string" },
+                  { "name": "rdata", "type": "string" },
+                  { "name": "ttl", "type": "uint256" },
+                  { "name": "zoneName", "type": "string" }
+                ],
+                "CreateDnsRecordEnvelope": [
+                  { "name": "payload", "type": "CreateDnsRecord" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records",
             "method": "POST",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "createDnsRecord",
             "summary": "Create DNS record",
             "description": "Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation."
@@ -39,7 +70,7 @@
         "route": {
           "path": "/dns/records",
           "method": "POST",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "createDnsRecord",
           "summary": "Create DNS record",
           "description": "Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation."
@@ -50,10 +81,29 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["UpdateDnsRecordEnvelope"],
+              "types": {
+                "UpdateDnsRecord": [
+                  { "name": "id", "type": "string" },
+                  { "name": "zoneName", "type": "string" },
+                  { "name": "name", "type": "string" },
+                  { "name": "rdata", "type": "string" },
+                  { "name": "ttl", "type": "uint256" }
+                ],
+                "UpdateDnsRecordEnvelope": [
+                  { "name": "payload", "type": "UpdateDnsRecord" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records/{id}",
             "method": "PUT",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "updateDnsRecord",
             "summary": "Update DNS record",
             "description": "Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules."
@@ -62,7 +112,7 @@
         "route": {
           "path": "/dns/records/{id}",
           "method": "PUT",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "updateDnsRecord",
           "summary": "Update DNS record",
           "description": "Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules."
@@ -73,10 +123,26 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["RecordSelectEnvelope"],
+              "types": {
+                "RecordSelect": [
+                  { "name": "id", "type": "string" },
+                  { "name": "zoneName", "type": "string" }
+                ],
+                "RecordSelectEnvelope": [
+                  { "name": "payload", "type": "RecordSelect" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records/{id}",
             "method": "DELETE",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "deleteDnsRecord",
             "summary": "Delete DNS record",
             "description": "Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity."
@@ -85,7 +151,7 @@
         "route": {
           "path": "/dns/records/{id}",
           "method": "DELETE",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "deleteDnsRecord",
           "summary": "Delete DNS record",
           "description": "Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity."
@@ -96,10 +162,32 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["UpdateRecordsEnvelope"],
+              "types": {
+                "UpdateZoneRecord": [
+                  { "name": "id", "type": "string" },
+                  { "name": "name", "type": "string" },
+                  { "name": "rdata", "type": "string" },
+                  { "name": "ttl", "type": "uint256" }
+                ],
+                "UpdateRecords": [
+                  { "name": "records", "type": "UpdateZoneRecord[]" },
+                  { "name": "zoneName", "type": "string" }
+                ],
+                "UpdateRecordsEnvelope": [
+                  { "name": "payload", "type": "UpdateRecords" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records/batch",
             "method": "PUT",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "batchUpdateDnsRecords",
             "summary": "Batch update DNS records",
             "description": "Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together."
@@ -108,7 +196,7 @@
         "route": {
           "path": "/dns/records/batch",
           "method": "PUT",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "batchUpdateDnsRecords",
           "summary": "Batch update DNS records",
           "description": "Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together."
@@ -119,10 +207,23 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["CreateRecordsEnvelope"],
+              "types": {
+                "CreateRecords": [{ "name": "zoneName", "type": "string" }],
+                "CreateRecordsEnvelope": [
+                  { "name": "payload", "type": "CreateRecords" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records/batch",
             "method": "POST",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "batchCreateDnsRecords",
             "summary": "Batch create DNS records",
             "description": "Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules."
@@ -131,7 +232,7 @@
         "route": {
           "path": "/dns/records/batch",
           "method": "POST",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "batchCreateDnsRecords",
           "summary": "Batch create DNS records",
           "description": "Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules."
@@ -142,10 +243,26 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["DeleteRecordsEnvelope"],
+              "types": {
+                "DeleteRecords": [
+                  { "name": "recordsIds", "type": "string[]" },
+                  { "name": "zoneName", "type": "string" }
+                ],
+                "DeleteRecordsEnvelope": [
+                  { "name": "payload", "type": "DeleteRecords" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/records/batch",
             "method": "DELETE",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "batchDeleteDnsRecords",
             "summary": "Batch delete DNS records",
             "description": "Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion."
@@ -154,7 +271,7 @@
         "route": {
           "path": "/dns/records/batch",
           "method": "DELETE",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "batchDeleteDnsRecords",
           "summary": "Batch delete DNS records",
           "description": "Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion."
@@ -330,10 +447,48 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": [
+                "InstantRegisterDomainEnvelope",
+                "InstantRegisterDomainDefaultWalletEnvelope"
+              ],
+              "types": {
+                "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet": [
+                  { "name": "chainId", "type": "uint256" }
+                ],
+                "InstantRegisterDomain": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "durationInYears", "type": "uint256" },
+                  {
+                    "name": "nftReceivinggWallet",
+                    "type": "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet"
+                  }
+                ],
+                "InstantRegisterDomainEnvelope": [
+                  { "name": "payload", "type": "InstantRegisterDomain" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ],
+                "InstantRegisterDomainDefaultWallet": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "durationInYears", "type": "uint256" }
+                ],
+                "InstantRegisterDomainDefaultWalletEnvelope": [
+                  {
+                    "name": "payload",
+                    "type": "InstantRegisterDomainDefaultWallet"
+                  },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/orders/register-domain",
             "method": "POST",
-            "tags": ["orders"],
+            "tags": ["orders", "EIP712"],
             "operationId": "registerDomain",
             "summary": "Instant Register domain",
             "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
@@ -342,7 +497,7 @@
         "route": {
           "path": "/orders/register-domain",
           "method": "POST",
-          "tags": ["orders"],
+          "tags": ["orders", "EIP712"],
           "operationId": "registerDomain",
           "summary": "Instant Register domain",
           "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."

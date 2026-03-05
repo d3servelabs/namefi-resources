@@ -17,6 +17,7 @@ import {
 } from '../../services/dns/service';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';
+import { getEip712MetaFromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
 
 // ============================================================================
 // Output Schemas for OpenAPI
@@ -85,6 +86,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   getRecords: publicProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([zoneSelect]),
       route: {
         path: '/dns/records',
         method: 'GET',
@@ -106,6 +108,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   createDnsRecord: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([createDnsRecord]),
       route: {
         path: '/dns/records',
         method: 'POST',
@@ -131,6 +134,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   updateRecord: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([updateDnsRecord]),
       route: {
         path: '/dns/records/{id}',
         method: 'PUT',
@@ -154,6 +158,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   deleteRecord: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([recordSelect]),
       route: {
         path: '/dns/records/{id}',
         method: 'DELETE',
@@ -184,6 +189,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   updateRecords: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([UpdateRecords]),
       route: {
         path: '/dns/records/batch',
         method: 'PUT',
@@ -252,6 +258,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   createRecords: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([CreateRecords]),
       route: {
         path: '/dns/records/batch',
         method: 'POST',
@@ -283,6 +290,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   deleteRecords: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([DeleteRecords]),
       route: {
         path: '/dns/records/batch',
         method: 'DELETE',
