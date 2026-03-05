@@ -8,7 +8,7 @@ import {
   createSignedPayloadProcedure,
 } from '../base';
 import { logger } from '#lib/logger';
-import { generatePlainApiKey } from '#lib/auth/api-key-plain';
+import { generatePlainApiKey } from '#lib/auth/methods/plain/api-key-plain';
 import { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
 
 /**

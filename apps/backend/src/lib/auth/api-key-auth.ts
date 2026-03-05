@@ -24,7 +24,7 @@ import {
   authenticateRequest,
 } from './auth-registry';
 
-import { plainAuthMethod } from './api-key-auth-plain';
+import { plainAuthMethod } from './methods/plain/api-key-auth-plain';
 
 /**
  * Initialize the authentication registry with all auth methods

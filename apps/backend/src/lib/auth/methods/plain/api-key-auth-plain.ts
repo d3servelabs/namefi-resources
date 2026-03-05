@@ -16,7 +16,7 @@ import type {
   AuthMethod,
   AuthRequestContext,
   AuthMethodResult,
-} from './auth-registry';
+} from '../../auth-registry';
 
 /**
  * PLAIN API Key Authentication
