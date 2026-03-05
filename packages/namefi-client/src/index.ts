@@ -105,27 +105,32 @@ export function createNamefiClient({
       });
     },
     interceptors: [
-      onError((error) => {
-        _logger?.error(error);
-      }),
-      onFinish((response) => {
-        _logger?.info('Request finished');
-      }),
-      onStart(async (request) => {
+      onStart((options) => {
         _logger?.info('Request started');
 
-        if (type === 'EIP712') {
-          await request.next({
-            ...request,
-            input: {
-              payload: request.input as unknown as Record<string, unknown>,
-              timestamp: Math.trunc(Date.now() / 1000),
-              nonce: authentication.signer.generateNonce(),
-            },
+        if (
+          type === 'EIP712' &&
+          !!options?.input &&
+          typeof options.input === 'object'
+        ) {
+          const clone: any = { ...options.input };
+          Object.keys(clone).forEach((key) => {
+            delete (options.input as any)[key];
+          });
+          Object.assign(options.input as any, {
+            payload: clone as unknown as Record<string, unknown>,
+            timestamp: Math.trunc(Date.now() / 1000),
+            nonce: authentication.signer.generateNonce(),
           });
         }
       }),
-      onSuccess((response) => {
+      onError((error) => {
+        _logger?.error(error);
+      }),
+      onFinish((_response) => {
+        _logger?.info('Request finished');
+      }),
+      onSuccess((_response) => {
         _logger?.info('Request succeeded');
       }),
     ],
