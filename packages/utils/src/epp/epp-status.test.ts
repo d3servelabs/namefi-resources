@@ -26,7 +26,7 @@ describe('EppStatuses', () => {
       'client transfer prohibited',
       'server update prohibited',
       'pending transfer',
-      'ok',
+      'active',
     ]);
   });
 
