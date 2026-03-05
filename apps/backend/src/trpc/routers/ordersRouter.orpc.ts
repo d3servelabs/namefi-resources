@@ -48,6 +48,7 @@ import { config } from '#lib/env';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
 import { getChain, CHAINS as chains } from '@namefi-astra/utils';
 import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
+import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -78,28 +79,44 @@ const paymentMethodDetailsSchema = z.union([
 
 type PaymentMethodDetails = z.infer<typeof paymentMethodDetailsSchema>;
 
-export const instantBuyInputSchema = z.object({
-  normalizedDomainName: namefiNormalizedDomainSchema,
-  durationInYears: z.number().int().min(1).max(10).default(1),
-  nftReceivinggWallet: z
-    .object({
-      walletAddress: checksumWalletAddressSchema,
-      chainId: z.number().refine(
-        (chainId) => {
-          const allowedChains = config.ALLOWED_CHAINS;
-          return allowedChains.includes(chainId);
-        },
-        {
-          message: 'Chain ID provided is not allowed',
-          path: ['nftReceivinggWallet', 'chainId'],
-        },
+export const instantBuyInputSchema = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    durationInYears: z.number().int().min(1).max(10).default(1),
+    nftReceivinggWallet: z
+      .object({
+        walletAddress: checksumWalletAddressSchema,
+        chainId: z.number().refine(
+          (chainId) => {
+            const allowedChains = config.ALLOWED_CHAINS;
+            return allowedChains.includes(chainId);
+          },
+          {
+            message: 'Chain ID provided is not allowed',
+            path: ['nftReceivinggWallet', 'chainId'],
+          },
+        ),
+      })
+      .optional()
+      .describe(
+        'Wallet address and chain ID of the wallet that will receive the NFT, defaults to the buyer\'s wallet and "Base Chain"',
       ),
-    })
-    .optional()
-    .describe(
-      'Wallet address and chain ID of the wallet that will receive the NFT, defaults to the buyer\'s wallet and "Base Chain"',
-    ),
-});
+  })
+  .meta({
+    name: 'InstantRegisterDomain',
+    eip712: { structName: 'InstantRegisterDomain' },
+  });
+
+export const instantBuyDefaultWalletInputSchema = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    durationInYears: z.number().int().min(1).max(10).default(1),
+  })
+  .meta({
+    name: 'InstantRegisterDomainDefaultWallet',
+    eip712: { structName: 'InstantRegisterDomainDefaultWallet' },
+  });
+defaultEip712SchemaConverter.register(instantBuyDefaultWalletInputSchema);
 
 const postProcessRecordSchema = z.object({
   name: z.string(),
@@ -447,7 +464,7 @@ export const ordersRouterOrpc = createTRPCRouter({
       route: {
         path: '/orders/register-domain',
         method: 'POST',
-        tags: ['orders'],
+        tags: ['orders', 'EIP712'],
         operationId: 'registerDomain',
         summary: 'Instant Register domain',
         description:

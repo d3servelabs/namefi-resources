@@ -26,6 +26,12 @@ import { searchRouterOrpc } from '#trpc/routers/searchRouter.orpc';
 
 import { createTRPCRouter } from '#trpc/base';
 import { initializeAuthRegistry } from '#lib/auth/api-key-auth';
+import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
+import { mapObjIndexed } from 'ramda';
+import {
+  EIP712_SIGNATURE_HEADER_METHOD_ID,
+  parseEIP712SignatureEnvelope,
+} from '../lib/auth/methods/eip712/api-key-eip712';
 
 const base = os.errors({
   BAD_REQUEST: {
@@ -117,7 +123,10 @@ export const orpcRouter = toORPCRouter(
 );
 
 const openAPIGenerator = new OpenAPIGenerator({
-  schemaConverters: [new ZodToJsonSchemaConverter()],
+  schemaConverters: [
+    defaultEip712SchemaConverter,
+    new ZodToJsonSchemaConverter(),
+  ],
 });
 
 const openApiDocument = await openAPIGenerator.generate(
@@ -171,14 +180,11 @@ const openApiDocument = await openAPIGenerator.generate(
 export const providersRouter = new Hono();
 const _logger = createLogger({ context: 'providersRouter' });
 
-providersRouter.get('/openapi/doc.json', (c) => {
-  return c.json(openApiDocument);
-});
 providersRouter.get('/openapi/doc', (c, next) => {
   const path = `${c.req.routePath}.json`;
   return Scalar({
     url: path,
-    theme: 'kepler',
+    theme: 'fastify',
     baseServerURL:
       process.env.ENVIRONMENT === 'production'
         ? 'http://backend.astra.namefi.io/v-next'
@@ -208,23 +214,65 @@ const handler = new OpenAPIHandler(orpcRouter, {
     }),
   ],
 });
+function getRequestForHandler({
+  rawRequest,
+  rawBody,
+  authResult,
+}: {
+  rawRequest: Request;
+  rawBody: string;
+  authResult: AuthMethodResult;
+}): Request {
+  if (authResult.methodId !== EIP712_SIGNATURE_HEADER_METHOD_ID) {
+    return rawRequest;
+  }
+
+  if (rawRequest.method === 'GET' || rawRequest.method === 'HEAD') {
+    return rawRequest;
+  }
+
+  const parsedEnvelope = parseEIP712SignatureEnvelope(rawBody);
+  if (!parsedEnvelope.valid || !parsedEnvelope.envelope) {
+    return rawRequest;
+  }
+
+  const headers = new Headers(rawRequest.headers);
+  headers.delete('content-length');
+  if (!headers.has('content-type')) {
+    headers.set('content-type', 'application/json');
+  }
+
+  return new Request(rawRequest, {
+    headers,
+    body: JSON.stringify(parsedEnvelope.envelope.payload ?? null),
+  });
+}
+
 providersRouter.use('/*', async (c, next) => {
   const honoVars = c.var as { requestId: string; connInfo: ConnInfo };
   const clientIp = honoVars.connInfo?.remote?.address || null;
+  const rawBody = await c.req.raw.clone().text();
   const authCtx = createAuthContext(
     c.req.header(),
-    '',
+    rawBody,
     c.req.path,
     c.req.method,
     clientIp,
   );
+  authCtx.eip712Types = defaultEip712SchemaConverter.getTypes();
   const authResult: AuthMethodResult = await authenticateRequest(authCtx);
   let user: UserSelect | undefined;
   if (authResult.success) {
     user = authResult.user;
   }
 
-  const { matched, response } = await handler.handle(c.req.raw, {
+  const requestForHandler = getRequestForHandler({
+    rawRequest: c.req.raw,
+    rawBody,
+    authResult,
+  });
+
+  const { matched, response } = await handler.handle(requestForHandler, {
     prefix: '/v-next/',
     context: {
       apiAuthResult: authResult,
@@ -263,3 +311,23 @@ providersRouter.use('/*', async (c, next) => {
   await next();
 });
 initializeAuthRegistry();
+
+providersRouter.get('/eip712/types', (c) => {
+  return c.json(defaultEip712SchemaConverter.getTypes());
+});
+
+providersRouter.get('/openapi/doc.json', (c) => {
+  const overridenOpenApiDocument = {
+    ...openApiDocument,
+    paths: mapObjIndexed((path) => {
+      return mapObjIndexed((method: { tags?: string[]; 'x-badges'?: any }) => {
+        if (method?.tags?.includes('EIP712')) {
+          method.tags = method.tags?.filter((tag: any) => tag !== 'EIP712');
+          method['x-badges'] = [{ name: 'EIP712', color: '#b5f5ce' }];
+        }
+        return method;
+      }, path as any);
+    }, openApiDocument.paths as any),
+  };
+  return c.json(overridenOpenApiDocument);
+});

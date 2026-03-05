@@ -27,6 +27,8 @@ export interface AuthRequestContext {
   clientIp: string | null;
   /** Origin header value (null if not present) */
   origin: string | null;
+  /** EIP712 types for signature verification */
+  eip712Types?: Record<string, readonly { name: string; type: string }[]>;
 }
 
 /**
@@ -41,12 +43,19 @@ export interface AuthMethodResult {
   apiKeyId?: string;
   /** Error message (if failed) */
   error?: string;
+  /** Auth method id that produced this result */
+  methodId: string | null;
 }
 
 /**
  * API key types supported by the system
  */
-export type ApiKeyType = 'PLAIN' | 'PUBLIC_PRIVATE' | 'HMAC';
+export type ApiKeyType =
+  | 'PLAIN'
+  | 'PUBLIC_PRIVATE'
+  | 'HMAC'
+  | 'ECDSA_SIGNATURE_HEADER'
+  | 'EIP712';
 
 /**
  * Definition of an authentication method
@@ -71,7 +80,9 @@ export interface AuthMethod {
    * @param ctx - The request context
    * @returns Authentication result
    */
-  authenticate: (ctx: AuthRequestContext) => Promise<AuthMethodResult>;
+  authenticate: (
+    ctx: AuthRequestContext,
+  ) => Promise<Omit<AuthMethodResult, 'methodId'>>;
 }
 
 /**
@@ -170,7 +181,7 @@ export async function authenticateRequest(
           );
         }
 
-        return result;
+        return { ...result, methodId: method.id };
       }
     } catch (error) {
       logger.error({ error, methodId: method.id }, 'Error in auth method');
@@ -182,6 +193,7 @@ export async function authenticateRequest(
   return {
     success: false,
     error: 'No valid authentication provided',
+    methodId: null,
   };
 }
 

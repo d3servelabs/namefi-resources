@@ -158,10 +158,10 @@ async function authenticatePlainFromContext(
 ): Promise<AuthMethodResult> {
   const apiKey = ctx.headers[PLAIN_API_KEY_HEADER];
   if (!apiKey) {
-    return { success: false, error: 'Missing API key' };
+    return { success: false, error: 'Missing API key', methodId: 'plain' };
   }
 
-  return authenticateWithPlainApiKey(apiKey);
+  return { ...(await authenticateWithPlainApiKey(apiKey)), methodId: 'plain' };
 }
 
 /**

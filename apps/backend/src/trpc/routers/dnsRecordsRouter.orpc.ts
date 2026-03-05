@@ -26,6 +26,55 @@ const successResponseSchema = z.object({
   success: z.boolean(),
 });
 
+const dnsRecord = dnsRecordSelectSchema.meta({
+  name: 'DnsRecord',
+  eip712: { structName: 'DnsRecord' },
+});
+const createDnsRecord = createRecordInputSchema.meta({
+  name: 'CreateDnsRecord',
+  eip712: { structName: 'CreateDnsRecord' },
+});
+const updateDnsRecord = updateRecordInputSchema.meta({
+  name: 'UpdateDnsRecord',
+  eip712: { structName: 'UpdateDnsRecord' },
+});
+const zoneSelect = z
+  .object({
+    zoneName: namefiNormalizedDomainSchema,
+  })
+  .meta({ name: 'ZoneSelect', eip712: { structName: 'ZoneSelect' } });
+
+const recordSelect = z
+  .object({
+    id: z.string(),
+    zoneName: namefiNormalizedDomainSchema,
+  })
+  .meta({ name: 'RecordSelect', eip712: { structName: 'RecordSelect' } });
+const UpdateZoneRecord = updateRecordInputSchema.omit({ zoneName: true }).meta({
+  name: 'UpdateZoneRecord',
+  eip712: { structName: 'UpdateZoneRecord' },
+});
+const UpdateRecords = z
+  .object({
+    records: z.array(UpdateZoneRecord),
+    zoneName: namefiNormalizedDomainSchema,
+  })
+  .meta({ name: 'UpdateRecords', eip712: { structName: 'UpdateRecords' } });
+
+const CreateRecords = z
+  .object({
+    records: z.array(recordSchema),
+    zoneName: namefiNormalizedDomainSchema,
+  })
+  .meta({ name: 'CreateRecords', eip712: { structName: 'CreateRecords' } });
+
+const DeleteRecords = z
+  .object({
+    recordsIds: z.array(z.string()),
+    zoneName: namefiNormalizedDomainSchema,
+  })
+  .meta({ name: 'DeleteRecords', eip712: { structName: 'DeleteRecords' } });
+
 // ============================================================================
 // Router Definition
 // ============================================================================
@@ -39,19 +88,15 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records',
         method: 'GET',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'getDnsRecords',
         summary: 'Get DNS records',
         description:
           'Retrieve all DNS records for a specified domain zone. Returns an array of DNS records including A, AAAA, CNAME, MX, TXT, and other record types.',
       },
     })
-    .input(
-      z.object({
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .output(z.array(dnsRecordSelectSchema))
+    .input(zoneSelect)
+    .output(z.array(dnsRecord))
     .query(({ input }) => {
       return getZoneRecordsWithManagedRecords(input.zoneName);
     }),
@@ -64,15 +109,15 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records',
         method: 'POST',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'createDnsRecord',
         summary: 'Create DNS record',
         description:
           'Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation.',
       },
     })
-    .input(createRecordInputSchema)
-    .output(dnsRecordSelectSchema)
+    .input(createDnsRecord)
+    .output(dnsRecord)
     .mutation(async ({ input, ctx }) => {
       const { zoneName } = input;
 
@@ -89,15 +134,15 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records/{id}',
         method: 'PUT',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'updateDnsRecord',
         summary: 'Update DNS record',
         description:
           'Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules.',
       },
     })
-    .input(updateRecordInputSchema)
-    .output(dnsRecordSelectSchema)
+    .input(updateDnsRecord)
+    .output(dnsRecord)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
 
@@ -112,19 +157,14 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records/{id}',
         method: 'DELETE',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'deleteDnsRecord',
         summary: 'Delete DNS record',
         description:
           'Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity.',
       },
     })
-    .input(
-      z.object({
-        id: z.string(),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(recordSelect)
     .output(successResponseSchema)
     .mutation(
       async ({ input: { zoneName: normalizedDomainName, id }, ctx }) => {
@@ -147,20 +187,15 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records/batch',
         method: 'PUT',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'batchUpdateDnsRecords',
         summary: 'Batch update DNS records',
         description:
           'Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together.',
       },
     })
-    .input(
-      z.object({
-        records: z.array(updateRecordInputSchema.omit({ zoneName: true })),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .output(z.array(dnsRecordSelectSchema))
+    .input(UpdateRecords)
+    .output(z.array(dnsRecord))
     .mutation(async ({ input, ctx }) => {
       const { zoneName, records } = input;
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
@@ -220,20 +255,15 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records/batch',
         method: 'POST',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'batchCreateDnsRecords',
         summary: 'Batch create DNS records',
         description:
           'Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules.',
       },
     })
-    .input(
-      z.object({
-        records: z.array(recordSchema),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .output(z.array(dnsRecordSelectSchema))
+    .input(CreateRecords)
+    .output(z.array(dnsRecord))
     .mutation(async ({ input: { zoneName, records }, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
 
@@ -256,19 +286,14 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/records/batch',
         method: 'DELETE',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'batchDeleteDnsRecords',
         summary: 'Batch delete DNS records',
         description:
           'Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion.',
       },
     })
-    .input(
-      z.object({
-        recordsIds: z.array(z.string()),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(DeleteRecords)
     .output(successResponseSchema)
     .mutation(async ({ input: { zoneName, recordsIds }, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
