@@ -124,6 +124,7 @@ export const secretsSchema = z.object({
 
   // Ponder indexer API key for service-to-service sync
   PONDER_INDEXER_API_KEY: z.string().optional(),
+  MAIN_REDIS_URL: z.string().url().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
