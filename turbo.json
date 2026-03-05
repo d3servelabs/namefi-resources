@@ -23,6 +23,11 @@
       "env": ["*"],
       "outputs": ["dist/**", "build/**"]
     },
+    "@namefi-astra/frontend#build": {
+      "dependsOn": [],
+      "env": ["*"],
+      "outputs": ["dist/**", ".next/**", "build/**", "!.next/cache/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "env": ["*"],
