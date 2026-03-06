@@ -39,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: |
           # required because infisical binary is not linked on the first run
-          bun install
-          bun install
+          bun install --frozen-lockfile
+          bun install --frozen-lockfile
 
       - name: Run validation of secrets
         run: bun validate:secrets
