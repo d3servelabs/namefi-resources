@@ -59,17 +59,17 @@ Key points:
     "build": "next build",
     "lint": "eslint .",
     "test": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsgo --noEmit"
   }
 }
 
 // packages/api/package.json
 {
   "scripts": {
-    "build": "tsc",
+    "build": "tsgo",
     "lint": "eslint .",
     "test": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsgo --noEmit"
   }
 }
 ```

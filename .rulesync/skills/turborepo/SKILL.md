@@ -34,10 +34,10 @@ When creating tasks/scripts/pipelines, you MUST:
 { "scripts": { "build": "next build", "lint": "eslint .", "test": "vitest" } }
 
 // apps/api/package.json
-{ "scripts": { "build": "tsc", "lint": "eslint .", "test": "vitest" } }
+{ "scripts": { "build": "tsgo", "lint": "eslint .", "test": "vitest" } }
 
 // packages/ui/package.json
-{ "scripts": { "build": "tsc", "lint": "eslint .", "test": "vitest" } }
+{ "scripts": { "build": "tsgo", "lint": "eslint .", "test": "vitest" } }
 ```
 
 ```json
@@ -67,7 +67,7 @@ When creating tasks/scripts/pipelines, you MUST:
 // Root package.json
 {
   "scripts": {
-    "build": "cd apps/web && next build && cd ../api && tsc",
+    "build": "cd apps/web && next build && cd ../api && tsgo",
     "lint": "eslint apps/ packages/",
     "test": "vitest"
   }
@@ -504,7 +504,7 @@ Don't use relative paths like `../` to reference files outside the package. Use 
 
 **Before flagging missing `outputs`, check what the task actually produces:**
 
-1. Read the package's script (e.g., `"build": "tsc"`, `"test": "vitest"`)
+1. Read the package's script (e.g., `"build": "tsgo"`, `"test": "vitest"`)
 2. Determine if it writes files to disk or only outputs to stdout
 3. Only flag if the task produces files that should be cached
 
@@ -533,14 +533,14 @@ Common outputs by framework:
 
 - Next.js: `[".next/**", "!.next/cache/**"]`
 - Vite/Rollup: `["dist/**"]`
-- tsc: `["dist/**"]` or custom `outDir`
+- tsgo: `["dist/**"]` or custom `outDir`
 
 **TypeScript `--noEmit` can still produce cache files:**
 
-When `incremental: true` in tsconfig.json, `tsc --noEmit` writes `.tsbuildinfo` files even without emitting JS. Check the tsconfig before assuming no outputs:
+When `incremental: true` in tsconfig.json, `tsgo --noEmit` writes `.tsbuildinfo` files even without emitting JS. Check the tsconfig before assuming no outputs:
 
 ```json
-// If tsconfig has incremental: true, tsc --noEmit produces cache files
+// If tsconfig has incremental: true, tsgo --noEmit produces cache files
 {
   "tasks": {
     "typecheck": {
@@ -554,7 +554,7 @@ To determine correct outputs for TypeScript tasks:
 
 1. Check if `incremental` or `composite` is enabled in tsconfig
 2. Check `tsBuildInfoFile` for custom cache location (default: alongside `outDir` or in project root)
-3. If no incremental mode, `tsc --noEmit` produces no files
+3. If no incremental mode, `tsgo --noEmit` produces no files
 
 ### `^build` vs `build` Confusion
 
@@ -767,7 +767,7 @@ A `dev` task with `dependsOn: ["^dev"]` and `persistent: false` in root turbo.js
 
 **Why this works:**
 
-- **Packages** (e.g., `@acme/db`, `@acme/validators`) have `"dev": "tsc"` — one-shot type generation that completes quickly
+- **Packages** (e.g., `@acme/db`, `@acme/validators`) have `"dev": "tsgo"` — one-shot type generation that completes quickly
 - **Apps** override with `persistent: true` for actual dev servers (Next.js, etc.)
 - **`turbo watch`** re-runs the one-shot package `dev` scripts when source files change, keeping types in sync
 

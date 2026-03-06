@@ -149,7 +149,7 @@ When you need to create a task (build, lint, test, typecheck, etc.):
 // Root package.json with task logic
 {
   "scripts": {
-    "build": "cd apps/web && next build && cd ../api && tsc",
+    "build": "cd apps/web && next build && cd ../api && tsgo",
     "lint": "eslint apps/ packages/",
     "test": "vitest"
   }
@@ -160,10 +160,10 @@ When you need to create a task (build, lint, test, typecheck, etc.):
 { "scripts": { "build": "next build", "lint": "eslint .", "test": "vitest" } }
 
 // apps/api/package.json
-{ "scripts": { "build": "tsc", "lint": "eslint .", "test": "vitest" } }
+{ "scripts": { "build": "tsgo", "lint": "eslint .", "test": "vitest" } }
 
 // packages/ui/package.json
-{ "scripts": { "build": "tsc", "lint": "eslint .", "test": "vitest" } }
+{ "scripts": { "build": "tsgo", "lint": "eslint .", "test": "vitest" } }
 
 // Root package.json - ONLY delegates
 { "scripts": { "build": "turbo run build", "lint": "turbo run lint", "test": "turbo run test" } }
@@ -223,7 +223,7 @@ Some tasks can run in parallel (don't need built output from dependencies) but m
 
 **Before flagging missing `outputs`, check what the task actually produces:**
 
-1. Read the package's script (e.g., `"build": "tsc"`, `"test": "vitest"`)
+1. Read the package's script (e.g., `"build": "tsgo"`, `"test": "vitest"`)
 2. Determine if it writes files to disk or only outputs to stdout
 3. Only flag if the task produces files that should be cached
 

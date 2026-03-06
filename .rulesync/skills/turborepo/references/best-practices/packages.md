@@ -27,7 +27,7 @@ Export TypeScript directly. The consuming app's bundler compiles it.
   },
   "scripts": {
     "lint": "eslint .",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsgo --noEmit"
   }
 }
 ```
@@ -59,8 +59,8 @@ Package handles its own compilation.
     }
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsgo",
+    "dev": "tsgo --watch"
   }
 }
 ```
@@ -306,9 +306,9 @@ import { MY_STRING } from "#utils.ts";  // Uses .ts extension
 import { MY_STRING } from "#utils.js";  // Uses .js extension
 ```
 
-### Use `tsc` for Internal Packages
+### Use `tsgo` for Internal Packages
 
-For internal packages, prefer `tsc` over bundlers. Bundlers can mangle code before it reaches your app's bundler, causing hard-to-debug issues.
+For internal packages, prefer `tsgo` over bundlers. Bundlers can mangle code before it reaches your app's bundler, causing hard-to-debug issues.
 
 ### Enable Go-to-Definition
 

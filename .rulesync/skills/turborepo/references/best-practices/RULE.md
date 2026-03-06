@@ -86,7 +86,7 @@ Export TypeScript directly; let the app's bundler compile it.
 
 ### Compiled (Recommended for Libraries)
 
-Package compiles itself with `tsc` or bundler.
+Package compiles itself with `tsgo` or bundler.
 
 ```json
 {
@@ -98,7 +98,7 @@ Package compiles itself with `tsc` or bundler.
     }
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsgo"
   }
 }
 ```

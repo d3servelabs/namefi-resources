@@ -162,7 +162,7 @@ See `examples/domain-check-zod.ts` for a Zod-backed domain check using the funct
 ## Scripts
 From `apps/epp-client/`:
 ```bash
-bun run typecheck   # tsc --noEmit
+bun run typecheck   # tsgo --noEmit
 bun run build       # tsup bundle
 bun run test        # (tests to be added)
 ```
