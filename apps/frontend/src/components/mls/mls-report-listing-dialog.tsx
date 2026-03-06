@@ -104,10 +104,10 @@ export function MlsReportListingDialog({
 
   const selectedReason = form.watch('reason');
   const detailsValue = form.watch('details') ?? '';
-  const selectedReasonDescription = useMemo(
+  const selectedReasonOption = useMemo(
     () =>
-      REPORT_REASON_OPTIONS.find((option) => option.value === selectedReason)
-        ?.description ?? null,
+      REPORT_REASON_OPTIONS.find((option) => option.value === selectedReason) ??
+      null,
     [selectedReason],
   );
 
@@ -180,7 +180,7 @@ export function MlsReportListingDialog({
             type="button"
             variant="ghost"
             size="sm"
-            className="text-white/50 hover:text-white"
+            className="text-white/35 hover:text-white/55"
             disabled={isReported}
             aria-label={`Report listing for ${domain}`}
           >
@@ -214,7 +214,9 @@ export function MlsReportListingDialog({
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a reason" />
+                        <SelectValue placeholder="Select a reason">
+                          {selectedReasonOption?.label}
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent align="start">
@@ -225,9 +227,9 @@ export function MlsReportListingDialog({
                       ))}
                     </SelectContent>
                   </Select>
-                  {selectedReasonDescription ? (
+                  {selectedReasonOption?.description ? (
                     <p className="text-xs text-muted-foreground">
-                      {selectedReasonDescription}
+                      {selectedReasonOption.description}
                     </p>
                   ) : null}
                   <FormMessage />

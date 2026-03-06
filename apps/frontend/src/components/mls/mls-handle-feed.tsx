@@ -73,7 +73,6 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
   );
   const sellerLabel = sellerHandle ?? fallbackHandle;
   const totalDomains = firstPage?.totalDomains ?? 0;
-  const otherDomainsCount = Math.max(0, totalDomains - 1);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -99,7 +98,7 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
     <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
       <MlsHandleHeader
         sellerLabel={sellerLabel}
-        subtitle={getSellerSubtitle(hasValidHandle, otherDomainsCount)}
+        subtitle={getSellerSubtitle(hasValidHandle, totalDomains)}
         hasValidHandle={hasValidHandle}
         isLoading={isLoading}
         isRefetching={isRefetching}
@@ -350,16 +349,16 @@ function MlsHandleCompletionState({
   return null;
 }
 
-function getSellerSubtitle(hasValidHandle: boolean, otherDomainsCount: number) {
+function getSellerSubtitle(hasValidHandle: boolean, totalDomains: number) {
   if (!hasValidHandle) {
     return 'Invalid MLS handle.';
   }
 
-  if (otherDomainsCount === 0) {
-    return 'No other domains listed by this seller yet.';
+  if (totalDomains === 0) {
+    return 'No domains listed by this seller yet.';
   }
 
-  return `${otherDomainsCount.toLocaleString()} other ${otherDomainsCount === 1 ? 'domain' : 'domains'} listed by this seller.`;
+  return `${totalDomains.toLocaleString()} ${totalDomains === 1 ? 'domain' : 'domains'} listed by this seller.`;
 }
 
 interface MlsHandleFeedSkeletonProps {
