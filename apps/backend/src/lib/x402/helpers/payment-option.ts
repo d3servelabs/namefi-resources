@@ -1,7 +1,8 @@
 import { config } from '#lib/env';
 import { getUsdcContractAddress } from '#lib/crypto/x402-viem-clients';
-import { X402_EIP712_DOMAIN, X402_MAX_TIMEOUT_SECONDS } from './constants';
+import { X402_MAX_TIMEOUT_SECONDS } from './constants';
 import { parseChainIdFromNetwork } from './network';
+import { CHAINS } from '@namefi-astra/utils/chains';
 
 export type X402UsdcPrice = {
   asset: `0x${string}`;
@@ -20,6 +21,14 @@ export function getX402ConfiguredUsdcContractAddress(): `0x${string}` {
   return getUsdcContractAddress(getX402ConfiguredChainId());
 }
 
+export function getX402ConfiguredUsdcEIP712Domain() {
+  const chainId = getX402ConfiguredChainId();
+  return {
+    name: chainId === CHAINS.baseSepolia.id ? 'USDC' : 'USD Coin',
+    version: '2',
+  };
+}
+
 export function centsToUsdc(
   cents: number,
   asset: `0x${string}` = getX402ConfiguredUsdcContractAddress(),
@@ -27,10 +36,7 @@ export function centsToUsdc(
   return {
     asset,
     amount: (cents * 10_000).toFixed(0),
-    extra: {
-      name: X402_EIP712_DOMAIN.name,
-      version: X402_EIP712_DOMAIN.version,
-    },
+    extra: getX402ConfiguredUsdcEIP712Domain(),
   };
 }
 

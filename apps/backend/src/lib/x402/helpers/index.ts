@@ -1,5 +1,4 @@
 export {
-  X402_EIP712_DOMAIN,
   X402_MAX_TIMEOUT_SECONDS,
   X402_VALID_AFTER_LEEWAY_SECONDS,
 } from './constants';
