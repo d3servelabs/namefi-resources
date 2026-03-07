@@ -39,6 +39,9 @@ const _baseSecretsSchema = z.object({
         [CHAINS.base.id]: {
           useWebsockets: true,
         },
+        [CHAINS.robinhoodTestnet.id]: {
+          useWebsockets: true,
+        },
         [CHAINS.sepolia.id]: {
           useWebsockets: false,
           pollingIntervalMs: 2 * 60 * 1000,

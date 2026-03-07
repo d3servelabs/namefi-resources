@@ -1,6 +1,7 @@
 import { isNotNil, pick, pluck, toPairs, values } from 'ramda';
 import * as _Chains from 'viem/chains';
 import type { Chain } from 'viem/chains';
+export type { Chain } from 'viem/chains';
 
 const robinhoodTestnet = {
   /** Collection of block explorers */

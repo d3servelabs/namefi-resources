@@ -1,4 +1,3 @@
-import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const developmentConfig: ConfigInput = {

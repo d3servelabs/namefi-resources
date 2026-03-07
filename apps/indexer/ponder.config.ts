@@ -1,7 +1,7 @@
 import { secrets } from './src/lib/env';
 import { createConfig } from 'ponder';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
-import { base, type Chain, mainnet, sepolia } from 'viem/chains';
+import { CHAINS, type Chain } from '@namefi-astra/utils/chains';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import type { ChainConfig } from 'ponder';
 
@@ -28,9 +28,10 @@ const getChainConfig = (
   const chainRpcSubdomain = switchCaseOrDefault(
     chain.id,
     {
-      [mainnet.id]: 'eth-mainnet',
-      [base.id]: 'base-mainnet',
-      [sepolia.id]: 'eth-sepolia',
+      [CHAINS.mainnet.id]: 'eth-mainnet',
+      [CHAINS.base.id]: 'base-mainnet',
+      [CHAINS.sepolia.id]: 'eth-sepolia',
+      [CHAINS.robinhoodTestnet.id]: 'robinhood-testnet',
     },
     'unsupported-chain',
   );
@@ -65,11 +66,16 @@ export default createConfig({
       },
   chains: DEV
     ? {
-        sepolia: getChainConfig(sepolia),
+        sepolia: getChainConfig(CHAINS.sepolia),
+        robinhoodTestnet: getChainConfig(CHAINS.robinhoodTestnet, {
+          useWebsockets: false,
+          pollingIntervalMs: 5 * MINUTE_MS,
+        }),
       }
     : {
-        mainnet: getChainConfig(mainnet),
-        base: getChainConfig(base),
+        mainnet: getChainConfig(CHAINS.mainnet),
+        base: getChainConfig(CHAINS.base),
+        robinhoodTestnet: getChainConfig(CHAINS.robinhoodTestnet),
       },
   accounts: getAccounts(),
   contracts: {
@@ -83,6 +89,11 @@ export default createConfig({
               includeTransactionReceipts: false,
               startBlock: 'latest', // Adjust based on when contract was deployed
             },
+            robinhoodTestnet: {
+              includeCallTraces: false,
+              includeTransactionReceipts: false,
+              startBlock: 'latest', // Adjust based on when contract was deployed
+            },
           }
         : {
             mainnet: {
@@ -91,6 +102,11 @@ export default createConfig({
               startBlock: 'latest', // Adjust based on when contract was deployed
             },
             base: {
+              includeCallTraces: false,
+              includeTransactionReceipts: false,
+              startBlock: 'latest', // Adjust based on when contract was deployed
+            },
+            robinhoodTestnet: {
               includeCallTraces: false,
               includeTransactionReceipts: false,
               startBlock: 'latest', // Adjust based on when contract was deployed
