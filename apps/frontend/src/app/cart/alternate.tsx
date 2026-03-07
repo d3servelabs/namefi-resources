@@ -11,6 +11,8 @@ import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-ca
 import { NoPaymentMethodRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useDefaultChainId } from '@/hooks/use-allowed-chains';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,11 +38,13 @@ import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { type AppRouterInput, useTRPC } from '@/lib/trpc';
+import { type AppRouterInput, type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
+import { getAddress, toHex } from 'viem';
 import {
   forwardRef,
   useCallback,
@@ -50,12 +54,50 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useAccount, useSwitchChain, useWalletClient } from 'wagmi';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 import { normalizeCreateOrderV2PaymentsToSafeIntCents } from '@/lib/payment-normalization';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
+type X402PaymentConfig = Extract<
+  AppRouterOutput['config']['x402Payment'],
+  { enabled: true }
+>;
+
+const X402_TRANSFER_WITH_AUTHORIZATION_TYPES = {
+  TransferWithAuthorization: [
+    { name: 'from', type: 'address' },
+    { name: 'to', type: 'address' },
+    { name: 'value', type: 'uint256' },
+    { name: 'validAfter', type: 'uint256' },
+    { name: 'validBefore', type: 'uint256' },
+    { name: 'nonce', type: 'bytes32' },
+  ],
+} as const;
+
+const X402_CART_PAYMENT_FLAG_DEFINITION: FeatureFlagDefinition[] = [
+  {
+    key: 'x402_cart_payment',
+    label: 'x402 Cart Payment',
+    description: 'Enable x402 (USDC) payment option in alternate cart',
+    scope: 'page',
+    pageKey: 'cart',
+    defaultValue: false,
+  },
+];
+
+function isX402PaymentDraft(
+  payment: CreateOrderV2Input['payments'][0],
+): boolean {
+  return payment.paymentProviderDetails.paymentProvider === 'X402';
+}
 
 export default function CartPage() {
+  useRegisterAdminFlags(X402_CART_PAYMENT_FLAG_DEFINITION);
+  const [x402CartPaymentEnabled] = useAdminFeatureFlag(
+    X402_CART_PAYMENT_FLAG_DEFINITION[0],
+  );
+
   const defaultChainId = useDefaultChainId();
   const defaultNfscPaymentProvider = getPaymentProviderForChain(defaultChainId);
 
@@ -85,6 +127,20 @@ export default function CartPage() {
   );
 
   const trpc = useTRPC();
+  const { address: connectedWalletAddress } = useAccount();
+  const { data: walletClient } = useWalletClient();
+  const { switchChainAsync } = useSwitchChain();
+
+  const { data: x402PaymentConfigResponse } = useQuery({
+    ...trpc.config.x402Payment.queryOptions(),
+    enabled: x402CartPaymentEnabled,
+  });
+  const x402PaymentConfig = useMemo<X402PaymentConfig | null>(() => {
+    if (!x402CartPaymentEnabled || !x402PaymentConfigResponse?.enabled) {
+      return null;
+    }
+    return x402PaymentConfigResponse;
+  }, [x402CartPaymentEnabled, x402PaymentConfigResponse]);
 
   const {
     cartData: items,
@@ -232,27 +288,155 @@ export default function CartPage() {
           return;
         }
 
+        let preparedPayments = normalizeResult.payments;
+        const hasX402Payment = preparedPayments.some(isX402PaymentDraft);
+
+        if (hasX402Payment) {
+          if (!x402CartPaymentEnabled) {
+            setErrorMessage('x402 payment is currently disabled');
+            setIsErrorDialogOpen(true);
+            return;
+          }
+
+          if (!x402PaymentConfig) {
+            setErrorMessage('x402 payment is not available right now');
+            setIsErrorDialogOpen(true);
+            return;
+          }
+
+          if (!connectedWalletAddress || !walletClient) {
+            setErrorMessage(
+              'Connect an active wallet to sign your x402 payment',
+            );
+            setIsErrorDialogOpen(true);
+            return;
+          }
+
+          const signerAddress = getAddress(connectedWalletAddress);
+          const receiverWalletAddress = getAddress(x402PaymentConfig.payTo);
+          const assetAddress = getAddress(x402PaymentConfig.asset);
+
+          await switchChainAsync({
+            chainId: x402PaymentConfig.chainId,
+          });
+
+          preparedPayments = await Promise.all(
+            preparedPayments.map(async (payment) => {
+              if (!isX402PaymentDraft(payment)) {
+                return payment;
+              }
+
+              const value = BigInt(payment.amountInUsdCents) * 10_000n;
+              const now = BigInt(Math.floor(Date.now() / 1000));
+              const validAfter =
+                now - BigInt(x402PaymentConfig.validAfterLeewaySeconds);
+              const validBefore =
+                now + BigInt(x402PaymentConfig.maxTimeoutSeconds);
+              const nonce = toHex(crypto.getRandomValues(new Uint8Array(32)));
+
+              const signature = await walletClient.signTypedData({
+                account: signerAddress,
+                domain: {
+                  name: x402PaymentConfig.eip712DomainName,
+                  version: x402PaymentConfig.eip712DomainVersion,
+                  chainId: x402PaymentConfig.chainId,
+                  verifyingContract: assetAddress,
+                },
+                types: X402_TRANSFER_WITH_AUTHORIZATION_TYPES,
+                primaryType: 'TransferWithAuthorization',
+                message: {
+                  from: signerAddress,
+                  to: receiverWalletAddress,
+                  value,
+                  validAfter,
+                  validBefore,
+                  nonce,
+                },
+              });
+
+              const valueAsString = value.toString();
+              const validAfterAsString = validAfter.toString();
+              const validBeforeAsString = validBefore.toString();
+
+              return {
+                ...payment,
+                paymentProviderDetails: {
+                  paymentProvider: 'X402' as const,
+                  x402PaymentDetails: {
+                    buyerWalletAddress: signerAddress,
+                    receiverWalletAddress,
+                    network: x402PaymentConfig.network,
+                    presettled: false,
+                    paymentPayload: {
+                      x402Version: x402PaymentConfig.x402Version,
+                      payload: {
+                        signature,
+                        authorization: {
+                          from: signerAddress,
+                          to: receiverWalletAddress,
+                          value: valueAsString,
+                          validAfter: validAfterAsString,
+                          validBefore: validBeforeAsString,
+                          nonce,
+                        },
+                      },
+                      accepted: {
+                        scheme: 'exact',
+                        network: x402PaymentConfig.network,
+                        asset: assetAddress,
+                        amount: valueAsString,
+                        payTo: receiverWalletAddress,
+                        maxTimeoutSeconds: x402PaymentConfig.maxTimeoutSeconds,
+                        extra: {
+                          name: x402PaymentConfig.eip712DomainName,
+                          version: x402PaymentConfig.eip712DomainVersion,
+                        },
+                      },
+                      resource: {
+                        url: '/cart/alternate',
+                        mimeType: '*',
+                        description: `Checkout cart with ${items.length} item(s)`,
+                      },
+                    },
+                  },
+                },
+              } satisfies CreateOrderV2Input['payments'][0];
+            }),
+          );
+        }
+
         // Always use createOrderV2 for hybrid payments
         createOrder({
           cartItemIds: items.map((item) => item.id),
-          payments: normalizeResult.payments,
+          payments: preparedPayments,
           nftMetadata: {
             nftWalletAddress: selectedNftWalletAddress,
             nftChainId: selectedNftChainId ?? defaultChainId,
           },
         });
-      } catch (_error) {
+      } catch (error) {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : 'Could not submit your order. Please try again.',
+        );
+        setIsErrorDialogOpen(true);
       } finally {
         setExplicitlyCheckingCartItemsForUpdates(false);
       }
     },
     [
+      connectedWalletAddress,
       createOrder,
+      defaultChainId,
       items,
       selectedNftWalletAddress,
       selectedNftChainId,
-      defaultChainId,
+      switchChainAsync,
       totalAmountInUsdCents,
+      walletClient,
+      x402CartPaymentEnabled,
+      x402PaymentConfig,
     ],
   );
 
@@ -473,6 +657,8 @@ export default function CartPage() {
                 <HybridPaymentCard
                   totalAmountInUsdCents={totalAmountInUsdCents}
                   userWalletAddresses={linkedWalletAddresses}
+                  x402PaymentConfig={x402PaymentConfig}
+                  x402BuyerWalletAddress={connectedWalletAddress}
                   isDisabled={isDisabled}
                   isProcessing={
                     isCreateOrderPending ||

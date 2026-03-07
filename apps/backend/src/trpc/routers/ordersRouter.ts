@@ -3,6 +3,7 @@ import {
   type OrderStatus,
   type PaymentProviderDetails,
   type PaymentSelect,
+  type X402PaymentProviderDetails,
   type UserSelect,
   cartItemsTable,
   db,
@@ -21,6 +22,11 @@ import { isNil, isNotNil, pluck, sum } from 'ramda';
 import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
+import type { PaymentPayload } from '@x402/hono';
+import {
+  encryptX402PaymentPayloadSignature,
+  resolveX402PaymentPayloadEncryptionPrivateKey,
+} from '#lib/x402/helpers';
 import { NegativeAmountInUsdCentsError } from '#services/payments/errors';
 import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import {
@@ -183,7 +189,7 @@ export const ordersRouter = createTRPCRouter({
       resourceType: 'order',
       resourceId: result.id || '',
       action: 'create',
-      extraInput: input,
+      extraInput: redactX402PaymentPayloadsFromAuditInput(input),
     }),
   )
     .input(createOrderInputSchema)
@@ -709,7 +715,7 @@ export const ordersRouter = createTRPCRouter({
       resourceType: 'order',
       resourceId: result.id || '',
       action: 'create',
-      extraInput: input,
+      extraInput: redactX402PaymentPayloadsFromAuditInput(input),
     }),
   )
     .input(
@@ -793,14 +799,29 @@ export const ordersRouter = createTRPCRouter({
         }
       }
 
+      const x402Payments = payments
+        .map((p) => p.paymentProviderDetails)
+        .filter((p): p is X402PaymentProviderDetails => isX402Payment(p));
+
+      for (const p of x402Payments) {
+        validateX402PaymentProviderDetails({
+          paymentProviderDetails: p,
+          userWallets,
+        });
+      }
+
       const order = await db.transaction(async (tx) => {
         // 1) Create payments first, capturing each paymentId
         const createdPayments: PaymentSelect[] = [];
         for (const p of payments) {
+          const paymentProviderDetails = isX402Payment(p.paymentProviderDetails)
+            ? encryptX402PaymentProviderDetails(p.paymentProviderDetails)
+            : p.paymentProviderDetails;
+
           const created = await createPayment(
             {
               amountInUsdCents: p.amountInUsdCents,
-              paymentProviderDetails: p.paymentProviderDetails,
+              paymentProviderDetails,
             },
             { tx },
           );
@@ -912,7 +933,7 @@ export const ordersRouter = createTRPCRouter({
       resourceType: 'order',
       resourceId: result.id || '',
       action: 'instant_buy',
-      extraInput: input,
+      extraInput: redactX402PaymentPayloadsFromAuditInput(input),
     }),
   )
     .input(
@@ -996,10 +1017,14 @@ export const ordersRouter = createTRPCRouter({
         // Create payments
         const createdPayments: PaymentSelect[] = [];
         for (const p of payments) {
+          const paymentProviderDetails = isX402Payment(p.paymentProviderDetails)
+            ? encryptX402PaymentProviderDetails(p.paymentProviderDetails)
+            : p.paymentProviderDetails;
+
           const created = await createPayment(
             {
               amountInUsdCents: p.amountInUsdCents,
-              paymentProviderDetails: p.paymentProviderDetails,
+              paymentProviderDetails,
             },
             { tx },
           );
@@ -1347,6 +1372,206 @@ export const ordersRouter = createTRPCRouter({
       );
     }),
 });
+
+function validateX402PaymentProviderDetails({
+  paymentProviderDetails,
+  userWallets,
+}: {
+  paymentProviderDetails: X402PaymentProviderDetails;
+  userWallets: Set<string>;
+}) {
+  if (!config.X402_ENABLED) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 payment protocol is disabled',
+    });
+  }
+
+  const signerWalletAddress = checksumWalletAddressSchema.safeParse(
+    config.X402_SIGNER_ADDRESS,
+  );
+  if (!signerWalletAddress.success) {
+    throw new TRPCError({
+      code: 'PRECONDITION_FAILED',
+      message: 'x402 signer wallet address is not configured correctly',
+    });
+  }
+
+  const buyerWalletAddress = checksumWalletAddressSchema.safeParse(
+    paymentProviderDetails.x402PaymentDetails.buyerWalletAddress,
+  );
+  if (!buyerWalletAddress.success) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 buyerWalletAddress is not a valid Ethereum wallet address',
+    });
+  }
+  if (!userWallets.has(buyerWalletAddress.data)) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 buyerWalletAddress is not linked to the user',
+    });
+  }
+
+  const receiverWalletAddress = checksumWalletAddressSchema.safeParse(
+    paymentProviderDetails.x402PaymentDetails.receiverWalletAddress,
+  );
+  if (!receiverWalletAddress.success) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message:
+        'x402 receiverWalletAddress is not a valid Ethereum wallet address',
+    });
+  }
+  if (receiverWalletAddress.data !== signerWalletAddress.data) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 receiverWalletAddress does not match configured signer',
+    });
+  }
+
+  if (
+    paymentProviderDetails.x402PaymentDetails.network !== config.X402_NETWORK
+  ) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `x402 network must be ${config.X402_NETWORK}`,
+    });
+  }
+
+  const paymentPayload =
+    paymentProviderDetails.x402PaymentDetails.paymentPayload;
+  if (!paymentPayload) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 payment payload is required for cart checkout',
+    });
+  }
+
+  if (paymentPayload.accepted.network !== config.X402_NETWORK) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `x402 payment payload network must be ${config.X402_NETWORK}`,
+    });
+  }
+
+  const acceptedPayTo = checksumWalletAddressSchema.safeParse(
+    paymentPayload.accepted.payTo,
+  );
+  if (
+    !acceptedPayTo.success ||
+    acceptedPayTo.data !== signerWalletAddress.data
+  ) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 payment payload payTo does not match configured signer',
+    });
+  }
+
+  const payloadRecord = paymentPayload.payload;
+  const signature =
+    payloadRecord && typeof payloadRecord === 'object'
+      ? (payloadRecord as Record<string, unknown>).signature
+      : undefined;
+
+  if (typeof signature !== 'string' || !/^0x[0-9a-fA-F]+$/.test(signature)) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 payment payload signature must be a hex string',
+    });
+  }
+}
+
+function encryptX402PaymentProviderDetails(
+  paymentProviderDetails: X402PaymentProviderDetails,
+): X402PaymentProviderDetails {
+  const paymentPayload =
+    paymentProviderDetails.x402PaymentDetails.paymentPayload;
+  if (!paymentPayload) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'x402 payment payload is required for encryption',
+    });
+  }
+
+  const privateKey = resolveX402PaymentPayloadEncryptionPrivateKey({
+    onMissing: () =>
+      new TRPCError({
+        code: 'PRECONDITION_FAILED',
+        message: 'x402 payment payload encryption key is not configured',
+      }),
+  });
+  const {
+    paymentPayload: encryptedSignaturePaymentPayload,
+    paymentPayloadEncryptionVersion,
+  } = encryptX402PaymentPayloadSignature({
+    paymentPayload: paymentPayload as PaymentPayload,
+    privateKey,
+  });
+
+  return {
+    paymentProvider: paymentProviderDetails.paymentProvider,
+    x402PaymentDetails: {
+      ...paymentProviderDetails.x402PaymentDetails,
+      paymentPayload: encryptedSignaturePaymentPayload,
+      paymentPayloadEncryptionVersion,
+      presettled: false,
+      settlementTxHash: undefined,
+      settledAt: undefined,
+    },
+  };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function redactX402PaymentPayloadsFromAuditInput(input: unknown): unknown {
+  if (!isRecord(input)) {
+    return input;
+  }
+
+  if (!Array.isArray(input.payments)) {
+    return input;
+  }
+
+  const payments = input.payments.map((payment) => {
+    if (!isRecord(payment)) {
+      return payment;
+    }
+
+    const paymentProviderDetails = payment.paymentProviderDetails;
+    if (
+      !isRecord(paymentProviderDetails) ||
+      paymentProviderDetails.paymentProvider !== 'X402'
+    ) {
+      return payment;
+    }
+
+    const x402PaymentDetails = paymentProviderDetails.x402PaymentDetails;
+    if (!isRecord(x402PaymentDetails)) {
+      return payment;
+    }
+
+    return {
+      ...payment,
+      paymentProviderDetails: {
+        ...paymentProviderDetails,
+        x402PaymentDetails: {
+          ...x402PaymentDetails,
+          paymentPayload: x402PaymentDetails.paymentPayload
+            ? '[REDACTED]'
+            : x402PaymentDetails.paymentPayload,
+        },
+      },
+    };
+  });
+
+  return {
+    ...input,
+    payments,
+  };
+}
 
 async function _createPaymentForOrder(
   {

@@ -1,5 +1,4 @@
 import { NetworkLogo } from '@/components/network-logo';
-import { getShortAddress } from '@/lib/string';
 import { formatAmountInUSD } from '@/lib/number';
 import { useState, useMemo } from 'react';
 import { cn } from '@/lib/cn';
@@ -14,25 +13,22 @@ type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
 
 export type PaymentSummaryProps = {
   calculation: HybridPaymentCalculation;
-  userWalletAddresses: `0x${string}`[];
-  totalAmountInUsdCents: number;
 };
 
-export function PaymentSummary({
-  calculation,
-  userWalletAddresses,
-  totalAmountInUsdCents,
-}: PaymentSummaryProps) {
-  // Check if we should show wallet addresses (multiple wallets or different wallets)
-  const uniqueWallets = new Set(
-    calculation.balancePayments
-      .map(
-        (p: any) => p.paymentProviderDetails?.nfscPaymentDetails?.walletAddress,
-      )
-      .filter(Boolean),
-  );
-  const shouldShowWalletAddresses =
-    uniqueWallets.size > 1 || userWalletAddresses.length > 1;
+function getNfscPaymentDetails(payment: CreateOrderV2Input['payments'][0]) {
+  const details = payment.paymentProviderDetails;
+  if (
+    details.paymentProvider === 'NFSC_BASE' ||
+    details.paymentProvider === 'NFSC_ETHEREUM' ||
+    details.paymentProvider === 'NFSC_ETHEREUM_SEPOLIA'
+  ) {
+    return details.nfscPaymentDetails;
+  }
+
+  return undefined;
+}
+
+export function PaymentSummary({ calculation }: PaymentSummaryProps) {
   const [showDetailedChainBalances, setShowDetailedChainBalances] =
     useState(false);
   const totalBalancePaymentsInUsdCents = useMemo(
@@ -76,10 +72,9 @@ export function PaymentSummary({
         ? null
         : calculation.balancePayments.map(
             (payment: CreateOrderV2Input['payments'][0], index: number) => {
-              const nfscDetails = payment.paymentProviderDetails as any;
-              const walletAddress =
-                nfscDetails.nfscPaymentDetails?.walletAddress;
-              const chainId = nfscDetails.nfscPaymentDetails?.chainId || 0;
+              const nfscDetails = getNfscPaymentDetails(payment);
+              const walletAddress = nfscDetails?.walletAddress;
+              const chainId = nfscDetails?.chainId || 0;
 
               return (
                 <div
@@ -119,6 +114,16 @@ export function PaymentSummary({
               calculation.stripePayment.amountInUsdCents,
               true,
             )}{' '}
+            USD
+          </span>
+        </div>
+      )}
+
+      {calculation.x402Payment && (
+        <div className="flex justify-between text-xs">
+          <span>x402 (USDC)</span>
+          <span>
+            {formatAmountInUSD(calculation.x402Payment.amountInUsdCents, true)}{' '}
             USD
           </span>
         </div>

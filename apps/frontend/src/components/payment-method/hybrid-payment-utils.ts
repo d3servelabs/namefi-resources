@@ -2,6 +2,15 @@ import { CHAINS } from '@namefi-astra/utils/chains';
 import type { AppRouterInput } from '@/lib/trpc';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
+type CreateOrderV2Payment = CreateOrderV2Input['payments'][0];
+type CreateOrderV2PaymentProviderDetails =
+  CreateOrderV2Payment['paymentProviderDetails'];
+type X402PaymentDetails = Extract<
+  CreateOrderV2PaymentProviderDetails,
+  { paymentProvider: 'X402' }
+>['x402PaymentDetails'];
+
+export type HybridRemainderPaymentProvider = 'STRIPE' | 'X402';
 
 export type ChainBalance = {
   chainId: number;
@@ -15,7 +24,9 @@ export type HybridPaymentCalculation = {
   totalBalanceInUsdCents: number;
   balancePayments: CreateOrderV2Input['payments'];
   stripePayment: CreateOrderV2Input['payments'][0] | null;
+  x402Payment: CreateOrderV2Input['payments'][0] | null;
   totalPayments: CreateOrderV2Input['payments'];
+  remainderPaymentProvider: HybridRemainderPaymentProvider;
   isValid: boolean;
   errorMessage?: string;
 };
@@ -36,10 +47,14 @@ export function calculateHybridPayments({
   totalAmountInUsdCents,
   chainBalances,
   stripeConfirmationTokenId,
+  remainderPaymentProvider = 'STRIPE',
+  x402PaymentDetails,
 }: {
   totalAmountInUsdCents: number;
   chainBalances: ChainBalance[];
   stripeConfirmationTokenId: string | null;
+  remainderPaymentProvider?: HybridRemainderPaymentProvider;
+  x402PaymentDetails?: X402PaymentDetails;
 }): HybridPaymentCalculation {
   // Sort balances by chain priority
   const sortedBalances = chainBalances
@@ -87,20 +102,22 @@ export function calculateHybridPayments({
 
   // Calculate Stripe payment for remainder
   let stripePayment: CreateOrderV2Input['payments'][0] | null = null;
-  let stripeAmountInUsdCents = remainingAmount;
+  let x402Payment: CreateOrderV2Input['payments'][0] | null = null;
+  let remainderAmountInUsdCents = remainingAmount;
 
   // Handle Stripe minimum charge constraint
   if (
-    stripeAmountInUsdCents > 0 &&
-    stripeAmountInUsdCents < STRIPE_MINIMUM_CHARGE_CENTS
+    remainderPaymentProvider === 'STRIPE' &&
+    remainderAmountInUsdCents > 0 &&
+    remainderAmountInUsdCents < STRIPE_MINIMUM_CHARGE_CENTS
   ) {
     // Need to reduce balance usage to meet Stripe minimum
     const additionalAmountNeeded =
-      STRIPE_MINIMUM_CHARGE_CENTS - stripeAmountInUsdCents;
+      STRIPE_MINIMUM_CHARGE_CENTS - remainderAmountInUsdCents;
 
     if (usedBalanceAmount >= additionalAmountNeeded) {
       // We have enough balance to reduce usage
-      stripeAmountInUsdCents = STRIPE_MINIMUM_CHARGE_CENTS;
+      remainderAmountInUsdCents = STRIPE_MINIMUM_CHARGE_CENTS;
       usedBalanceAmount -= additionalAmountNeeded;
 
       // Recalculate balance payments with reduced amounts
@@ -130,14 +147,14 @@ export function calculateHybridPayments({
     } else {
       // Not enough balance to reduce usage, user needs to pay full amount with card
       balancePayments.splice(0);
-      stripeAmountInUsdCents = totalAmountInUsdCents;
+      remainderAmountInUsdCents = totalAmountInUsdCents;
     }
   }
 
-  // Create Stripe payment if needed
-  if (stripeAmountInUsdCents > 0) {
+  // Create remainder payment if needed
+  if (remainderPaymentProvider === 'STRIPE' && remainderAmountInUsdCents > 0) {
     stripePayment = {
-      amountInUsdCents: stripeAmountInUsdCents,
+      amountInUsdCents: remainderAmountInUsdCents,
       paymentProviderDetails: {
         paymentProvider: 'STRIPE',
         stripePaymentDetails: { paymentMethodId: undefined },
@@ -146,9 +163,27 @@ export function calculateHybridPayments({
         confirmationTokenId: stripeConfirmationTokenId ?? undefined,
       },
     };
+  } else if (
+    remainderPaymentProvider === 'X402' &&
+    remainderAmountInUsdCents > 0 &&
+    x402PaymentDetails
+  ) {
+    x402Payment = {
+      amountInUsdCents: remainderAmountInUsdCents,
+      paymentProviderDetails: {
+        paymentProvider: 'X402',
+        x402PaymentDetails: {
+          ...x402PaymentDetails,
+          presettled: false,
+        },
+      },
+    };
   }
 
   const totalPayments = [...balancePayments];
+  if (x402Payment) {
+    totalPayments.push(x402Payment);
+  }
   if (stripePayment) {
     totalPayments.push(stripePayment);
   }
@@ -157,22 +192,31 @@ export function calculateHybridPayments({
     (sum, p) => sum + p.amountInUsdCents,
     0,
   );
+  const hasX402ConfigWhenNeeded =
+    remainderPaymentProvider !== 'X402' ||
+    remainderAmountInUsdCents <= 0 ||
+    !!x402PaymentDetails;
   const isValid =
     totalCalculated === totalAmountInUsdCents &&
     totalPayments.length > 0 &&
+    hasX402ConfigWhenNeeded &&
     (!stripePayment || !!stripeConfirmationTokenId);
 
   return {
     totalBalanceInUsdCents,
     balancePayments,
     stripePayment,
+    x402Payment,
     totalPayments,
+    remainderPaymentProvider,
     isValid,
     errorMessage: isValid
       ? undefined
-      : !stripeConfirmationTokenId && stripePayment
-        ? 'Please add a credit card to continue'
-        : 'Payment calculation error. Please check your balance and payment method.',
+      : remainderPaymentProvider === 'X402' && !x402PaymentDetails
+        ? 'x402 payment is temporarily unavailable'
+        : !stripeConfirmationTokenId && stripePayment
+          ? 'Please add a credit card to continue'
+          : 'Payment calculation error. Please check your balance and payment method.',
   };
 }
 
@@ -187,7 +231,6 @@ export function getPaymentProviderForChain(
       return 'NFSC_BASE';
     case CHAINS.mainnet.id:
       return 'NFSC_ETHEREUM';
-    case CHAINS.sepolia.id:
     default:
       return 'NFSC_ETHEREUM_SEPOLIA';
   }
