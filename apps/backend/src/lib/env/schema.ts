@@ -320,6 +320,21 @@ export const configSchema = z.object({
     .string()
     .url()
     .default('https://x402.org/facilitator'),
+  /**
+   * WalletConnect project ID for x402 paywall
+   * If not set, WalletConnect option will be hidden in the paywall UI
+   */
+  X402_WALLETCONNECT_PROJECT_ID: z.string().optional(),
+  /**
+   * Default chain ID for minting NFTs from x402 purchases
+   * Maps payment network to NFT chain:
+   * - Base Sepolia (84532) payment -> Sepolia (11155111) NFT
+   * - Base Mainnet (8453) payment -> Base (8453) NFT
+   * If not set, defaults based on X402_NETWORK:
+   * - eip155:84532 -> 11155111 (Sepolia)
+   * - eip155:8453 -> 8453 (Base)
+   */
+  X402_DEFAULT_NFT_CHAINID: z.coerce.number().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

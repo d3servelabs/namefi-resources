@@ -600,14 +600,39 @@ export async function createX402Order(
 }
 
 /**
- * Convert CAIP-2 network to chain ID
+ * Get the NFT chain ID for x402 purchases
+ *
+ * Uses X402_DEFAULT_NFT_CHAINID if configured, otherwise maps:
+ * - Base Sepolia (84532) payment -> Sepolia (11155111) NFT
+ * - Base Mainnet (8453) payment -> Base (8453) NFT
  */
 function getChainIdFromNetwork(network: string): number {
+  // Use explicit config if set
+  if (config.X402_DEFAULT_NFT_CHAINID) {
+    return config.X402_DEFAULT_NFT_CHAINID;
+  }
+
+  // Parse chain ID from CAIP-2 network string
   const match = network.match(/^eip155:(\d+)$/);
   if (match) {
-    return Number.parseInt(match[1], 10);
+    const paymentChainId = Number.parseInt(match[1], 10);
+
+    // Map payment chain to NFT chain
+    // Base Sepolia payment -> Sepolia NFT
+    // Base Mainnet payment -> Base NFT
+    if (paymentChainId === 84532) {
+      return 11155111; // Sepolia
+    }
+    if (paymentChainId === 8453) {
+      return 8453; // Base
+    }
+
+    // Fallback to payment chain ID
+    return paymentChainId;
   }
-  return 84532; // Default to Base Sepolia
+
+  // Default to Sepolia for testnet
+  return 11155111;
 }
 
 export function centsToUsdc(

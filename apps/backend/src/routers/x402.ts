@@ -32,35 +32,29 @@ import {
   type PaymentRequirements,
 } from '@x402/hono';
 import { ExactEvmScheme } from '@x402/evm/exact/server';
-import {
-  HTTPFacilitatorClient,
-  type ResourceInfo,
-  type RouteConfig,
-} from '@x402/core/server';
+import { HTTPFacilitatorClient, type RouteConfig } from '@x402/core/server';
 import {
   decodePaymentSignatureHeader,
   encodePaymentRequiredHeader,
   type PaymentOption,
 } from '@x402/core/http';
 import { createPaywall } from '@x402/paywall';
-import { evmPaywall } from '@x402/paywall/evm';
+import { namefiEvmPaywall } from '../lib/x402';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import {
   processX402PurchaseWorkflow,
-  getX402PurchaseStateQuery,
   settlementSignal,
 } from '../temporal/workflows/x402/process-x402-purchase.workflow';
-import { getOrderProgressQuery } from '../temporal/workflows/processOrder.workflow';
 import { centsToUsdc } from '../temporal/activities/x402.activities';
-import { setTimeout } from 'timers/promises';
 import type { SettleResponse } from '@x402/core/types';
+const logger = createLogger({ context: 'X402_ROUTER' });
 
 const paywall = createPaywall()
-  .withNetwork(evmPaywall)
+  .withNetwork(namefiEvmPaywall)
   .withConfig({
     appName: 'Namefi',
-    testnet: true,
+    testnet: config.X402_NETWORK === 'eip155:84532',
     appLogo: 'https://namefi.io/logotype.svg',
   })
   .build();
@@ -74,10 +68,16 @@ const x402ResourceServer = new X402ResourceServer(facilitatorClient).register(
   new ExactEvmScheme(),
 );
 x402ResourceServer.initialize();
+logger.info(
+  x402ResourceServer.hasRegisteredScheme('eip155:84532', 'exact'),
+  'hasRegisteredScheme',
+);
+logger.info(
+  x402ResourceServer.getSupportedKind(2, 'eip155:84532', 'exact'),
+  'getSupportedKind',
+);
 // Type alias for the context
 type X402Context = Context;
-
-const logger = createLogger({ context: 'X402_ROUTER' });
 
 // x402 headers
 const PAYMENT_REQUIRED_HEADERS = ['PAYMENT', 'X-PAYMENT'];
@@ -307,6 +307,7 @@ async function handlePaidRequest(
         c,
       );
     paymentRequirement = paymentRequirements[0];
+    logger.info({ paymentRequirements, paymentPayload }, 'payment');
     const verifyRes = await x402ResourceServer.verifyPayment(
       paymentPayload,
       paymentRequirement,
