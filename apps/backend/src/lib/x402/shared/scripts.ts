@@ -1,297 +1,40 @@
 /**
- * Namefi Custom EVM Paywall Template
+ * Shared JavaScript for x402 paywall system
  *
- * A dark-themed paywall matching Namefi Astra design for x402 protocol payments.
- * Supports MetaMask/injected wallets and WalletConnect.
+ * Contains all the browser-side JavaScript for wallet connection,
+ * EIP-712 signing, and payment submission.
  */
-
-export interface PaywallTemplateConfig {
-  /** Amount in USDC (human readable, e.g. 5.00) */
-  amount: number;
-  /** Amount in atomic units (e.g. 5000000 for 5 USDC) */
-  amountInAtomicUnits: string;
-  /** Wallet address to pay to */
-  payTo: string;
-  /** Domain being purchased */
-  domain: string;
-  /** Duration in years */
-  durationInYears: number;
-  /** Network in CAIP-2 format (e.g. eip155:8453) */
-  network: string;
-  /** Chain ID (e.g. 8453) */
-  chainId: number;
-  /** Chain ID in hex (e.g. 0x2105) */
-  chainIdHex: string;
-  /** Chain name (e.g. Base) */
-  chainName: string;
-  /** USDC contract address */
-  usdcAddress: string;
-  /** RPC URL for the chain */
-  rpcUrl: string;
-  /** Block explorer URL */
-  blockExplorer: string;
-  /** Current URL (for redirect after payment) */
-  currentUrl: string;
-  /** Is testnet */
-  testnet: boolean;
-  /** WalletConnect project ID (optional) */
-  walletConnectProjectId?: string;
-  /** Full payment required response */
-  paymentRequired: unknown;
-  /** Purchase ID for redirect */
-  purchaseId?: string;
-}
 
 /**
- * Generates the Namefi-themed paywall HTML
+ * Debug logging functions
  */
-export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
-  const configJson = JSON.stringify(config);
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Required - ${escapeHtml(config.domain)} | Namefi</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            background: '#1a1a1a',
-            card: '#2a2a2a',
-            foreground: '#fafafa',
-            muted: '#a3a3a3',
-            'brand-primary': '#22c55e',
-            'brand-primary-hover': '#16a34a',
-            destructive: '#ef4444',
-            border: 'rgba(255,255,255,0.1)',
-          },
-          borderRadius: {
-            DEFAULT: '0.65rem',
-          }
-        }
-      }
-    }
-  </script>
-  <script type="module">
-    // Load viem ESM and expose utilities to window
-    import { 
-      getAddress, 
-      toHex,
-      createWalletClient,
-      custom
-    } from 'https://esm.sh/viem@2.43.3';
-    import { base, baseSepolia } from 'https://esm.sh/viem@2.43.3/chains';
-    
-    window.viemGetAddress = getAddress;
-    window.viemToHex = toHex;
-    window.viemCreateWalletClient = createWalletClient;
-    window.viemCustom = custom;
-    window.viemChains = { base, baseSepolia };
-    window.dispatchEvent(new Event('viem-loaded'));
-  </script>
-  ${config.walletConnectProjectId ? `<script type="module" src="https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.umd.js"></script>` : ''}
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    .spinner {
-      border: 2px solid transparent;
-      border-top-color: currentColor;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .fade-in {
-      animation: fadeIn 0.3s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body class="min-h-screen bg-background flex items-center justify-center p-4">
-  <div class="w-full max-w-md">
-    <!-- Main Card -->
-    <div class="bg-card rounded-xl border border-border p-6 shadow-xl">
-      <!-- Logo -->
-      <div class="flex justify-center mb-6">
-        <img src="https://namefi.io/logotype.svg" alt="Namefi" class="h-8" />
-      </div>
-
-      <!-- Header -->
-      <div class="text-center mb-6">
-        <h1 class="text-xl font-bold text-foreground mb-2">Payment Required</h1>
-        <p class="text-muted text-sm">
-          Register <span class="text-foreground font-medium">${escapeHtml(config.domain)}</span>
-          for ${config.durationInYears} year${config.durationInYears > 1 ? 's' : ''}
-        </p>
-      </div>
-
-      <!-- Price Display -->
-      <div class="bg-background rounded-lg p-4 mb-6 border border-border">
-        <div class="flex items-center justify-between">
-          <span class="text-muted text-sm">Total Amount</span>
-          <div class="text-right">
-            <span class="text-2xl font-bold text-foreground">${config.amount.toFixed(2)}</span>
-            <span class="text-muted ml-1">USDC</span>
-          </div>
-        </div>
-        <div class="mt-2 flex items-center justify-end gap-2">
-          <div class="w-2 h-2 rounded-full ${config.testnet ? 'bg-yellow-500' : 'bg-brand-primary'}"></div>
-          <span class="text-xs text-muted">${escapeHtml(config.chainName)}${config.testnet ? ' (Testnet)' : ''}</span>
-        </div>
-      </div>
-
-      <!-- Status Container -->
-      <div id="status-container">
-        <!-- Connect State (Initial) -->
-        <div id="state-connect" class="space-y-3">
-          <!-- MetaMask / Injected Wallet Button -->
-          <button
-            id="btn-metamask"
-            onclick="connectMetaMask()"
-            class="w-full bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21.8 8.2l-9-5.2c-.5-.3-1.1-.3-1.6 0l-9 5.2c-.5.3-.8.8-.8 1.4v10.8c0 .6.3 1.1.8 1.4l9 5.2c.5.3 1.1.3 1.6 0l9-5.2c.5-.3.8-.8.8-1.4V9.6c0-.6-.3-1.1-.8-1.4z"/>
-            </svg>
-            <span id="btn-metamask-text">Connect Wallet</span>
-          </button>
-
-          ${
-            config.walletConnectProjectId
-              ? `
-          <!-- WalletConnect Button -->
-          <button
-            id="btn-walletconnect"
-            onclick="connectWalletConnect()"
-            class="w-full bg-background hover:bg-border text-foreground font-semibold py-3 px-4 rounded-lg transition-colors border border-border flex items-center justify-center gap-2"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6.09 10.26c3.26-3.19 8.54-3.19 11.8 0l.39.38c.16.16.16.42 0 .58l-1.34 1.31c-.08.08-.21.08-.29 0l-.54-.53c-2.27-2.22-5.96-2.22-8.24 0l-.58.56c-.08.08-.21.08-.29 0L5.66 11.2c-.16-.16-.16-.42 0-.58l.43-.36zm14.58 2.71l1.19 1.17c.16.16.16.42 0 .58l-5.37 5.26c-.16.16-.42.16-.58 0l-3.81-3.73c-.04-.04-.11-.04-.15 0l-3.81 3.73c-.16.16-.42.16-.58 0L2.19 14.72c-.16-.16-.16-.42 0-.58l1.19-1.17c.16-.16.42-.16.58 0l3.81 3.73c.04.04.11.04.15 0l3.81-3.73c.16-.16.42-.16.58 0l3.81 3.73c.04.04.11.04.15 0l3.81-3.73c.16-.16.42-.16.58 0z"/>
-            </svg>
-            WalletConnect
-          </button>
-          `
-              : ''
-          }
-        </div>
-
-        <!-- Connected State -->
-        <div id="state-connected" class="hidden space-y-4 fade-in">
-          <div class="flex items-center justify-between p-3 bg-background rounded-lg border border-border">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-brand-primary"></div>
-              <span class="text-sm text-muted">Connected</span>
-            </div>
-            <span id="connected-address" class="text-sm text-foreground font-mono"></span>
-          </div>
-          <button
-            id="btn-pay"
-            onclick="signPayment()"
-            class="w-full bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
-          >
-            Pay ${config.amount.toFixed(2)} USDC
-          </button>
-          <button
-            onclick="disconnect()"
-            class="w-full text-muted hover:text-foreground text-sm py-2 transition-colors"
-          >
-            Disconnect
-          </button>
-        </div>
-
-        <!-- Processing State -->
-        <div id="state-processing" class="hidden text-center space-y-4 fade-in">
-          <div class="flex justify-center">
-            <div class="spinner text-brand-primary w-8 h-8 border-[3px]"></div>
-          </div>
-          <div>
-            <p id="processing-text" class="text-foreground font-medium">Processing payment...</p>
-            <p class="text-muted text-sm mt-1">Please confirm in your wallet</p>
-          </div>
-        </div>
-
-        <!-- Success State -->
-        <div id="state-success" class="hidden text-center space-y-4 fade-in">
-          <div class="flex justify-center">
-            <div class="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
-              <svg class="w-8 h-8 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-            </div>
-          </div>
-          <div>
-            <p class="text-foreground font-semibold text-lg">Payment Successful!</p>
-            <p class="text-muted text-sm mt-1">Your domain is being registered</p>
-          </div>
-          <div class="text-muted text-sm">
-            Redirecting in <span id="countdown" class="text-foreground font-medium">3</span>s...
-          </div>
-        </div>
-
-        <!-- Error State -->
-        <div id="state-error" class="hidden space-y-4 fade-in">
-          <div class="p-4 bg-destructive/10 border border-destructive/30 rounded-lg">
-            <div class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <div>
-                <p class="text-destructive font-medium">Payment Failed</p>
-                <p id="error-message" class="text-destructive/80 text-sm mt-1"></p>
-              </div>
-            </div>
-          </div>
-          <button
-            onclick="resetState()"
-            class="w-full bg-background hover:bg-border text-foreground font-semibold py-3 px-4 rounded-lg transition-colors border border-border"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="text-center mt-4">
-      <p class="text-muted text-xs">
-        Powered by <a href="https://x402.org" target="_blank" class="text-brand-primary hover:underline">x402 Protocol</a>
-      </p>
-    </div>
-  </div>
-
-  <script>
-    // Configuration injected from server
-    window.x402Config = ${configJson};
-
+export function getDebugLoggingScript(): string {
+  return `
     // Debug mode - set to true to enable console logging
     const DEBUG = true;
-    
+
     function log(...args) {
       if (DEBUG) console.log('[x402-paywall]', ...args);
     }
-    
+
     function logObj(label, obj) {
       if (DEBUG) {
         console.log('[x402-paywall]', label + ':');
         console.log(JSON.stringify(obj, null, 2));
       }
-    }
-    
+    }`;
+}
+
+/**
+ * Viem helper functions (address checksumming)
+ */
+export function getViemHelpersScript(): string {
+  return `
     // Use viem's getAddress for EIP-55 checksumming
     // Loaded via ESM module and exposed to window.viemGetAddress
     function toChecksumAddress(address) {
       if (!address) return address;
-      
+
       const getAddress = window.viemGetAddress;
       if (!getAddress) {
         console.error('[x402-paywall] ERROR: viem.getAddress not loaded yet! Address checksumming will fail.');
@@ -306,20 +49,26 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
         return address;
       }
     }
-    
+
     // Wait for viem to load before enabling payment button
     let viemLoaded = !!window.viemGetAddress && !!window.viemToHex && !!window.viemCreateWalletClient;
     window.addEventListener('viem-loaded', () => {
       viemLoaded = true;
-      log('viem loaded successfully:', { 
-        getAddress: !!window.viemGetAddress, 
+      log('viem loaded successfully:', {
+        getAddress: !!window.viemGetAddress,
         toHex: !!window.viemToHex,
         createWalletClient: !!window.viemCreateWalletClient,
         custom: !!window.viemCustom,
         chains: !!window.viemChains
       });
-    });
+    });`;
+}
 
+/**
+ * Wallet state management
+ */
+export function getWalletStateScript(): string {
+  return `
     // State management
     let connectedAddress = null;
     let provider = null;
@@ -363,8 +112,14 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
     // Check if injected wallet exists
     function hasInjectedWallet() {
       return typeof window.ethereum !== 'undefined';
-    }
+    }`;
+}
 
+/**
+ * MetaMask connection function
+ */
+export function getConnectMetaMaskScript(): string {
+  return `
     // Connect via MetaMask / injected wallet
     async function connectMetaMask() {
       if (!hasInjectedWallet()) {
@@ -432,13 +187,17 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
           showError(error.message || 'Failed to connect wallet');
         }
       }
-    }
+    }`;
+}
 
+/**
+ * WalletConnect connection placeholder
+ */
+export function getConnectWalletConnectScript(hasProjectId: boolean): string {
+  if (hasProjectId) {
+    return `
     // Connect via WalletConnect
     async function connectWalletConnect() {
-      ${
-        config.walletConnectProjectId
-          ? `
       try {
         // WalletConnect Modal is loaded via UMD
         if (!window.WalletConnectModal) {
@@ -457,11 +216,31 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
         console.error('WalletConnect error:', error);
         showError(error.message || 'Failed to connect via WalletConnect');
       }
-      `
-          : `showError('WalletConnect not configured');`
-      }
-    }
+    }`;
+  }
 
+  return `
+    // Connect via WalletConnect (not configured)
+    async function connectWalletConnect() {
+      showError('WalletConnect not configured');
+    }`;
+}
+
+/**
+ * Sign payment function options
+ */
+export interface SignPaymentScriptOptions {
+  /** JavaScript to execute on successful payment (has access to 'result' and 'config' vars) */
+  onSuccessScript: string;
+}
+
+/**
+ * EIP-712 signing and payment submission
+ */
+export function getSignPaymentScript(
+  options: SignPaymentScriptOptions,
+): string {
+  return `
     // Sign payment using EIP-3009 TransferWithAuthorization
     async function signPayment() {
       log('signPayment called');
@@ -470,12 +249,12 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
         showError('Wallet not connected');
         return;
       }
-      
+
       // Check viem is loaded for address checksumming, nonce generation, and signing
       if (!window.viemGetAddress || !window.viemToHex || !window.viemCreateWalletClient) {
         showError('Payment library still loading. Please wait a moment and try again.');
-        log('viem not loaded yet:', { 
-          viemGetAddress: !!window.viemGetAddress, 
+        log('viem not loaded yet:', {
+          viemGetAddress: !!window.viemGetAddress,
           viemToHex: !!window.viemToHex,
           viemCreateWalletClient: !!window.viemCreateWalletClient
         });
@@ -526,7 +305,7 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
         const value = firstAccept.amount;
         const asset = toChecksumAddress(firstAccept.asset);
         const maxTimeoutSeconds = firstAccept.maxTimeoutSeconds || 3600;
-        
+
         log('Extracted from firstAccept (checksummed):', { from, to, value, asset, maxTimeoutSeconds });
 
         const now = Math.floor(Date.now() / 1000);
@@ -652,6 +431,7 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
           method: 'GET',
           headers: {
             'X-PAYMENT-SIGNATURE': paymentHeader,
+            'PAYMENT-SIGNATURE': paymentHeader,
             'Accept': 'application/json',
           },
         });
@@ -663,28 +443,20 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
           throw new Error(errorData.message || 'Payment verification failed');
         }
 
+        // Capture redirect options header before consuming response body
+        const redirectOptionsHeader = response.headers.get('X-PAYWALL-REDIRECT-OPTIONS');
+        if (redirectOptionsHeader) {
+          log('Redirect options header found:', redirectOptionsHeader);
+        }
+
         const result = await response.json();
         logObj('Success response', result);
 
-        // Success! Show success state and redirect
+        // Success! Show success state and handle redirect
         showState('success');
 
-        let countdown = 3;
-        const countdownEl = document.getElementById('countdown');
-        const timer = setInterval(() => {
-          countdown--;
-          countdownEl.textContent = countdown;
-          if (countdown <= 0) {
-            clearInterval(timer);
-            // Redirect to purchase status page
-            const purchaseId = result.purchaseId || config.purchaseId;
-            if (purchaseId) {
-              window.location.href = '/x402/purchase/' + purchaseId;
-            } else {
-              window.location.reload();
-            }
-          }
-        }, 1000);
+        // Custom success handler (has access to: result, config, redirectOptionsHeader)
+        ${options.onSuccessScript}
 
       } catch (error) {
         console.error('Payment error:', error);
@@ -694,12 +466,18 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
           showError(error.message || 'Payment failed. Please try again.');
         }
       }
-    }
+    }`;
+}
 
+/**
+ * DOMContentLoaded initialization script
+ */
+export function getDOMContentLoadedScript(): string {
+  return `
     // Initialize on load
     document.addEventListener('DOMContentLoaded', function() {
       log('DOM loaded, initializing...');
-      
+
       // Check viem loaded correctly (may not be loaded yet due to ESM async loading)
       log('viem check on DOMContentLoaded:', {
         viemGetAddress: !!window.viemGetAddress,
@@ -707,9 +485,9 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
         viemCreateWalletClient: !!window.viemCreateWalletClient,
         viemLoaded: viemLoaded,
       });
-      
+
       // viem loads async via ESM, so we'll check again when payment is triggered
-      
+
       logObj('Initial x402Config', window.x402Config);
 
       // Update button text based on wallet availability
@@ -724,20 +502,5 @@ export function generatePaywallTemplate(config: PaywallTemplateConfig): string {
       if (window.x402Config.testnet) {
         console.log('x402 Payment Config:', window.x402Config);
       }
-    });
-  </script>
-</body>
-</html>`;
-}
-
-/**
- * Escape HTML special characters
- */
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    });`;
 }

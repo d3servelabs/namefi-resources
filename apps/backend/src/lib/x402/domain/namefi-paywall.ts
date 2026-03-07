@@ -1,99 +1,29 @@
 /**
- * Namefi EVM Paywall Handler
+ * Namefi Domain Paywall Handler
  *
- * Implements PaywallNetworkHandler interface for x402 protocol.
+ * Implements PaywallNetworkHandler interface for domain registration.
  * Generates Namefi-themed payment pages for EVM chains.
  */
 
+import { generateDomainPaywallTemplate } from './paywall-template';
 import {
-  generatePaywallTemplate,
-  type PaywallTemplateConfig,
-} from './paywall-template';
+  CHAIN_CONFIG,
+  NAMEFI_BRANDING,
+  NAMEFI_THEME,
+} from '../shared/constants';
+import type {
+  DomainPaywallConfig,
+  PaymentRequirement,
+  PaymentRequiredResponse,
+  PaywallHandlerConfig,
+  PaywallNetworkHandler,
+} from '../shared/types';
 import { config as envConfig } from '#lib/env';
-
-/**
- * Chain configuration for supported networks
- */
-const CHAIN_CONFIG: Record<
-  string,
-  {
-    chainId: number;
-    name: string;
-    usdcAddress: string;
-    rpcUrl: string;
-    blockExplorer: string;
-  }
-> = {
-  'eip155:8453': {
-    chainId: 8453,
-    name: 'Base',
-    usdcAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-    rpcUrl: 'https://mainnet.base.org',
-    blockExplorer: 'https://basescan.org',
-  },
-  'eip155:84532': {
-    chainId: 84532,
-    name: 'Base Sepolia',
-    usdcAddress: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
-    rpcUrl: 'https://sepolia.base.org',
-    blockExplorer: 'https://sepolia.basescan.org',
-  },
-};
-
-/**
- * Payment requirement from x402 protocol
- */
-interface PaymentRequirement {
-  scheme: string;
-  network: string;
-  amount?: string;
-  maxAmountRequired?: string;
-  price?: string;
-  payTo?: string;
-}
-
-/**
- * Full payment required response from x402
- */
-interface PaymentRequiredResponse {
-  resource?: {
-    url?: string;
-    description?: string;
-  };
-  accepts?: PaymentRequirement[];
-}
-
-/**
- * Paywall configuration
- */
-interface PaywallConfig {
-  appName?: string;
-  appLogo?: string;
-  testnet?: boolean;
-  currentUrl?: string;
-  walletConnectProjectId?: string;
-  /** Domain being purchased */
-  domain?: string;
-  /** Duration in years */
-  durationInYears?: number;
-}
-
-/**
- * PaywallNetworkHandler interface from @x402/paywall
- */
-interface PaywallNetworkHandler {
-  supports(requirement: PaymentRequirement): boolean;
-  generateHtml(
-    requirement: PaymentRequirement,
-    paymentRequired: PaymentRequiredResponse,
-    config: PaywallConfig,
-  ): string;
-}
 
 /**
  * Namefi EVM Paywall Handler
  *
- * Generates Namefi-themed payment pages for EVM chains (Base, Base Sepolia).
+ * Generates Namefi-themed payment pages for domain registration on EVM chains.
  */
 export const namefiEvmPaywall: PaywallNetworkHandler = {
   /**
@@ -104,12 +34,12 @@ export const namefiEvmPaywall: PaywallNetworkHandler = {
   },
 
   /**
-   * Generate Namefi-themed paywall HTML
+   * Generate Namefi-themed paywall HTML for domain registration
    */
   generateHtml(
     requirement: PaymentRequirement,
     paymentRequired: PaymentRequiredResponse,
-    config: PaywallConfig,
+    config: PaywallHandlerConfig,
   ): string {
     const network = requirement.network;
     const chainConfig = CHAIN_CONFIG[network];
@@ -127,8 +57,8 @@ export const namefiEvmPaywall: PaywallNetworkHandler = {
     const amount = Number.parseFloat(amountInAtomicUnits) / 1e6;
 
     // Extract domain from resource description or URL
-    let domain = config.domain || 'domain.eth';
-    let durationInYears = config.durationInYears || 1;
+    let domain = 'domain.eth';
+    let durationInYears = 1;
 
     // Try to parse from resource description like "Register example.com for 2 year(s)"
     if (paymentRequired.resource?.description) {
@@ -142,7 +72,7 @@ export const namefiEvmPaywall: PaywallNetworkHandler = {
     }
 
     // Build template config
-    const templateConfig: PaywallTemplateConfig = {
+    const templateConfig: DomainPaywallConfig = {
       amount,
       amountInAtomicUnits,
       payTo: requirement.payTo || '',
@@ -160,8 +90,14 @@ export const namefiEvmPaywall: PaywallNetworkHandler = {
       // Read WalletConnect project ID from environment config
       walletConnectProjectId: envConfig.X402_WALLETCONNECT_PROJECT_ID,
       paymentRequired,
+      // Theme and branding (use provided or defaults)
+      theme: config.theme || NAMEFI_THEME,
+      branding: config.branding || {
+        appName: config.appName || NAMEFI_BRANDING.appName,
+        appLogo: config.appLogo || NAMEFI_BRANDING.appLogo,
+      },
     };
 
-    return generatePaywallTemplate(templateConfig);
+    return generateDomainPaywallTemplate(templateConfig);
   },
 };
