@@ -668,6 +668,28 @@ export type NfscPaymentProviderDetails = Omit<
   nfscPaymentDetails: NfscPaymentDetails;
 };
 
+const x402PaymentPayloadSchema = z.object({
+  x402Version: z.number(),
+  resource: z.object({
+    url: z.string(),
+    description: z.string(),
+    mimeType: z.string(),
+  }),
+  accepted: z.object({
+    scheme: z.string(),
+    network: z.string(),
+    asset: z.string(),
+    amount: z.string(),
+    payTo: z.string(),
+    maxTimeoutSeconds: z.number(),
+    extra: z.record(z.string(), z.unknown()),
+  }),
+  payload: z.record(z.string(), z.unknown()),
+  extensions: z.record(z.string(), z.unknown()).optional(),
+});
+
+const x402PaymentPayloadEncryptionVersionSchema = z.enum(['v1']);
+
 // x402 Payment Details Schema
 export const x402PaymentDetailsSchema = z.object({
   buyerWalletAddress: z.string(),
@@ -677,25 +699,12 @@ export const x402PaymentDetailsSchema = z.object({
    */
   receiverWalletAddress: z.string(),
   network: z.string(), // CAIP-2 format: eip155:84532
-  paymentPayload: z.object({
-    x402Version: z.number(),
-    resource: z.object({
-      url: z.string(),
-      description: z.string(),
-      mimeType: z.string(),
-    }),
-    accepted: z.object({
-      scheme: z.string(),
-      network: z.string(),
-      asset: z.string(),
-      amount: z.string(),
-      payTo: z.string(),
-      maxTimeoutSeconds: z.number(),
-      extra: z.record(z.string(), z.unknown()),
-    }),
-    payload: z.record(z.string(), z.unknown()),
-    extensions: z.record(z.string(), z.unknown()).optional(),
-  }),
+  paymentPayload: x402PaymentPayloadSchema.optional(),
+  /**
+   * Encryption version used for x402 payload encryption
+   */
+  paymentPayloadEncryptionVersion:
+    x402PaymentPayloadEncryptionVersionSchema.optional(),
   /**
    * Whether the payment was pre-settled before the workflow started.
    * When true, the workflow will verify the settlement instead of initiating it.

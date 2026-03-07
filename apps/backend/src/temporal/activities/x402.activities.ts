@@ -31,17 +31,17 @@ import {
 } from '@x402/hono';
 import { ExactEvmScheme } from '@x402/evm/exact/server';
 import { HTTPFacilitatorClient } from '@x402/core/server';
-import { ChainId } from 'caip';
-
-const facilitatorClient = new HTTPFacilitatorClient({
-  url: config.X402_FACILITATOR_URL,
-});
-
-const x402ResourceServer = new X402ResourceServer(facilitatorClient).register(
-  config.X402_NETWORK,
-  new ExactEvmScheme(),
-);
-x402ResourceServer.initialize();
+import {
+  buildX402ExactPaymentOption,
+  centsToUsdc,
+  decryptX402PaymentPayloadSignature,
+  encryptX402PaymentPayloadSignature,
+  hasEncryptedX402PaymentPayloadSignature,
+  parseChainIdFromNetwork,
+  resolveX402PaymentPayloadEncryptionPrivateKey,
+  facilitatorClient,
+  x402ResourceServer,
+} from '#lib/x402/helpers';
 
 const logger = createLogger({ context: 'X402_ACTIVITIES' });
 
@@ -113,22 +113,22 @@ export async function verifyX402Payment(
     'Verifying x402 payment',
   );
   try {
+    const paymentPayload = resolvePaymentPayloadForFacilitator(
+      input.paymentPayload,
+    );
+
     const paymentRequirements =
       await x402ResourceServer.buildPaymentRequirementsFromOptions(
         [
-          {
-            scheme: 'exact',
-            network: config.X402_NETWORK,
-            price: centsToUsdc(input.expectedAmountInUsdCents),
-            payTo: config.X402_SIGNER_ADDRESS ?? 'namefidao.eth',
-            maxTimeoutSeconds: 3 * 60 * 60,
-          },
+          buildX402ExactPaymentOption(
+            centsToUsdc(input.expectedAmountInUsdCents),
+          ),
         ],
         {},
       );
     logger.info({ paymentRequirements }, 'Payment requirements built');
     const verifyRes = await x402ResourceServer.verifyPayment(
-      input.paymentPayload,
+      paymentPayload,
       paymentRequirements[0],
     );
     logger.trace({ verifyRes }, 'Verified payment');
@@ -164,6 +164,21 @@ export interface SettleX402PaymentResult {
   txHash?: string;
   error?: string;
 }
+
+function resolvePaymentPayloadForFacilitator(
+  paymentPayload: PaymentPayload,
+): PaymentPayload {
+  if (!hasEncryptedX402PaymentPayloadSignature(paymentPayload)) {
+    return paymentPayload;
+  }
+
+  const privateKey = resolveX402PaymentPayloadEncryptionPrivateKey();
+  return decryptX402PaymentPayloadSignature({
+    paymentPayload,
+    privateKey,
+  });
+}
+
 /**
  * Settle x402 payment with facilitator
  *
@@ -176,21 +191,33 @@ export async function settleX402Payment(
   logger.info({ network: input.network }, 'Settling x402 payment');
 
   try {
+    const paymentPayload = resolvePaymentPayloadForFacilitator(
+      input.paymentPayload,
+    );
     const paymentRequirements =
       await x402ResourceServer.buildPaymentRequirementsFromOptions(
         [
-          {
-            scheme: 'exact',
-            network: config.X402_NETWORK,
-            price: centsToUsdc(input.chargeAmountInUsdCents),
-            payTo: config.X402_SIGNER_ADDRESS ?? 'namefidao.eth',
-            maxTimeoutSeconds: 3 * 60 * 60,
-          },
+          buildX402ExactPaymentOption(
+            centsToUsdc(input.chargeAmountInUsdCents),
+          ),
         ],
         {},
       );
+
+    const verifyRes = await x402ResourceServer.verifyPayment(
+      paymentPayload,
+      paymentRequirements[0],
+    );
+
+    if (!verifyRes || !verifyRes.isValid) {
+      return {
+        success: false,
+        error: verifyRes?.invalidReason || 'Payment verification failed',
+      };
+    }
+
     const result = await x402ResourceServer.settlePayment(
-      input.paymentPayload,
+      paymentPayload,
       paymentRequirements[0],
     );
 
@@ -522,6 +549,15 @@ export async function createX402Order(
     throw new Error(validation.error || 'Domain validation failed');
   }
 
+  const privateKey = resolveX402PaymentPayloadEncryptionPrivateKey();
+  const {
+    paymentPayload: encryptedSignaturePaymentPayload,
+    paymentPayloadEncryptionVersion,
+  } = encryptX402PaymentPayloadSignature({
+    paymentPayload: input.paymentPayload,
+    privateKey,
+  });
+
   // Create order, order item, and payment in a transaction
   const result = await db.transaction(async (tx) => {
     // Create order
@@ -565,7 +601,8 @@ export async function createX402Order(
           buyerWalletAddress: input.buyerWalletAddress,
           receiverWalletAddress: input.receiverWalletAddress,
           network: input.network,
-          paymentPayload: input.paymentPayload,
+          paymentPayload: encryptedSignaturePaymentPayload,
+          paymentPayloadEncryptionVersion,
           // Pre-settlement info (if provided)
           presettled: input.presettled,
           settlementTxHash: input.settlementTxHash,
@@ -612,10 +649,8 @@ function getChainIdFromNetwork(network: string): number {
     return config.X402_DEFAULT_NFT_CHAINID;
   }
 
-  // Parse chain ID from CAIP-2 network string
-  const match = network.match(/^eip155:(\d+)$/);
-  if (match) {
-    const paymentChainId = Number.parseInt(match[1], 10);
+  try {
+    const paymentChainId = parseChainIdFromNetwork(network);
 
     // Map payment chain to NFT chain
     // Base Sepolia payment -> Sepolia NFT
@@ -629,35 +664,9 @@ function getChainIdFromNetwork(network: string): number {
 
     // Fallback to payment chain ID
     return paymentChainId;
-  }
-
-  // Default to Sepolia for testnet
-  return 11155111;
-}
-
-export function centsToUsdc(
-  cents: number,
-  overrideContract = '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
-) {
-  return {
-    asset: overrideContract,
-    amount: (cents * 10_000).toFixed(0), // usdc is deciaml6
-    extra: {
-      name: 'USDC',
-      version: '2',
-    },
-  };
-}
-
-/**
- * Parse chain ID from CAIP-2 network identifier
- */
-export function parseChainIdFromNetwork(network: string): number {
-  try {
-    const chainIdObj = new ChainId(network);
-    return Number.parseInt(chainIdObj.reference, 10);
-  } catch (error) {
-    throw new Error(`Invalid network format: ${network}`);
+  } catch {
+    // Default to Sepolia for invalid network
+    return 11155111;
   }
 }
 

@@ -120,6 +120,13 @@ export const secretsSchema = z.object({
   X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME: z.string().optional(),
   X402_SIGNER_PRIVATE_KEY: z.string().optional(),
   X402_SIGNER_MNEMONIC: z.string().optional(),
+  X402_PAYMENT_PAYLOAD_ENCRYPTION_PRIVATE_KEY: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return null;
+      return Buffer.from(val, 'base64').toString('utf-8');
+    }),
 
   EPP_AUTH_GEN_PRIVATE_KEY: z
     .string()

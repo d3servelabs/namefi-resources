@@ -36,7 +36,6 @@ import { HTTPFacilitatorClient, type RouteConfig } from '@x402/core/server';
 import {
   decodePaymentSignatureHeader,
   encodePaymentRequiredHeader,
-  type PaymentOption,
 } from '@x402/core/http';
 import { createPaywall } from '@x402/paywall';
 import { namefiEvmPaywall } from '../lib/x402';
@@ -46,7 +45,14 @@ import {
   processX402PurchaseWorkflow,
   settlementSignal,
 } from '../temporal/workflows/x402/process-x402-purchase.workflow';
-import { centsToUsdc } from '../temporal/activities/x402.activities';
+import {
+  buildX402ExactPaymentOption,
+  centsToUsdc,
+  encryptX402PaymentPayloadSignature,
+  resolveX402PaymentPayloadEncryptionPrivateKey,
+  facilitatorClient,
+  x402ResourceServer,
+} from '#lib/x402/helpers';
 import type { SettleResponse } from '@x402/core/types';
 const logger = createLogger({ context: 'X402_ROUTER' });
 
@@ -59,23 +65,6 @@ const paywall = createPaywall()
   })
   .build();
 
-const facilitatorClient = new HTTPFacilitatorClient({
-  url: config.X402_FACILITATOR_URL,
-});
-
-const x402ResourceServer = new X402ResourceServer(facilitatorClient).register(
-  config.X402_NETWORK,
-  new ExactEvmScheme(),
-);
-x402ResourceServer.initialize();
-logger.info(
-  x402ResourceServer.hasRegisteredScheme('eip155:84532', 'exact'),
-  'hasRegisteredScheme',
-);
-logger.info(
-  x402ResourceServer.getSupportedKind(2, 'eip155:84532', 'exact'),
-  'getSupportedKind',
-);
 // Type alias for the context
 type X402Context = Context;
 
@@ -187,7 +176,7 @@ async function handlePaymentRequired(
 
   // Convert cents to dollars for x402 (uses USDC which is 6 decimals)
   const priceInUsdc = centsToUsdc(validation.priceInUsdCents);
-  const paymentOption = buildExactPaymentOption(priceInUsdc);
+  const paymentOption = buildX402ExactPaymentOption(priceInUsdc);
   const resourceInfo = {
     description: `Register ${normalizedDomainName} for ${durationInYears} year(s)`,
     mimeType: '*',
@@ -303,11 +292,17 @@ async function handlePaidRequest(
     paymentPayload = decodePaymentSignatureHeader(paymentSignature);
     const paymentRequirements =
       await x402ResourceServer.buildPaymentRequirementsFromOptions(
-        [buildExactPaymentOption(priceInUsdc)],
+        [buildX402ExactPaymentOption(priceInUsdc)],
         c,
       );
     paymentRequirement = paymentRequirements[0];
-    logger.info({ paymentRequirements, paymentPayload }, 'payment');
+    logger.info(
+      {
+        network: paymentRequirement?.network,
+        payTo: paymentRequirement?.payTo,
+      },
+      'Built x402 payment requirement for verification',
+    );
     const verifyRes = await x402ResourceServer.verifyPayment(
       paymentPayload,
       paymentRequirement,
@@ -366,6 +361,17 @@ async function handlePaidRequest(
     });
   }
 
+  const { paymentPayload: encryptedSignaturePaymentPayload } =
+    encryptX402PaymentPayloadSignature({
+      paymentPayload,
+      privateKey: resolveX402PaymentPayloadEncryptionPrivateKey({
+        onMissing: () =>
+          new HTTPException(503, {
+            message: 'x402 payment payload encryption key is not configured',
+          }),
+      }),
+    });
+
   // Create x402 purchase record
   const [purchase] = await db
     .insert(x402PurchasesTable)
@@ -376,7 +382,7 @@ async function handlePaidRequest(
       network: config.X402_NETWORK,
       durationInYears,
       status: 'PENDING_VERIFICATION',
-      paymentPayload,
+      paymentPayload: encryptedSignaturePaymentPayload,
       paymentNonce: nonce,
     })
     .returning();
@@ -581,14 +587,4 @@ function getSingleHeaderWithDifferentKeys(c: Context, headers: string[]) {
 
 function b64JsonStringify(json: any) {
   return Buffer.from(json, 'utf-8').toString('base64');
-}
-
-function buildExactPaymentOption(priceInUsdc: ReturnType<typeof centsToUsdc>) {
-  return {
-    scheme: 'exact',
-    network: config.X402_NETWORK,
-    price: priceInUsdc,
-    payTo: config.X402_SIGNER_ADDRESS ?? 'namefidao.eth',
-    maxTimeoutSeconds: 3 * 60 * 60,
-  } satisfies PaymentOption;
 }

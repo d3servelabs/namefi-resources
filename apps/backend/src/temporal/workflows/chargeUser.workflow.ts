@@ -214,38 +214,46 @@ export async function chargeUserWorkflow({
       }
     } else {
       // MARK: Standard settlement - settle with facilitator
-      try {
-        const settleInput: SettleX402PaymentInput = {
-          paymentPayload: x402PaymentDetails.paymentPayload,
-          network: x402PaymentDetails.network,
-          chargeAmountInUsdCents: amountInUSDCents,
-        };
-
-        const result = await settleX402Payment(settleInput);
-
-        if (result.success) {
-          paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
-          paymentProviderReferenceId = result.txHash;
-          // Store settlement txHash in x402PaymentDetails
-          updatedX402PaymentDetails = {
-            ...x402PaymentDetails,
-            settlementTxHash: result.txHash,
-            settledAt: new Date().toISOString(),
+      const paymentPayload = x402PaymentDetails.paymentPayload;
+      if (!paymentPayload) {
+        workflow.log.error(
+          `X402 payment missing payment payload. paymentId: ${paymentId}`,
+        );
+        paymentStatus = paymentStatusSchema.enum.FAILED;
+      } else {
+        try {
+          const settleInput: SettleX402PaymentInput = {
+            paymentPayload,
+            network: x402PaymentDetails.network,
+            chargeAmountInUsdCents: amountInUSDCents,
           };
-          workflow.log.info(
-            `X402 payment settled successfully. paymentId: ${paymentId}, txHash: ${result.txHash}`,
-          );
-        } else {
+
+          const result = await settleX402Payment(settleInput);
+
+          if (result.success) {
+            paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
+            paymentProviderReferenceId = result.txHash;
+            // Store settlement txHash in x402PaymentDetails
+            updatedX402PaymentDetails = {
+              ...x402PaymentDetails,
+              settlementTxHash: result.txHash,
+              settledAt: new Date().toISOString(),
+            };
+            workflow.log.info(
+              `X402 payment settled successfully. paymentId: ${paymentId}, txHash: ${result.txHash}`,
+            );
+          } else {
+            workflow.log.error(
+              `X402 settlement failed. paymentId: ${paymentId}, error: ${result.error}`,
+            );
+            paymentStatus = paymentStatusSchema.enum.FAILED;
+          }
+        } catch (error) {
           workflow.log.error(
-            `X402 settlement failed. paymentId: ${paymentId}, error: ${result.error}`,
+            `Error while settling X402 payment. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
           );
           paymentStatus = paymentStatusSchema.enum.FAILED;
         }
-      } catch (error) {
-        workflow.log.error(
-          `Error while settling X402 payment. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
-        );
-        paymentStatus = paymentStatusSchema.enum.FAILED;
       }
     }
   }

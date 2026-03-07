@@ -431,7 +431,9 @@ export const paymentsTable = pgTable(
       /** The wallet address that received the x402 payment (USDC) */
       receiverWalletAddress: string;
       network: string; // CAIP-2 format: eip155:84532
-      paymentPayload: PaymentPayload;
+      paymentPayload?: PaymentPayload;
+      /** Encryption version used for x402 payload encryption */
+      paymentPayloadEncryptionVersion?: 'v1';
       /** Whether the payment was pre-settled before the workflow started */
       presettled?: boolean;
       /** Transaction hash from the x402 facilitator settlement */
