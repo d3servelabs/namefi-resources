@@ -63,3 +63,4 @@ export * from './bulk-burn-expired-domains.workflow';
 export * from './generic/start-activity.workflow';
 export * from './sync-ponder-index.workflow';
 export * from './x402/transfer-usdc-x402.workflow';
+export * from './x402/process-x402-purchase.workflow';

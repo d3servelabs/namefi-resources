@@ -2066,3 +2066,106 @@ export const pbnIssuanceReservationsTable = pgTable(
     ),
   ],
 );
+
+/**
+ * x402 purchase status enum
+ * Tracks the state of x402 protocol purchases
+ */
+export const x402PurchaseStatusEnum = pgEnum('x402_purchase_status', [
+  'PENDING_SETTLEMENT', // Waiting for payment to be settled
+  'PENDING_VERIFICATION', // Payment received, pending verification (legacy)
+  'VERIFIED', // Payment verified by facilitator (legacy)
+  'PROCESSING', // Domain registration in progress
+  'SETTLING', // Payment settlement in progress (legacy)
+  'SETTLED', // Payment settled on-chain
+  'COMPLETED', // Purchase fully completed (domain registered + payment settled)
+  'FAILED', // Purchase failed
+  'REFUNDING', // Refund in progress
+  'REFUNDED', // Payment refunded
+] as const);
+
+/**
+ * x402 purchases table
+ * Stores x402 protocol domain purchases
+ *
+ * Flow:
+ * 1. Client sends payment payload via x402 header
+ * 2. Server verifies payment with facilitator
+ * 3. Server processes domain registration
+ * 4. Server settles payment with facilitator
+ * 5. Domain is minted to buyer's wallet
+ */
+export const x402PurchasesTable = pgTable(
+  'x402_purchases',
+  {
+    ...randomUuid,
+    ...normalizedDomain,
+    ...amountInUsdCents,
+    /**
+     * Buyer's wallet address (from x402 payment)
+     */
+    buyerWalletAddress: text('buyer_wallet_address').notNull(),
+    /**
+     * Network in CAIP-2 format (e.g., eip155:8453 for Base)
+     */
+    network: text('network').notNull(),
+    /**
+     * Duration of registration in years
+     */
+    durationInYears: integer('duration_in_years').notNull().default(1),
+    /**
+     * Current status of the purchase
+     */
+    status: x402PurchaseStatusEnum('status')
+      .notNull()
+      .default('PENDING_SETTLEMENT'),
+    /**
+     * Payment nonce from the x402 payload - used for deduplication
+     * This is extracted from paymentPayload.payload.nonce
+     */
+    paymentNonce: text('payment_nonce').notNull(),
+    /**
+     * Optional linked user ID (may be null for new users created from wallet)
+     */
+    userId: uuid('user_id').references(() => usersTable.id, {
+      onDelete: 'set null',
+    }),
+    /**
+     * Optional linked order ID (created after verification)
+     */
+    orderId: uuid('order_id').references(() => ordersTable.id, {
+      onDelete: 'set null',
+    }),
+    /**
+     * x402 payment payload for verification/settlement
+     */
+    paymentPayload: jsonb('payment_payload').$type<PaymentPayload>(),
+    /**
+     * Transaction hash from settlement
+     */
+    settlementTxHash: text('settlement_tx_hash'),
+    /**
+     * Timestamp when settlement was completed
+     */
+    settledAt: timestamp('settled_at', { withTimezone: true }),
+    /**
+     * Error message if purchase failed
+     */
+    errorMessage: text('error_message'),
+    /**
+     * Temporal workflow ID for tracking
+     */
+    workflowId: text('workflow_id'),
+    ...timestamps,
+  },
+  (table) => [
+    check('amount_in_usd_cents_positive', sql`amount_in_usd_cents > 0`),
+    index('x402_purchases_buyer_wallet_idx').on(table.buyerWalletAddress),
+    index('x402_purchases_status_idx').on(table.status),
+    index('x402_purchases_user_id_idx').on(table.userId),
+    index('x402_purchases_order_id_idx').on(table.orderId),
+    index('x402_purchases_domain_idx').on(table.normalizedDomainName),
+    // Unique constraint on payment nonce to prevent duplicate purchases
+    unique('x402_purchases_payment_nonce_unique').on(table.paymentNonce),
+  ],
+);

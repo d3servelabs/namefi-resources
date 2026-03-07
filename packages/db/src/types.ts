@@ -31,6 +31,8 @@ import {
   cartItemMetadataSchema,
   orderMetadataSchema,
   orderItemMetadataSchema,
+  x402PurchasesTable,
+  x402PurchaseStatusEnum,
 } from './schema';
 export type { OrderItemMetadata, OrderMintTransactionMetadata } from './schema';
 import type { PgUpdateSetSource } from 'drizzle-orm/pg-core';
@@ -295,6 +297,20 @@ export const pbnIssuanceReservationUpdateSchema = createUpdateSchema(
   },
 );
 
+export const x402PurchaseInsertSchema = createInsertSchema(x402PurchasesTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const x402PurchaseSelectSchema = createSelectSchema(x402PurchasesTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const x402PurchaseUpdateSchema = createUpdateSchema(x402PurchasesTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+
+export type X402PurchaseInsert = z.infer<typeof x402PurchaseInsertSchema>;
+export type X402PurchaseSelect = z.infer<typeof x402PurchaseSelectSchema>;
+export type X402PurchaseUpdate = z.infer<typeof x402PurchaseUpdateSchema>;
+
 export type PbnIssuanceReservationInsert = z.infer<
   typeof pbnIssuanceReservationInsertSchema
 >;
@@ -328,6 +344,12 @@ export const refundStatusSchema = z.enum(refundStatusEnum.enumValues);
 export type RefundStatus = z.infer<typeof refundStatusSchema>;
 export const orderStatusSchema = z.enum(orderStatusEnum.enumValues);
 export type OrderStatus = z.infer<typeof orderStatusSchema>;
+
+export const x402PurchaseStatusSchema = z.enum(
+  x402PurchaseStatusEnum.enumValues,
+);
+export type X402PurchaseStatus = z.infer<typeof x402PurchaseStatusSchema>;
+
 export const freeClaimClaimingStatusSchema = z.enum(
   freeClaimClaimingStatusEnum.enumValues,
 );

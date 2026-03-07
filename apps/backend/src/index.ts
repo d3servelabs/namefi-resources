@@ -36,6 +36,7 @@ import { browserLogsProxyRouter } from './routers/browser-logs-proxy';
 import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema-def';
 import { rdapRouter } from './routers/rdap';
 import { whoisRouter } from './routers/whois';
+import { x402Router } from './routers/x402';
 
 type HonoVariables = {
   requestId: string;
@@ -133,6 +134,7 @@ app.route('v-next', providersRouter);
 app.route('/c15t', c15tRouter);
 app.route('/log-level', logLevelRouter);
 app.route('/client-events', browserLogsProxyRouter);
+app.route('/x402', x402Router);
 
 app.get('/configfi', (c) => {
   return c.json({
