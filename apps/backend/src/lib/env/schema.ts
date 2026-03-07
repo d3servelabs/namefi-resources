@@ -110,6 +110,16 @@ export const secretsSchema = z.object({
   CENTRALNIC_OTE2_DEFAULT_REGISTRANT: z.string().optional(),
 
   CENTRALNIC_DEFAULT_REGISTRANT: z.string().optional(),
+  // x402 Protocol Configuration (for CDP facilitator in production)
+  CDP_API_KEY_ID: z.string().optional(),
+  CDP_API_KEY_SECRET: z.string().optional(),
+  /**
+   * Private key for signing x402 refund transactions (USDC transfers)
+   * The same wallet that receives x402 payments signs refunds
+   */
+  X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME: z.string().optional(),
+  X402_SIGNER_PRIVATE_KEY: z.string().optional(),
+  X402_SIGNER_MNEMONIC: z.string().optional(),
 
   EPP_AUTH_GEN_PRIVATE_KEY: z
     .string()
@@ -286,6 +296,30 @@ export const configSchema = z.object({
    * instead of running a local Ponder instance.
    */
   PONDER_INDEXER_URL: z.string().url().optional(),
+  // x402 Protocol Configuration
+  /**
+   * Enable/disable x402 payment protocol
+   */
+  X402_ENABLED: z.stringbool().default(true),
+  /**
+   * Network for x402 payments in CAIP-2 format
+   * - Base Mainnet: eip155:8453
+   * - Base Sepolia: eip155:84532
+   */
+  X402_NETWORK: z.enum(['eip155:8453', 'eip155:84532']).default('eip155:84532'),
+  /**
+   * Wallet address that signs x402 payments (receives USDC and signs refunds)
+   */
+  X402_SIGNER_ADDRESS: z.string().optional(),
+  /**
+   * x402 facilitator URL
+   * - Testnet: https://x402.org/facilitator
+   * - Production (CDP): https://api.cdp.coinbase.com/platform/v2/x402
+   */
+  X402_FACILITATOR_URL: z
+    .string()
+    .url()
+    .default('https://x402.org/facilitator'),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

@@ -81,6 +81,10 @@ const localConfig: ConfigInput = {
   CENTRALNIC_BALANCE_ENDPOINT:
     process.env.CENTRALNIC_BALANCE_ENDPOINT ||
     'https://registrar-console.ote.centralnicregistry.com/json/balance',
+  X402_ENABLED: 'true',
+  X402_NETWORK: 'eip155:84532',
+  X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
+  X402_FACILITATOR_URL: 'https://x402.org/facilitator',
 };
 
 export default localConfig;
