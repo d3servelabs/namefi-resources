@@ -582,6 +582,13 @@
       "when": 1771974450681,
       "tag": "0082_managed_indexer_data_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 83,
+      "version": "7",
+      "when": 1772733596479,
+      "tag": "0083_graceful_silverclaw",
+      "breakpoints": true
     }
   ]
 }

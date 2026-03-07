@@ -72,12 +72,13 @@ export async function multiChargeWorkflow(
     throw new Error('Some payments are duplicated');
   }
 
-  // Default priority: Stripe first for better UX, then NFSC chains
+  // Default priority: Stripe first for better UX, then NFSC chains, then X402
   const defaultPriority: PaymentPriority = [
     'STRIPE',
     'NFSC_ETHEREUM_SEPOLIA',
     'NFSC_BASE',
     'NFSC_ETHEREUM',
+    'X402',
   ] as PaymentPriority;
   const priorityOrder = chargePriority || defaultPriority;
 

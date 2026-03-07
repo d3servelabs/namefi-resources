@@ -43,12 +43,13 @@ export async function multiRefundWorkflow({
   amountToRefundInUsdCents,
   refundPriority,
 }: MultiRefundWorkflowInput): Promise<MultiRefundWorkflowOutput> {
-  // Default priority: Stripe first, then NFSC chains
+  // Default priority: Stripe first, then NFSC chains, then X402
   const defaultPriority: PaymentPriority = [
     'STRIPE',
     'NFSC_ETHEREUM_SEPOLIA',
     'NFSC_BASE',
     'NFSC_ETHEREUM',
+    'X402',
   ] as PaymentPriority;
   const priorityOrder = refundPriority || defaultPriority;
 

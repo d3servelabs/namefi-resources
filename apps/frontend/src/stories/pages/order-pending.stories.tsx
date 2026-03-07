@@ -333,6 +333,7 @@ function createMockPayment(
     paymentProviderReferenceId: 'pi_1234567890',
     nfscPaymentDetails: null,
     stripePaymentDetails: null,
+    x402PaymentDetails: null,
     createdAt: new Date('2026-01-15T10:30:00Z'),
     updatedAt: new Date('2026-01-15T10:35:00Z'),
     startedAt: new Date('2026-01-28T10:30:00Z'),

@@ -19,6 +19,7 @@ const paymentProviderSchema = z.enum([
   'NFSC_ETHEREUM',
   'NFSC_ETHEREUM_SEPOLIA',
   'STRIPE',
+  'X402',
 ]);
 type PaymentProvider = z.infer<typeof paymentProviderSchema>;
 

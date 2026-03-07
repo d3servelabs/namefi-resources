@@ -7,6 +7,7 @@ import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
+import { switchCase } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure, defineQuery } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
@@ -1037,6 +1038,7 @@ const PAYMENT_PROVIDER_PRIORITY = [
   'NFSC_ETHEREUM_SEPOLIA',
   'NFSC_BASE',
   'NFSC_ETHEREUM',
+  'X402',
 ] as const;
 
 /**
@@ -1080,10 +1082,16 @@ function _selectPaymentForNotification(
 
   const paymentMethodCharged =
     chosenPayment.paymentProvider as (typeof PAYMENT_PROVIDER_PRIORITY)[number];
+
   const paymentMethodIdentifier =
-    paymentMethodCharged === 'STRIPE'
-      ? chosenPayment.stripePaymentDetails?.paymentMethodId
-      : chosenPayment.nfscPaymentDetails?.walletAddress;
+    switchCase(paymentMethodCharged, {
+      STRIPE: chosenPayment.stripePaymentDetails?.paymentMethodId,
+      X402: chosenPayment?.x402PaymentDetails?.buyerWalletAddress,
+
+      NFSC_ETHEREUM_SEPOLIA: chosenPayment.nfscPaymentDetails?.walletAddress,
+      NFSC_BASE: chosenPayment.nfscPaymentDetails?.walletAddress,
+      NFSC_ETHEREUM: chosenPayment.nfscPaymentDetails?.walletAddress,
+    }) ?? '';
 
   return { paymentMethodCharged, paymentMethodIdentifier };
 }

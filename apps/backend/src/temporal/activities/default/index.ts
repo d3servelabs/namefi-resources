@@ -3,6 +3,7 @@ import * as CampaignCandidateCollectionActivities from './campaign-candidate-col
 import * as CampaignAutoGrantClaimsActivities from './campaign-grant-claims.activities';
 import * as EmailCampaignActivities from './email-campaigns.activities';
 import { config, secrets } from '#lib/env';
+import * as X402Activities from '../x402.activities';
 import { logger } from '#lib/logger';
 import { db } from '@namefi-astra/db';
 import { updateNamefiNftIndex } from '../mint/namefi-nft';
@@ -18,6 +19,7 @@ export const defaultTaskQueueActivities = {
   ...CampaignCandidateCollectionActivities,
   ...CampaignAutoGrantClaimsActivities,
   ...EmailCampaignActivities,
+  ...X402Activities,
   getNamefiUsers: async () => {
     const users = await db.query.usersTable.findMany();
     return users;

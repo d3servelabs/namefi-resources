@@ -8,6 +8,7 @@ import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { mintNfsc } from './mint.workflow';
 import { refundStripeWorkflow } from './refund-stripe.workflow';
+import { transferUsdcX402Workflow } from './x402/transfer-usdc-x402.workflow';
 
 export type RefundUserWorkflowInput = {
   paymentId: string;
@@ -61,9 +62,10 @@ export async function refundUserWorkflow({
   });
 
   // MARK: Process refund depending on payment provider
-  const { nfscPaymentDetails, paymentProvider } = await getPaymentDetails({
-    paymentId,
-  });
+  const { nfscPaymentDetails, paymentProvider, x402PaymentDetails } =
+    await getPaymentDetails({
+      paymentId,
+    });
 
   let refundStatus: RefundStatus = status;
   if (workflow.patched('lifecycle-timestamps')) {
@@ -132,6 +134,85 @@ export async function refundUserWorkflow({
     } catch (error) {
       workflow.log.error(
         `Failed to refund Stripe. workflowId: refund-stripe-${refundId}, cause: ${JSON.stringify(error)}`,
+      );
+      refundStatus = 'FAILED';
+    }
+  } else if (paymentProvider === paymentProviderSchema.enum.X402) {
+    // MARK: X402 Refund - Transfer USDC back to buyer via workflow
+    if (!x402PaymentDetails) {
+      criticalAlertNamefi({
+        workflowInfo: workflow.workflowInfo(),
+        message: `X402 payment missing x402PaymentDetails. Payment ID: ${paymentId}`,
+        level: 'fatal',
+      });
+      throw workflow.ApplicationFailure.create({
+        message: 'X402 payment missing required details for refund',
+      });
+    }
+
+    // Parse chain ID from CAIP-2 network (e.g., "eip155:84532" -> 84532)
+    const networkMatch = x402PaymentDetails.network.match(/^eip155:(\d+)$/);
+    if (!networkMatch) {
+      throw workflow.ApplicationFailure.create({
+        message: `Invalid network format: ${x402PaymentDetails.network}`,
+      });
+    }
+    const chainId = Number.parseInt(networkMatch[1], 10);
+
+    const input = {
+      chainId,
+      toAddress: x402PaymentDetails.buyerWalletAddress as `0x${string}`,
+      amountInUsdCents: amountToRefundInUsdCents,
+    };
+
+    try {
+      paymentProviderReferenceId = await workflow.executeChild(
+        transferUsdcX402Workflow,
+        {
+          args: [input],
+          workflowId: transferUsdcX402Workflow.generateId(input),
+          taskQueue: TEMPORAL_QUEUES.MINT,
+          searchAttributes: {
+            callerType: ['system'],
+            caller: ['refund-user.workflow'],
+            userId: [x402PaymentDetails.buyerWalletAddress],
+            affectedResources: [
+              'x402',
+              'usdc',
+              `usdc:${x402PaymentDetails.buyerWalletAddress}`,
+              `usdc:${x402PaymentDetails.receiverWalletAddress}`,
+              `refund:${refundId}`,
+            ],
+          },
+          memo: {
+            description: `X402 USDC Refund for Payment with ID: ${paymentId}`,
+            refundId,
+            paymentId,
+            amountInUsdCents: amountToRefundInUsdCents,
+            chainId,
+          },
+          retry: {
+            maximumAttempts: 1,
+          },
+        },
+      );
+
+      refundStatus = 'SUCCEEDED';
+      workflow.log.info(
+        `X402 refund completed. refundId: ${refundId}, txHash: ${paymentProviderReferenceId}`,
+      );
+
+      // Store refund txHash in x402PaymentDetails on the payment record
+      await updatePayment({
+        id: paymentId,
+        x402PaymentDetails: {
+          ...x402PaymentDetails,
+          refundTxHash: paymentProviderReferenceId,
+        },
+      });
+    } catch (error) {
+      workflow.log.error(
+        `Error refunding X402 payment. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
       );
       refundStatus = 'FAILED';
     }

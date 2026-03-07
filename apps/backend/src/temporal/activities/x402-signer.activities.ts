@@ -67,7 +67,7 @@ export async function prepareTxToTransferUsdc(
 
   // USDC has 6 decimals, convert cents to atomic units
   // cents * 10_000 = atomic units (e.g., 100 cents = 1_000_000 = 1 USDC)
-  const amountInAtomicUnits = BigInt(amountInUsdCents * 10_000);
+  const amountInAtomicUnits = BigInt(Math.trunc(amountInUsdCents * 10_000));
 
   const walletClient = await getX402WalletClient(chainId);
 

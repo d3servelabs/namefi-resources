@@ -20,6 +20,7 @@ const paymentProviderSchema = z.enum([
   'NFSC_ETHEREUM',
   'NFSC_ETHEREUM_SEPOLIA',
   'STRIPE',
+  'X402',
 ]);
 type PaymentProvider = z.infer<typeof paymentProviderSchema>;
 
@@ -60,6 +61,8 @@ function formatNfscPaymentIdentifier(provider: PaymentProvider): string {
       return 'NFSC Ethereum';
     case 'NFSC_ETHEREUM_SEPOLIA':
       return 'NFSC Ethereum Sepolia';
+    case 'X402':
+      return 'x402 (USDC)';
     default:
       return 'Unknown';
   }

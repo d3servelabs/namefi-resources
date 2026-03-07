@@ -13,3 +13,4 @@ export * as LinkSharesExternalIdentifierMigrationActivities from './migration/li
 export * as TwitterLinkSharesValidationActivities from './link-shares-validation.activities';
 export * as LogoGenerationActivities from './logo-generation.activities';
 export * as PbnIssuanceReservationsActivities from './pbn-issuance-reservations.activities';
+export * as X402Activities from './x402.activities';

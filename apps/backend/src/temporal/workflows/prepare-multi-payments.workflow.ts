@@ -201,6 +201,11 @@ export async function prepareMultiPaymentsWorkflow(
             paymentMethodId: allocation.stripePaymentMethodId,
           },
         };
+      } else if (allocation.provider === paymentProviderSchema.enum.X402) {
+        // X402 is not supported for multi-payments - it's a push-based payment from external users
+        throw new workflow.ApplicationFailure(
+          'X402 payment provider is not supported for multi-payments',
+        );
       } else {
         // NFSC payment
         if (!allocation.walletAddress) {

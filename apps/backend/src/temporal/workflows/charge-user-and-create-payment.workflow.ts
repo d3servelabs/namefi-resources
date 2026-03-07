@@ -2,7 +2,7 @@ import * as workflow from '@temporalio/workflow';
 import {
   paymentProviderSchema,
   paymentStatusSchema,
-  type PaymentProvider,
+  type AutoRenewalPaymentProvider,
 } from '@namefi-astra/db/types';
 import { CHAINS, type ChecksumWalletAddress } from '@namefi-astra/utils';
 import { shortRunningOpts, TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared';
@@ -16,7 +16,7 @@ export type ChargeUserAndCreatePaymentWorkflowInput = {
 };
 
 export type ChargeUserAndCreatePaymentWorkflowOutput = {
-  paymentType: PaymentProvider;
+  paymentType: AutoRenewalPaymentProvider;
   namefiPaymentIntentId: string;
 };
 
@@ -40,54 +40,61 @@ export async function chargeUserAndCreatePaymentWorkflow({
     stripePreferredPaymentMethodId,
   } = await determineAvailablePaymentMethods(totalAmountInUsd, userId);
 
-  const chargeMethods = (
-    [
-      {
-        method: paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
-        workflow: chargeNfsc,
-        args: [
-          CHAINS.sepolia.id,
-          walletAddressToBeCharged,
-          totalAmountInUsd,
-          'Domain auto-renewal charge',
-          '0x0', // empty bytes
-        ] as Parameters<typeof chargeNfsc>,
-      },
-      {
-        method: paymentProviderSchema.enum.NFSC_BASE,
-        workflow: chargeNfsc,
-        args: [
-          CHAINS.base.id,
-          walletAddressToBeCharged,
-          totalAmountInUsd,
-          'Domain auto-renewal charge',
-          '0x0', // empty bytes
-        ] as Parameters<typeof chargeNfsc>,
-      },
-      {
-        method: paymentProviderSchema.enum.NFSC_ETHEREUM,
-        workflow: chargeNfsc,
-        args: [
-          CHAINS.mainnet.id,
-          walletAddressToBeCharged,
-          totalAmountInUsd,
-          'Domain auto-renewal charge',
-          '0x0', // empty bytes
-        ] as Parameters<typeof chargeNfsc>,
-      },
-      {
-        method: paymentProviderSchema.enum.STRIPE,
-        workflow: chargeStripeWorkflow,
-        args: [
-          {
-            userId,
-            totalAmountInUsdCents: totalAmountInUsd * 100,
-            paymentMethodId: stripePreferredPaymentMethodId,
-          },
-        ] as Parameters<typeof chargeStripeWorkflow>,
-      },
-    ] as const
-  ).filter((method) => availablePaymentMethods.includes(method.method));
+  // Define all possible charge methods - only AutoRenewalPaymentProvider types (excludes X402)
+  const allChargeMethods: {
+    method: AutoRenewalPaymentProvider;
+    workflow: (...args: any[]) => Promise<any>;
+    args: any[];
+  }[] = [
+    {
+      method: paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
+      workflow: chargeNfsc,
+      args: [
+        CHAINS.sepolia.id,
+        walletAddressToBeCharged,
+        totalAmountInUsd,
+        'Domain auto-renewal charge',
+        '0x0', // empty bytes
+      ] as Parameters<typeof chargeNfsc>,
+    },
+    {
+      method: paymentProviderSchema.enum.NFSC_BASE,
+      workflow: chargeNfsc,
+      args: [
+        CHAINS.base.id,
+        walletAddressToBeCharged,
+        totalAmountInUsd,
+        'Domain auto-renewal charge',
+        '0x0', // empty bytes
+      ] as Parameters<typeof chargeNfsc>,
+    },
+    {
+      method: paymentProviderSchema.enum.NFSC_ETHEREUM,
+      workflow: chargeNfsc,
+      args: [
+        CHAINS.mainnet.id,
+        walletAddressToBeCharged,
+        totalAmountInUsd,
+        'Domain auto-renewal charge',
+        '0x0', // empty bytes
+      ] as Parameters<typeof chargeNfsc>,
+    },
+    {
+      method: paymentProviderSchema.enum.STRIPE,
+      workflow: chargeStripeWorkflow,
+      args: [
+        {
+          userId,
+          totalAmountInUsdCents: totalAmountInUsd * 100,
+          paymentMethodId: stripePreferredPaymentMethodId,
+        },
+      ] as Parameters<typeof chargeStripeWorkflow>,
+    },
+  ];
+
+  const chargeMethods = allChargeMethods.filter((method) =>
+    availablePaymentMethods.includes(method.method),
+  );
 
   if (chargeMethods.length === 0) {
     throw workflow.ApplicationFailure.create({
@@ -139,7 +146,7 @@ async function _tryChargingMethods({
   userId,
 }: {
   chargeMethods: {
-    method: PaymentProvider;
+    method: AutoRenewalPaymentProvider;
     workflow: (...args: any[]) => Promise<any>;
     args: any[];
   }[];

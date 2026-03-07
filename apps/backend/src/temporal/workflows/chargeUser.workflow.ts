@@ -12,6 +12,7 @@ import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-act
 import { chargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
 import { catchAndAlertLocally } from '../shared/workflow-helpers';
+import type { SettleX402PaymentInput } from '../activities/x402.activities';
 
 export const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
   (provider) => provider.startsWith('NFSC_'),
@@ -37,13 +38,18 @@ export async function chargeUserWorkflow({
   userId,
   metadata,
 }: ChargeUserWorkflowInput): Promise<ChargeUserWorkflowOutput> {
-  const { getPaymentDetails, updatePayment, updatePaymentMetadata } =
-    typedProxyActivities({
-      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-      options: {
-        ...shortRunningOpts,
-      },
-    });
+  const {
+    getPaymentDetails,
+    updatePayment,
+    updatePaymentMetadata,
+    settleX402Payment,
+    verifyPresettledX402Payment,
+  } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
 
   const {
     amountInUSDCents,
@@ -51,6 +57,7 @@ export async function chargeUserWorkflow({
     paymentProvider,
     status,
     stripePaymentDetails,
+    x402PaymentDetails,
   } = await getPaymentDetails({ paymentId });
 
   let paymentStatus = status;
@@ -155,11 +162,100 @@ export async function chargeUserWorkflow({
     }
   }
 
+  // MARK: X402 Payment - Settle with facilitator (or verify pre-settlement)
+  let updatedX402PaymentDetails = x402PaymentDetails;
+  if (paymentProvider === paymentProviderSchema.enum.X402) {
+    if (!x402PaymentDetails) {
+      workflow.log.error(
+        `X402 payment missing x402PaymentDetails. paymentId: ${paymentId}`,
+      );
+      paymentStatus = paymentStatusSchema.enum.FAILED;
+    } else if (x402PaymentDetails.presettled) {
+      // MARK: Pre-settled payment - verify it was done correctly
+      workflow.log.info(
+        `X402 payment is pre-settled. paymentId: ${paymentId}, txHash: ${x402PaymentDetails.settlementTxHash}`,
+      );
+
+      if (
+        !x402PaymentDetails.settlementTxHash ||
+        !x402PaymentDetails.settledAt
+      ) {
+        workflow.log.error(
+          `Pre-settled X402 payment missing required fields. paymentId: ${paymentId}`,
+        );
+        paymentStatus = paymentStatusSchema.enum.FAILED;
+      } else {
+        try {
+          const verifyResult = await verifyPresettledX402Payment({
+            settlementTxHash: x402PaymentDetails.settlementTxHash,
+            settledAt: x402PaymentDetails.settledAt,
+            expectedAmountInUsdCents: amountInUSDCents,
+            network: x402PaymentDetails.network,
+          });
+
+          if (verifyResult.valid) {
+            paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
+            paymentProviderReferenceId = x402PaymentDetails.settlementTxHash;
+            workflow.log.info(
+              `Pre-settled X402 payment verified. paymentId: ${paymentId}, txHash: ${x402PaymentDetails.settlementTxHash}`,
+            );
+          } else {
+            workflow.log.error(
+              `Pre-settled X402 payment verification failed. paymentId: ${paymentId}, error: ${verifyResult.error}`,
+            );
+            paymentStatus = paymentStatusSchema.enum.FAILED;
+          }
+        } catch (error) {
+          workflow.log.error(
+            `Error verifying pre-settled X402 payment. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
+          );
+          paymentStatus = paymentStatusSchema.enum.FAILED;
+        }
+      }
+    } else {
+      // MARK: Standard settlement - settle with facilitator
+      try {
+        const settleInput: SettleX402PaymentInput = {
+          paymentPayload: x402PaymentDetails.paymentPayload,
+          network: x402PaymentDetails.network,
+          chargeAmountInUsdCents: amountInUSDCents,
+        };
+
+        const result = await settleX402Payment(settleInput);
+
+        if (result.success) {
+          paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
+          paymentProviderReferenceId = result.txHash;
+          // Store settlement txHash in x402PaymentDetails
+          updatedX402PaymentDetails = {
+            ...x402PaymentDetails,
+            settlementTxHash: result.txHash,
+            settledAt: new Date().toISOString(),
+          };
+          workflow.log.info(
+            `X402 payment settled successfully. paymentId: ${paymentId}, txHash: ${result.txHash}`,
+          );
+        } else {
+          workflow.log.error(
+            `X402 settlement failed. paymentId: ${paymentId}, error: ${result.error}`,
+          );
+          paymentStatus = paymentStatusSchema.enum.FAILED;
+        }
+      } catch (error) {
+        workflow.log.error(
+          `Error while settling X402 payment. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
+        );
+        paymentStatus = paymentStatusSchema.enum.FAILED;
+      }
+    }
+  }
+
   // MARK: Update Payment
   const updatedPayment = await updatePayment({
     id: paymentId,
     status: paymentStatus,
     paymentProviderReferenceId,
+    x402PaymentDetails: updatedX402PaymentDetails,
   });
 
   return { paymentStatus: updatedPayment.status };

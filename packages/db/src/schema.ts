@@ -29,6 +29,7 @@ import {
 import type { Json } from 'drizzle-zod';
 import type { Permission } from '@namefi-astra/utils';
 import { z } from 'zod';
+import type { PaymentPayload } from './x402/types';
 
 /**
  * Common table columns for timestamp tracking
@@ -120,6 +121,7 @@ export const paymentProviderEnum = pgEnum('payment_provider', [
   'NFSC_ETHEREUM',
   'NFSC_ETHEREUM_SEPOLIA',
   'STRIPE',
+  'X402',
 ] as const);
 
 export const emailCampaignSendStatusEnum = pgEnum(
@@ -424,6 +426,21 @@ export const paymentsTable = pgTable(
       paymentMethodId?: string;
     }>(),
     metadata: jsonb('metadata').$type<PaymentMetadata>(),
+    x402PaymentDetails: jsonb('x402_payment_details').$type<{
+      buyerWalletAddress: string;
+      /** The wallet address that received the x402 payment (USDC) */
+      receiverWalletAddress: string;
+      network: string; // CAIP-2 format: eip155:84532
+      paymentPayload: PaymentPayload;
+      /** Whether the payment was pre-settled before the workflow started */
+      presettled?: boolean;
+      /** Transaction hash from the x402 facilitator settlement */
+      settlementTxHash?: string;
+      /** ISO timestamp when the settlement was completed */
+      settledAt?: string;
+      /** Transaction hash from USDC refund transfer (if refunded) */
+      refundTxHash?: string;
+    }>(),
     ...timestamps,
     ...lifecycleTimestamps,
   },

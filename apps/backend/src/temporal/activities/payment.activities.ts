@@ -31,6 +31,7 @@ import {
   buildPaymentStatusLifecycleTransition,
   buildRefundStatusLifecycleTransition,
   type PaymentProvider,
+  type AutoRenewalPaymentProvider,
 } from '@namefi-astra/db/types';
 import {
   CHAINS,
@@ -104,20 +105,32 @@ export async function createPayment(
         throw new NegativeAmountInUsdCentsError({ amountInUsdCents });
       }
 
-      const newPaymentInsertValues = Object.assign(
-        {
-          amountInUSDCents: amountInUsdCents,
-          paymentProvider: paymentProviderDetails.paymentProvider,
-        },
-        paymentProviderDetails.paymentProvider === 'STRIPE'
-          ? {
-              stripePaymentDetails: paymentProviderDetails.stripePaymentDetails,
-            }
-          : {
-              nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
-            },
-        { status: paymentStatusSchema.enum.CREATED },
-      );
+      const baseValues = {
+        amountInUSDCents: amountInUsdCents,
+        paymentProvider: paymentProviderDetails.paymentProvider,
+        status: paymentStatusSchema.enum.CREATED,
+      };
+
+      let providerSpecificDetails = {};
+      if (paymentProviderDetails.paymentProvider === 'STRIPE') {
+        providerSpecificDetails = {
+          stripePaymentDetails: paymentProviderDetails.stripePaymentDetails,
+        };
+      } else if (paymentProviderDetails.paymentProvider === 'X402') {
+        providerSpecificDetails = {
+          x402PaymentDetails: paymentProviderDetails.x402PaymentDetails,
+        };
+      } else {
+        // NFSC providers
+        providerSpecificDetails = {
+          nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
+        };
+      }
+
+      const newPaymentInsertValues = {
+        ...baseValues,
+        ...providerSpecificDetails,
+      };
 
       const [newPayment] = await tx
         .insert(paymentsTable)
@@ -206,6 +219,7 @@ export async function getMultiplePaymentsDetails(input: {
       paymentProviderReferenceId: true,
       nfscPaymentDetails: true,
       stripePaymentDetails: true,
+      x402PaymentDetails: true,
     },
     where: inArray(paymentsTable.id, paymentIds),
   });
@@ -332,7 +346,10 @@ export async function getStripeRefundStatus({
 
 export type UpdatePaymentInput = Pick<
   PaymentUpdate,
-  'status' | 'paymentProviderReferenceId' | 'amountInUSDCents'
+  | 'status'
+  | 'paymentProviderReferenceId'
+  | 'amountInUSDCents'
+  | 'x402PaymentDetails'
 > &
   Required<Pick<PaymentUpdate, 'id'>>;
 
@@ -347,6 +364,7 @@ export async function updatePayment({
   status,
   paymentProviderReferenceId,
   amountInUSDCents,
+  x402PaymentDetails,
 }: UpdatePaymentInput) {
   const lifecycleTimestamps = status
     ? buildPaymentStatusLifecycleTransition(status)
@@ -358,12 +376,14 @@ export async function updatePayment({
       status,
       paymentProviderReferenceId,
       amountInUSDCents,
+      x402PaymentDetails,
       ...lifecycleTimestamps,
     })
     .where(eq(paymentsTable.id, id))
     .returning({
       status: paymentsTable.status,
       paymentProviderReferenceId: paymentsTable.paymentProviderReferenceId,
+      x402PaymentDetails: paymentsTable.x402PaymentDetails,
     });
 
   if (isNil(updatedPayment)) {
@@ -593,7 +613,7 @@ export async function determineAvailablePaymentMethods(
   amountInUsd: number,
   userId: string,
 ): Promise<{
-  availablePaymentMethods: PaymentProvider[];
+  availablePaymentMethods: AutoRenewalPaymentProvider[];
   walletAddressToBeCharged: ChecksumWalletAddress;
   stripePreferredPaymentMethodId?: string;
 }> {

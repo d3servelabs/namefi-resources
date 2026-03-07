@@ -599,6 +599,21 @@ export const nfscPaymentProviderSchema = z.enum([
 ]);
 export type NfscPaymentProvider = z.infer<typeof nfscPaymentProviderSchema>;
 
+/**
+ * Payment providers that can be used for auto-renewal (excludes X402)
+ * X402 is excluded because it's a push-based payment from external users,
+ * not a pull-based payment from registered user accounts
+ */
+export const autoRenewalPaymentProviderSchema = z.enum([
+  paymentProviderSchema.enum.NFSC_BASE,
+  paymentProviderSchema.enum.NFSC_ETHEREUM,
+  paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
+  paymentProviderSchema.enum.STRIPE,
+]);
+export type AutoRenewalPaymentProvider = z.infer<
+  typeof autoRenewalPaymentProviderSchema
+>;
+
 export const stripePaymentProviderDetailsSchema = z.object({
   paymentProvider: z.literal(paymentProviderSchema.enum.STRIPE),
   stripePaymentDetails: stripePaymentDetailsSchema,
@@ -631,9 +646,72 @@ export type NfscPaymentProviderDetails = Omit<
   nfscPaymentDetails: NfscPaymentDetails;
 };
 
+// x402 Payment Details Schema
+export const x402PaymentDetailsSchema = z.object({
+  buyerWalletAddress: z.string(),
+  /**
+   * The wallet address that received the x402 payment (USDC)
+   * This is tracked to support multiple/different signers
+   */
+  receiverWalletAddress: z.string(),
+  network: z.string(), // CAIP-2 format: eip155:84532
+  paymentPayload: z.object({
+    x402Version: z.number(),
+    resource: z.object({
+      url: z.string(),
+      description: z.string(),
+      mimeType: z.string(),
+    }),
+    accepted: z.object({
+      scheme: z.string(),
+      network: z.string(),
+      asset: z.string(),
+      amount: z.string(),
+      payTo: z.string(),
+      maxTimeoutSeconds: z.number(),
+      extra: z.record(z.string(), z.unknown()),
+    }),
+    payload: z.record(z.string(), z.unknown()),
+    extensions: z.record(z.string(), z.unknown()).optional(),
+  }),
+  /**
+   * Whether the payment was pre-settled before the workflow started.
+   * When true, the workflow will verify the settlement instead of initiating it.
+   */
+  presettled: z.boolean().optional(),
+  /**
+   * Transaction hash from the x402 facilitator settlement
+   * Populated after successful payment settlement (or pre-settlement)
+   */
+  settlementTxHash: z.string().optional(),
+  /**
+   * ISO timestamp when the settlement was completed
+   * Used to verify pre-settled payments are recent
+   */
+  settledAt: z.string().optional(),
+  /**
+   * Transaction hash from USDC refund transfer (if refunded)
+   */
+  refundTxHash: z.string().optional(),
+});
+export type X402PaymentDetails = z.infer<typeof x402PaymentDetailsSchema>;
+
+export const x402PaymentProviderDetailsSchema = z.object({
+  paymentProvider: z.literal(paymentProviderSchema.enum.X402),
+  x402PaymentDetails: x402PaymentDetailsSchema,
+});
+
+export type X402PaymentProviderDetails = z.infer<
+  typeof x402PaymentProviderDetailsSchema
+>;
+
 export const paymentProviderDetailsSchema = z.discriminatedUnion(
   'paymentProvider',
-  [stripePaymentProviderDetailsSchema, nfscPaymentProviderDetailsSchema],
+  [
+    stripePaymentProviderDetailsSchema,
+    nfscPaymentProviderDetailsSchema,
+    x402PaymentProviderDetailsSchema,
+  ],
 );
 
 export type PaymentProviderDetails = z.infer<
@@ -676,6 +754,17 @@ export function isNfscPayment(
     | unknown,
 ): details is NfscPaymentProviderDetails {
   return nfscPaymentProviderDetailsSchema.safeParse(details).success;
+}
+
+/**
+ * Type guard function to check if payment details are X402 payment details
+ * @param details The payment provider details to check
+ * @returns Narrowed type with X402 payment details if applicable
+ */
+export function isX402Payment(
+  details: unknown,
+): details is X402PaymentProviderDetails {
+  return x402PaymentProviderDetailsSchema.safeParse(details).success;
 }
 
 export const orderItemStatusSchema = z.enum(orderStatusEnum.enumValues);

@@ -475,7 +475,7 @@ export async function sendStyledEmailNotification({
   }
 }
 
-function displayNameForPaymentMethod(paymentMethod: PaymentProvider) {
+function displayNameForPaymentMethod(paymentMethod: PaymentProvider): string {
   switch (paymentMethod) {
     case 'NFSC_BASE':
       return '$NFSC (Base)';
@@ -485,6 +485,8 @@ function displayNameForPaymentMethod(paymentMethod: PaymentProvider) {
       return '$NFSC (Ethereum Sepolia)';
     case 'STRIPE':
       return 'Credit Card';
+    case 'X402':
+      return 'x402 (USDC)';
   }
 }
 function abbreviateEvmAddress(address: string) {
