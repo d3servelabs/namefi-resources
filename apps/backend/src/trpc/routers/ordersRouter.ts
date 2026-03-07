@@ -7,6 +7,7 @@ import {
   cartItemsTable,
   db,
   isNfscPayment,
+  isX402Payment,
   orderItemsTable,
   ordersTable,
   paymentsTable,
@@ -74,10 +75,20 @@ type PaymentMethodDetailsOffChain = {
   brand?: string;
   last4?: string;
 };
+type PaymentMethodDetailsX402 = {
+  paymentId: string;
+  isOnChainPayment: true;
+  isX402Payment: true;
+  network: string;
+  buyerWalletAddress: string;
+  receiverWalletAddress?: string;
+  settlementTxHash?: string | null;
+};
 
 type PaymentMethodDetails =
   | PaymentMethodDetailsOnChain
-  | PaymentMethodDetailsOffChain;
+  | PaymentMethodDetailsOffChain
+  | PaymentMethodDetailsX402;
 
 type OrderProgressSnapshot = {
   workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
@@ -1116,6 +1127,19 @@ export const ordersRouter = createTRPCRouter({
       const res = await pMap(
         payments,
         async (payment): Promise<PaymentMethodDetails> => {
+          if (isX402Payment(payment)) {
+            return {
+              paymentId: payment.id,
+              isOnChainPayment: true,
+              isX402Payment: true,
+              network: payment.x402PaymentDetails.network,
+              buyerWalletAddress: payment.x402PaymentDetails.buyerWalletAddress,
+              receiverWalletAddress:
+                payment.x402PaymentDetails.receiverWalletAddress,
+              settlementTxHash: payment.x402PaymentDetails.settlementTxHash,
+            };
+          }
+
           if (isNfscPayment(payment)) {
             return {
               paymentId: payment.id,
@@ -1191,6 +1215,19 @@ export const ordersRouter = createTRPCRouter({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this payment',
         });
+      }
+
+      if (isX402Payment(payment)) {
+        return {
+          paymentId: payment.id,
+          isOnChainPayment: true,
+          isX402Payment: true,
+          network: payment.x402PaymentDetails.network,
+          buyerWalletAddress: payment.x402PaymentDetails.buyerWalletAddress,
+          receiverWalletAddress:
+            payment.x402PaymentDetails.receiverWalletAddress,
+          settlementTxHash: payment.x402PaymentDetails.settlementTxHash,
+        };
       }
 
       if (isNfscPayment(payment)) {

@@ -24,6 +24,7 @@ import { newsletterRouter } from './newsletterRouter';
 import { feedbackRouter } from './feedbackRouter';
 import { testSignedPayloadRouter } from './testSignedPayloadRouter';
 import { dnsCacheRouter } from './dnsCacheRouter';
+import { x402Router } from './x402Router';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -60,6 +61,7 @@ export const appRouter = createTRPCRouter({
     return result;
   }),
   testSignedPayload: testSignedPayloadRouter,
+  x402: x402Router,
 });
 
 export type AppRouter = typeof appRouter;

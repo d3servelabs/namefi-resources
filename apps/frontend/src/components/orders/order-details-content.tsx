@@ -857,9 +857,16 @@ function PaymentSummaryCard({
       enabled: !!payment.id && isAuthenticated,
     });
 
+  const isX402Payment = payment.paymentProvider === 'X402';
   const rightLabel = useMemo(() => {
     if (isLoading) return '…';
     if (!method) return '-';
+    // Handle x402 payments
+    if ('isX402Payment' in method && method.isX402Payment) {
+      return method.buyerWalletAddress
+        ? getShortAddress(method.buyerWalletAddress)
+        : '-';
+    }
     if (method.isOnChainPayment) {
       return 'walletAddress' in method && method.walletAddress
         ? getShortAddress(method.walletAddress)
@@ -869,6 +876,40 @@ function PaymentSummaryCard({
       ? `•••• ${method.last4}`
       : 'Credit Card';
   }, [isLoading, method]);
+  const paymentMethodDisplay = useMemo(() => {
+    if (payment.paymentProvider === 'STRIPE') {
+      return <>Credit Card</>;
+    }
+    if (isX402Payment && payment.x402PaymentDetails) {
+      const networkName = getNetworkName(payment.x402PaymentDetails.network);
+      return (
+        <>
+          <span className="text-xs px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">
+            {networkName}
+          </span>
+          x402 (USDC)
+        </>
+      );
+    }
+    // NFSC payment
+    return (
+      <>
+        {!!payment.nfscPaymentDetails?.chainId && (
+          <NetworkLogo
+            className="size-4"
+            network={payment.nfscPaymentDetails.chainId}
+          />
+        )}
+        NFSC
+      </>
+    );
+  }, [payment, isX402Payment]);
+  const walletLabel = useMemo(() => {
+    if (payment.paymentProvider === 'STRIPE') {
+      return 'Card';
+    }
+    return 'Wallet';
+  }, [payment.paymentProvider]);
 
   return (
     <button
@@ -886,19 +927,7 @@ function PaymentSummaryCard({
         <div className="flex items-center justify-between gap-3">
           <span className="text-muted-foreground">Method</span>
           <span className="font-medium flex items-center gap-2">
-            {payment.paymentProvider === 'STRIPE' ? (
-              <>Credit Card</>
-            ) : (
-              <>
-                {!!payment.nfscPaymentDetails?.chainId && (
-                  <NetworkLogo
-                    className="size-4"
-                    network={payment.nfscPaymentDetails.chainId}
-                  />
-                )}
-                NFSC
-              </>
-            )}
+            {paymentMethodDisplay}
           </span>
         </div>
         <div className="flex items-center justify-between">
@@ -908,9 +937,7 @@ function PaymentSummaryCard({
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">
-            {method?.isOnChainPayment ? 'Wallet' : 'Card'}
-          </span>
+          <span className="text-muted-foreground">{walletLabel}</span>
           <span className="font-mono text-xs">{rightLabel}</span>
         </div>
       </div>
@@ -999,11 +1026,94 @@ function PaymentDetailsModal({
             />
             <InfoRow
               label="Type"
-              value={payment.isOnChainPayment ? 'On-chain' : 'Card'}
+              value={
+                'isX402Payment' in payment && payment.isX402Payment
+                  ? 'x402 (USDC)'
+                  : payment.isOnChainPayment
+                    ? 'On-chain (NFSC)'
+                    : 'Card'
+              }
               field="modalPaymentType"
               onCopy={(t) => navigator.clipboard.writeText(t)}
             />
-            {payment.isOnChainPayment ? (
+            {'isX402Payment' in payment && payment.isX402Payment ? (
+              <>
+                <InfoRow
+                  label="Buyer Wallet"
+                  value={payment.buyerWalletAddress}
+                  field="buyerWalletAddress"
+                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                />
+                {payment.receiverWalletAddress && (
+                  <InfoRow
+                    label="Receiver Wallet"
+                    value={payment.receiverWalletAddress}
+                    field="receiverWalletAddress"
+                    onCopy={(t) => navigator.clipboard.writeText(t)}
+                  />
+                )}
+                <div className="flex items-center justify-between gap-3 py-1">
+                  <span className="text-sm text-muted-foreground">Network</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm break-all">
+                      {getNetworkName(payment.network)}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      onClick={() =>
+                        navigator.clipboard.writeText(payment.network)
+                      }
+                    >
+                      <ClipboardCopy size={14} />
+                    </Button>
+                  </div>
+                </div>
+                {payment.settlementTxHash && (
+                  <div className="flex items-center justify-between gap-3 py-1">
+                    <span className="text-sm text-muted-foreground">
+                      Settlement Tx
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm break-all font-mono">
+                        {getShortId(payment.settlementTxHash, 20, 20)}
+                      </span>
+                      {(() => {
+                        const explorerUrl = getBlockExplorerUrl(
+                          payment.network,
+                          payment.settlementTxHash,
+                        );
+                        return explorerUrl ? (
+                          <a
+                            href={explorerUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline"
+                          >
+                            <ExternalLink size={14} />
+                          </a>
+                        ) : null;
+                      })()}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={() =>
+                          navigator.clipboard.writeText(
+                            payment.settlementTxHash ?? '',
+                          )
+                        }
+                      >
+                        <ClipboardCopy size={14} />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : payment.isOnChainPayment &&
+              'walletAddress' in payment &&
+              'chainId' in payment ? (
               <>
                 <InfoRow
                   label="Wallet"
@@ -1036,18 +1146,20 @@ function PaymentDetailsModal({
                     </Button>
                   </div>
                 </div>
-                <InfoRow
-                  label="Tx Hash"
-                  value={
-                    payment.txHash ? getShortId(payment.txHash, 20, 20) : '-'
-                  }
-                  field="txHash"
-                  onCopy={() =>
-                    navigator.clipboard.writeText(payment.txHash ?? '')
-                  }
-                />
+                {'txHash' in payment && (
+                  <InfoRow
+                    label="Tx Hash"
+                    value={
+                      payment.txHash ? getShortId(payment.txHash, 20, 20) : '-'
+                    }
+                    field="txHash"
+                    onCopy={() =>
+                      navigator.clipboard.writeText(payment.txHash ?? '')
+                    }
+                  />
+                )}
               </>
-            ) : (
+            ) : 'brand' in payment ? (
               <>
                 <InfoRow
                   label="Brand"
@@ -1062,7 +1174,7 @@ function PaymentDetailsModal({
                   onCopy={(t) => navigator.clipboard.writeText(t)}
                 />
               </>
-            )}
+            ) : null}
 
             {/* Refunds section */}
             <div className="my-2">
@@ -1484,4 +1596,30 @@ function getFailureDetailsText(
   return isAuthCodeRequired
     ? 'Auth code update required and you canceled the request.'
     : 'Domain was locked and you canceled the request.';
+}
+
+/**
+ * Get block explorer URL for a given network and transaction hash
+ */
+function getBlockExplorerUrl(network: string, txHash: string): string | null {
+  if (network === 'eip155:8453') {
+    return `https://basescan.org/tx/${txHash}`;
+  }
+  if (network === 'eip155:84532') {
+    return `https://sepolia.basescan.org/tx/${txHash}`;
+  }
+  return null;
+}
+
+/**
+ * Get network display name from CAIP-2 format
+ */
+function getNetworkName(network: string): string {
+  if (network === 'eip155:8453') {
+    return 'Base';
+  }
+  if (network === 'eip155:84532') {
+    return 'Base Sepolia';
+  }
+  return network;
 }

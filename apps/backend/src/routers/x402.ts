@@ -460,10 +460,29 @@ async function handlePaidRequest(
 /**
  * GET /x402/purchase/:id
  *
- * Check status of an x402 purchase
+ * Check status of an x402 purchase.
+ * If the client accepts text/html and doesn't have ?content-type=json,
+ * redirects to the frontend progress page.
  */
 x402Router.get('/purchase/:id', async (c) => {
   const purchaseId = c.req.param('id');
+
+  // Check if client wants JSON explicitly via query param
+  const contentTypeQuery = c.req.query('content-type');
+  const wantsJson = contentTypeQuery === 'json';
+
+  // Check Accept header for text/html preference
+  const acceptHeader = c.req.header('Accept') ?? '';
+  const acceptsHtml =
+    acceptHeader.includes('text/html') ||
+    acceptHeader.includes('application/xhtml+xml');
+
+  // Redirect to frontend progress page if client accepts HTML and doesn't explicitly want JSON
+  if (acceptsHtml && !wantsJson) {
+    return c.redirect(
+      `${config.APP_URL.includes('localhost') ? 'http://' : 'https://'}${config.APP_URL}/x402/purchase/${purchaseId}`,
+    );
+  }
 
   const purchase = await db.query.x402PurchasesTable.findFirst({
     where: eq(x402PurchasesTable.id, purchaseId),

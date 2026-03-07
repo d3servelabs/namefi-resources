@@ -29,24 +29,23 @@ import {
   shortRunningOpts,
 } from '../../shared';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
+import {
+  createWorkflowProgress,
+  type WorkflowProgressState,
+} from '../../shared/workflow-helpers/workflow-progress';
 import { processOrderWorkflow } from '../processOrder.workflow';
 import type {
   X402PurchaseSelect,
   X402PurchaseStatus,
 } from '@namefi-astra/db/types';
 
-// Workflow status enum
-export type X402PurchaseWorkflowStatus =
-  | 'PENDING_SETTLEMENT'
-  | 'WAITING_FOR_SETTLEMENT'
-  | 'SETTLED'
-  | 'CREATING_USER'
-  | 'CREATING_ORDER'
-  | 'PROCESSING'
-  | 'COMPLETED'
-  | 'FAILED'
-  | 'REFUNDING'
-  | 'REFUNDED';
+// Step IDs for progress tracking
+export type X402PurchaseStepId =
+  | 'waiting-settlement'
+  | 'creating-user'
+  | 'creating-order'
+  | 'processing-order'
+  | 'completing';
 
 // Signal to notify workflow that payment has been settled
 export interface SettlementSignalInput {
@@ -72,31 +71,10 @@ export interface X402PurchaseWorkflowInput {
   paymentPayload: X402PurchaseSelect['paymentPayload'];
 }
 
-export interface X402PurchaseWorkflowState {
-  purchaseId: string;
-  status: X402PurchaseWorkflowStatus;
-  domain: NamefiNormalizedDomain;
-  buyerWallet: ChecksumWalletAddress;
-  amountInUsdCents: number;
-  userId?: string;
-  orderId?: string;
-  orderItemId?: string;
-  /** Transaction hash from the pre-settlement */
-  settlementTxHash?: string;
-  /** ISO timestamp when settlement was completed */
-  settledAt?: string;
-  error?: string;
-  timestamps: {
-    startedAt: number;
-    lastUpdatedAt: number;
-    completedAt?: number;
-  };
-}
-
-// Query to get workflow state
-export const getX402PurchaseStateQuery = defineQuery<X402PurchaseWorkflowState>(
-  'getX402PurchaseState',
-);
+// Query to get workflow progress state
+export const getX402PurchaseProgressQuery = defineQuery<
+  WorkflowProgressState<X402PurchaseStepId>
+>('getX402PurchaseProgress');
 
 // Activity proxies
 const {
@@ -125,62 +103,49 @@ const SETTLEMENT_POLL_INTERVAL_MS = 5 * 1000;
  */
 export async function processX402PurchaseWorkflow(
   input: X402PurchaseWorkflowInput,
-): Promise<X402PurchaseWorkflowState> {
-  const temporalNow = (): number => {
-    const info = workflow.workflowInfo();
-    return info.unsafe?.now ? info.unsafe.now() : Date.now();
-  };
+): Promise<WorkflowProgressState<X402PurchaseStepId>> {
+  // Initialize progress tracking
+  const progress = createWorkflowProgress<X402PurchaseStepId>(
+    [
+      'waiting-settlement',
+      'creating-user',
+      'creating-order',
+      'processing-order',
+      'completing',
+    ],
+    { workflowType: 'x402Purchase' },
+  );
 
-  const startedAt = temporalNow();
-  const state: X402PurchaseWorkflowState = {
-    purchaseId: input.purchaseId,
-    status: 'PENDING_SETTLEMENT',
-    domain: input.normalizedDomainName,
-    buyerWallet: input.buyerWalletAddress,
-    amountInUsdCents: input.amountInUsdCents,
-    timestamps: {
-      startedAt,
-      lastUpdatedAt: startedAt,
-    },
-  };
+  // Expose progress state via query
+  workflow.setHandler(getX402PurchaseProgressQuery, () => progress.state);
 
-  const touch = () => {
-    state.timestamps.lastUpdatedAt = temporalNow();
-  };
+  // Local state for settlement and order info (separate from progress tracking)
+  let settlementTxHash: string | undefined;
+  let settledAt: string | undefined;
+  let orderId: string | undefined;
+  let userId: string | undefined;
 
-  const setStatus = async (
-    status: X402PurchaseWorkflowStatus,
-    purchaseStatus: X402PurchaseStatus | null,
-    error?: string,
+  // Helper to update DB status
+  const updateDbStatus = async (
+    status: X402PurchaseStatus,
+    errorMessage?: string,
   ) => {
-    state.status = status;
-    if (error) {
-      state.error = error;
-    }
-    touch();
-
-    if (purchaseStatus) {
-      // Update database
-      try {
-        await updateX402PurchaseStatus({
-          purchaseId: input.purchaseId,
-          status: purchaseStatus,
-          errorMessage: error ?? '',
-          settlementTxHash: state.settlementTxHash,
-          orderId: state.orderId,
-          userId: state.userId,
-          workflowId: workflow.workflowInfo().workflowId,
-        });
-      } catch (e) {
-        workflow.log.error('Failed to update x402 purchase status in DB', {
-          error: e,
-        });
-      }
+    try {
+      await updateX402PurchaseStatus({
+        purchaseId: input.purchaseId,
+        status,
+        errorMessage: errorMessage ?? '',
+        settlementTxHash,
+        orderId,
+        userId,
+        workflowId: workflow.workflowInfo().workflowId,
+      });
+    } catch (e) {
+      workflow.log.error('Failed to update x402 purchase status in DB', {
+        error: e,
+      });
     }
   };
-
-  // Set up query handler
-  workflow.setHandler(getX402PurchaseStateQuery, () => state);
 
   // Set up signal handler for settlement notification
   workflow.setHandler(
@@ -190,9 +155,8 @@ export async function processX402PurchaseWorkflow(
         settlementTxHash: signalInput.settlementTxHash,
         settledAt: signalInput.settledAt,
       });
-      state.settlementTxHash = signalInput.settlementTxHash;
-      state.settledAt = signalInput.settledAt;
-      touch();
+      settlementTxHash = signalInput.settlementTxHash;
+      settledAt = signalInput.settledAt;
     },
   );
 
@@ -204,7 +168,8 @@ export async function processX402PurchaseWorkflow(
 
   try {
     // Step 1: Wait for payment settlement (signal or poll)
-    await setStatus('WAITING_FOR_SETTLEMENT', 'PENDING_SETTLEMENT');
+    progress.startStep('waiting-settlement');
+    await updateDbStatus('PENDING_SETTLEMENT');
     workflow.log.info('Waiting for payment settlement');
 
     if (!input.amountInUsdCents || !input.paymentPayload) {
@@ -213,7 +178,7 @@ export async function processX402PurchaseWorkflow(
 
     // Wait for settlement via signal or poll
     const settlementReceived = await condition(
-      () => !!state.settlementTxHash && !!state.settledAt,
+      () => !!settlementTxHash && !!settledAt,
       SETTLEMENT_TIMEOUT_MS,
     );
 
@@ -227,7 +192,7 @@ export async function processX402PurchaseWorkflow(
         SETTLEMENT_TIMEOUT_MS / SETTLEMENT_POLL_INTERVAL_MS,
       );
 
-      while (!state.settlementTxHash && pollAttempts < maxPollAttempts) {
+      while (!settlementTxHash && pollAttempts < maxPollAttempts) {
         const settlement = await getX402PurchaseSettlement({
           purchaseId: input.purchaseId,
         });
@@ -237,8 +202,8 @@ export async function processX402PurchaseWorkflow(
           settlement.settlementTxHash &&
           settlement.settledAt
         ) {
-          state.settlementTxHash = settlement.settlementTxHash;
-          state.settledAt = settlement.settledAt;
+          settlementTxHash = settlement.settlementTxHash;
+          settledAt = settlement.settledAt;
           workflow.log.info('Settlement found via polling', {
             settlementTxHash: settlement.settlementTxHash,
           });
@@ -251,9 +216,13 @@ export async function processX402PurchaseWorkflow(
     }
 
     // Check if we have settlement info
-    if (!state.settlementTxHash || !state.settledAt) {
-      await setStatus(
-        'FAILED',
+    if (!settlementTxHash || !settledAt) {
+      progress.failStep(
+        'waiting-settlement',
+        'Settlement timeout - payment not settled in time',
+      );
+      progress.fail('Settlement timeout - payment not settled in time');
+      await updateDbStatus(
         'FAILED',
         'Settlement timeout - payment not settled in time',
       );
@@ -263,27 +232,29 @@ export async function processX402PurchaseWorkflow(
       });
     }
 
-    await setStatus('SETTLED', 'SETTLED');
+    progress.completeStep('waiting-settlement');
+    await updateDbStatus('SETTLED');
     workflow.log.info('Payment settlement confirmed', {
-      settlementTxHash: state.settlementTxHash,
+      settlementTxHash,
     });
 
     // Step 2: Find or create user from wallet
-    await setStatus('CREATING_USER', null);
+    progress.startStep('creating-user');
     workflow.log.info('Finding or creating user from wallet');
 
     const userResult = await findOrCreateUserFromWallet({
       walletAddress: input.buyerWalletAddress,
     });
 
-    state.userId = userResult.userId;
+    userId = userResult.userId;
+    progress.completeStep('creating-user');
     workflow.log.info('User resolved', {
       userId: userResult.userId,
       isNew: userResult.isNewUser,
     });
 
     // Step 3: Create order with presettled payment
-    await setStatus('CREATING_ORDER', null);
+    progress.startStep('creating-order');
     workflow.log.info('Creating order for x402 purchase (presettled)');
 
     const orderResult = await createX402Order({
@@ -298,18 +269,27 @@ export async function processX402PurchaseWorkflow(
       paymentPayload: input.paymentPayload,
       // Pre-settlement info
       presettled: true,
-      settlementTxHash: state.settlementTxHash,
-      settledAt: state.settledAt,
+      settlementTxHash,
+      settledAt,
     });
 
-    state.orderId = orderResult.orderId;
-    state.orderItemId = orderResult.orderItemId;
+    orderId = orderResult.orderId;
+    progress.completeStep('creating-order');
     workflow.log.info('Order created', { orderId: orderResult.orderId });
 
     // Step 4: Process order via processOrderWorkflow
     // This handles: verifying pre-settlement, domain registration, and refunds if needed
-    await setStatus('PROCESSING', 'PROCESSING');
+    progress.startStep('processing-order');
+    await updateDbStatus('PROCESSING');
     workflow.log.info('Processing order via processOrderWorkflow');
+
+    // Set up nested workflow info for substep tracking
+    const childWorkflowId = `process-order-[${orderResult.orderId}]`;
+    progress.setStepNestedWorkflow('processing-order', {
+      workflowId: childWorkflowId,
+      runId: '',
+      progressQueryName: 'getOrderProgress',
+    });
 
     await workflow.executeChild(processOrderWorkflow, {
       args: [
@@ -318,31 +298,34 @@ export async function processX402PurchaseWorkflow(
           paymentsMetadata: {}, // No additional metadata needed for x402
         },
       ],
-      workflowId: `process-order-[${orderResult.orderId}]`,
+      workflowId: childWorkflowId,
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
       retry: { maximumAttempts: 1 },
     });
 
+    progress.completeStep('processing-order');
     workflow.log.info('Order processing completed');
 
-    // Mark as completed
-    await setStatus('COMPLETED', 'COMPLETED');
-    state.timestamps.completedAt = temporalNow();
+    // Step 5: Mark as completed
+    progress.startStep('completing');
+    await updateDbStatus('COMPLETED');
+    progress.completeStep('completing');
+    progress.complete();
 
     workflow.log.info('x402 purchase workflow completed successfully', {
       purchaseId: input.purchaseId,
-      orderId: state.orderId,
+      orderId,
     });
 
-    return state;
+    return progress.state;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    if (state.status !== 'FAILED') {
-      await setStatus('FAILED', 'FAILED', errorMessage);
+    // Mark workflow as failed if not already
+    if (progress.state.phase !== 'FAILED') {
+      progress.fail(errorMessage);
+      await updateDbStatus('FAILED', errorMessage);
     }
-
-    state.timestamps.completedAt = temporalNow();
 
     throw ApplicationFailure.create({
       nonRetryable: true,
@@ -351,3 +334,7 @@ export async function processX402PurchaseWorkflow(
     });
   }
 }
+
+// Static helper to generate consistent workflow IDs
+processX402PurchaseWorkflow.generateId = (input: { purchaseId: string }) =>
+  `x402-purchase-[${input.purchaseId}]`;
