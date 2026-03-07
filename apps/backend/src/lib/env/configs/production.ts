@@ -62,6 +62,10 @@ const productionConfig: ConfigInput = {
   CENTRALNIC_KEY: Registrars.CentralNic,
   EMAIL_ANALYTICS_URL: 'https://backend.astra.namefi.io/v1/email/track/open',
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 500,
+  X402_ENABLED: 'true',
+  X402_NETWORK: 'eip155:8453',
+  X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
+  X402_FACILITATOR_URL: 'https://api.cdp.coinbase.com/platform/v2/x402',
 };
 
 export default productionConfig;
