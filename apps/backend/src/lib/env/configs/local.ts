@@ -30,7 +30,14 @@ const localConfig: ConfigInput = {
     'namefi.localhost',
     'astra.localhost',
   ],
-  ALLOWED_CHAINS: [CHAINS.sepolia.id, CHAINS.robinhoodTestnet.id],
+  ALLOWED_CHAINS: {
+    NFT_ALLOWED_CHAINS: [CHAINS.sepolia.id, CHAINS.robinhoodTestnet.id],
+    DNS_SERVING_ALLOWED_NFT_CHAINS: [
+      CHAINS.sepolia.id,
+      CHAINS.robinhoodTestnet.id,
+    ],
+    NFSC_BALANCE_ALLOWED_CHAINS: [CHAINS.sepolia.id],
+  },
   DEV_NFSC_ENABLED: true,
   DEV_NFSC_SIGNUP_MINT_AMOUNT: 100,
   DEV_NFSC_FAUCET_AMOUNT: 20,
