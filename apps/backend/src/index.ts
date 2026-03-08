@@ -45,6 +45,12 @@ type HonoVariables = {
 
 const app = new Hono<{ Variables: HonoVariables }>();
 const logger = createLogger({ module: 'index', context: 'Main' });
+app.use(prettyJSON());
+
+app.route('v1/ns-json', nsJsonRouter);
+app.route('v1/dns/tracking', trackingRouter);
+app.route('v1/tls', tlsRouter);
+app.route('v1/dnssec', dnssecRouter);
 
 app.use(async (...args) => {
   const allowedHostnames: string[] = [
@@ -91,7 +97,6 @@ app.use(async (...args) => {
     credentials: true, // Allow cookies if needed
   })(...args);
 });
-app.use(prettyJSON());
 app.use(async (c, next) => {
   const requestId = c.req.header('x-request-id') ?? genRequestId();
   const connInfo = getConnInfo(c);
@@ -114,11 +119,6 @@ app.use(
     allowMethodOverride: true,
   }),
 );
-
-app.route('v1/ns-json', nsJsonRouter);
-app.route('v1/dns/tracking', trackingRouter);
-app.route('v1/tls', tlsRouter);
-app.route('v1/dnssec', dnssecRouter);
 
 app.route('v1/email', emailAnalyticsRouter);
 app.route('v1/availability', availabilityRouter);

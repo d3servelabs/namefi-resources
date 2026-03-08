@@ -41,6 +41,8 @@ import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import { sldRegistrar } from './epp-registrars';
+import superjson from 'superjson';
+import { getRedisClient } from '#lib/redis';
 
 export { sldRegistrar };
 
@@ -116,8 +118,22 @@ const HARDCODED_ADDITIONAL_ALLOWED_HOSTNAMES_MAP = new Map(
 );
 
 export const getPoweredByNamefi3PDomainsDetails = async () => {
+  const redis = await getRedisClient();
+
+  const cachedDomains = (await redis.get('poweredbyNamefiDomains')) as
+    | string[]
+    | undefined;
+
   const poweredbyNamefiDomains =
-    await db.query.poweredbyNamefiDomainsTable.findMany();
+    cachedDomains ?? (await db.query.poweredbyNamefiDomainsTable.findMany());
+  if (!cachedDomains) {
+    await redis.set(
+      'poweredbyNamefiDomains',
+      superjson.stringify(poweredbyNamefiDomains),
+      { EX: 12 * 60 * 60 /* 12 hours in seconds */ },
+    );
+  }
+
   const namesFromDb: string[] = pluck(
     'normalizedDomainName',
     poweredbyNamefiDomains,
