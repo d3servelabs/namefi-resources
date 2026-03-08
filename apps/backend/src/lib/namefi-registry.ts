@@ -120,9 +120,10 @@ const HARDCODED_ADDITIONAL_ALLOWED_HOSTNAMES_MAP = new Map(
 export const getPoweredByNamefi3PDomainsDetails = async () => {
   const redis = await getRedisClient();
 
-  const cachedDomains = (await redis.get('poweredbyNamefiDomains')) as
-    | string[]
-    | undefined;
+  const cachedDomainsString = await redis.get('poweredbyNamefiDomains');
+  const cachedDomains = cachedDomainsString
+    ? superjson.parse(cachedDomainsString)
+    : undefined;
 
   const poweredbyNamefiDomains =
     cachedDomains ?? (await db.query.poweredbyNamefiDomainsTable.findMany());
