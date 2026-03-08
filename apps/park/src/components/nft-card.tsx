@@ -29,6 +29,14 @@ const CHAIN_BADGE_BY_NAME = {
     label: 'Goerli',
     icon: '/assets/chains/ethereum-badge.svg',
   },
+  'robinhood-testnet': {
+    label: 'Robinhood Testnet',
+    icon: '/assets/chains/robinhood-badge.svg',
+  },
+  'chain-46630': {
+    label: 'Robinhood Testnet',
+    icon: '/assets/chains/robinhood-badge.svg',
+  },
 } as const satisfies Record<string, { label: string; icon: string }>;
 
 const PBN_BACKGROUND_BY_APEX = {

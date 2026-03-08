@@ -329,6 +329,9 @@ function buildChainExplorerUrl(document: DomainDocument): string | null {
         return 'https://sepolia.etherscan.io';
       case 'goerli':
         return 'https://goerli.etherscan.io';
+      case 'robinhood-testnet':
+      case 'chain-46630':
+        return 'https://explorer.testnet.chain.robinhood.com';
       default:
         return 'https://etherscan.io';
     }

@@ -15,7 +15,14 @@ const domainDocumentSchema = z
     _id: z.string().optional(),
     ldh: z.string().optional(),
     chainName: z
-      .enum(['base', 'ethereum', 'sepolia', 'goerli'])
+      .enum([
+        'base',
+        'ethereum',
+        'sepolia',
+        'goerli',
+        'robinhood-testnet',
+        'chain-46630',
+      ])
       .optional()
       .nullable(),
     namefi_gpt_version: z.string().optional().nullable(),

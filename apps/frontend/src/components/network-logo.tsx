@@ -59,7 +59,11 @@ export const NetworkLogo = ({
                 'flex items-center justify-center h-full w-full text-primary',
               )}
             >
-              <img src="/robinhood.png" width={50} height={50} alt="robinhood testnet" className="rounded-2xl" />
+              <img
+                src="/chains/robinhood-testnet.svg"
+                alt="robinhood testnet"
+                className={'w-full h-full aspect-square rounded-2xl'}
+              />
             </div>
           ) : networkId ? (
             <NetworkIcon
