@@ -45,24 +45,28 @@ type HonoVariables = {
 
 const app = new Hono<{ Variables: HonoVariables }>();
 const logger = createLogger({ module: 'index', context: 'Main' });
-app.use(prettyJSON());
-
-app.route('v1/ns-json', nsJsonRouter);
-app.route('v1/dns/tracking', trackingRouter);
-app.route('v1/tls', tlsRouter);
-app.route('v1/dnssec', dnssecRouter);
-
+const DNS_RELATED_ROUTES = [
+  /v1\/ns-json/,
+  /v1\/dns\/tracking/,
+  /v1\/tls/,
+  /v1\/dnssec/,
+];
+const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
 app.use(async (...args) => {
-  const allowedHostnames: string[] = [
-    ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
-    ...(await getPoweredByNamefi3PHostnames()),
-  ];
-
   return cors({
-    origin: (origin) => {
+    origin: async (origin) => {
       if (config.ALLOW_ALL_ORIGINS) {
         return origin;
       }
+      const req = args[0].req;
+      const path = req.path;
+      if (SKIP_CORS_ROUTES.some((re) => re.test(path))) {
+        return origin;
+      }
+      const allowedHostnames: string[] = [
+        ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
+        ...(await getPoweredByNamefi3PHostnames()),
+      ];
 
       if (origin) {
         try {
@@ -97,6 +101,7 @@ app.use(async (...args) => {
     credentials: true, // Allow cookies if needed
   })(...args);
 });
+app.use(prettyJSON());
 app.use(async (c, next) => {
   const requestId = c.req.header('x-request-id') ?? genRequestId();
   const connInfo = getConnInfo(c);
@@ -119,6 +124,11 @@ app.use(
     allowMethodOverride: true,
   }),
 );
+
+app.route('v1/ns-json', nsJsonRouter);
+app.route('v1/dns/tracking', trackingRouter);
+app.route('v1/tls', tlsRouter);
+app.route('v1/dnssec', dnssecRouter);
 
 app.route('v1/email', emailAnalyticsRouter);
 app.route('v1/availability', availabilityRouter);
