@@ -21,6 +21,7 @@ const PERSISTENCE_KEY = 'allowed-chains-config';
 const PERSISTENCE_EXPIRY = 60 * 60 * 1000;
 const NFT_DEFAULT_CHAIN_ID_ORDER = [
   CHAINS.sepolia.id,
+  CHAINS.robinhoodTestnet.id,
   CHAINS.base.id,
   CHAINS.mainnet.id,
 ] as const;
