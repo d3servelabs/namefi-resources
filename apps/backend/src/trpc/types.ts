@@ -23,7 +23,7 @@ const nftMetadataSchema2 = z.object({
     (chainId) => {
       // const { config } = await import('#lib/env');
       // const allowedChains = await import('../lib/env').then((env) => env.config.ALLOWED_CHAINS);
-      const allowedChains = [1, 11155111, 8453];
+      const allowedChains = [1, 11155111, 8453, 46630];
       return allowedChains.includes(chainId);
     },
     {
