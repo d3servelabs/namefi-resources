@@ -1,4 +1,4 @@
-import * as chains from 'viem/chains';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import type { ConfigInput } from '../schema';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
@@ -30,7 +30,7 @@ const localConfig: ConfigInput = {
     'namefi.localhost',
     'astra.localhost',
   ],
-  ALLOWED_CHAINS: [chains.sepolia.id],
+  ALLOWED_CHAINS: [CHAINS.sepolia.id, CHAINS.robinhoodTestnet.id],
   DEV_NFSC_ENABLED: true,
   DEV_NFSC_SIGNUP_MINT_AMOUNT: 100,
   DEV_NFSC_FAUCET_AMOUNT: 20,

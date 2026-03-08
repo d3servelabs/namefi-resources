@@ -7,7 +7,7 @@ import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { and, eq, ilike, notInArray, sql } from 'drizzle-orm';
 import { isNil, isNotNil } from 'ramda';
 import { http, createPublicClient } from 'viem';
-import * as chains from 'viem/chains';
+import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { secrets } from '#lib/env';
 import {
   canUserAccessAdminPanel,

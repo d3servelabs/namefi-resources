@@ -1,4 +1,4 @@
-import { sepolia } from 'viem/chains';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { parseAllowedChainsConfigValue } from '@namefi-astra/utils/allowed-chains';
 import type { ConfigInput } from '../schema';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
@@ -25,7 +25,7 @@ const previewConfig: ConfigInput = {
     : ['localhost', 'namefi.localhost', 'astra.localhost']
   ).map((hostname) => hostname.trim()),
   ALLOWED_CHAINS: parseAllowedChainsConfigValue(process.env.ALLOWED_CHAINS, [
-    sepolia.id,
+    CHAINS.sepolia.id,
   ]),
   DEV_NFSC_ENABLED: process.env.DEV_NFSC_ENABLED
     ? process.env.DEV_NFSC_ENABLED.toLowerCase() === 'true'

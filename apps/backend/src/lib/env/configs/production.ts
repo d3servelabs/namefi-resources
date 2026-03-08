@@ -1,5 +1,5 @@
 import type { ConfigInput } from '../schema';
-import { base, mainnet } from 'viem/chains';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
 const productionConfig: ConfigInput = {
@@ -16,7 +16,25 @@ const productionConfig: ConfigInput = {
     'poweredby.namefi.io',
     'namefi.io',
   ],
-  ALLOWED_CHAINS: [mainnet.id, base.id],
+  ALLOWED_CHAINS: {
+    DNS_SERVING_ALLOWED_NFT_CHAINS: [
+      CHAINS.mainnet.id,
+      CHAINS.base.id,
+      CHAINS.robinhoodTestnet.id,
+    ],
+    NFT_ALLOWED_CHAINS: [CHAINS.mainnet.id, CHAINS.base.id],
+    NFSC_BALANCE_ALLOWED_CHAINS: [CHAINS.mainnet.id, CHAINS.base.id],
+    BY_PARENT_DOMAIN: {
+      '0x.city': {
+        NFT_ALLOWED_CHAINS: [
+          CHAINS.mainnet.id,
+          CHAINS.base.id,
+          CHAINS.robinhoodTestnet.id,
+        ],
+        NFSC_BALANCE_ALLOWED_CHAINS: [CHAINS.mainnet.id, CHAINS.base.id],
+      },
+    },
+  },
   DEV_NFSC_ENABLED: false,
   DEV_NFSC_SIGNUP_MINT_AMOUNT: 0,
   DEV_NFSC_FAUCET_AMOUNT: 0,

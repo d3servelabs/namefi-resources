@@ -165,7 +165,7 @@ export const configSchema = z.object({
   // Google Analytics 4 Measurement Protocol configuration
   GA_MEASUREMENT_ID: z.string().optional(),
   ALLOW_HTTP: z.boolean().default(false),
-  ALLOWED_CHAINS: z.preprocess((value) => value ?? [], ALLOWED_CHAINS_SCHEMA),
+  ALLOWED_CHAINS: ALLOWED_CHAINS_SCHEMA,
   /**
    * Maps email addresses to the hostnames they own.
    * Used to determine which parent domains a user owns based on their email.

@@ -1,4 +1,4 @@
-import * as chains from 'viem/chains';
+import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import type { ConfigInput } from '../schema';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 

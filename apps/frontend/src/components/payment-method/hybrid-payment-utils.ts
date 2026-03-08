@@ -31,9 +31,10 @@ export type HybridPaymentCalculation = {
   errorMessage?: string;
 };
 
-// Chain priority: [Sepolia, Base, Ethereum]
+// Chain priority: [Sepolia, Robinhood Testnet, Base, Ethereum]
 const CHAIN_PRIORITY = [
   CHAINS.sepolia.id as number,
+  CHAINS.robinhoodTestnet.id as number,
   CHAINS.base.id as number,
   CHAINS.mainnet.id as number,
 ];

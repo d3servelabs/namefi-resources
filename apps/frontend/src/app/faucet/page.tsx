@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import dynamic from 'next/dynamic';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Droplet, ExternalLink, Loader2, TriangleAlert } from 'lucide-react';
-import * as chains from 'viem/chains';
+import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { useIsClient } from 'usehooks-ts';
 import { useTRPC } from '@/lib/trpc';
 import { Button } from '@/components/ui/shadcn/button';

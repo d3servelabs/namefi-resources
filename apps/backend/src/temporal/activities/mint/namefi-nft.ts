@@ -9,7 +9,7 @@ import * as R from 'ramda';
 import superjson from 'superjson';
 // Indexer for Namefi NFT activities
 import { http, type Address, type Chain, createPublicClient } from 'viem';
-import { base, mainnet } from 'viem/chains';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
@@ -238,7 +238,7 @@ export const updateNamefiNftIndex = async () => {
     `Highest blocks by chain = ${superjson.stringify(highestBlocksByChain)}`,
   );
 
-  for (const chain of [mainnet, base]) {
+  for (const chain of [CHAINS.mainnet, CHAINS.base]) {
     console.debug(`Updating chain ${chain.name}`);
     const highestBlockRaw = highestBlocksByChain.find(
       (block) => block.chainId === chain.id,

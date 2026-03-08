@@ -3,7 +3,7 @@
  */
 
 import type { ThemeConfig, BrandingConfig, ChainConfig } from './types';
-import * as Chains from 'viem/chains';
+import { CHAINS as Chains } from '@namefi-astra/utils/chains';
 /**
  * Namefi dark theme (default)
  */

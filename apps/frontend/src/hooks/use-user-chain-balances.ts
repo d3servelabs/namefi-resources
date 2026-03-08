@@ -16,6 +16,7 @@ type MulticallClient = Parameters<typeof multicall>[0];
 
 const CHAIN_PRIORITY = [
   CHAINS.sepolia.id as number,
+  CHAINS.robinhoodTestnet.id as number,
   CHAINS.base.id as number,
   CHAINS.mainnet.id as number,
 ];

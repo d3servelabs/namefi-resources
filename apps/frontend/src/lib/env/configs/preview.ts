@@ -1,4 +1,4 @@
-import { sepolia } from 'viem/chains';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { parseAllowedChainsConfigValue } from '@namefi-astra/utils/allowed-chains';
 import type { ConfigInput } from '../schema';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
@@ -28,7 +28,7 @@ const previewConfig: ConfigInput = {
     ]),
   ),
   ALLOWED_CHAINS: parseAllowedChainsConfigValue(process.env.ALLOWED_CHAINS, [
-    sepolia.id,
+    CHAINS.sepolia.id,
   ]),
   HUNT_CAMPAIGN_KEYS: (process.env.HUNT_CAMPAIGN_KEYS
     ? process.env.HUNT_CAMPAIGN_KEYS.split(',')

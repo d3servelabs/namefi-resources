@@ -58,9 +58,10 @@ export type DeterminePaymentsResult = {
 // Constants
 // ============================================================================
 
-// Chain priority: Sepolia → Base → Ethereum
+// Chain priority: Sepolia → Robinhood Testnet → Base → Ethereum
 const CHAIN_PRIORITY: number[] = [
   CHAINS.sepolia.id, // 11155111
+  CHAINS.robinhoodTestnet.id,
   CHAINS.base.id, // 8453
   CHAINS.mainnet.id, // 1
 ];

@@ -1,4 +1,4 @@
-import * as chains from 'viem/chains';
+import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import type { ConfigInput } from '../schema';
 
 const testConfig: ConfigInput = {

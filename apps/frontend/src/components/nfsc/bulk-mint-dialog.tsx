@@ -41,7 +41,7 @@ import {
 } from '@/components/ui/shadcn/alert-dialog';
 import { Label } from '@/components/ui/shadcn/label';
 import { toast } from 'sonner';
-import * as chains from 'viem/chains';
+import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { isAddress } from 'viem';
 
 type Props = {
