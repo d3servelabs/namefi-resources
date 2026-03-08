@@ -53,6 +53,14 @@ export const NetworkLogo = ({
             <EthNetwork className={cn('w-full h-full')} />
           ) : networkId && BASE_NETWORKS.includes(networkId) ? (
             <BaseNetwork className={cn('w-full h-full')} />
+          ) : networkId === CHAINS.robinhoodTestnet.id ? (
+            <div
+              className={cn(
+                'flex items-center justify-center h-full w-full text-primary',
+              )}
+            >
+              <img src="/robinhood.png" width={50} height={50} alt="robinhood testnet" className="rounded-2xl" />
+            </div>
           ) : networkId ? (
             <NetworkIcon
               variant="branded"
