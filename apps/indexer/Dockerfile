@@ -3,7 +3,7 @@
 # Enable BuildKit support
 # DOCKER_BUILDKIT=1 docker build -t namefi-astra-indexer .
 
-# the app doesn't have a build process yet, so we're just basically containerizing the app for deployment 
+# the app doesn't have a build process yet, so we're just basically containerizing the app for deployment
 
 # Stage 1: Setup base with Node.js 22 Debian Bullseye
 FROM node:jod-alpine3.22 AS base
@@ -11,14 +11,14 @@ WORKDIR /app
 
 # Set to production environment
 ENV NODE_ENV production
-
+ENV CI true
 # RUN curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
 # && apt-get update && apt-get install -y infisical
 
 # Stage 2: Prune the monorepo to only include indexer dependencies
 FROM node:jod-alpine3.22 AS pruner
 WORKDIR /app
-
+ENV CI true
 # Install turbo globally
 RUN npm install -g turbo@2.5.8
 
@@ -31,7 +31,7 @@ RUN turbo prune @namefi-astra/indexer --docker
 # Stage 3: Use Bun for dependency installation
 FROM oven/bun:1 AS deps
 WORKDIR /app
-
+ENV CI true
 # Copy pruned lockfile and package.json files
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/bun.lock ./bun.lock
@@ -47,7 +47,7 @@ WORKDIR /app
 
 ARG PORT
 ENV PORT=${PORT:-3000}
-
+ENV CI true
 # Copy pruned source code
 COPY --from=pruner /app/out/full/ .
 # Copy installed dependencies
@@ -60,7 +60,7 @@ RUN adduser --system --uid 1001 nodejs
 
 # ponder start updates the config file format for some reason (so it crashes without write permissions)
 RUN chown -R nodejs:nodejs /app
-RUN chmod -R 777 /app/apps/indexer 
+RUN chmod -R 777 /app/apps/indexer
 
 USER nodejs
 
@@ -71,6 +71,6 @@ EXPOSE ${PORT}
 WORKDIR /app/apps/indexer
 
 # Start the application with schema generation
-CMD ["npm", "run", "start"] 
+CMD ["npm", "run", "start"]
 
 ## https://infisical.com/docs/integrations/platforms/docker
