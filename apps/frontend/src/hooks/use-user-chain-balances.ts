@@ -123,6 +123,10 @@ export function useUserChainBalances(
   const baseClient = useClient({ chainId: CHAINS.base.id, config });
   const mainnetClient = useClient({ chainId: CHAINS.mainnet.id, config });
   const sepoliaClient = useClient({ chainId: CHAINS.sepolia.id, config });
+  const robinhoodTestnetClient = useClient({
+    chainId: CHAINS.robinhoodTestnet.id,
+    config,
+  });
 
   // Simplify: just use the first wallet for balance queries
   const primaryWallet = walletAddresses[0];
@@ -139,6 +143,7 @@ export function useUserChainBalances(
           [CHAINS.base.id]: baseClient,
           [CHAINS.mainnet.id]: mainnetClient,
           [CHAINS.sepolia.id]: sepoliaClient,
+          [CHAINS.robinhoodTestnet.id]: robinhoodTestnetClient,
         },
         chainIds,
         walletAddresses,
