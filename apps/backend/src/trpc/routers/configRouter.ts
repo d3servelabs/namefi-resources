@@ -9,11 +9,7 @@ import {
 import { getX402ConfiguredUsdcEIP712Domain } from '#lib/x402/helpers/payment-option';
 
 export const configRouter = createTRPCRouter({
-  allowedChains: publicProcedure.query(() => {
-    return {
-      chains: config.ALLOWED_CHAINS,
-    };
-  }),
+  allowedChains: publicProcedure.query(() => config.ALLOWED_CHAINS),
   x402Payment: publicProcedure.query(() => {
     if (!config.X402_ENABLED || !config.X402_SIGNER_ADDRESS) {
       return {

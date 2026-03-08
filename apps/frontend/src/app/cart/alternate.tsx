@@ -10,7 +10,7 @@ import { PageShell } from '@/components/page-shell';
 import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-card';
 import { NoPaymentMethodRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
-import { useDefaultChainId } from '@/hooks/use-allowed-chains';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import {
@@ -41,6 +41,7 @@ import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
@@ -98,14 +99,12 @@ export default function CartPage() {
     X402_CART_PAYMENT_FLAG_DEFINITION[0],
   );
 
-  const defaultChainId = useDefaultChainId();
-  const defaultNfscPaymentProvider = getPaymentProviderForChain(defaultChainId);
-
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
   >(null);
-  const [selectedNftChainId, setSelectedNftChainId] =
-    useState<number>(defaultChainId);
+  const [selectedNftChainId, setSelectedNftChainId] = useState<number>(
+    CHAINS.base.id,
+  );
   const [isLinkedOrUserConfirmed, setIsLinkedOrUserConfirmed] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
@@ -148,6 +147,14 @@ export default function CartPage() {
     isCartUpdating,
     clearCart,
   } = useCartContext();
+  const {
+    nftChainIds: allowedNftChainIds,
+    defaultNftChainId,
+    defaultNfscBalanceChainId,
+  } = useAllowedChains();
+  const defaultNfscPaymentProvider = getPaymentProviderForChain(
+    defaultNfscBalanceChainId,
+  );
 
   const [
     isExplicitlyCheckingCartItemsForUpdates,
@@ -411,7 +418,7 @@ export default function CartPage() {
           payments: preparedPayments,
           nftMetadata: {
             nftWalletAddress: selectedNftWalletAddress,
-            nftChainId: selectedNftChainId ?? defaultChainId,
+            nftChainId: selectedNftChainId ?? defaultNftChainId,
           },
         });
       } catch (error) {
@@ -428,7 +435,7 @@ export default function CartPage() {
     [
       connectedWalletAddress,
       createOrder,
-      defaultChainId,
+      defaultNftChainId,
       items,
       selectedNftWalletAddress,
       selectedNftChainId,
@@ -472,10 +479,16 @@ export default function CartPage() {
 
   const handleNftChainIdChange = useCallback(
     (chainId: number) => {
-      setSelectedNftChainId(chainId ?? defaultChainId);
+      setSelectedNftChainId(chainId ?? defaultNftChainId);
     },
-    [defaultChainId],
+    [defaultNftChainId],
   );
+
+  useEffect(() => {
+    if (!allowedNftChainIds.includes(selectedNftChainId)) {
+      setSelectedNftChainId(defaultNftChainId);
+    }
+  }, [allowedNftChainIds, defaultNftChainId, selectedNftChainId]);
 
   const isDisabled = useMemo(
     () =>
@@ -635,7 +648,7 @@ export default function CartPage() {
                               paymentProvider: defaultNfscPaymentProvider,
                               nfscPaymentDetails: {
                                 walletAddress: selectedNftWalletAddress || '',
-                                chainId: defaultChainId,
+                                chainId: defaultNfscBalanceChainId,
                               },
                             },
                           },

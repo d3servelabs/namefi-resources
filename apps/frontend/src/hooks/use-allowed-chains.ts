@@ -1,57 +1,94 @@
-import { useTRPC } from '@/lib/trpc';
-import { config } from '@/lib/env';
-import { CHAINS, getChain } from '@namefi-astra/utils/chains';
-import { filter, isNotNil } from 'ramda';
-import { useQuery } from '@tanstack/react-query';
-import type { Chain } from 'viem';
-import { useEffect, useMemo } from 'react';
+'use client';
 
-const PERSISTENCE_KEY = 'allowed-chains-data';
-const PERSISTENCE_EXPIRY = 1 * 60 * 60 * 1000; // 1 hour
+import { useOrigin } from '@/components/providers/origin';
+import { config } from '@/lib/env';
+import { useTRPC } from '@/lib/trpc';
+import {
+  type AllowedChainsDetails,
+  getAllowedChainsForDnsServingNft,
+  getAllowedChainsForNft,
+  getAllowedChainsForNfscBalance,
+  normalizeAllowedChainsParentDomain,
+  pickPreferredAllowedChainId,
+} from '@namefi-astra/utils/allowed-chains';
+import { CHAINS, getChain } from '@namefi-astra/utils/chains';
+import { useQuery } from '@tanstack/react-query';
+import { filter, isNotNil } from 'ramda';
+import { useEffect, useMemo } from 'react';
+import type { Chain } from 'viem';
+
+const PERSISTENCE_KEY = 'allowed-chains-config';
+const PERSISTENCE_EXPIRY = 60 * 60 * 1000;
+const NFT_DEFAULT_CHAIN_ID_ORDER = [
+  CHAINS.sepolia.id,
+  CHAINS.base.id,
+  CHAINS.mainnet.id,
+] as const;
+const NFSC_BALANCE_DEFAULT_CHAIN_ID_ORDER = [
+  CHAINS.base.id,
+  CHAINS.sepolia.id,
+  CHAINS.mainnet.id,
+] as const;
 
 interface PersistedData {
-  chains: number[];
+  allowedChains: AllowedChainsDetails;
   timestamp: number;
 }
 
-function getPersistedChains(): number[] | null {
-  if (typeof window === 'undefined') return null;
+function getPersistedAllowedChains(): AllowedChainsDetails | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   try {
     const stored = window.sessionStorage.getItem(PERSISTENCE_KEY);
-    if (!stored) return null;
+    if (!stored) {
+      return null;
+    }
 
     const data: PersistedData = JSON.parse(stored);
-    const now = Date.now();
-
-    // Check if data is still valid
-    if (now - data.timestamp > PERSISTENCE_EXPIRY) {
+    if (Date.now() - data.timestamp > PERSISTENCE_EXPIRY) {
       window.sessionStorage.removeItem(PERSISTENCE_KEY);
       return null;
     }
 
-    return data.chains;
+    return data.allowedChains;
   } catch {
     return null;
   }
 }
 
-function persistChains(chains: number[]): void {
-  if (typeof window === 'undefined') return;
+function persistAllowedChains(allowedChains: AllowedChainsDetails): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
 
   try {
-    const data: PersistedData = {
-      chains,
-      timestamp: Date.now(),
-    };
-    window.sessionStorage.setItem(PERSISTENCE_KEY, JSON.stringify(data));
+    window.sessionStorage.setItem(
+      PERSISTENCE_KEY,
+      JSON.stringify({
+        allowedChains,
+        timestamp: Date.now(),
+      } satisfies PersistedData),
+    );
   } catch {
-    // Silently fail if sessionStorage is not available
+    return;
   }
 }
 
-export function useAllowedChains() {
+function getChains(chainIds: readonly number[]): Chain[] {
+  return filter(
+    isNotNil,
+    chainIds.map((chainId) => getChain(chainId) as Chain),
+  );
+}
+
+export function useAllowedChains(parentDomain?: string) {
   const trpc = useTRPC();
+  const origin = useOrigin();
+  const resolvedParentDomain = normalizeAllowedChainsParentDomain(
+    parentDomain ?? origin.thirdPartyHostname,
+  );
 
   const query = useQuery(
     trpc.config.allowedChains.queryOptions(undefined, {
@@ -59,48 +96,74 @@ export function useAllowedChains() {
       retry: 2,
     }),
   );
-  const persistedChains = useMemo(() => getPersistedChains(), []);
 
-  const chainIds = useMemo(
-    () => query.data?.chains || persistedChains || config.ALLOWED_CHAINS,
-    [query.data?.chains, persistedChains],
+  const persistedAllowedChains = useMemo(() => getPersistedAllowedChains(), []);
+
+  const allowedChains = useMemo<AllowedChainsDetails>(
+    () => query.data ?? persistedAllowedChains ?? config.ALLOWED_CHAINS,
+    [persistedAllowedChains, query.data],
   );
 
-  const allowedChains: Chain[] = useMemo(
-    () =>
-      filter(
-        isNotNil,
-        chainIds.map((chainId) => getChain(chainId) as Chain),
-      ),
-    [chainIds],
-  );
-
-  // Persist data when successfully fetched
   useEffect(() => {
-    if (query.data?.chains && typeof window !== 'undefined') {
-      persistChains(query.data.chains);
+    if (query.data && typeof window !== 'undefined') {
+      persistAllowedChains(query.data);
     }
-  }, [query.data?.chains]);
+  }, [query.data]);
+
+  const nftChainIds = useMemo(
+    () => getAllowedChainsForNft(allowedChains, resolvedParentDomain),
+    [allowedChains, resolvedParentDomain],
+  );
+  const dnsServingNftChainIds = useMemo(
+    () => getAllowedChainsForDnsServingNft(allowedChains),
+    [allowedChains],
+  );
+  const nfscBalanceChainIds = useMemo(
+    () => getAllowedChainsForNfscBalance(allowedChains, resolvedParentDomain),
+    [allowedChains, resolvedParentDomain],
+  );
+
+  const nftChains = useMemo(() => getChains(nftChainIds), [nftChainIds]);
+  const dnsServingNftChains = useMemo(
+    () => getChains(dnsServingNftChainIds),
+    [dnsServingNftChainIds],
+  );
+  const nfscBalanceChains = useMemo(
+    () => getChains(nfscBalanceChainIds),
+    [nfscBalanceChainIds],
+  );
+
+  const defaultNftChainId = useMemo(
+    () =>
+      pickPreferredAllowedChainId(
+        nftChainIds,
+        NFT_DEFAULT_CHAIN_ID_ORDER,
+        CHAINS.base.id,
+      ),
+    [nftChainIds],
+  );
+  const defaultNfscBalanceChainId = useMemo(
+    () =>
+      pickPreferredAllowedChainId(
+        nfscBalanceChainIds,
+        NFSC_BALANCE_DEFAULT_CHAIN_ID_ORDER,
+        CHAINS.base.id,
+      ),
+    [nfscBalanceChainIds],
+  );
 
   return {
-    chains: allowedChains,
-    chainIds,
-    isLoading: query.isLoading && !getPersistedChains(),
-    isError: query.isError && !getPersistedChains(),
+    allowedChains,
+    parentDomain: resolvedParentDomain,
+    nftChainIds,
+    nftChains,
+    dnsServingNftChainIds,
+    dnsServingNftChains,
+    nfscBalanceChainIds,
+    nfscBalanceChains,
+    defaultNftChainId,
+    defaultNfscBalanceChainId,
+    isLoading: query.isLoading && !persistedAllowedChains,
+    isError: query.isError && !persistedAllowedChains,
   };
-}
-
-const CHAIN_ID_ORDER = [CHAINS.sepolia.id, CHAINS.base.id, CHAINS.mainnet.id];
-
-export function useDefaultChainId() {
-  const { chainIds: allowedChainIds } = useAllowedChains();
-  if (Array.isArray(allowedChainIds) && allowedChainIds.length > 0) {
-    const found = CHAIN_ID_ORDER.find((chainId) =>
-      allowedChainIds.includes(chainId),
-    );
-    if (isNotNil(found)) {
-      return found;
-    }
-  }
-  return CHAINS.base.id;
 }

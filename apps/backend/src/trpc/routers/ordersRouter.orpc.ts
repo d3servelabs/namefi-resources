@@ -14,11 +14,12 @@ import {
 import {
   checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
+  parseDomainName,
 } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, getTableColumns, ilike } from 'drizzle-orm';
-import { isNil, isNotNil, pluck, sum } from 'ramda';
+import { isNil, isNotNil } from 'ramda';
 import Stripe from 'stripe';
 import { z } from 'zod';
 import pMap from 'p-map';
@@ -26,10 +27,7 @@ import {
   orderService,
   type CreateOrderItemInput,
 } from '../../services/orders/orders.service';
-import {
-  createPayment,
-  determineAvailablePaymentMethods,
-} from '../../temporal/activities/payment.activities';
+import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
@@ -44,12 +42,15 @@ import {
 } from '../utils';
 import { secrets } from '../../lib/env';
 import { logger } from '#lib/logger';
-import { config } from '#lib/env';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
-import { getChain, CHAINS as chains } from '@namefi-astra/utils';
 import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 import { getEip712MetaFromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
+import {
+  getAllowedChainsForNft,
+  getDefaultAllowedNftChainId,
+} from '#lib/env/allowed-chains';
+import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -87,16 +88,7 @@ export const instantBuyInputSchema = z
     nftReceivinggWallet: z
       .object({
         walletAddress: checksumWalletAddressSchema,
-        chainId: z.number().refine(
-          (chainId) => {
-            const allowedChains = config.ALLOWED_CHAINS;
-            return allowedChains.includes(chainId);
-          },
-          {
-            message: 'Chain ID provided is not allowed',
-            path: ['nftReceivinggWallet', 'chainId'],
-          },
-        ),
+        chainId: z.number(),
       })
       .optional()
       .describe(
@@ -170,6 +162,13 @@ const registerDomainWithRecords = async ({
   gaEventTracking,
 }: RegisterDomainWithRecordsInput) => {
   const { normalizedDomainName, durationInYears } = input;
+  const parsedDomainResult = parseDomainName(normalizedDomainName);
+  if (!parsedDomainResult.valid) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Invalid Domain Name',
+    });
+  }
 
   // 1. Get user details from Privy
   const [error, privyUser] = await resolve(
@@ -200,15 +199,31 @@ const registerDomainWithRecords = async ({
       message: 'No linked wallet addresses found for user',
     });
   }
+
+  const poweredByNamefiDomain = (await getPoweredByNamefi3PDomains()).find(
+    (parent) => parsedDomainResult.immediateParentDomain === parent,
+  );
+  const allowedNftChainIds = getAllowedChainsForNft(poweredByNamefiDomain);
+  if (
+    input.nftReceivinggWallet &&
+    !allowedNftChainIds.includes(input.nftReceivinggWallet.chainId)
+  ) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `NFT chain ID ${input.nftReceivinggWallet.chainId} is not allowed for ${normalizedDomainName}`,
+    });
+  }
+
   const nftReceivinggWallet = input.nftReceivinggWallet || {
     walletAddress: userWalletAddresses[0],
-    chainId: config.ALLOWED_CHAINS.includes(chains.base.id)
-      ? chains.base.id
-      : config.ALLOWED_CHAINS[0],
+    chainId: getDefaultAllowedNftChainId(poweredByNamefiDomain),
   };
 
   // 4. Get chain balances for user's wallets
-  const chainBalances = await getUserChainBalances(userWalletAddresses);
+  const chainBalances = await getUserChainBalances(
+    userWalletAddresses,
+    poweredByNamefiDomain,
+  );
 
   // 5. Determine payments from NFSC balances
   const paymentResult = determinePayments({

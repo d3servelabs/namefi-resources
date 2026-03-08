@@ -2,7 +2,8 @@ import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import type { ChecksumWalletAddress } from '@namefi-astra/utils';
 import { formatUnits, getContract } from 'viem';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
-import { getViemPublicClient, ALLOWED_CHAINS } from '#lib/crypto/viem-clients';
+import { getViemPublicClient } from '#lib/crypto/viem-clients';
+import { getAllowedChainsForNfscBalance } from '#lib/env/allowed-chains';
 import { logger } from '#lib/logger';
 import {
   type ChainBalance,
@@ -58,31 +59,35 @@ async function getNfscBalance(
  */
 export async function getUserChainBalances(
   walletAddresses: ChecksumWalletAddress[],
+  parentDomain?: string | null | undefined,
 ): Promise<ChainBalance[]> {
   const balances: ChainBalance[] = [];
+  const allowedChainIds = getAllowedChainsForNfscBalance(
+    parentDomain ?? undefined,
+  );
 
-  for (const chain of ALLOWED_CHAINS) {
+  for (const chainId of allowedChainIds) {
     for (const walletAddress of walletAddresses) {
       try {
         const { balanceInUsdCents } = await getNfscBalance(
-          chain.id,
+          chainId,
           walletAddress,
         );
 
         // Only include non-zero balances
         if (balanceInUsdCents > 0) {
           balances.push({
-            chainId: chain.id,
-            chainName: getChainName(chain.id),
+            chainId,
+            chainName: getChainName(chainId),
             walletAddress,
             balanceInUsdCents,
-            paymentProvider: getPaymentProviderForChain(chain.id),
+            paymentProvider: getPaymentProviderForChain(chainId),
           });
         }
       } catch (balanceError) {
         logger.error(
           {
-            chainId: chain.id,
+            chainId,
             walletAddress,
             error: balanceError,
           },

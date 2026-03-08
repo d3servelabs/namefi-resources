@@ -1,4 +1,5 @@
 import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
+import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
@@ -164,7 +165,7 @@ export const configSchema = z.object({
   // Google Analytics 4 Measurement Protocol configuration
   GA_MEASUREMENT_ID: z.string().optional(),
   ALLOW_HTTP: z.boolean().default(false),
-  ALLOWED_CHAINS: z.number().array().default([]),
+  ALLOWED_CHAINS: z.preprocess((value) => value ?? [], ALLOWED_CHAINS_SCHEMA),
   /**
    * Maps email addresses to the hostnames they own.
    * Used to determine which parent domains a user owns based on their email.

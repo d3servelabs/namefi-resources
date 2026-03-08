@@ -12,7 +12,7 @@ import type {
 } from '../activities/domain/renew.activities';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import type { PaymentProvider } from '@namefi-astra/db/types';
-import { fromPairs, isNotNil, pickBy, pluck, sum } from 'ramda';
+import { fromPairs, isNotNil, pickBy, pluck, sum, filter } from 'ramda';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
 import type { DomainRenewalResult } from '../activities/order.activities';
 import pMap from 'p-map';
@@ -316,8 +316,8 @@ async function _preparePaymentsForRenew(
   const userPaymentSources = paymentPrepareResult.paymentSources;
 
   const availableBalanceInNfsc = sum(
-    userPaymentSources.nfscSources.map((source) =>
-      sum(Object.values(source.balances)),
+    userPaymentSources.nfscSources.flatMap((source) =>
+      filter(isNotNil, Object.values(source.balances)),
     ),
   );
 

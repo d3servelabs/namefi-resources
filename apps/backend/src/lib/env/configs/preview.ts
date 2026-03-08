@@ -1,16 +1,13 @@
-import * as chains from 'viem/chains';
+import { sepolia } from 'viem/chains';
+import { parseAllowedChainsConfigValue } from '@namefi-astra/utils/allowed-chains';
 import type { ConfigInput } from '../schema';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-
-type PreviewConfig = {
-  [Key in keyof ConfigInput]: any;
-};
 
 /**
  * Configurable from env with defaults, needed for preview deployments
  */
-const previewConfig: PreviewConfig = {
-  LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
+const previewConfig: ConfigInput = {
+  LOG_LEVEL: (process.env.LOG_LEVEL || 'debug') as ConfigInput['LOG_LEVEL'],
   PRIVY_APP_ID: process.env.PRIVY_APP_ID || 'cm2lx4u5a03x3rtgp4keapmrb',
   TEMPORAL_API_URL: process.env.TEMPORAL_API_URL || 'temporal:7233',
   TEMPORAL_NAMESPACE: process.env.TEMPORAL_NAMESPACE || 'default',
@@ -27,10 +24,9 @@ const previewConfig: PreviewConfig = {
     ? process.env.NAMEFI_FIRST_PARTY_HOSTNAMES.split(',')
     : ['localhost', 'namefi.localhost', 'astra.localhost']
   ).map((hostname) => hostname.trim()),
-  ALLOWED_CHAINS: (process.env.ALLOWED_CHAINS
-    ? process.env.ALLOWED_CHAINS.split(',').map((value) => Number(value))
-    : [chains.sepolia.id]
-  ).filter((chainId) => !Number.isNaN(chainId)),
+  ALLOWED_CHAINS: parseAllowedChainsConfigValue(process.env.ALLOWED_CHAINS, [
+    sepolia.id,
+  ]),
   DEV_NFSC_ENABLED: process.env.DEV_NFSC_ENABLED
     ? process.env.DEV_NFSC_ENABLED.toLowerCase() === 'true'
     : true,

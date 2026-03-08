@@ -12,6 +12,8 @@ import { useQuery } from '@tanstack/react-query';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { useAllowedChains } from './use-allowed-chains';
 
+type MulticallClient = Parameters<typeof multicall>[0];
+
 const CHAIN_PRIORITY = [
   CHAINS.sepolia.id as number,
   CHAINS.base.id as number,
@@ -70,7 +72,7 @@ const getWalletMultiChainNfscBalance = async (
     if (!clients[chainId]) {
       throw new Error(`Client not found for chain ${chainId}`);
     }
-    const balance = await multicall(clients[chainId], {
+    const balance = await multicall(clients[chainId] as MulticallClient, {
       contracts: walletAddresses.map((walletAddress) => ({
         address: NFSC_CONTRACT_ADDRESS as `0x${string}`,
         abi: NfscAbi,
@@ -101,6 +103,7 @@ export interface ChainBalance {
 export interface UseUserChainBalancesOptions {
   enabled?: boolean;
   walletAddresses?: `0x${string}`[];
+  parentDomain?: string;
 }
 
 export interface UseUserChainBalancesReturn {
@@ -114,7 +117,7 @@ export interface UseUserChainBalancesReturn {
 export function useUserChainBalances(
   options: UseUserChainBalancesOptions = {},
 ): UseUserChainBalancesReturn {
-  const { enabled = true, walletAddresses = [] } = options;
+  const { enabled = true, walletAddresses = [], parentDomain } = options;
   const config = useConfig();
   const baseClient = useClient({ chainId: CHAINS.base.id, config });
   const mainnetClient = useClient({ chainId: CHAINS.mainnet.id, config });
@@ -124,7 +127,8 @@ export function useUserChainBalances(
   const primaryWallet = walletAddresses[0];
 
   // Chain priority: [Sepolia, Base, Ethereum]
-  const { chainIds, isLoading } = useAllowedChains();
+  const { nfscBalanceChainIds: chainIds, isLoading } =
+    useAllowedChains(parentDomain);
 
   const q = useQuery({
     queryKey: ['wallet-multi-chain-nfsc-balance', walletAddresses, chainIds],

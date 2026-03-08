@@ -7,7 +7,6 @@ import {
   useLinkedWalletAddresses,
   useUserWalletAddresses,
 } from '@/hooks/use-user-wallet-addresses';
-import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getShortAddress } from '@/lib/string';
 import { cn } from '@/lib/cn';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -25,7 +24,7 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { Button } from '@/components/ui/shadcn/button';
 import { toast } from 'sonner';
-import { useDefaultChainId } from '@/hooks/use-allowed-chains';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 
 type EnsCandidate = {
   original: string;
@@ -51,6 +50,7 @@ export interface NftWalletCardProps {
   disabled?: boolean;
   onChainIdChange?: (chainId: number) => void;
   selectedChainId?: number;
+  parentDomain?: string;
   isLinkedOrUserConfirmed: boolean;
   onIsLinkedOrUserConfirmationChange: (confirmed: boolean) => void;
 }
@@ -61,10 +61,11 @@ export function NftWalletCard({
   disabled,
   onChainIdChange,
   selectedChainId,
+  parentDomain,
   isLinkedOrUserConfirmed: unlinkedWalletConfirmed,
   onIsLinkedOrUserConfirmationChange: onUnlinkedWalletConfirmationChange,
 }: NftWalletCardProps) {
-  const defaultChainId = useDefaultChainId();
+  const { defaultNftChainId: defaultChainId } = useAllowedChains(parentDomain);
   const [inputValue, setInputValue] = useState<string>(
     selectedWalletAddress ?? '',
   );
@@ -506,6 +507,7 @@ export function NftWalletCard({
         <WalletEditableSelect
           onChainIdChange={onChainIdChange}
           selectedChainId={selectedChainId}
+          parentDomain={parentDomain}
           value={inputValue}
           onValueChange={handleWalletAddressChange}
           options={options}

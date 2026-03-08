@@ -17,7 +17,6 @@ import { useResizeObserver } from 'usehooks-ts';
 import { NetworkLogo } from './network-logo';
 import { Badge } from './ui/shadcn/badge';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
-import { useDefaultChainId } from '@/hooks/use-allowed-chains';
 
 interface WalletEditableSelectProps {
   value: string;
@@ -31,6 +30,7 @@ interface WalletEditableSelectProps {
   icon?: ReactNode;
   onChainIdChange?: (chainId: number) => void;
   selectedChainId?: number;
+  parentDomain?: string;
 }
 
 export function WalletEditableSelect({
@@ -45,9 +45,10 @@ export function WalletEditableSelect({
   icon,
   onChainIdChange,
   selectedChainId,
+  parentDomain,
 }: WalletEditableSelectProps) {
-  const { chains } = useAllowedChains();
-  const defaultChainId = useDefaultChainId();
+  const { nftChains: chains, defaultNftChainId: defaultChainId } =
+    useAllowedChains(parentDomain);
   const activeChainId = selectedChainId ?? defaultChainId;
   // Track both the input value and what's selected in the dropdown
   const [localValue, setLocalValue] = useState({

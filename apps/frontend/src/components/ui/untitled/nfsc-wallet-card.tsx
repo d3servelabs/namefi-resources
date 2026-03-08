@@ -65,7 +65,7 @@ export function NFSCWalletCard({
   bottomActions,
 }: NFSCWalletCardProps) {
   const [showBalanceModal, setShowBalanceModal] = useState(false);
-  const { chains } = useAllowedChains();
+  const { nfscBalanceChains: chains } = useAllowedChains();
 
   // Add balances for chains with zero balance to show all allowed chains (only when not showing single chain)
   const completeBalances = useMemo(() => {

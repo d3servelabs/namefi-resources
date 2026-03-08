@@ -1,12 +1,9 @@
-import * as chains from 'viem/chains';
+import { sepolia } from 'viem/chains';
+import { parseAllowedChainsConfigValue } from '@namefi-astra/utils/allowed-chains';
 import type { ConfigInput } from '../schema';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 
-type PreviewConfig = {
-  [Key in keyof ConfigInput]: any;
-};
-
-const previewConfig: PreviewConfig = {
+const previewConfig: ConfigInput = {
   TYPE: 'preview',
   BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3000',
   MLS_PUBLIC_SALES_LISTINGS_URL:
@@ -30,10 +27,9 @@ const previewConfig: PreviewConfig = {
       [`${hostname}.localhost`, hostname],
     ]),
   ),
-  ALLOWED_CHAINS: (process.env.ALLOWED_CHAINS
-    ? process.env.ALLOWED_CHAINS.split(',').map((value) => Number(value))
-    : [chains.sepolia.id]
-  ).filter((chainId) => !Number.isNaN(chainId)),
+  ALLOWED_CHAINS: parseAllowedChainsConfigValue(process.env.ALLOWED_CHAINS, [
+    sepolia.id,
+  ]),
   HUNT_CAMPAIGN_KEYS: (process.env.HUNT_CAMPAIGN_KEYS
     ? process.env.HUNT_CAMPAIGN_KEYS.split(',')
     : ['cv-2025-07-16', 'cta-2025-07-16']

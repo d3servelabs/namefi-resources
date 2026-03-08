@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
@@ -24,7 +24,7 @@ import { CartCard } from '@/components/cart-card';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 import { useAuth } from '@/hooks/use-auth';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
-import { useDefaultChainId } from '@/hooks/use-allowed-chains';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { formatAmountInUSD } from '@/lib/number';
 import {
@@ -32,6 +32,7 @@ import {
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -56,15 +57,29 @@ export function InstantBuyModal({
   domainAvailabilityInfo,
 }: InstantBuyModalProps) {
   const router = useRouter();
-  const defaultChainId = useDefaultChainId();
-  const defaultNfscPaymentProvider = getPaymentProviderForChain(defaultChainId);
+  const parentDomain = useMemo(() => {
+    const parsedDomainName = parseDomainName(domainAvailabilityInfo.domain);
+
+    return parsedDomainName.valid &&
+      parsedDomainName.registryType === 'subdomain'
+      ? parsedDomainName.nearestTraditionalParentDomain
+      : undefined;
+  }, [domainAvailabilityInfo.domain]);
+  const {
+    nftChainIds: allowedNftChainIds,
+    defaultNftChainId,
+    defaultNfscBalanceChainId,
+  } = useAllowedChains(parentDomain);
+  const defaultNfscPaymentProvider = getPaymentProviderForChain(
+    defaultNfscBalanceChainId,
+  );
   const [isLinkedOrUserConfirmed, setIsLinkedOrUserConfirmed] = useState(true);
 
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
   >(null);
   const [selectedNftChainId, setSelectedNftChainId] =
-    useState<number>(defaultChainId);
+    useState<number>(defaultNftChainId);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -115,10 +130,16 @@ export function InstantBuyModal({
 
   const handleNftChainIdChange = useCallback(
     (chainId: number) => {
-      setSelectedNftChainId(chainId ?? defaultChainId);
+      setSelectedNftChainId(chainId ?? defaultNftChainId);
     },
-    [defaultChainId],
+    [defaultNftChainId],
   );
+
+  useEffect(() => {
+    if (!allowedNftChainIds.includes(selectedNftChainId)) {
+      setSelectedNftChainId(defaultNftChainId);
+    }
+  }, [allowedNftChainIds, defaultNftChainId, selectedNftChainId]);
 
   const submitButtonText = useMemo(() => {
     if (!selectedNftWalletAddress) {
@@ -153,7 +174,7 @@ export function InstantBuyModal({
         payments,
         nftMetadata: {
           nftWalletAddress: selectedNftWalletAddress,
-          nftChainId: selectedNftChainId ?? defaultChainId,
+          nftChainId: selectedNftChainId ?? defaultNftChainId,
         },
       });
     },
@@ -162,7 +183,7 @@ export function InstantBuyModal({
       domainAvailabilityInfo.domain,
       selectedNftWalletAddress,
       selectedNftChainId,
-      defaultChainId,
+      defaultNftChainId,
     ],
   );
 
@@ -178,7 +199,7 @@ export function InstantBuyModal({
           paymentProvider: defaultNfscPaymentProvider,
           nfscPaymentDetails: {
             walletAddress: selectedNftWalletAddress,
-            chainId: defaultChainId,
+            chainId: defaultNfscBalanceChainId,
           },
         },
       },
@@ -190,7 +211,7 @@ export function InstantBuyModal({
       payments: zeroPayment,
       nftMetadata: {
         nftWalletAddress: selectedNftWalletAddress,
-        nftChainId: selectedNftChainId ?? defaultChainId,
+        nftChainId: selectedNftChainId ?? defaultNftChainId,
       },
     });
   }, [
@@ -198,7 +219,8 @@ export function InstantBuyModal({
     domainAvailabilityInfo.domain,
     selectedNftWalletAddress,
     selectedNftChainId,
-    defaultChainId,
+    defaultNftChainId,
+    defaultNfscBalanceChainId,
     defaultNfscPaymentProvider,
   ]);
 
@@ -252,6 +274,7 @@ export function InstantBuyModal({
 
               {/* NFT Wallet Selection */}
               <NftWalletCard
+                parentDomain={parentDomain}
                 onWalletAddressChange={handleNftWalletAddressChange}
                 selectedWalletAddress={selectedNftWalletAddress}
                 disabled={isDisabled}
@@ -281,6 +304,7 @@ export function InstantBuyModal({
                 />
               ) : (
                 <HybridPaymentCard
+                  parentDomain={parentDomain}
                   totalAmountInUsdCents={priceInUsdCents}
                   userWalletAddresses={linkedWalletAddresses}
                   isDisabled={isDisabled}

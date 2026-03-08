@@ -37,6 +37,7 @@ type X402PaymentConfig = Extract<
 export type HybridPaymentCardProps = {
   totalAmountInUsdCents: number;
   userWalletAddresses: `0x${string}`[];
+  parentDomain?: string;
   x402PaymentConfig?: X402PaymentConfig | null;
   x402BuyerWalletAddress?: `0x${string}` | null;
   isDisabled: boolean;
@@ -71,6 +72,7 @@ function getX402NetworkLabel(network: string): string {
 export function HybridPaymentCard({
   totalAmountInUsdCents,
   userWalletAddresses,
+  parentDomain,
   x402PaymentConfig,
   x402BuyerWalletAddress,
   isDisabled,
@@ -113,6 +115,7 @@ export function HybridPaymentCard({
   const { chainBalances, totalBalanceInUsdCents, canUseBalance } =
     useUserChainBalances({
       enabled: true,
+      parentDomain,
       walletAddresses: userWalletAddresses,
     });
 

@@ -35,6 +35,7 @@ type PaymentDetails = {
 
 export type SelectPaymentMethodCardProps = {
   cartTotalInUsdCents: number;
+  parentDomain?: string;
   footerButton?: ReactNode;
   disabled?: boolean;
   onPaymentMethodDetailsChanged: (
@@ -47,16 +48,14 @@ export type SelectPaymentMethodCardProps = {
 
 export function SelectPaymentMethodCard({
   cartTotalInUsdCents,
+  parentDomain,
   footerButton,
   disabled = false,
   onPaymentMethodDetailsChanged,
   onSelectedPaymentMethodChanged,
 }: SelectPaymentMethodCardProps) {
-  const { chainIds } = useAllowedChains();
-
-  const DefaultPaymentChainId = chainIds.includes(CHAINS.base.id)
-    ? CHAINS.base.id
-    : CHAINS.sepolia.id;
+  const { defaultNfscBalanceChainId: defaultPaymentChainId } =
+    useAllowedChains(parentDomain);
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined
@@ -216,8 +215,8 @@ export function SelectPaymentMethodCard({
               ((isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)
                 ? nfscPaymentMethodDetails.paymentProviderDetails
                     .nfscPaymentDetails?.chainId
-                : DefaultPaymentChainId) ||
-                DefaultPaymentChainId),
+                : defaultPaymentChainId) ||
+                defaultPaymentChainId),
           },
         },
       };
@@ -229,7 +228,7 @@ export function SelectPaymentMethodCard({
       nfscPaymentMethodDetails,
       onPaymentMethodDetailsChanged,
       refetchNfscBalance,
-      DefaultPaymentChainId,
+      defaultPaymentChainId,
     ],
   );
 
@@ -301,6 +300,7 @@ export function SelectPaymentMethodCard({
                     />
                     <SelectChain
                       baseChainOnly={false}
+                      parentDomain={parentDomain}
                       onValueChange={handleNfscChainSelectValueChange}
                       selectTriggerDisabled={
                         selectedPaymentMethod !== SelectedPaymentMethod.NFSC ||

@@ -3,7 +3,7 @@ import { differenceInHours, format } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { db, namefiNftCte } from '@namefi-astra/db';
 import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
-import { config } from '#lib/env';
+import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 import {
   domainExportTrackingTable,
   namefiNftView,
@@ -265,7 +265,7 @@ export async function getLockedNftsForTracking(): Promise<
     ownerAddress: string;
   }>
 > {
-  const allowedChains = config.ALLOWED_CHAINS;
+  const allowedChains = getAllowedChainsForNft();
   logger.debug(
     { allowedChains },
     'Getting locked NFTs for export tracking on allowed chains',
@@ -1061,7 +1061,7 @@ export async function getDomainsEligibleForBurn(): Promise<
     confirmedOutOfAccountAt: Date | null;
   }>
 > {
-  const allowedChains = config.ALLOWED_CHAINS;
+  const allowedChains = getAllowedChainsForNft();
   logger.debug(
     { allowedChains },
     'Getting domains eligible for NFT burning on allowed chains',

@@ -44,7 +44,6 @@ import {
 } from '../../../mail/templates/domain-renew-failed-to-charge';
 import { calculateNextChargeDateAndAmount } from './helpers/calculateNextChargeDateAndAmount';
 import { privyClient } from '../../../trpc/utils';
-import { getPreferredPaymentMethodForNamefiUser } from '../payment.activities';
 import type { WalletWithMetadata } from '@privy-io/server-auth';
 import { eq, inArray, sql } from 'drizzle-orm';
 import {
@@ -54,13 +53,14 @@ import {
 import { ApplicationFailure } from '@temporalio/workflow';
 import { logger } from '#lib/logger';
 import { getDomainLevels } from '#lib/get-domain-levels';
+import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { fromUnixTime } from 'date-fns';
 import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
-import { config, secrets } from '#lib/env';
+import { secrets } from '#lib/env';
 import { TEMPORAL_QUEUES } from '../../../temporal/shared/enums';
 import { temporalClient } from '../../../temporal/client';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -113,7 +113,7 @@ export async function getDomainsUpForRenewal(input?: {
       chainId: namefiNftOwnersView.chainId,
     })
     .from(namefiNftOwnersView)
-    .where(inArray(namefiNftOwnersView.chainId, config.ALLOWED_CHAINS));
+    .where(inArray(namefiNftOwnersView.chainId, getAllowedChainsForNft()));
   logger.debug({ nftCount: allNfts.length }, 'Found NFTs');
 
   const allNftsMap = new Map<NamefiNormalizedDomain, number>(

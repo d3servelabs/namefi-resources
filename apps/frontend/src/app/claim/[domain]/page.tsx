@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
@@ -74,6 +75,18 @@ export default function ClaimPage() {
   const minDuration = useMemo(() => {
     return availabilityInfo?.durationValidationInYears?.min ?? 1;
   }, [availabilityInfo]);
+  const parentDomain = useMemo(() => {
+    if (!normalizedDomainName) {
+      return undefined;
+    }
+
+    const parsedDomainName = parseDomainName(normalizedDomainName);
+
+    return parsedDomainName.valid &&
+      parsedDomainName.registryType === 'subdomain'
+      ? parsedDomainName.nearestTraditionalParentDomain
+      : undefined;
+  }, [normalizedDomainName]);
 
   const registrarKey = availabilityInfo?.registrarKey || 'namefi';
 
@@ -281,6 +294,7 @@ export default function ClaimPage() {
         {/* Wallet selection */}
         {isAuthenticated ? (
           <NftWalletCard
+            parentDomain={parentDomain}
             onWalletAddressChange={setSelectedWalletAddress}
             selectedWalletAddress={selectedWalletAddress}
             disabled={isClaimPending}

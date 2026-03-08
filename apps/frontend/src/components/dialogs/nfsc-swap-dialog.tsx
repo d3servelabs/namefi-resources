@@ -60,7 +60,7 @@ export default function NFSCSwapDialog(props: Props) {
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { chains } = useAllowedChains();
+  const { nfscBalanceChains: chains } = useAllowedChains();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
 
   const { nfscBalance, nativeBalance, isLoading } = useNfscBalance();

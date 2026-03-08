@@ -66,6 +66,10 @@ import pMap from 'p-map';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
 import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
+import {
+  getAllowedChainsForNft,
+  getAllowedChainsForNftByDomainNames,
+} from '#lib/env/allowed-chains';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 type PaymentMethodDetailsOnChain = {
@@ -726,12 +730,6 @@ export const ordersRouter = createTRPCRouter({
             message: 'NFT chain ID is required',
           });
         }
-        if (!config.ALLOWED_CHAINS.includes(input.nftMetadata.nftChainId)) {
-          ctx.addIssue({
-            code: 'custom',
-            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed`,
-          });
-        }
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -760,6 +758,16 @@ export const ordersRouter = createTRPCRouter({
 
       if (cartItems.length !== cartItemIds.length) {
         throw new TRPCError({ code: 'BAD_REQUEST' });
+      }
+
+      const allowedNftChainIds = getAllowedChainsForNft(
+        ctx.poweredByNamefiDomain ?? undefined,
+      );
+      if (!allowedNftChainIds.includes(nftMetadata.nftChainId)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `NFT chain ID ${nftMetadata.nftChainId} is not allowed for the selected domains`,
+        });
       }
 
       const totalAmountInUsdCents = sum(pluck('amountInUSDCents', cartItems));
@@ -944,10 +952,14 @@ export const ordersRouter = createTRPCRouter({
             message: 'NFT chain ID is required',
           });
         }
-        if (!config.ALLOWED_CHAINS.includes(input.nftMetadata.nftChainId)) {
+        if (
+          !getAllowedChainsForNftByDomainNames([
+            input.normalizedDomainName,
+          ]).includes(input.nftMetadata.nftChainId)
+        ) {
           ctx.addIssue({
             code: 'custom',
-            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed`,
+            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed for ${input.normalizedDomainName}`,
           });
         }
       }),

@@ -10,7 +10,8 @@ import {
   privyClient,
 } from '../utils';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
-import { getViemPublicClient, ALLOWED_CHAINS } from '#lib/crypto/viem-clients';
+import { getViemPublicClient } from '#lib/crypto/viem-clients';
+import { getAllowedChainsForNfscBalance } from '#lib/env/allowed-chains';
 import { logger } from '#lib/logger';
 
 // ============================================================================
@@ -167,25 +168,25 @@ export const balanceRouterOrpc = createTRPCRouter({
       // 2. Get balances for each wallet on each allowed chain
       const balances: ChainBalance[] = [];
 
-      for (const chain of ALLOWED_CHAINS) {
+      for (const chainId of getAllowedChainsForNfscBalance()) {
         for (const walletAddress of walletAddresses) {
           try {
             const { rawBalance, balanceInUsd, balanceInUsdCents } =
-              await getNfscBalance(chain.id, walletAddress as `0x${string}`);
+              await getNfscBalance(chainId, walletAddress as `0x${string}`);
 
             balances.push({
-              chainId: chain.id,
-              chainName: getChainName(chain.id),
+              chainId,
+              chainName: getChainName(chainId),
               walletAddress,
               rawBalance: rawBalance.toString(),
               balanceInUsd,
               balanceInUsdCents,
-              paymentProvider: getPaymentProviderForChain(chain.id),
+              paymentProvider: getPaymentProviderForChain(chainId),
             });
           } catch (balanceError) {
             logger.error(
               {
-                chainId: chain.id,
+                chainId,
                 walletAddress,
                 error: balanceError,
               },
@@ -193,13 +194,13 @@ export const balanceRouterOrpc = createTRPCRouter({
             );
             // Include zero balance entry on error
             balances.push({
-              chainId: chain.id,
-              chainName: getChainName(chain.id),
+              chainId,
+              chainName: getChainName(chainId),
               walletAddress,
               rawBalance: '0',
               balanceInUsd: 0,
               balanceInUsdCents: 0,
-              paymentProvider: getPaymentProviderForChain(chain.id),
+              paymentProvider: getPaymentProviderForChain(chainId),
             });
           }
         }

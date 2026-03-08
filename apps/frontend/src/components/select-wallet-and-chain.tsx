@@ -24,6 +24,7 @@ interface SelectChainProps {
   baseChainOnly: boolean;
   onValueChange: (chainId: string) => void;
   selectTriggerDisabled: boolean;
+  parentDomain?: string;
 }
 
 export function SelectWallet({
@@ -78,12 +79,12 @@ export function SelectChain({
   baseChainOnly,
   onValueChange,
   selectTriggerDisabled,
+  parentDomain,
 }: SelectChainProps) {
-  const { chains, chainIds } = useAllowedChains();
-
-  const DefaultPaymentChainId = chainIds.includes(CHAINS.base.id)
-    ? CHAINS.base.id
-    : CHAINS.sepolia.id;
+  const {
+    nfscBalanceChains: chains,
+    defaultNfscBalanceChainId: defaultPaymentChainId,
+  } = useAllowedChains(parentDomain);
 
   if (baseChainOnly) {
     return (
@@ -101,7 +102,7 @@ export function SelectChain({
         if (!value) return;
         onValueChange(value);
       }}
-      defaultValue={`${DefaultPaymentChainId}`}
+      defaultValue={`${defaultPaymentChainId}`}
     >
       <SelectTrigger>
         <SelectValue placeholder="Select a Chain" />

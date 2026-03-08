@@ -41,6 +41,7 @@ import {
 } from '@namefi-astra/utils';
 import { getChain } from '@namefi-astra/utils';
 import { config, secrets } from '#lib/env';
+import { getAllowedChainsForNfscBalance } from '#lib/env/allowed-chains';
 import { isNotNil, isNotEmpty } from 'ramda';
 import { switchCaseOrDefault, resolve } from '@namefi-astra/utils';
 import type { Chain } from 'viem';
@@ -624,12 +625,12 @@ export async function determineAvailablePaymentMethods(
   const disableLivePaymentMethods = config.DISALLOW_LIVE_PAYMENT_METHODS; // TODO:  true if USE_MOCK_REGISTRARS; Add to global config
 
   // Get allowed chains and filter out non-testnet chains if using mocks
-  const allowedChains: Chain[] = config.ALLOWED_CHAINS.map((chain) =>
-    getChain(chain),
-  ).filter(
-    (chain) =>
-      isNotNil(chain) && !(!chain.testnet && disableLivePaymentMethods),
-  ) as Chain[];
+  const allowedChains: Chain[] = getAllowedChainsForNfscBalance()
+    .map((chain) => getChain(chain))
+    .filter(
+      (chain) =>
+        isNotNil(chain) && !(!chain.testnet && disableLivePaymentMethods),
+    ) as Chain[];
 
   // Map each chain to its corresponding NFSC payment method(s)
   const paymentMethodsFromChains = (
@@ -985,7 +986,9 @@ export async function getAllUserPaymentSourcesWithBalances(
   }> = [];
 
   // Add chains based on allowed chains config
-  const allowedChains = config.ALLOWED_CHAINS.map((chain) => getChain(chain));
+  const allowedChains = getAllowedChainsForNfscBalance().map((chain) =>
+    getChain(chain),
+  );
 
   for (const chain of allowedChains) {
     if (!chain) continue;

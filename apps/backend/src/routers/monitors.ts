@@ -3,6 +3,7 @@ import {
   getViemWalletClient,
 } from '#lib/crypto/viem-clients';
 import { config, secrets } from '#lib/env';
+import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import { getDynadotRegistrars } from '#lib/epp-registrars/dynadot';
 import type { Dynadot } from '@namefi-astra/registrars/lib/dynadot/client';
 import { DynadotCommand } from '@namefi-astra/registrars/lib/dynadot/common-types';
@@ -45,8 +46,13 @@ const CentralNicBalanceSchema = z.object({
 });
 
 async function checkSignerBalances() {
-  const signer = await getViemWalletClient(config.ALLOWED_CHAINS[0]);
-  return pMap(config.ALLOWED_CHAINS, async (chainId) =>
+  const configuredChainIds = getConfiguredAllowedChainIds();
+  if (configuredChainIds.length === 0) {
+    return [];
+  }
+
+  const signer = await getViemWalletClient(configuredChainIds[0]);
+  return pMap(configuredChainIds, async (chainId) =>
     checkBalance(chainId, signer.account.address),
   );
 }

@@ -35,7 +35,7 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
-import { config } from '@/lib/env';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
@@ -45,10 +45,8 @@ import { createOrderInputSchema } from '@namefi-astra/common/order-input';
 import {
   isNfscPayment,
   isStripePayment,
-  paymentProviderSchema,
 } from '@namefi-astra/common/payment-provider';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
-import { CHAINS } from '@namefi-astra/utils/chains';
 import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
@@ -64,16 +62,9 @@ import {
   type MultiPaymentSelectionChange,
 } from '@/components/payment-method/multi-payment-card';
 import { normalizeCreateOrderV2PaymentsToSafeIntCents } from '@/lib/payment-normalization';
+import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
-const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
-  ? CHAINS.base.id
-  : CHAINS.sepolia.id;
-
-const DEFAULT_NFSC_PAYMENT_PROVIDER =
-  DEFAULT_CHAIN_ID === CHAINS.base.id
-    ? paymentProviderSchema.enum.NFSC_BASE
-    : paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA;
 
 export default function CartPage() {
   type PaymentDetails = Omit<
@@ -111,6 +102,10 @@ export default function CartPage() {
     clearCart,
     refetchCart,
   } = useCartContext();
+  const { defaultNftChainId, defaultNfscBalanceChainId } = useAllowedChains();
+  const defaultNfscPaymentProvider = getPaymentProviderForChain(
+    defaultNfscBalanceChainId,
+  );
 
   const [
     isExplicitlyCheckingCartItemsForUpdates,
@@ -291,8 +286,8 @@ export default function CartPage() {
     ) {
       return paymentProviderDetails.nfscPaymentDetails.chainId;
     }
-    return DEFAULT_CHAIN_ID;
-  }, [checkoutWithCartRequestPaymentMethodDetails]);
+    return defaultNfscBalanceChainId;
+  }, [checkoutWithCartRequestPaymentMethodDetails, defaultNfscBalanceChainId]);
   const [multiPayment, setMultiPayment] = useState<MultiPaymentState>({
     enabled: false,
     includeNfsc: false,
@@ -348,10 +343,10 @@ export default function CartPage() {
       > | null = selectedNftWalletAddress
         ? {
             paymentProviderDetails: {
-              paymentProvider: DEFAULT_NFSC_PAYMENT_PROVIDER, // default value for receiving wallet
+              paymentProvider: defaultNfscPaymentProvider,
               nfscPaymentDetails: {
                 walletAddress: selectedNftWalletAddress,
-                chainId: DEFAULT_CHAIN_ID, // default value for receiving wallet
+                chainId: defaultNfscBalanceChainId,
               },
             },
           }
@@ -360,6 +355,8 @@ export default function CartPage() {
     }
   }, [
     cartItemsAreAllPromo,
+    defaultNfscBalanceChainId,
+    defaultNfscPaymentProvider,
     selectedNftWalletAddress,
     handlePaymentMethodDetailsChanged,
     handleSelectedPaymentMethodChanged,
@@ -547,7 +544,7 @@ export default function CartPage() {
           payments: normalizeResult.payments,
           nftMetadata: {
             nftWalletAddress: selectedNftWalletAddress,
-            nftChainId: DEFAULT_CHAIN_ID,
+            nftChainId: defaultNftChainId,
           },
         });
         return;
@@ -558,7 +555,7 @@ export default function CartPage() {
         ...validatedPaymentMethodDetails.data,
         nftMetadata: {
           nftWalletAddress: selectedNftWalletAddress,
-          nftChainId: DEFAULT_CHAIN_ID,
+          nftChainId: defaultNftChainId,
         },
       });
     } catch (_error) {}
@@ -566,6 +563,7 @@ export default function CartPage() {
     checkCartItemsForUpdates,
     createOrder,
     createOrderV2,
+    defaultNftChainId,
     multiPayment,
     checkoutWithCartRequestPaymentMethodDetails,
     items,

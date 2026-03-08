@@ -8,7 +8,7 @@ import { eq, isNull, or, sql, not, and, inArray } from 'drizzle-orm';
 import { register } from '../registry';
 import type { MetricsContext } from '../types';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
-import { config } from '#lib/env';
+import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 
 export const METRIC_NAME = 'namefi_domains_missing_in_registrar_total';
 
@@ -44,7 +44,7 @@ export async function collectDomainsWithNftMissingInRegistrar(
     )
     .where(
       and(
-        inArray(namefiNftView.chainId, config.ALLOWED_CHAINS),
+        inArray(namefiNftView.chainId, getAllowedChainsForNft()),
 
         or(
           and(

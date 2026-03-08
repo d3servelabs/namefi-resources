@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 
 export const configSchema = z.object({
   TYPE: z.enum(['development', 'production', 'local', 'preview']),
@@ -26,7 +27,7 @@ export const configSchema = z.object({
    * }
    */
   ADDITIONAL_HOSTNAME_MAP: z.record(z.string(), z.string()).default({}),
-  ALLOWED_CHAINS: z.number().array().default([]),
+  ALLOWED_CHAINS: z.preprocess((value) => value ?? [], ALLOWED_CHAINS_SCHEMA),
   HUNT_CAMPAIGN_KEYS: z.string().array().default([]),
   DATADOG_LOGS_CLIENT_TOKEN: z
     .string()

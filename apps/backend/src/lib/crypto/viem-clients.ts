@@ -9,12 +9,13 @@ import {
 } from 'viem/accounts';
 import type { Chain } from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
-import { config, secrets } from '#lib/env';
+import { secrets } from '#lib/env';
+import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import { chainsToUrls } from './rpc-urls';
 
-export const ALLOWED_CHAINS: readonly Chain[] = filter(
+export const CONFIGURED_CHAINS: readonly Chain[] = filter(
   isNotNil,
-  config.ALLOWED_CHAINS.map((chainId) => getChain(chainId) as Chain),
+  getConfiguredAllowedChainIds().map((chainId) => getChain(chainId) as Chain),
 );
 
 let publicClients: Awaited<ReturnType<typeof createPublicClients>> | null =
@@ -32,7 +33,7 @@ const createPublicClients = () => {
           chain,
         }),
       ],
-      ALLOWED_CHAINS,
+      CONFIGURED_CHAINS,
     ),
   );
 
@@ -84,15 +85,15 @@ const createWalletClients = async () => {
           chain,
         }),
       ],
-      ALLOWED_CHAINS,
+      CONFIGURED_CHAINS,
     ),
   );
   return walletClients;
 };
 
 export const getViemPublicClient = (chainId: number) => {
-  if (!ALLOWED_CHAINS.some((chain) => chain.id === chainId)) {
-    throw new Error(`Chain ${chainId} is not allowed`);
+  if (!CONFIGURED_CHAINS.some((chain) => chain.id === chainId)) {
+    throw new Error(`Chain ${chainId} is not configured`);
   }
   if (!publicClients) {
     publicClients = createPublicClients();
@@ -101,8 +102,8 @@ export const getViemPublicClient = (chainId: number) => {
 };
 
 export const getViemWalletClient = async (chainId: number) => {
-  if (!ALLOWED_CHAINS.some((chain) => chain.id === chainId)) {
-    throw new Error(`Chain ${chainId} is not allowed`);
+  if (!CONFIGURED_CHAINS.some((chain) => chain.id === chainId)) {
+    throw new Error(`Chain ${chainId} is not configured`);
   }
   if (!walletClients) {
     walletClients = await createWalletClients();
