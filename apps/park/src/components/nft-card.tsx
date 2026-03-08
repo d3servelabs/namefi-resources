@@ -31,11 +31,11 @@ const CHAIN_BADGE_BY_NAME = {
   },
   'robinhood-testnet': {
     label: 'Robinhood Testnet',
-    icon: '/assets/chains/robinhood-badge.svg',
+    icon: '/assets/chains/robinhood-testnet-badge.svg',
   },
   'chain-46630': {
     label: 'Robinhood Testnet',
-    icon: '/assets/chains/robinhood-badge.svg',
+    icon: '/assets/chains/robinhood-testnet-badge.svg',
   },
 } as const satisfies Record<string, { label: string; icon: string }>;
 
@@ -418,9 +418,9 @@ export function ParkNftCard({
   const primaryImage = aiPreviewUrl ?? null;
   const cardShellStyle = pbnApex
     ? {
-        boxShadow:
-          '0px 34px 78px -58px color-mix(in srgb, var(--brand-primary) 62%, rgba(0,0,0,0.5)), 0px 0px 48px -38px color-mix(in srgb, var(--brand-secondary) 58%, transparent)',
-      }
+      boxShadow:
+        '0px 34px 78px -58px color-mix(in srgb, var(--brand-primary) 62%, rgba(0,0,0,0.5)), 0px 0px 48px -38px color-mix(in srgb, var(--brand-secondary) 58%, transparent)',
+    }
     : undefined;
 
   return (
