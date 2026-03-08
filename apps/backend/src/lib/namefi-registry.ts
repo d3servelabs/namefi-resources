@@ -122,7 +122,7 @@ export const getPoweredByNamefi3PDomainsDetails = async () => {
 
   const cachedDomainsString = await redis.get('poweredbyNamefiDomains');
   const cachedDomains = cachedDomainsString
-    ? superjson.parse(cachedDomainsString)
+    ? superjson.parse<PoweredByNamefiDomainSelect[]>(cachedDomainsString)
     : undefined;
 
   const poweredbyNamefiDomains =

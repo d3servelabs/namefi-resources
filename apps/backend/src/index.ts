@@ -52,6 +52,7 @@ const DNS_RELATED_ROUTES = [
   /v1\/dnssec/,
 ];
 const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
+
 app.use(async (...args) => {
   return cors({
     origin: async (origin) => {
