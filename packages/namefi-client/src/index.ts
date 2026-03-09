@@ -83,6 +83,9 @@ export function createNamefiClient({
       const eip712Ctx = getPath(path, contract)?.['~orpc']?.meta?.eip712;
       const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
 
+      if (!primaryType) {
+        return {};
+      }
       const { signature, address } = await authentication.signer.signTypedData({
         domain: {
           name: 'Namefi',
@@ -113,6 +116,13 @@ export function createNamefiClient({
           !!options?.input &&
           typeof options.input === 'object'
         ) {
+          const eip712Ctx = getPath(options.path, contract)?.['~orpc']?.meta
+            ?.eip712;
+          const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
+
+          if (!primaryType) {
+            return;
+          }
           const clone: any = { ...options.input };
           Object.keys(clone).forEach((key) => {
             delete (options.input as any)[key];

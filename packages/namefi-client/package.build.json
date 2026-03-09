@@ -3,7 +3,7 @@
   "author": "Namefi <dev-team@namefi.io>",
   "license": "MIT",
   "description": "API client for Namefi",
-  "version": "0.0.0-pre.9",
+  "version": "0.0.0-pre.10",
   "type": "module",
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",

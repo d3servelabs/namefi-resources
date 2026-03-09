@@ -561,7 +561,7 @@
     },
     "packages/namefi-client": {
       "name": "@namefi-astra/client",
-      "version": "0.0.0-pre.9",
+      "version": "0.0.0-pre.10",
       "dependencies": {
         "@namefi-astra/backend": "workspace:*",
         "@orpc/client": "^1.13.2",
