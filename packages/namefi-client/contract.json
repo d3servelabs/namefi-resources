@@ -4,19 +4,6 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
-          "eip712": {
-            "input": {
-              "acceptedPrimaryTypes": ["ZoneSelectEnvelope"],
-              "types": {
-                "ZoneSelect": [{ "name": "zoneName", "type": "string" }],
-                "ZoneSelectEnvelope": [
-                  { "name": "payload", "type": "ZoneSelect" },
-                  { "name": "timestamp", "type": "uint256" },
-                  { "name": "nonce", "type": "string" }
-                ]
-              }
-            }
-          },
           "route": {
             "path": "/dns/records",
             "method": "GET",
@@ -282,6 +269,22 @@
       "~orpc": {
         "errorMap": {},
         "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ParkDomainEnvelope"],
+              "types": {
+                "ParkDomain": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "overrideExistingRecords", "type": "bool" }
+                ],
+                "ParkDomainEnvelope": [
+                  { "name": "payload", "type": "ParkDomain" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
           "route": {
             "path": "/dns/park",
             "method": "POST",
