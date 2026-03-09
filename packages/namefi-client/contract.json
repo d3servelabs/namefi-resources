@@ -288,7 +288,7 @@
           "route": {
             "path": "/dns/park",
             "method": "POST",
-            "tags": ["dns"],
+            "tags": ["dns", "EIP712"],
             "operationId": "parkDomain",
             "summary": "Park domain",
             "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."
@@ -297,7 +297,7 @@
         "route": {
           "path": "/dns/park",
           "method": "POST",
-          "tags": ["dns"],
+          "tags": ["dns", "EIP712"],
           "operationId": "parkDomain",
           "summary": "Park domain",
           "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."

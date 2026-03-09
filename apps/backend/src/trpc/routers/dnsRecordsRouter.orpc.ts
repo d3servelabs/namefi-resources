@@ -355,7 +355,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
       route: {
         path: '/dns/park',
         method: 'POST',
-        tags: ['dns'],
+        tags: ['dns', 'EIP712'],
         operationId: 'parkDomain',
         summary: 'Park domain',
         description:
