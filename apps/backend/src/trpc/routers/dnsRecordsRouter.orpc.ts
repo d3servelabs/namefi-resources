@@ -76,6 +76,12 @@ const DeleteRecords = z
   })
   .meta({ name: 'DeleteRecords', eip712: { structName: 'DeleteRecords' } });
 
+const ParkDomain = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    overrideExistingRecords: z.boolean().optional(),
+  })
+  .meta({ name: 'ParkDomain', eip712: { structName: 'ParkDomain' } });
 // ============================================================================
 // Router Definition
 // ============================================================================
@@ -86,7 +92,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   getRecords: publicProcedure
     .meta({
-      ...getEip712MetaFromZodSchema([zoneSelect]),
+      // ...getEip712MetaFromZodSchema([zoneSelect]),
       route: {
         path: '/dns/records',
         method: 'GET',
@@ -345,6 +351,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    */
   parkDomain: protectedProcedure
     .meta({
+      ...getEip712MetaFromZodSchema([ParkDomain]),
       route: {
         path: '/dns/park',
         method: 'POST',
@@ -355,12 +362,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
           'Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records.',
       },
     })
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        overrideExistingRecords: z.boolean().optional(),
-      }),
-    )
+    .input(ParkDomain)
     .output(z.object({ success: z.boolean() }))
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(

@@ -418,9 +418,9 @@ export function ParkNftCard({
   const primaryImage = aiPreviewUrl ?? null;
   const cardShellStyle = pbnApex
     ? {
-      boxShadow:
-        '0px 34px 78px -58px color-mix(in srgb, var(--brand-primary) 62%, rgba(0,0,0,0.5)), 0px 0px 48px -38px color-mix(in srgb, var(--brand-secondary) 58%, transparent)',
-    }
+        boxShadow:
+          '0px 34px 78px -58px color-mix(in srgb, var(--brand-primary) 62%, rgba(0,0,0,0.5)), 0px 0px 48px -38px color-mix(in srgb, var(--brand-secondary) 58%, transparent)',
+      }
     : undefined;
 
   return (
