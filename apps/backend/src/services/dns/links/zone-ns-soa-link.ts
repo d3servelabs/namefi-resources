@@ -179,7 +179,7 @@ export async function getZoneNsAndSoaFromRecord(
       !SEPARATE_ZONES_FOR_SUBDOMAINS &&
       parsedZoneName.registryType === 'subdomain'
     ) {
-      return null;
+      zone = null;
     }
     logger.trace({ nft: nft[0], recordName }, 'NFT found for NS or SOA answer');
   }
