@@ -11,9 +11,10 @@ import { prettyJSON } from 'hono/pretty-json';
 import { createLogger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { isHostnameAllowed } from '#lib/hostname-validation';
-import { dnssecRouter } from './routers/dnssec';
-import { nsJsonRouter } from './routers/ns-json';
-import { trackingRouter } from './routers/tracking';
+import { dnssecRouter } from './routers/dns/v1/dnssec';
+import { nsJsonRouter } from './routers/dns/v1/ns-json';
+import { dnsAnalyticsGateRouter } from './routers/dns/v1/analytics-gate';
+import { dnsRouter } from './routers/dns';
 import { emailAnalyticsRouter } from './routers/email-analytics';
 import { webhooksRouter } from './routers/webhooks';
 import { availabilityRouter } from './routers/availability';
@@ -50,6 +51,8 @@ const DNS_RELATED_ROUTES = [
   /v1\/dns\/tracking/,
   /v1\/tls/,
   /v1\/dnssec/,
+  /dns\/.*/,
+  /parking\/.*/,
 ];
 const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
 
@@ -126,10 +129,15 @@ app.use(
   }),
 );
 
+// #region legacy v1 routes deprecated
 app.route('v1/ns-json', nsJsonRouter);
-app.route('v1/dns/tracking', trackingRouter);
-app.route('v1/tls', tlsRouter);
+app.route('v1/dns/tracking', dnsAnalyticsGateRouter);
 app.route('v1/dnssec', dnssecRouter);
+app.route('v1/tls', tlsRouter);
+// #endregion legacy v1 routes
+
+app.route('dns', dnsRouter);
+app.route('parking/v1/tls', tlsRouter);
 
 app.route('v1/email', emailAnalyticsRouter);
 app.route('v1/availability', availabilityRouter);

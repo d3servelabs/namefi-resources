@@ -22,7 +22,7 @@ import {
   type PunycodeFqdn,
 } from '@namefi-astra/registrars/lib/data/validations';
 
-const trackingRouter = new Hono();
+const dnsAnalyticsGateRouter = new Hono();
 const _logger = createLogger({ context: 'TRACKING' });
 
 const fqdnLowercaseFromPunycodeSchema =
@@ -35,9 +35,9 @@ const requestQuerySchema = z.object({
     .pipe(fqdnLowercaseFromPunycodeSchema),
 });
 
-trackingRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
+dnsAnalyticsGateRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
-trackingRouter.get('/', async (c) => {
+dnsAnalyticsGateRouter.get('/', async (c) => {
   _logger.assign({ query: c.req.query() });
 
   const parsedQuery = requestQuerySchema.safeParse(c.req.query());
@@ -101,4 +101,4 @@ trackingRouter.get('/', async (c) => {
   }
 });
 
-export { trackingRouter };
+export { dnsAnalyticsGateRouter };
