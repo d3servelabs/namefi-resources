@@ -35,6 +35,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title,
       description,
+      robots: {
+        index: true,
+        follow: true,
+      },
       openGraph: {
         title,
         description,
@@ -72,6 +76,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: 'AI Brand Generation',
       description: 'View AI-generated brand assets.',
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 }
