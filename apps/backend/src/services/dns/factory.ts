@@ -22,6 +22,7 @@ import {
 } from './links/helpers';
 import { terminationLink } from './links/termination-link';
 import { createGatedLink } from './links/conditional-resolving-link';
+import { createZoneNsAndSoaLink } from './links/zone-ns-soa-link';
 
 export interface DnsRequestLinkDependencies {
   getNsAndSoaRecords: DnsAnswerResolver;
@@ -74,6 +75,49 @@ export function createDnsRequestHandlerV2(
 
   return createDnsRequestHandler({
     links: links ?? createDefaultDnsRequestLinksV2(dependencies),
+    createInitialContext:
+      createInitialContext ??
+      ((question) => createDnsRequestContext(question, { useMockDnsTable })),
+  });
+}
+
+export function createDefaultDnsRequestLinksV2_1(
+  dependencies: Partial<DnsRequestLinkDependencies> = {},
+): DnsRequestLink[] {
+  const resolvedDependencies: DnsRequestLinkDependencies = {
+    getNsAndSoaRecords,
+    getAnswerFromPreferences: getAnswerForDnsQueryFromPreferences,
+    getAnswerFromDnsRecords: getAnswerForDnsQueryFromDnsRecords,
+    getAnswerFromMockTable: getAnswerForDnsQueryMock,
+    ...dependencies,
+  };
+
+  return [
+    createLoggingLink(),
+    wildcardTerminationLink,
+    createZoneNsAndSoaLink(),
+    createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
+    createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
+    createGatedLink(
+      createResolvingLink(resolvedDependencies.getAnswerFromMockTable),
+      (context) => context.meta.useMockDnsTable && !hasAnswers(context.result),
+    ),
+    terminationLink,
+  ];
+}
+
+export function createDnsRequestHandlerV2_1(
+  options: CreateDefaultDnsRequestHandlerOptions = {},
+): DnsRequestHandler {
+  const {
+    links,
+    createInitialContext,
+    dependencies,
+    useMockDnsTable = DEFAULT_USE_MOCK_DNS_TABLE,
+  } = options;
+
+  return createDnsRequestHandler({
+    links: links ?? createDefaultDnsRequestLinksV2_1(dependencies),
     createInitialContext:
       createInitialContext ??
       ((question) => createDnsRequestContext(question, { useMockDnsTable })),

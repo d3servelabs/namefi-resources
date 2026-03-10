@@ -8,6 +8,7 @@ import { nsJsonRouter } from './v1/ns-json';
 import { dnsAnalyticsGateRouter } from './v1/analytics-gate';
 import { dnssecRouter } from './v1/dnssec';
 import { createNsJsonHandlerRouter } from './v2/json';
+import { createDnsRequestHandlerV2_1 } from '#services/dns/factory';
 
 const dnsRouter = new Hono();
 
@@ -16,5 +17,11 @@ dnsRouter.route('v1/tracking', dnsAnalyticsGateRouter);
 dnsRouter.route('v1/dnssec', dnssecRouter);
 
 dnsRouter.route('v2/json', createNsJsonHandlerRouter());
+dnsRouter.route(
+  'v2.1/json',
+  createNsJsonHandlerRouter({
+    dnsRequestHandler: createDnsRequestHandlerV2_1(),
+  }),
+);
 
 export { dnsRouter };
