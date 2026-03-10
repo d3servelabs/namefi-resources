@@ -1,13 +1,18 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Loader2, RefreshCcw } from 'lucide-react';
+import { Loader2, RefreshCcw, Rss } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useMemo, useRef } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button, buttonVariants } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { DEFAULT_MLS_FEED_LIMIT, type MlsSalesFeedPage } from '@/lib/mls/feed';
+import {
+  DEFAULT_MLS_FEED_LIMIT,
+  MLS_FEED_RSS_PATH,
+  type MlsSalesFeedPage,
+} from '@/lib/mls/feed';
 
 const SKELETON_KEYS = [
   'mls-skeleton-1',
@@ -72,25 +77,37 @@ export function MlsFeed() {
               Domains For Sale On Twitter
             </h1>
           </div>
-          <Button
-            variant="outline"
-            onClick={() => {
-              void refetch();
-            }}
-            disabled={isLoading || isRefetching}
-          >
-            {isRefetching ? (
-              <span className="inline-flex items-center gap-2">
-                <Loader2 className="size-4 animate-spin" />
-                Refreshing
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2">
-                <RefreshCcw className="size-4" />
-                Refresh
-              </span>
-            )}
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href={MLS_FEED_RSS_PATH}
+              target="_blank"
+              rel="noreferrer noopener"
+              className={buttonVariants({ variant: 'secondary' })}
+            >
+              <Rss className="size-4" />
+              Subscribe via RSS
+            </Link>
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                void refetch();
+              }}
+              disabled={isLoading || isRefetching}
+            >
+              {isRefetching ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="size-4 animate-spin" />
+                  Refreshing
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-2">
+                  <RefreshCcw className="size-4" />
+                  Refresh
+                </span>
+              )}
+            </Button>
+          </div>
         </div>
       </section>
 

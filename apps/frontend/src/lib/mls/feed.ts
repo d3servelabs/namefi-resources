@@ -42,6 +42,7 @@ export interface MlsSalesByHandlePage {
 
 export const DEFAULT_MLS_FEED_LIMIT = 20;
 export const MAX_MLS_FEED_LIMIT = 50;
+export const MLS_FEED_RSS_PATH = '/api/mls/feed/rss.xml';
 
 export const MLS_LISTING_REPORT_REASONS = [
   'already_sold',
