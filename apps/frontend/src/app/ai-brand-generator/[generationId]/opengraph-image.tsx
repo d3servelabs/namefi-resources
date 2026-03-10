@@ -32,9 +32,9 @@ async function loadGoogleFont(font: string) {
 export default async function Image({
   params,
 }: {
-  params: { domain: string; generationId: string };
+  params: Promise<{ generationId: string }>;
 }) {
-  const { domain, generationId } = params;
+  const { generationId } = await params;
 
   try {
     // Fetch the generation data
@@ -54,7 +54,7 @@ export default async function Image({
           }}
         >
           <div tw="flex flex-col items-center text-center text-white">
-            <h1 tw="text-6xl font-bold mb-4">{domain}</h1>
+            <h1 tw="text-6xl font-bold mb-4">Namefi AI</h1>
             <p tw="text-lg opacity-75 mt-2">Generation not found</p>
           </div>
         </div>,
@@ -62,9 +62,15 @@ export default async function Image({
       );
     }
 
+    const domain = generation.domain?.trim();
+    const destinationUrl = domain
+      ? `https://${domain}`
+      : `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/${generationId}`;
+    const domainLabel = domain || new URL(destinationUrl).host;
+
     // Use QR code API service that works in edge runtime
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(
-      `https://${domain}?utm_source=namefi&utm_medium=og_image&utm_campaign=jain`,
+      `${destinationUrl}?utm_source=namefi&utm_medium=og_image&utm_campaign=jain`,
     )}&bgcolor=FFFFFF&color=171717&margin=12&ecc=H`;
 
     return new ImageResponse(
@@ -92,9 +98,9 @@ export default async function Image({
             <img
               src={qrCodeUrl}
               tw="w-48 h-48 mb-6 rounded-lg"
-              alt={`QR code for ${domain}`}
+              alt={`QR code for ${domainLabel}`}
             />
-            <div tw="text-white text-xl font-bold mb-6">{domain}</div>
+            <div tw="text-white text-xl font-bold mb-6">{domainLabel}</div>
             <img
               src={`${config.FIRST_PARTY_DEPLOYMENT_URL}/jain-with-namefi.svg`}
               tw="h-9"
@@ -127,7 +133,7 @@ export default async function Image({
         }}
       >
         <div tw="flex flex-col items-center text-center text-white">
-          <h1 tw="text-6xl font-bold mb-4">{domain}</h1>
+          <h1 tw="text-6xl font-bold mb-4">Namefi AI</h1>
           <p tw="text-lg opacity-75 mt-2">Unable to load</p>
         </div>
       </div>,

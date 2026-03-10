@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { proxyUnauthenticatedClient } from '@/lib/trpc/server';
 import { cache } from 'react';
 import { GenerationDetailsClient } from '@/components/generation-details';
-import { config } from '@/lib/env';
 
 type Props = {
   params: Promise<{ generationId: string }>;
@@ -30,37 +29,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? `AI-generated logo design for ${generation.domain}. Created with advanced AI technology to help establish your brand identity with professional logo design.`
         : `AI-generated marketing image for ${generation.domain}. Professional marketing visuals created with artificial intelligence to enhance your brand presence and promotional materials.`
       : 'View AI-generated brand assets.';
+    const canonicalPath = `/ai-brand-generator/${generationId}`;
+    const openGraphImagePath = `${canonicalPath}/opengraph-image`;
 
     return {
       title,
       description,
-      metadataBase: new URL(
-        `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/${generationId}`,
-      ),
       openGraph: {
         title,
         description,
         type: 'website',
-        url: '/',
+        url: canonicalPath,
         images: [
           {
-            url: '/opengraph-image',
+            url: openGraphImagePath,
             width: 1200,
             height: 630,
           },
         ],
       },
       alternates: {
-        canonical: '/',
+        canonical: canonicalPath,
       },
       twitter: {
         card: 'summary_large_image',
         title,
         description,
+        site: '@namefi_io',
         creator: '@namefi_io',
         images: [
           {
-            url: '/opengraph-image',
+            url: openGraphImagePath,
             width: 1200,
             height: 630,
           },

@@ -3,9 +3,6 @@ import { Landing } from './landing';
 
 export const originConfig: OriginConfig = {
   metadata: {
-    alternates: {
-      canonical: '/',
-    },
     title: 'Tokenized domains for the future internet - Namefi',
     description:
       'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
