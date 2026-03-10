@@ -7,11 +7,14 @@ import { Hono } from 'hono';
 import { nsJsonRouter } from './v1/ns-json';
 import { dnsAnalyticsGateRouter } from './v1/analytics-gate';
 import { dnssecRouter } from './v1/dnssec';
+import { createNsJsonHandlerRouter } from './v2/json';
 
 const dnsRouter = new Hono();
 
 dnsRouter.route('v1/json', nsJsonRouter);
 dnsRouter.route('v1/tracking', dnsAnalyticsGateRouter);
 dnsRouter.route('v1/dnssec', dnssecRouter);
+
+dnsRouter.route('v2/json', createNsJsonHandlerRouter());
 
 export { dnsRouter };

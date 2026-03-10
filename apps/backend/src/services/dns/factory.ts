@@ -1,0 +1,81 @@
+import { getAnswerForDnsQueryFromPreferences } from '#lib/domains/domain-preferences';
+import {
+  createDnsRequestContext,
+  createDnsRequestHandler,
+} from './dns-request-handler';
+import type {
+  DnsAnswerResolver,
+  DnsQuestion,
+  DnsRequestContext,
+  DnsRequestHandler,
+  DnsRequestLink,
+} from './dns-request-handler.types';
+import { wildcardTerminationLink } from './links/wildcard-termination-link';
+import { createLoggingLink } from './links/logging-link';
+import { createResolvingLink } from './links/resolving-link';
+import { getAnswerForDnsQueryMock } from './links/mock';
+import {
+  DEFAULT_USE_MOCK_DNS_TABLE,
+  getAnswerForDnsQueryFromDnsRecords,
+  getNsAndSoaRecords,
+  hasAnswers,
+} from './links/helpers';
+import { terminationLink } from './links/termination-link';
+import { createGatedLink } from './links/conditional-resolving-link';
+
+export interface DnsRequestLinkDependencies {
+  getNsAndSoaRecords: DnsAnswerResolver;
+  getAnswerFromPreferences: DnsAnswerResolver;
+  getAnswerFromDnsRecords: DnsAnswerResolver;
+  getAnswerFromMockTable: DnsAnswerResolver;
+}
+
+export interface CreateDefaultDnsRequestHandlerOptions {
+  links?: DnsRequestLink[];
+  createInitialContext?: (question: DnsQuestion) => DnsRequestContext;
+  dependencies?: Partial<DnsRequestLinkDependencies>;
+  useMockDnsTable?: boolean;
+}
+
+export function createDefaultDnsRequestLinksV2(
+  dependencies: Partial<DnsRequestLinkDependencies> = {},
+): DnsRequestLink[] {
+  const resolvedDependencies: DnsRequestLinkDependencies = {
+    getNsAndSoaRecords,
+    getAnswerFromPreferences: getAnswerForDnsQueryFromPreferences,
+    getAnswerFromDnsRecords: getAnswerForDnsQueryFromDnsRecords,
+    getAnswerFromMockTable: getAnswerForDnsQueryMock,
+    ...dependencies,
+  };
+
+  return [
+    createLoggingLink(),
+    wildcardTerminationLink,
+    createResolvingLink(resolvedDependencies.getNsAndSoaRecords),
+    createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
+    createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
+    createGatedLink(
+      createResolvingLink(resolvedDependencies.getAnswerFromMockTable),
+      (context) => context.meta.useMockDnsTable && !hasAnswers(context.result),
+    ),
+    terminationLink,
+  ];
+}
+
+export function createDnsRequestHandlerV2(
+  options: CreateDefaultDnsRequestHandlerOptions = {},
+): DnsRequestHandler {
+  const {
+    links,
+    createInitialContext,
+    dependencies,
+    useMockDnsTable = DEFAULT_USE_MOCK_DNS_TABLE,
+  } = options;
+
+  return createDnsRequestHandler({
+    links: links ?? createDefaultDnsRequestLinksV2(dependencies),
+    createInitialContext:
+      createInitialContext ??
+      ((question) => createDnsRequestContext(question, { useMockDnsTable })),
+  });
+}
