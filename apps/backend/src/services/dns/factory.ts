@@ -44,7 +44,13 @@ export function createDefaultDnsRequestLinksV2(
   const resolvedDependencies: DnsRequestLinkDependencies = {
     getNsAndSoaRecords,
     getAnswerFromPreferences: getAnswerForDnsQueryFromPreferences,
-    getAnswerFromDnsRecords: getAnswerForDnsQueryFromDnsRecords,
+    getAnswerFromDnsRecords: async (...args: Parameters<DnsAnswerResolver>) => {
+      const result = await getAnswerForDnsQueryFromDnsRecords(...args);
+      if (result?.RCODE === 3) {
+        return null; // make v2.1 backward compatible with v2
+      }
+      return result;
+    },
     getAnswerFromMockTable: getAnswerForDnsQueryMock,
     ...dependencies,
   };

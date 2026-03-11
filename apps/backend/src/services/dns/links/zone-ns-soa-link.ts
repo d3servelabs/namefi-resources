@@ -53,7 +53,8 @@ export function createZoneNsAndSoaLink(): DnsRequestLink {
     if (
       result &&
       isNotNil(result.RCODE) &&
-      ((result.RCODE === 0 && !!result?.Answer?.length) || result.RCODE !== 0)
+      ((result.RCODE === 0 && !!result?.Answer?.length) ||
+        (result.RCODE !== 0 && result.RCODE !== 3))
     ) {
       return result;
     }
@@ -89,7 +90,12 @@ export function createZoneNsAndSoaLink(): DnsRequestLink {
         RCODE: 0,
       };
     }
-    return { RCODE: 3, Answer: [], Authority: soaRecords ? soaRecords : [] };
+    const Rcode = result?.RCODE ?? 3;
+    return {
+      RCODE: Rcode,
+      Answer: [],
+      Authority: soaRecords && Rcode === 3 ? soaRecords : [],
+    };
   };
 }
 

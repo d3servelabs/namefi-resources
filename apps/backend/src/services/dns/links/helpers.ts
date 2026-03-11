@@ -62,24 +62,62 @@ export async function getAnswerForDnsQueryFromDnsRecords(
         sql`ARRAY_TO_STRING( ARRAY[ CASE WHEN ${dnsRecordsTable.name} = '@' THEN NULL ELSE lower(${dnsRecordsTable.name}) END, lower(${dnsRecordsTable.zoneName})], '.')`,
         recordName,
       ),
-      eq(dnsRecordsTable.type, recordType),
+      // eq(dnsRecordsTable.type, recordType),
     ),
   });
 
   logger.trace({ records }, 'DNS records lookup result');
 
   if (records.length === 0) {
-    return null;
+    return { RCODE: 3, Answer: [] };
   }
 
-  return {
-    Answer: records.map((record) => ({
-      name: recordName,
-      type: dnsRecordTypeCodes.get(record.type) as number,
-      TTL: record.ttl,
-      data: record.rdata,
-    })),
-  };
+  const cnameRecord = records.find((record) => record.type === 'CNAME');
+  const hasCname = !!cnameRecord;
+  if (hasCname) {
+    return {
+      RCODE: 0,
+      Answer: [
+        {
+          name: recordName,
+          type: dnsRecordTypeCodes.get('CNAME') as number,
+          TTL: cnameRecord.ttl,
+          data: cnameRecord.rdata,
+        },
+      ],
+    };
+  }
+
+  const nsRecords = records.filter((record) => record.type === 'NS');
+  const hasNs = nsRecords.length > 0;
+  if (hasNs) {
+    return {
+      RCODE: 0,
+      Answer: nsRecords.map((record) => ({
+        name: recordName,
+        type: dnsRecordTypeCodes.get('NS') as number,
+        TTL: record.ttl,
+        data: record.rdata,
+      })),
+    };
+  }
+
+  const requestedType = records.filter((record) => record.type === recordType);
+  const hasRequestedType = requestedType.length > 0;
+
+  if (hasRequestedType) {
+    return {
+      RCODE: 0,
+      Answer: requestedType.map((record) => ({
+        name: recordName,
+        type: dnsRecordTypeCodes.get(record.type) as number,
+        TTL: record.ttl,
+        data: record.rdata,
+      })),
+    };
+  }
+
+  return { RCODE: 0, Answer: [] };
 }
 
 export async function getNsAndSoaRecords(
