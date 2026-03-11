@@ -89,7 +89,31 @@ async function userQualifiesForTestNamefiDevPromo({
 // ============================================================================
 // 0x.city Promo
 // ============================================================================
+const PARENT_DOMAINS_WITH_TRIAL_REGISTRATION = ['0x.city'];
 
+export async function userQualifiesForDomainNameTrialRegistration({
+  normalizedDomainName,
+  user,
+  duration,
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+  user: { privyUserId: string };
+  duration: { value: number; unit: 'year' | 'day' };
+}): Promise<boolean> {
+  const { subdomain, parentDomain } =
+    getSubDomainAndParentDomainFromNormalizedDomainName(normalizedDomainName);
+
+  if (PARENT_DOMAINS_WITH_TRIAL_REGISTRATION.includes(parentDomain)) {
+    switch (duration.unit) {
+      case 'year':
+        return duration.value === 0;
+      case 'day':
+        return duration.value <= 30;
+    }
+  }
+
+  return false;
+}
 /*
  * Function that checks if the the User qualifies for a promo for the provided normalizedDomainName.
  * The current implementation checks if normalizedDomainName has the "0x.city" parent domain, the

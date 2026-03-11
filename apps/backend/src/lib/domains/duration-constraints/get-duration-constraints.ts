@@ -66,9 +66,12 @@ export async function getDomainDurationConstraints(
         `Domain ${domainName} is not a valid powered by namefi 3P domain`,
       );
     }
-    const { durationConstraints } = record;
+    const { durationConstraints, normalizedDomainName } = record;
     return {
-      minYears: durationConstraints.minDurationInYears,
+      minYears:
+        normalizedDomainName === '0x.city'
+          ? 0
+          : durationConstraints.minDurationInYears,
       maxYears: durationConstraints.maxDurationInYears,
     } satisfies DomainDurationConstraints;
   }

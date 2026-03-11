@@ -4,7 +4,7 @@ import type {
   NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { addYears, getUnixTime } from 'date-fns';
+import { addDays, addYears, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { getDomainLevels } from '#lib/get-domain-levels';
 import {
@@ -97,9 +97,14 @@ export async function acquireDomainWorkflow(
         nonRetryable: true,
       });
     }
-    expirationTimeInSeconds = getUnixTime(
-      addYears(new Date(), input.durationInYears),
-    );
+    const expirationTime =
+      input.durationInYears === 0
+        ? addDays(
+            new Date(),
+            await getConfig('ZERO_PAYMENT_REGISTRATION_TRIAL_DAYS'),
+          )
+        : addYears(new Date(), input.durationInYears);
+    expirationTimeInSeconds = getUnixTime(expirationTime);
     registrarKey = 'namefi';
   } else {
     throw workflow.ApplicationFailure.create({

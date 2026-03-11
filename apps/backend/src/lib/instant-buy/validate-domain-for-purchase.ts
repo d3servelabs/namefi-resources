@@ -10,7 +10,10 @@ import {
   type DomainAvailabilityInfo,
 } from '#lib/namefi-registry';
 import { getDomainPricingForOperation } from '../../trpc/types';
-import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
+import {
+  userQualifiesForDomainNamePromo,
+  userQualifiesForDomainNameTrialRegistration,
+} from '#lib/user-promo';
 import { createLogger } from '#lib/logger';
 
 const logger = createLogger({ module: 'instant-buy' });
@@ -157,12 +160,19 @@ export async function validateDomainForInstantPurchase(
 
   // 7. If price is 0, verify promo eligibility
   if (priceInUsdCents === 0 && user) {
+    const qualifiesForTrialRegistration =
+      await userQualifiesForDomainNameTrialRegistration({
+        normalizedDomainName,
+        user: { privyUserId: user.privyUserId },
+        duration: { value: durationInYears, unit: 'year' },
+      });
+
     const qualifiesForPromo = await userQualifiesForDomainNamePromo({
       normalizedDomainName,
       user: { privyUserId: user.privyUserId },
     });
 
-    if (!qualifiesForPromo) {
+    if (!qualifiesForPromo && !qualifiesForTrialRegistration) {
       logger.debug(
         { normalizedDomainName, userId: user.id },
         'User does not qualify for promotional pricing',

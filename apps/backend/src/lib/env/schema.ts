@@ -343,6 +343,11 @@ export const configSchema = z.object({
    * - eip155:8453 -> 8453 (Base)
    */
   X402_DEFAULT_NFT_CHAINID: z.coerce.number().optional(),
+  ZERO_PAYMENT_REGISTRATION_TRIAL_DAYS: z
+    .string()
+    .optional()
+    .default('2')
+    .pipe(z.coerce.number()),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

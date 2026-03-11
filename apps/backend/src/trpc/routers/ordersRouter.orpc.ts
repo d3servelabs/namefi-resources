@@ -81,10 +81,20 @@ const paymentMethodDetailsSchema = z.union([
 
 type PaymentMethodDetails = z.infer<typeof paymentMethodDetailsSchema>;
 
-export const instantBuyInputSchema = z
+export const instantBuyDefaultWalletInputSchema = z
   .object({
     normalizedDomainName: namefiNormalizedDomainSchema,
-    durationInYears: z.number().int().min(1).max(10).default(1),
+    durationInYears: z.number().int().min(0).max(10).default(1),
+  })
+  .meta({
+    name: 'InstantRegisterDomainDefaultWallet',
+    eip712: { structName: 'InstantRegisterDomainDefaultWallet' },
+  });
+defaultEip712SchemaConverter.register(instantBuyDefaultWalletInputSchema);
+
+export const instantBuyInputSchema = z
+  .object({
+    ...instantBuyDefaultWalletInputSchema.shape,
     nftReceivinggWallet: z
       .object({
         walletAddress: checksumWalletAddressSchema,
@@ -99,17 +109,6 @@ export const instantBuyInputSchema = z
     name: 'InstantRegisterDomain',
     eip712: { structName: 'InstantRegisterDomain' },
   });
-
-export const instantBuyDefaultWalletInputSchema = z
-  .object({
-    normalizedDomainName: namefiNormalizedDomainSchema,
-    durationInYears: z.number().int().min(1).max(10).default(1),
-  })
-  .meta({
-    name: 'InstantRegisterDomainDefaultWallet',
-    eip712: { structName: 'InstantRegisterDomainDefaultWallet' },
-  });
-defaultEip712SchemaConverter.register(instantBuyDefaultWalletInputSchema);
 
 const postProcessRecordSchema = z.object({
   name: z.string(),
@@ -131,10 +130,8 @@ const postProcessOrderItemSchema = z.object({
 });
 
 const registerWithRecordsInputSchema = z.object({
-  normalizedDomainName: namefiNormalizedDomainSchema,
-  durationInYears: z.number().int().min(1).max(10).default(1),
+  ...instantBuyInputSchema.shape,
   records: z.array(postProcessRecordSchema).optional().default([]),
-  nftReceivinggWallet: instantBuyInputSchema.shape.nftReceivinggWallet,
 });
 
 type RegisterDomainInput = z.infer<typeof instantBuyInputSchema>;

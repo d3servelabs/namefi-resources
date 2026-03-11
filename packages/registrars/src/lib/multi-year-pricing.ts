@@ -82,7 +82,7 @@ export function computeChargesInUsdOrThrow(
   const durationInYears = z
     .number()
     .int('Duration must be an integer')
-    .min(1, 'Invalid duration')
+    .min(0, 'Invalid duration') // TODO(SAMI): granual duration
     .max(10, 'Invalid duration')
     .parse(_durationInYears);
 
