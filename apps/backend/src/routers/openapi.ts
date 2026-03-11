@@ -144,14 +144,22 @@ const openApiDocument = await openAPIGenerator.generate(
             },
           ]
         : []),
-      {
-        description: 'Dev Server',
-        url: 'http://backend.astra.namefi.dev/v-next/',
-      },
-      {
-        description: 'Live Server',
-        url: 'http://backend.astra.namefi.io/v-next/',
-      },
+      ...(process.env.ENVIRONMENT === 'production'
+        ? [
+            {
+              description: 'Dev Server',
+              url: 'https://api.namefi.dev/v-next/',
+            },
+          ]
+        : []),
+      ...(process.env.ENVIRONMENT === 'development'
+        ? [
+            {
+              description: 'Live Server',
+              url: 'https://api.namefi.io/v-next/',
+            },
+          ]
+        : []),
     ],
     tags: [
       { name: 'dns' },
@@ -160,13 +168,9 @@ const openApiDocument = await openAPIGenerator.generate(
       { name: 'balance' },
       { name: 'search' },
     ],
-    security: [{ bearerAuth: [] }, { apiKeyAuth: [] }],
+    security: [{ apiKeyAuth: [] }],
     components: {
       securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-        },
         apiKeyAuth: {
           type: 'apiKey',
           name: 'x-api-key',
@@ -187,12 +191,12 @@ providersRouter.get('/openapi/doc', (c, next) => {
     theme: 'fastify',
     baseServerURL:
       process.env.ENVIRONMENT === 'production'
-        ? 'http://backend.astra.namefi.io/v-next'
+        ? 'https://api.namefi.io/v-next'
         : process.env.ENVIRONMENT === 'development'
-          ? 'http://backend.astra.namefi.dev/v-next'
+          ? 'https://api.namefi.dev/v-next'
           : process.env.ENVIRONMENT === 'preview'
-            ? 'http://localhost:3000/v-next'
-            : 'http://localhost:3000/v-next',
+            ? '/v-next'
+            : 'http://localhost:3300/v-next',
   })(c, next);
 });
 
