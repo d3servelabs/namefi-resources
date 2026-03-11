@@ -14,9 +14,8 @@ import {
 } from '@/lib/content';
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
+import { resolveBaseUrl } from '@/lib/site-url';
 import { useMDXComponents } from '@/mdx-components';
-
-const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateStaticParams() {
   return getGlossaryParams();
@@ -33,12 +32,7 @@ export async function generateMetadata({
 
   if (!entry) return {};
 
-  const rawBaseUrl =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
-  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
-    ? rawBaseUrl
-    : `https://${rawBaseUrl}`;
-  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
+  const baseUrl = resolveBaseUrl();
   const canonicalPath = `/r/${locale}/glossary/${slug}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;

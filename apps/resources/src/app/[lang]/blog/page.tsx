@@ -4,14 +4,13 @@ import { localeDateLocales, i18n } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPostsForLocale } from '@/lib/content';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
+import { resolveBaseUrl } from '@/lib/site-url';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
 import { loadMdxReadingTime } from '@/lib/load-mdx-module';
-
-const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateMetadata({
   params,
@@ -23,12 +22,7 @@ export async function generateMetadata({
     ? (lang as Locale)
     : i18n.defaultLocale;
 
-  const rawBaseUrl =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
-  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
-    ? rawBaseUrl
-    : `https://${rawBaseUrl}`;
-  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
+  const baseUrl = resolveBaseUrl();
   const canonicalPath = `/r/${locale}/blog`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;

@@ -4,13 +4,12 @@ import { i18n, localeDateLocales } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getGlossaryEntriesForLocale } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
+import { resolveBaseUrl } from '@/lib/site-url';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
-
-const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateMetadata({
   params,
@@ -27,12 +26,7 @@ export async function generateMetadata({
   const sectionTitle = dictionary.glossary.indexTitle ?? navLabel;
   const sectionDescription = dictionary.glossary.indexDescription ?? navLabel;
 
-  const rawBaseUrl =
-    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
-  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
-    ? rawBaseUrl
-    : `https://${rawBaseUrl}`;
-  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
+  const baseUrl = resolveBaseUrl();
   const canonicalPath = `/r/${locale}/glossary`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;

@@ -17,8 +17,11 @@ function toAbsoluteUrl(path: string): string {
   return new URL(path, config.FIRST_PARTY_DEPLOYMENT_URL).toString();
 }
 
-// biome-ignore lint/style/noDefaultExport: Next.js metadata route API requires default export.
-export default function sitemap(): MetadataRoute.Sitemap {
+function getBaseOrigin() {
+  return new URL(config.FIRST_PARTY_DEPLOYMENT_URL).origin;
+}
+
+export function buildSitemapEntries(): MetadataRoute.Sitemap {
   const staticEntries: MetadataRoute.Sitemap = PUBLIC_STATIC_ROUTES.map(
     (route) => ({
       url: toAbsoluteUrl(route.path),
@@ -36,4 +39,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   return [...staticEntries, ...campaignEntries];
+}
+
+function escapeXml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
+export function buildSitemapIndexXml(): string {
+  const baseOrigin = getBaseOrigin();
+  const sitemapUrls = [
+    new URL('/sitemap/sitemap.xml', baseOrigin).toString(),
+    new URL('/r/sitemap.xml', baseOrigin).toString(),
+  ];
+  const sitemapsXml = sitemapUrls
+    .map(
+      (sitemapUrl) => `<sitemap><loc>${escapeXml(sitemapUrl)}</loc></sitemap>`,
+    )
+    .join('');
+
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>` +
+    `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemapsXml}</sitemapindex>`
+  );
 }
