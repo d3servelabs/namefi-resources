@@ -4,7 +4,7 @@ import {
   namefiNftOwnersCte,
   namefiNftOwnersView,
 } from '@namefi-astra/db';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { resolve, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { and, eq, sql } from 'drizzle-orm';
@@ -19,6 +19,7 @@ import type {
   DnsRequestContext,
   DnsRequestLink,
 } from '../dns-request-handler.types';
+import { getNonUserSpecificDomainPreferencesAndConfig } from '#lib/domains/domain-preferences';
 
 const logger = createLogger({ context: 'DNS-Request-Handler' });
 export const nameserverAdminPrefixRegex = /^.*?\./;
@@ -69,6 +70,15 @@ export async function getAnswerForDnsQueryFromDnsRecords(
   logger.trace({ records }, 'DNS records lookup result');
 
   if (records.length === 0) {
+    const result = await resolve(
+      getNonUserSpecificDomainPreferencesAndConfig(recordName),
+    );
+    if (result.success) {
+      const { autoEnsEnabled, autoParkEnabled, forwardTo } = result.result;
+      const hasRecords = !!forwardTo || autoEnsEnabled || autoParkEnabled;
+      return { RCODE: hasRecords ? 0 : 3, Answer: [] };
+    }
+
     return { RCODE: 3, Answer: [] };
   }
 
