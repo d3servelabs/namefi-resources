@@ -5,7 +5,10 @@ import { TRPCError } from '@trpc/server';
 import { and, eq, inArray } from 'drizzle-orm';
 import type { z } from 'zod';
 import { areRecordsEqual } from './helpers';
-import { updateDomainConfig } from '#lib/domains/domain-preferences';
+import {
+  getNonUserSpecificDomainPreferencesAndConfig,
+  updateDomainConfig,
+} from '#lib/domains/domain-preferences';
 
 import { PARKED_DOMAIN_RECORDS } from './managed-records';
 import { validateZone } from './service';
@@ -46,13 +49,9 @@ export function getZoneRecordsInPlaceOfParkedRecords(
 export async function isDomainParked(
   normalizedDomainName: NamefiNormalizedDomain,
 ) {
-  const records =
-    await getZoneRecordsInPlaceOfParkedRecords(normalizedDomainName);
-  return PARKED_DOMAIN_RECORDS.every((parkedRecord) =>
-    records.some((record) =>
-      areRecordsEqual(record as z.infer<typeof recordSchema>, parkedRecord),
-    ),
-  );
+  const domainConfig =
+    await getNonUserSpecificDomainPreferencesAndConfig(normalizedDomainName);
+  return domainConfig.autoParkEnabled;
 }
 
 /**
@@ -85,5 +84,22 @@ export async function parkDomain(
 
   await updateDomainConfig(normalizedDomainName, {
     autoParkEnabled: true,
+  });
+}
+
+/**
+ * Helper function to toggle domain parking
+ * @param normalizedDomainName - The normalized domain name to park
+ * @param enableParking - Whether to enable parking
+ * @param overrideExistingRecords - Whether to override the conflicting records if they already exist
+ */
+export async function toggleDomainParking(
+  normalizedDomainName: NamefiNormalizedDomain,
+  enableParking: boolean,
+  overrideExistingRecords = false,
+) {
+  //todo
+  await updateDomainConfig(normalizedDomainName, {
+    autoParkEnabled: enableParking,
   });
 }

@@ -5,7 +5,11 @@ import { TRPCError } from '@trpc/server';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { assoc, isNotNil, map, pickBy, pluck } from 'ramda';
 import { z } from 'zod';
-import { isDomainParked, parkDomain } from '#services/dns/parking';
+import {
+  isDomainParked,
+  parkDomain,
+  toggleDomainParking,
+} from '#services/dns/parking';
 import {
   createRecord,
   createRecordInputSchema,
@@ -82,6 +86,17 @@ const ParkDomain = z
     overrideExistingRecords: z.boolean().optional(),
   })
   .meta({ name: 'ParkDomain', eip712: { structName: 'ParkDomain' } });
+
+const ToggleDomainParking = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    enableParking: z.boolean(),
+    overrideExistingRecords: z.boolean().optional(),
+  })
+  .meta({
+    name: 'ToggleDomainParking',
+    eip712: { structName: 'ToggleDomainParking' },
+  });
 // ============================================================================
 // Router Definition
 // ============================================================================
@@ -381,7 +396,42 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
         return { success: false };
       }
     }),
+  /**
+   * Park a domain
+   */
+  toggleDomainParking: protectedProcedure
+    .meta({
+      ...getEip712MetaFromZodSchema([ToggleDomainParking]),
+      route: {
+        path: '/dns/park',
+        method: 'PUT',
+        tags: ['dns', 'EIP712'],
+        operationId: 'toggleDomainParking',
+        summary: 'Toggle Domain Parking',
+        description:
+          'Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records.',
+      },
+    })
+    .input(ToggleDomainParking)
+    .output(z.object({ success: z.boolean() }))
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.normalizedDomainName,
+        ctx.user,
+      );
 
+      try {
+        await toggleDomainParking(
+          input.normalizedDomainName,
+          input.enableParking,
+          input.overrideExistingRecords,
+        );
+
+        return { success: true };
+      } catch (e) {
+        return { success: false };
+      }
+    }),
   /**
    * Check if a domain is parked
    */
