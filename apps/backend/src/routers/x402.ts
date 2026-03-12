@@ -125,7 +125,7 @@ x402Router.get('/domain/:domain', async (c) => {
 
   // Parse query parameters
   const queryResult = domainQuerySchema.safeParse({
-    years: c.req.query('years'),
+    years: c.req.query('years') || c.req.query('durationInYears'),
   });
   const durationInYears = queryResult.success ? queryResult.data.years : 1;
 

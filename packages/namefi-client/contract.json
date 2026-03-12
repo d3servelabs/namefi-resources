@@ -552,6 +552,29 @@
           "description": "Retrieve payment method details for an order, including card info for Stripe payments and wallet addresses for on-chain payments."
         }
       }
+    },
+    "registerDomainX402": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/x402/domain/{normalizedDomainName}",
+            "method": "GET",
+            "tags": ["orders", "base-route"],
+            "operationId": "registerDomainX402",
+            "summary": "Instant Register domain With X402",
+            "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+          }
+        },
+        "route": {
+          "path": "/x402/domain/{normalizedDomainName}",
+          "method": "GET",
+          "tags": ["orders", "base-route"],
+          "operationId": "registerDomainX402",
+          "summary": "Instant Register domain With X402",
+          "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+        }
+      }
     }
   },
   "balance": {

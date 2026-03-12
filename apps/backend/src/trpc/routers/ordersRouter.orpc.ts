@@ -648,4 +648,41 @@ export const ordersRouterOrpc = createTRPCRouter({
 
       return res;
     }),
+
+  /**
+   * Instant buy - single domain purchase without cart
+   */
+  registerDomainX402: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'register_domain',
+      extraInput: input,
+    }),
+  )
+    .meta({
+      route: {
+        path: '/x402/domain/{normalizedDomainName}',
+        method: 'GET',
+        tags: ['orders', 'base-route'],
+        operationId: 'registerDomainX402',
+        summary: 'Instant Register domain With X402',
+        description:
+          'Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow.',
+      },
+    })
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        durationInYears: instantBuyInputSchema.shape.durationInYears,
+      }),
+    )
+    .output(orderOutputSchema)
+    .query(async ({ ctx, input }) => {
+      throw new Error();
+    }),
 });

@@ -10,6 +10,19 @@ import {
 import { OpenAPILink } from '@orpc/openapi-client/fetch';
 import contract from '../contract.json';
 import type { orpcRouter as router } from '@namefi-astra/backend/openapi';
+import {
+  createNamefiClientX402Fetch,
+  type CreateNamefiClientX402Options,
+  type NamefiClientContext,
+} from './client-x402';
+
+type NamefiClientLogger =
+  | {
+      info: (...args: any[]) => void;
+      error: (...args: any[]) => void;
+    }
+  | boolean
+  | undefined;
 
 export type EIP712Signer = {
   signTypedData: (data: {
@@ -40,24 +53,24 @@ export type CreateNamefiClientAuth =
       type: 'EIP712';
       signer: EIP712Signer;
     };
+
 type CreateNamefiClientOptions = {
   authentication: CreateNamefiClientAuth;
-  logger:
-    | {
-        info: (...args: any[]) => void;
-        error: (...args: any[]) => void;
-      }
-    | boolean
-    | undefined;
+  logger: NamefiClientLogger;
   baseUrl?: string;
+  x402?: CreateNamefiClientX402Options;
 };
+
+export type NamefiClient = JsonifiedClient<
+  ContractRouterClient<typeof router, NamefiClientContext>
+>;
 
 export function createNamefiClient({
   authentication,
   logger,
   baseUrl = 'https://backend.astra.namefi.io',
-}: CreateNamefiClientOptions) {
-  const { type } = authentication;
+  x402,
+}: CreateNamefiClientOptions): NamefiClient {
   const _logger = logger
     ? typeof logger === 'object'
       ? logger
@@ -67,55 +80,71 @@ export function createNamefiClient({
         }
     : undefined;
 
-  const url = new URL(baseUrl);
-  url.pathname =
-    '/' + [...url.pathname.split('/').filter(Boolean), 'v-next'].join('/');
+  const vNextUrl = new URL(baseUrl);
+  vNextUrl.pathname =
+    '/' + [...vNextUrl.pathname.split('/').filter(Boolean), 'v-next'].join('/');
 
-  const link = new OpenAPILink(contract as unknown as typeof router, {
-    url: url.toString(),
-    headers: async (options, path, input) => {
-      if (type === 'API_KEY') {
-        return {
-          'x-api-key': authentication.apiKey,
-        };
-      }
+  const link = new OpenAPILink<NamefiClientContext>(
+    contract as unknown as typeof router,
+    {
+      url: (_options, path) => {
+        const tags =
+          getPath(path, contract)?.['~orpc']?.meta?.route?.tags ?? [];
 
-      const eip712Ctx = getPath(path, contract)?.['~orpc']?.meta?.eip712;
-      const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
+        if (tags.includes('base-route')) {
+          return baseUrl;
+        }
 
-      if (!primaryType) {
-        return {};
-      }
-      const { signature, address } = await authentication.signer.signTypedData({
-        domain: {
-          name: 'Namefi',
-          version: '1',
-        },
-        types: eip712Ctx?.input?.types ?? {},
-        primaryType,
-        message: input as unknown as Record<string, unknown>,
-      });
-      return {
-        'x-namefi-signer': address,
-        'x-namefi-signature': signature,
-        'x-namefi-eip712-type': primaryType,
-      };
-    },
-    fetch: (request, init) => {
-      return globalThis.fetch(request, {
-        ...init,
-        credentials: 'include', // Include cookies for cross-origin requests
-      });
-    },
-    interceptors: [
-      onStart((options) => {
-        _logger?.info('Request started');
+        return vNextUrl.toString();
+      },
+      headers: async (_options, path, input) => {
+        const headers: Record<string, string> = {};
 
-        if (
-          type === 'EIP712' &&
-          !!options?.input &&
-          typeof options.input === 'object'
-        ) {
+        if (authentication.type === 'API_KEY') {
+          headers['x-api-key'] = authentication.apiKey;
+          return headers;
+        }
+
+        const eip712Ctx = getPath(path, contract)?.['~orpc']?.meta?.eip712;
+        const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
+
+        if (!primaryType) {
+          return headers;
+        }
+
+        const { signature, address } =
+          await authentication.signer.signTypedData({
+            domain: {
+              name: 'Namefi',
+              version: '1',
+            },
+            types: eip712Ctx?.input?.types ?? {},
+            primaryType,
+            message: input as unknown as Record<string, unknown>,
+          });
+
+        headers['x-namefi-signer'] = address;
+        headers['x-namefi-signature'] = signature;
+        headers['x-namefi-eip712-type'] = primaryType;
+
+        return headers;
+      },
+      fetch: createNamefiClientX402Fetch({
+        x402,
+        logger: _logger,
+      }),
+      interceptors: [
+        onStart((options) => {
+          _logger?.info('Request started');
+
+          if (
+            authentication.type !== 'EIP712' ||
+            !options?.input ||
+            typeof options.input !== 'object'
+          ) {
+            return;
+          }
+
           const eip712Ctx = getPath(options.path, contract)?.['~orpc']?.meta
             ?.eip712;
           const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
@@ -123,33 +152,31 @@ export function createNamefiClient({
           if (!primaryType) {
             return;
           }
-          const clone: any = { ...options.input };
+
+          const clone: Record<string, unknown> = { ...options.input };
           Object.keys(clone).forEach((key) => {
-            delete (options.input as any)[key];
+            delete (options.input as Record<string, unknown>)[key];
           });
-          Object.assign(options.input as any, {
-            payload: clone as unknown as Record<string, unknown>,
+          Object.assign(options.input as Record<string, unknown>, {
+            payload: clone,
             timestamp: Math.trunc(Date.now() / 1000),
             nonce: authentication.signer.generateNonce(),
           });
-        }
-      }),
-      onError((error) => {
-        _logger?.error(error);
-      }),
-      onFinish((_response) => {
-        _logger?.info('Request finished');
-      }),
-      onSuccess((_response) => {
-        _logger?.info('Request succeeded');
-      }),
-    ],
-  });
+        }),
+        onError((error) => {
+          _logger?.error(error);
+        }),
+        onFinish(() => {
+          _logger?.info('Request finished');
+        }),
+        onSuccess(() => {
+          _logger?.info('Request succeeded');
+        }),
+      ],
+    },
+  );
 
-  const client: JsonifiedClient<ContractRouterClient<typeof router>> =
-    createORPCClient(link);
-
-  return client;
+  return createORPCClient(link) as NamefiClient;
 }
 
 function getPath(parts: readonly string[], object: Record<string, unknown>) {
@@ -163,3 +190,16 @@ function getPath(parts: readonly string[], object: Record<string, unknown>) {
   }
   return current;
 }
+
+export type {
+  CreateNamefiClientX402Options,
+  NamefiClientContext,
+} from './client-x402';
+export type {
+  X402AcceptedPayment,
+  X402PaymentPredicate,
+  X402PaymentPredicateContext,
+  X402PaymentRequired,
+  X402RequestContext,
+  X402Signer,
+} from './x402';
