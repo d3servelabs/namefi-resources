@@ -45,7 +45,10 @@ import { logger } from '#lib/logger';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
 import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
-import { getEip712MetaFromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
+import {
+  getEip712MetaFromZodSchema,
+  orpcMetaWithEip712FromZodSchema,
+} from '#lib/eip712/orpc-meta-from-zod-schemas';
 import {
   getAllowedChainsForNft,
   getDefaultAllowedNftChainId,
@@ -473,21 +476,22 @@ export const ordersRouterOrpc = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .meta({
-      ...getEip712MetaFromZodSchema([
-        instantBuyInputSchema,
-        instantBuyDefaultWalletInputSchema,
-      ]),
-      route: {
-        path: '/orders/register-domain',
-        method: 'POST',
-        tags: ['orders', 'EIP712'],
-        operationId: 'registerDomain',
-        summary: 'Instant Register domain',
-        description:
-          'Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema(
+        [instantBuyInputSchema, instantBuyDefaultWalletInputSchema],
+        {
+          route: {
+            path: '/orders/register-domain',
+            method: 'POST',
+            tags: ['orders', 'EIP712'],
+            operationId: 'registerDomain',
+            summary: 'Instant Register domain',
+            description:
+              'Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow.',
+          },
+        },
+      ),
+    )
     .input(instantBuyInputSchema)
     .output(orderOutputSchema)
     .mutation(async ({ ctx, input }) => {

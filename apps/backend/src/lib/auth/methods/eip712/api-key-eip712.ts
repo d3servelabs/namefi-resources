@@ -39,6 +39,7 @@ const EIP712SignatureEnvelopeSchema = z.object({
   timestamp: z.number().int(),
   nonce: z.string().min(1).max(256),
   payload: z.unknown(),
+  payloadType: z.string().min(1).max(256),
 });
 
 export type EIP712SignatureEnvelope = z.infer<
@@ -138,7 +139,7 @@ export async function verifyEIP712RawBodySignature({
     if (!valid) {
       return {
         valid: false,
-        error: 'Signature verification failed',
+        error: 'Signature is invalid',
       };
     }
   } catch (e) {
@@ -186,7 +187,7 @@ export async function verifyEIP712RawBodySignature({
     logger.error({ error }, 'Failed to verify raw-body EIP712 signature');
     return {
       valid: false,
-      error: 'Signature verification failed',
+      error: 'Failed to verify signature with provided address',
     };
   }
 }

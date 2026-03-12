@@ -21,7 +21,10 @@ import {
 } from '../../services/dns/service';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';
-import { getEip712MetaFromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
+import {
+  getEip712MetaFromZodSchema,
+  orpcMetaWithEip712FromZodSchema,
+} from '#lib/eip712/orpc-meta-from-zod-schemas';
 
 // ============================================================================
 // Output Schemas for OpenAPI
@@ -33,30 +36,42 @@ const successResponseSchema = z.object({
 
 const dnsRecord = dnsRecordSelectSchema.meta({
   name: 'DnsRecord',
+  description: 'DnsRecord',
   eip712: { structName: 'DnsRecord' },
 });
 const createDnsRecord = createRecordInputSchema.meta({
   name: 'CreateDnsRecord',
+  description: 'CreateDnsRecord',
   eip712: { structName: 'CreateDnsRecord' },
 });
 const updateDnsRecord = updateRecordInputSchema.meta({
   name: 'UpdateDnsRecord',
+  description: 'UpdateDnsRecord',
   eip712: { structName: 'UpdateDnsRecord' },
 });
 const zoneSelect = z
   .object({
     zoneName: namefiNormalizedDomainSchema,
   })
-  .meta({ name: 'ZoneSelect', eip712: { structName: 'ZoneSelect' } });
+  .meta({
+    name: 'ZoneSelect',
+    description: 'ZoneSelect',
+    eip712: { structName: 'ZoneSelect' },
+  });
 
 const recordSelect = z
   .object({
     id: z.string(),
     zoneName: namefiNormalizedDomainSchema,
   })
-  .meta({ name: 'RecordSelect', eip712: { structName: 'RecordSelect' } });
+  .meta({
+    name: 'RecordSelect',
+    description: 'RecordSelect',
+    eip712: { structName: 'RecordSelect' },
+  });
 const UpdateZoneRecord = updateRecordInputSchema.omit({ zoneName: true }).meta({
   name: 'UpdateZoneRecord',
+  description: 'UpdateZoneRecord',
   eip712: { structName: 'UpdateZoneRecord' },
 });
 const UpdateRecords = z
@@ -64,28 +79,44 @@ const UpdateRecords = z
     records: z.array(UpdateZoneRecord),
     zoneName: namefiNormalizedDomainSchema,
   })
-  .meta({ name: 'UpdateRecords', eip712: { structName: 'UpdateRecords' } });
+  .meta({
+    name: 'UpdateRecords',
+    description: 'UpdateRecords',
+    eip712: { structName: 'UpdateRecords' },
+  });
 
 const CreateRecords = z
   .object({
     records: z.array(recordSchema),
     zoneName: namefiNormalizedDomainSchema,
   })
-  .meta({ name: 'CreateRecords', eip712: { structName: 'CreateRecords' } });
+  .meta({
+    name: 'CreateRecords',
+    description: 'CreateRecords',
+    eip712: { structName: 'CreateRecords' },
+  });
 
 const DeleteRecords = z
   .object({
     recordsIds: z.array(z.string()),
     zoneName: namefiNormalizedDomainSchema,
   })
-  .meta({ name: 'DeleteRecords', eip712: { structName: 'DeleteRecords' } });
+  .meta({
+    name: 'DeleteRecords',
+    description: 'DeleteRecords',
+    eip712: { structName: 'DeleteRecords' },
+  });
 
 const ParkDomain = z
   .object({
     normalizedDomainName: namefiNormalizedDomainSchema,
     overrideExistingRecords: z.boolean().optional(),
   })
-  .meta({ name: 'ParkDomain', eip712: { structName: 'ParkDomain' } });
+  .meta({
+    name: 'ParkDomain',
+    description: 'ParkDomain',
+    eip712: { structName: 'ParkDomain' },
+  });
 
 const ToggleDomainParking = z
   .object({
@@ -95,6 +126,7 @@ const ToggleDomainParking = z
   })
   .meta({
     name: 'ToggleDomainParking',
+    description: 'ToggleDomainParking',
     eip712: { structName: 'ToggleDomainParking' },
   });
 // ============================================================================
@@ -128,18 +160,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Add a new DNS record
    */
   createDnsRecord: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([createDnsRecord]),
-      route: {
-        path: '/dns/records',
-        method: 'POST',
-        tags: ['dns', 'EIP712'],
-        operationId: 'createDnsRecord',
-        summary: 'Create DNS record',
-        description:
-          'Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([createDnsRecord], {
+        route: {
+          path: '/dns/records',
+          method: 'POST',
+          tags: ['dns', 'EIP712'],
+          operationId: 'createDnsRecord',
+          summary: 'Create DNS record',
+          description:
+            'Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation.',
+        },
+      }),
+    )
     .input(createDnsRecord)
     .output(dnsRecord)
     .mutation(async ({ input, ctx }) => {
@@ -154,18 +187,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Update a DNS record by ID
    */
   updateRecord: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([updateDnsRecord]),
-      route: {
-        path: '/dns/records/{id}',
-        method: 'PUT',
-        tags: ['dns', 'EIP712'],
-        operationId: 'updateDnsRecord',
-        summary: 'Update DNS record',
-        description:
-          'Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([updateDnsRecord], {
+        route: {
+          path: '/dns/record',
+          method: 'PUT',
+          tags: ['dns', 'EIP712'],
+          operationId: 'updateDnsRecord',
+          summary: 'Update DNS record',
+          description:
+            'Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules.',
+        },
+      }),
+    )
     .input(updateDnsRecord)
     .output(dnsRecord)
     .mutation(async ({ input, ctx }) => {
@@ -178,18 +212,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Delete a DNS record by ID
    */
   deleteRecord: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([recordSelect]),
-      route: {
-        path: '/dns/records/{id}',
-        method: 'DELETE',
-        tags: ['dns', 'EIP712'],
-        operationId: 'deleteDnsRecord',
-        summary: 'Delete DNS record',
-        description:
-          'Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([recordSelect], {
+        route: {
+          path: '/dns/record',
+          method: 'DELETE',
+          tags: ['dns', 'EIP712'],
+          operationId: 'deleteDnsRecord',
+          summary: 'Delete DNS record',
+          description:
+            'Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity.',
+        },
+      }),
+    )
     .input(recordSelect)
     .output(successResponseSchema)
     .mutation(
@@ -209,18 +244,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Update multiple DNS records
    */
   updateRecords: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([UpdateRecords]),
-      route: {
-        path: '/dns/records/batch',
-        method: 'PUT',
-        tags: ['dns', 'EIP712'],
-        operationId: 'batchUpdateDnsRecords',
-        summary: 'Batch update DNS records',
-        description:
-          'Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([UpdateRecords], {
+        route: {
+          path: '/dns/records/batch',
+          method: 'PUT',
+          tags: ['dns', 'EIP712'],
+          operationId: 'batchUpdateDnsRecords',
+          summary: 'Batch update DNS records',
+          description:
+            'Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together.',
+        },
+      }),
+    )
     .input(UpdateRecords)
     .output(z.array(dnsRecord))
     .mutation(async ({ input, ctx }) => {
@@ -278,18 +314,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Create DNS records
    */
   createRecords: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([CreateRecords]),
-      route: {
-        path: '/dns/records/batch',
-        method: 'POST',
-        tags: ['dns', 'EIP712'],
-        operationId: 'batchCreateDnsRecords',
-        summary: 'Batch create DNS records',
-        description:
-          'Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([CreateRecords], {
+        route: {
+          path: '/dns/records/batch',
+          method: 'POST',
+          tags: ['dns', 'EIP712'],
+          operationId: 'batchCreateDnsRecords',
+          summary: 'Batch create DNS records',
+          description:
+            'Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules.',
+        },
+      }),
+    )
     .input(CreateRecords)
     .output(z.array(dnsRecord))
     .mutation(async ({ input: { zoneName, records }, ctx }) => {
@@ -310,18 +347,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Delete DNS records by IDs
    */
   deleteRecords: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([DeleteRecords]),
-      route: {
-        path: '/dns/records/batch',
-        method: 'DELETE',
-        tags: ['dns', 'EIP712'],
-        operationId: 'batchDeleteDnsRecords',
-        summary: 'Batch delete DNS records',
-        description:
-          'Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([DeleteRecords], {
+        route: {
+          path: '/dns/records/batch',
+          method: 'DELETE',
+          tags: ['dns', 'EIP712'],
+          operationId: 'batchDeleteDnsRecords',
+          summary: 'Batch delete DNS records',
+          description:
+            'Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion.',
+        },
+      }),
+    )
     .input(DeleteRecords)
     .output(successResponseSchema)
     .mutation(async ({ input: { zoneName, recordsIds }, ctx }) => {
@@ -365,18 +403,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Park a domain
    */
   parkDomain: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([ParkDomain]),
-      route: {
-        path: '/dns/park',
-        method: 'POST',
-        tags: ['dns', 'EIP712'],
-        operationId: 'parkDomain',
-        summary: 'Park domain',
-        description:
-          'Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([ParkDomain], {
+        route: {
+          path: '/dns/park',
+          method: 'POST',
+          tags: ['dns', 'EIP712'],
+          operationId: 'parkDomain',
+          summary: 'Park domain',
+          description:
+            'Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records.',
+        },
+      }),
+    )
     .input(ParkDomain)
     .output(z.object({ success: z.boolean() }))
     .mutation(async ({ input, ctx }) => {
@@ -400,18 +439,19 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
    * Park a domain
    */
   toggleDomainParking: protectedProcedure
-    .meta({
-      ...getEip712MetaFromZodSchema([ToggleDomainParking]),
-      route: {
-        path: '/dns/park',
-        method: 'PUT',
-        tags: ['dns', 'EIP712'],
-        operationId: 'toggleDomainParking',
-        summary: 'Toggle Domain Parking',
-        description:
-          'Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records.',
-      },
-    })
+    .meta(
+      orpcMetaWithEip712FromZodSchema([ToggleDomainParking], {
+        route: {
+          path: '/dns/park',
+          method: 'PUT',
+          tags: ['dns', 'EIP712'],
+          operationId: 'toggleDomainParking',
+          summary: 'Toggle Domain Parking',
+          description:
+            'Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records.',
+        },
+      }),
+    )
     .input(ToggleDomainParking)
     .output(z.object({ success: z.boolean() }))
     .mutation(async ({ input, ctx }) => {

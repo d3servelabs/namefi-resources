@@ -5,7 +5,7 @@ import { createLogger } from '#lib/logger';
 import { Scalar } from '@scalar/hono-api-reference';
 import type { TrpcContextWithUserOrNull } from '#trpc/index';
 import { toORPCRouter } from '@orpc/trpc';
-import { onError, ORPCError, os } from '@orpc/server';
+import { onError, ORPCError, os, onStart } from '@orpc/server';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { SmartCoercionPlugin } from '@orpc/json-schema';
@@ -26,7 +26,10 @@ import { searchRouterOrpc } from '#trpc/routers/searchRouter.orpc';
 
 import { createTRPCRouter } from '#trpc/base';
 import { initializeAuthRegistry } from '#lib/auth/api-key-auth';
-import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
+import {
+  defaultEip712SchemaConverter,
+  ZodToJsonSchemaConverterWithEip712,
+} from '#lib/eip712/orpc-eip712-schema-converter';
 import { mapObjIndexed } from 'ramda';
 import {
   EIP712_SIGNATURE_HEADER_METHOD_ID,
@@ -125,7 +128,7 @@ export const orpcRouter = toORPCRouter(
 const openAPIGenerator = new OpenAPIGenerator({
   schemaConverters: [
     defaultEip712SchemaConverter,
-    new ZodToJsonSchemaConverter(),
+    new ZodToJsonSchemaConverterWithEip712(),
   ],
 });
 
@@ -144,7 +147,7 @@ const openApiDocument = await openAPIGenerator.generate(
             },
           ]
         : []),
-      ...(process.env.ENVIRONMENT === 'production'
+      ...(process.env.ENVIRONMENT === 'development'
         ? [
             {
               description: 'Dev Server',
@@ -152,7 +155,7 @@ const openApiDocument = await openAPIGenerator.generate(
             },
           ]
         : []),
-      ...(process.env.ENVIRONMENT === 'development'
+      ...(process.env.ENVIRONMENT === 'production'
         ? [
             {
               description: 'Live Server',
@@ -206,6 +209,35 @@ const handler = new OpenAPIHandler(orpcRouter, {
       schemaConverters: [new ZodToJsonSchemaConverter()],
     }),
   ],
+  clientInterceptors: [
+    onStart((options) => {
+      if (
+        options.context.apiAuthResult?.methodId ===
+        EIP712_SIGNATURE_HEADER_METHOD_ID
+      ) {
+        const acceptedPrimaryTypes =
+          options.procedure?.['~orpc']?.meta?.eip712?.input
+            ?.acceptedPrimaryTypes ?? [];
+        const headers = options.context.req.header();
+        if (acceptedPrimaryTypes.length > 0) {
+          const type = headers['x-namefi-eip712-type'];
+          if (!type) {
+            throw new ORPCError('UNAUTHORIZED', {
+              status: 401,
+              message: 'No EIP 712 type provided',
+            });
+          }
+          const isValid = acceptedPrimaryTypes.includes(type);
+          if (!isValid) {
+            throw new ORPCError('UNAUTHORIZED', {
+              status: 401,
+              message: 'Invalid EIP712 type',
+            });
+          }
+        }
+      }
+    }),
+  ],
   interceptors: [
     onError((error: any) => {
       if (
@@ -218,6 +250,7 @@ const handler = new OpenAPIHandler(orpcRouter, {
     }),
   ],
 });
+
 function getRequestForHandler({
   rawRequest,
   rawBody,

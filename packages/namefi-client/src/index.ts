@@ -153,11 +153,13 @@ export function createNamefiClient({
             return;
           }
 
+          const payloadType = primaryType.replace(/Envelope$/, '');
           const clone: Record<string, unknown> = { ...options.input };
           Object.keys(clone).forEach((key) => {
             delete (options.input as Record<string, unknown>)[key];
           });
           Object.assign(options.input as Record<string, unknown>, {
+            payloadType,
             payload: clone,
             timestamp: Math.trunc(Date.now() / 1000),
             nonce: authentication.signer.generateNonce(),

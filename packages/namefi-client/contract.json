@@ -38,6 +38,7 @@
                   { "name": "zoneName", "type": "string" }
                 ],
                 "CreateDnsRecordEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "CreateDnsRecord" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -80,6 +81,7 @@
                   { "name": "ttl", "type": "uint256" }
                 ],
                 "UpdateDnsRecordEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "UpdateDnsRecord" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -88,7 +90,7 @@
             }
           },
           "route": {
-            "path": "/dns/records/{id}",
+            "path": "/dns/record",
             "method": "PUT",
             "tags": ["dns", "EIP712"],
             "operationId": "updateDnsRecord",
@@ -97,7 +99,7 @@
           }
         },
         "route": {
-          "path": "/dns/records/{id}",
+          "path": "/dns/record",
           "method": "PUT",
           "tags": ["dns", "EIP712"],
           "operationId": "updateDnsRecord",
@@ -119,6 +121,7 @@
                   { "name": "zoneName", "type": "string" }
                 ],
                 "RecordSelectEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "RecordSelect" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -127,7 +130,7 @@
             }
           },
           "route": {
-            "path": "/dns/records/{id}",
+            "path": "/dns/record",
             "method": "DELETE",
             "tags": ["dns", "EIP712"],
             "operationId": "deleteDnsRecord",
@@ -136,7 +139,7 @@
           }
         },
         "route": {
-          "path": "/dns/records/{id}",
+          "path": "/dns/record",
           "method": "DELETE",
           "tags": ["dns", "EIP712"],
           "operationId": "deleteDnsRecord",
@@ -164,6 +167,7 @@
                   { "name": "zoneName", "type": "string" }
                 ],
                 "UpdateRecordsEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "UpdateRecords" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -200,6 +204,7 @@
               "types": {
                 "CreateRecords": [{ "name": "zoneName", "type": "string" }],
                 "CreateRecordsEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "CreateRecords" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -239,6 +244,7 @@
                   { "name": "zoneName", "type": "string" }
                 ],
                 "DeleteRecordsEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "DeleteRecords" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -278,6 +284,7 @@
                   { "name": "overrideExistingRecords", "type": "bool" }
                 ],
                 "ParkDomainEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "ParkDomain" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -300,6 +307,47 @@
           "tags": ["dns", "EIP712"],
           "operationId": "parkDomain",
           "summary": "Park domain",
+          "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."
+        }
+      }
+    },
+    "toggleDomainParking": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ToggleDomainParkingEnvelope"],
+              "types": {
+                "ToggleDomainParking": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "enableParking", "type": "bool" },
+                  { "name": "overrideExistingRecords", "type": "bool" }
+                ],
+                "ToggleDomainParkingEnvelope": [
+                  { "name": "payloadType", "type": "string" },
+                  { "name": "payload", "type": "ToggleDomainParking" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
+          "route": {
+            "path": "/dns/park",
+            "method": "PUT",
+            "tags": ["dns", "EIP712"],
+            "operationId": "toggleDomainParking",
+            "summary": "Toggle Domain Parking",
+            "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."
+          }
+        },
+        "route": {
+          "path": "/dns/park",
+          "method": "PUT",
+          "tags": ["dns", "EIP712"],
+          "operationId": "toggleDomainParking",
+          "summary": "Toggle Domain Parking",
           "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."
         }
       }
@@ -469,6 +517,7 @@
                   }
                 ],
                 "InstantRegisterDomainEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   { "name": "payload", "type": "InstantRegisterDomain" },
                   { "name": "timestamp", "type": "uint256" },
                   { "name": "nonce", "type": "string" }
@@ -478,6 +527,7 @@
                   { "name": "durationInYears", "type": "uint256" }
                 ],
                 "InstantRegisterDomainDefaultWalletEnvelope": [
+                  { "name": "payloadType", "type": "string" },
                   {
                     "name": "payload",
                     "type": "InstantRegisterDomainDefaultWallet"
