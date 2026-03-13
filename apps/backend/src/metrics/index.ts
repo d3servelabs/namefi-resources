@@ -184,7 +184,7 @@ export async function collectAll(ctx?: MetricsContext): Promise<void> {
       recordCollectorSuccess(collector.metric, metricsContext.now);
     } catch (error) {
       recordCollectorError(collector.metric);
-      metricsContext.log.debug(
+      metricsContext.log.trace(
         { error, metric: collector.metric },
         'Failed to collect metric',
       );

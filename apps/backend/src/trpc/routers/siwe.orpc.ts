@@ -278,37 +278,49 @@ export const siweRouter = createTRPCRouter({
     .input(prepareSiweMessageInputSchema)
     .output(prepareSiweMessageOutputSchema)
     .query(async ({ input, ctx }) => {
-      logger.debug('Preparing SIWE message for signer %s on chain %d', {
-        signerAddress: input.signerAddress,
-        chainId: input.chainId,
-      });
-      const result = await prepareSiweMessage({
-        signerAddress: input.signerAddress,
-        nonce: input.nonce,
-        chainId: input.chainId,
-        domain: SIWE_DOMAIN,
-        uri: SIWE_DOMAIN,
-      });
-      logger.debug('Prepared SIWE message for signer %s on chain %d', {
-        signerAddress: input.signerAddress,
-        chainId: input.chainId,
-        result,
-      });
+      try {
+        logger.debug({
+          signerAddress: input.signerAddress,
+          chainId: input.chainId,
+        }, 'Preparing SIWE message for signer %s on chain %d', input.signerAddress, input.chainId);
+        const result = await prepareSiweMessage({
+          signerAddress: input.signerAddress,
+          nonce: input.nonce,
+          chainId: input.chainId,
+          domain: SIWE_DOMAIN,
+          uri: SIWE_DOMAIN,
+        });
+        logger.debug({
+          signerAddress: input.signerAddress,
+          chainId: input.chainId,
+          result,
+        }, 'Prepared SIWE message for signer %s on chain %d', input.signerAddress, input.chainId);
 
-      if (!result.valid) {
-        return result;
+        if (!result.valid) {
+          return result;
+        }
+
+        return {
+          valid: true,
+          message: {
+            ...result.message,
+            expirationTime: result.message.expirationTime?.toISOString(),
+            issuedAt: result.message.issuedAt?.toISOString(),
+            notBefore: result.message.notBefore?.toISOString(),
+          },
+          messageString: createSiweMessage(result.message),
+        };
+      } catch (error) {
+        logger.error({
+          signerAddress: input.signerAddress,
+          chainId: input.chainId,
+          error: (error as Error).message,
+        }, 'Error preparing SIWE message for signer %s on chain %d: %s', input.signerAddress, input.chainId, (error as Error).message);
+        return {
+          valid: false,
+          error: 'Failed to prepare SIWE message: ' + (error as Error).message,
+        };
       }
-
-      return {
-        valid: true,
-        message: {
-          ...result.message,
-          expirationTime: result.message.expirationTime?.toISOString(),
-          issuedAt: result.message.issuedAt?.toISOString(),
-          notBefore: result.message.notBefore?.toISOString(),
-        },
-        messageString: createSiweMessage(result.message),
-      };
     }),
 
   verifySiweSignature: publicProcedure
