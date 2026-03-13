@@ -55,7 +55,8 @@ export type ApiKeyType =
   | 'PUBLIC_PRIVATE'
   | 'HMAC'
   | 'ECDSA_SIGNATURE_HEADER'
-  | 'EIP712';
+  | 'EIP712'
+  | 'SIWE_SESSION_TOKEN';
 
 /**
  * Definition of an authentication method

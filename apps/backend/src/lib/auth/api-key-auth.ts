@@ -26,6 +26,7 @@ import {
 
 import { plainAuthMethod } from './methods/plain/api-key-auth-plain';
 import { eip712AuthMethod } from './methods/eip712/api-key-auth-eip712';
+import { SiweAuthMethod } from './methods/siwe/api-key-auth-siwe';
 
 /**
  * Initialize the authentication registry with all auth methods
@@ -37,7 +38,7 @@ import { eip712AuthMethod } from './methods/eip712/api-key-auth-eip712';
  */
 export function initializeAuthRegistry(): void {
   registerAuthMethod(eip712AuthMethod);
-
+  registerAuthMethod(SiweAuthMethod);
   // Register PLAIN last (most general - uses X-API-Key)
   registerAuthMethod(plainAuthMethod);
 

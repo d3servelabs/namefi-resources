@@ -23,6 +23,7 @@ import { userDataRouterOrpc } from '#trpc/routers/userDataRouter.orpc';
 import { ordersRouterOrpc } from '#trpc/routers/ordersRouter.orpc';
 import { balanceRouterOrpc } from '#trpc/routers/balanceRouter.orpc';
 import { searchRouterOrpc } from '#trpc/routers/searchRouter.orpc';
+import { siweRouter } from '#trpc/routers/siwe.orpc';
 
 import { createTRPCRouter } from '#trpc/base';
 import { initializeAuthRegistry } from '#lib/auth/api-key-auth';
@@ -122,6 +123,7 @@ export const orpcRouter = toORPCRouter(
     orders: ordersRouterOrpc,
     balance: balanceRouterOrpc,
     search: searchRouterOrpc,
+    siwe: siweRouter,
   }),
 );
 
