@@ -1,4 +1,23 @@
 const TRAILING_SLASH_REGEX = /\/$/;
+const LEGACY_RESOURCES_HOSTNAME_MAP: Record<string, string> = {
+  'r.namefi.io': 'namefi.io',
+  'r.namefi.dev': 'namefi.dev',
+};
+
+function withProtocol(url: string): string {
+  return url.startsWith('http://') || url.startsWith('https://')
+    ? url
+    : `https://${url}`;
+}
+
+function normaliseBaseUrl(rawBaseUrl: string): string {
+  const url = new URL(withProtocol(rawBaseUrl));
+  const mappedHostname = LEGACY_RESOURCES_HOSTNAME_MAP[url.hostname];
+  if (mappedHostname) {
+    url.hostname = mappedHostname;
+  }
+  return url.origin;
+}
 
 function resolveDefaultBaseUrl(): string {
   const environment = process.env.ENVIRONMENT ?? process.env.NODE_ENV;
@@ -10,9 +29,7 @@ function resolveDefaultBaseUrl(): string {
   if (!vercelProjectUrl) {
     return 'https://localhost:5050';
   }
-  return vercelProjectUrl.startsWith('https')
-    ? vercelProjectUrl
-    : `https://${vercelProjectUrl}`;
+  return withProtocol(vercelProjectUrl);
 }
 
 export function resolveBaseUrl(): string {
@@ -22,8 +39,6 @@ export function resolveBaseUrl(): string {
     process.env.FIRST_PARTY_DEPLOYMENT_URL ??
     process.env.NEXT_PUBLIC_FIRST_PARTY_DEPLOYMENT_URL ??
     resolveDefaultBaseUrl();
-  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
-    ? rawBaseUrl
-    : `https://${rawBaseUrl}`;
+  const normalisedBaseUrl = normaliseBaseUrl(rawBaseUrl);
   return normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
 }

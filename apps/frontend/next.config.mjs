@@ -29,6 +29,12 @@ const loadedClientConfig = {
   APP_VERSION: packageJson.version,
   DEPLOY_COMMIT_SHA: deployCommitSha,
 };
+// Keep public config rooted on first-party URLs while allowing a dedicated upstream for /r proxying.
+const resourcesProxyOrigin =
+  process.env.RESOURCES_PROXY_ORIGIN ||
+  (appConfig.TYPE === 'production'
+    ? 'https://r.namefi.io'
+    : appConfig.RESOURCES_URL);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -112,11 +118,11 @@ const nextConfig = {
     return [
       {
         source: '/r',
-        destination: `${appConfig.RESOURCES_URL}/r`,
+        destination: `${resourcesProxyOrigin}/r`,
       },
       {
         source: '/r/:path*',
-        destination: `${appConfig.RESOURCES_URL}/r/:path*`,
+        destination: `${resourcesProxyOrigin}/r/:path*`,
       },
       {
         source: '/my-domains',
