@@ -33,22 +33,24 @@ import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
-import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  withAudit,
+  authedOrPublicProcedure,
+} from '../base';
 import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
 } from '../utils';
-import { secrets } from '../../lib/env';
+import { secrets, config } from '../../lib/env';
 import { logger } from '#lib/logger';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
 import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
-import {
-  getEip712MetaFromZodSchema,
-  orpcMetaWithEip712FromZodSchema,
-} from '#lib/eip712/orpc-meta-from-zod-schemas';
+import { orpcMetaWithEip712FromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
 import {
   getAllowedChainsForNft,
   getDefaultAllowedNftChainId,
@@ -111,6 +113,15 @@ export const instantBuyInputSchema = z
   .meta({
     name: 'InstantRegisterDomain',
     eip712: { structName: 'InstantRegisterDomain' },
+  });
+
+export const registerTrialDomainInputSchema = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+  })
+  .meta({
+    name: 'RegisterTrialDomain',
+    eip712: { structName: 'RegisterTrialDomain' },
   });
 
 const postProcessRecordSchema = z.object({
@@ -464,6 +475,46 @@ export const ordersRouterOrpc = createTRPCRouter({
   /**
    * Instant buy - single domain purchase without cart
    */
+  registerDomainForTrial: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'register_domain_for_trial',
+      extraInput: input,
+    }),
+  )
+    .meta(
+      orpcMetaWithEip712FromZodSchema([registerTrialDomainInputSchema], {
+        route: {
+          path: '/orders/register-domain-trial',
+          method: 'POST',
+          tags: ['orders', 'EIP712'],
+          operationId: 'registerDomainForTrial',
+          summary: 'Instant Register domain for trial',
+          description:
+            'Purchase a single domain instantly for trial. Validates domain availability and creates the order, the domain is only registered for a couple of days before it expires or renewed if you please ',
+        },
+      }),
+    )
+    .input(registerTrialDomainInputSchema)
+    .output(orderOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      return registerDomainWithRecords({
+        ctx,
+        input: {
+          ...input,
+          durationInYears: 0,
+        },
+      });
+    }),
+
+  /**
+   * Instant buy - single domain purchase without cart
+   */
   registerDomain: withAudit(
     protectedProcedure,
     ({ ctx, input, auditActorExtraInfo, result }) => ({
@@ -688,5 +739,40 @@ export const ordersRouterOrpc = createTRPCRouter({
     .output(orderOutputSchema)
     .query(async ({ ctx, input }) => {
       throw new Error();
+    }),
+
+  /**
+   * Get order details by ID
+   */
+  getDomainsAvailableForTrial: authedOrPublicProcedure
+    .meta({
+      route: {
+        path: '/trial/domains/available',
+        method: 'GET',
+        tags: ['orders'],
+        operationId: 'getDomainsAvailableForTrial',
+        summary: 'Get Domains Available for Trial',
+        description:
+          'Retrieve a list of domains or parent domains(ie; their subdomains are available for trial)',
+      },
+    })
+    .input(z.any())
+    .output(
+      z.array(
+        z.object({
+          normalizedDomainName: z.string(),
+          type: z.enum(['PARENT_DOMAIN', 'EXACT_DOMAIN']),
+          trialDuration: z.number(),
+        }),
+      ),
+    )
+    .query(() => {
+      return [
+        {
+          normalizedDomainName: '0x.city',
+          type: 'PARENT_DOMAIN',
+          trialDuration: config.ZERO_PAYMENT_REGISTRATION_TRIAL_DAYS,
+        },
+      ];
     }),
 });

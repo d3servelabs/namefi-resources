@@ -494,6 +494,45 @@
         }
       }
     },
+    "registerDomainForTrial": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["RegisterTrialDomainEnvelope"],
+              "types": {
+                "RegisterTrialDomain": [
+                  { "name": "normalizedDomainName", "type": "string" }
+                ],
+                "RegisterTrialDomainEnvelope": [
+                  { "name": "payloadType", "type": "string" },
+                  { "name": "payload", "type": "RegisterTrialDomain" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
+          "route": {
+            "path": "/orders/register-domain-trial",
+            "method": "POST",
+            "tags": ["orders", "EIP712"],
+            "operationId": "registerDomainForTrial",
+            "summary": "Instant Register domain for trial",
+            "description": "Purchase a single domain instantly for trial. Validates domain availability and creates the order, the domain is only registered for a couple of days before it expires or renewed if you please "
+          }
+        },
+        "route": {
+          "path": "/orders/register-domain-trial",
+          "method": "POST",
+          "tags": ["orders", "EIP712"],
+          "operationId": "registerDomainForTrial",
+          "summary": "Instant Register domain for trial",
+          "description": "Purchase a single domain instantly for trial. Validates domain availability and creates the order, the domain is only registered for a couple of days before it expires or renewed if you please "
+        }
+      }
+    },
     "registerDomain": {
       "~orpc": {
         "errorMap": {},
@@ -623,6 +662,29 @@
           "operationId": "registerDomainX402",
           "summary": "Instant Register domain With X402",
           "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+        }
+      }
+    },
+    "getDomainsAvailableForTrial": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/trial/domains/available",
+            "method": "GET",
+            "tags": ["orders"],
+            "operationId": "getDomainsAvailableForTrial",
+            "summary": "Get Domains Available for Trial",
+            "description": "Retrieve a list of domains or parent domains(ie; their subdomains are available for trial)"
+          }
+        },
+        "route": {
+          "path": "/trial/domains/available",
+          "method": "GET",
+          "tags": ["orders"],
+          "operationId": "getDomainsAvailableForTrial",
+          "summary": "Get Domains Available for Trial",
+          "description": "Retrieve a list of domains or parent domains(ie; their subdomains are available for trial)"
         }
       }
     }
