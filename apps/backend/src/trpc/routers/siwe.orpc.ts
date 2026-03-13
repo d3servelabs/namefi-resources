@@ -10,6 +10,7 @@ import {
 } from '#lib/auth/methods/siwe/api-key-siwe';
 import { config } from '#lib/env';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
+import { logger } from '#lib/logger';
 
 const isoDateStringSchema = z
   .string()
@@ -277,12 +278,21 @@ export const siweRouter = createTRPCRouter({
     .input(prepareSiweMessageInputSchema)
     .output(prepareSiweMessageOutputSchema)
     .query(async ({ input, ctx }) => {
+      logger.debug('Preparing SIWE message for signer %s on chain %d', {
+        signerAddress: input.signerAddress,
+        chainId: input.chainId,
+      });
       const result = await prepareSiweMessage({
         signerAddress: input.signerAddress,
         nonce: input.nonce,
         chainId: input.chainId,
         domain: SIWE_DOMAIN,
         uri: SIWE_DOMAIN,
+      });
+      logger.debug('Prepared SIWE message for signer %s on chain %d', {
+        signerAddress: input.signerAddress,
+        chainId: input.chainId,
+        result,
       });
 
       if (!result.valid) {
