@@ -1,0 +1,22 @@
+{
+  "name": "wc-skill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone WalletConnect session management skill",
+  "scripts": {
+    "connect": "bun run scripts/connect-wallet.ts",
+    "sign": "bun run scripts/sign-typed-data.ts",
+    "status": "bun run scripts/get-session.ts",
+    "disconnect": "bun run scripts/disconnect.ts"
+  },
+  "dependencies": {
+    "@walletconnect/sign-client": "^2.21.7",
+    "viem": "^2.24.2",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.10",
+    "@types/qrcode": "^1.5.5"
+  }
+}

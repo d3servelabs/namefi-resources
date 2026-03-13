@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "label": "Namefi Dev",
+    "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+    "requestBaseUrl": "https://api.namefi.dev/v-next",
+    "useContractFallback": true,
+    "notes": [
+      "Dev OpenAPI is the freshest published schema and the primary source for x-eip712-* metadata."
+    ]
+  },
+  "prod": {
+    "label": "Namefi Prod",
+    "openapiUrl": "https://api.namefi.io/v-next/openapi/doc.json",
+    "requestBaseUrl": "https://api.namefi.io/v-next",
+    "fallbackEnv": "dev",
+    "useContractFallback": true,
+    "notes": [
+      "Prod OpenAPI is stale. Keep prod requestBaseUrl, then safely backfill missing operations and EIP-712 metadata from dev and contract.json."
+    ]
+  }
+}
