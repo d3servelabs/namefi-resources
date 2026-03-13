@@ -288,7 +288,7 @@ export const siweRouter = createTRPCRouter({
           nonce: input.nonce,
           chainId: input.chainId,
           domain: SIWE_DOMAIN,
-          uri: SIWE_DOMAIN,
+          uri: SIWE_DOMAIN.includes('http') ? SIWE_DOMAIN : `https://${SIWE_DOMAIN}`,
         });
         logger.debug({
           signerAddress: input.signerAddress,
