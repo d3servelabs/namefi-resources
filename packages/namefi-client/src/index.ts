@@ -13,8 +13,13 @@ import type { orpcRouter as router } from '@namefi-astra/backend/openapi';
 import {
   createNamefiClientX402Fetch,
   type CreateNamefiClientX402Options,
+  type NamefiClientFetch,
   type NamefiClientContext,
 } from './client-x402';
+import {
+  createNamefiClientSiweFetch,
+  type CreateNamefiClientSiweOptions,
+} from './client-siwe';
 
 type NamefiClientLogger =
   | {
@@ -25,6 +30,7 @@ type NamefiClientLogger =
   | undefined;
 
 export type EIP712Signer = {
+  getAddress: () => Promise<`0x${string}`>;
   signTypedData: (data: {
     domain: {
       name: string;
@@ -41,6 +47,7 @@ export type EIP712Signer = {
     primaryType: string;
     message: Record<string, unknown>;
   }) => Promise<{ signature: string; address: string }>;
+  signMessage: (message: string) => Promise<`0x${string}`>;
   generateNonce: () => string;
 };
 
@@ -58,6 +65,7 @@ type CreateNamefiClientOptions = {
   authentication: CreateNamefiClientAuth;
   logger: NamefiClientLogger;
   baseUrl?: string;
+  siwe?: CreateNamefiClientSiweOptions;
   x402?: CreateNamefiClientX402Options;
 };
 
@@ -69,6 +77,7 @@ export function createNamefiClient({
   authentication,
   logger,
   baseUrl = 'https://backend.astra.namefi.io',
+  siwe,
   x402,
 }: CreateNamefiClientOptions): NamefiClient {
   const _logger = logger
@@ -84,12 +93,40 @@ export function createNamefiClient({
   vNextUrl.pathname =
     '/' + [...vNextUrl.pathname.split('/').filter(Boolean), 'v-next'].join('/');
 
+  const isEip712Path = (path: readonly string[]): boolean => {
+    const eip712Ctx = getRouteMeta(path)?.eip712;
+    return !!eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
+  };
+
+  const baseFetch: NamefiClientFetch = async (request, init) => {
+    return globalThis.fetch(
+      new Request(request, {
+        ...init,
+        credentials: 'include',
+      }),
+    );
+  };
+
+  const x402Fetch = createNamefiClientX402Fetch({
+    x402,
+    logger: _logger,
+    nextFetch: baseFetch,
+  });
+
+  const composedFetch = createNamefiClientSiweFetch({
+    authentication,
+    logger: _logger,
+    nextFetch: x402Fetch,
+    siwe,
+    vNextUrl: vNextUrl.toString(),
+    isEip712Path,
+  });
+
   const link = new OpenAPILink<NamefiClientContext>(
     contract as unknown as typeof router,
     {
       url: (_options, path) => {
-        const tags =
-          getPath(path, contract)?.['~orpc']?.meta?.route?.tags ?? [];
+        const tags = getRouteMeta(path)?.route?.tags ?? [];
 
         if (tags.includes('base-route')) {
           return baseUrl;
@@ -105,7 +142,7 @@ export function createNamefiClient({
           return headers;
         }
 
-        const eip712Ctx = getPath(path, contract)?.['~orpc']?.meta?.eip712;
+        const eip712Ctx = getRouteMeta(path)?.eip712;
         const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
 
         if (!primaryType) {
@@ -129,10 +166,7 @@ export function createNamefiClient({
 
         return headers;
       },
-      fetch: createNamefiClientX402Fetch({
-        x402,
-        logger: _logger,
-      }),
+      fetch: composedFetch,
       interceptors: [
         onStart((options) => {
           _logger?.info('Request started');
@@ -145,8 +179,7 @@ export function createNamefiClient({
             return;
           }
 
-          const eip712Ctx = getPath(options.path, contract)?.['~orpc']?.meta
-            ?.eip712;
+          const eip712Ctx = getRouteMeta(options.path)?.eip712;
           const primaryType = eip712Ctx?.input?.acceptedPrimaryTypes?.[0];
 
           if (!primaryType) {
@@ -193,6 +226,23 @@ function getPath(parts: readonly string[], object: Record<string, unknown>) {
   return current;
 }
 
+function getRouteMeta(parts: readonly string[]) {
+  return getPath(parts, contract)?.['~orpc']?.meta as
+    | {
+        route?: {
+          tags?: string[];
+        };
+        eip712?: {
+          input?: {
+            acceptedPrimaryTypes?: string[];
+            types?: Record<string, Array<{ name: string; type: string }>>;
+          };
+        };
+      }
+    | undefined;
+}
+
+export type { CreateNamefiClientSiweOptions } from './client-siwe';
 export type {
   CreateNamefiClientX402Options,
   NamefiClientContext,

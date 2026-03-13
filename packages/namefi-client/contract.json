@@ -761,5 +761,99 @@
         }
       }
     }
+  },
+  "siwe": {
+    "getSiweNonce": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/siwe/nonce",
+            "method": "GET",
+            "tags": ["auth", "siwe"],
+            "operationId": "getSiweNonce",
+            "summary": "Get a SIWE nonce",
+            "description": "Generate and store a replay-protected nonce for a wallet address before signing a SIWE message."
+          }
+        },
+        "route": {
+          "path": "/siwe/nonce",
+          "method": "GET",
+          "tags": ["auth", "siwe"],
+          "operationId": "getSiweNonce",
+          "summary": "Get a SIWE nonce",
+          "description": "Generate and store a replay-protected nonce for a wallet address before signing a SIWE message."
+        }
+      }
+    },
+    "prepareMessage": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/siwe/message",
+            "method": "GET",
+            "tags": ["auth", "siwe"],
+            "operationId": "prepareSiweMessage",
+            "summary": "Prepare a SIWE message",
+            "description": "Verify that a previously issued nonce still exists and return the canonical SIWE message payload to sign."
+          }
+        },
+        "route": {
+          "path": "/siwe/message",
+          "method": "GET",
+          "tags": ["auth", "siwe"],
+          "operationId": "prepareSiweMessage",
+          "summary": "Prepare a SIWE message",
+          "description": "Verify that a previously issued nonce still exists and return the canonical SIWE message payload to sign."
+        }
+      }
+    },
+    "verifySiweSignature": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/siwe/verify",
+            "method": "POST",
+            "tags": ["auth", "siwe"],
+            "operationId": "verifySiweSignature",
+            "summary": "Verify a SIWE signature",
+            "description": "Verify a signed SIWE message, consume its nonce, and return a session token plus stored session details."
+          }
+        },
+        "route": {
+          "path": "/siwe/verify",
+          "method": "POST",
+          "tags": ["auth", "siwe"],
+          "operationId": "verifySiweSignature",
+          "summary": "Verify a SIWE signature",
+          "description": "Verify a signed SIWE message, consume its nonce, and return a session token plus stored session details."
+        }
+      }
+    },
+    "getAllowedChains": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/siwe/allowed-chains",
+            "method": "GET",
+            "tags": ["auth", "siwe"],
+            "operationId": "getAllowedChains",
+            "summary": "Get allowed chains for SIWE",
+            "description": "Retrieve the list of blockchain networks that are allowed for SIWE authentication."
+          }
+        },
+        "route": {
+          "path": "/siwe/allowed-chains",
+          "method": "GET",
+          "tags": ["auth", "siwe"],
+          "operationId": "getAllowedChains",
+          "summary": "Get allowed chains for SIWE",
+          "description": "Retrieve the list of blockchain networks that are allowed for SIWE authentication."
+        }
+      }
+    }
   }
 }

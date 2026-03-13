@@ -18,6 +18,16 @@ type ClientX402Logger = {
   error: (...args: any[]) => void;
 };
 
+export type NamefiClientFetch = (
+  request: Request,
+  init: {
+    redirect?: Request['redirect'];
+  },
+  options: ClientOptions<NamefiClientContext>,
+  path: readonly string[],
+  input: unknown,
+) => Promise<Response>;
+
 export type CreateNamefiClientX402Options = {
   signer: X402Signer;
   shouldAcceptPayment?: X402PaymentPredicate;
@@ -33,11 +43,13 @@ export type NamefiClientContext = {
 export function createNamefiClientX402Fetch({
   x402,
   logger,
+  nextFetch,
 }: {
   x402?: CreateNamefiClientX402Options;
   logger?: ClientX402Logger;
+  nextFetch: NamefiClientFetch;
 }) {
-  return async (
+  return (async (
     request: Request,
     init: {
       redirect?: Request['redirect'];
@@ -52,7 +64,13 @@ export function createNamefiClientX402Fetch({
     });
     const replayableRequest = firstAttemptRequest.clone();
 
-    const firstResponse = await globalThis.fetch(firstAttemptRequest);
+    const firstResponse = await nextFetch(
+      firstAttemptRequest,
+      init,
+      options,
+      path,
+      input,
+    );
 
     if (!x402?.signer || firstResponse.status !== 402) {
       return firstResponse;
@@ -110,18 +128,22 @@ export function createNamefiClientX402Fetch({
 
       logger?.info('Retrying request with x402 payment signature');
 
-      return await globalThis.fetch(
+      return await nextFetch(
         new Request(replayableRequest, {
           headers: replayHeaders,
           credentials: 'include',
         }),
+        init,
+        options,
+        path,
+        input,
       );
     } catch (error) {
       logger?.error('Failed to process x402 payment-required response');
       logger?.error(error);
       return firstResponse;
     }
-  };
+  }) satisfies NamefiClientFetch;
 }
 
 async function resolveShouldRetry({

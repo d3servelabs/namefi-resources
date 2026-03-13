@@ -9,6 +9,7 @@ import {
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 import { loadSession } from './lib/session-store';
 import { createSignClient } from './lib/create-sign-client';
+import { SignClient } from '@walletconnect/sign-client';
 
 const CHAIN_BY_ID: Record<number, Chain> = {
   [base.id]: base,
