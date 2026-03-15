@@ -279,22 +279,34 @@ export const siweRouter = createTRPCRouter({
     .output(prepareSiweMessageOutputSchema)
     .query(async ({ input, ctx }) => {
       try {
-        logger.debug({
-          signerAddress: input.signerAddress,
-          chainId: input.chainId,
-        }, 'Preparing SIWE message for signer %s on chain %d', input.signerAddress, input.chainId);
+        logger.debug(
+          {
+            signerAddress: input.signerAddress,
+            chainId: input.chainId,
+          },
+          'Preparing SIWE message for signer %s on chain %d',
+          input.signerAddress,
+          input.chainId,
+        );
         const result = await prepareSiweMessage({
           signerAddress: input.signerAddress,
           nonce: input.nonce,
           chainId: input.chainId,
           domain: SIWE_DOMAIN,
-          uri: SIWE_DOMAIN.includes('http') ? SIWE_DOMAIN : `https://${SIWE_DOMAIN}`,
+          uri: SIWE_DOMAIN.includes('http')
+            ? SIWE_DOMAIN
+            : `https://${SIWE_DOMAIN}`,
         });
-        logger.debug({
-          signerAddress: input.signerAddress,
-          chainId: input.chainId,
-          result,
-        }, 'Prepared SIWE message for signer %s on chain %d', input.signerAddress, input.chainId);
+        logger.debug(
+          {
+            signerAddress: input.signerAddress,
+            chainId: input.chainId,
+            result,
+          },
+          'Prepared SIWE message for signer %s on chain %d',
+          input.signerAddress,
+          input.chainId,
+        );
 
         if (!result.valid) {
           return result;
@@ -311,11 +323,17 @@ export const siweRouter = createTRPCRouter({
           messageString: createSiweMessage(result.message),
         };
       } catch (error) {
-        logger.error({
-          signerAddress: input.signerAddress,
-          chainId: input.chainId,
-          error: (error as Error).message,
-        }, 'Error preparing SIWE message for signer %s on chain %d: %s', input.signerAddress, input.chainId, (error as Error).message);
+        logger.error(
+          {
+            signerAddress: input.signerAddress,
+            chainId: input.chainId,
+            error: (error as Error).message,
+          },
+          'Error preparing SIWE message for signer %s on chain %d: %s',
+          input.signerAddress,
+          input.chainId,
+          (error as Error).message,
+        );
         return {
           valid: false,
           error: 'Failed to prepare SIWE message: ' + (error as Error).message,
