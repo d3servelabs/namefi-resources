@@ -4,10 +4,18 @@
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
+import { Card } from '../components/card';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button, Link } from '@react-email/components';
-import { button, anchor } from '../styles';
+import {
+  anchor,
+  astraTheme,
+  button,
+  footerMeta,
+  panelText,
+  panelTitle,
+} from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
@@ -72,27 +80,11 @@ export const InternalReservationNotification =
             {messageMarkdown}
           </ReactMarkdown>
 
-          <div
-            style={{
-              marginTop: '20px',
-              marginBottom: '20px',
-              padding: '16px',
-              backgroundColor: '#f0fdf4',
-              border: '1px solid #22c55e',
-              borderRadius: '8px',
-            }}
-          >
-            <h3
-              style={{
-                margin: '0 0 12px 0',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                color: '#22c55e',
-              }}
-            >
-              🔒 Reservation Details
+          <Card variant="success">
+            <h3 style={{ ...panelTitle, color: astraTheme.successInk }}>
+              Reservation Details
             </h3>
-            <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
+            <div style={panelText}>
               {exactDomainName && (
                 <div>
                   <strong>Your name:</strong> {toUnicode(exactDomainName)}
@@ -116,7 +108,7 @@ export const InternalReservationNotification =
                 </div>
               )}
             </div>
-          </div>
+          </Card>
 
           <ReactMarkdown
             rehypePlugins={[
@@ -137,13 +129,14 @@ export const InternalReservationNotification =
           </ReactMarkdown>
 
           <Button
+            className="namefi-button-mobile"
             style={button}
             href={NamefiEmailLinks.freeMints({ poweredByNamefiDomain })}
           >
             Go to Dashboard
           </Button>
 
-          <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
+          <div style={{ ...footerMeta, marginTop: '16px' }}>
             <p>This email was sent to {recipientEmail}.</p>
           </div>
 

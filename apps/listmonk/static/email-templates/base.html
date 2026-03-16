@@ -8,66 +8,100 @@
 
         <style>
             body {
-                background-color: #F0F1F3;
-                font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, sans-serif;
-                font-size: 15px;
-                line-height: 26px;
+                background-color: #eef4fb;
+                font-family: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                font-size: 16px;
+                line-height: 24px;
                 margin: 0;
-                color: #444;
+                color: #4b5f77;
             }
 
             .wrap {
                 background-color: #fff;
-                padding: 30px;
-                max-width: 525px;
+                padding: 32px;
+                max-width: 620px;
                 margin: 0 auto;
-                border-radius: 0.65rem;
+                border-radius: 18px;
+                border: 1px solid #d6e0ed;
             }
 
             .header {
-                border-bottom: 1px solid #737373;
-                padding-bottom: 1rem;
+                padding-bottom: 0.9rem;
                 margin-bottom: 1rem;
+            }
+
+            .header-logo {
+                display: block;
+                width: 104px;
+                max-width: 100%;
+                height: auto;
             }
 
             .footer {
                 text-align: center;
                 font-size: 12px;
-                color: #888;
+                color: #6c7e94;
             }
             .footer a {
-                color: #1dd17d;
+                color: #18865f;
             }
             .footer a:hover {
-                color: #00b05f;
+                color: #136a4b;
             }
 
             .gutter {
-                padding: 30px;
+                padding: 24px;
             }
             .button {
-                background: #1dd17d;
-                color: #fff !important;
+                background: #48e59b;
+                color: #032017 !important;
                 display: inline-block;
-                border-radius: 0.65rem;
-                padding: 0.5rem 1rem;
+                border-radius: 10px;
+                padding: 0.58rem 1rem;
                 text-align: center;
                 text-decoration: none;
-                font-weight: bold;
+                font-weight: 700;
             }
             .button:hover {
-                background: #00b05f;
-                color: #fff;
+                background: #35cf89;
+                color: #032017;
             }
             img {
                 max-width: 100%;
             }
 
             a {
-                color: #1dd17d !important;
+                color: #18865f !important;
+                text-decoration-color: #9adfc0;
+                text-underline-offset: 3px;
             }
             a:hover {
-                color: #00b05f;
+                color: #136a4b;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #c1d0e2;
+            }
+            table th {
+                border: 1px solid #d3deeb;
+                background-color: #edf3fb;
+                color: #445a74;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                padding: 10px 12px;
+                text-align: left;
+                text-transform: uppercase;
+            }
+            table td {
+                border: 1px solid #d3deeb;
+                color: #0f1b2d;
+                padding: 10px 12px;
+            }
+            h1, h2, h3 {
+                color: #101b2d;
             }
             @media screen and (max-width: 600px) {
                 .wrap {
@@ -79,12 +113,12 @@
             }
         </style>
     </head>
-<body style="background-color: #F0F1F3;">
+<body style="background-color: #eef4fb;">
     <div class="gutter">&nbsp;</div>
     <div class="wrap">
         <div class="header">
             {{ if ne LogoURL "" }}
-                <img src="{{ LogoURL }}" alt="listmonk" />
+                <img src="{{ LogoURL }}" alt="Namefi" class="header-logo" />
             {{ end }}
         </div>
 {{ end }}

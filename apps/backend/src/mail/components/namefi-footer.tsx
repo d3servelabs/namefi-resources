@@ -11,18 +11,23 @@ export function NamefiFooter() {
     <>
       <Hr style={styles.hr} />
 
-      <Text style={styles.paragraph}>
-        More questions?{' '}
+      <Text style={styles.footerIntro}>
+        Need help with your account or domains? Contact{' '}
         <Link style={styles.anchor} href="mailto:support@namefi.io">
           support@namefi.io
         </Link>
+        .
       </Text>
       <Link
-        style={styles.anchor}
+        style={styles.footerLink}
         href={NamefiEmailLinks.emailSubscription({ poweredByNamefiDomain })}
       >
-        Unsubscribe or manage your email preferences
+        Manage notification preferences
       </Link>
+      <Text style={styles.footerMeta}>
+        You are receiving this email because you have a Namefi account or opted
+        in to updates.
+      </Text>
     </>
   );
 }

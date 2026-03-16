@@ -2,14 +2,13 @@
     "root": {
         "type": "EmailLayout",
         "data": {
-            "backdropColor": "#F5F5F5",
+            "backdropColor": "#eef4fb",
             "canvasColor": "#FFFFFF",
-            "textColor": "#262626",
+            "textColor": "#4b5f77",
             "fontFamily": "MODERN_SANS",
             "childrenIds": [
                 "block-1744970939431",
                 "block-1744970976991",
-                "block-1744971036169",
                 "block-1744971054197"
             ]
         }
@@ -39,17 +38,6 @@
             }
         }
     },
-    "block-1744971036169": {
-        "type": "Divider",
-        "data": {
-            "style": {
-                "padding": { "top": 16,"right": 0, "bottom": 16, "left": 0 }
-            },
-            "props": {
-                "lineColor": "#CCCCCC"
-            }
-        }
-    },
     "block-1744971054197": {
         "type": "Button",
         "data": {
@@ -57,7 +45,7 @@
                 "padding": { "top": 16, "bottom": 16, "right": 24, "left": 24 }
             },
             "props": {
-                "buttonBackgroundColor": "#0055d4",
+                "buttonBackgroundColor": "#18865f",
                 "text": "This is a button",
                 "url": "https://listmonk.app"
             }

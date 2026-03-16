@@ -3,10 +3,24 @@
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
+import { Card } from '../components/card';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
-import { button } from '../styles';
+import {
+  astraTheme,
+  button,
+  mutedPanel,
+  panelText,
+  panelTitle,
+  sectionHeading,
+  tag,
+  table,
+  tableCell,
+  tableCellSubtext,
+  tableHeaderCell,
+  tableWrap,
+} from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
@@ -80,31 +94,43 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
           day: 'numeric',
         })}**. Make sure to use ${totalClaimsGranted === 1 ? 'it' : 'them'} before then!`
       : '';
+    const getSourceTagStyle = (
+      source: FreeClaimsCorrectionProps['claimsGranted'][number]['source'],
+    ) => {
+      if (source === 'UPVOTE') {
+        return {
+          ...tag,
+          backgroundColor: astraTheme.successBackground,
+          borderColor: astraTheme.successBorder,
+          color: astraTheme.successInk,
+        };
+      }
+      if (source === 'SHARE') {
+        return {
+          ...tag,
+          backgroundColor: astraTheme.infoBackground,
+          borderColor: astraTheme.infoBorder,
+          color: astraTheme.infoInk,
+        };
+      }
+      return tag;
+    };
 
     return (
       <NamefiEmailContainer
         title={`[Namefi] Correction - You have ${totalClaimsGranted} free ${pluralize('claim', totalClaimsGranted, false)} for ${correctParentDomain}`}
       >
         {/* Apology Section */}
-        <div
-          style={{
-            marginBottom: '24px',
-            padding: '20px',
-            backgroundColor: '#fef2f2',
-            border: '2px solid #f87171',
-            borderRadius: '12px',
-          }}
-        >
+        <Card variant="error" style={{ marginBottom: '24px' }}>
           <h2
             style={{
-              margin: '0 0 16px 0',
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#dc2626',
+              ...panelTitle,
+              color: astraTheme.errorInk,
+              marginBottom: '8px',
               textAlign: 'center',
             }}
           >
-            🙏 Our Sincere Apologies
+            Our Sincere Apologies
           </h2>
           <ReactMarkdown
             rehypePlugins={[
@@ -116,29 +142,19 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
           >
             {apologyMarkdown}
           </ReactMarkdown>
-        </div>
+        </Card>
 
         {/* Corrected Claims Summary */}
-        <div
-          style={{
-            marginTop: '20px',
-            marginBottom: '20px',
-            padding: '20px',
-            backgroundColor: '#f0fdf4',
-            border: '2px solid #22c55e',
-            borderRadius: '12px',
-          }}
-        >
+        <Card variant="success">
           <h3
             style={{
-              margin: '0 0 16px 0',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              color: '#16a34a',
+              ...panelTitle,
+              color: astraTheme.successInk,
+              marginBottom: '8px',
               textAlign: 'center',
             }}
           >
-            ✅ You have {totalClaimsGranted} free{' '}
+            You have {totalClaimsGranted} free{' '}
             {pluralize('claim', totalClaimsGranted, false)}
           </h3>
           <ReactMarkdown
@@ -151,86 +167,51 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
           >
             {claimSummary}
           </ReactMarkdown>
-        </div>
+        </Card>
 
         {/* Detailed Claims Table */}
         {claimsGranted.length > 0 && (
           <div style={{ marginBottom: '24px' }}>
-            <h3
-              style={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-                marginBottom: '12px',
-                color: '#374151',
-              }}
-            >
-              📋 Detailed Breakdown of Your Claims
-            </h3>
-            <table style={localStyles.table}>
-              <thead>
-                <tr>
-                  <th style={{ ...localStyles.th, textAlign: 'left' }}>
-                    Source
-                  </th>
-                  <th style={{ ...localStyles.th, textAlign: 'left' }}>
-                    Details
-                  </th>
-                  <th style={{ ...localStyles.th, textAlign: 'left' }}>
-                    Expires
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {claimsGranted.map((claim) => (
-                  <tr key={`${claim.source}-${claim.sourceId}`}>
-                    <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                      <span
-                        style={{
-                          backgroundColor: '#dcfce7',
-                          color: '#166534',
-                          padding: '6px 12px',
-                          borderRadius: '6px',
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {claim.source === 'UPVOTE'
-                          ? 'UPVOTE'
-                          : claim.source === 'SHARE'
-                            ? 'LINK SHARE'
-                            : 'GIFT'}
-                      </span>
-                    </td>
-                    <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                      <div style={{ fontSize: '14px', fontWeight: '500' }}>
-                        {claim.reason.replace(
-                          new RegExp(incorrectParentDomain, 'g'),
-                          correctParentDomain,
-                        )}
-                      </div>
-                      {claim.domainName && (
-                        <div
-                          style={{
-                            fontSize: '12px',
-                            color: '#666',
-                            marginTop: '4px',
-                          }}
-                        >
-                          Domain:{' '}
-                          {claim.domainName.replace(
-                            incorrectParentDomain,
+            <h3 style={sectionHeading}>Detailed Breakdown of Your Claims</h3>
+            <div style={tableWrap}>
+              <table style={table}>
+                <thead>
+                  <tr>
+                    <th style={tableHeaderCell}>Source</th>
+                    <th style={tableHeaderCell}>Details</th>
+                    <th style={tableHeaderCell}>Expires</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {claimsGranted.map((claim) => (
+                    <tr key={`${claim.source}-${claim.sourceId}`}>
+                      <td style={tableCell}>
+                        <span style={getSourceTagStyle(claim.source)}>
+                          {claim.source === 'UPVOTE'
+                            ? 'UPVOTE'
+                            : claim.source === 'SHARE'
+                              ? 'LINK SHARE'
+                              : 'GIFT'}
+                        </span>
+                      </td>
+                      <td style={tableCell}>
+                        <div>
+                          {claim.reason.replace(
+                            new RegExp(incorrectParentDomain, 'g'),
                             correctParentDomain,
                           )}
                         </div>
-                      )}
-                    </td>
-                    <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                      <span
-                        style={{
-                          fontSize: '13px',
-                          fontWeight: '500',
-                        }}
-                      >
+                        {claim.domainName && (
+                          <div style={tableCellSubtext}>
+                            Domain:{' '}
+                            {claim.domainName.replace(
+                              incorrectParentDomain,
+                              correctParentDomain,
+                            )}
+                          </div>
+                        )}
+                      </td>
+                      <td style={tableCell}>
                         {claim.expirationDate
                           ? new Date(claim.expirationDate).toLocaleDateString(
                               'en-US',
@@ -241,12 +222,12 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
                               },
                             )
                           : 'Never'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
@@ -269,6 +250,7 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
         {/* Action Button */}
         <div style={{ textAlign: 'center', margin: '32px 0' }}>
           <Button
+            className="namefi-button-mobile"
             style={{
               ...button,
             }}
@@ -281,15 +263,7 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
         </div>
 
         {/* Final apology */}
-        <div
-          style={{
-            marginTop: '32px',
-            padding: '16px',
-            backgroundColor: '#f9fafb',
-            borderRadius: '8px',
-            textAlign: 'center',
-          }}
-        >
+        <div style={{ ...mutedPanel, textAlign: 'center' }}>
           <ReactMarkdown
             rehypePlugins={[
               [
@@ -300,6 +274,10 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
           >
             {`Again, we sincerely apologize for any confusion caused by our error. Your free claims are absolutely still valid for **${correctParentDomain}** domains!\n\nIf you have any questions, please don't hesitate to reach out to our support team.`}
           </ReactMarkdown>
+        </div>
+        <div style={{ ...panelText, marginTop: '10px' }}>
+          You can always reach us at support@namefi.io if you need help with
+          claim redemption.
         </div>
 
         <GoToDashboard />
@@ -332,31 +310,3 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
 );
 
 export default FreeClaimsCorrection;
-
-const localStyles = {
-  table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-    marginTop: '16px',
-    marginBottom: '16px',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-    borderRadius: '8px',
-    overflow: 'hidden',
-  },
-  td: {
-    border: '1px #e5e7eb solid',
-    padding: '16px 12px',
-    textAlign: 'center',
-    verticalAlign: 'top',
-    backgroundColor: '#ffffff',
-  },
-  th: {
-    border: '1px #d1d5db solid',
-    padding: '16px 12px',
-    backgroundColor: '#f9fafb',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: '#374151',
-  },
-} as const;

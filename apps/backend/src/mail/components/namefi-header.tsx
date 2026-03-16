@@ -1,4 +1,4 @@
-import { Hr, Img, Text } from '@react-email/components';
+import { Img, Section, Text } from '@react-email/components';
 import * as styles from '../styles';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
@@ -10,13 +10,23 @@ export function NamefiHeader({
   title?: string;
   src?: string;
 }) {
+  const cleanedTitle = title?.replace(/^\s*\[namefi\]\s*/i, '').trim();
+  const displayTitle =
+    cleanedTitle && !/^\s*namefi\s*$/i.test(cleanedTitle) ? cleanedTitle : null;
+
   return (
-    <>
-      <div className="flex items-center gap-2">
-        <Img src={src} width="49" height="49" alt="Namefi" />
-        {!!title && <h1 style={styles.text}>{title}</h1>}
-      </div>
-      <Hr style={styles.hr} />
-    </>
+    <Section style={styles.headerShell}>
+      <Img
+        src={src}
+        width="92"
+        height="92"
+        alt="Namefi"
+        style={styles.headerLogo}
+      />
+      {displayTitle && <Text style={styles.headerTitle}>{displayTitle}</Text>}
+      <Text style={styles.headerSubtitle}>
+        Secure your domain portfolio with Namefi intelligence.
+      </Text>
+    </Section>
   );
 }

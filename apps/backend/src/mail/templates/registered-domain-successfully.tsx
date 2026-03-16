@@ -1,8 +1,7 @@
 import { Button, Text } from '@react-email/components';
 import { Code } from '../components/code';
-import { GoToDashboard } from '../components/go-to-dashboard';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { button, paragraph } from '../styles';
+import * as styles from '../styles';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
@@ -22,28 +21,56 @@ export const RegisteredDomainSuccessfully =
         <NamefiEmailContainer
           title={`[Namefi] Congratulations! ${domainUnicodeName} is Yours!`}
         >
-          <Text style={paragraph}>
+          <Text style={styles.paragraph}>
             You did it! Your new domain is officially registered and ready to
             go.
           </Text>
 
-          <Text style={{ ...paragraph, display: 'inline' }}>Say hello to </Text>
+          <Text style={{ ...styles.paragraph, display: 'inline' }}>
+            Say hello to{' '}
+          </Text>
           <Code>{domainUnicodeName}</Code>
-          <Text style={{ ...paragraph, display: 'inline' }}>
+          <Text style={{ ...styles.paragraph, display: 'inline' }}>
             {' '}
             - it's all yours now. Whether you're building a website, setting up
             email, or just securing your perfect name, you're ready to start.
           </Text>
-          <GoToDashboard />
-          <Button
-            style={button}
-            href={NamefiEmailLinks.domainSettings({
-              domain: domainUnicodeName,
-              poweredByNamefiDomain,
-            })}
+          <table
+            className="namefi-button-row"
+            role="presentation"
+            cellPadding={0}
+            cellSpacing={0}
+            style={styles.buttonRowTable}
           >
-            Set Up {domainUnicodeName}
-          </Button>
+            <tbody>
+              <tr>
+                <td className="namefi-button-cell" style={styles.buttonRowCell}>
+                  <Button
+                    className="namefi-button-mobile"
+                    style={styles.button}
+                    href={NamefiEmailLinks.domainSettings({
+                      domain: domainUnicodeName,
+                      poweredByNamefiDomain,
+                    })}
+                  >
+                    Set Up {domainUnicodeName}
+                  </Button>
+                </td>
+                <td
+                  className="namefi-button-cell"
+                  style={styles.buttonRowCellLast}
+                >
+                  <Button
+                    className="namefi-button-mobile"
+                    style={styles.button}
+                    href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
+                  >
+                    Go To Namefi Dashboard
+                  </Button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </NamefiEmailContainer>
       );
     },

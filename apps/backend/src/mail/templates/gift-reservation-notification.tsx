@@ -4,10 +4,18 @@
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
+import { Card } from '../components/card';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button, Link } from '@react-email/components';
-import { button, anchor } from '../styles';
+import {
+  anchor,
+  astraTheme,
+  button,
+  footerMeta,
+  panelText,
+  panelTitle,
+} from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
@@ -118,27 +126,11 @@ export const GiftReservationNotification =
             {messageMarkdown}
           </ReactMarkdown>
 
-          <div
-            style={{
-              marginTop: '20px',
-              marginBottom: '20px',
-              padding: '16px',
-              backgroundColor: '#f0f9ff',
-              border: '1px solid #0ea5e9',
-              borderRadius: '8px',
-            }}
-          >
-            <h3
-              style={{
-                margin: '0 0 12px 0',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                color: '#0ea5e9',
-              }}
-            >
-              {gift ? '🎁 Gift Details' : '🔒 Reservation Details'}
+          <Card variant="info">
+            <h3 style={{ ...panelTitle, color: astraTheme.infoInk }}>
+              {gift ? 'Gift Details' : 'Reservation Details'}
             </h3>
-            <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
+            <div style={panelText}>
               {gift && (
                 <div>
                   <strong>From:</strong> {gifterName}
@@ -168,7 +160,7 @@ export const GiftReservationNotification =
                 </div>
               )}
             </div>
-          </div>
+          </Card>
 
           <ReactMarkdown
             rehypePlugins={[
@@ -190,13 +182,14 @@ export const GiftReservationNotification =
           </ReactMarkdown>
 
           <Button
+            className="namefi-button-mobile"
             style={button}
             href={NamefiEmailLinks.freeMints({ poweredByNamefiDomain })}
           >
             Go to Dashboard
           </Button>
 
-          <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
+          <div style={{ ...footerMeta, marginTop: '16px' }}>
             <p>
               This email was sent to {recipientEmail}. If you did not expect
               this gift, you can safely ignore this email.

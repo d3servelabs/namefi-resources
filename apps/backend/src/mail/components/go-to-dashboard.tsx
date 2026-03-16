@@ -8,11 +8,14 @@ import { NamefiEmailLinks } from '../email-links';
 export function GoToDashboard() {
   const poweredByNamefiDomain = usePoweredByNamefiDomain();
   return (
-    <Button
-      style={button}
-      href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
-    >
-      Go To Namefi Dashboard
-    </Button>
+    <div style={{ marginTop: '10px' }}>
+      <Button
+        className="namefi-button-mobile"
+        style={button}
+        href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
+      >
+        Go To Namefi Dashboard
+      </Button>
+    </div>
   );
 }

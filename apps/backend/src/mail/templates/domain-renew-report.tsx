@@ -146,104 +146,68 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             {messageMarkdown}
           </ReactMarkdown>
         </div>
-        <table
-          style={{ ...styles.text, borderCollapse: 'collapse', width: '100%' }}
-        >
-          <tr>
-            <td
-              className="py-1 px-1 font-medium"
-              style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-            >
-              Domain Name
-            </td>
-            <td
-              className="py-1 px-1 font-medium"
-              style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-            >
-              Expiration Date
-            </td>
-            <td
-              className="py-1 px-1 font-medium"
-              style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-            >
-              Renew Price
-            </td>
-            <td
-              className="py-1 px-1 font-medium"
-              style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-            >
-              Renew Status
-            </td>
-          </tr>
-          {domainLdhRenewSucceeded.map((domainNameLdh) => (
-            <tr key={domainNameLdh}>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                {domainNameLdh}{' '}
-                {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                  ? ''
-                  : `(${punycode.toUnicode(domainNameLdh)})`}
-              </td>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                {format(
-                  expirationDatesByDomainLdh[domainNameLdh],
-                  'yyyy-MM-dd',
-                )}
-              </td>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
-              </td>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                <span className="text-green-400">Success</span>
-              </td>
-            </tr>
-          ))}
-          {domainLdhRenewFailed.map((domainNameLdh) => (
-            <tr key={domainNameLdh}>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                {domainNameLdh}{' '}
-                {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                  ? ''
-                  : `(${punycode.toUnicode(domainNameLdh)})`}
-              </td>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                {format(
-                  expirationDatesByDomainLdh[domainNameLdh],
-                  'yyyy-MM-dd',
-                )}
-              </td>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
-              </td>
-              <td
-                className="py-1 px-1"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-              >
-                <span className="text-red-400">Failed (Registry Error)</span>
-              </td>
-            </tr>
-          ))}
-        </table>
+        <div style={styles.tableWrap}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.tableHeaderCell}>Domain Name</th>
+                <th style={styles.tableHeaderCell}>Expiration Date</th>
+                <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
+                <th style={styles.tableHeaderCell}>Renew Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {domainLdhRenewSucceeded.map((domainNameLdh) => (
+                <tr key={domainNameLdh}>
+                  <td style={styles.tableCell}>
+                    {domainNameLdh}{' '}
+                    {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                      ? ''
+                      : `(${punycode.toUnicode(domainNameLdh)})`}
+                  </td>
+                  <td style={styles.tableCell}>
+                    {format(
+                      expirationDatesByDomainLdh[domainNameLdh],
+                      'yyyy-MM-dd',
+                    )}
+                  </td>
+                  <td style={styles.tableCellNumeric}>
+                    ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+                  </td>
+                  <td style={styles.tableCell}>
+                    <span style={{ color: styles.astraTheme.successInk }}>
+                      Success
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {domainLdhRenewFailed.map((domainNameLdh) => (
+                <tr key={domainNameLdh}>
+                  <td style={styles.tableCell}>
+                    {domainNameLdh}{' '}
+                    {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                      ? ''
+                      : `(${punycode.toUnicode(domainNameLdh)})`}
+                  </td>
+                  <td style={styles.tableCell}>
+                    {format(
+                      expirationDatesByDomainLdh[domainNameLdh],
+                      'yyyy-MM-dd',
+                    )}
+                  </td>
+                  <td style={styles.tableCellNumeric}>
+                    ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+                  </td>
+                  <td style={styles.tableCell}>
+                    <span style={{ color: styles.astraTheme.errorInk }}>
+                      Failed (Registry Error)
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {/* Show payment method breakdown if multiple payments were used */}
         {paymentMethods && paymentMethods.length > 1 && (
           <>
@@ -256,92 +220,47 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             >
               Payments
             </h4>
-            <table
-              style={{
-                ...styles.text,
-                borderCollapse: 'collapse',
-                width: '100%',
-                fontFamily: 'monospace',
-              }}
-            >
-              <tr>
-                <td
-                  className="py-1 px-1 font-medium"
-                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
-                />
-                <td
-                  className="py-1 px-1 font-medium"
-                  style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-                >
-                  Amount
-                </td>
-              </tr>
-              {paymentMethods.map((payment) => (
-                <tr key={payment.paymentId}>
-                  <td
-                    className="py-1 px-1"
-                    style={{
-                      border: '1px #D9D9D9 solid',
-                      textAlign: 'left',
-                    }}
-                  >
-                    {formatPaymentIdentifier(payment)}
-                  </td>
-                  <td
-                    className="py-1 px-1 text-red-800"
-                    style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-                  >
-                    ${(payment.amountInUsdCents / 100).toFixed(2)}
-                  </td>
-                </tr>
-              ))}
-              {refundAmountInUsd && (
-                <>
+            <div style={styles.tableWrap}>
+              <table style={styles.table}>
+                <thead>
                   <tr>
-                    <td />
-                    <td />
+                    <th style={styles.tableHeaderCell}>Payment Method</th>
+                    <th style={styles.tableHeaderCellNumeric}>Amount</th>
                   </tr>
+                </thead>
+                <tbody>
+                  {paymentMethods.map((payment) => (
+                    <tr key={payment.paymentId}>
+                      <td style={styles.tableCell}>
+                        {formatPaymentIdentifier(payment)}
+                      </td>
+                      <td style={styles.tableCellNumeric}>
+                        ${(payment.amountInUsdCents / 100).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                  {refundAmountInUsd ? (
+                    <tr>
+                      <td style={styles.tableCell}>Refunded Amount</td>
+                      <td style={styles.tableCellNumeric}>
+                        - ${refundAmountInUsd.toFixed(2)}
+                      </td>
+                    </tr>
+                  ) : null}
                   <tr>
-                    <td
-                      className="py-1 px-1"
-                      style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
-                    >
-                      Refunded Amount
-                    </td>
-                    <td
-                      className="py-1 px-1 text-green-800"
-                      style={{
-                        border: '1px #D9D9D9 solid',
-                        textAlign: 'right',
-                      }}
-                    >
-                      - ${refundAmountInUsd.toFixed(2)}
+                    <td style={styles.tableCellEmphasis}>Total</td>
+                    <td style={styles.tableCellNumeric}>
+                      $
+                      {(chargedAmountInUsd - (refundAmountInUsd ?? 0)).toFixed(
+                        2,
+                      )}
                     </td>
                   </tr>
-                </>
-              )}
-              <tr>
-                <td />
-                <td />
-              </tr>
-              <tr>
-                <td
-                  className="py-1 px-1 font-medium"
-                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
-                >
-                  Total
-                </td>
-                <td
-                  className="py-1 px-1 font-medium"
-                  style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
-                >
-                  {' '}
-                  ${(chargedAmountInUsd - (refundAmountInUsd ?? 0)).toFixed(2)}
-                </td>
-              </tr>
-            </table>
+                </tbody>
+              </table>
+            </div>
             <div style={{ marginTop: '2px', marginBottom: '30px' }}>
-              <span style={{ fontSize: '11px', color: '#666' }}>
+              <span style={styles.caption}>
                 For more details, view the order details
               </span>
             </div>
@@ -349,6 +268,7 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
         )}
         {orderId && (
           <Button
+            className="namefi-button-mobile"
             style={button}
             href={NamefiEmailLinks.orderDetails({
               orderId,

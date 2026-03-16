@@ -4,10 +4,23 @@
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
+import { Card } from '../components/card';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button, Link } from '@react-email/components';
-import { button, anchor } from '../styles';
+import {
+  astraTheme,
+  anchor,
+  button,
+  panelText,
+  panelTitle,
+  tag,
+  table,
+  tableCell,
+  tableCellSubtext,
+  tableHeaderCell,
+  tableWrap,
+} from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
@@ -83,6 +96,27 @@ export const FreeClaimsNotification =
             day: 'numeric',
           })}**. Make sure to use ${totalClaimsGranted === 1 ? 'it' : 'them'} before then!`
         : '';
+      const getSourceTagStyle = (
+        source: FreeClaimsNotificationProps['claimsGranted'][number]['source'],
+      ) => {
+        if (source === 'UPVOTE') {
+          return {
+            ...tag,
+            backgroundColor: astraTheme.successBackground,
+            borderColor: astraTheme.successBorder,
+            color: astraTheme.successInk,
+          };
+        }
+        if (source === 'SHARE') {
+          return {
+            ...tag,
+            backgroundColor: astraTheme.infoBackground,
+            borderColor: astraTheme.infoBorder,
+            color: astraTheme.infoInk,
+          };
+        }
+        return tag;
+      };
 
       return (
         <NamefiEmailContainer
@@ -99,25 +133,9 @@ export const FreeClaimsNotification =
             {messageMarkdown}
           </ReactMarkdown>
 
-          <div
-            style={{
-              marginTop: '20px',
-              marginBottom: '20px',
-              padding: '16px',
-              backgroundColor: '#f0f9ff',
-              border: '1px solid #0ea5e9',
-              borderRadius: '8px',
-            }}
-          >
-            <h3
-              style={{
-                margin: '0 0 12px 0',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                color: '#0ea5e9',
-              }}
-            >
-              🎉 Claims Granted
+          <Card variant="info">
+            <h3 style={{ ...panelTitle, color: astraTheme.infoInk }}>
+              Claims Granted
             </h3>
             <ReactMarkdown
               rehypePlugins={[
@@ -129,74 +147,55 @@ export const FreeClaimsNotification =
             >
               {claimSummary}
             </ReactMarkdown>
-          </div>
+          </Card>
 
           {claimsGranted.length > 0 && (
-            <table style={localStyles.table}>
-              <thead>
-                <tr>
-                  <th style={{ ...localStyles.th, textAlign: 'left' }}>
-                    Source
-                  </th>
-                  <th style={{ ...localStyles.th, textAlign: 'left' }}>
-                    Details
-                  </th>
-                  <th style={{ ...localStyles.th, textAlign: 'left' }}>
-                    Expires
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {claimsGranted.map((claim, index) => (
-                  <tr key={`${claim.source}-${claim.sourceId}`}>
-                    <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                      <span
-                        style={{
-                          backgroundColor: '#dcfce7',
-                          color: '#166534',
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          fontSize: '12px',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {claim.source === 'UPVOTE'
-                          ? 'UPVOTE'
-                          : claim.source === 'SHARE'
-                            ? 'LINK SHARE'
-                            : 'GIFT'}
-                      </span>
-                    </td>
-                    <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                      <div style={{ fontSize: '14px' }}>{claim.reason}</div>
-                      {claim.domainName && (
-                        <div
-                          style={{
-                            fontSize: '12px',
-                            color: '#666',
-                            marginTop: '4px',
-                          }}
-                        >
-                          Domain: {claim.domainName}
-                        </div>
-                      )}
-                    </td>
-                    <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                      {claim.expirationDate
-                        ? new Date(claim.expirationDate).toLocaleDateString(
-                            'en-US',
-                            {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric',
-                            },
-                          )
-                        : 'Never'}
-                    </td>
+            <div style={tableWrap}>
+              <table style={table}>
+                <thead>
+                  <tr>
+                    <th style={tableHeaderCell}>Source</th>
+                    <th style={tableHeaderCell}>Details</th>
+                    <th style={tableHeaderCell}>Expires</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {claimsGranted.map((claim) => (
+                    <tr key={`${claim.source}-${claim.sourceId}`}>
+                      <td style={tableCell}>
+                        <span style={getSourceTagStyle(claim.source)}>
+                          {claim.source === 'UPVOTE'
+                            ? 'UPVOTE'
+                            : claim.source === 'SHARE'
+                              ? 'LINK SHARE'
+                              : 'GIFT'}
+                        </span>
+                      </td>
+                      <td style={tableCell}>
+                        <div>{claim.reason}</div>
+                        {claim.domainName && (
+                          <div style={tableCellSubtext}>
+                            Domain: {claim.domainName}
+                          </div>
+                        )}
+                      </td>
+                      <td style={tableCell}>
+                        {claim.expirationDate
+                          ? new Date(claim.expirationDate).toLocaleDateString(
+                              'en-US',
+                              {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              },
+                            )
+                          : 'Never'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
           <ReactMarkdown
@@ -218,6 +217,7 @@ export const FreeClaimsNotification =
           </ReactMarkdown>
 
           <Button
+            className="namefi-button-mobile"
             style={button}
             href={NamefiEmailLinks.freeMints({
               poweredByNamefiDomain,
@@ -225,6 +225,10 @@ export const FreeClaimsNotification =
           >
             Claim Your Free Domains
           </Button>
+          <div style={{ ...panelText, marginTop: '12px' }}>
+            Your available claims are visible any time in your dashboard under
+            free mints.
+          </div>
 
           <GoToDashboard />
         </NamefiEmailContainer>
@@ -257,25 +261,3 @@ export const FreeClaimsNotification =
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default FreeClaimsNotification;
-
-const localStyles = {
-  table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-    marginTop: '20px',
-    marginBottom: '20px',
-  },
-  td: {
-    border: '1px #D9D9D9 solid',
-    padding: '12px',
-    textAlign: 'center',
-    verticalAlign: 'top',
-  },
-  th: {
-    border: '1px #D9D9D9 solid',
-    padding: '12px',
-    backgroundColor: '#f5f5f5',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-} as const;

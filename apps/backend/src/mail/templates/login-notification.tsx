@@ -2,7 +2,8 @@
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { buildTemplate } from '../components/build-template';
-import { Text, Section, Hr } from '@react-email/components';
+import { Text, Section } from '@react-email/components';
+import * as mailStyles from '../styles';
 
 export type LoginNotificationProps = {
   loginMethod: string;
@@ -70,8 +71,6 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
           </table>
         </Section>
 
-        <Hr style={styles.hr} />
-
         <Text style={styles.paragraph}>
           <strong>No action is required if this was you.</strong>
         </Text>
@@ -92,8 +91,6 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
             Please include this reference ID when contacting support.
           </Text>
         </Section>
-
-        <Hr style={styles.hr} />
 
         <Text style={styles.footerText}>
           This is an automated security notification. You are receiving this
@@ -119,83 +116,65 @@ export default LoginNotification;
 
 const styles = {
   greeting: {
-    fontSize: '16px',
-    lineHeight: '24px',
+    ...mailStyles.paragraph,
     marginBottom: '16px',
   },
   paragraph: {
-    fontSize: '14px',
-    lineHeight: '22px',
+    ...mailStyles.bodySmall,
     marginBottom: '16px',
-    color: '#333333',
   },
   detailsBox: {
-    backgroundColor: '#f8f9fa',
-    border: '1px solid #e9ecef',
-    borderRadius: '8px',
-    padding: '16px',
+    ...mailStyles.tableWrap,
+    backgroundColor: mailStyles.astraTheme.surface,
+    border: `1px solid ${mailStyles.astraTheme.borderStrong}`,
+    borderRadius: '12px',
+    padding: '12px',
     marginBottom: '20px',
   },
   table: {
-    width: '100%',
-    borderCollapse: 'collapse' as const,
+    ...mailStyles.table,
   },
   labelCell: {
-    padding: '8px 12px 8px 0',
-    fontSize: '13px',
-    color: '#666666',
-    fontWeight: 500,
-    width: '140px',
+    ...mailStyles.tableCellEmphasis,
+    color: mailStyles.astraTheme.textSecondary,
+    width: '170px',
     verticalAlign: 'top' as const,
   },
   valueCell: {
-    padding: '8px 0',
-    fontSize: '13px',
-    color: '#333333',
+    ...mailStyles.tableCell,
     wordBreak: 'break-word' as const,
   },
-  hr: {
-    borderColor: '#e9ecef',
-    margin: '24px 0',
-  },
   warningText: {
-    fontSize: '14px',
-    lineHeight: '22px',
-    color: '#dc3545',
+    ...mailStyles.bodySmall,
+    color: mailStyles.astraTheme.errorInk,
     marginBottom: '20px',
   },
   link: {
-    color: '#0066cc',
-    textDecoration: 'underline',
+    ...mailStyles.anchor,
   },
   referenceBox: {
-    backgroundColor: '#fff3cd',
-    border: '1px solid #ffc107',
-    borderRadius: '6px',
-    padding: '12px 16px',
+    backgroundColor: mailStyles.astraTheme.warningBackground,
+    border: `1px solid ${mailStyles.astraTheme.warningBorder}`,
+    borderRadius: '10px',
+    padding: '14px 16px',
     marginBottom: '20px',
   },
   referenceText: {
-    fontSize: '13px',
-    color: '#856404',
+    ...mailStyles.bodySmall,
+    color: mailStyles.astraTheme.warningInk,
     margin: '0 0 4px 0',
   },
   referenceHint: {
-    fontSize: '12px',
-    color: '#856404',
+    ...mailStyles.caption,
+    color: mailStyles.astraTheme.warningInk,
     margin: '0',
     fontStyle: 'italic' as const,
   },
   code: {
-    backgroundColor: '#f8f9fa',
+    ...mailStyles.code,
     padding: '2px 6px',
-    borderRadius: '4px',
-    fontFamily: 'monospace',
-    fontSize: '12px',
   },
   footerText: {
-    fontSize: '12px',
-    color: '#999999',
-    lineHeight: '18px',
+    ...mailStyles.footerMeta,
   },
 } as const;

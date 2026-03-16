@@ -33,25 +33,14 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
   const suggestedDomains = props.suggestedDomains ?? [];
   const hasSuggestions = suggestedDomains.length > 0;
   const domainTextStyle = {
-    ...styles.text,
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-    fontSize: '14px',
+    ...styles.monospaceText,
   };
   const suggestionsTableStyle = {
-    ...styles.text,
-    width: '100%',
-    borderCollapse: 'collapse' as const,
+    ...styles.table,
+    margin: 0,
   };
   const addToCartLinkStyle = {
-    backgroundColor: '#14b8a6',
-    borderRadius: '6px',
-    color: '#ffffff',
-    display: 'inline-block',
-    fontSize: '12px',
-    fontWeight: 600,
-    padding: '6px 10px',
-    textDecoration: 'none',
-    whiteSpace: 'nowrap' as const,
+    ...styles.inlineActionLink,
   };
 
   return (
@@ -68,15 +57,26 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
             Based on the domains you already have, here are a few available
             ideas in the same family:
           </Text>
-          <Card variant="success">
+          <div style={{ ...styles.tableWrap, margin: '0' }}>
             <table style={suggestionsTableStyle}>
+              <thead>
+                <tr>
+                  <th style={styles.tableHeaderCell}>Suggested domain</th>
+                  <th style={styles.tableHeaderCellNumeric}>Action</th>
+                </tr>
+              </thead>
               <tbody>
                 {suggestedDomains.map((domain) => (
                   <tr key={domain}>
-                    <td style={{ padding: '6px 0' }}>
+                    <td style={{ ...styles.tableCell, padding: '8px 10px' }}>
                       <span style={domainTextStyle}>{domain}</span>
                     </td>
-                    <td style={{ padding: '6px 0', textAlign: 'right' }}>
+                    <td
+                      style={{
+                        ...styles.tableCellNumeric,
+                        padding: '8px 10px',
+                      }}
+                    >
                       <a
                         href={NamefiEmailLinks.addToCartFromUrl({
                           domain,
@@ -91,7 +91,7 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
                 ))}
               </tbody>
             </table>
-          </Card>
+          </div>
         </>
       ) : null}
       <Card variant="info">
@@ -105,6 +105,7 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
         ))}
       </Card>
       <Button
+        className="namefi-button-mobile"
         style={styles.button}
         href={NamefiEmailLinks.home({ poweredByNamefiDomain })}
       >

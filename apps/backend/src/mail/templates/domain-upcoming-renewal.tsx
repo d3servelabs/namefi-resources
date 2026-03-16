@@ -3,7 +3,7 @@ import { Card } from '../components/card';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { addDays, differenceInCalendarDays, format } from 'date-fns';
+import { addDays, differenceInCalendarDays, format, isSameDay } from 'date-fns';
 import punycode from 'punycode';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
 import { GoToDashboard } from '../components/go-to-dashboard';
@@ -11,9 +11,9 @@ import { NamefiEmailLinks } from '../email-links';
 import { buildTemplate } from '../components/build-template';
 import { z } from 'zod';
 import * as styles from '../styles';
-import { sum, map } from 'ramda';
+import { map, sum } from 'ramda';
 import type { PrepareMultiPaymentsOutput } from '#temporal/workflows/prepare-multi-payments.workflow';
-import { isSameDay } from 'date-fns';
+
 const paymentProviderSchema = z.enum([
   'NFSC_BASE',
   'NFSC_ETHEREUM',
@@ -40,7 +40,7 @@ function formatNfscPaymentIdentifier(provider: PaymentProvider): string {
       return 'Unknown';
   }
 }
-// Helper function to format payment method identifier
+
 const formatPaymentIdentifier = (
   payment: NonNullable<DomainUpcomingRenewalProps['expectedPayments']>[number],
 ): string => {
@@ -52,6 +52,7 @@ const formatPaymentIdentifier = (
   }
   return '';
 };
+
 export type DomainUpcomingRenewalProps = {
   recipientName: string;
   recipientEmail: string;
@@ -90,25 +91,19 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
       title = '[Namefi] Your Domain Renewal Reminder',
     } = props;
 
+    const now = new Date();
     const manualRenewalDomains =
       domainsRenewInfo?.filter(({ autoRenew }) => !autoRenew) ?? [];
 
-    // Categorize domains into three groups
     const domainsRenewingToday =
       domainsRenewInfo?.filter(({ expirationDate, autoRenew }) => {
-        const daysRemaining = differenceInCalendarDays(
-          expirationDate,
-          new Date(),
-        );
+        const daysRemaining = differenceInCalendarDays(expirationDate, now);
         return autoRenew && daysRemaining < RENEW_EARLY_BY_DAYS;
       }) ?? [];
 
     const upcomingAutomaticRenewals =
       domainsRenewInfo?.filter(({ expirationDate, autoRenew }) => {
-        const daysRemaining = differenceInCalendarDays(
-          expirationDate,
-          new Date(),
-        );
+        const daysRemaining = differenceInCalendarDays(expirationDate, now);
         return autoRenew && daysRemaining >= RENEW_EARLY_BY_DAYS;
       }) ?? [];
 
@@ -122,578 +117,370 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
       showDomainsRenewingToday || showUpcomingAutomaticRenewals;
     const showNextChargeStatement =
       !!nextChargeDate &&
-      !isSameDay(nextChargeDate, new Date()) &&
+      !isSameDay(nextChargeDate, now) &&
       !expectedPayments?.length;
 
-    const showPaymentMethodBreakdown =
-      expectedPayments && expectedPayments.length > 0;
+    const paymentMethods = expectedPayments ?? [];
+    const showPaymentMethodBreakdown = paymentMethods.length > 0;
 
-    // Generate friendly intro message based on situation
+    const sortedRenewingToday = [...domainsRenewingToday].sort(
+      (a, b) => a.expirationDate.getTime() - b.expirationDate.getTime(),
+    );
+    const sortedManualRenewals = [...manualRenewalDomains].sort(
+      (a, b) => a.expirationDate.getTime() - b.expirationDate.getTime(),
+    );
+    const sortedUpcomingRenewals = [...upcomingAutomaticRenewals].sort(
+      (a, b) => a.expirationDate.getTime() - b.expirationDate.getTime(),
+    );
+
+    const renewingTodaySubtotal = sum(
+      map((domain) => domain.renewalPrice.amount, domainsRenewingToday),
+    );
+    const manualRenewalSubtotal = sum(
+      map((domain) => domain.renewalPrice.amount, manualRenewalDomains),
+    );
+    const paymentSubtotal = sum(
+      map((payment) => payment.amountInUsdCents / 100, paymentMethods),
+    );
+
     const getIntroMessage = () => {
       if (showDomainsRenewingToday && showPaymentMethodBreakdown) {
-        return "Good news - we're about to renew your domains and everything is set up perfectly.";
+        return 'Good news: your upcoming renewals are queued and your payment setup looks ready.';
       }
       if (showDomainsRenewingToday) {
-        return 'Just a heads up - some of your domains are coming up for renewal soon.';
+        return 'A few domains are in your active renewal window. Please review the details below.';
       }
       if (showUpcomingAutomaticRenewals) {
-        return 'We wanted to give you a friendly reminder about your upcoming domain renewals.';
+        return 'This is a reminder of upcoming automatic renewals for your portfolio.';
       }
       return '';
     };
 
     return (
       <NamefiEmailContainer title={title}>
-        <div style={{ ...styles.text }}>
-          Hi {recipientName || 'there'},<br />
-          <br />
-          {showIntroStatement && getIntroMessage()}
+        <div style={{ ...styles.paragraph, marginBottom: '8px' }}>
+          Hi {recipientName || 'there'},
         </div>
-        {/* Show payment issue warning if payment preparation failed or insufficient funds */}
+
+        {showIntroStatement && (
+          <div style={{ ...styles.paragraph, marginTop: 0 }}>
+            {getIntroMessage()}
+          </div>
+        )}
+
         {showPaymentIssueWarning && (
           <>
             <Card variant="warning">
-              <div
+              <h3
                 style={{
-                  fontWeight: 'bold',
-                  color: '#CC5500',
-                  marginBottom: '12px',
+                  ...styles.panelTitle,
+                  color: styles.astraTheme.warningInk,
                 }}
               >
-                ⚠️{' '}
                 {paymentPreparationSummary.status === 'INSUFFICIENT_FUNDS'
-                  ? 'Insufficient Funds'
-                  : 'Payment Issue Detected'}
+                  ? 'Payment attention needed'
+                  : 'Payment method attention needed'}
+              </h3>
+              <div
+                style={{
+                  ...styles.panelText,
+                  color: styles.astraTheme.warningInk,
+                  marginBottom: '8px',
+                }}
+              >
+                We were not able to fully prepare renewal payment. Please review
+                balances and cards below.
               </div>
 
-              <div
-                style={{
-                  borderRadius: '8px',
-                  border: '1.5px #D9D9D9 solid',
-                  marginTop: '12px',
-                }}
-              >
-                <table
-                  style={{
-                    borderCollapse: 'collapse',
-                    ...styles.text,
-                    width: '100%',
-                    borderStyle: 'hidden',
-                  }}
-                >
-                  <tr>
-                    <TD
-                      textAlign="left"
-                      monospace={false}
-                      className="font-medium"
-                      topLeft
-                    >
-                      Available Payment Methods
-                    </TD>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topRight
-                    >
-                      Balance/Info
-                    </TD>
-                  </tr>
-                  <tr>
-                    <TD textAlign="left" monospace={false}>
-                      NFSC Balance
-                    </TD>
-                    <TD textAlign="right" monospace={true}>
-                      ${availableBalanceInNfsc.toFixed(2)}
-                    </TD>
-                  </tr>
-                  {availableOffChainPaymentMethodsPublicIdentifiers.map(
-                    (last4, index) => (
-                      <tr key={last4}>
-                        <TD
-                          textAlign="left"
-                          monospace={false}
-                          bottomLeft={
-                            index ===
-                            availableOffChainPaymentMethodsPublicIdentifiers.length -
-                              1
-                          }
-                        >
-                          Credit Card
-                        </TD>
-                        <TD
-                          textAlign="right"
-                          monospace={true}
-                          bottomRight={
-                            index ===
-                            availableOffChainPaymentMethodsPublicIdentifiers.length -
-                              1
-                          }
-                        >
-                          ••••{last4}
-                        </TD>
+              <div style={{ ...styles.tableWrap, marginTop: '8px' }}>
+                <table style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.tableHeaderCell}>Payment Method</th>
+                      <th style={styles.tableHeaderCellNumeric}>
+                        Balance / Info
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style={styles.tableCell}>NFSC Balance</td>
+                      <td style={styles.tableCellNumeric}>
+                        ${availableBalanceInNfsc.toFixed(2)}
+                      </td>
+                    </tr>
+                    {availableOffChainPaymentMethodsPublicIdentifiers.length >
+                    0 ? (
+                      availableOffChainPaymentMethodsPublicIdentifiers.map(
+                        (last4) => (
+                          <tr key={last4}>
+                            <td style={styles.tableCell}>Credit Card</td>
+                            <td style={styles.tableCellNumeric}>••••{last4}</td>
+                          </tr>
+                        ),
+                      )
+                    ) : (
+                      <tr>
+                        <td style={styles.tableCell}>Credit Card</td>
+                        <td style={styles.tableCellNumeric}>None on file</td>
                       </tr>
-                    ),
-                  )}
+                    )}
+                  </tbody>
                 </table>
               </div>
 
               {(paymentPreparationSummary.shortByInUsdCents ?? 0) > 0 && (
                 <div
                   style={{
-                    ...styles.text,
-                    marginTop: '12px',
-                    fontSize: '13px',
-                    fontStyle: 'italic',
-                    color: '#666',
+                    ...styles.caption,
+                    color: styles.astraTheme.warningInk,
+                    marginTop: '10px',
                   }}
                 >
-                  * You need to have ${nextChargeAmount.amount.toFixed(2)}.
+                  Short by $
+                  {(
+                    (paymentPreparationSummary.shortByInUsdCents ?? 0) / 100
+                  ).toFixed(2)}
+                  . Required total is ${nextChargeAmount.amount.toFixed(2)}.
                 </div>
               )}
             </Card>
-            <div className="mt-4 grid sm:grid-cols-2 grid-cols-1 gap-6 px-8">
-              <Button
-                style={{ ...styles.outlineButton }}
-                href={NamefiEmailLinks.rechargeNFSC({
-                  poweredByNamefiDomain: null,
-                })}
-              >
-                Recharge NFSC
-              </Button>
-              <Button
-                style={{ ...styles.outlineButton }}
-                href={NamefiEmailLinks.paymentMethods({
-                  poweredByNamefiDomain: null,
-                })}
-              >
-                Add Credit Card
-              </Button>
-            </div>
+
+            <table
+              className="namefi-button-row"
+              role="presentation"
+              cellPadding={0}
+              cellSpacing={0}
+              style={styles.buttonRowTable}
+            >
+              <tbody>
+                <tr>
+                  <td
+                    className="namefi-button-cell"
+                    style={styles.buttonRowCell}
+                  >
+                    <Button
+                      className="namefi-button-mobile"
+                      style={styles.button}
+                      href={NamefiEmailLinks.rechargeNFSC({
+                        poweredByNamefiDomain: null,
+                      })}
+                    >
+                      Recharge NFSC
+                    </Button>
+                  </td>
+                  <td
+                    className="namefi-button-cell"
+                    style={styles.buttonRowCellLast}
+                  >
+                    <Button
+                      className="namefi-button-mobile"
+                      style={styles.button}
+                      href={NamefiEmailLinks.paymentMethods({
+                        poweredByNamefiDomain: null,
+                      })}
+                    >
+                      Add Credit Card
+                    </Button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </>
         )}
 
         {showNextChargeStatement && (
-          <div
-            style={{ ...styles.text, marginTop: '20px', marginBottom: '10px' }}
-          >
-            Next charge will be ${nextChargeAmount.amount.toFixed(2)} on{' '}
+          <div style={styles.sectionLead}>
+            Next charge: ${nextChargeAmount.amount.toFixed(2)} on{' '}
             {format(nextChargeDate, 'LLL dd, yyyy')}
           </div>
         )}
 
-        {/* Table A: Domains Renewing Today */}
         {showDomainsRenewingToday && (
           <>
-            <div className="font-normal mt-10 mb-4" style={{ ...styles.text }}>
-              Upcoming Renewals and Charges ({format(new Date(), 'LLL dd, yyy')}
-              )
+            <div style={styles.sectionHeading}>
+              Renewing Soon ({format(now, 'LLL dd, yyyy')})
             </div>
-            <div className="px-4 mb-5">
-              <div
-                style={{ borderRadius: '8px', border: '1.5px #D9D9D9 solid' }}
-              >
-                <table
+            <div style={styles.tableWrap}>
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.tableHeaderCell}>Domain Name</th>
+                    <th style={styles.tableHeaderCell}>Expiration Date</th>
+                    <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedRenewingToday.map(
+                    ({ domainNameLdh, expirationDate, renewalPrice }) => (
+                      <tr key={domainNameLdh}>
+                        <td style={styles.tableCell}>
+                          <DomainNameCell domainNameLdh={domainNameLdh} />
+                        </td>
+                        <td style={styles.tableCell}>
+                          <DomainExpirationDateCell
+                            expirationDate={expirationDate}
+                          />
+                        </td>
+                        <td style={styles.tableCellNumeric}>
+                          ${renewalPrice.amount.toFixed(2)}
+                        </td>
+                      </tr>
+                    ),
+                  )}
+                  <tr>
+                    <td style={styles.tableCellEmphasis}>Subtotal</td>
+                    <td style={styles.tableCell} />
+                    <td style={styles.tableCellNumeric}>
+                      ${renewingTodaySubtotal.toFixed(2)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {showPaymentMethodBreakdown && (
+              <Card variant="success" style={{ marginTop: '14px' }}>
+                <h3
                   style={{
-                    borderCollapse: 'collapse',
-                    ...styles.text,
-                    width: '100%',
-                    borderStyle: 'hidden',
+                    ...styles.panelTitle,
+                    color: styles.astraTheme.successInk,
                   }}
                 >
-                  <tr>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topLeft
-                    >
-                      Domain Name
-                    </TD>
-                    <TD
-                      textAlign="left"
-                      monospace={false}
-                      className="font-medium"
-                    >
-                      Expiration Date
-                    </TD>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topRight
-                    >
-                      Renew Price
-                    </TD>
-                  </tr>
-                  {domainsRenewingToday
-                    .sort(
-                      (a, b) =>
-                        a.expirationDate.getTime() - b.expirationDate.getTime(),
-                    )
-                    .map(
-                      (
-                        { domainNameLdh, expirationDate, renewalPrice },
-                        index,
-                      ) => (
-                        <tr key={domainNameLdh}>
-                          <TD
-                            textAlign="right"
-                            monospace={false}
-                            bottomLeft={
-                              index === domainsRenewingToday.length - 1
-                            }
-                          >
-                            <DomainNameCell domainNameLdh={domainNameLdh} />
-                          </TD>
-                          <TD textAlign="left" monospace={true}>
-                            <DomainExpirationDateCell
-                              expirationDate={expirationDate}
-                            />
-                          </TD>
-                          <TD
-                            textAlign="right"
-                            monospace={true}
-                            bottomRight={
-                              index === domainsRenewingToday.length - 1
-                            }
-                          >
-                            ${`${renewalPrice.amount.toFixed(2)}`}
-                          </TD>
-                        </tr>
-                      ),
-                    )}
-                  <tr>
-                    <td />
-                    <td />
-                    <td />
-                  </tr>
-                  <tr key={'total'} className="font-bold">
-                    <TD
-                      className="font-bold"
-                      textAlign="right"
-                      monospace={false}
-                      bottomLeft
-                    >
-                      Subtotal
-                    </TD>
-                    <TD textAlign="left" monospace={true} />
-                    <TD textAlign="right" monospace={true} bottomRight>
-                      $
-                      {`${sum(
-                        map(
-                          (domain) => domain.renewalPrice.amount,
-                          domainsRenewingToday,
-                        ),
-                      ).toFixed(2)}`}
-                    </TD>
-                  </tr>
-                </table>
-              </div>
-
-              {showPaymentMethodBreakdown && (
-                <Card variant="success">
-                  <div className="font-bold text-lg text-green-800 mb-2">
-                    ✅ You are all set!
-                  </div>
-                  <div
-                    style={{
-                      borderRadius: '8px',
-                      border: '1.5px #D9D9D9 solid',
-                    }}
-                  >
-                    <table
-                      style={{
-                        ...styles.text,
-                        borderCollapse: 'collapse',
-                        width: '100%',
-                        fontFamily: 'monospace',
-                        borderStyle: 'hidden',
-                      }}
-                    >
+                  Renewal payment split
+                </h3>
+                <div style={styles.tableWrap}>
+                  <table style={styles.table}>
+                    <thead>
                       <tr>
-                        <TD
-                          textAlign="left"
-                          monospace={false}
-                          className="font-medium"
-                          topLeft
-                        >
-                          Payment Method
-                        </TD>
-                        <TD
-                          textAlign="right"
-                          monospace={false}
-                          className="font-medium"
-                          topRight
-                        >
-                          Amount
-                        </TD>
+                        <th style={styles.tableHeaderCell}>Payment Method</th>
+                        <th style={styles.tableHeaderCellNumeric}>Amount</th>
                       </tr>
-
-                      {expectedPayments.map((payment) => (
+                    </thead>
+                    <tbody>
+                      {paymentMethods.map((payment) => (
                         <tr key={payment.paymentId}>
-                          <TD
-                            textAlign="left"
-                            monospace={false}
-                            className="pl-8"
-                          >
+                          <td style={styles.tableCell}>
                             {formatPaymentIdentifier(payment)}
-                          </TD>
-                          <TD textAlign="right" monospace={true}>
+                          </td>
+                          <td style={styles.tableCellNumeric}>
                             ${(payment.amountInUsdCents / 100).toFixed(2)}
-                          </TD>
+                          </td>
                         </tr>
                       ))}
                       <tr>
-                        <TD
-                          bottomLeft
-                          className="font-bold"
-                          textAlign="left"
-                          monospace={false}
-                        >
-                          Subtotal
-                        </TD>
-                        <TD
-                          bottomRight
-                          className="font-bold"
-                          textAlign="right"
-                          monospace={true}
-                        >
-                          $
-                          {`${sum(
-                            map(
-                              (payment) => payment.amountInUsdCents / 100,
-                              expectedPayments,
-                            ),
-                          ).toFixed(2)}`}
-                        </TD>
+                        <td style={styles.tableCellEmphasis}>Subtotal</td>
+                        <td style={styles.tableCellNumeric}>
+                          ${paymentSubtotal.toFixed(2)}
+                        </td>
                       </tr>
-                    </table>
-                  </div>
-                </Card>
-              )}
-            </div>
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            )}
           </>
         )}
 
-        {/* Table B: Manual Renewal Domains */}
         {showManualRenewalDomains && (
           <>
-            <div className="font-normal mt-10 mb-4" style={{ ...styles.text }}>
-              <span className="font-medium text-amber-500">
-                [Attention Needed]
-              </span>{' '}
-              Auto renewal is{' '}
-              <span className="font-medium text-amber-500">Off</span> for some
-              domains.
-              <br />
-              <span className="text-sm font-normal text-gray-500">
-                Please don't forget to renew them on-time manually or update the
-                settings to [auto]
-              </span>
+            <div
+              style={{
+                ...styles.sectionHeading,
+                color: styles.astraTheme.warningInk,
+              }}
+            >
+              Manual Renewal Required
             </div>
-            <div className="px-4 mb-5">
-              <div
-                style={{ borderRadius: '8px', border: '1.5px #D9D9D9 solid' }}
-              >
-                <table
-                  style={{
-                    borderCollapse: 'collapse',
-                    ...styles.text,
-                    width: '100%',
-                    borderStyle: 'hidden',
-                  }}
-                >
+            <div style={styles.sectionLead}>
+              Auto-renew is off for the domains below. Renew them manually or
+              enable auto-renew in domain settings.
+            </div>
+            <div style={styles.tableWrap}>
+              <table style={styles.table}>
+                <thead>
                   <tr>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topLeft
-                    >
-                      Domain Name
-                    </TD>
-                    <TD
-                      textAlign="left"
-                      monospace={false}
-                      className="font-medium"
-                    >
-                      Expiration Date
-                    </TD>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                    >
-                      Action
-                    </TD>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topRight
-                    >
-                      Renew Price
-                    </TD>
+                    <th style={styles.tableHeaderCell}>Domain Name</th>
+                    <th style={styles.tableHeaderCell}>Expiration Date</th>
+                    <th style={styles.tableHeaderCell}>Action</th>
+                    <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
                   </tr>
-
-                  {manualRenewalDomains
-                    .sort(
-                      (a, b) =>
-                        a.expirationDate.getTime() - b.expirationDate.getTime(),
-                    )
-                    .map(
-                      (
-                        { domainNameLdh, expirationDate, renewalPrice },
-                        index,
-                      ) => (
-                        <tr key={domainNameLdh}>
-                          <TD textAlign="right" monospace={false}>
-                            <DomainNameCell domainNameLdh={domainNameLdh} />
-                          </TD>
-                          <TD textAlign="left" monospace={true}>
-                            <DomainExpirationDateCell
-                              expirationDate={expirationDate}
-                            />
-                          </TD>
-                          <TD textAlign="right" monospace={false}>
-                            <Button
-                              style={{ color: '#1F8D30' }}
-                              href={NamefiEmailLinks.domainSettings({
-                                domain: domainNameLdh,
-                                poweredByNamefiDomain: null,
-                              })}
-                            >
-                              Renew
-                            </Button>
-                          </TD>
-                          <TD textAlign="right" monospace={true}>
-                            ${`${renewalPrice.amount.toFixed(2)}`}
-                          </TD>
-                        </tr>
-                      ),
-                    )}
+                </thead>
+                <tbody>
+                  {sortedManualRenewals.map(
+                    ({ domainNameLdh, expirationDate, renewalPrice }) => (
+                      <tr key={domainNameLdh}>
+                        <td style={styles.tableCell}>
+                          <DomainNameCell domainNameLdh={domainNameLdh} />
+                        </td>
+                        <td style={styles.tableCell}>
+                          <DomainExpirationDateCell
+                            expirationDate={expirationDate}
+                          />
+                        </td>
+                        <td style={styles.tableCell}>
+                          <a
+                            style={styles.inlineActionLink}
+                            href={NamefiEmailLinks.domainSettings({
+                              domain: domainNameLdh,
+                              poweredByNamefiDomain: null,
+                            })}
+                          >
+                            Renew Now
+                          </a>
+                        </td>
+                        <td style={styles.tableCellNumeric}>
+                          ${renewalPrice.amount.toFixed(2)}
+                        </td>
+                      </tr>
+                    ),
+                  )}
                   <tr>
-                    <td />
-                    <td />
-                    <td />
-                    <td />
+                    <td style={styles.tableCellEmphasis}>Subtotal</td>
+                    <td style={styles.tableCell} />
+                    <td style={styles.tableCell} />
+                    <td style={styles.tableCellNumeric}>
+                      ${manualRenewalSubtotal.toFixed(2)}
+                    </td>
                   </tr>
-                  <tr key={'total'} className="font-bold">
-                    <TD
-                      bottomLeft
-                      className="font-bold"
-                      textAlign="right"
-                      monospace={false}
-                    >
-                      Subtotal
-                    </TD>
-                    <TD textAlign="left" monospace={true} />
-                    <TD textAlign="right" monospace={true} />
-                    <TD
-                      bottomRight
-                      className="font-bold"
-                      textAlign="right"
-                      monospace={true}
-                    >
-                      $
-                      {`${sum(
-                        map(
-                          (domain) => domain.renewalPrice.amount,
-                          manualRenewalDomains,
-                        ),
-                      ).toFixed(2)}`}
-                    </TD>
-                  </tr>
-                </table>
-              </div>
+                </tbody>
+              </table>
             </div>
           </>
         )}
 
-        {/* Table C: Upcoming Automatic Renewals */}
         {showUpcomingAutomaticRenewals && (
           <>
-            <div className="font-normal mt-10 mb-4" style={{ ...styles.text }}>
-              <span className="font-medium">[FYI]</span> Upcoming Automatic
-              Renewals
-            </div>
-            <div className="px-4 mb-5">
-              <div
-                style={{ borderRadius: '8px', border: '1.5px #D9D9D9 solid' }}
-              >
-                <table
-                  style={{
-                    borderCollapse: 'collapse',
-                    ...styles.text,
-                    width: '100%',
-                    borderStyle: 'hidden',
-                  }}
-                >
+            <div style={styles.sectionHeading}>Upcoming Automatic Renewals</div>
+            <div style={styles.tableWrap}>
+              <table style={styles.table}>
+                <thead>
                   <tr>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topLeft
-                    >
-                      Domain Name
-                    </TD>
-                    <TD
-                      textAlign="left"
-                      monospace={false}
-                      className="font-medium"
-                    >
-                      Expiration Date
-                    </TD>
-                    <TD
-                      textAlign="right"
-                      monospace={false}
-                      className="font-medium"
-                      topRight
-                    >
-                      Renew Price
-                    </TD>
+                    <th style={styles.tableHeaderCell}>Domain Name</th>
+                    <th style={styles.tableHeaderCell}>Expiration Date</th>
+                    <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
                   </tr>
-                  {upcomingAutomaticRenewals
-                    .sort(
-                      (a, b) =>
-                        a.expirationDate.getTime() - b.expirationDate.getTime(),
-                    )
-                    .map(
-                      (
-                        { domainNameLdh, expirationDate, renewalPrice },
-                        index,
-                      ) => (
-                        <tr key={domainNameLdh}>
-                          <TD
-                            textAlign="right"
-                            monospace={false}
-                            bottomLeft={
-                              index === upcomingAutomaticRenewals.length - 1
-                            }
-                          >
-                            <DomainNameCell domainNameLdh={domainNameLdh} />
-                          </TD>
-                          <TD textAlign="left" monospace={true}>
-                            <DomainExpirationDateCell
-                              expirationDate={expirationDate}
-                            />
-                          </TD>
-                          <TD
-                            textAlign="right"
-                            monospace={true}
-                            bottomRight={
-                              index === upcomingAutomaticRenewals.length - 1
-                            }
-                          >
-                            ${`${renewalPrice.amount.toFixed(2)}`}
-                          </TD>
-                        </tr>
-                      ),
-                    )}
-                </table>
-              </div>
+                </thead>
+                <tbody>
+                  {sortedUpcomingRenewals.map(
+                    ({ domainNameLdh, expirationDate, renewalPrice }) => (
+                      <tr key={domainNameLdh}>
+                        <td style={styles.tableCell}>
+                          <DomainNameCell domainNameLdh={domainNameLdh} />
+                        </td>
+                        <td style={styles.tableCell}>
+                          <DomainExpirationDateCell
+                            expirationDate={expirationDate}
+                          />
+                        </td>
+                        <td style={styles.tableCellNumeric}>
+                          ${renewalPrice.amount.toFixed(2)}
+                        </td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              </table>
             </div>
           </>
         )}
@@ -719,7 +506,6 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
     recipientEmail: 'alice@example.com',
     userId: '123',
     domainsRenewInfo: [
-      // Domains renewing today (autoRenew: true, < 15 days)
       {
         domainNameLdh: 'apple.test',
         expirationDate: addDays(new Date(), 10),
@@ -730,7 +516,7 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
         autoRenew: true,
       },
       {
-        domainNameLdh: 'xn--gtvz22d.xn--0zwm56d', // '苹果.测试', translation of "apple.test" in Chinese
+        domainNameLdh: 'xn--gtvz22d.xn--0zwm56d',
         expirationDate: addDays(new Date(), 5),
         renewalPrice: {
           amount: 59,
@@ -738,9 +524,7 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
         },
         autoRenew: true,
       },
-      // Manual renewal domains (autoRenew: false)
       {
-        // 'सेब.परीक्षण', translation of "apple.test" in Hindi
         domainNameLdh: 'xn--p2bx9b.xn--11b2aty0b2c6e',
         expirationDate: addDays(new Date(), 12),
         renewalPrice: {
@@ -750,7 +534,6 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
         autoRenew: false,
       },
       {
-        // 'manzana.prueba', translation of "apple.test" in Spanish
         domainNameLdh: 'manzana.prueba',
         expirationDate: addDays(new Date(), 25),
         renewalPrice: {
@@ -759,9 +542,8 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
         },
         autoRenew: false,
       },
-      // Upcoming automatic renewals (autoRenew: true, >= 15 days)
       {
-        domainNameLdh: 'xn--90ascnx3e.xn--e1aybc', // 'яблуко.тест', translation of "apple.test" in Ukrainian
+        domainNameLdh: 'xn--90ascnx3e.xn--e1aybc',
         expirationDate: addDays(new Date(), 20),
         renewalPrice: {
           amount: 42,
@@ -770,7 +552,7 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
         autoRenew: true,
       },
       {
-        domainNameLdh: 'xn--90ascmb1h.xn--e1aybc', // 'яблоко.тест', translation of "apple.test" in Russian
+        domainNameLdh: 'xn--90ascmb1h.xn--e1aybc',
         expirationDate: addDays(new Date(), 28),
         renewalPrice: {
           amount: 38,
@@ -787,13 +569,13 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
       nextChargeAmount: { amount: 35 + 59, currency: 'USD' },
       nextChargeDate: new Date(),
       expectedPayments: [],
-      availableBalanceInNfsc: 25_00, // $25.00 in cents
+      availableBalanceInNfsc: 25,
       availableOffChainPaymentMethodsPublicIdentifiers: [],
       paymentPreparationSummary: {
         status: 'INSUFFICIENT_FUNDS' as const,
         message:
           'Insufficient funds available to complete the renewal payment.',
-        shortByInUsdCents: 69_00, // Short by $69.00
+        shortByInUsdCents: 69_00,
       },
     },
     example2: {
@@ -814,7 +596,7 @@ function getExamples(key: 'example1' | 'example2'): DomainUpcomingRenewalProps {
           stripeLast4: '4242',
         },
       ],
-      availableBalanceInNfsc: 49_00, // $49.00 in cents
+      availableBalanceInNfsc: 49,
       availableOffChainPaymentMethodsPublicIdentifiers: ['4242'],
       paymentPreparationSummary: {
         status: 'SUCCESS' as const,
@@ -829,75 +611,32 @@ function DomainExpirationDateCell({
   expirationDate: Date;
 }) {
   const daysRemaining = differenceInCalendarDays(expirationDate, new Date());
-  const color = daysRemaining > RENEW_EARLY_BY_DAYS ? 'inherit' : '#FFA500';
-  if (daysRemaining <= 0) {
-    return (
-      <React.Fragment>
-        {format(expirationDate, 'yyyy-MM-dd')}
-        <span className="text-red-700"> (Expired)</span>
-      </React.Fragment>
-    );
-  }
+  const color =
+    daysRemaining <= 0
+      ? styles.astraTheme.errorInk
+      : daysRemaining > RENEW_EARLY_BY_DAYS
+        ? styles.astraTheme.textMuted
+        : styles.astraTheme.warningInk;
+
   return (
     <React.Fragment>
-      {' '}
       {format(expirationDate, 'yyyy-MM-dd')}
-      <span style={{ color, fontSize: '12px' }}> ({daysRemaining} days)</span>
+      <span style={{ ...styles.caption, color }}>
+        {daysRemaining <= 0 ? ' (Expired)' : ` (${daysRemaining} days)`}
+      </span>
     </React.Fragment>
   );
 }
 
 function DomainNameCell({ domainNameLdh }: { domainNameLdh: string }) {
-  return (
-    <span style={{ ...styles.text }}>
-      {punycode.toUnicode(domainNameLdh) !== domainNameLdh ? (
-        <span>
-          {punycode.toUnicode(domainNameLdh)}
-          <br />({domainNameLdh})
-        </span>
-      ) : (
-        domainNameLdh
-      )}
-    </span>
-  );
-}
+  const unicodeDomain = punycode.toUnicode(domainNameLdh);
 
-function TD({
-  children,
-  textAlign,
-  monospace,
-  className,
-  style,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}: {
-  children?: React.ReactNode;
-  textAlign: 'right' | 'left';
-  monospace: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-  topLeft?: boolean;
-  topRight?: boolean;
-  bottomLeft?: boolean;
-  bottomRight?: boolean;
-}) {
-  return (
-    <td
-      className={'py-1 px-1 ' + (className ? className : '')}
-      style={{
-        border: '1.5px #D9D9D9 solid',
-        textAlign,
-        fontFamily: monospace ? 'monospace' : 'inherit',
-        ...style,
-        borderTopLeftRadius: topLeft ? '8px' : '0px',
-        borderTopRightRadius: topRight ? '8px' : '0px',
-        borderBottomLeftRadius: bottomLeft ? '8px' : '0px',
-        borderBottomRightRadius: bottomRight ? '8px' : '0px',
-      }}
-    >
-      {children}
-    </td>
+  return unicodeDomain !== domainNameLdh ? (
+    <div>
+      <div style={styles.monospaceText}>{unicodeDomain}</div>
+      <div style={styles.tableCellSubtext}>{domainNameLdh}</div>
+    </div>
+  ) : (
+    <span style={styles.monospaceText}>{domainNameLdh}</span>
   );
 }

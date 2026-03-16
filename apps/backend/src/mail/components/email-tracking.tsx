@@ -1,4 +1,4 @@
-import { secrets } from '#lib/env';
+import { mailSecrets } from '../env';
 import { CompactSign, compactVerify } from 'jose';
 // biome-ignore lint/style/useImportType: required for react-email
 import React from 'react';
@@ -72,7 +72,7 @@ export function useEmailTrackingUrl(trackingUrl?: string | null) {
 export async function buildEmailAnalyticsUrl(
   trackingInfo: EmailTrackingInfo,
 ): Promise<EmailAnalyticsUrlResult> {
-  const secret = secrets.EMAIL_TRACKING_JWT_SECRET;
+  const secret = mailSecrets.EMAIL_TRACKING_JWT_SECRET;
   if (!secret) {
     return {
       url: null,
@@ -108,7 +108,7 @@ export async function buildEmailAnalyticsUrl(
 export async function getEmailTrackDataFromUrl(
   urlOrToken: string,
 ): Promise<EmailAnalyticsDecodeResult> {
-  const secret = secrets.EMAIL_TRACKING_JWT_SECRET;
+  const secret = mailSecrets.EMAIL_TRACKING_JWT_SECRET;
   if (!secret) {
     return {
       data: null,

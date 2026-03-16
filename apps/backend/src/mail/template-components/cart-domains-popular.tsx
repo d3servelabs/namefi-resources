@@ -33,33 +33,20 @@ const formatDomainDisplay = (domainNameLdh: string) => {
 
 const tableStyles = {
   table: {
-    ...styles.text,
-    borderCollapse: 'collapse' as const,
-    width: '100%',
-    margin: '16px 0',
+    ...styles.table,
   },
   headerCell: {
-    border: '1px solid #D9D9D9',
-    padding: '8px',
-    textAlign: 'left' as const,
-    fontWeight: 600,
-    backgroundColor: '#f8fafc',
+    ...styles.tableHeaderCell,
   },
   cell: {
-    border: '1px solid #D9D9D9',
-    padding: '8px',
-    textAlign: 'left' as const,
-    verticalAlign: 'top' as const,
+    ...styles.tableCell,
   },
   mutedText: {
-    color: '#6b7280',
-    fontSize: '13px',
+    ...styles.mutedText,
     marginLeft: '6px',
   },
   domainText: {
-    ...styles.text,
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-    fontSize: '14px',
+    ...styles.monospaceText,
   },
 };
 
@@ -91,40 +78,45 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
           {copyVariant.card}
         </Text>
       </Card>
-      <table style={tableStyles.table}>
-        <thead>
-          <tr>
-            <th style={tableStyles.headerCell}>Domain</th>
-            {showPrice && <th style={tableStyles.headerCell}>Price</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {props.cartItems.map((item) => {
-            const display = formatDomainDisplay(item.domainNameLdh);
+      <div style={styles.tableWrap}>
+        <table style={tableStyles.table}>
+          <thead>
+            <tr>
+              <th style={tableStyles.headerCell}>Domain</th>
+              {showPrice && <th style={tableStyles.headerCell}>Price</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {props.cartItems.map((item) => {
+              const display = formatDomainDisplay(item.domainNameLdh);
 
-            return (
-              <tr key={item.domainNameLdh}>
-                <td style={tableStyles.cell}>
-                  <span style={tableStyles.domainText}>{display.primary}</span>
-                  {display.unicode && (
-                    <span style={tableStyles.mutedText}>
-                      ({display.unicode})
-                    </span>
-                  )}
-                </td>
-                {showPrice && (
+              return (
+                <tr key={item.domainNameLdh}>
                   <td style={tableStyles.cell}>
-                    {typeof item.priceInUsdCents === 'number'
-                      ? `$${(item.priceInUsdCents / 100).toFixed(2)}`
-                      : '--'}
+                    <span style={tableStyles.domainText}>
+                      {display.primary}
+                    </span>
+                    {display.unicode && (
+                      <span style={tableStyles.mutedText}>
+                        ({display.unicode})
+                      </span>
+                    )}
                   </td>
-                )}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  {showPrice && (
+                    <td style={tableStyles.cell}>
+                      {typeof item.priceInUsdCents === 'number'
+                        ? `$${(item.priceInUsdCents / 100).toFixed(2)}`
+                        : '--'}
+                    </td>
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <Button
+        className="namefi-button-mobile"
         style={styles.button}
         href={NamefiEmailLinks.cart({ poweredByNamefiDomain })}
       >

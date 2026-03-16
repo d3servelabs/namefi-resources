@@ -27,43 +27,30 @@ export type DomainTrafficSurgeProps = {
 
 const tableStyles = {
   table: {
-    ...styles.text,
-    borderCollapse: 'collapse' as const,
-    width: '100%',
-    margin: '16px 0',
+    ...styles.table,
   },
   headerCell: {
-    border: '1px solid #D9D9D9',
-    padding: '8px',
-    textAlign: 'left' as const,
-    fontWeight: 600,
-    backgroundColor: '#f8fafc',
+    ...styles.tableHeaderCell,
   },
   cell: {
-    border: '1px solid #D9D9D9',
-    padding: '8px',
-    textAlign: 'left' as const,
-    verticalAlign: 'top' as const,
+    ...styles.tableCell,
   },
   mutedText: {
-    color: '#6b7280',
-    fontSize: '13px',
+    ...styles.mutedText,
   },
   domainText: {
-    ...styles.text,
-    fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-    fontSize: '14px',
+    ...styles.monospaceText,
   },
   addToCartLink: {
-    backgroundColor: '#14b8a6',
-    borderRadius: '6px',
-    color: '#ffffff',
-    display: 'inline-block',
-    fontSize: '12px',
-    fontWeight: 600,
-    padding: '6px 10px',
-    textDecoration: 'none',
-    whiteSpace: 'nowrap' as const,
+    ...styles.inlineActionLink,
+  },
+  actionHeaderCell: {
+    ...styles.tableHeaderCellNumeric,
+    width: '170px',
+  },
+  actionCell: {
+    ...styles.tableCellNumeric,
+    width: '170px',
   },
 };
 
@@ -117,74 +104,79 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
       <Text style={{ ...styles.paragraph, marginBottom: '8px' }}>
         Here are the domains that stood out this week:
       </Text>
-      <table style={tableStyles.table}>
-        <thead>
-          <tr>
-            <th style={tableStyles.headerCell}>Domain</th>
-            <th style={tableStyles.headerCell}>Interest this week</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedDomains.map((item) => {
-            const label = getInterestLabel(
-              item.weeklyQueries,
-              props.baselineThreshold,
-            );
-            const detail = formatCompactCount(item.weeklyQueries);
+      <div style={styles.tableWrap}>
+        <table style={tableStyles.table}>
+          <thead>
+            <tr>
+              <th style={tableStyles.headerCell}>Domain</th>
+              <th style={tableStyles.headerCell}>Interest this week</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedDomains.map((item) => {
+              const label = getInterestLabel(
+                item.weeklyQueries,
+                props.baselineThreshold,
+              );
+              const detail = formatCompactCount(item.weeklyQueries);
 
-            return (
-              <tr key={item.domain}>
-                <td style={tableStyles.cell}>
-                  <span style={tableStyles.domainText}>{item.domain}</span>
-                </td>
-                <td style={tableStyles.cell}>
-                  <div style={{ fontWeight: 600 }}>{label}</div>
-                  <div style={tableStyles.mutedText}>~{detail} this week</div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr key={item.domain}>
+                  <td style={tableStyles.cell}>
+                    <span style={tableStyles.domainText}>{item.domain}</span>
+                  </td>
+                  <td style={tableStyles.cell}>
+                    <div style={{ fontWeight: 600 }}>{label}</div>
+                    <div style={tableStyles.mutedText}>~{detail} this week</div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       {suggestedDomains.length > 0 ? (
         <>
           <Text style={{ ...styles.paragraph, marginTop: '8px' }}>
             AI also found similar available names you may want to secure:
           </Text>
-          <table style={{ ...tableStyles.table, marginTop: '8px' }}>
-            <thead>
-              <tr>
-                <th style={tableStyles.headerCell}>Suggested domain</th>
-                <th style={tableStyles.headerCell}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {suggestedDomains.map((domain) => (
-                <tr key={domain}>
-                  <td style={tableStyles.cell}>
-                    <span style={tableStyles.domainText}>{domain}</span>
-                  </td>
-                  <td style={{ ...tableStyles.cell, textAlign: 'right' }}>
-                    <a
-                      href={NamefiEmailLinks.addToCartFromUrl({
-                        domain,
-                        poweredByNamefiDomain,
-                      })}
-                      style={tableStyles.addToCartLink}
-                    >
-                      Add to Cart
-                    </a>
-                  </td>
+          <div style={{ ...styles.tableWrap, marginTop: '8px' }}>
+            <table style={{ ...tableStyles.table, marginTop: '0' }}>
+              <thead>
+                <tr>
+                  <th style={tableStyles.headerCell}>Suggested domain</th>
+                  <th style={tableStyles.actionHeaderCell}>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {suggestedDomains.map((domain) => (
+                  <tr key={domain}>
+                    <td style={tableStyles.cell}>
+                      <span style={tableStyles.domainText}>{domain}</span>
+                    </td>
+                    <td style={tableStyles.actionCell}>
+                      <a
+                        href={NamefiEmailLinks.addToCartFromUrl({
+                          domain,
+                          poweredByNamefiDomain,
+                        })}
+                        style={tableStyles.addToCartLink}
+                      >
+                        Add to Cart
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       ) : null}
       <Text style={{ ...styles.paragraph, marginTop: '8px' }}>
         Based on activity we see on your Namefi-managed domains.
       </Text>
       <Button
+        className="namefi-button-mobile"
         style={styles.button}
         href={NamefiEmailLinks.domains({ poweredByNamefiDomain })}
       >

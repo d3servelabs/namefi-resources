@@ -2,7 +2,6 @@ import { Text, Button } from '@react-email/components';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { GoToDashboard } from '../components/go-to-dashboard';
 import { buildTemplate } from '../components/build-template';
 import { getChain } from '@namefi-astra/utils';
 import * as styles from '../styles';
@@ -60,15 +59,11 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
         <Card
           variant="info"
           style={{
-            paddingBottom: '5px',
-            paddingTop: '5px',
-            marginLeft: '5px',
-            marginRight: '5px',
+            paddingBottom: '10px',
+            paddingTop: '10px',
           }}
         >
-          <Text
-            style={{ ...styles.paragraph, fontSize: '12px', fontWeight: '400' }}
-          >
+          <Text style={{ ...styles.bodySmall, margin: 0 }}>
             As part of the export, we've burned the Namefi NFT for this domain.{' '}
             {txUrl && (
               <a href={txUrl} style={styles.anchor}>
@@ -86,13 +81,39 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
           to see you again soon!
         </Text>
 
-        <Button
-          style={styles.button}
-          href={NamefiEmailLinks.domains({ poweredByNamefiDomain })}
+        <table
+          className="namefi-button-row"
+          role="presentation"
+          cellPadding={0}
+          cellSpacing={0}
+          style={styles.buttonRowTable}
         >
-          Explore More Domains
-        </Button>
-        <GoToDashboard />
+          <tbody>
+            <tr>
+              <td className="namefi-button-cell" style={styles.buttonRowCell}>
+                <Button
+                  className="namefi-button-mobile"
+                  style={styles.button}
+                  href={NamefiEmailLinks.domains({ poweredByNamefiDomain })}
+                >
+                  Explore More Domains
+                </Button>
+              </td>
+              <td
+                className="namefi-button-cell"
+                style={styles.buttonRowCellLast}
+              >
+                <Button
+                  className="namefi-button-mobile"
+                  style={styles.button}
+                  href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
+                >
+                  Go To Namefi Dashboard
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </NamefiEmailContainer>
     );
   },

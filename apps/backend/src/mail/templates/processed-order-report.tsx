@@ -3,12 +3,28 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { GoToDashboard } from '../components/go-to-dashboard';
 import { domainToASCII, domainToUnicode } from 'node:url';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
-import { button } from '../styles';
+import { Card } from '../components/card';
+import {
+  astraTheme,
+  button,
+  buttonRowCell,
+  buttonRowCellLast,
+  buttonRowTable,
+  caption,
+  panelTitle,
+  panelText,
+  table,
+  tableCell,
+  tableCellNumeric,
+  tableCellSubtext,
+  tableHeaderCell,
+  tableHeaderCellNumeric,
+  tableWrap,
+} from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
@@ -221,106 +237,85 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
           {messageMarkdown}
         </ReactMarkdown>
 
-        <table style={localStyles.table}>
-          <thead>
-            <tr>
-              <th style={{ ...localStyles.th, textAlign: 'left' }}>Domain</th>
-              <th style={localStyles.th}>Type</th>
-              <th style={localStyles.th}>Duration</th>
-              <th style={{ ...localStyles.th, textAlign: 'right' }}>Price</th>
-              <th style={localStyles.th}>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.normalizedDomainName}>
-                <td style={{ ...localStyles.td, textAlign: 'left' }}>
-                  {getDomainWithIdn(item.normalizedDomainName)}
-                </td>
-                <td style={localStyles.td}>{item.type}</td>
-                <td style={localStyles.td}>
-                  {pluralize('year', item.duration, true)}
-                </td>
-                <td style={{ ...localStyles.td, textAlign: 'right' }}>
-                  ${(item.priceInUsdCents / 100).toFixed(2)}
-                </td>
-                <td style={localStyles.td}>
-                  <span
-                    style={{
-                      color:
-                        item.status === 'PROCESSING'
-                          ? 'orange'
-                          : item.status === 'SUCCEEDED'
-                            ? 'green'
-                            : 'red',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {item.status === 'PROCESSING'
-                      ? 'Processing'
-                      : item.status === 'SUCCEEDED'
-                        ? 'Succeeded'
-                        : 'Failed'}
-                  </span>
-                  {(() => {
-                    const nftUrl =
-                      item.status === 'SUCCEEDED' &&
-                      item.mintTxHash &&
-                      item.chainId
-                        ? getTxExplorerUrl(item.chainId, item.mintTxHash)
-                        : null;
-                    return nftUrl ? (
-                      <div style={{ marginTop: '4px' }}>
-                        <a
-                          href={nftUrl}
-                          style={{
-                            fontSize: '12px',
-                            color: '#0066cc',
-                            textDecoration: 'underline',
-                          }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View NFT
-                        </a>
-                      </div>
-                    ) : null;
-                  })()}
-                  {item.failureReason && (
-                    <div
+        <div style={tableWrap}>
+          <table style={table}>
+            <thead>
+              <tr>
+                <th style={tableHeaderCell}>Domain</th>
+                <th style={tableHeaderCell}>Type</th>
+                <th style={tableHeaderCell}>Duration</th>
+                <th style={tableHeaderCellNumeric}>Price</th>
+                <th style={tableHeaderCell}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.normalizedDomainName}>
+                  <td style={tableCell}>
+                    {getDomainWithIdn(item.normalizedDomainName)}
+                  </td>
+                  <td style={tableCell}>{item.type}</td>
+                  <td style={tableCell}>
+                    {pluralize('year', item.duration, true)}
+                  </td>
+                  <td style={tableCellNumeric}>
+                    ${(item.priceInUsdCents / 100).toFixed(2)}
+                  </td>
+                  <td style={tableCell}>
+                    <span
                       style={{
-                        fontSize: '12px',
-                        color: '#666',
-                        marginTop: '4px',
+                        color:
+                          item.status === 'PROCESSING'
+                            ? astraTheme.warningInk
+                            : item.status === 'SUCCEEDED'
+                              ? astraTheme.successInk
+                              : astraTheme.errorInk,
+                        fontWeight: 'bold',
                       }}
                     >
-                      {item.failureReason}
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                      {item.status === 'PROCESSING'
+                        ? 'Processing'
+                        : item.status === 'SUCCEEDED'
+                          ? 'Succeeded'
+                          : 'Failed'}
+                    </span>
+                    {(() => {
+                      const nftUrl =
+                        item.status === 'SUCCEEDED' &&
+                        item.mintTxHash &&
+                        item.chainId
+                          ? getTxExplorerUrl(item.chainId, item.mintTxHash)
+                          : null;
+                      return nftUrl ? (
+                        <div style={{ marginTop: '4px' }}>
+                          <a
+                            href={nftUrl}
+                            style={{
+                              ...tableCellSubtext,
+                              color: astraTheme.link,
+                              textDecoration: 'underline',
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View NFT
+                          </a>
+                        </div>
+                      ) : null;
+                    })()}
+                    {item.failureReason && (
+                      <div style={tableCellSubtext}>{item.failureReason}</div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Payment Summary */}
-        <div
-          style={{
-            marginTop: '20px',
-            padding: '16px',
-            backgroundColor: '#f9f9f9',
-            border: '1px solid #e0e0e0',
-          }}
-        >
-          <h3
-            style={{
-              margin: '0 0 12px 0',
-              fontSize: '16px',
-              fontWeight: 'bold',
-            }}
-          >
-            Payment Summary
-          </h3>
+        <Card variant="info">
+          <h3 style={panelTitle}>Payment Summary</h3>
           <div
             style={{
               display: 'flex',
@@ -349,17 +344,17 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                   fontWeight: 'bold',
                   color:
                     refund.status === 'SUCCEEDED'
-                      ? 'green'
+                      ? astraTheme.successInk
                       : refund.status === 'FAILED'
-                        ? 'red'
-                        : 'orange',
+                        ? astraTheme.errorInk
+                        : astraTheme.warningInk,
                 }}
               >
                 ${refund.amountInUsd.toFixed(2)} ({refund.status})
               </span>
             </div>
           )}
-        </div>
+        </Card>
 
         {/* Summary Message */}
         <ReactMarkdown
@@ -389,26 +384,11 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         )}
 
         {processingImportItems.length > 0 && (
-          <div
-            style={{
-              marginTop: '20px',
-              padding: '16px',
-              backgroundColor: '#fff8e6',
-              border: '1px solid #ffd666',
-              borderRadius: '8px',
-            }}
-          >
-            <h3
-              style={{
-                margin: '0 0 12px 0',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                color: '#d48806',
-              }}
-            >
+          <Card variant="warning">
+            <h3 style={{ ...panelTitle, color: astraTheme.warningInk }}>
               About Your Domain Import
             </h3>
-            <div style={{ color: '#614700', fontSize: '14px' }}>
+            <div style={{ ...panelText, color: astraTheme.warningInk }}>
               <p style={{ margin: '0 0 8px 0' }}>
                 <strong>What happens next:</strong>
               </p>
@@ -426,24 +406,53 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                   in your old registrar&apos;s dashboard.
                 </li>
               </ul>
-              <p style={{ margin: '0', fontSize: '13px', color: '#8c6d1f' }}>
+              <p
+                style={{
+                  margin: '0',
+                  ...caption,
+                  color: astraTheme.warningInk,
+                }}
+              >
                 Once the transfer is approved, we will automatically complete
                 the process and mint your domain NFT.
               </p>
             </div>
-          </div>
+          </Card>
         )}
 
-        <Button
-          style={button}
-          href={NamefiEmailLinks.orderDetails({
-            orderId,
-            poweredByNamefiDomain,
-          })}
+        <table
+          className="namefi-button-row"
+          role="presentation"
+          cellPadding={0}
+          cellSpacing={0}
+          style={buttonRowTable}
         >
-          Check Your Order Details
-        </Button>
-        <GoToDashboard />
+          <tbody>
+            <tr>
+              <td className="namefi-button-cell" style={buttonRowCell}>
+                <Button
+                  className="namefi-button-mobile"
+                  style={button}
+                  href={NamefiEmailLinks.orderDetails({
+                    orderId,
+                    poweredByNamefiDomain,
+                  })}
+                >
+                  Check Your Order Details
+                </Button>
+              </td>
+              <td className="namefi-button-cell" style={buttonRowCellLast}>
+                <Button
+                  className="namefi-button-mobile"
+                  style={button}
+                  href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
+                >
+                  Go To Namefi Dashboard
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </NamefiEmailContainer>
     );
   },
@@ -500,25 +509,6 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default ProcessedOrderReport;
-
-const localStyles = {
-  table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-    marginTop: '20px',
-  },
-  td: {
-    border: '1px #D9D9D9 solid',
-    padding: '8px',
-    textAlign: 'center',
-  },
-  th: {
-    border: '1px #D9D9D9 solid',
-    padding: '8px',
-    backgroundColor: '#f5f5f5',
-    textAlign: 'center',
-  },
-} as const;
 
 function getDomainWithIdn(domain: string) {
   const unicodeDomain = domainToUnicode(domain);

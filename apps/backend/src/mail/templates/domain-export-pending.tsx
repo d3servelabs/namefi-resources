@@ -42,6 +42,7 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
             </Text>
 
             <Button
+              className="namefi-button-mobile"
               href={NamefiEmailLinks.domainSettings({
                 domain: domainName,
                 poweredByNamefiDomain,

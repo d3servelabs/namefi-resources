@@ -7,61 +7,77 @@
         <base target="_blank">
         <style>
             body {
-                background-color: #F0F1F3;
-                font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, sans-serif;
-                font-size: 15px;
-                line-height: 26px;
+                background-color: #eef4fb;
+                font-family: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                font-size: 16px;
+                line-height: 24px;
                 margin: 0;
-                color: #444;
+                color: #4b5f77;
             }
 
             pre {
-                background: #f4f4f4f4;
-                padding: 2px;
+                background: #f4f8fd;
+                padding: 4px;
+                border: 1px solid #d6e0ed;
+                border-radius: 6px;
             }
 
             table {
                 width: 100%;
-                border: 1px solid #ddd;
+                border: 1px solid #c1d0e2;
+                border-collapse: collapse;
+            }
+            table th {
+                border: 1px solid #d3deeb;
+                background-color: #edf3fb;
+                color: #445a74;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                padding: 10px 12px;
+                text-align: left;
+                text-transform: uppercase;
             }
             table td {
-                border-color: #ddd;
-                padding: 5px;
+                border: 1px solid #d3deeb;
+                color: #0f1b2d;
+                padding: 10px 12px;
             }
 
             .wrap {
                 background-color: #fff;
-                padding: 30px;
-                max-width: 525px;
+                padding: 32px;
+                max-width: 620px;
                 margin: 0 auto;
-                border-radius: 5px;
+                border-radius: 18px;
+                border: 1px solid #d6e0ed;
             }
 
             .button {
-                background: #0055d4;
-                border-radius: 3px;
+                background: #48e59b;
+                border-radius: 10px;
                 text-decoration: none !important;
-                color: #fff !important;
-                font-weight: bold;
-                padding: 10px 30px;
+                color: #032017 !important;
+                font-weight: 700;
+                padding: 11px 22px;
                 display: inline-block;
             }
             .button:hover {
-                background: #111;
+                background: #35cf89;
             }
 
             .footer {
                 text-align: center;
                 font-size: 12px;
-                color: #888;
+                color: #6c7e94;
             }
                 .footer a {
-                    color: #888;
+                    color: #18865f;
                     margin-right: 5px;
                 }
 
             .gutter {
-                padding: 30px;
+                padding: 24px;
             }
 
             img {
@@ -70,10 +86,12 @@
             }
 
             a {
-                color: #0055d4;
+                color: #18865f;
+                text-decoration-color: #9adfc0;
+                text-underline-offset: 3px;
             }
                 a:hover {
-                    color: #111;
+                    color: #136a4b;
                 }
             @media screen and (max-width: 600px) {
                 .wrap {
@@ -85,19 +103,19 @@
             }
         </style>
     </head>
-<body style="background-color: #F0F1F3;font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, sans-serif;font-size: 15px;line-height: 26px;margin: 0;color: #444;">
-    <div class="gutter" style="padding: 30px;">&nbsp;</div>
-    <div class="wrap" style="background-color: #fff;padding: 30px;max-width: 525px;margin: 0 auto;border-radius: 5px;">
+<body style="background-color: #eef4fb;font-family: &quot;Avenir Next&quot;, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif;font-size: 16px;line-height: 24px;margin: 0;color: #4b5f77;">
+    <div class="gutter" style="padding: 24px;">&nbsp;</div>
+    <div class="wrap" style="background-color: #fff;padding: 32px;max-width: 620px;margin: 0 auto;border-radius: 18px;border: 1px solid #d6e0ed;">
         {{ template "content" . }}
     </div>
     
-    <div class="footer" style="text-align: center;font-size: 12px;color: #888;">
+    <div class="footer" style="text-align: center;font-size: 12px;color: #6c7e94;">
         <p>
-            <a href="{{ UnsubscribeURL }}" style="color: #888;">{{ L.T "email.unsub" }}</a>
+            <a href="{{ UnsubscribeURL }}" style="color: #18865f;">{{ L.T "email.unsub" }}</a>
             &nbsp;&nbsp;
-            <a href="{{ MessageURL }}" style="color: #888;">{{ L.T "email.viewInBrowser" }}</a>
+            <a href="{{ MessageURL }}" style="color: #18865f;">{{ L.T "email.viewInBrowser" }}</a>
         </p>
     </div>
-    <div class="gutter" style="padding: 30px;">&nbsp;{{ TrackView }}</div>
+    <div class="gutter" style="padding: 24px;">&nbsp;{{ TrackView }}</div>
 </body>
 </html>
