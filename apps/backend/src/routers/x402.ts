@@ -195,6 +195,9 @@ async function handlePaymentRequired(
         contentType: 'application/json',
         body: {
           ...baseRequirements,
+          x402Version: 2,
+          error: 'Payment required',
+          resource: resourceInfo,
           // Include metadata for client
           metadata: {
             domain: normalizedDomainName,
