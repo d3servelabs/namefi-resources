@@ -57,6 +57,12 @@ const DNS_RELATED_ROUTES = [
   /x402/,
 ];
 const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
+const X402Headers = [
+  'x-payment',
+  'payment',
+  'x-payment-signature',
+  'payment-signature',
+];
 
 app.use(async (...args) => {
   return cors({
@@ -103,6 +109,7 @@ app.use(async (...args) => {
       'x-c15t-region',
       'accept-language',
       'x-skip-auth',
+      ...X402Headers,
     ],
     credentials: true, // Allow cookies if needed
   })(...args);
