@@ -1,0 +1,139 @@
+---
+title: Orders and Polling
+description: Create orders, poll for completion, list past orders, and register trial domains
+---
+
+All domain registration operations return an order. Orders are processed asynchronously — you submit the request, receive an order ID, then poll until the status is terminal.
+
+## Order statuses
+
+| Status | Meaning |
+|--------|---------|
+| `PENDING` | Order created, not yet processing |
+| `PROCESSING` | Registration in progress |
+| `SUCCEEDED` | Domain registered successfully |
+| `FAILED` | Registration failed |
+| `CANCELLED` | Order was cancelled |
+| `PARTIALLY_COMPLETED` | Some items succeeded, others failed |
+
+## Register a domain and poll
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+import { setTimeout as sleep } from 'node:timers/promises';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+// Check availability first
+const { availability } = await client.search.checkAvailability({
+  domain: 'example.com',
+});
+
+if (!availability) {
+  throw new Error('Domain is not available');
+}
+
+// Create the order
+const order = await client.orders.registerDomain({
+  normalizedDomainName: 'example.com',
+  durationInYears: 1,
+});
+
+console.log('Order created:', order.id);
+
+// Poll until terminal
+const terminalStatuses = new Set([
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELLED',
+  'PARTIALLY_COMPLETED',
+]);
+
+while (true) {
+  const { order: current } = await client.orders.getOrder({
+    orderId: order.id,
+  });
+
+  console.log(`Status: ${current.status}`);
+
+  if (terminalStatuses.has(current.status)) {
+    break;
+  }
+
+  await sleep(5_000);
+}
+```
+
+## Register with a custom NFT wallet
+
+By default, the domain NFT is minted to your primary wallet. Pass `nftReceivinggWallet` to send it elsewhere:
+
+```ts
+const order = await client.orders.registerDomain({
+  normalizedDomainName: 'example.com',
+  durationInYears: 2,
+  nftReceivinggWallet: {
+    walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
+    chainId: 8453, // Base
+  },
+});
+```
+
+## Register a trial domain
+
+Trial domains are free subdomains under specific parent domains (e.g. `*.0x.city`). List available trial parent domains, then register:
+
+```ts
+// List available trial parent domains
+const trialDomains = await client.orders.getDomainsAvailableForTrial({});
+console.log('Available trial parents:', trialDomains);
+
+// Register a trial subdomain
+const order = await client.orders.registerDomainForTrial({
+  normalizedDomainName: 'myname.0x.city',
+});
+
+console.log('Trial order created:', order.id);
+```
+
+Trial registration requires EIP-712 authentication. If you are using `type: 'API_KEY'`, the API key handles this transparently.
+
+## List your orders
+
+```ts
+const orders = await client.user.getUserOrders();
+
+for (const order of orders) {
+  console.log(`${order.id}: ${order.status}`);
+}
+```
+
+## List your domains
+
+After registration completes, your domains appear in the user domains list:
+
+```ts
+const domains = await client.user.getDomains();
+
+for (const domain of domains) {
+  console.log(`${domain.normalizedDomainName} — expires ${domain.expiresAt}`);
+}
+```
+
+## Get order payment methods
+
+Check which payment methods are available for an order:
+
+```ts
+const methods = await client.orders.getOrderPaymentMethodsDetails({
+  orderId: order.id,
+});
+
+console.log('Available payment methods:', methods);
+```

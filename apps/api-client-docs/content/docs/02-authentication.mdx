@@ -1,7 +1,29 @@
 ---
 title: Authentication
-description: Authenticate the Namefi client with an API key
+description: Authenticate with the Namefi API using an API key, EIP-712 wallet signatures, or SIWE sessions
 ---
+
+The Namefi API supports three authentication methods. Which one you need depends on the operation you are calling.
+
+| Method | Header | Use case |
+|--------|--------|----------|
+| **API Key** | `x-api-key` | Simplest option — works for all operations |
+| **EIP-712** | `x-namefi-signature` + `x-namefi-signer` + `x-namefi-eip712-type` | Per-request wallet signatures for sensitive operations (DNS changes, domain registration) |
+| **SIWE** | `x-namefi-siwe-token` | Session-based wallet auth for protected operations that do not require EIP-712 |
+
+### How the client chooses a method
+
+When you create a client with `type: 'EIP712'`, the client automatically selects the right method per request:
+
+1. **EIP-712 operations** — the client signs typed data and sends the signature headers.
+2. **Non-EIP-712 protected operations** — the client bootstraps a SIWE session behind the scenes and attaches the session token.
+3. **Public operations** — no auth headers are sent.
+
+When you create a client with `type: 'API_KEY'`, all requests use the API key header regardless of operation type.
+
+---
+
+## API Key
 
 Create a client with an API key using the `authentication` option.
 
@@ -17,8 +39,171 @@ const client = createNamefiClient({
 });
 ```
 
-## Generating the API key
+### Generating the API key
 
 - [API keys management page](https://namefi.io/profile?tab=api-keys)
 
-<video src="/generate-api-key.mp4" />
+<video src="/generate-api-key.mp4" controls muted playsInline style={{ width: '100%', borderRadius: '8px' }}>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+## EIP-712 (wallet signatures)
+
+EIP-712 authentication signs each request payload as [EIP-712 typed data](https://eips.ethereum.org/EIPS/eip-712). This is required for sensitive operations like DNS record changes, domain parking, and domain registration.
+
+Provide a signer that implements the `EIP712Signer` interface:
+
+```ts
+import { createNamefiClient, type EIP712Signer } from '@namefi/api-client';
+import { mnemonicToAccount } from 'viem/accounts';
+import { toHex } from 'viem';
+
+const account = mnemonicToAccount(process.env.MNEMONIC!);
+
+const signer: EIP712Signer = {
+  getAddress: async () => account.address,
+  signTypedData: async ({ domain, types, primaryType, message }) => {
+    const signature = await account.signTypedData({
+      domain,
+      types,
+      primaryType,
+      message,
+    });
+    return { signature, address: account.address };
+  },
+  signMessage: async (message) => {
+    return account.signMessage({ message });
+  },
+  generateNonce: () => toHex(crypto.getRandomValues(new Uint8Array(32))),
+};
+
+const client = createNamefiClient({
+  authentication: {
+    signer,
+    type: 'EIP712',
+  },
+  logger: true,
+});
+```
+
+The `signMessage` and `generateNonce` methods are also used by the automatic SIWE bootstrap (see below).
+
+### EIP712Signer interface
+
+```ts
+type EIP712Signer = {
+  getAddress: () => Promise<`0x${string}`>;
+  signTypedData: (data: {
+    domain: {
+      name: string;
+      version: string;
+      chainId?: number;
+      verifyingContract?: `0x${string}`;
+    };
+    types: Record<string, { name: string; type: string }[]>;
+    primaryType: string;
+    message: Record<string, unknown>;
+  }) => Promise<{ signature: string; address: string }>;
+  signMessage: (message: string) => Promise<`0x${string}`>;
+  generateNonce: () => string;
+};
+```
+
+### How EIP-712 requests work
+
+For each EIP-712 operation the client:
+
+1. Wraps the request body in an envelope with `payloadType`, `payload`, `timestamp`, and `nonce`.
+2. Calls `signer.signTypedData` with the operation's typed data schema.
+3. Sends the signature, signer address, and primary type as request headers.
+
+---
+
+## SIWE (Sign-In with Ethereum)
+
+[SIWE](https://eips.ethereum.org/EIPS/eip-4361) provides session-based authentication. The client obtains a token by signing a challenge message with `personal_sign`, then reuses that token for subsequent requests. Sessions last 12 hours.
+
+SIWE is used automatically when you create a client with `type: 'EIP712'` — the client bootstraps a SIWE session for any protected operation that is not an EIP-712 route. You do not need to manage SIWE tokens yourself.
+
+### Specifying a chain
+
+Pass `siwe.chainId` to control which chain the SIWE message targets:
+
+```ts
+const client = createNamefiClient({
+  authentication: {
+    signer,
+    type: 'EIP712',
+  },
+  siwe: {
+    chainId: 1, // Ethereum Mainnet
+  },
+  logger: true,
+});
+```
+
+Allowed chains depend on the environment:
+
+| Environment | Allowed chains |
+|-------------|---------------|
+| Production | Ethereum Mainnet (`1`), Base (`8453`) |
+| Development | Sepolia (`11155111`), Namefi Testnet (`46630`) |
+
+### SIWE flow details
+
+The bootstrap runs automatically on the first request that needs it:
+
+1. **Get nonce** — `GET /v-next/siwe/nonce?signerAddress={address}` returns a one-time nonce.
+2. **Prepare message** — `GET /v-next/siwe/message?signerAddress={address}&nonce={nonce}&chainId={chainId}` returns a structured SIWE message and its string representation.
+3. **Sign** — the client calls `signer.signMessage(messageString)` which performs `personal_sign`.
+4. **Verify** — `POST /v-next/siwe/verify` with the address, structured message, and signature. Returns a session token.
+5. **Attach** — the token is sent as the `x-namefi-siwe-token` header on subsequent requests.
+
+The client caches the token in memory and refreshes it automatically when it expires (with a 30-second skew).
+
+### Using SIWE with WalletConnect
+
+When using a remote wallet via WalletConnect, implement `signMessage` using `personal_sign`:
+
+```ts
+const signer: EIP712Signer = {
+  getAddress: async () => walletAddress,
+  signTypedData: async ({ domain, types, primaryType, message }) => {
+    const signature = await walletClient.signTypedData({
+      domain,
+      types,
+      primaryType,
+      message,
+    });
+    return { signature, address: walletAddress };
+  },
+  signMessage: async (message) => {
+    return await provider.request({
+      method: 'personal_sign',
+      params: [message, walletAddress],
+    });
+  },
+  generateNonce: () => toHex(crypto.getRandomValues(new Uint8Array(32))),
+};
+```
+
+See the [namefi-api-skills](https://github.com/d3servelabs/namefi-api-skills) repository for a complete CLI-based WalletConnect + SIWE example.
+
+---
+
+## Authentication mode by operation
+
+Each API operation falls into one of four categories:
+
+| Auth mode | Description | Example operations |
+|-----------|-------------|-------------------|
+| `eip712` | Requires EIP-712 typed-data signature per request | `toggleDomainParking`, `upsertRecords`, `deleteRecords`, `registerDomain` |
+| `siwe-required` | Requires a SIWE session token | `getUserDomains`, `getOrders`, `getUserProfile` |
+| `siwe-optional` | Works without auth but returns richer data with a SIWE token | `checkAvailability` |
+| `none` | No authentication needed | `search`, `getSiweNonce`, `prepareSiweMessage` |
+
+When using `type: 'API_KEY'`, all operations use the API key regardless of category.
+
+When using `type: 'EIP712'`, the client handles mode selection automatically — EIP-712 for `eip712` operations, SIWE for `siwe-required` and `siwe-optional` operations, and no auth for `none` operations.

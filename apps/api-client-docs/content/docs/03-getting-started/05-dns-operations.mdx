@@ -1,0 +1,143 @@
+---
+title: DNS Operations
+description: Individual record operations, batch deletes, and domain parking
+---
+
+This guide covers DNS operations beyond the [full-flow example](/docs/03-getting-started/03-manage-dns-records). All DNS mutation operations require EIP-712 authentication — the client handles this automatically with both `API_KEY` and `EIP712` auth types.
+
+## Read records
+
+Fetch all DNS records for a zone:
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+const records = await client.dnsRecords.getRecords({
+  zoneName: 'example.com',
+});
+
+for (const r of records) {
+  console.log(`${r.name} ${r.type} ${r.rdata} (TTL: ${r.ttl}, ID: ${r.id})`);
+}
+```
+
+## Create a single record
+
+```ts
+await client.dnsRecords.createDnsRecord({
+  zoneName: 'example.com',
+  type: 'A',
+  name: '@',
+  rdata: '203.0.113.10',
+  ttl: 300,
+});
+```
+
+## Update a single record
+
+Update an existing record by its ID. Fetch records first to get the ID:
+
+```ts
+const records = await client.dnsRecords.getRecords({
+  zoneName: 'example.com',
+});
+
+const apex = records.find((r) => r.name === '@' && r.type === 'A');
+
+if (apex) {
+  await client.dnsRecords.updateRecord({
+    id: apex.id,
+    zoneName: 'example.com',
+    rdata: '198.51.100.42',
+    ttl: 600,
+  });
+}
+```
+
+## Delete a single record
+
+```ts
+await client.dnsRecords.deleteRecord({
+  id: apex.id,
+  zoneName: 'example.com',
+});
+```
+
+## Batch delete records
+
+Delete multiple records at once by their IDs:
+
+```ts
+const records = await client.dnsRecords.getRecords({
+  zoneName: 'example.com',
+});
+
+const txtRecords = records.filter((r) => r.type === 'TXT');
+
+if (txtRecords.length > 0) {
+  await client.dnsRecords.deleteRecords({
+    zoneName: 'example.com',
+    recordsIds: txtRecords.map((r) => r.id),
+  });
+}
+```
+
+## Domain parking
+
+Park a domain to serve a default landing page. This replaces DNS records with parking records:
+
+```ts
+// Park a domain
+await client.dnsRecords.parkDomain({
+  normalizedDomainName: 'example.com',
+  overrideExistingRecords: true,
+});
+
+// Check if a domain is parked
+const { parked } = await client.dnsRecords.isDomainParked({
+  normalizedDomainName: 'example.com',
+});
+
+console.log('Parked:', parked);
+```
+
+## Toggle parking
+
+Enable or disable parking without removing existing records:
+
+```ts
+// Disable parking, keep existing records
+await client.dnsRecords.toggleDomainParking({
+  normalizedDomainName: 'example.com',
+  enableParking: false,
+  overrideExistingRecords: false,
+});
+
+// Re-enable parking
+await client.dnsRecords.toggleDomainParking({
+  normalizedDomainName: 'example.com',
+  enableParking: true,
+  overrideExistingRecords: false,
+});
+```
+
+## Supported record types
+
+The API supports standard DNS record types including:
+
+`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `NS`, `SRV`, `CAA`, `SOA`
+
+## Notes
+
+- All mutation operations (`create`, `update`, `delete`, `park`, `toggleParking`) use EIP-712 signing under the hood. The client handles this transparently.
+- `updateRecord` and `updateRecords` require the record `id` — use `getRecords` first.
+- `overrideExistingRecords` on parking operations controls whether current records are replaced or preserved.
+- All batch operations are scoped to a single `zoneName` per request.
