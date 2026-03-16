@@ -239,7 +239,9 @@ async function handlePaymentRequired(
       const paymentRequiredHeader = encodePaymentRequiredHeader(
         paymentRequiredResponse,
       );
-      c.header(PAYMENT_REQUIRED_HEADERS[0], paymentRequiredHeader);
+      PAYMENT_REQUIRED_HEADERS.forEach((header) => {
+        c.header(header, paymentRequiredHeader);
+      });
       c.header('Content-Type', 'application/json');
 
       nextPromise.resolve(
@@ -448,10 +450,12 @@ async function handlePaidRequest(
     'Created x402 purchase record',
   );
 
-  c.header(
-    PAYMENT_RESPONSE_HEADERS[0],
-    Buffer.from(JSON.stringify(settledPayment)).toString('base64'),
-  );
+  PAYMENT_RESPONSE_HEADERS.forEach((header) => {
+    c.header(
+      header,
+      Buffer.from(JSON.stringify(settledPayment)).toString('base64'),
+    );
+  });
 
   return c.json({
     status: 'accepted',
