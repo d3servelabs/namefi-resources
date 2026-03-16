@@ -17,6 +17,7 @@ import { normalizeMlsHandle } from '@/lib/mls/handles';
 import { formatAmountInUSD } from '@/lib/number';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Badge } from '@/components/ui/shadcn/badge';
+import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
@@ -181,21 +182,22 @@ export const DomainCard: FC<{
       ? availabilityInfo.currentOwner
       : '';
   const mlsSellerHandle = normalizeMlsHandle(mlsOffer?.seller.username ?? null);
+  const mlsOfferUrl = mlsOffer?.sourceTweetUrl.trim() ?? '';
   const isUnavailableForDirectBuy = Boolean(
     availabilityInfo && !availabilityInfo.availability && !isUnsupported,
   );
   const shouldShowMlsOfferCta = Boolean(
-    isUnavailableForDirectBuy &&
-      mlsSellerHandle &&
-      mlsOffer?.sourceTweetUrl.trim().length,
+    isUnavailableForDirectBuy && mlsSellerHandle && mlsOfferUrl.length,
   );
-  const cardHeightClass = shouldShowMlsOfferCta ? 'min-h-[136px]' : 'h-[136px]';
+  const goToMlsOffer = useCallback(() => {
+    if (!mlsOfferUrl) return;
+    window.open(mlsOfferUrl, '_blank', 'noopener,noreferrer');
+  }, [mlsOfferUrl]);
 
   return (
     <Card
       className={cn(
-        'bg-white/5 backdrop-blur-lg pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
-        cardHeightClass,
+        'bg-white/5 backdrop-blur-lg h-[136px] pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
         // Only reduce opacity if we know the domain is unavailable and not importable
         hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
           ? 'opacity-60'
@@ -203,7 +205,7 @@ export const DomainCard: FC<{
       )}
     >
       <CardContent className="h-full w-full px-4 md:px-6">
-        <div className="flex h-full w-full items-start justify-between md:items-center">
+        <div className="flex h-full w-full items-center justify-between">
           <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
             <div className="font-semibold tracking-tight flex items-center gap-2">
               <div className="min-w-0 flex-1">
@@ -284,27 +286,8 @@ export const DomainCard: FC<{
                   />
                 </div>
               )}
-            {shouldShowMlsOfferCta && mlsOffer && mlsSellerHandle && (
-              <a
-                href={mlsOffer.sourceTweetUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="mt-2 inline-flex max-w-full items-center gap-1.5 text-xs text-sky-300 transition-colors hover:text-sky-200 hover:underline md:text-sm"
-              >
-                <span className="line-clamp-1">
-                  Buy from {mlsSellerHandle} on X
-                </span>
-                <Image
-                  src="/assets/social/twitter.svg"
-                  alt="Twitter/X"
-                  width={14}
-                  height={14}
-                  className="size-3.5 shrink-0"
-                />
-              </a>
-            )}
           </div>
-          <div className="flex shrink-0 items-start justify-center gap-2 md:items-center">
+          <div className="flex shrink-0 items-center justify-center gap-2">
             {domain && (
               <AnimatedWishlistButton
                 state={wishlistState}
@@ -349,9 +332,35 @@ export const DomainCard: FC<{
               </Badge>
             ) : showImportUi && isImportable ? null : isImportable &&
               !showImportUi ? (
-              <Badge variant="destructive" className="text-xs">
-                Taken
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge variant="destructive" className="text-xs">
+                  Taken
+                </Badge>
+                {shouldShowMlsOfferCta && (
+                  <Button
+                    onClick={goToMlsOffer}
+                    className="shrink-0 bg-sky-500 text-white hover:bg-sky-400 md:w-44"
+                  >
+                    <span className="inline-flex items-center gap-1 md:hidden">
+                      <span>Buy on</span>
+                      <Image
+                        src="/assets/social/twitter.svg"
+                        alt="X"
+                        width={14}
+                        height={14}
+                        className="size-3.5 shrink-0"
+                      />
+                    </span>
+                    <span className="hidden items-center gap-2 md:inline-flex">
+                      <span>Buy from</span>
+                      <span className="inline-flex max-w-20 items-center gap-1 rounded-full border border-white/30 bg-black/30 px-2 py-0.5 text-[11px] leading-none text-white">
+                        <span className="font-semibold">X</span>
+                        <span className="truncate">{mlsSellerHandle}</span>
+                      </span>
+                    </span>
+                  </Button>
+                )}
+              </div>
             ) : hasAvailabilityInfo &&
               !availabilityInfo.availability &&
               !isImportable ? (
