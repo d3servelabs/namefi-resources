@@ -423,42 +423,32 @@ export const DnssecPanelAction = ({
   };
 
   const enableDnssecMutationOptions =
-    trpc.domainConfig.dnssec.enableDnssec.mutationOptions();
+    trpc.domainConfig.dnssec.enableDnssec.mutationOptions({
+      onError(error) {
+        console.error(error);
+        toast.error('Request to Enable DNSSEC has failed');
+      },
+      async onSuccess() {
+        await refetchQueries();
+        toast.success('Request to Enable DNSSEC has been sent');
+      },
+    });
 
-  const enableNamefiSigning = useMutation({
-    ...enableDnssecMutationOptions,
-    mutationFn: async () => {
-      if (enableDnssecMutationOptions?.mutationFn) {
-        try {
-          await enableDnssecMutationOptions.mutationFn({ domainName });
-          await refetchQueries();
-          toast.success('Request to Enable DNSSEC has been sent');
-        } catch (error) {
-          console.error(error);
-          toast.error('Request to Enable DNSSEC has failed');
-        }
-      }
-    },
-  });
+  const enableNamefiSigning = useMutation(enableDnssecMutationOptions);
 
   const disableDnssecMutationOptions =
-    trpc.domainConfig.dnssec.disableDnssec.mutationOptions();
+    trpc.domainConfig.dnssec.disableDnssec.mutationOptions({
+      onError(error) {
+        console.error(error);
+        toast.error('Request to Disable DNSSEC has failed');
+      },
+      async onSuccess() {
+        await refetchQueries();
+        toast.success('Request to Disable DNSSEC has been sent');
+      },
+    });
 
-  const disableNamefiSigning = useMutation({
-    ...disableDnssecMutationOptions,
-    mutationFn: async () => {
-      if (disableDnssecMutationOptions?.mutationFn) {
-        try {
-          await disableDnssecMutationOptions.mutationFn({ domainName });
-          await refetchQueries();
-          toast.success('Request to Disable DNSSEC has been sent');
-        } catch (error) {
-          console.error(error);
-          toast.error('Request to Disable DNSSEC has failed');
-        }
-      }
-    },
-  });
+  const disableNamefiSigning = useMutation(disableDnssecMutationOptions);
 
   if (isLoadingActiveDnssecOperationWorkflows) {
     return (
