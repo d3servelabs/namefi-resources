@@ -54,6 +54,7 @@ const DNS_RELATED_ROUTES = [
   /v1\/dnssec/,
   /dns\/.*/,
   /parking\/.*/,
+  /x402/,
 ];
 const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
 
@@ -154,7 +155,7 @@ app.route('v-next', providersRouter);
 app.route('/c15t', c15tRouter);
 app.route('/log-level', logLevelRouter);
 app.route('/client-events', browserLogsProxyRouter);
-app.route('/x402', x402Router);
+app.route('x402', x402Router);
 app.route('mls/feed/rss.xml', mlsRssProxyRouter);
 
 app.get('/configfi', (c) => {
