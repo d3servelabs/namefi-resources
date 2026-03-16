@@ -188,16 +188,26 @@ async function handlePaymentRequired(
     accepts: [paymentOption],
     ...resourceInfo,
   };
+
+  const paymentRequirements =
+    await x402ResourceServer.buildPaymentRequirementsFromOptions(
+      [paymentOption],
+      c,
+    );
+  const paymentRequiredResponse =
+    await x402ResourceServer.createPaymentRequiredResponse(
+      paymentRequirements,
+      resourceInfo,
+      'Payment Required',
+    );
+
   const routeConfig = {
     ...baseRequirements,
     unpaidResponseBody: () => {
       return {
         contentType: 'application/json',
         body: {
-          ...baseRequirements,
-          x402Version: 2,
-          error: 'Payment required',
-          resource: resourceInfo,
+          ...paymentRequiredResponse,
           // Include metadata for client
           metadata: {
             domain: normalizedDomainName,
@@ -228,17 +238,7 @@ async function handlePaymentRequired(
     )(c, async () => {
       // Set 402 Payment Required response
       c.status(402);
-      const paymentRequirements =
-        await x402ResourceServer.buildPaymentRequirementsFromOptions(
-          [paymentOption],
-          c,
-        );
-      const paymentRequiredResponse =
-        await x402ResourceServer.createPaymentRequiredResponse(
-          paymentRequirements,
-          resourceInfo,
-          'Payment Required',
-        );
+
       const paymentRequiredHeader = encodePaymentRequiredHeader(
         paymentRequiredResponse,
       );
