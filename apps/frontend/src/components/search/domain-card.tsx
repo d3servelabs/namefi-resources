@@ -12,6 +12,8 @@ import { useCartRow } from '@/hooks/use-cart-row';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import type { MlsSaleListing } from '@/lib/mls/feed';
+import { normalizeMlsHandle } from '@/lib/mls/handles';
 import { formatAmountInUSD } from '@/lib/number';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Badge } from '@/components/ui/shadcn/badge';
@@ -28,6 +30,7 @@ import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validatio
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Gift, User } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
 import { useCallback, useMemo, useRef, type FC } from 'react';
@@ -36,6 +39,7 @@ import { useCallback, useMemo, useRef, type FC } from 'react';
 export const DomainCard: FC<{
   domain?: NamefiNormalizedDomain;
   availabilityInfo?: DomainAvailabilityInfo;
+  mlsOffer?: MlsSaleListing;
   eppAuthorizationCode?: string;
   onEppCodeChange?: (eppCode: string) => void;
   isImportMode?: boolean;
@@ -52,6 +56,7 @@ export const DomainCard: FC<{
 }> = ({
   domain,
   availabilityInfo,
+  mlsOffer,
   eppAuthorizationCode,
   onEppCodeChange,
   isImportMode,
@@ -175,11 +180,22 @@ export const DomainCard: FC<{
     hasOwnerInfo && availabilityInfo?.currentOwner
       ? availabilityInfo.currentOwner
       : '';
+  const mlsSellerHandle = normalizeMlsHandle(mlsOffer?.seller.username ?? null);
+  const isUnavailableForDirectBuy = Boolean(
+    availabilityInfo && !availabilityInfo.availability && !isUnsupported,
+  );
+  const shouldShowMlsOfferCta = Boolean(
+    isUnavailableForDirectBuy &&
+      mlsSellerHandle &&
+      mlsOffer?.sourceTweetUrl.trim().length,
+  );
+  const cardHeightClass = shouldShowMlsOfferCta ? 'min-h-[136px]' : 'h-[136px]';
 
   return (
     <Card
       className={cn(
-        'bg-white/5 backdrop-blur-lg h-[136px] pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
+        'bg-white/5 backdrop-blur-lg pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
+        cardHeightClass,
         // Only reduce opacity if we know the domain is unavailable and not importable
         hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
           ? 'opacity-60'
@@ -187,7 +203,7 @@ export const DomainCard: FC<{
       )}
     >
       <CardContent className="h-full w-full px-4 md:px-6">
-        <div className="flex items-center justify-between h-full w-full">
+        <div className="flex h-full w-full items-start justify-between md:items-center">
           <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
             <div className="font-semibold tracking-tight flex items-center gap-2">
               <div className="min-w-0 flex-1">
@@ -268,8 +284,27 @@ export const DomainCard: FC<{
                   />
                 </div>
               )}
+            {shouldShowMlsOfferCta && mlsOffer && mlsSellerHandle && (
+              <a
+                href={mlsOffer.sourceTweetUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mt-2 inline-flex max-w-full items-center gap-1.5 text-xs text-sky-300 transition-colors hover:text-sky-200 hover:underline md:text-sm"
+              >
+                <span className="line-clamp-1">
+                  Buy from {mlsSellerHandle} on X
+                </span>
+                <Image
+                  src="/assets/social/twitter.svg"
+                  alt="Twitter/X"
+                  width={14}
+                  height={14}
+                  className="size-3.5 shrink-0"
+                />
+              </a>
+            )}
           </div>
-          <div className="flex items-center justify-center shrink-0 gap-2">
+          <div className="flex shrink-0 items-start justify-center gap-2 md:items-center">
             {domain && (
               <AnimatedWishlistButton
                 state={wishlistState}

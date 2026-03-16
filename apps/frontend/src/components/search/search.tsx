@@ -40,6 +40,7 @@ import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Placeholder } from './placeholder';
 import type { ImportQuery } from './types';
+import type { MlsSaleListing } from '@/lib/mls/feed';
 import {
   isDomainImportable,
   isDomainUnsupported,
@@ -58,9 +59,13 @@ import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance
 import { Spotlight } from '@/components/ui/spotlight';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { InstantBuyButton } from '@/components/instant-buy';
+import { useQuery } from '@tanstack/react-query';
+import { useTRPCClient } from '@/lib/trpc';
 import { DomainCard, LoadingSkeletons } from './domain-card';
 
 export { DomainCard, LoadingSkeletons };
+
+const MLS_DOMAIN_OFFERS_BATCH_SIZE = 200;
 
 // Components
 export const SearchHeader: FC<{
@@ -613,6 +618,49 @@ export const SearchResults: FC<{
   onLoadMore,
   isLoadingMore = false,
 }) => {
+  const trpcClient = useTRPCClient();
+  const { data: mlsOffersByDomain } = useQuery<Record<string, MlsSaleListing>>({
+    queryKey: ['search.mlsDomainOffers', domains],
+    enabled: domains.length > 0,
+    staleTime: 15_000,
+    retry: 1,
+    queryFn: async () => {
+      const normalizedDomains = Array.from(
+        new Set(
+          domains
+            .map((domain) => domain.trim().toLowerCase())
+            .filter((domain) => domain.length > 0),
+        ),
+      );
+
+      if (normalizedDomains.length === 0) {
+        return {};
+      }
+
+      const offersByDomain: Record<string, MlsSaleListing> = {};
+      for (
+        let offset = 0;
+        offset < normalizedDomains.length;
+        offset += MLS_DOMAIN_OFFERS_BATCH_SIZE
+      ) {
+        const batch = normalizedDomains.slice(
+          offset,
+          offset + MLS_DOMAIN_OFFERS_BATCH_SIZE,
+        );
+        if (batch.length === 0) {
+          continue;
+        }
+
+        const result = await trpcClient.mls.searchDomainOffers.query({
+          domains: batch,
+        });
+        Object.assign(offersByDomain, result.offersByDomain);
+      }
+
+      return offersByDomain;
+    },
+  });
+
   // Show error state
   if (isError && query.length > 0) {
     return (
@@ -647,11 +695,13 @@ export const SearchResults: FC<{
           const claimEligibility = freeClaimEligibility?.find(
             (e) => e.domain === domain,
           );
+          const mlsOffer = mlsOffersByDomain?.[domain.toLowerCase()];
           return (
             <DomainCard
               key={domain}
               domain={domain}
               availabilityInfo={availabilityInfo}
+              mlsOffer={mlsOffer}
               eppAuthorizationCode={eppAuthorizationCodes[domain]}
               onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}
               isImportMode={isImportMode}
