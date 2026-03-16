@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
-import { config } from '@/lib/env';
+import { Hono } from 'hono';
+import { config } from '#lib/env';
 
 const TRAILING_SLASHES_PATTERN = /\/+$/;
 
-export const dynamic = 'force-dynamic';
+const mlsRssProxyRouter = new Hono();
 
-export async function GET() {
+mlsRssProxyRouter.get('/', async (c) => {
   const upstreamUrl = buildUpstreamRssUrl();
 
   try {
@@ -17,10 +17,7 @@ export async function GET() {
     });
 
     if (!upstreamResponse.ok) {
-      return NextResponse.json(
-        { error: 'Failed to fetch upstream MLS RSS feed.' },
-        { status: 502 },
-      );
+      return c.json({ error: 'Failed to fetch upstream MLS RSS feed.' }, 502);
     }
 
     const rssXml = await upstreamResponse.text();
@@ -28,20 +25,14 @@ export async function GET() {
       upstreamResponse.headers.get('cache-control') ??
       'public, s-maxage=300, stale-while-revalidate=3600';
 
-    return new NextResponse(rssXml, {
-      headers: {
-        'Content-Type': 'application/rss+xml; charset=utf-8',
-        'Cache-Control': cacheControl,
-        'X-Content-Type-Options': 'nosniff',
-      },
-    });
+    c.header('Content-Type', 'application/rss+xml; charset=utf-8');
+    c.header('Cache-Control', cacheControl);
+    c.header('X-Content-Type-Options', 'nosniff');
+    return c.body(rssXml, 200);
   } catch {
-    return NextResponse.json(
-      { error: 'Unable to load MLS RSS feed right now.' },
-      { status: 502 },
-    );
+    return c.json({ error: 'Unable to load MLS RSS feed right now.' }, 502);
   }
-}
+});
 
 function buildUpstreamRssUrl() {
   const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
@@ -50,14 +41,11 @@ function buildUpstreamRssUrl() {
     '',
   );
 
-  if (normalizedPath.endsWith('/rss.xml')) {
-    upstreamUrl.pathname = normalizedPath;
-    return upstreamUrl;
-  }
-
   upstreamUrl.pathname = normalizedPath.endsWith('/listings')
     ? `${normalizedPath}/rss.xml`
     : `${normalizedPath}/listings/rss.xml`;
 
   return upstreamUrl;
 }
+
+export { mlsRssProxyRouter };

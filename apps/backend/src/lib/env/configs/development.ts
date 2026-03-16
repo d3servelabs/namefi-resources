@@ -11,6 +11,8 @@ const developmentConfig: ConfigInput = {
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
+  MLS_PUBLIC_SALES_LISTINGS_URL:
+    'https://outbound.labs.namefi.io/api/public/sales/listings',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   NAMEFI_FIRST_PARTY_HOSTNAMES: [
     'astra.namefi.dev',

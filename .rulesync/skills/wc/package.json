@@ -11,6 +11,7 @@
     "disconnect": "bun run scripts/disconnect.ts"
   },
   "dependencies": {
+    "@walletconnect/keyvaluestorage": "^1.1.1",
     "@walletconnect/sign-client": "^2.21.7",
     "viem": "^2.24.2",
     "qrcode": "^1.5.4"

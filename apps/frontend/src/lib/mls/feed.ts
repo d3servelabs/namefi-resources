@@ -1,3 +1,5 @@
+import { config } from '@/lib/env';
+
 export interface MlsSaleSeller {
   username: string | null;
   displayName: string | null;
@@ -42,7 +44,8 @@ export interface MlsSalesByHandlePage {
 
 export const DEFAULT_MLS_FEED_LIMIT = 20;
 export const MAX_MLS_FEED_LIMIT = 50;
-export const MLS_FEED_RSS_PATH = '/api/mls/feed/rss.xml';
+const TRAILING_SLASHES_PATTERN = /\/+$/;
+export const MLS_FEED_RSS_PATH = buildMlsFeedRssUrl();
 
 export const MLS_LISTING_REPORT_REASONS = [
   'already_sold',
@@ -64,4 +67,16 @@ export interface MlsCreateListingReportInput {
 export interface MlsCreateListingReportResponse {
   id: string;
   status: 'active' | 'resolved';
+}
+
+function buildMlsFeedRssUrl() {
+  const backendUrl = new URL(config.BACKEND_URL);
+  const normalizedPath = backendUrl.pathname.replace(
+    TRAILING_SLASHES_PATTERN,
+    '',
+  );
+
+  backendUrl.pathname = `${normalizedPath}/mls/feed/rss.xml`;
+
+  return backendUrl.toString();
 }

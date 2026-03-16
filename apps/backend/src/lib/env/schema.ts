@@ -158,6 +158,7 @@ export const configSchema = z.object({
   SMTP_PORT: z.number().default(465),
   SMTP_HOST: z.string(),
   APP_URL: z.string(),
+  MLS_PUBLIC_SALES_LISTINGS_URL: z.string().url(),
   /**
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */

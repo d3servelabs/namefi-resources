@@ -25,6 +25,7 @@ import { feedbackRouter } from './feedbackRouter';
 import { testSignedPayloadRouter } from './testSignedPayloadRouter';
 import { dnsCacheRouter } from './dnsCacheRouter';
 import { x402Router } from './x402Router';
+import { mlsRouter } from './mlsRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -51,6 +52,7 @@ export const appRouter = createTRPCRouter({
   newsletter: newsletterRouter,
   feedback: feedbackRouter,
   dnsCache: dnsCacheRouter,
+  mls: mlsRouter,
 
   version: publicProcedure.query(() => {
     const result = {

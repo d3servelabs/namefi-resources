@@ -13,6 +13,7 @@ import {
   MLS_FEED_RSS_PATH,
   type MlsSalesFeedPage,
 } from '@/lib/mls/feed';
+import { useTRPCClient } from '@/lib/trpc';
 
 const SKELETON_KEYS = [
   'mls-skeleton-1',
@@ -22,6 +23,7 @@ const SKELETON_KEYS = [
 ] as const;
 
 export function MlsFeed() {
+  const trpcClient = useTRPCClient();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const {
     data,
@@ -37,7 +39,10 @@ export function MlsFeed() {
     queryKey: ['mls-feed'],
     initialPageParam: null,
     queryFn: ({ pageParam }) =>
-      fetchMlsSalesFeedPage(typeof pageParam === 'string' ? pageParam : null),
+      trpcClient.mls.getFeed.query({
+        limit: DEFAULT_MLS_FEED_LIMIT,
+        cursor: typeof pageParam === 'string' ? pageParam : null,
+      }),
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     staleTime: 15_000,
     retry: 1,
@@ -191,35 +196,4 @@ function MlsFeedSkeleton({ compact = false }: MlsFeedSkeletonProps) {
       ))}
     </div>
   );
-}
-
-async function fetchMlsSalesFeedPage(
-  cursor: string | null,
-): Promise<MlsSalesFeedPage> {
-  const params = new URLSearchParams({
-    limit: String(DEFAULT_MLS_FEED_LIMIT),
-  });
-  if (cursor) {
-    params.set('cursor', cursor);
-  }
-
-  const response = await fetch(`/api/mls/feed?${params.toString()}`, {
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    let errorMessage = 'Failed to load MLS feed.';
-    try {
-      const errorPayload = (await response.json()) as { error?: string };
-      if (errorPayload.error) {
-        errorMessage = errorPayload.error;
-      }
-    } catch {
-      // keep default fallback message
-    }
-
-    throw new Error(errorMessage);
-  }
-
-  return (await response.json()) as MlsSalesFeedPage;
 }

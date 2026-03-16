@@ -34,9 +34,9 @@ import { Textarea } from '@/components/ui/shadcn/textarea';
 import {
   MLS_LISTING_REPORT_REASONS,
   type MlsCreateListingReportInput,
-  type MlsCreateListingReportResponse,
   type MlsListingReportReason,
 } from '@/lib/mls/feed';
+import { useTRPCClient } from '@/lib/trpc';
 
 const REPORT_REASON_OPTIONS: Array<{
   value: MlsListingReportReason;
@@ -90,6 +90,7 @@ export function MlsReportListingDialog({
   listingId,
   domain,
 }: MlsReportListingDialogProps) {
+  const trpcClient = useTRPCClient();
   const [isOpen, setIsOpen] = useState(false);
   const [isReported, setIsReported] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -122,25 +123,8 @@ export function MlsReportListingDialog({
     };
 
     try {
-      const response = await fetch('/api/mls/listings/report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          await extractErrorMessage(
-            response,
-            'Unable to submit report. Please try again.',
-          ),
-        );
-      }
-
       const responsePayload =
-        (await response.json()) as MlsCreateListingReportResponse | null;
+        await trpcClient.mls.reportListing.mutate(payload);
       if (!responsePayload?.id) {
         throw new Error('Unexpected report response from server.');
       }
@@ -293,14 +277,4 @@ export function MlsReportListingDialog({
       </DialogContent>
     </Dialog>
   );
-}
-
-async function extractErrorMessage(response: Response, fallback: string) {
-  try {
-    const payload = (await response.json()) as { error?: string };
-    const normalized = payload.error?.trim();
-    return normalized && normalized.length > 0 ? normalized : fallback;
-  } catch {
-    return fallback;
-  }
 }

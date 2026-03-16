@@ -14,6 +14,7 @@ import {
   type MlsSalesByHandlePage,
 } from '@/lib/mls/feed';
 import { normalizeMlsHandle, normalizeMlsHandleSlug } from '@/lib/mls/handles';
+import { useTRPCClient } from '@/lib/trpc';
 
 const SKELETON_KEYS = [
   'mls-handle-skeleton-1',
@@ -27,6 +28,7 @@ interface MlsHandleFeedProps {
 }
 
 export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
+  const trpcClient = useTRPCClient();
   const normalizedHandleSlug = normalizeMlsHandleSlug(username);
   const hasValidHandle = Boolean(normalizedHandleSlug);
   const fallbackHandle = normalizedHandleSlug
@@ -53,10 +55,11 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
         throw new Error('Invalid MLS handle.');
       }
 
-      return fetchMlsSalesByHandlePage(
-        normalizedHandleSlug,
-        typeof pageParam === 'string' ? pageParam : null,
-      );
+      return trpcClient.mls.getHandleListings.query({
+        handle: normalizedHandleSlug,
+        limit: DEFAULT_MLS_FEED_LIMIT,
+        cursor: typeof pageParam === 'string' ? pageParam : null,
+      });
     },
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     staleTime: 15_000,
@@ -403,39 +406,4 @@ function MlsHandleFeedSkeleton({
       ))}
     </div>
   );
-}
-
-async function fetchMlsSalesByHandlePage(
-  handle: string,
-  cursor: string | null,
-): Promise<MlsSalesByHandlePage> {
-  const params = new URLSearchParams({
-    limit: String(DEFAULT_MLS_FEED_LIMIT),
-  });
-  if (cursor) {
-    params.set('cursor', cursor);
-  }
-
-  const response = await fetch(
-    `/api/mls/handles/${encodeURIComponent(handle)}/listings?${params.toString()}`,
-    {
-      cache: 'no-store',
-    },
-  );
-
-  if (!response.ok) {
-    let errorMessage = 'Failed to load MLS seller listings.';
-    try {
-      const errorPayload = (await response.json()) as { error?: string };
-      if (errorPayload.error) {
-        errorMessage = errorPayload.error;
-      }
-    } catch {
-      // keep default fallback message
-    }
-
-    throw new Error(errorMessage);
-  }
-
-  return (await response.json()) as MlsSalesByHandlePage;
 }
