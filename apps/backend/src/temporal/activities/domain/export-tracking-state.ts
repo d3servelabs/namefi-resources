@@ -16,6 +16,12 @@ export type TransferDecisionAction =
   | 'NO_SIGNAL'
   | 'UNDETERMINED';
 
+export type ExportTrackingStatusHistoryEntry = {
+  timestamp: string;
+  status: string;
+  eppStatuses?: string[];
+};
+
 export const EXPORT_BURN_ELIGIBLE_STATUSES = [
   'TRANSFER_COMPLETED',
   'NEEDS_ADMIN_REVIEW',
@@ -79,4 +85,19 @@ export function canResolveExportTrackingStatus(status: string): boolean {
 
 export function isBurnEligibleExportStatus(status: string): boolean {
   return statusInSet(EXPORT_BURN_ELIGIBLE_STATUSES, status);
+}
+
+export function appendExportTrackingStatusHistory(
+  statusHistory: ExportTrackingStatusHistoryEntry[] | null | undefined,
+  status: DomainExportTrackingStatus,
+  now: Date = new Date(),
+): ExportTrackingStatusHistoryEntry[] {
+  const history = statusHistory ?? [];
+  return [
+    ...history,
+    {
+      timestamp: now.toISOString(),
+      status,
+    },
+  ];
 }

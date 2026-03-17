@@ -31,11 +31,13 @@ import {
 import { maybeGetUserEmail } from '../notify.activities';
 import { privyClient } from '../../../trpc/utils';
 import {
+  appendExportTrackingStatusHistory,
   actionToTrackingStatus,
   EXPORT_BURN_ELIGIBLE_STATUSES,
   isBurnEligibleExportStatus,
   mapDecisionToPersistedStatus,
   type DomainExportTrackingStatus,
+  type ExportTrackingStatusHistoryEntry,
   type TransferDecisionAction,
 } from './export-tracking-state';
 
@@ -52,12 +54,6 @@ const EMAIL_BCC = [
 ];
 
 const logger = createLogger({ name: 'export-tracking' });
-
-interface StatusHistoryEntry {
-  timestamp: string;
-  status: string;
-  eppStatuses?: string[];
-}
 
 interface RawExportTrackingEvidence {
   accountCheck: {
@@ -615,13 +611,17 @@ export async function processSingleDomainExportStatus(input: {
   if (existingRecord) {
     if (existingRecord.status !== currentStatus) {
       const statusHistory =
-        (existingRecord.statusHistory as unknown as StatusHistoryEntry[]) || [];
-      const newHistoryEntry: StatusHistoryEntry = {
-        timestamp: new Date().toISOString(),
-        status: currentStatus,
-        eppStatuses: normalizedEvidence.eppStatuses,
-      };
-      const updatedHistory = [...statusHistory, newHistoryEntry];
+        (existingRecord.statusHistory as unknown as ExportTrackingStatusHistoryEntry[]) ||
+        [];
+      const now = new Date();
+      const updatedHistory = [
+        ...statusHistory,
+        {
+          timestamp: now.toISOString(),
+          status: currentStatus,
+          eppStatuses: normalizedEvidence.eppStatuses,
+        },
+      ];
 
       await db
         .update(domainExportTrackingTable)
@@ -632,10 +632,10 @@ export async function processSingleDomainExportStatus(input: {
           eppStatuses: normalizedEvidence.eppStatuses,
           whoisData: normalizedEvidence.whoisData as Json,
           registrarKey,
-          statusChangedAt: new Date(),
-          lastCheckedAt: new Date(),
+          statusChangedAt: now,
+          lastCheckedAt: now,
           transferCompletedAt:
-            currentStatus === 'NEEDS_ADMIN_REVIEW' ? new Date() : undefined,
+            currentStatus === 'NEEDS_ADMIN_REVIEW' ? now : undefined,
           userNotified: false,
         })
         .where(eq(domainExportTrackingTable.id, existingRecord.id));
@@ -664,7 +664,7 @@ export async function processSingleDomainExportStatus(input: {
       recordAction = 'no_change';
     }
   } else {
-    const initialHistory: StatusHistoryEntry[] = [
+    const initialHistory: ExportTrackingStatusHistoryEntry[] = [
       {
         timestamp: new Date().toISOString(),
         status: currentStatus,
@@ -803,13 +803,17 @@ export async function checkSinglePendingTransfer(input: {
     const statusFromDecision = actionToTrackingStatus(decision.action);
 
     if (statusFromDecision && statusFromDecision !== currentStatus) {
-      const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
-      const newHistoryEntry: StatusHistoryEntry = {
-        timestamp: new Date().toISOString(),
-        status: statusFromDecision,
-        eppStatuses: normalizedEvidence.eppStatuses,
-      };
-      const updatedHistory = [...history, newHistoryEntry];
+      const history =
+        (statusHistory as unknown as ExportTrackingStatusHistoryEntry[]) || [];
+      const now = new Date();
+      const updatedHistory = [
+        ...history,
+        {
+          timestamp: now.toISOString(),
+          status: statusFromDecision,
+          eppStatuses: normalizedEvidence.eppStatuses,
+        },
+      ];
 
       await db
         .update(domainExportTrackingTable)
@@ -819,12 +823,10 @@ export async function checkSinglePendingTransfer(input: {
           statusHistory: updatedHistory,
           eppStatuses: normalizedEvidence.eppStatuses,
           whoisData: normalizedEvidence.whoisData as Json,
-          statusChangedAt: new Date(),
-          lastCheckedAt: new Date(),
+          statusChangedAt: now,
+          lastCheckedAt: now,
           transferCompletedAt:
-            statusFromDecision === 'TRANSFER_COMPLETED'
-              ? new Date()
-              : undefined,
+            statusFromDecision === 'TRANSFER_COMPLETED' ? now : undefined,
           userNotified: false,
         })
         .where(eq(domainExportTrackingTable.id, id));
@@ -851,13 +853,17 @@ export async function checkSinglePendingTransfer(input: {
   }
 
   if (decision.action === 'NO_SIGNAL' && normalizedEvidence.inOurAccount) {
-    const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
-    const newHistoryEntry: StatusHistoryEntry = {
-      timestamp: new Date().toISOString(),
-      status: 'TRANSFER_FAILED',
-      eppStatuses: normalizedEvidence.eppStatuses,
-    };
-    const updatedHistory = [...history, newHistoryEntry];
+    const history =
+      (statusHistory as unknown as ExportTrackingStatusHistoryEntry[]) || [];
+    const now = new Date();
+    const updatedHistory = [
+      ...history,
+      {
+        timestamp: now.toISOString(),
+        status: 'TRANSFER_FAILED',
+        eppStatuses: normalizedEvidence.eppStatuses,
+      },
+    ];
 
     await db
       .update(domainExportTrackingTable)
@@ -867,8 +873,8 @@ export async function checkSinglePendingTransfer(input: {
         statusHistory: updatedHistory,
         eppStatuses: normalizedEvidence.eppStatuses,
         whoisData: normalizedEvidence.whoisData as Json,
-        statusChangedAt: new Date(),
-        lastCheckedAt: new Date(),
+        statusChangedAt: now,
+        lastCheckedAt: now,
         userNotified: false,
       })
       .where(eq(domainExportTrackingTable.id, id));
@@ -877,13 +883,17 @@ export async function checkSinglePendingTransfer(input: {
     return { action: 'failed', newStatus: 'TRANSFER_FAILED' };
   }
 
-  const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
-  const newHistoryEntry: StatusHistoryEntry = {
-    timestamp: new Date().toISOString(),
-    status: 'NEEDS_ADMIN_REVIEW',
-    eppStatuses: normalizedEvidence.eppStatuses,
-  };
-  const updatedHistory = [...history, newHistoryEntry];
+  const history =
+    (statusHistory as unknown as ExportTrackingStatusHistoryEntry[]) || [];
+  const now = new Date();
+  const updatedHistory = [
+    ...history,
+    {
+      timestamp: now.toISOString(),
+      status: 'NEEDS_ADMIN_REVIEW',
+      eppStatuses: normalizedEvidence.eppStatuses,
+    },
+  ];
 
   await db
     .update(domainExportTrackingTable)
@@ -893,9 +903,9 @@ export async function checkSinglePendingTransfer(input: {
       statusHistory: updatedHistory,
       eppStatuses: normalizedEvidence.eppStatuses,
       whoisData: normalizedEvidence.whoisData as Json,
-      statusChangedAt: new Date(),
-      lastCheckedAt: new Date(),
-      transferCompletedAt: new Date(),
+      statusChangedAt: now,
+      lastCheckedAt: now,
+      transferCompletedAt: now,
       // Set confirmedOutOfAccountAt if not already set
       confirmedOutOfAccountAt: sql`COALESCE(${domainExportTrackingTable.confirmedOutOfAccountAt}, NOW())`,
       userNotified: false,
@@ -1402,12 +1412,34 @@ export async function recordNftBurn(input: {
   logger.debug({ domain, chainId, txHash, error }, 'Recording NFT burn result');
 
   if (txHash) {
+    const existingRecord = await db
+      .select({
+        id: domainExportTrackingTable.id,
+        statusHistory: domainExportTrackingTable.statusHistory,
+      })
+      .from(domainExportTrackingTable)
+      .where(
+        and(
+          eq(domainExportTrackingTable.normalizedDomainName, domain),
+          eq(domainExportTrackingTable.chainId, chainId),
+        ),
+      )
+      .limit(1);
+
+    const record = existingRecord[0];
+    const updatedHistory = appendExportTrackingStatusHistory(
+      (record?.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
+        [],
+      'RESOLVED',
+    );
+
     // Successful burn
     await db
       .update(domainExportTrackingTable)
       .set({
         previousStatus: sql`${domainExportTrackingTable.status}`,
         status: 'RESOLVED',
+        statusHistory: updatedHistory,
         nftBurnedAt: new Date(),
         nftBurnTxHash: txHash,
         updatedAt: new Date(),

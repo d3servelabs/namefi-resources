@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   actionToTrackingStatus,
+  appendExportTrackingStatusHistory,
   canApproveExportTrackingStatus,
   canResolveExportTrackingStatus,
   isBurnEligibleExportStatus,
@@ -74,6 +75,49 @@ describe('export-tracking-state', () => {
     it('rejects burn for unresolved and pending states', () => {
       expect(isBurnEligibleExportStatus('PENDING_TRANSFER')).toBe(false);
       expect(isBurnEligibleExportStatus('RESOLVED')).toBe(false);
+    });
+  });
+
+  describe('status history appending', () => {
+    it('appends a status with an ISO timestamp to empty history', () => {
+      const at = new Date('2026-02-23T10:00:00.000Z');
+      const result = appendExportTrackingStatusHistory(
+        undefined,
+        'NOTIFIED',
+        at,
+      );
+
+      expect(result).toEqual([
+        {
+          timestamp: '2026-02-23T10:00:00.000Z',
+          status: 'NOTIFIED',
+        },
+      ]);
+    });
+
+    it('preserves existing entries and appends to the end', () => {
+      const at = new Date('2026-02-23T11:00:00.000Z');
+      const result = appendExportTrackingStatusHistory(
+        [
+          {
+            timestamp: '2026-02-23T09:00:00.000Z',
+            status: 'NEEDS_ADMIN_REVIEW',
+          },
+        ],
+        'RESOLVED',
+        at,
+      );
+
+      expect(result).toEqual([
+        {
+          timestamp: '2026-02-23T09:00:00.000Z',
+          status: 'NEEDS_ADMIN_REVIEW',
+        },
+        {
+          timestamp: '2026-02-23T11:00:00.000Z',
+          status: 'RESOLVED',
+        },
+      ]);
     });
   });
 });

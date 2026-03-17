@@ -86,3 +86,4 @@ stateDiagram-v2
 - Automatic pending/complete user emails from the scheduled workflow are disabled until the explicit admin-approved notification path is wired end-to-end.
 - `admin.verifyExportTracking` now sends the export-complete user email and transitions the record to `NOTIFIED` only after successful delivery.
 - `admin.resolveExportTracking` lets admins close a review without notification by transitioning to `RESOLVED`.
+- `statusHistory` is now appended consistently for admin approval (`NOTIFIED`), admin resolve (`RESOLVED`), and successful burn resolution to keep transition auditing intact.

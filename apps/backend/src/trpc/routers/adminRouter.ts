@@ -46,8 +46,10 @@ import {
   sendExportCompleteEmail,
 } from '#temporal/activities/domain/export-tracking.activities';
 import {
+  appendExportTrackingStatusHistory,
   canApproveExportTrackingStatus,
   canResolveExportTrackingStatus,
+  type ExportTrackingStatusHistoryEntry,
 } from '#temporal/activities/domain/export-tracking-state';
 import {
   adminProcedureWithPermissions,
@@ -3949,6 +3951,7 @@ export const adminRouter = createTRPCRouter({
           chainId: domainExportTrackingTable.chainId,
           ownerAddress: domainExportTrackingTable.ownerAddress,
           status: domainExportTrackingTable.status,
+          statusHistory: domainExportTrackingTable.statusHistory,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
         })
@@ -4008,18 +4011,27 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
+      const now = new Date();
+      const updatedHistory = appendExportTrackingStatusHistory(
+        (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
+          [],
+        'NOTIFIED',
+        now,
+      );
+
       // Update the record with admin verification
       await db
         .update(domainExportTrackingTable)
         .set({
           previousStatus: sql`${domainExportTrackingTable.status}`,
           status: 'NOTIFIED',
+          statusHistory: updatedHistory,
           verfyingAdminId: ctx.user.id,
-          adminVerifiedAt: new Date(),
+          adminVerifiedAt: now,
           userNotified: true,
-          notifiedAt: new Date(),
-          statusChangedAt: new Date(),
-          updatedAt: new Date(),
+          notifiedAt: now,
+          statusChangedAt: now,
+          updatedAt: now,
         })
         .where(eq(domainExportTrackingTable.id, input.id));
 
@@ -4060,6 +4072,7 @@ export const adminRouter = createTRPCRouter({
           id: domainExportTrackingTable.id,
           normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
           status: domainExportTrackingTable.status,
+          statusHistory: domainExportTrackingTable.statusHistory,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
         })
         .from(domainExportTrackingTable)
@@ -4096,15 +4109,24 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
+      const now = new Date();
+      const updatedHistory = appendExportTrackingStatusHistory(
+        (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
+          [],
+        'RESOLVED',
+        now,
+      );
+
       await db
         .update(domainExportTrackingTable)
         .set({
           previousStatus: sql`${domainExportTrackingTable.status}`,
           status: 'RESOLVED',
+          statusHistory: updatedHistory,
           verfyingAdminId: ctx.user.id,
           adminVerifiedAt: sql`COALESCE(${domainExportTrackingTable.adminVerifiedAt}, NOW())`,
-          statusChangedAt: new Date(),
-          updatedAt: new Date(),
+          statusChangedAt: now,
+          updatedAt: now,
         })
         .where(eq(domainExportTrackingTable.id, input.id));
 
