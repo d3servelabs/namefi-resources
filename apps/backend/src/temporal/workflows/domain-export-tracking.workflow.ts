@@ -51,6 +51,8 @@ export interface DomainExportTrackingWorkflowOutput {
   created: number;
   updated: number;
   skipped: number;
+  noSignal: number;
+  undetermined: number;
   noChange: number;
   pendingTransfersChecked: number;
   transfersCompleted: number;
@@ -98,6 +100,8 @@ export async function domainExportTrackingWorkflow(
     let created = 0;
     let updated = 0;
     let skipped = 0;
+    let noSignal = 0;
+    let undetermined = 0;
     let noChange = 0;
     let pendingExportEmailsSent = 0;
 
@@ -160,6 +164,12 @@ export async function domainExportTrackingWorkflow(
             case 'skipped':
               skipped++;
               break;
+            case 'no_signal':
+              noSignal++;
+              break;
+            case 'undetermined':
+              undetermined++;
+              break;
             case 'no_change':
               noChange++;
               break;
@@ -171,6 +181,8 @@ export async function domainExportTrackingWorkflow(
         created,
         updated,
         skipped,
+        noSignal,
+        undetermined,
         noChange,
       });
 
@@ -390,10 +402,13 @@ export async function domainExportTrackingWorkflow(
 
     const output: DomainExportTrackingWorkflowOutput = {
       lockedNftsFound: lockedNfts.length,
-      domainsProcessed: created + updated + skipped + noChange,
+      domainsProcessed:
+        created + updated + skipped + noSignal + undetermined + noChange,
       created,
       updated,
       skipped,
+      noSignal,
+      undetermined,
       noChange,
       pendingTransfersChecked: pendingTransfers.length,
       transfersCompleted,

@@ -1,6 +1,8 @@
 import { Context } from '@temporalio/activity';
 import { differenceInHours, format } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { EppStatuses } from '@namefi-astra/utils';
+import type { Json } from 'drizzle-zod';
 import { db, namefiNftCte } from '@namefi-astra/db';
 import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
@@ -14,6 +16,7 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+import type { PendingTransferInfo } from '@namefi-astra/registrars/lib/abstract-registrar/data/transfer-status';
 import { sendMail } from '../../../mail/mail-client';
 import { render } from '@react-email/components';
 import React from 'react';
@@ -28,7 +31,7 @@ import {
 import { maybeGetUserEmail } from '../notify.activities';
 import { privyClient } from '../../../trpc/utils';
 
-const SEND_TO_SLACK_DIRECT = false;
+const _SEND_TO_SLACK_DIRECT = false;
 const ENABLE_EXPORT_EMAILS = false;
 /** Minimum hours domain must be confirmed out of account before time-based burn */
 const MIN_HOURS_FOR_TIME_BASED_BURN = 36;
@@ -48,13 +51,130 @@ interface StatusHistoryEntry {
   eppStatuses?: string[];
 }
 
+type DomainExportTrackingStatus =
+  | 'PENDING_TRANSFER'
+  | 'TRANSFER_PERIOD'
+  | 'TRANSFER_COMPLETED'
+  | 'TRANSFER_FAILED';
+
+type TransferDecisionAction =
+  | 'PENDING_TRANSFER'
+  | 'TRANSFER_PERIOD'
+  | 'TRANSFER_COMPLETED'
+  | 'NO_SIGNAL'
+  | 'UNDETERMINED';
+
+interface RawExportTrackingEvidence {
+  accountCheck: {
+    inOurAccount: boolean;
+    registrarKey?: string;
+    confirmed: boolean;
+  };
+  transferStatus: {
+    eppStatuses?: string[];
+    whoisData?: unknown;
+    hasPendingTransfer: boolean;
+    hasTransferPeriod: boolean;
+    undetermined: boolean;
+    source: 'RDAP' | 'WHOIS' | 'NONE';
+  };
+  directPendingTransfer: {
+    pendingTransfer: PendingTransferInfo | null;
+    undetermined: boolean;
+  };
+  indexRegistrarKey: string | null;
+}
+
+interface NormalizedExportTrackingEvidence {
+  inOurAccount: boolean;
+  confirmedInOurAccount: boolean;
+  registrarKey?: string;
+  eppStatuses?: string[];
+  whoisData?: unknown;
+  hasPendingTransfer: boolean;
+  hasTransferPeriod: boolean;
+  undetermined: boolean;
+  evidenceSource: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
+}
+
+const ACTIVE_PENDING_TRANSFER_STATUSES = new Set<PendingTransferInfo['status']>(
+  ['pending', 'clientApproved', 'serverApproved'],
+);
+
+function detectTransferSignals(statuses: readonly string[] | undefined): {
+  eppStatuses?: string[];
+  hasPendingTransfer: boolean;
+  hasTransferPeriod: boolean;
+} {
+  if (!statuses || statuses.length === 0) {
+    return {
+      eppStatuses: undefined,
+      hasPendingTransfer: false,
+      hasTransferPeriod: false,
+    };
+  }
+
+  const normalizedStatuses = EppStatuses.fromArray(statuses);
+  return {
+    eppStatuses: normalizedStatuses.getEppStatuses(),
+    hasPendingTransfer: normalizedStatuses.hasStatus('pendingTransfer'),
+    hasTransferPeriod: normalizedStatuses.hasStatus('transferPeriod'),
+  };
+}
+
+function extractWhoisStatuses(whoisData: unknown): string[] {
+  if (!whoisData || typeof whoisData !== 'object') {
+    return [];
+  }
+
+  const domainRecord = (whoisData as { domain?: { status?: unknown } }).domain;
+  if (!domainRecord || typeof domainRecord !== 'object') {
+    return [];
+  }
+
+  const statuses = domainRecord.status;
+  if (!Array.isArray(statuses)) {
+    return [];
+  }
+
+  return statuses.filter(
+    (status): status is string => typeof status === 'string',
+  );
+}
+
+async function queryDirectPendingTransfer(
+  domain: NamefiNormalizedDomain,
+): Promise<{
+  pendingTransfer: PendingTransferInfo | null;
+  undetermined: boolean;
+}> {
+  try {
+    const pendingTransfer = await sldRegistrar.queryPendingTransfer(
+      toPunycodeDomainName(domain),
+    );
+    return {
+      pendingTransfer,
+      undetermined: false,
+    };
+  } catch (error) {
+    logger.warn(
+      { domain, error },
+      'Direct registrar pending-transfer lookup failed',
+    );
+    return {
+      pendingTransfer: null,
+      undetermined: true,
+    };
+  }
+}
+
 export interface DomainTransferStatus {
   domain: NamefiNormalizedDomain;
   chainId: number;
   ownerAddress: string;
   isLocked: boolean;
   eppStatuses?: string[];
-  whoisData?: any;
+  whoisData?: unknown;
   registrarKey?: string;
   inOurAccount: boolean;
   hasPendingTransfer: boolean;
@@ -69,9 +189,11 @@ export async function checkDomainTransferStatus(
   domain: NamefiNormalizedDomain,
 ): Promise<{
   eppStatuses?: string[];
-  whoisData?: any;
+  whoisData?: unknown;
   hasPendingTransfer: boolean;
   hasTransferPeriod: boolean;
+  undetermined: boolean;
+  source: 'RDAP' | 'WHOIS' | 'NONE';
 }> {
   const activityContext = Context.current();
   logger.debug({ domain }, 'Checking domain transfer status');
@@ -80,35 +202,24 @@ export async function checkDomainTransferStatus(
 
   const punyDomain = toPunycodeDomainName(domain);
   let eppStatuses: string[] | undefined;
-  let whoisData: any;
+  let whoisData: unknown;
   let hasPendingTransfer = false;
   let hasTransferPeriod = false;
+  let undetermined = false;
+  let source: 'RDAP' | 'WHOIS' | 'NONE' = 'NONE';
 
   // Try RDAP first
   try {
     const rdapClient = RDAP;
     const rdapData = await rdapClient.queryDomain(punyDomain);
 
-    if (rdapData?.status) {
-      eppStatuses = rdapData.status;
-
-      // Check for transfer-related statuses
-      const statusesLower = rdapData.status.map((s) => s.toLowerCase());
-      hasPendingTransfer = statusesLower.some(
-        (s) =>
-          s.includes('pendingtransfer') ||
-          s.includes('pending transfer') ||
-          s === 'pendingtransfer',
-      );
-      hasTransferPeriod = statusesLower.some(
-        (s) =>
-          s.includes('transferperiod') ||
-          s.includes('transfer period') ||
-          s === 'transferperiod',
-      );
-    }
+    const rdapSignals = detectTransferSignals(rdapData?.status);
+    eppStatuses = rdapSignals.eppStatuses;
+    hasPendingTransfer = rdapSignals.hasPendingTransfer;
+    hasTransferPeriod = rdapSignals.hasTransferPeriod;
 
     whoisData = rdapData;
+    source = 'RDAP';
     logger.debug(
       { domain, eppStatuses, hasPendingTransfer, hasTransferPeriod },
       'RDAP lookup successful',
@@ -127,8 +238,13 @@ export async function checkDomainTransferStatus(
       const whoisResult = await whoisClient.queryDomain(punyDomain);
       whoisData = whoisResult;
 
-      // Parse WHOIS data for status information
-      if (whoisResult && typeof whoisResult === 'object') {
+      const whoisStatuses = extractWhoisStatuses(whoisResult);
+      const whoisSignals = detectTransferSignals(whoisStatuses);
+      eppStatuses = whoisSignals.eppStatuses;
+      hasPendingTransfer = whoisSignals.hasPendingTransfer;
+      hasTransferPeriod = whoisSignals.hasTransferPeriod;
+
+      if (!hasPendingTransfer && !hasTransferPeriod) {
         const whoisText = JSON.stringify(whoisResult).toLowerCase();
         hasPendingTransfer =
           whoisText.includes('pending transfer') ||
@@ -137,6 +253,8 @@ export async function checkDomainTransferStatus(
           whoisText.includes('transfer period') ||
           whoisText.includes('transferperiod');
       }
+
+      source = 'WHOIS';
 
       logger.debug(
         { domain, hasPendingTransfer, hasTransferPeriod },
@@ -147,8 +265,12 @@ export async function checkDomainTransferStatus(
         { domain, rdapError, whoisError },
         'Both RDAP and WHOIS lookups failed',
       );
-      // Continue without EPP status data
+      undetermined = true;
     }
+  }
+
+  if (source === 'NONE') {
+    undetermined = true;
   }
 
   return {
@@ -156,7 +278,131 @@ export async function checkDomainTransferStatus(
     whoisData,
     hasPendingTransfer,
     hasTransferPeriod,
+    undetermined,
+    source,
   };
+}
+
+export async function gatherEvidenceForDomain(input: {
+  domain: NamefiNormalizedDomain;
+}): Promise<RawExportTrackingEvidence> {
+  const { domain } = input;
+
+  const [
+    accountCheck,
+    transferStatus,
+    directPendingTransfer,
+    indexRegistrarKey,
+  ] = await Promise.all([
+    isDomainInOurAccount(domain),
+    checkDomainTransferStatus(domain),
+    queryDirectPendingTransfer(domain),
+    getDomainRegistrarFromIndex(domain),
+  ]);
+
+  return {
+    accountCheck,
+    transferStatus,
+    directPendingTransfer,
+    indexRegistrarKey,
+  };
+}
+
+export function normalizeEvidence(
+  evidence: RawExportTrackingEvidence,
+): NormalizedExportTrackingEvidence {
+  const {
+    accountCheck,
+    transferStatus,
+    directPendingTransfer,
+    indexRegistrarKey,
+  } = evidence;
+
+  const directPendingStatus = directPendingTransfer.pendingTransfer?.status;
+  const hasDirectPendingTransfer =
+    directPendingStatus !== undefined &&
+    ACTIVE_PENDING_TRANSFER_STATUSES.has(directPendingStatus);
+
+  let evidenceSource: NormalizedExportTrackingEvidence['evidenceSource'] =
+    'NONE';
+  if (hasDirectPendingTransfer) {
+    evidenceSource = 'DIRECT_REGISTRAR';
+  } else if (transferStatus.source === 'RDAP') {
+    evidenceSource = 'RDAP';
+  } else if (transferStatus.source === 'WHOIS') {
+    evidenceSource = 'WHOIS';
+  }
+
+  return {
+    inOurAccount: accountCheck.inOurAccount,
+    confirmedInOurAccount: accountCheck.confirmed,
+    registrarKey: accountCheck.registrarKey || indexRegistrarKey || undefined,
+    eppStatuses: transferStatus.eppStatuses,
+    whoisData: transferStatus.whoisData,
+    hasPendingTransfer:
+      transferStatus.hasPendingTransfer || hasDirectPendingTransfer,
+    hasTransferPeriod: transferStatus.hasTransferPeriod,
+    undetermined:
+      !accountCheck.confirmed ||
+      transferStatus.undetermined ||
+      directPendingTransfer.undetermined,
+    evidenceSource,
+  };
+}
+
+export function decideExportTrackingState(
+  normalizedEvidence: NormalizedExportTrackingEvidence,
+): {
+  action: TransferDecisionAction;
+  reason: string;
+} {
+  if (normalizedEvidence.undetermined) {
+    return {
+      action: 'UNDETERMINED',
+      reason: 'Evidence is ambiguous or unavailable',
+    };
+  }
+
+  if (normalizedEvidence.hasPendingTransfer) {
+    return {
+      action: 'PENDING_TRANSFER',
+      reason: 'Explicit pending-transfer signal detected',
+    };
+  }
+
+  if (normalizedEvidence.hasTransferPeriod) {
+    return {
+      action: 'TRANSFER_PERIOD',
+      reason: 'Transfer-period signal detected',
+    };
+  }
+
+  if (!normalizedEvidence.inOurAccount) {
+    return {
+      action: 'TRANSFER_COMPLETED',
+      reason: 'Domain is confirmed outside our registrar account',
+    };
+  }
+
+  return {
+    action: 'NO_SIGNAL',
+    reason: 'No explicit transfer signal found',
+  };
+}
+
+function actionToTrackingStatus(
+  action: TransferDecisionAction,
+): DomainExportTrackingStatus | null {
+  switch (action) {
+    case 'PENDING_TRANSFER':
+      return 'PENDING_TRANSFER';
+    case 'TRANSFER_PERIOD':
+      return 'TRANSFER_PERIOD';
+    case 'TRANSFER_COMPLETED':
+      return 'TRANSFER_COMPLETED';
+    default:
+      return null;
+  }
 }
 
 /**
@@ -347,7 +593,13 @@ export async function processSingleDomainExportStatus(input: {
   chainId: number;
   ownerAddress: string;
 }): Promise<{
-  action: 'created' | 'updated' | 'no_change' | 'skipped';
+  action:
+    | 'created'
+    | 'updated'
+    | 'no_change'
+    | 'skipped'
+    | 'no_signal'
+    | 'undetermined';
   status?: string;
   previousStatus?: string;
   domain?: NamefiNormalizedDomain;
@@ -361,41 +613,33 @@ export async function processSingleDomainExportStatus(input: {
   logger.debug({ domain, chainId }, 'Processing single domain export status');
   activityContext.heartbeat({ domain, step: 'checking_status' });
 
-  const accountCheck = await isDomainInOurAccount(domain);
-  if (!accountCheck.confirmed) {
-    logger.debug({ domain, accountCheck }, 'processSingleDomainExportStatus');
+  const rawEvidence = await gatherEvidenceForDomain({ domain });
+  const normalizedEvidence = normalizeEvidence(rawEvidence);
+  const decision = decideExportTrackingState(normalizedEvidence);
 
-    return {
-      action: 'skipped',
-    };
+  if (decision.action === 'UNDETERMINED') {
+    logger.debug(
+      { domain, decision },
+      'Skipping update due to undetermined data',
+    );
+    return { action: 'undetermined' };
   }
 
-  const transferStatus = await checkDomainTransferStatus(domain);
-  const indexRegistrarKey = await getDomainRegistrarFromIndex(domain);
-  const registrarKey = accountCheck.registrarKey || indexRegistrarKey;
-
-  let currentStatus:
-    | 'PENDING_TRANSFER'
-    | 'TRANSFER_PERIOD'
-    | 'TRANSFER_COMPLETED'
-    | 'TRANSFER_FAILED'
-    | null = null;
-
-  if (transferStatus.hasPendingTransfer) {
-    currentStatus = 'PENDING_TRANSFER';
-  } else if (transferStatus.hasTransferPeriod) {
-    currentStatus = 'TRANSFER_PERIOD';
-  } else if (!accountCheck.inOurAccount) {
-    currentStatus = 'TRANSFER_COMPLETED';
+  if (decision.action === 'NO_SIGNAL') {
+    logger.debug({ domain, decision }, 'No explicit transfer signal detected');
+    return { action: 'no_signal' };
   }
 
+  const currentStatus = actionToTrackingStatus(decision.action);
   if (!currentStatus) {
     logger.debug(
-      { domain },
-      'Locked NFT with no transfer indicators, skipping',
+      { domain, decision },
+      'Unable to map decision to tracking status',
     );
     return { action: 'skipped' };
   }
+
+  const registrarKey = normalizedEvidence.registrarKey;
 
   const existingRecord = await getExistingTrackingRecord(domain, chainId);
 
@@ -406,7 +650,7 @@ export async function processSingleDomainExportStatus(input: {
       const newHistoryEntry: StatusHistoryEntry = {
         timestamp: new Date().toISOString(),
         status: currentStatus,
-        eppStatuses: transferStatus.eppStatuses,
+        eppStatuses: normalizedEvidence.eppStatuses,
       };
       const updatedHistory = [...statusHistory, newHistoryEntry];
 
@@ -420,8 +664,8 @@ export async function processSingleDomainExportStatus(input: {
             | 'TRANSFER_FAILED',
           status: currentStatus,
           statusHistory: updatedHistory,
-          eppStatuses: transferStatus.eppStatuses,
-          whoisData: transferStatus.whoisData,
+          eppStatuses: normalizedEvidence.eppStatuses,
+          whoisData: normalizedEvidence.whoisData as Json,
           registrarKey,
           statusChangedAt: new Date(),
           lastCheckedAt: new Date(),
@@ -451,8 +695,8 @@ export async function processSingleDomainExportStatus(input: {
       .update(domainExportTrackingTable)
       .set({
         lastCheckedAt: new Date(),
-        eppStatuses: transferStatus.eppStatuses,
-        whoisData: transferStatus.whoisData,
+        eppStatuses: normalizedEvidence.eppStatuses,
+        whoisData: normalizedEvidence.whoisData as Json,
       })
       .where(eq(domainExportTrackingTable.id, existingRecord.id));
 
@@ -463,7 +707,7 @@ export async function processSingleDomainExportStatus(input: {
     {
       timestamp: new Date().toISOString(),
       status: currentStatus,
-      eppStatuses: transferStatus.eppStatuses,
+      eppStatuses: normalizedEvidence.eppStatuses,
     },
   ];
 
@@ -472,9 +716,9 @@ export async function processSingleDomainExportStatus(input: {
     chainId,
     ownerAddress,
     status: currentStatus,
-    statusHistory: initialHistory as any,
-    eppStatuses: transferStatus.eppStatuses,
-    whoisData: transferStatus.whoisData as any,
+    statusHistory: initialHistory,
+    eppStatuses: normalizedEvidence.eppStatuses,
+    whoisData: normalizedEvidence.whoisData as Json,
     registrarKey,
   });
 
@@ -494,7 +738,7 @@ export async function processSingleDomainExportStatus(input: {
 }
 
 /**
- * Get all domains in PENDING_TRANSFER status
+ * Get all domains that should be monitored for transfer progression.
  */
 export async function getPendingTransferDomains(): Promise<
   Array<{
@@ -507,6 +751,11 @@ export async function getPendingTransferDomains(): Promise<
 > {
   logger.debug('Getting pending transfer domains');
 
+  const transferWatchStatuses: DomainExportTrackingStatus[] = [
+    'PENDING_TRANSFER',
+    'TRANSFER_PERIOD',
+  ];
+
   const records = await db
     .select({
       id: domainExportTrackingTable.id,
@@ -516,7 +765,7 @@ export async function getPendingTransferDomains(): Promise<
       statusHistory: domainExportTrackingTable.statusHistory,
     })
     .from(domainExportTrackingTable)
-    .where(eq(domainExportTrackingTable.status, 'PENDING_TRANSFER'));
+    .where(inArray(domainExportTrackingTable.status, transferWatchStatuses));
 
   logger.debug({ count: records.length }, 'Found pending transfer domains');
 
@@ -544,22 +793,29 @@ export async function checkSinglePendingTransfer(input: {
   logger.debug({ domain, id }, 'Checking pending transfer');
   activityContext.heartbeat({ domain, step: 'checking_failure' });
 
-  const transferStatus = await checkDomainTransferStatus(domain);
-  const accountCheck = await isDomainInOurAccount(domain);
-  if (!accountCheck.confirmed) {
-    logger.debug({ domain, accountCheck }, 'checkSinglePendingTransfer');
+  const rawEvidence = await gatherEvidenceForDomain({ domain });
+  const normalizedEvidence = normalizeEvidence(rawEvidence);
+  const decision = decideExportTrackingState(normalizedEvidence);
+
+  if (decision.action === 'UNDETERMINED') {
+    logger.debug({ domain, decision }, 'checkSinglePendingTransfer');
     return {
       action: 'undetermined',
     };
   }
 
-  if (!transferStatus.hasPendingTransfer && !transferStatus.hasTransferPeriod) {
-    if (accountCheck.inOurAccount) {
+  if (
+    decision.action === 'PENDING_TRANSFER' ||
+    decision.action === 'TRANSFER_PERIOD'
+  ) {
+    const statusFromDecision = actionToTrackingStatus(decision.action);
+
+    if (statusFromDecision && statusFromDecision !== currentStatus) {
       const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
       const newHistoryEntry: StatusHistoryEntry = {
         timestamp: new Date().toISOString(),
-        status: 'TRANSFER_FAILED',
-        eppStatuses: transferStatus.eppStatuses,
+        status: statusFromDecision,
+        eppStatuses: normalizedEvidence.eppStatuses,
       };
       const updatedHistory = [...history, newHistoryEntry];
 
@@ -571,25 +827,47 @@ export async function checkSinglePendingTransfer(input: {
             | 'TRANSFER_PERIOD'
             | 'TRANSFER_COMPLETED'
             | 'TRANSFER_FAILED',
-          status: 'TRANSFER_FAILED',
+          status: statusFromDecision,
           statusHistory: updatedHistory,
-          eppStatuses: transferStatus.eppStatuses,
-          whoisData: transferStatus.whoisData,
+          eppStatuses: normalizedEvidence.eppStatuses,
+          whoisData: normalizedEvidence.whoisData as Json,
           statusChangedAt: new Date(),
           lastCheckedAt: new Date(),
+          transferCompletedAt:
+            statusFromDecision === 'TRANSFER_COMPLETED'
+              ? new Date()
+              : undefined,
           userNotified: false,
         })
         .where(eq(domainExportTrackingTable.id, id));
 
-      logger.debug({ domain }, 'Transfer failed - domain back in our account');
-      return { action: 'failed', newStatus: 'TRANSFER_FAILED' };
+      logger.debug(
+        { domain, statusFromDecision },
+        'Updated transfer-watch status based on latest evidence',
+      );
     }
 
+    await db
+      .update(domainExportTrackingTable)
+      .set({
+        lastCheckedAt: new Date(),
+        eppStatuses: normalizedEvidence.eppStatuses,
+        whoisData: normalizedEvidence.whoisData as Json,
+      })
+      .where(eq(domainExportTrackingTable.id, id));
+
+    return {
+      action: 'still_pending',
+      newStatus: statusFromDecision ?? undefined,
+    };
+  }
+
+  if (decision.action === 'NO_SIGNAL' && normalizedEvidence.inOurAccount) {
     const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
     const newHistoryEntry: StatusHistoryEntry = {
       timestamp: new Date().toISOString(),
-      status: 'TRANSFER_COMPLETED',
-      eppStatuses: transferStatus.eppStatuses,
+      status: 'TRANSFER_FAILED',
+      eppStatuses: normalizedEvidence.eppStatuses,
     };
     const updatedHistory = [...history, newHistoryEntry];
 
@@ -601,41 +879,59 @@ export async function checkSinglePendingTransfer(input: {
           | 'TRANSFER_PERIOD'
           | 'TRANSFER_COMPLETED'
           | 'TRANSFER_FAILED',
-        status: 'TRANSFER_COMPLETED',
+        status: 'TRANSFER_FAILED',
         statusHistory: updatedHistory,
-        eppStatuses: transferStatus.eppStatuses,
-        whoisData: transferStatus.whoisData,
+        eppStatuses: normalizedEvidence.eppStatuses,
+        whoisData: normalizedEvidence.whoisData as Json,
         statusChangedAt: new Date(),
         lastCheckedAt: new Date(),
-        transferCompletedAt: new Date(),
-        // Set confirmedOutOfAccountAt if not already set
-        confirmedOutOfAccountAt: sql`COALESCE(${domainExportTrackingTable.confirmedOutOfAccountAt}, NOW())`,
         userNotified: false,
       })
       .where(eq(domainExportTrackingTable.id, id));
 
-    logger.debug(
-      { domain },
-      'Transfer completed - domain no longer in our account',
-    );
-    return {
-      action: 'completed',
-      newStatus: 'TRANSFER_COMPLETED',
-      domain,
-      chainId,
-    };
+    logger.debug({ domain }, 'Transfer failed - domain back in our account');
+    return { action: 'failed', newStatus: 'TRANSFER_FAILED' };
   }
+
+  const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
+  const newHistoryEntry: StatusHistoryEntry = {
+    timestamp: new Date().toISOString(),
+    status: 'TRANSFER_COMPLETED',
+    eppStatuses: normalizedEvidence.eppStatuses,
+  };
+  const updatedHistory = [...history, newHistoryEntry];
 
   await db
     .update(domainExportTrackingTable)
     .set({
+      previousStatus: currentStatus as
+        | 'PENDING_TRANSFER'
+        | 'TRANSFER_PERIOD'
+        | 'TRANSFER_COMPLETED'
+        | 'TRANSFER_FAILED',
+      status: 'TRANSFER_COMPLETED',
+      statusHistory: updatedHistory,
+      eppStatuses: normalizedEvidence.eppStatuses,
+      whoisData: normalizedEvidence.whoisData as Json,
+      statusChangedAt: new Date(),
       lastCheckedAt: new Date(),
-      eppStatuses: transferStatus.eppStatuses,
-      whoisData: transferStatus.whoisData,
+      transferCompletedAt: new Date(),
+      // Set confirmedOutOfAccountAt if not already set
+      confirmedOutOfAccountAt: sql`COALESCE(${domainExportTrackingTable.confirmedOutOfAccountAt}, NOW())`,
+      userNotified: false,
     })
     .where(eq(domainExportTrackingTable.id, id));
 
-  return { action: 'still_pending' };
+  logger.debug(
+    { domain },
+    'Transfer completed - domain no longer in our account',
+  );
+  return {
+    action: 'completed',
+    newStatus: 'TRANSFER_COMPLETED',
+    domain,
+    chainId,
+  };
 }
 
 /**
