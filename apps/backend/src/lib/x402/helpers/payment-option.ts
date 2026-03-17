@@ -26,6 +26,8 @@ export function getX402ConfiguredUsdcEIP712Domain() {
   return {
     name: chainId === CHAINS.baseSepolia.id ? 'USDC' : 'USD Coin',
     version: '2',
+    verifyingContract: getX402ConfiguredUsdcContractAddress(),
+    chainId,
   };
 }
 
