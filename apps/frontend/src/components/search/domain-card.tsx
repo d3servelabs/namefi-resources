@@ -339,23 +339,32 @@ export const DomainCard: FC<{
                 {shouldShowMlsOfferCta && (
                   <Button
                     onClick={goToMlsOffer}
-                    className="shrink-0 bg-sky-500 text-white hover:bg-sky-400 md:w-44"
+                    className="shrink-0 border border-white/15 bg-black text-white shadow-sm hover:bg-zinc-900 hover:text-white"
                   >
                     <span className="inline-flex items-center gap-1 md:hidden">
                       <span>Buy on</span>
                       <Image
-                        src="/assets/social/twitter.svg"
+                        src="/assets/social/x-logo.svg"
                         alt="X"
-                        width={14}
-                        height={14}
+                        width={12}
+                        height={12}
                         className="size-3.5 shrink-0"
                       />
                     </span>
                     <span className="hidden items-center gap-2 md:inline-flex">
                       <span>Buy from</span>
-                      <span className="inline-flex max-w-20 items-center gap-1 rounded-full border border-white/30 bg-black/30 px-2 py-0.5 text-[11px] leading-none text-white">
-                        <span className="font-semibold">X</span>
-                        <span className="truncate">{mlsSellerHandle}</span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[11px] leading-none text-white">
+                        <Image
+                          src="/assets/social/x-logo.svg"
+                          alt=""
+                          width={12}
+                          height={12}
+                          aria-hidden="true"
+                          className="size-3 shrink-0"
+                        />
+                        <span className="whitespace-nowrap font-medium">
+                          {mlsSellerHandle}
+                        </span>
                       </span>
                     </span>
                   </Button>
