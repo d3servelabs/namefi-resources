@@ -30,6 +30,14 @@ import {
 } from '../../../mail/templates/domain-export-complete';
 import { maybeGetUserEmail } from '../notify.activities';
 import { privyClient } from '../../../trpc/utils';
+import {
+  actionToTrackingStatus,
+  EXPORT_BURN_ELIGIBLE_STATUSES,
+  isBurnEligibleExportStatus,
+  mapDecisionToPersistedStatus,
+  type DomainExportTrackingStatus,
+  type TransferDecisionAction,
+} from './export-tracking-state';
 
 const _SEND_TO_SLACK_DIRECT = false;
 const ENABLE_EXPORT_EMAILS = false;
@@ -50,24 +58,6 @@ interface StatusHistoryEntry {
   status: string;
   eppStatuses?: string[];
 }
-
-type DomainExportTrackingStatus =
-  | 'NO_SIGNAL'
-  | 'UNDETERMINED'
-  | 'PENDING_TRANSFER'
-  | 'TRANSFER_PERIOD'
-  | 'TRANSFER_COMPLETED'
-  | 'TRANSFER_FAILED'
-  | 'NEEDS_ADMIN_REVIEW'
-  | 'NOTIFIED'
-  | 'RESOLVED';
-
-type TransferDecisionAction =
-  | 'PENDING_TRANSFER'
-  | 'TRANSFER_PERIOD'
-  | 'TRANSFER_COMPLETED'
-  | 'NO_SIGNAL'
-  | 'UNDETERMINED';
 
 interface RawExportTrackingEvidence {
   accountCheck: {
@@ -393,35 +383,6 @@ export function decideExportTrackingState(
     action: 'NO_SIGNAL',
     reason: 'No explicit transfer signal found',
   };
-}
-
-function mapDecisionToPersistedStatus(
-  action: TransferDecisionAction,
-): DomainExportTrackingStatus | null {
-  if (action === 'TRANSFER_COMPLETED') {
-    return 'NEEDS_ADMIN_REVIEW';
-  }
-
-  return actionToTrackingStatus(action);
-}
-
-function actionToTrackingStatus(
-  action: TransferDecisionAction,
-): DomainExportTrackingStatus | null {
-  switch (action) {
-    case 'NO_SIGNAL':
-      return 'NO_SIGNAL';
-    case 'UNDETERMINED':
-      return 'UNDETERMINED';
-    case 'PENDING_TRANSFER':
-      return 'PENDING_TRANSFER';
-    case 'TRANSFER_PERIOD':
-      return 'TRANSFER_PERIOD';
-    case 'TRANSFER_COMPLETED':
-      return 'TRANSFER_COMPLETED';
-    default:
-      return null;
-  }
 }
 
 /**
@@ -1307,12 +1268,7 @@ export async function shouldBurnNft(input: {
   }
 
   // Must be in an export-complete state
-  const eligibleStatuses: DomainExportTrackingStatus[] = [
-    'TRANSFER_COMPLETED',
-    'NEEDS_ADMIN_REVIEW',
-    'NOTIFIED',
-  ];
-  if (!eligibleStatuses.includes(record.status as DomainExportTrackingStatus)) {
+  if (!isBurnEligibleExportStatus(record.status)) {
     logger.debug(
       { domain, chainId, status: record.status },
       'Domain not in export-complete status',
@@ -1417,9 +1373,7 @@ export async function getDomainsEligibleForBurn(): Promise<
     .where(
       and(
         inArray(domainExportTrackingTable.status, [
-          'TRANSFER_COMPLETED',
-          'NEEDS_ADMIN_REVIEW',
-          'NOTIFIED',
+          ...EXPORT_BURN_ELIGIBLE_STATUSES,
         ]),
         isNull(domainExportTrackingTable.nftBurnedAt),
         inArray(domainExportTrackingTable.chainId, allowedChains),

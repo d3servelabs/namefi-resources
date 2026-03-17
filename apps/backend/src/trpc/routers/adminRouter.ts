@@ -46,6 +46,10 @@ import {
   sendExportCompleteEmail,
 } from '#temporal/activities/domain/export-tracking.activities';
 import {
+  canApproveExportTrackingStatus,
+  canResolveExportTrackingStatus,
+} from '#temporal/activities/domain/export-tracking-state';
+import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
   createTRPCRouter,
@@ -3975,8 +3979,7 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
-      const approvableStatuses = ['TRANSFER_COMPLETED', 'NEEDS_ADMIN_REVIEW'];
-      if (!approvableStatuses.includes(record.status)) {
+      if (!canApproveExportTrackingStatus(record.status)) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: `Cannot verify export with status: ${record.status}. Only NEEDS_ADMIN_REVIEW records (or legacy TRANSFER_COMPLETED records) can be verified.`,
@@ -4086,12 +4089,7 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
-      const resolvableStatuses = [
-        'NEEDS_ADMIN_REVIEW',
-        'NOTIFIED',
-        'TRANSFER_COMPLETED',
-      ];
-      if (!resolvableStatuses.includes(record.status)) {
+      if (!canResolveExportTrackingStatus(record.status)) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: `Cannot resolve export with status: ${record.status}.`,
