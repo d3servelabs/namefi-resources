@@ -43,12 +43,14 @@ import {
 } from '#temporal/workflows/bulk-burn-expired-domains.workflow';
 import {
   getUserIdFromOwnerAddress,
+  sendPendingExportEmail,
   sendExportCompleteEmail,
 } from '#temporal/activities/domain/export-tracking.activities';
 import {
   appendExportTrackingStatusHistory,
   canApproveExportTrackingStatus,
   canResolveExportTrackingStatus,
+  getExportTrackingEmailType,
   type ExportTrackingStatusHistoryEntry,
 } from '#temporal/activities/domain/export-tracking-state';
 import {
@@ -3816,6 +3818,9 @@ export const adminRouter = createTRPCRouter({
         firstDetectedAt: domainExportTrackingTable.firstDetectedAt,
         lastCheckedAt: domainExportTrackingTable.lastCheckedAt,
         transferCompletedAt: domainExportTrackingTable.transferCompletedAt,
+        pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
+        notifiedAt: domainExportTrackingTable.notifiedAt,
+        latestEvidence: domainExportTrackingTable.latestEvidence,
         userNotified: domainExportTrackingTable.userNotified,
         clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
         adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
@@ -3842,8 +3847,10 @@ export const adminRouter = createTRPCRouter({
           firstDetectedAt: domainExportTrackingTable.firstDetectedAt,
           lastCheckedAt: domainExportTrackingTable.lastCheckedAt,
           transferCompletedAt: domainExportTrackingTable.transferCompletedAt,
+          pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
           userNotified: domainExportTrackingTable.userNotified,
           notifiedAt: domainExportTrackingTable.notifiedAt,
+          latestEvidence: domainExportTrackingTable.latestEvidence,
           clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
           verfyingAdminId: domainExportTrackingTable.verfyingAdminId,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
@@ -3952,6 +3959,7 @@ export const adminRouter = createTRPCRouter({
           ownerAddress: domainExportTrackingTable.ownerAddress,
           status: domainExportTrackingTable.status,
           statusHistory: domainExportTrackingTable.statusHistory,
+          userNotified: domainExportTrackingTable.userNotified,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
         })
@@ -3989,26 +3997,28 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
-      const userId = await getUserIdFromOwnerAddress(record.ownerAddress);
-      if (!userId) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: `Cannot send export notification: no user is linked to owner wallet ${record.ownerAddress}`,
-        });
-      }
+      if (!record.userNotified) {
+        const userId = await getUserIdFromOwnerAddress(record.ownerAddress);
+        if (!userId) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `Cannot send export notification: no user is linked to owner wallet ${record.ownerAddress}`,
+          });
+        }
 
-      const notifyResult = await sendExportCompleteEmail({
-        userId,
-        domain: record.normalizedDomainName,
-        chainId: record.chainId,
-      });
-
-      if (!notifyResult.sent) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'Cannot send export notification: user does not have a deliverable email address',
+        const notifyResult = await sendExportCompleteEmail({
+          userId,
+          domain: record.normalizedDomainName,
+          chainId: record.chainId,
         });
+
+        if (!notifyResult.sent) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message:
+              'Cannot send export notification: user does not have a deliverable email address',
+          });
+        }
       }
 
       const now = new Date();
@@ -4142,6 +4152,156 @@ export const adminRouter = createTRPCRouter({
       return {
         success: true,
         message: `Export review for ${record.normalizedDomainName} has been resolved`,
+      };
+    }),
+
+  /**
+   * Send export notification email based on current export tracking status
+   * - pending statuses => pending export email
+   * - completed/review/resolved statuses => export complete email
+   *
+   * By default this is one-time per email type. Use forceResend to override.
+   */
+  sendExportTrackingEmail: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin' as const,
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.DOMAIN_EXPORT,
+      resourceId: input.id,
+      action: input.forceResend ? 'resend_export_email' : 'send_export_email',
+      extraInput: input,
+    }),
+  )
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        forceResend: z.boolean().optional().default(false),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const existingRecord = await db
+        .select({
+          id: domainExportTrackingTable.id,
+          normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
+          chainId: domainExportTrackingTable.chainId,
+          ownerAddress: domainExportTrackingTable.ownerAddress,
+          status: domainExportTrackingTable.status,
+          registrarKey: domainExportTrackingTable.registrarKey,
+          pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
+          userNotified: domainExportTrackingTable.userNotified,
+          notifiedAt: domainExportTrackingTable.notifiedAt,
+          nftBurnTxHash: domainExportTrackingTable.nftBurnTxHash,
+        })
+        .from(domainExportTrackingTable)
+        .where(eq(domainExportTrackingTable.id, input.id))
+        .limit(1);
+
+      if (!existingRecord[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Export tracking record not found',
+        });
+      }
+
+      const record = existingRecord[0];
+      const emailType = getExportTrackingEmailType(record.status);
+
+      if (!emailType) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `No export email template applies to status: ${record.status}.`,
+        });
+      }
+
+      const alreadySent =
+        emailType === 'pending'
+          ? Boolean(record.pendingNotifiedAt)
+          : Boolean(record.userNotified);
+
+      if (alreadySent && !input.forceResend) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            emailType === 'pending'
+              ? 'Pending export email was already sent. Set forceResend=true to resend.'
+              : 'Export complete email was already sent. Set forceResend=true to resend.',
+        });
+      }
+
+      const userId = await getUserIdFromOwnerAddress(record.ownerAddress);
+      if (!userId) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot send export notification: no user is linked to owner wallet ${record.ownerAddress}`,
+        });
+      }
+
+      if (emailType === 'pending') {
+        const pendingResult = await sendPendingExportEmail({
+          userId,
+          domain: record.normalizedDomainName,
+          registrarKey: record.registrarKey ?? 'unknown',
+        });
+
+        if (!pendingResult.sent) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message:
+              'Cannot send pending export notification: user does not have a deliverable email address',
+          });
+        }
+
+        const now = new Date();
+        await db
+          .update(domainExportTrackingTable)
+          .set({
+            pendingNotifiedAt: now,
+            updatedAt: now,
+          })
+          .where(eq(domainExportTrackingTable.id, input.id));
+
+        return {
+          success: true,
+          emailType,
+          message: input.forceResend
+            ? `Pending export email resent for ${record.normalizedDomainName}`
+            : `Pending export email sent for ${record.normalizedDomainName}`,
+        };
+      }
+
+      const completeResult = await sendExportCompleteEmail({
+        userId,
+        domain: record.normalizedDomainName,
+        chainId: record.chainId,
+        nftBurnTxHash: record.nftBurnTxHash ?? undefined,
+      });
+
+      if (!completeResult.sent) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'Cannot send export completion notification: user does not have a deliverable email address',
+        });
+      }
+
+      const now = new Date();
+      await db
+        .update(domainExportTrackingTable)
+        .set({
+          userNotified: true,
+          notifiedAt: now,
+          updatedAt: now,
+        })
+        .where(eq(domainExportTrackingTable.id, input.id));
+
+      return {
+        success: true,
+        emailType,
+        message: input.forceResend
+          ? `Export completion email resent for ${record.normalizedDomainName}`
+          : `Export completion email sent for ${record.normalizedDomainName}`,
       };
     }),
 

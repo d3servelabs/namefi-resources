@@ -22,6 +22,8 @@ export type ExportTrackingStatusHistoryEntry = {
   eppStatuses?: string[];
 };
 
+export type ExportTrackingEmailType = 'pending' | 'complete';
+
 export const EXPORT_BURN_ELIGIBLE_STATUSES = [
   'TRANSFER_COMPLETED',
   'NEEDS_ADMIN_REVIEW',
@@ -37,6 +39,18 @@ export const EXPORT_REVIEW_RESOLVABLE_STATUSES = [
   'NEEDS_ADMIN_REVIEW',
   'NOTIFIED',
   'TRANSFER_COMPLETED',
+] as const satisfies readonly DomainExportTrackingStatus[];
+
+export const EXPORT_PENDING_EMAIL_STATUSES = [
+  'PENDING_TRANSFER',
+  'TRANSFER_PERIOD',
+] as const satisfies readonly DomainExportTrackingStatus[];
+
+export const EXPORT_COMPLETE_EMAIL_STATUSES = [
+  'TRANSFER_COMPLETED',
+  'NEEDS_ADMIN_REVIEW',
+  'NOTIFIED',
+  'RESOLVED',
 ] as const satisfies readonly DomainExportTrackingStatus[];
 
 export function actionToTrackingStatus(
@@ -85,6 +99,27 @@ export function canResolveExportTrackingStatus(status: string): boolean {
 
 export function isBurnEligibleExportStatus(status: string): boolean {
   return statusInSet(EXPORT_BURN_ELIGIBLE_STATUSES, status);
+}
+
+export function getExportTrackingEmailType(
+  status: string,
+): ExportTrackingEmailType | null {
+  if (statusInSet(EXPORT_PENDING_EMAIL_STATUSES, status)) {
+    return 'pending';
+  }
+
+  if (statusInSet(EXPORT_COMPLETE_EMAIL_STATUSES, status)) {
+    return 'complete';
+  }
+
+  return null;
+}
+
+export function isAdminApprovedForPendingNotification(input: {
+  clientApprovedAt?: Date | null;
+  adminVerifiedAt?: Date | null;
+}): boolean {
+  return Boolean(input.clientApprovedAt || input.adminVerifiedAt);
 }
 
 export function appendExportTrackingStatusHistory(

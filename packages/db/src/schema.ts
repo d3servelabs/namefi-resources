@@ -948,6 +948,27 @@ export const domainExportTrackingTable = pgTable(
     // EPP/RDAP/WHOIS data
     eppStatuses: jsonb('epp_statuses').$type<string[]>(),
     whoisData: jsonb('whois_data').$type<Json>(),
+    latestEvidence: jsonb('latest_evidence').$type<{
+      checkedAt: string;
+      evidenceSource: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
+      decisionAction: string;
+      decisionReason: string;
+      accountCheck: {
+        inOurAccount: boolean;
+        confirmed: boolean;
+      };
+      rdapTransferEvent: {
+        detected: boolean;
+        eventAction?: string;
+        eventDate?: string;
+      };
+      hasPendingTransfer: boolean;
+      hasTransferPeriod: boolean;
+      hasExportConfirmedFinished: boolean;
+      undetermined: boolean;
+      directPendingTransferStatus?: string;
+      eppStatuses?: string[];
+    }>(),
 
     // Registrar information
     registrarKey: text('registrar_key'),
@@ -959,6 +980,7 @@ export const domainExportTrackingTable = pgTable(
     transferCompletedAt: timestamp('transfer_completed_at'),
 
     // User notification tracking
+    pendingNotifiedAt: timestamp('pending_notified_at'),
     userNotified: boolean('user_notified').notNull().default(false),
     notifiedAt: timestamp('notified_at'),
 

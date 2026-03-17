@@ -4,6 +4,8 @@ import {
   appendExportTrackingStatusHistory,
   canApproveExportTrackingStatus,
   canResolveExportTrackingStatus,
+  getExportTrackingEmailType,
+  isAdminApprovedForPendingNotification,
   isBurnEligibleExportStatus,
   mapDecisionToPersistedStatus,
 } from './export-tracking-state';
@@ -75,6 +77,54 @@ describe('export-tracking-state', () => {
     it('rejects burn for unresolved and pending states', () => {
       expect(isBurnEligibleExportStatus('PENDING_TRANSFER')).toBe(false);
       expect(isBurnEligibleExportStatus('RESOLVED')).toBe(false);
+    });
+  });
+
+  describe('email type routing', () => {
+    it('uses pending email type for transfer-in-progress statuses', () => {
+      expect(getExportTrackingEmailType('PENDING_TRANSFER')).toBe('pending');
+      expect(getExportTrackingEmailType('TRANSFER_PERIOD')).toBe('pending');
+    });
+
+    it('uses complete email type for export-complete statuses', () => {
+      expect(getExportTrackingEmailType('NEEDS_ADMIN_REVIEW')).toBe('complete');
+      expect(getExportTrackingEmailType('NOTIFIED')).toBe('complete');
+      expect(getExportTrackingEmailType('RESOLVED')).toBe('complete');
+    });
+
+    it('returns null for statuses that should not email', () => {
+      expect(getExportTrackingEmailType('NO_SIGNAL')).toBeNull();
+      expect(getExportTrackingEmailType('UNDETERMINED')).toBeNull();
+      expect(getExportTrackingEmailType('TRANSFER_FAILED')).toBeNull();
+    });
+  });
+
+  describe('admin-approved pending notification gate', () => {
+    it('is true when client approval exists', () => {
+      expect(
+        isAdminApprovedForPendingNotification({
+          clientApprovedAt: new Date(),
+          adminVerifiedAt: null,
+        }),
+      ).toBe(true);
+    });
+
+    it('is true when admin verification exists', () => {
+      expect(
+        isAdminApprovedForPendingNotification({
+          clientApprovedAt: null,
+          adminVerifiedAt: new Date(),
+        }),
+      ).toBe(true);
+    });
+
+    it('is false when neither approval signal exists', () => {
+      expect(
+        isAdminApprovedForPendingNotification({
+          clientApprovedAt: null,
+          adminVerifiedAt: null,
+        }),
+      ).toBe(false);
     });
   });
 

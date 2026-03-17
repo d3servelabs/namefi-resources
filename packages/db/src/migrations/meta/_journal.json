@@ -610,6 +610,13 @@
       "when": 1773750514420,
       "tag": "0086_simple_squadron_supreme",
       "breakpoints": true
+    },
+    {
+      "idx": 87,
+      "version": "7",
+      "when": 1773750561342,
+      "tag": "0087_dapper_firebrand",
+      "breakpoints": true
     }
   ]
 }

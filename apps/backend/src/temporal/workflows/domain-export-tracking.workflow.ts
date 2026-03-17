@@ -99,7 +99,7 @@ export async function domainExportTrackingWorkflow(
     let noSignal = 0;
     let undetermined = 0;
     let noChange = 0;
-    const pendingExportEmailsSent = 0;
+    let pendingExportEmailsSent = 0;
 
     if (lockedNfts.length > 0) {
       workflow.log.info('Processing locked NFTs in parallel');
@@ -133,6 +133,10 @@ export async function domainExportTrackingWorkflow(
 
         // Aggregate results
         for (const result of results) {
+          if ('pendingEmailSent' in result && result.pendingEmailSent) {
+            pendingExportEmailsSent++;
+          }
+
           switch (result.action) {
             case 'created':
               created++;
@@ -163,11 +167,8 @@ export async function domainExportTrackingWorkflow(
         noSignal,
         undetermined,
         noChange,
+        pendingExportEmailsSent,
       });
-
-      workflow.log.info(
-        'Automatic pending export emails are disabled pending admin approval flow',
-      );
     }
 
     // Step 3: Check pending transfers

@@ -16,7 +16,10 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
-import type { PendingTransferInfo } from '@namefi-astra/registrars/lib/abstract-registrar/data/transfer-status';
+import type {
+  PendingTransferInfo,
+  TransferStatus,
+} from '@namefi-astra/registrars/lib/abstract-registrar/data/transfer-status';
 import { sendMail } from '../../../mail/mail-client';
 import { render } from '@react-email/components';
 import React from 'react';
@@ -34,6 +37,7 @@ import {
   appendExportTrackingStatusHistory,
   actionToTrackingStatus,
   EXPORT_BURN_ELIGIBLE_STATUSES,
+  isAdminApprovedForPendingNotification,
   isBurnEligibleExportStatus,
   mapDecisionToPersistedStatus,
   type DomainExportTrackingStatus,
@@ -78,19 +82,51 @@ interface RawExportTrackingEvidence {
 
 interface NormalizedExportTrackingEvidence {
   inOurAccount: boolean;
-  confirmedInOurAccount: boolean;
+  inOurAccountValueIsConfirmed: boolean;
   registrarKey?: string;
   eppStatuses?: string[];
   whoisData?: unknown;
   hasPendingTransfer: boolean;
+  directPendingTransferStatus?: TransferStatus;
+  hasExportConfirmedFinished: boolean;
   hasTransferPeriod: boolean;
+  rdapTransferEventDetected: boolean;
+  rdapTransferEventAction?: string;
+  rdapTransferEventAt?: string;
   undetermined: boolean;
   evidenceSource: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
 }
 
+interface LatestExportTrackingEvidenceSnapshot {
+  checkedAt: string;
+  evidenceSource: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
+  decisionAction: TransferDecisionAction;
+  decisionReason: string;
+  accountCheck: {
+    inOurAccount: boolean;
+    confirmed: boolean;
+  };
+  rdapTransferEvent: {
+    detected: boolean;
+    eventAction?: string;
+    eventDate?: string;
+  };
+  hasPendingTransfer: boolean;
+  hasTransferPeriod: boolean;
+  hasExportConfirmedFinished: boolean;
+  undetermined: boolean;
+  directPendingTransferStatus?: string;
+  eppStatuses?: string[];
+}
+
 const ACTIVE_PENDING_TRANSFER_STATUSES = new Set<PendingTransferInfo['status']>(
-  ['pending', 'clientApproved', 'serverApproved'],
+  ['pending'],
 );
+
+const FINISHED_TRANSFER_STATUSES = new Set<PendingTransferInfo['status']>([
+  'clientApproved',
+  'serverApproved',
+]);
 
 function detectTransferSignals(statuses: readonly string[] | undefined): {
   eppStatuses?: string[];
@@ -131,6 +167,43 @@ function extractWhoisStatuses(whoisData: unknown): string[] {
   return statuses.filter(
     (status): status is string => typeof status === 'string',
   );
+}
+
+function extractRdapTransferEvent(whoisData: unknown): {
+  eventAction: string;
+  eventDate?: string;
+} | null {
+  if (!whoisData || typeof whoisData !== 'object') {
+    return null;
+  }
+
+  const events = (whoisData as { events?: unknown }).events;
+  if (!Array.isArray(events)) {
+    return null;
+  }
+
+  for (const event of events) {
+    if (!event || typeof event !== 'object') {
+      continue;
+    }
+
+    const eventAction = (event as { eventAction?: unknown }).eventAction;
+    if (typeof eventAction !== 'string') {
+      continue;
+    }
+
+    if (!/\btransfer(?:red)?\b/i.test(eventAction)) {
+      continue;
+    }
+
+    const eventDate = (event as { eventDate?: unknown }).eventDate;
+    return {
+      eventAction,
+      eventDate: typeof eventDate === 'string' ? eventDate : undefined,
+    };
+  }
+
+  return null;
 }
 
 async function queryDirectPendingTransfer(
@@ -316,7 +389,7 @@ export function normalizeEvidence(
 
   let evidenceSource: NormalizedExportTrackingEvidence['evidenceSource'] =
     'NONE';
-  if (hasDirectPendingTransfer) {
+  if (directPendingStatus) {
     evidenceSource = 'DIRECT_REGISTRAR';
   } else if (transferStatus.source === 'RDAP') {
     evidenceSource = 'RDAP';
@@ -324,19 +397,40 @@ export function normalizeEvidence(
     evidenceSource = 'WHOIS';
   }
 
+  const directPendingTransferStatusFinished = directPendingTransfer
+    .pendingTransfer?.status
+    ? FINISHED_TRANSFER_STATUSES.has(
+        directPendingTransfer.pendingTransfer?.status,
+      )
+    : false;
+
+  const rdapTransferEvent =
+    transferStatus.source === 'RDAP'
+      ? extractRdapTransferEvent(transferStatus.whoisData)
+      : null;
+
   return {
-    inOurAccount: accountCheck.inOurAccount,
-    confirmedInOurAccount: accountCheck.confirmed,
     registrarKey: accountCheck.registrarKey || indexRegistrarKey || undefined,
+
+    inOurAccount: accountCheck.inOurAccount,
+    inOurAccountValueIsConfirmed: accountCheck.confirmed,
+
     eppStatuses: transferStatus.eppStatuses,
     whoisData: transferStatus.whoisData,
+
     hasPendingTransfer:
       transferStatus.hasPendingTransfer || hasDirectPendingTransfer,
+    directPendingTransferStatus: directPendingTransfer.pendingTransfer?.status,
+    hasExportConfirmedFinished:
+      directPendingTransferStatusFinished || Boolean(rdapTransferEvent),
     hasTransferPeriod: transferStatus.hasTransferPeriod,
+    rdapTransferEventDetected: Boolean(rdapTransferEvent),
+    rdapTransferEventAction: rdapTransferEvent?.eventAction,
+    rdapTransferEventAt: rdapTransferEvent?.eventDate,
     undetermined:
-      !accountCheck.confirmed ||
-      transferStatus.undetermined ||
-      directPendingTransfer.undetermined,
+      evidenceSource === 'DIRECT_REGISTRAR'
+        ? directPendingTransfer.undetermined
+        : !accountCheck.confirmed || transferStatus.undetermined,
     evidenceSource,
   };
 }
@@ -368,7 +462,19 @@ export function decideExportTrackingState(
     };
   }
 
-  if (!normalizedEvidence.inOurAccount) {
+  if (
+    !normalizedEvidence.inOurAccount &&
+    normalizedEvidence.hasExportConfirmedFinished
+  ) {
+    return {
+      action: 'TRANSFER_COMPLETED',
+      reason: 'Domain has a confirmed export request',
+    };
+  }
+  if (
+    normalizedEvidence.inOurAccountValueIsConfirmed &&
+    !normalizedEvidence.inOurAccount
+  ) {
     return {
       action: 'TRANSFER_COMPLETED',
       reason: 'Domain is confirmed outside our registrar account',
@@ -378,6 +484,36 @@ export function decideExportTrackingState(
   return {
     action: 'NO_SIGNAL',
     reason: 'No explicit transfer signal found',
+  };
+}
+
+function buildLatestEvidenceSnapshot(input: {
+  normalizedEvidence: NormalizedExportTrackingEvidence;
+  decision: { action: TransferDecisionAction; reason: string };
+  checkedAt?: Date;
+}): LatestExportTrackingEvidenceSnapshot {
+  const { normalizedEvidence, decision, checkedAt = new Date() } = input;
+
+  return {
+    checkedAt: checkedAt.toISOString(),
+    evidenceSource: normalizedEvidence.evidenceSource,
+    decisionAction: decision.action,
+    decisionReason: decision.reason,
+    accountCheck: {
+      inOurAccount: normalizedEvidence.inOurAccount,
+      confirmed: normalizedEvidence.inOurAccountValueIsConfirmed,
+    },
+    rdapTransferEvent: {
+      detected: normalizedEvidence.rdapTransferEventDetected,
+      eventAction: normalizedEvidence.rdapTransferEventAction,
+      eventDate: normalizedEvidence.rdapTransferEventAt,
+    },
+    hasPendingTransfer: normalizedEvidence.hasPendingTransfer,
+    hasTransferPeriod: normalizedEvidence.hasTransferPeriod,
+    hasExportConfirmedFinished: normalizedEvidence.hasExportConfirmedFinished,
+    undetermined: normalizedEvidence.undetermined,
+    directPendingTransferStatus: normalizedEvidence.directPendingTransferStatus,
+    eppStatuses: normalizedEvidence.eppStatuses,
   };
 }
 
@@ -524,6 +660,9 @@ export async function getExistingTrackingRecord(
   status: string;
   statusHistory: unknown;
   registrarKey?: string | null;
+  pendingNotifiedAt: Date | null;
+  clientApprovedAt: Date | null;
+  adminVerifiedAt: Date | null;
 } | null> {
   const records = await db
     .select({
@@ -531,6 +670,9 @@ export async function getExistingTrackingRecord(
       status: domainExportTrackingTable.status,
       statusHistory: domainExportTrackingTable.statusHistory,
       registrarKey: domainExportTrackingTable.registrarKey,
+      pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
+      clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+      adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
     })
     .from(domainExportTrackingTable)
     .where(
@@ -582,6 +724,7 @@ export async function processSingleDomainExportStatus(input: {
   chainId?: number;
   ownerAddress?: string;
   registrarKey?: string | null;
+  pendingEmailSent?: boolean;
 }> {
   const { domain, chainId, ownerAddress } = input;
   const activityContext = Context.current();
@@ -602,13 +745,30 @@ export async function processSingleDomainExportStatus(input: {
     return { action: 'skipped' };
   }
 
+  const evidenceCheckedAt = new Date();
+  const latestEvidence = buildLatestEvidenceSnapshot({
+    normalizedEvidence,
+    decision,
+    checkedAt: evidenceCheckedAt,
+  });
+
   const registrarKey = normalizedEvidence.registrarKey;
 
   const existingRecord = await getExistingTrackingRecord(domain, chainId);
   let recordAction: 'created' | 'updated' | 'no_change';
   let previousStatus: string | undefined;
+  let trackingRecordId: string | undefined;
+  let pendingAlreadySent = false;
+  let adminApproved = false;
 
   if (existingRecord) {
+    trackingRecordId = existingRecord.id;
+    pendingAlreadySent = Boolean(existingRecord.pendingNotifiedAt);
+    adminApproved = isAdminApprovedForPendingNotification({
+      clientApprovedAt: existingRecord.clientApprovedAt,
+      adminVerifiedAt: existingRecord.adminVerifiedAt,
+    });
+
     if (existingRecord.status !== currentStatus) {
       const statusHistory =
         (existingRecord.statusHistory as unknown as ExportTrackingStatusHistoryEntry[]) ||
@@ -631,6 +791,7 @@ export async function processSingleDomainExportStatus(input: {
           statusHistory: updatedHistory,
           eppStatuses: normalizedEvidence.eppStatuses,
           whoisData: normalizedEvidence.whoisData as Json,
+          latestEvidence,
           registrarKey,
           statusChangedAt: now,
           lastCheckedAt: now,
@@ -658,6 +819,7 @@ export async function processSingleDomainExportStatus(input: {
           lastCheckedAt: new Date(),
           eppStatuses: normalizedEvidence.eppStatuses,
           whoisData: normalizedEvidence.whoisData as Json,
+          latestEvidence,
         })
         .where(eq(domainExportTrackingTable.id, existingRecord.id));
 
@@ -672,16 +834,22 @@ export async function processSingleDomainExportStatus(input: {
       },
     ];
 
-    await db.insert(domainExportTrackingTable).values({
-      normalizedDomainName: domain,
-      chainId,
-      ownerAddress,
-      status: currentStatus,
-      statusHistory: initialHistory,
-      eppStatuses: normalizedEvidence.eppStatuses,
-      whoisData: normalizedEvidence.whoisData as Json,
-      registrarKey,
-    });
+    const insertedRows = await db
+      .insert(domainExportTrackingTable)
+      .values({
+        normalizedDomainName: domain,
+        chainId,
+        ownerAddress,
+        status: currentStatus,
+        statusHistory: initialHistory,
+        eppStatuses: normalizedEvidence.eppStatuses,
+        whoisData: normalizedEvidence.whoisData as Json,
+        latestEvidence,
+        registrarKey,
+      })
+      .returning({ id: domainExportTrackingTable.id });
+
+    trackingRecordId = insertedRows[0]?.id;
 
     logger.debug(
       { domain, status: currentStatus },
@@ -691,11 +859,54 @@ export async function processSingleDomainExportStatus(input: {
     recordAction = 'created';
   }
 
+  let pendingEmailSent = false;
+  const shouldTryPendingEmail =
+    decision.action === 'PENDING_TRANSFER' &&
+    !pendingAlreadySent &&
+    (normalizedEvidence.evidenceSource === 'DIRECT_REGISTRAR' || adminApproved);
+
+  if (shouldTryPendingEmail && trackingRecordId) {
+    try {
+      const userId = await getUserIdFromOwnerAddress(ownerAddress);
+      if (userId) {
+        const pendingEmail = await sendPendingExportEmail({
+          userId,
+          domain,
+          registrarKey: registrarKey ?? 'unknown',
+        });
+
+        if (pendingEmail.sent) {
+          const now = new Date();
+          await db
+            .update(domainExportTrackingTable)
+            .set({
+              pendingNotifiedAt: now,
+              updatedAt: now,
+            })
+            .where(eq(domainExportTrackingTable.id, trackingRecordId));
+
+          pendingEmailSent = true;
+        }
+      }
+    } catch (pendingEmailError) {
+      logger.error(
+        {
+          domain,
+          chainId,
+          ownerAddress,
+          error: pendingEmailError,
+        },
+        'Failed to send pending export email from tracking process',
+      );
+    }
+  }
+
   if (decision.action === 'NO_SIGNAL') {
     return {
       action: 'no_signal',
       status: currentStatus,
       previousStatus,
+      pendingEmailSent,
     };
   }
 
@@ -704,6 +915,7 @@ export async function processSingleDomainExportStatus(input: {
       action: 'undetermined',
       status: currentStatus,
       previousStatus,
+      pendingEmailSent,
     };
   }
 
@@ -712,11 +924,12 @@ export async function processSingleDomainExportStatus(input: {
       action: 'updated',
       status: currentStatus,
       previousStatus,
+      pendingEmailSent,
     };
   }
 
   if (recordAction === 'no_change') {
-    return { action: 'no_change', status: currentStatus };
+    return { action: 'no_change', status: currentStatus, pendingEmailSent };
   }
 
   return {
@@ -726,6 +939,7 @@ export async function processSingleDomainExportStatus(input: {
     chainId,
     ownerAddress,
     registrarKey,
+    pendingEmailSent,
   };
 }
 
@@ -788,8 +1002,24 @@ export async function checkSinglePendingTransfer(input: {
   const rawEvidence = await gatherEvidenceForDomain({ domain });
   const normalizedEvidence = normalizeEvidence(rawEvidence);
   const decision = decideExportTrackingState(normalizedEvidence);
+  const evidenceCheckedAt = new Date();
+  const latestEvidence = buildLatestEvidenceSnapshot({
+    normalizedEvidence,
+    decision,
+    checkedAt: evidenceCheckedAt,
+  });
 
   if (decision.action === 'UNDETERMINED') {
+    await db
+      .update(domainExportTrackingTable)
+      .set({
+        lastCheckedAt: evidenceCheckedAt,
+        eppStatuses: normalizedEvidence.eppStatuses,
+        whoisData: normalizedEvidence.whoisData as Json,
+        latestEvidence,
+      })
+      .where(eq(domainExportTrackingTable.id, id));
+
     logger.debug({ domain, decision }, 'checkSinglePendingTransfer');
     return {
       action: 'undetermined',
@@ -823,6 +1053,7 @@ export async function checkSinglePendingTransfer(input: {
           statusHistory: updatedHistory,
           eppStatuses: normalizedEvidence.eppStatuses,
           whoisData: normalizedEvidence.whoisData as Json,
+          latestEvidence,
           statusChangedAt: now,
           lastCheckedAt: now,
           transferCompletedAt:
@@ -843,6 +1074,7 @@ export async function checkSinglePendingTransfer(input: {
         lastCheckedAt: new Date(),
         eppStatuses: normalizedEvidence.eppStatuses,
         whoisData: normalizedEvidence.whoisData as Json,
+        latestEvidence,
       })
       .where(eq(domainExportTrackingTable.id, id));
 
@@ -873,6 +1105,7 @@ export async function checkSinglePendingTransfer(input: {
         statusHistory: updatedHistory,
         eppStatuses: normalizedEvidence.eppStatuses,
         whoisData: normalizedEvidence.whoisData as Json,
+        latestEvidence,
         statusChangedAt: now,
         lastCheckedAt: now,
         userNotified: false,
@@ -903,6 +1136,7 @@ export async function checkSinglePendingTransfer(input: {
       statusHistory: updatedHistory,
       eppStatuses: normalizedEvidence.eppStatuses,
       whoisData: normalizedEvidence.whoisData as Json,
+      latestEvidence,
       statusChangedAt: now,
       lastCheckedAt: now,
       transferCompletedAt: now,

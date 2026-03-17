@@ -3,15 +3,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
-import type {
-  ColumnDef,
-  Row,
-  SortingState,
-  ColumnDefResolved,
-} from '@tanstack/react-table';
-import { ChevronDown, ChevronRight, Copy } from 'lucide-react';
+import type { ColumnDef, Row, ColumnDefResolved } from '@tanstack/react-table';
+import { ChevronDown, ChevronRight, Copy, Play } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
@@ -27,6 +22,14 @@ import { getChain, CHAINS } from '@namefi-astra/utils/chains';
 import { ExportStatusBadge } from './export-status-badge';
 import { StatusHistorySubrow } from './status-history-subrow';
 import { VerifyButton } from './verify-button';
+import { Button } from '@/components/ui/shadcn/button';
+import { PermissionGate } from '@/components/access/PermissionGate';
+import { Permission } from '@namefi-astra/utils/permissions';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/shadcn/popover';
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);
@@ -56,13 +59,31 @@ type ExportTrackingRecord = {
   confirmedOutOfAccountAt: Date | null;
   nftBurnedAt: Date | null;
   nftBurnTxHash: string | null;
+  pendingNotifiedAt: Date | null;
   userNotified: boolean;
+  notifiedAt: Date | null;
+  latestEvidence: {
+    checkedAt?: string;
+    evidenceSource?: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
+    accountCheck?: {
+      inOurAccount?: boolean;
+      confirmed?: boolean;
+    };
+    rdapTransferEvent?: {
+      detected?: boolean;
+      eventAction?: string;
+      eventDate?: string;
+    };
+    decisionAction?: string;
+    decisionReason?: string;
+  } | null;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export function ExportTrackingTable() {
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
 
   const {
@@ -79,6 +100,7 @@ export function ExportTrackingTable() {
       columnVisibility: {
         statusChangedAt: false,
         registrarKey: false,
+        latestEvidence: false,
       },
     },
   });
@@ -122,6 +144,22 @@ export function ExportTrackingTable() {
         placeholderData: (prev) => prev,
       },
     ),
+  );
+
+  const triggerExportTrackingMutation = useMutation(
+    trpc.admin.schedules.triggerSchedule.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({
+          queryKey: trpc.admin.getExportTrackingRecords.queryKey(),
+        });
+      },
+      onError: (error) => {
+        toast.error('Failed to trigger export tracking workflow', {
+          description: error.message,
+        });
+      },
+    }),
   );
 
   const filterStrategy = useDrizzlerServerFilterStrategy({
@@ -323,6 +361,24 @@ export function ExportTrackingTable() {
           size: 160,
         },
         {
+          accessorKey: 'pendingNotifiedAt',
+          header: 'Pending Email Sent',
+          cell: ({ row }) =>
+            row.original.pendingNotifiedAt
+              ? new Date(row.original.pendingNotifiedAt).toLocaleString()
+              : '-',
+          size: 180,
+        },
+        {
+          accessorKey: 'notifiedAt',
+          header: 'Completion Email Sent',
+          cell: ({ row }) =>
+            row.original.notifiedAt
+              ? new Date(row.original.notifiedAt).toLocaleString()
+              : '-',
+          size: 190,
+        },
+        {
           accessorKey: 'nftBurnedAt',
           header: 'NFT Burned',
           cell: ({ row }) =>
@@ -332,45 +388,144 @@ export function ExportTrackingTable() {
           size: 160,
         },
         {
+          accessorKey: 'latestEvidence',
+          header: 'Latest Evidence',
+          enableSorting: false,
+          cell: ({ row }) => {
+            const latestEvidence = row.original.latestEvidence;
+            if (!latestEvidence) {
+              return <span className="text-xs text-muted-foreground">-</span>;
+            }
+
+            const accountCheck = latestEvidence.accountCheck;
+            const accountSummary = accountCheck
+              ? `${accountCheck.inOurAccount ? 'In account' : 'Out of account'} (${accountCheck.confirmed ? 'confirmed' : 'unconfirmed'})`
+              : 'Unknown';
+
+            const rdapEvent = latestEvidence.rdapTransferEvent;
+            const rdapSummary = rdapEvent?.detected
+              ? rdapEvent.eventDate
+                ? `Detected (${new Date(rdapEvent.eventDate).toLocaleString()})`
+                : 'Detected'
+              : 'Not detected';
+
+            return (
+              <div className="space-y-0.5 text-xs max-w-[300px]">
+                <div>
+                  <span className="text-muted-foreground">Account:</span>{' '}
+                  <span>{accountSummary}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">RDAP transfer:</span>{' '}
+                  <span>{rdapSummary}</span>
+                </div>
+                {latestEvidence.checkedAt && (
+                  <div className="text-muted-foreground">
+                    Checked:{' '}
+                    {new Date(latestEvidence.checkedAt).toLocaleString()}
+                  </div>
+                )}
+                {latestEvidence.evidenceSource && (
+                  <div className="text-muted-foreground">
+                    Source: {latestEvidence.evidenceSource}
+                  </div>
+                )}
+                <Popover>
+                  <PopoverTrigger
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 px-2 text-xs -ml-2"
+                      />
+                    }
+                  >
+                    View JSON
+                  </PopoverTrigger>
+                  <PopoverContent align="start" className="w-[440px] p-3">
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium">Latest Evidence</div>
+                      <pre className="max-h-80 overflow-auto rounded-md bg-muted p-2 text-[11px] leading-relaxed">
+                        {JSON.stringify(latestEvidence, null, 2)}
+                      </pre>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            );
+          },
+          size: 320,
+        },
+        {
           id: 'actions',
           header: 'Actions',
           cell: ({ row }) => <VerifyButton record={row.original} />,
-          size: 180,
+          size: 280,
         },
       ] satisfies ColumnDef<ExportTrackingRecord>[],
     [],
   );
 
   const renderSubRow = (row: Row<ExportTrackingRecord>) => (
-    <StatusHistorySubrow statusHistory={row.original.statusHistory ?? []} />
+    <StatusHistorySubrow
+      statusHistory={row.original.statusHistory ?? []}
+      pendingNotifiedAt={row.original.pendingNotifiedAt}
+      notifiedAt={row.original.notifiedAt}
+    />
   );
 
   return (
-    <ExtensibleDataTable<ExportTrackingRecord, typeof filterStrategy>
-      filterStrategy={filterStrategy}
-      columns={columns}
-      data={query.data?.data ?? []}
-      isLoading={query.isLoading}
-      isFetching={query.isFetching}
-      page={page}
-      pageSize={pageSize}
-      totalPages={query.data?.pagination.totalPages ?? 1}
-      totalCount={query.data?.pagination.totalCount ?? 0}
-      onPageChange={setPage}
-      onPageSizeChange={(size) => {
-        setPage(1);
-        setPageSize(size);
-      }}
-      sorting={sorting}
-      onSortingChange={setSorting}
-      renderSubRow={renderSubRow}
-      getRowCanExpand={(row) => (row.original.statusHistory?.length ?? 0) > 0}
-      emptyMessage="No export tracking records found"
-      loadingMessage="Loading export tracking records..."
-      columnVisibility={columnVisibility}
-      onColumnVisibilityChange={setColumnVisibility}
-      onResetPreferences={resetToDefaults}
-    />
+    <div className="space-y-3">
+      <div className="flex justify-end">
+        <PermissionGate permissions={[Permission.WRITE_SCHEDULES]}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() =>
+              triggerExportTrackingMutation.mutate({
+                scheduleId: 'domain-export-tracking-schedule',
+              })
+            }
+            disabled={triggerExportTrackingMutation.isPending}
+          >
+            <Play className="h-4 w-4 mr-1" />
+            {triggerExportTrackingMutation.isPending
+              ? 'Triggering...'
+              : 'Run Export Tracking'}
+          </Button>
+        </PermissionGate>
+      </div>
+
+      <ExtensibleDataTable<ExportTrackingRecord, typeof filterStrategy>
+        filterStrategy={filterStrategy}
+        columns={columns}
+        data={query.data?.data ?? []}
+        isLoading={query.isLoading}
+        isFetching={query.isFetching}
+        page={page}
+        pageSize={pageSize}
+        totalPages={query.data?.pagination.totalPages ?? 1}
+        totalCount={query.data?.pagination.totalCount ?? 0}
+        onPageChange={setPage}
+        onPageSizeChange={(size) => {
+          setPage(1);
+          setPageSize(size);
+        }}
+        sorting={sorting}
+        onSortingChange={setSorting}
+        renderSubRow={renderSubRow}
+        getRowCanExpand={(row) =>
+          (row.original.statusHistory?.length ?? 0) > 0 ||
+          Boolean(row.original.pendingNotifiedAt) ||
+          Boolean(row.original.notifiedAt)
+        }
+        emptyMessage="No export tracking records found"
+        loadingMessage="Loading export tracking records..."
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
+        onResetPreferences={resetToDefaults}
+      />
+    </div>
   );
 }
 

@@ -87,3 +87,6 @@ stateDiagram-v2
 - `admin.verifyExportTracking` now sends the export-complete user email and transitions the record to `NOTIFIED` only after successful delivery.
 - `admin.resolveExportTracking` lets admins close a review without notification by transitioning to `RESOLVED`.
 - `statusHistory` is now appended consistently for admin approval (`NOTIFIED`), admin resolve (`RESOLVED`), and successful burn resolution to keep transition auditing intact.
+- Pending export email is sent automatically only when `hasPendingTransfer` and (`evidenceSource` is `DIRECT_REGISTRAR` or user/admin approval exists), and only once via `pendingNotifiedAt`.
+- `admin.sendExportTrackingEmail` enables status-based manual email send with default one-time behavior and `forceResend` override.
+- `latestEvidence` now stores a compact snapshot of each check (including account check and RDAP transfer-event detection) and is available as an optional admin table column.

@@ -16,10 +16,14 @@ type StatusHistoryEntry = {
 
 type StatusHistorySubrowProps = {
   statusHistory: StatusHistoryEntry[];
+  pendingNotifiedAt?: Date | string | null;
+  notifiedAt?: Date | string | null;
 };
 
 export function StatusHistorySubrow({
   statusHistory,
+  pendingNotifiedAt,
+  notifiedAt,
 }: StatusHistorySubrowProps) {
   // Sort by timestamp descending (most recent first)
   const sortedHistory = [...statusHistory].sort(
@@ -37,6 +41,24 @@ export function StatusHistorySubrow({
   return (
     <div className="p-4">
       <h4 className="font-medium mb-3 text-sm">Status History</h4>
+
+      <div className="grid gap-2 mb-4 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground">Pending Email Sent:</span>
+          <span>
+            {pendingNotifiedAt
+              ? new Date(pendingNotifiedAt).toLocaleString()
+              : '-'}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground">Completion Email Sent:</span>
+          <span>
+            {notifiedAt ? new Date(notifiedAt).toLocaleString() : '-'}
+          </span>
+        </div>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow>
