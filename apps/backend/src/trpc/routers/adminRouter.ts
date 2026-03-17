@@ -42,6 +42,10 @@ import {
   type BulkBurnWorkflowState,
 } from '#temporal/workflows/bulk-burn-expired-domains.workflow';
 import {
+  getUserIdFromOwnerAddress,
+  sendExportCompleteEmail,
+} from '#temporal/activities/domain/export-tracking.activities';
+import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
   createTRPCRouter,
@@ -3938,6 +3942,8 @@ export const adminRouter = createTRPCRouter({
         .select({
           id: domainExportTrackingTable.id,
           normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
+          chainId: domainExportTrackingTable.chainId,
+          ownerAddress: domainExportTrackingTable.ownerAddress,
           status: domainExportTrackingTable.status,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
@@ -3977,6 +3983,28 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
+      const userId = await getUserIdFromOwnerAddress(record.ownerAddress);
+      if (!userId) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot send export notification: no user is linked to owner wallet ${record.ownerAddress}`,
+        });
+      }
+
+      const notifyResult = await sendExportCompleteEmail({
+        userId,
+        domain: record.normalizedDomainName,
+        chainId: record.chainId,
+      });
+
+      if (!notifyResult.sent) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'Cannot send export notification: user does not have a deliverable email address',
+        });
+      }
+
       // Update the record with admin verification
       await db
         .update(domainExportTrackingTable)
@@ -4004,6 +4032,96 @@ export const adminRouter = createTRPCRouter({
       return {
         success: true,
         message: `Export for ${record.normalizedDomainName} has been verified and marked as notified`,
+      };
+    }),
+
+  /**
+   * Admin resolve an export tracking review without sending user notification
+   */
+  resolveExportTracking: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin' as const,
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.DOMAIN_EXPORT,
+      resourceId: input.id,
+      action: 'resolve_export',
+      extraInput: input,
+    }),
+  )
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const existingRecord = await db
+        .select({
+          id: domainExportTrackingTable.id,
+          normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
+          status: domainExportTrackingTable.status,
+          nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
+        })
+        .from(domainExportTrackingTable)
+        .where(eq(domainExportTrackingTable.id, input.id))
+        .limit(1);
+
+      if (!existingRecord[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Export tracking record not found',
+        });
+      }
+
+      const record = existingRecord[0];
+
+      if (record.status === 'RESOLVED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Export tracking record is already resolved',
+        });
+      }
+
+      if (record.nftBurnedAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Cannot resolve review: NFT has already been burned',
+        });
+      }
+
+      const resolvableStatuses = [
+        'NEEDS_ADMIN_REVIEW',
+        'NOTIFIED',
+        'TRANSFER_COMPLETED',
+      ];
+      if (!resolvableStatuses.includes(record.status)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot resolve export with status: ${record.status}.`,
+        });
+      }
+
+      await db
+        .update(domainExportTrackingTable)
+        .set({
+          previousStatus: sql`${domainExportTrackingTable.status}`,
+          status: 'RESOLVED',
+          verfyingAdminId: ctx.user.id,
+          adminVerifiedAt: sql`COALESCE(${domainExportTrackingTable.adminVerifiedAt}, NOW())`,
+          statusChangedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(domainExportTrackingTable.id, input.id));
+
+      logger.debug(
+        {
+          recordId: input.id,
+          domain: record.normalizedDomainName,
+          adminId: ctx.user.id,
+        },
+        'Admin resolved export tracking review',
+      );
+
+      return {
+        success: true,
+        message: `Export review for ${record.normalizedDomainName} has been resolved`,
       };
     }),
 

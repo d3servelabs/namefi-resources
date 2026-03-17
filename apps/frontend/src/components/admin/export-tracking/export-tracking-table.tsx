@@ -335,7 +335,7 @@ export function ExportTrackingTable() {
           id: 'actions',
           header: 'Actions',
           cell: ({ row }) => <VerifyButton record={row.original} />,
-          size: 120,
+          size: 180,
         },
       ] satisfies ColumnDef<ExportTrackingRecord>[],
     [],

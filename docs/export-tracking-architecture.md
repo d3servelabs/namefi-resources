@@ -84,3 +84,5 @@ stateDiagram-v2
 - Database enum `domain_export_status` now includes `NO_SIGNAL`, `UNDETERMINED`, `NEEDS_ADMIN_REVIEW`, `NOTIFIED`, and `RESOLVED` for staged state-machine rollout.
 - Transfer-complete evidence is now persisted as `NEEDS_ADMIN_REVIEW` and requires admin verification to move to `NOTIFIED`.
 - Automatic pending/complete user emails from the scheduled workflow are disabled until the explicit admin-approved notification path is wired end-to-end.
+- `admin.verifyExportTracking` now sends the export-complete user email and transitions the record to `NOTIFIED` only after successful delivery.
+- `admin.resolveExportTracking` lets admins close a review without notification by transitioning to `RESOLVED`.
