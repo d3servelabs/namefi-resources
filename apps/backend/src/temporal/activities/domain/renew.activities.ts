@@ -753,11 +753,12 @@ export async function sendEmailNotificationForRenewResult({
     pretty: false,
     plainText: true,
   });
-  let subject = 'Domain Renewal Report - Success | Namefi';
-  if (domainLdhRenewFailed.length > 0) {
-    subject =
-      '[Action May Be Required] Domain Renewal Report - Failed | Namefi';
-  }
+  const subject = 'Domain Renewal Report - Success | Namefi';
+  // This is commented out for the time being because we stopped send failed details to user
+  // if (domainLdhRenewFailed.length > 0) {
+  //   subject =
+  //     '[Action May Be Required] Domain Renewal Report - Failed | Namefi';
+  // }
 
   await sendMail({
     to: [userEmail],
