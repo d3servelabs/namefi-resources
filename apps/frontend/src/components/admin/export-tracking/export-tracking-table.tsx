@@ -138,10 +138,15 @@ export function ExportTrackingTable() {
         type: 'select',
         columnId: 'status',
         options: [
+          { value: 'NO_SIGNAL', label: 'No Signal' },
+          { value: 'UNDETERMINED', label: 'Undetermined' },
           { value: 'PENDING_TRANSFER', label: 'Pending Transfer' },
           { value: 'TRANSFER_PERIOD', label: 'Transfer Period' },
           { value: 'TRANSFER_COMPLETED', label: 'Transfer Completed' },
           { value: 'TRANSFER_FAILED', label: 'Transfer Failed' },
+          { value: 'NEEDS_ADMIN_REVIEW', label: 'Needs Admin Review' },
+          { value: 'NOTIFIED', label: 'Notified' },
+          { value: 'RESOLVED', label: 'Resolved' },
         ],
       },
       chainId: {

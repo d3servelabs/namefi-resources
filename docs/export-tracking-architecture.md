@@ -81,3 +81,6 @@ stateDiagram-v2
 - Evidence gathering, normalization, and decision logic are split into explicit functions in `apps/backend/src/temporal/activities/domain/export-tracking.activities.ts`.
 - Transfer-watch polling now includes both `PENDING_TRANSFER` and `TRANSFER_PERIOD` records.
 - Ambiguous evidence is treated as `undetermined` and does not trigger state transitions.
+- Database enum `domain_export_status` now includes `NO_SIGNAL`, `UNDETERMINED`, `NEEDS_ADMIN_REVIEW`, `NOTIFIED`, and `RESOLVED` for staged state-machine rollout.
+- Transfer-complete evidence is now persisted as `NEEDS_ADMIN_REVIEW` and requires admin verification to move to `NOTIFIED`.
+- Automatic pending/complete user emails from the scheduled workflow are disabled until the explicit admin-approved notification path is wired end-to-end.

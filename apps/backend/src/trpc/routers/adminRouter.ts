@@ -3969,10 +3969,11 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
-      if (record.status !== 'TRANSFER_COMPLETED') {
+      const approvableStatuses = ['TRANSFER_COMPLETED', 'NEEDS_ADMIN_REVIEW'];
+      if (!approvableStatuses.includes(record.status)) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `Cannot verify export with status: ${record.status}. Only TRANSFER_COMPLETED exports can be verified.`,
+          message: `Cannot verify export with status: ${record.status}. Only NEEDS_ADMIN_REVIEW records (or legacy TRANSFER_COMPLETED records) can be verified.`,
         });
       }
 
@@ -3980,8 +3981,13 @@ export const adminRouter = createTRPCRouter({
       await db
         .update(domainExportTrackingTable)
         .set({
+          previousStatus: sql`${domainExportTrackingTable.status}`,
+          status: 'NOTIFIED',
           verfyingAdminId: ctx.user.id,
           adminVerifiedAt: new Date(),
+          userNotified: true,
+          notifiedAt: new Date(),
+          statusChangedAt: new Date(),
           updatedAt: new Date(),
         })
         .where(eq(domainExportTrackingTable.id, input.id));
@@ -3997,7 +4003,7 @@ export const adminRouter = createTRPCRouter({
 
       return {
         success: true,
-        message: `Export for ${record.normalizedDomainName} has been verified`,
+        message: `Export for ${record.normalizedDomainName} has been verified and marked as notified`,
       };
     }),
 

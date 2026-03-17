@@ -603,6 +603,13 @@
       "when": 1773145237957,
       "tag": "0085_records_and_zones_helpers",
       "breakpoints": true
+    },
+    {
+      "idx": 86,
+      "version": "7",
+      "when": 1773750514420,
+      "tag": "0086_simple_squadron_supreme",
+      "breakpoints": true
     }
   ]
 }

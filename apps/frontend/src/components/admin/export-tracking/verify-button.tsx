@@ -71,8 +71,11 @@ export function VerifyButton({ record }: VerifyButtonProps) {
     );
   }
 
-  // Only show verify button for TRANSFER_COMPLETED status
-  if (record.status !== 'TRANSFER_COMPLETED') {
+  // Only show verify button for admin-review states
+  if (
+    record.status !== 'NEEDS_ADMIN_REVIEW' &&
+    record.status !== 'TRANSFER_COMPLETED'
+  ) {
     return <span className="text-xs text-muted-foreground">-</span>;
   }
 
@@ -87,8 +90,8 @@ export function VerifyButton({ record }: VerifyButtonProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Verify Export</AlertDialogTitle>
             <AlertDialogDescription>
-              This will mark the export as admin-verified, allowing the NFT to
-              be burned. Are you sure you want to verify the export for:
+              This will mark the export as admin-verified and notified. Are you
+              sure you want to verify the export for:
               <br />
               <strong className="text-foreground">
                 {record.normalizedDomainName}

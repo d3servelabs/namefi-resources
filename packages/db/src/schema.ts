@@ -908,10 +908,15 @@ export const indexedDomainsTable = pgTable(
  * Tracks the lifecycle of a domain being exported/transferred out
  */
 export const domainExportStatusEnum = pgEnum('domain_export_status', [
+  'NO_SIGNAL', // Explicitly checked and found no transfer evidence
+  'UNDETERMINED', // Check completed but evidence was ambiguous/unavailable
   'PENDING_TRANSFER', // Transfer has been initiated (EPP status: pendingTransfer)
   'TRANSFER_PERIOD', // Transfer completed, in 60-day lock period (EPP status: transferPeriod)
   'TRANSFER_COMPLETED', // Transfer fully completed and domain no longer in our account
   'TRANSFER_FAILED', // Transfer failed or was cancelled
+  'NEEDS_ADMIN_REVIEW', // Awaiting admin review before user-facing side effects
+  'NOTIFIED', // User/admin notification delivered after approval
+  'RESOLVED', // Tracking item was resolved or dismissed
 ]);
 
 /**

@@ -52,10 +52,15 @@ interface StatusHistoryEntry {
 }
 
 type DomainExportTrackingStatus =
+  | 'NO_SIGNAL'
+  | 'UNDETERMINED'
   | 'PENDING_TRANSFER'
   | 'TRANSFER_PERIOD'
   | 'TRANSFER_COMPLETED'
-  | 'TRANSFER_FAILED';
+  | 'TRANSFER_FAILED'
+  | 'NEEDS_ADMIN_REVIEW'
+  | 'NOTIFIED'
+  | 'RESOLVED';
 
 type TransferDecisionAction =
   | 'PENDING_TRANSFER'
@@ -390,10 +395,24 @@ export function decideExportTrackingState(
   };
 }
 
+function mapDecisionToPersistedStatus(
+  action: TransferDecisionAction,
+): DomainExportTrackingStatus | null {
+  if (action === 'TRANSFER_COMPLETED') {
+    return 'NEEDS_ADMIN_REVIEW';
+  }
+
+  return actionToTrackingStatus(action);
+}
+
 function actionToTrackingStatus(
   action: TransferDecisionAction,
 ): DomainExportTrackingStatus | null {
   switch (action) {
+    case 'NO_SIGNAL':
+      return 'NO_SIGNAL';
+    case 'UNDETERMINED':
+      return 'UNDETERMINED';
     case 'PENDING_TRANSFER':
       return 'PENDING_TRANSFER';
     case 'TRANSFER_PERIOD':
@@ -617,20 +636,7 @@ export async function processSingleDomainExportStatus(input: {
   const normalizedEvidence = normalizeEvidence(rawEvidence);
   const decision = decideExportTrackingState(normalizedEvidence);
 
-  if (decision.action === 'UNDETERMINED') {
-    logger.debug(
-      { domain, decision },
-      'Skipping update due to undetermined data',
-    );
-    return { action: 'undetermined' };
-  }
-
-  if (decision.action === 'NO_SIGNAL') {
-    logger.debug({ domain, decision }, 'No explicit transfer signal detected');
-    return { action: 'no_signal' };
-  }
-
-  const currentStatus = actionToTrackingStatus(decision.action);
+  const currentStatus = mapDecisionToPersistedStatus(decision.action);
   if (!currentStatus) {
     logger.debug(
       { domain, decision },
@@ -642,6 +648,8 @@ export async function processSingleDomainExportStatus(input: {
   const registrarKey = normalizedEvidence.registrarKey;
 
   const existingRecord = await getExistingTrackingRecord(domain, chainId);
+  let recordAction: 'created' | 'updated' | 'no_change';
+  let previousStatus: string | undefined;
 
   if (existingRecord) {
     if (existingRecord.status !== currentStatus) {
@@ -657,11 +665,7 @@ export async function processSingleDomainExportStatus(input: {
       await db
         .update(domainExportTrackingTable)
         .set({
-          previousStatus: existingRecord.status as
-            | 'PENDING_TRANSFER'
-            | 'TRANSFER_PERIOD'
-            | 'TRANSFER_COMPLETED'
-            | 'TRANSFER_FAILED',
+          previousStatus: existingRecord.status as DomainExportTrackingStatus,
           status: currentStatus,
           statusHistory: updatedHistory,
           eppStatuses: normalizedEvidence.eppStatuses,
@@ -670,10 +674,13 @@ export async function processSingleDomainExportStatus(input: {
           statusChangedAt: new Date(),
           lastCheckedAt: new Date(),
           transferCompletedAt:
-            currentStatus === 'TRANSFER_COMPLETED' ? new Date() : undefined,
+            currentStatus === 'NEEDS_ADMIN_REVIEW' ? new Date() : undefined,
           userNotified: false,
         })
         .where(eq(domainExportTrackingTable.id, existingRecord.id));
+
+      recordAction = 'updated';
+      previousStatus = existingRecord.status;
 
       logger.debug(
         {
@@ -683,49 +690,73 @@ export async function processSingleDomainExportStatus(input: {
         },
         'Updated domain export tracking status',
       );
+    } else {
+      await db
+        .update(domainExportTrackingTable)
+        .set({
+          lastCheckedAt: new Date(),
+          eppStatuses: normalizedEvidence.eppStatuses,
+          whoisData: normalizedEvidence.whoisData as Json,
+        })
+        .where(eq(domainExportTrackingTable.id, existingRecord.id));
 
-      return {
-        action: 'updated',
-        status: currentStatus,
-        previousStatus: existingRecord.status,
-      };
+      recordAction = 'no_change';
     }
-
-    await db
-      .update(domainExportTrackingTable)
-      .set({
-        lastCheckedAt: new Date(),
+  } else {
+    const initialHistory: StatusHistoryEntry[] = [
+      {
+        timestamp: new Date().toISOString(),
+        status: currentStatus,
         eppStatuses: normalizedEvidence.eppStatuses,
-        whoisData: normalizedEvidence.whoisData as Json,
-      })
-      .where(eq(domainExportTrackingTable.id, existingRecord.id));
+      },
+    ];
 
-    return { action: 'no_change', status: currentStatus };
+    await db.insert(domainExportTrackingTable).values({
+      normalizedDomainName: domain,
+      chainId,
+      ownerAddress,
+      status: currentStatus,
+      statusHistory: initialHistory,
+      eppStatuses: normalizedEvidence.eppStatuses,
+      whoisData: normalizedEvidence.whoisData as Json,
+      registrarKey,
+    });
+
+    logger.debug(
+      { domain, status: currentStatus },
+      'Created new export tracking record',
+    );
+
+    recordAction = 'created';
   }
 
-  const initialHistory: StatusHistoryEntry[] = [
-    {
-      timestamp: new Date().toISOString(),
+  if (decision.action === 'NO_SIGNAL') {
+    return {
+      action: 'no_signal',
       status: currentStatus,
-      eppStatuses: normalizedEvidence.eppStatuses,
-    },
-  ];
+      previousStatus,
+    };
+  }
 
-  await db.insert(domainExportTrackingTable).values({
-    normalizedDomainName: domain,
-    chainId,
-    ownerAddress,
-    status: currentStatus,
-    statusHistory: initialHistory,
-    eppStatuses: normalizedEvidence.eppStatuses,
-    whoisData: normalizedEvidence.whoisData as Json,
-    registrarKey,
-  });
+  if (decision.action === 'UNDETERMINED') {
+    return {
+      action: 'undetermined',
+      status: currentStatus,
+      previousStatus,
+    };
+  }
 
-  logger.debug(
-    { domain, status: currentStatus },
-    'Created new export tracking record',
-  );
+  if (recordAction === 'updated') {
+    return {
+      action: 'updated',
+      status: currentStatus,
+      previousStatus,
+    };
+  }
+
+  if (recordAction === 'no_change') {
+    return { action: 'no_change', status: currentStatus };
+  }
 
   return {
     action: 'created',
@@ -822,11 +853,7 @@ export async function checkSinglePendingTransfer(input: {
       await db
         .update(domainExportTrackingTable)
         .set({
-          previousStatus: currentStatus as
-            | 'PENDING_TRANSFER'
-            | 'TRANSFER_PERIOD'
-            | 'TRANSFER_COMPLETED'
-            | 'TRANSFER_FAILED',
+          previousStatus: currentStatus as DomainExportTrackingStatus,
           status: statusFromDecision,
           statusHistory: updatedHistory,
           eppStatuses: normalizedEvidence.eppStatuses,
@@ -874,11 +901,7 @@ export async function checkSinglePendingTransfer(input: {
     await db
       .update(domainExportTrackingTable)
       .set({
-        previousStatus: currentStatus as
-          | 'PENDING_TRANSFER'
-          | 'TRANSFER_PERIOD'
-          | 'TRANSFER_COMPLETED'
-          | 'TRANSFER_FAILED',
+        previousStatus: currentStatus as DomainExportTrackingStatus,
         status: 'TRANSFER_FAILED',
         statusHistory: updatedHistory,
         eppStatuses: normalizedEvidence.eppStatuses,
@@ -896,7 +919,7 @@ export async function checkSinglePendingTransfer(input: {
   const history = (statusHistory as unknown as StatusHistoryEntry[]) || [];
   const newHistoryEntry: StatusHistoryEntry = {
     timestamp: new Date().toISOString(),
-    status: 'TRANSFER_COMPLETED',
+    status: 'NEEDS_ADMIN_REVIEW',
     eppStatuses: normalizedEvidence.eppStatuses,
   };
   const updatedHistory = [...history, newHistoryEntry];
@@ -904,12 +927,8 @@ export async function checkSinglePendingTransfer(input: {
   await db
     .update(domainExportTrackingTable)
     .set({
-      previousStatus: currentStatus as
-        | 'PENDING_TRANSFER'
-        | 'TRANSFER_PERIOD'
-        | 'TRANSFER_COMPLETED'
-        | 'TRANSFER_FAILED',
-      status: 'TRANSFER_COMPLETED',
+      previousStatus: currentStatus as DomainExportTrackingStatus,
+      status: 'NEEDS_ADMIN_REVIEW',
       statusHistory: updatedHistory,
       eppStatuses: normalizedEvidence.eppStatuses,
       whoisData: normalizedEvidence.whoisData as Json,
@@ -928,7 +947,7 @@ export async function checkSinglePendingTransfer(input: {
   );
   return {
     action: 'completed',
-    newStatus: 'TRANSFER_COMPLETED',
+    newStatus: 'NEEDS_ADMIN_REVIEW',
     domain,
     chainId,
   };
@@ -942,9 +961,13 @@ export interface ExportTrackingReportMetrics {
   reportDate: Date;
   totalTracked: number;
   statusBreakdown: {
+    noSignal: number;
+    undetermined: number;
     pendingTransfer: number;
     transferPeriod: number;
-    transferCompleted: number;
+    needsAdminReview: number;
+    notified: number;
+    resolved: number;
     transferFailed: number;
   };
   domains: Array<{
@@ -985,13 +1008,17 @@ export async function collectExportTrackingMetrics(): Promise<ExportTrackingRepo
     .from(domainExportTrackingTable);
 
   const statusBreakdown = {
+    noSignal: allRecords.filter((r) => r.status === 'NO_SIGNAL').length,
+    undetermined: allRecords.filter((r) => r.status === 'UNDETERMINED').length,
     pendingTransfer: allRecords.filter((r) => r.status === 'PENDING_TRANSFER')
       .length,
     transferPeriod: allRecords.filter((r) => r.status === 'TRANSFER_PERIOD')
       .length,
-    transferCompleted: allRecords.filter(
-      (r) => r.status === 'TRANSFER_COMPLETED',
+    needsAdminReview: allRecords.filter(
+      (r) => r.status === 'NEEDS_ADMIN_REVIEW',
     ).length,
+    notified: allRecords.filter((r) => r.status === 'NOTIFIED').length,
+    resolved: allRecords.filter((r) => r.status === 'RESOLVED').length,
     transferFailed: allRecords.filter((r) => r.status === 'TRANSFER_FAILED')
       .length,
   };
@@ -1100,6 +1127,7 @@ export async function sendExportTrackingReportEmail(
             .status-period { color: #3498db; font-weight: bold; }
             .status-completed { color: #27ae60; font-weight: bold; }
             .status-failed { color: #e74c3c; font-weight: bold; }
+            .status-neutral { color: #6b7280; font-weight: bold; }
           </style>
         </head>
         <body>
@@ -1112,8 +1140,12 @@ export async function sendExportTrackingReportEmail(
               <li><strong>Total Domains Tracked:</strong> ${metrics.totalTracked}</li>
               <li><span class="status-pending">Pending Transfer:</span> ${metrics.statusBreakdown.pendingTransfer}</li>
               <li><span class="status-period">Transfer Period (60-day lock):</span> ${metrics.statusBreakdown.transferPeriod}</li>
-              <li><span class="status-completed">Transfer Completed:</span> ${metrics.statusBreakdown.transferCompleted}</li>
+              <li><span class="status-completed">Needs Admin Review:</span> ${metrics.statusBreakdown.needsAdminReview}</li>
+              <li><span class="status-completed">Notified:</span> ${metrics.statusBreakdown.notified}</li>
+              <li><span class="status-completed">Resolved:</span> ${metrics.statusBreakdown.resolved}</li>
               <li><span class="status-failed">Transfer Failed:</span> ${metrics.statusBreakdown.transferFailed}</li>
+              <li><span class="status-neutral">No Signal:</span> ${metrics.statusBreakdown.noSignal}</li>
+              <li><span class="status-neutral">Undetermined:</span> ${metrics.statusBreakdown.undetermined}</li>
             </ul>
           </div>
 
@@ -1140,7 +1172,9 @@ export async function sendExportTrackingReportEmail(
             ? 'status-period'
             : domain.status === 'TRANSFER_COMPLETED'
               ? 'status-completed'
-              : 'status-failed';
+              : domain.status === 'TRANSFER_FAILED'
+                ? 'status-failed'
+                : 'status-neutral';
 
       htmlContent += `
               <tr>
@@ -1272,11 +1306,16 @@ export async function shouldBurnNft(input: {
     };
   }
 
-  // Must be in TRANSFER_COMPLETED status
-  if (record.status !== 'TRANSFER_COMPLETED') {
+  // Must be in an export-complete state
+  const eligibleStatuses: DomainExportTrackingStatus[] = [
+    'TRANSFER_COMPLETED',
+    'NEEDS_ADMIN_REVIEW',
+    'NOTIFIED',
+  ];
+  if (!eligibleStatuses.includes(record.status as DomainExportTrackingStatus)) {
     logger.debug(
       { domain, chainId, status: record.status },
-      'Domain not in TRANSFER_COMPLETED status',
+      'Domain not in export-complete status',
     );
     return {
       shouldBurn: false,
@@ -1377,7 +1416,11 @@ export async function getDomainsEligibleForBurn(): Promise<
     .from(domainExportTrackingTable)
     .where(
       and(
-        eq(domainExportTrackingTable.status, 'TRANSFER_COMPLETED'),
+        inArray(domainExportTrackingTable.status, [
+          'TRANSFER_COMPLETED',
+          'NEEDS_ADMIN_REVIEW',
+          'NOTIFIED',
+        ]),
         isNull(domainExportTrackingTable.nftBurnedAt),
         inArray(domainExportTrackingTable.chainId, allowedChains),
       ),
@@ -1409,6 +1452,8 @@ export async function recordNftBurn(input: {
     await db
       .update(domainExportTrackingTable)
       .set({
+        previousStatus: sql`${domainExportTrackingTable.status}`,
+        status: 'RESOLVED',
         nftBurnedAt: new Date(),
         nftBurnTxHash: txHash,
         updatedAt: new Date(),
