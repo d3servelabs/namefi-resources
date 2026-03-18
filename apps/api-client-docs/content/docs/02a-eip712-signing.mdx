@@ -1,0 +1,314 @@
+---
+title: EIP-712 Signing
+description: EIP-712 typed data domain, envelope structure, and per-operation type schemas
+---
+
+The Namefi API uses [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed data signatures to authorize sensitive operations. Each request is signed with the caller's wallet, providing cryptographic proof of intent without exposing private keys.
+
+## EIP-712 domain
+
+All Namefi EIP-712 signatures use the same domain separator:
+
+```ts
+const domain = {
+  name: 'Namefi',
+  version: '1',
+};
+```
+
+No `chainId` or `verifyingContract` fields are included in the domain — the signature is chain-agnostic.
+
+## Envelope structure
+
+Every EIP-712 operation wraps the request payload in a standard envelope. The envelope is the `primaryType` that gets signed:
+
+```ts
+{
+  payloadType: string;   // The inner payload type name (e.g. "ToggleDomainParking")
+  payload: T;            // The operation-specific payload
+  timestamp: uint256;    // Unix timestamp in seconds (Math.trunc(Date.now() / 1000))
+  nonce: string;         // Random hex string for replay protection
+}
+```
+
+The client library builds this envelope automatically. If you are making raw HTTP requests, you must construct it yourself.
+
+### Example: signing a `toggleDomainParking` request
+
+```ts
+import { toHex } from 'viem';
+
+// 1. The operation-specific payload
+const payload = {
+  normalizedDomainName: 'example.com',
+  enableParking: true,
+  overrideExistingRecords: false,
+};
+
+// 2. Wrap in the envelope
+const envelope = {
+  payloadType: 'ToggleDomainParking',
+  payload,
+  timestamp: Math.trunc(Date.now() / 1000),
+  nonce: toHex(crypto.getRandomValues(new Uint8Array(32))),
+};
+
+// 3. Sign as EIP-712 typed data
+const { signature, address } = await signer.signTypedData({
+  domain: { name: 'Namefi', version: '1' },
+  types: {
+    ToggleDomainParking: [
+      { name: 'normalizedDomainName', type: 'string' },
+      { name: 'enableParking', type: 'bool' },
+      { name: 'overrideExistingRecords', type: 'bool' },
+    ],
+    ToggleDomainParkingEnvelope: [
+      { name: 'payloadType', type: 'string' },
+      { name: 'payload', type: 'ToggleDomainParking' },
+      { name: 'timestamp', type: 'uint256' },
+      { name: 'nonce', type: 'string' },
+    ],
+  },
+  primaryType: 'ToggleDomainParkingEnvelope',
+  message: envelope,
+});
+
+// 4. Send with signature headers
+const response = await fetch('https://backend.astra.namefi.io/v-next/dns/park', {
+  method: 'PUT',
+  headers: {
+    'content-type': 'application/json',
+    'x-namefi-signature': signature,
+    'x-namefi-signer': address,
+    'x-namefi-eip712-type': 'ToggleDomainParkingEnvelope',
+  },
+  body: JSON.stringify(envelope),
+});
+```
+
+## Request headers
+
+EIP-712 authenticated requests require three headers:
+
+| Header | Value |
+|--------|-------|
+| `x-namefi-signature` | The hex-encoded EIP-712 signature |
+| `x-namefi-signer` | The signer's checksummed Ethereum address |
+| `x-namefi-eip712-type` | The `primaryType` used for signing (the envelope type name) |
+
+## Operations and their typed data schemas
+
+### DNS record operations
+
+**`createDnsRecord`** — `CreateDnsRecordEnvelope`
+
+```json
+{
+  "CreateDnsRecord": [
+    { "name": "name", "type": "string" },
+    { "name": "rdata", "type": "string" },
+    { "name": "ttl", "type": "uint256" },
+    { "name": "zoneName", "type": "string" }
+  ],
+  "CreateDnsRecordEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "CreateDnsRecord" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`updateRecord`** — `UpdateDnsRecordEnvelope`
+
+```json
+{
+  "UpdateDnsRecord": [
+    { "name": "id", "type": "string" },
+    { "name": "zoneName", "type": "string" },
+    { "name": "rdata", "type": "string" },
+    { "name": "ttl", "type": "uint256" }
+  ],
+  "UpdateDnsRecordEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "UpdateDnsRecord" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`deleteRecord`** — `RecordSelectEnvelope`
+
+```json
+{
+  "RecordSelect": [
+    { "name": "id", "type": "string" },
+    { "name": "zoneName", "type": "string" }
+  ],
+  "RecordSelectEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "RecordSelect" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`createRecords`** (batch) — `CreateRecordsEnvelope`
+
+```json
+{
+  "CreateRecords": [
+    { "name": "records", "type": "CreateDnsRecord[]" },
+    { "name": "zoneName", "type": "string" }
+  ],
+  "CreateRecordsEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "CreateRecords" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`updateRecords`** (batch) — `UpdateRecordsEnvelope`
+
+```json
+{
+  "UpdateZoneRecord": [
+    { "name": "id", "type": "string" },
+    { "name": "rdata", "type": "string" },
+    { "name": "ttl", "type": "uint256" }
+  ],
+  "UpdateRecords": [
+    { "name": "records", "type": "UpdateZoneRecord[]" },
+    { "name": "zoneName", "type": "string" }
+  ],
+  "UpdateRecordsEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "UpdateRecords" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`deleteRecords`** (batch) — `DeleteRecordsEnvelope`
+
+```json
+{
+  "DeleteRecords": [
+    { "name": "recordsIds", "type": "string[]" },
+    { "name": "zoneName", "type": "string" }
+  ],
+  "DeleteRecordsEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "DeleteRecords" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+### Domain parking operations
+
+**`parkDomain`** — `ParkDomainEnvelope`
+
+```json
+{
+  "ParkDomain": [
+    { "name": "normalizedDomainName", "type": "string" },
+    { "name": "overrideExistingRecords", "type": "bool" }
+  ],
+  "ParkDomainEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "ParkDomain" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`toggleDomainParking`** — `ToggleDomainParkingEnvelope`
+
+```json
+{
+  "ToggleDomainParking": [
+    { "name": "normalizedDomainName", "type": "string" },
+    { "name": "enableParking", "type": "bool" },
+    { "name": "overrideExistingRecords", "type": "bool" }
+  ],
+  "ToggleDomainParkingEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "ToggleDomainParking" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+### Order operations
+
+**`registerDomain`** — `InstantRegisterDomainEnvelope` or `InstantRegisterDomainDefaultWalletEnvelope`
+
+When `nftReceivinggWallet` is provided:
+
+```json
+{
+  "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet": [
+    { "name": "chainId", "type": "uint256" }
+  ],
+  "InstantRegisterDomain": [
+    { "name": "normalizedDomainName", "type": "string" },
+    { "name": "durationInYears", "type": "uint256" },
+    { "name": "nftReceivinggWallet", "type": "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet" }
+  ],
+  "InstantRegisterDomainEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "InstantRegisterDomain" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+When using the default wallet (no `nftReceivinggWallet`):
+
+```json
+{
+  "InstantRegisterDomainDefaultWallet": [
+    { "name": "normalizedDomainName", "type": "string" },
+    { "name": "durationInYears", "type": "uint256" }
+  ],
+  "InstantRegisterDomainDefaultWalletEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "InstantRegisterDomainDefaultWallet" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+**`registerDomainForTrial`** — `RegisterTrialDomainEnvelope`
+
+```json
+{
+  "RegisterTrialDomain": [
+    { "name": "normalizedDomainName", "type": "string" }
+  ],
+  "RegisterTrialDomainEnvelope": [
+    { "name": "payloadType", "type": "string" },
+    { "name": "payload", "type": "RegisterTrialDomain" },
+    { "name": "timestamp", "type": "uint256" },
+    { "name": "nonce", "type": "string" }
+  ]
+}
+```
+
+## Notes
+
+- The `timestamp` field uses Unix seconds (`Math.trunc(Date.now() / 1000)`), not milliseconds.
+- The `nonce` should be a random hex string for replay protection.
+- The client library handles envelope construction and signing automatically — the schemas above are for reference when building raw HTTP requests.
+- All envelope types follow the same four-field pattern: `payloadType`, `payload`, `timestamp`, `nonce`.

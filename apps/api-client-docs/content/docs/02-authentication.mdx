@@ -119,6 +119,8 @@ For each EIP-712 operation the client:
 2. Calls `signer.signTypedData` with the operation's typed data schema.
 3. Sends the signature, signer address, and primary type as request headers.
 
+For full details on the EIP-712 domain, envelope structure, and all typed data schemas, see the [EIP-712 Signing guide](/docs/02a-eip712-signing).
+
 ---
 
 ## SIWE (Sign-In with Ethereum)
@@ -126,6 +128,8 @@ For each EIP-712 operation the client:
 [SIWE](https://eips.ethereum.org/EIPS/eip-4361) provides session-based authentication. The client obtains a token by signing a challenge message with `personal_sign`, then reuses that token for subsequent requests. Sessions last 12 hours.
 
 SIWE is used automatically when you create a client with `type: 'EIP712'` — the client bootstraps a SIWE session for any protected operation that is not an EIP-712 route. You do not need to manage SIWE tokens yourself.
+
+For the full step-by-step SIWE flow (nonce, message, sign, verify, token), see the [SIWE Authentication guide](/docs/02b-siwe-authentication).
 
 ### Specifying a chain
 
@@ -150,46 +154,6 @@ Allowed chains depend on the environment:
 |-------------|---------------|
 | Production | Ethereum Mainnet (`1`), Base (`8453`) |
 | Development | Sepolia (`11155111`), Namefi Testnet (`46630`) |
-
-### SIWE flow details
-
-The bootstrap runs automatically on the first request that needs it:
-
-1. **Get nonce** — `GET /v-next/siwe/nonce?signerAddress={address}` returns a one-time nonce.
-2. **Prepare message** — `GET /v-next/siwe/message?signerAddress={address}&nonce={nonce}&chainId={chainId}` returns a structured SIWE message and its string representation.
-3. **Sign** — the client calls `signer.signMessage(messageString)` which performs `personal_sign`.
-4. **Verify** — `POST /v-next/siwe/verify` with the address, structured message, and signature. Returns a session token.
-5. **Attach** — the token is sent as the `x-namefi-siwe-token` header on subsequent requests.
-
-The client caches the token in memory and refreshes it automatically when it expires (with a 30-second skew).
-
-### Using SIWE with WalletConnect
-
-When using a remote wallet via WalletConnect, implement `signMessage` using `personal_sign`:
-
-```ts
-const signer: EIP712Signer = {
-  getAddress: async () => walletAddress,
-  signTypedData: async ({ domain, types, primaryType, message }) => {
-    const signature = await walletClient.signTypedData({
-      domain,
-      types,
-      primaryType,
-      message,
-    });
-    return { signature, address: walletAddress };
-  },
-  signMessage: async (message) => {
-    return await provider.request({
-      method: 'personal_sign',
-      params: [message, walletAddress],
-    });
-  },
-  generateNonce: () => toHex(crypto.getRandomValues(new Uint8Array(32))),
-};
-```
-
-See the [namefi-api-skills](https://github.com/d3servelabs/namefi-api-skills) repository for a complete CLI-based WalletConnect + SIWE example.
 
 ---
 
