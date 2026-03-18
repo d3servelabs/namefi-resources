@@ -617,6 +617,13 @@
       "when": 1773750561342,
       "tag": "0087_dapper_firebrand",
       "breakpoints": true
+    },
+    {
+      "idx": 88,
+      "version": "7",
+      "when": 1773833654259,
+      "tag": "0088_needy_gauntlet",
+      "breakpoints": true
     }
   ]
 }

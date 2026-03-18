@@ -2135,6 +2135,14 @@ export const x402PurchasesTable = pgTable(
      */
     buyerWalletAddress: text('buyer_wallet_address').notNull(),
     /**
+     * Wallet address that should receive the NFT, defaults to the buyer wallet
+     */
+    nftReceivingWalletAddress: text('nft_receiving_wallet_address'),
+    /**
+     * Wallet address recovered from the EIP-3009 payment signature via recoverTypedDataAddress
+     */
+    signerWalletAddress: text('signer_wallet_address'),
+    /**
      * Network in CAIP-2 format (e.g., eip155:8453 for Base)
      */
     network: text('network').notNull(),

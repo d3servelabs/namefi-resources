@@ -41,6 +41,7 @@ import {
 } from '../base';
 import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
 import { itemTypeSchema } from '@namefi-astra/db/types';
+import { x402PurchasesTable } from '@namefi-astra/db/schema';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
@@ -56,6 +57,29 @@ import {
   getDefaultAllowedNftChainId,
 } from '#lib/env/allowed-chains';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
+import {
+  buildX402PaymentRequiredResponse,
+  buildX402PaymentRequirements,
+  decodeX402PaymentSignaturePayload,
+  encodeX402PaymentRequiredResponse,
+  encodeX402PaymentResponse,
+  encryptX402PaymentPayloadSignature,
+  extractBuyerWallet,
+  extractX402PaymentNonce,
+  getX402PaymentSignatureHeader,
+  recoverX402SignerWallet,
+  resolveX402PaymentPayloadEncryptionPrivateKey,
+  settleX402Payment,
+  verifyX402PaymentSignature,
+  X402_PAYMENT_REQUIRED_HEADERS,
+  X402_PAYMENT_RESPONSE_HEADERS,
+  X402PaymentRequiredError,
+} from '#lib/x402/helpers';
+import { validateDomainForInstantPurchase } from '../../lib/instant-buy';
+import {
+  processX402PurchaseWorkflow,
+  settlementSignal,
+} from '../../temporal/workflows/x402/process-x402-purchase.workflow';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -100,7 +124,7 @@ defaultEip712SchemaConverter.register(instantBuyDefaultWalletInputSchema);
 export const instantBuyInputSchema = z
   .object({
     ...instantBuyDefaultWalletInputSchema.shape,
-    nftReceivinggWallet: z
+    nftReceivingWallet: z
       .object({
         walletAddress: checksumWalletAddressSchema,
         chainId: z.number(),
@@ -216,16 +240,16 @@ const registerDomainWithRecords = async ({
   );
   const allowedNftChainIds = getAllowedChainsForNft(poweredByNamefiDomain);
   if (
-    input.nftReceivinggWallet &&
-    !allowedNftChainIds.includes(input.nftReceivinggWallet.chainId)
+    input.nftReceivingWallet &&
+    !allowedNftChainIds.includes(input.nftReceivingWallet.chainId)
   ) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `NFT chain ID ${input.nftReceivinggWallet.chainId} is not allowed for ${normalizedDomainName}`,
+      message: `NFT chain ID ${input.nftReceivingWallet.chainId} is not allowed for ${normalizedDomainName}`,
     });
   }
 
-  const nftReceivinggWallet = input.nftReceivinggWallet || {
+  const nftReceivingWallet = input.nftReceivingWallet || {
     walletAddress: userWalletAddresses[0],
     chainId: getDefaultAllowedNftChainId(poweredByNamefiDomain),
   };
@@ -277,8 +301,8 @@ const registerDomainWithRecords = async ({
         amountInUSDCents: validation.priceInUsdCents,
         userId: ctx.user.id,
         paymentIds: createdPayments.map((p) => p.id),
-        nftWalletAddress: nftReceivinggWallet.walletAddress,
-        nftChainId: nftReceivinggWallet.chainId,
+        nftWalletAddress: nftReceivingWallet.walletAddress,
+        nftChainId: nftReceivingWallet.chainId,
         items: [
           {
             normalizedDomainName,
@@ -398,6 +422,106 @@ const orderOutputSchema = z.object({
   nftChainId: z.number().nullable(),
   items: z.array(orderItemSelectSchema),
 });
+
+const registerDomainX402InputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  durationInYears: instantBuyInputSchema.shape.durationInYears,
+  nftReceivingWalletAddress: checksumWalletAddressSchema.optional(),
+});
+
+const x402PurchaseResponseSchema = z.object({
+  status: z.literal('accepted'),
+  message: z.string(),
+  purchaseId: z.string(),
+  domain: namefiNormalizedDomainSchema,
+  buyerWallet: checksumWalletAddressSchema,
+  nftReceivingWalletAddress: checksumWalletAddressSchema,
+  estimatedCompletionSeconds: z.number().int().positive(),
+});
+
+const resolveX402ErrorMessage = (errorReason?: string) =>
+  errorReason || 'Invalid payment signature format';
+
+const ensureX402ConfiguredOrThrow = () => {
+  if (!config.X402_ENABLED) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'x402 payment protocol is not allowed',
+    });
+  }
+
+  if (!config.X402_SIGNER_ADDRESS) {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'x402 payment not configured',
+    });
+  }
+};
+
+const getX402ResourceInfo = (
+  normalizedDomainName: string,
+  durationInYears: number,
+) => ({
+  description: `Register ${normalizedDomainName} for ${durationInYears} year(s)`,
+  mimeType: '*',
+  resource: `/v-next/x402/domain/${normalizedDomainName}`,
+  url: `/v-next/x402/domain/${normalizedDomainName}`,
+});
+
+const throwX402PaymentRequired = async ({
+  ctx,
+  normalizedDomainName,
+  durationInYears,
+  priceInUsdCents,
+  nftReceivingWalletAddress,
+}: {
+  ctx: {
+    req: { header: (headerName: string) => string | undefined };
+    honoCtx?: { header: (name: string, value: string) => void };
+  };
+  normalizedDomainName: string;
+  durationInYears: number;
+  priceInUsdCents: number;
+  nftReceivingWalletAddress?: string;
+}): Promise<never> => {
+  const { priceInUsdc, paymentOption, paymentRequirements } =
+    await buildX402PaymentRequirements({
+      amountInUsdCents: priceInUsdCents,
+      context: ctx.req,
+    });
+  const paymentRequiredResponse = await buildX402PaymentRequiredResponse({
+    paymentRequirements,
+    resourceInfo: getX402ResourceInfo(normalizedDomainName, durationInYears),
+  });
+  const paymentRequiredHeader = encodeX402PaymentRequiredResponse(
+    paymentRequiredResponse,
+  );
+  X402_PAYMENT_REQUIRED_HEADERS.forEach((header) => {
+    ctx.honoCtx?.header(header, paymentRequiredHeader);
+  });
+
+  throw new TRPCError({
+    code: 'PAYMENT_REQUIRED',
+    message: 'Payment Required',
+    cause: new X402PaymentRequiredError({
+      headers: Object.fromEntries(
+        X402_PAYMENT_REQUIRED_HEADERS.map((header) => [
+          header,
+          paymentRequiredHeader,
+        ]),
+      ),
+      paymentRequiredResponse,
+      metadata: {
+        domain: normalizedDomainName,
+        durationInYears,
+        priceInUsdCents,
+        priceInUsdc,
+        paymentOptions: [paymentOption],
+        nftReceivingWalletAddress,
+      },
+    }),
+  });
+};
 
 // ============================================================================
 // Router Definition
@@ -611,7 +735,7 @@ export const ordersRouterOrpc = createTRPCRouter({
         input: {
           normalizedDomainName: input.normalizedDomainName,
           durationInYears: input.durationInYears,
-          nftReceivinggWallet: input.nftReceivinggWallet,
+          nftReceivingWallet: input.nftReceivingWallet,
         },
         postProcessOrderItem,
         gaEventTracking,
@@ -707,18 +831,7 @@ export const ordersRouterOrpc = createTRPCRouter({
   /**
    * Instant buy - single domain purchase without cart
    */
-  registerDomainX402: withAudit(
-    protectedProcedure,
-    ({ ctx, input, auditActorExtraInfo, result }) => ({
-      actorType: 'user',
-      actorId: ctx.user?.id || 'unknown',
-      actorExtraInfo: auditActorExtraInfo,
-      resourceType: 'order',
-      resourceId: result.id || '',
-      action: 'register_domain',
-      extraInput: input,
-    }),
-  )
+  registerDomainX402: authedOrPublicProcedure
     .meta({
       route: {
         path: '/x402/domain/{normalizedDomainName}',
@@ -730,15 +843,217 @@ export const ordersRouterOrpc = createTRPCRouter({
           'Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow.',
       },
     })
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        durationInYears: instantBuyInputSchema.shape.durationInYears,
-      }),
-    )
-    .output(orderOutputSchema)
+    .input(registerDomainX402InputSchema)
+    .output(x402PurchaseResponseSchema)
     .query(async ({ ctx, input }) => {
-      throw new Error();
+      ensureX402ConfiguredOrThrow();
+
+      const validation = await validateDomainForInstantPurchase({
+        normalizedDomainName: input.normalizedDomainName,
+        durationInYears: input.durationInYears,
+        user: ctx.user
+          ? { id: ctx.user.id, privyUserId: ctx.user.privyUserId }
+          : undefined,
+      });
+
+      if (!validation.isValid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: validation.error || 'Domain not available for purchase',
+        });
+      }
+
+      const paymentSignature = getX402PaymentSignatureHeader(
+        ctx.req.header.bind(ctx.req),
+      );
+
+      if (!paymentSignature) {
+        return await throwX402PaymentRequired({
+          ctx,
+          normalizedDomainName: input.normalizedDomainName,
+          durationInYears: input.durationInYears,
+          priceInUsdCents: validation.priceInUsdCents,
+          nftReceivingWalletAddress: input.nftReceivingWalletAddress,
+        });
+      }
+
+      const receiverWalletAddress = config.X402_SIGNER_ADDRESS;
+      if (!receiverWalletAddress) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'x402 payment not configured',
+        });
+      }
+
+      let paymentPayload: ReturnType<typeof decodeX402PaymentSignaturePayload>;
+      let paymentRequirement: Awaited<
+        ReturnType<typeof buildX402PaymentRequirements>
+      >['paymentRequirement'];
+      try {
+        paymentPayload = decodeX402PaymentSignaturePayload(paymentSignature);
+        ({ paymentRequirement } = await buildX402PaymentRequirements({
+          amountInUsdCents: validation.priceInUsdCents,
+          context: ctx.req,
+        }));
+        const verifyRes = await verifyX402PaymentSignature({
+          paymentPayload,
+          paymentRequirement,
+        });
+
+        if (!verifyRes?.isValid) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: resolveX402ErrorMessage(verifyRes?.invalidReason),
+          });
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid payment signature format',
+          cause: error,
+        });
+      }
+
+      const buyerWallet = extractBuyerWallet(paymentPayload);
+      if (!buyerWallet) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Could not determine buyer wallet from payment',
+        });
+      }
+
+      // Recover the actual signer address from the EIP-3009 payment signature
+      const signerWallet = await recoverX402SignerWallet(paymentPayload);
+
+      const existingPurchase = await db.query.x402PurchasesTable.findFirst({
+        where: eq(
+          x402PurchasesTable.normalizedDomainName,
+          input.normalizedDomainName,
+        ),
+      });
+
+      if (
+        existingPurchase &&
+        ['PENDING_VERIFICATION', 'VERIFIED', 'PROCESSING', 'SETTLING'].includes(
+          existingPurchase.status,
+        )
+      ) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A purchase is already in progress for this domain',
+        });
+      }
+
+      let paymentNonce: string;
+      try {
+        paymentNonce = extractX402PaymentNonce(paymentPayload);
+      } catch (error) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Payment nonce is missing',
+          cause: error,
+        });
+      }
+
+      const { paymentPayload: encryptedSignaturePaymentPayload } =
+        encryptX402PaymentPayloadSignature({
+          paymentPayload,
+          privateKey: resolveX402PaymentPayloadEncryptionPrivateKey(),
+        });
+
+      const [purchase] = await db
+        .insert(x402PurchasesTable)
+        .values({
+          normalizedDomainName: input.normalizedDomainName,
+          amountInUSDCents: validation.priceInUsdCents,
+          buyerWalletAddress: buyerWallet,
+          signerWalletAddress: signerWallet,
+          nftReceivingWalletAddress: input.nftReceivingWalletAddress,
+          network: config.X402_NETWORK,
+          durationInYears: input.durationInYears,
+          status: 'PENDING_VERIFICATION',
+          paymentPayload: encryptedSignaturePaymentPayload,
+          paymentNonce,
+        })
+        .returning();
+
+      const workflow = await temporalClient.workflow.start(
+        processX402PurchaseWorkflow,
+        {
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          workflowId: `x402-purchase-[${purchase.id}]`,
+          args: [
+            {
+              purchaseId: purchase.id,
+              amountInUsdCents: purchase.amountInUSDCents,
+              paymentPayload: purchase.paymentPayload!,
+              buyerWalletAddress: checksumWalletAddressSchema.parse(
+                purchase.buyerWalletAddress,
+              ),
+              signerWalletAddress: purchase.signerWalletAddress ?? undefined,
+              nftReceivingWalletAddress: purchase.nftReceivingWalletAddress
+                ? checksumWalletAddressSchema.parse(
+                    purchase.nftReceivingWalletAddress,
+                  )
+                : undefined,
+              receiverWalletAddress,
+              durationInYears: purchase.durationInYears,
+              network: purchase.network,
+              normalizedDomainName: purchase.normalizedDomainName,
+            },
+          ],
+        },
+      );
+
+      let settledPayment: Awaited<ReturnType<typeof settleX402Payment>>;
+      try {
+        settledPayment = await settleX402Payment({
+          paymentPayload,
+          paymentRequirement,
+        });
+
+        if (!settledPayment?.success) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: resolveX402ErrorMessage(settledPayment?.errorReason),
+          });
+        }
+
+        await workflow.signal(settlementSignal, {
+          settledAt: new Date().toISOString(),
+          settlementTxHash: settledPayment.transaction,
+        });
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid payment signature format',
+          cause: error,
+        });
+      }
+
+      X402_PAYMENT_RESPONSE_HEADERS.forEach((header) => {
+        ctx.honoCtx?.header(header, encodeX402PaymentResponse(settledPayment));
+      });
+
+      return {
+        status: 'accepted' as const,
+        message: 'Payment accepted, processing domain registration',
+        purchaseId: purchase.id,
+        domain: input.normalizedDomainName,
+        buyerWallet: checksumWalletAddressSchema.parse(buyerWallet),
+        nftReceivingWalletAddress:
+          input.nftReceivingWalletAddress ??
+          checksumWalletAddressSchema.parse(buyerWallet),
+        estimatedCompletionSeconds: 60,
+      };
     }),
 
   /**

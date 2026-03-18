@@ -49,6 +49,7 @@ import {
   buildX402ExactPaymentOption,
   centsToUsdc,
   encryptX402PaymentPayloadSignature,
+  recoverX402SignerWallet,
   resolveX402PaymentPayloadEncryptionPrivateKey,
   facilitatorClient,
   x402ResourceServer,
@@ -81,6 +82,7 @@ const domainParamSchema = z.object({
 // Schema for optional query parameters
 const domainQuerySchema = z.object({
   years: z.coerce.number().int().min(1).max(10).default(1),
+  nftReceivingWalletAddress: checksumWalletAddressSchema.optional(),
 });
 
 export const x402Router = new Hono();
@@ -126,8 +128,12 @@ x402Router.get('/domain/:domain', async (c) => {
   // Parse query parameters
   const queryResult = domainQuerySchema.safeParse({
     years: c.req.query('years') || c.req.query('durationInYears'),
+    nftReceivingWalletAddress: c.req.query('nftReceivingWalletAddress'),
   });
   const durationInYears = queryResult.success ? queryResult.data.years : 1;
+  const nftReceivingWalletAddress = queryResult.success
+    ? queryResult.data.nftReceivingWalletAddress
+    : undefined;
 
   logger.info({ normalizedDomainName, durationInYears }, 'x402 domain request');
 
@@ -145,6 +151,7 @@ x402Router.get('/domain/:domain', async (c) => {
       normalizedDomainName,
       durationInYears,
       paymentSignature,
+      nftReceivingWalletAddress,
     );
   }
   logger.info('No payment signature found');
@@ -270,6 +277,7 @@ async function handlePaidRequest(
   normalizedDomainName: string,
   durationInYears: number,
   paymentSignature: string,
+  nftReceivingWalletAddress?: string,
 ) {
   logger.info(
     { normalizedDomainName, durationInYears },
@@ -334,6 +342,13 @@ async function handlePaidRequest(
     });
   }
 
+  // Recover the actual signer address from the EIP-3009 payment signature
+  const signerWallet = await recoverX402SignerWallet(paymentPayload);
+  logger.info(
+    { buyerWallet, signerWallet },
+    'Extracted wallet addresses from x402 payment',
+  );
+
   if (!validation.isValid) {
     throw new HTTPException(400, {
       message: validation.error || 'Domain not available for purchase',
@@ -384,6 +399,8 @@ async function handlePaidRequest(
       normalizedDomainName: normalizedDomainName as any,
       amountInUSDCents: validation.priceInUsdCents,
       buyerWalletAddress: buyerWallet,
+      signerWalletAddress: signerWallet,
+      nftReceivingWalletAddress: nftReceivingWalletAddress ?? buyerWallet,
       network: config.X402_NETWORK,
       durationInYears,
       status: 'PENDING_VERIFICATION',
@@ -413,6 +430,12 @@ async function handlePaidRequest(
           buyerWalletAddress: checksumWalletAddressSchema.parse(
             purchase.buyerWalletAddress,
           ),
+          signerWalletAddress: purchase.signerWalletAddress ?? undefined,
+          nftReceivingWalletAddress: purchase.nftReceivingWalletAddress
+            ? checksumWalletAddressSchema.parse(
+                purchase.nftReceivingWalletAddress,
+              )
+            : undefined,
           receiverWalletAddress,
           durationInYears: purchase.durationInYears,
           network: purchase.network,

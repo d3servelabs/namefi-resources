@@ -36,6 +36,7 @@ import {
   EIP712_SIGNATURE_HEADER_METHOD_ID,
   parseEIP712SignatureEnvelope,
 } from '../lib/auth/methods/eip712/api-key-eip712';
+import { X402PaymentRequiredError } from '#lib/x402/helpers';
 
 const base = os.errors({
   BAD_REQUEST: {
@@ -73,6 +74,10 @@ const base = os.errors({
   PRECONDITION_FAILED: {
     status: 412,
     message: 'Precondition Failed',
+  },
+  PAYMENT_REQUIRED: {
+    status: 402,
+    message: 'Payment Required',
   },
   // PAYLOAD_TOO_LARGE: {
   //   status: 413,
@@ -250,6 +255,28 @@ const handler = new OpenAPIHandler(orpcRouter, {
         throw toOrpcError(error.cause);
       }
     }),
+    async (options) => {
+      try {
+        return await options.next();
+      } catch (error) {
+        if (
+          error instanceof ORPCError &&
+          'cause' in error &&
+          error.cause instanceof TRPCError &&
+          error.cause.cause instanceof X402PaymentRequiredError
+        ) {
+          return {
+            matched: true,
+            response: {
+              status: 402,
+              headers: error?.cause?.cause?.data?.headers ?? {},
+              body: error?.cause?.cause?.data?.paymentRequiredResponse ?? {},
+            },
+          };
+        }
+        throw error;
+      }
+    },
   ],
 });
 
@@ -344,6 +371,9 @@ providersRouter.use('/*', async (c, next) => {
     },
   });
   if (matched) {
+    c.res.headers.forEach((value, key) => {
+      response.headers.set(key, value);
+    });
     return c.newResponse(response.body, response);
   }
 

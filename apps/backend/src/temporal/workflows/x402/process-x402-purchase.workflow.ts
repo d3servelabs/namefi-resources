@@ -60,6 +60,9 @@ export interface X402PurchaseWorkflowInput {
   purchaseId: string;
   normalizedDomainName: NamefiNormalizedDomain;
   buyerWalletAddress: ChecksumWalletAddress;
+  /** Wallet address recovered from the EIP-3009 payment signature */
+  signerWalletAddress?: string;
+  nftReceivingWalletAddress?: ChecksumWalletAddress;
   /**
    * The wallet address that received the x402 payment (USDC)
    * This is tracked to support multiple/different signers for refunds
@@ -243,7 +246,8 @@ export async function processX402PurchaseWorkflow(
     workflow.log.info('Finding or creating user from wallet');
 
     const userResult = await findOrCreateUserFromWallet({
-      walletAddress: input.buyerWalletAddress,
+      walletAddress:
+        input.nftReceivingWalletAddress ?? input.buyerWalletAddress,
     });
 
     userId = userResult.userId;
@@ -264,6 +268,8 @@ export async function processX402PurchaseWorkflow(
       amountInUsdCents: input.amountInUsdCents,
       durationInYears: input.durationInYears,
       buyerWalletAddress: input.buyerWalletAddress,
+      signerWalletAddress: input.signerWalletAddress,
+      nftReceivingWalletAddress: input.nftReceivingWalletAddress,
       receiverWalletAddress: input.receiverWalletAddress,
       network: input.network,
       paymentPayload: input.paymentPayload,

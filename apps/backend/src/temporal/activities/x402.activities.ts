@@ -504,6 +504,9 @@ export interface CreateX402OrderInput {
   amountInUsdCents: number;
   durationInYears: number;
   buyerWalletAddress: ChecksumWalletAddress;
+  /** Wallet address recovered from the EIP-3009 payment signature */
+  signerWalletAddress?: string;
+  nftReceivingWalletAddress?: ChecksumWalletAddress;
   /**
    * The wallet address that received the x402 payment (USDC)
    * This is tracked to support multiple/different signers for refunds
@@ -567,7 +570,8 @@ export async function createX402Order(
         userId: input.userId,
         status: 'PROCESSING',
         amountInUSDCents: input.amountInUsdCents,
-        nftWalletAddress: input.buyerWalletAddress,
+        nftWalletAddress:
+          input.nftReceivingWalletAddress ?? input.buyerWalletAddress,
         nftChainId: getChainIdFromNetwork(input.network),
         metadata: {
           x402PurchaseId: input.purchaseId,
