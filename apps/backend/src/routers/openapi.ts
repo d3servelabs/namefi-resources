@@ -24,6 +24,7 @@ import { ordersRouterOrpc } from '#trpc/routers/ordersRouter.orpc';
 import { balanceRouterOrpc } from '#trpc/routers/balanceRouter.orpc';
 import { searchRouterOrpc } from '#trpc/routers/searchRouter.orpc';
 import { siweRouter } from '#trpc/routers/siwe.orpc';
+import { eip712Router } from '#trpc/routers/eip712.orpc';
 
 import { createTRPCRouter } from '#trpc/base';
 import { initializeAuthRegistry } from '#lib/auth/api-key-auth';
@@ -129,6 +130,7 @@ export const orpcRouter = toORPCRouter(
     balance: balanceRouterOrpc,
     search: searchRouterOrpc,
     siwe: siweRouter,
+    eip712: eip712Router,
   }),
 );
 
@@ -177,6 +179,7 @@ const openApiDocument = await openAPIGenerator.generate(
       { name: 'user' },
       { name: 'balance' },
       { name: 'search' },
+      { name: 'eip712' },
     ],
     security: [{ apiKeyAuth: [] }],
     components: {
