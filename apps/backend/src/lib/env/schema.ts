@@ -111,9 +111,16 @@ export const secretsSchema = z.object({
   CENTRALNIC_OTE2_DEFAULT_REGISTRANT: z.string().optional(),
 
   CENTRALNIC_DEFAULT_REGISTRANT: z.string().optional(),
+  X402_FACILITATOR_KEY: z
+    .enum(['CDP', 'ONESHOT', 'TESTING'])
+    .optional()
+    .default('TESTING'),
   // x402 Protocol Configuration (for CDP facilitator in production)
   CDP_API_KEY_ID: z.string().optional(),
   CDP_API_KEY_SECRET: z.string().optional(),
+  // x402 Protocol Configuration (for ONESHOT facilitator in production)
+  ONESHOT_API_KEY: z.string().optional(),
+  ONESHOT_API_KEY_SECRET: z.string().optional(),
   /**
    * Private key for signing x402 refund transactions (USDC transfers)
    * The same wallet that receives x402 payments signs refunds

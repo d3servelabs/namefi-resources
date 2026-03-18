@@ -6,16 +6,30 @@ import {
   HTTPFacilitatorClient,
   type FacilitatorConfig,
 } from '@x402/core/server';
-import { createFacilitatorConfig } from '../coinbase/facilitator';
+import { createFacilitatorConfig as createCdpFacilitatorConfig } from '../coinbase/facilitator';
+import { createFacilitatorConfig as create1ShotFacilitatorConfig } from '../1shot/facilitator';
 const logger = createLogger({ context: 'X402' });
 
 function getFacilitatorConfig(): FacilitatorConfig {
-  if (secrets.CDP_API_KEY_ID && secrets.CDP_API_KEY_SECRET) {
-    return createFacilitatorConfig(
-      secrets.CDP_API_KEY_ID,
-      secrets.CDP_API_KEY_SECRET,
-    );
+  switch (secrets.X402_FACILITATOR_KEY) {
+    case 'ONESHOT':
+      if (secrets.ONESHOT_API_KEY && secrets.ONESHOT_API_KEY_SECRET) {
+        return create1ShotFacilitatorConfig(
+          secrets.ONESHOT_API_KEY,
+          secrets.ONESHOT_API_KEY_SECRET,
+        );
+      }
+      break;
+    case 'CDP':
+      if (secrets.CDP_API_KEY_ID && secrets.CDP_API_KEY_SECRET) {
+        return createCdpFacilitatorConfig(
+          secrets.CDP_API_KEY_ID,
+          secrets.CDP_API_KEY_SECRET,
+        );
+      }
+      break;
   }
+
   return {
     url: config.X402_FACILITATOR_URL,
   };
