@@ -189,6 +189,7 @@ export const DomainCard: FC<{
   const shouldShowMlsOfferCta = Boolean(
     isUnavailableForDirectBuy && mlsSellerHandle && mlsOfferUrl.length,
   );
+  const shouldUseExpandedLayout = showImportUi || shouldShowMlsOfferCta;
   const goToMlsOffer = useCallback(() => {
     if (!mlsOfferUrl) return;
     window.open(mlsOfferUrl, '_blank', 'noopener,noreferrer');
@@ -197,16 +198,27 @@ export const DomainCard: FC<{
   return (
     <Card
       className={cn(
-        'bg-white/5 backdrop-blur-lg h-[136px] pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
+        'bg-white/5 backdrop-blur-lg pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
+        shouldUseExpandedLayout ? 'min-h-[136px]' : 'h-[136px]',
         // Only reduce opacity if we know the domain is unavailable and not importable
         hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
           ? 'opacity-60'
           : 'opacity-100',
       )}
     >
-      <CardContent className="h-full w-full px-4 md:px-6">
-        <div className="flex h-full w-full items-center justify-between">
-          <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
+      <CardContent
+        className={cn(
+          'w-full px-4 md:px-6',
+          shouldUseExpandedLayout ? '' : 'h-full',
+        )}
+      >
+        <div
+          className={cn(
+            'flex w-full justify-between gap-2 items-center',
+            shouldUseExpandedLayout ? '' : 'h-full',
+          )}
+        >
+          <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-x-hidden">
             <div className="font-semibold tracking-tight flex items-center gap-2">
               <div className="min-w-0 flex-1">
                 {domain ? (
