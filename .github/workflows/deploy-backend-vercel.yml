@@ -415,7 +415,7 @@ jobs:
             DEPLOYMENT_URL=$(vercel deploy --target=production --skip-domain --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
           else
             echo "Deploying to dev target (traffic not routed yet)"
-            DEPLOYMENT_URL=$(vercel deploy --target=dev --skip-domain --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+            DEPLOYMENT_URL=$(vercel deploy --target=dev --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
           fi
 
           echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
