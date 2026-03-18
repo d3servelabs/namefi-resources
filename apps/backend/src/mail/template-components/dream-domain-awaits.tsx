@@ -9,6 +9,12 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import * as styles from '../styles';
 import { getDreamDomainAwaitsVariant } from '../campaigns/dream-domain-awaits-variants';
 
@@ -57,41 +63,47 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
             Based on the domains you already have, here are a few available
             ideas in the same family:
           </Text>
-          <div style={{ ...styles.tableWrap, margin: '0' }}>
-            <table style={suggestionsTableStyle}>
-              <thead>
-                <tr>
-                  <th style={styles.tableHeaderCell}>Suggested domain</th>
-                  <th style={styles.tableHeaderCellNumeric}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {suggestedDomains.map((domain) => (
-                  <tr key={domain}>
-                    <td style={{ ...styles.tableCell, padding: '8px 10px' }}>
-                      <span style={domainTextStyle}>{domain}</span>
-                    </td>
-                    <td
-                      style={{
-                        ...styles.tableCellNumeric,
-                        padding: '8px 10px',
-                      }}
+          <EmailTable
+            wrapStyle={{ margin: '0' }}
+            tableStyle={suggestionsTableStyle}
+          >
+            <thead>
+              <EmailTableRow>
+                <EmailTableHeaderCell>Suggested domain</EmailTableHeaderCell>
+                <EmailTableHeaderCell numeric>Action</EmailTableHeaderCell>
+              </EmailTableRow>
+            </thead>
+            <tbody>
+              {suggestedDomains.map((domain) => (
+                <EmailTableRow key={domain}>
+                  <EmailTableCell
+                    label="Suggested domain"
+                    style={{ ...styles.tableCell, padding: '8px 10px' }}
+                  >
+                    <span style={domainTextStyle}>{domain}</span>
+                  </EmailTableCell>
+                  <EmailTableCell
+                    label="Action"
+                    numeric
+                    style={{
+                      ...styles.tableCellNumeric,
+                      padding: '8px 10px',
+                    }}
+                  >
+                    <a
+                      href={NamefiEmailLinks.addToCartFromUrl({
+                        domain,
+                        poweredByNamefiDomain,
+                      })}
+                      style={addToCartLinkStyle}
                     >
-                      <a
-                        href={NamefiEmailLinks.addToCartFromUrl({
-                          domain,
-                          poweredByNamefiDomain,
-                        })}
-                        style={addToCartLinkStyle}
-                      >
-                        Add to Cart
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      Add to Cart
+                    </a>
+                  </EmailTableCell>
+                </EmailTableRow>
+              ))}
+            </tbody>
+          </EmailTable>
         </>
       ) : null}
       <Card variant="info">

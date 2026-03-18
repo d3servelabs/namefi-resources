@@ -9,6 +9,12 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import * as styles from '../styles';
 import { getDomainTrafficSurgeVariant } from '../campaigns/domain-traffic-surge-variants';
 
@@ -46,11 +52,9 @@ const tableStyles = {
   },
   actionHeaderCell: {
     ...styles.tableHeaderCellNumeric,
-    width: '170px',
   },
   actionCell: {
     ...styles.tableCellNumeric,
-    width: '170px',
   },
 };
 
@@ -104,72 +108,92 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
       <Text style={{ ...styles.paragraph, marginBottom: '8px' }}>
         Here are the domains that stood out this week:
       </Text>
-      <div style={styles.tableWrap}>
-        <table style={tableStyles.table}>
-          <thead>
-            <tr>
-              <th style={tableStyles.headerCell}>Domain</th>
-              <th style={tableStyles.headerCell}>Interest this week</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedDomains.map((item) => {
-              const label = getInterestLabel(
-                item.weeklyQueries,
-                props.baselineThreshold,
-              );
-              const detail = formatCompactCount(item.weeklyQueries);
+      <EmailTable>
+        <thead>
+          <EmailTableRow>
+            <EmailTableHeaderCell style={tableStyles.headerCell}>
+              Domain
+            </EmailTableHeaderCell>
+            <EmailTableHeaderCell style={tableStyles.headerCell}>
+              Interest this week
+            </EmailTableHeaderCell>
+          </EmailTableRow>
+        </thead>
+        <tbody>
+          {sortedDomains.map((item) => {
+            const label = getInterestLabel(
+              item.weeklyQueries,
+              props.baselineThreshold,
+            );
+            const detail = formatCompactCount(item.weeklyQueries);
 
-              return (
-                <tr key={item.domain}>
-                  <td style={tableStyles.cell}>
-                    <span style={tableStyles.domainText}>{item.domain}</span>
-                  </td>
-                  <td style={tableStyles.cell}>
-                    <div style={{ fontWeight: 600 }}>{label}</div>
-                    <div style={tableStyles.mutedText}>~{detail} this week</div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+            return (
+              <EmailTableRow key={item.domain}>
+                <EmailTableCell label="Domain" style={tableStyles.cell}>
+                  <span style={tableStyles.domainText}>{item.domain}</span>
+                </EmailTableCell>
+                <EmailTableCell
+                  label="Interest this week"
+                  style={tableStyles.cell}
+                >
+                  <div style={{ fontWeight: 600 }}>{label}</div>
+                  <div style={tableStyles.mutedText}>~{detail} this week</div>
+                </EmailTableCell>
+              </EmailTableRow>
+            );
+          })}
+        </tbody>
+      </EmailTable>
       {suggestedDomains.length > 0 ? (
         <>
           <Text style={{ ...styles.paragraph, marginTop: '8px' }}>
             AI also found similar available names you may want to secure:
           </Text>
-          <div style={{ ...styles.tableWrap, marginTop: '8px' }}>
-            <table style={{ ...tableStyles.table, marginTop: '0' }}>
-              <thead>
-                <tr>
-                  <th style={tableStyles.headerCell}>Suggested domain</th>
-                  <th style={tableStyles.actionHeaderCell}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {suggestedDomains.map((domain) => (
-                  <tr key={domain}>
-                    <td style={tableStyles.cell}>
-                      <span style={tableStyles.domainText}>{domain}</span>
-                    </td>
-                    <td style={tableStyles.actionCell}>
-                      <a
-                        href={NamefiEmailLinks.addToCartFromUrl({
-                          domain,
-                          poweredByNamefiDomain,
-                        })}
-                        style={tableStyles.addToCartLink}
-                      >
-                        Add to Cart
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <EmailTable
+            wrapStyle={{ marginTop: '8px' }}
+            tableStyle={{ ...tableStyles.table, marginTop: '0' }}
+          >
+            <thead>
+              <EmailTableRow>
+                <EmailTableHeaderCell style={tableStyles.headerCell}>
+                  Suggested domain
+                </EmailTableHeaderCell>
+                <EmailTableHeaderCell
+                  numeric
+                  style={tableStyles.actionHeaderCell}
+                >
+                  Action
+                </EmailTableHeaderCell>
+              </EmailTableRow>
+            </thead>
+            <tbody>
+              {suggestedDomains.map((domain) => (
+                <EmailTableRow key={domain}>
+                  <EmailTableCell
+                    label="Suggested domain"
+                    style={tableStyles.cell}
+                  >
+                    <span style={tableStyles.domainText}>{domain}</span>
+                  </EmailTableCell>
+                  <EmailTableCell
+                    label="Action"
+                    numeric
+                    style={tableStyles.actionCell}
+                  >
+                    <a
+                      href={NamefiEmailLinks.addToCartFromUrl({
+                        domain,
+                        poweredByNamefiDomain,
+                      })}
+                      style={tableStyles.addToCartLink}
+                    >
+                      Add to Cart
+                    </a>
+                  </EmailTableCell>
+                </EmailTableRow>
+              ))}
+            </tbody>
+          </EmailTable>
         </>
       ) : null}
       <Text style={{ ...styles.paragraph, marginTop: '8px' }}>

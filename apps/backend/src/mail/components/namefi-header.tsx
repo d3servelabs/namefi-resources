@@ -15,7 +15,7 @@ export function NamefiHeader({
     cleanedTitle && !/^\s*namefi\s*$/i.test(cleanedTitle) ? cleanedTitle : null;
 
   return (
-    <Section style={styles.headerShell}>
+    <Section className="namefi-header-shell" style={styles.headerShell}>
       <Img
         src={src}
         width="92"

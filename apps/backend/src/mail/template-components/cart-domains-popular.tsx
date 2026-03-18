@@ -8,6 +8,12 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import * as styles from '../styles';
 import { getCartDomainsPopularVariant } from '../campaigns/cart-domains-popular-variants';
 
@@ -43,7 +49,9 @@ const tableStyles = {
   },
   mutedText: {
     ...styles.mutedText,
-    marginLeft: '6px',
+    display: 'block',
+    marginLeft: '0',
+    marginTop: '4px',
   },
   domainText: {
     ...styles.monospaceText,
@@ -78,43 +86,45 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
           {copyVariant.card}
         </Text>
       </Card>
-      <div style={styles.tableWrap}>
-        <table style={tableStyles.table}>
-          <thead>
-            <tr>
-              <th style={tableStyles.headerCell}>Domain</th>
-              {showPrice && <th style={tableStyles.headerCell}>Price</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {props.cartItems.map((item) => {
-              const display = formatDomainDisplay(item.domainNameLdh);
+      <EmailTable>
+        <thead>
+          <EmailTableRow>
+            <EmailTableHeaderCell style={tableStyles.headerCell}>
+              Domain
+            </EmailTableHeaderCell>
+            {showPrice && (
+              <EmailTableHeaderCell style={tableStyles.headerCell}>
+                Price
+              </EmailTableHeaderCell>
+            )}
+          </EmailTableRow>
+        </thead>
+        <tbody>
+          {props.cartItems.map((item) => {
+            const display = formatDomainDisplay(item.domainNameLdh);
 
-              return (
-                <tr key={item.domainNameLdh}>
-                  <td style={tableStyles.cell}>
-                    <span style={tableStyles.domainText}>
-                      {display.primary}
+            return (
+              <EmailTableRow key={item.domainNameLdh}>
+                <EmailTableCell label="Domain" style={tableStyles.cell}>
+                  <span style={tableStyles.domainText}>{display.primary}</span>
+                  {display.unicode && (
+                    <span style={tableStyles.mutedText}>
+                      ({display.unicode})
                     </span>
-                    {display.unicode && (
-                      <span style={tableStyles.mutedText}>
-                        ({display.unicode})
-                      </span>
-                    )}
-                  </td>
-                  {showPrice && (
-                    <td style={tableStyles.cell}>
-                      {typeof item.priceInUsdCents === 'number'
-                        ? `$${(item.priceInUsdCents / 100).toFixed(2)}`
-                        : '--'}
-                    </td>
                   )}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                </EmailTableCell>
+                {showPrice && (
+                  <EmailTableCell label="Price" style={tableStyles.cell}>
+                    {typeof item.priceInUsdCents === 'number'
+                      ? `$${(item.priceInUsdCents / 100).toFixed(2)}`
+                      : '--'}
+                  </EmailTableCell>
+                )}
+              </EmailTableRow>
+            );
+          })}
+        </tbody>
+      </EmailTable>
       <Button
         className="namefi-button-mobile"
         style={styles.button}

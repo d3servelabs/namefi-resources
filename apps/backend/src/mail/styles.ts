@@ -58,17 +58,21 @@ export const lineHeights = {
 
 export const main: CSSProperties = {
   backgroundColor: astraTheme.canvas,
+  boxSizing: 'border-box',
   fontFamily:
     '"Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+  margin: '0',
+  padding: '24px 12px 32px',
+  width: 'auto',
 };
 
 export const container: CSSProperties = {
   backgroundColor: astraTheme.card,
   margin: '0 auto',
   padding: '0 0 36px',
-  marginBottom: '64px',
   maxWidth: '760px',
-  minWidth: '320px',
+  width: '100%',
+  boxSizing: 'border-box',
   border: `1px solid ${astraTheme.border}`,
   borderRadius: '18px',
   overflow: 'hidden',
@@ -203,7 +207,6 @@ export const buttonRowCellLast: CSSProperties = {
 };
 
 export const tableWrap: CSSProperties = {
-  border: `1px solid ${astraTheme.borderStrong}`,
   borderRadius: '12px',
   margin: '16px 0',
   overflow: 'hidden',
@@ -239,9 +242,11 @@ export const tableCell: CSSProperties = {
   color: astraTheme.textPrimary,
   fontSize: typeScale.sm,
   lineHeight: lineHeights.sm,
+  overflowWrap: 'anywhere',
   padding: '10px 12px',
   textAlign: 'left',
   verticalAlign: 'top',
+  wordBreak: 'break-word',
 };
 
 export const tableCellNumeric: CSSProperties = {
@@ -308,6 +313,8 @@ export const monospaceText: CSSProperties = {
   color: astraTheme.textPrimary,
   fontFamily: '"SFMono-Regular",Menlo,Consolas,monospace',
   fontSize: typeScale.sm,
+  overflowWrap: 'anywhere',
+  wordBreak: 'break-word',
 };
 
 export const inlineActionLink: CSSProperties = {
@@ -320,7 +327,17 @@ export const inlineActionLink: CSSProperties = {
   lineHeight: lineHeights.xs,
   padding: '7px 11px',
   textDecoration: 'none',
-  whiteSpace: 'nowrap',
+};
+
+export const tableMobileLabel: CSSProperties = {
+  color: astraTheme.textSubtle,
+  display: 'none',
+  fontSize: typeScale.xs,
+  fontWeight: 700,
+  letterSpacing: '0.04em',
+  lineHeight: lineHeights.xs,
+  marginBottom: '6px',
+  textTransform: 'uppercase',
 };
 
 export const panelTitle: CSSProperties = {

@@ -23,11 +23,16 @@ import {
   tableCellSubtext,
   tableHeaderCell,
   tableHeaderCellNumeric,
-  tableWrap,
 } from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import pluralize from 'pluralize';
 import { getChain } from '@namefi-astra/utils';
 
@@ -237,81 +242,91 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
           {messageMarkdown}
         </ReactMarkdown>
 
-        <div style={tableWrap}>
-          <table style={table}>
-            <thead>
-              <tr>
-                <th style={tableHeaderCell}>Domain</th>
-                <th style={tableHeaderCell}>Type</th>
-                <th style={tableHeaderCell}>Duration</th>
-                <th style={tableHeaderCellNumeric}>Price</th>
-                <th style={tableHeaderCell}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr key={item.normalizedDomainName}>
-                  <td style={tableCell}>
-                    {getDomainWithIdn(item.normalizedDomainName)}
-                  </td>
-                  <td style={tableCell}>{item.type}</td>
-                  <td style={tableCell}>
-                    {pluralize('year', item.duration, true)}
-                  </td>
-                  <td style={tableCellNumeric}>
-                    ${(item.priceInUsdCents / 100).toFixed(2)}
-                  </td>
-                  <td style={tableCell}>
-                    <span
-                      style={{
-                        color:
-                          item.status === 'PROCESSING'
-                            ? astraTheme.warningInk
-                            : item.status === 'SUCCEEDED'
-                              ? astraTheme.successInk
-                              : astraTheme.errorInk,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {item.status === 'PROCESSING'
-                        ? 'Processing'
-                        : item.status === 'SUCCEEDED'
-                          ? 'Succeeded'
-                          : 'Failed'}
-                    </span>
-                    {(() => {
-                      const nftUrl =
-                        item.status === 'SUCCEEDED' &&
-                        item.mintTxHash &&
-                        item.chainId
-                          ? getTxExplorerUrl(item.chainId, item.mintTxHash)
-                          : null;
-                      return nftUrl ? (
-                        <div style={{ marginTop: '4px' }}>
-                          <a
-                            href={nftUrl}
-                            style={{
-                              ...tableCellSubtext,
-                              color: astraTheme.link,
-                              textDecoration: 'underline',
-                            }}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            View NFT
-                          </a>
-                        </div>
-                      ) : null;
-                    })()}
-                    {item.failureReason && (
-                      <div style={tableCellSubtext}>{item.failureReason}</div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <EmailTable tableStyle={table}>
+          <thead>
+            <EmailTableRow>
+              <EmailTableHeaderCell style={tableHeaderCell}>
+                Domain
+              </EmailTableHeaderCell>
+              <EmailTableHeaderCell style={tableHeaderCell}>
+                Type
+              </EmailTableHeaderCell>
+              <EmailTableHeaderCell style={tableHeaderCell}>
+                Duration
+              </EmailTableHeaderCell>
+              <EmailTableHeaderCell numeric style={tableHeaderCellNumeric}>
+                Price
+              </EmailTableHeaderCell>
+              <EmailTableHeaderCell style={tableHeaderCell}>
+                Status
+              </EmailTableHeaderCell>
+            </EmailTableRow>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <EmailTableRow key={item.normalizedDomainName}>
+                <EmailTableCell label="Domain" style={tableCell}>
+                  {getDomainWithIdn(item.normalizedDomainName)}
+                </EmailTableCell>
+                <EmailTableCell label="Type" style={tableCell}>
+                  {item.type}
+                </EmailTableCell>
+                <EmailTableCell label="Duration" style={tableCell}>
+                  {pluralize('year', item.duration, true)}
+                </EmailTableCell>
+                <EmailTableCell label="Price" numeric style={tableCellNumeric}>
+                  ${(item.priceInUsdCents / 100).toFixed(2)}
+                </EmailTableCell>
+                <EmailTableCell label="Status" style={tableCell}>
+                  <span
+                    style={{
+                      color:
+                        item.status === 'PROCESSING'
+                          ? astraTheme.warningInk
+                          : item.status === 'SUCCEEDED'
+                            ? astraTheme.successInk
+                            : astraTheme.errorInk,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {item.status === 'PROCESSING'
+                      ? 'Processing'
+                      : item.status === 'SUCCEEDED'
+                        ? 'Succeeded'
+                        : 'Failed'}
+                  </span>
+                  {(() => {
+                    const nftUrl =
+                      item.status === 'SUCCEEDED' &&
+                      item.mintTxHash &&
+                      item.chainId
+                        ? getTxExplorerUrl(item.chainId, item.mintTxHash)
+                        : null;
+                    return nftUrl ? (
+                      <div style={{ marginTop: '4px' }}>
+                        <a
+                          href={nftUrl}
+                          style={{
+                            ...tableCellSubtext,
+                            color: astraTheme.link,
+                            textDecoration: 'underline',
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View NFT
+                        </a>
+                      </div>
+                    ) : null;
+                  })()}
+                  {item.failureReason && (
+                    <div style={tableCellSubtext}>{item.failureReason}</div>
+                  )}
+                </EmailTableCell>
+              </EmailTableRow>
+            ))}
+          </tbody>
+        </EmailTable>
 
         {/* Payment Summary */}
         <Card variant="info">

@@ -11,6 +11,12 @@ import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Button } from '@react-email/components';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import { button } from '../styles';
 import { addDays, format } from 'date-fns';
 import * as styles from '../styles';
@@ -146,68 +152,66 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             {messageMarkdown}
           </ReactMarkdown>
         </div>
-        <div style={styles.tableWrap}>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.tableHeaderCell}>Domain Name</th>
-                <th style={styles.tableHeaderCell}>Expiration Date</th>
-                <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
-                <th style={styles.tableHeaderCell}>Renew Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {domainLdhRenewSucceeded.map((domainNameLdh) => (
-                <tr key={domainNameLdh}>
-                  <td style={styles.tableCell}>
-                    {domainNameLdh}{' '}
-                    {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                      ? ''
-                      : `(${punycode.toUnicode(domainNameLdh)})`}
-                  </td>
-                  <td style={styles.tableCell}>
-                    {format(
-                      expirationDatesByDomainLdh[domainNameLdh],
-                      'yyyy-MM-dd',
-                    )}
-                  </td>
-                  <td style={styles.tableCellNumeric}>
-                    ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
-                  </td>
-                  <td style={styles.tableCell}>
-                    <span style={{ color: styles.astraTheme.successInk }}>
-                      Success
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              {domainLdhRenewFailed.map((domainNameLdh) => (
-                <tr key={domainNameLdh}>
-                  <td style={styles.tableCell}>
-                    {domainNameLdh}{' '}
-                    {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                      ? ''
-                      : `(${punycode.toUnicode(domainNameLdh)})`}
-                  </td>
-                  <td style={styles.tableCell}>
-                    {format(
-                      expirationDatesByDomainLdh[domainNameLdh],
-                      'yyyy-MM-dd',
-                    )}
-                  </td>
-                  <td style={styles.tableCellNumeric}>
-                    ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
-                  </td>
-                  <td style={styles.tableCell}>
-                    <span style={{ color: styles.astraTheme.errorInk }}>
-                      Failed (Registry Error)
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <EmailTable>
+          <thead>
+            <EmailTableRow>
+              <EmailTableHeaderCell>Domain Name</EmailTableHeaderCell>
+              <EmailTableHeaderCell>Expiration Date</EmailTableHeaderCell>
+              <EmailTableHeaderCell numeric>Renew Price</EmailTableHeaderCell>
+              <EmailTableHeaderCell>Renew Status</EmailTableHeaderCell>
+            </EmailTableRow>
+          </thead>
+          <tbody>
+            {domainLdhRenewSucceeded.map((domainNameLdh) => (
+              <EmailTableRow key={domainNameLdh}>
+                <EmailTableCell label="Domain Name">
+                  {domainNameLdh}{' '}
+                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                    ? ''
+                    : `(${punycode.toUnicode(domainNameLdh)})`}
+                </EmailTableCell>
+                <EmailTableCell label="Expiration Date">
+                  {format(
+                    expirationDatesByDomainLdh[domainNameLdh],
+                    'yyyy-MM-dd',
+                  )}
+                </EmailTableCell>
+                <EmailTableCell label="Renew Price" numeric>
+                  ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+                </EmailTableCell>
+                <EmailTableCell label="Renew Status">
+                  <span style={{ color: styles.astraTheme.successInk }}>
+                    Success
+                  </span>
+                </EmailTableCell>
+              </EmailTableRow>
+            ))}
+            {domainLdhRenewFailed.map((domainNameLdh) => (
+              <EmailTableRow key={domainNameLdh}>
+                <EmailTableCell label="Domain Name">
+                  {domainNameLdh}{' '}
+                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                    ? ''
+                    : `(${punycode.toUnicode(domainNameLdh)})`}
+                </EmailTableCell>
+                <EmailTableCell label="Expiration Date">
+                  {format(
+                    expirationDatesByDomainLdh[domainNameLdh],
+                    'yyyy-MM-dd',
+                  )}
+                </EmailTableCell>
+                <EmailTableCell label="Renew Price" numeric>
+                  ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+                </EmailTableCell>
+                <EmailTableCell label="Renew Status">
+                  <span style={{ color: styles.astraTheme.errorInk }}>
+                    Failed (Registry Error)
+                  </span>
+                </EmailTableCell>
+              </EmailTableRow>
+            ))}
+          </tbody>
+        </EmailTable>
         {/* Show payment method breakdown if multiple payments were used */}
         {paymentMethods && paymentMethods.length > 1 && (
           <>
@@ -220,45 +224,45 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             >
               Payments
             </h4>
-            <div style={styles.tableWrap}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.tableHeaderCell}>Payment Method</th>
-                    <th style={styles.tableHeaderCellNumeric}>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paymentMethods.map((payment) => (
-                    <tr key={payment.paymentId}>
-                      <td style={styles.tableCell}>
-                        {formatPaymentIdentifier(payment)}
-                      </td>
-                      <td style={styles.tableCellNumeric}>
-                        ${(payment.amountInUsdCents / 100).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                  {refundAmountInUsd ? (
-                    <tr>
-                      <td style={styles.tableCell}>Refunded Amount</td>
-                      <td style={styles.tableCellNumeric}>
-                        - ${refundAmountInUsd.toFixed(2)}
-                      </td>
-                    </tr>
-                  ) : null}
-                  <tr>
-                    <td style={styles.tableCellEmphasis}>Total</td>
-                    <td style={styles.tableCellNumeric}>
-                      $
-                      {(chargedAmountInUsd - (refundAmountInUsd ?? 0)).toFixed(
-                        2,
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <EmailTable>
+              <thead>
+                <EmailTableRow>
+                  <EmailTableHeaderCell>Payment Method</EmailTableHeaderCell>
+                  <EmailTableHeaderCell numeric>Amount</EmailTableHeaderCell>
+                </EmailTableRow>
+              </thead>
+              <tbody>
+                {paymentMethods.map((payment) => (
+                  <EmailTableRow key={payment.paymentId}>
+                    <EmailTableCell label="Payment Method">
+                      {formatPaymentIdentifier(payment)}
+                    </EmailTableCell>
+                    <EmailTableCell label="Amount" numeric>
+                      ${(payment.amountInUsdCents / 100).toFixed(2)}
+                    </EmailTableCell>
+                  </EmailTableRow>
+                ))}
+                {refundAmountInUsd ? (
+                  <EmailTableRow>
+                    <EmailTableCell label="Payment Method">
+                      Refunded Amount
+                    </EmailTableCell>
+                    <EmailTableCell label="Amount" numeric>
+                      - ${refundAmountInUsd.toFixed(2)}
+                    </EmailTableCell>
+                  </EmailTableRow>
+                ) : null}
+                <EmailTableRow>
+                  <EmailTableCell label="Summary" emphasis>
+                    Total
+                  </EmailTableCell>
+                  <EmailTableCell label="Amount" numeric>
+                    $
+                    {(chargedAmountInUsd - (refundAmountInUsd ?? 0)).toFixed(2)}
+                  </EmailTableCell>
+                </EmailTableRow>
+              </tbody>
+            </EmailTable>
             <div style={{ marginTop: '2px', marginBottom: '30px' }}>
               <span style={styles.caption}>
                 For more details, view the order details

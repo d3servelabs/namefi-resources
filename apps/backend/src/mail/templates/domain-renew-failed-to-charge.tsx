@@ -12,6 +12,12 @@ import { sum, map } from 'ramda';
 import { Button } from '@react-email/components';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 
 export type DomainRenewFailedToChargeProps = {
   recipientName: string;
@@ -60,52 +66,52 @@ export const DomainRenewFailedToCharge =
               {messageMarkdown}
             </ReactMarkdown>
           </div>
-          <div style={styles.tableWrap}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.tableHeaderCell}>Domain Name</th>
-                  <th style={styles.tableHeaderCell}>Expiration Date</th>
-                  <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {domainsToRenew.map((domainNameLdh) => (
-                  <tr key={domainNameLdh}>
-                    <td style={styles.tableCell}>
-                      {domainNameLdh}{' '}
-                      {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                        ? ''
-                        : `(${punycode.toUnicode(domainNameLdh)})`}
-                    </td>
-                    <td style={styles.tableCell}>
-                      {format(
-                        expirationDatesByDomainLdh[domainNameLdh],
-                        'yyyy-MM-dd',
-                      )}
-                    </td>
-                    <td style={styles.tableCellNumeric}>
-                      ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-                <tr>
-                  <td style={styles.tableCellEmphasis}>Total</td>
-                  <td style={styles.tableCell} />
-                  <td style={styles.tableCellNumeric}>
-                    $
-                    {sum(
-                      map(
-                        (domainNameLdh) =>
-                          chargeAmountInUsdByDomainLdh[domainNameLdh],
-                        domainsToRenew,
-                      ),
-                    ).toFixed(2)}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <EmailTable>
+            <thead>
+              <EmailTableRow>
+                <EmailTableHeaderCell>Domain Name</EmailTableHeaderCell>
+                <EmailTableHeaderCell>Expiration Date</EmailTableHeaderCell>
+                <EmailTableHeaderCell numeric>Renew Price</EmailTableHeaderCell>
+              </EmailTableRow>
+            </thead>
+            <tbody>
+              {domainsToRenew.map((domainNameLdh) => (
+                <EmailTableRow key={domainNameLdh}>
+                  <EmailTableCell label="Domain Name">
+                    {domainNameLdh}{' '}
+                    {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                      ? ''
+                      : `(${punycode.toUnicode(domainNameLdh)})`}
+                  </EmailTableCell>
+                  <EmailTableCell label="Expiration Date">
+                    {format(
+                      expirationDatesByDomainLdh[domainNameLdh],
+                      'yyyy-MM-dd',
+                    )}
+                  </EmailTableCell>
+                  <EmailTableCell label="Renew Price" numeric>
+                    ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+                  </EmailTableCell>
+                </EmailTableRow>
+              ))}
+              <EmailTableRow>
+                <EmailTableCell label="Summary" emphasis>
+                  Total
+                </EmailTableCell>
+                <EmailTableCell hideOnMobile />
+                <EmailTableCell label="Renew Price" numeric>
+                  $
+                  {sum(
+                    map(
+                      (domainNameLdh) =>
+                        chargeAmountInUsdByDomainLdh[domainNameLdh],
+                      domainsToRenew,
+                    ),
+                  ).toFixed(2)}
+                </EmailTableCell>
+              </EmailTableRow>
+            </tbody>
+          </EmailTable>
           <Card variant="warning" style={{ marginTop: '12px' }}>
             <div
               style={{

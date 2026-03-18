@@ -36,40 +36,68 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
           this login:
         </Text>
 
-        <Section style={styles.detailsBox}>
-          <table style={styles.table}>
+        <div className="namefi-table-wrap" style={styles.detailsBox}>
+          <table className="namefi-key-value-table" style={styles.table}>
             <tbody>
-              <tr>
-                <td style={styles.labelCell}>Login Method</td>
-                <td style={styles.valueCell}>{loginMethod}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  Login Method
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {loginMethod}
+                </td>
               </tr>
-              <tr>
-                <td style={styles.labelCell}>IP Address</td>
-                <td style={styles.valueCell}>{ipAddress}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  IP Address
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {ipAddress}
+                </td>
               </tr>
-              <tr>
-                <td style={styles.labelCell}>Location</td>
-                <td style={styles.valueCell}>{geolocation}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  Location
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {geolocation}
+                </td>
               </tr>
-              <tr>
-                <td style={styles.labelCell}>Device</td>
-                <td style={styles.valueCell}>{device}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  Device
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {device}
+                </td>
               </tr>
-              <tr>
-                <td style={styles.labelCell}>Operating System</td>
-                <td style={styles.valueCell}>{os}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  Operating System
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {os}
+                </td>
               </tr>
-              <tr>
-                <td style={styles.labelCell}>Browser</td>
-                <td style={styles.valueCell}>{browser}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  Browser
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {browser}
+                </td>
               </tr>
-              <tr>
-                <td style={styles.labelCell}>Time</td>
-                <td style={styles.valueCell}>{timestamp}</td>
+              <tr className="namefi-key-value-row">
+                <td className="namefi-key-value-label" style={styles.labelCell}>
+                  Time
+                </td>
+                <td className="namefi-key-value-value" style={styles.valueCell}>
+                  {timestamp}
+                </td>
               </tr>
             </tbody>
           </table>
-        </Section>
+        </div>
 
         <Text style={styles.paragraph}>
           <strong>No action is required if this was you.</strong>

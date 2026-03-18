@@ -41,20 +41,33 @@ export function NamefiEmailContainer({
         <Head>
           <style>
             {`
-            #markdown-table table {
+#markdown-table {
+  margin: 16px 0;
+}
+
+#markdown-table table {
   width: 100%;
   border-collapse: collapse;
-  margin: 16px 0;
+  margin: 0;
   border: 1px solid ${styles.astraTheme.border};
 }
 
 #markdown-table th,
 #markdown-table td {
   border: 1px solid ${styles.astraTheme.border};
+  box-sizing: border-box;
   padding: 10px 12px;
   text-align: left;
   font-size: 14px;
   color: ${styles.astraTheme.textPrimary};
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#markdown-table th[align='right'],
+#markdown-table td[align='right'],
+#markdown-table td.namefi-data-table-cell-numeric {
+  text-align: right;
 }
 
 #markdown-table th {
@@ -68,6 +81,18 @@ export function NamefiEmailContainer({
 
 #markdown-table tr:nth-child(even) {
   background-color: ${styles.astraTheme.surfaceStripe};
+}
+
+.namefi-shell {
+  width: 100%;
+}
+
+.namefi-data-table {
+  width: 100%;
+}
+
+.namefi-data-table-mobile-label {
+  display: none;
 }
 
 .namefi-button-row {
@@ -89,6 +114,138 @@ export function NamefiEmailContainer({
 }
 
 @media only screen and (max-width: 620px) {
+  .namefi-body {
+    box-sizing: border-box !important;
+    padding: 16px 8px 24px !important;
+    width: auto !important;
+  }
+
+  .namefi-shell {
+    border-radius: 14px !important;
+  }
+
+  .namefi-content {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .namefi-header-shell {
+    padding: 24px 18px 18px !important;
+  }
+
+  .namefi-table-wrap {
+    border: none !important;
+    border-radius: 14px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow: visible !important;
+  }
+
+  .namefi-data-table,
+  .namefi-data-table tbody,
+  #markdown-table table,
+  #markdown-table tbody {
+    background-color: transparent !important;
+    border: none !important;
+    display: block !important;
+    margin: 0 !important;
+    table-layout: fixed !important;
+    width: 100% !important;
+  }
+
+  .namefi-data-table thead,
+  #markdown-table thead {
+    display: none !important;
+  }
+
+  .namefi-data-table-row,
+  #markdown-table tr {
+    background-color: ${styles.astraTheme.surface} !important;
+    border: none !important;
+    border-radius: 12px !important;
+    display: block !important;
+    margin-bottom: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .namefi-data-table-cell,
+  #markdown-table td {
+    background-color: transparent !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid ${styles.astraTheme.border} !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    overflow-wrap: anywhere !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    text-align: left !important;
+    width: 100% !important;
+    word-break: break-word !important;
+  }
+
+  .namefi-data-table-cell:first-child,
+  #markdown-table td:first-child {
+    border-top: none !important;
+  }
+
+  .namefi-data-table-cell-hidden-mobile {
+    display: none !important;
+  }
+
+  .namefi-data-table-mobile-label {
+    color: ${styles.astraTheme.textSubtle} !important;
+    display: block !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    line-height: 18px !important;
+    margin-bottom: 6px !important;
+    text-transform: uppercase !important;
+  }
+
+  .namefi-key-value-table,
+  .namefi-key-value-table tbody {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .namefi-key-value-row {
+    background-color: ${styles.astraTheme.surface} !important;
+    border: none !important;
+    border-radius: 12px !important;
+    display: block !important;
+    margin-bottom: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .namefi-key-value-label,
+  .namefi-key-value-value {
+    background-color: transparent !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid ${styles.astraTheme.border} !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    width: 100% !important;
+  }
+
+  .namefi-key-value-label {
+    border-top: none !important;
+    padding-bottom: 6px !important;
+    padding-top: 12px !important;
+    width: 100% !important;
+  }
+
+  .namefi-key-value-value {
+    padding-bottom: 12px !important;
+    padding-top: 8px !important;
+  }
+
   .namefi-button-row,
   .namefi-button-row tbody,
   .namefi-button-row tr,
@@ -125,10 +282,10 @@ export function NamefiEmailContainer({
           </style>
         </Head>
         <Preview>{title}</Preview>
-        <Body style={styles.main}>
-          <Container style={styles.container}>
+        <Body className="namefi-body" style={styles.main}>
+          <Container className="namefi-shell" style={styles.container}>
             {shouldRenderDefaultHeader && <NamefiHeader title={title} />}
-            <Section style={styles.box}>
+            <Section className="namefi-content" style={styles.box}>
               {customHeader}
               {children}
               {isNotNil(footer) &&

@@ -4,6 +4,12 @@ import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
 import { Card } from '../components/card';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
@@ -173,61 +179,59 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
         {claimsGranted.length > 0 && (
           <div style={{ marginBottom: '24px' }}>
             <h3 style={sectionHeading}>Detailed Breakdown of Your Claims</h3>
-            <div style={tableWrap}>
-              <table style={table}>
-                <thead>
-                  <tr>
-                    <th style={tableHeaderCell}>Source</th>
-                    <th style={tableHeaderCell}>Details</th>
-                    <th style={tableHeaderCell}>Expires</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {claimsGranted.map((claim) => (
-                    <tr key={`${claim.source}-${claim.sourceId}`}>
-                      <td style={tableCell}>
-                        <span style={getSourceTagStyle(claim.source)}>
-                          {claim.source === 'UPVOTE'
-                            ? 'UPVOTE'
-                            : claim.source === 'SHARE'
-                              ? 'LINK SHARE'
-                              : 'GIFT'}
-                        </span>
-                      </td>
-                      <td style={tableCell}>
-                        <div>
-                          {claim.reason.replace(
-                            new RegExp(incorrectParentDomain, 'g'),
+            <EmailTable>
+              <thead>
+                <EmailTableRow>
+                  <EmailTableHeaderCell>Source</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Details</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Expires</EmailTableHeaderCell>
+                </EmailTableRow>
+              </thead>
+              <tbody>
+                {claimsGranted.map((claim) => (
+                  <EmailTableRow key={`${claim.source}-${claim.sourceId}`}>
+                    <EmailTableCell label="Source" style={tableCell}>
+                      <span style={getSourceTagStyle(claim.source)}>
+                        {claim.source === 'UPVOTE'
+                          ? 'UPVOTE'
+                          : claim.source === 'SHARE'
+                            ? 'LINK SHARE'
+                            : 'GIFT'}
+                      </span>
+                    </EmailTableCell>
+                    <EmailTableCell label="Details" style={tableCell}>
+                      <div>
+                        {claim.reason.replace(
+                          new RegExp(incorrectParentDomain, 'g'),
+                          correctParentDomain,
+                        )}
+                      </div>
+                      {claim.domainName && (
+                        <div style={tableCellSubtext}>
+                          Domain:{' '}
+                          {claim.domainName.replace(
+                            incorrectParentDomain,
                             correctParentDomain,
                           )}
                         </div>
-                        {claim.domainName && (
-                          <div style={tableCellSubtext}>
-                            Domain:{' '}
-                            {claim.domainName.replace(
-                              incorrectParentDomain,
-                              correctParentDomain,
-                            )}
-                          </div>
-                        )}
-                      </td>
-                      <td style={tableCell}>
-                        {claim.expirationDate
-                          ? new Date(claim.expirationDate).toLocaleDateString(
-                              'en-US',
-                              {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric',
-                              },
-                            )
-                          : 'Never'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      )}
+                    </EmailTableCell>
+                    <EmailTableCell label="Expires" style={tableCell}>
+                      {claim.expirationDate
+                        ? new Date(claim.expirationDate).toLocaleDateString(
+                            'en-US',
+                            {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            },
+                          )
+                        : 'Never'}
+                    </EmailTableCell>
+                  </EmailTableRow>
+                ))}
+              </tbody>
+            </EmailTable>
           </div>
         )}
 

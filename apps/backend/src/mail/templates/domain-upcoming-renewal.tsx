@@ -9,6 +9,12 @@ import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
 import { GoToDashboard } from '../components/go-to-dashboard';
 import { NamefiEmailLinks } from '../email-links';
 import { buildTemplate } from '../components/build-template';
+import {
+  EmailTable,
+  EmailTableCell,
+  EmailTableHeaderCell,
+  EmailTableRow,
+} from '../components/email-table';
 import { z } from 'zod';
 import * as styles from '../styles';
 import { map, sum } from 'ramda';
@@ -192,42 +198,50 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
                 balances and cards below.
               </div>
 
-              <div style={{ ...styles.tableWrap, marginTop: '8px' }}>
-                <table style={styles.table}>
-                  <thead>
-                    <tr>
-                      <th style={styles.tableHeaderCell}>Payment Method</th>
-                      <th style={styles.tableHeaderCellNumeric}>
-                        Balance / Info
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style={styles.tableCell}>NFSC Balance</td>
-                      <td style={styles.tableCellNumeric}>
-                        ${availableBalanceInNfsc.toFixed(2)}
-                      </td>
-                    </tr>
-                    {availableOffChainPaymentMethodsPublicIdentifiers.length >
-                    0 ? (
-                      availableOffChainPaymentMethodsPublicIdentifiers.map(
-                        (last4) => (
-                          <tr key={last4}>
-                            <td style={styles.tableCell}>Credit Card</td>
-                            <td style={styles.tableCellNumeric}>••••{last4}</td>
-                          </tr>
-                        ),
-                      )
-                    ) : (
-                      <tr>
-                        <td style={styles.tableCell}>Credit Card</td>
-                        <td style={styles.tableCellNumeric}>None on file</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+              <EmailTable wrapStyle={{ marginTop: '8px' }}>
+                <thead>
+                  <EmailTableRow>
+                    <EmailTableHeaderCell>Payment Method</EmailTableHeaderCell>
+                    <EmailTableHeaderCell numeric>
+                      Balance / Info
+                    </EmailTableHeaderCell>
+                  </EmailTableRow>
+                </thead>
+                <tbody>
+                  <EmailTableRow>
+                    <EmailTableCell label="Payment Method">
+                      NFSC Balance
+                    </EmailTableCell>
+                    <EmailTableCell label="Balance / Info" numeric>
+                      ${availableBalanceInNfsc.toFixed(2)}
+                    </EmailTableCell>
+                  </EmailTableRow>
+                  {availableOffChainPaymentMethodsPublicIdentifiers.length >
+                  0 ? (
+                    availableOffChainPaymentMethodsPublicIdentifiers.map(
+                      (last4) => (
+                        <EmailTableRow key={last4}>
+                          <EmailTableCell label="Payment Method">
+                            Credit Card
+                          </EmailTableCell>
+                          <EmailTableCell label="Balance / Info" numeric>
+                            ••••{last4}
+                          </EmailTableCell>
+                        </EmailTableRow>
+                      ),
+                    )
+                  ) : (
+                    <EmailTableRow>
+                      <EmailTableCell label="Payment Method">
+                        Credit Card
+                      </EmailTableCell>
+                      <EmailTableCell label="Balance / Info" numeric>
+                        None on file
+                      </EmailTableCell>
+                    </EmailTableRow>
+                  )}
+                </tbody>
+              </EmailTable>
 
               {(paymentPreparationSummary.shortByInUsdCents ?? 0) > 0 && (
                 <div
@@ -301,43 +315,45 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
             <div style={styles.sectionHeading}>
               Renewing Soon ({format(now, 'LLL dd, yyyy')})
             </div>
-            <div style={styles.tableWrap}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.tableHeaderCell}>Domain Name</th>
-                    <th style={styles.tableHeaderCell}>Expiration Date</th>
-                    <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedRenewingToday.map(
-                    ({ domainNameLdh, expirationDate, renewalPrice }) => (
-                      <tr key={domainNameLdh}>
-                        <td style={styles.tableCell}>
-                          <DomainNameCell domainNameLdh={domainNameLdh} />
-                        </td>
-                        <td style={styles.tableCell}>
-                          <DomainExpirationDateCell
-                            expirationDate={expirationDate}
-                          />
-                        </td>
-                        <td style={styles.tableCellNumeric}>
-                          ${renewalPrice.amount.toFixed(2)}
-                        </td>
-                      </tr>
-                    ),
-                  )}
-                  <tr>
-                    <td style={styles.tableCellEmphasis}>Subtotal</td>
-                    <td style={styles.tableCell} />
-                    <td style={styles.tableCellNumeric}>
-                      ${renewingTodaySubtotal.toFixed(2)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <EmailTable>
+              <thead>
+                <EmailTableRow>
+                  <EmailTableHeaderCell>Domain Name</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Expiration Date</EmailTableHeaderCell>
+                  <EmailTableHeaderCell numeric>
+                    Renew Price
+                  </EmailTableHeaderCell>
+                </EmailTableRow>
+              </thead>
+              <tbody>
+                {sortedRenewingToday.map(
+                  ({ domainNameLdh, expirationDate, renewalPrice }) => (
+                    <EmailTableRow key={domainNameLdh}>
+                      <EmailTableCell label="Domain Name">
+                        <DomainNameCell domainNameLdh={domainNameLdh} />
+                      </EmailTableCell>
+                      <EmailTableCell label="Expiration Date">
+                        <DomainExpirationDateCell
+                          expirationDate={expirationDate}
+                        />
+                      </EmailTableCell>
+                      <EmailTableCell label="Renew Price" numeric>
+                        ${renewalPrice.amount.toFixed(2)}
+                      </EmailTableCell>
+                    </EmailTableRow>
+                  ),
+                )}
+                <EmailTableRow>
+                  <EmailTableCell label="Summary" emphasis>
+                    Subtotal
+                  </EmailTableCell>
+                  <EmailTableCell hideOnMobile />
+                  <EmailTableCell label="Renew Price" numeric>
+                    ${renewingTodaySubtotal.toFixed(2)}
+                  </EmailTableCell>
+                </EmailTableRow>
+              </tbody>
+            </EmailTable>
 
             {showPaymentMethodBreakdown && (
               <Card variant="success" style={{ marginTop: '14px' }}>
@@ -349,34 +365,38 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
                 >
                   Renewal payment split
                 </h3>
-                <div style={styles.tableWrap}>
-                  <table style={styles.table}>
-                    <thead>
-                      <tr>
-                        <th style={styles.tableHeaderCell}>Payment Method</th>
-                        <th style={styles.tableHeaderCellNumeric}>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {paymentMethods.map((payment) => (
-                        <tr key={payment.paymentId}>
-                          <td style={styles.tableCell}>
-                            {formatPaymentIdentifier(payment)}
-                          </td>
-                          <td style={styles.tableCellNumeric}>
-                            ${(payment.amountInUsdCents / 100).toFixed(2)}
-                          </td>
-                        </tr>
-                      ))}
-                      <tr>
-                        <td style={styles.tableCellEmphasis}>Subtotal</td>
-                        <td style={styles.tableCellNumeric}>
-                          ${paymentSubtotal.toFixed(2)}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <EmailTable>
+                  <thead>
+                    <EmailTableRow>
+                      <EmailTableHeaderCell>
+                        Payment Method
+                      </EmailTableHeaderCell>
+                      <EmailTableHeaderCell numeric>
+                        Amount
+                      </EmailTableHeaderCell>
+                    </EmailTableRow>
+                  </thead>
+                  <tbody>
+                    {paymentMethods.map((payment) => (
+                      <EmailTableRow key={payment.paymentId}>
+                        <EmailTableCell label="Payment Method">
+                          {formatPaymentIdentifier(payment)}
+                        </EmailTableCell>
+                        <EmailTableCell label="Amount" numeric>
+                          ${(payment.amountInUsdCents / 100).toFixed(2)}
+                        </EmailTableCell>
+                      </EmailTableRow>
+                    ))}
+                    <EmailTableRow>
+                      <EmailTableCell label="Summary" emphasis>
+                        Subtotal
+                      </EmailTableCell>
+                      <EmailTableCell label="Amount" numeric>
+                        ${paymentSubtotal.toFixed(2)}
+                      </EmailTableCell>
+                    </EmailTableRow>
+                  </tbody>
+                </EmailTable>
               </Card>
             )}
           </>
@@ -396,92 +416,94 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
               Auto-renew is off for the domains below. Renew them manually or
               enable auto-renew in domain settings.
             </div>
-            <div style={styles.tableWrap}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.tableHeaderCell}>Domain Name</th>
-                    <th style={styles.tableHeaderCell}>Expiration Date</th>
-                    <th style={styles.tableHeaderCell}>Action</th>
-                    <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedManualRenewals.map(
-                    ({ domainNameLdh, expirationDate, renewalPrice }) => (
-                      <tr key={domainNameLdh}>
-                        <td style={styles.tableCell}>
-                          <DomainNameCell domainNameLdh={domainNameLdh} />
-                        </td>
-                        <td style={styles.tableCell}>
-                          <DomainExpirationDateCell
-                            expirationDate={expirationDate}
-                          />
-                        </td>
-                        <td style={styles.tableCell}>
-                          <a
-                            style={styles.inlineActionLink}
-                            href={NamefiEmailLinks.domainSettings({
-                              domain: domainNameLdh,
-                              poweredByNamefiDomain: null,
-                            })}
-                          >
-                            Renew Now
-                          </a>
-                        </td>
-                        <td style={styles.tableCellNumeric}>
-                          ${renewalPrice.amount.toFixed(2)}
-                        </td>
-                      </tr>
-                    ),
-                  )}
-                  <tr>
-                    <td style={styles.tableCellEmphasis}>Subtotal</td>
-                    <td style={styles.tableCell} />
-                    <td style={styles.tableCell} />
-                    <td style={styles.tableCellNumeric}>
-                      ${manualRenewalSubtotal.toFixed(2)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <EmailTable>
+              <thead>
+                <EmailTableRow>
+                  <EmailTableHeaderCell>Domain Name</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Expiration Date</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Action</EmailTableHeaderCell>
+                  <EmailTableHeaderCell numeric>
+                    Renew Price
+                  </EmailTableHeaderCell>
+                </EmailTableRow>
+              </thead>
+              <tbody>
+                {sortedManualRenewals.map(
+                  ({ domainNameLdh, expirationDate, renewalPrice }) => (
+                    <EmailTableRow key={domainNameLdh}>
+                      <EmailTableCell label="Domain Name">
+                        <DomainNameCell domainNameLdh={domainNameLdh} />
+                      </EmailTableCell>
+                      <EmailTableCell label="Expiration Date">
+                        <DomainExpirationDateCell
+                          expirationDate={expirationDate}
+                        />
+                      </EmailTableCell>
+                      <EmailTableCell label="Action">
+                        <a
+                          style={styles.inlineActionLink}
+                          href={NamefiEmailLinks.domainSettings({
+                            domain: domainNameLdh,
+                            poweredByNamefiDomain: null,
+                          })}
+                        >
+                          Renew Now
+                        </a>
+                      </EmailTableCell>
+                      <EmailTableCell label="Renew Price" numeric>
+                        ${renewalPrice.amount.toFixed(2)}
+                      </EmailTableCell>
+                    </EmailTableRow>
+                  ),
+                )}
+                <EmailTableRow>
+                  <EmailTableCell label="Summary" emphasis>
+                    Subtotal
+                  </EmailTableCell>
+                  <EmailTableCell hideOnMobile />
+                  <EmailTableCell hideOnMobile />
+                  <EmailTableCell label="Renew Price" numeric>
+                    ${manualRenewalSubtotal.toFixed(2)}
+                  </EmailTableCell>
+                </EmailTableRow>
+              </tbody>
+            </EmailTable>
           </>
         )}
 
         {showUpcomingAutomaticRenewals && (
           <>
             <div style={styles.sectionHeading}>Upcoming Automatic Renewals</div>
-            <div style={styles.tableWrap}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.tableHeaderCell}>Domain Name</th>
-                    <th style={styles.tableHeaderCell}>Expiration Date</th>
-                    <th style={styles.tableHeaderCellNumeric}>Renew Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedUpcomingRenewals.map(
-                    ({ domainNameLdh, expirationDate, renewalPrice }) => (
-                      <tr key={domainNameLdh}>
-                        <td style={styles.tableCell}>
-                          <DomainNameCell domainNameLdh={domainNameLdh} />
-                        </td>
-                        <td style={styles.tableCell}>
-                          <DomainExpirationDateCell
-                            expirationDate={expirationDate}
-                          />
-                        </td>
-                        <td style={styles.tableCellNumeric}>
-                          ${renewalPrice.amount.toFixed(2)}
-                        </td>
-                      </tr>
-                    ),
-                  )}
-                </tbody>
-              </table>
-            </div>
+            <EmailTable>
+              <thead>
+                <EmailTableRow>
+                  <EmailTableHeaderCell>Domain Name</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Expiration Date</EmailTableHeaderCell>
+                  <EmailTableHeaderCell numeric>
+                    Renew Price
+                  </EmailTableHeaderCell>
+                </EmailTableRow>
+              </thead>
+              <tbody>
+                {sortedUpcomingRenewals.map(
+                  ({ domainNameLdh, expirationDate, renewalPrice }) => (
+                    <EmailTableRow key={domainNameLdh}>
+                      <EmailTableCell label="Domain Name">
+                        <DomainNameCell domainNameLdh={domainNameLdh} />
+                      </EmailTableCell>
+                      <EmailTableCell label="Expiration Date">
+                        <DomainExpirationDateCell
+                          expirationDate={expirationDate}
+                        />
+                      </EmailTableCell>
+                      <EmailTableCell label="Renew Price" numeric>
+                        ${renewalPrice.amount.toFixed(2)}
+                      </EmailTableCell>
+                    </EmailTableRow>
+                  ),
+                )}
+              </tbody>
+            </EmailTable>
           </>
         )}
 

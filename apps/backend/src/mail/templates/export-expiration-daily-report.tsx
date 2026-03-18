@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { buildTemplate } from '../components/build-template';
+import { rehypeResponsiveEmailTable } from '../components/rehype-responsive-email-table';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import type { ExportExpirationMetrics } from '../../temporal/activities/domain/export-expiration-report.activities';
@@ -26,6 +27,7 @@ export const ExportExpirationDailyReport =
                 { target: '_blank', rel: ['noopener', 'noreferrer'] },
               ],
               rehypeRaw,
+              rehypeResponsiveEmailTable,
             ]}
             remarkPlugins={[remarkGfm]}
             remarkRehypeOptions={{ passThrough: ['link'] }}
