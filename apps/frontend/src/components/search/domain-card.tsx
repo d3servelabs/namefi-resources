@@ -34,9 +34,179 @@ import { Gift, User } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
-import { useCallback, useMemo, useRef, type FC } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FC,
+} from 'react';
 
 // Progressive DomainCard that shows skeleton states for missing data
+function truncateMiddle(value: string, maxChars: number) {
+  if (value.length <= maxChars) {
+    return value;
+  }
+
+  const ellipsis = '...';
+  const visibleChars = Math.max(maxChars - ellipsis.length, 2);
+  const headChars = Math.ceil(visibleChars / 2);
+  const tailChars = Math.floor(visibleChars / 2);
+
+  return `${value.slice(0, headChars)}${ellipsis}${value.slice(-tailChars)}`;
+}
+
+const MIN_SUBDOMAIN_CHARS = 10;
+
+const DomainTitle: FC<{
+  domain: string;
+  subdomain: string | null;
+  parentDomain: string | null;
+  subdomainClassName: string;
+  parentDomainClassName: string;
+}> = ({
+  domain,
+  subdomain,
+  parentDomain,
+  subdomainClassName,
+  parentDomainClassName,
+}) => {
+  const wrapperRef = useRef<HTMLSpanElement>(null);
+  const visibleTextRef = useRef<HTMLSpanElement>(null);
+  const visibleSubdomainRef = useRef<HTMLSpanElement>(null);
+  const visibleParentDomainRef = useRef<HTMLSpanElement>(null);
+  const measureRootRef = useRef<HTMLSpanElement>(null);
+  const measureSubdomainRef = useRef<HTMLSpanElement>(null);
+  const [displaySubdomain, setDisplaySubdomain] = useState(subdomain ?? '');
+
+  const recomputeDisplaySubdomain = useCallback(() => {
+    if (!subdomain) {
+      setDisplaySubdomain('');
+      return;
+    }
+
+    if (
+      !visibleTextRef.current ||
+      !measureRootRef.current ||
+      !measureSubdomainRef.current
+    ) {
+      return;
+    }
+
+    const measureRoot = measureRootRef.current;
+    const measureSubdomain = measureSubdomainRef.current;
+    const subdomainStyle = visibleSubdomainRef.current
+      ? window.getComputedStyle(visibleSubdomainRef.current)
+      : null;
+    const parentDomainStyle = visibleParentDomainRef.current
+      ? window.getComputedStyle(visibleParentDomainRef.current)
+      : null;
+    const resolvedLineHeights = [subdomainStyle, parentDomainStyle]
+      .filter((style): style is CSSStyleDeclaration => Boolean(style))
+      .map((style) => {
+        const parsedLineHeight = Number.parseFloat(style.lineHeight);
+        if (Number.isFinite(parsedLineHeight)) {
+          return parsedLineHeight;
+        }
+
+        return Number.parseFloat(style.fontSize) * 1.1;
+      });
+    const lineHeight = Math.max(...resolvedLineHeights, 0);
+    const maxHeight = lineHeight * 2 + 1;
+
+    const doesFit = (candidate: string) => {
+      measureSubdomain.textContent = candidate;
+      return measureRoot.getBoundingClientRect().height <= maxHeight;
+    };
+
+    if (doesFit(subdomain)) {
+      setDisplaySubdomain(subdomain);
+      return;
+    }
+
+    let low = Math.min(MIN_SUBDOMAIN_CHARS, subdomain.length);
+    let high = subdomain.length;
+    let bestFit = truncateMiddle(subdomain, low);
+
+    while (low <= high) {
+      const mid = Math.floor((low + high) / 2);
+      const candidate = truncateMiddle(subdomain, mid);
+
+      if (doesFit(candidate)) {
+        bestFit = candidate;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+
+    setDisplaySubdomain(bestFit);
+  }, [subdomain]);
+
+  useEffect(() => {
+    recomputeDisplaySubdomain();
+
+    const wrapper = wrapperRef.current;
+    if (!wrapper) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      recomputeDisplaySubdomain();
+    });
+
+    resizeObserver.observe(wrapper, { box: 'border-box' });
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [recomputeDisplaySubdomain]);
+
+  return (
+    <h3 className="min-w-0 leading-[1.06]" title={domain}>
+      <span ref={wrapperRef} className="relative block w-full">
+        <span
+          ref={visibleTextRef}
+          className="line-clamp-2 block w-full break-words [overflow-wrap:anywhere]"
+        >
+          {displaySubdomain && (
+            <span ref={visibleSubdomainRef} className={subdomainClassName}>
+              {displaySubdomain}
+            </span>
+          )}
+          {parentDomain && (
+            <span
+              ref={visibleParentDomainRef}
+              className={parentDomainClassName}
+            >
+              {displaySubdomain ? '.' : ''}
+              {parentDomain}
+            </span>
+          )}
+        </span>
+        <span
+          ref={measureRootRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 invisible block w-full break-words [overflow-wrap:anywhere]"
+        >
+          {subdomain && (
+            <span ref={measureSubdomainRef} className={subdomainClassName}>
+              {displaySubdomain}
+            </span>
+          )}
+          {parentDomain && (
+            <span className={parentDomainClassName}>
+              {subdomain ? '.' : ''}
+              {parentDomain}
+            </span>
+          )}
+        </span>
+      </span>
+    </h3>
+  );
+};
+
 export const DomainCard: FC<{
   domain?: NamefiNormalizedDomain;
   availabilityInfo?: DomainAvailabilityInfo;
@@ -102,12 +272,16 @@ export const DomainCard: FC<{
     return cart.cartData?.find((item) => item.normalizedDomainName === domain);
   }, [cart, domain, inCart]);
 
-  const cartItemEppAuthorizationCode = useMemo(() => {
-    if (!cartItem) return undefined;
-    return (
-      cartItem.eppAuthorizationCode ?? cartItem.encryptedEppAuthorizationCode
-    );
-  }, [cartItem]);
+  const cartItemPlaintextEppAuthorizationCode =
+    cartItem?.eppAuthorizationCode?.trim();
+  const hasStoredEncryptedEppCode = Boolean(
+    inCart &&
+      cartItem?.encryptedEppAuthorizationCode &&
+      !cartItemPlaintextEppAuthorizationCode,
+  );
+  const activeEppAuthorizationCode = (
+    inCart ? cartItemPlaintextEppAuthorizationCode : eppAuthorizationCode
+  )?.trim();
 
   // Only calculate these if we have availabilityInfo
   const isImportable = availabilityInfo
@@ -147,16 +321,51 @@ export const DomainCard: FC<{
   const parts = domain?.split('.');
   const subdomain = parts?.[0];
   const parentDomain = parts?.slice(1).join('.');
+  const unicodeSubdomain = subdomain ? toUnicodeDomainName(subdomain) : null;
+  const unicodeParentDomain = parentDomain
+    ? toUnicodeDomainName(parentDomain)
+    : null;
+  const displayDomain =
+    [unicodeSubdomain, unicodeParentDomain].filter(isNotNil).join('.') ||
+    domain ||
+    '';
+  const isImportAction =
+    showImportUi && isImportable && !availabilityInfo?.availability;
+  const cartButtonState = removingBusy
+    ? 'removing'
+    : addingBusy
+      ? 'adding'
+      : inCart
+        ? 'in-cart'
+        : isImportAction
+          ? 'import'
+          : 'add-to-cart';
+  const isImportButtonDisabled =
+    isImportAction && !inCart && !activeEppAuthorizationCode;
+  const importButtonClassName = isImportButtonDisabled
+    ? 'bg-brand-primary/45 text-primary-foreground/70 hover:bg-brand-primary/45'
+    : undefined;
+  const compactCartButtonClassName =
+    'size-8 sm:size-9 md:h-9 md:w-auto md:px-3 md:text-xs';
+  const compactWishlistButtonClassName =
+    'size-8 [&_svg]:h-4 [&_svg]:w-4 sm:size-9 sm:[&_svg]:h-5 sm:[&_svg]:w-5';
 
   const handleAdd = useCallback(async () => {
     if (!availabilityInfo) return;
+    if (isImportAction && !activeEppAuthorizationCode) {
+      eppInputRef.current?.focus();
+      return;
+    }
     const minDuration = availabilityInfo.durationValidationInYears?.min ?? 1;
     await cart.addItem({
       domainAvailabilityInfo: availabilityInfo,
       durationInYears: minDuration,
-      operationType: 'REGISTER',
+      operationType: isImportAction ? 'IMPORT' : 'REGISTER',
+      ...(isImportAction
+        ? { eppAuthorizationCode: activeEppAuthorizationCode }
+        : {}),
     });
-  }, [cart, availabilityInfo]);
+  }, [activeEppAuthorizationCode, availabilityInfo, cart, isImportAction]);
 
   const handleRemove = useCallback(async () => {
     if (domain) {
@@ -189,51 +398,76 @@ export const DomainCard: FC<{
   const shouldShowMlsOfferCta = Boolean(
     isUnavailableForDirectBuy && mlsSellerHandle && mlsOfferUrl.length,
   );
-  const shouldUseExpandedLayout = showImportUi || shouldShowMlsOfferCta;
+  const shouldShowImportHint = Boolean(
+    showImportUi && availabilityInfo?.availability,
+  );
+  const shouldShowImportInput = Boolean(
+    isImportable && showImportUi && !availabilityInfo?.availability,
+  );
+  const domainLength = Array.from(displayDomain).length;
+  const isLongDomain = domainLength > 28;
+  const isVeryLongDomain = domainLength > 42;
   const goToMlsOffer = useCallback(() => {
     if (!mlsOfferUrl) return;
     window.open(mlsOfferUrl, '_blank', 'noopener,noreferrer');
   }, [mlsOfferUrl]);
+  const mlsOfferButton = shouldShowMlsOfferCta ? (
+    <Button
+      onClick={goToMlsOffer}
+      aria-label={
+        mlsSellerHandle ? `Buy on X from ${mlsSellerHandle}` : 'Buy on X'
+      }
+      className="h-8 max-w-full shrink-0 gap-1.5 border border-white/15 bg-black px-2.5 text-[11px] text-white shadow-sm hover:bg-zinc-900 hover:text-white sm:h-9 sm:px-3 sm:text-xs"
+    >
+      <span className="sm:hidden">Buy</span>
+      <span className="hidden sm:inline">Buy on</span>
+      <Image
+        src="/assets/social/x-logo.svg"
+        alt="X"
+        width={12}
+        height={12}
+        className="size-3 shrink-0"
+      />
+    </Button>
+  ) : null;
 
   return (
     <Card
       className={cn(
-        'bg-white/5 backdrop-blur-lg pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
-        shouldUseExpandedLayout ? 'min-h-[136px]' : 'h-[136px]',
+        'flex min-h-[116px] w-full items-stretch border-[1px] border-white/10 bg-white/5 p-0 backdrop-blur-lg transition-all duration-150 sm:min-h-[126px] md:min-h-[136px]',
         // Only reduce opacity if we know the domain is unavailable and not importable
         hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
           ? 'opacity-60'
           : 'opacity-100',
       )}
     >
-      <CardContent
-        className={cn(
-          'w-full px-4 md:px-6',
-          shouldUseExpandedLayout ? '' : 'h-full',
-        )}
-      >
-        <div
-          className={cn(
-            'flex w-full justify-between gap-2 items-center',
-            shouldUseExpandedLayout ? '' : 'h-full',
-          )}
-        >
-          <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-x-hidden">
-            <div className="font-semibold tracking-tight flex items-center gap-2">
-              <div className="min-w-0 flex-1">
+      <CardContent className="flex flex-1 items-center px-3 py-3.5 sm:px-4 sm:py-4 md:px-6 md:py-4">
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:gap-4 md:gap-5">
+          <div className="flex min-w-0 flex-col items-start justify-center gap-1.5 text-left">
+            <div className="font-semibold tracking-tight w-full">
+              <div className="min-w-0">
                 {domain ? (
-                  <h3 className="line-clamp-2 break-words">
-                    {subdomain && (
-                      <span className="text-2xl md:text-3xl text-brand-tertiary">
-                        {toUnicodeDomainName(subdomain)}
-                      </span>
+                  <DomainTitle
+                    domain={domain}
+                    subdomain={unicodeSubdomain}
+                    parentDomain={unicodeParentDomain}
+                    subdomainClassName={cn(
+                      'text-brand-tertiary',
+                      isVeryLongDomain
+                        ? 'text-[0.95rem] sm:text-[1.05rem] md:text-[1.35rem]'
+                        : isLongDomain
+                          ? 'text-[1.05rem] sm:text-[1.15rem] md:text-[1.5rem]'
+                          : 'text-lg sm:text-xl md:text-[1.8rem]',
                     )}
-                    {parentDomain && (
-                      <span className="text-xl md:text-2xl text-foreground">
-                        .{toUnicodeDomainName(parentDomain)}
-                      </span>
+                    parentDomainClassName={cn(
+                      'text-foreground',
+                      isVeryLongDomain
+                        ? 'text-[0.85rem] sm:text-[0.95rem] md:text-[1.25rem]'
+                        : isLongDomain
+                          ? 'text-[0.95rem] sm:text-[1rem] md:text-[1.35rem]'
+                          : 'text-base sm:text-lg md:text-[1.55rem]',
                     )}
-                  </h3>
+                  />
                 ) : (
                   <Skeleton className="h-8 w-full max-w-[250px] bg-gray-600/50" />
                 )}
@@ -241,31 +475,31 @@ export const DomainCard: FC<{
             </div>
             <div className="flex items-center gap-2">
               {shouldShowPricingSkeleton ? (
-                <Skeleton className="h-6 w-20 bg-gray-600/50" />
+                <Skeleton className="h-5 w-16 bg-gray-600/50 sm:h-6 sm:w-20" />
               ) : isNotNil(priceInUsd) ? (
-                <div className="flex items-center gap-3 transition-opacity duration-200 ease-out">
-                  <p className="text-sm md:text-xl shrink-0 font-medium line-clamp-1">
+                <div className="flex flex-col gap-0.5 text-left transition-opacity duration-200 ease-out">
+                  <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl">
                     {`${formatAmountInUSD(priceInUsd)} USD`}
                   </p>
                   {isNotNil(renewalPriceInUsd) && (
-                    <p className="text-xs md:text-sm text-muted-foreground">
+                    <p className="text-[10px] text-muted-foreground sm:text-[11px] md:text-sm">
                       renews at {formatAmountInUSD(renewalPriceInUsd)}
                     </p>
                   )}
                 </div>
-              ) : (
-                <div className="flex items-center gap-3 invisible">
-                  <p className="text-sm md:text-xl shrink-0 font-medium line-clamp-1 invisible">
+              ) : isUnsupported ? null : (
+                <div className="flex flex-col gap-0.5 text-left invisible">
+                  <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl invisible">
                     {'N/A'}
                   </p>
-                  <p className="text-xs md:text-sm text-muted-foreground invisible">
+                  <p className="text-[10px] text-muted-foreground sm:text-[11px] md:text-sm invisible">
                     {'N/A'}
                   </p>
                 </div>
               )}
             </div>
             {hasOwnerInfo && (
-              <div className="flex items-center text-sm text-muted-foreground">
+              <div className="flex items-center text-[11px] text-muted-foreground sm:text-xs">
                 <User className="mr-1 h-3 w-3 shrink-0" />
                 <span className="line-clamp-1">
                   Owner: {currentOwner.substring(0, 6)}...
@@ -273,157 +507,143 @@ export const DomainCard: FC<{
                 </span>
               </div>
             )}
-            {showImportUi && availabilityInfo?.availability && (
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-xs md:text-sm text-muted-foreground italic">
+            {shouldShowImportHint && (
+              <div className="mt-1 flex items-center gap-2">
+                <span className="text-[10px] italic text-muted-foreground sm:text-xs">
                   Not registered
                 </span>
               </div>
             )}
-            {isImportable &&
-              showImportUi &&
-              !availabilityInfo?.availability && (
-                <div className="flex items-center gap-2 mt-2 w-full md:w-80">
-                  <PasswordInput
-                    ref={eppInputRef}
-                    placeholder="EPP Auth Code"
-                    value={
-                      inCart
-                        ? (cartItemEppAuthorizationCode ?? '')
-                        : (eppAuthorizationCode ?? '')
-                    }
-                    disabled={inCart}
-                    onChange={(e) => onEppCodeChange?.(e.target.value)}
-                    className="h-8 text-xs md:text-sm bg-gray-700/50 border-gray-600"
+          </div>
+          <div className="flex w-[8.25rem] shrink-0 flex-col items-end justify-center gap-2 sm:w-[9rem] sm:gap-2.5 md:min-w-[14rem] md:w-max">
+            <div className="flex w-full flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
+              {domain && (
+                <AnimatedWishlistButton
+                  state={wishlistState}
+                  aria-label={
+                    inWishlist ? 'Remove from wishlist' : 'Add to wishlist'
+                  }
+                  onToggle={handleWishlistToggle}
+                  disabled={wishlistBusy}
+                  className={compactWishlistButtonClassName}
+                />
+              )}
+              {shouldShowActionSkeleton ? (
+                <Skeleton className="h-8 w-16 rounded-full bg-gray-600/50 sm:h-9 sm:w-20 md:w-24" />
+              ) : isUnsupported ? (
+                <Badge variant="destructive" className="text-[10px] sm:text-xs">
+                  Unsupported
+                </Badge>
+              ) : showImportUi && availabilityInfo?.availability ? (
+                <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
+                  <AnimatedCartButton
+                    state={cartButtonState}
+                    className={compactCartButtonClassName}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                    onGoToCart={() => {
+                      logBeginCheckout();
+                      router.push('/cart');
+                    }}
+                    showRemoveButton={inCart}
+                    disabled={addingBusy || removingBusy}
                   />
                 </div>
-              )}
-          </div>
-          <div className="flex shrink-0 items-center justify-center gap-2">
-            {domain && (
-              <AnimatedWishlistButton
-                state={wishlistState}
-                aria-label={
-                  inWishlist ? 'Remove from wishlist' : 'Add to wishlist'
-                }
-                onToggle={handleWishlistToggle}
-                disabled={wishlistBusy}
-              />
-            )}
-            {shouldShowActionSkeleton ? (
-              <Skeleton className="h-10 w-[120px] rounded-full bg-gray-600/50" />
-            ) : isUnsupported ? (
-              <Badge variant="destructive" className="text-xs">
-                Unsupported
-              </Badge>
-            ) : showImportUi && availabilityInfo?.availability ? (
-              <div className="flex items-center gap-2">
-                <AnimatedCartButton
-                  state={
-                    removingBusy
-                      ? 'removing'
-                      : addingBusy
-                        ? 'adding'
-                        : inCart
-                          ? 'in-cart'
-                          : 'add-to-cart'
-                  }
-                  onAdd={handleAdd}
-                  onRemove={handleRemove}
-                  onGoToCart={() => {
-                    logBeginCheckout();
-                    router.push('/cart');
-                  }}
-                  showRemoveButton={inCart}
-                  disabled={addingBusy || removingBusy}
-                />
-              </div>
-            ) : showImportUi && !isImportable ? (
-              <Badge variant="secondary" className="text-xs">
-                Temporarily unimportable
-              </Badge>
-            ) : showImportUi && isImportable ? null : isImportable &&
-              !showImportUi ? (
-              <div className="flex items-center gap-2">
-                <Badge variant="destructive" className="text-xs">
-                  Taken
+              ) : showImportUi && !isImportable ? (
+                <Badge variant="secondary" className="text-[10px] sm:text-xs">
+                  <span className="sm:hidden">Locked</span>
+                  <span className="hidden sm:inline">
+                    Temporarily unimportable
+                  </span>
                 </Badge>
-                {shouldShowMlsOfferCta && (
-                  <Button
-                    onClick={goToMlsOffer}
-                    className="shrink-0 border border-white/15 bg-black text-white shadow-sm hover:bg-zinc-900 hover:text-white"
+              ) : showImportUi && isImportable ? (
+                <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
+                  <AnimatedCartButton
+                    state={cartButtonState}
+                    className={cn(
+                      compactCartButtonClassName,
+                      importButtonClassName,
+                    )}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                    onGoToCart={() => {
+                      logBeginCheckout();
+                      router.push('/cart');
+                    }}
+                    showRemoveButton={inCart}
+                    disabled={
+                      addingBusy || removingBusy || isImportButtonDisabled
+                    }
+                  />
+                  {mlsOfferButton}
+                </div>
+              ) : isImportable && !showImportUi ? (
+                <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
+                  <Badge
+                    variant="destructive"
+                    className="text-[10px] sm:text-xs"
                   >
-                    <span className="inline-flex items-center gap-1 md:hidden">
-                      <span>Buy on</span>
-                      <Image
-                        src="/assets/social/x-logo.svg"
-                        alt="X"
-                        width={12}
-                        height={12}
-                        className="size-3.5 shrink-0"
-                      />
-                    </span>
-                    <span className="hidden items-center gap-2 md:inline-flex">
-                      <span>Buy from</span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[11px] leading-none text-white">
-                        <Image
-                          src="/assets/social/x-logo.svg"
-                          alt=""
-                          width={12}
-                          height={12}
-                          aria-hidden="true"
-                          className="size-3 shrink-0"
-                        />
-                        <span className="whitespace-nowrap font-medium">
-                          {mlsSellerHandle}
-                        </span>
-                      </span>
-                    </span>
-                  </Button>
-                )}
-              </div>
-            ) : hasAvailabilityInfo &&
-              !availabilityInfo.availability &&
-              !isImportable ? (
-              <Badge variant="secondary" className="text-xs">
-                Temporarily unavailable
-              </Badge>
-            ) : availabilityInfo.availability &&
-              freeClaimEligibility?.eligible ? (
-              <NamefiButton
-                onClick={goToClaimPage}
-                className="bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
-              >
-                <Gift className="h-4 w-4" />
-                Free Claim
-              </NamefiButton>
-            ) : availabilityInfo.availability ? (
-              <div className="flex items-center gap-2">
-                <AnimatedCartButton
-                  state={
-                    removingBusy
-                      ? 'removing'
-                      : addingBusy
-                        ? 'adding'
-                        : inCart
-                          ? 'in-cart'
-                          : 'add-to-cart'
+                    Taken
+                  </Badge>
+                  {mlsOfferButton}
+                </div>
+              ) : hasAvailabilityInfo &&
+                !availabilityInfo.availability &&
+                !isImportable ? (
+                <Badge variant="secondary" className="text-[10px] sm:text-xs">
+                  <span className="sm:hidden">Unavailable</span>
+                  <span className="hidden sm:inline">
+                    Temporarily unavailable
+                  </span>
+                </Badge>
+              ) : availabilityInfo.availability &&
+                freeClaimEligibility?.eligible ? (
+                <NamefiButton
+                  onClick={goToClaimPage}
+                  className="h-8 max-w-full px-3 text-[11px] bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:text-xs"
+                >
+                  <Gift className="h-4 w-4" />
+                  Free Claim
+                </NamefiButton>
+              ) : availabilityInfo.availability ? (
+                <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
+                  <AnimatedCartButton
+                    state={cartButtonState}
+                    className={compactCartButtonClassName}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                    onGoToCart={() => {
+                      logBeginCheckout();
+                      router.push('/cart');
+                    }}
+                    showRemoveButton={inCart}
+                    disabled={addingBusy || removingBusy}
+                  />
+                  <InstantBuyButton
+                    domainAvailabilityInfo={availabilityInfo}
+                    disabled={addingBusy || removingBusy}
+                    className="h-8 px-2.5 text-[11px] sm:h-9 sm:px-3 sm:text-xs"
+                  />
+                </div>
+              ) : null}
+            </div>
+            {shouldShowImportInput && (
+              <div className="w-full">
+                <PasswordInput
+                  ref={eppInputRef}
+                  aria-label={
+                    hasStoredEncryptedEppCode ? 'Saved EPP code' : 'EPP Code'
                   }
-                  onAdd={handleAdd}
-                  onRemove={handleRemove}
-                  onGoToCart={() => {
-                    logBeginCheckout();
-                    router.push('/cart');
-                  }}
-                  showRemoveButton={inCart}
-                  disabled={addingBusy || removingBusy}
-                />
-                <InstantBuyButton
-                  domainAvailabilityInfo={availabilityInfo}
-                  disabled={addingBusy || removingBusy}
+                  placeholder={
+                    hasStoredEncryptedEppCode ? 'Saved EPP code' : 'EPP Code'
+                  }
+                  value={activeEppAuthorizationCode ?? ''}
+                  disabled={inCart}
+                  onChange={(e) => onEppCodeChange?.(e.target.value)}
+                  className="h-8 w-full border-gray-600 bg-gray-700/50 text-[11px] sm:h-9 sm:text-xs md:text-sm"
                 />
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </CardContent>

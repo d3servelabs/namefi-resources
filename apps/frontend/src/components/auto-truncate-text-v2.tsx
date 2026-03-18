@@ -1,5 +1,12 @@
 // TODO: timeout logic needs to be improved
-import { useRef, useState, useCallback, useEffect, useId } from 'react';
+import {
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+  useId,
+  type RefObject,
+} from 'react';
 import { cn } from '@/lib/cn';
 import { useDebounceCallback } from 'usehooks-ts';
 import {
@@ -28,15 +35,17 @@ export const AutoTruncateTextV2 = ({
   className,
   children: text,
   ellipsis = '...',
+  as = 'div',
 }: {
   minCharactersToDisplay: number;
   initialCharactersCountToDisplay?: number;
   className?: string;
   children: string;
   ellipsis?: string;
+  as?: 'div' | 'span';
 }) => {
   const id = useId();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | HTMLSpanElement>(null);
   const measureFullRef = useRef<HTMLSpanElement>(null);
   const measureEllipsisRef = useRef<HTMLSpanElement>(null);
   const hasResizedRef = useRef(false);
@@ -191,9 +200,8 @@ export const AutoTruncateTextV2 = ({
     : text;
 
   const needsHover = shouldTruncate && text.length > displayLength;
-
-  return (
-    <div ref={containerRef} className={cn('relative', className)}>
+  const content = (
+    <>
       {/* Hidden spans to measure text with actual font */}
       <span
         ref={measureFullRef}
@@ -237,6 +245,26 @@ export const AutoTruncateTextV2 = ({
           {truncatedText}
         </span>
       )}
+    </>
+  );
+
+  if (as === 'span') {
+    return (
+      <span
+        ref={containerRef as RefObject<HTMLSpanElement>}
+        className={cn('relative inline-block max-w-full', className)}
+      >
+        {content}
+      </span>
+    );
+  }
+
+  return (
+    <div
+      ref={containerRef as RefObject<HTMLDivElement>}
+      className={cn('relative', className)}
+    >
+      {content}
     </div>
   );
 };

@@ -78,6 +78,7 @@ export const AnimatedCartButton = forwardRef<
     const [isHovered, setIsHovered] = useState(false);
 
     const isMobile = useIsMobile();
+    const removeButtonSize = isMobile ? 'icon-sm' : 'icon';
 
     const config = stateConfig[state];
 
@@ -111,6 +112,8 @@ export const AnimatedCartButton = forwardRef<
     const shouldShowRemove = isInCart && showRemoveButton;
     const isDisabled =
       state === 'adding' || state === 'removing' || props.disabled;
+    const mainButtonAriaLabel =
+      props['aria-label'] ?? (isInCart ? 'View cart' : config.text);
 
     return (
       <div className="flex space-x-2 shrink-0">
@@ -124,8 +127,11 @@ export const AnimatedCartButton = forwardRef<
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <Button
-                className="bg-secondary text-secondary-foreground hover:bg-red-600/80 transition-colors duration-200 px-3 rounded-md shrink-0 disabled:opacity-100 flex items-center justify-center"
+                size={removeButtonSize}
+                aria-label="Remove from cart"
+                className="bg-secondary text-secondary-foreground hover:bg-red-600/80 transition-colors duration-200 rounded-md shrink-0 disabled:opacity-100 flex items-center justify-center"
                 onClick={onRemove}
+                disabled={isDisabled}
               >
                 <motion.div
                   className="flex items-center justify-center"
@@ -150,6 +156,7 @@ export const AnimatedCartButton = forwardRef<
               className,
             )}
             size={isMobile ? 'icon' : 'default'}
+            aria-label={mainButtonAriaLabel}
             onClick={handleClick}
             disabled={isDisabled}
             onMouseEnter={
