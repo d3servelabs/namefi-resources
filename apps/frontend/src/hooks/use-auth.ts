@@ -230,15 +230,13 @@ export function useLogin(callbacks?: LoginCallbacks) {
 
 export function useLogout(callbacks?: LogoutCallbacks) {
   const { clearLocalCart } = useCartContext();
-  const { has } = useConsentManager();
-  const hasMeasurement = has('measurement');
 
   const combinedCallbacks = useMemo(
     () => ({
       onSuccess: () => {
         clearLocalCart();
 
-        if (hasMeasurement && config.GA_MEASUREMENT_ID) {
+        if (config.GA_MEASUREMENT_ID) {
           window.gtag?.('config', config.GA_MEASUREMENT_ID, {
             user_id: null,
             update: true,
@@ -248,7 +246,7 @@ export function useLogout(callbacks?: LogoutCallbacks) {
         callbacks?.onSuccess?.();
       },
     }),
-    [clearLocalCart, callbacks, hasMeasurement],
+    [clearLocalCart, callbacks],
   );
 
   const { logout } = usePrivyLogout(combinedCallbacks);

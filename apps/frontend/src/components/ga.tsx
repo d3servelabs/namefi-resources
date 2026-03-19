@@ -4,26 +4,35 @@ import { config } from '@/lib/env';
 import { useEffect } from 'react';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
+import {
+  getGoogleAnalyticsConfig,
+  getGoogleConsentState,
+} from '@/lib/google-analytics-consent';
 
 export function GoogleAnalyticsCookieConsentGated() {
-  const { has } = useConsentManager();
-  const hasMeasurement = has('measurement');
+  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const hasMeasurement = consents.measurement;
   const originInfo = useOrigin();
 
   useEffect(() => {
-    if (!hasMeasurement || !config.GA_MEASUREMENT_ID) return;
+    if (!config.GA_MEASUREMENT_ID) return;
+    if (isLoadingConsentInfo) return;
+
+    window.gtag?.('consent', 'update', getGoogleConsentState(hasMeasurement));
     window.gtag?.('config', config.GA_MEASUREMENT_ID, {
-      origin_type: originInfo.isFirstPartyOrigin
-        ? 'first_party'
-        : 'third_party',
-      origin_domain: originInfo.thirdPartyHostname || 'astra',
+      ...getGoogleAnalyticsConfig({
+        originType: originInfo.isFirstPartyOrigin
+          ? 'first_party'
+          : 'third_party',
+        originDomain: originInfo.thirdPartyHostname || 'astra',
+        debugMode: config.TYPE === 'development',
+      }),
+      ...(!hasMeasurement ? { user_id: null } : {}),
       update: true,
-      allow_google_signals: false,
-      allow_ad_personalization_signals: false,
-      debug_mode: config.TYPE === 'development',
     });
   }, [
     hasMeasurement,
+    isLoadingConsentInfo,
     originInfo.isFirstPartyOrigin,
     originInfo.thirdPartyHostname,
   ]);

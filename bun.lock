@@ -177,7 +177,6 @@
         "@base-ui/react": "^1.1.0",
         "@bprogress/next": "^3.2.12",
         "@c15t/nextjs": "^1.8.2",
-        "@c15t/scripts": "^1.0.1",
         "@cfx-kit/wallet-avatar": "^0.0.5",
         "@datadog/browser-logs": "^6.6.4",
         "@date-fns/tz": "^1.3.1",
@@ -360,7 +359,6 @@
       "dependencies": {
         "@bprogress/next": "^3.2.12",
         "@c15t/nextjs": "^1.8.2",
-        "@c15t/scripts": "^1.0.1",
         "@formatjs/intl-localematcher": "^0.5.4",
         "@mdx-js/loader": "^3.1.1",
         "@mdx-js/react": "^3.1.1",
@@ -924,8 +922,6 @@
     "@c15t/nextjs": ["@c15t/nextjs@1.8.2", "", { "dependencies": { "@c15t/react": "1.8.2", "@c15t/translations": "1.8.0" }, "peerDependencies": { "next": "^16.0.0 || ^15.0.0 || ^14.0.0 || ^13.0.0", "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc" } }, "sha512-+l23odvYP4WrhvLX/YHUaGyPo6FIg9xkhpbVkzQVPc+T6EWbSPGJtzhT+Gj9tQ3sFduE4JjIMF3mZUE3jqQdrg=="],
 
     "@c15t/react": ["@c15t/react@1.8.2", "", { "dependencies": { "@radix-ui/react-accordion": "1.2.4", "@radix-ui/react-slot": "1.2.0", "@radix-ui/react-switch": "1.1.4", "c15t": "1.8.2", "clsx": "2.1.1", "zustand": "^5.0.3" }, "peerDependencies": { "react": "^19.0.0 || ^19.0.0-rc || ^18.0.0 || ^17.0.0 || ^16.8.0", "react-dom": "^19.0.0 || ^19.0.0-rc || ^18.0.0 || ^17.0.0 || ^16.8.0" } }, "sha512-fyTcwrAbcehFkkTH3TB+nzo9vOPR9atdE9nQVeIdMbh1lWSdchRIjH+iVaNKtoEcA1cB3SStCXzvqja9F5GQEw=="],
-
-    "@c15t/scripts": ["@c15t/scripts@1.0.1", "", {}, "sha512-bzXJCvJd+mtUsMH7ny8kH4pWRZl9v1H5zbgVvk2bFTvO3Cr0TsUfQHpmuGJkIKn5W1cwUZ0+fpO8rIygHbmR4w=="],
 
     "@c15t/translations": ["@c15t/translations@1.8.0", "", {}, "sha512-iCw8iOc9lgXpIJaN/WzN+T3FMzFUgjN+UZ7tp6hKSV4RktXwr7C/z3HAOdeGYZE01BdmunrlOZGQB/N3hZoZZQ=="],
 

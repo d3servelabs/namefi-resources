@@ -1,37 +1,35 @@
 'use client';
 
+import { config } from '@/lib/env';
+import {
+  GA_MEASUREMENT_ID,
+  getGoogleAnalyticsConfig,
+  getGoogleConsentState,
+} from '@/lib/google-analytics-consent';
 import { useEffect } from 'react';
 import { useConsentManager } from '@c15t/nextjs';
 
-const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ??
-  process.env.GA_MEASUREMENT_ID ??
-  '';
-
 export function GoogleAnalyticsCookieConsentGated() {
-  const { has } = useConsentManager();
-  const hasMeasurement = has('measurement');
-
-  const isDevelopment =
-    process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' ||
-    process.env.ENVIRONMENT === 'development' ||
-    process.env.NODE_ENV !== 'production';
+  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const hasMeasurement = consents.measurement;
 
   useEffect(() => {
-    if (!hasMeasurement || !GA_MEASUREMENT_ID) return;
+    if (!GA_MEASUREMENT_ID) return;
+    if (isLoadingConsentInfo) return;
+
     const domain =
       typeof window !== 'undefined' && window.location.hostname
         ? window.location.hostname
-        : 'astra';
+        : 'namefi.io';
+    window.gtag?.('consent', 'update', getGoogleConsentState(hasMeasurement));
     window.gtag?.('config', GA_MEASUREMENT_ID, {
-      origin_type: 'first_party',
-      origin_domain: domain,
+      ...getGoogleAnalyticsConfig({
+        originDomain: domain,
+        debugMode: config.TYPE === 'development' || config.TYPE === 'local',
+      }),
       update: true,
-      allow_google_signals: false,
-      allow_ad_personalization_signals: false,
-      debug_mode: isDevelopment,
     });
-  }, [hasMeasurement, isDevelopment]);
+  }, [hasMeasurement, isLoadingConsentInfo]);
 
   return null;
 }

@@ -17,6 +17,9 @@ export function Providers({ children }: PropsWithChildren) {
           mode: 'c15t',
           backendURL: `${config.BACKEND_URL}/c15t`,
           consentCategories: ['necessary', 'measurement'],
+          trackingBlockerConfig: {
+            disableAutomaticBlocking: true,
+          },
           react: {
             theme: {
               'banner.footer.sub-group': 'order-1 sm:order-2 sm:ml-auto',

@@ -183,7 +183,7 @@ export default function CartPage() {
     ...trpc.orders.createOrderV2.mutationOptions({
       onSuccess: (data) => {
         setIsRedirecting(true);
-        logSubmitOrder({ success: true });
+        logSubmitOrder({ success: true, transactionId: data.id });
         router.push(`/orders/${data.id}`);
       },
       onError: (error) => {
@@ -244,18 +244,42 @@ export default function CartPage() {
   ]);
 
   const logSubmitOrder = useCallback(
-    ({ success }: { success: boolean }) => {
+    ({
+      success,
+      transactionId,
+    }:
+      | {
+          success: true;
+          transactionId: string;
+        }
+      | {
+          success: false;
+          transactionId?: string;
+        }) => {
       if (!items) {
         return;
       }
 
+      const cartItems = cartItemsToInteractionLoggingCartItems(items);
+
+      if (success) {
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Purchase,
+          properties: {
+            transactionId,
+            totalAmountInUsdCents,
+            cartItems,
+          },
+        });
+        return;
+      }
+
       logEventWithInteractionLoggers({
-        name: success
-          ? InteractionLoggingEventName.Purchase
-          : InteractionLoggingEventName.SubmitOrderFailure,
+        name: InteractionLoggingEventName.SubmitOrderFailure,
         properties: {
+          ...(transactionId ? { transactionId } : {}),
           totalAmountInUsdCents,
-          cartItems: cartItemsToInteractionLoggingCartItems(items),
+          cartItems,
         },
       });
     },

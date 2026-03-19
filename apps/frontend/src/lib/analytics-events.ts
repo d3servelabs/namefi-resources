@@ -58,6 +58,7 @@ export type InteractionLoggingEvent =
   | BaseEvent<
       InteractionLoggingEventName.Purchase,
       {
+        transactionId: string;
         totalAmountInUsdCents: number;
         cartItems: InteractionLoggingCartItem[];
       }
@@ -65,6 +66,7 @@ export type InteractionLoggingEvent =
   | BaseEvent<
       InteractionLoggingEventName.SubmitOrderFailure,
       {
+        transactionId?: string;
         totalAmountInUsdCents: number;
         cartItems: InteractionLoggingCartItem[];
       }

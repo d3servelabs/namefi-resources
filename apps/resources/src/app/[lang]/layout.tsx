@@ -6,6 +6,7 @@ import { getDictionary } from '@/get-dictionary';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { Providers } from '@/components/providers';
+import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import { resolveBaseUrl } from '@/lib/site-url';
 import type { Metadata } from 'next';
 import '../globals.css';
@@ -51,6 +52,7 @@ export default async function RootLayout({
           isRtl ? 'rtl' : 'ltr'
         }`}
       >
+        <GoogleAnalyticsBootstrap />
         <Providers>
           <div className="flex min-h-screen flex-col bg-background">
             <SiteHeader locale={locale} dictionary={dictionary} />

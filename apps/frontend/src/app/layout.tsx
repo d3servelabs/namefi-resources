@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn';
 import { Providers } from '@/components/providers';
 import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
+import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col',
         )}
       >
+        <GoogleAnalyticsBootstrap />
         <DatadogObservability />
         <Suspense>
           <Providers>

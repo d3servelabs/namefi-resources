@@ -32,6 +32,9 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
                       mode: 'c15t',
                       backendURL: `${config.BACKEND_URL}/c15t`,
                       consentCategories: ['necessary', 'measurement'],
+                      trackingBlockerConfig: {
+                        disableAutomaticBlocking: true,
+                      },
                       react: {
                         theme: {
                           'banner.footer.sub-group':

@@ -58,10 +58,12 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
     }
     case InteractionLoggingEventName.Purchase: // fallthrough
     case InteractionLoggingEventName.SubmitOrderFailure: {
-      const { cartItems, totalAmountInUsdCents } = event.properties;
+      const { cartItems, totalAmountInUsdCents, transactionId } =
+        event.properties;
       return {
         name: event.name,
         properties: {
+          ...(transactionId ? { transaction_id: transactionId } : {}),
           currency: 'USD', // required to be 3-letter ISO 4217 by GoogleAnalytics
           value: totalAmountInUsdCents / 100,
           items: cartItems.map((cartItem: InteractionLoggingCartItem) =>
