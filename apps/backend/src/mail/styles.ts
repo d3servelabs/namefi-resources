@@ -169,6 +169,7 @@ export const button: CSSProperties = {
   backgroundColor: astraTheme.brandPrimary,
   border: `1px solid ${astraTheme.brandPrimaryStrong}`,
   borderRadius: '10px',
+  boxSizing: 'border-box',
   color: astraTheme.brandPrimaryInk,
   display: 'inline-block',
   fontSize: typeScale.md,
@@ -210,6 +211,15 @@ export const tableWrap: CSSProperties = {
   borderRadius: '12px',
   margin: '16px 0',
   overflow: 'hidden',
+};
+
+export const dataTableWrap: CSSProperties = {
+  border: `1px solid ${astraTheme.border}`,
+};
+
+export const dataTable: CSSProperties = {
+  borderCollapse: 'separate',
+  borderSpacing: '0',
 };
 
 export const table: CSSProperties = {

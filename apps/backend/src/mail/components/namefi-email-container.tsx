@@ -87,8 +87,21 @@ export function NamefiEmailContainer({
   width: 100%;
 }
 
+.namefi-data-table-wrap {
+  border: 1px solid ${styles.astraTheme.border};
+}
+
 .namefi-data-table {
   width: 100%;
+}
+
+.namefi-data-table-wrap .namefi-data-table-header-cell + .namefi-data-table-header-cell,
+.namefi-data-table-wrap .namefi-data-table-cell + .namefi-data-table-cell {
+  border-left: 1px solid ${styles.astraTheme.border} !important;
+}
+
+.namefi-data-table-wrap .namefi-data-table tbody .namefi-data-table-cell {
+  border-top: 1px solid ${styles.astraTheme.border} !important;
 }
 
 .namefi-data-table-mobile-label {
@@ -109,7 +122,9 @@ export function NamefiEmailContainer({
 }
 
 .namefi-button-mobile {
+  box-sizing: border-box;
   display: inline-block;
+  max-width: 100%;
   width: auto;
 }
 
@@ -185,9 +200,14 @@ export function NamefiEmailContainer({
     word-break: break-word !important;
   }
 
+  .namefi-data-table-wrap .namefi-data-table-row > .namefi-data-table-cell:first-child,
   .namefi-data-table-cell:first-child,
   #markdown-table td:first-child {
     border-top: none !important;
+  }
+
+  .namefi-data-table-wrap .namefi-data-table-cell + .namefi-data-table-cell {
+    border-left: none !important;
   }
 
   .namefi-data-table-cell-hidden-mobile {
@@ -261,7 +281,9 @@ export function NamefiEmailContainer({
   }
 
   .namefi-button-mobile {
+    box-sizing: border-box !important;
     display: block !important;
+    max-width: 100% !important;
     width: 100% !important;
     min-width: 0 !important;
     margin-top: 4px !important;

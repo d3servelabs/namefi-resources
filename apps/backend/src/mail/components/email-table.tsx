@@ -13,12 +13,12 @@ export function EmailTable({
 }) {
   return (
     <div
-      className="namefi-table-wrap"
-      style={{ ...styles.tableWrap, ...wrapStyle }}
+      className="namefi-table-wrap namefi-data-table-wrap"
+      style={{ ...styles.tableWrap, ...styles.dataTableWrap, ...wrapStyle }}
     >
       <table
         className="namefi-data-table"
-        style={{ ...styles.table, ...tableStyle }}
+        style={{ ...styles.table, ...styles.dataTable, ...tableStyle }}
       >
         {children}
       </table>
@@ -48,6 +48,7 @@ export function EmailTableHeaderCell({
       }
       style={{
         ...(numeric ? styles.tableHeaderCellNumeric : styles.tableHeaderCell),
+        border: 'none',
         ...style,
       }}
     >
@@ -80,6 +81,7 @@ export function EmailTableCell({
     .join(' ');
   const cellStyle: React.CSSProperties = {
     ...styles.tableCell,
+    border: 'none',
     ...(numeric ? { textAlign: styles.tableCellNumeric.textAlign } : {}),
     ...(emphasis ? { fontWeight: styles.tableCellEmphasis.fontWeight } : {}),
     ...style,
