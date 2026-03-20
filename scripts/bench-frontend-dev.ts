@@ -7,8 +7,10 @@ import { fileURLToPath } from 'node:url';
 
 type Timing = {
   totalMs: number;
-  compileMs: number;
-  renderMs: number;
+  primaryMs: number;
+  secondaryMs: number;
+  primaryLabel: string;
+  secondaryLabel: string;
   raw: string;
 };
 
@@ -32,11 +34,21 @@ type Options = {
   logDevOutput: boolean;
 };
 
+type AverageTiming = {
+  totalMs: number | null;
+  primaryMs: number | null;
+  secondaryMs: number | null;
+  primaryLabel: string;
+  secondaryLabel: string;
+};
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const appDir = path.join(projectRoot, 'apps', 'frontend');
 
 const DEFAULT_ROUTES = ['/', '/domains', '/ai-brand-generator'];
+const DEFAULT_PRIMARY_LABEL = 'Next.js';
+const DEFAULT_SECONDARY_LABEL = 'Application code';
 
 function parseArgs(argv: string[]): Partial<Options> {
   const args: Partial<Options> = {};
@@ -192,48 +204,57 @@ async function waitForRoutes(
   );
 }
 
-function parseSegment(lines: string[], routes: string[]): RouteResult {
+function parseTimingLine(line: string, route: string): Timing | null {
+  const routePattern = escapeRegExp(route);
+  const match = line.match(
+    new RegExp(
+      `GET\\s+${routePattern}\\s+\\d+\\s+in\\s+([^\\s]+)\\s+\\(next\\.js:\\s*([^,]+),\\s*application-code:\\s*([^)]+)\\)`,
+      'i',
+    ),
+  );
+  if (!match) {
+    return null;
+  }
+
+  const totalMs = parseTimeToMs(match[1] ?? '');
+  const primaryMs = parseTimeToMs(match[2] ?? '');
+  const secondaryMs = parseTimeToMs(match[3] ?? '');
+
+  if (totalMs === null || primaryMs === null || secondaryMs === null) {
+    return null;
+  }
+
+  return {
+    totalMs,
+    primaryMs,
+    secondaryMs,
+    primaryLabel: DEFAULT_PRIMARY_LABEL,
+    secondaryLabel: DEFAULT_SECONDARY_LABEL,
+    raw: line.trim(),
+  };
+}
+
+export function parseSegment(lines: string[], routes: string[]): RouteResult {
   const result: RouteResult = Object.fromEntries(
     routes.map((route) => [route, null]),
   );
 
   for (const route of routes) {
-    const routePattern = escapeRegExp(route);
-    const regex = new RegExp(
-      `GET\\s+${routePattern}\\s+\\d+\\s+in\\s+([^\\s]+)\\s+\\(compile:\\s*([^,]+),\\s*render:\\s*([^)]+)\\)`,
-    );
-
     for (let i = lines.length - 1; i >= 0; i -= 1) {
       const line = lines[i] ?? '';
-      const match = line.match(regex);
-      if (!match) continue;
-      const totalMs = parseTimeToMs(match[1] ?? '');
-      const compileMs = parseTimeToMs(match[2] ?? '');
-      const renderMs = parseTimeToMs(match[3] ?? '');
-      if (totalMs !== null && compileMs !== null && renderMs !== null) {
-        result[route] = {
-          totalMs,
-          compileMs,
-          renderMs,
-          raw: line.trim(),
-        };
+      const timing = parseTimingLine(line, route);
+      if (timing) {
+        result[route] = timing;
+        break;
       }
-      break;
     }
   }
 
   return result;
 }
 
-function averageTimings(results: RouteResult[]) {
-  const averages: Record<
-    string,
-    {
-      totalMs: number | null;
-      compileMs: number | null;
-      renderMs: number | null;
-    }
-  > = {};
+export function averageTimings(results: RouteResult[]) {
+  const averages: Record<string, AverageTiming> = {};
 
   const allRoutes = new Set<string>();
   for (const result of results) {
@@ -244,15 +265,19 @@ function averageTimings(results: RouteResult[]) {
 
   for (const route of allRoutes) {
     const totals: number[] = [];
-    const compiles: number[] = [];
-    const renders: number[] = [];
+    const primary: number[] = [];
+    const secondary: number[] = [];
+    let primaryLabel = DEFAULT_PRIMARY_LABEL;
+    let secondaryLabel = DEFAULT_SECONDARY_LABEL;
 
     for (const result of results) {
       const timing = result[route];
       if (!timing) continue;
       totals.push(timing.totalMs);
-      compiles.push(timing.compileMs);
-      renders.push(timing.renderMs);
+      primary.push(timing.primaryMs);
+      secondary.push(timing.secondaryMs);
+      primaryLabel = timing.primaryLabel;
+      secondaryLabel = timing.secondaryLabel;
     }
 
     const avg = (values: number[]) =>
@@ -260,12 +285,43 @@ function averageTimings(results: RouteResult[]) {
 
     averages[route] = {
       totalMs: avg(totals),
-      compileMs: avg(compiles),
-      renderMs: avg(renders),
+      primaryMs: avg(primary),
+      secondaryMs: avg(secondary),
+      primaryLabel,
+      secondaryLabel,
     };
   }
 
   return averages;
+}
+
+function resolveRouteLabels(results: RouteResult) {
+  for (const timing of Object.values(results)) {
+    if (!timing) continue;
+    return {
+      primaryLabel: timing.primaryLabel,
+      secondaryLabel: timing.secondaryLabel,
+    };
+  }
+
+  return {
+    primaryLabel: DEFAULT_PRIMARY_LABEL,
+    secondaryLabel: DEFAULT_SECONDARY_LABEL,
+  };
+}
+
+function resolveAverageLabels(averages: Record<string, AverageTiming>) {
+  for (const timing of Object.values(averages)) {
+    return {
+      primaryLabel: timing.primaryLabel,
+      secondaryLabel: timing.secondaryLabel,
+    };
+  }
+
+  return {
+    primaryLabel: DEFAULT_PRIMARY_LABEL,
+    secondaryLabel: DEFAULT_SECONDARY_LABEL,
+  };
 }
 
 async function requestRoute(baseUrl: string, route: string, timeoutMs: number) {
@@ -389,8 +445,11 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
 }
 
 function renderTable(results: RouteResult, unit: 's' | 'ms') {
+  const labels = resolveRouteLabels(results);
   const lines: string[] = [];
-  lines.push('| Route | Total | Compile | Render |');
+  lines.push(
+    `| Route | Total | ${labels.primaryLabel} | ${labels.secondaryLabel} |`,
+  );
   lines.push('| --- | --- | --- | --- |');
   for (const [route, timing] of Object.entries(results)) {
     if (!timing) {
@@ -399,22 +458,30 @@ function renderTable(results: RouteResult, unit: 's' | 'ms') {
     }
     lines.push(
       `| ${route} | ${formatMs(timing.totalMs, unit)} | ${formatMs(
-        timing.compileMs,
+        timing.primaryMs,
         unit,
-      )} | ${formatMs(timing.renderMs, unit)} |`,
+      )} | ${formatMs(timing.secondaryMs, unit)} |`,
     );
   }
   return lines.join('\n');
 }
 
-function renderAverages(
+export function renderAverages(
   cold: ReturnType<typeof averageTimings>,
   hot: ReturnType<typeof averageTimings>,
 ) {
   const routes = new Set([...Object.keys(cold), ...Object.keys(hot)]);
+  const coldLabels =
+    Object.keys(cold).length > 0
+      ? resolveAverageLabels(cold)
+      : resolveAverageLabels(hot);
+  const hotLabels =
+    Object.keys(hot).length > 0
+      ? resolveAverageLabels(hot)
+      : resolveAverageLabels(cold);
   const lines: string[] = [];
   lines.push(
-    '| Route | Cold total | Cold compile | Cold render | Hot total | Hot compile | Hot render |',
+    `| Route | Cold total | Cold ${coldLabels.primaryLabel} | Cold ${coldLabels.secondaryLabel} | Hot total | Hot ${hotLabels.primaryLabel} | Hot ${hotLabels.secondaryLabel} |`,
   );
   lines.push('| --- | --- | --- | --- | --- | --- | --- |');
   for (const route of routes) {
@@ -422,13 +489,13 @@ function renderAverages(
     const hotTiming = hot[route];
     lines.push(
       `| ${route} | ${formatMs(coldTiming?.totalMs ?? null, 's')} | ${formatMs(
-        coldTiming?.compileMs ?? null,
+        coldTiming?.primaryMs ?? null,
         's',
-      )} | ${formatMs(coldTiming?.renderMs ?? null, 'ms')} | ${formatMs(
+      )} | ${formatMs(coldTiming?.secondaryMs ?? null, 'ms')} | ${formatMs(
         hotTiming?.totalMs ?? null,
         'ms',
-      )} | ${formatMs(hotTiming?.compileMs ?? null, 'ms')} | ${formatMs(
-        hotTiming?.renderMs ?? null,
+      )} | ${formatMs(hotTiming?.primaryMs ?? null, 'ms')} | ${formatMs(
+        hotTiming?.secondaryMs ?? null,
         'ms',
       )} |`,
     );
@@ -463,7 +530,7 @@ async function main() {
     baseUrl,
     devCmd,
     timeoutMs: args.timeoutMs ?? 180_000,
-    phaseTimeoutMs: args.phaseTimeoutMs ?? 300_000,
+    phaseTimeoutMs: args.phaseTimeoutMs ?? 600_000,
     outputDir,
     outputFile,
     logDevOutput: args.logDevOutput ?? false,
@@ -530,7 +597,9 @@ async function main() {
   process.exit(0);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (import.meta.main) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

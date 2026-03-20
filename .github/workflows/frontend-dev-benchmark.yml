@@ -154,6 +154,7 @@ jobs:
 
           avg_table = "\n".join(avg_lines).strip()
 
+          header_columns = None
           rows = []
           if avg_table:
             for line in avg_table.splitlines():
@@ -162,9 +163,23 @@ jobs:
               if line.strip().startswith("| ---"):
                 continue
               columns = [col.strip() for col in line.split("|") if col.strip()]
-              if not columns or columns[0].lower() == "route":
+              if not columns:
+                continue
+              if columns[0].lower() == "route":
+                header_columns = columns
                 continue
               rows.append(columns)
+
+          cold_headers = (
+            header_columns[1:4]
+            if header_columns and len(header_columns) >= 4
+            else ["Cold total", "Cold Next.js", "Cold Application code"]
+          )
+          hot_headers = (
+            header_columns[4:7]
+            if header_columns and len(header_columns) >= 7
+            else ["Hot total", "Hot Next.js", "Hot Application code"]
+          )
 
           runs = ""
           for line in lines:
@@ -252,11 +267,11 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": f"*Cold (total | compile | render)*\n{cold}",
+                      "text": f"*{' | '.join(cold_headers)}*\n{cold}",
                     },
                     {
                       "type": "mrkdwn",
-                      "text": f"*Hot (total | compile | render)*\n{hot}",
+                      "text": f"*{' | '.join(hot_headers)}*\n{hot}",
                     },
                   ],
                 }

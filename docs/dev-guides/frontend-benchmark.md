@@ -29,7 +29,7 @@ The script:
 - `--dev-cmd "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run dev"`
 - `--output apps/frontend/.benchmarks/my-run.md`
 - `--timeout-ms 180000` (dev server ready timeout)
-- `--phase-timeout-ms 300000` (route compile timeout)
+- `--phase-timeout-ms 600000` (route compile timeout)
 
 ## Custom dev command examples
 
