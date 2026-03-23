@@ -115,6 +115,8 @@ function setupLimiter({
     reservoirRefreshAmount: 4, // refill 4 tokens...
     reservoirRefreshInterval: 1000, // ...every 1000 ms (1 second)
     connection,
+    maxConcurrent: 2,
+    minTime: 200,
   });
 
   limiter.on('failed', async (error, jobInfo) => {
