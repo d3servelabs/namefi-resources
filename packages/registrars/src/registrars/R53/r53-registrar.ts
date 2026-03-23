@@ -111,16 +111,16 @@ function setupLimiter({
 
   limiter = new Bottleneck({
     id: 'r53-registrar',
-    reservoir: 5, // initial available tokens
-    reservoirRefreshAmount: 5, // refill 5 tokens...
-    reservoirRefreshInterval: 2000, // ...every 2000 ms (2 second)
+    reservoir: 4, // initial available tokens
+    reservoirRefreshAmount: 4, // refill 4 tokens...
+    reservoirRefreshInterval: 1000, // ...every 1000 ms (1 second)
     connection,
   });
 
   limiter.on('failed', async (error, jobInfo) => {
     const id = jobInfo.options.id;
     logger.warn(`Job ${id} failed: ${error}`);
-    if (jobInfo.retryCount > 3) {
+    if (jobInfo.retryCount > 5) {
       logger.debug('Job failed too many times, skipping');
       return;
     }
@@ -132,7 +132,7 @@ function setupLimiter({
         error.name === 'TimeoutError' ||
         (error as any).code === 'ETIMEDOUT'
       ) {
-        const delay = crypto.randomInt(1000, 2000);
+        const delay = crypto.randomInt(1500, 4000);
         return delay;
       }
       logger.warn({ error }, 'R53 error');
