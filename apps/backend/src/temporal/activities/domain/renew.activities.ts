@@ -825,7 +825,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
  */
 export async function getRenewPriceByDomainInUsd({
   normalizeDomainNameList,
-  retriesForFailedDomains = 2,
+  retriesForFailedDomains = 5,
 }: {
   normalizeDomainNameList: NamefiNormalizedDomain[];
   retriesForFailedDomains?: number;

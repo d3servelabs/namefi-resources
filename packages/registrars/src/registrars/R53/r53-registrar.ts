@@ -113,7 +113,7 @@ function setupLimiter({
     id: 'r53-registrar',
     reservoir: 5, // initial available tokens
     reservoirRefreshAmount: 5, // refill 5 tokens...
-    reservoirRefreshInterval: 1000, // ...every 1000 ms (1 second)
+    reservoirRefreshInterval: 2000, // ...every 2000 ms (2 second)
     connection,
   });
 
