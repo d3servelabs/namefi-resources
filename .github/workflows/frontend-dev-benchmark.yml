@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
 
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -11,8 +17,55 @@ env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
 
 jobs:
+  trigger-gate:
+    name: Check Benchmark Trigger
+    runs-on: ubuntu-latest
+    outputs:
+      needs_rate_limit: ${{ steps.check.outputs.needs_rate_limit }}
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - name: Evaluate event
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.info(`Event name: ${context.eventName}`);
+            core.info(`Event action: ${context.payload.action ?? ''}`);
+
+            if (context.eventName === 'push') {
+              core.info('Push to main detected; proceeding.');
+              core.setOutput('needs_rate_limit', 'true');
+              core.setOutput('should_run', 'true');
+              return;
+            }
+
+            if (context.payload.action === 'labeled') {
+              const labelName = context.payload.label?.name ?? '';
+              core.info(`Label added: ${labelName}`);
+
+              if (labelName === 'fe-benchmark') {
+                core.info('fe-benchmark label added; proceeding.');
+                core.setOutput('needs_rate_limit', 'false');
+                core.setOutput('should_run', 'true');
+              } else {
+                core.info('Non-benchmark label added; skipping.');
+                core.setOutput('needs_rate_limit', 'false');
+                core.setOutput('should_run', 'false');
+              }
+              return;
+            }
+
+            const hasBenchmarkLabel = (context.payload.pull_request?.labels ?? []).some(
+              label => label.name === 'fe-benchmark'
+            );
+            core.info(`PR has fe-benchmark label: ${hasBenchmarkLabel}`);
+            core.setOutput('needs_rate_limit', 'false');
+            core.setOutput('should_run', hasBenchmarkLabel ? 'true' : 'false');
+
   rate-limit:
     name: Check Rate Limit
+    needs: trigger-gate
+    if: needs.trigger-gate.outputs.should_run == 'true' && needs.trigger-gate.outputs.needs_rate_limit == 'true'
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -78,8 +131,17 @@ jobs:
 
   benchmark:
     name: Run Frontend Dev Benchmark
-    needs: rate-limit
-    if: needs.rate-limit.outputs.should_skip != 'true'
+    needs: [trigger-gate, rate-limit]
+    if: |
+      always() &&
+      needs.trigger-gate.outputs.should_run == 'true' &&
+      (
+        needs.trigger-gate.outputs.needs_rate_limit != 'true' ||
+        (
+          needs.rate-limit.result == 'success' &&
+          needs.rate-limit.outputs.should_skip != 'true'
+        )
+      )
     runs-on: blacksmith-8vcpu-ubuntu-2404
     timeout-minutes: 90
     steps:
@@ -119,6 +181,9 @@ jobs:
         if: ${{ success() }}
         env:
           BENCH_REPORT: ${{ env.BENCH_REPORT }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
+          PR_URL: ${{ github.event.pull_request.html_url || '' }}
+          HEAD_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           python3 - <<'PY'
           import json
@@ -208,14 +273,28 @@ jobs:
           repo = os.environ.get("GITHUB_REPOSITORY", "")
           run_id = os.environ.get("GITHUB_RUN_ID", "")
           server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+          event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+          pr_number = os.environ.get("PR_NUMBER", "")
+          pr_url = os.environ.get("PR_URL", "")
+          head_ref = os.environ.get("HEAD_REF", "")
           run_url = f"{server_url}/{repo}/actions/runs/{run_id}" if repo and run_id else ""
 
-          header = "Frontend dev benchmark (main)"
+          if event_name == "pull_request" and pr_number:
+            header = f"Frontend dev benchmark (PR #{pr_number})"
+          else:
+            header = "Frontend dev benchmark (main)"
 
           meta_bits = []
           if repo:
             repo_url = f"{server_url}/{repo}"
             meta_bits.append(f"*Repo:* <{repo_url}|{repo}>")
+          if pr_number:
+            if pr_url:
+              meta_bits.append(f"*PR:* <{pr_url}|#{pr_number}>")
+            else:
+              meta_bits.append(f"*PR:* #{pr_number}")
+          if head_ref and event_name == "pull_request":
+            meta_bits.append(f"*Branch:* `{head_ref}`")
           if runs:
             meta_bits.append(f"*Runs:* {runs}")
           if sha:
