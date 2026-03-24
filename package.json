@@ -33,7 +33,7 @@
     "clean:root": "git clean -xdf node_modules out .turbo .next",
     "clean:all": "bun run clean:workspaces && bun run clean:root",
     "prepare": "sh scripts/prepare.sh",
-    "rulesync:generate": "bunx --yes rulesync@latest generate -c rulesync.jsonc",
+    "rulesync:generate": "bunx --yes rulesync@latest generate -c rulesync.jsonc --simulate-skills",
     "fix-infisical": "bun --cwd node_modules/@infisical/cli preinstall",
     "link-infisical": "bun run scripts/link-infisical.ts",
     "check": "biome check .",
