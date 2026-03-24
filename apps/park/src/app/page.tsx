@@ -187,9 +187,27 @@ async function detectNamefiRedirectFromDnsRecords(
       /^--nfi-redirect=/,
       '',
     );
-    return redirectUrl;
+
+    const normalizedUrl = attemptNormalizeUrl(redirectUrl);
+    if (normalizedUrl.status === 'failure') {
+      return;
+    }
+    return normalizedUrl.url.toString();
   } catch {
     // If DNS query fails we simply continue rendering the parking page.
+  }
+}
+
+function attemptNormalizeUrl(
+  text: string,
+): { status: 'success'; url: URL } | { status: 'failure' } {
+  try {
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(text);
+    const textWithScheme = hasScheme ? text : `https://${text}`;
+    const url = new URL(textWithScheme);
+    return { url, status: 'success' };
+  } catch (e) {
+    return { status: 'failure' };
   }
 }
 
