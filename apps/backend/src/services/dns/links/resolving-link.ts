@@ -1,8 +1,9 @@
+import { isNotNil } from 'ramda';
 import type {
   DnsRequestLink,
   DnsAnswerResolver,
 } from '../dns-request-handler.types';
-import { appendAnswers } from './helpers';
+import { mergeResponses } from './helpers';
 
 export function createResolvingLink(
   resolver: DnsAnswerResolver,
@@ -13,16 +14,12 @@ export function createResolvingLink(
       context.question.recordType,
     );
 
-    if (!response) {
-      return next();
+    if (response) {
+      mergeResponses(context.result, response);
     }
-
-    if (response.RCODE !== undefined) {
-      return response;
+    if (isNotNil(context.result.RCODE)) {
+      return context.result;
     }
-
-    appendAnswers(context.result, response);
-
     return next();
   };
 }

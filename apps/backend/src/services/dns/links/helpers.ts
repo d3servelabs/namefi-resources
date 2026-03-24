@@ -20,6 +20,7 @@ import type {
   DnsRequestLink,
 } from '../dns-request-handler.types';
 import { getNonUserSpecificDomainPreferencesAndConfig } from '#lib/domains/domain-preferences';
+import { isNotNil } from 'ramda';
 
 const logger = createLogger({ context: 'DNS-Request-Handler' });
 export const nameserverAdminPrefixRegex = /^.*?\./;
@@ -51,6 +52,19 @@ export function appendAnswers(target: DnsResponse, response: DnsResponse) {
   }
 
   target.Answer = [...(target.Answer ?? []), ...(response.Answer ?? [])];
+}
+
+export function mergeResponses(
+  target: DnsResponse,
+  response: DnsResponse,
+  { overrideRCODE }: { overrideRCODE?: boolean } = { overrideRCODE: true },
+) {
+  if (hasAnswers(response)) {
+    target.Answer = [...(target.Answer ?? []), ...(response.Answer ?? [])];
+  }
+  if (isNotNil(response.RCODE) && overrideRCODE) {
+    target.RCODE = response.RCODE; //TODO(): needs to account for edge cases like target.RCODE = 0 & response.RCODE = 3
+  }
 }
 
 export async function getAnswerForDnsQueryFromDnsRecords(
