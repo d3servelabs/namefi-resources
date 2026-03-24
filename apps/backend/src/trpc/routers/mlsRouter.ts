@@ -21,6 +21,7 @@ const mlsListingReportReasons = [
 const mlsListingSchema = z.object({
   id: z.string().min(1),
   domain: z.string().min(1),
+  logoUrl: z.string().nullable().optional().default(null),
   askingPrice: z.string().nullable(),
   askingCurrency: z.string().nullable(),
   purchaseUrl: z.string().nullable(),

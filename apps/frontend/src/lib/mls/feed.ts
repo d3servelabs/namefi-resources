@@ -8,6 +8,7 @@ export interface MlsSaleSeller {
 export interface MlsSaleListing {
   id: string;
   domain: string;
+  logoUrl: string | null;
   askingPrice: string | null;
   askingCurrency: string | null;
   purchaseUrl: string | null;

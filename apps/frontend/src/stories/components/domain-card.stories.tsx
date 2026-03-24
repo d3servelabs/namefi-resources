@@ -146,6 +146,7 @@ function createMlsOffer(domain: string, username: string): MlsSaleListing {
   return {
     id: `mls-${domain}`,
     domain,
+    logoUrl: null,
     askingPrice: '350',
     askingCurrency: 'USD',
     purchaseUrl: null,

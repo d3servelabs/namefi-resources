@@ -1,8 +1,18 @@
+/** biome-ignore-all lint/performance/noImgElement: remote logo URLs are dynamic Labs assets and sampled client-side for theming */
+'use client';
+
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
+import { type CSSProperties, useEffect, useState } from 'react';
 import { MlsReportListingDialog } from '@/components/mls/mls-report-listing-dialog';
+import {
+  buildMlsSaleCardFallbackTheme,
+  buildMlsSaleCardThemeFromRgb,
+  extractDominantColorFromImage,
+  type MlsSaleCardTheme,
+} from '@/components/mls/mls-sale-card-theme';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { cn } from '@/lib/cn';
 import type { MlsSaleListing } from '@/lib/mls/feed';
@@ -16,6 +26,7 @@ const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
   weight: ['500', '600'],
 });
+const mlsSaleCardThemeCache = new Map<string, MlsSaleCardTheme>();
 
 interface MlsSaleCardProps {
   listing: MlsSaleListing;
@@ -28,8 +39,11 @@ export function MlsSaleCard({
 }: MlsSaleCardProps) {
   const sellerHandle = normalizeMlsHandle(listing.seller.username);
   const sellerLabel = sellerHandle ?? '@unknown';
-  const sellerDetailsPath = getMlsHandlePath(sellerHandle);
+  const sellerDetailsPath = sellerHandle
+    ? getMlsHandlePath(sellerHandle)
+    : null;
   const domainUrl = getDomainUrl(listing.domain);
+  const logoUrl = normalizeExternalUrl(listing.logoUrl);
   const askingCurrency = normalizeCurrency(listing.askingCurrency);
   const askingPriceLabel = formatAskingPrice(
     listing.askingPrice,
@@ -39,20 +53,44 @@ export function MlsSaleCard({
   const excerpt = formatExcerpt(listing.messageText);
   const domainParts = splitDomainForDisplay(listing.domain);
   const otherDomainsCount = Math.max(0, listing.otherDomainsCount);
+  const theme = useMlsSaleCardTheme(
+    logoUrl,
+    `${listing.domain}:${sellerLabel}`,
+  );
+  const cardStyle = {
+    '--mls-accent': theme.accent,
+    '--mls-accent-muted': theme.accentMuted,
+    '--mls-accent-soft': theme.accentSoft,
+    '--mls-accent-glow': theme.accentGlow,
+    '--mls-accent-line': theme.accentLine,
+    '--mls-accent-shadow': theme.shadow,
+  } as CSSProperties;
 
   return (
-    <Card className="bg-transparent shadow-none !py-0 !ring-0 border-b border-white/10 rounded-none">
-      <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
+    <Card
+      className="group relative overflow-hidden rounded-none border-b border-white/10 bg-transparent shadow-none !py-0 !ring-0"
+      style={cardStyle}
+    >
+      <div
+        aria-hidden={true}
+        className="pointer-events-none absolute left-2 top-1/2 size-28 -translate-y-1/2 rounded-full opacity-70 blur-3xl transition-opacity duration-300 group-hover:opacity-90"
+        style={{
+          background:
+            'radial-gradient(circle, var(--mls-accent-glow) 0%, transparent 72%)',
+        }}
+      />
+
+      <CardContent className="relative px-5 py-6 sm:px-6 sm:py-7">
         <div className="flex flex-wrap items-center gap-2 text-xs text-white/35 sm:text-sm">
           {sellerDetailsPath ? (
             <Link
               href={sellerDetailsPath}
-              className="truncate font-semibold text-white/50 transition-colors hover:text-white/70 hover:underline"
+              className="truncate font-semibold text-white/52 transition-colors hover:text-[var(--mls-accent-muted)] hover:underline"
             >
               {sellerLabel}
             </Link>
           ) : (
-            <p className="truncate font-semibold text-white/50">
+            <p className="truncate font-semibold text-white/52">
               {sellerLabel}
             </p>
           )}
@@ -81,37 +119,58 @@ export function MlsSaleCard({
           ) : null}
         </div>
 
-        <div className="mt-4 flex items-end justify-between gap-4">
-          <Link
-            href={domainUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="min-w-0 flex flex-wrap items-baseline gap-1.5 no-underline"
-            aria-label={`Open ${listing.domain}`}
-          >
-            <h2
-              className={cn(
-                playfairDisplay.className,
-                'text-4xl leading-none text-white sm:text-[2.9rem]',
-              )}
-            >
-              {domainParts.label}
-            </h2>
-            {domainParts.tld ? (
-              <span className="font-sans text-[1.6rem] leading-none font-medium text-white/35 sm:text-[1.95rem]">
-                .{domainParts.tld}
-              </span>
-            ) : null}
-          </Link>
+        <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 flex items-center gap-4">
+            <MlsSaleCardLogo
+              domain={listing.domain}
+              label={domainParts.label}
+              logoUrl={logoUrl}
+              theme={theme}
+            />
 
-          {askingPriceLabel ? (
-            <p className="shrink-0 text-right text-lg font-semibold text-emerald-400 sm:text-xl">
-              {askingPriceLabel}
-            </p>
-          ) : null}
+            <Link
+              href={domainUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-w-0 flex flex-wrap items-baseline gap-1.5 no-underline"
+              aria-label={`Open ${listing.domain}`}
+            >
+              <h2
+                className={cn(
+                  playfairDisplay.className,
+                  'min-w-0 break-all text-4xl leading-none text-white sm:text-[2.9rem]',
+                )}
+              >
+                {domainParts.label}
+              </h2>
+              {domainParts.tld ? (
+                <span
+                  className="font-sans text-[1.6rem] leading-none font-medium sm:text-[1.95rem]"
+                  style={{ color: theme.accentMuted }}
+                >
+                  .{domainParts.tld}
+                </span>
+              ) : null}
+            </Link>
+          </div>
+
+          <div className="shrink-0 text-left sm:text-right">
+            {askingPriceLabel ? (
+              <p
+                className="text-lg font-semibold tracking-tight sm:text-xl"
+                style={{ color: theme.accent }}
+              >
+                {askingPriceLabel}
+              </p>
+            ) : (
+              <p className="text-[0.68rem] font-medium tracking-[0.22em] text-white/35 uppercase">
+                Price on request
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/6 pt-4">
           <Link
             href={listing.sourceTweetUrl}
             target="_blank"
@@ -135,6 +194,110 @@ export function MlsSaleCard({
   );
 }
 
+interface MlsSaleCardLogoProps {
+  domain: string;
+  label: string;
+  logoUrl: string | null;
+  theme: MlsSaleCardTheme;
+}
+
+function MlsSaleCardLogo({
+  domain,
+  label,
+  logoUrl,
+  theme,
+}: MlsSaleCardLogoProps) {
+  const domainMark = getDomainMark(label);
+
+  return (
+    <div
+      className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-white/10 sm:size-16"
+      style={{
+        backgroundImage: [
+          'linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01))',
+          'radial-gradient(circle at 30% 25%, var(--mls-accent-soft) 0%, transparent 72%)',
+          'linear-gradient(160deg, rgba(14,17,24,0.96), rgba(8,10,14,0.98))',
+        ].join(', '),
+        boxShadow: '0 8px 24px var(--mls-accent-shadow)',
+      }}
+    >
+      {logoUrl ? (
+        <img
+          src={logoUrl}
+          alt={`${domain} logo`}
+          className="size-full object-contain p-2.5 sm:p-3"
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
+        />
+      ) : (
+        <span
+          className={cn(playfairDisplay.className, 'text-xl sm:text-2xl')}
+          style={{ color: theme.accentMuted }}
+        >
+          {domainMark}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function useMlsSaleCardTheme(logoUrl: string | null, seed: string) {
+  const [theme, setTheme] = useState(() => buildMlsSaleCardFallbackTheme(seed));
+
+  useEffect(() => {
+    const fallbackTheme = buildMlsSaleCardFallbackTheme(seed);
+    setTheme(fallbackTheme);
+
+    if (!logoUrl) {
+      return;
+    }
+
+    const cachedTheme = mlsSaleCardThemeCache.get(logoUrl);
+    if (cachedTheme) {
+      setTheme(cachedTheme);
+      return;
+    }
+
+    let disposed = false;
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.decoding = 'async';
+    image.referrerPolicy = 'no-referrer';
+
+    image.onload = () => {
+      if (disposed) {
+        return;
+      }
+
+      const dominantColor = extractDominantColorFromImage(image);
+      const nextTheme = dominantColor
+        ? buildMlsSaleCardThemeFromRgb(dominantColor)
+        : fallbackTheme;
+
+      mlsSaleCardThemeCache.set(logoUrl, nextTheme);
+      setTheme(nextTheme);
+    };
+
+    image.onerror = () => {
+      if (disposed) {
+        return;
+      }
+
+      mlsSaleCardThemeCache.set(logoUrl, fallbackTheme);
+      setTheme(fallbackTheme);
+    };
+
+    image.src = logoUrl;
+
+    return () => {
+      disposed = true;
+    };
+  }, [logoUrl, seed]);
+
+  return theme;
+}
+
 function getDomainUrl(domain: string) {
   return normalizeExternalUrl(domain) ?? `https://${domain.trim()}`;
 }
@@ -146,6 +309,10 @@ function normalizeExternalUrl(value: string | null) {
   }
 
   if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
+    return normalized;
+  }
+
+  if (normalized.startsWith('/')) {
     return normalized;
   }
 
@@ -235,4 +402,13 @@ function formatExcerpt(value: string | null) {
     return 'No excerpt available';
   }
   return normalized;
+}
+
+function getDomainMark(label: string) {
+  const characters = Array.from(label.replace(/[^a-z0-9]/gi, ''));
+  if (characters.length === 0) {
+    return '?';
+  }
+
+  return characters[0]?.toUpperCase() ?? '?';
 }

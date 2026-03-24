@@ -378,28 +378,30 @@ function MlsHandleFeedSkeleton({
       {keys.map((key) => (
         <Card
           key={key}
-          className="bg-transparent shadow-none !py-0 !ring-0 border-b border-white/10 rounded-none"
+          className="rounded-none border-b border-white/10 bg-transparent shadow-none !py-0 !ring-0"
         >
           <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
             <div className="flex items-center gap-2">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-1.5 w-1.5 rounded-full" />
-              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-16" />
             </div>
 
-            <div className="mt-4 flex items-end justify-between gap-4">
-              <div className="min-w-0 flex items-end gap-1.5">
-                <Skeleton className="h-11 w-52 sm:w-64" />
-                <Skeleton className="h-8 w-14 sm:w-16" />
+            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-4">
+                <Skeleton className="size-14 rounded-[18px] sm:size-16" />
+                <div className="min-w-0 flex items-end gap-1.5">
+                  <Skeleton className="h-11 w-52 sm:w-64" />
+                  <Skeleton className="h-8 w-14 sm:w-16" />
+                </div>
               </div>
-              <Skeleton className="h-7 w-[4.5rem]" />
+
+              <Skeleton className="h-7 w-28" />
             </div>
 
-            <div className="mt-6">
-              <div className="inline-flex min-w-0 max-w-[46%] items-center gap-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="size-3.5 shrink-0" />
-              </div>
+            <div className="mt-6 flex items-center gap-2 border-t border-white/6 pt-4">
+              <Skeleton className="h-4 w-full max-w-[20rem]" />
+              <Skeleton className="size-3.5 shrink-0" />
             </div>
           </CardContent>
         </Card>
