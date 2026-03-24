@@ -154,20 +154,16 @@ export function MlsSaleCard({
             </Link>
           </div>
 
-          <div className="shrink-0 text-left sm:text-right">
-            {askingPriceLabel ? (
+          {askingPriceLabel ? (
+            <div className="shrink-0 text-left sm:text-right">
               <p
                 className="text-lg font-semibold tracking-tight sm:text-xl"
                 style={{ color: theme.accent }}
               >
                 {askingPriceLabel}
               </p>
-            ) : (
-              <p className="text-[0.68rem] font-medium tracking-[0.22em] text-white/35 uppercase">
-                Price on request
-              </p>
-            )}
-          </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/6 pt-4">
@@ -209,6 +205,32 @@ function MlsSaleCardLogo({
 }: MlsSaleCardLogoProps) {
   const domainMark = getDomainMark(label);
 
+  if (logoUrl) {
+    return (
+      <div className="relative flex size-14 shrink-0 items-center justify-center sm:size-16">
+        <div
+          aria-hidden={true}
+          className="pointer-events-none absolute inset-1 rounded-full opacity-90 blur-2xl"
+          style={{
+            background:
+              'radial-gradient(circle, var(--mls-accent-glow) 0%, transparent 74%)',
+          }}
+        />
+        <img
+          src={logoUrl}
+          alt={`${domain} logo`}
+          className="relative h-auto max-h-[3rem] w-auto max-w-[3rem] object-contain sm:max-h-[3.5rem] sm:max-w-[3.5rem]"
+          style={{
+            filter: 'drop-shadow(0 8px 18px var(--mls-accent-shadow))',
+          }}
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className="relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-white/10 sm:size-16"
@@ -221,23 +243,12 @@ function MlsSaleCardLogo({
         boxShadow: '0 8px 24px var(--mls-accent-shadow)',
       }}
     >
-      {logoUrl ? (
-        <img
-          src={logoUrl}
-          alt={`${domain} logo`}
-          className="size-full object-contain p-2.5 sm:p-3"
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-        />
-      ) : (
-        <span
-          className={cn(playfairDisplay.className, 'text-xl sm:text-2xl')}
-          style={{ color: theme.accentMuted }}
-        >
-          {domainMark}
-        </span>
-      )}
+      <span
+        className={cn(playfairDisplay.className, 'text-xl sm:text-2xl')}
+        style={{ color: theme.accentMuted }}
+      >
+        {domainMark}
+      </span>
     </div>
   );
 }
