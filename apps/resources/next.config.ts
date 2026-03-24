@@ -34,6 +34,7 @@ const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   experimental: {
     turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForBuild: true,
   },
   env: {
     ENVIRONMENT: process.env.ENVIRONMENT,

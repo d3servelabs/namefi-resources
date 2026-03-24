@@ -39,13 +39,13 @@ const CHAIN_BADGE_BY_NAME = {
   },
 } as const satisfies Record<string, { label: string; icon: string }>;
 
-const PBN_BACKGROUND_BY_APEX = {
+const PBN_BACKGROUND_BY_APEX: Partial<Record<string, string>> = {
   '0x.city': '/assets/pbn/0x-city.png',
-} as const satisfies Record<string, string>;
+};
 
-const PBN_MARK_BY_APEX = {
+const PBN_MARK_BY_APEX: Partial<Record<string, string>> = {
   '0x.city': '/assets/pbn/powered-by-namefi-0xcity.svg',
-} as const satisfies Record<string, string>;
+};
 
 function formatExpiry(expiration?: string | null): string | null {
   if (!expiration) return null;

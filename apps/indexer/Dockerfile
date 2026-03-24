@@ -20,7 +20,7 @@ FROM node:jod-alpine3.22 AS pruner
 WORKDIR /app
 ENV CI true
 # Install turbo globally
-RUN npm install -g turbo@2.5.8
+RUN npm install -g turbo@2.8.20
 
 # Copy the entire monorepo
 COPY . .

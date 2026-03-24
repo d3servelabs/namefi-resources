@@ -69,6 +69,7 @@ const nextConfig = {
   experimental: {
     authInterrupts: true,
     turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForBuild: true,
     // Favor per-module imports for large libraries to reduce dev compile time.
     optimizePackageImports: [
       'date-fns',

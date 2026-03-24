@@ -34,10 +34,13 @@ function renderSitemap(entries: MetadataRoute.Sitemap): string {
   const urls = entries
     .map((entry) => {
       const alternates = Object.entries(entry.alternates?.languages ?? {})
-        .map(
-          ([hrefLang, href]) =>
-            `    <xhtml:link rel="alternate" hreflang="${escapeXml(hrefLang)}" href="${escapeXml(href)}" />`,
-        )
+        .flatMap(([hrefLang, href]) => {
+          if (!href) {
+            return [];
+          }
+
+          return `    <xhtml:link rel="alternate" hreflang="${escapeXml(hrefLang)}" href="${escapeXml(href)}" />`;
+        })
         .join('\n');
       const lastModified = formatLastModified(entry.lastModified);
       const parts = ['  <url>', `    <loc>${escapeXml(entry.url)}</loc>`];
