@@ -251,24 +251,27 @@ jobs:
       - name: Check backend changes
         id: check
         run: |
+          set -euo pipefail
           IS_FORCE_PREVIEW="${{ needs.preview-label-gate.outputs.is_force_preview }}"
           COMPARISON_SHA="${{ needs.detect-synchronize-type.outputs.comparison_sha }}"
           IS_NEW_COMMIT="${{ needs.detect-synchronize-type.outputs.is_new_commit }}"
+          CHANGED_PACKAGES="${{ steps.turbo-changes.outputs.changed-packages || '[]' }}"
 
           echo "Is force preview: $IS_FORCE_PREVIEW"
           echo "Comparing against SHA: $COMPARISON_SHA"
           echo "Is new commit: $IS_NEW_COMMIT"
+          echo "Changed packages: $CHANGED_PACKAGES"
 
           # Force preview skips turbo detection and always deploys
           if [[ "$IS_FORCE_PREVIEW" == "true" ]]; then
             echo "Force preview enabled - skipping turbo detection, will deploy"
-            echo "has-backend-changes=true" >> $GITHUB_OUTPUT
+            echo "has-backend-changes=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/backend' ) }}"
+          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages || '[]'), '@namefi-astra/backend' ) }}"
 
-          echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
+          echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> "$GITHUB_OUTPUT"
           if [[ "$HAS_BACKEND_CHANGES" == "true" ]]; then
             echo "Backend changes detected - will proceed with deployment"
           else
