@@ -7,7 +7,12 @@ import {
 import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { privyClient } from '../utils';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../utils';
+import { getViemPublicClient } from '#lib/crypto/viem-clients';
+import { parseAbi } from 'viem';
 
 /**
  * Helper function to verify if the authenticated user is the owner of a domain NFT
@@ -22,6 +27,19 @@ export async function assertAuthenticatedUserIsDomainOwner(
   const isUserDomainOwner = await IsUserDomainOwner(normalizedDomainName, user);
 
   if (!isUserDomainOwner) {
+    const signer = await privyClient.getUserById(user.privyUserId);
+    const wallets = getPrivyUserLinkedEthereumChecksumWalletAddresses({
+      privyUser: signer,
+    });
+    const hasDelegatedAccess = await areAnyAddressAnApprovedSigner(
+      normalizedDomainName,
+      wallets,
+    );
+
+    if (hasDelegatedAccess) {
+      return;
+    }
+
     throw new TRPCError({
       code: 'FORBIDDEN',
       message:
@@ -54,4 +72,49 @@ export async function IsUserDomainOwner(
   );
 
   return nftOwnerUser?.id === user.privyUserId;
+}
+
+const abi = parseAbi([
+  'event SignerAdded(address indexed signer)',
+  'event SignerRemoved(address indexed signer)',
+  'function approvedSigners(address signer) view returns (bool)',
+]);
+
+export async function areAnyAddressAnApprovedSigner(
+  normalizedDomainName: NamefiNormalizedDomain,
+  challengingAddresses: string[],
+): Promise<string | boolean> {
+  // Verify user has permission to manage DNS records for this domain
+  const nfts = await db
+    .with(namefiNftOwnersCte)
+    .select()
+    .from(namefiNftOwnersView)
+    .where(eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName))
+    .limit(1);
+  const nft = nfts[0];
+
+  if (!nft) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Domain NFT not found',
+    });
+  }
+  const nftOwnerAddress = nft.ownerAddress as `0x${string}`;
+
+  const publicClient = getViemPublicClient(nft.chainId);
+  for (const address of challengingAddresses) {
+    try {
+      const value = await publicClient.readContract({
+        address: nftOwnerAddress,
+        abi,
+        functionName: 'approvedSigners',
+        args: [address as `0x${string}`],
+      });
+      if (value) {
+        return address;
+      }
+    } catch (e) {}
+  }
+
+  return false;
 }
