@@ -19,6 +19,10 @@ post-checkout:
         if [ -n "$CI" ]; then
           exit 0
         fi
+        git_dir=$(git rev-parse --git-dir)
+        if [ -d "$git_dir/rebase-merge" ] || [ -d "$git_dir/rebase-apply" ]; then
+          exit 0
+        fi
         old_ref="${1:-}"
         new_ref="${2:-}"
         is_branch_checkout="${3:-}"
@@ -61,7 +65,14 @@ post-rewrite:
         if [ -n "$CI" ]; then
           exit 0
         fi
-        if git rev-parse -q --verify ORIG_HEAD >/dev/null; then
+        rewrite_type="${1:-}"
+        if [ "$rewrite_type" = "amend" ]; then
+          if git rev-parse -q --verify HEAD@{1} >/dev/null; then
+            changed=$(git diff --name-only HEAD@{1} HEAD -- .rulesync rulesync.jsonc)
+          else
+            changed=
+          fi
+        elif git rev-parse -q --verify ORIG_HEAD >/dev/null; then
           changed=$(git diff --name-only ORIG_HEAD HEAD -- .rulesync rulesync.jsonc)
         elif git rev-parse -q --verify HEAD@{1} >/dev/null; then
           changed=$(git diff --name-only HEAD@{1} HEAD -- .rulesync rulesync.jsonc)
