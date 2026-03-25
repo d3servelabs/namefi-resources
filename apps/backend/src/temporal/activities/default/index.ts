@@ -13,6 +13,26 @@ import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 import { getTemporalWorkflowRunUrl } from './get-workflow-url';
 import { Context } from '@temporalio/activity';
 import { triggerSyncPonderIndex } from '#temporal/schedules/sync-ponder-index';
+import * as ChainConfigs from '#lib/env/allowed-chains';
+import { mapObjIndexed } from 'ramda';
+
+type AsyncReturningFunction<A extends any[], R> = (...args: A) => Promise<R>;
+type ReturningFunction<A extends any[], R> = (...args: A) => Promise<R> | R;
+type AsyncifyReturningFunction<F extends ReturningFunction<any, any>> =
+  AsyncReturningFunction<Parameters<F>, Awaited<ReturnType<F>>>;
+
+function convertSyncFnToActivity<
+  A extends any[],
+  R,
+  F extends ReturningFunction<A, R>,
+>(fn: F): AsyncReturningFunction<A, R> {
+  return async (...args: A) => fn(...args);
+}
+const mapConvertSyncFnToActivity = mapObjIndexed(convertSyncFnToActivity) as <
+  O extends Record<any, ReturningFunction<any, any>>,
+>(
+  obj: O,
+) => { [k in keyof O]: AsyncifyReturningFunction<O[k]> };
 
 export const defaultTaskQueueActivities = {
   ...EmailSubscriptionSyncActivities,
@@ -65,6 +85,7 @@ export const defaultTaskQueueActivities = {
   triggerNamefiGptCronJob,
   addCategoriesToDomainsWithNoCategories,
   getTemporalWorkflowRunUrl,
+  ...mapConvertSyncFnToActivity(ChainConfigs),
 };
 
 export async function sendTemporalAlertToSlack(

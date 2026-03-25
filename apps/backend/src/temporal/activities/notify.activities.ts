@@ -485,9 +485,13 @@ function displayNameForPaymentMethod(paymentMethod: PaymentProvider): string {
       return '$NFSC (Ethereum Sepolia)';
     case 'STRIPE':
       return 'Credit Card';
+    case 'MPP':
+      return 'MPP';
     case 'X402':
       return 'x402 (USDC)';
   }
+
+  return paymentMethod;
 }
 function abbreviateEvmAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;

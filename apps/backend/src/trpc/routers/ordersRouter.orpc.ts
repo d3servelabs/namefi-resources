@@ -10,6 +10,7 @@ import {
   paymentSelectSchema,
   userSelectSchema,
   cartItemsTable,
+  isMppPayment,
 } from '@namefi-astra/db';
 import {
   checksumWalletAddressSchema,
@@ -80,6 +81,12 @@ import {
   processX402PurchaseWorkflow,
   settlementSignal,
 } from '../../temporal/workflows/x402/process-x402-purchase.workflow';
+import {
+  getMppPaymentRequiredError,
+  getMppResourceMetadata,
+  getRegisterDomainMppPaymentResult,
+} from '#lib/mpp/helpers';
+import { createMppInstantRegistration } from '#lib/mpp/register-domain';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -439,6 +446,25 @@ const x402PurchaseResponseSchema = z.object({
   estimatedCompletionSeconds: z.number().int().positive(),
 });
 
+const registerDomainMppInputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  durationInYears: instantBuyInputSchema.shape.durationInYears,
+  nftReceivingWalletAddress: checksumWalletAddressSchema,
+});
+
+const mppPurchaseResponseSchema = z.object({
+  status: z.literal('accepted'),
+  message: z.string(),
+  orderId: z.string(),
+  paymentId: z.string(),
+  domain: namefiNormalizedDomainSchema,
+  paymentMethod: z.enum(['tempo', 'stripe']),
+  payerDid: z.string().optional(),
+  payerWalletAddress: checksumWalletAddressSchema.optional(),
+  nftReceivingWalletAddress: checksumWalletAddressSchema,
+  estimatedCompletionSeconds: z.number().int().positive(),
+});
+
 const resolveX402ErrorMessage = (errorReason?: string) =>
   errorReason || 'Invalid payment signature format';
 
@@ -778,6 +804,47 @@ export const ordersRouterOrpc = createTRPCRouter({
       const res = await pMap(
         payments,
         async (payment): Promise<PaymentMethodDetails> => {
+          if (isMppPayment(payment)) {
+            if (payment.metadata.mppPaymentDetails.method === 'tempo') {
+              return {
+                paymentId: payment.id,
+                isOnChainPayment: true,
+                txHash: payment.paymentProviderReferenceId,
+                chainId: 0,
+                walletAddress:
+                  payment.metadata.mppPaymentDetails.payerWalletAddress ||
+                  payment.metadata.mppPaymentDetails
+                    .nftReceivingWalletAddress ||
+                  '',
+              };
+            }
+            if (payment.metadata.mppPaymentDetails.method === 'stripe') {
+              if (isNil(payment.paymentProviderReferenceId)) {
+                return {
+                  paymentId: payment.id,
+                  isOnChainPayment: false,
+                  brand: undefined,
+                  last4: undefined,
+                };
+              }
+
+              const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+                payment.paymentProviderReferenceId,
+                { expand: ['payment_method'] },
+              );
+
+              const paymentMethod =
+                stripePaymentIntent.payment_method as Stripe.PaymentMethod | null;
+
+              return {
+                paymentId: payment.id,
+                isOnChainPayment: false,
+                brand: paymentMethod?.card?.brand,
+                last4: paymentMethod?.card?.last4,
+              };
+            }
+          }
+
           if (isNfscPayment(payment)) {
             return {
               paymentId: payment.id,
@@ -1054,6 +1121,89 @@ export const ordersRouterOrpc = createTRPCRouter({
           checksumWalletAddressSchema.parse(buyerWallet),
         estimatedCompletionSeconds: 60,
       };
+    }),
+
+  registerDomainMPP: authedOrPublicProcedure
+    .meta({
+      route: {
+        path: '/mpp/domain/{normalizedDomainName}',
+        method: 'GET',
+        tags: ['orders', 'base-route'],
+        operationId: 'registerDomainMPP',
+        summary: 'Instant Register domain With MPP',
+        description:
+          'Purchase a single domain instantly with MPP using Tempo or Stripe.',
+      },
+    })
+    .input(registerDomainMppInputSchema)
+    .output(mppPurchaseResponseSchema)
+    .query(async ({ ctx, input }) => {
+      try {
+        const paymentResult = await getRegisterDomainMppPaymentResult({
+          durationInYears: input.durationInYears,
+          nftReceivingWalletAddress: input.nftReceivingWalletAddress,
+          normalizedDomainName: input.normalizedDomainName,
+          request: (ctx.req as any).raw ?? ctx.req,
+        });
+
+        if (paymentResult.status === 'payment_required') {
+          for (const [
+            header,
+            value,
+          ] of paymentResult.challenge.headers.entries()) {
+            ctx.honoCtx?.header(header, value);
+          }
+
+          throw new TRPCError({
+            code: 'PAYMENT_REQUIRED',
+            message: 'Payment Required',
+            cause: getMppPaymentRequiredError({
+              challenge: paymentResult.challenge,
+              metadata: getMppResourceMetadata({
+                durationInYears: input.durationInYears,
+                normalizedDomainName: input.normalizedDomainName,
+                nftReceivingWalletAddress: input.nftReceivingWalletAddress,
+                priceInUsdCents: paymentResult.priceInUsdCents,
+              }),
+            }),
+          });
+        }
+
+        return createMppInstantRegistration({
+          credential: paymentResult.credential,
+          durationInYears: input.durationInYears,
+          nftReceivingWalletAddress: input.nftReceivingWalletAddress,
+          normalizedDomainName: input.normalizedDomainName,
+          receipt: paymentResult.receipt,
+          user: ctx.user
+            ? { id: ctx.user.id, privyUserId: ctx.user.privyUserId }
+            : undefined,
+          validation: paymentResult.validation,
+        });
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
+        if (
+          error instanceof Error &&
+          error.message === 'A purchase is already in progress for this domain'
+        ) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: error.message,
+          });
+        }
+
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            error instanceof Error
+              ? error.message
+              : 'MPP payment verification failed',
+          cause: error,
+        });
+      }
     }),
 
   /**

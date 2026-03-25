@@ -1035,6 +1035,7 @@ export async function processOrderWorkflow(
  */
 const PAYMENT_PROVIDER_PRIORITY = [
   'STRIPE',
+  'MPP',
   'NFSC_ETHEREUM_SEPOLIA',
   'NFSC_BASE',
   'NFSC_ETHEREUM',
@@ -1085,6 +1086,9 @@ function _selectPaymentForNotification(
 
   const paymentMethodIdentifier =
     switchCase(paymentMethodCharged, {
+      MPP:
+        chosenPayment.metadata?.mppPaymentDetails?.payerWalletAddress ||
+        chosenPayment.paymentProviderReferenceId,
       STRIPE: chosenPayment.stripePaymentDetails?.paymentMethodId,
       X402: chosenPayment?.x402PaymentDetails?.buyerWalletAddress,
 

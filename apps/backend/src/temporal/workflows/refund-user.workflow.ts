@@ -3,6 +3,7 @@ import {
   paymentProviderSchema,
   paymentStatusSchema,
 } from '@namefi-astra/db/types';
+import { CHAINS } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
@@ -27,9 +28,12 @@ export async function refundUserWorkflow({
   const {
     createRefund,
     getPaymentDetails,
+    getPreferredEvmWalletAddressToBeCharged,
+    getOrderDetailsOrThrow,
     updatePayment,
     updateRefund,
     criticalAlertNamefi,
+    getAllowedChainsForNfscBalance,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -62,10 +66,15 @@ export async function refundUserWorkflow({
   });
 
   // MARK: Process refund depending on payment provider
-  const { nfscPaymentDetails, paymentProvider, x402PaymentDetails } =
-    await getPaymentDetails({
-      paymentId,
-    });
+  const {
+    metadata,
+    nfscPaymentDetails,
+    orderId,
+    paymentProvider,
+    x402PaymentDetails,
+  } = await getPaymentDetails({
+    paymentId,
+  });
 
   let refundStatus: RefundStatus = status;
   if (workflow.patched('lifecycle-timestamps')) {
@@ -134,6 +143,55 @@ export async function refundUserWorkflow({
     } catch (error) {
       workflow.log.error(
         `Failed to refund Stripe. workflowId: refund-stripe-${refundId}, cause: ${JSON.stringify(error)}`,
+      );
+      refundStatus = 'FAILED';
+    }
+  } else if (paymentProvider === paymentProviderSchema.enum.MPP) {
+    const mppPaymentDetails = metadata?.mppPaymentDetails;
+
+    if (!orderId) {
+      throw workflow.ApplicationFailure.create({
+        message: `MPP payment missing orderId. Payment ID: ${paymentId}`,
+      });
+    }
+
+    const { order } = await getOrderDetailsOrThrow(orderId);
+    const walletAddress = await getPreferredEvmWalletAddressToBeCharged(
+      order.userId,
+    );
+
+    try {
+      const input = {
+        account: walletAddress,
+        amountInUsd: amountToRefundInUsdCents / 100,
+        chainId: (await getAllowedChainsForNfscBalance())[0],
+      };
+      paymentProviderReferenceId = await workflow.executeChild(mintNfsc, {
+        args: [input],
+        workflowId: mintNfsc.generateId(input),
+        taskQueue: TEMPORAL_QUEUES.MINT,
+        retry: {
+          maximumAttempts: 1,
+        },
+      });
+
+      refundStatus = 'SUCCEEDED';
+
+      await updatePayment({
+        id: paymentId,
+        metadata: {
+          ...metadata,
+          mppPaymentDetails: mppPaymentDetails
+            ? {
+                ...mppPaymentDetails,
+                refundTxHash: paymentProviderReferenceId,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      workflow.log.error(
+        `Failed to mint NFSC for MPP refund. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
       );
       refundStatus = 'FAILED';
     }

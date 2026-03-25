@@ -31,6 +31,7 @@ import {
   cartItemMetadataSchema,
   orderMetadataSchema,
   orderItemMetadataSchema,
+  paymentMetadataSchema,
   x402PurchasesTable,
   x402PurchaseStatusEnum,
 } from './schema';
@@ -621,6 +622,38 @@ export const nfscPaymentProviderSchema = z.enum([
 ]);
 export type NfscPaymentProvider = z.infer<typeof nfscPaymentProviderSchema>;
 
+export const mppPaymentMethodSchema = z.enum(['tempo', 'stripe']);
+export type MppPaymentMethod = z.infer<typeof mppPaymentMethodSchema>;
+
+export const mppPaymentReceiptSchema = z.object({
+  externalId: z.string().optional(),
+  method: mppPaymentMethodSchema,
+  reference: z.string(),
+  status: z.literal('success'),
+  timestamp: z.string(),
+});
+export type MppPaymentReceipt = z.infer<typeof mppPaymentReceiptSchema>;
+
+export const mppPaymentDetailsSchema = z.object({
+  challenge: z.record(z.string(), z.unknown()).optional(),
+  credentialSummary: z
+    .object({
+      source: z.string().optional(),
+      tempoPayloadType: z.enum(['hash', 'transaction']).optional(),
+      stripeExternalId: z.string().optional(),
+    })
+    .optional(),
+  method: mppPaymentMethodSchema,
+  nftReceivingWalletAddress: z.string().optional(),
+  payerDid: z.string().optional(),
+  payerWalletAddress: z.string().optional(),
+  presettled: z.boolean().optional(),
+  receipt: mppPaymentReceiptSchema,
+  refundTxHash: z.string().optional(),
+  settledAt: z.string().optional(),
+});
+export type MppPaymentDetails = z.infer<typeof mppPaymentDetailsSchema>;
+
 /**
  * Payment providers that can be used for auto-renewal (excludes X402)
  * X402 is excluded because it's a push-based payment from external users,
@@ -667,6 +700,17 @@ export type NfscPaymentProviderDetails = Omit<
 > & {
   nfscPaymentDetails: NfscPaymentDetails;
 };
+
+export const mppPaymentProviderDetailsSchema = z.object({
+  paymentProvider: z.literal(paymentProviderSchema.enum.MPP),
+  metadata: paymentMetadataSchema.extend({
+    mppPaymentDetails: mppPaymentDetailsSchema,
+  }),
+});
+
+export type MppPaymentProviderDetails = z.infer<
+  typeof mppPaymentProviderDetailsSchema
+>;
 
 const x402PaymentPayloadSchema = z.object({
   x402Version: z.number(),
@@ -741,6 +785,7 @@ export const paymentProviderDetailsSchema = z.discriminatedUnion(
   [
     stripePaymentProviderDetailsSchema,
     nfscPaymentProviderDetailsSchema,
+    mppPaymentProviderDetailsSchema,
     x402PaymentProviderDetailsSchema,
   ],
 );
@@ -778,6 +823,7 @@ export function isNfscPayment(
     | {
         paymentProvider: (typeof paymentProviderSchema.options)[number];
         stripePaymentDetails?: z.infer<typeof stripePaymentDetailsSchema>;
+        metadata?: z.infer<typeof paymentMetadataSchema>;
         nfscPaymentDetails?: z.infer<
           typeof paymentInsertSchema.shape.nfscPaymentDetails
         >;
@@ -796,6 +842,15 @@ export function isX402Payment(
   details: unknown,
 ): details is X402PaymentProviderDetails {
   return x402PaymentProviderDetailsSchema.safeParse(details).success;
+}
+
+/**
+ * Type guard function to check if payment details are MPP payment details
+ */
+export function isMppPayment(
+  details: unknown,
+): details is MppPaymentProviderDetails {
+  return mppPaymentProviderDetailsSchema.safeParse(details).success;
 }
 
 export const orderItemStatusSchema = z.enum(orderStatusEnum.enumValues);

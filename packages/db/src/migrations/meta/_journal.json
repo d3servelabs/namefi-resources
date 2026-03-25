@@ -624,6 +624,13 @@
       "when": 1773833654259,
       "tag": "0088_needy_gauntlet",
       "breakpoints": true
+    },
+    {
+      "idx": 89,
+      "version": "7",
+      "when": 1773949141024,
+      "tag": "0089_open_stepford_cuckoos",
+      "breakpoints": true
     }
   ]
 }

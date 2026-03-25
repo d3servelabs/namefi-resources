@@ -312,6 +312,13 @@ export const configSchema = z.object({
    * instead of running a local Ponder instance.
    */
   PONDER_INDEXER_URL: z.string().url().optional(),
+  MPP_ENABLED: z.stringbool().default(true),
+  MPP_STRIPE_NETWORK_ID: z.string().default('internal'),
+  MPP_TEMPO_CURRENCY: z
+    .string()
+    .default('0x20c0000000000000000000000000000000000000'),
+  MPP_TEMPO_RECIPIENT: z.string().optional(),
+  MPP_TEMPO_TESTNET: z.stringbool().default(true),
   // x402 Protocol Configuration
   /**
    * Enable/disable x402 payment protocol

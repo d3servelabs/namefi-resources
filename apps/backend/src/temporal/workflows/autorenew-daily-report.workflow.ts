@@ -169,6 +169,7 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
       NFSC_ETHEREUM_SEPOLIA: { count: 0, amountInUsd: 0 },
       STRIPE: { count: 0, amountInUsd: 0 },
       X402: { count: 0, amountInUsd: 0 },
+      MPP: { count: 0, amountInUsd: 0 },
     },
     failureBreakdown: {
       failedToCharge: 0,

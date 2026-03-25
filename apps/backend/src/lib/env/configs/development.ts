@@ -70,6 +70,10 @@ const developmentConfig: ConfigInput = {
   CENTRALNIC_BALANCE_ENDPOINT:
     'https://registrar-console.ote.centralnicregistry.com/json/balance',
 
+  MPP_ENABLED: 'true',
+  MPP_STRIPE_NETWORK_ID: 'internal',
+  MPP_TEMPO_RECIPIENT: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
+  MPP_TEMPO_TESTNET: 'true',
   X402_ENABLED: 'true',
   X402_NETWORK: 'eip155:84532',
   X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',

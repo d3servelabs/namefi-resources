@@ -39,8 +39,12 @@ const createPublicClients = () => {
 
   return publicClients;
 };
-
-const createWalletClients = async () => {
+let _signerAccount: Account;
+export async function getSignerAccount(): Promise<Account> {
+  if (_signerAccount) return _signerAccount;
+  const nonceManager = createNonceManager({
+    source: jsonRpc(),
+  });
   if (
     !(
       secrets.GCP_HSM_KEYRING_RESOURCE_NAME ||
@@ -51,29 +55,32 @@ const createWalletClients = async () => {
     throw new Error('Signer configuration missing');
   }
 
-  const nonceManager = createNonceManager({
-    source: jsonRpc(),
-  });
-
-  let signerAccount: Account;
   if (secrets.GCP_HSM_KEYRING_RESOURCE_NAME) {
-    signerAccount = await gcpHsmToAccount({
+    _signerAccount = await gcpHsmToAccount({
       hsmKeyVersion: secrets.GCP_HSM_KEYRING_RESOURCE_NAME,
     });
   } else if (secrets.LOCAL_SIGNER_PRIVATE_KEY) {
-    signerAccount = privateKeyToAccount(
+    _signerAccount = privateKeyToAccount(
       secrets.LOCAL_SIGNER_PRIVATE_KEY as `0x${string}`,
       {
         nonceManager,
       },
     );
   } else if (secrets.LOCAL_SIGNER_MNEMONIC) {
-    signerAccount = mnemonicToAccount(secrets.LOCAL_SIGNER_MNEMONIC as string, {
-      nonceManager,
-    });
+    _signerAccount = mnemonicToAccount(
+      secrets.LOCAL_SIGNER_MNEMONIC as string,
+      {
+        nonceManager,
+      },
+    );
   } else {
     throw new Error('Signer configuration missing');
   }
+
+  return _signerAccount;
+}
+const createWalletClients = async () => {
+  const signerAccount = await getSignerAccount();
 
   const walletClients = fromPairs(
     map(

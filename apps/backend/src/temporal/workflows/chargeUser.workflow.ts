@@ -42,6 +42,7 @@ export async function chargeUserWorkflow({
     getPaymentDetails,
     updatePayment,
     updatePaymentMetadata,
+    verifyPresettledMppPayment,
     settleX402Payment,
     verifyPresettledX402Payment,
   } = typedProxyActivities({
@@ -55,7 +56,9 @@ export async function chargeUserWorkflow({
     amountInUSDCents,
     nfscPaymentDetails,
     paymentProvider,
+    paymentProviderReferenceId: existingPaymentProviderReferenceId,
     status,
+    metadata: paymentMetadata,
     stripePaymentDetails,
     x402PaymentDetails,
   } = await getPaymentDetails({ paymentId });
@@ -159,6 +162,50 @@ export async function chargeUserWorkflow({
         `Error while executing ChargeNfsc workflow. workflowId: charge-nfsc-${paymentId}, cause: ${JSON.stringify(error)}`,
       );
       paymentStatus = paymentStatusSchema.enum.FAILED;
+    }
+  }
+
+  if (paymentProvider === paymentProviderSchema.enum.MPP) {
+    const mppPaymentDetails = paymentMetadata?.mppPaymentDetails;
+
+    if (!mppPaymentDetails) {
+      workflow.log.error(
+        `MPP payment missing mppPaymentDetails. paymentId: ${paymentId}`,
+      );
+      paymentStatus = paymentStatusSchema.enum.FAILED;
+    } else if (!mppPaymentDetails.presettled) {
+      workflow.log.error(
+        `MPP payment is not pre-settled. paymentId: ${paymentId}`,
+      );
+      paymentStatus = paymentStatusSchema.enum.FAILED;
+    } else if (!existingPaymentProviderReferenceId) {
+      workflow.log.error(
+        `MPP payment missing provider reference. paymentId: ${paymentId}`,
+      );
+      paymentStatus = paymentStatusSchema.enum.FAILED;
+    } else {
+      try {
+        const verifyResult = await verifyPresettledMppPayment({
+          paymentId,
+          paymentProviderReferenceId: existingPaymentProviderReferenceId,
+          settledAt: mppPaymentDetails.settledAt,
+        });
+
+        if (verifyResult.valid) {
+          paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
+          paymentProviderReferenceId = existingPaymentProviderReferenceId;
+        } else {
+          workflow.log.error(
+            `Pre-settled MPP payment verification failed. paymentId: ${paymentId}, error: ${verifyResult.error}`,
+          );
+          paymentStatus = paymentStatusSchema.enum.FAILED;
+        }
+      } catch (error) {
+        workflow.log.error(
+          `Error verifying pre-settled MPP payment. paymentId: ${paymentId}, cause: ${JSON.stringify(error)}`,
+        );
+        paymentStatus = paymentStatusSchema.enum.FAILED;
+      }
     }
   }
 

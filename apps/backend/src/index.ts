@@ -38,6 +38,7 @@ import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema
 import { rdapRouter } from './routers/rdap';
 import { whoisRouter } from './routers/whois';
 import { x402Router } from './routers/x402';
+import { mppRouter } from './routers/mpp';
 import { mlsRssProxyRouter } from './routers/mls-rss-proxy';
 
 type HonoVariables = {
@@ -55,6 +56,7 @@ const DNS_RELATED_ROUTES = [
   /dns\/.*/,
   /parking\/.*/,
   /x402/,
+  /mpp/,
 ];
 const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
 const X402Headers = [
@@ -163,6 +165,7 @@ app.route('/c15t', c15tRouter);
 app.route('/log-level', logLevelRouter);
 app.route('/client-events', browserLogsProxyRouter);
 app.route('x402', x402Router);
+app.route('mpp', mppRouter);
 app.route('mls/feed/rss.xml', mlsRssProxyRouter);
 
 app.get('/configfi', (c) => {

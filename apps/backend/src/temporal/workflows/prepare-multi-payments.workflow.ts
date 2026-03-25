@@ -1,4 +1,5 @@
 import type {
+  NfscPaymentProvider,
   PaymentProvider,
   PaymentProviderDetails,
   PaymentStatus,
@@ -201,10 +202,12 @@ export async function prepareMultiPaymentsWorkflow(
             paymentMethodId: allocation.stripePaymentMethodId,
           },
         };
-      } else if (allocation.provider === paymentProviderSchema.enum.X402) {
-        // X402 is not supported for multi-payments - it's a push-based payment from external users
+      } else if (
+        allocation.provider === paymentProviderSchema.enum.X402 ||
+        allocation.provider === paymentProviderSchema.enum.MPP
+      ) {
         throw new workflow.ApplicationFailure(
-          'X402 payment provider is not supported for multi-payments',
+          `${allocation.provider} payment provider is not supported for multi-payments`,
         );
       } else {
         // NFSC payment
@@ -213,9 +216,10 @@ export async function prepareMultiPaymentsWorkflow(
             'Wallet address is required for NFSC payments',
           );
         }
-        const chainId = getChainIdFromProvider(allocation.provider);
+        const provider = allocation.provider as NfscPaymentProvider;
+        const chainId = getChainIdFromProvider(provider);
         paymentProviderDetails = {
-          paymentProvider: allocation.provider,
+          paymentProvider: provider,
           nfscPaymentDetails: {
             chainId,
             walletAddress: allocation.walletAddress,

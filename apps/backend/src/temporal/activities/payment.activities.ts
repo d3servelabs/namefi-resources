@@ -117,15 +117,23 @@ export async function createPayment(
         providerSpecificDetails = {
           stripePaymentDetails: paymentProviderDetails.stripePaymentDetails,
         };
+      } else if (paymentProviderDetails.paymentProvider === 'MPP') {
+        providerSpecificDetails = {
+          metadata: paymentProviderDetails.metadata,
+        };
       } else if (paymentProviderDetails.paymentProvider === 'X402') {
         providerSpecificDetails = {
           x402PaymentDetails: paymentProviderDetails.x402PaymentDetails,
         };
-      } else {
-        // NFSC providers
+      } else if ('nfscPaymentDetails' in paymentProviderDetails) {
         providerSpecificDetails = {
           nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
         };
+      } else {
+        throw ApplicationFailure.create({
+          type: 'INVALID_PAYMENT_PROVIDER',
+          message: 'Invalid payment provider',
+        });
       }
 
       const newPaymentInsertValues = {
@@ -218,6 +226,7 @@ export async function getMultiplePaymentsDetails(input: {
       status: true,
       paymentProvider: true,
       paymentProviderReferenceId: true,
+      metadata: true,
       nfscPaymentDetails: true,
       stripePaymentDetails: true,
       x402PaymentDetails: true,
@@ -350,6 +359,7 @@ export type UpdatePaymentInput = Pick<
   | 'status'
   | 'paymentProviderReferenceId'
   | 'amountInUSDCents'
+  | 'metadata'
   | 'x402PaymentDetails'
 > &
   Required<Pick<PaymentUpdate, 'id'>>;
@@ -365,6 +375,7 @@ export async function updatePayment({
   status,
   paymentProviderReferenceId,
   amountInUSDCents,
+  metadata,
   x402PaymentDetails,
 }: UpdatePaymentInput) {
   const lifecycleTimestamps = status
@@ -377,6 +388,7 @@ export async function updatePayment({
       status,
       paymentProviderReferenceId,
       amountInUSDCents,
+      metadata,
       x402PaymentDetails,
       ...lifecycleTimestamps,
     })
@@ -384,6 +396,7 @@ export async function updatePayment({
     .returning({
       status: paymentsTable.status,
       paymentProviderReferenceId: paymentsTable.paymentProviderReferenceId,
+      metadata: paymentsTable.metadata,
       x402PaymentDetails: paymentsTable.x402PaymentDetails,
     });
 
@@ -470,6 +483,70 @@ export async function updatePaymentMetadata({
   }
 
   return updatedPayment;
+}
+
+export async function verifyPresettledMppPayment({
+  paymentId,
+  paymentProviderReferenceId,
+  settledAt,
+  maxAgeSeconds = 3600,
+}: {
+  paymentId: string;
+  paymentProviderReferenceId: string;
+  settledAt?: string;
+  maxAgeSeconds?: number;
+}) {
+  if (!paymentProviderReferenceId) {
+    return {
+      valid: false,
+      error: 'Missing payment provider reference for pre-settled MPP payment',
+    };
+  }
+
+  if (!settledAt) {
+    return {
+      valid: false,
+      error: 'Missing settlement timestamp for pre-settled MPP payment',
+    };
+  }
+
+  const settledAtDate = new Date(settledAt);
+  const ageSeconds = (Date.now() - settledAtDate.getTime()) / 1000;
+
+  if (ageSeconds > maxAgeSeconds) {
+    return {
+      valid: false,
+      error: `Pre-settled MPP payment is too old (${Math.round(ageSeconds)}s > ${maxAgeSeconds}s)`,
+    };
+  }
+
+  if (ageSeconds < 0) {
+    return {
+      valid: false,
+      error: 'Pre-settled MPP payment has future timestamp',
+    };
+  }
+
+  const existingPayment = await db.query.paymentsTable.findFirst({
+    where: eq(
+      paymentsTable.paymentProviderReferenceId,
+      paymentProviderReferenceId,
+    ),
+    columns: { id: true, paymentProvider: true },
+  });
+
+  if (
+    existingPayment &&
+    existingPayment.paymentProvider === paymentProviderSchema.enum.MPP &&
+    existingPayment.id !== paymentId
+  ) {
+    return {
+      valid: false,
+      error: `MPP payment reference ${paymentProviderReferenceId} already used for payment ${existingPayment.id}`,
+    };
+  }
+
+  return { valid: true };
 }
 
 export type UpdateRefundInput = Pick<

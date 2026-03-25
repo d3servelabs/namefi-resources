@@ -120,6 +120,7 @@ export const paymentProviderEnum = pgEnum('payment_provider', [
   'NFSC_BASE',
   'NFSC_ETHEREUM',
   'NFSC_ETHEREUM_SEPOLIA',
+  'MPP',
   'STRIPE',
   'X402',
 ] as const);
@@ -401,6 +402,32 @@ const legacyPaymentIntentSchema = z.object({
 
 export const paymentMetadataSchema = z.object({
   legacyPaymentMetadata: legacyPaymentIntentSchema.optional(),
+  mppPaymentDetails: z
+    .object({
+      challenge: z.record(z.string(), z.unknown()).optional(),
+      credentialSummary: z
+        .object({
+          source: z.string().optional(),
+          tempoPayloadType: z.enum(['hash', 'transaction']).optional(),
+          stripeExternalId: z.string().optional(),
+        })
+        .optional(),
+      method: z.enum(['tempo', 'stripe']),
+      nftReceivingWalletAddress: z.string().optional(),
+      payerDid: z.string().optional(),
+      payerWalletAddress: z.string().optional(),
+      presettled: z.boolean().optional(),
+      receipt: z.object({
+        externalId: z.string().optional(),
+        method: z.enum(['tempo', 'stripe']),
+        reference: z.string(),
+        status: z.literal('success'),
+        timestamp: z.string(),
+      }),
+      refundTxHash: z.string().optional(),
+      settledAt: z.string().optional(),
+    })
+    .optional(),
 });
 export type PaymentMetadata = z.infer<typeof paymentMetadataSchema>;
 

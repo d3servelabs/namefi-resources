@@ -7,6 +7,7 @@ import {
   type UserSelect,
   cartItemsTable,
   db,
+  isMppPayment,
   isNfscPayment,
   isX402Payment,
   orderItemsTable,
@@ -94,11 +95,22 @@ type PaymentMethodDetailsX402 = {
   receiverWalletAddress?: string;
   settlementTxHash?: string | null;
 };
+type PaymentMethodDetailsMpp = {
+  paymentId: string;
+  isMppPayment: true;
+  method: 'stripe' | 'tempo';
+  isOnChainPayment: boolean;
+  payerWalletAddress?: string;
+  reference?: string | null;
+  brand?: string;
+  last4?: string;
+};
 
 type PaymentMethodDetails =
   | PaymentMethodDetailsOnChain
   | PaymentMethodDetailsOffChain
-  | PaymentMethodDetailsX402;
+  | PaymentMethodDetailsX402
+  | PaymentMethodDetailsMpp;
 
 type OrderProgressSnapshot = {
   workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
@@ -1187,6 +1199,47 @@ export const ordersRouter = createTRPCRouter({
             };
           }
 
+          if (isMppPayment(payment)) {
+            if (payment.metadata.mppPaymentDetails.method === 'tempo') {
+              return {
+                isMppPayment: true,
+                method: 'tempo',
+                payerWalletAddress:
+                  payment.metadata.mppPaymentDetails.payerWalletAddress,
+                paymentId: payment.id,
+                isOnChainPayment: true,
+                reference: payment.paymentProviderReferenceId,
+              };
+            }
+
+            if (isNil(payment.paymentProviderReferenceId)) {
+              return {
+                paymentId: payment.id,
+                isOnChainPayment: false,
+                brand: undefined,
+                last4: undefined,
+              };
+            }
+
+            const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+              payment.paymentProviderReferenceId,
+              { expand: ['payment_method'] },
+            );
+
+            const paymentMethod =
+              stripePaymentIntent.payment_method as Stripe.PaymentMethod | null;
+
+            return {
+              isMppPayment: true,
+              method: 'stripe',
+              paymentId: payment.id,
+              isOnChainPayment: false,
+              brand: paymentMethod?.card?.brand,
+              last4: paymentMethod?.card?.last4,
+              reference: payment.paymentProviderReferenceId,
+            };
+          }
+
           if (isNil(payment.paymentProviderReferenceId)) {
             return {
               paymentId: payment.id,
@@ -1274,6 +1327,47 @@ export const ordersRouter = createTRPCRouter({
           txHash: payment.paymentProviderReferenceId,
           chainId: payment.nfscPaymentDetails.chainId,
           walletAddress: payment.nfscPaymentDetails.walletAddress,
+        };
+      }
+
+      if (isMppPayment(payment)) {
+        if (payment.metadata.mppPaymentDetails.method === 'tempo') {
+          return {
+            isMppPayment: true,
+            method: 'tempo',
+            payerWalletAddress:
+              payment.metadata.mppPaymentDetails.payerWalletAddress,
+            paymentId: payment.id,
+            isOnChainPayment: true,
+            reference: payment.paymentProviderReferenceId,
+          };
+        }
+
+        if (isNil(payment.paymentProviderReferenceId)) {
+          return {
+            paymentId: payment.id,
+            isOnChainPayment: false,
+            brand: undefined,
+            last4: undefined,
+          };
+        }
+
+        const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+          payment.paymentProviderReferenceId,
+          { expand: ['payment_method'] },
+        );
+
+        const paymentMethod =
+          stripePaymentIntent.payment_method as Stripe.PaymentMethod | null;
+
+        return {
+          isMppPayment: true,
+          method: 'stripe',
+          paymentId: payment.id,
+          isOnChainPayment: false,
+          brand: paymentMethod?.card?.brand,
+          last4: paymentMethod?.card?.last4,
+          reference: payment.paymentProviderReferenceId,
         };
       }
 
