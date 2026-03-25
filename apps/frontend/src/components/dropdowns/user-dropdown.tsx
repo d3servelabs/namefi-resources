@@ -8,6 +8,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { Button } from '@/components/ui/shadcn/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/shadcn/card';
 import { useSidebar } from '@/components/ui/shadcn/sidebar';
 import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
 import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
@@ -20,19 +27,27 @@ import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress, shortage } from '@/lib/string';
 import { getUserDisplayName } from '@/lib/user';
+import type { LucideIcon } from 'lucide-react';
 import {
   Loader2Icon,
   LogOutIcon,
   MoreHorizontalIcon,
+  SearchIcon,
   UserIcon,
+  UsersIcon,
   WalletIcon,
   Settings as SettingsIcon,
+  ShieldIcon,
   CoinsIcon,
+  ClipboardListIcon,
+  FileTextIcon,
+  BarChart3Icon,
+  SparklesIcon,
   LayoutListIcon,
   Globe,
 } from 'lucide-react';
 import Link from 'next/link';
-import {
+import React, {
   type ForwardRefExoticComponent,
   type ForwardedRef,
   type HTMLAttributes,
@@ -75,10 +90,15 @@ import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { ErrorBoundary } from '@suspensive/react';
+import { Input } from '@/components/ui/shadcn/input';
+import {
+  AdminUserLookupDialog,
+  type AdminUserLookupReference,
+} from '@/components/admin/user-details';
+import { useDebounceValue } from 'usehooks-ts';
 
 import {
   flatten,
-  compose,
   intersperse,
   filter,
   isNotEmpty,
@@ -133,22 +153,22 @@ export const UserDropdown = ErrorBoundary.with(
         enabled: isAuthenticated,
       }),
     );
+    const { hasPermissions: canReadUsers } = useHasPermissions(
+      [Permission.READ_USERS],
+      'every',
+    );
     const { hasPermissions: canViewAdminDashboard } = useHasPermissions(
       [Permission.VIEW_ADMIN_DASHBOARD],
       'every',
     );
+    const [isFindUserDialogOpen, setIsFindUserDialogOpen] = useState(false);
+    const [isAdminQuickAccessOpen, setIsAdminQuickAccessOpen] = useState(false);
 
     const items: UserDropdownItemProps[] = useMemo(() => {
       return getUserDropdownItems({
-        canViewAdminDashboard,
-        isPbnOwner: pbnOwnerQuery.data?.isOwner ?? false,
         showBalanceInUserDropdown,
       });
-    }, [
-      canViewAdminDashboard,
-      pbnOwnerQuery.data?.isOwner,
-      showBalanceInUserDropdown,
-    ]);
+    }, [showBalanceInUserDropdown]);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -225,7 +245,9 @@ export const UserDropdown = ErrorBoundary.with(
                 disableBackdropBlur={disableBackdropBlur}
                 stretch={shouldStretch}
                 className={expandedPaddingClass}
-                onClick={handleConnect as any}
+                onClick={() => {
+                  void handleConnect();
+                }}
               >
                 <WalletIcon className="size-6" />
                 {isExpanded && <span>Sign In</span>}
@@ -310,6 +332,19 @@ export const UserDropdown = ErrorBoundary.with(
                   )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
+                  {(canReadUsers ||
+                    canViewAdminDashboard ||
+                    pbnOwnerQuery.data?.isOwner) && (
+                    <AdminDropdownSection
+                      canReadUsers={canReadUsers}
+                      canViewAdminDashboard={canViewAdminDashboard}
+                      isPbnOwner={pbnOwnerQuery.data?.isOwner ?? false}
+                      onOpenFindUser={() => setIsFindUserDialogOpen(true)}
+                      onOpenAdminQuickAccess={() =>
+                        setIsAdminQuickAccessOpen(true)
+                      }
+                    />
+                  )}
                   {items.map((item, index) =>
                     item ? (
                       <UserDropdownItem
@@ -325,6 +360,14 @@ export const UserDropdown = ErrorBoundary.with(
             </motion.div>
           )}
         </AnimatePresence>
+        <FindUserDialog
+          open={isFindUserDialogOpen}
+          onOpenChange={setIsFindUserDialogOpen}
+        />
+        <AdminQuickAccessDialog
+          open={isAdminQuickAccessOpen}
+          onOpenChange={setIsAdminQuickAccessOpen}
+        />
       </div>
     );
   }) as ForwardRefExoticComponent<UserDropdownProps>,
@@ -467,23 +510,28 @@ type UserDropdownItemProps =
   | { custom: React.ReactNode; type: 'custom' }
   | { type: 'separator' }
   | (Omit<NavItem, 'href'> & {
-      onClick?: (e: React.MouseEvent<any>) => void;
+      onClick?: (e: React.MouseEvent<HTMLElement>) => void;
       type: 'button';
       customProps?: DropdownMenuItemProps;
     });
 
-const joinNavItemGroups = compose<
-  any[],
-  UserDropdownItemProps[],
-  UserDropdownItemProps[],
-  UserDropdownItemProps[],
-  UserDropdownItemProps[]
->(
-  filter(both(isNotNil, Boolean)), // Remove nulls
-  flatten, // Flatten the array of arrays into a single array
-  intersperse({ type: 'separator' } as UserDropdownItemProps), // Add separators between groups
-  filter(compose(isNotEmpty, filter(both(isNotNil, Boolean)))), // Remove nulls and empty arrays
-);
+const joinNavItemGroups = (
+  groups: (UserDropdownItemProps | boolean | undefined | null)[][],
+) => {
+  const filteredGroups = groups
+    .map(
+      (group) =>
+        filter(both(isNotNil, Boolean), group) as UserDropdownItemProps[],
+    )
+    .filter((group) => isNotEmpty(group));
+
+  return flatten(
+    intersperse(
+      [{ type: 'separator' } as UserDropdownItemProps],
+      filteredGroups,
+    ),
+  ) as UserDropdownItemProps[];
+};
 
 const logUserDropdownItemError = (error: Error, info: ErrorInfo) => {
   reportReactBoundaryError('UserDropdownItem', error, info);
@@ -491,7 +539,7 @@ const logUserDropdownItemError = (error: Error, info: ErrorInfo) => {
 
 const UserDropdownItem = ({ item }: { item: UserDropdownItemProps }) => {
   return (
-    <ErrorBoundary fallback={<></>} onError={logUserDropdownItemError}>
+    <ErrorBoundary fallback={null} onError={logUserDropdownItemError}>
       <UserDropdownItemInner item={item} />
     </ErrorBoundary>
   );
@@ -518,7 +566,9 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
       return (
         <DropdownMenuItem
           key={`${item.title}-${item.type}`}
-          onClick={item.onClick}
+          onSelect={(event) => {
+            item.onClick?.(event as unknown as React.MouseEvent<HTMLElement>);
+          }}
           {...item.customProps}
         >
           {Icon && <Icon className="mr-2 h-4 w-4" />}
@@ -536,12 +586,9 @@ const BASE_ITEMS: UserDropdownItemProps[] = [
 ];
 
 function getUserDropdownItems(options: {
-  canViewAdminDashboard: boolean;
-  isPbnOwner: boolean;
   showBalanceInUserDropdown: boolean;
 }): UserDropdownItemProps[] {
-  const { canViewAdminDashboard, isPbnOwner, showBalanceInUserDropdown } =
-    options;
+  const { showBalanceInUserDropdown } = options;
 
   const items: (UserDropdownItemProps | boolean | undefined | null)[][] = [
     showBalanceInUserDropdown
@@ -552,24 +599,6 @@ function getUserDropdownItems(options: {
           },
         ]
       : [],
-    [
-      canViewAdminDashboard && {
-        type: 'link',
-        title: 'Admin Dashboard',
-        href: '/admin',
-        icon: SettingsIcon,
-      },
-      canViewAdminDashboard && {
-        type: 'custom',
-        custom: <AdminFeatureFlagsDropdownItem key="admin-feature-flags" />,
-      },
-      isPbnOwner && {
-        type: 'link',
-        title: 'Powered Domains',
-        href: '/powered-by-namefi/admin',
-        icon: WalletIcon,
-      },
-    ],
     BASE_ITEMS,
     [
       {
@@ -579,6 +608,331 @@ function getUserDropdownItems(options: {
     ],
   ];
   return joinNavItemGroups(items) as UserDropdownItemProps[];
+}
+
+function AdminDropdownSection({
+  canReadUsers,
+  canViewAdminDashboard,
+  isPbnOwner,
+  onOpenFindUser,
+  onOpenAdminQuickAccess,
+}: {
+  canReadUsers: boolean;
+  canViewAdminDashboard: boolean;
+  isPbnOwner: boolean;
+  onOpenFindUser: () => void;
+  onOpenAdminQuickAccess: () => void;
+}) {
+  return (
+    <>
+      <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+        Admin
+      </div>
+      {canReadUsers ? <FindUserDropdownItem onOpen={onOpenFindUser} /> : null}
+      {canViewAdminDashboard ? (
+        <AdminQuickAccessDropdownItem onOpen={onOpenAdminQuickAccess} />
+      ) : null}
+      {canViewAdminDashboard ? (
+        <DropdownMenuItem render={<Link href="/admin" />}>
+          <SettingsIcon className="mr-2 h-4 w-4" />
+          <span>Admin Dashboard</span>
+        </DropdownMenuItem>
+      ) : null}
+      {canViewAdminDashboard ? <AdminFeatureFlagsDropdownItem /> : null}
+      {isPbnOwner ? (
+        <DropdownMenuItem render={<Link href="/powered-by-namefi/admin" />}>
+          <WalletIcon className="mr-2 h-4 w-4" />
+          <span>Powered Domains</span>
+        </DropdownMenuItem>
+      ) : null}
+      <DropdownMenuSeparator />
+    </>
+  );
+}
+
+type AdminQuickAccessItem = {
+  title: string;
+  description: string;
+  href: string;
+  icon: LucideIcon;
+  permissions?: Permission[];
+  permissionsMode?: 'some' | 'every';
+};
+
+const ADMIN_QUICK_ACCESS_ITEMS: AdminQuickAccessItem[] = [
+  {
+    title: 'Users',
+    description: 'Jump into users, balances, wallets, and account details.',
+    href: '/admin/users',
+    icon: UsersIcon,
+    permissions: [Permission.READ_USERS],
+  },
+  {
+    title: 'Orders',
+    description: 'Review orders, payments, and fulfillment issues fast.',
+    href: '/admin/orders',
+    icon: ClipboardListIcon,
+    permissions: [Permission.READ_ORDERS, Permission.READ_USERS],
+    permissionsMode: 'every',
+  },
+  {
+    title: 'Free Claims',
+    description: 'Manage campaigns, claim inventory, and redemption flow.',
+    href: '/admin/free-claims',
+    icon: Globe,
+    permissions: [Permission.READ_FREE_CLAIMS, Permission.WRITE_FREE_CLAIMS],
+    permissionsMode: 'some',
+  },
+  {
+    title: 'Permissions',
+    description: 'Adjust admin access, reviewers, and internal tooling rights.',
+    href: '/admin/permissions',
+    icon: ShieldIcon,
+    permissions: [Permission.READ_PERMISSIONS, Permission.WRITE_PERMISSIONS],
+    permissionsMode: 'some',
+  },
+  {
+    title: 'Audit Logs',
+    description: 'Inspect sensitive actions and recent admin activity.',
+    href: '/admin/audit-logs',
+    icon: FileTextIcon,
+    permissions: [Permission.READ_AUDIT_LOGS],
+  },
+  {
+    title: 'Analytics',
+    description: 'Check operational metrics, traffic, and platform trends.',
+    href: '/admin/analytics',
+    icon: BarChart3Icon,
+    permissions: [Permission.READ_ANALYTICS],
+  },
+];
+
+const FIND_USER_SKELETON_KEYS = [
+  'find-user-skeleton-1',
+  'find-user-skeleton-2',
+  'find-user-skeleton-3',
+] as const;
+
+function FindUserDropdownItem({ onOpen }: { onOpen: () => void }) {
+  return (
+    <DropdownMenuItem
+      closeOnClick={false}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onOpen();
+      }}
+      className="cursor-pointer"
+    >
+      <SearchIcon className="mr-2 h-4 w-4" />
+      <span>Find User</span>
+    </DropdownMenuItem>
+  );
+}
+
+function AdminQuickAccessDropdownItem({ onOpen }: { onOpen: () => void }) {
+  return (
+    <DropdownMenuItem
+      closeOnClick={false}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onOpen();
+      }}
+      className="cursor-pointer"
+    >
+      <SparklesIcon className="mr-2 h-4 w-4" />
+      <span>Admin Quick Access</span>
+    </DropdownMenuItem>
+  );
+}
+
+function FindUserDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const [selectedReference, setSelectedReference] =
+    useState<AdminUserLookupReference | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 250);
+  const normalizedSearchTerm = debouncedSearchTerm.trim();
+  const shouldSearch = open && normalizedSearchTerm.length > 1;
+  const trpc = useTRPC();
+  const searchUsers = useQuery({
+    ...trpc.admin.searchUsers.queryOptions({
+      searchTerm: shouldSearch ? normalizedSearchTerm : 'idle',
+      limit: 8,
+    }),
+    enabled: shouldSearch,
+  });
+
+  return (
+    <>
+      <Dialog
+        open={open}
+        onOpenChange={(nextOpen) => {
+          onOpenChange(nextOpen);
+          if (!nextOpen) {
+            setSearchTerm('');
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Find User</DialogTitle>
+            <DialogDescription>
+              Search by user ID, Privy ID, email, wallet, display name, Twitter
+              handle, or domain name.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <Input
+              autoFocus={true}
+              placeholder="Search users, wallets, emails, handles, or domains"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+
+            <div className="max-h-[24rem] space-y-3 overflow-y-auto pr-1">
+              {normalizedSearchTerm.length <= 1 ? (
+                <EmptyState message="Type at least 2 characters to search for an account." />
+              ) : searchUsers.isLoading ? (
+                FIND_USER_SKELETON_KEYS.map((key) => (
+                  <Skeleton key={key} className="h-24 w-full" />
+                ))
+              ) : searchUsers.data && searchUsers.data.length > 0 ? (
+                searchUsers.data.map((user) => (
+                  <button
+                    key={user.id}
+                    type="button"
+                    className="w-full rounded-xl border border-border/60 p-4 text-left transition-colors hover:bg-muted/40"
+                    onClick={() => {
+                      onOpenChange(false);
+                      setSelectedReference({ userId: user.id });
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2">
+                        <div className="text-sm font-semibold">
+                          {user.displayName ??
+                            user.primaryEmail ??
+                            user.privyUserId}
+                        </div>
+                        <div className="space-y-1 text-xs text-muted-foreground">
+                          <div>{user.primaryEmail ?? 'No primary email'}</div>
+                          <div className="font-mono">{user.id}</div>
+                          <div className="font-mono">{user.privyUserId}</div>
+                        </div>
+                      </div>
+
+                      <div className="max-w-[14rem] space-y-1 text-right text-xs text-muted-foreground">
+                        {user.twitterUsername ? (
+                          <div>@{user.twitterUsername}</div>
+                        ) : null}
+                        {user.walletAddresses
+                          .slice(0, 2)
+                          .map((walletAddress) => (
+                            <div key={walletAddress} className="font-mono">
+                              {getShortAddress(walletAddress)}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  </button>
+                ))
+              ) : (
+                <EmptyState message="No users matched that search." />
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {selectedReference ? (
+        <AdminUserLookupDialog
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setSelectedReference(null);
+            }
+          }}
+          reference={selectedReference}
+        />
+      ) : null}
+    </>
+  );
+}
+
+function AdminQuickAccessDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-3xl">
+        <DialogHeader>
+          <DialogTitle>Admin Quick Access</DialogTitle>
+          <DialogDescription>
+            Jump into the admin areas you use most often.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {ADMIN_QUICK_ACCESS_ITEMS.map((item) => (
+            <AdminQuickAccessCard
+              key={item.title}
+              item={item}
+              onNavigate={() => onOpenChange(false)}
+            />
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function AdminQuickAccessCard({
+  item,
+  onNavigate,
+}: {
+  item: AdminQuickAccessItem;
+  onNavigate: () => void;
+}) {
+  const { hasPermissions } = useHasPermissions(
+    item.permissions ?? [],
+    item.permissionsMode,
+  );
+
+  if (item.permissions && item.permissions.length > 0 && !hasPermissions) {
+    return null;
+  }
+
+  const Icon = item.icon;
+
+  return (
+    <Link href={item.href} className="group" onClick={onNavigate}>
+      <Card className="h-full border-border/60 transition-colors group-hover:bg-muted/40">
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl border border-border/60 bg-muted/40 p-2">
+              <Icon className="h-5 w-5" />
+            </div>
+            <CardTitle className="text-base">{item.title}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>{item.description}</CardDescription>
+        </CardContent>
+      </Card>
+    </Link>
+  );
 }
 
 function UserBalanceDropdownItem() {

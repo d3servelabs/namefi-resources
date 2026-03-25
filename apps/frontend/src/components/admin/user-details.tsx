@@ -3,7 +3,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Link from 'next/link';
-import { useState, type ComponentProps, type ReactNode } from 'react';
+import {
+  useEffect,
+  useState,
+  type ComponentProps,
+  type MouseEventHandler,
+  type ReactNode,
+} from 'react';
 import { toast } from 'sonner';
 import {
   ArrowUpRight,
@@ -60,7 +66,7 @@ import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 type AdminUserDetails = AppRouterOutput['admin']['getUserDetails'];
 type AdminWalletDetails = AppRouterOutput['admin']['getWalletDetails'];
 
-type AdminUserLookupReference =
+export type AdminUserLookupReference =
   | {
       userId: string;
       privyUserId?: never;
@@ -91,6 +97,12 @@ const pageLoadingCardKeys = [
   'page-loading-4',
   'page-loading-5',
 ] as const;
+
+const ADMIN_USER_DETAILS_CLOSE_EVENT = 'admin-user-details:close-all';
+
+const dispatchAdminUserDetailsCloseEvent = () => {
+  window.dispatchEvent(new CustomEvent(ADMIN_USER_DETAILS_CLOSE_EVENT));
+};
 
 const formatDateOnly = (value: Date | string | null | undefined) => {
   if (!value) {
@@ -223,16 +235,28 @@ function EmptyTableRow({ colSpan, label }: { colSpan: number; label: string }) {
 function ExternalPageButton({
   href,
   children,
+  closeAdminDetailDialogs = false,
 }: {
   href: string;
   children: ReactNode;
+  closeAdminDetailDialogs?: boolean;
 }) {
   return (
     <Button
       variant="outline"
       size="sm"
       render={(props) => (
-        <Link {...props} href={href} className={cn(props.className)}>
+        <Link
+          {...props}
+          href={href}
+          className={cn(props.className)}
+          onClick={(event) => {
+            props.onClick?.(event);
+            if (!event.defaultPrevented && closeAdminDetailDialogs) {
+              dispatchAdminUserDetailsCloseEvent();
+            }
+          }}
+        >
           {props.children}
         </Link>
       )}
@@ -357,6 +381,20 @@ export function AdminUserLookupDialog({
   reference: AdminUserLookupReference;
 }) {
   const trpc = useTRPC();
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const closeDialog = () => onOpenChange(false);
+    window.addEventListener(ADMIN_USER_DETAILS_CLOSE_EVENT, closeDialog);
+
+    return () => {
+      window.removeEventListener(ADMIN_USER_DETAILS_CLOSE_EVENT, closeDialog);
+    };
+  }, [open, onOpenChange]);
+
   const resolverQuery = useQuery(
     trpc.admin.resolveUserReference.queryOptions(reference, {
       enabled: open,
@@ -417,6 +455,11 @@ export function AdminUserLookupButton({
   variant = 'ghost',
   size = 'icon-sm',
   children,
+  onClick,
+  onMouseDown,
+  onMouseUp,
+  onPointerDown,
+  onPointerUp,
 }: {
   reference: AdminUserLookupReference;
   className?: string;
@@ -424,6 +467,11 @@ export function AdminUserLookupButton({
   variant?: ComponentProps<typeof Button>['variant'];
   size?: ComponentProps<typeof Button>['size'];
   children?: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onMouseDown?: MouseEventHandler<HTMLButtonElement>;
+  onMouseUp?: MouseEventHandler<HTMLButtonElement>;
+  onPointerDown?: ComponentProps<typeof Button>['onPointerDown'];
+  onPointerUp?: ComponentProps<typeof Button>['onPointerUp'];
 }) {
   const [open, setOpen] = useState(false);
 
@@ -434,7 +482,14 @@ export function AdminUserLookupButton({
         variant={variant}
         size={size}
         className={className}
-        onClick={() => setOpen(true)}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onClick={(event) => {
+          onClick?.(event);
+          setOpen(true);
+        }}
         title={title}
         aria-label={title}
       >
@@ -456,6 +511,11 @@ export function AdminWalletDetailsButton({
   variant = 'ghost',
   size = 'icon-sm',
   children,
+  onClick,
+  onMouseDown,
+  onMouseUp,
+  onPointerDown,
+  onPointerUp,
 }: {
   walletAddress: string;
   className?: string;
@@ -463,6 +523,11 @@ export function AdminWalletDetailsButton({
   variant?: ComponentProps<typeof Button>['variant'];
   size?: ComponentProps<typeof Button>['size'];
   children?: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onMouseDown?: MouseEventHandler<HTMLButtonElement>;
+  onMouseUp?: MouseEventHandler<HTMLButtonElement>;
+  onPointerDown?: ComponentProps<typeof Button>['onPointerDown'];
+  onPointerUp?: ComponentProps<typeof Button>['onPointerUp'];
 }) {
   const [open, setOpen] = useState(false);
 
@@ -473,7 +538,14 @@ export function AdminWalletDetailsButton({
         variant={variant}
         size={size}
         className={className}
-        onClick={() => setOpen(true)}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onClick={(event) => {
+          onClick?.(event);
+          setOpen(true);
+        }}
         title={title}
         aria-label={title}
       >
@@ -549,6 +621,20 @@ export function AdminWalletDetailsDialog({
   walletAddress: string;
 }) {
   const trpc = useTRPC();
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const closeDialog = () => onOpenChange(false);
+    window.addEventListener(ADMIN_USER_DETAILS_CLOSE_EVENT, closeDialog);
+
+    return () => {
+      window.removeEventListener(ADMIN_USER_DETAILS_CLOSE_EVENT, closeDialog);
+    };
+  }, [open, onOpenChange]);
+
   const query = useQuery(
     trpc.admin.getWalletDetails.queryOptions(
       {
@@ -638,7 +724,10 @@ function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
             </CardDescription>
           </div>
           <div className="flex flex-wrap gap-2">
-            <ExternalPageButton href={`/admin/users/${data.user.id}`}>
+            <ExternalPageButton
+              href={`/admin/users/${data.user.id}`}
+              closeAdminDetailDialogs={true}
+            >
               Open full page
               <ArrowUpRight className="h-4 w-4" />
             </ExternalPageButton>
@@ -921,6 +1010,7 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
           {data.wallet.linkedUserId ? (
             <ExternalPageButton
               href={`/admin/users/${data.wallet.linkedUserId}`}
+              closeAdminDetailDialogs={true}
             >
               Open user page
               <ArrowUpRight className="h-4 w-4" />
@@ -1809,7 +1899,10 @@ export function AdminUserExpandedDetails({ userId }: { userId: string }) {
           Quick view
           <ExternalLink className="h-4 w-4" />
         </AdminUserLookupButton>
-        <ExternalPageButton href={`/admin/users/${userId}`}>
+        <ExternalPageButton
+          href={`/admin/users/${userId}`}
+          closeAdminDetailDialogs={true}
+        >
           Open full page
           <ArrowUpRight className="h-4 w-4" />
         </ExternalPageButton>

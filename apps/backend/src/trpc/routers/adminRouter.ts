@@ -98,6 +98,9 @@ import {
 } from './admin/privyUserCache';
 import { triggerUpdatePrivyCache } from '../../temporal/schedules/update-privy-cache';
 import { getPrivyCacheStatus } from '../../temporal/activities/indexers/privy-cache.activities';
+
+const LEADING_AT_SYMBOL_REGEX = /^@/;
+
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -1773,126 +1776,113 @@ export const adminRouter = createTRPCRouter({
       const { searchTerm, limit } = input;
 
       try {
-        // Helper function to get user details from database
-        const getUserFromDatabase = async (privyUserId: string) => {
-          const user = await db.query.usersTable.findFirst({
-            where: eq(usersTable.privyUserId, privyUserId),
-            columns: {
-              id: true,
-              privyUserId: true,
-              primaryEmail: true,
-            },
-          });
-          return user;
-        };
-
-        // Helper function to format user response
-        const formatUserResponse = async (privyUser: any, dbUser?: any) => {
-          const walletAddresses = getPrivyUserLinkedEthereumWalletAddresses({
-            privyUser,
-          });
-
-          return {
-            id: dbUser?.id || null,
-            privyUserId: privyUser.id,
-            primaryEmail:
-              dbUser?.primaryEmail || privyUser.email?.address || null,
-            walletAddresses,
-            displayName: privyUser.email?.address?.split('@')[0] || null,
-          };
-        };
-
-        // Determine search type and resolve to privyUserId or userUuid
         const trimmedSearchTerm = searchTerm.trim();
-        let privyUser = null;
-        let searchResults: any[] = [];
+        const lowerSearchTerm = trimmedSearchTerm.toLowerCase();
+        const lowerLikeTerm = `%${lowerSearchTerm}%`;
+        const twitterSearchTerm = lowerSearchTerm.replace(
+          LEADING_AT_SYMBOL_REGEX,
+          '',
+        );
+        const twitterLikeTerm = `%${twitterSearchTerm}%`;
 
-        // Check if it's a UUID (our user ID format)
+        await ensurePrivyTableFresh();
+
+        const buildBaseSearchQuery = () =>
+          db
+            .with(namefiNftCte)
+            .select({
+              id: usersTable.id,
+              privyUserId: usersTable.privyUserId,
+              primaryEmail: sql<
+                string | null
+              >`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email})`.as(
+                'primary_email',
+              ),
+              walletAddresses: sql<
+                string[]
+              >`COALESCE(${privyUsersTableSchema.wallets}, ARRAY[]::text[])`.as(
+                'wallet_addresses',
+              ),
+              displayName: privyUsersTableSchema.displayName,
+              twitterUsername: privyUsersTableSchema.twitterUsername,
+            })
+            .from(usersTable)
+            .leftJoin(
+              privyUsersTableSchema,
+              eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+            )
+            .$dynamic();
+
+        const searchByWhereClause = async (whereClause: SQL) => {
+          return await buildBaseSearchQuery()
+            .where(whereClause)
+            .orderBy(
+              asc(
+                sql`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email}, ${privyUsersTableSchema.displayName}, ${usersTable.id}::text)`,
+              ),
+            )
+            .limit(limit);
+        };
+
+        const searchByWalletAddress = async (walletAddress: string) => {
+          return await searchByWhereClause(
+            sql`${walletAddress.toLowerCase()} = ANY(COALESCE(array_lowercase(${privyUsersTableSchema.wallets}), ARRAY[]::text[]))`,
+          );
+        };
+
+        const searchByOwnedDomain = async ({
+          domainName,
+          operator,
+        }: {
+          domainName: string;
+          operator: '=' | 'ILIKE';
+        }) => {
+          const comparisonValue =
+            operator === '='
+              ? domainName.toLowerCase()
+              : `%${domainName.toLowerCase()}%`;
+
+          return await searchByWhereClause(sql`EXISTS (
+            SELECT 1
+            FROM ${namefiNftView}
+            WHERE LOWER(${namefiNftView.ownerAddress}) = ANY(COALESCE(array_lowercase(${privyUsersTableSchema.wallets}), ARRAY[]::text[]))
+              AND LOWER(${namefiNftView.normalizedDomainName}) ${sql.raw(operator)} ${comparisonValue}
+          )`);
+        };
+
+        let exactMatches: Array<{
+          id: string;
+          privyUserId: string;
+          primaryEmail: string | null;
+          walletAddresses: string[];
+          displayName: string | null;
+          twitterUsername: string | null;
+        }> = [];
+
         const uuidValidation = z.string().uuid().safeParse(trimmedSearchTerm);
         if (uuidValidation.success) {
-          // Search by user UUID in our database
-          const dbUser = await db.query.usersTable.findFirst({
-            where: eq(usersTable.id, trimmedSearchTerm),
-            columns: {
-              id: true,
-              privyUserId: true,
-              primaryEmail: true,
-            },
-          });
-
-          if (dbUser) {
-            try {
-              privyUser = await privyClient.getUserById(dbUser.privyUserId);
-              if (privyUser) {
-                searchResults.push(await formatUserResponse(privyUser, dbUser));
-              }
-            } catch (error) {
-              logger.warn(
-                { userId: dbUser.id, privyUserId: dbUser.privyUserId, error },
-                'Failed to fetch Privy user by ID',
-              );
-            }
-          }
-        }
-        // Check if it's a Privy user ID (starts with 'did:privy:')
-        else if (trimmedSearchTerm.startsWith('did:privy:')) {
-          try {
-            privyUser = await privyClient.getUserById(trimmedSearchTerm);
-            if (privyUser) {
-              const dbUser = await getUserFromDatabase(privyUser.id);
-              searchResults.push(await formatUserResponse(privyUser, dbUser));
-            }
-          } catch (error) {
-            logger.warn(
-              { privyUserId: trimmedSearchTerm, error },
-              'Failed to fetch Privy user by Privy ID',
-            );
-          }
-        }
-        // Check if it's a wallet address
-        else {
+          exactMatches = await searchByWhereClause(
+            eq(usersTable.id, trimmedSearchTerm),
+          );
+        } else if (trimmedSearchTerm.startsWith('did:privy:')) {
+          exactMatches = await searchByWhereClause(
+            eq(usersTable.privyUserId, trimmedSearchTerm),
+          );
+        } else {
           const walletValidation =
             checksumWalletAddressSchema.safeParse(trimmedSearchTerm);
           if (walletValidation.success) {
-            try {
-              privyUser = await privyClient.getUserByWalletAddress(
-                walletValidation.data,
-              );
-              if (privyUser) {
-                const dbUser = await getUserFromDatabase(privyUser.id);
-                searchResults.push(await formatUserResponse(privyUser, dbUser));
-              }
-            } catch (error) {
-              logger.warn(
-                { walletAddress: trimmedSearchTerm, error },
-                'Failed to fetch Privy user by wallet address',
-              );
-            }
-          }
-          // Check if it's an email address
-          else {
+            exactMatches = await searchByWalletAddress(walletValidation.data);
+          } else {
             const emailValidation = z
               .string()
               .email()
               .safeParse(trimmedSearchTerm);
             if (emailValidation.success) {
-              try {
-                privyUser = await privyClient.getUserByEmail(trimmedSearchTerm);
-                if (privyUser) {
-                  const dbUser = await getUserFromDatabase(privyUser.id);
-                  searchResults.push(
-                    await formatUserResponse(privyUser, dbUser),
-                  );
-                }
-              } catch (error) {
-                logger.warn(
-                  { email: trimmedSearchTerm, error },
-                  'Failed to fetch Privy user by email',
-                );
-              }
-            }
-            // Check if it looks like a domain (potential ENS name)
-            else if (
+              exactMatches = await searchByWhereClause(
+                sql`LOWER(COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email}, '')) = ${lowerSearchTerm}`,
+              );
+            } else if (
               trimmedSearchTerm.includes('.') &&
               !trimmedSearchTerm.includes('@')
             ) {
@@ -1900,14 +1890,7 @@ export const adminRouter = createTRPCRouter({
                 const resolvedAddress =
                   await resolveENSToWallet(trimmedSearchTerm);
                 if (resolvedAddress) {
-                  privyUser =
-                    await privyClient.getUserByWalletAddress(resolvedAddress);
-                  if (privyUser) {
-                    const dbUser = await getUserFromDatabase(privyUser.id);
-                    searchResults.push(
-                      await formatUserResponse(privyUser, dbUser),
-                    );
-                  }
+                  exactMatches = await searchByWalletAddress(resolvedAddress);
                 }
               } catch (error) {
                 logger.warn(
@@ -1915,65 +1898,43 @@ export const adminRouter = createTRPCRouter({
                   'Failed to resolve ENS and fetch user',
                 );
               }
-            }
-            // If none of the above, search our database for partial email matches
-            else {
-              const dbUsers = await db
-                .select({
-                  id: usersTable.id,
-                  privyUserId: usersTable.privyUserId,
-                  primaryEmail: usersTable.primaryEmail,
-                })
-                .from(usersTable)
-                .where(
-                  usersTable.primaryEmail
-                    ? sql`${usersTable.primaryEmail} ILIKE ${`%${trimmedSearchTerm}%`}`
-                    : sql`false`,
-                )
-                .limit(limit);
-
-              // Get Privy details for each found user
-              const userDetails = await Promise.allSettled(
-                dbUsers.map(async (dbUser) => {
-                  try {
-                    const privyUser = await privyClient.getUserById(
-                      dbUser.privyUserId,
-                    );
-                    return await formatUserResponse(privyUser, dbUser);
-                  } catch (error) {
-                    logger.warn(
-                      {
-                        userId: dbUser.id,
-                        privyUserId: dbUser.privyUserId,
-                        error,
-                      },
-                      'Failed to fetch Privy user details for partial search',
-                    );
-                    return {
-                      id: dbUser.id,
-                      privyUserId: dbUser.privyUserId,
-                      primaryEmail: dbUser.primaryEmail,
-                      walletAddresses: [],
-                      displayName: null,
-                    };
-                  }
-                }),
-              );
-
-              searchResults = userDetails
-                .filter(
-                  (result): result is PromiseFulfilledResult<any> =>
-                    result.status === 'fulfilled',
-                )
-                .map((result) => result.value);
+              if (exactMatches.length === 0) {
+                exactMatches = await searchByOwnedDomain({
+                  domainName: trimmedSearchTerm,
+                  operator: '=',
+                });
+              }
             }
           }
         }
 
-        // Filter out users without a database record (only show users in our system)
-        const validResults = searchResults.filter((user) => user.id !== null);
+        if (exactMatches.length > 0) {
+          return exactMatches.slice(0, limit);
+        }
 
-        return validResults.slice(0, limit);
+        const genericSearchCondition = or(
+          sql`LOWER(COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email}, '')) LIKE ${lowerLikeTerm}`,
+          sql`LOWER(COALESCE(${privyUsersTableSchema.displayName}, '')) LIKE ${lowerLikeTerm}`,
+          sql`LOWER(${usersTable.privyUserId}) LIKE ${lowerLikeTerm}`,
+          sql`LOWER(COALESCE(${privyUsersTableSchema.twitterUsername}, '')) LIKE ${twitterLikeTerm}`,
+          sql`EXISTS (
+            SELECT 1
+            FROM unnest(COALESCE(array_lowercase(${privyUsersTableSchema.wallets}), ARRAY[]::text[])) AS wallet
+            WHERE wallet LIKE ${lowerLikeTerm}
+          )`,
+          sql`EXISTS (
+            SELECT 1
+            FROM ${namefiNftView}
+            WHERE LOWER(${namefiNftView.ownerAddress}) = ANY(COALESCE(array_lowercase(${privyUsersTableSchema.wallets}), ARRAY[]::text[]))
+              AND LOWER(${namefiNftView.normalizedDomainName}) LIKE ${lowerLikeTerm}
+          )`,
+        );
+
+        if (!genericSearchCondition) {
+          return [];
+        }
+
+        return await searchByWhereClause(genericSearchCondition);
       } catch (error) {
         logger.error({ error, searchTerm }, 'Failed to search users');
         throw new TRPCError({

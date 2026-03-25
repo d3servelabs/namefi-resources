@@ -7,7 +7,13 @@ import { getUserDisplayName } from '@/lib/user';
 import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
 import { useQuery } from '@tanstack/react-query';
 import { Info } from 'lucide-react';
-import type { ComponentProps, ForwardedRef } from 'react';
+import type {
+  ComponentProps,
+  ForwardedRef,
+  KeyboardEvent,
+  MouseEvent,
+  PointerEvent,
+} from 'react';
 import { forwardRef, useMemo } from 'react';
 import { useIsClient } from 'usehooks-ts';
 import { useEnsAvatar, useEnsName } from 'wagmi';
@@ -64,8 +70,21 @@ export const UserWalletAvatar = forwardRef<
       return null;
     }
 
+    const stopInfoIconPropagation = (
+      event: MouseEvent<HTMLButtonElement> | PointerEvent<HTMLButtonElement>,
+    ) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    const stopInfoIconKeyboardPropagation = (
+      event: KeyboardEvent<HTMLButtonElement>,
+    ) => {
+      event.stopPropagation();
+    };
+
     return (
-      <div className="group/user-wallet-avatar relative inline-flex shrink-0 overflow-visible">
+      <div className="group/user-wallet-avatar relative inline-grid shrink-0 place-items-center align-middle leading-none overflow-visible">
         <Avatar
           {...props}
           className={cn(
@@ -93,6 +112,12 @@ export const UserWalletAvatar = forwardRef<
               variant="outline"
               size="icon-xs"
               title="Open wallet details"
+              onMouseDown={stopInfoIconPropagation}
+              onMouseUp={stopInfoIconPropagation}
+              onPointerDown={stopInfoIconPropagation}
+              onPointerUp={stopInfoIconPropagation}
+              onClick={stopInfoIconPropagation}
+              // onKeyDown={stopInfoIconKeyboardPropagation}
               className="pointer-events-none absolute inset-0 z-10 m-auto rounded-full border bg-background/95 opacity-0 shadow-sm backdrop-blur transition-opacity duration-150 group-hover/user-wallet-avatar:pointer-events-auto group-hover/user-wallet-avatar:opacity-100 group-focus-within/user-wallet-avatar:pointer-events-auto group-focus-within/user-wallet-avatar:opacity-100"
             >
               <Info className="h-3.5 w-3.5" />
@@ -103,6 +128,12 @@ export const UserWalletAvatar = forwardRef<
               variant="outline"
               size="icon-xs"
               title="Open account details"
+              onMouseDown={stopInfoIconPropagation}
+              onMouseUp={stopInfoIconPropagation}
+              onPointerDown={stopInfoIconPropagation}
+              onPointerUp={stopInfoIconPropagation}
+              onClick={stopInfoIconPropagation}
+              // onKeyDown={stopInfoIconKeyboardPropagation}
               className="pointer-events-none absolute inset-0 z-10 m-auto rounded-full border bg-background/95 opacity-0 shadow-sm backdrop-blur transition-opacity duration-150 group-hover/user-wallet-avatar:pointer-events-auto group-hover/user-wallet-avatar:opacity-100 group-focus-within/user-wallet-avatar:pointer-events-auto group-focus-within/user-wallet-avatar:opacity-100"
             >
               <Info className="h-3.5 w-3.5" />
