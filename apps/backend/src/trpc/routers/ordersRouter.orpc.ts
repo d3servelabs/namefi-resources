@@ -466,7 +466,7 @@ const mppPurchaseResponseSchema = z.object({
 });
 
 const resolveX402ErrorMessage = (errorReason?: string) =>
-  errorReason || 'Invalid payment signature format';
+  errorReason || 'Error Validating Payment Signature';
 
 const ensureX402ConfiguredOrThrow = () => {
   if (!config.X402_ENABLED) {
@@ -971,6 +971,10 @@ export const ordersRouterOrpc = createTRPCRouter({
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: resolveX402ErrorMessage(verifyRes?.invalidReason),
+            cause: {
+              name: 'VerifyX402Error',
+              data: verifyRes,
+            },
           });
         }
       } catch (error) {
