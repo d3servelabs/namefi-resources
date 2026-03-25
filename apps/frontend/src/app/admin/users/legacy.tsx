@@ -13,14 +13,16 @@ import {
 } from '@/components/ui/shadcn/card';
 import { toast } from 'sonner';
 import { useCallback, useMemo, useState } from 'react';
-import { usePagination } from '@/hooks/use-pagination';
 import { useRouter } from 'next/navigation';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useDebounceValue } from 'usehooks-ts';
 import { ServerDataTable } from '@/components/table/server-data-table';
 import { ServerDataTable as ServerDataTableV2 } from '@/components/table/server-data-table-v2';
-import { DataTable } from '@/components/table/data-table';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import {
+  AdminUserExpandedDetails,
+  AdminUserLookupButton,
+} from '@/components/admin/user-details';
 import type {
   ColumnDef,
   SortingState,
@@ -37,17 +39,13 @@ import {
   Mail,
   VenetianMask,
 } from 'lucide-react';
-import { getChain, CHAINS } from '@namefi-astra/utils/chains';
-import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
-import { NetworkLogo } from '@/components/network-logo';
 import {
   differenceInYears,
   differenceInMonths,
   differenceInDays,
   formatDate,
 } from 'date-fns';
-import { applyFilterOperator } from '@/components/table/data-table';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -113,7 +111,7 @@ function UsersTable({
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, _setSearchTerm] = useState('');
   const [domainSearchTerm, setDomainSearchTerm] = useState('');
   const [ensSearchTerm, setEnsSearchTerm] = useState('');
   const [sorting, setSorting] = useState<SortingState>([
@@ -182,9 +180,9 @@ function UsersTable({
         toast('Impersonation enabled', {
           description: `Now impersonating ${userId}`,
         });
-      } catch (error: any) {
+      } catch (error) {
         toast('Failed to impersonate', {
-          description: error?.message ?? 'Unknown error',
+          description: error instanceof Error ? error.message : 'Unknown error',
         });
       }
     },
@@ -197,7 +195,8 @@ function UsersTable({
         id: 'expander',
         header: '',
         cell: ({ row }) => {
-          const canExpand = row.original.nftCount > 0;
+          const canExpand =
+            row.original.nftCount > 0 || row.original.wallets.length > 0;
           if (!canExpand) return null;
 
           return (
@@ -220,13 +219,19 @@ function UsersTable({
         accessorKey: 'id',
         header: 'ID',
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={16}
-            minCharactersToDisplay={16}
-            className="font-mono text-xs"
-          >
-            {row.original.id}
-          </AutoTruncateTextV2>
+          <div className="flex items-center gap-2">
+            <AutoTruncateTextV2
+              initialCharactersCountToDisplay={16}
+              minCharactersToDisplay={16}
+              className="font-mono text-xs"
+            >
+              {row.original.id}
+            </AutoTruncateTextV2>
+            <AdminUserLookupButton
+              reference={{ userId: row.original.id }}
+              title="Open user details by user ID"
+            />
+          </div>
         ),
         size: 150,
       },
@@ -301,13 +306,19 @@ function UsersTable({
         accessorKey: 'privyUserId',
         header: 'Privy ID',
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={16}
-            minCharactersToDisplay={16}
-            className="font-mono text-xs"
-          >
-            {row.original.privyUserId}
-          </AutoTruncateTextV2>
+          <div className="flex items-center gap-2">
+            <AutoTruncateTextV2
+              initialCharactersCountToDisplay={16}
+              minCharactersToDisplay={16}
+              className="font-mono text-xs"
+            >
+              {row.original.privyUserId}
+            </AutoTruncateTextV2>
+            <AdminUserLookupButton
+              reference={{ privyUserId: row.original.privyUserId }}
+              title="Open user details by Privy ID"
+            />
+          </div>
         ),
         size: 150,
       },
@@ -323,7 +334,7 @@ function UsersTable({
             try {
               await navigator.clipboard.writeText(primaryWallet);
               toast.success('Copied address successfully');
-            } catch (error) {
+            } catch (_error) {
               toast.error('Failed to copy address');
             }
           };
@@ -367,7 +378,7 @@ function UsersTable({
             try {
               await navigator.clipboard.writeText(wallet);
               toast.success('Copied address successfully');
-            } catch (error) {
+            } catch (_error) {
               toast.error('Failed to copy address');
             }
           };
@@ -665,7 +676,7 @@ function UsersTable({
       await forceRefreshCache.mutateAsync();
       await users.refetch();
       toast.success('Cache refreshed successfully');
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to refresh cache');
     }
   }, [forceRefreshCache.mutateAsync, users]);
@@ -732,7 +743,9 @@ function UsersTable({
           filterConfig={filterConfig}
           customFilters={customFilters}
           renderSubRow={renderSubRow}
-          getRowCanExpand={(row) => row.original.nftCount > 0}
+          getRowCanExpand={(row) =>
+            row.original.nftCount > 0 || row.original.wallets.length > 0
+          }
           emptyMessage="No users found"
           loadingMessage="Loading users..."
           columnVisibility={columnVisibility}
@@ -748,367 +761,7 @@ function renderSubRow(row: Row<UserRow>) {
 }
 
 const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
-  type NftRow = UserRow['nfts'][number];
-
-  const [globalFilter, setGlobalFilter] = useState('');
-  const { pageSize: nftPageSize, handlePageSizeChange } = usePagination({
-    defaultPageSize: 5,
-  });
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    tokenId: false,
-    ownerAddress: true,
-  });
-
-  const nftColumns = useMemo<Array<ColumnDef<NftRow>>>(
-    () => [
-      {
-        accessorKey: 'chainId',
-        id: 'chainId',
-        header: 'Network',
-        cell: ({ row }) => {
-          const chain = getChain(row.original.chainId);
-          return (
-            <div className="flex items-center gap-2">
-              <NetworkLogo network={row.original.chainId} className="w-5 h-5" />
-              <span className="text-xs text-muted-foreground">
-                {chain?.name ?? `Chain ${row.original.chainId}`}
-              </span>
-            </div>
-          );
-        },
-        filterFn: (row, columnId, filterValue) => {
-          const chainId = row.getValue(columnId) as number;
-          // Handle simple value (from inline filter or select)
-          if (
-            typeof filterValue === 'string' ||
-            typeof filterValue === 'number'
-          ) {
-            return String(chainId) === String(filterValue);
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              chainId,
-              filterValue.operator,
-              Number(filterValue.value),
-            );
-          }
-          return true;
-        },
-        size: 100,
-      },
-      {
-        accessorKey: 'normalizedDomainName',
-        id: 'normalizedDomainName',
-        header: 'Domain',
-        cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={30}
-            minCharactersToDisplay={30}
-          >
-            {row.original.normalizedDomainName}
-          </AutoTruncateTextV2>
-        ),
-        filterFn: (row, columnId, filterValue) => {
-          const cellValue = String(row.getValue(columnId) || '');
-          // Handle simple value (from inline filter)
-          if (typeof filterValue === 'string') {
-            return cellValue.toLowerCase().includes(filterValue.toLowerCase());
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              cellValue,
-              filterValue.operator,
-              String(filterValue.value),
-            );
-          }
-          return true;
-        },
-        size: 200,
-      },
-      {
-        accessorKey: 'ownerAddress',
-        id: 'ownerAddress',
-        header: 'Holding Wallet',
-        cell: ({ row }) => {
-          const ownerAddress = attemptGetChecksummedAddress(
-            row.original.ownerAddress,
-          );
-          const handleCopyWallet = async () => {
-            try {
-              await navigator.clipboard.writeText(ownerAddress);
-              toast.success('Copied address successfully');
-            } catch (error) {
-              toast.error('Failed to copy address');
-            }
-          };
-
-          return (
-            <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-              <UserWalletAvatar address={ownerAddress} className="size-6" />
-              <div className="flex-1 min-w-0">
-                <AutoTruncateTextV2
-                  initialCharactersCountToDisplay={16}
-                  minCharactersToDisplay={16}
-                  className="font-mono text-xs"
-                >
-                  {ownerAddress}
-                </AutoTruncateTextV2>
-              </div>
-              <button
-                type="button"
-                onClick={handleCopyWallet}
-                className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-                title="Copy address"
-              >
-                <Copy className="h-3 w-3" />
-              </button>
-            </div>
-          );
-        },
-        filterFn: (row, columnId, filterValue) => {
-          const cellValue = String(row.getValue(columnId) || '').toLowerCase();
-          // Handle simple value (from inline filter)
-          if (typeof filterValue === 'string') {
-            return cellValue.includes(filterValue.toLowerCase());
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              cellValue,
-              filterValue.operator,
-              String(filterValue.value).toLowerCase(),
-            );
-          }
-          return true;
-        },
-        size: 200,
-      },
-      {
-        id: 'expiration',
-        header: 'Expiration',
-        accessorKey: 'expirationTime',
-        cell: ({ row }) => {
-          const expirationTime = row.original.expirationTime;
-          if (!expirationTime)
-            return <span className="text-xs text-muted-foreground">-</span>;
-
-          const expirationDate = new Date(expirationTime);
-          const now = new Date();
-
-          // Calculate differences
-          const years = differenceInYears(expirationDate, now);
-          const months = differenceInMonths(expirationDate, now) % 12;
-          const days = differenceInDays(expirationDate, now) % 30;
-
-          // Build duration string
-          const durationParts: string[] = [];
-          if (years > 0) durationParts.push(`${years}y`);
-          if (months > 0) durationParts.push(`${months}mo`);
-          if (days > 0 || durationParts.length === 0)
-            durationParts.push(`${days}d`);
-          const durationText = durationParts.join(' ');
-
-          // Calculate total months for color coding
-          const totalMonths = differenceInMonths(expirationDate, now);
-
-          // Color coding: < 4 months = red, 4-12 months = orange, > 12 months = green
-          let textColor = 'text-muted-foreground';
-          if (totalMonths < 4) {
-            textColor = 'text-red-500 dark:text-red-400';
-          } else if (totalMonths < 12) {
-            textColor = 'text-orange-500 dark:text-orange-400';
-          } else {
-            textColor = 'text-green-500 dark:text-green-400';
-          }
-
-          // Format date as "19 Feb 2025"
-          const formattedDate = expirationDate.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          });
-
-          return (
-            <span className={`text-xs font-medium ${textColor}`}>
-              {formattedDate}
-              {totalMonths >= 0 && (
-                <span className="text-xs ml-1">({durationText})</span>
-              )}
-            </span>
-          );
-        },
-        size: 120,
-      },
-      {
-        accessorKey: 'tokenId',
-        id: 'tokenId',
-        header: 'Token',
-        cell: ({ row }) => {
-          const explorerUrl = getNftExplorerUrl(
-            row.original.chainId,
-            row.original.tokenId,
-          );
-          return explorerUrl ? (
-            <a
-              href={explorerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs text-primary hover:underline"
-            >
-              {row.original.tokenId}
-            </a>
-          ) : (
-            <span className="font-mono text-xs text-muted-foreground">
-              {row.original.tokenId}
-            </span>
-          );
-        },
-        filterFn: (row, columnId, filterValue) => {
-          const cellValue = String(row.getValue(columnId) || '');
-          // Handle simple value (from inline filter)
-          if (typeof filterValue === 'string') {
-            return cellValue.toLowerCase().includes(filterValue.toLowerCase());
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              cellValue,
-              filterValue.operator,
-              String(filterValue.value),
-            );
-          }
-          return true;
-        },
-        size: 200,
-      },
-      {
-        id: 'actions',
-        header: 'Actions',
-        cell: ({ row }) => {
-          const explorerUrl = getNftExplorerUrl(
-            row.original.chainId,
-            row.original.tokenId,
-          );
-          if (!explorerUrl) return null;
-          return (
-            <a
-              href={explorerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-primary hover:underline inline-flex items-center gap-1"
-            >
-              Visit Scan
-            </a>
-          );
-        },
-        size: 100,
-      },
-    ],
-    [],
-  );
-
-  // Filter NFTs based on global filter
-  const filteredNfts = useMemo(() => {
-    if (!globalFilter) return user.nfts;
-    const lowerFilter = globalFilter.toLowerCase();
-    return user.nfts.filter((nft) => {
-      const domainName = nft.normalizedDomainName.toLowerCase();
-      const tokenId = nft.tokenId.toLowerCase();
-      const chainName = getChain(nft.chainId)?.name?.toLowerCase() ?? '';
-      return (
-        domainName.includes(lowerFilter) ||
-        tokenId.includes(lowerFilter) ||
-        chainName.includes(lowerFilter)
-      );
-    });
-  }, [user.nfts, globalFilter]);
-
-  // Sort NFTs by expiration date (ascending - soonest first)
-  const sortedNfts = useMemo(() => {
-    return [...filteredNfts].sort((a, b) => {
-      const dateA = new Date(a.expirationTime).getTime();
-      const dateB = new Date(b.expirationTime).getTime();
-      return dateA - dateB; // Ascending order
-    });
-  }, [filteredNfts]);
-
-  const nftFilterConfig = useMemo(
-    () => ({
-      normalizedDomainName: { type: 'text' as const, label: 'Domain Name' },
-      ownerAddress: { type: 'text' as const, label: 'Holding Wallet' },
-      chainId: {
-        type: 'select' as const,
-        label: 'Network',
-        options: [
-          { value: String(CHAINS.base.id), label: CHAINS.base.name },
-          { value: String(CHAINS.mainnet.id), label: CHAINS.mainnet.name },
-          { value: String(CHAINS.sepolia.id), label: CHAINS.sepolia.name },
-        ],
-      },
-      tokenId: { type: 'text' as const, label: 'Token ID' },
-    }),
-    [],
-  );
-
-  const customNftFilters = useMemo(
-    () => [
-      {
-        id: 'globalSearch',
-        label: 'Search NFTs',
-        type: 'text' as const,
-        placeholder: 'Search by domain, token ID, or network...',
-        value: globalFilter,
-        onChange: (value: string | number | undefined) => {
-          setGlobalFilter(value ? String(value) : '');
-        },
-        onClear: () => {
-          setGlobalFilter('');
-        },
-      },
-    ],
-    [globalFilter],
-  );
-
-  if (!user.nfts || user.nfts.length === 0) return null;
-
-  return (
-    <div className="space-y-2">
-      <div className="text-sm font-semibold text-muted-foreground mb-2">
-        Domains ({user.nftCount})
-      </div>
-      <DataTable<NftRow>
-        columns={nftColumns}
-        data={sortedNfts}
-        isLoading={false}
-        pageSize={nftPageSize}
-        onPageSizeChange={handlePageSizeChange}
-        enableColumnFilters={true}
-        filterConfig={nftFilterConfig}
-        customFilters={customNftFilters}
-        columnVisibility={columnVisibility}
-        onColumnVisibilityChange={setColumnVisibility}
-        filterDisplayOptions={{ showInHeader: false }}
-      />
-    </div>
-  );
+  return <AdminUserExpandedDetails userId={user.id} />;
 };
 
 const CopyIconButton = ({

@@ -79,6 +79,12 @@ import { permissionsRouter } from './admin/permissionsRouter';
 import { nfscRouter } from './admin/nfscRouter';
 import { eppTestingRouter } from './admin/eppTestingRouter';
 import { emailCampaignsRouter } from './admin/emailCampaignsRouter';
+import {
+  adminUserReferenceInput,
+  getAdminUserDetails,
+  getAdminWalletDetails,
+  resolveAdminUserReference,
+} from './admin/user-details';
 import { ResourceType } from '#lib/auditor';
 import {
   canUserAccessAdminPanel,
@@ -1975,6 +1981,33 @@ export const adminRouter = createTRPCRouter({
           message: 'Failed to search users',
         });
       }
+    }),
+
+  resolveUserReference: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminUserReferenceInput)
+    .query(async ({ input }) => {
+      return await resolveAdminUserReference(input);
+    }),
+
+  getUserDetails: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(
+      z.object({
+        userId: z.string().uuid(),
+        matchedWalletAddress: checksumWalletAddressSchema.optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      return await getAdminUserDetails(input);
+    }),
+
+  getWalletDetails: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(
+      z.object({
+        walletAddress: checksumWalletAddressSchema,
+      }),
+    )
+    .query(async ({ input }) => {
+      return await getAdminWalletDetails(input);
     }),
 
   listUsers: adminProcedureWithPermissions(Permission.READ_USERS)
