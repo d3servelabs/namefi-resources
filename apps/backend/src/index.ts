@@ -62,6 +62,7 @@ const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
 const X402Headers = [
   'x-payment',
   'payment',
+  'payment-required',
   'x-payment-signature',
   'payment-signature',
 ];

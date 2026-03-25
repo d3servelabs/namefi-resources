@@ -32,7 +32,11 @@ export class X402PaymentRequiredError extends Error {
   }
 }
 
-export const X402_PAYMENT_REQUIRED_HEADERS = ['PAYMENT', 'X-PAYMENT'] as const;
+export const X402_PAYMENT_REQUIRED_HEADERS = [
+  'PAYMENT',
+  'X-PAYMENT',
+  'PAYMENT-REQUIRED',
+] as const;
 export const X402_PAYMENT_SIGNATURE_HEADERS = [
   'PAYMENT-SIGNATURE',
   'X-PAYMENT-SIGNATURE',
