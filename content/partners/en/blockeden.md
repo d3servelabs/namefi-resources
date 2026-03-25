@@ -17,6 +17,8 @@ BlockEden.xyz is a developer-first infrastructure platform built for Web3 scalab
 
 With 99.9% uptime, enterprise-grade API throughput, and over $50 million in assets staked, BlockEden.xyz is trusted by thousands of developers and projects globally.
 
+Beyond its core infrastructure, BlockEden features the [Eden Pay](https://blockeden.xyz/docs/eden-pay/) crypto payment solution alongside its comprehensive [API Marketplace](https://blockeden.xyz/api-marketplace/). It also supports open-source initiatives like the [Blockroma explorer](https://blockroma.com/), giving developers a complete toolkit to build out Web3 ecosystems.
+
 ### **Why It Matters to Namefi**
 
 Namefi enables domains like `example.com` to be minted as ERC-721 NFTs, preserving DNS usability while unlocking new on-chain capabilities. This evolution requires robust infrastructure to:
