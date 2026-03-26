@@ -213,10 +213,12 @@ export const configSchema = z.object({
     .object({
       LOGOS: z.string(),
       SOCIAL: z.string(),
+      ANIMATIONS: z.string(),
     })
     .default({
       LOGOS: 'ai-logos',
       SOCIAL: 'ai-social',
+      ANIMATIONS: 'ai-animations',
     }),
   DISALLOW_LIVE_PAYMENT_METHODS: z.boolean().optional().default(false),
   DEV_NFSC_ENABLED: z.boolean().default(false),

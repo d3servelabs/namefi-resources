@@ -34,6 +34,14 @@ export const buildDownloadFilename = (base: string, extension = 'png') => {
   return `${sanitized}${normalizedExtension}`;
 };
 
+export const getGenerationFileExtension = (mimeType?: string | null) => {
+  if (mimeType === 'video/mp4') {
+    return 'mp4';
+  }
+
+  return 'png';
+};
+
 type CopyGenerationLinkOptions = {
   id?: string | null;
   fallbackUrl?: string | null;
@@ -99,7 +107,7 @@ type DownloadGenerationAssetOptions = {
 export const downloadGenerationAsset = async ({
   url,
   filename,
-  errorMessage = 'Failed to download image',
+  errorMessage = 'Failed to download asset',
   errorDescription = 'Please try again',
 }: DownloadGenerationAssetOptions): Promise<boolean> => {
   if (!url) return false;

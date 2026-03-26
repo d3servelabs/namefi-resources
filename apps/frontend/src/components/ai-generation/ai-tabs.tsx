@@ -1,13 +1,14 @@
 'use client';
 
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@/lib/cn';
+import { GenerationUsage } from './generation-usage';
+import { AnimationTab } from './animation-tab';
 import { LogoTab } from './logo-tab';
 import { PosterTab } from './poster-tab';
-import { GenerationUsage } from './generation-usage';
-import { usePosterFlow } from './poster-flow-context';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { useDerivativeFlow } from './derivative-flow-context';
 import type { Generation } from './shared/types';
-import { AnimatePresence, motion } from 'motion/react';
 
 interface AITabsProps {
   className?: string;
@@ -22,20 +23,27 @@ interface AITabsProps {
     brandDomain?: NamefiNormalizedDomain;
     availableLogos?: Generation[];
   };
+
+  animationTabProps?: {
+    existingGenerations?: Generation[];
+    brandDomain?: NamefiNormalizedDomain;
+    availableLogos?: Generation[];
+  };
 }
 
 export function AITabs({
   className,
   logoTabProps,
   posterTabProps,
+  animationTabProps,
 }: AITabsProps) {
-  const { isPosterVisible, selectedLogo, closePoster } = usePosterFlow();
+  const { mode, selectedLogo, closeFlow } = useDerivativeFlow();
 
   return (
     <div className={cn('w-full', className)}>
       <GenerationUsage className="mb-6" />
       <AnimatePresence mode="wait" initial={false}>
-        {isPosterVisible ? (
+        {mode === 'poster' ? (
           <motion.div
             key="poster-tab"
             initial={{ opacity: 0, y: 8 }}
@@ -47,7 +55,24 @@ export function AITabs({
               brandDomain={posterTabProps?.brandDomain ?? selectedLogo?.domain}
               logoGenerations={posterTabProps?.availableLogos}
               focusedLogo={selectedLogo ?? undefined}
-              onDismiss={closePoster}
+              onDismiss={closeFlow}
+            />
+          </motion.div>
+        ) : mode === 'animation' ? (
+          <motion.div
+            key="animation-tab"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+          >
+            <AnimationTab
+              existingGenerations={animationTabProps?.existingGenerations}
+              brandDomain={
+                animationTabProps?.brandDomain ?? selectedLogo?.domain
+              }
+              logoGenerations={animationTabProps?.availableLogos}
+              focusedLogo={selectedLogo ?? undefined}
+              onDismiss={closeFlow}
             />
           </motion.div>
         ) : (

@@ -44,6 +44,7 @@ export * from './free-claims-correction.workflow';
 export * from './link-shares-validation.workflow';
 export * from './weekly-disable-auto-renewal.workflow';
 export * from './logo-generation.workflow';
+export * from './logo-animation.workflow';
 export * from './cart-domains-popular.workflow';
 export * from './dream-domain-awaits.workflow';
 export * from './domain-traffic-surge.workflow';

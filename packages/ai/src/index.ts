@@ -9,6 +9,11 @@ import {
   type marketingWorkflowInputSchema,
   type marketingWorkflowOutputSchema,
 } from './workflows/marketing-workflow';
+import {
+  runLogoAnimationWorkflow as executeLogoAnimationWorkflow,
+  type logoAnimationWorkflowInputSchema,
+  type logoAnimationWorkflowOutputSchema,
+} from './workflows/logo-animation-workflow';
 
 export type LogoWorkflowInput = z.input<typeof logoWorkflowInputSchema>;
 export type LogoWorkflowOutput = z.output<typeof logoWorkflowOutputSchema>;
@@ -18,9 +23,16 @@ export type MarketingWorkflowInput = z.input<
 export type MarketingWorkflowOutput = z.output<
   typeof marketingWorkflowOutputSchema
 >;
+export type LogoAnimationWorkflowInput = z.input<
+  typeof logoAnimationWorkflowInputSchema
+>;
+export type LogoAnimationWorkflowOutput = z.output<
+  typeof logoAnimationWorkflowOutputSchema
+>;
 
 export const runLogoWorkflow = executeLogoWorkflow;
 export const runMarketingWorkflow = executeMarketingWorkflow;
+export const runLogoAnimationWorkflow = executeLogoAnimationWorkflow;
 
 export * from './agents/dream-domain-suggestions';
 export * from './types/generation';

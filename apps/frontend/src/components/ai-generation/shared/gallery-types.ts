@@ -5,12 +5,19 @@ export type GalleryGeneration =
   AppRouterOutput['ai']['getUserGenerationsFiltered'][number];
 
 export type GalleryItemSource = 'pending' | 'query' | 'preview';
-export type GalleryItemStatus = 'pending' | 'ready' | 'preview';
+export type GalleryItemStatus =
+  | 'pending'
+  | 'processing'
+  | 'ready'
+  | 'failed'
+  | 'preview';
 
 export interface PreviewGeneration {
   id: string;
-  url: string;
-  type?: 'logo' | 'marketing';
+  url?: string | null;
+  thumbnailUrl?: string | null;
+  mimeType?: string | null;
+  type?: 'logo' | 'marketing' | 'animation';
 }
 
 export interface DomainPreview {
@@ -18,24 +25,29 @@ export interface DomainPreview {
   latestGeneration?: Date | string | null;
   logoCount?: number;
   marketingCount?: number;
+  animationCount?: number;
   previewGenerations?: PreviewGeneration[];
 }
 
 export interface GalleryItem {
   id: string;
   pendingId?: string;
-  url?: string;
+  url?: string | null;
+  previewUrl?: string | null;
+  thumbnailUrl?: string | null;
+  mimeType?: string | null;
   domain: string;
-  type?: 'logo' | 'marketing';
+  type?: 'logo' | 'marketing' | 'animation';
   generation?: GalleryGeneration;
   status: GalleryItemStatus;
+  errorMessage?: string | null;
   startedAt?: number;
   source: GalleryItemSource;
 }
 
 export type GalleryFilters = {
   selectedBrands: string[];
-  type: 'all' | 'logo' | 'marketing';
+  type: 'all' | 'logo' | 'marketing' | 'animation';
 };
 
 export type PendingGalleryWithGeneration = PendingGalleryItem & {

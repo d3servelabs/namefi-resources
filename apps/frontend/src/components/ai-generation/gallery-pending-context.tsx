@@ -14,7 +14,7 @@ import type { AppRouterOutput } from '@/lib/trpc';
 export type PendingGalleryItem = {
   id: string;
   domain: string;
-  type: 'logo' | 'marketing';
+  type: 'logo' | 'marketing' | 'animation';
   startedAt: number;
   generation?: AppRouterOutput['ai']['getUserGenerationsFiltered'][number];
 };

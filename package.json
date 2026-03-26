@@ -83,5 +83,8 @@
     "protobufjs",
     "sharp",
     "utf-8-validate"
-  ]
+  ],
+  "patchedDependencies": {
+    "@ai-sdk/google@3.0.53": "patches/@ai-sdk%2Fgoogle@3.0.53.patch"
+  }
 }

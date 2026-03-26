@@ -1,4 +1,8 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { randomUUID } from 'node:crypto';
 
 interface CreateS3ClientParams {
@@ -85,6 +89,29 @@ export const uploadFileToS3 = async ({
   } catch (error) {
     throw new Error(
       `Failed to upload file to S3: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
+  }
+};
+
+export interface DeleteFileFromS3Params extends BaseStorageParams {
+  key: string;
+}
+
+export const deleteFileFromS3 = async ({
+  s3Client,
+  bucketName,
+  key,
+}: DeleteFileFromS3Params): Promise<void> => {
+  try {
+    await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      }),
+    );
+  } catch (error) {
+    throw new Error(
+      `Failed to delete file from S3: ${error instanceof Error ? error.message : 'Unknown error'}`,
     );
   }
 };

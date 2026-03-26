@@ -21,13 +21,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const generation = await getGeneration(generationId);
 
     const hasGeneration = !!generation;
+    const generationLabel = hasGeneration
+      ? generation.type === 'animation'
+        ? 'logo animation'
+        : generation.type === 'marketing'
+          ? 'marketing image'
+          : 'logo image'
+      : 'brand asset';
     const title = hasGeneration
-      ? `AI-generated ${generation.type} image for ${generation.domain}`
+      ? `AI-generated ${generationLabel} for ${generation.domain}`
       : 'AI Brand Generation';
     const description = hasGeneration
       ? generation.type === 'logo'
         ? `AI-generated logo design for ${generation.domain}. Created with advanced AI technology to help establish your brand identity with professional logo design.`
-        : `AI-generated marketing image for ${generation.domain}. Professional marketing visuals created with artificial intelligence to enhance your brand presence and promotional materials.`
+        : generation.type === 'animation'
+          ? `AI-generated logo animation for ${generation.domain}. Motion-ready brand visuals created with artificial intelligence for premium social and product storytelling.`
+          : `AI-generated marketing image for ${generation.domain}. Professional marketing visuals created with artificial intelligence to enhance your brand presence and promotional materials.`
       : 'View AI-generated brand assets.';
     const canonicalPath = `/ai-brand-generator/${generationId}`;
     const openGraphImagePath = `${canonicalPath}/opengraph-image`;
@@ -70,8 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ],
       },
     };
-  } catch (error) {
-    console.error('Error fetching generation metadata:', error);
+  } catch {
     // Fallback metadata if the API call fails
     return {
       title: 'AI Brand Generation',
@@ -106,8 +114,7 @@ export default async function GenerationPage({ params }: Props) {
         initialGeneration={generation}
       />
     );
-  } catch (error) {
-    console.error('Error fetching generation:', error);
+  } catch {
     return (
       <GenerationDetailsClient
         domain=""

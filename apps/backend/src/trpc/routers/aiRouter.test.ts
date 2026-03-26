@@ -1,0 +1,211 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { WorkflowNotFoundError } from '@temporalio/common';
+
+const mockLogger = {
+  debug: vi.fn(),
+  error: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+};
+
+const describeMock = vi.fn();
+const startMock = vi.fn();
+
+const procedureBuilder = {
+  input: vi.fn(() => procedureBuilder),
+  mutation: vi.fn(() => procedureBuilder),
+  query: vi.fn(() => procedureBuilder),
+};
+
+vi.mock('#lib/logger', () => ({
+  createLogger: () => mockLogger,
+}));
+
+vi.mock('#lib/env', () => ({
+  config: {
+    AI_BUCKET_FOLDERS: {
+      LOGOS: 'logos',
+      SOCIAL: 'social',
+      ANIMATIONS: 'animations',
+    },
+    CLOUD_FRONT_DOMAIN: 'cdn.test',
+    MAX_AI_GENERATIONS_PER_USER_PER_MONTH: 25,
+    STORAGE_BUCKET: 'test-bucket',
+    AWS_REGION: 'us-east-1',
+  },
+  secrets: {
+    AWS_ACCESS_KEY_ID: 'test-access-key',
+    AWS_SECRET_ACCESS_KEY: 'test-secret-key',
+  },
+}));
+
+vi.mock('#temporal/client', () => ({
+  temporalClient: {
+    workflow: {
+      start: startMock,
+      getHandle: vi.fn(() => ({
+        describe: describeMock,
+      })),
+    },
+  },
+}));
+
+vi.mock('#temporal/shared', () => ({
+  TEMPORAL_QUEUES: {
+    DEFAULT: 'default',
+  },
+}));
+
+vi.mock('#temporal/workflows/logo-animation.workflow', () => ({
+  generateLogoAnimationWorkflow: vi.fn(),
+}));
+
+vi.mock('@namefi-astra/db', () => ({
+  db: {},
+}));
+
+vi.mock('@namefi-astra/db/schema', () => ({
+  aiGenerationsTable: {},
+  internalAiGenerationsTable: {},
+}));
+
+vi.mock('@namefi-astra/ai', () => ({
+  ANIMATION_MODEL_IDS: ['veo-3.1-generate-preview'],
+  ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
+  LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
+  LOGO_TEXT_TREATMENT_INPUT_IDS: ['let-ai-choose'],
+  LOGO_TYPE_INPUT_IDS: ['let-ai-choose'],
+  LOGO_TYPOGRAPHY_INPUT_IDS: ['let-ai-choose'],
+  MARKETING_COLLATERAL_TYPE_INPUT_IDS: ['let_ai_choose'],
+  runLogoWorkflow: vi.fn(),
+  runMarketingWorkflow: vi.fn(),
+}));
+
+vi.mock('@namefi-astra/storage', () => ({
+  createS3Client: vi.fn(() => ({})),
+  generateUrlFromStoragePath: vi.fn(),
+}));
+
+vi.mock('../base', () => ({
+  createTRPCRouter: (router: unknown) => router,
+  protectedProcedure: procedureBuilder,
+  publicProcedure: procedureBuilder,
+}));
+
+const {
+  getAnimationStartStateAfterError,
+  startLogoAnimationWorkflowWithRecovery,
+} = await import('./aiRouter');
+
+describe('getAnimationStartStateAfterError', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    describeMock.mockReset();
+    startMock.mockReset();
+  });
+
+  it('treats a workflow as started when describe succeeds after an initial not-found race', async () => {
+    describeMock
+      .mockRejectedValueOnce(
+        new WorkflowNotFoundError('Workflow not found', 'wid-1', undefined),
+      )
+      .mockResolvedValueOnce({});
+
+    await expect(getAnimationStartStateAfterError('wid-1')).resolves.toBe(
+      'started',
+    );
+    expect(describeMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('returns not-found after two not-found checks', async () => {
+    describeMock.mockRejectedValue(
+      new WorkflowNotFoundError('Workflow not found', 'wid-2', undefined),
+    );
+
+    await expect(getAnimationStartStateAfterError('wid-2')).resolves.toBe(
+      'not-found',
+    );
+    expect(describeMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('returns unknown for unexpected describe errors', async () => {
+    const describeError = new Error('temporal unavailable');
+    describeMock.mockRejectedValue(describeError);
+
+    await expect(getAnimationStartStateAfterError('wid-3')).resolves.toBe(
+      'unknown',
+    );
+
+    expect(mockLogger.warn).toHaveBeenCalledWith(
+      { attempt: 1, error: describeError, workflowId: 'wid-3' },
+      'Unable to verify animation workflow existence after start failure',
+    );
+  });
+});
+
+describe('startLogoAnimationWorkflowWithRecovery', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    describeMock.mockReset();
+    startMock.mockReset();
+  });
+
+  it('retries start with USE_EXISTING after an initial start failure', async () => {
+    const startError = new Error('connection dropped');
+
+    startMock.mockRejectedValueOnce(startError).mockResolvedValueOnce({});
+
+    await expect(
+      startLogoAnimationWorkflowWithRecovery({
+        generationId: 'generation-1',
+        workflowId: 'logo-animation-generation-1',
+      }),
+    ).resolves.toEqual({ state: 'started' });
+
+    expect(startMock).toHaveBeenNthCalledWith(
+      1,
+      expect.any(Function),
+      expect.objectContaining({
+        workflowId: 'logo-animation-generation-1',
+        workflowIdConflictPolicy: 'FAIL',
+      }),
+    );
+    expect(startMock).toHaveBeenNthCalledWith(
+      2,
+      expect.any(Function),
+      expect.objectContaining({
+        workflowId: 'logo-animation-generation-1',
+        workflowIdConflictPolicy: 'USE_EXISTING',
+      }),
+    );
+    expect(mockLogger.warn).toHaveBeenCalledWith(
+      {
+        error: startError,
+        generationId: 'generation-1',
+        workflowId: 'logo-animation-generation-1',
+      },
+      'Animation workflow start failed; retrying with workflow reconciliation',
+    );
+  });
+
+  it('returns unknown when recovery still cannot confirm workflow existence', async () => {
+    const startError = new Error('connection dropped');
+    const retryError = new Error('temporal unavailable');
+
+    startMock
+      .mockRejectedValueOnce(startError)
+      .mockRejectedValueOnce(retryError)
+      .mockRejectedValueOnce(retryError);
+    describeMock.mockRejectedValue(retryError);
+
+    await expect(
+      startLogoAnimationWorkflowWithRecovery({
+        generationId: 'generation-2',
+        workflowId: 'logo-animation-generation-2',
+      }),
+    ).resolves.toEqual({ error: startError, state: 'unknown' });
+
+    expect(startMock).toHaveBeenCalledTimes(3);
+    expect(describeMock).toHaveBeenCalledTimes(2);
+  });
+});

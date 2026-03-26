@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
@@ -38,12 +38,14 @@ import {
   CommandList,
 } from '@/components/ui/shadcn/command';
 import {
+  Clapperboard,
   Building2,
   ChevronDown,
   Check,
   Image as ImageIcon,
   Loader2,
   ArrowUpRight,
+  Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
@@ -51,14 +53,17 @@ import {
   defaultShareConfig,
   useTwitterShareDialog,
 } from '@/hooks/use-twitter-share';
-import { usePosterFlow } from './poster-flow-context';
-import type { PosterSource } from './poster-flow-context';
+import {
+  useDerivativeFlow,
+  type DerivativeSource,
+} from './derivative-flow-context';
 import { useGalleryPending } from './gallery-pending-context';
 import { getProgressMessage } from './shared/gallery-utils';
 import {
   buildDownloadFilename,
   copyGenerationLink,
   downloadGenerationAsset,
+  getGenerationFileExtension,
   resolveGenerationLink,
 } from './shared/generation-actions';
 import { usePendingGenerationProgress } from './shared/use-gallery-progress';
@@ -84,7 +89,7 @@ type ShareState = {
 type DeleteTarget = {
   id: string;
   domain: string;
-  type: 'logo' | 'marketing';
+  type: 'logo' | 'marketing' | 'animation';
 };
 
 interface GenerationsColumnProps {
@@ -98,7 +103,7 @@ export function GenerationsColumn({
 }: GenerationsColumnProps) {
   const router = useRouter();
   const { pendingItems, removePendingItem } = useGalleryPending();
-  const { openPoster } = usePosterFlow();
+  const { openAnimation, openPoster } = useDerivativeFlow();
 
   const [filters, setFilters] = useState<GalleryFilters>({
     selectedBrands: [],
@@ -266,19 +271,27 @@ export function GenerationsColumn({
   };
 
   const handleDownload = async (
-    item: Pick<GalleryItem, 'id' | 'domain' | 'url'>,
+    item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
   ) => {
     if (!item.url) return;
 
     await downloadGenerationAsset({
       url: item.url,
-      filename: buildDownloadFilename(`${item.domain}-${item.id}`),
+      filename: buildDownloadFilename(
+        `${item.domain}-${item.id}`,
+        getGenerationFileExtension(item.mimeType),
+      ),
     });
   };
 
   const handlePosterRequest = (generation?: GalleryGeneration) => {
     if (!generation) return;
-    openPoster(generation as PosterSource);
+    openPoster(generation as DerivativeSource);
+  };
+
+  const handleAnimationRequest = (generation?: GalleryGeneration) => {
+    if (!generation) return;
+    openAnimation(generation as DerivativeSource);
   };
 
   const closeShareDialog = () => {
@@ -304,7 +317,7 @@ export function GenerationsColumn({
         <div className="h-full overflow-y-auto">
           <div className="grid grid-cols-2 gap-4 py-4 px-4">
             {filteredGalleryItems.map((item) => {
-              if (item.status === 'pending') {
+              if (item.source === 'pending' && item.status === 'pending') {
                 const pendingId = item.pendingId ?? item.id;
                 const progressValue = getProgressValue(
                   pendingId,
@@ -319,6 +332,27 @@ export function GenerationsColumn({
                 );
               }
 
+              if (
+                item.status === 'pending' ||
+                item.status === 'processing' ||
+                item.status === 'failed'
+              ) {
+                return (
+                  <AsyncGenerationTile
+                    key={item.id}
+                    item={item}
+                    onNavigate={handleNavigateToGeneration}
+                    onCopy={handleCopyLink}
+                    onShare={handleOpenShareDialog}
+                    onDownload={handleDownload}
+                    onPoster={handlePosterRequest}
+                    onAnimation={handleAnimationRequest}
+                    onDelete={handleDeleteRequest}
+                    isDeleting={deleteMutation.isPending}
+                  />
+                );
+              }
+
               return (
                 <ReadyGenerationTile
                   key={item.id}
@@ -328,6 +362,7 @@ export function GenerationsColumn({
                   onShare={handleOpenShareDialog}
                   onDownload={handleDownload}
                   onPoster={handlePosterRequest}
+                  onAnimation={handleAnimationRequest}
                   onDelete={handleDeleteRequest}
                   isDeleting={deleteMutation.isPending}
                 />
@@ -408,9 +443,13 @@ export function GenerationsColumn({
             <AlertDialogTitle>Delete generation?</AlertDialogTitle>
             <AlertDialogDescription>
               This will remove the{' '}
-              {deleteTarget?.type === 'marketing' ? 'poster' : 'logo'} for{' '}
-              <strong>{deleteTarget?.domain}</strong> from your gallery. This
-              action can't be undone.
+              {deleteTarget?.type === 'marketing'
+                ? 'poster'
+                : deleteTarget?.type === 'animation'
+                  ? 'animation'
+                  : 'logo'}{' '}
+              for <strong>{deleteTarget?.domain}</strong> from your gallery.
+              This action can't be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -546,6 +585,7 @@ function GalleryHeader({
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="logo">Logo</SelectItem>
               <SelectItem value="marketing">Poster</SelectItem>
+              <SelectItem value="animation">Animation</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -576,7 +616,11 @@ function PendingGenerationTile({
           {message}
         </div>
         <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/80">
-          {item.type === 'marketing' ? 'Generating Poster' : 'Generating Logo'}{' '}
+          {item.type === 'marketing'
+            ? 'Generating Poster'
+            : item.type === 'animation'
+              ? 'Preparing Animation'
+              : 'Generating Logo'}{' '}
           · {item.domain}
         </div>
       </div>
@@ -589,8 +633,11 @@ interface ReadyGenerationTileProps {
   onNavigate: (id: string) => void;
   onCopy: (id: string) => void;
   onShare: (id: string, domain: string) => void;
-  onDownload: (item: Pick<GalleryItem, 'id' | 'domain' | 'url'>) => void;
+  onDownload: (
+    item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
+  ) => void;
   onPoster: (generation?: GalleryGeneration) => void;
+  onAnimation: (generation?: GalleryGeneration) => void;
   onDelete: (item: GalleryItem) => void;
   isDeleting?: boolean;
 }
@@ -602,9 +649,34 @@ function ReadyGenerationTile({
   onShare,
   onDownload,
   onPoster,
+  onAnimation,
   onDelete,
   isDeleting,
 }: ReadyGenerationTileProps) {
+  const ctaActions =
+    item.type === 'logo' && item.generation
+      ? [
+          {
+            label: 'Create Poster',
+            icon: Sparkles,
+            onClick: (event: MouseEvent<HTMLButtonElement>) => {
+              event.stopPropagation();
+              event.preventDefault();
+              onPoster(item.generation);
+            },
+          },
+          {
+            label: 'Animate Logo',
+            icon: Clapperboard,
+            onClick: (event: MouseEvent<HTMLButtonElement>) => {
+              event.stopPropagation();
+              event.preventDefault();
+              onAnimation(item.generation);
+            },
+          },
+        ]
+      : undefined;
+
   return (
     // biome-ignore lint/a11y/useSemanticElements: container wraps nested action buttons within the card
     <div
@@ -613,15 +685,21 @@ function ReadyGenerationTile({
       aria-label={`Open generation for ${item.domain}`}
       onClick={() => onNavigate(item.id)}
       onKeyDown={(event) => {
-        if (event.key === 'Enter') {
+        if (
+          event.key === 'Enter' ||
+          event.key === ' ' ||
+          event.key === 'Spacebar' ||
+          event.code === 'Space'
+        ) {
+          event.preventDefault();
           onNavigate(item.id);
         }
       }}
-      className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus:outline-none"
+      className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      {item.url ? (
+      {item.previewUrl ? (
         <GalleryImage
-          src={item.url}
+          src={item.previewUrl}
           alt={item.domain}
           className="h-full w-full object-cover"
         />
@@ -635,7 +713,11 @@ function ReadyGenerationTile({
         <div className="flex items-start justify-between gap-3 text-white">
           <div>
             <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
-              {item.type === 'marketing' ? 'Poster' : 'Logo'}
+              {item.type === 'marketing'
+                ? 'Poster'
+                : item.type === 'animation'
+                  ? 'Animation'
+                  : 'Logo'}
             </div>
             <div className="text-sm font-semibold drop-shadow-md">
               {item.domain}
@@ -656,17 +738,7 @@ function ReadyGenerationTile({
         </div>
         <GenerationActionButtons
           appearance="overlay"
-          posterAction={
-            item.type === 'logo' && item.generation
-              ? {
-                  onClick: (event) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    onPoster(item.generation);
-                  },
-                }
-              : undefined
-          }
+          ctaActions={ctaActions}
           onCopy={(event) => {
             event.stopPropagation();
             event.preventDefault();
@@ -681,6 +753,174 @@ function ReadyGenerationTile({
             event.stopPropagation();
             event.preventDefault();
             onDownload(item);
+          }}
+          disabled={{
+            share: !item.url,
+            download: !item.url,
+          }}
+          deleteAction={{
+            onClick: (event) => {
+              event.stopPropagation();
+              event.preventDefault();
+              onDelete(item);
+            },
+            disabled: isDeleting,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+interface AsyncGenerationTileProps {
+  item: GalleryItem;
+  onNavigate: (id: string) => void;
+  onCopy: (id: string) => void;
+  onShare: (id: string, domain: string) => void;
+  onDownload: (
+    item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
+  ) => void;
+  onPoster: (generation?: GalleryGeneration) => void;
+  onAnimation: (generation?: GalleryGeneration) => void;
+  onDelete: (item: GalleryItem) => void;
+  isDeleting?: boolean;
+}
+
+function AsyncGenerationTile({
+  item,
+  onNavigate,
+  onCopy,
+  onShare,
+  onDownload,
+  onPoster,
+  onAnimation,
+  onDelete,
+  isDeleting,
+}: AsyncGenerationTileProps) {
+  const ctaActions =
+    item.type === 'logo' && item.generation
+      ? [
+          {
+            label: 'Create Poster',
+            icon: Sparkles,
+            onClick: (event: MouseEvent<HTMLButtonElement>) => {
+              event.stopPropagation();
+              event.preventDefault();
+              onPoster(item.generation);
+            },
+          },
+          {
+            label: 'Animate Logo',
+            icon: Clapperboard,
+            onClick: (event: MouseEvent<HTMLButtonElement>) => {
+              event.stopPropagation();
+              event.preventDefault();
+              onAnimation(item.generation);
+            },
+          },
+        ]
+      : undefined;
+  const statusLabel =
+    item.status === 'failed'
+      ? 'Failed'
+      : item.status === 'processing'
+        ? 'Processing'
+        : 'Pending';
+
+  return (
+    // biome-ignore lint/a11y/useSemanticElements: container wraps nested action buttons within the card
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Open generation for ${item.domain}`}
+      onClick={() => onNavigate(item.id)}
+      onKeyDown={(event) => {
+        if (
+          event.key === 'Enter' ||
+          event.key === ' ' ||
+          event.key === 'Spacebar' ||
+          event.code === 'Space'
+        ) {
+          event.preventDefault();
+          onNavigate(item.id);
+        }
+      }}
+      className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+    >
+      {item.previewUrl ? (
+        <GalleryImage
+          src={item.previewUrl}
+          alt={item.domain}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
+          Preview unavailable
+        </div>
+      )}
+      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 flex flex-col justify-between p-3 text-white">
+        <div className="space-y-2">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
+                {item.type === 'marketing'
+                  ? 'Poster'
+                  : item.type === 'animation'
+                    ? 'Animation'
+                    : 'Logo'}
+              </div>
+              <div className="text-sm font-semibold drop-shadow-md">
+                {item.domain}
+              </div>
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-9 w-9 rounded-full bg-black/65 text-white shadow-lg transition hover:bg-black"
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                onNavigate(item.id);
+              }}
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="rounded-lg bg-black/45 p-3">
+            <div className="text-xs font-semibold uppercase tracking-wide text-white/80">
+              {statusLabel}
+            </div>
+            <div className="mt-1 text-sm text-white/95">
+              {item.status === 'failed'
+                ? item.errorMessage || 'This generation did not complete.'
+                : item.status === 'processing'
+                  ? 'Your generation is still running.'
+                  : 'Your generation is queued and will appear here shortly.'}
+            </div>
+          </div>
+        </div>
+        <GenerationActionButtons
+          appearance="overlay"
+          ctaActions={ctaActions}
+          onCopy={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            onCopy(item.id);
+          }}
+          onShare={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            onShare(item.id, item.domain);
+          }}
+          onDownload={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            onDownload(item);
+          }}
+          disabled={{
+            share: !item.url,
+            download: !item.url,
           }}
           deleteAction={{
             onClick: (event) => {
@@ -697,11 +937,19 @@ function ReadyGenerationTile({
 }
 
 interface FeaturedGenerationTileProps {
-  item: { id: string; url: string; domain: string };
+  item: {
+    id: string;
+    url: string | null;
+    previewUrl: string | null;
+    mimeType: string | null;
+    domain: string;
+  };
   onNavigate: (id: string) => void;
   onCopy: (id: string) => void;
   onShare: (id: string, domain: string) => void;
-  onDownload: (item: Pick<GalleryItem, 'id' | 'domain' | 'url'>) => void;
+  onDownload: (
+    item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
+  ) => void;
 }
 
 function FeaturedGenerationTile({
@@ -725,11 +973,17 @@ function FeaturedGenerationTile({
       }}
       className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus:outline-none"
     >
-      <GalleryImage
-        src={item.url}
-        alt={item.domain}
-        className="h-full w-full object-cover"
-      />
+      {item.previewUrl ? (
+        <GalleryImage
+          src={item.previewUrl}
+          alt={item.domain}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
+          Preview unavailable
+        </div>
+      )}
       <div className="absolute inset-0 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100" />
       <div className="absolute inset-0 flex flex-col justify-between p-3 opacity-0 transition-opacity group-hover:opacity-100">
         <div className="text-sm font-semibold text-white drop-shadow-sm">
@@ -751,6 +1005,10 @@ function FeaturedGenerationTile({
             event.stopPropagation();
             event.preventDefault();
             onDownload(item);
+          }}
+          disabled={{
+            share: !item.url,
+            download: !item.url,
           }}
         />
       </div>

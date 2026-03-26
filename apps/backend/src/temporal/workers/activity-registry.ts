@@ -10,6 +10,7 @@ import {
   LinkSharesExternalIdentifierMigrationActivities,
   TwitterLinkSharesValidationActivities,
   GreetActivities,
+  LogoAnimationActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import { TEMPORAL_ENUMS } from '../shared';
@@ -28,6 +29,7 @@ export const ACTIVITIES = {
     ...OrderActivities,
     ...PaymentActivities,
     ...LogoGenerationActivities,
+    ...LogoAnimationActivities,
 
     ...FreeClaimActivities,
     ...FreeClaimsCorrectionActivities,

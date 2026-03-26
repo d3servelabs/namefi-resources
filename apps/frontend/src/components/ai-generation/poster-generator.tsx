@@ -205,7 +205,7 @@ export function PosterGenerator({
             <CardContent className="p-4">
               <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
                 <img
-                  src={logo.url}
+                  src={logo.thumbnailUrl ?? logo.url ?? undefined}
                   alt={logo.domain}
                   className="w-full h-full object-cover"
                 />

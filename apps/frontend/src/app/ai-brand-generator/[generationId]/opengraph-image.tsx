@@ -1,9 +1,11 @@
-/** biome-ignore-all lint/performance/noImgElement: <explanation> */
+/** biome-ignore-all lint/performance/noImgElement: next/og ImageResponse requires standard img tags */
 import { ImageResponse } from 'next/og';
 import { proxyUnauthenticatedClient } from '@/lib/trpc/server';
 import { config } from '@/lib/env';
 
 export const runtime = 'edge';
+const GOOGLE_FONT_SRC_REGEX =
+  /src: url\((.+)\) format\('(opentype|truetype)'\)/;
 
 export const size = {
   width: 1200,
@@ -15,9 +17,7 @@ export const contentType = 'image/jpeg';
 async function loadGoogleFont(font: string) {
   const url = `https://fonts.googleapis.com/css2?family=${font.split(' ').join('+')}`;
   const css = await (await fetch(url)).text();
-  const resource = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/,
-  );
+  const resource = css.match(GOOGLE_FONT_SRC_REGEX);
 
   if (resource) {
     const response = await fetch(resource[1]);
@@ -29,6 +29,7 @@ async function loadGoogleFont(font: string) {
   throw new Error('failed to load font data');
 }
 
+// biome-ignore lint/style/noDefaultExport: Next.js route files require a default export.
 export default async function Image({
   params,
 }: {
@@ -67,6 +68,7 @@ export default async function Image({
       ? `https://${domain}`
       : `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/${generationId}`;
     const domainLabel = domain || new URL(destinationUrl).host;
+    const generationPreviewUrl = generation.thumbnailUrl ?? generation.url;
 
     // Use QR code API service that works in edge runtime
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(
@@ -83,12 +85,18 @@ export default async function Image({
       >
         {/* Left side - Main generated image */}
         <div tw="flex items-center justify-center w-3/4 p-8">
-          <img
-            src={generation.url}
-            tw="max-w-full max-h-full rounded-xl"
-            style={{ objectFit: 'contain' }}
-            alt="Generated content"
-          />
+          {generationPreviewUrl ? (
+            <img
+              src={generationPreviewUrl}
+              tw="max-w-full max-h-full rounded-xl"
+              style={{ objectFit: 'contain' }}
+              alt="Generated content"
+            />
+          ) : (
+            <div tw="flex items-center justify-center w-full h-full rounded-xl border border-white/10 bg-black/20 text-white/70">
+              Preview unavailable
+            </div>
+          )}
         </div>
 
         {/* Right side - QR Code and text */}
@@ -120,9 +128,7 @@ export default async function Image({
         ],
       },
     );
-  } catch (error) {
-    console.error('Error fetching generation:', error);
-
+  } catch {
     // Fallback design for errors
     return new ImageResponse(
       <div

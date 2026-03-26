@@ -11,3 +11,18 @@ export async function fetchImageAsDataUrl(url: string): Promise<string> {
   const base64 = Buffer.from(arrayBuffer).toString('base64');
   return `data:${contentType};base64,${base64}`;
 }
+
+export async function fetchImageAsBuffer(
+  url: string,
+  signal?: AbortSignal,
+): Promise<Buffer> {
+  const response = await fetch(url, { signal });
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch image: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}

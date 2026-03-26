@@ -1,3 +1,7 @@
+import { useRef, useState } from 'react';
+import { useFeedback } from '@/components/providers/feedback';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { LogoGenerator, type LogoFormData } from './logo-generator';
 import {
   BaseGenerationTab,
@@ -7,12 +11,8 @@ import {
   useLogoGeneration,
   createLogoGenerationPayload,
 } from './shared/generation-hooks';
-import { useState, useRef } from 'react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './shared/types';
-import { usePosterFlow } from './poster-flow-context';
-import { useFeedback } from '@/components/providers/feedback';
-import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
+import { useDerivativeFlow } from './derivative-flow-context';
 
 interface LogoTabProps {
   existingGenerations?: Generation[];
@@ -31,7 +31,7 @@ export function LogoTab({
   const generateLogoMutation = useLogoGeneration({
     domain: brandDomain,
   });
-  const { openPoster } = usePosterFlow();
+  const { openAnimation, openPoster } = useDerivativeFlow();
   const { requestFeedback } = useFeedback();
 
   const handleGenerateLogo = (data: LogoFormData) => {
@@ -75,7 +75,16 @@ export function LogoTab({
       }
       title="Generated Logos"
       convertToGeneratedItems={convertLogoGenerations}
-      onPosterRequest={openPoster}
+      logoActions={[
+        {
+          label: 'Create Poster',
+          onRequest: openPoster,
+        },
+        {
+          label: 'Animate Logo',
+          onRequest: openAnimation,
+        },
+      ]}
     />
   );
 }

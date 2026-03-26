@@ -14,13 +14,17 @@ import {
   buildDownloadFilename,
   copyGenerationLink,
   downloadGenerationAsset,
+  getGenerationFileExtension,
   resolveGenerationLink,
 } from './shared/generation-actions';
 import { GenerationActionButtons } from './shared/generation-action-buttons';
 
 export interface GeneratedItem {
   id?: string;
-  url: string;
+  url?: string | null;
+  previewUrl?: string | null;
+  thumbnailUrl?: string | null;
+  mimeType?: string | null;
   style?: string;
   type?: string;
   timestamp?: string;
@@ -33,8 +37,13 @@ export interface GeneratedItem {
       logoStyle?: string;
     };
   };
-  kind?: 'logo' | 'marketing';
+  kind?: 'logo' | 'marketing' | 'animation';
   domain?: NamefiNormalizedDomain;
+}
+
+interface LogoAction {
+  label: string;
+  onClick: (item: GeneratedItem) => void;
 }
 
 interface ImageGridProps {
@@ -42,7 +51,7 @@ interface ImageGridProps {
   title: string;
   onGenerateAnother?: () => void;
   brandDomain?: NamefiNormalizedDomain;
-  onCreatePoster?: (item: GeneratedItem) => void;
+  logoActions?: LogoAction[];
 }
 
 export function ImageGrid({
@@ -50,7 +59,7 @@ export function ImageGrid({
   title,
   onGenerateAnother: _onGenerateAnother,
   brandDomain,
-  onCreatePoster,
+  logoActions,
 }: ImageGridProps) {
   const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
@@ -90,33 +99,39 @@ export function ImageGrid({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item, index) => {
             const itemKey = item.id ? `gen-${item.id}` : `idx-${index}`;
+            const previewUrl = item.previewUrl ?? item.thumbnailUrl ?? item.url;
 
             const cardContent = (
               <Card key={itemKey} className="overflow-hidden">
                 <div className="relative aspect-square">
-                  {/** biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight */}
-                  <img
-                    src={item.url}
-                    alt={`${title} ${index + 1}`}
-                    className="object-cover w-full h-full"
-                    loading="lazy"
-                  />
+                  {previewUrl ? (
+                    /** biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight */
+                    <img
+                      src={previewUrl}
+                      alt={`${title} ${index + 1}`}
+                      className="object-cover w-full h-full"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
+                      Preview unavailable
+                    </div>
+                  )}
                 </div>
                 {/* Action buttons below image */}
                 <div className="p-3 border-b border-t flex justify-center">
                   <GenerationActionButtons
                     appearance="grid"
-                    posterAction={
-                      onCreatePoster && item.kind === 'logo' && item.id
-                        ? {
-                            label: 'Create Poster',
+                    ctaActions={
+                      logoActions && item.kind === 'logo' && item.id
+                        ? logoActions.map((action) => ({
+                            label: action.label,
                             onClick: (event) => {
                               event.preventDefault();
                               event.stopPropagation();
-                              onCreatePoster(item);
+                              action.onClick(item);
                             },
-                            disabled: false,
-                          }
+                          }))
                         : undefined
                     }
                     onCopy={(event) => {
@@ -124,7 +139,7 @@ export function ImageGrid({
                       event.stopPropagation();
                       void copyGenerationLink({
                         id: item.id,
-                        fallbackUrl: item.url,
+                        fallbackUrl: item.url ?? undefined,
                       });
                     }}
                     onShare={(event) => {
@@ -139,8 +154,13 @@ export function ImageGrid({
                         url: item.url,
                         filename: buildDownloadFilename(
                           `${title}-${index + 1}`,
+                          getGenerationFileExtension(item.mimeType),
                         ),
                       });
+                    }}
+                    disabled={{
+                      share: !item.url,
+                      download: !item.url,
                     }}
                   />
                 </div>

@@ -9,6 +9,19 @@ import type {
   GalleryItem,
 } from './gallery-types';
 
+const toGalleryStatus = (generation: GalleryGeneration) => {
+  switch (generation.status) {
+    case 'PENDING':
+      return 'pending' as const;
+    case 'PROCESSING':
+      return 'processing' as const;
+    case 'FAILED':
+      return 'failed' as const;
+    default:
+      return 'ready' as const;
+  }
+};
+
 interface UseGenerationsGalleryOptions {
   domains: DomainPreview[];
   filters: GalleryFilters;
@@ -26,8 +39,10 @@ export const useGenerationsGalleryData = ({
 }: UseGenerationsGalleryOptions) => {
   const trpc = useTRPC();
 
-  const typesForQuery: Array<'logo' | 'marketing'> =
-    filters.type === 'all' ? ['logo', 'marketing'] : [filters.type];
+  const typesForQuery: Array<'logo' | 'marketing' | 'animation'> =
+    filters.type === 'all'
+      ? ['logo', 'marketing', 'animation']
+      : [filters.type];
 
   const filteredQuery = useQuery({
     ...trpc.ai.getUserGenerationsFiltered.queryOptions(
@@ -42,6 +57,16 @@ export const useGenerationsGalleryData = ({
         enabled: activeTab === 'yours',
         staleTime: 10_000,
         placeholderData: (previousData) => previousData,
+        refetchInterval: (query) => {
+          const rows = query.state.data as GalleryGeneration[] | undefined;
+          const shouldPoll = rows?.some(
+            (generation) =>
+              generation.status === 'PENDING' ||
+              generation.status === 'PROCESSING',
+          );
+
+          return shouldPoll ? 2_500 : false;
+        },
       },
     ),
   });
@@ -72,8 +97,12 @@ export const useGenerationsGalleryData = ({
         domain: generation?.domain ?? pending.domain,
         type: generation?.type ?? pending.type,
         url: generation?.url,
+        previewUrl: generation?.thumbnailUrl ?? generation?.url,
+        thumbnailUrl: generation?.thumbnailUrl,
+        mimeType: generation?.mimeType,
         generation,
         status: isReady ? 'ready' : 'pending',
+        errorMessage: generation?.errorMessage,
         startedAt: pending.startedAt,
         source: 'pending',
       });
@@ -102,8 +131,12 @@ export const useGenerationsGalleryData = ({
           domain: generation.domain,
           type: generation.type,
           url: generation.url,
+          previewUrl: generation.thumbnailUrl ?? generation.url,
+          thumbnailUrl: generation.thumbnailUrl,
+          mimeType: generation.mimeType,
           generation,
-          status: 'ready',
+          status: toGalleryStatus(generation),
+          errorMessage: generation.errorMessage,
           source: 'query',
         });
         seenGenerationIds.add(generation.id);
@@ -117,6 +150,9 @@ export const useGenerationsGalleryData = ({
             domain: domain.domain,
             type: preview.type,
             url: preview.url,
+            previewUrl: preview.thumbnailUrl ?? preview.url,
+            thumbnailUrl: preview.thumbnailUrl,
+            mimeType: preview.mimeType,
             status: 'preview',
             source: 'preview',
           });
@@ -147,16 +183,31 @@ export const useGenerationsGalleryData = ({
   }, [galleryItems, filters.selectedBrands, filters.type]);
 
   const combinedFeaturedItems = useMemo(() => {
-    if (!featuredQuery.data)
-      return [] as Array<{ id: string; url: string; domain: string }>;
+    if (!featuredQuery.data) {
+      return [] as Array<{
+        id: string;
+        url: string | null;
+        previewUrl: string | null;
+        mimeType: string | null;
+        domain: string;
+      }>;
+    }
     const fr = featuredQuery.data as FeaturedRecent;
     const seen = new Set<string>();
-    const ordered: Array<{ id: string; url: string; domain: string }> = [];
+    const ordered: Array<{
+      id: string;
+      url: string | null;
+      previewUrl: string | null;
+      mimeType: string | null;
+      domain: string;
+    }> = [];
     for (const generation of fr.featured ?? []) {
       if (seen.has(generation.id)) continue;
       ordered.push({
         id: generation.id,
         url: generation.url,
+        previewUrl: generation.thumbnailUrl ?? generation.url,
+        mimeType: generation.mimeType,
         domain: generation.domain,
       });
       seen.add(generation.id);
@@ -166,6 +217,8 @@ export const useGenerationsGalleryData = ({
       ordered.push({
         id: generation.id,
         url: generation.url,
+        previewUrl: generation.thumbnailUrl ?? generation.url,
+        mimeType: generation.mimeType,
         domain: generation.domain,
       });
       seen.add(generation.id);

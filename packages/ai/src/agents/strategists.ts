@@ -2,7 +2,12 @@ import { ToolLoopAgent, Output } from 'ai';
 import type { LanguageModelUsage } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import type { MarketingCollateralTypeInput } from '../types/generation';
+import {
+  ANIMATION_MOTION_PRESETS,
+  ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+  type AnimationMotionPresetInput,
+  type MarketingCollateralTypeInput,
+} from '../types/generation';
 import {
   LOGO_STYLES,
   LOGO_TYPES,
@@ -14,7 +19,7 @@ import {
   type LogoTypeInput,
 } from '../types/logo-options';
 import { collateralAnalysisSchema } from '../types/marketing-schemas';
-import type { z } from 'zod';
+import { z } from 'zod';
 import {
   logoConceptSchema,
   type LogoConceptSchema,
@@ -45,6 +50,18 @@ const logoTextTreatmentInstructions = Object.values(LOGO_TEXT_TREATMENTS)
 const logoTypographyInstructions = Object.values(LOGO_TYPOGRAPHY)
   .filter((option) => option.id !== 'let-ai-choose')
   .map((option) => `- ${option.id} → ${option.name}: ${option.description}`)
+  .join('\n');
+
+const animationMotionResolvedEnum = z.enum(
+  ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+);
+const animationMotionInstructions = Object.values(ANIMATION_MOTION_PRESETS)
+  .filter(
+    (preset) =>
+      preset.id !== 'let-ai-choose' &&
+      !('legacy' in preset && preset.legacy === true),
+  )
+  .map((preset) => `- ${preset.id} → ${preset.name}: ${preset.description}`)
   .join('\n');
 
 const logoStrategistAgent = new ToolLoopAgent({
@@ -88,6 +105,50 @@ RULES:
 - If collateral is apparel, compose scenes involving a physical product (e.g., t-shirt, hoodie, cap etc.) with photorealistic logo placement on the product. Consider reflections, paint texture, and perspective.
 - If collateral is product, compose scenes involving a physical product (e.g., coffee mug, television, pizza box, sports equipment etc.) with photorealistic logo placement on the product. Consider reflections, paint texture, and perspective.
 `;
+}
+
+export const animationMotionPlanSchema = z.object({
+  brandAttributes: z
+    .array(z.string())
+    .describe('Key brand attributes, values, and personality traits'),
+  targetAudience: z
+    .string()
+    .describe('Primary target audience and market positioning'),
+  rationale: z
+    .string()
+    .describe(
+      'Why this motion direction is the strongest fit for the brand and its logo.',
+    ),
+  motionPreset: animationMotionResolvedEnum.describe(
+    'The single best motion preset for this brand and request.',
+  ),
+  direction: z
+    .string()
+    .describe(
+      'A prompt-ready cinematic direction describing camera work, action, context, and ambiance for the logo animation.',
+    ),
+});
+
+function createAnimationSystemPrompt(available: string) {
+  return `You are a motion creative director designing high-end 8-second brand logo animations for Veo.
+
+GOAL:
+- Pick the single strongest motion direction for this brand.
+- Favor bold, cinematic, high-impact motion over subtle surface decoration.
+- Keep the logo premium, recognizable, and legible throughout.
+
+AVAILABLE MOTION PRESETS:
+${available}
+
+RULES:
+- Return only JSON matching the schema.
+- Choose exactly one motionPreset from the allowed IDs above.
+- If the user prompt constrains the allowed motion presets, you must choose only from that constrained set.
+- Use camera movement, atmosphere, optical effects, particles, and energy only when they support a coherent hero animation.
+- Avoid generic "small effect" answers unless the brand description strongly calls for restraint.
+- Do not invent new brand marks, extra text, mascots, or scene changes.
+- The direction must remain image-to-video safe for a single source logo frame.
+- Make the result feel ambitious, polished, and ad-ready rather than minimal or decorative.`;
 }
 
 type StructuredGenerationResult<T> = {
@@ -153,6 +214,43 @@ export async function generatePosterStrategy(
 Description: ${input.description || 'N/A'}
 Requested number of collateral types: 1
 Allowed types (if constrained): ${allowedCollateralTypes}
+`,
+  });
+
+  return {
+    object: result.output,
+    totalUsage: result.totalUsage,
+    modelId: result.response?.modelId,
+  };
+}
+
+type AnimationMotionPlan = z.infer<typeof animationMotionPlanSchema>;
+
+export interface AnimationStrategyInput {
+  domain: NamefiNormalizedDomain;
+  description?: string;
+  motionPreset?: AnimationMotionPresetInput;
+}
+
+export async function generateAnimationStrategy(
+  input: AnimationStrategyInput,
+): Promise<StructuredGenerationResult<AnimationMotionPlan>> {
+  const allowedMotionPresets =
+    input.motionPreset && input.motionPreset !== 'let-ai-choose'
+      ? input.motionPreset
+      : 'orbital-reveal, energy-surge, atmospheric-rise, dimensional-parallax, prismatic-bloom';
+
+  const animationStrategistAgent = new ToolLoopAgent({
+    model: openai('gpt-5.2'),
+    instructions: createAnimationSystemPrompt(animationMotionInstructions),
+    output: Output.object({ schema: animationMotionPlanSchema }),
+  });
+
+  const result = await animationStrategistAgent.generate({
+    prompt: `Brand: ${input.domain}
+Description: ${input.description || 'N/A'}
+Requested number of motion directions: 1
+Allowed motion presets (if constrained): ${allowedMotionPresets}
 `,
   });
 

@@ -27,6 +27,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   ArrowLeft,
   Calendar,
+  Clapperboard,
   Copy,
   Download,
   Image as ImageIcon,
@@ -48,6 +49,14 @@ import { collateralLabels } from './ai-generation/poster-generator';
 import { useAuth } from '@/hooks/use-auth';
 import { useDeleteGeneration } from './ai-generation/shared/generation-hooks';
 import {
+  buildDownloadFilename,
+  downloadGenerationAsset,
+  getGenerationFileExtension,
+} from './ai-generation/shared/generation-actions';
+import {
+  ANIMATION_MODELS,
+  ANIMATION_MOTION_PRESETS,
+  type AnimationMotionPresetId,
   LOGO_STYLES,
   LOGO_TEXT_TREATMENTS,
   LOGO_TYPOGRAPHY,
@@ -61,6 +70,39 @@ interface GenerationDetailsClientProps {
   generationId: string;
   initialGeneration?: GenerationData;
   error?: string;
+}
+
+function resolveAnimationMotionPresetId(
+  generation: GenerationData | undefined,
+): AnimationMotionPresetId | undefined {
+  if (
+    generation?.type !== 'animation' ||
+    generation.input?.type !== 'animation'
+  ) {
+    return undefined;
+  }
+
+  const metadata =
+    generation.metadata &&
+    typeof generation.metadata === 'object' &&
+    !Array.isArray(generation.metadata)
+      ? generation.metadata
+      : undefined;
+
+  if (
+    metadata &&
+    'resolvedMotionPreset' in metadata &&
+    typeof metadata.resolvedMotionPreset === 'string' &&
+    metadata.resolvedMotionPreset in ANIMATION_MOTION_PRESETS
+  ) {
+    return metadata.resolvedMotionPreset as AnimationMotionPresetId;
+  }
+
+  if (generation.input.motionPreset in ANIMATION_MOTION_PRESETS) {
+    return generation.input.motionPreset as AnimationMotionPresetId;
+  }
+
+  return undefined;
 }
 
 const LoadingSkeleton = () => (
@@ -157,15 +199,25 @@ export function GenerationDetailsClient({
     setCurrentUrl(window.location.href);
   }, []);
 
-  // Use the initial generation if provided, otherwise fetch it
+  const shouldLiveRefresh =
+    initialGeneration?.status === 'PENDING' ||
+    initialGeneration?.status === 'PROCESSING';
+
+  // Hydrate from the server result, but keep pending jobs live until they settle.
   const {
     data: generation,
     isLoading: isGenerationLoading,
     error: fetchError,
   } = useQuery({
     ...trpc.ai.getGenerationById.queryOptions({ id: generationId }),
-    enabled: !initialGeneration,
+    enabled: !initialGeneration || shouldLiveRefresh,
     initialData: initialGeneration,
+    refetchInterval: (query) => {
+      const data = query.state.data as GenerationData | undefined;
+      return data?.status === 'PENDING' || data?.status === 'PROCESSING'
+        ? 2_500
+        : false;
+    },
   });
 
   const deleteMutation = useDeleteGeneration({
@@ -184,8 +236,7 @@ export function GenerationDetailsClient({
       id: generation?.referenceGenerationId || '',
     }),
     enabled:
-      generation?.type === 'marketing' &&
-      generation?.input.type === 'marketing' &&
+      (generation?.type === 'marketing' || generation?.type === 'animation') &&
       !!generation?.referenceGenerationId,
   });
 
@@ -196,22 +247,20 @@ export function GenerationDetailsClient({
   const handleDownload = useCallback(async () => {
     if (!generation?.url) return;
 
-    try {
-      const response = await fetch(generation.url);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `${domain}-${generation.type}-${generationId}.png`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Download failed:', error);
-    }
-  }, [domain, generation?.type, generation?.url, generationId]);
+    await downloadGenerationAsset({
+      url: generation.url,
+      filename: buildDownloadFilename(
+        `${domain}-${generation.type}-${generationId}`,
+        getGenerationFileExtension(generation.mimeType),
+      ),
+    });
+  }, [
+    domain,
+    generation?.mimeType,
+    generation?.type,
+    generation?.url,
+    generationId,
+  ]);
 
   const getTextTreatmentLabel = (value: string) =>
     LOGO_TEXT_TREATMENTS[value as keyof typeof LOGO_TEXT_TREATMENTS]?.name ??
@@ -254,6 +303,26 @@ export function GenerationDetailsClient({
         ? generation.input.typography
         : undefined;
 
+  const motionPresetValue = resolveAnimationMotionPresetId(generation);
+
+  const animationModelValue =
+    generation?.output?.type === 'animation'
+      ? generation.output.model
+      : generation?.input?.type === 'animation'
+        ? generation.input.model
+        : undefined;
+
+  const statusLabel =
+    generation?.status === 'PENDING'
+      ? 'Pending'
+      : generation?.status === 'PROCESSING'
+        ? 'Processing'
+        : generation?.status === 'FAILED'
+          ? 'Failed'
+          : 'Ready';
+
+  const previewUrl = generation?.thumbnailUrl ?? generation?.url;
+
   const handleCopyLink = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(currentUrl);
@@ -273,9 +342,16 @@ export function GenerationDetailsClient({
     if (!generation?.id || !generation?.domain) return;
     const params = new URLSearchParams();
     params.set('poster', generation.id);
-    params.set('posterDomain', generation.domain);
     router.push(`/ai-brand-generator?${params.toString()}`);
   }, [generation?.domain, generation?.id, generation?.type, router]);
+
+  const handleCreateAnimation = useCallback(() => {
+    if (generation?.type !== 'logo') return;
+    if (!generation?.id) return;
+    const params = new URLSearchParams();
+    params.set('animation', generation.id);
+    router.push(`/ai-brand-generator?${params.toString()}`);
+  }, [generation?.id, generation?.type, router]);
 
   // Create brand name from domain
   const brandName = domain
@@ -320,7 +396,12 @@ export function GenerationDetailsClient({
           </Button>
           <div>
             <h1 className="text-2xl font-bold">
-              {generation.type === 'logo' ? 'Logo' : 'Poster'} for {brandName}
+              {generation.type === 'logo'
+                ? 'Logo'
+                : generation.type === 'animation'
+                  ? 'Animation'
+                  : 'Poster'}{' '}
+              for {brandName}
             </h1>
             <p className="text-muted-foreground mt-1">{domain}</p>
           </div>
@@ -328,16 +409,57 @@ export function GenerationDetailsClient({
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Image Display */}
+          {/* Media Display */}
           <div className="lg:col-span-2">
             <Card className="p-0">
               <CardContent className="p-0">
                 <div className="relative aspect-square">
-                  <img
-                    src={generation.url}
-                    alt={`AI-generated ${generation.type} for ${domain}`}
-                    className="w-full h-full object-contain rounded-lg"
-                  />
+                  {generation.type === 'animation' && generation.url ? (
+                    // biome-ignore lint/a11y/useMediaCaption: generated animation clips are silent and do not include audio tracks
+                    <video
+                      controls
+                      playsInline
+                      poster={generation.thumbnailUrl ?? undefined}
+                      className="h-full w-full rounded-lg object-contain"
+                      src={generation.url}
+                    />
+                  ) : previewUrl ? (
+                    <img
+                      src={previewUrl}
+                      alt={`AI-generated ${generation.type} for ${domain}`}
+                      className="h-full w-full rounded-lg object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center rounded-lg bg-muted/30 p-8 text-center">
+                      <div>
+                        <div className="text-lg font-semibold">
+                          {statusLabel}
+                        </div>
+                        <div className="mt-2 text-sm text-muted-foreground">
+                          {generation.errorMessage ||
+                            'The asset is not available yet.'}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {!generation.url && (
+                    <div className="absolute inset-0 flex items-end justify-start rounded-lg bg-gradient-to-t from-black/60 via-black/20 to-transparent p-6">
+                      <div className="rounded-lg bg-black/60 px-4 py-3 text-white">
+                        <div className="text-sm font-semibold">
+                          {statusLabel}
+                        </div>
+                        <div className="text-xs text-white/80">
+                          {generation.status === 'FAILED'
+                            ? generation.errorMessage ||
+                              'This generation did not complete.'
+                            : generation.status === 'PROCESSING'
+                              ? 'Your generation is still running.'
+                              : 'Your generation is queued and will appear here shortly.'}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -348,16 +470,29 @@ export function GenerationDetailsClient({
             {/* Actions */}
             <div className="space-y-3">
               {generation.type === 'logo' && (
-                <Button
-                  className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
-                  onClick={handleCreatePoster}
-                >
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Create Poster
-                </Button>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <Button
+                    className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
+                    onClick={handleCreatePoster}
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Create Poster
+                  </Button>
+                  <Button
+                    className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
+                    onClick={handleCreateAnimation}
+                  >
+                    <Clapperboard className="mr-2 h-4 w-4" />
+                    Animate Logo
+                  </Button>
+                </div>
               )}
               <div className="flex flex-col gap-2">
-                <Button onClick={handleDownload} className="w-full">
+                <Button
+                  onClick={handleDownload}
+                  className="w-full"
+                  disabled={!generation.url}
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Download
                 </Button>
@@ -408,7 +543,11 @@ export function GenerationDetailsClient({
                       </AlertDialogTitle>
                       <AlertDialogDescription>
                         This will remove the{' '}
-                        {generation.type === 'marketing' ? 'poster' : 'logo'}{' '}
+                        {generation.type === 'marketing'
+                          ? 'poster'
+                          : generation.type === 'animation'
+                            ? 'animation'
+                            : 'logo'}{' '}
                         for <strong>{domain}</strong> from your gallery. This
                         action can't be undone.
                       </AlertDialogDescription>
@@ -451,6 +590,20 @@ export function GenerationDetailsClient({
                   </Badge>
                 </div>
 
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Status:</span>
+                  <Badge
+                    variant={
+                      generation.status === 'FAILED'
+                        ? 'destructive'
+                        : 'secondary'
+                    }
+                  >
+                    {statusLabel}
+                  </Badge>
+                </div>
+
                 {generation.type === 'marketing' && (
                   <div className="flex items-center gap-2">
                     <Type className="h-4 w-4 text-muted-foreground" />
@@ -467,6 +620,26 @@ export function GenerationDetailsClient({
                             ] ?? key)
                           : 'Unknown';
                       })()}
+                    </Badge>
+                  </div>
+                )}
+
+                {generation.type === 'animation' && motionPresetValue && (
+                  <div className="flex items-center gap-2">
+                    <Clapperboard className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Motion:</span>
+                    <Badge variant="secondary">
+                      {ANIMATION_MOTION_PRESETS[motionPresetValue].name}
+                    </Badge>
+                  </div>
+                )}
+
+                {generation.type === 'animation' && animationModelValue && (
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Model:</span>
+                    <Badge variant="secondary">
+                      {ANIMATION_MODELS[animationModelValue].name}
                     </Badge>
                   </div>
                 )}
@@ -497,6 +670,12 @@ export function GenerationDetailsClient({
                     </p>
                   </div>
                 </div>
+
+                {generation.errorMessage && (
+                  <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
+                    {generation.errorMessage}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -539,15 +718,15 @@ export function GenerationDetailsClient({
               </Card>
             )}
 
-            {/* Marketing-specific Metadata */}
-            {generation.type === 'marketing' &&
-              generation.input.type === 'marketing' &&
+            {/* Source Logo */}
+            {(generation.type === 'marketing' ||
+              generation.type === 'animation') &&
               generation.referenceGenerationId && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <ImageIcon className="h-5 w-5" />
-                      Logo Used
+                      Source Logo
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -561,8 +740,12 @@ export function GenerationDetailsClient({
                       <>
                         <div className="relative w-full aspect-square bg-muted rounded-lg overflow-hidden">
                           <img
-                            src={referenceGeneration.url}
-                            alt="Logo used for marketing generation"
+                            src={
+                              referenceGeneration.thumbnailUrl ??
+                              referenceGeneration.url ??
+                              ''
+                            }
+                            alt="Logo used for derivative generation"
                             className="w-full h-full object-contain"
                           />
                         </div>

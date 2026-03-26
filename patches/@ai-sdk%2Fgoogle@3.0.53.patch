@@ -1,0 +1,90 @@
+diff --git a/dist/index.js b/dist/index.js
+index 3e7f23966091a63ae3aa588f57c6900aed8dc1d1..d3ef70e1f55cbae3aa14d8369bbb9a3db0c7ab0b 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -2248,10 +2248,8 @@ var GoogleGenerativeAIVideoModel = class {
+       } else {
+         const base64Data = typeof options.image.data === "string" ? options.image.data : (0, import_provider_utils15.convertUint8ArrayToBase64)(options.image.data);
+         instance.image = {
+-          inlineData: {
+-            mimeType: options.image.mediaType || "image/png",
+-            data: base64Data
+-          }
++          bytesBase64Encoded: base64Data,
++          mimeType: options.image.mediaType || "image/png"
+         };
+       }
+     }
+@@ -2259,10 +2257,8 @@ var GoogleGenerativeAIVideoModel = class {
+       instance.referenceImages = googleOptions.referenceImages.map((refImg) => {
+         if (refImg.bytesBase64Encoded) {
+           return {
+-            inlineData: {
+-              mimeType: "image/png",
+-              data: refImg.bytesBase64Encoded
+-            }
++            bytesBase64Encoded: refImg.bytesBase64Encoded,
++            mimeType: "image/png"
+           };
+         } else if (refImg.gcsUri) {
+           return {
+diff --git a/dist/index.mjs b/dist/index.mjs
+index e5503d0400d31402367dd872041e3e41cdce6a86..657f8836be0f3265f587450d2c92a8fe247fb269 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -2299,10 +2299,8 @@ var GoogleGenerativeAIVideoModel = class {
+       } else {
+         const base64Data = typeof options.image.data === "string" ? options.image.data : convertUint8ArrayToBase64(options.image.data);
+         instance.image = {
+-          inlineData: {
+-            mimeType: options.image.mediaType || "image/png",
+-            data: base64Data
+-          }
++          bytesBase64Encoded: base64Data,
++          mimeType: options.image.mediaType || "image/png"
+         };
+       }
+     }
+@@ -2310,10 +2308,8 @@ var GoogleGenerativeAIVideoModel = class {
+       instance.referenceImages = googleOptions.referenceImages.map((refImg) => {
+         if (refImg.bytesBase64Encoded) {
+           return {
+-            inlineData: {
+-              mimeType: "image/png",
+-              data: refImg.bytesBase64Encoded
+-            }
++            bytesBase64Encoded: refImg.bytesBase64Encoded,
++            mimeType: "image/png"
+           };
+         } else if (refImg.gcsUri) {
+           return {
+diff --git a/src/google-generative-ai-video-model.ts b/src/google-generative-ai-video-model.ts
+index b31633c9a1701e54cc7e6be0268f29cd23175658..189309030e9aa5bc051102d652010359d5336926 100644
+--- a/src/google-generative-ai-video-model.ts
++++ b/src/google-generative-ai-video-model.ts
+@@ -102,10 +102,8 @@ export class GoogleGenerativeAIVideoModel implements Experimental_VideoModelV3 {
+             : convertUint8ArrayToBase64(options.image.data);
+ 
+         instance.image = {
+-          inlineData: {
+-            mimeType: options.image.mediaType || 'image/png',
+-            data: base64Data,
+-          },
++          bytesBase64Encoded: base64Data,
++          mimeType: options.image.mediaType || 'image/png',
+         };
+       }
+     }
+@@ -114,10 +112,8 @@ export class GoogleGenerativeAIVideoModel implements Experimental_VideoModelV3 {
+       instance.referenceImages = googleOptions.referenceImages.map(refImg => {
+         if (refImg.bytesBase64Encoded) {
+           return {
+-            inlineData: {
+-              mimeType: 'image/png',
+-              data: refImg.bytesBase64Encoded,
+-            },
++            bytesBase64Encoded: refImg.bytesBase64Encoded,
++            mimeType: 'image/png',
+           };
+         } else if (refImg.gcsUri) {
+           return {

@@ -116,7 +116,7 @@ export const InternalAIGenerations = ({
             >
               <LogoPreview
                 domain={domain}
-                logoUrl={logo?.url}
+                logoUrl={logo?.url ?? undefined}
                 isLoading={isLoading}
               />
               <div className="mt-3 text-center text-sm truncate">{domain}</div>

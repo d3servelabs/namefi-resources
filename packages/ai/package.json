@@ -17,15 +17,17 @@
     "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.6",
-    "@ai-sdk/openai": "^3.0.7",
+    "@ai-sdk/google": "^3.0.53",
+    "@ai-sdk/openai": "^3.0.48",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/storage": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
-    "ai": "^6.0.20",
+    "ai": "^6.0.138",
+    "sharp": "^0.34.5",
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@namefi-astra/typescript": "workspace:*"
+    "@namefi-astra/typescript": "workspace:*",
+    "vitest": "^3.2.4"
   }
 }

@@ -3,24 +3,28 @@
 import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/cn';
 import {
+  type LucideIcon,
   Copy as CopyIcon,
   Download as DownloadIcon,
-  Twitter,
   Sparkles,
+  Twitter,
   Trash2,
 } from 'lucide-react';
 import type { MouseEvent } from 'react';
+
+interface GenerationCtaAction {
+  label: string;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
+  icon?: LucideIcon;
+}
 
 interface GenerationActionButtonsProps {
   appearance: 'overlay' | 'featured' | 'grid';
   onCopy: (event: MouseEvent<HTMLButtonElement>) => void;
   onShare: (event: MouseEvent<HTMLButtonElement>) => void;
   onDownload: (event: MouseEvent<HTMLButtonElement>) => void;
-  posterAction?: {
-    label?: string;
-    onClick: (event: MouseEvent<HTMLButtonElement>) => void;
-    disabled?: boolean;
-  };
+  ctaActions?: GenerationCtaAction[];
   deleteAction?: {
     label?: string;
     onClick: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -74,7 +78,7 @@ export function GenerationActionButtons({
   onCopy,
   onShare,
   onDownload,
-  posterAction,
+  ctaActions,
   deleteAction,
   disabled,
 }: GenerationActionButtonsProps) {
@@ -82,17 +86,22 @@ export function GenerationActionButtons({
 
   return (
     <div className="flex flex-wrap items-center justify-end gap-2">
-      {posterAction && (
-        <Button
-          size={config.size}
-          className={config.posterClass}
-          onClick={posterAction.onClick}
-          disabled={posterAction.disabled}
-        >
-          <Sparkles className="h-4 w-4" />
-          {posterAction.label ?? 'Create Poster'}
-        </Button>
-      )}
+      {ctaActions?.map((action) => {
+        const Icon = action.icon ?? Sparkles;
+
+        return (
+          <Button
+            key={action.label}
+            size={config.size}
+            className={config.posterClass}
+            onClick={action.onClick}
+            disabled={action.disabled}
+          >
+            <Icon className="h-4 w-4" />
+            {action.label}
+          </Button>
+        );
+      })}
       <Button
         size={config.size}
         variant={config.variant}

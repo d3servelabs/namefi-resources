@@ -7,17 +7,17 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useLocalStorage } from 'usehooks-ts';
-import { AIOnboardingOneShot } from '@/components/ai-generation/onboarding-one-shot';
 import {
   GenerationsColumn,
   GenerationsColumnSkeleton,
 } from '@/components/ai-generation/generations-column';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { PosterFlowProvider } from '@/components/ai-generation/poster-flow-context';
-import { usePosterFlow } from '@/components/ai-generation/poster-flow-context';
-import type { PosterSource } from '@/components/ai-generation/poster-flow-context';
+import {
+  DerivativeFlowProvider,
+  useDerivativeFlow,
+  type DerivativeSource,
+} from '@/components/ai-generation/derivative-flow-context';
 import { GalleryPendingProvider } from '@/components/ai-generation/gallery-pending-context';
 import { useEffect, useRef } from 'react';
 import { PageShell } from '@/components/page-shell';
@@ -26,29 +26,16 @@ export default function AIBrandGeneratorPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
-  // Get all user domains (which represent "brands")
   const { data: domains = [], isLoading: isDomainsLoading } = useQuery({
     ...trpc.ai.getUserDomains.queryOptions(),
     enabled: isAuthenticated,
   });
 
-  // Get usage to detect first-time users
-  const { data: usage, isLoading: isUsageLoading } = useQuery({
-    ...trpc.ai.getUserGenerationUsage.queryOptions(),
-    enabled: isAuthenticated,
-  });
-
-  // Onboarding completion (persisted)
-  const [finishedOnboarding, setFinishedOnboarding] = useLocalStorage<boolean>(
-    'ai_onboarding_complete',
-    false,
-  );
-
   if (isAuthLoading) {
     return (
       <GalleryPendingProvider>
-        <PosterFlowProvider>
-          <PosterFlowInitializer />
+        <DerivativeFlowProvider>
+          <DerivativeFlowInitializer />
           <PageShell
             size="full"
             padding="none"
@@ -65,7 +52,7 @@ export default function AIBrandGeneratorPage() {
               </div>
             </div>
           </PageShell>
-        </PosterFlowProvider>
+        </DerivativeFlowProvider>
       </GalleryPendingProvider>
     );
   }
@@ -74,12 +61,12 @@ export default function AIBrandGeneratorPage() {
     return <AuthRequired />;
   }
 
-  const isInitialLoading = isDomainsLoading || isUsageLoading;
+  const isInitialLoading = isDomainsLoading;
 
   return (
     <GalleryPendingProvider>
-      <PosterFlowProvider>
-        <PosterFlowInitializer />
+      <DerivativeFlowProvider>
+        <DerivativeFlowInitializer />
         <PageShell
           size="full"
           padding="none"
@@ -90,17 +77,8 @@ export default function AIBrandGeneratorPage() {
           <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
             {/* Left Column - Generator */}
             <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
-              {/* Page header moved to left column to align right column at top */}
               <PageHeader />
-              {isInitialLoading ? (
-                <LeftColumnSkeleton />
-              ) : usage && finishedOnboarding && usage.currentCount > 1 ? (
-                <AITabs />
-              ) : (
-                <AIOnboardingOneShot
-                  onFinishAction={() => setFinishedOnboarding(true)}
-                />
-              )}
+              {isInitialLoading ? <LeftColumnSkeleton /> : <AITabs />}
             </div>
 
             {/* Right Column - Generations Gallery */}
@@ -113,7 +91,7 @@ export default function AIBrandGeneratorPage() {
             </div>
           </div>
         </PageShell>
-      </PosterFlowProvider>
+      </DerivativeFlowProvider>
     </GalleryPendingProvider>
   );
 }
@@ -130,7 +108,7 @@ function PageHeader() {
       />
       <h2 className="text-2xl font-bold">AI Brand Generator</h2>
       <p className="text-muted-foreground mt-2">
-        Create custom logos and posters for your brand
+        Create custom logos, posters, and animations for your brand
       </p>
       <a
         href="https://www.producthunt.com/products/namefi?embed=true&utm_source=badge-featured&utm_medium=badge"
@@ -138,6 +116,7 @@ function PageHeader() {
         rel="noreferrer noopener"
         className="mt-4 inline-block"
       >
+        {/* biome-ignore lint/performance/noImgElement: Product Hunt provides this badge as a fixed remote embed image */}
         <img
           src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1015110&theme=light&t=1758010170449"
           alt="Just AI'ng by Namefi on Product Hunt"
@@ -183,22 +162,24 @@ function LeftColumnSkeleton() {
   );
 }
 
-function PosterFlowInitializer() {
+function DerivativeFlowInitializer() {
   const searchParams = useSearchParams();
   const posterId = searchParams.get('poster');
+  const animationId = searchParams.get('animation');
   const searchParamsString = searchParams.toString();
-  const { openPoster } = usePosterFlow();
+  const activeLogoId = posterId || animationId;
+  const { openAnimation, openPoster } = useDerivativeFlow();
   const trpc = useTRPC();
   const router = useRouter();
   const openedRef = useRef<string | null>(null);
 
   const { data: posterGeneration } = useQuery({
-    ...trpc.ai.getGenerationById.queryOptions({ id: posterId || '' }),
-    enabled: !!posterId,
+    ...trpc.ai.getGenerationById.queryOptions({ id: activeLogoId || '' }),
+    enabled: !!activeLogoId,
   });
 
   useEffect(() => {
-    if (!posterId || openedRef.current === posterId) return;
+    if (!activeLogoId || openedRef.current === activeLogoId) return;
     if (!posterGeneration) return;
     if (
       posterGeneration.type !== 'logo' &&
@@ -207,18 +188,30 @@ function PosterFlowInitializer() {
       return;
     }
 
-    openPoster(posterGeneration as PosterSource);
-    openedRef.current = posterId;
+    if (animationId) {
+      openAnimation(posterGeneration as DerivativeSource);
+    } else {
+      openPoster(posterGeneration as DerivativeSource);
+    }
+    openedRef.current = activeLogoId;
 
     const params = new URLSearchParams(searchParamsString);
     params.delete('poster');
-    params.delete('posterDomain');
+    params.delete('animation');
     const query = params.toString();
     router.replace(
       query ? `/ai-brand-generator?${query}` : '/ai-brand-generator',
       { scroll: false },
     );
-  }, [posterGeneration, posterId, openPoster, router, searchParamsString]);
+  }, [
+    activeLogoId,
+    animationId,
+    openAnimation,
+    openPoster,
+    posterGeneration,
+    router,
+    searchParamsString,
+  ]);
 
   return null;
 }

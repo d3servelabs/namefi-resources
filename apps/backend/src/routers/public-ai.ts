@@ -248,10 +248,14 @@ publicAiRouter.get('/generations/:id', async (c) => {
     }
 
     const output = record.output;
-    const url = generateUrlFromStoragePath(
-      output.storagePath,
-      config.CLOUD_FRONT_DOMAIN,
-    );
+    const url = output.storagePath
+      ? generateUrlFromStoragePath(
+          output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        )
+      : null;
+    const model =
+      output.type === 'animation' ? output.model : output.imageModel;
 
     return c.json({
       id: record.id,
@@ -262,7 +266,7 @@ publicAiRouter.get('/generations/:id', async (c) => {
       logoStyle: output.type === 'logo' ? output.logoStyle : undefined,
       collateralType:
         output.type === 'marketing' ? output.collateralType : undefined,
-      model: output.imageModel,
+      model,
       url,
       storagePath: output.storagePath,
       tokenUsage: record.tokenUsage,

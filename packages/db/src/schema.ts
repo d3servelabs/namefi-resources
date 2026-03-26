@@ -869,7 +869,155 @@ export const domainUserPreferencesTable = pgTable(
 export const aiGenerationTypeEnum = pgEnum('ai_generation_type', [
   'logo',
   'marketing',
+  'animation',
 ] as const);
+
+export const aiGenerationStatusEnum = pgEnum('ai_generation_status', [
+  'PENDING',
+  'PROCESSING',
+  'SUCCEEDED',
+  'FAILED',
+] as const);
+
+type AiGenerationTokenUsage = Array<{
+  model: string;
+  inputTokens: number;
+  outputTokens: number;
+}>;
+
+type AiGenerationInput =
+  | {
+      type: 'logo';
+      logoType: string;
+      logoStyle: string;
+      description?: string;
+      textTreatment?: string;
+      typography?: string;
+    }
+  | {
+      type: 'marketing';
+      description?: string;
+      collateralType:
+        | 'billboard'
+        | 'apparel'
+        | 'vehicle'
+        | 'product'
+        | 'let_ai_choose';
+    }
+  | {
+      type: 'animation';
+      description?: string;
+      motionPreset:
+        | 'let-ai-choose'
+        | 'orbital-reveal'
+        | 'energy-surge'
+        | 'atmospheric-rise'
+        | 'dimensional-parallax'
+        | 'prismatic-bloom'
+        | 'light-sweep'
+        | 'glow-pulse'
+        | 'particle-orbit'
+        | 'contour-trace'
+        | 'shimmer';
+      model: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+    };
+
+type AiGenerationOutput =
+  | {
+      type: 'logo';
+      storagePath: string;
+      logoType?: string;
+      logoStyle?: string;
+      textTreatment?: string;
+      typography?: string;
+    }
+  | {
+      type: 'marketing';
+      storagePath: string;
+      collateralType:
+        | 'billboard'
+        | 'apparel'
+        | 'vehicle'
+        | 'product'
+        | 'let_ai_choose';
+    }
+  | {
+      type: 'animation';
+      storagePath?: string;
+      thumbnailStoragePath: string;
+      mimeType: 'video/mp4';
+      model: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+    };
+
+type ExternalAiGenerationInput =
+  | {
+      type: 'logo';
+      logoType: string;
+      logoStyle: string;
+      description?: string;
+      imageModel?: string;
+      textTreatment?: string;
+      typography?: string;
+    }
+  | {
+      type: 'marketing';
+      description?: string;
+      collateralType:
+        | 'billboard'
+        | 'apparel'
+        | 'vehicle'
+        | 'product'
+        | 'let_ai_choose';
+      imageModel?: string;
+      referenceLogoUrl?: string;
+    }
+  | {
+      type: 'animation';
+      description?: string;
+      motionPreset:
+        | 'let-ai-choose'
+        | 'orbital-reveal'
+        | 'energy-surge'
+        | 'atmospheric-rise'
+        | 'dimensional-parallax'
+        | 'prismatic-bloom'
+        | 'light-sweep'
+        | 'glow-pulse'
+        | 'particle-orbit'
+        | 'contour-trace'
+        | 'shimmer';
+      model?: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+      referenceLogoUrl?: string;
+    };
+
+type ExternalAiGenerationOutput =
+  | {
+      type: 'logo';
+      storagePath: string;
+      logoType?: string;
+      logoStyle?: string;
+      textTreatment?: string;
+      typography?: string;
+      imageModel?: string;
+    }
+  | {
+      type: 'marketing';
+      storagePath: string;
+      collateralType:
+        | 'billboard'
+        | 'apparel'
+        | 'vehicle'
+        | 'product'
+        | 'let_ai_choose';
+      imageModel?: string;
+    }
+  | {
+      type: 'animation';
+      storagePath?: string;
+      thumbnailStoragePath: string;
+      mimeType: 'video/mp4';
+      model?: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+    };
 
 /**
  * Indexed domains table - stores a cached index of all domains from all registrars
@@ -1078,56 +1226,16 @@ export const aiGenerationsTable = pgTable(
     domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
     type: aiGenerationTypeEnum('type').notNull(),
     referenceGenerationId: uuid('reference_generation_id'),
+    status: aiGenerationStatusEnum('status').notNull().default('SUCCEEDED'),
+    startedAt: timestamp('started_at'),
+    finishedAt: timestamp('finished_at'),
+    errorMessage: text('error_message'),
     tokenUsage: jsonb('token_usage')
-      .$type<
-        Array<{
-          model: string;
-          inputTokens: number;
-          outputTokens: number;
-        }>
-      >()
+      .$type<AiGenerationTokenUsage>()
       .notNull()
       .default([]),
-    input: jsonb('input').notNull().$type<
-      | {
-          type: 'logo';
-          logoType: string;
-          logoStyle: string;
-          description?: string;
-          textTreatment?: string;
-          typography?: string;
-        }
-      | {
-          type: 'marketing';
-          description?: string;
-          collateralType:
-            | 'billboard'
-            | 'apparel'
-            | 'vehicle'
-            | 'product'
-            | 'let_ai_choose';
-        }
-    >(),
-    output: jsonb('output').notNull().$type<
-      | {
-          type: 'logo';
-          storagePath: string;
-          logoType?: string;
-          logoStyle?: string;
-          textTreatment?: string;
-          typography?: string;
-        }
-      | {
-          type: 'marketing';
-          storagePath: string;
-          collateralType:
-            | 'billboard'
-            | 'apparel'
-            | 'vehicle'
-            | 'product'
-            | 'let_ai_choose';
-        }
-    >(),
+    input: jsonb('input').notNull().$type<AiGenerationInput>(),
+    output: jsonb('output').notNull().$type<AiGenerationOutput>(),
     metadata: jsonb('metadata').default({}),
     featured: boolean('featured').notNull().default(false),
     isDeleted: boolean('is_deleted').notNull().default(false),
@@ -1144,6 +1252,7 @@ export const aiGenerationsTable = pgTable(
       table.domain,
       table.createdAt,
     ),
+    index('ai_generations_status_idx').on(table.status),
     foreignKey({
       columns: [table.referenceGenerationId],
       foreignColumns: [table.id],
@@ -1160,60 +1269,11 @@ export const publicAiGenerationsTable = pgTable(
     domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
     type: aiGenerationTypeEnum('type').notNull(),
     tokenUsage: jsonb('token_usage')
-      .$type<
-        Array<{
-          model: string;
-          inputTokens: number;
-          outputTokens: number;
-        }>
-      >()
+      .$type<AiGenerationTokenUsage>()
       .notNull()
       .default([]),
-    input: jsonb('input').notNull().$type<
-      | {
-          type: 'logo';
-          logoType: string;
-          logoStyle: string;
-          description?: string;
-          imageModel?: string;
-          textTreatment?: string;
-          typography?: string;
-        }
-      | {
-          type: 'marketing';
-          description?: string;
-          collateralType:
-            | 'billboard'
-            | 'apparel'
-            | 'vehicle'
-            | 'product'
-            | 'let_ai_choose';
-          imageModel?: string;
-          referenceLogoUrl?: string;
-        }
-    >(),
-    output: jsonb('output').notNull().$type<
-      | {
-          type: 'logo';
-          storagePath: string;
-          logoType?: string;
-          logoStyle?: string;
-          textTreatment?: string;
-          typography?: string;
-          imageModel?: string;
-        }
-      | {
-          type: 'marketing';
-          storagePath: string;
-          collateralType:
-            | 'billboard'
-            | 'apparel'
-            | 'vehicle'
-            | 'product'
-            | 'let_ai_choose';
-          imageModel?: string;
-        }
-    >(),
+    input: jsonb('input').notNull().$type<ExternalAiGenerationInput>(),
+    output: jsonb('output').notNull().$type<ExternalAiGenerationOutput>(),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
   },
@@ -1243,50 +1303,11 @@ export const internalAiGenerationsTable = pgTable(
     }>(),
     // Aggregate token usage across steps (e.g., analysis + image gen)
     tokenUsage: jsonb('token_usage')
-      .$type<
-        Array<{
-          model: string;
-          inputTokens: number;
-          outputTokens: number;
-        }>
-      >()
+      .$type<AiGenerationTokenUsage>()
       .notNull()
       .default([]),
-    input: jsonb('input').notNull().$type<
-      | {
-          type: 'logo';
-          logoType: string;
-          logoStyle: string;
-          description?: string;
-          textTreatment?: string;
-          typography?: string;
-        }
-      | {
-          type: 'marketing';
-          description?: string;
-          collateralType:
-            | 'billboard'
-            | 'apparel'
-            | 'vehicle'
-            | 'product'
-            | 'let_ai_choose';
-        }
-    >(),
-    output: jsonb('output').notNull().$type<
-      | {
-          type: 'logo';
-          storagePath: string;
-          logoType?: string;
-          logoStyle?: string;
-          textTreatment?: string;
-          typography?: string;
-        }
-      | {
-          type: 'marketing';
-          storagePath: string;
-          collateralType: 'billboard' | 'apparel' | 'vehicle' | 'product';
-        }
-    >(),
+    input: jsonb('input').notNull().$type<ExternalAiGenerationInput>(),
+    output: jsonb('output').notNull().$type<ExternalAiGenerationOutput>(),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
   },

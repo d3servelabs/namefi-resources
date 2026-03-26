@@ -1,7 +1,16 @@
 import { type GeneratedItem, ImageGrid } from '../image-grid';
 import { useMemo, type ReactNode } from 'react';
+import {
+  ANIMATION_MOTION_PRESETS,
+  type AnimationMotionPresetId,
+} from '@namefi-astra/ai/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './types';
+
+interface LogoAction {
+  label: string;
+  onRequest: (generation: Generation) => void;
+}
 
 interface BaseGenerationTabProps {
   existingGenerations?: Generation[];
@@ -19,7 +28,7 @@ interface BaseGenerationTabProps {
 
   // Optional additional data for the conversion
   availableLogos?: Generation[];
-  onPosterRequest?: (generation: Generation) => void;
+  logoActions?: LogoAction[];
 }
 
 export function BaseGenerationTab({
@@ -29,7 +38,7 @@ export function BaseGenerationTab({
   title,
   convertToGeneratedItems,
   availableLogos,
-  onPosterRequest,
+  logoActions,
 }: BaseGenerationTabProps) {
   // Convert existing generations to GeneratedItem format
   const existingItems = convertToGeneratedItems(
@@ -47,21 +56,24 @@ export function BaseGenerationTab({
     return map;
   }, [existingGenerations]);
 
-  const handleCreatePoster =
-    onPosterRequest && existingGenerations.length > 0
-      ? (item: GeneratedItem) => {
-          if (!item.id || item.kind !== 'logo') return;
-          const generation = generationMap.get(item.id);
-          if (!generation) return;
-          if (
-            generation.type !== 'logo' &&
-            generation.output?.type !== 'logo'
-          ) {
-            return;
-          }
-          onPosterRequest(generation);
+  const resolvedLogoActions = useMemo(() => {
+    if (!logoActions?.length || existingGenerations.length === 0) {
+      return undefined;
+    }
+
+    return logoActions.map((action) => ({
+      label: action.label,
+      onClick: (item: GeneratedItem) => {
+        if (!item.id || item.kind !== 'logo') return;
+        const generation = generationMap.get(item.id);
+        if (!generation) return;
+        if (generation.type !== 'logo' && generation.output?.type !== 'logo') {
+          return;
         }
-      : undefined;
+        action.onRequest(generation);
+      },
+    }));
+  }, [existingGenerations.length, generationMap, logoActions]);
 
   return (
     <>
@@ -71,7 +83,7 @@ export function BaseGenerationTab({
         items={existingItems}
         title={title}
         brandDomain={brandDomain}
-        onCreatePoster={handleCreatePoster}
+        logoActions={resolvedLogoActions}
       />
     </>
   );
@@ -84,6 +96,9 @@ export const convertLogoGenerations = (
   return generations.map((gen) => ({
     id: gen.id,
     url: gen.url,
+    previewUrl: gen.thumbnailUrl ?? gen.url,
+    thumbnailUrl: gen.thumbnailUrl,
+    mimeType: gen.mimeType,
     timestamp: new Date(gen.createdAt).toISOString(),
     // Use resolved values from output when available (AI-chosen)
     type: gen.output?.type === 'logo' ? gen.output.logoType : undefined,
@@ -100,6 +115,9 @@ export const convertPosterGenerations = (
   return generations.map((gen) => ({
     id: gen.id,
     url: gen.url,
+    previewUrl: gen.thumbnailUrl ?? gen.url,
+    thumbnailUrl: gen.thumbnailUrl,
+    mimeType: gen.mimeType,
     timestamp: new Date(gen.createdAt).toISOString(),
     kind: 'marketing',
     domain: gen.domain,
@@ -116,20 +134,94 @@ export const convertPosterGenerations = (
           const logo = availableLogos.find(
             (logo) => logo.id === gen.referenceGenerationId,
           );
-          return logo
-            ? {
-                id: logo.id,
-                result: logo.url,
-                metadata:
-                  logo.output?.type === 'logo'
-                    ? {
-                        // Prefer output values if present
-                        logoType: logo.output.logoType,
-                        logoStyle: logo.output.logoStyle,
-                      }
-                    : undefined,
-              }
-            : undefined;
+          const logoPreviewUrl = logo?.thumbnailUrl ?? logo?.url;
+          if (!logo || !logoPreviewUrl) {
+            return undefined;
+          }
+
+          return {
+            id: logo.id,
+            result: logoPreviewUrl,
+            metadata:
+              logo.output?.type === 'logo'
+                ? {
+                    // Prefer output values if present
+                    logoType: logo.output.logoType,
+                    logoStyle: logo.output.logoStyle,
+                  }
+                : undefined,
+          };
+        })()
+      : undefined,
+  }));
+};
+
+export const convertAnimationGenerations = (
+  generations: Generation[],
+  availableLogos: Generation[] = [],
+): GeneratedItem[] => {
+  const resolveMotionLabel = (generation: Generation) => {
+    if (generation.input?.type !== 'animation') {
+      return undefined;
+    }
+
+    const metadata =
+      generation.metadata &&
+      typeof generation.metadata === 'object' &&
+      !Array.isArray(generation.metadata)
+        ? generation.metadata
+        : undefined;
+
+    const resolvedMotionPreset =
+      metadata &&
+      'resolvedMotionPreset' in metadata &&
+      typeof metadata.resolvedMotionPreset === 'string' &&
+      metadata.resolvedMotionPreset in ANIMATION_MOTION_PRESETS
+        ? (metadata.resolvedMotionPreset as AnimationMotionPresetId)
+        : undefined;
+
+    const motionPreset =
+      resolvedMotionPreset ??
+      (generation.input.motionPreset in ANIMATION_MOTION_PRESETS
+        ? (generation.input.motionPreset as AnimationMotionPresetId)
+        : undefined);
+
+    return motionPreset
+      ? ANIMATION_MOTION_PRESETS[motionPreset].name
+      : generation.input.motionPreset;
+  };
+
+  return generations.map((gen) => ({
+    id: gen.id,
+    url: gen.url,
+    previewUrl: gen.thumbnailUrl ?? gen.url,
+    thumbnailUrl: gen.thumbnailUrl,
+    mimeType: gen.mimeType,
+    timestamp: new Date(gen.createdAt).toISOString(),
+    kind: 'animation',
+    domain: gen.domain,
+    type: resolveMotionLabel(gen),
+    basedOnLogo: gen.referenceGenerationId
+      ? (() => {
+          const logo = availableLogos.find(
+            (candidate) => candidate.id === gen.referenceGenerationId,
+          );
+          const logoPreviewUrl = logo?.thumbnailUrl ?? logo?.url;
+          if (!logo || !logoPreviewUrl) {
+            return undefined;
+          }
+
+          return {
+            id: logo.id,
+            result: logoPreviewUrl,
+            metadata:
+              logo.output?.type === 'logo'
+                ? {
+                    logoType: logo.output.logoType,
+                    logoStyle: logo.output.logoStyle,
+                  }
+                : undefined,
+          };
         })()
       : undefined,
   }));
