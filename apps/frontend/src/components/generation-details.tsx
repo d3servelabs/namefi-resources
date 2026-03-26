@@ -74,6 +74,9 @@ interface GenerationDetailsClientProps {
   error?: string;
 }
 
+const logoCtaButtonClassName =
+  'h-11 flex-1 rounded-full border border-brand-primary/20 bg-brand-primary px-4 text-sm font-semibold text-primary-foreground shadow-[0_14px_28px_-18px_rgba(16,185,129,0.75)] transition-colors hover:bg-brand-primary/90';
+
 function resolveAnimationMotionPresetId(
   generation: GenerationData | undefined,
 ): AnimationMotionPresetId | undefined {
@@ -488,16 +491,16 @@ export function GenerationDetailsClient({
             {/* Actions */}
             <div className="space-y-3">
               {generation.type === 'logo' && (
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.5 sm:flex-row">
                   <Button
-                    className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
+                    className={logoCtaButtonClassName}
                     onClick={handleCreatePoster}
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
                     Create Poster
                   </Button>
                   <Button
-                    className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
+                    className={logoCtaButtonClassName}
                     onClick={handleCreateAnimation}
                   >
                     <Clapperboard className="mr-2 h-4 w-4" />
