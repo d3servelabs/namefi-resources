@@ -1,9 +1,16 @@
 #!/usr/bin/env bun
+import { rm } from 'node:fs/promises';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { Address, Chain } from 'viem';
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 import QrCode from 'qrcode';
 import { loadSession, saveSession } from './lib/session-store';
 import { createSignClient } from './lib/create-sign-client';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const QR_PNG_PATH = resolve(__dirname, '../wc-qr.png');
 
 const CHAIN_BY_ID: Record<number, Chain> = {
   [base.id]: base,
@@ -16,6 +23,7 @@ const REQUIRED_METHODS = [
   'eth_requestAccounts',
   'eth_accounts',
   'eth_chainId',
+  'personal_sign',
   'eth_signTypedData_v4',
 ] as const;
 
@@ -71,18 +79,10 @@ async function main() {
   // Check if already connected
   const existingSession = await loadSession();
   if (existingSession) {
-    console.error(
-      `Already connected to wallet ${existingSession.address} on chain ${existingSession.chainId} (${existingSession.peerName}).`,
-    );
-    console.error('Use disconnect.ts first to connect a different wallet.');
     process.exit(1);
   }
 
   const chain = getSupportedChain(chainId);
-
-  console.log(
-    `Creating WalletConnect session for chain ${chain.name} (${chain.id})...`,
-  );
 
   // Initialize SignClient with persistent storage
   const signClient = await createSignClient();
@@ -102,16 +102,17 @@ async function main() {
     throw new Error('Failed to generate WalletConnect URI');
   }
 
-  // Generate and display QR code
-  console.log('\nScan this QR code with your mobile wallet:\n');
   const qrText = await QrCode.toString(uri, {
     type: 'terminal',
     small: true,
     scale: 0.7,
   });
-  console.log(qrText);
-  console.log(`\nOr use this URI: ${uri}\n`);
-  console.log('Waiting for approval...');
+  await QrCode.toFile(QR_PNG_PATH, uri, { type: 'png', width: 400, margin: 2 });
+
+  process.stdout.write('Approve this WalletConnect session in your wallet:\n');
+  process.stdout.write(`${uri}\n`);
+  process.stdout.write(`${qrText}\n`);
+  process.stdout.write(`QR PNG saved to: ${QR_PNG_PATH}\n`);
 
   // Wait for approval
   const approvedSession = await approval();
@@ -129,16 +130,13 @@ async function main() {
     createdAt: Date.now(),
   });
 
-  console.log('\n✓ Successfully connected!');
-  console.log(`  Address: ${address}`);
-  console.log(`  Chain: ${chain.name} (${resolvedChainId})`);
-  console.log(`  Wallet: ${approvedSession.peer.metadata.name}`);
-  console.log('\nSession saved to sessions.json');
+  // Clean up QR PNG
+  await rm(QR_PNG_PATH, { force: true });
 
   process.exit(0);
 }
 
 main().catch((error) => {
-  console.error('Error:', error.message);
+  process.stderr.write(`${String(error)}\n`);
   process.exit(1);
 });

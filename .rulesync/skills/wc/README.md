@@ -85,7 +85,7 @@ WalletConnect v2 SignClient:
 ## Files
 
 ```
-.<agent>/skills/wc/
+.claude/skills/wc/
 ├── README.md               # This file
 ├── SKILL.md               # Complete API documentation
 ├── TESTING-SUMMARY.md     # Technical findings

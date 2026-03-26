@@ -14,6 +14,7 @@ import type {
 import {
   asString,
   asStringArray,
+  deriveAuthMode,
   isRecord,
   payloadTypeFromPrimaryType,
   uniqueStrings,
@@ -300,6 +301,7 @@ function normalizeOpenApiOperation(args: {
     eip712Types !== null ||
     badgeNames.includes('EIP712') ||
     tags.includes('EIP712');
+  const authKind = 'unknown';
 
   return {
     env: args.env,
@@ -320,6 +322,9 @@ function normalizeOpenApiOperation(args: {
     primaryType,
     payloadType: payloadTypeFromPrimaryType(primaryType),
     eip712Types,
+    authKind,
+    authMode: deriveAuthMode({ authKind, hasEip712 }),
+    authSource: null,
     publishedInEnvOpenapi: true,
     routeSource: 'openapi',
     metadataSource: {

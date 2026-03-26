@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url';
-import type { ParsedArgs } from './types';
+import type { AuthKind, AuthMode, ParsedArgs } from './types';
 
 const ENVELOPE_SUFFIX_REGEX = /Envelope$/;
 const TRAILING_SLASHES_REGEX = /\/+$/;
@@ -42,6 +42,26 @@ export function payloadTypeFromPrimaryType(
   }
 
   return primaryType.replace(ENVELOPE_SUFFIX_REGEX, '');
+}
+
+export function deriveAuthMode(args: {
+  authKind: AuthKind;
+  hasEip712: boolean;
+}): AuthMode {
+  if (args.hasEip712) {
+    return 'eip712';
+  }
+
+  switch (args.authKind) {
+    case 'public':
+      return 'none';
+    case 'authedOrPublic':
+      return 'siwe-optional';
+    case 'protected':
+      return 'siwe-required';
+    default:
+      return 'unknown';
+  }
 }
 
 export function sameRoute(

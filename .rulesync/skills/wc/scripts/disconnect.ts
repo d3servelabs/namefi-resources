@@ -25,9 +25,7 @@ async function main() {
     process.exit(0);
   }
 
-  console.log(
-    `Disconnecting session for ${session.address} (${session.peerName})...`,
-  );
+  console.log(`Disconnecting session for ${session.address} (${session.peerName})...`);
 
   // Initialize SignClient with persistent storage
   const signClient = await createSignClient();
@@ -43,10 +41,7 @@ async function main() {
     });
   } catch (error) {
     // Session might already be expired or invalid, continue with cleanup
-    console.warn(
-      'Warning: Failed to disconnect session on WalletConnect side:',
-      error instanceof Error ? error.message : error,
-    );
+    console.warn('Warning: Failed to disconnect session on WalletConnect side:', error instanceof Error ? error.message : error);
   }
 
   // Clear local session file and WalletConnect storage

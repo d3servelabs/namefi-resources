@@ -1,15 +1,8 @@
 #!/usr/bin/env bun
-import {
-  createWalletClient,
-  custom,
-  toHex,
-  type Address,
-  type Chain,
-} from 'viem';
+import { createWalletClient, custom, toHex, type Address, type Chain } from 'viem';
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 import { loadSession } from './lib/session-store';
 import { createSignClient } from './lib/create-sign-client';
-import type { SignClient } from '@walletconnect/sign-client';
 
 const CHAIN_BY_ID: Record<number, Chain> = {
   [base.id]: base,
@@ -50,13 +43,7 @@ function createWalletConnectProvider({
   chain: Chain;
 }) {
   return {
-    request: async ({
-      method,
-      params,
-    }: {
-      method: string;
-      params?: unknown;
-    }) => {
+    request: async ({ method, params }: { method: string; params?: unknown }) => {
       if (method === 'eth_accounts' || method === 'eth_requestAccounts') {
         return [address];
       }
@@ -73,10 +60,7 @@ function createWalletConnectProvider({
             : undefined;
 
         if (typeof chainIdHex === 'string') {
-          const requestedChainId = Number.parseInt(
-            chainIdHex.replace(/^0x/, ''),
-            16,
-          );
+          const requestedChainId = Number.parseInt(chainIdHex.replace(/^0x/, ''), 16);
           if (requestedChainId !== chain.id) {
             throw new Error(
               `Connected to chain ${chain.id}. Reconnect with the target chain to switch.`,
@@ -103,9 +87,7 @@ async function main() {
   // Load session from file
   const session = await loadSession();
   if (!session) {
-    console.error(
-      'No active WalletConnect session. Run connect-wallet.ts first.',
-    );
+    console.error('No active WalletConnect session. Run connect-wallet.ts first.');
     process.exit(1);
   }
 
@@ -129,15 +111,8 @@ async function main() {
   }
 
   // Validate required fields
-  if (
-    !typedData.domain ||
-    !typedData.types ||
-    !typedData.primaryType ||
-    !typedData.message
-  ) {
-    console.error(
-      'Invalid typed data. Required fields: domain, types, primaryType, message',
-    );
+  if (!typedData.domain || !typedData.types || !typedData.primaryType || !typedData.message) {
+    console.error('Invalid typed data. Required fields: domain, types, primaryType, message');
     process.exit(1);
   }
 
@@ -149,9 +124,7 @@ async function main() {
   // Resume session
   const wcSession = signClient.session.get(session.topic);
   if (!wcSession) {
-    console.error(
-      'Session not found. The session may have expired. Run connect-wallet.ts again.',
-    );
+    console.error('Session not found. The session may have expired. Run connect-wallet.ts again.');
     process.exit(1);
   }
 

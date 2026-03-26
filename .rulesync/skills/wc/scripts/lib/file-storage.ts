@@ -1,18 +1,8 @@
 import { existsSync, statSync } from 'node:fs';
-import {
-  readFile,
-  writeFile,
-  mkdir,
-  open,
-  unlink,
-  stat,
-} from 'node:fs/promises';
+import { readFile, writeFile, mkdir, open, unlink, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type {
-  IKeyValueStorage,
-  KeyValueStorageOptions,
-} from '@walletconnect/keyvaluestorage';
+import type { IKeyValueStorage, KeyValueStorageOptions } from '@walletconnect/keyvaluestorage';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -82,8 +72,8 @@ export class FileStorage implements IKeyValueStorage {
       } catch (error: any) {
         if (error.code === 'EEXIST') {
           // Lock file exists, wait and retry
-          const delay = baseDelay * 2 ** Math.min(retries, 5);
-          await new Promise((resolve) => setTimeout(resolve, delay));
+          const delay = baseDelay * Math.pow(2, Math.min(retries, 5));
+          await new Promise(resolve => setTimeout(resolve, delay));
           retries++;
         } else {
           throw error;

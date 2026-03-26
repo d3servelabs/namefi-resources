@@ -1,17 +1,23 @@
 #!/usr/bin/env bun
+import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { randomBytes } from 'node:crypto';
 import { repoRoot } from './lib/constants';
 import { buildEip712Artifacts } from './lib/eip712-request';
+import { buildHttpRequest } from './lib/http-request';
 import {
   findOperation,
   loadEnvironmentIndex,
   selectOperations,
 } from './lib/index-data';
-import type { TypedData } from './lib/types';
+import { ensureSiweToken } from './lib/siwe';
+import type {
+  IndexedOperation,
+  PreparedHttpRequest,
+  TypedData,
+} from './lib/types';
 import {
   getBooleanFlag,
   getStringFlag,
@@ -31,16 +37,40 @@ type WalletSession = {
   createdAt?: number;
 };
 
-type SignResult = {
+type SignTypedDataResult = {
   signature: string;
   address: string;
   primaryType: string;
+};
+
+type SignMessageResult = {
+  signature: string;
+  address: string;
+  message: string;
 };
 
 type RunScriptResult = {
   stdout: string;
   stderr: string;
   exitCode: number;
+};
+
+type ExecutionMode = 'eip712' | 'siwe-required' | 'siwe-optional' | 'none';
+
+type ParsedCliArgs = {
+  env: string;
+  operationId: string;
+  useRawOperations: boolean;
+  dryRun: boolean;
+  preferAuth: boolean;
+  wcScriptsRoot: string;
+  payload: Record<string, unknown>;
+  pathParams: Record<string, unknown>;
+  timestamp: number;
+  nonce: string;
+  signTimeoutMs: number;
+  requestTimeoutMs: number;
+  sessionTimeoutMs: number;
 };
 
 const DEFAULT_SIGN_TIMEOUT_MS = 300_000;
@@ -109,7 +139,6 @@ async function runBunScript(args: {
   if (args.input) {
     child.stdin.write(args.input);
   }
-
   child.stdin.end();
 
   const exitCode = await new Promise<number>(
@@ -162,7 +191,7 @@ async function signTypedData(args: {
   scriptsRoot: string;
   typedData: TypedData;
   timeoutMs: number;
-}): Promise<SignResult> {
+}): Promise<SignTypedDataResult> {
   const result = await runBunScript({
     scriptPath: resolve(args.scriptsRoot, 'sign-typed-data.ts'),
     input: JSON.stringify(args.typedData),
@@ -170,10 +199,30 @@ async function signTypedData(args: {
   });
 
   if (result.exitCode !== 0) {
-    throw new Error(result.stderr || 'WalletConnect signing failed.');
+    throw new Error(
+      result.stderr || 'WalletConnect typed-data signing failed.',
+    );
   }
 
-  return JSON.parse(result.stdout) as SignResult;
+  return JSON.parse(result.stdout) as SignTypedDataResult;
+}
+
+async function signMessage(args: {
+  scriptsRoot: string;
+  message: string;
+  timeoutMs: number;
+}): Promise<SignMessageResult> {
+  const result = await runBunScript({
+    scriptPath: resolve(args.scriptsRoot, 'sign-message.ts'),
+    input: args.message,
+    timeoutMs: args.timeoutMs,
+  });
+
+  if (result.exitCode !== 0) {
+    throw new Error(result.stderr || 'WalletConnect message signing failed.');
+  }
+
+  return JSON.parse(result.stdout) as SignMessageResult;
 }
 
 function parseIntegerFlag(value: string | null, fallbackValue: number): number {
@@ -189,55 +238,84 @@ function parseIntegerFlag(value: string | null, fallbackValue: number): number {
   return parsed;
 }
 
-async function main(): Promise<void> {
-  const args = parseArgs(process.argv.slice(2));
-  const env = requireStringFlag(args, 'env');
-  const operationId = requireStringFlag(args, 'operationId');
-  const useRawOperations = getBooleanFlag(args, 'raw');
-  const dryRun = getBooleanFlag(args, 'dry-run');
-  const wcScriptsRoot = resolveWalletConnectScriptsRoot(
-    getStringFlag(args, 'wc-scripts-root'),
-  );
-  const payload = await readJsonInput(
-    getStringFlag(args, 'payload'),
-    getStringFlag(args, 'payload-file'),
-    'payload',
-  );
-  const pathParams =
-    getStringFlag(args, 'path-params') ||
-    getStringFlag(args, 'path-params-file')
-      ? await readJsonInput(
-          getStringFlag(args, 'path-params'),
-          getStringFlag(args, 'path-params-file'),
-          'path-params',
-        )
-      : {};
-  const timestamp = parseIntegerFlag(
-    getStringFlag(args, 'timestamp'),
-    Math.floor(Date.now() / 1000),
-  );
-  const nonce =
-    getStringFlag(args, 'nonce') ?? `0x${randomBytes(32).toString('hex')}`;
-  const signTimeoutMs = parseIntegerFlag(
-    getStringFlag(args, 'sign-timeout-ms'),
-    DEFAULT_SIGN_TIMEOUT_MS,
-  );
-  const requestTimeoutMs = parseIntegerFlag(
-    getStringFlag(args, 'request-timeout-ms'),
-    DEFAULT_REQUEST_TIMEOUT_MS,
-  );
-  const sessionTimeoutMs = parseIntegerFlag(
-    getStringFlag(args, 'session-timeout-ms'),
-    DEFAULT_SESSION_TIMEOUT_MS,
-  );
+async function parseJsonFlagPair(
+  rawArgs: ReturnType<typeof parseArgs>,
+  flagName: string,
+): Promise<Record<string, unknown>> {
+  const inlineValue = getStringFlag(rawArgs, flagName);
+  const fileValue = getStringFlag(rawArgs, `${flagName}-file`);
+  if (inlineValue || fileValue) {
+    return readJsonInput(inlineValue, fileValue, flagName);
+  }
+  return {};
+}
 
-  const index = await loadEnvironmentIndex(env);
-  const operation = findOperation(selectOperations(index, useRawOperations), {
-    operationId,
-  });
+async function parseCliArgs(): Promise<ParsedCliArgs> {
+  const rawArgs = parseArgs(process.argv.slice(2));
+  const payload = await parseJsonFlagPair(rawArgs, 'payload');
+  const pathParams = await parseJsonFlagPair(rawArgs, 'path-params');
 
-  if (!operation) {
-    throw new Error(`Operation ${operationId} was not found in ${env}.`);
+  return {
+    env: requireStringFlag(rawArgs, 'env'),
+    operationId: requireStringFlag(rawArgs, 'operationId'),
+    useRawOperations: getBooleanFlag(rawArgs, 'raw'),
+    dryRun: getBooleanFlag(rawArgs, 'dry-run'),
+    preferAuth: getBooleanFlag(rawArgs, 'prefer-auth'),
+    wcScriptsRoot: resolveWalletConnectScriptsRoot(
+      getStringFlag(rawArgs, 'wc-scripts-root'),
+    ),
+    payload,
+    pathParams,
+    timestamp: parseIntegerFlag(
+      getStringFlag(rawArgs, 'timestamp'),
+      Math.floor(Date.now() / 1000),
+    ),
+    nonce:
+      getStringFlag(rawArgs, 'nonce') ?? `0x${randomBytes(32).toString('hex')}`,
+    signTimeoutMs: parseIntegerFlag(
+      getStringFlag(rawArgs, 'sign-timeout-ms'),
+      DEFAULT_SIGN_TIMEOUT_MS,
+    ),
+    requestTimeoutMs: parseIntegerFlag(
+      getStringFlag(rawArgs, 'request-timeout-ms'),
+      DEFAULT_REQUEST_TIMEOUT_MS,
+    ),
+    sessionTimeoutMs: parseIntegerFlag(
+      getStringFlag(rawArgs, 'session-timeout-ms'),
+      DEFAULT_SESSION_TIMEOUT_MS,
+    ),
+  };
+}
+
+function determineExecutionMode(
+  operation: IndexedOperation,
+  preferAuth: boolean,
+): ExecutionMode {
+  if (operation.hasEip712) {
+    return 'eip712';
+  }
+  if (operation.authMode === 'siwe-required') {
+    return 'siwe-required';
+  }
+  if (operation.authMode === 'siwe-optional' && preferAuth) {
+    return 'siwe-optional';
+  }
+  if (operation.authMode === 'none' || operation.authMode === 'siwe-optional') {
+    return 'none';
+  }
+  throw new Error(
+    `Operation ${operation.operationId} has unknown auth requirements. Inspect the indexed operation before executing it.`,
+  );
+}
+
+async function ensureWalletSession(
+  executionMode: ExecutionMode,
+  dryRun: boolean,
+  wcScriptsRoot: string,
+  sessionTimeoutMs: number,
+): Promise<WalletSession | null> {
+  if (executionMode === 'none' && !dryRun) {
+    return null;
   }
 
   const session = await getWalletSession({
@@ -245,29 +323,73 @@ async function main(): Promise<void> {
     timeoutMs: sessionTimeoutMs,
   });
 
+  if (executionMode !== 'none' && !session.connected) {
+    throw new Error(
+      'No active WalletConnect session. Connect a wallet with the wc skill first.',
+    );
+  }
+
+  return session;
+}
+
+async function parseJsonResponse(response: Response): Promise<{
+  json: unknown;
+  text: string | null;
+}> {
+  const responseText = await response.text();
+
+  try {
+    return {
+      json: responseText.length > 0 ? JSON.parse(responseText) : null,
+      text: null,
+    };
+  } catch {
+    return {
+      json: null,
+      text: responseText,
+    };
+  }
+}
+
+function formatResponseSummary(
+  response: Response,
+  parsed: { json: unknown; text: string | null },
+): Record<string, unknown> {
+  return {
+    ok: response.ok,
+    status: response.status,
+    statusText: response.statusText,
+    contentType: response.headers.get('content-type'),
+    json: parsed.json,
+    text: parsed.text,
+  };
+}
+
+async function executeEip712Mode(
+  cliArgs: ParsedCliArgs,
+  operation: IndexedOperation,
+  session: WalletSession | null,
+): Promise<void> {
   const artifacts = buildEip712Artifacts({
     operation,
-    payload,
-    pathParams,
-    timestamp,
-    nonce,
+    payload: cliArgs.payload,
+    pathParams: cliArgs.pathParams,
+    timestamp: cliArgs.timestamp,
+    nonce: cliArgs.nonce,
   });
 
-  if (dryRun) {
+  if (cliArgs.dryRun) {
     printJson({
-      env,
+      env: cliArgs.env,
       operationId: operation.operationId,
-      wcScriptsRoot,
+      authKind: operation.authKind,
+      authMode: operation.authMode,
+      executionMode: 'eip712',
+      wcScriptsRoot: cliArgs.wcScriptsRoot,
       session,
       artifacts,
     });
     return;
-  }
-
-  if (!session.connected) {
-    throw new Error(
-      'No active WalletConnect session. Connect a wallet with the wc skill first.',
-    );
   }
 
   if (artifacts.request.missingPathParams.length > 0) {
@@ -277,10 +399,11 @@ async function main(): Promise<void> {
   }
 
   const signed = await signTypedData({
-    scriptsRoot: wcScriptsRoot,
+    scriptsRoot: cliArgs.wcScriptsRoot,
     typedData: artifacts.typedData,
-    timeoutMs: signTimeoutMs,
+    timeoutMs: cliArgs.signTimeoutMs,
   });
+
   const response = await fetch(artifacts.request.url, {
     method: artifacts.request.method,
     headers: {
@@ -289,21 +412,17 @@ async function main(): Promise<void> {
       'x-namefi-signature': signed.signature,
     },
     body: JSON.stringify(artifacts.request.body),
-    signal: AbortSignal.timeout(requestTimeoutMs),
+    signal: AbortSignal.timeout(cliArgs.requestTimeoutMs),
   });
-  const responseText = await response.text();
-
-  let responseJson: unknown = null;
-  try {
-    responseJson = responseText.length > 0 ? JSON.parse(responseText) : null;
-  } catch {
-    responseJson = null;
-  }
+  const parsed = await parseJsonResponse(response);
 
   printJson({
-    env,
+    env: cliArgs.env,
     operationId: operation.operationId,
-    wcScriptsRoot,
+    authKind: operation.authKind,
+    authMode: operation.authMode,
+    executionMode: 'eip712',
+    wcScriptsRoot: cliArgs.wcScriptsRoot,
     session,
     signer: {
       address: signed.address,
@@ -320,19 +439,162 @@ async function main(): Promise<void> {
       },
       body: artifacts.request.body,
     },
-    response: {
-      ok: response.ok,
-      status: response.status,
-      statusText: response.statusText,
-      contentType: response.headers.get('content-type'),
-      json: responseJson,
-      text: responseJson === null ? responseText : null,
-    },
+    response: formatResponseSummary(response, parsed),
   });
 }
 
+async function acquireSiweTokenForRequest(
+  cliArgs: ParsedCliArgs,
+  operations: IndexedOperation[],
+  session: WalletSession,
+  request: PreparedHttpRequest,
+): Promise<string> {
+  const getSiweNonceOperation = findOperation(operations, {
+    operationId: 'getSiweNonce',
+  });
+  const prepareSiweMessageOperation = findOperation(operations, {
+    operationId: 'prepareSiweMessage',
+  });
+  const verifySiweSignatureOperation = findOperation(operations, {
+    operationId: 'verifySiweSignature',
+  });
+
+  if (
+    !getSiweNonceOperation ||
+    !prepareSiweMessageOperation ||
+    !verifySiweSignatureOperation
+  ) {
+    throw new Error(
+      'Missing SIWE helper operations in the local index. Refresh the namefi-api cache first.',
+    );
+  }
+
+  const getAllowedChainsOperation = findOperation(operations, {
+    operationId: 'getAllowedChains',
+  });
+
+  const tokenState = await ensureSiweToken({
+    env: cliArgs.env,
+    session,
+    operations: {
+      getSiweNonce: getSiweNonceOperation,
+      prepareSiweMessage: prepareSiweMessageOperation,
+      verifySiweSignature: verifySiweSignatureOperation,
+      getAllowedChains: getAllowedChainsOperation ?? undefined,
+    },
+    signMessage: async (message) =>
+      signMessage({
+        scriptsRoot: cliArgs.wcScriptsRoot,
+        message,
+        timeoutMs: cliArgs.signTimeoutMs,
+      }),
+    timeoutMs: cliArgs.requestTimeoutMs,
+  });
+
+  request.headers['x-namefi-siwe-token'] = tokenState.token;
+  return tokenState.token;
+}
+
+async function executeHttpMode(
+  cliArgs: ParsedCliArgs,
+  operation: IndexedOperation,
+  executionMode: ExecutionMode,
+  operations: IndexedOperation[],
+  session: WalletSession | null,
+): Promise<void> {
+  const request = buildHttpRequest({
+    operation,
+    payload: cliArgs.payload,
+    pathParams: cliArgs.pathParams,
+  });
+
+  if (request.missingPathParams.length > 0) {
+    throw new Error(
+      `Missing required path params: ${request.missingPathParams.join(', ')}`,
+    );
+  }
+
+  const needsSiwe =
+    executionMode === 'siwe-required' || executionMode === 'siwe-optional';
+
+  if (cliArgs.dryRun) {
+    printJson({
+      env: cliArgs.env,
+      operationId: operation.operationId,
+      authKind: operation.authKind,
+      authMode: operation.authMode,
+      executionMode,
+      wcScriptsRoot: cliArgs.wcScriptsRoot,
+      session,
+      request,
+      siweToken: needsSiwe ? '(would acquire SIWE token at runtime)' : null,
+    });
+    return;
+  }
+
+  if (needsSiwe) {
+    await acquireSiweTokenForRequest(
+      cliArgs,
+      operations,
+      session as WalletSession,
+      request,
+    );
+  }
+
+  const response = await fetch(request.url, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body ? JSON.stringify(request.body) : undefined,
+    signal: AbortSignal.timeout(cliArgs.requestTimeoutMs),
+  });
+  const parsed = await parseJsonResponse(response);
+
+  printJson({
+    env: cliArgs.env,
+    operationId: operation.operationId,
+    authKind: operation.authKind,
+    authMode: operation.authMode,
+    executionMode,
+    wcScriptsRoot: cliArgs.wcScriptsRoot,
+    session,
+    request,
+    response: formatResponseSummary(response, parsed),
+  });
+}
+
+export async function executeRequestCli(): Promise<void> {
+  const cliArgs = await parseCliArgs();
+
+  const index = await loadEnvironmentIndex(cliArgs.env);
+  const operations = selectOperations(index, cliArgs.useRawOperations);
+  const operation = findOperation(operations, {
+    operationId: cliArgs.operationId,
+  });
+
+  if (!operation) {
+    throw new Error(
+      `Operation ${cliArgs.operationId} was not found in ${cliArgs.env}.`,
+    );
+  }
+
+  const executionMode = determineExecutionMode(operation, cliArgs.preferAuth);
+  const session = await ensureWalletSession(
+    executionMode,
+    cliArgs.dryRun,
+    cliArgs.wcScriptsRoot,
+    cliArgs.sessionTimeoutMs,
+  );
+
+  if (executionMode === 'eip712') {
+    await executeEip712Mode(cliArgs, operation, session);
+    return;
+  }
+
+  await executeHttpMode(cliArgs, operation, executionMode, operations, session);
+}
+
 if (isMainModule(import.meta)) {
-  main().catch((error) => {
+  executeRequestCli().catch((error) => {
     writeError(error);
     process.exit(1);
   });

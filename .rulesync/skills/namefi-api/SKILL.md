@@ -23,8 +23,11 @@ Core workflow:
    - `bun .opencode/skill/namefi-api/scripts/get-primary-type.ts --env dev --operationId parkDomain`
 5. Generate the request/signing JSON you need locally:
    `bun .opencode/skill/namefi-api/scripts/generate-signature-json.ts --env dev --operationId parkDomain --payload '{"normalizedDomainName":"march1104.gl","overrideExistingRecords":true}' --format all`
-6. Execute an EIP-712 write end-to-end after the wallet is connected:
-   `bun .opencode/skill/namefi-api/scripts/execute-eip712-request.ts --env dev --operationId parkDomain --payload '{"normalizedDomainName":"march1104.gl","overrideExistingRecords":true}'`
+6. Execute any operation after the wallet is connected:
+   `bun .opencode/skill/namefi-api/scripts/execute-request.ts --env dev --operationId parkDomain --payload '{"normalizedDomainName":"march1104.gl","overrideExistingRecords":true}'`
+7. For trial registration flows:
+   - `bun .opencode/skill/namefi-api/scripts/list-trial-domains.ts --env dev`
+   - `bun .opencode/skill/namefi-api/scripts/check-trial-domain.ts --env dev --domain hello.0x.city`
 
 Important behavior:
 
@@ -33,9 +36,13 @@ Important behavior:
 - `dev` is the freshest schema source.
 - `prod` uses its own `requestBaseUrl`, but the built index safely backfills stale or missing
   metadata from `dev` and `packages/namefi-client/contract.json`.
+- Contract-only routes are still indexed when the published OpenAPI is stale. This is how the
+  skill finds newer trial registration and SIWE routes before they appear in the published docs.
 - Route-sensitive fallback is only applied when the published route still matches. If prod
   publishes a different route, helpers keep prod routing and surface a warning instead of
   guessing.
+- The local index also classifies each operation as `public`, `authedOrPublic`, or `protected`
+  from backend router source so the executor can decide between no auth, EIP-712, and SIWE.
 
 Generated files:
 
@@ -55,17 +62,25 @@ Helper script summary:
 - `scripts/get-primary-type.ts` prints the resolved primary type.
 - `scripts/generate-signature-json.ts` builds the envelope, typed-data JSON, and HTTP request
   template used for signing flows.
-- `scripts/execute-eip712-request.ts` signs with the connected `wc` wallet helper and sends the
-  HTTP request in one step. Use `--dry-run` to inspect the generated session/request payload
-  before waiting for wallet approval.
+- `scripts/execute-request.ts` executes any indexed operation. It automatically:
+  - signs EIP-712 operations
+  - bootstraps and caches a SIWE token for protected non-EIP712 reads
+  - uses `--prefer-auth` to authenticate `authedOrPublic` reads with SIWE when desired
+- `scripts/execute-eip712-request.ts` is a compatibility alias for `scripts/execute-request.ts`.
+- `scripts/list-trial-domains.ts` fetches the current trial domain offers.
+- `scripts/check-trial-domain.ts` checks whether a candidate domain matches any current trial offer.
 
 When you need to sign a write:
 
-1. Use this skill to find the operation and generate the typed-data JSON.
-2. Use `namefi-eip712-auth` or `wc` to sign it.
-3. Send the request with the generated envelope body and the signature headers.
+1. Use this skill to find the operation.
+2. Use `scripts/execute-request.ts` for the simplest path.
+3. Add `--prefer-auth` for `authedOrPublic` reads when you want them to run under a cached SIWE session.
 
-Or use `scripts/execute-eip712-request.ts` to do steps 1-3 in one command once the wallet is
-already connected.
+Authentication behavior:
+
+- Operations with a primary EIP-712 type use EIP-712 signing.
+- `protected` operations without EIP-712 use a cached SIWE token.
+- `authedOrPublic` operations stay anonymous by default, but can use SIWE with `--prefer-auth`.
+- SIWE tokens are cached locally in `references/generated/siwe-tokens.json` and reused until close to expiry.
 
 For authenticated reads that use API keys, use `x-api-key: $NAMEFI_CLIENT_API_KEY`.

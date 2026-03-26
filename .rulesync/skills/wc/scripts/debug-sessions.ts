@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 import { SignClient } from '@walletconnect/sign-client';
-import { requireEnv } from './lib/require-env';
+import { requireEnv } from './lib/require-env'
 
-const PROJECT_ID = requireEnv('WALLETCONNECT_PROJECT_ID');
+const PROJECT_ID = requireEnv('WALLETCONNECT_PROJECT_ID')
 
 async function main() {
   console.log('Initializing SignClient...');

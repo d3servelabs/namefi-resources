@@ -3,18 +3,23 @@ import { indexPath } from './lib/constants';
 import { writeJsonFile } from './lib/json';
 import { loadManifest } from './lib/manifest';
 import { loadContractOperations } from './lib/contract';
+import { loadSourceAuthClassifications } from './lib/source-auth';
 import {
   loadCachedOpenApiDocument,
   normalizeOpenApiOperations,
 } from './lib/openapi';
 import type {
+  AuthKind,
   ContractOperation,
   EnvironmentIndex,
   IndexedOperation,
   Manifest,
+  ManifestEntry,
+  SourceAuthClassification,
 } from './lib/types';
 import {
   deepClone,
+  deriveAuthMode,
   isMainModule,
   payloadTypeFromPrimaryType,
   printJson,
@@ -27,6 +32,72 @@ function mapByOperationId<T extends { operationId: string }>(
   values: T[],
 ): Map<string, T> {
   return new Map(values.map((value) => [value.operationId, value]));
+}
+
+function applyAuthClassification(
+  operation: IndexedOperation,
+  classification: SourceAuthClassification | null,
+): void {
+  const authKind: AuthKind = classification?.authKind ?? 'unknown';
+  operation.authKind = authKind;
+  operation.authSource = classification?.sourceFile ?? null;
+  operation.authMode = deriveAuthMode({
+    authKind,
+    hasEip712: operation.hasEip712,
+  });
+}
+
+function contractOperationToIndexedOperation(args: {
+  env: string;
+  config: ManifestEntry;
+  contractOperation: ContractOperation;
+  authClassification: SourceAuthClassification | null;
+}): IndexedOperation {
+  const hasEip712 =
+    args.contractOperation.acceptedPrimaryTypes.length > 0 ||
+    args.contractOperation.eip712Types !== null;
+  const operation: IndexedOperation = {
+    env: args.env,
+    requestBaseUrl: args.config.requestBaseUrl,
+    openapiUrl: args.config.openapiUrl,
+    method: args.contractOperation.method,
+    path: args.contractOperation.path,
+    operationId: args.contractOperation.operationId,
+    summary: args.contractOperation.summary,
+    description: args.contractOperation.description,
+    tags: args.contractOperation.tags,
+    badgeNames: hasEip712 ? ['EIP712'] : [],
+    parameters: [],
+    requestBody: null,
+    responses: [],
+    hasEip712,
+    acceptedPrimaryTypes: [...args.contractOperation.acceptedPrimaryTypes],
+    primaryType: args.contractOperation.primaryType,
+    payloadType: args.contractOperation.payloadType,
+    eip712Types: args.contractOperation.eip712Types
+      ? deepClone(args.contractOperation.eip712Types)
+      : null,
+    authKind: 'unknown',
+    authMode: 'unknown',
+    authSource: null,
+    publishedInEnvOpenapi: false,
+    routeSource: 'contract',
+    metadataSource: {
+      summary: args.contractOperation.summary ? 'contract' : null,
+      description: args.contractOperation.description ? 'contract' : null,
+      parameters: null,
+      requestBody: null,
+      responses: null,
+      eip712: hasEip712 ? 'contract' : null,
+    },
+    fallbacksApplied: ['added-from-contract'],
+    warnings: [
+      `Not published in ${args.env} OpenAPI. Added from contract metadata.`,
+    ],
+  };
+
+  applyAuthClassification(operation, args.authClassification);
+  return operation;
 }
 
 function fillFromFallback(
@@ -158,6 +229,7 @@ function resolveOperation(
   rawOperation: IndexedOperation,
   fallbackOperation: IndexedOperation | null,
   contractOperation: ContractOperation | null,
+  authClassification: SourceAuthClassification | null,
 ): IndexedOperation {
   const resolved = deepClone(rawOperation);
   const fallbackLabel = fallbackOperation
@@ -216,6 +288,7 @@ function resolveOperation(
     resolved.eip712Types !== null;
   resolved.primaryType = resolved.acceptedPrimaryTypes[0] ?? null;
   resolved.payloadType = payloadTypeFromPrimaryType(resolved.primaryType);
+  applyAuthClassification(resolved, authClassification);
 
   return resolved;
 }
@@ -229,12 +302,81 @@ function sortOperations(values: IndexedOperation[]): IndexedOperation[] {
   );
 }
 
+function addFallbackEnvOperations(
+  resolvedOperations: IndexedOperation[],
+  rawOperationsById: Map<string, IndexedOperation>,
+  fallbackOperations: IndexedOperation[],
+  config: ManifestEntry,
+  env: string,
+  authByOperationId: Map<string, SourceAuthClassification>,
+): void {
+  for (const fallbackOperation of fallbackOperations) {
+    if (rawOperationsById.has(fallbackOperation.operationId)) {
+      continue;
+    }
+
+    const clonedOperation = deepClone(fallbackOperation);
+    clonedOperation.env = env;
+    clonedOperation.requestBaseUrl = config.requestBaseUrl;
+    clonedOperation.openapiUrl = config.openapiUrl;
+    clonedOperation.publishedInEnvOpenapi = false;
+    clonedOperation.routeSource = 'fallback-env-openapi';
+    rewriteFallbackMetadataSources(
+      clonedOperation,
+      `${config.fallbackEnv}-openapi`,
+    );
+    clonedOperation.fallbacksApplied = uniqueStrings([
+      ...clonedOperation.fallbacksApplied,
+      `added-from-${config.fallbackEnv}-openapi`,
+    ]);
+    clonedOperation.warnings = uniqueStrings([
+      ...clonedOperation.warnings,
+      `Not published in ${env} OpenAPI. Added from ${config.fallbackEnv} fallback metadata.`,
+    ]);
+    applyAuthClassification(
+      clonedOperation,
+      authByOperationId.get(clonedOperation.operationId) ?? null,
+    );
+    resolvedOperations.push(clonedOperation);
+  }
+}
+
+function addContractOnlyOperations(
+  resolvedOperations: IndexedOperation[],
+  contractOperationsById: Map<string, ContractOperation>,
+  config: ManifestEntry,
+  env: string,
+  authByOperationId: Map<string, SourceAuthClassification>,
+): void {
+  for (const contractOperation of contractOperationsById.values()) {
+    if (
+      resolvedOperations.some(
+        (resolvedOperation) =>
+          resolvedOperation.operationId === contractOperation.operationId,
+      )
+    ) {
+      continue;
+    }
+
+    resolvedOperations.push(
+      contractOperationToIndexedOperation({
+        env,
+        config,
+        contractOperation,
+        authClassification:
+          authByOperationId.get(contractOperation.operationId) ?? null,
+      }),
+    );
+  }
+}
+
 function buildResolvedOperations(args: {
   env: string;
   manifest: Manifest;
   rawOperations: IndexedOperation[];
   rawOperationsByEnv: Map<string, IndexedOperation[]>;
   contractOperationsById: Map<string, ContractOperation>;
+  authByOperationId: Map<string, SourceAuthClassification>;
 }): IndexedOperation[] {
   const config = args.manifest[args.env];
   const fallbackOperations = config.fallbackEnv
@@ -251,35 +393,29 @@ function buildResolvedOperations(args: {
       config.useContractFallback !== false
         ? (args.contractOperationsById.get(rawOperation.operationId) ?? null)
         : null,
+      args.authByOperationId.get(rawOperation.operationId) ?? null,
     ),
   );
 
   if (config.fallbackEnv) {
-    for (const fallbackOperation of fallbackOperations) {
-      if (rawOperationsById.has(fallbackOperation.operationId)) {
-        continue;
-      }
+    addFallbackEnvOperations(
+      resolvedOperations,
+      rawOperationsById,
+      fallbackOperations,
+      config,
+      args.env,
+      args.authByOperationId,
+    );
+  }
 
-      const clonedOperation = deepClone(fallbackOperation);
-      clonedOperation.env = args.env;
-      clonedOperation.requestBaseUrl = config.requestBaseUrl;
-      clonedOperation.openapiUrl = config.openapiUrl;
-      clonedOperation.publishedInEnvOpenapi = false;
-      clonedOperation.routeSource = 'fallback-env-openapi';
-      rewriteFallbackMetadataSources(
-        clonedOperation,
-        `${config.fallbackEnv}-openapi`,
-      );
-      clonedOperation.fallbacksApplied = uniqueStrings([
-        ...clonedOperation.fallbacksApplied,
-        `added-from-${config.fallbackEnv}-openapi`,
-      ]);
-      clonedOperation.warnings = uniqueStrings([
-        ...clonedOperation.warnings,
-        `Not published in ${args.env} OpenAPI. Added from ${config.fallbackEnv} fallback metadata.`,
-      ]);
-      resolvedOperations.push(clonedOperation);
-    }
+  if (config.useContractFallback !== false) {
+    addContractOnlyOperations(
+      resolvedOperations,
+      args.contractOperationsById,
+      config,
+      args.env,
+      args.authByOperationId,
+    );
   }
 
   return sortOperations(resolvedOperations);
@@ -340,6 +476,7 @@ export async function buildOperationIndexes(): Promise<void> {
   const manifest = await loadManifest();
   const contractOperations = await loadContractOperations();
   const contractOperationsById = mapByOperationId(contractOperations);
+  const authByOperationId = await loadSourceAuthClassifications();
   const rawOperationsByEnv = new Map<string, IndexedOperation[]>();
 
   for (const [env, config] of Object.entries(manifest)) {
@@ -360,6 +497,7 @@ export async function buildOperationIndexes(): Promise<void> {
       rawOperations,
       rawOperationsByEnv,
       contractOperationsById,
+      authByOperationId,
     });
     const index: EnvironmentIndex = {
       env,

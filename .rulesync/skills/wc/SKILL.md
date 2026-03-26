@@ -18,7 +18,7 @@ Standalone WalletConnect session management without MCP configuration. This skil
 
 1. **Install dependencies:**
    ```bash
-   cd .<agent>/skills/wc
+   cd .claude/skills/wc
    bun install
    ```
 
@@ -249,7 +249,7 @@ This skill works seamlessly with the `namefi-eip712-auth` skill for authenticate
 
 1. **Connect wallet:**
    ```bash
-   cd .<agent>/skills/wc
+   cd .claude/skills/wc
    bun run scripts/connect-wallet.ts
    ```
 

@@ -1,8 +1,8 @@
 import { SignClient } from '@walletconnect/sign-client';
 import { FileStorage } from './file-storage';
-import { requireEnv } from './require-env';
+import { requireEnv } from './require-env'
 
-const PROJECT_ID = requireEnv('WALLETCONNECT_PROJECT_ID');
+const PROJECT_ID = requireEnv('WALLETCONNECT_PROJECT_ID')
 
 /**
  * Create a SignClient instance with persistent file-based storage

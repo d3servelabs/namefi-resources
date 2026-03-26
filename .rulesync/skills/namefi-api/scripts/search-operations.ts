@@ -106,6 +106,8 @@ async function main(): Promise<void> {
       path: operation.path,
       summary: operation.summary,
       tags: operation.tags,
+      authKind: operation.authKind,
+      authMode: operation.authMode,
       primaryType: operation.primaryType,
       publishedInEnvOpenapi: operation.publishedInEnvOpenapi,
       routeSource: operation.routeSource,

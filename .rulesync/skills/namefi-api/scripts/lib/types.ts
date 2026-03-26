@@ -53,6 +53,15 @@ export type RequestBodySummary = {
   content: MediaTypeSummary[];
 };
 
+export type AuthKind = 'public' | 'authedOrPublic' | 'protected' | 'unknown';
+
+export type AuthMode =
+  | 'none'
+  | 'eip712'
+  | 'siwe-optional'
+  | 'siwe-required'
+  | 'unknown';
+
 export type ResponseSummary = {
   status: string;
   description: string | null;
@@ -85,7 +94,7 @@ export type PreparedHttpRequest = {
   url: string;
   headers: Record<string, string>;
   missingPathParams: string[];
-  body: Eip712Envelope;
+  body: unknown;
 };
 
 export type PreparedEip712Artifacts = {
@@ -113,6 +122,9 @@ export type IndexedOperation = {
   primaryType: string | null;
   payloadType: string | null;
   eip712Types: Record<string, Eip712Field[]> | null;
+  authKind: AuthKind;
+  authMode: AuthMode;
+  authSource: string | null;
   publishedInEnvOpenapi: boolean;
   routeSource: 'openapi' | 'fallback-env-openapi' | 'contract';
   metadataSource: {
@@ -151,6 +163,12 @@ export type ContractOperation = {
   payloadType: string | null;
   eip712Types: Record<string, Eip712Field[]> | null;
   contractPath: string[];
+};
+
+export type SourceAuthClassification = {
+  operationId: string;
+  authKind: Exclude<AuthKind, 'unknown'>;
+  sourceFile: string;
 };
 
 export type ParsedArgs = {

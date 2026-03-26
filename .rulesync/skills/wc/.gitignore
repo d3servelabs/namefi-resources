@@ -8,7 +8,3 @@ node_modules/
 
 # Bun
 bun.lockb
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-pnpm-lock.yml

@@ -2,9 +2,9 @@
   "env": "dev",
   "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
   "requestBaseUrl": "https://api.namefi.dev/v-next",
-  "generatedAt": "2026-03-12T18:05:58.365Z",
-  "rawOperationCount": 22,
-  "resolvedOperationCount": 22,
+  "generatedAt": "2026-03-13T12:05:42.955Z",
+  "rawOperationCount": 28,
+  "resolvedOperationCount": 28,
   "rawOperations": [
     {
       "env": "dev",
@@ -329,6 +329,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -673,6 +676,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -1031,6 +1037,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -1348,6 +1357,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -1699,6 +1711,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -2043,6 +2058,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -2052,6 +2070,295 @@
         "requestBody": "openapi",
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/siwe/allowed-chains",
+      "operationId": "getAllowedChains",
+      "summary": "Get allowed chains for SIWE",
+      "description": "Retrieve the list of blockchain networks that are allowed for SIWE authentication.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": "array",
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": "number",
+                "itemsRef": null,
+                "variants": []
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -2336,6 +2643,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -2703,6 +3013,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -2712,6 +3025,294 @@
         "requestBody": null,
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/trial/domains/available",
+      "operationId": "getDomainsAvailableForTrial",
+      "summary": "Get Domains Available for Trial",
+      "description": "Retrieve a list of domains or parent domains(ie; their subdomains are available for trial)",
+      "tags": [
+        "orders"
+      ],
+      "badgeNames": [],
+      "parameters": [],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": "array",
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": "object",
+                "itemsRef": null,
+                "variants": []
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -3016,6 +3617,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -3301,6 +3905,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -3604,6 +4211,319 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/siwe/nonce",
+      "operationId": "getSiweNonce",
+      "summary": "Get a SIWE nonce",
+      "description": "Generate and store a replay-protected nonce for a wallet address before signing a SIWE message.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [
+        {
+          "name": "signerAddress",
+          "in": "query",
+          "required": true,
+          "description": null,
+          "schema": {
+            "type": "string",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -3970,6 +4890,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -4255,6 +5178,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -4541,6 +5467,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -4844,6 +5773,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -5188,6 +6120,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -5197,6 +6132,350 @@
         "requestBody": "openapi",
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/siwe/message",
+      "operationId": "prepareSiweMessage",
+      "summary": "Prepare a SIWE message",
+      "description": "Verify that a previously issued nonce still exists and return the canonical SIWE message payload to sign.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [
+        {
+          "name": "chainId",
+          "in": "query",
+          "required": false,
+          "description": null,
+          "schema": {
+            "type": "integer",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        },
+        {
+          "name": "nonce",
+          "in": "query",
+          "required": true,
+          "description": null,
+          "schema": {
+            "type": "string",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        },
+        {
+          "name": "signerAddress",
+          "in": "query",
+          "required": true,
+          "description": null,
+          "schema": {
+            "type": "string",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -5581,6 +6860,362 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": "openapi",
+        "responses": "openapi",
+        "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "POST",
+      "path": "/orders/register-domain-trial",
+      "operationId": "registerDomainForTrial",
+      "summary": "Instant Register domain for trial",
+      "description": "Purchase a single domain instantly for trial. Validates domain availability and creates the order, the domain is only registered for a couple of days before it expires or renewed if you please ",
+      "tags": [
+        "orders"
+      ],
+      "badgeNames": [
+        "EIP712"
+      ],
+      "parameters": [],
+      "requestBody": {
+        "required": true,
+        "description": null,
+        "content": [
+          {
+            "contentType": "application/json",
+            "schema": {
+              "type": null,
+              "ref": null,
+              "format": null,
+              "enumValues": [],
+              "properties": [],
+              "requiredProperties": [],
+              "itemsType": null,
+              "itemsRef": null,
+              "variants": [
+                "object",
+                "object"
+              ]
+            }
+          }
+        ]
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": "object",
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [
+                  "id",
+                  "userId",
+                  "amountInUSDCents",
+                  "nftWalletAddress",
+                  "nftChainId",
+                  "items"
+                ],
+                "requiredProperties": [
+                  "id",
+                  "userId",
+                  "amountInUSDCents",
+                  "nftWalletAddress",
+                  "nftChainId",
+                  "items"
+                ],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": []
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": true,
+      "acceptedPrimaryTypes": [
+        "RegisterTrialDomainEnvelope"
+      ],
+      "primaryType": "RegisterTrialDomainEnvelope",
+      "payloadType": "RegisterTrialDomain",
+      "eip712Types": {
+        "RegisterTrialDomain": [
+          {
+            "name": "normalizedDomainName",
+            "type": "string"
+          }
+        ],
+        "RegisterTrialDomainEnvelope": [
+          {
+            "name": "payloadType",
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "type": "RegisterTrialDomain"
+          },
+          {
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "name": "nonce",
+            "type": "string"
+          }
+        ]
+      },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -5916,6 +7551,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -6241,6 +7879,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -6557,6 +8198,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -6905,6 +8549,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -7260,6 +8907,9 @@
           }
         ]
       },
+      "authKind": "unknown",
+      "authMode": "eip712",
+      "authSource": null,
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -7269,6 +8919,325 @@
         "requestBody": "openapi",
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "POST",
+      "path": "/siwe/verify",
+      "operationId": "verifySiweSignature",
+      "summary": "Verify a SIWE signature",
+      "description": "Verify a signed SIWE message, consume its nonce, and return a session token plus stored session details.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [],
+      "requestBody": {
+        "required": true,
+        "description": null,
+        "content": [
+          {
+            "contentType": "application/json",
+            "schema": {
+              "type": "object",
+              "ref": null,
+              "format": null,
+              "enumValues": [],
+              "properties": [
+                "signature",
+                "message",
+                "address"
+              ],
+              "requiredProperties": [
+                "signature",
+                "message",
+                "address"
+              ],
+              "itemsType": null,
+              "itemsRef": null,
+              "variants": []
+            }
+          }
+        ]
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "unknown",
+      "authMode": "unknown",
+      "authSource": null,
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": "openapi",
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -7598,6 +9567,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -7942,6 +9914,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -8300,6 +10275,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -8617,6 +10595,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "authedOrPublic",
+      "authMode": "siwe-optional",
+      "authSource": "apps/backend/src/trpc/routers/searchRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -8968,6 +10949,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -9312,6 +11296,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -9321,6 +11308,295 @@
         "requestBody": "openapi",
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/siwe/allowed-chains",
+      "operationId": "getAllowedChains",
+      "summary": "Get allowed chains for SIWE",
+      "description": "Retrieve the list of blockchain networks that are allowed for SIWE authentication.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": "array",
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": "number",
+                "itemsRef": null,
+                "variants": []
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "public",
+      "authMode": "none",
+      "authSource": "apps/backend/src/trpc/routers/siwe.orpc.ts",
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -9605,6 +11881,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/balanceRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -9972,6 +12251,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "public",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -9981,6 +12263,294 @@
         "requestBody": null,
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/trial/domains/available",
+      "operationId": "getDomainsAvailableForTrial",
+      "summary": "Get Domains Available for Trial",
+      "description": "Retrieve a list of domains or parent domains(ie; their subdomains are available for trial)",
+      "tags": [
+        "orders"
+      ],
+      "badgeNames": [],
+      "parameters": [],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": "array",
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": "object",
+                "itemsRef": null,
+                "variants": []
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "authedOrPublic",
+      "authMode": "siwe-optional",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -10285,6 +12855,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -10570,6 +13143,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -10873,6 +13449,319 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/siwe/nonce",
+      "operationId": "getSiweNonce",
+      "summary": "Get a SIWE nonce",
+      "description": "Generate and store a replay-protected nonce for a wallet address before signing a SIWE message.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [
+        {
+          "name": "signerAddress",
+          "in": "query",
+          "required": true,
+          "description": null,
+          "schema": {
+            "type": "string",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "public",
+      "authMode": "none",
+      "authSource": "apps/backend/src/trpc/routers/siwe.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -11239,6 +14128,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "public",
+      "authMode": "none",
+      "authSource": "apps/backend/src/trpc/routers/searchRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -11524,6 +14416,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/userDataRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -11810,6 +14705,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/userDataRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -12113,6 +15011,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "public",
+      "authMode": "none",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -12457,6 +15358,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -12466,6 +15370,350 @@
         "requestBody": "openapi",
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "GET",
+      "path": "/siwe/message",
+      "operationId": "prepareSiweMessage",
+      "summary": "Prepare a SIWE message",
+      "description": "Verify that a previously issued nonce still exists and return the canonical SIWE message payload to sign.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [
+        {
+          "name": "chainId",
+          "in": "query",
+          "required": false,
+          "description": null,
+          "schema": {
+            "type": "integer",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        },
+        {
+          "name": "nonce",
+          "in": "query",
+          "required": true,
+          "description": null,
+          "schema": {
+            "type": "string",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        },
+        {
+          "name": "signerAddress",
+          "in": "query",
+          "required": true,
+          "description": null,
+          "schema": {
+            "type": "string",
+            "ref": null,
+            "format": null,
+            "enumValues": [],
+            "properties": [],
+            "requiredProperties": [],
+            "itemsType": null,
+            "itemsRef": null,
+            "variants": []
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "public",
+      "authMode": "none",
+      "authSource": "apps/backend/src/trpc/routers/siwe.orpc.ts",
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": null,
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []
@@ -12850,6 +16098,362 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": "openapi",
+        "responses": "openapi",
+        "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "POST",
+      "path": "/orders/register-domain-trial",
+      "operationId": "registerDomainForTrial",
+      "summary": "Instant Register domain for trial",
+      "description": "Purchase a single domain instantly for trial. Validates domain availability and creates the order, the domain is only registered for a couple of days before it expires or renewed if you please ",
+      "tags": [
+        "orders"
+      ],
+      "badgeNames": [
+        "EIP712"
+      ],
+      "parameters": [],
+      "requestBody": {
+        "required": true,
+        "description": null,
+        "content": [
+          {
+            "contentType": "application/json",
+            "schema": {
+              "type": null,
+              "ref": null,
+              "format": null,
+              "enumValues": [],
+              "properties": [],
+              "requiredProperties": [],
+              "itemsType": null,
+              "itemsRef": null,
+              "variants": [
+                "object",
+                "object"
+              ]
+            }
+          }
+        ]
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": "object",
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [
+                  "id",
+                  "userId",
+                  "amountInUSDCents",
+                  "nftWalletAddress",
+                  "nftChainId",
+                  "items"
+                ],
+                "requiredProperties": [
+                  "id",
+                  "userId",
+                  "amountInUSDCents",
+                  "nftWalletAddress",
+                  "nftChainId",
+                  "items"
+                ],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": []
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": true,
+      "acceptedPrimaryTypes": [
+        "RegisterTrialDomainEnvelope"
+      ],
+      "primaryType": "RegisterTrialDomainEnvelope",
+      "payloadType": "RegisterTrialDomain",
+      "eip712Types": {
+        "RegisterTrialDomain": [
+          {
+            "name": "normalizedDomainName",
+            "type": "string"
+          }
+        ],
+        "RegisterTrialDomainEnvelope": [
+          {
+            "name": "payloadType",
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "type": "RegisterTrialDomain"
+          },
+          {
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "name": "nonce",
+            "type": "string"
+          }
+        ]
+      },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -13185,6 +16789,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -13510,6 +17117,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/ordersRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -13826,6 +17436,9 @@
       "primaryType": null,
       "payloadType": null,
       "eip712Types": null,
+      "authKind": "protected",
+      "authMode": "siwe-required",
+      "authSource": "apps/backend/src/trpc/routers/userDataRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -14174,6 +17787,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -14529,6 +18145,9 @@
           }
         ]
       },
+      "authKind": "protected",
+      "authMode": "eip712",
+      "authSource": "apps/backend/src/trpc/routers/dnsRecordsRouter.orpc.ts",
       "publishedInEnvOpenapi": true,
       "routeSource": "openapi",
       "metadataSource": {
@@ -14538,6 +18157,325 @@
         "requestBody": "openapi",
         "responses": "openapi",
         "eip712": "openapi"
+      },
+      "fallbacksApplied": [],
+      "warnings": []
+    },
+    {
+      "env": "dev",
+      "requestBaseUrl": "https://api.namefi.dev/v-next",
+      "openapiUrl": "https://api.namefi.dev/v-next/openapi/doc.json",
+      "method": "POST",
+      "path": "/siwe/verify",
+      "operationId": "verifySiweSignature",
+      "summary": "Verify a SIWE signature",
+      "description": "Verify a signed SIWE message, consume its nonce, and return a session token plus stored session details.",
+      "tags": [
+        "auth",
+        "siwe"
+      ],
+      "badgeNames": [],
+      "parameters": [],
+      "requestBody": {
+        "required": true,
+        "description": null,
+        "content": [
+          {
+            "contentType": "application/json",
+            "schema": {
+              "type": "object",
+              "ref": null,
+              "format": null,
+              "enumValues": [],
+              "properties": [
+                "signature",
+                "message",
+                "address"
+              ],
+              "requiredProperties": [
+                "signature",
+                "message",
+                "address"
+              ],
+              "itemsType": null,
+              "itemsRef": null,
+              "variants": []
+            }
+          }
+        ]
+      },
+      "responses": [
+        {
+          "status": "200",
+          "description": "OK",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "400",
+          "description": "400",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "description": "401",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "description": "403",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "description": "404",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "406",
+          "description": "406",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "408",
+          "description": "408",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "description": "409",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "412",
+          "description": "412",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "429",
+          "description": "429",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "description": "500",
+          "content": [
+            {
+              "contentType": "application/json",
+              "schema": {
+                "type": null,
+                "ref": null,
+                "format": null,
+                "enumValues": [],
+                "properties": [],
+                "requiredProperties": [],
+                "itemsType": null,
+                "itemsRef": null,
+                "variants": [
+                  "object",
+                  "object"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "hasEip712": false,
+      "acceptedPrimaryTypes": [],
+      "primaryType": null,
+      "payloadType": null,
+      "eip712Types": null,
+      "authKind": "public",
+      "authMode": "none",
+      "authSource": "apps/backend/src/trpc/routers/siwe.orpc.ts",
+      "publishedInEnvOpenapi": true,
+      "routeSource": "openapi",
+      "metadataSource": {
+        "summary": "openapi",
+        "description": "openapi",
+        "parameters": "openapi",
+        "requestBody": "openapi",
+        "responses": "openapi",
+        "eip712": null
       },
       "fallbacksApplied": [],
       "warnings": []

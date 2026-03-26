@@ -68,7 +68,7 @@ FileStorage (custom IKeyValueStorage impl)
 - **Pros**: Already implemented, works
 - **Cons**: Requires MCP configuration
 
-## Recommendation
+##Recommendation
 
 **For MVP / Simplicity**: Use Option 1 (current implementation without custom storage)
 - Remove FileStorage implementation
