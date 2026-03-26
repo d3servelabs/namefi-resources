@@ -37,6 +37,11 @@ import {
   EIP712_SIGNATURE_HEADER_METHOD_ID,
   parseEIP712SignatureEnvelope,
 } from '../lib/auth/methods/eip712/api-key-eip712';
+import {
+  ERC1271_ACCOUNT_HEADER,
+  EIP1271_ACCOUNT_HEADER,
+  EIP7702_ACCOUNT_HEADER,
+} from '#lib/auth/wallet-auth';
 import { X402PaymentRequiredError } from '#lib/x402/helpers';
 
 const base = os.errors({
@@ -142,7 +147,7 @@ const openAPIGenerator = new OpenAPIGenerator({
 });
 
 const openApiDocument = await openAPIGenerator.generate(
-  base.router(orpcRouter as any) as any,
+  base.router(orpcRouter as never) as never,
   {
     info: {
       title: 'Namefi API',
@@ -197,6 +202,103 @@ const openApiDocument = await openAPIGenerator.generate(
 export const providersRouter = new Hono();
 const _logger = createLogger({ context: 'providersRouter' });
 
+const EIP7702_ACCOUNT_HEADER_PARAMETER_REF =
+  '#/components/parameters/Eip7702AccountHeader';
+const EIP1271_ACCOUNT_HEADER_PARAMETER_REF =
+  '#/components/parameters/Eip1271AccountHeader';
+const ERC1271_ACCOUNT_HEADER_PARAMETER_REF =
+  '#/components/parameters/Erc1271AccountHeader';
+
+type OpenApiParameter = {
+  in?: string;
+  name?: string;
+} & Partial<Record<'$ref', string>>;
+
+type OpenApiMethod = {
+  parameters?: OpenApiParameter[];
+  tags?: string[];
+  responses?: unknown;
+  operationId?: string;
+  'x-badges'?: Array<{ name: string; color: string }>;
+};
+
+function isOpenApiMethod(method: unknown): method is OpenApiMethod {
+  return !!method && typeof method === 'object' && !Array.isArray(method);
+}
+
+function withDelegatedAccountHeaders(method: unknown) {
+  if (!isOpenApiMethod(method)) {
+    return method;
+  }
+
+  const parameters = Array.isArray(method.parameters) ? method.parameters : [];
+  const existingRefs = new Set(
+    parameters
+      .map((parameter) => parameter.$ref)
+      .filter((parameterRef): parameterRef is string => !!parameterRef),
+  );
+  const existingHeaderNames = new Set(
+    parameters
+      .filter((parameter) => parameter.in === 'header')
+      .map((parameter) => parameter.name)
+      .filter((parameterName): parameterName is string => !!parameterName),
+  );
+  const nextParameters = [...parameters];
+
+  if (
+    !existingRefs.has(EIP7702_ACCOUNT_HEADER_PARAMETER_REF) &&
+    !existingHeaderNames.has(EIP7702_ACCOUNT_HEADER)
+  ) {
+    nextParameters.push({
+      $ref: EIP7702_ACCOUNT_HEADER_PARAMETER_REF,
+    });
+  }
+
+  if (
+    !existingRefs.has(EIP1271_ACCOUNT_HEADER_PARAMETER_REF) &&
+    !existingHeaderNames.has(EIP1271_ACCOUNT_HEADER)
+  ) {
+    nextParameters.push({
+      $ref: EIP1271_ACCOUNT_HEADER_PARAMETER_REF,
+    });
+  }
+
+  if (
+    !existingRefs.has(ERC1271_ACCOUNT_HEADER_PARAMETER_REF) &&
+    !existingHeaderNames.has(ERC1271_ACCOUNT_HEADER)
+  ) {
+    nextParameters.push({
+      $ref: ERC1271_ACCOUNT_HEADER_PARAMETER_REF,
+    });
+  }
+
+  return {
+    ...method,
+    parameters: nextParameters,
+  };
+}
+
+function mapOpenApiMethod(method: unknown) {
+  if (!isOpenApiMethod(method)) {
+    return method;
+  }
+
+  const nextMethod = withDelegatedAccountHeaders(method);
+  if (!isOpenApiMethod(nextMethod)) {
+    return nextMethod;
+  }
+
+  if (!nextMethod?.tags?.includes('EIP712')) {
+    return nextMethod;
+  }
+
+  return {
+    ...nextMethod,
+    tags: nextMethod.tags?.filter((tag) => tag !== 'EIP712'),
+    'x-badges': [{ name: 'EIP712', color: '#b5f5ce' }],
+  };
+}
+
 providersRouter.get('/openapi/doc', (c, next) => {
   const path = `${c.req.routePath}.json`;
   return Scalar({
@@ -249,7 +351,7 @@ const handler = new OpenAPIHandler(orpcRouter, {
     }),
   ],
   interceptors: [
-    onError((error: any) => {
+    onError((error: unknown) => {
       if (
         error instanceof ORPCError &&
         'cause' in error &&
@@ -391,15 +493,51 @@ providersRouter.get('/eip712/types', (c) => {
 providersRouter.get('/openapi/doc.json', (c) => {
   const overridenOpenApiDocument = {
     ...openApiDocument,
-    paths: mapObjIndexed((path) => {
-      return mapObjIndexed((method: { tags?: string[]; 'x-badges'?: any }) => {
-        if (method?.tags?.includes('EIP712')) {
-          method.tags = method.tags?.filter((tag: any) => tag !== 'EIP712');
-          method['x-badges'] = [{ name: 'EIP712', color: '#b5f5ce' }];
-        }
-        return method;
-      }, path as any);
-    }, openApiDocument.paths as any),
+    components: {
+      ...openApiDocument.components,
+      parameters: {
+        ...(openApiDocument.components?.parameters ?? {}),
+        Eip7702AccountHeader: {
+          name: EIP7702_ACCOUNT_HEADER,
+          in: 'header',
+          required: false,
+          schema: {
+            type: 'string',
+          },
+          description:
+            'Optional delegated account address to authenticate as when the signer is an approved signer. Preferred header name.',
+        },
+        Eip1271AccountHeader: {
+          name: EIP1271_ACCOUNT_HEADER,
+          in: 'header',
+          required: false,
+          schema: {
+            type: 'string',
+          },
+          description:
+            'Legacy alias for x-namefi-erc1271-account. When multiple delegated account headers are present, x-namefi-eip7702-account takes precedence, then x-namefi-erc1271-account.',
+        },
+        Erc1271AccountHeader: {
+          name: ERC1271_ACCOUNT_HEADER,
+          in: 'header',
+          required: false,
+          schema: {
+            type: 'string',
+          },
+          description:
+            'Optional delegated account address to authenticate as when the signer is an approved signer. Preferred ERC-1271 header name.',
+        },
+      },
+    },
+    paths: mapObjIndexed(
+      (path) => {
+        return mapObjIndexed(
+          (method) => mapOpenApiMethod(method),
+          path as Record<string, unknown>,
+        );
+      },
+      openApiDocument.paths as Record<string, Record<string, unknown>>,
+    ),
   };
   return c.json(overridenOpenApiDocument);
 });

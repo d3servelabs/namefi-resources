@@ -7,12 +7,11 @@ import {
 import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
+import { findFirstApprovedSignerAddress } from '#lib/auth/wallet-auth';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
 } from '../utils';
-import { getViemPublicClient } from '#lib/crypto/viem-clients';
-import { parseAbi } from 'viem';
 
 /**
  * Helper function to verify if the authenticated user is the owner of a domain NFT
@@ -74,12 +73,6 @@ export async function IsUserDomainOwner(
   return nftOwnerUser?.id === user.privyUserId;
 }
 
-const abi = parseAbi([
-  'event SignerAdded(address indexed signer)',
-  'event SignerRemoved(address indexed signer)',
-  'function approvedSigners(address signer) view returns (bool)',
-]);
-
 export async function areAnyAddressAnApprovedSigner(
   normalizedDomainName: NamefiNormalizedDomain,
   challengingAddresses: string[],
@@ -99,22 +92,11 @@ export async function areAnyAddressAnApprovedSigner(
       message: 'Domain NFT not found',
     });
   }
-  const nftOwnerAddress = nft.ownerAddress as `0x${string}`;
+  const approvedSignerAddress = await findFirstApprovedSignerAddress({
+    delegatorAddress: nft.ownerAddress,
+    challengingAddresses,
+    chainIds: [nft.chainId],
+  });
 
-  const publicClient = getViemPublicClient(nft.chainId);
-  for (const address of challengingAddresses) {
-    try {
-      const value = await publicClient.readContract({
-        address: nftOwnerAddress,
-        abi,
-        functionName: 'approvedSigners',
-        args: [address as `0x${string}`],
-      });
-      if (value) {
-        return address;
-      }
-    } catch (e) {}
-  }
-
-  return false;
+  return approvedSignerAddress ?? false;
 }

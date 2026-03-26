@@ -12,6 +12,7 @@ import { getRedisClient } from '#lib/redis';
 import { getViemPublicClient } from '#lib/crypto/viem-clients';
 import { getDefaultAllowedNftChainId } from '#lib/env/allowed-chains';
 import { config } from '#lib/env';
+import { resolveAuthenticatedWalletAddress } from '#lib/auth/wallet-auth';
 
 export const SIWE_SIGNATURE_HEADER_METHOD_ID = 'siwe';
 
@@ -37,6 +38,7 @@ export interface SIWESignatureEnvelopeParseResult {
 
 export type SiweSession = {
   address: string;
+  delegatorAddress?: string | null;
   chainId: number;
   createdAt: string;
   maxAgeSeconds: number;
@@ -44,6 +46,11 @@ export type SiweSession = {
 
 const siweSessionSchema = z.object({
   address: z.string().transform((address) => getAddress(address)),
+  delegatorAddress: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((address) => (address ? getAddress(address) : null)),
   chainId: z.number().int(),
   createdAt: z.string().datetime(),
   maxAgeSeconds: z.number().int().positive(),
@@ -99,10 +106,12 @@ export async function verifySiweSignature({
   message,
   signature,
   expectedSignerAddress,
+  delegatorAddress,
 }: {
   message: SiweMessage;
   signature: string;
   expectedSignerAddress?: string;
+  delegatorAddress?: string;
 }): Promise<SIWEVerificationResult> {
   if (!SIGNATURE_REGEX.test(signature)) {
     return {
@@ -143,8 +152,18 @@ export async function verifySiweSignature({
     logger.debug(e);
     return {
       valid: false,
-      error: 'Signature verification failed ' + (e as Error).message,
+      error: `Signature verification failed ${(e as Error).message}`,
     };
+  }
+
+  const authenticatedWalletAddress = await resolveAuthenticatedWalletAddress({
+    signerAddress,
+    delegatorAddress,
+    chainIds: [message.chainId],
+  });
+
+  if (!authenticatedWalletAddress.valid) {
+    return authenticatedWalletAddress;
   }
 
   const nonceValidation = await validateAndConsumeNonce({
@@ -158,6 +177,10 @@ export async function verifySiweSignature({
   const sessionDetails = await createSiweSession({
     ...message,
     address: signerAddress as `0x${string}`,
+    delegatorAddress:
+      authenticatedWalletAddress.walletAddress === signerAddress
+        ? null
+        : authenticatedWalletAddress.walletAddress,
   });
 
   return {
@@ -371,12 +394,15 @@ export async function getSiweDetailsFromToken(
 }
 
 export async function createSiweSession(
-  siweMessage: SiweMessage,
+  siweMessage: SiweMessage & { delegatorAddress?: string | null },
 ): Promise<SiweSessionDetails> {
   const token = randomUUID();
   const createdAt = new Date().toISOString();
   const session = {
     address: getAddress(siweMessage.address),
+    delegatorAddress: siweMessage.delegatorAddress
+      ? getAddress(siweMessage.delegatorAddress)
+      : null,
     chainId: siweMessage.chainId,
     createdAt,
     maxAgeSeconds: SIWE_SESSION_MAX_AGE_SECONDS,

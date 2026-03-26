@@ -8,7 +8,7 @@ import {
   SIWE_DOMAIN,
   verifySiweSignature,
 } from '#lib/auth/methods/siwe/api-key-siwe';
-import { config } from '#lib/env';
+import { getDelegatedAccountHeaderValue } from '#lib/auth/wallet-auth';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 import { logger } from '#lib/logger';
 
@@ -145,8 +145,14 @@ const getSiweNonceOutputSchema = z
 const siweSessionSchema = z
   .object({
     address: checksumWalletAddressSchema.describe(
-      'Wallet address bound to the created SIWE session.',
+      'Wallet address that signed and created the SIWE session.',
     ),
+    delegatorAddress: checksumWalletAddressSchema
+      .nullable()
+      .optional()
+      .describe(
+        'Optional EIP-7702 account the signer was allowed to act as for this session.',
+      ),
     chainId: z
       .number()
       .int()
@@ -277,7 +283,7 @@ export const siweRouter = createTRPCRouter({
     })
     .input(prepareSiweMessageInputSchema)
     .output(prepareSiweMessageOutputSchema)
-    .query(async ({ input, ctx }) => {
+    .query(async ({ input }) => {
       try {
         logger.debug(
           {
@@ -336,7 +342,7 @@ export const siweRouter = createTRPCRouter({
         );
         return {
           valid: false,
-          error: 'Failed to prepare SIWE message: ' + (error as Error).message,
+          error: `Failed to prepare SIWE message: ${(error as Error).message}`,
         };
       }
     }),
@@ -355,11 +361,12 @@ export const siweRouter = createTRPCRouter({
     })
     .input(verifySiweSignatureInputSchema)
     .output(verifySiweSignatureOutputSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       return verifySiweSignature({
         signature: input.signature,
         message: input.message,
         expectedSignerAddress: input.address,
+        delegatorAddress: getDelegatedAccountHeaderValue(ctx.req.header()),
       });
     }),
 

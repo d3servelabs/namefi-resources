@@ -1,17 +1,15 @@
-import {
-  type UserInsert,
-  type UserSelect,
-  db,
-  usersTable,
-} from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
 import { logger } from '#lib/logger';
-import { privyClient } from '#trpc/utils';
+import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import type {
   AuthMethod,
   AuthMethodResult,
   AuthRequestContext,
 } from '../../auth-registry';
+import {
+  getDelegatedAccountHeaderValue,
+  getUserOrCreateByWalletAddress,
+  resolveAuthenticatedWalletAddress,
+} from '#lib/auth/wallet-auth';
 import {
   EIP712_SIGNATURE_HEADER_HEADERS,
   EIP712_SIGNATURE_HEADER_METHOD_ID,
@@ -29,68 +27,6 @@ import {
  * - Optional header: x-namefi-signer
  * - Raw body: { timestamp, nonce, payload }
  */
-async function getUserRowOrCreate(
-  userInsert: UserInsert,
-): Promise<UserSelect | null> {
-  const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.privyUserId, userInsert.privyUserId),
-  });
-  if (user) {
-    return user;
-  }
-  const newUser = await db
-    .insert(usersTable)
-    .values({
-      ...userInsert,
-      lastSignInAt: new Date(),
-      lastAccessedSessionAt: new Date(),
-    })
-    .onConflictDoNothing()
-    .returning();
-
-  if (newUser[0]) {
-    return newUser[0];
-  }
-  return (
-    (await db.query.usersTable.findFirst({
-      where: eq(usersTable.privyUserId, userInsert.privyUserId),
-    })) ?? null
-  );
-}
-async function getPrivyUserOrCreateByWalletAddress(signerAddress: string) {
-  let privyUser = await privyClient.getUserByWalletAddress(
-    signerAddress.toLowerCase(),
-  );
-  if (!privyUser) {
-    privyUser = await privyClient.importUser({
-      linkedAccounts: [
-        {
-          type: 'wallet',
-          chainType: 'ethereum',
-          address: signerAddress.toLowerCase(),
-        },
-      ],
-    });
-    if (!privyUser) {
-      return null;
-    }
-  }
-  return privyUser;
-}
-
-async function getUserOrCreateBySignerAddress(
-  signerAddress: string,
-): Promise<UserSelect | null> {
-  const privyUser = await getPrivyUserOrCreateByWalletAddress(signerAddress);
-  if (!privyUser) {
-    return null;
-  }
-
-  return await getUserRowOrCreate({
-    privyUserId: privyUser.id,
-  });
-}
-
 export function isEIP712SignatureHeaderAuthRequest(
   ctx: AuthRequestContext,
 ): boolean {
@@ -167,6 +103,19 @@ export async function authenticateWithEIP712SignatureHeader(
       };
     }
 
+    const authenticatedWalletAddress = await resolveAuthenticatedWalletAddress({
+      signerAddress: signatureVerification.recoveredAddress,
+      delegatorAddress: getDelegatedAccountHeaderValue(ctx.headers),
+      chainIds: getConfiguredAllowedChainIds(),
+    });
+
+    if (!authenticatedWalletAddress.valid) {
+      return {
+        success: false,
+        error: authenticatedWalletAddress.error,
+      };
+    }
+
     const nonceResult = await consumeEIP712SignatureNonce({
       signerAddress: signatureVerification.recoveredAddress,
       nonce: parsedEnvelope.envelope.nonce,
@@ -179,19 +128,22 @@ export async function authenticateWithEIP712SignatureHeader(
       };
     }
 
-    const user = await getUserOrCreateBySignerAddress(
-      signatureVerification.recoveredAddress,
+    const user = await getUserOrCreateByWalletAddress(
+      authenticatedWalletAddress.walletAddress,
     );
 
     if (!user) {
       logger.warn(
-        { signerAddress: signatureVerification.recoveredAddress },
-        'EIP712 signer wallet is not linked to any user',
+        {
+          signerAddress: signatureVerification.recoveredAddress,
+          authenticatedWalletAddress: authenticatedWalletAddress.walletAddress,
+        },
+        'EIP712 wallet is not linked to any user',
       );
 
       return {
         success: false,
-        error: 'Signer wallet is not linked to a user',
+        error: 'Authenticated wallet is not linked to a user',
       };
     }
 

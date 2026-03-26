@@ -159,6 +159,32 @@ const orderItemSchema = z.object({
 // ============================================================================
 
 export const userDataRouterOrpc = createTRPCRouter({
+  getUser: protectedProcedure
+    .meta({
+      route: {
+        path: '/user',
+        method: 'GET',
+        tags: ['user'],
+        operationId: 'getUser',
+        summary: 'Get user ',
+        description: 'Retrieve the current user.',
+      },
+    })
+    .query(async ({ ctx }) => {
+      const user = await db.query.usersTable.findFirst({
+        where: (usersTable, { eq }) => eq(usersTable.id, ctx.user.id),
+      });
+
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
+
+      return user;
+    }),
+
   /**
    * Get current user's domains
    */

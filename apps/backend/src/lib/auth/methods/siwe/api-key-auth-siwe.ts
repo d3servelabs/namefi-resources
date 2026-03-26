@@ -1,17 +1,10 @@
-import {
-  type UserInsert,
-  type UserSelect,
-  db,
-  usersTable,
-} from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
 import { logger } from '#lib/logger';
-import { privyClient } from '#trpc/utils';
 import type {
   AuthMethod,
   AuthMethodResult,
   AuthRequestContext,
 } from '../../auth-registry';
+import { getUserOrCreateByWalletAddress } from '#lib/auth/wallet-auth';
 import {
   SIWE_SIGNATURE_HEADER_HEADERS,
   SIWE_SIGNATURE_HEADER_METHOD_ID,
@@ -26,68 +19,6 @@ import {
  * - Optional header: x-namefi-signer
  * - Raw body: { timestamp, nonce, payload }
  */
-async function getUserRowOrCreate(
-  userInsert: UserInsert,
-): Promise<UserSelect | null> {
-  const user = await db.query.usersTable.findFirst({
-    where: eq(usersTable.privyUserId, userInsert.privyUserId),
-  });
-  if (user) {
-    return user;
-  }
-  const newUser = await db
-    .insert(usersTable)
-    .values({
-      ...userInsert,
-      lastSignInAt: new Date(),
-      lastAccessedSessionAt: new Date(),
-    })
-    .onConflictDoNothing()
-    .returning();
-
-  if (newUser[0]) {
-    return newUser[0];
-  }
-  return (
-    (await db.query.usersTable.findFirst({
-      where: eq(usersTable.privyUserId, userInsert.privyUserId),
-    })) ?? null
-  );
-}
-async function getPrivyUserOrCreateByWalletAddress(signerAddress: string) {
-  let privyUser = await privyClient.getUserByWalletAddress(
-    signerAddress.toLowerCase(),
-  );
-  if (!privyUser) {
-    privyUser = await privyClient.importUser({
-      linkedAccounts: [
-        {
-          type: 'wallet',
-          chainType: 'ethereum',
-          address: signerAddress.toLowerCase(),
-        },
-      ],
-    });
-    if (!privyUser) {
-      return null;
-    }
-  }
-  return privyUser;
-}
-
-async function getUserOrCreateBySignerAddress(
-  signerAddress: string,
-): Promise<UserSelect | null> {
-  const privyUser = await getPrivyUserOrCreateByWalletAddress(signerAddress);
-  if (!privyUser) {
-    return null;
-  }
-
-  return await getUserRowOrCreate({
-    privyUserId: privyUser.id,
-  });
-}
-
 export function isSiweTokenAuthRequest(ctx: AuthRequestContext): boolean {
   const siweToken = ctx.headers[SIWE_SIGNATURE_HEADER_HEADERS.TOKEN];
   return !!siweToken;
@@ -113,19 +44,25 @@ export async function authenticateWithSiweTokenFromHeader(
       };
     }
 
-    const user = await getUserOrCreateBySignerAddress(
-      siweDetails.session.address,
+    const authenticatedWalletAddress =
+      siweDetails.session.delegatorAddress ?? siweDetails.session.address;
+
+    const user = await getUserOrCreateByWalletAddress(
+      authenticatedWalletAddress,
     );
 
     if (!user) {
       logger.warn(
-        { signerAddress: siweDetails.session.address },
-        'SIWE signer wallet is not linked to any user',
+        {
+          signerAddress: siweDetails.session.address,
+          authenticatedWalletAddress,
+        },
+        'SIWE wallet is not linked to any user',
       );
 
       return {
         success: false,
-        error: 'Signer wallet is not linked to a user',
+        error: 'Authenticated wallet is not linked to a user',
       };
     }
 
