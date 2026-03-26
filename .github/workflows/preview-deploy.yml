@@ -25,7 +25,7 @@ jobs:
   # ---------------------------------------------------------------------------
   detect-changes:
     name: Detect Changes
-    runs-on: ubuntu-latest
+    runs-on: "blacksmith-4vcpu-ubuntu-2204"
     outputs:
       park: ${{ steps.check.outputs.park }}
       frontend: ${{ steps.check.outputs.frontend }}
@@ -51,9 +51,7 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
 
       - name: Install dependencies
-        run: |
-          bun install --frozen-lockfile
-          bun install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Detect Turbo changes
         id: turbo-changes
@@ -91,7 +89,11 @@ jobs:
     name: "Preview: park"
     needs: detect-changes
     if: needs.detect-changes.outputs.park == 'true'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -117,9 +119,11 @@ jobs:
       - name: Comment preview URL
         if: steps.deploy.outputs.url != ''
         uses: actions/github-script@v7
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
         with:
           script: |
-            const body = `**Preview: park** deployed to: ${{ steps.deploy.outputs.url }}`;
+            const body = `**Preview: park** deployed to: ${process.env.DEPLOY_URL}`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -149,7 +153,11 @@ jobs:
     name: "Preview: frontend"
     needs: detect-changes
     if: needs.detect-changes.outputs.frontend == 'true'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -175,9 +183,11 @@ jobs:
       - name: Comment preview URL
         if: steps.deploy.outputs.url != ''
         uses: actions/github-script@v7
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
         with:
           script: |
-            const body = `**Preview: frontend** deployed to: ${{ steps.deploy.outputs.url }}`;
+            const body = `**Preview: frontend** deployed to: ${process.env.DEPLOY_URL}`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -207,7 +217,11 @@ jobs:
     name: "Preview: api-client-docs"
     needs: detect-changes
     if: needs.detect-changes.outputs.api-client-docs == 'true'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -233,9 +247,11 @@ jobs:
       - name: Comment preview URL
         if: steps.deploy.outputs.url != ''
         uses: actions/github-script@v7
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
         with:
           script: |
-            const body = `**Preview: api-client-docs** deployed to: ${{ steps.deploy.outputs.url }}`;
+            const body = `**Preview: api-client-docs** deployed to: ${process.env.DEPLOY_URL}`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -265,7 +281,11 @@ jobs:
     name: "Preview: resources"
     needs: detect-changes
     if: needs.detect-changes.outputs.resources == 'true'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -293,9 +313,11 @@ jobs:
       - name: Comment preview URL
         if: steps.deploy.outputs.url != ''
         uses: actions/github-script@v7
+        env:
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
         with:
           script: |
-            const body = `**Preview: resources** deployed to: ${{ steps.deploy.outputs.url }}`;
+            const body = `**Preview: resources** deployed to: ${process.env.DEPLOY_URL}`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
