@@ -241,15 +241,15 @@ Sessions are stored in `sessions.json` with the following structure:
 - File is automatically created on first connection
 - File is removed on disconnect
 
-## Integration with namefi-eip712-auth
+## Integration with namefi-api
 
-This skill works seamlessly with the `namefi-eip712-auth` skill for authenticated Namefi API requests.
+This skill works with the `namefi-api` skill when the user wants to sign Namefi EIP-712 or SIWE payloads that were prepared elsewhere.
 
 **Example Workflow:**
 
 1. **Connect wallet:**
    ```bash
-   cd .claude/skills/wc
+   cd .rulesync/skills/wc
    bun run scripts/connect-wallet.ts
    ```
 
@@ -258,8 +258,8 @@ This skill works seamlessly with the `namefi-eip712-auth` skill for authenticate
    bun run scripts/get-session.ts
    ```
 
-3. **Use with namefi-eip712-auth to make authenticated API call:**
-   The `namefi-eip712-auth` skill can use this session to sign authentication payloads for Namefi API requests that require EIP-712 signatures.
+3. **Use with namefi-api to prepare an auth request:**
+   The `namefi-api` skill prepares signer-neutral EIP-712 typed data or SIWE `personal_sign` payloads. This skill can then sign those payloads with the connected wallet session.
 
 4. **Disconnect when done:**
    ```bash

@@ -3,6 +3,14 @@ export type Eip712Field = {
   type: string;
 };
 
+export type Eip712Domain = {
+  name?: string;
+  version?: string;
+  chainId?: number;
+  verifyingContract?: `0x${string}`;
+  salt?: string;
+};
+
 export type ManifestEntry = {
   label?: string;
   openapiUrl: string;
@@ -76,12 +84,7 @@ export type Eip712Envelope = {
 };
 
 export type TypedData = {
-  domain: {
-    name: string;
-    version: string;
-    chainId?: number;
-    verifyingContract?: `0x${string}`;
-  };
+  domain: Eip712Domain;
   types: Record<string, Eip712Field[]>;
   primaryType: string;
   message: Eip712Envelope;

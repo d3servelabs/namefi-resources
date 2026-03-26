@@ -1,0 +1,145 @@
+---
+title: Prepare Auth Requests
+description: Use the canonical prepare-auth-request flow to generate signer-neutral Namefi auth payloads
+---
+
+If you do not want to wire signing directly into your client, use the signer-neutral preparation flow.
+
+The canonical entrypoint in the public [namefi-api-skills](https://github.com/d3servelabs/namefi-api-skills) repo is:
+
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts
+```
+
+It inspects the target operation and prepares one of three outputs:
+
+- a plain request template for `none`
+- a SIWE preparation flow for `siwe-required` or `siwe-optional --prefer-auth`
+- an EIP-712 typed-data payload for `eip712`
+
+## Common flags
+
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts \
+  --env dev \
+  --operationId toggleDomainParking \
+  --payload '{"normalizedDomainName":"march1104.gl","enableParking":true,"overrideExistingRecords":false}'
+```
+
+Useful flags:
+
+| Flag | Purpose |
+|------|---------|
+| `--env` | Environment from `openapi.docs.json` |
+| `--operationId` | Target API operation |
+| `--payload` / `--payload-file` | Request payload |
+| `--path-params` / `--path-params-file` | Path parameters for templated routes |
+| `--signer-address` | Required for SIWE prep; optional placeholder for EIP-712 prep |
+| `--chain` | EIP-712 domain query chain or SIWE chain selection |
+| `--primary-type` | Override the selected EIP-712 primary type when a method accepts more than one |
+| `--prefer-auth` | Prepare the SIWE-authenticated path for `siwe-optional` operations |
+
+## No-auth example
+
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts \
+  --env dev \
+  --operationId checkAvailability \
+  --payload '{"domain":"hello.0x.city"}'
+```
+
+Output shape:
+
+```json
+{
+  "authMode": "siwe-optional",
+  "preparationMode": "none",
+  "request": {
+    "method": "GET",
+    "url": "https://api.namefi.dev/v-next/search/availability?domain=hello.0x.city"
+  },
+  "guidance": "This operation can run anonymously..."
+}
+```
+
+## SIWE example
+
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts \
+  --env dev \
+  --operationId getUserDomains \
+  --signer-address 0xYourAddress
+```
+
+The output includes:
+
+- `allowedChains`
+- `selectedChainId`
+- `nonce`
+- `message`
+- `messageString`
+- `signingRequest.method = personal_sign`
+- `verifyRequest`
+- final request template with `x-namefi-siwe-token`
+
+You then:
+
+1. sign `messageString` externally with `personal_sign`
+2. fill `verifyRequest.body.signature`
+3. send `verifyRequest`
+4. copy the returned token into the final request header
+
+## EIP-712 example
+
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts \
+  --env dev \
+  --operationId toggleDomainParking \
+  --payload '{"normalizedDomainName":"march1104.gl","enableParking":true,"overrideExistingRecords":false}'
+```
+
+The output includes:
+
+- live `domain` from `/eip712/domain`
+- live `acceptedPrimaryTypes` and `types` from `/eip712/types-for-method`
+- selected `primaryType`
+- `envelope`
+- full `typedData`
+- `signatureRequest.method = eth_signTypedData_v4`
+- `signatureHeadersTemplate`
+- final request template with placeholder signature headers
+
+You then:
+
+1. sign `typedData` externally
+2. fill `x-namefi-signer` and `x-namefi-signature`
+3. send the final request body exactly as returned in `request.body`
+
+## Multiple primary types
+
+Some methods accept more than one primary type, such as `registerDomain`.
+
+Default behavior:
+
+- the helper chooses the first compatible primary type based on the payload shape
+- for example, `registerDomain` without `nftReceivingWallet` picks the default-wallet envelope
+
+Override explicitly when needed:
+
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts \
+  --env dev \
+  --operationId registerDomain \
+  --payload-file ./register-domain.json \
+  --primary-type InstantRegisterDomainEnvelope
+```
+
+## Related helper scripts
+
+- `get-eip712-domain.ts`
+- `get-eip712-types-for-method.ts`
+- `get-all-eip712-types.ts`
+- `prepare-siwe-message.ts`
+- `get-primary-type.ts`
+
+Use those when you want one focused piece of the flow. Use `prepare-auth-request.ts` when you want the full request-preparation result in one call.

@@ -4,8 +4,10 @@ import {
   loadEnvironmentIndex,
   selectOperations,
 } from './lib/index-data';
+import { fetchEip712TypesForMethod } from './lib/live-auth';
 import {
   getBooleanFlag,
+  getStringFlag,
   isMainModule,
   parseArgs,
   printJson,
@@ -18,6 +20,10 @@ async function main(): Promise<void> {
   const env = requireStringFlag(args, 'env');
   const operationId = requireStringFlag(args, 'operationId');
   const useRawOperations = getBooleanFlag(args, 'raw');
+  const timeoutMs = Number.parseInt(
+    getStringFlag(args, 'request-timeout-ms') ?? '30000',
+    10,
+  );
   const index = await loadEnvironmentIndex(env);
   const operation = findOperation(selectOperations(index, useRawOperations), {
     operationId,
@@ -27,9 +33,15 @@ async function main(): Promise<void> {
     throw new Error(`Operation ${operationId} was not found in ${env}.`);
   }
 
-  if (!operation.eip712Types) {
+  const liveTypes = await fetchEip712TypesForMethod({
+    env,
+    method: operation.operationId,
+    timeoutMs,
+  });
+
+  if (!liveTypes.response.found) {
     throw new Error(
-      `Operation ${operationId} does not have resolved EIP-712 types.`,
+      `Operation ${operationId} does not have live EIP-712 types.`,
     );
   }
 
@@ -38,11 +50,15 @@ async function main(): Promise<void> {
     operationId: operation.operationId,
     method: operation.method,
     path: operation.path,
-    acceptedPrimaryTypes: operation.acceptedPrimaryTypes,
-    primaryType: operation.primaryType,
-    payloadType: operation.payloadType,
-    source: operation.metadataSource.eip712,
-    types: operation.eip712Types,
+    authMode: operation.authMode,
+    acceptedPrimaryTypes: liveTypes.response.acceptedPrimaryTypes,
+    primaryType: liveTypes.response.acceptedPrimaryTypes[0] ?? null,
+    payloadType:
+      liveTypes.response.acceptedPrimaryTypes[0]?.replace(/Envelope$/, '') ??
+      null,
+    request: liveTypes.request,
+    source: 'live-helper-endpoint',
+    types: liveTypes.response.types,
   });
 }
 

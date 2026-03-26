@@ -5,7 +5,8 @@
     "requestBaseUrl": "https://api.namefi.dev/v-next",
     "useContractFallback": true,
     "notes": [
-      "Dev OpenAPI is the freshest published schema and the primary source for x-eip712-* metadata."
+      "Dev OpenAPI is the freshest published schema for operation discovery.",
+      "Use live /eip712/* helper endpoints for canonical EIP-712 domain and method types when preparing signatures."
     ]
   },
   "prod": {
@@ -15,7 +16,8 @@
     "fallbackEnv": "dev",
     "useContractFallback": true,
     "notes": [
-      "Prod OpenAPI is stale. Keep prod requestBaseUrl, then safely backfill missing operations and EIP-712 metadata from dev and contract.json."
+      "Prod OpenAPI can lag. Keep prod requestBaseUrl, then safely backfill missing operation discovery metadata from dev and contract.json.",
+      "Use live /eip712/* helper endpoints for canonical EIP-712 domain and method types when preparing signatures."
     ]
   }
 }

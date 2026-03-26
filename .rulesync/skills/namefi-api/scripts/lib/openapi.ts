@@ -296,11 +296,7 @@ function normalizeOpenApiOperation(args: {
   const eip712Types = normalizeEip712Types(
     args.operationValue['x-eip712-types'],
   );
-  const hasEip712 =
-    acceptedPrimaryTypes.length > 0 ||
-    eip712Types !== null ||
-    badgeNames.includes('EIP712') ||
-    tags.includes('EIP712');
+  const hasEip712 = acceptedPrimaryTypes.length > 0 || eip712Types !== null;
   const authKind = 'unknown';
 
   return {

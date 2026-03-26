@@ -10,7 +10,7 @@ export async function loadEnvironmentIndex(
 
   if (!fileExists(filePath)) {
     throw new Error(
-      `Missing cached index for ${env}. Run bun .opencode/skill/namefi-api/scripts/refresh.ts first.`,
+      `Missing cached index for ${env}. Run bun .rulesync/skills/namefi-api/scripts/refresh.ts first.`,
     );
   }
 

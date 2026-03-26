@@ -1,5 +1,14 @@
-import type { IndexedOperation, PreparedEip712Artifacts } from './types';
-import { joinUrl, resolvePathTemplate } from './utils';
+import type {
+  Eip712Domain,
+  Eip712Field,
+  IndexedOperation,
+  PreparedEip712Artifacts,
+} from './types';
+import {
+  joinUrl,
+  payloadTypeFromPrimaryType,
+  resolvePathTemplate,
+} from './utils';
 
 export function buildEip712Artifacts(args: {
   operation: IndexedOperation;
@@ -7,16 +16,16 @@ export function buildEip712Artifacts(args: {
   pathParams?: Record<string, unknown>;
   timestamp: number;
   nonce: string;
+  domain: Eip712Domain;
+  types: Record<string, Eip712Field[]>;
+  primaryType: string;
 }): PreparedEip712Artifacts {
   const { operation, payload, timestamp, nonce } = args;
+  const payloadType = payloadTypeFromPrimaryType(args.primaryType);
 
-  if (
-    !operation.primaryType ||
-    !operation.payloadType ||
-    !operation.eip712Types
-  ) {
+  if (!payloadType) {
     throw new Error(
-      `Operation ${operation.operationId} does not have resolved EIP-712 metadata.`,
+      `Primary type ${args.primaryType} is not a valid envelope type.`,
     );
   }
 
@@ -25,18 +34,15 @@ export function buildEip712Artifacts(args: {
   }
 
   const envelope = {
-    payloadType: operation.payloadType,
+    payloadType,
     payload,
     timestamp,
     nonce,
   };
   const typedData = {
-    domain: {
-      name: 'Namefi',
-      version: '1',
-    },
-    types: operation.eip712Types,
-    primaryType: operation.primaryType,
+    domain: args.domain,
+    types: args.types,
+    primaryType: args.primaryType,
     message: envelope,
   };
   const { resolvedPath, missingPathParams } = resolvePathTemplate(
@@ -54,7 +60,7 @@ export function buildEip712Artifacts(args: {
       url: joinUrl(operation.requestBaseUrl, resolvedPath),
       headers: {
         'Content-Type': 'application/json',
-        'x-namefi-eip712-type': operation.primaryType,
+        'x-namefi-eip712-type': args.primaryType,
       },
       missingPathParams,
       body: envelope,

@@ -115,7 +115,7 @@ All scripts are executable:
 - Usage examples ✓
 - Input/output formats ✓
 - Troubleshooting guide ✓
-- Integration with namefi-eip712-auth ✓
+- Integration with namefi-api ✓
 - Supported chains ✓
 - Environment variables ✓
 - Technical details ✓
@@ -216,9 +216,9 @@ Expected:
 2. sessions.json removed
 3. get-session.ts returns `{ "connected": false }`
 
-### Test 5: Integration with namefi-eip712-auth
+### Test 5: Integration with namefi-api
 1. Connect wallet via wc skill
-2. Use namefi-eip712-auth to make authenticated API call
+2. Use namefi-api to prepare a signer-neutral auth payload
 3. Verify signature is generated correctly
 4. Verify API request succeeds
 
@@ -270,7 +270,7 @@ Can be overridden with `WALLETCONNECT_PROJECT_ID` environment variable
 ## Next Steps
 
 1. Test with live wallet connection
-2. Test integration with namefi-eip712-auth skill
+2. Test integration with namefi-api skill
 3. Verify all supported chains work correctly
 4. Test error handling with expired sessions
 5. Document any edge cases discovered during testing

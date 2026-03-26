@@ -2,7 +2,7 @@
   "env": "prod",
   "openapiUrl": "https://api.namefi.io/v-next/openapi/doc.json",
   "requestBaseUrl": "https://api.namefi.io/v-next",
-  "fetchedAt": "2026-03-13T12:05:42.894Z",
+  "fetchedAt": "2026-03-20T03:07:57.430Z",
   "document": {
     "info": {
       "title": "Namefi API",
@@ -29,6 +29,9 @@
       },
       {
         "name": "search"
+      },
+      {
+        "name": "eip712"
       }
     ],
     "security": [
@@ -328,6 +331,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -1334,6 +1397,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -2422,6 +2545,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -3128,6 +3311,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -4055,6 +4298,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -5825,6 +6128,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -6560,6 +6923,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -7254,6 +7677,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -8032,6 +8515,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -8671,6 +9214,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -9422,6 +10025,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -10040,6 +10703,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -10799,6 +11522,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -12378,6 +13161,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -13287,6 +14130,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -14365,6 +15268,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -14916,7 +15879,7 @@
                               "maximum": 10,
                               "default": 1
                             },
-                            "nftReceivinggWallet": {
+                            "nftReceivingWallet": {
                               "type": "object",
                               "properties": {
                                 "walletAddress": {
@@ -14965,7 +15928,7 @@
                           "maximum": 10,
                           "default": 1
                         },
-                        "nftReceivinggWallet": {
+                        "nftReceivingWallet": {
                           "type": "object",
                           "properties": {
                             "walletAddress": {
@@ -15444,6 +16407,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -15969,7 +16992,7 @@
             "InstantRegisterDomainDefaultWalletEnvelope"
           ],
           "x-eip712-types": {
-            "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet": [
+            "InstantRegisterDomainEnvelope_Payload_NftReceivingWallet": [
               {
                 "name": "chainId",
                 "type": "uint256"
@@ -15985,8 +17008,8 @@
                 "type": "uint256"
               },
               {
-                "name": "nftReceivinggWallet",
-                "type": "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet"
+                "name": "nftReceivingWallet",
+                "type": "InstantRegisterDomainEnvelope_Payload_NftReceivingWallet"
               }
             ],
             "InstantRegisterDomainEnvelope": [
@@ -16069,7 +17092,7 @@
                       "maximum": 10,
                       "default": 1
                     },
-                    "nftReceivinggWallet": {
+                    "nftReceivingWallet": {
                       "type": "object",
                       "properties": {
                         "walletAddress": {
@@ -16594,6 +17617,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -17323,6 +18406,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -17837,6 +18980,16 @@
               },
               "allowEmptyValue": true,
               "allowReserved": true
+            },
+            {
+              "name": "nftReceivingWalletAddress",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              },
+              "allowEmptyValue": true,
+              "allowReserved": true
             }
           ],
           "responses": {
@@ -17847,365 +19000,34 @@
                   "schema": {
                     "type": "object",
                     "properties": {
-                      "id": {
+                      "status": {
+                        "const": "accepted"
+                      },
+                      "message": {
                         "type": "string"
                       },
-                      "userId": {
+                      "purchaseId": {
                         "type": "string"
                       },
-                      "amountInUSDCents": {
-                        "type": "number"
+                      "domain": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9_])?(\\.[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9_])?)*$"
                       },
-                      "nftWalletAddress": {
-                        "anyOf": [
-                          {
-                            "type": "string"
-                          },
-                          {
-                            "type": "null"
-                          }
-                        ]
-                      },
-                      "nftChainId": {
-                        "anyOf": [
-                          {
-                            "type": "number"
-                          },
-                          {
-                            "type": "null"
-                          }
-                        ]
-                      },
-                      "items": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "format": "uuid"
-                            },
-                            "orderId": {
-                              "type": "string",
-                              "format": "uuid"
-                            },
-                            "normalizedDomainName": {
-                              "type": "string",
-                              "pattern": "^[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9_])?(\\.[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9_])?)*$"
-                            },
-                            "amountInUSDCents": {
-                              "type": "integer",
-                              "minimum": -2147483648,
-                              "maximum": 2147483647
-                            },
-                            "durationInYears": {
-                              "type": "integer",
-                              "minimum": -2147483648,
-                              "maximum": 2147483647
-                            },
-                            "type": {
-                              "enum": [
-                                "REGISTER",
-                                "IMPORT",
-                                "RENEW"
-                              ]
-                            },
-                            "registrar": {
-                              "type": "string"
-                            },
-                            "encryptionKeyId": {
-                              "anyOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "null"
-                                }
-                              ]
-                            },
-                            "encryptedEppAuthorizationCode": {
-                              "anyOf": [
-                                {
-                                  "type": "string"
-                                },
-                                {
-                                  "type": "null"
-                                }
-                              ]
-                            },
-                            "status": {
-                              "anyOf": [
-                                {
-                                  "enum": [
-                                    "CREATED",
-                                    "PROCESSING",
-                                    "SUCCEEDED",
-                                    "FAILED",
-                                    "CANCELLED",
-                                    "PARTIALLY_COMPLETED"
-                                  ]
-                                },
-                                {
-                                  "type": "null"
-                                }
-                              ]
-                            },
-                            "metadata": {
-                              "type": "object",
-                              "properties": {
-                                "freeClaim": {
-                                  "type": "boolean"
-                                },
-                                "groupOrCampaignKey": {
-                                  "type": "string"
-                                },
-                                "claimId": {
-                                  "type": "string"
-                                },
-                                "mintTransaction": {
-                                  "type": "object",
-                                  "properties": {
-                                    "txHash": {
-                                      "type": "string"
-                                    },
-                                    "recordedAt": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "required": [
-                                    "txHash",
-                                    "recordedAt"
-                                  ]
-                                },
-                                "postProcessOrderItem": {
-                                  "type": "object",
-                                  "properties": {
-                                    "actions": {
-                                      "type": "array",
-                                      "minItems": 1,
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "scope": {
-                                            "const": "dns-records"
-                                          },
-                                          "action": {
-                                            "enum": [
-                                              "add",
-                                              "set"
-                                            ]
-                                          },
-                                          "records": {
-                                            "type": "array",
-                                            "minItems": 1,
-                                            "items": {
-                                              "type": "object",
-                                              "properties": {
-                                                "name": {
-                                                  "type": "string"
-                                                },
-                                                "type": {
-                                                  "enum": [
-                                                    "A",
-                                                    "AAAA",
-                                                    "CNAME",
-                                                    "MX",
-                                                    "TXT",
-                                                    "NS",
-                                                    "SOA",
-                                                    "PTR",
-                                                    "SRV",
-                                                    "CAA",
-                                                    "DS",
-                                                    "TLSA",
-                                                    "SSHFP",
-                                                    "HTTPS",
-                                                    "SVCB",
-                                                    "NAPTR",
-                                                    "SPF"
-                                                  ]
-                                                },
-                                                "rdata": {
-                                                  "type": "string"
-                                                },
-                                                "ttl": {
-                                                  "type": "integer",
-                                                  "minimum": 0,
-                                                  "maximum": 2147483647
-                                                }
-                                              },
-                                              "required": [
-                                                "name",
-                                                "type",
-                                                "rdata"
-                                              ]
-                                            }
-                                          }
-                                        },
-                                        "required": [
-                                          "scope",
-                                          "action",
-                                          "records"
-                                        ]
-                                      }
-                                    }
-                                  },
-                                  "required": [
-                                    "actions"
-                                  ],
-                                  "additionalProperties": {}
-                                },
-                                "requiredAction": {
-                                  "enum": [
-                                    "EPP_UNLOCK_REQUIRED",
-                                    "EPP_AUTH_CODE_UPDATE_REQUIRED",
-                                    "UNDETERMINED"
-                                  ]
-                                },
-                                "failureDetails": {
-                                  "type": "object",
-                                  "properties": {
-                                    "requiredAction": {
-                                      "enum": [
-                                        "EPP_UNLOCK_REQUIRED",
-                                        "EPP_AUTH_CODE_UPDATE_REQUIRED",
-                                        "UNDETERMINED"
-                                      ]
-                                    },
-                                    "resolution": {
-                                      "enum": [
-                                        "USER_SIGNAL",
-                                        "TIMEOUT"
-                                      ]
-                                    },
-                                    "actor": {
-                                      "enum": [
-                                        "USER",
-                                        "ADMIN"
-                                      ]
-                                    },
-                                    "actorId": {
-                                      "type": "string"
-                                    },
-                                    "timeoutMs": {
-                                      "type": "integer",
-                                      "minimum": -9007199254740991,
-                                      "maximum": 9007199254740991,
-                                      "exclusiveMinimum": 0
-                                    },
-                                    "recordedAt": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "required": [
-                                    "requiredAction",
-                                    "resolution",
-                                    "recordedAt"
-                                  ]
-                                },
-                                "backfilled_started_finished_at": {
-                                  "type": "boolean"
-                                },
-                                "legacyOrderItemMetadata": {
-                                  "type": "object",
-                                  "properties": {
-                                    "source": {
-                                      "const": "legacy"
-                                    },
-                                    "type": {
-                                      "const": "legacy-migration"
-                                    },
-                                    "legacyItemId": {
-                                      "type": "string",
-                                      "minLength": 1
-                                    },
-                                    "chainId": {
-                                      "type": "number",
-                                      "minimum": 1
-                                    },
-                                    "receivingWalletAddress": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "null"
-                                        }
-                                      ]
-                                    }
-                                  },
-                                  "required": [
-                                    "source",
-                                    "type",
-                                    "legacyItemId",
-                                    "chainId",
-                                    "receivingWalletAddress"
-                                  ]
-                                }
-                              },
-                              "additionalProperties": {}
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "format": "date-time",
-                              "x-native-type": "date"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "format": "date-time",
-                              "x-native-type": "date"
-                            },
-                            "startedAt": {
-                              "anyOf": [
-                                {
-                                  "type": "string",
-                                  "format": "date-time",
-                                  "x-native-type": "date"
-                                },
-                                {
-                                  "type": "null"
-                                }
-                              ]
-                            },
-                            "finishedAt": {
-                              "anyOf": [
-                                {
-                                  "type": "string",
-                                  "format": "date-time",
-                                  "x-native-type": "date"
-                                },
-                                {
-                                  "type": "null"
-                                }
-                              ]
-                            }
-                          },
-                          "required": [
-                            "id",
-                            "orderId",
-                            "normalizedDomainName",
-                            "amountInUSDCents",
-                            "durationInYears",
-                            "type",
-                            "registrar",
-                            "encryptionKeyId",
-                            "encryptedEppAuthorizationCode",
-                            "status",
-                            "createdAt",
-                            "updatedAt",
-                            "startedAt",
-                            "finishedAt"
-                          ]
-                        }
+                      "buyerWallet": {},
+                      "nftReceivingWalletAddress": {},
+                      "estimatedCompletionSeconds": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991,
+                        "exclusiveMinimum": 0
                       }
                     },
                     "required": [
-                      "id",
-                      "userId",
-                      "amountInUSDCents",
-                      "nftWalletAddress",
-                      "nftChainId",
-                      "items"
+                      "status",
+                      "message",
+                      "purchaseId",
+                      "domain",
+                      "estimatedCompletionSeconds"
                     ]
                   }
                 }
@@ -18292,6 +19114,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -18975,6 +19857,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -19613,6 +20555,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -20532,6 +21534,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -21240,6 +22302,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -21877,6 +22999,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -22653,6 +23835,66 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },
@@ -23499,6 +24741,66 @@
                 }
               }
             },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
             "403": {
               "description": "403",
               "content": {
@@ -24086,6 +25388,2246 @@
                           "message": {
                             "type": "string",
                             "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "403",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "FORBIDDEN"
+                          },
+                          "status": {
+                            "const": 403
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Forbidden"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "404",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "NOT_FOUND"
+                          },
+                          "status": {
+                            "const": 404
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Not Found"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "406": {
+              "description": "406",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "NOT_ACCEPTABLE"
+                          },
+                          "status": {
+                            "const": 406
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Not Acceptable"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "408": {
+              "description": "408",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "TIMEOUT"
+                          },
+                          "status": {
+                            "const": 408
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Request Timeout"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "409",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "CONFLICT"
+                          },
+                          "status": {
+                            "const": 409
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Conflict"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "412": {
+              "description": "412",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PRECONDITION_FAILED"
+                          },
+                          "status": {
+                            "const": 412
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Precondition Failed"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "429",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "TOO_MANY_REQUESTS"
+                          },
+                          "status": {
+                            "const": 429
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Too Many Requests"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "500",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "INTERNAL_SERVER_ERROR"
+                          },
+                          "status": {
+                            "const": 500
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Internal Server Error"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/eip712/domain": {
+        "get": {
+          "operationId": "getEip712Domain",
+          "summary": "Get EIP-712 signing domain",
+          "description": "Return the EIP-712 domain separator used for Namefi payload signing. The Namefi domain is chain-agnostic (chainId omitted) to allow cross-chain signatures.",
+          "tags": [
+            "auth",
+            "eip712"
+          ],
+          "parameters": [
+            {
+              "name": "chain",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991,
+                "description": "EIP-155 chain ID to query the signing domain for."
+              },
+              "allowEmptyValue": true,
+              "allowReserved": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Human-readable signing domain name."
+                      },
+                      "version": {
+                        "type": "string",
+                        "description": "Domain version string."
+                      },
+                      "chainId": {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991,
+                        "description": "EIP-155 chain ID bound to the domain, if chain-specific signing is used."
+                      },
+                      "verifyingContract": {
+                        "type": "string",
+                        "description": "Contract address bound to the domain, if applicable."
+                      },
+                      "salt": {
+                        "type": "string",
+                        "description": "Disambiguation salt, if applicable."
+                      }
+                    },
+                    "description": "EIP-712 typed-data domain separator."
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "400",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "BAD_REQUEST"
+                          },
+                          "status": {
+                            "const": 400
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Bad Request"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "401",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "UNAUTHORIZED"
+                          },
+                          "status": {
+                            "const": 401
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "403",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "FORBIDDEN"
+                          },
+                          "status": {
+                            "const": 403
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Forbidden"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "404",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "NOT_FOUND"
+                          },
+                          "status": {
+                            "const": 404
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Not Found"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "406": {
+              "description": "406",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "NOT_ACCEPTABLE"
+                          },
+                          "status": {
+                            "const": 406
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Not Acceptable"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "408": {
+              "description": "408",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "TIMEOUT"
+                          },
+                          "status": {
+                            "const": 408
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Request Timeout"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "409",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "CONFLICT"
+                          },
+                          "status": {
+                            "const": 409
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Conflict"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "412": {
+              "description": "412",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PRECONDITION_FAILED"
+                          },
+                          "status": {
+                            "const": 412
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Precondition Failed"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "429",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "TOO_MANY_REQUESTS"
+                          },
+                          "status": {
+                            "const": 429
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Too Many Requests"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "500",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "INTERNAL_SERVER_ERROR"
+                          },
+                          "status": {
+                            "const": 500
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Internal Server Error"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/eip712/types": {
+        "get": {
+          "operationId": "getAllEip712Types",
+          "summary": "Get all EIP-712 types",
+          "description": "Return every registered EIP-712 struct type used by the Namefi API.",
+          "tags": [
+            "auth",
+            "eip712"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Field name."
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Solidity type (e.g. \"address\", \"uint256\")."
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "type"
+                        ],
+                        "description": "A single EIP-712 typed-data field."
+                      }
+                    },
+                    "description": "Map of struct name to its typed-data fields (EIP-712 `types` object)."
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "400",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "BAD_REQUEST"
+                          },
+                          "status": {
+                            "const": 400
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Bad Request"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "401",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "UNAUTHORIZED"
+                          },
+                          "status": {
+                            "const": 401
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "403",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "FORBIDDEN"
+                          },
+                          "status": {
+                            "const": 403
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Forbidden"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "404",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "NOT_FOUND"
+                          },
+                          "status": {
+                            "const": 404
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Not Found"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "406": {
+              "description": "406",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "NOT_ACCEPTABLE"
+                          },
+                          "status": {
+                            "const": 406
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Not Acceptable"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "408": {
+              "description": "408",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "TIMEOUT"
+                          },
+                          "status": {
+                            "const": 408
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Request Timeout"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "409",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "CONFLICT"
+                          },
+                          "status": {
+                            "const": 409
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Conflict"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "412": {
+              "description": "412",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PRECONDITION_FAILED"
+                          },
+                          "status": {
+                            "const": 412
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Precondition Failed"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "429": {
+              "description": "429",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "TOO_MANY_REQUESTS"
+                          },
+                          "status": {
+                            "const": 429
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Too Many Requests"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "500",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "INTERNAL_SERVER_ERROR"
+                          },
+                          "status": {
+                            "const": 500
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Internal Server Error"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/eip712/types-for-method": {
+        "get": {
+          "operationId": "getEip712TypesForMethod",
+          "summary": "Get EIP-712 types for a method",
+          "description": "Return the accepted primary types and full type map for a specific API operation that supports EIP-712 authentication.",
+          "tags": [
+            "auth",
+            "eip712"
+          ],
+          "parameters": [
+            {
+              "name": "method",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 1,
+                "description": "API operation ID (e.g. \"createDnsRecord\", \"registerDomain\")."
+              },
+              "allowEmptyValue": true,
+              "allowReserved": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "found": {
+                        "type": "boolean",
+                        "description": "Whether the method was found in the EIP-712 registry."
+                      },
+                      "acceptedPrimaryTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Primary type names accepted by this method (sent via x-namefi-eip712-type header). Present when found is true."
+                      },
+                      "types": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "additionalProperties": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "Field name."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Solidity type (e.g. \"address\", \"uint256\")."
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "type"
+                            ],
+                            "description": "A single EIP-712 typed-data field."
+                          }
+                        },
+                        "description": "EIP-712 type map for this method. Present when found is true."
+                      },
+                      "availableMethods": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "List of operation IDs that support EIP-712 authentication. Present when found is false."
+                      }
+                    },
+                    "required": [
+                      "found"
+                    ],
+                    "description": "Result of looking up EIP-712 types for a specific API operation."
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "400",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "BAD_REQUEST"
+                          },
+                          "status": {
+                            "const": 400
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Bad Request"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "401",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "UNAUTHORIZED"
+                          },
+                          "status": {
+                            "const": 401
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Unauthorized"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": false
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "number"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "data": {}
+                        },
+                        "required": [
+                          "defined",
+                          "code",
+                          "status",
+                          "message"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "402": {
+              "description": "402",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "defined": {
+                            "const": true
+                          },
+                          "code": {
+                            "const": "PAYMENT_REQUIRED"
+                          },
+                          "status": {
+                            "const": 402
+                          },
+                          "message": {
+                            "type": "string",
+                            "default": "Payment Required"
                           },
                           "data": {}
                         },

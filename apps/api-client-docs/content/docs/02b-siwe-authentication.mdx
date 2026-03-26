@@ -1,144 +1,76 @@
 ---
 title: SIWE Authentication
-description: Step-by-step Sign-In with Ethereum flow — nonce, message, sign, verify, and use the session token
+description: Prepare and complete the manual SIWE flow for protected Namefi API operations
 ---
 
-[SIWE (EIP-4361)](https://eips.ethereum.org/EIPS/eip-4361) provides session-based wallet authentication. Instead of signing every request, you sign a challenge message once and receive a session token that lasts 12 hours.
+[SIWE (EIP-4361)](https://eips.ethereum.org/EIPS/eip-4361) gives you a session token after one ERC-191 `personal_sign` signature. Use it for protected operations that do not require EIP-712.
 
-The `@namefi/api-client` handles SIWE automatically when using `type: 'EIP712'`. This guide covers the manual flow for custom integrations or raw HTTP usage.
+At the moment, production SIWE has a known server-side issue in `prepareSiweMessage` caused by an invalid URI value. If you see a `500 INTERNAL_SERVER_ERROR` during message preparation on production, that is a backend bug rather than a signing-flow bug in your client or tooling.
 
-## Overview
+## Flow
 
-```
-┌─────────┐         ┌─────────────┐
-│  Client  │         │  Namefi API  │
-└────┬─────┘         └──────┬──────┘
-     │  1. GET /siwe/nonce   │
-     │──────────────────────►│
-     │     { nonce }         │
-     │◄──────────────────────│
-     │                       │
-     │  2. GET /siwe/message │
-     │──────────────────────►│
-     │  { message,           │
-     │    messageString }    │
-     │◄──────────────────────│
-     │                       │
-     │  3. personal_sign     │
-     │  (local wallet)       │
-     │                       │
-     │  4. POST /siwe/verify │
-     │──────────────────────►│
-     │  { token, session }   │
-     │◄──────────────────────│
-     │                       │
-     │  5. Authenticated     │
-     │  requests with        │
-     │  x-namefi-siwe-token  │
-     │──────────────────────►│
-```
+1. `GET /v-next/siwe/allowed-chains`
+2. `GET /v-next/siwe/nonce?signerAddress=...`
+3. `GET /v-next/siwe/message?signerAddress=...&nonce=...&chainId=...`
+4. Sign `messageString` with `personal_sign`
+5. `POST /v-next/siwe/verify`
+6. Send the returned token as `x-namefi-siwe-token`
 
-## Step 1: Get a nonce
-
-Request a replay-protected nonce for your wallet address. The nonce expires after 5 minutes.
+## Step 1: Allowed chains
 
 ```ts
-const nonceResponse = await fetch(
-  'https://backend.astra.namefi.io/v-next/siwe/nonce?signerAddress=0xYourAddress',
-);
-const { valid, nonce } = await nonceResponse.json();
+const allowedChains = await fetch(
+  'https://api.namefi.io/v-next/siwe/allowed-chains',
+).then((r) => r.json());
+
+console.log(allowedChains);
+// Production: [1, 8453]
+// Development: [11155111, 46630]
+```
+
+Pick one of the returned chain IDs for the SIWE message.
+
+## Step 2: Get a nonce
+
+```ts
+const { valid, nonce } = await fetch(
+  'https://api.namefi.io/v-next/siwe/nonce?signerAddress=0xYourAddress',
+).then((r) => r.json());
 
 if (!valid) {
   throw new Error('Failed to get nonce');
 }
 ```
 
-**Request:** `GET /v-next/siwe/nonce`
+The nonce is single-use and expires after 5 minutes.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `signerAddress` | `string` (query) | Checksummed Ethereum address |
-
-**Response:**
-
-```json
-{ "valid": true, "nonce": "a1b2c3d4..." }
-```
-
-## Step 2: Prepare the SIWE message
-
-Send the nonce back to get a canonical SIWE message. The server constructs the message with proper domain, URI, and expiration fields.
+## Step 3: Prepare the message
 
 ```ts
-const messageResponse = await fetch(
-  `https://backend.astra.namefi.io/v-next/siwe/message?signerAddress=0xYourAddress&nonce=${nonce}&chainId=1`,
-);
-const { valid, message, messageString } = await messageResponse.json();
+const { valid, message, messageString } = await fetch(
+  `https://api.namefi.io/v-next/siwe/message?signerAddress=0xYourAddress&nonce=${nonce}&chainId=1`,
+).then((r) => r.json());
 
 if (!valid) {
-  throw new Error('Failed to prepare message');
+  throw new Error('Failed to prepare SIWE message');
 }
 ```
 
-**Request:** `GET /v-next/siwe/message`
+`message` is the structured payload you send back to `/siwe/verify`.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `signerAddress` | `string` (query) | Checksummed Ethereum address |
-| `nonce` | `string` (query) | Nonce from step 1 |
-| `chainId` | `number` (query, optional) | EIP-155 chain ID to bind the session to |
+`messageString` is the exact ERC-191 string you sign with `personal_sign`.
 
-**Response:**
+## Step 4: Sign with ERC-191
 
-```json
-{
-  "valid": true,
-  "message": {
-    "address": "0xYourAddress",
-    "chainId": 1,
-    "domain": "astra.namefi.io",
-    "uri": "https://astra.namefi.io",
-    "version": "1",
-    "nonce": "a1b2c3d4...",
-    "issuedAt": "2025-01-15T10:30:00.000Z",
-    "expirationTime": "2025-01-15T22:30:00.000Z",
-    "statement": "Sign in to Namefi API"
-  },
-  "messageString": "astra.namefi.io wants you to sign in with your Ethereum account:\n0xYourAddress\n\nSign in to Namefi API\n\nURI: https://astra.namefi.io\nVersion: 1\n..."
-}
-```
+The signature step is external to the API and external to the `namefi-api` skill.
 
-The `message` object is the structured EIP-4361 payload. The `messageString` is the canonical string representation you sign.
-
-### Allowed chains
-
-Use `GET /v-next/siwe/allowed-chains` to discover which chain IDs the server accepts:
+### viem
 
 ```ts
-const chainsResponse = await fetch(
-  'https://backend.astra.namefi.io/v-next/siwe/allowed-chains',
-);
-const allowedChains = await chainsResponse.json();
-// Production: [1, 8453]  (Mainnet, Base)
-// Development: [11155111, 46630]  (Sepolia, Namefi Testnet)
-```
-
-If you omit `chainId` in step 2, the server uses its default chain.
-
-## Step 3: Sign the message
-
-Sign the `messageString` with `personal_sign` using your wallet. This produces a standard Ethereum message signature.
-
-### With viem (local account)
-
-```ts
-import { mnemonicToAccount } from 'viem/accounts';
-
-const account = mnemonicToAccount(process.env.MNEMONIC!);
 const signature = await account.signMessage({ message: messageString });
 ```
 
-### With WalletConnect (remote wallet)
+### WalletConnect
 
 ```ts
 const signature = await provider.request({
@@ -147,151 +79,90 @@ const signature = await provider.request({
 });
 ```
 
-### With ethers.js
+### ethers.js
 
 ```ts
 const signature = await signer.signMessage(messageString);
 ```
 
-## Step 4: Verify the signature
-
-Submit the signature along with the structured `message` object and address. The server verifies the signature, consumes the nonce, and returns a session token.
+## Step 5: Verify and get a token
 
 ```ts
-const verifyResponse = await fetch(
-  'https://backend.astra.namefi.io/v-next/siwe/verify',
-  {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      signature,
-      message,       // The structured message object from step 2, not the string
-      address: '0xYourAddress',
-    }),
-  },
-);
+const verifyResult = await fetch('https://api.namefi.io/v-next/siwe/verify', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify({
+    address: '0xYourAddress',
+    message,
+    signature,
+  }),
+}).then((r) => r.json());
 
-const result = await verifyResponse.json();
-
-if (!result.valid) {
-  throw new Error(`Verification failed: ${result.error}`);
+if (!verifyResult.valid) {
+  throw new Error(`Verification failed: ${verifyResult.error}`);
 }
 
-const { token, session } = result;
-console.log('Session token:', token);
-console.log('Expires in:', session.maxAgeSeconds, 'seconds');
+const token = verifyResult.token;
 ```
 
-**Request:** `POST /v-next/siwe/verify`
+Successful responses also include session details such as `chainId`, `createdAt`, and `maxAgeSeconds`.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `signature` | `string` | Hex-encoded signature (`0x...`) |
-| `message` | `object` | The structured SIWE message object from step 2 |
-| `address` | `string` | Expected signer address (checksummed) |
-
-**Response:**
-
-```json
-{
-  "valid": true,
-  "recoveredAddress": "0xYourAddress",
-  "token": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "session": {
-    "address": "0xYourAddress",
-    "chainId": 1,
-    "createdAt": "2025-01-15T10:30:00.000Z",
-    "maxAgeSeconds": 43200
-  }
-}
-```
-
-## Step 5: Use the session token
-
-Attach the token as the `x-namefi-siwe-token` header on authenticated requests:
+## Step 6: Call the protected operation
 
 ```ts
-const response = await fetch(
-  'https://backend.astra.namefi.io/v-next/user/domains',
-  {
-    headers: {
-      'x-namefi-siwe-token': token,
-    },
+const domains = await fetch('https://api.namefi.io/v-next/user/domains', {
+  headers: {
+    'x-namefi-siwe-token': token,
   },
-);
-
-const domains = await response.json();
+}).then((r) => r.json());
 ```
 
-## Session lifecycle
+## Session details
 
 | Property | Value |
 |----------|-------|
-| Token lifetime | 12 hours (`43200` seconds) |
 | Nonce lifetime | 5 minutes (`300` seconds) |
-| Token format | UUID v4 |
-| Header name | `x-namefi-siwe-token` |
-| Refresh skew | 30 seconds (client refreshes 30s before expiry) |
+| Token lifetime | 12 hours (`43200` seconds) |
+| Token header | `x-namefi-siwe-token` |
+| Signing method | ERC-191 `personal_sign` |
 
-The token is opaque — store it and reuse it for all requests until it expires. When it expires, repeat the full flow (steps 1-4) to get a new token.
+## Using the skill helpers
 
-## Full example
+The public [namefi-api-skills](https://github.com/d3servelabs/namefi-api-skills) repo exposes two useful prep flows:
 
-```ts
-import { mnemonicToAccount } from 'viem/accounts';
+### Full operation-aware prep
 
-const BASE_URL = 'https://backend.astra.namefi.io/v-next';
-const account = mnemonicToAccount(process.env.MNEMONIC!);
-const address = account.address;
-
-// 1. Get nonce
-const { nonce } = await fetch(
-  `${BASE_URL}/siwe/nonce?signerAddress=${address}`,
-).then((r) => r.json());
-
-// 2. Prepare message
-const { message, messageString } = await fetch(
-  `${BASE_URL}/siwe/message?signerAddress=${address}&nonce=${nonce}&chainId=1`,
-).then((r) => r.json());
-
-// 3. Sign
-const signature = await account.signMessage({ message: messageString });
-
-// 4. Verify and get token
-const { token } = await fetch(`${BASE_URL}/siwe/verify`, {
-  method: 'POST',
-  headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ signature, message, address }),
-}).then((r) => r.json());
-
-// 5. Make authenticated requests
-const domains = await fetch(`${BASE_URL}/user/domains`, {
-  headers: { 'x-namefi-siwe-token': token },
-}).then((r) => r.json());
-
-console.log('Your domains:', domains);
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-auth-request.ts \
+  --env dev \
+  --operationId getUserDomains \
+  --signer-address 0xYourAddress
 ```
 
-## Using SIWE with the client library
+That returns:
 
-When using `@namefi/api-client` with `type: 'EIP712'`, SIWE is handled automatically. The client runs steps 1-4 behind the scenes on the first request that needs session auth, caches the token, and refreshes it before expiry:
+- allowed chains
+- selected chain ID
+- nonce
+- structured SIWE message
+- `messageString`
+- a verify request template
+- a final request template with `x-namefi-siwe-token`
 
-```ts
-import { createNamefiClient, type EIP712Signer } from '@namefi/api-client';
+### SIWE-only helper
 
-const client = createNamefiClient({
-  authentication: {
-    signer: myEip712Signer,
-    type: 'EIP712',
-  },
-  siwe: {
-    chainId: 1,
-  },
-  logger: true,
-});
-
-// SIWE bootstrap happens automatically when needed
-const domains = await client.user.getDomains();
+```bash
+bun .rulesync/skills/namefi-api/scripts/prepare-siwe-message.ts \
+  --env dev \
+  --signer-address 0xYourAddress
 ```
 
-See the [namefi-api-skills](https://github.com/d3servelabs/namefi-api-skills) repository for a complete CLI-based WalletConnect + SIWE implementation.
+Use either output with any external signer or MCP that can do `personal_sign`.
+
+For the combined operation-aware entrypoint that also handles EIP-712 and no-auth cases, see [Prepare Auth Requests](/docs/02c-prepare-auth-requests).
+
+## Client-library behavior
+
+When you use `@namefi/api-client` with `type: 'EIP712'`, the client performs this SIWE flow automatically for `siwe-required` and `siwe-optional` operations.
+
+For raw integrations, the flow stays the same: prepare the message, sign it externally, verify it, then reuse the token until it expires.

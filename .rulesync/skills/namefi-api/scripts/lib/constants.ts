@@ -16,7 +16,6 @@ export const contractPath = resolve(
   repoRoot,
   'packages/namefi-client/contract.json',
 );
-export const siweTokensPath = resolve(generatedDir, 'siwe-tokens.json');
 
 export function snapshotPath(env: string): string {
   return resolve(generatedDir, `${env}.openapi.json`);
