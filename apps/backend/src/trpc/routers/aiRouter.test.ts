@@ -72,6 +72,7 @@ vi.mock('@namefi-astra/db/schema', () => ({
 vi.mock('@namefi-astra/ai', () => ({
   ANIMATION_MODEL_IDS: ['veo-3.1-generate-preview'],
   ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
+  ANIMATION_SOURCE_MODE_IDS: ['exact-frame', 'subject-reference'],
   LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
   LOGO_TEXT_TREATMENT_INPUT_IDS: ['let-ai-choose'],
   LOGO_TYPE_INPUT_IDS: ['let-ai-choose'],

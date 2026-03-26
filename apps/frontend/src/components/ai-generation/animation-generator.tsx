@@ -11,8 +11,11 @@ import {
   ANIMATION_MODEL_IDS,
   ANIMATION_MOTION_PRESETS,
   ANIMATION_MOTION_PRESET_IDS,
+  ANIMATION_SOURCE_MODES,
+  ANIMATION_SOURCE_MODE_IDS,
   type AnimationModel,
   type AnimationMotionPresetInput,
+  type AnimationSourceMode,
 } from '@namefi-astra/ai/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
@@ -38,6 +41,9 @@ import type { Generation } from './shared/types';
 
 const animationFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
+  sourceMode: z
+    .enum(ANIMATION_SOURCE_MODE_IDS)
+    .default('exact-frame' satisfies AnimationSourceMode),
   motionPreset: z
     .enum(ANIMATION_MOTION_PRESET_IDS)
     .default('let-ai-choose' satisfies AnimationMotionPresetInput),
@@ -86,6 +92,7 @@ export function AnimationGenerator({
       domain: fixedDomain || '',
       description: '',
       selectedLogoId: '',
+      sourceMode: 'exact-frame' as const,
       motionPreset: 'let-ai-choose' as const,
       model: 'veo-3.1-generate-preview' as const,
     }),
@@ -186,8 +193,11 @@ export function AnimationGenerator({
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedLogoId = form.watch('selectedLogoId');
+        const selectedSourceMode = form.watch('sourceMode');
         const selectedModel = form.watch('model');
         const selectedMotionPreset = form.watch('motionPreset');
+        const resolvedSourceMode =
+          selectedSourceMode ?? ANIMATION_SOURCE_MODE_IDS[0];
         const resolvedMotionPreset =
           selectedMotionPreset ?? ANIMATION_MOTION_PRESET_IDS[0];
         const resolvedModel = selectedModel ?? ANIMATION_MODEL_IDS[0];
@@ -277,6 +287,14 @@ export function AnimationGenerator({
                   isActive: openPanel === 'description',
                 },
                 {
+                  key: 'opening',
+                  label: 'Opening',
+                  badge: ANIMATION_SOURCE_MODES[resolvedSourceMode].name,
+                  onClick: () =>
+                    setOpenPanel(openPanel === 'opening' ? null : 'opening'),
+                  isActive: openPanel === 'opening',
+                },
+                {
                   key: 'motion',
                   label: 'Motion',
                   badge: ANIMATION_MOTION_PRESETS[resolvedMotionPreset].name,
@@ -309,6 +327,49 @@ export function AnimationGenerator({
                         {logosToShow.map(renderLogoCard)}
                       </div>
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {openPanel === 'opening' && (
+              <FormField
+                control={form.control}
+                name={'sourceMode'}
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel className="text-lg font-semibold">
+                      Choose opening style
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => {
+                          if (!value) return;
+                          field.onChange(value as AnimationSourceMode);
+                          setOpenPanel(null);
+                        }}
+                      >
+                        <SelectTrigger className="w-full max-w-sm">
+                          <SelectValue placeholder="Select opening style" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ANIMATION_SOURCE_MODE_IDS.map((sourceModeId) => (
+                            <SelectItem key={sourceModeId} value={sourceModeId}>
+                              {ANIMATION_SOURCE_MODES[sourceModeId].name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {
+                        ANIMATION_SOURCE_MODES[
+                          field.value as AnimationSourceMode
+                        ].description
+                      }
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -15,6 +15,7 @@ import type { PosterFormData } from '../poster-generator';
 import type {
   AnimationModel,
   AnimationMotionPresetInput,
+  AnimationSourceMode,
   ImageModel as Model,
   LogoStyleInput,
   LogoTextTreatmentInput,
@@ -354,11 +355,13 @@ export const createAnimationGenerationPayload = (data: AnimationFormData) => {
     domain: NamefiNormalizedDomain;
     description?: string;
     referenceLogoGenerationId: string;
+    sourceMode: AnimationSourceMode;
     motionPreset: AnimationMotionPresetInput;
     model: AnimationModel;
   } = {
     domain: data.domain,
     referenceLogoGenerationId: data.selectedLogoId,
+    sourceMode: data.sourceMode,
     motionPreset: data.motionPreset,
     model: data.model,
   };

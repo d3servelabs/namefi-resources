@@ -907,6 +907,7 @@ type AiGenerationInput =
   | {
       type: 'animation';
       description?: string;
+      sourceMode?: 'exact-frame' | 'subject-reference';
       motionPreset:
         | 'let-ai-choose'
         | 'orbital-reveal'
@@ -974,6 +975,7 @@ type ExternalAiGenerationInput =
   | {
       type: 'animation';
       description?: string;
+      sourceMode?: 'exact-frame' | 'subject-reference';
       motionPreset:
         | 'let-ai-choose'
         | 'orbital-reveal'

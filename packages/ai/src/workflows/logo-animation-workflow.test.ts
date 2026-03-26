@@ -134,6 +134,72 @@ describe('runLogoAnimationWorkflow', () => {
     expect(googleVideoMock).toHaveBeenCalledWith('veo-3.1-generate-preview');
   });
 
+  it('defaults to exact-frame mode when sourceMode is omitted', async () => {
+    experimentalGenerateVideoMock.mockResolvedValue({
+      video: { uint8Array: new Uint8Array([1, 2, 3]) },
+      warnings: [],
+      providerMetadata: {},
+    });
+    uploadFileToS3Mock
+      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' })
+      .mockResolvedValueOnce({ key: 'animations/domain/thumb.png' });
+
+    await runLogoAnimationWorkflow({
+      domain: 'example.com',
+      referenceLogoUrl: 'https://cdn.test/logo.png',
+      motionPreset: 'let-ai-choose',
+      model: 'veo-3.1-generate-preview',
+      storage,
+    });
+
+    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
+    expect(typeof generateVideoCall.prompt).toBe('object');
+    expect(generateVideoCall.prompt.text).toContain('provided source frame');
+    expect(generateVideoCall.providerOptions.google).not.toHaveProperty(
+      'referenceImages',
+    );
+
+    const thumbnailUpload = uploadFileToS3Mock.mock.calls[1]?.[0];
+    expect(Buffer.isBuffer(thumbnailUpload.fileBuffer)).toBe(true);
+    expect(thumbnailUpload.fileBuffer.equals(onePixelPng)).toBe(false);
+  });
+
+  it('uses subject references without sending a literal first frame', async () => {
+    experimentalGenerateVideoMock.mockResolvedValue({
+      video: { uint8Array: new Uint8Array([1, 2, 3]) },
+      warnings: [],
+      providerMetadata: {},
+    });
+    uploadFileToS3Mock
+      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' })
+      .mockResolvedValueOnce({ key: 'animations/domain/thumb.png' });
+
+    await runLogoAnimationWorkflow({
+      domain: 'example.com',
+      referenceLogoUrl: 'https://cdn.test/logo.png',
+      sourceMode: 'subject-reference',
+      motionPreset: 'let-ai-choose',
+      model: 'veo-3.1-generate-preview',
+      storage,
+    });
+
+    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
+    expect(typeof generateVideoCall.prompt).toBe('string');
+    expect(generateVideoCall.prompt).toContain('subject reference');
+    expect(generateVideoCall.providerOptions.google.referenceImages).toEqual([
+      {
+        image: {
+          bytesBase64Encoded: onePixelPng.toString('base64'),
+          mimeType: 'image/png',
+        },
+        referenceType: 'asset',
+      },
+    ]);
+
+    const thumbnailUpload = uploadFileToS3Mock.mock.calls[1]?.[0];
+    expect(thumbnailUpload.fileBuffer.equals(onePixelPng)).toBe(true);
+  });
+
   it('does not upload assets before video generation succeeds', async () => {
     experimentalGenerateVideoMock.mockRejectedValue(
       new Error('provider request failed'),

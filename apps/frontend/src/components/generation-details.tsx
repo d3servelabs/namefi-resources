@@ -57,6 +57,8 @@ import {
   ANIMATION_MODELS,
   ANIMATION_MOTION_PRESETS,
   type AnimationMotionPresetId,
+  ANIMATION_SOURCE_MODES,
+  type AnimationSourceMode,
   LOGO_STYLES,
   LOGO_TEXT_TREATMENTS,
   LOGO_TYPOGRAPHY,
@@ -103,6 +105,21 @@ function resolveAnimationMotionPresetId(
   }
 
   return undefined;
+}
+
+function resolveAnimationSourceMode(
+  generation: GenerationData | undefined,
+): AnimationSourceMode | undefined {
+  if (
+    generation?.type !== 'animation' ||
+    generation.input?.type !== 'animation'
+  ) {
+    return undefined;
+  }
+
+  return generation.input.sourceMode === 'subject-reference'
+    ? 'subject-reference'
+    : 'exact-frame';
 }
 
 const LoadingSkeleton = () => (
@@ -304,6 +321,7 @@ export function GenerationDetailsClient({
         : undefined;
 
   const motionPresetValue = resolveAnimationMotionPresetId(generation);
+  const animationSourceModeValue = resolveAnimationSourceMode(generation);
 
   const animationModelValue =
     generation?.output?.type === 'animation'
@@ -633,6 +651,17 @@ export function GenerationDetailsClient({
                     </Badge>
                   </div>
                 )}
+
+                {generation.type === 'animation' &&
+                  animationSourceModeValue && (
+                    <div className="flex items-center gap-2">
+                      <Type className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">Opening:</span>
+                      <Badge variant="secondary">
+                        {ANIMATION_SOURCE_MODES[animationSourceModeValue].name}
+                      </Badge>
+                    </div>
+                  )}
 
                 {generation.type === 'animation' && animationModelValue && (
                   <div className="flex items-center gap-2">

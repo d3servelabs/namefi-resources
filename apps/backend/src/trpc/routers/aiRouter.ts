@@ -11,6 +11,7 @@ import {
 import {
   ANIMATION_MODEL_IDS,
   ANIMATION_MOTION_PRESET_IDS,
+  ANIMATION_SOURCE_MODE_IDS,
   LOGO_STYLE_INPUT_IDS,
   LOGO_TEXT_TREATMENT_INPUT_IDS,
   LOGO_TYPE_INPUT_IDS,
@@ -503,6 +504,7 @@ const generateAnimationInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   referenceLogoGenerationId: z.string(),
   description: z.string().optional(),
+  sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).default('exact-frame'),
   motionPreset: z.enum(ANIMATION_MOTION_PRESET_IDS).default('let-ai-choose'),
   model: z.enum(ANIMATION_MODEL_IDS).default('veo-3.1-generate-preview'),
 });
@@ -739,6 +741,7 @@ export const aiRouter = createTRPCRouter({
           input: {
             type: 'animation',
             description: input.description,
+            sourceMode: input.sourceMode,
             motionPreset: input.motionPreset,
             model: input.model,
           },

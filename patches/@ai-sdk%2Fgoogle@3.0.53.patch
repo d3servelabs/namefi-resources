@@ -1,8 +1,27 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index b36bf96d..1d0a65d1 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -213,8 +213,12 @@ type GoogleVideoModelOptions = {
+     personGeneration?: 'dont_allow' | 'allow_adult' | 'allow_all' | null;
+     negativePrompt?: string | null;
+     referenceImages?: Array<{
+-        bytesBase64Encoded?: string;
+-        gcsUri?: string;
++        image: {
++            bytesBase64Encoded?: string;
++            gcsUri?: string;
++            mimeType?: string;
++        };
++        referenceType?: 'asset' | 'style';
+     }> | null;
+     [key: string]: unknown;
+ };
 diff --git a/dist/index.js b/dist/index.js
-index 3e7f23966091a63ae3aa588f57c6900aed8dc1d1..d3ef70e1f55cbae3aa14d8369bbb9a3db0c7ab0b 100644
+index 3e7f2396..811566ad 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -2248,10 +2248,8 @@ var GoogleGenerativeAIVideoModel = class {
+@@ -2248,28 +2248,34 @@ var GoogleGenerativeAIVideoModel = class {
        } else {
          const base64Data = typeof options.image.data === "string" ? options.image.data : (0, import_provider_utils15.convertUint8ArrayToBase64)(options.image.data);
          instance.image = {
@@ -15,24 +34,67 @@ index 3e7f23966091a63ae3aa588f57c6900aed8dc1d1..d3ef70e1f55cbae3aa14d8369bbb9a3d
          };
        }
      }
-@@ -2259,10 +2257,8 @@ var GoogleGenerativeAIVideoModel = class {
+     if ((googleOptions == null ? void 0 : googleOptions.referenceImages) != null) {
        instance.referenceImages = googleOptions.referenceImages.map((refImg) => {
-         if (refImg.bytesBase64Encoded) {
+-        if (refImg.bytesBase64Encoded) {
++        if (refImg.image.bytesBase64Encoded) {
            return {
 -            inlineData: {
 -              mimeType: "image/png",
 -              data: refImg.bytesBase64Encoded
 -            }
-+            bytesBase64Encoded: refImg.bytesBase64Encoded,
-+            mimeType: "image/png"
++            image: {
++              bytesBase64Encoded: refImg.image.bytesBase64Encoded,
++              mimeType: refImg.image.mimeType || "image/png"
++            },
++            referenceType: refImg.referenceType || "asset"
            };
-         } else if (refImg.gcsUri) {
+-        } else if (refImg.gcsUri) {
++        } else if (refImg.image.gcsUri) {
            return {
+-            gcsUri: refImg.gcsUri
++            image: {
++              gcsUri: refImg.image.gcsUri,
++              mimeType: refImg.image.mimeType || "image/png"
++            },
++            referenceType: refImg.referenceType || "asset"
+           };
+         }
+-        return refImg;
++        return {
++          ...refImg,
++          referenceType: refImg.referenceType || "asset"
++        };
+       });
+     }
+     const parameters = {
+@@ -2452,8 +2458,12 @@ var googleVideoModelOptionsSchema = (0, import_provider_utils15.lazySchema)(
+       negativePrompt: import_v414.z.string().nullish(),
+       referenceImages: import_v414.z.array(
+         import_v414.z.object({
+-          bytesBase64Encoded: import_v414.z.string().nullish(),
+-          gcsUri: import_v414.z.string().nullish()
++          image: import_v414.z.object({
++            bytesBase64Encoded: import_v414.z.string().nullish(),
++            gcsUri: import_v414.z.string().nullish(),
++            mimeType: import_v414.z.string().nullish()
++          }),
++          referenceType: import_v414.z.enum(["asset", "style"]).nullish()
+         })
+       ).nullish()
+     }).passthrough()
+@@ -2550,4 +2560,4 @@ var google = createGoogleGenerativeAI();
+   createGoogleGenerativeAI,
+   google
+ });
+-//# sourceMappingURL=index.js.map
+\ No newline at end of file
++//# sourceMappingURL=index.js.map
 diff --git a/dist/index.mjs b/dist/index.mjs
-index e5503d0400d31402367dd872041e3e41cdce6a86..657f8836be0f3265f587450d2c92a8fe247fb269 100644
+index e5503d04..5ed8d180 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
-@@ -2299,10 +2299,8 @@ var GoogleGenerativeAIVideoModel = class {
+@@ -2299,28 +2299,34 @@ var GoogleGenerativeAIVideoModel = class {
        } else {
          const base64Data = typeof options.image.data === "string" ? options.image.data : convertUint8ArrayToBase64(options.image.data);
          instance.image = {
@@ -45,24 +107,82 @@ index e5503d0400d31402367dd872041e3e41cdce6a86..657f8836be0f3265f587450d2c92a8fe
          };
        }
      }
-@@ -2310,10 +2308,8 @@ var GoogleGenerativeAIVideoModel = class {
+     if ((googleOptions == null ? void 0 : googleOptions.referenceImages) != null) {
        instance.referenceImages = googleOptions.referenceImages.map((refImg) => {
-         if (refImg.bytesBase64Encoded) {
+-        if (refImg.bytesBase64Encoded) {
++        if (refImg.image.bytesBase64Encoded) {
            return {
 -            inlineData: {
 -              mimeType: "image/png",
 -              data: refImg.bytesBase64Encoded
 -            }
-+            bytesBase64Encoded: refImg.bytesBase64Encoded,
-+            mimeType: "image/png"
++            image: {
++              bytesBase64Encoded: refImg.image.bytesBase64Encoded,
++              mimeType: refImg.image.mimeType || "image/png"
++            },
++            referenceType: refImg.referenceType || "asset"
            };
-         } else if (refImg.gcsUri) {
+-        } else if (refImg.gcsUri) {
++        } else if (refImg.image.gcsUri) {
            return {
+-            gcsUri: refImg.gcsUri
++            image: {
++              gcsUri: refImg.image.gcsUri,
++              mimeType: refImg.image.mimeType || "image/png"
++            },
++            referenceType: refImg.referenceType || "asset"
+           };
+         }
+-        return refImg;
++        return {
++          ...refImg,
++          referenceType: refImg.referenceType || "asset"
++        };
+       });
+     }
+     const parameters = {
+@@ -2503,8 +2509,12 @@ var googleVideoModelOptionsSchema = lazySchema12(
+       negativePrompt: z14.string().nullish(),
+       referenceImages: z14.array(
+         z14.object({
+-          bytesBase64Encoded: z14.string().nullish(),
+-          gcsUri: z14.string().nullish()
++          image: z14.object({
++            bytesBase64Encoded: z14.string().nullish(),
++            gcsUri: z14.string().nullish(),
++            mimeType: z14.string().nullish()
++          }),
++          referenceType: z14.enum(["asset", "style"]).nullish()
+         })
+       ).nullish()
+     }).passthrough()
+@@ -2600,4 +2610,4 @@ export {
+   createGoogleGenerativeAI,
+   google
+ };
+-//# sourceMappingURL=index.mjs.map
+\ No newline at end of file
++//# sourceMappingURL=index.mjs.map
 diff --git a/src/google-generative-ai-video-model.ts b/src/google-generative-ai-video-model.ts
-index b31633c9a1701e54cc7e6be0268f29cd23175658..189309030e9aa5bc051102d652010359d5336926 100644
+index b31633c9..8f62bde3 100644
 --- a/src/google-generative-ai-video-model.ts
 +++ b/src/google-generative-ai-video-model.ts
-@@ -102,10 +102,8 @@ export class GoogleGenerativeAIVideoModel implements Experimental_VideoModelV3 {
+@@ -32,8 +32,12 @@ export type GoogleVideoModelOptions = {
+ 
+   // Reference images (for style/asset reference)
+   referenceImages?: Array<{
+-    bytesBase64Encoded?: string;
+-    gcsUri?: string;
++    image: {
++      bytesBase64Encoded?: string;
++      gcsUri?: string;
++      mimeType?: string;
++    };
++    referenceType?: 'asset' | 'style';
+   }> | null;
+ 
+   [key: string]: unknown; // For passthrough
+@@ -102,29 +106,35 @@ export class GoogleGenerativeAIVideoModel implements Experimental_VideoModelV3 {
              : convertUint8ArrayToBase64(options.image.data);
  
          instance.image = {
@@ -75,16 +195,52 @@ index b31633c9a1701e54cc7e6be0268f29cd23175658..189309030e9aa5bc051102d652010359
          };
        }
      }
-@@ -114,10 +112,8 @@ export class GoogleGenerativeAIVideoModel implements Experimental_VideoModelV3 {
+ 
+     if (googleOptions?.referenceImages != null) {
        instance.referenceImages = googleOptions.referenceImages.map(refImg => {
-         if (refImg.bytesBase64Encoded) {
+-        if (refImg.bytesBase64Encoded) {
++        if (refImg.image.bytesBase64Encoded) {
            return {
 -            inlineData: {
 -              mimeType: 'image/png',
 -              data: refImg.bytesBase64Encoded,
--            },
-+            bytesBase64Encoded: refImg.bytesBase64Encoded,
-+            mimeType: 'image/png',
++            image: {
++              bytesBase64Encoded: refImg.image.bytesBase64Encoded,
++              mimeType: refImg.image.mimeType || 'image/png',
+             },
++            referenceType: refImg.referenceType || 'asset',
            };
-         } else if (refImg.gcsUri) {
+-        } else if (refImg.gcsUri) {
++        } else if (refImg.image.gcsUri) {
            return {
+-            gcsUri: refImg.gcsUri,
++            image: {
++              gcsUri: refImg.image.gcsUri,
++              mimeType: refImg.image.mimeType || 'image/png',
++            },
++            referenceType: refImg.referenceType || 'asset',
+           };
+         }
+-        return refImg;
++        return {
++          ...refImg,
++          referenceType: refImg.referenceType || 'asset',
++        };
+       });
+     }
+ 
+@@ -363,8 +373,12 @@ const googleVideoModelOptionsSchema = lazySchema(() =>
+         referenceImages: z
+           .array(
+             z.object({
+-              bytesBase64Encoded: z.string().nullish(),
+-              gcsUri: z.string().nullish(),
++              image: z.object({
++                bytesBase64Encoded: z.string().nullish(),
++                gcsUri: z.string().nullish(),
++                mimeType: z.string().nullish(),
++              }),
++              referenceType: z.enum(['asset', 'style']).nullish(),
+             }),
+           )
+           .nullish(),

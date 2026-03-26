@@ -262,6 +262,7 @@ export async function generateLogoAnimation({
           {
             domain: generation.domain,
             description: animationInput.description,
+            sourceMode: animationInput.sourceMode,
             motionPreset: animationInput.motionPreset,
             model: animationInput.model,
             referenceLogoUrl: generateUrlFromStoragePath(

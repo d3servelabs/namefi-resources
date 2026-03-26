@@ -40,6 +40,31 @@ export const ANIMATION_MODEL_IDS = animationModelIds as [
   ...AnimationModel[],
 ];
 
+export const ANIMATION_SOURCE_MODES = {
+  'exact-frame': {
+    id: 'exact-frame',
+    name: 'Exact frame',
+    description: 'Start from the selected logo image exactly as provided.',
+  },
+  'subject-reference': {
+    id: 'subject-reference',
+    name: 'Native composition',
+    description:
+      'Use the selected logo as a subject reference so Veo composes the shot itself.',
+  },
+} as const;
+
+export type AnimationSourceMode = keyof typeof ANIMATION_SOURCE_MODES;
+
+const animationSourceModeIds = Object.keys(
+  ANIMATION_SOURCE_MODES,
+) as AnimationSourceMode[];
+
+export const ANIMATION_SOURCE_MODE_IDS = animationSourceModeIds as [
+  AnimationSourceMode,
+  ...AnimationSourceMode[],
+];
+
 export const ANIMATION_MOTION_PRESETS = {
   'let-ai-choose': {
     id: 'let-ai-choose',
@@ -268,6 +293,7 @@ export interface AnimationGenerationInput extends BaseWorkflowStorageInput {
   domain: NamefiNormalizedDomain;
   description?: string;
   referenceLogoUrl: string;
+  sourceMode?: AnimationSourceMode;
   motionPreset: AnimationMotionPresetId;
   model: AnimationModel;
 }

@@ -13,9 +13,11 @@ import {
   ANIMATION_MODEL_IDS,
   ANIMATION_MOTION_PRESET_IDS,
   ANIMATION_MOTION_PRESET_KNOWN_IDS,
+  ANIMATION_SOURCE_MODE_IDS,
   type AnimationGenerationResult,
   type AnimationMotionPresetId,
   type AnimationMotionPresetInput,
+  type AnimationSourceMode,
 } from '../types/generation';
 import { createRunId } from '../utils/files';
 import { fetchImageAsBuffer } from '../utils/images';
@@ -32,6 +34,7 @@ const DARK_BACKGROUND = '#0F172A';
 const animationModelEnum = z.enum(ANIMATION_MODEL_IDS);
 const motionPresetKnownEnum = z.enum(ANIMATION_MOTION_PRESET_KNOWN_IDS);
 const motionPresetResolvedEnum = z.enum(ANIMATION_MOTION_PRESET_KNOWN_IDS);
+const animationSourceModeEnum = z.enum(ANIMATION_SOURCE_MODE_IDS);
 const google = createGoogleGenerativeAI({
   apiKey: secrets.GEMINI_API_KEY,
 });
@@ -40,6 +43,7 @@ export const logoAnimationWorkflowInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   referenceLogoUrl: z.string().url(),
   description: z.string().optional(),
+  sourceMode: animationSourceModeEnum.default('exact-frame'),
   motionPreset: motionPresetKnownEnum.default('let-ai-choose'),
   model: animationModelEnum.default('veo-3.1-generate-preview'),
   storage: z.custom<StorageConfig>(),
@@ -106,17 +110,30 @@ const motionPromptByPreset: Record<AnimationMotionPresetId, string> = {
 
 function buildAnimationPrompt(input: {
   motionPreset: AnimationMotionPresetId;
+  sourceMode: AnimationSourceMode;
   direction: string;
 }) {
-  const parts = [
-    'Create an ambitious cinematic 8-second logo animation from the provided source frame.',
-    motionPromptByPreset[input.motionPreset],
-    `Brand-specific motion direction: ${input.direction.trim()}.`,
-    'Use camera movement, atmospheric context, temporal motion, and optical effects only when they keep the logo as the clear focal subject.',
-    'The logo may gain depth, reflections, particles, energy interaction, or cinematic environmental support, but the original shapes, letterforms, proportions, colors, and brand marks must remain intact and recognizable throughout.',
-    'No new text, no extra symbols, no mascot characters, no scene cuts, no destructive effects, and no morphing into a different mark.',
-    'End on a sharp, fully legible hero frame with the logo cleanly resolved.',
-  ];
+  const parts =
+    input.sourceMode === 'subject-reference'
+      ? [
+          'Create an ambitious cinematic 8-second logo animation using the provided logo as a subject reference rather than a literal first frame.',
+          motionPromptByPreset[input.motionPreset],
+          `Brand-specific motion direction: ${input.direction.trim()}.`,
+          'Preserve the original logo shapes, letterforms, proportions, colors, and brand marks throughout the animation.',
+          'Treat the provided logo as the core asset reference and compose it natively in frame instead of placing it inside a poster, card, inset, square box, or padded plate.',
+          'Use camera movement, atmospheric context, temporal motion, and optical effects only when they keep the logo as the clear focal subject.',
+          'No new text, no extra symbols, no mascot characters, no scene cuts, no destructive effects, and no morphing into a different mark.',
+          'End on a sharp, fully legible hero frame with the logo cleanly resolved.',
+        ]
+      : [
+          'Create an ambitious cinematic 8-second logo animation from the provided source frame.',
+          motionPromptByPreset[input.motionPreset],
+          `Brand-specific motion direction: ${input.direction.trim()}.`,
+          'Use camera movement, atmospheric context, temporal motion, and optical effects only when they keep the logo as the clear focal subject.',
+          'The logo may gain depth, reflections, particles, energy interaction, or cinematic environmental support, but the original shapes, letterforms, proportions, colors, and brand marks must remain intact and recognizable throughout.',
+          'No new text, no extra symbols, no mascot characters, no scene cuts, no destructive effects, and no morphing into a different mark.',
+          'End on a sharp, fully legible hero frame with the logo cleanly resolved.',
+        ];
 
   return parts.filter(Boolean).join(' ');
 }
@@ -254,7 +271,10 @@ export async function runLogoAnimationWorkflow(
     input.referenceLogoUrl,
     options.abortSignal,
   );
-  const preparedFrame = await createPreparedSourceFrame(logoBuffer);
+  const preparedFrame =
+    input.sourceMode === 'exact-frame'
+      ? await createPreparedSourceFrame(logoBuffer)
+      : null;
 
   const strategy = isCurrentAnimationMotionPresetInput(input.motionPreset)
     ? await generateAnimationStrategy({
@@ -267,6 +287,7 @@ export async function runLogoAnimationWorkflow(
     strategy?.object.motionPreset ?? input.motionPreset;
   const prompt = buildAnimationPrompt({
     motionPreset: resolvedMotionPreset,
+    sourceMode: input.sourceMode,
     direction:
       strategy?.object.direction ??
       (input.description?.trim() ||
@@ -275,16 +296,32 @@ export async function runLogoAnimationWorkflow(
 
   const generated = await experimental_generateVideo({
     model: google.video(input.model),
-    prompt: {
-      image: preparedFrame.frame,
-      text: prompt,
-    },
+    prompt:
+      input.sourceMode === 'exact-frame'
+        ? {
+            image: preparedFrame?.frame ?? logoBuffer,
+            text: prompt,
+          }
+        : prompt,
     aspectRatio: '16:9',
     resolution: '1280x720',
     duration: 8,
     providerOptions: {
       google: {
         pollTimeoutMs: 600_000,
+        ...(input.sourceMode === 'subject-reference'
+          ? {
+              referenceImages: [
+                {
+                  image: {
+                    bytesBase64Encoded: logoBuffer.toString('base64'),
+                    mimeType: 'image/png',
+                  },
+                  referenceType: 'asset',
+                },
+              ],
+            }
+          : {}),
       },
     },
     abortSignal: options.abortSignal,
@@ -304,7 +341,7 @@ export async function runLogoAnimationWorkflow(
     uploadedStoragePaths.push(uploadedVideo.storagePath);
 
     const uploadedThumbnail = await uploadBufferToStorage({
-      buffer: preparedFrame.frame,
+      buffer: preparedFrame?.frame ?? logoBuffer,
       contentType: 'image/png',
       domain: input.domain,
       storage: input.storage,
