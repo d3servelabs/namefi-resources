@@ -74,8 +74,11 @@ interface GenerationDetailsClientProps {
   error?: string;
 }
 
+const detailActionButtonClassName =
+  'min-h-11 w-full justify-center gap-2 px-4 text-center leading-tight whitespace-normal [&_svg]:shrink-0';
+
 const logoCtaButtonClassName =
-  'h-11 flex-1 rounded-full border border-brand-primary/20 bg-brand-primary px-4 text-sm font-semibold text-primary-foreground shadow-[0_14px_28px_-18px_rgba(16,185,129,0.75)] transition-colors hover:bg-brand-primary/90';
+  'min-h-11 w-full justify-center gap-2 border border-brand-primary/20 bg-brand-primary px-5 text-center text-sm font-semibold leading-tight whitespace-normal text-primary-foreground shadow-[0_14px_28px_-18px_rgba(16,185,129,0.75)] transition-colors hover:bg-brand-primary/90 [&_svg]:shrink-0';
 
 function resolveAnimationMotionPresetId(
   generation: GenerationData | undefined,
@@ -491,19 +494,19 @@ export function GenerationDetailsClient({
             {/* Actions */}
             <div className="space-y-3">
               {generation.type === 'logo' && (
-                <div className="flex flex-col gap-1.5 sm:flex-row">
+                <div className="grid gap-2">
                   <Button
                     className={logoCtaButtonClassName}
                     onClick={handleCreatePoster}
                   >
-                    <Sparkles className="mr-2 h-4 w-4" />
+                    <Sparkles className="h-4 w-4" />
                     Create Poster
                   </Button>
                   <Button
                     className={logoCtaButtonClassName}
                     onClick={handleCreateAnimation}
                   >
-                    <Clapperboard className="mr-2 h-4 w-4" />
+                    <Clapperboard className="h-4 w-4" />
                     Animate Logo
                   </Button>
                 </div>
@@ -511,31 +514,32 @@ export function GenerationDetailsClient({
               <div className="flex flex-col gap-2">
                 <Button
                   onClick={handleDownload}
-                  className="w-full"
+                  className={detailActionButtonClassName}
                   disabled={!generation.url}
                 >
-                  <Download className="mr-2 h-4 w-4" />
+                  <Download className="h-4 w-4" />
                   Download
                 </Button>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className={detailActionButtonClassName}
                     title="Share on Twitter"
                     onClick={() => {
                       shareDialog.openDialog(domain as any);
                       setIsDialogOpen(true);
                     }}
                   >
-                    <TwitterIcon className="mr-2 h-4 w-4 rounded" />
+                    <TwitterIcon className="h-4 w-4 rounded" />
                     Twitter
                   </Button>
                   <Button
                     variant="outline"
+                    className={detailActionButtonClassName}
                     onClick={handleCopyLink}
                     title="Copy link"
                   >
-                    <Copy className="mr-2 h-4 w-4" />
+                    <Copy className="h-4 w-4" />
                     Copy Link
                   </Button>
                 </div>
@@ -549,12 +553,12 @@ export function GenerationDetailsClient({
                     render={
                       <Button
                         variant="destructive"
-                        className="w-full"
+                        className={detailActionButtonClassName}
                         disabled={deleteMutation.isPending}
                       />
                     }
                   >
-                    <Trash2 className="mr-2 h-4 w-4" />
+                    <Trash2 className="h-4 w-4" />
                     Delete
                   </AlertDialogTrigger>
                   <AlertDialogContent>
