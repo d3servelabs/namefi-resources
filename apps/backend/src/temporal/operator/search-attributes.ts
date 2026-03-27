@@ -201,7 +201,7 @@ export async function validateAndCreateSearchAttributes(): Promise<boolean> {
 
     return isValid;
   } catch (error) {
-    logger.error(error, 'Error during search attributes validation');
+    logger.warn({ error }, 'Error during search attributes validation');
     return false;
   }
 }

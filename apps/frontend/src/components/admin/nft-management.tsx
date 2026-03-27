@@ -1,26 +1,52 @@
 'use client';
-import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
+
+import {
+  type FC,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import type {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/react-table';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDebounceValue } from 'usehooks-ts';
+import { format } from 'date-fns';
+import {
+  AlertTriangle,
+  CirclePlay,
+  Copy,
+  Flame,
+  Loader2,
+  RefreshCw,
+  Wrench,
+} from 'lucide-react';
+import { toast } from 'sonner';
+import type { FilterOperators } from '@samyx/drizzler-filters-sorters';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
+import { getChain } from '@namefi-astra/utils/chains';
 import { AuthRequired } from '@/components/auth-required';
+import { AdminUserLookupButton } from '@/components/admin/user-details';
+import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { NetworkLogo } from '@/components/network-logo';
 import { PageShell } from '@/components/page-shell';
-import { Table, Td, Th, Thead, Tr } from '@/components/table';
+import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+  convertToDrizzlerFilterOptions,
+  type DrizzlerFilterState,
+  useDrizzlerServerFilterStrategy,
+} from '@/components/table/filters';
+import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { TableBody } from '@/components/ui/shadcn/table';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/shadcn/accordion';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,170 +58,583 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/shadcn/alert-dialog';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { Label } from '@/components/ui/shadcn/label';
+import { Badge } from '@/components/ui/shadcn/badge';
+import { Button } from '@/components/ui/shadcn/button';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/shadcn/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/shadcn/dialog';
-import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/lib/trpc';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { type FC, useState, useCallback } from 'react';
-import { toast } from 'sonner';
-import { format } from 'date-fns';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
-  Flame,
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-  ChevronsLeft,
-  ChevronsRight,
-  Filter,
-  ArrowUpDown,
-  SortAsc,
-  SortDesc,
-  Hash,
-  List,
-  Globe,
-  Calendar,
-  Link,
-  Eye,
-  AlertTriangle,
-  RefreshCw,
-  Wrench,
-  Clock,
-  ChevronDown,
-  ChevronUp,
-  CirclePlay,
-} from 'lucide-react';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/shadcn/table';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
+import { UserWalletAvatar } from '@/components/user-avatar';
+import { useAuth } from '@/hooks/use-auth';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+
+type NftManagementRow =
+  AppRouterOutput['admin']['getNftsWithExpirationStatus']['data'][number];
+
+type WorkflowRow = {
+  domainName: string;
+  chainId: number;
+  workflowId: string;
+  startTime: Date | string | null;
+  status: string;
+};
+
+const DEFAULT_COLUMN_VISIBILITY: VisibilityState = {
+  normalizedDomainName: true,
+  chainId: true,
+  ownerAddress: true,
+  domainStatus: true,
+  nftStatus: true,
+  nftExpirationTime: true,
+  domainExpirationTime: true,
+  dateState: true,
+  registrarKey: true,
+  actions: true,
+  userId: false,
+  displayName: false,
+  primaryEmail: false,
+  privyUserId: false,
+  isPoweredByNamefiDomain: false,
+  canBurn: false,
+  hasMissingData: false,
+  hasDateMismatch: false,
+  needsExpirationReview: false,
+  isExpired: false,
+  lastIndexedAt: false,
+  asOfBlockNumber: false,
+};
+
+const BOOLEAN_FILTER_OPTIONS = [
+  { value: 'true', label: 'Yes' },
+  { value: 'false', label: 'No' },
+] as const;
+const DOMAIN_STATUS_OPTIONS = [
+  { value: 'active', label: 'Active' },
+  { value: 'expired', label: 'Expired' },
+  { value: 'not-found', label: 'Not Found' },
+] as const;
+const NFT_STATUS_OPTIONS = [
+  { value: 'active', label: 'Active' },
+  { value: 'expired', label: 'Expired' },
+  { value: 'not-available', label: 'N/A' },
+] as const;
+const DATE_STATE_OPTIONS = [
+  { value: 'match', label: 'Match' },
+  { value: 'missing-data', label: 'Missing Data' },
+  { value: 'date-mismatch', label: 'Date Mismatch' },
+] as const;
+const REQUIRED_SELECT_OPERATORS: FilterOperators[] = ['eq', 'neq'];
+
+const LOADING_ROW_KEYS = [
+  'nft-loading-1',
+  'nft-loading-2',
+  'nft-loading-3',
+  'nft-loading-4',
+  'nft-loading-5',
+  'nft-loading-6',
+] as const;
+
+const formatDateOnly = (value: Date | string | null | undefined) => {
+  if (!value) return '-';
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+
+  return format(date, 'yyyy-MM-dd');
+};
+
+const formatWorkflowDate = (value: Date | string | null | undefined) => {
+  if (!value) return 'N/A';
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'N/A';
+
+  return format(date, 'yyyy-MM-dd HH:mm');
+};
+
+const attemptGetChecksummedAddress = (address: string): string => {
+  const parsed = checksumWalletAddressSchema.safeParse(address);
+  return parsed.success ? parsed.data : address;
+};
+
+const getDomainStatusLabel = (
+  domainStatus: NftManagementRow['domainStatus'],
+) => {
+  switch (domainStatus) {
+    case 'expired':
+      return 'Expired';
+    case 'not-found':
+      return 'Not Found';
+    default:
+      return 'Active';
+  }
+};
+
+const getNftStatusLabel = (nftStatus: NftManagementRow['nftStatus']) => {
+  switch (nftStatus) {
+    case 'expired':
+      return 'Expired';
+    case 'not-available':
+      return 'N/A';
+    default:
+      return 'Active';
+  }
+};
+
+const getDateStateLabel = (dateState: NftManagementRow['dateState']) => {
+  switch (dateState) {
+    case 'missing-data':
+      return 'Missing Data';
+    case 'date-mismatch':
+      return 'Date Mismatch';
+    default:
+      return 'Match';
+  }
+};
 
 const LoadingSkeletons: FC = () => (
-  <div className="flex flex-col gap-4">
-    {Array.from({ length: 5 }).map((_, index) => (
-      <div
-        key={index}
-        className="flex items-center space-x-4 p-4 border rounded-lg"
-      >
-        <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[100px]" />
-        <Skeleton className="h-4 w-[150px]" />
-        <Skeleton className="h-4 w-[120px]" />
-        <Skeleton className="h-4 w-[120px]" />
-        <Skeleton className="h-8 w-[80px]" />
+  <Card>
+    <CardHeader className="space-y-3">
+      <Skeleton className="h-7 w-52" />
+      <Skeleton className="h-4 w-80" />
+    </CardHeader>
+    <CardContent className="space-y-4">
+      <div className="flex items-center justify-between gap-4">
+        <Skeleton className="h-9 w-72" />
+        <div className="flex gap-2">
+          <Skeleton className="h-9 w-24" />
+          <Skeleton className="h-9 w-24" />
+        </div>
       </div>
-    ))}
-  </div>
+      <div className="space-y-3">
+        {LOADING_ROW_KEYS.map((key) => (
+          <Skeleton key={key} className="h-12 w-full" />
+        ))}
+      </div>
+    </CardContent>
+  </Card>
 );
 
-function NftManagementContent() {
+function BurnActionButton(props: {
+  row: NftManagementRow;
+  isBurning: boolean;
+  isBurnWorkflowActive: boolean;
+  onBurn: (normalizedDomainName: string, chainId: number) => void;
+}) {
+  const { row, isBurning, isBurnWorkflowActive, onBurn } = props;
+
+  if (!row.canBurn) {
+    return null;
+  }
+
+  if (isBurnWorkflowActive) {
+    return (
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              variant="outline"
+              size="sm"
+              disabled
+              className="border-red-200 text-red-400"
+            />
+          }
+        >
+          <Flame className="h-3 w-3" />
+          Burn
+        </TooltipTrigger>
+        <TooltipContent>
+          A burn workflow is already in progress for this domain.
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger
+        render={
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={isBurning}
+            className="border border-red-200 bg-red-900/10 text-red-600 hover:bg-red-900/20"
+          />
+        }
+      >
+        <Flame className="h-3 w-3" />
+        {isBurning ? 'Burning...' : 'Burn'}
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Burn NFT</AlertDialogTitle>
+          <AlertDialogDescription>
+            Burn the NFT for <strong>{row.normalizedDomainName}</strong>? This
+            action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={() => onBurn(row.normalizedDomainName, row.chainId)}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            Burn NFT
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+function FixExpirationActionButton(props: {
+  row: NftManagementRow;
+  isPending: boolean;
+  onFix: (normalizedDomainName: string, chainId: number) => void;
+}) {
+  const { row, isPending, onFix } = props;
+
+  if (!row.needsExpirationReview) {
+    return null;
+  }
+
+  const isDateMismatchFixable =
+    row.hasDateMismatch && !row.hasMissingData && !row.isPoweredByNamefiDomain;
+
+  if (!isDateMismatchFixable) {
+    return (
+      <Tooltip>
+        <TooltipTrigger
+          render={<Button variant="outline" size="sm" disabled />}
+        >
+          <AlertTriangle className="h-3 w-3" />
+          Cannot Fix
+        </TooltipTrigger>
+        <TooltipContent>
+          Cannot fix when expiration data is missing.
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => onFix(row.normalizedDomainName, row.chainId)}
+      disabled={isPending}
+    >
+      <Wrench className="h-3 w-3" />
+      {isPending ? 'Fixing...' : 'Fix'}
+    </Button>
+  );
+}
+
+function RenewActionButton(props: { row: NftManagementRow }) {
+  const { row } = props;
+
+  if (row.canBurn || row.hasMissingData) {
+    return null;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger render={<Button variant="outline" size="sm" disabled />}>
+        <RefreshCw className="h-3 w-3" />
+        Renew
+      </TooltipTrigger>
+      <TooltipContent>
+        Domain renewal is not yet implemented here.
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function NftActionsCell(props: {
+  row: NftManagementRow;
+  isBurning: boolean;
+  isBurnWorkflowActive: boolean;
+  isFixPending: boolean;
+  onBurn: (normalizedDomainName: string, chainId: number) => void;
+  onFix: (normalizedDomainName: string, chainId: number) => void;
+}) {
+  const { row, isBurning, isBurnWorkflowActive, isFixPending, onBurn, onFix } =
+    props;
+
+  return (
+    <div className="flex flex-wrap gap-1">
+      <BurnActionButton
+        row={row}
+        isBurning={isBurning}
+        isBurnWorkflowActive={isBurnWorkflowActive}
+        onBurn={onBurn}
+      />
+      <FixExpirationActionButton
+        row={row}
+        isPending={isFixPending}
+        onFix={onFix}
+      />
+      <RenewActionButton row={row} />
+    </div>
+  );
+}
+
+function WorkflowTableSection(props: {
+  value: string;
+  title: string;
+  count: number;
+  workflows: WorkflowRow[] | undefined;
+  emptyMessage: string;
+  accentClassName: string;
+}) {
+  const { value, title, count, workflows, emptyMessage, accentClassName } =
+    props;
+
+  return (
+    <AccordionItem value={value}>
+      <AccordionTrigger>
+        <div className="flex items-center gap-2 text-left">
+          <span>{title}</span>
+          <Badge variant="secondary">{count}</Badge>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent>
+        {workflows && workflows.length > 0 ? (
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Domain</TableHead>
+                  <TableHead>Chain</TableHead>
+                  <TableHead>Workflow ID</TableHead>
+                  <TableHead>Started</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {workflows.map((workflow) => (
+                  <TableRow key={workflow.workflowId}>
+                    <TableCell className="font-medium">
+                      <TruncatedTextWithHover maxLength={28}>
+                        {workflow.domainName}
+                      </TruncatedTextWithHover>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{workflow.chainId}</Badge>
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">
+                      <TruncatedTextWithHover maxLength={24}>
+                        {workflow.workflowId}
+                      </TruncatedTextWithHover>
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {formatWorkflowDate(workflow.startTime)}
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={accentClassName}>
+                        {workflow.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        ) : (
+          <p className="py-4 text-sm text-muted-foreground">{emptyMessage}</p>
+        )}
+      </AccordionContent>
+    </AccordionItem>
+  );
+}
+
+function ActiveWorkflowsDialog(props: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  burnWorkflows: WorkflowRow[] | undefined;
+  fixWorkflows: WorkflowRow[] | undefined;
+  extendWorkflows: WorkflowRow[] | undefined;
+}) {
+  const { open, onOpenChange, burnWorkflows, fixWorkflows, extendWorkflows } =
+    props;
+
+  const totalActiveWorkflows =
+    (burnWorkflows?.length ?? 0) +
+    (fixWorkflows?.length ?? 0) +
+    (extendWorkflows?.length ?? 0);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[80vh] max-w-[95vw] overflow-y-auto lg:max-w-5xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <CirclePlay className="h-5 w-5" />
+            Active Workflows ({totalActiveWorkflows})
+          </DialogTitle>
+        </DialogHeader>
+
+        <Accordion multiple defaultValue={['burn', 'fix', 'extend']}>
+          <WorkflowTableSection
+            value="burn"
+            title="Burn NFT Workflows"
+            count={burnWorkflows?.length ?? 0}
+            workflows={burnWorkflows}
+            emptyMessage="No active burn workflows"
+            accentClassName="bg-red-100 text-red-800 hover:bg-red-100"
+          />
+          <WorkflowTableSection
+            value="fix"
+            title="Fix NFT Expiration Workflows"
+            count={fixWorkflows?.length ?? 0}
+            workflows={fixWorkflows}
+            emptyMessage="No active fix expiration workflows"
+            accentClassName="bg-blue-100 text-blue-800 hover:bg-blue-100"
+          />
+          <WorkflowTableSection
+            value="extend"
+            title="Extend Registration Workflows"
+            count={extendWorkflows?.length ?? 0}
+            workflows={extendWorkflows}
+            emptyMessage="No active extend registration workflows"
+            accentClassName="bg-green-100 text-green-800 hover:bg-green-100"
+          />
+        </Accordion>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function NftManagementTable() {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(20);
-  const [sortBy, setSortBy] = useState<
-    'domainName' | 'nftExpiration' | 'domainExpiration' | 'chainId'
-  >('domainName');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [filterBy, setFilterBy] = useState<
-    'all' | 'expired' | 'canBurn' | 'dateMismatch' | 'missingData'
-  >('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [excludePoweredByNamefiDomains, setExcludePoweredByNamefiDomains] =
-    useState(false);
-  const [burnInProgress, setBurnInProgress] = useState<Set<string>>(new Set());
   const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
-
-  // Separate state for applied filters vs pending filter changes
-  const [appliedFilters, setAppliedFilters] = useState({
-    filterBy: 'all' as
-      | 'all'
-      | 'expired'
-      | 'canBurn'
-      | 'dateMismatch'
-      | 'missingData',
-    sortBy: 'domainName' as
-      | 'domainName'
-      | 'nftExpiration'
-      | 'domainExpiration'
-      | 'chainId',
-    sortOrder: 'asc' as 'asc' | 'desc',
-    excludePoweredByNamefiDomains: false,
-    searchTerm: '',
-  });
-  const [hasUnappliedChanges, setHasUnappliedChanges] = useState(false);
-
-  const { data, isLoading, isFetching } = useQuery({
-    ...trpc.admin.getNftsWithExpirationStatus.queryOptions({
-      page,
-      limit,
-      sortBy: appliedFilters.sortBy,
-      sortOrder: appliedFilters.sortOrder,
-      filterBy: appliedFilters.filterBy,
-      searchTerm: appliedFilters.searchTerm || undefined,
-      excludePoweredByNamefiDomains:
-        appliedFilters.excludePoweredByNamefiDomains,
-    }),
-    placeholderData: (previousData) => previousData, // Keep previous data while loading
-  });
-
-  // Query for active workflows
-  const { data: activeBurnWorkflows, isLoading: loadingBurnWorkflows } =
-    useQuery({
-      ...trpc.admin.getActiveBurnWorkflows.queryOptions(),
-      refetchInterval: 5000, // Refresh every 5 seconds
-    });
-
-  const { data: activeFixExpirationWorkflows, isLoading: loadingFixWorkflows } =
-    useQuery({
-      ...trpc.admin.getActiveFixExpirationWorkflows.queryOptions(),
-      refetchInterval: 5000, // Refresh every 5 seconds
-    });
+  const [burnInProgress, setBurnInProgress] = useState<Set<string>>(
+    () => new Set(),
+  );
 
   const {
-    data: activeExtendRegistrationWorkflows,
-    isLoading: loadingExtendWorkflows,
-  } = useQuery({
-    ...trpc.admin.getActiveExtendRegistrationWorkflows.queryOptions(),
-    refetchInterval: 5000, // Refresh every 5 seconds
+    preferences: { sorting, pageSize, columnVisibility },
+    setSorting,
+    setPageSize,
+    setColumnVisibility,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: 'admin-nft-management',
+    defaultPreferences: {
+      sorting: [{ id: 'normalizedDomainName', desc: false }],
+      pageSize: 25,
+      columnVisibility: DEFAULT_COLUMN_VISIBILITY,
+    },
   });
 
-  // Keep track of the last known pagination info
-  const totalPages = data?.pagination.totalPages ?? 0;
-  const totalCount = data?.pagination.totalCount ?? 0;
+  const [drizzlerFilterState, setDrizzlerFilterState] =
+    useState<DrizzlerFilterState>({
+      columnFilters: {},
+      customFilters: {},
+    });
+  const [debouncedDrizzlerFilterState] = useDebounceValue(
+    drizzlerFilterState,
+    500,
+  );
+  const [debouncedSearchTerm] = useDebounceValue(searchTerm, 300);
+
+  const backendFilters = useMemo(
+    () =>
+      convertToDrizzlerFilterOptions(
+        debouncedDrizzlerFilterState.columnFilters,
+      ),
+    [debouncedDrizzlerFilterState],
+  );
+
+  const backendSorting = useMemo(() => {
+    if (!sorting || sorting.length === 0) return undefined;
+
+    return sorting.map((sort) => ({
+      column: sort.id,
+      order: sort.desc ? ('desc' as const) : ('asc' as const),
+    }));
+  }, [sorting]);
+
+  const nftStatusQuery = useQuery(
+    trpc.admin.getNftsWithExpirationStatus.queryOptions(
+      {
+        page,
+        pageSize,
+        searchTerm: debouncedSearchTerm || undefined,
+        filters: backendFilters,
+        sorting: backendSorting,
+      },
+      {
+        placeholderData: (previousData) => previousData,
+      },
+    ),
+  );
+
+  const workflowQueryOptions = useMemo(
+    () => ({
+      refetchInterval: (query: { state: { error: unknown } }) =>
+        query.state.error ? false : workflowModalOpen ? 5000 : 30000,
+      retry: 2,
+      retryDelay: 1000,
+      refetchOnWindowFocus: workflowModalOpen,
+      refetchIntervalInBackground: workflowModalOpen,
+    }),
+    [workflowModalOpen],
+  );
+
+  const burnWorkflowsQuery = useQuery({
+    ...trpc.admin.getActiveBurnWorkflows.queryOptions(),
+    ...workflowQueryOptions,
+  });
+  const fixWorkflowsQuery = useQuery({
+    ...trpc.admin.getActiveFixExpirationWorkflows.queryOptions(),
+    ...workflowQueryOptions,
+  });
+  const extendWorkflowsQuery = useQuery({
+    ...trpc.admin.getActiveExtendRegistrationWorkflows.queryOptions(),
+    ...workflowQueryOptions,
+  });
 
   const burnNftMutation = useMutation(
     trpc.admin.burnNft.mutationOptions({
-      onSuccess: (result) => {
+      onSuccess: async (result) => {
         toast.success(`NFT burn workflow started: ${result.workflowId}`);
-        // Refetch the data to update the table
-        queryClient.invalidateQueries({
-          queryKey: ['admin.getNftsWithExpirationStatus'],
+        await queryClient.invalidateQueries({
+          queryKey: trpc.admin.getNftsWithExpirationStatus.queryKey(),
         });
       },
       onError: (error) => {
         toast.error(`Failed to burn NFT: ${error.message}`);
       },
       onSettled: (_, __, variables) => {
-        // Remove from burn in progress set
-        setBurnInProgress((prev) => {
-          const next = new Set(prev);
+        setBurnInProgress((previous) => {
+          const next = new Set(previous);
           next.delete(`${variables.normalizedDomainName}-${variables.chainId}`);
           return next;
         });
@@ -205,10 +644,10 @@ function NftManagementContent() {
 
   const fixNftExpirationMutation = useMutation(
     trpc.admin.fixNftExpiration.mutationOptions({
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success('NFT expiration fix workflow started');
-        queryClient.invalidateQueries({
-          queryKey: ['admin.getNftsWithExpirationStatus'],
+        await queryClient.invalidateQueries({
+          queryKey: trpc.admin.getNftsWithExpirationStatus.queryKey(),
         });
       },
       onError: (error) => {
@@ -217,1028 +656,617 @@ function NftManagementContent() {
     }),
   );
 
-  const handleBurnNft = async (
-    normalizedDomainName: string,
-    chainId: number,
-  ) => {
-    const key = `${normalizedDomainName}-${chainId}`;
-    setBurnInProgress((prev) => new Set([...prev, key]));
-
-    try {
-      await burnNftMutation.mutateAsync({
-        normalizedDomainName,
-        chainId,
-      });
-    } catch {
-      // Error handling is done in onError callback
-    }
-  };
-
-  const applyFilters = useCallback(() => {
-    setAppliedFilters({
-      filterBy,
-      sortBy,
-      sortOrder,
-      excludePoweredByNamefiDomains,
-      searchTerm,
-    });
-    setPage(1);
-    setHasUnappliedChanges(false);
-  }, [filterBy, sortBy, sortOrder, excludePoweredByNamefiDomains, searchTerm]);
-
-  const handleSearch = useCallback(() => {
-    applyFilters();
-  }, [applyFilters]);
-
-  const handleFilterChange = useCallback(
-    (
-      value:
-        | 'all'
-        | 'expired'
-        | 'canBurn'
-        | 'dateMismatch'
-        | 'missingData'
-        | null,
-    ) => {
-      if (!value) return;
-      setFilterBy(value);
-      setHasUnappliedChanges(true);
-    },
-    [],
+  const activeBurnWorkflowKeys = useMemo(
+    () =>
+      new Set(
+        (burnWorkflowsQuery.data ?? []).map(
+          (workflow) => `${workflow.domainName}-${workflow.chainId}`,
+        ),
+      ),
+    [burnWorkflowsQuery.data],
   );
 
-  const handleSortByChange = useCallback(
-    (
-      value:
-        | 'domainName'
-        | 'nftExpiration'
-        | 'domainExpiration'
-        | 'chainId'
-        | null,
-    ) => {
-      if (!value) return;
-      setSortBy(value);
-      setHasUnappliedChanges(true);
-    },
-    [],
-  );
-
-  const handleSortOrderChange = useCallback((value: 'asc' | 'desc' | null) => {
-    if (!value) return;
-    setSortOrder(value);
-    setHasUnappliedChanges(true);
-  }, []);
-
-  const handleExcludeToggle = useCallback((checked: boolean) => {
-    setExcludePoweredByNamefiDomains(checked);
-    setHasUnappliedChanges(true);
-  }, []);
-
-  const handleLimitChange = useCallback((value: string | null) => {
-    if (!value) return;
-    setLimit(Number(value));
-    setPage(1);
-  }, []);
-
-  const handleFirstPage = useCallback(() => {
-    setPage(1);
-  }, []);
-
-  const handleLastPage = useCallback(() => {
-    setPage(totalPages);
-  }, [totalPages]);
-
-  const formatDate = (date: Date | null) => {
-    if (!date) return 'N/A';
-    return format(new Date(date), 'MMM do, yyyy');
-  };
-
-  // Helper functions for workflow status
-  const isInActiveBurnWorkflow = (domainName: string, chainId: number) => {
-    return (
-      activeBurnWorkflows?.some(
-        (workflow) =>
-          workflow.domainName === domainName && workflow.chainId === chainId,
-      ) ?? false
-    );
-  };
-
-  const getTotalActiveWorkflows = () => {
-    const burnCount = activeBurnWorkflows?.length ?? 0;
-    const fixCount = activeFixExpirationWorkflows?.length ?? 0;
-    const extendCount = activeExtendRegistrationWorkflows?.length ?? 0;
-    return burnCount + fixCount + extendCount;
-  };
+  const totalActiveWorkflows =
+    (burnWorkflowsQuery.data?.length ?? 0) +
+    (fixWorkflowsQuery.data?.length ?? 0) +
+    (extendWorkflowsQuery.data?.length ?? 0);
 
   const isWorkflowsLoading =
-    loadingBurnWorkflows || loadingFixWorkflows || loadingExtendWorkflows;
+    burnWorkflowsQuery.isLoading ||
+    fixWorkflowsQuery.isLoading ||
+    extendWorkflowsQuery.isLoading;
 
-  const handleFixNftExpiration = async (
-    normalizedDomainName: string,
-    chainId: number,
-  ) => {
-    try {
-      await fixNftExpirationMutation.mutateAsync({
-        normalizedDomainName,
-        chainId,
-      });
-    } catch {
-      // Error handling is done in onError callback
-    }
-  };
-
-  const getDomainStatus = (domainExpiration: Date | null) => {
-    if (!domainExpiration) {
-      return <Badge variant="destructive">Not Found</Badge>;
-    }
-    return domainExpiration < new Date() ? (
-      <Badge variant="destructive">Expired</Badge>
-    ) : (
-      <Badge variant="default">Active</Badge>
+  useEffect(() => {
+    const totalPages = Math.max(
+      nftStatusQuery.data?.pagination.totalPages ?? 1,
+      1,
     );
-  };
-
-  const getNftStatus = (nftExpiration: Date | null) => {
-    if (!nftExpiration) {
-      return <Badge variant="secondary">N/A</Badge>;
+    if (page < 1) {
+      setPage(1);
+      return;
     }
-    return nftExpiration < new Date() ? (
-      <Badge variant="destructive">Expired</Badge>
-    ) : (
-      <Badge variant="default">Active</Badge>
-    );
-  };
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [page, nftStatusQuery.data?.pagination.totalPages]);
 
-  // Render the workflows modal
-  const renderWorkflowsModal = () => (
-    <Dialog
-      open={workflowModalOpen}
-      onOpenChange={setWorkflowModalOpen}
-      modal={true}
-    >
-      <DialogContent className="max-w-[95vw] max-h-[80vh] overflow-y-auto w-full">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <CirclePlay className="h-5 w-5" />
-            Active Workflows ({getTotalActiveWorkflows()})
-          </DialogTitle>
-        </DialogHeader>
+  const handleSearchChange = useCallback((value: string) => {
+    setPage(1);
+    setSearchTerm(value);
+  }, []);
 
-        <div className="space-y-4">
-          <Accordion multiple defaultValue={['burn', 'fix', 'extend']}>
-            {/* Burn Workflows */}
-            <AccordionItem value="burn">
-              <AccordionTrigger className="text-left">
-                <div className="flex items-center gap-2">
-                  <Flame className="h-4 w-4 text-red-500" />
-                  <span>Burn NFT Workflows</span>
-                  <Badge variant="secondary" className="ml-2">
-                    {activeBurnWorkflows?.length ?? 0}
-                  </Badge>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                {activeBurnWorkflows && activeBurnWorkflows.length > 0 ? (
-                  <div className="rounded-md border overflow-x-auto">
-                    <Table className="min-w-full">
-                      <Thead>
-                        <Tr>
-                          <Th className="text-xs w-[35%]">Domain</Th>
-                          <Th className="text-xs w-[10%]">Chain ID</Th>
-                          <Th className="text-xs w-[25%]">Workflow ID</Th>
-                          <Th className="text-xs w-[20%]">Started</Th>
-                          <Th className="text-xs w-[10%]">Status</Th>
-                        </Tr>
-                      </Thead>
-                      <TableBody>
-                        {activeBurnWorkflows.map((workflow) => (
-                          <Tr key={workflow.workflowId}>
-                            <Td className="font-medium text-xs">
-                              <TruncatedTextWithHover maxLength={25}>
-                                {workflow.domainName}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td>
-                              <Badge variant="outline" className="text-xs">
-                                {workflow.chainId}
-                              </Badge>
-                            </Td>
-                            <Td className="font-mono text-xs">
-                              <TruncatedTextWithHover maxLength={15}>
-                                {workflow.workflowId}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td className="text-xs">
-                              {workflow.startTime
-                                ? formatDate(new Date(workflow.startTime))
-                                : 'N/A'}
-                            </Td>
-                            <Td>
-                              <Badge
-                                variant="default"
-                                className="bg-yellow-100 text-yellow-800 text-xs"
-                              >
-                                {workflow.status}
-                              </Badge>
-                            </Td>
-                          </Tr>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground py-4">
-                    No active burn workflows
-                  </p>
-                )}
-              </AccordionContent>
-            </AccordionItem>
+  const handleSortingChange = useCallback(
+    (updater: SetStateAction<SortingState>) => {
+      setPage(1);
+      setSorting(updater);
+    },
+    [setSorting],
+  );
 
-            {/* Fix Expiration Workflows */}
-            <AccordionItem value="fix">
-              <AccordionTrigger className="text-left">
-                <div className="flex items-center gap-2">
-                  <Wrench className="h-4 w-4 text-blue-500" />
-                  <span>Fix NFT Expiration Workflows</span>
-                  <Badge variant="secondary" className="ml-2">
-                    {activeFixExpirationWorkflows?.length ?? 0}
-                  </Badge>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                {activeFixExpirationWorkflows &&
-                activeFixExpirationWorkflows.length > 0 ? (
-                  <div className="rounded-md border overflow-x-auto">
-                    <Table className="min-w-full">
-                      <Thead>
-                        <Tr>
-                          <Th className="text-xs w-[35%]">Domain</Th>
-                          <Th className="text-xs w-[10%]">Chain ID</Th>
-                          <Th className="text-xs w-[25%]">Workflow ID</Th>
-                          <Th className="text-xs w-[20%]">Started</Th>
-                          <Th className="text-xs w-[10%]">Status</Th>
-                        </Tr>
-                      </Thead>
-                      <TableBody>
-                        {activeFixExpirationWorkflows.map((workflow) => (
-                          <Tr key={workflow.workflowId}>
-                            <Td className="font-medium text-xs">
-                              <TruncatedTextWithHover maxLength={25}>
-                                {workflow.domainName}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td>
-                              <Badge variant="outline" className="text-xs">
-                                {workflow.chainId}
-                              </Badge>
-                            </Td>
-                            <Td className="font-mono text-xs">
-                              <TruncatedTextWithHover maxLength={15}>
-                                {workflow.workflowId}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td className="text-xs">
-                              {workflow.startTime
-                                ? formatDate(new Date(workflow.startTime))
-                                : 'N/A'}
-                            </Td>
-                            <Td>
-                              <Badge
-                                variant="default"
-                                className="bg-blue-100 text-blue-800 text-xs"
-                              >
-                                {workflow.status}
-                              </Badge>
-                            </Td>
-                          </Tr>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground py-4">
-                    No active fix expiration workflows
-                  </p>
-                )}
-              </AccordionContent>
-            </AccordionItem>
+  const handleBurnNft = useCallback(
+    async (normalizedDomainName: string, chainId: number) => {
+      const rowKey = `${normalizedDomainName}-${chainId}`;
+      setBurnInProgress((previous) => new Set(previous).add(rowKey));
 
-            {/* Extend Registration Workflows */}
-            <AccordionItem value="extend">
-              <AccordionTrigger className="text-left">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-green-500" />
-                  <span>Extend Registration Workflows</span>
-                  <Badge variant="secondary" className="ml-2">
-                    {activeExtendRegistrationWorkflows?.length ?? 0}
-                  </Badge>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                {activeExtendRegistrationWorkflows &&
-                activeExtendRegistrationWorkflows.length > 0 ? (
-                  <div className="rounded-md border overflow-x-auto">
-                    <Table className="min-w-full">
-                      <Thead>
-                        <Tr>
-                          <Th className="text-xs w-[35%]">Domain</Th>
-                          <Th className="text-xs w-[10%]">Chain ID</Th>
-                          <Th className="text-xs w-[25%]">Workflow ID</Th>
-                          <Th className="text-xs w-[20%]">Started</Th>
-                          <Th className="text-xs w-[10%]">Status</Th>
-                        </Tr>
-                      </Thead>
-                      <TableBody>
-                        {activeExtendRegistrationWorkflows.map((workflow) => (
-                          <Tr key={workflow.workflowId}>
-                            <Td className="font-medium text-xs">
-                              <TruncatedTextWithHover maxLength={25}>
-                                {workflow.domainName}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td>
-                              <Badge variant="outline" className="text-xs">
-                                {workflow.chainId}
-                              </Badge>
-                            </Td>
-                            <Td className="font-mono text-xs">
-                              <TruncatedTextWithHover maxLength={15}>
-                                {workflow.workflowId}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td className="text-xs">
-                              {workflow.startTime
-                                ? formatDate(new Date(workflow.startTime))
-                                : 'N/A'}
-                            </Td>
-                            <Td>
-                              <Badge
-                                variant="default"
-                                className="bg-green-100 text-green-800 text-xs"
-                              >
-                                {workflow.status}
-                              </Badge>
-                            </Td>
-                          </Tr>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground py-4">
-                    No active extend registration workflows
-                  </p>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </DialogContent>
-    </Dialog>
+      try {
+        await burnNftMutation.mutateAsync({
+          normalizedDomainName,
+          chainId,
+        });
+      } catch {
+        // handled by mutation callbacks
+      }
+    },
+    [burnNftMutation],
+  );
+
+  const handleFixNftExpiration = useCallback(
+    async (normalizedDomainName: string, chainId: number) => {
+      try {
+        await fixNftExpirationMutation.mutateAsync({
+          normalizedDomainName,
+          chainId,
+        });
+      } catch {
+        // handled by mutation callbacks
+      }
+    },
+    [fixNftExpirationMutation],
+  );
+
+  const filterStrategy = useDrizzlerServerFilterStrategy<NftManagementRow>({
+    filterConfig: {
+      normalizedDomainName: {
+        id: 'normalizedDomainName',
+        label: 'Domain',
+        type: 'text',
+        columnId: 'normalizedDomainName',
+      },
+      ownerAddress: {
+        id: 'ownerAddress',
+        label: 'Owner Address',
+        type: 'text',
+        columnId: 'ownerAddress',
+      },
+      domainStatus: {
+        id: 'domainStatus',
+        label: 'Domain Status',
+        type: 'select',
+        columnId: 'domainStatus',
+        options: [...DOMAIN_STATUS_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      nftStatus: {
+        id: 'nftStatus',
+        label: 'NFT Status',
+        type: 'select',
+        columnId: 'nftStatus',
+        options: [...NFT_STATUS_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      chainId: {
+        id: 'chainId',
+        label: 'Chain',
+        type: 'number',
+        columnId: 'chainId',
+        allowedOperators: ['eq', 'neq'],
+      },
+      nftExpirationTime: {
+        id: 'nftExpirationTime',
+        label: 'NFT Expiration',
+        type: 'date',
+        columnId: 'nftExpirationTime',
+      },
+      domainExpirationTime: {
+        id: 'domainExpirationTime',
+        label: 'Domain Expiration',
+        type: 'date',
+        columnId: 'domainExpirationTime',
+      },
+      registrarKey: {
+        id: 'registrarKey',
+        label: 'Registrar',
+        type: 'text',
+        columnId: 'registrarKey',
+      },
+      isExpired: {
+        id: 'isExpired',
+        label: 'Has Any Expired Status',
+        type: 'select',
+        columnId: 'isExpired',
+        options: [...BOOLEAN_FILTER_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      canBurn: {
+        id: 'canBurn',
+        label: 'Can Burn',
+        type: 'select',
+        columnId: 'canBurn',
+        options: [...BOOLEAN_FILTER_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      dateState: {
+        id: 'dateState',
+        label: 'Date State',
+        type: 'select',
+        columnId: 'dateState',
+        options: [...DATE_STATE_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      hasMissingData: {
+        id: 'hasMissingData',
+        label: 'Missing Data',
+        type: 'select',
+        columnId: 'hasMissingData',
+        options: [...BOOLEAN_FILTER_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      hasDateMismatch: {
+        id: 'hasDateMismatch',
+        label: 'Strict Date Mismatch',
+        type: 'select',
+        columnId: 'hasDateMismatch',
+        options: [...BOOLEAN_FILTER_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      needsExpirationReview: {
+        id: 'needsExpirationReview',
+        label: 'Needs Expiration Review',
+        type: 'select',
+        columnId: 'needsExpirationReview',
+        options: [...BOOLEAN_FILTER_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      isPoweredByNamefiDomain: {
+        id: 'isPoweredByNamefiDomain',
+        label: 'Powered by Namefi',
+        type: 'select',
+        columnId: 'isPoweredByNamefiDomain',
+        options: [...BOOLEAN_FILTER_OPTIONS],
+        allowedOperators: REQUIRED_SELECT_OPERATORS,
+      },
+      userId: {
+        id: 'userId',
+        label: 'User ID',
+        type: 'text',
+        columnId: 'userId',
+      },
+      displayName: {
+        id: 'displayName',
+        label: 'Display Name',
+        type: 'text',
+        columnId: 'displayName',
+      },
+      primaryEmail: {
+        id: 'primaryEmail',
+        label: 'Primary Email',
+        type: 'text',
+        columnId: 'primaryEmail',
+      },
+      privyUserId: {
+        id: 'privyUserId',
+        label: 'Privy User ID',
+        type: 'text',
+        columnId: 'privyUserId',
+      },
+    },
+    filterDisplayOptions: { showInHeader: false },
+    onDrizzlerFilterChange: (newFilterState) => {
+      setPage(1);
+      setDrizzlerFilterState(newFilterState);
+    },
+  });
+
+  const columns = useMemo<ColumnDef<NftManagementRow>[]>(
+    () => [
+      {
+        accessorKey: 'chainId',
+        header: 'Chain',
+        cell: ({ row }) => {
+          const chain = getChain(row.original.chainId);
+
+          return (
+            <div className="flex items-center gap-2">
+              <NetworkLogo
+                network={row.original.chainId}
+                className="size-5 bg-transparent"
+              />
+              <span className="text-xs text-muted-foreground">
+                {chain?.name ?? `Chain ${row.original.chainId}`}
+              </span>
+            </div>
+          );
+        },
+        size: 130,
+      },
+      {
+        accessorKey: 'normalizedDomainName',
+        header: 'Domain',
+        cell: ({ row }) => (
+          <div className="flex flex-col gap-1">
+            <AutoTruncateTextV2
+              initialCharactersCountToDisplay={32}
+              minCharactersToDisplay={16}
+              className="font-medium"
+            >
+              {row.original.normalizedDomainName}
+            </AutoTruncateTextV2>
+            {row.original.isPoweredByNamefiDomain ? (
+              <Badge variant="secondary" className="w-fit text-[10px]">
+                Powered by Namefi
+              </Badge>
+            ) : null}
+          </div>
+        ),
+        size: 220,
+      },
+      {
+        accessorKey: 'ownerAddress',
+        header: 'Owner Address',
+        cell: ({ row }) => {
+          const ownerAddress = attemptGetChecksummedAddress(
+            row.original.ownerAddress,
+          );
+
+          const handleCopyWallet = async () => {
+            try {
+              await navigator.clipboard.writeText(ownerAddress);
+              toast.success('Copied address successfully');
+            } catch {
+              toast.error('Failed to copy address');
+            }
+          };
+
+          return (
+            <div className="flex items-center gap-2 rounded-xl bg-muted px-2 py-1.5 max-w-full">
+              <UserWalletAvatar
+                address={ownerAddress}
+                userId={row.original.userId ?? undefined}
+                className="size-6"
+              />
+              <div className="min-w-0 flex-1">
+                <AutoTruncateTextV2
+                  initialCharactersCountToDisplay={16}
+                  minCharactersToDisplay={10}
+                  className="font-mono text-xs"
+                >
+                  {ownerAddress}
+                </AutoTruncateTextV2>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyWallet}
+                className="rounded p-1 transition-colors hover:bg-background"
+                title="Copy address"
+              >
+                <Copy className="h-3 w-3" />
+              </button>
+            </div>
+          );
+        },
+        size: 220,
+      },
+      {
+        accessorKey: 'domainStatus',
+        header: 'Domain Status',
+        enableSorting: false,
+        cell: ({ row }) => {
+          if (row.original.domainStatus === 'not-found') {
+            return <Badge variant="destructive">Not Found</Badge>;
+          }
+
+          return row.original.domainStatus === 'expired' ? (
+            <Badge variant="destructive">Expired</Badge>
+          ) : (
+            <Badge>{getDomainStatusLabel(row.original.domainStatus)}</Badge>
+          );
+        },
+        size: 120,
+      },
+      {
+        accessorKey: 'nftStatus',
+        header: 'NFT Status',
+        enableSorting: false,
+        cell: ({ row }) => {
+          if (row.original.nftStatus === 'not-available') {
+            return <Badge variant="secondary">N/A</Badge>;
+          }
+
+          return row.original.nftStatus === 'expired' ? (
+            <Badge variant="destructive">Expired</Badge>
+          ) : (
+            <Badge>{getNftStatusLabel(row.original.nftStatus)}</Badge>
+          );
+        },
+        size: 120,
+      },
+      {
+        accessorKey: 'nftExpirationTime',
+        header: 'NFT Expiration',
+        cell: ({ row }) => formatDateOnly(row.original.nftExpirationTime),
+        size: 130,
+      },
+      {
+        accessorKey: 'domainExpirationTime',
+        header: 'Domain Expiration',
+        cell: ({ row }) => formatDateOnly(row.original.domainExpirationTime),
+        size: 140,
+      },
+      {
+        id: 'dateState',
+        header: 'Date State',
+        accessorKey: 'dateState',
+        cell: ({ row }) => {
+          const dateState = row.original.dateState;
+
+          if (dateState === 'missing-data') {
+            return <Badge variant="destructive">Missing Data</Badge>;
+          }
+
+          if (dateState === 'date-mismatch') {
+            return (
+              <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
+                Date Mismatch
+              </Badge>
+            );
+          }
+
+          return (
+            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+              {getDateStateLabel(dateState)}
+            </Badge>
+          );
+        },
+        size: 130,
+      },
+      {
+        accessorKey: 'registrarKey',
+        header: 'Registrar',
+        cell: ({ row }) =>
+          row.original.registrarKey ? (
+            <Badge variant="outline">{row.original.registrarKey}</Badge>
+          ) : (
+            <span className="text-muted-foreground">N/A</span>
+          ),
+        size: 130,
+      },
+      {
+        accessorKey: 'displayName',
+        header: 'Display Name',
+        cell: ({ row }) => row.original.displayName ?? '-',
+        size: 160,
+      },
+      {
+        accessorKey: 'primaryEmail',
+        header: 'Primary Email',
+        cell: ({ row }) => (
+          <AutoTruncateTextV2
+            initialCharactersCountToDisplay={20}
+            minCharactersToDisplay={10}
+          >
+            {row.original.primaryEmail ?? '-'}
+          </AutoTruncateTextV2>
+        ),
+        size: 180,
+      },
+      {
+        accessorKey: 'userId',
+        header: 'User ID',
+        cell: ({ row }) => {
+          if (!row.original.userId) return '-';
+
+          return (
+            <div className="flex items-center gap-2">
+              <AutoTruncateTextV2
+                initialCharactersCountToDisplay={16}
+                minCharactersToDisplay={12}
+                className="font-mono text-xs"
+              >
+                {row.original.userId}
+              </AutoTruncateTextV2>
+              <AdminUserLookupButton
+                reference={{ userId: row.original.userId }}
+                title="Open user details"
+              />
+            </div>
+          );
+        },
+        size: 170,
+      },
+      {
+        accessorKey: 'privyUserId',
+        header: 'Privy User ID',
+        cell: ({ row }) => {
+          if (!row.original.privyUserId) return '-';
+
+          return (
+            <div className="flex items-center gap-2">
+              <AutoTruncateTextV2
+                initialCharactersCountToDisplay={16}
+                minCharactersToDisplay={12}
+                className="font-mono text-xs"
+              >
+                {row.original.privyUserId}
+              </AutoTruncateTextV2>
+              <AdminUserLookupButton
+                reference={{ privyUserId: row.original.privyUserId }}
+                title="Open user details by Privy ID"
+              />
+            </div>
+          );
+        },
+        size: 180,
+      },
+      {
+        accessorKey: 'isPoweredByNamefiDomain',
+        header: 'Powered by Namefi',
+        cell: ({ row }) =>
+          row.original.isPoweredByNamefiDomain ? 'Yes' : 'No',
+        size: 130,
+      },
+      {
+        accessorKey: 'canBurn',
+        header: 'Can Burn',
+        cell: ({ row }) => (row.original.canBurn ? 'Yes' : 'No'),
+        size: 100,
+      },
+      {
+        accessorKey: 'hasMissingData',
+        header: 'Missing Data',
+        cell: ({ row }) => (row.original.hasMissingData ? 'Yes' : 'No'),
+        size: 110,
+      },
+      {
+        accessorKey: 'hasDateMismatch',
+        header: 'Strict Date Mismatch',
+        cell: ({ row }) => (row.original.hasDateMismatch ? 'Yes' : 'No'),
+        size: 150,
+      },
+      {
+        accessorKey: 'needsExpirationReview',
+        header: 'Needs Expiration Review',
+        cell: ({ row }) => (row.original.needsExpirationReview ? 'Yes' : 'No'),
+        size: 170,
+      },
+      {
+        accessorKey: 'isExpired',
+        header: 'Expired',
+        cell: ({ row }) => (row.original.isExpired ? 'Yes' : 'No'),
+        size: 90,
+      },
+      {
+        accessorKey: 'lastIndexedAt',
+        header: 'Last Indexed',
+        cell: ({ row }) => formatDateOnly(row.original.lastIndexedAt),
+        size: 120,
+      },
+      {
+        accessorKey: 'asOfBlockNumber',
+        header: 'As Of Block',
+        cell: ({ row }) => row.original.asOfBlockNumber?.toString() ?? '-',
+        size: 130,
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        enableSorting: false,
+        cell: ({ row }) => {
+          const burnKey = `${row.original.normalizedDomainName}-${row.original.chainId}`;
+
+          return (
+            <NftActionsCell
+              row={row.original}
+              isBurning={burnInProgress.has(burnKey)}
+              isBurnWorkflowActive={activeBurnWorkflowKeys.has(burnKey)}
+              isFixPending={fixNftExpirationMutation.isPending}
+              onBurn={handleBurnNft}
+              onFix={handleFixNftExpiration}
+            />
+          );
+        },
+        size: 220,
+      },
+    ],
+    [
+      activeBurnWorkflowKeys,
+      burnInProgress,
+      fixNftExpirationMutation.isPending,
+      handleBurnNft,
+      handleFixNftExpiration,
+    ],
   );
 
   return (
-    <div className="space-y-6">
-      {renderWorkflowsModal()}
+    <>
+      <ActiveWorkflowsDialog
+        open={workflowModalOpen}
+        onOpenChange={setWorkflowModalOpen}
+        burnWorkflows={burnWorkflowsQuery.data}
+        fixWorkflows={fixWorkflowsQuery.data}
+        extendWorkflows={extendWorkflowsQuery.data}
+      />
 
-      {/* Filters and Search */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Search & Filter
-          </CardTitle>
+        <CardHeader className="gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="space-y-1">
+            <CardTitle>NFT Management</CardTitle>
+            <CardDescription>
+              Compare NFT expirations with indexed domain data, filter with the
+              new drizzler scheme, and run burn or fix workflows.
+            </CardDescription>
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setWorkflowModalOpen(true)}
+            disabled={isWorkflowsLoading}
+            className="shrink-0"
+          >
+            {isWorkflowsLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <CirclePlay className="h-4 w-4" />
+            )}
+            Active Workflows
+            <Badge variant="secondary">{totalActiveWorkflows}</Badge>
+          </Button>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <Input
-                placeholder="Search by domain name or owner address..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setHasUnappliedChanges(true);
-                }}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              />
-            </div>
-            <Button
-              onClick={applyFilters}
-              variant={hasUnappliedChanges ? 'default' : 'outline'}
-              disabled={isFetching}
-              className={
-                hasUnappliedChanges ? 'bg-primary hover:bg-primary/90' : ''
-              }
-            >
-              {isFetching ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              ) : hasUnappliedChanges ? (
-                <Filter className="h-4 w-4 mr-2" />
-              ) : (
-                <Search className="h-4 w-4 mr-2" />
-              )}
-              {isFetching
-                ? 'Loading...'
-                : hasUnappliedChanges
-                  ? 'Apply Filters'
-                  : 'Search'}
-            </Button>
-          </div>
 
-          {/* Filter & Sort Controls */}
-          <div className="space-y-4">
-            {/* Primary Controls Row */}
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Filter Section */}
-              <div className="flex-1 space-y-2">
-                <Label className="text-sm font-medium flex items-center gap-2">
-                  <Filter className="h-4 w-4" />
-                  Filter NFTs
-                </Label>
-                <Select
-                  value={filterBy}
-                  onValueChange={handleFilterChange}
-                  disabled={isFetching}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">
-                      <span className="flex items-center gap-2">
-                        <Eye className="h-4 w-4" />
-                        All NFTs
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="expired">
-                      <span className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4" />
-                        Expired Domains
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="canBurn">
-                      <span className="flex items-center gap-2">
-                        <Flame className="h-4 w-4" />
-                        Can Burn
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="dateMismatch">
-                      <span className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        Date Mismatch
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="missingData">
-                      <span className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4" />
-                        Missing Data
-                      </span>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Sort Section */}
-              <div className="flex-1 lg:flex-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium flex items-center gap-2">
-                    <ArrowUpDown className="h-4 w-4" />
-                    Sort By
-                  </Label>
-                  <Select
-                    value={sortBy}
-                    onValueChange={handleSortByChange}
-                    disabled={isFetching}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="domainName">
-                        <span className="flex items-center gap-2">
-                          <Globe className="h-4 w-4" />
-                          Domain Name
-                        </span>
-                      </SelectItem>
-                      <SelectItem value="domainExpiration">
-                        <span className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
-                          Domain Expiration
-                        </span>
-                      </SelectItem>
-                      <SelectItem value="chainId">
-                        <span className="flex items-center gap-2">
-                          <Link className="h-4 w-4" />
-                          Chain ID
-                        </span>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium flex items-center gap-2">
-                    {sortOrder === 'asc' ? (
-                      <SortAsc className="h-4 w-4" />
-                    ) : (
-                      <SortDesc className="h-4 w-4" />
-                    )}
-                    Order
-                  </Label>
-                  <Select
-                    value={sortOrder}
-                    onValueChange={handleSortOrderChange}
-                    disabled={isFetching}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sort order" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="asc">
-                        <span className="flex items-center gap-2">
-                          <SortAsc className="h-4 w-4" />
-                          Ascending
-                        </span>
-                      </SelectItem>
-                      <SelectItem value="desc">
-                        <span className="flex items-center gap-2">
-                          <SortDesc className="h-4 w-4" />
-                          Descending
-                        </span>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Page Size Section */}
-              <div className="flex-1 space-y-2">
-                <Label className="text-sm font-medium flex items-center gap-2">
-                  <List className="h-4 w-4" />
-                  Results
-                </Label>
-                <Select
-                  value={limit.toString()}
-                  onValueChange={handleLimitChange}
-                  disabled={isFetching}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Page size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10 per page</SelectItem>
-                    <SelectItem value="20">20 per page</SelectItem>
-                    <SelectItem value="50">50 per page</SelectItem>
-                    <SelectItem value="100">100 per page</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-
-          {/* PoweredByNamefi Toggle - only show for "All NFTs" filter */}
-          {appliedFilters.filterBy === 'all' && (
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="exclude-powered-by-namefi"
-                checked={excludePoweredByNamefiDomains}
-                onCheckedChange={handleExcludeToggle}
-                disabled={isFetching}
-              />
-              <Label htmlFor="exclude-powered-by-namefi">
-                Exclude Powered by Namefi domains
-              </Label>
-            </div>
-          )}
+        <CardContent>
+          <ExtensibleDataTable<NftManagementRow, typeof filterStrategy>
+            filterStrategy={filterStrategy}
+            columns={columns}
+            data={nftStatusQuery.data?.data ?? []}
+            isLoading={nftStatusQuery.isLoading}
+            isFetching={nftStatusQuery.isFetching}
+            page={page}
+            pageSize={pageSize}
+            totalPages={nftStatusQuery.data?.pagination.totalPages ?? 1}
+            totalCount={nftStatusQuery.data?.pagination.totalCount ?? 0}
+            onPageChange={setPage}
+            onPageSizeChange={(size) => {
+              setPage(1);
+              setPageSize(size);
+            }}
+            sorting={sorting}
+            onSortingChange={handleSortingChange}
+            searchTerm={searchTerm}
+            onSearchChange={handleSearchChange}
+            searchPlaceholder="Search domain or owner address..."
+            emptyMessage="No NFTs found"
+            loadingMessage="Loading NFTs..."
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            onResetPreferences={resetToDefaults}
+          />
         </CardContent>
       </Card>
-
-      {/* Results Summary */}
-      <Card>
-        <CardContent className="pt-1 flex flex-col-reverse gap-4">
-          {/* NFT Table */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  NFT Management
-                  {isFetching && (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </CardTitle>
-                <div className="flex items-center gap-2">
-                  {isFetching && (
-                    <div className="text-sm text-muted-foreground">
-                      Loading...
-                    </div>
-                  )}
-                  {/* Active Workflows Button */}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setWorkflowModalOpen(true)}
-                    className="flex items-center gap-2"
-                    disabled={isWorkflowsLoading}
-                  >
-                    {isWorkflowsLoading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <CirclePlay className="h-4 w-4" />
-                    )}
-                    <span>Active Workflows</span>
-                    <Badge
-                      variant="secondary"
-                      className={`text-xs ${getTotalActiveWorkflows() > 0 ? 'bg-blue-100 text-blue-800' : ''}`}
-                    >
-                      {getTotalActiveWorkflows()}
-                    </Badge>
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {!isLoading && !isFetching && data?.data.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="text-muted-foreground">
-                    No NFTs found matching your criteria.
-                  </div>
-                </div>
-              ) : isLoading && !data ? (
-                <LoadingSkeletons />
-              ) : data?.data ? (
-                <div className="relative">
-                  {isFetching && (
-                    <div className="absolute inset-0 bg-background/50 backdrop-blur-sm z-10 flex items-center justify-center">
-                      <div className="flex items-center gap-2 bg-background/90 px-4 py-2 rounded-lg shadow-sm border">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span className="text-sm">Loading...</span>
-                      </div>
-                    </div>
-                  )}
-                  <Table className="w-full">
-                    <Thead>
-                      <Tr>
-                        <Th>Domain Name</Th>
-                        <Th>Chain ID</Th>
-                        <Th>Owner Address</Th>
-                        <Th>Domain Status</Th>
-                        <Th>NFT Status</Th>
-                        <Th>NFT Expiration</Th>
-                        <Th>Domain Expiration</Th>
-                        <Th>Date Match</Th>
-                        <Th>Registrar</Th>
-                        <Th>Actions</Th>
-                      </Tr>
-                    </Thead>
-                    <TableBody>
-                      {data?.data.map((nft) => {
-                        const burnKey = `${nft.normalizedDomainName}-${nft.chainId}`;
-                        const isBurning = burnInProgress.has(burnKey);
-
-                        // Determine missing data vs date mismatch based on domain type
-                        const hasMissingData = nft.isPoweredByNamefiDomain
-                          ? nft.nftExpirationTime === null // For powered by namefi, only NFT date matters
-                          : nft.nftExpirationTime === null ||
-                            nft.domainExpirationTime === null; // For regular domains, both dates required
-
-                        // Date mismatch is only for regular domains where both dates exist but differ
-                        const isDateMismatchFixable =
-                          nft.hasDateMismatch &&
-                          !nft.isPoweredByNamefiDomain &&
-                          nft.nftExpirationTime !== null &&
-                          nft.domainExpirationTime !== null;
-
-                        return (
-                          <Tr key={burnKey}>
-                            <Td className="font-medium">
-                              <div className="flex flex-col gap-1">
-                                <TruncatedTextWithHover maxLength={30}>
-                                  {nft.normalizedDomainName}
-                                </TruncatedTextWithHover>
-                                {nft.isPoweredByNamefiDomain && (
-                                  <Badge
-                                    variant="secondary"
-                                    className="text-xs w-fit"
-                                  >
-                                    Powered by Namefi
-                                  </Badge>
-                                )}
-                              </div>
-                            </Td>
-                            <Td>
-                              <Badge variant="outline">{nft.chainId}</Badge>
-                            </Td>
-                            <Td className="font-mono text-sm">
-                              <TruncatedTextWithHover maxLength={12}>
-                                {nft.ownerAddress}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td>{getDomainStatus(nft.domainExpirationTime)}</Td>
-                            <Td>{getNftStatus(nft.nftExpirationTime)}</Td>
-                            <Td>{formatDate(nft.nftExpirationTime)}</Td>
-                            <Td>{formatDate(nft.domainExpirationTime)}</Td>
-                            <Td>
-                              {hasMissingData ? (
-                                <Badge variant="destructive">
-                                  Missing Data
-                                </Badge>
-                              ) : nft.hasDateMismatch ? (
-                                <Badge
-                                  variant="secondary"
-                                  className="flex items-center gap-1 bg-amber-100 text-amber-800 border-amber-200"
-                                >
-                                  <AlertTriangle className="h-3 w-3" />
-                                  Date Mismatch
-                                </Badge>
-                              ) : (
-                                <Badge
-                                  variant="default"
-                                  className="bg-green-100 text-green-800"
-                                >
-                                  Match
-                                </Badge>
-                              )}
-                            </Td>
-                            <Td>
-                              {nft.registrarKey ? (
-                                <Badge variant="outline">
-                                  {nft.registrarKey}
-                                </Badge>
-                              ) : (
-                                <span className="text-muted-foreground">
-                                  N/A
-                                </span>
-                              )}
-                            </Td>
-                            <Td>
-                              <div className="flex flex-wrap gap-1">
-                                <TooltipProvider>
-                                  {/* Burn Action - Only show if canBurn */}
-                                  {nft.canBurn && (
-                                    <>
-                                      {!isInActiveBurnWorkflow(
-                                        nft.normalizedDomainName,
-                                        nft.chainId,
-                                      ) ? (
-                                        <AlertDialog>
-                                          <AlertDialogTrigger
-                                            render={
-                                              <Button
-                                                variant="secondary"
-                                                size="sm"
-                                                disabled={isBurning}
-                                                className="flex items-center gap-1 text-xs border-red-200 text-red-300 hover:bg-red-800/30 bg-red-900/10 hover:text-red-600"
-                                              />
-                                            }
-                                          >
-                                            <Flame className="h-3 w-3" />
-                                            {isBurning ? 'Burning...' : 'Burn'}
-                                          </AlertDialogTrigger>
-                                          <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                              <AlertDialogTitle>
-                                                Burn NFT
-                                              </AlertDialogTitle>
-                                              <AlertDialogDescription>
-                                                Are you sure you want to burn
-                                                the NFT for{' '}
-                                                <strong>
-                                                  {nft.normalizedDomainName}
-                                                </strong>
-                                                ?
-                                                <br />
-                                                <br />
-                                                This action cannot be undone.
-                                                The NFT will be permanently
-                                                destroyed.
-                                                <br />
-                                                <br />
-                                                <strong>Domain:</strong>{' '}
-                                                {nft.normalizedDomainName}
-                                                <br />
-                                                <strong>Chain ID:</strong>{' '}
-                                                {nft.chainId}
-                                                <br />
-                                                <strong>Owner:</strong>{' '}
-                                                {nft.ownerAddress}
-                                              </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                              <AlertDialogCancel>
-                                                Cancel
-                                              </AlertDialogCancel>
-                                              <AlertDialogAction
-                                                onClick={() =>
-                                                  handleBurnNft(
-                                                    nft.normalizedDomainName,
-                                                    nft.chainId,
-                                                  )
-                                                }
-                                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                              >
-                                                Burn NFT
-                                              </AlertDialogAction>
-                                            </AlertDialogFooter>
-                                          </AlertDialogContent>
-                                        </AlertDialog>
-                                      ) : (
-                                        <Tooltip>
-                                          <TooltipTrigger
-                                            render={
-                                              <Button
-                                                variant="outline"
-                                                size="sm"
-                                                disabled
-                                                className="flex items-center gap-1 text-xs border-red-200 text-red-400 opacity-50"
-                                              />
-                                            }
-                                          >
-                                            <Flame className="h-3 w-3" />
-                                            Burn
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <p>
-                                              A burn workflow is already in
-                                              progress for this domain
-                                            </p>
-                                          </TooltipContent>
-                                        </Tooltip>
-                                      )}
-                                    </>
-                                  )}
-
-                                  {/* Fix NFT Expiration Action - Only show for fixable date mismatches (not missing data) */}
-                                  {nft.hasDateMismatch &&
-                                    !hasMissingData &&
-                                    (isDateMismatchFixable ? (
-                                      <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() =>
-                                          handleFixNftExpiration(
-                                            nft.normalizedDomainName,
-                                            nft.chainId,
-                                          )
-                                        }
-                                        disabled={
-                                          fixNftExpirationMutation.isPending
-                                        }
-                                        className="flex items-center gap-1 text-xs"
-                                      >
-                                        <Wrench className="h-3 w-3" />
-                                        {fixNftExpirationMutation.isPending
-                                          ? 'Fixing...'
-                                          : 'Fix'}
-                                      </Button>
-                                    ) : (
-                                      <Tooltip>
-                                        <TooltipTrigger
-                                          render={
-                                            <Button
-                                              variant="outline"
-                                              size="sm"
-                                              disabled
-                                              className="flex items-center gap-1 text-xs"
-                                            />
-                                          }
-                                        >
-                                          <AlertTriangle className="h-3 w-3" />
-                                          Cannot Fix
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                          <p>
-                                            Cannot fix: Either NFT or domain
-                                            expiration date is missing
-                                          </p>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    ))}
-
-                                  {/* Renew Action - Only show for valid domains (not burnable and no missing data) */}
-                                  {!nft.canBurn && !hasMissingData && (
-                                    <Tooltip>
-                                      <TooltipTrigger
-                                        render={
-                                          <Button
-                                            variant="outline"
-                                            size="sm"
-                                            disabled
-                                            className="flex items-center gap-1 text-xs"
-                                          />
-                                        }
-                                      >
-                                        <RefreshCw className="h-3 w-3" />
-                                        Renew
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>
-                                          Domain renewal is not yet implemented
-                                        </p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  )}
-                                </TooltipProvider>
-                              </div>
-                            </Td>
-                          </Tr>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="text-muted-foreground">
-                    Unable to load NFT data. Please try again.
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-muted-foreground">
-              {isFetching && totalCount === 0 ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                  Loading NFT data...
-                </span>
-              ) : (
-                <>
-                  Showing {(page - 1) * limit + 1} to{' '}
-                  {Math.min(page * limit, totalCount)} of {totalCount} NFTs
-                  {isFetching && (
-                    <span className="inline-flex items-center gap-1 ml-2">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      <span className="text-xs">Updating...</span>
-                    </span>
-                  )}
-                </>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleFirstPage}
-                disabled={page <= 1 || isFetching}
-                title="Go to first page"
-              >
-                <ChevronsLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page <= 1 || isFetching}
-                title="Previous page"
-              >
-                {isFetching && page > 1 ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <ChevronLeft className="h-4 w-4" />
-                )}
-                Previous
-              </Button>
-              <span className="text-sm mx-2">
-                Page {page} of {totalPages > 0 ? totalPages : '?'}
-                {isFetching && totalPages === 0 && (
-                  <span className="ml-2 text-xs text-muted-foreground">
-                    (loading)
-                  </span>
-                )}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                disabled={page >= totalPages || isFetching}
-                title="Next page"
-              >
-                Next
-                {isFetching && page < totalPages ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <ChevronRight className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleLastPage}
-                disabled={page >= totalPages || isFetching || totalPages === 0}
-                title="Go to last page"
-              >
-                <ChevronsRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    </>
   );
 }
 
-export default function AdminNftManagement() {
+export function AdminNftManagement() {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {
@@ -1246,17 +1274,8 @@ export default function AdminNftManagement() {
   }
 
   return (
-    <PageShell>
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">NFT Management</h1>
-          <p className="text-muted-foreground mt-2">
-            Manage all NFTs in the system. Compare NFT dates with indexed domain
-            dates and burn expired NFTs.
-          </p>
-        </div>
-      </div>
-      {isLoading ? <LoadingSkeletons /> : <NftManagementContent />}
+    <PageShell padding="admin" className="space-y-6">
+      {isLoading ? <LoadingSkeletons /> : <NftManagementTable />}
     </PageShell>
   );
 }

@@ -145,13 +145,23 @@ function convertToDrizzlerFilterOptions<T extends Record<string, unknown>>(
 function isEmptyValue(value: unknown): boolean {
   if (value === null || value === undefined) return true;
   if (typeof value === 'string' && value.trim() === '') return true;
+  if (Array.isArray(value) && value.length === 0) return true;
   return false;
 }
 
 /**
  * Unary operators that don't require a value
  */
-const UNARY_OPERATORS = ['isNull', 'isNotNull'];
+const UNARY_OPERATORS = [
+  'isNull',
+  'isNotNull',
+  'isnull',
+  'not_isnull',
+  'string_isempty',
+  'not_string_isempty',
+  'array_isempty',
+  'not_array_isempty',
+];
 
 /**
  * Operators that should have % wildcards added for "contains" functionality

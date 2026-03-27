@@ -27,7 +27,18 @@ import {
   Permission,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, asc, desc, eq, isNull, or, lt, type SQL, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  inArray,
+  isNull,
+  or,
+  lt,
+  type SQL,
+  sql,
+} from 'drizzle-orm';
 import { z } from 'zod';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
@@ -70,6 +81,7 @@ import {
   privyClient,
 } from '../utils';
 import { config } from '#lib/env';
+import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import { logger } from '#lib/logger';
 import { getDomainChain } from '#temporal/activities/domain/index';
 import { resolveEnsNameToAddress } from '#lib/crypto/ens';
@@ -141,6 +153,28 @@ function getWorkflowStatusString(status: any): string {
 const MAX_GRACE_PERIOD_DAYS = 90; /* 90 days is the max grace period for any registrar */
 const DATE_MISMATCH_THRESHOLD_SECONDS = 86400;
 
+type NftManagementFilterRow = {
+  normalizedDomainName: string;
+  chainId: number;
+  ownerAddress: string;
+  domainStatus: string;
+  nftStatus: string;
+  nftExpirationTime: Date | null;
+  domainExpirationTime: Date | null;
+  registrarKey: string | null;
+  dateState: string;
+  userId: string | null;
+  privyUserId: string | null;
+  displayName: string | null;
+  primaryEmail: string | null;
+  isPoweredByNamefiDomain: string;
+  canBurn: string;
+  hasMissingData: string;
+  hasDateMismatch: string;
+  needsExpirationReview: string;
+  isExpired: string;
+};
+
 export const adminRouter = createTRPCRouter({
   getNftsWithExpirationStatus: adminProcedureWithPermissions(
     Permission.READ_NFT,
@@ -148,29 +182,17 @@ export const adminRouter = createTRPCRouter({
     .input(
       z.object({
         page: z.number().min(1).default(1),
-        limit: z.number().min(1).max(100).default(20),
-        sortBy: z
-          .enum(['domainName', 'nftExpiration', 'domainExpiration', 'chainId'])
-          .default('domainName'),
-        sortOrder: z.enum(['asc', 'desc']).default('asc'),
-        filterBy: z
-          .enum(['all', 'expired', 'canBurn', 'dateMismatch', 'missingData'])
-          .default('all'),
+        pageSize: z.number().min(1).max(100).default(25),
         searchTerm: z.string().optional(),
-        excludePoweredByNamefiDomains: z.boolean().default(false),
+        filters: z.any().optional(),
+        sorting: z.any().optional(),
       }),
     )
     .query(async ({ input }) => {
-      const {
-        page,
-        limit,
-        sortBy,
-        sortOrder,
-        filterBy,
-        searchTerm,
-        excludePoweredByNamefiDomains,
-      } = input;
-      const offset = (page - 1) * limit;
+      const { page, pageSize, searchTerm, filters, sorting } = input;
+      const offset = (page - 1) * pageSize;
+
+      await ensurePrivyTableFresh();
 
       const poweredByNamefiDomains = [
         ...(await getPoweredByNamefi3PDomains()),
@@ -178,44 +200,46 @@ export const adminRouter = createTRPCRouter({
         'withtrump.club',
         'defi.build',
       ];
+      const configuredAllowedChainIds = getConfiguredAllowedChainIds();
 
       // Extract the powered-by-namefi condition to avoid repetition
-      const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+      const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
-      // Build filters to exclude sepolia and test domains (same as reporting)
-      const isSepoliaCondition = sql<boolean>`${namefiNftOwnersView.chainId} = 11155111`;
-      const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+      // Build filters to exclude disallowed chains and test domains
+      const isConfiguredAllowedChainCondition =
+        configuredAllowedChainIds.length > 0
+          ? inArray(namefiNftView.chainId, configuredAllowedChainIds)
+          : sql<boolean>`false`;
+      const isTestDomainCondition = sql<boolean>`split_part(${namefiNftView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
 
-      // Build base query with joins and computed fields, excluding sepolia and test domains
-      const baseQuery = db
-        .with(namefiNftOwnersCte, namefiNftCte)
+      const nftStatusRows = db
+        .with(namefiNftCte)
         .select({
-          normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
-          chainId: namefiNftOwnersView.chainId,
-          asOfBlockNumber: namefiNftOwnersView.asOfBlockNumber,
-          ownerAddress: namefiNftOwnersView.ownerAddress,
-          nftExpirationTime: namefiNftView.expirationTime,
-          domainExpirationTime: indexedDomainsTable.expirationTime,
-          registrarKey: indexedDomainsTable.registrarKey,
-          lastIndexedAt: indexedDomainsTable.lastIndexedAt,
-          // Computed fields using the extracted condition
-          isPoweredByNamefiDomain: isPoweredByNamefiCondition.as(
-            'is_powered_by_namefi_domain',
+          normalizedDomainName: namefiNftView.normalizedDomainName,
+          chainId: namefiNftView.chainId,
+          asOfBlockNumber: sql<bigint>`${namefiNftView.lastUpdatedBlock}`.as(
+            'as_of_block_number',
           ),
-          effectiveDomainExpirationTime: sql<Date | null>`
+          ownerAddress: namefiNftView.ownerAddress,
+          nftExpirationTime: namefiNftView.expirationTime,
+          domainExpirationTime: sql<Date | null>`
             CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN ${namefiNftView.expirationTime}
               ELSE ${indexedDomainsTable.expirationTime}
             END
-          `.as('effective_domain_expiration_time'),
-          effectiveRegistrarKey: sql<string | null>`
+          `.as('domain_expiration_time'),
+          registrarKey: sql<string | null>`
             CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN 'Powered by Namefi'
               ELSE ${indexedDomainsTable.registrarKey}
             END
-          `.as('effective_registrar_key'),
+          `.as('registrar_key'),
+          lastIndexedAt: indexedDomainsTable.lastIndexedAt,
+          isPoweredByNamefiDomain: isPoweredByNamefiCondition.as(
+            'is_powered_by_namefi_domain',
+          ),
           canBurn: sql<boolean>`
             CASE
               WHEN ${isPoweredByNamefiCondition}
@@ -229,110 +253,249 @@ export const adminRouter = createTRPCRouter({
               )
             END
           `.as('can_burn'),
+          domainStatus: sql<string>`
+            CASE
+              WHEN ${indexedDomainsTable.expirationTime} IS NULL THEN 'not-found'
+              WHEN ${indexedDomainsTable.expirationTime} < NOW() THEN 'expired'
+              ELSE 'active'
+            END
+          `.as('domain_status'),
+          nftStatus: sql<string>`
+            CASE
+              WHEN ${namefiNftView.expirationTime} IS NULL THEN 'not-available'
+              WHEN ${namefiNftView.expirationTime} < NOW() THEN 'expired'
+              ELSE 'active'
+            END
+          `.as('nft_status'),
+          hasMissingData: sql<boolean>`
+            CASE
+              WHEN ${isPoweredByNamefiCondition}
+              THEN ${namefiNftView.expirationTime} IS NULL
+              ELSE ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+            END
+          `.as('has_missing_data'),
           hasDateMismatch: sql<boolean>`
             CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN false
               WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
               THEN false
-              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+                ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
             END
           `.as('has_date_mismatch'),
+          dateState: sql<string>`
+            CASE
+              WHEN ${isPoweredByNamefiCondition}
+              THEN CASE
+                WHEN ${namefiNftView.expirationTime} IS NULL THEN 'missing-data'
+                ELSE 'match'
+              END
+              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+              THEN 'missing-data'
+              WHEN ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+              THEN 'date-mismatch'
+              ELSE 'match'
+            END
+          `.as('date_state'),
+          needsExpirationReview: sql<boolean>`
+            CASE
+              WHEN ${isPoweredByNamefiCondition}
+              THEN false
+              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+              THEN true
+              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+            END
+          `.as('needs_expiration_review'),
+          isExpired: sql<boolean>`
+            CASE
+              WHEN ${isPoweredByNamefiCondition}
+              THEN COALESCE(${namefiNftView.expirationTime} < NOW(), false)
+              ELSE (
+                COALESCE(${indexedDomainsTable.expirationTime} < NOW(), false)
+                OR COALESCE(${namefiNftView.expirationTime} < NOW(), false)
+              )
+            END
+          `.as('is_expired'),
+          userId: sql<string | null>`MAX(${usersTable.id}::text)`.as('user_id'),
+          privyUserId: sql<
+            string | null
+          >`MAX(${privyUsersTableSchema.privyUserId})`.as('privy_user_id'),
+          displayName: sql<
+            string | null
+          >`MAX(${privyUsersTableSchema.displayName})`.as('display_name'),
+          primaryEmail: sql<
+            string | null
+          >`MAX(COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email}))`.as(
+            'primary_email',
+          ),
         })
-        .from(namefiNftOwnersView)
-        .leftJoin(
-          namefiNftView,
-          and(
-            eq(
-              namefiNftOwnersView.normalizedDomainName,
-              namefiNftView.normalizedDomainName,
-            ),
-            eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
-          ),
-        )
+        .from(namefiNftView)
         .leftJoin(
           indexedDomainsTable,
           eq(
-            namefiNftOwnersView.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
             indexedDomainsTable.normalizedDomainName,
           ),
+        )
+        .leftJoin(
+          privyUsersTableSchema,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+        )
+        .where(
+          and(
+            isConfiguredAllowedChainCondition,
+            sql`NOT ${isTestDomainCondition}`,
+          ),
+        )
+        .groupBy(
+          namefiNftView.normalizedDomainName,
+          namefiNftView.chainId,
+          namefiNftView.lastUpdatedBlock,
+          namefiNftView.ownerAddress,
+          namefiNftView.expirationTime,
+          indexedDomainsTable.expirationTime,
+          indexedDomainsTable.registrarKey,
+          indexedDomainsTable.lastIndexedAt,
+        )
+        .as('nft_status_rows');
+
+      const tableStructure = {
+        normalizedDomainName: nftStatusRows.normalizedDomainName,
+        chainId: nftStatusRows.chainId,
+        ownerAddress: nftStatusRows.ownerAddress,
+        domainStatus: nftStatusRows.domainStatus,
+        nftStatus: nftStatusRows.nftStatus,
+        nftExpirationTime: nftStatusRows.nftExpirationTime,
+        domainExpirationTime: nftStatusRows.domainExpirationTime,
+        registrarKey: nftStatusRows.registrarKey,
+        dateState: nftStatusRows.dateState,
+        userId: nftStatusRows.userId,
+        privyUserId: nftStatusRows.privyUserId,
+        displayName: nftStatusRows.displayName,
+        primaryEmail: nftStatusRows.primaryEmail,
+        isPoweredByNamefiDomain: sql`${nftStatusRows.isPoweredByNamefiDomain}::text`,
+        canBurn: sql`${nftStatusRows.canBurn}::text`,
+        hasMissingData: sql`${nftStatusRows.hasMissingData}::text`,
+        hasDateMismatch: sql`${nftStatusRows.hasDateMismatch}::text`,
+        needsExpirationReview: sql`${nftStatusRows.needsExpirationReview}::text`,
+        isExpired: sql`${nftStatusRows.isExpired}::text`,
+      };
+
+      const baseQuery = db
+        .select({
+          normalizedDomainName: nftStatusRows.normalizedDomainName,
+          chainId: nftStatusRows.chainId,
+          asOfBlockNumber: nftStatusRows.asOfBlockNumber,
+          ownerAddress: nftStatusRows.ownerAddress,
+          domainStatus: nftStatusRows.domainStatus,
+          nftStatus: nftStatusRows.nftStatus,
+          nftExpirationTime: nftStatusRows.nftExpirationTime,
+          domainExpirationTime: nftStatusRows.domainExpirationTime,
+          registrarKey: nftStatusRows.registrarKey,
+          dateState: nftStatusRows.dateState,
+          lastIndexedAt: nftStatusRows.lastIndexedAt,
+          isPoweredByNamefiDomain: nftStatusRows.isPoweredByNamefiDomain,
+          canBurn: nftStatusRows.canBurn,
+          hasMissingData: nftStatusRows.hasMissingData,
+          hasDateMismatch: nftStatusRows.hasDateMismatch,
+          needsExpirationReview: nftStatusRows.needsExpirationReview,
+          isExpired: nftStatusRows.isExpired,
+          userId: nftStatusRows.userId,
+          privyUserId: nftStatusRows.privyUserId,
+          displayName: nftStatusRows.displayName,
+          primaryEmail: nftStatusRows.primaryEmail,
+        })
+        .from(nftStatusRows)
+        .$dynamic();
+
+      const whereClauses: SQL[] = [];
+
+      const trimmedSearchTerm = searchTerm?.trim();
+      if (trimmedSearchTerm) {
+        const likeTerm = `%${trimmedSearchTerm}%`;
+        const searchCondition = or(
+          sql`${nftStatusRows.normalizedDomainName} ILIKE ${likeTerm}`,
+          sql`${nftStatusRows.ownerAddress} ILIKE ${likeTerm}`,
         );
 
-      // Build count query with same joins and filters
+        if (searchCondition) {
+          whereClauses.push(searchCondition);
+        }
+      }
+
+      if (filters) {
+        const drizzlerWhere = buildWhereClause(
+          tableStructure,
+          filters as FilterOptions<NftManagementFilterRow>,
+        );
+
+        if (drizzlerWhere) {
+          whereClauses.push(drizzlerWhere);
+        }
+      }
+
+      let query = baseQuery;
+      if (whereClauses.length > 0) {
+        query = query.where(and(...whereClauses));
+      }
+
+      const orderByClauses = sorting
+        ? buildSortClause(
+            tableStructure,
+            sorting as SortOptions<NftManagementFilterRow>,
+          )
+        : [
+            sql`${nftStatusRows.normalizedDomainName} ASC NULLS LAST`,
+            sql`${nftStatusRows.chainId} ASC NULLS LAST`,
+          ];
+
       const countQuery = db
-        .with(namefiNftOwnersCte, namefiNftCte)
-        .select({ count: sql<number>`COUNT(*)` })
-        .from(namefiNftOwnersView)
-        .leftJoin(
-          namefiNftView,
-          and(
-            eq(
-              namefiNftOwnersView.normalizedDomainName,
-              namefiNftView.normalizedDomainName,
-            ),
-            eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
-          ),
-        )
-        .leftJoin(
-          indexedDomainsTable,
-          eq(
-            namefiNftOwnersView.normalizedDomainName,
-            indexedDomainsTable.normalizedDomainName,
-          ),
-        );
+        .select({ count: sql<number>`COUNT(*)::int` })
+        .from(query.as('sq'));
 
-      const filters = _buildQueryFilters(
-        searchTerm,
-        filterBy,
-        poweredByNamefiDomains,
-        excludePoweredByNamefiDomains,
-      );
-
-      // Combine base exclusion filters with additional filters
-      const allFilters = [
-        sql`NOT ${isSepoliaCondition}`,
-        sql`NOT ${isTestDomainCondition}`,
-        ...filters,
-      ];
-      const whereClause = and(...allFilters);
-
-      // Apply sorting
-      const orderByClause = _buildOrderByClause(sortBy, sortOrder);
-
-      // Execute queries with or without filters
       const [results, countResult] = await Promise.all([
-        baseQuery
-          .where(whereClause)
-          .orderBy(orderByClause)
-          .limit(limit)
+        query
+          .orderBy(...orderByClauses)
+          .limit(pageSize)
           .offset(offset),
-        countQuery.where(whereClause),
+        countQuery,
       ]);
 
       const totalCount = countResult[0]?.count ?? 0;
 
-      // Map results to include computed fields (already calculated in DB)
-      const processedResults = results.map((result) => ({
-        normalizedDomainName: result.normalizedDomainName,
-        chainId: result.chainId,
-        asOfBlockNumber: result.asOfBlockNumber,
-        ownerAddress: result.ownerAddress,
-        nftExpirationTime: result.nftExpirationTime,
-        domainExpirationTime: result.effectiveDomainExpirationTime,
-        registrarKey: result.effectiveRegistrarKey,
-        lastIndexedAt: result.lastIndexedAt,
-        isPoweredByNamefiDomain: result.isPoweredByNamefiDomain,
-        canBurn: result.canBurn,
-        hasDateMismatch: result.hasDateMismatch,
-      }));
-
       return {
-        data: processedResults,
+        data: results.map((result) => ({
+          normalizedDomainName: result.normalizedDomainName,
+          chainId: result.chainId,
+          asOfBlockNumber: result.asOfBlockNumber,
+          ownerAddress: result.ownerAddress,
+          domainStatus: result.domainStatus,
+          nftStatus: result.nftStatus,
+          nftExpirationTime: result.nftExpirationTime,
+          domainExpirationTime: result.domainExpirationTime,
+          registrarKey: result.registrarKey,
+          dateState: result.dateState,
+          lastIndexedAt: result.lastIndexedAt,
+          isPoweredByNamefiDomain: result.isPoweredByNamefiDomain,
+          canBurn: result.canBurn,
+          hasMissingData: result.hasMissingData,
+          hasDateMismatch: result.hasDateMismatch,
+          needsExpirationReview: result.needsExpirationReview,
+          isExpired: result.isExpired,
+          userId: result.userId,
+          privyUserId: result.privyUserId,
+          displayName: result.displayName,
+          primaryEmail: result.primaryEmail,
+        })),
         pagination: {
           page,
-          limit,
+          pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / limit),
+          totalPages: Math.max(1, Math.ceil(totalCount / pageSize)),
         },
       };
     }),
@@ -909,7 +1072,7 @@ export const adminRouter = createTRPCRouter({
 
       return activeWorkflows;
     } catch (error) {
-      logger.error(
+      logger.trace(
         { context: 'getActiveFixExpirationWorkflows', error },
         'Failed to fetch active fix expiration workflows',
       );
@@ -4307,156 +4470,6 @@ export const adminRouter = createTRPCRouter({
   eppTesting: eppTestingRouter,
   emailCampaigns: emailCampaignsRouter,
 });
-
-function _buildQueryFilters(
-  searchTerm: string | undefined,
-  filterBy: string,
-  poweredByNamefiDomains: string[],
-  excludePoweredByNamefiDomains: boolean,
-) {
-  // Build filters (base filters for sepolia and test domains are already applied in WHERE clause)
-  const filters = [];
-
-  if (searchTerm) {
-    filters.push(
-      or(
-        sql`${namefiNftOwnersView.normalizedDomainName} ILIKE ${'%' + searchTerm + '%'}`,
-        sql`${namefiNftOwnersView.ownerAddress} ILIKE ${'%' + searchTerm + '%'}`,
-      ),
-    );
-  }
-
-  // Add powered by namefi exclusion filter
-  if (excludePoweredByNamefiDomains) {
-    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
-    filters.push(sql`NOT (${isPoweredByNamefiCondition})`);
-  }
-
-  if (filterBy === 'expired') {
-    // Exclude powered-by-namefi domains from expired count (consistent with reporting logic)
-    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
-
-    filters.push(
-      and(
-        // Not a powered by namefi domain
-        sql`NOT (${isPoweredByNamefiCondition})`,
-        // Expired condition
-        or(
-          // Domain expired
-          sql`${indexedDomainsTable.expirationTime} < NOW()`,
-          isNull(indexedDomainsTable.expirationTime),
-          // NFT expired
-          sql`${namefiNftView.expirationTime} < NOW()`,
-        ),
-      ),
-    );
-  } else if (filterBy === 'canBurn') {
-    // For canBurn, we need to check:
-    // 1. Missing data OR (no date mismatch AND beyond grace period)
-    // 2. NOT a powered by namefi domain (they can't be burned)
-    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
-
-    filters.push(
-      and(
-        // Not a powered by namefi domain
-        sql`NOT (${isPoweredByNamefiCondition})`,
-        // Can burn logic: missing data OR (no date mismatch AND beyond grace period)
-        or(
-          // Missing data - can burn
-          and(
-            or(
-              isNull(indexedDomainsTable.expirationTime),
-              isNull(namefiNftView.expirationTime),
-            ),
-          ),
-          // No date mismatch AND beyond grace period
-          and(
-            // No significant date mismatch (< 1 day difference)
-            sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) <= ${DATE_MISMATCH_THRESHOLD_SECONDS}`,
-            // Beyond grace period
-            sql`( NOW() - coalesce(${indexedDomainsTable.expirationTime}, ${namefiNftView.expirationTime}) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days'`,
-          ),
-        ),
-      ),
-    );
-  } else if (filterBy === 'dateMismatch') {
-    // Filter for domains where NFT and domain expiration dates don't match
-    // This includes both cases where dates differ AND where either date is missing
-    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
-
-    filters.push(
-      and(
-        // Not a powered by namefi domain (they use NFT expiration)
-        sql`NOT (${isPoweredByNamefiCondition})`,
-        // Either dates are missing OR dates differ by more than 1 day
-        or(
-          // Either date is missing
-          sql`${namefiNftView.expirationTime} IS NULL`,
-          sql`${indexedDomainsTable.expirationTime} IS NULL`,
-          // Or both dates exist but differ by more than 1 day
-          and(
-            sql`${namefiNftView.expirationTime} IS NOT NULL`,
-            sql`${indexedDomainsTable.expirationTime} IS NOT NULL`,
-            sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}`,
-          ),
-        ),
-      ),
-    );
-  } else if (filterBy === 'missingData') {
-    // Filter for domains where either NFT or domain expiration data is missing
-    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
-
-    filters.push(
-      and(
-        // Not a powered by namefi domain (they use NFT expiration)
-        sql`NOT (${isPoweredByNamefiCondition})`,
-        // Either date is missing
-        or(
-          sql`${namefiNftView.expirationTime} IS NULL`,
-          sql`${indexedDomainsTable.expirationTime} IS NULL`,
-        ),
-      ),
-    );
-  }
-
-  return filters;
-}
-
-function _buildOrderByClause(sortBy: string, sortOrder: string) {
-  let orderByClause: SQL<unknown>;
-  switch (sortBy) {
-    case 'domainName':
-      orderByClause =
-        sortOrder === 'asc'
-          ? asc(namefiNftOwnersView.normalizedDomainName)
-          : desc(namefiNftOwnersView.normalizedDomainName);
-      break;
-    case 'nftExpiration':
-      orderByClause =
-        sortOrder === 'asc'
-          ? sql`${namefiNftView.expirationTime} ASC NULLS LAST`
-          : sql`${namefiNftView.expirationTime} DESC NULLS LAST`;
-      break;
-    case 'domainExpiration':
-      orderByClause =
-        sortOrder === 'asc'
-          ? asc(indexedDomainsTable.expirationTime)
-          : desc(indexedDomainsTable.expirationTime);
-      break;
-    case 'chainId':
-      orderByClause =
-        sortOrder === 'asc'
-          ? asc(namefiNftOwnersView.chainId)
-          : desc(namefiNftOwnersView.chainId);
-      break;
-    default:
-      orderByClause =
-        sortOrder === 'asc'
-          ? asc(namefiNftOwnersView.normalizedDomainName)
-          : desc(namefiNftOwnersView.normalizedDomainName);
-  }
-  return orderByClause;
-}
 
 // Helper to resolve ENS name to wallet address
 const resolveENSToWallet = resolveEnsNameToAddress;

@@ -341,7 +341,11 @@ function UsersTable({
 
           return (
             <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-              <UserWalletAvatar address={primaryWallet} className="size-6" />
+              <UserWalletAvatar
+                address={primaryWallet}
+                userId={row.original.id}
+                className="size-6"
+              />
               <div className="flex-1 min-w-0">
                 <AutoTruncateTextV2
                   initialCharactersCountToDisplay={16}
@@ -390,7 +394,11 @@ function UsersTable({
                   key={wallet}
                   className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl w-fit"
                 >
-                  <UserWalletAvatar address={wallet} className="size-6" />
+                  <UserWalletAvatar
+                    address={wallet}
+                    userId={row.original.id}
+                    className="size-6"
+                  />
                   <span className="text-xs font-mono">
                     <AutoTruncateTextV2
                       initialCharactersCountToDisplay={16}

@@ -106,8 +106,12 @@ export const OPERATORS_BY_TYPE: Record<
 };
 
 const UNARY_OPERATORS: FilterOperators[] = ['isnull', 'not_isnull'];
+const SELECT_ARRAY_OPERATORS: FilterOperators[] = ['in_array', 'not_in_array'];
 
-const formatValueForDisplay = (value: unknown, type: string): string => {
+const formatValueForDisplay = (value: unknown, _type: string): string => {
+  if (Array.isArray(value)) {
+    return value.length > 0 ? String(value[0]) : '';
+  }
   if (value instanceof Date) {
     return value.toISOString().split('T')[0];
   }
@@ -206,9 +210,25 @@ function SingleConditionEditor({
 
   const handleOperatorChange = (newOperator: FilterOperators) => {
     const isNewUnary = UNARY_OPERATORS.includes(newOperator);
+
+    let nextValue = condition.value;
+    if (fieldType === 'select' && !isNewUnary) {
+      if (SELECT_ARRAY_OPERATORS.includes(newOperator)) {
+        if (Array.isArray(condition.value)) {
+          nextValue = condition.value;
+        } else if (condition.value !== undefined && condition.value !== null) {
+          nextValue = [condition.value];
+        } else {
+          nextValue = undefined;
+        }
+      } else if (Array.isArray(condition.value)) {
+        nextValue = condition.value[0];
+      }
+    }
+
     onChange({
       operator: newOperator,
-      value: isNewUnary ? 'true' : condition.value,
+      value: isNewUnary ? 'true' : nextValue,
     });
   };
 
@@ -346,7 +366,11 @@ function SingleConditionEditor({
                   (option) => option.value?.toString() === v,
                 );
                 if (foundOption) {
-                  handleValueChange(foundOption.value);
+                  handleValueChange(
+                    SELECT_ARRAY_OPERATORS.includes(condition.operator)
+                      ? [foundOption.value]
+                      : foundOption.value,
+                  );
                   setLocalValue(foundOption.value?.toString() ?? '');
                 } else {
                   handleValueChange(undefined);

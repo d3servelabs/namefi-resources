@@ -198,7 +198,7 @@ async function main() {
       const searchAttributesValidated =
         await validateAndCreateSearchAttributes();
       if (!searchAttributesValidated) {
-        logger.error('Temporal search attributes validation failed');
+        logger.warn('Temporal search attributes validation failed');
         throw new Error('Temporal search attributes validation failed');
       }
       logger.info('Temporal search attributes validated and created');
