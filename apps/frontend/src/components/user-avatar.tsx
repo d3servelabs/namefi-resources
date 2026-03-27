@@ -28,6 +28,7 @@ type UserWalletAvatarProps = ComponentProps<typeof Avatar> & {
   address?: string | null;
   fallback?: string;
   adminOpenTarget?: 'user' | 'wallet';
+  userId?: string;
 };
 
 export const UserWalletAvatar = forwardRef<
@@ -39,6 +40,7 @@ export const UserWalletAvatar = forwardRef<
       address,
       fallback,
       adminOpenTarget = 'user',
+      userId,
       ...props
     }: UserWalletAvatarProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -84,7 +86,7 @@ export const UserWalletAvatar = forwardRef<
     };
 
     return (
-      <div className="group/user-wallet-avatar relative inline-grid shrink-0 place-items-center align-middle leading-none overflow-visible">
+      <div className="group/user-wallet-avatar relative flex shrink-0 overflow-visible">
         <Avatar
           {...props}
           className={cn(
@@ -124,7 +126,7 @@ export const UserWalletAvatar = forwardRef<
             </AdminWalletDetailsButton>
           ) : (
             <AdminUserLookupButton
-              reference={{ walletAddress: address }}
+              reference={userId ? { userId } : { walletAddress: address }}
               variant="outline"
               size="icon-xs"
               title="Open account details"
