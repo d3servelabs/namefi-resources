@@ -34,8 +34,18 @@ type UserWalletAvatarProps = ComponentProps<typeof Avatar> & {
 export const UserWalletAvatar = forwardRef<
   HTMLDivElement,
   UserWalletAvatarProps
->(
-  (
+>((props: UserWalletAvatarProps, ref: ForwardedRef<HTMLDivElement>) => {
+  const isClient = useIsClient();
+  if (!isClient) {
+    return null;
+  }
+  return <UserWalletAvatarInner {...props} ref={ref} />;
+});
+
+UserWalletAvatar.displayName = 'UserWalletAvatar';
+
+const UserWalletAvatarInner = forwardRef<HTMLDivElement, UserWalletAvatarProps>(
+  function UserWalletAvatarInner(
     {
       address,
       fallback,
@@ -44,11 +54,12 @@ export const UserWalletAvatar = forwardRef<
       ...props
     }: UserWalletAvatarProps,
     ref: ForwardedRef<HTMLDivElement>,
-  ) => {
+  ) {
+    const isClient = useIsClient();
+
     const { hasPermissions: canReadUsers } = useHasPermissions([
       Permission.READ_USERS,
     ]);
-    const isClient = useIsClient();
     const ensName = useEnsName({
       query: {
         enabled: !!address,
@@ -146,8 +157,7 @@ export const UserWalletAvatar = forwardRef<
     );
   },
 );
-
-UserWalletAvatar.displayName = 'UserWalletAvatar';
+UserWalletAvatarInner.displayName = 'UserWalletAvatarInner';
 
 export const CurrentUserAvatar = forwardRef<
   HTMLDivElement,
