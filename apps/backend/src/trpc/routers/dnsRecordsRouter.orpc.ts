@@ -5,11 +5,16 @@ import { TRPCError } from '@trpc/server';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { assoc, isNotNil, map, pickBy, pluck } from 'ramda';
 import { z } from 'zod';
+import { updateDomainConfig } from '#lib/domains/domain-preferences';
 import {
   isDomainParked,
   parkDomain,
   toggleDomainParking,
 } from '#services/dns/parking';
+import {
+  getVercelAnycastRecordPlan,
+  type VercelAnycastDnsRecord,
+} from '#lib/vercel/vercel-client-sdk';
 import {
   createRecord,
   createRecordInputSchema,
@@ -21,10 +26,7 @@ import {
 } from '../../services/dns/service';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';
-import {
-  getEip712MetaFromZodSchema,
-  orpcMetaWithEip712FromZodSchema,
-} from '#lib/eip712/orpc-meta-from-zod-schemas';
+import { orpcMetaWithEip712FromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
 
 // ============================================================================
 // Output Schemas for OpenAPI
@@ -129,6 +131,121 @@ const ToggleDomainParking = z
     description: 'ToggleDomainParking',
     eip712: { structName: 'ToggleDomainParking' },
   });
+
+const ToggleForwarding = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    enableForwarding: z.boolean(),
+    forwardTo: z.string().optional(),
+  })
+  .superRefine((input, ctx) => {
+    if (
+      input.enableForwarding &&
+      normalizeForwardTo(input.forwardTo) === null
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['forwardTo'],
+        message: 'forwardTo is required when enabling forwarding',
+      });
+    }
+  })
+  .meta({
+    name: 'ToggleForwarding',
+    description: 'ToggleForwarding',
+    eip712: { structName: 'ToggleForwarding' },
+  });
+
+const ToggleAutoEns = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    enableAutoEns: z.boolean(),
+  })
+  .meta({
+    name: 'ToggleAutoEns',
+    description: 'ToggleAutoEns',
+    eip712: { structName: 'ToggleAutoEns' },
+  });
+
+const ToggleVercelAnyCastRecords = z
+  .object({
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    enableVercelAnyCastRecords: z.boolean(),
+    overrideExistingRecords: z.boolean().optional(),
+  })
+  .meta({
+    name: 'ToggleVercelAnyCastRecords',
+    description: 'ToggleVercelAnyCastRecords',
+    eip712: { structName: 'ToggleVercelAnyCastRecords' },
+  });
+
+const VERCEL_ANYCAST_MANAGED_BY = 'vercelAnycast';
+
+type DnsRecordRow = z.infer<typeof dnsRecordSelectSchema>;
+
+function normalizeForwardTo(forwardTo: string | undefined) {
+  const trimmed = forwardTo?.trim();
+  return trimmed ? trimmed : null;
+}
+
+function isApexRecordName(name: string) {
+  return name === '@' || name === '';
+}
+
+function isManagedVercelAnycastRecord(record: Pick<DnsRecordRow, 'metadata'>) {
+  return (
+    typeof record.metadata === 'object' &&
+    record.metadata !== null &&
+    record.metadata.namefiManaged === true &&
+    record.metadata.managedBy === VERCEL_ANYCAST_MANAGED_BY
+  );
+}
+
+function isMatchingVercelAnycastRecord(
+  record: Pick<DnsRecordRow, 'name' | 'type' | 'rdata'>,
+  targetRecord: VercelAnycastDnsRecord,
+) {
+  return (
+    record.name === targetRecord.name &&
+    record.type === targetRecord.type &&
+    record.rdata === targetRecord.rdata
+  );
+}
+
+function toValidationRecord(
+  record: Pick<DnsRecordRow, 'id' | 'name' | 'type' | 'rdata' | 'ttl'>,
+) {
+  return {
+    id: record.id,
+    name: record.name,
+    type: record.type,
+    rdata: record.rdata,
+    ttl: record.ttl,
+  };
+}
+
+function buildVercelAnycastMetadata(record: VercelAnycastDnsRecord) {
+  return {
+    namefiManaged: true,
+    managedBy: VERCEL_ANYCAST_MANAGED_BY,
+    kind: record.type === 'CAA' ? 'caa' : 'apex',
+  } as const;
+}
+
+function getVercelAnycastManagedConfigUpdate(apexRecordType: 'A' | 'CNAME') {
+  if (apexRecordType === 'CNAME') {
+    return {
+      autoParkEnabled: false,
+      autoEnsEnabled: false,
+      forwardTo: '',
+    };
+  }
+
+  return {
+    autoParkEnabled: false,
+    forwardTo: '',
+  };
+}
 // ============================================================================
 // Router Definition
 // ============================================================================
@@ -400,6 +517,266 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
     }),
 
   /**
+   * Toggle forwarding managed records for a domain
+   */
+  toggleForwarding: protectedProcedure
+    .meta(
+      orpcMetaWithEip712FromZodSchema([ToggleForwarding], {
+        route: {
+          path: '/dns/forwarding',
+          method: 'PUT',
+          tags: ['dns', 'EIP712'],
+          operationId: 'toggleForwarding',
+          summary: 'Toggle domain forwarding',
+          description:
+            'Enable or disable managed forwarding DNS records for a domain. Enabling forwarding requires a destination URL and validates that the resulting DNS zone remains valid.',
+        },
+      }),
+    )
+    .input(ToggleForwarding)
+    .output(successResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.normalizedDomainName,
+        ctx.user,
+      );
+
+      const forwardTo = input.enableForwarding
+        ? normalizeForwardTo(input.forwardTo)
+        : null;
+
+      await validateZone(
+        input.normalizedDomainName,
+        {},
+        {
+          managedStateOverride: {
+            forwardTo,
+          },
+        },
+      );
+
+      await updateDomainConfig(input.normalizedDomainName, {
+        forwardTo: forwardTo ?? '',
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Toggle automatic ENS TXT records for a domain
+   */
+  toggleAutoEns: protectedProcedure
+    .meta(
+      orpcMetaWithEip712FromZodSchema([ToggleAutoEns], {
+        route: {
+          path: '/dns/auto-ens',
+          method: 'PUT',
+          tags: ['dns', 'EIP712'],
+          operationId: 'toggleAutoEns',
+          summary: 'Toggle automatic ENS records',
+          description:
+            'Enable or disable the managed ENS TXT record for a domain. The DNS zone is validated against the resulting managed-record state before the setting is updated.',
+        },
+      }),
+    )
+    .input(ToggleAutoEns)
+    .output(successResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.normalizedDomainName,
+        ctx.user,
+      );
+
+      await validateZone(
+        input.normalizedDomainName,
+        {},
+        {
+          managedStateOverride: {
+            autoEnsEnabled: input.enableAutoEns,
+          },
+        },
+      );
+
+      await updateDomainConfig(input.normalizedDomainName, {
+        autoEnsEnabled: input.enableAutoEns,
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Toggle Vercel anycast DNS records for a domain
+   */
+  toggleVercelAnyCastRecords: protectedProcedure
+    .meta(
+      orpcMetaWithEip712FromZodSchema([ToggleVercelAnyCastRecords], {
+        route: {
+          path: '/dns/vercel-anycast',
+          method: 'PUT',
+          tags: ['dns', 'EIP712'],
+          operationId: 'toggleVercelAnyCastRecords',
+          summary: 'Toggle Vercel anycast DNS records',
+          description:
+            "Enable or disable Vercel anycast DNS records for a domain. Subdomains use an apex CNAME, traditional apex domains use Vercel's anycast A record plus parking-style CAA records.",
+        },
+      }),
+    )
+    .input(ToggleVercelAnyCastRecords)
+    .output(successResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.normalizedDomainName,
+        ctx.user,
+      );
+
+      const zoneRecords = await db
+        .select()
+        .from(dnsRecordsTable)
+        .where(eq(dnsRecordsTable.zoneName, input.normalizedDomainName));
+
+      const apexZoneRecords = zoneRecords.filter((record) =>
+        isApexRecordName(record.name),
+      );
+      const existingManagedAnycastRecords = apexZoneRecords.filter((record) =>
+        isManagedVercelAnycastRecord(record),
+      );
+
+      if (!input.enableVercelAnyCastRecords) {
+        if (existingManagedAnycastRecords.length > 0) {
+          await db
+            .delete(dnsRecordsTable)
+            .where(
+              and(
+                eq(dnsRecordsTable.zoneName, input.normalizedDomainName),
+                inArray(
+                  dnsRecordsTable.id,
+                  pluck('id', existingManagedAnycastRecords),
+                ),
+              ),
+            );
+        }
+
+        return { success: true };
+      }
+
+      let recordPlan: ReturnType<typeof getVercelAnycastRecordPlan>;
+      try {
+        recordPlan = getVercelAnycastRecordPlan(input.normalizedDomainName);
+      } catch (error) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            error instanceof Error ? error.message : 'Invalid domain name',
+        });
+      }
+
+      const conflictingRecords = apexZoneRecords.filter((record) => {
+        if (isMatchingVercelAnycastRecord(record, recordPlan.records[0])) {
+          return false;
+        }
+
+        if (
+          recordPlan.records.some((targetRecord) =>
+            isMatchingVercelAnycastRecord(record, targetRecord),
+          )
+        ) {
+          return false;
+        }
+
+        if (isManagedVercelAnycastRecord(record)) {
+          return true;
+        }
+
+        if (recordPlan.overrideStrategy === 'replace-all-apex-records') {
+          return true;
+        }
+
+        return record.type === 'A' || record.type === 'CNAME';
+      });
+
+      if (
+        conflictingRecords.length > 0 &&
+        input.overrideExistingRecords !== true
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'Conflicting apex DNS records already exist. Set overrideExistingRecords to true to replace them.',
+        });
+      }
+
+      await validateZone(
+        input.normalizedDomainName,
+        {
+          addedRecords: recordPlan.records,
+          deletedRecords: conflictingRecords.map(toValidationRecord),
+        },
+        {
+          managedStateOverride:
+            recordPlan.apexRecordType === 'CNAME'
+              ? {
+                  autoParkEnabled: false,
+                  autoEnsEnabled: false,
+                  forwardTo: null,
+                }
+              : {
+                  autoParkEnabled: false,
+                  forwardTo: null,
+                },
+        },
+      );
+
+      await db.transaction(async (tx) => {
+        await updateDomainConfig(
+          input.normalizedDomainName,
+          getVercelAnycastManagedConfigUpdate(recordPlan.apexRecordType),
+          tx,
+        );
+
+        if (conflictingRecords.length > 0) {
+          await tx
+            .delete(dnsRecordsTable)
+            .where(
+              and(
+                eq(dnsRecordsTable.zoneName, input.normalizedDomainName),
+                inArray(dnsRecordsTable.id, pluck('id', conflictingRecords)),
+              ),
+            );
+        }
+
+        await tx
+          .insert(dnsRecordsTable)
+          .values(
+            recordPlan.records.map((record) => ({
+              zoneName: input.normalizedDomainName,
+              name: record.name,
+              type: record.type,
+              class: 'IN',
+              ttl: record.ttl,
+              rdata: record.rdata,
+              metadata: buildVercelAnycastMetadata(record),
+            })),
+          )
+          .onConflictDoUpdate({
+            target: [
+              dnsRecordsTable.zoneName,
+              dnsRecordsTable.name,
+              dnsRecordsTable.type,
+              dnsRecordsTable.class,
+              dnsRecordsTable.rdata,
+            ],
+            set: {
+              ttl: sql`excluded.ttl`,
+              metadata: sql`excluded.metadata`,
+              updatedAt: new Date(),
+            },
+          });
+      });
+
+      return { success: true };
+    }),
+
+  /**
    * Park a domain
    */
   parkDomain: protectedProcedure
@@ -431,7 +808,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
         );
 
         return { success: true };
-      } catch (e) {
+      } catch (_e) {
         return { success: false };
       }
     }),
@@ -468,7 +845,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
         );
 
         return { success: true };
-      } catch (e) {
+      } catch (_e) {
         return { success: false };
       }
     }),

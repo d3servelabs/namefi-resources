@@ -17,10 +17,13 @@ describe('buildManagedRecordsForState', () => {
       ownerAddress: null,
     });
 
-    expect(records).toHaveLength(2);
-    expect(
-      records.every((record) => record.type === 'A' || record.type === 'AAAA'),
-    ).toBe(true);
+    expect(records).toHaveLength(4);
+    expect(records.map((record) => record.type)).toEqual([
+      'A',
+      'AAAA',
+      'CAA',
+      'CAA',
+    ]);
     expect(
       records.every((record) => record.metadata?.namefiManaged === true),
     ).toBe(true);
@@ -34,7 +37,7 @@ describe('buildManagedRecordsForState', () => {
       ownerAddress: null,
     });
 
-    expect(records).toHaveLength(3);
+    expect(records).toHaveLength(5);
     expect(records.some((record) => record.type === 'TXT')).toBe(true);
     expect(
       records.some(

@@ -1,4 +1,6 @@
 import { Vercel } from '@vercel/sdk';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { logger } from '#lib/logger';
 import { secrets } from '#lib/env';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -32,10 +34,79 @@ export interface DomainConfiguration {
   }>;
 }
 
-const VERCEL_ANYCAST = {
+export const VERCEL_ANYCAST = {
   CNAME: 'cname.vercel-dns.com.',
   A: '76.76.21.21',
 };
+
+export const VERCEL_ANYCAST_TTL = 60;
+
+export const VERCEL_ANYCAST_CAA_RECORDS = [
+  {
+    type: 'CAA' as const,
+    name: '@' as const,
+    rdata: '0 issue "letsencrypt.org"',
+    ttl: VERCEL_ANYCAST_TTL,
+  },
+  {
+    type: 'CAA' as const,
+    name: '@' as const,
+    rdata: '0 issue "zerossl.com"',
+    ttl: VERCEL_ANYCAST_TTL,
+  },
+];
+
+export type VercelAnycastDnsRecord = {
+  name: '@';
+  type: 'A' | 'CAA' | 'CNAME';
+  ttl: number;
+  rdata: string;
+};
+
+export type VercelAnycastRecordPlan = {
+  apexRecordType: 'A' | 'CNAME';
+  records: VercelAnycastDnsRecord[];
+  overrideStrategy: 'replace-apex-address-records' | 'replace-all-apex-records';
+};
+
+export function getVercelAnycastRecordPlan(
+  normalizedDomainName: NamefiNormalizedDomain,
+): VercelAnycastRecordPlan {
+  const parsedDomain = parseDomainName(normalizedDomainName);
+
+  if (!parsedDomain.valid) {
+    throw new Error(`Invalid domain name: ${normalizedDomainName}`);
+  }
+
+  if (parsedDomain.registryType === 'subdomain') {
+    return {
+      apexRecordType: 'CNAME',
+      records: [
+        {
+          name: '@',
+          type: 'CNAME',
+          ttl: VERCEL_ANYCAST_TTL,
+          rdata: VERCEL_ANYCAST.CNAME,
+        },
+      ],
+      overrideStrategy: 'replace-all-apex-records',
+    };
+  }
+
+  return {
+    apexRecordType: 'A',
+    records: [
+      {
+        name: '@',
+        type: 'A',
+        ttl: VERCEL_ANYCAST_TTL,
+        rdata: VERCEL_ANYCAST.A,
+      },
+      ...VERCEL_ANYCAST_CAA_RECORDS,
+    ],
+    overrideStrategy: 'replace-apex-address-records',
+  };
+}
 
 export class VercelClientSDK {
   private readonly vercel: Vercel;
@@ -48,7 +119,9 @@ export class VercelClientSDK {
     this.teamId = teamId;
   }
 
-  async getProject() {}
+  async getProject() {
+    return undefined;
+  }
 
   async getProjectDomain(
     projectIdOrName: string,

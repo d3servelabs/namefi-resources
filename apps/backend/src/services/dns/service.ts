@@ -22,6 +22,7 @@ import {
   MANAGED_DNS_CNAME_CONFLICT_CODE,
   MANAGED_DNS_CNAME_MANAGED_CONFLICT_CODE,
   MANAGED_DNS_PARKING_CONFLICT_CODE,
+  type ManagedDnsState,
   PARKED_DOMAIN_RECORDS,
   buildManagedRecordsForState,
   getDomainManagedDnsState,
@@ -51,6 +52,19 @@ type ZoneRecordLike = {
   rdata: string;
   ttl: number;
   class?: string;
+};
+
+type ValidateZoneManagedStateOverride = Partial<
+  Pick<
+    ManagedDnsState,
+    'autoEnsEnabled' | 'autoParkEnabled' | 'forwardTo' | 'ownerAddress'
+  >
+>;
+
+type ZoneChanges = {
+  addedRecords?: z.infer<typeof recordSchema>[];
+  updatedRecords?: Omit<z.infer<typeof updateRecordInputSchema>, 'zoneName'>[];
+  deletedRecords?: (z.infer<typeof recordSchema> & { id?: string })[];
 };
 
 function getRecordSetKey(record: ZoneRecordLike) {
@@ -94,6 +108,156 @@ function isParkedApexRecord(record: z.infer<typeof recordSchema>) {
 
 function normalizeRecordName(name: string) {
   return name.trim().toLowerCase();
+}
+
+function getManagedStateWithOverride(
+  managedState: ManagedDnsState,
+  override?: ValidateZoneManagedStateOverride,
+): ManagedDnsState {
+  const forwardTo =
+    override && 'forwardTo' in override
+      ? (override.forwardTo ?? null)
+      : managedState.forwardTo;
+  const ownerAddress =
+    override && 'ownerAddress' in override
+      ? (override.ownerAddress ?? null)
+      : managedState.ownerAddress;
+
+  return {
+    autoEnsEnabled: override?.autoEnsEnabled ?? managedState.autoEnsEnabled,
+    autoParkEnabled: override?.autoParkEnabled ?? managedState.autoParkEnabled,
+    forwardTo,
+    ownerAddress,
+    shouldServeParkingRecords:
+      (override?.autoParkEnabled ?? managedState.autoParkEnabled) ||
+      forwardTo !== null,
+  };
+}
+
+function applyRecordChanges(
+  existingRecords: Awaited<ReturnType<typeof getZoneRecords>>,
+  updatedRecords: NonNullable<ZoneChanges['updatedRecords']>,
+  deletedRecords: NonNullable<ZoneChanges['deletedRecords']>,
+) {
+  const updatedExistingRecords = filter(
+    isNotNil,
+    existingRecords.map((record) => {
+      const update = updatedRecords.find(
+        (candidate) => candidate.id === record.id,
+      );
+      if (update) {
+        return mergeRight(record, update);
+      }
+      if (
+        deletedRecords.find(
+          (deletedRecord) =>
+            deletedRecord.id === record.id ||
+            areRecordsEqual(deletedRecord, record),
+        )
+      ) {
+        return null;
+      }
+      return record;
+    }),
+  );
+
+  const updatedChangedRecords = filter(
+    isNotNil,
+    updatedRecords.map((update) => {
+      const existingRecord = existingRecords.find(
+        (record) => record.id === update.id,
+      );
+      if (!existingRecord) {
+        return null;
+      }
+      const merged = mergeRight(existingRecord, update);
+      return {
+        type: merged.type,
+        name: merged.name,
+        rdata: merged.rdata,
+        ttl: merged.ttl,
+      } satisfies z.infer<typeof recordSchema>;
+    }),
+  );
+
+  return {
+    updatedExistingRecords,
+    updatedChangedRecords,
+  };
+}
+
+function assertNoCnameConflicts(
+  addedRecords: z.infer<typeof recordSchema>[],
+  updatedChangedRecords: z.infer<typeof recordSchema>[],
+  updatedExistingRecords: Awaited<ReturnType<typeof getZoneRecords>>,
+  managedRecords: ReturnType<typeof buildManagedRecordsForState>,
+) {
+  const cnameCandidates = [...addedRecords, ...updatedChangedRecords].filter(
+    (record) => record.type === 'CNAME',
+  );
+
+  if (cnameCandidates.length === 0) {
+    return;
+  }
+
+  const nonManagedNonCnameRecords = [
+    ...updatedExistingRecords,
+    ...addedRecords,
+  ].filter((record) => record.type !== 'CNAME');
+  const managedNonCnameRecords = managedRecords.filter(
+    (record) => record.type !== 'CNAME',
+  );
+
+  const hasNonManagedConflict = cnameCandidates.some((cnameCandidate) => {
+    const cnameName = normalizeRecordName(cnameCandidate.name);
+    return nonManagedNonCnameRecords.some(
+      (record) => normalizeRecordName(record.name) === cnameName,
+    );
+  });
+
+  if (hasNonManagedConflict) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `${MANAGED_DNS_CNAME_CONFLICT_CODE}: CNAME records cannot share a name with other record types. Delete conflicting records first.`,
+    });
+  }
+
+  const hasManagedOnlyConflict = cnameCandidates.some((cnameCandidate) => {
+    const cnameName = normalizeRecordName(cnameCandidate.name);
+    return managedNonCnameRecords.some(
+      (record) => normalizeRecordName(record.name) === cnameName,
+    );
+  });
+
+  if (hasManagedOnlyConflict) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `${MANAGED_DNS_CNAME_MANAGED_CONFLICT_CODE}: Disable managed records before adding this CNAME.`,
+    });
+  }
+}
+
+function assertNoParkingConflicts(
+  records: z.infer<typeof recordSchema>[],
+  shouldServeParkingRecords: boolean,
+) {
+  if (!shouldServeParkingRecords) {
+    return;
+  }
+
+  const parkingConflict = records.some((record) => {
+    if (!isApexParkingConflictCandidate(record)) {
+      return false;
+    }
+    return !isParkedApexRecord(record);
+  });
+
+  if (parkingConflict) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `${MANAGED_DNS_PARKING_CONFLICT_CODE}: Disable parking and forwarding before adding apex A/AAAA records.`,
+    });
+  }
 }
 
 /**
@@ -166,13 +330,9 @@ export async function getZoneRecordsWithManagedRecords(
 // TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function validateZone(
   zoneName: NamefiNormalizedDomain,
-  changes: {
-    addedRecords?: z.infer<typeof recordSchema>[];
-    updatedRecords?: Omit<
-      z.infer<typeof updateRecordInputSchema>,
-      'zoneName'
-    >[];
-    deletedRecords?: (z.infer<typeof recordSchema> & { id?: string })[];
+  changes: ZoneChanges,
+  options?: {
+    managedStateOverride?: ValidateZoneManagedStateOverride;
   },
 ) {
   const {
@@ -185,43 +345,20 @@ export async function validateZone(
     getDomainManagedDnsState(zoneName),
   ]);
 
-  // Replace updated records in existing records
-  const updatedExistingRecords = filter(
-    isNotNil,
-    existingRecords.map((record) => {
-      const update = updatedRecords.find((u) => u.id === record.id);
-      if (update) {
-        return mergeRight(record, update);
-      }
-      if (
-        deletedRecords.find(
-          (d) => d.id === record.id || areRecordsEqual(d, record),
-        )
-      ) {
-        return null;
-      }
-      return record;
-    }),
+  const { updatedExistingRecords, updatedChangedRecords } = applyRecordChanges(
+    existingRecords,
+    updatedRecords,
+    deletedRecords,
+  );
+  const nextManagedState = getManagedStateWithOverride(
+    managedState,
+    options?.managedStateOverride,
   );
 
-  const updatedChangedRecords = filter(
-    isNotNil,
-    updatedRecords.map((update) => {
-      const existingRecord = existingRecords.find((r) => r.id === update.id);
-      if (!existingRecord) {
-        return null;
-      }
-      const merged = mergeRight(existingRecord, update);
-      return {
-        type: merged.type,
-        name: merged.name,
-        rdata: merged.rdata,
-        ttl: merged.ttl,
-      } satisfies z.infer<typeof recordSchema>;
-    }),
+  const managedRecords = buildManagedRecordsForState(
+    zoneName,
+    nextManagedState,
   );
-
-  const managedRecords = buildManagedRecordsForState(zoneName, managedState);
 
   // Combine existing (with updates), new records, and managed records.
   const allRecords = dedupeRecordsBySet([
@@ -242,79 +379,16 @@ export async function validateZone(
     })),
   ]);
 
-  const cnameCandidates = [...addedRecords, ...updatedChangedRecords].filter(
-    (record) => record.type === 'CNAME',
+  assertNoCnameConflicts(
+    addedRecords,
+    updatedChangedRecords,
+    updatedExistingRecords,
+    managedRecords,
   );
-
-  if (cnameCandidates.length > 0) {
-    const nonManagedNonCnameRecords = [
-      ...updatedExistingRecords,
-      ...addedRecords,
-    ].filter((record) => record.type !== 'CNAME');
-    const managedNonCnameRecords = managedRecords.filter(
-      (record) => record.type !== 'CNAME',
-    );
-
-    let hasNonManagedConflict = false;
-    let hasManagedOnlyConflict = false;
-
-    for (const cnameCandidate of cnameCandidates) {
-      const cnameName = normalizeRecordName(cnameCandidate.name);
-
-      const hasNonManagedConflictForName = nonManagedNonCnameRecords.some(
-        (record) => {
-          return normalizeRecordName(record.name) === cnameName;
-        },
-      );
-
-      if (hasNonManagedConflictForName) {
-        hasNonManagedConflict = true;
-        continue;
-      }
-
-      const hasManagedConflictForName = managedNonCnameRecords.some(
-        (record) => {
-          return normalizeRecordName(record.name) === cnameName;
-        },
-      );
-
-      if (hasManagedConflictForName) {
-        hasManagedOnlyConflict = true;
-      }
-    }
-
-    if (hasNonManagedConflict) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: `${MANAGED_DNS_CNAME_CONFLICT_CODE}: CNAME records cannot share a name with other record types. Delete conflicting records first.`,
-      });
-    }
-
-    if (hasManagedOnlyConflict) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: `${MANAGED_DNS_CNAME_MANAGED_CONFLICT_CODE}: Disable managed records before adding this CNAME.`,
-      });
-    }
-  }
-
-  if (managedState.shouldServeParkingRecords) {
-    const parkingConflict = [...addedRecords, ...updatedChangedRecords].some(
-      (record) => {
-        if (!isApexParkingConflictCandidate(record)) {
-          return false;
-        }
-        return !isParkedApexRecord(record);
-      },
-    );
-
-    if (parkingConflict) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: `${MANAGED_DNS_PARKING_CONFLICT_CODE}: Disable parking and forwarding before adding apex A/AAAA records.`,
-      });
-    }
-  }
+  assertNoParkingConflicts(
+    [...addedRecords, ...updatedChangedRecords],
+    nextManagedState.shouldServeParkingRecords,
+  );
 
   // Validate the entire zone
   await zoneSchema.parseAsync({
