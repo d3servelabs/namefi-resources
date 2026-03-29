@@ -232,6 +232,31 @@ const ErrorPlaceholder = ({
   </div>
 );
 
+function AnimationPreview(props: {
+  domain: string;
+  mode?: AnimationMode;
+  posterUrl?: string | null;
+  url: string;
+}) {
+  const isLooped = props.mode === 'looped';
+
+  return (
+    // biome-ignore lint/a11y/useMediaCaption: generated animation clips are silent and do not include audio tracks
+    <video
+      aria-label={`AI-generated ${isLooped ? 'looped' : 'cinematic'} animation for ${props.domain}`}
+      autoPlay={isLooped}
+      className="h-full w-full rounded-lg bg-black object-contain"
+      controls
+      loop={isLooped}
+      muted={isLooped}
+      playsInline
+      poster={props.posterUrl ?? undefined}
+      preload="metadata"
+      src={props.url}
+    />
+  );
+}
+
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: this container coordinates loading, polling, media display, detail cards, and destructive actions for three generation types.
 export function GenerationDetailsClient({
   domain,
@@ -479,13 +504,11 @@ export function GenerationDetailsClient({
               <CardContent className="p-0">
                 <div className="relative aspect-square">
                   {generation.type === 'animation' && generation.url ? (
-                    // biome-ignore lint/a11y/useMediaCaption: generated animation clips are silent and do not include audio tracks
-                    <video
-                      controls
-                      playsInline
-                      poster={generation.thumbnailUrl ?? undefined}
-                      className="h-full w-full rounded-lg object-contain"
-                      src={generation.url}
+                    <AnimationPreview
+                      domain={domain}
+                      mode={animationModeValue}
+                      posterUrl={generation.thumbnailUrl}
+                      url={generation.url}
                     />
                   ) : previewUrl ? (
                     <img
