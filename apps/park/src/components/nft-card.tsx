@@ -192,13 +192,13 @@ function ParkDefaultArtworkContent({
   return (
     <>
       {primaryImage ? (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 overflow-hidden">
           {/* biome-ignore lint/performance/noImgElement: remote artwork URLs are served outside Next.js image optimization */}
           <img
             src={primaryImage}
             alt={`Artwork for ${domainName}`}
             loading="lazy"
-            className="h-full w-full object-contain p-0 sm:p-1"
+            className="block h-full w-full object-contain"
           />
         </div>
       ) : (
