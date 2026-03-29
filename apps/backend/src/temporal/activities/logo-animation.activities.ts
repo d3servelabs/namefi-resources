@@ -255,11 +255,10 @@ export async function generateLogoAnimation({
     }
 
     const referenceLogoOutput = referenceLogo.output;
-
-    const animationResult = await heartbeatWhile(
-      (abortSignal) =>
-        runLogoAnimationWorkflow(
-          {
+    const workflowInput =
+      animationInput.mode === 'cinematic'
+        ? {
+            mode: 'cinematic' as const,
             domain: generation.domain,
             description: animationInput.description,
             sourceMode: animationInput.sourceMode,
@@ -270,9 +269,23 @@ export async function generateLogoAnimation({
               config.CLOUD_FRONT_DOMAIN,
             ),
             storage: getStorage(config.AI_BUCKET_FOLDERS.ANIMATIONS),
-          },
-          { abortSignal },
-        ),
+          }
+        : {
+            mode: 'looped' as const,
+            domain: generation.domain,
+            description: animationInput.description,
+            motionPreset: animationInput.motionPreset,
+            motionIntensity: animationInput.motionIntensity,
+            model: animationInput.model,
+            referenceLogoUrl: generateUrlFromStoragePath(
+              referenceLogoOutput.storagePath,
+              config.CLOUD_FRONT_DOMAIN,
+            ),
+            storage: getStorage(config.AI_BUCKET_FOLDERS.ANIMATIONS),
+          };
+
+    const animationResult = await heartbeatWhile(
+      (abortSignal) => runLogoAnimationWorkflow(workflowInput, { abortSignal }),
       {
         stage: 'animation-workflow',
         generationId,
@@ -296,6 +309,7 @@ export async function generateLogoAnimation({
         },
         metadata: {
           ...metadata,
+          animationMode: animationResult.analysis.mode,
           brandAttributes: animationResult.analysis.brandAttributes,
           targetAudience: animationResult.analysis.targetAudience,
           motionDirection: animationResult.analysis.direction,

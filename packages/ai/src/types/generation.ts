@@ -18,7 +18,27 @@ export type ImageModel =
   | 'gemini-2.5-flash-image'
   | 'gemini-3-pro-image-preview';
 
-export const ANIMATION_MODELS = {
+export const ANIMATION_MODES = {
+  cinematic: {
+    id: 'cinematic',
+    name: 'Cinematic',
+    description: 'Wide-frame logo reveals with dramatic motion.',
+  },
+  looped: {
+    id: 'looped',
+    name: 'Looped',
+    description: 'Square animated logos with restrained repeatable motion.',
+  },
+} as const;
+
+export type AnimationMode = keyof typeof ANIMATION_MODES;
+
+export const ANIMATION_MODE_IDS = ['cinematic', 'looped'] as const satisfies [
+  AnimationMode,
+  ...AnimationMode[],
+];
+
+export const CINEMATIC_ANIMATION_MODELS = {
   'veo-3.1-generate-preview': {
     id: 'veo-3.1-generate-preview',
     name: 'Veo 3.1 Quality',
@@ -31,14 +51,60 @@ export const ANIMATION_MODELS = {
   },
 } as const;
 
+export type CinematicAnimationModel = keyof typeof CINEMATIC_ANIMATION_MODELS;
+
+export const LOOPED_ANIMATION_MODELS = {
+  'bytedance/seedance-v1.5-pro': {
+    id: 'bytedance/seedance-v1.5-pro',
+    name: 'Seedance 1.5 Pro',
+    description: 'Highest-quality square looped logo animation.',
+  },
+  'bytedance/seedance-v1.0-pro': {
+    id: 'bytedance/seedance-v1.0-pro',
+    name: 'Seedance 1.0 Pro',
+    description: 'Faster square looped logo animation.',
+  },
+} as const;
+
+export type LoopedAnimationModel = keyof typeof LOOPED_ANIMATION_MODELS;
+
+export const ANIMATION_MODELS = {
+  ...CINEMATIC_ANIMATION_MODELS,
+  ...LOOPED_ANIMATION_MODELS,
+} as const;
+
 export type AnimationModel = keyof typeof ANIMATION_MODELS;
 
-const animationModelIds = Object.keys(ANIMATION_MODELS) as AnimationModel[];
+export const CINEMATIC_ANIMATION_MODEL_IDS = [
+  'veo-3.1-generate-preview',
+  'veo-3.1-fast-generate-preview',
+] as const satisfies [CinematicAnimationModel, ...CinematicAnimationModel[]];
 
-export const ANIMATION_MODEL_IDS = animationModelIds as [
-  AnimationModel,
-  ...AnimationModel[],
-];
+export const LOOPED_ANIMATION_MODEL_IDS = [
+  'bytedance/seedance-v1.5-pro',
+  'bytedance/seedance-v1.0-pro',
+] as const satisfies [LoopedAnimationModel, ...LoopedAnimationModel[]];
+
+export const ANIMATION_MODEL_IDS = [
+  ...CINEMATIC_ANIMATION_MODEL_IDS,
+  ...LOOPED_ANIMATION_MODEL_IDS,
+] as const satisfies [AnimationModel, ...AnimationModel[]];
+
+export function isCinematicAnimationModel(
+  model: AnimationModel,
+): model is CinematicAnimationModel {
+  return model in CINEMATIC_ANIMATION_MODELS;
+}
+
+export function isLoopedAnimationModel(
+  model: AnimationModel,
+): model is LoopedAnimationModel {
+  return model in LOOPED_ANIMATION_MODELS;
+}
+
+export function getAnimationModeForModel(model: AnimationModel): AnimationMode {
+  return isLoopedAnimationModel(model) ? 'looped' : 'cinematic';
+}
 
 export const ANIMATION_SOURCE_MODES = {
   'exact-frame': {
@@ -65,12 +131,15 @@ export const ANIMATION_SOURCE_MODE_IDS = animationSourceModeIds as [
   ...AnimationSourceMode[],
 ];
 
-export const ANIMATION_MOTION_PRESETS = {
+const LET_AI_CHOOSE_ANIMATION_PRESET = {
+  id: 'let-ai-choose',
+  name: 'Let AI Choose',
+  description: 'AI picks the strongest motion direction for this mode.',
+} as const;
+
+export const CINEMATIC_ANIMATION_MOTION_PRESETS = {
   'let-ai-choose': {
-    id: 'let-ai-choose',
-    name: 'Let AI Choose',
-    description:
-      'AI picks the strongest cinematic motion direction for this brand.',
+    ...LET_AI_CHOOSE_ANIMATION_PRESET,
   },
   'orbital-reveal': {
     id: 'orbital-reveal',
@@ -102,77 +171,177 @@ export const ANIMATION_MOTION_PRESETS = {
     description:
       'Refractions, lens flares, and glossy glints create a high-end reveal.',
   },
+} as const;
+
+export type CinematicAnimationMotionPresetId =
+  keyof typeof CINEMATIC_ANIMATION_MOTION_PRESETS;
+
+export const CINEMATIC_ANIMATION_MOTION_PRESET_IDS = [
+  'let-ai-choose',
+  'orbital-reveal',
+  'energy-surge',
+  'atmospheric-rise',
+  'dimensional-parallax',
+  'prismatic-bloom',
+] as const satisfies [
+  CinematicAnimationMotionPresetId,
+  ...CinematicAnimationMotionPresetId[],
+];
+
+export type CinematicAnimationMotionPresetInput =
+  (typeof CINEMATIC_ANIMATION_MOTION_PRESET_IDS)[number];
+
+export const CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS = [
+  'orbital-reveal',
+  'energy-surge',
+  'atmospheric-rise',
+  'dimensional-parallax',
+  'prismatic-bloom',
+] as const satisfies [
+  Exclude<CinematicAnimationMotionPresetId, 'let-ai-choose'>,
+  ...Exclude<CinematicAnimationMotionPresetId, 'let-ai-choose'>[],
+];
+
+export type CinematicAnimationMotionPreset =
+  (typeof CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS)[number];
+
+export const LOOPED_ANIMATION_MOTION_PRESETS = {
+  'let-ai-choose': {
+    ...LET_AI_CHOOSE_ANIMATION_PRESET,
+  },
+  breathe: {
+    id: 'breathe',
+    name: 'Breathe',
+    description: 'A slow in-place pulse in light and energy.',
+  },
   'light-sweep': {
     id: 'light-sweep',
     name: 'Light Sweep',
-    description: 'A controlled light pass across the logo surface.',
-    legacy: true,
-  },
-  'glow-pulse': {
-    id: 'glow-pulse',
-    name: 'Glow Pulse',
-    description: 'A restrained glow that gently brightens and fades.',
-    legacy: true,
-  },
-  'particle-orbit': {
-    id: 'particle-orbit',
-    name: 'Particle Orbit',
-    description: 'Small particles orbit the logo without obscuring it.',
-    legacy: true,
-  },
-  'contour-trace': {
-    id: 'contour-trace',
-    name: 'Contour Trace',
-    description: 'A clean line traces the logo silhouette.',
-    legacy: true,
+    description: 'A restrained highlight pass glides across the mark.',
   },
   shimmer: {
     id: 'shimmer',
     name: 'Shimmer',
-    description: 'A subtle metallic shimmer glides across key edges.',
-    legacy: true,
+    description: 'A subtle reflective shimmer glides across key edges.',
+  },
+  'glow-pulse': {
+    id: 'glow-pulse',
+    name: 'Glow Pulse',
+    description: 'A soft radiance brightens and fades without blooming out.',
+  },
+  'contour-trace': {
+    id: 'contour-trace',
+    name: 'Contour Trace',
+    description: 'A clean light trace follows the logo contour and resolves.',
+  },
+  'ambient-orbit': {
+    id: 'ambient-orbit',
+    name: 'Ambient Orbit',
+    description: 'Sparse ambient particles orbit around the logo.',
+  },
+  'micro-parallax': {
+    id: 'micro-parallax',
+    name: 'Micro Parallax',
+    description: 'Tiny internal depth motion adds dimension without a reveal.',
+  },
+  'gradient-drift': {
+    id: 'gradient-drift',
+    name: 'Gradient Drift',
+    description: 'Very slow movement in fills or background gradients.',
   },
 } as const;
 
-export const ANIMATION_MOTION_PRESET_KNOWN_IDS = [
-  'let-ai-choose',
-  'orbital-reveal',
-  'energy-surge',
-  'atmospheric-rise',
-  'dimensional-parallax',
-  'prismatic-bloom',
-  'light-sweep',
-  'glow-pulse',
-  'particle-orbit',
-  'contour-trace',
-  'shimmer',
-] as const;
+export type LoopedAnimationMotionPresetId =
+  keyof typeof LOOPED_ANIMATION_MOTION_PRESETS;
 
-export type AnimationMotionPresetId =
-  (typeof ANIMATION_MOTION_PRESET_KNOWN_IDS)[number];
+export const LOOPED_ANIMATION_MOTION_PRESET_IDS = [
+  'let-ai-choose',
+  'breathe',
+  'light-sweep',
+  'shimmer',
+  'glow-pulse',
+  'contour-trace',
+  'ambient-orbit',
+  'micro-parallax',
+  'gradient-drift',
+] as const satisfies [
+  LoopedAnimationMotionPresetId,
+  ...LoopedAnimationMotionPresetId[],
+];
+
+export type LoopedAnimationMotionPresetInput =
+  (typeof LOOPED_ANIMATION_MOTION_PRESET_IDS)[number];
+
+export const LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS = [
+  'breathe',
+  'light-sweep',
+  'shimmer',
+  'glow-pulse',
+  'contour-trace',
+  'ambient-orbit',
+  'micro-parallax',
+  'gradient-drift',
+] as const satisfies [
+  Exclude<LoopedAnimationMotionPresetId, 'let-ai-choose'>,
+  ...Exclude<LoopedAnimationMotionPresetId, 'let-ai-choose'>[],
+];
+
+export type LoopedAnimationMotionPreset =
+  (typeof LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS)[number];
+
+export const ANIMATION_MOTION_PRESETS = {
+  ...CINEMATIC_ANIMATION_MOTION_PRESETS,
+  ...LOOPED_ANIMATION_MOTION_PRESETS,
+} as const;
+
+export type AnimationMotionPresetId = keyof typeof ANIMATION_MOTION_PRESETS;
 
 export const ANIMATION_MOTION_PRESET_IDS = [
-  'let-ai-choose',
-  'orbital-reveal',
-  'energy-surge',
-  'atmospheric-rise',
-  'dimensional-parallax',
-  'prismatic-bloom',
-] as const;
+  ...CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+  ...LOOPED_ANIMATION_MOTION_PRESET_IDS.filter(
+    (presetId) => presetId !== 'let-ai-choose',
+  ),
+] as const satisfies [AnimationMotionPresetId, ...AnimationMotionPresetId[]];
 
 export type AnimationMotionPresetInput =
-  (typeof ANIMATION_MOTION_PRESET_IDS)[number];
-
-export const ANIMATION_MOTION_PRESET_RESOLVED_IDS = [
-  'orbital-reveal',
-  'energy-surge',
-  'atmospheric-rise',
-  'dimensional-parallax',
-  'prismatic-bloom',
-] as const;
+  | CinematicAnimationMotionPresetInput
+  | LoopedAnimationMotionPresetInput;
 
 export type AnimationMotionPreset =
-  (typeof ANIMATION_MOTION_PRESET_RESOLVED_IDS)[number];
+  | CinematicAnimationMotionPreset
+  | LoopedAnimationMotionPreset;
+
+export const ANIMATION_MOTION_PRESET_RESOLVED_IDS = [
+  ...CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+  ...LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+] as const satisfies [AnimationMotionPreset, ...AnimationMotionPreset[]];
+
+export const ANIMATION_MOTION_INTENSITIES = {
+  subtle: {
+    id: 'subtle',
+    name: 'Subtle',
+    description: 'Very restrained in-place motion.',
+  },
+  balanced: {
+    id: 'balanced',
+    name: 'Balanced',
+    description: 'Noticeable motion while keeping the logo calm and stable.',
+  },
+  bold: {
+    id: 'bold',
+    name: 'Bold',
+    description: 'The strongest motion allowed for a looped logo.',
+  },
+} as const;
+
+export type AnimationMotionIntensity =
+  keyof typeof ANIMATION_MOTION_INTENSITIES;
+
+export const ANIMATION_MOTION_INTENSITY_IDS = [
+  'subtle',
+  'balanced',
+  'bold',
+] as const satisfies [AnimationMotionIntensity, ...AnimationMotionIntensity[]];
 
 export const MARKETING_COLLATERAL_TYPES = [
   'billboard',
@@ -215,10 +384,10 @@ export interface MarketingConcept extends BaseConcept {
   style: string;
 }
 
-export interface BaseAssetResult<TModel extends string> {
+export interface BaseAssetResult<TModelName extends string> {
   storagePath: string;
   url: string;
-  model: TModel;
+  model: TModelName;
 }
 
 export interface BaseGenerationResult extends BaseAssetResult<ImageModel> {
@@ -289,24 +458,59 @@ export interface MarketingGenerationInput extends BaseWorkflowStorageInput {
   collateralType?: MarketingCollateralTypeInput;
 }
 
-export interface AnimationGenerationInput extends BaseWorkflowStorageInput {
+interface BaseAnimationGenerationInput extends BaseWorkflowStorageInput {
   domain: NamefiNormalizedDomain;
   description?: string;
   referenceLogoUrl: string;
-  sourceMode?: AnimationSourceMode;
-  motionPreset: AnimationMotionPresetId;
-  model: AnimationModel;
 }
 
-export interface AnimationAnalysis {
+export interface CinematicAnimationGenerationInput
+  extends BaseAnimationGenerationInput {
+  mode: 'cinematic';
+  sourceMode?: AnimationSourceMode;
+  motionPreset: CinematicAnimationMotionPresetId;
+  model: CinematicAnimationModel;
+}
+
+export interface LoopedAnimationGenerationInput
+  extends BaseAnimationGenerationInput {
+  mode: 'looped';
+  motionPreset: LoopedAnimationMotionPresetId;
+  motionIntensity: AnimationMotionIntensity;
+  model: LoopedAnimationModel;
+}
+
+export type AnimationGenerationInput =
+  | CinematicAnimationGenerationInput
+  | LoopedAnimationGenerationInput;
+
+interface BaseAnimationAnalysis<
+  TModeValue extends AnimationMode,
+  TPresetValue extends AnimationMotionPreset,
+> {
+  mode: TModeValue;
   brandAttributes: string[];
   targetAudience: string;
   rationale: string;
-  resolvedMotionPreset: AnimationMotionPresetId;
+  resolvedMotionPreset: TPresetValue;
   direction: string;
   model: string;
   tokenUsage?: LanguageModelUsage;
 }
+
+export type CinematicAnimationAnalysis = BaseAnimationAnalysis<
+  'cinematic',
+  CinematicAnimationMotionPreset
+>;
+
+export type LoopedAnimationAnalysis = BaseAnimationAnalysis<
+  'looped',
+  LoopedAnimationMotionPreset
+>;
+
+export type AnimationAnalysis =
+  | CinematicAnimationAnalysis
+  | LoopedAnimationAnalysis;
 
 export interface AnimationGenerationResult {
   analysis: AnimationAnalysis;

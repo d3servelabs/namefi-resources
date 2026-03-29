@@ -188,7 +188,7 @@ export const convertAnimationGenerations = (
 
     return motionPreset
       ? ANIMATION_MOTION_PRESETS[motionPreset].name
-      : generation.input.motionPreset;
+      : undefined;
   };
 
   return generations.map((gen) => ({

@@ -9,13 +9,16 @@ import {
   internalAiGenerationsTable,
 } from '@namefi-astra/db/schema';
 import {
-  ANIMATION_MODEL_IDS,
-  ANIMATION_MOTION_PRESET_IDS,
+  ANIMATION_MOTION_INTENSITY_IDS,
   ANIMATION_SOURCE_MODE_IDS,
+  CINEMATIC_ANIMATION_MODEL_IDS,
+  CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
   LOGO_STYLE_INPUT_IDS,
   LOGO_TEXT_TREATMENT_INPUT_IDS,
   LOGO_TYPE_INPUT_IDS,
   LOGO_TYPOGRAPHY_INPUT_IDS,
+  LOOPED_ANIMATION_MODEL_IDS,
+  LOOPED_ANIMATION_MOTION_PRESET_IDS,
   MARKETING_COLLATERAL_TYPE_INPUT_IDS,
   runLogoWorkflow,
   runMarketingWorkflow,
@@ -500,14 +503,42 @@ const generateMarketingImageInputSchema = z.object({
   model: z.enum(imageModelIds).default('gemini-3-pro-image-preview'),
 });
 
-const generateAnimationInputSchema = z.object({
+const generateAnimationCommonInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   referenceLogoGenerationId: z.string(),
   description: z.string().optional(),
-  sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).default('exact-frame'),
-  motionPreset: z.enum(ANIMATION_MOTION_PRESET_IDS).default('let-ai-choose'),
-  model: z.enum(ANIMATION_MODEL_IDS).default('veo-3.1-generate-preview'),
 });
+
+const generateCinematicAnimationInputSchema = generateAnimationCommonInputSchema
+  .extend({
+    mode: z.literal('cinematic'),
+    sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).default('exact-frame'),
+    motionPreset: z
+      .enum(CINEMATIC_ANIMATION_MOTION_PRESET_IDS)
+      .default('let-ai-choose'),
+    model: z
+      .enum(CINEMATIC_ANIMATION_MODEL_IDS)
+      .default('veo-3.1-generate-preview'),
+  })
+  .strict();
+
+const generateLoopedAnimationInputSchema = generateAnimationCommonInputSchema
+  .extend({
+    mode: z.literal('looped'),
+    motionPreset: z
+      .enum(LOOPED_ANIMATION_MOTION_PRESET_IDS)
+      .default('let-ai-choose'),
+    motionIntensity: z.enum(ANIMATION_MOTION_INTENSITY_IDS).default('subtle'),
+    model: z
+      .enum(LOOPED_ANIMATION_MODEL_IDS)
+      .default('bytedance/seedance-v1.5-pro'),
+  })
+  .strict();
+
+export const generateAnimationInputSchema = z.discriminatedUnion('mode', [
+  generateCinematicAnimationInputSchema,
+  generateLoopedAnimationInputSchema,
+]);
 
 export const aiRouter = createTRPCRouter({
   generateLogo: protectedProcedure
@@ -730,6 +761,25 @@ export const aiRouter = createTRPCRouter({
         });
       }
 
+      const animationGenerationInput =
+        input.mode === 'cinematic'
+          ? {
+              type: 'animation' as const,
+              mode: 'cinematic' as const,
+              description: input.description,
+              sourceMode: input.sourceMode,
+              motionPreset: input.motionPreset,
+              model: input.model,
+            }
+          : {
+              type: 'animation' as const,
+              mode: 'looped' as const,
+              description: input.description,
+              motionPreset: input.motionPreset,
+              motionIntensity: input.motionIntensity,
+              model: input.model,
+            };
+
       const [generationRecord] = await db
         .insert(aiGenerationsTable)
         .values({
@@ -738,13 +788,7 @@ export const aiRouter = createTRPCRouter({
           type: 'animation',
           status: 'PENDING',
           referenceGenerationId: referenceLogoGeneration.id,
-          input: {
-            type: 'animation',
-            description: input.description,
-            sourceMode: input.sourceMode,
-            motionPreset: input.motionPreset,
-            model: input.model,
-          },
+          input: animationGenerationInput,
           output: {
             type: 'animation',
             thumbnailStoragePath: referenceLogoGeneration.output.storagePath,

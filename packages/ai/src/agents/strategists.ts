@@ -3,9 +3,13 @@ import type { LanguageModelUsage } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import {
-  ANIMATION_MOTION_PRESETS,
-  ANIMATION_MOTION_PRESET_RESOLVED_IDS,
-  type AnimationMotionPresetInput,
+  CINEMATIC_ANIMATION_MOTION_PRESETS,
+  CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+  LOOPED_ANIMATION_MOTION_PRESETS,
+  LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+  type AnimationMotionIntensity,
+  type CinematicAnimationMotionPresetInput,
+  type LoopedAnimationMotionPresetInput,
   type MarketingCollateralTypeInput,
 } from '../types/generation';
 import {
@@ -52,15 +56,23 @@ const logoTypographyInstructions = Object.values(LOGO_TYPOGRAPHY)
   .map((option) => `- ${option.id} → ${option.name}: ${option.description}`)
   .join('\n');
 
-const animationMotionResolvedEnum = z.enum(
-  ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+const cinematicAnimationMotionResolvedEnum = z.enum(
+  CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
 );
-const animationMotionInstructions = Object.values(ANIMATION_MOTION_PRESETS)
-  .filter(
-    (preset) =>
-      preset.id !== 'let-ai-choose' &&
-      !('legacy' in preset && preset.legacy === true),
-  )
+const cinematicAnimationMotionInstructions = Object.values(
+  CINEMATIC_ANIMATION_MOTION_PRESETS,
+)
+  .filter((preset) => preset.id !== 'let-ai-choose')
+  .map((preset) => `- ${preset.id} → ${preset.name}: ${preset.description}`)
+  .join('\n');
+
+const loopedAnimationMotionResolvedEnum = z.enum(
+  LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+);
+const loopedAnimationMotionInstructions = Object.values(
+  LOOPED_ANIMATION_MOTION_PRESETS,
+)
+  .filter((preset) => preset.id !== 'let-ai-choose')
   .map((preset) => `- ${preset.id} → ${preset.name}: ${preset.description}`)
   .join('\n');
 
@@ -107,7 +119,7 @@ RULES:
 `;
 }
 
-export const animationMotionPlanSchema = z.object({
+export const cinematicAnimationMotionPlanSchema = z.object({
   brandAttributes: z
     .array(z.string())
     .describe('Key brand attributes, values, and personality traits'),
@@ -119,7 +131,7 @@ export const animationMotionPlanSchema = z.object({
     .describe(
       'Why this motion direction is the strongest fit for the brand and its logo.',
     ),
-  motionPreset: animationMotionResolvedEnum.describe(
+  motionPreset: cinematicAnimationMotionResolvedEnum.describe(
     'The single best motion preset for this brand and request.',
   ),
   direction: z
@@ -129,7 +141,29 @@ export const animationMotionPlanSchema = z.object({
     ),
 });
 
-function createAnimationSystemPrompt(available: string) {
+export const loopedAnimationMotionPlanSchema = z.object({
+  brandAttributes: z
+    .array(z.string())
+    .describe('Key brand attributes, values, and personality traits'),
+  targetAudience: z
+    .string()
+    .describe('Primary target audience and market positioning'),
+  rationale: z
+    .string()
+    .describe(
+      'Why this looped motion direction best reinforces the brand without turning into a cinematic reveal.',
+    ),
+  motionPreset: loopedAnimationMotionResolvedEnum.describe(
+    'The single best loop-friendly motion preset for this brand and request.',
+  ),
+  direction: z
+    .string()
+    .describe(
+      'A prompt-ready square logo loop direction that preserves the mark and returns to the starting state.',
+    ),
+});
+
+function createCinematicAnimationSystemPrompt(available: string) {
   return `You are a motion creative director designing high-end 8-second brand logo animations for Veo.
 
 GOAL:
@@ -149,6 +183,28 @@ RULES:
 - Do not invent new brand marks, extra text, mascots, or scene changes.
 - The direction must remain image-to-video safe for a single source logo frame.
 - Make the result feel ambitious, polished, and ad-ready rather than minimal or decorative.`;
+}
+
+function createLoopedAnimationSystemPrompt(available: string) {
+  return `You are a motion designer creating square animated logo loops.
+
+GOAL:
+- Pick the single strongest loop-friendly motion direction for this brand.
+- Favor subtle, brand-safe, repeatable motion over cinematic reveals.
+- Keep the logo centered, recognizable, legible, and visually stable.
+
+AVAILABLE MOTION PRESETS:
+${available}
+
+RULES:
+- Return only JSON matching the schema.
+- Choose exactly one motionPreset from the allowed IDs above.
+- If the user prompt constrains the allowed motion presets, you must choose only from that constrained set.
+- The result must read as a 1:1 animated logo, not a scene, trailer, or hero reveal.
+- No scene cuts, no environment building, no extra text, no mascots, and no morphing into a different mark.
+- Camera movement must be minimal or absent.
+- The ending state must closely match the starting state so the loop feels clean.
+- Keep the motion material-aware, restrained, and brand-coherent.`;
 }
 
 type StructuredGenerationResult<T> = {
@@ -224,17 +280,19 @@ Allowed types (if constrained): ${allowedCollateralTypes}
   };
 }
 
-type AnimationMotionPlan = z.infer<typeof animationMotionPlanSchema>;
+type CinematicAnimationMotionPlan = z.infer<
+  typeof cinematicAnimationMotionPlanSchema
+>;
 
-export interface AnimationStrategyInput {
+export interface CinematicAnimationStrategyInput {
   domain: NamefiNormalizedDomain;
   description?: string;
-  motionPreset?: AnimationMotionPresetInput;
+  motionPreset?: CinematicAnimationMotionPresetInput;
 }
 
-export async function generateAnimationStrategy(
-  input: AnimationStrategyInput,
-): Promise<StructuredGenerationResult<AnimationMotionPlan>> {
+export async function generateCinematicAnimationStrategy(
+  input: CinematicAnimationStrategyInput,
+): Promise<StructuredGenerationResult<CinematicAnimationMotionPlan>> {
   const allowedMotionPresets =
     input.motionPreset && input.motionPreset !== 'let-ai-choose'
       ? input.motionPreset
@@ -242,8 +300,10 @@ export async function generateAnimationStrategy(
 
   const animationStrategistAgent = new ToolLoopAgent({
     model: openai('gpt-5.2'),
-    instructions: createAnimationSystemPrompt(animationMotionInstructions),
-    output: Output.object({ schema: animationMotionPlanSchema }),
+    instructions: createCinematicAnimationSystemPrompt(
+      cinematicAnimationMotionInstructions,
+    ),
+    output: Output.object({ schema: cinematicAnimationMotionPlanSchema }),
   });
 
   const result = await animationStrategistAgent.generate({
@@ -251,6 +311,49 @@ export async function generateAnimationStrategy(
 Description: ${input.description || 'N/A'}
 Requested number of motion directions: 1
 Allowed motion presets (if constrained): ${allowedMotionPresets}
+`,
+  });
+
+  return {
+    object: result.output,
+    totalUsage: result.totalUsage,
+    modelId: result.response?.modelId,
+  };
+}
+
+type LoopedAnimationMotionPlan = z.infer<
+  typeof loopedAnimationMotionPlanSchema
+>;
+
+export interface LoopedAnimationStrategyInput {
+  domain: NamefiNormalizedDomain;
+  description?: string;
+  motionPreset?: LoopedAnimationMotionPresetInput;
+  motionIntensity: AnimationMotionIntensity;
+}
+
+export async function generateLoopedAnimationStrategy(
+  input: LoopedAnimationStrategyInput,
+): Promise<StructuredGenerationResult<LoopedAnimationMotionPlan>> {
+  const allowedMotionPresets =
+    input.motionPreset && input.motionPreset !== 'let-ai-choose'
+      ? input.motionPreset
+      : 'breathe, light-sweep, shimmer, glow-pulse, contour-trace, ambient-orbit, micro-parallax, gradient-drift';
+
+  const animationStrategistAgent = new ToolLoopAgent({
+    model: openai('gpt-5.2'),
+    instructions: createLoopedAnimationSystemPrompt(
+      loopedAnimationMotionInstructions,
+    ),
+    output: Output.object({ schema: loopedAnimationMotionPlanSchema }),
+  });
+
+  const result = await animationStrategistAgent.generate({
+    prompt: `Brand: ${input.domain}
+Description: ${input.description || 'N/A'}
+Requested number of motion directions: 1
+Allowed motion presets (if constrained): ${allowedMotionPresets}
+Requested motion intensity: ${input.motionIntensity}
 `,
   });
 

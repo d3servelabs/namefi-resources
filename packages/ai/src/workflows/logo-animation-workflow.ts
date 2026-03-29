@@ -1,5 +1,5 @@
+import { createGateway, experimental_generateVideo } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { experimental_generateVideo } from 'ai';
 import sharp from 'sharp';
 import { z } from 'zod';
 import {
@@ -11,54 +11,117 @@ import {
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import {
   ANIMATION_MODEL_IDS,
-  ANIMATION_MOTION_PRESET_IDS,
-  ANIMATION_MOTION_PRESET_KNOWN_IDS,
+  ANIMATION_MOTION_INTENSITY_IDS,
   ANIMATION_SOURCE_MODE_IDS,
+  CINEMATIC_ANIMATION_MODEL_IDS,
+  CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+  CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+  LOOPED_ANIMATION_MODEL_IDS,
+  LOOPED_ANIMATION_MOTION_PRESET_IDS,
+  LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
   type AnimationGenerationResult,
-  type AnimationMotionPresetId,
-  type AnimationMotionPresetInput,
+  type AnimationMotionIntensity,
   type AnimationSourceMode,
 } from '../types/generation';
 import { createRunId } from '../utils/files';
 import { fetchImageAsBuffer } from '../utils/images';
 import { secrets } from '../env';
 import { tokenUsageSchema } from '../types/logo-schemas';
-import { generateAnimationStrategy } from '../agents/strategists';
+import {
+  generateCinematicAnimationStrategy,
+  generateLoopedAnimationStrategy,
+} from '../agents/strategists';
 
-const FRAME_WIDTH = 1280;
-const FRAME_HEIGHT = 720;
-const SAFE_MARGIN_RATIO = 0.12;
+const CINEMATIC_FRAME_WIDTH = 1280;
+const CINEMATIC_FRAME_HEIGHT = 720;
+const CINEMATIC_SAFE_MARGIN_RATIO = 0.12;
+const LOOPED_FRAME_SIZE = 1024;
+const LOOPED_SAFE_MARGIN_RATIO = 0.16;
 const LIGHT_BACKGROUND = '#F8FAFC';
 const DARK_BACKGROUND = '#0F172A';
 
+const cinematicAnimationModelEnum = z.enum(CINEMATIC_ANIMATION_MODEL_IDS);
+const loopedAnimationModelEnum = z.enum(LOOPED_ANIMATION_MODEL_IDS);
 const animationModelEnum = z.enum(ANIMATION_MODEL_IDS);
-const motionPresetKnownEnum = z.enum(ANIMATION_MOTION_PRESET_KNOWN_IDS);
-const motionPresetResolvedEnum = z.enum(ANIMATION_MOTION_PRESET_KNOWN_IDS);
 const animationSourceModeEnum = z.enum(ANIMATION_SOURCE_MODE_IDS);
+const motionIntensityEnum = z.enum(ANIMATION_MOTION_INTENSITY_IDS);
+const cinematicMotionPresetInputEnum = z.enum(
+  CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+);
+const loopedMotionPresetInputEnum = z.enum(LOOPED_ANIMATION_MOTION_PRESET_IDS);
+const cinematicMotionPresetResolvedEnum = z.enum(
+  CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+);
+const loopedMotionPresetResolvedEnum = z.enum(
+  LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+);
+
 const google = createGoogleGenerativeAI({
   apiKey: secrets.GEMINI_API_KEY,
 });
 
-export const logoAnimationWorkflowInputSchema = z.object({
-  domain: namefiNormalizedDomainSchema,
-  referenceLogoUrl: z.string().url(),
-  description: z.string().optional(),
-  sourceMode: animationSourceModeEnum.default('exact-frame'),
-  motionPreset: motionPresetKnownEnum.default('let-ai-choose'),
-  model: animationModelEnum.default('veo-3.1-generate-preview'),
-  storage: z.custom<StorageConfig>(),
+const gateway = createGateway({
+  apiKey: secrets.AI_GATEWAY_API_KEY,
 });
 
+const cinematicAnalysisSchema = z.object({
+  mode: z.literal('cinematic'),
+  brandAttributes: z.array(z.string()),
+  targetAudience: z.string(),
+  rationale: z.string(),
+  resolvedMotionPreset: cinematicMotionPresetResolvedEnum,
+  direction: z.string(),
+  model: z.string(),
+  tokenUsage: tokenUsageSchema.optional(),
+});
+
+const loopedAnalysisSchema = z.object({
+  mode: z.literal('looped'),
+  brandAttributes: z.array(z.string()),
+  targetAudience: z.string(),
+  rationale: z.string(),
+  resolvedMotionPreset: loopedMotionPresetResolvedEnum,
+  direction: z.string(),
+  model: z.string(),
+  tokenUsage: tokenUsageSchema.optional(),
+});
+
+const cinematicAnimationWorkflowInputSchema = z
+  .object({
+    mode: z.literal('cinematic'),
+    domain: namefiNormalizedDomainSchema,
+    referenceLogoUrl: z.string().url(),
+    description: z.string().optional(),
+    sourceMode: animationSourceModeEnum.default('exact-frame'),
+    motionPreset: cinematicMotionPresetInputEnum.default('let-ai-choose'),
+    model: cinematicAnimationModelEnum.default('veo-3.1-generate-preview'),
+    storage: z.custom<StorageConfig>(),
+  })
+  .strict();
+
+const loopedAnimationWorkflowInputSchema = z
+  .object({
+    mode: z.literal('looped'),
+    domain: namefiNormalizedDomainSchema,
+    referenceLogoUrl: z.string().url(),
+    description: z.string().optional(),
+    motionPreset: loopedMotionPresetInputEnum.default('let-ai-choose'),
+    motionIntensity: motionIntensityEnum.default('subtle'),
+    model: loopedAnimationModelEnum.default('bytedance/seedance-v1.5-pro'),
+    storage: z.custom<StorageConfig>(),
+  })
+  .strict();
+
+export const logoAnimationWorkflowInputSchema = z.discriminatedUnion('mode', [
+  cinematicAnimationWorkflowInputSchema,
+  loopedAnimationWorkflowInputSchema,
+]);
+
 export const logoAnimationWorkflowOutputSchema = z.object({
-  analysis: z.object({
-    brandAttributes: z.array(z.string()),
-    targetAudience: z.string(),
-    rationale: z.string(),
-    resolvedMotionPreset: motionPresetResolvedEnum,
-    direction: z.string(),
-    model: z.string(),
-    tokenUsage: tokenUsageSchema,
-  }),
+  analysis: z.discriminatedUnion('mode', [
+    cinematicAnalysisSchema,
+    loopedAnalysisSchema,
+  ]),
   prompt: z.string(),
   video: z.object({
     storagePath: z.string(),
@@ -83,7 +146,10 @@ export interface LogoAnimationWorkflowOptions {
   abortSignal?: AbortSignal;
 }
 
-const motionPromptByPreset: Record<AnimationMotionPresetId, string> = {
+const cinematicMotionPromptByPreset: Record<
+  z.infer<typeof cinematicMotionPresetResolvedEnum>,
+  string
+> = {
   'orbital-reveal':
     'A smooth semi-circular arc shot orbits the logo while elegant light ribbons, controlled lens flare, and refined parallax depth build toward a premium hero reveal.',
   'energy-surge':
@@ -94,22 +160,40 @@ const motionPromptByPreset: Record<AnimationMotionPresetId, string> = {
     'Subtle depth-separated layers and a confident camera push create a dimensional parallax reveal, then resolve cleanly back into the untouched original mark.',
   'prismatic-bloom':
     'Glossy refractions, caustic highlights, chromatic glints, and premium optical bloom sweep through the frame, culminating in a crisp high-end hero lockup.',
-  'light-sweep':
-    'A narrow premium light sweep glides across the logo surface and resolves with clean stillness.',
-  'glow-pulse':
-    'A restrained glow pulse brightens the logo once, adds soft atmospheric bloom, and settles naturally.',
-  'particle-orbit':
-    'A refined field of particles orbits the logo in graceful motion while the mark remains unobscured and central.',
-  'contour-trace':
-    'A crisp tracing light travels around the logo silhouette, building anticipation before resolving into a hero lockup.',
-  shimmer:
-    'A subtle metallic shimmer glides across key edges and reflective contours, giving the logo a polished premium finish.',
-  'let-ai-choose':
-    'Choose the strongest cinematic motion direction for this brand and source logo.',
 };
 
-function buildAnimationPrompt(input: {
-  motionPreset: AnimationMotionPresetId;
+const loopedMotionPromptByPreset: Record<
+  z.infer<typeof loopedMotionPresetResolvedEnum>,
+  string
+> = {
+  breathe:
+    'The logo gently breathes with restrained luminance and depth shifts while staying perfectly centered and legible.',
+  'light-sweep':
+    'A narrow polished light sweep travels across the mark and resolves back to the untouched resting state.',
+  shimmer:
+    'A subtle material-aware shimmer glides over key edges without becoming flashy or scene-like.',
+  'glow-pulse':
+    'A soft bounded glow pulse brightens and fades in place without blooming beyond the mark.',
+  'contour-trace':
+    'A clean tracing light follows important contours of the logo and settles back into the original state.',
+  'ambient-orbit':
+    'Sparse ambient particles orbit around the logo without obscuring any core text or shapes.',
+  'micro-parallax':
+    'Very small internal depth shifts create dimension while the camera remains effectively locked.',
+  'gradient-drift':
+    'Subtle movement in fills or gradients adds life while the logo composition stays stable.',
+};
+
+const motionIntensityPromptByValue: Record<AnimationMotionIntensity, string> = {
+  subtle:
+    'Keep motion very restrained with a locked camera and minimal amplitude.',
+  balanced:
+    'Allow moderate motion while preserving a calm, square logo-loop feel.',
+  bold: 'Use the strongest motion allowed for a looped logo without turning it into a cinematic reveal.',
+};
+
+function buildCinematicAnimationPrompt(input: {
+  motionPreset: z.infer<typeof cinematicMotionPresetResolvedEnum>;
   sourceMode: AnimationSourceMode;
   direction: string;
 }) {
@@ -117,7 +201,7 @@ function buildAnimationPrompt(input: {
     input.sourceMode === 'subject-reference'
       ? [
           'Create an ambitious cinematic 8-second logo animation using the provided logo as a subject reference rather than a literal first frame.',
-          motionPromptByPreset[input.motionPreset],
+          cinematicMotionPromptByPreset[input.motionPreset],
           `Brand-specific motion direction: ${input.direction.trim()}.`,
           'Preserve the original logo shapes, letterforms, proportions, colors, and brand marks throughout the animation.',
           'Treat the provided logo as the core asset reference and compose it natively in frame instead of placing it inside a poster, card, inset, square box, or padded plate.',
@@ -127,7 +211,7 @@ function buildAnimationPrompt(input: {
         ]
       : [
           'Create an ambitious cinematic 8-second logo animation from the provided source frame.',
-          motionPromptByPreset[input.motionPreset],
+          cinematicMotionPromptByPreset[input.motionPreset],
           `Brand-specific motion direction: ${input.direction.trim()}.`,
           'Use camera movement, atmospheric context, temporal motion, and optical effects only when they keep the logo as the clear focal subject.',
           'The logo may gain depth, reflections, particles, energy interaction, or cinematic environmental support, but the original shapes, letterforms, proportions, colors, and brand marks must remain intact and recognizable throughout.',
@@ -135,15 +219,24 @@ function buildAnimationPrompt(input: {
           'End on a sharp, fully legible hero frame with the logo cleanly resolved.',
         ];
 
-  return parts.filter(Boolean).join(' ');
+  return parts.join(' ');
 }
 
-function isCurrentAnimationMotionPresetInput(
-  value: AnimationMotionPresetId,
-): value is AnimationMotionPresetInput {
-  return ANIMATION_MOTION_PRESET_IDS.includes(
-    value as AnimationMotionPresetInput,
-  );
+function buildLoopedAnimationPrompt(input: {
+  motionPreset: z.infer<typeof loopedMotionPresetResolvedEnum>;
+  motionIntensity: AnimationMotionIntensity;
+  direction: string;
+}) {
+  return [
+    'Create a seamless 4-second square animated logo loop from the provided image.',
+    loopedMotionPromptByPreset[input.motionPreset],
+    motionIntensityPromptByValue[input.motionIntensity],
+    `Brand-specific motion direction: ${input.direction.trim()}.`,
+    'Keep the logo centered, dominant, perfectly legible, and compositionally stable for the full clip.',
+    'No scene cuts, no environmental sets, no extra text, no mascots, no camera travel, and no morphing into a different mark.',
+    'Preserve the original logo shapes, letterforms, proportions, colors, and silhouette.',
+    'The ending frame must closely match the starting frame so the video loops cleanly.',
+  ].join(' ');
 }
 
 async function resolveContrastingBackground(logoBuffer: Buffer) {
@@ -164,12 +257,19 @@ async function resolveContrastingBackground(logoBuffer: Buffer) {
   return luminance > 170 ? DARK_BACKGROUND : LIGHT_BACKGROUND;
 }
 
-async function createPreparedSourceFrame(logoBuffer: Buffer) {
-  const maxWidth = Math.round(FRAME_WIDTH * (1 - SAFE_MARGIN_RATIO * 2));
-  const maxHeight = Math.round(FRAME_HEIGHT * (1 - SAFE_MARGIN_RATIO * 2));
-  const background = await resolveContrastingBackground(logoBuffer);
+async function createPreparedSourceFrame(params: {
+  logoBuffer: Buffer;
+  width: number;
+  height: number;
+  safeMarginRatio: number;
+}) {
+  const maxWidth = Math.round(params.width * (1 - params.safeMarginRatio * 2));
+  const maxHeight = Math.round(
+    params.height * (1 - params.safeMarginRatio * 2),
+  );
+  const background = await resolveContrastingBackground(params.logoBuffer);
 
-  const logoPng = await sharp(logoBuffer)
+  const logoPng = await sharp(params.logoBuffer)
     .ensureAlpha()
     .resize({
       width: maxWidth,
@@ -186,8 +286,8 @@ async function createPreparedSourceFrame(logoBuffer: Buffer) {
 
   const frame = await sharp({
     create: {
-      width: FRAME_WIDTH,
-      height: FRAME_HEIGHT,
+      width: params.width,
+      height: params.height,
       channels: 4,
       background,
     },
@@ -195,8 +295,8 @@ async function createPreparedSourceFrame(logoBuffer: Buffer) {
     .composite([
       {
         input: logoPng,
-        left: Math.round((FRAME_WIDTH - logoWidth) / 2),
-        top: Math.round((FRAME_HEIGHT - logoHeight) / 2),
+        left: Math.round((params.width - logoWidth) / 2),
+        top: Math.round((params.height - logoHeight) / 2),
       },
     ])
     .png()
@@ -261,37 +361,35 @@ async function deleteStoragePaths(params: {
   return cleanupErrors;
 }
 
-export async function runLogoAnimationWorkflow(
-  rawInput: LogoAnimationWorkflowInput,
-  options: LogoAnimationWorkflowOptions = {},
-): Promise<LogoAnimationWorkflowOutput> {
-  const input = logoAnimationWorkflowInputSchema.parse(rawInput);
-
+async function runCinematicAnimationWorkflow(
+  input: z.output<typeof cinematicAnimationWorkflowInputSchema>,
+  options: LogoAnimationWorkflowOptions,
+) {
   const logoBuffer = await fetchImageAsBuffer(
     input.referenceLogoUrl,
     options.abortSignal,
   );
   const preparedFrame =
     input.sourceMode === 'exact-frame'
-      ? await createPreparedSourceFrame(logoBuffer)
+      ? await createPreparedSourceFrame({
+          logoBuffer,
+          width: CINEMATIC_FRAME_WIDTH,
+          height: CINEMATIC_FRAME_HEIGHT,
+          safeMarginRatio: CINEMATIC_SAFE_MARGIN_RATIO,
+        })
       : null;
 
-  const strategy = isCurrentAnimationMotionPresetInput(input.motionPreset)
-    ? await generateAnimationStrategy({
-        domain: input.domain,
-        description: input.description,
-        motionPreset: input.motionPreset,
-      })
-    : undefined;
-  const resolvedMotionPreset =
-    strategy?.object.motionPreset ?? input.motionPreset;
-  const prompt = buildAnimationPrompt({
+  const strategy = await generateCinematicAnimationStrategy({
+    domain: input.domain,
+    description: input.description,
+    motionPreset: input.motionPreset,
+  });
+
+  const resolvedMotionPreset = strategy.object.motionPreset;
+  const prompt = buildCinematicAnimationPrompt({
     motionPreset: resolvedMotionPreset,
     sourceMode: input.sourceMode,
-    direction:
-      strategy?.object.direction ??
-      (input.description?.trim() ||
-        'Honor the originally requested legacy motion direction with a polished, brand-safe execution.'),
+    direction: strategy.object.direction,
   });
 
   const generated = await experimental_generateVideo({
@@ -351,17 +449,14 @@ export async function runLogoAnimationWorkflow(
 
     return logoAnimationWorkflowOutputSchema.parse({
       analysis: {
-        brandAttributes: strategy?.object.brandAttributes ?? [],
-        targetAudience: strategy?.object.targetAudience ?? '',
-        rationale:
-          strategy?.object.rationale ??
-          'Legacy motion preset preserved from the original request.',
+        mode: 'cinematic',
+        brandAttributes: strategy.object.brandAttributes,
+        targetAudience: strategy.object.targetAudience,
+        rationale: strategy.object.rationale,
         resolvedMotionPreset,
-        direction:
-          strategy?.object.direction ??
-          'Honor the originally requested legacy motion direction with a polished, brand-safe execution.',
-        model: strategy?.modelId ?? 'legacy-preset',
-        tokenUsage: strategy?.totalUsage,
+        direction: strategy.object.direction,
+        model: strategy.modelId ?? 'gpt-5.2',
+        tokenUsage: strategy.totalUsage,
       },
       prompt,
       video: {
@@ -395,4 +490,133 @@ export async function runLogoAnimationWorkflow(
 
     throw error;
   }
+}
+
+async function runLoopedAnimationWorkflow(
+  input: z.output<typeof loopedAnimationWorkflowInputSchema>,
+  options: LogoAnimationWorkflowOptions,
+) {
+  const logoBuffer = await fetchImageAsBuffer(
+    input.referenceLogoUrl,
+    options.abortSignal,
+  );
+  const preparedFrame = await createPreparedSourceFrame({
+    logoBuffer,
+    width: LOOPED_FRAME_SIZE,
+    height: LOOPED_FRAME_SIZE,
+    safeMarginRatio: LOOPED_SAFE_MARGIN_RATIO,
+  });
+
+  const uploadedStoragePaths: string[] = [];
+
+  try {
+    const uploadedPreparedFrame = await uploadBufferToStorage({
+      buffer: preparedFrame.frame,
+      contentType: 'image/png',
+      domain: input.domain,
+      storage: input.storage,
+      label: `${createRunId('animation-source')}.png`,
+    });
+    uploadedStoragePaths.push(uploadedPreparedFrame.storagePath);
+
+    const strategy = await generateLoopedAnimationStrategy({
+      domain: input.domain,
+      description: input.description,
+      motionPreset: input.motionPreset,
+      motionIntensity: input.motionIntensity,
+    });
+
+    const resolvedMotionPreset = strategy.object.motionPreset;
+    const prompt = buildLoopedAnimationPrompt({
+      motionPreset: resolvedMotionPreset,
+      motionIntensity: input.motionIntensity,
+      direction: strategy.object.direction,
+    });
+
+    const generated = await experimental_generateVideo({
+      model: gateway.video(input.model),
+      prompt: {
+        image: uploadedPreparedFrame.url,
+        text: prompt,
+      },
+      aspectRatio: '1:1',
+      duration: 4,
+      providerOptions: {
+        bytedance: {
+          lastFrameImage: uploadedPreparedFrame.url,
+          cameraFixed: true,
+          watermark: false,
+          generateAudio: false,
+          pollTimeoutMs: 600_000,
+        },
+      },
+      abortSignal: options.abortSignal,
+    });
+
+    const videoBuffer = Buffer.from(generated.video.uint8Array);
+    const uploadedVideo = await uploadBufferToStorage({
+      buffer: videoBuffer,
+      contentType: 'video/mp4',
+      domain: input.domain,
+      storage: input.storage,
+      label: `${createRunId('animation')}.mp4`,
+    });
+    uploadedStoragePaths.push(uploadedVideo.storagePath);
+
+    return logoAnimationWorkflowOutputSchema.parse({
+      analysis: {
+        mode: 'looped',
+        brandAttributes: strategy.object.brandAttributes,
+        targetAudience: strategy.object.targetAudience,
+        rationale: strategy.object.rationale,
+        resolvedMotionPreset,
+        direction: strategy.object.direction,
+        model: strategy.modelId ?? 'gpt-5.2',
+        tokenUsage: strategy.totalUsage,
+      },
+      prompt,
+      video: {
+        storagePath: uploadedVideo.storagePath,
+        thumbnailStoragePath: uploadedPreparedFrame.storagePath,
+        url: uploadedVideo.url,
+        thumbnailUrl: uploadedPreparedFrame.url,
+        model: input.model,
+        mimeType: 'video/mp4',
+      },
+      warnings: generated.warnings,
+      providerMetadata: generated.providerMetadata,
+    } satisfies AnimationGenerationResult);
+  } catch (error) {
+    const cleanupErrors = await deleteStoragePaths({
+      storage: input.storage,
+      storagePaths: uploadedStoragePaths,
+    });
+
+    if (cleanupErrors.length > 0) {
+      const cleanupMessage = cleanupErrors
+        .map((item) => item.message)
+        .join('; ');
+      const failureMessage =
+        error instanceof Error ? error.message : 'Unknown animation failure';
+
+      throw new Error(
+        `Logo animation generation failed (${failureMessage}) and uploaded assets could not be fully cleaned up: ${cleanupMessage}`,
+      );
+    }
+
+    throw error;
+  }
+}
+
+export async function runLogoAnimationWorkflow(
+  rawInput: LogoAnimationWorkflowInput,
+  options: LogoAnimationWorkflowOptions = {},
+): Promise<LogoAnimationWorkflowOutput> {
+  const input = logoAnimationWorkflowInputSchema.parse(rawInput);
+
+  if (input.mode === 'cinematic') {
+    return await runCinematicAnimationWorkflow(input, options);
+  }
+
+  return await runLoopedAnimationWorkflow(input, options);
 }

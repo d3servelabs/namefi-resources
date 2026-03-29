@@ -11,9 +11,20 @@ const dbMock = {
   update: vi.fn(),
 };
 const runLogoAnimationWorkflowMock = vi.fn();
+const generateUrlFromStoragePathMock = vi.fn();
+const temporalContextMock = {
+  current: vi.fn(() => ({
+    cancellationSignal: new AbortController().signal,
+    heartbeat: vi.fn(),
+  })),
+};
 
 vi.mock('#lib/logger', () => ({
   createLogger: () => mockLogger,
+}));
+
+vi.mock('@temporalio/activity', () => ({
+  Context: temporalContextMock,
 }));
 
 vi.mock('#lib/env', () => ({
@@ -38,10 +49,29 @@ vi.mock('@namefi-astra/db', () => ({
 
 vi.mock('@namefi-astra/storage', () => ({
   createS3Client: vi.fn(() => ({})),
-  generateUrlFromStoragePath: vi.fn(),
+  generateUrlFromStoragePath: generateUrlFromStoragePathMock,
 }));
 
 vi.mock('@namefi-astra/ai', () => ({
+  ANIMATION_MOTION_INTENSITY_IDS: ['subtle', 'balanced', 'bold'],
+  ANIMATION_SOURCE_MODE_IDS: ['exact-frame', 'subject-reference'],
+  CINEMATIC_ANIMATION_MODEL_IDS: [
+    'veo-3.1-generate-preview',
+    'veo-3.1-fast-generate-preview',
+  ],
+  CINEMATIC_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
+  LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
+  LOGO_TEXT_TREATMENT_INPUT_IDS: ['let-ai-choose'],
+  LOGO_TYPE_INPUT_IDS: ['let-ai-choose'],
+  LOGO_TYPOGRAPHY_INPUT_IDS: ['let-ai-choose'],
+  LOOPED_ANIMATION_MODEL_IDS: [
+    'bytedance/seedance-v1.5-pro',
+    'bytedance/seedance-v1.0-pro',
+  ],
+  LOOPED_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'light-sweep'],
+  MARKETING_COLLATERAL_TYPE_INPUT_IDS: ['let_ai_choose'],
+  runLogoWorkflow: vi.fn(),
+  runMarketingWorkflow: vi.fn(),
   runLogoAnimationWorkflow: runLogoAnimationWorkflowMock,
 }));
 
@@ -113,6 +143,8 @@ describe('generateLogoAnimation', () => {
     dbMock.select.mockReset();
     dbMock.update.mockReset();
     runLogoAnimationWorkflowMock.mockReset();
+    generateUrlFromStoragePathMock.mockReset();
+    generateUrlFromStoragePathMock.mockReturnValue('https://cdn.test/logo.png');
   });
 
   it('fails the claimed animation when the reference logo is missing before pickup', async () => {
@@ -129,7 +161,9 @@ describe('generateLogoAnimation', () => {
       metadata: null,
       input: {
         type: 'animation',
+        mode: 'cinematic',
         description: 'Make it cinematic',
+        sourceMode: 'exact-frame',
         motionPreset: 'let-ai-choose',
         model: 'veo-3.1-generate-preview',
       },
@@ -181,6 +215,115 @@ describe('generateLogoAnimation', () => {
         generationId: generation.id,
       },
       'Logo animation generation failed',
+    );
+  });
+
+  it('passes looped animation inputs through to the workflow', async () => {
+    const generation = {
+      id: 'animation-2',
+      type: 'animation',
+      status: 'PENDING',
+      isDeleted: false,
+      startedAt: null,
+      finishedAt: null,
+      updatedAt: new Date('2026-03-25T00:00:00.000Z'),
+      referenceGenerationId: 'logo-2',
+      domain: 'brand.xyz',
+      metadata: {},
+      input: {
+        type: 'animation',
+        mode: 'looped',
+        description: 'Keep it subtle',
+        motionPreset: 'light-sweep',
+        motionIntensity: 'subtle',
+        model: 'bytedance/seedance-v1.5-pro',
+      },
+      output: {
+        type: 'animation',
+        thumbnailStoragePath: 'logos/logo-2.png',
+        mimeType: 'video/mp4',
+        model: 'bytedance/seedance-v1.5-pro',
+      },
+    };
+
+    const referenceLogo = {
+      id: 'logo-2',
+      type: 'logo',
+      isDeleted: false,
+      output: {
+        type: 'logo',
+        storagePath: 'logos/logo-2.png',
+      },
+    };
+
+    const selectWhereMock = vi
+      .fn()
+      .mockResolvedValueOnce([generation])
+      .mockResolvedValueOnce([referenceLogo]);
+    const selectFromMock = vi.fn(() => ({ where: selectWhereMock }));
+    dbMock.select.mockImplementation(() => ({ from: selectFromMock }));
+
+    const returningMock = vi
+      .fn()
+      .mockResolvedValueOnce([{ ...generation, status: 'PROCESSING' }])
+      .mockResolvedValueOnce([]);
+    const updateWhereMock = vi.fn(() => ({ returning: returningMock }));
+    const updateSetMock = vi.fn(() => ({ where: updateWhereMock }));
+    dbMock.update.mockImplementation(() => ({ set: updateSetMock }));
+
+    runLogoAnimationWorkflowMock.mockResolvedValue({
+      analysis: {
+        mode: 'looped',
+        brandAttributes: ['premium'],
+        targetAudience: 'Founders',
+        rationale: 'Looped polish',
+        resolvedMotionPreset: 'light-sweep',
+        direction: 'Keep it restrained.',
+        model: 'gpt-5.2',
+        tokenUsage: undefined,
+      },
+      prompt: 'Create a seamless loop.',
+      video: {
+        storagePath: 'animations/video.mp4',
+        thumbnailStoragePath: 'animations/source.png',
+        url: 'https://cdn.test/animations/video.mp4',
+        thumbnailUrl: 'https://cdn.test/animations/source.png',
+        model: 'bytedance/seedance-v1.5-pro',
+        mimeType: 'video/mp4',
+      },
+      warnings: [],
+      providerMetadata: {},
+    });
+
+    await expect(
+      generateLogoAnimation({ generationId: generation.id }),
+    ).resolves.toEqual({
+      generationId: generation.id,
+      status: 'SUCCEEDED',
+    });
+
+    expect(runLogoAnimationWorkflowMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mode: 'looped',
+        domain: 'brand.xyz',
+        motionPreset: 'light-sweep',
+        motionIntensity: 'subtle',
+        model: 'bytedance/seedance-v1.5-pro',
+        referenceLogoUrl: 'https://cdn.test/logo.png',
+      }),
+      expect.any(Object),
+    );
+    expect(updateSetMock).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({
+          animationMode: 'looped',
+          resolvedMotionPreset: 'light-sweep',
+        }),
+        output: expect.objectContaining({
+          model: 'bytedance/seedance-v1.5-pro',
+        }),
+        status: 'SUCCEEDED',
+      }),
     );
   });
 });

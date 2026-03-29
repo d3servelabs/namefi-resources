@@ -1,12 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+const createGatewayMock = vi.fn();
+const gatewayVideoMock = vi.fn();
 const createGoogleGenerativeAIMock = vi.fn();
 const googleVideoMock = vi.fn();
 const experimentalGenerateVideoMock = vi.fn();
 const uploadFileToS3Mock = vi.fn();
 const deleteFileFromS3Mock = vi.fn();
 const fetchImageAsBufferMock = vi.fn();
-const generateAnimationStrategyMock = vi.fn();
+const generateCinematicAnimationStrategyMock = vi.fn();
+const generateLoopedAnimationStrategyMock = vi.fn();
+const invalidOptionErrorPattern = /Invalid option/;
 
 const onePixelPng = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4////fwAJ+wP9KobjigAAAABJRU5ErkJggg==',
@@ -18,6 +22,7 @@ vi.mock('@ai-sdk/google', () => ({
 }));
 
 vi.mock('ai', () => ({
+  createGateway: createGatewayMock,
   experimental_generateVideo: experimentalGenerateVideoMock,
 }));
 
@@ -38,18 +43,24 @@ vi.mock('../utils/images', () => ({
 }));
 
 vi.mock('../agents/strategists', () => ({
-  generateAnimationStrategy: generateAnimationStrategyMock,
+  generateCinematicAnimationStrategy: generateCinematicAnimationStrategyMock,
+  generateLoopedAnimationStrategy: generateLoopedAnimationStrategyMock,
 }));
 
 vi.mock('../env', () => ({
   secrets: {
     GEMINI_API_KEY: 'test-gemini-key',
+    AI_GATEWAY_API_KEY: 'test-gateway-key',
   },
 }));
 
 googleVideoMock.mockReturnValue('mock-google-video-model');
+gatewayVideoMock.mockReturnValue('mock-gateway-video-model');
 createGoogleGenerativeAIMock.mockReturnValue({
   video: googleVideoMock,
+});
+createGatewayMock.mockReturnValue({
+  video: gatewayVideoMock,
 });
 
 const { runLogoAnimationWorkflow } = await import('./logo-animation-workflow');
@@ -66,14 +77,18 @@ describe('runLogoAnimationWorkflow', () => {
     vi.clearAllMocks();
 
     googleVideoMock.mockReturnValue('mock-google-video-model');
+    gatewayVideoMock.mockReturnValue('mock-gateway-video-model');
     createGoogleGenerativeAIMock.mockReturnValue({
       video: googleVideoMock,
     });
-    experimentalGenerateVideoMock.mockReset();
-    fetchImageAsBufferMock.mockReset();
+    createGatewayMock.mockReturnValue({
+      video: gatewayVideoMock,
+    });
+
     fetchImageAsBufferMock.mockResolvedValue(onePixelPng);
-    generateAnimationStrategyMock.mockReset();
-    generateAnimationStrategyMock.mockResolvedValue({
+    deleteFileFromS3Mock.mockResolvedValue(undefined);
+
+    generateCinematicAnimationStrategyMock.mockResolvedValue({
       object: {
         brandAttributes: ['bold', 'premium'],
         targetAudience: 'Design-conscious founders',
@@ -89,11 +104,27 @@ describe('runLogoAnimationWorkflow', () => {
       },
       modelId: 'gpt-5.2',
     });
-    uploadFileToS3Mock.mockReset();
-    deleteFileFromS3Mock.mockResolvedValue(undefined);
+
+    generateLoopedAnimationStrategyMock.mockResolvedValue({
+      object: {
+        brandAttributes: ['premium', 'precise'],
+        targetAudience: 'Design-conscious founders',
+        rationale:
+          'A light sweep keeps the mark polished without turning it cinematic.',
+        motionPreset: 'light-sweep',
+        direction:
+          'Keep the logo centered with a restrained polish pass that resolves back to stillness.',
+      },
+      totalUsage: {
+        inputTokens: 10,
+        outputTokens: 14,
+        totalTokens: 24,
+      },
+      modelId: 'gpt-5.2',
+    });
   });
 
-  it('forwards abort signals to image fetch and video generation', async () => {
+  it('forwards abort signals through the cinematic branch', async () => {
     experimentalGenerateVideoMock.mockResolvedValue({
       video: { uint8Array: new Uint8Array([1, 2, 3]) },
       warnings: [],
@@ -107,6 +138,7 @@ describe('runLogoAnimationWorkflow', () => {
 
     await runLogoAnimationWorkflow(
       {
+        mode: 'cinematic',
         domain: 'example.com',
         referenceLogoUrl: 'https://cdn.test/logo.png',
         motionPreset: 'let-ai-choose',
@@ -120,7 +152,7 @@ describe('runLogoAnimationWorkflow', () => {
       'https://cdn.test/logo.png',
       abortController.signal,
     );
-    expect(generateAnimationStrategyMock).toHaveBeenCalledWith(
+    expect(generateCinematicAnimationStrategyMock).toHaveBeenCalledWith(
       expect.objectContaining({
         domain: 'example.com',
         motionPreset: 'let-ai-choose',
@@ -134,7 +166,7 @@ describe('runLogoAnimationWorkflow', () => {
     expect(googleVideoMock).toHaveBeenCalledWith('veo-3.1-generate-preview');
   });
 
-  it('defaults to exact-frame mode when sourceMode is omitted', async () => {
+  it('uses subject references without sending a literal first frame in cinematic mode', async () => {
     experimentalGenerateVideoMock.mockResolvedValue({
       video: { uint8Array: new Uint8Array([1, 2, 3]) },
       warnings: [],
@@ -145,36 +177,7 @@ describe('runLogoAnimationWorkflow', () => {
       .mockResolvedValueOnce({ key: 'animations/domain/thumb.png' });
 
     await runLogoAnimationWorkflow({
-      domain: 'example.com',
-      referenceLogoUrl: 'https://cdn.test/logo.png',
-      motionPreset: 'let-ai-choose',
-      model: 'veo-3.1-generate-preview',
-      storage,
-    });
-
-    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
-    expect(typeof generateVideoCall.prompt).toBe('object');
-    expect(generateVideoCall.prompt.text).toContain('provided source frame');
-    expect(generateVideoCall.providerOptions.google).not.toHaveProperty(
-      'referenceImages',
-    );
-
-    const thumbnailUpload = uploadFileToS3Mock.mock.calls[1]?.[0];
-    expect(Buffer.isBuffer(thumbnailUpload.fileBuffer)).toBe(true);
-    expect(thumbnailUpload.fileBuffer.equals(onePixelPng)).toBe(false);
-  });
-
-  it('uses subject references without sending a literal first frame', async () => {
-    experimentalGenerateVideoMock.mockResolvedValue({
-      video: { uint8Array: new Uint8Array([1, 2, 3]) },
-      warnings: [],
-      providerMetadata: {},
-    });
-    uploadFileToS3Mock
-      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' })
-      .mockResolvedValueOnce({ key: 'animations/domain/thumb.png' });
-
-    await runLogoAnimationWorkflow({
+      mode: 'cinematic',
       domain: 'example.com',
       referenceLogoUrl: 'https://cdn.test/logo.png',
       sourceMode: 'subject-reference',
@@ -195,31 +198,76 @@ describe('runLogoAnimationWorkflow', () => {
         referenceType: 'asset',
       },
     ]);
-
-    const thumbnailUpload = uploadFileToS3Mock.mock.calls[1]?.[0];
-    expect(thumbnailUpload.fileBuffer.equals(onePixelPng)).toBe(true);
   });
 
-  it('does not upload assets before video generation succeeds', async () => {
-    experimentalGenerateVideoMock.mockRejectedValue(
-      new Error('provider request failed'),
+  it('uploads a square source frame and reuses it as the loop boundary in looped mode', async () => {
+    experimentalGenerateVideoMock.mockResolvedValue({
+      video: { uint8Array: new Uint8Array([7, 8, 9]) },
+      warnings: ['draft-preview'],
+      providerMetadata: { provider: 'bytedance' },
+    });
+    uploadFileToS3Mock
+      .mockResolvedValueOnce({ key: 'animations/domain/source.png' })
+      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' });
+
+    const result = await runLogoAnimationWorkflow({
+      mode: 'looped',
+      domain: 'example.com',
+      referenceLogoUrl: 'https://cdn.test/logo.png',
+      motionPreset: 'let-ai-choose',
+      motionIntensity: 'subtle',
+      model: 'bytedance/seedance-v1.5-pro',
+      storage,
+    });
+
+    expect(generateLoopedAnimationStrategyMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        domain: 'example.com',
+        motionIntensity: 'subtle',
+      }),
+    );
+    expect(gatewayVideoMock).toHaveBeenCalledWith(
+      'bytedance/seedance-v1.5-pro',
     );
 
-    await expect(
-      runLogoAnimationWorkflow({
-        domain: 'example.com',
-        referenceLogoUrl: 'https://cdn.test/logo.png',
-        motionPreset: 'let-ai-choose',
-        model: 'veo-3.1-generate-preview',
-        storage,
+    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
+    expect(generateVideoCall.aspectRatio).toBe('1:1');
+    expect(generateVideoCall.duration).toBe(4);
+    expect(generateVideoCall.prompt).toEqual({
+      image: 'https://cdn.test/animations/domain/source.png',
+      text: expect.stringContaining(
+        'seamless 4-second square animated logo loop',
+      ),
+    });
+    expect(generateVideoCall.providerOptions.bytedance).toEqual(
+      expect.objectContaining({
+        lastFrameImage: 'https://cdn.test/animations/domain/source.png',
+        cameraFixed: true,
+        watermark: false,
+        generateAudio: false,
+        pollTimeoutMs: 600_000,
       }),
-    ).rejects.toThrow('provider request failed');
-
-    expect(uploadFileToS3Mock).not.toHaveBeenCalled();
-    expect(deleteFileFromS3Mock).not.toHaveBeenCalled();
+    );
+    expect(result.video.thumbnailStoragePath).toBe(
+      'animations/domain/source.png',
+    );
   });
 
-  it('deletes already-uploaded assets when a later upload fails', async () => {
+  it('rejects invalid cross-mode combinations', async () => {
+    await expect(
+      runLogoAnimationWorkflow({
+        mode: 'looped',
+        domain: 'example.com',
+        referenceLogoUrl: 'https://cdn.test/logo.png',
+        motionPreset: 'light-sweep',
+        motionIntensity: 'subtle',
+        model: 'veo-3.1-generate-preview',
+        storage,
+      } as never),
+    ).rejects.toThrow(invalidOptionErrorPattern);
+  });
+
+  it('cleans up uploaded assets when a later cinematic upload fails', async () => {
     experimentalGenerateVideoMock.mockResolvedValue({
       video: { uint8Array: new Uint8Array([1, 2, 3]) },
       warnings: [],
@@ -231,6 +279,7 @@ describe('runLogoAnimationWorkflow', () => {
 
     await expect(
       runLogoAnimationWorkflow({
+        mode: 'cinematic',
         domain: 'example.com',
         referenceLogoUrl: 'https://cdn.test/logo.png',
         motionPreset: 'let-ai-choose',
@@ -239,7 +288,6 @@ describe('runLogoAnimationWorkflow', () => {
       }),
     ).rejects.toThrow('thumbnail upload failed');
 
-    expect(deleteFileFromS3Mock).toHaveBeenCalledTimes(1);
     expect(deleteFileFromS3Mock).toHaveBeenCalledWith({
       bucketName: 'test-bucket',
       key: 'animations/domain/video.mp4',

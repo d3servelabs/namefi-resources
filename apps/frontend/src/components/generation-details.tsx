@@ -45,6 +45,7 @@ import {
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
 import type { AppRouterOutput } from '@/lib/trpc';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { collateralLabels } from './ai-generation/poster-generator';
 import { useAuth } from '@/hooks/use-auth';
 import { useDeleteGeneration } from './ai-generation/shared/generation-hooks';
@@ -54,9 +55,13 @@ import {
   getGenerationFileExtension,
 } from './ai-generation/shared/generation-actions';
 import {
+  ANIMATION_MODES,
   ANIMATION_MODELS,
+  ANIMATION_MOTION_INTENSITIES,
   ANIMATION_MOTION_PRESETS,
   type AnimationMotionPresetId,
+  type AnimationMode,
+  type AnimationMotionIntensity,
   ANIMATION_SOURCE_MODES,
   type AnimationSourceMode,
   LOGO_STYLES,
@@ -118,7 +123,8 @@ function resolveAnimationSourceMode(
 ): AnimationSourceMode | undefined {
   if (
     generation?.type !== 'animation' ||
-    generation.input?.type !== 'animation'
+    generation.input?.type !== 'animation' ||
+    generation.input.mode !== 'cinematic'
   ) {
     return undefined;
   }
@@ -126,6 +132,33 @@ function resolveAnimationSourceMode(
   return generation.input.sourceMode === 'subject-reference'
     ? 'subject-reference'
     : 'exact-frame';
+}
+
+function resolveAnimationMode(
+  generation: GenerationData | undefined,
+): AnimationMode | undefined {
+  if (
+    generation?.type !== 'animation' ||
+    generation.input?.type !== 'animation'
+  ) {
+    return undefined;
+  }
+
+  return generation.input.mode;
+}
+
+function resolveAnimationMotionIntensity(
+  generation: GenerationData | undefined,
+): AnimationMotionIntensity | undefined {
+  if (
+    generation?.type !== 'animation' ||
+    generation.input?.type !== 'animation' ||
+    generation.input.mode !== 'looped'
+  ) {
+    return undefined;
+  }
+
+  return generation.input.motionIntensity;
 }
 
 const LoadingSkeleton = () => (
@@ -199,6 +232,7 @@ const ErrorPlaceholder = ({
   </div>
 );
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: this container coordinates loading, polling, media display, detail cards, and destructive actions for three generation types.
 export function GenerationDetailsClient({
   domain,
   generationId,
@@ -326,8 +360,11 @@ export function GenerationDetailsClient({
         ? generation.input.typography
         : undefined;
 
+  const animationModeValue = resolveAnimationMode(generation);
   const motionPresetValue = resolveAnimationMotionPresetId(generation);
   const animationSourceModeValue = resolveAnimationSourceMode(generation);
+  const animationMotionIntensityValue =
+    resolveAnimationMotionIntensity(generation);
 
   const animationModelValue =
     generation?.output?.type === 'animation'
@@ -383,6 +420,9 @@ export function GenerationDetailsClient({
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+  const shareableDomain = generation?.domain
+    ? (generation.domain as NamefiNormalizedDomain)
+    : null;
 
   const canDelete =
     isAuthenticated &&
@@ -526,7 +566,11 @@ export function GenerationDetailsClient({
                     className={detailActionButtonClassName}
                     title="Share on Twitter"
                     onClick={() => {
-                      shareDialog.openDialog(domain as any);
+                      if (!shareableDomain) {
+                        return;
+                      }
+
+                      shareDialog.openDialog(shareableDomain);
                       setIsDialogOpen(true);
                     }}
                   >
@@ -659,13 +703,40 @@ export function GenerationDetailsClient({
                   </div>
                 )}
 
+                {generation.type === 'animation' && animationModeValue && (
+                  <div className="flex items-center gap-2">
+                    <Type className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Mode:</span>
+                    <Badge variant="secondary">
+                      {ANIMATION_MODES[animationModeValue].name}
+                    </Badge>
+                  </div>
+                )}
+
                 {generation.type === 'animation' &&
+                  animationModeValue === 'cinematic' &&
                   animationSourceModeValue && (
                     <div className="flex items-center gap-2">
                       <Type className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">Opening:</span>
                       <Badge variant="secondary">
                         {ANIMATION_SOURCE_MODES[animationSourceModeValue].name}
+                      </Badge>
+                    </div>
+                  )}
+
+                {generation.type === 'animation' &&
+                  animationModeValue === 'looped' &&
+                  animationMotionIntensityValue && (
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">Intensity:</span>
+                      <Badge variant="secondary">
+                        {
+                          ANIMATION_MOTION_INTENSITIES[
+                            animationMotionIntensityValue
+                          ].name
+                        }
                       </Badge>
                     </div>
                   )}
@@ -823,7 +894,7 @@ export function GenerationDetailsClient({
           setIsDialogOpen(false);
           shareDialog.onClose();
         }}
-        domainName={domain as any}
+        domainName={shareableDomain}
         shareUrl={currentUrl}
         hasShared={false}
         isCheckingStatus={false}

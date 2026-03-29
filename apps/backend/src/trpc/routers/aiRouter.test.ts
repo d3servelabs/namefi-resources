@@ -70,13 +70,22 @@ vi.mock('@namefi-astra/db/schema', () => ({
 }));
 
 vi.mock('@namefi-astra/ai', () => ({
-  ANIMATION_MODEL_IDS: ['veo-3.1-generate-preview'],
-  ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
+  ANIMATION_MOTION_INTENSITY_IDS: ['subtle', 'balanced', 'bold'],
   ANIMATION_SOURCE_MODE_IDS: ['exact-frame', 'subject-reference'],
+  CINEMATIC_ANIMATION_MODEL_IDS: [
+    'veo-3.1-generate-preview',
+    'veo-3.1-fast-generate-preview',
+  ],
+  CINEMATIC_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
   LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
   LOGO_TEXT_TREATMENT_INPUT_IDS: ['let-ai-choose'],
   LOGO_TYPE_INPUT_IDS: ['let-ai-choose'],
   LOGO_TYPOGRAPHY_INPUT_IDS: ['let-ai-choose'],
+  LOOPED_ANIMATION_MODEL_IDS: [
+    'bytedance/seedance-v1.5-pro',
+    'bytedance/seedance-v1.0-pro',
+  ],
+  LOOPED_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'light-sweep'],
   MARKETING_COLLATERAL_TYPE_INPUT_IDS: ['let_ai_choose'],
   runLogoWorkflow: vi.fn(),
   runMarketingWorkflow: vi.fn(),
@@ -94,6 +103,7 @@ vi.mock('../base', () => ({
 }));
 
 const {
+  generateAnimationInputSchema,
   getAnimationStartStateAfterError,
   startLogoAnimationWorkflowWithRecovery,
 } = await import('./aiRouter');
@@ -208,5 +218,68 @@ describe('startLogoAnimationWorkflowWithRecovery', () => {
 
     expect(startMock).toHaveBeenCalledTimes(3);
     expect(describeMock).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('generateAnimationInputSchema', () => {
+  it('accepts cinematic animation inputs', () => {
+    expect(
+      generateAnimationInputSchema.parse({
+        mode: 'cinematic',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-1',
+        sourceMode: 'subject-reference',
+        motionPreset: 'orbital-reveal',
+        model: 'veo-3.1-generate-preview',
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        mode: 'cinematic',
+        sourceMode: 'subject-reference',
+      }),
+    );
+  });
+
+  it('accepts looped animation inputs', () => {
+    expect(
+      generateAnimationInputSchema.parse({
+        mode: 'looped',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-1',
+        motionPreset: 'light-sweep',
+        motionIntensity: 'subtle',
+        model: 'bytedance/seedance-v1.5-pro',
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        mode: 'looped',
+        motionIntensity: 'subtle',
+      }),
+    );
+  });
+
+  it('rejects cross-mode field combinations', () => {
+    expect(() =>
+      generateAnimationInputSchema.parse({
+        mode: 'looped',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-1',
+        motionPreset: 'light-sweep',
+        motionIntensity: 'subtle',
+        model: 'veo-3.1-generate-preview',
+      }),
+    ).toThrow();
+
+    expect(() =>
+      generateAnimationInputSchema.parse({
+        mode: 'cinematic',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-1',
+        sourceMode: 'exact-frame',
+        motionPreset: 'orbital-reveal',
+        motionIntensity: 'subtle',
+        model: 'veo-3.1-generate-preview',
+      }),
+    ).toThrow();
   });
 });

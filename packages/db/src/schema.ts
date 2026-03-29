@@ -885,6 +885,37 @@ type AiGenerationTokenUsage = Array<{
   outputTokens: number;
 }>;
 
+type CinematicAnimationModel =
+  | 'veo-3.1-generate-preview'
+  | 'veo-3.1-fast-generate-preview';
+
+type LoopedAnimationModel =
+  | 'bytedance/seedance-v1.5-pro'
+  | 'bytedance/seedance-v1.0-pro';
+
+type AnimationModel = CinematicAnimationModel | LoopedAnimationModel;
+
+type CinematicAnimationMotionPreset =
+  | 'let-ai-choose'
+  | 'orbital-reveal'
+  | 'energy-surge'
+  | 'atmospheric-rise'
+  | 'dimensional-parallax'
+  | 'prismatic-bloom';
+
+type LoopedAnimationMotionPreset =
+  | 'let-ai-choose'
+  | 'breathe'
+  | 'light-sweep'
+  | 'shimmer'
+  | 'glow-pulse'
+  | 'contour-trace'
+  | 'ambient-orbit'
+  | 'micro-parallax'
+  | 'gradient-drift';
+
+type AnimationMotionIntensity = 'subtle' | 'balanced' | 'bold';
+
 type AiGenerationInput =
   | {
       type: 'logo';
@@ -906,21 +937,19 @@ type AiGenerationInput =
     }
   | {
       type: 'animation';
+      mode: 'cinematic';
       description?: string;
       sourceMode?: 'exact-frame' | 'subject-reference';
-      motionPreset:
-        | 'let-ai-choose'
-        | 'orbital-reveal'
-        | 'energy-surge'
-        | 'atmospheric-rise'
-        | 'dimensional-parallax'
-        | 'prismatic-bloom'
-        | 'light-sweep'
-        | 'glow-pulse'
-        | 'particle-orbit'
-        | 'contour-trace'
-        | 'shimmer';
-      model: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+      motionPreset: CinematicAnimationMotionPreset;
+      model: CinematicAnimationModel;
+    }
+  | {
+      type: 'animation';
+      mode: 'looped';
+      description?: string;
+      motionPreset: LoopedAnimationMotionPreset;
+      motionIntensity: AnimationMotionIntensity;
+      model: LoopedAnimationModel;
     };
 
 type AiGenerationOutput =
@@ -947,7 +976,7 @@ type AiGenerationOutput =
       storagePath?: string;
       thumbnailStoragePath: string;
       mimeType: 'video/mp4';
-      model: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+      model: AnimationModel;
     };
 
 type ExternalAiGenerationInput =
@@ -974,21 +1003,20 @@ type ExternalAiGenerationInput =
     }
   | {
       type: 'animation';
+      mode: 'cinematic';
       description?: string;
       sourceMode?: 'exact-frame' | 'subject-reference';
-      motionPreset:
-        | 'let-ai-choose'
-        | 'orbital-reveal'
-        | 'energy-surge'
-        | 'atmospheric-rise'
-        | 'dimensional-parallax'
-        | 'prismatic-bloom'
-        | 'light-sweep'
-        | 'glow-pulse'
-        | 'particle-orbit'
-        | 'contour-trace'
-        | 'shimmer';
-      model?: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+      motionPreset: CinematicAnimationMotionPreset;
+      model?: CinematicAnimationModel;
+      referenceLogoUrl?: string;
+    }
+  | {
+      type: 'animation';
+      mode: 'looped';
+      description?: string;
+      motionPreset: LoopedAnimationMotionPreset;
+      motionIntensity: AnimationMotionIntensity;
+      model?: LoopedAnimationModel;
       referenceLogoUrl?: string;
     };
 
@@ -1018,7 +1046,7 @@ type ExternalAiGenerationOutput =
       storagePath?: string;
       thumbnailStoragePath: string;
       mimeType: 'video/mp4';
-      model?: 'veo-3.1-generate-preview' | 'veo-3.1-fast-generate-preview';
+      model?: AnimationModel;
     };
 
 /**

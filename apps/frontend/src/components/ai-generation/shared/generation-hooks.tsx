@@ -13,15 +13,26 @@ import type { AnimationFormData } from '../animation-generator';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
 import type {
-  AnimationModel,
-  AnimationMotionPresetInput,
+  AnimationMotionIntensity,
   AnimationSourceMode,
+  CinematicAnimationModel,
+  CinematicAnimationMotionPresetId,
   ImageModel as Model,
+  LoopedAnimationModel,
+  LoopedAnimationMotionPresetId,
   LogoStyleInput,
   LogoTextTreatmentInput,
   LogoTypographyInput,
   LogoTypeInput,
   MarketingCollateralTypeInput,
+} from '@namefi-astra/ai/types';
+import {
+  ANIMATION_MOTION_INTENSITY_IDS,
+  ANIMATION_SOURCE_MODE_IDS,
+  CINEMATIC_ANIMATION_MODEL_IDS,
+  CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+  LOOPED_ANIMATION_MODEL_IDS,
+  LOOPED_ANIMATION_MOTION_PRESET_IDS,
 } from '@namefi-astra/ai/types';
 import { useGalleryPending } from '../gallery-pending-context';
 
@@ -351,20 +362,42 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
 };
 
 export const createAnimationGenerationPayload = (data: AnimationFormData) => {
-  const requestBody: {
-    domain: NamefiNormalizedDomain;
-    description?: string;
-    referenceLogoGenerationId: string;
-    sourceMode: AnimationSourceMode;
-    motionPreset: AnimationMotionPresetInput;
-    model: AnimationModel;
-  } = {
-    domain: data.domain,
-    referenceLogoGenerationId: data.selectedLogoId,
-    sourceMode: data.sourceMode,
-    motionPreset: data.motionPreset,
-    model: data.model,
-  };
+  const requestBody: AppRouterInput['ai']['generateAnimation'] =
+    data.mode === 'looped'
+      ? {
+          mode: 'looped',
+          domain: data.domain,
+          referenceLogoGenerationId: data.selectedLogoId,
+          motionPreset: pickAnimationValue(
+            data.motionPreset,
+            LOOPED_ANIMATION_MOTION_PRESET_IDS,
+          ) as LoopedAnimationMotionPresetId,
+          motionIntensity: pickAnimationValue(
+            data.motionIntensity,
+            ANIMATION_MOTION_INTENSITY_IDS,
+          ) as AnimationMotionIntensity,
+          model: pickAnimationValue(
+            data.model,
+            LOOPED_ANIMATION_MODEL_IDS,
+          ) as LoopedAnimationModel,
+        }
+      : {
+          mode: 'cinematic',
+          domain: data.domain,
+          referenceLogoGenerationId: data.selectedLogoId,
+          sourceMode: pickAnimationValue(
+            data.sourceMode,
+            ANIMATION_SOURCE_MODE_IDS,
+          ) as AnimationSourceMode,
+          motionPreset: pickAnimationValue(
+            data.motionPreset,
+            CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+          ) as CinematicAnimationMotionPresetId,
+          model: pickAnimationValue(
+            data.model,
+            CINEMATIC_ANIMATION_MODEL_IDS,
+          ) as CinematicAnimationModel,
+        };
 
   if (data.description) {
     requestBody.description = data.description;
@@ -388,6 +421,42 @@ type DeleteGenerationContext = {
   previousGenerationsByType: Array<[QueryKey, unknown]>;
   previousFeaturedAndRecent: FeaturedRecentGenerations | undefined;
 };
+
+function pickAnimationValue<TValue extends string>(
+  value: string | undefined,
+  allowedValues: readonly [TValue, ...TValue[]],
+): TValue {
+  if (value && allowedValues.includes(value as TValue)) {
+    return value as TValue;
+  }
+
+  return allowedValues[0];
+}
+
+function restoreQuerySnapshots(
+  queryClient: ReturnType<typeof useQueryClient>,
+  snapshots: Array<[QueryKey, unknown]> | undefined,
+) {
+  if (!snapshots) {
+    return;
+  }
+
+  for (const [queryKey, data] of snapshots) {
+    queryClient.setQueryData(queryKey, data);
+  }
+}
+
+function getMutationErrorMessage(error: unknown) {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (typeof error === 'object' && error && 'message' in error) {
+    return String((error as { message?: unknown }).message);
+  }
+
+  return 'Failed to delete generation';
+}
 
 export function useDeleteGeneration(options: UseDeleteGenerationOptions = {}) {
   const trpc = useTRPC();
@@ -525,34 +594,19 @@ export function useDeleteGeneration(options: UseDeleteGenerationOptions = {}) {
         options.onSuccess?.();
       },
       onError: (error, _variables, context) => {
-        if (context?.previousUserGenerations) {
-          for (const [queryKey, data] of context.previousUserGenerations) {
-            queryClient.setQueryData(queryKey, data);
-          }
-        }
-        if (context?.previousGenerationsByDomain) {
-          for (const [queryKey, data] of context.previousGenerationsByDomain) {
-            queryClient.setQueryData(queryKey, data);
-          }
-        }
-        if (context?.previousGenerationsByType) {
-          for (const [queryKey, data] of context.previousGenerationsByType) {
-            queryClient.setQueryData(queryKey, data);
-          }
-        }
+        restoreQuerySnapshots(queryClient, context?.previousUserGenerations);
+        restoreQuerySnapshots(
+          queryClient,
+          context?.previousGenerationsByDomain,
+        );
+        restoreQuerySnapshots(queryClient, context?.previousGenerationsByType);
         if (context?.previousFeaturedAndRecent !== undefined) {
           queryClient.setQueryData<FeaturedRecentGenerations | undefined>(
             trpc.ai.getFeaturedAndRecentGenerations.queryKey(),
             context.previousFeaturedAndRecent,
           );
         }
-        const message =
-          error instanceof Error
-            ? error.message
-            : typeof error === 'object' && error && 'message' in error
-              ? String((error as { message?: unknown }).message)
-              : 'Failed to delete generation';
-        toast.error(message);
+        toast.error(getMutationErrorMessage(error));
         options.onError?.(error);
       },
     }),
