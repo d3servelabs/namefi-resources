@@ -56,7 +56,8 @@ export type ApiKeyType =
   | 'HMAC'
   | 'ECDSA_SIGNATURE_HEADER'
   | 'EIP712'
-  | 'SIWE_SESSION_TOKEN';
+  | 'SIWE_SESSION_TOKEN'
+  | 'JWT_BEARER';
 
 /**
  * Definition of an authentication method

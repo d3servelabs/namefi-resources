@@ -186,13 +186,18 @@ const openApiDocument = await openAPIGenerator.generate(
       { name: 'search' },
       { name: 'eip712' },
     ],
-    security: [{ apiKeyAuth: [] }],
+    security: [{ apiKeyAuth: [] }, { bearerAuth: [] }],
     components: {
       securitySchemes: {
         apiKeyAuth: {
           type: 'apiKey',
           name: 'x-api-key',
           in: 'header',
+        },
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
         },
       },
     },

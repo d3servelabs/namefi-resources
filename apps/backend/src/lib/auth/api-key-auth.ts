@@ -26,6 +26,7 @@ import {
 
 import { plainAuthMethod } from './methods/plain/api-key-auth-plain';
 import { eip712AuthMethod } from './methods/eip712/api-key-auth-eip712';
+import { jwtBearerAuthMethod } from './methods/jwt/api-key-auth-jwt';
 import { SiweAuthMethod } from './methods/siwe/api-key-auth-siwe';
 
 /**
@@ -37,6 +38,7 @@ import { SiweAuthMethod } from './methods/siwe/api-key-auth-siwe';
  * Call this once during application startup.
  */
 export function initializeAuthRegistry(): void {
+  registerAuthMethod(jwtBearerAuthMethod);
   registerAuthMethod(eip712AuthMethod);
   registerAuthMethod(SiweAuthMethod);
   // Register PLAIN last (most general - uses X-API-Key)

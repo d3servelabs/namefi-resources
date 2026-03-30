@@ -18,6 +18,7 @@ export const secretsSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   TEMPORAL_API_KEY: z.string().optional(),
   API_AUTH_KEY: z.string(),
+  API_AUTH_JWT_SECRET: z.string().optional(),
   ALCHEMY_API_KEY: z.string(),
   SMTP_PASSWORD: z.string().optional(),
   SMTP_USERNAME: z.string().optional(),
@@ -191,6 +192,11 @@ export const configSchema = z.object({
    * This is useful for local development.
    */
   ALLOW_ALL_ORIGINS: z.boolean().default(false),
+  API_AUTH_JWT_TTL_SECONDS: z
+    .number()
+    .int()
+    .positive()
+    .default(60 * 60 * 12),
   /**
    * The nameservers that NameFI will use for its own domains.
    */

@@ -11,6 +11,7 @@ import {
   getMppResourceMetadata,
   getRegisterDomainMppPaymentResult,
 } from '#lib/mpp/helpers';
+import { getMppSignInResult } from '#lib/mpp/sign-in';
 import { createMppInstantRegistration } from '#lib/mpp/register-domain';
 
 const domainParamSchema = z.object({
@@ -96,6 +97,22 @@ mppRouter.get('/domain/:domain', async (c) => {
       receipt: paymentResult.receipt,
       validation: paymentResult.validation,
     });
+
+    return c.json(result);
+  } catch (error) {
+    throwAsHttpException(error);
+  }
+});
+
+mppRouter.get('/sign-in', async (c) => {
+  try {
+    const result = await getMppSignInResult({
+      request: c.req.raw,
+    });
+
+    if (result.status === 'payment_required') {
+      return result.challenge;
+    }
 
     return c.json(result);
   } catch (error) {
