@@ -107,6 +107,7 @@ const DEFAULT_COLUMN_VISIBILITY: VisibilityState = {
   normalizedDomainName: true,
   chainId: true,
   ownerAddress: true,
+  autoRenewEnabled: true,
   domainStatus: true,
   nftStatus: true,
   nftExpirationTime: true,
@@ -131,6 +132,10 @@ const DEFAULT_COLUMN_VISIBILITY: VisibilityState = {
 const BOOLEAN_FILTER_OPTIONS = [
   { value: 'true', label: 'Yes' },
   { value: 'false', label: 'No' },
+] as const;
+const TOGGLE_FILTER_OPTIONS = [
+  { value: 'true', label: 'Enabled' },
+  { value: 'false', label: 'Disabled' },
 ] as const;
 const DOMAIN_STATUS_OPTIONS = [
   { value: 'active', label: 'Active' },
@@ -214,6 +219,16 @@ const getDateStateLabel = (dateState: NftManagementRow['dateState']) => {
     default:
       return 'Match';
   }
+};
+
+const getAutoRenewLabel = (
+  autoRenewEnabled: NftManagementRow['autoRenewEnabled'],
+) => {
+  if (autoRenewEnabled === null) {
+    return 'Not set';
+  }
+
+  return autoRenewEnabled ? 'Enabled' : 'Disabled';
 };
 
 const LoadingSkeletons: FC = () => (
@@ -748,6 +763,14 @@ function NftManagementTable() {
         type: 'text',
         columnId: 'ownerAddress',
       },
+      autoRenewEnabled: {
+        id: 'autoRenewEnabled',
+        label: 'Auto Renew',
+        type: 'select',
+        columnId: 'autoRenewEnabled',
+        options: [...TOGGLE_FILTER_OPTIONS],
+        allowedOperators: ['eq', 'neq', 'isnull', 'not_isnull'],
+      },
       domainStatus: {
         id: 'domainStatus',
         label: 'Domain Status',
@@ -965,6 +988,30 @@ function NftManagementTable() {
           );
         },
         size: 220,
+      },
+      {
+        accessorKey: 'autoRenewEnabled',
+        header: 'Auto Renew',
+        cell: ({ row }) => {
+          if (row.original.autoRenewEnabled === null) {
+            return (
+              <Badge variant="outline" className="text-muted-foreground">
+                {getAutoRenewLabel(row.original.autoRenewEnabled)}
+              </Badge>
+            );
+          }
+
+          return row.original.autoRenewEnabled ? (
+            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+              {getAutoRenewLabel(row.original.autoRenewEnabled)}
+            </Badge>
+          ) : (
+            <Badge variant="secondary">
+              {getAutoRenewLabel(row.original.autoRenewEnabled)}
+            </Badge>
+          );
+        },
+        size: 120,
       },
       {
         accessorKey: 'domainStatus',

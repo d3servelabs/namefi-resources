@@ -157,6 +157,7 @@ type NftManagementFilterRow = {
   normalizedDomainName: string;
   chainId: number;
   ownerAddress: string;
+  autoRenewEnabled: string | null;
   domainStatus: string;
   nftStatus: string;
   nftExpirationTime: Date | null;
@@ -367,6 +368,9 @@ export const adminRouter = createTRPCRouter({
         normalizedDomainName: nftStatusRows.normalizedDomainName,
         chainId: nftStatusRows.chainId,
         ownerAddress: nftStatusRows.ownerAddress,
+        autoRenewEnabled: sql<
+          string | null
+        >`${domainUserPreferencesTable.autoRenewEnabled}::text`,
         domainStatus: nftStatusRows.domainStatus,
         nftStatus: nftStatusRows.nftStatus,
         nftExpirationTime: nftStatusRows.nftExpirationTime,
@@ -391,6 +395,7 @@ export const adminRouter = createTRPCRouter({
           chainId: nftStatusRows.chainId,
           asOfBlockNumber: nftStatusRows.asOfBlockNumber,
           ownerAddress: nftStatusRows.ownerAddress,
+          autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
           domainStatus: nftStatusRows.domainStatus,
           nftStatus: nftStatusRows.nftStatus,
           nftExpirationTime: nftStatusRows.nftExpirationTime,
@@ -410,6 +415,16 @@ export const adminRouter = createTRPCRouter({
           primaryEmail: nftStatusRows.primaryEmail,
         })
         .from(nftStatusRows)
+        .leftJoin(
+          domainUserPreferencesTable,
+          and(
+            eq(
+              domainUserPreferencesTable.normalizedDomainName,
+              nftStatusRows.normalizedDomainName,
+            ),
+            sql`${domainUserPreferencesTable.userId}::text = ${nftStatusRows.userId}::text`,
+          ),
+        )
         .$dynamic();
 
       const whereClauses: SQL[] = [];
@@ -473,6 +488,7 @@ export const adminRouter = createTRPCRouter({
           chainId: result.chainId,
           asOfBlockNumber: result.asOfBlockNumber,
           ownerAddress: result.ownerAddress,
+          autoRenewEnabled: result.autoRenewEnabled,
           domainStatus: result.domainStatus,
           nftStatus: result.nftStatus,
           nftExpirationTime: result.nftExpirationTime,
