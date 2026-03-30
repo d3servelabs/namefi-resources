@@ -44,7 +44,12 @@ function StoryProviders({ children }: { children: ReactNode }) {
     links: [
       createMockLink({
         isAuthenticated: false,
-        getMockData: async () => [null, {}] as const,
+        getMockData: async ({ op }) => {
+          if (op.path === 'users.getMyPermissions') {
+            return Promise.resolve([null, []] as const);
+          }
+          return Promise.resolve([null, {}] as const);
+        },
       }),
     ],
   });

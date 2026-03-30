@@ -71,7 +71,12 @@ function AuthenticatedStoryProviders({
     links: [
       createMockLink({
         isAuthenticated: true,
-        getMockData: async () => [null, {}] as const,
+        getMockData: async ({ op }) => {
+          if (op.path === 'users.getMyPermissions') {
+            return Promise.resolve([null, []] as const);
+          }
+          return Promise.resolve([null, {}] as const);
+        },
       }),
     ],
   });
