@@ -123,9 +123,9 @@ const meta: Meta<typeof UserWalletAvatar> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <StoryProviders>
+      <AuthenticatedStoryProviders walletAddress={MOCK_WALLET_ADDRESS}>
         <Story />
-      </StoryProviders>
+      </AuthenticatedStoryProviders>
     ),
   ],
   argTypes: {
