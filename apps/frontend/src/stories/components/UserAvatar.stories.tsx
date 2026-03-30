@@ -217,7 +217,11 @@ function MultipleAvatarsStory() {
 }
 
 export const MultipleAvatars: Story = {
-  render: () => <MultipleAvatarsStory />,
+  render: () => (
+    <AuthenticatedStoryProviders walletAddress={MOCK_WALLET_ADDRESS}>
+      <MultipleAvatarsStory />
+    </AuthenticatedStoryProviders>
+  ),
 };
 
 function CurrentUserAvatarStory() {

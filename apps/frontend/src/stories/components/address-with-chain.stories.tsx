@@ -8,6 +8,10 @@ import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia, base, baseSepolia } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
 import { TooltipProvider } from '@/components/ui/shadcn/tooltip';
+import { TRPCProvider } from '@/lib/trpc';
+import { createMockLink } from '@/lib/mock/trpc';
+import { createTRPCClient } from '@trpc/client';
+import type { AppRouter } from '@namefi-astra/backend/trpc';
 
 const MOCK_WALLET_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const MOCK_WALLET_ADDRESS_2 = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';
@@ -36,7 +40,14 @@ function createMockQueryClient() {
 
 function StoryProviders({ children }: { children: ReactNode }) {
   const queryClient = createMockQueryClient();
-
+  const trpcClient = createTRPCClient<AppRouter>({
+    links: [
+      createMockLink({
+        isAuthenticated: false,
+        getMockData: async () => [null, {}] as const,
+      }),
+    ],
+  });
   return (
     <MockPrivyProvider
       value={
@@ -49,7 +60,9 @@ function StoryProviders({ children }: { children: ReactNode }) {
     >
       <WagmiProvider config={mockWagmiConfig}>
         <QueryClientProvider client={queryClient}>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+            <TooltipProvider>{children}</TooltipProvider>
+          </TRPCProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </MockPrivyProvider>
