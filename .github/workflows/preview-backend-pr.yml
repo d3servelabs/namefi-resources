@@ -164,7 +164,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 32
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Detect synchronize event type
         id: detect-type
@@ -236,17 +237,37 @@ jobs:
     outputs:
       has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
     steps:
+      - name: Check if preview is unconditional
+        id: preview-mode
+        run: |
+          if [[ "${{ needs.preview-label-gate.outputs.is_force_preview }}" == "true" ]]; then
+            echo "skip-detection=true" >> "$GITHUB_OUTPUT"
+            echo "reason=force preview" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip-detection=false" >> "$GITHUB_OUTPUT"
+            echo "reason=change detection required" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout repository
+        if: steps.preview-mode.outputs.skip-detection != 'true'
         uses: actions/checkout@v4
         with:
-          fetch-depth: 32
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Detect Turbo changes
         id: turbo-changes
-        if: needs.preview-label-gate.outputs.is_force_preview != 'true'
+        if: steps.preview-mode.outputs.skip-detection != 'true'
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: "...[${{ needs.detect-synchronize-type.outputs.comparison_sha }}]"
+          base-ref: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
+          head-ref: ${{ needs.preview-label-gate.outputs.head_sha }}
+          packages: "@namefi-astra/backend"
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
 
       - name: Check backend changes
         id: check
@@ -257,6 +278,7 @@ jobs:
           IS_NEW_COMMIT="${{ needs.detect-synchronize-type.outputs.is_new_commit }}"
           CHANGED_PACKAGES="${{ steps.turbo-changes.outputs.changed-packages || '[]' }}"
 
+          echo "Detection mode: ${{ steps.preview-mode.outputs.reason }}"
           echo "Is force preview: $IS_FORCE_PREVIEW"
           echo "Comparing against SHA: $COMPARISON_SHA"
           echo "Is new commit: $IS_NEW_COMMIT"

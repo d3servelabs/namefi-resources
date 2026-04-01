@@ -8,6 +8,15 @@
 - [Logs Access](./docs/logs.md)
 - [Dev Guides](./docs/dev-guides.md)
 
+## Turbo Build Graph
+
+The root `turbo.json` includes a virtual `transit` task to make build impact
+propagate across workspace package boundaries without inventing fake outputs.
+`@namefi-astra/backend#build`, `@namefi-astra/frontend#build`, and the default
+`build` task all depend on `transit`, so shared package changes still mark the
+right app builds as affected. `transit` does not execute side effects of its
+own; it exists only to preserve correct dependency edges for change detection.
+
 ## Quick Start
 
 Once you have all dependencies installed

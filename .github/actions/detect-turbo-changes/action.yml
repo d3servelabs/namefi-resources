@@ -1,12 +1,32 @@
 name: 'Detect Turbo Changes'
-description: 'Detects which packages have changed using Turbo and outputs package names (excluding //)'
+description: 'Detects affected packages for specific Turbo tasks and outputs package names (excluding //)'
 author: 'D3ServeLabs'
 
 inputs:
-  filter:
-    description: 'Turbo filter to use (e.g., "...[HEAD^]" or "...[origin/main]")'
+  base-ref:
+    description: 'Base git ref for comparison'
     required: false
-    default: '...[HEAD^]'
+    default: 'HEAD^'
+  head-ref:
+    description: 'Head git ref for comparison'
+    required: false
+    default: 'HEAD'
+  tasks:
+    description: 'Whitespace or newline separated Turbo tasks to query'
+    required: false
+    default: 'build'
+  packages:
+    description: 'Optional whitespace or newline separated package filters'
+    required: false
+    default: ''
+  fallback-files:
+    description: 'Optional whitespace or newline separated file paths that force the selected package filters to be treated as changed when touched'
+    required: false
+    default: ''
+  filter:
+    description: 'Deprecated Turbo filter input (e.g., "...[HEAD^]"). Use base-ref instead.'
+    required: false
+    default: ''
   working-directory:
     description: 'Working directory to run turbo from'
     required: false
@@ -14,10 +34,10 @@ inputs:
 
 outputs:
   changed-packages:
-    description: 'JSON array of changed package names (excluding //)'
+    description: 'JSON array of affected package names (excluding //)'
     value: ${{ steps.detect-changes.outputs.changed-packages }}
   has-changes:
-    description: 'Boolean indicating if any packages have changed'
+    description: 'Boolean indicating if any packages are affected'
     value: ${{ steps.detect-changes.outputs.has-changes }}
 
 runs:
@@ -28,21 +48,82 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "Running turbo with filter: ${{ inputs.filter }}"
+        set -euo pipefail
 
-        # Run turbo and extract packages in one step, filtering out '//'
-        PACKAGES=$(npx turbo run build --filter='${{ inputs.filter }}' --dry-run=json | jq -r '.packages[] | select(. != "//")')
+        BASE_REF='${{ inputs.base-ref }}'
+        HEAD_REF='${{ inputs.head-ref }}'
+        TASKS_INPUT='${{ inputs.tasks }}'
+        PACKAGES_INPUT='${{ inputs.packages }}'
+        FALLBACK_FILES_INPUT='${{ inputs.fallback-files }}'
+        FILTER_INPUT='${{ inputs.filter }}'
 
-        # Convert to JSON array and check if empty
-        if [ -z "$PACKAGES" ]; then
-          CHANGED_PACKAGES="[]"
-          HAS_CHANGES="false"
-          echo "No packages changed"
+        if [[ -n "$FILTER_INPUT" ]]; then
+          if [[ "$FILTER_INPUT" =~ ^\.\.\.\[(.+)\]$ ]]; then
+            if [[ "$BASE_REF" == "HEAD^" ]]; then
+              BASE_REF="${BASH_REMATCH[1]}"
+              echo "Derived base-ref from deprecated filter input: $BASE_REF"
+            else
+              echo "Ignoring deprecated filter input because base-ref was provided explicitly"
+            fi
+          else
+            echo "Unsupported deprecated filter format: $FILTER_INPUT" >&2
+            exit 1
+          fi
+        fi
+
+        if [[ -x node_modules/.bin/turbo ]]; then
+          TURBO_CMD=(node_modules/.bin/turbo)
         else
-          CHANGED_PACKAGES=$(echo "$PACKAGES" | jq -R . | jq -s . | jq 'tostring')
+          TURBO_VERSION=$(node -e "const pkg=require('./package.json'); process.stdout.write(pkg.devDependencies?.turbo ?? pkg.dependencies?.turbo ?? 'latest')")
+          TURBO_CMD=(npx --yes "turbo@$TURBO_VERSION")
+        fi
+
+        mapfile -t TASKS < <(printf '%s\n' "$TASKS_INPUT" | tr ' ' '\n' | sed '/^$/d')
+        mapfile -t PACKAGE_FILTERS < <(printf '%s\n' "$PACKAGES_INPUT" | tr ' ' '\n' | sed '/^$/d')
+        mapfile -t FALLBACK_FILES < <(printf '%s\n' "$FALLBACK_FILES_INPUT" | tr ' ' '\n' | sed '/^$/d')
+
+        CMD=("${TURBO_CMD[@]}" query affected --base "$BASE_REF" --head "$HEAD_REF")
+        if [[ ${#TASKS[@]} -gt 0 ]]; then
+          CMD+=(--tasks "${TASKS[@]}")
+        fi
+        if [[ ${#PACKAGE_FILTERS[@]} -gt 0 ]]; then
+          CMD+=(--packages "${PACKAGE_FILTERS[@]}")
+        fi
+
+        echo "Running: ${CMD[*]}"
+        RESULT_JSON="$("${CMD[@]}")"
+
+        CHANGED_PACKAGES=$(echo "$RESULT_JSON" | jq -c '
+          if .data.affectedTasks then
+            [.data.affectedTasks.items[]?.package.name]
+          elif .data.affectedPackages then
+            [.data.affectedPackages.items[]?.name]
+          else
+            []
+          end
+          | map(select(. != "//"))
+          | unique
+        ')
+
+        if [[ "$CHANGED_PACKAGES" == "[]" && ${#PACKAGE_FILTERS[@]} -gt 0 && ${#FALLBACK_FILES[@]} -gt 0 ]]; then
+          mapfile -t CHANGED_FILES < <(git diff --name-only "$BASE_REF" "$HEAD_REF" | sed '/^$/d')
+
+          for fallback_file in "${FALLBACK_FILES[@]}"; do
+            if printf '%s\n' "${CHANGED_FILES[@]}" | grep -Fxq "$fallback_file"; then
+              echo "Touched fallback file '$fallback_file'; treating selected package filters as changed"
+              CHANGED_PACKAGES=$(printf '%s\n' "${PACKAGE_FILTERS[@]}" | jq -R . | jq -cs 'unique')
+              break
+            fi
+          done
+        fi
+
+        if [[ "$CHANGED_PACKAGES" == "[]" ]]; then
+          HAS_CHANGES="false"
+          echo "No affected packages found"
+        else
           HAS_CHANGES="true"
-          echo "Changed packages:"
-          echo "$PACKAGES"
+          echo "Affected packages:"
+          echo "$CHANGED_PACKAGES" | jq -r '.[]'
         fi
 
         echo "changed-packages=$CHANGED_PACKAGES" >> $GITHUB_OUTPUT

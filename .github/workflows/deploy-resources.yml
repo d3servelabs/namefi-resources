@@ -28,21 +28,45 @@ jobs:
     outputs:
       should-deploy: ${{ steps.should-deploy.outputs.result }}
     steps:
+      - name: Check if deploy is unconditional
+        id: deploy-mode
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "skip-detection=true" >> $GITHUB_OUTPUT
+            echo "reason=manual workflow dispatch" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
+            echo "skip-detection=true" >> $GITHUB_OUTPUT
+            echo "reason=tag push" >> $GITHUB_OUTPUT
+          else
+            echo "skip-detection=false" >> $GITHUB_OUTPUT
+            echo "reason=change detection required" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout repository
+        if: steps.deploy-mode.outputs.skip-detection != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: recursive
+          filter: blob:none
 
       - name: Determine before commit
+        if: steps.deploy-mode.outputs.skip-detection != 'true'
         id: determine-before-commit
         uses: ./.github/actions/determine-before-commit
   
       - name: Detect Turbo changes
+        if: steps.deploy-mode.outputs.skip-detection != 'true'
         id: turbo-changes
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: "...[${{ steps.determine-before-commit.outputs.before-commit }}]"
+          base-ref: ${{ steps.determine-before-commit.outputs.before-commit }}
+          head-ref: ${{ github.sha }}
+          packages: "@namefi-astra/resources"
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
 
       - name: Determine if should deploy
         id: should-deploy
@@ -51,14 +75,14 @@ jobs:
           # 1. Manual workflow dispatch
           # 2. Tag push (astra-resources/v*)
           # 3. Main branch push AND resources has changes
-          HAS_CHANGES="${{ contains((steps.turbo-changes.outputs.changed-packages), '@namefi-astra/resources' ) }}"
+          SKIP_DETECTION="${{ steps.deploy-mode.outputs.skip-detection }}"
+          HAS_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages || '[]'), '@namefi-astra/resources' ) }}"
 
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "Detection mode: ${{ steps.deploy-mode.outputs.reason }}"
+
+          if [[ "$SKIP_DETECTION" == "true" ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
-            echo "Deploying: Manual workflow dispatch"
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
-            echo "result=true" >> $GITHUB_OUTPUT
-            echo "Deploying: Tag push"
+            echo "Deploying without change detection"
           elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" && "$HAS_CHANGES" == "true" ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
             echo "Deploying: Main branch push with resources changes"

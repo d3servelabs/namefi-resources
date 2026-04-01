@@ -75,7 +75,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 32
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -99,24 +100,36 @@ jobs:
           LATEST_TAG=$(git tag -l 'astra/v*' --sort=-version:refname | head -n 1)
           if [ -z "$LATEST_TAG" ]; then
             echo "No previous release tag found, will proceed with release"
+            echo "first-release=true" >> $GITHUB_OUTPUT
             echo "latest-tag=" >> $GITHUB_OUTPUT
-            echo "filter=...[HEAD^]" >> $GITHUB_OUTPUT
+            echo "base-ref=HEAD^" >> $GITHUB_OUTPUT
           else
             echo "Latest release tag: $LATEST_TAG"
+            echo "first-release=false" >> $GITHUB_OUTPUT
             echo "latest-tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-            echo "filter=...[$LATEST_TAG]" >> $GITHUB_OUTPUT
+            echo "base-ref=$LATEST_TAG" >> $GITHUB_OUTPUT
           fi
 
       - name: Detect changed packages
         id: detect
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: ${{ steps.get-tag.outputs.filter }}
+          base-ref: ${{ steps.get-tag.outputs.base-ref }}
+          head-ref: ${{ github.sha }}
+          packages: |
+            @namefi-astra/backend
+            @namefi-astra/frontend
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
 
       - name: Check for frontend/backend changes
         id: check-changes
         run: |
           FORCE_RELEASE="${{ github.event.inputs.forceRelease }}"
+          FIRST_RELEASE="${{ steps.get-tag.outputs.first-release }}"
           HAS_CHANGES="${{ steps.detect.outputs.has-changes }}"
 
           # Use fromJSON and contains to check for frontend/backend changes
@@ -124,6 +137,7 @@ jobs:
           HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.detect.outputs.changed-packages), '@namefi-astra/backend') }}"
 
           echo "Force release: $FORCE_RELEASE"
+          echo "First release: $FIRST_RELEASE"
           echo "Has changes: $HAS_CHANGES"
           echo "Changed packages: ${{ steps.detect.outputs.changed-packages }}"
           echo "Has frontend changes: $HAS_FRONTEND_CHANGES"
@@ -135,6 +149,9 @@ jobs:
           # Determine if we should release
           if [ "$FORCE_RELEASE" == "true" ]; then
             echo "Force release enabled, proceeding with release"
+            echo "should-release=true" >> $GITHUB_OUTPUT
+          elif [ "$FIRST_RELEASE" == "true" ]; then
+            echo "No previous release tag found, proceeding with initial release"
             echo "should-release=true" >> $GITHUB_OUTPUT
           elif [ "$HAS_FRONTEND_CHANGES" == "true" ] || [ "$HAS_BACKEND_CHANGES" == "true" ]; then
             echo "Changes detected in frontend or backend, proceeding with release"

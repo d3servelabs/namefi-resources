@@ -2,6 +2,9 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },
@@ -19,18 +22,35 @@
       "outputs": ["coverage/**"]
     },
     "@namefi-astra/backend#build": {
-      "dependsOn": [],
+      "dependsOn": ["transit"],
       "env": ["*"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
       "outputs": ["dist/**", "build/**"]
     },
     "@namefi-astra/frontend#build": {
-      "dependsOn": [],
+      "dependsOn": ["transit"],
       "env": ["*"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!src/stories/**",
+        "!**/*.stories.*",
+        "!**/*.test.*",
+        "!**/*.spec.*",
+        "!.storybook/**"
+      ],
       "outputs": ["dist/**", ".next/**", "build/**", "!.next/cache/**"]
     },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "transit"],
       "env": ["*"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!src/stories/**",
+        "!**/*.stories.*",
+        "!**/*.test.*",
+        "!**/*.spec.*",
+        "!.storybook/**"
+      ],
       "outputs": ["dist/**", ".next/**", "build/**", "!.next/cache/**"]
     },
     "validate:secrets": {
