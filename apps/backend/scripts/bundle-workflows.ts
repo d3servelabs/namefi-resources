@@ -11,6 +11,18 @@ async function bundle() {
     workflowsPath: require.resolve(
       path.join(import.meta.dirname || __dirname, '../src/temporal/workflows'),
     ),
+    webpackConfigHook: (config) => ({
+      ...config,
+      output: {
+        ...config.output,
+        chunkLoading: 'require',
+      },
+      optimization: {
+        ...config.optimization,
+        splitChunks: false,
+        runtimeChunk: false,
+      },
+    }),
   });
   const tsconfigPath = path.join(
     import.meta.dirname || __dirname,
