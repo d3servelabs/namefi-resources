@@ -3,7 +3,10 @@ import { Challenge, Credential, type Receipt } from 'mppx';
 import type * as Tempo from 'mppx/tempo';
 import { charge as createStripeCharge } from 'mppx/stripe/server';
 import Stripe from 'stripe';
-import { tempoModerato } from 'viem/chains';
+import {
+  tempoModerato as tempoModeratoChain,
+  tempo as tempoChain,
+} from 'viem/chains';
 import { db } from '@namefi-astra/db';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
@@ -18,7 +21,7 @@ import { getSignerAccount } from '#lib/crypto/viem-clients';
 const logger = createLogger({ context: 'MPP' });
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
-tempoModerato.extend({
+tempoModeratoChain.extend({
   feeToken: getMppTempoCurrency(),
 });
 
@@ -28,6 +31,7 @@ const [tempoMethod, _tempoSessionMethod] = tempo({
   recipient: getMppTempoRecipientOrThrow(),
   testnet: config.MPP_TEMPO_TESTNET,
   feePayer: true,
+  chainId: config.MPP_TEMPO_TESTNET ? tempoModeratoChain.id : tempoChain.id,
 });
 
 const stripeMethod = createStripeCharge({

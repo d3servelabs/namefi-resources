@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import {
+  CHAINS,
   checksumWalletAddressSchema,
   type ChecksumWalletAddress,
 } from '@namefi-astra/utils';
@@ -224,6 +225,8 @@ export async function getMppSignInResult(input: {
     description: MPP_SIGN_IN_DESCRIPTION,
     memo,
     meta: getMppSignInChallengeMeta(),
+    chainId: (config.MPP_TEMPO_TESTNET ? CHAINS.tempoModerato : CHAINS.tempo)
+      .id,
   })(input.request);
 
   if (result.status === 402) {
