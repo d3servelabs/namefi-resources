@@ -8,6 +8,10 @@ on:
       - apps/resources/data
   workflow_dispatch: # Allow manual triggering
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   ENVIRONMENT: test
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -22,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -51,7 +55,7 @@ jobs:
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Check for duplicate numeric indices
         run: |
@@ -83,7 +87,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -93,7 +97,7 @@ jobs:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.bun/install/cache
@@ -169,6 +173,11 @@ jobs:
           echo "has_sql_changes=$HAS_SQL"
           echo "check-duplicate-migration-indices.result=$DUPLICATE_RESULT"
           echo "validate-migrations-run.result=$RUN_RESULT"
+
+          if [[ "$CHECK_RESULT" == "cancelled" ]] || [[ "$DUPLICATE_RESULT" == "cancelled" ]] || [[ "$RUN_RESULT" == "cancelled" ]]; then
+            echo "Migration validation run was superseded and cancelled."
+            exit 0
+          fi
 
           if [[ "$DUPLICATE_RESULT" != "success" ]]; then
             echo "Duplicate migration index check failed."

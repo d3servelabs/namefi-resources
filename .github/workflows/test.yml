@@ -14,6 +14,11 @@ on:
         description: 'Filter for specific package to test (e.g., "@namefi-astra/backend")'
         required: false
         default: ""
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   ENVIRONMENT: test
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -24,7 +29,7 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: recursive
@@ -35,7 +40,7 @@ jobs:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.bun/install/cache
