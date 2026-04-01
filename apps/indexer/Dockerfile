@@ -20,7 +20,7 @@ FROM node:jod-alpine3.22 AS pruner
 WORKDIR /app
 ENV CI true
 # Install turbo globally
-RUN npm install -g turbo@2.8.20
+RUN npm install -g turbo@2.9.1
 
 # Copy the entire monorepo
 COPY . .
@@ -29,16 +29,14 @@ COPY . .
 RUN turbo prune @namefi-astra/indexer --docker
 
 # Stage 3: Use Bun for dependency installation
-FROM oven/bun:1 AS deps
+FROM oven/bun:1.3.11 AS deps
 WORKDIR /app
 ENV CI true
-# Copy pruned lockfile and package.json files
+# `out/json` now includes the pruned lockfile and bunfig with Turbo 2.9.
 COPY --from=pruner /app/out/json/ .
-COPY --from=pruner /app/out/bun.lock ./bun.lock
-COPY bunfig.toml ./bunfig.toml
 
 # Install dependencies using Bun (faster than npm)
-RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install # --frozen-lockfile --production (not working atm )
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install --frozen-lockfile --ignore-scripts
 
 
 # Stage 4: Runtime image
