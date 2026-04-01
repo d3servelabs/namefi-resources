@@ -114,7 +114,7 @@
         "drizzle-orm": "^0.44.6",
         "drizzle-zod": "^0.8.3",
         "entities": "^6.0.1",
-        "hono": "^4.7.5",
+        "hono": "^4.12.8",
         "hono-pino-logger": "^1.0.0",
         "hono-rate-limiter": "^0.4.2",
         "iso-countries-lookup": "^2.0.8",
@@ -299,7 +299,7 @@
         "@ponder/utils": "^0.2.9",
         "date-fns": "^4.1.0",
         "drizzle-orm": "^0.44.6",
-        "hono": "^4.7.5",
+        "hono": "^4.12.8",
         "jose": "^6.0.12",
         "nodemailer": "^6.10.0",
         "pg": "^8.15.6",
@@ -3605,7 +3605,7 @@
 
     "hmac-drbg": ["hmac-drbg@1.0.1", "", { "dependencies": { "hash.js": "^1.0.3", "minimalistic-assert": "^1.0.0", "minimalistic-crypto-utils": "^1.0.1" } }, "sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg=="],
 
-    "hono": ["hono@4.12.5", "", {}, "sha512-3qq+FUBtlTHhtYxbxheZgY8NIFnkkC/MR8u5TTsr7YZ3wixryQ3cCwn3iZbg8p8B88iDBBAYSfZDS75t8MN7Vg=="],
+    "hono": ["hono@4.12.8", "", {}, "sha512-VJCEvtrezO1IAR+kqEYnxUOoStaQPGrCmX3j4wDTNOcD1uRPFpGlwQUIW8niPuvHXaTUxeOUl5MMDGrl+tmO9A=="],
 
     "hono-pino-logger": ["hono-pino-logger@1.0.0", "", { "dependencies": { "pino": "^8.20.0" }, "peerDependencies": { "hono": ">=4.*" } }, "sha512-h3gkcJ2N/Ptn48WcSdgg+Hjo8VSpoEZN2C8Ln75Hb99sqwmlha7tVXinf8ory/tMUiLfPe8hZ/iJqpIxFinduQ=="],
 
@@ -6352,6 +6352,8 @@
     "ponder/vite-node": ["vite-node@1.0.2", "", { "dependencies": { "cac": "^6.7.14", "debug": "^4.3.4", "pathe": "^1.1.1", "picocolors": "^1.0.0", "vite": "^5.0.0" }, "bin": { "vite-node": "vite-node.mjs" } }, "sha512-h7BbMJf46fLvFW/9Ygo3snkIBEHFh6fHpB4lge98H5quYrDhPFeI3S0LREz328uqPWSnii2yeJXktQ+Pmqk5BQ=="],
 
     "ponder/vite-tsconfig-paths": ["vite-tsconfig-paths@4.3.1", "", { "dependencies": { "debug": "^4.1.1", "globrex": "^0.1.2", "tsconfck": "^3.0.1" }, "peerDependencies": { "vite": "*" }, "optionalPeers": ["vite"] }, "sha512-cfgJwcGOsIxXOLU/nELPny2/LUD/lcf1IbfyeKTv2bsupVbTH/xpFtdQlBmIP1GEK2CjjLxYhFfB+QODFAx5aw=="],
+
+    "porto/hono": ["hono@4.12.5", "", {}, "sha512-3qq+FUBtlTHhtYxbxheZgY8NIFnkkC/MR8u5TTsr7YZ3wixryQ3cCwn3iZbg8p8B88iDBBAYSfZDS75t8MN7Vg=="],
 
     "porto/idb-keyval": ["idb-keyval@6.2.2", "", {}, "sha512-yjD9nARJ/jb1g+CvD0tlhUHOrJ9Sy0P8T9MF3YaLlHnSRpwPfpTX0XIvpmw3gAJUmEu3FiICLBDPXVwyEvrleg=="],
 
