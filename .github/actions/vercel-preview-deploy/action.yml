@@ -1,0 +1,140 @@
+name: "Vercel Preview Deploy"
+description: "Deploys a Vercel preview"
+
+inputs:
+  head_ref:
+    description: "Head branch ref for Vercel metadata"
+    required: true
+  head_sha:
+    description: "Head commit SHA for Vercel metadata"
+    required: true
+  pr_number:
+    description: "Pull request number for Vercel metadata"
+    required: true
+  build_env_json:
+    description: "JSON object of Vercel build env vars"
+    required: false
+    default: "{}"
+  runtime_env_json:
+    description: "JSON object of Vercel runtime env vars"
+    required: false
+    default: "{}"
+  additional_meta_json:
+    description: "JSON object of additional Vercel deployment metadata"
+    required: false
+    default: "{}"
+  vercel_org_id:
+    description: "Vercel organization/team ID"
+    required: true
+  vercel_project_id:
+    description: "Vercel project ID"
+    required: true
+  vercel_token:
+    description: "Vercel token"
+    required: true
+
+outputs:
+  deployed:
+    description: "Whether the deploy produced a preview URL"
+    value: ${{ steps.result.outputs.deployed }}
+  deployment_url:
+    description: "The Vercel preview URL"
+    value: ${{ steps.result.outputs.deployment_url }}
+  deployment_id:
+    description: "The Vercel deployment id"
+    value: ${{ steps.result.outputs.deployment_id }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version-file: ".bun-version"
+
+    - name: Install Vercel CLI
+      shell: bash
+      run: bun add --global vercel@latest
+
+    - name: Deploy preview to Vercel
+      id: deploy
+      shell: bash
+      env:
+        VERCEL_ORG_ID: ${{ inputs.vercel_org_id }}
+        VERCEL_PROJECT_ID: ${{ inputs.vercel_project_id }}
+        VERCEL_TOKEN: ${{ inputs.vercel_token }}
+        BUILD_ENV_JSON: ${{ inputs.build_env_json }}
+        RUNTIME_ENV_JSON: ${{ inputs.runtime_env_json }}
+        ADDITIONAL_META_JSON: ${{ inputs.additional_meta_json }}
+        HEAD_SHA: ${{ inputs.head_sha }}
+        HEAD_REF: ${{ inputs.head_ref }}
+        PR_NUMBER: ${{ inputs.pr_number }}
+      run: |
+        set -euo pipefail
+
+        # Vercel project rootDirectory already scopes the build target for each
+        # linked monorepo project. Running from app subdirectories duplicates
+        # that root (for example apps/frontend/apps/frontend) and breaks deploys.
+
+        jq -e 'type == "object"' <<<"$BUILD_ENV_JSON" >/dev/null
+        jq -e 'type == "object"' <<<"$RUNTIME_ENV_JSON" >/dev/null
+        jq -e 'type == "object"' <<<"$ADDITIONAL_META_JSON" >/dev/null
+
+        CMD=(
+          vercel deploy
+          --yes
+          --target=preview
+          --token="$VERCEL_TOKEN"
+          --scope="$VERCEL_ORG_ID"
+          --meta "githubCommitSha=$HEAD_SHA"
+          --meta "githubCommitRef=$HEAD_REF"
+          --meta "githubPrId=$PR_NUMBER"
+        )
+
+        while IFS= read -r entry; do
+          KEY=$(jq -r '.key' <<<"$entry")
+          VALUE=$(jq -r '.value | tostring' <<<"$entry")
+          CMD+=(--meta "${KEY}=${VALUE}")
+        done < <(jq -c 'to_entries[]?' <<<"$ADDITIONAL_META_JSON")
+
+        while IFS= read -r entry; do
+          KEY=$(jq -r '.key' <<<"$entry")
+          VALUE=$(jq -r '.value | tostring' <<<"$entry")
+          CMD+=(--build-env "${KEY}=${VALUE}")
+        done < <(jq -c 'to_entries[]?' <<<"$BUILD_ENV_JSON")
+
+        while IFS= read -r entry; do
+          KEY=$(jq -r '.key' <<<"$entry")
+          VALUE=$(jq -r '.value | tostring' <<<"$entry")
+          CMD+=(--env "${KEY}=${VALUE}")
+        done < <(jq -c 'to_entries[]?' <<<"$RUNTIME_ENV_JSON")
+
+        DEPLOYMENT_URL="$("${CMD[@]}" | tail -n 1 | tr -d '\r')"
+        DEPLOYMENT_ID="${DEPLOYMENT_URL#https://}"
+
+        if [[ -z "$DEPLOYMENT_URL" ]]; then
+          echo "Failed to capture deployment URL" >&2
+          exit 1
+        fi
+
+        echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+        echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
+
+    - name: Set workflow outputs
+      id: result
+      shell: bash
+      env:
+        DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment_url }}
+        DEPLOYMENT_ID: ${{ steps.deploy.outputs.deployment_id }}
+      run: |
+        set -euo pipefail
+
+        if [[ -n "$DEPLOYMENT_URL" ]]; then
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
+          echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+          echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
+        else
+          echo "deployed=false" >> "$GITHUB_OUTPUT"
+          echo "deployment_url=" >> "$GITHUB_OUTPUT"
+          echo "deployment_id=" >> "$GITHUB_OUTPUT"
+        fi

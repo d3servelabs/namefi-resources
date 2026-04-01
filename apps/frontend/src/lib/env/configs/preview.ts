@@ -3,24 +3,59 @@ import { parseAllowedChainsConfigValue } from '@namefi-astra/utils/allowed-chain
 import type { ConfigInput } from '../schema';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 
+function normaliseHttpsUrl(value: string): string {
+  const trimmed = value.trim();
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed.replace(/^http:\/\//i, 'https://');
+  }
+
+  return `https://${trimmed}`;
+}
+
+const previewDeploymentUrl = (() => {
+  const explicitDeploymentUrl =
+    process.env.FIRST_PARTY_DEPLOYMENT_URL ??
+    process.env.NEXT_PUBLIC_FIRST_PARTY_DEPLOYMENT_URL;
+  if (explicitDeploymentUrl) {
+    return normaliseHttpsUrl(explicitDeploymentUrl);
+  }
+
+  const systemDeploymentHost =
+    process.env.VERCEL_BRANCH_URL ?? process.env.VERCEL_URL;
+  if (systemDeploymentHost) {
+    return normaliseHttpsUrl(systemDeploymentHost);
+  }
+
+  return 'https://namefi.dev';
+})();
+
+const previewFirstPartyHostnames = (() => {
+  if (process.env.NAMEFI_FIRST_PARTY_HOSTNAMES) {
+    return process.env.NAMEFI_FIRST_PARTY_HOSTNAMES.split(',')
+      .map((hostname) => hostname.trim())
+      .filter(Boolean);
+  }
+
+  return Array.from(
+    new Set([new URL(previewDeploymentUrl).hostname, 'namefi.dev']),
+  );
+})();
+
 const previewConfig: ConfigInput = {
   TYPE: 'preview',
-  BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3000',
+  BACKEND_URL: process.env.BACKEND_URL || 'https://backend.astra.namefi.dev',
   MLS_PUBLIC_SALES_LISTINGS_URL:
     'https://outbound.labs.namefi.io/api/public/sales/listings',
-  RESOURCES_URL: process.env.RESOURCES_URL || 'https://localhost:3002',
-  DOCS_URL: process.env.DOCS_URL || 'https://localhost:3003',
-  FIRST_PARTY_DEPLOYMENT_URL:
-    process.env.FIRST_PARTY_DEPLOYMENT_URL || 'http://localhost:5050',
+  RESOURCES_URL: process.env.RESOURCES_URL || 'https://r.namefi.dev',
+  DOCS_URL: process.env.DOCS_URL || 'https://docs.namefi.dev',
+  FIRST_PARTY_DEPLOYMENT_URL: previewDeploymentUrl,
   GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID || 'G-PHKF9PM32W',
   PRIVY_APP_ID: process.env.PRIVY_APP_ID || 'cm2lx4u5a03x3rtgp4keapmrb',
   STRIPE_PUBLISHABLE_KEY:
     process.env.STRIPE_PUBLISHABLE_KEY ||
     'pk_test_51Pqc6fP7AJmUlGkqATatN7ovwZrEo0WjmJTjryazMHsXRIzk1WrMQv1C0SQ8J4LrTnrc2O5P4XxnTmtSKIfdl2Ct00o9GOerUj',
-  NAMEFI_FIRST_PARTY_HOSTNAMES: (process.env.NAMEFI_FIRST_PARTY_HOSTNAMES
-    ? process.env.NAMEFI_FIRST_PARTY_HOSTNAMES.split(',')
-    : ['localhost', 'namefi.localhost', 'astra.localhost']
-  ).map((hostname) => hostname.trim()),
+  NAMEFI_FIRST_PARTY_HOSTNAMES: previewFirstPartyHostnames,
   POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES,
   ADDITIONAL_HOSTNAME_MAP: Object.fromEntries(
     POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.flatMap((hostname) => [

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const configSchema = z.object({
-  TYPE: z.enum(['local', 'development', 'production', 'test']),
+  TYPE: z.enum(['local', 'development', 'production', 'test', 'preview']),
   NAMEFI_MD_API_ENDPOINT: z.url(),
   ASTRA_BACKEND_URL: z.url(),
   NEWSLETTER_ENDPOINT: z.url().optional(),

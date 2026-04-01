@@ -45,17 +45,17 @@ runs:
   steps:
     - name: Detect changed packages
       id: detect-changes
+      env:
+        BASE_REF: ${{ inputs.base-ref }}
+        HEAD_REF: ${{ inputs.head-ref }}
+        TASKS_INPUT: ${{ inputs.tasks }}
+        PACKAGES_INPUT: ${{ inputs.packages }}
+        FALLBACK_FILES_INPUT: ${{ inputs.fallback-files }}
+        FILTER_INPUT: ${{ inputs.filter }}
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: |
         set -euo pipefail
-
-        BASE_REF='${{ inputs.base-ref }}'
-        HEAD_REF='${{ inputs.head-ref }}'
-        TASKS_INPUT='${{ inputs.tasks }}'
-        PACKAGES_INPUT='${{ inputs.packages }}'
-        FALLBACK_FILES_INPUT='${{ inputs.fallback-files }}'
-        FILTER_INPUT='${{ inputs.filter }}'
 
         if [[ -n "$FILTER_INPUT" ]]; then
           if [[ "$FILTER_INPUT" =~ ^\.\.\.\[(.+)\]$ ]]; then
@@ -126,8 +126,8 @@ runs:
           echo "$CHANGED_PACKAGES" | jq -r '.[]'
         fi
 
-        echo "changed-packages=$CHANGED_PACKAGES" >> $GITHUB_OUTPUT
-        echo "has-changes=$HAS_CHANGES" >> $GITHUB_OUTPUT
+        echo "changed-packages=$CHANGED_PACKAGES" >> "$GITHUB_OUTPUT"
+        echo "has-changes=$HAS_CHANGES" >> "$GITHUB_OUTPUT"
 
 branding:
   icon: 'git-branch'

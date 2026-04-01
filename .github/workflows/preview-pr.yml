@@ -1,0 +1,1182 @@
+name: Preview PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+    branches-ignore:
+      - prod
+      - gtmq_spec_*
+      - "*_nopreview_*"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to deploy preview for"
+        required: true
+        type: number
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+  REPO_NAME: ${{ vars.REPOSITORY_NAME }}
+
+jobs:
+  detect:
+    name: Plan App Previews
+    if: github.event_name == 'pull_request' && github.event.action != 'labeled'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      frontend_changed: ${{ steps.evaluate.outputs.frontend_changed }}
+      park_changed: ${{ steps.evaluate.outputs.park_changed }}
+      resources_changed: ${{ steps.evaluate.outputs.resources_changed }}
+      docs_changed: ${{ steps.evaluate.outputs.docs_changed }}
+    steps:
+      - name: Evaluate head branch
+        id: head-branch-gate
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          case "$HEAD_REF" in
+            prod|gtmq_spec_*|*_nopreview_*)
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Checkout repository
+        if: steps.head-branch-gate.outputs.should_run == 'true'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Determine comparison SHAs
+        # We capture both the PR base and the incremental `before` SHA.
+        # Per target, we only use incremental detection after that target
+        # already has a preview on this PR branch; otherwise we bootstrap
+        # from the full base -> head diff.
+        id: comparison
+        if: steps.head-branch-gate.outputs.should_run == 'true'
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          BEFORE_SHA: ${{ github.event.before }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "has_incremental=false" >> "$GITHUB_OUTPUT"
+
+          if [[ "$EVENT_ACTION" == "synchronize" && -n "$BEFORE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            if git cat-file -e "$BEFORE_SHA" 2>/dev/null && [[ "$BEFORE_SHA" != "$BASE_SHA" ]]; then
+              echo "incremental_sha=$BEFORE_SHA" >> "$GITHUB_OUTPUT"
+              echo "has_incremental=true" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Detect existing previews
+        id: preview-state
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.comparison.outputs.has_incremental == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+          PARK_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PARK_PROJECT_ID }}
+          RESOURCES_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_RESOURCES_PROJECT_ID }}
+          DOCS_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_API_CLIENT_DOCS_PROJECT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          url_encode() {
+            jq -rn --arg value "$1" '$value|@uri'
+          }
+
+          preview_exists() {
+            local project_id="$1"
+
+            if [[ -z "$VERCEL_TOKEN" || -z "$VERCEL_TEAM_ID" || -z "$project_id" ]]; then
+              echo "false"
+              return
+            fi
+
+            local encoded_branch
+            encoded_branch="$(url_encode "$HEAD_REF")"
+            local response
+            response="$(
+              curl --silent --show-error --fail \
+                --header "Authorization: Bearer $VERCEL_TOKEN" \
+                "https://api.vercel.com/v6/deployments?projectId=$project_id&teamId=$VERCEL_TEAM_ID&branch=$encoded_branch&state=QUEUED,INITIALIZING,BUILDING,READY&limit=1"
+            )" || {
+              echo "false"
+              return
+            }
+
+            if jq -e '.deployments | length > 0' <<<"$response" >/dev/null; then
+              echo "true"
+            else
+              echo "false"
+            fi
+          }
+
+          FRONTEND_EXISTS="$(preview_exists "$FRONTEND_PROJECT_ID")"
+          PARK_EXISTS="$(preview_exists "$PARK_PROJECT_ID")"
+          RESOURCES_EXISTS="$(preview_exists "$RESOURCES_PROJECT_ID")"
+          DOCS_EXISTS="$(preview_exists "$DOCS_PROJECT_ID")"
+
+          echo "frontend_exists=$FRONTEND_EXISTS" >> "$GITHUB_OUTPUT"
+          echo "park_exists=$PARK_EXISTS" >> "$GITHUB_OUTPUT"
+          echo "resources_exists=$RESOURCES_EXISTS" >> "$GITHUB_OUTPUT"
+          echo "docs_exists=$DOCS_EXISTS" >> "$GITHUB_OUTPUT"
+
+          if [[ "$FRONTEND_EXISTS" == "true" || "$PARK_EXISTS" == "true" || "$RESOURCES_EXISTS" == "true" || "$DOCS_EXISTS" == "true" ]]; then
+            echo "any_preview_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "any_preview_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect preview target changes
+        id: base-changes
+        if: steps.head-branch-gate.outputs.should_run == 'true'
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          base-ref: ${{ steps.comparison.outputs.base_sha }}
+          head-ref: ${{ github.event.pull_request.head.sha }}
+          packages: |
+            @namefi-astra/frontend
+            @namefi-astra/park
+            @namefi-astra/resources
+            api-client-docs
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
+
+      - name: Detect incremental preview target changes
+        id: incremental-changes
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.comparison.outputs.has_incremental == 'true' && steps.preview-state.outputs.any_preview_exists == 'true'
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          base-ref: ${{ steps.comparison.outputs.incremental_sha }}
+          head-ref: ${{ github.event.pull_request.head.sha }}
+          packages: |
+            @namefi-astra/frontend
+            @namefi-astra/park
+            @namefi-astra/resources
+            api-client-docs
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
+
+      - name: Evaluate deployment targets
+        id: evaluate
+        if: always()
+        env:
+          SHOULD_RUN: ${{ steps.head-branch-gate.outputs.should_run }}
+          HAS_INCREMENTAL: ${{ steps.comparison.outputs.has_incremental }}
+          BASE_CHANGED_PACKAGES: ${{ steps.base-changes.outputs.changed-packages || '[]' }}
+          INCREMENTAL_CHANGED_PACKAGES: ${{ steps.incremental-changes.outputs.changed-packages || '[]' }}
+          FRONTEND_EXISTS: ${{ steps.preview-state.outputs.frontend_exists || 'false' }}
+          PARK_EXISTS: ${{ steps.preview-state.outputs.park_exists || 'false' }}
+          RESOURCES_EXISTS: ${{ steps.preview-state.outputs.resources_exists || 'false' }}
+          DOCS_EXISTS: ${{ steps.preview-state.outputs.docs_exists || 'false' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          package_changed() {
+            local package_name="$1"
+            local preview_exists="$2"
+            local changed_packages="$BASE_CHANGED_PACKAGES"
+
+            if [[ "$HAS_INCREMENTAL" == "true" && "$preview_exists" == "true" ]]; then
+              changed_packages="$INCREMENTAL_CHANGED_PACKAGES"
+            fi
+
+            if jq -e --arg package_name "$package_name" 'index($package_name) != null' <<<"$changed_packages" >/dev/null; then
+              echo "true"
+            else
+              echo "false"
+            fi
+          }
+
+          if [[ "$SHOULD_RUN" != "true" ]]; then
+            echo "frontend_changed=false" >> "$GITHUB_OUTPUT"
+            echo "park_changed=false" >> "$GITHUB_OUTPUT"
+            echo "resources_changed=false" >> "$GITHUB_OUTPUT"
+            echo "docs_changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "frontend_changed=$(package_changed '@namefi-astra/frontend' "$FRONTEND_EXISTS")" >> "$GITHUB_OUTPUT"
+          echo "park_changed=$(package_changed '@namefi-astra/park' "$PARK_EXISTS")" >> "$GITHUB_OUTPUT"
+          echo "resources_changed=$(package_changed '@namefi-astra/resources' "$RESOURCES_EXISTS")" >> "$GITHUB_OUTPUT"
+          echo "docs_changed=$(package_changed 'api-client-docs' "$DOCS_EXISTS")" >> "$GITHUB_OUTPUT"
+
+  deploy-frontend:
+    name: "Frontend Preview (Dev Backend)"
+    needs:
+      [detect, preview-label-gate, detect-backend-changes, resolve-backend-preview-context]
+    if: |-
+      needs.detect.result == 'success' &&
+      needs.detect.outputs.frontend_changed == 'true' &&
+      (
+        needs.preview-label-gate.outputs.should_run != 'true' ||
+        (
+          needs.detect-backend-changes.outputs.has-backend-changes != 'true' &&
+          needs.resolve-backend-preview-context.outputs.backend_preview_url == ''
+        )
+      )
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      deployed: ${{ steps.deploy.outputs.deployed }}
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Deploy frontend preview
+        id: deploy
+        uses: ./.github/actions/vercel-preview-deploy
+        with:
+          head_ref: ${{ github.event.pull_request.head.ref }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
+          pr_number: ${{ github.event.pull_request.number }}
+          additional_meta_json: |
+            {
+              "previewMode": "standard"
+            }
+          build_env_json: |
+            {
+              "ENVIRONMENT": "preview",
+              "BACKEND_URL": "https://backend.astra.namefi.dev",
+              "RESOURCES_URL": "https://r.namefi.dev",
+              "DOCS_URL": "https://docs.namefi.dev"
+            }
+          runtime_env_json: |
+            {
+              "ENVIRONMENT": "preview",
+              "BACKEND_URL": "https://backend.astra.namefi.dev",
+              "RESOURCES_URL": "https://r.namefi.dev",
+              "DOCS_URL": "https://docs.namefi.dev"
+            }
+          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+          vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+
+  deploy-park:
+    name: Deploy Park Preview
+    needs: detect
+    if: needs.detect.result == 'success' && needs.detect.outputs.park_changed == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      deployed: ${{ steps.deploy.outputs.deployed }}
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Deploy park preview
+        id: deploy
+        uses: ./.github/actions/vercel-preview-deploy
+        with:
+          head_ref: ${{ github.event.pull_request.head.ref }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
+          pr_number: ${{ github.event.pull_request.number }}
+          build_env_json: |
+            {
+              "ENVIRONMENT": "preview"
+            }
+          runtime_env_json: |
+            {
+              "ENVIRONMENT": "preview"
+            }
+          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id: ${{ secrets.VERCEL_ASTRA_PARK_PROJECT_ID }}
+          vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+
+  deploy-resources:
+    name: Deploy Resources Preview
+    needs: detect
+    if: needs.detect.result == 'success' && needs.detect.outputs.resources_changed == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      deployed: ${{ steps.deploy.outputs.deployed }}
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Deploy resources preview
+        id: deploy
+        uses: ./.github/actions/vercel-preview-deploy
+        with:
+          head_ref: ${{ github.event.pull_request.head.ref }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
+          pr_number: ${{ github.event.pull_request.number }}
+          build_env_json: |
+            {
+              "ENVIRONMENT": "preview",
+              "BACKEND_URL": "https://backend.astra.namefi.dev",
+              "CANONICAL_SITE_URL": "https://namefi.dev",
+              "FIRST_PARTY_DEPLOYMENT_URL": "https://namefi.dev",
+              "NEXT_PUBLIC_FIRST_PARTY_DEPLOYMENT_URL": "https://namefi.dev"
+            }
+          runtime_env_json: |
+            {
+              "ENVIRONMENT": "preview",
+              "BACKEND_URL": "https://backend.astra.namefi.dev",
+              "CANONICAL_SITE_URL": "https://namefi.dev",
+              "FIRST_PARTY_DEPLOYMENT_URL": "https://namefi.dev",
+              "NEXT_PUBLIC_FIRST_PARTY_DEPLOYMENT_URL": "https://namefi.dev"
+            }
+          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id: ${{ secrets.VERCEL_ASTRA_RESOURCES_PROJECT_ID }}
+          vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+
+  deploy-api-client-docs:
+    name: Deploy Docs Preview
+    needs: detect
+    if: needs.detect.result == 'success' && needs.detect.outputs.docs_changed == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      deployed: ${{ steps.deploy.outputs.deployed }}
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Deploy API client docs preview
+        id: deploy
+        uses: ./.github/actions/vercel-preview-deploy
+        with:
+          head_ref: ${{ github.event.pull_request.head.ref }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
+          pr_number: ${{ github.event.pull_request.number }}
+          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id: ${{ secrets.VERCEL_ASTRA_API_CLIENT_DOCS_PROJECT_ID }}
+          vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+
+  resolve-backend-preview-context:
+    name: Resolve Backend State
+    needs:
+      [preview-label-gate, head-branch-gate, detect-backend-changes, deploy-preview]
+    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      backend_preview_url: ${{ steps.backend-preview.outputs.backend_preview_url }}
+      has_matching_frontend_backend_preview: ${{ steps.frontend-preview.outputs.has_matching_frontend_backend_preview }}
+      existing_frontend_backend_preview_url: ${{ steps.frontend-preview.outputs.existing_frontend_backend_preview_url }}
+    steps:
+      - name: Google Auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Resolve backend preview URL
+        id: backend-preview
+        env:
+          DEPLOYED_BACKEND_PREVIEW_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -n "$DEPLOYED_BACKEND_PREVIEW_URL" ]]; then
+            echo "backend_preview_url=$DEPLOYED_BACKEND_PREVIEW_URL" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TAG="pr-$PR_NUMBER"
+          BACKEND_PREVIEW_URL=$(
+            gcloud run services describe namefi-astra-backend-preview \
+              --region "${{ env.REGION }}" \
+              --project "${{ env.PROJECT_ID }}" \
+              --format="json" |
+              jq -r ".status.traffic.[] | select(.tag == \"$TAG\") | .url" |
+              head -n 1
+          )
+
+          if [[ -z "$BACKEND_PREVIEW_URL" || "$BACKEND_PREVIEW_URL" == "null" ]]; then
+            echo "backend_preview_url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "backend_preview_url=$BACKEND_PREVIEW_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Detect matching backend-linked frontend preview
+        id: frontend-preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
+          FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+          BACKEND_PREVIEW_URL: ${{ steps.backend-preview.outputs.backend_preview_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$BACKEND_PREVIEW_URL" ]]; then
+            echo "has_matching_frontend_backend_preview=false" >> "$GITHUB_OUTPUT"
+            echo "existing_frontend_backend_preview_url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          ENCODED_BRANCH="$(jq -rn --arg value "$HEAD_REF" '$value|@uri')"
+          RESPONSE="$(
+            curl --silent --show-error --fail \
+              --header "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v6/deployments?projectId=$FRONTEND_PROJECT_ID&teamId=$VERCEL_TEAM_ID&branch=$ENCODED_BRANCH&state=QUEUED,INITIALIZING,BUILDING,READY&limit=20"
+          )"
+
+          HAS_MATCHING_FRONTEND_BACKEND_PREVIEW="$(
+            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" '
+              .deployments | any(
+                (.meta.previewMode // "") == "backend-preview" and
+                (.meta.backendPreviewUrl // "") == $backend_preview_url
+              )
+            ' <<<"$RESPONSE"
+          )"
+
+          MATCHING_FRONTEND_BACKEND_PREVIEW_URL="$(
+            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" '
+              .deployments
+              | map(
+                  select(
+                    (.meta.previewMode // "") == "backend-preview" and
+                    (.meta.backendPreviewUrl // "") == $backend_preview_url
+                  )
+                )
+              | .[0].url // ""
+            ' <<<"$RESPONSE"
+          )"
+
+          if [[ -n "$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" && "$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" != http://* && "$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" != https://* ]]; then
+            MATCHING_FRONTEND_BACKEND_PREVIEW_URL="https://$MATCHING_FRONTEND_BACKEND_PREVIEW_URL"
+          fi
+
+          echo "has_matching_frontend_backend_preview=$HAS_MATCHING_FRONTEND_BACKEND_PREVIEW" >> "$GITHUB_OUTPUT"
+          echo "existing_frontend_backend_preview_url=$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" >> "$GITHUB_OUTPUT"
+
+  preview-label-gate:
+    name: Check Backend Preview Label
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      should_run: ${{ steps.check-label.outputs.should_run }}
+      is_force_preview: ${{ steps.check-label.outputs.is_force_preview }}
+      pr_number: ${{ steps.check-label.outputs.pr_number }}
+      head_sha: ${{ steps.check-label.outputs.head_sha }}
+      base_sha: ${{ steps.check-label.outputs.base_sha }}
+      head_ref: ${{ steps.check-label.outputs.head_ref }}
+    steps:
+      - name: Check preview label
+        id: check-label
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+          INPUT_PR_NUMBER: ${{ github.event.inputs.pr_number || '' }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER_FROM_EVENT: ${{ github.event.pull_request.number || '' }}
+          HEAD_SHA_FROM_EVENT: ${{ github.event.pull_request.head.sha || '' }}
+          BASE_SHA_FROM_EVENT: ${{ github.event.pull_request.base.sha || '' }}
+          HEAD_REF_FROM_EVENT: ${{ github.event.pull_request.head.ref || '' }}
+          LABEL_NAME_FROM_EVENT: ${{ github.event.label.name || '' }}
+          HAS_FORCE_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'force-preview') }}
+          HAS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Event name: $EVENT_NAME"
+          echo "Event action: $EVENT_ACTION"
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            PR_NUMBER="$INPUT_PR_NUMBER"
+            echo "Workflow dispatch triggered for PR #$PR_NUMBER"
+
+            PR_DATA=$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref}')
+            HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head_sha')
+            BASE_SHA=$(echo "$PR_DATA" | jq -r '.base_sha')
+            HEAD_REF=$(echo "$PR_DATA" | jq -r '.head_ref')
+
+            echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+            echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+            echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PR_NUMBER="$PR_NUMBER_FROM_EVENT"
+          HEAD_SHA="$HEAD_SHA_FROM_EVENT"
+          BASE_SHA="$BASE_SHA_FROM_EVENT"
+          HEAD_REF="$HEAD_REF_FROM_EVENT"
+
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+
+          if [[ "$EVENT_ACTION" == "labeled" ]]; then
+            LABEL_NAME="$LABEL_NAME_FROM_EVENT"
+            echo "Label added: $LABEL_NAME"
+            if [[ "$LABEL_NAME" == "force-preview" ]]; then
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+            elif [[ "$LABEL_NAME" == "preview" ]]; then
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          if [[ "$HAS_FORCE_PREVIEW_LABEL" == "true" ]]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  head-branch-gate:
+    name: Check Preview Branch
+    needs: preview-label-gate
+    timeout-minutes: 2
+    if: needs.preview-label-gate.outputs.should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+    steps:
+      - name: Evaluate head branch
+        id: gate
+        env:
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          case "$HEAD_REF" in
+            prod|gtmq_spec_*|*_nopreview_*)
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+  detect-synchronize-type:
+    name: Resolve Compare Base
+    needs: [preview-label-gate, head-branch-gate]
+    if: needs.head-branch-gate.outputs.should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      is_new_commit: ${{ steps.detect-type.outputs.is_new_commit }}
+      is_force_push: ${{ steps.detect-type.outputs.is_force_push }}
+      comparison_sha: ${{ steps.detect-type.outputs.comparison_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Detect synchronize event type
+        id: detect-type
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+          BEFORE_SHA: ${{ github.event.before }}
+          BASE_SHA: ${{ needs.preview-label-gate.outputs.base_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$EVENT_ACTION" == "labeled" ]]; then
+            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
+            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+            echo "comparison_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BEFORE_SHA_EXISTS="false"
+          if [[ -n "$BEFORE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            if git cat-file -e "$BEFORE_SHA" 2>/dev/null; then
+              BEFORE_SHA_EXISTS="true"
+            fi
+          fi
+
+          if [[ "$EVENT_ACTION" == "synchronize" && "$BEFORE_SHA_EXISTS" == "true" && "$BEFORE_SHA" != "$BASE_SHA" ]]; then
+            echo "is_new_commit=true" >> "$GITHUB_OUTPUT"
+            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+            echo "comparison_sha=$BEFORE_SHA" >> "$GITHUB_OUTPUT"
+          else
+            if [[ "$EVENT_ACTION" == "synchronize" ]]; then
+              echo "is_force_push=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+            fi
+            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
+            echo "comparison_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+  detect-backend-changes:
+    name: Check Backend Changes
+    timeout-minutes: 2
+    needs: [preview-label-gate, head-branch-gate, detect-synchronize-type]
+    if: needs.head-branch-gate.outputs.should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
+      backend-changed: ${{ steps.check.outputs.backend-changed }}
+    steps:
+      - name: Check if preview is unconditional
+        id: preview-mode
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ needs.preview-label-gate.outputs.is_force_preview }}" == "true" ]]; then
+            echo "skip-detection=true" >> "$GITHUB_OUTPUT"
+            echo "reason=force preview" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip-detection=false" >> "$GITHUB_OUTPUT"
+            echo "reason=change detection required" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout repository
+        if: steps.preview-mode.outputs.skip-detection != 'true'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Detect Turbo changes
+        id: turbo-changes
+        if: steps.preview-mode.outputs.skip-detection != 'true'
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          base-ref: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
+          head-ref: ${{ needs.preview-label-gate.outputs.head_sha }}
+          packages: "@namefi-astra/backend"
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
+
+      - name: Check backend changes
+        id: check
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ needs.preview-label-gate.outputs.is_force_preview }}" == "true" ]]; then
+            echo "has-backend-changes=true" >> "$GITHUB_OUTPUT"
+            echo "backend-changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages || '[]'), '@namefi-astra/backend' ) }}"
+          echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> "$GITHUB_OUTPUT"
+          echo "backend-changed=$HAS_BACKEND_CHANGES" >> "$GITHUB_OUTPUT"
+
+  build-backend:
+    name: Build Backend Image
+    needs: detect-backend-changes
+    if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    runs-on: "blacksmith-8vcpu-ubuntu-2404"
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      image_tag: ${{ steps.set-tag.outputs.image_tag }}
+      image_digest: ${{ steps.resolve-digest.outputs.image_digest }}
+      new_image: ${{ steps.resolve-digest.outputs.new_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Set Docker tag
+        id: set-tag
+        run: |
+          IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${{ github.sha }}"
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Check if Docker image exists
+        id: check-image
+        run: |
+          {
+            IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+            IMAGE_DETAILS="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null)"
+            DIGEST="$(echo "$IMAGE_DETAILS" | jq .image_summary.digest)"
+            if [[ -n "$DIGEST" && "$DIGEST" != "null" ]]; then
+              echo "exists=true" >> $GITHUB_OUTPUT
+            else
+              echo "exists=false" >> $GITHUB_OUTPUT
+            fi
+          } || {
+            echo "exists=false" >> $GITHUB_OUTPUT
+          }
+
+      - name: Set up Docker Buildx
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/setup-docker-builder@v1
+
+      - name: Build and Push Container
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.image_tag }}
+          push: true
+          context: .
+          file: ./apps/backend/Dockerfile
+
+      - name: Resolve image digest
+        id: resolve-digest
+        run: |
+          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+          IMAGE_BASE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api"
+          DIGEST="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="value(image_summary.digest)")"
+          if [[ -z "$DIGEST" ]]; then
+            exit 1
+          fi
+          NEW_IMAGE="${IMAGE_BASE}@${DIGEST}"
+          echo "image_digest=$DIGEST" >> $GITHUB_OUTPUT
+          echo "new_image=$NEW_IMAGE" >> $GITHUB_OUTPUT
+
+  prepare-database:
+    name: Prepare Preview DB
+    timeout-minutes: 5
+    needs: [preview-label-gate, detect-backend-changes]
+    if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    outputs:
+      branch_id: ${{ steps.branch-name.outputs.branch_id }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 32
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Set Neon branch name
+        id: branch-name
+        run: echo "branch_id=pr-${{ needs.preview-label-gate.outputs.pr_number }}" >> $GITHUB_OUTPUT
+
+      - name: Create Neon branch
+        run: |
+          BRANCH_ID="${{ steps.branch-name.outputs.branch_id }}"
+          EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          if [ ! -z "$EXISTING_BRANCH" ]; then
+            bun run neonctl branches delete "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          fi
+          bun run neonctl branches create --name "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
+
+      - name: Check for SQL migration changes
+        id: check-sql-changes
+        run: |
+          SQL_FILES=$(git diff --name-only ${{ needs.preview-label-gate.outputs.base_sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
+          if [[ -n "$SQL_FILES" ]]; then
+            echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_sql_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get connection string for PR branch
+        id: connection-string
+        run: |
+          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch "${{ steps.branch-name.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          echo "database_url=$CS" >> $GITHUB_OUTPUT
+
+      - name: Run migrations on PR branch
+        if: steps.check-sql-changes.outputs.has_sql_changes == 'true'
+        working-directory: ./packages/db
+        env:
+          DATABASE_URL: ${{ steps.connection-string.outputs.database_url }}
+        run: bun db:migrate
+
+  deploy-preview:
+    name: Deploy Backend Preview
+    needs: [preview-label-gate, detect-backend-changes, build-backend, prepare-database]
+    if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      statuses: write
+    outputs:
+      revision_tag_url: ${{ steps.tagged-url.outputs.revision_tag_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install Neon CLI
+        run: bun add --global neonctl@latest
+
+      - name: Get connection string for PR branch
+        id: connection-string
+        run: |
+          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch "${{ needs.prepare-database.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          echo "database_url=$CS" >> $GITHUB_OUTPUT
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+        with:
+          install_components: "beta"
+
+      - name: Deploy preview revision
+        id: deploy
+        env:
+          NEW_IMAGE: ${{ needs.build-backend.outputs.new_image }}
+          DATABASE_URL: ${{ steps.connection-string.outputs.database_url }}
+          INFISICAL_TOKEN: ${{ secrets.INFISICAL_DEV_SERVICE_TOKEN }}
+          GCP_HSM_KEYRING_RESOURCE_NAME: ${{ secrets.GCP_HSM_KEYRING_RESOURCE_NAME }}
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+        run: |
+          gcloud config set core/disable_prompts True
+          gcloud beta config set core/disable_prompts True
+
+          TAG="pr-$PR_NUMBER"
+          SHORT_SHA="${GITHUB_SHA::7}"
+          REVISION_SUFFIX="pr-$PR_NUMBER-$SHORT_SHA"
+          gcloud beta run deploy namefi-astra-backend-preview \
+            --container "gate-proxy" \
+            --image "us-central1-docker.pkg.dev/d3serve-labs/cloud-run-source-deploy/namefi-astra/preview-ngnix-proxy:latest" \
+            --port='80' --no-traffic \
+            --container "temporal" \
+            --image "us-central1-docker.pkg.dev/d3serve-labs/cloud-run-source-deploy/temporalio/temporal:1.5.1" \
+            --args="server,start-dev,--ip,0.0.0.0" \
+            --container "api" \
+            --image "$NEW_IMAGE" \
+            --set-env-vars="MANAGED_NFT_INDEX=true,DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
+            --container "workers" \
+            --image "$NEW_IMAGE" \
+            --set-env-vars="MANAGED_NFT_INDEX=true,DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
+            --revision-suffix "$REVISION_SUFFIX" \
+            --no-traffic \
+            --tag "$TAG" \
+            --region "${{ env.REGION }}" \
+            --project "${{ env.PROJECT_ID }}" \
+            --quiet --async
+
+          REVISION_NAME="namefi-astra-backend-preview-$REVISION_SUFFIX"
+          while true; do
+            READY_CONDITION=$(gcloud run revisions describe "$REVISION_NAME" --project "${{ env.PROJECT_ID }}" --region "${{ env.REGION }}" --format='json' | jq -r '.status.conditions[] | select(.type == "Ready")')
+            READY_STATUS=$(echo "$READY_CONDITION" | jq -r '.status')
+            READY_REASON=$(echo "$READY_CONDITION" | jq -r '.reason // empty')
+            READY_MESSAGE=$(echo "$READY_CONDITION" | jq -r '.message // empty')
+
+            if [[ "$READY_STATUS" == "True" ]]; then
+              break
+            elif [[ "$READY_STATUS" == "False" ]]; then
+              echo "Reason: $READY_REASON"
+              echo "Message: $READY_MESSAGE"
+              exit 1
+            else
+              sleep 5
+            fi
+          done
+
+      - name: Get tagged URL
+        id: tagged-url
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+        run: |
+          TAG="pr-$PR_NUMBER"
+          REVISION_TAG_URL=$(gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="json" | jq -r ".status.traffic.[] | select(.tag == \"$TAG\") | .url" )
+          if [[ -z "$REVISION_TAG_URL" ]]; then
+            exit 1
+          fi
+          echo "revision_tag_url=$REVISION_TAG_URL" >> $GITHUB_OUTPUT
+
+  deploy-frontend-preview:
+    name: "Frontend Preview (Preview Backend)"
+    needs:
+      [detect, preview-label-gate, head-branch-gate, detect-backend-changes, deploy-preview, resolve-backend-preview-context]
+    if: |-
+      needs.preview-label-gate.outputs.should_run == 'true' &&
+      needs.head-branch-gate.outputs.should_run == 'true' &&
+      needs.resolve-backend-preview-context.outputs.backend_preview_url != '' &&
+      (
+        (needs.detect.result == 'success' && needs.detect.outputs.frontend_changed == 'true') ||
+        (
+          needs.resolve-backend-preview-context.outputs.has_matching_frontend_backend_preview != 'true' &&
+          (
+            github.event_name == 'workflow_dispatch' ||
+            needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+          )
+        )
+      )
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      deployed: ${{ steps.deploy.outputs.deployed }}
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Deploy frontend preview
+        id: deploy
+        uses: ./.github/actions/vercel-preview-deploy
+        with:
+          head_ref: ${{ needs.preview-label-gate.outputs.head_ref }}
+          head_sha: ${{ needs.preview-label-gate.outputs.head_sha }}
+          pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
+          additional_meta_json: |
+            {
+              "previewMode": "backend-preview",
+              "backendPreviewUrl": "${{ needs.resolve-backend-preview-context.outputs.backend_preview_url }}"
+            }
+          build_env_json: |
+            {
+              "ENVIRONMENT": "preview",
+              "BACKEND_URL": "${{ needs.resolve-backend-preview-context.outputs.backend_preview_url }}",
+              "RESOURCES_URL": "https://r.namefi.dev",
+              "DOCS_URL": "https://docs.namefi.dev"
+            }
+          runtime_env_json: |
+            {
+              "ENVIRONMENT": "preview",
+              "BACKEND_URL": "${{ needs.resolve-backend-preview-context.outputs.backend_preview_url }}",
+              "RESOURCES_URL": "https://r.namefi.dev",
+              "DOCS_URL": "https://docs.namefi.dev"
+            }
+          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel_project_id: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+          vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+
+  workflow-summary:
+    name: Preview Summary
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    if: always()
+    needs:
+      - detect
+      - deploy-frontend
+      - deploy-park
+      - deploy-resources
+      - deploy-api-client-docs
+      - preview-label-gate
+      - head-branch-gate
+      - detect-synchronize-type
+      - detect-backend-changes
+      - resolve-backend-preview-context
+      - build-backend
+      - prepare-database
+      - deploy-preview
+      - deploy-frontend-preview
+    steps:
+      - name: Generate workflow summary
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action || github.event_name }}
+          DETECT_APPS_RESULT: ${{ needs.detect.result }}
+          FRONTEND_CHANGED: ${{ needs.detect.outputs.frontend_changed || 'false' }}
+          PARK_CHANGED: ${{ needs.detect.outputs.park_changed || 'false' }}
+          RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
+          DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
+          FRONTEND_PREVIEW_RESULT: ${{ needs.deploy-frontend.result }}
+          FRONTEND_PREVIEW_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
+          PARK_PREVIEW_RESULT: ${{ needs.deploy-park.result }}
+          PARK_PREVIEW_URL: ${{ needs.deploy-park.outputs.deployment_url }}
+          RESOURCES_PREVIEW_RESULT: ${{ needs.deploy-resources.result }}
+          RESOURCES_PREVIEW_URL: ${{ needs.deploy-resources.outputs.deployment_url }}
+          DOCS_PREVIEW_RESULT: ${{ needs.deploy-api-client-docs.result }}
+          DOCS_PREVIEW_URL: ${{ needs.deploy-api-client-docs.outputs.deployment_url }}
+          SHOULD_RUN: ${{ needs.preview-label-gate.outputs.should_run }}
+          IS_FORCE_PREVIEW: ${{ needs.preview-label-gate.outputs.is_force_preview }}
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+          HEAD_BRANCH_ALLOWED: ${{ needs.head-branch-gate.outputs.should_run }}
+          IS_NEW_COMMIT: ${{ needs.detect-synchronize-type.outputs.is_new_commit }}
+          IS_FORCE_PUSH: ${{ needs.detect-synchronize-type.outputs.is_force_push }}
+          COMPARISON_SHA: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
+          HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
+          BACKEND_CHANGED: ${{ needs.detect-backend-changes.outputs.backend-changed }}
+          REVISION_TAG_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          PREVIEW_LABEL_GATE_RESULT: ${{ needs.preview-label-gate.result }}
+          HEAD_BRANCH_GATE_RESULT: ${{ needs.head-branch-gate.result }}
+          DETECT_SYNC_TYPE_RESULT: ${{ needs.detect-synchronize-type.result }}
+          DETECT_BACKEND_CHANGES_RESULT: ${{ needs.detect-backend-changes.result }}
+          RESOLVE_BACKEND_PREVIEW_CONTEXT_RESULT: ${{ needs.resolve-backend-preview-context.result }}
+          BUILD_BACKEND_RESULT: ${{ needs.build-backend.result }}
+          PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
+          DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
+          DEPLOY_FRONTEND_BACKEND_URL: ${{ needs.deploy-frontend-preview.outputs.deployment_url }}
+          FRONTEND_BACKEND_PREVIEW_RESULT: ${{ needs.deploy-frontend-preview.result }}
+          EXISTING_FRONTEND_BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.existing_frontend_backend_preview_url }}
+        run: |
+          set -euo pipefail
+
+          short_sha() {
+            local value="${1:-}"
+            if [[ -z "$value" ]]; then
+              echo "—"
+            else
+              echo "${value:0:7}"
+            fi
+          }
+
+          row() {
+            printf '| %s | %s | %s | %s | %s |\n' "$1" "$2" "$3" "$4" "$5" >> "$GITHUB_STEP_SUMMARY"
+          }
+
+          format_result() {
+            case "${1:-}" in
+              success) echo "deployed" ;;
+              skipped) echo "skipped" ;;
+              failure|cancelled|timed_out) echo "failed" ;;
+              "") echo "—" ;;
+              *) echo "$1" ;;
+            esac
+          }
+
+          frontend_mode="dev backend"
+          frontend_result="$(format_result "$FRONTEND_PREVIEW_RESULT")"
+          frontend_url="${FRONTEND_PREVIEW_URL:-}"
+          frontend_note="affected-only"
+
+          if [[ "$SHOULD_RUN" == "true" && -n "$REVISION_TAG_URL" ]]; then
+            frontend_mode="preview backend"
+            frontend_result="$(format_result "$FRONTEND_BACKEND_PREVIEW_RESULT")"
+            frontend_url="${DEPLOY_FRONTEND_BACKEND_URL:-}"
+            frontend_note="backend preview active"
+            if [[ -z "$frontend_url" && -n "$EXISTING_FRONTEND_BACKEND_PREVIEW_URL" ]]; then
+              frontend_url="$EXISTING_FRONTEND_BACKEND_PREVIEW_URL"
+              frontend_note="backend preview active (existing preview reused)"
+            fi
+          elif [[ "$FRONTEND_CHANGED" != "true" ]]; then
+            frontend_note="not affected"
+          fi
+
+          park_note="affected-only"
+          [[ "$PARK_CHANGED" == "true" ]] || park_note="not affected"
+          resources_note="affected-only"
+          [[ "$RESOURCES_CHANGED" == "true" ]] || resources_note="not affected"
+          docs_note="affected-only"
+          [[ "$DOCS_CHANGED" == "true" ]] || docs_note="not affected"
+
+          {
+            echo "## Preview Summary"
+            echo
+            echo "- PR: #$PR_NUMBER"
+            echo "- Event: \`$EVENT_NAME / $EVENT_ACTION\`"
+            echo "- Head branch: \`$HEAD_REF\`"
+            echo "- Compare base: \`$(short_sha "$COMPARISON_SHA")\`"
+            echo "- Backend preview label active: \`$SHOULD_RUN\`"
+            echo "- Force preview: \`$IS_FORCE_PREVIEW\`"
+            echo
+            echo "### Preview Surfaces"
+            echo
+            echo "| Surface | Mode | Result | URL | Notes |"
+            echo "|---|---|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          row "Frontend" "$frontend_mode" "$frontend_result" "${frontend_url:-—}" "$frontend_note"
+          row "Park" "affected-only" "$(format_result "$PARK_PREVIEW_RESULT")" "${PARK_PREVIEW_URL:-—}" "$park_note"
+          row "Resources" "affected-only" "$(format_result "$RESOURCES_PREVIEW_RESULT")" "${RESOURCES_PREVIEW_URL:-—}" "$resources_note"
+          row "API Client Docs" "affected-only" "$(format_result "$DOCS_PREVIEW_RESULT")" "${DOCS_PREVIEW_URL:-—}" "$docs_note"
+          backend_note="not requested or unchanged"
+          if [[ "$IS_FORCE_PREVIEW" == "true" ]]; then
+            backend_note="forced preview"
+          elif [[ "$BACKEND_CHANGED" == "true" ]]; then
+            backend_note="changes detected"
+          fi
+
+          row "Backend" "label-gated" "$(format_result "$DEPLOY_PREVIEW_RESULT")" "${REVISION_TAG_URL:-—}" "$backend_note"
+
+          {
+            echo
+            echo "### Orchestration"
+            echo
+            echo "| Check | Result |"
+            echo "|---|---|"
+            echo "| App planning | $DETECT_APPS_RESULT |"
+            echo "| Backend label check | $PREVIEW_LABEL_GATE_RESULT |"
+            echo "| Preview branch check | $HEAD_BRANCH_GATE_RESULT |"
+            echo "| Compare base resolution | $DETECT_SYNC_TYPE_RESULT |"
+            echo "| Backend change check | $DETECT_BACKEND_CHANGES_RESULT |"
+            echo "| Backend state resolution | $RESOLVE_BACKEND_PREVIEW_CONTEXT_RESULT |"
+            echo "| Backend image build | $BUILD_BACKEND_RESULT |"
+            echo "| Preview database | $PREPARE_DATABASE_RESULT |"
+            echo "| Frontend via backend | $FRONTEND_BACKEND_PREVIEW_RESULT |"
+          } >> "$GITHUB_STEP_SUMMARY"
