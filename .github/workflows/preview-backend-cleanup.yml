@@ -17,15 +17,20 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
       - name: Google Auth
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Remove Cloud Run tag and revision
         run: |
@@ -38,18 +43,13 @@ jobs:
           gcloud run services update-traffic namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --remove-tags "$TAG" --quiet
           gcloud run revisions delete "$REVISION_NAME" --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --quiet
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.bun/install/cache

@@ -44,7 +44,7 @@ jobs:
 
       - name: Checkout repository
         if: steps.deploy-mode.outputs.skip-detection != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           filter: blob:none
@@ -141,7 +141,7 @@ jobs:
       deployment_url: ${{ steps.deploy.outputs.deployment_url }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           submodules: recursive

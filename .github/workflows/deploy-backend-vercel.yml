@@ -59,7 +59,7 @@ jobs:
 
       - name: Checkout repository
         if: steps.deploy-mode.outputs.skip-detection != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           filter: blob:none
@@ -237,7 +237,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Debug environment variables
         run: |
@@ -249,13 +249,13 @@ jobs:
       # Set up Google Cloud authentication using WIF
       - name: Google Auth
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
@@ -326,15 +326,18 @@ jobs:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - name: Google Auth
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Deploy to Cloud Run (Backend/API)
         id: deploy
@@ -360,15 +363,18 @@ jobs:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - name: Google Auth
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Deploy to Cloud Run (Backend/Temporal)
         id: deploy-temporal
@@ -393,7 +399,7 @@ jobs:
     env:
       INFISICAL_SERVICE_TOKEN: ${{ needs.compute-env.outputs.infisical_token_selector == 'prod' && secrets.INFISICAL_PROD_SERVICE_TOKEN || secrets.INFISICAL_DEV_SERVICE_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -403,7 +409,7 @@ jobs:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.bun/install/cache
@@ -427,7 +433,7 @@ jobs:
       deployment_id: ${{ steps.deploy.outputs.deployment_id }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
