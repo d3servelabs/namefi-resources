@@ -11,7 +11,10 @@ import {
   getMppResourceMetadata,
   getRegisterDomainMppPaymentResult,
 } from '#lib/mpp/helpers';
-import { getMppSignInResult } from '#lib/mpp/sign-in';
+import {
+  buildMppSignInPaymentRequiredResponse,
+  getMppSignInResult,
+} from '#lib/mpp/sign-in';
 import { createMppInstantRegistration } from '#lib/mpp/register-domain';
 
 const domainParamSchema = z.object({
@@ -111,7 +114,10 @@ mppRouter.get('/sign-in', async (c) => {
     });
 
     if (result.status === 'payment_required') {
-      return result.challenge;
+      return buildMppSignInPaymentRequiredResponse({
+        challenge: result.challenge,
+        metadata: result.metadata,
+      });
     }
 
     return c.json(result);

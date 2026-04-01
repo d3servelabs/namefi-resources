@@ -97,7 +97,7 @@ const previewConfig: ConfigInput = {
     },
   ],
   SKIP_AUTH_USER_ID: '202832e8-304f-4f4a-81c9-df32fd1e5364',
-  PONDER_INDEXER_URL: 'https://indexer.namefi.dev',
+  PONDER_INDEXER_URL: 'https://indexer.namefi.io',
   MPP_ENABLED: 'true',
   MPP_STRIPE_NETWORK_ID: 'internal',
   MPP_TEMPO_RECIPIENT: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',

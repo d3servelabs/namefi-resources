@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import {
   checksumWalletAddressSchema,
   type ChecksumWalletAddress,
@@ -12,12 +13,21 @@ import { createLogger } from '#lib/logger';
 import { getRedisClient } from '#lib/redis';
 import { findOrCreateUserFromWallet } from '#temporal/activities/x402.activities';
 import { parseMppDidSource } from './source-did';
+import {
+  assertTempoCredentialSourceMatchesIdentity,
+  overrideMppMethodVerify,
+  verifyTempoChargeWithoutBroadcast,
+} from './verify-only';
 
 const logger = createLogger({ context: 'MPP_SIGN_IN' });
 
 const MPP_SIGN_IN_DESCRIPTION = 'Sign in to Namefi API';
 const MPP_SIGN_IN_REPLAY_KEY_PREFIX = 'mpp:sign-in:challenge';
 const MPP_SIGN_IN_REPLAY_TTL_SECONDS = 60 * 5;
+const MPP_SIGN_IN_ACCEPTED_CREDENTIAL_TYPES = ['transaction', 'hash'] as const;
+const MPP_SIGN_IN_PREFERRED_MODE = 'pull';
+const MPP_SIGN_IN_PUSH_WARNING =
+  'Push mode may spend gas before authentication completes.';
 
 export type MppSignInSuccessResult = {
   chain: string;
@@ -30,9 +40,18 @@ export type MppSignInSuccessResult = {
   walletAddress: ChecksumWalletAddress;
 };
 
+export type MppSignInPaymentRequiredMetadata = {
+  acceptedCredentialTypes: string[];
+  action: 'sign-in';
+  preferredMode: 'pull';
+  warning: string;
+  zeroFeePreferred: true;
+};
+
 export type MppSignInResult =
   | {
       challenge: Response;
+      metadata: MppSignInPaymentRequiredMetadata;
       status: 'payment_required';
     }
   | MppSignInSuccessResult;
@@ -47,19 +66,79 @@ function getMppTempoRecipientOrThrow() {
   );
 }
 
+function createMppSignInMemo() {
+  return `0x${randomBytes(32).toString('hex')}` as `0x${string}`;
+}
+
+function getMppSignInChallengeMeta() {
+  return {
+    acceptedCredentialTypes: MPP_SIGN_IN_ACCEPTED_CREDENTIAL_TYPES.join(','),
+    action: 'sign-in',
+    preferredMode: MPP_SIGN_IN_PREFERRED_MODE,
+    zeroFeePreferred: 'true',
+    warning: MPP_SIGN_IN_PUSH_WARNING,
+  } satisfies Record<string, string>;
+}
+
+function getMppSignInPaymentRequiredMetadata(): MppSignInPaymentRequiredMetadata {
+  return {
+    acceptedCredentialTypes: [...MPP_SIGN_IN_ACCEPTED_CREDENTIAL_TYPES],
+    action: 'sign-in',
+    preferredMode: MPP_SIGN_IN_PREFERRED_MODE,
+    warning: MPP_SIGN_IN_PUSH_WARNING,
+    zeroFeePreferred: true,
+  };
+}
+
+export function buildMppSignInPaymentRequiredResponse(input: {
+  challenge: Response;
+  metadata: MppSignInPaymentRequiredMetadata;
+}) {
+  const headers = new Headers(input.challenge.headers);
+  headers.set('Content-Type', 'application/json');
+
+  return new Response(
+    JSON.stringify({
+      message: 'Payment Required',
+      status: 402,
+      ...input.metadata,
+    }),
+    {
+      headers,
+      status: 402,
+    },
+  );
+}
+
+function createVerifyOnlyTempoSignInMethod() {
+  const [tempoChargeMethod] = tempo({
+    currency: getMppTempoCurrency(),
+    decimals: 6,
+    recipient: getMppTempoRecipientOrThrow(),
+    testnet: config.MPP_TEMPO_TESTNET,
+  });
+
+  return overrideMppMethodVerify(
+    tempoChargeMethod,
+    verifyTempoChargeWithoutBroadcast,
+  );
+}
+
 function createMppSignInHandler(realm: string) {
   return Mppx.create({
-    methods: [
-      tempo({
-        currency: getMppTempoCurrency(),
-        decimals: 6,
-        recipient: getMppTempoRecipientOrThrow(),
-        testnet: config.MPP_TEMPO_TESTNET,
-      }),
-    ],
+    methods: [createVerifyOnlyTempoSignInMethod()],
     realm,
     secretKey: secrets.COOKIE_SECRET,
   });
+}
+
+function getChainIdFromDidChain(chain: string) {
+  const match = chain.match(/^eip155:(\d+)$/);
+  if (!match) {
+    throw new Error('MPP sign-in requires an eip155 DID chain');
+  }
+
+  return Number(match[1]);
 }
 
 async function consumeMppSignInChallenge(input: {
@@ -99,6 +178,33 @@ function getSignInCredential(request: Request) {
   }
 }
 
+function getSignInMemoFromCredential(credential: Credential.Credential | null) {
+  const challengeRequest = credential?.challenge?.request;
+
+  if (
+    challengeRequest &&
+    typeof challengeRequest === 'object' &&
+    'methodDetails' in challengeRequest &&
+    challengeRequest.methodDetails &&
+    typeof challengeRequest.methodDetails === 'object' &&
+    'memo' in challengeRequest.methodDetails &&
+    typeof challengeRequest.methodDetails.memo === 'string'
+  ) {
+    return challengeRequest.methodDetails.memo as `0x${string}`;
+  }
+
+  if (
+    challengeRequest &&
+    typeof challengeRequest === 'object' &&
+    'memo' in challengeRequest &&
+    typeof challengeRequest.memo === 'string'
+  ) {
+    return challengeRequest.memo as `0x${string}`;
+  }
+
+  return createMppSignInMemo();
+}
+
 export async function getMppSignInResult(input: {
   request: Request;
 }): Promise<MppSignInResult> {
@@ -110,22 +216,24 @@ export async function getMppSignInResult(input: {
 
   const realm = new URL(input.request.url).host;
   const signInHandler = createMppSignInHandler(realm);
+  const credential = getSignInCredential(input.request);
+  const memo = getSignInMemoFromCredential(credential);
+  const paymentRequiredMetadata = getMppSignInPaymentRequiredMetadata();
   const result = await signInHandler.tempo.charge({
     amount: '0',
     description: MPP_SIGN_IN_DESCRIPTION,
-    meta: {
-      action: 'sign-in',
-    },
+    memo,
+    meta: getMppSignInChallengeMeta(),
   })(input.request);
 
   if (result.status === 402) {
     return {
       challenge: result.challenge,
+      metadata: paymentRequiredMetadata,
       status: 'payment_required',
     };
   }
 
-  const credential = getSignInCredential(input.request);
   if (!credential) {
     throw new Error(
       'Missing MPP credential after successful sign-in verification',
@@ -136,6 +244,12 @@ export async function getMppSignInResult(input: {
   if (!didSource) {
     throw new Error('MPP sign-in requires a valid DID source');
   }
+
+  await assertTempoCredentialSourceMatchesIdentity({
+    credential,
+    expectedChainId: getChainIdFromDidChain(didSource.chain),
+    expectedWalletAddress: didSource.walletAddress,
+  });
 
   const replayResult = await consumeMppSignInChallenge({
     challengeId: credential.challenge.id,
