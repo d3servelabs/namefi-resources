@@ -24,9 +24,9 @@ runs:
         echo "before: ${{ github.event.before }}"
 
         if [[ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" || "${{ github.event.before }}" == "" ]]; then
-          echo "before-commit='HEAD^'" >> $GITHUB_OUTPUT
+          echo "before-commit=HEAD^" >> $GITHUB_OUTPUT
         else
-          echo "before-commit='${{ github.event.before }}'" >> $GITHUB_OUTPUT
+          echo "before-commit=${{ github.event.before }}" >> $GITHUB_OUTPUT
         fi
 branding:
   icon: 'git-branch'
