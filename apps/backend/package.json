@@ -163,7 +163,7 @@
     "superjson": "^2.2.2",
     "tldts": "^7.0.8",
     "unique-names-generator": "^4.7.1",
-    "viem": "2.41.2",
+    "viem": "2.47.6",
     "zod": "^4.1.12"
   },
   "devDependencies": {
