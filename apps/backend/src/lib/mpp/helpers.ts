@@ -390,6 +390,12 @@ export async function getRegisterDomainMppPaymentResult(
   const realm = new URL(input.request.url).host;
   const credential = parseCredentialFromRequest(input.request);
 
+  logger.info(
+    {
+      credential,
+    },
+    'parseCredentialFromRequest',
+  );
   const tempoResult = await tryTempoRegisterDomainMppPayment({
     credential,
     description,

@@ -365,7 +365,7 @@ export async function assertTempoCredentialSourceMatchesIdentity(input: {
 
       if (transaction.chainId !== input.expectedChainId) {
         throw new Error(
-          'Tempo auth credential source does not match transaction chain',
+          `Tempo auth credential source does not match transaction chain.\n\tTransaction ChainId:\t${transaction.chainId}\n\tExpected ChainId:${input.expectedChainId}`,
         );
       }
 

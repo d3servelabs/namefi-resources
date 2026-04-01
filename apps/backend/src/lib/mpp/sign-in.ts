@@ -245,6 +245,15 @@ export async function getMppSignInResult(input: {
     throw new Error('MPP sign-in requires a valid DID source');
   }
 
+  logger.info(
+    {
+      didSource,
+      credentialSource: credential.source,
+      expectedChainId: getChainIdFromDidChain(didSource.chain),
+      expectedWalletAddress: didSource.walletAddress,
+    },
+    'getMppSignInResult',
+  );
   await assertTempoCredentialSourceMatchesIdentity({
     credential,
     expectedChainId: getChainIdFromDidChain(didSource.chain),
