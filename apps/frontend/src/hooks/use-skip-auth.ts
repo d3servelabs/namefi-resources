@@ -1,6 +1,7 @@
 'use client';
 
 import { config } from '@/lib/env';
+import type { Route } from 'next';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import {
   useEffect,
@@ -101,7 +102,7 @@ export function useSkipAuth() {
       const newUrl = newParams.toString()
         ? `${pathname}?${newParams.toString()}`
         : pathname;
-      router.replace(newUrl);
+      router.replace(newUrl as Route);
     } else if (urlParam === '0') {
       setSkipAuthInStorage(false);
       const newParams = new URLSearchParams(searchParams.toString());
@@ -109,7 +110,7 @@ export function useSkipAuth() {
       const newUrl = newParams.toString()
         ? `${pathname}?${newParams.toString()}`
         : pathname;
-      router.replace(newUrl);
+      router.replace(newUrl as Route);
     }
   }, [searchParams, router, pathname, devEnvironment]);
 

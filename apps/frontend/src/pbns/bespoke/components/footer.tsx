@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/shadcn/button';
 import { Trophy } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 import type { BespokeLandingConfig } from '../types';
 
@@ -29,7 +30,11 @@ export const Footer = ({ config }: FooterProps) => {
         </p>
 
         <div className="flex justify-center">
-          <Link href={huntUrl} target="_blank" rel="noopener noreferrer">
+          <Link
+            href={huntUrl as Route}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
               size="lg"
               className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white font-semibold text-xl px-12 py-5 rounded-2xl shadow-2xl shadow-cyan-500/25 tracking-tight"

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/shadcn/button';
+import type { Route } from 'next';
 import {
   Dialog,
   DialogContent,
@@ -16,7 +17,7 @@ interface EmailRequiredModalProps {
   title?: string;
   description?: string;
   actionText?: string;
-  actionHref?: string;
+  actionHref?: Route;
   dismissible?: boolean;
   onGoBack?: () => void;
 }

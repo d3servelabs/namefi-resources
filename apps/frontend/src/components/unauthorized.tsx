@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/shadcn/button';
+import type { Route } from 'next';
 import {
   Card,
   CardContent,
@@ -14,8 +15,8 @@ import Link from 'next/link';
 export interface UnauthorizedProps {
   title?: string;
   description?: string;
-  authUrl?: string;
-  homeUrl?: string;
+  authUrl?: Route;
+  homeUrl?: Route;
 }
 
 export function Unauthorized({

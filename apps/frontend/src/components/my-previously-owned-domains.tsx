@@ -312,19 +312,22 @@ function MyPreviouslyOwnedDomainsTable() {
             <div className="flex gap-2">
               {explorerUrl ? (
                 <Button
-                  render={
-                    <Link
+                  render={(props) => (
+                    <a
+                      {...props}
                       href={explorerUrl}
-                      aria-label={`View transaction for ${domainName}`}
+                      aria-label={`View NFT for ${domainName}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                    />
-                  }
+                    >
+                      {props.children}
+                    </a>
+                  )}
                   nativeButton={false}
                   variant="outline"
                   size="sm"
                 >
-                  <ExternalLink className="w-4 h-4 mr-1" /> View Transaction
+                  <ExternalLink className="w-4 h-4 mr-1" /> View NFT
                 </Button>
               ) : null}
             </div>

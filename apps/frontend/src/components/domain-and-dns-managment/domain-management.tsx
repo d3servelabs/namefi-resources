@@ -14,7 +14,6 @@ import { useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
-import Link from 'next/link';
 import {
   type FC,
   type HTMLAttributes,
@@ -264,13 +263,16 @@ export const DomainManagement: FC<DomainManagementProps> = ({
             />
             {domainSupportedFeatures.domainManagement.config.redirectTo ? (
               <Button
-                render={
-                  <Link
+                render={(props) => (
+                  <a
+                    {...props}
                     href={
                       domainSupportedFeatures.domainManagement.config.redirectTo
                     }
-                  />
-                }
+                  >
+                    {props.children}
+                  </a>
+                )}
                 nativeButton={false}
                 variant="outline"
               >

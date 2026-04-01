@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import type { NavItem } from '@/lib/types/nav-item';
 import { reportReactBoundaryError } from '@/lib/datadog-react-error';
+import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ErrorInfo, FC, HTMLAttributes, ReactElement } from 'react';
@@ -77,7 +78,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                       isActive={isRouteActive(item, pathname)}
                       render={
                         <Link
-                          href={item.href}
+                          href={item.href as Route}
                           target={item.target}
                           onClick={() => {
                             if (isMobile) {

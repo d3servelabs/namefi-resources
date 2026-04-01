@@ -670,7 +670,7 @@ const LogoGrid = ({
 }) => (
   <div className={cn('grid gap-4', columns)}>
     {items.map((item) => (
-      <Link
+      <a
         key={item.name}
         href={item.href}
         target="_blank"
@@ -685,7 +685,7 @@ const LogoGrid = ({
           height={32}
           className="max-h-10 w-auto grayscale transition group-hover:grayscale-0"
         />
-      </Link>
+      </a>
     ))}
   </div>
 );

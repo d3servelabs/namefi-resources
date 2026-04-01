@@ -3,6 +3,7 @@
 
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { type CSSProperties, useEffect, useState } from 'react';
@@ -84,7 +85,7 @@ export function MlsSaleCard({
         <div className="flex flex-wrap items-center gap-2 text-xs text-white/35 sm:text-sm">
           {sellerDetailsPath ? (
             <Link
-              href={sellerDetailsPath}
+              href={sellerDetailsPath as Route}
               className="truncate font-semibold text-white/52 transition-colors hover:text-[var(--mls-accent-muted)] hover:underline"
             >
               {sellerLabel}
@@ -103,7 +104,7 @@ export function MlsSaleCard({
               <span aria-hidden={true}>•</span>
               {sellerDetailsPath ? (
                 <Link
-                  href={sellerDetailsPath}
+                  href={sellerDetailsPath as Route}
                   className="transition-colors hover:text-white/55 hover:underline"
                 >
                   {otherDomainsCount.toLocaleString()} other{' '}
@@ -128,7 +129,7 @@ export function MlsSaleCard({
               theme={theme}
             />
 
-            <Link
+            <a
               href={domainUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -151,7 +152,7 @@ export function MlsSaleCard({
                   .{domainParts.tld}
                 </span>
               ) : null}
-            </Link>
+            </a>
           </div>
 
           {askingPriceLabel ? (
@@ -167,7 +168,7 @@ export function MlsSaleCard({
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/6 pt-4">
-          <Link
+          <a
             href={listing.sourceTweetUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -176,7 +177,7 @@ export function MlsSaleCard({
           >
             <span className="truncate">{excerpt}</span>
             <ExternalLink className="size-3.5 shrink-0" />
-          </Link>
+          </a>
 
           <div className="flex w-full items-center justify-end gap-1 sm:w-auto sm:shrink-0">
             <MlsReportListingDialog

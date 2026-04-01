@@ -45,7 +45,7 @@ const PersonCard = ({ person }: { person: FamousPerson }) => {
           <div className="space-y-1">
             <CardTitle className="text-xl md:text-2xl text-white font-bold leading-tight drop-shadow-lg">
               {person.externalUrl ? (
-                <Link
+                <a
                   href={person.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -53,7 +53,7 @@ const PersonCard = ({ person }: { person: FamousPerson }) => {
                 >
                   {person.name}
                   <ExternalLink className="w-4 h-4 text-slate-300 flex-shrink-0" />
-                </Link>
+                </a>
               ) : (
                 person.name
               )}

@@ -1,4 +1,5 @@
 'use client';
+import type { Route } from 'next';
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
 import { withAdminGuard } from '@/components/admin/admin-guard';
@@ -39,7 +40,7 @@ import { PageShell } from '@/components/page-shell';
 interface AdminCardConfig {
   title: string;
   description: string;
-  href: string;
+  href: Route | string;
   icon: LucideIcon;
   iconBgColor: string;
   iconTextColor: string;
@@ -344,6 +345,7 @@ const ADMIN_SECTIONS: AdminSection[] = [
 function AdminCard({ card }: { card: AdminCardConfig }) {
   const Icon = card.icon;
   const isDisabled = card.disabled || card.comingSoon;
+  const isInternalRoute = card.href.startsWith('/');
 
   const cardContent = (
     <Card
@@ -384,10 +386,18 @@ function AdminCard({ card }: { card: AdminCardConfig }) {
     return cardContent;
   }
 
+  if (isInternalRoute) {
+    return (
+      <Link href={card.href as Route} className="group">
+        {cardContent}
+      </Link>
+    );
+  }
+
   return (
-    <Link href={card.href} className="group">
+    <a href={card.href} className="group">
       {cardContent}
-    </Link>
+    </a>
   );
 }
 

@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import {
   Collapsible,
   CollapsibleContent,
@@ -77,7 +78,7 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
                       <SidebarDomainTooltip label={domain}>
                         <SidebarMenuButton
                           isActive={href === pathname}
-                          render={<Link href={href} />}
+                          render={<Link href={href as Route} />}
                         >
                           <Globe className="size-4" />
                           <span className="truncate">{domain}</span>

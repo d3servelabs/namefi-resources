@@ -46,6 +46,7 @@ import {
   LayoutListIcon,
   Globe,
 } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 import React, {
   type ForwardRefExoticComponent,
@@ -551,7 +552,7 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
     case 'link':
       return (
         <DropdownMenuItem
-          render={<Link href={item.href} />}
+          render={<Link href={item.href as Route} />}
           {...item.customProps}
         >
           {Icon && <Icon className="mr-2 h-4 w-4" />}
@@ -653,7 +654,7 @@ function AdminDropdownSection({
 type AdminQuickAccessItem = {
   title: string;
   description: string;
-  href: string;
+  href: Route;
   icon: LucideIcon;
   permissions?: Permission[];
   permissionsMode?: 'some' | 'every';

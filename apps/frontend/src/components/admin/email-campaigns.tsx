@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import { useCallback, useMemo, useState } from 'react';
 import { useTRPC } from '@/lib/trpc';
 import type { AppRouterOutput } from '@/lib/trpc';
@@ -524,7 +525,7 @@ export default function AdminEmailCampaigns() {
   const handleSetupSchedule = useCallback(
     (scheduleId?: string) => {
       const hash = scheduleId ? `#${scheduleId}` : '';
-      router.push(`/admin/schedules${hash}`);
+      router.push(`/admin/schedules${hash}` as Route);
     },
     [router],
   );

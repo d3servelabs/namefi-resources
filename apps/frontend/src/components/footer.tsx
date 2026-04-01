@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/cn';
+import type { Route } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -60,7 +61,7 @@ const SOCIAL_LINKS = [
 
 const FOOTER_SECTIONS: Array<{
   title: string;
-  links: Array<{ label: string; href: string; external?: boolean }>;
+  links: Array<{ label: string; href: Route | string; external?: boolean }>;
 }> = [
   {
     title: 'Explore',
@@ -154,7 +155,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
             </p>
             <div className="flex flex-wrap items-center gap-3">
               {SOCIAL_LINKS.map(({ name, href, icon: Icon }) => (
-                <Link
+                <a
                   key={name}
                   href={href}
                   target="_blank"
@@ -163,7 +164,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                   aria-label={name}
                 >
                   <Icon className="h-5 w-5" />
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -176,17 +177,24 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               <ul className="space-y-3 text-sm">
                 {section.links.map(({ label, href, external }) => (
                   <li key={label}>
-                    <Link
-                      href={href}
-                      target={external ? '_blank' : undefined}
-                      rel={external ? 'noreferrer noopener' : undefined}
-                      className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
-                    >
-                      <span>{label}</span>
-                      {external && (
+                    {external ? (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
+                      >
+                        <span>{label}</span>
                         <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition group-hover:opacity-100" />
-                      )}
-                    </Link>
+                      </a>
+                    ) : (
+                      <Link
+                        href={href as Route}
+                        className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
+                      >
+                        <span>{label}</span>
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

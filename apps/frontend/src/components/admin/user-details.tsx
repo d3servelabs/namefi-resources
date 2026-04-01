@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -314,7 +315,7 @@ function ExternalPageButton({
   children,
   closeAdminDetailDialogs = false,
 }: {
-  href: string;
+  href: Route;
   children: ReactNode;
   closeAdminDetailDialogs?: boolean;
 }) {
@@ -807,7 +808,7 @@ function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
               primaryEmail={data.user.primaryEmail}
             />
             <ExternalPageButton
-              href={`/admin/users/${data.user.id}`}
+              href={`/admin/users/${data.user.id}` as Route}
               closeAdminDetailDialogs={true}
             >
               Open full page
@@ -1091,7 +1092,7 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
           </div>
           {data.wallet.linkedUserId ? (
             <ExternalPageButton
-              href={`/admin/users/${data.wallet.linkedUserId}`}
+              href={`/admin/users/${data.wallet.linkedUserId}` as Route}
               closeAdminDetailDialogs={true}
             >
               Open user page
@@ -1989,7 +1990,7 @@ export function AdminUserExpandedDetails({ userId }: { userId: string }) {
           <ExternalLink className="h-4 w-4" />
         </AdminUserLookupButton>
         <ExternalPageButton
-          href={`/admin/users/${userId}`}
+          href={`/admin/users/${userId}` as Route}
           closeAdminDetailDialogs={true}
         >
           Open full page

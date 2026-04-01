@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
@@ -29,7 +30,7 @@ export function AddToCartFromUrl() {
     processingRef.current = true;
     lastValueRef.current = raw;
     const target = `/cart/add-from-url?${PARAM_KEY}=${encodeURIComponent(raw)}`;
-    router.replace(target);
+    router.replace(target as Route);
   }, [pathname, router, searchParams]);
 
   return null;

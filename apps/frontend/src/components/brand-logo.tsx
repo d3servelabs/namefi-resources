@@ -17,7 +17,10 @@ import {
 } from 'react';
 import { useSidebar } from './ui/shadcn/sidebar';
 
-export type BrandLogoProps = AnchorHTMLAttributes<HTMLAnchorElement>;
+export type BrandLogoProps = Omit<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  'href'
+>;
 
 export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   HTMLAnchorElement,

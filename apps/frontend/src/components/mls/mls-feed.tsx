@@ -2,7 +2,6 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Loader2, RefreshCcw, Rss } from 'lucide-react';
-import Link from 'next/link';
 import { useEffect, useMemo, useRef } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
 import { Button, buttonVariants } from '@/components/ui/shadcn/button';
@@ -83,7 +82,7 @@ export function MlsFeed() {
             </h1>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Link
+            <a
               href={MLS_FEED_RSS_PATH}
               target="_blank"
               rel="noreferrer noopener"
@@ -91,7 +90,7 @@ export function MlsFeed() {
             >
               <Rss className="size-4" />
               Subscribe via RSS
-            </Link>
+            </a>
 
             <Button
               variant="outline"

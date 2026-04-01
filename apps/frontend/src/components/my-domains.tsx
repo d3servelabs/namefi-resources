@@ -1750,15 +1750,21 @@ function MyDomainsTable(props: {
                   actionButtonBaseClassName,
                   'hover:!text-blue-400',
                 )}
-                render={
-                  <Link
+                render={(props) => (
+                  <a
+                    {...props}
                     href={explorerUrl}
                     aria-label={`View NFT for ${domainName}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex justify-start items-center"
-                  />
-                }
+                    className={cn(
+                      'flex justify-start items-center',
+                      props.className,
+                    )}
+                  >
+                    {props.children}
+                  </a>
+                )}
                 nativeButton={false}
               >
                 <Compass className="w-4 h-4" />

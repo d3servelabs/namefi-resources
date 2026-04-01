@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/shadcn/button';
 import { Trophy } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 
 interface CTAProps {
@@ -30,7 +31,11 @@ export const CTA = ({ name, huntUrl }: CTAProps) => {
         </p>
 
         <div className="flex justify-center">
-          <Link href={huntUrl} target="_blank" rel="noopener noreferrer">
+          <Link
+            href={huntUrl as Route}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
               size="lg"
               className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold text-xl px-12 py-5 rounded-2xl shadow-2xl shadow-yellow-500/25 tracking-tight"

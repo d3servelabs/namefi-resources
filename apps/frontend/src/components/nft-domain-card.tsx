@@ -1,6 +1,7 @@
 import type { OriginInfo } from '@/lib/origin';
 import { originConfig } from '@/lib/origin/config';
 import { ExternalLink, Share2, Settings } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 import { CartCard } from './cart-card';
 import { NamefiButton } from './buttons/namefi-button';
@@ -80,15 +81,24 @@ export function NftDomainCard({
             className="w-full mt-4"
             disabled={!isCompleted}
             render={
-              <Link
-                href={
-                  domainAction === 'manage'
-                    ? manageTarget
-                    : `https://${item.fullDomain}`
-                }
-                target={domainAction === 'manage' ? undefined : '_blank'}
-                tabIndex={isCompleted ? 0 : -1}
-              />
+              domainAction === 'manage' ? (
+                <Link
+                  href={manageTarget as Route}
+                  tabIndex={isCompleted ? 0 : -1}
+                />
+              ) : (
+                (props) => (
+                  <a
+                    {...props}
+                    href={`https://${item.fullDomain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    tabIndex={isCompleted ? 0 : -1}
+                  >
+                    {props.children}
+                  </a>
+                )
+              )
             }
             nativeButton={false}
           >
@@ -110,13 +120,16 @@ export function NftDomainCard({
         <NamefiButton
           variant="ghost"
           className="w-full mt-2 bg-black/[0.03] border-white/10"
-          render={
-            <Link
+          render={(props) => (
+            <a
+              {...props}
               href={explorerUrl}
               target="_blank"
               rel="noopener noreferrer"
-            />
-          }
+            >
+              {props.children}
+            </a>
+          )}
           nativeButton={false}
         >
           {item.chainId !== null ? (
