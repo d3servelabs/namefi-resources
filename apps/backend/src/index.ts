@@ -59,7 +59,7 @@ const DNS_RELATED_ROUTES = [
   /x402/,
   /mpp/,
 ];
-const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES];
+const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES, /llms\.txt/];
 const X402Headers = [
   'x-payment',
   'payment',

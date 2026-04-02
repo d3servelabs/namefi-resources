@@ -123,9 +123,22 @@ Supported types: A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV, CAA, DS, TLSA, SSHF
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json)
 `;
 
-llmsTxtRouter.get('/', (c) => {
+function serveLlmsTxt(c: {
+  text: (
+    body: string,
+    status: number,
+    headers: Record<string, string>,
+  ) => Response;
+}) {
   return c.text(LLMS_TXT, 200, {
     'Content-Type': 'text/plain; charset=utf-8',
     'Cache-Control': 'public, max-age=3600',
   });
+}
+
+llmsTxtRouter.get('/', (c) => serveLlmsTxt(c));
+// Also handle trailing-slash requests (/llms.txt/)
+llmsTxtRouter.get('/*', (c) => {
+  if (c.req.path.endsWith('/')) return serveLlmsTxt(c);
+  return c.notFound();
 });
