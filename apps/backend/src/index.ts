@@ -40,6 +40,7 @@ import { whoisRouter } from './routers/whois';
 import { x402Router } from './routers/x402';
 import { mppRouter } from './routers/mpp';
 import { mlsRssProxyRouter } from './routers/mls-rss-proxy';
+import { llmsTxtRouter } from './routers/llms-txt';
 
 type HonoVariables = {
   requestId: string;
@@ -168,6 +169,7 @@ app.route('/client-events', browserLogsProxyRouter);
 app.route('x402', x402Router);
 app.route('mpp', mppRouter);
 app.route('mls/feed/rss.xml', mlsRssProxyRouter);
+app.route('llms.txt', llmsTxtRouter);
 
 app.get('/configfi', (c) => {
   return c.json({
