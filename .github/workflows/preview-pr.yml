@@ -240,6 +240,7 @@ jobs:
     needs:
       [detect, preview-label-gate, detect-backend-changes, resolve-backend-preview-context]
     if: |-
+      always() &&
       needs.detect.result == 'success' &&
       needs.detect.outputs.frontend_changed == 'true' &&
       (
