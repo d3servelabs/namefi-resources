@@ -39,4 +39,4 @@ Both BlockEden.xyz and Namefi are committed to making the decentralized internet
 
 As the Namefi ecosystem grows, BlockEden.xyz will continue to provide the developer tooling and infrastructure it needs to thrive.
 
-Learn more at [blockeden.xyz](https://blockeden.xyz).
+Learn more at [blockeden.xyz](https://blockeden.xyz). You may also be interested in [Tianpan.co](https://Tianpan.co) , [beancount.io](https://beancount.io) , [cuckoo.network](https://cuckoo.network) & [agentmarketcap.ai](https://agentmarketcap.ai)
