@@ -50,7 +50,7 @@
     },
     "apps/backend": {
       "name": "@namefi-astra/backend",
-      "version": "0.3.135-beta",
+      "version": "0.3.136-beta",
       "dependencies": {
         "@aws-sdk/client-kms": "^3.830.0",
         "@c15t/backend": "^1.8.0",
@@ -174,7 +174,7 @@
     },
     "apps/frontend": {
       "name": "@namefi-astra/frontend",
-      "version": "0.3.135-beta",
+      "version": "0.3.136-beta",
       "dependencies": {
         "@base-ui/react": "^1.1.0",
         "@bprogress/next": "^3.2.12",
@@ -694,8 +694,8 @@
     "@ai-sdk/google@3.0.53": "patches/@ai-sdk%2Fgoogle@3.0.53.patch",
   },
   "overrides": {
-    "webpack": "5.99.9",
     "date-fns": "4.1.0",
+    "webpack": "5.99.9",
   },
   "packages": {
     "@adobe/css-tools": ["@adobe/css-tools@4.4.4", "", {}, "sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg=="],
