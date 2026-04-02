@@ -1,4 +1,4 @@
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { Challenge, Credential, type Receipt } from 'mppx';
 import type * as Tempo from 'mppx/tempo';
 import { charge as createStripeCharge } from 'mppx/stripe/server';
@@ -204,6 +204,9 @@ function buildTempoPaymentRequest(input: {
     decimals: 6,
     description: input.description,
     recipient: getMppTempoRecipientOrThrow(),
+    chainId: config.MPP_TEMPO_TESTNET
+      ? CHAINS.tempoModerato.id
+      : CHAINS.tempo.id,
   };
 }
 

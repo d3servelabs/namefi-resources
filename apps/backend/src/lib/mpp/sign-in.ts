@@ -117,6 +117,9 @@ function createVerifyOnlyTempoSignInMethod() {
     decimals: 6,
     recipient: getMppTempoRecipientOrThrow(),
     testnet: config.MPP_TEMPO_TESTNET,
+    chainId: config.MPP_TEMPO_TESTNET
+      ? CHAINS.tempoModerato.id
+      : CHAINS.tempo.id,
   });
 
   return overrideMppMethodVerify(
