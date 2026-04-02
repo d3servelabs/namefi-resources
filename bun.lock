@@ -357,7 +357,7 @@
     },
     "apps/resources": {
       "name": "@namefi-astra/resources",
-      "version": "0.1.19",
+      "version": "0.1.20",
       "dependencies": {
         "@bprogress/next": "^3.2.12",
         "@c15t/nextjs": "^1.8.2",
