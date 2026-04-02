@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { getAddress } from 'viem';
+import { type Address, getAddress } from 'viem';
 import {
   generateSiweNonce,
   type SiweMessage,
@@ -12,7 +12,8 @@ import { getRedisClient } from '#lib/redis';
 import { getViemPublicClient } from '#lib/crypto/viem-clients';
 import { getDefaultAllowedNftChainId } from '#lib/env/allowed-chains';
 import { config } from '#lib/env';
-import { resolveAuthenticatedWalletAddress } from '#lib/auth/wallet-auth';
+import { parseEip7702AccountAddress } from '#lib/auth/wallet-auth';
+import { verifyMessageWithEip1271 } from '#lib/auth/eip1271-verify';
 
 export const SIWE_SIGNATURE_HEADER_METHOD_ID = 'siwe';
 
@@ -156,14 +157,35 @@ export async function verifySiweSignature({
     };
   }
 
-  const authenticatedWalletAddress = await resolveAuthenticatedWalletAddress({
-    signerAddress,
-    delegatorAddress,
-    chainIds: [message.chainId],
-  });
+  let walletAddress: Address = signerAddress as Address;
 
-  if (!authenticatedWalletAddress.valid) {
-    return authenticatedWalletAddress;
+  if (delegatorAddress) {
+    const parsedDelegator = parseEip7702AccountAddress(delegatorAddress);
+    if (!parsedDelegator.valid) {
+      return parsedDelegator;
+    }
+
+    if (
+      parsedDelegator.accountAddress &&
+      parsedDelegator.accountAddress !== signerAddress
+    ) {
+      const eip1271Valid = await verifyMessageWithEip1271({
+        address: signerAddress as Address,
+        message: messageString,
+        signature: signature as `0x${string}`,
+        eip1271Account: parsedDelegator.accountAddress,
+        chainIds: [message.chainId],
+      });
+
+      if (!eip1271Valid) {
+        return {
+          valid: false,
+          error: 'Signer is not authorized by the delegated account (EIP-1271)',
+        };
+      }
+
+      walletAddress = parsedDelegator.accountAddress;
+    }
   }
 
   const nonceValidation = await validateAndConsumeNonce({
@@ -177,10 +199,7 @@ export async function verifySiweSignature({
   const sessionDetails = await createSiweSession({
     ...message,
     address: signerAddress as `0x${string}`,
-    delegatorAddress:
-      authenticatedWalletAddress.walletAddress === signerAddress
-        ? null
-        : authenticatedWalletAddress.walletAddress,
+    delegatorAddress: walletAddress === signerAddress ? null : walletAddress,
   });
 
   return {

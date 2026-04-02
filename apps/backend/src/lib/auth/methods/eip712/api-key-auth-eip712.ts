@@ -1,3 +1,4 @@
+import { getAddress } from 'viem';
 import { logger } from '#lib/logger';
 import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import type {
@@ -8,7 +9,7 @@ import type {
 import {
   getDelegatedAccountHeaderValue,
   getUserOrCreateByWalletAddress,
-  resolveAuthenticatedWalletAddress,
+  parseEip7702AccountAddress,
 } from '#lib/auth/wallet-auth';
 import {
   EIP712_SIGNATURE_HEADER_HEADERS,
@@ -81,9 +82,29 @@ export async function authenticateWithEIP712SignatureHeader(
       };
     }
 
-    const expectedSignerAddress =
+    const rawExpectedSignerAddress =
       ctx.headers[EIP712_SIGNATURE_HEADER_HEADERS.SIGNER];
+    const expectedSignerAddress = rawExpectedSignerAddress
+      ? getAddress(rawExpectedSignerAddress)
+      : undefined;
     const expectedType = ctx.headers[EIP712_SIGNATURE_HEADER_HEADERS.TYPE];
+
+    const delegatorAddressRaw = getDelegatedAccountHeaderValue(ctx.headers);
+    const parsedDelegator = parseEip7702AccountAddress(delegatorAddressRaw);
+
+    if (!parsedDelegator.valid) {
+      return {
+        success: false,
+        error: parsedDelegator.error,
+      };
+    }
+
+    const chainIds = getConfiguredAllowedChainIds();
+    const eip1271Account =
+      parsedDelegator.accountAddress &&
+      parsedDelegator.accountAddress !== expectedSignerAddress
+        ? parsedDelegator.accountAddress
+        : undefined;
 
     const signatureVerification = await verifyEIP712RawBodySignature({
       rawBody: ctx.rawBody,
@@ -91,33 +112,33 @@ export async function authenticateWithEIP712SignatureHeader(
       expectedSignerAddress,
       types: ctx.eip712Types ?? {},
       primaryType: expectedType ?? '', //todo
+      eip1271Account,
+      chainIds,
     });
 
-    if (
-      !signatureVerification.valid ||
-      !signatureVerification.recoveredAddress
-    ) {
+    if (!signatureVerification.valid) {
       return {
         success: false,
         error: signatureVerification.error || 'Invalid signature',
       };
     }
 
-    const authenticatedWalletAddress = await resolveAuthenticatedWalletAddress({
-      signerAddress: signatureVerification.recoveredAddress,
-      delegatorAddress: getDelegatedAccountHeaderValue(ctx.headers),
-      chainIds: getConfiguredAllowedChainIds(),
-    });
+    const walletAddress =
+      signatureVerification.delegatorAddress ??
+      signatureVerification.signerAddress;
 
-    if (!authenticatedWalletAddress.valid) {
+    if (!walletAddress) {
       return {
         success: false,
-        error: authenticatedWalletAddress.error,
+        error: 'Could not determine authenticated wallet address',
       };
     }
 
+    const nonceSignerAddress =
+      signatureVerification.signerAddress ?? walletAddress;
+
     const nonceResult = await consumeEIP712SignatureNonce({
-      signerAddress: signatureVerification.recoveredAddress,
+      signerAddress: nonceSignerAddress,
       nonce: parsedEnvelope.envelope.nonce,
     });
 
@@ -128,15 +149,14 @@ export async function authenticateWithEIP712SignatureHeader(
       };
     }
 
-    const user = await getUserOrCreateByWalletAddress(
-      authenticatedWalletAddress.walletAddress,
-    );
+    const user = await getUserOrCreateByWalletAddress(walletAddress);
 
     if (!user) {
       logger.warn(
         {
-          signerAddress: signatureVerification.recoveredAddress,
-          authenticatedWalletAddress: authenticatedWalletAddress.walletAddress,
+          signerAddress: signatureVerification.signerAddress,
+          delegatorAddress: signatureVerification.delegatorAddress,
+          walletAddress,
         },
         'EIP712 wallet is not linked to any user',
       );

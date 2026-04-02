@@ -1,10 +1,12 @@
 import {
+  type Address,
+  type Hex,
   getAddress,
   recoverTypedDataAddress,
-  verifyTypedData,
   type TypedDataDomain,
   type TypedDataParameter,
 } from 'viem';
+import { verifyTypedDataWithEip1271 } from '#lib/auth/eip1271-verify';
 import { z } from 'zod';
 import { logger } from '#lib/logger';
 import { getRedisClient } from '#lib/redis';
@@ -54,7 +56,10 @@ export interface EIP712SignatureEnvelopeParseResult {
 
 export interface EIP712RawSignatureVerificationResult {
   valid: boolean;
-  recoveredAddress?: string;
+  /** The EOA address that produced the signature */
+  signerAddress?: string;
+  /** The smart contract address when EIP-1271 delegation is used */
+  delegatorAddress?: string;
   error?: string;
 }
 
@@ -113,12 +118,18 @@ export async function verifyEIP712RawBodySignature({
   expectedSignerAddress,
   types,
   primaryType,
+  eip1271Account,
+  chainIds,
 }: {
   rawBody: string;
   signature: string;
   expectedSignerAddress?: string;
   types: Record<string, readonly TypedDataParameter[]>;
   primaryType: string;
+  /** When provided, verify via EIP-1271 isValidSignature on this contract */
+  eip1271Account?: Address;
+  /** Chain IDs to try for on-chain EIP-1271 verification */
+  chainIds?: readonly number[];
 }): Promise<EIP712RawSignatureVerificationResult> {
   if (!SIGNATURE_REGEX.test(signature)) {
     return {
@@ -127,69 +138,80 @@ export async function verifyEIP712RawBodySignature({
     };
   }
 
-  try {
-    const valid = await verifyTypedData({
-      address: expectedSignerAddress as `0x${string}`,
-      message: EIP712SignatureEnvelopeSchema.parse(JSON.parse(rawBody)),
-      signature: signature as `0x${string}`,
-      primaryType,
-      types,
-      domain: NAMEFI_EIP712_DOMAIN,
-    });
-    if (!valid) {
-      return {
-        valid: false,
-        error: 'Signature is invalid',
-      };
-    }
-  } catch (e) {
-    return {
-      valid: false,
-      error: 'Signature verification failed',
-    };
-  }
+  const parsedMessage = EIP712SignatureEnvelopeSchema.parse(
+    JSON.parse(rawBody),
+  );
 
+  // Always recover the signer address from the signature
+  let recoveredAddress: string;
   try {
-    const recoveredAddress = getAddress(
+    recoveredAddress = getAddress(
       await recoverTypedDataAddress({
-        message: EIP712SignatureEnvelopeSchema.parse(JSON.parse(rawBody)),
+        message: parsedMessage,
         signature: signature as `0x${string}`,
         primaryType,
         types,
         domain: NAMEFI_EIP712_DOMAIN,
       }),
     );
-
-    if (expectedSignerAddress) {
-      let normalizedExpectedSignerAddress: string;
-      try {
-        normalizedExpectedSignerAddress = getAddress(expectedSignerAddress);
-      } catch {
-        return {
-          valid: false,
-          error: 'Invalid signer address format',
-        };
-      }
-
-      if (normalizedExpectedSignerAddress !== recoveredAddress) {
-        return {
-          valid: false,
-          error: 'Signature does not match expected signer address',
-        };
-      }
-    }
-
-    return {
-      valid: true,
-      recoveredAddress,
-    };
   } catch (error) {
-    logger.error({ error }, 'Failed to verify raw-body EIP712 signature');
+    logger.error({ error }, 'Failed to recover typed data signer address');
     return {
       valid: false,
-      error: 'Failed to verify signature with provided address',
+      error: 'Failed to recover signer address from signature',
     };
   }
+
+  // Validate recovered address against expected signer
+  if (expectedSignerAddress) {
+    const normalizedExpected = getAddress(expectedSignerAddress);
+    if (normalizedExpected !== recoveredAddress) {
+      return {
+        valid: false,
+        error: 'Signature does not match expected signer address',
+      };
+    }
+  }
+
+  // EIP-1271: additionally verify on-chain via isValidSignature
+  if (eip1271Account) {
+    try {
+      const valid = await verifyTypedDataWithEip1271({
+        address: eip1271Account,
+        domain: NAMEFI_EIP712_DOMAIN,
+        types,
+        primaryType,
+        message: parsedMessage,
+        signature: signature as Hex,
+        eip1271Account,
+        chainIds,
+      });
+
+      if (!valid) {
+        return {
+          valid: false,
+          error: 'EIP-1271 signature verification failed',
+        };
+      }
+
+      return {
+        valid: true,
+        signerAddress: recoveredAddress,
+        delegatorAddress: getAddress(eip1271Account),
+      };
+    } catch (error) {
+      logger.error({ error }, 'EIP-1271 typed data verification failed');
+      return {
+        valid: false,
+        error: 'EIP-1271 signature verification failed',
+      };
+    }
+  }
+
+  return {
+    valid: true,
+    signerAddress: recoveredAddress,
+  };
 }
 
 function createNonceKey(signerAddress: string, nonce: string): string {

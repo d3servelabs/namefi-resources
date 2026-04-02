@@ -138,6 +138,12 @@ export function parseEip7702AccountAddress(accountAddress: string | undefined):
   }
 }
 
+/**
+ * @deprecated Use EIP-1271 verification via `verifyTypedDataWithEip1271` or
+ * `verifyMessageWithEip1271` from `#lib/auth/eip1271-verify` instead.
+ * Retained for `assert-domain-owner.ts` which needs address-only checks
+ * without a signature.
+ */
 export async function findFirstApprovedSignerAddress(params: {
   delegatorAddress: string;
   challengingAddresses: readonly string[];
@@ -180,6 +186,11 @@ export async function findFirstApprovedSignerAddress(params: {
   return null;
 }
 
+/**
+ * @deprecated Auth callers should migrate to EIP-1271 wrappers from
+ * `#lib/auth/eip1271-verify` which validate signatures directly on-chain
+ * via `isValidSignature`, eliminating the need for `approvedSigners` checks.
+ */
 export async function resolveAuthenticatedWalletAddress(params: {
   signerAddress: string;
   delegatorAddress?: string | null;
