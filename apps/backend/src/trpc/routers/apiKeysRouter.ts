@@ -2,14 +2,18 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { eq, and, isNull, desc } from 'drizzle-orm';
 import { db, apiKeysTable } from '@namefi-astra/db';
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  createSignedPayloadProcedure,
-} from '../base';
+import { createTRPCRouter, protectedProcedure } from '../base';
 import { logger } from '#lib/logger';
 import { generatePlainApiKey } from '#lib/auth/methods/plain/api-key-plain';
-import { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
+import {
+  verifySignedPayload,
+  NAMEFI_EIP712_DOMAIN,
+} from '#lib/auth/ecdsa-payload-signature';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../utils';
+import { getAddress } from 'viem';
 
 /**
  * EIP-712 types for creating an API key
@@ -65,7 +69,8 @@ const MAX_API_KEYS_PER_USER = 10;
 const createApiKeyInputSchema = z.object({
   signature: z
     .string()
-    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix'),
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
+    .optional(),
   payload: z.object({
     keyName: z.string().min(1).max(100),
     keyType: z.enum(['PLAIN', 'PUBLIC_PRIVATE']),
@@ -81,7 +86,8 @@ const createApiKeyInputSchema = z.object({
 const revokeApiKeyInputSchema = z.object({
   signature: z
     .string()
-    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix'),
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
+    .optional(),
   payload: z.object({
     keyId: z.string().uuid(),
     timestamp: z.number().int(),
@@ -94,7 +100,8 @@ const revokeApiKeyInputSchema = z.object({
 const updateApiKeyNameInputSchema = z.object({
   signature: z
     .string()
-    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix'),
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
+    .optional(),
   payload: z.object({
     keyId: z.string().uuid(),
     newName: z.string().min(1).max(100),
@@ -103,43 +110,80 @@ const updateApiKeyNameInputSchema = z.object({
 });
 
 /**
- * Signed procedure for creating API keys
+ * Optionally verify an EIP-712 signature when provided.
+ * Returns the signer wallet address if signature is present and valid, or null if no signature.
+ * Throws on invalid signature or wallet ownership mismatch.
  */
-const createApiKeyProcedure = createSignedPayloadProcedure({
-  types: CREATE_API_KEY_EIP712_TYPES,
-  primaryType: 'CreateApiKey',
-  getPayloadFromInput: (input) =>
-    (input as z.infer<typeof createApiKeyInputSchema>).payload,
-  getSignatureFromInput: (input) =>
-    (input as z.infer<typeof createApiKeyInputSchema>).signature,
-  getChainIdFromInput: async () => 1, // TODO: support other chains
-});
+async function verifyOptionalSignature({
+  signature,
+  types,
+  primaryType,
+  message,
+  privyUserId,
+  userId,
+}: {
+  signature: string | undefined;
+  types: Record<string, Array<{ name: string; type: string }>>;
+  primaryType: string;
+  message: Record<string, unknown>;
+  privyUserId: string;
+  userId: string;
+}): Promise<string | null> {
+  if (!signature) return null;
 
-/**
- * Signed procedure for revoking API keys
- */
-const revokeApiKeyProcedure = createSignedPayloadProcedure({
-  types: REVOKE_API_KEY_EIP712_TYPES,
-  primaryType: 'RevokeApiKey',
-  getPayloadFromInput: (input) =>
-    (input as z.infer<typeof revokeApiKeyInputSchema>).payload,
-  getSignatureFromInput: (input) =>
-    (input as z.infer<typeof revokeApiKeyInputSchema>).signature,
-  getChainIdFromInput: async () => 1, // TODO: support other chains or allow cross-chain
-});
+  const verificationResult = await verifySignedPayload({
+    signature,
+    types,
+    primaryType,
+    message,
+    domain: {
+      ...NAMEFI_EIP712_DOMAIN,
+      chainId: 1,
+    },
+  });
 
-/**
- * Signed procedure for updating API key names
- */
-const updateApiKeyNameProcedure = createSignedPayloadProcedure({
-  types: UPDATE_API_KEY_NAME_EIP712_TYPES,
-  primaryType: 'UpdateApiKeyName',
-  getPayloadFromInput: (input) =>
-    (input as z.infer<typeof updateApiKeyNameInputSchema>).payload,
-  getSignatureFromInput: (input) =>
-    (input as z.infer<typeof updateApiKeyNameInputSchema>).signature,
-  getChainIdFromInput: async (input) => 1, // TODO: support other chains or allow cross-chain
-});
+  if (!verificationResult.valid || !verificationResult.recoveredAddress) {
+    logger.warn(
+      { error: verificationResult.error, userId },
+      'EIP-712 signature verification failed',
+    );
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: verificationResult.error || 'Invalid payload signature',
+    });
+  }
+
+  const signerAddress = getAddress(verificationResult.recoveredAddress);
+
+  const privyUser = await privyClient.getUser(privyUserId);
+  if (!privyUser) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'Could not verify user wallet ownership',
+    });
+  }
+
+  const userWallets = getPrivyUserLinkedEthereumChecksumWalletAddresses({
+    privyUser,
+  });
+
+  const signerOwnsWallet = userWallets.some(
+    (wallet) => wallet.toLowerCase() === signerAddress.toLowerCase(),
+  );
+
+  if (!signerOwnsWallet) {
+    logger.warn(
+      { signerAddress, userWallets, userId },
+      'Payload signed by wallet not owned by authenticated user',
+    );
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Signature wallet does not belong to authenticated user',
+    });
+  }
+
+  return signerAddress;
+}
 
 export const apiKeysRouter = createTRPCRouter({
   /**
@@ -190,15 +234,25 @@ export const apiKeysRouter = createTRPCRouter({
 
   /**
    * Create a new API key
-   * Requires EIP-712 signature for security
+   * Wallet signature is optional — when provided, it is verified for extra security.
    *
    * For PLAIN keys: Returns the full key once (user must save it)
    * For PUBLIC_PRIVATE keys: User provides their public key
    */
-  create: createApiKeyProcedure
+  create: protectedProcedure
     .input(createApiKeyInputSchema)
     .mutation(async ({ ctx, input }) => {
       const { keyName, keyType, publicKey, expiresAt } = input.payload;
+
+      // Verify optional EIP-712 signature
+      const signedBy = await verifyOptionalSignature({
+        signature: input.signature,
+        types: CREATE_API_KEY_EIP712_TYPES,
+        primaryType: 'CreateApiKey',
+        message: input.payload as unknown as Record<string, unknown>,
+        privyUserId: ctx.user.privyUserId,
+        userId: ctx.user.id,
+      });
 
       // Check key limit
       const existingKeysCount = await db
@@ -218,16 +272,18 @@ export const apiKeysRouter = createTRPCRouter({
         });
       }
 
-      // Validate timestamp (must be within last 5 minutes)
-      const now = Math.floor(Date.now() / 1000);
-      if (
-        input.payload.timestamp < now - 300 ||
-        input.payload.timestamp > now + 30
-      ) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Signature timestamp is invalid or expired',
-        });
+      // Validate timestamp only when signature is provided
+      if (input.signature) {
+        const now = Math.floor(Date.now() / 1000);
+        if (
+          input.payload.timestamp < now - 300 ||
+          input.payload.timestamp > now + 30
+        ) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Signature timestamp is invalid or expired',
+          });
+        }
       }
 
       let keyHash: string | null = null;
@@ -271,7 +327,7 @@ export const apiKeysRouter = createTRPCRouter({
         });
 
       logger.debug(
-        { userId: ctx.user.id, keyId: newKey.id, keyType },
+        { userId: ctx.user.id, keyId: newKey.id, keyType, signedBy },
         'API key created',
       );
 
@@ -279,28 +335,42 @@ export const apiKeysRouter = createTRPCRouter({
         ...newKey,
         // Only return the plain key for PLAIN type - user must save it as it won't be shown again
         plainKey: plainKeyToReturn,
+        // Indicate whether the creation was attested with a wallet signature
+        signedBy: signedBy ?? undefined,
       };
     }),
 
   /**
    * Revoke an API key
-   * Requires EIP-712 signature for security
+   * Wallet signature is optional — when provided, it is verified for extra security.
    */
-  revoke: revokeApiKeyProcedure
+  revoke: protectedProcedure
     .input(revokeApiKeyInputSchema)
     .mutation(async ({ ctx, input }) => {
       const { keyId } = input.payload;
 
-      // Validate timestamp
-      const now = Math.floor(Date.now() / 1000);
-      if (
-        input.payload.timestamp < now - 300 ||
-        input.payload.timestamp > now + 30
-      ) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Signature timestamp is invalid or expired',
-        });
+      // Verify optional EIP-712 signature
+      const signedBy = await verifyOptionalSignature({
+        signature: input.signature,
+        types: REVOKE_API_KEY_EIP712_TYPES,
+        primaryType: 'RevokeApiKey',
+        message: input.payload as unknown as Record<string, unknown>,
+        privyUserId: ctx.user.privyUserId,
+        userId: ctx.user.id,
+      });
+
+      // Validate timestamp only when signature is provided
+      if (input.signature) {
+        const now = Math.floor(Date.now() / 1000);
+        if (
+          input.payload.timestamp < now - 300 ||
+          input.payload.timestamp > now + 30
+        ) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Signature timestamp is invalid or expired',
+          });
+        }
       }
 
       // Find the key and verify ownership
@@ -336,30 +406,45 @@ export const apiKeysRouter = createTRPCRouter({
           revokedAt: apiKeysTable.revokedAt,
         });
 
-      logger.debug({ userId: ctx.user.id, keyId }, 'API key revoked');
+      logger.debug({ userId: ctx.user.id, keyId, signedBy }, 'API key revoked');
 
-      return revokedKey;
+      return {
+        ...revokedKey,
+        signedBy: signedBy ?? undefined,
+      };
     }),
 
   /**
    * Update an API key's name
-   * Requires EIP-712 signature for security
+   * Wallet signature is optional — when provided, it is verified for extra security.
    */
-  updateName: updateApiKeyNameProcedure
+  updateName: protectedProcedure
     .input(updateApiKeyNameInputSchema)
     .mutation(async ({ ctx, input }) => {
       const { keyId, newName } = input.payload;
 
-      // Validate timestamp
-      const now = Math.floor(Date.now() / 1000);
-      if (
-        input.payload.timestamp < now - 300 ||
-        input.payload.timestamp > now + 30
-      ) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Signature timestamp is invalid or expired',
-        });
+      // Verify optional EIP-712 signature
+      const signedBy = await verifyOptionalSignature({
+        signature: input.signature,
+        types: UPDATE_API_KEY_NAME_EIP712_TYPES,
+        primaryType: 'UpdateApiKeyName',
+        message: input.payload as unknown as Record<string, unknown>,
+        privyUserId: ctx.user.privyUserId,
+        userId: ctx.user.id,
+      });
+
+      // Validate timestamp only when signature is provided
+      if (input.signature) {
+        const now = Math.floor(Date.now() / 1000);
+        if (
+          input.payload.timestamp < now - 300 ||
+          input.payload.timestamp > now + 30
+        ) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Signature timestamp is invalid or expired',
+          });
+        }
       }
 
       // Find the key and verify ownership
@@ -388,11 +473,14 @@ export const apiKeysRouter = createTRPCRouter({
         });
 
       logger.debug(
-        { userId: ctx.user.id, keyId, newName },
+        { userId: ctx.user.id, keyId, newName, signedBy },
         'API key name updated',
       );
 
-      return updatedKey;
+      return {
+        ...updatedKey,
+        signedBy: signedBy ?? undefined,
+      };
     }),
 
   /**

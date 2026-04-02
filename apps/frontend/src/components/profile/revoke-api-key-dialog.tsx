@@ -18,7 +18,8 @@ import {
 } from '@/components/dialogs/request-wallet-connection';
 import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
 import { toast } from 'sonner';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import { Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import { Label } from '@/components/ui/shadcn/label';
 
@@ -57,6 +58,7 @@ export function RevokeApiKeyDialog({
   const pendingWalletConnectionResolve = useRef<(() => void) | null>(null);
 
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
+  const [signWithWallet, setSignWithWallet] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleWalletConnected = useCallback((_walletAddress: string) => {
@@ -69,26 +71,16 @@ export function RevokeApiKeyDialog({
   const handleSubmit = async () => {
     if (!keyToRevoke) return;
 
-    const walletToUse = selectedWallet || activeWalletAddress;
-    if (!walletToUse) {
-      toast.error('Please select a wallet to sign with');
-      return;
+    if (signWithWallet) {
+      const walletToUse = selectedWallet || activeWalletAddress;
+      if (!walletToUse) {
+        toast.error('Please select a wallet to sign with');
+        return;
+      }
     }
 
     try {
       setIsSubmitting(true);
-
-      // Request wallet connection
-      await new Promise<void>((resolve, reject) => {
-        const currentRef = walletConnectionRef.current;
-        if (!currentRef) {
-          reject(new Error('Wallet connection component not ready'));
-          return;
-        }
-
-        pendingWalletConnectionResolve.current = resolve;
-        currentRef.requestWalletConnection(walletToUse);
-      });
 
       // Create the payload
       const payload = {
@@ -96,17 +88,35 @@ export function RevokeApiKeyDialog({
         timestamp: Math.floor(Date.now() / 1000),
       };
 
-      // Sign the payload
-      const signature = await signTypedData({
-        types: REVOKE_API_KEY_EIP712_TYPES,
-        primaryType: 'RevokeApiKey',
-        message: payload,
-        chainId: 1,
-      });
+      let signature: string | undefined;
+
+      if (signWithWallet) {
+        const walletToUse = selectedWallet || activeWalletAddress;
+
+        // Request wallet connection
+        await new Promise<void>((resolve, reject) => {
+          const currentRef = walletConnectionRef.current;
+          if (!currentRef) {
+            reject(new Error('Wallet connection component not ready'));
+            return;
+          }
+
+          pendingWalletConnectionResolve.current = resolve;
+          currentRef.requestWalletConnection(walletToUse!);
+        });
+
+        // Sign the payload
+        signature = await signTypedData({
+          types: REVOKE_API_KEY_EIP712_TYPES,
+          primaryType: 'RevokeApiKey',
+          message: payload,
+          chainId: 1,
+        });
+      }
 
       // Revoke the API key
       await trpcClient.apiKeys.revoke.mutate({
-        signature,
+        ...(signature ? { signature } : {}),
         payload,
       });
 
@@ -157,37 +167,63 @@ export function RevokeApiKeyDialog({
               </div>
             )}
 
-            {/* Wallet Selection */}
-            <div className="space-y-2">
-              <Label>Signing Wallet</Label>
-              <div className="grid gap-2">
-                {connectedEthereumWallets.map((wallet) => (
-                  <button
-                    key={wallet.address}
-                    type="button"
-                    onClick={() => setSelectedWallet(wallet.address)}
-                    className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
-                      (selectedWallet || activeWalletAddress) === wallet.address
-                        ? 'border-primary bg-primary/10'
-                        : 'border-zinc-700 hover:border-zinc-500'
-                    }`}
-                  >
-                    <span className="font-mono text-sm">
-                      {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
-                    </span>
-                    {activeWalletAddress === wallet.address && (
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        (active)
-                      </span>
-                    )}
-                  </button>
-                ))}
-                {connectedEthereumWallets.length === 0 && (
-                  <p className="text-sm text-muted-foreground">
-                    No wallets connected. Please connect a wallet first.
-                  </p>
-                )}
+            {/* Optional Wallet Signature */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <Checkbox
+                  id="sign-with-wallet-revoke"
+                  checked={signWithWallet}
+                  onCheckedChange={(checked) =>
+                    setSignWithWallet(checked === true)
+                  }
+                />
+                <Label
+                  htmlFor="sign-with-wallet-revoke"
+                  className="flex items-center gap-2 cursor-pointer font-normal"
+                >
+                  <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">
+                    Attest with wallet signature{' '}
+                    <span className="text-muted-foreground">(optional)</span>
+                  </span>
+                </Label>
               </div>
+
+              {signWithWallet && (
+                <div className="space-y-2 ml-7">
+                  <Label>Signing Wallet</Label>
+                  <div className="grid gap-2">
+                    {connectedEthereumWallets.map((wallet) => (
+                      <button
+                        key={wallet.address}
+                        type="button"
+                        onClick={() => setSelectedWallet(wallet.address)}
+                        className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
+                          (selectedWallet || activeWalletAddress) ===
+                          wallet.address
+                            ? 'border-primary bg-primary/10'
+                            : 'border-zinc-700 hover:border-zinc-500'
+                        }`}
+                      >
+                        <span className="font-mono text-sm">
+                          {wallet.address.slice(0, 6)}...
+                          {wallet.address.slice(-4)}
+                        </span>
+                        {activeWalletAddress === wallet.address && (
+                          <span className="ml-auto text-xs text-muted-foreground">
+                            (active)
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                    {connectedEthereumWallets.length === 0 && (
+                      <p className="text-sm text-muted-foreground">
+                        No wallets connected. Please connect a wallet first.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -202,7 +238,10 @@ export function RevokeApiKeyDialog({
             <Button
               variant="destructive"
               onClick={handleSubmit}
-              disabled={isSubmitting || connectedEthereumWallets.length === 0}
+              disabled={
+                isSubmitting ||
+                (signWithWallet && connectedEthereumWallets.length === 0)
+              }
             >
               {isSubmitting ? (
                 <>

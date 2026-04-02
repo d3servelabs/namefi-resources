@@ -36,12 +36,14 @@ import {
   AlertTriangle,
   Key,
   Shield,
+  ShieldCheck,
   Hash,
   CheckCircle,
   RefreshCw,
   Eye,
   EyeOff,
 } from 'lucide-react';
+import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import * as secp256k1 from '@noble/secp256k1';
 
@@ -134,6 +136,7 @@ export function CreateApiKeyDialog({
   );
   const [expiresIn, setExpiresIn] = useState('0');
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
+  const [signWithWallet, setSignWithWallet] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGeneratingKeypair, setIsGeneratingKeypair] = useState(false);
   const [createdKey, setCreatedKey] = useState<string | null>(null);
@@ -160,6 +163,7 @@ export function CreateApiKeyDialog({
     setGeneratedPrivateKey(null);
     setExpiresIn('0');
     setSelectedWallet(null);
+    setSignWithWallet(false);
     setCreatedKey(null);
     setStep('form');
     setIsKeyVisible(false);
@@ -233,26 +237,16 @@ export function CreateApiKeyDialog({
       return;
     }
 
-    const walletToUse = selectedWallet || activeWalletAddress;
-    if (!walletToUse) {
-      toast.error('Please select a wallet to sign with');
-      return;
+    if (signWithWallet) {
+      const walletToUse = selectedWallet || activeWalletAddress;
+      if (!walletToUse) {
+        toast.error('Please select a wallet to sign with');
+        return;
+      }
     }
 
     try {
       setIsSubmitting(true);
-
-      // Request wallet connection
-      await new Promise<void>((resolve, reject) => {
-        const currentRef = walletConnectionRef.current;
-        if (!currentRef) {
-          reject(new Error('Wallet connection component not ready'));
-          return;
-        }
-
-        pendingWalletConnectionResolve.current = resolve;
-        currentRef.requestWalletConnection(walletToUse);
-      });
 
       // Calculate expiration timestamp
       const expiresInSeconds = Number.parseInt(expiresIn, 10);
@@ -261,8 +255,7 @@ export function CreateApiKeyDialog({
           ? Math.floor(Date.now() / 1000) + expiresInSeconds
           : 0;
 
-      // Create the payload for signing (arrays as JSON strings for EIP-712)
-      const signPayload = {
+      const payload = {
         keyName: keyName.trim(),
         keyType,
         publicKey: keyType === 'PUBLIC_PRIVATE' ? publicKey.trim() : '',
@@ -270,26 +263,35 @@ export function CreateApiKeyDialog({
         timestamp: Math.floor(Date.now() / 1000),
       };
 
-      // Sign the payload
-      const signature = await signTypedData({
-        types: CREATE_API_KEY_EIP712_TYPES,
-        primaryType: 'CreateApiKey',
-        message: signPayload,
-        chainId: 1,
-      });
+      let signature: string | undefined;
 
-      // Create the API payload (arrays as actual arrays for tRPC)
-      const payload = {
-        keyName: keyName.trim(),
-        keyType,
-        publicKey: keyType === 'PUBLIC_PRIVATE' ? publicKey.trim() : '',
-        expiresAt,
-        timestamp: signPayload.timestamp,
-      };
+      if (signWithWallet) {
+        const walletToUse = selectedWallet || activeWalletAddress;
+
+        // Request wallet connection
+        await new Promise<void>((resolve, reject) => {
+          const currentRef = walletConnectionRef.current;
+          if (!currentRef) {
+            reject(new Error('Wallet connection component not ready'));
+            return;
+          }
+
+          pendingWalletConnectionResolve.current = resolve;
+          currentRef.requestWalletConnection(walletToUse!);
+        });
+
+        // Sign the payload
+        signature = await signTypedData({
+          types: CREATE_API_KEY_EIP712_TYPES,
+          primaryType: 'CreateApiKey',
+          message: payload,
+          chainId: 1,
+        });
+      }
 
       // Create the API key
       const result = await trpcClient.apiKeys.create.mutate({
-        signature,
+        ...(signature ? { signature } : {}),
         payload,
       });
 
@@ -348,7 +350,6 @@ export function CreateApiKeyDialog({
                 <DialogTitle>Create API Key</DialogTitle>
                 <DialogDescription>
                   Create a new API key for programmatic access to your account.
-                  This action requires a wallet signature for security.
                 </DialogDescription>
               </DialogHeader>
 
@@ -538,39 +539,65 @@ export function CreateApiKeyDialog({
                   </Select>
                 </div>
 
-                {/* Wallet Selection */}
-                <div className="space-y-2">
-                  <Label>Signing Wallet</Label>
-                  <div className="grid gap-2">
-                    {connectedEthereumWallets.map((wallet) => (
-                      <button
-                        key={wallet.address}
-                        type="button"
-                        onClick={() => setSelectedWallet(wallet.address)}
-                        className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
-                          (selectedWallet || activeWalletAddress) ===
-                          wallet.address
-                            ? 'border-primary bg-primary/10'
-                            : 'border-zinc-700 hover:border-zinc-500'
-                        }`}
-                      >
-                        <span className="font-mono text-sm">
-                          {wallet.address.slice(0, 6)}...
-                          {wallet.address.slice(-4)}
+                {/* Optional Wallet Signature */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      id="sign-with-wallet-create"
+                      checked={signWithWallet}
+                      onCheckedChange={(checked) =>
+                        setSignWithWallet(checked === true)
+                      }
+                    />
+                    <Label
+                      htmlFor="sign-with-wallet-create"
+                      className="flex items-center gap-2 cursor-pointer font-normal"
+                    >
+                      <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">
+                        Attest with wallet signature{' '}
+                        <span className="text-muted-foreground">
+                          (optional)
                         </span>
-                        {activeWalletAddress === wallet.address && (
-                          <span className="ml-auto text-xs text-muted-foreground">
-                            (active)
-                          </span>
-                        )}
-                      </button>
-                    ))}
-                    {connectedEthereumWallets.length === 0 && (
-                      <p className="text-sm text-muted-foreground">
-                        No wallets connected. Please connect a wallet first.
-                      </p>
-                    )}
+                      </span>
+                    </Label>
                   </div>
+
+                  {signWithWallet && (
+                    <div className="space-y-2 ml-7">
+                      <Label>Signing Wallet</Label>
+                      <div className="grid gap-2">
+                        {connectedEthereumWallets.map((wallet) => (
+                          <button
+                            key={wallet.address}
+                            type="button"
+                            onClick={() => setSelectedWallet(wallet.address)}
+                            className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
+                              (selectedWallet || activeWalletAddress) ===
+                              wallet.address
+                                ? 'border-primary bg-primary/10'
+                                : 'border-zinc-700 hover:border-zinc-500'
+                            }`}
+                          >
+                            <span className="font-mono text-sm">
+                              {wallet.address.slice(0, 6)}...
+                              {wallet.address.slice(-4)}
+                            </span>
+                            {activeWalletAddress === wallet.address && (
+                              <span className="ml-auto text-xs text-muted-foreground">
+                                (active)
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                        {connectedEthereumWallets.length === 0 && (
+                          <p className="text-sm text-muted-foreground">
+                            No wallets connected. Please connect a wallet first.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -587,7 +614,7 @@ export function CreateApiKeyDialog({
                   disabled={
                     isSubmitting ||
                     !keyName.trim() ||
-                    connectedEthereumWallets.length === 0 ||
+                    (signWithWallet && connectedEthereumWallets.length === 0) ||
                     (keyType === 'PUBLIC_PRIVATE' && !publicKey.trim())
                   }
                 >
