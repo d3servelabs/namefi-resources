@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../base';
-import { NAMEFI_EIP712_DOMAIN } from '#lib/auth/methods/eip712/api-key-eip712';
+import { getNamefiEip712Domain } from '#lib/auth/methods/eip712/api-key-eip712';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 import { getEip712MethodRegistry } from '#lib/eip712/orpc-meta-from-zod-schemas';
 
@@ -104,14 +104,13 @@ export const eip712Router = createTRPCRouter({
     .input(getEip712DomainInputSchema)
     .output(eip712DomainOutputSchema)
     .query(async ({ input }) => {
+      const domain = getNamefiEip712Domain(input.chain);
       return {
-        name: NAMEFI_EIP712_DOMAIN.name ?? undefined,
-        version: NAMEFI_EIP712_DOMAIN.version ?? undefined,
-        chainId: NAMEFI_EIP712_DOMAIN.chainId
-          ? Number(NAMEFI_EIP712_DOMAIN.chainId)
-          : undefined,
-        verifyingContract: NAMEFI_EIP712_DOMAIN.verifyingContract ?? undefined,
-        salt: NAMEFI_EIP712_DOMAIN.salt ?? undefined,
+        name: domain.name ?? undefined,
+        version: domain.version ?? undefined,
+        chainId: domain.chainId ? Number(domain.chainId) : undefined,
+        verifyingContract: domain.verifyingContract ?? undefined,
+        salt: domain.salt ?? undefined,
       };
     }),
 

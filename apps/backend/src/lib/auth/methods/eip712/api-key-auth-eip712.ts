@@ -1,6 +1,5 @@
 import { getAddress } from 'viem';
 import { logger } from '#lib/logger';
-import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import type {
   AuthMethod,
   AuthMethodResult,
@@ -89,6 +88,15 @@ export async function authenticateWithEIP712SignatureHeader(
       : undefined;
     const expectedType = ctx.headers[EIP712_SIGNATURE_HEADER_HEADERS.TYPE];
 
+    const rawChainId = ctx.headers[EIP712_SIGNATURE_HEADER_HEADERS.CHAIN_ID];
+    const chainId = rawChainId ? Number.parseInt(rawChainId, 10) : undefined;
+    if (rawChainId && (!chainId || !Number.isFinite(chainId))) {
+      return {
+        success: false,
+        error: `Invalid ${EIP712_SIGNATURE_HEADER_HEADERS.CHAIN_ID} header`,
+      };
+    }
+
     const delegatorAddressRaw = getDelegatedAccountHeaderValue(ctx.headers);
     const parsedDelegator = parseEip7702AccountAddress(delegatorAddressRaw);
 
@@ -99,7 +107,6 @@ export async function authenticateWithEIP712SignatureHeader(
       };
     }
 
-    const chainIds = getConfiguredAllowedChainIds();
     const eip1271Account =
       parsedDelegator.accountAddress &&
       parsedDelegator.accountAddress !== expectedSignerAddress
@@ -113,7 +120,7 @@ export async function authenticateWithEIP712SignatureHeader(
       types: ctx.eip712Types ?? {},
       primaryType: expectedType ?? '', //todo
       eip1271Account,
-      chainIds,
+      chainId,
     });
 
     if (!signatureVerification.valid) {
@@ -170,6 +177,7 @@ export async function authenticateWithEIP712SignatureHeader(
     return {
       success: true,
       user,
+      chainId,
     };
   } catch (error) {
     logger.error({ error }, 'EIP712 signature-header failed');

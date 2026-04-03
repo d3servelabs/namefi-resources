@@ -1232,6 +1232,7 @@ export const ordersRouterOrpc = createTRPCRouter({
           normalizedDomainName: z.string(),
           type: z.enum(['PARENT_DOMAIN', 'EXACT_DOMAIN']),
           trialDuration: z.number(),
+          trialDurationUnit: z.enum(['days', 'years']),
         }),
       ),
     )
@@ -1241,6 +1242,7 @@ export const ordersRouterOrpc = createTRPCRouter({
           normalizedDomainName: '0x.city',
           type: 'PARENT_DOMAIN',
           trialDuration: config.ZERO_PAYMENT_REGISTRATION_TRIAL_DAYS,
+          trialDurationUnit: 'days',
         },
       ];
     }),

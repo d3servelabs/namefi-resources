@@ -45,6 +45,8 @@ export interface AuthMethodResult {
   error?: string;
   /** Auth method id that produced this result */
   methodId: string | null;
+  /** Chain ID from the authentication request (e.g. from x-namefi-chain-id header or SIWE message) */
+  chainId?: number;
 }
 
 /**

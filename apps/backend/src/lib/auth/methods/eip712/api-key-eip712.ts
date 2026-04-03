@@ -18,9 +18,15 @@ import { getRedisClient } from '#lib/redis';
 export const NAMEFI_EIP712_DOMAIN: TypedDataDomain = {
   name: 'Namefi',
   version: '1',
-  // Note: chainId is intentionally omitted to allow cross-chain signatures
-  // If chain-specific signing is needed, add chainId here
 };
+
+/**
+ * Build the EIP-712 domain with an optional chainId.
+ * When chainId is provided, signatures are bound to that chain.
+ */
+export function getNamefiEip712Domain(chainId?: number): TypedDataDomain {
+  return chainId ? { ...NAMEFI_EIP712_DOMAIN, chainId } : NAMEFI_EIP712_DOMAIN;
+}
 
 export const EIP712_SIGNATURE_HEADER_METHOD_ID = 'eip712-signature-header';
 
@@ -28,6 +34,7 @@ export const EIP712_SIGNATURE_HEADER_HEADERS = {
   SIGNATURE: 'x-namefi-signature',
   SIGNER: 'x-namefi-signer',
   TYPE: 'x-namefi-eip712-type',
+  CHAIN_ID: 'x-namefi-chain-id',
 } as const;
 
 export const EIP712_SIGNATURE_MAX_AGE_SECONDS = 300;
@@ -119,7 +126,7 @@ export async function verifyEIP712RawBodySignature({
   types,
   primaryType,
   eip1271Account,
-  chainIds,
+  chainId,
 }: {
   rawBody: string;
   signature: string;
@@ -128,8 +135,8 @@ export async function verifyEIP712RawBodySignature({
   primaryType: string;
   /** When provided, verify via EIP-1271 isValidSignature on this contract */
   eip1271Account?: Address;
-  /** Chain IDs to try for on-chain EIP-1271 verification */
-  chainIds?: readonly number[];
+  /** Chain ID for EIP-712 domain binding and on-chain verification */
+  chainId?: number;
 }): Promise<EIP712RawSignatureVerificationResult> {
   if (!SIGNATURE_REGEX.test(signature)) {
     return {
@@ -142,6 +149,8 @@ export async function verifyEIP712RawBodySignature({
     JSON.parse(rawBody),
   );
 
+  const domain = getNamefiEip712Domain(chainId);
+
   // Always recover the signer address from the signature
   let recoveredAddress: string;
   try {
@@ -151,7 +160,7 @@ export async function verifyEIP712RawBodySignature({
         signature: signature as `0x${string}`,
         primaryType,
         types,
-        domain: NAMEFI_EIP712_DOMAIN,
+        domain,
       }),
     );
   } catch (error) {
@@ -178,13 +187,13 @@ export async function verifyEIP712RawBodySignature({
     try {
       const valid = await verifyTypedDataWithEip1271({
         address: eip1271Account,
-        domain: NAMEFI_EIP712_DOMAIN,
+        domain,
         types,
         primaryType,
         message: parsedMessage,
         signature: signature as Hex,
         eip1271Account,
-        chainIds,
+        chainIds: chainId ? [chainId] : undefined,
       });
 
       if (!valid) {
