@@ -69,6 +69,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
   dryRun = false,
   forceSendReport = false,
   ownersIdFilter,
+  allowExpired = true,
 }: {
   dryRun?: boolean;
   forceSendReport?: boolean;
@@ -77,13 +78,14 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
    * Mainly for testing purposes
    */
   ownersIdFilter?: string[];
+  allowExpired?: boolean;
 } = {}) {
   const startTime = Date.now();
   workflow.log.info(
     `Starting daily domains upcoming renewals workflow, ${dryRun ? 'dryRun' : 'live'}`,
   );
   const domainsUpForRenewalGroupedByOwner =
-    await getDomainsUpForRenewalGroupedByOwner();
+    await getDomainsUpForRenewalGroupedByOwner({ allowExpired });
   workflow.log.info(
     `Found ${Object.keys(domainsUpForRenewalGroupedByOwner).length} users with domains up for renewal`,
   );

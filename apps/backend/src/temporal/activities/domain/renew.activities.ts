@@ -133,7 +133,7 @@ export async function getDomainsUpForRenewal(input?: {
     return (
       allNftsMap.has(domain.domainName) && // Only include domains that are on an allowed chain and has NFT
       daysToExpiration <= SEND_RENEW_REMINDERS_THRESHOLD &&
-      (allowExpired || daysToExpiration >= 0)
+      (allowExpired ? daysToExpiration > -30 : daysToExpiration >= 0)
     );
   });
   logger.debug(
