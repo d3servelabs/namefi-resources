@@ -107,7 +107,12 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
         const result = await workflow.executeChild(
           notifyAndRenewDomainsForSingleUserWorkflow,
           {
-            args: [userId, domainsUpForRenewalGroupedByOwner[userId], dryRun],
+            args: [
+              userId,
+              domainsUpForRenewalGroupedByOwner[userId],
+              dryRun,
+              allowExpired,
+            ],
             workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${userId}`,
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
             parentClosePolicy: 'ABANDON',
@@ -195,6 +200,7 @@ type UserDomainsUpForRenewal = Exclude<
 async function _prepareDomainsForRenew(
   userId: string,
   userDomainsUpForRenewal: UserDomainsUpForRenewal,
+  allowExpired: boolean,
 ) {
   const chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number | null> =
     await getRenewPriceByDomainInUsd({
@@ -226,7 +232,7 @@ async function _prepareDomainsForRenew(
       return (
         autoRenewOption === RenewOption.AUTOMATIC &&
         daysToExpiration <= RENEW_EARLY_BY_DAYS &&
-        daysToExpiration >= 0
+        (allowExpired ? daysToExpiration >= -30 : daysToExpiration >= 0)
       );
     },
   );
@@ -346,6 +352,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   userId: string,
   userDomainsUpForRenewal: UserDomainsUpForRenewal,
   dryRun: boolean,
+  allowExpired: boolean,
 ): Promise<NotifyAndRenewDomainsForSingleUserWorkflowOutput> {
   const userEmail = await maybeGetUserEmail(userId);
 
@@ -355,7 +362,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     domainsMissingPriceData,
     domainsThatHavePriceData,
     chargeAmountByDomainLdh,
-  } = await _prepareDomainsForRenew(userId, userDomainsUpForRenewal);
+  } = await _prepareDomainsForRenew(
+    userId,
+    userDomainsUpForRenewal,
+    allowExpired,
+  );
 
   workflow.log.info(
     `For user ${userId}, ${userEmail} here are domains up for renew: ${JSON.stringify(domainsThatCouldBeRenewed, null, 2)}`,
