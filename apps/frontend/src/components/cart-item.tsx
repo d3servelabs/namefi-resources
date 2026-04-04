@@ -5,12 +5,13 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Trash2 } from 'lucide-react';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 interface CartItemProps {
   item: UnifiedCartItem;
@@ -45,6 +46,16 @@ export function CartItem({
     item.normalizedDomainName,
   );
 
+  const displayName = useMemo(() => {
+    try {
+      return toUnicodeDomainName(item.normalizedDomainName);
+    } catch {
+      return item.normalizedDomainName;
+    }
+  }, [item.normalizedDomainName]);
+
+  const isPunycode = displayName !== item.normalizedDomainName;
+
   const handleDurationChange = useCallback(
     async (itemId: string, newDuration: number) => {
       if (domainAvailabilityInfo) {
@@ -77,7 +88,12 @@ export function CartItem({
     <div>
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{item.normalizedDomainName}</span>
+          <span className="text-xl">{displayName}</span>
+          {isPunycode && (
+            <span className="text-sm text-muted-foreground">
+              {item.normalizedDomainName}
+            </span>
+          )}
           {(item.type === itemTypeSchema.enum.IMPORT ||
             item.type === itemTypeSchema.enum.RENEW) && (
             <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">

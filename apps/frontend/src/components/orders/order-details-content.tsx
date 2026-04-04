@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type {
   PaymentSelect,
   OrderMintTransactionMetadata,
@@ -79,6 +80,14 @@ function getShortId(id: string, start = 6, end = 4): string {
   if (!id) return '-';
   if (id.length <= start + end) return id;
   return `${id.slice(0, start)}…${id.slice(-end)}`;
+}
+
+function safeToUnicode(domain: string): string {
+  try {
+    return toUnicodeDomainName(domain);
+  } catch {
+    return domain;
+  }
 }
 
 export function OrderDetailsContent({ id }: { id: string }) {
@@ -319,7 +328,9 @@ export function OrderDetailsContent({ id }: { id: string }) {
                         <span>
                           The domain{' '}
                           <span className="font-semibold">
-                            {requiredActionItems[0].normalizedDomainName}
+                            {safeToUnicode(
+                              requiredActionItems[0].normalizedDomainName,
+                            )}
                           </span>{' '}
                           requires further action from your side.
                         </span>
@@ -375,7 +386,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                             >
                               <div className="flex items-center justify-between">
                                 <span className="text-base font-medium break-all">
-                                  {item.normalizedDomainName}
+                                  {safeToUnicode(item.normalizedDomainName)}
                                 </span>
                                 <div className="flex items-center gap-2">
                                   <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
@@ -547,7 +558,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-base font-medium break-all">
-                        {item.normalizedDomainName}
+                        {safeToUnicode(item.normalizedDomainName)}
                       </span>
                       <div className="flex items-center gap-2">
                         <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">

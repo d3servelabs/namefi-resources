@@ -45,6 +45,7 @@ import { AutoRenewToggle } from '@/components/my-domains/auto-renew-toggle';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -142,6 +143,14 @@ const truncateWalletAddress = (address: string): string => {
   if (address.length <= 10) return address;
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
+
+function safeToUnicode(domain: string): string {
+  try {
+    return toUnicodeDomainName(domain);
+  } catch {
+    return domain;
+  }
+}
 
 const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
 
@@ -329,7 +338,7 @@ const RenewNowModal: FC<RenewNowModalProps> = ({
           </DialogTitle>
           <DialogDescription>
             {domains.length === 1
-              ? `Renew ${domains[0].normalizedDomainName}`
+              ? `Renew ${safeToUnicode(domains[0].normalizedDomainName)}`
               : `Renew ${domains.length} domains`}
           </DialogDescription>
         </DialogHeader>
@@ -344,7 +353,7 @@ const RenewNowModal: FC<RenewNowModalProps> = ({
                     key={d.normalizedDomainName}
                     className="text-muted-foreground"
                   >
-                    {d.normalizedDomainName}
+                    {safeToUnicode(d.normalizedDomainName)}
                   </li>
                 ))}
               </ul>

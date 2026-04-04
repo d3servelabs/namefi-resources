@@ -18,9 +18,10 @@ import type { UnifiedCartItem } from '@/hooks/use-cart';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { Loader2, ShoppingCart, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { forwardRef, useCallback, useMemo } from 'react';
+import { forwardRef, useCallback, useMemo, type FC } from 'react';
 import type { MouseEvent } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
@@ -35,6 +36,20 @@ export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
 
 type CartDropdownItemProps = {
   item: UnifiedCartItem;
+};
+
+const DomainDisplayName: FC<{ normalizedDomainName: string }> = ({
+  normalizedDomainName,
+}) => {
+  const displayName = useMemo(() => {
+    try {
+      return toUnicodeDomainName(normalizedDomainName);
+    } catch {
+      return normalizedDomainName;
+    }
+  }, [normalizedDomainName]);
+
+  return <>{displayName}</>;
 };
 
 function CartDropdownItem({ item }: CartDropdownItemProps) {
@@ -55,7 +70,9 @@ function CartDropdownItem({ item }: CartDropdownItemProps) {
       className="flex items-center gap-3"
       onSelect={(event) => event.preventDefault()}
     >
-      <span className="flex-1 truncate">{item.normalizedDomainName}</span>
+      <span className="flex-1 truncate">
+        <DomainDisplayName normalizedDomainName={item.normalizedDomainName} />
+      </span>
       <span className="text-muted-foreground">
         {formatAmountInUSD(item.amountInUSDCents, true)}
       </span>
