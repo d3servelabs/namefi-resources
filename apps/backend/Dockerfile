@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y bash curl dnsutils
 # Stage 2: Use Bun for dependency installation
 # ##############################################################################
 #
-FROM oven/bun:1.3.11 AS deps_prod
+FROM oven/bun:1.3.11-slim AS deps_prod
 ENV CI="true"
 WORKDIR /app
 

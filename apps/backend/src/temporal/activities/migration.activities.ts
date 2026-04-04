@@ -9,7 +9,7 @@ import { fromPairs, isNil, isNotNil, uniqBy } from 'ramda';
 import {
   ensurePrivyTableFresh,
   privyUsersTableSchema,
-} from '../../trpc/routers/admin/privyUserCache';
+} from '../../services/admin/privy-user-cache';
 import * as workflow from '@temporalio/workflow';
 import * as changeKeys from 'change-case/keys';
 

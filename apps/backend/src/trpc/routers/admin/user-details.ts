@@ -32,7 +32,7 @@ import {
   getPrivyUserLinkedEthereumWalletAddresses,
   privyClient,
 } from '../../utils';
-import { privyUsersTableSchema } from './privyUserCache';
+import { privyUsersTableSchema } from '../../../services/admin/privy-user-cache';
 
 export const adminUserReferenceInput = z
   .object({

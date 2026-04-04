@@ -9,7 +9,7 @@ import { createLogger } from '#lib/logger';
 import {
   buildSimplifiedPrivyUsers,
   privyUsersTableSchema,
-} from '../../../trpc/routers/admin/privyUserCache';
+} from '../../../services/admin/privy-user-cache';
 import { assoc, map } from 'ramda';
 
 const logger = createLogger({ module: 'privy-cache-activities' });

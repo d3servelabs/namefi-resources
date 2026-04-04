@@ -1,7 +1,7 @@
 import { db, namefiNftCte, namefiNftView, usersTable } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { sql, eq, or, type SQL } from 'drizzle-orm';
-import { privyClient } from '../../utils';
+import { privyClient } from '../../trpc/utils';
 import { logger } from '#lib/logger';
 import { assoc, map } from 'ramda';
 
