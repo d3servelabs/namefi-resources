@@ -24,8 +24,8 @@ concurrency:
 
 permissions:
   contents: read
+  issues: write
   pull-requests: write
-  statuses: write
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
@@ -68,25 +68,39 @@ jobs:
           filter: blob:none
 
       - name: Determine comparison SHAs
-        # We capture both the PR base and the incremental `before` SHA.
+        # We capture both the PR merge-base and the incremental `before` SHA.
         # Per target, we only use incremental detection after that target
         # already has a preview on this PR branch; otherwise we bootstrap
-        # from the full base -> head diff.
+        # from the true PR diff so base-branch drift does not trigger
+        # unrelated preview deploys.
         id: comparison
         if: steps.head-branch-gate.outputs.should_run == 'true'
         env:
           EVENT_ACTION: ${{ github.event.action }}
           BEFORE_SHA: ${{ github.event.before }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         shell: bash
         run: |
           set -euo pipefail
 
-          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          if ! git cat-file -e "$HEAD_SHA" 2>/dev/null; then
+            echo "Missing PR head commit: $HEAD_SHA" >&2
+            exit 1
+          fi
+
+          PR_BASE_SHA="$(git merge-base "$BASE_SHA" "$HEAD_SHA")"
+
+          if [[ -z "$PR_BASE_SHA" ]]; then
+            echo "Unable to determine merge-base for $BASE_SHA and $HEAD_SHA" >&2
+            exit 1
+          fi
+
+          echo "base_sha=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "has_incremental=false" >> "$GITHUB_OUTPUT"
 
           if [[ "$EVENT_ACTION" == "synchronize" && -n "$BEFORE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
-            if git cat-file -e "$BEFORE_SHA" 2>/dev/null && [[ "$BEFORE_SHA" != "$BASE_SHA" ]]; then
+            if git cat-file -e "$BEFORE_SHA" 2>/dev/null && [[ "$BEFORE_SHA" != "$HEAD_SHA" ]]; then
               echo "incremental_sha=$BEFORE_SHA" >> "$GITHUB_OUTPUT"
               echo "has_incremental=true" >> "$GITHUB_OUTPUT"
             fi
@@ -235,6 +249,131 @@ jobs:
           echo "resources_changed=$(package_changed '@namefi-astra/resources' "$RESOURCES_EXISTS")" >> "$GITHUB_OUTPUT"
           echo "docs_changed=$(package_changed 'api-client-docs' "$DOCS_EXISTS")" >> "$GITHUB_OUTPUT"
 
+  publish-preview-progress:
+    name: Publish Preview Progress
+    if: |-
+      always() &&
+      needs.preview-label-gate.outputs.pr_number != '' &&
+      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+      needs.head-branch-gate.outputs.should_run == 'true' &&
+      (
+        github.event_name == 'workflow_dispatch' ||
+        github.event.action != 'labeled' ||
+        needs.preview-label-gate.outputs.should_run == 'true'
+      )
+    needs:
+      - detect
+      - preview-label-gate
+      - head-branch-gate
+      - detect-synchronize-type
+      - detect-backend-changes
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    steps:
+      - name: Publish preview progress comment
+        uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          FRONTEND_CHANGED: ${{ needs.detect.outputs.frontend_changed || 'false' }}
+          PARK_CHANGED: ${{ needs.detect.outputs.park_changed || 'false' }}
+          RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
+          DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
+          PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.should_run || 'false' }}
+          HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes || 'false' }}
+        with:
+          script: |
+            const marker = '<!-- preview-surface-status:v1 -->';
+            const prNumber = Number(process.env.PR_NUMBER);
+            const runUrl = process.env.RUN_URL;
+            const updatedAt = new Date().toISOString();
+            const isTrue = (value) => value === 'true';
+            const linkCell = (links) => links.length > 0 ? links.join('<br>') : '—';
+            const row = (surface, status, links, notes) =>
+              `| ${surface} | ${status} | ${linkCell(links)} | ${notes} |`;
+            const buildLink = `[Build](${runUrl})`;
+            const frontendChanged = isTrue(process.env.FRONTEND_CHANGED);
+            const parkChanged = isTrue(process.env.PARK_CHANGED);
+            const resourcesChanged = isTrue(process.env.RESOURCES_CHANGED);
+            const docsChanged = isTrue(process.env.DOCS_CHANGED);
+            const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
+            const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
+            const frontendUsesPreviewBackend = previewRequested && hasBackendChanges;
+            const frontendPendingBackendDecision =
+              !frontendChanged && frontendUsesPreviewBackend;
+
+            const rows = [
+              frontendChanged
+                ? row(
+                    'Frontend',
+                    '🟡 Building',
+                    [buildLink],
+                    frontendUsesPreviewBackend ? 'Preview backend' : 'Dev backend',
+                  )
+                : frontendPendingBackendDecision
+                  ? row(
+                      'Frontend',
+                      '🟡 Pending',
+                      [buildLink],
+                      'Awaiting backend preview context',
+                    )
+                  : row('Frontend', '⚪ Not affected', [], 'No relevant changes'),
+              parkChanged
+                ? row('Park', '🟡 Building', [buildLink], 'Affected-only')
+                : row('Park', '⚪ Not affected', [], 'No relevant changes'),
+              resourcesChanged
+                ? row('Resources', '🟡 Building', [buildLink], 'Affected-only')
+                : row('Resources', '⚪ Not affected', [], 'No relevant changes'),
+              docsChanged
+                ? row('API Client Docs', '🟡 Building', [buildLink], 'Affected-only')
+                : row('API Client Docs', '⚪ Not affected', [], 'No relevant changes'),
+              !previewRequested
+                ? row('Backend', '⚪ Not requested', [], 'Label-gated')
+                : hasBackendChanges
+                  ? row('Backend', '🟡 Building', [buildLink], 'Label-gated')
+                  : row('Backend', '⚪ Not affected', [], 'Label-gated'),
+            ];
+
+            const body = [
+              marker,
+              '### Preview Surfaces',
+              '',
+              `- PR: #${prNumber}`,
+              `- Run: [Workflow run](${runUrl})`,
+              `- Updated: \`${updatedAt}\``,
+              '',
+              '| Surface | Status | Links | Notes |',
+              '|---|---|---|---|',
+              ...rows,
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
   deploy-frontend:
     name: "Frontend Preview (Dev Backend)"
     needs:
@@ -262,9 +401,9 @@ jobs:
         id: deploy
         uses: ./.github/actions/vercel-preview-deploy
         with:
-          head_ref: ${{ github.event.pull_request.head.ref }}
-          head_sha: ${{ github.event.pull_request.head.sha }}
-          pr_number: ${{ github.event.pull_request.number }}
+          head_ref: ${{ needs.preview-label-gate.outputs.head_ref }}
+          head_sha: ${{ needs.preview-label-gate.outputs.head_sha }}
+          pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
           additional_meta_json: |
             {
               "previewMode": "standard"
@@ -496,6 +635,7 @@ jobs:
     outputs:
       should_run: ${{ steps.check-label.outputs.should_run }}
       is_force_preview: ${{ steps.check-label.outputs.is_force_preview }}
+      is_same_repo: ${{ steps.check-label.outputs.is_same_repo }}
       pr_number: ${{ steps.check-label.outputs.pr_number }}
       head_sha: ${{ steps.check-label.outputs.head_sha }}
       base_sha: ${{ steps.check-label.outputs.base_sha }}
@@ -513,6 +653,7 @@ jobs:
           HEAD_SHA_FROM_EVENT: ${{ github.event.pull_request.head.sha || '' }}
           BASE_SHA_FROM_EVENT: ${{ github.event.pull_request.base.sha || '' }}
           HEAD_REF_FROM_EVENT: ${{ github.event.pull_request.head.ref || '' }}
+          HEAD_REPO_FULL_NAME_FROM_EVENT: ${{ github.event.pull_request.head.repo.full_name || '' }}
           LABEL_NAME_FROM_EVENT: ${{ github.event.label.name || '' }}
           HAS_FORCE_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'force-preview') }}
           HAS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
@@ -527,15 +668,21 @@ jobs:
             PR_NUMBER="$INPUT_PR_NUMBER"
             echo "Workflow dispatch triggered for PR #$PR_NUMBER"
 
-            PR_DATA=$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref}')
+            PR_DATA=$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref, head_repo_full_name: .head.repo.full_name}')
             HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head_sha')
             BASE_SHA=$(echo "$PR_DATA" | jq -r '.base_sha')
             HEAD_REF=$(echo "$PR_DATA" | jq -r '.head_ref')
+            HEAD_REPO_FULL_NAME=$(echo "$PR_DATA" | jq -r '.head_repo_full_name')
 
             echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
             echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
             echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
             echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+            if [[ "$HEAD_REPO_FULL_NAME" == "$REPOSITORY" ]]; then
+              echo "is_same_repo=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "is_same_repo=false" >> "$GITHUB_OUTPUT"
+            fi
             echo "should_run=true" >> "$GITHUB_OUTPUT"
             echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
             exit 0
@@ -545,11 +692,17 @@ jobs:
           HEAD_SHA="$HEAD_SHA_FROM_EVENT"
           BASE_SHA="$BASE_SHA_FROM_EVENT"
           HEAD_REF="$HEAD_REF_FROM_EVENT"
+          HEAD_REPO_FULL_NAME="$HEAD_REPO_FULL_NAME_FROM_EVENT"
 
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
           echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
           echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+          if [[ "$HEAD_REPO_FULL_NAME" == "$REPOSITORY" ]]; then
+            echo "is_same_repo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_same_repo=false" >> "$GITHUB_OUTPUT"
+          fi
 
           if [[ "$EVENT_ACTION" == "labeled" ]]; then
             LABEL_NAME="$LABEL_NAME_FROM_EVENT"
@@ -582,7 +735,7 @@ jobs:
     name: Check Preview Branch
     needs: preview-label-gate
     timeout-minutes: 2
-    if: needs.preview-label-gate.outputs.should_run == 'true'
+    if: needs.preview-label-gate.outputs.pr_number != ''
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       should_run: ${{ steps.gate.outputs.should_run }}
@@ -607,7 +760,7 @@ jobs:
   detect-synchronize-type:
     name: Resolve Compare Base
     needs: [preview-label-gate, head-branch-gate]
-    if: needs.head-branch-gate.outputs.should_run == 'true'
+    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       is_new_commit: ${{ steps.detect-type.outputs.is_new_commit }}
@@ -663,7 +816,7 @@ jobs:
     name: Check Backend Changes
     timeout-minutes: 2
     needs: [preview-label-gate, head-branch-gate, detect-synchronize-type]
-    if: needs.head-branch-gate.outputs.should_run == 'true'
+    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
@@ -870,9 +1023,8 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
-      statuses: write
     outputs:
       revision_tag_url: ${{ steps.tagged-url.outputs.revision_tag_url }}
     steps:
@@ -1181,3 +1333,260 @@ jobs:
             echo "| Preview database | $PREPARE_DATABASE_RESULT |"
             echo "| Frontend via backend | $FRONTEND_BACKEND_PREVIEW_RESULT |"
           } >> "$GITHUB_STEP_SUMMARY"
+
+  publish-preview-results:
+    name: Publish Preview Results
+    if: |-
+      always() &&
+      needs.preview-label-gate.outputs.pr_number != '' &&
+      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+      needs.head-branch-gate.outputs.should_run == 'true' &&
+      (
+        github.event_name == 'workflow_dispatch' ||
+        github.event.action != 'labeled' ||
+        needs.preview-label-gate.outputs.should_run == 'true'
+      )
+    needs:
+      - detect
+      - deploy-frontend
+      - deploy-park
+      - deploy-resources
+      - deploy-api-client-docs
+      - preview-label-gate
+      - head-branch-gate
+      - detect-backend-changes
+      - build-backend
+      - prepare-database
+      - resolve-backend-preview-context
+      - deploy-preview
+      - deploy-frontend-preview
+      - workflow-summary
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    steps:
+      - name: Publish preview results comment
+        uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          FRONTEND_CHANGED: ${{ needs.detect.outputs.frontend_changed || 'false' }}
+          PARK_CHANGED: ${{ needs.detect.outputs.park_changed || 'false' }}
+          RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
+          DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
+          PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.should_run || 'false' }}
+          HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes || 'false' }}
+          FRONTEND_DEV_RESULT: ${{ needs.deploy-frontend.result }}
+          FRONTEND_DEV_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
+          PARK_RESULT: ${{ needs.deploy-park.result }}
+          PARK_URL: ${{ needs.deploy-park.outputs.deployment_url }}
+          RESOURCES_RESULT: ${{ needs.deploy-resources.result }}
+          RESOURCES_URL: ${{ needs.deploy-resources.outputs.deployment_url }}
+          DOCS_RESULT: ${{ needs.deploy-api-client-docs.result }}
+          DOCS_URL: ${{ needs.deploy-api-client-docs.outputs.deployment_url }}
+          BUILD_BACKEND_RESULT: ${{ needs.build-backend.result }}
+          PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
+          DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
+          BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.backend_preview_url || needs.deploy-preview.outputs.revision_tag_url }}
+          FRONTEND_BACKEND_RESULT: ${{ needs.deploy-frontend-preview.result }}
+          FRONTEND_BACKEND_URL: ${{ needs.deploy-frontend-preview.outputs.deployment_url }}
+          EXISTING_FRONTEND_BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.existing_frontend_backend_preview_url }}
+        with:
+          script: |
+            const marker = '<!-- preview-surface-status:v1 -->';
+            const prNumber = Number(process.env.PR_NUMBER);
+            const runUrl = process.env.RUN_URL;
+            const updatedAt = new Date().toISOString();
+
+            const isTrue = (value) => value === 'true';
+            const isFailure = (value) =>
+              ['failure', 'cancelled', 'timed_out'].includes(value ?? '');
+            const previewLink = (url) => `[Preview](${url})`;
+            const buildLink = `[Build](${runUrl})`;
+            const linkCell = (links) => links.filter(Boolean).join('<br>') || '—';
+            const row = (surface, status, links, notes) =>
+              `| ${surface} | ${status} | ${linkCell(links)} | ${notes} |`;
+
+            const frontendChanged = isTrue(process.env.FRONTEND_CHANGED);
+            const parkChanged = isTrue(process.env.PARK_CHANGED);
+            const resourcesChanged = isTrue(process.env.RESOURCES_CHANGED);
+            const docsChanged = isTrue(process.env.DOCS_CHANGED);
+            const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
+            const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
+
+            const frontendDevResult = process.env.FRONTEND_DEV_RESULT || '';
+            const frontendDevUrl = process.env.FRONTEND_DEV_URL || '';
+            const frontendBackendResult = process.env.FRONTEND_BACKEND_RESULT || '';
+            const frontendBackendUrl = process.env.FRONTEND_BACKEND_URL || '';
+            const existingFrontendBackendPreviewUrl =
+              process.env.EXISTING_FRONTEND_BACKEND_PREVIEW_URL || '';
+
+            const parkResult = process.env.PARK_RESULT || '';
+            const parkUrl = process.env.PARK_URL || '';
+            const resourcesResult = process.env.RESOURCES_RESULT || '';
+            const resourcesUrl = process.env.RESOURCES_URL || '';
+            const docsResult = process.env.DOCS_RESULT || '';
+            const docsUrl = process.env.DOCS_URL || '';
+
+            const buildBackendResult = process.env.BUILD_BACKEND_RESULT || '';
+            const prepareDatabaseResult = process.env.PREPARE_DATABASE_RESULT || '';
+            const deployPreviewResult = process.env.DEPLOY_PREVIEW_RESULT || '';
+            const backendPreviewUrl = process.env.BACKEND_PREVIEW_URL || '';
+
+            const backendAttempted = previewRequested && hasBackendChanges;
+            const backendPreparationFailed =
+              isFailure(buildBackendResult) || isFailure(prepareDatabaseResult);
+
+            const readyOrFailedRow = (surface, changed, result, url, affectedNote) => {
+              if (!changed) {
+                return row(surface, '⚪ Not affected', [], 'No relevant changes');
+              }
+
+              if (result === 'success') {
+                return row(surface, '🟢 Ready', url ? [previewLink(url)] : [], affectedNote);
+              }
+
+              return row(surface, '🔴 Failed', [buildLink], affectedNote);
+            };
+
+            let frontendRow;
+            const frontendUsesPreviewBackend = backendPreviewUrl !== '' || backendAttempted;
+            const canReuseFrontendBackendPreview =
+              !frontendChanged &&
+              existingFrontendBackendPreviewUrl !== '' &&
+              frontendBackendResult === 'skipped' &&
+              !backendPreparationFailed &&
+              !isFailure(deployPreviewResult);
+
+            if (frontendUsesPreviewBackend) {
+              if (frontendBackendResult === 'success') {
+                frontendRow = row(
+                  'Frontend',
+                  '🟢 Ready',
+                  frontendBackendUrl ? [previewLink(frontendBackendUrl)] : [],
+                  'Preview backend',
+                );
+              } else if (
+                isFailure(frontendBackendResult) ||
+                isFailure(deployPreviewResult) ||
+                backendPreparationFailed ||
+                (backendAttempted &&
+                  frontendBackendResult === 'skipped' &&
+                  !canReuseFrontendBackendPreview)
+              ) {
+                frontendRow = row('Frontend', '🔴 Failed', [buildLink], 'Preview backend');
+              } else if (canReuseFrontendBackendPreview) {
+                frontendRow = row(
+                  'Frontend',
+                  '🟢 Ready (reused)',
+                  [previewLink(existingFrontendBackendPreviewUrl)],
+                  'Existing preview reused',
+                );
+              } else if (frontendChanged && frontendDevResult === 'success') {
+                frontendRow = row(
+                  'Frontend',
+                  '🟢 Ready',
+                  frontendDevUrl ? [previewLink(frontendDevUrl)] : [],
+                  'Dev backend',
+                );
+              } else {
+                frontendRow = row('Frontend', '⚪ Not affected', [], 'No relevant changes');
+              }
+            } else if (frontendChanged) {
+              frontendRow =
+                frontendDevResult === 'success'
+                  ? row(
+                      'Frontend',
+                      '🟢 Ready',
+                      frontendDevUrl ? [previewLink(frontendDevUrl)] : [],
+                      'Dev backend',
+                    )
+                  : row('Frontend', '🔴 Failed', [buildLink], 'Dev backend');
+            } else {
+              frontendRow = row('Frontend', '⚪ Not affected', [], 'No relevant changes');
+            }
+
+            let backendRow;
+            if (!previewRequested) {
+              backendRow = row('Backend', '⚪ Not requested', [], 'Label-gated');
+            } else if (
+              backendAttempted &&
+              (backendPreparationFailed ||
+                isFailure(deployPreviewResult) ||
+                deployPreviewResult === 'skipped')
+            ) {
+              backendRow = row('Backend', '🔴 Failed', [buildLink], 'Label-gated');
+            } else if (backendPreviewUrl) {
+              backendRow = row(
+                'Backend',
+                '🟢 Ready',
+                [previewLink(backendPreviewUrl)],
+                'Label-gated',
+              );
+            } else if (backendAttempted) {
+              backendRow =
+                deployPreviewResult === 'success'
+                  ? row('Backend', '🟢 Ready', [], 'Label-gated')
+                  : row('Backend', '🔴 Failed', [buildLink], 'Label-gated');
+            } else {
+              backendRow = row('Backend', '⚪ Not affected', [], 'Label-gated');
+            }
+
+            const rows = [
+              frontendRow,
+              readyOrFailedRow('Park', parkChanged, parkResult, parkUrl, 'Affected-only'),
+              readyOrFailedRow(
+                'Resources',
+                resourcesChanged,
+                resourcesResult,
+                resourcesUrl,
+                'Affected-only',
+              ),
+              readyOrFailedRow(
+                'API Client Docs',
+                docsChanged,
+                docsResult,
+                docsUrl,
+                'Affected-only',
+              ),
+              backendRow,
+            ];
+
+            const body = [
+              marker,
+              '### Preview Surfaces',
+              '',
+              `- PR: #${prNumber}`,
+              `- Run: [Workflow run](${runUrl})`,
+              `- Updated: \`${updatedAt}\``,
+              '',
+              '| Surface | Status | Links | Notes |',
+              '|---|---|---|---|',
+              ...rows,
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
