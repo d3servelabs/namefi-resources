@@ -557,9 +557,17 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-base font-medium break-all">
-                        {safeToUnicode(item.normalizedDomainName)}
-                      </span>
+                      <div className="min-w-0">
+                        <span className="text-base font-medium break-all">
+                          {safeToUnicode(item.normalizedDomainName)}
+                        </span>
+                        {safeToUnicode(item.normalizedDomainName) !==
+                          item.normalizedDomainName && (
+                          <span className="block text-xs text-muted-foreground break-all">
+                            {item.normalizedDomainName}
+                          </span>
+                        )}
+                      </div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
                           {humanizeItemType(item.type)}

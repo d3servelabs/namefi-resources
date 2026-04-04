@@ -532,7 +532,15 @@ const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
           {items.map((item) => (
             <TableRow key={item.id}>
               <TableCell className="font-medium">
-                {item.normalizedDomainName}
+                <div>
+                  {safeToUnicode(item.normalizedDomainName)}
+                  {safeToUnicode(item.normalizedDomainName) !==
+                    item.normalizedDomainName && (
+                    <span className="block text-xs text-muted-foreground font-normal">
+                      {item.normalizedDomainName}
+                    </span>
+                  )}
+                </div>
               </TableCell>
               <TableCell>
                 <AddressWithChain
@@ -1441,15 +1449,24 @@ function MyDomainsTable(props: {
         header: 'Domain Name',
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
+          const unicodeName = safeToUnicode(domainName);
+          const isPunycode = unicodeName !== domainName;
           return (
             <div className="flex items-center gap-2">
-              <Link
-                href={`/domains/${domainName}?tab=dns-overview`}
-                aria-label={`Settings for ${domainName}`}
-                className="font-medium hover:underline"
-              >
-                {domainName}
-              </Link>
+              <div className="min-w-0">
+                <Link
+                  href={`/domains/${domainName}?tab=dns-overview`}
+                  aria-label={`Settings for ${domainName}`}
+                  className="font-medium hover:underline"
+                >
+                  {unicodeName}
+                </Link>
+                {isPunycode && (
+                  <span className="block text-xs text-muted-foreground">
+                    {domainName}
+                  </span>
+                )}
+              </div>
               <Tooltip>
                 <TooltipTrigger
                   render={(props) => (
