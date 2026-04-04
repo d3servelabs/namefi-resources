@@ -317,7 +317,9 @@ export const adminRouter = createTRPCRouter({
               )
             END
           `.as('is_expired'),
-          userId: sql<string | null>`MAX(${usersTable.id}::text)`.as('user_id'),
+          userId: sql<string | null>`MAX(${usersTable.id}::text)`.as(
+            'namefi_user_id',
+          ),
           privyUserId: sql<
             string | null
           >`MAX(${privyUsersTableSchema.privyUserId})`.as('privy_user_id'),
