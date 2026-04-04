@@ -830,3 +830,68 @@ export const SingleRegistration: Story = {
     },
   },
 };
+
+/** Order with internationalized (punycode) domain names to verify i18n display */
+export const PunycodeDomains: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 5797,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-idn-1',
+            normalizedDomainName:
+              'xn--fiq228c.com' as NamefiNormalizedDomain /* 中文.com */,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1999,
+          }),
+          createMockOrderItem({
+            id: 'item-idn-2',
+            normalizedDomainName:
+              'xn--wgv71a.com' as NamefiNormalizedDomain /* 日本.com */,
+            type: 'REGISTER',
+            status: 'SUCCEEDED',
+            amountInUSDCents: 2499,
+            metadata: {
+              mintTransaction: {
+                txHash:
+                  '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+                recordedAt: '2026-02-01T10:35:00Z',
+              },
+            },
+          }),
+          createMockOrderItem({
+            id: 'item-idn-3',
+            normalizedDomainName:
+              'xn--mgbh0fb.com' as NamefiNormalizedDomain /* مثال.com */,
+            type: 'IMPORT',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 5797,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'visa',
+          last4: '4242',
+        },
+      ],
+    },
+  },
+};

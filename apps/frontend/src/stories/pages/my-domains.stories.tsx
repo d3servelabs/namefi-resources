@@ -476,3 +476,101 @@ export const Unauthenticated: Story = {
     },
   },
 };
+
+/** Domains with internationalized (punycode) names to verify i18n display */
+export const PunycodeDomains: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      domains: [
+        {
+          normalizedDomainName:
+            'xn--fiq228c.com' as NamefiNormalizedDomain /* 中文.com */,
+          ownerAddress: '0x1234567890abcdef1234567890abcdef12345678',
+          chainId: 1,
+          tokenId: 33333333333333333333n,
+          asOfBlockNumber: 21000000n,
+          expirationDate: new Date('2027-06-15T00:00:00Z'),
+          autoRenewEnabled: true,
+          autoEnsEnabled: false,
+          dateTokenized: new Date('2025-06-15T10:30:00Z'),
+          dnsStatus: {
+            nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
+            isUsingNamefiNameservers: true,
+            isParkingEnabled: false,
+            forwardTo: null,
+            hasWebRecords: true,
+            hasMxRecords: false,
+            ensRecord: null,
+          },
+        },
+        {
+          normalizedDomainName:
+            'xn--wgv71a.com' as NamefiNormalizedDomain /* 日本.com */,
+          ownerAddress: '0x1234567890abcdef1234567890abcdef12345678',
+          chainId: 1,
+          tokenId: 44444444444444444444n,
+          asOfBlockNumber: 21000000n,
+          expirationDate: new Date('2026-08-20T00:00:00Z'),
+          autoRenewEnabled: false,
+          autoEnsEnabled: true,
+          dateTokenized: new Date('2025-08-20T14:00:00Z'),
+          dnsStatus: {
+            nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
+            isUsingNamefiNameservers: true,
+            isParkingEnabled: true,
+            forwardTo: null,
+            hasWebRecords: false,
+            hasMxRecords: true,
+            ensRecord: null,
+          },
+        },
+        {
+          normalizedDomainName:
+            'xn--mgbh0fb.com' as NamefiNormalizedDomain /* مثال.com */,
+          ownerAddress: '0x1234567890abcdef1234567890abcdef12345678',
+          chainId: 8453,
+          tokenId: 55555555555555555555n,
+          asOfBlockNumber: 21000000n,
+          expirationDate: new Date('2027-01-10T00:00:00Z'),
+          autoRenewEnabled: true,
+          autoEnsEnabled: false,
+          dateTokenized: new Date('2026-01-10T08:15:00Z'),
+          dnsStatus: {
+            nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
+            isUsingNamefiNameservers: true,
+            isParkingEnabled: false,
+            forwardTo: null,
+            hasWebRecords: true,
+            hasMxRecords: true,
+            ensRecord: null,
+          },
+        },
+        {
+          normalizedDomainName: 'regular-domain.com' as NamefiNormalizedDomain,
+          ownerAddress: '0x1234567890abcdef1234567890abcdef12345678',
+          chainId: 1,
+          tokenId: 66666666666666666666n,
+          asOfBlockNumber: 21000000n,
+          expirationDate: new Date('2028-03-01T00:00:00Z'),
+          autoRenewEnabled: false,
+          autoEnsEnabled: false,
+          dateTokenized: new Date('2026-03-01T16:45:00Z'),
+          dnsStatus: {
+            nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
+            isUsingNamefiNameservers: true,
+            isParkingEnabled: false,
+            forwardTo: null,
+            hasWebRecords: false,
+            hasMxRecords: false,
+            ensRecord: null,
+          },
+        },
+      ],
+      orderItems: [],
+      isDomainsLoading: false,
+      hasError: false,
+    },
+  },
+};

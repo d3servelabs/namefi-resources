@@ -444,3 +444,75 @@ export const MixedOperationTypes: Story = {
     },
   },
 };
+
+/** Cart with internationalized (punycode) domain names to verify i18n display */
+export const PunycodeDomains: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      cartItems: [
+        {
+          id: 'idn-chinese',
+          userId: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
+          normalizedDomainName:
+            'xn--fiq228c.com' as NamefiNormalizedDomain /* 中文.com */,
+          amountInUSDCents: 1999,
+          durationInYears: 1,
+          type: 'REGISTER' as const,
+          registrar: 'DynadotGdg',
+          createdAt: new Date('2026-02-01T10:00:00Z'),
+          updatedAt: new Date('2026-02-01T10:00:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: null,
+        },
+        {
+          id: 'idn-japanese',
+          userId: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
+          normalizedDomainName:
+            'xn--wgv71a.com' as NamefiNormalizedDomain /* 日本.com */,
+          amountInUSDCents: 2499,
+          durationInYears: 1,
+          type: 'REGISTER' as const,
+          registrar: 'DynadotGdg',
+          createdAt: new Date('2026-02-02T10:00:00Z'),
+          updatedAt: new Date('2026-02-02T10:00:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: null,
+        },
+        {
+          id: 'idn-arabic',
+          userId: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
+          normalizedDomainName:
+            'xn--mgbh0fb.com' as NamefiNormalizedDomain /* مثال.com */,
+          amountInUSDCents: 1299,
+          durationInYears: 1,
+          type: 'IMPORT' as const,
+          registrar: 'DynadotGdg',
+          createdAt: new Date('2026-02-03T10:00:00Z'),
+          updatedAt: new Date('2026-02-03T10:00:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: null,
+        },
+        {
+          id: 'ascii-domain',
+          userId: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
+          normalizedDomainName: 'regular-domain.com' as NamefiNormalizedDomain,
+          amountInUSDCents: 999,
+          durationInYears: 1,
+          type: 'REGISTER' as const,
+          registrar: 'DynadotGdg',
+          createdAt: new Date('2026-02-04T10:00:00Z'),
+          updatedAt: new Date('2026-02-04T10:00:00Z'),
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          metadata: null,
+        },
+      ],
+      isCartLoading: false,
+    },
+  },
+};
