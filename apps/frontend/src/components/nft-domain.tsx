@@ -3,6 +3,7 @@ import type { OriginInfo } from '@/lib/origin/types';
 import Image from 'next/image';
 import { cn } from '@/lib/cn';
 import { NftDomainLabel } from '@/components/nft-domain-label';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 type NFTDomainProps = {
   origin: OriginInfo | string;
@@ -18,14 +19,34 @@ type NFTDomainProps = {
 );
 
 export function NFTDomain({ origin, className, ...props }: NFTDomainProps) {
-  const subdomain =
+  const rawSubdomain =
     'subdomain' in props
       ? props.subdomain
       : (props.domainName?.split('.')[0] ?? '');
-  const parentDomain =
+  const rawParentDomain =
     'parentDomain' in props
       ? props.parentDomain
       : (props.domainName?.split('.').slice(1).join('.') ?? '');
+
+  // Convert punycode parts to Unicode for display
+  let unicodeSubdomain = rawSubdomain;
+  let unicodeParentDomain = rawParentDomain;
+  try {
+    const fullRaw = rawParentDomain
+      ? `${rawSubdomain}.${rawParentDomain}`
+      : rawSubdomain;
+    const fullUnicode = toUnicodeDomainName(fullRaw);
+    if (fullUnicode !== fullRaw) {
+      const parts = fullUnicode.split('.');
+      unicodeSubdomain = parts[0];
+      unicodeParentDomain = parts.slice(1).join('.');
+    }
+  } catch {
+    // keep raw values on conversion failure
+  }
+  const isPunycode =
+    unicodeSubdomain !== rawSubdomain ||
+    unicodeParentDomain !== rawParentDomain;
   const originInfo =
     typeof origin === 'string'
       ? getOriginInfo(
@@ -68,12 +89,19 @@ export function NFTDomain({ origin, className, ...props }: NFTDomainProps) {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start text-secondary-foreground px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-        <NftDomainLabel text={subdomain} variant="subdomain" as="h2" />
+        <NftDomainLabel text={unicodeSubdomain} variant="subdomain" as="h2" />
         <NftDomainLabel
-          text={parentDomain ? `.${parentDomain}` : ''}
+          text={unicodeParentDomain ? `.${unicodeParentDomain}` : ''}
           variant="parent"
           as="p"
         />
+        {isPunycode && (
+          <span className="block text-xs text-white/60 mt-0.5 break-all">
+            {rawParentDomain
+              ? `${rawSubdomain}.${rawParentDomain}`
+              : rawSubdomain}
+          </span>
+        )}
       </div>
     </div>
   );

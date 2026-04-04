@@ -87,18 +87,20 @@ export function CartItem({
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{displayName}</span>
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{displayName}</span>
+            {(item.type === itemTypeSchema.enum.IMPORT ||
+              item.type === itemTypeSchema.enum.RENEW) && (
+              <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
+                {item.type === itemTypeSchema.enum.IMPORT ? 'Import' : 'Renew'}
+              </Badge>
+            )}
+          </div>
           {isPunycode && (
             <span className="text-sm text-muted-foreground">
               {item.normalizedDomainName}
             </span>
-          )}
-          {(item.type === itemTypeSchema.enum.IMPORT ||
-            item.type === itemTypeSchema.enum.RENEW) && (
-            <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
-              {item.type === itemTypeSchema.enum.IMPORT ? 'Import' : 'Renew'}
-            </Badge>
           )}
         </div>
         <div className="flex items-center justify-between">
