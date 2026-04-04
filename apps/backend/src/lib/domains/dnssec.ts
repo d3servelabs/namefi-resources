@@ -16,6 +16,7 @@ import {
 } from '@namefi-astra/registrars/lib/data/validations';
 import {
   namefiNormalizedDomainSchema,
+  resolve,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { WorkflowIdReusePolicy } from '@temporalio/common';
@@ -448,9 +449,25 @@ export async function checkDsRecordExists(
 
     // Try each parent nameserver until we get a response
     for (const ns of parentNameservers) {
-      const { stdout: dsOutput } = await execAsync(
-        `dig @${ns} +noall +answer ${domain} DS`,
+      const response = await resolve(
+        execAsync(
+          ['dig', `@${ns}`, '+noall', '+answer', domain, 'DS'].join(' '),
+        ),
       );
+      if (response.failed) {
+        _logger.warn(
+          { error: response.error },
+          `Dig for DS Record for "${domain}" Failed`,
+        );
+        continue;
+      }
+      if (response.result.stderr) {
+        _logger.warn(
+          { stderr: response.result.stderr },
+          `STDERR for Dig for DS Record for "${domain}"`,
+        );
+      }
+      const dsOutput = response.result.stdout;
 
       const answers = dsOutput.split('\n').filter((line) => line.trim() !== '');
 
