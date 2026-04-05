@@ -658,6 +658,89 @@ export const MultipleRegistrationsPending: Story = {
   },
 };
 
+export const PunycodeDomains: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 9093,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName: 'xn--fiq228c.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-2',
+            normalizedDomainName: 'xn--wgv71a.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-3',
+            normalizedDomainName: 'xn--mgbh0fb.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-4',
+            normalizedDomainName:
+              'xn--vermgensberatung-pwb.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-5',
+            normalizedDomainName: 'xn--e1afmapc.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-6',
+            normalizedDomainName: 'example.com' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-7',
+            normalizedDomainName: 'mywebsite.io' as NamefiNormalizedDomain,
+            type: 'REGISTER',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 9093,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'visa',
+          last4: '4242',
+        },
+      ],
+    },
+  },
+};
+
 export const LoadingState: Story = {
   args: {
     mockState: {
