@@ -19,6 +19,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@namefi-astra/typescript": "workspace:*"
+    "@namefi-astra/typescript": "workspace:*",
+    "@types/node": "^22.13.14"
   }
 }
