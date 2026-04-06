@@ -709,9 +709,11 @@ export const adminRouter = createTRPCRouter({
         .selectDistinctOn([namefiNftView.normalizedDomainName], {
           normalizedDomainName: namefiNftView.normalizedDomainName,
           autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
+          userId: usersTable.id,
+          privyUserId: usersTable.privyUserId,
           userEmail: sql<
             string | null
-          >`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email})`.as(
+          >`COALESCE(${privyUsersTableSchema.email}, ${usersTable.primaryEmail})`.as(
             'user_email',
           ),
         })
@@ -734,7 +736,12 @@ export const adminRouter = createTRPCRouter({
             sql`${domainUserPreferencesTable.userId}::text = ${usersTable.id}::text`,
           ),
         )
-        .where(sql`${namefiNftView.normalizedDomainName} = ANY(${domainNames})`)
+        .where(
+          sql`${namefiNftView.normalizedDomainName} = ANY(ARRAY[${sql.join(
+            domainNames.map((v) => sql`${v}`),
+            sql.raw(', '),
+          )}])`,
+        )
         .orderBy(namefiNftView.normalizedDomainName);
 
       const result: Record<
