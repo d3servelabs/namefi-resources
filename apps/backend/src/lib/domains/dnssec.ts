@@ -451,7 +451,16 @@ export async function checkDsRecordExists(
     for (const ns of parentNameservers) {
       const response = await resolve(
         execAsync(
-          ['dig', `@${ns}`, '+noall', '+answer', domain, 'DS'].join(' '),
+          [
+            'dig',
+            `@${ns}`,
+            '+noall',
+            '+answer',
+            '+tries=3',
+            '+time=15',
+            domain,
+            'DS',
+          ].join(' '),
         ),
       );
       if (response.failed) {
