@@ -126,6 +126,10 @@ const nextConfig = {
         source: '/domain/:path*',
         destination: '/domains/:path*',
       },
+      {
+        source: '/llms.txt',
+        destination: `${appConfig.BACKEND_URL}/llms.txt`,
+      },
     ];
   },
   async redirects() {
