@@ -38,15 +38,16 @@ export const createOrderV2InputSchema = z.object({
   payments: z
     .array(
       z.object({
-        amountInUsdCents: z
-          .number()
-          .int()
-          .positive('Payment amount must be positive'),
-        paymentProviderDetails: paymentProviderDetailsSchema,
+        amountInUsdCents: z.union([
+          z.number().int().positive('Payment amount must be positive'),
+          z.literal(0),
+        ]),
+        paymentProviderDetails: paymentProviderDetailsSchema.optional(),
         paymentMetadata: paymentMetadataSchema.optional(),
       }),
     )
     .min(1)
+    .transform((payments) => payments.filter((p) => p.amountInUsdCents > 0))
     .superRefine((payments, ctx) => {
       for (const [idx, p] of payments.entries()) {
         const provider = (p.paymentProviderDetails as any)?.paymentProvider;
