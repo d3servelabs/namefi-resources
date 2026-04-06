@@ -690,6 +690,66 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
+  enrichBulkBurnDomains: adminProcedureWithPermissions(Permission.WRITE_NFT)
+    .input(
+      z.object({
+        domainNames: z.array(namefiNormalizedDomainSchema).max(5000),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { domainNames } = input;
+      if (domainNames.length === 0) return {};
+
+      await ensurePrivyTableFresh();
+
+      // Join chain: nftView → privyUsersCache (on wallet) → usersTable (on privyUserId)
+      // Then use the resolved userId to look up domainUserPreferences for the current owner
+      const rows = await db
+        .with(namefiNftCte)
+        .selectDistinctOn([namefiNftView.normalizedDomainName], {
+          normalizedDomainName: namefiNftView.normalizedDomainName,
+          autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
+          userEmail: sql<
+            string | null
+          >`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email})`.as(
+            'user_email',
+          ),
+        })
+        .from(namefiNftView)
+        .leftJoin(
+          privyUsersTableSchema,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+        )
+        .leftJoin(
+          domainUserPreferencesTable,
+          and(
+            eq(
+              domainUserPreferencesTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            sql`${domainUserPreferencesTable.userId}::text = ${usersTable.id}::text`,
+          ),
+        )
+        .where(sql`${namefiNftView.normalizedDomainName} = ANY(${domainNames})`)
+        .orderBy(namefiNftView.normalizedDomainName);
+
+      const result: Record<
+        string,
+        { autoRenewEnabled: boolean | null; userEmail: string | null }
+      > = {};
+      for (const row of rows) {
+        result[row.normalizedDomainName] = {
+          autoRenewEnabled: row.autoRenewEnabled ?? null,
+          userEmail: row.userEmail ?? null,
+        };
+      }
+      return result;
+    }),
+
   getActiveFixExpirationWorkflows: adminProcedureWithPermissions(
     Permission.READ_NFT,
   ).query(async () => {

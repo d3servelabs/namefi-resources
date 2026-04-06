@@ -24,7 +24,7 @@ import {
 import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { type FC, useState, useMemo } from 'react';
+import { type FC, useState, useMemo, useCallback } from 'react';
 import { toast } from 'sonner';
 import { format, formatDistanceToNow } from 'date-fns';
 import {
@@ -41,6 +41,32 @@ import { AutoTruncateTextV2 } from '../auto-truncate-text-v2';
 import { PageShell } from '@/components/page-shell';
 import { UserWalletAvatar } from '../user-avatar';
 import { getChain } from '@namefi-astra/utils/chains';
+import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+  useDrizzlerServerFilterStrategy,
+  convertToDrizzlerFilterOptions,
+  applyClientSideSorting,
+  type DrizzlerFilterState,
+} from '@/components/table/filters';
+import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
+import { useDebounceValue } from 'usehooks-ts';
+
+type DomainToBurn = {
+  domain: string;
+  chainId: number;
+  ownerAddress: string;
+  nftExpirationDate: Date;
+  daysSinceExpiration: number;
+  registrar?: string;
+  [key: string]: unknown;
+};
+
+type EnrichedDomainToBurn = DomainToBurn & {
+  autoRenewEnabled: boolean | null;
+  userEmail: string | null;
+};
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -122,6 +148,7 @@ function BulkBurnManagementContent({
   const verifiedDomainsMap = useMemo(() => {
     return new Map(verifiedDomains.map((d) => [d.domain, d]));
   }, [verifiedDomains]);
+  const isWaitingApproval = workflowData?.status === 'WAITING_APPROVAL';
 
   const skippedDomains = workflowData?.state?.skippedDomains || [];
   const successfulBurns = useMemo(
@@ -141,31 +168,311 @@ function BulkBurnManagementContent({
     [workflowData?.state?.failedBurns, verifiedDomainsMap],
   );
 
-  const handleCopyWallet = async (address: string) => {
+  // Enrichment query for autorenew + user email
+  const enrichmentQuery = useQuery({
+    ...trpc.admin.enrichBulkBurnDomains.queryOptions({
+      domainNames: verifiedDomains.map((d) => d.domain),
+    }),
+    enabled: verifiedDomains.length > 0,
+    staleTime: 60_000,
+  });
+
+  const enrichedDomains = useMemo<EnrichedDomainToBurn[]>(() => {
+    if (!enrichmentQuery.isSuccess) {
+      return verifiedDomains.map((d) => ({
+        ...d,
+        autoRenewEnabled: null,
+        userEmail: null,
+      }));
+    }
+    const enrichMap = enrichmentQuery.data;
+    return verifiedDomains.map((d) => ({
+      ...d,
+      autoRenewEnabled: enrichMap[d.domain]?.autoRenewEnabled ?? null,
+      userEmail: enrichMap[d.domain]?.userEmail ?? null,
+    }));
+  }, [verifiedDomains, enrichmentQuery.data, enrichmentQuery.isSuccess]);
+
+  // Table state
+  const [drizzlerFilterState, setDrizzlerFilterState] =
+    useState<DrizzlerFilterState>({ columnFilters: {}, customFilters: {} });
+  const [debouncedFilterState] = useDebounceValue(drizzlerFilterState, 300);
+  const [page, setPage] = useState(1);
+
+  const {
+    preferences: { columnVisibility, sorting, pageSize },
+    setColumnVisibility,
+    setSorting,
+    setPageSize,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: 'admin-bulk-burn-verified',
+    defaultPreferences: { pageSize: 25 },
+  });
+
+  const drizzlerFilterOptions = useMemo(
+    () =>
+      convertToDrizzlerFilterOptions<EnrichedDomainToBurn>(
+        debouncedFilterState.columnFilters,
+      ),
+    [debouncedFilterState],
+  );
+
+  const filteredDomains = useMemo(() => {
+    if (!drizzlerFilterOptions) return enrichedDomains;
+    return applyDrizzlerFilterOnDataset(enrichedDomains, drizzlerFilterOptions);
+  }, [enrichedDomains, drizzlerFilterOptions]);
+
+  const sortAccessors: Record<string, (row: EnrichedDomainToBurn) => unknown> =
+    useMemo(
+      () => ({
+        domain: (r) => r.domain,
+        ownerAddress: (r) => r.ownerAddress,
+        autoRenewEnabled: (r) => r.autoRenewEnabled,
+        userEmail: (r) => r.userEmail,
+        daysSinceExpiration: (r) => r.daysSinceExpiration,
+        registrar: (r) => r.registrar ?? null,
+        chainId: (r) => r.chainId,
+        nftExpirationDate: (r) => r.nftExpirationDate,
+      }),
+      [],
+    );
+
+  const sortedDomains = useMemo(
+    () => applyClientSideSorting(filteredDomains, sorting, sortAccessors),
+    [filteredDomains, sorting, sortAccessors],
+  );
+
+  const totalPages = Math.max(1, Math.ceil(sortedDomains.length / pageSize));
+  const paginatedDomains = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return sortedDomains.slice(start, start + pageSize);
+  }, [sortedDomains, page, pageSize]);
+
+  const filterStrategy = useDrizzlerServerFilterStrategy<EnrichedDomainToBurn>({
+    filterConfig: {
+      domain: {
+        id: 'domain',
+        label: 'Domain',
+        type: 'text',
+        columnId: 'domain',
+      },
+      ownerAddress: {
+        id: 'ownerAddress',
+        label: 'Owner',
+        type: 'text',
+        columnId: 'ownerAddress',
+      },
+      autoRenewEnabled: {
+        id: 'autoRenewEnabled',
+        label: 'Auto Renew',
+        type: 'select',
+        columnId: 'autoRenewEnabled',
+        options: [
+          { value: 'true', label: 'Enabled' },
+          { value: 'false', label: 'Disabled' },
+        ],
+        allowedOperators: ['eq', 'neq'],
+      },
+      userEmail: {
+        id: 'userEmail',
+        label: 'User Email',
+        type: 'text',
+        columnId: 'userEmail',
+      },
+      daysSinceExpiration: {
+        id: 'daysSinceExpiration',
+        label: 'Days Expired',
+        type: 'number',
+        columnId: 'daysSinceExpiration',
+      },
+      registrar: {
+        id: 'registrar',
+        label: 'Registrar',
+        type: 'text',
+        columnId: 'registrar',
+      },
+    },
+    onDrizzlerFilterChange: (newState) => {
+      setDrizzlerFilterState(newState);
+      setPage(1);
+    },
+  });
+
+  const handleCopyWallet = useCallback(async (address: string) => {
     try {
       await navigator.clipboard.writeText(address);
       toast.success('Copied address successfully');
-    } catch (error) {
+    } catch {
       toast.error('Failed to copy address');
     }
-  };
-  const handleSelectAll = () => {
-    if (selectedDomains.size === verifiedDomains.length) {
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    if (selectedDomains.size === filteredDomains.length) {
       setSelectedDomains(new Set());
     } else {
-      setSelectedDomains(new Set(verifiedDomains.map((d) => d.domain)));
+      setSelectedDomains(new Set(filteredDomains.map((d) => d.domain)));
     }
-  };
+  }, [selectedDomains.size, filteredDomains]);
 
-  const handleSelectDomain = (domain: string) => {
-    const newSelected = new Set(selectedDomains);
-    if (newSelected.has(domain)) {
-      newSelected.delete(domain);
-    } else {
-      newSelected.add(domain);
-    }
-    setSelectedDomains(newSelected);
-  };
+  const handleSelectDomain = useCallback(
+    (domain: string) => {
+      const newSelected = new Set(selectedDomains);
+      if (newSelected.has(domain)) {
+        newSelected.delete(domain);
+      } else {
+        newSelected.add(domain);
+      }
+      setSelectedDomains(newSelected);
+    },
+    [selectedDomains],
+  );
+
+  const verifiedColumns = useMemo<ColumnDef<EnrichedDomainToBurn, any>[]>(
+    () => [
+      {
+        id: 'select',
+        header: () => (
+          <Checkbox
+            checked={
+              selectedDomains.size === filteredDomains.length &&
+              filteredDomains.length > 0
+            }
+            disabled={!isWaitingApproval}
+            onCheckedChange={handleSelectAll}
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={selectedDomains.has(row.original.domain)}
+            disabled={!isWaitingApproval}
+            onCheckedChange={() => handleSelectDomain(row.original.domain)}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: 'domain',
+        header: 'Domain',
+        cell: ({ row }) => (
+          <AutoTruncateTextV2
+            minCharactersToDisplay={30}
+            initialCharactersCountToDisplay={30}
+          >
+            {row.original.domain}
+          </AutoTruncateTextV2>
+        ),
+      },
+      {
+        accessorKey: 'chainId',
+        header: 'Chain',
+        cell: ({ row }) => (
+          <Badge variant="outline">{getChainName(row.original.chainId)}</Badge>
+        ),
+      },
+      {
+        accessorKey: 'ownerAddress',
+        header: 'Owner',
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
+            <UserWalletAvatar
+              address={row.original.ownerAddress}
+              className="size-6"
+            />
+            <div className="flex-1 min-w-0">
+              <AutoTruncateTextV2
+                initialCharactersCountToDisplay={16}
+                minCharactersToDisplay={16}
+                className="font-mono text-xs"
+              >
+                {row.original.ownerAddress}
+              </AutoTruncateTextV2>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleCopyWallet(row.original.ownerAddress)}
+              className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
+              title="Copy address"
+            >
+              <Copy className="h-3 w-3" />
+            </button>
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'autoRenewEnabled',
+        header: 'Auto Renew',
+        cell: ({ row }) => {
+          const val = row.original.autoRenewEnabled;
+          if (val == null)
+            return <span className="text-sm text-muted-foreground">N/A</span>;
+          return val ? (
+            <Badge variant="default" className="bg-green-600">
+              Enabled
+            </Badge>
+          ) : (
+            <Badge variant="secondary">Disabled</Badge>
+          );
+        },
+      },
+      {
+        accessorKey: 'userEmail',
+        header: 'User Email',
+        cell: ({ row }) => {
+          const email = row.original.userEmail;
+          if (!email)
+            return <span className="text-sm text-muted-foreground">-</span>;
+          return (
+            <AutoTruncateTextV2
+              minCharactersToDisplay={20}
+              initialCharactersCountToDisplay={20}
+              className="text-sm"
+            >
+              {email}
+            </AutoTruncateTextV2>
+          );
+        },
+      },
+      {
+        accessorKey: 'nftExpirationDate',
+        header: 'NFT Expiry',
+        cell: ({ row }) => (
+          <span className="text-sm">
+            {format(new Date(row.original.nftExpirationDate), 'yyyy-MM-dd')}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'daysSinceExpiration',
+        header: 'Days Expired',
+        cell: ({ row }) => (
+          <Badge variant="secondary">
+            {row.original.daysSinceExpiration} days
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: 'registrar',
+        header: 'Registrar',
+        cell: ({ row }) => (
+          <span className="text-sm text-muted-foreground">
+            {row.original.registrar || 'N/A'}
+          </span>
+        ),
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      selectedDomains,
+      filteredDomains.length,
+      isWaitingApproval,
+      handleCopyWallet,
+      handleSelectAll,
+      handleSelectDomain,
+    ],
+  );
 
   const handleApprove = () => {
     if (selectedDomains.size === 0) {
@@ -271,8 +578,7 @@ function BulkBurnManagementContent({
     startTime,
     state,
   } = workflowData;
-  const isWaitingApproval = status === 'WAITING_APPROVAL';
-  const isProcessing = status === 'PROCESSING';
+  const _isProcessing = status === 'PROCESSING';
   const isCompleted = status === 'COMPLETED' || status === 'CANCELLED';
 
   return (
@@ -575,7 +881,7 @@ function BulkBurnManagementContent({
           </CardContent>
         </Card>
       )}
-      {/* Verified Domains Table - Only show when waiting for approval */}
+      {/* Verified Domains Table */}
       {verifiedDomains.length > 0 && (
         <Card>
           <CardHeader>
@@ -584,7 +890,7 @@ function BulkBurnManagementContent({
                 <CardTitle>Domains Ready to Burn</CardTitle>
                 <CardDescription>
                   Select domains to approve for burning ({selectedDomains.size}{' '}
-                  of {verifiedDomains.length} selected)
+                  of {filteredDomains.length} selected)
                 </CardDescription>
               </div>
               <div className="flex gap-2">
@@ -592,9 +898,9 @@ function BulkBurnManagementContent({
                   onClick={handleSelectAll}
                   variant="outline"
                   size="sm"
-                  disabled={!isWaitingApproval || verifiedDomains.length === 0}
+                  disabled={!isWaitingApproval || filteredDomains.length === 0}
                 >
-                  {selectedDomains.size === verifiedDomains.length
+                  {selectedDomains.size === filteredDomains.length
                     ? 'Deselect All'
                     : 'Select All'}
                 </Button>
@@ -622,105 +928,36 @@ function BulkBurnManagementContent({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th className="w-12">
-                      <Checkbox
-                        checked={
-                          selectedDomains.size === verifiedDomains.length &&
-                          verifiedDomains.length > 0
-                        }
-                        disabled={!isWaitingApproval}
-                        onCheckedChange={handleSelectAll}
-                      />
-                    </Th>
-                    <Th>Domain</Th>
-                    <Th>Chain</Th>
-                    <Th>Owner</Th>
-                    <Th>Registrar DomainStatus</Th>
-                    <Th>NFT Expiry</Th>
-                    <Th>Days Expired</Th>
-                    <Th>Registrar</Th>
-                  </Tr>
-                </Thead>
-                <TableBody>
-                  {verifiedDomains.map((domain) => (
-                    <Tr key={domain.domain}>
-                      <Td>
-                        <Checkbox
-                          checked={selectedDomains.has(domain.domain)}
-                          disabled={!isWaitingApproval}
-                          onCheckedChange={() =>
-                            handleSelectDomain(domain.domain)
-                          }
-                        />
-                      </Td>
-                      <Td>
-                        <AutoTruncateTextV2
-                          minCharactersToDisplay={30}
-                          initialCharactersCountToDisplay={30}
-                        >
-                          {domain.domain}
-                        </AutoTruncateTextV2>
-                      </Td>
-                      <Td>
-                        <Badge variant="outline">
-                          {getChainName(domain.chainId)}
-                        </Badge>
-                      </Td>
-                      <Td>
-                        <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-                          <UserWalletAvatar
-                            address={domain.ownerAddress}
-                            className="size-6"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <AutoTruncateTextV2
-                              initialCharactersCountToDisplay={16}
-                              minCharactersToDisplay={16}
-                              className="font-mono text-xs"
-                            >
-                              {domain.ownerAddress}
-                            </AutoTruncateTextV2>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleCopyWallet(domain.ownerAddress)
-                            }
-                            className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-                            title="Copy address"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </button>
-                        </div>
-                      </Td>
-                      <Td>
-                        <Badge variant="secondary">
-                          Not found in registrar account
-                        </Badge>
-                      </Td>
-                      <Td className="text-sm">
-                        {format(
-                          new Date(domain.nftExpirationDate),
-                          'MMM dd, yyyy',
-                        )}
-                      </Td>
-                      <Td>
-                        <Badge variant="secondary">
-                          {domain.daysSinceExpiration} days
-                        </Badge>
-                      </Td>
-                      <Td className="text-sm text-muted-foreground">
-                        {domain.registrar || 'N/A'}
-                      </Td>
-                    </Tr>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+            {enrichmentQuery.isError && (
+              <div className="mb-4 flex items-center gap-2 rounded-md border border-red-600/30 bg-red-600/10 px-4 py-3 text-sm text-red-500">
+                <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+                Failed to load auto-renew and email data. These columns may show
+                incomplete results.
+              </div>
+            )}
+            <ExtensibleDataTable<EnrichedDomainToBurn, typeof filterStrategy>
+              filterStrategy={filterStrategy}
+              columns={verifiedColumns}
+              data={paginatedDomains}
+              isLoading={isLoading || enrichmentQuery.isLoading}
+              isFetching={enrichmentQuery.isFetching}
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              totalCount={filteredDomains.length}
+              onPageChange={setPage}
+              onPageSizeChange={(size) => {
+                setPage(1);
+                setPageSize(size);
+              }}
+              sorting={sorting}
+              onSortingChange={setSorting}
+              columnVisibility={columnVisibility}
+              onColumnVisibilityChange={setColumnVisibility}
+              onResetPreferences={resetToDefaults}
+              emptyMessage="No verified domains"
+              loadingMessage="Loading domains..."
+            />
           </CardContent>
         </Card>
       )}

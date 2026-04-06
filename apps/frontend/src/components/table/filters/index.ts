@@ -36,3 +36,6 @@ export {
 // Components
 export { DrizzlerFilterPanel } from './components/drizzler-filter-panel';
 export { DrizzlerFilterField as DrizzlerFilterFieldComponent } from './components/drizzler-filter-field';
+
+// Client-side utilities
+export { applyClientSideSorting } from './utils/apply-client-side-sorting';
