@@ -1,9 +1,11 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
+  useCallback,
   useEffect,
   useState,
   type ComponentProps,
@@ -18,8 +20,10 @@ import {
   Gift,
   Globe,
   KeyRound,
+  Mail,
   ShoppingCart,
   UserRound,
+  VenetianMask,
   Wallet,
 } from 'lucide-react';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
@@ -62,6 +66,9 @@ import {
 } from '@/components/ui/shadcn/table';
 import { getChain } from '@namefi-astra/utils/chains';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
+import { Permission } from '@namefi-astra/utils/permissions';
+import { AsyncButton } from '@/components/buttons/async-button';
+import { PermissionGate } from '@/components/access/PermissionGate';
 
 type AdminUserDetails = AppRouterOutput['admin']['getUserDetails'];
 type AdminWalletDetails = AppRouterOutput['admin']['getWalletDetails'];
@@ -133,6 +140,76 @@ const getWalletLabel = (wallet: AdminWalletDetails['wallet']) => {
     wallet.linkedDisplayName ?? wallet.linkedPrimaryEmail ?? wallet.address
   );
 };
+
+function UserActionButtons({
+  userId,
+  isAdmin,
+  primaryEmail,
+}: {
+  userId: string;
+  isAdmin: boolean;
+  primaryEmail: string | null;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const impersonate = useMutation(trpc.users.impersonateUser.mutationOptions());
+
+  const handleImpersonate = useCallback(async () => {
+    try {
+      await impersonate.mutateAsync({ targetUserId: userId });
+      await queryClient.invalidateQueries();
+      await router.replace('/');
+      toast('Impersonation enabled', {
+        description: `Now impersonating ${userId}`,
+      });
+    } catch (error) {
+      toast('Failed to impersonate', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }, [impersonate.mutateAsync, queryClient, router, userId]);
+
+  return (
+    <div className="flex items-center gap-2">
+      {!isAdmin && (
+        <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
+          <AsyncButton
+            size="sm"
+            variant="secondary"
+            onClick={handleImpersonate}
+            loadingText="Impersonating..."
+          >
+            <VenetianMask className="h-4 w-4" />
+            Impersonate
+          </AsyncButton>
+        </PermissionGate>
+      )}
+      {!!primaryEmail && (
+        <Button
+          size="sm"
+          variant="secondary"
+          render={(props) => (
+            <a
+              {...props}
+              href={`mailto:${primaryEmail}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Send email"
+              className={cn('flex', props.className)}
+            >
+              {props.children}
+            </a>
+          )}
+          nativeButton={false}
+        >
+          <Mail className="h-4 w-4" />
+          Send Email
+        </Button>
+      )}
+    </div>
+  );
+}
 
 function LoadingDialogBody({ title }: { title: string }) {
   return (
@@ -724,6 +801,11 @@ function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
             </CardDescription>
           </div>
           <div className="flex flex-wrap gap-2">
+            <UserActionButtons
+              userId={data.user.id}
+              isAdmin={data.user.isAdmin}
+              primaryEmail={data.user.primaryEmail}
+            />
             <ExternalPageButton
               href={`/admin/users/${data.user.id}`}
               closeAdminDetailDialogs={true}
@@ -1678,6 +1760,13 @@ function UserDetailsPageContentView({ data }: { data: AdminUserDetails }) {
             <CardDescription className="mt-1 break-all">
               {data.user.primaryEmail ?? 'No primary email'}
             </CardDescription>
+            <div className="mt-3">
+              <UserActionButtons
+                userId={data.user.id}
+                isAdmin={data.user.isAdmin}
+                primaryEmail={data.user.primaryEmail}
+              />
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <CopyableBadge label="User ID" value={data.user.id} />

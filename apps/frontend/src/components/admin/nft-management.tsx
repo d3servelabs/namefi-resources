@@ -2,6 +2,7 @@
 
 import {
   type FC,
+  memo,
   type SetStateAction,
   useCallback,
   useEffect,
@@ -543,7 +544,7 @@ function ActiveWorkflowsDialog(props: {
   );
 }
 
-function NftManagementTable() {
+const NftManagementTable = memo(function NftManagementTable() {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -1311,7 +1312,7 @@ function NftManagementTable() {
       </Card>
     </>
   );
-}
+});
 
 export function AdminNftManagement() {
   const { isAuthenticated, isLoading } = useAuth();
