@@ -6,6 +6,7 @@ import {
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { sortByProviderPriority } from '../shared/workflow-helpers/payment-dispatch';
 import { chargeUserWorkflow } from './chargeUser.workflow';
 import {
   multiRefundWorkflow,
@@ -72,17 +73,6 @@ export async function multiChargeWorkflow(
     throw new Error('Some payments are duplicated');
   }
 
-  // Default priority: Stripe first for better UX, then MPP, NFSC chains, then X402
-  const defaultPriority: PaymentPriority = [
-    'STRIPE',
-    'MPP',
-    'NFSC_ETHEREUM_SEPOLIA',
-    'NFSC_BASE',
-    'NFSC_ETHEREUM',
-    'X402',
-  ] as PaymentPriority;
-  const priorityOrder = chargePriority || defaultPriority;
-
   // validate payment amounts and get payment details
   const details = await getMultiplePaymentsDetails({
     paymentIds: paymentsData.map((p) => p.paymentId),
@@ -117,15 +107,12 @@ export async function multiChargeWorkflow(
     }
   }
 
-  // Sort payments based on priority order
-  // Since PaymentPriority guarantees all 4 providers are present, indexOf will always find a match
-  const sortedPaymentsData = paymentsData.sort((a, b) => {
-    const providerA = details[a.paymentId].paymentProvider;
-    const providerB = details[b.paymentId].paymentProvider;
-    const indexA = priorityOrder.indexOf(providerA);
-    const indexB = priorityOrder.indexOf(providerB);
-    return indexA - indexB;
-  });
+  // Sort payments by provider priority
+  const sortedPaymentsData = sortByProviderPriority(
+    paymentsData,
+    (p) => details[p.paymentId].paymentProvider,
+    chargePriority,
+  );
 
   let refundResult: MultiRefundWorkflowOutput | undefined;
   for (const { paymentId, amountInUSDCents, metadata } of sortedPaymentsData) {

@@ -1,6 +1,7 @@
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { sortByProviderPriority } from '../shared/workflow-helpers/payment-dispatch';
 import { refundUserWorkflow } from './refund-user.workflow';
 import { values } from 'ramda';
 import type { PaymentPriority } from '../shared/workflow-helpers/payment-priority';
@@ -43,29 +44,17 @@ export async function multiRefundWorkflow({
   amountToRefundInUsdCents,
   refundPriority,
 }: MultiRefundWorkflowInput): Promise<MultiRefundWorkflowOutput> {
-  // Default priority: Stripe first, then MPP, NFSC chains, then X402
-  const defaultPriority: PaymentPriority = [
-    'STRIPE',
-    'MPP',
-    'NFSC_ETHEREUM_SEPOLIA',
-    'NFSC_BASE',
-    'NFSC_ETHEREUM',
-    'X402',
-  ] as PaymentPriority;
-  const priorityOrder = refundPriority || defaultPriority;
-
   const paymentsWithProvidersMap = await getMultiplePaymentsDetails({
     paymentIds,
   });
   const paymentsWithProviders = values(paymentsWithProvidersMap);
 
-  // Sort payments based on priority order
-  // Since PaymentPriority guarantees all 4 providers are present, indexOf will always find a match
-  const sorted = paymentsWithProviders.sort((a, b) => {
-    const indexA = priorityOrder.indexOf(a.paymentProvider);
-    const indexB = priorityOrder.indexOf(b.paymentProvider);
-    return indexA - indexB;
-  });
+  // Sort payments by provider priority
+  const sorted = sortByProviderPriority(
+    paymentsWithProviders,
+    (p) => p.paymentProvider,
+    refundPriority,
+  );
 
   const successfulRefunds: Array<{
     paymentId: string;

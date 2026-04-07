@@ -1,4 +1,3 @@
-import { paymentProviderEnum } from '@namefi-astra/db/schema';
 import {
   type PaymentStatus,
   paymentProviderSchema,
@@ -9,14 +8,13 @@ import type { CreateStripePaymentIntentInput } from '#services/stripe-payments/t
 import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import {
+  catchAndAlertLocally,
+  isNfscProvider,
+} from '../shared/workflow-helpers';
 import { chargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
-import { catchAndAlertLocally } from '../shared/workflow-helpers';
 import type { SettleX402PaymentInput } from '../activities/x402.activities';
-
-export const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
-  (provider) => provider.startsWith('NFSC_'),
-);
 
 export type PaymentExtraMetadata = Pick<
   CreateStripePaymentIntentInput,
@@ -131,7 +129,7 @@ export async function chargeUserWorkflow({
     }
   }
 
-  if (NFSC_PAYMENT_PROVIDERS.includes(paymentProvider)) {
+  if (isNfscProvider(paymentProvider)) {
     if (!nfscPaymentDetails?.chainId || !nfscPaymentDetails?.walletAddress) {
       workflow.log.error(
         `NFSC payment missing required nfscPaymentDetails. paymentId: ${paymentId}`,
