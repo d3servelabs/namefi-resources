@@ -20,15 +20,34 @@ const monitorsRouter = new Hono();
 const _logger = createLogger({ context: 'MONITORS_ROUTER' });
 
 const DYNADOT_BALANCE_TRIGGER_LIMIT = Object.freeze({
-  gdg: 400,
+  gdg: 300,
   regular: 200,
 });
 const CENTRALNIC_BALANCE_TRIGGER_LIMIT = 200;
 
+/**
+ * Based on 01Jan-31Mar 2026
+ *
+ * 1 ETH = 2024.89 USD (Apr06 2026)
+ *
+ * For ETH mainnet (504 Transactions in 3 months)
+ * Avg/Month: ~0.0023ETH ( 4.68 $USD )
+ *
+ * > Estimated For 4 Months: ~0.0093ETH ( 18.72 $USD )
+ *
+ *
+ * For Base mainnet (702 Transactions in 3 months)
+ * Avg/Month: ~0.00011ETH ( 0.22 $USD )
+ *
+ * > Estimated For 4 Months: ~0.00044ETH ( 0.88 $USD )
+ *
+ * The Threshold will be the estimated amount needed for 4 Months
+ *
+ */
 const BALANCE_THRESHOLD = Object.freeze({
-  [CHAINS.mainnet.id]: parseEther('0.025'),
-  [CHAINS.base.id]: parseEther('0.0025'),
-  [CHAINS.sepolia.id]: parseEther('0.0025'),
+  [CHAINS.mainnet.id]: parseEther('0.0093'),
+  [CHAINS.base.id]: parseEther('0.00044'),
+  [CHAINS.sepolia.id]: parseEther('0.0093'),
 });
 
 const zStringNumber = z.union([
