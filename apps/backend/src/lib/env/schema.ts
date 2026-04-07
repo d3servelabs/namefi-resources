@@ -148,6 +148,10 @@ export const secretsSchema = z.object({
   NAMEFI_COWBELL_SLACK_WEBHOOK_URL: z.string().url().optional(),
   DNS_CACHE_SERVERS_API_KEY: z.string().optional(),
 
+  // ClickUp API for incident ticket creation
+  CLICKUP_API_TOKEN: z.string().optional(),
+  CLICKUP_INCIDENT_LIST_ID: z.string().optional(),
+
   // Ponder indexer API key for service-to-service sync
   PONDER_INDEXER_API_KEY: z.string().optional(),
   MAIN_REDIS_URL: z.string().url().optional(),
