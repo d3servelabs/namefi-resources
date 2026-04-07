@@ -251,7 +251,6 @@ export async function sendTemporalAlertToSlack(
       }
     } catch (error) {
       logger.error({ error }, 'Failed to send alert to Slack');
-      throw error;
     }
   } else {
     ctx.log.warn('No Slack webhook URL configured, skipping Slack Alert');
