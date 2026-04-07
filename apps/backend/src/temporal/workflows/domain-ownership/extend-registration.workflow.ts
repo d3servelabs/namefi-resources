@@ -187,7 +187,7 @@ export async function extendDomainRegistrationWorkflow({
       workflowId: `set-expiration-for-namefi-nft-${normalizedDomainName}-${chainId}-${nextExpirationTimeInSeconds}`,
       args: [chainId, normalizedDomainName, nextExpirationTimeInSeconds],
       retry: {
-        maximumAttempts: 2,
+        maximumAttempts: 5,
       },
       workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       parentClosePolicy: 'REQUEST_CANCEL',
@@ -205,19 +205,39 @@ export async function extendDomainRegistrationWorkflow({
       txHash,
       txStatus: 'SUCCESS',
     };
-  } catch (_error: any) {
+  } catch (error: any) {
     const info = workflow.workflowInfo();
+
+    workflow.log.error(
+      'NFT expiration update failed after successful registrar renewal',
+      {
+        workflowId: info.workflowId,
+        runId: info.runId,
+        normalizedDomainName,
+        nextExpirationTimeInSeconds,
+        chainId,
+        error: error?.message ?? String(error),
+      },
+    );
+
     try {
       await criticalAlertNamefi({
-        title: `Workflow Failed (${info.workflowId})`,
-        message: 'Extend NFT Expiration Not Successful',
+        title: `PARTIAL FAILURE: Renewal succeeded but NFT expiry stale (${info.workflowId})`,
+        message: `Domain ${normalizedDomainName} was renewed at the registrar but the NFT expiration update failed. The NFT shows a stale expiry date which may cause double-charging via auto-renewal or incorrect marketplace listings.`,
         runId: info.runId,
         nextExpirationTimeInSeconds,
         operation: 'DOMAIN_RENEW',
         normalizedDomainName,
+        error: error?.message ?? String(error),
       });
-    } catch (error: any) {
-      workflow.log.error('Failed to send alert', error);
+    } catch (alertError: any) {
+      workflow.log.error(
+        'Failed to send critical alert for NFT expiry update failure',
+        {
+          alertError: alertError?.message ?? String(alertError),
+          normalizedDomainName,
+        },
+      );
     }
 
     if (updateDomainIndex) {
