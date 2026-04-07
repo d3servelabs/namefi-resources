@@ -51,11 +51,12 @@ import {
 import { toPunycodeFqdn } from '@namefi-astra/registrars/lib/data/validations';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import {
+  useMutation,
   useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { Info, Loader2, RotateCw, SaveIcon } from 'lucide-react';
+import { Info, Loader2, RotateCw, SaveIcon, XCircleIcon } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import React from 'react';
@@ -68,6 +69,16 @@ import {
   type RequestWalletConnectionRef,
 } from '@/components/dialogs/request-wallet-connection';
 import { useAccount } from 'wagmi';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
+
+const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
+  key: 'cancel_dns_workflow',
+  label: 'Cancel Workflow',
+  description: 'Show cancel button for active DNS/DNSSEC workflows',
+  scope: 'global',
+  defaultValue: false,
+};
 
 /**
  * Unified EIP-712 types for domain actions.
@@ -734,10 +745,30 @@ function NameserversProgressModal({
   onClose?: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [canCancel] = useAdminFeatureFlag(CANCEL_WORKFLOW_FLAG);
 
   const progress = useChangeNameserversProgress(domainName, {
     enabled: open,
   });
+
+  const cancelMutation = useMutation(
+    trpc.domainConfig.cancelNameserversWorkflow.mutationOptions({
+      onSuccess() {
+        toast.success('Cancellation requested');
+        queryClient.invalidateQueries({
+          queryKey:
+            trpc.domainConfig.queryActiveNameserversChangeWorkflow.queryKey({
+              domainName,
+            }),
+        });
+      },
+      onError(error) {
+        toast.error(`Failed to cancel: ${error.message}`);
+      },
+    }),
+  );
 
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -800,6 +831,20 @@ function NameserversProgressModal({
           showTitle={false}
           className="border-none"
         />
+        {canCancel && (
+          <div className="flex justify-end pt-2 border-t border-zinc-800">
+            <LoadingButton
+              variant="destructive"
+              size="sm"
+              isLoading={cancelMutation.isPending}
+              loadingText="Cancelling..."
+              onClick={() => cancelMutation.mutate({ domainName })}
+            >
+              <XCircleIcon className="w-4 h-4" />
+              Cancel Workflow
+            </LoadingButton>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

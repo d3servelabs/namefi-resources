@@ -10,6 +10,7 @@ import {
   type WorkflowProgressState,
 } from '../shared/workflow-helpers/workflow-progress';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
 
 /**
  * Step IDs for the enable DNSSEC workflow.
@@ -101,6 +102,32 @@ export async function enableDnssecWorkflow(
   const { pollDsRecordAssociationStatus } = longRunningActivities;
   const { updateDomainIndexRows } = indexerActivities;
 
+  const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
+
+  // Track cancellation requests
+  let cancelled = false;
+  if (hasCancellationSupport) {
+    workflow.CancellationScope.current().cancelRequested.then(() => {
+      cancelled = true;
+    });
+  }
+
+  /** Check cancellation and run compensating actions if cancelled. */
+  async function checkCancellation(
+    compensate?: () => Promise<void>,
+  ): Promise<void> {
+    if (!cancelled) return;
+    if (compensate) {
+      await workflow.CancellationScope.nonCancellable(compensate);
+    }
+    progress.fail('Workflow cancelled');
+    throw workflow.ApplicationFailure.create({
+      message: 'Workflow cancelled by user',
+      nonRetryable: true,
+      type: 'workflow/cancelled',
+    });
+  }
+
   try {
     // Step 1: Check if domain supports DNSSEC
     progress.startStep('check-support');
@@ -149,6 +176,13 @@ export async function enableDnssecWorkflow(
 
     progress.completeStep('enable-zone-signing');
 
+    // Cancellation checkpoint: undo zone signing if cancelled before DS association
+    if (hasCancellationSupport) {
+      await checkCancellation(() =>
+        setZoneSigningFlag(input.domainName, false),
+      );
+    }
+
     // Step 3: Associate DS record with registrar
     progress.startStep('associate-ds-record');
 
@@ -172,10 +206,21 @@ export async function enableDnssecWorkflow(
     // Step 4: Wait for DS record propagation
     progress.startStep('verify-propagation', 'Waiting for DNS propagation...');
 
-    const dsAssociationStatus = await pollDsRecordAssociationStatus({
-      registrarOperationId: registrarOperation.operationId,
-      domainName: input.domainName,
-    });
+    const dsAssociationStatus = hasCancellationSupport
+      ? await pollWithTimeoutAlert(
+          pollDsRecordAssociationStatus({
+            registrarOperationId: registrarOperation.operationId,
+            domainName: input.domainName,
+          }),
+          {
+            domainName: input.domainName,
+            operationLabel: 'DS record association propagation',
+          },
+        )
+      : await pollDsRecordAssociationStatus({
+          registrarOperationId: registrarOperation.operationId,
+          domainName: input.domainName,
+        });
 
     if (matchAny(dsAssociationStatus, 'FAILED', 'ERROR')) {
       progress.failStep('verify-propagation', 'DS record propagation failed');
@@ -216,6 +261,18 @@ export async function enableDnssecWorkflow(
 
     progress.complete();
   } catch (e) {
+    // On cancellation during polling/activities, rollback zone signing
+    if (hasCancellationSupport && workflow.isCancellation(e)) {
+      await workflow.CancellationScope.nonCancellable(async () => {
+        try {
+          await setZoneSigningFlag(input.domainName, false);
+        } catch {
+          // Best-effort rollback
+        }
+      });
+      progress.fail('Workflow cancelled');
+      throw e;
+    }
     // Only update progress if not already failed
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));

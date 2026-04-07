@@ -933,6 +933,61 @@ export const domainConfigRouter = createTRPCRouter({
       return result;
     }),
 
+  /**
+   * Cancel an active nameservers change workflow.
+   * Uses Temporal's native workflow cancellation.
+   */
+  cancelNameserversWorkflow: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { domainName } = input;
+
+      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+
+      const punycodeDomain = toPunycodeDomainName(domainName);
+      const activeWorkflow =
+        await queryActiveNameserversChangeWorkflow(punycodeDomain);
+
+      if (!activeWorkflow) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'No active nameservers change workflow found',
+        });
+      }
+
+      try {
+        const handle = temporalClient.workflow.getHandle(
+          activeWorkflow.workflowId,
+        );
+        await handle.cancel();
+
+        logger.info(
+          {
+            domainName,
+            workflowId: activeWorkflow.workflowId,
+            userId: ctx.user.id,
+          },
+          'Nameservers change workflow cancellation requested',
+        );
+
+        return { success: true, workflowId: activeWorkflow.workflowId };
+      } catch (error) {
+        logger.error(
+          { error, domainName, workflowId: activeWorkflow.workflowId },
+          'Failed to cancel nameservers change workflow',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to cancel workflow',
+          cause: error,
+        });
+      }
+    }),
+
   dnssec: domainDnssecRouter,
 });
 

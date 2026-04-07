@@ -10,6 +10,7 @@ import {
   type WorkflowProgressState,
 } from '../shared/workflow-helpers/workflow-progress';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
 
 /**
  * Step IDs for the disable DNSSEC workflow.
@@ -93,12 +94,42 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
   const {
     getDnssecStatusDetails,
     disassociateDelegationSigner,
+    associateDelegationSignerWithDefaultKey,
     setZoneSigningFlag,
   } = standardActivities;
 
   const { pollDsRecordRemovalStatus, pollDsRecordRemovalPropagation } =
     longRunningActivities;
   const { updateDomainIndexRows } = indexerActivities;
+
+  const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
+
+  // Track cancellation requests
+  let cancelled = false;
+  if (hasCancellationSupport) {
+    workflow.CancellationScope.current().cancelRequested.then(() => {
+      cancelled = true;
+    });
+  }
+
+  // Track whether DS was removed (for rollback)
+  let dsWasRemoved = false;
+
+  /** Check cancellation and run compensating actions if cancelled. */
+  async function checkCancellation(
+    compensate?: () => Promise<void>,
+  ): Promise<void> {
+    if (!cancelled) return;
+    if (compensate) {
+      await workflow.CancellationScope.nonCancellable(compensate);
+    }
+    progress.fail('Workflow cancelled');
+    throw workflow.ApplicationFailure.create({
+      message: 'Workflow cancelled by user',
+      nonRetryable: true,
+      type: 'workflow/cancelled',
+    });
+  }
 
   try {
     // Step 1: Check current DNSSEC status
@@ -149,10 +180,21 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
       }
 
       // Wait for DS record removal at registrar
-      const dsRemovalStatus = await pollDsRecordRemovalStatus({
-        registrarOperationId: registrarOperation.operationId,
-        domainName: input.domainName,
-      });
+      const dsRemovalStatus = hasCancellationSupport
+        ? await pollWithTimeoutAlert(
+            pollDsRecordRemovalStatus({
+              registrarOperationId: registrarOperation.operationId,
+              domainName: input.domainName,
+            }),
+            {
+              domainName: input.domainName,
+              operationLabel: 'DS record removal at registrar',
+            },
+          )
+        : await pollDsRecordRemovalStatus({
+            registrarOperationId: registrarOperation.operationId,
+            domainName: input.domainName,
+          });
 
       if (matchAny(dsRemovalStatus, 'FAILED', 'ERROR')) {
         progress.failStep('remove-ds-record', 'DS record removal failed');
@@ -162,14 +204,30 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
         });
       }
 
+      dsWasRemoved = true;
       progress.completeStep('remove-ds-record');
+
+      // Cancellation checkpoint: re-associate DS if cancelled after removal
+      if (hasCancellationSupport) {
+        await checkCancellation(() =>
+          associateDelegationSignerWithDefaultKey(input.domainName).then(
+            () => undefined,
+          ),
+        );
+      }
 
       // Step 3: Verify DS record removal propagation
       progress.startStep('verify-removal', 'Waiting for DNS propagation...');
 
-      const dsPropagationStatus = await pollDsRecordRemovalPropagation(
-        input.domainName,
-      );
+      const dsPropagationStatus = hasCancellationSupport
+        ? await pollWithTimeoutAlert(
+            pollDsRecordRemovalPropagation(input.domainName),
+            {
+              domainName: input.domainName,
+              operationLabel: 'DS record removal propagation',
+            },
+          )
+        : await pollDsRecordRemovalPropagation(input.domainName);
 
       if (matchAny(dsPropagationStatus, 'FAILED', 'ERROR')) {
         progress.failStep('verify-removal', 'DS record propagation failed');
@@ -184,6 +242,18 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
       // No DS record to remove, skip these steps
       progress.skipStep('remove-ds-record', 'No DS record to remove');
       progress.skipStep('verify-removal', 'No DS record to verify');
+    }
+
+    // Cancellation checkpoint: re-associate DS if cancelled before zone signing disable
+    if (hasCancellationSupport) {
+      await checkCancellation(
+        dsWasRemoved
+          ? () =>
+              associateDelegationSignerWithDefaultKey(input.domainName).then(
+                () => undefined,
+              )
+          : undefined,
+      );
     }
 
     // Step 4: Disable zone signing
@@ -221,6 +291,20 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
     progress.complete();
     return progress.state;
   } catch (e) {
+    // On cancellation, rollback: re-associate DS if it was removed
+    if (hasCancellationSupport && workflow.isCancellation(e)) {
+      await workflow.CancellationScope.nonCancellable(async () => {
+        if (dsWasRemoved) {
+          try {
+            await associateDelegationSignerWithDefaultKey(input.domainName);
+          } catch {
+            // Best-effort rollback
+          }
+        }
+      });
+      progress.fail('Workflow cancelled');
+      throw e;
+    }
     // Only update progress if not already failed
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));

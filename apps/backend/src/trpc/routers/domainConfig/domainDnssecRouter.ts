@@ -18,6 +18,9 @@ import {
 import { createLogger, logger } from '#lib/logger';
 
 import { TRPCError } from '@trpc/server';
+import { temporalClient } from '../../../temporal/client';
+import { enableDnssecWorkflow } from '../../../temporal/workflows/enable-dnssec.workflow';
+import { disableDnssecWorkflow } from '../../../temporal/workflows/disable-dnssec.workflow';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 
@@ -153,6 +156,61 @@ export const domainDnssecRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Error querying active nameservers change workflow',
+        });
+      }
+    }),
+
+  /**
+   * Cancel an active DNSSEC workflow (enable or disable).
+   * Uses Temporal's native workflow cancellation.
+   */
+  cancelDnssecWorkflow: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+        operation: z.enum(['ENABLE_DNSSEC', 'REMOVE_DNSSEC']),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { domainName, operation } = input;
+
+      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+
+      const punycodeDomain = toPunycodeDomainName(domainName);
+      const workflowId =
+        operation === 'ENABLE_DNSSEC'
+          ? enableDnssecWorkflow.generateId({ domainName: punycodeDomain })
+          : disableDnssecWorkflow.generateId({ domainName: punycodeDomain });
+
+      try {
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        const description = await handle.describe();
+
+        if (description.status.name !== 'RUNNING') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Workflow is not running',
+          });
+        }
+
+        await handle.cancel();
+
+        _logger.info(
+          { domainName, operation, workflowId, userId: ctx.user.id },
+          'DNSSEC workflow cancellation requested',
+        );
+
+        return { success: true, workflowId };
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+        _logger.error(
+          { error, domainName, operation, workflowId },
+          'Failed to cancel DNSSEC workflow',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to cancel workflow',
+          cause: error,
         });
       }
     }),

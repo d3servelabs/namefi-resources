@@ -7,6 +7,7 @@ import { defineQuery } from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
 
 import {
   createWorkflowProgress,
@@ -73,6 +74,16 @@ export async function changeNameserversWorkflow({
     checkIfNameserversAreNamefiNameserversActivity,
   } = standardActivities;
   const { pollRegistrarOperationStatus } = pollingActivities;
+
+  const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
+
+  // Track cancellation requests
+  let cancelled = false;
+  if (hasCancellationSupport) {
+    workflow.CancellationScope.current().cancelRequested.then(() => {
+      cancelled = true;
+    });
+  }
   const { updateDomainIndexRows } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.INDEXERS,
     options: {
@@ -114,6 +125,16 @@ export async function changeNameserversWorkflow({
       );
     }
 
+    // Cancellation checkpoint: safe to cancel before nameserver change
+    if (hasCancellationSupport && cancelled) {
+      progress.fail('Workflow cancelled');
+      throw workflow.ApplicationFailure.create({
+        message: 'Workflow cancelled by user',
+        nonRetryable: true,
+        type: 'workflow/cancelled',
+      });
+    }
+
     // Step 2: Set nameservers
     progress.startStep('set-nameservers');
     const registrarOperation = await setNameserversForDomain({
@@ -132,10 +153,21 @@ export async function changeNameserversWorkflow({
 
     // Step 3: Verify change
     progress.startStep('verify-change');
-    const nameserversChangeStatus = await pollRegistrarOperationStatus({
-      domainName,
-      registrarOperationId: registrarOperation.operationId,
-    });
+    const nameserversChangeStatus = hasCancellationSupport
+      ? await pollWithTimeoutAlert(
+          pollRegistrarOperationStatus({
+            domainName,
+            registrarOperationId: registrarOperation.operationId,
+          }),
+          {
+            domainName,
+            operationLabel: 'Nameservers change verification',
+          },
+        )
+      : await pollRegistrarOperationStatus({
+          domainName,
+          registrarOperationId: registrarOperation.operationId,
+        });
 
     if (matchAny(nameserversChangeStatus, 'FAILED', 'ERROR')) {
       progress.failStep(

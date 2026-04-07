@@ -41,6 +41,8 @@ import {
   enableDnssecStepDisplayInfo,
   disableDnssecStepDisplayInfo,
 } from '@/hooks/use-dnssec-progress';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -57,11 +59,20 @@ import {
   ShieldMinusIcon,
   ShieldPlusIcon,
   ShieldXIcon,
+  XCircleIcon,
 } from 'lucide-react';
 import { isNotEmpty, isNotNil } from 'ramda';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
+
+const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
+  key: 'cancel_dns_workflow',
+  label: 'Cancel Workflow',
+  description: 'Show cancel button for active DNS/DNSSEC workflows',
+  scope: 'global',
+  defaultValue: false,
+};
 
 type DnssecStatusDetails =
   AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
@@ -319,6 +330,9 @@ function DnssecProgressModal({
   operation: 'ENABLE_DNSSEC' | 'REMOVE_DNSSEC';
 }) {
   const [open, setOpen] = useState(false);
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [canCancel] = useAdminFeatureFlag(CANCEL_WORKFLOW_FLAG);
 
   const enableProgress = useEnableDnssecProgress(domainName, {
     enabled: open && operation === 'ENABLE_DNSSEC',
@@ -327,6 +341,23 @@ function DnssecProgressModal({
   const disableProgress = useDisableDnssecProgress(domainName, {
     enabled: open && operation === 'REMOVE_DNSSEC',
   });
+
+  const cancelMutation = useMutation(
+    trpc.domainConfig.dnssec.cancelDnssecWorkflow.mutationOptions({
+      onSuccess() {
+        toast.success('Cancellation requested');
+        queryClient.invalidateQueries({
+          queryKey:
+            trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryKey(
+              { domainName },
+            ),
+        });
+      },
+      onError(error) {
+        toast.error(`Failed to cancel: ${error.message}`);
+      },
+    }),
+  );
 
   const isEnabling = operation === 'ENABLE_DNSSEC';
   const title = `${isEnabling ? 'Enabling' : 'Disabling'} for ${domainName}`;
@@ -371,6 +402,20 @@ function DnssecProgressModal({
             showTitle={false}
             className="border-none"
           />
+        )}
+        {canCancel && (
+          <div className="flex justify-end pt-2 border-t border-zinc-800">
+            <LoadingButton
+              variant="destructive"
+              size="sm"
+              isLoading={cancelMutation.isPending}
+              loadingText="Cancelling..."
+              onClick={() => cancelMutation.mutate({ domainName, operation })}
+            >
+              <XCircleIcon className="w-4 h-4" />
+              Cancel Workflow
+            </LoadingButton>
+          </div>
         )}
       </DialogContent>
     </Dialog>
