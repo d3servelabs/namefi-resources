@@ -5,19 +5,15 @@
  * Uses X402_SIGNER_* secrets for signing refund transactions.
  */
 
-import { getChain, switchCase } from '@namefi-astra/utils';
-import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
-import { filter, fromPairs, isNotNil, map } from 'ramda';
-import { http, createPublicClient, createWalletClient } from 'viem';
-import {
-  type Account,
-  mnemonicToAccount,
-  privateKeyToAccount,
-} from 'viem/accounts';
+import { switchCase } from '@namefi-astra/utils';
+import type { Account } from 'viem/accounts';
 import type { Chain } from 'viem/chains';
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
-import { createNonceManager, jsonRpc } from 'viem/nonce';
-import { config, secrets } from '#lib/env';
+import { secrets } from '#lib/env';
+import {
+  createViemClientFactory,
+  resolveSignerAccount,
+} from './viem-client-factory';
 
 // Chains supported for x402 USDC operations
 const X402_SUPPORTED_CHAINS: readonly Chain[] = [
@@ -42,99 +38,26 @@ const x402ChainsToUrls = (chain: Chain): string => {
   return chainUrl;
 };
 
-let x402PublicClients: Awaited<
-  ReturnType<typeof createX402PublicClients>
-> | null = null;
-let x402WalletClients: Awaited<
-  ReturnType<typeof createX402WalletClients>
-> | null = null;
-
-const createX402PublicClients = () => {
-  const publicClients = fromPairs(
-    map(
-      (chain) => [
-        chain.id,
-        createPublicClient({
-          transport: http(x402ChainsToUrls(chain)),
-          chain,
-        }),
-      ],
-      X402_SUPPORTED_CHAINS,
-    ),
-  );
-
-  return publicClients;
-};
-
-const createX402WalletClients = async () => {
-  if (
-    !(
-      secrets.X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME ||
-      secrets.X402_SIGNER_PRIVATE_KEY ||
-      secrets.X402_SIGNER_MNEMONIC
-    )
-  ) {
-    throw new Error(
-      'X402 signer configuration missing. Set one of: X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME, X402_SIGNER_PRIVATE_KEY, or X402_SIGNER_MNEMONIC',
-    );
-  }
-
-  const nonceManager = createNonceManager({
-    source: jsonRpc(),
+let _x402SignerAccount: Account;
+async function getX402SignerAccount(): Promise<Account> {
+  if (_x402SignerAccount) return _x402SignerAccount;
+  _x402SignerAccount = await resolveSignerAccount({
+    gcpHsmKeyringResourceName:
+      secrets.X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME,
+    privateKey: secrets.X402_SIGNER_PRIVATE_KEY,
+    mnemonic: secrets.X402_SIGNER_MNEMONIC as string | undefined,
   });
+  return _x402SignerAccount;
+}
 
-  let signerAccount: Account;
-  if (secrets.X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME) {
-    signerAccount = await gcpHsmToAccount({
-      hsmKeyVersion: secrets.X402_SIGNER_GCP_HSM_KEYRING_RESOURCE_NAME,
-    });
-  } else if (secrets.X402_SIGNER_PRIVATE_KEY) {
-    signerAccount = privateKeyToAccount(
-      secrets.X402_SIGNER_PRIVATE_KEY as `0x${string}`,
-      {
-        nonceManager,
-      },
-    );
-  } else if (secrets.X402_SIGNER_MNEMONIC) {
-    signerAccount = mnemonicToAccount(secrets.X402_SIGNER_MNEMONIC as string, {
-      nonceManager,
-    });
-  } else {
-    throw new Error('X402 signer configuration missing');
-  }
+const factory = createViemClientFactory({
+  chains: X402_SUPPORTED_CHAINS,
+  chainToUrl: x402ChainsToUrls,
+  getSignerAccount: getX402SignerAccount,
+});
 
-  const walletClients = fromPairs(
-    X402_SUPPORTED_CHAINS.map((chain) => [
-      chain.id,
-      createWalletClient({
-        transport: http(x402ChainsToUrls(chain)),
-        account: signerAccount,
-        chain,
-      }),
-    ]),
-  );
-  return walletClients;
-};
-
-export const getX402PublicClient = (chainId: number) => {
-  if (!X402_SUPPORTED_CHAINS.some((chain) => chain.id === chainId)) {
-    throw new Error(`Chain ${chainId} is not supported for x402 operations`);
-  }
-  if (!x402PublicClients) {
-    x402PublicClients = createX402PublicClients();
-  }
-  return x402PublicClients[chainId];
-};
-
-export const getX402WalletClient = async (chainId: number) => {
-  if (!X402_SUPPORTED_CHAINS.some((chain) => chain.id === chainId)) {
-    throw new Error(`Chain ${chainId} is not supported for x402 operations`);
-  }
-  if (!x402WalletClients) {
-    x402WalletClients = await createX402WalletClients();
-  }
-  return x402WalletClients[chainId];
-};
+export const getX402PublicClient = factory.getPublicClient;
+export const getX402WalletClient = factory.getWalletClient;
 
 /**
  * USDC contract addresses by chain ID
