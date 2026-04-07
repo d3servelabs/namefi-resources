@@ -54,6 +54,14 @@ export async function isDomainParked(
   return domainConfig.autoParkEnabled;
 }
 
+class AlreadyParkedError extends Error {
+  constructor(
+    public readonly domain: string,
+    message?: string,
+  ) {
+    super(message);
+  }
+}
 /**
  * Helper function to park a domain
  * @param normalizedDomainName - The normalized domain name to park
@@ -68,6 +76,7 @@ export async function parkDomain(
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: 'Domain is already parked',
+      cause: new AlreadyParkedError(normalizedDomainName),
     });
   }
 
@@ -98,8 +107,18 @@ export async function toggleDomainParking(
   enableParking: boolean,
   overrideExistingRecords = false,
 ) {
-  //todo
-  await updateDomainConfig(normalizedDomainName, {
-    autoParkEnabled: enableParking,
-  });
+  if (enableParking) {
+    try {
+      await parkDomain(normalizedDomainName, overrideExistingRecords);
+    } catch (e) {
+      if (e instanceof TRPCError && e.cause instanceof AlreadyParkedError) {
+        return;
+      }
+      throw e;
+    }
+  } else {
+    await updateDomainConfig(normalizedDomainName, {
+      autoParkEnabled: false,
+    });
+  }
 }
