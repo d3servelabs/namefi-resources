@@ -132,36 +132,44 @@ export async function chargeUserWorkflow({
   }
 
   if (NFSC_PAYMENT_PROVIDERS.includes(paymentProvider)) {
-    const input = {
-      chainId: nfscPaymentDetails?.chainId as number,
-      chargee: nfscPaymentDetails?.walletAddress as `0x${string}`,
-      amountInUSD: amountInUSDCents / 100,
-      reason: `charge-user.workflow for Payment with ID: ${paymentId}`,
-      extra: '' as `0x${string}`,
-    };
-
-    try {
-      const txHash = await workflow.executeChild(chargeNfscWorkflow, {
-        args: [
-          input.chainId,
-          input.chargee,
-          input.amountInUSD,
-          input.reason,
-          input.extra,
-        ],
-        workflowId: `charge-nfsc-${paymentId}`,
-        taskQueue: TEMPORAL_QUEUES.MINT,
-        retry: {
-          maximumAttempts: 1,
-        },
-      });
-      paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
-      paymentProviderReferenceId = txHash;
-    } catch (error) {
+    if (!nfscPaymentDetails?.chainId || !nfscPaymentDetails?.walletAddress) {
       workflow.log.error(
-        `Error while executing ChargeNfsc workflow. workflowId: charge-nfsc-${paymentId}, cause: ${JSON.stringify(error)}`,
+        `NFSC payment missing required nfscPaymentDetails. paymentId: ${paymentId}`,
       );
       paymentStatus = paymentStatusSchema.enum.FAILED;
+    } else {
+      const input = {
+        chainId: nfscPaymentDetails.chainId,
+        chargee: nfscPaymentDetails.walletAddress as `0x${string}`,
+        amountInUSD: amountInUSDCents / 100,
+        reason: `charge-user.workflow for Payment with ID: ${paymentId}`,
+        // Empty extra data placeholder for the NFSC charge workflow
+        extra: '' as `0x${string}`,
+      };
+
+      try {
+        const txHash = await workflow.executeChild(chargeNfscWorkflow, {
+          args: [
+            input.chainId,
+            input.chargee,
+            input.amountInUSD,
+            input.reason,
+            input.extra,
+          ],
+          workflowId: `charge-nfsc-${paymentId}`,
+          taskQueue: TEMPORAL_QUEUES.MINT,
+          retry: {
+            maximumAttempts: 1,
+          },
+        });
+        paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
+        paymentProviderReferenceId = txHash;
+      } catch (error) {
+        workflow.log.error(
+          `Error while executing ChargeNfsc workflow. workflowId: charge-nfsc-${paymentId}, cause: ${JSON.stringify(error)}`,
+        );
+        paymentStatus = paymentStatusSchema.enum.FAILED;
+      }
     }
   }
 
