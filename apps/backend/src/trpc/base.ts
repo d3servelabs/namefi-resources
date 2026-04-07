@@ -1001,6 +1001,43 @@ export const adminProcedureWithPermissions = (
   );
 
 /**
+ * Build AuditActorExtraInfo from request context and timing data.
+ * Shared by auditedAdminProcedure and withAudit to avoid duplication.
+ */
+function buildAuditActorExtraInfo(
+  ctx: TrpcContextWithUser,
+  responseTimeInMs: number,
+): AuditActorExtraInfo {
+  return {
+    ipAddress: ctx.honoVars?.connInfo.remote.address || '',
+    ipAddressType: ctx.honoVars?.connInfo.remote.addressType || 'unknown',
+    userAgent: ctx.req.header('user-agent') || '',
+    referer: ctx.req.header('referer') || '',
+    url: ctx.req.url || '',
+    method: ctx.req.method || '',
+    requestId: ctx.honoVars?.requestId || '',
+    sessionId: ctx.sessionId || '',
+    userId: ctx.user?.id || '',
+    statusCode: ctx.res.status,
+    responseTimeInMs,
+    type: 'user',
+  };
+}
+
+/**
+ * Log impersonation context for audit trail when impersonation is active.
+ * Shared by auditedAdminProcedure and withAudit.
+ */
+function logImpersonationContext(ctx: TrpcContextWithUser): void {
+  if (ctx.impersonation) {
+    logger.assign({
+      auditActorUserId: ctx.impersonation.actorUserId,
+      auditImpersonatedUserId: ctx.impersonation.targetUserId,
+    });
+  }
+}
+
+/**
  * Audited Admin procedure
  */
 export const auditedAdminProcedure = (
@@ -1037,27 +1074,11 @@ export const auditedAdminProcedure = (
       const result = await next({ ctx });
 
       try {
-        const auditActorExtraInfo: AuditActorExtraInfo = {
-          ipAddress: ctx.honoVars?.connInfo.remote.address || '',
-          ipAddressType: ctx.honoVars?.connInfo.remote.addressType || 'unknown',
-          userAgent: ctx.req.header('user-agent') || '',
-          referer: ctx.req.header('referer') || '',
-          url: ctx.req.url,
-          method: ctx.req.method,
-          requestId: ctx.honoVars?.requestId || '',
-          sessionId: ctx.sessionId || '',
-          userId: ctx.user.id || '',
-          statusCode: ctx.res.status,
-          responseTimeInMs: performance.now() - start,
-          type: 'user',
-        };
-        // Attach impersonation context to logger for downstream processing/auditing (non-breaking)
-        if (ctx.impersonation) {
-          logger.assign({
-            auditActorUserId: ctx.impersonation.actorUserId,
-            auditImpersonatedUserId: ctx.impersonation.targetUserId,
-          });
-        }
+        const auditActorExtraInfo = buildAuditActorExtraInfo(
+          ctx,
+          performance.now() - start,
+        );
+        logImpersonationContext(ctx);
         audit(
           createAuditRecord(
             typeof params === 'function'
@@ -1124,29 +1145,11 @@ export const withAudit = <
         const result = await next({ ctx });
 
         try {
-          const auditActorExtraInfo: AuditActorExtraInfo = {
-            ipAddress: ctx.honoVars?.connInfo.remote.address || '',
-            ipAddressType:
-              ctx.honoVars?.connInfo.remote.addressType || 'unknown',
-            userAgent: ctx.req.header('user-agent') || '',
-            referer: ctx.req.header('referer') || '',
-            url: ctx.req.url || '',
-            method: ctx.req.method || '',
-            requestId: ctx.honoVars?.requestId || '',
-            sessionId: ctx.sessionId || '',
-            userId: ctx.user?.id || '',
-            statusCode: ctx.res.status,
-            responseTimeInMs: performance.now() - start,
-            type: 'user',
-          };
-
-          // Attach impersonation context when available (non-breaking)
-          if (ctx.impersonation) {
-            logger.assign({
-              auditActorUserId: ctx.impersonation.actorUserId,
-              auditImpersonatedUserId: ctx.impersonation.targetUserId,
-            });
-          }
+          const auditActorExtraInfo = buildAuditActorExtraInfo(
+            ctx,
+            performance.now() - start,
+          );
+          logImpersonationContext(ctx);
 
           const record: CreateAuditRecordParams =
             typeof params === 'function'
