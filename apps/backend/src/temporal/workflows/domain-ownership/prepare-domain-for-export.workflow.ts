@@ -3,10 +3,12 @@ import { lockNamefiNftByName } from '../mint.workflow';
 import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../../shared';
 import { typedProxyActivities } from '../../shared/workflow-helpers';
+import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { pollingOpts } from '../../shared';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { isNil } from 'ramda';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import { criticalAlertWithTicket } from '#temporal/shared/workflow-helpers/critical-alert-with-ticket';
 
 const { getEppLockState, getDomainChain, unlockEppDomain } =
   typedProxyActivities({
@@ -60,13 +62,6 @@ const { sendStyledEmailNotificationForUser, sendStyledEmailNotification } =
     },
   });
 
-const { getTemporalWorkflowRunUrl } = typedProxyActivities({
-  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-  options: {
-    startToCloseTimeout: '10 seconds',
-  },
-});
-
 const NOTIFY_ERRORS = false;
 export async function prepareDomainForExportWorkflow({
   domainName,
@@ -88,6 +83,9 @@ export async function prepareDomainForExportWorkflow({
   const chainId = await getDomainChain(domainName);
   const nftTokenLock = await getNamefiNftLock(chainId, domainName);
 
+  // Track whether we locked the NFT in this run, so we can roll back on failure.
+  let nftLockedByThisRun = false;
+
   try {
     if (!nftTokenLock) {
       await workflow.executeChild(lockNamefiNftByName, {
@@ -96,6 +94,7 @@ export async function prepareDomainForExportWorkflow({
         workflowId: lockNamefiNftByName.generateId({ chainId, domainName }),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       });
+      nftLockedByThisRun = true;
     }
 
     const eppLockState = await getEppLockState(domainName);
@@ -141,38 +140,53 @@ export async function prepareDomainForExportWorkflow({
       workflow.log.error('Error sending email notification', error);
     }
   } catch (error: any) {
-    workflow.log.error('Error preparing domain for export', error);
-    try {
-      const workflowInfo = workflow.workflowInfo();
-      await sendStyledEmailNotification({
-        to: ['dev-team@d3serve.xyz'],
-        messageMarkdown: `### Error preparing domain for export
+    workflow.log.error('Error preparing domain for export', {
+      domainName,
+      nftLockedByThisRun,
+      errorMessage: error.message,
+    });
 
-        We encountered an error while preparing your domain ${domainName} for export.
-        Error: ${error.message}
-        Stack: ${error.stack}
-        Workflow ID: ${workflowInfo.workflowId}
-        Workflow Run ID: ${workflowInfo.runId}
-        Workflow Type: ${workflowInfo.workflowType}
-        Workflow Link: ${getTemporalWorkflowRunUrl(workflowInfo.workflowId, workflowInfo.runId)}
-      `,
-        showGoToDashboard: true,
-        title: '[Namefi] Error preparing domain for export',
-      });
-      if (NOTIFY_ERRORS) {
-        await sendStyledEmailNotificationForUser({
-          userId,
-          messageMarkdown: `### Error preparing domain for export
-  
-          We encountered an error while preparing your domain ${domainName} for export. Please go to the dashboard to retry.
-        `,
-          showGoToDashboard: true,
-          title: '[Namefi] Error preparing domain for export',
-        });
-      }
-    } catch (error: any) {
-      workflow.log.error('Error sending email notification', error);
+    // If we locked the NFT in this run but EPP unlock failed, the domain is
+    // stuck (NFT locked + EPP locked). Alert the dev team with full context
+    // so they can manually remediate.
+    const stuckState = nftLockedByThisRun;
+    if (stuckState) {
+      workflow.log.error(
+        'STUCK STATE: NFT was locked but EPP unlock failed. Domain requires manual intervention.',
+        { domainName, chainId },
+      );
     }
+
+    await criticalAlertWithTicket({
+      message: `### ${stuckState ? 'STUCK STATE: ' : ''}Error preparing domain for export
+
+        ${stuckState ? '**The NFT was locked but the EPP unlock failed. The domain is stuck and requires manual intervention.**\n' : ''}
+        Domain: ${domainName}
+        Chain ID: ${chainId}
+        Error: ${error.message}
+      `,
+      title: `[Minor] ${stuckState ? 'STUCK STATE: ' : ''}Error preparing domain for export`,
+    });
+
+    if (NOTIFY_ERRORS) {
+      await catchAndAlertLocally(
+        async () => {
+          await sendStyledEmailNotificationForUser({
+            userId,
+            messageMarkdown: `### Error preparing domain for export
+
+            We encountered an error while preparing your domain ${domainName} for export. Please go to the dashboard to retry.
+          `,
+            showGoToDashboard: true,
+            title: '[Namefi] Error preparing domain for export',
+          });
+        },
+        {
+          message: `Failed to send user notification for export failure of ${domainName}`,
+        },
+      );
+    }
+
     throw error;
   }
 }
