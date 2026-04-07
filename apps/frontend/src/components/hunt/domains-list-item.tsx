@@ -3,7 +3,7 @@
 import { cn } from '@/lib/cn';
 import { formatNumberWithAbbreviations } from '@/lib/number';
 import Link from 'next/link';
-import { type MouseEvent, useCallback, useMemo } from 'react';
+import { type MouseEvent, memo, useCallback, useMemo } from 'react';
 import { TagsDisplay } from './tags-display';
 import { UpvoteIcon } from './upvote-icon';
 import { usePendingToast } from '../../hooks/use-pending-toast';
@@ -84,15 +84,30 @@ export interface DomainsListItemProps
 /**
  * Component for rendering a single domain item in a list.
  */
-export const DomainsListItem = ({
+export const DomainsListItem = memo(function DomainsListItem({
   domain,
   upvote,
   unvote,
   isVotePending,
-}: DomainsListItemProps) => {
+}: DomainsListItemProps) {
   const { count } = useHuntVoteCount({
     domain,
   });
+
+  const handleUpvote = useCallback(
+    () => upvote(domain.domainName),
+    [upvote, domain.domainName],
+  );
+
+  const handleUnvote = useCallback(
+    () => unvote(domain.domainName),
+    [unvote, domain.domainName],
+  );
+
+  const pending = useMemo(
+    () => isVotePending(domain.domainName),
+    [domain.domainName, isVotePending],
+  );
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">
@@ -124,9 +139,9 @@ export const DomainsListItem = ({
       <div className="flex flex-col items-center gap-2 w-12 sm:w-16">
         <VoteButton
           voted={domain.userHasUpvoted}
-          pending={isVotePending(domain.domainName)}
-          onUpvote={() => upvote(domain.domainName)}
-          onUnvote={() => unvote(domain.domainName)}
+          pending={pending}
+          onUpvote={handleUpvote}
+          onUnvote={handleUnvote}
         />
         <span className="text-base leading-none font-bold text-foreground font-mono">
           {count}
@@ -134,4 +149,4 @@ export const DomainsListItem = ({
       </div>
     </div>
   );
-};
+});

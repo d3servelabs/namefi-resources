@@ -48,7 +48,7 @@ export const DomainsList = ({
     <LayoutGroup>
       <motion.div
         className="divide-y divide-border"
-        layout
+        layout="position"
         variants={containerVariants}
         initial="hidden"
         animate="show"
@@ -84,7 +84,7 @@ export const DomainsList = ({
                 initial="hidden"
                 animate="show"
                 exit="exit"
-                layout
+                layout="position"
                 transition={getItemTransition(domain.domainName)}
                 style={getItemStyle(domain.domainName)}
                 className={isItemReordering(domain.domainName) ? 'z-10' : ''}
