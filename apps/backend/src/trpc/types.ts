@@ -42,7 +42,7 @@ export const createOrderV2InputSchema = z.object({
           z.number().int().positive('Payment amount must be positive'),
           z.literal(0),
         ]),
-        paymentProviderDetails: paymentProviderDetailsSchema.optional(),
+        paymentProviderDetails: paymentProviderDetailsSchema,
         paymentMetadata: paymentMetadataSchema.optional(),
       }),
     )
