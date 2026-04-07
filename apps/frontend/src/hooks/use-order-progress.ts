@@ -71,9 +71,7 @@ export function useOrderProgress(
 
   const hasCompleted = useMemo(() => {
     if (!progress) return false;
-    return ['COMPLETED', 'FAILED', 'TERMINATED', 'TIMED_OUT'].includes(
-      progress.workflowStatus,
-    );
+    return TERMINAL_WORKFLOW_STATUSES.has(progress.workflowStatus);
   }, [progress]);
 
   const isPolling =
