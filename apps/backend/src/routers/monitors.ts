@@ -8,7 +8,7 @@ import { getDynadotRegistrars } from '#lib/epp-registrars/dynadot';
 import type { Dynadot } from '@namefi-astra/registrars/lib/dynadot/client';
 import { DynadotCommand } from '@namefi-astra/registrars/lib/dynadot/common-types';
 import { CHAINS } from '@namefi-astra/utils';
-import pMap from 'p-map';
+import pMap, { pMapSkip } from 'p-map';
 import pProps from 'p-props';
 import { formatEther, parseEther } from 'viem';
 import { Hono } from 'hono';
@@ -71,6 +71,9 @@ async function checkSignerBalances() {
   }
 
   const signer = await getViemWalletClient(configuredChainIds[0]);
+  if (!signer.account?.address) {
+    throw new Error('Could not determine signer address');
+  }
   return pMap(configuredChainIds, async (chainId) =>
     checkBalance(chainId, signer.account.address),
   );

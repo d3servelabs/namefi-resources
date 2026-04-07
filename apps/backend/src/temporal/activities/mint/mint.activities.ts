@@ -337,7 +337,7 @@ export const mintNFSC = async (
 export const getNfscBalanceInUSD = async (
   chainId: number,
   account: Address,
-  publicClient: PublicClient = getViemPublicClient(chainId),
+  publicClient = getViemPublicClient(chainId),
 ): Promise<number> => {
   const ctx = Context.current();
   ctx.log.info(

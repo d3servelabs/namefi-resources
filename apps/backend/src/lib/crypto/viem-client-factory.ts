@@ -8,7 +8,14 @@
 
 import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
 import { fromPairs, map } from 'ramda';
-import { http, createPublicClient, createWalletClient } from 'viem';
+import {
+  http,
+  createPublicClient,
+  createWalletClient,
+  type HttpTransport,
+  type WalletClient as _WalletClient,
+  type PublicClient as _PublicClient,
+} from 'viem';
 import {
   type Account,
   mnemonicToAccount,
@@ -73,12 +80,25 @@ export interface ViemClientFactoryOptions {
   getSignerAccount: () => Promise<Account>;
 }
 
+type PublicClient = _PublicClient<
+  HttpTransport<undefined, false>,
+  Chain,
+  undefined,
+  undefined
+>;
+type WalletClient = _WalletClient<
+  HttpTransport<undefined, false>,
+  Chain,
+  Account
+>;
+
 export interface ViemClientFactory {
-  getPublicClient: (chainId: number) => ReturnType<typeof createPublicClient>;
-  getWalletClient: (
-    chainId: number,
-  ) => Promise<ReturnType<typeof createWalletClient>>;
+  getPublicClient: (chainId: number) => PublicClient;
+  getWalletClient: (chainId: number) => Promise<WalletClient>;
 }
+
+type PublicClients = Record<number, PublicClient>;
+type WalletClients = Record<number, WalletClient>;
 
 /**
  * Build a pair of `getPublicClient` / `getWalletClient` accessors that lazily
@@ -89,14 +109,9 @@ export function createViemClientFactory(
 ): ViemClientFactory {
   const { chains, chainToUrl, getSignerAccount } = opts;
 
-  let publicClients: Record<
-    number,
-    ReturnType<typeof createPublicClient>
-  > | null = null;
-  let walletClients: Record<
-    number,
-    ReturnType<typeof createWalletClient>
-  > | null = null;
+  let publicClients: PublicClients | null = null;
+  let walletClients: WalletClients | null = null;
+  let walletClientsPromise: Promise<WalletClients | null> | null = null;
 
   const buildPublicClients = () =>
     fromPairs(
@@ -143,8 +158,19 @@ export function createViemClientFactory(
 
     async getWalletClient(chainId: number) {
       assertChainConfigured(chainId, 'wallet client');
+      if (!walletClients && !walletClientsPromise) {
+        walletClientsPromise = buildWalletClients();
+      }
       if (!walletClients) {
-        walletClients = await buildWalletClients();
+        try {
+          walletClients = await walletClientsPromise;
+        } catch (e) {
+          walletClients = null;
+        }
+      }
+
+      if (!walletClients) {
+        throw Error('Could not get wallet client for chain ' + chainId);
       }
       return walletClients[chainId];
     },
