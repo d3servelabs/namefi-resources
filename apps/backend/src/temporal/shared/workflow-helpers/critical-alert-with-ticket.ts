@@ -3,9 +3,12 @@ import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
 import { typedProxyActivities } from './typed-proxy-activities';
 
 /**
- * Sends a critical alert (Slack + logger.fatal) and creates a ClickUp incident ticket.
- * If the ticket is created and monitoring is enabled, starts a monitoring child workflow
- * that polls the ticket and re-alerts with escalating severity until the ticket is resolved.
+ * Sends a critical alert (Slack + logger.fatal), creates a ClickUp incident ticket,
+ * and starts a monitoring child workflow that polls the ticket and re-alerts with
+ * escalating severity until the ticket is resolved.
+ *
+ * Passes `monitorIncident: false` to the activity so that monitoring is started here
+ * as a child workflow (with parentClosePolicy: ABANDON) instead of from the activity.
  *
  * This helper must only be used within Temporal workflows.
  */
@@ -30,17 +33,15 @@ export async function criticalAlertWithTicket(args: {
     },
   });
 
-  // criticalAlertNamefi now handles both Slack alert and ClickUp ticket creation
+  // Pass monitorIncident: false — we start the monitoring workflow here as a child workflow
   let ticket: { taskId: string; taskUrl: string } | null = null;
-  let shouldMonitor = false;
   try {
     const result = await criticalAlertNamefi(args, {
       createIncident: args.createIncident,
-      monitorIncident: args.monitorIncident,
+      monitorIncident: false,
       incidentPriority: args.priority,
     });
     ticket = result?.ticket ?? null;
-    shouldMonitor = result?.shouldMonitor ?? false;
   } catch (error) {
     workflow.log.warn(`criticalAlertNamefi failed: ${error}`);
     return null;
@@ -51,31 +52,30 @@ export async function criticalAlertWithTicket(args: {
   }
 
   // Start monitoring workflow as a detached child (fire-and-forget)
-  if (shouldMonitor) {
-    try {
-      await workflow.startChild('monitorIncidentTicketWorkflow', {
-        args: [
-          {
-            taskId: ticket.taskId,
-            taskUrl: ticket.taskUrl,
-            originalAlert: {
-              title: args.title,
-              message: args.message,
-              extraData: args.extraData,
-            },
+  if (args.monitorIncident === false) {
+    return ticket;
+  }
+
+  try {
+    await workflow.startChild('monitorIncidentTicketWorkflow', {
+      args: [
+        {
+          taskId: ticket.taskId,
+          taskUrl: ticket.taskUrl,
+          originalAlert: {
+            title: args.title,
+            message: args.message,
+            extraData: args.extraData,
           },
-        ],
-        workflowId: `monitor-incident-[${ticket.taskId}]-[${Date.now()}]`,
-        workflowRunTimeout: '7 days',
-        taskQueue: 'default_task_queue',
-        parentClosePolicy:
-          workflow.ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
-      });
-    } catch (error) {
-      workflow.log.warn(
-        `Failed to start incident monitoring workflow: ${error}`,
-      );
-    }
+        },
+      ],
+      workflowId: `monitor-incident-[${ticket.taskId}]-[${Date.now()}]`,
+      workflowRunTimeout: '7 days',
+      taskQueue: 'default_task_queue',
+      parentClosePolicy: workflow.ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON,
+    });
+  } catch (error) {
+    workflow.log.warn(`Failed to start incident monitoring workflow: ${error}`);
   }
 
   return ticket;

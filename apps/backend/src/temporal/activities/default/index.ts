@@ -16,6 +16,8 @@ import { triggerSyncPonderIndex } from '#temporal/schedules/sync-ponder-index';
 import * as ChainConfigs from '#lib/env/allowed-chains';
 import { mapObjIndexed } from 'ramda';
 import { createClickUpTask, getClickUpTask } from '#lib/clickup/index';
+import { temporalClient } from '#temporal/client';
+import type { monitorIncidentTicketWorkflow } from '../../workflows/monitor-incident-ticket.workflow';
 
 type AsyncReturningFunction<A extends any[], R> = (...args: A) => Promise<R>;
 type ReturningFunction<A extends any[], R> = (...args: A) => Promise<R> | R;
@@ -78,7 +80,7 @@ export const defaultTaskQueueActivities = {
         },
         'sendTemporalAlertToSlack failed',
       );
-      return { ticket: null, shouldMonitor: false };
+      return { ticket: null, monitoringStarted: false };
     }
   },
   getConfig: async <K extends keyof typeof config>(key: K) => config[key],
@@ -106,8 +108,8 @@ export interface SendTemporalAlertOptions {
 export interface SendTemporalAlertResult {
   /** ClickUp ticket info, or null if ticket was not created */
   ticket: { taskId: string; taskUrl: string } | null;
-  /** Whether a monitoring workflow should be started by the caller (activity can't start workflows) */
-  shouldMonitor: boolean;
+  /** Whether a monitoring workflow was started */
+  monitoringStarted: boolean;
 }
 
 export async function sendTemporalAlertToSlack(
@@ -123,10 +125,48 @@ export async function sendTemporalAlertToSlack(
   const workflowType = ctx.info.workflowType;
   const taskQueue = ctx.info.taskQueue;
 
-  // Send Slack alert
+  // Create ClickUp incident ticket first so we can include it in the Slack message
+  let ticket: { taskId: string; taskUrl: string } | null = null;
+  if (shouldCreateIncident) {
+    try {
+      ticket = await createIncidentTicket({
+        title,
+        message,
+        extraData,
+        priority: options?.incidentPriority,
+      });
+    } catch (error) {
+      logger.error({ error }, 'Failed to create ClickUp incident ticket');
+    }
+  }
+
+  // Send Slack alert with ticket link if available
   const webhookUrl = secrets.NAMEFI_ALERT_SLACK_WEBHOOK_URL;
   if (webhookUrl) {
     try {
+      const actionButtons: Array<Record<string, unknown>> = [
+        {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: 'Go To Workflows',
+          },
+          url: await getTemporalWorkflowRunUrl(workflowId, runId),
+          style: 'primary',
+        },
+      ];
+
+      if (ticket) {
+        actionButtons.push({
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: `View Ticket (${ticket.taskId})`,
+          },
+          url: ticket.taskUrl,
+        });
+      }
+
       const slackMessage = {
         blocks: [
           {
@@ -152,6 +192,17 @@ export async function sendTemporalAlertToSlack(
               text: `Message: ${message}`,
             },
           },
+          ...(ticket
+            ? [
+                {
+                  type: 'section',
+                  text: {
+                    type: 'mrkdwn',
+                    text: `*Incident Ticket:* <${ticket.taskUrl}|${ticket.taskId}>`,
+                  },
+                },
+              ]
+            : []),
           {
             type: 'section',
             fields: [
@@ -182,17 +233,7 @@ export async function sendTemporalAlertToSlack(
           },
           {
             type: 'actions',
-            elements: [
-              {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  text: 'Go To Workflows',
-                },
-                url: await getTemporalWorkflowRunUrl(workflowId, runId),
-                style: 'primary',
-              },
-            ],
+            elements: actionButtons,
           },
         ],
       };
@@ -216,25 +257,32 @@ export async function sendTemporalAlertToSlack(
     ctx.log.warn('No Slack webhook URL configured, skipping Slack Alert');
   }
 
-  // Create ClickUp incident ticket
-  let ticket: { taskId: string; taskUrl: string } | null = null;
-  if (shouldCreateIncident) {
+  // Start monitoring workflow if ticket was created and monitoring is enabled
+  let monitoringStarted = false;
+  if (shouldMonitor && ticket) {
     try {
-      ticket = await createIncidentTicket({
-        title,
-        message,
-        extraData,
-        priority: options?.incidentPriority,
-      });
+      await temporalClient.workflow.start<typeof monitorIncidentTicketWorkflow>(
+        'monitorIncidentTicketWorkflow',
+        {
+          args: [
+            {
+              taskId: ticket.taskId,
+              taskUrl: ticket.taskUrl,
+              originalAlert: { title, message, extraData },
+            },
+          ],
+          workflowId: `monitor-incident-[${ticket.taskId}]-[${Date.now()}]`,
+          workflowRunTimeout: '7 days',
+          taskQueue: 'default_task_queue',
+        },
+      );
+      monitoringStarted = true;
     } catch (error) {
-      logger.error({ error }, 'Failed to create ClickUp incident ticket');
+      logger.error({ error }, 'Failed to start incident monitoring workflow');
     }
   }
 
-  return {
-    ticket,
-    shouldMonitor: shouldMonitor && ticket !== null,
-  };
+  return { ticket, monitoringStarted };
 }
 
 async function createIncidentTicket(args: {
