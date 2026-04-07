@@ -600,6 +600,84 @@ function maybeNotifyLogin(params: {
 }
 
 /**
+ * Shared result type for resolveUserFromRequest.
+ */
+interface ResolvedUser {
+  user: UserSelect;
+  sessionId: string | null;
+  isNewUser: boolean;
+  tokenIssuedAt: Date | null;
+}
+
+/**
+ * Shared helper that extracts and verifies the user from the request context.
+ *
+ * When `required` is true, throws UNAUTHORIZED if no valid auth is present.
+ * When `required` is false, returns null if no valid auth is present.
+ */
+async function resolveUserFromRequest(
+  ctx: TrpcContext,
+  options: { required: true },
+): Promise<ResolvedUser>;
+async function resolveUserFromRequest(
+  ctx: TrpcContext,
+  options: { required: false },
+): Promise<ResolvedUser | null>;
+async function resolveUserFromRequest(
+  ctx: TrpcContext,
+  options: { required: boolean },
+): Promise<ResolvedUser | null> {
+  // If user is already resolved on context, return it directly
+  if (ctx.user) {
+    return {
+      user: ctx.user,
+      sessionId: ctx.sessionId ?? null,
+      isNewUser: false,
+      tokenIssuedAt: null,
+    };
+  }
+
+  // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
+  if (ctx.testUser) {
+    return {
+      user: ctx.testUser,
+      sessionId: null,
+      isNewUser: false,
+      tokenIssuedAt: null,
+    };
+  }
+
+  // Attempt Bearer token auth
+  const authHeader = ctx.req?.header?.('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) {
+    if (options.required) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: ctx.apiAuthResult?.error ?? 'Invalid authorization header',
+      });
+    }
+    return null;
+  }
+
+  const authResult = await requireUserAuth(authHeader, ctx.testUser);
+
+  maybeNotifyLogin({
+    user: authResult.user,
+    sessionId: authResult.sessionId,
+    tokenIssuedAt: authResult.tokenIssuedAt,
+    isNewUser: authResult.isNewUser,
+    ctx,
+  });
+
+  return {
+    user: authResult.user,
+    sessionId: authResult.sessionId,
+    isNewUser: authResult.isNewUser,
+    tokenIssuedAt: authResult.tokenIssuedAt,
+  };
+}
+
+/**
  * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
  *
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
@@ -607,43 +685,11 @@ function maybeNotifyLogin(params: {
 export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next }) => {
     try {
-      let user = ctx.user;
-      let sessionId = ctx.sessionId;
-      let isNewUser = false;
-      let tokenIssuedAt: Date | null = null;
-      if (!user) {
-        // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
-        if (ctx.testUser) {
-          user = ctx.testUser;
-          sessionId = null;
-        } else {
-          const authHeader = ctx.req?.header?.('Authorization');
-          if (!authHeader?.startsWith('Bearer ')) {
-            throw new TRPCError({
-              code: 'UNAUTHORIZED',
-              message:
-                ctx.apiAuthResult?.error ?? 'Invalid authorization header',
-            });
-          }
-          const authResult = await requireUserAuth(authHeader, ctx.testUser);
-          user = authResult.user;
-          sessionId = authResult.sessionId;
-          isNewUser = authResult.isNewUser;
-          tokenIssuedAt = authResult.tokenIssuedAt;
-
-          maybeNotifyLogin({
-            user,
-            sessionId,
-            tokenIssuedAt,
-            isNewUser,
-            ctx,
-          });
-        }
-      }
+      const resolved = await resolveUserFromRequest(ctx, { required: true });
 
       const result = await processUserAuthContext({
-        user,
-        sessionId: sessionId ?? 'unknown',
+        user: resolved.user,
+        sessionId: resolved.sessionId ?? 'unknown',
         ctx,
         throwOnImpersonationFailure: true,
       });
@@ -674,35 +720,15 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
  */
 export const maybeVerifyUserAuthAndCreation =
   t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
-    let user = ctx.user;
-    let sessionId = ctx.sessionId;
-    if (!user) {
-      // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
-      if (ctx.testUser) {
-        user = ctx.testUser;
-        sessionId = null;
-      } else {
-        const authHeader = ctx.req?.header?.('Authorization');
-        if (!authHeader?.startsWith('Bearer ')) {
-          return next({ ctx });
-        }
-        const authResult = await requireUserAuth(authHeader, ctx.testUser);
-        user = authResult.user;
-        sessionId = authResult.sessionId;
+    const resolved = await resolveUserFromRequest(ctx, { required: false });
 
-        maybeNotifyLogin({
-          user,
-          sessionId,
-          tokenIssuedAt: authResult.tokenIssuedAt,
-          isNewUser: authResult.isNewUser,
-          ctx,
-        });
-      }
+    if (!resolved) {
+      return next({ ctx });
     }
 
     const result = await processUserAuthContext({
-      user,
-      sessionId: sessionId ?? 'unknown',
+      user: resolved.user,
+      sessionId: resolved.sessionId ?? 'unknown',
       ctx,
       throwOnImpersonationFailure: false,
     });
