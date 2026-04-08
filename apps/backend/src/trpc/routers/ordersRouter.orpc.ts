@@ -2,15 +2,12 @@ import {
   type PaymentSelect,
   type PostProcessOrderItem,
   db,
-  isNfscPayment,
   orderItemsTable,
   ordersTable,
   orderSelectSchema,
   orderItemSelectSchema,
   paymentSelectSchema,
   userSelectSchema,
-  cartItemsTable,
-  isMppPayment,
 } from '@namefi-astra/db';
 import {
   checksumWalletAddressSchema,
@@ -19,20 +16,20 @@ import {
 } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
-import { and, desc, eq, getTableColumns, ilike } from 'drizzle-orm';
-import { isNil, isNotNil } from 'ramda';
-import Stripe from 'stripe';
+import { and, eq } from 'drizzle-orm';
+import { isNil } from 'ramda';
 import { z } from 'zod';
-import pMap from 'p-map';
 import {
   orderService,
   type CreateOrderItemInput,
+  ensureOrderOwnership,
+  getOrderItemsForUser,
+  buildOrderPaymentMethodsDetails,
+  createOrderWithWorkflow,
 } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
-import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
-import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
 import {
   createTRPCRouter,
@@ -50,7 +47,6 @@ import {
 import { secrets, config } from '../../lib/env';
 import { logger } from '#lib/logger';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
-import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 import { orpcMetaWithEip712FromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
 import {
@@ -88,8 +84,6 @@ import {
 } from '#lib/mpp/helpers';
 import { createMppInstantRegistration } from '#lib/mpp/register-domain';
 
-const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
-
 // ============================================================================
 // Output Schemas for OpenAPI
 // ============================================================================
@@ -110,12 +104,33 @@ const paymentMethodDetailsOffChainSchema = z.object({
   last4: z.string().optional(),
 });
 
+const paymentMethodDetailsX402Schema = z.object({
+  paymentId: z.string(),
+  isOnChainPayment: z.literal(true),
+  isX402Payment: z.literal(true),
+  network: z.string(),
+  buyerWalletAddress: z.string(),
+  receiverWalletAddress: z.string().optional(),
+  settlementTxHash: z.string().nullable().optional(),
+});
+
+const paymentMethodDetailsMppSchema = z.object({
+  paymentId: z.string(),
+  isMppPayment: z.literal(true),
+  method: z.enum(['stripe', 'tempo']),
+  isOnChainPayment: z.boolean(),
+  payerWalletAddress: z.string().optional(),
+  reference: z.string().nullable().optional(),
+  brand: z.string().optional(),
+  last4: z.string().optional(),
+});
+
 const paymentMethodDetailsSchema = z.union([
+  paymentMethodDetailsX402Schema,
+  paymentMethodDetailsMppSchema,
   paymentMethodDetailsOnChainSchema,
   paymentMethodDetailsOffChainSchema,
 ]);
-
-type PaymentMethodDetails = z.infer<typeof paymentMethodDetailsSchema>;
 
 export const instantBuyDefaultWalletInputSchema = z
   .object({
@@ -201,8 +216,11 @@ const registerDomainWithRecords = async ({
   ctx,
   input,
   postProcessOrderItem,
-  gaEventTracking,
+  gaEventTracking: gaEventTrackingInput,
 }: RegisterDomainWithRecordsInput) => {
+  const gaEventTracking =
+    gaEventTrackingInput ??
+    (await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id));
   const { normalizedDomainName, durationInYears } = input;
   const parsedDomainResult = parseDomainName(normalizedDomainName);
   if (!parsedDomainResult.valid) {
@@ -287,115 +305,42 @@ const registerDomainWithRecords = async ({
 
   const payments = paymentResult.payments;
 
-  // 6. Create order in transaction
-  const order = await db.transaction(async (tx) => {
-    // Create payments
-    const createdPayments: PaymentSelect[] = [];
-    for (const p of payments) {
-      const created = await createPayment(
-        {
-          amountInUsdCents: p.amountInUsdCents,
-          paymentProviderDetails: p.paymentProviderDetails,
-        },
-        { tx },
-      );
-      createdPayments.push(created);
-    }
-
-    // Create order with single item
-    const order = await orderService.createOrderWithExistingMultiplePayments(
+  // 6. Create order via shared service
+  const order = await createOrderWithWorkflow({
+    userId: ctx.user.id,
+    amountInUSDCents: validation.priceInUsdCents,
+    nftWalletAddress: nftReceivingWallet.walletAddress,
+    nftChainId: nftReceivingWallet.chainId,
+    payments,
+    items: [
       {
+        normalizedDomainName,
         amountInUSDCents: validation.priceInUsdCents,
-        userId: ctx.user.id,
-        paymentIds: createdPayments.map((p) => p.id),
-        nftWalletAddress: nftReceivingWallet.walletAddress,
-        nftChainId: nftReceivingWallet.chainId,
-        items: [
-          {
-            normalizedDomainName,
-            amountInUSDCents: validation.priceInUsdCents,
-            durationInYears,
-            type: itemTypeSchema.enum.REGISTER,
-            registrar: validation.registrar,
-            metadata: postProcessOrderItem
-              ? { postProcessOrderItem }
-              : undefined,
-          } satisfies CreateOrderItemInput,
-        ],
-      },
-      { tx },
-    );
-
-    // Remove from cart if exists (cleanup)
-    await tx
-      .delete(cartItemsTable)
-      .where(
-        and(
-          eq(cartItemsTable.userId, ctx.user.id),
-          eq(cartItemsTable.normalizedDomainName, normalizedDomainName),
-        ),
-      );
-
-    // Build per-payment metadata map (empty for NFSC payments) and start workflow
-    const paymentsMetadata: {
-      [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
-    } = {};
-
-    try {
-      await temporalClient.workflow.start(processOrderWorkflow, {
-        args: [
-          {
-            orderId: order.id,
-            paymentsMetadata,
-            gaEventTracking,
-          },
-        ],
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `process-order-${order.id}`,
-      });
-    } catch (workflowError) {
-      logger.error(
-        { error: workflowError },
-        'Could not start process order workflow for instant buy',
-      );
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message:
-          'Could not initiate the order, please contact support if the issue persists',
-      });
-    }
-
-    logger.debug(
-      {
-        orderId: order.id,
-        domain: normalizedDomainName,
-        userId: ctx.user.id,
-        priceInUsdCents: validation.priceInUsdCents,
-      },
-      'Instant buy order created successfully',
-    );
-
-    return order;
-  });
-  if (gaEventTracking?.trackGaEvents) {
-    void gaEventOrderPlaced({
+        durationInYears,
+        type: itemTypeSchema.enum.REGISTER,
+        registrar: validation.registrar,
+        metadata: postProcessOrderItem ? { postProcessOrderItem } : undefined,
+      } satisfies CreateOrderItemInput,
+    ],
+    cartCleanup: {
+      type: 'domain',
       userId: ctx.user.id,
+      normalizedDomainName,
+    },
+    gaEventTracking,
+    orderSource: 'instant_buy',
+  });
+
+  logger.debug(
+    {
       orderId: order.id,
-      amountUsdCents: order.amountInUSDCents,
-      itemCount: order.items.length,
-      paymentCount: payments.length,
-      orderSource: 'instant_buy',
-    });
-  } else {
-    logger.info(
-      {
-        orderId: order.id,
-        userId: ctx.user.id,
-        gaEventTracking,
-      },
-      'Skipping GA order_placed event because tracking is disabled',
-    );
-  }
+      domain: normalizedDomainName,
+      userId: ctx.user.id,
+      priceInUsdCents: validation.priceInUsdCents,
+    },
+    'Instant buy order created successfully',
+  );
+
   return order;
 };
 
@@ -600,26 +545,7 @@ export const ordersRouterOrpc = createTRPCRouter({
     })
     .output(z.array(orderItemOutputSchema))
     .query(async ({ ctx: { user, poweredByNamefiDomain } }) => {
-      const items = await db
-        .select({
-          ...getTableColumns(orderItemsTable),
-        })
-        .from(orderItemsTable)
-        .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
-        .where(
-          and(
-            eq(ordersTable.userId, user.id),
-            isNotNil(poweredByNamefiDomain)
-              ? ilike(
-                  orderItemsTable.normalizedDomainName,
-                  `%.${poweredByNamefiDomain}`,
-                )
-              : undefined,
-          ),
-        )
-        .orderBy(desc(ordersTable.createdAt));
-
-      return items;
+      return getOrderItemsForUser(user.id, poweredByNamefiDomain);
     }),
 
   /**
@@ -785,14 +711,12 @@ export const ordersRouterOrpc = createTRPCRouter({
     })
     .input(z.object({ orderId: z.string() }))
     .output(z.array(paymentMethodDetailsSchema))
-    .query(async ({ ctx, input }): Promise<PaymentMethodDetails[]> => {
-      const { user } = ctx;
-      const { orderId } = input;
+    .query(async ({ ctx, input }) => {
+      const { order, payments } = await orderService.getOrderDetailsOrThrow(
+        input.orderId,
+      );
 
-      const { order, payments } =
-        await orderService.getOrderDetailsOrThrow(orderId);
-
-      if (order.userId !== user.id) {
+      if (order.userId !== ctx.user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this order',
@@ -801,98 +725,7 @@ export const ordersRouterOrpc = createTRPCRouter({
       if (!payments.length) {
         return [];
       }
-      const res = await pMap(
-        payments,
-        async (payment): Promise<PaymentMethodDetails> => {
-          if (isMppPayment(payment)) {
-            if (payment.metadata.mppPaymentDetails.method === 'tempo') {
-              return {
-                paymentId: payment.id,
-                isOnChainPayment: true,
-                txHash: payment.paymentProviderReferenceId,
-                chainId: 0,
-                walletAddress:
-                  payment.metadata.mppPaymentDetails.payerWalletAddress ||
-                  payment.metadata.mppPaymentDetails
-                    .nftReceivingWalletAddress ||
-                  '',
-              };
-            }
-            if (payment.metadata.mppPaymentDetails.method === 'stripe') {
-              if (isNil(payment.paymentProviderReferenceId)) {
-                return {
-                  paymentId: payment.id,
-                  isOnChainPayment: false,
-                  brand: undefined,
-                  last4: undefined,
-                };
-              }
-
-              const stripePaymentIntent = await stripe.paymentIntents.retrieve(
-                payment.paymentProviderReferenceId,
-                { expand: ['payment_method'] },
-              );
-
-              const paymentMethod =
-                stripePaymentIntent.payment_method as Stripe.PaymentMethod | null;
-
-              return {
-                paymentId: payment.id,
-                isOnChainPayment: false,
-                brand: paymentMethod?.card?.brand,
-                last4: paymentMethod?.card?.last4,
-              };
-            }
-          }
-
-          if (isNfscPayment(payment)) {
-            return {
-              paymentId: payment.id,
-              isOnChainPayment: true,
-              txHash: payment.paymentProviderReferenceId,
-              chainId: payment.nfscPaymentDetails.chainId,
-              walletAddress: payment.nfscPaymentDetails.walletAddress,
-            };
-          }
-
-          if (isNil(payment.paymentProviderReferenceId)) {
-            return {
-              paymentId: payment.id,
-              isOnChainPayment: false,
-              brand: undefined,
-              last4: undefined,
-            };
-          }
-
-          const stripePaymentIntent = await stripe.paymentIntents.retrieve(
-            payment.paymentProviderReferenceId,
-            { expand: ['payment_method'] },
-          );
-
-          if (isNil(stripePaymentIntent.payment_method)) {
-            throw new TRPCError({
-              code: 'NOT_FOUND',
-              message:
-                'payment information missing, Namefi Payment ID: ' +
-                payment.id +
-                ' Stripe Payment Intent ID: ' +
-                payment.paymentProviderReferenceId,
-            });
-          }
-
-          const paymentMethod =
-            stripePaymentIntent.payment_method as Stripe.PaymentMethod;
-
-          return {
-            paymentId: payment.id,
-            isOnChainPayment: false,
-            brand: paymentMethod.card?.brand,
-            last4: paymentMethod.card?.last4,
-          };
-        },
-      );
-
-      return res;
+      return buildOrderPaymentMethodsDetails(payments) as any;
     }),
 
   /**

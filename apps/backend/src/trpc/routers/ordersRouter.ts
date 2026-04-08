@@ -33,6 +33,14 @@ import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import {
   orderService,
   type CreateOrderItemInput,
+  ensureOrderOwnership,
+  getOrderItemsForUser,
+  buildPaymentMethodDetails,
+  buildOrderPaymentMethodsDetails,
+  validateNfscWalletAddresses,
+  removeCartItems,
+  createOrderWithWorkflow,
+  type PaymentMethodDetails,
 } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
@@ -72,46 +80,6 @@ import {
   getAllowedChainsForNftByDomainNames,
 } from '#lib/env/allowed-chains';
 
-const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
-type PaymentMethodDetailsOnChain = {
-  paymentId: string;
-  isOnChainPayment: true;
-  txHash?: string | null;
-  chainId: number;
-  walletAddress: string;
-};
-type PaymentMethodDetailsOffChain = {
-  paymentId: string;
-  isOnChainPayment: false;
-  brand?: string;
-  last4?: string;
-};
-type PaymentMethodDetailsX402 = {
-  paymentId: string;
-  isOnChainPayment: true;
-  isX402Payment: true;
-  network: string;
-  buyerWalletAddress: string;
-  receiverWalletAddress?: string;
-  settlementTxHash?: string | null;
-};
-type PaymentMethodDetailsMpp = {
-  paymentId: string;
-  isMppPayment: true;
-  method: 'stripe' | 'tempo';
-  isOnChainPayment: boolean;
-  payerWalletAddress?: string;
-  reference?: string | null;
-  brand?: string;
-  last4?: string;
-};
-
-type PaymentMethodDetails =
-  | PaymentMethodDetailsOnChain
-  | PaymentMethodDetailsOffChain
-  | PaymentMethodDetailsX402
-  | PaymentMethodDetailsMpp;
-
 type OrderProgressSnapshot = {
   workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
   runId: string | null;
@@ -124,32 +92,6 @@ type OrderProgressPayload = OrderProgressSnapshot & {
 };
 
 const workflowIdForOrder = (orderId: string) => `process-order-${orderId}`;
-
-const ensureOrderOwnership = async (orderId: string, userId: string) => {
-  const orderRecord = await db.query.ordersTable.findFirst({
-    where: eq(ordersTable.id, orderId),
-    columns: {
-      userId: true,
-      status: true,
-    },
-  });
-
-  if (!orderRecord) {
-    throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: 'Order not found',
-    });
-  }
-
-  if (orderRecord.userId !== userId) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'You are not authorized to view this order',
-    });
-  }
-
-  return orderRecord;
-};
 
 const fetchOrderWorkflowSnapshot = async (
   orderId: string,
@@ -269,7 +211,7 @@ export const ordersRouter = createTRPCRouter({
         );
 
         // Delete cart items that were used to create the order
-        await _removeCartItems(ctx.user.id, cartItemIds, { tx });
+        await removeCartItems(ctx.user.id, cartItemIds, { tx });
 
         const paymentsMetadata = {
           [payment.id]: input.paymentMetadata,
@@ -671,30 +613,7 @@ export const ordersRouter = createTRPCRouter({
 
   getOrderItems: protectedProcedure.query(
     async ({ ctx: { user, poweredByNamefiDomain } }) => {
-      // TODO: (sid) Consider addding pagination to this query if we start to have a lot of order
-      const items = await db
-        .select({
-          ...getTableColumns(orderItemsTable),
-          nftWalletAddress: ordersTable.nftWalletAddress,
-          nftChainId: ordersTable.nftChainId,
-          orderMetadata: ordersTable.metadata,
-        })
-        .from(orderItemsTable)
-        .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
-        .where(
-          and(
-            eq(ordersTable.userId, user.id),
-            isNotNil(poweredByNamefiDomain)
-              ? ilike(
-                  orderItemsTable.normalizedDomainName,
-                  `%.${poweredByNamefiDomain}`,
-                )
-              : undefined,
-          ),
-        )
-        .orderBy(desc(ordersTable.createdAt));
-
-      return items;
+      return getOrderItemsForUser(user.id, poweredByNamefiDomain);
     },
   ),
 
@@ -796,28 +715,12 @@ export const ordersRouter = createTRPCRouter({
           privyUser,
         }),
       );
-      const nfscPayments = payments
-        .map((p) => p.paymentProviderDetails)
-        .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[];
-
-      for (const p of nfscPayments) {
-        const validWalletAddress = checksumWalletAddressSchema.safeParse(
-          p.nfscPaymentDetails.walletAddress,
-        );
-        if (!validWalletAddress.success) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message:
-              'NFSC payment walletAddress is not a valid Ethereum wallet address',
-          });
-        }
-        if (!userWallets.has(validWalletAddress.data)) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'NFSC payment walletAddress is not linked to the user',
-          });
-        }
-      }
+      validateNfscWalletAddresses(
+        payments
+          .map((p) => p.paymentProviderDetails)
+          .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[],
+        userWallets,
+      );
 
       const x402Payments = payments
         .map((p) => p.paymentProviderDetails)
@@ -876,7 +779,7 @@ export const ordersRouter = createTRPCRouter({
           );
 
         // 3) Delete used cart items
-        await _removeCartItems(ctx.user.id, cartItemIds, { tx });
+        await removeCartItems(ctx.user.id, cartItemIds, { tx });
 
         // 4) Build per-payment metadata map and start workflow
         const paymentsMetadata = createdPayments.reduce<{
@@ -1013,28 +916,12 @@ export const ordersRouter = createTRPCRouter({
       const userWallets = new Set(
         getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser }),
       );
-      const nfscPayments = payments
-        .map((p) => p.paymentProviderDetails)
-        .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[];
-
-      for (const p of nfscPayments) {
-        const validWalletAddress = checksumWalletAddressSchema.safeParse(
-          p.nfscPaymentDetails.walletAddress,
-        );
-        if (!validWalletAddress.success) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message:
-              'NFSC payment walletAddress is not a valid Ethereum wallet address',
-          });
-        }
-        if (!userWallets.has(validWalletAddress.data)) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'NFSC payment walletAddress is not linked to the user',
-          });
-        }
-      }
+      validateNfscWalletAddresses(
+        payments
+          .map((p) => p.paymentProviderDetails)
+          .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[],
+        userWallets,
+      );
 
       // 5. Create order in transaction
       const order = await db.transaction(async (tx) => {
@@ -1158,13 +1045,11 @@ export const ordersRouter = createTRPCRouter({
   getOrderPaymentMethodsDetails: protectedProcedure
     .input(z.object({ orderId: z.string() }))
     .query(async ({ ctx, input }): Promise<PaymentMethodDetails[]> => {
-      const { user } = ctx;
-      const { orderId } = input;
+      const { order, payments } = await orderService.getOrderDetailsOrThrow(
+        input.orderId,
+      );
 
-      const { order, payments } =
-        await orderService.getOrderDetailsOrThrow(orderId);
-
-      if (order.userId !== user.id) {
+      if (order.userId !== ctx.user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this order',
@@ -1173,124 +1058,15 @@ export const ordersRouter = createTRPCRouter({
       if (!payments.length) {
         return [];
       }
-      const res = await pMap(
-        payments,
-        async (payment): Promise<PaymentMethodDetails> => {
-          if (isX402Payment(payment)) {
-            return {
-              paymentId: payment.id,
-              isOnChainPayment: true,
-              isX402Payment: true,
-              network: payment.x402PaymentDetails.network,
-              buyerWalletAddress: payment.x402PaymentDetails.buyerWalletAddress,
-              receiverWalletAddress:
-                payment.x402PaymentDetails.receiverWalletAddress,
-              settlementTxHash: payment.x402PaymentDetails.settlementTxHash,
-            };
-          }
-
-          if (isNfscPayment(payment)) {
-            return {
-              paymentId: payment.id,
-              isOnChainPayment: true,
-              txHash: payment.paymentProviderReferenceId,
-              chainId: payment.nfscPaymentDetails.chainId,
-              walletAddress: payment.nfscPaymentDetails.walletAddress,
-            };
-          }
-
-          if (isMppPayment(payment)) {
-            if (payment.metadata.mppPaymentDetails.method === 'tempo') {
-              return {
-                isMppPayment: true,
-                method: 'tempo',
-                payerWalletAddress:
-                  payment.metadata.mppPaymentDetails.payerWalletAddress,
-                paymentId: payment.id,
-                isOnChainPayment: true,
-                reference: payment.paymentProviderReferenceId,
-              };
-            }
-
-            if (isNil(payment.paymentProviderReferenceId)) {
-              return {
-                paymentId: payment.id,
-                isOnChainPayment: false,
-                brand: undefined,
-                last4: undefined,
-              };
-            }
-
-            const stripePaymentIntent = await stripe.paymentIntents.retrieve(
-              payment.paymentProviderReferenceId,
-              { expand: ['payment_method'] },
-            );
-
-            const paymentMethod =
-              stripePaymentIntent.payment_method as Stripe.PaymentMethod | null;
-
-            return {
-              isMppPayment: true,
-              method: 'stripe',
-              paymentId: payment.id,
-              isOnChainPayment: false,
-              brand: paymentMethod?.card?.brand,
-              last4: paymentMethod?.card?.last4,
-              reference: payment.paymentProviderReferenceId,
-            };
-          }
-
-          if (isNil(payment.paymentProviderReferenceId)) {
-            return {
-              paymentId: payment.id,
-              isOnChainPayment: false,
-              brand: undefined,
-              last4: undefined,
-            };
-          }
-
-          const stripePaymentIntent = await stripe.paymentIntents.retrieve(
-            payment.paymentProviderReferenceId,
-            { expand: ['payment_method'] },
-          );
-
-          if (isNil(stripePaymentIntent.payment_method)) {
-            throw new TRPCError({
-              code: 'NOT_FOUND',
-              message:
-                'payment information missing, Namefi Payment ID: ' +
-                payment.id +
-                ' Stripe Payment Intent ID: ' +
-                payment.paymentProviderReferenceId,
-            });
-          }
-
-          const paymentMethod =
-            stripePaymentIntent.payment_method as Stripe.PaymentMethod;
-
-          return {
-            paymentId: payment.id,
-            isOnChainPayment: false,
-            brand: paymentMethod.card?.brand,
-            last4: paymentMethod.card?.last4,
-          };
-        },
-      );
-
-      return res;
+      return buildOrderPaymentMethodsDetails(payments);
     }),
 
   getPaymentMethodDetails: protectedProcedure
     .input(z.object({ paymentId: z.string() }))
     .query(async ({ ctx, input }): Promise<PaymentMethodDetails> => {
-      const { user } = ctx;
-      const { paymentId } = input;
-
       const payment = await db.query.paymentsTable.findFirst({
-        where: eq(paymentsTable.id, paymentId),
-        with: {
-          order: true,
-        },
+        where: eq(paymentsTable.id, input.paymentId),
+        with: { order: true },
       });
 
       if (!payment || !payment.order) {
@@ -1299,112 +1075,14 @@ export const ordersRouter = createTRPCRouter({
           message: 'Payment not found',
         });
       }
-      // TODO userId should be present in the payment table
-      if (payment.order.userId !== user.id) {
+      if (payment.order.userId !== ctx.user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this payment',
         });
       }
 
-      if (isX402Payment(payment)) {
-        return {
-          paymentId: payment.id,
-          isOnChainPayment: true,
-          isX402Payment: true,
-          network: payment.x402PaymentDetails.network,
-          buyerWalletAddress: payment.x402PaymentDetails.buyerWalletAddress,
-          receiverWalletAddress:
-            payment.x402PaymentDetails.receiverWalletAddress,
-          settlementTxHash: payment.x402PaymentDetails.settlementTxHash,
-        };
-      }
-
-      if (isNfscPayment(payment)) {
-        return {
-          paymentId: payment.id,
-          isOnChainPayment: true,
-          txHash: payment.paymentProviderReferenceId,
-          chainId: payment.nfscPaymentDetails.chainId,
-          walletAddress: payment.nfscPaymentDetails.walletAddress,
-        };
-      }
-
-      if (isMppPayment(payment)) {
-        if (payment.metadata.mppPaymentDetails.method === 'tempo') {
-          return {
-            isMppPayment: true,
-            method: 'tempo',
-            payerWalletAddress:
-              payment.metadata.mppPaymentDetails.payerWalletAddress,
-            paymentId: payment.id,
-            isOnChainPayment: true,
-            reference: payment.paymentProviderReferenceId,
-          };
-        }
-
-        if (isNil(payment.paymentProviderReferenceId)) {
-          return {
-            paymentId: payment.id,
-            isOnChainPayment: false,
-            brand: undefined,
-            last4: undefined,
-          };
-        }
-
-        const stripePaymentIntent = await stripe.paymentIntents.retrieve(
-          payment.paymentProviderReferenceId,
-          { expand: ['payment_method'] },
-        );
-
-        const paymentMethod =
-          stripePaymentIntent.payment_method as Stripe.PaymentMethod | null;
-
-        return {
-          isMppPayment: true,
-          method: 'stripe',
-          paymentId: payment.id,
-          isOnChainPayment: false,
-          brand: paymentMethod?.card?.brand,
-          last4: paymentMethod?.card?.last4,
-          reference: payment.paymentProviderReferenceId,
-        };
-      }
-
-      if (isNil(payment.paymentProviderReferenceId)) {
-        return {
-          paymentId: payment.id,
-          isOnChainPayment: false,
-          brand: undefined,
-          last4: undefined,
-        };
-      }
-
-      const stripePaymentIntent = await stripe.paymentIntents.retrieve(
-        payment.paymentProviderReferenceId,
-        { expand: ['payment_method'] },
-      );
-
-      if (isNil(stripePaymentIntent.payment_method)) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message:
-            'payment information missing, Namefi Payment ID: ' +
-            payment.id +
-            ' Stripe Payment Intent ID: ' +
-            payment.paymentProviderReferenceId,
-        });
-      }
-
-      const paymentMethod =
-        stripePaymentIntent.payment_method as Stripe.PaymentMethod;
-
-      return {
-        paymentId: payment.id,
-        isOnChainPayment: false,
-        brand: paymentMethod.card?.brand,
-        last4: paymentMethod.card?.last4,
-      };
+      return buildPaymentMethodDetails(payment);
     }),
 
   // Get refunds for a given payment (amounts and provider reference ids)
@@ -1797,27 +1475,4 @@ async function _createPaymentForOrder(
       message: 'Could not create payment',
     });
   }
-}
-async function _removeCartItems(
-  userId: string,
-  cartItemIds: string[],
-  { tx }: { tx?: typeof db } = {},
-) {
-  const res = await (tx ?? db)
-    .delete(cartItemsTable)
-    .where(
-      and(
-        inArray(cartItemsTable.id, cartItemIds),
-        eq(cartItemsTable.userId, userId),
-      ),
-    );
-  if (res.rowCount !== cartItemIds.length) {
-    logger.error({ res }, 'Cart items removal failed');
-    throw new TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: 'Cart items removal failed',
-    });
-  }
-  logger.debug({ res }, 'Cart items removed');
-  return res;
 }
