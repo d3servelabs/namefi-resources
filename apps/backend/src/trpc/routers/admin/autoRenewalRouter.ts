@@ -27,8 +27,8 @@ export const autoRenewalRouter = createTRPCRouter({
       const cutoff = new Date(
         Date.now() - 90 * 24 * 60 * 60 * 1000,
       ).toISOString();
-      const workflowList = await temporalClient.workflow.list({
-        query: `StartTime >= "${cutoff}" AND WorkflowType = "dailyDomainsUpcomingRenewalsWorkflow" ORDER BY StartTime DESC`,
+      const workflowList = temporalClient.workflow.list({
+        query: `StartTime >= "${cutoff}" AND WorkflowType = "dailyDomainsUpcomingRenewalsWorkflow"`,
       });
 
       const workflows: Array<{
