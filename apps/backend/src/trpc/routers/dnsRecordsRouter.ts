@@ -1,23 +1,21 @@
-import { db, dnsRecordsTable } from '@namefi-astra/db';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { recordSchema } from '@namefi-astra/zod-dns';
-import { TRPCError } from '@trpc/server';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
-import { and, eq, inArray, sql } from 'drizzle-orm';
-import { assoc, isNotNil, map, pickBy, pluck } from 'ramda';
 import { z } from 'zod';
 import { logger } from '#lib/logger';
 import { queryActiveNameserversChangeWorkflow } from '#lib/domains/nameservers';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
+  batchCreateRecords,
+  batchDeleteRecords,
+  batchUpdateRecords,
   createRecord,
   createRecordInputSchema,
   deleteRecord,
   getZoneRecordsWithManagedRecords,
   updateRecord,
   updateRecordInputSchema,
-  validateZone,
 } from '../../services/dns/service';
 import { temporalClient } from '../../temporal/client';
 import {
@@ -457,53 +455,8 @@ export const dnsRecordsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const { zoneName, records } = input;
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
-
-      // First, verify that all records exist and belong to the specified domain
-      const existingRecords = await db
-        .select()
-        .from(dnsRecordsTable)
-        .where(
-          and(
-            inArray(dnsRecordsTable.id, pluck('id', records)),
-            eq(dnsRecordsTable.zoneName, zoneName),
-          ),
-        );
-
-      if (existingRecords?.length !== records.length) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message:
-            'Some DNS records are not found or do not belong to this domain',
-        });
-      }
-      // Validate the zone with the updated record
-      await validateZone(zoneName, {
-        updatedRecords: records,
-      });
-
-      const updatedRecords = await db.transaction(async (tx) => {
-        const multiStatementSql = sql.join(
-          records.map((record) =>
-            tx
-              .update(dnsRecordsTable)
-              .set(pickBy(isNotNil, record))
-              .where(
-                and(
-                  eq(dnsRecordsTable.id, record.id),
-                  eq(dnsRecordsTable.zoneName, zoneName),
-                ),
-              )
-              .returning()
-              .getSQL(),
-          ),
-          sql`;\n`,
-        );
-        return tx.execute(multiStatementSql.inlineParams());
-      });
-
-      return updatedRecords;
+      return batchUpdateRecords(input.zoneName, input.records);
     }),
 
   /**
@@ -518,17 +471,7 @@ export const dnsRecordsRouter = createTRPCRouter({
     )
     .mutation(async ({ input: { zoneName, records }, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-
-      // Validate the zone with the new record
-      await validateZone(zoneName, {
-        addedRecords: records,
-      });
-
-      const addedRecords = await db
-        .insert(dnsRecordsTable)
-        .values(map(assoc('zoneName', zoneName), records))
-        .returning();
-      return addedRecords;
+      return batchCreateRecords(zoneName, records);
     }),
 
   /**
@@ -543,40 +486,7 @@ export const dnsRecordsRouter = createTRPCRouter({
     )
     .mutation(async ({ input: { zoneName, recordsIds }, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-
-      const records = await db
-        .select()
-        .from(dnsRecordsTable)
-        .where(
-          and(
-            inArray(dnsRecordsTable.id, recordsIds),
-            eq(dnsRecordsTable.zoneName, zoneName),
-          ),
-        );
-
-      if (records?.length !== recordsIds.length) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message:
-            'Some DNS records are not found or do not belong to this domain',
-        });
-      }
-
-      // Validate the zone with the deleted records
-      await validateZone(zoneName, {
-        deletedRecords: records,
-      });
-
-      await db
-        .delete(dnsRecordsTable)
-        .where(
-          and(
-            eq(dnsRecordsTable.zoneName, zoneName),
-            inArray(dnsRecordsTable.id, recordsIds),
-          ),
-        );
-
-      return { success: true };
+      return batchDeleteRecords(zoneName, recordsIds);
     }),
 
   /**

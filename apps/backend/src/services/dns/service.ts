@@ -14,8 +14,17 @@ import {
   zoneSchema,
 } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
-import { and, eq } from 'drizzle-orm';
-import { filter, isNotNil, mergeRight, pickBy } from 'ramda';
+import { and, eq, inArray, sql } from 'drizzle-orm';
+import {
+  assoc,
+  filter,
+  isNotNil,
+  map,
+  mergeRight,
+  pickBy,
+  pluck,
+  omit,
+} from 'ramda';
 import { z } from 'zod';
 import { areRecordsEqual } from './helpers';
 import {
@@ -268,7 +277,6 @@ function assertNoParkingConflicts(
  * @returns The found DNS record
  * @throws {TRPCError} If record is not found or doesn't belong to Domain
  */
-// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function getRecordByIdAndDomainOrThrow(
   id: string,
   zoneName: NamefiNormalizedDomain,
@@ -295,7 +303,6 @@ export async function getRecordByIdAndDomainOrThrow(
  * @param zoneName - The normalized domain name to get records for
  * @returns An array of DNS records for the domain
  */
-// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function getZoneRecords(zoneName: NamefiNormalizedDomain) {
   const records = await db
     .select()
@@ -327,7 +334,6 @@ export async function getZoneRecordsWithManagedRecords(
  * @param deleteRecords - Array of existing records to delete
  * @returns Array of all records in the zone after updates
  */
-// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function validateZone(
   zoneName: NamefiNormalizedDomain,
   changes: ZoneChanges,
@@ -402,7 +408,6 @@ export async function validateZone(
  * @param input - The input data for the updated record
  * @returns The updated DNS record
  */
-// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function updateRecord(
   input: z.infer<typeof updateRecordInputSchema>,
 ) {
@@ -433,7 +438,6 @@ export async function updateRecord(
  * @param id - The ID of the DNS record to delete
  * @param zoneName - The normalized domain name to check against
  */
-// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function deleteRecord(
   id: string,
   zoneName: NamefiNormalizedDomain,
@@ -450,7 +454,6 @@ export async function deleteRecord(
  * @param input - The input data for the new record
  * @returns The created DNS record
  */
-// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function createRecord(
   input: z.infer<typeof createRecordInputSchema>,
 ) {
@@ -468,4 +471,115 @@ export async function createRecord(
 
   const record = await db.insert(dnsRecordsTable).values(input).returning();
   return record[0];
+}
+
+export async function batchUpdateRecords(
+  zoneName: NamefiNormalizedDomain,
+  records: Omit<z.infer<typeof updateRecordInputSchema>, 'zoneName'>[],
+) {
+  if (records.length === 0) {
+    return [];
+  }
+
+  const existingRecords = await db
+    .select()
+    .from(dnsRecordsTable)
+    .where(
+      and(
+        inArray(dnsRecordsTable.id, pluck('id', records)),
+        eq(dnsRecordsTable.zoneName, zoneName),
+      ),
+    );
+
+  if (existingRecords?.length !== records.length) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Some DNS records are not found or do not belong to this domain',
+    });
+  }
+
+  await validateZone(zoneName, {
+    updatedRecords: records,
+  });
+
+  const updatedRecords = await db.transaction(async (tx) => {
+    const multiStatementSql = sql.join(
+      records.map((record) =>
+        tx
+          .update(dnsRecordsTable)
+          .set(pickBy(isNotNil, omit(['id'], record)))
+          .where(
+            and(
+              eq(dnsRecordsTable.id, record.id),
+              eq(dnsRecordsTable.zoneName, zoneName),
+            ),
+          )
+          .returning()
+          .getSQL(),
+      ),
+      sql`;\n`,
+    );
+    return tx.execute(multiStatementSql.inlineParams());
+  });
+
+  return updatedRecords;
+}
+
+export async function batchCreateRecords(
+  zoneName: NamefiNormalizedDomain,
+  records: z.infer<typeof recordSchema>[],
+) {
+  if (records.length === 0) {
+    return [];
+  }
+  await validateZone(zoneName, {
+    addedRecords: records,
+  });
+
+  const addedRecords = await db
+    .insert(dnsRecordsTable)
+    .values(map(assoc('zoneName', zoneName), records))
+    .returning();
+  return addedRecords;
+}
+
+export async function batchDeleteRecords(
+  zoneName: NamefiNormalizedDomain,
+  recordIds: string[],
+) {
+  if (recordIds.length === 0) {
+    return { success: true as const };
+  }
+
+  const records = await db
+    .select()
+    .from(dnsRecordsTable)
+    .where(
+      and(
+        inArray(dnsRecordsTable.id, recordIds),
+        eq(dnsRecordsTable.zoneName, zoneName),
+      ),
+    );
+
+  if (records?.length !== recordIds.length) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Some DNS records are not found or do not belong to this domain',
+    });
+  }
+
+  await validateZone(zoneName, {
+    deletedRecords: records,
+  });
+
+  await db
+    .delete(dnsRecordsTable)
+    .where(
+      and(
+        eq(dnsRecordsTable.zoneName, zoneName),
+        inArray(dnsRecordsTable.id, recordIds),
+      ),
+    );
+
+  return { success: true as const };
 }

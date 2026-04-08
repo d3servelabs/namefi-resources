@@ -1,9 +1,6 @@
-import { db, dnsRecordsTable, dnsRecordSelectSchema } from '@namefi-astra/db';
+import { dnsRecordSelectSchema } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { recordSchema } from '@namefi-astra/zod-dns';
-import { TRPCError } from '@trpc/server';
-import { and, eq, inArray, sql } from 'drizzle-orm';
-import { assoc, isNotNil, map, pickBy, pluck } from 'ramda';
 import { z } from 'zod';
 import { updateDomainConfig } from '#lib/domains/domain-preferences';
 import {
@@ -12,10 +9,9 @@ import {
   toggleDomainParking,
 } from '#services/dns/parking';
 import {
-  getVercelAnycastRecordPlan,
-  type VercelAnycastDnsRecord,
-} from '#lib/vercel/vercel-client-sdk';
-import {
+  batchCreateRecords,
+  batchDeleteRecords,
+  batchUpdateRecords,
   createRecord,
   createRecordInputSchema,
   deleteRecord,
@@ -24,6 +20,7 @@ import {
   updateRecordInputSchema,
   validateZone,
 } from '../../services/dns/service';
+import { toggleVercelAnycastRecords } from '../../services/dns/vercel-anycast';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';
 import { orpcMetaWithEip712FromZodSchema } from '#lib/eip712/orpc-meta-from-zod-schemas';
@@ -179,73 +176,11 @@ const ToggleVercelAnyCastRecords = z
     eip712: { structName: 'ToggleVercelAnyCastRecords' },
   });
 
-const VERCEL_ANYCAST_MANAGED_BY = 'vercelAnycast';
-
-type DnsRecordRow = z.infer<typeof dnsRecordSelectSchema>;
-
 function normalizeForwardTo(forwardTo: string | undefined) {
   const trimmed = forwardTo?.trim();
   return trimmed ? trimmed : null;
 }
 
-function isApexRecordName(name: string) {
-  return name === '@' || name === '';
-}
-
-function isManagedVercelAnycastRecord(record: Pick<DnsRecordRow, 'metadata'>) {
-  return (
-    typeof record.metadata === 'object' &&
-    record.metadata !== null &&
-    record.metadata.namefiManaged === true &&
-    record.metadata.managedBy === VERCEL_ANYCAST_MANAGED_BY
-  );
-}
-
-function isMatchingVercelAnycastRecord(
-  record: Pick<DnsRecordRow, 'name' | 'type' | 'rdata'>,
-  targetRecord: VercelAnycastDnsRecord,
-) {
-  return (
-    record.name === targetRecord.name &&
-    record.type === targetRecord.type &&
-    record.rdata === targetRecord.rdata
-  );
-}
-
-function toValidationRecord(
-  record: Pick<DnsRecordRow, 'id' | 'name' | 'type' | 'rdata' | 'ttl'>,
-) {
-  return {
-    id: record.id,
-    name: record.name,
-    type: record.type,
-    rdata: record.rdata,
-    ttl: record.ttl,
-  };
-}
-
-function buildVercelAnycastMetadata(record: VercelAnycastDnsRecord) {
-  return {
-    namefiManaged: true,
-    managedBy: VERCEL_ANYCAST_MANAGED_BY,
-    kind: record.type === 'CAA' ? 'caa' : 'apex',
-  } as const;
-}
-
-function getVercelAnycastManagedConfigUpdate(apexRecordType: 'A' | 'CNAME') {
-  if (apexRecordType === 'CNAME') {
-    return {
-      autoParkEnabled: false,
-      autoEnsEnabled: false,
-      forwardTo: '',
-    };
-  }
-
-  return {
-    autoParkEnabled: false,
-    forwardTo: '',
-  };
-}
 // ============================================================================
 // Router Definition
 // ============================================================================
@@ -377,51 +312,11 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
     .input(UpdateRecords)
     .output(z.array(dnsRecord))
     .mutation(async ({ input, ctx }) => {
-      const { zoneName, records } = input;
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
-
-      const existingRecords = await db
-        .select()
-        .from(dnsRecordsTable)
-        .where(
-          and(
-            inArray(dnsRecordsTable.id, pluck('id', records)),
-            eq(dnsRecordsTable.zoneName, zoneName),
-          ),
-        );
-
-      if (existingRecords?.length !== records.length) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message:
-            'Some DNS records are not found or do not belong to this domain',
-        });
-      }
-
-      await validateZone(zoneName, {
-        updatedRecords: records,
-      });
-
-      const updatedRecords = await db.transaction(async (tx) => {
-        const multiStatementSql = sql.join(
-          records.map((record) =>
-            tx
-              .update(dnsRecordsTable)
-              .set(pickBy(isNotNil, record))
-              .where(
-                and(
-                  eq(dnsRecordsTable.id, record.id),
-                  eq(dnsRecordsTable.zoneName, zoneName),
-                ),
-              )
-              .returning()
-              .getSQL(),
-          ),
-          sql`;\n`,
-        );
-        return tx.execute(multiStatementSql.inlineParams());
-      });
-
+      const updatedRecords = await batchUpdateRecords(
+        input.zoneName,
+        input.records,
+      );
       return updatedRecords as unknown as z.infer<
         typeof dnsRecordSelectSchema
       >[];
@@ -448,16 +343,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
     .output(z.array(dnsRecord))
     .mutation(async ({ input: { zoneName, records }, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-
-      await validateZone(zoneName, {
-        addedRecords: records,
-      });
-
-      const addedRecords = await db
-        .insert(dnsRecordsTable)
-        .values(map(assoc('zoneName', zoneName), records))
-        .returning();
-      return addedRecords;
+      return batchCreateRecords(zoneName, records);
     }),
 
   /**
@@ -481,39 +367,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
     .output(successResponseSchema)
     .mutation(async ({ input: { zoneName, recordsIds }, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-
-      const records = await db
-        .select()
-        .from(dnsRecordsTable)
-        .where(
-          and(
-            inArray(dnsRecordsTable.id, recordsIds),
-            eq(dnsRecordsTable.zoneName, zoneName),
-          ),
-        );
-
-      if (records?.length !== recordsIds.length) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message:
-            'Some DNS records are not found or do not belong to this domain',
-        });
-      }
-
-      await validateZone(zoneName, {
-        deletedRecords: records,
-      });
-
-      await db
-        .delete(dnsRecordsTable)
-        .where(
-          and(
-            eq(dnsRecordsTable.zoneName, zoneName),
-            inArray(dnsRecordsTable.id, recordsIds),
-          ),
-        );
-
-      return { success: true };
+      return batchDeleteRecords(zoneName, recordsIds);
     }),
 
   /**
@@ -628,152 +482,7 @@ export const dnsRecordsRouterOrpc = createTRPCRouter({
         input.normalizedDomainName,
         ctx.user,
       );
-
-      const zoneRecords = await db
-        .select()
-        .from(dnsRecordsTable)
-        .where(eq(dnsRecordsTable.zoneName, input.normalizedDomainName));
-
-      const apexZoneRecords = zoneRecords.filter((record) =>
-        isApexRecordName(record.name),
-      );
-      const existingManagedAnycastRecords = apexZoneRecords.filter((record) =>
-        isManagedVercelAnycastRecord(record),
-      );
-
-      if (!input.enableVercelAnyCastRecords) {
-        if (existingManagedAnycastRecords.length > 0) {
-          await db
-            .delete(dnsRecordsTable)
-            .where(
-              and(
-                eq(dnsRecordsTable.zoneName, input.normalizedDomainName),
-                inArray(
-                  dnsRecordsTable.id,
-                  pluck('id', existingManagedAnycastRecords),
-                ),
-              ),
-            );
-        }
-
-        return { success: true };
-      }
-
-      let recordPlan: ReturnType<typeof getVercelAnycastRecordPlan>;
-      try {
-        recordPlan = getVercelAnycastRecordPlan(input.normalizedDomainName);
-      } catch (error) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            error instanceof Error ? error.message : 'Invalid domain name',
-        });
-      }
-
-      const conflictingRecords = apexZoneRecords.filter((record) => {
-        if (isMatchingVercelAnycastRecord(record, recordPlan.records[0])) {
-          return false;
-        }
-
-        if (
-          recordPlan.records.some((targetRecord) =>
-            isMatchingVercelAnycastRecord(record, targetRecord),
-          )
-        ) {
-          return false;
-        }
-
-        if (isManagedVercelAnycastRecord(record)) {
-          return true;
-        }
-
-        if (recordPlan.overrideStrategy === 'replace-all-apex-records') {
-          return true;
-        }
-
-        return record.type === 'A' || record.type === 'CNAME';
-      });
-
-      if (
-        conflictingRecords.length > 0 &&
-        input.overrideExistingRecords !== true
-      ) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'Conflicting apex DNS records already exist. Set overrideExistingRecords to true to replace them.',
-        });
-      }
-
-      await validateZone(
-        input.normalizedDomainName,
-        {
-          addedRecords: recordPlan.records,
-          deletedRecords: conflictingRecords.map(toValidationRecord),
-        },
-        {
-          managedStateOverride:
-            recordPlan.apexRecordType === 'CNAME'
-              ? {
-                  autoParkEnabled: false,
-                  autoEnsEnabled: false,
-                  forwardTo: null,
-                }
-              : {
-                  autoParkEnabled: false,
-                  forwardTo: null,
-                },
-        },
-      );
-
-      await db.transaction(async (tx) => {
-        await updateDomainConfig(
-          input.normalizedDomainName,
-          getVercelAnycastManagedConfigUpdate(recordPlan.apexRecordType),
-          tx,
-        );
-
-        if (conflictingRecords.length > 0) {
-          await tx
-            .delete(dnsRecordsTable)
-            .where(
-              and(
-                eq(dnsRecordsTable.zoneName, input.normalizedDomainName),
-                inArray(dnsRecordsTable.id, pluck('id', conflictingRecords)),
-              ),
-            );
-        }
-
-        await tx
-          .insert(dnsRecordsTable)
-          .values(
-            recordPlan.records.map((record) => ({
-              zoneName: input.normalizedDomainName,
-              name: record.name,
-              type: record.type,
-              class: 'IN',
-              ttl: record.ttl,
-              rdata: record.rdata,
-              metadata: buildVercelAnycastMetadata(record),
-            })),
-          )
-          .onConflictDoUpdate({
-            target: [
-              dnsRecordsTable.zoneName,
-              dnsRecordsTable.name,
-              dnsRecordsTable.type,
-              dnsRecordsTable.class,
-              dnsRecordsTable.rdata,
-            ],
-            set: {
-              ttl: sql`excluded.ttl`,
-              metadata: sql`excluded.metadata`,
-              updatedAt: new Date(),
-            },
-          });
-      });
-
-      return { success: true };
+      return toggleVercelAnycastRecords(input);
     }),
 
   /**
