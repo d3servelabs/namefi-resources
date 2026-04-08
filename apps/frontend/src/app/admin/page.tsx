@@ -80,6 +80,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         permissions: [Permission.READ_SCHEDULES, Permission.WRITE_SCHEDULES],
         permissionsMode: 'some',
       },
+      {
+        title: 'Auto-Renewal',
+        description:
+          'View auto-renewal workflow runs, domain renewals, and payment details.',
+        href: '/admin/auto-renewal',
+        icon: RefreshCw,
+        iconBgColor: 'bg-green-100',
+        iconTextColor: 'text-green-600',
+        permissions: [Permission.READ_ORDERS],
+      },
     ],
   },
   {

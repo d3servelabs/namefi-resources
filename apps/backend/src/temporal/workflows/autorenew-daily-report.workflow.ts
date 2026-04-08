@@ -116,13 +116,19 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
     workflowResults.push({
       userId: success.userId,
       userEmail: result.userEmail,
-      status: result.paymentStatus === 'FAILED' ? 'failure' : 'success',
+      status:
+        result.paymentStatus === 'FAILED'
+          ? 'failure'
+          : result.paymentStatus === 'SKIPPED'
+            ? 'skipped'
+            : 'success',
       domainsProcessed: processedDomains.length + failedDomains.length || 0,
       amountChargedInUsd: result.totalAmountInUsd || 0,
       amountRefundedInUsd: result.refundAmountInUsd || 0,
       payments: result.payments,
       failures: failedDomains,
       successes: processedDomains,
+      chargeAmountByDomainLdh: result.chargeAmountByDomainLdh,
     });
   }
 
@@ -154,147 +160,26 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
     });
   }
 
-  // Calculate detailed metrics
-  const metrics: AutoRenewMetrics = {
-    reportDate: new Date(),
-    totalUsersProcessed: workflowResults.length,
-    totalDomainsProcessed: 0,
-    successfulRenewals: 0,
-    failedRenewals: 0,
-    totalAmountChargedInUsd: 0,
-    totalAmountRefundedInUsd: 0,
-    paymentMethodBreakdown: {
-      NFSC_BASE: { count: 0, amountInUsd: 0 },
-      NFSC_ETHEREUM: { count: 0, amountInUsd: 0 },
-      NFSC_ETHEREUM_SEPOLIA: { count: 0, amountInUsd: 0 },
-      STRIPE: { count: 0, amountInUsd: 0 },
-      X402: { count: 0, amountInUsd: 0 },
-      MPP: { count: 0, amountInUsd: 0 },
+  // Compute metrics via the collectAutoRenewMetrics activity.
+  // The activity delegates to computeAutoRenewMetricsFromResults internally,
+  // so we only pass the execution-time and notification count that the
+  // pure function cannot derive from workflowResults alone.
+  const seedMetrics = {
+    executionMetrics: {
+      totalExecutionTime: executionTime,
+      averageTimePerUser: 0,
+      childWorkflowsSpawned: 0,
     },
-    failureBreakdown: {
-      failedToCharge: 0,
-      registrarErrors: 0,
-      missingPriceData: 0,
-    },
-    criticalDomains: [],
     userCommunication: {
       upcomingRenewalNotifications: successes.length,
       successfulRenewalConfirmations: 0,
       failedRenewalAlerts: 0,
       paymentFailureNotifications: 0,
     },
-    executionMetrics: {
-      totalExecutionTime: executionTime,
-      averageTimePerUser:
-        workflowResults.length > 0 ? executionTime / workflowResults.length : 0,
-      childWorkflowsSpawned: workflowResults.length,
-    },
-    registrarBreakdown: {},
-    largestTransaction: {
-      userId: '',
-      amount: 0,
-      domainCount: 0,
-    },
-  };
+  } as AutoRenewMetrics;
 
-  // Process metrics from results
-  for (const result of workflowResults) {
-    metrics.totalDomainsProcessed += result.domainsProcessed || 0;
-    metrics.totalAmountChargedInUsd += result.amountChargedInUsd || 0;
-    metrics.totalAmountRefundedInUsd += result.amountRefundedInUsd || 0;
-
-    // Count successes and failures
-    if (result.successes) {
-      metrics.successfulRenewals += result.successes.length;
-      for (const success of result.successes) {
-        const registrar = success.registrar || 'Unknown';
-        if (!metrics.registrarBreakdown[registrar]) {
-          metrics.registrarBreakdown[registrar] = { successful: 0, failed: 0 };
-        }
-        metrics.registrarBreakdown[registrar].successful++;
-      }
-    }
-
-    if (result.failures) {
-      metrics.failedRenewals += result.failures.length;
-      for (const failure of result.failures) {
-        const registrar = failure.registrar || 'Unknown';
-        if (!metrics.registrarBreakdown[registrar]) {
-          metrics.registrarBreakdown[registrar] = { successful: 0, failed: 0 };
-        }
-        metrics.registrarBreakdown[registrar].failed++;
-
-        // Categorize failures
-        if (
-          failure.reason.toLowerCase().includes('charge') ||
-          failure.reason.toLowerCase().includes('payment')
-        ) {
-          metrics.failureBreakdown.failedToCharge++;
-        } else if (failure.reason.toLowerCase().includes('price')) {
-          metrics.failureBreakdown.missingPriceData++;
-        } else {
-          metrics.failureBreakdown.registrarErrors++;
-        }
-
-        // Add to critical domains if not a simple payment failure
-        if (
-          !failure.reason.toLowerCase().includes('insufficient') &&
-          !failure.reason.toLowerCase().includes('declined')
-        ) {
-          metrics.criticalDomains.push({
-            domain: failure.domain,
-            userId: result.userId,
-            userEmail: result.userEmail,
-            issue: failure.reason,
-            registrar: failure.registrar,
-            actionRequired: _determineActionRequired(failure.reason),
-          });
-        }
-      }
-    }
-
-    // Track payment methods
-    if (result.payments && result.amountChargedInUsd) {
-      for (const { paymentProvider, amountInUsdCents } of result.payments) {
-        if (!metrics.paymentMethodBreakdown[paymentProvider]) {
-          metrics.paymentMethodBreakdown[paymentProvider] = {
-            count: 0,
-            amountInUsd: 0,
-          };
-        }
-        metrics.paymentMethodBreakdown[paymentProvider].count++;
-        metrics.paymentMethodBreakdown[paymentProvider].amountInUsd +=
-          amountInUsdCents / 100; // Convert cents to USD
-      }
-    }
-
-    // Track largest transaction
-    if (
-      result.amountChargedInUsd &&
-      result.amountChargedInUsd > metrics.largestTransaction.amount
-    ) {
-      metrics.largestTransaction = {
-        userId: result.userId,
-        amount: result.amountChargedInUsd,
-        domainCount: result.domainsProcessed || 0,
-      };
-    }
-
-    // Update communication counts
-    if (result.status === 'success' && result.userEmail) {
-      metrics.userCommunication.successfulRenewalConfirmations++;
-    } else if (result.status === 'failure' && result.userEmail) {
-      if (result.failures?.some((f) => f.reason.includes('payment'))) {
-        metrics.userCommunication.paymentFailureNotifications++;
-      } else {
-        metrics.userCommunication.failedRenewalAlerts++;
-      }
-    }
-  }
-
-  // Collect final metrics
   const finalMetrics = await collectAutoRenewMetrics({
-    metrics,
+    metrics: seedMetrics,
     workflowResults,
   });
 
@@ -399,31 +284,4 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
   } else {
     workflow.log.info('No auto-renewal activity to report, skipping report');
   }
-}
-
-/**
- * Determine the action required based on the error message
- */
-function _determineActionRequired(errorMessage: string): string {
-  const lowerError = errorMessage.toLowerCase();
-
-  if (lowerError.includes('price') || lowerError.includes('pricing')) {
-    return 'Check pricing data';
-  }
-  if (lowerError.includes('locked')) {
-    return 'Unlock domain and retry';
-  }
-  if (lowerError.includes('timeout')) {
-    return 'Retry renewal';
-  }
-  if (lowerError.includes('api')) {
-    return 'Check registrar API';
-  }
-  if (lowerError.includes('expired')) {
-    return 'Domain already expired';
-  }
-  if (lowerError.includes('balance') || lowerError.includes('payment')) {
-    return 'Contact user about payment';
-  }
-  return 'Manual investigation required';
 }

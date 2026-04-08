@@ -11,7 +11,7 @@ import type {
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { getEppLockState } from './registrar.activities';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import type { PaymentSelect } from '@namefi-astra/db/types';
+import { determineActionRequired } from '../../shared/autorenew-utils';
 
 /**
  * Generate comprehensive CSV report with all auto-renewal details
@@ -48,14 +48,15 @@ export async function generateAutoRenewReportCsv(
     const baseRow = {
       userId: result.userId,
       userEmail: result.userEmail || '',
-      amountCharged: result.amountChargedInUsd?.toFixed(2) || '0.00',
-      amountRefunded: result.amountRefundedInUsd?.toFixed(2) || '0.00',
     };
+    const paymentProviders =
+      result.payments?.map((p) => p.paymentProvider).join('; ') || '';
+    const paymentIds = result.payments?.map((p) => p.id).join('; ') || '';
 
     // Add successful renewals
     if (result.successes) {
       for (const success of result.successes) {
-        const paymentInfo = result.payments?.[0] as PaymentSelect | undefined;
+        const domainCharge = result.chargeAmountByDomainLdh?.[success.domain];
         lines.push(
           [
             success.domain,
@@ -63,10 +64,10 @@ export async function generateAutoRenewReportCsv(
             baseRow.userEmail,
             'SUCCESS',
             formatRegistrarName(success.registrar || 'Unknown'),
-            baseRow.amountCharged,
+            domainCharge != null ? domainCharge.toFixed(2) : '0.00',
             '0.00',
-            paymentInfo?.paymentProvider || '',
-            paymentInfo?.id || '',
+            paymentProviders,
+            paymentIds,
             '',
             '',
             new Date().toISOString(),
@@ -77,10 +78,13 @@ export async function generateAutoRenewReportCsv(
       }
     }
 
-    // Add failed renewals
+    // Add failed renewals — refund equals the charge for that domain
     if (result.failures) {
       for (const failure of result.failures) {
-        const paymentInfo = result.payments?.[0] as PaymentSelect | undefined;
+        const domainCharge = result.chargeAmountByDomainLdh?.[failure.domain];
+        const chargeStr =
+          domainCharge != null ? domainCharge.toFixed(2) : '0.00';
+
         lines.push(
           [
             failure.domain,
@@ -88,12 +92,12 @@ export async function generateAutoRenewReportCsv(
             baseRow.userEmail,
             'FAILED',
             formatRegistrarName(failure.registrar || 'Unknown'),
-            baseRow.amountCharged,
-            baseRow.amountRefunded,
-            paymentInfo?.paymentProvider || '',
-            paymentInfo?.id || '',
+            chargeStr,
+            chargeStr, // refund = charge for failed domains
+            paymentProviders,
+            paymentIds,
             failure.reason,
-            getActionRequired(failure.reason),
+            determineActionRequired(failure.reason),
             new Date().toISOString(),
           ]
             .map(escapeCSV)
@@ -372,31 +376,4 @@ function formatRegistrarName(registrar: string): string {
     default:
       return registrar || 'Unknown';
   }
-}
-
-/**
- * Helper function to determine action required based on error
- */
-function getActionRequired(errorMessage: string): string {
-  const lowerError = errorMessage.toLowerCase();
-
-  if (lowerError.includes('price') || lowerError.includes('pricing')) {
-    return 'Check pricing data';
-  }
-  if (lowerError.includes('locked')) {
-    return 'Unlock domain and retry';
-  }
-  if (lowerError.includes('timeout')) {
-    return 'Retry renewal';
-  }
-  if (lowerError.includes('balance') || lowerError.includes('payment')) {
-    return 'Contact user about payment';
-  }
-  if (lowerError.includes('transfer period')) {
-    return 'Wait for transfer period to end';
-  }
-  if (lowerError.includes('expired')) {
-    return 'Domain already expired';
-  }
-  return 'Manual investigation required';
 }

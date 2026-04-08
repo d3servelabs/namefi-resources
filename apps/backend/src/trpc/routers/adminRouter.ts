@@ -80,6 +80,7 @@ import { permissionsRouter } from './admin/permissionsRouter';
 import { nfscRouter } from './admin/nfscRouter';
 import { eppTestingRouter } from './admin/eppTestingRouter';
 import { emailCampaignsRouter } from './admin/emailCampaignsRouter';
+import { autoRenewalRouter } from './admin/autoRenewalRouter';
 import {
   adminUserReferenceInput,
   getAdminUserDetails,
@@ -4190,6 +4191,7 @@ export const adminRouter = createTRPCRouter({
   nfsc: nfscRouter,
   eppTesting: eppTestingRouter,
   emailCampaigns: emailCampaignsRouter,
+  autoRenewal: autoRenewalRouter,
 });
 
 // Helper to resolve ENS name to wallet address
