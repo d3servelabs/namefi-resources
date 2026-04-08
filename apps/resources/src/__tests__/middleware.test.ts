@@ -4,8 +4,13 @@ import { getRedirectUrl } from 'next/experimental/testing/server';
 import { middleware } from '@/middleware';
 
 describe('middleware redirect behaviour', () => {
-  function createRequest(pathname: string) {
-    return new NextRequest(`http://localhost:3000/${pathname}`);
+  function createRequest(
+    pathname: string,
+    options?: { origin?: string; search?: string },
+  ) {
+    const origin = options?.origin ?? 'http://localhost:3000';
+    const search = options?.search ?? '';
+    return new NextRequest(`${origin}/${pathname}${search}`);
   }
 
   it('redirects non-localized paths to the detected locale', () => {
@@ -46,5 +51,53 @@ describe('middleware redirect behaviour', () => {
       const response = middleware(createRequest(path));
       expect(getRedirectUrl(response)).toBe(null);
     }
+  });
+
+  it('redirects legacy resources host URLs to first-party /r URLs', () => {
+    const response = middleware(
+      createRequest('en/blog/what-are-xstocks', {
+        origin: 'https://r.namefi.io',
+        search: '?utm=legacy',
+      }),
+    );
+    expect(getRedirectUrl(response)).toBe(
+      'https://namefi.io/r/en/blog/what-are-xstocks?utm=legacy',
+    );
+  });
+
+  it('redirects legacy resources host URLs that already include /r', () => {
+    const response = middleware(
+      createRequest('r/en/tld/able', {
+        origin: 'https://r.namefi.io',
+      }),
+    );
+    expect(getRedirectUrl(response)).toBe('https://namefi.io/r/en/tld/able');
+  });
+
+  it('does not redirect legacy host when request is proxied from first-party host', () => {
+    const response = middleware(
+      new NextRequest('https://r.namefi.io/r/en/tld/able', {
+        headers: {
+          'x-forwarded-host': 'namefi.io',
+        },
+      }),
+    );
+    expect(getRedirectUrl(response)).toBe(null);
+  });
+
+  it('does not redirect legacy host when request is proxied from preview host', () => {
+    const response = middleware(
+      new NextRequest('https://r.namefi.dev/r/en/tld/able', {
+        headers: {
+          'x-forwarded-host': 'namefi-preview.vercel.app',
+        },
+      }),
+    );
+    expect(getRedirectUrl(response)).toBe(null);
+  });
+
+  it('accepts /r-prefixed paths when base path is present in pathname', () => {
+    const response = middleware(createRequest('r/en/blog'));
+    expect(getRedirectUrl(response)).toBe(null);
   });
 });

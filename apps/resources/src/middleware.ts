@@ -8,6 +8,10 @@ const LOCALES: Locale[] = [...i18n.locales];
 const DEFAULT_LOCALE: Locale = i18n.defaultLocale;
 const LOCALE_SET = new Set(LOCALES);
 export const PUBLIC_FILE = /\.(.*)$/;
+const RESOURCES_HOST_TO_FIRST_PARTY_HOST: Record<string, string> = {
+  'r.namefi.io': 'namefi.io',
+  'r.namefi.dev': 'namefi.dev',
+};
 
 function isLocale(value: string): value is Locale {
   return LOCALE_SET.has(value as Locale);
@@ -29,27 +33,89 @@ function getLocale(request: NextRequest): Locale {
   return matchLocale(languages, LOCALES, DEFAULT_LOCALE) as Locale;
 }
 
-export function middleware(request: NextRequest) {
-  const { pathname, search, searchParams } = request.nextUrl;
-  const pathnameHasLocale = LOCALES.some(
+function stripResourcesBasePath(pathname: string): string {
+  if (pathname === '/r') {
+    return '/';
+  }
+
+  return pathname.startsWith('/r/') ? pathname.slice(2) : pathname;
+}
+
+function hasLocalePrefix(pathname: string): boolean {
+  return LOCALES.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
+}
 
-  if (pathnameHasLocale || PUBLIC_FILE.test(pathname)) {
+function toLocalePath(pathname: string, locale: Locale): string {
+  if (pathname === '/') {
+    return `/${locale}`;
+  }
+
+  if (pathname.startsWith('/')) {
+    return `/${locale}${pathname}`;
+  }
+
+  return `/${locale}/${pathname}`;
+}
+
+function resolveCanonicalResourcesHostRedirect(
+  request: NextRequest,
+): URL | undefined {
+  const rawPathname = new URL(request.url).pathname;
+  const canonicalHost =
+    RESOURCES_HOST_TO_FIRST_PARTY_HOST[request.nextUrl.hostname];
+
+  if (!canonicalHost) {
+    return undefined;
+  }
+  const requestHost = request.nextUrl.hostname.toLowerCase();
+  const forwardedHost = request.headers
+    .get('x-forwarded-host')
+    ?.split(',')[0]
+    ?.trim()
+    .toLowerCase();
+  if (forwardedHost && forwardedHost !== requestHost) {
+    // Allow reverse-proxy traffic (frontend rewrites / preview proxies)
+    // to flow through without bouncing back and creating redirect loops.
+    return undefined;
+  }
+
+  const redirectUrl = new URL(request.url);
+  redirectUrl.protocol = 'https:';
+  redirectUrl.hostname = canonicalHost;
+  redirectUrl.port = '';
+
+  if (rawPathname === '/') {
+    redirectUrl.pathname = '/r';
+    return redirectUrl;
+  }
+  if (rawPathname === '/r' || rawPathname.startsWith('/r/')) {
+    redirectUrl.pathname = rawPathname;
+    return redirectUrl;
+  }
+
+  redirectUrl.pathname = `/r${rawPathname.startsWith('/') ? '' : '/'}${rawPathname}`;
+  return redirectUrl;
+}
+
+export function middleware(request: NextRequest) {
+  const canonicalRedirectUrl = resolveCanonicalResourcesHostRedirect(request);
+  if (canonicalRedirectUrl) {
+    return NextResponse.redirect(canonicalRedirectUrl, 308);
+  }
+
+  const { pathname, search } = request.nextUrl;
+  const pathnameWithoutBasePath = stripResourcesBasePath(pathname);
+  const pathnameHasLocale = hasLocalePrefix(pathnameWithoutBasePath);
+
+  if (pathnameHasLocale || PUBLIC_FILE.test(pathnameWithoutBasePath)) {
     return NextResponse.next();
   }
 
   const locale = getLocale(request);
-  let remainder = pathname;
-
-  if (pathname === '/') {
-    remainder = '';
-  } else if (pathname.startsWith('/')) {
-    remainder = pathname.slice(1);
-  }
-
   const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = `/${locale}/${remainder}`;
+  redirectUrl.pathname = toLocalePath(pathnameWithoutBasePath, locale);
 
   // Redirect home (/${locale}) to blog index for now.
   if (redirectUrl.pathname === `/${locale}`) {

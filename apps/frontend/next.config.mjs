@@ -141,14 +141,9 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/b/:lang/blog/:path*',
-        destination: '/r/:lang/:path*',
-        permanent: true,
-      },
-      {
         source: '/b/:path*',
-        permanent: false,
-        destination: 'https://namefi.io/r/:path*',
+        destination: '/r/:path*',
+        permanent: true,
       },
       {
         source: '/discord',
