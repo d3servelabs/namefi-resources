@@ -1,8 +1,6 @@
+import { LEGACY_RESOURCES_HOSTNAME_MAP } from '@/lib/resources-host-map';
+
 const TRAILING_SLASH_REGEX = /\/$/;
-const LEGACY_RESOURCES_HOSTNAME_MAP: Record<string, string> = {
-  'r.namefi.io': 'namefi.io',
-  'r.namefi.dev': 'namefi.dev',
-};
 
 function withProtocol(url: string): string {
   return url.startsWith('http://') || url.startsWith('https://')

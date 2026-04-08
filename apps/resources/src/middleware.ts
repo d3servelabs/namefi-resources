@@ -3,15 +3,12 @@ import type { NextRequest, MiddlewareConfig } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { i18n, type Locale } from '@/i18n-config';
+import { LEGACY_RESOURCES_HOSTNAME_MAP } from '@/lib/resources-host-map';
 
 const LOCALES: Locale[] = [...i18n.locales];
 const DEFAULT_LOCALE: Locale = i18n.defaultLocale;
 const LOCALE_SET = new Set(LOCALES);
 export const PUBLIC_FILE = /\.(.*)$/;
-const RESOURCES_HOST_TO_FIRST_PARTY_HOST: Record<string, string> = {
-  'r.namefi.io': 'namefi.io',
-  'r.namefi.dev': 'namefi.dev',
-};
 
 function isLocale(value: string): value is Locale {
   return LOCALE_SET.has(value as Locale);
@@ -63,8 +60,7 @@ function resolveCanonicalResourcesHostRedirect(
   request: NextRequest,
 ): URL | undefined {
   const rawPathname = new URL(request.url).pathname;
-  const canonicalHost =
-    RESOURCES_HOST_TO_FIRST_PARTY_HOST[request.nextUrl.hostname];
+  const canonicalHost = LEGACY_RESOURCES_HOSTNAME_MAP[request.nextUrl.hostname];
 
   if (!canonicalHost) {
     return undefined;
@@ -106,6 +102,7 @@ export function middleware(request: NextRequest) {
   }
 
   const { pathname, search } = request.nextUrl;
+  const hasResourcesBasePath = pathname === '/r' || pathname.startsWith('/r/');
   const pathnameWithoutBasePath = stripResourcesBasePath(pathname);
   const pathnameHasLocale = hasLocalePrefix(pathnameWithoutBasePath);
 
@@ -115,11 +112,17 @@ export function middleware(request: NextRequest) {
 
   const locale = getLocale(request);
   const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = toLocalePath(pathnameWithoutBasePath, locale);
+  const localizedPath = toLocalePath(pathnameWithoutBasePath, locale);
+  redirectUrl.pathname = hasResourcesBasePath
+    ? `/r${localizedPath}`
+    : localizedPath;
 
   // Redirect home (/${locale}) to blog index for now.
-  if (redirectUrl.pathname === `/${locale}`) {
-    redirectUrl.pathname = `/${locale}/blog`;
+  const localizedHomePath = hasResourcesBasePath
+    ? `/r/${locale}`
+    : `/${locale}`;
+  if (redirectUrl.pathname === localizedHomePath) {
+    redirectUrl.pathname = `${localizedHomePath}/blog`;
     redirectUrl.search = search ? search : '';
     return NextResponse.redirect(redirectUrl);
   }

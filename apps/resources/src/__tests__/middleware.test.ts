@@ -20,7 +20,7 @@ describe('middleware redirect behaviour', () => {
 
   it('handles root paths', () => {
     const response = middleware(createRequest(''));
-    expect(getRedirectUrl(response)).toBe('http://localhost:3000/en');
+    expect(getRedirectUrl(response)).toBe('http://localhost:3000/en/blog');
 
     const response3 = middleware(createRequest('en'));
     expect(getRedirectUrl(response3)).toBe(null);
@@ -99,5 +99,15 @@ describe('middleware redirect behaviour', () => {
   it('accepts /r-prefixed paths when base path is present in pathname', () => {
     const response = middleware(createRequest('r/en/blog'));
     expect(getRedirectUrl(response)).toBe(null);
+  });
+
+  it('keeps /r prefix when redirecting /r root to localized blog index', () => {
+    const response = middleware(createRequest('r'));
+    expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en/blog');
+  });
+
+  it('keeps /r prefix when localizing non-localized /r paths', () => {
+    const response = middleware(createRequest('r/foo'));
+    expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en/foo');
   });
 });
