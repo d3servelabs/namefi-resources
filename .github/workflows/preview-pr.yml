@@ -35,7 +35,19 @@ env:
 jobs:
   detect:
     name: Plan App Previews
-    if: github.event_name == 'pull_request' && github.event.action != 'labeled'
+    needs: preview-label-gate
+    if: |-
+      needs.preview-label-gate.outputs.pr_number != '' &&
+      (
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event_name == 'pull_request' &&
+          (
+            github.event.action != 'labeled' ||
+            needs.preview-label-gate.outputs.should_run == 'true'
+          )
+        )
+      )
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       frontend_changed: ${{ steps.evaluate.outputs.frontend_changed }}
@@ -46,7 +58,7 @@ jobs:
       - name: Evaluate head branch
         id: head-branch-gate
         env:
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
         shell: bash
         run: |
           set -euo pipefail
@@ -64,6 +76,7 @@ jobs:
         if: steps.head-branch-gate.outputs.should_run == 'true'
         uses: actions/checkout@v5
         with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
           fetch-depth: 0
           filter: blob:none
 
@@ -78,8 +91,8 @@ jobs:
         env:
           EVENT_ACTION: ${{ github.event.action }}
           BEFORE_SHA: ${{ github.event.before }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ needs.preview-label-gate.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
         shell: bash
         run: |
           set -euo pipefail
@@ -112,7 +125,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
           VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
           FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
           PARK_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PARK_PROJECT_ID }}
           RESOURCES_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_RESOURCES_PROJECT_ID }}
@@ -174,7 +187,7 @@ jobs:
         uses: ./.github/actions/detect-turbo-changes
         with:
           base-ref: ${{ steps.comparison.outputs.base_sha }}
-          head-ref: ${{ github.event.pull_request.head.sha }}
+          head-ref: ${{ needs.preview-label-gate.outputs.head_sha }}
           packages: |
             @namefi-astra/frontend
             @namefi-astra/park
@@ -192,7 +205,7 @@ jobs:
         uses: ./.github/actions/detect-turbo-changes
         with:
           base-ref: ${{ steps.comparison.outputs.incremental_sha }}
-          head-ref: ${{ github.event.pull_request.head.sha }}
+          head-ref: ${{ needs.preview-label-gate.outputs.head_sha }}
           packages: |
             @namefi-astra/frontend
             @namefi-astra/park
@@ -396,6 +409,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
 
       - name: Deploy frontend preview
         id: deploy
@@ -428,7 +443,7 @@ jobs:
 
   deploy-park:
     name: Deploy Park Preview
-    needs: detect
+    needs: [detect, preview-label-gate]
     if: needs.detect.result == 'success' && needs.detect.outputs.park_changed == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
@@ -437,14 +452,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
 
       - name: Deploy park preview
         id: deploy
         uses: ./.github/actions/vercel-preview-deploy
         with:
-          head_ref: ${{ github.event.pull_request.head.ref }}
-          head_sha: ${{ github.event.pull_request.head.sha }}
-          pr_number: ${{ github.event.pull_request.number }}
+          head_ref: ${{ needs.preview-label-gate.outputs.head_ref }}
+          head_sha: ${{ needs.preview-label-gate.outputs.head_sha }}
+          pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
           build_env_json: |
             {
               "ENVIRONMENT": "preview"
@@ -459,7 +476,7 @@ jobs:
 
   deploy-resources:
     name: Deploy Resources Preview
-    needs: detect
+    needs: [detect, preview-label-gate]
     if: needs.detect.result == 'success' && needs.detect.outputs.resources_changed == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
@@ -469,15 +486,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
           submodules: recursive
 
       - name: Deploy resources preview
         id: deploy
         uses: ./.github/actions/vercel-preview-deploy
         with:
-          head_ref: ${{ github.event.pull_request.head.ref }}
-          head_sha: ${{ github.event.pull_request.head.sha }}
-          pr_number: ${{ github.event.pull_request.number }}
+          head_ref: ${{ needs.preview-label-gate.outputs.head_ref }}
+          head_sha: ${{ needs.preview-label-gate.outputs.head_sha }}
+          pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
           build_env_json: |
             {
               "ENVIRONMENT": "preview",
@@ -500,7 +518,7 @@ jobs:
 
   deploy-api-client-docs:
     name: Deploy Docs Preview
-    needs: detect
+    needs: [detect, preview-label-gate]
     if: needs.detect.result == 'success' && needs.detect.outputs.docs_changed == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
@@ -509,14 +527,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
 
       - name: Deploy API client docs preview
         id: deploy
         uses: ./.github/actions/vercel-preview-deploy
         with:
-          head_ref: ${{ github.event.pull_request.head.ref }}
-          head_sha: ${{ github.event.pull_request.head.sha }}
-          pr_number: ${{ github.event.pull_request.number }}
+          head_ref: ${{ needs.preview-label-gate.outputs.head_ref }}
+          head_sha: ${{ needs.preview-label-gate.outputs.head_sha }}
+          pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
           vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
           vercel_project_id: ${{ secrets.VERCEL_ASTRA_API_CLIENT_DOCS_PROJECT_ID }}
           vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
@@ -637,6 +657,7 @@ jobs:
       is_force_preview: ${{ steps.check-label.outputs.is_force_preview }}
       is_same_repo: ${{ steps.check-label.outputs.is_same_repo }}
       pr_number: ${{ steps.check-label.outputs.pr_number }}
+      checkout_ref: ${{ steps.check-label.outputs.checkout_ref }}
       head_sha: ${{ steps.check-label.outputs.head_sha }}
       base_sha: ${{ steps.check-label.outputs.base_sha }}
       head_ref: ${{ steps.check-label.outputs.head_ref }}
@@ -675,6 +696,7 @@ jobs:
             HEAD_REPO_FULL_NAME=$(echo "$PR_DATA" | jq -r '.head_repo_full_name')
 
             echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+            echo "checkout_ref=refs/pull/$PR_NUMBER/merge" >> "$GITHUB_OUTPUT"
             echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
             echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
             echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
@@ -695,6 +717,7 @@ jobs:
           HEAD_REPO_FULL_NAME="$HEAD_REPO_FULL_NAME_FROM_EVENT"
 
           echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "checkout_ref=refs/pull/$PR_NUMBER/merge" >> "$GITHUB_OUTPUT"
           echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
           echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
@@ -770,6 +793,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
           fetch-depth: 0
           filter: blob:none
 
@@ -780,14 +804,27 @@ jobs:
           EVENT_ACTION: ${{ github.event.action }}
           BEFORE_SHA: ${{ github.event.before }}
           BASE_SHA: ${{ needs.preview-label-gate.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
         shell: bash
         run: |
           set -euo pipefail
 
+          if ! git cat-file -e "$HEAD_SHA" 2>/dev/null; then
+            echo "Missing PR head commit: $HEAD_SHA" >&2
+            exit 1
+          fi
+
+          PR_BASE_SHA="$(git merge-base "$BASE_SHA" "$HEAD_SHA")"
+
+          if [[ -z "$PR_BASE_SHA" ]]; then
+            echo "Unable to determine merge-base for $BASE_SHA and $HEAD_SHA" >&2
+            exit 1
+          fi
+
           if [[ "$EVENT_NAME" == "workflow_dispatch" || "$EVENT_ACTION" == "labeled" ]]; then
             echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
             echo "is_force_push=false" >> "$GITHUB_OUTPUT"
-            echo "comparison_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+            echo "comparison_sha=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -798,7 +835,7 @@ jobs:
             fi
           fi
 
-          if [[ "$EVENT_ACTION" == "synchronize" && "$BEFORE_SHA_EXISTS" == "true" && "$BEFORE_SHA" != "$BASE_SHA" ]]; then
+          if [[ "$EVENT_ACTION" == "synchronize" && "$BEFORE_SHA_EXISTS" == "true" && "$BEFORE_SHA" != "$HEAD_SHA" ]] && git merge-base --is-ancestor "$BEFORE_SHA" "$HEAD_SHA"; then
             echo "is_new_commit=true" >> "$GITHUB_OUTPUT"
             echo "is_force_push=false" >> "$GITHUB_OUTPUT"
             echo "comparison_sha=$BEFORE_SHA" >> "$GITHUB_OUTPUT"
@@ -809,7 +846,7 @@ jobs:
               echo "is_force_push=false" >> "$GITHUB_OUTPUT"
             fi
             echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
-            echo "comparison_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+            echo "comparison_sha=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
           fi
 
   detect-backend-changes:
@@ -840,6 +877,7 @@ jobs:
         if: steps.preview-mode.outputs.skip-detection != 'true'
         uses: actions/checkout@v5
         with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
           fetch-depth: 0
           filter: blob:none
 
@@ -875,7 +913,7 @@ jobs:
 
   build-backend:
     name: Build Backend Image
-    needs: detect-backend-changes
+    needs: [preview-label-gate, detect-backend-changes]
     if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     timeout-minutes: 10
@@ -889,6 +927,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
 
       - name: Google Auth
         id: auth
@@ -906,7 +946,8 @@ jobs:
       - name: Set Docker tag
         id: set-tag
         run: |
-          IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${{ github.sha }}"
+          IMAGE_SHA="$(git rev-parse HEAD)"
+          IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${IMAGE_SHA}"
           echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Check if Docker image exists
@@ -963,6 +1004,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
           fetch-depth: 32
 
       - name: Setup Bun
@@ -996,7 +1038,8 @@ jobs:
       - name: Check for SQL migration changes
         id: check-sql-changes
         run: |
-          SQL_FILES=$(git diff --name-only ${{ needs.preview-label-gate.outputs.base_sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
+          COMPARE_BASE=$(git merge-base ${{ needs.preview-label-gate.outputs.base_sha }} ${{ needs.preview-label-gate.outputs.head_sha }})
+          SQL_FILES=$(git diff --name-only "$COMPARE_BASE" ${{ needs.preview-label-gate.outputs.head_sha }} | grep -E '\.sql$' || true)
           if [[ -n "$SQL_FILES" ]]; then
             echo "has_sql_changes=true" >> $GITHUB_OUTPUT
           else
@@ -1030,6 +1073,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -1070,7 +1115,8 @@ jobs:
           gcloud beta config set core/disable_prompts True
 
           TAG="pr-$PR_NUMBER"
-          SHORT_SHA="${GITHUB_SHA::7}"
+          DEPLOY_SHA="$(git rev-parse HEAD)"
+          SHORT_SHA="${DEPLOY_SHA::7}"
           REVISION_SUFFIX="pr-$PR_NUMBER-$SHORT_SHA"
           gcloud beta run deploy namefi-astra-backend-preview \
             --container "gate-proxy" \
@@ -1147,6 +1193,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
 
       - name: Deploy frontend preview
         id: deploy
@@ -1225,7 +1273,7 @@ jobs:
           COMPARISON_SHA: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
           BACKEND_CHANGED: ${{ needs.detect-backend-changes.outputs.backend-changed }}
-          REVISION_TAG_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.backend_preview_url || needs.deploy-preview.outputs.revision_tag_url }}
           PREVIEW_LABEL_GATE_RESULT: ${{ needs.preview-label-gate.result }}
           HEAD_BRANCH_GATE_RESULT: ${{ needs.head-branch-gate.result }}
           DETECT_SYNC_TYPE_RESULT: ${{ needs.detect-synchronize-type.result }}
@@ -1268,14 +1316,19 @@ jobs:
           frontend_url="${FRONTEND_PREVIEW_URL:-}"
           frontend_note="affected-only"
 
-          if [[ "$SHOULD_RUN" == "true" && -n "$REVISION_TAG_URL" ]]; then
+          if [[ "$SHOULD_RUN" == "true" && -n "$BACKEND_PREVIEW_URL" ]]; then
             frontend_mode="preview backend"
-            frontend_result="$(format_result "$FRONTEND_BACKEND_PREVIEW_RESULT")"
-            frontend_url="${DEPLOY_FRONTEND_BACKEND_URL:-}"
             frontend_note="backend preview active"
-            if [[ -z "$frontend_url" && -n "$EXISTING_FRONTEND_BACKEND_PREVIEW_URL" ]]; then
+            if [[ "$FRONTEND_BACKEND_PREVIEW_RESULT" == "success" ]]; then
+              frontend_result="deployed"
+              frontend_url="${DEPLOY_FRONTEND_BACKEND_URL:-}"
+            elif [[ "$FRONTEND_BACKEND_PREVIEW_RESULT" == "skipped" && -n "$EXISTING_FRONTEND_BACKEND_PREVIEW_URL" ]]; then
+              frontend_result="reused"
               frontend_url="$EXISTING_FRONTEND_BACKEND_PREVIEW_URL"
               frontend_note="backend preview active (existing preview reused)"
+            else
+              frontend_result="$(format_result "$FRONTEND_BACKEND_PREVIEW_RESULT")"
+              frontend_url="${DEPLOY_FRONTEND_BACKEND_URL:-}"
             fi
           elif [[ "$FRONTEND_CHANGED" != "true" ]]; then
             frontend_note="not affected"
@@ -1315,7 +1368,7 @@ jobs:
             backend_note="changes detected"
           fi
 
-          row "Backend" "label-gated" "$(format_result "$DEPLOY_PREVIEW_RESULT")" "${REVISION_TAG_URL:-—}" "$backend_note"
+          row "Backend" "label-gated" "$(format_result "$DEPLOY_PREVIEW_RESULT")" "${BACKEND_PREVIEW_URL:-—}" "$backend_note"
 
           {
             echo
