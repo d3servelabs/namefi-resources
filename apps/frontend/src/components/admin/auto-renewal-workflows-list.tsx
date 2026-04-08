@@ -55,14 +55,14 @@ function getStatusBadge(status: string) {
       );
     case 'COMPLETED':
       return (
-        <Badge variant="default" className="gap-1 bg-green-500">
+        <Badge variant="default" className="gap-1 bg-green-600/80">
           <CheckCircle2 className="w-3 h-3" />
           Completed
         </Badge>
       );
     case 'FAILED':
       return (
-        <Badge variant="destructive" className="gap-1">
+        <Badge variant="default" className="gap-1 bg-red-600/80">
           <XCircle className="w-3 h-3" />
           Failed
         </Badge>
@@ -70,7 +70,7 @@ function getStatusBadge(status: string) {
     case 'CANCELED':
     case 'CANCELLED':
       return (
-        <Badge variant="destructive" className="gap-1">
+        <Badge variant="default" className="gap-1 bg-red-600/80">
           <XCircle className="w-3 h-3" />
           Cancelled
         </Badge>
@@ -246,6 +246,7 @@ function AutoRenewalWorkflowsListContent() {
                   <Th>Status</Th>
                   <Th>Started</Th>
                   <Th>Users</Th>
+                  <Th>Domains</Th>
                   <Th>Renewed</Th>
                   <Th>Failed</Th>
                   <Th>Revenue</Th>
@@ -273,12 +274,22 @@ function AutoRenewalWorkflowsListContent() {
                     </Td>
                     <Td className="text-sm">{wf.summary?.totalUsers ?? '-'}</Td>
                     <Td className="text-sm">
-                      {wf.summary?.totalDomainsRenewed ?? '-'}
+                      {wf.summary?.totalDomains ?? '-'}
+                    </Td>
+                    <Td className="text-sm">
+                      {wf.summary != null &&
+                      wf.summary.totalDomainsRenewed > 0 ? (
+                        <span className="text-green-400">
+                          {wf.summary.totalDomainsRenewed}
+                        </span>
+                      ) : (
+                        (wf.summary?.totalDomainsRenewed ?? '-')
+                      )}
                     </Td>
                     <Td className="text-sm">
                       {wf.summary != null &&
                       wf.summary.totalDomainsFailed > 0 ? (
-                        <span className="text-red-500">
+                        <span className="text-red-400">
                           {wf.summary.totalDomainsFailed}
                         </span>
                       ) : (
@@ -293,7 +304,7 @@ function AutoRenewalWorkflowsListContent() {
                     </Td>
                     <Td className="text-right">
                       <Link
-                        href={`/admin/auto-renewal/${wf.workflowId}?runId=${wf.runId}`}
+                        href={`/admin/auto-renewal/${encodeURIComponent(wf.workflowId)}?runId=${encodeURIComponent(wf.runId)}`}
                       >
                         <Button variant="outline" size="sm" className="gap-2">
                           <ExternalLink className="w-4 h-4" />

@@ -41,6 +41,7 @@ export const autoRenewalRouter = createTRPCRouter({
           totalUsers: number;
           successfulUsers: number;
           failedUsers: number;
+          totalDomains: number;
           totalDomainsRenewed: number;
           totalDomainsFailed: number;
           totalRevenueUsd: number;
@@ -86,6 +87,10 @@ export const autoRenewalRouter = createTRPCRouter({
                 const ps = s.result?.paymentStatus;
                 if (ps === 'SUCCEEDED') {
                   successfulUsers++;
+                  // Only count revenue from successful payments
+                  totalRevenue +=
+                    (s.result?.totalAmountInUsd ?? 0) -
+                    (s.result?.refundAmountInUsd ?? 0);
                 } else if (ps === 'FAILED' || ps === 'SKIPPED') {
                   failedUsers++;
                 }
@@ -99,16 +104,13 @@ export const autoRenewalRouter = createTRPCRouter({
                 }
                 // Domains with missing price data are always failed
                 domainsFailed += s.result?.domainsMissingPriceData?.length ?? 0;
-
-                totalRevenue +=
-                  (s.result?.totalAmountInUsd ?? 0) -
-                  (s.result?.refundAmountInUsd ?? 0);
               }
 
               summary = {
                 totalUsers: childSuccesses.length + childFailures.length,
                 successfulUsers,
                 failedUsers,
+                totalDomains: domainsRenewed + domainsFailed,
                 totalDomainsRenewed: domainsRenewed,
                 totalDomainsFailed: domainsFailed,
                 totalRevenueUsd: totalRevenue,

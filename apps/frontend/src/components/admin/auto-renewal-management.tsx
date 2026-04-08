@@ -61,28 +61,28 @@ function getStatusBadge(status: DomainRow['status']) {
   switch (status) {
     case 'SUCCESS':
       return (
-        <Badge variant="default" className="gap-1 bg-green-500">
+        <Badge variant="default" className="gap-1 bg-green-600/80">
           <CheckCircle2 className="w-3 h-3" />
           Success
         </Badge>
       );
     case 'FAILED':
       return (
-        <Badge variant="destructive" className="gap-1">
+        <Badge variant="default" className="gap-1 bg-red-600/80">
           <XCircle className="w-3 h-3" />
           Failed
         </Badge>
       );
     case 'PAYMENT_FAILED':
       return (
-        <Badge className="gap-1 bg-yellow-600 text-white">
+        <Badge variant="default" className="gap-1 bg-yellow-600/80">
           <AlertTriangle className="w-3 h-3" />
           Payment Failed
         </Badge>
       );
     case 'MISSING_PRICE':
       return (
-        <Badge className="gap-1 bg-orange-500 text-white">
+        <Badge variant="default" className="gap-1 bg-orange-600/80">
           <AlertTriangle className="w-3 h-3" />
           Missing Price
         </Badge>
