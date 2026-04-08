@@ -13,10 +13,11 @@ const ENV_KEYS = [
 const ORIGINAL_ENV = Object.fromEntries(
   ENV_KEYS.map((key) => [key, process.env[key]]),
 ) as Record<(typeof ENV_KEYS)[number], string | undefined>;
+const mutableEnv = process.env as Record<string, string | undefined>;
 
 function clearSiteUrlEnv() {
   for (const key of ENV_KEYS) {
-    delete process.env[key];
+    delete mutableEnv[key];
   }
 }
 
@@ -24,10 +25,10 @@ function restoreSiteUrlEnv() {
   for (const key of ENV_KEYS) {
     const value = ORIGINAL_ENV[key];
     if (value === undefined) {
-      delete process.env[key];
+      delete mutableEnv[key];
       continue;
     }
-    process.env[key] = value;
+    mutableEnv[key] = value;
   }
 }
 
