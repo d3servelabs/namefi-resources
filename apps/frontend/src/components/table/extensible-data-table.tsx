@@ -8,7 +8,9 @@ import {
   type ColumnSizingState,
   type VisibilityState,
   getExpandedRowModel,
+  getGroupedRowModel,
   type ExpandedState,
+  type GroupingState,
   type Row,
   type ColumnOrderState,
 } from '@tanstack/react-table';
@@ -35,6 +37,8 @@ import {
   ArrowUpDownIcon,
   FilterIcon,
   RotateCcwIcon,
+  ChevronRightIcon,
+  ChevronDownIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
@@ -83,6 +87,22 @@ type ExtensibleDataTableProps<TData, FS extends IFilterStrategy<TData>> = {
   renderSubRow?: (row: Row<TData>) => ReactNode;
   getRowCanExpand?: (row: Row<TData>) => boolean;
 
+  // Grouping (client-side display grouping on already-paginated data)
+  grouping?: GroupingState;
+  groupedColumnMode?: 'reorder' | 'remove' | false;
+  /** Render the content shown in a group header row. Receives the grouped row. */
+  renderGroupHeader?: (row: Row<TData>) => ReactNode;
+  /** Optional className applied to the group header `<tr>`. Defaults to a theme-aware muted background. */
+  groupHeaderRowClassName?: string;
+  /** Optional className applied to the group header `<td>`. */
+  groupHeaderCellClassName?: string;
+
+  /** Controlled expanded state. When provided, the table uses this instead of internal state. */
+  expanded?: ExpandedState;
+  onExpandedChange?: Dispatch<SetStateAction<ExpandedState>>;
+  /** Initial expanded state (used only when expanded is not controlled). */
+  defaultExpanded?: ExpandedState;
+
   // Custom rendering
   emptyMessage?: string;
   loadingMessage?: string;
@@ -122,6 +142,14 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     filterStrategy,
     renderSubRow,
     getRowCanExpand,
+    grouping,
+    groupedColumnMode = false,
+    renderGroupHeader,
+    groupHeaderRowClassName,
+    groupHeaderCellClassName,
+    expanded: controlledExpanded,
+    onExpandedChange,
+    defaultExpanded,
     emptyMessage = 'No data found',
     loadingMessage = 'Loading...',
     columnVisibility,
@@ -137,7 +165,11 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
   } = filterStrategy || {};
 
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
-  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [localExpanded, setLocalExpanded] = useState<ExpandedState>(
+    defaultExpanded ?? {},
+  );
+  const expanded = controlledExpanded ?? localExpanded;
+  const setExpanded = onExpandedChange ?? setLocalExpanded;
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
 
@@ -180,6 +212,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
       columnSizing,
       expanded,
       columnOrder,
+      ...(grouping ? { grouping } : {}),
     },
     onSortingChange: setSorting,
     onColumnVisibilityChange,
@@ -188,6 +221,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    ...(grouping ? { getGroupedRowModel: getGroupedRowModel() } : {}),
     getRowCanExpand: getRowCanExpand,
     columnResizeMode: 'onChange',
     enableColumnResizing: true,
@@ -195,6 +229,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     manualFiltering: true,
     manualPagination: true,
     pageCount: totalPages,
+    groupedColumnMode,
     defaultColumn: {
       minSize: 50,
       maxSize: 800,
@@ -501,7 +536,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
               {isLoading && data.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={columns.length}
+                    colSpan={table.getVisibleLeafColumns().length}
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
                     <Loader2Icon className="h-6 w-6 animate-spin mx-auto mb-2" />
@@ -511,7 +546,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
               ) : table.getRowModel().rows.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={columns.length}
+                    colSpan={table.getVisibleLeafColumns().length}
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
                     {emptyMessage}
@@ -520,42 +555,92 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
               ) : (
                 table.getRowModel().rows.map((row) => (
                   <Fragment key={row.id}>
-                    <tr
-                      key={row.id}
-                      className="hover:bg-muted/50 transition-colors"
-                    >
-                      {row.getVisibleCells().map((cell) => (
+                    {row.getIsGrouped() ? (
+                      // Group header row
+                      <tr
+                        className={cn(
+                          'bg-muted/40 hover:bg-muted/60 transition-colors cursor-pointer',
+                          groupHeaderRowClassName,
+                        )}
+                        onClick={row.getToggleExpandedHandler()}
+                      >
                         <td
-                          key={cell.id}
-                          className="px-4 py-3 overflow-hidden"
-                          style={
-                            hasResizedColumns
-                              ? {
-                                  width: `${cell.column.getSize()}px`,
-                                  maxWidth: `${cell.column.getSize()}px`,
-                                }
-                              : undefined
-                          }
+                          colSpan={row.getVisibleCells().length}
+                          className={cn(
+                            'px-4 py-2.5',
+                            groupHeaderCellClassName,
+                          )}
                         >
-                          <div className="break-words overflow-wrap-anywhere">
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
+                          <div className="flex items-center gap-2">
+                            {row.getIsExpanded() ? (
+                              <ChevronDownIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                            ) : (
+                              <ChevronRightIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                            )}
+                            {renderGroupHeader ? (
+                              renderGroupHeader(row)
+                            ) : (
+                              <span className="text-sm font-medium">
+                                {String(
+                                  row.getGroupingValue(row.groupingColumnId!),
+                                )}
+                                <span className="ml-2 text-xs text-muted-foreground">
+                                  ({row.getLeafRows().length})
+                                </span>
+                              </span>
                             )}
                           </div>
                         </td>
-                      ))}
-                    </tr>
-                    {row.getIsExpanded() && renderSubRow && (
-                      <tr key={`${row.id}-expanded`}>
-                        <td
-                          colSpan={columns.length}
-                          className="px-4 py-2 bg-muted/30"
-                        >
-                          {renderSubRow(row)}
-                        </td>
+                      </tr>
+                    ) : (
+                      // Normal data row
+                      <tr
+                        className={cn(
+                          'hover:bg-muted/50 transition-colors',
+                          row.depth > 0 && 'bg-background',
+                        )}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <td
+                            key={cell.id}
+                            className="px-4 py-3 overflow-hidden"
+                            style={
+                              hasResizedColumns
+                                ? {
+                                    width: `${cell.column.getSize()}px`,
+                                    maxWidth: `${cell.column.getSize()}px`,
+                                  }
+                                : undefined
+                            }
+                          >
+                            <div className="break-words overflow-wrap-anywhere">
+                              {cell.getIsAggregated()
+                                ? flexRender(
+                                    cell.column.columnDef.aggregatedCell ??
+                                      cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                  )
+                                : flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                  )}
+                            </div>
+                          </td>
+                        ))}
                       </tr>
                     )}
+                    {row.getIsExpanded() &&
+                      !row.getIsGrouped() &&
+                      renderSubRow && (
+                        <tr key={`${row.id}-expanded`}>
+                          <td
+                            colSpan={table.getVisibleLeafColumns().length}
+                            className="px-4 py-2 bg-muted/30"
+                          >
+                            {renderSubRow(row)}
+                          </td>
+                        </tr>
+                      )}
                   </Fragment>
                 ))
               )}
