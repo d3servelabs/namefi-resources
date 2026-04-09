@@ -55,14 +55,17 @@ function getStatusBadge(status: string) {
       );
     case 'COMPLETED':
       return (
-        <Badge variant="default" className="gap-1 bg-green-600/80">
+        <Badge
+          variant="outline"
+          className="gap-1 border-green-300 text-green-300"
+        >
           <CheckCircle2 className="w-3 h-3" />
           Completed
         </Badge>
       );
     case 'FAILED':
       return (
-        <Badge variant="default" className="gap-1 bg-red-600/80">
+        <Badge variant="outline" className="gap-1 border-red-300 text-red-300">
           <XCircle className="w-3 h-3" />
           Failed
         </Badge>
@@ -70,7 +73,7 @@ function getStatusBadge(status: string) {
     case 'CANCELED':
     case 'CANCELLED':
       return (
-        <Badge variant="default" className="gap-1 bg-red-600/80">
+        <Badge variant="outline" className="gap-1 border-red-300 text-red-300">
           <XCircle className="w-3 h-3" />
           Cancelled
         </Badge>
@@ -279,7 +282,7 @@ function AutoRenewalWorkflowsListContent() {
                     <Td className="text-sm">
                       {wf.summary != null &&
                       wf.summary.totalDomainsRenewed > 0 ? (
-                        <span className="text-green-400">
+                        <span className="text-green-300">
                           {wf.summary.totalDomainsRenewed}
                         </span>
                       ) : (
@@ -289,7 +292,7 @@ function AutoRenewalWorkflowsListContent() {
                     <Td className="text-sm">
                       {wf.summary != null &&
                       wf.summary.totalDomainsFailed > 0 ? (
-                        <span className="text-red-400">
+                        <span className="text-red-300">
                           {wf.summary.totalDomainsFailed}
                         </span>
                       ) : (

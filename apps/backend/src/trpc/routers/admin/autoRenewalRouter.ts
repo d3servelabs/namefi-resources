@@ -1,8 +1,11 @@
 import { z } from 'zod';
+import { inArray } from 'drizzle-orm';
 import { logger } from '#lib/logger';
+import { config } from '#lib/env';
 import { adminProcedureWithPermissions, createTRPCRouter } from '../../base';
 import { Permission } from '@namefi-astra/utils';
 import { temporalClient } from '#temporal/client';
+import { db, paymentsTable } from '@namefi-astra/db';
 import {
   computeAutoRenewMetricsFromResults,
   type AutoRenewReportInput,
@@ -174,6 +177,11 @@ export const autoRenewalRouter = createTRPCRouter({
           startTime: desc.startTime ?? null,
           closeTime: desc.closeTime ?? null,
           runId: desc.runId,
+          historyLength: desc.historyLength ?? null,
+          temporal: {
+            apiUrl: config.TEMPORAL_API_URL,
+            namespace: config.TEMPORAL_NAMESPACE,
+          },
         };
 
         // If the workflow is still running, return basic info only
@@ -205,6 +213,35 @@ export const autoRenewalRouter = createTRPCRouter({
             'Could not retrieve workflow result',
           );
           return base;
+        }
+
+        // The workflow's notify activity returns payment objects without
+        // `paymentProviderReferenceId` (the external Stripe Payment Intent ID
+        // or on-chain tx hash). Enrich them via a single batched DB lookup
+        // keyed on the payment row id (UUID stored in `paymentId` / `id`).
+        const allPaymentIds = new Set<string>();
+        for (const s of rawResult.successes ?? []) {
+          for (const p of s.result?.payments ?? []) {
+            const id = p.paymentId ?? p.id;
+            if (id) allPaymentIds.add(id);
+          }
+        }
+        const paymentRefById: Record<string, string | null> = {};
+        if (allPaymentIds.size > 0) {
+          try {
+            const rows = await db.query.paymentsTable.findMany({
+              columns: { id: true, paymentProviderReferenceId: true },
+              where: inArray(paymentsTable.id, [...allPaymentIds]),
+            });
+            for (const row of rows) {
+              paymentRefById[row.id] = row.paymentProviderReferenceId ?? null;
+            }
+          } catch (err) {
+            autoRenewalLogger.warn(
+              { workflowId, err },
+              'Failed to enrich payments with provider reference ids',
+            );
+          }
         }
 
         // Build workflowResults in the same format used by the report
@@ -271,13 +308,16 @@ export const autoRenewalRouter = createTRPCRouter({
               (processedDomains?.length ?? 0) + (failedDomains?.length ?? 0),
             amountChargedInUsd: r.totalAmountInUsd || 0,
             amountRefundedInUsd: r.refundAmountInUsd || 0,
-            payments: r.payments as
-              | {
-                  id: string;
-                  paymentProvider: PaymentProvider;
-                  amountInUsdCents: number;
-                }[]
-              | undefined,
+            // The workflow runtime returns each payment with `provider`
+            // rather than `paymentProvider`; normalize so that
+            // computeAutoRenewMetricsFromResults sees the field it expects.
+            payments: r.payments?.map((p) => ({
+              id: p.id ?? p.paymentId ?? '',
+              paymentProvider: (p.provider ??
+                p.paymentProvider ??
+                'UNKNOWN') as PaymentProvider,
+              amountInUsdCents: p.amountInUsdCents,
+            })),
             failures: failedDomains ?? undefined,
             successes: processedDomains ?? undefined,
             chargeAmountByDomainLdh: r.chargeAmountByDomainLdh,
@@ -290,6 +330,7 @@ export const autoRenewalRouter = createTRPCRouter({
             domains.push({
               domain: s.domain.normalizedDomainName,
               registrar: s.domain.registrarKey,
+              chainId: s.domain.chainId,
               status: 'SUCCESS',
               chargeAmountUsd:
                 r.chargeAmountByDomainLdh?.[s.domain.normalizedDomainName] ??
@@ -303,6 +344,7 @@ export const autoRenewalRouter = createTRPCRouter({
             domains.push({
               domain: f.domain.normalizedDomainName,
               registrar: f.domain.registrarKey,
+              chainId: f.domain.chainId,
               status: 'FAILED',
               chargeAmountUsd:
                 r.chargeAmountByDomainLdh?.[f.domain.normalizedDomainName] ??
@@ -319,6 +361,7 @@ export const autoRenewalRouter = createTRPCRouter({
               domains.push({
                 domain: d.normalizedDomainName,
                 registrar: d.registrarKey,
+                chainId: d.chainId,
                 status: 'PAYMENT_FAILED',
                 chargeAmountUsd:
                   r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
@@ -333,6 +376,7 @@ export const autoRenewalRouter = createTRPCRouter({
             domains.push({
               domain: d.normalizedDomainName,
               registrar: d.registrarKey,
+              chainId: d.chainId,
               status: 'MISSING_PRICE',
               errorReason: 'Missing price data',
               actionRequired: 'Check pricing data',
@@ -347,12 +391,19 @@ export const autoRenewalRouter = createTRPCRouter({
             refundAmountInUsd: r.refundAmountInUsd ?? undefined,
             orderId: r.orderId ?? undefined,
             domains,
-            payments: (r.payments ?? []).map((p) => ({
-              provider: p.paymentProvider,
-              amountInUsdCents: p.amountInUsdCents,
-              walletAddress: p.walletAddress,
-              stripeLast4: p.stripeLast4,
-            })),
+            // Note: the workflow returns these objects with `provider` (not
+            // `paymentProvider`) — fall back to either to be defensive.
+            payments: (r.payments ?? []).map((p) => {
+              const dbId = p.paymentId ?? p.id;
+              return {
+                provider: p.provider ?? p.paymentProvider ?? 'UNKNOWN',
+                amountInUsdCents: p.amountInUsdCents,
+                walletAddress: p.walletAddress,
+                stripeLast4: p.stripeLast4,
+                paymentProviderReferenceId:
+                  (dbId ? paymentRefById[dbId] : null) ?? undefined,
+              };
+            }),
           });
         }
 
@@ -425,6 +476,7 @@ type UserResultForAdmin = {
   domains: Array<{
     domain: string;
     registrar?: string;
+    chainId?: number;
     status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
     chargeAmountUsd?: number | null;
     errorReason?: string;
@@ -434,9 +486,16 @@ type UserResultForAdmin = {
   }>;
   payments: Array<{
     provider: string;
+    /** Amount in USD cents (1 USD = 100 cents). */
     amountInUsdCents: number;
     walletAddress?: string;
     stripeLast4?: string;
+    /**
+     * Provider-specific external reference.
+     * - Stripe: Payment Intent ID (e.g. `pi_...`)
+     * - NFSC / X402 / MPP: on-chain transaction hash
+     */
+    paymentProviderReferenceId?: string;
   }>;
 };
 
@@ -450,19 +509,28 @@ type SingleUserResult = {
   domainsThatCouldBeRenewed?: Array<{
     normalizedDomainName: string;
     registrarKey?: string;
+    chainId?: number;
   }>;
   domainsMissingPriceData?: Array<{
     normalizedDomainName: string;
     registrarKey?: string;
+    chainId?: number;
   }>;
   chargeAmountByDomainLdh?: Record<string, number | null>;
   totalAmountInUsd: number;
   paymentStatus: 'SUCCEEDED' | 'FAILED' | 'SKIPPED';
+  /**
+   * Note: the workflow's notify activity returns this array using `provider`
+   * (not `paymentProvider`) and it never includes `paymentProviderReferenceId`,
+   * so the only stable identifier we have here is `paymentId` (the database
+   * row ID, used to enrich with the external reference via a follow-up query).
+   */
   payments?: Array<{
-    id: string;
-    paymentProvider: string;
+    id?: string;
+    provider?: string;
+    paymentProvider?: string;
     amountInUsdCents: number;
-    paymentId: string;
+    paymentId?: string;
     walletAddress?: string;
     stripeLast4?: string;
   }>;
@@ -470,7 +538,11 @@ type SingleUserResult = {
   orderId?: string | null;
   message?: string;
   successes?: Array<{
-    domain: { normalizedDomainName: string; registrarKey?: string };
+    domain: {
+      normalizedDomainName: string;
+      registrarKey?: string;
+      chainId?: number;
+    };
     result?: {
       eppOperationStatus?: string;
       txHash?: string;
@@ -478,7 +550,11 @@ type SingleUserResult = {
     };
   }>;
   failures?: Array<{
-    domain: { normalizedDomainName: string; registrarKey?: string };
+    domain: {
+      normalizedDomainName: string;
+      registrarKey?: string;
+      chainId?: number;
+    };
     error?: { message?: string };
   }>;
 };

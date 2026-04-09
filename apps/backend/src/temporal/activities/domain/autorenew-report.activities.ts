@@ -203,10 +203,8 @@ export function computeAutoRenewMetricsFromResults(
         } else {
           metrics.failureBreakdown.registrarErrors++;
         }
-        const lower = failure.reason.toLowerCase();
-
-        // Critical domains (exclude simple payment declines)
-        if (!lower.includes('insufficient') && !lower.includes('declined')) {
+        // Critical domains (exclude payment failures — those are user-side, not ops-actionable)
+        if (!isPaymentFailure(failure.reason)) {
           metrics.criticalDomains.push({
             domain: failure.domain,
             userId: result.userId,

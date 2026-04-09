@@ -23,12 +23,11 @@ import {
   Globe,
   Clock,
   ArrowLeft,
-  Copy,
 } from 'lucide-react';
 import Link from 'next/link';
 import { PageShell } from '@/components/page-shell';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row, ExpandedState } from '@tanstack/react-table';
 import {
   useDrizzlerServerFilterStrategy,
   convertToDrizzlerFilterOptions,
@@ -37,7 +36,14 @@ import {
 } from '@/components/table/filters';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
+import { UserWalletAvatar } from '@/components/user-avatar';
+import { AdminUserLookupButton } from '@/components/admin/user-details';
+import { getTransactionExplorerUrl } from '@/components/admin/bulk-burn-management';
+import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { toast } from 'sonner';
+import { Copy, ExternalLink } from 'lucide-react';
+import { cn } from '@/lib/cn';
 
 // ─── Types ───────────────────────────────────────────────────────
 
@@ -45,14 +51,35 @@ type DomainRow = {
   domain: string;
   userId: string;
   userEmail?: string;
+  walletAddress?: string;
   registrar?: string;
+  chainId?: number;
   status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
   chargeAmountUsd?: number | null;
   errorReason?: string;
   actionRequired?: string;
   txHash?: string;
   eppOperationStatus?: string;
-  paymentProviders?: string;
+  /**
+   * User-level payment status (SUCCEEDED / FAILED / SKIPPED).
+   * Carried on every row of the same user so the group header — which
+   * is computed from the currently visible (filtered + paginated) rows —
+   * can still display the user-level status without round-tripping back
+   * to the full userResults set.
+   */
+  userPaymentStatus?: string;
+  /** All payments for the user this domain belongs to. Same array on every row in the same group. */
+  payments?: Array<{
+    provider: string;
+    /** Amount in USD cents (1 USD = 100 cents). */
+    amountInUsdCents: number;
+    /**
+     * Provider-specific external reference.
+     * - Stripe: Payment Intent ID (e.g. `pi_...`)
+     * - NFSC / X402 / MPP: on-chain transaction hash
+     */
+    paymentProviderReferenceId?: string;
+  }>;
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────
@@ -61,28 +88,37 @@ function getStatusBadge(status: DomainRow['status']) {
   switch (status) {
     case 'SUCCESS':
       return (
-        <Badge variant="default" className="gap-1 bg-green-600/80">
+        <Badge
+          variant="outline"
+          className="gap-1 border-green-300 text-green-300"
+        >
           <CheckCircle2 className="w-3 h-3" />
           Success
         </Badge>
       );
     case 'FAILED':
       return (
-        <Badge variant="default" className="gap-1 bg-red-600/80">
+        <Badge variant="outline" className="gap-1 border-red-300 text-red-300">
           <XCircle className="w-3 h-3" />
           Failed
         </Badge>
       );
     case 'PAYMENT_FAILED':
       return (
-        <Badge variant="default" className="gap-1 bg-yellow-600/80">
+        <Badge
+          variant="outline"
+          className="gap-1 border-amber-200 text-amber-200"
+        >
           <AlertTriangle className="w-3 h-3" />
-          Payment Failed
+          Could Not Charge
         </Badge>
       );
     case 'MISSING_PRICE':
       return (
-        <Badge variant="default" className="gap-1 bg-orange-600/80">
+        <Badge
+          variant="outline"
+          className="gap-1 border-orange-300 text-orange-300"
+        >
           <AlertTriangle className="w-3 h-3" />
           Missing Price
         </Badge>
@@ -95,6 +131,51 @@ function getStatusBadge(status: DomainRow['status']) {
 function formatUsd(amount: number | null | undefined): string {
   if (amount == null) return '-';
   return `$${amount.toFixed(2)}`;
+}
+
+/**
+ * Build a provider-specific external URL for a single payment.
+ *
+ * - Stripe → Stripe dashboard payment intent page (https://dashboard.stripe.com/payments/<pi_...>).
+ * - NFSC_BASE / X402 / MPP → Base block explorer (chain 8453).
+ * - NFSC_ETHEREUM → Ethereum mainnet block explorer (chain 1).
+ * - NFSC_ETHEREUM_SEPOLIA → Sepolia testnet block explorer (chain 11155111).
+ * - Anything else → null.
+ *
+ * For on-chain providers, prefers the payment-specific reference (the actual
+ * settlement tx hash from `paymentsTable.paymentProviderReferenceId`), but
+ * falls back to the renewal-tx hash from the row when that field is missing
+ * (e.g. for older payments that predate the reference being persisted, or
+ * providers that didn't record one). This matches the previous behavior
+ * where the cell linked to the renewal tx hash.
+ */
+function getPaymentExplorerUrl(
+  provider: string,
+  reference: string | undefined,
+  renewalTxHash?: string,
+  renewalChainId?: number,
+): string | null {
+  if (provider === 'STRIPE') {
+    if (!reference) return null;
+    return `https://dashboard.stripe.com/payments/${reference}`;
+  }
+  // Map provider → chain id for on-chain settlements.
+  const providerChainId =
+    provider === 'NFSC_ETHEREUM'
+      ? 1
+      : provider === 'NFSC_ETHEREUM_SEPOLIA'
+        ? 11155111
+        : 8453; // NFSC_BASE, X402, MPP — all default to Base mainnet
+
+  // Prefer the payment-specific settlement tx hash; fall back to the
+  // renewal tx hash on the same row (which always lives on the NFT chain).
+  if (reference) {
+    return getTransactionExplorerUrl(providerChainId, reference);
+  }
+  if (renewalTxHash && renewalChainId) {
+    return getTransactionExplorerUrl(renewalChainId, renewalTxHash);
+  }
+  return null;
 }
 
 function formatDuration(ms: number | undefined): string {
@@ -251,6 +332,31 @@ export default function AutoRenewalManagement({
   const metrics = 'metrics' in data ? data.metrics : undefined;
   const userResults = 'userResults' in data ? data.userResults : undefined;
 
+  // Build the Temporal UI URL for this workflow run.
+  // The backend's apiUrl is the gRPC API endpoint; the UI is hosted at
+  // localhost:8233 in dev or cloud.temporal.io in prod.
+  const temporalUiUrl = (() => {
+    if (!('temporal' in data) || !data.temporal) return null;
+    const { apiUrl, namespace } = data.temporal;
+    const uiBase = apiUrl?.includes('localhost')
+      ? 'http://localhost:8233'
+      : 'https://cloud.temporal.io';
+    return `${uiBase}/namespaces/${namespace}/workflows/${encodeURIComponent(
+      data.workflowId,
+    )}/${encodeURIComponent(data.runId)}`;
+  })();
+
+  const formatDateTime = (d: Date | string | null | undefined) => {
+    if (!d) return '-';
+    const date = typeof d === 'string' ? new Date(d) : d;
+    return date.toLocaleString();
+  };
+
+  const runDuration =
+    data.startTime && data.closeTime
+      ? new Date(data.closeTime).getTime() - new Date(data.startTime).getTime()
+      : null;
+
   return (
     <PageShell padding="admin">
       <div className="space-y-6">
@@ -264,9 +370,11 @@ export default function AutoRenewalManagement({
             </Link>
             <div>
               <h1 className="text-xl font-bold">Auto-Renewal Run</h1>
-              <code className="text-xs text-muted-foreground">
-                {workflowId}
-              </code>
+              <p className="text-xs text-muted-foreground">
+                {data.startTime
+                  ? new Date(data.startTime).toLocaleDateString()
+                  : ''}
+              </p>
             </div>
           </div>
           <Button
@@ -279,6 +387,64 @@ export default function AutoRenewalManagement({
             Refresh
           </Button>
         </div>
+
+        {/* Workflow Details */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm">Workflow Details</CardTitle>
+              {temporalUiUrl && (
+                <a
+                  href={temporalUiUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-blue-300 hover:underline"
+                >
+                  Open in Temporal UI
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 text-xs">
+              <div>
+                <dt className="text-muted-foreground">Status</dt>
+                <dd className="font-medium mt-0.5">{data.status}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Started</dt>
+                <dd className="font-medium mt-0.5">
+                  {formatDateTime(data.startTime)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Completed</dt>
+                <dd className="font-medium mt-0.5">
+                  {formatDateTime(data.closeTime)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Duration</dt>
+                <dd className="font-medium mt-0.5">
+                  {runDuration != null ? formatDuration(runDuration) : '-'}
+                </dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-muted-foreground">Workflow ID</dt>
+                <dd className="font-mono text-[11px] mt-0.5 break-all">
+                  {data.workflowId}
+                </dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-muted-foreground">Run ID</dt>
+                <dd className="font-mono text-[11px] mt-0.5 break-all">
+                  {data.runId}
+                </dd>
+              </div>
+            </dl>
+          </CardContent>
+        </Card>
 
         {/* KPI Cards */}
         {metrics && (
@@ -295,7 +461,7 @@ export default function AutoRenewalManagement({
               variant="success"
             />
             <KpiCard
-              label="Domains Failed"
+              label="Domains Not Renewed"
               value={metrics.failedRenewals}
               icon={XCircle}
               variant={metrics.failedRenewals > 0 ? 'danger' : 'default'}
@@ -309,7 +475,7 @@ export default function AutoRenewalManagement({
               icon={DollarSign}
             />
             <KpiCard
-              label="Success Rate"
+              label="Completion Rate"
               value={
                 metrics.totalDomainsProcessed > 0
                   ? `${((metrics.successfulRenewals / metrics.totalDomainsProcessed) * 100).toFixed(1)}%`
@@ -475,6 +641,7 @@ type UserResultItem = {
   domains: Array<{
     domain: string;
     registrar?: string;
+    chainId?: number;
     status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
     chargeAmountUsd?: number | null;
     errorReason?: string;
@@ -484,14 +651,22 @@ type UserResultItem = {
   }>;
   payments: Array<{
     provider: string;
+    /** Amount in USD cents (1 USD = 100 cents). */
     amountInUsdCents: number;
     walletAddress?: string;
     stripeLast4?: string;
+    /**
+     * Provider-specific external reference.
+     * - Stripe: Payment Intent ID (e.g. `pi_...`)
+     * - NFSC / X402 / MPP: on-chain transaction hash
+     */
+    paymentProviderReferenceId?: string;
   }>;
 };
 
 function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
   const [page, setPage] = useState(1);
+  const [groupByUser, setGroupByUser] = useState(true);
   const [drizzlerFilterState, setDrizzlerFilterState] =
     useState<DrizzlerFilterState>({ columnFilters: {}, customFilters: {} });
 
@@ -502,33 +677,234 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
     setPageSize,
     resetToDefaults,
   } = useTablePreferences({
-    tableId: 'admin-auto-renewal-domains',
-    defaultPreferences: { pageSize: 25 },
+    tableId: 'admin-auto-renewal-domains-v2',
+    defaultPreferences: {
+      pageSize: 25,
+      columnVisibility: { userId: false },
+    },
   });
 
   // Flatten all user results into domain rows
   const allDomains: DomainRow[] = useMemo(() => {
     const rows: DomainRow[] = [];
     for (const user of userResults) {
-      const providers = user.payments?.map((p) => p.provider).join(', ') || '';
+      const wallet = user.payments?.find((p) => p.walletAddress)?.walletAddress;
+      const payments = user.payments?.map((p) => ({
+        provider: p.provider,
+        amountInUsdCents: p.amountInUsdCents,
+        paymentProviderReferenceId: p.paymentProviderReferenceId,
+      }));
       for (const d of user.domains) {
         rows.push({
           domain: d.domain,
           userId: user.userId,
           userEmail: user.userEmail,
+          walletAddress: wallet,
           registrar: d.registrar,
+          chainId: d.chainId,
           status: d.status,
           chargeAmountUsd: d.chargeAmountUsd,
           errorReason: d.errorReason,
           actionRequired: d.actionRequired,
           txHash: d.txHash,
           eppOperationStatus: d.eppOperationStatus,
-          paymentProviders: providers,
+          userPaymentStatus: user.paymentStatus,
+          payments,
         });
       }
     }
     return rows;
   }, [userResults]);
+
+  const grouping = useMemo(
+    () => (groupByUser ? ['userId'] : undefined),
+    [groupByUser],
+  );
+
+  // Expand the first user group by default. This is captured once at mount
+  // and never re-derived, so it doesn't depend on filter/pagination state.
+  const initialExpanded = useMemo<ExpandedState>(() => {
+    if (allDomains.length === 0) return {};
+    const firstUserId = allDomains[0].userId;
+    return { [`userId:${firstUserId}`]: true };
+  }, [allDomains]);
+
+  const [expanded, setExpanded] = useState<ExpandedState>(initialExpanded);
+
+  const renderGroupHeader = useCallback((row: Row<DomainRow>) => {
+    const userId = String(row.getGroupingValue('userId'));
+
+    // Derive header data from the rows actually visible in this group
+    // (which already reflect the current filter + pagination state).
+    // Falls back to leaf rows if the group hasn't been expanded yet.
+    const visibleRows: Array<Row<DomainRow>> =
+      row.subRows.length > 0 ? row.subRows : row.getLeafRows();
+    const first = visibleRows[0]?.original;
+
+    let successCount = 0;
+    let failedCount = 0;
+    let totalChargedInUsd = 0;
+    for (const r of visibleRows) {
+      if (r.original.status === 'SUCCESS') {
+        successCount++;
+      } else {
+        failedCount++;
+      }
+      totalChargedInUsd += r.original.chargeAmountUsd ?? 0;
+    }
+
+    const info = first
+      ? {
+          email: first.userEmail,
+          walletAddress: first.walletAddress,
+          paymentStatus: first.userPaymentStatus,
+          domainCount: visibleRows.length,
+          successCount,
+          failedCount,
+          totalAmountInUsd: totalChargedInUsd,
+          refundAmountInUsd: 0, // refunds are user-level and not represented per-row
+        }
+      : undefined;
+
+    const allPaymentFailed =
+      info?.paymentStatus === 'FAILED' && info.failedCount === info.domainCount;
+    const netAmount =
+      (info?.totalAmountInUsd ?? 0) - (info?.refundAmountInUsd ?? 0);
+    const isExpanded = row.getIsExpanded();
+
+    return (
+      <div
+        className={cn(
+          'grid grid-cols-[350px_1fr_auto_auto] items-center gap-x-3 gap-y-0 text-sm w-full py-2  hover:opacity-100',
+          isExpanded ? 'opacity-30' : 'opacity-60',
+        )}
+      >
+        {/* Col 1: avatar + user */}
+        <div className="flex items-center gap-2">
+          {info?.walletAddress && (
+            <UserWalletAvatar
+              address={info.walletAddress}
+              adminOpenTarget="wallet"
+              userId={userId}
+              className="size-6"
+            />
+          )}
+          <AdminUserLookupButton
+            reference={{ userId }}
+            variant="ghost"
+            size="sm"
+            className="h-auto px-1 py-0 font-medium text-sm hover:underline"
+          >
+            {info?.email || <code className="text-xs">{userId}</code>}
+          </AdminUserLookupButton>
+        </div>
+
+        {/* Col 2: domain count + status */}
+        <div className="flex justify-start items-start gap-2">
+          <Badge
+            variant="outline"
+            className="text-xs min-w-[15ch] w-[15ch] font-mono"
+          >
+            {row.subRows.length}{' '}
+            {row.subRows.length === 1 ? 'domain' : 'domains'}
+          </Badge>
+          {allPaymentFailed ? (
+            <>
+              <Badge
+                variant="outline"
+                className="text-xs border-amber-300/80 text-amber-300/80 min-w-[15ch] w-[15ch]"
+              >
+                No payment
+              </Badge>
+              {info?.email &&
+                (() => {
+                  const domains = row.subRows
+                    .map((r) => r.original.domain)
+                    .filter(Boolean);
+                  const failureLines = row.subRows
+                    .map(
+                      (r) =>
+                        `- ${r.original.domain}${
+                          r.original.errorReason
+                            ? ` — ${r.original.errorReason}`
+                            : ''
+                        }`,
+                    )
+                    .join('\n');
+                  const total = (info.totalAmountInUsd ?? 0).toFixed(2);
+                  const subject = `Auto-renewal payment failed for ${domains.length} ${domains.length === 1 ? 'domain' : 'domains'}`;
+                  const body =
+                    'Hi,\n\n' +
+                    `Your auto-renewal attempt for the following ${domains.length === 1 ? 'domain' : 'domains'} could not be completed because we were unable to charge your payment method.\n\n` +
+                    `Total required: $${total}\n\n` +
+                    `Affected domains:\n${failureLines}\n\n` +
+                    'Please update your payment method or contact us to resolve this so we can complete the renewal.\n\n' +
+                    'Thank you.';
+                  const href = `mailto:${info.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                  return (
+                    <a href={href} onClick={(e) => e.stopPropagation()}>
+                      <Badge
+                        variant="outline"
+                        className="text-xs border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
+                      >
+                        Contact user about payment
+                      </Badge>
+                    </a>
+                  );
+                })()}
+            </>
+          ) : (
+            <>
+              {(info?.successCount ?? 0) > 0 && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-green-300/80 text-green-300/80 min-w-[15ch] w-[15ch]"
+                >
+                  {info!.successCount} success
+                </Badge>
+              )}
+              {(info?.failedCount ?? 0) > 0 && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-red-300/80 text-red-300/80 min-w-[15ch] w-[15ch]"
+                >
+                  {info!.failedCount} failure
+                </Badge>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Col 3: amounts */}
+        <span className="text-xs text-muted-foreground text-right whitespace-nowrap">
+          {allPaymentFailed ? (
+            <>
+              ${(info?.totalAmountInUsd ?? 0).toFixed(2)}{' '}
+              <span className="text-red-300">required</span>
+            </>
+          ) : (
+            <>
+              ${(info?.totalAmountInUsd ?? 0).toFixed(2)} charged
+              {(info?.refundAmountInUsd ?? 0) > 0 && (
+                <> / ${info!.refundAmountInUsd.toFixed(2)} refunded</>
+              )}
+            </>
+          )}
+        </span>
+
+        {/* Col 4: net */}
+        <span className="text-xs text-right whitespace-nowrap w-[80px]">
+          {allPaymentFailed ? (
+            <span className="text-red-300">$0.00 net</span>
+          ) : netAmount > 0 ? (
+            <span className="text-green-300">${netAmount.toFixed(2)} net</span>
+          ) : (
+            <span className="text-muted-foreground">$0.00 net</span>
+          )}
+        </span>
+      </div>
+    );
+  }, []);
 
   const drizzlerFilterOptions = useMemo(
     () =>
@@ -554,7 +930,7 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
       status: (r) => r.status,
       registrar: (r) => r.registrar ?? '',
       chargeAmountUsd: (r) => r.chargeAmountUsd ?? 0,
-      paymentProviders: (r) => r.paymentProviders ?? '',
+      payments: (r) => r.payments?.map((p) => p.provider).join(',') ?? '',
       errorReason: (r) => r.errorReason ?? '',
       actionRequired: (r) => r.actionRequired ?? '',
     }),
@@ -566,11 +942,43 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
     [filteredDomains, sorting, sortAccessors],
   );
 
-  const totalPages = Math.max(1, Math.ceil(sortedDomains.length / pageSize));
+  // When grouping by user, pagination is disabled and the table shows all
+  // sorted rows so groups are never split across pages. Otherwise we slice
+  // into the requested page.
+  const totalPages = groupByUser
+    ? 1
+    : Math.max(1, Math.ceil(sortedDomains.length / pageSize));
   const paginatedDomains = useMemo(() => {
+    if (groupByUser) return sortedDomains;
     const start = (page - 1) * pageSize;
     return sortedDomains.slice(start, start + pageSize);
-  }, [sortedDomains, page, pageSize]);
+  }, [sortedDomains, page, pageSize, groupByUser]);
+
+  // Unique user IDs that have at least one row visible on the current page.
+  // Used so "Expand All" only targets groups actually rendered, and so the
+  // toggle reflects only what the user can currently see.
+  const allUserIds = useMemo(
+    () => [...new Set(paginatedDomains.map((d) => d.userId))],
+    [paginatedDomains],
+  );
+
+  const allExpanded = useMemo(() => {
+    if (typeof expanded === 'boolean') return expanded;
+    if (allUserIds.length === 0) return false;
+    return allUserIds.every((id) => expanded[`userId:${id}`]);
+  }, [expanded, allUserIds]);
+
+  const toggleExpandAll = useCallback(() => {
+    if (allExpanded) {
+      setExpanded({});
+    } else {
+      const next: Record<string, boolean> = {};
+      for (const id of allUserIds) {
+        next[`userId:${id}`] = true;
+      }
+      setExpanded(next);
+    }
+  }, [allExpanded, allUserIds]);
 
   const filterStrategy = useDrizzlerServerFilterStrategy<DomainRow>({
     filterConfig: {
@@ -644,15 +1052,6 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
     },
   });
 
-  const handleCopy = useCallback(async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success('Copied');
-    } catch {
-      toast.error('Failed to copy');
-    }
-  }, []);
-
   const columns: ColumnDef<DomainRow>[] = useMemo(
     () => [
       {
@@ -664,37 +1063,65 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
         ),
       },
       {
+        id: 'walletAddress',
+        accessorKey: 'walletAddress',
+        header: 'Wallet',
+        cell: ({ row }) =>
+          row.original.walletAddress ? (
+            <UserWalletAvatar
+              address={row.original.walletAddress}
+              adminOpenTarget="wallet"
+              userId={row.original.userId}
+              className="size-6"
+            />
+          ) : (
+            <span className="text-xs text-muted-foreground">-</span>
+          ),
+      },
+      {
+        id: 'userEmail',
+        accessorKey: 'userEmail',
+        header: 'Owner Email',
+        cell: ({ row }) =>
+          row.original.userEmail ? (
+            <AdminUserLookupButton
+              reference={{ userId: row.original.userId }}
+              variant="ghost"
+              size="sm"
+              className="h-auto px-0 py-0 text-xs hover:underline justify-start max-w-[200px]"
+            >
+              <span className="truncate">{row.original.userEmail}</span>
+            </AdminUserLookupButton>
+          ) : (
+            <span className="text-xs text-muted-foreground">-</span>
+          ),
+      },
+      {
         id: 'userId',
         accessorKey: 'userId',
-        header: 'Owner',
+        header: 'Owner ID',
         cell: ({ row }) => (
-          <div className="flex flex-col gap-0.5">
-            <div className="flex items-center gap-1">
-              <code className="text-xs truncate max-w-[120px]">
-                {row.original.userId}
-              </code>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-5 w-5 p-0"
-                onClick={() => handleCopy(row.original.userId)}
-              >
-                <Copy className="w-3 h-3" />
-              </Button>
-            </div>
-            {row.original.userEmail && (
-              <span className="text-xs text-muted-foreground truncate max-w-[160px]">
-                {row.original.userEmail}
-              </span>
-            )}
-          </div>
+          <AdminUserLookupButton
+            reference={{ userId: row.original.userId }}
+            variant="ghost"
+            size="sm"
+            className="h-auto px-0 py-0 text-xs font-mono hover:underline justify-start max-w-[140px]"
+          >
+            <TruncatedTextWithHover maxLength={12}>
+              {row.original.userId}
+            </TruncatedTextWithHover>
+          </AdminUserLookupButton>
         ),
       },
       {
         id: 'status',
         accessorKey: 'status',
-        header: 'Status',
-        cell: ({ row }) => getStatusBadge(row.original.status),
+        header: () => <div className="text-center">Status</div>,
+        cell: ({ row }) => (
+          <div className="flex justify-center">
+            {getStatusBadge(row.original.status)}
+          </div>
+        ),
       },
       {
         id: 'registrar',
@@ -717,14 +1144,50 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
         ),
       },
       {
-        id: 'paymentProviders',
-        accessorKey: 'paymentProviders',
+        id: 'payments',
+        accessorKey: 'payments',
         header: 'Payment',
-        cell: ({ row }) => (
-          <span className="text-xs text-muted-foreground">
-            {row.original.paymentProviders || '-'}
-          </span>
-        ),
+        cell: ({ row }) => {
+          const payments = row.original.payments;
+          if (!payments || payments.length === 0)
+            return <span className="text-xs text-muted-foreground">-</span>;
+          return (
+            <div className="flex flex-col gap-0.5 text-xs">
+              {payments.map((p, i) => {
+                const url = getPaymentExplorerUrl(
+                  p.provider,
+                  p.paymentProviderReferenceId,
+                  row.original.txHash,
+                  row.original.chainId,
+                );
+                const inner = (
+                  <span className="flex items-center gap-1.5 whitespace-nowrap">
+                    <span className="text-muted-foreground">{p.provider}</span>
+                    <span className="font-mono">
+                      ${(p.amountInUsdCents / 100).toFixed(2)}
+                    </span>
+                    {url && <ExternalLink className="h-3 w-3 opacity-60" />}
+                  </span>
+                );
+                return url ? (
+                  <a
+                    key={`${p.provider}-${i}`}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="hover:underline text-blue-300"
+                    title={`View on ${p.provider === 'STRIPE' ? 'Stripe dashboard' : 'block explorer'}`}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={`${p.provider}-${i}`}>{inner}</div>
+                );
+              })}
+            </div>
+          );
+        },
       },
       {
         id: 'errorReason',
@@ -733,16 +1196,41 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
         cell: ({ row }) => {
           if (!row.original.errorReason)
             return <span className="text-sm">-</span>;
+          const isContactAction =
+            row.original.actionRequired === 'Contact user about payment';
+          const canEmail = isContactAction && row.original.userEmail;
           return (
             <div className="flex flex-col gap-0.5 max-w-[250px]">
               <span className="text-xs text-red-400 truncate">
                 {row.original.errorReason}
               </span>
-              {row.original.actionRequired && (
-                <Badge variant="outline" className="text-xs w-fit">
-                  {row.original.actionRequired}
-                </Badge>
-              )}
+              {row.original.actionRequired &&
+                (canEmail ? (
+                  (() => {
+                    const subject = `Domain Renewal Issue: ${row.original.domain}`;
+                    const body =
+                      'Hi,\n\n' +
+                      `We noticed an issue with the renewal of your domain ${row.original.domain}.\n\n` +
+                      `Reason: ${row.original.errorReason ?? 'Unknown'}\n\n` +
+                      'Please contact us if you need assistance.';
+                    const params = new URLSearchParams({ subject, body });
+                    const href = `mailto:${row.original.userEmail}?${params.toString()}`;
+                    return (
+                      <a href={href} onClick={(e) => e.stopPropagation()}>
+                        <Badge
+                          variant="outline"
+                          className="text-xs w-fit border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
+                        >
+                          {row.original.actionRequired}
+                        </Badge>
+                      </a>
+                    );
+                  })()
+                ) : (
+                  <Badge variant="outline" className="text-xs w-fit">
+                    {row.original.actionRequired}
+                  </Badge>
+                ))}
             </div>
           );
         },
@@ -753,26 +1241,93 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
         header: 'Tx Hash',
         cell: ({ row }) => {
           if (!row.original.txHash) return <span className="text-sm">-</span>;
+          const hash = row.original.txHash;
+          const url = row.original.chainId
+            ? getTransactionExplorerUrl(row.original.chainId, hash)
+            : null;
           return (
-            <code className="text-xs truncate max-w-[100px] block">
-              {row.original.txHash.slice(0, 10)}...
-            </code>
+            <div className="flex items-center gap-1 max-w-[160px]">
+              <span className="font-mono text-xs flex-1 min-w-0">
+                <AutoTruncateTextV2
+                  initialCharactersCountToDisplay={8}
+                  minCharactersToDisplay={8}
+                >
+                  {hash}
+                </AutoTruncateTextV2>
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 w-6 p-0 flex-shrink-0"
+                title="Copy tx hash"
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    await navigator.clipboard.writeText(hash);
+                    toast.success('Copied tx hash');
+                  } catch {
+                    toast.error('Failed to copy');
+                  }
+                }}
+              >
+                <Copy className="h-3 w-3" />
+              </Button>
+              {url && (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  title="View on explorer"
+                  className="flex-shrink-0 inline-flex h-6 w-6 items-center justify-center rounded hover:bg-muted text-muted-foreground hover:text-foreground"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+            </div>
           );
         },
       },
     ],
-    [handleCopy],
+    [],
   );
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm">
-          Domains ({filteredDomains.length} of {allDomains.length})
-        </CardTitle>
-        <CardDescription>
-          All domains processed in this auto-renewal run, grouped by owner.
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-sm">
+              Domains ({filteredDomains.length} of {allDomains.length})
+            </CardTitle>
+            <CardDescription>
+              All domains processed in this auto-renewal run, grouped by owner.
+            </CardDescription>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant={groupByUser ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => {
+                setGroupByUser((v) => !v);
+                setPage(1);
+              }}
+              className="text-xs"
+            >
+              Group by Owner
+            </Button>
+            {groupByUser && allUserIds.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleExpandAll}
+                className="text-xs"
+              >
+                {allExpanded ? 'Collapse All' : 'Expand All'}
+              </Button>
+            )}
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <ExtensibleDataTable<DomainRow, typeof filterStrategy>
@@ -793,6 +1348,12 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
           onResetPreferences={resetToDefaults}
+          grouping={grouping}
+          groupedColumnMode={false}
+          renderGroupHeader={renderGroupHeader}
+          expanded={expanded}
+          onExpandedChange={setExpanded}
+          paginationVisibility={groupByUser ? 'hidden' : 'always'}
           emptyMessage="No domains in this run"
         />
       </CardContent>
