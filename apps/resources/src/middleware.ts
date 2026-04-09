@@ -61,10 +61,17 @@ function resolveCanonicalResourcesHostRedirect(
 ): URL | undefined {
   const rawPathname = new URL(request.url).pathname;
   const canonicalHost = LEGACY_RESOURCES_HOSTNAME_MAP[request.nextUrl.hostname];
+  const hasResourcesBasePath =
+    rawPathname === '/r' || rawPathname.startsWith('/r/');
 
   if (!canonicalHost) {
     return undefined;
   }
+
+  if (hasResourcesBasePath) {
+    return undefined;
+  }
+
   const requestHost = request.nextUrl.hostname.toLowerCase();
   const forwardedHost = request.headers
     .get('x-forwarded-host')

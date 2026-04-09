@@ -65,13 +65,13 @@ describe('middleware redirect behaviour', () => {
     );
   });
 
-  it('redirects legacy resources host URLs that already include /r', () => {
+  it('keeps /r-prefixed legacy resources host URLs on the same request host', () => {
     const response = middleware(
       createRequest('r/en/tld/able', {
         origin: 'https://r.namefi.io',
       }),
     );
-    expect(getRedirectUrl(response)).toBe('https://namefi.io/r/en/tld/able');
+    expect(getRedirectUrl(response)).toBe(null);
   });
 
   it('does not redirect legacy host when request is proxied from first-party host', () => {
