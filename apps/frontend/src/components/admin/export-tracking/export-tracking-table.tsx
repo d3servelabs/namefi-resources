@@ -5,7 +5,7 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
-import type { ColumnDef, Row, ColumnDefResolved } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 import { ChevronDown, ChevronRight, Copy, Play } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserWalletAvatar } from '@/components/user-avatar';
@@ -528,44 +528,3 @@ export function ExportTrackingTable() {
     </div>
   );
 }
-
-type VisibilityStateFromColumns<CDef extends ColumnDefResolved<any>> = {
-  [key in NonNullable<
-    CDef['id'] extends string ? CDef['id'] : CDef['accessorKey']
-  >]?: boolean;
-};
-
-type UseVisibilityProps<CDef extends ColumnDefResolved<any>> = {
-  initial?: VisibilityStateFromColumns<CDef>;
-  columns: CDef[];
-  defaultVisibility?: boolean;
-};
-
-const useVisibility = <CDef extends ColumnDefResolved<any>>({
-  initial = {},
-  columns,
-  defaultVisibility = false,
-}: UseVisibilityProps<CDef>) => {
-  const base = useMemo(() => {
-    return columns.reduce((acc, column) => {
-      acc[column.id ?? column.accessorKey ?? ''] = defaultVisibility;
-      return acc;
-    }, {} as any);
-  }, [columns, defaultVisibility]);
-
-  const [columnVisibility, setColumnVisibility] = useState<
-    VisibilityStateFromColumns<CDef>
-  >({ ...base, ...initial });
-
-  const toggleColumnVisibility = useCallback(
-    (columnId: keyof typeof initial) => {
-      setColumnVisibility((prevVisibility) => ({
-        ...prevVisibility,
-        [columnId]: !prevVisibility[columnId],
-      }));
-    },
-    [],
-  );
-
-  return { columnVisibility, setColumnVisibility, toggleColumnVisibility };
-};

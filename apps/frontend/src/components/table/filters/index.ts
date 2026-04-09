@@ -39,3 +39,5 @@ export { DrizzlerFilterField as DrizzlerFilterFieldComponent } from './component
 
 // Client-side utilities
 export { applyClientSideSorting } from './utils/apply-client-side-sorting';
+export { useVisibility } from './utils/use-visibility';
+export { useSorting } from './utils/use-sorting';
