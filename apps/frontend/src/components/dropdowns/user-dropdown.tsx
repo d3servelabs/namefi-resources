@@ -634,9 +634,15 @@ function AdminDropdownSection({
         <AdminQuickAccessDropdownItem onOpen={onOpenAdminQuickAccess} />
       ) : null}
       {canViewAdminDashboard ? (
-        <DropdownMenuItem render={<Link href="/admin" />}>
+        <DropdownMenuItem render={<Link href="/dev-tools" />}>
           <SettingsIcon className="mr-2 h-4 w-4" />
-          <span>Admin Dashboard</span>
+          <span>Dev Tools</span>
+        </DropdownMenuItem>
+      ) : null}
+      {canViewAdminDashboard ? (
+        <DropdownMenuItem render={<Link href="/customer-support" />}>
+          <SettingsIcon className="mr-2 h-4 w-4" />
+          <span>Customer Support</span>
         </DropdownMenuItem>
       ) : null}
       {canViewAdminDashboard ? <AdminFeatureFlagsDropdownItem /> : null}
