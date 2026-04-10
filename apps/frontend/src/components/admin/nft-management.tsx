@@ -94,7 +94,7 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 
 type NftManagementRow =
-  AppRouterOutput['admin']['getNftsWithExpirationStatus']['data'][number];
+  AppRouterOutput['admin']['nft']['getNftsWithExpirationStatus']['data'][number];
 
 type WorkflowRow = {
   domainName: string;
@@ -598,7 +598,7 @@ const NftManagementTable = memo(function NftManagementTable() {
   }, [sorting]);
 
   const nftStatusQuery = useQuery(
-    trpc.admin.getNftsWithExpirationStatus.queryOptions(
+    trpc.admin.nft.getNftsWithExpirationStatus.queryOptions(
       {
         page,
         pageSize,
@@ -625,24 +625,24 @@ const NftManagementTable = memo(function NftManagementTable() {
   );
 
   const burnWorkflowsQuery = useQuery({
-    ...trpc.admin.getActiveBurnWorkflows.queryOptions(),
+    ...trpc.admin.nft.getActiveBurnWorkflows.queryOptions(),
     ...workflowQueryOptions,
   });
   const fixWorkflowsQuery = useQuery({
-    ...trpc.admin.getActiveFixExpirationWorkflows.queryOptions(),
+    ...trpc.admin.nft.getActiveFixExpirationWorkflows.queryOptions(),
     ...workflowQueryOptions,
   });
   const extendWorkflowsQuery = useQuery({
-    ...trpc.admin.getActiveExtendRegistrationWorkflows.queryOptions(),
+    ...trpc.admin.nft.getActiveExtendRegistrationWorkflows.queryOptions(),
     ...workflowQueryOptions,
   });
 
   const burnNftMutation = useMutation(
-    trpc.admin.burnNft.mutationOptions({
+    trpc.admin.nft.burnNft.mutationOptions({
       onSuccess: async (result) => {
         toast.success(`NFT burn workflow started: ${result.workflowId}`);
         await queryClient.invalidateQueries({
-          queryKey: trpc.admin.getNftsWithExpirationStatus.queryKey(),
+          queryKey: trpc.admin.nft.getNftsWithExpirationStatus.queryKey(),
         });
       },
       onError: (error) => {
@@ -659,11 +659,11 @@ const NftManagementTable = memo(function NftManagementTable() {
   );
 
   const fixNftExpirationMutation = useMutation(
-    trpc.admin.fixNftExpiration.mutationOptions({
+    trpc.admin.nft.fixNftExpiration.mutationOptions({
       onSuccess: async () => {
         toast.success('NFT expiration fix workflow started');
         await queryClient.invalidateQueries({
-          queryKey: trpc.admin.getNftsWithExpirationStatus.queryKey(),
+          queryKey: trpc.admin.nft.getNftsWithExpirationStatus.queryKey(),
         });
       },
       onError: (error) => {

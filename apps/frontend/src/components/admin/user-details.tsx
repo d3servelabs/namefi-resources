@@ -71,8 +71,8 @@ import { Permission } from '@namefi-astra/utils/permissions';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { PermissionGate } from '@/components/access/PermissionGate';
 
-type AdminUserDetails = AppRouterOutput['admin']['getUserDetails'];
-type AdminWalletDetails = AppRouterOutput['admin']['getWalletDetails'];
+type AdminUserDetails = AppRouterOutput['admin']['users']['getUserDetails'];
+type AdminWalletDetails = AppRouterOutput['admin']['users']['getWalletDetails'];
 
 export type AdminUserLookupReference =
   | {
@@ -474,7 +474,7 @@ export function AdminUserLookupDialog({
   }, [open, onOpenChange]);
 
   const resolverQuery = useQuery(
-    trpc.admin.resolveUserReference.queryOptions(reference, {
+    trpc.admin.users.resolveUserReference.queryOptions(reference, {
       enabled: open,
       trpc: { context: { skipBatch: true } },
     }),
@@ -651,7 +651,7 @@ function AdminUserDetailsDialog({
 }) {
   const trpc = useTRPC();
   const query = useQuery(
-    trpc.admin.getUserDetails.queryOptions(
+    trpc.admin.users.getUserDetails.queryOptions(
       {
         userId,
         matchedWalletAddress: matchedWalletAddress ?? undefined,
@@ -714,7 +714,7 @@ export function AdminWalletDetailsDialog({
   }, [open, onOpenChange]);
 
   const query = useQuery(
-    trpc.admin.getWalletDetails.queryOptions(
+    trpc.admin.users.getWalletDetails.queryOptions(
       {
         walletAddress,
       },
@@ -1876,7 +1876,7 @@ function UserDetailsPageContentView({ data }: { data: AdminUserDetails }) {
 export function AdminUserDetailsPageContent({ userId }: { userId: string }) {
   const trpc = useTRPC();
   const query = useQuery(
-    trpc.admin.getUserDetails.queryOptions(
+    trpc.admin.users.getUserDetails.queryOptions(
       {
         userId,
       },
@@ -1920,7 +1920,7 @@ export function AdminUserDetailsPageContent({ userId }: { userId: string }) {
 export function AdminUserExpandedDetails({ userId }: { userId: string }) {
   const trpc = useTRPC();
   const query = useQuery(
-    trpc.admin.getUserDetails.queryOptions(
+    trpc.admin.users.getUserDetails.queryOptions(
       {
         userId,
       },

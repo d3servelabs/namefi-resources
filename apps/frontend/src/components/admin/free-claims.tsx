@@ -155,7 +155,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
 
   // User search query
   const userSearchQuery = useQuery({
-    ...trpc.admin.searchUsers.queryOptions({
+    ...trpc.admin.users.searchUsers.queryOptions({
       searchTerm: userSearchTerm,
       limit: 10,
     }),
@@ -163,7 +163,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
   });
 
   const createMutation = useMutation({
-    ...trpc.admin.createFreeClaim.mutationOptions(),
+    ...trpc.admin.freeClaims.createFreeClaim.mutationOptions(),
     onSuccess: () => {
       toast.success('Free claim created successfully');
       setOpen(false);
@@ -182,7 +182,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
       setShowUserSearch(false);
       onSuccess();
       queryClient.invalidateQueries({
-        queryKey: trpc.admin.getFreeClaimsWithPagination.queryKey(),
+        queryKey: trpc.admin.freeClaims.getFreeClaimsWithPagination.queryKey(),
       });
     },
     onError: (error) => {
@@ -559,7 +559,7 @@ function DeleteClaimDialog({
   const trpc = useTRPC();
 
   const deleteMutation = useMutation({
-    ...trpc.admin.deleteFreeClaim.mutationOptions(),
+    ...trpc.admin.freeClaims.deleteFreeClaim.mutationOptions(),
     onSuccess: () => {
       toast.success('Free claim deleted successfully');
       setOpen(false);
@@ -642,7 +642,7 @@ function FreeClaimsContent() {
   );
 
   const { data, isLoading, isFetching } = useQuery({
-    ...trpc.admin.getFreeClaimsWithPagination.queryOptions({
+    ...trpc.admin.freeClaims.getFreeClaimsWithPagination.queryOptions({
       page,
       limit,
       sortBy,
@@ -655,7 +655,7 @@ function FreeClaimsContent() {
 
   const handleRefresh = useCallback(() => {
     queryClient.invalidateQueries({
-      queryKey: ['trpc', 'admin', 'getFreeClaimsWithPagination'],
+      queryKey: ['trpc', 'admin', 'freeClaims', 'getFreeClaimsWithPagination'],
     });
   }, [queryClient]);
 

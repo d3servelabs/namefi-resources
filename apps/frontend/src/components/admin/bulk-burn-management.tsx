@@ -107,19 +107,19 @@ function BulkBurnManagementContent({
     isLoading,
     refetch,
   } = useQuery({
-    ...trpc.admin.getBulkBurnWorkflowById.queryOptions({ workflowId }),
+    ...trpc.admin.bulkBurn.getBulkBurnWorkflowById.queryOptions({ workflowId }),
     refetchInterval: 10000, // Refresh every 10 seconds
   });
 
   // Approve mutation
   const approveMutation = useMutation(
-    trpc.admin.approveBulkBurn.mutationOptions({
+    trpc.admin.bulkBurn.approveBulkBurn.mutationOptions({
       onSuccess: () => {
         toast.success('Bulk burn approved successfully');
         setSelectedDomains(new Set());
         setApproveDialogOpen(false);
         queryClient.invalidateQueries({
-          queryKey: trpc.admin.getPendingBulkBurnWorkflow.queryKey(),
+          queryKey: trpc.admin.bulkBurn.getPendingBulkBurnWorkflow.queryKey(),
         });
       },
       onError: (error: any) => {
@@ -130,12 +130,12 @@ function BulkBurnManagementContent({
 
   // Cancel mutation
   const cancelMutation = useMutation(
-    trpc.admin.cancelBulkBurn.mutationOptions({
+    trpc.admin.bulkBurn.cancelBulkBurn.mutationOptions({
       onSuccess: () => {
         toast.success('Bulk burn cancelled successfully');
         setCancelDialogOpen(false);
         queryClient.invalidateQueries({
-          queryKey: trpc.admin.getPendingBulkBurnWorkflow.queryKey(),
+          queryKey: trpc.admin.bulkBurn.getPendingBulkBurnWorkflow.queryKey(),
         });
       },
       onError: (error: any) => {
@@ -170,7 +170,7 @@ function BulkBurnManagementContent({
 
   // Enrichment query for autorenew + user email
   const enrichmentQuery = useQuery({
-    ...trpc.admin.enrichBulkBurnDomains.queryOptions({
+    ...trpc.admin.bulkBurn.enrichBulkBurnDomains.queryOptions({
       domainNames: verifiedDomains.map((d) => d.domain),
     }),
     enabled: verifiedDomains.length > 0,

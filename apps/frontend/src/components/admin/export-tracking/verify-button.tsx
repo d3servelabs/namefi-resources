@@ -60,11 +60,12 @@ export function VerifyButton({ record }: VerifyButtonProps) {
   const queryClient = useQueryClient();
 
   const verifyMutation = useMutation(
-    trpc.admin.verifyExportTracking.mutationOptions({
+    trpc.admin.exportTracking.verifyExportTracking.mutationOptions({
       onSuccess: () => {
         toast.success('Export approved and notification sent');
         queryClient.invalidateQueries({
-          queryKey: trpc.admin.getExportTrackingRecords.queryKey(),
+          queryKey:
+            trpc.admin.exportTracking.getExportTrackingRecords.queryKey(),
         });
       },
       onError: (error) => {
@@ -76,11 +77,12 @@ export function VerifyButton({ record }: VerifyButtonProps) {
   );
 
   const resolveMutation = useMutation(
-    trpc.admin.resolveExportTracking.mutationOptions({
+    trpc.admin.exportTracking.resolveExportTracking.mutationOptions({
       onSuccess: () => {
         toast.success('Export review resolved');
         queryClient.invalidateQueries({
-          queryKey: trpc.admin.getExportTrackingRecords.queryKey(),
+          queryKey:
+            trpc.admin.exportTracking.getExportTrackingRecords.queryKey(),
         });
       },
       onError: (error) => {
@@ -92,11 +94,12 @@ export function VerifyButton({ record }: VerifyButtonProps) {
   );
 
   const sendEmailMutation = useMutation(
-    trpc.admin.sendExportTrackingEmail.mutationOptions({
+    trpc.admin.exportTracking.sendExportTrackingEmail.mutationOptions({
       onSuccess: (data) => {
         toast.success(data.message);
         queryClient.invalidateQueries({
-          queryKey: trpc.admin.getExportTrackingRecords.queryKey(),
+          queryKey:
+            trpc.admin.exportTracking.getExportTrackingRecords.queryKey(),
         });
       },
       onError: (error) => {

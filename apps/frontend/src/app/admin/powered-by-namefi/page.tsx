@@ -735,7 +735,7 @@ function CreateDomainForm({
 
   // User search query
   const userSearchQuery = useQuery({
-    ...trpc.admin.searchUsers.queryOptions({
+    ...trpc.admin.users.searchUsers.queryOptions({
       searchTerm: userSearchTerm,
       limit: 10,
     }),

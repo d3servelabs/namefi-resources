@@ -150,7 +150,7 @@ function UsersTable({
   }, [debouncedColumnFilters]);
 
   const users = useQuery(
-    trpc.admin.listUsers.queryOptions(
+    trpc.admin.users.listUsers.queryOptions(
       {
         page,
         pageSize,
@@ -676,7 +676,7 @@ function UsersTable({
   );
 
   const forceRefreshCache = useMutation(
-    trpc.admin.forceRefreshPrivyCache.mutationOptions(),
+    trpc.admin.users.forceRefreshPrivyCache.mutationOptions(),
   );
 
   const handleForceRefresh = useCallback(async () => {

@@ -87,7 +87,7 @@ function OrdersTable() {
   });
 
   const ordersQuery = useQuery(
-    trpc.admin.listOrders.queryOptions(
+    trpc.admin.orders.listOrders.queryOptions(
       {
         page,
         pageSize,

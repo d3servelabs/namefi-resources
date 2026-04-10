@@ -54,7 +54,7 @@ function BulkBurnWorkflowsListContent() {
     isLoading,
     refetch,
   } = useQuery({
-    ...trpc.admin.getAllBulkBurnWorkflows.queryOptions(),
+    ...trpc.admin.bulkBurn.getAllBulkBurnWorkflows.queryOptions(),
     refetchInterval: 30000, // Refresh every 30 seconds
   });
 

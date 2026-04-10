@@ -598,7 +598,7 @@ function UsersTableV2() {
   }, [sorting]);
 
   const users = useQuery(
-    trpc.admin.listUsersV2.queryOptions(
+    trpc.admin.users.listUsersV2.queryOptions(
       {
         page,
         pageSize,

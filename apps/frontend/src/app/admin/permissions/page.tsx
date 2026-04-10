@@ -226,7 +226,7 @@ function AddUser({
   const queryClient = useQueryClient();
 
   const searchUsers = useQuery({
-    ...trpc.admin.searchUsers.queryOptions({
+    ...trpc.admin.users.searchUsers.queryOptions({
       searchTerm: debouncedSearchTerm,
       limit: 10,
     }),

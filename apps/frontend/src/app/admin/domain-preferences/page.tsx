@@ -154,7 +154,7 @@ function DomainPreferencesTable() {
   }, [sorting]);
 
   const query = useQuery(
-    trpc.admin.listDomainPreferences.queryOptions(
+    trpc.admin.domainPreferences.listDomainPreferences.queryOptions(
       {
         page,
         pageSize,
@@ -168,7 +168,7 @@ function DomainPreferencesTable() {
   );
 
   const updateMutation = useMutation(
-    trpc.admin.updateDomainPreferences.mutationOptions({
+    trpc.admin.domainPreferences.updateDomainPreferences.mutationOptions({
       onSuccess: async (_, variables) => {
         toast('Domain preferences updated');
         setDrafts((prev) => {

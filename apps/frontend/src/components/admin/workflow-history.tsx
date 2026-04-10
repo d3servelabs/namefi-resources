@@ -87,7 +87,7 @@ function WorkflowHistoryContent() {
   const [previousPageTokens, setPreviousPageTokens] = useState<string[]>([]);
 
   const { data, isLoading, isFetching } = useQuery({
-    ...trpc.admin.getWorkflowHistory.queryOptions({
+    ...trpc.admin.nft.getWorkflowHistory.queryOptions({
       days,
       page,
       limit,

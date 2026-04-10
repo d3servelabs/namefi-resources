@@ -133,7 +133,7 @@ export function ExportTrackingTable() {
   }, [sorting]);
 
   const query = useQuery(
-    trpc.admin.getExportTrackingRecords.queryOptions(
+    trpc.admin.exportTracking.getExportTrackingRecords.queryOptions(
       {
         page,
         pageSize,
@@ -151,7 +151,8 @@ export function ExportTrackingTable() {
       onSuccess: (data) => {
         toast.success(data.message);
         queryClient.invalidateQueries({
-          queryKey: trpc.admin.getExportTrackingRecords.queryKey(),
+          queryKey:
+            trpc.admin.exportTracking.getExportTrackingRecords.queryKey(),
         });
       },
       onError: (error) => {

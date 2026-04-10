@@ -763,7 +763,7 @@ function FindUserDialog({
   const shouldSearch = open && normalizedSearchTerm.length > 1;
   const trpc = useTRPC();
   const searchUsers = useQuery({
-    ...trpc.admin.searchUsers.queryOptions({
+    ...trpc.admin.users.searchUsers.queryOptions({
       searchTerm: shouldSearch ? normalizedSearchTerm : 'idle',
       limit: 8,
     }),
