@@ -130,7 +130,7 @@ jobs:
       - name: Get connection string for test branch
         id: connection-string
         run: |
-          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch ${{ env.BRANCH_ID }} --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
           echo "DATABASE_URL=$CS" >> $GITHUB_ENV
 
       - name: Run migrations on test branch

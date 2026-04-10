@@ -1049,7 +1049,7 @@ jobs:
       - name: Get connection string for PR branch
         id: connection-string
         run: |
-          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch "${{ steps.branch-name.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch "${{ steps.branch-name.outputs.branch_id }}" --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
           echo "database_url=$CS" >> $GITHUB_OUTPUT
 
       - name: Run migrations on PR branch
@@ -1087,7 +1087,7 @@ jobs:
       - name: Get connection string for PR branch
         id: connection-string
         run: |
-          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch "${{ needs.prepare-database.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch "${{ needs.prepare-database.outputs.branch_id }}" --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
           echo "database_url=$CS" >> $GITHUB_OUTPUT
 
       - name: Google Auth
