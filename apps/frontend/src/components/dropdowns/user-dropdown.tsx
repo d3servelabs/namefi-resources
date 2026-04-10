@@ -567,9 +567,7 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
       return (
         <DropdownMenuItem
           key={`${item.title}-${item.type}`}
-          onSelect={(event) => {
-            item.onClick?.(event as unknown as React.MouseEvent<HTMLElement>);
-          }}
+          onClick={item.onClick}
           {...item.customProps}
         >
           {Icon && <Icon className="mr-2 h-4 w-4" />}
@@ -964,7 +962,7 @@ function UserBalanceDropdownItem() {
   return (
     <>
       <DropdownMenuItem
-        onSelect={(e) => {
+        onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           setIsBalanceDialogOpen(true);
