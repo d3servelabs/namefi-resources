@@ -2,8 +2,11 @@
   "name": "@namefi-astra/typescript",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@typescript/native-preview": "^7.0.0-dev.20260202.1"
+  "bin": {
+    "tsgo": "./bin/tsgo.js"
+  },
+  "dependencies": {
+    "@typescript/native-preview": "catalog:"
   },
   "exports": {
     ".": "./tsconfig.json"

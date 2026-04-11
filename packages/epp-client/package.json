@@ -51,7 +51,7 @@
     "unique-names-generator": "^4.7.1",
     "xml-formatter": "^3.6.7",
     "yaml": "^2.8.0",
-    "zod": "^4.1.12"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

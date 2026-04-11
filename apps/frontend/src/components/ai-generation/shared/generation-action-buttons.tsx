@@ -1,13 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/shadcn/button';
+import { XBrandIcon } from '@/components/brand-icons';
 import { cn } from '@/lib/cn';
 import {
   type LucideIcon,
   Copy as CopyIcon,
   Download as DownloadIcon,
   Sparkles,
-  Twitter,
   Trash2,
 } from 'lucide-react';
 import type { MouseEvent } from 'react';
@@ -121,7 +121,7 @@ export function GenerationActionButtons({
         onClick={onShare}
         disabled={disabled?.share}
       >
-        <Twitter
+        <XBrandIcon
           className={cn('h-4 w-4', appearance === 'grid' ? '' : 'mr-1')}
         />
         {appearance === 'grid' ? 'Tweet' : 'Tweet'}

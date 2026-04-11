@@ -23,6 +23,10 @@ inputs:
     description: "JSON object of additional Vercel deployment metadata"
     required: false
     default: "{}"
+  turbo_prune_scope:
+    description: "Optional workspace package name to prune before deploying"
+    required: false
+    default: ""
   vercel_org_id:
     description: "Vercel organization/team ID"
     required: true
@@ -56,6 +60,43 @@ runs:
       shell: bash
       run: bun add --global vercel@latest
 
+    - name: Prepare pruned deploy root
+      id: prune
+      if: ${{ inputs.turbo_prune_scope != '' }}
+      shell: bash
+      env:
+        TURBO_PRUNE_SCOPE: ${{ inputs.turbo_prune_scope }}
+      run: |
+        set -euo pipefail
+
+        PRUNE_DIR="${RUNNER_TEMP:-/tmp}/vercel-pruned-$RANDOM"
+
+        # Isolated installs cause Bun to materialize the full workspace graph,
+        # even when Vercel builds a single app. Prune the repo first so Vercel
+        # only sees the target app and its transitive workspace deps.
+        bunx turbo prune "$TURBO_PRUNE_SCOPE" --docker --out-dir "$PRUNE_DIR"
+
+        PRUNED_ROOT="$PRUNE_DIR/full"
+
+        if [[ -f ".bun-version" ]]; then
+          cp ".bun-version" "$PRUNED_ROOT/"
+        fi
+
+        if [[ -f "vercel.json" ]]; then
+          cp "vercel.json" "$PRUNED_ROOT/"
+        fi
+
+        if [[ -f "$PRUNE_DIR/bun.lock" ]]; then
+          cp "$PRUNE_DIR/bun.lock" "$PRUNED_ROOT/"
+        fi
+
+        if [[ -f "scripts/prepare.sh" ]]; then
+          mkdir -p "$PRUNED_ROOT/scripts"
+          cp "scripts/prepare.sh" "$PRUNED_ROOT/scripts/prepare.sh"
+        fi
+
+        echo "deploy_root=$PRUNED_ROOT" >> "$GITHUB_OUTPUT"
+
     - name: Deploy preview to Vercel
       id: deploy
       shell: bash
@@ -69,12 +110,17 @@ runs:
         HEAD_SHA: ${{ inputs.head_sha }}
         HEAD_REF: ${{ inputs.head_ref }}
         PR_NUMBER: ${{ inputs.pr_number }}
+        DEPLOY_ROOT: ${{ steps.prune.outputs.deploy_root }}
       run: |
         set -euo pipefail
 
         # Vercel project rootDirectory already scopes the build target for each
         # linked monorepo project. Running from app subdirectories duplicates
         # that root (for example apps/frontend/apps/frontend) and breaks deploys.
+
+        if [[ -n "${DEPLOY_ROOT:-}" ]]; then
+          cd "$DEPLOY_ROOT"
+        fi
 
         jq -e 'type == "object"' <<<"$BUILD_ENV_JSON" >/dev/null
         jq -e 'type == "object"' <<<"$RUNTIME_ENV_JSON" >/dev/null
@@ -83,6 +129,7 @@ runs:
         CMD=(
           vercel deploy
           --yes
+          --force
           --target=preview
           --token="$VERCEL_TOKEN"
           --scope="$VERCEL_ORG_ID"

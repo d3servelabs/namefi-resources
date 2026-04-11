@@ -21,7 +21,7 @@
     "@namefi-astra/utils": "workspace:*"
   },
   "peerDependencies": {
-    "zod": "^4.1.12"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*"

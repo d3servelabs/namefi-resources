@@ -228,3 +228,14 @@ next-env.d.ts
 temp/
 
 env/configs/custom.ts
+
+# conductor
+.context
+
+# nested workspace artifacts
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+**/coverage
+**/out

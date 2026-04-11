@@ -9,7 +9,7 @@
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "typecheck": "tsgo --noEmit",
     "build": "tsup",
-    "generate:contract": "bun run tsx ./scripts/minify-contract.ts",
+    "generate:contract": "bun ./scripts/minify-contract.ts",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",

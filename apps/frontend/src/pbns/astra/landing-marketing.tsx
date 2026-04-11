@@ -27,20 +27,22 @@ import { cn } from '@/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
 import BaseNetwork from '@/components/chains/base-network';
 import {
+  GitHubBrandIcon,
+  LinkedInBrandIcon,
+  XBrandIcon,
+  YouTubeBrandIcon,
+} from '@/components/brand-icons';
+import {
   ArrowRight,
   BrainCircuit,
   Coins,
   ShieldCheck,
   Send,
   Sparkles,
-  Twitter as TwitterIcon,
-  Github,
   MessageCircle,
-  Linkedin,
   CalendarCheck,
   Newspaper,
   Search as SearchIcon,
-  Youtube,
 } from 'lucide-react';
 
 const NewsletterForm = dynamic(
@@ -445,12 +447,12 @@ const COMMUNITY_LINKS = [
   {
     name: 'Twitter',
     href: 'https://twitter.com/namefi_io',
-    icon: TwitterIcon,
+    icon: XBrandIcon,
   },
   {
     name: 'GitHub',
     href: 'https://github.com/d3servelabs',
-    icon: Github,
+    icon: GitHubBrandIcon,
   },
   {
     name: 'Telegram',
@@ -460,12 +462,12 @@ const COMMUNITY_LINKS = [
   {
     name: 'LinkedIn',
     href: 'https://www.linkedin.com/company/d3servelabs',
-    icon: Linkedin,
+    icon: LinkedInBrandIcon,
   },
   {
     name: 'YouTube',
     href: 'https://www.youtube.com/@Namefi_io',
-    icon: Youtube,
+    icon: YouTubeBrandIcon,
   },
   {
     name: 'Namefi Resources',
@@ -1089,7 +1091,7 @@ export const MarketingSections = ({
                   rel="noreferrer"
                   className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
                 >
-                  <Github className="h-4 w-4" />
+                  <GitHubBrandIcon className="h-4 w-4" />
                   <span>GitHub</span>
                 </Link>
               </div>

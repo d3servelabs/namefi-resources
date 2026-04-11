@@ -16,8 +16,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/shadcn/dialog';
+import { GitHubBrandIcon } from '@/components/brand-icons';
 import { type User, usePrivy } from '@privy-io/react-auth';
-import { GithubIcon, Users2 } from 'lucide-react';
+import { Users2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { TwitterIcon } from 'react-share';
 import { toast } from 'sonner';
@@ -155,7 +156,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
 
           <Account
             title="GitHub"
-            icon={<GithubIcon className="h-5 w-5" />}
+            icon={<GitHubBrandIcon className="h-5 w-5" />}
             isLinked={!!user.github?.username}
             linkedValue={
               user.github?.username ? `${user.github.username}` : undefined

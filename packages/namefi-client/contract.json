@@ -271,6 +271,128 @@
         }
       }
     },
+    "toggleForwarding": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ToggleForwardingEnvelope"],
+              "types": {
+                "ToggleForwarding": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "enableForwarding", "type": "bool" },
+                  { "name": "forwardTo", "type": "string" }
+                ],
+                "ToggleForwardingEnvelope": [
+                  { "name": "payloadType", "type": "string" },
+                  { "name": "payload", "type": "ToggleForwarding" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
+          "route": {
+            "path": "/dns/forwarding",
+            "method": "PUT",
+            "tags": ["dns", "EIP712"],
+            "operationId": "toggleForwarding",
+            "summary": "Toggle domain forwarding",
+            "description": "Enable or disable managed forwarding DNS records for a domain. Enabling forwarding requires a destination URL and validates that the resulting DNS zone remains valid."
+          }
+        },
+        "route": {
+          "path": "/dns/forwarding",
+          "method": "PUT",
+          "tags": ["dns", "EIP712"],
+          "operationId": "toggleForwarding",
+          "summary": "Toggle domain forwarding",
+          "description": "Enable or disable managed forwarding DNS records for a domain. Enabling forwarding requires a destination URL and validates that the resulting DNS zone remains valid."
+        }
+      }
+    },
+    "toggleAutoEns": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ToggleAutoEnsEnvelope"],
+              "types": {
+                "ToggleAutoEns": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "enableAutoEns", "type": "bool" }
+                ],
+                "ToggleAutoEnsEnvelope": [
+                  { "name": "payloadType", "type": "string" },
+                  { "name": "payload", "type": "ToggleAutoEns" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
+          "route": {
+            "path": "/dns/auto-ens",
+            "method": "PUT",
+            "tags": ["dns", "EIP712"],
+            "operationId": "toggleAutoEns",
+            "summary": "Toggle automatic ENS records",
+            "description": "Enable or disable the managed ENS TXT record for a domain. The DNS zone is validated against the resulting managed-record state before the setting is updated."
+          }
+        },
+        "route": {
+          "path": "/dns/auto-ens",
+          "method": "PUT",
+          "tags": ["dns", "EIP712"],
+          "operationId": "toggleAutoEns",
+          "summary": "Toggle automatic ENS records",
+          "description": "Enable or disable the managed ENS TXT record for a domain. The DNS zone is validated against the resulting managed-record state before the setting is updated."
+        }
+      }
+    },
+    "toggleVercelAnyCastRecords": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ToggleVercelAnyCastRecordsEnvelope"],
+              "types": {
+                "ToggleVercelAnyCastRecords": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "enableVercelAnyCastRecords", "type": "bool" },
+                  { "name": "overrideExistingRecords", "type": "bool" }
+                ],
+                "ToggleVercelAnyCastRecordsEnvelope": [
+                  { "name": "payloadType", "type": "string" },
+                  { "name": "payload", "type": "ToggleVercelAnyCastRecords" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
+          "route": {
+            "path": "/dns/vercel-anycast",
+            "method": "PUT",
+            "tags": ["dns", "EIP712"],
+            "operationId": "toggleVercelAnyCastRecords",
+            "summary": "Toggle Vercel anycast DNS records",
+            "description": "Enable or disable Vercel anycast DNS records for a domain. Subdomains use an apex CNAME, traditional apex domains use Vercel's anycast A record plus parking-style CAA records."
+          }
+        },
+        "route": {
+          "path": "/dns/vercel-anycast",
+          "method": "PUT",
+          "tags": ["dns", "EIP712"],
+          "operationId": "toggleVercelAnyCastRecords",
+          "summary": "Toggle Vercel anycast DNS records",
+          "description": "Enable or disable Vercel anycast DNS records for a domain. Subdomains use an apex CNAME, traditional apex domains use Vercel's anycast A record plus parking-style CAA records."
+        }
+      }
+    },
     "parkDomain": {
       "~orpc": {
         "errorMap": {},
@@ -377,6 +499,29 @@
     }
   },
   "user": {
+    "getUser": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/user",
+            "method": "GET",
+            "tags": ["user"],
+            "operationId": "getUser",
+            "summary": "Get user ",
+            "description": "Retrieve the current user."
+          }
+        },
+        "route": {
+          "path": "/user",
+          "method": "GET",
+          "tags": ["user"],
+          "operationId": "getUser",
+          "summary": "Get user ",
+          "description": "Retrieve the current user."
+        }
+      }
+    },
     "getDomains": {
       "~orpc": {
         "errorMap": {},
@@ -544,15 +689,15 @@
                 "InstantRegisterDomainDefaultWalletEnvelope"
               ],
               "types": {
-                "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet": [
+                "InstantRegisterDomainEnvelope_Payload_NftReceivingWallet": [
                   { "name": "chainId", "type": "uint256" }
                 ],
                 "InstantRegisterDomain": [
                   { "name": "normalizedDomainName", "type": "string" },
                   { "name": "durationInYears", "type": "uint256" },
                   {
-                    "name": "nftReceivinggWallet",
-                    "type": "InstantRegisterDomainEnvelope_Payload_NftReceivinggWallet"
+                    "name": "nftReceivingWallet",
+                    "type": "InstantRegisterDomainEnvelope_Payload_NftReceivingWallet"
                   }
                 ],
                 "InstantRegisterDomainEnvelope": [
@@ -662,6 +807,29 @@
           "operationId": "registerDomainX402",
           "summary": "Instant Register domain With X402",
           "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+        }
+      }
+    },
+    "registerDomainMPP": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/mpp/domain/{normalizedDomainName}",
+            "method": "GET",
+            "tags": ["orders", "base-route"],
+            "operationId": "registerDomainMPP",
+            "summary": "Instant Register domain With MPP",
+            "description": "Purchase a single domain instantly with MPP using Tempo or Stripe."
+          }
+        },
+        "route": {
+          "path": "/mpp/domain/{normalizedDomainName}",
+          "method": "GET",
+          "tags": ["orders", "base-route"],
+          "operationId": "registerDomainMPP",
+          "summary": "Instant Register domain With MPP",
+          "description": "Purchase a single domain instantly with MPP using Tempo or Stripe."
         }
       }
     },
@@ -852,6 +1020,77 @@
           "operationId": "getAllowedChains",
           "summary": "Get allowed chains for SIWE",
           "description": "Retrieve the list of blockchain networks that are allowed for SIWE authentication."
+        }
+      }
+    }
+  },
+  "eip712": {
+    "getEip712Domain": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/eip712/domain",
+            "method": "GET",
+            "tags": ["auth", "eip712"],
+            "operationId": "getEip712Domain",
+            "summary": "Get EIP-712 signing domain",
+            "description": "Return the EIP-712 domain separator used for Namefi payload signing. The Namefi domain is chain-agnostic (chainId omitted) to allow cross-chain signatures."
+          }
+        },
+        "route": {
+          "path": "/eip712/domain",
+          "method": "GET",
+          "tags": ["auth", "eip712"],
+          "operationId": "getEip712Domain",
+          "summary": "Get EIP-712 signing domain",
+          "description": "Return the EIP-712 domain separator used for Namefi payload signing. The Namefi domain is chain-agnostic (chainId omitted) to allow cross-chain signatures."
+        }
+      }
+    },
+    "getAllEip712Types": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/eip712/types",
+            "method": "GET",
+            "tags": ["auth", "eip712"],
+            "operationId": "getAllEip712Types",
+            "summary": "Get all EIP-712 types",
+            "description": "Return every registered EIP-712 struct type used by the Namefi API."
+          }
+        },
+        "route": {
+          "path": "/eip712/types",
+          "method": "GET",
+          "tags": ["auth", "eip712"],
+          "operationId": "getAllEip712Types",
+          "summary": "Get all EIP-712 types",
+          "description": "Return every registered EIP-712 struct type used by the Namefi API."
+        }
+      }
+    },
+    "getEip712TypesForMethod": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/eip712/types-for-method",
+            "method": "GET",
+            "tags": ["auth", "eip712"],
+            "operationId": "getEip712TypesForMethod",
+            "summary": "Get EIP-712 types for a method",
+            "description": "Return the accepted primary types and full type map for a specific API operation that supports EIP-712 authentication."
+          }
+        },
+        "route": {
+          "path": "/eip712/types-for-method",
+          "method": "GET",
+          "tags": ["auth", "eip712"],
+          "operationId": "getEip712TypesForMethod",
+          "summary": "Get EIP-712 types for a method",
+          "description": "Return the accepted primary types and full type map for a specific API operation that supports EIP-712 authentication."
         }
       }
     }

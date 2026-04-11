@@ -8,6 +8,10 @@ const config = {
     turbopackFileSystemCacheForDev: true,
     turbopackFileSystemCacheForBuild: true,
   },
+  typescript: {
+    // Note: validate is run on CI with build
+    ignoreBuildErrors: true,
+  },
   reactStrictMode: true,
   async rewrites() {
     return [

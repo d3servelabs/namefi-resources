@@ -16,7 +16,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.830.0",
     "@namefi-astra/env": "workspace:*",
-    "zod": "^4.1.12"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

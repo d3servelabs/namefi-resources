@@ -10,17 +10,15 @@ import {
   type HTMLAttributes,
   forwardRef,
 } from 'react';
-import {
-  MessageCircle,
-  TwitterIcon,
-  Github,
-  Send,
-  Linkedin,
-  ArrowUpRight,
-  Youtube,
-} from 'lucide-react';
+import { MessageCircle, Send, ArrowUpRight } from 'lucide-react';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
+import {
+  GitHubBrandIcon,
+  LinkedInBrandIcon,
+  XBrandIcon,
+  YouTubeBrandIcon,
+} from '@/components/brand-icons';
 
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
@@ -35,12 +33,12 @@ const SOCIAL_LINKS = [
   {
     name: 'Twitter / X',
     href: 'https://twitter.com/namefi_io',
-    icon: TwitterIcon,
+    icon: XBrandIcon,
   },
   {
     name: 'GitHub',
     href: 'https://github.com/d3servelabs',
-    icon: Github,
+    icon: GitHubBrandIcon,
   },
   {
     name: 'Telegram',
@@ -50,12 +48,12 @@ const SOCIAL_LINKS = [
   {
     name: 'LinkedIn',
     href: 'https://www.linkedin.com/company/d3servelabs',
-    icon: Linkedin,
+    icon: LinkedInBrandIcon,
   },
   {
     name: 'YouTube',
     href: 'https://www.youtube.com/@Namefi_io',
-    icon: Youtube,
+    icon: YouTubeBrandIcon,
   },
 ] as const;
 

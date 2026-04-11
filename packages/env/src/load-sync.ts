@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -11,13 +11,17 @@ export const loadSyncEnv = ({
 }) => {
   try {
     const dirname = fileURLToPath(new URL('.', import.meta.url));
-    const secrets = execSync(`tsx ${path.join(dirname, 'get-env-sync.ts')}`, {
-      env: {
-        ...process.env,
-        INFISICAL_TOKEN:
-          process.env.INFISICAL_TOKEN || process.env.INFISICAL_SERVICE_TOKEN,
+    const secrets = execFileSync(
+      'bun',
+      [path.join(dirname, 'get-env-sync.ts')],
+      {
+        env: {
+          ...process.env,
+          INFISICAL_TOKEN:
+            process.env.INFISICAL_TOKEN || process.env.INFISICAL_SERVICE_TOKEN,
+        },
       },
-    })
+    )
       .toString()
       .trim();
     const secretsObject = JSON.parse(secrets);

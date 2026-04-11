@@ -6,8 +6,8 @@ peer = true
 # whether to save text vs binary lock file
 saveTextLockfile = true
 
-# Use traditional hoisted installs
-linker = "hoisted"
+# Use isolated installs to avoid phantom dependencies across workspaces
+linker = "isolated"
 
 [install.lockfile]
 

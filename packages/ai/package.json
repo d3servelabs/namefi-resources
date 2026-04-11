@@ -24,7 +24,7 @@
     "@namefi-astra/utils": "workspace:*",
     "ai": "^6.0.138",
     "sharp": "^0.34.5",
-    "zod": "^4.1.12"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

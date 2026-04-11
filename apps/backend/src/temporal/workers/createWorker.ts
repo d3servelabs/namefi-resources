@@ -40,7 +40,7 @@ export async function createWorker({
     process.env.NODE_ENV === 'production'
       ? {
           workflowBundle: {
-            codePath: '/app/dist/workflow-bundle.js',
+            codePath: path.join(process.cwd(), 'dist/workflow-bundle.js'),
           },
         }
       : {

@@ -18,7 +18,7 @@
     "@namefi-astra/typescript": "workspace:*"
   },
   "peerDependencies": {
-    "zod": "^4.1.12"
+    "zod": "catalog:"
   },
   "exports": {
     ".": "./src/index.ts",

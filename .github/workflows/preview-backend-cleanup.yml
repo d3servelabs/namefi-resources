@@ -61,9 +61,9 @@ jobs:
       - name: Delete Neon branch
         run: |
           BRANCH_ID="pr-${{ github.event.pull_request.number }}"
-          EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          EXISTING_BRANCH=$(./apps/backend/node_modules/.bin/neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
           if [ ! -z "$EXISTING_BRANCH" ]; then
-            bun run neonctl branches delete "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+            ./apps/backend/node_modules/.bin/neonctl branches delete "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
           else
             echo "Neon branch not found: $BRANCH_ID"
           fi

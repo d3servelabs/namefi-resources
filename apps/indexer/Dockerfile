@@ -20,7 +20,7 @@ FROM node:jod-alpine3.22 AS pruner
 WORKDIR /app
 ENV CI true
 # Install turbo globally
-RUN npm install -g turbo@2.9.1
+RUN npm install -g turbo@2.9.5
 
 # Copy the entire monorepo
 COPY . .
@@ -34,6 +34,8 @@ WORKDIR /app
 ENV CI true
 # `out/json` now includes the pruned lockfile and bunfig with Turbo 2.9.
 COPY --from=pruner /app/out/json/ .
+# Keep the repo bunfig explicit so Bun always sees the monorepo install config here.
+COPY bunfig.toml ./bunfig.toml
 
 # Install dependencies using Bun (faster than npm)
 RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install --frozen-lockfile --ignore-scripts
@@ -46,10 +48,10 @@ WORKDIR /app
 ARG PORT
 ENV PORT=${PORT:-3000}
 ENV CI true
-# Copy pruned source code
-COPY --from=pruner /app/out/full/ .
-# Copy installed dependencies
-COPY --from=deps /app/node_modules ./node_modules
+# Copy the installed dependency tree
+COPY --from=deps /app ./
+# Overlay the pruned source code
+COPY --from=pruner /app/out/full/ ./
 
 
 # Don't run as root

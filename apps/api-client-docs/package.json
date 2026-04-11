@@ -7,7 +7,8 @@
     "dev": "next dev",
     "start": "next start",
     "typecheck": "bun run types:check",
-    "types:check": "fumadocs-mdx && next typegen && tsgo --noEmit",
+    "next:typegen": "next typegen",
+    "types:check": "fumadocs-mdx && bun run next:typegen && tsgo --noEmit",
     "postinstall": "fumadocs-mdx",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
@@ -17,28 +18,30 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "fumadocs-core": "16.4.7",
-    "fumadocs-mdx": "14.2.5",
-    "fumadocs-openapi": "^10.2.4",
-    "fumadocs-ui": "16.4.7",
-    "lucide-react": "^0.563.0",
-    "next": "16.2.1",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "fumadocs-core": "16.7.11",
+    "fumadocs-mdx": "14.2.11",
+    "fumadocs-openapi": "10.6.7",
+    "fumadocs-ui": "16.7.11",
+    "lucide-react": "catalog:",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "shiki": "^3.21.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.7",
     "@namefi-astra/typescript": "workspace:*",
-    "@tailwindcss/postcss": "^4.1.11",
-    "@types/mdx": "^2.0.13",
-    "@types/node": "^22.13.14",
-    "@types/react": "19.2.2",
-    "@types/react-dom": "19.2.2",
+    "@tailwindcss/postcss": "catalog:",
+    "@types/mdx": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@typescript/native-preview": "catalog:",
     "json-schema-typed": "^8.0.2",
     "openapi-types": "^12.1.3",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4"
+    "postcss": "catalog:",
+    "tailwindcss": "catalog:"
   }
 }

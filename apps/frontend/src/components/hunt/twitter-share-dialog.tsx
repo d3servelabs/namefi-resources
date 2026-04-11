@@ -25,7 +25,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from '@/hooks/use-pending-toast';
-import { Twitter, ExternalLink, Copy, CheckCircle } from 'lucide-react';
+import { XBrandIcon } from '@/components/brand-icons';
+import { ExternalLink, Copy, CheckCircle } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
@@ -191,7 +192,7 @@ export function TwitterShareDialog({
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Twitter className="h-5 w-5 text-blue-500" />
+            <XBrandIcon className="h-5 w-5 text-blue-500" />
             Share {domainName}
           </DialogTitle>
           <DialogDescription>
@@ -229,7 +230,7 @@ export function TwitterShareDialog({
               disabled={!twitterIntentUrl}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
-              <Twitter className="h-4 w-4 mr-2" />
+              <XBrandIcon className="mr-2 h-4 w-4" />
               Tweet about {domainName}
               <ExternalLink className="h-4 w-4 ml-2" />
             </Button>

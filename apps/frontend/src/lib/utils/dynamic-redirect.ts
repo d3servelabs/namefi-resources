@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { config } from '@/lib/env';
@@ -96,5 +97,5 @@ export async function poweredByNamefiRedirect(
       ? _destination.replace('https://', 'http://')
       : _destination;
 
-  redirect(destination);
+  redirect(destination as Route);
 }

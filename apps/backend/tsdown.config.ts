@@ -17,7 +17,7 @@ const config = defineConfig({
     };
   },
   deps: {
-    // skipNodeModulesBundle: true,
+    neverBundle: [/^sharp(?:\/.*)?$/],
     alwaysBundle: (() => {
       const noExternal: (string | RegExp)[] = [/@namefi-astra\/.*/];
       const imports = pkg.imports || {};

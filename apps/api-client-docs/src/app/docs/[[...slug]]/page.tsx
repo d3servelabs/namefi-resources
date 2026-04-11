@@ -4,7 +4,7 @@ import {
   DocsPage,
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page';
-import { createRelativeLink } from 'fumadocs-ui/mdx';
+import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { ExternalLink } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -17,8 +17,6 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
-
-  const Mdx = 'body' in page.data ? page.data.body : undefined;
   const gitConfig = {
     user: 'username',
     repo: 'repo',
@@ -44,6 +42,10 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
     );
   }
 
+  if (page.data.type !== 'docs' || !('body' in page.data)) notFound();
+
+  const Mdx = page.data.body;
+
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
@@ -62,8 +64,18 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
         {Mdx ? (
           <Mdx
             components={getMDXComponents({
-              // this allows you to link to other pages with relative file paths
-              a: createRelativeLink(source, page),
+              // Work around the generic mismatch in `createRelativeLink` under Bun monorepos.
+              // See fuma-nama/fumadocs#3027.
+              a: ({ href, ...componentProps }) => {
+                const Link = defaultMdxComponents.a;
+
+                return (
+                  <Link
+                    href={href ? source.resolveHref(href, page) : href}
+                    {...componentProps}
+                  />
+                );
+              },
             })}
           />
         ) : (

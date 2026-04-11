@@ -26,7 +26,7 @@
     "parse-domain": "^8.2.2",
     "ramda": "^0.30.1",
     "viem": "2.47.6",
-    "zod": "^4.1.12"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

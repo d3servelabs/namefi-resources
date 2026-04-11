@@ -116,13 +116,13 @@ jobs:
           BRANCH_ID="migration-test-${GITHUB_REF_NAME:-${GITHUB_SHA}}"
           echo "Creating test branch: $BRANCH_ID"
           # Check if branch already exists
-          EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          EXISTING_BRANCH=$(./apps/backend/node_modules/.bin/neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
 
           if [ ! -z "$EXISTING_BRANCH" ]; then
             echo "Branch $BRANCH_ID already exists, deleting it first"
-            bun run neonctl branches delete $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+            ./apps/backend/node_modules/.bin/neonctl branches delete $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
           fi
-          bun run neonctl branches create --name $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
+          ./apps/backend/node_modules/.bin/neonctl branches create --name $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
 
           # Save branch ID for later steps
           echo "BRANCH_ID=$BRANCH_ID" >> $GITHUB_ENV
@@ -130,7 +130,7 @@ jobs:
       - name: Get connection string for test branch
         id: connection-string
         run: |
-          CS=$(bun run neonctl connection-string --role-name neondb_owner --branch ${{ env.BRANCH_ID }} --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          CS=$(./apps/backend/node_modules/.bin/neonctl connection-string --role-name neondb_owner --branch ${{ env.BRANCH_ID }} --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
           echo "DATABASE_URL=$CS" >> $GITHUB_ENV
 
       - name: Run migrations on test branch
@@ -148,7 +148,7 @@ jobs:
           else
             echo "Migrations failed, but still cleaning up branch: ${{ env.BRANCH_ID }}"
           fi
-          bun run neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          ./apps/backend/node_modules/.bin/neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
 
   validate-migrations:
     name: Validate DB Migrations
