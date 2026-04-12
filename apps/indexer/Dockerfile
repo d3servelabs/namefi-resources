@@ -29,7 +29,7 @@ COPY . .
 RUN turbo prune @namefi-astra/indexer --docker
 
 # Stage 3: Use Bun for dependency installation
-FROM oven/bun:1.3.11 AS deps
+FROM oven/bun:1.3.12 AS deps
 WORKDIR /app
 ENV CI true
 # `out/json` now includes the pruned lockfile and bunfig with Turbo 2.9.

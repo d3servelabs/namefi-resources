@@ -41,7 +41,7 @@ RUN turbo prune @namefi-astra/backend --docker
 # Stage 3: Use Bun for dependency installation
 # ##############################################################################
 #
-FROM oven/bun:1.3.11-slim AS deps_prod
+FROM oven/bun:1.3.12-slim AS deps_prod
 ENV CI="true"
 WORKDIR /app
 
