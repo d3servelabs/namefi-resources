@@ -27,8 +27,10 @@ import { cn } from '@/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
 import BaseNetwork from '@/components/chains/base-network';
 import {
+  DiscordBrandIcon,
   GitHubBrandIcon,
   LinkedInBrandIcon,
+  TelegramBrandIcon,
   XBrandIcon,
   YouTubeBrandIcon,
 } from '@/components/brand-icons';
@@ -39,7 +41,6 @@ import {
   ShieldCheck,
   Send,
   Sparkles,
-  MessageCircle,
   CalendarCheck,
   Newspaper,
   Search as SearchIcon,
@@ -442,7 +443,7 @@ const COMMUNITY_LINKS = [
   {
     name: 'Discord',
     href: 'https://discord.gg/PKW52TXS',
-    icon: MessageCircle,
+    icon: DiscordBrandIcon,
   },
   {
     name: 'Twitter',
@@ -457,7 +458,7 @@ const COMMUNITY_LINKS = [
   {
     name: 'Telegram',
     href: 'https://t.me/namefidao',
-    icon: Send,
+    icon: TelegramBrandIcon,
   },
   {
     name: 'LinkedIn',

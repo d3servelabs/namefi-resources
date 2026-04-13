@@ -10,12 +10,14 @@ import {
   type HTMLAttributes,
   forwardRef,
 } from 'react';
-import { MessageCircle, Send, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
 import {
+  DiscordBrandIcon,
   GitHubBrandIcon,
   LinkedInBrandIcon,
+  TelegramBrandIcon,
   XBrandIcon,
   YouTubeBrandIcon,
 } from '@/components/brand-icons';
@@ -28,7 +30,7 @@ const SOCIAL_LINKS = [
   {
     name: 'Discord',
     href: 'https://discord.gg/PKW52TXS',
-    icon: MessageCircle,
+    icon: DiscordBrandIcon,
   },
   {
     name: 'Twitter / X',
@@ -43,7 +45,7 @@ const SOCIAL_LINKS = [
   {
     name: 'Telegram',
     href: 'https://t.me/namefidao',
-    icon: Send,
+    icon: TelegramBrandIcon,
   },
   {
     name: 'LinkedIn',
