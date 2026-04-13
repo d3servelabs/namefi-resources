@@ -6,6 +6,10 @@ const DATADOG_SERVICE = 'namefi-astra-frontend';
 const DATADOG_SOURCEMAP_PATH = '/_next/static/chunks';
 const DATADOG_DEFAULT_SITE = 'us5.datadoghq.com';
 
+const resolveDeployCommitSha = () =>
+  toTrimmedString(process.env.DEPLOY_COMMIT_SHA) ||
+  toTrimmedString(process.env.VERCEL_GIT_COMMIT_SHA);
+
 /**
  * @param {string | undefined} value
  */
@@ -152,7 +156,7 @@ const runDatadogSourcemapUpload = ({
   projectDir,
   minifiedPathPrefix,
 }) => {
-  const releaseVersion = process.env.VERCEL_GIT_COMMIT_SHA;
+  const releaseVersion = resolveDeployCommitSha();
   const hasDatadogApiKey = Boolean(process.env.DATADOG_API_KEY);
   const buildEnvLabel = toTrimmedString(process.env.VERCEL_TARGET_ENV);
   const failBuildOnUploadError = buildEnvLabel === 'production';
@@ -186,7 +190,7 @@ const runDatadogSourcemapUpload = ({
   try {
     if (!releaseVersion) {
       console.log(
-        '[datadog] Skipping sourcemap upload outside Vercel deployment builds.',
+        '[datadog] Skipping sourcemap upload because no deploy commit SHA is available.',
       );
       return;
     }

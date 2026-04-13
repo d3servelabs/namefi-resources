@@ -23,7 +23,10 @@ const withMDX = createMdx({
 
 /** @type {{ config: import('./src/lib/env/schema').ConfigInput }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
-const deployCommitSha = process.env.VERCEL_GIT_COMMIT_SHA || 'unknown';
+const deployCommitSha =
+  process.env.DEPLOY_COMMIT_SHA ||
+  process.env.VERCEL_GIT_COMMIT_SHA ||
+  'unknown';
 const loadedClientConfig = {
   ...appConfig,
   APP_VERSION: packageJson.version,

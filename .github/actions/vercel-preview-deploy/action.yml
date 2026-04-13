@@ -126,6 +126,25 @@ runs:
         jq -e 'type == "object"' <<<"$RUNTIME_ENV_JSON" >/dev/null
         jq -e 'type == "object"' <<<"$ADDITIONAL_META_JSON" >/dev/null
 
+        MERGED_BUILD_ENV_JSON="$(
+          jq -c --arg headSha "$HEAD_SHA" '
+            if has("DEPLOY_COMMIT_SHA") then
+              .
+            else
+              . + { DEPLOY_COMMIT_SHA: $headSha }
+            end
+          ' <<<"$BUILD_ENV_JSON"
+        )"
+        MERGED_RUNTIME_ENV_JSON="$(
+          jq -c --arg headSha "$HEAD_SHA" '
+            if has("DEPLOY_COMMIT_SHA") then
+              .
+            else
+              . + { DEPLOY_COMMIT_SHA: $headSha }
+            end
+          ' <<<"$RUNTIME_ENV_JSON"
+        )"
+
         CMD=(
           vercel deploy
           --yes
@@ -133,6 +152,7 @@ runs:
           --target=preview
           --token="$VERCEL_TOKEN"
           --scope="$VERCEL_ORG_ID"
+          --meta "githubDeployment=1"
           --meta "githubCommitSha=$HEAD_SHA"
           --meta "githubCommitRef=$HEAD_REF"
           --meta "githubPrId=$PR_NUMBER"
@@ -148,13 +168,13 @@ runs:
           KEY=$(jq -r '.key' <<<"$entry")
           VALUE=$(jq -r '.value | tostring' <<<"$entry")
           CMD+=(--build-env "${KEY}=${VALUE}")
-        done < <(jq -c 'to_entries[]?' <<<"$BUILD_ENV_JSON")
+        done < <(jq -c 'to_entries[]?' <<<"$MERGED_BUILD_ENV_JSON")
 
         while IFS= read -r entry; do
           KEY=$(jq -r '.key' <<<"$entry")
           VALUE=$(jq -r '.value | tostring' <<<"$entry")
           CMD+=(--env "${KEY}=${VALUE}")
-        done < <(jq -c 'to_entries[]?' <<<"$RUNTIME_ENV_JSON")
+        done < <(jq -c 'to_entries[]?' <<<"$MERGED_RUNTIME_ENV_JSON")
 
         DEPLOYMENT_URL="$("${CMD[@]}" | tail -n 1 | tr -d '\r')"
         DEPLOYMENT_ID="${DEPLOYMENT_URL#https://}"
