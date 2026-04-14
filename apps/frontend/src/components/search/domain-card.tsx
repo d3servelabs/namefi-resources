@@ -356,7 +356,10 @@ export const DomainCard: FC<{
       eppInputRef.current?.focus();
       return;
     }
-    const minDuration = availabilityInfo.durationValidationInYears?.min ?? 1;
+    const minDuration = Math.max(
+      1,
+      availabilityInfo.durationValidationInYears?.min ?? 1,
+    );
     await cart.addItem({
       domainAvailabilityInfo: availabilityInfo,
       durationInYears: minDuration,
