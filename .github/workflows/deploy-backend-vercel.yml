@@ -484,10 +484,10 @@ jobs:
           # Use --target=production or --target=dev based on environment
           if [[ "${{ needs.compute-env.outputs.label }}" == "prod" ]]; then
             echo "Deploying to production target (traffic not routed yet)"
-            DEPLOYMENT_URL=$(vercel deploy --yes --target=production --skip-domain --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} | tail -n 1 | tr -d '\r')
+            DEPLOYMENT_URL=$(vercel deploy --yes --force --target=production --skip-domain --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} | tail -n 1 | tr -d '\r')
           else
             echo "Deploying to dev target (traffic not routed yet)"
-            DEPLOYMENT_URL=$(vercel deploy --yes --target=dev --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} | tail -n 1 | tr -d '\r')
+            DEPLOYMENT_URL=$(vercel deploy --yes --force --target=dev --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} | tail -n 1 | tr -d '\r')
           fi
 
           echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
