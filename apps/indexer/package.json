@@ -7,6 +7,7 @@
     "./schema": "./ponder.schema.ts"
   },
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "dev": "ponder dev",
     "start": "ponder start --log-format json --log-level debug --schema=\"__indexer_$(date +%Y-%m-%d_%H-%M-%S)\" --views-schema indexed_onchain_data",
     "start:with-schema": "./scripts/start-with-schema.sh",
