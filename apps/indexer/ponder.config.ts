@@ -75,7 +75,11 @@ export default createConfig({
     : {
         mainnet: getChainConfig(CHAINS.mainnet),
         base: getChainConfig(CHAINS.base),
-        robinhoodTestnet: getChainConfig(CHAINS.robinhoodTestnet),
+        // robinhoodTestnet: getChainConfig(CHAINS.robinhoodTestnet),
+        sepolia: getChainConfig(CHAINS.sepolia, {
+          useWebsockets: false,
+          pollingIntervalMs: 5 * MINUTE_MS,
+        }),
       },
   accounts: getAccounts(),
   contracts: {
