@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { createTRPCRouter, publicProcedure } from '../../base';
 import { getNamefiEip712Domain } from '#lib/auth/methods/eip712/api-key-eip712';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 import { getEip712MethodRegistry } from '#lib/eip712/orpc-meta-from-zod-schemas';

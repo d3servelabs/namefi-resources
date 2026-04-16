@@ -96,7 +96,7 @@ vi.mock('@namefi-astra/storage', () => ({
   generateUrlFromStoragePath: vi.fn(),
 }));
 
-vi.mock('../base', () => ({
+vi.mock('../../base', () => ({
   createTRPCRouter: (router: unknown) => router,
   protectedProcedure: procedureBuilder,
   publicProcedure: procedureBuilder,
@@ -106,7 +106,7 @@ const {
   generateAnimationInputSchema,
   getAnimationStartStateAfterError,
   startLogoAnimationWorkflowWithRecovery,
-} = await import('./aiRouter');
+} = await import('../aiRouter');
 
 describe('getAnimationStartStateAfterError', () => {
   beforeEach(() => {

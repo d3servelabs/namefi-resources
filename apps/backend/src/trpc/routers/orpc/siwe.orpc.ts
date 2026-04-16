@@ -1,7 +1,7 @@
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { createSiweMessage } from 'viem/siwe';
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { createTRPCRouter, publicProcedure } from '../../base';
 import {
   getSiweNonce,
   prepareSiweMessage,

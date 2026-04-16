@@ -4,7 +4,7 @@ import {
   createTRPCRouter,
   authedOrPublicProcedure,
   baseProcedure,
-} from '../base';
+} from '../../base';
 import {
   getDomainListInfo,
   type DomainAvailabilityInfo,

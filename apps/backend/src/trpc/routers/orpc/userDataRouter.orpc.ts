@@ -20,18 +20,18 @@ import { and, desc, eq, getTableColumns, ilike, inArray } from 'drizzle-orm';
 import { isEmpty, isNil, pluck, isNotNil } from 'ramda';
 import { z } from 'zod';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure } from '../../base';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
-} from '../utils';
+} from '../../utils';
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { logger } from '#lib/logger';
 import {
   requestNfscFaucet,
   requestNfscFaucetForPrimaryWallet,
 } from '#lib/faucet/nfsc-faucet';
-import { getDomainsExpirationDatesFromIndex } from '../../temporal/activities/domain/renew.activities';
+import { getDomainsExpirationDatesFromIndex } from '../../../temporal/activities/domain/renew.activities';
 import {
   getUserUnusedClaims,
   checkItemClaimEligibility,

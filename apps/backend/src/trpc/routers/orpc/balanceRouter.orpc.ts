@@ -4,11 +4,11 @@ import { formatUnits, getContract } from 'viem';
 import { isNil, isEmpty } from 'ramda';
 import { z } from 'zod';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure } from '../../base';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
-} from '../utils';
+} from '../../utils';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { getViemPublicClient } from '#lib/crypto/viem-clients';
 import { getAllowedChainsForNfscBalance } from '#lib/env/allowed-chains';

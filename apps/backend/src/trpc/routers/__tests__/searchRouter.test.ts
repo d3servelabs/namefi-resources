@@ -1,8 +1,8 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
-import type { TrpcContext } from '../base';
-import { searchRouter } from './searchRouter';
+import type { TrpcContext } from '../../base';
+import { searchRouter } from '../searchRouter';
 import { RANKED_TLDS } from '#lib/tld-rank';
 import {
   rotateString,

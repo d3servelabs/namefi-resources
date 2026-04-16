@@ -4,12 +4,12 @@ import {
   getDashboardOverview,
   getCheckoutFlowOverview,
   getFullReportByRecordName,
-} from './analyticsRouter';
+} from '../analyticsRouter';
 import { parseDnsAnalyticsReportData } from '#lib/analytics-parser';
 
 // Mock env for GA property id
-vi.mock('../../lib/env', async () => {
-  const actual: any = await vi.importActual('../../lib/env');
+vi.mock('../../../lib/env', async () => {
+  const actual: any = await vi.importActual('../../../lib/env');
   return {
     ...actual,
     secrets: {
@@ -49,7 +49,7 @@ function row3(
 }
 
 // Mock GA4 client factory to return deterministic data across requested dimensions
-vi.mock('../../lib/analytics_client', () => {
+vi.mock('../../../lib/analytics_client', () => {
   function makeResponse(
     dim: string,
   ): protos.google.analytics.data.v1beta.IRunReportResponse {

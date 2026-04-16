@@ -18,13 +18,13 @@ import {
   authenticateRequest,
   type AuthMethodResult,
 } from '#lib/auth/auth-registry';
-import { dnsRecordsRouterOrpc } from '#trpc/routers/dnsRecordsRouter.orpc';
-import { userDataRouterOrpc } from '#trpc/routers/userDataRouter.orpc';
-import { ordersRouterOrpc } from '#trpc/routers/ordersRouter.orpc';
-import { balanceRouterOrpc } from '#trpc/routers/balanceRouter.orpc';
-import { searchRouterOrpc } from '#trpc/routers/searchRouter.orpc';
-import { siweRouter } from '#trpc/routers/siwe.orpc';
-import { eip712Router } from '#trpc/routers/eip712.orpc';
+import { dnsRecordsRouterOrpc } from '#trpc/routers/orpc/dnsRecordsRouter.orpc';
+import { userDataRouterOrpc } from '#trpc/routers/orpc/userDataRouter.orpc';
+import { ordersRouterOrpc } from '#trpc/routers/orpc/ordersRouter.orpc';
+import { balanceRouterOrpc } from '#trpc/routers/orpc/balanceRouter.orpc';
+import { searchRouterOrpc } from '#trpc/routers/orpc/searchRouter.orpc';
+import { siweRouter } from '#trpc/routers/orpc/siwe.orpc';
+import { eip712Router } from '#trpc/routers/orpc/eip712.orpc';
 
 import { createTRPCRouter } from '#trpc/base';
 import { initializeAuthRegistry } from '#lib/auth/api-key-auth';

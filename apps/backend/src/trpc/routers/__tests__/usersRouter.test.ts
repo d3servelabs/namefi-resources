@@ -14,14 +14,14 @@ vi.mock('#lib/env', () => ({
 import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
 import { type Address, type BlockTag, zeroAddress } from 'viem';
-import testEnvConfig from '../../lib/env/configs/test'; // Import the test config file directly
-import { getQualifyingDomainNameFromUserIdentifier } from '../../lib/user-promo';
-import type { TrpcContext } from '../base';
-import { privyClient } from '../utils';
+import testEnvConfig from '../../../lib/env/configs/test'; // Import the test config file directly
+import { getQualifyingDomainNameFromUserIdentifier } from '../../../lib/user-promo';
+import type { TrpcContext } from '../../base';
+import { privyClient } from '../../utils';
 import * as ensModule from '#lib/crypto/ens';
 
 const { config: actualAppConfig } = await import('#lib/env');
-const { usersRouter } = await import('./usersRouter');
+const { usersRouter } = await import('../usersRouter');
 const { getViemPublicClient } = await import('#lib/crypto/viem-clients');
 const viemEthereumPublicClient = getViemPublicClient(1);
 
