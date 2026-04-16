@@ -11,7 +11,7 @@ import { TooltipProvider } from '@/components/ui/shadcn/tooltip';
 import { TRPCProvider } from '@/lib/trpc';
 import { createMockLink } from '@/lib/mock/trpc';
 import { createTRPCClient } from '@trpc/client';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import type { AppRouter } from '@/lib/trpc';
 
 const MOCK_WALLET_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const MOCK_WALLET_ADDRESS_2 = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';

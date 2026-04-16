@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createTRPCClient } from '@trpc/client';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import type { AppRouter } from '@/lib/trpc';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import type { MlsSaleListing } from '@/lib/mls/feed';

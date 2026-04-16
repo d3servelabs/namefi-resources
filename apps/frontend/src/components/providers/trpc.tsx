@@ -2,7 +2,7 @@
 
 import { config } from '@/lib/env';
 import { datadogLogs } from '@datadog/browser-logs';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import type { AppRouter } from '@/lib/trpc';
 import { getAccessToken } from '@privy-io/react-auth';
 import {
   QueryClient,

@@ -19,7 +19,7 @@ import {
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import type { AppRouter } from '@/lib/trpc';
 import type { AppRouterOutput } from '@/lib/trpc';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { createMockLink } from '@/lib/mock/trpc';

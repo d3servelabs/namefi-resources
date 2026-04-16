@@ -32,7 +32,7 @@
     "commander": "^14.0.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
-    "fast-xml-parser": "^5.0.0",
+    "fast-xml-parser": "5.2.5",
     "generic-pool": "^3.9.0",
     "iso-countries-lookup": "^2.0.8",
     "libxmljs": "^1.0.11",

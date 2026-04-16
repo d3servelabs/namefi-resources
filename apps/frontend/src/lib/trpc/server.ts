@@ -1,4 +1,4 @@
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import type { AppRouter } from '@/lib/trpc';
 import { config } from '@/lib/env';
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import { secrets } from '@/lib/env/secrets';
