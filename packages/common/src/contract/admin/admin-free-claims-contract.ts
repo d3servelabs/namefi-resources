@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -100,27 +101,30 @@ const mutationResultSchema = z.object({
   claim: freeClaimRowSchema.optional(),
 });
 
-export const adminFreeClaimsContract = {
-  getFreeClaimsWithPagination: {
-    type: 'query',
-    input: getFreeClaimsWithPaginationInputSchema,
-    output: paginatedFreeClaimsOutputSchema,
+export const adminFreeClaimsContract = createContract(
+  { softOutput: true },
+  {
+    getFreeClaimsWithPagination: {
+      type: 'query',
+      input: getFreeClaimsWithPaginationInputSchema,
+      output: paginatedFreeClaimsOutputSchema,
+    },
+    createFreeClaim: {
+      type: 'mutation',
+      input: createFreeClaimInputSchema,
+      output: mutationResultSchema,
+    },
+    updateFreeClaim: {
+      type: 'mutation',
+      input: updateFreeClaimInputSchema,
+      output: mutationResultSchema,
+    },
+    deleteFreeClaim: {
+      type: 'mutation',
+      input: deleteFreeClaimInputSchema,
+      output: mutationResultSchema,
+    },
   },
-  createFreeClaim: {
-    type: 'mutation',
-    input: createFreeClaimInputSchema,
-    output: mutationResultSchema,
-  },
-  updateFreeClaim: {
-    type: 'mutation',
-    input: updateFreeClaimInputSchema,
-    output: mutationResultSchema,
-  },
-  deleteFreeClaim: {
-    type: 'mutation',
-    input: deleteFreeClaimInputSchema,
-    output: mutationResultSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminFreeClaimsContract = typeof adminFreeClaimsContract;

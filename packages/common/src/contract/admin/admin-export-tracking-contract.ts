@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -47,27 +48,30 @@ const sendEmailOutputSchema = z.object({
   emailType: z.string().optional(),
 });
 
-export const adminExportTrackingContract = {
-  getExportTrackingRecords: {
-    type: 'query',
-    input: getExportTrackingRecordsInputSchema,
-    output: exportTrackingListOutputSchema,
+export const adminExportTrackingContract = createContract(
+  { softOutput: true },
+  {
+    getExportTrackingRecords: {
+      type: 'query',
+      input: getExportTrackingRecordsInputSchema,
+      output: exportTrackingListOutputSchema,
+    },
+    verifyExportTracking: {
+      type: 'mutation',
+      input: idInputSchema,
+      output: exportTrackingActionOutputSchema,
+    },
+    resolveExportTracking: {
+      type: 'mutation',
+      input: idInputSchema,
+      output: exportTrackingActionOutputSchema,
+    },
+    sendExportTrackingEmail: {
+      type: 'mutation',
+      input: sendExportTrackingEmailInputSchema,
+      output: sendEmailOutputSchema,
+    },
   },
-  verifyExportTracking: {
-    type: 'mutation',
-    input: idInputSchema,
-    output: exportTrackingActionOutputSchema,
-  },
-  resolveExportTracking: {
-    type: 'mutation',
-    input: idInputSchema,
-    output: exportTrackingActionOutputSchema,
-  },
-  sendExportTrackingEmail: {
-    type: 'mutation',
-    input: sendExportTrackingEmailInputSchema,
-    output: sendEmailOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminExportTrackingContract = typeof adminExportTrackingContract;

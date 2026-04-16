@@ -13,6 +13,7 @@ import type {
   PaymentRefundEntry,
   ReflectCartChangesSummary,
 } from '../orders-shared-types';
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -252,84 +253,87 @@ const reflectCartChangesSummarySchema = z.custom<ReflectCartChangesSummary>(
 // The contract
 // ---------------------------------------------------------------------------
 
-export const ordersContract = {
-  createOrder: {
-    type: 'mutation',
-    input: createOrderInputSchema,
-    output: createdOrderSchema,
-  },
+export const ordersContract = createContract(
+  { softOutput: true },
+  {
+    createOrder: {
+      type: 'mutation',
+      input: createOrderInputSchema,
+      output: createdOrderSchema,
+    },
 
-  getOrder: {
-    type: 'query',
-    input: orderIdInputSchema,
-    output: orderDetailsSchema,
-  },
+    getOrder: {
+      type: 'query',
+      input: orderIdInputSchema,
+      output: orderDetailsSchema,
+    },
 
-  updateImportAuthCode: {
-    type: 'mutation',
-    input: updateImportAuthCodeInputSchema,
-    output: successAckSchema,
-  },
+    updateImportAuthCode: {
+      type: 'mutation',
+      input: updateImportAuthCodeInputSchema,
+      output: successAckSchema,
+    },
 
-  cancelRequiredActionOrderItem: {
-    type: 'mutation',
-    input: orderItemActionInputSchema,
-    output: successAckSchema,
-  },
+    cancelRequiredActionOrderItem: {
+      type: 'mutation',
+      input: orderItemActionInputSchema,
+      output: successAckSchema,
+    },
 
-  confirmDomainUnlocked: {
-    type: 'mutation',
-    input: orderItemActionInputSchema,
-    output: successAckSchema,
-  },
+    confirmDomainUnlocked: {
+      type: 'mutation',
+      input: orderItemActionInputSchema,
+      output: successAckSchema,
+    },
 
-  getOrderItems: {
-    type: 'query',
-    input: noInputSchema,
-    output: orderItemsForUserSchema,
-  },
+    getOrderItems: {
+      type: 'query',
+      input: noInputSchema,
+      output: orderItemsForUserSchema,
+    },
 
-  getOrderProgress: {
-    type: 'query',
-    input: orderProgressInputSchema,
-    output: orderProgressPayloadSchema,
-  },
+    getOrderProgress: {
+      type: 'query',
+      input: orderProgressInputSchema,
+      output: orderProgressPayloadSchema,
+    },
 
-  createOrderV2: {
-    type: 'mutation',
-    input: createOrderV2ContractInputSchema,
-    output: createdOrderSchema,
-  },
+    createOrderV2: {
+      type: 'mutation',
+      input: createOrderV2ContractInputSchema,
+      output: createdOrderSchema,
+    },
 
-  instantBuy: {
-    type: 'mutation',
-    input: instantBuyContractInputSchema,
-    output: createdOrderSchema,
-  },
+    instantBuy: {
+      type: 'mutation',
+      input: instantBuyContractInputSchema,
+      output: createdOrderSchema,
+    },
 
-  getOrderPaymentMethodsDetails: {
-    type: 'query',
-    input: orderIdInputSchema,
-    output: paymentMethodDetailsArraySchema,
-  },
+    getOrderPaymentMethodsDetails: {
+      type: 'query',
+      input: orderIdInputSchema,
+      output: paymentMethodDetailsArraySchema,
+    },
 
-  getPaymentMethodDetails: {
-    type: 'query',
-    input: paymentIdInputSchema,
-    output: paymentMethodDetailsSchema,
-  },
+    getPaymentMethodDetails: {
+      type: 'query',
+      input: paymentIdInputSchema,
+      output: paymentMethodDetailsSchema,
+    },
 
-  getPaymentRefunds: {
-    type: 'query',
-    input: paymentIdInputSchema,
-    output: paymentRefundsArraySchema,
-  },
+    getPaymentRefunds: {
+      type: 'query',
+      input: paymentIdInputSchema,
+      output: paymentRefundsArraySchema,
+    },
 
-  reflectChangesInCartItemsIfAnyAndReturnSummary: {
-    type: 'mutation',
-    input: refreshCartItemsInputSchema,
-    output: reflectCartChangesSummarySchema,
+    reflectChangesInCartItemsIfAnyAndReturnSummary: {
+      type: 'mutation',
+      input: refreshCartItemsInputSchema,
+      output: reflectCartChangesSummarySchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type OrdersContract = typeof ordersContract;

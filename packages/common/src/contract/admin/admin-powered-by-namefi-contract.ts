@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -160,62 +161,65 @@ const mutationResultSchema = z
   })
   .loose();
 
-export const adminPoweredByNamefiContract = {
-  getPoweredByNamefiDomains: {
-    type: 'query',
-    input: getPoweredByNamefiDomainsInputSchema,
-    output: paginatedDomainsOutputSchema,
+export const adminPoweredByNamefiContract = createContract(
+  { softOutput: true },
+  {
+    getPoweredByNamefiDomains: {
+      type: 'query',
+      input: getPoweredByNamefiDomainsInputSchema,
+      output: paginatedDomainsOutputSchema,
+    },
+    getPoweredByNamefiDomainStatus: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainStatusOutputSchema,
+    },
+    createPoweredByNamefiDomain: {
+      type: 'mutation',
+      input: createPoweredByNamefiDomainInputSchema,
+      output: mutationResultSchema,
+    },
+    updatePoweredByNamefiDomain: {
+      type: 'mutation',
+      input: updatePoweredByNamefiDomainInputSchema,
+      output: mutationResultSchema,
+    },
+    deletePoweredByNamefiDomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: mutationResultSchema,
+    },
+    setupVercelAndDns: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: mutationResultSchema,
+    },
+    setupNamefiIoSubdomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: mutationResultSchema,
+    },
+    setupNamefiDevSubdomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: mutationResultSchema,
+    },
+    togglePoweredByNamefiDomainStatus: {
+      type: 'mutation',
+      input: toggleStatusInputSchema,
+      output: mutationResultSchema,
+    },
+    startPoweredByNamefiDomainRollout: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: mutationResultSchema,
+    },
+    updatePoweredByNamefiDomainCostAndDuration: {
+      type: 'mutation',
+      input: updateCostAndDurationInputSchema,
+      output: mutationResultSchema,
+    },
   },
-  getPoweredByNamefiDomainStatus: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainStatusOutputSchema,
-  },
-  createPoweredByNamefiDomain: {
-    type: 'mutation',
-    input: createPoweredByNamefiDomainInputSchema,
-    output: mutationResultSchema,
-  },
-  updatePoweredByNamefiDomain: {
-    type: 'mutation',
-    input: updatePoweredByNamefiDomainInputSchema,
-    output: mutationResultSchema,
-  },
-  deletePoweredByNamefiDomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: mutationResultSchema,
-  },
-  setupVercelAndDns: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: mutationResultSchema,
-  },
-  setupNamefiIoSubdomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: mutationResultSchema,
-  },
-  setupNamefiDevSubdomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: mutationResultSchema,
-  },
-  togglePoweredByNamefiDomainStatus: {
-    type: 'mutation',
-    input: toggleStatusInputSchema,
-    output: mutationResultSchema,
-  },
-  startPoweredByNamefiDomainRollout: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: mutationResultSchema,
-  },
-  updatePoweredByNamefiDomainCostAndDuration: {
-    type: 'mutation',
-    input: updateCostAndDurationInputSchema,
-    output: mutationResultSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminPoweredByNamefiContract = typeof adminPoweredByNamefiContract;

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -149,37 +150,40 @@ const updateNameOutputSchema = z.object({
 // Contract
 // ---------------------------------------------------------------------------
 
-export const apiKeysContract = {
-  getSigningTypes: {
-    type: 'query',
-    input: z.void(),
-    output: signingTypesOutputSchema,
+export const apiKeysContract = createContract(
+  { softOutput: true },
+  {
+    getSigningTypes: {
+      type: 'query',
+      input: z.void(),
+      output: signingTypesOutputSchema,
+    },
+    list: {
+      type: 'query',
+      input: z.void(),
+      output: listOutputSchema,
+    },
+    create: {
+      type: 'mutation',
+      input: createInputSchema,
+      output: createOutputSchema,
+    },
+    revoke: {
+      type: 'mutation',
+      input: revokeInputSchema,
+      output: revokeOutputSchema,
+    },
+    updateName: {
+      type: 'mutation',
+      input: updateNameInputSchema,
+      output: updateNameOutputSchema,
+    },
+    getById: {
+      type: 'query',
+      input: getByIdInputSchema,
+      output: apiKeyListItemSchema,
+    },
   },
-  list: {
-    type: 'query',
-    input: z.void(),
-    output: listOutputSchema,
-  },
-  create: {
-    type: 'mutation',
-    input: createInputSchema,
-    output: createOutputSchema,
-  },
-  revoke: {
-    type: 'mutation',
-    input: revokeInputSchema,
-    output: revokeOutputSchema,
-  },
-  updateName: {
-    type: 'mutation',
-    input: updateNameInputSchema,
-    output: updateNameOutputSchema,
-  },
-  getById: {
-    type: 'query',
-    input: getByIdInputSchema,
-    output: apiKeyListItemSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type ApiKeysContract = typeof apiKeysContract;

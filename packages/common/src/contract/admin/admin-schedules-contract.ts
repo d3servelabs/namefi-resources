@@ -2,6 +2,7 @@ import type { ScheduleOverlapPolicy, Workflow } from '../../types/temporal';
 import type { Duration } from '@temporalio/common';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -137,67 +138,70 @@ const namefiScheduleListSchema = z.array(
   z.custom<{ config: ScheduleConfigLike }>(() => true),
 );
 
-export const adminSchedulesContract = {
-  getAllSchedules: {
-    type: 'query',
-    input: z.void(),
-    output: scheduleConfigListSchema,
+export const adminSchedulesContract = createContract(
+  { softOutput: true },
+  {
+    getAllSchedules: {
+      type: 'query',
+      input: z.void(),
+      output: scheduleConfigListSchema,
+    },
+    getScheduleStatuses: {
+      type: 'query',
+      input: z.void(),
+      output: scheduleStatusListSchema,
+    },
+    getSchedulesByCategory: {
+      type: 'query',
+      input: categoryInputSchema,
+      output: scheduleConfigListSchema,
+    },
+    submitSchedule: {
+      type: 'mutation',
+      input: scheduleIdInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    triggerSchedule: {
+      type: 'mutation',
+      input: scheduleIdInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    pauseSchedule: {
+      type: 'mutation',
+      input: scheduleIdInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    unpauseSchedule: {
+      type: 'mutation',
+      input: scheduleIdInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    deleteSchedule: {
+      type: 'mutation',
+      input: scheduleIdInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    getScheduleStatus: {
+      type: 'query',
+      input: scheduleIdInputSchema,
+      output: scheduleStatusSchema,
+    },
+    getAllScheduleGroups: {
+      type: 'query',
+      input: z.void(),
+      output: scheduleGroupsSchema,
+    },
+    getSchedulesByGroup: {
+      type: 'query',
+      input: optionalGroupIdInputSchema,
+      output: namefiScheduleListSchema,
+    },
+    getScheduleGroup: {
+      type: 'query',
+      input: optionalGroupIdInputSchema,
+      output: scheduleGroupSchema,
+    },
   },
-  getScheduleStatuses: {
-    type: 'query',
-    input: z.void(),
-    output: scheduleStatusListSchema,
-  },
-  getSchedulesByCategory: {
-    type: 'query',
-    input: categoryInputSchema,
-    output: scheduleConfigListSchema,
-  },
-  submitSchedule: {
-    type: 'mutation',
-    input: scheduleIdInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  triggerSchedule: {
-    type: 'mutation',
-    input: scheduleIdInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  pauseSchedule: {
-    type: 'mutation',
-    input: scheduleIdInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  unpauseSchedule: {
-    type: 'mutation',
-    input: scheduleIdInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  deleteSchedule: {
-    type: 'mutation',
-    input: scheduleIdInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  getScheduleStatus: {
-    type: 'query',
-    input: scheduleIdInputSchema,
-    output: scheduleStatusSchema,
-  },
-  getAllScheduleGroups: {
-    type: 'query',
-    input: z.void(),
-    output: scheduleGroupsSchema,
-  },
-  getSchedulesByGroup: {
-    type: 'query',
-    input: optionalGroupIdInputSchema,
-    output: namefiScheduleListSchema,
-  },
-  getScheduleGroup: {
-    type: 'query',
-    input: optionalGroupIdInputSchema,
-    output: scheduleGroupSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminSchedulesContract = typeof adminSchedulesContract;

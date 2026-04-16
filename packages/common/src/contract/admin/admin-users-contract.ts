@@ -1,6 +1,7 @@
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -262,42 +263,45 @@ const privyCacheStatusSchema = z.object({
   recordCount: z.number(),
 });
 
-export const adminUsersContract = {
-  searchUsers: {
-    type: 'query',
-    input: searchUsersInputSchema,
-    output: adminUserRowsSchema,
+export const adminUsersContract = createContract(
+  { softOutput: true },
+  {
+    searchUsers: {
+      type: 'query',
+      input: searchUsersInputSchema,
+      output: adminUserRowsSchema,
+    },
+    resolveUserReference: {
+      type: 'query',
+      input: adminUserReferenceInputSchema,
+      output: resolveUserReferenceOutputSchema,
+    },
+    getUserDetails: {
+      type: 'query',
+      input: getUserDetailsInputSchema,
+      output: getUserDetailsOutputSchema,
+    },
+    getWalletDetails: {
+      type: 'query',
+      input: getWalletDetailsInputSchema,
+      output: getWalletDetailsOutputSchema,
+    },
+    listUsers: {
+      type: 'query',
+      input: listUsersInputSchema,
+      output: adminUserListOutputSchema,
+    },
+    listUsersV2: {
+      type: 'query',
+      input: listUsersV2InputSchema,
+      output: adminUserListOutputSchema,
+    },
+    forceRefreshPrivyCache: {
+      type: 'mutation',
+      input: z.void(),
+      output: privyCacheStatusSchema,
+    },
   },
-  resolveUserReference: {
-    type: 'query',
-    input: adminUserReferenceInputSchema,
-    output: resolveUserReferenceOutputSchema,
-  },
-  getUserDetails: {
-    type: 'query',
-    input: getUserDetailsInputSchema,
-    output: getUserDetailsOutputSchema,
-  },
-  getWalletDetails: {
-    type: 'query',
-    input: getWalletDetailsInputSchema,
-    output: getWalletDetailsOutputSchema,
-  },
-  listUsers: {
-    type: 'query',
-    input: listUsersInputSchema,
-    output: adminUserListOutputSchema,
-  },
-  listUsersV2: {
-    type: 'query',
-    input: listUsersV2InputSchema,
-    output: adminUserListOutputSchema,
-  },
-  forceRefreshPrivyCache: {
-    type: 'mutation',
-    input: z.void(),
-    output: privyCacheStatusSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminUsersContract = typeof adminUsersContract;

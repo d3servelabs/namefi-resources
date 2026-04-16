@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -121,12 +122,15 @@ const getX402PurchaseProgressInputSchema = z.object({
   purchaseId: z.string().uuid(),
 });
 
-export const x402Contract = {
-  getX402PurchaseProgress: {
-    type: 'query',
-    input: getX402PurchaseProgressInputSchema,
-    output: x402PurchaseProgressPayloadSchema,
+export const x402Contract = createContract(
+  { softOutput: true },
+  {
+    getX402PurchaseProgress: {
+      type: 'query',
+      input: getX402PurchaseProgressInputSchema,
+      output: x402PurchaseProgressPayloadSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type X402Contract = typeof x402Contract;

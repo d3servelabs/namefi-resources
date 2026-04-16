@@ -1,6 +1,7 @@
 import type { WorkflowExecutionStatusName } from '../../types/temporal';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -188,17 +189,20 @@ const workflowDetailOutputSchema = z.custom<
     }
 >(() => true);
 
-export const adminAutoRenewalContract = {
-  getAllAutoRenewalWorkflows: {
-    type: 'query',
-    input: z.void(),
-    output: workflowListOutputSchema,
+export const adminAutoRenewalContract = createContract(
+  { softOutput: true },
+  {
+    getAllAutoRenewalWorkflows: {
+      type: 'query',
+      input: z.void(),
+      output: workflowListOutputSchema,
+    },
+    getAutoRenewalWorkflowById: {
+      type: 'query',
+      input: getAutoRenewalWorkflowByIdInputSchema,
+      output: workflowDetailOutputSchema,
+    },
   },
-  getAutoRenewalWorkflowById: {
-    type: 'query',
-    input: getAutoRenewalWorkflowByIdInputSchema,
-    output: workflowDetailOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminAutoRenewalContract = typeof adminAutoRenewalContract;

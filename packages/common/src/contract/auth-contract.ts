@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -33,12 +34,15 @@ const signingDomainOutputSchema = z.object({
   domain: z.custom<TypedDataDomainLike>(() => true),
 });
 
-export const authContract = {
-  getSigningDomain: {
-    type: 'query',
-    input: z.void(),
-    output: signingDomainOutputSchema,
+export const authContract = createContract(
+  { softOutput: true },
+  {
+    getSigningDomain: {
+      type: 'query',
+      input: z.void(),
+      output: signingDomainOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type AuthContract = typeof authContract;

@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -233,28 +234,31 @@ const createBulkInputSchema = z.object({
 // Contract
 // ---------------------------------------------------------------------------
 
-export const pbnIssuanceReservationsContract = {
-  create: {
-    type: 'mutation',
-    input: createReservationInputSchema,
-    output: createReservationOutputSchema,
+export const pbnIssuanceReservationsContract = createContract(
+  { softOutput: true },
+  {
+    create: {
+      type: 'mutation',
+      input: createReservationInputSchema,
+      output: createReservationOutputSchema,
+    },
+    listByCreator: {
+      type: 'query',
+      input: listByCreatorInputSchema,
+      output: listByCreatorOutputSchema,
+    },
+    cancel: {
+      type: 'mutation',
+      input: cancelInputSchema,
+      output: cancelOutputSchema,
+    },
+    createBulk: {
+      type: 'mutation',
+      input: createBulkInputSchema,
+      output: createReservationsBulkOutputSchema,
+    },
   },
-  listByCreator: {
-    type: 'query',
-    input: listByCreatorInputSchema,
-    output: listByCreatorOutputSchema,
-  },
-  cancel: {
-    type: 'mutation',
-    input: cancelInputSchema,
-    output: cancelOutputSchema,
-  },
-  createBulk: {
-    type: 'mutation',
-    input: createBulkInputSchema,
-    output: createReservationsBulkOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type PbnIssuanceReservationsContract =
   typeof pbnIssuanceReservationsContract;

@@ -1,6 +1,7 @@
 import { recordTypeValues } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -116,52 +117,55 @@ const testConnectivityOutputSchema = z.array(
 // Contract
 // ---------------------------------------------------------------------------
 
-export const dnsCacheContract = {
-  listServers: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(serverInfoSchema),
+export const dnsCacheContract = createContract(
+  { softOutput: true },
+  {
+    listServers: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(serverInfoSchema),
+    },
+    flushCache: {
+      type: 'mutation',
+      input: flushCacheInputSchema,
+      output: flushCacheOutputSchema,
+    },
+    flushCacheAdmin: {
+      type: 'mutation',
+      input: flushCacheAdminInputSchema,
+      output: flushCacheOutputSchema,
+    },
+    getServerStats: {
+      type: 'query',
+      input: serverNameInputSchema,
+      output: getServerStatsOutputSchema,
+    },
+    dumpServerCache: {
+      type: 'query',
+      input: dumpServerCacheInputSchema,
+      output: dumpServerCacheOutputSchema,
+    },
+    flushAllOnServer: {
+      type: 'mutation',
+      input: serverNameInputSchema,
+      output: flushAllOnServerOutputSchema,
+    },
+    flushAllServers: {
+      type: 'mutation',
+      input: z.void(),
+      output: flushAllServersOutputSchema,
+    },
+    getCombinedStats: {
+      type: 'query',
+      input: serverNamesInputSchema,
+      output: getCombinedStatsOutputSchema,
+    },
+    testConnectivity: {
+      type: 'query',
+      input: serverNamesInputSchema,
+      output: testConnectivityOutputSchema,
+    },
   },
-  flushCache: {
-    type: 'mutation',
-    input: flushCacheInputSchema,
-    output: flushCacheOutputSchema,
-  },
-  flushCacheAdmin: {
-    type: 'mutation',
-    input: flushCacheAdminInputSchema,
-    output: flushCacheOutputSchema,
-  },
-  getServerStats: {
-    type: 'query',
-    input: serverNameInputSchema,
-    output: getServerStatsOutputSchema,
-  },
-  dumpServerCache: {
-    type: 'query',
-    input: dumpServerCacheInputSchema,
-    output: dumpServerCacheOutputSchema,
-  },
-  flushAllOnServer: {
-    type: 'mutation',
-    input: serverNameInputSchema,
-    output: flushAllOnServerOutputSchema,
-  },
-  flushAllServers: {
-    type: 'mutation',
-    input: z.void(),
-    output: flushAllServersOutputSchema,
-  },
-  getCombinedStats: {
-    type: 'query',
-    input: serverNamesInputSchema,
-    output: getCombinedStatsOutputSchema,
-  },
-  testConnectivity: {
-    type: 'query',
-    input: serverNamesInputSchema,
-    output: testConnectivityOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type DnsCacheContract = typeof dnsCacheContract;

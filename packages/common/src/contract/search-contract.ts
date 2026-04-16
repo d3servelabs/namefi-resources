@@ -2,6 +2,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
 import type { DomainAvailabilityInfo } from '../domain-availability';
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -113,38 +114,41 @@ const checkFreeClaimEligibilityOutputSchema = z.array(
 // Contract
 // ---------------------------------------------------------------------------
 
-export const searchContract = {
-  isDomainAvailable: {
-    type: 'query',
-    input: isDomainAvailableInputSchema,
-    output: domainAvailabilityInfoSchema,
+export const searchContract = createContract(
+  { softOutput: true },
+  {
+    isDomainAvailable: {
+      type: 'query',
+      input: isDomainAvailableInputSchema,
+      output: domainAvailabilityInfoSchema,
+    },
+    getClubsCategoriesWithStats: {
+      type: 'query',
+      input: z.void(),
+      output: getClubsCategoriesWithStatsOutputSchema,
+    },
+    getDomainSuggestions: {
+      type: 'query',
+      input: getDomainSuggestionsInputSchema,
+      output: domainSuggestionsResultSchema,
+    },
+    /**
+     * Streams `DomainAvailabilityInfo` events as the backend resolves each
+     * domain. The output schema describes a SINGLE event; tRPC v11 wraps
+     * the resolver's `async function*` return as `AsyncIterable<Event>`
+     * automatically.
+     */
+    streamDomainAvailability: {
+      type: 'subscription',
+      input: streamDomainAvailabilityInputSchema,
+      output: domainAvailabilityInfoSchema,
+    },
+    checkFreeClaimEligibility: {
+      type: 'query',
+      input: checkFreeClaimEligibilityInputSchema,
+      output: checkFreeClaimEligibilityOutputSchema,
+    },
   },
-  getClubsCategoriesWithStats: {
-    type: 'query',
-    input: z.void(),
-    output: getClubsCategoriesWithStatsOutputSchema,
-  },
-  getDomainSuggestions: {
-    type: 'query',
-    input: getDomainSuggestionsInputSchema,
-    output: domainSuggestionsResultSchema,
-  },
-  /**
-   * Streams `DomainAvailabilityInfo` events as the backend resolves each
-   * domain. The output schema describes a SINGLE event; tRPC v11 wraps
-   * the resolver's `async function*` return as `AsyncIterable<Event>`
-   * automatically.
-   */
-  streamDomainAvailability: {
-    type: 'subscription',
-    input: streamDomainAvailabilityInputSchema,
-    output: domainAvailabilityInfoSchema,
-  },
-  checkFreeClaimEligibility: {
-    type: 'query',
-    input: checkFreeClaimEligibilityInputSchema,
-    output: checkFreeClaimEligibilityOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type SearchContract = typeof searchContract;

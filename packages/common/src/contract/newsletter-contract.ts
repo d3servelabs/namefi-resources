@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -32,12 +33,15 @@ const subscribeOutputSchema = z.object({
   message: z.string(),
 });
 
-export const newsletterContract = {
-  subscribe: {
-    type: 'mutation',
-    input: subscribeInputSchema,
-    output: subscribeOutputSchema,
+export const newsletterContract = createContract(
+  { softOutput: true },
+  {
+    subscribe: {
+      type: 'mutation',
+      input: subscribeInputSchema,
+      output: subscribeOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type NewsletterContract = typeof newsletterContract;

@@ -1,6 +1,7 @@
 import { ALLOWED_CHAINS_DETAILS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -54,18 +55,21 @@ export type X402PaymentInfo = z.infer<typeof x402PaymentOutputSchema>;
 // The contract
 // ---------------------------------------------------------------------------
 
-export const configContract = {
-  allowedChains: {
-    type: 'query',
-    input: z.void(),
-    output: allowedChainsOutputSchema,
-  },
+export const configContract = createContract(
+  { softOutput: true },
+  {
+    allowedChains: {
+      type: 'query',
+      input: z.void(),
+      output: allowedChainsOutputSchema,
+    },
 
-  x402Payment: {
-    type: 'query',
-    input: z.void(),
-    output: x402PaymentOutputSchema,
+    x402Payment: {
+      type: 'query',
+      input: z.void(),
+      output: x402PaymentOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type ConfigContract = typeof configContract;

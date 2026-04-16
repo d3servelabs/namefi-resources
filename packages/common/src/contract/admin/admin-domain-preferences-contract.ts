@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -45,18 +46,21 @@ const listOutputSchema = z.object({
   }),
 });
 
-export const adminDomainPreferencesContract = {
-  listDomainPreferences: {
-    type: 'query',
-    input: listInputSchema,
-    output: listOutputSchema,
+export const adminDomainPreferencesContract = createContract(
+  { softOutput: true },
+  {
+    listDomainPreferences: {
+      type: 'query',
+      input: listInputSchema,
+      output: listOutputSchema,
+    },
+    updateDomainPreferences: {
+      type: 'mutation',
+      input: updateInputSchema,
+      output: z.object({ success: z.boolean() }),
+    },
   },
-  updateDomainPreferences: {
-    type: 'mutation',
-    input: updateInputSchema,
-    output: z.object({ success: z.boolean() }),
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminDomainPreferencesContract =
   typeof adminDomainPreferencesContract;

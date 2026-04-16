@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -51,17 +52,20 @@ const claimAnonymousOutputSchema = z.object({
 // Contract
 // ---------------------------------------------------------------------------
 
-export const feedbackContract = {
-  submit: {
-    type: 'mutation',
-    input: submitInputSchema,
-    output: feedbackResponseOutputSchema,
+export const feedbackContract = createContract(
+  { softOutput: false },
+  {
+    submit: {
+      type: 'mutation',
+      input: submitInputSchema,
+      output: feedbackResponseOutputSchema,
+    },
+    claimAnonymous: {
+      type: 'mutation',
+      input: claimAnonymousInputSchema,
+      output: claimAnonymousOutputSchema,
+    },
   },
-  claimAnonymous: {
-    type: 'mutation',
-    input: claimAnonymousInputSchema,
-    output: claimAnonymousOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type FeedbackContract = typeof feedbackContract;

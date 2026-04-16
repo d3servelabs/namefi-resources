@@ -5,6 +5,7 @@ import {
 } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -225,100 +226,103 @@ const resolveEnsNameOutputSchema = z.object({
 // Contract
 // ---------------------------------------------------------------------------
 
-export const usersContract = {
-  getImpersonationStatus: {
-    type: 'query',
-    input: z.void(),
-    output: impersonationStatusOutputSchema,
+export const usersContract = createContract(
+  { softOutput: true },
+  {
+    getImpersonationStatus: {
+      type: 'query',
+      input: z.void(),
+      output: impersonationStatusOutputSchema,
+    },
+    impersonateUser: {
+      type: 'mutation',
+      input: impersonateUserInputSchema,
+      output: z.object({ ok: z.literal(true) }),
+    },
+    stopImpersonating: {
+      type: 'mutation',
+      input: z.void(),
+      output: z.object({ ok: z.literal(true) }),
+    },
+    getUser: {
+      type: 'query',
+      input: z.void(),
+      output: userRowSchema,
+    },
+    getMyPermissions: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(permissionSchema),
+    },
+    requestNfscFaucet: {
+      type: 'mutation',
+      input: requestNfscFaucetInputSchema,
+      output: requestNfscFaucetOutputSchema,
+    },
+    getNfscFaucetStatus: {
+      type: 'query',
+      input: getNfscFaucetStatusInputSchema,
+      output: getNfscFaucetStatusOutputSchema,
+    },
+    updatePrivyCustomMetadata: {
+      type: 'mutation',
+      input: privyCustomMetadataSchema,
+      output: privyCustomMetadataSchema,
+    },
+    getUserQualifiesForDomainNamePromo: {
+      type: 'query',
+      input: getUserQualifiesForDomainNamePromoInputSchema,
+      output: z.boolean(),
+    },
+    getCurrentUserDomains: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(currentUserDomainSchema),
+    },
+    isDomainOwnedByCurrentUser: {
+      type: 'query',
+      input: isDomainOwnedByCurrentUserInputSchema,
+      output: z.boolean(),
+    },
+    getManagerPageEntrypointViewable: {
+      type: 'query',
+      input: z.void(),
+      output: z.object({ viewable: z.boolean() }),
+    },
+    getRegisteredSubdomainsForParentDomainOwner: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(registeredSubdomainSchema),
+    },
+    getUserQualifyingDomainNamesForPromo: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(qualifyingDomainSchema),
+    },
+    doesUserSubscribeToEmails: {
+      type: 'query',
+      input: z.void(),
+      output: z.boolean(),
+    },
+    setSubscribeToEmails: {
+      type: 'mutation',
+      input: setSubscribeToEmailsInputSchema,
+      output: z.object({
+        success: z.boolean(),
+        optIn: z.any(),
+      }),
+    },
+    getCurrentUserBurnedDomains: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(previouslyOwnedDomainEventSchema),
+    },
+    resolveEnsName: {
+      type: 'mutation',
+      input: resolveEnsNameInputSchema,
+      output: resolveEnsNameOutputSchema,
+    },
   },
-  impersonateUser: {
-    type: 'mutation',
-    input: impersonateUserInputSchema,
-    output: z.object({ ok: z.literal(true) }),
-  },
-  stopImpersonating: {
-    type: 'mutation',
-    input: z.void(),
-    output: z.object({ ok: z.literal(true) }),
-  },
-  getUser: {
-    type: 'query',
-    input: z.void(),
-    output: userRowSchema,
-  },
-  getMyPermissions: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(permissionSchema),
-  },
-  requestNfscFaucet: {
-    type: 'mutation',
-    input: requestNfscFaucetInputSchema,
-    output: requestNfscFaucetOutputSchema,
-  },
-  getNfscFaucetStatus: {
-    type: 'query',
-    input: getNfscFaucetStatusInputSchema,
-    output: getNfscFaucetStatusOutputSchema,
-  },
-  updatePrivyCustomMetadata: {
-    type: 'mutation',
-    input: privyCustomMetadataSchema,
-    output: privyCustomMetadataSchema,
-  },
-  getUserQualifiesForDomainNamePromo: {
-    type: 'query',
-    input: getUserQualifiesForDomainNamePromoInputSchema,
-    output: z.boolean(),
-  },
-  getCurrentUserDomains: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(currentUserDomainSchema),
-  },
-  isDomainOwnedByCurrentUser: {
-    type: 'query',
-    input: isDomainOwnedByCurrentUserInputSchema,
-    output: z.boolean(),
-  },
-  getManagerPageEntrypointViewable: {
-    type: 'query',
-    input: z.void(),
-    output: z.object({ viewable: z.boolean() }),
-  },
-  getRegisteredSubdomainsForParentDomainOwner: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(registeredSubdomainSchema),
-  },
-  getUserQualifyingDomainNamesForPromo: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(qualifyingDomainSchema),
-  },
-  doesUserSubscribeToEmails: {
-    type: 'query',
-    input: z.void(),
-    output: z.boolean(),
-  },
-  setSubscribeToEmails: {
-    type: 'mutation',
-    input: setSubscribeToEmailsInputSchema,
-    output: z.object({
-      success: z.boolean(),
-      optIn: z.any(),
-    }),
-  },
-  getCurrentUserBurnedDomains: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(previouslyOwnedDomainEventSchema),
-  },
-  resolveEnsName: {
-    type: 'mutation',
-    input: resolveEnsNameInputSchema,
-    output: resolveEnsNameOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type UsersContract = typeof usersContract;

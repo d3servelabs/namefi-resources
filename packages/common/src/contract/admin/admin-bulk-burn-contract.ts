@@ -2,6 +2,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import type { WorkflowExecutionStatusName } from '../../types/temporal';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -215,42 +216,45 @@ const burnAllExpiredDomainsOutputSchema = z.custom<
     }
 >(() => true);
 
-export const adminBulkBurnContract = {
-  getAllBulkBurnWorkflows: {
-    type: 'query',
-    input: z.void(),
-    output: bulkBurnWorkflowListSchema,
+export const adminBulkBurnContract = createContract(
+  { softOutput: true },
+  {
+    getAllBulkBurnWorkflows: {
+      type: 'query',
+      input: z.void(),
+      output: bulkBurnWorkflowListSchema,
+    },
+    getBulkBurnWorkflowById: {
+      type: 'query',
+      input: workflowIdInputSchema,
+      output: bulkBurnWorkflowByIdSchema,
+    },
+    getPendingBulkBurnWorkflow: {
+      type: 'query',
+      input: z.void(),
+      output: pendingBulkBurnWorkflowSchema,
+    },
+    approveBulkBurn: {
+      type: 'mutation',
+      input: approveBulkBurnInputSchema,
+      output: approveBulkBurnOutputSchema,
+    },
+    cancelBulkBurn: {
+      type: 'mutation',
+      input: workflowIdInputSchema,
+      output: cancelBulkBurnOutputSchema,
+    },
+    enrichBulkBurnDomains: {
+      type: 'query',
+      input: enrichBulkBurnDomainsInputSchema,
+      output: enrichBulkBurnOutputSchema,
+    },
+    burnAllExpiredDomains: {
+      type: 'mutation',
+      input: burnAllExpiredDomainsInputSchema,
+      output: burnAllExpiredDomainsOutputSchema,
+    },
   },
-  getBulkBurnWorkflowById: {
-    type: 'query',
-    input: workflowIdInputSchema,
-    output: bulkBurnWorkflowByIdSchema,
-  },
-  getPendingBulkBurnWorkflow: {
-    type: 'query',
-    input: z.void(),
-    output: pendingBulkBurnWorkflowSchema,
-  },
-  approveBulkBurn: {
-    type: 'mutation',
-    input: approveBulkBurnInputSchema,
-    output: approveBulkBurnOutputSchema,
-  },
-  cancelBulkBurn: {
-    type: 'mutation',
-    input: workflowIdInputSchema,
-    output: cancelBulkBurnOutputSchema,
-  },
-  enrichBulkBurnDomains: {
-    type: 'query',
-    input: enrichBulkBurnDomainsInputSchema,
-    output: enrichBulkBurnOutputSchema,
-  },
-  burnAllExpiredDomains: {
-    type: 'mutation',
-    input: burnAllExpiredDomainsInputSchema,
-    output: burnAllExpiredDomainsOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminBulkBurnContract = typeof adminBulkBurnContract;

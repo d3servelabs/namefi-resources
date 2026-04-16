@@ -2,6 +2,7 @@ import { poweredbyNamefiDomainSelectSchema } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -181,67 +182,70 @@ const removeReservedWordsOutputSchema = z.object({
 // Contract
 // ---------------------------------------------------------------------------
 
-export const poweredByNamefiOwnerContract = {
-  isUserAPoweredByNamefiOwner: {
-    type: 'query',
-    input: z.void(),
-    output: z.object({ isOwner: z.boolean() }),
+export const poweredByNamefiOwnerContract = createContract(
+  { softOutput: true },
+  {
+    isUserAPoweredByNamefiOwner: {
+      type: 'query',
+      input: z.void(),
+      output: z.object({ isOwner: z.boolean() }),
+    },
+    isUserOwnerOf: {
+      type: 'query',
+      input: isUserOwnerOfInputSchema,
+      output: z.object({ isOwner: z.boolean() }),
+    },
+    getAnalyticsDashboardOverview: {
+      type: 'query',
+      input: getAnalyticsDashboardOverviewInputSchema,
+      output: analyticsReportBundleSchema,
+    },
+    listOwnedDomains: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(poweredByNamefiDomainSchema),
+    },
+    updateDomain: {
+      type: 'mutation',
+      input: updateDomainInputSchema,
+      output: poweredByNamefiDomainSchema.nullable(),
+    },
+    orderItemsHistory: {
+      type: 'query',
+      input: orderItemsHistoryInputSchema,
+      output: orderItemsHistoryOutputSchema,
+    },
+    revenue: {
+      type: 'query',
+      input: revenueInputSchema,
+      output: revenueOutputSchema,
+    },
+    revenueByDomain: {
+      type: 'query',
+      input: revenueByDomainInputSchema,
+      output: revenueByDomainOutputSchema,
+    },
+    getReservedWords: {
+      type: 'query',
+      input: reservedWordsDomainInputSchema,
+      output: getReservedWordsOutputSchema,
+    },
+    validateReservedWords: {
+      type: 'query',
+      input: reservedWordsMutateInputSchema,
+      output: validateReservedWordsOutputSchema,
+    },
+    addReservedWords: {
+      type: 'mutation',
+      input: reservedWordsMutateInputSchema,
+      output: addReservedWordsOutputSchema,
+    },
+    removeReservedWords: {
+      type: 'mutation',
+      input: reservedWordsMutateInputSchema,
+      output: removeReservedWordsOutputSchema,
+    },
   },
-  isUserOwnerOf: {
-    type: 'query',
-    input: isUserOwnerOfInputSchema,
-    output: z.object({ isOwner: z.boolean() }),
-  },
-  getAnalyticsDashboardOverview: {
-    type: 'query',
-    input: getAnalyticsDashboardOverviewInputSchema,
-    output: analyticsReportBundleSchema,
-  },
-  listOwnedDomains: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(poweredByNamefiDomainSchema),
-  },
-  updateDomain: {
-    type: 'mutation',
-    input: updateDomainInputSchema,
-    output: poweredByNamefiDomainSchema.nullable(),
-  },
-  orderItemsHistory: {
-    type: 'query',
-    input: orderItemsHistoryInputSchema,
-    output: orderItemsHistoryOutputSchema,
-  },
-  revenue: {
-    type: 'query',
-    input: revenueInputSchema,
-    output: revenueOutputSchema,
-  },
-  revenueByDomain: {
-    type: 'query',
-    input: revenueByDomainInputSchema,
-    output: revenueByDomainOutputSchema,
-  },
-  getReservedWords: {
-    type: 'query',
-    input: reservedWordsDomainInputSchema,
-    output: getReservedWordsOutputSchema,
-  },
-  validateReservedWords: {
-    type: 'query',
-    input: reservedWordsMutateInputSchema,
-    output: validateReservedWordsOutputSchema,
-  },
-  addReservedWords: {
-    type: 'mutation',
-    input: reservedWordsMutateInputSchema,
-    output: addReservedWordsOutputSchema,
-  },
-  removeReservedWords: {
-    type: 'mutation',
-    input: reservedWordsMutateInputSchema,
-    output: removeReservedWordsOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type PoweredByNamefiOwnerContract = typeof poweredByNamefiOwnerContract;

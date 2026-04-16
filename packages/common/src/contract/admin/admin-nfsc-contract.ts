@@ -1,6 +1,7 @@
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -80,17 +81,20 @@ const mintBulkOutputSchema = z.custom<{
   };
 }>(() => true);
 
-export const adminNfscContract = {
-  listRecentMintWorkflows: {
-    type: 'query',
-    input: listRecentMintWorkflowsInputSchema,
-    output: listRecentMintWorkflowsOutputSchema,
+export const adminNfscContract = createContract(
+  { softOutput: true },
+  {
+    listRecentMintWorkflows: {
+      type: 'query',
+      input: listRecentMintWorkflowsInputSchema,
+      output: listRecentMintWorkflowsOutputSchema,
+    },
+    mintBulk: {
+      type: 'mutation',
+      input: mintBulkInputSchema,
+      output: mintBulkOutputSchema,
+    },
   },
-  mintBulk: {
-    type: 'mutation',
-    input: mintBulkInputSchema,
-    output: mintBulkOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminNfscContract = typeof adminNfscContract;

@@ -2,6 +2,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 import type { WorkflowExecutionStatusName } from '../../types/temporal';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -124,52 +125,55 @@ const workflowHistoryOutputSchema = z.custom<{
   temporal: { apiUrl: string; namespace: string };
 }>(() => true);
 
-export const adminNftContract = {
-  getNftsWithExpirationStatus: {
-    type: 'query',
-    input: getNftsWithExpirationStatusInputSchema,
-    output: nftListOutputSchema,
+export const adminNftContract = createContract(
+  { softOutput: true },
+  {
+    getNftsWithExpirationStatus: {
+      type: 'query',
+      input: getNftsWithExpirationStatusInputSchema,
+      output: nftListOutputSchema,
+    },
+    burnNft: {
+      type: 'mutation',
+      input: domainAndChainIdInputSchema,
+      output: burnOrFixResultSchema,
+    },
+    getBurnWorkflowStatus: {
+      type: 'query',
+      input: domainAndChainIdInputSchema,
+      output: getBurnWorkflowStatusOutputSchema,
+    },
+    getActiveBurnWorkflows: {
+      type: 'query',
+      input: z.void(),
+      output: activeWorkflowsListSchema,
+    },
+    getActiveFixExpirationWorkflows: {
+      type: 'query',
+      input: z.void(),
+      output: activeWorkflowsListSchema,
+    },
+    getActiveExtendRegistrationWorkflows: {
+      type: 'query',
+      input: z.void(),
+      output: activeWorkflowsListSchema,
+    },
+    extendRegistration: {
+      type: 'mutation',
+      input: extendRegistrationInputSchema,
+      output: burnOrFixResultSchema,
+    },
+    fixNftExpiration: {
+      type: 'mutation',
+      input: domainAndChainIdInputSchema,
+      output: burnOrFixResultSchema,
+    },
+    getWorkflowHistory: {
+      type: 'query',
+      input: getWorkflowHistoryInputSchema,
+      output: workflowHistoryOutputSchema,
+    },
   },
-  burnNft: {
-    type: 'mutation',
-    input: domainAndChainIdInputSchema,
-    output: burnOrFixResultSchema,
-  },
-  getBurnWorkflowStatus: {
-    type: 'query',
-    input: domainAndChainIdInputSchema,
-    output: getBurnWorkflowStatusOutputSchema,
-  },
-  getActiveBurnWorkflows: {
-    type: 'query',
-    input: z.void(),
-    output: activeWorkflowsListSchema,
-  },
-  getActiveFixExpirationWorkflows: {
-    type: 'query',
-    input: z.void(),
-    output: activeWorkflowsListSchema,
-  },
-  getActiveExtendRegistrationWorkflows: {
-    type: 'query',
-    input: z.void(),
-    output: activeWorkflowsListSchema,
-  },
-  extendRegistration: {
-    type: 'mutation',
-    input: extendRegistrationInputSchema,
-    output: burnOrFixResultSchema,
-  },
-  fixNftExpiration: {
-    type: 'mutation',
-    input: domainAndChainIdInputSchema,
-    output: burnOrFixResultSchema,
-  },
-  getWorkflowHistory: {
-    type: 'query',
-    input: getWorkflowHistoryInputSchema,
-    output: workflowHistoryOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminNftContract = typeof adminNftContract;

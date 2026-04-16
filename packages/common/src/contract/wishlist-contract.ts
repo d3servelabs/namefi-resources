@@ -2,6 +2,7 @@ import type { wishlistedDomainsTable } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -34,24 +35,27 @@ const wishlistedDomainRowSchema = z.custom<WishlistedDomainRow>(() => true);
 
 const wishlistedDomainArrayOutputSchema = z.array(wishlistedDomainRowSchema);
 
-export const wishlistContract = {
-  addToWishlist: {
-    type: 'mutation',
-    input: wishlistDomainArrayInputSchema,
-    output: wishlistedDomainArrayOutputSchema,
-  },
+export const wishlistContract = createContract(
+  { softOutput: true },
+  {
+    addToWishlist: {
+      type: 'mutation',
+      input: wishlistDomainArrayInputSchema,
+      output: wishlistedDomainArrayOutputSchema,
+    },
 
-  removeFromWishlist: {
-    type: 'mutation',
-    input: wishlistDomainArrayInputSchema,
-    output: wishlistedDomainArrayOutputSchema,
-  },
+    removeFromWishlist: {
+      type: 'mutation',
+      input: wishlistDomainArrayInputSchema,
+      output: wishlistedDomainArrayOutputSchema,
+    },
 
-  getWishlistDomains: {
-    type: 'query',
-    input: z.void(),
-    output: wishlistedDomainArrayOutputSchema,
+    getWishlistDomains: {
+      type: 'query',
+      input: z.void(),
+      output: wishlistedDomainArrayOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type WishlistContract = typeof wishlistContract;

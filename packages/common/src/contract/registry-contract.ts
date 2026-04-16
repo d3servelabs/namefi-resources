@@ -6,6 +6,7 @@ import { normalizeDomainName } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
 import type { DomainAvailabilityInfo } from '../domain-availability';
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -126,37 +127,40 @@ export type ChecksumWalletAddress = z.output<
 // Contract
 // ---------------------------------------------------------------------------
 
-export const registryContract = {
-  getDomainListInfo: {
-    type: 'query',
-    input: domainListInputSchema,
-    output: getDomainListInfoOutputSchema,
+export const registryContract = createContract(
+  { softOutput: true },
+  {
+    getDomainListInfo: {
+      type: 'query',
+      input: domainListInputSchema,
+      output: getDomainListInfoOutputSchema,
+    },
+    getDomainInfo: {
+      type: 'query',
+      input: domainInputSchema,
+      output: getDomainInfoOutputSchema,
+    },
+    getTldPricingTable: {
+      type: 'query',
+      input: z.void(),
+      output: getTldPricingTableOutputSchema,
+    },
+    getDomainsByOwner: {
+      type: 'query',
+      input: getDomainsByOwnerInputSchema,
+      output: getDomainsByOwnerOutputSchema,
+    },
+    queryDomain: {
+      type: 'query',
+      input: queryDomainInputSchema,
+      output: getDomainListInfoOutputSchema,
+    },
+    get0xDotCityPercentageRollout: {
+      type: 'query',
+      input: z.void(),
+      output: z.number(),
+    },
   },
-  getDomainInfo: {
-    type: 'query',
-    input: domainInputSchema,
-    output: getDomainInfoOutputSchema,
-  },
-  getTldPricingTable: {
-    type: 'query',
-    input: z.void(),
-    output: getTldPricingTableOutputSchema,
-  },
-  getDomainsByOwner: {
-    type: 'query',
-    input: getDomainsByOwnerInputSchema,
-    output: getDomainsByOwnerOutputSchema,
-  },
-  queryDomain: {
-    type: 'query',
-    input: queryDomainInputSchema,
-    output: getDomainListInfoOutputSchema,
-  },
-  get0xDotCityPercentageRollout: {
-    type: 'query',
-    input: z.void(),
-    output: z.number(),
-  },
-} as const satisfies RouterContract;
+);
 
 export type RegistryContract = typeof registryContract;

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -40,12 +41,15 @@ const testSignedEndpointOutputSchema = z.object({
   }),
 });
 
-export const testSignedPayloadContract = {
-  testSignedEndpoint: {
-    type: 'mutation',
-    input: testSignedEndpointInputSchema,
-    output: testSignedEndpointOutputSchema,
+export const testSignedPayloadContract = createContract(
+  { softOutput: true },
+  {
+    testSignedEndpoint: {
+      type: 'mutation',
+      input: testSignedEndpointInputSchema,
+      output: testSignedEndpointOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type TestSignedPayloadContract = typeof testSignedPayloadContract;

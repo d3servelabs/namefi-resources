@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -51,17 +52,20 @@ const paginatedOrdersOutputSchema = z.object({
   totalPages: z.number(),
 });
 
-export const adminOrdersContract = {
-  listOrderItems: {
-    type: 'query',
-    input: listOrderItemsInputSchema,
-    output: paginatedOrdersOutputSchema,
+export const adminOrdersContract = createContract(
+  { softOutput: true },
+  {
+    listOrderItems: {
+      type: 'query',
+      input: listOrderItemsInputSchema,
+      output: paginatedOrdersOutputSchema,
+    },
+    listOrders: {
+      type: 'query',
+      input: listOrdersInputSchema,
+      output: paginatedOrdersOutputSchema,
+    },
   },
-  listOrders: {
-    type: 'query',
-    input: listOrdersInputSchema,
-    output: paginatedOrdersOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminOrdersContract = typeof adminOrdersContract;

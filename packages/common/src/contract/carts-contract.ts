@@ -3,6 +3,7 @@ import { cartItemInsertSchema, cartItemUpdateSchema } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -148,32 +149,35 @@ const clearOutputSchema = z.array(z.never());
 // Contract
 // ---------------------------------------------------------------------------
 
-export const cartsContract = {
-  getItems: {
-    type: 'query',
-    input: z.void(),
-    output: getItemsOutputSchema,
+export const cartsContract = createContract(
+  { softOutput: true },
+  {
+    getItems: {
+      type: 'query',
+      input: z.void(),
+      output: getItemsOutputSchema,
+    },
+    addItems: {
+      type: 'mutation',
+      input: addItemsInputSchema,
+      output: cartItemRowOutputSchema,
+    },
+    updateItem: {
+      type: 'mutation',
+      input: updateItemInputSchema,
+      output: cartItemRowOutputSchema,
+    },
+    removeItem: {
+      type: 'mutation',
+      input: removeItemInputSchema,
+      output: cartItemRowOutputSchema,
+    },
+    clear: {
+      type: 'mutation',
+      input: z.void(),
+      output: clearOutputSchema,
+    },
   },
-  addItems: {
-    type: 'mutation',
-    input: addItemsInputSchema,
-    output: cartItemRowOutputSchema,
-  },
-  updateItem: {
-    type: 'mutation',
-    input: updateItemInputSchema,
-    output: cartItemRowOutputSchema,
-  },
-  removeItem: {
-    type: 'mutation',
-    input: removeItemInputSchema,
-    output: cartItemRowOutputSchema,
-  },
-  clear: {
-    type: 'mutation',
-    input: z.void(),
-    output: clearOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type CartsContract = typeof cartsContract;

@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -376,72 +377,75 @@ const getUserGenerationUsageOutputSchema = z.object({
 // Contract
 // ---------------------------------------------------------------------------
 
-export const aiContract = {
-  generateLogo: {
-    type: 'mutation',
-    input: generateLogoInputSchema,
-    output: aiGenerationRecordSchema,
+export const aiContract = createContract(
+  { softOutput: true },
+  {
+    generateLogo: {
+      type: 'mutation',
+      input: generateLogoInputSchema,
+      output: aiGenerationRecordSchema,
+    },
+    generatePoster: {
+      type: 'mutation',
+      input: generatePosterInputSchema,
+      output: aiGenerationRecordSchema,
+    },
+    generateAnimation: {
+      type: 'mutation',
+      input: generateAnimationInputSchema,
+      output: aiGenerationRecordSchema,
+    },
+    getGenerationsByDomain: {
+      type: 'query',
+      input: getGenerationsByDomainInputSchema,
+      output: z.array(aiGenerationRecordSchema),
+    },
+    getUserDomains: {
+      type: 'query',
+      input: z.void(),
+      output: getUserDomainsOutputSchema,
+    },
+    getUserGenerationsFiltered: {
+      type: 'query',
+      input: getUserGenerationsFilteredInputSchema,
+      output: z.array(aiGenerationRecordSchema),
+    },
+    getGenerationsByType: {
+      type: 'query',
+      input: getGenerationsByTypeInputSchema,
+      output: z.array(aiGenerationRecordSchema),
+    },
+    getFeaturedAndRecentGenerations: {
+      type: 'query',
+      input: z.void(),
+      output: getFeaturedAndRecentOutputSchema,
+    },
+    getGenerationById: {
+      type: 'query',
+      input: idInputSchema,
+      output: aiGenerationRecordSchema,
+    },
+    deleteGeneration: {
+      type: 'mutation',
+      input: idInputSchema,
+      output: aiGenerationRecordSchema,
+    },
+    getInternalGenerationsByDomain: {
+      type: 'query',
+      input: getGenerationsByDomainInputSchema,
+      output: z.array(internalAiGenerationRecordSchema),
+    },
+    getInternalGenerationsByDomains: {
+      type: 'query',
+      input: getInternalGenerationsByDomainsInputSchema,
+      output: getInternalGenerationsByDomainsOutputSchema,
+    },
+    getUserGenerationUsage: {
+      type: 'query',
+      input: z.void(),
+      output: getUserGenerationUsageOutputSchema,
+    },
   },
-  generatePoster: {
-    type: 'mutation',
-    input: generatePosterInputSchema,
-    output: aiGenerationRecordSchema,
-  },
-  generateAnimation: {
-    type: 'mutation',
-    input: generateAnimationInputSchema,
-    output: aiGenerationRecordSchema,
-  },
-  getGenerationsByDomain: {
-    type: 'query',
-    input: getGenerationsByDomainInputSchema,
-    output: z.array(aiGenerationRecordSchema),
-  },
-  getUserDomains: {
-    type: 'query',
-    input: z.void(),
-    output: getUserDomainsOutputSchema,
-  },
-  getUserGenerationsFiltered: {
-    type: 'query',
-    input: getUserGenerationsFilteredInputSchema,
-    output: z.array(aiGenerationRecordSchema),
-  },
-  getGenerationsByType: {
-    type: 'query',
-    input: getGenerationsByTypeInputSchema,
-    output: z.array(aiGenerationRecordSchema),
-  },
-  getFeaturedAndRecentGenerations: {
-    type: 'query',
-    input: z.void(),
-    output: getFeaturedAndRecentOutputSchema,
-  },
-  getGenerationById: {
-    type: 'query',
-    input: idInputSchema,
-    output: aiGenerationRecordSchema,
-  },
-  deleteGeneration: {
-    type: 'mutation',
-    input: idInputSchema,
-    output: aiGenerationRecordSchema,
-  },
-  getInternalGenerationsByDomain: {
-    type: 'query',
-    input: getGenerationsByDomainInputSchema,
-    output: z.array(internalAiGenerationRecordSchema),
-  },
-  getInternalGenerationsByDomains: {
-    type: 'query',
-    input: getInternalGenerationsByDomainsInputSchema,
-    output: getInternalGenerationsByDomainsOutputSchema,
-  },
-  getUserGenerationUsage: {
-    type: 'query',
-    input: z.void(),
-    output: getUserGenerationUsageOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AiContract = typeof aiContract;

@@ -1,6 +1,7 @@
 import { EMAIL_CAMPAIGN_KEY_LIST } from '../../email-campaigns';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -115,37 +116,40 @@ const sendNowOutputSchema = z.object({
   periodStart: z.date(),
 });
 
-export const adminEmailCampaignsContract = {
-  getScheduleStatus: {
-    type: 'query',
-    input: campaignKeyInputSchema,
-    output: getScheduleStatusOutputSchema,
+export const adminEmailCampaignsContract = createContract(
+  { softOutput: true },
+  {
+    getScheduleStatus: {
+      type: 'query',
+      input: campaignKeyInputSchema,
+      output: getScheduleStatusOutputSchema,
+    },
+    pauseSchedule: {
+      type: 'mutation',
+      input: campaignKeyInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    resumeSchedule: {
+      type: 'mutation',
+      input: campaignKeyInputSchema,
+      output: scheduleActionOutputSchema,
+    },
+    getEligibleUsers: {
+      type: 'query',
+      input: getEligibleUsersInputSchema,
+      output: getEligibleUsersOutputSchema,
+    },
+    getDomainTrafficSurgeFunnelDebug: {
+      type: 'query',
+      input: getDomainTrafficSurgeFunnelDebugInputSchema,
+      output: getDomainTrafficSurgeFunnelDebugOutputSchema,
+    },
+    sendNow: {
+      type: 'mutation',
+      input: sendNowInputSchema,
+      output: sendNowOutputSchema,
+    },
   },
-  pauseSchedule: {
-    type: 'mutation',
-    input: campaignKeyInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  resumeSchedule: {
-    type: 'mutation',
-    input: campaignKeyInputSchema,
-    output: scheduleActionOutputSchema,
-  },
-  getEligibleUsers: {
-    type: 'query',
-    input: getEligibleUsersInputSchema,
-    output: getEligibleUsersOutputSchema,
-  },
-  getDomainTrafficSurgeFunnelDebug: {
-    type: 'query',
-    input: getDomainTrafficSurgeFunnelDebugInputSchema,
-    output: getDomainTrafficSurgeFunnelDebugOutputSchema,
-  },
-  sendNow: {
-    type: 'mutation',
-    input: sendNowInputSchema,
-    output: sendNowOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminEmailCampaignsContract = typeof adminEmailCampaignsContract;

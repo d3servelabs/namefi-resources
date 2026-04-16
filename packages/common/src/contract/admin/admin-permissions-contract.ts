@@ -1,6 +1,7 @@
 import { Permission } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -42,37 +43,40 @@ const listUsersWithPermissionsRowSchema = z.object({
   walletAddresses: z.array(z.string()).optional(),
 });
 
-export const adminPermissionsContract = {
-  listUsersWithPermissions: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(listUsersWithPermissionsRowSchema),
+export const adminPermissionsContract = createContract(
+  { softOutput: true },
+  {
+    listUsersWithPermissions: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(listUsersWithPermissionsRowSchema),
+    },
+    listAvailablePermissions: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(permissionSchema),
+    },
+    getUserPermissions: {
+      type: 'query',
+      input: userIdInputSchema,
+      output: z.array(permissionSchema),
+    },
+    grantPermissions: {
+      type: 'mutation',
+      input: userIdAndPermissionsInputSchema,
+      output: z.array(permissionSchema),
+    },
+    revokePermissions: {
+      type: 'mutation',
+      input: userIdAndPermissionsInputSchema,
+      output: z.array(permissionSchema),
+    },
+    deleteUserPermissions: {
+      type: 'mutation',
+      input: userIdInputSchema,
+      output: z.object({ success: z.boolean() }),
+    },
   },
-  listAvailablePermissions: {
-    type: 'query',
-    input: z.void(),
-    output: z.array(permissionSchema),
-  },
-  getUserPermissions: {
-    type: 'query',
-    input: userIdInputSchema,
-    output: z.array(permissionSchema),
-  },
-  grantPermissions: {
-    type: 'mutation',
-    input: userIdAndPermissionsInputSchema,
-    output: z.array(permissionSchema),
-  },
-  revokePermissions: {
-    type: 'mutation',
-    input: userIdAndPermissionsInputSchema,
-    output: z.array(permissionSchema),
-  },
-  deleteUserPermissions: {
-    type: 'mutation',
-    input: userIdInputSchema,
-    output: z.object({ success: z.boolean() }),
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminPermissionsContract = typeof adminPermissionsContract;

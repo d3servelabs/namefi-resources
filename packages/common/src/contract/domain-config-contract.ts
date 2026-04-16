@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 import {
   DnssecAlgorithms,
@@ -289,38 +290,41 @@ const cancelDnssecWorkflowInputSchema = z.object({
   operation: z.enum(['ENABLE_DNSSEC', 'REMOVE_DNSSEC']),
 });
 
-const domainDnssecContract = {
-  getDomainDnssecDetails: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: dnssecStatusDetailsSchema,
+const domainDnssecContract = createContract(
+  { softOutput: true },
+  {
+    getDomainDnssecDetails: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: dnssecStatusDetailsSchema,
+    },
+    enableDnssec: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: z.void(),
+    },
+    disableDnssec: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: z.void(),
+    },
+    associateDelegationSigner: {
+      type: 'mutation',
+      input: associateDelegationSignerInputSchema,
+      output: z.void(),
+    },
+    getActiveDnssecOperationWorkflows: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: dnssecActiveWorkflowsSchema,
+    },
+    cancelDnssecWorkflow: {
+      type: 'mutation',
+      input: cancelDnssecWorkflowInputSchema,
+      output: cancelWorkflowOutputSchema,
+    },
   },
-  enableDnssec: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: z.void(),
-  },
-  disableDnssec: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: z.void(),
-  },
-  associateDelegationSigner: {
-    type: 'mutation',
-    input: associateDelegationSignerInputSchema,
-    output: z.void(),
-  },
-  getActiveDnssecOperationWorkflows: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: dnssecActiveWorkflowsSchema,
-  },
-  cancelDnssecWorkflow: {
-    type: 'mutation',
-    input: cancelDnssecWorkflowInputSchema,
-    output: cancelWorkflowOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type DomainDnssecContract = typeof domainDnssecContract;
 
@@ -328,88 +332,91 @@ export type DomainDnssecContract = typeof domainDnssecContract;
 // Top-level contract (includes nested `dnssec`)
 // ---------------------------------------------------------------------------
 
-export const domainConfigContract = {
-  getDomainDetails: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainDetailsSchema,
+export const domainConfigContract = createContract(
+  { softOutput: true },
+  {
+    getDomainDetails: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainDetailsSchema,
+    },
+    getDomainRenewalDetails: {
+      type: 'query',
+      input: normalizedDomainNameInputSchema,
+      output: domainRenewalDetailsSchema,
+    },
+    changeDomainNameservers: {
+      type: 'mutation',
+      input: domainActionInputSchema,
+      output: z.void(),
+    },
+    resetDomainNameservers: {
+      type: 'mutation',
+      input: domainActionInputSchema,
+      output: z.void(),
+    },
+    queryActiveNameserversChangeWorkflow: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: nameserversChangeWorkflowSchema.nullable(),
+    },
+    getDomainSupportedFeatures: {
+      type: 'query',
+      input: normalizedDomainNameInputSchema,
+      output: domainSupportedFeaturesSchema,
+    },
+    getDomainPreferencesAndConfig: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainPreferencesAndConfigSchema,
+    },
+    updateDomainPreferencesAndConfig: {
+      type: 'mutation',
+      input: updateDomainPreferencesAndConfigInputSchema,
+      output: z.void(),
+    },
+    requestDomainExport: {
+      type: 'mutation',
+      input: domainActionInputSchema,
+      output: z.void(),
+    },
+    getDomainExportDetails: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainExportDetailsSchema,
+    },
+    getAuthCode: {
+      type: 'mutation',
+      input: domainActionInputSchema,
+      output: getAuthCodeOutputSchema,
+    },
+    getDomainOwnerWallet: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: getDomainOwnerWalletOutputSchema,
+    },
+    getPendingTransfer: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: pendingTransferSchema.nullable(),
+    },
+    approveTransfer: {
+      type: 'mutation',
+      input: domainActionInputSchema,
+      output: transferActionResultSchema,
+    },
+    rejectTransfer: {
+      type: 'mutation',
+      input: domainActionInputSchema,
+      output: transferActionResultSchema,
+    },
+    cancelNameserversWorkflow: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: cancelWorkflowOutputSchema,
+    },
+    dnssec: domainDnssecContract,
   },
-  getDomainRenewalDetails: {
-    type: 'query',
-    input: normalizedDomainNameInputSchema,
-    output: domainRenewalDetailsSchema,
-  },
-  changeDomainNameservers: {
-    type: 'mutation',
-    input: domainActionInputSchema,
-    output: z.void(),
-  },
-  resetDomainNameservers: {
-    type: 'mutation',
-    input: domainActionInputSchema,
-    output: z.void(),
-  },
-  queryActiveNameserversChangeWorkflow: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: nameserversChangeWorkflowSchema.nullable(),
-  },
-  getDomainSupportedFeatures: {
-    type: 'query',
-    input: normalizedDomainNameInputSchema,
-    output: domainSupportedFeaturesSchema,
-  },
-  getDomainPreferencesAndConfig: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainPreferencesAndConfigSchema,
-  },
-  updateDomainPreferencesAndConfig: {
-    type: 'mutation',
-    input: updateDomainPreferencesAndConfigInputSchema,
-    output: z.void(),
-  },
-  requestDomainExport: {
-    type: 'mutation',
-    input: domainActionInputSchema,
-    output: z.void(),
-  },
-  getDomainExportDetails: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainExportDetailsSchema,
-  },
-  getAuthCode: {
-    type: 'mutation',
-    input: domainActionInputSchema,
-    output: getAuthCodeOutputSchema,
-  },
-  getDomainOwnerWallet: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: getDomainOwnerWalletOutputSchema,
-  },
-  getPendingTransfer: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: pendingTransferSchema.nullable(),
-  },
-  approveTransfer: {
-    type: 'mutation',
-    input: domainActionInputSchema,
-    output: transferActionResultSchema,
-  },
-  rejectTransfer: {
-    type: 'mutation',
-    input: domainActionInputSchema,
-    output: transferActionResultSchema,
-  },
-  cancelNameserversWorkflow: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: cancelWorkflowOutputSchema,
-  },
-  dnssec: domainDnssecContract,
-} as const satisfies RouterContract;
+);
 
 export type DomainConfigContract = typeof domainConfigContract;

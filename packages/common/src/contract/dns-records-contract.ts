@@ -3,6 +3,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { recordSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -203,83 +204,86 @@ export type ChangeNameserversProgressPayload = z.infer<
 // The contract
 // ---------------------------------------------------------------------------
 
-export const dnsRecordsContract = {
-  getRecords: {
-    type: 'query',
-    input: zoneNameInputSchema,
-    output: z.array(dnsRecordSchema),
-  },
+export const dnsRecordsContract = createContract(
+  { softOutput: true },
+  {
+    getRecords: {
+      type: 'query',
+      input: zoneNameInputSchema,
+      output: z.array(dnsRecordSchema),
+    },
 
-  createDnsRecord: {
-    type: 'mutation',
-    input: createRecordInputSchema,
-    output: dnsRecordSchema,
-  },
+    createDnsRecord: {
+      type: 'mutation',
+      input: createRecordInputSchema,
+      output: dnsRecordSchema,
+    },
 
-  updateRecord: {
-    type: 'mutation',
-    input: updateRecordInputSchema,
-    output: dnsRecordSchema,
-  },
+    updateRecord: {
+      type: 'mutation',
+      input: updateRecordInputSchema,
+      output: dnsRecordSchema,
+    },
 
-  deleteRecord: {
-    type: 'mutation',
-    input: deleteRecordInputSchema,
-    output: successAckSchema,
-  },
+    deleteRecord: {
+      type: 'mutation',
+      input: deleteRecordInputSchema,
+      output: successAckSchema,
+    },
 
-  updateRecords: {
-    type: 'mutation',
-    input: updateRecordsInputSchema,
-    // `batchUpdateRecords` runs N update statements and returns the updated
-    // rows as a single flat array (the underlying driver call is opaque, so
-    // the handler casts to this contract shape).
-    output: z.array(dnsRecordSchema),
-  },
+    updateRecords: {
+      type: 'mutation',
+      input: updateRecordsInputSchema,
+      // `batchUpdateRecords` runs N update statements and returns the updated
+      // rows as a single flat array (the underlying driver call is opaque, so
+      // the handler casts to this contract shape).
+      output: z.array(dnsRecordSchema),
+    },
 
-  createRecords: {
-    type: 'mutation',
-    input: createRecordsInputSchema,
-    output: z.array(dnsRecordSchema),
-  },
+    createRecords: {
+      type: 'mutation',
+      input: createRecordsInputSchema,
+      output: z.array(dnsRecordSchema),
+    },
 
-  deleteRecords: {
-    type: 'mutation',
-    input: deleteRecordsInputSchema,
-    output: successAckSchema,
-  },
+    deleteRecords: {
+      type: 'mutation',
+      input: deleteRecordsInputSchema,
+      output: successAckSchema,
+    },
 
-  parkDomain: {
-    type: 'mutation',
-    input: parkDomainInputSchema,
-    // `parkDomain` itself returns `void`; the router wraps the call so the
-    // wire shape is a stable success ack instead of `undefined`.
-    output: successAckSchema,
-  },
+    parkDomain: {
+      type: 'mutation',
+      input: parkDomainInputSchema,
+      // `parkDomain` itself returns `void`; the router wraps the call so the
+      // wire shape is a stable success ack instead of `undefined`.
+      output: successAckSchema,
+    },
 
-  isDomainParked: {
-    type: 'query',
-    input: isDomainParkedInputSchema,
-    output: z.boolean(),
-  },
+    isDomainParked: {
+      type: 'query',
+      input: isDomainParkedInputSchema,
+      output: z.boolean(),
+    },
 
-  getEnableDnssecProgress: {
-    type: 'query',
-    input: dnssecProgressInputSchema,
-    output: enableDnssecProgressPayloadSchema,
-  },
+    getEnableDnssecProgress: {
+      type: 'query',
+      input: dnssecProgressInputSchema,
+      output: enableDnssecProgressPayloadSchema,
+    },
 
-  getDisableDnssecProgress: {
-    type: 'query',
-    input: dnssecProgressInputSchema,
-    output: disableDnssecProgressPayloadSchema,
-  },
+    getDisableDnssecProgress: {
+      type: 'query',
+      input: dnssecProgressInputSchema,
+      output: disableDnssecProgressPayloadSchema,
+    },
 
-  getChangeNameserversProgress: {
-    type: 'query',
-    input: dnssecProgressInputSchema,
-    output: changeNameserversProgressPayloadSchema,
+    getChangeNameserversProgress: {
+      type: 'query',
+      input: dnssecProgressInputSchema,
+      output: changeNameserversProgressPayloadSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type DnsRecordsContract = typeof dnsRecordsContract;

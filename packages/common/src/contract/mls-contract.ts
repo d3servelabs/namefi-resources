@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -152,30 +153,33 @@ export type MlsDomainSearchResponse = z.infer<
 // The contract
 // ---------------------------------------------------------------------------
 
-export const mlsContract = {
-  getFeed: {
-    type: 'query',
-    input: mlsFeedInputSchema,
-    output: mlsFeedPageSchema,
-  },
+export const mlsContract = createContract(
+  { softOutput: true },
+  {
+    getFeed: {
+      type: 'query',
+      input: mlsFeedInputSchema,
+      output: mlsFeedPageSchema,
+    },
 
-  getHandleListings: {
-    type: 'query',
-    input: mlsHandleListingsInputSchema,
-    output: mlsHandleListingsPageSchema,
-  },
+    getHandleListings: {
+      type: 'query',
+      input: mlsHandleListingsInputSchema,
+      output: mlsHandleListingsPageSchema,
+    },
 
-  reportListing: {
-    type: 'mutation',
-    input: mlsReportInputSchema,
-    output: mlsReportResponseSchema,
-  },
+    reportListing: {
+      type: 'mutation',
+      input: mlsReportInputSchema,
+      output: mlsReportResponseSchema,
+    },
 
-  searchDomainOffers: {
-    type: 'query',
-    input: mlsDomainSearchInputSchema,
-    output: mlsDomainSearchResponseSchema,
+    searchDomainOffers: {
+      type: 'query',
+      input: mlsDomainSearchInputSchema,
+      output: mlsDomainSearchResponseSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type MlsContract = typeof mlsContract;

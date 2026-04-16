@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -82,57 +83,60 @@ const checkAvailabilityResultSchema = z.object({
   price: z.any(),
 });
 
-export const adminEppTestingContract = {
-  createDomain: {
-    type: 'mutation',
-    input: createDomainInputSchema,
-    output: eppOperationResultSchema,
+export const adminEppTestingContract = createContract(
+  { softOutput: true },
+  {
+    createDomain: {
+      type: 'mutation',
+      input: createDomainInputSchema,
+      output: eppOperationResultSchema,
+    },
+    getDomainInfo: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: getDomainInfoResultSchema,
+    },
+    changeAuthCode: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: changeAuthCodeResultSchema,
+    },
+    queryTransfer: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: queryTransferResultSchema,
+    },
+    requestTransfer: {
+      type: 'mutation',
+      input: requestTransferInputSchema,
+      output: eppOperationResultSchema,
+    },
+    approveTransfer: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: eppOperationResultSchema,
+    },
+    rejectTransfer: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: eppOperationResultSchema,
+    },
+    lockDomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: eppOperationResultSchema,
+    },
+    unlockDomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: eppOperationResultSchema,
+    },
+    checkAvailability: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: checkAvailabilityResultSchema,
+    },
   },
-  getDomainInfo: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: getDomainInfoResultSchema,
-  },
-  changeAuthCode: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: changeAuthCodeResultSchema,
-  },
-  queryTransfer: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: queryTransferResultSchema,
-  },
-  requestTransfer: {
-    type: 'mutation',
-    input: requestTransferInputSchema,
-    output: eppOperationResultSchema,
-  },
-  approveTransfer: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: eppOperationResultSchema,
-  },
-  rejectTransfer: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: eppOperationResultSchema,
-  },
-  lockDomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: eppOperationResultSchema,
-  },
-  unlockDomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: eppOperationResultSchema,
-  },
-  checkAvailability: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: checkAvailabilityResultSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AdminEppTestingContract = typeof adminEppTestingContract;

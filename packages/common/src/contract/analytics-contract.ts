@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -192,37 +193,40 @@ const dnsAnalyticsParsedSchema = z.custom<unknown>(() => true);
 // Contract
 // ---------------------------------------------------------------------------
 
-export const analyticsContract = {
-  getDashboardOverview: {
-    type: 'query',
-    input: getDashboardOverviewInputSchema,
-    output: analyticsReportBundleSchema,
+export const analyticsContract = createContract(
+  { softOutput: true },
+  {
+    getDashboardOverview: {
+      type: 'query',
+      input: getDashboardOverviewInputSchema,
+      output: analyticsReportBundleSchema,
+    },
+    getCheckoutFlowOverview: {
+      type: 'query',
+      input: getCheckoutFlowOverviewInputSchema,
+      output: checkoutFlowAnalyticsParsedSchema,
+    },
+    getByPublicSuffix: {
+      type: 'query',
+      input: getByPublicSuffixInputSchema,
+      output: ga4ReportSchema,
+    },
+    getByPublicSuffixPlusOne: {
+      type: 'query',
+      input: getByPublicSuffixPlusOneInputSchema,
+      output: ga4ReportSchema,
+    },
+    getFullReportByRecordName: {
+      type: 'query',
+      input: getFullReportByRecordNameInputSchema,
+      output: analyticsReportBundleSchema,
+    },
+    getParsedReportByRecordName: {
+      type: 'query',
+      input: getFullReportByRecordNameInputSchema,
+      output: dnsAnalyticsParsedSchema,
+    },
   },
-  getCheckoutFlowOverview: {
-    type: 'query',
-    input: getCheckoutFlowOverviewInputSchema,
-    output: checkoutFlowAnalyticsParsedSchema,
-  },
-  getByPublicSuffix: {
-    type: 'query',
-    input: getByPublicSuffixInputSchema,
-    output: ga4ReportSchema,
-  },
-  getByPublicSuffixPlusOne: {
-    type: 'query',
-    input: getByPublicSuffixPlusOneInputSchema,
-    output: ga4ReportSchema,
-  },
-  getFullReportByRecordName: {
-    type: 'query',
-    input: getFullReportByRecordNameInputSchema,
-    output: analyticsReportBundleSchema,
-  },
-  getParsedReportByRecordName: {
-    type: 'query',
-    input: getFullReportByRecordNameInputSchema,
-    output: dnsAnalyticsParsedSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type AnalyticsContract = typeof analyticsContract;

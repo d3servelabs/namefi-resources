@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -50,24 +51,27 @@ const hasUserSharedOutputSchema = z.object({
 // The contract
 // ---------------------------------------------------------------------------
 
-export const shareContract = {
-  submitShare: {
-    type: 'mutation',
-    input: submitShareInputSchema,
-    output: submitShareOutputSchema,
-  },
+export const shareContract = createContract(
+  { softOutput: true },
+  {
+    submitShare: {
+      type: 'mutation',
+      input: submitShareInputSchema,
+      output: submitShareOutputSchema,
+    },
 
-  submitShareAnonymous: {
-    type: 'mutation',
-    input: submitShareInputSchema,
-    output: submitShareOutputSchema,
-  },
+    submitShareAnonymous: {
+      type: 'mutation',
+      input: submitShareInputSchema,
+      output: submitShareOutputSchema,
+    },
 
-  hasUserShared: {
-    type: 'query',
-    input: hasUserSharedInputSchema,
-    output: hasUserSharedOutputSchema,
+    hasUserShared: {
+      type: 'query',
+      input: hasUserSharedInputSchema,
+      output: hasUserSharedOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type ShareContract = typeof shareContract;

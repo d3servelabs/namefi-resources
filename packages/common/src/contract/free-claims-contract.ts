@@ -9,6 +9,7 @@ import {
 import type { SearchAttributes } from '@temporalio/common';
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -177,37 +178,40 @@ const getUserClaimsOutputSchema = z.array(
 // Contract
 // ---------------------------------------------------------------------------
 
-export const freeClaimsContract = {
-  checkEligibility: {
-    type: 'query',
-    input: checkEligibilityInputSchema,
-    output: checkEligibilityOutputSchema,
+export const freeClaimsContract = createContract(
+  { softOutput: true },
+  {
+    checkEligibility: {
+      type: 'query',
+      input: checkEligibilityInputSchema,
+      output: checkEligibilityOutputSchema,
+    },
+    processClaim: {
+      type: 'mutation',
+      input: processClaimInputSchema,
+      output: processClaimOutputSchema,
+    },
+    getDomainClaimStatus: {
+      type: 'query',
+      input: getDomainClaimStatusInputSchema,
+      output: getDomainClaimStatusOutputSchema,
+    },
+    searchWorkflows: {
+      type: 'query',
+      input: searchWorkflowsInputSchema,
+      output: searchWorkflowsOutputSchema,
+    },
+    processClaimWithTransaction: {
+      type: 'mutation',
+      input: processClaimWithTransactionInputSchema,
+      output: processClaimWithTransactionOutputSchema,
+    },
+    getUserClaims: {
+      type: 'query',
+      input: z.void(),
+      output: getUserClaimsOutputSchema,
+    },
   },
-  processClaim: {
-    type: 'mutation',
-    input: processClaimInputSchema,
-    output: processClaimOutputSchema,
-  },
-  getDomainClaimStatus: {
-    type: 'query',
-    input: getDomainClaimStatusInputSchema,
-    output: getDomainClaimStatusOutputSchema,
-  },
-  searchWorkflows: {
-    type: 'query',
-    input: searchWorkflowsInputSchema,
-    output: searchWorkflowsOutputSchema,
-  },
-  processClaimWithTransaction: {
-    type: 'mutation',
-    input: processClaimWithTransactionInputSchema,
-    output: processClaimWithTransactionOutputSchema,
-  },
-  getUserClaims: {
-    type: 'query',
-    input: z.void(),
-    output: getUserClaimsOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type FreeClaimsContract = typeof freeClaimsContract;

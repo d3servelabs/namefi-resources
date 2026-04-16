@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -46,27 +47,30 @@ const paymentMethodCardSchema = z.object({
 
 const getPaymentMethodsOutputSchema = z.array(paymentMethodCardSchema);
 
-export const paymentsContract = {
-  createCustomerSession: {
-    type: 'mutation',
-    input: z.void(),
-    output: createCustomerSessionOutputSchema,
+export const paymentsContract = createContract(
+  { softOutput: false },
+  {
+    createCustomerSession: {
+      type: 'mutation',
+      input: z.void(),
+      output: createCustomerSessionOutputSchema,
+    },
+    createSetupIntent: {
+      type: 'mutation',
+      input: z.void(),
+      output: createSetupIntentOutputSchema,
+    },
+    deletePaymentMethod: {
+      type: 'mutation',
+      input: deletePaymentMethodInputSchema,
+      output: deletePaymentMethodOutputSchema,
+    },
+    getPaymentMethods: {
+      type: 'query',
+      input: z.void(),
+      output: getPaymentMethodsOutputSchema,
+    },
   },
-  createSetupIntent: {
-    type: 'mutation',
-    input: z.void(),
-    output: createSetupIntentOutputSchema,
-  },
-  deletePaymentMethod: {
-    type: 'mutation',
-    input: deletePaymentMethodInputSchema,
-    output: deletePaymentMethodOutputSchema,
-  },
-  getPaymentMethods: {
-    type: 'query',
-    input: z.void(),
-    output: getPaymentMethodsOutputSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type PaymentsContract = typeof paymentsContract;

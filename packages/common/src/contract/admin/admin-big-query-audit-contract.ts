@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
 
 /**
@@ -45,12 +46,15 @@ const listAuditLogsOutputSchema = z.object({
   nextPageToken: z.string().optional(),
 });
 
-export const adminBigQueryAuditContract = {
-  list: {
-    type: 'query',
-    input: listInputSchema,
-    output: listAuditLogsOutputSchema,
+export const adminBigQueryAuditContract = createContract(
+  { softOutput: true },
+  {
+    list: {
+      type: 'query',
+      input: listInputSchema,
+      output: listAuditLogsOutputSchema,
+    },
   },
-} as const satisfies RouterContract;
+);
 
 export type AdminBigQueryAuditContract = typeof adminBigQueryAuditContract;

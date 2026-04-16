@@ -4,6 +4,7 @@ import type {
   ScheduleExecutionStartWorkflowActionResult,
 } from '../types/temporal';
 import { z } from 'zod';
+import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -281,122 +282,125 @@ const campaignMutationResultSchema = z
 // Contract
 // ---------------------------------------------------------------------------
 
-export const huntContract = {
-  submitDomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: submitDomainResultSchema,
+export const huntContract = createContract(
+  { softOutput: true },
+  {
+    submitDomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: submitDomainResultSchema,
+    },
+    removeDomain: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: removeDomainResultSchema,
+    },
+    getMySubmittedDomains: {
+      type: 'query',
+      input: paginationInputSchema,
+      output: huntDomainListSchema,
+    },
+    getMyUpvotedDomains: {
+      type: 'query',
+      input: paginationInputSchema,
+      output: huntDomainListSchema,
+    },
+    getTrendingDomainsPublic: {
+      type: 'query',
+      input: getTrendingDomainsInputSchema,
+      output: trendingDomainsResultSchema,
+    },
+    getTrendingDomains: {
+      type: 'query',
+      input: getTrendingDomainsInputSchema,
+      output: trendingDomainsResultSchema,
+    },
+    upvote: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: voteResultSchema,
+    },
+    unvote: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: voteResultSchema,
+    },
+    checkDomainOwnership: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: checkDomainOwnershipResultSchema,
+    },
+    getDomainDetail: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainDetailResultSchema,
+    },
+    getDomainDetailPublic: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainDetailResultSchema,
+    },
+    getCampaignPublic: {
+      type: 'query',
+      input: getCampaignInputSchema,
+      output: campaignResultSchema,
+    },
+    getCampaign: {
+      type: 'query',
+      input: getCampaignInputSchema,
+      output: campaignResultSchema,
+    },
+    getPeriodAwards: {
+      type: 'query',
+      input: getPeriodAwardsInputSchema,
+      output: periodAwardsResultSchema,
+    },
+    getDomainAwards: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: domainAwardsResultSchema,
+    },
+    getAwardSchedulesHealth: {
+      type: 'query',
+      input: z.void(),
+      output: awardSchedulesHealthSchema,
+    },
+    triggerPeriodAward: {
+      type: 'mutation',
+      input: triggerPeriodAwardInputSchema,
+      output: triggerWorkflowResultSchema,
+    },
+    triggerCampaignAward: {
+      type: 'mutation',
+      input: triggerCampaignAwardInputSchema,
+      output: triggerWorkflowResultSchema,
+    },
+    triggerCampaignStatus: {
+      type: 'mutation',
+      input: z.object({}),
+      output: triggerWorkflowResultSchema,
+    },
+    createCampaign: {
+      type: 'mutation',
+      input: createCampaignInputSchema,
+      output: campaignMutationResultSchema,
+    },
+    addDomainsToCampaign: {
+      type: 'mutation',
+      input: addDomainsToCampaignInputSchema,
+      output: campaignMutationResultSchema,
+    },
+    updateCampaignStatus: {
+      type: 'mutation',
+      input: updateCampaignStatusInputSchema,
+      output: campaignMutationResultSchema,
+    },
+    updateCampaign: {
+      type: 'mutation',
+      input: updateCampaignInputSchema,
+      output: campaignMutationResultSchema,
+    },
   },
-  removeDomain: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: removeDomainResultSchema,
-  },
-  getMySubmittedDomains: {
-    type: 'query',
-    input: paginationInputSchema,
-    output: huntDomainListSchema,
-  },
-  getMyUpvotedDomains: {
-    type: 'query',
-    input: paginationInputSchema,
-    output: huntDomainListSchema,
-  },
-  getTrendingDomainsPublic: {
-    type: 'query',
-    input: getTrendingDomainsInputSchema,
-    output: trendingDomainsResultSchema,
-  },
-  getTrendingDomains: {
-    type: 'query',
-    input: getTrendingDomainsInputSchema,
-    output: trendingDomainsResultSchema,
-  },
-  upvote: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: voteResultSchema,
-  },
-  unvote: {
-    type: 'mutation',
-    input: domainNameInputSchema,
-    output: voteResultSchema,
-  },
-  checkDomainOwnership: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: checkDomainOwnershipResultSchema,
-  },
-  getDomainDetail: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainDetailResultSchema,
-  },
-  getDomainDetailPublic: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainDetailResultSchema,
-  },
-  getCampaignPublic: {
-    type: 'query',
-    input: getCampaignInputSchema,
-    output: campaignResultSchema,
-  },
-  getCampaign: {
-    type: 'query',
-    input: getCampaignInputSchema,
-    output: campaignResultSchema,
-  },
-  getPeriodAwards: {
-    type: 'query',
-    input: getPeriodAwardsInputSchema,
-    output: periodAwardsResultSchema,
-  },
-  getDomainAwards: {
-    type: 'query',
-    input: domainNameInputSchema,
-    output: domainAwardsResultSchema,
-  },
-  getAwardSchedulesHealth: {
-    type: 'query',
-    input: z.void(),
-    output: awardSchedulesHealthSchema,
-  },
-  triggerPeriodAward: {
-    type: 'mutation',
-    input: triggerPeriodAwardInputSchema,
-    output: triggerWorkflowResultSchema,
-  },
-  triggerCampaignAward: {
-    type: 'mutation',
-    input: triggerCampaignAwardInputSchema,
-    output: triggerWorkflowResultSchema,
-  },
-  triggerCampaignStatus: {
-    type: 'mutation',
-    input: z.object({}),
-    output: triggerWorkflowResultSchema,
-  },
-  createCampaign: {
-    type: 'mutation',
-    input: createCampaignInputSchema,
-    output: campaignMutationResultSchema,
-  },
-  addDomainsToCampaign: {
-    type: 'mutation',
-    input: addDomainsToCampaignInputSchema,
-    output: campaignMutationResultSchema,
-  },
-  updateCampaignStatus: {
-    type: 'mutation',
-    input: updateCampaignStatusInputSchema,
-    output: campaignMutationResultSchema,
-  },
-  updateCampaign: {
-    type: 'mutation',
-    input: updateCampaignInputSchema,
-    output: campaignMutationResultSchema,
-  },
-} as const satisfies RouterContract;
+);
 
 export type HuntContract = typeof huntContract;
