@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { adminProcedure, createTRPCRouter } from '../base';
-import { getBigQueryAuditClient } from '../../lib/bigquery_audit_client';
+import { adminProcedure, createTRPCRouter } from '../../base';
+import { getBigQueryAuditClient } from '../../../lib/bigquery_audit_client';
 import { logger } from '#lib/logger';
-import { config } from '../../lib/env';
+import { config } from '../../../lib/env';
 
 const listInput = z.object({
   pageSize: z.number().min(1).max(1000).default(50),

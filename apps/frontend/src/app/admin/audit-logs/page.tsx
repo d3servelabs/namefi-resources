@@ -98,7 +98,7 @@ function AuditLogsPageInner() {
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
 
   const { data, isLoading, isFetching, refetch } = useQuery({
-    ...trpc.bigQueryAudit.list.queryOptions({
+    ...trpc.admin.bigQueryAudit.list.queryOptions({
       pageSize,
       pageToken,
       orderBy,

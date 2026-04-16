@@ -19,6 +19,7 @@ import { adminUsersRouter } from './admin/adminUsersRouter';
 import { domainPreferencesRouter } from './admin/domainPreferencesRouter';
 import { adminOrdersRouter } from './admin/adminOrdersRouter';
 import { exportTrackingRouter } from './admin/exportTrackingRouter';
+import { bigQueryAuditRouter } from './admin/bigQueryAuditRouter';
 
 export const adminRouter = createTRPCRouter({
   isUserAdmin: protectedProcedure.query(async ({ ctx }) => {
@@ -40,4 +41,5 @@ export const adminRouter = createTRPCRouter({
   domainPreferences: domainPreferencesRouter,
   orders: adminOrdersRouter,
   exportTracking: exportTrackingRouter,
+  bigQueryAudit: bigQueryAuditRouter,
 });
