@@ -1,27 +1,34 @@
 import type { z } from 'zod';
 import type {
   AnyProcedure,
+  BuiltRouter,
   MutationProcedure,
   QueryProcedure,
-  Router,
   RouterRecord,
+  SubscriptionProcedure,
 } from '@trpc/server/unstable-core-do-not-import';
 
 /**
  * Type-only contract-first tRPC router infrastructure.
  *
  * A "contract" is a plain object describing every procedure on a router as
- * `{ type: 'query' | 'mutation', input: ZodSchema, output: ZodSchema }`,
+ * `{ type: 'query' | 'mutation' | 'subscription', input: ZodSchema, output: ZodSchema }`,
  * with optional **nested** sub-contracts for sub-routers:
  *
  *   const myContract = {
- *     getThing: { type: 'query',    input: ..., output: ... },
- *     setThing: { type: 'mutation', input: ..., output: ... },
+ *     getThing: { type: 'query',        input: ..., output: ... },
+ *     setThing: { type: 'mutation',     input: ..., output: ... },
+ *     liveFeed: { type: 'subscription', input: ..., output: ... },
  *     admin: {
  *       deleteThing: { type: 'mutation', input: ..., output: ... },
  *       listAll:     { type: 'query',    input: ..., output: ... },
  *     },
  *   } as const satisfies RouterContract;
+ *
+ * For subscriptions, `output` describes the shape of **each event** the
+ * resolver yields (for `async function*` subscriptions in tRPC v11) or the
+ * inner value of the observable (for the legacy subscription style). It is
+ * not the `AsyncIterable<...>` wrapper itself.
  *
  * The contract is **only** about wire shape — it does not know or care
  * whether a procedure is `publicProcedure`, `protectedProcedure`, wrapped
@@ -39,11 +46,16 @@ import type {
 // Contract shape
 // ---------------------------------------------------------------------------
 
-export type ContractType = 'query' | 'mutation';
+export type ContractType = 'query' | 'mutation' | 'subscription';
 
 export type ProcedureContract = {
   readonly type: ContractType;
   readonly input: z.ZodTypeAny;
+  /**
+   * For `query` and `mutation`, this is the response shape. For
+   * `subscription`, this is the shape of **each event** the resolver
+   * yields/emits — not the `AsyncIterable<...>` / observable wrapper.
+   */
   readonly output: z.ZodTypeAny;
 };
 
@@ -69,13 +81,32 @@ export type RouterContract = {
  *   schema, `z.input` is the unbranded base type, which lets clients keep
  *   passing plain `string`s where the server brands them after parsing.
  *
- * - `BuiltProcedureDef.output` is `z.output<C['output']>` — the POST-parse
- *   shape — because that is what the client receives.
+ * - `BuiltProcedureDef.output` for `query` / `mutation` is
+ *   `z.output<C['output']>` (the POST-parse response shape). For
+ *   `subscription`, it is `AsyncIterable<z.output<C['output']>, any, any>`
+ *   — tRPC v11 subscriptions use an `async function*` resolver whose
+ *   inferred return type is the full `AsyncIterable<Event>`, and that is
+ *   what tRPC stores on the procedure def. Wrapping here keeps the
+ *   contract-derived procedure type structurally equal to what the backend
+ *   builder actually produces.
+ *
+ *   Implementation note for subscriptions: do **not** call `.output(...)`
+ *   on the procedure chain. In tRPC v11, `.output()` on a subscription
+ *   expects the full `AsyncIterable<Event>` type and fails with
+ *   `TypeError<'Subscription output could not be inferred'>` if a plain
+ *   per-event schema is passed. Just declare the event shape in the
+ *   contract and let `async function*` inference carry it through; tRPC
+ *   will still serialize the yielded values correctly on the wire.
  *
  * - `BuiltProcedureDef.meta` is plumbed through as the `TMeta` generic so
  *   per-procedure `.meta(...)` calls keep their proper typing instead of
  *   collapsing to `object` / `unknown`. Pass the actual meta type from the
  *   tRPC instance (e.g. `TrpcMeta` exported from `apps/backend/src/trpc/base.ts`).
+ *
+ * Dispatches on `C['type']` to pick `QueryProcedure`, `MutationProcedure`,
+ * or `SubscriptionProcedure` from tRPC's procedure type zoo. A contract
+ * with an unknown `type` falls through to `never`, which surfaces as a
+ * very visible compile error at the implementation site.
  */
 export type ProcedureFor<
   C extends ProcedureContract,
@@ -86,11 +117,20 @@ export type ProcedureFor<
       input: z.input<C['input']>;
       output: z.output<C['output']>;
     }>
-  : MutationProcedure<{
-      meta: TMeta;
-      input: z.input<C['input']>;
-      output: z.output<C['output']>;
-    }>;
+  : C['type'] extends 'mutation'
+    ? MutationProcedure<{
+        meta: TMeta;
+        input: z.input<C['input']>;
+        output: z.output<C['output']>;
+      }>
+    : C['type'] extends 'subscription'
+      ? SubscriptionProcedure<{
+          meta: TMeta;
+          input: z.input<C['input']>;
+          // biome-ignore lint/suspicious/noExplicitAny: match tRPC's subscription() generic bounds, which use `any` for the AsyncIterable's $Return / $Next parameters.
+          output: AsyncIterable<z.output<C['output']>, any, any>;
+        }>
+      : never;
 
 /**
  * The tRPC router record (procedures keyed by name) derived from a contract.
@@ -109,7 +149,7 @@ export type ContractRouterRecord<
 };
 
 /**
- * The full tRPC `Router` type derived from a contract.
+ * The full tRPC `BuiltRouter` type derived from a contract.
  *
  * Useful when you want to share an `AppRouter`-style type with the frontend
  * (for `inferRouterInputs<...>` / `inferRouterOutputs<...>`) **without**
@@ -124,14 +164,19 @@ export type ContractRouterRecord<
  *   type DnsRecordsRouter = ContractRouter<typeof dnsRecordsContract>;
  *   type Inputs = inferRouterInputs<DnsRecordsRouter>;
  *
- * `inferRouterInputs` only walks `_def.record`, so the synthetic router type
- * we construct here is structurally compatible even though we never actually
- * instantiate a real router on the frontend.
+ * We use tRPC's `BuiltRouter<TRoot, TRecord> = Router<TRoot, TRecord> & TRecord`
+ * (rather than the plain `Router<...>` interface) so the result is
+ * structurally assignable to `RouterRecord` as well. That matters when a
+ * `ContractRouter<...>` is plugged *into* another router's `_def.record`
+ * as a sub-router — e.g. when the frontend splices contract-derived types
+ * into an `AppRouter` override — since tRPC's inference helpers check each
+ * record entry with `$Value extends RouterRecord` and a BuiltRouter passes
+ * that check thanks to the TRecord intersection.
  */
 export type ContractRouter<
   TContract extends RouterContract,
   TMeta = unknown,
-> = Router<
+> = BuiltRouter<
   // We don't know the consumer's ctx / errorShape / transformer at the
   // contract level — they're irrelevant to input/output inference. `any` is
   // safe here because `inferRouterInputs` / `inferRouterOutputs` only read
