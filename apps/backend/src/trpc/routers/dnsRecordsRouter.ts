@@ -37,7 +37,10 @@ import {
   type WorkflowProgressState,
   type WorkflowStep,
 } from '../../temporal/shared/workflow-helpers/workflow-progress';
-import { dnsRecordsContract } from '@namefi-astra/common/dns-records-contract';
+import {
+  type dnsRecordSchema,
+  dnsRecordsContract,
+} from '@namefi-astra/common/contract/dns-records-contract';
 import { protectedProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';

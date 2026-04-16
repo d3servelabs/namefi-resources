@@ -33,7 +33,7 @@ export const namefiNftCte = qb.$with('namefi_nft_cte').as((qb) => {
       expirationTimeInSeconds: sql<bigint>`expiration_time_in_seconds`.as(
         'expiration_time_in_seconds',
       ),
-      expirationTime: sql<Date>`
+      expirationTime: sql<Date | null>`
     CASE WHEN expiration_time_in_seconds IS NULL
       OR expiration_time_in_seconds = 0 THEN
       NULL

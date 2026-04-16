@@ -1,8 +1,9 @@
-import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import { apiKeysContract } from '@namefi-astra/common/contract/api-keys-contract';
 import { eq, and, isNull, desc } from 'drizzle-orm';
 import { db, apiKeysTable } from '@namefi-astra/db';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { protectedProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { logger } from '#lib/logger';
 import { generatePlainApiKey } from '#lib/auth/methods/plain/api-key-plain';
 import {
@@ -63,51 +64,9 @@ const UPDATE_API_KEY_NAME_EIP712_TYPES: Record<
  */
 const MAX_API_KEYS_PER_USER = 10;
 
-/**
- * Schema for create API key input
- */
-const createApiKeyInputSchema = z.object({
-  signature: z
-    .string()
-    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
-    .optional(),
-  payload: z.object({
-    keyName: z.string().min(1).max(100),
-    keyType: z.enum(['PLAIN', 'PUBLIC_PRIVATE']),
-    publicKey: z.string().default(''), // Required for PUBLIC_PRIVATE, empty for PLAIN
-    expiresAt: z.number().int().min(0), // 0 means never expires
-    timestamp: z.number().int(),
-  }),
-});
-
-/**
- * Schema for revoke API key input
- */
-const revokeApiKeyInputSchema = z.object({
-  signature: z
-    .string()
-    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
-    .optional(),
-  payload: z.object({
-    keyId: z.string().uuid(),
-    timestamp: z.number().int(),
-  }),
-});
-
-/**
- * Schema for update API key name input
- */
-const updateApiKeyNameInputSchema = z.object({
-  signature: z
-    .string()
-    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
-    .optional(),
-  payload: z.object({
-    keyId: z.string().uuid(),
-    newName: z.string().min(1).max(100),
-    timestamp: z.number().int(),
-  }),
-});
+// Note: input schemas for create / revoke / updateName moved to
+// `@namefi-astra/common/contract/api-keys-contract`. The handlers below
+// reference the contract's schemas via `apiKeysContract.<name>.input`.
 
 /**
  * Optionally verify an EIP-712 signature when provided.
@@ -185,52 +144,58 @@ async function verifyOptionalSignature({
   return signerAddress;
 }
 
-export const apiKeysRouter = createTRPCRouter({
+export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
   /**
    * Get the EIP-712 types for API key operations
    * Used by the frontend to construct the signing payload
    */
-  getSigningTypes: protectedProcedure.query(() => {
-    return {
-      domain: {
-        ...NAMEFI_EIP712_DOMAIN,
-        chainId: 1, // TODO: support other chains or allow cross-chain
-      },
-      types: {
-        createApiKey: CREATE_API_KEY_EIP712_TYPES,
-        revokeApiKey: REVOKE_API_KEY_EIP712_TYPES,
-        updateApiKeyName: UPDATE_API_KEY_NAME_EIP712_TYPES,
-      },
-    };
-  }),
+  getSigningTypes: protectedProcedure
+    .input(apiKeysContract.getSigningTypes.input)
+    .output(apiKeysContract.getSigningTypes.output)
+    .query(() => {
+      return {
+        domain: {
+          ...NAMEFI_EIP712_DOMAIN,
+          chainId: 1, // TODO: support other chains or allow cross-chain
+        },
+        types: {
+          createApiKey: CREATE_API_KEY_EIP712_TYPES,
+          revokeApiKey: REVOKE_API_KEY_EIP712_TYPES,
+          updateApiKeyName: UPDATE_API_KEY_NAME_EIP712_TYPES,
+        },
+      };
+    }),
 
   /**
    * List all API keys for the authenticated user
    * Returns keys with masked information (no actual key values)
    */
-  list: protectedProcedure.query(async ({ ctx }) => {
-    const keys = await db
-      .select({
-        id: apiKeysTable.id,
-        name: apiKeysTable.name,
-        type: apiKeysTable.type,
-        keyPrefix: apiKeysTable.keyPrefix,
-        expiresAt: apiKeysTable.expiresAt,
-        revokedAt: apiKeysTable.revokedAt,
-        lastUsedAt: apiKeysTable.lastUsedAt,
-        createdAt: apiKeysTable.createdAt,
-      })
-      .from(apiKeysTable)
-      .where(eq(apiKeysTable.userId, ctx.user.id))
-      .orderBy(desc(apiKeysTable.createdAt));
+  list: protectedProcedure
+    .input(apiKeysContract.list.input)
+    .output(apiKeysContract.list.output)
+    .query(async ({ ctx }) => {
+      const keys = await db
+        .select({
+          id: apiKeysTable.id,
+          name: apiKeysTable.name,
+          type: apiKeysTable.type,
+          keyPrefix: apiKeysTable.keyPrefix,
+          expiresAt: apiKeysTable.expiresAt,
+          revokedAt: apiKeysTable.revokedAt,
+          lastUsedAt: apiKeysTable.lastUsedAt,
+          createdAt: apiKeysTable.createdAt,
+        })
+        .from(apiKeysTable)
+        .where(eq(apiKeysTable.userId, ctx.user.id))
+        .orderBy(desc(apiKeysTable.createdAt));
 
-    return keys.map((key) => ({
-      ...key,
-      isActive:
-        !key.revokedAt && (!key.expiresAt || key.expiresAt > new Date()),
-      isExpired: key.expiresAt && key.expiresAt <= new Date(),
-    }));
-  }),
+      return keys.map((key) => ({
+        ...key,
+        isActive:
+          !key.revokedAt && (!key.expiresAt || key.expiresAt > new Date()),
+        isExpired: key.expiresAt && key.expiresAt <= new Date(),
+      }));
+    }),
 
   /**
    * Create a new API key
@@ -240,7 +205,8 @@ export const apiKeysRouter = createTRPCRouter({
    * For PUBLIC_PRIVATE keys: User provides their public key
    */
   create: protectedProcedure
-    .input(createApiKeyInputSchema)
+    .input(apiKeysContract.create.input)
+    .output(apiKeysContract.create.output)
     .mutation(async ({ ctx, input }) => {
       const { keyName, keyType, publicKey, expiresAt } = input.payload;
 
@@ -345,7 +311,8 @@ export const apiKeysRouter = createTRPCRouter({
    * Wallet signature is optional — when provided, it is verified for extra security.
    */
   revoke: protectedProcedure
-    .input(revokeApiKeyInputSchema)
+    .input(apiKeysContract.revoke.input)
+    .output(apiKeysContract.revoke.output)
     .mutation(async ({ ctx, input }) => {
       const { keyId } = input.payload;
 
@@ -419,7 +386,8 @@ export const apiKeysRouter = createTRPCRouter({
    * Wallet signature is optional — when provided, it is verified for extra security.
    */
   updateName: protectedProcedure
-    .input(updateApiKeyNameInputSchema)
+    .input(apiKeysContract.updateName.input)
+    .output(apiKeysContract.updateName.output)
     .mutation(async ({ ctx, input }) => {
       const { keyId, newName } = input.payload;
 
@@ -487,7 +455,8 @@ export const apiKeysRouter = createTRPCRouter({
    * Get a single API key by ID
    */
   getById: protectedProcedure
-    .input(z.object({ keyId: z.string().uuid() }))
+    .input(apiKeysContract.getById.input)
+    .output(apiKeysContract.getById.output)
     .query(async ({ ctx, input }) => {
       const [key] = await db
         .select({

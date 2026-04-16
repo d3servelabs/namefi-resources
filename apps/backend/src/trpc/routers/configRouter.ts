@@ -1,4 +1,4 @@
-import { configContract } from '@namefi-astra/common/config-contract';
+import { configContract } from '@namefi-astra/common/contract/config-contract';
 import {
   X402_MAX_TIMEOUT_SECONDS,
   X402_VALID_AFTER_LEEWAY_SECONDS,

@@ -1,11 +1,7 @@
-import { z } from 'zod';
-import {
-  createTRPCRouter,
-  poweredByNamefiOwnerProcedure,
-  withAudit,
-} from '../base';
+import { pbnIssuanceReservationsContract } from '@namefi-astra/common/contract/pbn-issuance-reservations-contract';
+import { poweredByNamefiOwnerProcedure, withAudit } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import {
   createReservation,
@@ -15,79 +11,9 @@ import {
 import { db, pbnIssuanceReservationsTable } from '@namefi-astra/db';
 import { and, desc, eq } from 'drizzle-orm';
 
-const createReservationInputSchema = z
-  .object({
-    pbnDomain: namefiNormalizedDomainSchema,
-    recipientEmail: z.string().email().optional(),
-    exactDomainName: namefiNormalizedDomainSchema.optional(),
-    parentDomain: namefiNormalizedDomainSchema.optional(),
-    reason: z.string().optional(),
-    issueFreeClaim: z.boolean().default(false),
-    reserveHold: z.boolean().default(true),
-    reservationExpirationDate: z.date().nullable().optional(),
-    freeClaimExpirationDate: z.date().nullable().optional(),
-    personalMessage: z.string().optional(),
-    sendEmail: z.boolean().default(true),
-  })
-  .superRefine((v, ctx) => {
-    const hasExact = !!v.exactDomainName;
-    const hasParent = !!v.parentDomain;
-
-    // XOR(exactDomainName, parentDomain)
-    if (hasExact === hasParent) {
-      const message = 'Provide exactly one of exactDomainName or parentDomain';
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message,
-        path: ['exactDomainName'],
-      });
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message,
-        path: ['parentDomain'],
-      });
-    }
-
-    // Hold allowed only on exact; parent must be omitted
-    if (v.reserveHold && (!hasExact || hasParent)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'reserveHold requires exactDomainName and no parentDomain',
-        path: ['exactDomainName'],
-      });
-    }
-
-    // Parent only when issuing a free claim
-    if (hasParent && !v.issueFreeClaim) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'parentDomain requires issueFreeClaim=true',
-        path: ['parentDomain'],
-      });
-    }
-
-    // reservationExpirationDate only when reserveHold=true
-    if (!v.reserveHold && v.reservationExpirationDate != null) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          'reservationExpirationDate must be null when reserveHold=false',
-        path: ['reservationExpirationDate'],
-      });
-    }
-
-    // freeClaimExpirationDate only when issuing
-    if (!v.issueFreeClaim && v.freeClaimExpirationDate != null) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          'freeClaimExpirationDate must be null when issueFreeClaim=false',
-        path: ['freeClaimExpirationDate'],
-      });
-    }
-  });
-
-export const pbnIssuanceReservationsRouter = createTRPCRouter({
+export const pbnIssuanceReservationsRouter = createContractTRPCRouter<
+  typeof pbnIssuanceReservationsContract
+>({
   create: withAudit(
     poweredByNamefiOwnerProcedure,
     ({ ctx, input, auditActorExtraInfo }) => ({
@@ -100,7 +26,8 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(createReservationInputSchema)
+    .input(pbnIssuanceReservationsContract.create.input)
+    .output(pbnIssuanceReservationsContract.create.output)
     .mutation(async ({ ctx, input }) => {
       try {
         const result = await createReservation({
@@ -135,13 +62,8 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
     }),
 
   listByCreator: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        status: z.enum(['CREATED', 'CANCELLED']).optional(),
-        issueFreeClaim: z.boolean().optional(),
-        pbnDomain: namefiNormalizedDomainSchema.optional(),
-      }),
-    )
+    .input(pbnIssuanceReservationsContract.listByCreator.input)
+    .output(pbnIssuanceReservationsContract.listByCreator.output)
     .query(async ({ ctx, input }) => {
       const conditions = [
         eq(pbnIssuanceReservationsTable.creatorId, ctx.user.id),
@@ -195,7 +117,8 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(z.object({ reservationId: z.string().uuid() }))
+    .input(pbnIssuanceReservationsContract.cancel.input)
+    .output(pbnIssuanceReservationsContract.cancel.output)
     .mutation(async ({ ctx, input }) => {
       // ensure ownership
       const records = await db
@@ -240,38 +163,8 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        pbnDomain: namefiNormalizedDomainSchema,
-        items: z
-          .array(
-            z
-              .object({
-                recipientEmail: z.string().email(),
-                exactDomainName: namefiNormalizedDomainSchema.optional(),
-                parentDomain: namefiNormalizedDomainSchema.optional(),
-                reason: z.string().optional(),
-                personalMessage: z.string().optional(),
-                issueFreeClaim: z.boolean().optional(),
-                reserveHold: z.boolean().optional(),
-                reservationExpirationDate: z.date().nullable().optional(),
-                freeClaimExpirationDate: z.date().nullable().optional(),
-              })
-              .refine((v) => v.exactDomainName || v.parentDomain, {
-                message:
-                  'Either exactDomainName or parentDomain must be provided',
-                path: ['exactDomainName'],
-              })
-              .refine((v) => !(v.reserveHold && !v.exactDomainName), {
-                message: 'reserveHold requires exactDomainName',
-                path: ['reserveHold'],
-              }),
-          )
-          .min(1),
-        sendEmail: z.boolean().optional(),
-        metadata: z.record(z.string(), z.any()).optional(),
-      }),
-    )
+    .input(pbnIssuanceReservationsContract.createBulk.input)
+    .output(pbnIssuanceReservationsContract.createBulk.output)
     .mutation(async ({ ctx, input }) => {
       try {
         const result = await createReservationsBulk({

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   createOrderInputSchema as baseCreateOrderInputSchema,
   paymentMetadataSchema,
-} from './order-input';
+} from '../order-input';
 import type {
   CreatedOrder,
   OrderItemsForUser,
@@ -12,7 +12,7 @@ import type {
   PaymentMethodDetails,
   PaymentRefundEntry,
   ReflectCartChangesSummary,
-} from './orders-shared-types';
+} from '../orders-shared-types';
 import type { RouterContract } from './trpc-contract';
 
 /**

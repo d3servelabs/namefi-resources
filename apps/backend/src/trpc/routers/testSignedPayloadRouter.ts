@@ -1,5 +1,6 @@
-import { z } from 'zod';
-import { createTRPCRouter, createSignedPayloadProcedure } from '../base';
+import { testSignedPayloadContract } from '@namefi-astra/common/contract/test-signed-payload-contract';
+import { createSignedPayloadProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { createLogger } from '#lib/logger';
 
 const logger = createLogger({ module: 'test-signed-payload-router' });
@@ -22,7 +23,9 @@ export const TEST_SIGNED_PAYLOAD_EIP712_TYPES: Record<
  * Test router for validating signed payload functionality.
  * This router is for development/testing purposes only.
  */
-export const testSignedPayloadRouter = createTRPCRouter({
+export const testSignedPayloadRouter = createContractTRPCRouter<
+  typeof testSignedPayloadContract
+>({
   /**
    * Test endpoint that requires a signed EIP-712 payload.
    * Logs the payload details and returns them for verification.
@@ -36,15 +39,8 @@ export const testSignedPayloadRouter = createTRPCRouter({
       (input as { signature: string }).signature,
     getChainIdFromInput: async () => 1,
   })
-    .input(
-      z.object({
-        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
-        payload: z.object({
-          message: z.string().min(1),
-          timestamp: z.number().int().positive(),
-        }),
-      }),
-    )
+    .input(testSignedPayloadContract.testSignedEndpoint.input)
+    .output(testSignedPayloadContract.testSignedEndpoint.output)
     .mutation(async ({ input, ctx }) => {
       logger.debug(
         {
@@ -61,7 +57,7 @@ export const testSignedPayloadRouter = createTRPCRouter({
         message: 'Payload signature verified successfully',
         details: {
           payload: input.payload,
-          signerWalletAddress: ctx.signerWalletAddress,
+          signerWalletAddress: ctx.signerWalletAddress as `0x${string}`,
           userId: ctx.user.id,
           privyUserId: ctx.user.privyUserId,
           verifiedAt: new Date().toISOString(),

@@ -1,5 +1,5 @@
 import { db, linkSharesTable } from '@namefi-astra/db';
-import { shareContract } from '@namefi-astra/common/share-contract';
+import { shareContract } from '@namefi-astra/common/contract/share-contract';
 import { and, eq } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 import { protectedProcedure, publicProcedure, withAudit } from '../base';

@@ -1,7 +1,7 @@
 import type {
   ContractRouterRecord,
   RouterContract,
-} from '@namefi-astra/common/trpc-contract';
+} from '@namefi-astra/common/contract/trpc-contract';
 
 import { createTRPCRouter, type TrpcMeta } from './base';
 
@@ -37,7 +37,7 @@ export type {
   ProcedureContract,
   ProcedureFor,
   RouterContract,
-} from '@namefi-astra/common/trpc-contract';
+} from '@namefi-astra/common/contract/trpc-contract';
 
 /**
  * Build a tRPC router whose procedures are statically checked against a

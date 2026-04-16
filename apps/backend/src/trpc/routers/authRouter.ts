@@ -1,7 +1,9 @@
-import { createTRPCRouter, baseProcedure } from '../base';
+import { authContract } from '@namefi-astra/common/contract/auth-contract';
 import { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
+import { baseProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 
-export const authRouter = createTRPCRouter({
+export const authRouter = createContractTRPCRouter<typeof authContract>({
   /**
    * Get the EIP-712 domain configuration for signing payloads.
    *
@@ -10,9 +12,12 @@ export const authRouter = createTRPCRouter({
    *
    * @returns The EIP-712 domain configuration
    */
-  getSigningDomain: baseProcedure.query(() => {
-    return {
-      domain: NAMEFI_EIP712_DOMAIN,
-    };
-  }),
+  getSigningDomain: baseProcedure
+    .input(authContract.getSigningDomain.input)
+    .output(authContract.getSigningDomain.output)
+    .query(() => {
+      return {
+        domain: NAMEFI_EIP712_DOMAIN,
+      };
+    }),
 });

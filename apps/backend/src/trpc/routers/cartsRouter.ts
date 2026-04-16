@@ -1,25 +1,17 @@
-import {
-  cartItemInsertSchema,
-  cartItemUpdateSchema,
-  cartItemsTable,
-  db,
-  itemTypeSchema,
-} from '@namefi-astra/db';
+import { cartItemsTable, db, itemTypeSchema } from '@namefi-astra/db';
+import { cartsContract } from '@namefi-astra/common/contract/carts-contract';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, ilike, sql } from 'drizzle-orm';
-import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { encryptEppAuthCode } from '#lib/epp-code-encryption';
-import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
+import { protectedProcedure, withAudit } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { getDomainPricingForOperation } from '../types';
 import { createLogger } from '#lib/logger';
 import { isNotNil } from 'ramda';
@@ -30,10 +22,12 @@ import {
 
 const _logger = createLogger({ module: 'carts-router' });
 
-export const cartsRouter = createTRPCRouter({
+export const cartsRouter = createContractTRPCRouter<typeof cartsContract>({
   // Get cart items for the current user
-  getItems: protectedProcedure.query(
-    async ({ ctx: { user, poweredByNamefiDomain } }) => {
+  getItems: protectedProcedure
+    .input(cartsContract.getItems.input)
+    .output(cartsContract.getItems.output)
+    .query(async ({ ctx: { user, poweredByNamefiDomain } }) => {
       const cartItems = await db.query.cartItemsTable.findMany({
         where: and(
           eq(cartItemsTable.userId, user.id),
@@ -67,8 +61,7 @@ export const cartsRouter = createTRPCRouter({
       });
 
       return cartItemsWithClaims;
-    },
-  ),
+    }),
 
   // Add multiple items to cart for the current user
   addItems: withAudit(
@@ -83,27 +76,8 @@ export const cartsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.array(
-        cartItemInsertSchema
-          .omit({
-            id: true,
-            userId: true,
-            createdAt: true,
-            updatedAt: true,
-            encryptionKeyId: true,
-            encryptedEppAuthorizationCode: true,
-          })
-          .required()
-          .partial({
-            metadata: true,
-          })
-          .extend({
-            // For import items, we accept the plain text EPP code
-            eppAuthorizationCode: z.string().optional(),
-          }),
-      ),
-    )
+    .input(cartsContract.addItems.input)
+    .output(cartsContract.addItems.output)
     .mutation(async ({ ctx, input }) => {
       _logger.assign({ method: 'addItems' });
 
@@ -223,29 +197,8 @@ export const cartsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      cartItemUpdateSchema
-        .pick({
-          id: true,
-          durationInYears: true,
-        })
-        .required()
-        .partial({
-          durationInYears: true,
-        })
-        .extend({
-          eppAuthorizationCode: z.string().optional(),
-        })
-        .refine(
-          (data) =>
-            data.durationInYears !== undefined ||
-            data.eppAuthorizationCode !== undefined,
-          {
-            message:
-              'At least one of durationInYears or eppAuthorizationCode must be provided',
-          },
-        ),
-    )
+    .input(cartsContract.updateItem.input)
+    .output(cartsContract.updateItem.output)
     .mutation(async ({ ctx, input }) => {
       // Fetch current item since we need domain info for calculations
       const currentItem = await db.query.cartItemsTable.findFirst({
@@ -342,14 +295,19 @@ export const cartsRouter = createTRPCRouter({
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'user',
       actorId: ctx.user?.id || 'unknown',
+      // `input` here is the array of normalized domain names, not an
+      // object with an `id` field — kept as `'unknown'` to match the
+      // original audit behavior, which logged `''` because `input.id`
+      // didn't exist on the array.
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'cart_item',
-      resourceId: input.id || '',
+      resourceId: '',
       action: 'delete',
       extraInput: input,
     }),
   )
-    .input(z.array(namefiNormalizedDomainSchema).min(1))
+    .input(cartsContract.removeItem.input)
+    .output(cartsContract.removeItem.output)
     .mutation(async ({ ctx, input }) => {
       // Delete and return the removed items directly
       const removedItems = await db
@@ -367,11 +325,14 @@ export const cartsRouter = createTRPCRouter({
       return removedItems;
     }),
 
-  clear: protectedProcedure.mutation(async ({ ctx }) => {
-    await db
-      .delete(cartItemsTable)
-      .where(eq(cartItemsTable.userId, ctx.user.id));
+  clear: protectedProcedure
+    .input(cartsContract.clear.input)
+    .output(cartsContract.clear.output)
+    .mutation(async ({ ctx }) => {
+      await db
+        .delete(cartItemsTable)
+        .where(eq(cartItemsTable.userId, ctx.user.id));
 
-    return [];
-  }),
+      return [];
+    }),
 });

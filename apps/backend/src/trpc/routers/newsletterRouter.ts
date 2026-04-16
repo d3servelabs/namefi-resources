@@ -1,5 +1,6 @@
-import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { newsletterContract } from '@namefi-astra/common/contract/newsletter-contract';
+import { publicProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { TRPCError } from '@trpc/server';
 import { logger } from '#lib/logger';
 import { secrets, config } from '#lib/env';
@@ -8,20 +9,6 @@ import { verifySolution } from 'altcha-lib';
 import { db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { privyClient } from '#trpc/utils';
-
-const subscribeToNewsletterSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  name: z.string().optional(),
-  /**
-   * Source/origin of the subscription (e.g., 'namefi-home', 'namefi-park', 'newsletter-page')
-   */
-  from: z.string().min(1, 'Source is required'),
-  /**
-   * Additional custom attributes to store with the subscriber
-   */
-  attributes: z.record(z.string(), z.unknown()).optional(),
-  altcha: z.string().optional().nullable(),
-});
 
 /**
  * Subscribe to newsletter using Listmonk with custom attributes
@@ -183,7 +170,9 @@ async function subscribeToNewsletter(
   }
 }
 
-export const newsletterRouter = createTRPCRouter({
+export const newsletterRouter = createContractTRPCRouter<
+  typeof newsletterContract
+>({
   /**
    * Subscribe to newsletter - Public endpoint for anonymous users
    *
@@ -194,7 +183,8 @@ export const newsletterRouter = createTRPCRouter({
    * - Any additional custom attributes passed
    */
   subscribe: publicProcedure
-    .input(subscribeToNewsletterSchema)
+    .input(newsletterContract.subscribe.input)
+    .output(newsletterContract.subscribe.output)
     .mutation(async ({ input, ctx }) => {
       const { email, name, from, attributes, altcha } = input;
       if (!altcha) {

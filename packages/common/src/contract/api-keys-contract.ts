@@ -1,0 +1,185 @@
+import { z } from 'zod';
+
+import type { RouterContract } from './trpc-contract';
+
+/**
+ * Contract for the API keys router.
+ *
+ * The router (`apps/backend/src/trpc/routers/apiKeysRouter.ts`) is
+ * type-checked against this contract via
+ * `createContractTRPCRouter<typeof apiKeysContract>`. All procedures use
+ * `protectedProcedure` on the backend; the create/revoke/updateName
+ * mutations accept an OPTIONAL EIP-712 signature that the handler verifies
+ * against the authenticated user's wallets.
+ */
+
+// ---------------------------------------------------------------------------
+// EIP-712 signing types (returned by `getSigningTypes`)
+// ---------------------------------------------------------------------------
+
+const eip712TypeFieldSchema = z.object({
+  name: z.string(),
+  type: z.string(),
+});
+
+const eip712TypeMapSchema = z.record(
+  z.string(),
+  z.array(eip712TypeFieldSchema),
+);
+
+const signingTypesOutputSchema = z.object({
+  domain: z.object({
+    name: z.string().optional(),
+    salt: z.custom<`0x${string}`>().optional(),
+    verifyingContract: z.custom<`0x${string}`>().optional(),
+    version: z.string().optional(),
+    chainId: z.number(),
+  }),
+  types: z.object({
+    createApiKey: eip712TypeMapSchema,
+    revokeApiKey: eip712TypeMapSchema,
+    updateApiKeyName: eip712TypeMapSchema,
+  }),
+});
+
+// ---------------------------------------------------------------------------
+// API key row (returned by `list` and `getById`)
+// ---------------------------------------------------------------------------
+
+const apiKeyTypeSchema = z.union([
+  z.literal('PLAIN'),
+  z.literal('PUBLIC_PRIVATE'),
+]);
+
+const apiKeyListItemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: apiKeyTypeSchema,
+  keyPrefix: z.string(),
+  expiresAt: z.date().nullable(),
+  revokedAt: z.date().nullable(),
+  lastUsedAt: z.date().nullable(),
+  createdAt: z.date(),
+  isActive: z.boolean(),
+  isExpired: z.boolean().nullable(),
+});
+
+const listOutputSchema = z.array(apiKeyListItemSchema);
+
+const getByIdInputSchema = z.object({
+  keyId: z.string().uuid(),
+});
+
+// ---------------------------------------------------------------------------
+// create
+// ---------------------------------------------------------------------------
+
+const createInputSchema = z.object({
+  signature: z
+    .string()
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
+    .optional(),
+  payload: z.object({
+    keyName: z.string().min(1).max(100),
+    keyType: apiKeyTypeSchema,
+    publicKey: z.string().default(''),
+    expiresAt: z.number().int().min(0),
+    timestamp: z.number().int(),
+  }),
+});
+
+const createOutputSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: apiKeyTypeSchema,
+  keyPrefix: z.string(),
+  expiresAt: z.date().nullable(),
+  createdAt: z.date(),
+  // For PLAIN keys this is the one-time-shown plaintext key. For
+  // PUBLIC_PRIVATE keys it is `null`.
+  plainKey: z.string().nullable(),
+  signedBy: z.string().optional(),
+});
+
+// ---------------------------------------------------------------------------
+// revoke
+// ---------------------------------------------------------------------------
+
+const revokeInputSchema = z.object({
+  signature: z
+    .string()
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
+    .optional(),
+  payload: z.object({
+    keyId: z.string().uuid(),
+    timestamp: z.number().int(),
+  }),
+});
+
+const revokeOutputSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  revokedAt: z.date().nullable(),
+  signedBy: z.string().optional(),
+});
+
+// ---------------------------------------------------------------------------
+// updateName
+// ---------------------------------------------------------------------------
+
+const updateNameInputSchema = z.object({
+  signature: z
+    .string()
+    .regex(/^0x[a-fA-F0-9]+$/, 'Signature must be a hex string with 0x prefix')
+    .optional(),
+  payload: z.object({
+    keyId: z.string().uuid(),
+    newName: z.string().min(1).max(100),
+    timestamp: z.number().int(),
+  }),
+});
+
+const updateNameOutputSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  signedBy: z.string().optional(),
+});
+
+// ---------------------------------------------------------------------------
+// Contract
+// ---------------------------------------------------------------------------
+
+export const apiKeysContract = {
+  getSigningTypes: {
+    type: 'query',
+    input: z.void(),
+    output: signingTypesOutputSchema,
+  },
+  list: {
+    type: 'query',
+    input: z.void(),
+    output: listOutputSchema,
+  },
+  create: {
+    type: 'mutation',
+    input: createInputSchema,
+    output: createOutputSchema,
+  },
+  revoke: {
+    type: 'mutation',
+    input: revokeInputSchema,
+    output: revokeOutputSchema,
+  },
+  updateName: {
+    type: 'mutation',
+    input: updateNameInputSchema,
+    output: updateNameOutputSchema,
+  },
+  getById: {
+    type: 'query',
+    input: getByIdInputSchema,
+    output: apiKeyListItemSchema,
+  },
+} as const satisfies RouterContract;
+
+export type ApiKeysContract = typeof apiKeysContract;

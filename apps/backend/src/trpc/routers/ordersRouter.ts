@@ -56,7 +56,7 @@ import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUse
 import { resolve } from '../../utils/resolve';
 import { protectedProcedure, withAudit } from '../base';
 import { createContractTRPCRouter } from '../contract';
-import { ordersContract } from '@namefi-astra/common/orders-contract';
+import { ordersContract } from '@namefi-astra/common/contract/orders-contract';
 import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import {

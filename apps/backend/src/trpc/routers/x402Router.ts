@@ -1,5 +1,6 @@
-import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { x402Contract } from '@namefi-astra/common/contract/x402-contract';
+import { publicProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { temporalClient } from '../../temporal/client';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
 import {
@@ -184,13 +185,14 @@ const fetchX402PurchaseWorkflowSnapshot = async (
   }
 };
 
-export const x402Router = createTRPCRouter({
+export const x402Router = createContractTRPCRouter<typeof x402Contract>({
   /**
    * Get x402 purchase workflow progress.
    * Public endpoint - anyone with the purchaseId can check status.
    */
   getX402PurchaseProgress: publicProcedure
-    .input(z.object({ purchaseId: z.string().uuid() }))
+    .input(x402Contract.getX402PurchaseProgress.input)
+    .output(x402Contract.getX402PurchaseProgress.output)
     .query(async ({ input }): Promise<X402PurchaseProgressPayload> => {
       const purchase = await db.query.x402PurchasesTable.findFirst({
         where: eq(x402PurchasesTable.id, input.purchaseId),

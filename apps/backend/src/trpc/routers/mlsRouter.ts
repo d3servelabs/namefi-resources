@@ -8,7 +8,7 @@ import {
   mlsFeedPageSchema,
   mlsHandleListingsPageSchema,
   mlsReportResponseSchema,
-} from '@namefi-astra/common/mls-contract';
+} from '@namefi-astra/common/contract/mls-contract';
 import { config } from '#lib/env';
 import { publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';

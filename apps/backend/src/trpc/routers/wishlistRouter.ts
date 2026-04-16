@@ -1,5 +1,5 @@
 import { db, wishlistedDomainsTable } from '@namefi-astra/db';
-import { wishlistContract } from '@namefi-astra/common/wishlist-contract';
+import { wishlistContract } from '@namefi-astra/common/contract/wishlist-contract';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, ilike, inArray } from 'drizzle-orm';
 import { protectedProcedure } from '../base';
