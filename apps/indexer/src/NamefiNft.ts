@@ -7,6 +7,7 @@ import {
   http,
   zeroAddress,
   type PublicClient,
+  getAddress,
 } from 'viem';
 import { filter, isNil, isNotNil } from 'ramda';
 import { desc, eq, sql } from 'ponder';
@@ -20,7 +21,20 @@ import {
   getHistoricSetExpirationCallsBeforeEventAdded,
   type HistoricSetExpirationCall,
 } from './lib/historic-data';
-import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
+  type NamefiNormalizedDomain,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
+
+type ChecksumAddress = `0x${string}` & { __checksum: true };
+function checksumAddress(input: string): ChecksumAddress {
+  return getAddress(input) as ChecksumAddress;
+}
+
+function areAddressesEqual(a: string, b: string): boolean {
+  return checksumAddress(a) === checksumAddress(b);
+}
 
 // Helper function to fetch domain name from contract
 async function fetchDomainName(
@@ -70,8 +84,8 @@ async function fetchExpirationDate(
 // Types for setup function
 type TransferEvent = {
   tokenId: bigint;
-  fromAddress: `0x${string}`;
-  toAddress: `0x${string}`;
+  fromAddress: ChecksumAddress;
+  toAddress: ChecksumAddress;
   blockNumber: bigint;
   blockTimestamp: bigint;
   transactionHash: `0x${string}`;
@@ -84,7 +98,7 @@ type ExpirationChangeEvent = {
   blockNumber: bigint;
   blockTimestamp: bigint;
   transactionHash: `0x${string}`;
-  changedBy: `0x${string}`;
+  changedBy: ChecksumAddress;
 };
 
 type SetupConfig = {
@@ -98,13 +112,14 @@ type SetupConfig = {
 
 // Helper function to setup block ranges and configuration
 async function setupBlockRanges(context: Context): Promise<SetupConfig> {
-  const {
-    chain: { id: chainId },
-    db,
-    contracts,
-  } = context;
+  if (!context.chain) {
+    throw new Error('missing chain info');
+  }
+  const { db, contracts } = context;
 
+  const chainId = context.chain.id as number;
   const chain = chainById[chainId] as Chain;
+
   if (!chain) {
     throw new Error(`Chain ${chainId} not found`);
   }
@@ -216,12 +231,12 @@ async function getAllTransferEvents(
 
       transferEvents.push({
         tokenId,
-        fromAddress: from,
-        toAddress: to,
+        fromAddress: checksumAddress(from),
+        toAddress: checksumAddress(to),
         blockNumber,
         blockTimestamp,
         transactionHash,
-        isBurn: to === zeroAddress,
+        isBurn: areAddressesEqual(to, zeroAddress),
       });
     }
     i++;
@@ -233,14 +248,14 @@ async function getAllTransferEvents(
 // Helper function to process ownership from transfer events
 function processOwnership(
   transferEvents: TransferEvent[],
-): Map<bigint, { ownerAddress: `0x${string}`; blockNumber: bigint }> {
+): Map<bigint, { ownerAddress: ChecksumAddress; blockNumber: bigint }> {
   const nftToOwners = new Map<
     bigint,
-    { ownerAddress: `0x${string}`; blockNumber: bigint }
+    { ownerAddress: ChecksumAddress; blockNumber: bigint }
   >();
 
   for (const event of transferEvents) {
-    if (event.toAddress === zeroAddress) {
+    if (areAddressesEqual(event.toAddress, zeroAddress)) {
       // NFT was burned
       nftToOwners.delete(event.tokenId);
     } else {
@@ -323,7 +338,7 @@ async function getAllExpirationChangeEvents(
         blockNumber,
         blockTimestamp,
         transactionHash,
-        changedBy: transaction.from,
+        changedBy: checksumAddress(transaction.from),
       });
     }
     i++;
@@ -416,9 +431,7 @@ async function fetchDomainNames(
 // Returns two separate maps: one for active NFTs, one for burn events
 async function fetchExpirationDates(
   config: SetupConfig,
-  activeNfts: Array<
-    [bigint, { ownerAddress: `0x${string}`; blockNumber: bigint }]
-  >,
+  activeNfts: Array<[bigint, NftOwnerShipOnBlock]>,
   burnEvents: TransferEvent[],
 ): Promise<{
   activeDomainsExpirations: Map<bigint, bigint>;
@@ -486,16 +499,27 @@ async function fetchExpirationDates(
   };
 }
 
+type NftOwnerShipOnBlock = {
+  ownerAddress: ChecksumAddress;
+  blockNumber: bigint;
+};
+type PreparedNftData = {
+  tokenId: bigint;
+  normalizedDomainName: NamefiNormalizedDomain;
+  expirationTimeInSeconds: bigint;
+  ownerAddress: ChecksumAddress;
+  chainId: number;
+  lastUpdatedBlock: bigint;
+  lastUpdatedTimestamp: bigint;
+  isLocked: boolean;
+};
 // Helper function to prepare NFT data for database
 async function prepareNftData(
   config: SetupConfig,
-  nftToOwners: Map<
-    bigint,
-    { ownerAddress: `0x${string}`; blockNumber: bigint }
-  >,
+  nftToOwners: Map<bigint, NftOwnerShipOnBlock>,
   domainNames: Map<bigint, string>,
   activeExpirations: Map<bigint, bigint>,
-): Promise<any[]> {
+): Promise<PreparedNftData[]> {
   const { chainId, toBlock, publicClient, contracts } = config;
   const nftToOwnersArray = Array.from(nftToOwners.entries());
 
@@ -533,9 +557,9 @@ async function prepareNftData(
 
       return {
         tokenId,
-        normalizedDomainName: domainName,
+        normalizedDomainName: namefiNormalizedDomainSchema.parse(domainName),
         expirationTimeInSeconds,
-        ownerAddress,
+        ownerAddress: checksumAddress(ownerAddress),
         chainId,
         lastUpdatedBlock: toBlock,
         lastUpdatedTimestamp: BigInt(Date.now()),
@@ -547,12 +571,23 @@ async function prepareNftData(
   return data;
 }
 
+type PreparedTransferLogData = {
+  tokenId: bigint;
+  normalizedDomainName: NamefiNormalizedDomain;
+  fromAddress: ChecksumAddress;
+  toAddress: ChecksumAddress;
+  chainId: number;
+  blockNumber: bigint;
+  blockTimestamp: bigint;
+  transactionHash: string;
+  isBurn: boolean;
+};
 // Helper function to prepare transfer log data
 function prepareTransferLogData(
   transferEvents: TransferEvent[],
   domainNames: Map<bigint, string>,
   chainId: number,
-): any[] {
+): PreparedTransferLogData[] {
   return filter(
     isNotNil,
     transferEvents.map((event) => {
@@ -563,7 +598,7 @@ function prepareTransferLogData(
 
       return {
         tokenId: event.tokenId,
-        normalizedDomainName: domainName,
+        normalizedDomainName: namefiNormalizedDomainSchema.parse(domainName),
         fromAddress: event.fromAddress,
         toAddress: event.toAddress,
         chainId,
@@ -603,7 +638,7 @@ function prepareBurnLogData(
       return {
         tokenId: event.tokenId,
         normalizedDomainName: domainName,
-        fromAddress: event.fromAddress,
+        fromAddress: checksumAddress(event.fromAddress),
         chainId,
         burnedBlock: event.blockNumber,
         burnedTimestamp: event.blockTimestamp,
@@ -642,7 +677,7 @@ function prepareExpirationChangeLogData(
       blockNumber: call.blockNumber,
       blockTimestamp: BigInt(call.blockTimestamp),
       transactionHash: call.transactionHash as `0x${string}`,
-      changedBy: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+      changedBy: checksumAddress(NAMEFI_NFT_CONTRACT_ADDRESS),
       source: call.source,
       prevFromSource: call.previousExpirationTime,
     })),
@@ -687,7 +722,7 @@ function prepareExpirationChangeLogData(
         normalizedDomainName: domainName,
         previousExpiration,
         newExpiration: event.newExpiration,
-        changedBy: event.changedBy,
+        changedBy: checksumAddress(event.changedBy),
         chainId,
         blockNumber: event.blockNumber,
         blockTimestamp: event.blockTimestamp,
@@ -706,10 +741,11 @@ function prepareExpirationChangeLogData(
 // Main setup function - now clean and organized
 ponder.on('NamefiNft:setup', async ({ context }) => {
   const start = Date.now();
-  const {
-    chain: { id: chainId },
-    db,
-  } = context;
+  if (!context.chain) {
+    return;
+  }
+  const { db } = context;
+  const chainId = context.chain.id as number;
 
   try {
     // 1. Setup configuration and block ranges
@@ -847,14 +883,17 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
 
 // Main Transfer event handler - this captures all ownership changes
 ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
+  if (!context.chain) {
+    return;
+  }
   const {
     block,
     args: { from, to, tokenId },
     transaction,
   } = event;
 
-  const chainId = context.chain.id;
-  const isBurn = to === zeroAddress;
+  const chainId = context.chain.id as number;
+  const isBurn = areAddressesEqual(to, zeroAddress);
 
   // For burns, fetch data from the database before deletion
   // For other transfers, fetch from contract
@@ -902,8 +941,8 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
       .values({
         tokenId,
         normalizedDomainName: domainName,
-        fromAddress: from,
-        toAddress: to,
+        fromAddress: checksumAddress(from),
+        toAddress: checksumAddress(to),
         chainId,
         blockNumber: block.number,
         blockTimestamp: block.timestamp,
@@ -926,7 +965,7 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
         .values({
           tokenId,
           normalizedDomainName: domainName,
-          fromAddress: from,
+          fromAddress: checksumAddress(from),
           chainId,
           burnedBlock: block.number,
           burnedTimestamp: block.timestamp,
@@ -956,7 +995,7 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
       normalizedDomainName: domainName || '',
       expirationTimeInSeconds,
       isLocked: false, // Default to unlocked
-      ownerAddress: to,
+      ownerAddress: checksumAddress(to),
       chainId,
       lastUpdatedBlock: block.number,
       lastUpdatedTimestamp: block.timestamp,
@@ -964,19 +1003,22 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
     .onConflictDoUpdate({
       normalizedDomainName: domainName || '',
       expirationTimeInSeconds,
-      ownerAddress: to,
+      ownerAddress: checksumAddress(to),
       lastUpdatedBlock: block.number,
       lastUpdatedTimestamp: block.timestamp,
     });
 });
 
 ponder.on('NamefiNft:ExpirationChanged', async ({ event, context }) => {
+  if (!context.chain) {
+    return;
+  }
   const {
     block,
     args: { tokenId, newExpirationTime },
     transaction,
   } = event;
-  const chainId = context.chain.id;
+  const chainId = context.chain.id as number;
 
   // Fetch the current domain data to get the previous expiration and domain name
   let previousExpiration = 0n;
@@ -1005,7 +1047,7 @@ ponder.on('NamefiNft:ExpirationChanged', async ({ event, context }) => {
         normalizedDomainName: domainName,
         previousExpiration,
         newExpiration: newExpirationTime,
-        changedBy: transaction.from, // The address that initiated the transaction
+        changedBy: checksumAddress(transaction.from), // The address that initiated the transaction
         chainId,
         blockNumber: block.number,
         blockTimestamp: block.timestamp,
@@ -1040,11 +1082,16 @@ ponder.on('NamefiNft:ExpirationChanged', async ({ event, context }) => {
 // Lock/Unlock handlers - now tracking lock status
 
 ponder.on('NamefiNft:Lock', async ({ event, context }) => {
+  if (!context.chain) {
+    return;
+  }
+
   const {
     block,
     args: { tokenId },
   } = event;
-  const chainId = context.chain.id;
+
+  const chainId = context.chain.id as number;
   let domainName = '';
   try {
     const domain = await context.db.find(schema.NamefiNft, {
@@ -1070,11 +1117,16 @@ ponder.on('NamefiNft:Lock', async ({ event, context }) => {
 });
 
 ponder.on('NamefiNft:Unlock', async ({ event, context }) => {
+  if (!context.chain) {
+    return;
+  }
+
   const {
     block,
     args: { tokenId },
   } = event;
-  const chainId = context.chain.id;
+
+  const chainId = context.chain.id as number;
 
   let domainName = '';
   try {

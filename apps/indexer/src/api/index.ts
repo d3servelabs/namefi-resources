@@ -3,7 +3,7 @@ import schema from 'ponder:schema';
 import { type Context, Hono, type Next } from 'hono';
 import { client, graphql } from 'ponder';
 import auth, { requireAuth } from './auth';
-import { config } from '../lib/env';
+import { config, secrets } from '../lib/env';
 
 const app = new Hono();
 
@@ -17,8 +17,8 @@ const healthCheck = async (c: any) => {
     // This is a simple check - we try to query the NamefiNft table
     const result = await db.execute(`
       SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_schema = current_schema() 
+        SELECT FROM information_schema.tables
+        WHERE table_schema = current_schema()
         AND table_name = 'NamefiNft'
       ) as table_exists
     `);
@@ -86,11 +86,22 @@ app.get('/configz', async (c) => {
     return c.json({
       ENVIRONMENT: process.env.ENVIRONMENT,
       config,
+      isApiKeyConfigured: !!secrets.PONDER_SERVICE_API_KEY,
     });
   } catch (error) {
     console.error('Schema endpoint error:', error);
     return c.json({ error: 'Unable to determine current schema' }, 500);
   }
+});
+
+app.get('/access', async (c) => {
+  // Check for API key authentication (service-to-service)
+  const apiKey = c.req.header('x-api-key') || c.req.header('X-API-Key');
+  return c.json({
+    accessIsValid: apiKey === secrets.PONDER_SERVICE_API_KEY,
+    keyIsConfigured: !!secrets.PONDER_SERVICE_API_KEY,
+    keyIsRecieved: !!apiKey,
+  });
 });
 
 app.use('/', async (c) => c.redirect('/graphql'));

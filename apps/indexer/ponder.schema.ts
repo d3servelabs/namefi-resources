@@ -7,7 +7,10 @@ export const NamefiNft = onchainTable(
     normalizedDomainName: t.text().notNull(),
     expirationTimeInSeconds: t.bigint().notNull(), // Unix timestamp
     isLocked: t.boolean().default(false),
-    ownerAddress: t.text().notNull(),
+    ownerAddress: t
+      .text()
+      .notNull()
+      .$type<`0x${string}` & { __checksum: true }>(),
     chainId: t.integer().notNull(),
     // Metadata fields for tracking updates
     lastUpdatedBlock: t.bigint().notNull(),
@@ -29,7 +32,10 @@ export const BurnedNamefiNftLog = onchainTable(
   (t) => ({
     tokenId: t.bigint().notNull(),
     normalizedDomainName: t.text().notNull(),
-    fromAddress: t.text().notNull(), // The address that burned the token
+    fromAddress: t
+      .text()
+      .notNull()
+      .$type<`0x${string}` & { __checksum: true }>(), // The address that burned the token
     chainId: t.integer().notNull(),
     burnedBlock: t.bigint().notNull(), // Block number when burned
     burnedTimestamp: t.bigint().notNull(), // Timestamp when burned
@@ -51,8 +57,11 @@ export const TransferLog = onchainTable(
   (t) => ({
     tokenId: t.bigint().notNull(),
     normalizedDomainName: t.text().notNull(),
-    fromAddress: t.text().notNull(), // Address transferring from
-    toAddress: t.text().notNull(), // Address transferring to
+    fromAddress: t
+      .text()
+      .notNull()
+      .$type<`0x${string}` & { __checksum: true }>(), // Address transferring from
+    toAddress: t.text().notNull().$type<`0x${string}` & { __checksum: true }>(), // Address transferring to
     chainId: t.integer().notNull(),
     blockNumber: t.bigint().notNull(),
     blockTimestamp: t.bigint().notNull(),
@@ -83,7 +92,7 @@ export const ExpirationChangeLog = onchainTable(
     normalizedDomainName: t.text().notNull(),
     previousExpiration: t.bigint().notNull(), // Old expiration time
     newExpiration: t.bigint().notNull(), // New expiration time
-    changedBy: t.text().notNull(), // Address that made the change
+    changedBy: t.text().notNull().$type<`0x${string}` & { __checksum: true }>(), // Address that made the change
     chainId: t.integer().notNull(),
     blockNumber: t.bigint().notNull(),
     blockTimestamp: t.bigint().notNull(),

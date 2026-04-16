@@ -103,7 +103,7 @@ export const requireAuth = async (c: Context, next: Next) => {
   }
 
   // Check for API key authentication (service-to-service)
-  const apiKey = c.req.header('X-API-Key');
+  const apiKey = c.req.header('x-api-key') || c.req.header('X-API-Key');
   if (apiKey && secrets.PONDER_SERVICE_API_KEY) {
     if (apiKey === secrets.PONDER_SERVICE_API_KEY) {
       console.log('[requireAuth] Authenticated via API key');
