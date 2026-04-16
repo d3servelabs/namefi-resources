@@ -19,10 +19,19 @@ import { and, eq, sql, gte, isNull } from 'drizzle-orm';
 import { temporalClient } from '../../../client';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { secrets } from '#lib/env';
-import { sendMail } from '../../../../mail/mail-client';
-import React from 'react';
+import { sendMail, type SendMailInput } from '../../../../mail/mail-client';
+import { createElement } from 'react';
 import { render } from '@react-email/components';
 import { NftManagementReport } from '../../../../mail/templates/nft-management-report';
+import type {
+  CategorizedDomainEntry,
+  CategorizedSections,
+  KnownIssueExplanation,
+  NftReportMeta,
+  NftReportSummary,
+  CategorySummary,
+} from '../../../../mail/templates/nft-management-report.types';
+import { loadKnownIssuesMap } from '#lib/nft-known-issues';
 
 const SEND_TO_SLACK_DIRECT = false;
 
@@ -90,6 +99,14 @@ export interface ReportMetrics {
     registrarBreakdown: Record<string, number>;
     domains: UnmintedDomainData[];
   };
+  /**
+   * Domains bucketed into the four reportable issue categories used by the
+   * email template. Populated by `buildCategorizedSections`. Each entry may
+   * carry an attached `knownIssue` explanation if one is persisted.
+   */
+  categorized: CategorizedSections;
+  /** ISO timestamp of when this metrics snapshot was produced. */
+  generatedAt: string;
 }
 
 export interface DetailedNftData {
@@ -211,12 +228,17 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
     // Collect unminted domains (domains in index but not in NFT view)
     const unmintedDomainsMetrics = await collectUnmintedDomainsMetrics(ctx);
 
+    // Load persisted known-issue explanations so we can mark acknowledged
+    // domains in the categorized sections. Tolerates store outages.
+    const knownIssuesMap = await loadKnownIssuesMap();
+
     // Analyze the collected data
     const metrics = analyzeNftData(
       allNftsData,
       workflowMetrics,
       recentOrdersMetrics,
       unmintedDomainsMetrics,
+      knownIssuesMap,
     );
 
     ctx.log.info('NFT metrics collection completed', {
@@ -720,7 +742,10 @@ function analyzeNftData(
     registrarBreakdown: Record<string, number>;
     domains: UnmintedDomainData[];
   },
+  knownIssuesMap: Map<string, KnownIssueExplanation>,
 ): ReportMetrics {
+  const now = new Date();
+
   const metrics: ReportMetrics = {
     totalNfts: allNftsData.length,
     expiredDomains: 0,
@@ -740,17 +765,308 @@ function analyzeNftData(
     criticalDomains: [],
     recentOrders: recentOrdersMetrics,
     unmintedDomains: unmintedDomainsMetrics,
+    categorized: {
+      dateMismatch: [],
+      domainExistsMissingNft: [],
+      nftExistsMissingDomainNotExpired: [],
+      expired: [],
+    },
+    generatedAt: now.toISOString(),
   };
 
-  const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-  // Analyze each NFT
+  // Analyze each NFT for legacy counters / critical-domains list
   for (const nft of allNftsData) {
     analyzeNftRecordAndUpdateMetrics(nft, metrics, now, thirtyDaysAgo);
   }
 
+  // Bucket every domain into one of the four reportable categories
+  metrics.categorized = buildCategorizedSections(
+    allNftsData,
+    unmintedDomainsMetrics.domains,
+    knownIssuesMap,
+    now,
+  );
+
   return metrics;
+}
+
+function isoOrNull(date: Date | null | undefined): string | null {
+  if (!date) return null;
+  return date instanceof Date
+    ? date.toISOString()
+    : new Date(date).toISOString();
+}
+
+function attachKnownIssue(
+  entry: CategorizedDomainEntry,
+  knownIssuesMap: Map<string, KnownIssueExplanation>,
+): CategorizedDomainEntry {
+  const known = knownIssuesMap.get(entry.normalizedDomainName);
+  if (known) {
+    entry.knownIssue = known;
+  }
+  return entry;
+}
+
+/**
+ * Assigns NFT and unminted-domain rows into mutually exclusive categories
+ * for the report email. Powered-by-namefi domains are excluded since their
+ * expiration semantics differ and they don't have a registrar comparison.
+ *
+ * Precedence (highest first):
+ *   EXPIRED -> NFT_EXISTS_MISSING_DOMAIN -> DATE_MISMATCH (NFT side)
+ *   EXPIRED -> DOMAIN_EXISTS_MISSING_NFT (unminted side)
+ */
+function buildCategorizedSections(
+  allNftsData: NftDataQueryResult[],
+  unmintedDomains: UnmintedDomainData[],
+  knownIssuesMap: Map<string, KnownIssueExplanation>,
+  now: Date,
+): CategorizedSections {
+  const sections: CategorizedSections = {
+    dateMismatch: [],
+    domainExistsMissingNft: [],
+    nftExistsMissingDomainNotExpired: [],
+    expired: [],
+  };
+
+  for (const nft of allNftsData) {
+    if (nft.isPoweredByNamefiDomain) continue;
+
+    const effectiveExpirationTime =
+      nft.effectiveDomainExpirationTime || nft.domainExpirationTime;
+    const isExpired = effectiveExpirationTime
+      ? effectiveExpirationTime < now
+      : false;
+
+    if (isExpired && effectiveExpirationTime) {
+      sections.expired.push(
+        attachKnownIssue(
+          {
+            normalizedDomainName: nft.normalizedDomainName,
+            chainId: nft.chainId,
+            ownerAddress: nft.ownerAddress,
+            registrarKey: nft.effectiveRegistrarKey,
+            nftExpirationTime: isoOrNull(nft.nftExpirationTime),
+            domainExpirationTime: isoOrNull(effectiveExpirationTime),
+            isExpired: true,
+          },
+          knownIssuesMap,
+        ),
+      );
+      continue;
+    }
+
+    if (!nft.domainExpirationTime) {
+      // NFT row exists but registrar join failed (or registrar data missing)
+      sections.nftExistsMissingDomainNotExpired.push(
+        attachKnownIssue(
+          {
+            normalizedDomainName: nft.normalizedDomainName,
+            chainId: nft.chainId,
+            ownerAddress: nft.ownerAddress,
+            registrarKey: nft.effectiveRegistrarKey,
+            nftExpirationTime: isoOrNull(nft.nftExpirationTime),
+            domainExpirationTime: null,
+            isExpired: false,
+          },
+          knownIssuesMap,
+        ),
+      );
+      continue;
+    }
+
+    if (nft.hasDateMismatch && nft.nftExpirationTime) {
+      const diffSeconds = Math.round(
+        (nft.nftExpirationTime.getTime() - nft.domainExpirationTime.getTime()) /
+          1000,
+      );
+      sections.dateMismatch.push(
+        attachKnownIssue(
+          {
+            normalizedDomainName: nft.normalizedDomainName,
+            chainId: nft.chainId,
+            ownerAddress: nft.ownerAddress,
+            registrarKey: nft.effectiveRegistrarKey,
+            nftExpirationTime: isoOrNull(nft.nftExpirationTime),
+            domainExpirationTime: isoOrNull(nft.domainExpirationTime),
+            expirationDiffSeconds: diffSeconds,
+            isExpired: false,
+          },
+          knownIssuesMap,
+        ),
+      );
+    }
+  }
+
+  for (const domain of unmintedDomains) {
+    const isExpired = domain.expirationTime
+      ? domain.expirationTime < now
+      : false;
+
+    if (isExpired && domain.expirationTime) {
+      sections.expired.push(
+        attachKnownIssue(
+          {
+            normalizedDomainName: domain.normalizedDomainName,
+            registrarKey: domain.registrarKey,
+            nftExpirationTime: null,
+            domainExpirationTime: isoOrNull(domain.expirationTime),
+            isExpired: true,
+          },
+          knownIssuesMap,
+        ),
+      );
+      continue;
+    }
+
+    sections.domainExistsMissingNft.push(
+      attachKnownIssue(
+        {
+          normalizedDomainName: domain.normalizedDomainName,
+          registrarKey: domain.registrarKey,
+          nftExpirationTime: null,
+          domainExpirationTime: isoOrNull(domain.expirationTime),
+          isExpired: false,
+        },
+        knownIssuesMap,
+      ),
+    );
+  }
+
+  // Sort each bucket for deterministic, scannable output
+  sections.dateMismatch.sort(
+    (a, b) =>
+      Math.abs(b.expirationDiffSeconds ?? 0) -
+      Math.abs(a.expirationDiffSeconds ?? 0),
+  );
+  sections.domainExistsMissingNft.sort((a, b) =>
+    sortByDateAsc(a.domainExpirationTime, b.domainExpirationTime),
+  );
+  sections.nftExistsMissingDomainNotExpired.sort((a, b) =>
+    sortByDateAsc(a.nftExpirationTime, b.nftExpirationTime),
+  );
+  sections.expired.sort((a, b) =>
+    sortByDateAsc(a.domainExpirationTime, b.domainExpirationTime),
+  );
+
+  return sections;
+}
+
+function sortByDateAsc(a: string | null, b: string | null): number {
+  if (a === b) return 0;
+  if (a === null) return 1;
+  if (b === null) return -1;
+  return a < b ? -1 : 1;
+}
+
+function summarizeCategory(entries: CategorizedDomainEntry[]): CategorySummary {
+  const acknowledged = entries.filter((e) => e.knownIssue).length;
+  return {
+    total: entries.length,
+    acknowledged,
+    needsReview: entries.length - acknowledged,
+  };
+}
+
+function buildReportSummary(metrics: ReportMetrics): NftReportSummary {
+  const dateMismatch = summarizeCategory(metrics.categorized.dateMismatch);
+  const domainExistsMissingNft = summarizeCategory(
+    metrics.categorized.domainExistsMissingNft,
+  );
+  const nftExistsMissingDomainNotExpired = summarizeCategory(
+    metrics.categorized.nftExistsMissingDomainNotExpired,
+  );
+  const expired = summarizeCategory(metrics.categorized.expired);
+  return {
+    totalNfts: metrics.totalNfts,
+    dateMismatch,
+    domainExistsMissingNft,
+    nftExistsMissingDomainNotExpired,
+    expired,
+    knownIssuesTotal:
+      dateMismatch.acknowledged +
+      domainExistsMissingNft.acknowledged +
+      nftExistsMissingDomainNotExpired.acknowledged +
+      expired.acknowledged,
+  };
+}
+
+function csvEscape(value: string | number | null | undefined): string {
+  if (value === null || value === undefined) return '""';
+  const s = String(value);
+  return `"${s.replace(/"/g, '""')}"`;
+}
+
+function buildCategoryCsv(entries: CategorizedDomainEntry[]): string {
+  const headers = [
+    'Domain',
+    'Registrar',
+    'ChainId',
+    'DomainExpiration',
+    'NftExpiration',
+    'Owner',
+    'DiffSeconds',
+    'IsExpired',
+    'KnownIssue',
+    'AcknowledgedBy',
+    'AcknowledgedAt',
+  ];
+  const rows = entries.map((e) =>
+    [
+      csvEscape(e.normalizedDomainName),
+      csvEscape(e.registrarKey ?? ''),
+      csvEscape(e.chainId ?? ''),
+      csvEscape(e.domainExpirationTime ?? ''),
+      csvEscape(e.nftExpirationTime ?? ''),
+      csvEscape(e.ownerAddress ?? ''),
+      csvEscape(e.expirationDiffSeconds ?? ''),
+      csvEscape(e.isExpired ? 'true' : 'false'),
+      csvEscape(e.knownIssue?.explanation ?? ''),
+      csvEscape(e.knownIssue?.acknowledgedBy ?? ''),
+      csvEscape(e.knownIssue?.acknowledgedAt ?? ''),
+    ].join(','),
+  );
+  return [headers.map(csvEscape).join(','), ...rows].join('\n');
+}
+
+function buildCsvAttachments(
+  metrics: ReportMetrics,
+  reportDate: string,
+): NonNullable<SendMailInput['attachments']> {
+  const attachments: NonNullable<SendMailInput['attachments']> = [];
+  const sections: Array<{
+    key: keyof CategorizedSections;
+    filenamePart: string;
+    minToAttach: number;
+  }> = [
+    { key: 'expired', filenamePart: 'expired-domains', minToAttach: 1 },
+    { key: 'dateMismatch', filenamePart: 'date-mismatch', minToAttach: 20 },
+    {
+      key: 'domainExistsMissingNft',
+      filenamePart: 'domain-missing-nft',
+      minToAttach: 20,
+    },
+    {
+      key: 'nftExistsMissingDomainNotExpired',
+      filenamePart: 'nft-missing-domain',
+      minToAttach: 20,
+    },
+  ];
+
+  for (const section of sections) {
+    const entries = metrics.categorized[section.key];
+    if (entries.length < section.minToAttach) continue;
+    attachments.push({
+      filename: `${section.filenamePart}-${reportDate}.csv`,
+      content: buildCategoryCsv(entries),
+      contentType: 'text/csv',
+    });
+  }
+
+  return attachments;
 }
 
 /**
@@ -1287,25 +1603,42 @@ export async function sendNftManagementReportToSlack(
   }
 }
 
+export interface SendNftManagementReportEmailInput {
+  title: string;
+  metrics: ReportMetrics;
+}
+
 /**
- * Send the formatted report via email to reporting@namefi.io
+ * Send the structured report via email. Renders the NftManagementReport
+ * template directly from the metrics' `categorized` sections, and attaches
+ * CSV exports for the expired bucket plus any other oversize sections.
  */
 export async function sendNftManagementReportEmail(
-  title: string,
-  content: string,
+  input: SendNftManagementReportEmailInput,
 ): Promise<void> {
   const ctx = Context.current();
+  const { title, metrics } = input;
 
   try {
-    // Create React email template
-    const emailTemplate = React.createElement(NftManagementReport, {
+    const summary = buildReportSummary(metrics);
+    const meta: NftReportMeta = {
+      generatedAt: metrics.generatedAt,
+      adminUrl: NFT_MANAGEMENT_ADMIN_URL,
+      githubActionsUrl: getGitHubActionsUrl(),
+    };
+
+    const emailTemplate = createElement(NftManagementReport, {
       title,
-      reportContent: content,
+      summary,
+      categorized: metrics.categorized,
+      meta,
     });
 
-    // Render the template to HTML and plain text
     const html = await render(emailTemplate);
     const plain = await render(emailTemplate, { plainText: true });
+
+    const reportDate = format(new Date(metrics.generatedAt), 'yyyy-MM-dd');
+    const attachments = buildCsvAttachments(metrics, reportDate);
 
     await sendMail({
       to: [
@@ -1313,15 +1646,17 @@ export async function sendNftManagementReportEmail(
         'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
       ],
       subject: title,
-      content: {
-        html,
-        plain,
-      },
+      content: { html, plain },
       from: 'NFT Management System <noreply@d3serve.xyz>',
+      attachments,
     });
 
     ctx.log.info(
       'Successfully sent NFT management report email to reports+nft@d3serve.xyz',
+      {
+        attachmentCount: attachments.length,
+        knownIssuesTotal: summary.knownIssuesTotal,
+      },
     );
   } catch (error) {
     ctx.log.error('Failed to send NFT management report email', { error });

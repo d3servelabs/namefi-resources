@@ -26,6 +26,12 @@ import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getDomainChain } from '#temporal/activities/domain/index';
 import { getNftsWithExpirationStatus } from '../../../services/admin/domains-nfts';
+import {
+  deleteKnownIssue,
+  getKnownIssue,
+  listKnownIssues,
+  upsertKnownIssue,
+} from '#lib/nft-known-issues';
 
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
@@ -632,6 +638,60 @@ export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
         });
       }
     }),
+
+  listKnownIssues: adminProcedureWithPermissions(Permission.READ_NFT)
+    .input(adminNftContract.listKnownIssues.input)
+    .output(adminNftContract.listKnownIssues.output)
+    .query(async () => listKnownIssues()),
+
+  getKnownIssue: adminProcedureWithPermissions(Permission.READ_NFT)
+    .input(adminNftContract.getKnownIssue.input)
+    .output(adminNftContract.getKnownIssue.output)
+    .query(async ({ input }) => {
+      const entry = await getKnownIssue(input.normalizedDomainName);
+      return entry ?? null;
+    }),
+
+  upsertKnownIssue: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: input.normalizedDomainName,
+      action: 'upsert_nft_known_issue',
+      extraInput: input,
+    }),
+  )
+    .input(adminNftContract.upsertKnownIssue.input)
+    .output(adminNftContract.upsertKnownIssue.output)
+    .mutation(async ({ ctx, input }) =>
+      upsertKnownIssue({
+        normalizedDomainName: input.normalizedDomainName,
+        explanation: input.explanation,
+        category: input.category,
+        actingUserId: ctx.user.id,
+      }),
+    ),
+
+  deleteKnownIssue: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: input.normalizedDomainName,
+      action: 'delete_nft_known_issue',
+      extraInput: input,
+    }),
+  )
+    .input(adminNftContract.deleteKnownIssue.input)
+    .output(adminNftContract.deleteKnownIssue.output)
+    .mutation(async ({ input }) => ({
+      deleted: await deleteKnownIssue(input.normalizedDomainName),
+    })),
 
   getWorkflowHistory: adminProcedureWithPermissions(Permission.READ_NFT)
     .input(adminNftContract.getWorkflowHistory.input)

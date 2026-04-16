@@ -89,19 +89,36 @@ export async function nftManagementDailyReportWorkflow({
       totalRecentWorkflows,
     });
 
-    // Step 2: Format the report
+    // Step 2: Format the report (markdown — used by Slack path)
     workflow.log.info('Formatting NFT management report');
     const { title: reportTitle, content } =
       await formatNftManagementReport(metrics);
 
     const finalTitle = customTitle || reportTitle;
 
+    // Counts of each new categorized bucket that still need review
+    // (acknowledged known-issue rows are excluded from the trigger logic).
+    const needsReviewCounts = {
+      dateMismatch: metrics.categorized.dateMismatch.filter(
+        (e) => !e.knownIssue,
+      ).length,
+      domainExistsMissingNft: metrics.categorized.domainExistsMissingNft.filter(
+        (e) => !e.knownIssue,
+      ).length,
+      nftExistsMissingDomainNotExpired:
+        metrics.categorized.nftExistsMissingDomainNotExpired.filter(
+          (e) => !e.knownIssue,
+        ).length,
+    };
+
     // Step 3: Decide whether to send the report
     const shouldSendReport =
       forceSend ||
       totalCriticalIssues > 0 ||
       totalRecentWorkflows > 0 ||
-      metrics.dateMismatchNfts > 0;
+      needsReviewCounts.dateMismatch > 0 ||
+      needsReviewCounts.domainExistsMissingNft > 0 ||
+      needsReviewCounts.nftExistsMissingDomainNotExpired > 0;
 
     let reportSent = false;
     let slackSent = false;
@@ -128,18 +145,21 @@ export async function nftManagementDailyReportWorkflow({
         },
       );
 
-      // Step 5: Send report via email
+      // Step 5: Send report via email (structured template + CSV attachments)
       workflow.log.info(
         'Sending NFT management report email to reporting@namefi.io',
         {
           reportTitle: finalTitle,
-          contentLength: content.length,
+          needsReviewCounts,
         },
       );
 
       await catchAndAlertLocally(
         async () => {
-          await sendNftManagementReportEmail(finalTitle, content);
+          await sendNftManagementReportEmail({
+            title: finalTitle,
+            metrics,
+          });
           emailSent = true;
         },
         {

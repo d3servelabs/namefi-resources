@@ -18,6 +18,36 @@ import type { RouterContract } from '../trpc-contract';
  */
 
 // ---------------------------------------------------------------------------
+// Known-issue schemas (shared by CRUD procedures)
+// ---------------------------------------------------------------------------
+
+const knownIssueCategorySchema = z.enum([
+  'DATE_MISMATCH',
+  'DOMAIN_EXISTS_MISSING_NFT',
+  'NFT_EXISTS_MISSING_DOMAIN',
+  'EXPIRED',
+]);
+
+const knownIssueExplanationSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  explanation: z.string(),
+  category: knownIssueCategorySchema.optional(),
+  acknowledgedBy: z.string(),
+  acknowledgedAt: z.string(),
+  updatedAt: z.string(),
+});
+
+const domainNameInputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+
+const upsertKnownIssueInputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  explanation: z.string().min(1).max(2_000),
+  category: knownIssueCategorySchema.optional(),
+});
+
+// ---------------------------------------------------------------------------
 // Inputs
 // ---------------------------------------------------------------------------
 
@@ -172,6 +202,26 @@ export const adminNftContract = createContract(
       type: 'query',
       input: getWorkflowHistoryInputSchema,
       output: workflowHistoryOutputSchema,
+    },
+    listKnownIssues: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(knownIssueExplanationSchema),
+    },
+    getKnownIssue: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: knownIssueExplanationSchema.nullable(),
+    },
+    upsertKnownIssue: {
+      type: 'mutation',
+      input: upsertKnownIssueInputSchema,
+      output: knownIssueExplanationSchema,
+    },
+    deleteKnownIssue: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: z.object({ deleted: z.boolean() }),
     },
   },
 );
