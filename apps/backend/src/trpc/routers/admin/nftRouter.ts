@@ -6,14 +6,9 @@ import {
   namefiNftCte,
   namefiNftOwnersCte,
 } from '@namefi-astra/db';
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-  Permission,
-} from '@namefi-astra/utils';
+import { type NamefiNormalizedDomain, Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
-import { z } from 'zod';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
@@ -22,17 +17,15 @@ import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminNftContract } from '@namefi-astra/common/contract/admin/admin-nft-contract';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getDomainChain } from '#temporal/activities/domain/index';
-import {
-  getNftsWithExpirationStatusInputSchema,
-  getNftsWithExpirationStatus,
-} from '../../../services/admin/domains-nfts';
+import { getNftsWithExpirationStatus } from '../../../services/admin/domains-nfts';
 
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
@@ -71,11 +64,12 @@ function getWorkflowStatusString(status: any): string {
   }
 }
 
-export const nftRouter = createTRPCRouter({
+export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
   getNftsWithExpirationStatus: adminProcedureWithPermissions(
     Permission.READ_NFT,
   )
-    .input(getNftsWithExpirationStatusInputSchema)
+    .input(adminNftContract.getNftsWithExpirationStatus.input)
+    .output(adminNftContract.getNftsWithExpirationStatus.output)
     .query(async ({ input }) => getNftsWithExpirationStatus(input)),
 
   burnNft: auditedAdminProcedureWithPermissions(
@@ -90,12 +84,8 @@ export const nftRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        chainId: z.number(),
-      }),
-    )
+    .input(adminNftContract.burnNft.input)
+    .output(adminNftContract.burnNft.output)
     .mutation(async ({ input }) => {
       const { normalizedDomainName, chainId } = input;
       let parsedDomainName = parseDomainName(normalizedDomainName);
@@ -230,12 +220,8 @@ export const nftRouter = createTRPCRouter({
     }),
 
   getBurnWorkflowStatus: adminProcedureWithPermissions(Permission.READ_NFT)
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        chainId: z.number(),
-      }),
-    )
+    .input(adminNftContract.getBurnWorkflowStatus.input)
+    .output(adminNftContract.getBurnWorkflowStatus.output)
     .query(async ({ input }) => {
       const { normalizedDomainName, chainId } = input;
 
@@ -268,136 +254,143 @@ export const nftRouter = createTRPCRouter({
       }
     }),
 
-  getActiveBurnWorkflows: adminProcedureWithPermissions(
-    Permission.READ_NFT,
-  ).query(async () => {
-    try {
-      await temporalClient.connection.ensureConnected();
-      // Get all active burn workflows from Temporal
-      const workflowList = await temporalClient.workflow.list({
-        query: `WorkflowType = "ensureNftIsLockedAndBurnByNftName" AND ExecutionStatus = "Running"`,
-      });
+  getActiveBurnWorkflows: adminProcedureWithPermissions(Permission.READ_NFT)
+    .input(adminNftContract.getActiveBurnWorkflows.input)
+    .output(adminNftContract.getActiveBurnWorkflows.output)
+    .query(async () => {
+      try {
+        await temporalClient.connection.ensureConnected();
+        // Get all active burn workflows from Temporal
+        const workflowList = await temporalClient.workflow.list({
+          query: `WorkflowType = "ensureNftIsLockedAndBurnByNftName" AND ExecutionStatus = "Running"`,
+        });
 
-      const activeWorkflows = [];
-      for await (const workflow of workflowList) {
-        try {
-          // Extract domain name and chain ID from workflow ID
-          const parsedId = ensureNftIsLockedAndBurnByNftName.attemptParseId(
-            workflow.workflowId,
-          );
-          if (!parsedId) {
-            continue;
-          }
-          const { normalizedDomainName, chainId } = parsedId;
+        const activeWorkflows = [];
+        for await (const workflow of workflowList) {
+          try {
+            // Extract domain name and chain ID from workflow ID
+            const parsedId = ensureNftIsLockedAndBurnByNftName.attemptParseId(
+              workflow.workflowId,
+            );
+            if (!parsedId) {
+              continue;
+            }
+            const { normalizedDomainName, chainId } = parsedId;
 
-          activeWorkflows.push({
-            workflowId: workflow.workflowId,
-            domainName: normalizedDomainName,
-            chainId,
-            startTime: workflow.startTime,
-            runId: workflow.runId,
-            status: workflow.status?.name || 'Running',
-          });
-        } catch (error) {}
+            activeWorkflows.push({
+              workflowId: workflow.workflowId,
+              domainName: normalizedDomainName,
+              chainId,
+              startTime: workflow.startTime,
+              runId: workflow.runId,
+              status: workflow.status?.name || 'Running',
+            });
+          } catch (error) {}
+        }
+
+        return activeWorkflows;
+      } catch (error) {
+        logger.error(
+          { context: 'getActiveBurnWorkflows', error },
+          'Failed to fetch active burn workflows',
+        );
+        return [];
       }
-
-      return activeWorkflows;
-    } catch (error) {
-      logger.error(
-        { context: 'getActiveBurnWorkflows', error },
-        'Failed to fetch active burn workflows',
-      );
-      return [];
-    }
-  }),
+    }),
 
   getActiveFixExpirationWorkflows: adminProcedureWithPermissions(
     Permission.READ_NFT,
-  ).query(async () => {
-    try {
-      await temporalClient.connection.ensureConnected();
-      // Get all active fix NFT expiration workflows from Temporal
-      const workflowList = await temporalClient.workflow.list({
-        query: `WorkflowType = "fixNftExpirationWorkflow" AND ExecutionStatus = "Running"`,
-      });
+  )
+    .input(adminNftContract.getActiveFixExpirationWorkflows.input)
+    .output(adminNftContract.getActiveFixExpirationWorkflows.output)
+    .query(async () => {
+      try {
+        await temporalClient.connection.ensureConnected();
+        // Get all active fix NFT expiration workflows from Temporal
+        const workflowList = await temporalClient.workflow.list({
+          query: `WorkflowType = "fixNftExpirationWorkflow" AND ExecutionStatus = "Running"`,
+        });
 
-      const activeWorkflows = [];
-      for await (const workflow of workflowList) {
-        try {
-          // Extract domain name and chain ID from workflow ID
-          // Format: admin-fix-nft-expiration-{domainName}-{chainId}-{timestamp}
-          const parsedId = fixNftExpirationWorkflow.attemptParseId(
-            workflow.workflowId,
-          );
-          if (!parsedId) {
-            continue;
-          }
-          const { normalizedDomainName, chainId } = parsedId;
+        const activeWorkflows = [];
+        for await (const workflow of workflowList) {
+          try {
+            // Extract domain name and chain ID from workflow ID
+            // Format: admin-fix-nft-expiration-{domainName}-{chainId}-{timestamp}
+            const parsedId = fixNftExpirationWorkflow.attemptParseId(
+              workflow.workflowId,
+            );
+            if (!parsedId) {
+              continue;
+            }
+            const { normalizedDomainName, chainId } = parsedId;
 
-          activeWorkflows.push({
-            workflowId: workflow.workflowId,
-            domainName: normalizedDomainName,
-            chainId,
-            startTime: workflow.startTime,
-            runId: workflow.runId,
-            status: workflow.status?.name || 'Running',
-          });
-        } catch (error) {}
+            activeWorkflows.push({
+              workflowId: workflow.workflowId,
+              domainName: normalizedDomainName,
+              chainId,
+              startTime: workflow.startTime,
+              runId: workflow.runId,
+              status: workflow.status?.name || 'Running',
+            });
+          } catch (error) {}
+        }
+
+        return activeWorkflows;
+      } catch (error) {
+        logger.trace(
+          { context: 'getActiveFixExpirationWorkflows', error },
+          'Failed to fetch active fix expiration workflows',
+        );
+        return [];
       }
-
-      return activeWorkflows;
-    } catch (error) {
-      logger.trace(
-        { context: 'getActiveFixExpirationWorkflows', error },
-        'Failed to fetch active fix expiration workflows',
-      );
-      return [];
-    }
-  }),
+    }),
 
   getActiveExtendRegistrationWorkflows: adminProcedureWithPermissions(
     Permission.READ_NFT,
-  ).query(async () => {
-    try {
-      await temporalClient.connection.ensureConnected();
-      // Get all active extend registration workflows from Temporal
-      const workflowList = await temporalClient.workflow.list({
-        query: `WorkflowType = "extendDomainRegistrationWorkflow" AND ExecutionStatus = "Running"`,
-      });
+  )
+    .input(adminNftContract.getActiveExtendRegistrationWorkflows.input)
+    .output(adminNftContract.getActiveExtendRegistrationWorkflows.output)
+    .query(async () => {
+      try {
+        await temporalClient.connection.ensureConnected();
+        // Get all active extend registration workflows from Temporal
+        const workflowList = await temporalClient.workflow.list({
+          query: `WorkflowType = "extendDomainRegistrationWorkflow" AND ExecutionStatus = "Running"`,
+        });
 
-      const activeWorkflows = [];
-      for await (const workflow of workflowList) {
-        try {
-          // Extract domain name and chain ID from workflow ID
-          // Format: admin-extend-registration-{domainName}-{chainId}-{timestamp}
-          const parsedId = extendDomainRegistrationWorkflow.attemptParseId(
-            workflow.workflowId,
-          );
-          if (!parsedId) {
-            continue;
-          }
-          const { normalizedDomainName } = parsedId;
+        const activeWorkflows = [];
+        for await (const workflow of workflowList) {
+          try {
+            // Extract domain name and chain ID from workflow ID
+            // Format: admin-extend-registration-{domainName}-{chainId}-{timestamp}
+            const parsedId = extendDomainRegistrationWorkflow.attemptParseId(
+              workflow.workflowId,
+            );
+            if (!parsedId) {
+              continue;
+            }
+            const { normalizedDomainName } = parsedId;
 
-          activeWorkflows.push({
-            workflowId: workflow.workflowId,
-            domainName: normalizedDomainName,
-            chainId: await getDomainChain(normalizedDomainName as any),
-            startTime: workflow.startTime,
-            runId: workflow.runId,
-            status: workflow.status?.name || 'Running',
-          });
-        } catch (error) {}
+            activeWorkflows.push({
+              workflowId: workflow.workflowId,
+              domainName: normalizedDomainName,
+              chainId: await getDomainChain(normalizedDomainName as any),
+              startTime: workflow.startTime,
+              runId: workflow.runId,
+              status: workflow.status?.name || 'Running',
+            });
+          } catch (error) {}
+        }
+
+        return activeWorkflows;
+      } catch (error) {
+        logger.error(
+          { context: 'getActiveExtendRegistrationWorkflows', error },
+          'Failed to fetch active extend registration workflows',
+        );
+        return [];
       }
-
-      return activeWorkflows;
-    } catch (error) {
-      logger.error(
-        { context: 'getActiveExtendRegistrationWorkflows', error },
-        'Failed to fetch active extend registration workflows',
-      );
-      return [];
-    }
-  }),
+    }),
 
   extendRegistration: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NFT,
@@ -411,15 +404,8 @@ export const nftRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        chainId: z.number(),
-        durationInYears: z.number().min(1).max(10),
-        ownerAddress: z.string(),
-        userId: z.string(),
-      }),
-    )
+    .input(adminNftContract.extendRegistration.input)
+    .output(adminNftContract.extendRegistration.output)
     .mutation(async ({ input }) => {
       const {
         normalizedDomainName,
@@ -515,12 +501,8 @@ export const nftRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        chainId: z.number(),
-      }),
-    )
+    .input(adminNftContract.fixNftExpiration.input)
+    .output(adminNftContract.fixNftExpiration.output)
     .mutation(async ({ input }) => {
       const { normalizedDomainName, chainId } = input;
 
@@ -652,15 +634,8 @@ export const nftRouter = createTRPCRouter({
     }),
 
   getWorkflowHistory: adminProcedureWithPermissions(Permission.READ_NFT)
-    .input(
-      z.object({
-        days: z.enum(['1', '3', '7']).default('7'),
-        page: z.number().min(1).default(1),
-        limit: z.number().min(1).max(100).default(20),
-        workflowType: z.enum(['all', 'burn', 'fix', 'extend']).default('all'),
-        nextPageToken: z.string().optional(),
-      }),
-    )
+    .input(adminNftContract.getWorkflowHistory.input)
+    .output(adminNftContract.getWorkflowHistory.output)
     .query(async ({ input }) => {
       const { days, page, limit, workflowType, nextPageToken } = input;
 

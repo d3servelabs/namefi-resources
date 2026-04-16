@@ -1,9 +1,6 @@
-import { Permission } from '@namefi-astra/utils';
-import {
-  adminProcedureWithPermissions,
-  createTRPCRouter,
-  protectedProcedure,
-} from '../base';
+import { protectedProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
+import { adminContract } from '@namefi-astra/common/contract/admin/admin-contract';
 import { canUserAccessAdminPanel } from '../utils';
 import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
@@ -21,10 +18,13 @@ import { adminOrdersRouter } from './admin/adminOrdersRouter';
 import { exportTrackingRouter } from './admin/exportTrackingRouter';
 import { bigQueryAuditRouter } from './admin/bigQueryAuditRouter';
 
-export const adminRouter = createTRPCRouter({
-  isUserAdmin: protectedProcedure.query(async ({ ctx }) => {
-    return await canUserAccessAdminPanel(ctx.user);
-  }),
+export const adminRouter = createContractTRPCRouter<typeof adminContract>({
+  isUserAdmin: protectedProcedure
+    .input(adminContract.isUserAdmin.input)
+    .output(adminContract.isUserAdmin.output)
+    .query(async ({ ctx }) => {
+      return await canUserAccessAdminPanel(ctx.user);
+    }),
 
   // Subrouters
   schedules: schedulesRouter,

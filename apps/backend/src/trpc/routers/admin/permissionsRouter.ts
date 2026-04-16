@@ -1,11 +1,11 @@
-import { z } from 'zod';
 import { and, eq, inArray } from 'drizzle-orm';
 import {
   auditedAdminProcedure,
-  createTRPCRouter,
   adminProcedure,
   withRequiredPermissions,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminPermissionsContract } from '@namefi-astra/common/contract/admin/admin-permissions-contract';
 import { db, usersTable, userPermissionsTable } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import { Permission, getVisiblePermissions } from '@namefi-astra/utils';
@@ -13,59 +13,68 @@ import pMap from 'p-map';
 import { privyClient } from '../../utils';
 import { isNotNil } from 'ramda';
 
-const permissionEnum = z.nativeEnum(Permission);
-
-export const permissionsRouter = createTRPCRouter({
+export const permissionsRouter = createContractTRPCRouter<
+  typeof adminPermissionsContract
+>({
   // List users who have any permissions
   listUsersWithPermissions: withRequiredPermissions(
     adminProcedure,
     Permission.READ_PERMISSIONS,
-  ).query(async () => {
-    const rows = await db
-      .select({
-        userId: userPermissionsTable.userId,
-        privyUserId: usersTable.privyUserId,
-      })
-      .from(userPermissionsTable)
-      .leftJoin(usersTable, eq(usersTable.id, userPermissionsTable.userId))
-      .groupBy(userPermissionsTable.userId, usersTable.privyUserId);
-    return pMap(rows, async (r) => {
-      const privyUser = r.privyUserId
-        ? await privyClient.getUserById(r.privyUserId)
-        : null;
+  )
+    .input(adminPermissionsContract.listUsersWithPermissions.input)
+    .output(adminPermissionsContract.listUsersWithPermissions.output)
+    .query(async () => {
+      const rows = await db
+        .select({
+          userId: userPermissionsTable.userId,
+          privyUserId: usersTable.privyUserId,
+        })
+        .from(userPermissionsTable)
+        .leftJoin(usersTable, eq(usersTable.id, userPermissionsTable.userId))
+        .groupBy(userPermissionsTable.userId, usersTable.privyUserId);
+      return pMap(rows, async (r) => {
+        const privyUser = r.privyUserId
+          ? await privyClient.getUserById(r.privyUserId)
+          : null;
 
-      return {
-        userId: r.userId,
-        primaryEmail: privyUser?.email?.address ?? null,
-        privyUserId: r.privyUserId ?? null,
-        primaryWalletAddress: privyUser?.wallet?.address ?? null,
-        walletAddresses: privyUser?.linkedAccounts
-          .map((linkedAccount) =>
-            linkedAccount.type === 'wallet' &&
-            linkedAccount.chainType === 'ethereum'
-              ? linkedAccount.address
-              : null,
-          )
-          .filter(isNotNil),
-      };
-    });
-  }),
+        return {
+          userId: r.userId,
+          primaryEmail: privyUser?.email?.address ?? null,
+          privyUserId: r.privyUserId ?? null,
+          primaryWalletAddress: privyUser?.wallet?.address ?? null,
+          walletAddresses: privyUser?.linkedAccounts
+            .map((linkedAccount) =>
+              linkedAccount.type === 'wallet' &&
+              linkedAccount.chainType === 'ethereum'
+                ? linkedAccount.address
+                : null,
+            )
+            .filter(isNotNil),
+        };
+      });
+    }),
 
   // List all permissions enum values (TS-defined)
   listAvailablePermissions: withRequiredPermissions(
     adminProcedure,
     Permission.READ_PERMISSIONS,
-  ).query(() => {
-    // Only return visible permissions for UI
-    return getVisiblePermissions();
-  }),
+  )
+    .input(adminPermissionsContract.listAvailablePermissions.input)
+    .output(adminPermissionsContract.listAvailablePermissions.output)
+    .query(() => {
+      // Only return visible permissions for UI. `getVisiblePermissions()`
+      // returns `readonly Permission[]`; copy into a mutable array so the
+      // handler's return type matches the contract's `Permission[]`.
+      return Array.from(getVisiblePermissions());
+    }),
 
   // Get a user's permissions
   getUserPermissions: withRequiredPermissions(
     adminProcedure,
     Permission.READ_PERMISSIONS,
   )
-    .input(z.object({ userId: z.string().uuid() }))
+    .input(adminPermissionsContract.getUserPermissions.input)
+    .output(adminPermissionsContract.getUserPermissions.output)
     .query(async ({ input }) => {
       const rows = await db
         .select({ permission: userPermissionsTable.permission })
@@ -87,12 +96,8 @@ export const permissionsRouter = createTRPCRouter({
     })),
     Permission.WRITE_PERMISSIONS,
   )
-    .input(
-      z.object({
-        userId: z.string().uuid(),
-        permissions: z.array(permissionEnum).nonempty(),
-      }),
-    )
+    .input(adminPermissionsContract.grantPermissions.input)
+    .output(adminPermissionsContract.grantPermissions.output)
     .mutation(async ({ input, ctx }) => {
       const { userId, permissions } = input;
 
@@ -147,12 +152,8 @@ export const permissionsRouter = createTRPCRouter({
     })),
     Permission.WRITE_PERMISSIONS,
   )
-    .input(
-      z.object({
-        userId: z.string().uuid(),
-        permissions: z.array(permissionEnum).nonempty(),
-      }),
-    )
+    .input(adminPermissionsContract.revokePermissions.input)
+    .output(adminPermissionsContract.revokePermissions.output)
     .mutation(async ({ input }) => {
       const { userId, permissions } = input;
 
@@ -190,7 +191,8 @@ export const permissionsRouter = createTRPCRouter({
     })),
     Permission.WRITE_PERMISSIONS,
   )
-    .input(z.object({ userId: z.string().uuid() }))
+    .input(adminPermissionsContract.deleteUserPermissions.input)
+    .output(adminPermissionsContract.deleteUserPermissions.output)
     .mutation(async ({ input }) => {
       const { userId } = input;
       await db

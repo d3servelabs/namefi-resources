@@ -1,15 +1,14 @@
-import { z } from 'zod';
 import {
   auditedAdminProcedureWithPermissions,
   adminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
-import { Permission, checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { createContractTRPCRouter } from '../../contract';
+import { adminNfscContract } from '@namefi-astra/common/contract/admin/admin-nfsc-contract';
+import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { mintNfsc } from '#temporal/workflows/mint.workflow';
-import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
 import {
@@ -20,15 +19,10 @@ import {
   parseSearchAttributes,
 } from '#temporal/utils/query';
 
-export const nfscRouter = createTRPCRouter({
+export const nfscRouter = createContractTRPCRouter<typeof adminNfscContract>({
   listRecentMintWorkflows: adminProcedureWithPermissions(Permission.MINT_NFSC)
-    .input(
-      z.object({
-        days: z.number().min(1).max(30).default(7),
-        limit: z.number().min(1).max(100).default(50),
-        pageToken: z.string().optional(),
-      }),
-    )
+    .input(adminNfscContract.listRecentMintWorkflows.input)
+    .output(adminNfscContract.listRecentMintWorkflows.output)
     .query(async ({ input }) => {
       const { days, limit, pageToken } = input;
 
@@ -140,22 +134,8 @@ export const nfscRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        users: z
-          .array(
-            z.object({
-              walletAddress: checksumWalletAddressSchema,
-              amount: z.number().min(1).max(10000),
-              memo: z.string().optional(),
-            }),
-          )
-          .min(1)
-          .max(100),
-        chainId: z.number().default(chains.base.id),
-        reason: z.string().min(1),
-      }),
-    )
+    .input(adminNfscContract.mintBulk.input)
+    .output(adminNfscContract.mintBulk.output)
     .mutation(async ({ input, ctx }) => {
       const { users, chainId, reason } = input;
 

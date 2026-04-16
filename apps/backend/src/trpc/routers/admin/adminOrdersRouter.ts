@@ -9,53 +9,24 @@ import {
 import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, or, type SQL, sql } from 'drizzle-orm';
-import { z } from 'zod';
-import { adminProcedureWithPermissions, createTRPCRouter } from '../../base';
+import { adminProcedureWithPermissions } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminOrdersContract } from '@namefi-astra/common/contract/admin/admin-orders-contract';
 import {
   getPrivyUserLinkedEthereumWalletAddresses,
   privyClient,
 } from '../../utils';
 import { logger } from '#lib/logger';
 
-export const adminOrdersRouter = createTRPCRouter({
+export const adminOrdersRouter = createContractTRPCRouter<
+  typeof adminOrdersContract
+>({
   listOrderItems: adminProcedureWithPermissions(
     [Permission.READ_ORDERS, Permission.READ_USERS],
     { mode: 'every' },
   )
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        pageSize: z.number().min(1).max(100).default(25),
-        searchTerm: z.string().optional(),
-        columnFilters: z
-          .array(
-            z.object({
-              id: z.string(),
-              value: z.object({
-                operator: z.enum([
-                  'like',
-                  'eq',
-                  'neq',
-                  'gt',
-                  'gte',
-                  'lt',
-                  'lte',
-                ]),
-                value: z.union([z.string(), z.number(), z.date()]),
-              }),
-            }),
-          )
-          .optional(),
-        sorting: z
-          .array(
-            z.object({
-              id: z.string(),
-              desc: z.boolean(),
-            }),
-          )
-          .optional(),
-      }),
-    )
+    .input(adminOrdersContract.listOrderItems.input)
+    .output(adminOrdersContract.listOrderItems.output)
     .query(async ({ input }) => {
       const { page, pageSize, searchTerm, columnFilters, sorting } = input;
       const offset = (page - 1) * pageSize;
@@ -369,41 +340,8 @@ export const adminOrdersRouter = createTRPCRouter({
     [Permission.READ_ORDERS, Permission.READ_USERS],
     { mode: 'every' },
   )
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        pageSize: z.number().min(1).max(100).default(25),
-        searchTerm: z.string().optional(),
-        userId: z.string().optional(),
-        columnFilters: z
-          .array(
-            z.object({
-              id: z.string(),
-              value: z.object({
-                operator: z.enum([
-                  'like',
-                  'eq',
-                  'neq',
-                  'gt',
-                  'gte',
-                  'lt',
-                  'lte',
-                ]),
-                value: z.union([z.string(), z.number(), z.date()]),
-              }),
-            }),
-          )
-          .optional(),
-        sorting: z
-          .array(
-            z.object({
-              id: z.string(),
-              desc: z.boolean(),
-            }),
-          )
-          .optional(),
-      }),
-    )
+    .input(adminOrdersContract.listOrders.input)
+    .output(adminOrdersContract.listOrders.output)
     .query(async ({ input }) => {
       const { page, pageSize, searchTerm, userId, columnFilters, sorting } =
         input;

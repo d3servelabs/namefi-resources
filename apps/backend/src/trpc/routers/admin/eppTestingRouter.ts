@@ -1,14 +1,17 @@
-import { z } from 'zod';
 import {
   auditedAdminProcedureWithPermissions,
   adminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminEppTestingContract } from '@namefi-astra/common/contract/admin/admin-epp-testing-contract';
 import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { logger } from '#lib/logger';
 import { getCentralnicOte2Registrar } from '#lib/epp-registrars/centralnic';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import {
+  toPunycodeDomainName,
+  type PunycodeDomainName,
+} from '@namefi-astra/registrars/lib/data/validations';
 import { ResourceType } from '#lib/auditor';
 import type {
   RegisterDomainInput,
@@ -16,20 +19,16 @@ import type {
 } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { DomainContactPrivacyEnum } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 
-const domainNameSchema = z
-  .string()
-  .min(1)
-  .transform((val) => {
-    // Ensure lowercase and trim
-    const normalized = val.toLowerCase().trim();
-    return toPunycodeDomainName(normalized);
-  });
+const normalizeDomainName = (val: string): PunycodeDomainName =>
+  toPunycodeDomainName(val.toLowerCase().trim());
 
 /**
  * EPP Testing Router - Admin-only operations for CentralNic OTE2
  * Used for testing domain transfers in/out in OTE environment
  */
-export const eppTestingRouter = createTRPCRouter({
+export const eppTestingRouter = createContractTRPCRouter<
+  typeof adminEppTestingContract
+>({
   /**
    * Create a new domain on OTE2 for testing
    */
@@ -44,21 +43,16 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName, years: input.years },
     }),
   )
-    .input(
-      z.object({
-        domainName: domainNameSchema,
-        years: z.number().min(1).max(10).default(1),
-      }),
-    )
+    .input(adminEppTestingContract.createDomain.input)
+    .output(adminEppTestingContract.createDomain.output)
     .mutation(async ({ input }) => {
-      const { domainName, years } = input;
+      const domainName = normalizeDomainName(input.domainName);
+      const { years } = input;
 
       logger.debug({ domainName, years }, 'Creating domain on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
-        // CentralNic uses defaults from config for contacts/privacy/renewOption
-        // but TypeScript requires the full type
         const result = await registrar.registerDomain({
           domainName,
           durationInYears: years,
@@ -91,9 +85,10 @@ export const eppTestingRouter = createTRPCRouter({
    * Get domain info from OTE2
    */
   getDomainInfo: adminProcedureWithPermissions(Permission.EPP_TESTING)
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.getDomainInfo.input)
+    .output(adminEppTestingContract.getDomainInfo.output)
     .query(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Getting domain info from OTE2');
 
@@ -135,9 +130,10 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName },
     }),
   )
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.changeAuthCode.input)
+    .output(adminEppTestingContract.changeAuthCode.output)
     .mutation(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Changing auth code on OTE2');
 
@@ -169,9 +165,10 @@ export const eppTestingRouter = createTRPCRouter({
    * Query pending transfer status
    */
   queryTransfer: adminProcedureWithPermissions(Permission.EPP_TESTING)
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.queryTransfer.input)
+    .output(adminEppTestingContract.queryTransfer.output)
     .query(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Querying transfer status on OTE2');
 
@@ -211,20 +208,16 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName },
     }),
   )
-    .input(
-      z.object({
-        domainName: domainNameSchema,
-        authCode: z.string().min(1),
-      }),
-    )
+    .input(adminEppTestingContract.requestTransfer.input)
+    .output(adminEppTestingContract.requestTransfer.output)
     .mutation(async ({ input }) => {
-      const { domainName, authCode } = input;
+      const domainName = normalizeDomainName(input.domainName);
+      const { authCode } = input;
 
       logger.debug({ domainName }, 'Requesting transfer on OTE2');
 
       try {
         const registrar = getCentralnicOte2Registrar();
-        // CentralNic only uses domainName and authCode for transfers
         const result = await registrar.transferDomain({
           domainName,
           authCode,
@@ -270,9 +263,10 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName },
     }),
   )
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.approveTransfer.input)
+    .output(adminEppTestingContract.approveTransfer.output)
     .mutation(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Approving transfer on OTE2');
 
@@ -316,9 +310,10 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName },
     }),
   )
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.rejectTransfer.input)
+    .output(adminEppTestingContract.rejectTransfer.output)
     .mutation(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Rejecting transfer on OTE2');
 
@@ -362,9 +357,10 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName },
     }),
   )
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.lockDomain.input)
+    .output(adminEppTestingContract.lockDomain.output)
     .mutation(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Locking domain on OTE2');
 
@@ -403,9 +399,10 @@ export const eppTestingRouter = createTRPCRouter({
       extraInput: { domainName: input.domainName },
     }),
   )
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.unlockDomain.input)
+    .output(adminEppTestingContract.unlockDomain.output)
     .mutation(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Unlocking domain on OTE2');
 
@@ -434,9 +431,10 @@ export const eppTestingRouter = createTRPCRouter({
    * Check domain availability
    */
   checkAvailability: adminProcedureWithPermissions(Permission.EPP_TESTING)
-    .input(z.object({ domainName: domainNameSchema }))
+    .input(adminEppTestingContract.checkAvailability.input)
+    .output(adminEppTestingContract.checkAvailability.output)
     .query(async ({ input }) => {
-      const { domainName } = input;
+      const domainName = normalizeDomainName(input.domainName);
 
       logger.debug({ domainName }, 'Checking domain availability on OTE2');
 

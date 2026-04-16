@@ -1,11 +1,11 @@
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
 import { logger } from '#lib/logger';
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminSchedulesContract } from '@namefi-astra/common/contract/admin/admin-schedules-contract';
 import { Permission } from '@namefi-astra/utils';
 import {
   SCHEDULE_REGISTRY,
@@ -16,47 +16,48 @@ import {
   getScheduleGroup,
 } from '../../../temporal/schedules';
 
-export const schedulesRouter = createTRPCRouter({
-  getAllSchedules: adminProcedureWithPermissions(
-    Permission.READ_SCHEDULES,
-  ).query(async () => {
-    try {
-      return getAllSchedules().map((schedule) => {
-        return {
-          config: schedule.config,
-        };
-      });
-    } catch (error) {
-      logger.error({ error }, 'Failed to get all schedules');
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Failed to retrieve schedules',
-      });
-    }
-  }),
+export const schedulesRouter = createContractTRPCRouter<
+  typeof adminSchedulesContract
+>({
+  getAllSchedules: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
+    .input(adminSchedulesContract.getAllSchedules.input)
+    .output(adminSchedulesContract.getAllSchedules.output)
+    .query(async () => {
+      try {
+        return getAllSchedules().map((schedule) => {
+          return {
+            config: schedule.config,
+          };
+        });
+      } catch (error) {
+        logger.error({ error }, 'Failed to get all schedules');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to retrieve schedules',
+        });
+      }
+    }),
 
-  getScheduleStatuses: adminProcedureWithPermissions(
-    Permission.READ_SCHEDULES,
-  ).query(async () => {
-    try {
-      return await getAllScheduleStatuses();
-    } catch (error) {
-      logger.error({ error }, 'Failed to get schedule statuses');
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Failed to retrieve schedule statuses',
-      });
-    }
-  }),
+  getScheduleStatuses: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
+    .input(adminSchedulesContract.getScheduleStatuses.input)
+    .output(adminSchedulesContract.getScheduleStatuses.output)
+    .query(async () => {
+      try {
+        return await getAllScheduleStatuses();
+      } catch (error) {
+        logger.error({ error }, 'Failed to get schedule statuses');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to retrieve schedule statuses',
+        });
+      }
+    }),
 
   getSchedulesByCategory: adminProcedureWithPermissions(
     Permission.READ_SCHEDULES,
   )
-    .input(
-      z.object({
-        category: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.getSchedulesByCategory.input)
+    .output(adminSchedulesContract.getSchedulesByCategory.output)
     .query(async ({ input }) => {
       try {
         const { category } = input;
@@ -92,11 +93,8 @@ export const schedulesRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        scheduleId: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.submitSchedule.input)
+    .output(adminSchedulesContract.submitSchedule.output)
     .mutation(async ({ input }) => {
       try {
         const { scheduleId } = input;
@@ -140,11 +138,8 @@ export const schedulesRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        scheduleId: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.triggerSchedule.input)
+    .output(adminSchedulesContract.triggerSchedule.output)
     .mutation(async ({ input }) => {
       const { scheduleId } = input;
       const schedule = SCHEDULE_REGISTRY[scheduleId];
@@ -188,11 +183,8 @@ export const schedulesRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        scheduleId: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.pauseSchedule.input)
+    .output(adminSchedulesContract.pauseSchedule.output)
     .mutation(async ({ input }) => {
       const { scheduleId } = input;
       const schedule = SCHEDULE_REGISTRY[scheduleId];
@@ -235,11 +227,8 @@ export const schedulesRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        scheduleId: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.unpauseSchedule.input)
+    .output(adminSchedulesContract.unpauseSchedule.output)
     .mutation(async ({ input }) => {
       const { scheduleId } = input;
       const schedule = SCHEDULE_REGISTRY[scheduleId];
@@ -282,11 +271,8 @@ export const schedulesRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        scheduleId: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.deleteSchedule.input)
+    .output(adminSchedulesContract.deleteSchedule.output)
     .mutation(async ({ input }) => {
       const { scheduleId } = input;
       const schedule = SCHEDULE_REGISTRY[scheduleId];
@@ -319,11 +305,8 @@ export const schedulesRouter = createTRPCRouter({
     }),
 
   getScheduleStatus: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
-    .input(
-      z.object({
-        scheduleId: z.string().min(1),
-      }),
-    )
+    .input(adminSchedulesContract.getScheduleStatus.input)
+    .output(adminSchedulesContract.getScheduleStatus.output)
     .query(async ({ input }) => {
       const { scheduleId } = input;
       const schedule = SCHEDULE_REGISTRY[scheduleId];
@@ -348,26 +331,24 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  getAllScheduleGroups: adminProcedureWithPermissions(
-    Permission.READ_SCHEDULES,
-  ).query(async () => {
-    try {
-      return getAllRegisteredScheduleGroups();
-    } catch (error) {
-      logger.error({ error }, 'Failed to get schedule groups');
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Failed to retrieve schedule groups',
-      });
-    }
-  }),
+  getAllScheduleGroups: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
+    .input(adminSchedulesContract.getAllScheduleGroups.input)
+    .output(adminSchedulesContract.getAllScheduleGroups.output)
+    .query(async () => {
+      try {
+        return getAllRegisteredScheduleGroups();
+      } catch (error) {
+        logger.error({ error }, 'Failed to get schedule groups');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to retrieve schedule groups',
+        });
+      }
+    }),
 
   getSchedulesByGroup: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
-    .input(
-      z.object({
-        groupId: z.string().optional(),
-      }),
-    )
+    .input(adminSchedulesContract.getSchedulesByGroup.input)
+    .output(adminSchedulesContract.getSchedulesByGroup.output)
     .query(async ({ input }) => {
       try {
         return getSchedulesByGroup(input.groupId);
@@ -384,11 +365,8 @@ export const schedulesRouter = createTRPCRouter({
     }),
 
   getScheduleGroup: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
-    .input(
-      z.object({
-        groupId: z.string().optional(),
-      }),
-    )
+    .input(adminSchedulesContract.getScheduleGroup.input)
+    .output(adminSchedulesContract.getScheduleGroup.output)
     .query(async ({ input }) => {
       try {
         return getScheduleGroup(input.groupId);

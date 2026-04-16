@@ -1,8 +1,9 @@
-import { z } from 'zod';
 import { inArray } from 'drizzle-orm';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
-import { adminProcedureWithPermissions, createTRPCRouter } from '../../base';
+import { adminProcedureWithPermissions } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminAutoRenewalContract } from '@namefi-astra/common/contract/admin/admin-auto-renewal-contract';
 import { Permission } from '@namefi-astra/utils';
 import { temporalClient } from '#temporal/client';
 import { db, paymentsTable } from '@namefi-astra/db';
@@ -16,142 +17,148 @@ import type { PaymentProvider } from '@namefi-astra/db/types';
 
 const autoRenewalLogger = logger;
 
-export const autoRenewalRouter = createTRPCRouter({
+export const autoRenewalRouter = createContractTRPCRouter<
+  typeof adminAutoRenewalContract
+>({
   /**
    * List all auto-renewal workflow runs (recent 90 days).
    * For completed runs, extract summary counts from the workflow result.
    */
   getAllAutoRenewalWorkflows: adminProcedureWithPermissions(
     Permission.READ_ORDERS,
-  ).query(async () => {
-    try {
-      await temporalClient.connection.ensureConnected();
+  )
+    .input(adminAutoRenewalContract.getAllAutoRenewalWorkflows.input)
+    .output(adminAutoRenewalContract.getAllAutoRenewalWorkflows.output)
+    .query(async () => {
+      try {
+        await temporalClient.connection.ensureConnected();
 
-      const cutoff = new Date(
-        Date.now() - 90 * 24 * 60 * 60 * 1000,
-      ).toISOString();
-      const workflowList = temporalClient.workflow.list({
-        query: `StartTime >= "${cutoff}" AND WorkflowType = "dailyDomainsUpcomingRenewalsWorkflow"`,
-      });
+        const cutoff = new Date(
+          Date.now() - 90 * 24 * 60 * 60 * 1000,
+        ).toISOString();
+        const workflowList = temporalClient.workflow.list({
+          query: `StartTime >= "${cutoff}" AND WorkflowType = "dailyDomainsUpcomingRenewalsWorkflow"`,
+        });
 
-      const workflows: Array<{
-        workflowId: string;
-        status: string;
-        startTime: Date | null;
-        closeTime: Date | null;
-        runId: string;
-        summary?: {
-          totalUsers: number;
-          successfulUsers: number;
-          failedUsers: number;
-          totalDomains: number;
-          totalDomainsRenewed: number;
-          totalDomainsFailed: number;
-          totalRevenueUsd: number;
-          executionTimeMs: number;
-        };
-      }> = [];
+        const workflows: Array<{
+          workflowId: string;
+          status: string;
+          startTime: Date | null;
+          closeTime: Date | null;
+          runId: string;
+          summary?: {
+            totalUsers: number;
+            successfulUsers: number;
+            failedUsers: number;
+            totalDomains: number;
+            totalDomainsRenewed: number;
+            totalDomainsFailed: number;
+            totalRevenueUsd: number;
+            executionTimeMs: number;
+          };
+        }> = [];
 
-      for await (const info of workflowList) {
-        try {
-          let summary: (typeof workflows)[number]['summary'];
+        for await (const info of workflowList) {
+          try {
+            let summary: (typeof workflows)[number]['summary'];
 
-          // For completed workflows, extract summary from the result
-          if (info.status?.name === 'COMPLETED') {
-            try {
-              const handle = temporalClient.workflow.getHandle(
-                info.workflowId,
-                info.runId,
-              );
-              const result = await handle.result();
-              // `successes` = child workflows that didn't crash (but may
-              // still have paymentStatus FAILED/SKIPPED internally).
-              // `failures` = child workflows that threw entirely.
-              const childSuccesses = (result?.successes ?? []) as Array<{
-                result?: {
-                  paymentStatus?: string;
-                  successes?: unknown[];
-                  failures?: unknown[];
-                  domainsThatCouldBeRenewed?: unknown[];
-                  domainsMissingPriceData?: unknown[];
-                  totalAmountInUsd?: number;
-                  refundAmountInUsd?: number | null;
-                };
-              }>;
-              const childFailures: unknown[] = result?.failures ?? [];
+            // For completed workflows, extract summary from the result
+            if (info.status?.name === 'COMPLETED') {
+              try {
+                const handle = temporalClient.workflow.getHandle(
+                  info.workflowId,
+                  info.runId,
+                );
+                const result = await handle.result();
+                // `successes` = child workflows that didn't crash (but may
+                // still have paymentStatus FAILED/SKIPPED internally).
+                // `failures` = child workflows that threw entirely.
+                const childSuccesses = (result?.successes ?? []) as Array<{
+                  result?: {
+                    paymentStatus?: string;
+                    successes?: unknown[];
+                    failures?: unknown[];
+                    domainsThatCouldBeRenewed?: unknown[];
+                    domainsMissingPriceData?: unknown[];
+                    totalAmountInUsd?: number;
+                    refundAmountInUsd?: number | null;
+                  };
+                }>;
+                const childFailures: unknown[] = result?.failures ?? [];
 
-              let domainsRenewed = 0;
-              let domainsFailed = 0;
-              let totalRevenue = 0;
-              let successfulUsers = 0;
-              let failedUsers = childFailures.length; // crashed workflows = failed
+                let domainsRenewed = 0;
+                let domainsFailed = 0;
+                let totalRevenue = 0;
+                let successfulUsers = 0;
+                let failedUsers = childFailures.length; // crashed workflows = failed
 
-              for (const s of childSuccesses) {
-                const ps = s.result?.paymentStatus;
-                if (ps === 'SUCCEEDED') {
-                  successfulUsers++;
-                  // Only count revenue from successful payments
-                  totalRevenue +=
-                    (s.result?.totalAmountInUsd ?? 0) -
-                    (s.result?.refundAmountInUsd ?? 0);
-                } else if (ps === 'FAILED' || ps === 'SKIPPED') {
-                  failedUsers++;
-                }
-                domainsRenewed += s.result?.successes?.length ?? 0;
-                domainsFailed += s.result?.failures?.length ?? 0;
+                for (const s of childSuccesses) {
+                  const ps = s.result?.paymentStatus;
+                  if (ps === 'SUCCEEDED') {
+                    successfulUsers++;
+                    // Only count revenue from successful payments
+                    totalRevenue +=
+                      (s.result?.totalAmountInUsd ?? 0) -
+                      (s.result?.refundAmountInUsd ?? 0);
+                  } else if (ps === 'FAILED' || ps === 'SKIPPED') {
+                    failedUsers++;
+                  }
+                  domainsRenewed += s.result?.successes?.length ?? 0;
+                  domainsFailed += s.result?.failures?.length ?? 0;
 
-                // When payment failed, all attempted domains are effectively failed
-                if (ps === 'FAILED') {
+                  // When payment failed, all attempted domains are effectively failed
+                  if (ps === 'FAILED') {
+                    domainsFailed +=
+                      s.result?.domainsThatCouldBeRenewed?.length ?? 0;
+                  }
+                  // Domains with missing price data are always failed
                   domainsFailed +=
-                    s.result?.domainsThatCouldBeRenewed?.length ?? 0;
+                    s.result?.domainsMissingPriceData?.length ?? 0;
                 }
-                // Domains with missing price data are always failed
-                domainsFailed += s.result?.domainsMissingPriceData?.length ?? 0;
+
+                summary = {
+                  totalUsers: childSuccesses.length + childFailures.length,
+                  successfulUsers,
+                  failedUsers,
+                  totalDomains: domainsRenewed + domainsFailed,
+                  totalDomainsRenewed: domainsRenewed,
+                  totalDomainsFailed: domainsFailed,
+                  totalRevenueUsd: totalRevenue,
+                  executionTimeMs: result?.executionTime ?? 0,
+                };
+              } catch (err) {
+                autoRenewalLogger.debug(
+                  { workflowId: info.workflowId, err },
+                  'Could not fetch workflow result for summary',
+                );
               }
-
-              summary = {
-                totalUsers: childSuccesses.length + childFailures.length,
-                successfulUsers,
-                failedUsers,
-                totalDomains: domainsRenewed + domainsFailed,
-                totalDomainsRenewed: domainsRenewed,
-                totalDomainsFailed: domainsFailed,
-                totalRevenueUsd: totalRevenue,
-                executionTimeMs: result?.executionTime ?? 0,
-              };
-            } catch (err) {
-              autoRenewalLogger.debug(
-                { workflowId: info.workflowId, err },
-                'Could not fetch workflow result for summary',
-              );
             }
+
+            workflows.push({
+              workflowId: info.workflowId,
+              status: info.status?.name || 'Unknown',
+              startTime: info.startTime ?? null,
+              closeTime: info.closeTime ?? null,
+              runId: info.runId,
+              summary,
+            });
+          } catch (err) {
+            autoRenewalLogger.error(
+              { workflowId: info.workflowId, err },
+              'Failed to process auto-renewal workflow entry',
+            );
           }
-
-          workflows.push({
-            workflowId: info.workflowId,
-            status: info.status?.name || 'Unknown',
-            startTime: info.startTime ?? null,
-            closeTime: info.closeTime ?? null,
-            runId: info.runId,
-            summary,
-          });
-        } catch (err) {
-          autoRenewalLogger.error(
-            { workflowId: info.workflowId, err },
-            'Failed to process auto-renewal workflow entry',
-          );
         }
-      }
 
-      return workflows;
-    } catch (error) {
-      autoRenewalLogger.error(
-        { error },
-        'Failed to fetch auto-renewal workflows',
-      );
-      return [];
-    }
-  }),
+        return workflows;
+      } catch (error) {
+        autoRenewalLogger.error(
+          { error },
+          'Failed to fetch auto-renewal workflows',
+        );
+        return [];
+      }
+    }),
 
   /**
    * Get full details for a single auto-renewal workflow run.
@@ -160,7 +167,8 @@ export const autoRenewalRouter = createTRPCRouter({
   getAutoRenewalWorkflowById: adminProcedureWithPermissions(
     Permission.READ_ORDERS,
   )
-    .input(z.object({ workflowId: z.string(), runId: z.string().optional() }))
+    .input(adminAutoRenewalContract.getAutoRenewalWorkflowById.input)
+    .output(adminAutoRenewalContract.getAutoRenewalWorkflowById.output)
     .query(async ({ input }) => {
       const { workflowId, runId } = input;
 

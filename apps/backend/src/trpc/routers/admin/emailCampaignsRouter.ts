@@ -17,8 +17,9 @@ import { db } from '@namefi-astra/db';
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminEmailCampaignsContract } from '@namefi-astra/common/contract/admin/admin-email-campaigns-contract';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
@@ -290,13 +291,12 @@ async function getEligibleUserIds(
   });
 }
 
-export const emailCampaignsRouter = createTRPCRouter({
+export const emailCampaignsRouter = createContractTRPCRouter<
+  typeof adminEmailCampaignsContract
+>({
   getScheduleStatus: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
-    .input(
-      z.object({
-        campaignKey: emailCampaignKeySchema,
-      }),
-    )
+    .input(adminEmailCampaignsContract.getScheduleStatus.input)
+    .output(adminEmailCampaignsContract.getScheduleStatus.output)
     .query(async ({ input }) => {
       const { scheduleId, schedule } = getScheduleForCampaign(
         input.campaignKey,
@@ -349,11 +349,8 @@ export const emailCampaignsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        campaignKey: emailCampaignKeySchema,
-      }),
-    )
+    .input(adminEmailCampaignsContract.pauseSchedule.input)
+    .output(adminEmailCampaignsContract.pauseSchedule.output)
     .mutation(async ({ input }) => {
       const { scheduleId, schedule } = getScheduleForCampaign(
         input.campaignKey,
@@ -399,11 +396,8 @@ export const emailCampaignsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        campaignKey: emailCampaignKeySchema,
-      }),
-    )
+    .input(adminEmailCampaignsContract.resumeSchedule.input)
+    .output(adminEmailCampaignsContract.resumeSchedule.output)
     .mutation(async ({ input }) => {
       const { scheduleId, schedule } = getScheduleForCampaign(
         input.campaignKey,
@@ -441,12 +435,8 @@ export const emailCampaignsRouter = createTRPCRouter({
     [Permission.READ_USERS, Permission.READ_ORDERS],
     { mode: 'every' },
   )
-    .input(
-      z.object({
-        campaignKey: emailCampaignKeySchema,
-        searchTerm: z.string().optional(),
-      }),
-    )
+    .input(adminEmailCampaignsContract.getEligibleUsers.input)
+    .output(adminEmailCampaignsContract.getEligibleUsers.output)
     .query(async ({ input }) => {
       const { campaignKey } = input;
       const searchTerm = input.searchTerm?.trim() || undefined;
@@ -745,12 +735,8 @@ export const emailCampaignsRouter = createTRPCRouter({
   getDomainTrafficSurgeFunnelDebug: adminProcedureWithPermissions(
     Permission.READ_USERS,
   )
-    .input(
-      z.object({
-        searchTerm: z.string().optional(),
-        limit: z.number().min(1).max(1000).default(250),
-      }),
-    )
+    .input(adminEmailCampaignsContract.getDomainTrafficSurgeFunnelDebug.input)
+    .output(adminEmailCampaignsContract.getDomainTrafficSurgeFunnelDebug.output)
     .query(async ({ input }) => {
       const searchTerm = input.searchTerm?.trim() || undefined;
       const searchTermLike = searchTerm ? `%${searchTerm}%` : undefined;
@@ -949,12 +935,8 @@ export const emailCampaignsRouter = createTRPCRouter({
     }),
     { mode: 'every' },
   )
-    .input(
-      z.object({
-        campaignKey: emailCampaignKeySchema,
-        userId: z.string().uuid(),
-      }),
-    )
+    .input(adminEmailCampaignsContract.sendNow.input)
+    .output(adminEmailCampaignsContract.sendNow.output)
     .mutation(async ({ input }) => {
       const { campaignKey, userId } = input;
       const now = new Date();

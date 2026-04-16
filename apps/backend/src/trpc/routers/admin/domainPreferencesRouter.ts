@@ -6,10 +6,9 @@ import {
   domainConfigTable,
   domainUserPreferencesTable,
 } from '@namefi-astra/db';
-import { namefiNormalizedDomainSchema, Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
-import { z } from 'zod';
 import {
   buildWhereClause,
   buildSortClause,
@@ -19,8 +18,9 @@ import {
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminDomainPreferencesContract } from '@namefi-astra/common/contract/admin/admin-domain-preferences-contract';
 import { updateDomainPreferencesAndConfig } from '#lib/domains/domain-preferences';
 import { logger } from '#lib/logger';
 import { ResourceType } from '#lib/auditor';
@@ -29,18 +29,14 @@ import {
   privyUsersTableSchema,
 } from '../../../services/admin/privy-user-cache';
 
-export const domainPreferencesRouter = createTRPCRouter({
+export const domainPreferencesRouter = createContractTRPCRouter<
+  typeof adminDomainPreferencesContract
+>({
   listDomainPreferences: adminProcedureWithPermissions(
     Permission.READ_DOMAIN_PREFERENCES,
   )
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        pageSize: z.number().min(1).max(100).default(25),
-        filters: z.any().optional(),
-        sorting: z.any().optional(),
-      }),
-    )
+    .input(adminDomainPreferencesContract.listDomainPreferences.input)
+    .output(adminDomainPreferencesContract.listDomainPreferences.output)
     .query(async ({ input }) => {
       const { page, pageSize, filters, sorting } = input;
       const offset = (page - 1) * pageSize;
@@ -202,17 +198,8 @@ export const domainPreferencesRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-        domainPreferencesAndConfig: z.object({
-          forwardTo: z.string().optional(),
-          autoEnsEnabled: z.boolean().optional(),
-          autoParkEnabled: z.boolean().optional(),
-          autoRenewEnabled: z.boolean().optional(),
-        }),
-      }),
-    )
+    .input(adminDomainPreferencesContract.updateDomainPreferences.input)
+    .output(adminDomainPreferencesContract.updateDomainPreferences.output)
     .mutation(async ({ ctx, input }) => {
       await ensurePrivyTableFresh();
       const { domainName, domainPreferencesAndConfig } = input;

@@ -6,19 +6,15 @@ import {
   type DnsRecordInsert,
   type PoweredByNamefiDomainUpdate,
 } from '@namefi-astra/db';
-import {
-  namefiNormalizedDomainSchema,
-  resolve,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import { resolve, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, sql, type SQL } from 'drizzle-orm';
-import { z } from 'zod';
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminPoweredByNamefiContract } from '@namefi-astra/common/contract/admin/admin-powered-by-namefi-contract';
 import { Permission } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { createVercelClientSDK } from '#lib/vercel/vercel-client-sdk';
@@ -308,20 +304,13 @@ function generateRecommendations(validation: DomainValidation): string[] {
   return recommendations;
 }
 
-export const poweredByNamefiRouter = createTRPCRouter({
+export const poweredByNamefiRouter = createContractTRPCRouter<
+  typeof adminPoweredByNamefiContract
+>({
   // Get paginated list of poweredByNamefi domains
   getPoweredByNamefiDomains: adminProcedureWithPermissions(Permission.READ_PBN)
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        limit: z.number().min(1).max(100).default(20),
-        sortBy: z
-          .enum(['normalizedDomainName', 'createdAt', 'updatedAt'])
-          .default('normalizedDomainName'),
-        sortOrder: z.enum(['asc', 'desc']).default('asc'),
-        searchTerm: z.string().optional(),
-      }),
-    )
+    .input(adminPoweredByNamefiContract.getPoweredByNamefiDomains.input)
+    .output(adminPoweredByNamefiContract.getPoweredByNamefiDomains.output)
     .query(async ({ input }) => {
       const { page, limit, sortBy, sortOrder, searchTerm } = input;
       const offset = (page - 1) * limit;
@@ -399,11 +388,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
   getPoweredByNamefiDomainStatus: adminProcedureWithPermissions(
     Permission.READ_PBN,
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(adminPoweredByNamefiContract.getPoweredByNamefiDomainStatus.input)
+    .output(adminPoweredByNamefiContract.getPoweredByNamefiDomainStatus.output)
     .query(async ({ input }) => {
       const { normalizedDomainName } = input;
 
@@ -446,29 +432,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        additionalAllowedHostnames: z.array(z.string()).default([]),
-        additionalReservedNames: z.array(z.string()).default([]),
-        durationConstraints: z
-          .object({
-            minDurationInYears: z.number().min(1),
-            maxDurationInYears: z.number().min(1),
-          })
-          .refine(
-            (data) => data.minDurationInYears <= data.maxDurationInYears,
-            {
-              message:
-                'Min duration must be less than or equal to max duration',
-              path: ['durationConstraints'],
-            },
-          ),
-        costPerYearInUsdCents: z.number().min(0),
-        metadata: z.record(z.string(), z.any()).optional(),
-        ownerId: z.string().uuid().optional(),
-      }),
-    )
+    .input(adminPoweredByNamefiContract.createPoweredByNamefiDomain.input)
+    .output(adminPoweredByNamefiContract.createPoweredByNamefiDomain.output)
     .mutation(async ({ input }) => {
       const {
         normalizedDomainName,
@@ -532,30 +497,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        additionalAllowedHostnames: z.array(z.string()).optional(),
-        additionalReservedNames: z.array(z.string()).optional(),
-        durationConstraints: z
-          .object({
-            minDurationInYears: z.number().min(1),
-            maxDurationInYears: z.number().min(1),
-          })
-          .refine(
-            (data) => data.minDurationInYears <= data.maxDurationInYears,
-            {
-              message:
-                'Min duration must be less than or equal to max duration',
-              path: ['durationConstraints'],
-            },
-          )
-          .optional(),
-        costPerYearInUsdCents: z.number().min(0).optional(),
-        metadata: z.record(z.string(), z.any()).optional(),
-        ownerId: z.string().uuid().optional(),
-      }),
-    )
+    .input(adminPoweredByNamefiContract.updatePoweredByNamefiDomain.input)
+    .output(adminPoweredByNamefiContract.updatePoweredByNamefiDomain.output)
     .mutation(async ({ input }) => {
       const {
         normalizedDomainName,
@@ -638,11 +581,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(adminPoweredByNamefiContract.deletePoweredByNamefiDomain.input)
+    .output(adminPoweredByNamefiContract.deletePoweredByNamefiDomain.output)
     .mutation(async ({ input }) => {
       const { normalizedDomainName } = input;
 
@@ -693,11 +633,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(adminPoweredByNamefiContract.setupVercelAndDns.input)
+    .output(adminPoweredByNamefiContract.setupVercelAndDns.output)
     .mutation(async ({ input }) => {
       const { normalizedDomainName } = input;
 
@@ -790,11 +727,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(adminPoweredByNamefiContract.setupNamefiIoSubdomain.input)
+    .output(adminPoweredByNamefiContract.setupNamefiIoSubdomain.output)
     .mutation(async ({ input }) => {
       {
         const { normalizedDomainName } = input;
@@ -887,11 +821,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(adminPoweredByNamefiContract.setupNamefiDevSubdomain.input)
+    .output(adminPoweredByNamefiContract.setupNamefiDevSubdomain.output)
     .mutation(async ({ input }) => {
       {
         const { normalizedDomainName } = input;
@@ -985,11 +916,9 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        enabled: z.boolean(),
-      }),
+    .input(adminPoweredByNamefiContract.togglePoweredByNamefiDomainStatus.input)
+    .output(
+      adminPoweredByNamefiContract.togglePoweredByNamefiDomainStatus.output,
     )
     .mutation(async ({ input }) => {
       const { normalizedDomainName, enabled } = input;
@@ -1043,10 +972,9 @@ export const poweredByNamefiRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
+    .input(adminPoweredByNamefiContract.startPoweredByNamefiDomainRollout.input)
+    .output(
+      adminPoweredByNamefiContract.startPoweredByNamefiDomainRollout.output,
     )
     .mutation(async ({ input }) => {
       const { normalizedDomainName } = input;
@@ -1102,23 +1030,12 @@ export const poweredByNamefiRouter = createTRPCRouter({
       }),
     )
       .input(
-        z.object({
-          normalizedDomainName: namefiNormalizedDomainSchema,
-          costPerYearInUsdCents: z.number().min(0),
-          durationConstraints: z
-            .object({
-              minDurationInYears: z.number().min(1),
-              maxDurationInYears: z.number().min(1),
-            })
-            .refine(
-              (data) => data.minDurationInYears <= data.maxDurationInYears,
-              {
-                message:
-                  'Min duration must be less than or equal to max duration',
-                path: ['durationConstraints'],
-              },
-            ),
-        }),
+        adminPoweredByNamefiContract.updatePoweredByNamefiDomainCostAndDuration
+          .input,
+      )
+      .output(
+        adminPoweredByNamefiContract.updatePoweredByNamefiDomainCostAndDuration
+          .output,
       )
       .mutation(async ({ input }) => {
         const {

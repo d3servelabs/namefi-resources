@@ -2,7 +2,6 @@ import { db, domainExportTrackingTable } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, type SQL, sql } from 'drizzle-orm';
-import { z } from 'zod';
 import {
   buildWhereClause,
   buildSortClause,
@@ -12,8 +11,9 @@ import {
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminExportTrackingContract } from '@namefi-astra/common/contract/admin/admin-export-tracking-contract';
 import {
   getUserIdFromOwnerAddress,
   sendPendingExportEmail,
@@ -29,19 +29,15 @@ import {
 import { ResourceType } from '#lib/auditor';
 import { logger } from '#lib/logger';
 
-export const exportTrackingRouter = createTRPCRouter({
+export const exportTrackingRouter = createContractTRPCRouter<
+  typeof adminExportTrackingContract
+>({
   /**
    * Get export tracking records with pagination and filtering
    */
   getExportTrackingRecords: adminProcedureWithPermissions(Permission.READ_NFT)
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        pageSize: z.number().min(1).max(100).default(25),
-        filters: z.any().optional(), // FilterOptions type from drizzler
-        sorting: z.any().optional(), // SortOptions type from drizzler
-      }),
-    )
+    .input(adminExportTrackingContract.getExportTrackingRecords.input)
+    .output(adminExportTrackingContract.getExportTrackingRecords.output)
     .query(async ({ input }) => {
       const { page, pageSize, filters, sorting } = input;
       const offset = (page - 1) * pageSize;
@@ -189,7 +185,8 @@ export const exportTrackingRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(z.object({ id: z.string().uuid() }))
+    .input(adminExportTrackingContract.verifyExportTracking.input)
+    .output(adminExportTrackingContract.verifyExportTracking.output)
     .mutation(async ({ ctx, input }) => {
       // First verify the record exists and is in TRANSFER_COMPLETED status
       const existingRecord = await db
@@ -316,7 +313,8 @@ export const exportTrackingRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(z.object({ id: z.string().uuid() }))
+    .input(adminExportTrackingContract.resolveExportTracking.input)
+    .output(adminExportTrackingContract.resolveExportTracking.output)
     .mutation(async ({ ctx, input }) => {
       const existingRecord = await db
         .select({
@@ -415,12 +413,8 @@ export const exportTrackingRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        id: z.string().uuid(),
-        forceResend: z.boolean().optional().default(false),
-      }),
-    )
+    .input(adminExportTrackingContract.sendExportTrackingEmail.input)
+    .output(adminExportTrackingContract.sendExportTrackingEmail.output)
     .mutation(async ({ input }) => {
       const existingRecord = await db
         .select({

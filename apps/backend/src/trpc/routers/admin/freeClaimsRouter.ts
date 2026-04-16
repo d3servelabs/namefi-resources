@@ -1,39 +1,24 @@
 import { db, freeClaimsTable } from '@namefi-astra/db';
-import { namefiNormalizedDomainSchema, Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, or, type SQL, sql } from 'drizzle-orm';
-import { z } from 'zod';
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
-  createTRPCRouter,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminFreeClaimsContract } from '@namefi-astra/common/contract/admin/admin-free-claims-contract';
 import { ResourceType } from '#lib/auditor';
 import { logger } from '#lib/logger';
 
-export const freeClaimsRouter = createTRPCRouter({
+export const freeClaimsRouter = createContractTRPCRouter<
+  typeof adminFreeClaimsContract
+>({
   getFreeClaimsWithPagination: adminProcedureWithPermissions(
     Permission.READ_FREE_CLAIMS,
   )
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        limit: z.number().min(1).max(100).default(20),
-        sortBy: z
-          .enum([
-            'groupOrCampaignKey',
-            'reason',
-            'exactDomainName',
-            'parentDomain',
-            'expirationDate',
-            'createdAt',
-          ])
-          .default('createdAt'),
-        sortOrder: z.enum(['asc', 'desc']).default('desc'),
-        searchTerm: z.string().optional(),
-        status: z.enum(['all', 'IDLE', 'CLAIMING', 'CLAIMED']).default('all'),
-      }),
-    )
+    .input(adminFreeClaimsContract.getFreeClaimsWithPagination.input)
+    .output(adminFreeClaimsContract.getFreeClaimsWithPagination.output)
     .query(async ({ input }) => {
       const { page, limit, sortBy, sortOrder, searchTerm, status } = input;
       const offset = (page - 1) * limit;
@@ -142,25 +127,8 @@ export const freeClaimsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z
-        .object({
-          userId: z.string().uuid(),
-          groupOrCampaignKey: z.string().min(1),
-          reason: z.string().min(1),
-          exactDomainName: namefiNormalizedDomainSchema.optional(),
-          parentDomain: namefiNormalizedDomainSchema.optional(),
-          expirationDate: z.date().optional(),
-        })
-        .refine((data) => data.exactDomainName || data.parentDomain, {
-          message: 'Either exactDomainName or parentDomain must be provided',
-          path: ['exactDomainName', 'parentDomain'],
-        })
-        .refine((data) => !(data.exactDomainName && data.parentDomain), {
-          message: 'Cannot specify both exactDomainName and parentDomain',
-          path: ['exactDomainName', 'parentDomain'],
-        }),
-    )
+    .input(adminFreeClaimsContract.createFreeClaim.input)
+    .output(adminFreeClaimsContract.createFreeClaim.output)
     .mutation(async ({ input }) => {
       const {
         userId,
@@ -212,16 +180,8 @@ export const freeClaimsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        id: z.string().uuid(),
-        groupOrCampaignKey: z.string().min(1).optional(),
-        reason: z.string().min(1).optional(),
-        exactDomainName: namefiNormalizedDomainSchema.optional(),
-        parentDomain: namefiNormalizedDomainSchema.optional(),
-        expirationDate: z.date().optional(),
-      }),
-    )
+    .input(adminFreeClaimsContract.updateFreeClaim.input)
+    .output(adminFreeClaimsContract.updateFreeClaim.output)
     .mutation(async ({ input }) => {
       const { id, ...updateData } = input;
 
@@ -293,11 +253,8 @@ export const freeClaimsRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(
-      z.object({
-        id: z.string().uuid(),
-      }),
-    )
+    .input(adminFreeClaimsContract.deleteFreeClaim.input)
+    .output(adminFreeClaimsContract.deleteFreeClaim.output)
     .mutation(async ({ input }) => {
       const { id } = input;
 

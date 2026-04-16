@@ -3,10 +3,11 @@ import { checksumWalletAddressSchema, Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, or, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { adminProcedureWithPermissions, createTRPCRouter } from '../../base';
+import { adminProcedureWithPermissions } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { adminUsersContract } from '@namefi-astra/common/contract/admin/admin-users-contract';
 import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 import {
-  adminUserReferenceInput,
   getAdminUserDetails,
   getAdminWalletDetails,
   resolveAdminUserReference,
@@ -33,14 +34,12 @@ const LEADING_AT_SYMBOL_REGEX = /^@/;
 // Helper to resolve ENS name to wallet address
 const resolveENSToWallet = resolveEnsNameToAddress;
 
-export const adminUsersRouter = createTRPCRouter({
+export const adminUsersRouter = createContractTRPCRouter<
+  typeof adminUsersContract
+>({
   searchUsers: adminProcedureWithPermissions(Permission.READ_USERS)
-    .input(
-      z.object({
-        searchTerm: z.string().min(1).max(100),
-        limit: z.number().min(1).max(50).default(10),
-      }),
-    )
+    .input(adminUsersContract.searchUsers.input)
+    .output(adminUsersContract.searchUsers.output)
     .query(async ({ input }) => {
       const { searchTerm, limit } = input;
 
@@ -214,69 +213,29 @@ export const adminUsersRouter = createTRPCRouter({
     }),
 
   resolveUserReference: adminProcedureWithPermissions(Permission.READ_USERS)
-    .input(adminUserReferenceInput)
+    .input(adminUsersContract.resolveUserReference.input)
+    .output(adminUsersContract.resolveUserReference.output)
     .query(async ({ input }) => {
       return await resolveAdminUserReference(input);
     }),
 
   getUserDetails: adminProcedureWithPermissions(Permission.READ_USERS)
-    .input(
-      z.object({
-        userId: z.string().uuid(),
-        matchedWalletAddress: checksumWalletAddressSchema.optional(),
-      }),
-    )
+    .input(adminUsersContract.getUserDetails.input)
+    .output(adminUsersContract.getUserDetails.output)
     .query(async ({ input }) => {
       return await getAdminUserDetails(input);
     }),
 
   getWalletDetails: adminProcedureWithPermissions(Permission.READ_USERS)
-    .input(
-      z.object({
-        walletAddress: checksumWalletAddressSchema,
-      }),
-    )
+    .input(adminUsersContract.getWalletDetails.input)
+    .output(adminUsersContract.getWalletDetails.output)
     .query(async ({ input }) => {
       return await getAdminWalletDetails(input);
     }),
 
   listUsers: adminProcedureWithPermissions(Permission.READ_USERS)
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        pageSize: z.number().min(1).max(100).default(25),
-        searchTerm: z.string().optional(),
-        domainSearchTerm: z.string().optional(),
-        ensSearchTerm: z.string().optional(),
-        columnFilters: z
-          .array(
-            z.object({
-              id: z.string(),
-              value: z.object({
-                operator: z.enum([
-                  'like',
-                  'eq',
-                  'neq',
-                  'gt',
-                  'gte',
-                  'lt',
-                  'lte',
-                ]),
-                value: z.union([z.string(), z.number(), z.date()]),
-              }),
-            }),
-          )
-          .optional(),
-        sorting: z
-          .array(
-            z.object({
-              id: z.string(),
-              desc: z.boolean(),
-            }),
-          )
-          .optional(),
-      }),
-    )
+    .input(adminUsersContract.listUsers.input)
+    .output(adminUsersContract.listUsers.output)
     .query(async ({ input }) => {
       const {
         page,
@@ -709,17 +668,8 @@ export const adminUsersRouter = createTRPCRouter({
     }),
 
   listUsersV2: adminProcedureWithPermissions(Permission.READ_USERS)
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        pageSize: z.number().min(1).max(100).default(25),
-        searchTerm: z.string().optional(),
-        domainSearchTerm: z.string().optional(),
-        ensSearchTerm: z.string().optional(),
-        filters: z.any().optional(), // FilterOptions type from drizzler
-        sorting: z.any().optional(), // SortOptions type from drizzler
-      }),
-    )
+    .input(adminUsersContract.listUsersV2.input)
+    .output(adminUsersContract.listUsersV2.output)
     .query(async ({ input }) => {
       const {
         page,
@@ -911,30 +861,31 @@ export const adminUsersRouter = createTRPCRouter({
       }
     }),
 
-  forceRefreshPrivyCache: adminProcedureWithPermissions(
-    Permission.READ_USERS,
-  ).mutation(async () => {
-    try {
-      logger.debug('Force refreshing Privy cache');
+  forceRefreshPrivyCache: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminUsersContract.forceRefreshPrivyCache.input)
+    .output(adminUsersContract.forceRefreshPrivyCache.output)
+    .mutation(async () => {
+      try {
+        logger.debug('Force refreshing Privy cache');
 
-      // Trigger the workflow with forceRefresh=true
-      const result = await triggerUpdatePrivyCache(true);
+        // Trigger the workflow with forceRefresh=true
+        const result = await triggerUpdatePrivyCache(true);
 
-      // Get the updated status
-      const status = await getPrivyCacheStatus();
+        // Get the updated status
+        const status = await getPrivyCacheStatus();
 
-      return {
-        success: true,
-        lastRefresh: status?.lastRefresh || null,
-        expiresAt: status?.expiresAt || null,
-        recordCount: status?.recordCount || 0,
-      };
-    } catch (error) {
-      logger.error({ error }, 'Failed to force refresh Privy cache');
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Failed to force refresh Privy cache',
-      });
-    }
-  }),
+        return {
+          success: true,
+          lastRefresh: status?.lastRefresh || null,
+          expiresAt: status?.expiresAt || null,
+          recordCount: status?.recordCount || 0,
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to force refresh Privy cache');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to force refresh Privy cache',
+        });
+      }
+    }),
 });
