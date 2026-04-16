@@ -110,7 +110,7 @@ export default createConfig({
               includeTransactionReceipts: false,
               startBlock: 'latest', // Adjust based on when contract was deployed
             },
-            robinhoodTestnet: {
+            sepolia: {
               includeCallTraces: false,
               includeTransactionReceipts: false,
               startBlock: 'latest', // Adjust based on when contract was deployed
