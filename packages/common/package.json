@@ -18,9 +18,12 @@
     "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
-    "@namefi-astra/utils": "workspace:*"
+    "@namefi-astra/db": "workspace:*",
+    "@namefi-astra/utils": "workspace:*",
+    "@namefi-astra/zod-dns": "workspace:*"
   },
   "peerDependencies": {
+    "@trpc/server": "^11.4.4",
     "zod": "catalog:"
   },
   "devDependencies": {

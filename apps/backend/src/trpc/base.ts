@@ -310,11 +310,19 @@ export function ctxRequirePermission(ctx: TrpcContext, permission: Permission) {
  * ZodErrors so that we get typesafety on the frontend if our procedure fails due to validation
  * errors on the backend.
  */
+/**
+ * The meta shape attached to every tRPC procedure on this instance.
+ * Exported so contract helpers (see `./contract.ts`) can plumb the actual
+ * meta type into derived `QueryProcedure` / `MutationProcedure` types instead
+ * of falling back to `object`.
+ */
+export type TrpcMeta = ORPCMeta & {
+  eip712?: { input?: { acceptedPrimaryTypes?: string[] } };
+};
+
 export const t = initTRPC
   .context<TrpcContext>()
-  .meta<
-    ORPCMeta & { eip712?: { input?: { acceptedPrimaryTypes?: string[] } } }
-  >()
+  .meta<TrpcMeta>()
   .create({
     transformer: superjson,
     errorFormatter({ shape, error }) {

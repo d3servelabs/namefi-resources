@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "namefi-astra",
@@ -434,12 +433,15 @@
       "name": "@namefi-astra/common",
       "version": "0.0.0",
       "dependencies": {
+        "@namefi-astra/db": "workspace:*",
         "@namefi-astra/utils": "workspace:*",
+        "@namefi-astra/zod-dns": "workspace:*",
       },
       "devDependencies": {
         "@namefi-astra/typescript": "workspace:*",
       },
       "peerDependencies": {
+        "@trpc/server": "^11.4.4",
         "zod": "catalog:",
       },
     },
