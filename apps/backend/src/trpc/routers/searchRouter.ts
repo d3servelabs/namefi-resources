@@ -1,8 +1,5 @@
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
-import { z } from 'zod';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { searchContract } from '@namefi-astra/common/contract/search-contract';
 import { getClubsCategoriesWithStats } from '#lib/clubs-categories';
 import { logger } from '#lib/logger';
 import {
@@ -11,10 +8,10 @@ import {
 } from '#lib/namefi-registry';
 import {
   authedOrPublicProcedure,
-  createTRPCRouter,
   protectedProcedure,
   baseProcedure,
 } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { generateDomainSuggestions } from '#lib/domain-suggestions';
 import { drop, take, isNil, isNotNil, isEmpty } from 'ramda';
 import type { UserSelect } from '@namefi-astra/db';
@@ -31,15 +28,10 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { gaEventUserBeginSearch } from '#lib/tracking/checkout/events';
 import { orderService } from '#services/orders/orders.service';
 
-export const searchRouter = createTRPCRouter({
+export const searchRouter = createContractTRPCRouter<typeof searchContract>({
   isDomainAvailable: authedOrPublicProcedure
-    .input(
-      z.object({
-        domain: namefiNormalizedDomainSchema.describe(
-          'The domain to check availability for',
-        ),
-      }),
-    )
+    .input(searchContract.isDomainAvailable.input)
+    .output(searchContract.isDomainAvailable.output)
     .query(async ({ input, ctx }) => {
       const { domain } = input;
       // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
@@ -87,8 +79,10 @@ export const searchRouter = createTRPCRouter({
       return availability[0];
     }),
 
-  getClubsCategoriesWithStats: authedOrPublicProcedure.query(
-    async ({ ctx }) => {
+  getClubsCategoriesWithStats: authedOrPublicProcedure
+    .input(searchContract.getClubsCategoriesWithStats.input)
+    .output(searchContract.getClubsCategoriesWithStats.output)
+    .query(async ({ ctx }) => {
       const parentDomain = ctx.poweredByNamefiDomain;
       const startTime = performance.now();
       const categories = await getClubsCategoriesWithStats(parentDomain);
@@ -100,18 +94,11 @@ export const searchRouter = createTRPCRouter({
         `[getClubsCategoriesWithStats] Number of categories: ${categories.length}`,
       );
       return categories;
-    },
-  ),
+    }),
 
   getDomainSuggestions: baseProcedure
-    .input(
-      z.object({
-        query: z.string().min(1),
-        parentDomain: z.string().optional(),
-        page: z.number().int().min(1).optional(),
-        pageSize: z.number().int().min(1).max(100).optional(),
-      }),
-    )
+    .input(searchContract.getDomainSuggestions.input)
+    .output(searchContract.getDomainSuggestions.output)
     .query(async ({ input, ctx }) => {
       const { query, page = 1, pageSize } = input;
       const parentDomain =
@@ -153,12 +140,15 @@ export const searchRouter = createTRPCRouter({
   /**
    * Stream domain availability results
    */
+  /**
+   * Subscription procedure — does NOT call `.output(...)` because tRPC v11
+   * subscriptions infer their wire-output from the `async function*`
+   * resolver's return type. The contract still pins the per-event shape
+   * via `searchContract.streamDomainAvailability.output`, which the
+   * runtime helper wraps in `AsyncIterable<...>` automatically.
+   */
   streamDomainAvailability: authedOrPublicProcedure
-    .input(
-      z.object({
-        domains: z.array(namefiNormalizedDomainSchema).min(1),
-      }),
-    )
+    .input(searchContract.streamDomainAvailability.input)
     .subscription(async function* ({ input: { domains }, signal, ctx }) {
       if (domains.length === 0 || signal?.aborted) {
         yield* [];
@@ -226,14 +216,8 @@ export const searchRouter = createTRPCRouter({
     }),
 
   checkFreeClaimEligibility: protectedProcedure
-    .input(
-      z.object({
-        domains: z
-          .array(namefiNormalizedDomainSchema)
-          .min(1)
-          .describe('Array of domains to check for free claim eligibility'),
-      }),
-    )
+    .input(searchContract.checkFreeClaimEligibility.input)
+    .output(searchContract.checkFreeClaimEligibility.output)
     .query(async ({ input, ctx }) => {
       const { domains } = input;
       const { user } = ctx;

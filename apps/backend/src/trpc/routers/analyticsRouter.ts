@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { analyticsContract } from '@namefi-astra/common/contract/analytics-contract';
 import {
   adminProcedureWithPermissions,
-  createTRPCRouter,
   publicProcedure,
   withRequiredPermissions,
 } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { namefiNormalizedDomainSchema, Permission } from '@namefi-astra/utils';
 import {
   createGA4DnsAnalyticsClient,
@@ -516,12 +517,15 @@ export async function getFullReportByRecordName(
   }
 }
 
-export const analyticsRouter = createTRPCRouter({
+export const analyticsRouter = createContractTRPCRouter<
+  typeof analyticsContract
+>({
   /**
    * Get comprehensive dashboard overview
    */
   getDashboardOverview: adminProcedureWithPermissions(Permission.READ_ANALYTICS)
-    .input(getDashboardOverviewInputSchema)
+    .input(analyticsContract.getDashboardOverview.input)
+    .output(analyticsContract.getDashboardOverview.output)
     .query(async ({ input }) => {
       return getDashboardOverview(input);
     }),
@@ -529,7 +533,8 @@ export const analyticsRouter = createTRPCRouter({
   getCheckoutFlowOverview: adminProcedureWithPermissions(
     Permission.READ_ANALYTICS,
   )
-    .input(getCheckoutFlowOverviewInputSchema)
+    .input(analyticsContract.getCheckoutFlowOverview.input)
+    .output(analyticsContract.getCheckoutFlowOverview.output)
     .query(async ({ input }) => {
       return getCheckoutFlowOverview(input);
     }),
@@ -538,12 +543,8 @@ export const analyticsRouter = createTRPCRouter({
    * Get queries by public suffix
    */
   getByPublicSuffix: adminProcedureWithPermissions(Permission.READ_ANALYTICS)
-    .input(
-      z.object({
-        limit: z.number().min(1).max(1000).default(50),
-        ...dateRangeSchema.shape,
-      }),
-    )
+    .input(analyticsContract.getByPublicSuffix.input)
+    .output(analyticsContract.getByPublicSuffix.output)
     .query(async ({ input }) => {
       const client = createClient();
       const dateRange: DateRange = {
@@ -560,12 +561,8 @@ export const analyticsRouter = createTRPCRouter({
   getByPublicSuffixPlusOne: adminProcedureWithPermissions(
     Permission.READ_ANALYTICS,
   )
-    .input(
-      z.object({
-        limit: z.number().min(1).max(1000).default(50),
-        ...dateRangeSchema.shape,
-      }),
-    )
+    .input(analyticsContract.getByPublicSuffixPlusOne.input)
+    .output(analyticsContract.getByPublicSuffixPlusOne.output)
     .query(async ({ input }) => {
       const client = createClient();
       const dateRange: DateRange = {
@@ -582,7 +579,8 @@ export const analyticsRouter = createTRPCRouter({
   getFullReportByRecordName: adminProcedureWithPermissions(
     Permission.READ_ANALYTICS,
   )
-    .input(getFullReportByRecordNameInputSchema)
+    .input(analyticsContract.getFullReportByRecordName.input)
+    .output(analyticsContract.getFullReportByRecordName.output)
     .query(async ({ input }) => {
       return getFullReportByRecordName(input);
     }),
@@ -593,7 +591,8 @@ export const analyticsRouter = createTRPCRouter({
   getParsedReportByRecordName: withRequiredPermissions(publicProcedure, [
     Permission.READ_ANALYTICS,
   ])
-    .input(getFullReportByRecordNameInputSchema)
+    .input(analyticsContract.getParsedReportByRecordName.input)
+    .output(analyticsContract.getParsedReportByRecordName.output)
     .query(async ({ input }) => {
       const report = await getFullReportByRecordName(input);
       return parseDnsAnalyticsReportData(report, {

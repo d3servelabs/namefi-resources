@@ -648,7 +648,7 @@ export const NameserversPanelInner = ({
     <Layout>
       <NameserversPanelForm
         domainName={domainName}
-        nameservers={data?.nameservers ?? []}
+        nameservers={(data?.nameservers ?? []) as Nameserver[]}
         nftChainId={nftChainId}
       />
     </Layout>

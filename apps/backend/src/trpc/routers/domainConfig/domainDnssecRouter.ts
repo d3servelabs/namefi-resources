@@ -1,12 +1,5 @@
-import {
-  DnssecAlgorithms,
-  DnssecDigestType,
-  DnssecFlags,
-} from '@namefi-astra/registrars/lib/abstract-registrar/data/dnssec';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 
-import { z } from 'zod';
 import {
   associateDelegationSigner,
   disableDnssecForDomain,
@@ -21,21 +14,22 @@ import { TRPCError } from '@trpc/server';
 import { temporalClient } from '../../../temporal/client';
 import { enableDnssecWorkflow } from '../../../temporal/workflows/enable-dnssec.workflow';
 import { disableDnssecWorkflow } from '../../../temporal/workflows/disable-dnssec.workflow';
-import { createTRPCRouter, protectedProcedure } from '../../base';
+import { protectedProcedure } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { domainConfigContract } from '@namefi-astra/common/contract/domain-config-contract';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 
 const _logger = createLogger({ module: 'domain-dnssec-router' });
 
-export const domainDnssecRouter = createTRPCRouter({
+export const domainDnssecRouter = createContractTRPCRouter<
+  (typeof domainConfigContract)['dnssec']
+>({
   /**
    * Get Domain DNSSEC Details
    */
   getDomainDnssecDetails: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.dnssec.getDomainDnssecDetails.input)
+    .output(domainConfigContract.dnssec.getDomainDnssecDetails.output)
     .query(async ({ input, ctx }) => {
       _logger.assign({
         method: 'getDomainDnssecDetails',
@@ -56,7 +50,8 @@ export const domainDnssecRouter = createTRPCRouter({
    * Enable DNSSEC for a domain
    */
   enableDnssec: protectedProcedure
-    .input(z.object({ domainName: namefiNormalizedDomainSchema }))
+    .input(domainConfigContract.dnssec.enableDnssec.input)
+    .output(domainConfigContract.dnssec.enableDnssec.output)
     .mutation(async ({ input, ctx }) => {
       _logger.assign({ method: 'enableDnssec', domainName: input.domainName });
       _logger.debug('Enabling DNSSEC for domain');
@@ -71,7 +66,8 @@ export const domainDnssecRouter = createTRPCRouter({
    * Disable DNSSEC for a domain
    */
   disableDnssec: protectedProcedure
-    .input(z.object({ domainName: namefiNormalizedDomainSchema }))
+    .input(domainConfigContract.dnssec.disableDnssec.input)
+    .output(domainConfigContract.dnssec.disableDnssec.output)
     .mutation(async ({ input, ctx }) => {
       _logger.assign({ method: 'disableDnssec', domainName: input.domainName });
       _logger.debug('Disabling DNSSEC for domain');
@@ -89,19 +85,8 @@ export const domainDnssecRouter = createTRPCRouter({
    * Associate a delegation signer with a domain
    */
   associateDelegationSigner: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-        signingConfig: z.object({
-          algorithm: z.nativeEnum(DnssecAlgorithms),
-          publicKey: z.string(),
-          flags: z.nativeEnum(DnssecFlags),
-          keyTag: z.number(),
-          digestType: z.nativeEnum(DnssecDigestType),
-          digest: z.string(),
-        }),
-      }),
-    )
+    .input(domainConfigContract.dnssec.associateDelegationSigner.input)
+    .output(domainConfigContract.dnssec.associateDelegationSigner.output)
     .mutation(async ({ input, ctx }) => {
       _logger.assign({
         method: 'associateDelegationSigner',
@@ -114,7 +99,7 @@ export const domainDnssecRouter = createTRPCRouter({
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       await associateDelegationSigner(
         toPunycodeDomainName(input.domainName),
-        input.signingConfig,
+        input.signingConfig as Parameters<typeof associateDelegationSigner>[1],
       );
 
       _logger.debug('Successfully associated delegation signer');
@@ -124,7 +109,10 @@ export const domainDnssecRouter = createTRPCRouter({
    * Get active DNSSEC operation workflows
    */
   getActiveDnssecOperationWorkflows: protectedProcedure
-    .input(z.object({ domainName: namefiNormalizedDomainSchema }))
+    .input(domainConfigContract.dnssec.getActiveDnssecOperationWorkflows.input)
+    .output(
+      domainConfigContract.dnssec.getActiveDnssecOperationWorkflows.output,
+    )
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       try {
@@ -165,12 +153,8 @@ export const domainDnssecRouter = createTRPCRouter({
    * Uses Temporal's native workflow cancellation.
    */
   cancelDnssecWorkflow: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-        operation: z.enum(['ENABLE_DNSSEC', 'REMOVE_DNSSEC']),
-      }),
-    )
+    .input(domainConfigContract.dnssec.cancelDnssecWorkflow.input)
+    .output(domainConfigContract.dnssec.cancelDnssecWorkflow.output)
     .mutation(async ({ input, ctx }) => {
       const { domainName, operation } = input;
 

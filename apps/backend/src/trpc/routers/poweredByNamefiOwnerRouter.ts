@@ -1,10 +1,7 @@
 import { and, desc, eq, inArray, or, sql } from 'drizzle-orm';
-import { z } from 'zod';
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  poweredByNamefiOwnerProcedure,
-} from '../base';
+import { protectedProcedure, poweredByNamefiOwnerProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
+import { poweredByNamefiOwnerContract } from '@namefi-astra/common/contract/powered-by-namefi-owner-contract';
 import {
   db,
   freeClaimsTable,
@@ -19,30 +16,30 @@ import { subDays } from 'date-fns';
 import { isNil, sum } from 'ramda';
 import { logger } from '#lib/logger';
 import { TRPCError } from '@trpc/server';
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { isReservedKeyword } from '#lib/namefi-registry-helpers';
-import {
-  getDashboardOverviewInputSchema,
-  getDashboardOverview,
-} from './analyticsRouter';
+import { getDashboardOverview } from './analyticsRouter';
 import { getSystemReservedKeywords } from '#lib/namefi-registry-helpers';
 
-export const poweredByNamefiOwnerRouter = createTRPCRouter({
+export const poweredByNamefiOwnerRouter = createContractTRPCRouter<
+  typeof poweredByNamefiOwnerContract
+>({
   // For topBar visibility
-  isUserAPoweredByNamefiOwner: protectedProcedure.query(async ({ ctx }) => {
-    const [{ count }] = await ctx.db
-      .select({ count: sql<number>`COUNT(*)` })
-      .from(poweredbyNamefiDomainsTable)
-      .where(eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id));
-    return { isOwner: (count ?? 0) > 0 };
-  }),
+  isUserAPoweredByNamefiOwner: protectedProcedure
+    .input(poweredByNamefiOwnerContract.isUserAPoweredByNamefiOwner.input)
+    .output(poweredByNamefiOwnerContract.isUserAPoweredByNamefiOwner.output)
+    .query(async ({ ctx }) => {
+      const [{ count }] = await ctx.db
+        .select({ count: sql<number>`COUNT(*)` })
+        .from(poweredbyNamefiDomainsTable)
+        .where(eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id));
+      return { isOwner: (count ?? 0) > 0 };
+    }),
 
   // For specific domain auth checks
   isUserOwnerOf: protectedProcedure
-    .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
+    .input(poweredByNamefiOwnerContract.isUserOwnerOf.input)
+    .output(poweredByNamefiOwnerContract.isUserOwnerOf.output)
     .query(async ({ ctx, input }) => {
       const record = await ctx.db.query.poweredbyNamefiDomainsTable.findFirst({
         where: (t, { eq }) =>
@@ -59,44 +56,30 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
     }),
 
   getAnalyticsDashboardOverview: poweredByNamefiOwnerProcedure
-    .input(
-      getDashboardOverviewInputSchema.extend({
-        publicSuffixPlusOne: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.getAnalyticsDashboardOverview.input)
+    .output(poweredByNamefiOwnerContract.getAnalyticsDashboardOverview.output)
     .query(async ({ ctx, input }) => {
       await assertOwnerOfDomain(input.publicSuffixPlusOne, ctx.user.id);
       return getDashboardOverview(input);
     }),
 
   // List domains owned by the user
-  listOwnedDomains: poweredByNamefiOwnerProcedure.query(async ({ ctx }) => {
-    const domains = await ctx.db
-      .select()
-      .from(poweredbyNamefiDomainsTable)
-      .where(eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id))
-      .orderBy(desc(poweredbyNamefiDomainsTable.updatedAt));
-    return domains as PoweredByNamefiDomainSelect[];
-  }),
+  listOwnedDomains: poweredByNamefiOwnerProcedure
+    .input(poweredByNamefiOwnerContract.listOwnedDomains.input)
+    .output(poweredByNamefiOwnerContract.listOwnedDomains.output)
+    .query(async ({ ctx }) => {
+      const domains = await ctx.db
+        .select()
+        .from(poweredbyNamefiDomainsTable)
+        .where(eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id))
+        .orderBy(desc(poweredbyNamefiDomainsTable.updatedAt));
+      return domains as PoweredByNamefiDomainSelect[];
+    }),
 
   // Update a domain (no creation)
   updateDomain: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        additionalAllowedHostnames: z.array(z.string()).optional(),
-        additionalReservedNames: z.array(z.string()).optional(),
-        durationConstraints: z
-          .object({
-            minDurationInYears: z.number().min(1),
-            maxDurationInYears: z.number().min(1),
-          })
-          .optional(),
-        costPerYearInUsdCents: z.number().int().nonnegative().optional(),
-        enabled: z.boolean().optional(),
-        metadata: z.record(z.string(), z.any()).optional(),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.updateDomain.input)
+    .output(poweredByNamefiOwnerContract.updateDomain.output)
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, ...updates } = input;
       const updated = await ctx.db
@@ -117,13 +100,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
   // Order history for owned domains
   orderItemsHistory: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        page: z.number().min(1).default(1),
-        limit: z.number().min(1).max(100).default(20),
-        normalizedDomainName: namefiNormalizedDomainSchema.optional(),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.orderItemsHistory.input)
+    .output(poweredByNamefiOwnerContract.orderItemsHistory.output)
     .query(async ({ ctx, input }) => {
       const { page, limit, normalizedDomainName } = input;
       const offset = (page - 1) * limit;
@@ -205,14 +183,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
   // Revenue timeseries + total (SUCCEEDED only)
   revenue: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        from: z.date().optional(),
-        to: z.date().optional(),
-        normalizedDomainName: namefiNormalizedDomainSchema.optional(),
-        interval: z.enum(['day', 'week', 'month']).default('day'),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.revenue.input)
+    .output(poweredByNamefiOwnerContract.revenue.output)
     .query(async ({ ctx, input }) => {
       const owned = await ctx.db
         .select({
@@ -314,12 +286,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
   // Revenue by domain (distribution across owned domains)
   revenueByDomain: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        from: z.date().optional(),
-        to: z.date().optional(),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.revenueByDomain.input)
+    .output(poweredByNamefiOwnerContract.revenueByDomain.output)
     .query(async ({ ctx, input }) => {
       const owned = await ctx.db
         .select({
@@ -369,7 +337,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
   // Reserved words management
   getReservedWords: poweredByNamefiOwnerProcedure
-    .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
+    .input(poweredByNamefiOwnerContract.getReservedWords.input)
+    .output(poweredByNamefiOwnerContract.getReservedWords.output)
     .query(async ({ ctx, input }) => {
       await assertOwnerOfDomain(input.normalizedDomainName, ctx.user.id);
 
@@ -399,12 +368,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
     }),
 
   validateReservedWords: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        words: z.array(z.string()),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.validateReservedWords.input)
+    .output(poweredByNamefiOwnerContract.validateReservedWords.output)
     .query(async ({ ctx, input }) => {
       const { normalizedDomainName, words } = input;
 
@@ -483,12 +448,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
     }),
 
   addReservedWords: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        words: z.array(z.string()),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.addReservedWords.input)
+    .output(poweredByNamefiOwnerContract.addReservedWords.output)
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, words } = input;
 
@@ -603,12 +564,8 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
     }),
 
   removeReservedWords: poweredByNamefiOwnerProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        words: z.array(z.string()),
-      }),
-    )
+    .input(poweredByNamefiOwnerContract.removeReservedWords.input)
+    .output(poweredByNamefiOwnerContract.removeReservedWords.output)
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, words } = input;
 

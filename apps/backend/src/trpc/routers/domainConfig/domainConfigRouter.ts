@@ -29,11 +29,12 @@ import {
   sldRegistrar,
 } from '../../../lib/namefi-registry';
 import {
-  createTRPCRouter,
   protectedProcedure,
   createSignedPayloadProcedure,
   withAudit,
 } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { domainConfigContract } from '@namefi-astra/common/contract/domain-config-contract';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { domainDnssecRouter } from './domainDnssecRouter';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
@@ -188,16 +189,15 @@ function createDomainActionProcedure(expectedAction: DomainAction) {
   });
 }
 
-export const domainConfigRouter = createTRPCRouter({
+export const domainConfigRouter = createContractTRPCRouter<
+  typeof domainConfigContract
+>({
   /**
    * Get Domain Details
    */
   getDomainDetails: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getDomainDetails.input)
+    .output(domainConfigContract.getDomainDetails.output)
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       const parseResult = parseDomainName(input.domainName);
@@ -248,11 +248,8 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   getDomainRenewalDetails: protectedProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getDomainRenewalDetails.input)
+    .output(domainConfigContract.getDomainRenewalDetails.output)
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.normalizedDomainName,
@@ -353,7 +350,8 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(domainActionInputSchema)
+    .input(domainConfigContract.changeDomainNameservers.input)
+    .output(domainConfigContract.changeDomainNameservers.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -400,7 +398,8 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(domainActionInputSchema)
+    .input(domainConfigContract.resetDomainNameservers.input)
+    .output(domainConfigContract.resetDomainNameservers.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -412,11 +411,8 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   queryActiveNameserversChangeWorkflow: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.queryActiveNameserversChangeWorkflow.input)
+    .output(domainConfigContract.queryActiveNameserversChangeWorkflow.output)
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       try {
@@ -447,11 +443,8 @@ export const domainConfigRouter = createTRPCRouter({
    * Get the supported features for a domain
    */
   getDomainSupportedFeatures: protectedProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getDomainSupportedFeatures.input)
+    .output(domainConfigContract.getDomainSupportedFeatures.output)
     .query(async ({ input, ctx }) => {
       // This data is all public and does not require authorization
       // await assertAuthenticatedUserIsDomainOwner(
@@ -494,11 +487,8 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   getDomainPreferencesAndConfig: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getDomainPreferencesAndConfig.input)
+    .output(domainConfigContract.getDomainPreferencesAndConfig.output)
     .query(async ({ input, ctx }) => {
       const [_, domainPreferencesAndConfig] = await Promise.all([
         assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user),
@@ -508,17 +498,8 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   updateDomainPreferencesAndConfig: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-        domainPreferencesAndConfig: z.object({
-          forwardTo: z.string().optional(),
-          autoEnsEnabled: z.boolean().optional(),
-          autoParkEnabled: z.boolean().optional(),
-          autoRenewEnabled: z.boolean().optional(),
-        }),
-      }),
-    )
+    .input(domainConfigContract.updateDomainPreferencesAndConfig.input)
+    .output(domainConfigContract.updateDomainPreferencesAndConfig.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       const autoRenewEnabled =
@@ -597,7 +578,8 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(domainActionInputSchema)
+    .input(domainConfigContract.requestDomainExport.input)
+    .output(domainConfigContract.requestDomainExport.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -634,11 +616,8 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   getDomainExportDetails: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getDomainExportDetails.input)
+    .output(domainConfigContract.getDomainExportDetails.output)
     .query(async ({ input, ctx }) => {
       const user = ctx.user;
       const domainName = toPunycodeDomainName(input.domainName);
@@ -706,7 +685,8 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(domainActionInputSchema)
+    .input(domainConfigContract.getAuthCode.input)
+    .output(domainConfigContract.getAuthCode.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -741,11 +721,8 @@ export const domainConfigRouter = createTRPCRouter({
    * for operations that require signing with the owner wallet.
    */
   getDomainOwnerWallet: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getDomainOwnerWallet.input)
+    .output(domainConfigContract.getDomainOwnerWallet.output)
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
 
@@ -776,11 +753,8 @@ export const domainConfigRouter = createTRPCRouter({
    * Get pending transfer status for a domain
    */
   getPendingTransfer: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.getPendingTransfer.input)
+    .output(domainConfigContract.getPendingTransfer.output)
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       const domainName = toPunycodeDomainName(input.domainName);
@@ -822,7 +796,8 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(domainActionInputSchema)
+    .input(domainConfigContract.approveTransfer.input)
+    .output(domainConfigContract.approveTransfer.output)
     .mutation(async ({ input, ctx }) => {
       const domainName = toPunycodeDomainName(input.payload.domainName);
 
@@ -922,7 +897,8 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(domainActionInputSchema)
+    .input(domainConfigContract.rejectTransfer.input)
+    .output(domainConfigContract.rejectTransfer.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -938,11 +914,8 @@ export const domainConfigRouter = createTRPCRouter({
    * Uses Temporal's native workflow cancellation.
    */
   cancelNameserversWorkflow: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(domainConfigContract.cancelNameserversWorkflow.input)
+    .output(domainConfigContract.cancelNameserversWorkflow.output)
     .mutation(async ({ input, ctx }) => {
       const { domainName } = input;
 

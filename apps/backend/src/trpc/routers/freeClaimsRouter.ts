@@ -13,7 +13,9 @@ import {
 } from '../../temporal/activities/free-claim.activities';
 import { processReservationsForUser } from '../../temporal/activities/pbn-issuance-reservations.activities';
 import { validateAndCreateClaimOrder } from '../../temporal/activities/free-claim.activities';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { freeClaimsContract } from '@namefi-astra/common/contract/free-claims-contract';
+import { protectedProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { createLogger } from '#lib/logger';
 import { privyClient } from '../utils';
 import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
@@ -26,17 +28,15 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 const logger = createLogger({ context: 'freeClaimsRouter' });
 
-export const freeClaimsRouter = createTRPCRouter({
+export const freeClaimsRouter = createContractTRPCRouter<
+  typeof freeClaimsContract
+>({
   /**
    * Check if a user is eligible for a free claim for a specific domain
    */
   checkEligibility: protectedProcedure
-    .input(
-      z.object({
-        groupOrCampaignKey: z.string().min(1),
-        normalizedDomainName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(freeClaimsContract.checkEligibility.input)
+    .output(freeClaimsContract.checkEligibility.output)
     .query(async ({ ctx, input }) => {
       const { user } = ctx;
       const { groupOrCampaignKey, normalizedDomainName } = input;
@@ -70,14 +70,8 @@ export const freeClaimsRouter = createTRPCRouter({
    * Process a free claim for a domain
    */
   processClaim: protectedProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        recipientWalletAddress: checksumWalletAddressSchema,
-        durationInYears: z.number().int().min(1).max(1),
-        registrarKey: z.string().min(1),
-      }),
-    )
+    .input(freeClaimsContract.processClaim.input)
+    .output(freeClaimsContract.processClaim.output)
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
       const {
@@ -258,12 +252,8 @@ export const freeClaimsRouter = createTRPCRouter({
    * Get the status of a free claim workflow
    */
   getDomainClaimStatus: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-        claimId: z.string().optional(),
-      }),
-    )
+    .input(freeClaimsContract.getDomainClaimStatus.input)
+    .output(freeClaimsContract.getDomainClaimStatus.output)
     .query(async ({ ctx, input }) => {
       const { user } = ctx;
       const { domainName, claimId } = input;
@@ -343,13 +333,8 @@ export const freeClaimsRouter = createTRPCRouter({
    * Search for free claim workflows by user ID or domain name
    */
   searchWorkflows: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema.optional(),
-        groupOrCampaignKey: z.string().optional(),
-        limit: z.number().int().min(1).max(100).default(50),
-      }),
-    )
+    .input(freeClaimsContract.searchWorkflows.input)
+    .output(freeClaimsContract.searchWorkflows.output)
     .query(async ({ ctx, input }) => {
       const { user } = ctx;
       const { domainName, groupOrCampaignKey, limit } = input;
@@ -403,13 +388,8 @@ export const freeClaimsRouter = createTRPCRouter({
    * then starts workflow with the claimId and orderIds
    */
   processClaimWithTransaction: protectedProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        recipientWalletAddress: checksumWalletAddressSchema,
-        registrarKey: z.string().min(1),
-      }),
-    )
+    .input(freeClaimsContract.processClaimWithTransaction.input)
+    .output(freeClaimsContract.processClaimWithTransaction.output)
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
       const { normalizedDomainName, recipientWalletAddress, registrarKey } =
@@ -546,117 +526,123 @@ export const freeClaimsRouter = createTRPCRouter({
       }
     }),
 
-  getUserClaims: protectedProcedure.query(async ({ ctx }) => {
-    const { user, poweredByNamefiDomain } = ctx;
+  getUserClaims: protectedProcedure
+    .input(freeClaimsContract.getUserClaims.input)
+    .output(freeClaimsContract.getUserClaims.output)
+    .query(async ({ ctx }) => {
+      const { user, poweredByNamefiDomain } = ctx;
 
-    // Handle pending gifts for this user before fetching claims
-    try {
-      const privyUser = await privyClient.getUser(user.privyUserId);
-      const userEmail = privyUser?.linkedAccounts?.find(
-        (account) => account.type === 'email',
-      )?.address;
+      // Handle pending gifts for this user before fetching claims
+      try {
+        const privyUser = await privyClient.getUser(user.privyUserId);
+        const userEmail = privyUser?.linkedAccounts?.find(
+          (account) => account.type === 'email',
+        )?.address;
 
-      if (userEmail) {
-        const giftResult = await processReservationsForUser({
-          userId: user.id,
-          userEmail,
-        });
+        if (userEmail) {
+          const giftResult = await processReservationsForUser({
+            userId: user.id,
+            userEmail,
+          });
 
-        if (giftResult.freeClaimsCreated > 0) {
-          logger.debug(
-            {
-              userId: user.id,
-              freeClaimsCreated: giftResult.freeClaimsCreated,
-            },
-            'Created free claims from pending reservations',
-          );
+          if (giftResult.freeClaimsCreated > 0) {
+            logger.debug(
+              {
+                userId: user.id,
+                freeClaimsCreated: giftResult.freeClaimsCreated,
+              },
+              'Created free claims from pending reservations',
+            );
+          }
         }
+      } catch (error) {
+        logger.error(
+          { error, userId: user.id },
+          'Failed to handle pending reservations',
+        );
+        // Don't throw - gift processing failure shouldn't prevent free claims fetch
       }
-    } catch (error) {
-      logger.error(
-        { error, userId: user.id },
-        'Failed to handle pending reservations',
-      );
-      // Don't throw - gift processing failure shouldn't prevent free claims fetch
-    }
 
-    const where: SQL[] = [eq(freeClaimsTable.userId, user.id)];
+      const where: SQL[] = [eq(freeClaimsTable.userId, user.id)];
 
-    if (poweredByNamefiDomain) {
-      const condition = or(
-        eq(
-          freeClaimsTable.parentDomain,
-          poweredByNamefiDomain as NamefiNormalizedDomain,
-        ),
-        ilike(freeClaimsTable.parentDomain, `%.${poweredByNamefiDomain}`),
-      );
-      if (!condition) {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: "Server Can't Query Data",
-        });
+      if (poweredByNamefiDomain) {
+        const condition = or(
+          eq(
+            freeClaimsTable.parentDomain,
+            poweredByNamefiDomain as NamefiNormalizedDomain,
+          ),
+          ilike(freeClaimsTable.parentDomain, `%.${poweredByNamefiDomain}`),
+        );
+        if (!condition) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: "Server Can't Query Data",
+          });
+        }
+        where.push(condition);
       }
-      where.push(condition);
-    }
 
-    const claims: FreeClaimSelect[] = await db.query.freeClaimsTable.findMany({
-      where: (_, { and }) => and(...where),
-    });
-
-    const now = new Date();
-
-    const claimsWithStatus: (FreeClaimSelect & { isExpired: boolean })[] =
-      claims.map((claim) => ({
-        ...claim,
-        isExpired:
-          isNotNil(claim.expirationDate) && isAfter(now, claim.expirationDate),
-      }));
-
-    const getGroupKey = (claim: (typeof claimsWithStatus)[0]) =>
-      claim.parentDomain
-        ? `${claim.groupOrCampaignKey}_${claim.parentDomain}`
-        : claim.id;
-
-    const grouped = groupBy(getGroupKey, claimsWithStatus);
-
-    return Object.values(grouped).map((claims) => {
-      if (!claims || !claims[0]) {
-        return null;
-      }
-      const parentDomain = claims[0].parentDomain;
-      const reason = claims[0].reason;
-      const groupOrCampaignKey = claims[0].groupOrCampaignKey;
-
-      const availableClaims = claims.filter(
-        (claim) => !claim.isExpired && claim.claimingStatus === 'IDLE',
+      const claims: FreeClaimSelect[] = await db.query.freeClaimsTable.findMany(
+        {
+          where: (_, { and }) => and(...where),
+        },
       );
-      const expiredClaims = claims.filter(
-        (claim) => claim.isExpired && claim.claimingStatus === 'IDLE',
-      );
-      const unclaimedClaims = claims.filter(
-        (claim) => !claim.isExpired && claim.claimingStatus !== 'IDLE',
-      );
-      if (parentDomain) {
+
+      const now = new Date();
+
+      const claimsWithStatus: (FreeClaimSelect & { isExpired: boolean })[] =
+        claims.map((claim) => ({
+          ...claim,
+          isExpired:
+            isNotNil(claim.expirationDate) &&
+            isAfter(now, claim.expirationDate),
+        }));
+
+      const getGroupKey = (claim: (typeof claimsWithStatus)[0]) =>
+        claim.parentDomain
+          ? `${claim.groupOrCampaignKey}_${claim.parentDomain}`
+          : claim.id;
+
+      const grouped = groupBy(getGroupKey, claimsWithStatus);
+
+      return Object.values(grouped).map((claims) => {
+        if (!claims || !claims[0]) {
+          return null;
+        }
+        const parentDomain = claims[0].parentDomain;
+        const reason = claims[0].reason;
+        const groupOrCampaignKey = claims[0].groupOrCampaignKey;
+
+        const availableClaims = claims.filter(
+          (claim) => !claim.isExpired && claim.claimingStatus === 'IDLE',
+        );
+        const expiredClaims = claims.filter(
+          (claim) => claim.isExpired && claim.claimingStatus === 'IDLE',
+        );
+        const unclaimedClaims = claims.filter(
+          (claim) => !claim.isExpired && claim.claimingStatus !== 'IDLE',
+        );
+        if (parentDomain) {
+          return {
+            type: 'campaignParentDomain' as const,
+            groupOrCampaignKey,
+            parentDomain,
+            reason,
+            counts: {
+              total: claims.length,
+              available: availableClaims.length,
+              expired: expiredClaims.length,
+              unclaimed: unclaimedClaims.length,
+            },
+            claims,
+          } satisfies GetUserClaimsResponse;
+        }
         return {
-          type: 'campaignParentDomain' as const,
-          groupOrCampaignKey,
-          parentDomain,
-          reason,
-          counts: {
-            total: claims.length,
-            available: availableClaims.length,
-            expired: expiredClaims.length,
-            unclaimed: unclaimedClaims.length,
-          },
-          claims,
+          type: 'singleExactDomain' as const,
+          claim: claims[0],
         } satisfies GetUserClaimsResponse;
-      }
-      return {
-        type: 'singleExactDomain' as const,
-        claim: claims[0],
-      } satisfies GetUserClaimsResponse;
-    });
-  }),
+      });
+    }),
 });
 
 type GetUserClaimsResponse =

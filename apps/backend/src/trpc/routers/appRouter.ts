@@ -1,3 +1,4 @@
+import { versionContract } from '@namefi-astra/common/contract/version-contract';
 import { createTRPCRouter, publicProcedure } from '../base';
 import { apiKeysRouter } from './apiKeysRouter';
 import { authRouter } from './authRouter';
@@ -52,14 +53,17 @@ export const appRouter = createTRPCRouter({
   dnsCache: dnsCacheRouter,
   mls: mlsRouter,
 
-  version: publicProcedure.query(() => {
-    const result = {
-      version: process.env.npm_package_version,
-      name: process.env.npm_package_name,
-    };
+  version: publicProcedure
+    .input(versionContract.input)
+    .output(versionContract.output)
+    .query(() => {
+      const result = {
+        version: process.env.npm_package_version,
+        name: process.env.npm_package_name,
+      };
 
-    return result;
-  }),
+      return result;
+    }),
   testSignedPayload: testSignedPayloadRouter,
   x402: x402Router,
 });

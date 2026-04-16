@@ -1,17 +1,8 @@
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
 import { secrets } from '#lib/env';
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-  t,
-} from '../../base';
-import {
-  trendingDomainTimeRangeEnum,
-  huntPeriodAwardTypeEnum,
-} from '../../../services/hunt/schema';
+import { protectedProcedure, publicProcedure, t } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { huntContract } from '@namefi-astra/common/contract/hunt-contract';
 import {
   checkDomainOwnership,
   submitDomain,
@@ -41,58 +32,6 @@ import {
   triggerCampaignStatus,
 } from '../../../services/hunt/schedule.service';
 
-// Input schemas
-const submitDomainSchema = z.object({
-  domainName: namefiNormalizedDomainSchema,
-});
-
-const removeDomainSchema = z.object({
-  domainName: namefiNormalizedDomainSchema,
-});
-
-const getMySubmittedDomainsSchema = z.object({
-  offset: z.number().min(0).default(0),
-  limit: z.number().min(1).max(50).default(20),
-});
-
-const getMyUpvotedDomainsSchema = z.object({
-  offset: z.number().min(0).default(0),
-  limit: z.number().min(1).max(50).default(20),
-});
-
-const getTrendingDomainsSchema = z.object({
-  offset: z.number().min(0).default(0),
-  limit: z.number().min(1).max(50).default(20),
-  timeRange: trendingDomainTimeRangeEnum.default('ANYTIME'),
-  extension: namefiNormalizedDomainSchema.optional(),
-  excludeCampaignKey: z.string().optional(),
-});
-
-const domainVoteSchema = z.object({
-  domainName: namefiNormalizedDomainSchema,
-});
-
-const getDomainDetailSchema = z.object({
-  domainName: namefiNormalizedDomainSchema,
-});
-
-const getPeriodAwardsSchema = z.object({
-  type: huntPeriodAwardTypeEnum,
-  periodKey: z.string().min(1),
-  offset: z.number().min(0).default(0),
-  limit: z.number().min(1).max(50).default(20),
-});
-
-const getCampaignSchema = z.object({
-  campaignKey: z.string().min(1),
-  offset: z.number().min(0).default(0),
-  limit: z.number().min(1).max(50).default(20),
-});
-
-const getDomainAwardsSchema = z.object({
-  domainName: namefiNormalizedDomainSchema,
-});
-
 /**
  * Middleware for verifying API key authentication.
  *
@@ -116,12 +55,13 @@ const verifyApiKey = t.middleware(async ({ ctx, next }) => {
  */
 const apiKeyProtectedProcedure = publicProcedure.use(verifyApiKey);
 
-export const huntRouter = createTRPCRouter({
+export const huntRouter = createContractTRPCRouter<typeof huntContract>({
   /**
    * Submit a domain - Creates a SUBMIT edge between user and domain
    */
   submitDomain: protectedProcedure
-    .input(submitDomainSchema)
+    .input(huntContract.submitDomain.input)
+    .output(huntContract.submitDomain.output)
     .mutation(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
@@ -132,7 +72,8 @@ export const huntRouter = createTRPCRouter({
    * Remove a domain
    */
   removeDomain: protectedProcedure
-    .input(removeDomainSchema)
+    .input(huntContract.removeDomain.input)
+    .output(huntContract.removeDomain.output)
     .mutation(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
@@ -143,7 +84,8 @@ export const huntRouter = createTRPCRouter({
    * Get domains submitted by the current user
    */
   getMySubmittedDomains: protectedProcedure
-    .input(getMySubmittedDomainsSchema)
+    .input(huntContract.getMySubmittedDomains.input)
+    .output(huntContract.getMySubmittedDomains.output)
     .query(async ({ ctx, input }) => {
       const { offset, limit } = input;
       const userId = ctx.user.id;
@@ -154,7 +96,8 @@ export const huntRouter = createTRPCRouter({
    * Get domains upvoted by the current user
    */
   getMyUpvotedDomains: protectedProcedure
-    .input(getMyUpvotedDomainsSchema)
+    .input(huntContract.getMyUpvotedDomains.input)
+    .output(huntContract.getMyUpvotedDomains.output)
     .query(async ({ ctx, input }) => {
       const { offset, limit } = input;
       const userId = ctx.user.id;
@@ -166,7 +109,8 @@ export const huntRouter = createTRPCRouter({
    * Returns trending domains without user-specific data
    */
   getTrendingDomainsPublic: publicProcedure
-    .input(getTrendingDomainsSchema)
+    .input(huntContract.getTrendingDomainsPublic.input)
+    .output(huntContract.getTrendingDomainsPublic.output)
     .query(async ({ input }) => {
       const { offset, limit, timeRange, extension, excludeCampaignKey } = input;
 
@@ -184,7 +128,8 @@ export const huntRouter = createTRPCRouter({
    * Returns trending domains with user-specific voting data
    */
   getTrendingDomains: protectedProcedure
-    .input(getTrendingDomainsSchema)
+    .input(huntContract.getTrendingDomains.input)
+    .output(huntContract.getTrendingDomains.output)
     .query(async ({ ctx, input }) => {
       const { offset, limit, timeRange, extension, excludeCampaignKey } = input;
       const userId = ctx.user.id;
@@ -203,7 +148,8 @@ export const huntRouter = createTRPCRouter({
    * Upvote a domain - Creates an UPVOTE edge
    */
   upvote: protectedProcedure
-    .input(domainVoteSchema)
+    .input(huntContract.upvote.input)
+    .output(huntContract.upvote.output)
     .mutation(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
@@ -214,7 +160,8 @@ export const huntRouter = createTRPCRouter({
    * Remove upvote from a domain - Deletes the UPVOTE edge
    */
   unvote: protectedProcedure
-    .input(domainVoteSchema)
+    .input(huntContract.unvote.input)
+    .output(huntContract.unvote.output)
     .mutation(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
@@ -225,7 +172,8 @@ export const huntRouter = createTRPCRouter({
    * Check if current user is the submitter of a domain
    */
   checkDomainOwnership: protectedProcedure
-    .input(domainVoteSchema)
+    .input(huntContract.checkDomainOwnership.input)
+    .output(huntContract.checkDomainOwnership.output)
     .query(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
@@ -236,7 +184,8 @@ export const huntRouter = createTRPCRouter({
    * Get comprehensive domain details in split queries for consistency
    */
   getDomainDetail: protectedProcedure
-    .input(getDomainDetailSchema)
+    .input(huntContract.getDomainDetail.input)
+    .output(huntContract.getDomainDetail.output)
     .query(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
@@ -248,7 +197,8 @@ export const huntRouter = createTRPCRouter({
    * Returns domain details without user-specific data
    */
   getDomainDetailPublic: publicProcedure
-    .input(getDomainDetailSchema)
+    .input(huntContract.getDomainDetailPublic.input)
+    .output(huntContract.getDomainDetailPublic.output)
     .query(async ({ input }) => {
       const { domainName } = input;
       return await getDomainDetail(domainName);
@@ -259,7 +209,8 @@ export const huntRouter = createTRPCRouter({
    * Returns campaign info and either finalized results or current live rankings without user-specific data
    */
   getCampaignPublic: publicProcedure
-    .input(getCampaignSchema)
+    .input(huntContract.getCampaignPublic.input)
+    .output(huntContract.getCampaignPublic.output)
     .query(async ({ input }) => {
       const { campaignKey, offset, limit } = input;
 
@@ -275,7 +226,8 @@ export const huntRouter = createTRPCRouter({
    * Returns campaign info and either finalized results or current live rankings with user-specific voting data
    */
   getCampaign: protectedProcedure
-    .input(getCampaignSchema)
+    .input(huntContract.getCampaign.input)
+    .output(huntContract.getCampaign.output)
     .query(async ({ ctx, input }) => {
       const { campaignKey, offset, limit } = input;
       const userId = ctx.user.id;
@@ -293,7 +245,8 @@ export const huntRouter = createTRPCRouter({
    * Returns finalized award rankings for a specific time period
    */
   getPeriodAwards: publicProcedure
-    .input(getPeriodAwardsSchema)
+    .input(huntContract.getPeriodAwards.input)
+    .output(huntContract.getPeriodAwards.output)
     .query(async ({ input }) => {
       const { type, periodKey, offset, limit } = input;
       return await getPeriodAwards({ type, periodKey, offset, limit });
@@ -304,7 +257,8 @@ export const huntRouter = createTRPCRouter({
    * Returns all awards won by a specific domain
    */
   getDomainAwards: publicProcedure
-    .input(getDomainAwardsSchema)
+    .input(huntContract.getDomainAwards.input)
+    .output(huntContract.getDomainAwards.output)
     .query(async ({ input }) => {
       const { domainName } = input;
       return await getDomainAwards(domainName);
@@ -316,21 +270,18 @@ export const huntRouter = createTRPCRouter({
    * Health check endpoint that returns the status of award schedules.
    * Returns schedule statuses for monitoring purposes.
    */
-  getAwardSchedulesHealth: apiKeyProtectedProcedure.query(async () =>
-    getAwardSchedulesHealth(),
-  ),
+  getAwardSchedulesHealth: apiKeyProtectedProcedure
+    .input(huntContract.getAwardSchedulesHealth.input)
+    .output(huntContract.getAwardSchedulesHealth.output)
+    .query(async () => getAwardSchedulesHealth()),
 
   /**
    * Trigger period award workflow.
    * Starts a workflow to process awards for a specific time period.
    */
   triggerPeriodAward: apiKeyProtectedProcedure
-    .input(
-      z.object({
-        type: huntPeriodAwardTypeEnum,
-        date: z.string().optional(),
-      }),
-    )
+    .input(huntContract.triggerPeriodAward.input)
+    .output(huntContract.triggerPeriodAward.output)
     .mutation(async ({ input }) => {
       const { type, date } = input;
       return await triggerPeriodAward({ type, date });
@@ -341,11 +292,8 @@ export const huntRouter = createTRPCRouter({
    * Starts a workflow to process awards for a specific campaign.
    */
   triggerCampaignAward: apiKeyProtectedProcedure
-    .input(
-      z.object({
-        campaignKey: z.string().min(1),
-      }),
-    )
+    .input(huntContract.triggerCampaignAward.input)
+    .output(huntContract.triggerCampaignAward.output)
     .mutation(async ({ input }) => {
       const { campaignKey } = input;
       return await triggerCampaignAward(campaignKey);
@@ -356,7 +304,8 @@ export const huntRouter = createTRPCRouter({
    * Starts a workflow to update expired ACTIVE campaigns to ENDED status.
    */
   triggerCampaignStatus: apiKeyProtectedProcedure
-    .input(z.object({}))
+    .input(huntContract.triggerCampaignStatus.input)
+    .output(huntContract.triggerCampaignStatus.output)
     .mutation(async () => triggerCampaignStatus()),
 
   /**
@@ -364,25 +313,8 @@ export const huntRouter = createTRPCRouter({
    * This is a system-only operation to create a new campaign.
    */
   createCampaign: apiKeyProtectedProcedure
-    .input(
-      z.object({
-        campaignKey: z.string().min(1),
-        name: z.string().min(1),
-        title: z.string().min(1),
-        description: z.string().optional(),
-        logoUrl: z.string().optional(),
-        startDate: z.string(),
-        endDate: z.string(),
-        domains: z
-          .array(
-            z.object({
-              domainName: namefiNormalizedDomainSchema,
-              description: z.string().optional(),
-            }),
-          )
-          .optional(),
-      }),
-    )
+    .input(huntContract.createCampaign.input)
+    .output(huntContract.createCampaign.output)
     .mutation(async ({ input }) => {
       const {
         campaignKey,
@@ -411,17 +343,8 @@ export const huntRouter = createTRPCRouter({
    * This is a system-only operation to add domains to a campaign.
    */
   addDomainsToCampaign: apiKeyProtectedProcedure
-    .input(
-      z.object({
-        campaignKey: z.string().min(1),
-        domains: z.array(
-          z.object({
-            domainName: namefiNormalizedDomainSchema,
-            description: z.string().optional(),
-          }),
-        ),
-      }),
-    )
+    .input(huntContract.addDomainsToCampaign.input)
+    .output(huntContract.addDomainsToCampaign.output)
     .mutation(async ({ input }) => {
       const { campaignKey, domains } = input;
       return await addDomainsToCampaign({ campaignKey, domains });
@@ -433,12 +356,8 @@ export const huntRouter = createTRPCRouter({
    * Only allows transitions between DRAFT, ACTIVE, and CANCELLED statuses.
    */
   updateCampaignStatus: apiKeyProtectedProcedure
-    .input(
-      z.object({
-        campaignKey: z.string().min(1),
-        status: z.enum(['DRAFT', 'ACTIVE', 'CANCELLED']),
-      }),
-    )
+    .input(huntContract.updateCampaignStatus.input)
+    .output(huntContract.updateCampaignStatus.output)
     .mutation(async ({ input }) => {
       const { campaignKey, status } = input;
       return await updateCampaignStatus({ campaignKey, status });
@@ -449,17 +368,8 @@ export const huntRouter = createTRPCRouter({
    * This is a system-only operation to update campaign details.
    */
   updateCampaign: apiKeyProtectedProcedure
-    .input(
-      z.object({
-        campaignKey: z.string().min(1),
-        name: z.string().min(1).optional(),
-        title: z.string().min(1).optional(),
-        description: z.string().optional(),
-        logoUrl: z.string().optional(),
-        startDate: z.string().optional(),
-        endDate: z.string().optional(),
-      }),
-    )
+    .input(huntContract.updateCampaign.input)
+    .output(huntContract.updateCampaign.output)
     .mutation(async ({ input }) => {
       const {
         campaignKey,

@@ -32,7 +32,9 @@ import { WorkflowNotFoundError } from '@temporalio/common';
 import { TRPCError } from '@trpc/server';
 import { and, count, desc, eq, inArray, max, ne, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import { aiContract } from '@namefi-astra/common/contract/ai-contract';
+import { protectedProcedure, publicProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 
 const logger = createLogger({ module: 'ai-router' });
 
@@ -540,9 +542,10 @@ export const generateAnimationInputSchema = z.discriminatedUnion('mode', [
   generateLoopedAnimationInputSchema,
 ]);
 
-export const aiRouter = createTRPCRouter({
+export const aiRouter = createContractTRPCRouter<typeof aiContract>({
   generateLogo: protectedProcedure
-    .input(generateLogoInputSchema)
+    .input(aiContract.generateLogo.input)
+    .output(aiContract.generateLogo.output)
     .mutation(async ({ input, ctx }) => {
       try {
         const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
@@ -637,7 +640,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   generatePoster: protectedProcedure
-    .input(generateMarketingImageInputSchema)
+    .input(aiContract.generatePoster.input)
+    .output(aiContract.generatePoster.output)
     .mutation(async ({ input, ctx }) => {
       try {
         const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
@@ -732,7 +736,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   generateAnimation: protectedProcedure
-    .input(generateAnimationInputSchema)
+    .input(aiContract.generateAnimation.input)
+    .output(aiContract.generateAnimation.output)
     .mutation(async ({ input, ctx }) => {
       const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
       if (hasReachedLimit) {
@@ -861,11 +866,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   getGenerationsByDomain: protectedProcedure
-    .input(
-      z.object({
-        domain: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(aiContract.getGenerationsByDomain.input)
+    .output(aiContract.getGenerationsByDomain.output)
     .query(async ({ input, ctx }) => {
       await reconcileUnconfirmedAnimationGenerationsForUser(ctx.user.id);
 
@@ -884,47 +886,42 @@ export const aiRouter = createTRPCRouter({
       return generations.map(mapAiGenerationRecord);
     }),
 
-  getUserDomains: protectedProcedure.query(async ({ ctx }) => {
-    const latestGenerationAlias = max(aiGenerationsTable.createdAt).as(
-      'latestGeneration',
-    );
+  getUserDomains: protectedProcedure
+    .input(aiContract.getUserDomains.input)
+    .output(aiContract.getUserDomains.output)
+    .query(async ({ ctx }) => {
+      const latestGenerationAlias = max(aiGenerationsTable.createdAt).as(
+        'latestGeneration',
+      );
 
-    return await db
-      .select({
-        domain: aiGenerationsTable.domain,
-        latestGeneration: latestGenerationAlias,
-        logoCount: count(
-          sql`CASE WHEN ${aiGenerationsTable.type} = 'logo' THEN 1 END`,
-        ).as('logoCount'),
-        marketingCount: count(
-          sql`CASE WHEN ${aiGenerationsTable.type} = 'marketing' THEN 1 END`,
-        ).as('marketingCount'),
-        animationCount: count(
-          sql`CASE WHEN ${aiGenerationsTable.type} = 'animation' THEN 1 END`,
-        ).as('animationCount'),
-      })
-      .from(aiGenerationsTable)
-      .where(
-        and(
-          eq(aiGenerationsTable.userId, ctx.user.id),
-          eq(aiGenerationsTable.isDeleted, false),
-        ),
-      )
-      .groupBy(aiGenerationsTable.domain)
-      .orderBy(desc(latestGenerationAlias));
-  }),
+      return await db
+        .select({
+          domain: aiGenerationsTable.domain,
+          latestGeneration: latestGenerationAlias,
+          logoCount: count(
+            sql`CASE WHEN ${aiGenerationsTable.type} = 'logo' THEN 1 END`,
+          ).as('logoCount'),
+          marketingCount: count(
+            sql`CASE WHEN ${aiGenerationsTable.type} = 'marketing' THEN 1 END`,
+          ).as('marketingCount'),
+          animationCount: count(
+            sql`CASE WHEN ${aiGenerationsTable.type} = 'animation' THEN 1 END`,
+          ).as('animationCount'),
+        })
+        .from(aiGenerationsTable)
+        .where(
+          and(
+            eq(aiGenerationsTable.userId, ctx.user.id),
+            eq(aiGenerationsTable.isDeleted, false),
+          ),
+        )
+        .groupBy(aiGenerationsTable.domain)
+        .orderBy(desc(latestGenerationAlias));
+    }),
 
   getUserGenerationsFiltered: protectedProcedure
-    .input(
-      z.object({
-        types: z
-          .array(z.enum(['logo', 'marketing', 'animation']))
-          .min(1)
-          .default(['logo', 'marketing', 'animation']),
-        domains: z.array(namefiNormalizedDomainSchema).optional(),
-        limit: z.number().int().min(1).max(200).default(100),
-      }),
-    )
+    .input(aiContract.getUserGenerationsFiltered.input)
+    .output(aiContract.getUserGenerationsFiltered.output)
     .query(async ({ ctx, input }) => {
       await reconcileUnconfirmedAnimationGenerationsForUser(ctx.user.id);
 
@@ -952,12 +949,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   getGenerationsByType: protectedProcedure
-    .input(
-      z.object({
-        domain: namefiNormalizedDomainSchema,
-        type: z.enum(['logo', 'marketing', 'animation']),
-      }),
-    )
+    .input(aiContract.getGenerationsByType.input)
+    .output(aiContract.getGenerationsByType.output)
     .query(async ({ input, ctx }) => {
       await reconcileUnconfirmedAnimationGenerationsForUser(ctx.user.id);
 
@@ -977,63 +970,67 @@ export const aiRouter = createTRPCRouter({
       return generations.map(mapAiGenerationRecord);
     }),
 
-  getFeaturedAndRecentGenerations: publicProcedure.query(async () => {
-    const selectFields = {
-      id: aiGenerationsTable.id,
-      domain: aiGenerationsTable.domain,
-      type: aiGenerationsTable.type,
-      status: aiGenerationsTable.status,
-      errorMessage: aiGenerationsTable.errorMessage,
-      createdAt: aiGenerationsTable.createdAt,
-      output: aiGenerationsTable.output,
-    };
+  getFeaturedAndRecentGenerations: publicProcedure
+    .input(aiContract.getFeaturedAndRecentGenerations.input)
+    .output(aiContract.getFeaturedAndRecentGenerations.output)
+    .query(async () => {
+      const selectFields = {
+        id: aiGenerationsTable.id,
+        domain: aiGenerationsTable.domain,
+        type: aiGenerationsTable.type,
+        status: aiGenerationsTable.status,
+        errorMessage: aiGenerationsTable.errorMessage,
+        createdAt: aiGenerationsTable.createdAt,
+        output: aiGenerationsTable.output,
+      };
 
-    const [featuredRows, recentRows] = await Promise.all([
-      db
-        .select(selectFields)
-        .from(aiGenerationsTable)
-        .where(
-          and(
-            eq(aiGenerationsTable.featured, true),
-            eq(aiGenerationsTable.status, 'SUCCEEDED'),
-            eq(aiGenerationsTable.isDeleted, false),
-          ),
-        )
-        .orderBy(desc(aiGenerationsTable.createdAt)),
-      db
-        .select(selectFields)
-        .from(aiGenerationsTable)
-        .where(
-          and(
-            eq(aiGenerationsTable.status, 'SUCCEEDED'),
-            eq(aiGenerationsTable.isDeleted, false),
-          ),
-        )
-        .orderBy(desc(aiGenerationsTable.createdAt))
-        .limit(50),
-    ]);
+      const [featuredRows, recentRows] = await Promise.all([
+        db
+          .select(selectFields)
+          .from(aiGenerationsTable)
+          .where(
+            and(
+              eq(aiGenerationsTable.featured, true),
+              eq(aiGenerationsTable.status, 'SUCCEEDED'),
+              eq(aiGenerationsTable.isDeleted, false),
+            ),
+          )
+          .orderBy(desc(aiGenerationsTable.createdAt)),
+        db
+          .select(selectFields)
+          .from(aiGenerationsTable)
+          .where(
+            and(
+              eq(aiGenerationsTable.status, 'SUCCEEDED'),
+              eq(aiGenerationsTable.isDeleted, false),
+            ),
+          )
+          .orderBy(desc(aiGenerationsTable.createdAt))
+          .limit(50),
+      ]);
 
-    const mapRows = (rows: typeof featuredRows) =>
-      rows.map((row) => ({
-        id: row.id,
-        domain: row.domain,
-        type: row.type,
-        status: row.status,
-        errorMessage: row.errorMessage,
-        createdAt: row.createdAt,
-        url: getGenerationUrl(row.output),
-        thumbnailUrl: getGenerationThumbnailUrl(row.output),
-        mimeType: getGenerationMimeType(row.output),
-      }));
+      const mapRows = (rows: typeof featuredRows) =>
+        rows.map((row) => ({
+          id: row.id,
+          domain: row.domain,
+          type: row.type,
+          status: row.status,
+          errorMessage: row.errorMessage,
+          createdAt: row.createdAt,
+          url: getGenerationUrl(row.output),
+          thumbnailUrl: getGenerationThumbnailUrl(row.output),
+          mimeType: getGenerationMimeType(row.output),
+        }));
 
-    return {
-      featured: mapRows(featuredRows),
-      recent: mapRows(recentRows),
-    };
-  }),
+      return {
+        featured: mapRows(featuredRows),
+        recent: mapRows(recentRows),
+      };
+    }),
 
   getGenerationById: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(aiContract.getGenerationById.input)
+    .output(aiContract.getGenerationById.output)
     .query(async ({ input }) => {
       const [generation] = await db
         .select()
@@ -1059,7 +1056,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   deleteGeneration: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(aiContract.deleteGeneration.input)
+    .output(aiContract.deleteGeneration.output)
     .mutation(async ({ input, ctx }) => {
       const [generation] = await db
         .update(aiGenerationsTable)
@@ -1079,15 +1077,12 @@ export const aiRouter = createTRPCRouter({
         });
       }
 
-      return generation;
+      return mapAiGenerationRecord(generation);
     }),
 
   getInternalGenerationsByDomain: publicProcedure
-    .input(
-      z.object({
-        domain: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(aiContract.getInternalGenerationsByDomain.input)
+    .output(aiContract.getInternalGenerationsByDomain.output)
     .query(async ({ input }) => {
       const rows = await db
         .select({
@@ -1105,11 +1100,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   getInternalGenerationsByDomains: publicProcedure
-    .input(
-      z.object({
-        domains: z.array(namefiNormalizedDomainSchema).min(1).max(200),
-      }),
-    )
+    .input(aiContract.getInternalGenerationsByDomains.input)
+    .output(aiContract.getInternalGenerationsByDomains.output)
     .query(async ({ input }) => {
       const rows = await db
         .select({
@@ -1145,20 +1137,23 @@ export const aiRouter = createTRPCRouter({
       return domainToRows;
     }),
 
-  getUserGenerationUsage: protectedProcedure.query(async ({ ctx }) => {
-    const currentCount = await getCurrentMonthlyGenerationCount(ctx.user.id);
-    const remainingGenerations = Math.max(
-      0,
-      config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH - currentCount,
-    );
-    const hasReachedLimit =
-      currentCount >= config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
+  getUserGenerationUsage: protectedProcedure
+    .input(aiContract.getUserGenerationUsage.input)
+    .output(aiContract.getUserGenerationUsage.output)
+    .query(async ({ ctx }) => {
+      const currentCount = await getCurrentMonthlyGenerationCount(ctx.user.id);
+      const remainingGenerations = Math.max(
+        0,
+        config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH - currentCount,
+      );
+      const hasReachedLimit =
+        currentCount >= config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
 
-    return {
-      currentCount,
-      maxGenerations: config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH,
-      remainingGenerations,
-      hasReachedLimit,
-    };
-  }),
+      return {
+        currentCount,
+        maxGenerations: config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH,
+        remainingGenerations,
+        hasReachedLimit,
+      };
+    }),
 });

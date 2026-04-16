@@ -437,6 +437,7 @@
         "@namefi-astra/db": "workspace:*",
         "@namefi-astra/utils": "workspace:*",
         "@namefi-astra/zod-dns": "workspace:*",
+        "@temporalio/common": "1.13.1",
       },
       "devDependencies": {
         "@namefi-astra/typescript": "workspace:*",
