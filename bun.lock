@@ -86,7 +86,7 @@
         "@orpc/shared": "^1.13.2",
         "@orpc/trpc": "^1.13.2",
         "@orpc/zod": "^1.13.2",
-        "@ponder/client": "0.11.30",
+        "@ponder/client": "0.16.6",
         "@privy-io/server-auth": "^1.19.2",
         "@react-email/components": "^0.0.34",
         "@react-email/render": "^1.4.0",
@@ -1738,7 +1738,7 @@
 
     "@polka/url": ["@polka/url@1.0.0-next.29", "", {}, "sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww=="],
 
-    "@ponder/client": ["@ponder/client@0.11.30", "", { "dependencies": { "drizzle-orm": "0.41.0", "eventsource": "^3.0.5", "superjson": "^2.2.2" }, "peerDependencies": { "typescript": ">=5.0.4" }, "optionalPeers": ["typescript"] }, "sha512-rwEIUD+MmZapEOFl0N4RpcPQ4UciUK1MQKx910jgmXf3c8IEcf/W1n4Jzh2yg0o8fKRkuURoIzd0yzOrNvIGXg=="],
+    "@ponder/client": ["@ponder/client@0.16.6", "", { "dependencies": { "drizzle-orm": "0.41.0", "eventsource": "^3.0.5", "superjson": "^2.2.2" }, "peerDependencies": { "typescript": ">=5.0.4" }, "optionalPeers": ["typescript"] }, "sha512-bpoGzfaFtWtP6DE/HbPaaPGs6KK2DmEM5DJxHMSph1jyh0qqxxOuaEh+2k/mbDyQyjRT3/CmLe9PPuxRpmy2Aw=="],
 
     "@ponder/utils": ["@ponder/utils@0.2.18", "", { "peerDependencies": { "typescript": ">=5.0.4", "viem": ">=2" }, "optionalPeers": ["typescript"] }, "sha512-pWacQuohfKlKO440zC39C1l6AH+Vx18mca0cPkxM0YnrB70px5hEwLKrc3fU4DMu72j4pljy/Mvfm95FBouYjw=="],
 

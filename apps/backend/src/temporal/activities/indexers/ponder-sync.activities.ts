@@ -31,7 +31,7 @@ const BATCH_SIZE = 500;
 /**
  * Get a configured Ponder client instance
  */
-function getPonderClient(): PonderSqlClient {
+export function getPonderClient(): PonderSqlClient {
   const ponderUrl = config.PONDER_INDEXER_URL;
   if (!ponderUrl) {
     throw new Error(
