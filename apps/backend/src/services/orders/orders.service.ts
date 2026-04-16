@@ -52,6 +52,13 @@ const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
 type OrderRow = typeof ordersTable.$inferSelect;
 
+/**
+ * Wire shape returned by `getOrderDetailsOrThrow`. A structurally identical
+ * type is declared in `@namefi-astra/common/orders-shared-types` for the
+ * orders router contract; the two definitions are deliberately independent
+ * (no import-export cycle), and any divergence is caught at compile time
+ * by the contract output assignment in `ordersRouter.ts`.
+ */
 export type OrderWithPayments = {
   order: OrderRow;
   items: OrderItemSelect[];
@@ -355,6 +362,12 @@ export async function getOrderItemsForUser(
 }
 
 // -------- Payment method details --------
+//
+// Structurally identical types are declared in
+// `@namefi-astra/common/orders-shared-types` for the orders router contract.
+// They are deliberately duplicated (no import-export cycle), and divergence
+// is caught at compile time by the contract output assignment in
+// `ordersRouter.ts`.
 
 export type PaymentMethodDetailsOnChain = {
   paymentId: string;

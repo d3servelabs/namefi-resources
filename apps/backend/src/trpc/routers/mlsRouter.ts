@@ -1,109 +1,27 @@
 import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
+import {
+  MAX_MLS_FEED_LIMIT,
+  type MlsDomainSearchResponse,
+  type MlsListing,
+  mlsContract,
+  mlsDomainSearchResponseSchema,
+  mlsFeedPageSchema,
+  mlsHandleListingsPageSchema,
+  mlsReportResponseSchema,
+} from '@namefi-astra/common/mls-contract';
 import { config } from '#lib/env';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { publicProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 
-const DEFAULT_MLS_FEED_LIMIT = 20;
-const MAX_MLS_FEED_LIMIT = 50;
 const REQUEST_TIMEOUT_MS = 5_000;
 const TRAILING_SLASHES_PATTERN = /\/+$/;
 const LEADING_AT_SYMBOL = /^@/;
 const HANDLE_PATTERN = /^[a-z0-9_]+$/i;
 
-const mlsListingReportReasons = [
-  'already_sold',
-  'inaccurate_price',
-  'not_for_sale',
-  'duplicate_listing',
-  'other',
-] as const;
-
-const mlsListingSchema = z.object({
-  id: z.string().min(1),
-  domain: z.string().min(1),
-  logoUrl: z.string().nullable().optional().default(null),
-  askingPrice: z.string().nullable(),
-  askingCurrency: z.string().nullable(),
-  purchaseUrl: z.string().nullable(),
-  messageText: z.string().nullable(),
-  seller: z.object({
-    username: z.string().nullable(),
-    displayName: z.string().nullable(),
-  }),
-  otherDomainsCount: z.number().int().nonnegative().optional().default(0),
-  sourceTweetUrl: z.string().min(1),
-  postedAt: z.string().min(1),
-  listedAt: z.string().min(1),
-});
-
-const mlsFeedInputSchema = z.object({
-  limit: z
-    .number()
-    .int()
-    .min(1)
-    .max(MAX_MLS_FEED_LIMIT)
-    .optional()
-    .default(DEFAULT_MLS_FEED_LIMIT),
-  cursor: z.string().trim().min(1).nullish(),
-});
-
-const mlsFeedPageSchema = z.object({
-  rows: z.array(mlsListingSchema),
-  nextCursor: z.string().nullable(),
-  hasMore: z.boolean(),
-  limit: z.number().int().positive(),
-});
-
-const mlsHandleListingsInputSchema = z.object({
-  handle: z.string().trim().min(1),
-  limit: z
-    .number()
-    .int()
-    .min(1)
-    .max(MAX_MLS_FEED_LIMIT)
-    .optional()
-    .default(DEFAULT_MLS_FEED_LIMIT),
-  cursor: z.string().trim().min(1).nullish(),
-});
-
-const mlsHandleListingsPageSchema = z.object({
-  handle: z.string().min(1),
-  seller: z.object({
-    authorId: z.string().nullable(),
-    username: z.string().nullable(),
-    displayName: z.string().nullable(),
-  }),
-  rows: z.array(mlsListingSchema),
-  nextCursor: z.string().nullable(),
-  hasMore: z.boolean(),
-  limit: z.number().int().positive(),
-  totalDomains: z.number().int().nonnegative(),
-});
-
-const mlsReportInputSchema = z.object({
-  listingId: z.string().uuid(),
-  reason: z.enum(mlsListingReportReasons),
-  details: z.string().trim().max(1_000).optional(),
-});
-
-const mlsReportResponseSchema = z.object({
-  id: z.string().min(1),
-  status: z.enum(['active', 'resolved']),
-});
-
-const mlsDomainSearchInputSchema = z.object({
-  domains: z.array(z.string().min(1)).min(1).max(200),
-});
-
-const mlsDomainSearchResponseSchema = z.object({
-  offersByDomain: z.record(z.string(), mlsListingSchema),
-  generatedAt: z.string().min(1),
-});
-
-export const mlsRouter = createTRPCRouter({
+export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
   getFeed: publicProcedure
-    .input(mlsFeedInputSchema)
-    .output(mlsFeedPageSchema)
+    .input(mlsContract.getFeed.input)
+    .output(mlsContract.getFeed.output)
     .query(async ({ input }) => {
       const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
       upstreamUrl.searchParams.set(
@@ -149,8 +67,8 @@ export const mlsRouter = createTRPCRouter({
     }),
 
   getHandleListings: publicProcedure
-    .input(mlsHandleListingsInputSchema)
-    .output(mlsHandleListingsPageSchema)
+    .input(mlsContract.getHandleListings.input)
+    .output(mlsContract.getHandleListings.output)
     .query(async ({ input }) => {
       const normalizedHandle = normalizeMlsHandleSlug(input.handle);
       if (!normalizedHandle) {
@@ -214,8 +132,8 @@ export const mlsRouter = createTRPCRouter({
     }),
 
   reportListing: publicProcedure
-    .input(mlsReportInputSchema)
-    .output(mlsReportResponseSchema)
+    .input(mlsContract.reportListing.input)
+    .output(mlsContract.reportListing.output)
     .mutation(async ({ input }) => {
       const details = input.details?.trim();
       const upstreamBody = {
@@ -286,8 +204,8 @@ export const mlsRouter = createTRPCRouter({
     }),
 
   searchDomainOffers: publicProcedure
-    .input(mlsDomainSearchInputSchema)
-    .output(mlsDomainSearchResponseSchema)
+    .input(mlsContract.searchDomainOffers.input)
+    .output(mlsContract.searchDomainOffers.output)
     .query(async ({ input }) => {
       const upstreamUrl = buildUpstreamListingSearchUrl();
       const domains = uniqueLowercaseStrings(input.domains);
@@ -379,9 +297,9 @@ function uniqueLowercaseStrings(values: string[]) {
 }
 
 function normalizeDomainSearchResponse(
-  payload: z.infer<typeof mlsDomainSearchResponseSchema>,
-) {
-  const offersByDomain: Record<string, z.infer<typeof mlsListingSchema>> = {};
+  payload: MlsDomainSearchResponse,
+): MlsDomainSearchResponse {
+  const offersByDomain: Record<string, MlsListing> = {};
   for (const [domain, offer] of Object.entries(payload.offersByDomain)) {
     const normalizedDomain = domain.toLowerCase();
     offersByDomain[normalizedDomain] = {
@@ -393,7 +311,7 @@ function normalizeDomainSearchResponse(
   return {
     offersByDomain,
     generatedAt: payload.generatedAt,
-  } satisfies z.infer<typeof mlsDomainSearchResponseSchema>;
+  };
 }
 
 function clamp(value: number, min: number, max: number) {

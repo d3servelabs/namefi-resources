@@ -22,6 +22,18 @@ import { postProcessOrderItemWorkflow } from './post-process-order-item.workflow
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import type { OrderWithPayments } from '#services/orders/orders.service';
 
+// These types are defined locally in the workflow file rather than
+// imported from `@namefi-astra/common`. Temporal workflow code runs inside
+// a deterministic sandbox, and adding `@namefi-astra/common` to the
+// workflow's import graph could pull in modules the sandbox can't load.
+//
+// A structurally identical copy of the same types lives in
+// `@namefi-astra/common/orders-shared-types` for the orders router
+// contract. The two definitions are deliberately independent, and any
+// divergence is caught at compile time by the contract output assignment
+// in `ordersRouter.ts` (which casts the workflow query result against the
+// common type).
+
 export type ProcessOrderWorkflowStepStatus =
   | 'PENDING'
   | 'IN_PROGRESS'

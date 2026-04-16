@@ -54,12 +54,9 @@ import { eppRegisterOrImportProceed } from '../../temporal/workflows/domain-owne
 import { sldRegisterOrImportProceed } from '../../temporal/workflows/domain-ownership/sld-register-or-import.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
-import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
-import {
-  createOrderInputSchema,
-  createOrderV2InputSchema,
-  instantBuyInputSchema,
-} from '../types';
+import { protectedProcedure, withAudit } from '../base';
+import { createContractTRPCRouter } from '../contract';
+import { ordersContract } from '@namefi-astra/common/orders-contract';
 import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import {
@@ -137,7 +134,17 @@ const fetchOrderWorkflowSnapshot = async (
   }
 };
 
-export const ordersRouter = createTRPCRouter({
+/**
+ * Orders router. The wire-shape contract (per-procedure input, output and
+ * query/mutation type) lives in `ordersRouter.contract.ts`; this file owns
+ * the procedure definitions including auth, audit and any other middleware.
+ *
+ * `createContractTRPCRouter<typeof ordersContract>(...)` enforces — at
+ * compile time — that every contract key is implemented as the right
+ * procedure type and that the chained `.input()` / `.output()` schemas
+ * match the contract.
+ */
+export const ordersRouter = createContractTRPCRouter<typeof ordersContract>({
   createOrder: withAudit(
     protectedProcedure,
     ({ ctx, input, auditActorExtraInfo, result }) => ({
@@ -150,7 +157,8 @@ export const ordersRouter = createTRPCRouter({
       extraInput: redactX402PaymentPayloadsFromAuditInput(input),
     }),
   )
-    .input(createOrderInputSchema)
+    .input(ordersContract.createOrder.input)
+    .output(ordersContract.createOrder.output)
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
       const { cartItemIds } = input;
@@ -261,7 +269,8 @@ export const ordersRouter = createTRPCRouter({
     }),
 
   getOrder: protectedProcedure
-    .input(z.object({ orderId: z.string() }))
+    .input(ordersContract.getOrder.input)
+    .output(ordersContract.getOrder.output)
     .query(async ({ ctx, input }) => {
       const { orderId } = input;
       const data = await orderService.getOrderDetailsOrThrow(orderId);
@@ -289,13 +298,8 @@ export const ordersRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        orderId: z.string().min(1),
-        orderItemId: z.string().min(1),
-        eppAuthorizationCode: z.string().min(1),
-      }),
-    )
+    .input(ordersContract.updateImportAuthCode.input)
+    .output(ordersContract.updateImportAuthCode.output)
     .mutation(async ({ ctx, input }) => {
       const { orderId, orderItemId, eppAuthorizationCode } = input;
 
@@ -408,12 +412,8 @@ export const ordersRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        orderId: z.string().min(1),
-        orderItemId: z.string().min(1),
-      }),
-    )
+    .input(ordersContract.cancelRequiredActionOrderItem.input)
+    .output(ordersContract.cancelRequiredActionOrderItem.output)
     .mutation(async ({ ctx, input }) => {
       const { orderId, orderItemId } = input;
 
@@ -516,12 +516,8 @@ export const ordersRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        orderId: z.string().min(1),
-        orderItemId: z.string().min(1),
-      }),
-    )
+    .input(ordersContract.confirmDomainUnlocked.input)
+    .output(ordersContract.confirmDomainUnlocked.output)
     .mutation(async ({ ctx, input }) => {
       const { orderId, orderItemId } = input;
 
@@ -611,18 +607,16 @@ export const ordersRouter = createTRPCRouter({
       return { success: true };
     }),
 
-  getOrderItems: protectedProcedure.query(
-    async ({ ctx: { user, poweredByNamefiDomain } }) => {
+  getOrderItems: protectedProcedure
+    .input(ordersContract.getOrderItems.input)
+    .output(ordersContract.getOrderItems.output)
+    .query(async ({ ctx: { user, poweredByNamefiDomain } }) => {
       return getOrderItemsForUser(user.id, poweredByNamefiDomain);
-    },
-  ),
+    }),
 
   getOrderProgress: protectedProcedure
-    .input(
-      z.object({
-        orderId: z.string().min(1),
-      }),
-    )
+    .input(ordersContract.getOrderProgress.input)
+    .output(ordersContract.getOrderProgress.output)
     .query(async ({ ctx, input }) => {
       const { user } = ctx;
       const { orderId } = input;
@@ -653,16 +647,8 @@ export const ordersRouter = createTRPCRouter({
       extraInput: redactX402PaymentPayloadsFromAuditInput(input),
     }),
   )
-    .input(
-      createOrderV2InputSchema.superRefine((input, ctx) => {
-        if (!input.nftMetadata.nftChainId) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'NFT chain ID is required',
-          });
-        }
-      }),
-    )
+    .input(ordersContract.createOrderV2.input)
+    .output(ordersContract.createOrderV2.output)
     .mutation(async ({ ctx, input }) => {
       const { cartItemIds, payments, nftMetadata } = input;
       const gaEventTracking =
@@ -859,29 +845,25 @@ export const ordersRouter = createTRPCRouter({
       extraInput: redactX402PaymentPayloadsFromAuditInput(input),
     }),
   )
-    .input(
-      instantBuyInputSchema.superRefine((input, ctx) => {
-        if (!input.nftMetadata.nftChainId) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'NFT chain ID is required',
-          });
-        }
-        if (
-          !getAllowedChainsForNftByDomainNames([
-            input.normalizedDomainName,
-          ]).includes(input.nftMetadata.nftChainId)
-        ) {
-          ctx.addIssue({
-            code: 'custom',
-            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed for ${input.normalizedDomainName}`,
-          });
-        }
-      }),
-    )
+    .input(ordersContract.instantBuy.input)
+    .output(ordersContract.instantBuy.output)
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, durationInYears, payments, nftMetadata } =
         input;
+
+      // Chain-vs-domain allow-list check (kept here because it requires a
+      // runtime call to `getAllowedChainsForNftByDomainNames`).
+      if (
+        !getAllowedChainsForNftByDomainNames([normalizedDomainName]).includes(
+          nftMetadata.nftChainId,
+        )
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `NFT chain ID ${nftMetadata.nftChainId} is not allowed for ${normalizedDomainName}`,
+        });
+      }
+
       const gaEventTracking =
         await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id);
 
@@ -1043,7 +1025,8 @@ export const ordersRouter = createTRPCRouter({
     }),
 
   getOrderPaymentMethodsDetails: protectedProcedure
-    .input(z.object({ orderId: z.string() }))
+    .input(ordersContract.getOrderPaymentMethodsDetails.input)
+    .output(ordersContract.getOrderPaymentMethodsDetails.output)
     .query(async ({ ctx, input }): Promise<PaymentMethodDetails[]> => {
       const { order, payments } = await orderService.getOrderDetailsOrThrow(
         input.orderId,
@@ -1062,7 +1045,8 @@ export const ordersRouter = createTRPCRouter({
     }),
 
   getPaymentMethodDetails: protectedProcedure
-    .input(z.object({ paymentId: z.string() }))
+    .input(ordersContract.getPaymentMethodDetails.input)
+    .output(ordersContract.getPaymentMethodDetails.output)
     .query(async ({ ctx, input }): Promise<PaymentMethodDetails> => {
       const payment = await db.query.paymentsTable.findFirst({
         where: eq(paymentsTable.id, input.paymentId),
@@ -1087,7 +1071,8 @@ export const ordersRouter = createTRPCRouter({
 
   // Get refunds for a given payment (amounts and provider reference ids)
   getPaymentRefunds: protectedProcedure
-    .input(z.object({ paymentId: z.string() }))
+    .input(ordersContract.getPaymentRefunds.input)
+    .output(ordersContract.getPaymentRefunds.output)
     .query(async ({ ctx, input }) => {
       const { user } = ctx;
       const { paymentId } = input;
@@ -1147,7 +1132,10 @@ export const ordersRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(z.object({ cartItemIds: z.array(z.string()).optional() }))
+    .input(ordersContract.reflectChangesInCartItemsIfAnyAndReturnSummary.input)
+    .output(
+      ordersContract.reflectChangesInCartItemsIfAnyAndReturnSummary.output,
+    )
     .mutation(({ ctx, input }) => {
       const { cartItemIds } = input;
       return reflectChangesInCartItemsIfAnyAndReturnSummary(

@@ -1,32 +1,15 @@
 import { db, linkSharesTable } from '@namefi-astra/db';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { shareContract } from '@namefi-astra/common/share-contract';
 import { and, eq } from 'drizzle-orm';
-import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-  withAudit,
-} from '../base';
+import { protectedProcedure, publicProcedure, withAudit } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import {
   validateTweet,
   type ValidatedPublicTweet,
 } from '../../lib/twitter/validate-tweet';
 
-// Input schemas
-const submitShareSchema = z.object({
-  normalizedDomainName: namefiNormalizedDomainSchema,
-  postUrl: z.string().url('Invalid post URL'),
-  sharedUrl: z.string().url('Invalid shared URL'),
-  campaignKey: z.string().optional(),
-});
-
-const hasUserSharedSchema = z.object({
-  normalizedDomainName: namefiNormalizedDomainSchema,
-});
-
-export const shareRouter = createTRPCRouter({
+export const shareRouter = createContractTRPCRouter<typeof shareContract>({
   /**
    * Submit a social media share (authenticated)
    */
@@ -42,7 +25,8 @@ export const shareRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(submitShareSchema)
+    .input(shareContract.submitShare.input)
+    .output(shareContract.submitShare.output)
     .mutation(async ({ input, ctx }) => {
       const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
 
@@ -81,7 +65,7 @@ export const shareRouter = createTRPCRouter({
         return {
           id: share.id,
           sharedUrl,
-          success: true,
+          success: true as const,
         };
       } catch (_error) {
         throw new TRPCError({
@@ -95,7 +79,8 @@ export const shareRouter = createTRPCRouter({
    * Submit a social media share (anonymous)
    */
   submitShareAnonymous: publicProcedure
-    .input(submitShareSchema)
+    .input(shareContract.submitShareAnonymous.input)
+    .output(shareContract.submitShareAnonymous.output)
     .mutation(async ({ input }) => {
       const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
 
@@ -134,7 +119,7 @@ export const shareRouter = createTRPCRouter({
         return {
           id: share.id,
           sharedUrl,
-          success: true,
+          success: true as const,
         };
       } catch (_error) {
         throw new TRPCError({
@@ -148,7 +133,8 @@ export const shareRouter = createTRPCRouter({
    * Check if authenticated user has shared a specific domain
    */
   hasUserShared: protectedProcedure
-    .input(hasUserSharedSchema)
+    .input(shareContract.hasUserShared.input)
+    .output(shareContract.hasUserShared.output)
     .query(async ({ input, ctx }) => {
       const { normalizedDomainName } = input;
 

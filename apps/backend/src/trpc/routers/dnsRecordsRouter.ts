@@ -1,8 +1,5 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import { recordSchema } from '@namefi-astra/zod-dns';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
-import { z } from 'zod';
 import { logger } from '#lib/logger';
 import { queryActiveNameserversChangeWorkflow } from '#lib/domains/nameservers';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
@@ -11,11 +8,9 @@ import {
   batchDeleteRecords,
   batchUpdateRecords,
   createRecord,
-  createRecordInputSchema,
   deleteRecord,
   getZoneRecordsWithManagedRecords,
   updateRecord,
-  updateRecordInputSchema,
 } from '../../services/dns/service';
 import { temporalClient } from '../../temporal/client';
 import {
@@ -42,7 +37,9 @@ import {
   type WorkflowProgressState,
   type WorkflowStep,
 } from '../../temporal/shared/workflow-helpers/workflow-progress';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import { dnsRecordsContract } from '@namefi-astra/common/dns-records-contract';
+import { protectedProcedure, publicProcedure } from '../base';
+import { createContractTRPCRouter } from '../contract';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';
 
 type EnableDnssecProgressSnapshot = {
@@ -51,20 +48,10 @@ type EnableDnssecProgressSnapshot = {
   state: WorkflowProgressState<EnableDnssecStepId> | null;
 };
 
-type EnableDnssecProgressPayload = EnableDnssecProgressSnapshot & {
-  domainName: string;
-  fetchedAt: string;
-};
-
 type DisableDnssecProgressSnapshot = {
   workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
   runId: string | null;
   state: WorkflowProgressState<DisableDnssecStepId> | null;
-};
-
-type DisableDnssecProgressPayload = DisableDnssecProgressSnapshot & {
-  domainName: string;
-  fetchedAt: string;
 };
 
 type ChangeNameserversProgressSnapshot = {
@@ -74,11 +61,6 @@ type ChangeNameserversProgressSnapshot = {
     ChangeNameserversStepId | ResetNameserversStepId
   > | null;
   workflowType: 'change-nameservers' | 'reset-nameservers' | null;
-};
-
-type ChangeNameserversProgressPayload = ChangeNameserversProgressSnapshot & {
-  domainName: string;
-  fetchedAt: string;
 };
 
 const fetchEnableDnssecWorkflowSnapshot = async (
@@ -381,158 +363,98 @@ const fetchChangeNameserversWorkflowSnapshot = async (
   }
 };
 
-export const dnsRecordsRouter = createTRPCRouter({
-  /**
-   * Get DNS records for a domain
-   */
+/**
+ * DNS records router. The wire-shape contract (per-procedure input, output
+ * and query/mutation type) lives in `dnsRecordsRouter.contract.ts`; this
+ * file owns the procedure definitions including auth/middleware choices.
+ *
+ * `createContractTRPCRouter<typeof dnsRecordsContract>(...)` enforces — at
+ * compile time — that every contract key is implemented as the right
+ * procedure type and that the chained `.input()` / `.output()` schemas
+ * match the contract.
+ */
+export const dnsRecordsRouter = createContractTRPCRouter<
+  typeof dnsRecordsContract
+>({
   getRecords: publicProcedure
-    .input(
-      z.object({
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .query(({ input }) => {
-      // In a real implementation, we may want to check permissions
-      // before returning records, but for DNS we might allow public reading
-      return getZoneRecordsWithManagedRecords(input.zoneName);
-    }),
+    .input(dnsRecordsContract.getRecords.input)
+    .output(dnsRecordsContract.getRecords.output)
+    .query(({ input }) => getZoneRecordsWithManagedRecords(input.zoneName)),
 
-  /**
-   * Add a new DNS record
-   */
   createDnsRecord: protectedProcedure
-    .input(createRecordInputSchema)
+    .input(dnsRecordsContract.createDnsRecord.input)
+    .output(dnsRecordsContract.createDnsRecord.output)
     .mutation(async ({ input, ctx }) => {
-      const { zoneName } = input;
-
-      await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-
+      await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
       return createRecord(input);
     }),
 
-  /**
-   * Update a DNS record by ID
-   */
   updateRecord: protectedProcedure
-    .input(updateRecordInputSchema)
+    .input(dnsRecordsContract.updateRecord.input)
+    .output(dnsRecordsContract.updateRecord.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
-
       return updateRecord(input);
     }),
 
-  /**
-   * Delete a DNS record by ID
-   */
   deleteRecord: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .mutation(
-      async ({ input: { zoneName: normalizedDomainName, id }, ctx }) => {
-        await assertAuthenticatedUserIsDomainOwner(
-          normalizedDomainName,
-          ctx.user,
-        );
+    .input(dnsRecordsContract.deleteRecord.input)
+    .output(dnsRecordsContract.deleteRecord.output)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
+      await deleteRecord(input.id, input.zoneName);
+      return { success: true as const };
+    }),
 
-        await deleteRecord(id, normalizedDomainName);
-
-        return { success: true };
-      },
-    ),
-
-  /**
-   * Update multiple DNS records
-   */
   updateRecords: protectedProcedure
-    .input(
-      z.object({
-        records: z.array(updateRecordInputSchema.omit({ zoneName: true })),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
+    .input(dnsRecordsContract.updateRecords.input)
+    .output(dnsRecordsContract.updateRecords.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
       return batchUpdateRecords(input.zoneName, input.records);
     }),
 
-  /**
-   * Create DNS records
-   */
   createRecords: protectedProcedure
-    .input(
-      z.object({
-        records: z.array(recordSchema),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .mutation(async ({ input: { zoneName, records }, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-      return batchCreateRecords(zoneName, records);
+    .input(dnsRecordsContract.createRecords.input)
+    .output(dnsRecordsContract.createRecords.output)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
+      return batchCreateRecords(input.zoneName, input.records);
     }),
 
-  /**
-   * Delete DNS records by IDs
-   */
   deleteRecords: protectedProcedure
-    .input(
-      z.object({
-        recordsIds: z.array(z.string()),
-        zoneName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .mutation(async ({ input: { zoneName, recordsIds }, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
-      return batchDeleteRecords(zoneName, recordsIds);
+    .input(dnsRecordsContract.deleteRecords.input)
+    .output(dnsRecordsContract.deleteRecords.output)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
+      return batchDeleteRecords(input.zoneName, input.recordsIds);
     }),
 
-  /**
-   * Park a domain
-   */
   parkDomain: protectedProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        overrideExistingRecords: z.boolean().optional(),
-      }),
-    )
+    .input(dnsRecordsContract.parkDomain.input)
+    .output(dnsRecordsContract.parkDomain.output)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.normalizedDomainName,
         ctx.user,
       );
-
-      const result = await parkDomain(
+      await parkDomain(
         input.normalizedDomainName,
         input.overrideExistingRecords,
       );
-
-      return result;
+      return { success: true as const };
     }),
 
-  /**
-   * Check if a domain is parked
-   */
   isDomainParked: publicProcedure
-    .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
+    .input(dnsRecordsContract.isDomainParked.input)
+    .output(dnsRecordsContract.isDomainParked.output)
     .query(({ input }) => isDomainParked(input.normalizedDomainName)),
 
-  /**
-   * Get DNSSEC enable workflow progress for a domain.
-   * Returns the current state of the workflow if running or completed.
-   */
   getEnableDnssecProgress: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .query(async ({ ctx, input }): Promise<EnableDnssecProgressPayload> => {
+    .input(dnsRecordsContract.getEnableDnssecProgress.input)
+    .output(dnsRecordsContract.getEnableDnssecProgress.output)
+    .query(async ({ ctx, input }) => {
       const { domainName } = input;
-
       await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
 
       // Cast to PunycodeDomainName since NamefiNormalizedDomain is compatible
@@ -547,22 +469,13 @@ export const dnsRecordsRouter = createTRPCRouter({
       };
     }),
 
-  /**
-   * Get DNSSEC disable workflow progress for a domain.
-   * Returns the current state of the workflow if running or completed.
-   */
   getDisableDnssecProgress: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .query(async ({ ctx, input }): Promise<DisableDnssecProgressPayload> => {
+    .input(dnsRecordsContract.getDisableDnssecProgress.input)
+    .output(dnsRecordsContract.getDisableDnssecProgress.output)
+    .query(async ({ ctx, input }) => {
       const { domainName } = input;
-
       await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
 
-      // Cast to PunycodeDomainName since NamefiNormalizedDomain is compatible
       const snapshot = await fetchDisableDnssecWorkflowSnapshot(
         domainName as PunycodeDomainName,
       );
@@ -574,41 +487,30 @@ export const dnsRecordsRouter = createTRPCRouter({
       };
     }),
 
-  /**
-   * Get change nameservers workflow progress for a domain.
-   * Returns the current state of the workflow if running or completed.
-   * Includes substeps from embedded workflows (e.g., disable DNSSEC).
-   */
   getChangeNameserversProgress: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .query(
-      async ({ ctx, input }): Promise<ChangeNameserversProgressPayload> => {
-        const { domainName } = input;
+    .input(dnsRecordsContract.getChangeNameserversProgress.input)
+    .output(dnsRecordsContract.getChangeNameserversProgress.output)
+    .query(async ({ ctx, input }) => {
+      const { domainName } = input;
+      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
 
-        await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+      // First, query for any active nameservers change workflow to get the
+      // correct workflowId — this handles both change-nameservers and
+      // reset-nameservers workflows.
+      const activeWorkflow = await queryActiveNameserversChangeWorkflow(
+        domainName as PunycodeDomainName,
+      );
 
-        // First, query for any active nameservers change workflow to get the correct workflowId
-        // This handles both change-nameservers and reset-nameservers workflows
-        const activeWorkflow = await queryActiveNameserversChangeWorkflow(
-          domainName as PunycodeDomainName,
-        );
+      const snapshot = await fetchChangeNameserversWorkflowSnapshot(
+        domainName as PunycodeDomainName,
+        activeWorkflow?.workflowId,
+        activeWorkflow?.runId,
+      );
 
-        // Cast to PunycodeDomainName since NamefiNormalizedDomain is compatible
-        const snapshot = await fetchChangeNameserversWorkflowSnapshot(
-          domainName as PunycodeDomainName,
-          activeWorkflow?.workflowId,
-          activeWorkflow?.runId,
-        );
-
-        return {
-          ...snapshot,
-          domainName,
-          fetchedAt: new Date().toISOString(),
-        };
-      },
-    ),
+      return {
+        ...snapshot,
+        domainName,
+        fetchedAt: new Date().toISOString(),
+      };
+    }),
 });

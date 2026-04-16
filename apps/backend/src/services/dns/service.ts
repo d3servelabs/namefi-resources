@@ -38,6 +38,13 @@ import {
   getManagedRecordsForZone,
 } from './managed-records';
 
+/**
+ * Structurally identical copies of these schemas live in
+ * `@namefi-astra/common/dns-records-contract` for the DNS records router
+ * contract. The two definitions are deliberately independent (no
+ * import-export cycle), and divergence is caught at compile time by the
+ * contract assignment in `dnsRecordsRouter.ts`.
+ */
 export const updateRecordInputSchema = z.object({
   id: z.string(),
   zoneName: namefiNormalizedDomainSchema,
@@ -474,6 +481,57 @@ export async function createRecord(
 }
 
 export async function batchUpdateRecords(
+  zoneName: NamefiNormalizedDomain,
+  records: Omit<z.infer<typeof updateRecordInputSchema>, 'zoneName'>[],
+) {
+  if (records.length === 0) {
+    return [];
+  }
+
+  const existingRecords = await db
+    .select()
+    .from(dnsRecordsTable)
+    .where(
+      and(
+        inArray(dnsRecordsTable.id, pluck('id', records)),
+        eq(dnsRecordsTable.zoneName, zoneName),
+      ),
+    );
+
+  if (existingRecords?.length !== records.length) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Some DNS records are not found or do not belong to this domain',
+    });
+  }
+
+  await validateZone(zoneName, {
+    updatedRecords: records,
+  });
+
+  const updatedRecords = await db.transaction(async (tx) => {
+    const rows: Array<typeof dnsRecordsTable.$inferSelect> = [];
+    for (const record of records) {
+      const updated = await tx
+        .update(dnsRecordsTable)
+        .set(pickBy(isNotNil, omit(['id'], record)))
+        .where(
+          and(
+            eq(dnsRecordsTable.id, record.id),
+            eq(dnsRecordsTable.zoneName, zoneName),
+          ),
+        )
+        .returning();
+      rows.push(...updated);
+    }
+    return rows;
+  });
+
+  return updatedRecords;
+}
+
+//TODO: validate that returning is working properly with multi-statement sql
+export async function batchUpdateRecordsV2(
   zoneName: NamefiNormalizedDomain,
   records: Omit<z.infer<typeof updateRecordInputSchema>, 'zoneName'>[],
 ) {
