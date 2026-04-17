@@ -835,13 +835,16 @@ function buildCategorizedSections(
   for (const nft of allNftsData) {
     if (nft.isPoweredByNamefiDomain) continue;
 
-    const effectiveExpirationTime =
-      nft.effectiveDomainExpirationTime || nft.domainExpirationTime;
-    const isExpired = effectiveExpirationTime
-      ? effectiveExpirationTime < now
+    // Use registrar expiration when available; otherwise fall back to the
+    // NFT's own expiration so that an orphaned-but-already-expired NFT is
+    // bucketed as EXPIRED rather than NFT_EXISTS_MISSING_DOMAIN.
+    const expirationForCategorization =
+      nft.domainExpirationTime ?? nft.nftExpirationTime;
+    const isExpired = expirationForCategorization
+      ? expirationForCategorization < now
       : false;
 
-    if (isExpired && effectiveExpirationTime) {
+    if (isExpired && expirationForCategorization) {
       sections.expired.push(
         attachKnownIssue(
           {
@@ -850,7 +853,7 @@ function buildCategorizedSections(
             ownerAddress: nft.ownerAddress,
             registrarKey: nft.effectiveRegistrarKey,
             nftExpirationTime: isoOrNull(nft.nftExpirationTime),
-            domainExpirationTime: isoOrNull(effectiveExpirationTime),
+            domainExpirationTime: isoOrNull(expirationForCategorization),
             isExpired: true,
           },
           knownIssuesMap,
@@ -860,7 +863,9 @@ function buildCategorizedSections(
     }
 
     if (!nft.domainExpirationTime) {
-      // NFT row exists but registrar join failed (or registrar data missing)
+      // NFT row exists, registrar join failed, and the NFT itself is not
+      // expired (or has no expiration data). Expired orphaned NFTs are
+      // already routed to the EXPIRED bucket above.
       sections.nftExistsMissingDomainNotExpired.push(
         attachKnownIssue(
           {
