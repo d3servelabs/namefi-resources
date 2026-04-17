@@ -92,6 +92,7 @@ import { UserWalletAvatar } from '@/components/user-avatar';
 import { useAuth } from '@/hooks/use-auth';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { NftKnownIssuesCard } from './nft-known-issues-card';
 
 type NftManagementRow =
   AppRouterOutput['admin']['nft']['getNftsWithExpirationStatus']['data'][number];
@@ -1323,7 +1324,14 @@ export function AdminNftManagement() {
 
   return (
     <PageShell padding="admin" className="space-y-6">
-      {isLoading ? <LoadingSkeletons /> : <NftManagementTable />}
+      {isLoading ? (
+        <LoadingSkeletons />
+      ) : (
+        <>
+          <NftKnownIssuesCard />
+          <NftManagementTable />
+        </>
+      )}
     </PageShell>
   );
 }

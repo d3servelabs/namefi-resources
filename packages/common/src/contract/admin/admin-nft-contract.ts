@@ -44,7 +44,12 @@ const domainNameInputSchema = z.object({
 const upsertKnownIssueInputSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
   explanation: z.string().min(1).max(2_000),
-  category: knownIssueCategorySchema.optional(),
+  /**
+   * `undefined` (field omitted) → keep the existing category on edit.
+   * `null` → explicitly clear the category (store as unset).
+   * A category string → set the category to that value.
+   */
+  category: knownIssueCategorySchema.nullable().optional(),
 });
 
 // ---------------------------------------------------------------------------

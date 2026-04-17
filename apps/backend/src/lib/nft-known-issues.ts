@@ -80,7 +80,12 @@ export async function loadKnownIssuesMap(): Promise<
 export interface UpsertKnownIssueInput {
   normalizedDomainName: string;
   explanation: string;
-  category?: NftIssueCategory;
+  /**
+   * `undefined` (field omitted) → keep the existing category on edit.
+   * `null` → explicitly clear the category.
+   * A category string → set the category to that value.
+   */
+  category?: NftIssueCategory | null;
   actingUserId: string;
 }
 
@@ -90,10 +95,17 @@ export async function upsertKnownIssue(
   const nowIso = new Date().toISOString();
   const existing = await getKnownIssue(input.normalizedDomainName);
 
+  const resolvedCategory: NftIssueCategory | undefined =
+    input.category === undefined
+      ? existing?.category
+      : input.category === null
+        ? undefined
+        : input.category;
+
   const next: KnownIssueExplanation = {
     normalizedDomainName: input.normalizedDomainName,
     explanation: input.explanation,
-    category: input.category ?? existing?.category,
+    category: resolvedCategory,
     acknowledgedBy: existing?.acknowledgedBy ?? input.actingUserId,
     acknowledgedAt: existing?.acknowledgedAt ?? nowIso,
     updatedAt: nowIso,
