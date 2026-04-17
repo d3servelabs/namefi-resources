@@ -460,8 +460,8 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
                           {getCategoryLabel(issue.category)}
                         </Badge>
                       </TableCell>
-                      <TableCell className="max-w-md text-sm text-muted-foreground">
-                        <TruncatedTextWithHover maxLength={120}>
+                      <TableCell className="max-w-md whitespace-pre-wrap break-words text-sm text-muted-foreground">
+                        <TruncatedTextWithHover maxLength={48}>
                           {issue.explanation}
                         </TruncatedTextWithHover>
                       </TableCell>
