@@ -907,6 +907,13 @@ function buildCategorizedSections(
   }
 
   for (const domain of unmintedDomains) {
+    // Domains that the registrar no longer returns are "gone from the
+    // registrar" rather than "expired at the registrar". Their stored
+    // expirationTime is the last known value (usually in the past), which
+    // would incorrectly inflate the EXPIRED bucket. They're already tracked
+    // in `unmintedDomainsMetrics.missingFromRegistrarCount` for the TLDR.
+    if (domain.isMissingFromRegistrar) continue;
+
     const isExpired = domain.expirationTime
       ? domain.expirationTime < now
       : false;
