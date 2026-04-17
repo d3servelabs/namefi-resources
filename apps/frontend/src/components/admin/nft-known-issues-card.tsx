@@ -6,7 +6,11 @@ import { format } from 'date-fns';
 import { AlertTriangle, Pencil, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Permission } from '@namefi-astra/utils/permissions';
-import { PermissionGate } from '@/components/access/PermissionGate';
+import {
+  PermissionGate,
+  useHasPermissions,
+} from '@/components/access/PermissionGate';
+import { AdminUserLookupButton } from '@/components/admin/user-details';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import {
@@ -20,6 +24,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/shadcn/alert-dialog';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/components/ui/shadcn/avatar';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -89,6 +98,93 @@ function formatDateTime(value: string): string {
   } catch {
     return value;
   }
+}
+
+const USER_ID_UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * `acknowledgedBy` is either a real user UUID (stamped from `ctx.user.id`
+ * when an admin upserts via tRPC) or a sentinel string (e.g.
+ * `system:seed-script` from the seed script). Only real UUIDs get the
+ * avatar + user lookup affordance; sentinels render as a plain badge.
+ */
+function isRealUserId(acknowledgedBy: string): boolean {
+  return USER_ID_UUID_REGEX.test(acknowledgedBy);
+}
+
+function getInitials(label: string): string {
+  const trimmed = label.trim();
+  if (!trimmed) return '?';
+  const parts = trimmed.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return trimmed.slice(0, 2).toUpperCase();
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+}
+
+function AcknowledgedByUserCard({ userId }: { userId: string }) {
+  const trpc = useTRPC();
+  const userDetailsQuery = useQuery(
+    trpc.admin.users.getUserDetails.queryOptions(
+      { userId },
+      { trpc: { context: { skipBatch: true } } },
+    ),
+  );
+
+  const user = userDetailsQuery.data?.user;
+  const wallets = userDetailsQuery.data?.wallets;
+  const label = user?.displayName ?? user?.primaryEmail ?? userId;
+  const walletAddress = wallets?.[0]?.address;
+  const initials = getInitials(label);
+
+  return (
+    <AdminUserLookupButton
+      reference={{ userId }}
+      title="Open user details"
+      variant="ghost"
+      size="sm"
+      className="h-auto max-w-full items-center justify-start gap-2 px-2 py-1 font-normal"
+    >
+      <Avatar className="size-6 shrink-0 rounded-full">
+        {walletAddress ? (
+          <AvatarImage
+            alt=""
+            src={`https://effigy.im/a/${walletAddress}.svg`}
+          />
+        ) : null}
+        <AvatarFallback className="rounded-full text-[10px]">
+          {initials}
+        </AvatarFallback>
+      </Avatar>
+      <span className="truncate text-xs">
+        {userDetailsQuery.isLoading ? 'Loading…' : label}
+      </span>
+    </AdminUserLookupButton>
+  );
+}
+
+function AcknowledgedByCell({ acknowledgedBy }: { acknowledgedBy: string }) {
+  const { hasPermissions: canReadUsers } = useHasPermissions([
+    Permission.READ_USERS,
+  ]);
+
+  if (!isRealUserId(acknowledgedBy)) {
+    return (
+      <Badge variant="secondary" className="font-mono text-[10px]">
+        {acknowledgedBy}
+      </Badge>
+    );
+  }
+
+  if (!canReadUsers) {
+    return (
+      <TruncatedTextWithHover maxLength={12}>
+        {acknowledgedBy}
+      </TruncatedTextWithHover>
+    );
+  }
+
+  return <AcknowledgedByUserCard userId={acknowledgedBy} />;
 }
 
 interface KnownIssueFormValues {
@@ -465,10 +561,10 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
                           {issue.explanation}
                         </TruncatedTextWithHover>
                       </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        <TruncatedTextWithHover maxLength={24}>
-                          {issue.acknowledgedBy}
-                        </TruncatedTextWithHover>
+                      <TableCell>
+                        <AcknowledgedByCell
+                          acknowledgedBy={issue.acknowledgedBy}
+                        />
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">
                         {formatDateTime(issue.updatedAt)}
