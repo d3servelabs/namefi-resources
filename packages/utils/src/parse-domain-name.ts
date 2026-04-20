@@ -1,6 +1,84 @@
 import { parseDomain, ParseResultType } from 'parse-domain';
 import type { NamefiNormalizedDomain } from './namefi-flavor';
 
+function safeParseArray(input: string | undefined) {
+  if (input === undefined || input === null) {
+    return null;
+  }
+  try {
+    const parseRes = JSON.parse(input);
+    if (Array.isArray(parseRes)) {
+      return parseRes;
+    }
+  } catch (e) {
+    return null;
+  }
+  return null;
+}
+
+function getExtraAllowedPublicSuffix(): string[] {
+  // Browser
+  if (typeof window === 'object' && !!window) {
+    if ('namefi_tlds' in window && Array.isArray(window.namefi_tlds)) {
+      return window.namefi_tlds;
+    }
+  }
+
+  // Node
+  if (
+    typeof process === 'object' &&
+    !!process &&
+    'env' in process &&
+    typeof process.env === 'object' &&
+    !!process.env
+  ) {
+    if ('NAMEFI_UNOFFICIAL_TLDS' in process.env) {
+      const namefiTlds = safeParseArray(process.env.NAMEFI_UNOFFICIAL_TLDS);
+      if (namefiTlds) {
+        return namefiTlds;
+      }
+    }
+  }
+
+  // Fallback
+  return [] as string[];
+}
+
+function parseDomainWithUnofficialPublicSuffix(
+  normalizedDomainName: NamefiNormalizedDomain,
+): { matched: true; result: ValidDomainParseResult } | { matched: false } {
+  const publicSuffixes = getExtraAllowedPublicSuffix();
+  for (const publicSuffix of publicSuffixes) {
+    if (normalizedDomainName.endsWith(`.${publicSuffix}`)) {
+      const labels = normalizedDomainName.split('.');
+      if (labels.length !== 2) {
+        continue;
+      }
+      return {
+        matched: true,
+        result: {
+          valid: true,
+          domain: normalizedDomainName,
+          labels,
+          registryType: 'subdomain',
+          level: labels.length,
+          publicSuffix,
+          immediateParentDomain: labels
+            .slice(1)
+            .join('.') as NamefiNormalizedDomain,
+          publicSuffixPlusOne: labels.slice(-2).join('.'),
+          nearestTraditionalParentDomain: labels
+            .slice(1)
+            .join('.') as NamefiNormalizedDomain,
+        },
+      };
+    }
+  }
+
+  return {
+    matched: false,
+  };
+}
 /**
  * The analysis of a domain
  * This is helpful to get around the subTLDs like co.uk, co.za, etc., because you can't just split the domain by the dot.
@@ -84,6 +162,11 @@ export type ValidDomainParseResult = {
 export const parseDomainName = (
   normalizedDomainName: NamefiNormalizedDomain,
 ): DomainParseResult => {
+  const unofficialParseResult =
+    parseDomainWithUnofficialPublicSuffix(normalizedDomainName);
+  if (unofficialParseResult.matched) {
+    return unofficialParseResult.result;
+  }
   const domainParseResult = parseDomain(normalizedDomainName);
   // Return default values for invalid or unsupported domains
   if (domainParseResult.type !== ParseResultType.Listed) {

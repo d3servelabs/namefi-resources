@@ -16,6 +16,7 @@ import DatadogObservability from '@/components/datadog-observability';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
 import SkipAuthBanner from '@/components/SkipAuthBanner';
+import { UnofficialTldsInjector } from '@/components/providers/unofficial-tlds';
 import './globals.css';
 
 const geistSans = Geist({
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <Main>{children}</Main>
+              <UnofficialTldsInjector />
             </SidebarProvider>
             <ImpersonationBanner />
             <SkipAuthBanner />
