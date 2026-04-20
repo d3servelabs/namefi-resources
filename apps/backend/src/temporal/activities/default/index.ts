@@ -125,12 +125,19 @@ export async function sendTemporalAlertToSlack(
   const workflowType = ctx.info.workflowType;
   const taskQueue = ctx.info.taskQueue;
 
+  const resolvedTitle = resolveIncidentTitle({
+    title,
+    message,
+    workflowType,
+    workflowId,
+  });
+
   // Create ClickUp incident ticket first so we can include it in the Slack message
   let ticket: { taskId: string; taskUrl: string } | null = null;
   if (shouldCreateIncident) {
     try {
       ticket = await createIncidentTicket({
-        title,
+        title: resolvedTitle,
         message,
         extraData,
         priority: options?.incidentPriority,
@@ -173,7 +180,7 @@ export async function sendTemporalAlertToSlack(
             type: 'header',
             text: {
               type: 'plain_text',
-              text: `[Temporal] ${title}`,
+              text: `[Temporal] ${resolvedTitle}`,
               emoji: true,
             },
           },
@@ -267,7 +274,7 @@ export async function sendTemporalAlertToSlack(
             {
               taskId: ticket.taskId,
               taskUrl: ticket.taskUrl,
-              originalAlert: { title, message, extraData },
+              originalAlert: { title: resolvedTitle, message, extraData },
             },
           ],
           workflowId: `monitor-incident-[${ticket.taskId}]-[${Date.now()}]`,
@@ -306,6 +313,13 @@ async function createIncidentTicket(args: {
   const taskQueue = ctx.info.taskQueue;
   const temporalUrl = await getTemporalWorkflowRunUrl(workflowId, runId);
 
+  const resolvedTitle = resolveIncidentTitle({
+    title: args.title,
+    message: args.message,
+    workflowType,
+    workflowId,
+  });
+
   const extraDataText =
     args.extraData && typeof args.extraData === 'object'
       ? Object.entries(args.extraData)
@@ -331,7 +345,7 @@ async function createIncidentTicket(args: {
   ].join('\n');
 
   const result = await createClickUpTask({
-    name: `[Incident] ${args.title}`,
+    name: `[Incident] ${resolvedTitle}`,
     description,
     priority: args.priority ?? 1,
     tags: ['incident', 'auto-created'],
@@ -342,10 +356,45 @@ async function createIncidentTicket(args: {
   logger.info(
     { taskId: result.id, taskUrl: result.url },
     'Created ClickUp incident ticket for %s',
-    args.title,
+    resolvedTitle,
   );
 
   return { taskId: result.id, taskUrl: result.url };
+}
+
+function resolveIncidentTitle(input: {
+  title?: unknown;
+  message?: unknown;
+  workflowType?: string;
+  workflowId?: string;
+}): string {
+  const title = typeof input.title === 'string' ? input.title.trim() : '';
+  if (title && title.toLowerCase() !== 'undefined') {
+    return title;
+  }
+
+  const message = typeof input.message === 'string' ? input.message.trim() : '';
+  if (message) {
+    const firstLine = message.split('\n')[0]?.trim() ?? '';
+    const snippet =
+      firstLine.length > 80 ? `${firstLine.slice(0, 77)}...` : firstLine;
+    if (snippet) {
+      return input.workflowType
+        ? `${input.workflowType} failed: ${snippet}`
+        : snippet;
+    }
+  }
+
+  if (input.workflowType && input.workflowId) {
+    return `${input.workflowType} failed (${input.workflowId})`;
+  }
+  if (input.workflowType) {
+    return `${input.workflowType} failed`;
+  }
+  if (input.workflowId) {
+    return `Workflow failed (${input.workflowId})`;
+  }
+  return 'Unknown workflow failure';
 }
 
 async function getIncidentTicketStatus(args: { taskId: string }) {
