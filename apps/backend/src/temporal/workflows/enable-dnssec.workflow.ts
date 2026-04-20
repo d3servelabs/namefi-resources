@@ -104,30 +104,6 @@ export async function enableDnssecWorkflow(
 
   const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
 
-  // Track cancellation requests
-  let cancelled = false;
-  if (hasCancellationSupport) {
-    workflow.CancellationScope.current().cancelRequested.then(() => {
-      cancelled = true;
-    });
-  }
-
-  /** Check cancellation and run compensating actions if cancelled. */
-  async function checkCancellation(
-    compensate?: () => Promise<void>,
-  ): Promise<void> {
-    if (!cancelled) return;
-    if (compensate) {
-      await workflow.CancellationScope.nonCancellable(compensate);
-    }
-    progress.fail('Workflow cancelled');
-    throw workflow.ApplicationFailure.create({
-      message: 'Workflow cancelled by user',
-      nonRetryable: true,
-      type: 'workflow/cancelled',
-    });
-  }
-
   try {
     // Step 1: Check if domain supports DNSSEC
     progress.startStep('check-support');
@@ -175,13 +151,6 @@ export async function enableDnssecWorkflow(
     await setZoneSigningFlag(input.domainName, true);
 
     progress.completeStep('enable-zone-signing');
-
-    // Cancellation checkpoint: undo zone signing if cancelled before DS association
-    if (hasCancellationSupport) {
-      await checkCancellation(() =>
-        setZoneSigningFlag(input.domainName, false),
-      );
-    }
 
     // Step 3: Associate DS record with registrar
     progress.startStep('associate-ds-record');

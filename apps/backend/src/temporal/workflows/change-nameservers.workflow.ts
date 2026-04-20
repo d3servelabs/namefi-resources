@@ -77,13 +77,6 @@ export async function changeNameserversWorkflow({
 
   const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
 
-  // Track cancellation requests
-  let cancelled = false;
-  if (hasCancellationSupport) {
-    workflow.CancellationScope.current().cancelRequested.then(() => {
-      cancelled = true;
-    });
-  }
   const { updateDomainIndexRows } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.INDEXERS,
     options: {
@@ -123,16 +116,6 @@ export async function changeNameserversWorkflow({
         'disable-dnssec',
         'DNSSEC not enabled or not supported',
       );
-    }
-
-    // Cancellation checkpoint: safe to cancel before nameserver change
-    if (hasCancellationSupport && cancelled) {
-      progress.fail('Workflow cancelled');
-      throw workflow.ApplicationFailure.create({
-        message: 'Workflow cancelled by user',
-        nonRetryable: true,
-        type: 'workflow/cancelled',
-      });
     }
 
     // Step 2: Set nameservers
@@ -183,6 +166,12 @@ export async function changeNameserversWorkflow({
 
     progress.complete();
   } catch (e) {
+    if (hasCancellationSupport && workflow.isCancellation(e)) {
+      // No compensation needed: DNSSEC rollback handled by embedded workflow,
+      // nameserver change can't be rolled back once submitted to registrar.
+      progress.fail('Workflow cancelled');
+      throw e;
+    }
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));
     }

@@ -104,32 +104,8 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
 
   const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
 
-  // Track cancellation requests
-  let cancelled = false;
-  if (hasCancellationSupport) {
-    workflow.CancellationScope.current().cancelRequested.then(() => {
-      cancelled = true;
-    });
-  }
-
-  // Track whether DS was removed (for rollback)
+  // Track whether DS was removed (for rollback on cancellation)
   let dsWasRemoved = false;
-
-  /** Check cancellation and run compensating actions if cancelled. */
-  async function checkCancellation(
-    compensate?: () => Promise<void>,
-  ): Promise<void> {
-    if (!cancelled) return;
-    if (compensate) {
-      await workflow.CancellationScope.nonCancellable(compensate);
-    }
-    progress.fail('Workflow cancelled');
-    throw workflow.ApplicationFailure.create({
-      message: 'Workflow cancelled by user',
-      nonRetryable: true,
-      type: 'workflow/cancelled',
-    });
-  }
 
   try {
     // Step 1: Check current DNSSEC status
@@ -207,15 +183,6 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
       dsWasRemoved = true;
       progress.completeStep('remove-ds-record');
 
-      // Cancellation checkpoint: re-associate DS if cancelled after removal
-      if (hasCancellationSupport) {
-        await checkCancellation(() =>
-          associateDelegationSignerWithDefaultKey(input.domainName).then(
-            () => undefined,
-          ),
-        );
-      }
-
       // Step 3: Verify DS record removal propagation
       progress.startStep('verify-removal', 'Waiting for DNS propagation...');
 
@@ -242,18 +209,6 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
       // No DS record to remove, skip these steps
       progress.skipStep('remove-ds-record', 'No DS record to remove');
       progress.skipStep('verify-removal', 'No DS record to verify');
-    }
-
-    // Cancellation checkpoint: re-associate DS if cancelled before zone signing disable
-    if (hasCancellationSupport) {
-      await checkCancellation(
-        dsWasRemoved
-          ? () =>
-              associateDelegationSignerWithDefaultKey(input.domainName).then(
-                () => undefined,
-              )
-          : undefined,
-      );
     }
 
     // Step 4: Disable zone signing
