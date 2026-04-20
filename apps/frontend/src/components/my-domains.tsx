@@ -124,6 +124,9 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
 import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import {
   CalendarPlus,
   BadgeDollarSign,
@@ -138,6 +141,18 @@ import {
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 type OtherWalletOrderItem = AppRouterOutput['orders']['getOrderItems'][number];
+
+const MY_DOMAINS_FEATURE_FLAGS: FeatureFlagDefinition[] = [
+  {
+    key: 'my_domains_use_v2',
+    label: 'My Domains: use getCurrentUserDomainsV2',
+    description:
+      'Switch the My Domains query from getCurrentUserDomains (v1) to getCurrentUserDomainsV2 (single-query leftJoin variant).',
+    scope: 'page',
+    pageKey: 'my_domains',
+    defaultValue: false,
+  },
+];
 
 const truncateWalletAddress = (address: string): string => {
   if (address.length <= 10) return address;
@@ -1968,10 +1983,28 @@ export default function MyDomains() {
 
 const MyDomainsContent = () => {
   const trpc = useTRPC();
+  useRegisterAdminFlags(MY_DOMAINS_FEATURE_FLAGS);
+  const [useDomainsV2] = useAdminFeatureFlag(MY_DOMAINS_FEATURE_FLAGS[0]);
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
-  const { data: _domains } = useSuspenseQuery(
-    trpc.users.getCurrentUserDomains.queryOptions(),
+  const v1QueryOptions = trpc.users.getCurrentUserDomains.queryOptions();
+  const v2QueryOptions = trpc.users.getCurrentUserDomainsV2.queryOptions();
+  const domainsQueryOptions = (
+    useDomainsV2 ? v2QueryOptions : v1QueryOptions
+  ) as typeof v1QueryOptions;
+  const { data: _rawDomains } = useSuspenseQuery(domainsQueryOptions);
+  const _domains = useMemo<DomainRow[]>(
+    () =>
+      _rawDomains.map((domain) => ({
+        ...domain,
+        dateTokenized: 'dateTokenized' in domain ? domain.dateTokenized : null,
+        dnsStatus: {
+          ...domain.dnsStatus,
+          ensRecord:
+            'ensRecord' in domain.dnsStatus ? domain.dnsStatus.ensRecord : null,
+        },
+      })),
+    [_rawDomains],
   );
 
   const { data: orderItems } = useQuery(

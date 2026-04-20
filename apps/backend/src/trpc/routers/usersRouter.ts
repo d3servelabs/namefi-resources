@@ -3,6 +3,8 @@ import {
   usersTable,
   namefiNftOwnersView,
   namefiNftOwnersCte,
+  namefiNftView,
+  namefiNftCte,
   burnedNamefiNftCte,
   transferLogsCte,
   indexedDomainsTable,
@@ -713,6 +715,149 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           },
         }));
       }
+    }),
+
+  getCurrentUserDomainsV2: protectedProcedure
+    .input(usersContract.getCurrentUserDomainsV2.input)
+    .output(usersContract.getCurrentUserDomainsV2.output)
+    .query(async ({ ctx }) => {
+      const { user, poweredByNamefiDomain } = ctx;
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(user.privyUserId),
+      );
+
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'could not find user details',
+        });
+      }
+
+      const privyUserLinkedEthereumChecksumWalletAddresses =
+        getPrivyUserLinkedEthereumChecksumWalletAddresses({
+          privyUser,
+        });
+
+      if (isEmpty(privyUserLinkedEthereumChecksumWalletAddresses)) {
+        return [];
+      }
+
+      const whereConditions = [
+        inArray(
+          namefiNftView.ownerAddress,
+          privyUserLinkedEthereumChecksumWalletAddresses,
+        ),
+      ];
+
+      if (poweredByNamefiDomain) {
+        whereConditions.push(
+          ilike(
+            namefiNftView.normalizedDomainName,
+            `%.${poweredByNamefiDomain}`,
+          ),
+        );
+      }
+
+      if (ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER) {
+        whereConditions.push(
+          gte(
+            sql`array_length(string_to_array(${namefiNftView.normalizedDomainName}, '.'), 1)`,
+            3,
+          ),
+        );
+      }
+
+      const dnsFlagsLateral = db
+        .select({
+          hasWebRecords:
+            sql<boolean>`bool_or(${dnsRecordsTable.type} IN ('A', 'AAAA', 'CNAME'))`.as(
+              'has_web_records',
+            ),
+          hasMxRecords:
+            sql<boolean>`bool_or(${dnsRecordsTable.type} = 'MX')`.as(
+              'has_mx_records',
+            ),
+        })
+        .from(dnsRecordsTable)
+        .where(
+          and(
+            eq(dnsRecordsTable.zoneName, namefiNftView.normalizedDomainName),
+            inArray(dnsRecordsTable.type, ['A', 'AAAA', 'CNAME', 'MX']),
+          ),
+        )
+        .as('dns_flags');
+
+      const rows = await db
+        .with(namefiNftCte)
+        .select({
+          normalizedDomainName: namefiNftView.normalizedDomainName,
+          tokenId: namefiNftView.tokenId,
+          chainId: namefiNftView.chainId,
+          ownerAddress: namefiNftView.ownerAddress,
+          expirationDate: indexedDomainsTable.expirationTime,
+          nameservers: indexedDomainsTable.nameservers,
+          isUsingNamefiNameservers:
+            indexedDomainsTable.isUsingNamefiNameservers,
+          autoEnsEnabled: domainConfigTable.autoEnsEnabled,
+          autoParkEnabled: domainConfigTable.autoParkEnabled,
+          dnssecEnabled: domainConfigTable.dnssecEnabled,
+          forwardTo: domainConfigTable.forwardTo,
+          autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
+          hasWebRecords: dnsFlagsLateral.hasWebRecords,
+          hasMxRecords: dnsFlagsLateral.hasMxRecords,
+          hasEffectiveWebPresence: sql<boolean>`
+            COALESCE(${dnsFlagsLateral.hasWebRecords}, false)
+            OR COALESCE(${domainConfigTable.autoParkEnabled}, false)
+            OR (${domainConfigTable.forwardTo} IS NOT NULL)
+          `,
+        })
+        .from(namefiNftView)
+        .leftJoin(
+          indexedDomainsTable,
+          eq(
+            indexedDomainsTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          domainConfigTable,
+          eq(
+            domainConfigTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          domainUserPreferencesTable,
+          and(
+            eq(
+              domainUserPreferencesTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            eq(domainUserPreferencesTable.userId, user.id),
+          ),
+        )
+        .leftJoinLateral(dnsFlagsLateral, sql`true`)
+        .where(and(...whereConditions));
+
+      return rows.map((row) => ({
+        normalizedDomainName: row.normalizedDomainName,
+        chainId: row.chainId,
+        ownerAddress: row.ownerAddress,
+        tokenId: row.tokenId,
+        expirationDate: row.expirationDate,
+        autoRenewEnabled: row.autoRenewEnabled ?? false,
+        autoEnsEnabled: row.autoEnsEnabled ?? false,
+        dnssecEnabled: row.dnssecEnabled ?? false,
+        dnsStatus: {
+          nameservers: row.nameservers ?? [],
+          isUsingNamefiNameservers: row.isUsingNamefiNameservers ?? false,
+          isParkingEnabled: row.autoParkEnabled ?? false,
+          forwardTo: row.forwardTo ?? null,
+          hasWebRecords: row.hasWebRecords ?? false,
+          hasMxRecords: row.hasMxRecords ?? false,
+          hasEffectiveWebPresence: row.hasEffectiveWebPresence ?? false,
+        },
+      }));
     }),
 
   isDomainOwnedByCurrentUser: protectedProcedure

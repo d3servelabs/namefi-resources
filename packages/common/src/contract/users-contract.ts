@@ -176,6 +176,26 @@ const currentUserDomainSchema = z.object({
   }),
 });
 
+const currentUserDomainV2Schema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  chainId: z.number(),
+  ownerAddress: z.string(),
+  tokenId: z.bigint(),
+  expirationDate: z.date().nullable(),
+  autoRenewEnabled: z.boolean(),
+  autoEnsEnabled: z.boolean(),
+  dnssecEnabled: z.boolean(),
+  dnsStatus: z.object({
+    nameservers: z.array(z.string()),
+    isUsingNamefiNameservers: z.boolean(),
+    isParkingEnabled: z.boolean(),
+    forwardTo: z.string().nullable(),
+    hasWebRecords: z.boolean(),
+    hasMxRecords: z.boolean(),
+    hasEffectiveWebPresence: z.boolean(),
+  }),
+});
+
 const registeredSubdomainSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
   ownerAddress: z.string(),
@@ -278,6 +298,11 @@ export const usersContract = createContract(
       type: 'query',
       input: z.void(),
       output: z.array(currentUserDomainSchema),
+    },
+    getCurrentUserDomainsV2: {
+      type: 'query',
+      input: z.void(),
+      output: z.array(currentUserDomainV2Schema),
     },
     isDomainOwnedByCurrentUser: {
       type: 'query',
