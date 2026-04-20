@@ -20,6 +20,7 @@ type AnimatedCartButtonProps = Omit<ComponentProps<'button'>, 'children'> & {
   onAdd?: () => void;
   onRemove?: () => void;
   onGoToCart?: () => void;
+  mainDisabled?: boolean;
   showRemoveButton?: boolean;
   children?: never;
 };
@@ -69,6 +70,7 @@ export const AnimatedCartButton = forwardRef<
       onAdd,
       onRemove,
       onGoToCart,
+      mainDisabled = false,
       showRemoveButton = false,
       className,
       ...props
@@ -112,6 +114,7 @@ export const AnimatedCartButton = forwardRef<
     const shouldShowRemove = isInCart && showRemoveButton;
     const isDisabled =
       state === 'adding' || state === 'removing' || props.disabled;
+    const isMainDisabled = isDisabled || mainDisabled;
     const mainButtonAriaLabel =
       props['aria-label'] ?? (isInCart ? 'View cart' : config.text);
 
@@ -158,7 +161,7 @@ export const AnimatedCartButton = forwardRef<
             size={isMobile ? 'icon' : 'default'}
             aria-label={mainButtonAriaLabel}
             onClick={handleClick}
-            disabled={isDisabled}
+            disabled={isMainDisabled}
             onMouseEnter={
               state === 'in-cart' ? () => setIsHovered(true) : undefined
             }

@@ -361,6 +361,7 @@ export const Landing: LandingComponent = ({ origin }) => {
     error,
     hasData,
     domainInfos,
+    authoritativeDomainInfos,
     domains,
     canLoadMore,
     loadMore,
@@ -433,13 +434,17 @@ export const Landing: LandingComponent = ({ origin }) => {
   );
 
   const importableDomains = useMemo(() => {
-    if (searchMode !== SearchMode.IMPORT || !domains || !domainInfos) {
+    if (
+      searchMode !== SearchMode.IMPORT ||
+      !domains ||
+      !authoritativeDomainInfos
+    ) {
       return [];
     }
 
     return domains
       .map((domain) => {
-        const availabilityInfo = domainInfos.get(domain);
+        const availabilityInfo = authoritativeDomainInfos.get(domain);
         const eppCode = eppAuthorizationCodes[domain];
 
         if (!availabilityInfo || !eppCode?.trim()) return null;
@@ -452,7 +457,7 @@ export const Landing: LandingComponent = ({ origin }) => {
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
-  }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
+  }, [searchMode, domains, authoritativeDomainInfos, eppAuthorizationCodes]);
 
   const handleStorylineEnter = useCallback(() => {
     setHasSeenStorylineThisCycle(true);
@@ -533,6 +538,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                     error={error}
                     hasData={hasData}
                     domainInfos={domainInfos}
+                    authoritativeDomainInfos={authoritativeDomainInfos}
                     domains={domains}
                     query={query}
                     eppAuthorizationCodes={eppAuthorizationCodes}

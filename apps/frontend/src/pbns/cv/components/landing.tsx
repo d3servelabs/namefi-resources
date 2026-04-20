@@ -100,6 +100,7 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
     error,
     hasData,
     domainInfos,
+    authoritativeDomainInfos,
     domains,
     freeClaimEligibility,
   } = useSearch(`${config.name}.cv`); // Filter for .cv domains
@@ -148,13 +149,17 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
 
   // Calculate importable domains for FloatingCart
   const importableDomains = useMemo(() => {
-    if (searchMode !== SearchMode.IMPORT || !domains || !domainInfos) {
+    if (
+      searchMode !== SearchMode.IMPORT ||
+      !domains ||
+      !authoritativeDomainInfos
+    ) {
       return [];
     }
 
     return domains
       .map((domain) => {
-        const availabilityInfo = domainInfos.get(domain);
+        const availabilityInfo = authoritativeDomainInfos.get(domain);
         const eppCode = eppAuthorizationCodes[domain];
 
         if (!availabilityInfo || !eppCode || !eppCode.trim()) return null;
@@ -168,7 +173,7 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
         };
       })
       .filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
+  }, [searchMode, domains, authoritativeDomainInfos, eppAuthorizationCodes]);
 
   // Check if user is actively searching
   const isSearching = searchEnabled && query.trim().length > 0;
@@ -213,6 +218,7 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
                 error={error}
                 hasData={hasData}
                 domainInfos={domainInfos}
+                authoritativeDomainInfos={authoritativeDomainInfos}
                 domains={domains}
                 query={query}
                 eppAuthorizationCodes={eppAuthorizationCodes}

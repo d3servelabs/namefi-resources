@@ -114,7 +114,7 @@ export const useSearch = (parentDomain?: string) => {
     [searchMode, importQuery, suggestedDomains],
   );
 
-  const [_domainInfo, setDomainInfo] = useState<
+  const [authoritativeDomainInfo, setAuthoritativeDomainInfo] = useState<
     Map<NamefiNormalizedDomain, DomainAvailabilityInfo>
   >(new Map());
 
@@ -134,16 +134,16 @@ export const useSearch = (parentDomain?: string) => {
         domain.domain,
         domain,
       ]) as [NamefiNormalizedDomain, DomainAvailabilityInfo][]) ?? []),
-      ...(_domainInfo?.entries() ?? []),
+      ...authoritativeDomainInfo.entries(),
     ]);
-  }, [_domainInfo, preliminaryDomainAvailability]);
+  }, [authoritativeDomainInfo, preliminaryDomainAvailability]);
 
   const timingDetails = useRef<TimingDetails>({
     numberOfResponses: 0,
     timestamps: [],
   });
   useEffect(() => {
-    setDomainInfo((previous) => {
+    setAuthoritativeDomainInfo((previous) => {
       if (domains.length === 0) {
         return new Map();
       }
@@ -185,7 +185,7 @@ export const useSearch = (parentDomain?: string) => {
       { domains },
       {
         onData(info) {
-          setDomainInfo((m) => new Map(m).set(info.domain, info));
+          setAuthoritativeDomainInfo((m) => new Map(m).set(info.domain, info));
           punchTimestamp(timingDetails);
         },
         onStarted() {
@@ -201,7 +201,7 @@ export const useSearch = (parentDomain?: string) => {
     if (searchMode === SearchMode.REGISTER) {
       void refetchSuggestions();
     } else {
-      setDomainInfo(new Map());
+      setAuthoritativeDomainInfo(new Map());
       resetAvailStatus();
     }
   }, [query, refetchSuggestions, searchMode, resetAvailStatus]);
@@ -213,7 +213,7 @@ export const useSearch = (parentDomain?: string) => {
 
   const isAvailabilityStreaming =
     domains.length > 0 &&
-    domainInfo.size < domains.length &&
+    authoritativeDomainInfo.size < domains.length &&
     availStatus !== 'error' &&
     availStatus !== 'idle';
 
@@ -255,6 +255,7 @@ export const useSearch = (parentDomain?: string) => {
         : undefined,
     domains,
     domainInfos: domainInfo,
+    authoritativeDomainInfos: authoritativeDomainInfo,
     hasData,
     loadMore,
     canLoadMore,

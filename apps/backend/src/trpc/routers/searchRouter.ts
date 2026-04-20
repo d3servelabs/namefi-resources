@@ -183,35 +183,37 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
         );
       }
 
-      const firstDomainResult = await getDomainListInfoWithAbortSignal(
-        [domains[0] as NamefiNormalizedDomain],
-        signal,
-        ctx.user,
+      const remainingDomains = drop(1, domains);
+      const firstDomainResult = settleAvailabilityBatch(
+        getDomainListInfoWithAbortSignal(
+          [domains[0] as NamefiNormalizedDomain],
+          signal,
+          ctx.user,
+        ),
       );
 
-      const nonTraditionalDomainsResult = getDomainListInfoWithAbortSignal(
-        pickNonTraditionalDomains(drop(1, domains)),
-        signal,
-        ctx.user,
+      const nonTraditionalDomainsResult = settleAvailabilityBatch(
+        getDomainListInfoWithAbortSignal(
+          pickNonTraditionalDomains(remainingDomains),
+          signal,
+          ctx.user,
+        ),
       );
 
-      yield* firstDomainResult;
-
-      const chunks = [pickTraditionalDomains(drop(1, domains))];
+      const chunks = [pickTraditionalDomains(remainingDomains)];
 
       const promises = chunks.map((names) =>
-        getDomainListInfoWithAbortSignal(names, signal, ctx.user),
+        settleAvailabilityBatch(
+          getDomainListInfoWithAbortSignal(names, signal, ctx.user),
+        ),
       );
-      yield* await nonTraditionalDomainsResult;
+
+      yield* await getAvailabilityBatch(firstDomainResult);
+      yield* await getAvailabilityBatch(nonTraditionalDomainsResult);
 
       for (const promise of promises) {
         if (signal?.aborted) break;
-        try {
-          yield* await promise;
-        } catch (error) {
-          logger.error({ error }, 'Search subscription error');
-          throw error;
-        }
+        yield* await getAvailabilityBatch(promise);
       }
     }),
 
@@ -244,6 +246,43 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
       return eligibilityResults;
     }),
 });
+
+type AvailabilityBatchResult =
+  | {
+      status: 'fulfilled';
+      value: DomainAvailabilityInfo[];
+    }
+  | {
+      status: 'rejected';
+      error: unknown;
+    };
+
+const settleAvailabilityBatch = async (
+  promise: Promise<DomainAvailabilityInfo[]>,
+): Promise<AvailabilityBatchResult> => {
+  try {
+    return {
+      status: 'fulfilled',
+      value: await promise,
+    };
+  } catch (error) {
+    return {
+      status: 'rejected',
+      error,
+    };
+  }
+};
+
+const getAvailabilityBatch = async (
+  promise: Promise<AvailabilityBatchResult>,
+) => {
+  const result = await promise;
+  if (result.status === 'rejected') {
+    logger.error({ error: result.error }, 'Search subscription error');
+    throw result.error;
+  }
+  return result.value;
+};
 
 const getDomainListInfoWithAbortSignal = async (
   names: NamefiNormalizedDomain[],

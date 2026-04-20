@@ -73,6 +73,7 @@ export const Landing: LandingComponent = ({ origin }) => {
     error,
     hasData,
     domainInfos,
+    authoritativeDomainInfos,
     domains,
     freeClaimEligibility,
   } = useSearch(origin.thirdPartyHostname || undefined);
@@ -137,13 +138,17 @@ export const Landing: LandingComponent = ({ origin }) => {
 
   // Calculate importable domains for FloatingCart
   const importableDomains = useMemo(() => {
-    if (searchMode !== SearchMode.IMPORT || !domains || !domainInfos) {
+    if (
+      searchMode !== SearchMode.IMPORT ||
+      !domains ||
+      !authoritativeDomainInfos
+    ) {
       return [];
     }
 
     return domains
       .map((domain) => {
-        const availabilityInfo = domainInfos.get(domain);
+        const availabilityInfo = authoritativeDomainInfos.get(domain);
         const eppCode = eppAuthorizationCodes[domain];
 
         if (!availabilityInfo || !eppCode || !eppCode.trim()) return null;
@@ -157,7 +162,7 @@ export const Landing: LandingComponent = ({ origin }) => {
         };
       })
       .filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
+  }, [searchMode, domains, authoritativeDomainInfos, eppAuthorizationCodes]);
 
   const { consumePendingFreeMintsSearch, startFreeMintsSearchGuidance } =
     useFreeMintsGuidance();
@@ -219,6 +224,7 @@ export const Landing: LandingComponent = ({ origin }) => {
               error={error}
               hasData={hasData}
               domainInfos={domainInfos}
+              authoritativeDomainInfos={authoritativeDomainInfos}
               domains={domains}
               query={query}
               eppAuthorizationCodes={eppAuthorizationCodes}

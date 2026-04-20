@@ -140,6 +140,7 @@ type SearchResultsPanelProps = Pick<
   | 'error'
   | 'hasData'
   | 'domainInfos'
+  | 'authoritativeDomainInfos'
   | 'domains'
   | 'query'
   | 'freeClaimEligibility'
@@ -234,6 +235,7 @@ function SearchResultsPanel({
   error,
   hasData,
   domainInfos,
+  authoritativeDomainInfos,
   domains,
   query,
   eppAuthorizationCodes,
@@ -258,6 +260,7 @@ function SearchResultsPanel({
           error={error}
           hasData={hasData}
           domainInfos={domainInfos}
+          authoritativeDomainInfos={authoritativeDomainInfos}
           domains={domains}
           query={query}
           eppAuthorizationCodes={eppAuthorizationCodes}
@@ -446,6 +449,7 @@ export const TokenComVariantBLanding: LandingComponent = ({ origin }) => {
     error,
     hasData,
     domainInfos,
+    authoritativeDomainInfos,
     domains,
     freeClaimEligibility,
   } = useSearch(origin.thirdPartyHostname || undefined);
@@ -497,7 +501,7 @@ export const TokenComVariantBLanding: LandingComponent = ({ origin }) => {
 
     return domains
       .map((domain) => {
-        const availabilityInfo = domainInfos.get(domain);
+        const availabilityInfo = authoritativeDomainInfos.get(domain);
         const eppCode = eppAuthorizationCodes[domain];
 
         if (!availabilityInfo || !eppCode?.trim()) {
@@ -517,7 +521,7 @@ export const TokenComVariantBLanding: LandingComponent = ({ origin }) => {
       .filter(
         (domain): domain is NonNullable<typeof domain> => domain !== null,
       );
-  }, [domainInfos, domains, eppAuthorizationCodes, searchMode]);
+  }, [authoritativeDomainInfos, domains, eppAuthorizationCodes, searchMode]);
 
   const { consumePendingFreeMintsSearch, startFreeMintsSearchGuidance } =
     useFreeMintsGuidance();
@@ -561,6 +565,7 @@ export const TokenComVariantBLanding: LandingComponent = ({ origin }) => {
             error={error}
             hasData={hasData}
             domainInfos={domainInfos}
+            authoritativeDomainInfos={authoritativeDomainInfos}
             domains={domains}
             query={query}
             eppAuthorizationCodes={eppAuthorizationCodes}

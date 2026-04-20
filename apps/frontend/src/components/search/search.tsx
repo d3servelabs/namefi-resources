@@ -585,6 +585,10 @@ export const SearchResults: FC<{
   hasData: boolean;
   domains: NamefiNormalizedDomain[];
   domainInfos: Map<NamefiNormalizedDomain, DomainAvailabilityInfo>;
+  authoritativeDomainInfos?: Map<
+    NamefiNormalizedDomain,
+    DomainAvailabilityInfo
+  >;
   query: string;
   eppAuthorizationCodes: Record<string, string | undefined>;
   onEppCodeChange: (domain: NamefiNormalizedDomain, eppCode: string) => void;
@@ -608,6 +612,7 @@ export const SearchResults: FC<{
   error,
   hasData,
   domainInfos,
+  authoritativeDomainInfos,
   domains,
   query,
   eppAuthorizationCodes,
@@ -692,6 +697,9 @@ export const SearchResults: FC<{
       <div className="flex flex-col gap-4">
         {domains.map((domain) => {
           const availabilityInfo = domainInfos.get(domain);
+          const isAvailabilityAuthoritative = authoritativeDomainInfos
+            ? authoritativeDomainInfos.has(domain)
+            : availabilityInfo !== undefined;
           const claimEligibility = freeClaimEligibility?.find(
             (e) => e.domain === domain,
           );
@@ -701,6 +709,7 @@ export const SearchResults: FC<{
               key={domain}
               domain={domain}
               availabilityInfo={availabilityInfo}
+              isAvailabilityAuthoritative={isAvailabilityAuthoritative}
               mlsOffer={mlsOffer}
               eppAuthorizationCode={eppAuthorizationCodes[domain]}
               onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}

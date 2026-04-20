@@ -210,6 +210,7 @@ const DomainTitle: FC<{
 export const DomainCard: FC<{
   domain?: NamefiNormalizedDomain;
   availabilityInfo?: DomainAvailabilityInfo;
+  isAvailabilityAuthoritative?: boolean;
   mlsOffer?: MlsSaleListing;
   eppAuthorizationCode?: string;
   onEppCodeChange?: (eppCode: string) => void;
@@ -227,6 +228,7 @@ export const DomainCard: FC<{
 }> = ({
   domain,
   availabilityInfo,
+  isAvailabilityAuthoritative = true,
   mlsOffer,
   eppAuthorizationCode,
   onEppCodeChange,
@@ -331,6 +333,9 @@ export const DomainCard: FC<{
     '';
   const isImportAction =
     showImportUi && isImportable && !availabilityInfo?.availability;
+  const shouldBlockAvailabilityActions = Boolean(
+    availabilityInfo && !isAvailabilityAuthoritative,
+  );
   const cartButtonState = removingBusy
     ? 'removing'
     : addingBusy
@@ -352,6 +357,7 @@ export const DomainCard: FC<{
 
   const handleAdd = useCallback(async () => {
     if (!availabilityInfo) return;
+    if (!isAvailabilityAuthoritative) return;
     if (isImportAction && !activeEppAuthorizationCode) {
       eppInputRef.current?.focus();
       return;
@@ -368,7 +374,13 @@ export const DomainCard: FC<{
         ? { eppAuthorizationCode: activeEppAuthorizationCode }
         : {}),
     });
-  }, [activeEppAuthorizationCode, availabilityInfo, cart, isImportAction]);
+  }, [
+    activeEppAuthorizationCode,
+    availabilityInfo,
+    cart,
+    isAvailabilityAuthoritative,
+    isImportAction,
+  ]);
 
   const handleRemove = useCallback(async () => {
     if (domain) {
@@ -376,11 +388,18 @@ export const DomainCard: FC<{
     }
   }, [cart, domain]);
 
+  const goToCart = useCallback(() => {
+    if (shouldBlockAvailabilityActions) return;
+    logBeginCheckout();
+    router.push('/cart');
+  }, [logBeginCheckout, router, shouldBlockAvailabilityActions]);
+
   const goToClaimPage = useCallback(() => {
     if (!domain) return;
+    if (!isAvailabilityAuthoritative) return;
     logBeginCheckout();
     router.push(`/claim/${domain}`);
-  }, [domain, logBeginCheckout, router]);
+  }, [domain, isAvailabilityAuthoritative, logBeginCheckout, router]);
 
   const hasAvailabilityInfo = availabilityInfo !== undefined;
   const shouldShowPricingSkeleton = !hasAvailabilityInfo;
@@ -544,10 +563,8 @@ export const DomainCard: FC<{
                     className={compactCartButtonClassName}
                     onAdd={handleAdd}
                     onRemove={handleRemove}
-                    onGoToCart={() => {
-                      logBeginCheckout();
-                      router.push('/cart');
-                    }}
+                    onGoToCart={goToCart}
+                    mainDisabled={shouldBlockAvailabilityActions}
                     showRemoveButton={inCart}
                     disabled={addingBusy || removingBusy}
                   />
@@ -569,10 +586,8 @@ export const DomainCard: FC<{
                     )}
                     onAdd={handleAdd}
                     onRemove={handleRemove}
-                    onGoToCart={() => {
-                      logBeginCheckout();
-                      router.push('/cart');
-                    }}
+                    onGoToCart={goToCart}
+                    mainDisabled={shouldBlockAvailabilityActions}
                     showRemoveButton={inCart}
                     disabled={
                       addingBusy || removingBusy || isImportButtonDisabled
@@ -603,7 +618,9 @@ export const DomainCard: FC<{
                 freeClaimEligibility?.eligible ? (
                 <NamefiButton
                   onClick={goToClaimPage}
-                  className="h-8 max-w-full px-3 text-[11px] bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:text-xs"
+                  disabled={shouldBlockAvailabilityActions}
+                  aria-busy={shouldBlockAvailabilityActions}
+                  className="h-8 max-w-full px-3 text-[11px] bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:text-xs disabled:opacity-100"
                 >
                   <Gift className="h-4 w-4" />
                   Free Claim
@@ -615,17 +632,19 @@ export const DomainCard: FC<{
                     className={compactCartButtonClassName}
                     onAdd={handleAdd}
                     onRemove={handleRemove}
-                    onGoToCart={() => {
-                      logBeginCheckout();
-                      router.push('/cart');
-                    }}
+                    onGoToCart={goToCart}
+                    mainDisabled={shouldBlockAvailabilityActions}
                     showRemoveButton={inCart}
                     disabled={addingBusy || removingBusy}
                   />
                   <InstantBuyButton
                     domainAvailabilityInfo={availabilityInfo}
-                    disabled={addingBusy || removingBusy}
-                    className="h-8 px-2.5 text-[11px] sm:h-9 sm:px-3 sm:text-xs"
+                    disabled={
+                      addingBusy ||
+                      removingBusy ||
+                      shouldBlockAvailabilityActions
+                    }
+                    className="h-8 px-2.5 text-[11px] sm:h-9 sm:px-3 sm:text-xs disabled:opacity-100"
                   />
                 </div>
               ) : null}

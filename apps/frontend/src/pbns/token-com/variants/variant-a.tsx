@@ -122,6 +122,7 @@ type VariantAContentProps = {
   | 'error'
   | 'hasData'
   | 'domainInfos'
+  | 'authoritativeDomainInfos'
   | 'domains'
   | 'freeClaimEligibility'
 >;
@@ -531,6 +532,7 @@ function SearchResultsPanel({
   error,
   hasData,
   domainInfos,
+  authoritativeDomainInfos,
   domains,
   query,
   eppAuthorizationCodes,
@@ -543,6 +545,7 @@ function SearchResultsPanel({
   | 'error'
   | 'hasData'
   | 'domainInfos'
+  | 'authoritativeDomainInfos'
   | 'domains'
   | 'query'
   | 'eppAuthorizationCodes'
@@ -564,6 +567,7 @@ function SearchResultsPanel({
           error={error}
           hasData={hasData}
           domainInfos={domainInfos}
+          authoritativeDomainInfos={authoritativeDomainInfos}
           domains={domains}
           query={query}
           eppAuthorizationCodes={eppAuthorizationCodes}
@@ -588,6 +592,7 @@ function VariantAContent({
   error,
   hasData,
   domainInfos,
+  authoritativeDomainInfos,
   domains,
   eppAuthorizationCodes,
   onEppCodeChange,
@@ -618,6 +623,7 @@ function VariantAContent({
           error={error}
           hasData={hasData}
           domainInfos={domainInfos}
+          authoritativeDomainInfos={authoritativeDomainInfos}
           domains={domains}
           query={query}
           eppAuthorizationCodes={eppAuthorizationCodes}
@@ -643,6 +649,7 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
     error,
     hasData,
     domainInfos,
+    authoritativeDomainInfos,
     domains,
     freeClaimEligibility,
   } = useSearch(origin.thirdPartyHostname || undefined);
@@ -694,7 +701,7 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
 
     return domains
       .map((domain) => {
-        const availabilityInfo = domainInfos.get(domain);
+        const availabilityInfo = authoritativeDomainInfos.get(domain);
         const eppCode = eppAuthorizationCodes[domain];
 
         if (!availabilityInfo || !eppCode?.trim()) {
@@ -714,7 +721,7 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
       .filter(
         (domain): domain is NonNullable<typeof domain> => domain !== null,
       );
-  }, [domainInfos, domains, eppAuthorizationCodes, searchMode]);
+  }, [authoritativeDomainInfos, domains, eppAuthorizationCodes, searchMode]);
 
   const { consumePendingFreeMintsSearch, startFreeMintsSearchGuidance } =
     useFreeMintsGuidance();
@@ -752,6 +759,7 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
         error={error}
         hasData={hasData}
         domainInfos={domainInfos}
+        authoritativeDomainInfos={authoritativeDomainInfos}
         domains={domains}
         freeClaimEligibility={freeClaimEligibility}
         shouldShowResults={shouldShowResults}
