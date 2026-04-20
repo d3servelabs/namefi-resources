@@ -51,8 +51,7 @@ import {
   encryptX402PaymentPayloadSignature,
   recoverX402SignerWallet,
   resolveX402PaymentPayloadEncryptionPrivateKey,
-  facilitatorClient,
-  x402ResourceServer,
+  getX402ResourceServer,
 } from '#lib/x402/helpers';
 import type { SettleResponse } from '@x402/core/types';
 const logger = createLogger({ context: 'X402_ROUTER' });
@@ -196,13 +195,14 @@ async function handlePaymentRequired(
     ...resourceInfo,
   };
 
+  const resourceServer = await getX402ResourceServer();
   const paymentRequirements =
-    await x402ResourceServer.buildPaymentRequirementsFromOptions(
+    await resourceServer.buildPaymentRequirementsFromOptions(
       [paymentOption],
       c,
     );
   const paymentRequiredResponse =
-    await x402ResourceServer.createPaymentRequiredResponse(
+    await resourceServer.createPaymentRequiredResponse(
       paymentRequirements,
       resourceInfo,
       'Payment Required',
@@ -235,7 +235,7 @@ async function handlePaymentRequired(
       {
         [`/x402/domain/${normalizedDomainName}`]: routeConfig,
       },
-      x402ResourceServer,
+      resourceServer,
       {
         appLogo: 'https://namefi.io/logotype.svg',
         appName: 'Namefi',
@@ -301,10 +301,11 @@ async function handlePaidRequest(
   // Parse payment payload
   let paymentPayload: PaymentPayload;
   let paymentRequirement: PaymentRequirements;
+  const resourceServer = await getX402ResourceServer();
   try {
     paymentPayload = decodePaymentSignatureHeader(paymentSignature);
     const paymentRequirements =
-      await x402ResourceServer.buildPaymentRequirementsFromOptions(
+      await resourceServer.buildPaymentRequirementsFromOptions(
         [buildX402ExactPaymentOption(priceInUsdc)],
         c,
       );
@@ -316,7 +317,7 @@ async function handlePaidRequest(
       },
       'Built x402 payment requirement for verification',
     );
-    const verifyRes = await x402ResourceServer.verifyPayment(
+    const verifyRes = await resourceServer.verifyPayment(
       paymentPayload,
       paymentRequirement,
     );
@@ -447,7 +448,7 @@ async function handlePaidRequest(
 
   let settledPayment: SettleResponse;
   try {
-    settledPayment = await x402ResourceServer.settlePayment(
+    settledPayment = await resourceServer.settlePayment(
       paymentPayload,
       paymentRequirement,
     );
@@ -581,7 +582,8 @@ async function safeVerifyPayment(
   paymentRequirements: PaymentRequirements,
 ): Promise<void> {
   try {
-    const verifyRes = await x402ResourceServer.verifyPayment(
+    const resourceServer = await getX402ResourceServer();
+    const verifyRes = await resourceServer.verifyPayment(
       paymentPayload,
       paymentRequirements,
     );
@@ -596,7 +598,8 @@ async function safeSettlePayment(
   paymentRequirements: PaymentRequirements,
 ): Promise<void> {
   try {
-    const settleRes = await x402ResourceServer.settlePayment(
+    const resourceServer = await getX402ResourceServer();
+    const settleRes = await resourceServer.settlePayment(
       paymentPayload,
       paymentRequirements,
     );

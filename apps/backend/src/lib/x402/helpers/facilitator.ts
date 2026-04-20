@@ -35,25 +35,44 @@ function getFacilitatorConfig(): FacilitatorConfig {
   };
 }
 
-export const facilitatorClient = new HTTPFacilitatorClient(
-  getFacilitatorConfig(),
-);
+let _facilitatorClient: HTTPFacilitatorClient | undefined;
 
-export const x402ResourceServer = new X402ResourceServer(
-  facilitatorClient,
-).register(config.X402_NETWORK, new ExactEvmScheme());
-
-try {
-  await x402ResourceServer.initialize();
-} catch (error) {
-  logger.error(error, 'Error initializing X402');
+export function getX402FacilitatorClient(): HTTPFacilitatorClient {
+  if (!_facilitatorClient) {
+    _facilitatorClient = new HTTPFacilitatorClient(getFacilitatorConfig());
+  }
+  return _facilitatorClient;
 }
 
-logger.info(
-  x402ResourceServer.hasRegisteredScheme('eip155:84532', 'exact'),
-  'hasRegisteredScheme',
-);
-logger.info(
-  x402ResourceServer.getSupportedKind(2, 'eip155:84532', 'exact'),
-  'getSupportedKind',
-);
+let _resourceServerPromise: Promise<X402ResourceServer> | undefined;
+
+export function getX402ResourceServer(): Promise<X402ResourceServer> {
+  if (_resourceServerPromise) return _resourceServerPromise;
+
+  const promise = (async () => {
+    const server = new X402ResourceServer(getX402FacilitatorClient()).register(
+      config.X402_NETWORK,
+      new ExactEvmScheme(),
+    );
+    await server.initialize();
+    logger.debug(
+      {
+        hasRegisteredScheme: server.hasRegisteredScheme(
+          'eip155:84532',
+          'exact',
+        ),
+        supportedKind: server.getSupportedKind(2, 'eip155:84532', 'exact'),
+      },
+      'X402 resource server initialized',
+    );
+    return server;
+  })();
+
+  promise.catch((error) => {
+    logger.error({ error }, 'Error initializing X402');
+    _resourceServerPromise = undefined;
+  });
+
+  _resourceServerPromise = promise;
+  return promise;
+}

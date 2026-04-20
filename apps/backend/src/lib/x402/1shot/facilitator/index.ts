@@ -161,5 +161,3 @@ export function create1ShotAPIFacilitatorClient(
 ): FacilitatorClient {
   return new OneShotAPIFacilitatorClient(config);
 }
-
-export const facilitator = createFacilitatorConfig();

@@ -25,12 +25,7 @@ import type {
   NamefiNormalizedDomain,
   ChecksumWalletAddress,
 } from '@namefi-astra/utils';
-import {
-  x402ResourceServer as X402ResourceServer,
-  type PaymentPayload,
-} from '@x402/hono';
-import { ExactEvmScheme } from '@x402/evm/exact/server';
-import { HTTPFacilitatorClient } from '@x402/core/server';
+import type { PaymentPayload } from '@x402/hono';
 import {
   buildX402ExactPaymentOption,
   centsToUsdc,
@@ -39,8 +34,7 @@ import {
   hasEncryptedX402PaymentPayloadSignature,
   parseChainIdFromNetwork,
   resolveX402PaymentPayloadEncryptionPrivateKey,
-  facilitatorClient,
-  x402ResourceServer,
+  getX402ResourceServer,
 } from '#lib/x402/helpers';
 
 const logger = createLogger({ context: 'X402_ACTIVITIES' });
@@ -117,8 +111,9 @@ export async function verifyX402Payment(
       input.paymentPayload,
     );
 
+    const resourceServer = await getX402ResourceServer();
     const paymentRequirements =
-      await x402ResourceServer.buildPaymentRequirementsFromOptions(
+      await resourceServer.buildPaymentRequirementsFromOptions(
         [
           buildX402ExactPaymentOption(
             centsToUsdc(input.expectedAmountInUsdCents),
@@ -127,7 +122,7 @@ export async function verifyX402Payment(
         {},
       );
     logger.info({ paymentRequirements }, 'Payment requirements built');
-    const verifyRes = await x402ResourceServer.verifyPayment(
+    const verifyRes = await resourceServer.verifyPayment(
       paymentPayload,
       paymentRequirements[0],
     );
@@ -194,8 +189,9 @@ export async function settleX402Payment(
     const paymentPayload = resolvePaymentPayloadForFacilitator(
       input.paymentPayload,
     );
+    const resourceServer = await getX402ResourceServer();
     const paymentRequirements =
-      await x402ResourceServer.buildPaymentRequirementsFromOptions(
+      await resourceServer.buildPaymentRequirementsFromOptions(
         [
           buildX402ExactPaymentOption(
             centsToUsdc(input.chargeAmountInUsdCents),
@@ -204,7 +200,7 @@ export async function settleX402Payment(
         {},
       );
 
-    const verifyRes = await x402ResourceServer.verifyPayment(
+    const verifyRes = await resourceServer.verifyPayment(
       paymentPayload,
       paymentRequirements[0],
     );
@@ -216,7 +212,7 @@ export async function settleX402Payment(
       };
     }
 
-    const result = await x402ResourceServer.settlePayment(
+    const result = await resourceServer.settlePayment(
       paymentPayload,
       paymentRequirements[0],
     );

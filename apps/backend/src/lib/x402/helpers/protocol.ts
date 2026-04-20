@@ -3,19 +3,23 @@ import {
   encodePaymentRequiredHeader,
 } from '@x402/core/http';
 import type { SettleResponse } from '@x402/core/types';
-import type { PaymentPayload, PaymentRequirements } from '@x402/hono';
+import type {
+  PaymentPayload,
+  PaymentRequirements,
+  x402ResourceServer as X402ResourceServerClass,
+} from '@x402/hono';
 import { recoverTypedDataAddress, getAddress } from 'viem';
 import {
   buildX402ExactPaymentOption,
   centsToUsdc,
   getX402ConfiguredUsdcEIP712Domain,
 } from './payment-option';
-import { x402ResourceServer } from './facilitator';
+import { getX402ResourceServer } from './facilitator';
 
 export type X402PaymentSignaturePayload = PaymentPayload;
 export type X402PaymentResponse = SettleResponse;
 export type X402PaymentRequiredResponse = Awaited<
-  ReturnType<typeof x402ResourceServer.createPaymentRequiredResponse>
+  ReturnType<X402ResourceServerClass['createPaymentRequiredResponse']>
 >;
 
 export class X402PaymentRequiredError extends Error {
@@ -86,8 +90,9 @@ export async function buildX402PaymentRequirements({
 }> {
   const priceInUsdc = centsToUsdc(amountInUsdCents);
   const paymentOption = buildX402ExactPaymentOption(priceInUsdc);
+  const resourceServer = await getX402ResourceServer();
   const paymentRequirements =
-    await x402ResourceServer.buildPaymentRequirementsFromOptions(
+    await resourceServer.buildPaymentRequirementsFromOptions(
       [paymentOption],
       context,
     );
@@ -119,7 +124,8 @@ export async function buildX402PaymentRequiredResponse({
   };
   reason?: string;
 }): Promise<X402PaymentRequiredResponse> {
-  return x402ResourceServer.createPaymentRequiredResponse(
+  const resourceServer = await getX402ResourceServer();
+  return resourceServer.createPaymentRequiredResponse(
     paymentRequirements,
     resourceInfo,
     reason,
@@ -139,7 +145,8 @@ export async function verifyX402PaymentSignature({
   paymentPayload: X402PaymentSignaturePayload;
   paymentRequirement: PaymentRequirements;
 }) {
-  return x402ResourceServer.verifyPayment(paymentPayload, paymentRequirement);
+  const resourceServer = await getX402ResourceServer();
+  return resourceServer.verifyPayment(paymentPayload, paymentRequirement);
 }
 
 export async function settleX402Payment({
@@ -149,7 +156,8 @@ export async function settleX402Payment({
   paymentPayload: X402PaymentSignaturePayload;
   paymentRequirement: PaymentRequirements;
 }): Promise<X402PaymentResponse> {
-  return x402ResourceServer.settlePayment(paymentPayload, paymentRequirement);
+  const resourceServer = await getX402ResourceServer();
+  return resourceServer.settlePayment(paymentPayload, paymentRequirement);
 }
 
 export function encodeX402PaymentResponse(

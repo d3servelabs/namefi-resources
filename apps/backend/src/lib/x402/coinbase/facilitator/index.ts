@@ -127,5 +127,3 @@ export function createFacilitatorConfig(
     createAuthHeaders: createCdpAuthHeaders(apiKeyId, apiKeySecret),
   };
 }
-
-export const facilitator = createFacilitatorConfig();

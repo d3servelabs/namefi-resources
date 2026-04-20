@@ -19,7 +19,7 @@ export {
 } from './payment-payload-encryption';
 export { parseChainIdFromNetwork } from './network';
 export { resolveX402PaymentPayloadEncryptionPrivateKey } from './secrets';
-export { facilitatorClient, x402ResourceServer } from './facilitator';
+export { getX402FacilitatorClient, getX402ResourceServer } from './facilitator';
 export {
   buildX402PaymentRequiredResponse,
   buildX402PaymentRequirements,
