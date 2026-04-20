@@ -1,4 +1,4 @@
-import { log } from '@temporalio/workflow';
+import { log, sleep } from '@temporalio/workflow';
 import { typedProxyActivities } from '../shared/workflow-helpers';
 import { TEMPORAL_ENUMS } from '../shared';
 
@@ -71,6 +71,9 @@ export async function refreshNftMarketplacesWorkflow({
         `❌ Failed marketplace update ${i + 1}/${dirtyDomains.length}: ${result.error}`,
       );
     }
+    // There's no official rate-limit from opensea, they just say it's ratelimited
+    // to get around it we will add 2 second-delay between each request to see if it reduces 429 responses
+    await sleep(2000, { summary: `rate-limit-${i + 1}` });
   }
 
   const finalResult: MarketplaceUpdateResult = {
