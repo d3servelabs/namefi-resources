@@ -336,9 +336,9 @@ export const t = initTRPC
       };
     },
     sse: {
-      maxDurationMs: 120_000, // 2 minutes
-      ping: { enabled: true, intervalMs: 30_000 },
-      client: { reconnectAfterInactivityMs: 30_000 },
+      maxDurationMs: 5 * 60_000, // 5 minutes
+      ping: { enabled: true, intervalMs: 3_000 },
+      client: { reconnectAfterInactivityMs: 15_000 },
     },
   });
 

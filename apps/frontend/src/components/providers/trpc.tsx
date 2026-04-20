@@ -170,6 +170,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
                   // Get fresh access token for each connection attempt
                   const headers = await getHeaders();
                   return {
+                    withCredentials: true,
                     headers,
                   };
                 },
