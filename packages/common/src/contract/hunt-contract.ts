@@ -183,13 +183,13 @@ const checkDomainOwnershipResultSchema = z.object({
 
 const domainDetailResultSchema = z.object({
   upvoteCount: z.number(),
-  firstSubmitDate: z.date(),
-  lastUpvoteDate: z.date(),
+  firstSubmitDate: z.coerce.date().nullable(),
+  lastUpvoteDate: z.coerce.date().nullable(),
   domainName: namefiNormalizedDomainSchema,
   userHasUpvoted: z.boolean(),
-  userUpvotedAt: z.date().nullable(),
+  userUpvotedAt: z.coerce.date().nullable(),
   userIsOwner: z.boolean(),
-  userSubmittedAt: z.date().nullable(),
+  userSubmittedAt: z.coerce.date().nullable(),
   tags: z.array(tagSchema),
 });
 
