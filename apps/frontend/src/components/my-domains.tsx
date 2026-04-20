@@ -1987,8 +1987,17 @@ const MyDomainsContent = () => {
   const [useDomainsV2] = useAdminFeatureFlag(MY_DOMAINS_FEATURE_FLAGS[0]);
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
-  const v1QueryOptions = trpc.users.getCurrentUserDomains.queryOptions();
-  const v2QueryOptions = trpc.users.getCurrentUserDomainsV2.queryOptions();
+  const v1QueryOptions = trpc.users.getCurrentUserDomains.queryOptions(void 0, {
+    placeholderData: (prev) => prev,
+    trpc: { context: { skipBatch: true } },
+  });
+  const v2QueryOptions = trpc.users.getCurrentUserDomainsV2.queryOptions(
+    void 0,
+    {
+      placeholderData: (prev) => prev,
+      trpc: { context: { skipBatch: true } },
+    },
+  );
   const domainsQueryOptions = (
     useDomainsV2 ? v2QueryOptions : v1QueryOptions
   ) as typeof v1QueryOptions;

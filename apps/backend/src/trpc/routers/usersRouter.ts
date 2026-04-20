@@ -65,6 +65,7 @@ import { getDomainsExpirationDatesFromIndex } from '../../temporal/activities/do
 import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 import { requestNfscFaucet } from '#lib/faucet/nfsc-faucet';
 import { temporalClient } from '#temporal/client';
+import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -746,6 +747,10 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         inArray(
           namefiNftView.ownerAddress,
           privyUserLinkedEthereumChecksumWalletAddresses,
+        ),
+        inArray(
+          namefiNftView.chainId,
+          getAllowedChainsForNft(poweredByNamefiDomain ?? undefined),
         ),
       ];
 
