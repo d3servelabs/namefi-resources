@@ -842,7 +842,12 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           ),
         )
         .leftJoinLateral(dnsFlagsLateral, sql`true`)
-        .where(and(...whereConditions));
+        .where(and(...whereConditions))
+        .$withCache({
+          config: { ex: 15 },
+          autoInvalidate: true,
+          tag: `getCurrentUserDomainsV2(userId:${user.id},poweredByNamefiDomain:${poweredByNamefiDomain ?? 'undefined'})`,
+        });
 
       return rows.map((row) => ({
         normalizedDomainName: row.normalizedDomainName,
