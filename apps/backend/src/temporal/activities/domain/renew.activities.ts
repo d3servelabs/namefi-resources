@@ -682,6 +682,8 @@ export async function sendEmailNotificationForRenewResult({
   expirationDatesByDomainLdh,
   availableBalanceInNfsc,
   availableOffChainPaymentMethods,
+  domainLdhSkippedDueToInsufficientFunds,
+  shortfallInUsdCents,
 }: {
   userId: string;
   domainLdhRenewFailed: string[];
@@ -702,6 +704,10 @@ export async function sendEmailNotificationForRenewResult({
   expirationDatesByDomainLdh: Record<string, Date>;
   availableBalanceInNfsc: number;
   availableOffChainPaymentMethods: string[];
+  /** Domains deferred this cycle because NFSC balance didn't cover them. */
+  domainLdhSkippedDueToInsufficientFunds: string[];
+  /** USD cents the user was short of the full original renewal bill. */
+  shortfallInUsdCents?: number;
 }) {
   const originalOrderDetails = {
     recipientName: userEmail,
@@ -714,6 +720,8 @@ export async function sendEmailNotificationForRenewResult({
     availableOffChainPaymentMethods,
     domainLdhRenewFailed,
     domainLdhRenewSucceeded,
+    domainLdhSkippedDueToInsufficientFunds,
+    shortfallInUsdCents,
     payments: paymentMethods,
     refundAmountInUsd,
     refundStatus,
@@ -733,6 +741,9 @@ export async function sendEmailNotificationForRenewResult({
     return;
   }
 
+  // Skipped-domains list is preserved here even when failures are hidden
+  // — a skipped renewal is an expected outcome the user should see, not
+  // an internal error.
   const adjustedOrderDetails = noFailedRenewals
     ? originalOrderDetails
     : {

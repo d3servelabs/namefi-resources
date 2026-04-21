@@ -268,6 +268,60 @@ async function _prepareDomainsForRenew(
   };
 }
 
+type DomainWithChargeAmount = UserDomainsUpForRenewal[number] & {
+  chargeAmount: number;
+};
+
+/*
+ * ------------------------------------------------------------
+ * Select Affordable Subset of Domains
+ * ------------------------------------------------------------
+ *
+ * Greedy ascending-by-cost: sort domains by chargeAmount ascending, then
+ * fill while the running total stays within the USD budget. Operates in
+ * integer cents to avoid float drift. Stable tiebreak on
+ * normalizedDomainName keeps Temporal replay deterministic.
+ *
+ * Optimal for maximizing the number of domains renewed under a fixed
+ * budget (exchange argument). Used when prepareMultiPaymentsWorkflow
+ * returns INSUFFICIENT_FUNDS — lets an NFSC-only user still renew the
+ * subset their balance can cover.
+ */
+function _selectAffordableDomainsByNfscCents(
+  domains: DomainWithChargeAmount[],
+  availableBalanceInUsd: number,
+): {
+  fits: DomainWithChargeAmount[];
+  skipped: DomainWithChargeAmount[];
+  totalFitsInUsdCents: number;
+} {
+  // Floor the budget so we never over-select from cent-rounding.
+  const budgetCents = Math.floor(availableBalanceInUsd * 100);
+
+  const sorted = [...domains].sort((a, b) => {
+    const aCents = Math.round(a.chargeAmount * 100);
+    const bCents = Math.round(b.chargeAmount * 100);
+    if (aCents !== bCents) return aCents - bCents;
+    return a.normalizedDomainName.localeCompare(b.normalizedDomainName);
+  });
+
+  const fits: DomainWithChargeAmount[] = [];
+  const skipped: DomainWithChargeAmount[] = [];
+  let runningCents = 0;
+
+  for (const domain of sorted) {
+    const amountCents = Math.round(domain.chargeAmount * 100);
+    if (runningCents + amountCents <= budgetCents) {
+      fits.push(domain);
+      runningCents += amountCents;
+    } else {
+      skipped.push(domain);
+    }
+  }
+
+  return { fits, skipped, totalFitsInUsdCents: runningCents };
+}
+
 /*
  * ------------------------------------------------------------
  * Prepare Payments for Renew
@@ -358,7 +412,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 
   const {
     domainsThatShouldBeRenewed,
-    domainsThatCouldBeRenewed,
+    domainsThatCouldBeRenewed: initialDomainsThatCouldBeRenewed,
     domainsMissingPriceData,
     domainsThatHavePriceData,
     chargeAmountByDomainLdh,
@@ -367,15 +421,16 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     userDomainsUpForRenewal,
     allowExpired,
   );
+  // May be narrowed by the partial-renewal branch below when the initial
+  // payment preparation returns INSUFFICIENT_FUNDS.
+  let domainsThatCouldBeRenewed = initialDomainsThatCouldBeRenewed;
 
   workflow.log.info(
     `For user ${userId}, ${userEmail} here are domains up for renew: ${JSON.stringify(domainsThatCouldBeRenewed, null, 2)}`,
   );
-  const totalAmountInUsd = sum(
-    pluck('chargeAmount', domainsThatCouldBeRenewed),
-  );
+  let totalAmountInUsd = sum(pluck('chargeAmount', domainsThatCouldBeRenewed));
 
-  const {
+  let {
     expectedPayments,
     paymentPrepareResult,
     stripeLast4ByMethodId,
@@ -387,6 +442,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     totalAmountInUsd,
   );
 
+  // Track domains skipped due to insufficient balance so they surface in
+  // the result email and the internal daily report.
+  let domainsSkippedDueToInsufficientFunds: DomainWithChargeAmount[] = [];
+  let shortfallInUsdCents: number | undefined;
+
   if (dryRun) {
     return {
       userId,
@@ -394,6 +454,8 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       domainsThatShouldBeRenewed,
       domainsThatCouldBeRenewed,
       domainsMissingPriceData,
+      domainsSkippedDueToInsufficientFunds,
+      shortfallInUsdCents,
       chargeAmountByDomainLdh,
       totalAmountInUsd,
       paymentStatus: 'SKIPPED',
@@ -428,6 +490,55 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     );
   }
 
+  // Partial-renewal fallback: if payment prep was short of budget, try
+  // the affordable subset (greedy by ascending cost) rather than failing
+  // the whole user. Triggers only for NFSC-only users — with a Stripe
+  // card, prepareMultiPaymentsWorkflow covers any remainder and never
+  // returns INSUFFICIENT_FUNDS.
+  if (
+    paymentPrepareResult.preparationSummary.status === 'INSUFFICIENT_FUNDS' &&
+    domainsThatCouldBeRenewed.length > 0
+  ) {
+    shortfallInUsdCents =
+      paymentPrepareResult.preparationSummary.shortByInUsdCents;
+    const selection = _selectAffordableDomainsByNfscCents(
+      domainsThatCouldBeRenewed,
+      availableBalanceInNfsc,
+    );
+
+    if (selection.fits.length > 0) {
+      workflow.log.info(
+        `Partial renewal for user ${userId}: fits=${selection.fits.length}, skipped=${selection.skipped.length}, shortBy=$${((shortfallInUsdCents ?? 0) / 100).toFixed(2)}`,
+      );
+      domainsThatCouldBeRenewed = selection.fits;
+      domainsSkippedDueToInsufficientFunds = selection.skipped;
+      totalAmountInUsd = selection.totalFitsInUsdCents / 100;
+
+      // Re-prepare payments for the reduced set — expected to return SUCCESS.
+      ({
+        expectedPayments,
+        paymentPrepareResult,
+        stripeLast4ByMethodId,
+        availableBalanceInNfsc,
+        availableOffChainPaymentMethodsPublicIdentifiers,
+      } = await _preparePaymentsForRenew(
+        userId,
+        domainsThatCouldBeRenewed,
+        totalAmountInUsd,
+      ));
+    } else {
+      // Nothing fits (balance < smallest domain). Fall through to the
+      // existing FAILED path. We deliberately leave
+      // `domainsSkippedDueToInsufficientFunds` empty here to avoid
+      // double-counting: the FAILED path (below) already reports each
+      // domain, and the internal daily report will use
+      // `shortfallInUsdCents` to label the reason as insufficient balance.
+      workflow.log.info(
+        `No domains fit in balance for user ${userId}: skipped=${selection.skipped.length}, shortBy=$${((shortfallInUsdCents ?? 0) / 100).toFixed(2)}`,
+      );
+    }
+  }
+
   // No domains to renew
   if (domainsThatCouldBeRenewed.length === 0) {
     workflow.log.info(`For user ${userId} there are no domains up for renew`);
@@ -437,6 +548,8 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       domainsThatShouldBeRenewed,
       domainsThatCouldBeRenewed,
       domainsMissingPriceData,
+      domainsSkippedDueToInsufficientFunds,
+      shortfallInUsdCents,
       chargeAmountByDomainLdh,
       totalAmountInUsd,
       paymentStatus: 'SKIPPED',
@@ -457,6 +570,8 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       domainsThatShouldBeRenewed,
       domainsThatCouldBeRenewed,
       domainsMissingPriceData,
+      domainsSkippedDueToInsufficientFunds,
+      shortfallInUsdCents,
       chargeAmountByDomainLdh,
       totalAmountInUsd,
       paymentStatus: 'FAILED',
@@ -524,6 +639,8 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       chargeAmountByDomainLdh,
       domainsThatShouldBeRenewed,
       domainsMissingPriceData,
+      domainsSkippedDueToInsufficientFunds,
+      shortfallInUsdCents,
       paymentStatus: 'FAILED',
       payments,
       message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
@@ -615,6 +732,8 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     domainsThatCouldBeRenewed,
     chargeAmountByDomainLdh,
     domainsMissingPriceData,
+    domainsSkippedDueToInsufficientFunds,
+    shortfallInUsdCents,
     payments,
   } satisfies NotifyAndRenewDomainsForSingleUserWorkflowOutput;
 
@@ -644,6 +763,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       availableBalanceInNfsc,
       availableOffChainPaymentMethods:
         availableOffChainPaymentMethodsPublicIdentifiers.filter(isNotNil),
+      domainLdhSkippedDueToInsufficientFunds:
+        domainsSkippedDueToInsufficientFunds.map(
+          (domain) => domain.normalizedDomainName,
+        ),
+      shortfallInUsdCents,
     });
   }
   return result;
@@ -656,10 +780,16 @@ type NotifyAndRenewDomainsForSingleUserWorkflowOutput = {
   userId: string;
   userEmail: string | undefined;
   domainsThatShouldBeRenewed: UserDomainsUpForRenewal;
-  domainsThatCouldBeRenewed: (UserDomainsUpForRenewal[number] & {
-    chargeAmount: number;
-  })[];
+  domainsThatCouldBeRenewed: DomainWithChargeAmount[];
   domainsMissingPriceData: UserDomainsUpForRenewal;
+  /**
+   * Domains that the user could not renew this cycle because their NFSC
+   * balance did not cover them. These are deferred to the next cycle
+   * (auto-renewal re-queries eligible domains daily).
+   */
+  domainsSkippedDueToInsufficientFunds: DomainWithChargeAmount[];
+  /** USD cents short of the full original renewal bill, if partial-renewal triggered. */
+  shortfallInUsdCents?: number;
   chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number | null>;
   totalAmountInUsd: number;
   paymentStatus: 'SUCCEEDED' | 'FAILED' | 'SKIPPED';
@@ -763,6 +893,10 @@ type NotifyUserForRenewResultInput = {
   orderId?: string | null;
   availableBalanceInNfsc: number;
   availableOffChainPaymentMethods: string[];
+  /** Domains we couldn't renew this cycle because NFSC balance was short. */
+  domainLdhSkippedDueToInsufficientFunds: string[];
+  /** USD cents short of the full original renewal bill, if applicable. */
+  shortfallInUsdCents?: number;
 };
 
 /*
@@ -786,6 +920,8 @@ async function _notifyUserForRenewResult({
   availableBalanceInNfsc,
   availableOffChainPaymentMethods,
   orderId,
+  domainLdhSkippedDueToInsufficientFunds,
+  shortfallInUsdCents,
 }: NotifyUserForRenewResultInput) {
   const { sendEmailNotificationForRenewResult } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
@@ -810,6 +946,8 @@ async function _notifyUserForRenewResult({
     expirationDatesByDomainLdh: expirationDatesByDomainLdh,
     availableBalanceInNfsc,
     availableOffChainPaymentMethods,
+    domainLdhSkippedDueToInsufficientFunds,
+    shortfallInUsdCents,
   });
 }
 

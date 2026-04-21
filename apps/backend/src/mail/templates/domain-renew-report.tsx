@@ -41,6 +41,14 @@ export type DomainRenewReportProps = {
   availableOffChainPaymentMethods: string[];
   domainLdhRenewFailed: string[];
   domainLdhRenewSucceeded: string[];
+  /**
+   * Domains deferred to the next cycle because NFSC balance didn't cover
+   * them. Shown in a dedicated "deferred" section so the user knows why
+   * they weren't renewed and can add funds/a card.
+   */
+  domainLdhSkippedDueToInsufficientFunds?: string[];
+  /** USD cents short of the full original renewal bill, if applicable. */
+  shortfallInUsdCents?: number;
   chargedAmountInUsd: number;
   payments: Array<{
     provider: PaymentProvider;
@@ -94,6 +102,8 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
       recipientName,
       domainLdhRenewSucceeded,
       domainLdhRenewFailed,
+      domainLdhSkippedDueToInsufficientFunds = [],
+      shortfallInUsdCents,
       chargeAmountInUsdByDomainLdh,
       expirationDatesByDomainLdh,
       refundAmountInUsd,
@@ -213,6 +223,64 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             ))}
           </tbody>
         </EmailTable>
+        {domainLdhSkippedDueToInsufficientFunds.length > 0 && (
+          <>
+            <h4
+              style={{
+                ...styles.text,
+                marginTop: '20px',
+                marginBottom: '6px',
+              }}
+            >
+              Deferred — insufficient balance
+            </h4>
+            <div style={{ ...styles.text, marginBottom: '10px' }}>
+              We couldn't renew these domains with your current NFSC balance.
+              Add funds or a card to renew them next cycle.
+              {typeof shortfallInUsdCents === 'number' &&
+              shortfallInUsdCents > 0
+                ? ` You were short by $${(shortfallInUsdCents / 100).toFixed(2)}.`
+                : ''}
+            </div>
+            <EmailTable>
+              <thead>
+                <EmailTableRow>
+                  <EmailTableHeaderCell>Domain Name</EmailTableHeaderCell>
+                  <EmailTableHeaderCell>Expiration Date</EmailTableHeaderCell>
+                  <EmailTableHeaderCell numeric>
+                    Renew Price
+                  </EmailTableHeaderCell>
+                </EmailTableRow>
+              </thead>
+              <tbody>
+                {domainLdhSkippedDueToInsufficientFunds.map((domainNameLdh) => (
+                  <EmailTableRow key={domainNameLdh}>
+                    <EmailTableCell label="Domain Name">
+                      {domainNameLdh}{' '}
+                      {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                        ? ''
+                        : `(${punycode.toUnicode(domainNameLdh)})`}
+                    </EmailTableCell>
+                    <EmailTableCell label="Expiration Date">
+                      {expirationDatesByDomainLdh[domainNameLdh]
+                        ? format(
+                            expirationDatesByDomainLdh[domainNameLdh],
+                            'yyyy-MM-dd',
+                          )
+                        : '—'}
+                    </EmailTableCell>
+                    <EmailTableCell label="Renew Price" numeric>
+                      {typeof chargeAmountInUsdByDomainLdh[domainNameLdh] ===
+                      'number'
+                        ? `$${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}`
+                        : '—'}
+                    </EmailTableCell>
+                  </EmailTableRow>
+                ))}
+              </tbody>
+            </EmailTable>
+          </>
+        )}
         {/* Show payment method breakdown if multiple payments were used */}
         {paymentMethods && paymentMethods.length > 1 && (
           <>
@@ -292,15 +360,19 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     recipientEmail: 'alice@example.com',
     domainLdhRenewSucceeded: ['test.org'],
     domainLdhRenewFailed: ['example.org', 'example.net'],
+    domainLdhSkippedDueToInsufficientFunds: ['skipped.xyz'],
+    shortfallInUsdCents: 489,
     chargeAmountInUsdByDomainLdh: {
       'test.org': 11.1,
       'example.org': 11.1,
       'example.net': 12.52,
+      'skipped.xyz': 4.89,
     },
     expirationDatesByDomainLdh: {
       'test.org': addDays(new Date(), 1),
       'example.org': addDays(new Date(), 2),
       'example.net': addDays(new Date(), 3),
+      'skipped.xyz': addDays(new Date(), 4),
     },
     chargedAmountInUsd: 11.1 + 11.1 + 12.52,
     availableBalanceInNfsc: 11.1 + 12.52,

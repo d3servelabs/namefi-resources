@@ -91,13 +91,35 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
       }
     }
 
+    // Domains deferred this cycle because NFSC balance was short. These
+    // are surfaced as "failures" in the report with a specific reason so
+    // operators can distinguish from hard failures.
+    if (result.domainsSkippedDueToInsufficientFunds) {
+      for (const domain of result.domainsSkippedDueToInsufficientFunds) {
+        failedDomains.push({
+          domain: domain.normalizedDomainName,
+          reason: `Skipped due to insufficient balance${
+            typeof result.shortfallInUsdCents === 'number'
+              ? ` (short by $${(result.shortfallInUsdCents / 100).toFixed(2)})`
+              : ''
+          }`,
+          registrar: domain.registrarKey,
+        });
+      }
+    }
+
     // Handle payment failures
     if (result.paymentStatus === 'FAILED') {
       if (result.domainsThatCouldBeRenewed) {
+        const paymentFailureReason =
+          typeof result.shortfallInUsdCents === 'number' &&
+          result.shortfallInUsdCents > 0
+            ? `Skipped due to insufficient balance (short by $${(result.shortfallInUsdCents / 100).toFixed(2)})`
+            : result.message || 'Payment failed';
         for (const domain of result.domainsThatCouldBeRenewed) {
           failedDomains.push({
             domain: domain.normalizedDomainName,
-            reason: result.message || 'Payment failed',
+            reason: paymentFailureReason,
             registrar: undefined,
           });
         }
