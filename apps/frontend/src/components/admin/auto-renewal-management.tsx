@@ -54,7 +54,12 @@ type DomainRow = {
   walletAddress?: string;
   registrar?: string;
   chainId?: number;
-  status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
+  status:
+    | 'SUCCESS'
+    | 'FAILED'
+    | 'PAYMENT_FAILED'
+    | 'MISSING_PRICE'
+    | 'SKIPPED_INSUFFICIENT_FUNDS';
   chargeAmountUsd?: number | null;
   errorReason?: string;
   actionRequired?: string;
@@ -68,6 +73,26 @@ type DomainRow = {
    * to the full userResults set.
    */
   userPaymentStatus?: string;
+  /**
+   * Per-user run-start snapshot fields. Same values on every row in the
+   * same group; duplicated so the group header (which derives from visible
+   * rows) can render balance + payment-method info without a separate map.
+   * USD. `availableBalanceInNfsc` is summed across chains at workflow start
+   * and does NOT reflect post-charge debits.
+   */
+  availableBalanceInNfsc?: number;
+  nfscBalancesByChain?: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  availablePaymentMethods?: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  /** USD cents short of covering the full original renewal bill. */
+  shortfallInUsdCents?: number;
+  snapshotTakenAt?: string;
   /** All payments for the user this domain belongs to. Same array on every row in the same group. */
   payments?: Array<{
     provider: string;
@@ -111,6 +136,16 @@ function getStatusBadge(status: DomainRow['status']) {
         >
           <AlertTriangle className="w-3 h-3" />
           Could Not Charge
+        </Badge>
+      );
+    case 'SKIPPED_INSUFFICIENT_FUNDS':
+      return (
+        <Badge
+          variant="outline"
+          className="gap-1 border-amber-300/80 text-amber-300/80"
+        >
+          <Clock className="w-3 h-3" />
+          Deferred — Low Balance
         </Badge>
       );
     case 'MISSING_PRICE':
@@ -448,7 +483,7 @@ export default function AutoRenewalManagement({
 
         {/* KPI Cards */}
         {metrics && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
             <KpiCard
               label="Users Processed"
               value={metrics.totalUsersProcessed}
@@ -465,6 +500,16 @@ export default function AutoRenewalManagement({
               value={metrics.failedRenewals}
               icon={XCircle}
               variant={metrics.failedRenewals > 0 ? 'danger' : 'default'}
+            />
+            <KpiCard
+              label="Deferred (Low Balance)"
+              value={metrics.failureBreakdown?.deferredInsufficientBalance ?? 0}
+              icon={Clock}
+              variant={
+                (metrics.failureBreakdown?.deferredInsufficientBalance ?? 0) > 0
+                  ? 'danger'
+                  : 'default'
+              }
             />
             <KpiCard
               label="Net Revenue"
@@ -531,7 +576,11 @@ type MetricsShape = {
     failedToCharge: number;
     registrarErrors: number;
     missingPriceData: number;
+    deferredInsufficientBalance: number;
   };
+  totalShortfallInUsdCents: number;
+  totalNfscBalanceInUsdAtRunStart: number;
+  usersWithInsufficientBalance: number;
   criticalDomains: Array<{
     domain: string;
     userId: string;
@@ -638,11 +687,29 @@ type UserResultItem = {
   totalAmountInUsd: number;
   refundAmountInUsd?: number;
   orderId?: string;
+  /** NFSC balance available at workflow start (USD, summed across chains). */
+  availableBalanceInNfsc?: number;
+  nfscBalancesByChain?: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  availablePaymentMethods?: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  shortfallInUsdCents?: number;
+  snapshotTakenAt?: string;
   domains: Array<{
     domain: string;
     registrar?: string;
     chainId?: number;
-    status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
+    status:
+      | 'SUCCESS'
+      | 'FAILED'
+      | 'PAYMENT_FAILED'
+      | 'MISSING_PRICE'
+      | 'SKIPPED_INSUFFICIENT_FUNDS';
     chargeAmountUsd?: number | null;
     errorReason?: string;
     actionRequired?: string;
@@ -684,7 +751,10 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
     },
   });
 
-  // Flatten all user results into domain rows
+  // Flatten all user results into domain rows. Per-user snapshot fields
+  // (balance, payment methods, shortfall) are duplicated onto every row
+  // in the same group so the group header — which reads the first visible
+  // row — can render them without a lookup map.
   const allDomains: DomainRow[] = useMemo(() => {
     const rows: DomainRow[] = [];
     for (const user of userResults) {
@@ -709,6 +779,11 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           txHash: d.txHash,
           eppOperationStatus: d.eppOperationStatus,
           userPaymentStatus: user.paymentStatus,
+          availableBalanceInNfsc: user.availableBalanceInNfsc,
+          nfscBalancesByChain: user.nfscBalancesByChain,
+          availablePaymentMethods: user.availablePaymentMethods,
+          shortfallInUsdCents: user.shortfallInUsdCents,
+          snapshotTakenAt: user.snapshotTakenAt,
           payments,
         });
       }
@@ -743,14 +818,21 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
 
     let successCount = 0;
     let failedCount = 0;
+    let deferredCount = 0;
     let totalChargedInUsd = 0;
     for (const r of visibleRows) {
       if (r.original.status === 'SUCCESS') {
         successCount++;
+      } else if (r.original.status === 'SKIPPED_INSUFFICIENT_FUNDS') {
+        deferredCount++;
       } else {
         failedCount++;
       }
-      totalChargedInUsd += r.original.chargeAmountUsd ?? 0;
+      // Only count actually-charged rows toward the user total —
+      // deferred rows did not incur a charge.
+      if (r.original.status !== 'SKIPPED_INSUFFICIENT_FUNDS') {
+        totalChargedInUsd += r.original.chargeAmountUsd ?? 0;
+      }
     }
 
     const info = first
@@ -761,13 +843,35 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           domainCount: visibleRows.length,
           successCount,
           failedCount,
+          deferredCount,
           totalAmountInUsd: totalChargedInUsd,
           refundAmountInUsd: 0, // refunds are user-level and not represented per-row
+          availableBalanceInNfsc: first.availableBalanceInNfsc,
+          availablePaymentMethods: first.availablePaymentMethods,
+          shortfallInUsdCents: first.shortfallInUsdCents,
         }
       : undefined;
 
     const allPaymentFailed =
       info?.paymentStatus === 'FAILED' && info.failedCount === info.domainCount;
+    const shortfallInUsd =
+      info?.shortfallInUsdCents && info.shortfallInUsdCents > 0
+        ? info.shortfallInUsdCents / 100
+        : 0;
+    const paymentMethodsLabel = (() => {
+      if (!info?.availablePaymentMethods?.length) return null;
+      return info.availablePaymentMethods
+        .map((method) => {
+          if (method.kind === 'STRIPE') {
+            return method.last4 ? `Stripe ••${method.last4}` : 'Stripe';
+          }
+          const short = method.walletAddress
+            ? `${method.walletAddress.slice(0, 6)}…${method.walletAddress.slice(-4)}`
+            : 'Wallet';
+          return `Wallet ${short}`;
+        })
+        .join(' · ');
+    })();
     const netAmount =
       (info?.totalAmountInUsd ?? 0) - (info?.refundAmountInUsd ?? 0);
     const isExpanded = row.getIsExpanded();
@@ -779,24 +883,39 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           isExpanded ? 'opacity-30' : 'opacity-60',
         )}
       >
-        {/* Col 1: avatar + user */}
-        <div className="flex items-center gap-2">
+        {/* Col 1: avatar + user + balance/payment snapshot */}
+        <div className="flex items-center gap-2 min-w-0">
           {info?.walletAddress && (
             <UserWalletAvatar
               address={info.walletAddress}
               adminOpenTarget="wallet"
               userId={userId}
-              className="size-6"
+              className="size-6 shrink-0"
             />
           )}
-          <AdminUserLookupButton
-            reference={{ userId }}
-            variant="ghost"
-            size="sm"
-            className="h-auto px-1 py-0 font-medium text-sm hover:underline"
-          >
-            {info?.email || <code className="text-xs">{userId}</code>}
-          </AdminUserLookupButton>
+          <div className="flex flex-col min-w-0">
+            <AdminUserLookupButton
+              reference={{ userId }}
+              variant="ghost"
+              size="sm"
+              className="h-auto px-1 py-0 font-medium text-sm hover:underline justify-start"
+            >
+              {info?.email || <code className="text-xs">{userId}</code>}
+            </AdminUserLookupButton>
+            {info &&
+              (typeof info.availableBalanceInNfsc === 'number' ||
+                paymentMethodsLabel) && (
+                <span className="text-[11px] text-muted-foreground truncate px-1">
+                  {typeof info.availableBalanceInNfsc === 'number' && (
+                    <>Balance ${info.availableBalanceInNfsc.toFixed(2)}</>
+                  )}
+                  {typeof info.availableBalanceInNfsc === 'number' &&
+                    paymentMethodsLabel &&
+                    ' · '}
+                  {paymentMethodsLabel && <>Pays via {paymentMethodsLabel}</>}
+                </span>
+              )}
+          </div>
         </div>
 
         {/* Col 2: domain count + status */}
@@ -869,6 +988,22 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
                   className="text-xs border-red-300/80 text-red-300/80 min-w-[15ch] w-[15ch]"
                 >
                   {info!.failedCount} failure
+                </Badge>
+              )}
+              {(info?.deferredCount ?? 0) > 0 && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-amber-300/80 text-amber-300/80 min-w-[15ch] w-[15ch]"
+                >
+                  {info!.deferredCount} deferred
+                </Badge>
+              )}
+              {shortfallInUsd > 0 && (
+                <Badge
+                  variant="outline"
+                  className="text-xs border-amber-300/80 text-amber-300/80"
+                >
+                  Short ${shortfallInUsd.toFixed(2)}
                 </Badge>
               )}
             </>
@@ -1009,6 +1144,10 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           { value: 'SUCCESS', label: 'Success' },
           { value: 'FAILED', label: 'Failed' },
           { value: 'PAYMENT_FAILED', label: 'Payment Failed' },
+          {
+            value: 'SKIPPED_INSUFFICIENT_FUNDS',
+            label: 'Deferred — Low Balance',
+          },
           { value: 'MISSING_PRICE', label: 'Missing Price' },
         ],
         allowedOperators: ['eq', 'neq'],
@@ -1037,6 +1176,10 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           {
             value: 'Contact user about payment',
             label: 'Contact User (Payment)',
+          },
+          {
+            value: 'Top up balance or wait for next cycle',
+            label: 'Top Up Balance',
           },
           {
             value: 'Manual investigation required',

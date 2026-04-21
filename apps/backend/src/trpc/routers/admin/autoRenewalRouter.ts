@@ -260,48 +260,111 @@ export const autoRenewalRouter = createContractTRPCRouter<
           const r = success.result;
           if (!r) continue;
 
-          const processedDomains: AutoRenewReportInput['workflowResults'][number]['successes'] =
-            [];
-          const failedDomains: AutoRenewReportInput['workflowResults'][number]['failures'] =
-            [];
+          const chargeMap = r.chargeAmountByDomainLdh ?? {};
+          const lookupCharge = (name: string): number | null =>
+            chargeMap[name] ?? null;
 
-          if (r.successes) {
-            for (const s of r.successes) {
-              processedDomains?.push({
-                domain: s.domain.normalizedDomainName as NamefiNormalizedDomain,
-                registrar: s.domain.registrarKey,
-              });
-            }
-          }
-          if (r.failures) {
-            for (const f of r.failures) {
-              failedDomains?.push({
-                domain: f.domain.normalizedDomainName as NamefiNormalizedDomain,
-                reason: f.error?.message || 'Unknown error',
-                registrar: f.domain.registrarKey,
-              });
-            }
-          }
-
-          // Payment-failed domains
-          if (r.paymentStatus === 'FAILED' && r.domainsThatCouldBeRenewed) {
-            for (const d of r.domainsThatCouldBeRenewed) {
-              failedDomains?.push({
-                domain: d.normalizedDomainName as NamefiNormalizedDomain,
-                reason: r.message || 'Payment failed',
-                registrar: d.registrarKey,
-              });
-            }
-          }
-
-          // Missing price data
-          for (const d of r.domainsMissingPriceData ?? []) {
-            failedDomains?.push({
+          // Authoritative per-domain categorization. Mirrors the
+          // orchestration logic in `autorenew-daily-report.workflow.ts`.
+          const isInsufficientBalance =
+            typeof r.shortfallInUsdCents === 'number' &&
+            r.shortfallInUsdCents > 0;
+          const domainCategories: NonNullable<
+            AutoRenewReportInput['workflowResults'][number]['domainCategories']
+          > = {
+            renewed: (r.successes ?? []).map((s) => ({
+              domain: s.domain.normalizedDomainName as NamefiNormalizedDomain,
+              registrar: s.domain.registrarKey,
+              chargeAmountInUsd: lookupCharge(s.domain.normalizedDomainName),
+            })),
+            registrarFailed: (r.failures ?? []).map((f) => ({
+              domain: f.domain.normalizedDomainName as NamefiNormalizedDomain,
+              registrar: f.domain.registrarKey,
+              reason: f.error?.message || 'Unknown error',
+              chargeAmountInUsd: lookupCharge(f.domain.normalizedDomainName),
+            })),
+            paymentFailed: [],
+            deferredInsufficientBalance: (
+              r.domainsSkippedDueToInsufficientFunds ?? []
+            ).map((d) => ({
               domain: d.normalizedDomainName as NamefiNormalizedDomain,
-              reason: 'Missing price data',
               registrar: d.registrarKey,
-            });
+              chargeAmountInUsd: lookupCharge(d.normalizedDomainName),
+            })),
+            missingPrice: (r.domainsMissingPriceData ?? []).map((d) => ({
+              domain: d.normalizedDomainName as NamefiNormalizedDomain,
+              registrar: d.registrarKey,
+            })),
+          };
+
+          if (r.paymentStatus === 'FAILED' && r.domainsThatCouldBeRenewed) {
+            const reason = isInsufficientBalance
+              ? `Skipped due to insufficient balance (short by $${(r.shortfallInUsdCents! / 100).toFixed(2)})`
+              : r.message || 'Payment failed';
+            for (const d of r.domainsThatCouldBeRenewed) {
+              if (isInsufficientBalance) {
+                domainCategories.deferredInsufficientBalance.push({
+                  domain: d.normalizedDomainName as NamefiNormalizedDomain,
+                  registrar: d.registrarKey,
+                  chargeAmountInUsd: lookupCharge(d.normalizedDomainName),
+                });
+              } else {
+                domainCategories.paymentFailed.push({
+                  domain: d.normalizedDomainName as NamefiNormalizedDomain,
+                  registrar: d.registrarKey,
+                  reason,
+                  chargeAmountInUsd: lookupCharge(d.normalizedDomainName),
+                });
+              }
+            }
           }
+
+          // Legacy `failures[]` / `successes[]` arrays are kept populated
+          // for callers that still read them (metrics fallback path).
+          const legacySuccesses =
+            domainCategories.renewed.map((e) => ({
+              domain: e.domain,
+              registrar: e.registrar,
+            })) ?? [];
+          const legacyFailures: NonNullable<
+            AutoRenewReportInput['workflowResults'][number]['failures']
+          > = [
+            ...domainCategories.registrarFailed.map((e) => ({
+              domain: e.domain,
+              reason: e.reason,
+              registrar: e.registrar,
+            })),
+            ...domainCategories.paymentFailed.map((e) => ({
+              domain: e.domain,
+              reason: e.reason,
+              registrar: e.registrar,
+            })),
+            ...domainCategories.deferredInsufficientBalance.map((e) => ({
+              domain: e.domain,
+              reason: isInsufficientBalance
+                ? `Skipped due to insufficient balance (short by $${(r.shortfallInUsdCents! / 100).toFixed(2)})`
+                : 'Skipped due to insufficient balance',
+              registrar: e.registrar,
+            })),
+            ...domainCategories.missingPrice.map((e) => ({
+              domain: e.domain,
+              reason: 'Missing price data',
+              registrar: e.registrar,
+            })),
+          ];
+
+          const snapshot =
+            typeof r.availableBalanceInNfsc === 'number' &&
+            r.nfscBalancesByChain &&
+            r.availablePaymentMethods &&
+            r.snapshotTakenAt
+              ? {
+                  availableBalanceInNfsc: r.availableBalanceInNfsc,
+                  nfscBalancesByChain: r.nfscBalancesByChain,
+                  availablePaymentMethods: r.availablePaymentMethods,
+                  snapshotTakenAt: r.snapshotTakenAt,
+                }
+              : undefined;
 
           workflowResults.push({
             userId: success.userId,
@@ -313,9 +376,12 @@ export const autoRenewalRouter = createContractTRPCRouter<
                   ? 'skipped'
                   : 'success',
             domainsProcessed:
-              (processedDomains?.length ?? 0) + (failedDomains?.length ?? 0),
+              legacySuccesses.length + legacyFailures.length || 0,
             amountChargedInUsd: r.totalAmountInUsd || 0,
             amountRefundedInUsd: r.refundAmountInUsd || 0,
+            totalAmountInUsd: r.totalAmountInUsd,
+            shortfallInUsdCents: r.shortfallInUsdCents,
+            snapshot,
             // The workflow runtime returns each payment with `provider`
             // rather than `paymentProvider`; normalize so that
             // computeAutoRenewMetricsFromResults sees the field it expects.
@@ -326,12 +392,13 @@ export const autoRenewalRouter = createContractTRPCRouter<
                 'UNKNOWN') as PaymentProvider,
               amountInUsdCents: p.amountInUsdCents,
             })),
-            failures: failedDomains ?? undefined,
-            successes: processedDomains ?? undefined,
+            failures: legacyFailures,
+            successes: legacySuccesses,
             chargeAmountByDomainLdh: r.chargeAmountByDomainLdh,
+            domainCategories,
           });
 
-          // Build flattened domain rows for the admin UI
+          // Build flattened domain rows for the admin UI.
           const domains: UserResultForAdmin['domains'] = [];
 
           for (const s of r.successes ?? []) {
@@ -364,19 +431,51 @@ export const autoRenewalRouter = createContractTRPCRouter<
             });
           }
 
+          // Deferred-insufficient-balance domains (partial-renewal branch).
+          for (const d of r.domainsSkippedDueToInsufficientFunds ?? []) {
+            domains.push({
+              domain: d.normalizedDomainName,
+              registrar: d.registrarKey,
+              chainId: d.chainId,
+              status: 'SKIPPED_INSUFFICIENT_FUNDS',
+              chargeAmountUsd:
+                r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
+                undefined,
+              errorReason:
+                typeof r.shortfallInUsdCents === 'number'
+                  ? `Deferred — short by $${(r.shortfallInUsdCents / 100).toFixed(2)}`
+                  : 'Deferred — insufficient balance',
+              actionRequired: 'Top up balance or wait for next cycle',
+            });
+          }
+
           if (r.paymentStatus === 'FAILED' && r.domainsThatCouldBeRenewed) {
             for (const d of r.domainsThatCouldBeRenewed) {
-              domains.push({
-                domain: d.normalizedDomainName,
-                registrar: d.registrarKey,
-                chainId: d.chainId,
-                status: 'PAYMENT_FAILED',
-                chargeAmountUsd:
-                  r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
-                  undefined,
-                errorReason: r.message || 'Payment failed',
-                actionRequired: 'Contact user about payment',
-              });
+              if (isInsufficientBalance) {
+                domains.push({
+                  domain: d.normalizedDomainName,
+                  registrar: d.registrarKey,
+                  chainId: d.chainId,
+                  status: 'SKIPPED_INSUFFICIENT_FUNDS',
+                  chargeAmountUsd:
+                    r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
+                    undefined,
+                  errorReason: `Deferred — short by $${(r.shortfallInUsdCents! / 100).toFixed(2)}`,
+                  actionRequired: 'Top up balance or wait for next cycle',
+                });
+              } else {
+                domains.push({
+                  domain: d.normalizedDomainName,
+                  registrar: d.registrarKey,
+                  chainId: d.chainId,
+                  status: 'PAYMENT_FAILED',
+                  chargeAmountUsd:
+                    r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
+                    undefined,
+                  errorReason: r.message || 'Payment failed',
+                  actionRequired: 'Contact user about payment',
+                });
+              }
             }
           }
 
@@ -398,6 +497,11 @@ export const autoRenewalRouter = createContractTRPCRouter<
             totalAmountInUsd: r.totalAmountInUsd,
             refundAmountInUsd: r.refundAmountInUsd ?? undefined,
             orderId: r.orderId ?? undefined,
+            availableBalanceInNfsc: r.availableBalanceInNfsc,
+            nfscBalancesByChain: r.nfscBalancesByChain,
+            availablePaymentMethods: r.availablePaymentMethods,
+            shortfallInUsdCents: r.shortfallInUsdCents,
+            snapshotTakenAt: r.snapshotTakenAt,
             domains,
             // Note: the workflow returns these objects with `provider` (not
             // `paymentProvider`) — fall back to either to be defensive.
@@ -481,11 +585,33 @@ type UserResultForAdmin = {
   totalAmountInUsd: number;
   refundAmountInUsd?: number;
   orderId?: string;
+  /** NFSC balance available at workflow start (USD, summed across chains). */
+  availableBalanceInNfsc?: number;
+  /** Per-(wallet, chain) USD balance at workflow start. */
+  nfscBalancesByChain?: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  /** Payment methods available at workflow start (NFSC wallets + Stripe). */
+  availablePaymentMethods?: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  /** USD cents short of covering the full original renewal bill. */
+  shortfallInUsdCents?: number;
+  /** ISO timestamp when the snapshot was taken. */
+  snapshotTakenAt?: string;
   domains: Array<{
     domain: string;
     registrar?: string;
     chainId?: number;
-    status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
+    status:
+      | 'SUCCESS'
+      | 'FAILED'
+      | 'PAYMENT_FAILED'
+      | 'MISSING_PRICE'
+      | 'SKIPPED_INSUFFICIENT_FUNDS';
     chargeAmountUsd?: number | null;
     errorReason?: string;
     actionRequired?: string;
@@ -524,6 +650,24 @@ type SingleUserResult = {
     registrarKey?: string;
     chainId?: number;
   }>;
+  domainsSkippedDueToInsufficientFunds?: Array<{
+    normalizedDomainName: string;
+    registrarKey?: string;
+    chainId?: number;
+  }>;
+  shortfallInUsdCents?: number;
+  // Per-user snapshot fields captured at workflow start.
+  availableBalanceInNfsc?: number;
+  nfscBalancesByChain?: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  availablePaymentMethods?: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  snapshotTakenAt?: string;
   chargeAmountByDomainLdh?: Record<string, number | null>;
   totalAmountInUsd: number;
   paymentStatus: 'SUCCEEDED' | 'FAILED' | 'SKIPPED';

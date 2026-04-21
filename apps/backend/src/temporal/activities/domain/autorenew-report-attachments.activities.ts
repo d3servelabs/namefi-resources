@@ -14,7 +14,16 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import { determineActionRequired } from '../../shared/autorenew-utils';
 
 /**
- * Generate comprehensive CSV report with all auto-renewal details
+ * Generate comprehensive CSV report with all auto-renewal details.
+ *
+ * One row per domain. When orchestration supplied `domainCategories`
+ * (the authoritative pre-categorized buckets), rows are emitted from
+ * that — including the new Deferred-Insufficient-Balance category.
+ * Legacy `successes` / `failures` arrays are used as a fallback.
+ *
+ * Snapshot columns (`Available NFSC Balance`, `Payment Methods`,
+ * `Shortfall`, `Snapshot Taken At`) are per-user, duplicated onto every
+ * row for that user so the CSV stays flat.
  */
 export async function generateAutoRenewReportCsv(
   input: AutoRenewReportInput,
@@ -32,6 +41,7 @@ export async function generateAutoRenewReportCsv(
       'User ID',
       'User Email',
       'Status',
+      'Category',
       'Registrar',
       'Amount Charged (USD)',
       'Amount Refunded (USD)',
@@ -39,11 +49,16 @@ export async function generateAutoRenewReportCsv(
       'Payment ID',
       'Error Reason',
       'Action Required',
+      'Available NFSC Balance (USD)',
+      'Payment Methods',
+      'Shortfall (USD)',
+      'Snapshot Taken At',
       'Transaction Date',
     ].join(','),
   );
 
-  // Process all workflow results for detailed rows
+  const transactionDate = new Date().toISOString();
+
   for (const result of input.workflowResults) {
     const baseRow = {
       userId: result.userId,
@@ -52,80 +67,188 @@ export async function generateAutoRenewReportCsv(
     const paymentProviders =
       result.payments?.map((p) => p.paymentProvider).join('; ') || '';
     const paymentIds = result.payments?.map((p) => p.id).join('; ') || '';
+    const availableBalanceStr =
+      result.snapshot?.availableBalanceInNfsc != null
+        ? result.snapshot.availableBalanceInNfsc.toFixed(2)
+        : '';
+    const paymentMethodsStr =
+      result.snapshot?.availablePaymentMethods
+        ?.map((method) =>
+          method.kind === 'STRIPE'
+            ? `Stripe ${method.last4 ? '••••' + method.last4 : '(no last4)'}`
+            : `Wallet ${method.walletAddress}`,
+        )
+        .join('; ') || '';
+    const shortfallStr =
+      typeof result.shortfallInUsdCents === 'number' &&
+      result.shortfallInUsdCents > 0
+        ? (result.shortfallInUsdCents / 100).toFixed(2)
+        : '';
+    const snapshotTakenAt = result.snapshot?.snapshotTakenAt ?? '';
 
-    // Add successful renewals
-    if (result.successes) {
-      for (const success of result.successes) {
-        const domainCharge = result.chargeAmountByDomainLdh?.[success.domain];
-        lines.push(
-          [
-            success.domain,
-            baseRow.userId,
-            baseRow.userEmail,
-            'SUCCESS',
-            formatRegistrarName(success.registrar || 'Unknown'),
-            domainCharge != null ? domainCharge.toFixed(2) : '0.00',
-            '0.00',
-            paymentProviders,
-            paymentIds,
-            '',
-            '',
-            new Date().toISOString(),
-          ]
-            .map(escapeCSV)
-            .join(','),
-        );
+    type DomainCsvRow = {
+      domain: string;
+      status: string;
+      category: string;
+      registrar: string;
+      amountCharged: string;
+      amountRefunded: string;
+      errorReason: string;
+      actionRequired: string;
+    };
+
+    const emit = (row: DomainCsvRow) => {
+      lines.push(
+        [
+          row.domain,
+          baseRow.userId,
+          baseRow.userEmail,
+          row.status,
+          row.category,
+          formatRegistrarName(row.registrar),
+          row.amountCharged,
+          row.amountRefunded,
+          paymentProviders,
+          paymentIds,
+          row.errorReason,
+          row.actionRequired,
+          availableBalanceStr,
+          paymentMethodsStr,
+          shortfallStr,
+          snapshotTakenAt,
+          transactionDate,
+        ]
+          .map(escapeCSV)
+          .join(','),
+      );
+    };
+
+    if (result.domainCategories) {
+      const cats = result.domainCategories;
+      for (const entry of cats.renewed) {
+        emit({
+          domain: entry.domain,
+          status: 'SUCCESS',
+          category: 'RENEWED',
+          registrar: entry.registrar || 'Unknown',
+          amountCharged:
+            entry.chargeAmountInUsd != null
+              ? entry.chargeAmountInUsd.toFixed(2)
+              : '0.00',
+          amountRefunded: '0.00',
+          errorReason: '',
+          actionRequired: '',
+        });
       }
-    }
-
-    // Add failed renewals — refund equals the charge for that domain
-    if (result.failures) {
-      for (const failure of result.failures) {
-        const domainCharge = result.chargeAmountByDomainLdh?.[failure.domain];
+      for (const entry of cats.registrarFailed) {
         const chargeStr =
-          domainCharge != null ? domainCharge.toFixed(2) : '0.00';
-
-        lines.push(
-          [
-            failure.domain,
-            baseRow.userId,
-            baseRow.userEmail,
-            'FAILED',
-            formatRegistrarName(failure.registrar || 'Unknown'),
-            chargeStr,
-            chargeStr, // refund = charge for failed domains
-            paymentProviders,
-            paymentIds,
-            failure.reason,
-            determineActionRequired(failure.reason),
-            new Date().toISOString(),
-          ]
-            .map(escapeCSV)
-            .join(','),
-        );
+          entry.chargeAmountInUsd != null
+            ? entry.chargeAmountInUsd.toFixed(2)
+            : '0.00';
+        emit({
+          domain: entry.domain,
+          status: 'FAILED',
+          category: 'REGISTRAR_FAILED',
+          registrar: entry.registrar || 'Unknown',
+          amountCharged: chargeStr,
+          amountRefunded: chargeStr,
+          errorReason: entry.reason,
+          actionRequired: determineActionRequired(entry.reason),
+        });
+      }
+      for (const entry of cats.paymentFailed) {
+        const chargeStr =
+          entry.chargeAmountInUsd != null
+            ? entry.chargeAmountInUsd.toFixed(2)
+            : '0.00';
+        emit({
+          domain: entry.domain,
+          status: 'FAILED',
+          category: 'PAYMENT_FAILED',
+          registrar: entry.registrar || 'Unknown',
+          amountCharged: '0.00',
+          amountRefunded: '0.00',
+          errorReason: entry.reason,
+          actionRequired: determineActionRequired(entry.reason),
+        });
+        void chargeStr; // Payment-failed rows don't reflect a charge.
+      }
+      for (const entry of cats.deferredInsufficientBalance) {
+        emit({
+          domain: entry.domain,
+          status: 'DEFERRED',
+          category: 'DEFERRED_INSUFFICIENT_BALANCE',
+          registrar: entry.registrar || 'Unknown',
+          amountCharged: '0.00',
+          amountRefunded: '0.00',
+          errorReason:
+            typeof result.shortfallInUsdCents === 'number'
+              ? `Deferred — short by $${(result.shortfallInUsdCents / 100).toFixed(2)}`
+              : 'Deferred — insufficient balance',
+          actionRequired: 'Top up balance or wait for next cycle',
+        });
+      }
+      for (const entry of cats.missingPrice) {
+        emit({
+          domain: entry.domain,
+          status: 'FAILED',
+          category: 'MISSING_PRICE',
+          registrar: entry.registrar || 'Unknown',
+          amountCharged: '0.00',
+          amountRefunded: '0.00',
+          errorReason: 'Missing price data',
+          actionRequired: 'Check pricing data',
+        });
+      }
+    } else {
+      // Legacy path — used when `domainCategories` wasn't populated.
+      if (result.successes) {
+        for (const success of result.successes) {
+          const domainCharge = result.chargeAmountByDomainLdh?.[success.domain];
+          emit({
+            domain: success.domain,
+            status: 'SUCCESS',
+            category: 'RENEWED',
+            registrar: success.registrar || 'Unknown',
+            amountCharged:
+              domainCharge != null ? domainCharge.toFixed(2) : '0.00',
+            amountRefunded: '0.00',
+            errorReason: '',
+            actionRequired: '',
+          });
+        }
+      }
+      if (result.failures) {
+        for (const failure of result.failures) {
+          const domainCharge = result.chargeAmountByDomainLdh?.[failure.domain];
+          const chargeStr =
+            domainCharge != null ? domainCharge.toFixed(2) : '0.00';
+          emit({
+            domain: failure.domain,
+            status: 'FAILED',
+            category: 'FAILED',
+            registrar: failure.registrar || 'Unknown',
+            amountCharged: chargeStr,
+            amountRefunded: chargeStr,
+            errorReason: failure.reason,
+            actionRequired: determineActionRequired(failure.reason),
+          });
+        }
       }
     }
 
     // Add skipped entries
     if (result.status === 'skipped' && result.domainsProcessed === 0) {
-      lines.push(
-        [
-          'N/A',
-          baseRow.userId,
-          baseRow.userEmail,
-          'SKIPPED',
-          '',
-          '0.00',
-          '0.00',
-          '',
-          '',
-          'No domains to process',
-          '',
-          new Date().toISOString(),
-        ]
-          .map(escapeCSV)
-          .join(','),
-      );
+      emit({
+        domain: 'N/A',
+        status: 'SKIPPED',
+        category: 'NO_DOMAINS',
+        registrar: '',
+        amountCharged: '0.00',
+        amountRefunded: '0.00',
+        errorReason: 'No domains to process',
+        actionRequired: '',
+      });
     }
   }
 

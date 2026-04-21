@@ -4,9 +4,18 @@ import type { PaymentProvider, PaymentSelect } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { secrets } from '#lib/env';
 import { sendMail } from '../../../mail/mail-client';
-import React from 'react';
+import { createElement } from 'react';
 import { render } from '@react-email/components';
 import { AutoRenewDailyReport } from '../../../mail/templates/autorenew-daily-report';
+import { AutoRenewDailyReportDetailed } from '../../../mail/templates/autorenew-daily-report-detailed';
+import type {
+  AutoRenewDailyReportDetailedProps,
+  AutoRenewDailyReportProps,
+  AutoRenewDomainEntry,
+  AutoRenewReportSummary,
+  AutoRenewSnapshotCategory,
+  AutoRenewUserCard,
+} from '../../../mail/templates/autorenew-daily-report.types';
 import {
   generateAutoRenewReportCsv,
   generateAutoRenewReportMarkdown,
@@ -17,6 +26,42 @@ import {
 } from '../../shared/autorenew-utils';
 
 const SEND_TO_SLACK_DIRECT = false;
+
+/**
+ * Per-domain category, computed once during orchestration from the typed
+ * workflow result. Downstream (email, CSV, HTML, admin UI) reads the
+ * category directly instead of re-deriving from `successes[]` /
+ * `failures[]` / reason strings.
+ */
+export type AutoRenewDomainCategory =
+  | 'renewed'
+  | 'registrarFailed'
+  | 'paymentFailed'
+  | 'deferredInsufficientBalance'
+  | 'missingPrice';
+
+/**
+ * Per-user snapshot captured at the *start* of the renewal run.
+ *
+ * Duplicated here (structurally) from
+ * `apps/backend/src/temporal/workflows/autorenew-daily-emails.workflow.ts`'s
+ * `PerUserRunSnapshot` rather than imported, because the workflow
+ * bundle must not pull activity-file imports, and this file is used by
+ * both the activity bundle and the admin tRPC router.
+ */
+export interface AutoRenewUserSnapshot {
+  availableBalanceInNfsc: number;
+  nfscBalancesByChain: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  availablePaymentMethods: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  snapshotTakenAt: string;
+}
 
 export interface AutoRenewMetrics {
   reportDate: Date;
@@ -37,7 +82,15 @@ export interface AutoRenewMetrics {
     failedToCharge: number;
     registrarErrors: number;
     missingPriceData: number;
+    /** NEW: domains deferred because NFSC balance ran out this cycle. */
+    deferredInsufficientBalance: number;
   };
+  /** NEW: sum of per-user `shortfallInUsdCents` across users with a shortfall. */
+  totalShortfallInUsdCents: number;
+  /** NEW: sum of per-user `availableBalanceInNfsc` (USD) at run start. */
+  totalNfscBalanceInUsdAtRunStart: number;
+  /** NEW: count of users where balance did not cover their renewal bill. */
+  usersWithInsufficientBalance: number;
   criticalDomains: Array<{
     domain: NamefiNormalizedDomain;
     userId: string;
@@ -90,32 +143,75 @@ export interface AutoRenewMetrics {
   };
 }
 
+/** Per-user entry inside the `AutoRenewReportInput.workflowResults` array. */
+export interface AutoRenewWorkflowResultEntry {
+  userId: string;
+  userEmail?: string;
+  status: 'success' | 'failure' | 'skipped';
+  domainsProcessed?: number;
+  amountChargedInUsd?: number;
+  amountRefundedInUsd?: number;
+  /** Total USD the user was billed this cycle (successes + deferred would-be). */
+  totalAmountInUsd?: number;
+  /** USD cents the user was short of covering the full original renewal bill. */
+  shortfallInUsdCents?: number;
+  /** Snapshot taken at workflow start — balance, payment methods available. */
+  snapshot?: AutoRenewUserSnapshot;
+  payments?: {
+    id: string;
+    paymentProvider: PaymentProvider;
+    amountInUsdCents: number;
+  }[];
+  failures?: {
+    domain: NamefiNormalizedDomain;
+    reason: string;
+    registrar?: string;
+  }[];
+  successes?: {
+    domain: NamefiNormalizedDomain;
+    registrar?: string;
+  }[];
+  /** Per-domain charge amounts in USD (keyed by normalized domain name) */
+  chargeAmountByDomainLdh?: Record<string, number | null>;
+  /**
+   * Pre-categorized domain outcomes. Authoritative for the new typed
+   * email/attachment/admin-UI rendering. The legacy `failures[]` /
+   * `successes[]` arrays are kept for the Markdown formatter back-compat
+   * but downstream typed consumers should prefer this.
+   */
+  domainCategories?: {
+    renewed: Array<{
+      domain: NamefiNormalizedDomain;
+      registrar?: string;
+      chargeAmountInUsd: number | null;
+    }>;
+    registrarFailed: Array<{
+      domain: NamefiNormalizedDomain;
+      registrar?: string;
+      reason: string;
+      chargeAmountInUsd: number | null;
+    }>;
+    paymentFailed: Array<{
+      domain: NamefiNormalizedDomain;
+      registrar?: string;
+      reason: string;
+      chargeAmountInUsd: number | null;
+    }>;
+    deferredInsufficientBalance: Array<{
+      domain: NamefiNormalizedDomain;
+      registrar?: string;
+      chargeAmountInUsd: number | null;
+    }>;
+    missingPrice: Array<{
+      domain: NamefiNormalizedDomain;
+      registrar?: string;
+    }>;
+  };
+}
+
 export interface AutoRenewReportInput {
   metrics: AutoRenewMetrics;
-  workflowResults: {
-    userId: string;
-    userEmail?: string;
-    status: 'success' | 'failure' | 'skipped';
-    domainsProcessed?: number;
-    amountChargedInUsd?: number;
-    amountRefundedInUsd?: number;
-    payments?: {
-      id: string;
-      paymentProvider: PaymentProvider;
-      amountInUsdCents: number;
-    }[];
-    failures?: {
-      domain: NamefiNormalizedDomain;
-      reason: string;
-      registrar?: string;
-    }[];
-    successes?: {
-      domain: NamefiNormalizedDomain;
-      registrar?: string;
-    }[];
-    /** Per-domain charge amounts in USD (keyed by normalized domain name) */
-    chargeAmountByDomainLdh?: Record<string, number | null>;
-  }[];
+  workflowResults: AutoRenewWorkflowResultEntry[];
 }
 
 /**
@@ -145,7 +241,11 @@ export function computeAutoRenewMetricsFromResults(
       failedToCharge: 0,
       registrarErrors: 0,
       missingPriceData: 0,
+      deferredInsufficientBalance: 0,
     },
+    totalShortfallInUsdCents: 0,
+    totalNfscBalanceInUsdAtRunStart: 0,
+    usersWithInsufficientBalance: 0,
     criticalDomains: [],
     userCommunication: {
       upcomingRenewalNotifications,
@@ -173,20 +273,69 @@ export function computeAutoRenewMetricsFromResults(
       result.status === 'success' ? result.amountChargedInUsd || 0 : 0;
     metrics.totalAmountRefundedInUsd += result.amountRefundedInUsd || 0;
 
-    // Successes
-    if (result.successes) {
-      metrics.successfulRenewals += result.successes.length;
-      for (const success of result.successes) {
-        const registrar = success.registrar || 'Unknown';
+    // Snapshot aggregates (when orchestration supplied them)
+    if (result.snapshot) {
+      metrics.totalNfscBalanceInUsdAtRunStart +=
+        result.snapshot.availableBalanceInNfsc;
+    }
+    if (result.shortfallInUsdCents && result.shortfallInUsdCents > 0) {
+      metrics.totalShortfallInUsdCents += result.shortfallInUsdCents;
+      metrics.usersWithInsufficientBalance += 1;
+    }
+
+    // Prefer typed `domainCategories` when the orchestration layer
+    // supplied them. Falls back to reason-string regex / legacy arrays
+    // for callers that still populate only `failures[]` / `successes[]`.
+    if (result.domainCategories) {
+      const cats = result.domainCategories;
+      metrics.successfulRenewals += cats.renewed.length;
+      for (const entry of cats.renewed) {
+        const registrar = entry.registrar || 'Unknown';
         if (!metrics.registrarBreakdown[registrar]) {
           metrics.registrarBreakdown[registrar] = { successful: 0, failed: 0 };
         }
         metrics.registrarBreakdown[registrar].successful++;
       }
-    }
+      metrics.failureBreakdown.registrarErrors += cats.registrarFailed.length;
+      metrics.failureBreakdown.failedToCharge += cats.paymentFailed.length;
+      metrics.failureBreakdown.missingPriceData += cats.missingPrice.length;
+      metrics.failureBreakdown.deferredInsufficientBalance +=
+        cats.deferredInsufficientBalance.length;
+      metrics.failedRenewals +=
+        cats.registrarFailed.length +
+        cats.paymentFailed.length +
+        cats.deferredInsufficientBalance.length +
+        cats.missingPrice.length;
 
-    // Failures
-    if (result.failures) {
+      for (const entry of cats.registrarFailed) {
+        const registrar = entry.registrar || 'Unknown';
+        if (!metrics.registrarBreakdown[registrar]) {
+          metrics.registrarBreakdown[registrar] = { successful: 0, failed: 0 };
+        }
+        metrics.registrarBreakdown[registrar].failed++;
+        metrics.criticalDomains.push({
+          domain: entry.domain,
+          userId: result.userId,
+          userEmail: result.userEmail,
+          issue: entry.reason,
+          registrar: entry.registrar,
+          actionRequired: determineActionRequired(entry.reason),
+        });
+      }
+      for (const entry of cats.missingPrice) {
+        metrics.criticalDomains.push({
+          domain: entry.domain,
+          userId: result.userId,
+          userEmail: result.userEmail,
+          issue: 'Missing price data',
+          registrar: entry.registrar,
+          actionRequired: 'Check pricing data',
+        });
+      }
+      // paymentFailed and deferredInsufficientBalance are user-side,
+      // not ops-actionable — excluded from `criticalDomains`.
+    } else if (result.failures) {
+      // Legacy path: bucket via reason-string regex.
       metrics.failedRenewals += result.failures.length;
       for (const failure of result.failures) {
         const registrar = failure.registrar || 'Unknown';
@@ -195,7 +344,6 @@ export function computeAutoRenewMetricsFromResults(
         }
         metrics.registrarBreakdown[registrar].failed++;
 
-        // Categorize failures
         if (isPaymentFailure(failure.reason)) {
           metrics.failureBreakdown.failedToCharge++;
         } else if (failure.reason.toLowerCase().includes('price')) {
@@ -203,7 +351,6 @@ export function computeAutoRenewMetricsFromResults(
         } else {
           metrics.failureBreakdown.registrarErrors++;
         }
-        // Critical domains (exclude payment failures — those are user-side, not ops-actionable)
         if (!isPaymentFailure(failure.reason)) {
           metrics.criticalDomains.push({
             domain: failure.domain,
@@ -274,6 +421,219 @@ export function computeAutoRenewMetricsFromResults(
   );
 
   return metrics;
+}
+
+/**
+ * Build the summary email props from the raw report input + computed
+ * metrics. Pure — safe to call from both the activity and the admin
+ * tRPC router. Email body focuses on aggregate counts; per-category
+ * tables are capped by the template itself.
+ */
+export function buildAutoRenewReportProps(
+  input: AutoRenewReportInput,
+  metrics: AutoRenewMetrics,
+  options: {
+    adminUrl?: string;
+    attachmentNote?: string;
+  } = {},
+): AutoRenewDailyReportProps {
+  const reportDate = format(metrics.reportDate ?? new Date(), 'yyyy-MM-dd');
+  const title = `${reportDate} Auto-Renewal Daily Report`;
+
+  const categorized: Record<AutoRenewSnapshotCategory, AutoRenewDomainEntry[]> =
+    {
+      renewed: [],
+      registrarFailed: [],
+      paymentFailed: [],
+      deferredInsufficientBalance: [],
+      missingPrice: [],
+    };
+
+  const renewedTotalUsd = { value: 0 };
+  const paymentFailedTotalUsd = { value: 0 };
+  const deferredTotalUsd = { value: 0 };
+
+  for (const result of input.workflowResults) {
+    if (!result.domainCategories) continue;
+    const userRef = {
+      userId: result.userId,
+      userEmail: result.userEmail,
+    };
+
+    for (const entry of result.domainCategories.renewed) {
+      categorized.renewed.push({
+        ...userRef,
+        normalizedDomainName: entry.domain,
+        registrarKey: entry.registrar,
+        chargeAmountInUsd: entry.chargeAmountInUsd,
+      });
+      renewedTotalUsd.value += entry.chargeAmountInUsd ?? 0;
+    }
+    for (const entry of result.domainCategories.registrarFailed) {
+      categorized.registrarFailed.push({
+        ...userRef,
+        normalizedDomainName: entry.domain,
+        registrarKey: entry.registrar,
+        chargeAmountInUsd: entry.chargeAmountInUsd,
+        reason: entry.reason,
+      });
+    }
+    for (const entry of result.domainCategories.paymentFailed) {
+      categorized.paymentFailed.push({
+        ...userRef,
+        normalizedDomainName: entry.domain,
+        registrarKey: entry.registrar,
+        chargeAmountInUsd: entry.chargeAmountInUsd,
+        reason: entry.reason,
+      });
+      paymentFailedTotalUsd.value += entry.chargeAmountInUsd ?? 0;
+    }
+    for (const entry of result.domainCategories.deferredInsufficientBalance) {
+      categorized.deferredInsufficientBalance.push({
+        ...userRef,
+        normalizedDomainName: entry.domain,
+        registrarKey: entry.registrar,
+        chargeAmountInUsd: entry.chargeAmountInUsd,
+      });
+      deferredTotalUsd.value += entry.chargeAmountInUsd ?? 0;
+    }
+    for (const entry of result.domainCategories.missingPrice) {
+      categorized.missingPrice.push({
+        ...userRef,
+        normalizedDomainName: entry.domain,
+        registrarKey: entry.registrar,
+        chargeAmountInUsd: null,
+      });
+    }
+  }
+
+  const summary: AutoRenewReportSummary = {
+    reportDate,
+    totalUsersProcessed: metrics.totalUsersProcessed,
+    totalDomainsProcessed: metrics.totalDomainsProcessed,
+    renewed: {
+      total: metrics.successfulRenewals,
+      totalUsd: renewedTotalUsd.value,
+    },
+    registrarFailed: { total: metrics.failureBreakdown.registrarErrors },
+    paymentFailed: {
+      total: metrics.failureBreakdown.failedToCharge,
+      totalUsd: paymentFailedTotalUsd.value,
+    },
+    deferredInsufficientBalance: {
+      total: metrics.failureBreakdown.deferredInsufficientBalance,
+      totalUsd: deferredTotalUsd.value,
+      totalShortfallInUsd: metrics.totalShortfallInUsdCents / 100,
+      usersAffected: metrics.usersWithInsufficientBalance,
+    },
+    missingPrice: { total: metrics.failureBreakdown.missingPriceData },
+    totalChargedInUsd: metrics.totalAmountChargedInUsd,
+    totalRefundedInUsd: metrics.totalAmountRefundedInUsd,
+    totalNfscBalanceInUsdAtRunStart: metrics.totalNfscBalanceInUsdAtRunStart,
+    executionTimeMs: metrics.executionMetrics.totalExecutionTime,
+  };
+
+  return {
+    title,
+    summary,
+    categorized,
+    meta: {
+      reportDate,
+      generatedAt: new Date().toISOString(),
+      adminUrl:
+        options.adminUrl ?? 'https://astra.namefi.io/admin/auto-renewal',
+      attachmentNote: options.attachmentNote,
+    },
+  };
+}
+
+/**
+ * Build the detailed HTML-attachment props. Extends the summary props
+ * with a full per-user card array (no cap).
+ */
+export function buildAutoRenewDetailedProps(
+  input: AutoRenewReportInput,
+  metrics: AutoRenewMetrics,
+  options: {
+    adminUrl?: string;
+    attachmentNote?: string;
+  } = {},
+): AutoRenewDailyReportDetailedProps {
+  const summaryProps = buildAutoRenewReportProps(input, metrics, options);
+
+  const users: AutoRenewUserCard[] = input.workflowResults
+    .filter((r) => r.snapshot)
+    .map((result) => {
+      const cats = result.domainCategories ?? {
+        renewed: [],
+        registrarFailed: [],
+        paymentFailed: [],
+        deferredInsufficientBalance: [],
+        missingPrice: [],
+      };
+      const userRef = {
+        userId: result.userId,
+        userEmail: result.userEmail,
+      };
+      return {
+        userId: result.userId,
+        userEmail: result.userEmail,
+        paymentStatus:
+          result.status === 'success'
+            ? 'SUCCEEDED'
+            : result.status === 'failure'
+              ? 'FAILED'
+              : 'SKIPPED',
+        availableBalanceInUsd: result.snapshot!.availableBalanceInNfsc,
+        nfscBalancesByChain: result.snapshot!.nfscBalancesByChain,
+        availablePaymentMethods: result.snapshot!.availablePaymentMethods,
+        totalBilledInUsd: result.totalAmountInUsd ?? 0,
+        shortfallInUsdCents: result.shortfallInUsdCents,
+        snapshotTakenAt: result.snapshot!.snapshotTakenAt,
+        domainsByCategory: {
+          renewed: cats.renewed.map((entry) => ({
+            ...userRef,
+            normalizedDomainName: entry.domain,
+            registrarKey: entry.registrar,
+            chargeAmountInUsd: entry.chargeAmountInUsd,
+          })),
+          registrarFailed: cats.registrarFailed.map((entry) => ({
+            ...userRef,
+            normalizedDomainName: entry.domain,
+            registrarKey: entry.registrar,
+            chargeAmountInUsd: entry.chargeAmountInUsd,
+            reason: entry.reason,
+          })),
+          paymentFailed: cats.paymentFailed.map((entry) => ({
+            ...userRef,
+            normalizedDomainName: entry.domain,
+            registrarKey: entry.registrar,
+            chargeAmountInUsd: entry.chargeAmountInUsd,
+            reason: entry.reason,
+          })),
+          deferredInsufficientBalance: cats.deferredInsufficientBalance.map(
+            (entry) => ({
+              ...userRef,
+              normalizedDomainName: entry.domain,
+              registrarKey: entry.registrar,
+              chargeAmountInUsd: entry.chargeAmountInUsd,
+            }),
+          ),
+          missingPrice: cats.missingPrice.map((entry) => ({
+            ...userRef,
+            normalizedDomainName: entry.domain,
+            registrarKey: entry.registrar,
+            chargeAmountInUsd: null,
+          })),
+        },
+      };
+    });
+
+  return {
+    ...summaryProps,
+    title: `${summaryProps.title} — Detailed`,
+    users,
+  };
 }
 
 /**
@@ -601,7 +961,16 @@ export async function sendAutoRenewReportToSlack(
 }
 
 /**
- * Send auto-renewal report via email with CSV and Markdown attachments
+ * Send auto-renewal report via email with CSV, Markdown, and detailed HTML attachments.
+ *
+ * The email body renders the compact summary template
+ * (`AutoRenewDailyReport`) with category-first capped tables. Full
+ * per-user detail (balance, payment methods, every domain) lives in
+ * the detailed HTML attachment rendered from `AutoRenewDailyReportDetailed`,
+ * plus the existing CSV and Markdown attachments for grep-ability.
+ *
+ * `content` is the legacy Markdown-formatted report content. It's still
+ * used by the Slack path; no longer rendered into the email body.
  */
 export async function sendAutoRenewReportEmailWithAttachments(
   title: string,
@@ -610,8 +979,16 @@ export async function sendAutoRenewReportEmailWithAttachments(
   metrics: AutoRenewMetrics,
 ): Promise<void> {
   const ctx = Context.current();
+  // `content` (legacy Markdown) is threaded through only so the Slack
+  // path and other ambient callers can still consume it; the email
+  // body no longer uses it.
+  void content;
 
   try {
+    // Build typed props for both the email body and the HTML attachment.
+    const reportProps = buildAutoRenewReportProps(input, metrics);
+    const detailedProps = buildAutoRenewDetailedProps(input, metrics);
+
     // Generate attachments
     const csvContent = await generateAutoRenewReportCsv(input, metrics);
     const markdownContent = await generateAutoRenewReportMarkdown(
@@ -621,15 +998,18 @@ export async function sendAutoRenewReportEmailWithAttachments(
 
     const dateStr = format(metrics.reportDate || new Date(), 'yyyy-MM-dd');
 
-    // Create React email template
-    const emailTemplate = React.createElement(AutoRenewDailyReport, {
-      title,
-      reportContent: content,
-    });
-
-    // Render the template to HTML and plain text
+    // Render the structured summary template into the email body.
+    const emailTemplate = createElement(AutoRenewDailyReport, reportProps);
     const html = await render(emailTemplate);
     const plain = await render(emailTemplate, { plainText: true });
+
+    // Render the detailed per-user template into a standalone HTML
+    // attachment — every user, no cap.
+    const detailedTemplate = createElement(
+      AutoRenewDailyReportDetailed,
+      detailedProps,
+    );
+    const detailedHtml = await render(detailedTemplate);
 
     await sendMail({
       to: [
@@ -653,6 +1033,11 @@ export async function sendAutoRenewReportEmailWithAttachments(
           content: markdownContent,
           contentType: 'text/markdown',
         },
+        {
+          filename: `autorenew-report-${dateStr}-detailed.html`,
+          content: detailedHtml,
+          contentType: 'text/html',
+        },
       ],
     });
 
@@ -663,49 +1048,6 @@ export async function sendAutoRenewReportEmailWithAttachments(
     ctx.log.error('Failed to send auto-renewal report email with attachments', {
       error,
     });
-    throw error;
-  }
-}
-
-/**
- * Legacy function for backward compatibility - redirects to new function with attachments
- */
-export async function sendAutoRenewReportEmail(
-  title: string,
-  content: string,
-): Promise<void> {
-  // For backward compatibility, just send without attachments using simple email
-  const ctx = Context.current();
-
-  try {
-    // Create React email template
-    const emailTemplate = React.createElement(AutoRenewDailyReport, {
-      title,
-      reportContent: content,
-    });
-
-    // Render the template to HTML and plain text
-    const html = await render(emailTemplate);
-    const plain = await render(emailTemplate, { plainText: true });
-
-    await sendMail({
-      to: [
-        'reports+autorenew@d3serve.xyz',
-        'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
-      ],
-      subject: title,
-      content: {
-        html,
-        plain,
-      },
-      from: 'Auto-Renewal System <noreply@d3serve.xyz>',
-    });
-
-    ctx.log.info(
-      'Successfully sent auto-renewal report email to reports+autorenew@d3serve.xyz',
-    );
-  } catch (error) {
-    ctx.log.error('Failed to send auto-renewal report email', { error });
     throw error;
   }
 }

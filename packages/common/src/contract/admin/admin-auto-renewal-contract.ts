@@ -30,11 +30,29 @@ type UserResultForAdminLike = {
   totalAmountInUsd: number;
   refundAmountInUsd?: number;
   orderId?: string;
+  /** NFSC balance available at workflow start (USD, summed across chains). */
+  availableBalanceInNfsc?: number;
+  nfscBalancesByChain?: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  availablePaymentMethods?: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  shortfallInUsdCents?: number;
+  snapshotTakenAt?: string;
   domains: Array<{
     domain: string;
     registrar?: string;
     chainId?: number;
-    status: 'SUCCESS' | 'FAILED' | 'PAYMENT_FAILED' | 'MISSING_PRICE';
+    status:
+      | 'SUCCESS'
+      | 'FAILED'
+      | 'PAYMENT_FAILED'
+      | 'MISSING_PRICE'
+      | 'SKIPPED_INSUFFICIENT_FUNDS';
     chargeAmountUsd?: number | null;
     errorReason?: string;
     actionRequired?: string;
@@ -80,7 +98,15 @@ type AutoRenewMetricsLike = {
     failedToCharge: number;
     registrarErrors: number;
     missingPriceData: number;
+    /** NEW: domains deferred because NFSC balance ran out this cycle. */
+    deferredInsufficientBalance: number;
   };
+  /** NEW: sum of per-user `shortfallInUsdCents` across users. */
+  totalShortfallInUsdCents: number;
+  /** NEW: sum of per-user NFSC balance at run start (USD). */
+  totalNfscBalanceInUsdAtRunStart: number;
+  /** NEW: count of users with at least $0.01 shortfall. */
+  usersWithInsufficientBalance: number;
   criticalDomains: Array<{
     domain: string;
     userId: string;

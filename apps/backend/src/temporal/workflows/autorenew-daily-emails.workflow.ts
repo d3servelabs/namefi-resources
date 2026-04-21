@@ -272,6 +272,36 @@ type DomainWithChargeAmount = UserDomainsUpForRenewal[number] & {
   chargeAmount: number;
 };
 
+/**
+ * Per-user snapshot taken at workflow start — BEFORE any charges run.
+ *
+ * Rendered in the daily report email body, the detailed HTML
+ * attachment, the CSV attachment, and the admin UI. Lets on-call see
+ * exactly what balance/payment methods the user had available at the
+ * moment renewal was attempted, which is critical for explaining
+ * deferred-insufficient-balance outcomes.
+ *
+ * Units:
+ * - `availableBalanceInNfsc` is USD (NFSC is USD-pegged, summed across chains).
+ * - `nfscBalancesByChain[].balanceInUsd` is USD per (wallet, chain) pair.
+ *
+ * `snapshotTakenAt` derives from `workflow.workflowInfo().startTime` so
+ * it stays deterministic across Temporal replay.
+ */
+export type PerUserRunSnapshot = {
+  availableBalanceInNfsc: number;
+  nfscBalancesByChain: Array<{
+    walletAddress: string;
+    chainId: number;
+    balanceInUsd: number | null;
+  }>;
+  availablePaymentMethods: Array<
+    | { kind: 'NFSC_WALLET'; walletAddress: string }
+    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
+  >;
+  snapshotTakenAt: string;
+};
+
 /*
  * ------------------------------------------------------------
  * Select Affordable Subset of Domains
@@ -434,6 +464,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     expectedPayments,
     paymentPrepareResult,
     stripeLast4ByMethodId,
+    userPaymentSources,
     availableBalanceInNfsc,
     availableOffChainPaymentMethodsPublicIdentifiers,
   } = await _preparePaymentsForRenew(
@@ -447,8 +478,42 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   let domainsSkippedDueToInsufficientFunds: DomainWithChargeAmount[] = [];
   let shortfallInUsdCents: number | undefined;
 
+  // Per-user snapshot captured at run-start (BEFORE any charges happen).
+  // The email/attachment/admin UI all render this so on-call can see
+  // exactly what the user had available when we attempted renewal.
+  // Unit: USD (NFSC is USD-pegged, summed across chains).
+  const runStartSnapshot: PerUserRunSnapshot = {
+    availableBalanceInNfsc,
+    nfscBalancesByChain: userPaymentSources.nfscSources.flatMap((source) =>
+      Object.entries(source.balances).map(([chainIdStr, balanceInUsd]) => ({
+        walletAddress: source.walletAddress,
+        chainId: Number(chainIdStr),
+        balanceInUsd: balanceInUsd ?? null,
+      })),
+    ),
+    availablePaymentMethods: [
+      ...userPaymentSources.nfscSources.map(
+        (source) =>
+          ({
+            kind: 'NFSC_WALLET' as const,
+            walletAddress: source.walletAddress,
+          }) satisfies PerUserRunSnapshot['availablePaymentMethods'][number],
+      ),
+      ...userPaymentSources.stripePaymentMethods.map(
+        (method) =>
+          ({
+            kind: 'STRIPE' as const,
+            last4: stripeLast4ByMethodId[method.id] ?? null,
+            paymentMethodId: method.id,
+          }) satisfies PerUserRunSnapshot['availablePaymentMethods'][number],
+      ),
+    ],
+    snapshotTakenAt: workflow.workflowInfo().startTime.toISOString(),
+  };
+
   if (dryRun) {
     return {
+      ...runStartSnapshot,
       userId,
       userEmail,
       domainsThatShouldBeRenewed,
@@ -543,6 +608,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   if (domainsThatCouldBeRenewed.length === 0) {
     workflow.log.info(`For user ${userId} there are no domains up for renew`);
     return {
+      ...runStartSnapshot,
       userId,
       userEmail,
       domainsThatShouldBeRenewed,
@@ -565,6 +631,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       paymentPrepareResult,
     });
     return {
+      ...runStartSnapshot,
       userId,
       userEmail,
       domainsThatShouldBeRenewed,
@@ -632,6 +699,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     }
     // stop for this user because we failed to charge
     return {
+      ...runStartSnapshot,
       userId,
       userEmail,
       totalAmountInUsd,
@@ -720,6 +788,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   });
 
   const result = {
+    ...runStartSnapshot,
     userId,
     userEmail,
     failures,
@@ -776,7 +845,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 export type SingleUserRenewalResult = Awaited<
   ReturnType<typeof notifyAndRenewDomainsForSingleUserWorkflow>
 >;
-type NotifyAndRenewDomainsForSingleUserWorkflowOutput = {
+type NotifyAndRenewDomainsForSingleUserWorkflowOutput = PerUserRunSnapshot & {
   userId: string;
   userEmail: string | undefined;
   domainsThatShouldBeRenewed: UserDomainsUpForRenewal;
