@@ -367,7 +367,7 @@ export const Landing: LandingComponent = ({ origin }) => {
     loadMore,
     isLoadingMore,
     freeClaimEligibility,
-  } = useSearch(parentDomain);
+  } = useSearch(parentDomain, { suggestionSource: 'client-ranked-tlds' });
 
   useSearchFromQuery(setQuery, runSearch);
 

@@ -32,13 +32,13 @@ export const sanitisedQuerySchema = z
   .transform<SanitisedDomain>((raw, ctx) => {
     const cleaned = raw
       .replace(/^[a-z][a-z0-9+.-]*:\/\//i, '') // rm scheme
-      .replace(/\/.*$/s, '') // rm path
+      .replace(/[/?#].*$/s, '') // rm path/query/hash
       .normalize('NFKC')
       .trim()
       .toLowerCase()
       .replace(/\.{2,}/g, '.') // collapse ..
       .replace(/^\.|\.$/g, '') // rm edge dots
-      .replace(/[^\p{L}\p{N}\u2010\-.]/gu, ''); // keep letters, numbers, -, …
+      .replace(/[^\p{L}\p{N}_\u2010\-.]/gu, ''); // keep letters, numbers, _, -, …
 
     if (!cleaned) {
       ctx.addIssue({ code: 'custom', message: 'empty domain' });

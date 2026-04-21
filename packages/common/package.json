@@ -12,6 +12,7 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "typecheck": "tsgo --noEmit",
+    "test": "vitest --run",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",
@@ -28,6 +29,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@namefi-astra/typescript": "workspace:*"
+    "@namefi-astra/typescript": "workspace:*",
+    "vitest": "^3.2.4"
   }
 }

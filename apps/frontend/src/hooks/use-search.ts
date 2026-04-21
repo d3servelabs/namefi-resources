@@ -11,6 +11,11 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import { useTRPC, useTRPCClient, type AppRouterOutput } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
+import {
+  safeGenerateRankedDomainSuggestions,
+  type RankedDomainSuggestionsResult,
+} from '@namefi-astra/common/ranked-domain-suggestions';
+import { DEFAULT_RANKED_TLD_PAGE_SIZE } from '@namefi-astra/common/tld-rank';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { SearchMode } from '@/components/search/types';
 import { parseCSVDomains } from '@/components/search/utils';
@@ -26,13 +31,24 @@ declare global {
 }
 type TldPricingInfo = AppRouterOutput['registry']['getTldPricingTable'][number];
 
-const RANKED_TLD_PAGE_SIZE = 16;
+const RANKED_TLD_PAGE_SIZE = DEFAULT_RANKED_TLD_PAGE_SIZE;
 
-export const useSearch = (parentDomain?: string) => {
+type UseSearchOptions = {
+  suggestionSource?: 'api' | 'client-ranked-tlds';
+};
+
+export const useSearch = (
+  parentDomain?: string,
+  options: UseSearchOptions = {},
+) => {
   const [query, setQuery] = useState('');
   const [searchMode, setSearchMode] = useState<SearchMode>(SearchMode.REGISTER);
   const [debounced] = useDebounceValue(query, 100);
   const sanitized = debounced.trim();
+  const [clientSuggestionPagination, setClientSuggestionPagination] = useState({
+    key: '',
+    page: 1,
+  });
   const { isAuthenticated } = useAuth();
 
   const onSearchModeChange = useCallback((mode: SearchMode) => {
@@ -45,6 +61,24 @@ export const useSearch = (parentDomain?: string) => {
   const normalizedQuery = sanitized.toLowerCase();
   const suggestionEnabled =
     normalizedQuery.length > 0 && searchMode === SearchMode.REGISTER;
+  const useClientRankedSuggestions =
+    options.suggestionSource === 'client-ranked-tlds' && !parentDomain;
+  const clientSuggestionKey = `${normalizedQuery}:${parentDomain ?? ''}`;
+  useEffect(() => {
+    if (!useClientRankedSuggestions) {
+      return;
+    }
+
+    setClientSuggestionPagination({
+      key: normalizedQuery.length > 0 ? clientSuggestionKey : '',
+      page: 1,
+    });
+  }, [clientSuggestionKey, normalizedQuery.length, useClientRankedSuggestions]);
+
+  const clientSuggestionPage =
+    clientSuggestionPagination.key === clientSuggestionKey
+      ? clientSuggestionPagination.page
+      : 1;
   const {
     error: suggestionError,
     data: suggestionData,
@@ -70,13 +104,43 @@ export const useSearch = (parentDomain?: string) => {
       }),
     getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
     initialPageParam: 1,
-    enabled: suggestionEnabled,
+    enabled: suggestionEnabled && !useClientRankedSuggestions,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchInterval: false,
     staleTime: Number.POSITIVE_INFINITY,
   });
+
+  const clientSuggestionResult = useMemo(() => {
+    if (!suggestionEnabled || !useClientRankedSuggestions) {
+      return { pages: [], error: undefined };
+    }
+
+    const pages: RankedDomainSuggestionsResult[] = [];
+    for (let index = 0; index < clientSuggestionPage; index++) {
+      const result = safeGenerateRankedDomainSuggestions(
+        normalizedQuery,
+        index + 1,
+        RANKED_TLD_PAGE_SIZE,
+      );
+      if (!result.success) {
+        return { pages: [], error: result.error };
+      }
+      pages.push(result.data);
+    }
+
+    return { pages, error: undefined };
+  }, [
+    clientSuggestionPage,
+    normalizedQuery,
+    suggestionEnabled,
+    useClientRankedSuggestions,
+  ]);
+  const clientSuggestionPages = clientSuggestionResult.pages;
+  const clientSuggestionError = clientSuggestionResult.error;
+  const clientLastSuggestionPage = clientSuggestionPages.at(-1);
+  const clientHasNextPage = Boolean(clientLastSuggestionPage?.nextPage);
 
   const importQuery = useMemo(() => {
     if (sanitized.length > 0) {
@@ -90,7 +154,9 @@ export const useSearch = (parentDomain?: string) => {
     if (!suggestionEnabled || searchMode !== SearchMode.REGISTER) {
       return [];
     }
-    const pages = suggestionData?.pages ?? [];
+    const pages = useClientRankedSuggestions
+      ? clientSuggestionPages
+      : (suggestionData?.pages ?? []);
     const seen = new Set<NamefiNormalizedDomain>();
     const collected: NamefiNormalizedDomain[] = [];
 
@@ -104,7 +170,13 @@ export const useSearch = (parentDomain?: string) => {
     }
 
     return collected;
-  }, [suggestionData?.pages, suggestionEnabled, searchMode]);
+  }, [
+    clientSuggestionPages,
+    searchMode,
+    suggestionData?.pages,
+    suggestionEnabled,
+    useClientRankedSuggestions,
+  ]);
 
   const domains = useMemo<NamefiNormalizedDomain[]>(
     () =>
@@ -199,17 +271,50 @@ export const useSearch = (parentDomain?: string) => {
   const runSearch = useCallback(() => {
     if (query.trim().length === 0) return;
     if (searchMode === SearchMode.REGISTER) {
+      if (useClientRankedSuggestions) {
+        setClientSuggestionPagination({
+          key: clientSuggestionKey,
+          page: 1,
+        });
+        return;
+      }
       void refetchSuggestions();
     } else {
       setAuthoritativeDomainInfo(new Map());
       resetAvailStatus();
     }
-  }, [query, refetchSuggestions, searchMode, resetAvailStatus]);
+  }, [
+    query,
+    refetchSuggestions,
+    searchMode,
+    resetAvailStatus,
+    clientSuggestionKey,
+    useClientRankedSuggestions,
+  ]);
 
   const loadMore = useCallback(() => {
+    if (useClientRankedSuggestions) {
+      if (clientHasNextPage) {
+        setClientSuggestionPagination((previous) => ({
+          key: clientSuggestionKey,
+          page:
+            previous.key === clientSuggestionKey
+              ? previous.page + 1
+              : clientSuggestionPage + 1,
+        }));
+      }
+      return;
+    }
     if (!hasNextPage) return;
     void fetchNextPage();
-  }, [hasNextPage, fetchNextPage]);
+  }, [
+    clientHasNextPage,
+    clientSuggestionKey,
+    clientSuggestionPage,
+    fetchNextPage,
+    hasNextPage,
+    useClientRankedSuggestions,
+  ]);
 
   const isAvailabilityStreaming =
     domains.length > 0 &&
@@ -219,6 +324,7 @@ export const useSearch = (parentDomain?: string) => {
 
   const isRegisterLoading =
     searchMode === SearchMode.REGISTER &&
+    !useClientRankedSuggestions &&
     suggestionIsFetching &&
     suggestedDomains.length === 0;
 
@@ -230,10 +336,14 @@ export const useSearch = (parentDomain?: string) => {
   const hasData = domains.length > 0;
 
   const canLoadMore =
-    searchMode === SearchMode.REGISTER && !parentDomain && Boolean(hasNextPage);
+    searchMode === SearchMode.REGISTER &&
+    !parentDomain &&
+    (useClientRankedSuggestions ? clientHasNextPage : Boolean(hasNextPage));
 
   const isLoadingMore =
-    searchMode === SearchMode.REGISTER && Boolean(isFetchingNextPage);
+    searchMode === SearchMode.REGISTER &&
+    !useClientRankedSuggestions &&
+    Boolean(isFetchingNextPage);
 
   return {
     query,
@@ -243,16 +353,22 @@ export const useSearch = (parentDomain?: string) => {
     onSearchModeChange,
     importQuery,
     isLoading,
-    isError: suggestionIsError || availStatus === 'error',
-    error: suggestionIsError
-      ? suggestionError instanceof Error
-        ? suggestionError.message
-        : 'Search failed'
-      : availStatus === 'error'
-        ? availError instanceof Error
-          ? availError.message
-          : 'Search failed'
-        : undefined,
+    isError:
+      (useClientRankedSuggestions && Boolean(clientSuggestionError)) ||
+      (!useClientRankedSuggestions && suggestionIsError) ||
+      availStatus === 'error',
+    error:
+      useClientRankedSuggestions && clientSuggestionError instanceof Error
+        ? clientSuggestionError.message
+        : !useClientRankedSuggestions && suggestionIsError
+          ? suggestionError instanceof Error
+            ? suggestionError.message
+            : 'Search failed'
+          : availStatus === 'error'
+            ? availError instanceof Error
+              ? availError.message
+              : 'Search failed'
+            : undefined,
     domains,
     domainInfos: domainInfo,
     authoritativeDomainInfos: authoritativeDomainInfo,
