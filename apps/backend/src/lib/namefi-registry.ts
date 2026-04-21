@@ -295,9 +295,9 @@ export const getDomainListInfo = async (
 
   const { eppDomain = [], subdomain = [] } = groupBy((domain) => {
     // Parse the domain to extract its components
-    const domainParseResult = parseDomain(domain);
+    const domainParseResult = parseDomainName(domain);
     // Return default values for invalid or unsupported domains
-    if (domainParseResult.type !== ParseResultType.Listed) {
+    if (!domainParseResult.valid) {
       return 'invalid';
     }
     // if the domain has a pending order, return 'order-pending'
@@ -309,14 +309,13 @@ export const getDomainListInfo = async (
       return 'unavailable';
     }
 
-    const parseResult = parseDomainName(domain);
-    if (!parseResult.valid) {
+    if (!domainParseResult.valid) {
       return 'invalid';
     }
-    if (parseResult.registryType === 'traditional') {
+    if (domainParseResult.registryType === 'traditional') {
       return 'eppDomain';
     }
-    if (parseResult.registryType === 'subdomain') {
+    if (domainParseResult.registryType === 'subdomain') {
       return 'subdomain';
     }
 
