@@ -23,6 +23,7 @@ import {
 import { terminationLink } from './links/termination-link';
 import { createGatedLink } from './links/conditional-resolving-link';
 import { createZoneNsAndSoaLink } from './links/zone-ns-soa-link';
+import { createUnofficialTldRelayLink } from './links/unofficial-tld-relay-link';
 
 export interface DnsRequestLinkDependencies {
   getNsAndSoaRecords: DnsAnswerResolver;
@@ -102,6 +103,10 @@ export function createDefaultDnsRequestLinksV2_1(
     createLoggingLink(),
     wildcardTerminationLink,
     createZoneNsAndSoaLink(),
+    createGatedLink(
+      createUnofficialTldRelayLink(),
+      (context) => process.env.ENVIRONMENT !== 'production',
+    ),
     createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
     createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
     createGatedLink(

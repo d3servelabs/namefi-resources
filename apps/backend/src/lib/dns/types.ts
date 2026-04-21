@@ -14,6 +14,12 @@ export interface DnsResponse {
     TTL: number;
     data: string;
   }>;
+  Authority?: Array<{
+    name: string;
+    type: number;
+    TTL: number;
+    data: string;
+  }>;
   Question?: Array<{
     name: string;
     type: number;

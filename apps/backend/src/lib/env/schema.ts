@@ -212,6 +212,15 @@ export const configSchema = z.object({
       ),
     ),
 
+  /**
+   * Real DNS zone used to relay records for unofficial TLDs
+   * (see `NAMEFI_UNOFFICIAL_TLDS`). A query for
+   * `<name>.<unofficialTld>.<NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE>` resolves
+   * to the same records stored under the logical `<name>.<unofficialTld>`
+   * zone. Normalized form: lowercase, no trailing dot.
+   */
+  NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE: z.string().default('gtld.namefi.dev'),
+
   AWS_REGION: z.string().default('us-east-1'),
   DYNADOT_BASE_URL: z.string().optional(),
   DNSSEC_DNSKEY_PUBLIC_RECORD: z.string(),

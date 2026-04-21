@@ -16,7 +16,7 @@ function safeParseArray(input: string | undefined) {
   return null;
 }
 
-function getExtraAllowedPublicSuffix(): string[] {
+export function getUnofficialTlds(): string[] {
   // Browser
   if (typeof window === 'object' && !!window) {
     if ('namefi_tlds' in window && Array.isArray(window.namefi_tlds)) {
@@ -43,6 +43,8 @@ function getExtraAllowedPublicSuffix(): string[] {
   // Fallback
   return [] as string[];
 }
+
+const getExtraAllowedPublicSuffix = getUnofficialTlds;
 
 function parseDomainWithUnofficialPublicSuffix(
   normalizedDomainName: NamefiNormalizedDomain,
