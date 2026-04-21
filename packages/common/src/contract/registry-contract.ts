@@ -99,7 +99,23 @@ export type TldPricingInfoLike = {
 // TODO(contract): replace with a structural zod schema for TldPricingInfo.
 const tldPricingInfoSchema = z.custom<TldPricingInfoLike>(() => true);
 
-const getTldPricingTableOutputSchema = z.array(tldPricingInfoSchema);
+/**
+ * Mirror of the backend's powered-by-namefi (PBN) domain pricing entry.
+ * `costPerYearInUsd` is the per-year subdomain minting price under the PBN
+ * parent domain, expressed in USD (not cents) to match `TldPricingInfoLike`.
+ */
+export type PbnDomainPricingLike = {
+  normalizedDomainName: string;
+  costPerYearInUsd: number;
+};
+
+// TODO(contract): replace with a structural zod schema for PbnDomainPricing.
+const pbnDomainPricingSchema = z.custom<PbnDomainPricingLike>(() => true);
+
+const getTldPricingTableOutputSchema = z.object({
+  tldPricing: z.array(tldPricingInfoSchema),
+  pbnDomains: z.array(pbnDomainPricingSchema),
+});
 
 const getDomainsByOwnerOutputSchema = z.object({
   walletAddress: z.string(),

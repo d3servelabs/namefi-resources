@@ -22,6 +22,7 @@ import { parseCSVDomains } from '@/components/search/utils';
 import { useAuth } from './use-auth';
 import { dropLast, isNil, isEmpty } from 'ramda';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 declare global {
   interface Window {
@@ -29,7 +30,10 @@ declare global {
     printTimingDetails: () => void;
   }
 }
-type TldPricingInfo = AppRouterOutput['registry']['getTldPricingTable'][number];
+type TldPricingInfo =
+  AppRouterOutput['registry']['getTldPricingTable']['tldPricing'][number];
+type PbnDomainPricing =
+  AppRouterOutput['registry']['getTldPricingTable']['pbnDomains'][number];
 
 const RANKED_TLD_PAGE_SIZE = DEFAULT_RANKED_TLD_PAGE_SIZE;
 
@@ -196,7 +200,11 @@ export const useSearch = (
   const { data: preliminaryDomainAvailability } = useQuery({
     queryKey: ['preliminaryDomainAvailability', domains],
     queryFn: () =>
-      getPreliminaryDomainAvailability(domains, tldPricingQuery.data || []),
+      getPreliminaryDomainAvailability(
+        domains,
+        tldPricingQuery.data?.tldPricing ?? [],
+        tldPricingQuery.data?.pbnDomains ?? [],
+      ),
     enabled: domains.length > 0 && !tldPricingQuery.isLoading,
   });
 
@@ -393,21 +401,72 @@ function resolveNsDOH(domain: NamefiNormalizedDomain) {
     });
 }
 
+function resolveIpv4DOH(domain: NamefiNormalizedDomain) {
+  return fetch(`https://dns.google/resolve?name=${domain}&type=A`)
+    .then((res) => res.json())
+    .then((data) => data.Answer?.map((answer: any) => answer.data))
+    .then((ips) => ips?.map((ip: string) => ip.trim()))
+    .catch((error) => {
+      // biome-ignore lint/suspicious/noConsole: used for debugging
+      console.error('Error resolving A record for', domain, error);
+      return [];
+    });
+}
+
+type PricingMapEntry =
+  | { kind: 'tld'; info: TldPricingInfo }
+  | { kind: 'pbn'; info: PbnDomainPricing };
+
 const getPreliminaryDomainAvailability = async (
   _domains: NamefiNormalizedDomain[],
   tldPricingInfo: TldPricingInfo[],
+  pbnDomainPricing: PbnDomainPricing[],
 ): Promise<DomainAvailabilityInfo[]> => {
-  const priceMap = new Map<string, TldPricingInfo>(
-    tldPricingInfo.map((info) => [info.tld, info]),
-  );
-  const domains = _domains.filter((domain) => domain.split('.').length === 2); //todo use actual public suffix list
+  const priceMap = new Map<string, PricingMapEntry>();
+  for (const info of tldPricingInfo) {
+    priceMap.set(info.tld, { kind: 'tld', info });
+  }
+  for (const info of pbnDomainPricing) {
+    priceMap.set(info.normalizedDomainName, { kind: 'pbn', info });
+  }
+
+  const parsedDomains = _domains
+    .map((domain) => ({ domain, parsed: parseDomainName(domain) }))
+    .filter(
+      (
+        entry,
+      ): entry is {
+        domain: NamefiNormalizedDomain;
+        parsed: Extract<ReturnType<typeof parseDomainName>, { valid: true }>;
+      } => entry.parsed.valid,
+    );
 
   return Promise.all(
-    domains.map(async (domain) => {
-      const [_error, nameservers] = await resolve(resolveNsDOH(domain));
-      const availability = isNil(nameservers) || isEmpty(nameservers);
-      const tld = domain.split('.').pop();
-      const pricingDetails = tld ? priceMap.get(tld) : undefined;
+    parsedDomains.map(async ({ domain, parsed }) => {
+      const [_error, records] = await resolve(
+        parsed.registryType === 'subdomain'
+          ? resolveIpv4DOH(domain)
+          : resolveNsDOH(domain),
+      );
+      const availability = isNil(records) || isEmpty(records);
+      const priceKey =
+        parsed.registryType === 'subdomain'
+          ? parsed.immediateParentDomain
+          : parsed.publicSuffix;
+      const pricingEntry = priceMap.get(priceKey);
+
+      const amounts =
+        pricingEntry?.kind === 'pbn'
+          ? {
+              registration: pricingEntry.info.costPerYearInUsd,
+              renewal: pricingEntry.info.costPerYearInUsd,
+              transfer: pricingEntry.info.costPerYearInUsd,
+            }
+          : {
+              registration: pricingEntry?.info.registrationPriceUsdPerYear ?? 0,
+              renewal: pricingEntry?.info.renewalPriceUsdPerYear ?? 0,
+              transfer: pricingEntry?.info.transferPriceUsdPerYear ?? 0,
+            };
 
       return {
         domain,
@@ -416,21 +475,21 @@ const getPreliminaryDomainAvailability = async (
           importPrice: {
             type: 'PER_YEAR',
             price: {
-              amount: pricingDetails?.transferPriceUsdPerYear ?? 0,
+              amount: amounts.transfer ?? 0,
               currency: 'USD',
             },
           },
           registrationPrice: {
             type: 'PER_YEAR',
             price: {
-              amount: pricingDetails?.registrationPriceUsdPerYear ?? 0,
+              amount: amounts.registration ?? 0,
               currency: 'USD',
             },
           },
           renewalPrice: {
             type: 'PER_YEAR',
             price: {
-              amount: pricingDetails?.renewalPriceUsdPerYear ?? 0,
+              amount: amounts.renewal ?? 0,
               currency: 'USD',
             },
           },
@@ -438,9 +497,10 @@ const getPreliminaryDomainAvailability = async (
         currentOwner: undefined,
         durationValidationInYears: { min: 1, max: 1 },
         importable: !availability,
-        registrarKey: pricingDetails
-          ? pricingDetails.registrarKey
-          : 'preliminary',
+        registrarKey:
+          pricingEntry?.kind === 'tld'
+            ? pricingEntry.info.registrarKey
+            : 'preliminary',
         supported: true,
       } satisfies DomainAvailabilityInfo;
     }),

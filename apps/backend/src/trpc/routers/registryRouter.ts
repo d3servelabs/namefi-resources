@@ -14,6 +14,7 @@ import { z } from 'zod';
 import {
   getDomainListInfo,
   getPoweredByNamefi3PDomains,
+  getPoweredByNamefi3PDomainsDetails,
   getTldPricingTable,
 } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, publicProcedure } from '../base';
@@ -70,7 +71,17 @@ export const registryRouter = createContractTRPCRouter<typeof registryContract>(
     getTldPricingTable: authedOrPublicProcedure
       .input(registryContract.getTldPricingTable.input)
       .output(registryContract.getTldPricingTable.output)
-      .query(async () => getTldPricingTable()),
+      .query(async () => {
+        const [tldPricing, pbnDomainDetails] = await Promise.all([
+          getTldPricingTable(),
+          getPoweredByNamefi3PDomainsDetails(),
+        ]);
+        const pbnDomains = pbnDomainDetails.map((domain) => ({
+          normalizedDomainName: domain.normalizedDomainName,
+          costPerYearInUsd: domain.costPerYearInUsdCents / 100,
+        }));
+        return { tldPricing, pbnDomains };
+      }),
 
     getDomainsByOwner: publicProcedure
       .input(registryContract.getDomainsByOwner.input)

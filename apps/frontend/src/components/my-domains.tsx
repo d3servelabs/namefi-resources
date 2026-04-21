@@ -1005,7 +1005,7 @@ function MyDomainsTable(props: {
   );
   const renewalPriceUsdPerYearByTld = useMemo(() => {
     const map = new Map<string, number | null>();
-    for (const row of tldPricingQuery.data ?? []) {
+    for (const row of tldPricingQuery.data?.tldPricing ?? []) {
       if (!row?.tld) continue;
       map.set(
         String(row.tld).toLowerCase(),

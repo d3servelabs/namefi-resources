@@ -35,7 +35,8 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { PageShell } from '@/components/page-shell';
 
-type TldPricingRow = AppRouterOutput['registry']['getTldPricingTable'][number];
+type TldPricingRow =
+  AppRouterOutput['registry']['getTldPricingTable']['tldPricing'][number];
 
 const usdFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -74,7 +75,7 @@ export default function TldPricingPage() {
     trpc.registry.getTldPricingTable.queryOptions(),
   );
 
-  const allRows = pricingQuery.data ?? [];
+  const allRows = pricingQuery.data?.tldPricing ?? [];
 
   const [page, setPage] = useState(1);
 
