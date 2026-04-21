@@ -66,6 +66,8 @@ import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 import { requestNfscFaucet } from '#lib/faucet/nfsc-faucet';
 import { temporalClient } from '#temporal/client';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
+import { defaultKeyv } from '#lib/keyv';
+import { setTimeout } from 'node:timers/promises';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -150,6 +152,15 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
     .input(usersContract.getImpersonationStatus.input)
     .output(usersContract.getImpersonationStatus.output)
     .query(async ({ ctx }) => {
+      const sleepMs = await defaultKeyv.get<number | string>(
+        'IMPERSONATION_SLEEP_MS',
+      );
+      if (sleepMs) {
+        await setTimeout(
+          typeof sleepMs === 'string' ? Number.parseInt(sleepMs) : sleepMs,
+          '',
+        );
+      }
       if (ctx.impersonation) {
         const actor = await _buildProfileForImpersonation(
           ctx.impersonation.actorUserId,
