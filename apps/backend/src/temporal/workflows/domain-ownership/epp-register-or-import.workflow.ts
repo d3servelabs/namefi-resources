@@ -8,8 +8,8 @@ import {
   type ChecksumWalletAddress,
   type NamefiNormalizedDomain,
   notMatchAny,
-  parseDomainName,
 } from '@namefi-astra/utils';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import * as workflow from '@temporalio/workflow';
 import {
   TEMPORAL_ENUMS,
@@ -56,6 +56,7 @@ const {
   convertRequiredActionToFailureReason,
   sendOrderRequiresFurtherActionEmail,
   getOrderDetailsOrThrow,
+  parseDomainName: parseDomainNameActivity,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -686,7 +687,7 @@ async function extendDomainRegistrationIfNeeded(
 
     if (workflow.patched('special-renew-logic-ai-tld')) {
       const extraDurationIncludedWithImportInYears =
-        getExtraDurationIncludedWithImportInYears(
+        await getExtraDurationIncludedWithImportInYears(
           input.normalizedDomainName,
           input.registrarKey,
         );
@@ -859,11 +860,13 @@ async function resubmitRequestIfNeeded(
  *
  * WIP
  */
-function getExtraDurationIncludedWithImportInYears(
+async function getExtraDurationIncludedWithImportInYears(
   domainName: NamefiNormalizedDomain,
   registrarKey: string,
 ) {
-  const parsedDomainName = parseDomainName(domainName);
+  const parsedDomainName = workflow.patched('parse-domain-name-as-activity')
+    ? await parseDomainNameActivity(domainName)
+    : parseDomainName(domainName);
   if (!parsedDomainName.valid) {
     throw workflow.ApplicationFailure.create({
       type: 'InvalidDomainName',

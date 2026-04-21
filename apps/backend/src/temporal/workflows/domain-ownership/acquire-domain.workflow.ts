@@ -1,9 +1,9 @@
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import {
-  parseDomainName,
-  type ChecksumWalletAddress,
-  type NamefiNormalizedDomain,
+import type {
+  ChecksumWalletAddress,
+  NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import * as workflow from '@temporalio/workflow';
 import { addDays, addYears, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
@@ -47,6 +47,7 @@ const {
   criticalAlertNamefi,
   getConfig,
   triggerSyncPonderIndex,
+  parseDomainName: parseDomainNameActivity,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -73,7 +74,9 @@ export async function acquireDomainWorkflow(
     });
   }
 
-  const parseResult = parseDomainName(input.normalizedDomainName);
+  const parseResult = workflow.patched('parse-domain-name-as-activity')
+    ? await parseDomainNameActivity(input.normalizedDomainName)
+    : parseDomainName(input.normalizedDomainName);
 
   let registrarKey: string;
   let expirationTimeInSeconds: number;

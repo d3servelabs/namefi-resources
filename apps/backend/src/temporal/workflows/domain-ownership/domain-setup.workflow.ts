@@ -1,9 +1,8 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import {
-  parseDomainName,
-  type ChecksumWalletAddress,
-  type NamefiNormalizedDomain,
+import type {
+  ChecksumWalletAddress,
+  NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
@@ -25,7 +24,7 @@ export interface DomainSetupWorkflowInput {
   };
 }
 
-const { generalAlertNamefi } = typedProxyActivities({
+const { generalAlertNamefi, parseDomainName } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: shortRunningOpts,
 });
@@ -39,7 +38,7 @@ export async function domainSetupWorkflow(
   input: DomainSetupWorkflowInput,
 ): Promise<void> {
   try {
-    const parseResult = parseDomainName(input.normalizedDomainName);
+    const parseResult = await parseDomainName(input.normalizedDomainName);
 
     try {
       await fillDefaultDomainConfig(input.normalizedDomainName, input.userId, {

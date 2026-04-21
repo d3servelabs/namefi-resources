@@ -1,9 +1,9 @@
 import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
-import {
-  parseDomainName,
-  type ChecksumWalletAddress,
-  type NamefiNormalizedDomain,
+import type {
+  ChecksumWalletAddress,
+  NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import * as workflow from '@temporalio/workflow';
 import { addYears, fromUnixTime, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
@@ -130,18 +130,21 @@ export async function extendDomainRegistrationWorkflow({
     },
   });
 
-  const { criticalAlertNamefi } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-    },
-  });
+  const { criticalAlertNamefi, parseDomainName: parseDomainNameActivity } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...shortRunningOpts,
+      },
+    });
 
   //#endregion Activities Defs
 
   const chainId = await getDomainChain(normalizedDomainName);
 
-  const parseResult = parseDomainName(normalizedDomainName);
+  const parseResult = workflow.patched('parse-domain-name-as-activity')
+    ? await parseDomainNameActivity(normalizedDomainName)
+    : parseDomainName(normalizedDomainName);
 
   let nextExpirationTime: string | Date;
   if (parseResult.valid && parseResult.registryType === 'traditional') {
@@ -250,6 +253,12 @@ export async function extendDomainRegistrationWorkflow({
   }
 }
 
+const { parseDomainName: parseDomainNameActivity } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    ...shortRunningOpts,
+  },
+});
 /**
  * Extend EPP domain registration post import workflow
  */
@@ -262,7 +271,9 @@ export async function extendEppDomainRegistrationPostImportWorkflow({
   eppOperationStatus: string;
   newExpirationTime: string;
 }> {
-  const parseResult = parseDomainName(normalizedDomainName);
+  const parseResult = workflow.patched('parse-domain-name-as-activity')
+    ? await parseDomainNameActivity(normalizedDomainName)
+    : parseDomainName(normalizedDomainName);
 
   let newExpirationTime: string | Date;
   if (parseResult.valid && parseResult.registryType === 'traditional') {

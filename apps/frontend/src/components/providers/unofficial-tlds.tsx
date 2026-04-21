@@ -11,7 +11,7 @@ export const UnofficialTldsInjector: FC = () => {
   const isClient = useIsClient();
   useEffect(() => {
     if (isClient) {
-      globalThis.namefi_tlds = ['namefi', 'test'];
+      globalThis.namefi_tlds = ['namefi', 'test', 'nfi', 'nmfi'];
     }
   }, [isClient]);
 

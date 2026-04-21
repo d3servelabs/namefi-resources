@@ -35,6 +35,11 @@ const {
   gaEventParkingFinished,
 } = standardActivities;
 
+const { parseDomainName: parseDomainNameActivity } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: shortRunningOpts,
+});
+
 export async function domainParkingTrackingWorkflow(
   input: DomainParkingTrackingWorkflowInput,
 ): Promise<void> {
@@ -115,7 +120,9 @@ async function _dnsRecordsPropagated(
       });
       return;
     }
-    const parsedDomainName = parseDomainName(input.domainName);
+    const parsedDomainName = workflow.patched('parse-domain-name-as-activity')
+      ? await parseDomainNameActivity(input.domainName)
+      : parseDomainName(input.domainName);
     if (parsedDomainName.valid) {
       if (parsedDomainName.registryType === 'traditional') {
         await pollDefaultNsPropagated(input.domainName as PunycodeDomainName);

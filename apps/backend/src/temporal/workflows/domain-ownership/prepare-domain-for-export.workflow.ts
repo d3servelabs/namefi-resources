@@ -7,8 +7,14 @@ import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-al
 import { pollingOpts } from '../../shared';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { isNil } from 'ramda';
-import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { criticalAlertWithTicket } from '#temporal/shared/workflow-helpers/critical-alert-with-ticket';
+
+const { parseDomainName } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    startToCloseTimeout: '10 seconds',
+  },
+});
 
 const { getEppLockState, getDomainChain, unlockEppDomain } =
   typedProxyActivities({
@@ -70,7 +76,7 @@ export async function prepareDomainForExportWorkflow({
   domainName: PunycodeDomainName;
   userId: string;
 }) {
-  const parsedDomainName = parseDomainName(domainName);
+  const parsedDomainName = await parseDomainName(domainName);
   if (!parsedDomainName.valid) {
     throw new workflow.ApplicationFailure('Invalid domain name');
   }

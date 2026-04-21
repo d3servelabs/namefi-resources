@@ -18,6 +18,7 @@ import { mapObjIndexed } from 'ramda';
 import { createClickUpTask, getClickUpTask } from '#lib/clickup/index';
 import { temporalClient } from '#temporal/client';
 import type { monitorIncidentTicketWorkflow } from '../../workflows/monitor-incident-ticket.workflow';
+import { parseDomainName } from '@namefi-astra/utils';
 
 type AsyncReturningFunction<A extends any[], R> = (...args: A) => Promise<R>;
 type ReturningFunction<A extends any[], R> = (...args: A) => Promise<R> | R;
@@ -94,6 +95,7 @@ export const defaultTaskQueueActivities = {
   createIncidentTicket,
   getIncidentTicketStatus,
   sendIncidentEscalationToSlack,
+  ...mapConvertSyncFnToActivity({ parseDomainName }),
 };
 
 export interface SendTemporalAlertOptions {
