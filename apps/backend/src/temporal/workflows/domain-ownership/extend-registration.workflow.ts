@@ -1,13 +1,13 @@
 import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
-import type {
-  ChecksumWalletAddress,
-  NamefiNormalizedDomain,
+import {
+  parseDomainName,
+  type ChecksumWalletAddress,
+  type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { addYears, fromUnixTime, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
-import { getDomainLevels } from '#lib/get-domain-levels';
 import {
   TEMPORAL_ENUMS,
   TEMPORAL_QUEUES,
@@ -141,10 +141,10 @@ export async function extendDomainRegistrationWorkflow({
 
   const chainId = await getDomainChain(normalizedDomainName);
 
-  const { levels, parentDomain } = getDomainLevels(normalizedDomainName);
+  const parseResult = parseDomainName(normalizedDomainName);
 
   let nextExpirationTime: string | Date;
-  if (levels.length === 2) {
+  if (parseResult.valid && parseResult.registryType === 'traditional') {
     nextExpirationTime = await _extendSldDomainAndReturnNewExpirationTime({
       normalizedDomainName,
       ownerAddress,
@@ -152,14 +152,10 @@ export async function extendDomainRegistrationWorkflow({
       chainId,
       userId,
     });
-  } else if (levels.length >= 3) {
+  } else if (parseResult.valid && parseResult.registryType === 'subdomain') {
+    const parentDomain = parseResult.immediateParentDomain;
     const allowedParentDomains = await getPoweredByNamefi3PDomains();
-    if (
-      !(
-        parentDomain &&
-        allowedParentDomains.includes(parentDomain as NamefiNormalizedDomain)
-      )
-    ) {
+    if (!allowedParentDomains.includes(parentDomain)) {
       throw workflow.ApplicationFailure.create({
         message: `Invalid domain name "${normalizedDomainName}", parent domain "${parentDomain}" is not allowed`,
         nonRetryable: true,
@@ -174,7 +170,7 @@ export async function extendDomainRegistrationWorkflow({
     });
   } else {
     throw workflow.ApplicationFailure.create({
-      message: `Invalid domain name "${normalizedDomainName}", parent domain "${parentDomain}" is not allowed`,
+      message: `Invalid domain name "${normalizedDomainName}"`,
       nonRetryable: true,
     });
   }
@@ -266,10 +262,10 @@ export async function extendEppDomainRegistrationPostImportWorkflow({
   eppOperationStatus: string;
   newExpirationTime: string;
 }> {
-  const { levels } = getDomainLevels(normalizedDomainName);
+  const parseResult = parseDomainName(normalizedDomainName);
 
   let newExpirationTime: string | Date;
-  if (levels.length === 2) {
+  if (parseResult.valid && parseResult.registryType === 'traditional') {
     newExpirationTime = await _extendSldDomainAndReturnNewExpirationTime({
       normalizedDomainName,
       ownerAddress,

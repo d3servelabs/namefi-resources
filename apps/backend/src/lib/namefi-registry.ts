@@ -10,15 +10,17 @@ import {
   usersTable,
   type PoweredByNamefiDomainSelect,
 } from '@namefi-astra/db';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  parseDomainName,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
-import { groupBy, isNil, pluck, filter, isNotNil, last } from 'ramda';
+import { groupBy, isNil, pluck, filter, isNotNil } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
-import { getDomainLevels } from './get-domain-levels';
 import {
   hashBasedPercentageRollouted,
   isReservedKeywordForParentDomain,
@@ -221,20 +223,15 @@ export const getSubdomainPriceInUsd = async (
   isFreeMint: boolean,
 ) => {
   if (isFreeMint) return 0;
-  const { parentDomain, levels } = getDomainLevels(_subdomain);
+  const parseResult = parseDomainName(_subdomain);
   // Validate that this is actually a subdomain
-  if (!(levels?.length >= 3)) {
+  if (!parseResult.valid || parseResult.registryType !== 'subdomain') {
     logger.warn(
       `getSubdomainPriceInUsd called with non-subdomain: ${_subdomain}`,
     );
     return null;
   }
-  if (!parentDomain) {
-    logger.warn(
-      `getSubdomainPriceInUsd cannot determine parent domain for subdomain ${_subdomain}`,
-    );
-    return null;
-  }
+  const parentDomain = parseResult.immediateParentDomain;
   const poweredbyNamefiDomain =
     await getSinglePoweredByNamefi3PDomainsDetails(parentDomain);
   if (
@@ -312,14 +309,14 @@ export const getDomainListInfo = async (
       return 'unavailable';
     }
 
-    const { levels } = getDomainLevels(domain);
-    if (!(levels.length >= 2)) {
+    const parseResult = parseDomainName(domain);
+    if (!parseResult.valid) {
       return 'invalid';
     }
-    if (levels.length === 2) {
+    if (parseResult.registryType === 'traditional') {
       return 'eppDomain';
     }
-    if (levels.length >= 3) {
+    if (parseResult.registryType === 'subdomain') {
       return 'subdomain';
     }
 
@@ -515,10 +512,13 @@ const _getSubdomainListInfo = async (
   nftMap: Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>,
   user?: { privyUserId: string } | null,
 ) => {
-  const { parentDomain, levels } = getDomainLevels(domain);
-  const prefix = last(levels);
-
-  if (!parentDomain || !prefix) {
+  const parseResult = parseDomainName(domain);
+  if (!parseResult.valid) {
+    return generateUnavailableDomainInfo(domain, false);
+  }
+  const parentDomain = parseResult.immediateParentDomain;
+  const prefix = parseResult.labels[0];
+  if (!prefix) {
     return generateUnavailableDomainInfo(domain, false);
   }
 

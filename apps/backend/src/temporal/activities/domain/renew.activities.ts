@@ -52,12 +52,14 @@ import {
 } from '../../../lib/env/consts';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { logger } from '#lib/logger';
-import { getDomainLevels } from '#lib/get-domain-levels';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { fromUnixTime } from 'date-fns';
-import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
+  parseDomainName,
+} from '@namefi-astra/utils';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
 import { secrets } from '#lib/env';
@@ -143,8 +145,8 @@ export async function getDomainsUpForRenewal(input?: {
 
   // Filter for 3LD domains only
   const _3ldNfts = allNfts.filter((nft) => {
-    const domainLevels = getDomainLevels(nft.normalizedDomainName);
-    return domainLevels.levels.length === 3;
+    const parseResult = parseDomainName(nft.normalizedDomainName);
+    return parseResult.valid && parseResult.registryType === 'subdomain';
   });
   logger.debug({ count: _3ldNfts.length }, 'Found 3LD NFTs');
 
@@ -988,11 +990,14 @@ export async function getDomainsExpirationDatesFromIndex(
   normalizedDomainNames: NamefiNormalizedDomain[],
 ): Promise<Record<string, Date | null>> {
   const groupedDomainNames = groupBy((normalizedDomainName) => {
-    const domainLevels = getDomainLevels(normalizedDomainName);
-    if (domainLevels.levels.length === 2) {
+    const parseResult = parseDomainName(normalizedDomainName);
+    if (!parseResult.valid) {
+      return 'unknown';
+    }
+    if (parseResult.registryType === 'traditional') {
       return 'sld';
     }
-    if (domainLevels.levels.length === 3) {
+    if (parseResult.registryType === 'subdomain') {
       return '3ld';
     }
     return 'unknown'; // this should never happen but to satisfy typescript

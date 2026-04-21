@@ -1,12 +1,12 @@
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type {
-  ChecksumWalletAddress,
-  NamefiNormalizedDomain,
+import {
+  parseDomainName,
+  type ChecksumWalletAddress,
+  type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { addDays, addYears, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
-import { getDomainLevels } from '#lib/get-domain-levels';
 import {
   TEMPORAL_ENUMS,
   TEMPORAL_QUEUES,
@@ -73,25 +73,21 @@ export async function acquireDomainWorkflow(
     });
   }
 
-  const { levels, parentDomain } = getDomainLevels(input.normalizedDomainName);
+  const parseResult = parseDomainName(input.normalizedDomainName);
 
   let registrarKey: string;
   let expirationTimeInSeconds: number;
   let failOnMintingError = false;
-  if (levels.length === 2) {
+  if (parseResult.valid && parseResult.registryType === 'traditional') {
     const details = await _acquireSldDomain(input);
     registrarKey = details.registrarKey;
     expirationTimeInSeconds = getUnixTime(details.expirationTime);
-  } else if (levels.length >= 3) {
+  } else if (parseResult.valid && parseResult.registryType === 'subdomain') {
     failOnMintingError = true; // Subdomains require NFT minting to be successful
+    const parentDomain = parseResult.immediateParentDomain;
     const allowedParentDomains = await getPoweredByNamefi3PDomains();
 
-    if (
-      !(
-        parentDomain &&
-        allowedParentDomains.includes(parentDomain as NamefiNormalizedDomain)
-      )
-    ) {
+    if (!allowedParentDomains.includes(parentDomain)) {
       throw workflow.ApplicationFailure.create({
         message: `Invalid domain name "${input.normalizedDomainName}", parent domain "${parentDomain}" is not allowed`,
         nonRetryable: true,
@@ -108,7 +104,7 @@ export async function acquireDomainWorkflow(
     registrarKey = 'namefi';
   } else {
     throw workflow.ApplicationFailure.create({
-      message: `Invalid domain name "${input.normalizedDomainName}", unsupported number of levels: ${levels.length}`,
+      message: `Invalid domain name "${input.normalizedDomainName}"`,
       nonRetryable: true,
     });
   }

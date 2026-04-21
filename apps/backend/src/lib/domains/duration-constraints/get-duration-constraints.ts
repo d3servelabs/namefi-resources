@@ -1,14 +1,20 @@
-import { getDomainLevels } from '../../get-domain-levels';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  parseDomainName,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import type { DomainDurationConstraints } from './types';
 import { db } from '@namefi-astra/db';
 
 export async function getDomainDurationConstraints(
   domainName: NamefiNormalizedDomain,
 ): Promise<DomainDurationConstraints> {
-  const { levels, parentDomain } = getDomainLevels(domainName);
+  const parseResult = parseDomainName(domainName);
 
-  if (levels.length === 2) {
+  if (!parseResult.valid) {
+    throw new Error(`Domain ${domainName} is not a valid domain name`);
+  }
+  const { registryType, immediateParentDomain: parentDomain } = parseResult;
+  if (registryType === 'traditional') {
     switch (parentDomain) {
       case 'co':
       case 'com.co':
@@ -51,7 +57,7 @@ export async function getDomainDurationConstraints(
 
     return { minYears: 1, maxYears: 10 };
   }
-  if (levels.length >= 3) {
+  if (registryType === 'subdomain') {
     if (!parentDomain) {
       throw new Error(
         `Domain ${domainName} is not a valid powered by namefi 3P domain`,

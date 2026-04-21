@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import {
   namefiNormalizedDomainSchema,
+  parseDomainName,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
-import { getDomainLevels } from './get-domain-levels';
 import { DEFAULT_RANKED_TLD_PAGE_SIZE, RANKED_TLDS } from './tld-rank';
 import { getTags } from '@namefi/cat';
 import {
@@ -133,9 +133,10 @@ export function generateDomainSuggestions(
   );
 
   let domains: PunycodeDomainName[] = [];
-  const { levels } = getDomainLevels(sanitizedQuery);
+  const parseResult = parseDomainName(sanitizedQuery);
 
-  if (levels.length <= 1) {
+  if (!parseResult.valid || parseResult.level <= 1) {
+    //single word
     // Check if user provided a TLD (contains a dot) even if not recognized
     if (sanitizedQuery.includes('.')) {
       // User provided a TLD (even if not recognized) - prioritize it

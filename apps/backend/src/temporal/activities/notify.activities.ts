@@ -8,9 +8,11 @@ import {
 } from '../../mail/templates/processed-order-report';
 import React from 'react';
 import { render } from '@react-email/components';
-import { getDomainLevels } from '#lib/get-domain-levels';
 import { groupBy, map, prop } from 'ramda';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  parseDomainName,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { Context } from '@temporalio/activity';
 import { logger } from '#lib/logger';
@@ -297,14 +299,18 @@ async function determineHostnameFromCartItems(
   items: { normalizedDomainName: string }[],
 ): Promise<string> {
   const itemsWithLevels = map((item) => {
-    const { levels, parentDomain } = getDomainLevels(
+    const parseResult = parseDomainName(
       item.normalizedDomainName as NamefiNormalizedDomain,
     );
-    return { item, levels, parentDomain: parentDomain ?? '' };
+    return {
+      item,
+      registryType: parseResult.valid ? parseResult.registryType : null,
+      parentDomain: parseResult.valid ? parseResult.immediateParentDomain : '',
+    };
   }, items);
 
-  const { subdomains = [] } = groupBy(({ levels }) => {
-    if (levels.length === 3) {
+  const { subdomains = [] } = groupBy(({ registryType }) => {
+    if (registryType === 'subdomain') {
       return 'subdomains';
     }
     return 'other';

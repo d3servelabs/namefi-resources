@@ -1,12 +1,12 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type {
-  ChecksumWalletAddress,
-  NamefiNormalizedDomain,
+import {
+  parseDomainName,
+  type ChecksumWalletAddress,
+  type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
-import { getDomainLevels } from '#lib/get-domain-levels';
 import {
   TEMPORAL_ENUMS,
   TEMPORAL_QUEUES,
@@ -39,7 +39,7 @@ export async function domainSetupWorkflow(
   input: DomainSetupWorkflowInput,
 ): Promise<void> {
   try {
-    const { levels } = getDomainLevels(input.normalizedDomainName);
+    const parseResult = parseDomainName(input.normalizedDomainName);
 
     try {
       await fillDefaultDomainConfig(input.normalizedDomainName, input.userId, {
@@ -51,7 +51,7 @@ export async function domainSetupWorkflow(
         e,
       );
     }
-    if (levels.length === 2) {
+    if (parseResult.valid && parseResult.registryType === 'traditional') {
       await workflow.executeChild(resetNameserversWorkflow, {
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
         args: [
@@ -64,12 +64,12 @@ export async function domainSetupWorkflow(
         }),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       });
-    } else if (levels.length >= 3) {
+    } else if (parseResult.valid && parseResult.registryType === 'subdomain') {
       // TODO: Implement domain setup for 3 levels
       return;
     } else {
       throw workflow.ApplicationFailure.create({
-        message: `Invalid domain name "${input.normalizedDomainName}", unsupported number of levels: ${levels.length}`,
+        message: `Invalid domain name "${input.normalizedDomainName}"`,
         nonRetryable: true,
       });
     }
