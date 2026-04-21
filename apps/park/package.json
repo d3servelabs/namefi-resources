@@ -43,8 +43,10 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@typescript/native-preview": "catalog:",
+    "@vitest/coverage-v8": "^3.1.2",
     "tailwindcss": "catalog:",
-    "tw-animate-css": "catalog:"
+    "tw-animate-css": "catalog:",
+    "vitest": "^3.2.4"
   },
   "overrides": {
     "@types/react": "19.2.2",

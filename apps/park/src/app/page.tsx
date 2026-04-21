@@ -21,6 +21,7 @@ import {
   getDomainDocument,
   getTagsByDomain,
 } from '@/lib/metadata';
+import { resolveLogicalHost } from '@/lib/relay';
 
 type MarketplaceKey = 'manage' | 'opensea' | 'magiceden' | 'looksrare' | 'okx';
 
@@ -42,7 +43,10 @@ type PageData =
       domainsCountByOwner: number;
       domainTags: string[];
       aiGenerations: Awaited<ReturnType<typeof getInternalGenerationsByDomain>>;
+      /** The request host (may be relay-form, e.g. `sami.nfi.gtld.namefi.dev`). */
       host: string;
+      /** The logical domain for data lookups (e.g. `sami.nfi`). Equals host when not relayed. */
+      logicalHost: string;
     }
   | {
       type: 'redirect_url';
@@ -379,6 +383,16 @@ function resolvePbnBrandStyle(
 }
 
 async function loadPageData(host: string): Promise<PageData> {
+  // Relay resolution: if host ends with the relay zone (e.g.
+  // `gtld.namefi.dev`), strip the suffix to get the logical host (e.g.
+  // `sami.nfi.gtld.namefi.dev` → `sami.nfi`) and use it for internal metadata
+  // lookups. Public-DNS operations (TXT forwarding lookup, share URL) still
+  // use the request host because the logical form isn't resolvable outside
+  // Namefi's authoritative server.
+  const logicalHost = resolveLogicalHost(host, {
+    relayZone: config.NAMEFI_RELAY_ZONE,
+  });
+
   const redirectUrl = await detectNamefiRedirectFromDnsRecords(host);
   if (redirectUrl) {
     return {
@@ -391,23 +405,23 @@ async function loadPageData(host: string): Promise<PageData> {
   let fetchFailed = false;
 
   try {
-    domainDocument = await getDomainDocument(host);
+    domainDocument = await getDomainDocument(logicalHost);
   } catch (error) {
     fetchFailed = true;
     console.warn(
-      `Failed to fetch domain document for ${host}:`,
+      `Failed to fetch domain document for ${logicalHost}:`,
       error instanceof Error ? error.message : error,
     );
   }
 
   if (!fetchFailed && !domainDocument) {
-    redirect(`/api/healthz?domain=${encodeURIComponent(host)}`);
+    redirect(`/api/healthz?domain=${encodeURIComponent(logicalHost)}`);
   }
 
   const resolvedDocument: DomainDocument = domainDocument ?? {
-    _id: host,
-    ldh: host,
-    unicode: host,
+    _id: logicalHost,
+    ldh: logicalHost,
+    unicode: logicalHost,
     explain: 'This domain is parked with Namefi.',
   };
 
@@ -430,7 +444,7 @@ async function loadPageData(host: string): Promise<PageData> {
     })(),
     fetchFailed
       ? Promise.resolve([])
-      : getInternalGenerationsByDomain(domainDocument?.ldh ?? host),
+      : getInternalGenerationsByDomain(domainDocument?.ldh ?? logicalHost),
   ]);
 
   return {
@@ -440,6 +454,7 @@ async function loadPageData(host: string): Promise<PageData> {
     domainTags: tagsResult,
     aiGenerations,
     host,
+    logicalHost,
   };
 }
 
