@@ -1,7 +1,7 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Separator } from '@/components/ui/shadcn/separator';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';

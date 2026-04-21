@@ -2,7 +2,7 @@
 
 import { useSkipAuth } from '@/hooks/use-skip-auth';
 import { X, Unlock } from 'lucide-react';
-import { Button } from './ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 
 export default function SkipAuthBanner() {
   const {

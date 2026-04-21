@@ -7,11 +7,11 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Label } from '@/components/ui/shadcn/label';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import {
   useQuery,
@@ -38,13 +38,13 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from '@/components/ui/shadcn/alert';
+} from '@namefi-astra/ui/components/shadcn/alert';
 import { useSignTypedData } from '@/hooks/use-sign-typed-data';
 import {
   RequestWalletConnection,

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { OrdersDataTable } from '@/components/powered-by-namefi/OrdersDataTable';
 import { OrdersTableSkeleton } from '@/components/powered-by-namefi/OrdersTableSkeleton';
 import { PbnOwnerGuard } from '@/components/admin/pbn-owner-guard';

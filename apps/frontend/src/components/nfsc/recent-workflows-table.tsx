@@ -5,22 +5,22 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { DataTable } from '@/components/table/data-table';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { RefreshCwIcon, EyeIcon, Loader2Icon } from 'lucide-react';
 import { format } from 'date-fns';
 import JsonView from '@uiw/react-json-view';

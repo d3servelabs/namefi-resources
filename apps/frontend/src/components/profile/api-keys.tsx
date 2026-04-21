@@ -1,21 +1,21 @@
 'use client';
 
-import { NamefiButton } from '@/components/buttons/namefi-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { type HTMLAttributes, useState, useCallback } from 'react';
 import { toast } from 'sonner';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { CreateApiKeyDialog } from './create-api-key-dialog';
 import { RevokeApiKeyDialog } from './revoke-api-key-dialog';
 import { formatDistanceToNow } from 'date-fns';

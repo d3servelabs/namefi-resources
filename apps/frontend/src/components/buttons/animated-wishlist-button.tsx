@@ -1,7 +1,7 @@
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { ComponentProps } from 'react';
 import { motion } from 'motion/react';
-import { Button } from '../ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { forwardRef, useState } from 'react';
 import { Loader2, Heart } from 'lucide-react';
 

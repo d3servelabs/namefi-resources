@@ -2,7 +2,7 @@
 
 import { useMemo, useCallback } from 'react';
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { CometCard } from '@/components/ui/aceternity/comet-card';
 import type { FreeMint } from '@/hooks/use-free-mints';

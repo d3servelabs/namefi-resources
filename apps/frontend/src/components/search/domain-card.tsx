@@ -6,20 +6,20 @@ import {
   type WishlistButtonState,
 } from '@/components/buttons/animated-wishlist-button';
 import { InstantBuyButton } from '@/components/instant-buy';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import type { MlsSaleListing } from '@/lib/mls/feed';
 import { normalizeMlsHandle } from '@/lib/mls/handles';
 import { formatAmountInUSD } from '@/lib/number';
 import { useInteractionLoggers } from '@/components/providers/analytics';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   getDomainPricingForOperation,
   isDomainImportable,

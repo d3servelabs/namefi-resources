@@ -26,6 +26,7 @@ const withMDX = createMdx({
 
 const nextConfig: NextConfig = {
   basePath: '/r',
+  transpilePackages: ['@namefi-astra/ui'],
   compiler: {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),

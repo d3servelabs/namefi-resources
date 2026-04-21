@@ -1,20 +1,20 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Input } from '@/components/ui/shadcn/input';
-import { Textarea } from '@/components/ui/shadcn/textarea';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { config } from '@/lib/env';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
@@ -35,7 +35,7 @@ import {
   type ClipboardEvent,
   type FormEvent,
 } from 'react';
-import { NamefiButton } from '../buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Placeholder } from './placeholder';
@@ -51,13 +51,17 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { SearchMode } from './types';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
-import { Separator } from '@/components/ui/shadcn/separator';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Spotlight } from '@/components/ui/spotlight';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { InstantBuyButton } from '@/components/instant-buy';
 import { useQuery } from '@tanstack/react-query';
 import { useTRPCClient } from '@/lib/trpc';

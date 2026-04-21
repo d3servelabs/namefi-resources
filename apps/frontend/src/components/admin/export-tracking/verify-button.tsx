@@ -4,8 +4,8 @@ import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CheckIcon, MailIcon, XIcon } from 'lucide-react';
-import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
 

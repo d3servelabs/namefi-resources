@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
@@ -8,9 +8,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { CountryDropdown, type Country } from '@/components/country-input';
 import { ContactAccounts } from './contact-accounts';
 import { EmailSubscriptionSettings } from './email-subscription-settings';

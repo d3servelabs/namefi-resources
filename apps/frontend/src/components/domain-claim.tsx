@@ -1,8 +1,8 @@
 'use client';
 
-import { Input } from '@/components/ui/shadcn/input';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { useCartRow } from '@/hooks/use-cart-row';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -12,15 +12,15 @@ import { useCallback, useMemo, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { UserDropdown } from './dropdowns/user-dropdown';
-import { NamefiButton } from './buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from './ui/shadcn/accordion';
-import { Button } from './ui/shadcn/button';
-import { Separator } from './ui/shadcn/separator';
+} from '@namefi-astra/ui/components/shadcn/accordion';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 
 interface DomainClaimProps {
   /**

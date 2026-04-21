@@ -8,15 +8,15 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { RevenueLine } from '@/components/powered-by-namefi/RevenueLine';
 import { RecentOrdersList } from '@/components/powered-by-namefi/RecentOrdersList';
 import { DomainDetailsCard } from '@/components/powered-by-namefi/DomainDetailsCard';
 import { EditDomainDialog } from '@/components/powered-by-namefi/EditDomainDialog';
 import { ReservedWordsManager } from '@/components/powered-by-namefi/ReservedWordsManager';
 import { useCallback, useState } from 'react';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -36,7 +36,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { RsuiteRangePicker } from '@/components/powered-by-namefi/RsuiteRangePicker';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { PbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
@@ -46,7 +46,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import { OrdersTableSkeleton } from '@/components/powered-by-namefi/OrdersTableSkeleton';
 import { OrdersDataTable } from '@/components/powered-by-namefi/OrdersDataTable';
 import {
@@ -56,7 +56,7 @@ import {
   BreadcrumbItem,
   BreadcrumbPage,
   Breadcrumb,
-} from '@/components/ui/shadcn/breadcrumb';
+} from '@namefi-astra/ui/components/shadcn/breadcrumb';
 import { PageShell } from '@/components/page-shell';
 
 import {
@@ -64,7 +64,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { ChevronDownIcon } from 'lucide-react';
 import DashboardOverview from '@/components/admin/analytics/DashboardOverview';
 import {

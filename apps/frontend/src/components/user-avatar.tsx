@@ -1,7 +1,7 @@
 'use client';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { useAuth } from '@/hooks/use-auth';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { abbreviation } from '@/lib/string';
 import { getUserDisplayName } from '@/lib/user';
 import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
@@ -22,7 +22,11 @@ import {
   AdminUserLookupButton,
   AdminWalletDetailsButton,
 } from './admin/user-details';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/shadcn/avatar';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@namefi-astra/ui/components/shadcn/avatar';
 
 type UserWalletAvatarProps = ComponentProps<typeof Avatar> & {
   address?: string | null;

@@ -28,12 +28,8 @@
     "@mdx-js/loader": "catalog:",
     "@mdx-js/react": "catalog:",
     "@namefi-astra/env": "workspace:*",
+    "@namefi-astra/ui": "workspace:*",
     "@next/mdx": "catalog:",
-    "@radix-ui/react-dropdown-menu": "^2.1.16",
-    "@radix-ui/react-navigation-menu": "^1.2.14",
-    "@radix-ui/react-slot": "catalog:",
-    "class-variance-authority": "catalog:",
-    "clsx": "catalog:",
     "gray-matter": "^4.0.3",
     "lucide-react": "catalog:",
     "motion": "catalog:",
@@ -47,15 +43,12 @@
     "remark-reading-time": "^2.0.2",
     "rss": "^1.2.2",
     "server-only": "catalog:",
-    "tailwind-merge": "catalog:",
     "unist-util-visit": "^5.0.0",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
-    "@tailwindcss/forms": "catalog:",
     "@tailwindcss/postcss": "catalog:",
-    "@tailwindcss/typography": "catalog:",
     "@types/mdx": "catalog:",
     "@types/negotiator": "^0.6.4",
     "@types/node": "catalog:",
@@ -64,7 +57,6 @@
     "@types/rss": "^0.0.32",
     "@typescript/native-preview": "catalog:",
     "tailwindcss": "catalog:",
-    "tw-animate-css": "catalog:",
     "vitest": "catalog:"
   },
   "overrides": {

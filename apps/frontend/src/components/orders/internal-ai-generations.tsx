@@ -6,8 +6,8 @@ import { CartCard } from '@/components/cart-card';
 import type { AppRouterOutput } from '@/lib/trpc';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { cn } from '@/lib/cn';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 type InternalAIGenerations =
   AppRouterOutput['ai']['getInternalGenerationsByDomains'];

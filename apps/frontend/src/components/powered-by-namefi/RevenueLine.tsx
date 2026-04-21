@@ -1,6 +1,6 @@
 'use client';
 import { Line } from 'react-chartjs-2';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 /**
  * !!Important!!

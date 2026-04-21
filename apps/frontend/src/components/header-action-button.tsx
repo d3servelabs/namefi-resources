@@ -7,8 +7,8 @@ import {
   HEADER_ACTION_BUTTON_NO_BLUR_CLASS,
   HEADER_ACTION_BUTTON_PILL_CLASS,
 } from '@/components/header.tokens';
-import { Button } from '@/components/ui/shadcn/button';
-import { cn } from '@/lib/cn';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { forwardRef, type ComponentProps } from 'react';
 
 export type HeaderActionVariant = 'icon' | 'pill';

@@ -8,25 +8,25 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { TableBody } from '@/components/ui/shadcn/table';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { TableBody } from '@namefi-astra/ui/components/shadcn/table';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';

@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 
 type StatusBadgeType = 'order' | 'payment';
 

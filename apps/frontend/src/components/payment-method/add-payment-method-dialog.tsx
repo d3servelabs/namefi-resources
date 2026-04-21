@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { useTRPC } from '@/lib/trpc';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation } from '@tanstack/react-query';

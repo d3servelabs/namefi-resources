@@ -2,14 +2,14 @@
 
 import { withAdminGuard } from '@/components/admin/admin-guard';
 import { PageShell } from '@/components/page-shell';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 

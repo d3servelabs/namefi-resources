@@ -10,7 +10,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Table,
   TableBody,
@@ -18,32 +18,32 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { PageShell } from '@/components/page-shell';
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Form,
   FormControl,
@@ -52,8 +52,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
+} from '@namefi-astra/ui/components/shadcn/form';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import {
   CheckCircle,
   XCircle,

@@ -8,14 +8,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
-import { TooltipTrigger } from '@/components/ui/shadcn/tooltip';
-import { TooltipContent } from '@/components/ui/shadcn/tooltip';
-import { Tooltip } from '@/components/ui/shadcn/tooltip';
-import { TooltipProvider } from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
+import { TooltipTrigger } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { TooltipContent } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { Tooltip } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { TooltipProvider } from '@namefi-astra/ui/components/shadcn/tooltip';
 import type { DnsRecordSelect } from '@namefi-astra/db';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { CellContext, HeaderContext } from '@tanstack/react-table';

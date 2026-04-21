@@ -4,9 +4,12 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Loader2, RefreshCcw, Rss } from 'lucide-react';
 import { useEffect, useMemo, useRef } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
-import { Button, buttonVariants } from '@/components/ui/shadcn/button';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import {
+  Button,
+  buttonVariants,
+} from '@namefi-astra/ui/components/shadcn/button';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   DEFAULT_MLS_FEED_LIMIT,
   MLS_FEED_RSS_PATH,

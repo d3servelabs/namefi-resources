@@ -5,9 +5,9 @@ import { ArrowLeft, Loader2, RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
 import { type RefObject, useEffect, useMemo, useRef } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   DEFAULT_MLS_FEED_LIMIT,
   type MlsSaleListing,

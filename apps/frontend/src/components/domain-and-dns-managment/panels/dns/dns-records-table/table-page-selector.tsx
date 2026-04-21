@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 
 export const TablePageSelector = ({
   pageSize,

@@ -6,21 +6,21 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { TableBody } from '@/components/ui/shadcn/table';
-import { Label } from '@/components/ui/shadcn/label';
-import { Input } from '@/components/ui/shadcn/input';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { TableBody } from '@namefi-astra/ui/components/shadcn/table';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import {
   Dialog,
   DialogContent,
@@ -28,7 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,9 +39,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
-import { Switch } from '@/components/ui/shadcn/switch';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from '@namefi-astra/ui/components/shadcn/radio-group';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

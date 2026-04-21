@@ -7,17 +7,21 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/select';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import {
   RefreshCwIcon,
   TrendingUpIcon,

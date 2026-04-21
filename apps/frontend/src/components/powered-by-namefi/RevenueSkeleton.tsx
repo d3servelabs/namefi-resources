@@ -1,5 +1,5 @@
 'use client';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 
 export function RevenueSkeleton() {
   return (

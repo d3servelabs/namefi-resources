@@ -7,7 +7,7 @@ import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
 import { CartContext } from '@/components/providers/cart';
 import { WishlistProvider } from '@/components/providers/wishlist';
-import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
+import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import { type ReactNode, useState } from 'react';
@@ -289,7 +289,6 @@ const meta: Meta<StoryArgs> = {
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     mockState: {
       control: 'object',

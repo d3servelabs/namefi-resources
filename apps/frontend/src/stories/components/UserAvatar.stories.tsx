@@ -120,7 +120,6 @@ const meta: Meta<typeof UserWalletAvatar> = {
       },
     },
   },
-  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <AuthenticatedStoryProviders walletAddress={MOCK_WALLET_ADDRESS}>

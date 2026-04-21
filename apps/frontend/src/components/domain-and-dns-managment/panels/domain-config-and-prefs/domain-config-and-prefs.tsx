@@ -1,7 +1,7 @@
 'use client';
 
 import { AsyncButton } from '@/components/buttons/async-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,24 +11,24 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Switch } from '@/components/ui/shadcn/switch';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';

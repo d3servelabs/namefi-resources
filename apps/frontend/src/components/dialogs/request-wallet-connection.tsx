@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';

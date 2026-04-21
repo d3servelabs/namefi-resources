@@ -12,29 +12,29 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { ProgressTimeline } from '@/components/ui/progress-timeline';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { ProgressTimeline } from '@namefi-astra/ui/components/namefi/progress-timeline';
 import {
   useEnableDnssecProgress,
   useDisableDnssecProgress,

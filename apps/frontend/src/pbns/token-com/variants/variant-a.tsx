@@ -21,7 +21,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
-import { buttonVariants } from '@/components/ui/shadcn/button';
+import { buttonVariants } from '@namefi-astra/ui/components/shadcn/button';
 import { Marquee } from '@/components/ui/magicui/marquee';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import {
@@ -29,8 +29,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/accordion';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 const uiFont = Plus_Jakarta_Sans({
   subsets: ['latin'],

@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import type { ComponentProps } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 const PasswordInput = React.forwardRef<
   HTMLInputElement,

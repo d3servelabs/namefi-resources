@@ -28,23 +28,23 @@ import {
   type AnimationSourceMode,
 } from '@namefi-astra/ai/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
+} from '@namefi-astra/ui/components/shadcn/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';

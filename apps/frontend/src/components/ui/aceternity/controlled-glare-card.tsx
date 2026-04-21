@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useRef } from 'react';
 
 interface ControlledGlareCardProps {

@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import type { LottieComponentProps } from 'lottie-react';
 import { Suspense, lazy, useMemo } from 'react';

@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Button } from '@/components/ui/shadcn/button';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,20 +15,24 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
+} from '@namefi-astra/ui/components/shadcn/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import {
   Command,
   CommandEmpty,
@@ -36,7 +40,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/shadcn/command';
+} from '@namefi-astra/ui/components/shadcn/command';
 import {
   Clapperboard,
   Building2,
@@ -47,7 +51,7 @@ import {
   ArrowUpRight,
   Sparkles,
 } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import {
   defaultShareConfig,

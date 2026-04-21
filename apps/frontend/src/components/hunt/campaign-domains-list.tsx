@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useMemo } from 'react';
 import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { DomainsListProps } from './domains-list';
 
 const DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 10;

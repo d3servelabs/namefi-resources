@@ -5,7 +5,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import { SocialAccounts } from './social-accounts';

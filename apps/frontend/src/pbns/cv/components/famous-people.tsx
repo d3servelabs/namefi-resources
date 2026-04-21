@@ -1,4 +1,8 @@
-import { Card, CardDescription, CardTitle } from '@/components/ui/shadcn/card';
+import {
+  Card,
+  CardDescription,
+  CardTitle,
+} from '@namefi-astra/ui/components/shadcn/card';
 import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';

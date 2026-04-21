@@ -4,7 +4,7 @@ import { StatusBadge } from '@/components/status-badge';
 import {
   ProgressTimeline,
   type StepDisplayInfo,
-} from '@/components/ui/progress-timeline';
+} from '@namefi-astra/ui/components/namefi/progress-timeline';
 import type { WorkflowProgressPhase } from '@/hooks/use-order-progress';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { isNotNil } from 'ramda';

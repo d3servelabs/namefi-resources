@@ -1,7 +1,7 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Form } from '@/components/ui/shadcn/form';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Form } from '@namefi-astra/ui/components/shadcn/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {

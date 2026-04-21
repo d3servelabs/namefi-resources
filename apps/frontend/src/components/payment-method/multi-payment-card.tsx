@@ -1,16 +1,16 @@
 import { AddPaymentMethodDialog } from '@/components/payment-method/add-payment-method-dialog';
 import { CartCard } from '@/components/cart-card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Separator } from '@/components/ui/shadcn/separator';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { useEffect, useMemo, useState } from 'react';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { paymentProviderSchema } from '@namefi-astra/common/payment-provider';
 import type { AppRouterInput } from '@/lib/trpc';
 import { Loader2 } from 'lucide-react';
-import { NamefiButton } from '../buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NetworkLogo } from '@/components/network-logo';
 import { getShortAddress } from '@/lib/string';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 export type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
 

@@ -9,7 +9,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/components/ui/shadcn/avatar';
+} from '@namefi-astra/ui/components/shadcn/avatar';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import {
   Dialog,
@@ -18,9 +18,9 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { useEnsName } from 'wagmi';
-import { Button } from './ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 
 type ImpersonationParticipant =
   | NonNullable<AppRouterOutput['users']['getImpersonationStatus']>['actor']

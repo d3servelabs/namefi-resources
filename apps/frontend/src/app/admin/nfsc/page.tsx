@@ -9,8 +9,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Coins, History } from 'lucide-react';
 import { BulkMintNfscDialog } from '@/components/nfsc/bulk-mint-dialog';
 import { RecentWorkflowsTable } from '@/components/nfsc/recent-workflows-table';

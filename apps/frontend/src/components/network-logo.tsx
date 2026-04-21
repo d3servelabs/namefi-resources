@@ -1,4 +1,4 @@
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { CHAINS, getChain } from '@namefi-astra/utils/chains';
 import { AlertTriangleIcon } from 'lucide-react';
 import BaseNetwork from '@/components/chains/base-network';
@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { NetworkIcon } from '@web3icons/react';
 
 const TEST_NETS: number[] = [CHAINS.sepolia.id, CHAINS.baseSepolia.id];

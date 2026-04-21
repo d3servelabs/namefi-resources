@@ -1,11 +1,15 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { Footer } from './footer';
 import { Header } from './header';
-import { SidebarInset, SidebarTrigger, useSidebar } from './ui/shadcn/sidebar';
+import {
+  SidebarInset,
+  SidebarTrigger,
+  useSidebar,
+} from '@namefi-astra/ui/components/shadcn/sidebar';
 
 export const Main = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();

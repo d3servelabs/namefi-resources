@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 import { ExportStatusBadge } from './export-status-badge';
 
 type StatusHistoryEntry = {

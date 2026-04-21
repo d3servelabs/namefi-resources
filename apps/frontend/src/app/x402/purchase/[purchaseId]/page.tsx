@@ -7,9 +7,9 @@ import {
   x402PurchaseStepDisplayInfo,
   x402ProcessingOrderSubstepDisplayInfo,
 } from '@/hooks/use-x402-purchase-progress';
-import { ProgressTimeline } from '@/components/ui/progress-timeline';
+import { ProgressTimeline } from '@namefi-astra/ui/components/namefi/progress-timeline';
 import { StatusBadge } from '@/components/status-badge';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { ExternalLink } from 'lucide-react';
 import { isNotNil } from 'ramda';
 

@@ -1,13 +1,13 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';

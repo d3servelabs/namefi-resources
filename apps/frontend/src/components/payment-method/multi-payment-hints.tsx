@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { cn } from '@/lib/cn';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { SelectedPaymentMethod } from './select-payment-method-card';
 
 export function MultiPaymentHints({

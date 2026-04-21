@@ -21,7 +21,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
 import { TablePageSelector } from './table-page-selector';
 import {
@@ -34,7 +34,7 @@ import {
   FilterIcon,
   RotateCcwIcon,
 } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -44,9 +44,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
-import { Input } from '@/components/ui/shadcn/input';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { ColumnFilter } from './column-filter';
 import { TableFilterPanel } from './table-filter-panel';
 import { isNotNil } from 'ramda';

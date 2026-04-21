@@ -1,14 +1,14 @@
 'use client';
 
-import { NamefiButton } from '@/components/buttons/namefi-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Dialog,
   DialogContent,
@@ -16,16 +16,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { useIsMobile } from '@/hooks/use-mobile';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { getShortAddress, shortage } from '@/lib/string';
 import { type WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import {

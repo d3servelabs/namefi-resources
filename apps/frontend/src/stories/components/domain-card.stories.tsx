@@ -52,7 +52,6 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
 } satisfies Meta<typeof DomainCard>;
 
 // biome-ignore lint/style/noDefaultExport: Storybook stories require a default meta export.

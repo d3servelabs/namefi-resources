@@ -10,7 +10,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { toast } from 'sonner';
 import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -47,14 +47,14 @@ import {
   formatDate,
 } from 'date-fns';
 import { UserWalletAvatar } from '@/components/user-avatar';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
   Tooltip,
-} from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);

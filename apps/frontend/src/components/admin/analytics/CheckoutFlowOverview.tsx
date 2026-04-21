@@ -16,8 +16,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import type { AppRouterOutput } from '@/lib/trpc';
 
 const FUNNEL_COLORS = [

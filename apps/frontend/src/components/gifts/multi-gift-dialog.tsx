@@ -8,29 +8,29 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Loader2 } from 'lucide-react';
 import { Plus, Trash2 } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { NaturalLanguageDatePicker } from '@/components/date-picker/natural-language-date-picker';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { Label } from '@/components/ui/shadcn/label';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,7 +40,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import {
   Table,
   TableBody,
@@ -48,7 +48,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 import React from 'react';
 
 type Props = {

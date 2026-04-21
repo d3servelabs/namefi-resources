@@ -1,4 +1,4 @@
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type React from 'react';
 import { motion } from 'motion/react';
 

@@ -9,15 +9,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import { toast } from 'sonner';
 import {
   Play,
@@ -27,13 +27,13 @@ import {
   Clock,
   ArchiveRestoreIcon,
 } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { range } from 'ramda';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { PageShell } from '@/components/page-shell';
 
 type ScheduleConfig =

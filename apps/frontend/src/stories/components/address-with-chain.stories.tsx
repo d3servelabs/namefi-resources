@@ -7,7 +7,7 @@ import { WagmiProvider } from 'wagmi';
 import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia, base, baseSepolia } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
-import { TooltipProvider } from '@/components/ui/shadcn/tooltip';
+import { TooltipProvider } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { TRPCProvider } from '@/lib/trpc';
 import { createMockLink } from '@/lib/mock/trpc';
 import { createTRPCClient } from '@trpc/client';
@@ -86,7 +86,6 @@ const meta: Meta<typeof AddressWithChain> = {
       },
     },
   },
-  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <StoryProviders>

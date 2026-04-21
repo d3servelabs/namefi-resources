@@ -1,6 +1,6 @@
 'use client';
 
-import type { ProgressPhase } from '@/components/ui/progress-timeline';
+import type { ProgressPhase } from '@namefi-astra/ui/components/namefi/progress-timeline';
 
 /**
  * Terminal workflow statuses that indicate the workflow has finished.

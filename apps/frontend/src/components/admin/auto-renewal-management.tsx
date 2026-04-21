@@ -5,10 +5,10 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from '@/components/ui/shadcn/card';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo, useCallback, type FC } from 'react';
@@ -46,7 +46,7 @@ import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { toast } from 'sonner';
 import { Copy, ExternalLink } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 // ─── Types ───────────────────────────────────────────────────────
 

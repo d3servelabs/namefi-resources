@@ -2,9 +2,9 @@
 
 import { StatusBadge } from '@/components/status-badge';
 import { CartCard } from '@/components/cart-card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Separator } from '@/components/ui/shadcn/separator';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type {
@@ -17,7 +17,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { Unauthorized } from '@/components/unauthorized';
 import { useAuth } from '@/hooks/use-auth';
 import { getShortAddress } from '@/lib/string';
@@ -51,20 +51,20 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import {
   Alert,
   AlertTitle,
   AlertDescription,
-} from '@/components/ui/shadcn/alert';
+} from '@namefi-astra/ui/components/shadcn/alert';
 import { NetworkLogo } from '@/components/network-logo';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { formatDuration, intervalToDuration, addSeconds } from 'date-fns';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { PasswordInput } from '@/components/password-input';
-import { Label } from '@/components/ui/shadcn/label';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { toast } from 'sonner';
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;

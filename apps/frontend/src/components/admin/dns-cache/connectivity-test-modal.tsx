@@ -5,8 +5,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { CheckCircle2, XCircle, Loader2, RefreshCw } from 'lucide-react';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';

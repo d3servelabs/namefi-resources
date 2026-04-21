@@ -6,7 +6,7 @@ import type { CSSProperties } from 'react';
 import { Footer } from '@/components/footer';
 import { ParkHeader } from '@/components/header';
 import { ParkNftCard } from '@/components/nft-card';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { getInternalGenerationsByDomain } from '@/lib/ai';
 import { config } from '@/lib/env';
 import {
@@ -553,25 +553,27 @@ export default async function ParkPage({
               </div>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Button
-                  asChild
+                  render={<Link href="#marketplaces" />}
+                  nativeButton={false}
                   variant="outline"
                   className="h-11 rounded-full border border-brand-primary/62 bg-background/72 px-7 text-[0.98rem] font-semibold tracking-[0.01em] text-foreground shadow-none transition hover:border-brand-primary hover:bg-brand-primary/12 sm:h-12 sm:px-9 sm:text-[1.05rem]"
                 >
-                  <Link href="#marketplaces">Buy this domain</Link>
+                  Buy this domain
                 </Button>
                 {manageUrl ? (
                   <Button
-                    asChild
+                    render={
+                      <Link
+                        href={manageUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      />
+                    }
+                    nativeButton={false}
                     variant="outline"
                     className="h-11 rounded-full border border-brand-primary/45 bg-background/72 px-7 text-[0.98rem] font-semibold tracking-[0.01em] text-foreground shadow-none transition hover:border-brand-primary/75 hover:bg-brand-primary/10 sm:h-12 sm:px-9 sm:text-[1.05rem]"
                   >
-                    <Link
-                      href={manageUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      Manage domain
-                    </Link>
+                    Manage domain
                   </Button>
                 ) : null}
               </div>

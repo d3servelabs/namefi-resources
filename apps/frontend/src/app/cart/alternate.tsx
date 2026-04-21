@@ -2,7 +2,7 @@
 import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
@@ -22,21 +22,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Separator } from '@/components/ui/shadcn/separator';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';

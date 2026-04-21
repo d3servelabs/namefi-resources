@@ -4,16 +4,19 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Progress } from '@/components/ui/shadcn/progress';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Progress } from '@namefi-astra/ui/components/shadcn/progress';
 import { AlertCircle, Server } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
+import {
+  Alert,
+  AlertDescription,
+} from '@namefi-astra/ui/components/shadcn/alert';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 
 type ServerStats = {
   serverName: string;

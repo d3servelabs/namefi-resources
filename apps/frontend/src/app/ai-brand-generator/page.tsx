@@ -11,8 +11,8 @@ import {
   GenerationsColumn,
   GenerationsColumnSkeleton,
 } from '@/components/ai-generation/generations-column';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import {
   DerivativeFlowProvider,
   useDerivativeFlow,

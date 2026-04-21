@@ -1,10 +1,10 @@
 import { Main } from '@/components/main';
 import OriginBackground from '@/components/origin-background';
 import { AppSidebar } from '@/components/sidebars';
-import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
-import { Toaster } from '@/components/ui/shadcn/sonner';
+import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
+import { Toaster } from '@namefi-astra/ui/components/shadcn/sonner';
 import { getOriginRuntime } from '@/lib/origin/utils.server';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Providers } from '@/components/providers';
 import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';

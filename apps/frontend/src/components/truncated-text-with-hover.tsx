@@ -3,7 +3,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from './ui/shadcn/hover-card';
+} from '@namefi-astra/ui/components/shadcn/hover-card';
 import { useId } from 'react';
 
 function centerTruncateString(str: string, length: number, filler = '...') {

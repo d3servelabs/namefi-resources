@@ -3,18 +3,18 @@
 import { useRef, useState, useMemo, forwardRef, type FormEvent } from 'react';
 import dynamic from 'next/dynamic';
 import { z } from 'zod';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { useTRPC } from '@/lib/trpc';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { toast } from 'sonner';
 import { Mail, CheckCircle2, X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';

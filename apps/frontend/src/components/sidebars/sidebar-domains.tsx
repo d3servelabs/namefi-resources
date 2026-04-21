@@ -5,7 +5,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/shadcn/collapsible';
+} from '@namefi-astra/ui/components/shadcn/collapsible';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -14,12 +14,12 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   useSidebar,
-} from '@/components/ui/shadcn/sidebar';
+} from '@namefi-astra/ui/components/shadcn/sidebar';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { ChevronRight, Globe, History } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

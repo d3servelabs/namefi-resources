@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
-import { cn } from '@/lib/cn';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Minus, Plus } from 'lucide-react';
 import {
   type ChangeEvent,

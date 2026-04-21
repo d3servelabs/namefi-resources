@@ -1,19 +1,19 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: <explanation> */
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
+} from '@namefi-astra/ui/components/shadcn/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { Filter, X } from 'lucide-react';
 import { toast } from 'sonner';
 

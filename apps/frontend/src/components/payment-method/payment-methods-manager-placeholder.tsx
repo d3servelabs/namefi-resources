@@ -1,7 +1,7 @@
 'use client';
 
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { FC, HTMLAttributes } from 'react';
 import type React from 'react';
 

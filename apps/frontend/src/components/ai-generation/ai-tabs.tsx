@@ -2,7 +2,7 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { AnimatePresence, motion } from 'motion/react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { GenerationUsage } from './generation-usage';
 import { AnimationTab } from './animation-tab';
 import { LogoTab } from './logo-tab';

@@ -1,9 +1,9 @@
 'use client';
 
 import { AnimatedList } from '@/components/ui/magicui/animated-list';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { type LucideIcon, Trophy, Sparkles, ArrowDown } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { DomainHuntWidget } from './domain-hunt-widget';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';

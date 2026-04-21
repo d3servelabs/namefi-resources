@@ -1,7 +1,7 @@
 'use client';
 
 import { HeaderActionButton } from '@/components/header-action-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,12 +10,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';

@@ -1,19 +1,19 @@
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getShortAddress } from '@/lib/string';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { useCallback, useState } from 'react';
 import type { Chain } from 'viem';
-import { Badge } from './ui/shadcn/badge';
-import { Button } from './ui/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 
 interface SelectWalletProps {
   onValueChange: (walletAddress: string) => void;

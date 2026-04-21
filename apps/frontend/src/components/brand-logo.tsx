@@ -2,7 +2,7 @@
 
 import { LazyLottie } from '@/components/lazy-lottie';
 import { useOrigin } from '@/components/providers/origin';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { LottieRefCurrentProps } from 'lottie-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { useSidebar } from './ui/shadcn/sidebar';
+import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 
 export type BrandLogoProps = Omit<
   AnchorHTMLAttributes<HTMLAnchorElement>,

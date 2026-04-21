@@ -6,16 +6,16 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { useSidebar } from '@/components/ui/shadcn/sidebar';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
 import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import {
@@ -69,7 +69,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import {
   Dialog,
   DialogContent,
@@ -77,21 +77,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { AnimatePresence, motion } from 'motion/react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
 import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { ErrorBoundary } from '@suspensive/react';
-import { Input } from '@/components/ui/shadcn/input';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   AdminUserLookupDialog,
   type AdminUserLookupReference,

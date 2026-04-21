@@ -5,10 +5,10 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { config } from '@/lib/env';
 import { useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -22,9 +22,17 @@ import {
   useEffect,
 } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
-import { Button } from '../ui/shadcn/button';
-import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@namefi-astra/ui/components/shadcn/alert';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,

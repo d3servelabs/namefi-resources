@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -8,14 +8,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
-import { useSidebar } from '@/components/ui/shadcn/sidebar';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/popover';
+import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { AlertCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

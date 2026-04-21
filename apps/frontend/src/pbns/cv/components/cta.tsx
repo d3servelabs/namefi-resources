@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Trophy } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';

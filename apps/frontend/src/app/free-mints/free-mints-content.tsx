@@ -8,8 +8,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints, type FreeMint } from '@/hooks/use-free-mints';
 import {

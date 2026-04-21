@@ -14,16 +14,16 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { motion, useInView } from 'motion/react';
 import { ErrorBoundary } from '@suspensive/react';
-import { Button } from '@/components/ui/shadcn/button';
-import { Card } from '@/components/ui/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
+} from '@namefi-astra/ui/components/shadcn/accordion';
 import { reportReactBoundaryError } from '@/lib/datadog-react-error';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
 import BaseNetwork from '@/components/chains/base-network';
 import {

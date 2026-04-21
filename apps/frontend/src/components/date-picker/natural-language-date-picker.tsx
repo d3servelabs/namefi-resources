@@ -3,16 +3,16 @@ import { type ReactNode, useMemo } from 'react';
 import { parseDate } from 'chrono-node';
 import { CalendarIcon } from 'lucide-react';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Calendar } from '@/components/ui/shadcn/calendar';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Calendar } from '@namefi-astra/ui/components/shadcn/calendar';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/popover';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 function formatDate(date: Date | undefined) {
   if (!date) {

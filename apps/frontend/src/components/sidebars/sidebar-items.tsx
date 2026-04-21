@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -8,12 +8,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/shadcn/sidebar';
+} from '@namefi-astra/ui/components/shadcn/sidebar';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import type { NavItem } from '@/lib/types/nav-item';
 import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import type { Route } from 'next';

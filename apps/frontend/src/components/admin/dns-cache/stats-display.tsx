@@ -1,6 +1,9 @@
 import { AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
-import { Progress } from '@/components/ui/shadcn/progress';
+import {
+  Alert,
+  AlertDescription,
+} from '@namefi-astra/ui/components/shadcn/alert';
+import { Progress } from '@namefi-astra/ui/components/shadcn/progress';
 
 type CacheStats = {
   success_cache: {

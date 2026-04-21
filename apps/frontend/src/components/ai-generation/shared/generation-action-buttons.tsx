@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { XBrandIcon } from '@/components/brand-icons';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import {
   type LucideIcon,
   Copy as CopyIcon,

@@ -1,12 +1,12 @@
 import { DnsRecordsTable } from '@/components/domain-and-dns-managment/panels/dns/dns-records-table/dns-records-table';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,8 +15,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { Database, FileText, FileType, Mail, Plus, Server } from 'lucide-react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { formatNumberWithAbbreviations } from '@/lib/number';
 import Link from 'next/link';
 import { type MouseEvent, memo, useCallback, useMemo } from 'react';

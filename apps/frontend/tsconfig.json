@@ -4,7 +4,21 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@namefi-astra/ui/components/namefi/namefi-button": [
+        "../../packages/ui/src/components/namefi/namefi-button.tsx"
+      ],
+      "@namefi-astra/ui/components/namefi/progress-timeline": [
+        "../../packages/ui/src/components/namefi/progress-timeline/index.ts"
+      ],
+      "@namefi-astra/ui/components/shadcn": [
+        "../../packages/ui/src/components/shadcn"
+      ],
+      "@namefi-astra/ui/components/shadcn/*": [
+        "../../packages/ui/src/components/shadcn/*"
+      ],
+      "@namefi-astra/ui/hooks/*": ["../../packages/ui/src/hooks/*"],
+      "@namefi-astra/ui/lib/*": ["../../packages/ui/src/lib/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

@@ -1,26 +1,26 @@
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
-import { Input } from '@/components/ui/shadcn/input';
-import { Textarea } from '@/components/ui/shadcn/textarea';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/form';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useResizeObserver } from 'usehooks-ts';
 import { useCallback, useMemo, useRef } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 

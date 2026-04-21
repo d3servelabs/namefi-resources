@@ -2,7 +2,7 @@
 'use client';
 
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { ReactNode } from 'react';
 import { VisaIcon } from './visa-icon';
 

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import { AddEditRecordsDialog } from './add-edit-records-dialog';
 import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import type { DnsRecordSelect } from '@namefi-astra/db';

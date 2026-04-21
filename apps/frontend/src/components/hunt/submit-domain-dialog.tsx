@@ -1,15 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

@@ -2,14 +2,14 @@
 'use client';
 
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,8 +20,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {

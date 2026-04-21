@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import Link from 'next/link';
 
 export function DomainTable({

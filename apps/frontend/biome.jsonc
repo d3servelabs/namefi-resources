@@ -26,10 +26,6 @@
           }
         }
       }
-    },
-    {
-      "includes": ["src/components/ui/shadcn/**"],
-      "linter": { "enabled": false }
     }
   ]
 }

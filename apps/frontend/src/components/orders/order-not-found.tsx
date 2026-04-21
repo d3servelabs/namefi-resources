@@ -1,5 +1,5 @@
 import { CartCard } from '@/components/cart-card';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useRouter } from 'next/navigation';
 import { PageShell } from '@/components/page-shell';
 

@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import type { Route } from 'next';
 import {
   Card,
@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { useAuth } from '@/hooks/use-auth';
 import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';

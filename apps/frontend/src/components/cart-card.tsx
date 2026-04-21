@@ -7,8 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { ReactNode } from 'react';
 
 interface CartCardProps {

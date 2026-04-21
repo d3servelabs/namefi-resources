@@ -12,10 +12,10 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Input } from '@/components/ui/shadcn/input';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { DataTable } from '@/components/table/data-table';
 import { formatAmountInUSD } from '@/lib/number';
 import {
@@ -48,14 +48,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 
 const CAMPAIGNS = EMAIL_CAMPAIGNS;
 type CampaignKey = EmailCampaignKey;

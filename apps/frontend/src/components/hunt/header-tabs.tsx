@@ -1,7 +1,7 @@
 'use client';
 
 import { config } from '@/lib/env';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';

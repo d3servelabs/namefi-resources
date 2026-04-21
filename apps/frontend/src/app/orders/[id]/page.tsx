@@ -22,9 +22,9 @@ import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
 import { getSubDomainAndParentDomainFromNormalizedDomainName } from '@namefi-astra/utils/domain-names';
 import { getTokenIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { AuthRequired } from '@/components/auth-required';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { useOrigin } from '@/components/providers/origin';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
 import { useFeedback } from '@/components/providers/feedback';
@@ -33,8 +33,8 @@ import { OrderNotFound } from '@/components/orders/order-not-found';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
-import { Button } from '@/components/ui/shadcn/button';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import {
   Dialog,
   DialogContent,
@@ -42,8 +42,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { Check, Copy, Info } from 'lucide-react';
 
 // Dynamically import heavy visualization components to reduce first-hit compile time

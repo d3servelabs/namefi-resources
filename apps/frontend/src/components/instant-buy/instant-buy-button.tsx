@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Zap } from 'lucide-react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useAuth } from '@/hooks/use-auth';
 import { InstantBuyModal } from './instant-buy-modal';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
@@ -10,8 +10,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';

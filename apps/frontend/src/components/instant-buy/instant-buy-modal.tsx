@@ -11,14 +11,14 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-card';
 import {
   AuthRequiredCard,
   NoPaymentMethodRequiredCard,
 } from '@/components/payment-method/select-payment-method-card';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { CartCard } from '@/components/cart-card';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
@@ -41,7 +41,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 
 type InstantBuyInput = AppRouterInput['orders']['instantBuy'];
 

@@ -7,22 +7,22 @@ import { Droplet, ExternalLink, Loader2, TriangleAlert } from 'lucide-react';
 import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { useIsClient } from 'usehooks-ts';
 import { useTRPC } from '@/lib/trpc';
-import { Button } from '@/components/ui/shadcn/button';
-import { Label } from '@/components/ui/shadcn/label';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { WalletEditableSelect } from '@/components/wallet-editable-select';
 import { NetworkLogo } from '@/components/network-logo';
 import type {

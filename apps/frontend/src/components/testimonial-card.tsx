@@ -1,4 +1,4 @@
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 interface TestimonialCardProps {
   img: string;

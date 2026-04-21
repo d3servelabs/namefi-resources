@@ -12,14 +12,14 @@ import {
   type VisibilityState,
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
-import { Input } from '@/components/ui/shadcn/input';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import NetworkLogo from '@/components/network-logo';
 import { TablePageSelector } from '@/components/table/table-page-selector';
 import { TablePageSizeSelector } from '@/components/table/table-page-size-selector';

@@ -20,10 +20,10 @@ import {
   type DrizzlerFilterState,
 } from '@/components/table/filters';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { Input } from '@/components/ui/shadcn/input';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { AsyncButton } from '@/components/buttons/async-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { AddressWithChain as AddressWithChainId } from '@/components/address-with-chain';
 

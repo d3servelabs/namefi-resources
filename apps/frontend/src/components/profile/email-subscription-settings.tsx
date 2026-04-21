@@ -1,8 +1,8 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { Label } from '@/components/ui/shadcn/label';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { useTRPC } from '@/lib/trpc';
 import { Bell } from 'lucide-react';
 import { useCallback } from 'react';

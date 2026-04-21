@@ -6,8 +6,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { LogIn, Share2 } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 

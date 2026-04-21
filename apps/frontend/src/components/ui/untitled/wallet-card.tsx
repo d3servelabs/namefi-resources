@@ -1,13 +1,13 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { NetworkLogo } from '@/components/network-logo';
 import { WalletIcon } from '@web3icons/react';
 import Image from 'next/image';

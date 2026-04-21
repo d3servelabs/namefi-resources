@@ -2,8 +2,11 @@ import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { CartCard } from '@/components/cart-card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
-import { cn } from '@/lib/cn';
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from '@namefi-astra/ui/components/shadcn/radio-group';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { formatAmountInUSD } from '@/lib/number';
 import type { DeepPartial } from '@/lib/types/utils';
 import {
@@ -18,7 +21,7 @@ import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 import { SelectChain, SelectWallet } from '../select-wallet-and-chain';
 import { AddPaymentMethodDialog } from './add-payment-method-dialog';
-import { Separator } from '../ui/shadcn/separator';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 
 export enum SelectedPaymentMethod {

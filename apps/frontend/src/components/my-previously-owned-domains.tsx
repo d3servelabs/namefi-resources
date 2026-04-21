@@ -12,9 +12,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -22,15 +22,15 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { CHAINS, getChain } from '@namefi-astra/utils/chains';
@@ -65,7 +65,7 @@ import {
 } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { config } from '@/lib/env';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { range } from 'ramda';
 import { format } from 'date-fns';
 
@@ -134,10 +134,8 @@ const MyPreviouslyOwnedDomainsEmptyPlaceholder: FC<
         You haven't burned or transferred any domains away from your linked
         wallets yet
       </EmptyPlaceholder.Description>
-      <Button variant="outline">
-        <Link href={'/'} aria-label="Button to go to the search page">
-          Search Page
-        </Link>
+      <Button render={<Link href="/" />} nativeButton={false} variant="outline">
+        Search Page
       </Button>
     </EmptyPlaceholder>
   );

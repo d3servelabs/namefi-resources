@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { Sparkles, ArrowDown, Trophy } from 'lucide-react';
 import Link from 'next/link';

@@ -8,21 +8,21 @@ import {
   useUserWalletAddresses,
 } from '@/hooks/use-user-wallet-addresses';
 import { getShortAddress } from '@/lib/string';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { Loader2, CheckCircle2, Copy, Check, Info } from 'lucide-react';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useEnsAddress } from 'wagmi';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { toast } from 'sonner';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 

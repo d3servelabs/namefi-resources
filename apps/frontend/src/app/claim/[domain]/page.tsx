@@ -1,10 +1,10 @@
 'use client';
 
 import { CartCard } from '@/components/cart-card';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useAuth } from '@/hooks/use-auth';
 import { useCartRow } from '@/hooks/use-cart-row';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
@@ -15,10 +15,10 @@ import { useRouter, useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { toast } from 'sonner';
 import { NftWalletCard } from '@/components/nft-wallet-card';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import confetti from 'canvas-confetti';
 import { PageShell } from '@/components/page-shell';
 

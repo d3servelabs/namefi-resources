@@ -10,8 +10,8 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/shadcn/sheet';
-import { Switch } from '@/components/ui/shadcn/switch';
+} from '@namefi-astra/ui/components/shadcn/sheet';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
 
 export function AdminFeatureFlagsSheet({ pageKey }: { pageKey?: string }) {
   const { registry } = useAdminFeatureFlags();

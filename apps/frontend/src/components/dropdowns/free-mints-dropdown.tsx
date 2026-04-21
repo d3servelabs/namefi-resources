@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { Gift } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints, type FreeMint } from '@/hooks/use-free-mints';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { AnimatePresence, motion } from 'motion/react';
 import NumberFlow from '@number-flow/react';
 import { HeaderActionButton } from '@/components/header-action-button';
@@ -16,10 +16,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import Link from 'next/link';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useRouter } from 'next/navigation';
 import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 

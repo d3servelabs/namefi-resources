@@ -8,18 +8,18 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import {
   Table,
@@ -28,7 +28,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,8 +38,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { toast } from 'sonner';
 import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { isAddress } from 'viem';

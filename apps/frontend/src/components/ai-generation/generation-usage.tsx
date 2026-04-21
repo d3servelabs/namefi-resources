@@ -1,8 +1,8 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Sparkles, AlertCircle } from 'lucide-react';

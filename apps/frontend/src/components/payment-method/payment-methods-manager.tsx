@@ -1,13 +1,13 @@
 'use client';
 
 import { AuthRequired } from '@/components/auth-required';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { PageShell } from '@/components/page-shell';
 import { SavePaymentMethodDialog } from './save-payment-method-dialog';
 import { ControlledGlareCard } from '@/components/ui/aceternity/controlled-glare-card';
 import { CreditCard } from '@/components/ui/untitled/credit-card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +17,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import {
@@ -71,7 +71,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 
 const LoadingSkeletons = () => {
   return (

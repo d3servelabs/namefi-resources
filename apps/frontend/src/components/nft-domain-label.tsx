@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 type LabelLayout = {
   text: string;

@@ -4,7 +4,7 @@ import { ExternalLink, Share2, Settings } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { CartCard } from './cart-card';
-import { NamefiButton } from './buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NFTDomain } from './nft-domain';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { NetworkLogo } from '@/components/network-logo';

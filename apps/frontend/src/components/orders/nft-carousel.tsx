@@ -4,10 +4,10 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from '@/components/ui/shadcn/carousel';
+} from '@namefi-astra/ui/components/shadcn/carousel';
 import { NftDomainCard, type NftDomainCardProps } from '../nft-domain-card';
 import type { OriginInfo } from '@/lib/origin';
-import { Skeleton } from '../ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 
 export const NftCarousel = ({
   items,

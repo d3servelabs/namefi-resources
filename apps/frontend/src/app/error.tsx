@@ -4,8 +4,8 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from '@/components/ui/shadcn/alert';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/alert';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { reportAppRouterError } from '@/lib/datadog-react-error';
 import { TriangleIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';

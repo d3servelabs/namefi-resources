@@ -9,7 +9,7 @@ import type { ConfirmationToken } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useState } from 'react';
-import { NamefiButton } from '../buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 
 interface AddPaymentMethodFormProps {
   onSuccess?: (confirmationToken: ConfirmationToken) => void;

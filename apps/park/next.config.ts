@@ -3,6 +3,7 @@ import packageJson from './package.json';
 import { config as appConfig } from './src/lib/env/load';
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['@namefi-astra/ui'],
   cacheComponents: true,
   compiler: {
     define: {

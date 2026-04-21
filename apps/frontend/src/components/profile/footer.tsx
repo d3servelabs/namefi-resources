@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { User } from '@privy-io/react-auth';
 import type { FC, HTMLAttributes } from 'react';
 

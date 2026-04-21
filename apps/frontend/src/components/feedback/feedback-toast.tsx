@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Card } from '@/components/ui/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-} from '@/components/ui/shadcn/form';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/form';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -18,7 +18,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 const ratingOptions = [
   { value: 1, label: 'Not good', emoji: '😫' },

@@ -45,6 +45,7 @@ const nextConfig = {
     '@namefi-astra/common',
     '@namefi-astra/env',
     '@namefi-astra/registrars',
+    '@namefi-astra/ui',
     '@namefi-astra/utils',
     '@namefi-astra/zod-dns',
   ],

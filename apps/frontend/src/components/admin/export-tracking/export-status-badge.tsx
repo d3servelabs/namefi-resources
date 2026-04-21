@@ -1,10 +1,10 @@
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 const statusConfig: Record<
   string,

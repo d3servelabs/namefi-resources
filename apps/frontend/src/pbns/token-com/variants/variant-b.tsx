@@ -17,8 +17,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/accordion';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useSearch } from '@/hooks/use-search';
 import { zodResolver } from '@hookform/resolvers/zod';

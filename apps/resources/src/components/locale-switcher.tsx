@@ -11,9 +11,9 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
-import { Button } from '@/components/ui/shadcn/button';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 type LocaleSwitcherProps = {
   activeLocale: Locale;
@@ -44,20 +44,22 @@ export function LocaleSwitcher({ activeLocale, label }: LocaleSwitcherProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className={cn(
-            'gap-2 rounded-full border-border/60 bg-card/80 text-xs font-medium text-muted-foreground shadow-sm shadow-black/10 transition hover:border-border hover:text-foreground',
-            'px-3 py-1',
-          )}
-        >
-          <Languages className="h-3.5 w-3.5" aria-hidden="true" />
-          <span className="hidden sm:inline">{label}</span>
-          <span className="text-foreground">{activeLabel}</span>
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={cn(
+              'gap-2 rounded-full border-border/60 bg-card/80 text-xs font-medium text-muted-foreground shadow-sm shadow-black/10 transition hover:border-border hover:text-foreground',
+              'px-3 py-1',
+            )}
+          />
+        }
+      >
+        <Languages className="h-3.5 w-3.5" aria-hidden="true" />
+        <span className="hidden sm:inline">{label}</span>
+        <span className="text-foreground">{activeLabel}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuLabel className="text-xs uppercase tracking-[0.18em] text-muted-foreground">

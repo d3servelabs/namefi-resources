@@ -1,21 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
+} from '@namefi-astra/ui/components/shadcn/popover';
 import { CalendarIcon } from 'lucide-react';
 
 interface DateRangePickerProps {

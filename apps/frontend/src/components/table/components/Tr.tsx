@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { type HTMLAttributes, forwardRef } from 'react';
 import { Consumer } from '../utils';
 import { TrInner } from './TrInner';

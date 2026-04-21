@@ -12,8 +12,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from '@/components/ui/shadcn/navigation-menu';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/navigation-menu';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 type SiteHeaderProps = {
   locale: Locale;
@@ -36,20 +36,22 @@ function DesktopNav({ items }: { items: NavItem[] }) {
             pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <NavigationMenuItem key={item.href}>
-              <NavigationMenuLink asChild>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    navigationMenuTriggerStyle(),
-                    'rounded-full',
-                    isActive
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-muted-foreground',
-                  )}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  {item.label}
-                </Link>
+              <NavigationMenuLink
+                render={
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      'rounded-full',
+                      isActive
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground',
+                    )}
+                    aria-current={isActive ? 'page' : undefined}
+                  />
+                }
+              >
+                {item.label}
               </NavigationMenuLink>
             </NavigationMenuItem>
           );

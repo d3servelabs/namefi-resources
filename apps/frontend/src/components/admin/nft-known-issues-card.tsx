@@ -23,21 +23,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@/components/ui/shadcn/avatar';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/avatar';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Dialog,
   DialogContent,
@@ -45,17 +45,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Table,
   TableBody,
@@ -63,8 +63,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 
 type KnownIssue = AppRouterOutput['admin']['nft']['listKnownIssues'][number];

@@ -1,20 +1,20 @@
 'use client';
 
 import { LoadingButton } from '@/components/buttons/loading-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   Form,
   FormControl,
@@ -22,16 +22,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
-import { Input } from '@/components/ui/shadcn/input';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/form';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { ProgressTimeline } from '@/components/ui/progress-timeline';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { ProgressTimeline } from '@namefi-astra/ui/components/namefi/progress-timeline';
 import {
   useChangeNameserversProgress,
   changeNameserversStepDisplayInfo,
@@ -40,7 +40,7 @@ import {
   resetNameserversChangeSubstepDisplayInfo,
   resetNameserversEnableDnssecSubstepDisplayInfo,
 } from '@/hooks/use-change-nameservers-progress';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';

@@ -1,5 +1,5 @@
-import { cn } from '@/lib/cn';
-import { useSidebar } from './shadcn/sidebar';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 
 /*
  * This is a custom sidebar rail component that is used to toggle the sidebar.

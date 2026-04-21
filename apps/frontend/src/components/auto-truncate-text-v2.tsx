@@ -7,13 +7,13 @@ import {
   useId,
   type RefObject,
 } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useDebounceCallback } from 'usehooks-ts';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from './ui/shadcn/hover-card';
+} from '@namefi-astra/ui/components/shadcn/hover-card';
 
 /**
  * AutoTruncateText V2 - Standalone component that handles truncation without external dependencies

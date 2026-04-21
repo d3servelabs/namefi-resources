@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { formatNumberWithAbbreviations } from '@/lib/number';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

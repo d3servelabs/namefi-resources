@@ -5,26 +5,26 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from '@/components/ui/shadcn/sheet';
+} from '@namefi-astra/ui/components/shadcn/sheet';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+} from '@namefi-astra/ui/components/shadcn/accordion';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Filter } from 'lucide-react';
 import type { ColumnFiltersState } from '@tanstack/react-table';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { DatePickerWithInput } from '@/components/date-picker/date-picker-with-input';
 
 type FilterOperator = 'like' | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';

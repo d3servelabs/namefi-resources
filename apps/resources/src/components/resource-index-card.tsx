@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { ResourceMetaItem } from '@/lib/resource-meta-items';
 
 export type ResourceIndexCardProps = {

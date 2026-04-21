@@ -10,11 +10,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Button } from '@/components/ui/shadcn/button';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   convertToDrizzlerFilterOptions,
@@ -28,7 +28,7 @@ import {
   type RenewalResult,
 } from '@/hooks/use-domain-renewal';
 import { AddressWithChain } from '@/components/address-with-chain';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { formatAmountInUSD } from '@/lib/number';
 import { toast } from 'sonner';
@@ -38,8 +38,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { triggerCelebrationAtPosition } from '@/components/my-domains/confetti-celebration';
 import { AutoRenewToggle } from '@/components/my-domains/auto-renew-toggle';
 import { useInteractionLoggers } from '@/components/providers/analytics';
@@ -81,7 +81,7 @@ import {
   isPast,
 } from 'date-fns';
 import dynamic from 'next/dynamic';
-import { Separator } from '@/components/ui/shadcn/separator';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 
 // Lazy-load the floating action panel to keep motion/react and @number-flow/react
 // out of the initial /domains client bundle
@@ -94,18 +94,18 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '@/components/dialogs/email-required-dialog';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { groupBy } from 'ramda';
 import { MyPreviouslyOwnedDomainsContent } from '@/components/my-previously-owned-domains';
 import {
@@ -113,7 +113,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import {
   Dialog,
   DialogContent,
@@ -121,7 +121,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
 import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
@@ -521,10 +521,8 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
       <EmptyPlaceholder.Description>
         Start the search for your next domain by clicking the button below
       </EmptyPlaceholder.Description>
-      <Button variant="outline">
-        <Link href={'/'} aria-label="Button to go to the search page">
-          Search Page
-        </Link>
+      <Button render={<Link href="/" />} nativeButton={false} variant="outline">
+        Search Page
       </Button>
     </EmptyPlaceholder>
   );

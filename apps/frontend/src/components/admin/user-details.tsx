@@ -28,35 +28,38 @@ import {
   Wallet,
 } from 'lucide-react';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress } from '@/lib/string';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { NetworkLogo } from '@/components/network-logo';
 import { UserWalletAvatar } from '@/components/user-avatar';
-import { Button, buttonVariants } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
+import {
+  Button,
+  buttonVariants,
+} from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import {
   Table,
   TableBody,
@@ -64,7 +67,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 import { getChain } from '@namefi-astra/utils/chains';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { Permission } from '@namefi-astra/utils/permissions';
@@ -323,6 +326,7 @@ function ExternalPageButton({
     <Button
       variant="outline"
       size="sm"
+      nativeButton={false}
       render={(props) => (
         <Link
           {...props}

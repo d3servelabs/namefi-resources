@@ -1,6 +1,6 @@
 import Image, { type StaticImageData } from 'next/image';
 import type { ComponentPropsWithoutRef } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 type ContentImageProps = Omit<
   ComponentPropsWithoutRef<'img'>,

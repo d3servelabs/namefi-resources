@@ -8,12 +8,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { NetworkLogo } from '@/components/network-logo';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 interface NFSCWalletCardProps
   extends Omit<WalletCardProps, 'networks' | 'bottomContent'> {

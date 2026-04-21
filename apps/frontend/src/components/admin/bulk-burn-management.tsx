@@ -6,11 +6,11 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { TableBody } from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { TableBody } from '@namefi-astra/ui/components/shadcn/table';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,8 +20,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FC, useState, useMemo, useCallback } from 'react';

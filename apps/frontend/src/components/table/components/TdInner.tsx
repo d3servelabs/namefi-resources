@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { type TdHTMLAttributes, forwardRef } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import type { Context } from '../utils';

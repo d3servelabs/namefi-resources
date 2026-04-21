@@ -1,0 +1,50 @@
+{
+  "name": "@namefi-astra/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./components/shadcn/*": "./src/components/shadcn/*.tsx",
+    "./components/namefi/namefi-button": "./src/components/namefi/namefi-button.tsx",
+    "./components/namefi/progress-timeline": "./src/components/namefi/progress-timeline/index.ts",
+    "./hooks/*": "./src/hooks/*.ts",
+    "./lib/*": "./src/lib/*.ts",
+    "./styles/globals.css": "./src/styles/globals.css"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
+    "typecheck": "tsgo --noEmit",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
+  },
+  "dependencies": {
+    "@base-ui/react": "catalog:",
+    "@radix-ui/react-slot": "catalog:",
+    "@tailwindcss/forms": "catalog:",
+    "@tailwindcss/typography": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "cmdk": "catalog:",
+    "embla-carousel-react": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react-day-picker": "catalog:",
+    "react-hook-form": "catalog:",
+    "shadcn": "catalog:",
+    "sonner": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tw-animate-css": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tailwindcss": "catalog:"
+  }
+}

@@ -4,9 +4,13 @@ import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
 import { ExternalLink } from 'lucide-react';
 
 import { ParkShareMenu } from '@/components/share-menu';
-import { Button } from '@/components/ui/shadcn/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/shadcn/card';
-import { cn } from '@/lib/cn';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from '@namefi-astra/ui/components/shadcn/card';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { DomainDocument } from '@/lib/metadata';
 
 const LEADING_SLASHES_PATTERN = /^\/+/;
@@ -460,23 +464,28 @@ export function ParkNftCard({
             )}
           >
             {followLink ? (
-              <Button asChild variant="outline" className={ACTION_BUTTON_CLASS}>
-                <Link
-                  href={followLink}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="min-w-0"
-                >
-                  <Image
-                    src="/assets/logos/efp-logo.svg"
-                    alt=""
-                    aria-hidden={true}
-                    width={16}
-                    height={16}
-                    className="size-4 rounded-[2px]"
+              <Button
+                render={
+                  <Link
+                    href={followLink}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="min-w-0"
                   />
-                  Follow on ethfollow
-                </Link>
+                }
+                nativeButton={false}
+                variant="outline"
+                className={ACTION_BUTTON_CLASS}
+              >
+                <Image
+                  src="/assets/logos/efp-logo.svg"
+                  alt=""
+                  aria-hidden={true}
+                  width={16}
+                  height={16}
+                  className="size-4 rounded-[2px]"
+                />
+                Follow on ethfollow
               </Button>
             ) : null}
             <ParkShareMenu

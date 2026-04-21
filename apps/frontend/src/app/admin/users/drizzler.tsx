@@ -9,7 +9,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { useCallback, useMemo, useState } from 'react';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
@@ -22,7 +22,7 @@ import {
   AdminUserExpandedDetails,
   AdminUserLookupButton,
 } from '@/components/admin/user-details';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PageShell } from '@/components/page-shell';
 import { toast } from 'sonner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -51,8 +51,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
   Tooltip,
-} from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { OPERATORS_BY_TYPE } from '@/components/table/filters/components/drizzler-filter-field';
 
 const attemptGetChecksummedAddress = (address: string): string => {

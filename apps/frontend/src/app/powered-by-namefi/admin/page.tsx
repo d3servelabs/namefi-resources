@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-} from '@/components/ui/shadcn/card';
+} from '@namefi-astra/ui/components/shadcn/card';
 import { useMemo } from 'react';
 import { DomainTable } from '@/components/powered-by-namefi/DomainTable';
 import { RevenuePie } from '@/components/powered-by-namefi/RevenuePie';

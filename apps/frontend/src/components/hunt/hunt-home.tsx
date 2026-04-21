@@ -1,8 +1,12 @@
 'use client';
 
 import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
-import { Button } from '@/components/ui/shadcn/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';

@@ -4,17 +4,17 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from '@/components/ui/shadcn/sheet';
+} from '@namefi-astra/ui/components/shadcn/sheet';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
-import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/accordion';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Filter } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { DrizzlerFilterField } from './drizzler-filter-field';
 import type {
   DrizzlerFilterFieldConfig as DrizzlerFilterFieldType,

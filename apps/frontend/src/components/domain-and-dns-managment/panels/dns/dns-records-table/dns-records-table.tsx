@@ -1,6 +1,6 @@
 'use client';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@/components/table';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -10,9 +10,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
-import { Input } from '@/components/ui/shadcn/input';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';

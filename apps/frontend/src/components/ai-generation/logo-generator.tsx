@@ -1,13 +1,13 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
+} from '@namefi-astra/ui/components/shadcn/form';
 import {
   LOGO_STYLES,
   LOGO_TEXT_TREATMENTS,
@@ -19,7 +19,7 @@ import {
   type LogoTypographyInput,
   type LogoTypeInput,
 } from '@namefi-astra/ai/types';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { LucideIcon } from 'lucide-react';
 import {
   Atom,
@@ -54,9 +54,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 
 const logoTypeOptions = Object.keys(LOGO_TYPES) as LogoTypeInput[];
 const logoStyleOptions = Object.keys(LOGO_STYLES) as LogoStyleInput[];

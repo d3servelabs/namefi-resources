@@ -25,7 +25,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
 import { TableFilterPanel } from './table-filter-panel';
 import { ColumnFilter } from './column-filter';
@@ -38,7 +38,7 @@ import {
   ArrowUpNarrowWideIcon,
   ArrowUpDownIcon,
 } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -47,8 +47,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/shadcn/dropdown-menu';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 
 // Helper function to apply filter operators for client-side filtering
 export const applyFilterOperator = (

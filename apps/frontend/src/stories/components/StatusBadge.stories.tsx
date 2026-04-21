@@ -10,7 +10,6 @@ const meta = {
       default: 'dark',
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     status: {
       control: 'select',

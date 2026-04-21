@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { useCallback } from 'react';
 import { TagsDisplay } from '@/components/hunt/tags-display';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { TrendingUp, Globe, Share2 } from 'lucide-react';
 import {
   type HuntVoteRowOptions,

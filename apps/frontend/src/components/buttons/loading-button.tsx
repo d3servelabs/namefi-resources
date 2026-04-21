@@ -1,7 +1,7 @@
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Loader2 } from 'lucide-react';
 import { type ComponentPropsWithoutRef, type ReactNode, useMemo } from 'react';
-import { Button } from '../ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 
 export type LoadingButtonProps = ComponentPropsWithoutRef<typeof Button> & {
   isLoading?: boolean;

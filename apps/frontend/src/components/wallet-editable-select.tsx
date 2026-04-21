@@ -1,21 +1,21 @@
 'use client';
 
-import { Input } from '@/components/ui/shadcn/input';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { getShortAddress } from '@/lib/string';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';
 import { NetworkLogo } from './network-logo';
-import { Badge } from './ui/shadcn/badge';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 
 interface WalletEditableSelectProps {

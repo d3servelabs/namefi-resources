@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/shadcn/button';
-import { Card } from '@/components/ui/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/components/ui/shadcn/collapsible';
+} from '@namefi-astra/ui/components/shadcn/collapsible';
 import {
   Dialog,
   DialogContent,
@@ -13,8 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
-import { ScrollArea } from '@/components/ui/shadcn/scroll-area';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { ScrollArea } from '@namefi-astra/ui/components/shadcn/scroll-area';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';

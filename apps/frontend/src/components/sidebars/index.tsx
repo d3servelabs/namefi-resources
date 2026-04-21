@@ -11,7 +11,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   useSidebar,
-} from '@/components/ui/shadcn/sidebar';
+} from '@namefi-astra/ui/components/shadcn/sidebar';
 import { SidebarRail } from '@/components/ui/sidebar-rail';
 import type { NavItem } from '@/lib/types/nav-item';
 import {

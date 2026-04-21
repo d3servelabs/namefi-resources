@@ -8,9 +8,9 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-} from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Table,
   TableBody,
@@ -18,19 +18,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { Gift, Plus, X, Mail, Calendar, Users } from 'lucide-react';
 import { withPbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
 import { CreateGiftDialog } from '@/components/gifts/create-gift-dialog';
 import { MultiGiftDialog } from '@/components/gifts/multi-gift-dialog';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,7 +40,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { range } from 'ramda';

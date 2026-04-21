@@ -8,13 +8,13 @@
  * It only loads when the user selects domains (selectedDomainCount > 0).
  */
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Separator } from '@/components/ui/shadcn/separator';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import {
   BulkAutoRenewToggle,
   type BulkAutoRenewState,

@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
-import type { StepDisplayInfo } from '@/components/ui/progress-timeline';
+import type { StepDisplayInfo } from '@namefi-astra/ui/components/namefi/progress-timeline';
 import {
   getProgressPhase,
   isTerminalStatus,

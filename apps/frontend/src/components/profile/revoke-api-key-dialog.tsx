@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { useTRPCClient } from '@/lib/trpc';
 import { useSignTypedData } from '@/hooks/use-sign-typed-data';
 import {
@@ -19,9 +19,9 @@ import {
 import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
 import { toast } from 'sonner';
 import { Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
-import { Label } from '@/components/ui/shadcn/label';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 
 /**
  * EIP-712 types for revoking an API key

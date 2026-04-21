@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints } from '@/hooks/use-free-mints';
 import { useMemo } from 'react';

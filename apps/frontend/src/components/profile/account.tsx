@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Label } from '@/components/ui/shadcn/label';
-import { cn } from '@/lib/cn';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Check } from 'lucide-react';
 import type { HTMLAttributes, ReactNode } from 'react';
 

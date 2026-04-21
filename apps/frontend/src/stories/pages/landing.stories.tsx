@@ -8,7 +8,7 @@ import { OriginProvider } from '@/components/providers/origin';
 import { TrpcProvider } from '@/components/providers/trpc';
 import { CartProvider } from '@/components/providers/cart';
 import { WishlistProvider } from '@/components/providers/wishlist';
-import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
+import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import type { ReactNode } from 'react';
@@ -76,8 +76,10 @@ const meta = {
         pathname: '/',
       },
     },
+    chromatic: {
+      cropToViewport: true,
+    },
   },
-  tags: ['autodocs'],
   decorators: [
     (Story, context) => (
       <StoryProviders origin={context.args.origin ?? mockOriginRuntime}>

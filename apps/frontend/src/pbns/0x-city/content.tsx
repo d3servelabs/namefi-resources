@@ -10,7 +10,7 @@ import { type FC, useCallback } from 'react';
 import { DomainClaim } from '@/components/domain-claim';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useInteractionLoggers } from '@/components/providers/analytics';
-import { Separator } from '@/components/ui/shadcn/separator';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import './styles.css';
 
 // Hero Section

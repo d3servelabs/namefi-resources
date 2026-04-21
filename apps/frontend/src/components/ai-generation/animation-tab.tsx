@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   AnimationGenerator,
   type AnimationFormData,

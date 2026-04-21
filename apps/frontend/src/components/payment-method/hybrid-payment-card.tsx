@@ -1,5 +1,5 @@
 import { CartCard } from '@/components/cart-card';
-import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { AddPaymentMethodDialog } from '@/components/payment-method/add-payment-method-dialog';
 import { PaymentSummary } from '@/components/payment-method/payment-summary';
 import { NetworkLogo } from '@/components/network-logo';
@@ -17,7 +17,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button } from '../ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useBalance } from 'wagmi';
 
 import type {
@@ -25,7 +25,7 @@ import type {
   HybridRemainderPaymentProvider,
 } from './hybrid-payment-utils';
 import { calculateHybridPayments } from './hybrid-payment-utils';
-import { Switch } from '../ui/shadcn/switch';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];

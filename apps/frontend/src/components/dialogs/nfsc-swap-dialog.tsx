@@ -1,14 +1,17 @@
 'use client';
 
-import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
-import { Button } from '@/components/ui/shadcn/button';
+import {
+  Alert,
+  AlertDescription,
+} from '@namefi-astra/ui/components/shadcn/alert';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Input } from '@/components/ui/shadcn/input';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { useBuyNfsc } from '@/hooks/use-buy-nfsc';
 import useGetNfscExchangeRate from '@/hooks/use-get-nfsc-exchange-rate';
 import useNfscBalance from '@/hooks/use-nfsc-balance';
@@ -30,7 +33,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 
 type Props = {
   open: boolean;

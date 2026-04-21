@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useId } from 'react';
 
 import { motion } from 'motion/react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 export interface ContainerTextFlipProps {
   /** Array of words to cycle through in the animation */

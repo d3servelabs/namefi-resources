@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { DomainsList } from '@/components/hunt/domains-list';
 import { CampaignDomainsList } from '@/components/hunt/campaign-domains-list';

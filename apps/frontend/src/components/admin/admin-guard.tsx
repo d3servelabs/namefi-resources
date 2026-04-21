@@ -5,7 +5,10 @@ import { useTRPC } from '@/lib/trpc';
 import { skipToken, useQuery } from '@tanstack/react-query';
 import { AuthRequired } from '@/components/auth-required';
 import { useAuth } from '@/hooks/use-auth';
-import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
+import {
+  Alert,
+  AlertDescription,
+} from '@namefi-astra/ui/components/shadcn/alert';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { PageShell } from '@/components/page-shell';
 

@@ -1,6 +1,6 @@
 import { Loader2, Sparkles } from 'lucide-react';
-import { NamefiButton } from '../../buttons/namefi-button';
-import { cn } from '@/lib/cn';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 interface GenerateSubmitButtonProps {
   isLoading?: boolean;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -9,17 +9,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { useTRPCClient } from '@/lib/trpc';
 import { useSignTypedData } from '@/hooks/use-sign-typed-data';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
@@ -43,7 +43,7 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import * as secp256k1 from '@noble/secp256k1';
 

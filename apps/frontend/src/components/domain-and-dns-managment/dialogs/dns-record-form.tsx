@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Form,
   FormControl,
@@ -6,16 +6,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
-import { Input } from '@/components/ui/shadcn/input';
+} from '@namefi-astra/ui/components/shadcn/form';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type RecordType, sanitizeDnsRecord } from '@namefi-astra/zod-dns';
 import { Trash2 } from 'lucide-react';

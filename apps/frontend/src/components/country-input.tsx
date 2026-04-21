@@ -9,13 +9,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/shadcn/command';
+} from '@namefi-astra/ui/components/shadcn/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/popover';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { ChevronDown, CheckIcon, Globe } from 'lucide-react';
 import { CircleFlag } from 'react-circle-flags';
 import { countries } from 'country-data-list';

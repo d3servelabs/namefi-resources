@@ -22,14 +22,14 @@ import { getChain, CHAINS } from '@namefi-astra/utils/chains';
 import { ExportStatusBadge } from './export-status-badge';
 import { StatusHistorySubrow } from './status-history-subrow';
 import { VerifyButton } from './verify-button';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
+} from '@namefi-astra/ui/components/shadcn/popover';
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);

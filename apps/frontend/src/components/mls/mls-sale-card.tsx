@@ -14,8 +14,8 @@ import {
   extractDominantColorFromImage,
   type MlsSaleCardTheme,
 } from '@/components/mls/mls-sale-card-theme';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { cn } from '@/lib/cn';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { MlsSaleListing } from '@/lib/mls/feed';
 import { getMlsHandlePath, normalizeMlsHandle } from '@/lib/mls/handles';
 

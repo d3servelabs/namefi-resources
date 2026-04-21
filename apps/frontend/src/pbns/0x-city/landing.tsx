@@ -15,7 +15,10 @@ import {
   SearchInput,
   SearchResults,
 } from '@/components/search';
-import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
+import {
+  Alert,
+  AlertDescription,
+} from '@namefi-astra/ui/components/shadcn/alert';
 import { Content } from './content';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

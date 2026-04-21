@@ -1,7 +1,7 @@
 import type { MDXComponents } from 'mdx/types';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { ContentImage } from '@/components/content-image';
 
 const Wrapper = ({ children }: { children: ReactNode }) => (

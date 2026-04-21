@@ -1,11 +1,11 @@
 import { NetworkLogo } from '@/components/network-logo';
 import { formatAmountInUSD } from '@/lib/number';
 import { useState, useMemo } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { AppRouterInput } from '@/lib/trpc';
 import type { HybridPaymentCalculation } from './hybrid-payment-utils';
 import { getChainName } from './hybrid-payment-utils';
-import { Separator } from '../ui/shadcn/separator';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { ChevronDown, ChevronRight, CreditCard } from 'lucide-react';
 import { TruncatedTextWithHover } from '../truncated-text-with-hover';
 

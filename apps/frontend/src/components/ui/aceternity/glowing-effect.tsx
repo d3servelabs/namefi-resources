@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { animate } from 'motion/react';
 
 interface GlowingEffectProps {

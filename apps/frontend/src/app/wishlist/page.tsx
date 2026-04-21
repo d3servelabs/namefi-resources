@@ -8,7 +8,7 @@ import { DomainCard } from '@/components/search/domain-card';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { useAuth } from '@/hooks/use-auth';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { PageShell } from '@/components/page-shell';
 
 export default function WishlistPage() {

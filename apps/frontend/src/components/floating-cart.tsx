@@ -12,15 +12,15 @@ import {
   type CSSProperties,
 } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
-import { Button } from './ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { SearchMode } from './search/types';
 import { useCart } from '@/hooks/use-cart';
 import { AnimatePresence, motion } from 'motion/react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import NumberFlow from '@number-flow/react';
-import { useSidebar } from '@/components/ui/shadcn/sidebar';
+import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { useEventListener } from 'usehooks-ts';
 
 const FLOATING_CART_BASE_BOTTOM = 24;

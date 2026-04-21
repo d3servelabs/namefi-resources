@@ -8,7 +8,7 @@ import {
   useTransform,
   useMotionTemplate,
 } from 'motion/react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 export const CometCard = ({
   rotateDepth = 17.5,

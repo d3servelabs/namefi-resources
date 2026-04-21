@@ -1,15 +1,15 @@
 /** biome-ignore-all lint/performance/noImgElement: using plain img for grid thumbnails and simplicity */
 'use client';
 
-import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/form';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Check } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
@@ -18,8 +18,8 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { Switch } from '@/components/ui/shadcn/switch';
-import { Label } from '@/components/ui/shadcn/label';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import type { Generation } from './shared/types';
 import type { UseFormReturn } from 'react-hook-form';
 import {
@@ -28,7 +28,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import type {
   ImageModel as Model,
   MarketingCollateralTypeInput,

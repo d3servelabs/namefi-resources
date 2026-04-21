@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import {
   defaultShareConfig,

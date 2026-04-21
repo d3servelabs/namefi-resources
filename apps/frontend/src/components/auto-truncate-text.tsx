@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useDebounceCallback } from 'usehooks-ts';
 import { TruncatedTextWithHover } from './truncated-text-with-hover';
 /**

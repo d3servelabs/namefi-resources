@@ -6,7 +6,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/shadcn/pagination';
+} from '@namefi-astra/ui/components/shadcn/pagination';
 
 interface PaginationControlsProps {
   page: number;

@@ -13,8 +13,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useMemo, useState } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { NameserversDialog } from '../dialogs/nameservers-dialog';

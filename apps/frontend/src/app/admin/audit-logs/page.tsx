@@ -6,9 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import type { Dispatch, SetStateAction } from 'react';
-import { Input } from '@/components/ui/shadcn/input';
-import { Button } from '@/components/ui/shadcn/button';
-import { Label } from '@/components/ui/shadcn/label';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Sheet,
   SheetContent,
@@ -16,13 +16,13 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/shadcn/sheet';
+} from '@namefi-astra/ui/components/shadcn/sheet';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   Loader2Icon,
   FilterIcon,
@@ -34,13 +34,13 @@ import {
 import { DataTable } from '@/components/table/data-table';
 import type { Row } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Calendar } from '@/components/ui/shadcn/calendar';
+import { Calendar } from '@namefi-astra/ui/components/shadcn/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/popover';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import JsonView from '@uiw/react-json-view';
 import { useTheme } from 'next-themes';
 import { PageShell } from '@/components/page-shell';

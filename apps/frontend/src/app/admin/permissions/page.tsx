@@ -6,24 +6,24 @@ import { AdminGuard } from '@/components/admin/admin-guard';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { useTRPC } from '@/lib/trpc';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Input } from '@/components/ui/shadcn/input';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
-import { Badge } from '@/components/ui/shadcn/badge';
-import { Label } from '@/components/ui/shadcn/label';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion';
+} from '@namefi-astra/ui/components/shadcn/accordion';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { toast } from 'sonner';
 import { useDebounceValue } from 'usehooks-ts';
@@ -39,8 +39,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 
 export default function PermissionsAdminPage() {
   return (

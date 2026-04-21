@@ -1,7 +1,7 @@
 'use client';
 
-import { cn } from '@/lib/cn';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import type { ReactElement, ReactNode } from 'react';
 import { Children, isValidElement, useState, useEffect } from 'react';
 import {
@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/table';
 
 // ============================================================================
 // Mobile Components

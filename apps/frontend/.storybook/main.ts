@@ -11,6 +11,31 @@ import { fileURLToPath } from 'url';
 function getAbsolutePath(value: string) {
   return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
 }
+
+function moveStorybookStylesBeforeEntryScript(html: string) {
+  const entryScriptPattern =
+    /\n\s*<script type="module"[^>]*src="\.\/assets\/iframe-[^"]+\.js"[^>]*><\/script>/;
+  const stylesheetPattern =
+    /\n\s*<link rel="stylesheet"[^>]*href="\.\/assets\/iframe-[^"]+\.css"[^>]*>/;
+  const entryScriptMatch = html.match(entryScriptPattern);
+  const stylesheetMatch = html.match(stylesheetPattern);
+
+  if (!entryScriptMatch || !stylesheetMatch) {
+    return html;
+  }
+
+  const entryScriptIndex = entryScriptMatch.index ?? 0;
+  const stylesheetIndex = stylesheetMatch.index ?? 0;
+
+  if (stylesheetIndex < entryScriptIndex) {
+    return html;
+  }
+
+  return html
+    .replace(stylesheetPattern, '')
+    .replace(entryScriptPattern, `${stylesheetMatch[0]}$&`);
+}
+
 const config: StorybookConfig = {
   stories: [
     '../src/stories/**/*.mdx',
@@ -37,6 +62,14 @@ const config: StorybookConfig = {
       cssMinify: false,
       sourcemap: 'inline',
     };
+    config.plugins = [
+      ...(config.plugins ?? []),
+      {
+        name: 'namefi-storybook-css-before-entry',
+        enforce: 'post',
+        transformIndexHtml: moveStorybookStylesBeforeEntryScript,
+      },
+    ];
     return config;
   },
 };

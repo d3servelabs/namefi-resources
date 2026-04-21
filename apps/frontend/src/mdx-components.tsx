@@ -1,6 +1,6 @@
 import type { MDXComponents } from 'mdx/types';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
   <div className="mx-auto w-full max-w-3xl px-6 py-20 sm:py-24">

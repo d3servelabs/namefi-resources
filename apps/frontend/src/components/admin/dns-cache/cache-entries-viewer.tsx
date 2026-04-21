@@ -6,16 +6,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/shadcn/table';
-import { Input } from '@/components/ui/shadcn/input';
-import { Button } from '@/components/ui/shadcn/button';
+} from '@namefi-astra/ui/components/shadcn/table';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { ChevronLeft, ChevronRight, Download, Search } from 'lucide-react';
 
 type CacheEntry = {

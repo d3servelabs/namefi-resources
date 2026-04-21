@@ -1,5 +1,5 @@
 import { MultipleLinesArrayErrorMessage } from '@/components/multiple-lines-array-error-message';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/shadcn/alert-dialog';
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';

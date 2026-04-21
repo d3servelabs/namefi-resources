@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { type MouseEvent, useCallback } from 'react';
 import { ArrowBigUpIcon } from 'lucide-react';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { type Domain, useHuntVoteCount } from '../domains-list-item';
 import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';

@@ -8,9 +8,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { TableBody } from '@/components/ui/shadcn/table';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { TableBody } from '@namefi-astra/ui/components/shadcn/table';
 import { useAuth } from '@/hooks/use-auth';
 import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';

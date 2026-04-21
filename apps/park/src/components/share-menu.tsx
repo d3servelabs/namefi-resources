@@ -13,9 +13,9 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Button } from '@/components/ui/shadcn/button';
-import { Card } from '@/components/ui/shadcn/card';
-import { cn } from '@/lib/cn';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 type BrandIconProps = SVGProps<SVGSVGElement>;
 
@@ -181,35 +181,37 @@ export function ParkShareMenu({
               style={menuStyle}
             >
               <Button
-                asChild
+                render={
+                  <Link
+                    href={shareLinks.twitter}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  />
+                }
+                nativeButton={false}
                 variant="ghost"
                 className="w-full justify-start rounded-lg text-sm"
                 onClick={() => setIsOpen(false)}
               >
-                <Link
-                  href={shareLinks.twitter}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <XBrandIcon className="h-4 w-4" />
-                  Share on X
-                </Link>
+                <XBrandIcon className="h-4 w-4" />
+                Share on X
               </Button>
 
               <Button
-                asChild
+                render={
+                  <Link
+                    href={shareLinks.facebook}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  />
+                }
+                nativeButton={false}
                 variant="ghost"
                 className="w-full justify-start rounded-lg text-sm"
                 onClick={() => setIsOpen(false)}
               >
-                <Link
-                  href={shareLinks.facebook}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <FacebookBrandIcon className="h-4 w-4" />
-                  Share on Facebook
-                </Link>
+                <FacebookBrandIcon className="h-4 w-4" />
+                Share on Facebook
               </Button>
 
               <Button

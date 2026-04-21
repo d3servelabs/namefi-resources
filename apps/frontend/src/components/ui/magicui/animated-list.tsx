@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { AnimatePresence, motion } from 'motion/react';
 import React, {
   type ComponentPropsWithoutRef,

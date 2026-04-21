@@ -2,11 +2,14 @@
 
 import { CartDropdown } from '@/components/dropdowns/cart-dropdown';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
-import { Separator } from '@/components/ui/shadcn/separator';
+import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { FreeMintsDropdown } from '@/components/dropdowns/free-mints-dropdown';
 import { HeaderMissingEmailWarning } from '@/components/header-missing-email-warning';
-import { SidebarTrigger, useSidebar } from '@/components/ui/shadcn/sidebar';
-import { cn } from '@/lib/cn';
+import {
+  SidebarTrigger,
+  useSidebar,
+} from '@namefi-astra/ui/components/shadcn/sidebar';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useOrigin } from '@/components/providers/origin';
 import { motion } from 'motion/react';
 import {

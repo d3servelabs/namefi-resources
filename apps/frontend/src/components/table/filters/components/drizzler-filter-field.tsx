@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
+} from '@namefi-astra/ui/components/shadcn/select';
 import { DatePickerWithInput } from '@/components/date-picker/date-picker-with-input';
 import { Plus, X, Check, ChevronsUpDown } from 'lucide-react';
 import type { FilterOperators } from '@samyx/drizzler-filters-sorters';
@@ -22,13 +22,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/shadcn/command';
+} from '@namefi-astra/ui/components/shadcn/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/shadcn/popover';
-import { cn } from '@/lib/cn';
+} from '@namefi-astra/ui/components/shadcn/popover';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { UserWalletAvatar } from '@/components/user-avatar';
 
 type DrizzlerFilterFieldProps = {

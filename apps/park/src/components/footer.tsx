@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { useCookieConsent } from '@/hooks/use-cookie-consent';
 import { useOrigin } from '@/hooks/use-origin';
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { getPoweredByNamefiApex } from '@/lib/theme';
 
 type BrandIconProps = SVGProps<SVGSVGElement>;

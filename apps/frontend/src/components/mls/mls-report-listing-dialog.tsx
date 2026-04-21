@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import {
   Form,
   FormControl,
@@ -22,15 +22,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form';
+} from '@namefi-astra/ui/components/shadcn/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select';
-import { Textarea } from '@/components/ui/shadcn/textarea';
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import {
   MLS_LISTING_REPORT_REASONS,
   type MlsCreateListingReportInput,

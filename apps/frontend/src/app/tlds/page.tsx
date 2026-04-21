@@ -8,9 +8,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Badge } from '@/components/ui/shadcn/badge';
+} from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
@@ -32,7 +32,7 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { PageShell } from '@/components/page-shell';
 
 type TldPricingRow =

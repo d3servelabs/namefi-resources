@@ -22,7 +22,7 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/mobile-table';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { AddressWithChain } from '@/components/address-with-chain';
 import { useAuth } from '@/hooks/use-auth';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
@@ -32,14 +32,14 @@ import { format } from 'date-fns';
 import { Calendar, ExternalLink, Info, PackageX } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useMemo } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PageShell } from '@/components/page-shell';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 
 export default function OrdersPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();

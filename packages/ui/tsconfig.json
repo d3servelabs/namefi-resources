@@ -1,0 +1,24 @@
+{
+  "extends": "@namefi-astra/typescript",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "paths": {
+      "@namefi-astra/ui/components": ["./src/components"],
+      "@namefi-astra/ui/components/namefi/namefi-button": [
+        "./src/components/namefi/namefi-button.tsx"
+      ],
+      "@namefi-astra/ui/components/namefi/progress-timeline": [
+        "./src/components/namefi/progress-timeline/index.ts"
+      ],
+      "@namefi-astra/ui/components/shadcn": ["./src/components/shadcn"],
+      "@namefi-astra/ui/components/shadcn/*": ["./src/components/shadcn/*"],
+      "@namefi-astra/ui/hooks": ["./src/hooks"],
+      "@namefi-astra/ui/hooks/*": ["./src/hooks/*"],
+      "@namefi-astra/ui/lib": ["./src/lib"],
+      "@namefi-astra/ui/lib/*": ["./src/lib/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

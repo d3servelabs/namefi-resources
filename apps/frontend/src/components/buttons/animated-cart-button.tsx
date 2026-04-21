@@ -1,12 +1,12 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import type { ComponentProps } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Button } from '../ui/shadcn/button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { forwardRef, useState } from 'react';
 import { Loader2, ShoppingCart, Check, Download, Trash } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 
 type CartButtonState =
   | 'add-to-cart'
