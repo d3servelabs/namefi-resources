@@ -455,18 +455,48 @@ const getPreliminaryDomainAvailability = async (
           : parsed.publicSuffix;
       const pricingEntry = priceMap.get(priceKey);
 
+      if (!pricingEntry) {
+        return {
+          domain,
+          availability: false,
+          pricingDetails: undefined,
+          currentOwner: undefined,
+          durationValidationInYears: { min: 1, max: 1 },
+          importable: false,
+          registrarKey: undefined,
+          supported: false,
+        } satisfies DomainAvailabilityInfo;
+      }
+
       const amounts =
-        pricingEntry?.kind === 'pbn'
+        pricingEntry.kind === 'pbn'
           ? {
               registration: pricingEntry.info.costPerYearInUsd,
               renewal: pricingEntry.info.costPerYearInUsd,
               transfer: pricingEntry.info.costPerYearInUsd,
             }
           : {
-              registration: pricingEntry?.info.registrationPriceUsdPerYear ?? 0,
-              renewal: pricingEntry?.info.renewalPriceUsdPerYear ?? 0,
-              transfer: pricingEntry?.info.transferPriceUsdPerYear ?? 0,
+              registration: pricingEntry.info.registrationPriceUsdPerYear,
+              renewal: pricingEntry.info.renewalPriceUsdPerYear,
+              transfer: pricingEntry.info.transferPriceUsdPerYear,
             };
+      const { registration, renewal, transfer } = amounts;
+
+      if (isNil(registration) || isNil(renewal) || isNil(transfer)) {
+        return {
+          domain,
+          availability: false,
+          pricingDetails: undefined,
+          currentOwner: undefined,
+          durationValidationInYears: { min: 1, max: 1 },
+          importable: false,
+          registrarKey:
+            pricingEntry.kind === 'tld'
+              ? pricingEntry.info.registrarKey
+              : 'namefi',
+          supported: false,
+        } satisfies DomainAvailabilityInfo;
+      }
 
       return {
         domain,
@@ -475,21 +505,21 @@ const getPreliminaryDomainAvailability = async (
           importPrice: {
             type: 'PER_YEAR',
             price: {
-              amount: amounts.transfer ?? 0,
+              amount: transfer,
               currency: 'USD',
             },
           },
           registrationPrice: {
             type: 'PER_YEAR',
             price: {
-              amount: amounts.registration ?? 0,
+              amount: registration,
               currency: 'USD',
             },
           },
           renewalPrice: {
             type: 'PER_YEAR',
             price: {
-              amount: amounts.renewal ?? 0,
+              amount: renewal,
               currency: 'USD',
             },
           },
@@ -498,9 +528,9 @@ const getPreliminaryDomainAvailability = async (
         durationValidationInYears: { min: 1, max: 1 },
         importable: !availability,
         registrarKey:
-          pricingEntry?.kind === 'tld'
+          pricingEntry.kind === 'tld'
             ? pricingEntry.info.registrarKey
-            : 'preliminary',
+            : 'namefi',
         supported: true,
       } satisfies DomainAvailabilityInfo;
     }),

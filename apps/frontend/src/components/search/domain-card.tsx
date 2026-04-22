@@ -333,7 +333,7 @@ export const DomainCard: FC<{
     '';
   const isImportAction =
     showImportUi && isImportable && !availabilityInfo?.availability;
-  const shouldBlockAvailabilityActions = Boolean(
+  const isWaitingForAuthoritativeAvailability = Boolean(
     availabilityInfo && !isAvailabilityAuthoritative,
   );
   const cartButtonState = removingBusy
@@ -357,7 +357,8 @@ export const DomainCard: FC<{
 
   const handleAdd = useCallback(async () => {
     if (!availabilityInfo) return;
-    if (!isAvailabilityAuthoritative) return;
+    // Cart rows can be created from preliminary search data; cart/checkout
+    // validation refreshes authoritative availability before purchase.
     if (isImportAction && !activeEppAuthorizationCode) {
       eppInputRef.current?.focus();
       return;
@@ -374,13 +375,7 @@ export const DomainCard: FC<{
         ? { eppAuthorizationCode: activeEppAuthorizationCode }
         : {}),
     });
-  }, [
-    activeEppAuthorizationCode,
-    availabilityInfo,
-    cart,
-    isAvailabilityAuthoritative,
-    isImportAction,
-  ]);
+  }, [activeEppAuthorizationCode, availabilityInfo, cart, isImportAction]);
 
   const handleRemove = useCallback(async () => {
     if (domain) {
@@ -389,10 +384,9 @@ export const DomainCard: FC<{
   }, [cart, domain]);
 
   const goToCart = useCallback(() => {
-    if (shouldBlockAvailabilityActions) return;
     logBeginCheckout();
     router.push('/cart');
-  }, [logBeginCheckout, router, shouldBlockAvailabilityActions]);
+  }, [logBeginCheckout, router]);
 
   const goToClaimPage = useCallback(() => {
     if (!domain) return;
@@ -564,7 +558,6 @@ export const DomainCard: FC<{
                     onAdd={handleAdd}
                     onRemove={handleRemove}
                     onGoToCart={goToCart}
-                    mainDisabled={shouldBlockAvailabilityActions}
                     showRemoveButton={inCart}
                     disabled={addingBusy || removingBusy}
                   />
@@ -587,7 +580,6 @@ export const DomainCard: FC<{
                     onAdd={handleAdd}
                     onRemove={handleRemove}
                     onGoToCart={goToCart}
-                    mainDisabled={shouldBlockAvailabilityActions}
                     showRemoveButton={inCart}
                     disabled={
                       addingBusy || removingBusy || isImportButtonDisabled
@@ -618,8 +610,8 @@ export const DomainCard: FC<{
                 freeClaimEligibility?.eligible ? (
                 <NamefiButton
                   onClick={goToClaimPage}
-                  disabled={shouldBlockAvailabilityActions}
-                  aria-busy={shouldBlockAvailabilityActions}
+                  disabled={isWaitingForAuthoritativeAvailability}
+                  aria-busy={isWaitingForAuthoritativeAvailability}
                   className="h-8 max-w-full px-3 text-[11px] bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:text-xs disabled:opacity-100"
                 >
                   <Gift className="h-4 w-4" />
@@ -633,7 +625,6 @@ export const DomainCard: FC<{
                     onAdd={handleAdd}
                     onRemove={handleRemove}
                     onGoToCart={goToCart}
-                    mainDisabled={shouldBlockAvailabilityActions}
                     showRemoveButton={inCart}
                     disabled={addingBusy || removingBusy}
                   />
@@ -642,7 +633,7 @@ export const DomainCard: FC<{
                     disabled={
                       addingBusy ||
                       removingBusy ||
-                      shouldBlockAvailabilityActions
+                      isWaitingForAuthoritativeAvailability
                     }
                     className="h-8 px-2.5 text-[11px] sm:h-9 sm:px-3 sm:text-xs disabled:opacity-100"
                   />

@@ -153,6 +153,7 @@ export const AnimatedCartButton = forwardRef<
         <div className="shrink-0">
           <Button
             ref={ref}
+            {...props}
             className={cn(
               'shrink-0 md:w-44 transition-all duration-300 disabled:opacity-100',
               config.className,
@@ -168,7 +169,6 @@ export const AnimatedCartButton = forwardRef<
             onMouseLeave={
               state === 'in-cart' ? () => setIsHovered(false) : undefined
             }
-            {...props}
           >
             <div className="flex items-center gap-2">
               <div className="flex items-center justify-center">

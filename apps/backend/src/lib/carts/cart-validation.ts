@@ -691,8 +691,9 @@ function _prepareCartItemsWithChangesReflected(
 ) {
   const changes: CartItemChange[] = stillAvailableCartItems.map(
     (originalItem) => {
-      const { pricingDetails, durationValidationInYears } =
+      const domainAvailability =
         domainPricingByName[originalItem.normalizedDomainName];
+      const { pricingDetails, durationValidationInYears } = domainAvailability;
 
       if (!pricingDetails) {
         throw new TRPCError({

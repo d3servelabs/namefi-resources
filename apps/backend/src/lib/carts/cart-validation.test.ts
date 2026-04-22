@@ -14,6 +14,7 @@ const {
   _getAvailabilityChangesInRegisterCartItems,
   _getAvailabilityChangesInImportCartItems,
   _getAvailabilityChangesInRenewCartItems,
+  _prepareCartItemsWithChangesReflected,
 } = __INTERNAL__;
 
 describe('cart-validation', () => {
@@ -572,7 +573,63 @@ describe('cart-validation', () => {
     });
   });
 
-  // Note: _determineChangesIfAnyToCartItems and _prepareCartItemsWithChangesReflected are complex functions
-  // that depend on external pricing calculation functions and are not suitable for simple unit testing
-  // without extensive mocking. They would be better tested as integration tests.
+  describe('_prepareCartItemsWithChangesReflected', () => {
+    const mockCartItem: CartItemSelect = {
+      id: '1',
+      userId: 'user1',
+      normalizedDomainName: 'example.com' as NamefiNormalizedDomain,
+      type: itemTypeSchema.enum.REGISTER,
+      durationInYears: 1,
+      amountInUSDCents: 1000,
+      registrar: 'preliminary-registrar',
+      encryptionKeyId: null,
+      encryptedEppAuthorizationCode: null,
+      metadata: {},
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    it('should reflect registrar changes from authoritative availability', () => {
+      const result = _prepareCartItemsWithChangesReflected(
+        [mockCartItem],
+        {
+          [mockCartItem.normalizedDomainName]: {
+            domain: 'example.com' as NamefiNormalizedDomain,
+            availability: true,
+            importable: false,
+            supported: true,
+            currentOwner: undefined,
+            registrarKey: 'dynadot',
+            durationValidationInYears: { min: 1, max: 10 },
+            pricingDetails: {
+              registrationPrice: {
+                type: 'PER_YEAR',
+                price: { amount: 10, currency: 'USD' },
+              },
+              renewalPrice: {
+                type: 'PER_YEAR',
+                price: { amount: 10, currency: 'USD' },
+              },
+              importPrice: {
+                type: 'PER_YEAR',
+                price: { amount: 10, currency: 'USD' },
+              },
+            },
+          },
+        },
+        new Map(),
+      );
+
+      expect(result.priceChangedCartItems).toEqual([]);
+      expect(result.durationChangedCartItems).toEqual([]);
+      expect(result.cartItemsWithChangesReflected).toEqual([
+        {
+          ...mockCartItem,
+        },
+      ]);
+    });
+  });
+
+  // Note: _determineChangesIfAnyToCartItems depends on external data sources and
+  // is better tested as an integration path.
 });
