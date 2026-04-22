@@ -11,7 +11,10 @@ import type {
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { getEppLockState } from './registrar.activities';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { determineActionRequired } from '../../shared/autorenew-utils';
+import {
+  determineActionRequired,
+  formatDeferredRowReason,
+} from '../../shared/autorenew-utils';
 
 /**
  * Generate comprehensive CSV report with all auto-renewal details.
@@ -181,10 +184,12 @@ export async function generateAutoRenewReportCsv(
           registrar: entry.registrar || 'Unknown',
           amountCharged: '0.00',
           amountRefunded: '0.00',
-          errorReason:
-            typeof result.shortfallInUsdCents === 'number'
-              ? `Deferred — short by $${(result.shortfallInUsdCents / 100).toFixed(2)}`
-              : 'Deferred — insufficient balance',
+          // User-level run aggregates (required / balance / short). The
+          // per-row cost lives in the `Amount Charged (USD)` column.
+          errorReason: formatDeferredRowReason({
+            availableBalanceInUsd: result.snapshot?.availableBalanceInNfsc,
+            shortfallInUsdCents: result.shortfallInUsdCents,
+          }),
           actionRequired: 'Top up balance or wait for next cycle',
         });
       }

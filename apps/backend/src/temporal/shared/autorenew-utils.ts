@@ -52,3 +52,35 @@ export function isPaymentFailure(reason: string): boolean {
     lower.includes('insufficient')
   );
 }
+
+/**
+ * Format a row-level error-reason string for a domain that was deferred
+ * due to insufficient NFSC balance. Used by the admin tRPC router's
+ * `domains[]` rows, the CSV attachment, and the orchestration-level
+ * legacy `failures[]` array.
+ *
+ * All three numbers are user-level (not per-row):
+ * - `required` = total USD the user needed for all their renewals this cycle.
+ * - `balance`  = user's NFSC balance at run start (USD, summed across chains).
+ * - `short`    = balance shortfall in USD (i.e. `required - balance`).
+ *
+ * The per-row charge lives in a separate column/field — this string is
+ * the user-level context, labeled clearly so no number can be misread as
+ * belonging to the single row.
+ */
+export function formatDeferredRowReason(args: {
+  availableBalanceInUsd: number | undefined;
+  shortfallInUsdCents: number | undefined;
+}): string {
+  const { availableBalanceInUsd, shortfallInUsdCents } = args;
+  if (typeof shortfallInUsdCents !== 'number' || shortfallInUsdCents <= 0) {
+    return 'Deferred — insufficient balance';
+  }
+  const shortfallInUsd = shortfallInUsdCents / 100;
+  if (typeof availableBalanceInUsd !== 'number') {
+    return `Deferred — run total short by $${shortfallInUsd.toFixed(2)}`;
+  }
+  // Required = balance + shortfall, by definition of `shortfallInUsdCents`.
+  const requiredInUsd = availableBalanceInUsd + shortfallInUsd;
+  return `Deferred — required $${requiredInUsd.toFixed(2)}, balance $${availableBalanceInUsd.toFixed(2)}, short $${shortfallInUsd.toFixed(2)}`;
+}

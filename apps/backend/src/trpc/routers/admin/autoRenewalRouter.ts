@@ -12,7 +12,10 @@ import {
   computeAutoRenewMetricsFromResults,
   type AutoRenewReportInput,
 } from '#temporal/activities/domain/autorenew-report.activities';
-import { determineActionRequired } from '#temporal/shared/autorenew-utils';
+import {
+  determineActionRequired,
+  formatDeferredRowReason,
+} from '#temporal/shared/autorenew-utils';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { PaymentProvider } from '@namefi-astra/db/types';
 
@@ -304,9 +307,11 @@ export const autoRenewalRouter = createContractTRPCRouter<
           };
 
           if (r.paymentStatus === 'FAILED' && r.domainsThatCouldBeRenewed) {
-            const reason = isInsufficientBalance
-              ? `Skipped due to insufficient balance (short by $${(r.shortfallInUsdCents! / 100).toFixed(2)})`
-              : r.message || 'Payment failed';
+            // `reason` is only used in the paymentFailed branch; the
+            // deferred branch doesn't need it (consumers derive wording
+            // from `shortfallInUsdCents` or the `deferredInsufficientBalance`
+            // category label).
+            const paymentFailedReason = r.message || 'Payment failed';
             for (const d of r.domainsThatCouldBeRenewed) {
               if (isInsufficientBalance) {
                 domainCategories.deferredInsufficientBalance.push({
@@ -318,7 +323,7 @@ export const autoRenewalRouter = createContractTRPCRouter<
                 domainCategories.paymentFailed.push({
                   domain: d.normalizedDomainName as NamefiNormalizedDomain,
                   registrar: d.registrarKey,
-                  reason,
+                  reason: paymentFailedReason,
                   chargeAmountInUsd: lookupCharge(d.normalizedDomainName),
                 });
               }
@@ -347,9 +352,13 @@ export const autoRenewalRouter = createContractTRPCRouter<
             })),
             ...domainCategories.deferredInsufficientBalance.map((e) => ({
               domain: e.domain,
-              reason: isInsufficientBalance
-                ? `Skipped due to insufficient balance (short by $${(r.shortfallInUsdCents! / 100).toFixed(2)})`
-                : 'Skipped due to insufficient balance',
+              // `required` / `balance` / `short` are all user-level
+              // (run aggregate), never per-row — the row's own cost is
+              // in `chargeAmountUsd` / `chargeAmountInUsd`.
+              reason: formatDeferredRowReason({
+                availableBalanceInUsd: r.availableBalanceInNfsc,
+                shortfallInUsdCents: r.shortfallInUsdCents,
+              }),
               registrar: e.registrar,
             })),
             ...domainCategories.missingPrice.map((e) => ({
@@ -438,6 +447,9 @@ export const autoRenewalRouter = createContractTRPCRouter<
           }
 
           // Deferred-insufficient-balance domains (partial-renewal branch).
+          // The numbers in `errorReason` (required / balance / short)
+          // are all user-level (run aggregate), never per-row. Per-row
+          // cost lives in `chargeAmountUsd`.
           for (const d of r.domainsSkippedDueToInsufficientFunds ?? []) {
             domains.push({
               domain: d.normalizedDomainName,
@@ -447,10 +459,10 @@ export const autoRenewalRouter = createContractTRPCRouter<
               chargeAmountUsd:
                 r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
                 undefined,
-              errorReason:
-                typeof r.shortfallInUsdCents === 'number'
-                  ? `Deferred — short by $${(r.shortfallInUsdCents / 100).toFixed(2)}`
-                  : 'Deferred — insufficient balance',
+              errorReason: formatDeferredRowReason({
+                availableBalanceInUsd: r.availableBalanceInNfsc,
+                shortfallInUsdCents: r.shortfallInUsdCents,
+              }),
               actionRequired: 'Top up balance or wait for next cycle',
             });
           }
@@ -466,7 +478,11 @@ export const autoRenewalRouter = createContractTRPCRouter<
                   chargeAmountUsd:
                     r.chargeAmountByDomainLdh?.[d.normalizedDomainName] ??
                     undefined,
-                  errorReason: `Deferred — short by $${(r.shortfallInUsdCents! / 100).toFixed(2)}`,
+                  // User-level run aggregates; per-row cost is in `chargeAmountUsd`.
+                  errorReason: formatDeferredRowReason({
+                    availableBalanceInUsd: r.availableBalanceInNfsc,
+                    shortfallInUsdCents: r.shortfallInUsdCents,
+                  }),
                   actionRequired: 'Top up balance or wait for next cycle',
                 });
               } else {

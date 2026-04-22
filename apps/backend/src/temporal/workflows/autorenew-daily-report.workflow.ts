@@ -4,6 +4,7 @@ import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-act
 import type { SingleUserRenewalResult } from './autorenew-daily-emails.workflow';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import { formatDeferredRowReason } from '../shared/autorenew-utils';
 import type {
   AutoRenewMetrics,
   AutoRenewReportInput,
@@ -101,9 +102,11 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
       const isInsufficientBalance =
         typeof result.shortfallInUsdCents === 'number' &&
         result.shortfallInUsdCents > 0;
-      const reason = isInsufficientBalance
-        ? `Skipped due to insufficient balance (short by $${(result.shortfallInUsdCents! / 100).toFixed(2)})`
-        : result.message || 'Payment failed';
+      // `reason` is only used in the paymentFailed branch; the deferred
+      // branch doesn't need a per-row reason (downstream derives wording
+      // from `shortfallInUsdCents` on the user object so the amount is
+      // never ambiguously attributed to a single row's cost).
+      const paymentFailedReason = result.message || 'Payment failed';
 
       for (const d of result.domainsThatCouldBeRenewed) {
         if (isInsufficientBalance) {
@@ -116,7 +119,7 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
           domainCategories.paymentFailed.push({
             domain: d.normalizedDomainName,
             registrar: d.registrarKey,
-            reason,
+            reason: paymentFailedReason,
             chargeAmountInUsd: lookupCharge(d.normalizedDomainName),
           });
         }
@@ -152,11 +155,12 @@ export async function generateAndSendInternalAutoRenewReportWorkflow({
       })),
       ...domainCategories.deferredInsufficientBalance.map((e) => ({
         domain: e.domain,
-        reason: `Skipped due to insufficient balance${
-          typeof result.shortfallInUsdCents === 'number'
-            ? ` (short by $${(result.shortfallInUsdCents / 100).toFixed(2)})`
-            : ''
-        }`,
+        // User-level run aggregates (required/balance/short). Per-row
+        // cost is in `chargeAmountInUsd`.
+        reason: formatDeferredRowReason({
+          availableBalanceInUsd: result.availableBalanceInNfsc,
+          shortfallInUsdCents: result.shortfallInUsdCents,
+        }),
         registrar: e.registrar,
       })),
       ...domainCategories.missingPrice.map((e) => ({

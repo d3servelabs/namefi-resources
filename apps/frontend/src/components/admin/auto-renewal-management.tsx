@@ -974,6 +974,10 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
     let failedCount = 0;
     let deferredCount = 0;
     let totalChargedInUsd = 0;
+    // Required includes deferred rows (what the user *wanted* to renew,
+    // before any subset trimming) so the header can contrast
+    // "needed vs. had".
+    let totalRequiredInUsd = 0;
     for (const r of visibleRows) {
       if (r.original.status === 'SUCCESS') {
         successCount++;
@@ -982,6 +986,7 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
       } else {
         failedCount++;
       }
+      totalRequiredInUsd += r.original.chargeAmountUsd ?? 0;
       // Only count actually-charged rows toward the user total —
       // deferred rows did not incur a charge.
       if (r.original.status !== 'SKIPPED_INSUFFICIENT_FUNDS') {
@@ -999,6 +1004,7 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           failedCount,
           deferredCount,
           totalAmountInUsd: totalChargedInUsd,
+          totalRequiredInUsd,
           refundAmountInUsd: 0, // refunds are user-level and not represented per-row
           availableBalanceInNfsc: first.availableBalanceInNfsc,
           availablePaymentMethods: first.availablePaymentMethods,
@@ -1063,6 +1069,28 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
                   {typeof info.availableBalanceInNfsc === 'number' && (
                     <>Balance ${info.availableBalanceInNfsc.toFixed(2)}</>
                   )}
+                  {/*
+                    When any domain was deferred (partial or full),
+                    show the total required bill and the shortfall so
+                    on-call can see needed vs. had without computing
+                    it themselves. `shortfallInUsdCents` is the user's
+                    aggregate run-total shortfall (not per-row).
+                  */}
+                  {(info.deferredCount > 0 || shortfallInUsd > 0) &&
+                    info.totalRequiredInUsd > 0 && (
+                      <>
+                        {' · Needed $'}
+                        {info.totalRequiredInUsd.toFixed(2)}
+                        {shortfallInUsd > 0 && (
+                          <>
+                            {' · '}
+                            <span className="text-amber-300/80 font-medium">
+                              Short ${shortfallInUsd.toFixed(2)}
+                            </span>
+                          </>
+                        )}
+                      </>
+                    )}
                   {typeof info.availableBalanceInNfsc === 'number' &&
                     paymentMethodsLabel &&
                     ' · '}
@@ -1498,7 +1526,10 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           const canEmail = isContactAction && row.original.userEmail;
           return (
             <div className="flex flex-col gap-0.5 max-w-[250px]">
-              <span className="text-xs text-red-400 truncate">
+              <span
+                className="text-xs text-red-400 truncate"
+                title={row.original.errorReason}
+              >
                 {row.original.errorReason}
               </span>
               {row.original.actionRequired &&
