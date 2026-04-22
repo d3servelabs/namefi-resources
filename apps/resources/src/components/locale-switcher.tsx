@@ -6,6 +6,7 @@ import { i18n, localeLabels, type Locale } from '@/i18n-config';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -62,20 +63,22 @@ export function LocaleSwitcher({ activeLocale, label }: LocaleSwitcherProps) {
         <span className="text-foreground">{activeLabel}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-          {label}
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup
-          value={activeLocale}
-          onValueChange={(value) => onSelectLocale(value as Locale)}
-        >
-          {i18n.locales.map((locale) => (
-            <DropdownMenuRadioItem key={locale} value={locale}>
-              {localeLabels[locale] ?? locale.toUpperCase()}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            {label}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuRadioGroup
+            value={activeLocale}
+            onValueChange={(value) => onSelectLocale(value as Locale)}
+          >
+            {i18n.locales.map((locale) => (
+              <DropdownMenuRadioItem key={locale} value={locale}>
+                {localeLabels[locale] ?? locale.toUpperCase()}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
