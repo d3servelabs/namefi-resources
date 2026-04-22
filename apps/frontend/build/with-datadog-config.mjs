@@ -6,6 +6,11 @@ const DATADOG_SERVICE = 'namefi-astra-frontend';
 const DATADOG_SOURCEMAP_PATH = '/_next/static/chunks';
 const DATADOG_DEFAULT_SITE = 'us5.datadoghq.com';
 
+/**
+ * Resolves the deploy commit SHA used for Datadog release versioning.
+ * Values are normalized via toTrimmedString; returns an empty string when
+ * neither the CI-provided deploy SHA nor Vercel's git SHA is available.
+ */
 export const resolveDeployCommitSha = () =>
   toTrimmedString(process.env.DEPLOY_COMMIT_SHA) ||
   toTrimmedString(process.env.VERCEL_GIT_COMMIT_SHA);
