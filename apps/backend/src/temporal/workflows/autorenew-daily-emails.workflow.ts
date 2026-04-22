@@ -70,6 +70,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
   forceSendReport = false,
   ownersIdFilter,
   allowExpired = true,
+  overrideRecipientEmail,
 }: {
   dryRun?: boolean;
   forceSendReport?: boolean;
@@ -79,10 +80,24 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
    */
   ownersIdFilter?: string[];
   allowExpired?: boolean;
+  /**
+   * Dev-testing override: when set, all user-facing renewal emails
+   * (upcoming, result, failed-to-charge) are sent to this address
+   * instead of the user's real email. The internal ops report and
+   * the workflow's output (`userEmail` field visible in the admin UI)
+   * are NOT affected — only the `to:` envelope of user-facing emails
+   * is redirected. Pair with `ownersIdFilter` for a targeted dress
+   * rehearsal that doesn't spam the dev mailbox across many users.
+   */
+  overrideRecipientEmail?: string;
 } = {}) {
   const startTime = Date.now();
   workflow.log.info(
-    `Starting daily domains upcoming renewals workflow, ${dryRun ? 'dryRun' : 'live'}`,
+    `Starting daily domains upcoming renewals workflow, ${dryRun ? 'dryRun' : 'live'}${
+      overrideRecipientEmail
+        ? `, email override → ${overrideRecipientEmail}`
+        : ''
+    }`,
   );
   const domainsUpForRenewalGroupedByOwner =
     await getDomainsUpForRenewalGroupedByOwner({ allowExpired });
@@ -112,6 +127,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
               domainsUpForRenewalGroupedByOwner[userId],
               dryRun,
               allowExpired,
+              overrideRecipientEmail,
             ],
             workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${userId}`,
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
@@ -437,8 +453,20 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   userDomainsUpForRenewal: UserDomainsUpForRenewal,
   dryRun: boolean,
   allowExpired: boolean,
+  overrideRecipientEmail?: string,
 ): Promise<NotifyAndRenewDomainsForSingleUserWorkflowOutput> {
   const userEmail = await maybeGetUserEmail(userId);
+  // Dev-testing redirect: when the top-level caller set
+  // `overrideRecipientEmail`, all user-facing notify wrappers use it
+  // as the `to:` address. The workflow's output `userEmail` field
+  // (which feeds the admin UI, CSV, and ops report) still carries the
+  // real user email so reporting stays accurate.
+  const effectiveRecipientEmail = overrideRecipientEmail ?? userEmail;
+  if (overrideRecipientEmail) {
+    workflow.log.info(
+      `Email override active for user ${userId}: redirecting to ${overrideRecipientEmail} (real userEmail=${userEmail ?? '<none>'})`,
+    );
+  }
 
   const {
     domainsThatShouldBeRenewed,
@@ -531,9 +559,9 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   }
 
   // Notify user for upcoming renew
-  if (userEmail && domainsThatHavePriceData.length > 0) {
+  if (effectiveRecipientEmail && domainsThatHavePriceData.length > 0) {
     await _notifyUserForUpcomingRenew({
-      userEmail,
+      userEmail: effectiveRecipientEmail,
       domainsWithUser: {
         domains: domainsThatHavePriceData,
         userId,
@@ -679,7 +707,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       level: 'error',
     });
 
-    if (userEmail) {
+    if (effectiveRecipientEmail) {
       // Build chargeAmountByDomainLdh from domainsThatCouldBeRenewed
       const chargeAmountByDomainLdhForEmail: Record<string, number> = {};
       for (const domain of domainsThatCouldBeRenewed) {
@@ -689,7 +717,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 
       await _notifyUserForFailedToCharge({
         userId,
-        userEmail,
+        userEmail: effectiveRecipientEmail,
         domainsToRenew: domainsThatCouldBeRenewed,
         chargeAmountByDomainLdh: chargeAmountByDomainLdhForEmail,
         availableBalanceInNfsc,
@@ -806,9 +834,9 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     payments,
   } satisfies NotifyAndRenewDomainsForSingleUserWorkflowOutput;
 
-  if (userEmail) {
+  if (effectiveRecipientEmail) {
     await _notifyUserForRenewResult({
-      userEmail,
+      userEmail: effectiveRecipientEmail,
       userId,
       successes,
       failures,
