@@ -79,8 +79,14 @@ describe('matchRelayPattern', () => {
     ).toEqual({ logicalName: 'sami.nfi' });
   });
 
-  it('does not match the TLD apex (no label before TLD)', () => {
-    expect(matchRelayPattern('nfi.gtld.namefi.dev', opts)).toBeNull();
+  it('matches the TLD apex itself (enables ENT detection for `<tld>.<relayZone>`)', () => {
+    // `nfi.gtld.namefi.dev` is an empty non-terminal when records live at
+    // `sami.nfi` — the tree-aware resolver finds those as descendants of
+    // the bare `nfi` node and answers NODATA. That only works if the
+    // relay rewrite strips `.gtld.namefi.dev` here too.
+    expect(matchRelayPattern('nfi.gtld.namefi.dev', opts)).toEqual({
+      logicalName: 'nfi',
+    });
   });
 
   it('does not match the relay-zone apex', () => {

@@ -437,6 +437,41 @@ describe('createDnsRequestHandlerV2_1 (relay chain integration)', () => {
     });
   });
 
+  it('returns NODATA (not NXDOMAIN) for the TLD apex `nfi.gtld.namefi.dev` when logical `nfi` has descendant records', async () => {
+    // `sami.nfi` exists in dns_records, so `nfi` is an ENT in the tree
+    // (RFC 8020). A query for `nfi.gtld.namefi.dev` must get NODATA, not
+    // NXDOMAIN: the relay strip rewrites the query to bare `nfi`, and the
+    // tree-aware resolver finds `sami.nfi` as a descendant of `nfi`.
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: vi.fn().mockResolvedValue(null),
+        getAnswerFromDnsRecords: vi.fn(async (recordName) => {
+          // The relay link must rewrite the TLD apex to the bare TLD.
+          expect(recordName).toBe('nfi');
+          // Emulate the real resolver: `sami.nfi` is a descendant → NODATA.
+          return { RCODE: 0, Answer: [] };
+        }),
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'nfi.gtld.namefi.dev.',
+      rawType: 1,
+      recordName: 'nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+      recordType: 'A',
+      wildcard: false,
+    });
+
+    expect(response.RCODE).toBe(0);
+    expect(response.Answer).toEqual([]);
+    expect(response.Authority).toHaveLength(1);
+    expect(response.Authority?.[0]).toMatchObject({
+      name: 'gtld.namefi.dev',
+      type: 6, // SOA
+    });
+  });
+
   it('is a no-op in production regardless of host', async () => {
     process.env.ENVIRONMENT = 'production';
     const dnsRecords = vi.fn(async (recordName) => {

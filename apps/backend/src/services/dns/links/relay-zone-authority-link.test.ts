@@ -91,9 +91,9 @@ describe('createRelayZoneAuthorityLink', () => {
     });
 
     it('apex A with downstream NXDOMAIN is downgraded to NODATA (RFC 1034 §4.3.2 / RFC 8020)', async () => {
-      // The zone origin always exists as a tree node in an authoritative
-      // zone. A downstream NXDOMAIN at the apex would illegally cut the
-      // subtree that the relay serves for descendants.
+      // The zone origin always exists in an authoritative zone. A downstream
+      // NXDOMAIN at the apex would illegally cut the subtree served via the
+      // relay. Clamp to NOERROR with empty Answer, Authority SOA attached.
       const next = vi.fn().mockResolvedValue({ RCODE: 3, Answer: [] });
       const link = createRelayZoneAuthorityLink();
       const context = createContext({

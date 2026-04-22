@@ -65,8 +65,15 @@ export function matchRelayPattern(
   for (const tld of tlds) {
     const normalizedTld = tld.toLowerCase().replace(/^\.+|\.+$/g, '');
     if (!normalizedTld) continue;
-    if (candidate === normalizedTld) continue; // at least one label required before the TLD
-    if (candidate.endsWith(`.${normalizedTld}`)) {
+    // Match the TLD apex itself (`nfi.gtld.namefi.dev` → `nfi`) as well as
+    // any descendant (`sami.nfi.gtld.namefi.dev` → `sami.nfi`). The apex
+    // case is important for ENT correctness: the tree-aware resolver will
+    // find records below the TLD (e.g. `sami.nfi`) as descendants of the
+    // bare TLD node and return NODATA instead of NXDOMAIN per RFC 8020.
+    if (
+      candidate === normalizedTld ||
+      candidate.endsWith(`.${normalizedTld}`)
+    ) {
       return { logicalName: candidate as NamefiNormalizedDomain };
     }
   }

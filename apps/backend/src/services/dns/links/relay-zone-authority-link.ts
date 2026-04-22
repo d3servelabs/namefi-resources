@@ -20,8 +20,8 @@ import {
  *    - Other types still delegate downstream in case stored records
  *      exist, but because the zone origin *always* exists as a tree
  *      node (RFC 1034 §4.3.2 / RFC 8020), a downstream NXDOMAIN is
- *      downgraded to NODATA on unwind — the apex can never be
- *      NXDOMAIN in a zone we're authoritative for.
+ *      downgraded to NODATA on unwind — the apex can never be NXDOMAIN
+ *      in a zone we're authoritative for.
  * 2. For non-apex names under the relay zone, delegate downstream and
  *    attach the zone SOA in Authority whenever the result carries no
  *    Answer (both NXDOMAIN and NODATA per RFC 2308 §3). Non-NOERROR /
