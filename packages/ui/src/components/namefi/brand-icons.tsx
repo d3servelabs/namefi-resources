@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-type BrandIconProps = SVGProps<SVGSVGElement>;
+export type BrandIconProps = SVGProps<SVGSVGElement>;
 
 export function DiscordBrandIcon(props: BrandIconProps) {
   return (

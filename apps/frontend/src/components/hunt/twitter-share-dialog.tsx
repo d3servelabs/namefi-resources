@@ -25,7 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from '@/hooks/use-pending-toast';
-import { XBrandIcon } from '@/components/brand-icons';
+import { XBrandIcon } from '@namefi-astra/ui/components/namefi/brand-icons';
 import { ExternalLink, Copy, CheckCircle } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useInteractionLoggers } from '@/components/providers/analytics';

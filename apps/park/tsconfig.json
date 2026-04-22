@@ -21,6 +21,9 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@namefi-astra/ui/components/namefi/brand-icons": [
+        "../../packages/ui/src/components/namefi/brand-icons.tsx"
+      ],
       "@namefi-astra/ui/components/namefi/namefi-button": [
         "../../packages/ui/src/components/namefi/namefi-button.tsx"
       ],

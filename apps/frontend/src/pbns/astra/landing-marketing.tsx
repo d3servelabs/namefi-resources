@@ -33,7 +33,7 @@ import {
   TelegramBrandIcon,
   XBrandIcon,
   YouTubeBrandIcon,
-} from '@/components/brand-icons';
+} from '@namefi-astra/ui/components/namefi/brand-icons';
 import {
   ArrowRight,
   BrainCircuit,

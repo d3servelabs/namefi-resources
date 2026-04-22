@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import type { SVGProps } from 'react';
 import { Check, Copy, Share2 } from 'lucide-react';
 import {
   useCallback,
@@ -13,27 +12,13 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
+import {
+  FacebookBrandIcon,
+  XBrandIcon,
+} from '@namefi-astra/ui/components/namefi/brand-icons';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { cn } from '@namefi-astra/ui/lib/cn';
-
-type BrandIconProps = SVGProps<SVGSVGElement>;
-
-function XBrandIcon(props: BrandIconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M18.244 2.25h3.308l-7.227 8.26L23 21.75h-6.74l-5.28-6.79-5.94 6.79H1.73l7.73-8.835L1 2.25h6.91l4.77 6.231zm-1.161 17.52h1.833L6.915 4.126H4.949z" />
-    </svg>
-  );
-}
-
-function FacebookBrandIcon(props: BrandIconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M13.5 21v-6h2.25l.5-3H13.5V9.75c0-.87.28-1.5 1.5-1.5H16.5V5.2c-.28-.04-1.24-.12-2.34-.12-2.32 0-3.91 1.42-3.91 4.03V12H8v3h2.25v6z" />
-    </svg>
-  );
-}
 
 const COPY_FEEDBACK_TIMEOUT_MS = 1300;
 const SHARE_MENU_WIDTH_PX = 224;

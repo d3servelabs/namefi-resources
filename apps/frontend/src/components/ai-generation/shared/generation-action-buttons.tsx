@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { XBrandIcon } from '@/components/brand-icons';
+import { XBrandIcon } from '@namefi-astra/ui/components/namefi/brand-icons';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import {
   type LucideIcon,

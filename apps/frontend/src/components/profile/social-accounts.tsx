@@ -16,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
-import { GitHubBrandIcon } from '@/components/brand-icons';
+import { GitHubBrandIcon } from '@namefi-astra/ui/components/namefi/brand-icons';
 import { type User, usePrivy } from '@privy-io/react-auth';
 import { Users2 } from 'lucide-react';
 import { useCallback, useState } from 'react';

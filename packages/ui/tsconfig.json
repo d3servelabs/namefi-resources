@@ -6,6 +6,9 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "paths": {
       "@namefi-astra/ui/components": ["./src/components"],
+      "@namefi-astra/ui/components/namefi/brand-icons": [
+        "./src/components/namefi/brand-icons.tsx"
+      ],
       "@namefi-astra/ui/components/namefi/namefi-button": [
         "./src/components/namefi/namefi-button.tsx"
       ],
