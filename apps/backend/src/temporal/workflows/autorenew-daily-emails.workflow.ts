@@ -119,6 +119,10 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
           );
           return { status: 'skipped', userId };
         }
+        // Pre-compute the child workflow ID so we can surface it on the
+        // admin response. `new Date()` inside a workflow is deterministic
+        // (uses Temporal's workflow clock) so this is replay-safe.
+        const childWorkflowId = `notify-and-renew-domains-${new Date().toISOString()}-${userId}`;
         const result = await workflow.executeChild(
           notifyAndRenewDomainsForSingleUserWorkflow,
           {
@@ -129,12 +133,12 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
               allowExpired,
               overrideRecipientEmail,
             ],
-            workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${userId}`,
+            workflowId: childWorkflowId,
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
             parentClosePolicy: 'ABANDON',
           },
         );
-        return { status: 'fulfilled', userId, result };
+        return { status: 'fulfilled', userId, childWorkflowId, result };
       } catch (error) {
         workflow.log.error(
           `Error in notifyAndRenewDomainsForSingleUserWorkflow for user ${userId}: ${error}`,
@@ -148,6 +152,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
   const successes = results.filter(({ status }) => status === 'fulfilled') as {
     status: 'fulfilled';
     userId: string;
+    childWorkflowId: string;
     result: Awaited<
       ReturnType<typeof notifyAndRenewDomainsForSingleUserWorkflow>
     >;

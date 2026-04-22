@@ -30,6 +30,8 @@ type UserResultForAdminLike = {
   totalAmountInUsd: number;
   refundAmountInUsd?: number;
   orderId?: string;
+  /** Child workflow ID for the per-user Temporal run. */
+  childWorkflowId?: string;
   /** NFSC balance available at workflow start (USD, summed across chains). */
   availableBalanceInNfsc?: number;
   nfscBalancesByChain?: Array<{

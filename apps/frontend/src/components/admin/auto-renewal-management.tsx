@@ -9,6 +9,14 @@ import {
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo, useCallback, type FC } from 'react';
@@ -519,16 +527,19 @@ export default function AutoRenewalManagement({
   // Build the Temporal UI URL for this workflow run.
   // The backend's apiUrl is the gRPC API endpoint; the UI is hosted at
   // localhost:8233 in dev or cloud.temporal.io in prod.
-  const temporalUiUrl = (() => {
+  const temporalUiNamespaceBase = (() => {
     if (!('temporal' in data) || !data.temporal) return null;
     const { apiUrl, namespace } = data.temporal;
     const uiBase = apiUrl?.includes('localhost')
       ? 'http://localhost:8233'
       : 'https://cloud.temporal.io';
-    return `${uiBase}/namespaces/${namespace}/workflows/${encodeURIComponent(
-      data.workflowId,
-    )}/${encodeURIComponent(data.runId)}`;
+    return `${uiBase}/namespaces/${namespace}`;
   })();
+  const temporalUiUrl = temporalUiNamespaceBase
+    ? `${temporalUiNamespaceBase}/workflows/${encodeURIComponent(
+        data.workflowId,
+      )}/${encodeURIComponent(data.runId)}`
+    : null;
 
   const formatDateTime = (d: Date | string | null | undefined) => {
     if (!d) return '-';
@@ -697,7 +708,12 @@ export default function AutoRenewalManagement({
         {metrics && <BreakdownCards metrics={metrics} />}
 
         {/* Domains Table */}
-        {userResults && <DomainsTable userResults={userResults} />}
+        {userResults && (
+          <DomainsTable
+            userResults={userResults}
+            temporalUiNamespaceBase={temporalUiNamespaceBase}
+          />
+        )}
 
         {/* Critical Issues */}
         {metrics &&
@@ -841,6 +857,11 @@ type UserResultItem = {
   totalAmountInUsd: number;
   refundAmountInUsd?: number;
   orderId?: string;
+  /**
+   * Child workflow ID for the per-user Temporal run — exposed so the
+   * admin UI can link directly to that subworkflow's Temporal page.
+   */
+  childWorkflowId?: string;
   /** NFSC balance available at workflow start (USD, summed across chains). */
   availableBalanceInNfsc?: number;
   nfscBalancesByChain?: Array<{
@@ -885,7 +906,307 @@ type UserResultItem = {
   }>;
 };
 
-function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
+// ─── Per-user Snapshot Modal ─────────────────────────────────────
+
+function formatChainLabel(chainId: number | undefined): string {
+  if (chainId === undefined) return '—';
+  if (chainId === 1) return 'Ethereum';
+  if (chainId === 8453) return 'Base';
+  if (chainId === 11155111) return 'Sepolia';
+  return `Chain ${chainId}`;
+}
+
+/**
+ * Full per-user snapshot dialog — balance breakdown by chain, every
+ * payment method available at run start, every domain (grouped by
+ * category), and a link to the per-user sub-workflow's Temporal UI
+ * page when `childWorkflowId` is known.
+ *
+ * Opened from a "Details" button on each user's group header row.
+ */
+function UserSnapshotDialog({
+  user,
+  rows,
+  temporalUiNamespaceBase,
+}: {
+  user: UserResultItem;
+  /** All flattened rows for this user (one per domain). */
+  rows: DomainRow[];
+  temporalUiNamespaceBase: string | null;
+}) {
+  const totalRequiredInUsd = rows.reduce(
+    (sum, r) => sum + (r.chargeAmountUsd ?? 0),
+    0,
+  );
+  const shortfallInUsd = user.shortfallInUsdCents
+    ? user.shortfallInUsdCents / 100
+    : 0;
+  const snapshotTakenAt = user.snapshotTakenAt
+    ? new Date(user.snapshotTakenAt)
+    : null;
+  const childWorkflowUrl =
+    temporalUiNamespaceBase && user.childWorkflowId
+      ? `${temporalUiNamespaceBase}/workflows/${encodeURIComponent(user.childWorkflowId)}`
+      : null;
+
+  // Group domains by status for the modal sections.
+  const byStatus: Record<DomainRow['status'], DomainRow[]> = {
+    SUCCESS: [],
+    FAILED: [],
+    PAYMENT_FAILED: [],
+    MISSING_PRICE: [],
+    SKIPPED_INSUFFICIENT_FUNDS: [],
+  };
+  for (const r of rows) byStatus[r.status].push(r);
+
+  const sections: Array<{
+    label: string;
+    rows: DomainRow[];
+    accent: string;
+  }> = [
+    {
+      label: `Renewed (${byStatus.SUCCESS.length})`,
+      rows: byStatus.SUCCESS,
+      accent: 'text-green-300',
+    },
+    {
+      label: `Deferred — Low Balance (${byStatus.SKIPPED_INSUFFICIENT_FUNDS.length})`,
+      rows: byStatus.SKIPPED_INSUFFICIENT_FUNDS,
+      accent: 'text-amber-300',
+    },
+    {
+      label: `Payment Failed (${byStatus.PAYMENT_FAILED.length})`,
+      rows: byStatus.PAYMENT_FAILED,
+      accent: 'text-amber-200',
+    },
+    {
+      label: `Failed (${byStatus.FAILED.length})`,
+      rows: byStatus.FAILED,
+      accent: 'text-red-300',
+    },
+    {
+      label: `Missing Price (${byStatus.MISSING_PRICE.length})`,
+      rows: byStatus.MISSING_PRICE,
+      accent: 'text-orange-300',
+    },
+  ].filter((s) => s.rows.length > 0);
+
+  return (
+    <Dialog>
+      {/*
+        Base UI's DialogTrigger uses `render` (not Radix-style `asChild`).
+        Passing a <Button> element via `render` substitutes the element
+        while preserving Base UI's trigger props (aria, onClick, etc.).
+      */}
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs h-6 px-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Details
+          </Button>
+        }
+      />
+      <DialogContent
+        className="max-w-3xl max-h-[85vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <DialogHeader>
+          <DialogTitle className="text-base">
+            {user.userEmail || user.userId}
+          </DialogTitle>
+          <DialogDescription className="text-xs font-mono break-all">
+            {user.userId}
+            {snapshotTakenAt && !Number.isNaN(snapshotTakenAt.getTime()) && (
+              <span className="ml-2 text-muted-foreground">
+                · Snapshot {snapshotTakenAt.toLocaleString()}
+              </span>
+            )}
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* Run summary */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs border rounded-md p-3">
+          <div>
+            <p className="text-muted-foreground">Required (USD)</p>
+            <p className="font-medium">${totalRequiredInUsd.toFixed(2)}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Balance at start (USD)</p>
+            <p className="font-medium">
+              {typeof user.availableBalanceInNfsc === 'number'
+                ? `$${user.availableBalanceInNfsc.toFixed(2)}`
+                : '—'}
+            </p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Charged (USD)</p>
+            <p className="font-medium">${user.totalAmountInUsd.toFixed(2)}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Shortfall (USD)</p>
+            <p
+              className={cn(
+                'font-medium',
+                shortfallInUsd > 0 ? 'text-amber-300' : '',
+              )}
+            >
+              {shortfallInUsd > 0 ? `$${shortfallInUsd.toFixed(2)}` : '—'}
+            </p>
+          </div>
+        </div>
+
+        {/* NFSC balances by chain */}
+        <div className="mt-1">
+          <h4 className="text-xs font-medium mb-2">NFSC balances by chain</h4>
+          {user.nfscBalancesByChain && user.nfscBalancesByChain.length > 0 ? (
+            <div className="text-xs border rounded-md divide-y">
+              {user.nfscBalancesByChain.map((b) => (
+                <div
+                  key={`${b.walletAddress}-${b.chainId}`}
+                  className="flex items-center justify-between px-3 py-2"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-mono text-[11px] truncate">
+                      <TruncatedTextWithHover maxLength={16}>
+                        {b.walletAddress}
+                      </TruncatedTextWithHover>
+                    </span>
+                    <span className="text-muted-foreground">
+                      {formatChainLabel(b.chainId)}
+                    </span>
+                  </div>
+                  <span className="font-mono">
+                    {typeof b.balanceInUsd === 'number'
+                      ? `$${b.balanceInUsd.toFixed(2)}`
+                      : '—'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              No NFSC wallets linked.
+            </p>
+          )}
+        </div>
+
+        {/* Available payment methods */}
+        <div className="mt-1">
+          <h4 className="text-xs font-medium mb-2">
+            Available payment methods
+          </h4>
+          {user.availablePaymentMethods &&
+          user.availablePaymentMethods.length > 0 ? (
+            <ul className="text-xs border rounded-md divide-y">
+              {user.availablePaymentMethods.map((m, i) => (
+                <li
+                  key={`${m.kind}-${i}`}
+                  className="px-3 py-2 flex items-center gap-2"
+                >
+                  {m.kind === 'STRIPE' ? (
+                    <>
+                      <span className="text-muted-foreground">Stripe</span>
+                      <span className="font-mono">
+                        {m.last4 ? `••${m.last4}` : '(no last4)'}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-muted-foreground">Wallet</span>
+                      <span className="font-mono text-[11px]">
+                        <TruncatedTextWithHover maxLength={16}>
+                          {m.walletAddress}
+                        </TruncatedTextWithHover>
+                      </span>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              No payment methods on file.
+            </p>
+          )}
+        </div>
+
+        {/* Categorized domains */}
+        {sections.map((s) => (
+          <div key={s.label} className="mt-1">
+            <h4 className={cn('text-xs font-medium mb-2', s.accent)}>
+              {s.label}
+            </h4>
+            <div className="text-xs border rounded-md divide-y">
+              {s.rows.map((r) => (
+                <div
+                  key={`${r.domain}-${r.status}`}
+                  className="grid grid-cols-[1fr_auto_auto] gap-3 items-center px-3 py-2"
+                >
+                  <span className="font-mono truncate">{r.domain}</span>
+                  <span className="font-mono text-right whitespace-nowrap">
+                    {typeof r.chargeAmountUsd === 'number'
+                      ? `$${r.chargeAmountUsd.toFixed(2)}`
+                      : '—'}
+                  </span>
+                  <span
+                    className="text-muted-foreground max-w-[260px] truncate"
+                    title={r.errorReason || ''}
+                  >
+                    {r.errorReason || ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Subworkflow link */}
+        {(childWorkflowUrl || user.childWorkflowId) && (
+          <div className="mt-3 pt-3 border-t">
+            {childWorkflowUrl ? (
+              <a
+                href={childWorkflowUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-blue-300 hover:underline"
+              >
+                Open subworkflow in Temporal UI
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                Subworkflow ID:{' '}
+                <span className="font-mono">{user.childWorkflowId}</span>
+              </p>
+            )}
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function DomainsTable({
+  userResults,
+  temporalUiNamespaceBase,
+}: {
+  userResults: UserResultItem[];
+  /**
+   * Base URL like `https://cloud.temporal.io/namespaces/default`. The
+   * per-user snapshot modal appends `/workflows/{childWorkflowId}` to
+   * link to the subworkflow's Temporal UI page.
+   */
+  temporalUiNamespaceBase: string | null;
+}) {
+  const userById = useMemo(() => {
+    const map = new Map<string, UserResultItem>();
+    for (const u of userResults) map.set(u.userId, u);
+    return map;
+  }, [userResults]);
   const [page, setPage] = useState(1);
   const [groupByUser, setGroupByUser] = useState(true);
   const [drizzlerFilterState, setDrizzlerFilterState] =
@@ -960,268 +1281,291 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
 
   const [expanded, setExpanded] = useState<ExpandedState>(initialExpanded);
 
-  const renderGroupHeader = useCallback((row: Row<DomainRow>) => {
-    const userId = String(row.getGroupingValue('userId'));
+  const renderGroupHeader = useCallback(
+    (row: Row<DomainRow>) => {
+      const userId = String(row.getGroupingValue('userId'));
 
-    // Derive header data from the rows actually visible in this group
-    // (which already reflect the current filter + pagination state).
-    // Falls back to leaf rows if the group hasn't been expanded yet.
-    const visibleRows: Array<Row<DomainRow>> =
-      row.subRows.length > 0 ? row.subRows : row.getLeafRows();
-    const first = visibleRows[0]?.original;
+      // Derive header data from the rows actually visible in this group
+      // (which already reflect the current filter + pagination state).
+      // Falls back to leaf rows if the group hasn't been expanded yet.
+      const visibleRows: Array<Row<DomainRow>> =
+        row.subRows.length > 0 ? row.subRows : row.getLeafRows();
+      const first = visibleRows[0]?.original;
 
-    let successCount = 0;
-    let failedCount = 0;
-    let deferredCount = 0;
-    let totalChargedInUsd = 0;
-    // Required includes deferred rows (what the user *wanted* to renew,
-    // before any subset trimming) so the header can contrast
-    // "needed vs. had".
-    let totalRequiredInUsd = 0;
-    for (const r of visibleRows) {
-      if (r.original.status === 'SUCCESS') {
-        successCount++;
-      } else if (r.original.status === 'SKIPPED_INSUFFICIENT_FUNDS') {
-        deferredCount++;
-      } else {
-        failedCount++;
-      }
-      totalRequiredInUsd += r.original.chargeAmountUsd ?? 0;
-      // Only count actually-charged rows toward the user total —
-      // deferred rows did not incur a charge.
-      if (r.original.status !== 'SKIPPED_INSUFFICIENT_FUNDS') {
-        totalChargedInUsd += r.original.chargeAmountUsd ?? 0;
-      }
-    }
-
-    const info = first
-      ? {
-          email: first.userEmail,
-          walletAddress: first.walletAddress,
-          paymentStatus: first.userPaymentStatus,
-          domainCount: visibleRows.length,
-          successCount,
-          failedCount,
-          deferredCount,
-          totalAmountInUsd: totalChargedInUsd,
-          totalRequiredInUsd,
-          refundAmountInUsd: 0, // refunds are user-level and not represented per-row
-          availableBalanceInNfsc: first.availableBalanceInNfsc,
-          availablePaymentMethods: first.availablePaymentMethods,
-          shortfallInUsdCents: first.shortfallInUsdCents,
+      let successCount = 0;
+      let failedCount = 0;
+      let deferredCount = 0;
+      let totalChargedInUsd = 0;
+      // Required includes deferred rows (what the user *wanted* to renew,
+      // before any subset trimming) so the header can contrast
+      // "needed vs. had".
+      let totalRequiredInUsd = 0;
+      for (const r of visibleRows) {
+        if (r.original.status === 'SUCCESS') {
+          successCount++;
+        } else if (r.original.status === 'SKIPPED_INSUFFICIENT_FUNDS') {
+          deferredCount++;
+        } else {
+          failedCount++;
         }
-      : undefined;
+        totalRequiredInUsd += r.original.chargeAmountUsd ?? 0;
+        // Only count actually-charged rows toward the user total —
+        // deferred rows did not incur a charge.
+        if (r.original.status !== 'SKIPPED_INSUFFICIENT_FUNDS') {
+          totalChargedInUsd += r.original.chargeAmountUsd ?? 0;
+        }
+      }
 
-    const allPaymentFailed =
-      info?.paymentStatus === 'FAILED' && info.failedCount === info.domainCount;
-    const shortfallInUsd =
-      info?.shortfallInUsdCents && info.shortfallInUsdCents > 0
-        ? info.shortfallInUsdCents / 100
-        : 0;
-    const paymentMethodsLabel = (() => {
-      if (!info?.availablePaymentMethods?.length) return null;
-      return info.availablePaymentMethods
-        .map((method) => {
-          if (method.kind === 'STRIPE') {
-            return method.last4 ? `Stripe ••${method.last4}` : 'Stripe';
+      const info = first
+        ? {
+            email: first.userEmail,
+            walletAddress: first.walletAddress,
+            paymentStatus: first.userPaymentStatus,
+            domainCount: visibleRows.length,
+            successCount,
+            failedCount,
+            deferredCount,
+            totalAmountInUsd: totalChargedInUsd,
+            totalRequiredInUsd,
+            refundAmountInUsd: 0, // refunds are user-level and not represented per-row
+            availableBalanceInNfsc: first.availableBalanceInNfsc,
+            availablePaymentMethods: first.availablePaymentMethods,
+            shortfallInUsdCents: first.shortfallInUsdCents,
           }
-          const short = method.walletAddress
-            ? `${method.walletAddress.slice(0, 6)}…${method.walletAddress.slice(-4)}`
-            : 'Wallet';
-          return `Wallet ${short}`;
-        })
-        .join(' · ');
-    })();
-    const netAmount =
-      (info?.totalAmountInUsd ?? 0) - (info?.refundAmountInUsd ?? 0);
-    const isExpanded = row.getIsExpanded();
+        : undefined;
 
-    return (
-      <div
-        className={cn(
-          'grid grid-cols-[350px_1fr_auto_auto] items-center gap-x-3 gap-y-0 text-sm w-full py-2  hover:opacity-100',
-          isExpanded ? 'opacity-30' : 'opacity-60',
-        )}
-      >
-        {/* Col 1: avatar + user + balance/payment snapshot */}
-        <div className="flex items-center gap-2 min-w-0">
-          {info?.walletAddress && (
-            <UserWalletAvatar
-              address={info.walletAddress}
-              adminOpenTarget="wallet"
-              userId={userId}
-              className="size-6 shrink-0"
-            />
+      const allPaymentFailed =
+        info?.paymentStatus === 'FAILED' &&
+        info.failedCount === info.domainCount;
+      const shortfallInUsd =
+        info?.shortfallInUsdCents && info.shortfallInUsdCents > 0
+          ? info.shortfallInUsdCents / 100
+          : 0;
+      const paymentMethodsLabel = (() => {
+        if (!info?.availablePaymentMethods?.length) return null;
+        return info.availablePaymentMethods
+          .map((method) => {
+            if (method.kind === 'STRIPE') {
+              return method.last4 ? `Stripe ••${method.last4}` : 'Stripe';
+            }
+            const short = method.walletAddress
+              ? `${method.walletAddress.slice(0, 6)}…${method.walletAddress.slice(-4)}`
+              : 'Wallet';
+            return `Wallet ${short}`;
+          })
+          .join(' · ');
+      })();
+      const netAmount =
+        (info?.totalAmountInUsd ?? 0) - (info?.refundAmountInUsd ?? 0);
+      const isExpanded = row.getIsExpanded();
+
+      return (
+        <div
+          className={cn(
+            'grid grid-cols-[350px_1fr_auto_auto] items-center gap-x-3 gap-y-0 text-sm w-full py-2  hover:opacity-100',
+            isExpanded ? 'opacity-30' : 'opacity-60',
           )}
-          <div className="flex flex-col min-w-0">
-            <AdminUserLookupButton
-              reference={{ userId }}
-              variant="ghost"
-              size="sm"
-              className="h-auto px-1 py-0 font-medium text-sm hover:underline justify-start"
-            >
-              {info?.email || <code className="text-xs">{userId}</code>}
-            </AdminUserLookupButton>
-            {info &&
-              (typeof info.availableBalanceInNfsc === 'number' ||
-                paymentMethodsLabel) && (
-                <span className="text-[11px] text-muted-foreground truncate px-1">
-                  {typeof info.availableBalanceInNfsc === 'number' && (
-                    <>Balance ${info.availableBalanceInNfsc.toFixed(2)}</>
-                  )}
-                  {/*
+        >
+          {/* Col 1: avatar + user + balance/payment snapshot */}
+          <div className="flex items-center gap-2 min-w-0">
+            {info?.walletAddress && (
+              <UserWalletAvatar
+                address={info.walletAddress}
+                adminOpenTarget="wallet"
+                userId={userId}
+                className="size-6 shrink-0"
+              />
+            )}
+            <div className="flex flex-col min-w-0">
+              <AdminUserLookupButton
+                reference={{ userId }}
+                variant="ghost"
+                size="sm"
+                className="h-auto px-1 py-0 font-medium text-sm hover:underline justify-start"
+              >
+                {info?.email || <code className="text-xs">{userId}</code>}
+              </AdminUserLookupButton>
+              {info &&
+                (typeof info.availableBalanceInNfsc === 'number' ||
+                  paymentMethodsLabel) && (
+                  // Multi-line — wraps naturally instead of truncating.
+                  // The subtitle can span 2–3 lines without overflowing
+                  // the 350px col-1 width, and the "Details" dialog has
+                  // the full breakdown when a single line of context
+                  // isn't enough.
+                  <span className="text-[11px] text-muted-foreground whitespace-normal leading-snug px-1">
+                    {typeof info.availableBalanceInNfsc === 'number' && (
+                      <>Balance ${info.availableBalanceInNfsc.toFixed(2)}</>
+                    )}
+                    {/*
                     When any domain was deferred (partial or full),
                     show the total required bill and the shortfall so
                     on-call can see needed vs. had without computing
                     it themselves. `shortfallInUsdCents` is the user's
                     aggregate run-total shortfall (not per-row).
                   */}
-                  {(info.deferredCount > 0 || shortfallInUsd > 0) &&
-                    info.totalRequiredInUsd > 0 && (
-                      <>
-                        {' · Needed $'}
-                        {info.totalRequiredInUsd.toFixed(2)}
-                        {shortfallInUsd > 0 && (
-                          <>
-                            {' · '}
-                            <span className="text-amber-300/80 font-medium">
-                              Short ${shortfallInUsd.toFixed(2)}
-                            </span>
-                          </>
-                        )}
-                      </>
-                    )}
-                  {typeof info.availableBalanceInNfsc === 'number' &&
-                    paymentMethodsLabel &&
-                    ' · '}
-                  {paymentMethodsLabel && <>Pays via {paymentMethodsLabel}</>}
-                </span>
-              )}
+                    {(info.deferredCount > 0 || shortfallInUsd > 0) &&
+                      info.totalRequiredInUsd > 0 && (
+                        <>
+                          {' · Needed $'}
+                          {info.totalRequiredInUsd.toFixed(2)}
+                          {shortfallInUsd > 0 && (
+                            <>
+                              {' · '}
+                              <span className="text-amber-300/80 font-medium">
+                                Short ${shortfallInUsd.toFixed(2)}
+                              </span>
+                            </>
+                          )}
+                        </>
+                      )}
+                    {typeof info.availableBalanceInNfsc === 'number' &&
+                      paymentMethodsLabel &&
+                      ' · '}
+                    {paymentMethodsLabel && <>Pays via {paymentMethodsLabel}</>}
+                  </span>
+                )}
+            </div>
           </div>
-        </div>
 
-        {/* Col 2: domain count + status */}
-        <div className="flex justify-start items-start gap-2">
-          <Badge
-            variant="outline"
-            className="text-xs min-w-[15ch] w-[15ch] font-mono"
-          >
-            {row.subRows.length}{' '}
-            {row.subRows.length === 1 ? 'domain' : 'domains'}
-          </Badge>
-          {allPaymentFailed ? (
-            <>
-              <Badge
-                variant="outline"
-                className="text-xs border-amber-300/80 text-amber-300/80 min-w-[15ch] w-[15ch]"
-              >
-                No payment
-              </Badge>
-              {info?.email &&
-                (() => {
-                  const domains = row.subRows
-                    .map((r) => r.original.domain)
-                    .filter(Boolean);
-                  const failureLines = row.subRows
-                    .map(
-                      (r) =>
-                        `- ${r.original.domain}${
-                          r.original.errorReason
-                            ? ` — ${r.original.errorReason}`
-                            : ''
-                        }`,
-                    )
-                    .join('\n');
-                  const total = (info.totalAmountInUsd ?? 0).toFixed(2);
-                  const subject = `Auto-renewal payment failed for ${domains.length} ${domains.length === 1 ? 'domain' : 'domains'}`;
-                  const body =
-                    'Hi,\n\n' +
-                    `Your auto-renewal attempt for the following ${domains.length === 1 ? 'domain' : 'domains'} could not be completed because we were unable to charge your payment method.\n\n` +
-                    `Total required: $${total}\n\n` +
-                    `Affected domains:\n${failureLines}\n\n` +
-                    'Please update your payment method or contact us to resolve this so we can complete the renewal.\n\n' +
-                    'Thank you.';
-                  const href = `mailto:${info.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                  return (
-                    <a href={href} onClick={(e) => e.stopPropagation()}>
-                      <Badge
-                        variant="outline"
-                        className="text-xs border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
-                      >
-                        Contact user about payment
-                      </Badge>
-                    </a>
-                  );
-                })()}
-            </>
-          ) : (
-            <>
-              {(info?.successCount ?? 0) > 0 && (
-                <Badge
-                  variant="outline"
-                  className="text-xs border-green-300/80 text-green-300/80 min-w-[15ch] w-[15ch]"
-                >
-                  {info!.successCount} success
-                </Badge>
-              )}
-              {(info?.failedCount ?? 0) > 0 && (
-                <Badge
-                  variant="outline"
-                  className="text-xs border-red-300/80 text-red-300/80 min-w-[15ch] w-[15ch]"
-                >
-                  {info!.failedCount} failure
-                </Badge>
-              )}
-              {(info?.deferredCount ?? 0) > 0 && (
+          {/* Col 2: domain count + details dialog + status */}
+          <div className="flex justify-start items-start gap-2 flex-wrap">
+            <Badge
+              variant="outline"
+              className="text-xs min-w-[15ch] w-[15ch] font-mono"
+            >
+              {row.subRows.length}{' '}
+              {row.subRows.length === 1 ? 'domain' : 'domains'}
+            </Badge>
+            {(() => {
+              const userForDialog = userById.get(userId);
+              if (!userForDialog) return null;
+              const rowsForDialog = visibleRows.map((r) => r.original);
+              return (
+                <UserSnapshotDialog
+                  user={userForDialog}
+                  rows={rowsForDialog}
+                  temporalUiNamespaceBase={temporalUiNamespaceBase}
+                />
+              );
+            })()}
+            {allPaymentFailed ? (
+              <>
                 <Badge
                   variant="outline"
                   className="text-xs border-amber-300/80 text-amber-300/80 min-w-[15ch] w-[15ch]"
                 >
-                  {info!.deferredCount} deferred
+                  No payment
                 </Badge>
-              )}
-              {shortfallInUsd > 0 && (
-                <Badge
-                  variant="outline"
-                  className="text-xs border-amber-300/80 text-amber-300/80"
-                >
-                  Short ${shortfallInUsd.toFixed(2)}
-                </Badge>
-              )}
-            </>
-          )}
+                {info?.email &&
+                  (() => {
+                    const domains = row.subRows
+                      .map((r) => r.original.domain)
+                      .filter(Boolean);
+                    const failureLines = row.subRows
+                      .map(
+                        (r) =>
+                          `- ${r.original.domain}${
+                            r.original.errorReason
+                              ? ` — ${r.original.errorReason}`
+                              : ''
+                          }`,
+                      )
+                      .join('\n');
+                    const total = (info.totalAmountInUsd ?? 0).toFixed(2);
+                    const subject = `Auto-renewal payment failed for ${domains.length} ${domains.length === 1 ? 'domain' : 'domains'}`;
+                    const body =
+                      'Hi,\n\n' +
+                      `Your auto-renewal attempt for the following ${domains.length === 1 ? 'domain' : 'domains'} could not be completed because we were unable to charge your payment method.\n\n` +
+                      `Total required: $${total}\n\n` +
+                      `Affected domains:\n${failureLines}\n\n` +
+                      'Please update your payment method or contact us to resolve this so we can complete the renewal.\n\n' +
+                      'Thank you.';
+                    const href = `mailto:${info.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    return (
+                      <a href={href} onClick={(e) => e.stopPropagation()}>
+                        <Badge
+                          variant="outline"
+                          className="text-xs border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
+                        >
+                          Contact user about payment
+                        </Badge>
+                      </a>
+                    );
+                  })()}
+              </>
+            ) : (
+              <>
+                {(info?.successCount ?? 0) > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-green-300/80 text-green-300/80 min-w-[15ch] w-[15ch]"
+                  >
+                    {info!.successCount} success
+                  </Badge>
+                )}
+                {(info?.failedCount ?? 0) > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-red-300/80 text-red-300/80 min-w-[15ch] w-[15ch]"
+                  >
+                    {info!.failedCount} failure
+                  </Badge>
+                )}
+                {(info?.deferredCount ?? 0) > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-amber-300/80 text-amber-300/80 min-w-[15ch] w-[15ch]"
+                  >
+                    {info!.deferredCount} deferred
+                  </Badge>
+                )}
+                {shortfallInUsd > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-amber-300/80 text-amber-300/80"
+                  >
+                    Short ${shortfallInUsd.toFixed(2)}
+                  </Badge>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Col 3: amounts */}
+          <span className="text-xs text-muted-foreground text-right whitespace-nowrap">
+            {allPaymentFailed ? (
+              <>
+                ${(info?.totalAmountInUsd ?? 0).toFixed(2)}{' '}
+                <span className="text-red-300">required</span>
+              </>
+            ) : (
+              <>
+                ${(info?.totalAmountInUsd ?? 0).toFixed(2)} charged
+                {(info?.refundAmountInUsd ?? 0) > 0 && (
+                  <> / ${info!.refundAmountInUsd.toFixed(2)} refunded</>
+                )}
+              </>
+            )}
+          </span>
+
+          {/* Col 4: net */}
+          <span className="text-xs text-right whitespace-nowrap w-[80px]">
+            {allPaymentFailed ? (
+              <span className="text-red-300">$0.00 net</span>
+            ) : netAmount > 0 ? (
+              <span className="text-green-300">
+                ${netAmount.toFixed(2)} net
+              </span>
+            ) : (
+              <span className="text-muted-foreground">$0.00 net</span>
+            )}
+          </span>
         </div>
-
-        {/* Col 3: amounts */}
-        <span className="text-xs text-muted-foreground text-right whitespace-nowrap">
-          {allPaymentFailed ? (
-            <>
-              ${(info?.totalAmountInUsd ?? 0).toFixed(2)}{' '}
-              <span className="text-red-300">required</span>
-            </>
-          ) : (
-            <>
-              ${(info?.totalAmountInUsd ?? 0).toFixed(2)} charged
-              {(info?.refundAmountInUsd ?? 0) > 0 && (
-                <> / ${info!.refundAmountInUsd.toFixed(2)} refunded</>
-              )}
-            </>
-          )}
-        </span>
-
-        {/* Col 4: net */}
-        <span className="text-xs text-right whitespace-nowrap w-[80px]">
-          {allPaymentFailed ? (
-            <span className="text-red-300">$0.00 net</span>
-          ) : netAmount > 0 ? (
-            <span className="text-green-300">${netAmount.toFixed(2)} net</span>
-          ) : (
-            <span className="text-muted-foreground">$0.00 net</span>
-          )}
-        </span>
-      </div>
-    );
-  }, []);
+      );
+    },
+    [userById, temporalUiNamespaceBase],
+  );
 
   const drizzlerFilterOptions = useMemo(
     () =>
@@ -1415,7 +1759,9 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
               size="sm"
               className="h-auto px-0 py-0 text-xs hover:underline justify-start max-w-[200px]"
             >
-              <span className="truncate">{row.original.userEmail}</span>
+              <TruncatedTextWithHover maxLength={24}>
+                {row.original.userEmail}
+              </TruncatedTextWithHover>
             </AdminUserLookupButton>
           ) : (
             <span className="text-xs text-muted-foreground">-</span>
@@ -1526,11 +1872,10 @@ function DomainsTable({ userResults }: { userResults: UserResultItem[] }) {
           const canEmail = isContactAction && row.original.userEmail;
           return (
             <div className="flex flex-col gap-0.5 max-w-[250px]">
-              <span
-                className="text-xs text-red-400 truncate"
-                title={row.original.errorReason}
-              >
-                {row.original.errorReason}
+              <span className="text-xs text-red-400">
+                <TruncatedTextWithHover maxLength={40}>
+                  {row.original.errorReason}
+                </TruncatedTextWithHover>
               </span>
               {row.original.actionRequired &&
                 (canEmail ? (

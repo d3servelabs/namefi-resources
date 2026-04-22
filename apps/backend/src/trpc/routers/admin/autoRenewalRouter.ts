@@ -211,6 +211,8 @@ export const autoRenewalRouter = createContractTRPCRouter<
           successes: Array<{
             status: string;
             userId: string;
+            /** Child workflow ID for drill-down into the per-user Temporal run. */
+            childWorkflowId?: string;
             result: SingleUserResult;
           }>;
           failures: Array<{
@@ -546,6 +548,7 @@ export const autoRenewalRouter = createContractTRPCRouter<
             totalAmountInUsd: r.totalAmountInUsd,
             refundAmountInUsd: r.refundAmountInUsd ?? undefined,
             orderId: r.orderId ?? undefined,
+            childWorkflowId: success.childWorkflowId,
             availableBalanceInNfsc: r.availableBalanceInNfsc,
             nfscBalancesByChain: r.nfscBalancesByChain,
             availablePaymentMethods: r.availablePaymentMethods,
@@ -744,6 +747,13 @@ type UserResultForAdmin = {
   totalAmountInUsd: number;
   refundAmountInUsd?: number;
   orderId?: string;
+  /**
+   * Child workflow ID for drilling into the per-user Temporal run.
+   * Constructed in the parent workflow as
+   * `notify-and-renew-domains-{iso}-{userId}` and surfaced here so the
+   * admin UI can link directly to that child's Temporal UI page.
+   */
+  childWorkflowId?: string;
   /** NFSC balance available at workflow start (USD, summed across chains). */
   availableBalanceInNfsc?: number;
   /** Per-(wallet, chain) USD balance at workflow start. */
