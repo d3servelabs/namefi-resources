@@ -237,17 +237,17 @@ export const DEFAULT_CONTACT = (
   return {
     countryCode: 'US',
     email: domain
-      ? `dns-${contactType}-contact+${domain}@d3bridge.xyz`
-      : `dns-${contactType}-contact@d3bridge.xyz`,
+      ? `whois-privacy+${domain}@namefi.io`
+      : 'whois-privacy@namefi.io',
     city: 'Sunnyvale',
-    organizationName: 'D3Serve',
+    organizationName: 'Namefi by D3Serve Labs',
     addressLines: ['1111 W EL CAMINO REAL', 'STE133x178 att D3ServeLabs'],
     fax: '+1.6503365691',
     phoneNumber: '+1.6503365691',
     zipCode: '94087',
     state: 'CA',
-    firstName: 'D3Bridge',
-    lastName: 'Domains',
+    firstName: 'Namefi',
+    lastName: 'WHOIS Privacy',
     contactType: 'COMPANY',
     extraParams: [],
   };
