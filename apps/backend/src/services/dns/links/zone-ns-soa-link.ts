@@ -11,13 +11,8 @@ import {
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { and, desc, eq, gt, sql } from 'drizzle-orm';
-import { config } from '#lib/env';
-import { dnsRecordTypeCodes } from '#lib/dns/record-type-codes';
-import type { DnsResponse } from '#lib/dns/types';
-import {
-  SEPARATE_ZONES_FOR_SUBDOMAINS,
-  nameserverAdminPrefixRegex,
-} from './helpers';
+import { SEPARATE_ZONES_FOR_SUBDOMAINS } from './helpers';
+import { buildNsAndSoaRecordsForZone, isRecordZoneApex } from './zone-helpers';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
 const logger = createLogger({ context: 'NS-SOA-Link' });
@@ -28,7 +23,7 @@ import type {
   DnsRequestContext,
   DnsRequestLink,
 } from '../dns-request-handler.types';
-import { equals, isNotNil, filter, split, pipe, isNotEmpty, both } from 'ramda';
+import { isNotNil } from 'ramda';
 import { createLogger } from '#lib/logger';
 
 export interface DnsRequestLinkDependencies {
@@ -199,42 +194,11 @@ export async function getZoneNsAndSoaFromRecord(
     zone = requestFallsToPoweredByNamefiZone;
   }
 
-  const { nsRecords, soaRecords } = buildNsAndSoaRecords(zone);
+  const { nsRecords, soaRecords } = buildNsAndSoaRecordsForZone(zone);
 
   return {
     nsRecords,
     soaRecords,
     zone,
   };
-}
-
-const toParts = pipe(split('.'), filter(both(isNotNil, isNotEmpty)));
-
-const isRecordZoneApex = (
-  recordName: NamefiNormalizedDomain,
-  zone: string,
-): boolean => {
-  return equals(toParts(recordName), toParts(zone));
-};
-
-function buildNsAndSoaRecords(zone: string): {
-  nsRecords: DnsResponse['Answer'];
-  soaRecords: DnsResponse['Answer'];
-} {
-  const nsRecords = config.NAMEFI_ASTRA_NAMESERVERS.map((nameserver) => ({
-    name: zone,
-    type: dnsRecordTypeCodes.get('NS') as number,
-    TTL: 300,
-    data: nameserver,
-  }));
-  const primaryNameserver = config.NAMEFI_ASTRA_NAMESERVERS[0];
-  const soaRecords = [
-    {
-      name: zone,
-      type: dnsRecordTypeCodes.get('SOA') as number,
-      TTL: 300,
-      data: `${primaryNameserver} ${primaryNameserver.replace(nameserverAdminPrefixRegex, 'admin.')} 2023080901 60 30 300 60`,
-    },
-  ];
-  return { nsRecords, soaRecords };
 }

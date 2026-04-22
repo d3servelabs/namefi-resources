@@ -13,6 +13,25 @@ export interface RelayPatternMatch {
   logicalName: NamefiNormalizedDomain;
 }
 
+/**
+ * True when `recordName` is the relay zone itself or any subdomain beneath
+ * it (e.g. `gtld.namefi.dev` or `*.gtld.namefi.dev`). Used as a chain
+ * predicate to gate the relay-specific sub-chain. Tolerant of case and
+ * trailing dots on both inputs.
+ */
+export function isRelayZoneHost(
+  recordName: string,
+  { relayZone }: { relayZone: string },
+): boolean {
+  const normalizedRelay = relayZone.toLowerCase().replace(/^\.+|\.+$/g, '');
+  if (!normalizedRelay) return false;
+  const normalizedHost = recordName.toLowerCase().replace(/\.+$/, '');
+  return (
+    normalizedHost === normalizedRelay ||
+    normalizedHost.endsWith(`.${normalizedRelay}`)
+  );
+}
+
 export function matchRelayPattern(
   recordName: string,
   { tlds, relayZone }: RelayPatternInput,

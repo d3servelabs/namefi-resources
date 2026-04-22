@@ -1,4 +1,5 @@
 import { getAnswerForDnsQueryFromPreferences } from '#lib/domains/domain-preferences';
+import { config } from '#lib/env';
 import {
   createDnsRequestContext,
   createDnsRequestHandler,
@@ -22,8 +23,14 @@ import {
 } from './links/helpers';
 import { terminationLink } from './links/termination-link';
 import { createGatedLink } from './links/conditional-resolving-link';
+import { mergeLinks, switchLink } from './links/combinators';
 import { createZoneNsAndSoaLink } from './links/zone-ns-soa-link';
-import { createUnofficialTldRelayLink } from './links/unofficial-tld-relay-link';
+import {
+  createUnofficialTldRelayLink,
+  isRelayZoneHost,
+} from './links/unofficial-tld-relay-link';
+import { createRewriteRelayedLink } from './links/rewrite-relayed-link';
+import { createRelayZoneAuthorityLink } from './links/relay-zone-authority-link';
 
 export interface DnsRequestLinkDependencies {
   getNsAndSoaRecords: DnsAnswerResolver;
@@ -102,11 +109,51 @@ export function createDefaultDnsRequestLinksV2_1(
   return [
     createLoggingLink(),
     wildcardTerminationLink,
-    createZoneNsAndSoaLink(),
-    createGatedLink(
-      createUnofficialTldRelayLink(),
-      (context) => process.env.ENVIRONMENT !== 'production',
+    switchLink(
+      (ctx) =>
+        process.env.ENVIRONMENT !== 'production' &&
+        isRelayZoneHost(ctx.question.recordName, {
+          relayZone: config.NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE,
+        }),
+      mergeLinks(
+        createRelayZoneAuthorityLink(),
+        createUnofficialTldRelayLink(),
+      ),
+      createZoneNsAndSoaLink(),
     ),
+    createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
+    createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
+    createGatedLink(
+      createResolvingLink(resolvedDependencies.getAnswerFromMockTable),
+      (context) => context.meta.useMockDnsTable && !hasAnswers(context.result),
+    ),
+    terminationLink,
+  ];
+}
+
+export function createDefaultDnsRequestLinksV2_2(
+  dependencies: Partial<DnsRequestLinkDependencies> = {},
+): DnsRequestLink[] {
+  const resolvedDependencies: DnsRequestLinkDependencies = {
+    getNsAndSoaRecords,
+    getAnswerFromPreferences: getAnswerForDnsQueryFromPreferences,
+    getAnswerFromDnsRecords: getAnswerForDnsQueryFromDnsRecords,
+    getAnswerFromMockTable: getAnswerForDnsQueryMock,
+    ...dependencies,
+  };
+
+  return [
+    createLoggingLink(),
+    wildcardTerminationLink,
+    createGatedLink(
+      createRewriteRelayedLink(),
+      (ctx) =>
+        process.env.ENVIRONMENT !== 'production' &&
+        isRelayZoneHost(ctx.question.recordName, {
+          relayZone: config.NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE,
+        }),
+    ),
+    createZoneNsAndSoaLink(),
     createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
     createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
     createGatedLink(
@@ -129,6 +176,24 @@ export function createDnsRequestHandlerV2_1(
 
   return createDnsRequestHandler({
     links: links ?? createDefaultDnsRequestLinksV2_1(dependencies),
+    createInitialContext:
+      createInitialContext ??
+      ((question) => createDnsRequestContext(question, { useMockDnsTable })),
+  });
+}
+
+export function createDnsRequestHandlerV2_2(
+  options: CreateDefaultDnsRequestHandlerOptions = {},
+): DnsRequestHandler {
+  const {
+    links,
+    createInitialContext,
+    dependencies,
+    useMockDnsTable = DEFAULT_USE_MOCK_DNS_TABLE,
+  } = options;
+
+  return createDnsRequestHandler({
+    links: links ?? createDefaultDnsRequestLinksV2_2(dependencies),
     createInitialContext:
       createInitialContext ??
       ((question) => createDnsRequestContext(question, { useMockDnsTable })),

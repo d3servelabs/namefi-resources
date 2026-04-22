@@ -1,5 +1,5 @@
 import type { DnsResponse } from '#lib/dns/types';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createDnsRequestContext,
   createDnsRequestHandler,
@@ -19,7 +19,28 @@ vi.mock('#lib/logger', () => ({
   logger: mockLogger,
 }));
 
-import { createDnsRequestHandlerV2 } from './factory';
+vi.mock('#lib/env', () => ({
+  config: {
+    NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE: 'gtld.namefi.dev',
+    NAMEFI_ASTRA_NAMESERVERS: ['ns3.namefi.dev.', 'ns4.namefi.dev.'],
+  },
+  secrets: {},
+}));
+
+// Zone-ns-soa pulls in DB clients and the powered-by-namefi registry; stub
+// it to a passthrough so V2.1 integration tests can exercise the relay
+// sub-chain without real DB/registry dependencies. The link's own behavior is
+// covered in its own tests.
+vi.mock('./links/zone-ns-soa-link', () => ({
+  createZoneNsAndSoaLink:
+    () => async (_ctx: unknown, next: () => Promise<DnsResponse>) =>
+      next(),
+}));
+
+import {
+  createDnsRequestHandlerV2,
+  createDnsRequestHandlerV2_1,
+} from './factory';
 import type { DnsQuestion, DnsRequestLink } from './dns-request-handler.types';
 
 const baseQuestion: DnsQuestion = {
@@ -232,5 +253,184 @@ describe('createDefaultDnsRequestHandler', () => {
         },
       ],
     });
+  });
+});
+
+describe('createDnsRequestHandlerV2_1 (relay chain integration)', () => {
+  const originalEnvironment = process.env.ENVIRONMENT;
+  const originalTldsEnv = process.env.NAMEFI_UNOFFICIAL_TLDS;
+
+  beforeEach(() => {
+    // The relay sub-chain is gated off in production; run the tests as a
+    // non-production env so the switchLink predicate can engage.
+    process.env.ENVIRONMENT = 'development';
+    process.env.NAMEFI_UNOFFICIAL_TLDS = JSON.stringify(['nfi']);
+  });
+
+  afterEach(() => {
+    if (originalEnvironment === undefined) {
+      delete process.env.ENVIRONMENT;
+    } else {
+      process.env.ENVIRONMENT = originalEnvironment;
+    }
+    if (originalTldsEnv === undefined) {
+      delete process.env.NAMEFI_UNOFFICIAL_TLDS;
+    } else {
+      process.env.NAMEFI_UNOFFICIAL_TLDS = originalTldsEnv;
+    }
+  });
+
+  it('returns NXDOMAIN with a relay-zone Authority SOA when no records exist', async () => {
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: vi.fn().mockResolvedValue(null),
+        // Mirror the production `getAnswerForDnsQueryFromDnsRecords` contract:
+        // an explicit `{ RCODE: 3, Answer: [] }` is returned when no records
+        // match, which short-circuits the resolver chain with NXDOMAIN.
+        getAnswerFromDnsRecords: vi
+          .fn()
+          .mockResolvedValue({ RCODE: 3, Answer: [] }),
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'sami.nfi.gtld.namefi.dev.',
+      rawType: 1,
+      recordName: 'sami.nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+      recordType: 'A',
+      wildcard: false,
+    });
+
+    expect(response.RCODE).toBe(3);
+    expect(response.Answer).toEqual([]);
+    expect(response.Authority).toHaveLength(1);
+    expect(response.Authority?.[0]).toMatchObject({
+      name: 'gtld.namefi.dev',
+      type: 6, // SOA
+    });
+  });
+
+  it('rewrites downstream records from logical to relay form when found', async () => {
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: vi.fn().mockResolvedValue(null),
+        getAnswerFromDnsRecords: vi.fn(async (recordName) => {
+          // The resolver must see the stripped logical name.
+          expect(recordName).toBe('sami.nfi');
+          return {
+            RCODE: 0,
+            Answer: [{ name: 'sami.nfi', type: 1, TTL: 300, data: '1.2.3.4' }],
+          };
+        }),
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'sami.nfi.gtld.namefi.dev.',
+      rawType: 1,
+      recordName: 'sami.nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+      recordType: 'A',
+      wildcard: false,
+    });
+
+    expect(response.RCODE).toBe(0);
+    expect(response.Answer).toEqual([
+      {
+        name: 'sami.nfi.gtld.namefi.dev',
+        type: 1,
+        TTL: 300,
+        data: '1.2.3.4',
+      },
+    ]);
+  });
+
+  it('short-circuits NS at the relay-zone apex with synthesized records', async () => {
+    const preferences = vi.fn().mockResolvedValue(null);
+    const dnsRecords = vi.fn().mockResolvedValue(null);
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: preferences,
+        getAnswerFromDnsRecords: dnsRecords,
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'gtld.namefi.dev.',
+      rawType: 2,
+      recordName: 'gtld.namefi.dev' as DnsQuestion['recordName'],
+      recordType: 'NS',
+      wildcard: false,
+    });
+
+    expect(response.RCODE).toBe(0);
+    expect(response.Answer).toHaveLength(2);
+    expect(response.Answer?.[0]).toMatchObject({
+      name: 'gtld.namefi.dev',
+      type: 2, // NS
+      data: 'ns3.namefi.dev.',
+    });
+    // The resolvers are never reached — the apex short-circuit fires first.
+    expect(preferences).not.toHaveBeenCalled();
+    expect(dnsRecords).not.toHaveBeenCalled();
+  });
+
+  it('does not engage the relay sub-chain for non-relay hosts', async () => {
+    const preferences = vi.fn(async (recordName) => {
+      // The resolver must see the original (non-rewritten) name.
+      expect(recordName).toBe('example.com');
+      return null;
+    });
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: preferences,
+        getAnswerFromDnsRecords: vi.fn().mockResolvedValue(null),
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'example.com.',
+      rawType: 1,
+      recordName: 'example.com' as DnsQuestion['recordName'],
+      recordType: 'A',
+      wildcard: false,
+    });
+
+    // Zone-ns-soa is stubbed to passthrough, so we get whatever terminationLink finalizes.
+    expect(response.RCODE).toBe(0);
+    expect(response.Answer).toEqual([]);
+    expect(response.Authority).toBeUndefined();
+    expect(preferences).toHaveBeenCalledTimes(1);
+  });
+
+  it('is a no-op in production regardless of host', async () => {
+    process.env.ENVIRONMENT = 'production';
+    const dnsRecords = vi.fn(async (recordName) => {
+      // Production bypasses the relay sub-chain, so the resolver sees the raw name.
+      expect(recordName).toBe('sami.nfi.gtld.namefi.dev');
+      return null;
+    });
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: vi.fn().mockResolvedValue(null),
+        getAnswerFromDnsRecords: dnsRecords,
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'sami.nfi.gtld.namefi.dev.',
+      rawType: 1,
+      recordName: 'sami.nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+      recordType: 'A',
+      wildcard: false,
+    });
+
+    expect(dnsRecords).toHaveBeenCalledTimes(1);
+    // No relay-zone Authority injected.
+    expect(response.Authority).toBeUndefined();
   });
 });

@@ -22,8 +22,12 @@ vi.mock('#lib/env', () => ({
   },
 }));
 
-const { createUnofficialTldRelayLink, matchRelayPattern, rewriteAnswerNames } =
-  await import('./unofficial-tld-relay-link');
+const {
+  createUnofficialTldRelayLink,
+  isRelayZoneHost,
+  matchRelayPattern,
+  rewriteAnswerNames,
+} = await import('./unofficial-tld-relay-link');
 const { createDnsRequestHandler } = await import('../dns-request-handler');
 
 const baseQuestion: DnsQuestion = {
@@ -122,6 +126,62 @@ describe('matchRelayPattern', () => {
         relayZone: 'gtld.namefi.dev.',
       }),
     ).toEqual({ logicalName: 'sami.nfi' });
+  });
+});
+
+describe('isRelayZoneHost', () => {
+  it('matches the relay-zone apex itself', () => {
+    expect(isRelayZoneHost('gtld.namefi.dev', { relayZone: RELAY_ZONE })).toBe(
+      true,
+    );
+  });
+
+  it('matches any subdomain under the relay zone', () => {
+    expect(
+      isRelayZoneHost('sami.nfi.gtld.namefi.dev', { relayZone: RELAY_ZONE }),
+    ).toBe(true);
+    expect(
+      isRelayZoneHost('foo.gtld.namefi.dev', { relayZone: RELAY_ZONE }),
+    ).toBe(true);
+    expect(
+      isRelayZoneHost('a.b.c.d.gtld.namefi.dev', { relayZone: RELAY_ZONE }),
+    ).toBe(true);
+  });
+
+  it('is case-insensitive', () => {
+    expect(
+      isRelayZoneHost('SAMI.NFI.GTLD.NAMEFI.DEV', { relayZone: RELAY_ZONE }),
+    ).toBe(true);
+  });
+
+  it('tolerates trailing dots on either side', () => {
+    expect(
+      isRelayZoneHost('sami.nfi.gtld.namefi.dev.', { relayZone: RELAY_ZONE }),
+    ).toBe(true);
+    expect(
+      isRelayZoneHost('sami.nfi.gtld.namefi.dev', {
+        relayZone: 'gtld.namefi.dev.',
+      }),
+    ).toBe(true);
+  });
+
+  it('rejects unrelated hosts', () => {
+    expect(isRelayZoneHost('example.com', { relayZone: RELAY_ZONE })).toBe(
+      false,
+    );
+    expect(isRelayZoneHost('sami.nfi', { relayZone: RELAY_ZONE })).toBe(false);
+  });
+
+  it('is anchored — rejects substring matches', () => {
+    expect(
+      isRelayZoneHost('gtld.namefi.dev.extra', { relayZone: RELAY_ZONE }),
+    ).toBe(false);
+  });
+
+  it('returns false for an empty relay zone', () => {
+    expect(isRelayZoneHost('sami.nfi.gtld.namefi.dev', { relayZone: '' })).toBe(
+      false,
+    );
   });
 });
 
