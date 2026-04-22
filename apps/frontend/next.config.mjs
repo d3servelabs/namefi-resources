@@ -5,7 +5,10 @@
  */
 import createMdx from '@next/mdx';
 import { createJiti } from 'jiti';
-import { withDatadogConfig } from './build/with-datadog-config.mjs';
+import {
+  resolveDeployCommitSha,
+  withDatadogConfig,
+} from './build/with-datadog-config.mjs';
 import packageJson from './package.json' with { type: 'json' };
 
 /** @type {import('jiti').Jiti} */
@@ -23,10 +26,7 @@ const withMDX = createMdx({
 
 /** @type {{ config: import('./src/lib/env/schema').ConfigInput }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
-const deployCommitSha =
-  process.env.DEPLOY_COMMIT_SHA ||
-  process.env.VERCEL_GIT_COMMIT_SHA ||
-  'unknown';
+const deployCommitSha = resolveDeployCommitSha() || 'unknown';
 const loadedClientConfig = {
   ...appConfig,
   APP_VERSION: packageJson.version,

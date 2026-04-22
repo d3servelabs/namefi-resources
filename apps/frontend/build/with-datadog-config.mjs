@@ -6,7 +6,7 @@ const DATADOG_SERVICE = 'namefi-astra-frontend';
 const DATADOG_SOURCEMAP_PATH = '/_next/static/chunks';
 const DATADOG_DEFAULT_SITE = 'us5.datadoghq.com';
 
-const resolveDeployCommitSha = () =>
+export const resolveDeployCommitSha = () =>
   toTrimmedString(process.env.DEPLOY_COMMIT_SHA) ||
   toTrimmedString(process.env.VERCEL_GIT_COMMIT_SHA);
 
