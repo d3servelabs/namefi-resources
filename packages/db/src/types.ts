@@ -1,5 +1,25 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import {
+  orderStatusSchema,
+  paymentStatusSchema,
+  refundStatusSchema,
+  type OrderStatus,
+  type PaymentStatus,
+  type RefundStatus,
+} from '@namefi-astra/common/shared-schemas';
+import {
+  mppPaymentProviderDetailsSchema as commonMppPaymentProviderDetailsSchema,
+  nfscPaymentProviderDetailsSchema as commonNfscPaymentProviderDetailsSchema,
+  stripePaymentProviderDetailsSchema as commonStripePaymentProviderDetailsSchema,
+  x402PaymentProviderDetailsSchema as commonX402PaymentProviderDetailsSchema,
+} from '@namefi-astra/common/payment-provider';
+import type {
+  MppPaymentProviderDetails,
+  NfscPaymentProviderDetails,
+  StripePaymentProviderDetails,
+  X402PaymentProviderDetails,
+} from '@namefi-astra/common/payment-provider';
+import {
   createInsertSchema,
   createSelectSchema,
   createUpdateSchema,
@@ -12,18 +32,12 @@ import {
   cartItemsTable,
   dnsRecordsTable,
   orderItemsTable,
-  orderStatusEnum,
   ordersTable,
-  paymentProviderEnum,
-  paymentStatusEnum,
   paymentsTable,
-  refundStatusEnum,
-  itemTypeEnum,
   refundsTable,
   feedbackResponsesTable,
   usersTable,
   freeClaimsTable,
-  freeClaimClaimingStatusEnum,
   domainAiAnalysisTable,
   aiAppraisalDataSchema,
   poweredbyNamefiDomainsTable,
@@ -31,13 +45,134 @@ import {
   cartItemMetadataSchema,
   orderMetadataSchema,
   orderItemMetadataSchema,
-  paymentMetadataSchema,
   x402PurchasesTable,
   x402PurchaseStatusEnum,
 } from './schema';
 export type { OrderItemMetadata, OrderMintTransactionMetadata } from './schema';
 import type { PgUpdateSetSource } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
+
+export {
+  autoRenewalPaymentProviderSchema,
+  mppPaymentDetailsSchema,
+  mppPaymentMethodSchema,
+  mppPaymentProviderDetailsSchema,
+  mppPaymentReceiptSchema,
+  nfscPaymentDetailsSchema,
+  nfscPaymentProviderDetailsSchema,
+  nfscPaymentProviderSchema,
+  paymentProviderDetailsSchema,
+  paymentProviderSchema,
+  stripePaymentDetailsSchema,
+  stripePaymentProviderDetailsSchema,
+  x402PaymentDetailsSchema,
+  x402PaymentPayloadEncryptionVersionSchema,
+  x402PaymentPayloadSchema,
+  x402PaymentProviderDetailsSchema,
+} from '@namefi-astra/common/payment-provider';
+export type {
+  AutoRenewalPaymentProvider,
+  MppPaymentDetails,
+  MppPaymentMethod,
+  MppPaymentProviderDetails,
+  MppPaymentReceipt,
+  NfscPaymentDetails,
+  NfscPaymentProvider,
+  NfscPaymentProviderDetails,
+  PaymentProvider,
+  PaymentProviderDetails,
+  StripePaymentDetails,
+  StripePaymentProviderDetails,
+  X402PaymentDetails,
+  X402PaymentPayload,
+  X402PaymentPayloadEncryptionVersion,
+  X402PaymentProviderDetails,
+} from '@namefi-astra/common/payment-provider';
+export {
+  freeClaimClaimingStatusSchema,
+  itemTypeSchema,
+  orderStatusSchema,
+  paymentStatusSchema,
+  refundStatusSchema,
+} from '@namefi-astra/common/shared-schemas';
+export type {
+  FreeClaimClaimingStatus,
+  ItemType,
+  OrderStatus,
+  PaymentStatus,
+  RefundStatus,
+} from '@namefi-astra/common/shared-schemas';
+
+const asPaymentRecord = (details: unknown): Record<string, unknown> | null =>
+  typeof details === 'object' && details !== null
+    ? (details as Record<string, unknown>)
+    : null;
+
+/**
+ * DB-facing payment guards accept full payment rows. Extracting the provider
+ * fields keeps the previous row-aware API without relying on unknown-key
+ * stripping inside the shared provider schemas.
+ */
+export function isStripePayment(
+  details: unknown,
+): details is StripePaymentProviderDetails {
+  const payment = asPaymentRecord(details);
+  if (payment === null) {
+    return false;
+  }
+
+  return commonStripePaymentProviderDetailsSchema.safeParse({
+    paymentProvider: payment.paymentProvider,
+    stripePaymentDetails: payment.stripePaymentDetails,
+  }).success;
+}
+
+export function isNfscPayment(
+  details: unknown,
+): details is NfscPaymentProviderDetails {
+  const payment = asPaymentRecord(details);
+  if (payment === null) {
+    return false;
+  }
+
+  return commonNfscPaymentProviderDetailsSchema.safeParse({
+    paymentProvider: payment.paymentProvider,
+    nfscPaymentDetails: payment.nfscPaymentDetails,
+  }).success;
+}
+
+export function isX402Payment(
+  details: unknown,
+): details is X402PaymentProviderDetails {
+  const payment = asPaymentRecord(details);
+  if (payment === null) {
+    return false;
+  }
+
+  return commonX402PaymentProviderDetailsSchema.safeParse({
+    paymentProvider: payment.paymentProvider,
+    x402PaymentDetails: payment.x402PaymentDetails,
+  }).success;
+}
+
+export function isMppPayment(
+  details: unknown,
+): details is MppPaymentProviderDetails {
+  const payment = asPaymentRecord(details);
+  if (payment === null) {
+    return false;
+  }
+
+  const metadata = asPaymentRecord(payment.metadata);
+
+  return commonMppPaymentProviderDetailsSchema.safeParse({
+    paymentProvider: payment.paymentProvider,
+    metadata: {
+      mppPaymentDetails: metadata?.mppPaymentDetails,
+    },
+  }).success;
+}
+
 /**
  * Zod schemas for type-safe operations
  */
@@ -333,30 +468,10 @@ export type DomainAiAnalysisUpdate = z.infer<
   typeof domainAiAnalysisUpdateSchema
 >;
 
-/**
- * Enum types from pgEnums
- */
-
-export const paymentProviderSchema = z.enum(paymentProviderEnum.enumValues);
-export type PaymentProvider = z.infer<typeof paymentProviderSchema>;
-export const paymentStatusSchema = z.enum(paymentStatusEnum.enumValues);
-export type PaymentStatus = z.infer<typeof paymentStatusSchema>;
-export const refundStatusSchema = z.enum(refundStatusEnum.enumValues);
-export type RefundStatus = z.infer<typeof refundStatusSchema>;
-export const orderStatusSchema = z.enum(orderStatusEnum.enumValues);
-export type OrderStatus = z.infer<typeof orderStatusSchema>;
-
 export const x402PurchaseStatusSchema = z.enum(
   x402PurchaseStatusEnum.enumValues,
 );
 export type X402PurchaseStatus = z.infer<typeof x402PurchaseStatusSchema>;
-
-export const freeClaimClaimingStatusSchema = z.enum(
-  freeClaimClaimingStatusEnum.enumValues,
-);
-export type FreeClaimClaimingStatus = z.infer<
-  typeof freeClaimClaimingStatusSchema
->;
 
 /**
  * Forces exhaustive status handling.
@@ -605,259 +720,8 @@ export function buildLifecycleTransitionTimestampsValues(
 
   return lifecycleTimestamps;
 }
-export type NfscPaymentDetails = Exclude<
-  z.infer<typeof paymentInsertSchema.shape.nfscPaymentDetails>,
-  undefined | null
->;
-// Note: A bug or limitation of drizzle-zod seems to be that optional fields in json are inferred as unknown. Hence defining the type here.
-const stripePaymentDetailsSchema = z.object({
-  paymentMethodId: z.string().optional(),
-});
-export type StripePaymentDetails = z.infer<typeof stripePaymentDetailsSchema>;
-
-export const nfscPaymentProviderSchema = z.enum([
-  paymentProviderSchema.enum.NFSC_BASE,
-  paymentProviderSchema.enum.NFSC_ETHEREUM,
-  paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
-]);
-export type NfscPaymentProvider = z.infer<typeof nfscPaymentProviderSchema>;
-
-export const mppPaymentMethodSchema = z.enum(['tempo', 'stripe']);
-export type MppPaymentMethod = z.infer<typeof mppPaymentMethodSchema>;
-
-export const mppPaymentReceiptSchema = z.object({
-  externalId: z.string().optional(),
-  method: mppPaymentMethodSchema,
-  reference: z.string(),
-  status: z.literal('success'),
-  timestamp: z.string(),
-});
-export type MppPaymentReceipt = z.infer<typeof mppPaymentReceiptSchema>;
-
-export const mppPaymentDetailsSchema = z.object({
-  challenge: z.record(z.string(), z.unknown()).optional(),
-  credentialSummary: z
-    .object({
-      source: z.string().optional(),
-      tempoPayloadType: z.enum(['hash', 'transaction']).optional(),
-      stripeExternalId: z.string().optional(),
-    })
-    .optional(),
-  method: mppPaymentMethodSchema,
-  nftReceivingWalletAddress: z.string().optional(),
-  payerDid: z.string().optional(),
-  payerWalletAddress: z.string().optional(),
-  presettled: z.boolean().optional(),
-  receipt: mppPaymentReceiptSchema,
-  refundTxHash: z.string().optional(),
-  settledAt: z.string().optional(),
-});
-export type MppPaymentDetails = z.infer<typeof mppPaymentDetailsSchema>;
-
-/**
- * Payment providers that can be used for auto-renewal (excludes X402)
- * X402 is excluded because it's a push-based payment from external users,
- * not a pull-based payment from registered user accounts
- */
-export const autoRenewalPaymentProviderSchema = z.enum([
-  paymentProviderSchema.enum.NFSC_BASE,
-  paymentProviderSchema.enum.NFSC_ETHEREUM,
-  paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
-  paymentProviderSchema.enum.STRIPE,
-]);
-export type AutoRenewalPaymentProvider = z.infer<
-  typeof autoRenewalPaymentProviderSchema
->;
-
-export const stripePaymentProviderDetailsSchema = z.object({
-  paymentProvider: z.literal(paymentProviderSchema.enum.STRIPE),
-  stripePaymentDetails: stripePaymentDetailsSchema,
-});
-
-export type StripePaymentProviderDetails = z.infer<
-  typeof stripePaymentProviderDetailsSchema
->;
-
-export const nfscPaymentProviderDetailsSchema = z.object({
-  paymentProvider: nfscPaymentProviderSchema,
-  nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails
-    .unwrap()
-    .transform((details, ctx): NfscPaymentDetails => {
-      if (details === null) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'NFSC payment details are required',
-        });
-        return z.NEVER;
-      }
-      return details;
-    }),
-});
-
-export type NfscPaymentProviderDetails = Omit<
-  z.infer<typeof nfscPaymentProviderDetailsSchema>,
-  'nfscPaymentDetails'
-> & {
-  nfscPaymentDetails: NfscPaymentDetails;
-};
-
-export const mppPaymentProviderDetailsSchema = z.object({
-  paymentProvider: z.literal(paymentProviderSchema.enum.MPP),
-  metadata: paymentMetadataSchema.extend({
-    mppPaymentDetails: mppPaymentDetailsSchema,
-  }),
-});
-
-export type MppPaymentProviderDetails = z.infer<
-  typeof mppPaymentProviderDetailsSchema
->;
-
-const x402PaymentPayloadSchema = z.object({
-  x402Version: z.number(),
-  resource: z.object({
-    url: z.string(),
-    description: z.string(),
-    mimeType: z.string(),
-  }),
-  accepted: z.object({
-    scheme: z.string(),
-    network: z.string(),
-    asset: z.string(),
-    amount: z.string(),
-    payTo: z.string(),
-    maxTimeoutSeconds: z.number(),
-    extra: z.record(z.string(), z.unknown()),
-  }),
-  payload: z.record(z.string(), z.unknown()),
-  extensions: z.record(z.string(), z.unknown()).optional(),
-});
-
-const x402PaymentPayloadEncryptionVersionSchema = z.enum(['v1']);
-
-// x402 Payment Details Schema
-export const x402PaymentDetailsSchema = z.object({
-  buyerWalletAddress: z.string(),
-  /**
-   * The wallet address that received the x402 payment (USDC)
-   * This is tracked to support multiple/different signers
-   */
-  receiverWalletAddress: z.string(),
-  network: z.string(), // CAIP-2 format: eip155:84532
-  paymentPayload: x402PaymentPayloadSchema.optional(),
-  /**
-   * Encryption version used for x402 payload encryption
-   */
-  paymentPayloadEncryptionVersion:
-    x402PaymentPayloadEncryptionVersionSchema.optional(),
-  /**
-   * Whether the payment was pre-settled before the workflow started.
-   * When true, the workflow will verify the settlement instead of initiating it.
-   */
-  presettled: z.boolean().optional(),
-  /**
-   * Transaction hash from the x402 facilitator settlement
-   * Populated after successful payment settlement (or pre-settlement)
-   */
-  settlementTxHash: z.string().optional(),
-  /**
-   * ISO timestamp when the settlement was completed
-   * Used to verify pre-settled payments are recent
-   */
-  settledAt: z.string().optional(),
-  /**
-   * Transaction hash from USDC refund transfer (if refunded)
-   */
-  refundTxHash: z.string().optional(),
-});
-export type X402PaymentDetails = z.infer<typeof x402PaymentDetailsSchema>;
-
-export const x402PaymentProviderDetailsSchema = z.object({
-  paymentProvider: z.literal(paymentProviderSchema.enum.X402),
-  x402PaymentDetails: x402PaymentDetailsSchema,
-});
-
-export type X402PaymentProviderDetails = z.infer<
-  typeof x402PaymentProviderDetailsSchema
->;
-
-export const paymentProviderDetailsSchema = z.discriminatedUnion(
-  'paymentProvider',
-  [
-    stripePaymentProviderDetailsSchema,
-    nfscPaymentProviderDetailsSchema,
-    mppPaymentProviderDetailsSchema,
-    x402PaymentProviderDetailsSchema,
-  ],
-);
-
-export type PaymentProviderDetails = z.infer<
-  typeof paymentProviderDetailsSchema
->;
-
-/**
- * Type guard function to check if payment details are Stripe payment details
- * @param details The payment provider details to check
- * @returns Narrowed type with Stripe payment details if applicable
- */
-export function isStripePayment(
-  details:
-    | {
-        paymentProvider: (typeof paymentProviderSchema.options)[number];
-        stripePaymentDetails?: z.infer<typeof stripePaymentDetailsSchema>;
-        nfscPaymentDetails?: z.infer<
-          typeof paymentInsertSchema.shape.nfscPaymentDetails
-        >;
-      }
-    | unknown,
-): details is StripePaymentProviderDetails {
-  return stripePaymentProviderDetailsSchema.safeParse(details).success;
-}
-
-/**
- * Type guard function to check if payment details are NFSC payment details
- * @param details The payment provider details to check
- * @returns Narrowed type with NFSC payment details if applicable
- */
-export function isNfscPayment(
-  details:
-    | {
-        paymentProvider: (typeof paymentProviderSchema.options)[number];
-        stripePaymentDetails?: z.infer<typeof stripePaymentDetailsSchema>;
-        metadata?: z.infer<typeof paymentMetadataSchema>;
-        nfscPaymentDetails?: z.infer<
-          typeof paymentInsertSchema.shape.nfscPaymentDetails
-        >;
-      }
-    | unknown,
-): details is NfscPaymentProviderDetails {
-  return nfscPaymentProviderDetailsSchema.safeParse(details).success;
-}
-
-/**
- * Type guard function to check if payment details are X402 payment details
- * @param details The payment provider details to check
- * @returns Narrowed type with X402 payment details if applicable
- */
-export function isX402Payment(
-  details: unknown,
-): details is X402PaymentProviderDetails {
-  return x402PaymentProviderDetailsSchema.safeParse(details).success;
-}
-
-/**
- * Type guard function to check if payment details are MPP payment details
- */
-export function isMppPayment(
-  details: unknown,
-): details is MppPaymentProviderDetails {
-  return mppPaymentProviderDetailsSchema.safeParse(details).success;
-}
-
-export const orderItemStatusSchema = z.enum(orderStatusEnum.enumValues);
-export type OrderItemStatus = z.infer<typeof orderItemStatusSchema>;
-
-export const itemTypeSchema = z.enum(itemTypeEnum.enumValues);
-export type ItemType = z.infer<typeof itemTypeSchema>;
+export const orderItemStatusSchema = orderStatusSchema;
+export type OrderItemStatus = OrderStatus;
 
 export type {
   NamefiNftSelect,

@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { isManagedDnsRecord } from '../panels/dns/dns-records-table/managed-records';
 
 interface EditDnsRecordsWrapperProps {

@@ -413,7 +413,8 @@ export default function CartPage() {
                       },
                       accepted: {
                         scheme: 'exact',
-                        network: x402PaymentConfig.network,
+                        network:
+                          x402PaymentConfig.network as `${string}:${string}`,
                         asset: assetAddress,
                         amount: valueAsString,
                         payTo: receiverWalletAddress,

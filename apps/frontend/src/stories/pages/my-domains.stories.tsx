@@ -26,7 +26,7 @@ import { createMockLink } from '@/lib/mock/trpc';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
-import type { OrderItemSelect } from '@namefi-astra/db';
+import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

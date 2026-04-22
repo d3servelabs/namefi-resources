@@ -254,7 +254,6 @@
       },
       "devDependencies": {
         "@chromatic-com/storybook": "^5.0.0",
-        "@namefi-astra/db": "workspace:*",
         "@namefi-astra/typescript": "workspace:*",
         "@storybook/addon-a11y": "^10.2.1",
         "@storybook/addon-docs": "^10.2.1",
@@ -407,7 +406,6 @@
       "name": "@namefi-astra/common",
       "version": "0.0.0",
       "dependencies": {
-        "@namefi-astra/db": "workspace:*",
         "@namefi-astra/utils": "workspace:*",
         "@namefi-astra/zod-dns": "workspace:*",
         "@temporalio/common": "1.13.1",
@@ -442,6 +440,7 @@
       "name": "@namefi-astra/db",
       "dependencies": {
         "@c15t/backend": "^1.8.0",
+        "@namefi-astra/common": "workspace:*",
         "@namefi-astra/env": "workspace:*",
         "@namefi-astra/utils": "workspace:*",
         "@namefi-astra/zod-dns": "workspace:*",

@@ -16,7 +16,7 @@ import { TooltipTrigger } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { TooltipContent } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { Tooltip } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { TooltipProvider } from '@namefi-astra/ui/components/shadcn/tooltip';
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { CellContext, HeaderContext } from '@tanstack/react-table';
 import {

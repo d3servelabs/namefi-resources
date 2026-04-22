@@ -1,30 +1,14 @@
-import type {
-  OrderItemSelect,
-  OrderStatus,
-  PaymentSelect,
-  UserSelect,
-  orderItemsTable,
-  ordersTable,
-} from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-type OrderItemRow = typeof orderItemsTable.$inferSelect;
-
-/**
- * The raw drizzle row type for an order — `metadata` is `T | null` here
- * (drizzle's `$inferSelect`). The backend service `getOrderDetailsOrThrow`
- * returns `$inferSelect` for the `order` field directly (no cast), so we
- * have to use the drizzle row type here or assignability breaks. The
- * drizzle-zod-derived `OrderSelect` would say `metadata?: T | undefined`
- * which is structurally different.
- *
- * Note that the sibling `items`, `payments` and `user` fields *are*
- * explicitly cast to the drizzle-zod `*Select` types in the backend (see
- * `apps/backend/src/services/orders/orders.service.ts` lines 81-83), so we
- * use those types for those fields. This mirrors the backend's actual
- * casting choices exactly.
- */
-type OrderRow = typeof ordersTable.$inferSelect;
+import type {
+  OrderItemForUser,
+  OrderItemSelect,
+  OrderItemsForUser,
+  OrderSelect,
+  PaymentSelect,
+  UserSelect,
+} from './contract/entity-schemas';
+import type { OrderStatus } from './shared-schemas';
 
 /**
  * Wire-shape types shared between the orders router contract (in
@@ -48,7 +32,7 @@ type OrderRow = typeof ordersTable.$inferSelect;
 // ---------------------------------------------------------------------------
 
 export type OrderWithPayments = {
-  order: OrderRow;
+  order: OrderSelect;
   items: OrderItemSelect[];
   payments: PaymentSelect[];
   user: UserSelect;
@@ -72,21 +56,10 @@ export type CreatedOrder = {
 };
 
 /**
- * Row shape returned by `getOrderItemsForUser` — every column of
- * `orderItemsTable` (`OrderItemRow`) plus three columns lifted from the
- * joined `ordersTable`: `nftWalletAddress`, `nftChainId`, and
- * `orderMetadata` (sourced from `OrderRow['metadata']`). The backend
- * builds this from a `db.select(...)` (no cast through drizzle-zod), so
- * we use the drizzle row type for the order-item columns to match the
- * actual `metadata: T | null` shape exactly.
+ * Row shape returned by `getOrderItemsForUser` — every order item column
+ * plus three columns lifted from the joined order.
  */
-export type OrderItemForUser = OrderItemRow & {
-  nftWalletAddress: OrderRow['nftWalletAddress'];
-  nftChainId: OrderRow['nftChainId'];
-  orderMetadata: OrderRow['metadata'];
-};
-
-export type OrderItemsForUser = OrderItemForUser[];
+export type { OrderItemForUser, OrderItemsForUser };
 
 /**
  * Return type of

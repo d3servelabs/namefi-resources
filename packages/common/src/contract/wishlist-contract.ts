@@ -1,8 +1,11 @@
-import type { wishlistedDomainsTable } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
 import { createContract } from './create-contract';
+import {
+  wishlistedDomainSchema,
+  type WishlistedDomainSelect,
+} from './entity-schemas';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -14,15 +17,9 @@ import type { RouterContract } from './trpc-contract';
  * nothing about authentication — every procedure is `protectedProcedure`
  * on the backend.
  *
- * Output rows reuse the drizzle `$inferSelect` type for `wishlistedDomainsTable`
- * (rather than the drizzle-zod-derived `WishlistedDomainSelect`) to stay
- * consistent with how the orders contract handles drizzle row outputs and
- * to avoid the `metadata?: T | undefined` vs `metadata: T | null`
- * nullability mismatch — even though `wishlistedDomainsTable` has no jsonb
- * column today, this keeps the pattern uniform if one is added later.
+ * Output rows use the common contract row shape, keeping frontend and backend
+ * consumers independent of the database package.
  */
-
-type WishlistedDomainRow = typeof wishlistedDomainsTable.$inferSelect;
 
 const wishlistDomainArrayInputSchema = z.array(
   z.object({
@@ -30,10 +27,7 @@ const wishlistDomainArrayInputSchema = z.array(
   }),
 );
 
-// TODO(contract): replace with structural schema for wishlistedDomainsTable
-const wishlistedDomainRowSchema = z.custom<WishlistedDomainRow>(() => true);
-
-const wishlistedDomainArrayOutputSchema = z.array(wishlistedDomainRowSchema);
+const wishlistedDomainArrayOutputSchema = z.array(wishlistedDomainSchema);
 
 export const wishlistContract = createContract(
   { softOutput: true },
@@ -59,3 +53,4 @@ export const wishlistContract = createContract(
 );
 
 export type WishlistContract = typeof wishlistContract;
+export type { WishlistedDomainSelect };

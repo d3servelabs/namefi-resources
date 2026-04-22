@@ -14,7 +14,7 @@ import {
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
-import type { DnsRecordSelect } from '@namefi-astra/db/types';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useQuery } from '@tanstack/react-query';
 import {

@@ -8,10 +8,11 @@ import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type {
-  PaymentSelect,
   OrderMintTransactionMetadata,
   OrderItemMetadata,
-} from '@namefi-astra/db/types';
+  OrderItemSelect,
+  PaymentSelect,
+} from '@namefi-astra/common/contract/entity-schemas';
 import {
   Tooltip,
   TooltipContent,
@@ -58,7 +59,6 @@ import {
   AlertDescription,
 } from '@namefi-astra/ui/components/shadcn/alert';
 import { NetworkLogo } from '@/components/network-logo';
-import type { OrderItemSelect } from '@namefi-astra/db';
 import { PageShell } from '@/components/page-shell';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { formatDuration, intervalToDuration, addSeconds } from 'date-fns';

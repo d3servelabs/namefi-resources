@@ -80,9 +80,8 @@ type UserResultForAdminLike = {
  * Mirror of `AutoRenewMetrics` from
  * `apps/backend/src/temporal/activities/domain/autorenew-report.activities.ts`.
  *
- * `PaymentProvider` is defined in `@namefi-astra/db/types` (a dep of common);
- * `NamefiNormalizedDomain` is defined in `@namefi-astra/utils`, but we use
- * plain `string` here since the zod type-only parameter ignores the brand.
+ * Payment-provider and domain-name details are represented as plain strings
+ * here since the zod type-only parameter ignores brands.
  */
 type AutoRenewMetricsLike = {
   reportDate: Date;

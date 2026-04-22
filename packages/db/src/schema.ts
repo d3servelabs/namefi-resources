@@ -6,6 +6,24 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeValues } from '@namefi-astra/zod-dns';
+import {
+  cartItemMetadataSchema,
+  orderItemMetadataSchema,
+  orderMetadataSchema,
+  paymentMetadataSchema,
+  type CartItemMetadata,
+  type OrderItemMetadata,
+  type OrderMetadata,
+  type PaymentMetadata,
+} from '@namefi-astra/common/contract/entity-schemas';
+import {
+  itemTypeValues,
+  freeClaimClaimingStatusValues,
+  orderStatusValues,
+  paymentProviderValues,
+  paymentStatusValues,
+  refundStatusValues,
+} from '@namefi-astra/common/shared-schemas';
 import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
@@ -30,6 +48,28 @@ import type { Json } from 'drizzle-zod';
 import type { Permission } from '@namefi-astra/utils';
 import { z } from 'zod';
 import type { PaymentPayload } from './x402/types';
+
+export {
+  cartItemMetadataSchema,
+  legacyOrderItemMetadataSchema,
+  legacyOrderMetadataSchema,
+  orderItemFailureDetailsSchema,
+  orderItemFailureResolutionSchema,
+  orderItemMetadataSchema,
+  orderItemRequiredActionSchema,
+  orderMetadataSchema,
+  orderMintTransactionMetadataSchema,
+  paymentMetadataSchema,
+  postProcessOrderItemSchema,
+} from '@namefi-astra/common/contract/entity-schemas';
+export type {
+  CartItemMetadata,
+  OrderItemMetadata,
+  OrderMintTransactionMetadata,
+  OrderMetadata,
+  PaymentMetadata,
+  PostProcessOrderItem,
+} from '@namefi-astra/common/contract/entity-schemas';
 
 /**
  * Common table columns for timestamp tracking
@@ -78,52 +118,13 @@ const amountInUsdCents = {
   amountInUSDCents: integer('amount_in_usd_cents').notNull(),
 };
 
-/**
- * Basic status values shared across multiple status enums
- */
-const basicStatusValues = [
-  'CREATED',
-  'PROCESSING',
-  'SUCCEEDED',
-  'FAILED',
-  'CANCELLED',
-] as const;
-
-/**
- * Creates a PostgreSQL enum with consistent ordering
- * @template T - Type of custom status values
- * @param name - Name of the enum in the database
- * @param customValues - Additional status values specific to this enum
- * @returns PostgreSQL enum with basic statuses followed by custom statuses
- */
-const createStatusEnum = <T extends string>(
-  name: string,
-  customValues: readonly T[],
-) => {
-  return pgEnum(name, [...basicStatusValues, ...customValues] as const);
-};
-
-export const orderStatusEnum = createStatusEnum('order_status', [
-  'PARTIALLY_COMPLETED',
-] as const);
-
-export const paymentStatusEnum = createStatusEnum('payment_status', [
-  'REFUND_REQUESTED',
-  'REQUIRES_CAPTURE',
-] as const);
-
-export const refundStatusEnum = createStatusEnum('refund_status', [
-  'REQUIRES_ACTION',
-] as const);
-
-export const paymentProviderEnum = pgEnum('payment_provider', [
-  'NFSC_BASE',
-  'NFSC_ETHEREUM',
-  'NFSC_ETHEREUM_SEPOLIA',
-  'MPP',
-  'STRIPE',
-  'X402',
-] as const);
+export const orderStatusEnum = pgEnum('order_status', orderStatusValues);
+export const paymentStatusEnum = pgEnum('payment_status', paymentStatusValues);
+export const refundStatusEnum = pgEnum('refund_status', refundStatusValues);
+export const paymentProviderEnum = pgEnum(
+  'payment_provider',
+  paymentProviderValues,
+);
 
 export const emailCampaignSendStatusEnum = pgEnum(
   'email_campaign_send_status',
@@ -146,11 +147,7 @@ export const usersTable = pgTable('users', {
   ...timestamps,
 });
 
-export const itemTypeEnum = pgEnum('item_type', [
-  'REGISTER',
-  'IMPORT',
-  'RENEW',
-] as const);
+export const itemTypeEnum = pgEnum('item_type', itemTypeValues);
 
 export const userContactsTable = pgTable('user_contacts', {
   ...randomUuid,
@@ -200,120 +197,6 @@ export const feedbackResponsesTable = pgTable(
     check('feedback_rating_bounds', sql`${table.rating} BETWEEN 1 AND 5`),
   ],
 );
-
-export const orderMintTransactionMetadataSchema = z.object({
-  txHash: z.string(),
-  recordedAt: z.string(),
-});
-
-export type OrderMintTransactionMetadata = z.infer<
-  typeof orderMintTransactionMetadataSchema
->;
-
-const claimMetadataShape = {
-  freeClaim: z.boolean().optional(),
-  groupOrCampaignKey: z.string().optional(),
-  claimId: z.string().optional(),
-};
-
-export const cartItemMetadataSchema = z.object(claimMetadataShape).loose();
-
-export type CartItemMetadata = z.infer<typeof cartItemMetadataSchema>;
-
-const postProcessDnsRecordSchema = z.object({
-  name: z.string(),
-  type: z.enum(recordTypeValues),
-  rdata: z.string(),
-  ttl: z.number().int().min(0).max(2147483647).optional(),
-});
-
-const postProcessOrderItemActionSchema = z.object({
-  scope: z.literal('dns-records'),
-  action: z.enum(['add', 'set']),
-  records: z.array(postProcessDnsRecordSchema).min(1),
-});
-
-export const postProcessOrderItemSchema = z
-  .object({
-    actions: z.array(postProcessOrderItemActionSchema).min(1),
-  })
-  .loose();
-
-export type PostProcessOrderItem = z.infer<typeof postProcessOrderItemSchema>;
-
-export const legacyOrderItemMetadataSchema = z.object({
-  source: z.literal('legacy'),
-  type: z.literal('legacy-migration'),
-  legacyItemId: z.string().min(1, 'Legacy item ID is required'),
-  chainId: z.number().min(1, 'Chain ID must be positive'),
-  receivingWalletAddress: z.string().nullable(),
-});
-
-export const orderItemRequiredActionSchema = z.enum([
-  'EPP_UNLOCK_REQUIRED',
-  'EPP_AUTH_CODE_UPDATE_REQUIRED',
-  'UNDETERMINED',
-]);
-
-export const orderItemFailureResolutionSchema = z.enum([
-  'USER_SIGNAL',
-  'TIMEOUT',
-]);
-
-export const orderItemFailureDetailsSchema = z.object({
-  requiredAction: orderItemRequiredActionSchema,
-  resolution: orderItemFailureResolutionSchema,
-  actor: z.enum(['USER', 'ADMIN']).optional(),
-  actorId: z.string().optional(),
-  timeoutMs: z.number().int().positive().optional(),
-  recordedAt: z.string(),
-});
-
-export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
-  mintTransaction: orderMintTransactionMetadataSchema.optional(),
-  postProcessOrderItem: postProcessOrderItemSchema.optional(),
-  requiredAction: orderItemRequiredActionSchema.optional(),
-  failureDetails: orderItemFailureDetailsSchema.optional(),
-  backfilled_started_finished_at: z.boolean().optional(),
-  legacyOrderItemMetadata: legacyOrderItemMetadataSchema.optional(),
-});
-
-export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;
-
-// Metadata schemas for different data sources
-export const legacyOrderMetadataSchema = z.object({
-  source: z.literal('legacy'),
-  type: z.literal('legacy-migration'),
-  legacyOrderId: z.string().min(1, 'Legacy order ID is required'),
-  useNfscBalance: z.boolean(),
-  migratedAt: z.string().min(1, 'Migrated at date is required'),
-  legacyPaymentIntentId: z
-    .string()
-    .min(1, 'Legacy payment intent ID is required')
-    .optional(),
-  legacyPaymentDetails: z
-    .object({
-      status: z.string().min(1, 'Payment status is required'),
-      provider: z.string().min(1, 'Payment provider is required'),
-      paymentType: z.string().min(1, 'Payment type is required'),
-      txHash: z.string().optional(),
-      externalId: z.string().optional(),
-    })
-    .optional(),
-});
-
-export const orderMetadataSchema = z
-  .object({
-    ...claimMetadataShape,
-    mintTransactions: z
-      .record(z.string(), orderMintTransactionMetadataSchema)
-      .optional(),
-    backfilled_started_finished_at: z.boolean().optional(),
-    legacyOrderMetadata: legacyOrderMetadataSchema.optional(),
-  })
-  .loose();
-
-export type OrderMetadata = z.infer<typeof orderMetadataSchema>;
 
 export const emailCampaignSendMetadataSchema = z
   .object({
@@ -387,49 +270,6 @@ const legacyNfscRefundDetailSchema = z.object({
   chainId: z.number().optional(),
   walletAddress: z.string().min(1, 'Wallet address is required').optional(),
 });
-
-const legacyPaymentIntentSchema = z.object({
-  id: z.string().min(1, 'Payment intent ID is required'),
-  amountinusdcents: z.number().min(0, 'Amount must be non-negative'),
-  externalid: z.string().nullable(),
-  paymenttype: z.string().min(1, 'Payment type is required'),
-  status: z.string().min(1, 'Status is required'),
-  txhash: z.string().nullable(),
-  modified: z.boolean().nullable(),
-  refundtxhash: z.string().nullable(),
-  stripeRefund: legacyStripeRefundSchema.optional(),
-});
-
-export const paymentMetadataSchema = z.object({
-  legacyPaymentMetadata: legacyPaymentIntentSchema.optional(),
-  mppPaymentDetails: z
-    .object({
-      challenge: z.record(z.string(), z.unknown()).optional(),
-      credentialSummary: z
-        .object({
-          source: z.string().optional(),
-          tempoPayloadType: z.enum(['hash', 'transaction']).optional(),
-          stripeExternalId: z.string().optional(),
-        })
-        .optional(),
-      method: z.enum(['tempo', 'stripe']),
-      nftReceivingWalletAddress: z.string().optional(),
-      payerDid: z.string().optional(),
-      payerWalletAddress: z.string().optional(),
-      presettled: z.boolean().optional(),
-      receipt: z.object({
-        externalId: z.string().optional(),
-        method: z.enum(['tempo', 'stripe']),
-        reference: z.string(),
-        status: z.literal('success'),
-        timestamp: z.string(),
-      }),
-      refundTxHash: z.string().optional(),
-      settledAt: z.string().optional(),
-    })
-    .optional(),
-});
-export type PaymentMetadata = z.infer<typeof paymentMetadataSchema>;
 
 /**
  * Payments table
@@ -1610,7 +1450,7 @@ export const huntDomainStatsView = pgView('hunt_domain_stats_view').as((qb) =>
  */
 export const freeClaimClaimingStatusEnum = pgEnum(
   'free_claim_claiming_status',
-  ['IDLE', 'CLAIMING', 'CLAIMED'],
+  freeClaimClaimingStatusValues,
 );
 
 export const freeClaimsTable = pgTable(

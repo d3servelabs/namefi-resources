@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { getChain } from '@namefi-astra/utils/chains';
 import { getShortAddress } from '@/lib/string';
 import { StatusBadge } from '@/components/status-badge';
-import type { PaymentSelect } from '@namefi-astra/db/types';
+import type { PaymentSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { ExternalLink } from 'lucide-react';
 

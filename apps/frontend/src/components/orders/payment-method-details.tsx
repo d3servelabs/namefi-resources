@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import { useAuth } from '@/hooks/use-auth';
 import { TRPCClientError } from '@trpc/client';
-import type { PaymentSelect } from '@namefi-astra/db/types';
+import type { PaymentSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { SinglePaymentMethodDetails } from '@/components/orders/single-payment-method-details';
 import { Loader2 } from 'lucide-react';
 

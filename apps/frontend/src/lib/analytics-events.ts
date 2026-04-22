@@ -1,4 +1,4 @@
-import type { CartItemSelect } from '@namefi-astra/db/types';
+import type { CartItemSelect } from '@namefi-astra/common/contract/entity-schemas';
 
 export enum InteractionLoggingEventName {
   // GoogleAnalytics-recommended events

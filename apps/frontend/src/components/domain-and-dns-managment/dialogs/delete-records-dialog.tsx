@@ -16,7 +16,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { ScrollArea } from '@namefi-astra/ui/components/shadcn/scroll-area';
 import { useTRPC } from '@/lib/trpc';
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';

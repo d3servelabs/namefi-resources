@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { Column, Row } from '@tanstack/react-table';
 import { Check, X } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useRef, useState } from 'react';

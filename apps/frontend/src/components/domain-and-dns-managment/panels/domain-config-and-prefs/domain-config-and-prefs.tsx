@@ -30,7 +30,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Info, Loader2 } from 'lucide-react';

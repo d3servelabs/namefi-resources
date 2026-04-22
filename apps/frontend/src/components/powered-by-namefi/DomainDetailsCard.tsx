@@ -19,7 +19,7 @@ import {
 import { CheckIcon, PauseIcon } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
-import type { PoweredByNamefiDomainSelect } from '@namefi-astra/db';
+import type { PoweredByNamefiDomainSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { toast } from 'sonner';
 import { isNotNil } from 'ramda';
 

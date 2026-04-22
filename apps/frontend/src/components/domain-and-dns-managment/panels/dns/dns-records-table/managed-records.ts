@@ -1,4 +1,4 @@
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 
 const MANAGED_BY_VALUES = ['autoPark', 'forwarding', 'autoEns'] as const;
 

@@ -19,7 +19,7 @@ import {
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { useTRPC } from '@/lib/trpc';
-import type { DnsRecordSelect } from '@namefi-astra/db';
+import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';

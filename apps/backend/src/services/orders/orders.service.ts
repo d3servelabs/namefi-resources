@@ -15,6 +15,15 @@ import {
   checksumWalletAddressSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
+import type {
+  OrderWithPayments,
+  PaymentMethodDetails,
+} from '@namefi-astra/common/orders-shared-types';
+import type {
+  OrderItemSelect,
+  PaymentSelect,
+  UserSelect,
+} from '@namefi-astra/common/contract/entity-schemas';
 import type { NfscPaymentProviderDetails } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import {
@@ -31,11 +40,6 @@ import Stripe from 'stripe';
 import pMap from 'p-map';
 import z from 'zod';
 import { OrderNotFoundError } from './errors';
-import type {
-  OrderItemSelect,
-  PaymentSelect,
-  UserSelect,
-} from '@namefi-astra/db';
 import type { OrderItemInsert, OrderInsert } from '@namefi-astra/db';
 import { defaultKeyv } from '#lib/keyv';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
@@ -50,21 +54,7 @@ import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
-type OrderRow = typeof ordersTable.$inferSelect;
-
-/**
- * Wire shape returned by `getOrderDetailsOrThrow`. A structurally identical
- * type is declared in `@namefi-astra/common/orders-shared-types` for the
- * orders router contract; the two definitions are deliberately independent
- * (no import-export cycle), and any divergence is caught at compile time
- * by the contract output assignment in `ordersRouter.ts`.
- */
-export type OrderWithPayments = {
-  order: OrderRow;
-  items: OrderItemSelect[];
-  payments: PaymentSelect[];
-  user: UserSelect;
-};
+export type { OrderWithPayments, PaymentMethodDetails };
 
 export async function getOrderDetailsOrThrow(
   orderId: string,
@@ -360,56 +350,6 @@ export async function getOrderItemsForUser(
 
   return items;
 }
-
-// -------- Payment method details --------
-//
-// Structurally identical types are declared in
-// `@namefi-astra/common/orders-shared-types` for the orders router contract.
-// They are deliberately duplicated (no import-export cycle), and divergence
-// is caught at compile time by the contract output assignment in
-// `ordersRouter.ts`.
-
-export type PaymentMethodDetailsOnChain = {
-  paymentId: string;
-  isOnChainPayment: true;
-  txHash?: string | null;
-  chainId: number;
-  walletAddress: string;
-};
-
-export type PaymentMethodDetailsOffChain = {
-  paymentId: string;
-  isOnChainPayment: false;
-  brand?: string;
-  last4?: string;
-};
-
-export type PaymentMethodDetailsX402 = {
-  paymentId: string;
-  isOnChainPayment: true;
-  isX402Payment: true;
-  network: string;
-  buyerWalletAddress: string;
-  receiverWalletAddress?: string;
-  settlementTxHash?: string | null;
-};
-
-export type PaymentMethodDetailsMpp = {
-  paymentId: string;
-  isMppPayment: true;
-  method: 'stripe' | 'tempo';
-  isOnChainPayment: boolean;
-  payerWalletAddress?: string;
-  reference?: string | null;
-  brand?: string;
-  last4?: string;
-};
-
-export type PaymentMethodDetails =
-  | PaymentMethodDetailsOnChain
-  | PaymentMethodDetailsOffChain
-  | PaymentMethodDetailsX402
-  | PaymentMethodDetailsMpp;
 
 export async function buildPaymentMethodDetails(
   payment: PaymentSelect,

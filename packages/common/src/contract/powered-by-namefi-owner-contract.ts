@@ -1,8 +1,11 @@
-import { poweredbyNamefiDomainSelectSchema } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
 import { createContract } from './create-contract';
+import {
+  poweredByNamefiDomainSchema,
+  type PoweredByNamefiDomainSelect,
+} from './entity-schemas';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -91,14 +94,6 @@ const reservedWordsMutateInputSchema = z.object({
 // ---------------------------------------------------------------------------
 // Outputs
 // ---------------------------------------------------------------------------
-
-/**
- * Reuses the drizzle-zod select schema from `@namefi-astra/db`. This keeps
- * the wire shape aligned with the backend's `$inferSelect` row (including
- * how drizzle-zod handles `jsonb` columns) so both handler returns and
- * frontend `PoweredByNamefiDomainSelect` consumers line up without casts.
- */
-const poweredByNamefiDomainSchema = poweredbyNamefiDomainSelectSchema;
 
 /**
  * GA4 `IRunReportResponse` mirror — same reasoning as in
@@ -249,3 +244,4 @@ export const poweredByNamefiOwnerContract = createContract(
 );
 
 export type PoweredByNamefiOwnerContract = typeof poweredByNamefiOwnerContract;
+export type { PoweredByNamefiDomainSelect };

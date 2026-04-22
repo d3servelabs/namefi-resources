@@ -31,7 +31,7 @@ import { useFeedback } from '@/components/providers/feedback';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { OrderNotFound } from '@/components/orders/order-not-found';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import type { OrderItemSelect } from '@namefi-astra/db';
+import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { PageShell } from '@/components/page-shell';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';

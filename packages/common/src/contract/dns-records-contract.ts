@@ -1,9 +1,12 @@
-import { dnsRecordSelectSchema, dnsRecordInsertSchema } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { recordSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
 import { createContract } from './create-contract';
+import {
+  dnsRecordSchema as baseDnsRecordSchema,
+  type DnsRecordSelect,
+} from './entity-schemas';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -35,12 +38,12 @@ export const updateRecordInputSchema = z.object({
   ttl: z.number().optional(),
 });
 
-export const createRecordInputSchema = dnsRecordInsertSchema.pick({
-  type: true,
-  name: true,
-  rdata: true,
-  ttl: true,
-  zoneName: true,
+export const createRecordInputSchema = z.object({
+  type: recordTypeEnum,
+  name: z.string(),
+  rdata: z.string(),
+  ttl: z.number().int().min(0).max(2147483647),
+  zoneName: namefiNormalizedDomainSchema,
 });
 
 // ---------------------------------------------------------------------------
@@ -92,10 +95,8 @@ const successAckSchema = z.object({
   success: z.literal(true),
 });
 
-// `dnsRecordSelectSchema` is the drizzle-zod schema generated from the
-// `dns_records` table — that is the exact row shape every CRUD endpoint
-// returns from the service layer.
-export const dnsRecordSchema = dnsRecordSelectSchema;
+export const dnsRecordSchema = baseDnsRecordSchema;
+export type { DnsRecordSelect };
 
 // ---------------------------------------------------------------------------
 // Workflow progress shared schemas

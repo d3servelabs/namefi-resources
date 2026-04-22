@@ -21,7 +21,7 @@ import type {
   OrderItemSelect,
   PaymentSelect,
   UserSelect,
-} from '@namefi-astra/db';
+} from '@namefi-astra/common/contract/entity-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { createMockLink } from '@/lib/mock/trpc';
 import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';

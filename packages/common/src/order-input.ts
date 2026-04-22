@@ -1,11 +1,8 @@
 import { z } from 'zod';
 import { paymentProviderDetailsSchema } from './payment-provider';
+import { paymentMetadataSchema } from './contract/entity-schemas';
 
-export const paymentMetadataSchema = z
-  .object({
-    confirmationTokenId: z.string().optional(),
-  })
-  .optional();
+export { paymentMetadataSchema };
 
 export const nftMetadataSchema = z.object({
   nftWalletAddress: z.string(),
@@ -15,7 +12,8 @@ export const nftMetadataSchema = z.object({
 export const createOrderInputSchema = z.object({
   cartItemIds: z.array(z.string()),
   paymentProviderDetails: paymentProviderDetailsSchema,
-  paymentMetadata: paymentMetadataSchema,
+  // Preserve the previous request shape: paymentMetadata may be omitted.
+  paymentMetadata: paymentMetadataSchema.optional(),
   nftMetadata: nftMetadataSchema,
 });
 

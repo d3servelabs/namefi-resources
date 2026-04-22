@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@c15t/backend": "^1.8.0",
+    "@namefi-astra/common": "workspace:*",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
     "@namefi-astra/zod-dns": "workspace:*",

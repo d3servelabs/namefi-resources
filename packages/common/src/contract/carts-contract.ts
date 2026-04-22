@@ -1,9 +1,13 @@
-import type { cartItemsTable } from '@namefi-astra/db';
-import { cartItemInsertSchema, cartItemUpdateSchema } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { itemTypeSchema } from '../shared-schemas';
 import { createContract } from './create-contract';
+import {
+  cartItemMetadataSchema,
+  cartItemSchema,
+  type CartItemSelect,
+} from './entity-schemas';
 import type { RouterContract } from './trpc-contract';
 
 /**
@@ -17,50 +21,29 @@ import type { RouterContract } from './trpc-contract';
  * middleware decisions stay at the call site.
  */
 
-/**
- * Drizzle row type for `cart_items` — `$inferSelect` rather than the
- * drizzle-zod `cartItemSelectSchema` because `db.query.cartItemsTable.findMany`
- * returns the row shape with `metadata: T | null`, while `cartItemSelectSchema`
- * has `metadata?: T | undefined`. Using the row type keeps the contract
- * structurally compatible with the actual handler return type.
- */
-type CartItemRow = typeof cartItemsTable.$inferSelect;
-
 // ---------------------------------------------------------------------------
-// Inputs — reuse the drizzle-zod schemas from `@namefi-astra/db`.
+// Inputs
 // ---------------------------------------------------------------------------
 
 const addItemsInputSchema = z.array(
-  cartItemInsertSchema
-    .omit({
-      id: true,
-      userId: true,
-      createdAt: true,
-      updatedAt: true,
-      encryptionKeyId: true,
-      encryptedEppAuthorizationCode: true,
-    })
-    .required()
-    .partial({
-      metadata: true,
+  z
+    .object({
+      normalizedDomainName: namefiNormalizedDomainSchema,
+      amountInUSDCents: z.number().int().nonnegative(),
+      durationInYears: z.number().int().positive(),
+      type: itemTypeSchema,
+      registrar: z.string(),
+      metadata: cartItemMetadataSchema.optional(),
     })
     .extend({
-      // Plain-text EPP authorization code; the handler encrypts it before
-      // persisting.
       eppAuthorizationCode: z.string().optional(),
     }),
 );
 
-const updateItemInputSchema = cartItemUpdateSchema
-  .pick({
-    id: true,
-    durationInYears: true,
-  })
-  .required()
-  .partial({
-    durationInYears: true,
-  })
-  .extend({
+const updateItemInputSchema = z
+  .object({
+    id: z.string(),
+    durationInYears: z.number().int().positive().optional(),
     eppAuthorizationCode: z.string().optional(),
   })
   .refine(
@@ -83,8 +66,8 @@ const removeItemInputSchema = z.array(namefiNormalizedDomainSchema).min(1);
  * `getItems` returns each cart row PLUS an optional `claims[]` aggregate
  * computed at the handler level via `checkItemClaimEligibility`. The
  * claim shape lives in the backend's free-claim activities and would
- * pull a large transitive surface into common, so we use the escape
- * hatch with a structural mirror.
+ * pull a large transitive surface into common, so common keeps only a
+ * typed mirror and preserves passthrough runtime validation for claims.
  */
 type CartItemClaimEntryLike = {
   groupOrCampaignKey: string;
@@ -123,25 +106,19 @@ type CartItemClaimEntryLike = {
   }>;
 };
 
-export type CartItemWithClaimsLike = CartItemRow & {
+export type CartItemWithClaimsLike = CartItemSelect & {
   claims?: CartItemClaimEntryLike[];
 };
 
-// TODO(contract): replace with a structural zod schema for the cart-item +
-// claims aggregate. The base `cartItemSelectSchema` is already structural;
-// the `claims?: ...` extension is the part that lives in backend activity
-// land.
-const cartItemWithClaimsSchema = z.custom<CartItemWithClaimsLike>(() => true);
+const cartItemWithClaimsSchema = cartItemSchema.extend({
+  // The base cart row is structural. The backend-computed claims aggregate
+  // intentionally keeps the previous passthrough contract behavior.
+  claims: z.array(z.custom<CartItemClaimEntryLike>(() => true)).optional(),
+});
 
 const getItemsOutputSchema = z.array(cartItemWithClaimsSchema);
 
-// addItems / updateItem / removeItem all return drizzle rows from
-// `db.insert(...).returning()` (or similar). Use the `$inferSelect` row
-// type via `z.custom<CartItemRow>()` so the contract matches the actual
-// nullability the driver hands back.
-// TODO(contract): replace with a structural zod schema for cartItemsTable rows.
-const cartItemRowSchema = z.custom<CartItemRow>(() => true);
-const cartItemRowOutputSchema = z.array(cartItemRowSchema);
+const cartItemRowOutputSchema = z.array(cartItemSchema);
 
 const clearOutputSchema = z.array(z.never());
 
@@ -181,3 +158,4 @@ export const cartsContract = createContract(
 );
 
 export type CartsContract = typeof cartsContract;
+export type { CartItemSelect };

@@ -1,4 +1,4 @@
-import { paymentProviderDetailsSchema } from '@namefi-astra/db/types';
+import { paymentProviderDetailsSchema } from '@namefi-astra/common/payment-provider';
 import { z } from 'zod';
 import {
   createOrderInputSchema as baseCreateOrderInputSchema,

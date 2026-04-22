@@ -4,6 +4,7 @@ import {
   createOrderInputSchema as baseCreateOrderInputSchema,
   paymentMetadataSchema,
 } from '../order-input';
+import { paymentProviderDetailsSchema } from '../payment-provider';
 import type {
   CreatedOrder,
   OrderItemsForUser,
@@ -47,14 +48,6 @@ import type { RouterContract } from './trpc-contract';
 // `apps/backend/src/trpc/types.ts` so the contract can own them)
 // ---------------------------------------------------------------------------
 
-/**
- * Note: the original backend version of these schemas attached
- * `paymentProviderDetailsSchema` from `@namefi-astra/db/types` to validate
- * payment-provider details against the live DB constraint. We do that
- * exact same thing here — `@namefi-astra/db` is a hard dependency of common
- * already, so the import is identical to the backend version.
- */
-import { paymentProviderDetailsSchema } from '@namefi-astra/db/types';
 import {
   checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
