@@ -152,13 +152,18 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
     .input(usersContract.getImpersonationStatus.input)
     .output(usersContract.getImpersonationStatus.output)
     .query(async ({ ctx }) => {
-      const sleepMs = await defaultKeyv.get<number | string>(
-        'IMPERSONATION_SLEEP_MS',
-      );
-      if (sleepMs) {
-        await setTimeout(
-          typeof sleepMs === 'string' ? Number.parseInt(sleepMs) : sleepMs,
-          '',
+      try {
+        const sleepMsRaw = await defaultKeyv.get<number | string>(
+          'IMPERSONATION_SLEEP_MS',
+        );
+        const sleepMs = z.coerce.number().optional().parse(sleepMsRaw);
+        if (sleepMs) {
+          await setTimeout(sleepMs);
+        }
+      } catch (e) {
+        logger.trace(
+          { error: e },
+          'getImpersonationStatus: failed to get sleep ms',
         );
       }
       if (ctx.impersonation) {
