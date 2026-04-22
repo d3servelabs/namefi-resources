@@ -94,7 +94,7 @@ function getChainBadge(chainName?: DomainDocument['chainName']) {
 }
 
 const ACTION_BUTTON_CLASS =
-  'h-10 w-full min-w-0 justify-center rounded-full border border-border/45 bg-white/[0.04] px-3 text-[0.82rem] font-medium text-foreground shadow-none hover:border-border/65 hover:bg-white/[0.08] sm:text-sm';
+  'h-11 w-full min-w-0 justify-center rounded-[1rem] border border-white/[0.08] bg-white/[0.045] px-3.5 text-[0.82rem] font-medium text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:border-white/15 hover:bg-white/[0.075] sm:text-sm';
 
 function splitDomainForPbnOverlay(
   domainName: string,
@@ -241,7 +241,7 @@ function ParkOwnerBlock({
   const walletAvatarSrc = getWalletAvatarSrc(ownerAddress);
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl bg-background/50 px-4 py-3">
+    <div className="flex items-center gap-3 rounded-[1.15rem] border border-white/[0.05] bg-white/[0.035] px-3.5 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">
       <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/25">
         {walletAvatarSrc ? (
           // biome-ignore lint/performance/noImgElement: wallet avatar lib returns data URI
@@ -295,7 +295,7 @@ function ParkOwnerBlock({
           </span>
         )}
       </div>
-      <span className="shrink-0 rounded-full bg-white/[0.06] px-3 py-1 text-xs font-medium text-muted-foreground">
+      <span className="shrink-0 rounded-full bg-white/[0.06] px-2.5 py-1 text-[0.72rem] font-medium text-muted-foreground">
         {domainsCountByOwner.toLocaleString()}{' '}
         {domainsCountByOwner === 1 ? 'domain' : 'domains'}
       </span>
@@ -323,7 +323,7 @@ function ParkArtworkPreview({
   const chainBadge = getChainBadge(chainName);
   const expiry = formatExpiry(expiration);
   const expiryBadgeClassName =
-    'absolute bottom-4 right-4 z-[4] inline-flex items-center gap-1.5 rounded-[calc(var(--radius)+1px)] bg-black/72 px-2 py-1.5 ring-1 ring-white/20 backdrop-blur';
+    'absolute bottom-4 right-4 z-[4] inline-flex items-center gap-1.5 rounded-[0.9rem] bg-black/72 px-2 py-1.5 ring-1 ring-white/20 backdrop-blur';
   const expiryBadgeContent = (
     <>
       {chainBadge ? (
@@ -348,8 +348,8 @@ function ParkArtworkPreview({
   );
 
   return (
-    <div className="park-nft-asset-shell rounded-[1.5rem] p-[1px]">
-      <div className="relative aspect-square w-full overflow-hidden rounded-[calc(1.5rem-1px)] bg-black">
+    <div className="park-nft-asset-shell rounded-[1.3rem] p-[1px]">
+      <div className="relative aspect-square w-full overflow-hidden rounded-[calc(1.3rem-1px)] bg-black">
         {pbnApex ? (
           <ParkPbnArtworkContent domainName={domainName} pbnApex={pbnApex} />
         ) : (
@@ -430,16 +430,16 @@ export function ParkNftCard({
   return (
     <div
       className={cn(
-        'group relative mx-auto w-full max-w-[27.5rem] overflow-hidden rounded-[1.55rem] border',
+        'group relative mx-auto w-full max-w-[27.5rem] overflow-hidden rounded-[1.625rem] border',
         pbnApex
           ? 'border-brand-primary/40 bg-background/74'
           : 'border-border/55 bg-background/70 shadow-[0px_34px_78px_-58px_rgba(0,0,0,0.88)]',
       )}
       style={cardShellStyle}
     >
-      <Card className="relative w-full overflow-hidden !rounded-[1.55rem] border-0 bg-background/85 shadow-none">
-        <div className="pointer-events-none absolute inset-x-4 top-4 h-44 rounded-full bg-gradient-to-b from-brand-primary/20 via-transparent to-transparent blur-3xl" />
-        <CardHeader className="relative space-y-5 pb-3">
+      <Card className="relative w-full gap-0 overflow-hidden !rounded-[1.55rem] border-0 bg-background/86 p-0 shadow-none">
+        <div className="pointer-events-none absolute inset-x-4 top-4 h-44 rounded-full bg-gradient-to-b from-brand-primary/18 via-transparent to-transparent blur-3xl" />
+        <CardHeader className="relative rounded-none px-4 pb-0 pt-4 sm:px-5 sm:pt-5">
           <ParkOwnerBlock
             ownerAddress={owner}
             ownerDisplay={ownerDisplay}
@@ -447,7 +447,7 @@ export function ParkNftCard({
             domainsCountByOwner={domainsCountByOwner}
           />
         </CardHeader>
-        <CardContent className="relative space-y-5">
+        <CardContent className="relative space-y-5 px-4 pb-4 pt-5 sm:px-5 sm:pb-5">
           <ParkArtworkPreview
             primaryImage={primaryImage}
             domainName={domainName}
@@ -492,7 +492,7 @@ export function ParkNftCard({
               domainName={domainName}
               shareTarget={shareTarget}
               fullWidth={true}
-              className="h-10"
+              className="h-11"
               buttonClassName={ACTION_BUTTON_CLASS}
             />
           </div>

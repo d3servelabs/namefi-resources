@@ -176,7 +176,7 @@ export function ParkShareMenu({
       {isOpen && typeof document !== 'undefined'
         ? createPortal(
             <Card
-              className="z-[140] border-border/60 bg-background/95 p-1.5 shadow-2xl backdrop-blur"
+              className="z-[140] gap-1 border-border/60 bg-background/95 p-1.5 shadow-2xl backdrop-blur"
               ref={menuPanelRef}
               style={menuStyle}
             >
