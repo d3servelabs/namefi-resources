@@ -34,5 +34,5 @@ export function getMlsHandlePath(handle: string | null): string | null {
     return null;
   }
 
-  return `/mls/feed/${encodeURIComponent(slug)}`;
+  return `/feed/${encodeURIComponent(slug)}`;
 }

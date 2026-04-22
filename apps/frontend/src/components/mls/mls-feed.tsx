@@ -78,7 +78,7 @@ export function MlsFeed() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              Domains For Sale On Twitter
+              Namefi Feed
             </h1>
           </div>
           <div className="flex flex-wrap items-center gap-2">

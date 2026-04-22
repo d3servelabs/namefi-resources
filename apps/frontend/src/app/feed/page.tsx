@@ -5,7 +5,7 @@ import { MLS_FEED_RSS_PATH } from '@/lib/mls/feed';
 const title = 'Domains For Sale On Twitter | Namefi MLS Feed';
 const description =
   'Browse a live feed that aggregates domains listed for sale on Twitter, with prices, seller handles, and source tweets.';
-const canonicalPath = '/mls/feed';
+const canonicalPath = '/feed';
 const openGraphImagePath = '/assets/mls/opengraph-image.png';
 
 export const metadata: Metadata = {

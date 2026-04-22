@@ -148,7 +148,7 @@ function MlsHandleHeader({
     <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
       <div className="space-y-3">
         <Link
-          href="/mls/feed"
+          href="/feed"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />

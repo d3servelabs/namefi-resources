@@ -168,7 +168,8 @@ app.route('/log-level', logLevelRouter);
 app.route('/client-events', browserLogsProxyRouter);
 app.route('x402', x402Router);
 app.route('mpp', mppRouter);
-app.route('mls/feed/rss.xml', mlsRssProxyRouter);
+app.route('feed/rss.xml', mlsRssProxyRouter);
+app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
 app.route('llms.txt', llmsTxtRouter);
 
 app.get('/configfi', (c) => {

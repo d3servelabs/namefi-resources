@@ -141,6 +141,26 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/mls',
+        destination: '/feed',
+        permanent: true,
+      },
+      {
+        source: '/mls/feed/rss.xml',
+        destination: `${appConfig.BACKEND_URL}/feed/rss.xml`,
+        permanent: true,
+      },
+      {
+        source: '/mls/feed',
+        destination: '/feed',
+        permanent: true,
+      },
+      {
+        source: '/mls/feed/:path*',
+        destination: '/feed/:path*',
+        permanent: true,
+      },
+      {
         source: '/b/:path*',
         destination: '/r/:path*',
         permanent: true,

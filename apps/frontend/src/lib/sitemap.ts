@@ -4,7 +4,7 @@ import { config } from '@/lib/env';
 const PUBLIC_STATIC_ROUTES = [
   { path: '/', priority: 1, changeFrequency: 'daily' },
   { path: '/hunt', priority: 0.9, changeFrequency: 'daily' },
-  { path: '/mls/feed', priority: 0.8, changeFrequency: 'daily' },
+  { path: '/feed', priority: 0.8, changeFrequency: 'daily' },
   { path: '/tlds', priority: 0.8, changeFrequency: 'weekly' },
   { path: '/newsletter', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/education', priority: 0.5, changeFrequency: 'monthly' },

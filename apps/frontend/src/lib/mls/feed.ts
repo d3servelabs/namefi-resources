@@ -77,7 +77,7 @@ function buildMlsFeedRssUrl() {
     '',
   );
 
-  backendUrl.pathname = `${normalizedPath}/mls/feed/rss.xml`;
+  backendUrl.pathname = `${normalizedPath}/feed/rss.xml`;
 
   return backendUrl.toString();
 }
