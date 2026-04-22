@@ -3,7 +3,7 @@
  * Used in dev/local environments to avoid running a separate Ponder instance.
  */
 
-import { db as database } from '@namefi-astra/db';
+import { db as database, type DB } from '@namefi-astra/db';
 import {
   managedNamefiNftTable,
   managedBurnedNamefiNftLogTable,
@@ -81,15 +81,23 @@ export async function getLastSyncCheckpoint(
   return BigInt(result[0].lastSyncedBlock);
 }
 
+type DbExecutor = DB | Parameters<Parameters<DB['transaction']>[0]>[0];
+
 /**
- * Update the sync checkpoint for a table
+ * Update the sync checkpoint for a table.
+ *
+ * MUST be executed inside the same transaction as the row inserts for the
+ * given table. If the checkpoint advances while inserts roll back (or vice
+ * versa), subsequent runs will skip unsynced blocks and the managed tables
+ * will silently fall behind the checkpoint.
  */
 async function updateSyncCheckpoint(
+  tx: DbExecutor,
   tableName: PonderTableName,
   lastSyncedBlock: bigint,
   recordsSynced: number,
 ): Promise<void> {
-  await database
+  await tx
     .insert(syncCheckpointsTable)
     .values({
       tableName,
@@ -157,10 +165,17 @@ export async function syncNamefiNftsFromPonder(
       syncedAt: new Date(),
     }));
 
-    let syncedCount = 0;
-    const batches = splitEvery(BATCH_SIZE, transformedRecords);
+    // Compute the max block from the fetched records before the write so
+    // the checkpoint update can live inside the same transaction as the inserts.
+    const maxBlock = records.reduce(
+      (max: bigint, r: PonderNamefiNft) =>
+        BigInt(r.last_updated_block) > max ? BigInt(r.last_updated_block) : max,
+      sinceBlock ?? 0n,
+    );
 
-    await database.transaction(async (tx) => {
+    const batches = splitEvery(BATCH_SIZE, transformedRecords);
+    const syncedCount = await database.transaction(async (tx) => {
+      let count = 0;
       for (const batch of batches) {
         const result = await tx
           .insert(managedNamefiNftTable)
@@ -182,19 +197,11 @@ export async function syncNamefiNftsFromPonder(
               syncedAt: sql.raw('EXCLUDED.synced_at'),
             },
           });
-        syncedCount += result.rowCount ?? 0;
+        count += result.rowCount ?? 0;
       }
+      await updateSyncCheckpoint(tx, tableName, maxBlock, count);
+      return count;
     });
-
-    // Get the max block from synced records
-    const maxBlock = records.reduce(
-      (max: bigint, r: PonderNamefiNft) =>
-        BigInt(r.last_updated_block) > max ? BigInt(r.last_updated_block) : max,
-      sinceBlock ?? 0n,
-    );
-
-    // Update checkpoint
-    await updateSyncCheckpoint(tableName, maxBlock, syncedCount);
 
     logger.info(
       { recordsFetched: records.length, recordsSynced: syncedCount, maxBlock },
@@ -268,26 +275,25 @@ export async function syncBurnedNftLogsFromPonder(
       syncedAt: new Date(),
     }));
 
-    let syncedCount = 0;
-    const batches = splitEvery(BATCH_SIZE, transformedRecords);
-
-    await database.transaction(async (tx) => {
-      for (const batch of batches) {
-        const result = await tx
-          .insert(managedBurnedNamefiNftLogTable)
-          .values(batch)
-          .onConflictDoNothing();
-        syncedCount += result.rowCount ?? 0;
-      }
-    });
-
     const maxBlock = records.reduce(
       (max: bigint, r: PonderBurnedNamefiNftLog) =>
         BigInt(r.burned_block) > max ? BigInt(r.burned_block) : max,
       sinceBlock ?? 0n,
     );
 
-    await updateSyncCheckpoint(tableName, maxBlock, syncedCount);
+    const batches = splitEvery(BATCH_SIZE, transformedRecords);
+    const syncedCount = await database.transaction(async (tx) => {
+      let count = 0;
+      for (const batch of batches) {
+        const result = await tx
+          .insert(managedBurnedNamefiNftLogTable)
+          .values(batch)
+          .onConflictDoNothing();
+        count += result.rowCount ?? 0;
+      }
+      await updateSyncCheckpoint(tx, tableName, maxBlock, count);
+      return count;
+    });
 
     logger.info(
       { recordsFetched: records.length, recordsSynced: syncedCount, maxBlock },
@@ -359,26 +365,25 @@ export async function syncTransferLogsFromPonder(
       syncedAt: new Date(),
     }));
 
-    let syncedCount = 0;
-    const batches = splitEvery(BATCH_SIZE, transformedRecords);
-
-    await database.transaction(async (tx) => {
-      for (const batch of batches) {
-        const result = await tx
-          .insert(managedTransferLogTable)
-          .values(batch)
-          .onConflictDoNothing();
-        syncedCount += result.rowCount ?? 0;
-      }
-    });
-
     const maxBlock = records.reduce(
       (max: bigint, r: PonderTransferLog) =>
         BigInt(r.block_number) > max ? BigInt(r.block_number) : max,
       sinceBlock ?? 0n,
     );
 
-    await updateSyncCheckpoint(tableName, maxBlock, syncedCount);
+    const batches = splitEvery(BATCH_SIZE, transformedRecords);
+    const syncedCount = await database.transaction(async (tx) => {
+      let count = 0;
+      for (const batch of batches) {
+        const result = await tx
+          .insert(managedTransferLogTable)
+          .values(batch)
+          .onConflictDoNothing();
+        count += result.rowCount ?? 0;
+      }
+      await updateSyncCheckpoint(tx, tableName, maxBlock, count);
+      return count;
+    });
 
     logger.info(
       { recordsFetched: records.length, recordsSynced: syncedCount, maxBlock },
@@ -454,26 +459,25 @@ export async function syncExpirationChangeLogsFromPonder(
       syncedAt: new Date(),
     }));
 
-    let syncedCount = 0;
-    const batches = splitEvery(BATCH_SIZE, transformedRecords);
-
-    await database.transaction(async (tx) => {
-      for (const batch of batches) {
-        const result = await tx
-          .insert(managedExpirationChangeLogTable)
-          .values(batch)
-          .onConflictDoNothing();
-        syncedCount += result.rowCount ?? 0;
-      }
-    });
-
     const maxBlock = records.reduce(
       (max: bigint, r: PonderExpirationChangeLog) =>
         BigInt(r.block_number) > max ? BigInt(r.block_number) : max,
       sinceBlock ?? 0n,
     );
 
-    await updateSyncCheckpoint(tableName, maxBlock, syncedCount);
+    const batches = splitEvery(BATCH_SIZE, transformedRecords);
+    const syncedCount = await database.transaction(async (tx) => {
+      let count = 0;
+      for (const batch of batches) {
+        const result = await tx
+          .insert(managedExpirationChangeLogTable)
+          .values(batch)
+          .onConflictDoNothing();
+        count += result.rowCount ?? 0;
+      }
+      await updateSyncCheckpoint(tx, tableName, maxBlock, count);
+      return count;
+    });
 
     logger.info(
       { recordsFetched: records.length, recordsSynced: syncedCount, maxBlock },
