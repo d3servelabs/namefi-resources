@@ -1,3 +1,11 @@
+/**
+ * Generic chain combinators for DNS request links. These primitives are
+ * pure plumbing — they never touch `RCODE`, `Answer`, or `Authority` and
+ * therefore have no tree-semantic role on their own. See
+ * `../TREE-SEMANTICS.md` for the authoritative explanation of how the
+ * links they compose shape the response.
+ */
+
 import type {
   DnsRequestContext,
   DnsRequestLink,

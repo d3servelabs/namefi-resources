@@ -406,6 +406,37 @@ describe('createDnsRequestHandlerV2_1 (relay chain integration)', () => {
     expect(preferences).toHaveBeenCalledTimes(1);
   });
 
+  it('returns NODATA with a relay-zone Authority SOA for ENT (records only at descendants)', async () => {
+    // Resolver signals "node exists as ENT" by returning RCODE=0 empty Answer.
+    // Per RFC 2308 §3 we still attach the relay-zone SOA so resolvers can
+    // negative-cache the lack of records of this type at this node.
+    const handler = createDnsRequestHandlerV2_1({
+      dependencies: {
+        getAnswerFromPreferences: vi.fn().mockResolvedValue(null),
+        getAnswerFromDnsRecords: vi
+          .fn()
+          .mockResolvedValue({ RCODE: 0, Answer: [] }),
+        getAnswerFromMockTable: vi.fn().mockResolvedValue(null),
+      },
+    });
+
+    const response = await handler.handle({
+      rawName: 'sami.nfi.gtld.namefi.dev.',
+      rawType: 1,
+      recordName: 'sami.nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+      recordType: 'A',
+      wildcard: false,
+    });
+
+    expect(response.RCODE).toBe(0);
+    expect(response.Answer).toEqual([]);
+    expect(response.Authority).toHaveLength(1);
+    expect(response.Authority?.[0]).toMatchObject({
+      name: 'gtld.namefi.dev',
+      type: 6, // SOA
+    });
+  });
+
   it('is a no-op in production regardless of host', async () => {
     process.env.ENVIRONMENT = 'production';
     const dnsRecords = vi.fn(async (recordName) => {

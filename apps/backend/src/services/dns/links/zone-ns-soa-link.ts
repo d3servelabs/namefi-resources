@@ -40,6 +40,31 @@ export interface CreateDefaultDnsRequestHandlerOptions {
   useMockDnsTable?: boolean;
 }
 
+/**
+ * Owns NS/SOA and negative-response Authority for Namefi-authoritative
+ * (NFT / powered-by-namefi) zones — the mirror of
+ * `relay-zone-authority-link.ts` but for real zones rather than the
+ * synthetic relay zone.
+ *
+ * The link calls `next()` first so the resolver chain can answer, then on
+ * unwind:
+ *
+ * 1. If a non-empty `Answer` came back, pass it through.
+ * 2. If downstream set a non-0/non-3 RCODE (e.g. SERVFAIL), pass it
+ *    through.
+ * 3. Otherwise locate the authoritative zone via
+ *    `getZoneNsAndSoaFromRecord` and:
+ *    - For NS/SOA queries at the zone apex, synthesize the Answer.
+ *    - For everything else, attach the zone SOA in Authority so that
+ *      both NXDOMAIN (RCODE=3) and NODATA (RCODE=0, empty Answer)
+ *      responses can be negative-cached per RFC 2308 §3.
+ *
+ * Contributes to the tree-semantic response described in
+ * `../TREE-SEMANTICS.md`. The tree-level NXDOMAIN-vs-NODATA decision is
+ * made upstream by `getAnswerForDnsQueryFromDnsRecords` in `./helpers.ts`;
+ * this link only dresses the resulting response with the correct
+ * Authority section.
+ */
 export function createZoneNsAndSoaLink(): DnsRequestLink {
   return async (context, next) => {
     const { recordName, recordType } = context.question;
@@ -85,11 +110,14 @@ export function createZoneNsAndSoaLink(): DnsRequestLink {
         RCODE: 0,
       };
     }
+
+    // Attach zone SOA in Authority for every empty-Answer negative
+    // response (NXDOMAIN *and* NODATA/ENT) — RFC 2308 §3.
     const Rcode = result?.RCODE ?? 3;
     return {
       RCODE: Rcode,
       Answer: [],
-      Authority: soaRecords && Rcode === 3 ? soaRecords : [],
+      Authority: soaRecords ?? [],
     };
   };
 }

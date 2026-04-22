@@ -90,7 +90,10 @@ describe('createRelayZoneAuthorityLink', () => {
       });
     });
 
-    it('apex A query delegates to next (no NS/SOA short-circuit)', async () => {
+    it('apex A with downstream NXDOMAIN is downgraded to NODATA (RFC 1034 §4.3.2 / RFC 8020)', async () => {
+      // The zone origin always exists as a tree node in an authoritative
+      // zone. A downstream NXDOMAIN at the apex would illegally cut the
+      // subtree that the relay serves for descendants.
       const next = vi.fn().mockResolvedValue({ RCODE: 3, Answer: [] });
       const link = createRelayZoneAuthorityLink();
       const context = createContext({
@@ -101,8 +104,51 @@ describe('createRelayZoneAuthorityLink', () => {
       const result = await link(context, next);
 
       expect(next).toHaveBeenCalledTimes(1);
-      expect(result.RCODE).toBe(3);
+      expect(result.RCODE).toBe(0);
+      expect(result.Answer).toEqual([]);
       expect(result.Authority).toHaveLength(1);
+      expect(result.Authority?.[0]).toMatchObject({
+        name: RELAY_ZONE,
+        type: 6, // SOA
+      });
+    });
+
+    it('apex A with downstream NODATA stays NODATA with Authority SOA', async () => {
+      const next = vi.fn().mockResolvedValue({ RCODE: 0, Answer: [] });
+      const link = createRelayZoneAuthorityLink();
+      const context = createContext({
+        recordName: RELAY_ZONE as DnsQuestion['recordName'],
+        recordType: 'A',
+      });
+
+      const result = await link(context, next);
+
+      expect(result.RCODE).toBe(0);
+      expect(result.Answer).toEqual([]);
+      expect(result.Authority).toHaveLength(1);
+    });
+
+    it('apex A with answers returned by downstream passes through unchanged', async () => {
+      const apexAnswer = {
+        name: RELAY_ZONE,
+        type: 1,
+        TTL: 60,
+        data: '203.0.113.5',
+      };
+      const next = vi
+        .fn()
+        .mockResolvedValue({ RCODE: 0, Answer: [apexAnswer] });
+      const link = createRelayZoneAuthorityLink();
+      const context = createContext({
+        recordName: RELAY_ZONE as DnsQuestion['recordName'],
+        recordType: 'A',
+      });
+
+      const result = await link(context, next);
+
+      expect(result.RCODE).toBe(0);
+      expect(result.Answer).toEqual([apexAnswer]);
+      expect(result.Authority).toBeUndefined();
     });
   });
 
@@ -126,7 +172,7 @@ describe('createRelayZoneAuthorityLink', () => {
       });
     });
 
-    it('passes NODATA (RCODE=0 with empty Answer) through without adding Authority', async () => {
+    it('injects relay-zone SOA in Authority on NODATA (RCODE=0, empty Answer) per RFC 2308', async () => {
       const next = vi.fn().mockResolvedValue({ RCODE: 0, Answer: [] });
       const link = createRelayZoneAuthorityLink();
       const context = createContext({
@@ -138,7 +184,11 @@ describe('createRelayZoneAuthorityLink', () => {
 
       expect(result.RCODE).toBe(0);
       expect(result.Answer).toEqual([]);
-      expect(result.Authority).toBeUndefined();
+      expect(result.Authority).toHaveLength(1);
+      expect(result.Authority?.[0]).toMatchObject({
+        name: RELAY_ZONE,
+        type: 6, // SOA
+      });
     });
 
     it('does not overwrite existing non-NXDOMAIN RCODEs (e.g. SERVFAIL)', async () => {

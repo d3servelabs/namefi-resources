@@ -1,3 +1,12 @@
+/**
+ * Label rewrite for queries under the synthetic relay zone — strips
+ * `<unofficialTld>.<relayZone>` so downstream resolvers can answer against
+ * the underlying logical domain, then rewrites Answer/Authority `name`
+ * fields back on unwind. Does **not** change RCODE: tree-semantic decisions
+ * (NXDOMAIN vs NODATA) live in `./helpers.ts`, and Authority SOA injection
+ * lives in `./relay-zone-authority-link.ts`. See `../TREE-SEMANTICS.md`.
+ */
+
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { getUnofficialTlds } from '@namefi-astra/utils/parse-domain-name';
 import { config } from '#lib/env';
