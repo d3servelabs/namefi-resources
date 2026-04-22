@@ -496,6 +496,33 @@ export const autoRenewalRouter = createContractTRPCRouter<
             });
           }
 
+          // Invariant check: if the workflow output suggests deferred
+          // state (non-empty skipped list or positive shortfall) we
+          // expect at least one SKIPPED_INSUFFICIENT_FUNDS row to have
+          // landed in `domains`. Log a structured warning if the two
+          // disagree — makes a silent hole observable next time it
+          // surfaces.
+          const expectsDeferredRows =
+            (r.domainsSkippedDueToInsufficientFunds?.length ?? 0) > 0 ||
+            (typeof r.shortfallInUsdCents === 'number' &&
+              r.shortfallInUsdCents > 0);
+          const emittedDeferredRows = domains.filter(
+            (d) => d.status === 'SKIPPED_INSUFFICIENT_FUNDS',
+          ).length;
+          if (expectsDeferredRows && emittedDeferredRows === 0) {
+            autoRenewalLogger.warn(
+              {
+                workflowId,
+                userId: success.userId,
+                shortfallInUsdCents: r.shortfallInUsdCents,
+                skippedLen: r.domainsSkippedDueToInsufficientFunds?.length ?? 0,
+                couldBeRenewedLen: r.domainsThatCouldBeRenewed?.length ?? 0,
+                paymentStatus: r.paymentStatus,
+              },
+              'Deferred rows expected but none emitted in admin userResults.domains',
+            );
+          }
+
           userResults.push({
             userId: success.userId,
             userEmail: r.userEmail,
