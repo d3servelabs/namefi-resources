@@ -186,6 +186,25 @@ const workflowListOutputSchema = z.array(
   }>(() => true),
 );
 
+/**
+ * Run configuration surfaced on the admin detail page — derived from
+ * Temporal's describe() search attributes and fetchHistory() first
+ * event. All fields are best-effort; a malformed history returns
+ * `{ runType: 'unknown' }` rather than failing the endpoint.
+ */
+type RunConfigLike = {
+  runType: 'scheduled' | 'manual' | 'unknown';
+  scheduleId?: string;
+  scheduledStartTime?: Date;
+  input?: {
+    dryRun?: boolean;
+    forceSendReport?: boolean;
+    allowExpired?: boolean;
+    ownersIdFilter?: string[];
+    overrideRecipientEmail?: string;
+  };
+};
+
 const workflowDetailOutputSchema = z.custom<
   | {
       exists: true;
@@ -196,6 +215,7 @@ const workflowDetailOutputSchema = z.custom<
       runId: string;
       historyLength: number | null;
       temporal: { apiUrl: string; namespace: string };
+      runConfig?: RunConfigLike;
     }
   | {
       exists: true;
@@ -206,6 +226,7 @@ const workflowDetailOutputSchema = z.custom<
       runId: string;
       historyLength: number | null;
       temporal: { apiUrl: string; namespace: string };
+      runConfig?: RunConfigLike;
       metrics: AutoRenewMetricsLike;
       userResults: UserResultForAdminLike[];
     }

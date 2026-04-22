@@ -1,4 +1,5 @@
 import { inArray } from 'drizzle-orm';
+import { defaultPayloadConverter } from '@temporalio/common';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
 import { adminProcedureWithPermissions } from '../../base';
@@ -178,6 +179,10 @@ export const autoRenewalRouter = createContractTRPCRouter<
         const handle = temporalClient.workflow.getHandle(workflowId, runId);
         const desc = await handle.describe();
 
+        // Best-effort run-type + input-arg extraction. Always returns
+        // something (falls back to `{ runType: 'unknown' }` on failure).
+        const runConfig = await extractRunConfig(handle, desc);
+
         const base = {
           exists: true as const,
           workflowId: desc.workflowId,
@@ -190,6 +195,7 @@ export const autoRenewalRouter = createContractTRPCRouter<
             apiUrl: config.TEMPORAL_API_URL,
             namespace: config.TEMPORAL_NAMESPACE,
           },
+          runConfig,
         };
 
         // If the workflow is still running, return basic info only
@@ -572,6 +578,116 @@ export const autoRenewalRouter = createContractTRPCRouter<
       }
     }),
 });
+
+// ─── Run-config extraction ──────────────────────────────────────
+
+type RunConfig = {
+  runType: 'scheduled' | 'manual' | 'unknown';
+  scheduleId?: string;
+  scheduledStartTime?: Date;
+  input?: {
+    dryRun?: boolean;
+    forceSendReport?: boolean;
+    allowExpired?: boolean;
+    ownersIdFilter?: string[];
+    overrideRecipientEmail?: string;
+  };
+};
+
+/**
+ * Extract run type + input args from a Temporal workflow handle.
+ *
+ * - `runType` comes from the `TemporalScheduledById` search attribute
+ *   (Temporal auto-populates it for schedule-triggered runs).
+ * - `input` comes from the first history event's payload, decoded via
+ *   the default payload converter (same one `handle.result()` uses).
+ *
+ * Best-effort: any failure returns `{ runType: 'unknown' }` rather than
+ * throwing, so a malformed/legacy history doesn't 500 the endpoint.
+ */
+async function extractRunConfig(
+  handle: Awaited<ReturnType<typeof temporalClient.workflow.getHandle>>,
+  desc: Awaited<ReturnType<typeof handle.describe>>,
+): Promise<RunConfig> {
+  const runConfig: RunConfig = { runType: 'unknown' };
+
+  try {
+    const searchAttrs = (desc.searchAttributes ?? {}) as Record<
+      string,
+      unknown
+    >;
+    const scheduleIdAttr = searchAttrs.TemporalScheduledById;
+    const scheduledStartTimeAttr = searchAttrs.TemporalScheduledStartTime;
+
+    if (scheduleIdAttr) {
+      runConfig.runType = 'scheduled';
+      const first = Array.isArray(scheduleIdAttr)
+        ? scheduleIdAttr[0]
+        : scheduleIdAttr;
+      if (typeof first === 'string') runConfig.scheduleId = first;
+    } else {
+      runConfig.runType = 'manual';
+    }
+
+    if (scheduledStartTimeAttr) {
+      const first = Array.isArray(scheduledStartTimeAttr)
+        ? scheduledStartTimeAttr[0]
+        : scheduledStartTimeAttr;
+      const parsed =
+        first instanceof Date
+          ? first
+          : typeof first === 'string' || typeof first === 'number'
+            ? new Date(first)
+            : null;
+      if (parsed && !Number.isNaN(parsed.getTime())) {
+        runConfig.scheduledStartTime = parsed;
+      }
+    }
+  } catch (error) {
+    autoRenewalLogger.debug(
+      { workflowId: desc.workflowId, error },
+      'Failed to read searchAttributes for runConfig',
+    );
+  }
+
+  try {
+    const history = await handle.fetchHistory();
+    const startedEvent = history.events?.find(
+      (e) => e.workflowExecutionStartedEventAttributes != null,
+    );
+    const payloads =
+      startedEvent?.workflowExecutionStartedEventAttributes?.input?.payloads;
+    if (payloads && payloads.length > 0) {
+      // Workflow takes a single options object; decode the first payload.
+      const decoded = defaultPayloadConverter.fromPayload<unknown>(payloads[0]);
+      if (decoded && typeof decoded === 'object') {
+        const raw = decoded as Record<string, unknown>;
+        const input: RunConfig['input'] = {};
+        if (typeof raw.dryRun === 'boolean') input.dryRun = raw.dryRun;
+        if (typeof raw.forceSendReport === 'boolean')
+          input.forceSendReport = raw.forceSendReport;
+        if (typeof raw.allowExpired === 'boolean')
+          input.allowExpired = raw.allowExpired;
+        if (Array.isArray(raw.ownersIdFilter)) {
+          input.ownersIdFilter = raw.ownersIdFilter.filter(
+            (x): x is string => typeof x === 'string',
+          );
+        }
+        if (typeof raw.overrideRecipientEmail === 'string') {
+          input.overrideRecipientEmail = raw.overrideRecipientEmail;
+        }
+        if (Object.keys(input).length > 0) runConfig.input = input;
+      }
+    }
+  } catch (error) {
+    autoRenewalLogger.debug(
+      { workflowId: desc.workflowId, error },
+      'Failed to decode workflow input for runConfig',
+    );
+  }
+
+  return runConfig;
+}
 
 // ─── Internal types ──────────────────────────────────────────────
 

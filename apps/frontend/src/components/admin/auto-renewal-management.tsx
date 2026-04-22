@@ -23,6 +23,9 @@ import {
   Globe,
   Clock,
   ArrowLeft,
+  Calendar,
+  Play,
+  Mail,
 } from 'lucide-react';
 import Link from 'next/link';
 import { PageShell } from '@/components/page-shell';
@@ -246,6 +249,152 @@ const LoadingSkeletons: FC = () => (
     <Skeleton className="h-[400px] rounded-lg" />
   </div>
 );
+
+// ─── Run Config Card ─────────────────────────────────────────────
+
+type RunConfigShape = {
+  runType: 'scheduled' | 'manual' | 'unknown';
+  scheduleId?: string;
+  scheduledStartTime?: Date | string | null;
+  input?: {
+    dryRun?: boolean;
+    forceSendReport?: boolean;
+    allowExpired?: boolean;
+    ownersIdFilter?: string[];
+    overrideRecipientEmail?: string;
+  };
+};
+
+function RunConfigCard({ runConfig }: { runConfig: RunConfigShape }) {
+  const { runType, scheduleId, scheduledStartTime, input } = runConfig;
+  const scheduledAt =
+    scheduledStartTime instanceof Date
+      ? scheduledStartTime
+      : scheduledStartTime
+        ? new Date(scheduledStartTime)
+        : null;
+
+  const runTypeBadge =
+    runType === 'scheduled' ? (
+      <Badge
+        variant="outline"
+        className="gap-1 border-blue-300/80 text-blue-300/80"
+      >
+        <Calendar className="w-3 h-3" />
+        Scheduled
+      </Badge>
+    ) : runType === 'manual' ? (
+      <Badge
+        variant="outline"
+        className="gap-1 border-muted-foreground/60 text-muted-foreground"
+      >
+        <Play className="w-3 h-3" />
+        Manual
+      </Badge>
+    ) : (
+      <Badge variant="secondary" className="text-xs">
+        Unknown
+      </Badge>
+    );
+
+  const ownersFilter = input?.ownersIdFilter ?? [];
+  const ownersSummary =
+    ownersFilter.length === 0
+      ? null
+      : ownersFilter.length <= 6
+        ? ownersFilter.join(', ')
+        : `${ownersFilter.slice(0, 6).join(', ')} +${ownersFilter.length - 6} more`;
+
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm">Run Configuration</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 text-xs">
+          <div>
+            <dt className="text-muted-foreground">Run Type</dt>
+            <dd className="font-medium mt-0.5">{runTypeBadge}</dd>
+          </div>
+          {scheduleId && (
+            <div>
+              <dt className="text-muted-foreground">Schedule ID</dt>
+              <dd className="font-mono text-[11px] mt-0.5 break-all">
+                {scheduleId}
+              </dd>
+            </div>
+          )}
+          {scheduledAt && !Number.isNaN(scheduledAt.getTime()) && (
+            <div>
+              <dt className="text-muted-foreground">Scheduled For</dt>
+              <dd className="font-medium mt-0.5">
+                {scheduledAt.toLocaleString()}
+              </dd>
+            </div>
+          )}
+          {typeof input?.dryRun === 'boolean' && (
+            <div>
+              <dt className="text-muted-foreground">dryRun</dt>
+              <dd className="font-medium mt-0.5">
+                {input.dryRun ? (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-amber-300/80 text-amber-300/80"
+                  >
+                    true
+                  </Badge>
+                ) : (
+                  <span className="text-muted-foreground">false</span>
+                )}
+              </dd>
+            </div>
+          )}
+          {typeof input?.forceSendReport === 'boolean' && (
+            <div>
+              <dt className="text-muted-foreground">forceSendReport</dt>
+              <dd className="font-medium mt-0.5">
+                {String(input.forceSendReport)}
+              </dd>
+            </div>
+          )}
+          {typeof input?.allowExpired === 'boolean' && (
+            <div>
+              <dt className="text-muted-foreground">allowExpired</dt>
+              <dd className="font-medium mt-0.5">
+                {String(input.allowExpired)}
+              </dd>
+            </div>
+          )}
+          {ownersSummary && (
+            <div className="sm:col-span-2">
+              <dt className="text-muted-foreground">
+                ownersIdFilter ({ownersFilter.length})
+              </dt>
+              <dd className="font-mono text-[11px] mt-0.5 break-all">
+                {ownersSummary}
+              </dd>
+            </div>
+          )}
+          {input?.overrideRecipientEmail && (
+            <div className="sm:col-span-2">
+              <dt className="text-muted-foreground">overrideRecipientEmail</dt>
+              <dd className="mt-0.5">
+                <Badge
+                  variant="outline"
+                  className="gap-1 text-xs border-amber-300/80 text-amber-300/80"
+                  title="User-facing emails for this run were redirected away from real users"
+                >
+                  <Mail className="w-3 h-3" />
+                  {input.overrideRecipientEmail}
+                </Badge>
+              </dd>
+            </div>
+          )}
+        </dl>
+      </CardContent>
+    </Card>
+  );
+}
 
 // ─── KPI Card ────────────────────────────────────────────────────
 
@@ -480,6 +629,11 @@ export default function AutoRenewalManagement({
             </dl>
           </CardContent>
         </Card>
+
+        {/* Run Configuration — runType + control params */}
+        {'runConfig' in data && data.runConfig && (
+          <RunConfigCard runConfig={data.runConfig} />
+        )}
 
         {/* KPI Cards */}
         {metrics && (
