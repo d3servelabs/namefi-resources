@@ -1,5 +1,6 @@
 import type { OriginConfigMap } from './types';
 import { originConfig as astraConfig } from '@/pbns/astra/config';
+import { originConfig as aaveConfig } from '@/pbns/aave/config';
 import { originConfig as zeroxCityConfig } from '@/pbns/0x-city/config';
 import { originConfig as tokenComConfig } from '@/pbns/token-com/config';
 import { originConfig as taylorCvConfig } from '@/pbns/cv/names/taylor';
@@ -20,6 +21,7 @@ import { originConfig as discountsTodayConfig } from '@/pbns/bespoke/domains/dis
 export const originConfig: OriginConfigMap = {
   firstParty: astraConfig,
   thirdParty: {
+    aave: aaveConfig,
     '0x.city': zeroxCityConfig,
     'token.com': tokenComConfig,
     'taylor.cv': taylorCvConfig,
