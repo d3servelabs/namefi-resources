@@ -24,6 +24,12 @@ import type { RouterContract } from './trpc-contract';
 const allowedChainsOutputSchema = ALLOWED_CHAINS_DETAILS_SCHEMA;
 
 // ---------------------------------------------------------------------------
+// unofficialTlds
+// ---------------------------------------------------------------------------
+
+const unofficialTldsOutputSchema = z.array(z.string());
+
+// ---------------------------------------------------------------------------
 // x402Payment
 // ---------------------------------------------------------------------------
 
@@ -62,6 +68,12 @@ export const configContract = createContract(
       type: 'query',
       input: z.void(),
       output: allowedChainsOutputSchema,
+    },
+
+    unofficialTlds: {
+      type: 'query',
+      input: z.void(),
+      output: unofficialTldsOutputSchema,
     },
 
     x402Payment: {

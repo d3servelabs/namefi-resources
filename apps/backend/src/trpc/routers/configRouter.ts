@@ -1,4 +1,5 @@
 import { configContract } from '@namefi-astra/common/contract/config-contract';
+import { getUnofficialTlds } from '@namefi-astra/utils/parse-domain-name';
 import {
   X402_MAX_TIMEOUT_SECONDS,
   X402_VALID_AFTER_LEEWAY_SECONDS,
@@ -15,6 +16,11 @@ export const configRouter = createContractTRPCRouter<typeof configContract>({
     .input(configContract.allowedChains.input)
     .output(configContract.allowedChains.output)
     .query(() => config.ALLOWED_CHAINS),
+
+  unofficialTlds: publicProcedure
+    .input(configContract.unofficialTlds.input)
+    .output(configContract.unofficialTlds.output)
+    .query(() => getUnofficialTlds()),
 
   x402Payment: publicProcedure
     .input(configContract.x402Payment.input)
