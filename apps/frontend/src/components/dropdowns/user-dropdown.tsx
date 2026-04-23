@@ -45,7 +45,9 @@ import {
   SparklesIcon,
   LayoutListIcon,
   Globe,
+  RefreshCwIcon,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import type { Route } from 'next';
 import Link from 'next/link';
 import React, {
@@ -81,7 +83,7 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
@@ -897,6 +899,7 @@ function AdminQuickAccessDialog({
               onNavigate={() => onOpenChange(false)}
             />
           ))}
+          <SyncPonderIndexQuickAccessCard onDone={() => onOpenChange(false)} />
         </div>
       </DialogContent>
     </Dialog>
@@ -937,6 +940,81 @@ function AdminQuickAccessCard({
         </CardContent>
       </Card>
     </Link>
+  );
+}
+
+const SYNC_PONDER_INDEX_SCHEDULE_ID = 'sync-ponder-index-schedule';
+
+function SyncPonderIndexQuickAccessCard({ onDone }: { onDone: () => void }) {
+  const trpc = useTRPC();
+  const { hasPermissions } = useHasPermissions(
+    [Permission.WRITE_SCHEDULES],
+    'every',
+  );
+
+  const submitScheduleMutation = useMutation(
+    trpc.admin.schedules.submitSchedule.mutationOptions(),
+  );
+  const triggerScheduleMutation = useMutation(
+    trpc.admin.schedules.triggerSchedule.mutationOptions(),
+  );
+
+  const isPending =
+    submitScheduleMutation.isPending || triggerScheduleMutation.isPending;
+
+  if (!hasPermissions) {
+    return null;
+  }
+
+  const handleClick = async () => {
+    const input = { scheduleId: SYNC_PONDER_INDEX_SCHEDULE_ID };
+    try {
+      await triggerScheduleMutation.mutateAsync(input);
+      toast.success('Ponder index sync triggered');
+      onDone();
+    } catch {
+      // Schedule may not be registered in Temporal yet; set it up then retry.
+      try {
+        await submitScheduleMutation.mutateAsync(input);
+        await triggerScheduleMutation.mutateAsync(input);
+        toast.success('Ponder index sync schedule created and triggered');
+        onDone();
+      } catch (error) {
+        toast.error('Failed to trigger Ponder index sync', {
+          description: error instanceof Error ? error.message : undefined,
+        });
+      }
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      className="group text-left disabled:opacity-60 disabled:cursor-not-allowed"
+      onClick={handleClick}
+      disabled={isPending}
+    >
+      <Card className="h-full border-border/60 transition-colors group-hover:bg-muted/40">
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl border border-border/60 bg-muted/40 p-2">
+              {isPending ? (
+                <Loader2Icon className="h-5 w-5 animate-spin" />
+              ) : (
+                <RefreshCwIcon className="h-5 w-5" />
+              )}
+            </div>
+            <CardTitle className="text-base">Sync Ponder Index</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>
+            Trigger the Ponder indexer sync now. Creates the schedule
+            automatically if it is not yet set up.
+          </CardDescription>
+        </CardContent>
+      </Card>
+    </button>
   );
 }
 
