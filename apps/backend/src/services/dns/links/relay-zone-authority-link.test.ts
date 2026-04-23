@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type {
   DnsQuestion,
   DnsRequestContext,
@@ -26,11 +26,70 @@ vi.mock('#lib/env', () => ({
   secrets: {},
 }));
 
-const { createRelayZoneAuthorityLink } = await import(
-  './relay-zone-authority-link'
-);
+const { createRelayZoneAuthorityLink, isUnofficialTldApexUnderRelay } =
+  await import('./relay-zone-authority-link');
 
 const RELAY_ZONE = 'gtld.namefi.dev';
+
+describe('isUnofficialTldApexUnderRelay', () => {
+  const tlds = ['nfi', 'nmfi'];
+
+  it('matches the unofficial-TLD apex under the relay zone', () => {
+    expect(
+      isUnofficialTldApexUnderRelay('nfi.gtld.namefi.dev', RELAY_ZONE, tlds),
+    ).toBe(true);
+    expect(
+      isUnofficialTldApexUnderRelay('nmfi.gtld.namefi.dev', RELAY_ZONE, tlds),
+    ).toBe(true);
+  });
+
+  it('is case-insensitive and tolerates a trailing dot', () => {
+    expect(
+      isUnofficialTldApexUnderRelay('NFI.gtld.namefi.dev.', RELAY_ZONE, tlds),
+    ).toBe(true);
+  });
+
+  it('rejects the relay-zone apex itself (not a TLD apex)', () => {
+    expect(
+      isUnofficialTldApexUnderRelay('gtld.namefi.dev', RELAY_ZONE, tlds),
+    ).toBe(false);
+  });
+
+  it('rejects labels that are not declared unofficial TLDs', () => {
+    expect(
+      isUnofficialTldApexUnderRelay('com.gtld.namefi.dev', RELAY_ZONE, tlds),
+    ).toBe(false);
+  });
+
+  it('rejects names deeper than one label above the zone', () => {
+    expect(
+      isUnofficialTldApexUnderRelay(
+        'sami.nfi.gtld.namefi.dev',
+        RELAY_ZONE,
+        tlds,
+      ),
+    ).toBe(false);
+  });
+
+  it('rejects names that do not end in the relay zone', () => {
+    expect(
+      isUnofficialTldApexUnderRelay('nfi.example.com', RELAY_ZONE, tlds),
+    ).toBe(false);
+    expect(isUnofficialTldApexUnderRelay('nfi', RELAY_ZONE, tlds)).toBe(false);
+  });
+
+  it('returns false for an empty TLD list', () => {
+    expect(
+      isUnofficialTldApexUnderRelay('nfi.gtld.namefi.dev', RELAY_ZONE, []),
+    ).toBe(false);
+  });
+
+  it('returns false for an empty relay zone', () => {
+    expect(isUnofficialTldApexUnderRelay('nfi.gtld.namefi.dev', '', tlds)).toBe(
+      false,
+    );
+  });
+});
 
 function createContext(question: Partial<DnsQuestion>): DnsRequestContext {
   return {
@@ -226,6 +285,76 @@ describe('createRelayZoneAuthorityLink', () => {
       expect(result.RCODE).toBe(0);
       expect(result.Answer).toEqual([answer]);
       expect(result.Authority).toBeUndefined();
+    });
+  });
+
+  describe('unofficial-TLD apex clamp', () => {
+    const originalTldsEnv = process.env.NAMEFI_UNOFFICIAL_TLDS;
+
+    beforeEach(() => {
+      process.env.NAMEFI_UNOFFICIAL_TLDS = JSON.stringify(['nfi']);
+    });
+
+    afterEach(() => {
+      if (originalTldsEnv === undefined) {
+        delete process.env.NAMEFI_UNOFFICIAL_TLDS;
+      } else {
+        process.env.NAMEFI_UNOFFICIAL_TLDS = originalTldsEnv;
+      }
+    });
+
+    it('clamps a downstream NXDOMAIN at the unofficial-TLD apex to NODATA with Authority SOA', async () => {
+      // Scenario: relay strips `nfi.gtld.namefi.dev` → `nfi`, a deeper
+      // link (e.g. zone-ns-soa) returns `{ RCODE: 3 }` because it has
+      // no authoritative zone for a bare TLD. The relay zone owns the
+      // `nfi` namespace (it's in NAMEFI_UNOFFICIAL_TLDS), so the apex
+      // node exists as an ENT by construction.
+      const next = vi.fn().mockResolvedValue({ RCODE: 3, Answer: [] });
+      const link = createRelayZoneAuthorityLink();
+      const context = createContext({
+        recordName: 'nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+        recordType: 'A',
+      });
+
+      const result = await link(context, next);
+
+      expect(result.RCODE).toBe(0);
+      expect(result.Answer).toEqual([]);
+      expect(result.Authority).toHaveLength(1);
+      expect(result.Authority?.[0]).toMatchObject({
+        name: RELAY_ZONE,
+        type: 6, // SOA
+      });
+    });
+
+    it('leaves NXDOMAIN intact on a non-TLD subdomain under the relay zone', async () => {
+      // `sami.nfi.gtld.namefi.dev` with no stored records → NXDOMAIN is
+      // the legit answer; the TLD-apex ENT rule doesn't apply two
+      // labels deep.
+      const next = vi.fn().mockResolvedValue({ RCODE: 3, Answer: [] });
+      const link = createRelayZoneAuthorityLink();
+      const context = createContext({
+        recordName: 'sami.nfi.gtld.namefi.dev' as DnsQuestion['recordName'],
+        recordType: 'A',
+      });
+
+      const result = await link(context, next);
+
+      expect(result.RCODE).toBe(3);
+      expect(result.Authority).toHaveLength(1);
+    });
+
+    it('does not clamp a non-declared TLD apex (label absent from NAMEFI_UNOFFICIAL_TLDS)', async () => {
+      const next = vi.fn().mockResolvedValue({ RCODE: 3, Answer: [] });
+      const link = createRelayZoneAuthorityLink();
+      const context = createContext({
+        recordName: 'zzz.gtld.namefi.dev' as DnsQuestion['recordName'],
+        recordType: 'A',
+      });
+
+      const result = await link(context, next);
+
+      expect(result.RCODE).toBe(3);
     });
   });
 });
