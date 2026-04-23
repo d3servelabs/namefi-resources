@@ -7,6 +7,11 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import type { GetProjectDomainResponseBody } from '@vercel/sdk/models/getprojectdomainop';
 import type { AddProjectDomainResponseBody } from '@vercel/sdk/models/addprojectdomainop';
 import type { GetDomainConfigResponseBody } from '@vercel/sdk/models/getdomainconfigop.js';
+import {
+  VercelNotApplicableError,
+  isVercelProvisionable,
+  vercelApplicabilityReason,
+} from './applicability';
 
 export interface VercelDomain {
   name: string;
@@ -136,13 +141,25 @@ export class VercelClientSDK {
   }
 
   /**
-   * Add domain to project
+   * Add domain to project.
+   *
+   * Throws a {@link VercelNotApplicableError} before the network call when
+   * `domain` cannot be a Vercel project domain (e.g. a TLD). Callers
+   * should catch it specifically to render a "N/A" state in the UI.
    */
   async addDomainToProject(
     projectId: string,
     domain: string,
     customEnvironmentId?: string,
   ): Promise<AddProjectDomainResponseBody> {
+    if (!isVercelProvisionable(domain)) {
+      const reason = vercelApplicabilityReason(domain) ?? 'invalid-domain';
+      logger.debug(
+        { projectId, domain, reason },
+        'Skipping addDomainToProject — domain is not Vercel-provisionable',
+      );
+      throw new VercelNotApplicableError(domain, reason);
+    }
     try {
       const result = await this.vercel.projects.addProjectDomain({
         idOrName: projectId,
@@ -196,20 +213,49 @@ export class VercelClientSDK {
   }
 
   /**
-   * Check if domain is configured in project
+   * Check if domain is configured in project.
+   *
+   * Uses the single-domain lookup (`GET /projects/{id}/domains/{domain}`)
+   * first for an O(1) existence check; falls back to the full-list scan
+   * if the direct lookup fails for any reason other than a 404. Domains
+   * that are not Vercel-provisionable (TLDs, invalid) are treated as
+   * "not in project" without any network call.
    */
   async isDomainInProject(projectId: string, domain: string): Promise<boolean> {
-    try {
-      const domains = await this.getProjectDomains(projectId);
-      return domains.some(
-        (d) => toPunycodeDomainName(d.name) === toPunycodeDomainName(domain),
-      );
-    } catch (error) {
-      logger.error(
-        { error, projectId, domain },
-        'Failed to check if domain is in project',
-      );
+    if (!isVercelProvisionable(domain)) {
       return false;
+    }
+
+    try {
+      const found = await this.vercel.projects.getProjectDomain({
+        idOrName: projectId,
+        teamId: this.teamId,
+        domain,
+      });
+      return Boolean(found);
+    } catch (error) {
+      const status =
+        (error as { statusCode?: number; status?: number })?.statusCode ??
+        (error as { status?: number })?.status;
+      if (status === 404) {
+        return false;
+      }
+      logger.warn(
+        { error, projectId, domain },
+        'Direct Vercel domain lookup failed; falling back to list scan',
+      );
+      try {
+        const domains = await this.getProjectDomains(projectId);
+        return domains.some(
+          (d) => toPunycodeDomainName(d.name) === toPunycodeDomainName(domain),
+        );
+      } catch (fallbackError) {
+        logger.error(
+          { error: fallbackError, projectId, domain },
+          'Failed to check if domain is in project',
+        );
+        return false;
+      }
     }
   }
 

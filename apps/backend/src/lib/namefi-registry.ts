@@ -80,6 +80,41 @@ const HARDCODED_3P_DOMAINS_NAMES = [
   'discounts.today',
 ] as NamefiNormalizedDomain[];
 
+/**
+ * Derives the default `additionalAllowedHostnames` for a Powered-by-Namefi
+ * parent domain, based on which first-party namefi hostnames are
+ * configured. Pure — no I/O — so it's safe to call from both backend
+ * seeding (on first insert of a PBN row) and frontend previews.
+ *
+ * Rules (mirrors what `HARDCODED_3P_DOMAINS` builds):
+ * - `poweredby.namefi.io` present → `${domain}.astra.namefi.io`,
+ *   `${domain}.poweredby.namefi.io`.
+ * - `poweredby.namefi.dev` present → `${domain}.astra.namefi.dev`,
+ *   `${domain}.poweredby.namefi.dev`.
+ * - `localhost` present → `${domain}.localhost`.
+ */
+export function computeDefaultAdditionalAllowedHostnames(
+  normalizedDomainName: string,
+  firstPartyHostnames: readonly string[],
+): string[] {
+  const set = new Set(firstPartyHostnames);
+  return filter(isNotNil, [
+    ...(set.has('poweredby.namefi.io')
+      ? [
+          `${normalizedDomainName}.astra.namefi.io`,
+          `${normalizedDomainName}.poweredby.namefi.io`,
+        ]
+      : []),
+    ...(set.has('poweredby.namefi.dev')
+      ? [
+          `${normalizedDomainName}.astra.namefi.dev`,
+          `${normalizedDomainName}.poweredby.namefi.dev`,
+        ]
+      : []),
+    ...(set.has('localhost') ? [`${normalizedDomainName}.localhost`] : []),
+  ]);
+}
+
 const HARDCODED_3P_DOMAINS = HARDCODED_3P_DOMAINS_NAMES.map(
   (domain) =>
     ({
@@ -87,17 +122,10 @@ const HARDCODED_3P_DOMAINS = HARDCODED_3P_DOMAINS_NAMES.map(
       startRolloutAt: domain === '0x.city' ? subDays(new Date(), 1) : null,
       costPerYearInUsdCents: 500,
       enabled: domain === '0x.city',
-      additionalAllowedHostnames: filter(isNotNil, [
-        ...(config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes('poweredby.namefi.io')
-          ? [`${domain}.astra.namefi.io`, `${domain}.poweredby.namefi.io`]
-          : []),
-        ...(config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes('poweredby.namefi.dev')
-          ? [`${domain}.astra.namefi.dev`, `${domain}.poweredby.namefi.dev`]
-          : []),
-        ...(config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes('localhost')
-          ? [`${domain}.localhost`]
-          : []),
-      ]),
+      additionalAllowedHostnames: computeDefaultAdditionalAllowedHostnames(
+        domain,
+        config.NAMEFI_FIRST_PARTY_HOSTNAMES,
+      ),
       durationConstraints: {
         minDurationInYears: 1,
         maxDurationInYears: 1,
@@ -119,10 +147,41 @@ const HARDCODED_ADDITIONAL_ALLOWED_HOSTNAMES_MAP = new Map(
   }),
 );
 
+/**
+ * Redis key used to cache the full `poweredby_namefi_domains` row set.
+ * Kept in a constant so the cache read/write and the invalidation helper
+ * (`invalidatePoweredByNamefi3PDomainsCache`) can't drift.
+ */
+const POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY = 'poweredbyNamefiDomains';
+
+/**
+ * Drops the cached PBN-domains row set from Redis so the next
+ * `getPoweredByNamefi3PDomainsDetails` / `getPoweredByNamefi3PDomains`
+ * call rebuilds it from the database. Call this from every mutation that
+ * edits `poweredby_namefi_domains` — without it, admin edits stay
+ * invisible for up to the cache TTL (12 hours).
+ */
+export const invalidatePoweredByNamefi3PDomainsCache =
+  async (): Promise<void> => {
+    try {
+      const redis = await getRedisClient();
+      await redis.del(POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY);
+    } catch (error) {
+      // Cache invalidation is best-effort — the TTL will eventually catch
+      // up. Log rather than surface an error to the mutation caller.
+      logger.warn(
+        { error },
+        'Failed to invalidate poweredby_namefi_domains Redis cache',
+      );
+    }
+  };
+
 export const getPoweredByNamefi3PDomainsDetails = async () => {
   const redis = await getRedisClient();
 
-  const cachedDomainsString = await redis.get('poweredbyNamefiDomains');
+  const cachedDomainsString = await redis.get(
+    POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
+  );
   const cachedDomains = cachedDomainsString
     ? superjson.parse<PoweredByNamefiDomainSelect[]>(cachedDomainsString)
     : undefined;
@@ -131,7 +190,7 @@ export const getPoweredByNamefi3PDomainsDetails = async () => {
     cachedDomains ?? (await db.query.poweredbyNamefiDomainsTable.findMany());
   if (!cachedDomains) {
     await redis.set(
-      'poweredbyNamefiDomains',
+      POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
       superjson.stringify(poweredbyNamefiDomains),
       { EX: 12 * 60 * 60 /* 12 hours in seconds */ },
     );

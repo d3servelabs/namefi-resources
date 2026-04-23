@@ -133,7 +133,16 @@ const setupStatusSectionSchema = z
 /**
  * `getPoweredByNamefiDomainStatus` aggregates the domain row plus a
  * detailed setup status. Each setup status entry is a three-section
- * aggregate (apex / namefi.io / namefi.dev) plus a `summary` block.
+ * aggregate (apex / namefi.io / namefi.dev) plus a `summary` block and a
+ * top-level `vercelApplicable` flag.
+ *
+ * `vercelApplicable` is `false` when the PBN parent is a single-label
+ * name (e.g. `nfi`), since Vercel's Domains API rejects TLDs. Callers
+ * use this to hide the "Setup Vercel & DNS" affordance rather than
+ * letting the user click through to an inevitable error. The authority
+ * for this computation is the backend (`isVercelProvisionable` in
+ * `apps/backend/src/lib/vercel/applicability.ts`); the schema captures
+ * it so the frontend can type-check the flag without casts.
  */
 const setupStatusEntrySchema = z
   .object({
@@ -145,6 +154,7 @@ const setupStatusEntrySchema = z
       notice: z.string().nullable(),
       recommendations: z.array(z.string()),
     }),
+    vercelApplicable: z.boolean(),
   })
   .loose();
 

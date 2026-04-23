@@ -80,6 +80,12 @@ import type { AppRouterOutput } from '@/lib/trpc';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useQueryClient } from '@tanstack/react-query';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
+import {
+  computeDefaultAdditionalAllowedHostnames,
+  isTldOnly,
+} from '@/lib/pbn-defaults';
+import { HostnamesChipInput } from './forms/hostnames-chip-input';
+import { EditHostnamesDialog } from './forms/edit-hostnames-form';
 
 // Form schema for creating powered by namefi domains
 const createDomainSchema = z.object({
@@ -187,6 +193,8 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingDomain, setEditingDomain] = useState<Domain | null>(null);
   const [isEditCostDialogOpen, setIsEditCostDialogOpen] = useState(false);
+  const [editingHostnamesDomain, setEditingHostnamesDomain] =
+    useState<Domain | null>(null);
 
   // Fetch domains
   const {
@@ -295,6 +303,18 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
     },
   });
 
+  const updateDomainMutation = useMutation({
+    ...trpc.admin.poweredByNamefi.updatePoweredByNamefiDomain.mutationOptions(),
+    onSuccess: () => {
+      toast.success('Hostnames updated');
+      setEditingHostnamesDomain(null);
+      refetchDomains();
+    },
+    onError: (error) => {
+      toast.error(`Failed to update hostnames: ${error.message}`);
+    },
+  });
+
   const handleSort = (column: typeof sortBy) => {
     if (sortBy === column) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -333,35 +353,45 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 <Plus className="h-4 w-4 mr-2" />
                 Add Domain
               </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+              {/*
+                Pin the dialog to a viewport-aware size so the header and
+                close button stay fixed while the (potentially tall) form
+                body scrolls inside. `grid-rows-[auto_1fr]` collaborates
+                with the base DialogContent `grid` layout to give the
+                form a min-height:0 track — required for nested overflow
+                to work.
+              */}
+              <DialogContent className="sm:max-w-2xl w-full max-h-[min(90vh,920px)] overflow-hidden grid-rows-[auto_1fr]">
                 <DialogHeader>
                   <DialogTitle>Add New Powered by Namefi Domain</DialogTitle>
                 </DialogHeader>
-                <CreateDomainForm
-                  onSubmit={async (data) => {
-                    await createDomainMutation.mutateAsync(data);
+                <div className="min-h-0 overflow-y-auto pr-1">
+                  <CreateDomainForm
+                    onSubmit={async (data) => {
+                      await createDomainMutation.mutateAsync(data);
 
-                    // Run setup actions if requested
-                    if (data.setupVercelAndDns) {
-                      await setupVercelMutation.mutateAsync({
-                        normalizedDomainName: data.normalizedDomainName,
-                      });
-                    }
+                      // Run setup actions if requested
+                      if (data.setupVercelAndDns) {
+                        await setupVercelMutation.mutateAsync({
+                          normalizedDomainName: data.normalizedDomainName,
+                        });
+                      }
 
-                    if (data.setupNamefiIo) {
-                      await setupNamefiIoMutation.mutateAsync({
-                        normalizedDomainName: data.normalizedDomainName,
-                      });
-                    }
+                      if (data.setupNamefiIo) {
+                        await setupNamefiIoMutation.mutateAsync({
+                          normalizedDomainName: data.normalizedDomainName,
+                        });
+                      }
 
-                    if (data.setupNamefiDev) {
-                      await setupNamefiDevMutation.mutateAsync({
-                        normalizedDomainName: data.normalizedDomainName,
-                      });
-                    }
-                  }}
-                  isLoading={createDomainMutation.isPending}
-                />
+                      if (data.setupNamefiDev) {
+                        await setupNamefiDevMutation.mutateAsync({
+                          normalizedDomainName: data.normalizedDomainName,
+                        });
+                      }
+                    }}
+                    isLoading={createDomainMutation.isPending}
+                  />
+                </div>
               </DialogContent>
             </Dialog>
           </div>
@@ -508,7 +538,19 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                               >
                                 <MoreHorizontal className="h-4 w-4" />
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
+                              {/*
+                                The project's base DropdownMenuContent pins
+                                `w-(--anchor-width)` (i.e. the trigger's
+                                width). The trigger here is a 32px icon
+                                button, which clips every label. Override
+                                with auto width + a comfortable minimum so
+                                items never truncate, and cap at the
+                                viewport on mobile.
+                              */}
+                              <DropdownMenuContent
+                                align="end"
+                                className="w-auto min-w-56 max-w-[calc(100vw-2rem)]"
+                              >
                                 {/* Enable/Disable Toggle */}
                                 <DropdownMenuItem
                                   onClick={() =>
@@ -564,6 +606,16 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                                   Edit Cost & Duration
                                 </DropdownMenuItem>
 
+                                {/* Edit additionalAllowedHostnames */}
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    setEditingHostnamesDomain(domain)
+                                  }
+                                >
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Edit Additional Hostnames
+                                </DropdownMenuItem>
+
                                 <DropdownMenuSeparator />
 
                                 {/* Configuration Dialog */}
@@ -584,14 +636,16 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                                     <Settings className="h-4 w-4 mr-2" />
                                     DNS Configuration
                                   </DialogTrigger>
-                                  <DialogContent className="!max-w-screen-xl w-full">
+                                  <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
                                     <DialogHeader>
-                                      <DialogTitle>
+                                      <DialogTitle className="break-words pr-8">
                                         Configuration Status:{' '}
-                                        {domain.normalizedDomainName}
+                                        <span className="font-mono text-base">
+                                          {domain.normalizedDomainName}
+                                        </span>
                                       </DialogTitle>
                                     </DialogHeader>
-                                    <div className="w-full space-y-6 max-h-[80vh] overflow-y-auto">
+                                    <div className="w-full min-h-0 overflow-y-auto pr-1">
                                       {isLoadingStatus ? (
                                         <div className="text-center py-8">
                                           Loading setup status...
@@ -673,9 +727,16 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         open={isEditCostDialogOpen}
         onOpenChange={setIsEditCostDialogOpen}
       >
-        <DialogContent className="max-w-md">
+        <DialogContent className="sm:max-w-lg w-full">
           <DialogHeader>
-            <DialogTitle>Edit Cost & Duration</DialogTitle>
+            <DialogTitle className="break-words pr-8">
+              Edit Cost &amp; Duration
+              {editingDomain ? (
+                <span className="ml-2 font-mono text-sm text-muted-foreground">
+                  {editingDomain.normalizedDomainName}
+                </span>
+              ) : null}
+            </DialogTitle>
           </DialogHeader>
           {editingDomain && (
             <EditCostAndDurationForm
@@ -694,6 +755,21 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      <EditHostnamesDialog
+        domain={editingHostnamesDomain}
+        onClose={() => setEditingHostnamesDomain(null)}
+        isSubmitting={updateDomainMutation.isPending}
+        onSubmit={async ({
+          normalizedDomainName,
+          additionalAllowedHostnames,
+        }) => {
+          await updateDomainMutation.mutateAsync({
+            normalizedDomainName,
+            additionalAllowedHostnames,
+          });
+        }}
+      />
     </PageShell>
   );
 });
@@ -980,6 +1056,38 @@ function CreateDomainForm({
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="additionalAllowedHostnames"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Additional Allowed Hostnames</FormLabel>
+                <FormControl>
+                  <HostnamesChipInput
+                    value={field.value ?? []}
+                    onChange={field.onChange}
+                    emptyStateHint={
+                      <>
+                        Leave empty to auto-populate the standard namefi-hosted
+                        mirrors (e.g.{' '}
+                        <code className="font-mono">
+                          {form.watch('normalizedDomainName') || '<domain>'}
+                          .astra.namefi.io
+                        </code>
+                        ). Override only if you need bespoke entries.
+                      </>
+                    }
+                  />
+                </FormControl>
+                <FormDescription>
+                  Hostnames that are accepted as aliases for this Powered-by-
+                  Namefi parent. Press Enter or comma to add an entry.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         {/* Setup Options */}
@@ -1211,6 +1319,15 @@ function EditCostAndDurationForm({
 
 // Component to display setup status for a domain
 function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
+  // Vercel's Domains API rejects single-label names — e.g. a PBN that is
+  // itself a TLD like `nfi`. The backend already short-circuits the
+  // `setupVercelAndDns` mutation in that case and returns the
+  // `vercelApplicable` flag on the setup-status entry; reflect it in
+  // the UI so admins don't see a "Configure" button that would no-op.
+  // Fallback to local TLD detection so we still behave sanely against a
+  // stale backend that didn't ship the flag.
+  const vercelApplicable =
+    setupStatus.vercelApplicable ?? !isTldOnly(setupStatus.apexDomain.domain);
   const apexFullySetup =
     setupStatus.apexDomain.vercelIsSetup &&
     setupStatus.apexDomain.vercelIsVerified &&
@@ -1267,8 +1384,11 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
     }),
   });
 
+  // Parent dialog/container owns the scroll. Here we just size the cards
+  // fluidly — single column on narrow viewports, two on tablet+, and
+  // three on wide desktop so the cards never stretch absurdly.
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {/* Section 1: Apex Domain Setup */}
       <Card>
         <CardHeader>
@@ -1357,22 +1477,33 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               )}
           </div>
 
-          <AsyncButton
-            variant="outline"
-            size="sm"
-            className="w-full"
-            disabled={!setupStatus.apexDomain.canSetup}
-            onClick={() =>
-              setupVercelMutation.mutateAsync({
-                normalizedDomainName: setupStatus.apexDomain.domain,
-              })
-            }
-          >
-            {apexFullySetup ? 'Already Configured' : 'Configure Apex Domain'}
-          </AsyncButton>
+          {vercelApplicable ? (
+            <AsyncButton
+              variant="outline"
+              size="sm"
+              className="w-full"
+              disabled={!setupStatus.apexDomain.canSetup}
+              onClick={() =>
+                setupVercelMutation.mutateAsync({
+                  normalizedDomainName: setupStatus.apexDomain.domain,
+                })
+              }
+            >
+              {apexFullySetup ? 'Already Configured' : 'Configure Apex Domain'}
+            </AsyncButton>
+          ) : (
+            <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+              <strong className="block text-foreground">
+                Vercel apex setup is not applicable for TLDs.
+              </strong>
+              Single-label names (e.g.{' '}
+              <code>{setupStatus.apexDomain.domain}</code>) cannot be
+              provisioned as Vercel project domains. Use the namefi.io /
+              namefi.dev subdomain mirrors below for a previewable URL.
+            </div>
+          )}
         </CardContent>
       </Card>
-      <div className="h-4" />
 
       {/* Section 2: Namefi.io Subdomain Setup */}
       <Card>

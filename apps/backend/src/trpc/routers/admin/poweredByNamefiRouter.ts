@@ -18,6 +18,14 @@ import { adminPoweredByNamefiContract } from '@namefi-astra/common/contract/admi
 import { Permission } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { createVercelClientSDK } from '#lib/vercel/vercel-client-sdk';
+import {
+  VercelNotApplicableError,
+  isVercelProvisionable,
+} from '#lib/vercel/applicability';
+import {
+  computeDefaultAdditionalAllowedHostnames,
+  invalidatePoweredByNamefi3PDomainsCache,
+} from '#lib/namefi-registry';
 import type { GetDomainConfigResponseBody } from '@vercel/sdk/models/getdomainconfigop';
 import type { GetProjectDomainResponseBody } from '@vercel/sdk/models/getprojectdomainop';
 import { indexBy, prop, sum } from 'ramda';
@@ -172,11 +180,17 @@ async function validateDomainsSetup(
         ].flatMap(generateRecommendations),
       };
 
+      // Vercel's Domains API rejects single-label names (TLDs). Callers
+      // (including the admin UI) use this flag to hide / disable the
+      // "Setup Vercel & DNS" affordance and explain why.
+      const vercelApplicable = isVercelProvisionable(normalizedDomainName);
+
       return {
         apexDomain: apexDomainValidation,
         namefiIoSubdomain: namefiIoValidation,
         namefiDevSubdomain: namefiDevValidation,
         summary,
+        vercelApplicable,
       };
     });
   } catch (error) {
@@ -445,12 +459,25 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
         ownerId,
       } = input;
 
+      // When the caller leaves `additionalAllowedHostnames` empty, seed it
+      // with the namefi-hosted mirrors derived from
+      // `config.NAMEFI_FIRST_PARTY_HOSTNAMES`. This mirrors the behavior
+      // of the hardcoded 3P domains in `namefi-registry.ts` so DB-created
+      // PBN rows get the same default hostname coverage.
+      const resolvedAdditionalAllowedHostnames =
+        additionalAllowedHostnames && additionalAllowedHostnames.length > 0
+          ? additionalAllowedHostnames
+          : computeDefaultAdditionalAllowedHostnames(
+              normalizedDomainName,
+              config.NAMEFI_FIRST_PARTY_HOSTNAMES,
+            );
+
       try {
         const newDomain = await db
           .insert(poweredbyNamefiDomainsTable)
           .values({
             normalizedDomainName,
-            additionalAllowedHostnames,
+            additionalAllowedHostnames: resolvedAdditionalAllowedHostnames,
             additionalReservedNames,
             durationConstraints,
             costPerYearInUsdCents,
@@ -460,6 +487,8 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
             updatedAt: new Date(),
           })
           .returning();
+
+        await invalidatePoweredByNamefi3PDomainsCache();
 
         return {
           success: true,
@@ -552,6 +581,8 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
           });
         }
 
+        await invalidatePoweredByNamefi3PDomainsCache();
+
         return {
           success: true,
           domain: updatedDomain[0],
@@ -604,6 +635,8 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
           });
         }
 
+        await invalidatePoweredByNamefi3PDomainsCache();
+
         return {
           success: true,
           domain: deletedDomain[0],
@@ -637,6 +670,22 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
     .output(adminPoweredByNamefiContract.setupVercelAndDns.output)
     .mutation(async ({ input }) => {
       const { normalizedDomainName } = input;
+
+      // Short-circuit for domains Vercel can't host (e.g. bare TLDs like
+      // `nfi`). Vercel's Domains API rejects single-label names; surface
+      // this to the caller as a structured skip rather than a 500 so the
+      // admin UI can render a "Vercel N/A" state.
+      if (!isVercelProvisionable(normalizedDomainName)) {
+        return {
+          success: true,
+          message:
+            'Skipped Vercel setup: TLDs cannot be provisioned as Vercel project domains. The namefi.{io,dev} subdomain mirrors remain available.',
+          vercelSetup: false,
+          vercelSkipped: true,
+          vercelSkipReason: 'tld',
+          dnsRecordCreated: false,
+        };
+      }
 
       try {
         const vercelClient = createVercelClientSDK();
@@ -706,6 +755,19 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
           dnsRecordCreated,
         };
       } catch (error) {
+        if (error instanceof VercelNotApplicableError) {
+          // Defense-in-depth: the top-level `isVercelProvisionable` check
+          // should have short-circuited already, but surface it cleanly if
+          // reached.
+          return {
+            success: true,
+            message: error.message,
+            vercelSetup: false,
+            vercelSkipped: true,
+            vercelSkipReason: error.reason,
+            dnsRecordCreated: false,
+          };
+        }
         logger.error({ error, input }, 'Failed to setup Vercel and DNS');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -945,6 +1007,8 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
           });
         }
 
+        await invalidatePoweredByNamefi3PDomainsCache();
+
         return {
           success: true,
           domain: updatedDomain[0],
@@ -1000,6 +1064,8 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
             message: 'Powered by Namefi domain not found',
           });
         }
+
+        await invalidatePoweredByNamefi3PDomainsCache();
 
         return {
           success: true,
@@ -1066,6 +1132,8 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
               message: 'Powered by Namefi domain not found',
             });
           }
+
+          await invalidatePoweredByNamefi3PDomainsCache();
 
           return {
             success: true,
