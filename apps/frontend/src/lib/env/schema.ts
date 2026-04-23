@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z, type ZodSchema } from 'zod';
 import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 
 export const configSchema = z.object({
@@ -40,11 +40,12 @@ export type ConfigInput = z.input<typeof configSchema>;
 export const serverSideSecretsSchema = z.object({
   API_AUTH_KEY: z.string(),
   DATADOG_API_KEY: z.string().min(1),
-  ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
 });
 
 export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
 
-export const clientSideEnvSchema = z.object({});
+export const clientSideEnvSchema = z.object({
+  NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
+} satisfies Record<`NEXT_PUBLIC_${string}`, ZodSchema>);
 
 export type ClientSideEnvInput = z.input<typeof clientSideEnvSchema>;

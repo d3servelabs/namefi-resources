@@ -13,9 +13,10 @@ export const supportedChains = [
 ] as const;
 
 export const getWagmiConfig = () => {
-  const generateAlchemyRpcUrlForChain = clientSideEnv.ALCHEMY_FRONTEND_API_KEY
-    ? getAlchemyHttpRpcUrl(clientSideEnv.ALCHEMY_FRONTEND_API_KEY)
-    : null;
+  const generateAlchemyRpcUrlForChain =
+    clientSideEnv.NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY
+      ? getAlchemyHttpRpcUrl(clientSideEnv.NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY)
+      : null;
 
   const getHttpTransport = (chainId: number) => {
     if (generateAlchemyRpcUrlForChain) {
