@@ -37,7 +37,10 @@ import {
   DomainUpcomingRenewal,
   type DomainUpcomingRenewalProps,
 } from '../../../mail/templates/domain-upcoming-renewal';
-import { DomainRenewReport } from '../../../mail/templates/domain-renew-report';
+import {
+  DomainRenewReport,
+  computeDomainRenewReportSubject,
+} from '../../../mail/templates/domain-renew-report';
 import {
   DomainRenewFailedToCharge,
   type DomainRenewFailedToChargeProps,
@@ -766,12 +769,16 @@ export async function sendEmailNotificationForRenewResult({
     pretty: false,
     plainText: true,
   });
-  const subject = 'Domain Renewal Report - Success | Namefi';
-  // This is commented out for the time being because we stopped send failed details to user
-  // if (domainLdhRenewFailed.length > 0) {
-  //   subject =
-  //     '[Action May Be Required] Domain Renewal Report - Failed | Namefi';
-  // }
+  // Use the same subject-computation as the in-email title so the inbox
+  // subject matches what the user sees when they open the email. Notably,
+  // when some domains were deferred for insufficient balance, the subject
+  // reflects that instead of blindly claiming "Success".
+  const subject = computeDomainRenewReportSubject({
+    succeededCount: adjustedOrderDetails.domainLdhRenewSucceeded.length,
+    failedCount: adjustedOrderDetails.domainLdhRenewFailed.length,
+    deferredCount:
+      adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds.length,
+  });
 
   await sendMail({
     to: [userEmail],

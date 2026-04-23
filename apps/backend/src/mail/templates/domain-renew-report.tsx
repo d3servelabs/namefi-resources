@@ -62,6 +62,34 @@ export type DomainRenewReportProps = {
   orderId?: string | null;
 };
 
+/**
+ * Compute the domain-renewal report's subject/title from category counts.
+ *
+ * Shared between this template (for the in-email `NamefiEmailContainer`
+ * title) and the SMTP `subject` line in `renew.activities.ts::sendEmailNotificationForRenewResult`
+ * so both stay in sync. A previous bug had the template title flip to
+ * "Some Deferred (Low Balance)" while the inbox subject still read
+ * "Success" — the user saw "Success" but opened an email about deferred
+ * domains.
+ */
+export function computeDomainRenewReportSubject(args: {
+  succeededCount: number;
+  failedCount: number;
+  deferredCount: number;
+}): string {
+  const { succeededCount, failedCount, deferredCount } = args;
+  const hasDeferred = deferredCount > 0;
+  const allSucceeded = succeededCount > 0 && failedCount === 0 && !hasDeferred;
+  const allFailed = failedCount > 0 && succeededCount === 0;
+  const someDeferred = succeededCount > 0 && failedCount === 0 && hasDeferred;
+
+  if (allSucceeded) return '[Namefi] Your Domain Renewal is Complete';
+  if (allFailed) return '[Namefi] Action Needed: Domain Renewal Issue';
+  if (someDeferred)
+    return '[Namefi] Domain Renewal — Some Deferred (Low Balance)';
+  return '[Namefi] Domain Renewal Update';
+}
+
 // Helper function to truncate wallet address
 const truncateWalletAddress = (address: string): string => {
   if (address.length <= 10) return address;
@@ -113,12 +141,23 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     } = props;
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
+    const succeededCount = domainLdhRenewSucceeded.length;
+    const failedCount = domainLdhRenewFailed.length;
+    const deferredCount = domainLdhSkippedDueToInsufficientFunds.length;
+    const hasDeferred = deferredCount > 0;
+
+    // "Complete" = all attempted domains renewed AND nothing was deferred.
+    // A deferred domain is un-renewed this cycle (insufficient balance) and
+    // needs the user's attention just as much as a hard failure — otherwise
+    // the subject/intro would tell them renewal is "complete" while the
+    // body lists deferred domains below.
     const allSucceeded =
-      domainLdhRenewSucceeded.length > 0 && domainLdhRenewFailed.length === 0;
-    const allFailed =
-      domainLdhRenewFailed.length > 0 && domainLdhRenewSucceeded.length === 0;
-    const mixed =
-      domainLdhRenewSucceeded.length > 0 && domainLdhRenewFailed.length > 0;
+      succeededCount > 0 && failedCount === 0 && !hasDeferred;
+    const allFailed = failedCount > 0 && succeededCount === 0;
+    const mixed = succeededCount > 0 && (failedCount > 0 || hasDeferred);
+    // Successes + deferred (no hard failures) — distinct from "complete"
+    // because some domains still need a top-up / card to renew next cycle.
+    const someDeferred = succeededCount > 0 && failedCount === 0 && hasDeferred;
 
     const safeRecipientName =
       recipientName && recipientName.trim().length > 0
@@ -128,12 +167,23 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     let introText = '';
     if (allSucceeded) {
       introText =
-        domainLdhRenewSucceeded.length === 1
+        succeededCount === 1
           ? "Great news! Your domain has been renewed and you're all set for another year."
           : "Great news! Your domains have been renewed and you're all set for another year.";
     } else if (allFailed) {
       introText =
         "We ran into some issues while renewing your domains. Here's what happened:";
+    } else if (someDeferred) {
+      const succeededPhrase =
+        succeededCount === 1
+          ? 'We renewed one of your domains'
+          : 'We renewed some of your domains';
+      const deferredPhrase =
+        deferredCount === 1
+          ? "but one couldn't be renewed"
+          : "but a few couldn't be renewed";
+      const deferredPronoun = deferredCount === 1 ? 'it' : 'them';
+      introText = `${succeededPhrase}, ${deferredPhrase} because your NFSC balance didn't cover ${deferredPronoun}. Add funds or a card to renew ${deferredPronoun} next cycle.`;
     } else if (mixed) {
       introText =
         "We've renewed some of your domains, but a few need your attention:";
@@ -143,11 +193,11 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
 
     const messageMarkdown = `Hi ${safeRecipientName},\n\n${introText}`;
 
-    const emailTitle = allSucceeded
-      ? '[Namefi] Your Domain Renewal is Complete'
-      : allFailed
-        ? '[Namefi] Action Needed: Domain Renewal Issue'
-        : '[Namefi] Domain Renewal Update';
+    const emailTitle = computeDomainRenewReportSubject({
+      succeededCount,
+      failedCount,
+      deferredCount,
+    });
 
     return (
       <NamefiEmailContainer title={emailTitle}>
