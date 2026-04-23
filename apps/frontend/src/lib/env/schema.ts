@@ -40,6 +40,7 @@ export type ConfigInput = z.input<typeof configSchema>;
 export const serverSideSecretsSchema = z.object({
   API_AUTH_KEY: z.string(),
   DATADOG_API_KEY: z.string().min(1),
+  ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
 });
 
 export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
