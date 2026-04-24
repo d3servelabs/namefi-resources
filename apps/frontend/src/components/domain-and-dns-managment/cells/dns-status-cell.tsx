@@ -32,12 +32,12 @@ export interface DnsStatus {
   forwardTo: string | null;
   hasWebRecords: boolean;
   hasMxRecords: boolean;
-  ensRecord: string | null;
 }
 
 interface DnsStatusCellProps {
   domainName: NamefiNormalizedDomain;
   status: DnsStatus;
+  autoEnsEnabled: boolean;
   disabled?: boolean;
   nftChainId: number | bigint;
 }
@@ -91,6 +91,7 @@ function areNameserverSetsEqual(a: string[], b: string[]): boolean {
 function getStatusColors(
   status: DnsStatus,
   effectiveIsUsingNamefiNameservers: boolean,
+  autoEnsEnabled: boolean,
 ) {
   const nsColor = effectiveIsUsingNamefiNameservers
     ? 'text-emerald-500'
@@ -105,7 +106,7 @@ function getStatusColors(
       : 'text-zinc-600';
 
   const mxColor = status.hasMxRecords ? 'text-sky-500' : 'text-zinc-600';
-  const ensColor = status.ensRecord ? 'text-sky-500' : 'text-zinc-600';
+  const ensColor = autoEnsEnabled ? 'text-sky-500' : 'text-zinc-600';
   const forwardColor = status.forwardTo ? 'text-sky-500' : 'text-zinc-600';
 
   return { nsColor, webColor, mxColor, ensColor, forwardColor };
@@ -199,6 +200,7 @@ function DnsDialogs({
 export function DnsStatusCell({
   domainName,
   status,
+  autoEnsEnabled,
   disabled,
   nftChainId,
 }: DnsStatusCellProps) {
@@ -250,6 +252,7 @@ export function DnsStatusCell({
         nameservers: effectiveNameservers,
       },
       effectiveIsUsingNamefiNameservers,
+      autoEnsEnabled,
     );
 
   // Read-only if not using Namefi NS (except NS settings itself, usually)
@@ -405,7 +408,7 @@ export function DnsStatusCell({
           <Hexagon className={cn('w-4 h-4', ensColor)} />
         </TooltipTrigger>
         <TooltipContent>
-          {status.ensRecord ? status.ensRecord : 'No ENS Record'}
+          {autoEnsEnabled ? 'Auto-ENS enabled' : 'No ENS Record'}
         </TooltipContent>
       </Tooltip>
 

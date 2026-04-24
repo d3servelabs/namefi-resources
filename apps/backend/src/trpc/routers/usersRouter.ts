@@ -506,9 +506,9 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
     }),
 
   // TODO: add tests for this procedure
-  getCurrentUserDomains: protectedProcedure
-    .input(usersContract.getCurrentUserDomains.input)
-    .output(usersContract.getCurrentUserDomains.output)
+  getCurrentUserDomainsV1: protectedProcedure
+    .input(usersContract.getCurrentUserDomainsV1.input)
+    .output(usersContract.getCurrentUserDomainsV1.output)
     .query(async ({ ctx }) => {
       const { user, poweredByNamefiDomain } = ctx;
       const [error, privyUser] = await resolve(
@@ -712,7 +712,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         });
       } catch (error) {
         logger.error(
-          { context: 'getCurrentUserDomains', error },
+          { context: 'getCurrentUserDomainsV1', error },
           'Failed to fetch domain details',
         );
         // Fallback to minimal data if something fails
@@ -734,9 +734,9 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
       }
     }),
 
-  getCurrentUserDomainsV2: protectedProcedure
-    .input(usersContract.getCurrentUserDomainsV2.input)
-    .output(usersContract.getCurrentUserDomainsV2.output)
+  getCurrentUserDomains: protectedProcedure
+    .input(usersContract.getCurrentUserDomains.input)
+    .output(usersContract.getCurrentUserDomains.output)
     .query(async ({ ctx }) => {
       const { user, poweredByNamefiDomain } = ctx;
       const [error, privyUser] = await resolve(
@@ -808,6 +808,24 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         )
         .as('dns_flags');
 
+      const dateTokenizedLateral = db
+        .select({
+          dateTokenized: sql<Date | null>`MIN(${orderItemsTable.createdAt})`.as(
+            'date_tokenized',
+          ),
+        })
+        .from(orderItemsTable)
+        .where(
+          and(
+            eq(
+              orderItemsTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            eq(orderItemsTable.status, 'SUCCEEDED'),
+          ),
+        )
+        .as('date_tokenized_lateral');
+
       const rows = await db
         .with(namefiNftCte)
         .select({
@@ -831,6 +849,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
             OR COALESCE(${domainConfigTable.autoParkEnabled}, false)
             OR (${domainConfigTable.forwardTo} IS NOT NULL)
           `,
+          dateTokenized: dateTokenizedLateral.dateTokenized,
         })
         .from(namefiNftView)
         .leftJoin(
@@ -858,11 +877,12 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           ),
         )
         .leftJoinLateral(dnsFlagsLateral, sql`true`)
+        .leftJoinLateral(dateTokenizedLateral, sql`true`)
         .where(and(...whereConditions))
         .$withCache({
           config: { ex: 15 },
           autoInvalidate: true,
-          tag: `getCurrentUserDomainsV2(userId:${user.id},poweredByNamefiDomain:${poweredByNamefiDomain ?? 'undefined'})`,
+          tag: `getCurrentUserDomains(userId:${user.id},poweredByNamefiDomain:${poweredByNamefiDomain ?? 'undefined'})`,
         });
 
       return rows.map((row) => ({
@@ -874,6 +894,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         autoRenewEnabled: row.autoRenewEnabled ?? false,
         autoEnsEnabled: row.autoEnsEnabled ?? false,
         dnssecEnabled: row.dnssecEnabled ?? false,
+        dateTokenized: row.dateTokenized ?? null,
         dnsStatus: {
           nameservers: row.nameservers ?? [],
           isUsingNamefiNameservers: row.isUsingNamefiNameservers ?? false,

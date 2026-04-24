@@ -155,7 +155,7 @@ const getNfscFaucetStatusOutputSchema = z.union([
   }),
 ]);
 
-const currentUserDomainSchema = z.object({
+const currentUserDomainV1Schema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
   chainId: z.number(),
   ownerAddress: z.string(),
@@ -176,7 +176,7 @@ const currentUserDomainSchema = z.object({
   }),
 });
 
-const currentUserDomainV2Schema = z.object({
+const currentUserDomainSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
   chainId: z.number(),
   ownerAddress: z.string(),
@@ -185,6 +185,7 @@ const currentUserDomainV2Schema = z.object({
   autoRenewEnabled: z.boolean(),
   autoEnsEnabled: z.boolean(),
   dnssecEnabled: z.boolean(),
+  dateTokenized: z.date().nullable(),
   dnsStatus: z.object({
     nameservers: z.array(z.string()),
     isUsingNamefiNameservers: z.boolean(),
@@ -299,10 +300,10 @@ export const usersContract = createContract(
       input: z.void(),
       output: z.array(currentUserDomainSchema),
     },
-    getCurrentUserDomainsV2: {
+    getCurrentUserDomainsV1: {
       type: 'query',
       input: z.void(),
-      output: z.array(currentUserDomainV2Schema),
+      output: z.array(currentUserDomainV1Schema),
     },
     isDomainOwnedByCurrentUser: {
       type: 'query',
