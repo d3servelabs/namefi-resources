@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from './lib/env/consts';
+import { config as configEnv } from './lib/env';
 
 const isPoweredByNamefiDomains = (domain: string) => {
   return POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.includes(domain);
@@ -108,15 +109,13 @@ export function proxy(request: NextRequest) {
   // Get default hostname from environment
   // In middleware, we need to parse the URL from env var or use a default
   const firstPartyDeploymentUrl =
-    process.env.NEXT_PUBLIC_FIRST_PARTY_DEPLOYMENT_URL ||
-    process.env.FIRST_PARTY_DEPLOYMENT_URL ||
-    'https://astra.namefi.io';
+    configEnv.FIRST_PARTY_DEPLOYMENT_URL || 'https://namefi.io';
 
   let defaultHost: string;
   try {
     defaultHost = new URL(firstPartyDeploymentUrl).hostname;
   } catch {
-    defaultHost = 'astra.namefi.io';
+    defaultHost = 'namefi.io';
   }
 
   let redirectHostname = defaultHost;
