@@ -33,6 +33,7 @@ import {
 import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useDnsEmailGate } from '@/hooks/use-dns-email-gate';
 import {
   type RenewalResult,
   useDomainRenewal,
@@ -149,6 +150,7 @@ export function MyDomainsTable(props: {
     : persistedColumnVisibility;
 
   const { renewDomains } = useDomainRenewal();
+  const { gate: gateDnsEmail, modal: dnsEmailModal } = useDnsEmailGate();
 
   const handleListForSaleClick = useCallback(
     (domainName: string) => {
@@ -816,7 +818,7 @@ export function MyDomainsTable(props: {
           renewableDomainsCount={renewableDomainsCount}
           renewableDomains={renewableDomains}
           onRenewNow={(domains) => setRenewNowModalDomains(domains)}
-          onBatchAction={setBatchAction}
+          onBatchAction={(action) => gateDnsEmail(() => setBatchAction(action))}
         />
       </Suspense>
       <BatchDnsDialog
@@ -825,6 +827,7 @@ export function MyDomainsTable(props: {
         domains={Array.from(selectedDomainIds)}
         action={batchAction}
       />
+      {dnsEmailModal}
     </>
   );
 }

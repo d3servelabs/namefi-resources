@@ -22,6 +22,7 @@ import { ForwardingDialog } from '../dialogs/forwarding-dialog';
 import { EditDnsRecordsWrapper } from '../dialogs/edit-dns-records-wrapper';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { useDnsEmailGate } from '@/hooks/use-dns-email-gate';
 import { useTRPC } from '@/lib/trpc';
 import { normalizeDomainName } from '@namefi-astra/zod-dns';
 
@@ -208,6 +209,7 @@ export function DnsStatusCell({
   const [hasInteracted, setHasInteracted] = useState(false);
   const router = useRouter();
   const trpc = useTRPC();
+  const { gate: gateDnsEmail, modal: dnsEmailModal } = useDnsEmailGate();
 
   const shouldLazyFetchNameservers =
     status.nameservers.length === 0 && hasInteracted;
@@ -296,7 +298,7 @@ export function DnsStatusCell({
               )}
             />
           }
-          onClick={() => !disabled && setActiveDialog('ns')}
+          onClick={() => !disabled && gateDnsEmail(() => setActiveDialog('ns'))}
           disabled={disabled}
         >
           <Server className={cn('w-4 h-4', nsColor)} />
@@ -321,7 +323,9 @@ export function DnsStatusCell({
               )}
             />
           }
-          onClick={() => !disabled && setActiveDialog('web')}
+          onClick={() =>
+            !disabled && gateDnsEmail(() => setActiveDialog('web'))
+          }
           disabled={disabled}
         >
           <Globe className={cn('w-4 h-4', webColor)} />
@@ -349,7 +353,9 @@ export function DnsStatusCell({
             />
           }
           onClick={() =>
-            !disabled && isForwardingEnabled && setActiveDialog('forward')
+            !disabled &&
+            isForwardingEnabled &&
+            gateDnsEmail(() => setActiveDialog('forward'))
           }
           disabled={disabled || !isForwardingEnabled}
         >
@@ -380,7 +386,7 @@ export function DnsStatusCell({
               )}
             />
           }
-          onClick={() => !disabled && setActiveDialog('mx')}
+          onClick={() => !disabled && gateDnsEmail(() => setActiveDialog('mx'))}
           disabled={disabled}
         >
           <Mail className={cn('w-4 h-4', mxColor)} />
@@ -402,7 +408,9 @@ export function DnsStatusCell({
               )}
             />
           }
-          onClick={() => !disabled && setActiveDialog('ens')}
+          onClick={() =>
+            !disabled && gateDnsEmail(() => setActiveDialog('ens'))
+          }
           disabled={disabled}
         >
           <Hexagon className={cn('w-4 h-4', ensColor)} />
@@ -421,7 +429,9 @@ export function DnsStatusCell({
               className="transition-colors hover:opacity-80 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 cursor-pointer"
             />
           }
-          onClick={() => router.push(`/domains/${domainName}`)}
+          onClick={() =>
+            gateDnsEmail(() => router.push(`/domains/${domainName}`))
+          }
         >
           <Ellipsis className="w-4 h-4" />
         </TooltipTrigger>
@@ -437,6 +447,7 @@ export function DnsStatusCell({
         warningMessage={warningMessage}
         nftChainId={nftChainId}
       />
+      {dnsEmailModal}
     </div>
   );
 }
