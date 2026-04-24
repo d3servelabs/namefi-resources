@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { LandingComponent } from '@/components/search';
 import Image from 'next/image';
