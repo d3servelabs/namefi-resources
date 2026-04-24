@@ -174,10 +174,10 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                       </TooltipTrigger>
                       <TooltipContent>
                         {bulkAutoRenewState === 'mixed'
-                          ? 'Mixed states - click left to disable all, right to enable all'
+                          ? 'Mixed states — click left to disable all, right to enable all'
                           : bulkAutoRenewState === 'on'
-                            ? 'Auto-renew enabled - click left to disable'
-                            : 'Auto-renew disabled - click right to enable'}
+                            ? 'Auto-renew enabled — click to disable all'
+                            : 'Auto-renew disabled — click to enable all'}
                       </TooltipContent>
                     </Tooltip>
 

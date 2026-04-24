@@ -44,11 +44,18 @@ export const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
       const clickX = e.clientX - rect.left;
       const midpoint = rect.width / 2;
 
-      // UX: Click position determines state (left=off, right=on)
-      // This allows users to explicitly choose the desired state
-      // rather than cycling through states, which is clearer for bulk actions
-      // when domains have mixed auto-renew states
-      const newState = clickX < midpoint ? 'off' : 'on';
+      // For `mixed`, click position decides which way to resolve the selection
+      // (left = disable all, right = enable all). For `on` / `off` a click
+      // toggles the state — otherwise the thumb covers the "correct" side and
+      // users hit a no-op (see clickX vs. thumb offset when state is `on`).
+      const newState: 'off' | 'on' =
+        state === 'mixed'
+          ? clickX < midpoint
+            ? 'off'
+            : 'on'
+          : state === 'on'
+            ? 'off'
+            : 'on';
 
       // Calculate position for potential celebration
       let position: { x: number; y: number } | null = null;
@@ -61,7 +68,7 @@ export const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
 
       onStateChange(newState, position);
     },
-    [onStateChange, disabled, isLoading],
+    [onStateChange, disabled, isLoading, state],
   );
 
   // Keyboard handler for accessibility
