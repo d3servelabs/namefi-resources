@@ -53,15 +53,10 @@ import {
   convertToDrizzlerFilterOptions,
   useDrizzlerServerFilterStrategy,
 } from '@/components/table/filters';
-import {
-  DNS_MANAGEMENT_EMAIL_REQUIRED,
-  EmailRequiredModal,
-} from '@/components/dialogs/email-required-dialog';
 import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
 import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import {
   type RenewalResult,
   useDomainRenewal,
@@ -104,16 +99,12 @@ export function MyDomainsTable(props: {
   const preferencesMutation = useDomainPreferencesMutation();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const tableKind = kind;
-  const [showEmailModal, setShowEmailModal] = useState(false);
   const [listForSaleDialogDomain, setListForSaleDialogDomain] = useState<
     string | null
   >(null);
   const [selectedDomainIds, setSelectedDomainIds] = useState<
     Set<NamefiNormalizedDomain>
   >(() => new Set<NamefiNormalizedDomain>());
-  const [processingDomains, setProcessingDomains] = useState<Set<string>>(
-    () => new Set(),
-  );
   const [batchAction, setBatchAction] = useState<
     'ns' | 'web' | 'mx' | 'ens' | 'forward' | null
   >(null);
@@ -150,21 +141,15 @@ export function MyDomainsTable(props: {
     actions: true,
   };
 
-  const {
-    preferences,
-    setColumnVisibility,
-    setSorting,
-    setPageSize,
-    resetToDefaults,
-    isLoaded,
-  } = useTablePreferences({
-    tableId: `my-domains-${kind}`,
-    defaultPreferences: {
-      columnVisibility: defaultColumnVisibility,
-      sorting: [{ id: 'expirationDate', desc: false }],
-      pageSize: DEFAULT_DOMAIN_LIST_PAGE_SIZE,
-    },
-  });
+  const { preferences, setColumnVisibility, setSorting, setPageSize } =
+    useTablePreferences({
+      tableId: `my-domains-${kind}`,
+      defaultPreferences: {
+        columnVisibility: defaultColumnVisibility,
+        sorting: [{ id: 'expirationDate', desc: false }],
+        pageSize: DEFAULT_DOMAIN_LIST_PAGE_SIZE,
+      },
+    });
 
   const {
     columnVisibility: persistedColumnVisibility,
@@ -193,7 +178,6 @@ export function MyDomainsTable(props: {
     ? mobileColumnVisibility
     : persistedColumnVisibility;
 
-  const { hasEmail } = useEmailPrompt();
   const { renewDomains } = useDomainRenewal();
 
   const handleListForSaleClick = useCallback(
@@ -338,34 +322,14 @@ export function MyDomainsTable(props: {
     [selectedDomainIds, preferencesMutation],
   );
 
-  // Handle renew now with year selection
   const handleRenewNowWithYears = useCallback(
-    async (
+    (
       domainsToRenew: Array<{
         normalizedDomainName: NamefiNormalizedDomain;
         expirationDate?: Date | null;
       }>,
       durationYears: number,
-    ): Promise<RenewalResult[]> => {
-      setProcessingDomains((prev) => {
-        const next = new Set(prev);
-        for (const d of domainsToRenew) {
-          next.add(d.normalizedDomainName);
-        }
-        return next;
-      });
-      try {
-        return await renewDomains(domainsToRenew, durationYears);
-      } finally {
-        setProcessingDomains((prev) => {
-          const next = new Set(prev);
-          for (const d of domainsToRenew) {
-            next.delete(d.normalizedDomainName);
-          }
-          return next;
-        });
-      }
-    },
+    ): Promise<RenewalResult[]> => renewDomains(domainsToRenew, durationYears),
     [renewDomains],
   );
 
@@ -1184,13 +1148,6 @@ export function MyDomainsTable(props: {
 
   return (
     <>
-      <EmailRequiredModal
-        isOpen={showEmailModal}
-        onOpenChange={setShowEmailModal}
-        title={DNS_MANAGEMENT_EMAIL_REQUIRED.title}
-        description={DNS_MANAGEMENT_EMAIL_REQUIRED.description}
-        actionText={DNS_MANAGEMENT_EMAIL_REQUIRED.actionText}
-      />
       <Dialog
         open={listForSaleDialogDomain !== null}
         onOpenChange={(open) => {
