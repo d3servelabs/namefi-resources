@@ -30,7 +30,9 @@ export function computeDsDigest(
   }
   const nameWire = domainToWireFormat(domain);
   const rdataWire = dnskeyToRdata(flags, protocol, algorithm, publicKey);
-  const data = Buffer.concat([nameWire, rdataWire]);
+  const data = new Uint8Array(nameWire.length + rdataWire.length);
+  data.set(nameWire);
+  data.set(rdataWire, nameWire.length);
 
   const hash = createHash(digestTypeName);
   hash.update(data);

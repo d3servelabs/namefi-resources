@@ -13,7 +13,7 @@ import {
 } from '@namefi-astra/storage';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
-import { timingSafeEqual } from 'node:crypto';
+import { validateApiKey } from '#lib/validate-api-key';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { and, eq } from 'drizzle-orm';
@@ -55,13 +55,7 @@ const generateLogoInputSchema = z.object({
 
 publicAiRouter.post('/generate-logo', async (c) => {
   const apiKey = c.req.header('x-api-key');
-  const authKey = secrets.API_AUTH_KEY;
-
-  if (
-    !apiKey ||
-    apiKey.length !== authKey.length ||
-    !timingSafeEqual(Buffer.from(apiKey), Buffer.from(authKey))
-  ) {
+  if (!validateApiKey(apiKey, secrets.API_AUTH_KEY)) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 
@@ -200,13 +194,7 @@ const getGenerationQuerySchema = z.object({
 
 publicAiRouter.get('/generations/:id', async (c) => {
   const apiKey = c.req.header('x-api-key');
-  const authKey = secrets.API_AUTH_KEY;
-
-  if (
-    !apiKey ||
-    apiKey.length !== authKey.length ||
-    !timingSafeEqual(Buffer.from(apiKey), Buffer.from(authKey))
-  ) {
+  if (!validateApiKey(apiKey, secrets.API_AUTH_KEY)) {
     return c.json({ error: 'Unauthorized' }, 401);
   }
 

@@ -14,7 +14,9 @@ export async function decryptEppAuthCode(
   encryptionKeyId: string,
 ) {
   const input = {
-    CiphertextBlob: Buffer.from(encryptedAuthorizationCode, 'base64'),
+    CiphertextBlob: Uint8Array.from(
+      Buffer.from(encryptedAuthorizationCode, 'base64'),
+    ),
     KeyId: encryptionKeyId,
   };
   const command = new DecryptCommand(input);
@@ -32,7 +34,7 @@ export async function encryptEppAuthCode(eppAuthorizationCode: string) {
   }
   const input = {
     KeyId: encryptionKeyId,
-    Plaintext: Buffer.from(eppAuthorizationCode, 'utf-8'),
+    Plaintext: Uint8Array.from(Buffer.from(eppAuthorizationCode, 'utf-8')),
   };
   const command = new EncryptCommand(input);
   const { CiphertextBlob, KeyId } = await kmsClient.send(command);

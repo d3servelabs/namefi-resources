@@ -131,14 +131,12 @@ export type InteractionLoggingEventAugmentation = Pick<
 >;
 
 // Extract augmentation type for a specific event name
-export type AugmentationFor<T extends InteractionLoggingEventName> = Extract<
-  InteractionLoggingEvent,
-  { name: T }
-> extends {
-  augmentation?: infer A;
-}
-  ? A
-  : never;
+export type AugmentationFor<T extends InteractionLoggingEventName> =
+  Extract<InteractionLoggingEvent, { name: T }> extends {
+    augmentation?: infer A;
+  }
+    ? A
+    : never;
 
 // Extract partial event (name + augmentation) for a specific event name
 export type PartialEventFor<T extends InteractionLoggingEventName> = Extract<

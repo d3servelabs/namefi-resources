@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { secrets } from '#lib/env';
+import { validateApiKey } from '#lib/validate-api-key';
 import {
   createLogger,
   getLogLevel,
@@ -12,7 +13,7 @@ const logger = createLogger({ context: 'LOG_LEVEL_ROUTER' });
 
 logLevelRouter.get('/', (c) => {
   const key = c.req.header('x-namefi-key') ?? c.req.query('key');
-  if (key !== secrets.API_AUTH_KEY) {
+  if (!validateApiKey(key, secrets.API_AUTH_KEY)) {
     logger.fatal(new Error('Unauthorized request to "/log-level"'));
     c.status(401);
     return c.json({ error: 'Unauthorized' });
@@ -26,7 +27,7 @@ logLevelRouter.get('/', (c) => {
 
 logLevelRouter.post('/', async (c) => {
   const key = c.req.header('x-namefi-key') ?? c.req.query('key');
-  if (key !== secrets.API_AUTH_KEY) {
+  if (!validateApiKey(key, secrets.API_AUTH_KEY)) {
     logger.fatal(new Error('Unauthorized request to "/log-level"'));
     c.status(401);
     return c.json({ error: 'Unauthorized' });

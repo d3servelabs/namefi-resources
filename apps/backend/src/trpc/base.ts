@@ -31,13 +31,13 @@ import { eq, sql } from 'drizzle-orm';
 import { requireUserAuth } from '#lib/auth';
 import { triggerLoginNotification } from '#lib/login-notification';
 import type { RequestInfo } from '#lib/request-info';
+import { validateApiKey } from '#lib/validate-api-key';
 import {
   audit,
   createAuditRecord,
   type CreateAuditRecordParams,
   type AuditActorExtraInfo,
 } from '#lib/auditor';
-import { timingSafeEqual } from 'crypto';
 import { getCookie } from 'hono/cookie';
 import { getAddress } from 'viem';
 import {
@@ -142,13 +142,7 @@ type ValidateApiKeyAndGetDetailsResult =
 async function validateApiKeyAndGetDetails(
   apiKeyFromHeader: string | undefined | null,
 ): Promise<ValidateApiKeyAndGetDetailsResult> {
-  if (
-    !apiKeyFromHeader ||
-    !timingSafeEqual(
-      Buffer.from(apiKeyFromHeader),
-      Buffer.from(secrets.API_AUTH_KEY),
-    )
-  ) {
+  if (!validateApiKey(apiKeyFromHeader, secrets.API_AUTH_KEY)) {
     return {
       valid: false,
     };

@@ -1,4 +1,3 @@
-import { timingSafeEqual } from 'node:crypto';
 import { config, secrets } from '#lib/env';
 import { getBigQueryAuditClient } from '#lib/bigquery_audit_client';
 import type {
@@ -6,6 +5,7 @@ import type {
   ListAuditLogsParams,
 } from '#lib/bigquery_audit_client';
 import { createLogger } from '#lib/logger';
+import { validateApiKey } from '#lib/validate-api-key';
 import { Hono } from 'hono';
 import type { Context } from 'hono';
 
@@ -68,14 +68,8 @@ function isAuthorized(c: Context): boolean {
 
   return (
     username === BASIC_AUTH_USERNAME &&
-    safeEqualString(password, secrets.API_AUTH_KEY)
+    validateApiKey(password, secrets.API_AUTH_KEY)
   );
-}
-
-function safeEqualString(value: string, expected: string): boolean {
-  if (value.length !== expected.length) return false;
-
-  return timingSafeEqual(Buffer.from(value), Buffer.from(expected));
 }
 
 function parseListParams(c: Context): ListAuditLogsParams {

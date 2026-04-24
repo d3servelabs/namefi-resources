@@ -1,5 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { secrets } from '#lib/env';
+import { validateApiKey } from '#lib/validate-api-key';
 import { protectedProcedure, publicProcedure, t } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { huntContract } from '@namefi-astra/common/contract/hunt-contract';
@@ -40,7 +41,7 @@ import {
 const verifyApiKey = t.middleware(async ({ ctx, next }) => {
   const apiKey = ctx.req.header('x-api-key');
 
-  if (apiKey !== secrets.API_AUTH_KEY) {
+  if (!validateApiKey(apiKey, secrets.API_AUTH_KEY)) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message: 'Invalid API key',

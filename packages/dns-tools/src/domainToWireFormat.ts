@@ -12,10 +12,10 @@
  * This format is used in DNSSEC digest computations, such as for DS record generation.
  *
  * @param domain - The domain name to convert, e.g., "example.com"
- * @returns A Buffer representing the domain name in DNS wire format
+ * @returns A Uint8Array representing the domain name in DNS wire format
  */
 
-export function domainToWireFormat(_domain: string): Buffer {
+export function domainToWireFormat(_domain: string): Uint8Array {
   if (!_domain || _domain.trim().length === 0) {
     throw new Error('Domain cannot be empty');
   }
@@ -26,22 +26,32 @@ export function domainToWireFormat(_domain: string): Buffer {
     throw new Error('Domain name too long (max 253 characters)');
   }
 
-  const wire = Buffer.concat(
-    domain
-      .split('.')
-      .map((label) => {
-        // Validate label length (RFC 1035)
-        if (label.length === 0 || label.length > 63) {
-          throw new Error(
-            `Invalid label length: ${label.length} (must be 1-63 characters)`,
-          );
-        }
-        const len = Buffer.from([label.length]);
-        const data = Buffer.from(label, 'ascii');
-        return Buffer.concat([len, data]);
-      })
-      .concat(Buffer.from([0])), // null root
-  );
+  const labels = domain.split('.').map((label) => {
+    // Validate label length (RFC 1035)
+    if (label.length === 0 || label.length > 63) {
+      throw new Error(
+        `Invalid label length: ${label.length} (must be 1-63 characters)`,
+      );
+    }
+
+    const data = Uint8Array.from(Buffer.from(label, 'ascii'));
+    return Uint8Array.from([label.length, ...data]);
+  });
+
+  const wire = _concatBytes(...labels, Uint8Array.of(0)); // null root
 
   return wire;
+}
+
+function _concatBytes(...parts: ReadonlyArray<Uint8Array>): Uint8Array {
+  const totalLength = parts.reduce((sum, part) => sum + part.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+
+  for (const part of parts) {
+    result.set(part, offset);
+    offset += part.length;
+  }
+
+  return result;
 }

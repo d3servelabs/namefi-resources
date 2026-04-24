@@ -1911,7 +1911,9 @@
       const customInput = document.getElementById(type + 'CustomColor');
 
       // Update selection UI
-      container.querySelectorAll('.color-preset').forEach(b => b.classList.remove('selected'));
+      container.querySelectorAll('.color-preset').forEach((b) => {
+        b.classList.remove('selected');
+      });
       btn.classList.add('selected');
 
       const color = btn.dataset.color;
@@ -1936,7 +1938,11 @@
     function setupProminenceOptions() {
       document.querySelectorAll('#prominenceTrack .prominence-option').forEach(opt => {
         opt.addEventListener('click', () => {
-          document.querySelectorAll('#prominenceTrack .prominence-option').forEach(o => o.classList.remove('selected'));
+          document
+            .querySelectorAll('#prominenceTrack .prominence-option')
+            .forEach((o) => {
+              o.classList.remove('selected');
+            });
           opt.classList.add('selected');
           config.prominence = opt.dataset.value;
           updatePreview();

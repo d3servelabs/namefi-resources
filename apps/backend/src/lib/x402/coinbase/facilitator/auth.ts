@@ -185,7 +185,7 @@ async function buildEdwardsJWT(
  * @returns {string} The generated nonce.
  */
 function nonce(): string {
-  return Buffer.from(randomBytes(16)).toString('hex');
+  return randomBytes(16).toString('hex');
 }
 
 /**

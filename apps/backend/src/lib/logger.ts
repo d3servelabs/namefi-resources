@@ -6,6 +6,10 @@ import pinoPretty from 'pino-pretty';
 import { dropWhile, isNotNil, mergeDeepRight, pickBy } from 'ramda';
 import superjson from 'superjson';
 
+const inspector = _inspector as typeof _inspector & {
+  console?: typeof console;
+};
+
 const _extraBindingsStore = new AsyncLocalStorage<Record<string, any>>();
 
 // Import execution context from the dedicated module
@@ -25,7 +29,6 @@ function _bindLogData(bindings: Record<string, any>) {
 
 Error.stackTraceLimit = 100;
 
-const inspector = _inspector;
 if (process.env.INSPECTOR_PORT) {
   inspector.open(Number(process.env.INSPECTOR_PORT));
 }
@@ -139,13 +142,13 @@ function getStreams(): StreamsArray {
               const obj = JSON.parse(msg);
               if (inspector.url()) {
                 if (obj.level < 30) {
-                  inspector.console.debug(obj);
+                  inspector.console?.debug(obj);
                 } else if (obj.level >= 50) {
-                  inspector.console.error(obj);
+                  inspector.console?.error(obj);
                 } else if (obj.level >= 40) {
-                  inspector.console.warn(obj);
+                  inspector.console?.warn(obj);
                 } else {
-                  inspector.console.log(obj);
+                  inspector.console?.log(obj);
                 }
               }
             } catch (error) {

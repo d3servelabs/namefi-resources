@@ -19,18 +19,42 @@ export function dnskeyToRdata(
   protocol: number,
   algorithm: number,
   publicKey: string,
-): Buffer {
-  const rdata = Buffer.alloc(4);
-  rdata.writeUInt16BE(flags, 0); // 2 bytes
-  rdata.writeUInt8(protocol, 2); // 1 byte
-  rdata.writeUInt8(algorithm, 3); // 1 byte
+): Uint8Array {
+  if (!Number.isInteger(flags) || flags < 0 || flags > 0xffff) {
+    throw new Error('Flags must be an integer between 0 and 65535');
+  }
+  if (!Number.isInteger(protocol) || protocol < 0 || protocol > 0xff) {
+    throw new Error('Protocol must be an integer between 0 and 255');
+  }
+  if (!Number.isInteger(algorithm) || algorithm < 0 || algorithm > 0xff) {
+    throw new Error('Algorithm must be an integer between 0 and 255');
+  }
 
-  const pubkeyBuf = _base64ToBuffer(publicKey);
-  return Buffer.concat([rdata, pubkeyBuf]);
+  const rdata = new Uint8Array(4);
+  const view = new DataView(rdata.buffer);
+  view.setUint16(0, flags); // 2 bytes, big-endian by default
+  rdata[2] = protocol; // 1 byte
+  rdata[3] = algorithm; // 1 byte
+
+  const publicKeyBytes = _base64ToBytes(publicKey);
+  return _concatBytes(rdata, publicKeyBytes);
 }
 /**
  * Base64-decodes the public key string
  */
-function _base64ToBuffer(b64: string): Buffer {
-  return Buffer.from(b64.replace(/\s+/g, ''), 'base64');
+function _base64ToBytes(b64: string): Uint8Array {
+  return Uint8Array.from(Buffer.from(b64.replace(/\s+/g, ''), 'base64'));
+}
+
+function _concatBytes(...parts: ReadonlyArray<Uint8Array>): Uint8Array {
+  const totalLength = parts.reduce((sum, part) => sum + part.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+
+  for (const part of parts) {
+    result.set(part, offset);
+    offset += part.length;
+  }
+
+  return result;
 }

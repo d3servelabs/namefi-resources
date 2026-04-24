@@ -80,10 +80,11 @@ export async function sendFrame(
   xml: string,
 ): Promise<void> {
   const { length } = encodeFrame(xml);
-  const xmlBuf = Buffer.from(xml, 'utf8');
-  const frame = Buffer.alloc(length);
-  frame.writeUInt32BE(length, 0);
-  xmlBuf.copy(frame, 4);
+  const xmlBytes = Uint8Array.from(Buffer.from(xml, 'utf8'));
+  const frame = new Uint8Array(length);
+  const view = new DataView(frame.buffer);
+  view.setUint32(0, length);
+  frame.set(xmlBytes, 4);
 
   await new Promise<void>((resolve, reject) => {
     conn.socket.write(frame, (err) => {
@@ -98,21 +99,25 @@ export async function readFrame(
   opts: { timeoutMs?: number } = {},
 ): Promise<string> {
   const { socket } = conn;
-  let buffer = Buffer.alloc(0);
+  let buffer: Uint8Array<ArrayBufferLike> = new Uint8Array(0);
   let expectedLength: number | null = null;
 
   return new Promise<string>((resolve, reject) => {
     const onData = (chunk: Buffer) => {
-      buffer = Buffer.concat([buffer, chunk]);
+      buffer = concatBytes(buffer, Uint8Array.from(chunk));
 
       if (expectedLength === null && buffer.length >= 4) {
-        expectedLength = buffer.readUInt32BE(0);
+        expectedLength = new DataView(
+          buffer.buffer,
+          buffer.byteOffset,
+          buffer.byteLength,
+        ).getUint32(0);
       }
 
       if (expectedLength !== null && buffer.length >= expectedLength) {
         const xmlBuf = buffer.slice(4, expectedLength);
         cleanup();
-        resolve(xmlBuf.toString('utf8'));
+        resolve(Buffer.from(xmlBuf).toString('utf8'));
       }
     };
 
@@ -150,4 +155,17 @@ export async function readFrame(
 export function closeConnection(conn: EppConnection): void {
   if (conn.socket.destroyed) return;
   conn.socket.end();
+}
+
+function concatBytes(...parts: ReadonlyArray<Uint8Array>): Uint8Array {
+  const totalLength = parts.reduce((sum, part) => sum + part.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+
+  for (const part of parts) {
+    result.set(part, offset);
+    offset += part.length;
+  }
+
+  return result;
 }

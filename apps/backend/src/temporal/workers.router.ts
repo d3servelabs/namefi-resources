@@ -12,6 +12,7 @@ import type { State, Worker } from '@temporalio/worker';
 import { Hono } from 'hono';
 import { forEachObjIndexed } from 'ramda';
 import { secrets } from '../lib/env';
+import { validateApiKey } from '../lib/validate-api-key';
 import { WORKERS } from './workers';
 
 const router = new Hono();
@@ -80,7 +81,7 @@ router.get('/health', async (c) => {
  */
 router.post('/workers/stop', async (c) => {
   // Verify API key authentication
-  if (c.req.header('x-api-key') !== secrets.API_AUTH_KEY) {
+  if (!validateApiKey(c.req.header('x-api-key'), secrets.API_AUTH_KEY)) {
     c.status(402);
     return c.text('UNAUTHORIZED');
   }
@@ -134,7 +135,7 @@ router.post('/workers/stop', async (c) => {
  */
 router.post('/workers/start', async (c) => {
   // Verify API key authentication
-  if (c.req.header('x-api-key') !== secrets.API_AUTH_KEY) {
+  if (!validateApiKey(c.req.header('x-api-key'), secrets.API_AUTH_KEY)) {
     c.status(402);
     return c.text('UNAUTHORIZED');
   }

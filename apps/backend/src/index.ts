@@ -35,6 +35,7 @@ import { logLevelRouter } from './routers/log-level';
 import { statsRouter } from './routers/stats';
 import { tlsRouter } from './routers/tls';
 import { browserLogsProxyRouter } from './routers/browser-logs-proxy';
+import { validateApiKey } from './lib/validate-api-key';
 import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema-def';
 import { rdapRouter } from './routers/rdap';
 import { whoisRouter } from './routers/whois';
@@ -194,7 +195,7 @@ app.get('/configfi', (c) => {
 
 app.get('/secretsfi', (c) => {
   const key = c.req.header('x-namefi-key') ?? c.req.query('key');
-  if (key !== secrets.API_AUTH_KEY) {
+  if (!validateApiKey(key, secrets.API_AUTH_KEY)) {
     logger.warn('Unauthorized request to "/secretsfi"');
     c.status(401);
     return c.json({ error: 'Unauthorized' });

@@ -9,6 +9,7 @@ import { cors } from 'hono/cors';
 import { logger as HonoLogger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config, secrets } from '#lib/env';
+import { validateApiKey } from '#lib/validate-api-key';
 import workersRouter from './workers.router';
 import { logLevelRouter } from '../routers/log-level';
 import { logger } from '#lib/logger';
@@ -35,7 +36,7 @@ async function main() {
 
   app.get('/secretsfi', (c) => {
     const key = c.req.header('x-namefi-key') ?? c.req.query('key');
-    if (key !== secrets.API_AUTH_KEY) {
+    if (!validateApiKey(key, secrets.API_AUTH_KEY)) {
       c.status(401);
       return c.json({ error: 'Unauthorized' });
     }

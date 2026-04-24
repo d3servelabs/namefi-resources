@@ -128,5 +128,10 @@
     "formatter": {
       "quoteStyle": "single"
     }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   }
 }

@@ -13,14 +13,16 @@ const ENCRYPTION_IV_BYTES = 12;
 
 type EncryptionVersion = typeof ENCRYPTION_VERSION;
 
-const deriveEncryptionKey = (privateKey: string): Buffer => {
+const deriveEncryptionKey = (privateKey: string): Uint8Array => {
   if (!privateKey) {
     throw new Error(
       'Private key is required for x402 payment payload encryption',
     );
   }
 
-  return createHash('sha256').update(privateKey, 'utf8').digest();
+  return Uint8Array.from(
+    createHash('sha256').update(privateKey, 'utf8').digest(),
+  );
 };
 
 function encryptX402Value({
@@ -31,28 +33,28 @@ function encryptX402Value({
   privateKey: string;
 }): string {
   const key = deriveEncryptionKey(privateKey);
-  const iv = randomBytes(ENCRYPTION_IV_BYTES);
+  const iv = Uint8Array.from(randomBytes(ENCRYPTION_IV_BYTES));
   const cipher = createCipheriv(ENCRYPTION_ALGORITHM, key, iv);
 
-  const ciphertext = Buffer.concat([
-    cipher.update(plaintext, 'utf8'),
-    cipher.final(),
-  ]);
-  const authTag = cipher.getAuthTag();
+  const ciphertext = concatBytes(
+    Uint8Array.from(cipher.update(plaintext, 'utf8')),
+    Uint8Array.from(cipher.final()),
+  );
+  const authTag = Uint8Array.from(cipher.getAuthTag());
 
   return [
     ENCRYPTION_VERSION,
-    iv.toString('base64url'),
-    authTag.toString('base64url'),
-    ciphertext.toString('base64url'),
+    Buffer.from(iv).toString('base64url'),
+    Buffer.from(authTag).toString('base64url'),
+    Buffer.from(ciphertext).toString('base64url'),
   ].join(ENCRYPTION_DELIMITER);
 }
 
 function parseEncryptedX402Value(encryptedValue: string): {
   version: EncryptionVersion;
-  iv: Buffer;
-  authTag: Buffer;
-  ciphertext: Buffer;
+  iv: Uint8Array;
+  authTag: Uint8Array;
+  ciphertext: Uint8Array;
 } {
   if (!encryptedValue) {
     throw new Error('Encrypted x402 payload value is required');
@@ -73,9 +75,9 @@ function parseEncryptedX402Value(encryptedValue: string): {
 
   return {
     version,
-    iv: Buffer.from(ivBase64, 'base64url'),
-    authTag: Buffer.from(authTagBase64, 'base64url'),
-    ciphertext: Buffer.from(ciphertextBase64, 'base64url'),
+    iv: Uint8Array.from(Buffer.from(ivBase64, 'base64url')),
+    authTag: Uint8Array.from(Buffer.from(authTagBase64, 'base64url')),
+    ciphertext: Uint8Array.from(Buffer.from(ciphertextBase64, 'base64url')),
   };
 }
 
@@ -92,10 +94,25 @@ function decryptX402Value({
   const decipher = createDecipheriv(ENCRYPTION_ALGORITHM, key, parsed.iv);
   decipher.setAuthTag(parsed.authTag);
 
-  return Buffer.concat([
-    decipher.update(parsed.ciphertext),
-    decipher.final(),
-  ]).toString('utf8');
+  return Buffer.from(
+    concatBytes(
+      Uint8Array.from(decipher.update(parsed.ciphertext)),
+      Uint8Array.from(decipher.final()),
+    ),
+  ).toString('utf8');
+}
+
+function concatBytes(...parts: ReadonlyArray<Uint8Array>): Uint8Array {
+  const totalLength = parts.reduce((sum, part) => sum + part.length, 0);
+  const result = new Uint8Array(totalLength);
+  let offset = 0;
+
+  for (const part of parts) {
+    result.set(part, offset);
+    offset += part.length;
+  }
+
+  return result;
 }
 
 function resolvePayloadRecord(
