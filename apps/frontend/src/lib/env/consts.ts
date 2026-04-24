@@ -1,5 +1,6 @@
 export const POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES = [
   'aave',
+  'uniswap',
   '0x.city',
   'token.com',
   'taylor.cv',
