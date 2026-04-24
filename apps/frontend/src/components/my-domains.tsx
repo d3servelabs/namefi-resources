@@ -3,18 +3,8 @@
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { PageShell } from '@/components/page-shell';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@namefi-astra/ui/components/shadcn/table';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
-
-import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   convertToDrizzlerFilterOptions,
@@ -42,23 +32,23 @@ import {
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { triggerCelebrationAtPosition } from '@/components/my-domains/confetti-celebration';
 import { AutoRenewToggle } from '@/components/my-domains/auto-renew-toggle';
+import { ActionTooltip } from '@/components/my-domains/action-tooltip';
+import { MyDomainsEmptyPlaceholder } from '@/components/my-domains/empty-placeholder';
+import { LoadingSkeletons } from '@/components/my-domains/loading-skeletons';
+import { RenewPricePremiumInfo } from '@/components/my-domains/renew-price-premium-info';
+import { OtherWalletOrdersTable } from '@/components/my-domains/other-wallet-orders-table';
+import { safeToUnicode } from '@/components/my-domains/utils';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import type {
-  ColumnDef,
-  SortingState,
-  VisibilityState,
-} from '@tanstack/react-table';
+import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import {
   Loader2,
-  SearchIcon,
   MoreVertical,
   ExternalLink,
   ShoppingCart,
@@ -66,7 +56,6 @@ import {
 import Link from 'next/link';
 import {
   type FC,
-  type HTMLAttributes,
   Suspense,
   useCallback,
   useEffect,
@@ -82,13 +71,6 @@ import {
 } from 'date-fns';
 import dynamic from 'next/dynamic';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
-
-// Lazy-load the floating action panel to keep motion/react and @number-flow/react
-// out of the initial /domains client bundle
-const FloatingActionPanel = dynamic(
-  () => import('@/components/my-domains/floating-action-panel'),
-  { ssr: false },
-);
 import {
   Tabs,
   TabsContent,
@@ -124,33 +106,21 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
 import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
-import {
-  CalendarPlus,
-  BadgeDollarSign,
-  Compass,
-  Server,
-  Globe,
-  Mail,
-  Hexagon,
-  Link as LinkIcon,
-  X,
-} from 'lucide-react';
+import { BadgeDollarSign, Compass } from 'lucide-react';
+
+// Lazy-load the floating action panel to keep motion/react and @number-flow/react
+// out of the initial /domains client bundle
+const FloatingActionPanel = dynamic(
+  () => import('@/components/my-domains/floating-action-panel'),
+  { ssr: false },
+);
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
-type OtherWalletOrderItem = AppRouterOutput['orders']['getOrderItems'][number];
 
 const truncateWalletAddress = (address: string): string => {
   if (address.length <= 10) return address;
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
-
-function safeToUnicode(domain: string): string {
-  try {
-    return toUnicodeDomainName(domain);
-  } catch {
-    return domain;
-  }
-}
 
 const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
 
@@ -214,33 +184,6 @@ const formatExpirationDateISO = (
 
 // Import BulkAutoRenewState type for use in this file
 type BulkAutoRenewState = 'off' | 'mixed' | 'on';
-
-const RenewPricePremiumInfo: FC<{ domainName: string }> = ({ domainName }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <Tooltip open={open} onOpenChange={setOpen}>
-      <TooltipTrigger
-        render={
-          <button
-            type="button"
-            aria-label={`Renewal price info for ${domainName}`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setOpen((prev) => !prev);
-            }}
-            className="inline-flex size-4 items-center justify-center rounded-full border border-muted-foreground/40 text-[10px] font-semibold leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
-          />
-        }
-      >
-        !
-      </TooltipTrigger>
-      <TooltipContent sideOffset={6}>
-        Premium domains may have a different renewal price.
-      </TooltipContent>
-    </Tooltip>
-  );
-};
 
 // Renew Now Modal Component
 interface RenewNowModalProps {
@@ -431,137 +374,6 @@ const RenewNowModal: FC<RenewNowModalProps> = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
-
-const ActionTooltip: FC<{ label: string; children: React.ReactNode }> = ({
-  label,
-  children,
-}) => {
-  return (
-    <Tooltip>
-      <TooltipTrigger render={<span className="inline-flex" />}>
-        {children}
-      </TooltipTrigger>
-      <TooltipContent sideOffset={6}>{label}</TooltipContent>
-    </Tooltip>
-  );
-};
-
-const LoadingSkeletons: FC = () => (
-  <div className="flex flex-col gap-4">
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[50px]">
-              <Skeleton className="h-4 w-4" />
-            </TableHead>
-            <TableHead>Domain Name</TableHead>
-            <TableHead className="w-[180px]">Renewal</TableHead>
-            <TableHead className="w-[140px]">Renew (USD/yr)</TableHead>
-            <TableHead className="w-[280px]">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {[...new Array(6)].map((_, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                <Skeleton className="h-4 w-4" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-32" />
-              </TableCell>
-              <TableCell>
-                <div className="flex flex-col gap-1.5">
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-3 w-24" />
-                </div>
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-16" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-24" />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  </div>
-);
-
-const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
-  className,
-  children,
-  ...rest
-}: HTMLAttributes<HTMLDivElement>) => {
-  return (
-    <EmptyPlaceholder className={cn('', className)} {...rest}>
-      <div className="flex size-20 items-center justify-center rounded-full bg-muted">
-        <SearchIcon className="size-10 text-muted-foreground" />
-      </div>
-      <EmptyPlaceholder.Title>No domains found</EmptyPlaceholder.Title>
-      <EmptyPlaceholder.Description>
-        Start the search for your next domain by clicking the button below
-      </EmptyPlaceholder.Description>
-      <Button render={<Link href="/" />} nativeButton={false} variant="outline">
-        Search Page
-      </Button>
-    </EmptyPlaceholder>
-  );
-};
-
-const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
-  items,
-}) => {
-  return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Domain</TableHead>
-            <TableHead>NFT Wallet</TableHead>
-            <TableHead className="w-[160px]">Order</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="font-medium">
-                <div>
-                  {safeToUnicode(item.normalizedDomainName)}
-                  {safeToUnicode(item.normalizedDomainName) !==
-                    item.normalizedDomainName && (
-                    <span className="block text-xs text-muted-foreground font-normal">
-                      {item.normalizedDomainName}
-                    </span>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <AddressWithChain
-                  address={item.nftWalletAddress}
-                  chainId={item.nftChainId}
-                />
-              </TableCell>
-              <TableCell>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  render={<Link href={`/orders/${item.orderId}/details`} />}
-                  nativeButton={false}
-                >
-                  <ExternalLink className="h-4 w-4 mr-1" />
-                  View order
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
   );
 };
 
