@@ -14,22 +14,18 @@ import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import {
-  useDomainRenewal,
   type RenewalResult,
+  useDomainRenewal,
 } from '@/hooks/use-domain-renewal';
 import { AddressWithChain } from '@/components/address-with-chain';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
+import { useTRPC, useTRPCClient } from '@/lib/trpc';
+import type {
+  BulkAutoRenewState,
+  DomainRow,
+} from '@/components/my-domains/types';
 import { formatAmountInUSD } from '@/lib/number';
 import { toast } from 'sonner';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@namefi-astra/ui/components/shadcn/select';
-import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { triggerCelebrationAtPosition } from '@/components/my-domains/confetti-celebration';
 import { AutoRenewToggle } from '@/components/my-domains/auto-renew-toggle';
 import { ActionTooltip } from '@/components/my-domains/action-tooltip';
@@ -37,7 +33,17 @@ import { MyDomainsEmptyPlaceholder } from '@/components/my-domains/empty-placeho
 import { LoadingSkeletons } from '@/components/my-domains/loading-skeletons';
 import { RenewPricePremiumInfo } from '@/components/my-domains/renew-price-premium-info';
 import { OtherWalletOrdersTable } from '@/components/my-domains/other-wallet-orders-table';
-import { safeToUnicode } from '@/components/my-domains/utils';
+import { RenewNowModal } from '@/components/my-domains/renew-now-modal';
+import {
+  DEFAULT_DOMAIN_LIST_PAGE_SIZE,
+  formatExpirationDateISO,
+  formatTimeLeft,
+  getCustomRenewalPrice,
+  getRenewalPriceUsdPerYearForDomain,
+  isDomainPossiblyRenewable,
+  safeToUnicode,
+  truncateWalletAddress,
+} from '@/components/my-domains/utils';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
@@ -47,12 +53,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import {
-  Loader2,
-  MoreVertical,
-  ExternalLink,
-  ShoppingCart,
-} from 'lucide-react';
+import { ExternalLink, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 import {
   type FC,
@@ -70,7 +71,6 @@ import {
   isPast,
 } from 'date-fns';
 import dynamic from 'next/dynamic';
-import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import {
   Tabs,
   TabsContent,
@@ -114,268 +114,6 @@ const FloatingActionPanel = dynamic(
   () => import('@/components/my-domains/floating-action-panel'),
   { ssr: false },
 );
-
-type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
-
-const truncateWalletAddress = (address: string): string => {
-  if (address.length <= 10) return address;
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-};
-
-const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
-
-function getRenewalPriceUsdPerYearForDomain(
-  normalizedDomainName: string | null | undefined,
-  renewalPriceUsdPerYearByTld: Map<string, number | null>,
-) {
-  const domainName = normalizedDomainName ?? '';
-  const tld = domainName.split('.').pop()?.toLowerCase() ?? '';
-  return tld === '' ? null : (renewalPriceUsdPerYearByTld.get(tld) ?? null);
-}
-
-// Helper function to format time left with simplified display
-// Returns: "Xd" if less than 30 days, "Xm+" if less than 12 months, "Xy+" if more than a year
-const formatTimeLeft = (
-  expirationDate: string | Date | null | undefined,
-): string => {
-  if (!expirationDate) return '-';
-
-  const expiry = new Date(expirationDate);
-  if (Number.isNaN(expiry.getTime())) return '-';
-
-  const now = new Date();
-  const isExpired = isPast(expiry);
-
-  if (isExpired) return 'Expired';
-
-  const daysLeft = differenceInDays(expiry, now);
-  const monthsLeft = differenceInMonths(expiry, now);
-  const yearsLeft = differenceInYears(expiry, now);
-
-  // Less than 1 full calendar month: show days
-  if (monthsLeft < 1) {
-    return `${daysLeft}d`;
-  }
-
-  // Less than 12 months: show months with + if there are extra days
-  if (monthsLeft < 12) {
-    const extraDays = daysLeft - monthsLeft * 30;
-    return extraDays > 0 ? `${monthsLeft}m+` : `${monthsLeft}m`;
-  }
-
-  // More than a year: show years with + if there are extra months
-  const extraMonths = monthsLeft - yearsLeft * 12;
-  return extraMonths > 0 ? `${yearsLeft}y+` : `${yearsLeft}y`;
-};
-
-// Helper function to format expiration date in ISO format yyyy-mm-dd (UTC)
-// Uses UTC to avoid timezone-shift issues where a UTC midnight date
-// could display as the previous day for users in western timezones
-const formatExpirationDateISO = (
-  expirationDate: string | Date | null | undefined,
-): string => {
-  if (!expirationDate) return '-';
-
-  const expiry = new Date(expirationDate);
-  if (Number.isNaN(expiry.getTime())) return '-';
-
-  return expiry.toISOString().slice(0, 10);
-};
-
-// Import BulkAutoRenewState type for use in this file
-type BulkAutoRenewState = 'off' | 'mixed' | 'on';
-
-// Renew Now Modal Component
-interface RenewNowModalProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  domains: Array<{
-    normalizedDomainName: string;
-    expirationDate: Date | string | null | undefined;
-  }>;
-  renewalPriceUsdPerYearByTld: Map<string, number | null>;
-  getCustomRenewalPrice: (domainName: string) => number | null;
-  onRenew: (
-    domains: Array<{
-      normalizedDomainName: NamefiNormalizedDomain;
-      expirationDate?: Date | null;
-    }>,
-    durationYears: number,
-  ) => Promise<RenewalResult[]>;
-  onSuccess?: () => void;
-}
-
-const RenewNowModal: FC<RenewNowModalProps> = ({
-  isOpen,
-  onOpenChange,
-  domains,
-  renewalPriceUsdPerYearByTld,
-  getCustomRenewalPrice,
-  onRenew,
-  onSuccess,
-}) => {
-  const [selectedYears, setSelectedYears] = useState(1);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  // Reset selectedYears when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setSelectedYears(1);
-    }
-  }, [isOpen]);
-
-  const totalPricePerYear = useMemo(() => {
-    let total = 0;
-    for (const domain of domains) {
-      const customPrice = getCustomRenewalPrice(domain.normalizedDomainName);
-      if (customPrice !== null) {
-        total += customPrice;
-      } else {
-        const price = getRenewalPriceUsdPerYearForDomain(
-          domain.normalizedDomainName,
-          renewalPriceUsdPerYearByTld,
-        );
-        if (price !== null) {
-          total += price;
-        }
-      }
-    }
-    return total;
-  }, [domains, renewalPriceUsdPerYearByTld, getCustomRenewalPrice]);
-
-  const handleRenew = async () => {
-    setIsProcessing(true);
-    try {
-      const results = await onRenew(
-        domains.map((d) => ({
-          normalizedDomainName:
-            d.normalizedDomainName as NamefiNormalizedDomain,
-          expirationDate: d.expirationDate ? new Date(d.expirationDate) : null,
-        })),
-        selectedYears,
-      );
-
-      // Check if any domains were successfully added
-      const successCount = results.filter((r) => r.success).length;
-      if (successCount > 0) {
-        onSuccess?.();
-        onOpenChange(false);
-      } else {
-        // All domains failed - keep modal open so user can adjust
-        // Toast notifications are already shown by the renewDomains hook
-      }
-    } catch (error) {
-      toast.error('Failed to add domains to cart. Please try again.');
-      console.error('Renewal error:', error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            Renew {domains.length === 1 ? 'Domain' : 'Domains'}
-          </DialogTitle>
-          <DialogDescription>
-            {domains.length === 1
-              ? `Renew ${safeToUnicode(domains[0].normalizedDomainName)}`
-              : `Renew ${domains.length} domains`}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4 py-4">
-          {/* Domain list (only show if multiple) */}
-          {domains.length > 1 && (
-            <div className="max-h-32 overflow-y-auto rounded-md border border-border p-2">
-              <ul className="space-y-1 text-sm">
-                {domains.map((d) => (
-                  <li
-                    key={d.normalizedDomainName}
-                    className="text-muted-foreground"
-                  >
-                    {safeToUnicode(d.normalizedDomainName)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Year selection */}
-          <div className="flex items-center justify-between">
-            <Label htmlFor="renewal-years">Renewal Period</Label>
-            <Select
-              value={selectedYears.toString()}
-              onValueChange={(value) => {
-                if (!value) return;
-                setSelectedYears(Number.parseInt(value, 10));
-              }}
-            >
-              <SelectTrigger className="w-32">
-                <SelectValue placeholder="Select years" />
-              </SelectTrigger>
-              <SelectContent>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((year) => (
-                  <SelectItem key={year} value={year.toString()}>
-                    {year} {year === 1 ? 'year' : 'years'}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Price display */}
-          <div className="rounded-lg bg-muted/50 p-4 space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Price per year</span>
-              <span>{formatAmountInUSD(totalPricePerYear)}</span>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between font-medium">
-              <span>
-                Total ({selectedYears} {selectedYears === 1 ? 'year' : 'years'})
-              </span>
-              <span className="text-lg">
-                {formatAmountInUSD(totalPricePerYear * selectedYears)}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={isProcessing}
-          >
-            Cancel
-          </Button>
-          {/* UX: Disable when totalPricePerYear === 0 (pricing unavailable for all domains).
-              This is intentional to prevent user confusion about the cost before checkout.
-              Backend can calculate pricing, but we prefer explicit pricing upfront for better UX. */}
-          <Button
-            onClick={handleRenew}
-            disabled={isProcessing || totalPricePerYear === 0}
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Adding to Cart...
-              </>
-            ) : (
-              <>
-                <ShoppingCart className="w-4 h-4 mr-2" />
-                Add to Cart
-              </>
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
 
 function MyDomainsTable(props: {
   title?: string;
@@ -809,30 +547,6 @@ function MyDomainsTable(props: {
     }
     return map;
   }, [tldPricingQuery.data]);
-
-  /**
-   * Returns a custom fixed renewal price for specific TLDs.
-   *
-   * TLDs: .0x.city, .defi.build, .astra.namefi.io
-   * Price: $5.00
-   * Rationale: Promotional pricing for these specific partner domains.
-   * Reference: See product requirement for Fixed Rate Partner Domains.
-   *
-   * TODO: https://app.clickup.com/t/9009140026/NFI-5260 Prompt for LLM: a deeper search in
-   * entire codebase, especially backend and database to find whether there is a database
-   * that returns the pricing of 0x.city  when user visits 0x.city to register a domain,
-   * then see if you need to update getCustomRenewalPrice a instead of locally hardcoded price
-   */
-  const getCustomRenewalPrice = useCallback((domainName: string) => {
-    if (
-      domainName.endsWith('.0x.city') ||
-      domainName.endsWith('.defi.build') ||
-      domainName.endsWith('.astra.namefi.io')
-    ) {
-      return 5.0;
-    }
-    return null;
-  }, []);
 
   // Ref to hold the latest filtered domains for filter suggestions
   // This avoids circular dependencies between filter strategy and filtered data
@@ -1639,7 +1353,6 @@ function MyDomainsTable(props: {
       autoEnsCache,
       isMobile,
       renewalPriceUsdPerYearByTld,
-      getCustomRenewalPrice,
     ],
   );
 
@@ -1932,14 +1645,3 @@ const MyDomainsContent = () => {
     </div>
   );
 };
-
-function isDomainPossiblyRenewable(expirationDate?: Date | string | null) {
-  if (!expirationDate) {
-    return false;
-  }
-  const expiry = new Date(expirationDate);
-  if (Number.isNaN(expiry.getTime())) {
-    return false;
-  }
-  return expiry > new Date();
-}
