@@ -67,7 +67,7 @@ import {
   useDomainRenewal,
 } from '@/hooks/use-domain-renewal';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { useTRPC, useTRPCClient } from '@/lib/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { formatAmountInUSD } from '@/lib/number';
 import { ActionTooltip } from './action-tooltip';
 import { AutoRenewToggle } from './auto-renew-toggle';
@@ -75,6 +75,7 @@ import { triggerCelebrationAtPosition } from './confetti-celebration';
 import { RenewNowModal } from './renew-now-modal';
 import { RenewPricePremiumInfo } from './renew-price-premium-info';
 import type { BulkAutoRenewState, DomainRow } from './types';
+import { useDomainPreferencesMutation } from './use-domain-preferences-mutation';
 import {
   DEFAULT_DOMAIN_LIST_PAGE_SIZE,
   formatExpirationDateISO,
@@ -100,7 +101,7 @@ export function MyDomainsTable(props: {
   const { title, domains, kind } = props;
 
   const trpc = useTRPC();
-  const trpcClient = useTRPCClient();
+  const preferencesMutation = useDomainPreferencesMutation();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const tableKind = kind;
   const [showEmailModal, setShowEmailModal] = useState(false);
@@ -125,24 +126,14 @@ export function MyDomainsTable(props: {
     }>
   >([]);
 
-  // State for auto-renewal toggling
+  // Per-domain pending spinners; the actual auto-renew/auto-ens values live in
+  // the tRPC query cache and are patched optimistically by
+  // useDomainPreferencesMutation.
   const [togglingAutoRenew, setTogglingAutoRenew] = useState<Set<string>>(
     () => new Set(),
   );
-
-  // Cache for domain auto-renewal status
-  const [autoRenewCache, setAutoRenewCache] = useState<Map<string, boolean>>(
-    () => new Map(),
-  );
-
-  // State for auto-ENS toggling
   const [togglingAutoEns, setTogglingAutoEns] = useState<Set<string>>(
     () => new Set(),
-  );
-
-  // Cache for domain auto-ENS status
-  const [autoEnsCache, setAutoEnsCache] = useState<Map<string, boolean>>(
-    () => new Map(),
   );
   const [page, setPage] = useState(1);
   const [domainSearch, setDomainSearch] = useState('');
@@ -202,47 +193,6 @@ export function MyDomainsTable(props: {
     ? mobileColumnVisibility
     : persistedColumnVisibility;
 
-  // Initialize autoRenewCache from domain data when domains are loaded
-  useEffect(() => {
-    setAutoRenewCache((prev) => {
-      const next = new Map(prev);
-      let changed = false;
-
-      for (const domain of domains) {
-        const domainName = domain.normalizedDomainName;
-        if (!domainName || prev.has(domainName)) continue;
-
-        // Always add domain to cache, defaulting to false if autoRenewEnabled is undefined
-        // This ensures the cache is populated for all domains so bulk state calculation works correctly
-        next.set(domainName, domain.autoRenewEnabled ?? false);
-        changed = true;
-      }
-
-      return changed ? next : prev;
-    });
-  }, [domains]);
-
-  // Initialize autoEnsCache from domain data when domains are loaded
-  useEffect(() => {
-    setAutoEnsCache((prev) => {
-      const next = new Map(prev);
-      let changed = false;
-
-      for (const domain of domains) {
-        const domainName = domain.normalizedDomainName;
-        if (!domainName || prev.has(domainName)) continue;
-
-        // Use autoEnsEnabled from the backend if available
-        if (domain.autoEnsEnabled !== undefined) {
-          next.set(domainName, domain.autoEnsEnabled);
-          changed = true;
-        }
-      }
-
-      return changed ? next : prev;
-    });
-  }, [domains]);
-
   const { hasEmail } = useEmailPrompt();
   const { renewDomains } = useDomainRenewal();
 
@@ -257,50 +207,32 @@ export function MyDomainsTable(props: {
     [logEventWithInteractionLoggers, tableKind],
   );
 
-  // Handle auto-renewal toggle for a single domain
+  // Handle auto-renewal toggle for a single domain. Optimistic update + rollback
+  // are handled by useDomainPreferencesMutation; this handler only tracks the
+  // per-domain spinner and surfaces toasts + celebration.
   const handleToggleAutoRenew = useCallback(
     async (
       domainName: string,
       enabled: boolean,
       position: { x: number; y: number } | null,
     ) => {
-      // Snapshot previous value before any state updates (safe for rollback)
-      const prevValue = autoRenewCache.get(domainName) ?? false;
-
       setTogglingAutoRenew((prev) => {
         const next = new Set(prev);
         next.add(domainName);
         return next;
       });
       try {
-        // Optimistic update
-        setAutoRenewCache((prev) => {
-          const next = new Map(prev);
-          next.set(domainName, enabled);
-          return next;
-        });
-
-        await trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
+        await preferencesMutation.mutateAsync({
           domainName: domainName as NamefiNormalizedDomain,
-          domainPreferencesAndConfig: {
-            autoRenewEnabled: enabled,
-          },
+          domainPreferencesAndConfig: { autoRenewEnabled: enabled },
         });
         toast.success(
           `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${domainName}`,
         );
-
-        // Trigger celebration after successful enable
         if (enabled && position) {
           triggerCelebrationAtPosition(position.x, position.y);
         }
-      } catch (_error) {
-        // Revert optimistic update to actual previous value
-        setAutoRenewCache((prev) => {
-          const next = new Map(prev);
-          next.set(domainName, prevValue);
-          return next;
-        });
+      } catch {
         toast.error(`Failed to update auto-renew for ${domainName}`);
       } finally {
         setTogglingAutoRenew((prev) => {
@@ -310,44 +242,25 @@ export function MyDomainsTable(props: {
         });
       }
     },
-    [trpcClient, autoRenewCache],
+    [preferencesMutation],
   );
 
-  // Handle auto-ENS toggle for a single domain
   const handleToggleAutoEns = useCallback(
     async (domainName: string, enabled: boolean) => {
-      // Snapshot previous value before any state updates (safe for rollback)
-      const prevValue = autoEnsCache.get(domainName) ?? false;
-
       setTogglingAutoEns((prev) => {
         const next = new Set(prev);
         next.add(domainName);
         return next;
       });
       try {
-        // Optimistic update
-        setAutoEnsCache((prev) => {
-          const next = new Map(prev);
-          next.set(domainName, enabled);
-          return next;
-        });
-
-        await trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
+        await preferencesMutation.mutateAsync({
           domainName: domainName as NamefiNormalizedDomain,
-          domainPreferencesAndConfig: {
-            autoEnsEnabled: enabled,
-          },
+          domainPreferencesAndConfig: { autoEnsEnabled: enabled },
         });
         toast.success(
           `AutoENS ${enabled ? 'enabled' : 'disabled'} for ${domainName}`,
         );
-      } catch (_error) {
-        // Revert optimistic update to actual previous value
-        setAutoEnsCache((prev) => {
-          const next = new Map(prev);
-          next.set(domainName, prevValue);
-          return next;
-        });
+      } catch {
         toast.error(`Failed to update AutoENS for ${domainName}`);
       } finally {
         setTogglingAutoEns((prev) => {
@@ -357,126 +270,72 @@ export function MyDomainsTable(props: {
         });
       }
     },
-    [trpcClient, autoEnsCache],
+    [preferencesMutation],
   );
 
-  // Handle batch auto-renewal toggle
+  // Batch toggle: fires the mutation per domain with a concurrency limit. Each
+  // mutation is independently optimistic — succeeded rows stay flipped while
+  // failed rows are rolled back by the hook's onError.
   const handleBatchToggleAutoRenew = useCallback(
     async (enabled: boolean, position?: { x: number; y: number } | null) => {
       const domainsToUpdate = Array.from(selectedDomainIds);
       if (domainsToUpdate.length === 0) return;
 
-      // Snapshot original states synchronously (safe for rollback)
-      // Must be done before any state updates to avoid React Strict Mode issues
-      const originalStates = new Map<string, boolean>();
-      for (const d of domainsToUpdate) {
-        originalStates.set(d, autoRenewCache.get(d) ?? false);
+      setTogglingAutoRenew((prev) => {
+        const next = new Set(prev);
+        for (const d of domainsToUpdate) next.add(d);
+        return next;
+      });
+
+      const ConcurrencyLimit = 8;
+      const results: PromiseSettledResult<unknown>[] = [];
+      for (let i = 0; i < domainsToUpdate.length; i += ConcurrencyLimit) {
+        const chunk = domainsToUpdate.slice(i, i + ConcurrencyLimit);
+        const chunkResults = await Promise.allSettled(
+          chunk.map((domainName) =>
+            preferencesMutation.mutateAsync({
+              domainName: domainName as NamefiNormalizedDomain,
+              domainPreferencesAndConfig: { autoRenewEnabled: enabled },
+            }),
+          ),
+        );
+        results.push(...chunkResults);
+      }
+
+      const succeeded: string[] = [];
+      const failed: string[] = [];
+      results.forEach((result, index) => {
+        const domainName = domainsToUpdate[index];
+        if (result.status === 'fulfilled') succeeded.push(domainName);
+        else failed.push(domainName);
+      });
+
+      if (failed.length > 0) {
+        toast.error(
+          `Failed to update ${failed.length} of ${domainsToUpdate.length} domains`,
+        );
+      }
+      if (succeeded.length > 0) {
+        toast.success(
+          `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${succeeded.length} domain${succeeded.length > 1 ? 's' : ''}`,
+        );
+      }
+      if (enabled && succeeded.length > 0) {
+        const celebrationX = position?.x ?? 0.5;
+        const celebrationY = position?.y ?? 0.9;
+        setTimeout(
+          () => triggerCelebrationAtPosition(celebrationX, celebrationY),
+          100,
+        );
       }
 
       setTogglingAutoRenew((prev) => {
         const next = new Set(prev);
-        for (const d of domainsToUpdate) {
-          next.add(d);
-        }
+        for (const d of domainsToUpdate) next.delete(d);
         return next;
       });
-
-      try {
-        // Optimistic update
-        setAutoRenewCache((prev) => {
-          const next = new Map(prev);
-          for (const d of domainsToUpdate) {
-            next.set(d, enabled);
-          }
-          return next;
-        });
-
-        // Update domains with concurrency limit to avoid thundering herd
-        const ConcurrencyLimit = 8;
-        const results: PromiseSettledResult<unknown>[] = [];
-        for (let i = 0; i < domainsToUpdate.length; i += ConcurrencyLimit) {
-          const chunk = domainsToUpdate.slice(i, i + ConcurrencyLimit);
-          const chunkResults = await Promise.allSettled(
-            chunk.map((domainName) =>
-              trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
-                domainName: domainName as NamefiNormalizedDomain,
-                domainPreferencesAndConfig: {
-                  autoRenewEnabled: enabled,
-                },
-              }),
-            ),
-          );
-          results.push(...chunkResults);
-        }
-
-        // Separate successful and failed domains
-        const succeeded: string[] = [];
-        const failed: Array<{ domainName: string; error: unknown }> = [];
-
-        results.forEach((result, index) => {
-          const domainName = domainsToUpdate[index];
-          if (result.status === 'fulfilled') {
-            succeeded.push(domainName);
-          } else {
-            failed.push({ domainName, error: result.reason });
-          }
-        });
-
-        // Revert only failed domains to their original states
-        if (failed.length > 0) {
-          setAutoRenewCache((prev) => {
-            const next = new Map(prev);
-            for (const { domainName } of failed) {
-              const originalState = originalStates.get(domainName) ?? false;
-              next.set(domainName, originalState);
-            }
-            return next;
-          });
-          toast.error(
-            `Failed to update ${failed.length} of ${domainsToUpdate.length} domains`,
-          );
-        }
-
-        // Show success message for succeeded domains
-        if (succeeded.length > 0) {
-          toast.success(
-            `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${succeeded.length} domain${succeeded.length > 1 ? 's' : ''}`,
-          );
-        }
-
-        // Trigger celebration when enabling auto-renew for successfully updated domains
-        if (enabled && succeeded.length > 0) {
-          // Use provided position or default to center-bottom
-          const celebrationX = position?.x ?? 0.5;
-          const celebrationY = position?.y ?? 0.9;
-          setTimeout(
-            () => triggerCelebrationAtPosition(celebrationX, celebrationY),
-            100,
-          );
-        }
-      } catch (error) {
-        // Revert all domains to original states on unexpected error
-        setAutoRenewCache((prev) => {
-          const next = new Map(prev);
-          for (const d of domainsToUpdate) {
-            const originalState = originalStates.get(d) ?? false;
-            next.set(d, originalState);
-          }
-          return next;
-        });
-        toast.error('An unexpected error occurred');
-        console.error('Batch toggle error:', error);
-      } finally {
-        setTogglingAutoRenew((prev) => {
-          const next = new Set(prev);
-          for (const d of domainsToUpdate) {
-            next.delete(d);
-          }
-          return next;
-        });
-      }
     },
-    [selectedDomainIds, trpcClient, autoRenewCache],
+    [selectedDomainIds, preferencesMutation],
   );
 
   // Handle renew now with year selection
@@ -877,22 +736,17 @@ export function MyDomainsTable(props: {
   const renewableDomainsCount = renewableDomains.length;
   const selectedDomainCount = selectedDomainIds.size;
 
-  // Calculate bulk auto-renew state based on selected domains
+  // Bulk auto-renew state derived directly from the selected rows; the query
+  // cache is the single source of truth now.
   const bulkAutoRenewState = useMemo((): BulkAutoRenewState => {
-    if (selectedDomainIds.size === 0) return 'off';
-
-    const selectedDomainNames = Array.from(selectedDomainIds);
-    const autoRenewStates = selectedDomainNames.map(
-      (name) => autoRenewCache.get(name) ?? false,
-    );
-
-    const allOn = autoRenewStates.every((state) => state === true);
-    const allOff = autoRenewStates.every((state) => state === false);
-
+    if (selectedDomainRows.length === 0) return 'off';
+    const states = selectedDomainRows.map((d) => d.autoRenewEnabled ?? false);
+    const allOn = states.every((s) => s === true);
+    const allOff = states.every((s) => s === false);
     if (allOn) return 'on';
     if (allOff) return 'off';
     return 'mixed';
-  }, [selectedDomainIds, autoRenewCache]);
+  }, [selectedDomainRows]);
 
   // Handle bulk auto-renew toggle from the three-state toggle
   const handleBulkAutoRenewToggle = useCallback(
@@ -1020,9 +874,7 @@ export function MyDomainsTable(props: {
             | undefined;
 
           const isToggling = togglingAutoRenew.has(domainName);
-          const cachedAutoRenew = autoRenewCache.get(domainName);
-          // Use cached value if available, otherwise default to false (will be fetched)
-          const isAutoRenewEnabled = cachedAutoRenew ?? false;
+          const isAutoRenewEnabled = row.original.autoRenewEnabled ?? false;
           const isExpired = expirationDate
             ? isPast(new Date(expirationDate))
             : false;
@@ -1085,8 +937,7 @@ export function MyDomainsTable(props: {
             | null
             | undefined;
           const isToggling = togglingAutoEns.has(domainName);
-          const cachedAutoEns = autoEnsCache.get(domainName);
-          const isAutoEnsEnabled = cachedAutoEns ?? false;
+          const isAutoEnsEnabled = row.original.autoEnsEnabled ?? false;
           const isExpired = expirationDate
             ? isPast(new Date(expirationDate))
             : false;
@@ -1325,9 +1176,7 @@ export function MyDomainsTable(props: {
       pageSelectionState,
       selectedDomainIds,
       togglingAutoRenew,
-      autoRenewCache,
       togglingAutoEns,
-      autoEnsCache,
       isMobile,
       renewalPriceUsdPerYearByTld,
     ],
