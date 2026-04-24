@@ -8,7 +8,13 @@ import {
 } from '@namefi-astra/db';
 import { resolve, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, asc, desc, eq, sql, type SQL } from 'drizzle-orm';
+import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
+import {
+  buildWhereClause,
+  buildSortClause,
+  type FilterOptions,
+  type SortOptions,
+} from '@samyx/drizzler-filters-sorters';
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
@@ -321,81 +327,95 @@ function generateRecommendations(validation: DomainValidation): string[] {
 export const poweredByNamefiRouter = createContractTRPCRouter<
   typeof adminPoweredByNamefiContract
 >({
-  // Get paginated list of poweredByNamefi domains
+  // Get paginated list of poweredByNamefi domains. Uses the repo-wide
+  // Drizzler filter/sort pattern — see `domainPreferencesRouter` for the
+  // reference implementation. JSONB columns (`durationConstraints`,
+  // `metadata`, `additionalAllowedHostnames`, `additionalReservedNames`)
+  // are intentionally not exposed in `tableStructure` because Drizzler
+  // cannot filter them generically.
   getPoweredByNamefiDomains: adminProcedureWithPermissions(Permission.READ_PBN)
     .input(adminPoweredByNamefiContract.getPoweredByNamefiDomains.input)
     .output(adminPoweredByNamefiContract.getPoweredByNamefiDomains.output)
     .query(async ({ input }) => {
-      const { page, limit, sortBy, sortOrder, searchTerm } = input;
-      const offset = (page - 1) * limit;
+      const { page, pageSize, filters, sorting } = input;
+      const offset = (page - 1) * pageSize;
 
-      // Build base query
-      const baseQuery = db.select().from(poweredbyNamefiDomainsTable);
-      const baseCountQuery = db
-        .select({ count: sql<number>`COUNT(*)` })
-        .from(poweredbyNamefiDomainsTable);
-
-      // Build filters
-      const filters = [];
-
-      if (searchTerm) {
-        filters.push(
-          sql`${poweredbyNamefiDomainsTable.normalizedDomainName} ILIKE ${'%' + searchTerm + '%'}`,
-        );
-      }
-
-      const whereClause = filters.length > 0 ? and(...filters) : undefined;
-
-      const query = whereClause ? baseQuery.where(whereClause) : baseQuery;
-      const countQuery = whereClause
-        ? baseCountQuery.where(whereClause)
-        : baseCountQuery;
-
-      // Apply sorting
-      let orderByClause: SQL<unknown>;
-      switch (sortBy) {
-        case 'normalizedDomainName':
-          orderByClause =
-            sortOrder === 'asc'
-              ? asc(poweredbyNamefiDomainsTable.normalizedDomainName)
-              : desc(poweredbyNamefiDomainsTable.normalizedDomainName);
-          break;
-        case 'createdAt':
-          orderByClause =
-            sortOrder === 'asc'
-              ? asc(poweredbyNamefiDomainsTable.createdAt)
-              : desc(poweredbyNamefiDomainsTable.createdAt);
-          break;
-        case 'updatedAt':
-          orderByClause =
-            sortOrder === 'asc'
-              ? asc(poweredbyNamefiDomainsTable.updatedAt)
-              : desc(poweredbyNamefiDomainsTable.updatedAt);
-          break;
-        default:
-          orderByClause =
-            sortOrder === 'asc'
-              ? asc(poweredbyNamefiDomainsTable.normalizedDomainName)
-              : desc(poweredbyNamefiDomainsTable.normalizedDomainName);
-      }
-
-      // Execute queries
-      const [results, countResult] = await Promise.all([
-        query.orderBy(orderByClause).limit(limit).offset(offset),
-        countQuery,
-      ]);
-
-      const totalCount = countResult[0]?.count ?? 0;
-
-      return {
-        data: results,
-        pagination: {
-          page,
-          limit,
-          totalCount,
-          totalPages: Math.ceil(totalCount / limit),
-        },
+      // Boolean columns must be exposed as ::text — Drizzler has no native
+      // boolean filter type and the frontend submits `'true'` / `'false'`
+      // strings from a `select` filter field.
+      const tableStructure = {
+        normalizedDomainName: poweredbyNamefiDomainsTable.normalizedDomainName,
+        enabled: sql<string>`${poweredbyNamefiDomainsTable.enabled}::text`,
+        costPerYearInUsdCents:
+          poweredbyNamefiDomainsTable.costPerYearInUsdCents,
+        ownerId: poweredbyNamefiDomainsTable.ownerId,
+        startRolloutAt: poweredbyNamefiDomainsTable.startRolloutAt,
+        createdAt: poweredbyNamefiDomainsTable.createdAt,
+        updatedAt: poweredbyNamefiDomainsTable.updatedAt,
       };
+
+      const baseQuery = db
+        .select()
+        .from(poweredbyNamefiDomainsTable)
+        .$dynamic();
+
+      const whereClauses: SQL[] = [];
+      if (filters) {
+        const drizzlerWhere = buildWhereClause(
+          tableStructure,
+          filters as FilterOptions<typeof tableStructure>,
+        );
+        if (drizzlerWhere) whereClauses.push(drizzlerWhere);
+      }
+
+      let query = baseQuery;
+      if (whereClauses.length > 0) {
+        query = query.where(and(...whereClauses));
+      }
+
+      const orderByClauses = sorting
+        ? buildSortClause(
+            tableStructure,
+            sorting as SortOptions<typeof tableStructure>,
+          )
+        : [asc(poweredbyNamefiDomainsTable.normalizedDomainName)];
+
+      try {
+        const countQuery = db
+          .select({ count: sql<number>`COUNT(*)::int` })
+          .from(poweredbyNamefiDomainsTable)
+          .$dynamic();
+        const countQueryWithWhere =
+          whereClauses.length > 0
+            ? countQuery.where(and(...whereClauses))
+            : countQuery;
+
+        const [rows, countRow] = await Promise.all([
+          query
+            .orderBy(...orderByClauses)
+            .limit(pageSize)
+            .offset(offset),
+          countQueryWithWhere,
+        ]);
+
+        const totalCount = countRow[0]?.count ?? 0;
+
+        return {
+          data: rows,
+          pagination: {
+            page,
+            pageSize,
+            totalCount,
+            totalPages: Math.ceil(totalCount / pageSize),
+          },
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to list powered-by-namefi domains');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to list powered-by-namefi domains',
+        });
+      }
     }),
 
   // Get comprehensive status of a specific poweredByNamefi domain

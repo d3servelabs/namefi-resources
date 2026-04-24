@@ -241,3 +241,29 @@ export const parseDomainName = (
     publicSuffixPlusOne,
   };
 };
+
+export type DomainLevelLabel = 'TLD' | 'SLD' | '3LD' | '4LD' | '5LD+';
+
+/**
+ * Human-readable level tag for a normalized domain name:
+ * `TLD` (1 label), `SLD` (2), `3LD`, `4LD`, or `5LD+`.
+ *
+ * Falls back to a naive dot-count when `parseDomainName` rejects the input
+ * (e.g. bare TLDs like `nfi`, which the `parse-domain` library flags as
+ * `NotListed`). Without the fallback those rows would render nothing.
+ */
+export function getDomainLevelLabel(
+  normalizedDomainName: string,
+): DomainLevelLabel {
+  const parsed = parseDomainName(
+    normalizedDomainName as NamefiNormalizedDomain,
+  );
+  const level = parsed.valid
+    ? parsed.level
+    : normalizedDomainName.split('.').filter(Boolean).length;
+  if (level <= 1) return 'TLD';
+  if (level === 2) return 'SLD';
+  if (level === 3) return '3LD';
+  if (level === 4) return '4LD';
+  return '5LD+';
+}

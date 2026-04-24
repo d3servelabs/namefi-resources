@@ -23,14 +23,19 @@ const durationConstraintsSchema = z
     path: ['durationConstraints'],
   });
 
+/**
+ * Input for the paginated PBN list. Uses the repo-wide Drizzler pattern
+ * (`filters` + `sorting` are `@samyx/drizzler-filters-sorters` shapes — typed
+ * as `z.any()` because Drizzler's runtime shape is polymorphic and validated
+ * server-side by `buildWhereClause` / `buildSortClause`). See
+ * `apps/backend/src/trpc/routers/admin/domainPreferencesRouter.ts` for the
+ * canonical example.
+ */
 const getPoweredByNamefiDomainsInputSchema = z.object({
   page: z.number().min(1).default(1),
-  limit: z.number().min(1).max(100).default(20),
-  sortBy: z
-    .enum(['normalizedDomainName', 'createdAt', 'updatedAt'])
-    .default('normalizedDomainName'),
-  sortOrder: z.enum(['asc', 'desc']).default('asc'),
-  searchTerm: z.string().optional(),
+  pageSize: z.number().min(1).max(100).default(25),
+  filters: z.any().optional(),
+  sorting: z.any().optional(),
 });
 
 const domainNameInputSchema = z.object({
@@ -89,7 +94,7 @@ const paginatedDomainsOutputSchema = z.object({
   data: z.array(pbnDomainRowSchema),
   pagination: z.object({
     page: z.number(),
-    limit: z.number(),
+    pageSize: z.number(),
     totalCount: z.number(),
     totalPages: z.number(),
   }),

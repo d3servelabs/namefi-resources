@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -11,23 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@namefi-astra/ui/components/shadcn/table';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@namefi-astra/ui/components/shadcn/select';
 import {
   Dialog,
   DialogContent,
@@ -62,9 +47,6 @@ import {
   Search,
   Settings,
   ExternalLink,
-  ArrowUpDown,
-  ChevronLeft,
-  ChevronRight,
   Loader2,
   X,
   Play,
@@ -73,19 +55,30 @@ import {
   MoreHorizontal,
 } from 'lucide-react';
 import { useTRPC } from '@/lib/trpc';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow, format } from 'date-fns';
 import { toast } from 'sonner';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { AsyncButton } from '@/components/buttons/async-button';
-import { useQueryClient } from '@tanstack/react-query';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
+import { getDomainLevelLabel } from '@namefi-astra/utils/parse-domain-name';
 import {
   computeDefaultAdditionalAllowedHostnames,
   isTldOnly,
 } from '@/lib/pbn-defaults';
 import { HostnamesChipInput } from './forms/hostnames-chip-input';
 import { EditHostnamesDialog } from './forms/edit-hostnames-form';
+import { DnsStatusCell } from './cells/dns-status-cell';
+import type { ColumnDef } from '@tanstack/react-table';
+import { useDebounceValue } from 'usehooks-ts';
+import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
+import {
+  useDrizzlerServerFilterStrategy,
+  convertToDrizzlerFilterOptions,
+  type DrizzlerFilterState,
+} from '@/components/table/filters';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
+import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 
 // Form schema for creating powered by namefi domains
 const createDomainSchema = z.object({
@@ -180,15 +173,23 @@ const StatusBadge = ({
   return <Badge variant={variant}>{text}</Badge>;
 };
 
+/**
+ * TLD / SLD / 3LD / 4LD / 5LD+ marker for a PBN parent. The label is
+ * computed client-side from `parseDomainName`; see the notes in
+ * `packages/utils/src/parse-domain-name.ts` for why we don't expose this
+ * as a server-sortable column.
+ */
+function DomainLevelBadge({ name }: { name: string }) {
+  const label = getDomainLevelLabel(name);
+  const variant: 'default' | 'secondary' | 'outline' =
+    label === 'TLD' ? 'outline' : label === 'SLD' ? 'default' : 'secondary';
+  return <Badge variant={variant}>{label}</Badge>;
+}
+
 export default withAdminGuard(function PoweredByNamefiDomainsPage() {
   const trpc = useTRPC();
-  const [page, setPage] = useState(1);
-  const [limit] = useState(20);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<
-    'normalizedDomainName' | 'createdAt' | 'updatedAt'
-  >('normalizedDomainName');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  // Dialog / selection state (unchanged surface).
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingDomain, setEditingDomain] = useState<Domain | null>(null);
@@ -196,19 +197,67 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
   const [editingHostnamesDomain, setEditingHostnamesDomain] =
     useState<Domain | null>(null);
 
+  // Pagination / sort / visibility persisted per-user via localStorage.
+  const [page, setPage] = useState(1);
+  const {
+    preferences: { sorting, pageSize, columnVisibility },
+    setSorting,
+    setPageSize,
+    setColumnVisibility,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: 'admin-pbn-domains',
+    defaultPreferences: {
+      sorting: [{ id: 'normalizedDomainName', desc: false }],
+      pageSize: 25,
+      columnVisibility: {
+        normalizedDomainName: true,
+        domainLevel: true,
+        enabled: true,
+        dnsStatus: true,
+        costPerYearInUsdCents: true,
+        duration: true,
+        startRolloutAt: true,
+        createdAt: true,
+        updatedAt: false,
+        minDurationInYears: false,
+        maxDurationInYears: false,
+        actions: true,
+      },
+    },
+  });
+
+  // Drizzler multi-field filter state. Debounced so typing into the
+  // Filters panel doesn't hammer the backend.
+  const [drizzlerFilterState, setDrizzlerFilterState] =
+    useState<DrizzlerFilterState>({ columnFilters: {}, customFilters: {} });
+  const [debouncedFilterState] = useDebounceValue(drizzlerFilterState, 500);
+  const backendFilters = useMemo(
+    () => convertToDrizzlerFilterOptions(debouncedFilterState.columnFilters),
+    [debouncedFilterState],
+  );
+  const backendSorting = useMemo(() => {
+    if (!sorting || sorting.length === 0) return undefined;
+    return sorting.map((s) => ({
+      column: s.id,
+      order: s.desc ? ('desc' as const) : ('asc' as const),
+    }));
+  }, [sorting]);
+
   // Fetch domains
   const {
     data: domainsData,
     isLoading: isLoadingDomains,
+    isFetching: isFetchingDomains,
     refetch: refetchDomains,
   } = useQuery({
     ...trpc.admin.poweredByNamefi.getPoweredByNamefiDomains.queryOptions({
       page,
-      limit,
-      searchTerm: searchTerm || undefined,
-      sortBy,
-      sortOrder,
+      pageSize,
+      filters: backendFilters,
+      sorting: backendSorting,
     }),
+    placeholderData: (prev) => prev,
   });
 
   // Fetch domain status for selected domain
@@ -315,22 +364,353 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
     },
   });
 
-  const handleSort = (column: typeof sortBy) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(column);
-      setSortOrder('asc');
-    }
-  };
+  const filterStrategy = useDrizzlerServerFilterStrategy({
+    filterConfig: {
+      normalizedDomainName: {
+        id: 'normalizedDomainName',
+        label: 'Domain',
+        type: 'text',
+        columnId: 'normalizedDomainName',
+      },
+      enabled: {
+        id: 'enabled',
+        label: 'Status',
+        type: 'select',
+        columnId: 'enabled',
+        options: [
+          { value: 'true', label: 'Enabled' },
+          { value: 'false', label: 'Disabled' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      costPerYearInUsdCents: {
+        id: 'costPerYearInUsdCents',
+        label: 'Cost/Year (cents)',
+        type: 'number',
+        columnId: 'costPerYearInUsdCents',
+      },
+      ownerId: {
+        id: 'ownerId',
+        label: 'Owner ID',
+        type: 'text',
+        columnId: 'ownerId',
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      startRolloutAt: {
+        id: 'startRolloutAt',
+        label: 'Rollout Started At',
+        type: 'date',
+        columnId: 'startRolloutAt',
+        allowedOperators: [
+          'eq',
+          'gt',
+          'gte',
+          'lt',
+          'lte',
+          'isNull',
+          'isNotNull',
+        ],
+      },
+      createdAt: {
+        id: 'createdAt',
+        label: 'Created At',
+        type: 'date',
+        columnId: 'createdAt',
+      },
+      updatedAt: {
+        id: 'updatedAt',
+        label: 'Updated At',
+        type: 'date',
+        columnId: 'updatedAt',
+      },
+    },
+    onDrizzlerFilterChange: (next) => {
+      setPage(1);
+      setDrizzlerFilterState(next);
+    },
+  });
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
-    setPage(1); // Reset to first page when searching
-  };
+  const columns = useMemo<ColumnDef<Domain>[]>(
+    () => [
+      {
+        accessorKey: 'normalizedDomainName',
+        header: 'Domain',
+        size: 240,
+        cell: ({ row }) => (
+          <AutoTruncateTextV2
+            initialCharactersCountToDisplay={32}
+            minCharactersToDisplay={16}
+            className="font-medium"
+          >
+            {row.original.normalizedDomainName}
+          </AutoTruncateTextV2>
+        ),
+      },
+      {
+        id: 'domainLevel',
+        header: 'Level',
+        size: 90,
+        enableSorting: false,
+        cell: ({ row }) => (
+          <DomainLevelBadge name={row.original.normalizedDomainName} />
+        ),
+      },
+      {
+        accessorKey: 'enabled',
+        header: 'Status',
+        size: 110,
+        cell: ({ row }) => (
+          <Badge variant={row.original.enabled ? 'default' : 'secondary'}>
+            {row.original.enabled ? 'Enabled' : 'Disabled'}
+          </Badge>
+        ),
+      },
+      {
+        id: 'dnsStatus',
+        header: 'DNS Status',
+        size: 200,
+        enableSorting: false,
+        cell: ({ row }) => (
+          <DnsStatusCell
+            normalizedDomainName={row.original.normalizedDomainName}
+            index={row.index}
+          />
+        ),
+      },
+      {
+        accessorKey: 'costPerYearInUsdCents',
+        header: 'Cost/Year',
+        size: 110,
+        cell: ({ row }) => (
+          <span className="tabular-nums">
+            ${(row.original.costPerYearInUsdCents / 100).toFixed(2)}
+          </span>
+        ),
+      },
+      {
+        id: 'duration',
+        header: 'Duration',
+        size: 110,
+        enableSorting: false,
+        cell: ({ row }) => (
+          <span className="text-muted-foreground">
+            {row.original.durationConstraints.minDurationInYears}–
+            {row.original.durationConstraints.maxDurationInYears} yr
+          </span>
+        ),
+      },
+      {
+        id: 'minDurationInYears',
+        header: 'Min Years',
+        size: 90,
+        enableSorting: false,
+        cell: ({ row }) => row.original.durationConstraints.minDurationInYears,
+      },
+      {
+        id: 'maxDurationInYears',
+        header: 'Max Years',
+        size: 90,
+        enableSorting: false,
+        cell: ({ row }) => row.original.durationConstraints.maxDurationInYears,
+      },
+      {
+        accessorKey: 'startRolloutAt',
+        header: 'Rollout Started',
+        size: 160,
+        cell: ({ row }) =>
+          row.original.startRolloutAt ? (
+            <div className="text-sm">
+              <div>
+                {format(new Date(row.original.startRolloutAt), 'yyyy-MM-dd')}
+              </div>
+              <div className="text-muted-foreground text-xs">
+                {formatDistanceToNow(new Date(row.original.startRolloutAt), {
+                  addSuffix: true,
+                })}
+              </div>
+            </div>
+          ) : (
+            <span className="text-muted-foreground">Not started</span>
+          ),
+      },
+      {
+        accessorKey: 'createdAt',
+        header: 'Created',
+        size: 140,
+        cell: ({ row }) => (
+          <span className="text-sm text-muted-foreground">
+            {formatDistanceToNow(new Date(row.original.createdAt), {
+              addSuffix: true,
+            })}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'updatedAt',
+        header: 'Updated',
+        size: 140,
+        cell: ({ row }) => (
+          <span className="text-sm text-muted-foreground">
+            {formatDistanceToNow(new Date(row.original.updatedAt), {
+              addSuffix: true,
+            })}
+          </span>
+        ),
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        size: 80,
+        enableSorting: false,
+        cell: ({ row }) => {
+          const domain = row.original;
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={<Button variant="ghost" size="sm" />}
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              {/*
+                The project's base DropdownMenuContent pins
+                `w-(--anchor-width)` (i.e. the trigger's width). The
+                trigger here is a 32px icon button, which clips every
+                label. Override with auto width + a comfortable minimum
+                so items never truncate, and cap at the viewport on
+                mobile.
+              */}
+              <DropdownMenuContent
+                align="end"
+                className="w-auto min-w-56 max-w-[calc(100vw-2rem)]"
+              >
+                {/* Enable/Disable Toggle */}
+                <DropdownMenuItem
+                  onClick={() =>
+                    toggleDomainStatusMutation.mutate({
+                      normalizedDomainName: domain.normalizedDomainName,
+                      enabled: !domain.enabled,
+                    })
+                  }
+                  disabled={toggleDomainStatusMutation.isPending}
+                >
+                  {domain.enabled ? (
+                    <>
+                      <Pause className="h-4 w-4 mr-2" />
+                      Disable
+                    </>
+                  ) : (
+                    <>
+                      <Play className="h-4 w-4 mr-2" />
+                      Enable
+                    </>
+                  )}
+                </DropdownMenuItem>
+
+                {/* Start Rollout (only if not started) */}
+                {!domain.startRolloutAt && (
+                  <DropdownMenuItem
+                    onClick={() =>
+                      startRolloutMutation.mutate({
+                        normalizedDomainName: domain.normalizedDomainName,
+                      })
+                    }
+                    disabled={startRolloutMutation.isPending}
+                  >
+                    <Play className="h-4 w-4 mr-2" />
+                    Start Rollout
+                  </DropdownMenuItem>
+                )}
+
+                <DropdownMenuSeparator />
+
+                {/* Edit Cost and Duration */}
+                <DropdownMenuItem
+                  onClick={() => {
+                    setEditingDomain(domain);
+                    setIsEditCostDialogOpen(true);
+                  }}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Cost & Duration
+                </DropdownMenuItem>
+
+                {/* Edit additionalAllowedHostnames */}
+                <DropdownMenuItem
+                  onClick={() => setEditingHostnamesDomain(domain)}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Additional Hostnames
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                {/* Configuration Dialog */}
+                <Dialog>
+                  <DialogTrigger
+                    render={
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        onClick={() =>
+                          setSelectedDomain(domain.normalizedDomainName)
+                        }
+                        closeOnClick={false}
+                      />
+                    }
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    DNS Configuration
+                  </DialogTrigger>
+                  <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
+                    <DialogHeader>
+                      <DialogTitle className="break-words pr-8">
+                        Configuration Status:{' '}
+                        <span className="font-mono text-base">
+                          {domain.normalizedDomainName}
+                        </span>
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="w-full min-h-0 overflow-y-auto pr-1">
+                      {isLoadingStatus ? (
+                        <div className="text-center py-8">
+                          Loading setup status...
+                        </div>
+                      ) : domainStatus?.setupStatus &&
+                        domainStatus.setupStatus.length > 0 ? (
+                        <SetupStatusDisplay
+                          setupStatus={domainStatus.setupStatus[0]}
+                        />
+                      ) : null}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                {/* Visit Domain */}
+                <DropdownMenuItem
+                  onClick={() =>
+                    window.open(
+                      `https://${domain.normalizedDomainName}`,
+                      '_blank',
+                    )
+                  }
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Visit Domain
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ],
+    [
+      toggleDomainStatusMutation,
+      startRolloutMutation,
+      isLoadingStatus,
+      domainStatus,
+    ],
+  );
 
   const domains = domainsData?.data || [];
-  const pagination = domainsData?.pagination;
 
   return (
     <PageShell padding="admin">
@@ -397,328 +777,29 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {/* Search and filters */}
-            <div className="flex items-center space-x-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search domains..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
-              <Select
-                value={sortBy}
-                onValueChange={(value: typeof sortBy | null) => {
-                  if (!value) return;
-                  setSortBy(value);
-                }}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="normalizedDomainName">
-                    Domain Name
-                  </SelectItem>
-                  <SelectItem value="createdAt">Created Date</SelectItem>
-                  <SelectItem value="updatedAt">Updated Date</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Table */}
-            <div className="border rounded-lg">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort('normalizedDomainName')}
-                        className="h-auto p-0 font-semibold hover:bg-transparent"
-                      >
-                        Domain Name
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      </Button>
-                    </TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Cost/Year</TableHead>
-                    <TableHead>Min Years</TableHead>
-                    <TableHead>Max Years</TableHead>
-                    <TableHead>Rollout Started</TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort('createdAt')}
-                        className="h-auto p-0 font-semibold hover:bg-transparent"
-                      >
-                        Created
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      </Button>
-                    </TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {isLoadingDomains ? (
-                    <TableRow>
-                      <TableCell colSpan={9} className="text-center py-8">
-                        Loading domains...
-                      </TableCell>
-                    </TableRow>
-                  ) : domains.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={9} className="text-center py-8">
-                        No domains found.
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    domains.map((domain: Domain) => (
-                      <TableRow key={domain.normalizedDomainName}>
-                        <TableCell className="font-medium">
-                          {domain.normalizedDomainName}
-                        </TableCell>
-
-                        <TableCell>
-                          <Badge
-                            variant={domain.enabled ? 'default' : 'secondary'}
-                          >
-                            {domain.enabled ? 'Enabled' : 'Disabled'}
-                          </Badge>
-                        </TableCell>
-
-                        <TableCell>
-                          ${(domain.costPerYearInUsdCents / 100).toFixed(2)}
-                        </TableCell>
-
-                        <TableCell>
-                          {domain.durationConstraints.minDurationInYears}
-                        </TableCell>
-
-                        <TableCell>
-                          {domain.durationConstraints.maxDurationInYears}
-                        </TableCell>
-                        <TableCell>
-                          {domain.startRolloutAt ? (
-                            <div className="text-sm">
-                              <div>
-                                {format(
-                                  new Date(domain.startRolloutAt),
-                                  'MMM dd, yyyy',
-                                )}
-                              </div>
-                              <div className="text-muted-foreground">
-                                {formatDistanceToNow(
-                                  new Date(domain.startRolloutAt),
-                                  {
-                                    addSuffix: true,
-                                  },
-                                )}
-                              </div>
-                            </div>
-                          ) : (
-                            <span className="text-muted-foreground">
-                              Not started
-                            </span>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {formatDistanceToNow(new Date(domain.createdAt), {
-                            addSuffix: true,
-                          })}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-2">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger
-                                render={<Button variant="ghost" size="sm" />}
-                              >
-                                <MoreHorizontal className="h-4 w-4" />
-                              </DropdownMenuTrigger>
-                              {/*
-                                The project's base DropdownMenuContent pins
-                                `w-(--anchor-width)` (i.e. the trigger's
-                                width). The trigger here is a 32px icon
-                                button, which clips every label. Override
-                                with auto width + a comfortable minimum so
-                                items never truncate, and cap at the
-                                viewport on mobile.
-                              */}
-                              <DropdownMenuContent
-                                align="end"
-                                className="w-auto min-w-56 max-w-[calc(100vw-2rem)]"
-                              >
-                                {/* Enable/Disable Toggle */}
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    toggleDomainStatusMutation.mutate({
-                                      normalizedDomainName:
-                                        domain.normalizedDomainName,
-                                      enabled: !domain.enabled,
-                                    })
-                                  }
-                                  disabled={
-                                    toggleDomainStatusMutation.isPending
-                                  }
-                                >
-                                  {domain.enabled ? (
-                                    <>
-                                      <Pause className="h-4 w-4 mr-2" />
-                                      Disable
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Play className="h-4 w-4 mr-2" />
-                                      Enable
-                                    </>
-                                  )}
-                                </DropdownMenuItem>
-
-                                {/* Start Rollout (only if not started) */}
-                                {!domain.startRolloutAt && (
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      startRolloutMutation.mutate({
-                                        normalizedDomainName:
-                                          domain.normalizedDomainName,
-                                      })
-                                    }
-                                    disabled={startRolloutMutation.isPending}
-                                  >
-                                    <Play className="h-4 w-4 mr-2" />
-                                    Start Rollout
-                                  </DropdownMenuItem>
-                                )}
-
-                                <DropdownMenuSeparator />
-
-                                {/* Edit Cost and Duration */}
-                                <DropdownMenuItem
-                                  onClick={() => {
-                                    setEditingDomain(domain);
-                                    setIsEditCostDialogOpen(true);
-                                  }}
-                                >
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Edit Cost & Duration
-                                </DropdownMenuItem>
-
-                                {/* Edit additionalAllowedHostnames */}
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    setEditingHostnamesDomain(domain)
-                                  }
-                                >
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Edit Additional Hostnames
-                                </DropdownMenuItem>
-
-                                <DropdownMenuSeparator />
-
-                                {/* Configuration Dialog */}
-                                <Dialog>
-                                  <DialogTrigger
-                                    render={
-                                      <DropdownMenuItem
-                                        onSelect={(e) => e.preventDefault()}
-                                        onClick={() =>
-                                          setSelectedDomain(
-                                            domain.normalizedDomainName,
-                                          )
-                                        }
-                                        closeOnClick={false}
-                                      />
-                                    }
-                                  >
-                                    <Settings className="h-4 w-4 mr-2" />
-                                    DNS Configuration
-                                  </DialogTrigger>
-                                  <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
-                                    <DialogHeader>
-                                      <DialogTitle className="break-words pr-8">
-                                        Configuration Status:{' '}
-                                        <span className="font-mono text-base">
-                                          {domain.normalizedDomainName}
-                                        </span>
-                                      </DialogTitle>
-                                    </DialogHeader>
-                                    <div className="w-full min-h-0 overflow-y-auto pr-1">
-                                      {isLoadingStatus ? (
-                                        <div className="text-center py-8">
-                                          Loading setup status...
-                                        </div>
-                                      ) : domainStatus?.setupStatus &&
-                                        domainStatus.setupStatus.length > 0 ? (
-                                        <SetupStatusDisplay
-                                          setupStatus={
-                                            domainStatus.setupStatus[0]
-                                          }
-                                        />
-                                      ) : null}
-                                    </div>
-                                  </DialogContent>
-                                </Dialog>
-
-                                {/* Visit Domain */}
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    window.open(
-                                      `https://${domain.normalizedDomainName}`,
-                                      '_blank',
-                                    )
-                                  }
-                                >
-                                  <ExternalLink className="h-4 w-4 mr-2" />
-                                  Visit Domain
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-
-            {/* Pagination */}
-            {pagination && pagination.totalPages > 1 && (
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-muted-foreground">
-                  Showing {(page - 1) * limit + 1} to{' '}
-                  {Math.min(page * limit, pagination.totalCount)} of{' '}
-                  {pagination.totalCount} domains
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPage(page - 1)}
-                    disabled={page <= 1}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    Previous
-                  </Button>
-                  <span className="text-sm">
-                    Page {page} of {pagination.totalPages}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPage(page + 1)}
-                    disabled={page >= pagination.totalPages}
-                  >
-                    Next
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
+          <ExtensibleDataTable<Domain, typeof filterStrategy>
+            filterStrategy={filterStrategy}
+            columns={columns}
+            data={domains}
+            isLoading={isLoadingDomains}
+            isFetching={isFetchingDomains}
+            page={page}
+            pageSize={pageSize}
+            totalPages={domainsData?.pagination.totalPages ?? 1}
+            totalCount={domainsData?.pagination.totalCount ?? 0}
+            onPageChange={setPage}
+            onPageSizeChange={(size) => {
+              setPage(1);
+              setPageSize(size);
+            }}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            onResetPreferences={resetToDefaults}
+            emptyMessage="No domains found"
+            loadingMessage="Loading domains..."
+          />
         </CardContent>
       </Card>
 
