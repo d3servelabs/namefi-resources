@@ -364,6 +364,17 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
     },
   });
 
+  // Pull out the stable callback (`mutate`) and the single flag the
+  // action cells actually read (`isPending`) so the `columns` useMemo
+  // only re-runs when one of those actually changes. Depending on
+  // the full `useMutation` result object would invalidate the memo
+  // on every render because the wrapper object is not reference-
+  // stable across renders.
+  const { mutate: toggleDomainEnabled, isPending: toggleDomainEnabledPending } =
+    toggleDomainStatusMutation;
+  const { mutate: startRollout, isPending: startRolloutPending } =
+    startRolloutMutation;
+
   const filterStrategy = useDrizzlerServerFilterStrategy({
     filterConfig: {
       normalizedDomainName: {
@@ -586,12 +597,12 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 {/* Enable/Disable Toggle */}
                 <DropdownMenuItem
                   onClick={() =>
-                    toggleDomainStatusMutation.mutate({
+                    toggleDomainEnabled({
                       normalizedDomainName: domain.normalizedDomainName,
                       enabled: !domain.enabled,
                     })
                   }
-                  disabled={toggleDomainStatusMutation.isPending}
+                  disabled={toggleDomainEnabledPending}
                 >
                   {domain.enabled ? (
                     <>
@@ -610,11 +621,11 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 {!domain.startRolloutAt && (
                   <DropdownMenuItem
                     onClick={() =>
-                      startRolloutMutation.mutate({
+                      startRollout({
                         normalizedDomainName: domain.normalizedDomainName,
                       })
                     }
-                    disabled={startRolloutMutation.isPending}
+                    disabled={startRolloutPending}
                   >
                     <Play className="h-4 w-4 mr-2" />
                     Start Rollout
@@ -645,44 +656,12 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 <DropdownMenuSeparator />
 
                 {/* Configuration Dialog */}
-                <Dialog>
-                  <DialogTrigger
-                    render={
-                      <DropdownMenuItem
-                        onSelect={(e) => e.preventDefault()}
-                        onClick={() =>
-                          setSelectedDomain(domain.normalizedDomainName)
-                        }
-                        closeOnClick={false}
-                      />
-                    }
-                  >
-                    <Settings className="h-4 w-4 mr-2" />
-                    DNS Configuration
-                  </DialogTrigger>
-                  <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
-                    <DialogHeader>
-                      <DialogTitle className="break-words pr-8">
-                        Configuration Status:{' '}
-                        <span className="font-mono text-base">
-                          {domain.normalizedDomainName}
-                        </span>
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="w-full min-h-0 overflow-y-auto pr-1">
-                      {isLoadingStatus ? (
-                        <div className="text-center py-8">
-                          Loading setup status...
-                        </div>
-                      ) : domainStatus?.setupStatus &&
-                        domainStatus.setupStatus.length > 0 ? (
-                        <SetupStatusDisplay
-                          setupStatus={domainStatus.setupStatus[0]}
-                        />
-                      ) : null}
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <DropdownMenuItem
+                  onClick={() => setSelectedDomain(domain.normalizedDomainName)}
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  DNS Configuration
+                </DropdownMenuItem>
 
                 {/* Visit Domain */}
                 <DropdownMenuItem
@@ -703,10 +682,10 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
       },
     ],
     [
-      toggleDomainStatusMutation,
-      startRolloutMutation,
-      isLoadingStatus,
-      domainStatus,
+      toggleDomainEnabled,
+      toggleDomainEnabledPending,
+      startRollout,
+      startRolloutPending,
     ],
   );
 
@@ -851,6 +830,63 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
           });
         }}
       />
+
+      {/*
+        DNS Configuration dialog — a single page-level controlled
+        Dialog shared across all rows. The row's dropdown simply sets
+        `selectedDomain` and this dialog opens automatically via
+        `!!selectedDomain`. Closing clears the selection.
+      */}
+      <Dialog
+        open={!!selectedDomain}
+        onOpenChange={(open) => {
+          if (!open) setSelectedDomain(null);
+        }}
+      >
+        <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
+          <DialogHeader>
+            <DialogTitle className="break-words pr-8">
+              Configuration Status:{' '}
+              <span className="font-mono text-base">{selectedDomain}</span>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="w-full min-h-0 overflow-y-auto pr-1">
+            {isLoadingStatus ? (
+              <div className="text-center py-8">Loading setup status...</div>
+            ) : domainStatus?.setupStatus &&
+              domainStatus.setupStatus.length > 0 ? (
+              <SetupStatusDisplay setupStatus={domainStatus.setupStatus[0]} />
+            ) : (
+              /*
+                Backend returned no setup status (null / empty array).
+                Most common cause: the upstream Vercel or Google Cloud
+                DNS call inside `validateDomainsSetup` threw and the
+                router's catch returned null. Give the admin a clear
+                message and a retry instead of a blank modal.
+              */
+              <div className="flex flex-col items-center gap-3 py-10 text-center">
+                <p className="text-sm font-medium">
+                  No setup status available.
+                </p>
+                <p className="text-xs text-muted-foreground max-w-md">
+                  We couldn&apos;t compute a Vercel + DNS status for this
+                  domain. This usually means the upstream Vercel or Google Cloud
+                  DNS call failed — try again in a moment.
+                </p>
+                <AsyncButton
+                  variant="outline"
+                  size="sm"
+                  onClick={async () => {
+                    await refetchStatus();
+                  }}
+                >
+                  Retry
+                </AsyncButton>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 });
@@ -1409,18 +1445,54 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
   // stale backend that didn't ship the flag.
   const vercelApplicable =
     setupStatus.vercelApplicable ?? !isTldOnly(setupStatus.apexDomain.domain);
-  const apexFullySetup =
-    setupStatus.apexDomain.vercelIsSetup &&
-    setupStatus.apexDomain.vercelIsVerified &&
-    setupStatus.apexDomain.recordsAreSetup;
-  const ioFullySetup =
-    setupStatus.namefiIoSubdomain.vercelIsSetup &&
-    setupStatus.namefiIoSubdomain.vercelIsVerified &&
-    setupStatus.namefiIoSubdomain.recordsAreSetup;
-  const devFullySetup =
-    setupStatus.namefiDevSubdomain.vercelIsSetup &&
-    setupStatus.namefiDevSubdomain.vercelIsVerified &&
-    setupStatus.namefiDevSubdomain.recordsAreSetup;
+
+  /*
+   * Tri-state helpers. A binary "fully vs. not configured" readout
+   * hides the meaningful in-between case where one of the two
+   * prerequisites (Vercel registration, DNS records) is done but the
+   * other isn't. Admins need to see that as "Pending" so they know
+   * the setup was started and what's left.
+   */
+  type TriState = 'verified' | 'pending' | 'not-configured';
+  type SectionStatus = SetupStatus['apexDomain'];
+  const triForVercelProject = (s: SectionStatus): TriState => {
+    if (s.vercelIsSetup && s.vercelIsVerified) return 'verified';
+    if (s.vercelIsSetup) return 'pending';
+    return 'not-configured';
+  };
+  const triForDnsRecords = (s: SectionStatus): TriState => {
+    if (s.recordsAreSetup) return 'verified';
+    if (s.records && s.records.length > 0) return 'pending';
+    return 'not-configured';
+  };
+  const triForOverall = (s: SectionStatus): TriState => {
+    const verified = s.vercelIsSetup && s.vercelIsVerified && s.recordsAreSetup;
+    if (verified) return 'verified';
+    const hasAny =
+      s.vercelIsSetup ||
+      s.recordsAreSetup ||
+      (s.records && s.records.length > 0);
+    if (hasAny) return 'pending';
+    return 'not-configured';
+  };
+  const triLabel = (t: TriState): string =>
+    t === 'verified'
+      ? 'Verified'
+      : t === 'pending'
+        ? 'Pending'
+        : 'Not Configured';
+
+  const apexOverall = triForOverall(setupStatus.apexDomain);
+  const apexVercel = triForVercelProject(setupStatus.apexDomain);
+  const apexRecords = triForDnsRecords(setupStatus.apexDomain);
+  const ioOverall = triForOverall(setupStatus.namefiIoSubdomain);
+  const devOverall = triForOverall(setupStatus.namefiDevSubdomain);
+
+  // Retained for the "Already Configured" button label, which should
+  // only flip when the section is fully wired up (not on Pending).
+  const apexFullySetup = apexOverall === 'verified';
+  const ioFullySetup = ioOverall === 'verified';
+  const devFullySetup = devOverall === 'verified';
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -1465,257 +1537,14 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
     }),
   });
 
-  // Parent dialog/container owns the scroll. Here we just size the cards
-  // fluidly — single column on narrow viewports, two on tablet+, and
-  // three on wide desktop so the cards never stretch absurdly.
+  // Parent dialog/container owns the scroll. Layout:
+  //  • Summary card pinned to the top at full width — the headline
+  //    status and recommendations belong above the detail cards.
+  //  • Apex / IO / Dev in a 2-column grid below.
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {/* Section 1: Apex Domain Setup */}
+    <div className="w-full space-y-4">
+      {/* Summary — full width, above the detail grid */}
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Apex Domain Configuration</CardTitle>
-            <StatusBadge isSetup={apexFullySetup} />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Vercel Details */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-medium">Vercel Project</h4>
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Status:</span>
-              <div className="flex items-center space-x-2">
-                <StatusIcon
-                  isSetup={
-                    setupStatus.apexDomain.vercelIsSetup &&
-                    setupStatus.apexDomain.vercelIsVerified
-                  }
-                />
-                <span className="text-sm capitalize">
-                  {setupStatus.apexDomain.vercelIsSetup &&
-                  setupStatus.apexDomain.vercelIsVerified
-                    ? 'Verified'
-                    : 'Not Configured'}
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Domain:</span>
-              <span className="text-sm text-muted-foreground">
-                {setupStatus.apexDomain.domain}
-              </span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {setupStatus.apexDomain.message}
-            </div>
-            {setupStatus.apexDomain.expectedRecords &&
-              setupStatus.apexDomain.expectedRecords.length > 0 && (
-                <div className="text-sm">
-                  <span className="font-medium">Expected Records:</span>
-                  <div className="text-muted-foreground">
-                    {setupStatus.apexDomain.expectedRecords.map((r) => (
-                      <Record
-                        type={'A'}
-                        name={'@'}
-                        value={r.value}
-                        key={`expected-record-${r.value}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-          </div>
-
-          {/* DNS Records */}
-          <div className="space-y-3 pt-4 border-t">
-            <h4 className="text-sm font-medium">DNS Records</h4>
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Status:</span>
-              <div className="flex items-center space-x-2">
-                <StatusIcon isSetup={setupStatus.apexDomain.recordsAreSetup} />
-                <span className="text-sm capitalize">
-                  {setupStatus.apexDomain.recordsAreSetup
-                    ? 'Configured'
-                    : 'Not Configured'}
-                </span>
-              </div>
-            </div>
-            {setupStatus.apexDomain.records &&
-              setupStatus.apexDomain.records.length > 0 && (
-                <div className="text-sm">
-                  <span className="font-medium">Current Records:</span>
-                  <div className="text-muted-foreground">
-                    {setupStatus.apexDomain.records.map((r) => (
-                      <Record
-                        type={r.type}
-                        name={r.name}
-                        value={r.rdata}
-                        key={`current-record-${r.type}-${r.name}-${r.rdata}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-          </div>
-
-          {vercelApplicable ? (
-            <AsyncButton
-              variant="outline"
-              size="sm"
-              className="w-full"
-              disabled={!setupStatus.apexDomain.canSetup}
-              onClick={() =>
-                setupVercelMutation.mutateAsync({
-                  normalizedDomainName: setupStatus.apexDomain.domain,
-                })
-              }
-            >
-              {apexFullySetup ? 'Already Configured' : 'Configure Apex Domain'}
-            </AsyncButton>
-          ) : (
-            <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
-              <strong className="block text-foreground">
-                Vercel apex setup is not applicable for TLDs.
-              </strong>
-              Single-label names (e.g.{' '}
-              <code>{setupStatus.apexDomain.domain}</code>) cannot be
-              provisioned as Vercel project domains. Use the namefi.io /
-              namefi.dev subdomain mirrors below for a previewable URL.
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Section 2: Namefi.io Subdomain Setup */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Namefi.io Subdomain</CardTitle>
-            <StatusBadge isSetup={ioFullySetup} />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Subdomain:</span>
-              <span className="text-sm text-muted-foreground">
-                {setupStatus.namefiIoSubdomain.domain}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Status:</span>
-              <div className="flex items-center space-x-2">
-                <StatusIcon isSetup={ioFullySetup} />
-                <span className="text-sm capitalize">
-                  {ioFullySetup ? 'Configured' : 'Not Configured'}
-                </span>
-              </div>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {setupStatus.namefiIoSubdomain.message}
-            </div>
-            {setupStatus.namefiIoSubdomain.records &&
-              setupStatus.namefiIoSubdomain.records.length > 0 && (
-                <div className="text-sm">
-                  <span className="font-medium">Current Records:</span>
-                  <div className="text-muted-foreground">
-                    {setupStatus.namefiIoSubdomain.records.map((r) => (
-                      <Record
-                        type={r.type}
-                        name={r.name}
-                        value={r.rdata}
-                        key={`current-record-${r.type}-${r.name}-${r.rdata}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-          </div>
-
-          <AsyncButton
-            variant="outline"
-            size="sm"
-            className="w-full"
-            disabled={!setupStatus.namefiIoSubdomain.canSetup}
-            onClick={() =>
-              setupNamefiIoMutation.mutateAsync({
-                normalizedDomainName: setupStatus.apexDomain.domain,
-              })
-            }
-          >
-            {ioFullySetup
-              ? 'Already Configured'
-              : 'Configure Namefi.io Subdomain'}
-          </AsyncButton>
-        </CardContent>
-      </Card>
-
-      {/* Section 3: Namefi.dev Subdomain Setup */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Namefi.dev Subdomain</CardTitle>
-            <StatusBadge isSetup={devFullySetup} />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Subdomain:</span>
-              <span className="text-sm text-muted-foreground">
-                {setupStatus.namefiDevSubdomain.domain}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Status:</span>
-              <div className="flex items-center space-x-2">
-                <StatusIcon isSetup={devFullySetup} />
-                <span className="text-sm capitalize">
-                  {devFullySetup ? 'Configured' : 'Not Configured'}
-                </span>
-              </div>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {setupStatus.namefiDevSubdomain.message}
-            </div>
-            {setupStatus.namefiDevSubdomain.records &&
-              setupStatus.namefiDevSubdomain.records.length > 0 && (
-                <div className="text-sm">
-                  <span className="font-medium">Current Records:</span>
-                  <div className="text-muted-foreground">
-                    {setupStatus.namefiDevSubdomain.records.map((r) => (
-                      <Record
-                        type={r.type}
-                        name={r.name}
-                        value={r.rdata}
-                        key={`current-record-${r.type}-${r.name}-${r.rdata}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-          </div>
-
-          <AsyncButton
-            variant="outline"
-            size="sm"
-            className="w-full"
-            disabled={!setupStatus.namefiDevSubdomain.canSetup}
-            onClick={() =>
-              setupNamefiDevMutation.mutateAsync({
-                normalizedDomainName: setupStatus.apexDomain.domain,
-              })
-            }
-          >
-            {devFullySetup
-              ? 'Already Configured'
-              : 'Configure Namefi.dev Subdomain'}
-          </AsyncButton>
-        </CardContent>
-      </Card>
-
-      {/* Section 4: Summary */}
-      <Card className="col-span-2">
         <CardHeader>
           <CardTitle className="text-lg">Configuration Summary</CardTitle>
         </CardHeader>
@@ -1728,6 +1557,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                   isSetup={
                     setupStatus.summary.overallStatus === 'fully_configured'
                   }
+                  isPending={setupStatus.summary.overallStatus === 'partial'}
                 />
                 <span className="text-sm capitalize">
                   {setupStatus.summary.overallStatus.replace('_', ' ')}
@@ -1760,6 +1590,270 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Detail cards — 2 columns on tablet+ (Apex/IO on row 1, Dev on
+          row 2) so each card stays comfortably wide for the record
+          listings. */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Section 1: Apex Domain Setup */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">
+                Apex Domain Configuration
+              </CardTitle>
+              <StatusBadge
+                isSetup={apexOverall === 'verified'}
+                isPending={apexOverall === 'pending'}
+              />
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Vercel Details */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium">Vercel Project</h4>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Status:</span>
+                <div className="flex items-center space-x-2">
+                  <StatusIcon
+                    isSetup={apexVercel === 'verified'}
+                    isPending={apexVercel === 'pending'}
+                  />
+                  <span className="text-sm capitalize">
+                    {triLabel(apexVercel)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Domain:</span>
+                <span className="text-sm text-muted-foreground">
+                  {setupStatus.apexDomain.domain}
+                </span>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {setupStatus.apexDomain.message}
+              </div>
+              {setupStatus.apexDomain.expectedRecords &&
+                setupStatus.apexDomain.expectedRecords.length > 0 && (
+                  <div className="text-sm">
+                    <span className="font-medium">Expected Records:</span>
+                    <div className="text-muted-foreground">
+                      {setupStatus.apexDomain.expectedRecords.map((r) => (
+                        <Record
+                          type={'A'}
+                          name={'@'}
+                          value={r.value}
+                          key={`expected-record-${r.value}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+            </div>
+
+            {/* DNS Records */}
+            <div className="space-y-3 pt-4 border-t">
+              <h4 className="text-sm font-medium">DNS Records</h4>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Status:</span>
+                <div className="flex items-center space-x-2">
+                  <StatusIcon
+                    isSetup={apexRecords === 'verified'}
+                    isPending={apexRecords === 'pending'}
+                  />
+                  <span className="text-sm capitalize">
+                    {triLabel(apexRecords)}
+                  </span>
+                </div>
+              </div>
+              {setupStatus.apexDomain.records &&
+                setupStatus.apexDomain.records.length > 0 && (
+                  <div className="text-sm">
+                    <span className="font-medium">Current Records:</span>
+                    <div className="text-muted-foreground">
+                      {setupStatus.apexDomain.records.map((r) => (
+                        <Record
+                          type={r.type}
+                          name={r.name}
+                          value={r.rdata}
+                          key={`current-record-${r.type}-${r.name}-${r.rdata}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+            </div>
+
+            {vercelApplicable ? (
+              <AsyncButton
+                variant="outline"
+                size="sm"
+                className="w-full"
+                disabled={!setupStatus.apexDomain.canSetup}
+                onClick={() =>
+                  setupVercelMutation.mutateAsync({
+                    normalizedDomainName: setupStatus.apexDomain.domain,
+                  })
+                }
+              >
+                {apexFullySetup
+                  ? 'Already Configured'
+                  : 'Configure Apex Domain'}
+              </AsyncButton>
+            ) : (
+              <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+                <strong className="block text-foreground">
+                  Vercel apex setup is not applicable for TLDs.
+                </strong>
+                Single-label names (e.g.{' '}
+                <code>{setupStatus.apexDomain.domain}</code>) cannot be
+                provisioned as Vercel project domains. Use the namefi.io /
+                namefi.dev subdomain mirrors below for a previewable URL.
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Section 2: Namefi.io Subdomain Setup */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Namefi.io Subdomain</CardTitle>
+              <StatusBadge
+                isSetup={ioOverall === 'verified'}
+                isPending={ioOverall === 'pending'}
+              />
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Subdomain:</span>
+                <span className="text-sm text-muted-foreground">
+                  {setupStatus.namefiIoSubdomain.domain}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Status:</span>
+                <div className="flex items-center space-x-2">
+                  <StatusIcon
+                    isSetup={ioOverall === 'verified'}
+                    isPending={ioOverall === 'pending'}
+                  />
+                  <span className="text-sm capitalize">
+                    {triLabel(ioOverall)}
+                  </span>
+                </div>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {setupStatus.namefiIoSubdomain.message}
+              </div>
+              {setupStatus.namefiIoSubdomain.records &&
+                setupStatus.namefiIoSubdomain.records.length > 0 && (
+                  <div className="text-sm">
+                    <span className="font-medium">Current Records:</span>
+                    <div className="text-muted-foreground">
+                      {setupStatus.namefiIoSubdomain.records.map((r) => (
+                        <Record
+                          type={r.type}
+                          name={r.name}
+                          value={r.rdata}
+                          key={`current-record-${r.type}-${r.name}-${r.rdata}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+            </div>
+
+            <AsyncButton
+              variant="outline"
+              size="sm"
+              className="w-full"
+              disabled={!setupStatus.namefiIoSubdomain.canSetup}
+              onClick={() =>
+                setupNamefiIoMutation.mutateAsync({
+                  normalizedDomainName: setupStatus.apexDomain.domain,
+                })
+              }
+            >
+              {ioFullySetup
+                ? 'Already Configured'
+                : 'Configure Namefi.io Subdomain'}
+            </AsyncButton>
+          </CardContent>
+        </Card>
+
+        {/* Section 3: Namefi.dev Subdomain Setup */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Namefi.dev Subdomain</CardTitle>
+              <StatusBadge
+                isSetup={devOverall === 'verified'}
+                isPending={devOverall === 'pending'}
+              />
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Subdomain:</span>
+                <span className="text-sm text-muted-foreground">
+                  {setupStatus.namefiDevSubdomain.domain}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Status:</span>
+                <div className="flex items-center space-x-2">
+                  <StatusIcon
+                    isSetup={devOverall === 'verified'}
+                    isPending={devOverall === 'pending'}
+                  />
+                  <span className="text-sm capitalize">
+                    {triLabel(devOverall)}
+                  </span>
+                </div>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {setupStatus.namefiDevSubdomain.message}
+              </div>
+              {setupStatus.namefiDevSubdomain.records &&
+                setupStatus.namefiDevSubdomain.records.length > 0 && (
+                  <div className="text-sm">
+                    <span className="font-medium">Current Records:</span>
+                    <div className="text-muted-foreground">
+                      {setupStatus.namefiDevSubdomain.records.map((r) => (
+                        <Record
+                          type={r.type}
+                          name={r.name}
+                          value={r.rdata}
+                          key={`current-record-${r.type}-${r.name}-${r.rdata}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+            </div>
+
+            <AsyncButton
+              variant="outline"
+              size="sm"
+              className="w-full"
+              disabled={!setupStatus.namefiDevSubdomain.canSetup}
+              onClick={() =>
+                setupNamefiDevMutation.mutateAsync({
+                  normalizedDomainName: setupStatus.apexDomain.domain,
+                })
+              }
+            >
+              {devFullySetup
+                ? 'Already Configured'
+                : 'Configure Namefi.dev Subdomain'}
+            </AsyncButton>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

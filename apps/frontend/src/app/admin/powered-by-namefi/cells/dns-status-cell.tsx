@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
@@ -17,6 +17,7 @@ type SetupStatusEntry = NonNullable<
   AppRouterOutput['admin']['poweredByNamefi']['getPoweredByNamefiDomainStatus']['setupStatus']
 >[number];
 
+type ChipKey = 'apex' | 'io' | 'dev';
 type ChipState = 'verified' | 'pending' | 'not-configured' | 'na' | 'unknown';
 
 const STATE_VARIANT: Record<
@@ -44,9 +45,31 @@ const STATE_CLASS: Partial<Record<ChipState, string>> = {
   unknown: 'text-muted-foreground',
 };
 
+// One-liner describing what each surface is. Surfaces the dialog's
+// per-card detail in a compact hover so admins don't have to open
+// the DNS Configuration modal just to recall which chip is which.
+const CHIP_DESCRIPTION: Record<ChipKey, string> = {
+  apex: 'The PBN parent itself (e.g. example.com). Needs a Vercel project domain plus an A record so Vercel can serve the apex.',
+  io: 'Namefi-hosted mirror on the namefi.io zone (e.g. example.com.astra.namefi.io). Preview URL owned by Namefi; lets admins reach the site even before the customer apex DNS is live.',
+  dev: 'Namefi-hosted mirror on the namefi.dev zone (e.g. example.com.astra.namefi.dev). Same purpose as IO, but on the dev zone used for internal/preview deploys.',
+};
+
+const STATE_EXPLANATION: Record<ChipState, string> = {
+  verified:
+    'Configured end-to-end: Vercel recognizes the domain and DNS points correctly.',
+  pending:
+    'Partially set up — one of Vercel project registration or DNS records is in place but the other is missing or not verified yet.',
+  'not-configured':
+    'Nothing is wired up on this surface yet. Use the DNS Configuration dialog to provision it.',
+  na: 'Not applicable. Vercel rejects single-label (TLD-only) apex names, so the mirror subdomains are the only usable surface.',
+  unknown:
+    'Status could not be fetched. Try reopening the page or the DNS Configuration dialog.',
+};
+
 // Delays react-query `enabled=true` by `index * stepMs` ms so 25 rows don't
-// all fire their status query in the same animation frame. Keeps the Vercel
-// and GCP-DNS fan-out friendlier to rate limits without adding a dep.
+// all fire their status query in the same animation frame. Only used for
+// the FIRST-PAINT fan-out; cache hits short-circuit the delay (see
+// DnsStatusCell render logic, which prefers `query.data` over `enabled`).
 function useStaggeredEnabled(index: number, stepMs = 100): boolean {
   const [enabled, setEnabled] = useState(index === 0);
   useEffect(() => {
@@ -70,13 +93,15 @@ function deriveSectionState(
 }
 
 function StatusChip({
+  chip,
   label,
   state,
-  tooltip,
+  sectionMessage,
 }: {
+  chip: ChipKey;
   label: string;
   state: ChipState;
-  tooltip: string;
+  sectionMessage?: string;
 }) {
   return (
     <TooltipProvider>
@@ -94,13 +119,25 @@ function StatusChip({
             </span>
           )}
         />
-        <TooltipContent>
+        <TooltipContent className="max-w-[32ch]">
           <p className="text-xs">
             <span className="font-medium">{label}:</span> {STATE_LABEL[state]}
           </p>
-          <p className="text-xs text-muted-foreground max-w-[28ch]">
-            {tooltip}
+          <p className="text-xs text-muted-foreground mt-1">
+            {CHIP_DESCRIPTION[chip]}
           </p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {STATE_EXPLANATION[state]}
+          </p>
+          {/*
+            Surface the backend-supplied detail line. Suppress only for
+            the 'na' state, where it carries no useful detail; for
+            'unknown' we WANT to show the error reason so admins see
+            why the chip isn't resolving.
+          */}
+          {sectionMessage && state !== 'na' ? (
+            <p className="text-xs mt-1 italic">{sectionMessage}</p>
+          ) : null}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -117,7 +154,7 @@ function LoadingChips() {
   );
 }
 
-export function DnsStatusCell({
+function DnsStatusCellImpl({
   normalizedDomainName,
   index,
 }: {
@@ -135,53 +172,89 @@ export function DnsStatusCell({
         staleTime: 5 * 60_000,
         gcTime: 10 * 60_000,
         retry: 1,
+        // Prefer any cached data from a prior visit / the DNS
+        // Configuration dialog — avoids the Skeleton flash when the
+        // user paginates or the table refetches after a mutation.
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
       },
     ),
   );
 
-  if (!enabled || query.isLoading) {
-    return <LoadingChips />;
-  }
-
   const entry = query.data?.setupStatus?.[0];
 
-  if (query.isError || !entry) {
-    const tooltip = query.isError
-      ? (query.error?.message ?? 'Status check failed')
-      : 'Status is not available yet';
+  // If we have data (cached OR fresh), render immediately. The stagger's
+  // `enabled=false` window is invisible for any row we've seen before.
+  if (entry) {
+    const apexState: ChipState = entry.vercelApplicable
+      ? deriveSectionState(entry.apexDomain)
+      : 'na';
+    const ioState = deriveSectionState(entry.namefiIoSubdomain);
+    const devState = deriveSectionState(entry.namefiDevSubdomain);
+
     return (
       <div className="flex items-center gap-1">
-        <StatusChip label="Apex" state="unknown" tooltip={tooltip} />
-        <StatusChip label="IO" state="unknown" tooltip={tooltip} />
-        <StatusChip label="Dev" state="unknown" tooltip={tooltip} />
+        <StatusChip
+          chip="apex"
+          label="Apex"
+          state={apexState}
+          sectionMessage={entry.apexDomain.message}
+        />
+        <StatusChip
+          chip="io"
+          label="IO"
+          state={ioState}
+          sectionMessage={entry.namefiIoSubdomain.message}
+        />
+        <StatusChip
+          chip="dev"
+          label="Dev"
+          state={devState}
+          sectionMessage={entry.namefiDevSubdomain.message}
+        />
       </div>
     );
   }
 
-  const apexState: ChipState = entry.vercelApplicable
-    ? deriveSectionState(entry.apexDomain)
-    : 'na';
-  const ioState = deriveSectionState(entry.namefiIoSubdomain);
-  const devState = deriveSectionState(entry.namefiDevSubdomain);
+  // No data yet. Either the query errored (setupStatus === null),
+  // the response had an empty setupStatus (null OR []), or the
+  // stagger hasn't let the query fire. Error cases surface a muted
+  // "Unknown"; otherwise show the loading skeleton.
+  const setupStatusIsEmpty =
+    query.data !== undefined &&
+    (!query.data.setupStatus || query.data.setupStatus.length === 0);
+  if (query.isError || setupStatusIsEmpty) {
+    const sectionMessage = query.isError
+      ? (query.error?.message ?? 'Status check failed')
+      : 'Backend returned no setup status';
+    return (
+      <div className="flex items-center gap-1">
+        <StatusChip
+          chip="apex"
+          label="Apex"
+          state="unknown"
+          sectionMessage={sectionMessage}
+        />
+        <StatusChip
+          chip="io"
+          label="IO"
+          state="unknown"
+          sectionMessage={sectionMessage}
+        />
+        <StatusChip
+          chip="dev"
+          label="Dev"
+          state="unknown"
+          sectionMessage={sectionMessage}
+        />
+      </div>
+    );
+  }
 
-  const apexTooltip =
-    apexState === 'na'
-      ? 'Vercel apex setup is not applicable for single-label (TLD-only) parents.'
-      : entry.apexDomain.message;
-
-  return (
-    <div className="flex items-center gap-1">
-      <StatusChip label="Apex" state={apexState} tooltip={apexTooltip} />
-      <StatusChip
-        label="IO"
-        state={ioState}
-        tooltip={entry.namefiIoSubdomain.message}
-      />
-      <StatusChip
-        label="Dev"
-        state={devState}
-        tooltip={entry.namefiDevSubdomain.message}
-      />
-    </div>
-  );
+  return <LoadingChips />;
 }
+
+export const DnsStatusCell = memo(
+  DnsStatusCellImpl,
+  (prev, curr) => prev.normalizedDomainName === curr.normalizedDomainName,
+);
