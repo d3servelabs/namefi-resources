@@ -9,19 +9,10 @@ import {
   useState,
 } from 'react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
-import { differenceInDays, isPast } from 'date-fns';
+import type { VisibilityState } from '@tanstack/react-table';
 import { toast } from 'sonner';
-import {
-  BadgeDollarSign,
-  Compass,
-  ExternalLink,
-  MoreVertical,
-} from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -30,30 +21,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
-import { cn } from '@namefi-astra/ui/lib/cn';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { CHAINS } from '@namefi-astra/utils/chains';
-import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { AddressWithChain } from '@/components/address-with-chain';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   convertToDrizzlerFilterOptions,
   useDrizzlerServerFilterStrategy,
 } from '@/components/table/filters';
-import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
 import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
@@ -63,22 +39,16 @@ import {
 } from '@/hooks/use-domain-renewal';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useTRPC } from '@/lib/trpc';
-import { formatAmountInUSD } from '@/lib/number';
-import { ActionTooltip } from './action-tooltip';
-import { AutoRenewToggle } from './auto-renew-toggle';
+import { useMyDomainsColumns } from './columns';
 import { triggerCelebrationAtPosition } from './confetti-celebration';
 import { RenewNowModal } from './renew-now-modal';
-import { RenewPricePremiumInfo } from './renew-price-premium-info';
 import type { BulkAutoRenewState, DomainRow } from './types';
 import { useDomainPreferencesMutation } from './use-domain-preferences-mutation';
 import {
   DEFAULT_DOMAIN_LIST_PAGE_SIZE,
-  formatExpirationDateISO,
-  formatTimeLeft,
   getCustomRenewalPrice,
   getRenewalPriceUsdPerYearForDomain,
   isDomainPossiblyRenewable,
-  safeToUnicode,
   truncateWalletAddress,
 } from './utils';
 
@@ -728,423 +698,30 @@ export function MyDomainsTable(props: {
     [setPageSize],
   );
 
-  const columns: ColumnDef<DomainRow>[] = useMemo(
-    () => [
-      {
-        id: 'select',
-        header: () => (
-          <Checkbox
-            checked={pageSelectionState.allSelected}
-            indeterminate={
-              pageSelectionState.someSelected && !pageSelectionState.allSelected
-            }
-            onCheckedChange={(value) =>
-              handleToggleAllCurrentPage(value === true)
-            }
-            aria-label="Select all"
-          />
-        ),
-        cell: ({ row }) => {
-          const domainName = row.getValue(
-            'normalizedDomainName',
-          ) as NamefiNormalizedDomain;
-          const isSelected = selectedDomainIds.has(domainName);
-          return (
-            <Checkbox
-              checked={isSelected}
-              onCheckedChange={(value) =>
-                handleRowSelectionChange(domainName, value === true)
-              }
-              aria-label="Select row"
-            />
-          );
-        },
-        size: 50,
-        enableSorting: false,
-        enableHiding: false,
-      },
-      {
-        accessorKey: 'normalizedDomainName',
-        header: 'Domain Name',
-        cell: ({ row }) => {
-          const domainName = row.getValue('normalizedDomainName') as string;
-          const unicodeName = safeToUnicode(domainName);
-          const isPunycode = unicodeName !== domainName;
-          return (
-            <div className="flex items-center gap-2">
-              <div className="min-w-0">
-                <Link
-                  href={`/domains/${domainName}?tab=dns-overview`}
-                  aria-label={`Settings for ${domainName}`}
-                  className="font-medium hover:underline"
-                >
-                  {unicodeName}
-                </Link>
-                {isPunycode && (
-                  <span className="block text-xs text-muted-foreground">
-                    {domainName}
-                  </span>
-                )}
-              </div>
-              <Tooltip>
-                <TooltipTrigger
-                  render={(props) => (
-                    <a
-                      {...props}
-                      href={`https://${domainName}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        'text-muted-foreground hover:text-foreground transition-colors',
-                        props.className,
-                      )}
-                      aria-label={`Visit ${domainName}`}
-                      onClick={(event) => {
-                        props.onClick?.(event);
-                        event.stopPropagation();
-                      }}
-                    >
-                      {props.children}
-                    </a>
-                  )}
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </TooltipTrigger>
-                <TooltipContent>Visit {domainName}</TooltipContent>
-              </Tooltip>
-            </div>
-          );
-        },
-      },
-      {
-        id: 'account',
-        header: 'Account',
-        cell: ({ row }) => {
-          const chainId = row.original.chainId ?? null;
-          const ownerAddress = row.original.ownerAddress ?? null;
-          return <AddressWithChain address={ownerAddress} chainId={chainId} />;
-        },
-        size: 200,
-      },
-      {
-        accessorKey: 'expirationDate',
-        header: 'Renewal',
-        cell: ({ row }) => {
-          const domainName = row.getValue('normalizedDomainName') as string;
-          const expirationDate = row.getValue('expirationDate') as
-            | Date
-            | string
-            | null
-            | undefined;
-
-          const isToggling = togglingAutoRenew.has(domainName);
-          const isAutoRenewEnabled = row.original.autoRenewEnabled ?? false;
-          const isExpired = expirationDate
-            ? isPast(new Date(expirationDate))
-            : false;
-          const canRenew = isDomainPossiblyRenewable(expirationDate);
-
-          return (
-            <div className="flex flex-col gap-1">
-              {/* Auto toggle row - primary text */}
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-foreground">
-                  Auto
-                </span>
-                <AutoRenewToggle
-                  checked={isAutoRenewEnabled}
-                  onCheckedChange={(checked, position) =>
-                    handleToggleAutoRenew(domainName, checked, position)
-                  }
-                  disabled={isExpired}
-                  isLoading={isToggling}
-                  ariaLabel={`Auto-renew ${domainName}`}
-                />
-              </div>
-
-              {/* Time left - secondary text, clickable to open renew modal */}
-              {canRenew ? (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setRenewNowModalDomains([
-                      {
-                        normalizedDomainName: domainName,
-                        expirationDate,
-                      },
-                    ])
-                  }
-                  className="text-left text-[11px] text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors"
-                >
-                  {formatExpirationDateISO(expirationDate)} (
-                  {formatTimeLeft(expirationDate)})
-                </button>
-              ) : (
-                <span className="text-[11px] text-muted-foreground">
-                  {formatExpirationDateISO(expirationDate)} (
-                  {isExpired ? 'Expired' : formatTimeLeft(expirationDate)})
-                </span>
-              )}
-            </div>
-          );
-        },
-        size: 180,
-      },
-      {
-        id: 'autoEns',
-        header: 'AutoENS',
-        cell: ({ row }) => {
-          const domainName = row.getValue('normalizedDomainName') as string;
-          const expirationDate = row.getValue('expirationDate') as
-            | Date
-            | string
-            | null
-            | undefined;
-          const isToggling = togglingAutoEns.has(domainName);
-          const isAutoEnsEnabled = row.original.autoEnsEnabled ?? false;
-          const isExpired = expirationDate
-            ? isPast(new Date(expirationDate))
-            : false;
-
-          return (
-            <div className="flex items-center gap-2">
-              <AutoRenewToggle
-                checked={isAutoEnsEnabled}
-                onCheckedChange={(checked) =>
-                  handleToggleAutoEns(domainName, checked)
-                }
-                disabled={isExpired}
-                isLoading={isToggling}
-                ariaLabel={`Auto-ENS ${domainName}`}
-              />
-            </div>
-          );
-        },
-        size: 100,
-      },
-      {
-        accessorKey: 'dateTokenized',
-        header: 'Date Tokenized',
-        cell: ({ row }) => {
-          const dateTokenized = row.getValue('dateTokenized') as
-            | Date
-            | string
-            | null
-            | undefined;
-
-          if (!dateTokenized) {
-            return <span className="text-muted-foreground">-</span>;
-          }
-
-          const date = new Date(dateTokenized);
-          if (Number.isNaN(date.getTime())) {
-            return <span className="text-muted-foreground">-</span>;
-          }
-
-          // Format: yyyy-mm-dd
-          const formattedDate = date.toISOString().slice(0, 10);
-
-          return (
-            <span className="text-sm text-muted-foreground">
-              {formattedDate}
-            </span>
-          );
-        },
-        size: 140,
-        enableSorting: true,
-      },
-      {
-        id: 'renewPricing',
-        header: 'Renew (USD/yr)',
-        accessorFn: (row) => {
-          const customPrice = getCustomRenewalPrice(
-            row.normalizedDomainName ?? '',
-          );
-          if (customPrice !== null) return customPrice;
-          return getRenewalPriceUsdPerYearForDomain(
-            row.normalizedDomainName,
-            renewalPriceUsdPerYearByTld,
-          );
-        },
-        cell: ({ row }) => {
-          const domainName = row.original.normalizedDomainName ?? '';
-          const customPrice = getCustomRenewalPrice(domainName);
-          let renewalPriceUsdPerYear = row.getValue('renewPricing') as
-            | number
-            | null;
-
-          if (customPrice !== null) {
-            renewalPriceUsdPerYear = customPrice;
-          }
-
-          const priceLabel =
-            renewalPriceUsdPerYear === null
-              ? '—'
-              : formatAmountInUSD(renewalPriceUsdPerYear);
-
-          return (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                {priceLabel}
-              </span>
-              <RenewPricePremiumInfo domainName={domainName} />
-            </div>
-          );
-        },
-        size: 140,
-        enableSorting: true,
-      },
-      {
-        id: 'dnsStatus',
-        header: 'DNS Records',
-        cell: ({ row }) => {
-          const domainName = row.getValue(
-            'normalizedDomainName',
-          ) as NamefiNormalizedDomain;
-          const status = row.original.dnsStatus;
-          const chainId = row.original.chainId ?? null;
-
-          if (!status || !chainId)
-            return <span className="text-muted-foreground">-</span>;
-
-          return (
-            <DnsStatusCell
-              domainName={domainName}
-              status={status}
-              autoEnsEnabled={row.original.autoEnsEnabled ?? false}
-              nftChainId={chainId}
-            />
-          );
-        },
-        size: 200,
-      },
-      {
-        id: 'actions',
-        header: 'Actions',
-        cell: ({ row }) => {
-          const domainName = row.getValue('normalizedDomainName') as string;
-          const expirationDateRaw = row.getValue('expirationDate') as
-            | Date
-            | string
-            | null
-            | undefined;
-          const expirationDate = expirationDateRaw
-            ? new Date(expirationDateRaw)
-            : null;
-          const isExpired =
-            expirationDate !== null
-              ? differenceInDays(expirationDate, new Date()) < 0
-              : false;
-          const explorerUrl = getNftExplorerUrl(
-            row.original.chainId ?? null,
-            row.original.tokenId?.toString() ?? null,
-          );
-
-          const actionButtonBaseClassName =
-            'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5 !text-white border-0 bg-transparent shadow-none hover:bg-muted/30 xl:border xl:bg-background xl:shadow-xs';
-
-          const listForSaleButton = (
-            <Button
-              variant="outline"
-              size="sm"
-              className={cn(
-                actionButtonBaseClassName,
-                'hover:!text-orange-400',
-              )}
-              onClick={() => handleListForSaleClick(domainName)}
-              aria-label={`List ${domainName} for sale`}
-            >
-              <BadgeDollarSign className="w-4 h-4" />
-            </Button>
-          );
-
-          const explorerButton =
-            !isExpired && explorerUrl ? (
-              <Button
-                variant="outline"
-                size="sm"
-                className={cn(
-                  actionButtonBaseClassName,
-                  'hover:!text-blue-400',
-                )}
-                render={(props) => (
-                  <a
-                    {...props}
-                    href={explorerUrl}
-                    aria-label={`View NFT for ${domainName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      'flex justify-start items-center',
-                      props.className,
-                    )}
-                  >
-                    {props.children}
-                  </a>
-                )}
-                nativeButton={false}
-              >
-                <Compass className="w-4 h-4" />
-              </Button>
-            ) : null;
-
-          if (isMobile) {
-            return (
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
-                      aria-label={`Actions for ${domainName}`}
-                    />
-                  }
-                >
-                  <MoreVertical className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {/* Renew button logic can be added here if needed for mobile, but it's in the column now */}
-                  {!!listForSaleButton && (
-                    <DropdownMenuItem>{listForSaleButton}</DropdownMenuItem>
-                  )}
-                  {!!explorerButton && (
-                    <DropdownMenuItem>{explorerButton}</DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            );
-          }
-
-          return (
-            <div className="flex gap-2">
-              <ActionTooltip label="List for sale">
-                {listForSaleButton}
-              </ActionTooltip>
-              {explorerButton ? (
-                <ActionTooltip label="View NFT">{explorerButton}</ActionTooltip>
-              ) : null}
-            </div>
-          );
-        },
-        size: 280,
-        enableSorting: false,
-      },
-    ],
-    [
-      handleListForSaleClick,
-      handleRowSelectionChange,
-      handleToggleAllCurrentPage,
-      handleToggleAutoRenew,
-      handleToggleAutoEns,
-      pageSelectionState,
-      selectedDomainIds,
-      togglingAutoRenew,
-      togglingAutoEns,
-      isMobile,
-      renewalPriceUsdPerYearByTld,
-    ],
+  const handleOpenRenewModal = useCallback(
+    (domain: {
+      normalizedDomainName: string;
+      expirationDate: Date | string | null | undefined;
+    }) => {
+      setRenewNowModalDomains([domain]);
+    },
+    [],
   );
+
+  const columns = useMyDomainsColumns({
+    selectedDomainIds,
+    pageSelectionState,
+    togglingAutoRenew,
+    togglingAutoEns,
+    renewalPriceUsdPerYearByTld,
+    isMobile,
+    onToggleAllCurrentPage: handleToggleAllCurrentPage,
+    onRowSelectionChange: handleRowSelectionChange,
+    onToggleAutoRenew: handleToggleAutoRenew,
+    onToggleAutoEns: handleToggleAutoEns,
+    onOpenRenewModal: handleOpenRenewModal,
+    onListForSaleClick: handleListForSaleClick,
+  });
 
   return (
     <>
