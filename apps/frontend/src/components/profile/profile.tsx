@@ -17,6 +17,7 @@ import { ApiKeys } from './api-keys';
 import { useQueryState, parseAsStringEnum } from 'nuqs';
 import { useAuth } from '@/hooks/use-auth';
 import { PageShell } from '@/components/page-shell';
+import { AuthRequired } from '../auth-required';
 
 enum TabValues {
   WALLETS = 'wallets',
@@ -45,18 +46,6 @@ export default function Profile() {
     isLoading,
   } = useAuth();
 
-  useEffect(() => {
-    if (ready && !isLoading && !authenticated) {
-      router.push('/');
-    }
-  }, [ready, authenticated, isLoading, router]);
-
-  useEffect(() => {
-    if (activeTab === defaultTab) {
-      setActiveTab(defaultTab);
-    }
-  }, [activeTab, setActiveTab]);
-
   const handleTabChange = useCallback(
     (value: string) => {
       setActiveTab(value as TabValues);
@@ -64,12 +53,16 @@ export default function Profile() {
     [setActiveTab],
   );
 
-  if (isLoading || !user) {
+  if (!ready || isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
+  }
+
+  if (ready && !isLoading && !authenticated) {
+    return <AuthRequired />;
   }
 
   return (

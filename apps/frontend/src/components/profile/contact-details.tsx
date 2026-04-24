@@ -18,12 +18,13 @@ import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Globe, Loader2, Save, MessageCircle, User } from 'lucide-react';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { privyCustomMetadataSchema } from '@namefi-astra/common/privy-custom-metadata';
 import { useAuth } from '@/hooks/use-auth';
+import { useQueryState, parseAsString } from 'nuqs';
 
 // Helper function to add trimming and empty string handling to a string schema
 const withFormValidation = (schema: z.ZodOptional<z.ZodString>) =>
@@ -64,6 +65,7 @@ type ContactDetailsFormData = z.infer<typeof contactDetailsFormSchema>;
 export function ContactDetails() {
   const trpc = useTRPC();
   const { privyUser } = useAuth();
+  const [focus, setFocus] = useQueryState('focus', parseAsString);
 
   // Mutation for updating custom metadata
   const { mutate: updateMetadata, isPending: isUpdatingMetadata } = useMutation(
@@ -97,12 +99,12 @@ export function ContactDetails() {
   useEffect(() => {
     const address = privyUser.customMetadata.address
       ? {
-          street: privyUser.customMetadata.address.street ?? undefined,
-          city: privyUser.customMetadata.address.city ?? undefined,
-          state: privyUser.customMetadata.address.state ?? undefined,
-          zipCode: privyUser.customMetadata.address.zipCode ?? undefined,
-          country: privyUser.customMetadata.address.country ?? undefined,
-        }
+        street: privyUser.customMetadata.address.street ?? undefined,
+        city: privyUser.customMetadata.address.city ?? undefined,
+        state: privyUser.customMetadata.address.state ?? undefined,
+        zipCode: privyUser.customMetadata.address.zipCode ?? undefined,
+        country: privyUser.customMetadata.address.country ?? undefined,
+      }
       : undefined;
     const formData: ContactDetailsFormData = {
       fullName: privyUser.customMetadata.fullName || '',
@@ -122,6 +124,14 @@ export function ContactDetails() {
     },
     [updateMetadata],
   );
+
+  const emaiSubscriptionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (focus === 'email-subscription') {
+      scrollToElement(emaiSubscriptionRef.current);
+    }
+  }, [focus]);
 
   return (
     <div className="space-y-6">
@@ -153,7 +163,11 @@ export function ContactDetails() {
             </Card>
           </div>
           {/* Email Subscription Settings Section */}
-          <div className="space-y-12 mt-12">
+          <div
+            ref={emaiSubscriptionRef}
+            id="email-subscription"
+            className="space-y-12 mt-12"
+          >
             <EmailSubscriptionSettings hasEmail={!!privyUser?.email?.address} />
           </div>
 
@@ -298,4 +312,10 @@ export function ContactDetails() {
       </Card>
     </div>
   );
+}
+
+function scrollToElement(element?: HTMLElement | null | undefined) {
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
 }
