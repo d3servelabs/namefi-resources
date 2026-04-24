@@ -33,9 +33,8 @@ const accentFont = Fraunces({
 });
 
 const HERO_TILES = [
-  { label: 'Routing', value: 'Timelock-gated' },
-  { label: 'Identity', value: 'Verified surfaces' },
-  { label: 'Recovery', value: 'Policy-based' },
+  { label: 'Domains', value: 'Official surfaces' },
+  { label: 'Identity', value: 'Verified ownership' },
 ] as const;
 
 const GOVERNANCE_CONTROLS = [
@@ -204,7 +203,7 @@ const INCIDENTS: readonly IncidentCard[] = [
     tag: 'Systemic risk',
     title: 'The attack surface has moved up the stack',
     description:
-      'As smart contracts harden, attackers increasingly target the centralized infrastructure that decides where users land. If the namespace signals what is official, governance should control it.',
+      'As smart contracts harden, attackers increasingly target the centralized infrastructure that decides where users land. If the domain signals what is official, governance should control it.',
     className: 'md:col-span-2',
   },
 ];
@@ -226,19 +225,13 @@ const CAPABILITIES = [
     title: 'Verified surfaces',
     description:
       'Users can verify that a URL maps to a DAO-approved interface or operator.',
-    className: 'md:col-span-1 xl:col-span-2',
+    className: 'md:col-span-1 xl:col-span-3',
   },
   {
     title: 'Scoped operator access',
     description:
-      'Teams can handle low-risk records while the timelock retains control over routing-critical changes.',
-    className: 'md:col-span-1 xl:col-span-2',
-  },
-  {
-    title: 'Policy-based recovery',
-    description:
-      'Emergency procedures can be pre-approved and executed cleanly if an upstream provider is compromised.',
-    className: 'md:col-span-2 xl:col-span-2',
+      'Teams can handle low-risk records while governance retains approval over routing-critical changes.',
+    className: 'md:col-span-1 xl:col-span-3',
   },
 ] as const;
 
@@ -247,7 +240,7 @@ const STEPS = [
     numeral: 'I',
     title: 'Migrate control',
     description:
-      'Transfer namespace control to Namefi contracts governed by the Uniswap timelock.',
+      'Transfer domain control to Namefi contracts controlled by Uniswap governance.',
   },
   {
     numeral: 'II',
@@ -265,7 +258,7 @@ const STEPS = [
     numeral: 'IV',
     title: 'Audit and recover',
     description:
-      'Continuously monitor the namespace and execute pre-approved recovery playbooks when needed.',
+      'Continuously monitor the domain and execute pre-approved recovery playbooks when needed.',
   },
 ] as const;
 
@@ -510,7 +503,7 @@ function HeroDiagram() {
             letterSpacing="2.4"
             style={{ fontFamily: 'var(--font-uniswap-mono)' }}
           >
-            ONCHAIN SCOPE
+            OFFICIAL DOMAINS
           </text>
 
           <circle cx="280" cy="230" r="18" fill="#F50DB4" />
@@ -567,11 +560,11 @@ function HeroDiagram() {
             x="302"
             y="232"
             fill="#FFFFFF"
-            fontSize="11"
+            fontSize="10"
             letterSpacing="1.6"
             style={{ fontFamily: 'var(--font-uniswap-mono)' }}
           >
-            TIMELOCK
+            DOMAIN ROOT
           </text>
           <text
             x="144"
@@ -626,7 +619,7 @@ function HeroDiagram() {
         </svg>
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {HERO_TILES.map((tile) => (
           <div
             key={tile.label}
@@ -725,7 +718,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
               <div className="absolute bottom-0 left-0 top-0 w-px bg-[linear-gradient(180deg,#F50DB4,#FF8DD8)] opacity-65" />
               <FrameCorners />
 
-              <SectionEyebrow>Governance-native namespace</SectionEyebrow>
+              <SectionEyebrow>Governance-native domain</SectionEyebrow>
 
               <Image
                 src="/assets/uniswap/logos/uniswap-horizontal-white.svg"
@@ -751,7 +744,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                     '[font-family:var(--font-uniswap-accent)]',
                   )}
                 >
-                  namespace
+                  domain
                 </span>{' '}
                 too.
               </h1>
@@ -804,7 +797,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
               >
                 The protocol is decentralized.
                 <span className="block text-[#a8a1b7]">
-                  The namespace still is not.
+                  The domain still is not.
                 </span>
               </h2>
               <p className="mt-5 max-w-[760px] text-lg leading-8 text-[#a8a1b7]">
@@ -898,12 +891,12 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                   '[font-family:var(--font-uniswap-display)]',
                 )}
               >
-                A proposal screen that can prove what is official.
+                Delegates should know which identities are official.
               </h2>
               <p className="mt-5 max-w-[720px] text-lg leading-8 text-[#a8a1b7]">
-                This is the Aave-style proposal example adapted for Uniswap: the
-                proposal stays routine, but the voting surface can show verified
-                namespace identities alongside ENS names and wallets.
+                Proposal pages should make verified Uniswap domains obvious
+                alongside ENS names and wallets, so delegates can assess
+                provenance at a glance.
               </p>
             </div>
 
@@ -934,15 +927,15 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                     '[font-family:var(--font-uniswap-display)]',
                   )}
                 >
-                  Proposal: Canonical namespace policy for app.uniswap,
+                  Proposal: Canonical domain policy for app.uniswap,
                   docs.uniswap, and Unichain entry points.
                 </h3>
 
                 <p className="mt-5 max-w-[700px] text-[0.98rem] leading-7 text-[#a8a1b7] md:text-[1.04rem]">
                   The proposal itself is simple: route official web surfaces
-                  through a governance-defined namespace policy. What changes is
-                  the ledger around it. Delegates can appear as verified
-                  namespace IDs, ENS names, or wallets without losing
+                  through a governance-defined domain policy. What changes is
+                  the context around it. Delegates can appear under verified
+                  Uniswap domains, ENS names, or wallets without losing
                   auditability.
                 </p>
 
@@ -1041,7 +1034,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 This already matches how Uniswap handles risk.
               </h2>
               <p className="mt-5 max-w-[720px] text-lg leading-8 text-[#a8a1b7]">
-                The namespace is not a branding layer. It is an extension of the
+                The domain is not a branding layer. It is an extension of the
                 same governance logic already applied to deployment, routing,
                 and execution risk.
               </p>
@@ -1085,7 +1078,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
               )}
             >
               <span className="h-px flex-1 bg-white/12" />
-              <span>Namefi extends that logic to the namespace layer.</span>
+              <span>Namefi extends that logic to the domain layer.</span>
               <span className="h-px flex-1 bg-white/12" />
             </div>
           </div>
@@ -1104,7 +1097,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 This is governance infrastructure, not brand polish.
               </h2>
               <p className="mt-5 max-w-[560px] text-lg leading-8 text-[#a8a1b7]">
-                When users connect through a URL, the namespace is part of the
+                When users connect through a URL, the domain is part of the
                 trust model. That makes it governance scope.
               </p>
             </div>
@@ -1208,7 +1201,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                   '[font-family:var(--font-uniswap-display)]',
                 )}
               >
-                Governance for the namespace layer.
+                Governance for the domain layer.
               </h2>
             </div>
 
@@ -1312,13 +1305,13 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                   '[font-family:var(--font-uniswap-display)]',
                 )}
               >
-                Make the namespace match the standard of the protocol.
+                Make the domain match the standard of the protocol.
               </h2>
             </div>
 
             <p className="mt-6 max-w-[640px] text-lg leading-8 text-[#a8a1b7]">
               If governance defines what is official in Uniswap, it should
-              define the namespace users trust.
+              define the domain users trust.
             </p>
 
             <a
