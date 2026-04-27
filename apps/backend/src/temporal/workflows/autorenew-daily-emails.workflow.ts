@@ -71,6 +71,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
   ownersIdFilter,
   allowExpired = true,
   overrideRecipientEmail,
+  userWorkflowsConcurrency = 3,
 }: {
   dryRun?: boolean;
   forceSendReport?: boolean;
@@ -90,6 +91,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
    * rehearsal that doesn't spam the dev mailbox across many users.
    */
   overrideRecipientEmail?: string;
+  userWorkflowsConcurrency?: number;
 } = {}) {
   const startTime = Date.now();
   workflow.log.info(
@@ -146,7 +148,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
         return { status: 'rejected', userId, error };
       }
     },
-    { concurrency: 10 },
+    { concurrency: userWorkflowsConcurrency },
   );
 
   const successes = results.filter(({ status }) => status === 'fulfilled') as {

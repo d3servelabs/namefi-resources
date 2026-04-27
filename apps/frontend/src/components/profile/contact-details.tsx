@@ -99,12 +99,12 @@ export function ContactDetails() {
   useEffect(() => {
     const address = privyUser.customMetadata.address
       ? {
-        street: privyUser.customMetadata.address.street ?? undefined,
-        city: privyUser.customMetadata.address.city ?? undefined,
-        state: privyUser.customMetadata.address.state ?? undefined,
-        zipCode: privyUser.customMetadata.address.zipCode ?? undefined,
-        country: privyUser.customMetadata.address.country ?? undefined,
-      }
+          street: privyUser.customMetadata.address.street ?? undefined,
+          city: privyUser.customMetadata.address.city ?? undefined,
+          state: privyUser.customMetadata.address.state ?? undefined,
+          zipCode: privyUser.customMetadata.address.zipCode ?? undefined,
+          country: privyUser.customMetadata.address.country ?? undefined,
+        }
       : undefined;
     const formData: ContactDetailsFormData = {
       fullName: privyUser.customMetadata.fullName || '',
