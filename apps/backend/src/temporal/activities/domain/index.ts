@@ -95,7 +95,7 @@ export async function fillDefaultDomainConfig(
   overrides: UpdateDomainPreferencesAndConfig = {},
 ) {
   return updateDomainPreferencesAndConfig(normalizedDomainName, userId, {
-    autoEnsEnabled: false,
+    autoEnsEnabled: true,
     autoParkEnabled: true,
     autoRenewEnabled: true,
     dnssecEnabled: false,
