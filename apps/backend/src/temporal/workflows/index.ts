@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/performance/noReExportAll: expected */
+/** biome-ignore-all lint/performance/noBarrelFile lint/performance/noReExportAll: expected */
 export * from './chargeStripe.workflow';
 export * from './hello-world.workflow';
 export * from './mint.workflow';
@@ -54,6 +54,7 @@ export * from './multi-refund.workflow';
 export * from './update-privy-cache.workflow';
 export * from './backfill-nft-wallet-users.workflow';
 export * from './prepare-multi-payments-and-charge.workflow';
+export * from './prepare-multi-payments-charge-and-link-order.workflow';
 export * from './test-workflows/test-multi-payments.workflow';
 export * from './test-workflows/test-incident-escalation.workflow';
 export * from './prepare-multi-payments.workflow';

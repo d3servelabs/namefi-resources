@@ -7,10 +7,11 @@ import {
   paymentProviderSchema,
   paymentStatusSchema,
   paymentsTable,
+  ordersTable,
   refundsTable,
   usersTable,
 } from '@namefi-astra/db';
-import { eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, isNull, or } from 'drizzle-orm';
 import { isNil, indexBy, prop } from 'ramda';
 import Stripe from 'stripe';
 import { usersService } from '#services/index';
@@ -242,6 +243,167 @@ export async function getMultiplePaymentsDetails(input: {
   }
 
   return indexBy(prop('id'), payments);
+}
+
+type LinkPaymentsToOrderInput = {
+  paymentIds: string[];
+  orderId: string;
+};
+
+export async function maybeLinkPaymentsToOrder({
+  paymentIds,
+  orderId,
+}: LinkPaymentsToOrderInput) {
+  try {
+    return await $withTransaction(
+      async (tx) => {
+        if (paymentIds.length === 0) {
+          return {
+            linkedPaymentIds: [],
+            skipped: true as const,
+            skipReason: 'NO_PAYMENTS' as const,
+          };
+        }
+
+        const result = await _linkAllPaymentsToOrderOrThrowTx(
+          { paymentIds, orderId },
+          tx,
+        );
+
+        return {
+          ...result,
+          skipped: false as const,
+        };
+      },
+      { isolationLevel: 'serializable' },
+    );
+  } catch (error) {
+    return {
+      linkedPaymentIds: [],
+      skipped: true as const,
+      skipReason: 'LINK_FAILED' as const,
+      error: serializeActivityError(error),
+    };
+  }
+}
+export async function linkAllPaymentsToOrderOrThrow(
+  input: LinkPaymentsToOrderInput,
+) {
+  return $withTransaction(
+    async (tx) => _linkAllPaymentsToOrderOrThrowTx(input, tx),
+    { isolationLevel: 'serializable' },
+  );
+}
+
+async function _linkAllPaymentsToOrderOrThrowTx(
+  { paymentIds, orderId }: LinkPaymentsToOrderInput,
+  _tx: typeof db,
+) {
+  const uniquePaymentIds = Array.from(new Set(paymentIds));
+
+  if (uniquePaymentIds.length !== paymentIds.length) {
+    throw ApplicationFailure.create({
+      message: 'Some payments are duplicated',
+      nonRetryable: true,
+      details: [{ paymentIds }],
+    });
+  }
+
+  const order = await _tx.query.ordersTable.findFirst({
+    columns: { id: true },
+    where: eq(ordersTable.id, orderId),
+  });
+
+  if (!order) {
+    throw ApplicationFailure.create({
+      message: 'Order not found',
+      nonRetryable: true,
+      details: [{ orderId }],
+    });
+  }
+
+  if (uniquePaymentIds.length === 0) {
+    return { linkedPaymentIds: [] };
+  }
+
+  const payments = await _tx.query.paymentsTable.findMany({
+    columns: {
+      id: true,
+      orderId: true,
+    },
+    where: inArray(paymentsTable.id, uniquePaymentIds),
+  });
+
+  if (payments.length !== uniquePaymentIds.length) {
+    throw ApplicationFailure.create({
+      message: 'Some payments not found',
+      nonRetryable: true,
+      details: [{ paymentIds: uniquePaymentIds, orderId }],
+    });
+  }
+
+  const conflictingPayments = payments.filter(
+    (payment) => payment.orderId !== null && payment.orderId !== orderId,
+  );
+
+  if (conflictingPayments.length > 0) {
+    throw ApplicationFailure.create({
+      message: 'Some payments are already linked to a different order',
+      nonRetryable: true,
+      details: [{ orderId, conflictingPayments }],
+    });
+  }
+
+  const linkedPayments = await _tx
+    .update(paymentsTable)
+    .set({ orderId })
+    .where(
+      and(
+        inArray(paymentsTable.id, uniquePaymentIds),
+        or(isNull(paymentsTable.orderId), eq(paymentsTable.orderId, orderId)),
+      ),
+    )
+    .returning({ id: paymentsTable.id });
+
+  if (linkedPayments.length !== uniquePaymentIds.length) {
+    throw ApplicationFailure.create({
+      message: 'Failed to link all payments to order',
+      nonRetryable: true,
+      details: [
+        {
+          orderId,
+          expectedPaymentIds: uniquePaymentIds,
+          linkedPaymentIds: linkedPayments.map((payment) => payment.id),
+        },
+      ],
+    });
+  }
+
+  return { linkedPaymentIds: linkedPayments.map((payment) => payment.id) };
+}
+
+function serializeActivityError(error: unknown) {
+  if (error instanceof Error) {
+    const maybeApplicationFailure = error as {
+      type?: string;
+      nonRetryable?: boolean;
+      details?: unknown[];
+    };
+
+    return {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      type: maybeApplicationFailure.type,
+      nonRetryable: maybeApplicationFailure.nonRetryable,
+      details: maybeApplicationFailure.details,
+    };
+  }
+
+  return {
+    name: 'UnknownError',
+    message: String(error),
+  };
 }
 
 export async function getRefundDetails({ refundId }: { refundId: string }) {
