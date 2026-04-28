@@ -243,6 +243,37 @@ const resolveEnsNameOutputSchema = z.object({
   address: z.string().nullable().optional(),
 });
 
+/**
+ * Shared row schema for the current user's own login history (profile → Security tab).
+ * Mirrors the admin row shape minus PII like email — the client already knows who
+ * it is authenticated as, so we don't re-ship user identity fields here.
+ */
+const myLoginHistoryRowSchema = z.object({
+  id: z.string().uuid(),
+  sessionId: z.string().nullable(),
+  signedInAt: z.date(),
+  lastAccessedAt: z.date(),
+  ipAddress: z.string().nullable(),
+  os: z.string().nullable(),
+  browser: z.string().nullable(),
+  device: z.string().nullable(),
+  loginMethod: z.string().nullable(),
+  geoCity: z.string().nullable(),
+  geoSubdivision: z.string().nullable(),
+  geoRegionCode: z.string().nullable(),
+  isNewIp: z.boolean(),
+  isNewLocation: z.boolean(),
+  isFirstSession: z.boolean(),
+});
+
+const listMyLoginHistoryInputSchema = z.object({
+  limit: z.number().int().min(1).max(100).default(50),
+});
+
+const listMyLoginHistoryOutputSchema = z.object({
+  items: z.array(myLoginHistoryRowSchema),
+});
+
 // ---------------------------------------------------------------------------
 // Contract
 // ---------------------------------------------------------------------------
@@ -348,7 +379,13 @@ export const usersContract = createContract(
       input: resolveEnsNameInputSchema,
       output: resolveEnsNameOutputSchema,
     },
+    listMyLoginHistory: {
+      type: 'query',
+      input: listMyLoginHistoryInputSchema,
+      output: listMyLoginHistoryOutputSchema,
+    },
   },
 );
 
 export type UsersContract = typeof usersContract;
+export type MyLoginHistoryRow = z.infer<typeof myLoginHistoryRowSchema>;

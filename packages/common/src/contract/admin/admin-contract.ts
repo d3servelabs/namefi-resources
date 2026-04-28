@@ -8,6 +8,7 @@ import { adminEmailCampaignsContract } from './admin-email-campaigns-contract';
 import { adminEppTestingContract } from './admin-epp-testing-contract';
 import { adminExportTrackingContract } from './admin-export-tracking-contract';
 import { adminFreeClaimsContract } from './admin-free-claims-contract';
+import { adminLoginHistoryContract } from './admin-login-history-contract';
 import { adminNfscContract } from './admin-nfsc-contract';
 import { adminNftContract } from './admin-nft-contract';
 import { adminOrdersContract } from './admin-orders-contract';
@@ -55,6 +56,7 @@ export const adminContract = {
   orders: adminOrdersContract,
   exportTracking: adminExportTrackingContract,
   bigQueryAudit: adminBigQueryAuditContract,
+  loginHistory: adminLoginHistoryContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;

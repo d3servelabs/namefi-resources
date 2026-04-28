@@ -1042,13 +1042,14 @@ jobs:
       - name: Check for SQL migration changes
         id: check-sql-changes
         run: |
-          COMPARE_BASE=$(git merge-base ${{ needs.preview-label-gate.outputs.base_sha }} ${{ needs.preview-label-gate.outputs.head_sha }})
-          SQL_FILES=$(git diff --name-only "$COMPARE_BASE" ${{ needs.preview-label-gate.outputs.head_sha }} | grep -E '\.sql$' || true)
-          if [[ -n "$SQL_FILES" ]]; then
-            echo "has_sql_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_sql_changes=false" >> $GITHUB_OUTPUT
-          fi
+          echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+          # COMPARE_BASE=$(git merge-base ${{ needs.preview-label-gate.outputs.base_sha }} ${{ needs.preview-label-gate.outputs.head_sha }})
+          # SQL_FILES=$(git diff --name-only "$COMPARE_BASE" ${{ needs.preview-label-gate.outputs.head_sha }} | grep -E '\.sql$' || true)
+          # if [[ -n "$SQL_FILES" ]]; then
+          #   echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+          # else
+          #   echo "has_sql_changes=false" >> $GITHUB_OUTPUT
+          # fi
 
       - name: Get connection string for PR branch
         id: connection-string

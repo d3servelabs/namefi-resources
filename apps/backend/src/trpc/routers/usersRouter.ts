@@ -1,6 +1,7 @@
 import {
   db,
   usersTable,
+  userLoginHistoryTable,
   namefiNftOwnersView,
   namefiNftOwnersCte,
   namefiNftView,
@@ -1423,5 +1424,40 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         normalizedEnsName,
         address,
       };
+    }),
+
+  listMyLoginHistory: protectedProcedure
+    .input(usersContract.listMyLoginHistory.input)
+    .output(usersContract.listMyLoginHistory.output)
+    .query(async ({ ctx, input }) => {
+      const rows = await db
+        .select({
+          id: userLoginHistoryTable.id,
+          sessionId: userLoginHistoryTable.sessionId,
+          signedInAt: userLoginHistoryTable.signedInAt,
+          lastAccessedAt: userLoginHistoryTable.lastAccessedAt,
+          ipAddress: userLoginHistoryTable.ipAddress,
+          os: userLoginHistoryTable.os,
+          browser: userLoginHistoryTable.browser,
+          device: userLoginHistoryTable.device,
+          loginMethod: userLoginHistoryTable.loginMethod,
+          geoCity: userLoginHistoryTable.geoCity,
+          geoSubdivision: userLoginHistoryTable.geoSubdivision,
+          geoRegionCode: userLoginHistoryTable.geoRegionCode,
+          isNewIp: userLoginHistoryTable.isNewIp,
+          isNewLocation: userLoginHistoryTable.isNewLocation,
+          isFirstSession: userLoginHistoryTable.isFirstSession,
+        })
+        .from(userLoginHistoryTable)
+        .where(eq(userLoginHistoryTable.userId, ctx.user.id))
+        .orderBy(
+          sql`${userLoginHistoryTable.signedInAt} DESC`,
+          // Stable tiebreaker so rows with identical signedInAt return in
+          // a deterministic order (matches the admin-side router pattern).
+          sql`${userLoginHistoryTable.id} DESC`,
+        )
+        .limit(input.limit);
+
+      return { items: rows };
     }),
 });

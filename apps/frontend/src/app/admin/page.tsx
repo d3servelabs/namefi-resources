@@ -214,6 +214,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         permissions: [Permission.READ_USERS],
       },
       {
+        title: 'Login History',
+        description:
+          'Review sign-ins across all users, including IP, approximate location, device, and new-location/new-IP flags.',
+        href: '/admin/login-history',
+        icon: History,
+        iconBgColor: 'bg-indigo-100',
+        iconTextColor: 'text-indigo-600',
+        permissions: [Permission.READ_USERS],
+      },
+      {
         title: 'Analytics',
         description:
           'View DNS analytics, query metrics, and comprehensive system insights.',
