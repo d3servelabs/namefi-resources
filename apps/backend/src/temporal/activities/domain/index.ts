@@ -89,12 +89,17 @@ export async function getDomainChain(
   return domain.chainId;
 }
 
+
 export async function fillDefaultDomainConfig(
   normalizedDomainName: NamefiNormalizedDomain,
   userId: string,
   overrides: UpdateDomainPreferencesAndConfig = {},
 ) {
   return updateDomainPreferencesAndConfig(normalizedDomainName, userId, {
+    /**
+     * autoEns flag value should be either user or wallet specific.
+     * Because user might transfer it to another wallet(his own or another user), and the reciever may not want autoEns for that wallet.
+     */
     autoEnsEnabled: true,
     autoParkEnabled: true,
     autoRenewEnabled: true,
