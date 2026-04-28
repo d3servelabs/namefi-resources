@@ -63,7 +63,7 @@
     "chart.js": "^4.5.0",
     "chrono-node": "^2.8.4",
     "colorjs.io": "^0.5.2",
-    "country-data-list": "^1.4.1",
+    "country-data-list": "^1.6.2",
     "date-fns": "^4.1.0",
     "event-source-polyfill": "^1.0.31",
     "lottie-react": "^2.4.1",

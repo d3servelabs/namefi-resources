@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import type { ConnInfo } from 'hono/conninfo';
+import type { RequestInfo } from '#lib/request-info';
 
 import { createLogger } from '#lib/logger';
 import { Scalar } from '@scalar/hono-api-reference';
@@ -425,8 +426,15 @@ function getRequestForHandler({
 }
 
 providersRouter.use('/*', async (c, next) => {
-  const honoVars = c.var as { requestId: string; connInfo: ConnInfo };
-  const clientIp = honoVars.connInfo?.remote?.address || null;
+  const honoVars = c.var as {
+    requestId: string;
+    connInfo: ConnInfo;
+    requestInfo: RequestInfo;
+  };
+  const clientIp =
+    honoVars.requestInfo?.ipAddress ??
+    honoVars.connInfo?.remote?.address ??
+    null;
   const rawBody = await c.req.raw.clone().text();
   const authCtx = createAuthContext(
     c.req.header(),
@@ -470,6 +478,7 @@ providersRouter.use('/*', async (c, next) => {
       honoVars: c.var as {
         requestId: string;
         connInfo: ConnInfo;
+        requestInfo: RequestInfo;
       },
       user: user ?? null,
     } satisfies TrpcContextWithUserOrNull, // Provide initial context if needed

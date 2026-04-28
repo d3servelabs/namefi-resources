@@ -25,6 +25,22 @@ const transporter: Mail = nodemailer.createTransport({
   ...transportOptions,
 });
 
+export interface SendMailAttachment {
+  filename: string;
+  content: string | Buffer;
+  contentType?: string;
+  /**
+   * When set, the attachment is referenceable from the HTML body as
+   * `<img src="cid:<cid>">`. Forwarded to nodemailer as `contentId: <<cid>>`.
+   */
+  cid?: string;
+  /**
+   * Disposition hint. `'inline'` is the right choice for images referenced
+   * via `cid:` from the HTML body; defaults to `'attachment'`.
+   */
+  disposition?: 'inline' | 'attachment';
+}
+
 export interface SendMailInput {
   to: string[];
   cc?: string[];
@@ -32,11 +48,7 @@ export interface SendMailInput {
   subject: string;
   content: { plain?: string; html: string };
   from?: string;
-  attachments?: Array<{
-    filename: string;
-    content: string | Buffer;
-    contentType?: string;
-  }>;
+  attachments?: SendMailAttachment[];
   replyTo?: (string | Mail.Address)[];
 }
 
@@ -64,6 +76,8 @@ export async function sendMail({
       filename: att.filename,
       content: att.content,
       contentType: att.contentType || 'text/plain',
+      ...(att.cid ? { cid: att.cid } : {}),
+      ...(att.disposition ? { contentDisposition: att.disposition } : {}),
     })),
     headers: {
       ses: 'no-track',

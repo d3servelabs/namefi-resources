@@ -30,6 +30,7 @@ import { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
 import { requireUserAuth } from '#lib/auth';
 import { triggerLoginNotification } from '#lib/login-notification';
+import type { RequestInfo } from '#lib/request-info';
 import {
   audit,
   createAuditRecord,
@@ -251,6 +252,7 @@ export const createContext = async (
     honoVars: c.var as {
       requestId: string;
       connInfo: ConnInfo;
+      requestInfo: RequestInfo;
     },
   } satisfies TrpcContext;
 };
@@ -273,6 +275,7 @@ export type TrpcContext = {
   honoVars?: {
     requestId: string;
     connInfo: ConnInfo;
+    requestInfo: RequestInfo;
   };
   /**
    * Impersonation metadata for this request if applicable
@@ -594,7 +597,11 @@ function maybeNotifyLogin(params: {
     if (minutesSinceLogin > 5) {
       return;
     }
-    const ipAddress = ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
+    const requestInfo = ctx.honoVars?.requestInfo;
+    const ipAddress =
+      requestInfo?.ipAddress ??
+      ctx.honoVars?.connInfo?.remote?.address ??
+      'unknown';
     const userAgent = ctx.req?.header?.('User-Agent') ?? '';
     triggerLoginNotification({
       user,
@@ -603,6 +610,7 @@ function maybeNotifyLogin(params: {
       userAgent,
       isNewUser,
       tokenIssuedAt,
+      requestInfo: requestInfo ?? null,
     });
   }
 }

@@ -645,6 +645,13 @@
       "when": 1774613640616,
       "tag": "0091_careless_dragon_man",
       "breakpoints": true
+    },
+    {
+      "idx": 92,
+      "version": "7",
+      "when": 1777026407137,
+      "tag": "0092_famous_colossus",
+      "breakpoints": true
     }
   ]
 }

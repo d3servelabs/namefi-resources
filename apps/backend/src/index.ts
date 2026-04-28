@@ -26,6 +26,7 @@ import { validateAndCreateSearchAttributes } from '#temporal/operator/search-att
 import { randomBytes } from 'node:crypto';
 import { getConnInfo } from '@hono/node-server/conninfo';
 import type { ConnInfo } from 'hono/conninfo';
+import { resolveRequestInfo, type RequestInfo } from '#lib/request-info';
 import { altchaRouter } from './routers/altcha';
 import { publicRouter } from './routers/public';
 import { providersRouter } from './routers/openapi';
@@ -46,6 +47,7 @@ import { auditLogsTestRouter } from './routers/audit-logs-test';
 type HonoVariables = {
   requestId: string;
   connInfo: ConnInfo;
+  requestInfo: RequestInfo;
 };
 
 const app = new Hono<{ Variables: HonoVariables }>();
@@ -127,10 +129,14 @@ app.use(prettyJSON());
 app.use(async (c, next) => {
   const requestId = c.req.header('x-request-id') ?? genRequestId();
   const connInfo = getConnInfo(c);
+  const requestInfo = resolveRequestInfo(c, connInfo);
   c.set('requestId', requestId);
   c.set('connInfo', connInfo);
+  c.set('requestInfo', requestInfo);
   logger.assign({
-    ip: connInfo.remote.address ?? 'unknown',
+    ip: requestInfo.ipAddress,
+    ipSource: requestInfo.source,
+    isGoogleLB: requestInfo.isGoogleLB,
     connInfo,
     requestId,
   });
