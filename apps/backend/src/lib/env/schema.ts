@@ -327,6 +327,23 @@ export const configSchema = z.object({
       z.stringbool().safeParse(process.env.ALLOW_LOGIN_NOTIFICATIONS).data ??
         true,
     ),
+  /**
+   * Gate for displaying the resolved `loginMethod` in user-visible
+   * surfaces (login-notification email + admin login-history page +
+   * profile Security card). The DB column keeps storing whatever
+   * `detectLoginMethod` resolves; this flag only controls the *render*.
+   *
+   * Default false: `detectLoginMethod` is heuristic (it walks Privy
+   * `linkedAccounts` types) and the team can't actually verify which
+   * method a user authenticated with, so showing it misleads more than
+   * it informs. Flip to true (`SHOW_LOGIN_METHOD=true`) once the
+   * detection is reliable enough to surface.
+   */
+  SHOW_LOGIN_METHOD: z
+    .boolean()
+    .default(
+      z.stringbool().safeParse(process.env.SHOW_LOGIN_METHOD).data ?? false,
+    ),
 
   /**
    * URL of the Ponder indexer to sync from.

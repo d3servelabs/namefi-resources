@@ -58,6 +58,17 @@ const x402PaymentOutputSchema = z.discriminatedUnion('enabled', [
 export type X402PaymentInfo = z.infer<typeof x402PaymentOutputSchema>;
 
 // ---------------------------------------------------------------------------
+// showLoginMethod
+// ---------------------------------------------------------------------------
+
+// Whether the resolved `loginMethod` should be shown in user-visible
+// surfaces (login-notification email, admin login-history page, profile
+// Security card). Driven by the `SHOW_LOGIN_METHOD` env flag on the
+// backend; default false because the underlying detection is heuristic
+// and currently not reliable enough to surface.
+const showLoginMethodOutputSchema = z.boolean();
+
+// ---------------------------------------------------------------------------
 // The contract
 // ---------------------------------------------------------------------------
 
@@ -80,6 +91,12 @@ export const configContract = createContract(
       type: 'query',
       input: z.void(),
       output: x402PaymentOutputSchema,
+    },
+
+    showLoginMethod: {
+      type: 'query',
+      input: z.void(),
+      output: showLoginMethodOutputSchema,
     },
   },
 );

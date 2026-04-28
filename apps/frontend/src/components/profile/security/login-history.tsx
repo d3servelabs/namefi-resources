@@ -45,6 +45,13 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
     trpc.users.listMyLoginHistory.queryOptions({ limit: 50 }),
   );
 
+  // Backend env flag — `loginMethod` detection is heuristic and not yet
+  // reliable enough to surface, so the per-row "Method:" sub-text is
+  // hidden unless ops explicitly opts in via `SHOW_LOGIN_METHOD=true`.
+  const { data: showLoginMethod = false } = useQuery(
+    trpc.config.showLoginMethod.queryOptions(),
+  );
+
   const items = data?.items ?? [];
 
   return (
@@ -154,7 +161,7 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
                             </code>
                           </span>
                         ) : null}
-                        {row.loginMethod ? (
+                        {showLoginMethod && row.loginMethod ? (
                           <span>Method: {row.loginMethod}</span>
                         ) : null}
                       </div>

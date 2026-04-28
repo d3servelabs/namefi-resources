@@ -7,6 +7,13 @@ import * as mailStyles from '../styles';
 
 export type LoginNotificationProps = {
   loginMethod: string;
+  /**
+   * Whether to render the resolved `loginMethod` to the user. Driven by
+   * `config.SHOW_LOGIN_METHOD` on the server side. Defaults to false at
+   * the call site because the underlying detection isn't reliable enough
+   * to surface yet.
+   */
+  showLoginMethod: boolean;
   ipAddress: string;
   geolocation: string;
   os: string;
@@ -24,6 +31,7 @@ export type LoginNotificationProps = {
 export const LoginNotification = buildTemplate<LoginNotificationProps>(
   ({
     loginMethod,
+    showLoginMethod,
     ipAddress,
     geolocation,
     os,
@@ -77,14 +85,22 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
         <div className="namefi-table-wrap" style={styles.detailsBox}>
           <table className="namefi-key-value-table" style={styles.table}>
             <tbody>
-              <tr className="namefi-key-value-row">
-                <td className="namefi-key-value-label" style={styles.labelCell}>
-                  Login Method
-                </td>
-                <td className="namefi-key-value-value" style={styles.valueCell}>
-                  {loginMethod}
-                </td>
-              </tr>
+              {showLoginMethod ? (
+                <tr className="namefi-key-value-row">
+                  <td
+                    className="namefi-key-value-label"
+                    style={styles.labelCell}
+                  >
+                    Login Method
+                  </td>
+                  <td
+                    className="namefi-key-value-value"
+                    style={styles.valueCell}
+                  >
+                    {loginMethod}
+                  </td>
+                </tr>
+              ) : null}
               <tr className="namefi-key-value-row">
                 <td className="namefi-key-value-label" style={styles.labelCell}>
                   IP Address
@@ -173,6 +189,10 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
   },
   {
     loginMethod: 'Email',
+    // Match the production default: hide the Login Method row in the
+    // react-email preview server unless explicitly toggled on while
+    // iterating on the template.
+    showLoginMethod: false,
     ipAddress: '192.168.1.1',
     geolocation: 'San Francisco, California, United States',
     os: 'macOS Catalina or later',

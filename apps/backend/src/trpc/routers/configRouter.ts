@@ -47,4 +47,9 @@ export const configRouter = createContractTRPCRouter<typeof configContract>({
         x402Version: 2 as const,
       };
     }),
+
+  showLoginMethod: publicProcedure
+    .input(configContract.showLoginMethod.input)
+    .output(configContract.showLoginMethod.output)
+    .query(() => config.SHOW_LOGIN_METHOD),
 });

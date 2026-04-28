@@ -2,6 +2,7 @@ import { render } from '@react-email/components';
 import React from 'react';
 import { sendMail, type SendMailAttachment } from '../../mail/mail-client';
 import { LoginNotification } from '../../mail/templates/login-notification';
+import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import type { LoginSessionInfo } from './types';
 import { formatGeolocation } from './geolocation';
@@ -55,6 +56,10 @@ export async function sendLoginNotificationEmail({
 
     const emailContent = React.createElement(LoginNotification, {
       loginMethod: sessionInfo.loginMethod,
+      // `detectLoginMethod` is heuristic and the team currently can't
+      // verify the result, so the rendered row is hidden by default.
+      // Flip `SHOW_LOGIN_METHOD=true` once the detection is reliable.
+      showLoginMethod: config.SHOW_LOGIN_METHOD,
       ipAddress: sessionInfo.ipAddress,
       geolocation: geolocationString,
       os: sessionInfo.os,

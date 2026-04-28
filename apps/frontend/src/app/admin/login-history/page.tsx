@@ -106,6 +106,15 @@ function LoginHistoryTable() {
     ),
   );
 
+  // Backend env flag — `loginMethod` detection is heuristic and not yet
+  // reliable enough to surface, so the column is omitted unless ops
+  // explicitly opts in via `SHOW_LOGIN_METHOD=true`.
+  const { data: showLoginMethod = false } = useQuery(
+    trpc.config.showLoginMethod.queryOptions(undefined, {
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+
   const columns = useMemo<ColumnDef<LoginHistoryRow>[]>(
     () => [
       {
@@ -184,14 +193,20 @@ function LoginHistoryTable() {
         ),
         size: 200,
       },
-      {
-        accessorKey: 'loginMethod',
-        header: 'Method',
-        cell: ({ row }) => (
-          <span className="text-xs">{row.original.loginMethod ?? '—'}</span>
-        ),
-        size: 120,
-      },
+      ...(showLoginMethod
+        ? [
+            {
+              accessorKey: 'loginMethod',
+              header: 'Method',
+              cell: ({ row }) => (
+                <span className="text-xs">
+                  {row.original.loginMethod ?? '—'}
+                </span>
+              ),
+              size: 120,
+            } satisfies ColumnDef<LoginHistoryRow>,
+          ]
+        : []),
       {
         id: 'flags',
         header: 'Flags',
@@ -263,7 +278,7 @@ function LoginHistoryTable() {
         size: 240,
       },
     ],
-    [],
+    [showLoginMethod],
   );
 
   const rows = useMemo(() => {

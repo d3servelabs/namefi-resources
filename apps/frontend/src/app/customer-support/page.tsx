@@ -14,6 +14,7 @@ import {
   ShoppingCart,
   Megaphone,
   Settings,
+  History,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -32,6 +33,16 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         icon: Users,
         iconBgColor: 'bg-gray-100',
         iconTextColor: 'text-gray-700',
+        permissions: [Permission.READ_USERS],
+      },
+      {
+        title: 'Login History',
+        description:
+          'Review sign-ins across all users — IP, approximate location, device, and new-IP / new-location flags.',
+        href: '/admin/login-history',
+        icon: History,
+        iconBgColor: 'bg-indigo-100',
+        iconTextColor: 'text-indigo-600',
         permissions: [Permission.READ_USERS],
       },
       {
