@@ -111,7 +111,9 @@ function createSuggestionAgent(candidateCount: number) {
     model: openai('gpt-4.1'),
     instructions: `You are a domain branding strategist.
 
-Given a list of domains a user already owns, infer the shared theme/family/category and propose ${candidateCount} new domain ideas in the same style.
+Given one or more domains a user already owns, propose ${candidateCount} ranked new domain ideas they may want to secure.
+For multiple owned domains, evaluate the whole set and return the strongest suggestions across those domains. Cover shared themes when they exist, and strong per-domain variants when the domains are unrelated.
+For one owned domain, suggest close, useful alternatives for that domain.
 
 Rules:
 - Output JSON only.
@@ -120,6 +122,7 @@ Rules:
 - Avoid spaces, underscores, and punctuation.
 - Do not include domains the user already owns.
 - Prefer common TLDs (com, io, xyz, ai, co, net, org).
+- Return the strongest suggestions first.
 
 JSON shape:
 {
@@ -128,6 +131,17 @@ JSON shape:
 `,
     output: Output.object({ schema: suggestionPayloadSchema }),
   });
+}
+
+export function buildDreamDomainSuggestionPrompt(
+  ownedDomains: NamefiNormalizedDomain[],
+  maxPromptDomains: number,
+) {
+  const safeMaxPromptDomains = Number.isFinite(maxPromptDomains)
+    ? Math.max(1, Math.floor(maxPromptDomains))
+    : 1;
+  const promptDomains = ownedDomains.slice(0, safeMaxPromptDomains);
+  return `Owned domains:\n${promptDomains.join('\n')}`;
 }
 
 async function fetchCandidateDomains({
@@ -144,11 +158,10 @@ async function fetchCandidateDomains({
   payload: SuggestionPayload;
   candidates: NamefiNormalizedDomain[];
 }> {
-  const promptDomains = ownedDomains.slice(0, maxPromptDomains);
   const agent = createSuggestionAgent(candidateCount);
 
   const result = await agent.generate({
-    prompt: `Owned domains:\n${promptDomains.join('\n')}`,
+    prompt: buildDreamDomainSuggestionPrompt(ownedDomains, maxPromptDomains),
   });
 
   const payload = result.output;

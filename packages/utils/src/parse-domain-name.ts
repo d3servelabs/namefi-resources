@@ -18,7 +18,7 @@ function safeParseArray(input: string | undefined) {
 
 export function getUnofficialTlds(): string[] {
   // Browser
-  if (typeof window === 'object' && !!window) {
+  if (typeof window === 'object' && window) {
     if ('namefi_tlds' in window && Array.isArray(window.namefi_tlds)) {
       return window.namefi_tlds;
     }
@@ -27,10 +27,10 @@ export function getUnofficialTlds(): string[] {
   // Node
   if (
     typeof process === 'object' &&
-    !!process &&
+    process &&
     'env' in process &&
     typeof process.env === 'object' &&
-    !!process.env
+    process.env
   ) {
     if ('NAMEFI_UNOFFICIAL_TLDS' in process.env) {
       const namefiTlds = safeParseArray(process.env.NAMEFI_UNOFFICIAL_TLDS);

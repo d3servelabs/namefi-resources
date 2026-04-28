@@ -3,6 +3,7 @@ import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import pMap from 'p-map';
 import { getWeeklyPeriodStartUtc } from './email-campaign-period';
+import { aggregateDomainTrafficCandidatesByUser } from '../../services/email-campaigns/domain-traffic-candidates';
 
 export type WeeklyDomainTrafficSurgeWorkflowInput = {
   dryRun?: boolean;
@@ -48,11 +49,13 @@ export async function weeklyDomainTrafficSurgeWorkflow(
     dryRun,
   });
 
-  const candidates = await getDomainTrafficSurgeCandidates({
-    periodStart,
-    userIdFilter,
-    asOf: now.toISOString(),
-  });
+  const candidates = aggregateDomainTrafficCandidatesByUser(
+    await getDomainTrafficSurgeCandidates({
+      periodStart,
+      userIdFilter,
+      asOf: now.toISOString(),
+    }),
+  );
 
   const results = await pMap(
     candidates,

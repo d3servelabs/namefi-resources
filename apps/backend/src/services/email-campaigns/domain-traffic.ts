@@ -25,22 +25,19 @@ import {
 import { resolve } from '../../utils/resolve';
 import { EMAIL_CAMPAIGN_KEYS } from './constants';
 import { toDate } from './utils';
+import {
+  aggregateDomainTrafficCandidatesByUser,
+  type DomainTrafficCandidate,
+  type DomainTrafficSignal,
+} from './domain-traffic-candidates';
+
+export type { DomainTrafficCandidate, DomainTrafficSignal };
+export { aggregateDomainTrafficCandidatesByUser };
 
 const logger = createLogger({ module: 'email-campaign-traffic' });
 
 const DOMAIN_CHUNK_SIZE = 100;
-const MAX_DOMAINS_PER_USER = 5;
 const GA4_RETRY_ATTEMPTS = 3;
-
-export type DomainTrafficSignal = {
-  domain: NamefiNormalizedDomain;
-  weeklyQueries: number;
-};
-
-export type DomainTrafficCandidate = {
-  userId: string;
-  domains: DomainTrafficSignal[];
-};
 
 let cachedGa4Client: ReturnType<typeof createGA4DnsAnalyticsClient> | null =
   null;
@@ -396,16 +393,12 @@ export async function getDomainTrafficCampaignCandidates({
     }
   }
 
-  const candidates: DomainTrafficCandidate[] = [];
-  for (const [userId, domains] of userToDomains.entries()) {
-    const sorted = [...domains].sort(
-      (a, b) => b.weeklyQueries - a.weeklyQueries,
-    );
-    const limited = sorted.slice(0, MAX_DOMAINS_PER_USER);
-    if (limited.length > 0) {
-      candidates.push({ userId, domains: limited });
-    }
-  }
+  const candidates = aggregateDomainTrafficCandidatesByUser(
+    Array.from(userToDomains.entries()).map(([userId, domains]) => ({
+      userId,
+      domains,
+    })),
+  );
 
   logger.debug(
     {

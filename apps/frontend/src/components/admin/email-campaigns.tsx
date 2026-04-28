@@ -74,6 +74,10 @@ type DreamOwnedDomainsModalState = {
   email: string | null;
   domains: string[];
 };
+type TrafficDomainSignal = {
+  domain: string;
+  weeklyQueries: number;
+};
 
 const formatDateTime = (value?: Date | null) =>
   value ? format(value, 'MMM d, yyyy HH:mm') : '-';
@@ -114,6 +118,26 @@ const formatUtcDate = (value?: string | null) => {
   }).format(date);
 };
 
+const getTrafficDomains = (user: EligibleUser): TrafficDomainSignal[] => {
+  if (Array.isArray(user.trafficDomains) && user.trafficDomains.length > 0) {
+    return user.trafficDomains;
+  }
+
+  if (typeof user.trafficTopDomain === 'string') {
+    return [
+      {
+        domain: user.trafficTopDomain,
+        weeklyQueries:
+          typeof user.trafficTopWeeklyQueries === 'number'
+            ? user.trafficTopWeeklyQueries
+            : 0,
+      },
+    ];
+  }
+
+  return [];
+};
+
 const getStatusBadge = (status?: string | null) => {
   if (!status) return <Badge variant="outline">-</Badge>;
   if (status === 'SENT') return <Badge variant="default">Sent</Badge>;
@@ -137,6 +161,49 @@ const getDropOffStageBadge = (
   }
   return <Badge variant="outline">Dropped: Threshold</Badge>;
 };
+
+function TrafficDomainsCell({
+  domains,
+  domainCount,
+}: {
+  domains: TrafficDomainSignal[];
+  domainCount?: number | null;
+}) {
+  if (domains.length === 0) {
+    return <span className="text-muted-foreground">-</span>;
+  }
+
+  const totalDomains = domainCount ?? domains.length;
+
+  return (
+    <div className="min-w-[280px] max-w-[520px] space-y-2">
+      <div className="flex items-center gap-2">
+        <Badge variant="secondary">
+          {formatInteger(totalDomains)}{' '}
+          {totalDomains === 1 ? 'domain' : 'domains'}
+        </Badge>
+        <span className="text-xs text-muted-foreground">
+          aggregated into one email
+        </span>
+      </div>
+      <div className="space-y-1">
+        {domains.map((item) => (
+          <div
+            key={item.domain}
+            className="flex items-center justify-between gap-3 rounded-md border border-border bg-muted/30 px-2 py-1"
+          >
+            <code className="min-w-0 break-all font-mono text-xs">
+              {item.domain}
+            </code>
+            <span className="shrink-0 text-xs text-muted-foreground">
+              {formatInteger(item.weeklyQueries)} lookups
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function CampaignSendHistorySubrow({
   sendHistory,
@@ -946,22 +1013,16 @@ export default function AdminEmailCampaigns() {
         },
       },
       {
-        accessorKey: 'trafficTopDomain',
-        header: 'Top domain',
-        cell: ({ row }) => row.original.trafficTopDomain ?? '-',
-        size: 180,
-      },
-      {
-        accessorKey: 'trafficTopWeeklyQueries',
-        header: 'Top domain lookups (7d)',
-        cell: ({ row }) => formatInteger(row.original.trafficTopWeeklyQueries),
-        size: 160,
-      },
-      {
-        accessorKey: 'trafficDomainCount',
-        header: 'Domains over threshold',
-        cell: ({ row }) => formatInteger(row.original.trafficDomainCount ?? 0),
-        size: 140,
+        id: 'trafficDomains',
+        header: 'Heating domains',
+        cell: ({ row }) => (
+          <TrafficDomainsCell
+            domains={getTrafficDomains(row.original)}
+            domainCount={row.original.trafficDomainCount}
+          />
+        ),
+        enableSorting: false,
+        size: 360,
       },
       {
         accessorKey: 'lastSentAt',
@@ -979,11 +1040,13 @@ export default function AdminEmailCampaigns() {
         id: 'actions',
         header: '',
         cell: ({ row }) => {
+          const trafficDomains = getTrafficDomains(row.original);
           const isSending =
             sendNowMutation.isPending &&
             sendNowMutation.variables?.campaignKey ===
               EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE &&
             sendNowMutation.variables?.userId === row.original.userId;
+          const recipient = row.original.email ?? row.original.userId;
 
           return (
             <Button
@@ -995,7 +1058,8 @@ export default function AdminEmailCampaigns() {
                   row.original.userId,
                 )
               }
-              disabled={isSending}
+              disabled={isSending || trafficDomains.length === 0}
+              aria-label={`Send traffic surge email to ${recipient} for ${trafficDomains.length} heating ${trafficDomains.length === 1 ? 'domain' : 'domains'}`}
             >
               {isSending ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />

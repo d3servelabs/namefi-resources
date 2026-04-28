@@ -99,7 +99,7 @@ export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
       // If the domain name is a test domain, parse it as a subdomain
       const parts = normalizedDomainName.split('.');
       const lastPart = parts[parts.length - 1] as NamefiNormalizedDomain;
-      if (!!lastPart && lastPart.startsWith('test')) {
+      if (lastPart && lastPart.startsWith('test')) {
         parsedDomainName = {
           valid: true,
           immediateParentDomain: lastPart as NamefiNormalizedDomain,

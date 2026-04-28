@@ -162,9 +162,7 @@ export function MultiPaymentCard({
   const availableAmountInUsdCents = useMemo(() => {
     return (
       (includeNfsc ? nfscAmountInUsdCents : 0) +
-      (includeStripe && !!stripeConfirmationTokenId
-        ? stripeAmountInUsdCents
-        : 0)
+      (includeStripe && stripeConfirmationTokenId ? stripeAmountInUsdCents : 0)
     );
   }, [
     includeNfsc,

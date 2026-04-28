@@ -232,7 +232,7 @@ export async function sendTemporalAlertToSlack(
                 type: 'mrkdwn',
                 text: `*Task Queue:* ${taskQueue}`,
               },
-              ...(!!extraData && typeof extraData === 'object'
+              ...(extraData && typeof extraData === 'object'
                 ? Object.entries(extraData).map(([key, value]) => ({
                     type: 'mrkdwn',
                     text: `*${key}:*\n${value}`,

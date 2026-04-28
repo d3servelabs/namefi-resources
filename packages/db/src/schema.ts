@@ -204,6 +204,8 @@ export const emailCampaignSendMetadataSchema = z
     cartItemCount: z.number().int().min(0).optional(),
     cartItemTotalUsdCents: z.number().int().min(0).optional(),
     cartItemDomains: z.array(z.string().min(1)).optional(),
+    trafficDomainCount: z.number().int().min(0).optional(),
+    trafficDomains: z.array(z.string().min(1)).optional(),
   })
   .strict();
 

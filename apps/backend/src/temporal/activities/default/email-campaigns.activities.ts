@@ -33,6 +33,7 @@ import {
   getDreamDomainAwaitsEligibleUserIds as getDreamDomainAwaitsEligibleUserIdsQuery,
 } from '../../../services/email-campaigns/eligibility';
 import {
+  aggregateDomainTrafficCandidatesByUser,
   type DomainTrafficCandidate,
   getDomainTrafficCampaignCandidates,
 } from '../../../services/email-campaigns/domain-traffic';
@@ -508,7 +509,9 @@ export async function sendDomainTrafficSurgeEmail({
     return { status: 'SKIPPED', reason: 'opted_out' };
   }
 
-  const limitedDomains = domains.slice(0, 5);
+  const limitedDomains =
+    aggregateDomainTrafficCandidatesByUser([{ userId, domains }])[0]?.domains ??
+    [];
 
   if (!limitedDomains || limitedDomains.length === 0) {
     return { status: 'SKIPPED', reason: 'no_high_traffic_domains' };
@@ -526,7 +529,10 @@ export async function sendDomainTrafficSurgeEmail({
     userId,
     periodStart: periodStartDate,
     campaignKey: DOMAIN_TRAFFIC_SURGE_CAMPAIGN_KEY,
-    metadata: {},
+    metadata: {
+      trafficDomainCount: limitedDomains.length,
+      trafficDomains: limitedDomains.map((item) => item.domain),
+    },
     totalVariants: DOMAIN_TRAFFIC_SURGE_VARIANT_COUNT,
     getVariant: getDomainTrafficSurgeVariant,
     buildEmailContent: ({ recipientName, recipientEmail, variantIndex }) =>

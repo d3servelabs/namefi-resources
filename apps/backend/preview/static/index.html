@@ -501,9 +501,9 @@
     </div>
 
     <script>
-      (function () {
-        const COOKIE_NAME = "proxy_override";
-        const MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+      (() => {
+        const CookieName = "proxy_override";
+        const MaxAgeSeconds = 60 * 60 * 24 * 30;
 
         const cards = Array.from(document.querySelectorAll("[data-router-card]"));
         const currentValueEl = document.getElementById("currentValue");
@@ -565,16 +565,16 @@
           if (toastTimer) window.clearTimeout(toastTimer);
           toastTextEl.textContent = text;
           toastEl.classList.remove("hidden");
-          toastTimer = window.setTimeout(function () {
+          toastTimer = window.setTimeout(() => {
             toastEl.classList.add("hidden");
           }, 2200);
         }
 
         function render() {
-          const value = getCookie(COOKIE_NAME);
+          const value = getCookie(CookieName);
           const activeKey = value && value.length ? value : null;
 
-          currentValueEl.textContent = activeKey ? COOKIE_NAME + "=" + activeKey : "not set";
+          currentValueEl.textContent = activeKey ? CookieName + "=" + activeKey : "not set";
           currentDotEl.style.backgroundColor = activeKey
             ? "var(--brand-primary)"
             : "var(--muted-foreground)";
@@ -601,21 +601,21 @@
           const key = card.getAttribute("data-key");
 
           if (isReset) {
-            deleteCookie(COOKIE_NAME);
-            showToast("Cleared " + COOKIE_NAME + " (default routing).");
+            deleteCookie(CookieName);
+            showToast("Cleared " + CookieName + " (default routing).");
             render();
             return;
           }
 
           if (!key) return;
 
-          setCookie(COOKIE_NAME, key, MAX_AGE_SECONDS);
-          showToast("Set " + COOKIE_NAME + "=" + key + ".");
+          setCookie(CookieName, key, MaxAgeSeconds);
+          showToast("Set " + CookieName + "=" + key + ".");
           render();
         }
 
         for (const card of cards) {
-          card.addEventListener("click", function () {
+          card.addEventListener("click", () => {
             select(card);
           });
         }

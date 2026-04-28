@@ -90,6 +90,7 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
   const sortedDomains = [...props.domains].sort(
     (a, b) => b.weeklyQueries - a.weeklyQueries,
   );
+  const hasMultipleTrafficDomains = sortedDomains.length !== 1;
   const suggestedDomains = props.suggestedDomains ?? [];
 
   return (
@@ -106,7 +107,9 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
         </Text>
       </Card>
       <Text style={{ ...styles.paragraph, marginBottom: '8px' }}>
-        Here are the domains that stood out this week:
+        {hasMultipleTrafficDomains
+          ? 'Here are the domains that stood out this week:'
+          : 'Here is the domain that stood out this week:'}
       </Text>
       <EmailTable>
         <thead>
@@ -197,7 +200,9 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
         </>
       ) : null}
       <Text style={{ ...styles.paragraph, marginTop: '8px' }}>
-        Based on activity we see on your Namefi-managed domains.
+        {hasMultipleTrafficDomains
+          ? 'Based on activity we see on these Namefi-managed domains.'
+          : 'Based on activity we see on this Namefi-managed domain.'}
       </Text>
       <Button
         className="namefi-button-mobile"

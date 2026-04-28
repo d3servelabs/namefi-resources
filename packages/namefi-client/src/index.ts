@@ -217,7 +217,7 @@ export function createNamefiClient({
 function getPath(parts: readonly string[], object: Record<string, unknown>) {
   let current: any = object;
   for (const part of parts) {
-    if (!!current && part in current) {
+    if (current && part in current) {
       current = current[part];
     } else {
       return undefined;

@@ -87,6 +87,7 @@ type EligibleUserRow = {
   ownedDomainCount?: number;
   ownedDomains?: string[];
   trafficDomainCount?: number;
+  trafficDomains?: DomainTrafficCandidate['domains'];
   trafficTopDomain?: string | null;
   trafficTopWeeklyQueries?: number | null;
 };
@@ -698,6 +699,7 @@ export const emailCampaignsRouter = createContractTRPCRouter<
           return {
             ...base,
             trafficDomainCount: trafficCandidate?.domains.length ?? 0,
+            trafficDomains: trafficCandidate?.domains ?? [],
             trafficTopDomain: topTrafficDomain?.domain ?? null,
             trafficTopWeeklyQueries: topTrafficDomain?.weeklyQueries ?? null,
           };

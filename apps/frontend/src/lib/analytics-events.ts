@@ -134,7 +134,9 @@ export type InteractionLoggingEventAugmentation = Pick<
 export type AugmentationFor<T extends InteractionLoggingEventName> = Extract<
   InteractionLoggingEvent,
   { name: T }
-> extends { augmentation?: infer A }
+> extends {
+  augmentation?: infer A;
+}
   ? A
   : never;
 

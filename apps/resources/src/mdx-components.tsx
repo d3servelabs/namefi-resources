@@ -23,7 +23,12 @@ const Anchor = ({
   );
   if (href?.startsWith('http')) {
     return (
-      <a href={href} target="_blank" className={derivedClassName}>
+      <a
+        href={href}
+        target="_blank"
+        className={derivedClassName}
+        rel="noopener noreferrer"
+      >
         {children}
       </a>
     );

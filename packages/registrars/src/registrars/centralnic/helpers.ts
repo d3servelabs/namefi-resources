@@ -839,7 +839,7 @@ function safePropAccess<P extends KeysOfUnion<O>, O>(
 }
   ? T
   : never {
-  if (!!obj && typeof obj === 'object' && prop in obj) {
+  if (obj && typeof obj === 'object' && prop in obj) {
     return (obj as any)[prop as any] as unknown as any;
   }
   return undefined as any;

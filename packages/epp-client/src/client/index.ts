@@ -136,11 +136,11 @@ export async function createEppClient(
             const response =
               'epp:response' in eppNode ? eppNode['epp:response'] : undefined;
             const result =
-              !!response && 'epp:result' in response
+              response && 'epp:result' in response
                 ? response['epp:result'][0]
                 : undefined;
             const code =
-              !!result && '@_code' in result ? result['@_code'] : undefined;
+              result && '@_code' in result ? result['@_code'] : undefined;
 
             if (!code || !String(code).startsWith('1')) {
               throw new Error(`Login failed with code ${code}`);
