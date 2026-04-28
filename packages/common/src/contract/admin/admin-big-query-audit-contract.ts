@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { createContract } from '../create-contract';
-import type { RouterContract } from '../trpc-contract';
 
 /**
  * Contract for the admin BigQuery audit sub-router.

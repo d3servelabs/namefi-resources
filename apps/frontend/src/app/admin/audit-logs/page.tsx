@@ -1,8 +1,8 @@
 'use client';
 
 import { withAdminGuard } from '@/components/admin/admin-guard';
-import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
+import { useTRPCClient } from '@/lib/trpc';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import type { Dispatch, SetStateAction } from 'react';
@@ -66,13 +66,10 @@ type Filters = FilterFields & {
 };
 
 function AuditLogsPageInner() {
-  const trpc = useTRPC();
+  const trpcClient = useTRPCClient();
   const { theme } = useTheme();
 
-  const [pageToken, setPageToken] = useState<string | undefined>(undefined);
-  const [orderBy, setOrderBy] = useState<'timestamp_desc' | 'timestamp_asc'>(
-    'timestamp_desc',
-  );
+  const orderBy = 'timestamp_desc' as const;
 
   const {
     preferences: { pageSize },
@@ -84,11 +81,12 @@ function AuditLogsPageInner() {
     },
   });
 
-  const [filters, setFilters] = useState<Filters>({});
-
-  // Date states for the pickers
-  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [appliedFilters, setAppliedFilters] = useState<Filters>({});
+  const [draftFilters, setDraftFilters] = useState<FilterFields>({});
+  const [draftStartDate, setDraftStartDate] = useState<Date | undefined>(
+    undefined,
+  );
+  const [draftEndDate, setDraftEndDate] = useState<Date | undefined>(undefined);
 
   // Details modal state
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
@@ -97,16 +95,50 @@ function AuditLogsPageInner() {
   // Filter panel state
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
 
-  const { data, isLoading, isFetching, refetch } = useQuery({
-    ...trpc.admin.bigQueryAudit.list.queryOptions({
-      pageSize,
-      pageToken,
-      orderBy,
-      filters,
-    }),
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ['admin.bigQueryAudit.list', pageSize, orderBy, appliedFilters],
+    queryFn: ({ pageParam }) =>
+      trpcClient.admin.bigQueryAudit.list.query({
+        pageSize,
+        pageToken: pageParam,
+        orderBy,
+        filters: appliedFilters,
+      }),
+    getNextPageParam: (lastPage) => lastPage.nextPageToken ?? undefined,
+    initialPageParam: undefined as string | undefined,
+    refetchOnWindowFocus: false,
   });
 
-  const rows: AuditRow[] = (data?.rows as any[]) || [];
+  const rows = useMemo<AuditRow[]>(() => {
+    const seenIds = new Set<string>();
+
+    return (data?.pages ?? []).flatMap((page) =>
+      ((page.rows as AuditRow[]) || []).filter((row) => {
+        const rowKey =
+          row.id || `${row.ts}-${JSON.stringify(row.audit_payload)}`;
+
+        if (seenIds.has(rowKey)) {
+          return false;
+        }
+
+        seenIds.add(rowKey);
+        return true;
+      }),
+    );
+  }, [data?.pages]);
+
+  const nextPageToken = data?.pages.at(-1)?.nextPageToken;
+  const activeFilterCount = Object.values(appliedFilters).filter(
+    (value) => value !== undefined,
+  ).length;
 
   const columns = useMemo(
     () => [
@@ -289,15 +321,25 @@ function AuditLogsPageInner() {
           <FilterPanel
             filterSheetOpen={filterSheetOpen}
             setFilterSheetOpen={setFilterSheetOpen}
-            filters={filters}
-            setFilters={setFilters}
+            draftFilters={draftFilters}
+            setDraftFilters={setDraftFilters}
+            appliedFilterCount={activeFilterCount}
             isFetching={isFetching}
-            refetch={refetch}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            setPageToken={setPageToken}
+            startDate={draftStartDate}
+            setStartDate={setDraftStartDate}
+            endDate={draftEndDate}
+            setEndDate={setDraftEndDate}
+            onApply={(nextFilters) => {
+              setAppliedFilters(nextFilters);
+              setFilterSheetOpen(false);
+            }}
+            onReset={() => {
+              setDraftFilters({});
+              setDraftStartDate(undefined);
+              setDraftEndDate(undefined);
+              setAppliedFilters({});
+              setFilterSheetOpen(false);
+            }}
           />
           <Button
             variant="outline"
@@ -318,11 +360,11 @@ function AuditLogsPageInner() {
       <DataTable
         columns={columns}
         data={rows}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetchingNextPage}
         pageSize={pageSize}
         onPageSizeChange={(n) => setPageSize(n)}
-        nextPageToken={data?.nextPageToken}
-        onLoadMore={(token) => setPageToken(token)}
+        nextPageToken={hasNextPage ? nextPageToken : undefined}
+        onLoadMore={() => void fetchNextPage()}
       />
 
       {/* Details Modal */}
@@ -485,62 +527,52 @@ export default withAdminGuard(AuditLogsPageInner);
 export function FilterPanel({
   filterSheetOpen,
   setFilterSheetOpen,
-  filters,
-  setFilters,
+  draftFilters,
+  setDraftFilters,
+  appliedFilterCount,
   isFetching,
   startDate,
   setStartDate,
   endDate,
   setEndDate,
-  setPageToken,
-  refetch,
+  onApply,
+  onReset,
 }: {
   filterSheetOpen: boolean;
   setFilterSheetOpen: Dispatch<SetStateAction<boolean>>;
-  filters: Filters;
-  setFilters: Dispatch<SetStateAction<Filters>>;
+  draftFilters: FilterFields;
+  setDraftFilters: Dispatch<SetStateAction<FilterFields>>;
+  appliedFilterCount: number;
   isFetching: boolean;
   startDate: Date | undefined;
   setStartDate: Dispatch<SetStateAction<Date | undefined>>;
   endDate: Date | undefined;
   setEndDate: Dispatch<SetStateAction<Date | undefined>>;
-  setPageToken: Dispatch<SetStateAction<string | undefined>>;
-  refetch: () => void;
+  onApply: (filters: Filters) => void;
+  onReset: () => void;
 }) {
   const handleApplyFilters = () => {
-    // Convert dates to microseconds
-    const gteMs = startDate ? startDate.getTime() * 1000 : undefined;
-    const lteMs = endDate ? endDate.getTime() * 1000 : undefined;
-
-    setFilters((f) => ({
-      ...f,
-      timestampGte: gteMs,
-      timestampLte: lteMs,
-    }));
-    setPageToken(undefined);
-    setFilterSheetOpen(false);
-    refetch();
+    onApply({
+      ...draftFilters,
+      timestampGte: startDate ? startDate.getTime() * 1000 : undefined,
+      timestampLte: endDate
+        ? new Date(endDate).setHours(23, 59, 59, 999) * 1000
+        : undefined,
+    });
   };
 
   const handleResetFilters = () => {
-    setFilters({});
-    setStartDate(undefined);
-    setEndDate(undefined);
-    setPageToken(undefined);
+    onReset();
   };
-
-  const activeFilterCount = Object.keys(filters).filter(
-    (k) => filters[k as keyof typeof filters] !== undefined,
-  ).length;
 
   return (
     <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
       <SheetTrigger render={<Button variant="outline" size="sm" />}>
         <FilterIcon className="h-4 w-4 mr-2" />
         Filters
-        {activeFilterCount > 0 && (
+        {appliedFilterCount > 0 && (
           <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-600 rounded-full">
-            {activeFilterCount}
+            {appliedFilterCount}
           </span>
         )}
       </SheetTrigger>
@@ -556,9 +588,9 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Resource Type</Label>
             <Input
-              value={filters.resourceType ?? ''}
+              value={draftFilters.resourceType ?? ''}
               onChange={(e) =>
-                setFilters((f) => ({
+                setDraftFilters((f) => ({
                   ...f,
                   resourceType: e.target.value || undefined,
                 }))
@@ -570,9 +602,9 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Resource ID</Label>
             <Input
-              value={filters.resourceId ?? ''}
+              value={draftFilters.resourceId ?? ''}
               onChange={(e) =>
-                setFilters((f) => ({
+                setDraftFilters((f) => ({
                   ...f,
                   resourceId: e.target.value || undefined,
                 }))
@@ -584,9 +616,9 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Action</Label>
             <Input
-              value={filters.action ?? ''}
+              value={draftFilters.action ?? ''}
               onChange={(e) =>
-                setFilters((f) => ({
+                setDraftFilters((f) => ({
                   ...f,
                   action: e.target.value || undefined,
                 }))
@@ -598,9 +630,9 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Actor Type</Label>
             <Input
-              value={filters.actorType ?? ''}
+              value={draftFilters.actorType ?? ''}
               onChange={(e) =>
-                setFilters((f) => ({
+                setDraftFilters((f) => ({
                   ...f,
                   actorType: e.target.value || undefined,
                 }))
@@ -612,9 +644,9 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Actor ID</Label>
             <Input
-              value={filters.actorId ?? ''}
+              value={draftFilters.actorId ?? ''}
               onChange={(e) =>
-                setFilters((f) => ({
+                setDraftFilters((f) => ({
                   ...f,
                   actorId: e.target.value || undefined,
                 }))
@@ -643,7 +675,7 @@ export function FilterPanel({
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {startDate ? (
-                      format(startDate, 'PPP')
+                      format(startDate, 'yyyy-MM-dd')
                     ) : (
                       <span>Pick a date</span>
                     )}
@@ -675,7 +707,7 @@ export function FilterPanel({
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {endDate ? (
-                      format(endDate, 'PPP')
+                      format(endDate, 'yyyy-MM-dd')
                     ) : (
                       <span>Pick a date</span>
                     )}

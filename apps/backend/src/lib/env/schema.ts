@@ -74,6 +74,7 @@ export const secretsSchema = z.object({
   // BigQuery Audit Logs configuration (defaults to BIGQUERY_* when not provided)
   BIGQUERY_AUDIT_DATASET_ID: z.string(),
   BIGQUERY_AUDIT_TABLE_ID: z.string(),
+  BIGQUERY_AUDIT_USE_TABLE_SUFFIX: z.stringbool().optional().default(false),
 
   VISION_API_KEY: z.string(),
 

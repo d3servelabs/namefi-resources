@@ -41,6 +41,7 @@ import { x402Router } from './routers/x402';
 import { mppRouter } from './routers/mpp';
 import { mlsRssProxyRouter } from './routers/mls-rss-proxy';
 import { llmsTxtRouter } from './routers/llms-txt';
+import { auditLogsTestRouter } from './routers/audit-logs-test';
 
 type HonoVariables = {
   requestId: string;
@@ -68,41 +69,45 @@ const X402Headers = [
   'payment-signature',
 ];
 
+async function resolveCorsOrigin(origin: string | undefined, path: string) {
+  if (config.ALLOW_ALL_ORIGINS) {
+    return origin;
+  }
+  if (SKIP_CORS_ROUTES.some((re) => re.test(path))) {
+    return origin;
+  }
+
+  const allowedHostnames: string[] = [
+    ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
+    ...(await getPoweredByNamefi3PHostnames()),
+  ];
+
+  if (!origin) {
+    return null;
+  }
+
+  try {
+    const parsedOrigin = new URL(origin);
+
+    // Check if it's using https
+    if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
+      return null;
+    }
+
+    if (isHostnameAllowed(parsedOrigin.hostname, allowedHostnames)) {
+      return origin;
+    }
+  } catch (error) {
+    logger.error(error, 'Error parsing origin');
+    return null;
+  }
+
+  return null; // Block other origins
+}
+
 app.use(async (...args) => {
   return cors({
-    origin: async (origin) => {
-      if (config.ALLOW_ALL_ORIGINS) {
-        return origin;
-      }
-      const req = args[0].req;
-      const path = req.path;
-      if (SKIP_CORS_ROUTES.some((re) => re.test(path))) {
-        return origin;
-      }
-      const allowedHostnames: string[] = [
-        ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
-        ...(await getPoweredByNamefi3PHostnames()),
-      ];
-
-      if (origin) {
-        try {
-          const parsedOrigin = new URL(origin);
-
-          // Check if it's using https
-          if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
-            return null;
-          }
-
-          if (isHostnameAllowed(parsedOrigin.hostname, allowedHostnames)) {
-            return origin;
-          }
-        } catch (error) {
-          logger.error(error, 'Error parsing origin');
-          return null;
-        }
-      }
-      return null; // Block other origins
-    },
+    origin: (origin) => resolveCorsOrigin(origin, args[0].req.path),
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowHeaders: [
       'Content-Type',
@@ -171,6 +176,7 @@ app.route('mpp', mppRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
 app.route('llms.txt', llmsTxtRouter);
+app.route('audit-logs-test', auditLogsTestRouter);
 
 app.get('/configfi', (c) => {
   return c.json({
