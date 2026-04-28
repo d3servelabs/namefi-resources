@@ -7,6 +7,7 @@ import {
   Section,
   Tailwind,
 } from '@react-email/components';
+// biome-ignore lint/performance/noNamespaceImport: email shell styles are grouped as shared tokens.
 import * as styles from '../styles';
 import { EmailTrackingPixel, useEmailTrackingUrl } from './email-tracking';
 import { NamefiFooter } from './namefi-footer';
@@ -20,11 +21,13 @@ export function NamefiEmailContainer({
   children,
   footer = 'default',
   header = 'default',
+  headerSubtitle,
 }: {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode | 'default' | undefined | null | false;
   header?: React.ReactNode | 'default' | undefined | null | false;
+  headerSubtitle?: string | false;
 }) {
   const trackingUrl = useEmailTrackingUrl();
   const trackingPixel = trackingUrl ? (
@@ -306,7 +309,9 @@ export function NamefiEmailContainer({
         <Preview>{title}</Preview>
         <Body className="namefi-body" style={styles.main}>
           <Container className="namefi-shell" style={styles.container}>
-            {shouldRenderDefaultHeader && <NamefiHeader title={title} />}
+            {shouldRenderDefaultHeader && (
+              <NamefiHeader title={title} subtitle={headerSubtitle} />
+            )}
             <Section className="namefi-content" style={styles.box}>
               {customHeader}
               {children}

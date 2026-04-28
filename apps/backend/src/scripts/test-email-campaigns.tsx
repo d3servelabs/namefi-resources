@@ -13,14 +13,14 @@ import React from 'react';
 import { sendMail } from '../mail/mail-client';
 import { getDomainTrafficSurgeVariant } from '../mail/campaigns/domain-traffic-surge-variants';
 import { getDreamDomainAwaitsVariant } from '../mail/campaigns/dream-domain-awaits-variants';
+import { getDomainTrafficSurgeEmailTitle } from '../mail/template-components/domain-traffic-surge';
 import { DomainTrafficSurge } from '../mail/templates/domain-traffic-surge';
 import { DreamDomainAwaits } from '../mail/templates/dream-domain-awaits';
-import { config } from '#lib/env';
 
 const DEFAULT_WINBACK_OWNED_DOMAINS =
   'brightlabs.com,brightlabs.io,brightlabs.xyz';
 const DEFAULT_SURGE_DOMAINS =
-  'brightlabs.com:4820,brightlabs.io:2380,brightlabs.xyz:1710';
+  'brightlabs.com:94320,brightlabs.io:41880,brightlabs.xyz:17100';
 
 const CAMPAIGN_TO_TEST = ['winback', 'surge', 'all'] as const;
 
@@ -54,7 +54,6 @@ export type CampaignSmokeTestOptions = {
   winbackOwnedDomains?: string[];
   winbackVariant?: number;
   surgeVariant?: number;
-  surgeBaselineThreshold?: number;
   surgeDomains?: Array<{ domain: string; weeklyQueries: number }>;
 };
 
@@ -252,7 +251,6 @@ export async function sendSurgeCampaignTestEmail({
   subjectPrefix,
   dryRun = false,
   domains,
-  baselineThreshold,
   variant = 0,
 }: {
   to: string[];
@@ -262,7 +260,6 @@ export async function sendSurgeCampaignTestEmail({
   subjectPrefix?: string;
   dryRun?: boolean;
   domains: ParsedTrafficDomain[];
-  baselineThreshold: number;
   variant?: number;
 }): Promise<CampaignSendSummary> {
   const aiResult = await generateDreamDomainSuggestions({
@@ -280,14 +277,19 @@ export async function sendSurgeCampaignTestEmail({
   );
 
   const { variant: copyVariant } = getDomainTrafficSurgeVariant(variant);
-  const subject = normalizeSubject(subjectPrefix, copyVariant.subject);
+  const subject = normalizeSubject(
+    subjectPrefix,
+    getDomainTrafficSurgeEmailTitle({
+      domains,
+      fallbackSubject: copyVariant.subject,
+    }),
+  );
 
   const email = React.createElement(DomainTrafficSurge, {
     recipientName,
     recipientEmail,
     poweredByNamefiDomain: poweredByNamefiDomain ?? null,
     variant,
-    baselineThreshold,
     domains,
     suggestedDomains:
       suggestedDomains.length > 0 ? suggestedDomains : undefined,
@@ -343,10 +345,6 @@ export async function runCampaignEmailSmokeTest(
       weeklyQueries: domain.weeklyQueries,
     })) ?? parseTrafficDomainList(DEFAULT_SURGE_DOMAINS);
 
-  const surgeBaselineThreshold =
-    options.surgeBaselineThreshold ??
-    config.EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD;
-
   for (const campaign of campaigns) {
     if (campaign === 'winback') {
       const result = await sendWinbackCampaignTestEmail({
@@ -371,7 +369,6 @@ export async function runCampaignEmailSmokeTest(
       subjectPrefix: options.subjectPrefix,
       dryRun: options.dryRun,
       domains: surgeDomains,
-      baselineThreshold: surgeBaselineThreshold,
       variant: options.surgeVariant,
     });
     results.push(result);

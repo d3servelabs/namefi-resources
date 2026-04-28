@@ -15,6 +15,7 @@ import { sendMail } from '../../../mail/mail-client';
 import { CartDomainsPopular } from '../../../mail/templates/cart-domains-popular';
 import { DreamDomainAwaits } from '../../../mail/templates/dream-domain-awaits';
 import { DomainTrafficSurge } from '../../../mail/templates/domain-traffic-surge';
+import { getDomainTrafficSurgeEmailTitle } from '../../../mail/template-components/domain-traffic-surge';
 import {
   CART_DOMAINS_POPULAR_VARIANT_COUNT,
   getCartDomainsPopularVariant,
@@ -228,6 +229,7 @@ async function sendCampaignEmail({
   metadata,
   totalVariants,
   getVariant,
+  buildEmailSubject,
   buildEmailContent,
   errorLogMessage,
 }: {
@@ -237,6 +239,12 @@ async function sendCampaignEmail({
   metadata: EmailCampaignSendMetadata;
   totalVariants: number;
   getVariant: (variantIndex: number) => { variant: { subject: string } };
+  buildEmailSubject?: (args: {
+    variantIndex: number;
+    variant: { subject: string };
+    recipientName: string;
+    recipientEmail: string;
+  }) => string;
   buildEmailContent: (args: {
     variantIndex: number;
     recipientName: string;
@@ -275,6 +283,13 @@ async function sendCampaignEmail({
   const fallbackRecipientName = userEmail.split('@')[0] || 'there';
 
   try {
+    const subject =
+      buildEmailSubject?.({
+        variantIndex,
+        variant: copyVariant,
+        recipientName: fallbackRecipientName,
+        recipientEmail: userEmail,
+      }) ?? copyVariant.subject;
     const emailContent = await buildEmailContent({
       variantIndex,
       recipientName: fallbackRecipientName,
@@ -287,7 +302,7 @@ async function sendCampaignEmail({
     await sendMail({
       to: [userEmail],
       bcc: ARCHIVE_BCC,
-      subject: copyVariant.subject,
+      subject,
       content: { html, plain },
     });
 
@@ -535,6 +550,11 @@ export async function sendDomainTrafficSurgeEmail({
     },
     totalVariants: DOMAIN_TRAFFIC_SURGE_VARIANT_COUNT,
     getVariant: getDomainTrafficSurgeVariant,
+    buildEmailSubject: ({ variant }) =>
+      getDomainTrafficSurgeEmailTitle({
+        domains: limitedDomains,
+        fallbackSubject: variant.subject,
+      }),
     buildEmailContent: ({ recipientName, recipientEmail, variantIndex }) =>
       React.createElement(DomainTrafficSurge, {
         recipientName,
@@ -543,7 +563,6 @@ export async function sendDomainTrafficSurgeEmail({
         domains: limitedDomains,
         suggestedDomains:
           suggestedDomains.length > 0 ? suggestedDomains : undefined,
-        baselineThreshold: config.EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD,
       }),
     errorLogMessage: 'Failed to send domain traffic surge email',
   });
