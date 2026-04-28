@@ -745,8 +745,12 @@ export async function updateRefund({
 
   return updatedRefund;
 }
-
 export async function getPreferredEvmWalletAddressToBeCharged(
+  userId: string,
+): Promise<ChecksumWalletAddress> {
+  return getDefaultEvmWalletForUserOrThrow(userId);
+}
+export async function getDefaultEvmWalletForUserOrThrow(
   userId: string,
 ): Promise<ChecksumWalletAddress> {
   const user = await db.query.usersTable.findFirst({
