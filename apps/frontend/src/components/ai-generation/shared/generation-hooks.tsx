@@ -305,9 +305,9 @@ export function useAnimationGeneration({
           removePendingItem(context.pendingId);
         }
 
-        const errorMessage =
-          error.message || 'An error occurred generating animations';
-        toast.error(errorMessage);
+        // biome-ignore lint/suspicious/noConsole: keep provider details out of user-facing toasts while preserving browser-debug visibility
+        console.error('Animation generation failed', error);
+        toast.error("We couldn't start this animation. Please try again.");
       },
     }),
   );

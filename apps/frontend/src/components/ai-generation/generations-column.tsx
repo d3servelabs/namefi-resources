@@ -96,6 +96,9 @@ type DeleteTarget = {
   type: 'logo' | 'marketing' | 'animation';
 };
 
+const GENERIC_GENERATION_ERROR_MESSAGE =
+  "We couldn't finish this generation. Please try again.";
+
 interface GenerationsColumnProps {
   domains: DomainPreview[];
   className?: string;
@@ -801,6 +804,18 @@ function AsyncGenerationTile({
   onDelete,
   isDeleting,
 }: AsyncGenerationTileProps) {
+  useEffect(() => {
+    if (item.status !== 'failed' || !item.errorMessage) return;
+
+    // biome-ignore lint/suspicious/noConsole: keep provider details out of UI while preserving browser-debug visibility
+    console.error('AI generation failed', {
+      generationId: item.id,
+      domain: item.domain,
+      type: item.type,
+      errorMessage: item.errorMessage,
+    });
+  }, [item.domain, item.errorMessage, item.id, item.status, item.type]);
+
   const ctaActions =
     item.type === 'logo' && item.generation
       ? [
@@ -897,7 +912,7 @@ function AsyncGenerationTile({
             </div>
             <div className="mt-1 text-sm text-white/95">
               {item.status === 'failed'
-                ? item.errorMessage || 'This generation did not complete.'
+                ? GENERIC_GENERATION_ERROR_MESSAGE
                 : item.status === 'processing'
                   ? 'Your generation is still running.'
                   : 'Your generation is queued and will appear here shortly.'}

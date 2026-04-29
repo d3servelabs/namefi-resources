@@ -79,6 +79,9 @@ interface GenerationDetailsClientProps {
   error?: string;
 }
 
+const GENERIC_GENERATION_ERROR_MESSAGE =
+  "We couldn't finish this generation. Please try again.";
+
 const detailActionButtonClassName =
   'min-h-11 w-full justify-center gap-2 px-4 text-center leading-tight whitespace-normal [&_svg]:shrink-0';
 
@@ -504,6 +507,24 @@ export function GenerationDetailsClient({
     !!generation?.userId &&
     user.id === generation.userId;
 
+  useEffect(() => {
+    if (generation?.status !== 'FAILED' || !generation.errorMessage) return;
+
+    // biome-ignore lint/suspicious/noConsole: keep provider details out of UI while preserving browser-debug visibility
+    console.error('AI generation failed', {
+      generationId: generation.id,
+      domain: generation.domain,
+      type: generation.type,
+      errorMessage: generation.errorMessage,
+    });
+  }, [
+    generation?.domain,
+    generation?.errorMessage,
+    generation?.id,
+    generation?.status,
+    generation?.type,
+  ]);
+
   if (isGenerationLoading) {
     return <LoadingSkeleton />;
   }
@@ -572,8 +593,9 @@ export function GenerationDetailsClient({
                           {statusLabel}
                         </div>
                         <div className="mt-2 text-sm text-muted-foreground">
-                          {generation.errorMessage ||
-                            'The asset is not available yet.'}
+                          {generation.status === 'FAILED'
+                            ? GENERIC_GENERATION_ERROR_MESSAGE
+                            : 'The asset is not available yet.'}
                         </div>
                       </div>
                     </div>
@@ -587,8 +609,7 @@ export function GenerationDetailsClient({
                         </div>
                         <div className="text-xs text-white/80">
                           {generation.status === 'FAILED'
-                            ? generation.errorMessage ||
-                              'This generation did not complete.'
+                            ? GENERIC_GENERATION_ERROR_MESSAGE
                             : generation.status === 'PROCESSING'
                               ? 'Your generation is still running.'
                               : 'Your generation is queued and will appear here shortly.'}
@@ -852,7 +873,7 @@ export function GenerationDetailsClient({
 
                 {generation.errorMessage && (
                   <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
-                    {generation.errorMessage}
+                    {GENERIC_GENERATION_ERROR_MESSAGE}
                   </div>
                 )}
               </CardContent>
