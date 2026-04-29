@@ -14,6 +14,7 @@ const LLMS_TXT = `# Namefi API
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
 - [namefi-api-skills (GitHub)](https://github.com/d3servelabs/namefi-api-skills): Signer-neutral helper scripts for preparing auth payloads.
 - Buy domain (X402): https://api.namefi.io/x402/domain/{domainName}
+- Buy domain (MPP): https://api.namefi.io/x402/domain/{domainName}?nftReceivingWalletAddress={nftReceivingWalletAddress}
 
 ## Base URLs
 
@@ -127,6 +128,13 @@ Buy a domain with stablecoin (USDC) using the [x402 protocol](https://x402.org).
   - Optional query params: \`years\` (1-10, default 1), \`nftReceivingWalletAddress\` (defaults to the buyer wallet).
 - \`GET /x402/purchase/{purchaseId}\` — poll purchase status. Returns JSON when \`?content-type=json\` or the \`Accept\` header isn't HTML; otherwise redirects to the frontend progress page.
 - namefi-api-skills have the full details about all possible payment options.
+
+## MPP (Machine Payable Protocol)
+
+Buy a domain or sign in using the MPP payment-challenge flow. The first request returns \`402 Payment Required\` with a signed challenge; the client signs it (e.g. via the [\`mppx\`](https://www.npmjs.com/package/mppx) CLI: \`mppx sign\`) and replays the request with the resulting \`Authorization\` header to complete the operation.
+
+- \`GET /mpp/domain/{domainName}\` — register a domain via MPP. Required query param: \`nftReceivingWalletAddress\` (checksummed). Optional: \`years\` (1-10, default 1). Without auth → 402 with challenge + price metadata. With a valid signed credential → instant registration.
+- \`GET /mpp/sign-in\` — MPP-authenticated sign-in. Without auth → 402 with challenge. With a valid signed credential → returns the sign-in result.
 
 ## Optional
 
