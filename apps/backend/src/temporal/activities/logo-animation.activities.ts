@@ -296,7 +296,6 @@ export async function generateLogoAnimation({
               mode: 'sheet-guided' as const,
               domain: generation.domain,
               description: animationInput.description,
-              motionPreset: animationInput.motionPreset,
               model: animationInput.model,
               sheetModel: animationInput.sheetModel ?? 'gpt-image-2',
               referenceLogoUrl,
@@ -337,6 +336,12 @@ export async function generateLogoAnimation({
             videoPrompt: animationResult.analysis.videoPrompt,
           }
         : {};
+    const motionPresetMetadata =
+      animationResult.analysis.mode === 'sheet-guided'
+        ? {}
+        : {
+            resolvedMotionPreset: animationResult.analysis.resolvedMotionPreset,
+          };
 
     await db
       .update(aiGenerationsTable)
@@ -359,7 +364,7 @@ export async function generateLogoAnimation({
           motionDirection: animationResult.analysis.direction,
           motionRationale: animationResult.analysis.rationale,
           prompt: animationResult.prompt,
-          resolvedMotionPreset: animationResult.analysis.resolvedMotionPreset,
+          ...motionPresetMetadata,
           strategistModel: animationResult.analysis.model,
           ...sheetGuidedMetadata,
           warnings: animationResult.warnings,

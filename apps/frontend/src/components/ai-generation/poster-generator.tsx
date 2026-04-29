@@ -56,7 +56,7 @@ const posterFormSchema = baseFormSchema.extend({
       'gemini-2.5-flash-image',
       'gemini-3-pro-image-preview',
     ])
-    .default('gemini-3-pro-image-preview'),
+    .default('gpt-image-2'),
 });
 
 type PosterFormInput = z.input<typeof posterFormSchema>;
@@ -97,7 +97,7 @@ export function PosterGenerator({
       description: '',
       selectedLogoId: '',
       collateralType: 'let_ai_choose' as const,
-      model: 'gemini-3-pro-image-preview' as Model,
+      model: 'gpt-image-2' as Model,
     };
   }, [fixedDomain]);
 

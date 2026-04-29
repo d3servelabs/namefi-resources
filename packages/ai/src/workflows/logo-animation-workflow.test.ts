@@ -13,6 +13,7 @@ const generateLoopedAnimationStrategyMock = vi.fn();
 const generateSheetGuidedAnimationStrategyMock = vi.fn();
 const generateAnimationSheetImageMock = vi.fn();
 const invalidOptionErrorPattern = /Invalid option/;
+const unrecognizedKeyErrorPattern = /Unrecognized key/;
 
 const onePixelPng = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4////fwAJ+wP9KobjigAAAABJRU5ErkJggg==',
@@ -140,7 +141,6 @@ describe('runLogoAnimationWorkflow', () => {
         targetAudience: 'Design-conscious founders',
         rationale:
           'The logo has sharp contours that will read best as a staged trace and hero reveal.',
-        motionPreset: 'orbital-reveal',
         logoVisualSummary:
           'A compact monochrome logo with a clean symbol and short wordmark.',
         animationConcept:
@@ -344,8 +344,7 @@ describe('runLogoAnimationWorkflow', () => {
       mode: 'sheet-guided',
       domain: 'example.com',
       referenceLogoUrl: 'https://cdn.test/logo.png',
-      motionPreset: 'let-ai-choose',
-      model: 'bytedance/seedance-v1.5-pro',
+      model: 'bytedance/seedance-2.0',
       sheetModel: 'gpt-image-2',
       storage,
     });
@@ -353,20 +352,21 @@ describe('runLogoAnimationWorkflow', () => {
     expect(generateSheetGuidedAnimationStrategyMock).toHaveBeenCalledWith(
       expect.objectContaining({
         domain: 'example.com',
-        motionPreset: 'let-ai-choose',
-        referenceLogoDataUrl: expect.stringMatching(/^data:image\/png;base64,/),
+        referenceLogo: expect.any(Uint8Array),
+        referenceLogoMediaType: 'image/png',
       }),
     );
     expect(generateAnimationSheetImageMock).toHaveBeenCalledWith(
       expect.objectContaining({
         model: 'gpt-image-2',
-        referenceLogoDataUrl: expect.stringMatching(/^data:image\/png;base64,/),
+        referenceLogo: expect.objectContaining({
+          image: expect.any(Uint8Array),
+          mediaType: 'image/png',
+        }),
         prompt: expect.stringContaining('1536x1024'),
       }),
     );
-    expect(gatewayVideoMock).toHaveBeenCalledWith(
-      'bytedance/seedance-v1.5-pro',
-    );
+    expect(gatewayVideoMock).toHaveBeenCalledWith('bytedance/seedance-2.0');
 
     const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
     expect(generateVideoCall.aspectRatio).toBe('16:9');
@@ -412,6 +412,18 @@ describe('runLogoAnimationWorkflow', () => {
         storage,
       } as never),
     ).rejects.toThrow(invalidOptionErrorPattern);
+
+    await expect(
+      runLogoAnimationWorkflow({
+        mode: 'sheet-guided',
+        domain: 'example.com',
+        referenceLogoUrl: 'https://cdn.test/logo.png',
+        motionPreset: 'orbital-reveal',
+        model: 'bytedance/seedance-2.0',
+        sheetModel: 'gpt-image-2',
+        storage,
+      } as never),
+    ).rejects.toThrow(unrecognizedKeyErrorPattern);
   });
 
   it('cleans up uploaded assets when a later cinematic upload fails', async () => {

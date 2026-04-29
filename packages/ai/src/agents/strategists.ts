@@ -175,9 +175,6 @@ export const sheetGuidedAnimationMotionPlanSchema = z.object({
     .describe(
       'Why this sheet-guided motion direction is the strongest fit for the uploaded logo.',
     ),
-  motionPreset: cinematicAnimationMotionResolvedEnum.describe(
-    'The single best reveal-friendly motion preset for this uploaded logo.',
-  ),
   logoVisualSummary: z
     .string()
     .describe(
@@ -270,7 +267,7 @@ RULES:
 - Keep the motion material-aware, restrained, and brand-coherent.`;
 }
 
-function createSheetGuidedAnimationSystemPrompt(available: string) {
+function createSheetGuidedAnimationSystemPrompt() {
   return `You are a senior motion director designing an 8-second logo animation through a visual animation sheet.
 
 You will receive the actual logo image. Analyze that image first, then choose a tailored animation that fits the logo's geometry, letterforms, colors, contrast, and brand description.
@@ -280,13 +277,8 @@ GOAL:
 - The sheet must guide timing, transformation, staging, and final logo lockup clearly enough for image-to-video generation.
 - Favor logo-specific construction, morph, trace, reveal, or material behavior over generic effects.
 
-AVAILABLE MOTION PRESETS:
-${available}
-
 RULES:
 - Return only JSON matching the schema.
-- Choose exactly one motionPreset from the allowed IDs above.
-- If the user prompt constrains the allowed motion presets, you must choose only from that constrained set.
 - Use the uploaded logo as the source of truth. Do not invent a new mark, new text, mascot, or unrelated object.
 - Plan a total duration of exactly 8 seconds.
 - stagePlan must contain 4 to 6 clear stages with explicit time ranges that cover 0.0s to 8.0s.
@@ -459,23 +451,16 @@ Requested motion intensity: ${input.motionIntensity}
 export interface SheetGuidedAnimationStrategyInput {
   domain: NamefiNormalizedDomain;
   description?: string;
-  motionPreset?: CinematicAnimationMotionPresetInput;
-  referenceLogoDataUrl: string;
+  referenceLogo: Uint8Array;
+  referenceLogoMediaType: string;
 }
 
 export async function generateSheetGuidedAnimationStrategy(
   input: SheetGuidedAnimationStrategyInput,
 ): Promise<StructuredGenerationResult<SheetGuidedAnimationMotionPlan>> {
-  const allowedMotionPresets =
-    input.motionPreset && input.motionPreset !== 'let-ai-choose'
-      ? input.motionPreset
-      : 'orbital-reveal, energy-surge, atmospheric-rise, dimensional-parallax, prismatic-bloom';
-
   const animationStrategistAgent = new ToolLoopAgent({
     model: openai('gpt-5.2'),
-    instructions: createSheetGuidedAnimationSystemPrompt(
-      cinematicAnimationMotionInstructions,
-    ),
+    instructions: createSheetGuidedAnimationSystemPrompt(),
     output: Output.object({ schema: sheetGuidedAnimationMotionPlanSchema }),
   });
 
@@ -489,11 +474,14 @@ export async function generateSheetGuidedAnimationStrategy(
             text: `Brand: ${input.domain}
 Description: ${input.description || 'N/A'}
 Requested number of motion directions: 1
-Allowed motion presets (if constrained): ${allowedMotionPresets}
 Target output: one 8-second sheet-guided logo animation, using the uploaded logo as the visual source of truth.
 `,
           },
-          { type: 'image', image: input.referenceLogoDataUrl },
+          {
+            type: 'image',
+            image: input.referenceLogo,
+            mediaType: input.referenceLogoMediaType,
+          },
         ],
       },
     ],

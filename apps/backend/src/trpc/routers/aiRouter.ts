@@ -493,7 +493,7 @@ const generateLogoInputSchema = z.object({
   style: z.enum(LOGO_STYLE_INPUT_IDS),
   textTreatment: z.enum(LOGO_TEXT_TREATMENT_INPUT_IDS),
   typography: z.enum(LOGO_TYPOGRAPHY_INPUT_IDS),
-  model: z.enum(imageModelIds).default('gpt-image-1.5'),
+  model: z.enum(imageModelIds).default('gpt-image-2'),
 });
 
 const generateMarketingImageInputSchema = z.object({
@@ -503,7 +503,7 @@ const generateMarketingImageInputSchema = z.object({
   collateralType: z
     .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
     .default('let_ai_choose'),
-  model: z.enum(imageModelIds).default('gemini-3-pro-image-preview'),
+  model: z.enum(imageModelIds).default('gpt-image-2'),
 });
 
 const generateAnimationCommonInputSchema = z.object({
@@ -532,9 +532,7 @@ const generateLoopedAnimationInputSchema = generateAnimationCommonInputSchema
       .enum(LOOPED_ANIMATION_MOTION_PRESET_IDS)
       .default('let-ai-choose'),
     motionIntensity: z.enum(ANIMATION_MOTION_INTENSITY_IDS).default('subtle'),
-    model: z
-      .enum(LOOPED_ANIMATION_MODEL_IDS)
-      .default('bytedance/seedance-v1.5-pro'),
+    model: z.enum(LOOPED_ANIMATION_MODEL_IDS).default('bytedance/seedance-2.0'),
   })
   .strict();
 
@@ -542,12 +540,9 @@ const generateSheetGuidedAnimationInputSchema =
   generateAnimationCommonInputSchema
     .extend({
       mode: z.literal('sheet-guided'),
-      motionPreset: z
-        .enum(CINEMATIC_ANIMATION_MOTION_PRESET_IDS)
-        .default('let-ai-choose'),
       model: z
         .enum(LOOPED_ANIMATION_MODEL_IDS)
-        .default('bytedance/seedance-v1.5-pro'),
+        .default('bytedance/seedance-2.0'),
       sheetModel: z.enum(['gpt-image-2']).default('gpt-image-2'),
     })
     .strict();
@@ -797,7 +792,6 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
                 type: 'animation' as const,
                 mode: 'sheet-guided' as const,
                 description: input.description,
-                motionPreset: input.motionPreset,
                 model: input.model,
                 sheetModel: input.sheetModel,
               }

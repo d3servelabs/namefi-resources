@@ -597,7 +597,7 @@ export async function processOrderWorkflow(
             await workflow.startChild(generateLogosForAliveNftsWorkflow, {
               args: [
                 {
-                  model: 'gpt-image-1.5',
+                  model: 'gpt-image-2',
                   domains: orderDomainsForLogoPreview,
                 },
               ],
@@ -816,7 +816,7 @@ export async function processOrderWorkflow(
             await workflow.startChild(generateLogosForAliveNftsWorkflow, {
               args: [
                 {
-                  model: 'gpt-image-1.5',
+                  model: 'gpt-image-2',
                   domains: purchasedDomains,
                 },
               ],

@@ -112,6 +112,11 @@ type ImageGenerationResult = {
   tokenUsage?: LanguageModelUsage;
 };
 
+type ReferenceLogoInput = {
+  image: Uint8Array;
+  mediaType: string;
+};
+
 const openaiPosterAgents = {
   'gpt-image-1': new ToolLoopAgent({
     model: openai('gpt-4.1'),
@@ -266,7 +271,7 @@ async function generateOpenAiImage(
   task: ImageTask,
   model: 'gpt-image-1' | 'gpt-image-1.5' | 'gpt-image-2',
   prompt: string,
-  referenceLogoDataUrl?: string,
+  referenceLogo?: ReferenceLogoInput,
 ): Promise<ImageGenerationResult> {
   const result = await getOpenAiAgent(task, model).generate({
     messages: [
@@ -274,8 +279,14 @@ async function generateOpenAiImage(
         role: 'user',
         content: [
           { type: 'text', text: prompt },
-          ...(referenceLogoDataUrl
-            ? [{ type: 'image' as const, image: referenceLogoDataUrl }]
+          ...(referenceLogo
+            ? [
+                {
+                  type: 'image' as const,
+                  image: referenceLogo.image,
+                  mediaType: referenceLogo.mediaType,
+                },
+              ]
             : []),
         ],
       },
@@ -301,7 +312,7 @@ async function generateGeminiImage(
   task: ImageTask,
   model: 'gemini-2.5-flash-image' | 'gemini-3-pro-image-preview',
   prompt: string,
-  referenceLogoDataUrl?: string,
+  referenceLogo?: ReferenceLogoInput,
 ): Promise<ImageGenerationResult> {
   const result = await getGeminiAgent(task, model).generate({
     messages: [
@@ -309,8 +320,14 @@ async function generateGeminiImage(
         role: 'user',
         content: [
           { type: 'text', text: prompt },
-          ...(referenceLogoDataUrl
-            ? [{ type: 'image' as const, image: referenceLogoDataUrl }]
+          ...(referenceLogo
+            ? [
+                {
+                  type: 'image' as const,
+                  image: referenceLogo.image,
+                  mediaType: referenceLogo.mediaType,
+                },
+              ]
             : []),
         ],
       },
@@ -333,16 +350,16 @@ async function createImage(
   task: ImageTask,
   model: ImageModel,
   prompt: string,
-  referenceLogoDataUrl?: string,
+  referenceLogo?: ReferenceLogoInput,
 ) {
   if (
     model === 'gpt-image-1' ||
     model === 'gpt-image-1.5' ||
     model === 'gpt-image-2'
   ) {
-    return generateOpenAiImage(task, model, prompt, referenceLogoDataUrl);
+    return generateOpenAiImage(task, model, prompt, referenceLogo);
   }
-  return generateGeminiImage(task, model, prompt, referenceLogoDataUrl);
+  return generateGeminiImage(task, model, prompt, referenceLogo);
 }
 
 export interface LogoGenerationInput {
@@ -376,7 +393,7 @@ export async function generateLogoImage(input: LogoGenerationInput) {
 export interface PosterGenerationInput {
   prompt: string;
   model: ImageModel;
-  referenceLogoDataUrl?: string;
+  referenceLogo?: ReferenceLogoInput;
 }
 
 export async function generatePosterImage(input: PosterGenerationInput) {
@@ -384,14 +401,14 @@ export async function generatePosterImage(input: PosterGenerationInput) {
     'marketing',
     input.model,
     input.prompt,
-    input.referenceLogoDataUrl,
+    input.referenceLogo,
   );
 }
 
 export interface AnimationSheetGenerationInput {
   prompt: string;
   model: 'gpt-image-2';
-  referenceLogoDataUrl: string;
+  referenceLogo: ReferenceLogoInput;
 }
 
 export async function generateAnimationSheetImage(
@@ -401,6 +418,6 @@ export async function generateAnimationSheetImage(
     'animationSheet',
     input.model,
     input.prompt,
-    input.referenceLogoDataUrl,
+    input.referenceLogo,
   );
 }

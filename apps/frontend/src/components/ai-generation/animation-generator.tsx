@@ -53,9 +53,7 @@ import type { Generation } from './shared/types';
 const animationFormSchema = baseFormSchema
   .extend({
     selectedLogoId: z.string().uuid(),
-    mode: z
-      .enum(ANIMATION_MODE_IDS)
-      .default('cinematic' satisfies AnimationMode),
+    mode: z.enum(ANIMATION_MODE_IDS).default('looped' satisfies AnimationMode),
     sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).optional(),
     motionPreset: z
       .enum(ANIMATION_MOTION_PRESET_IDS)
@@ -63,7 +61,7 @@ const animationFormSchema = baseFormSchema
     motionIntensity: z.enum(ANIMATION_MOTION_INTENSITY_IDS).optional(),
     model: z
       .enum(ANIMATION_MODEL_IDS)
-      .default('veo-3.1-generate-preview' satisfies AnimationModel),
+      .default('bytedance/seedance-2.0' satisfies AnimationModel),
   })
   .superRefine((value, ctx) => {
     if (value.mode === 'cinematic') {
@@ -104,18 +102,6 @@ const animationFormSchema = baseFormSchema
           code: z.ZodIssueCode.custom,
           message: 'Choose a Seedance model',
           path: ['model'],
-        });
-      }
-
-      if (
-        !CINEMATIC_ANIMATION_MOTION_PRESET_IDS.includes(
-          value.motionPreset as never,
-        )
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Choose a sheet-guided motion preset',
-          path: ['motionPreset'],
         });
       }
 
@@ -329,13 +315,15 @@ function buildControlPanelButtons(params: {
     });
   }
 
-  buttons.push({
-    key: 'motion',
-    label: 'Motion',
-    badge: ANIMATION_MOTION_PRESETS[params.resolvedMotionPreset].name,
-    onClick: () => togglePanel('motion'),
-    isActive: params.openPanel === 'motion',
-  });
+  if (params.mode !== 'sheet-guided') {
+    buttons.push({
+      key: 'motion',
+      label: 'Motion',
+      badge: ANIMATION_MOTION_PRESETS[params.resolvedMotionPreset].name,
+      onClick: () => togglePanel('motion'),
+      isActive: params.openPanel === 'motion',
+    });
+  }
 
   if (params.mode === 'looped') {
     buttons.push({
@@ -569,7 +557,7 @@ function AnimationGeneratorPanels({
         />
       )}
 
-      {openPanel === 'motion' && (
+      {openPanel === 'motion' && selectedMode !== 'sheet-guided' && (
         <FormField
           control={form.control}
           name={'motionPreset'}
@@ -730,11 +718,11 @@ export function AnimationGenerator({
       domain: fixedDomain || '',
       description: '',
       selectedLogoId: '',
-      mode: 'cinematic' as const,
+      mode: 'looped' as const,
       sourceMode: 'exact-frame' as const,
       motionPreset: 'let-ai-choose' as const,
       motionIntensity: 'subtle' as const,
-      model: 'veo-3.1-generate-preview' as const,
+      model: 'bytedance/seedance-2.0' as const,
     }),
     [fixedDomain],
   );

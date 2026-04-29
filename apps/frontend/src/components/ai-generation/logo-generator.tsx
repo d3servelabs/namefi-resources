@@ -306,7 +306,7 @@ const logoFormSchema = baseFormSchema.extend({
       'gemini-2.5-flash-image',
       'gemini-3-pro-image-preview',
     ])
-    .default('gpt-image-1.5'),
+    .default('gpt-image-2'),
 });
 
 type LogoFormData = z.infer<typeof logoFormSchema>;
@@ -369,7 +369,7 @@ export function LogoGenerator({
       description: '',
       textTreatment: LOGO_TEXT_TREATMENTS['let-ai-choose'].id,
       typography: LOGO_TYPOGRAPHY['let-ai-choose'].id,
-      model: 'gpt-image-1.5' as Model,
+      model: 'gpt-image-2' as Model,
     };
   }, [fixedDomain]);
 

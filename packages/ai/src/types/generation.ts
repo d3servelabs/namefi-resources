@@ -62,15 +62,25 @@ export const CINEMATIC_ANIMATION_MODELS = {
 export type CinematicAnimationModel = keyof typeof CINEMATIC_ANIMATION_MODELS;
 
 export const LOOPED_ANIMATION_MODELS = {
+  'bytedance/seedance-2.0': {
+    id: 'bytedance/seedance-2.0',
+    name: 'Seedance 2.0',
+    description: 'Highest-quality Seedance logo animation.',
+  },
+  'bytedance/seedance-2.0-fast': {
+    id: 'bytedance/seedance-2.0-fast',
+    name: 'Seedance 2.0 Fast',
+    description: 'Faster Seedance 2.0 logo animation.',
+  },
   'bytedance/seedance-v1.5-pro': {
     id: 'bytedance/seedance-v1.5-pro',
     name: 'Seedance 1.5 Pro',
-    description: 'Highest-quality Seedance logo animation.',
+    description: 'Legacy Seedance quality model.',
   },
   'bytedance/seedance-v1.0-pro': {
     id: 'bytedance/seedance-v1.0-pro',
     name: 'Seedance 1.0 Pro',
-    description: 'Faster Seedance logo animation.',
+    description: 'Legacy faster Seedance model.',
   },
 } as const;
 
@@ -89,6 +99,8 @@ export const CINEMATIC_ANIMATION_MODEL_IDS = [
 ] as const satisfies [CinematicAnimationModel, ...CinematicAnimationModel[]];
 
 export const LOOPED_ANIMATION_MODEL_IDS = [
+  'bytedance/seedance-2.0',
+  'bytedance/seedance-2.0-fast',
   'bytedance/seedance-v1.5-pro',
   'bytedance/seedance-v1.0-pro',
 ] as const satisfies [LoopedAnimationModel, ...LoopedAnimationModel[]];
@@ -491,7 +503,6 @@ export interface LoopedAnimationGenerationInput
 export interface SheetGuidedAnimationGenerationInput
   extends BaseAnimationGenerationInput {
   mode: 'sheet-guided';
-  motionPreset: CinematicAnimationMotionPresetId;
   model: LoopedAnimationModel;
   sheetModel: 'gpt-image-2';
 }
@@ -525,10 +536,14 @@ export type LoopedAnimationAnalysis = BaseAnimationAnalysis<
   LoopedAnimationMotionPreset
 >;
 
-export type SheetGuidedAnimationAnalysis = BaseAnimationAnalysis<
-  'sheet-guided',
-  CinematicAnimationMotionPreset
-> & {
+export interface SheetGuidedAnimationAnalysis {
+  mode: 'sheet-guided';
+  brandAttributes: string[];
+  targetAudience: string;
+  rationale: string;
+  direction: string;
+  model: string;
+  tokenUsage?: LanguageModelUsage;
   logoVisualSummary: string;
   animationConcept: string;
   shapeNotes: string[];
@@ -540,7 +555,7 @@ export type SheetGuidedAnimationAnalysis = BaseAnimationAnalysis<
   }>;
   sheetPrompt: string;
   videoPrompt: string;
-};
+}
 
 export type AnimationAnalysis =
   | CinematicAnimationAnalysis

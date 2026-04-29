@@ -35,7 +35,7 @@ export const logoWorkflowInputSchema = z.object({
   preferredStyle: logoStyleInputEnum.optional(),
   textTreatment: logoTextTreatmentInputEnum.optional(),
   typography: logoTypographyInputEnum.optional(),
-  imageModel: imageModelEnum.default('gpt-image-1.5'),
+  imageModel: imageModelEnum.default('gpt-image-2'),
   storage: z.custom<StorageConfig>(),
 });
 

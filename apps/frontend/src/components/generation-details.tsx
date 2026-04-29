@@ -116,8 +116,13 @@ function resolveAnimationMotionPresetId(
     return metadata.resolvedMotionPreset as AnimationMotionPresetId;
   }
 
-  if (generation.input.motionPreset in ANIMATION_MOTION_PRESETS) {
-    return generation.input.motionPreset as AnimationMotionPresetId;
+  const inputMotionPreset =
+    'motionPreset' in generation.input
+      ? generation.input.motionPreset
+      : undefined;
+
+  if (inputMotionPreset && inputMotionPreset in ANIMATION_MOTION_PRESETS) {
+    return inputMotionPreset as AnimationMotionPresetId;
   }
 
   return undefined;

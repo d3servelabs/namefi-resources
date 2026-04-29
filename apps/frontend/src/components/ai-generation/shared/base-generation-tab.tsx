@@ -180,10 +180,15 @@ export const convertAnimationGenerations = (
         ? (metadata.resolvedMotionPreset as AnimationMotionPresetId)
         : undefined;
 
+    const inputMotionPreset =
+      'motionPreset' in generation.input
+        ? generation.input.motionPreset
+        : undefined;
+
     const motionPreset =
       resolvedMotionPreset ??
-      (generation.input.motionPreset in ANIMATION_MOTION_PRESETS
-        ? (generation.input.motionPreset as AnimationMotionPresetId)
+      (inputMotionPreset && inputMotionPreset in ANIMATION_MOTION_PRESETS
+        ? (inputMotionPreset as AnimationMotionPresetId)
         : undefined);
 
     return motionPreset

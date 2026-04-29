@@ -40,7 +40,7 @@ describe('createAnimationGenerationPayload', () => {
       sourceMode: 'exact-frame',
       motionPreset: 'light-sweep',
       motionIntensity: 'subtle',
-      model: 'bytedance/seedance-v1.5-pro',
+      model: 'bytedance/seedance-2.0',
     } satisfies AnimationFormData);
 
     expect(payload).toEqual({
@@ -50,7 +50,7 @@ describe('createAnimationGenerationPayload', () => {
       mode: 'looped',
       motionPreset: 'light-sweep',
       motionIntensity: 'subtle',
-      model: 'bytedance/seedance-v1.5-pro',
+      model: 'bytedance/seedance-2.0',
     });
     expect('sourceMode' in payload).toBe(false);
   });
@@ -64,7 +64,7 @@ describe('createAnimationGenerationPayload', () => {
       sourceMode: 'exact-frame',
       motionPreset: 'prismatic-bloom',
       motionIntensity: 'bold',
-      model: 'bytedance/seedance-v1.5-pro',
+      model: 'bytedance/seedance-2.0',
     } satisfies AnimationFormData);
 
     expect(payload).toEqual({
@@ -72,8 +72,7 @@ describe('createAnimationGenerationPayload', () => {
       description: 'Analyze the logo first',
       referenceLogoGenerationId: '44444444-4444-4444-8444-444444444444',
       mode: 'sheet-guided',
-      motionPreset: 'prismatic-bloom',
-      model: 'bytedance/seedance-v1.5-pro',
+      model: 'bytedance/seedance-2.0',
       sheetModel: 'gpt-image-2',
     });
     expect('sourceMode' in payload).toBe(false);
@@ -96,7 +95,7 @@ describe('createAnimationGenerationPayload', () => {
       mode: 'looped',
       motionPreset: 'let-ai-choose',
       motionIntensity: 'subtle',
-      model: 'bytedance/seedance-v1.5-pro',
+      model: 'bytedance/seedance-2.0',
     });
     expect('sourceMode' in payload).toBe(false);
   });

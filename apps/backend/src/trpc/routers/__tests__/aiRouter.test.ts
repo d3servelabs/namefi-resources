@@ -83,6 +83,8 @@ vi.mock('@namefi-astra/ai', () => ({
   LOGO_TYPE_INPUT_IDS: ['let-ai-choose'],
   LOGO_TYPOGRAPHY_INPUT_IDS: ['let-ai-choose'],
   LOOPED_ANIMATION_MODEL_IDS: [
+    'bytedance/seedance-2.0',
+    'bytedance/seedance-2.0-fast',
     'bytedance/seedance-v1.5-pro',
     'bytedance/seedance-v1.0-pro',
   ],
@@ -265,14 +267,12 @@ describe('generateAnimationInputSchema', () => {
         mode: 'sheet-guided',
         domain: 'example.com',
         referenceLogoGenerationId: 'logo-1',
-        motionPreset: 'orbital-reveal',
-        model: 'bytedance/seedance-v1.5-pro',
+        model: 'bytedance/seedance-2.0',
       }),
     ).toEqual(
       expect.objectContaining({
         mode: 'sheet-guided',
-        motionPreset: 'orbital-reveal',
-        model: 'bytedance/seedance-v1.5-pro',
+        model: 'bytedance/seedance-2.0',
         sheetModel: 'gpt-image-2',
       }),
     );
@@ -299,6 +299,16 @@ describe('generateAnimationInputSchema', () => {
         motionPreset: 'orbital-reveal',
         motionIntensity: 'subtle',
         model: 'veo-3.1-generate-preview',
+      }),
+    ).toThrow();
+
+    expect(() =>
+      generateAnimationInputSchema.parse({
+        mode: 'sheet-guided',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-1',
+        motionPreset: 'orbital-reveal',
+        model: 'bytedance/seedance-2.0',
       }),
     ).toThrow();
   });

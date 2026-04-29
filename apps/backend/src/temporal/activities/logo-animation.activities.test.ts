@@ -65,6 +65,8 @@ vi.mock('@namefi-astra/ai', () => ({
   LOGO_TYPE_INPUT_IDS: ['let-ai-choose'],
   LOGO_TYPOGRAPHY_INPUT_IDS: ['let-ai-choose'],
   LOOPED_ANIMATION_MODEL_IDS: [
+    'bytedance/seedance-2.0',
+    'bytedance/seedance-2.0-fast',
     'bytedance/seedance-v1.5-pro',
     'bytedance/seedance-v1.0-pro',
   ],
@@ -343,7 +345,6 @@ describe('generateLogoAnimation', () => {
         type: 'animation',
         mode: 'sheet-guided',
         description: 'Make it logo-specific',
-        motionPreset: 'orbital-reveal',
         model: 'bytedance/seedance-v1.5-pro',
         sheetModel: 'gpt-image-2',
       },
@@ -386,7 +387,6 @@ describe('generateLogoAnimation', () => {
         brandAttributes: ['precise'],
         targetAudience: 'Founders',
         rationale: 'The mark has geometry worth tracing.',
-        resolvedMotionPreset: 'orbital-reveal',
         direction: 'Trace the mark and settle to the lockup.',
         model: 'gpt-5.2',
         tokenUsage: {
@@ -447,7 +447,6 @@ describe('generateLogoAnimation', () => {
       expect.objectContaining({
         mode: 'sheet-guided',
         domain: 'brand.xyz',
-        motionPreset: 'orbital-reveal',
         model: 'bytedance/seedance-v1.5-pro',
         sheetModel: 'gpt-image-2',
         referenceLogoUrl: 'https://cdn.test/logo.png',
@@ -481,6 +480,13 @@ describe('generateLogoAnimation', () => {
           },
         ],
         status: 'SUCCEEDED',
+      }),
+    );
+    expect(updateSetMock).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        metadata: expect.not.objectContaining({
+          resolvedMotionPreset: expect.anything(),
+        }),
       }),
     );
   });

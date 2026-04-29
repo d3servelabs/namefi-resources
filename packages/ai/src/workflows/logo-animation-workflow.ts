@@ -102,7 +102,6 @@ const sheetGuidedAnalysisSchema = z.object({
   brandAttributes: z.array(z.string()),
   targetAudience: z.string(),
   rationale: z.string(),
-  resolvedMotionPreset: cinematicMotionPresetResolvedEnum,
   direction: z.string(),
   model: z.string(),
   tokenUsage: tokenUsageSchema.optional(),
@@ -135,7 +134,7 @@ const loopedAnimationWorkflowInputSchema = z
     description: z.string().optional(),
     motionPreset: loopedMotionPresetInputEnum.default('let-ai-choose'),
     motionIntensity: motionIntensityEnum.default('subtle'),
-    model: loopedAnimationModelEnum.default('bytedance/seedance-v1.5-pro'),
+    model: loopedAnimationModelEnum.default('bytedance/seedance-2.0'),
     storage: z.custom<StorageConfig>(),
   })
   .strict();
@@ -146,8 +145,7 @@ const sheetGuidedAnimationWorkflowInputSchema = z
     domain: namefiNormalizedDomainSchema,
     referenceLogoUrl: z.string().url(),
     description: z.string().optional(),
-    motionPreset: cinematicMotionPresetInputEnum.default('let-ai-choose'),
-    model: loopedAnimationModelEnum.default('bytedance/seedance-v1.5-pro'),
+    model: loopedAnimationModelEnum.default('bytedance/seedance-2.0'),
     sheetModel: animationSheetImageModelEnum.default('gpt-image-2'),
     storage: z.custom<StorageConfig>(),
   })
@@ -295,7 +293,6 @@ function buildSheetGuidedAnimationSheetPrompt(input: {
   domain: string;
   logoVisualSummary: string;
   animationConcept: string;
-  motionPreset: z.infer<typeof cinematicMotionPresetResolvedEnum>;
   rationale: string;
   shapeNotes: string[];
   stagePlan: Array<z.output<typeof sheetGuidedStagePlanSchema>>;
@@ -308,7 +305,7 @@ function buildSheetGuidedAnimationSheetPrompt(input: {
     `Brand/domain: ${input.domain}.`,
     `Uploaded logo analysis: ${input.logoVisualSummary.trim()}.`,
     `Tailored animation concept: ${input.animationConcept.trim()}.`,
-    `Motion preset: ${input.motionPreset}. Rationale: ${input.rationale.trim()}.`,
+    `Motion rationale: ${input.rationale.trim()}.`,
     `Shape-specific motion notes: ${input.shapeNotes.join(' | ')}.`,
     `8-second stage plan: ${JSON.stringify(input.stagePlan)}.`,
     `Additional sheet direction: ${input.sheetPrompt.trim()}.`,
@@ -319,14 +316,13 @@ function buildSheetGuidedAnimationSheetPrompt(input: {
 }
 
 function buildSheetGuidedAnimationPrompt(input: {
-  motionPreset: z.infer<typeof cinematicMotionPresetResolvedEnum>;
   direction: string;
   videoPrompt: string;
   stagePlan: Array<z.output<typeof sheetGuidedStagePlanSchema>>;
 }) {
   return [
     'Create an 8-second 16:9 logo animation following the provided animation sheet reference exactly.',
-    cinematicMotionPromptByPreset[input.motionPreset],
+    'Keep the overall read as a premium logo animation: the logo is always the hero, and every movement should clarify its construction, identity, and final lockup.',
     `Brand-specific motion direction: ${input.direction.trim()}.`,
     `Animation-sheet video direction: ${input.videoPrompt.trim()}.`,
     `Match these stage timings from the sheet: ${JSON.stringify(input.stagePlan)}.`,
@@ -337,7 +333,7 @@ function buildSheetGuidedAnimationPrompt(input: {
   ].join(' ');
 }
 
-async function createLogoReferenceDataUrl(logoBuffer: Buffer) {
+async function createLogoReferenceImage(logoBuffer: Buffer) {
   const logoPng = await sharp(logoBuffer)
     .ensureAlpha()
     .resize({
@@ -349,7 +345,10 @@ async function createLogoReferenceDataUrl(logoBuffer: Buffer) {
     .png()
     .toBuffer();
 
-  return `data:image/png;base64,${logoPng.toString('base64')}`;
+  return {
+    image: new Uint8Array(logoPng),
+    mediaType: 'image/png',
+  } as const;
 }
 
 async function resolveContrastingBackground(logoBuffer: Buffer) {
@@ -729,23 +728,21 @@ async function runSheetGuidedAnimationWorkflow(
     input.referenceLogoUrl,
     options.abortSignal,
   );
-  const referenceLogoDataUrl = await createLogoReferenceDataUrl(logoBuffer);
+  const referenceLogo = await createLogoReferenceImage(logoBuffer);
   const uploadedStoragePaths: string[] = [];
 
   try {
     const strategy = await generateSheetGuidedAnimationStrategy({
       domain: input.domain,
       description: input.description,
-      motionPreset: input.motionPreset,
-      referenceLogoDataUrl,
+      referenceLogo: referenceLogo.image,
+      referenceLogoMediaType: referenceLogo.mediaType,
     });
 
-    const resolvedMotionPreset = strategy.object.motionPreset;
     const sheetPrompt = buildSheetGuidedAnimationSheetPrompt({
       domain: input.domain,
       logoVisualSummary: strategy.object.logoVisualSummary,
       animationConcept: strategy.object.animationConcept,
-      motionPreset: resolvedMotionPreset,
       rationale: strategy.object.rationale,
       shapeNotes: strategy.object.shapeNotes,
       stagePlan: strategy.object.stagePlan,
@@ -754,7 +751,7 @@ async function runSheetGuidedAnimationWorkflow(
     const generatedSheet = await generateAnimationSheetImage({
       prompt: sheetPrompt,
       model: input.sheetModel,
-      referenceLogoDataUrl,
+      referenceLogo,
     });
 
     if (!generatedSheet.imageBase64) {
@@ -771,7 +768,6 @@ async function runSheetGuidedAnimationWorkflow(
     uploadedStoragePaths.push(uploadedSheet.storagePath);
 
     const prompt = buildSheetGuidedAnimationPrompt({
-      motionPreset: resolvedMotionPreset,
       direction: strategy.object.direction,
       videoPrompt: strategy.object.videoPrompt,
       stagePlan: strategy.object.stagePlan,
@@ -812,7 +808,6 @@ async function runSheetGuidedAnimationWorkflow(
         brandAttributes: strategy.object.brandAttributes,
         targetAudience: strategy.object.targetAudience,
         rationale: strategy.object.rationale,
-        resolvedMotionPreset,
         direction: strategy.object.direction,
         model: strategy.modelId ?? 'gpt-5.2',
         tokenUsage: strategy.totalUsage,

@@ -114,6 +114,8 @@ const loopedMotionPresetSchema = z.enum([
 const animationMotionIntensitySchema = z.enum(['balanced', 'bold', 'subtle']);
 
 const loopedModelSchema = z.enum([
+  'bytedance/seedance-2.0',
+  'bytedance/seedance-2.0-fast',
   'bytedance/seedance-v1.0-pro',
   'bytedance/seedance-v1.5-pro',
 ]);
@@ -133,7 +135,7 @@ const generateLogoInputSchema = z.object({
   style: logoStyleSchema,
   textTreatment: logoTextTreatmentSchema,
   typography: logoTypographySchema,
-  model: imageModelSchema.default('gpt-image-1.5'),
+  model: imageModelSchema.default('gpt-image-2'),
 });
 
 const generatePosterInputSchema = z.object({
@@ -141,7 +143,7 @@ const generatePosterInputSchema = z.object({
   description: z.string().optional(),
   referenceLogoGenerationId: z.string().optional(),
   collateralType: marketingCollateralTypeSchema.default('let_ai_choose'),
-  model: imageModelSchema.default('gemini-3-pro-image-preview'),
+  model: imageModelSchema.default('gpt-image-2'),
 });
 
 const generateAnimationCommonInputSchema = z.object({
@@ -164,7 +166,7 @@ const generateLoopedAnimationInputSchema = generateAnimationCommonInputSchema
     mode: z.literal('looped'),
     motionPreset: loopedMotionPresetSchema.default('let-ai-choose'),
     motionIntensity: animationMotionIntensitySchema.default('subtle'),
-    model: loopedModelSchema.default('bytedance/seedance-v1.5-pro'),
+    model: loopedModelSchema.default('bytedance/seedance-2.0'),
   })
   .strict();
 
@@ -172,8 +174,7 @@ const generateSheetGuidedAnimationInputSchema =
   generateAnimationCommonInputSchema
     .extend({
       mode: z.literal('sheet-guided'),
-      motionPreset: cinematicMotionPresetSchema.default('let-ai-choose'),
-      model: loopedModelSchema.default('bytedance/seedance-v1.5-pro'),
+      model: loopedModelSchema.default('bytedance/seedance-2.0'),
       sheetModel: animationSheetModelSchema.default('gpt-image-2'),
     })
     .strict();
@@ -259,7 +260,7 @@ const aiSheetGuidedAnimationInputRowSchema = z.object({
   type: z.literal('animation'),
   mode: z.literal('sheet-guided'),
   description: z.string().optional(),
-  motionPreset: cinematicMotionPresetSchema,
+  motionPreset: cinematicMotionPresetSchema.optional(),
   model: loopedModelSchema,
   sheetModel: animationSheetModelSchema.optional(),
 });

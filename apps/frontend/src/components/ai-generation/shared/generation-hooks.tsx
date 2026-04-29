@@ -369,10 +369,6 @@ export const createAnimationGenerationPayload = (data: AnimationFormData) => {
       mode: 'sheet-guided',
       domain: data.domain,
       referenceLogoGenerationId: data.selectedLogoId,
-      motionPreset: pickAnimationValue(
-        data.motionPreset,
-        CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
-      ) as CinematicAnimationMotionPresetId,
       model: pickAnimationValue(
         data.model,
         LOOPED_ANIMATION_MODEL_IDS,

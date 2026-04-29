@@ -793,6 +793,8 @@ type CinematicAnimationModel =
   | 'veo-3.1-fast-generate-preview';
 
 type LoopedAnimationModel =
+  | 'bytedance/seedance-2.0'
+  | 'bytedance/seedance-2.0-fast'
   | 'bytedance/seedance-v1.5-pro'
   | 'bytedance/seedance-v1.0-pro';
 
@@ -860,7 +862,7 @@ type AiGenerationInput =
       type: 'animation';
       mode: 'sheet-guided';
       description?: string;
-      motionPreset: CinematicAnimationMotionPreset;
+      motionPreset?: CinematicAnimationMotionPreset;
       model: LoopedAnimationModel;
       sheetModel?: AnimationSheetImageModel;
     };
@@ -936,7 +938,7 @@ type ExternalAiGenerationInput =
       type: 'animation';
       mode: 'sheet-guided';
       description?: string;
-      motionPreset: CinematicAnimationMotionPreset;
+      motionPreset?: CinematicAnimationMotionPreset;
       model?: LoopedAnimationModel;
       sheetModel?: AnimationSheetImageModel;
       referenceLogoUrl?: string;

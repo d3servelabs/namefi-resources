@@ -9,7 +9,7 @@ import { tokenUsageSchema } from '../types/logo-schemas';
 import { generatePosterStrategy } from '../agents/strategists';
 import { generatePosterImage } from '../agents/generators';
 import { createRunId } from '../utils/files';
-import { fetchImageAsDataUrl } from '../utils/images';
+import { fetchImageAsReferenceInput } from '../utils/images';
 import {
   MARKETING_COLLATERAL_TYPE_INPUT_IDS,
   MARKETING_COLLATERAL_TYPE_RESOLVED_IDS,
@@ -31,7 +31,7 @@ export const marketingWorkflowInputSchema = z.object({
   domain: z.string(),
   description: z.string().optional(),
   collateralType: collateralTypeInputEnum.default('let_ai_choose'),
-  imageModel: imageModelEnum.default('gemini-3-pro-image-preview'),
+  imageModel: imageModelEnum.default('gpt-image-2'),
   storage: z.custom<StorageConfig>(),
   referenceLogoUrl: z.string().optional(),
 });
@@ -88,9 +88,9 @@ export async function runMarketingWorkflow(
     ? `${pick.prompt}\n\nBrand details: ${input.description}`
     : pick.prompt;
 
-  let referenceLogoDataUrl: string;
+  let referenceLogo: { image: Uint8Array; mediaType: string };
   try {
-    referenceLogoDataUrl = await fetchImageAsDataUrl(input.referenceLogoUrl);
+    referenceLogo = await fetchImageAsReferenceInput(input.referenceLogoUrl);
   } catch (error) {
     throw new Error('Failed to fetch reference logo');
   }
@@ -98,7 +98,7 @@ export async function runMarketingWorkflow(
   const generated = await generatePosterImage({
     prompt,
     model: input.imageModel,
-    referenceLogoDataUrl,
+    referenceLogo,
   });
 
   if (!generated.imageBase64) {
