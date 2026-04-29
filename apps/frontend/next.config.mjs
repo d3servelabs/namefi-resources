@@ -185,6 +185,11 @@ const nextConfig = {
         destination: process.env.API_DOCS_URL || 'https://docs.namefi.io/',
         permanent: false,
       },
+      {
+        source: '/api/x402/:path*',
+        destination: `${appConfig.BACKEND_URL || 'https://api.namefi.io'}/x402/:path*`,
+        permanent: false,
+      },
     ];
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
