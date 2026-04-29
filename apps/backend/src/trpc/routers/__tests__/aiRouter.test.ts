@@ -14,6 +14,7 @@ const startMock = vi.fn();
 const procedureBuilder = {
   input: vi.fn(() => procedureBuilder),
   mutation: vi.fn(() => procedureBuilder),
+  output: vi.fn(() => procedureBuilder),
   query: vi.fn(() => procedureBuilder),
 };
 
@@ -254,6 +255,25 @@ describe('generateAnimationInputSchema', () => {
       expect.objectContaining({
         mode: 'looped',
         motionIntensity: 'subtle',
+      }),
+    );
+  });
+
+  it('accepts sheet-guided animation inputs with GPT Image 2', () => {
+    expect(
+      generateAnimationInputSchema.parse({
+        mode: 'sheet-guided',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-1',
+        motionPreset: 'orbital-reveal',
+        model: 'bytedance/seedance-v1.5-pro',
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        mode: 'sheet-guided',
+        motionPreset: 'orbital-reveal',
+        model: 'bytedance/seedance-v1.5-pro',
+        sheetModel: 'gpt-image-2',
       }),
     );
   });

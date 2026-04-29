@@ -15,6 +15,7 @@ import type { GenerateVideoResult, LanguageModelUsage } from 'ai';
 export type ImageModel =
   | 'gpt-image-1'
   | 'gpt-image-1.5'
+  | 'gpt-image-2'
   | 'gemini-2.5-flash-image'
   | 'gemini-3-pro-image-preview';
 
@@ -29,14 +30,21 @@ export const ANIMATION_MODES = {
     name: 'Looped',
     description: 'Square animated logos with restrained repeatable motion.',
   },
+  'sheet-guided': {
+    id: 'sheet-guided',
+    name: 'Animation Sheet',
+    description:
+      'AI analyzes the logo, creates a motion-spec sheet, then animates from that sheet.',
+  },
 } as const;
 
 export type AnimationMode = keyof typeof ANIMATION_MODES;
 
-export const ANIMATION_MODE_IDS = ['cinematic', 'looped'] as const satisfies [
-  AnimationMode,
-  ...AnimationMode[],
-];
+export const ANIMATION_MODE_IDS = [
+  'cinematic',
+  'looped',
+  'sheet-guided',
+] as const satisfies [AnimationMode, ...AnimationMode[]];
 
 export const CINEMATIC_ANIMATION_MODELS = {
   'veo-3.1-generate-preview': {
@@ -57,12 +65,12 @@ export const LOOPED_ANIMATION_MODELS = {
   'bytedance/seedance-v1.5-pro': {
     id: 'bytedance/seedance-v1.5-pro',
     name: 'Seedance 1.5 Pro',
-    description: 'Highest-quality square looped logo animation.',
+    description: 'Highest-quality Seedance logo animation.',
   },
   'bytedance/seedance-v1.0-pro': {
     id: 'bytedance/seedance-v1.0-pro',
     name: 'Seedance 1.0 Pro',
-    description: 'Faster square looped logo animation.',
+    description: 'Faster Seedance logo animation.',
   },
 } as const;
 
@@ -480,9 +488,18 @@ export interface LoopedAnimationGenerationInput
   model: LoopedAnimationModel;
 }
 
+export interface SheetGuidedAnimationGenerationInput
+  extends BaseAnimationGenerationInput {
+  mode: 'sheet-guided';
+  motionPreset: CinematicAnimationMotionPresetId;
+  model: LoopedAnimationModel;
+  sheetModel: 'gpt-image-2';
+}
+
 export type AnimationGenerationInput =
   | CinematicAnimationGenerationInput
-  | LoopedAnimationGenerationInput;
+  | LoopedAnimationGenerationInput
+  | SheetGuidedAnimationGenerationInput;
 
 interface BaseAnimationAnalysis<
   TModeValue extends AnimationMode,
@@ -508,14 +525,37 @@ export type LoopedAnimationAnalysis = BaseAnimationAnalysis<
   LoopedAnimationMotionPreset
 >;
 
+export type SheetGuidedAnimationAnalysis = BaseAnimationAnalysis<
+  'sheet-guided',
+  CinematicAnimationMotionPreset
+> & {
+  logoVisualSummary: string;
+  animationConcept: string;
+  shapeNotes: string[];
+  stagePlan: Array<{
+    label: string;
+    timeRange: string;
+    visualState: string;
+    motionInstruction: string;
+  }>;
+  sheetPrompt: string;
+  videoPrompt: string;
+};
+
 export type AnimationAnalysis =
   | CinematicAnimationAnalysis
-  | LoopedAnimationAnalysis;
+  | LoopedAnimationAnalysis
+  | SheetGuidedAnimationAnalysis;
+
+export interface GeneratedAnimationSheet extends BaseGenerationResult {
+  prompt: string;
+}
 
 export interface AnimationGenerationResult {
   analysis: AnimationAnalysis;
   prompt: string;
   video: GeneratedAnimationVideo;
+  animationSheet?: GeneratedAnimationSheet;
   warnings: GenerateVideoResult['warnings'];
   providerMetadata?: GenerateVideoResult['providerMetadata'];
 }

@@ -302,6 +302,7 @@ const logoFormSchema = baseFormSchema.extend({
     .enum([
       'gpt-image-1',
       'gpt-image-1.5',
+      'gpt-image-2',
       'gemini-2.5-flash-image',
       'gemini-3-pro-image-preview',
     ])
@@ -355,6 +356,7 @@ export function LogoGenerator({
   const getModelDisplay = (model: Model) => {
     if (model === 'gemini-3-pro-image-preview') return 'Gemini 3 Pro (preview)';
     if (model === 'gemini-2.5-flash-image') return 'Gemini 2.5 (legacy)';
+    if (model === 'gpt-image-2') return 'OpenAI 2';
     if (model === 'gpt-image-1.5') return 'OpenAI 1.5';
     return 'OpenAI (legacy)';
   };
@@ -768,6 +770,7 @@ export function LogoGenerator({
                           <SelectItem value="gpt-image-1.5">
                             OpenAI 1.5
                           </SelectItem>
+                          <SelectItem value="gpt-image-2">OpenAI 2</SelectItem>
                           <SelectItem value="gpt-image-1">
                             OpenAI (legacy)
                           </SelectItem>

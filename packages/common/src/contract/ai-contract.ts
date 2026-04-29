@@ -72,6 +72,7 @@ const imageModelSchema = z.enum([
   'gemini-3-pro-image-preview',
   'gpt-image-1',
   'gpt-image-1.5',
+  'gpt-image-2',
 ]);
 
 const marketingCollateralTypeSchema = z.enum([
@@ -116,6 +117,8 @@ const loopedModelSchema = z.enum([
   'bytedance/seedance-v1.0-pro',
   'bytedance/seedance-v1.5-pro',
 ]);
+
+const animationSheetModelSchema = z.enum(['gpt-image-2']);
 
 const generationTypeSchema = z.enum(['logo', 'marketing', 'animation']);
 
@@ -165,9 +168,20 @@ const generateLoopedAnimationInputSchema = generateAnimationCommonInputSchema
   })
   .strict();
 
+const generateSheetGuidedAnimationInputSchema =
+  generateAnimationCommonInputSchema
+    .extend({
+      mode: z.literal('sheet-guided'),
+      motionPreset: cinematicMotionPresetSchema.default('let-ai-choose'),
+      model: loopedModelSchema.default('bytedance/seedance-v1.5-pro'),
+      sheetModel: animationSheetModelSchema.default('gpt-image-2'),
+    })
+    .strict();
+
 const generateAnimationInputSchema = z.discriminatedUnion('mode', [
   generateCinematicAnimationInputSchema,
   generateLoopedAnimationInputSchema,
+  generateSheetGuidedAnimationInputSchema,
 ]);
 
 const getGenerationsByDomainInputSchema = z.object({
@@ -241,11 +255,21 @@ const aiLoopedAnimationInputRowSchema = z.object({
   model: loopedModelSchema,
 });
 
+const aiSheetGuidedAnimationInputRowSchema = z.object({
+  type: z.literal('animation'),
+  mode: z.literal('sheet-guided'),
+  description: z.string().optional(),
+  motionPreset: cinematicMotionPresetSchema,
+  model: loopedModelSchema,
+  sheetModel: animationSheetModelSchema.optional(),
+});
+
 const aiGenerationInputUnionSchema = z.union([
   aiLogoInputSchema,
   aiMarketingInputSchema,
   aiCinematicAnimationInputRowSchema,
   aiLoopedAnimationInputRowSchema,
+  aiSheetGuidedAnimationInputRowSchema,
 ]);
 
 const aiLogoOutputSchema = z.object({

@@ -19,6 +19,7 @@ import { generateLogoImage } from '../agents/generators';
 const imageModelEnum = z.enum([
   'gpt-image-1',
   'gpt-image-1.5',
+  'gpt-image-2',
   'gemini-2.5-flash-image',
   'gemini-3-pro-image-preview',
 ]);

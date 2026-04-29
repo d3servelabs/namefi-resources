@@ -163,6 +163,69 @@ export const loopedAnimationMotionPlanSchema = z.object({
     ),
 });
 
+export const sheetGuidedAnimationMotionPlanSchema = z.object({
+  brandAttributes: z
+    .array(z.string())
+    .describe('Key brand attributes, values, and personality traits'),
+  targetAudience: z
+    .string()
+    .describe('Primary target audience and market positioning'),
+  rationale: z
+    .string()
+    .describe(
+      'Why this sheet-guided motion direction is the strongest fit for the uploaded logo.',
+    ),
+  motionPreset: cinematicAnimationMotionResolvedEnum.describe(
+    'The single best reveal-friendly motion preset for this uploaded logo.',
+  ),
+  logoVisualSummary: z
+    .string()
+    .describe(
+      'Concise visual analysis of the uploaded logo: geometry, text, colors, contrast, distinctive shapes, and motion-safe constraints.',
+    ),
+  animationConcept: z
+    .string()
+    .describe(
+      'The tailored motion concept that should be shown in the animation sheet.',
+    ),
+  shapeNotes: z
+    .array(z.string())
+    .min(3)
+    .max(8)
+    .describe(
+      'Concrete notes for how the actual logo shapes, strokes, negative space, or letterforms should move or assemble.',
+    ),
+  stagePlan: z
+    .array(
+      z.object({
+        label: z.string(),
+        timeRange: z.string(),
+        visualState: z.string(),
+        motionInstruction: z.string(),
+      }),
+    )
+    .min(4)
+    .max(6)
+    .describe(
+      'Four to six 8-second timeline stages for the animation sheet and final video.',
+    ),
+  direction: z
+    .string()
+    .describe(
+      'A prompt-ready motion direction for the final video, grounded in the uploaded logo and stage plan.',
+    ),
+  sheetPrompt: z
+    .string()
+    .describe(
+      'A prompt-ready animation sheet image prompt for GPT Image 2, including layout, labels, timing, and visual style.',
+    ),
+  videoPrompt: z
+    .string()
+    .describe(
+      'A prompt-ready Seedance video prompt that follows the generated animation sheet as reference.',
+    ),
+});
+
 function createCinematicAnimationSystemPrompt(available: string) {
   return `You are a motion creative director designing high-end 8-second brand logo animations for Veo.
 
@@ -205,6 +268,32 @@ RULES:
 - Camera movement must be minimal or absent.
 - The ending state must closely match the starting state so the loop feels clean.
 - Keep the motion material-aware, restrained, and brand-coherent.`;
+}
+
+function createSheetGuidedAnimationSystemPrompt(available: string) {
+  return `You are a senior motion director designing an 8-second logo animation through a visual animation sheet.
+
+You will receive the actual logo image. Analyze that image first, then choose a tailored animation that fits the logo's geometry, letterforms, colors, contrast, and brand description.
+
+GOAL:
+- Produce a motion plan that will be turned into a GPT Image 2 animation sheet and then a Seedance video.
+- The sheet must guide timing, transformation, staging, and final logo lockup clearly enough for image-to-video generation.
+- Favor logo-specific construction, morph, trace, reveal, or material behavior over generic effects.
+
+AVAILABLE MOTION PRESETS:
+${available}
+
+RULES:
+- Return only JSON matching the schema.
+- Choose exactly one motionPreset from the allowed IDs above.
+- If the user prompt constrains the allowed motion presets, you must choose only from that constrained set.
+- Use the uploaded logo as the source of truth. Do not invent a new mark, new text, mascot, or unrelated object.
+- Plan a total duration of exactly 8 seconds.
+- stagePlan must contain 4 to 6 clear stages with explicit time ranges that cover 0.0s to 8.0s.
+- The final stage must resolve to the original logo, fully legible, centered, and intact.
+- shapeNotes must describe actual visual features from the uploaded logo, not generic placeholder shapes.
+- sheetPrompt must ask GPT Image 2 for a clean landscape animation sheet with labeled keyframes, arrows, timing bars, easing notes, and a focused shape/morph breakdown.
+- videoPrompt must tell Seedance to follow the animation sheet reference closely and match the staged timing.`;
 }
 
 type StructuredGenerationResult<T> = {
@@ -324,6 +413,9 @@ Allowed motion presets (if constrained): ${allowedMotionPresets}
 type LoopedAnimationMotionPlan = z.infer<
   typeof loopedAnimationMotionPlanSchema
 >;
+type SheetGuidedAnimationMotionPlan = z.infer<
+  typeof sheetGuidedAnimationMotionPlanSchema
+>;
 
 export interface LoopedAnimationStrategyInput {
   domain: NamefiNormalizedDomain;
@@ -355,6 +447,56 @@ Requested number of motion directions: 1
 Allowed motion presets (if constrained): ${allowedMotionPresets}
 Requested motion intensity: ${input.motionIntensity}
 `,
+  });
+
+  return {
+    object: result.output,
+    totalUsage: result.totalUsage,
+    modelId: result.response?.modelId,
+  };
+}
+
+export interface SheetGuidedAnimationStrategyInput {
+  domain: NamefiNormalizedDomain;
+  description?: string;
+  motionPreset?: CinematicAnimationMotionPresetInput;
+  referenceLogoDataUrl: string;
+}
+
+export async function generateSheetGuidedAnimationStrategy(
+  input: SheetGuidedAnimationStrategyInput,
+): Promise<StructuredGenerationResult<SheetGuidedAnimationMotionPlan>> {
+  const allowedMotionPresets =
+    input.motionPreset && input.motionPreset !== 'let-ai-choose'
+      ? input.motionPreset
+      : 'orbital-reveal, energy-surge, atmospheric-rise, dimensional-parallax, prismatic-bloom';
+
+  const animationStrategistAgent = new ToolLoopAgent({
+    model: openai('gpt-5.2'),
+    instructions: createSheetGuidedAnimationSystemPrompt(
+      cinematicAnimationMotionInstructions,
+    ),
+    output: Output.object({ schema: sheetGuidedAnimationMotionPlanSchema }),
+  });
+
+  const result = await animationStrategistAgent.generate({
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: `Brand: ${input.domain}
+Description: ${input.description || 'N/A'}
+Requested number of motion directions: 1
+Allowed motion presets (if constrained): ${allowedMotionPresets}
+Target output: one 8-second sheet-guided logo animation, using the uploaded logo as the visual source of truth.
+`,
+          },
+          { type: 'image', image: input.referenceLogoDataUrl },
+        ],
+      },
+    ],
   });
 
   return {

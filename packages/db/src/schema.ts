@@ -798,6 +798,8 @@ type LoopedAnimationModel =
 
 type AnimationModel = CinematicAnimationModel | LoopedAnimationModel;
 
+type AnimationSheetImageModel = 'gpt-image-2';
+
 type CinematicAnimationMotionPreset =
   | 'let-ai-choose'
   | 'orbital-reveal'
@@ -853,6 +855,14 @@ type AiGenerationInput =
       motionPreset: LoopedAnimationMotionPreset;
       motionIntensity: AnimationMotionIntensity;
       model: LoopedAnimationModel;
+    }
+  | {
+      type: 'animation';
+      mode: 'sheet-guided';
+      description?: string;
+      motionPreset: CinematicAnimationMotionPreset;
+      model: LoopedAnimationModel;
+      sheetModel?: AnimationSheetImageModel;
     };
 
 type AiGenerationOutput =
@@ -920,6 +930,15 @@ type ExternalAiGenerationInput =
       motionPreset: LoopedAnimationMotionPreset;
       motionIntensity: AnimationMotionIntensity;
       model?: LoopedAnimationModel;
+      referenceLogoUrl?: string;
+    }
+  | {
+      type: 'animation';
+      mode: 'sheet-guided';
+      description?: string;
+      motionPreset: CinematicAnimationMotionPreset;
+      model?: LoopedAnimationModel;
+      sheetModel?: AnimationSheetImageModel;
       referenceLogoUrl?: string;
     };
 

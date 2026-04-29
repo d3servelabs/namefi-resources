@@ -362,42 +362,60 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
 };
 
 export const createAnimationGenerationPayload = (data: AnimationFormData) => {
-  const requestBody: AppRouterInput['ai']['generateAnimation'] =
-    data.mode === 'looped'
-      ? {
-          mode: 'looped',
-          domain: data.domain,
-          referenceLogoGenerationId: data.selectedLogoId,
-          motionPreset: pickAnimationValue(
-            data.motionPreset,
-            LOOPED_ANIMATION_MOTION_PRESET_IDS,
-          ) as LoopedAnimationMotionPresetId,
-          motionIntensity: pickAnimationValue(
-            data.motionIntensity,
-            ANIMATION_MOTION_INTENSITY_IDS,
-          ) as AnimationMotionIntensity,
-          model: pickAnimationValue(
-            data.model,
-            LOOPED_ANIMATION_MODEL_IDS,
-          ) as LoopedAnimationModel,
-        }
-      : {
-          mode: 'cinematic',
-          domain: data.domain,
-          referenceLogoGenerationId: data.selectedLogoId,
-          sourceMode: pickAnimationValue(
-            data.sourceMode,
-            ANIMATION_SOURCE_MODE_IDS,
-          ) as AnimationSourceMode,
-          motionPreset: pickAnimationValue(
-            data.motionPreset,
-            CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
-          ) as CinematicAnimationMotionPresetId,
-          model: pickAnimationValue(
-            data.model,
-            CINEMATIC_ANIMATION_MODEL_IDS,
-          ) as CinematicAnimationModel,
-        };
+  let requestBody: AppRouterInput['ai']['generateAnimation'];
+
+  if (data.mode === 'sheet-guided') {
+    requestBody = {
+      mode: 'sheet-guided',
+      domain: data.domain,
+      referenceLogoGenerationId: data.selectedLogoId,
+      motionPreset: pickAnimationValue(
+        data.motionPreset,
+        CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+      ) as CinematicAnimationMotionPresetId,
+      model: pickAnimationValue(
+        data.model,
+        LOOPED_ANIMATION_MODEL_IDS,
+      ) as LoopedAnimationModel,
+      sheetModel: 'gpt-image-2',
+    };
+  } else if (data.mode === 'looped') {
+    requestBody = {
+      mode: 'looped',
+      domain: data.domain,
+      referenceLogoGenerationId: data.selectedLogoId,
+      motionPreset: pickAnimationValue(
+        data.motionPreset,
+        LOOPED_ANIMATION_MOTION_PRESET_IDS,
+      ) as LoopedAnimationMotionPresetId,
+      motionIntensity: pickAnimationValue(
+        data.motionIntensity,
+        ANIMATION_MOTION_INTENSITY_IDS,
+      ) as AnimationMotionIntensity,
+      model: pickAnimationValue(
+        data.model,
+        LOOPED_ANIMATION_MODEL_IDS,
+      ) as LoopedAnimationModel,
+    };
+  } else {
+    requestBody = {
+      mode: 'cinematic',
+      domain: data.domain,
+      referenceLogoGenerationId: data.selectedLogoId,
+      sourceMode: pickAnimationValue(
+        data.sourceMode,
+        ANIMATION_SOURCE_MODE_IDS,
+      ) as AnimationSourceMode,
+      motionPreset: pickAnimationValue(
+        data.motionPreset,
+        CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
+      ) as CinematicAnimationMotionPresetId,
+      model: pickAnimationValue(
+        data.model,
+        CINEMATIC_ANIMATION_MODEL_IDS,
+      ) as CinematicAnimationModel,
+    };
+  }
 
   if (data.description) {
     requestBody.description = data.description;

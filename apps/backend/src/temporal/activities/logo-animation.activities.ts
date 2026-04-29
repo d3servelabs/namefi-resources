@@ -121,23 +121,41 @@ function asMetadataRecord(value: unknown): Record<string, unknown> {
 function buildAnimationTokenUsageEntries(
   result: Awaited<ReturnType<typeof runLogoAnimationWorkflow>>,
 ) {
-  const tokenUsage = result.analysis.tokenUsage;
-  const hasUsage =
-    tokenUsage?.inputTokens != null ||
-    tokenUsage?.outputTokens != null ||
-    tokenUsage?.totalTokens != null;
+  const entries: Array<{
+    model: string;
+    inputTokens: number;
+    outputTokens: number;
+  }> = [];
 
-  if (!hasUsage) {
-    return [];
+  const strategistUsage = result.analysis.tokenUsage;
+  const hasStrategistUsage =
+    strategistUsage?.inputTokens != null ||
+    strategistUsage?.outputTokens != null ||
+    strategistUsage?.totalTokens != null;
+
+  if (hasStrategistUsage) {
+    entries.push({
+      model: result.analysis.model,
+      inputTokens: strategistUsage?.inputTokens ?? 0,
+      outputTokens: strategistUsage?.outputTokens ?? 0,
+    });
   }
 
-  return [
-    {
-      model: result.analysis.model,
-      inputTokens: tokenUsage?.inputTokens ?? 0,
-      outputTokens: tokenUsage?.outputTokens ?? 0,
-    },
-  ];
+  const sheetUsage = result.animationSheet?.tokenUsage;
+  const hasSheetUsage =
+    sheetUsage?.inputTokens != null ||
+    sheetUsage?.outputTokens != null ||
+    sheetUsage?.totalTokens != null;
+
+  if (result.animationSheet && hasSheetUsage) {
+    entries.push({
+      model: result.animationSheet.model,
+      inputTokens: sheetUsage?.inputTokens ?? 0,
+      outputTokens: sheetUsage?.outputTokens ?? 0,
+    });
+  }
+
+  return entries;
 }
 
 export async function generateLogoAnimation({
@@ -255,6 +273,12 @@ export async function generateLogoAnimation({
     }
 
     const referenceLogoOutput = referenceLogo.output;
+    const referenceLogoUrl = generateUrlFromStoragePath(
+      referenceLogoOutput.storagePath,
+      config.CLOUD_FRONT_DOMAIN,
+    );
+    const storage = getStorage(config.AI_BUCKET_FOLDERS.ANIMATIONS);
+
     const workflowInput =
       animationInput.mode === 'cinematic'
         ? {
@@ -264,25 +288,30 @@ export async function generateLogoAnimation({
             sourceMode: animationInput.sourceMode,
             motionPreset: animationInput.motionPreset,
             model: animationInput.model,
-            referenceLogoUrl: generateUrlFromStoragePath(
-              referenceLogoOutput.storagePath,
-              config.CLOUD_FRONT_DOMAIN,
-            ),
-            storage: getStorage(config.AI_BUCKET_FOLDERS.ANIMATIONS),
+            referenceLogoUrl,
+            storage,
           }
-        : {
-            mode: 'looped' as const,
-            domain: generation.domain,
-            description: animationInput.description,
-            motionPreset: animationInput.motionPreset,
-            motionIntensity: animationInput.motionIntensity,
-            model: animationInput.model,
-            referenceLogoUrl: generateUrlFromStoragePath(
-              referenceLogoOutput.storagePath,
-              config.CLOUD_FRONT_DOMAIN,
-            ),
-            storage: getStorage(config.AI_BUCKET_FOLDERS.ANIMATIONS),
-          };
+        : animationInput.mode === 'sheet-guided'
+          ? {
+              mode: 'sheet-guided' as const,
+              domain: generation.domain,
+              description: animationInput.description,
+              motionPreset: animationInput.motionPreset,
+              model: animationInput.model,
+              sheetModel: animationInput.sheetModel ?? 'gpt-image-2',
+              referenceLogoUrl,
+              storage,
+            }
+          : {
+              mode: 'looped' as const,
+              domain: generation.domain,
+              description: animationInput.description,
+              motionPreset: animationInput.motionPreset,
+              motionIntensity: animationInput.motionIntensity,
+              model: animationInput.model,
+              referenceLogoUrl,
+              storage,
+            };
 
     const animationResult = await heartbeatWhile(
       (abortSignal) => runLogoAnimationWorkflow(workflowInput, { abortSignal }),
@@ -293,6 +322,21 @@ export async function generateLogoAnimation({
     );
 
     const metadata = asMetadataRecord(generation.metadata);
+    const sheetGuidedMetadata =
+      animationResult.analysis.mode === 'sheet-guided'
+        ? {
+            logoVisualSummary: animationResult.analysis.logoVisualSummary,
+            animationConcept: animationResult.analysis.animationConcept,
+            shapeNotes: animationResult.analysis.shapeNotes,
+            stagePlan: animationResult.analysis.stagePlan,
+            sheetModel: animationResult.animationSheet?.model,
+            animationSheetStoragePath:
+              animationResult.animationSheet?.storagePath,
+            animationSheetUrl: animationResult.animationSheet?.url,
+            animationSheetPrompt: animationResult.animationSheet?.prompt,
+            videoPrompt: animationResult.analysis.videoPrompt,
+          }
+        : {};
 
     await db
       .update(aiGenerationsTable)
@@ -317,6 +361,7 @@ export async function generateLogoAnimation({
           prompt: animationResult.prompt,
           resolvedMotionPreset: animationResult.analysis.resolvedMotionPreset,
           strategistModel: animationResult.analysis.model,
+          ...sheetGuidedMetadata,
           warnings: animationResult.warnings,
           providerMetadata: animationResult.providerMetadata,
         },

@@ -98,6 +98,30 @@ const animationFormSchema = baseFormSchema
       return;
     }
 
+    if (value.mode === 'sheet-guided') {
+      if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Choose a Seedance model',
+          path: ['model'],
+        });
+      }
+
+      if (
+        !CINEMATIC_ANIMATION_MOTION_PRESET_IDS.includes(
+          value.motionPreset as never,
+        )
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Choose a sheet-guided motion preset',
+          path: ['motionPreset'],
+        });
+      }
+
+      return;
+    }
+
     if (!value.motionIntensity) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -154,6 +178,10 @@ const animationModeConfigs = {
   looped: {
     modelIds: LOOPED_ANIMATION_MODEL_IDS,
     motionPresetIds: LOOPED_ANIMATION_MOTION_PRESET_IDS,
+  },
+  'sheet-guided': {
+    modelIds: LOOPED_ANIMATION_MODEL_IDS,
+    motionPresetIds: CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
   },
 } as const;
 
@@ -237,7 +265,7 @@ function applyAnimationModeChange(params: {
       'sourceMode',
       params.currentSourceMode ?? ANIMATION_SOURCE_MODE_IDS[0],
     );
-  } else {
+  } else if (params.mode === 'looped') {
     setAnimationFormValue(
       params.form,
       'motionIntensity',

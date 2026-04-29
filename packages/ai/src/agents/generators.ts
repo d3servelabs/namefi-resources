@@ -44,6 +44,14 @@ const OPENAI_TOOL_CONFIGS = {
       outputFormat: 'png',
       outputCompression: 100,
     },
+    animationSheet: {
+      model: 'gpt-image-1',
+      size: '1536x1024',
+      quality: 'medium',
+      background: 'opaque',
+      outputFormat: 'png',
+      outputCompression: 100,
+    },
   },
   'gpt-image-1.5': {
     logo: {
@@ -58,6 +66,40 @@ const OPENAI_TOOL_CONFIGS = {
       model: 'gpt-image-1.5',
       size: '1536x1024',
       quality: 'medium',
+      background: 'opaque',
+      outputFormat: 'png',
+      outputCompression: 100,
+    },
+    animationSheet: {
+      model: 'gpt-image-1.5',
+      size: '1536x1024',
+      quality: 'medium',
+      background: 'opaque',
+      outputFormat: 'png',
+      outputCompression: 100,
+    },
+  },
+  'gpt-image-2': {
+    logo: {
+      model: 'gpt-image-2',
+      size: '1024x1024',
+      quality: 'medium',
+      background: 'opaque',
+      outputFormat: 'png',
+      outputCompression: 100,
+    },
+    poster: {
+      model: 'gpt-image-2',
+      size: '1536x1024',
+      quality: 'medium',
+      background: 'opaque',
+      outputFormat: 'png',
+      outputCompression: 100,
+    },
+    animationSheet: {
+      model: 'gpt-image-2',
+      size: '1536x1024',
+      quality: 'high',
       background: 'opaque',
       outputFormat: 'png',
       outputCompression: 100,
@@ -91,6 +133,16 @@ const openaiPosterAgents = {
     },
     toolChoice: { type: 'tool', toolName: imageGenerationTool },
   }),
+  'gpt-image-2': new ToolLoopAgent({
+    model: openai('gpt-4.1'),
+    instructions: resolveImageSystemPrompt('gpt-image-2', 'marketing'),
+    tools: {
+      [imageGenerationTool]: openai.tools.imageGeneration(
+        OPENAI_TOOL_CONFIGS['gpt-image-2'].poster,
+      ),
+    },
+    toolChoice: { type: 'tool', toolName: imageGenerationTool },
+  }),
 } as const;
 
 const openaiLogoAgents = {
@@ -114,13 +166,62 @@ const openaiLogoAgents = {
     },
     toolChoice: { type: 'tool', toolName: imageGenerationTool },
   }),
+  'gpt-image-2': new ToolLoopAgent({
+    model: openai('gpt-4.1'),
+    instructions: resolveImageSystemPrompt('gpt-image-2', 'logo'),
+    tools: {
+      [imageGenerationTool]: openai.tools.imageGeneration(
+        OPENAI_TOOL_CONFIGS['gpt-image-2'].logo,
+      ),
+    },
+    toolChoice: { type: 'tool', toolName: imageGenerationTool },
+  }),
+} as const;
+
+const openaiAnimationSheetAgents = {
+  'gpt-image-1': new ToolLoopAgent({
+    model: openai('gpt-4.1'),
+    instructions: resolveImageSystemPrompt('gpt-image-1', 'animationSheet'),
+    tools: {
+      [imageGenerationTool]: openai.tools.imageGeneration(
+        OPENAI_TOOL_CONFIGS['gpt-image-1'].animationSheet,
+      ),
+    },
+    toolChoice: { type: 'tool', toolName: imageGenerationTool },
+  }),
+  'gpt-image-1.5': new ToolLoopAgent({
+    model: openai('gpt-4.1'),
+    instructions: resolveImageSystemPrompt('gpt-image-1.5', 'animationSheet'),
+    tools: {
+      [imageGenerationTool]: openai.tools.imageGeneration(
+        OPENAI_TOOL_CONFIGS['gpt-image-1.5'].animationSheet,
+      ),
+    },
+    toolChoice: { type: 'tool', toolName: imageGenerationTool },
+  }),
+  'gpt-image-2': new ToolLoopAgent({
+    model: openai('gpt-4.1'),
+    instructions: resolveImageSystemPrompt('gpt-image-2', 'animationSheet'),
+    tools: {
+      [imageGenerationTool]: openai.tools.imageGeneration(
+        OPENAI_TOOL_CONFIGS['gpt-image-2'].animationSheet,
+      ),
+    },
+    toolChoice: { type: 'tool', toolName: imageGenerationTool },
+  }),
 } as const;
 
 function getOpenAiAgent(
   task: ImageTask,
-  model: 'gpt-image-1' | 'gpt-image-1.5',
+  model: 'gpt-image-1' | 'gpt-image-1.5' | 'gpt-image-2',
 ) {
-  return task === 'logo' ? openaiLogoAgents[model] : openaiPosterAgents[model];
+  if (task === 'logo') {
+    return openaiLogoAgents[model];
+  }
+  if (task === 'animationSheet') {
+    return openaiAnimationSheetAgents[model];
+  }
+  return openaiPosterAgents[model];
 }
 
 const geminiPosterAgents = {
@@ -163,7 +264,7 @@ function getGeminiAgent(
 
 async function generateOpenAiImage(
   task: ImageTask,
-  model: 'gpt-image-1' | 'gpt-image-1.5',
+  model: 'gpt-image-1' | 'gpt-image-1.5' | 'gpt-image-2',
   prompt: string,
   referenceLogoDataUrl?: string,
 ): Promise<ImageGenerationResult> {
@@ -234,7 +335,11 @@ async function createImage(
   prompt: string,
   referenceLogoDataUrl?: string,
 ) {
-  if (model === 'gpt-image-1' || model === 'gpt-image-1.5') {
+  if (
+    model === 'gpt-image-1' ||
+    model === 'gpt-image-1.5' ||
+    model === 'gpt-image-2'
+  ) {
     return generateOpenAiImage(task, model, prompt, referenceLogoDataUrl);
   }
   return generateGeminiImage(task, model, prompt, referenceLogoDataUrl);
@@ -277,6 +382,23 @@ export interface PosterGenerationInput {
 export async function generatePosterImage(input: PosterGenerationInput) {
   return createImage(
     'marketing',
+    input.model,
+    input.prompt,
+    input.referenceLogoDataUrl,
+  );
+}
+
+export interface AnimationSheetGenerationInput {
+  prompt: string;
+  model: 'gpt-image-2';
+  referenceLogoDataUrl: string;
+}
+
+export async function generateAnimationSheetImage(
+  input: AnimationSheetGenerationInput,
+) {
+  return createImage(
+    'animationSheet',
     input.model,
     input.prompt,
     input.referenceLogoDataUrl,

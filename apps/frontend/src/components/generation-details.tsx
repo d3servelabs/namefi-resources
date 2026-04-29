@@ -85,6 +85,16 @@ const detailActionButtonClassName =
 const logoCtaButtonClassName =
   'min-h-11 w-full justify-center gap-2 border border-brand-primary/20 bg-brand-primary px-5 text-center text-sm font-semibold leading-tight whitespace-normal text-primary-foreground shadow-[0_14px_28px_-18px_rgba(16,185,129,0.75)] transition-colors hover:bg-brand-primary/90 [&_svg]:shrink-0';
 
+function getGenerationMetadataRecord(
+  generation: GenerationData | undefined,
+): Record<string, unknown> | undefined {
+  return generation?.metadata &&
+    typeof generation.metadata === 'object' &&
+    !Array.isArray(generation.metadata)
+    ? (generation.metadata as Record<string, unknown>)
+    : undefined;
+}
+
 function resolveAnimationMotionPresetId(
   generation: GenerationData | undefined,
 ): AnimationMotionPresetId | undefined {
@@ -95,12 +105,7 @@ function resolveAnimationMotionPresetId(
     return undefined;
   }
 
-  const metadata =
-    generation.metadata &&
-    typeof generation.metadata === 'object' &&
-    !Array.isArray(generation.metadata)
-      ? generation.metadata
-      : undefined;
+  const metadata = getGenerationMetadataRecord(generation);
 
   if (
     metadata &&
@@ -159,6 +164,41 @@ function resolveAnimationMotionIntensity(
   }
 
   return generation.input.motionIntensity;
+}
+
+function resolveAnimationSheetReference(
+  generation: GenerationData | undefined,
+) {
+  if (
+    generation?.type !== 'animation' ||
+    generation.input?.type !== 'animation' ||
+    generation.input.mode !== 'sheet-guided'
+  ) {
+    return undefined;
+  }
+
+  const metadata = getGenerationMetadataRecord(generation);
+  const url = metadata?.animationSheetUrl;
+
+  if (typeof url !== 'string' || !url) {
+    return undefined;
+  }
+
+  return {
+    url,
+    prompt:
+      typeof metadata.animationSheetPrompt === 'string'
+        ? metadata.animationSheetPrompt
+        : undefined,
+    model:
+      typeof metadata.sheetModel === 'string' ? metadata.sheetModel : undefined,
+  };
+}
+
+function truncatePrompt(value: string, maxLength = 220) {
+  return value.length > maxLength
+    ? `${value.slice(0, maxLength).trim()}...`
+    : value;
 }
 
 const LoadingSkeleton = () => (
@@ -239,11 +279,14 @@ function AnimationPreview(props: {
   url: string;
 }) {
   const isLooped = props.mode === 'looped';
+  const modeLabel = props.mode
+    ? ANIMATION_MODES[props.mode].name.toLowerCase()
+    : 'logo';
 
   return (
     // biome-ignore lint/a11y/useMediaCaption: generated animation clips are silent and do not include audio tracks
     <video
-      aria-label={`AI-generated ${isLooped ? 'looped' : 'cinematic'} animation for ${props.domain}`}
+      aria-label={`AI-generated ${modeLabel} animation for ${props.domain}`}
       autoPlay={isLooped}
       className="h-full w-full rounded-lg bg-black object-contain"
       controls
@@ -390,6 +433,7 @@ export function GenerationDetailsClient({
   const animationSourceModeValue = resolveAnimationSourceMode(generation);
   const animationMotionIntensityValue =
     resolveAnimationMotionIntensity(generation);
+  const animationSheetReference = resolveAnimationSheetReference(generation);
 
   const animationModelValue =
     generation?.output?.type === 'animation'
@@ -907,6 +951,44 @@ export function GenerationDetailsClient({
                   </CardContent>
                 </Card>
               )}
+
+            {animationSheetReference && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clapperboard className="h-5 w-5" />
+                    Animation Sheet
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg bg-muted">
+                    <img
+                      src={animationSheetReference.url}
+                      alt={`Generated animation sheet for ${domain}`}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+
+                  {animationSheetReference.model && (
+                    <div>
+                      <span className="text-sm font-medium">Sheet model:</span>
+                      <Badge variant="outline" className="ml-2">
+                        {animationSheetReference.model}
+                      </Badge>
+                    </div>
+                  )}
+
+                  {animationSheetReference.prompt && (
+                    <div className="space-y-1 border-t pt-3">
+                      <span className="text-sm font-medium">Sheet prompt</span>
+                      <p className="text-xs leading-relaxed text-muted-foreground">
+                        {truncatePrompt(animationSheetReference.prompt)}
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>

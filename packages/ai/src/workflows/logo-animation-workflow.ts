@@ -30,13 +30,16 @@ import { tokenUsageSchema } from '../types/logo-schemas';
 import {
   generateCinematicAnimationStrategy,
   generateLoopedAnimationStrategy,
+  generateSheetGuidedAnimationStrategy,
 } from '../agents/strategists';
+import { generateAnimationSheetImage } from '../agents/generators';
 
 const CINEMATIC_FRAME_WIDTH = 1280;
 const CINEMATIC_FRAME_HEIGHT = 720;
 const CINEMATIC_SAFE_MARGIN_RATIO = 0.12;
 const LOOPED_FRAME_SIZE = 1024;
 const LOOPED_SAFE_MARGIN_RATIO = 0.16;
+const SHEET_GUIDED_DURATION_SECONDS = 8;
 const LIGHT_BACKGROUND = '#F8FAFC';
 const DARK_BACKGROUND = '#0F172A';
 
@@ -55,6 +58,7 @@ const cinematicMotionPresetResolvedEnum = z.enum(
 const loopedMotionPresetResolvedEnum = z.enum(
   LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
 );
+const animationSheetImageModelEnum = z.enum(['gpt-image-2']);
 
 const google = createGoogleGenerativeAI({
   apiKey: secrets.GEMINI_API_KEY,
@@ -86,6 +90,30 @@ const loopedAnalysisSchema = z.object({
   tokenUsage: tokenUsageSchema.optional(),
 });
 
+const sheetGuidedStagePlanSchema = z.object({
+  label: z.string(),
+  timeRange: z.string(),
+  visualState: z.string(),
+  motionInstruction: z.string(),
+});
+
+const sheetGuidedAnalysisSchema = z.object({
+  mode: z.literal('sheet-guided'),
+  brandAttributes: z.array(z.string()),
+  targetAudience: z.string(),
+  rationale: z.string(),
+  resolvedMotionPreset: cinematicMotionPresetResolvedEnum,
+  direction: z.string(),
+  model: z.string(),
+  tokenUsage: tokenUsageSchema.optional(),
+  logoVisualSummary: z.string(),
+  animationConcept: z.string(),
+  shapeNotes: z.array(z.string()),
+  stagePlan: z.array(sheetGuidedStagePlanSchema),
+  sheetPrompt: z.string(),
+  videoPrompt: z.string(),
+});
+
 const cinematicAnimationWorkflowInputSchema = z
   .object({
     mode: z.literal('cinematic'),
@@ -112,15 +140,30 @@ const loopedAnimationWorkflowInputSchema = z
   })
   .strict();
 
+const sheetGuidedAnimationWorkflowInputSchema = z
+  .object({
+    mode: z.literal('sheet-guided'),
+    domain: namefiNormalizedDomainSchema,
+    referenceLogoUrl: z.string().url(),
+    description: z.string().optional(),
+    motionPreset: cinematicMotionPresetInputEnum.default('let-ai-choose'),
+    model: loopedAnimationModelEnum.default('bytedance/seedance-v1.5-pro'),
+    sheetModel: animationSheetImageModelEnum.default('gpt-image-2'),
+    storage: z.custom<StorageConfig>(),
+  })
+  .strict();
+
 export const logoAnimationWorkflowInputSchema = z.discriminatedUnion('mode', [
   cinematicAnimationWorkflowInputSchema,
   loopedAnimationWorkflowInputSchema,
+  sheetGuidedAnimationWorkflowInputSchema,
 ]);
 
 export const logoAnimationWorkflowOutputSchema = z.object({
   analysis: z.discriminatedUnion('mode', [
     cinematicAnalysisSchema,
     loopedAnalysisSchema,
+    sheetGuidedAnalysisSchema,
   ]),
   prompt: z.string(),
   video: z.object({
@@ -131,6 +174,15 @@ export const logoAnimationWorkflowOutputSchema = z.object({
     model: animationModelEnum,
     mimeType: z.literal('video/mp4'),
   }),
+  animationSheet: z
+    .object({
+      storagePath: z.string(),
+      url: z.string(),
+      model: animationSheetImageModelEnum,
+      prompt: z.string(),
+      tokenUsage: tokenUsageSchema.optional(),
+    })
+    .optional(),
   warnings: z.array(z.unknown()),
   providerMetadata: z.record(z.string(), z.unknown()).optional(),
 });
@@ -237,6 +289,67 @@ function buildLoopedAnimationPrompt(input: {
     'Preserve the original logo shapes, letterforms, proportions, colors, and silhouette.',
     'The ending frame must closely match the starting frame so the video loops cleanly.',
   ].join(' ');
+}
+
+function buildSheetGuidedAnimationSheetPrompt(input: {
+  domain: string;
+  logoVisualSummary: string;
+  animationConcept: string;
+  motionPreset: z.infer<typeof cinematicMotionPresetResolvedEnum>;
+  rationale: string;
+  shapeNotes: string[];
+  stagePlan: Array<z.output<typeof sheetGuidedStagePlanSchema>>;
+  sheetPrompt: string;
+}) {
+  return [
+    'Create a professional landscape animation sheet for an 8-second logo animation.',
+    'Use the uploaded logo image as the exact source logo reference and preserve its identity.',
+    'Canvas: 1536x1024, clean dark motion-design board, high contrast, crisp readable labels.',
+    `Brand/domain: ${input.domain}.`,
+    `Uploaded logo analysis: ${input.logoVisualSummary.trim()}.`,
+    `Tailored animation concept: ${input.animationConcept.trim()}.`,
+    `Motion preset: ${input.motionPreset}. Rationale: ${input.rationale.trim()}.`,
+    `Shape-specific motion notes: ${input.shapeNotes.join(' | ')}.`,
+    `8-second stage plan: ${JSON.stringify(input.stagePlan)}.`,
+    `Additional sheet direction: ${input.sheetPrompt.trim()}.`,
+    'Required sheet layout: 4-6 labeled keyframe panels with time ranges, arrows showing motion flow, timing bars from 0.0s to 8.0s, easing notes, and one focused breakdown row showing how the real logo shapes/letterforms form, trace, morph, or settle.',
+    'Final keyframe must be the original logo, centered, fully legible, and intact.',
+    'Do not add new brand text, symbols, mascots, mockup devices, posters, or unrelated scene elements.',
+  ].join(' ');
+}
+
+function buildSheetGuidedAnimationPrompt(input: {
+  motionPreset: z.infer<typeof cinematicMotionPresetResolvedEnum>;
+  direction: string;
+  videoPrompt: string;
+  stagePlan: Array<z.output<typeof sheetGuidedStagePlanSchema>>;
+}) {
+  return [
+    'Create an 8-second 16:9 logo animation following the provided animation sheet reference exactly.',
+    cinematicMotionPromptByPreset[input.motionPreset],
+    `Brand-specific motion direction: ${input.direction.trim()}.`,
+    `Animation-sheet video direction: ${input.videoPrompt.trim()}.`,
+    `Match these stage timings from the sheet: ${JSON.stringify(input.stagePlan)}.`,
+    'Use the animation sheet as timing, composition, transformation, and easing guidance, not as an object to show in-frame.',
+    'Preserve the original logo shapes, letterforms, colors, proportions, and final lockup.',
+    'No new text, no extra symbols, no mascot characters, no scene cuts, no destructive effects, and no morphing into a different mark.',
+    'End on a sharp, fully legible hero frame with the logo cleanly resolved.',
+  ].join(' ');
+}
+
+async function createLogoReferenceDataUrl(logoBuffer: Buffer) {
+  const logoPng = await sharp(logoBuffer)
+    .ensureAlpha()
+    .resize({
+      width: 1024,
+      height: 1024,
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .png()
+    .toBuffer();
+
+  return `data:image/png;base64,${logoPng.toString('base64')}`;
 }
 
 async function resolveContrastingBackground(logoBuffer: Buffer) {
@@ -608,6 +721,149 @@ async function runLoopedAnimationWorkflow(
   }
 }
 
+async function runSheetGuidedAnimationWorkflow(
+  input: z.output<typeof sheetGuidedAnimationWorkflowInputSchema>,
+  options: LogoAnimationWorkflowOptions,
+) {
+  const logoBuffer = await fetchImageAsBuffer(
+    input.referenceLogoUrl,
+    options.abortSignal,
+  );
+  const referenceLogoDataUrl = await createLogoReferenceDataUrl(logoBuffer);
+  const uploadedStoragePaths: string[] = [];
+
+  try {
+    const strategy = await generateSheetGuidedAnimationStrategy({
+      domain: input.domain,
+      description: input.description,
+      motionPreset: input.motionPreset,
+      referenceLogoDataUrl,
+    });
+
+    const resolvedMotionPreset = strategy.object.motionPreset;
+    const sheetPrompt = buildSheetGuidedAnimationSheetPrompt({
+      domain: input.domain,
+      logoVisualSummary: strategy.object.logoVisualSummary,
+      animationConcept: strategy.object.animationConcept,
+      motionPreset: resolvedMotionPreset,
+      rationale: strategy.object.rationale,
+      shapeNotes: strategy.object.shapeNotes,
+      stagePlan: strategy.object.stagePlan,
+      sheetPrompt: strategy.object.sheetPrompt,
+    });
+    const generatedSheet = await generateAnimationSheetImage({
+      prompt: sheetPrompt,
+      model: input.sheetModel,
+      referenceLogoDataUrl,
+    });
+
+    if (!generatedSheet.imageBase64) {
+      throw new Error('Animation sheet generation did not return image data');
+    }
+
+    const uploadedSheet = await uploadBufferToStorage({
+      buffer: Buffer.from(generatedSheet.imageBase64, 'base64'),
+      contentType: 'image/png',
+      domain: input.domain,
+      storage: input.storage,
+      label: `${createRunId('animation-sheet')}.png`,
+    });
+    uploadedStoragePaths.push(uploadedSheet.storagePath);
+
+    const prompt = buildSheetGuidedAnimationPrompt({
+      motionPreset: resolvedMotionPreset,
+      direction: strategy.object.direction,
+      videoPrompt: strategy.object.videoPrompt,
+      stagePlan: strategy.object.stagePlan,
+    });
+
+    const generated = await experimental_generateVideo({
+      model: gateway.video(input.model),
+      prompt: {
+        image: uploadedSheet.url,
+        text: prompt,
+      },
+      aspectRatio: '16:9',
+      duration: SHEET_GUIDED_DURATION_SECONDS,
+      providerOptions: {
+        bytedance: {
+          cameraFixed: true,
+          watermark: false,
+          generateAudio: false,
+          pollTimeoutMs: 600_000,
+        },
+      },
+      abortSignal: options.abortSignal,
+    });
+
+    const videoBuffer = Buffer.from(generated.video.uint8Array);
+    const uploadedVideo = await uploadBufferToStorage({
+      buffer: videoBuffer,
+      contentType: 'video/mp4',
+      domain: input.domain,
+      storage: input.storage,
+      label: `${createRunId('animation')}.mp4`,
+    });
+    uploadedStoragePaths.push(uploadedVideo.storagePath);
+
+    return logoAnimationWorkflowOutputSchema.parse({
+      analysis: {
+        mode: 'sheet-guided',
+        brandAttributes: strategy.object.brandAttributes,
+        targetAudience: strategy.object.targetAudience,
+        rationale: strategy.object.rationale,
+        resolvedMotionPreset,
+        direction: strategy.object.direction,
+        model: strategy.modelId ?? 'gpt-5.2',
+        tokenUsage: strategy.totalUsage,
+        logoVisualSummary: strategy.object.logoVisualSummary,
+        animationConcept: strategy.object.animationConcept,
+        shapeNotes: strategy.object.shapeNotes,
+        stagePlan: strategy.object.stagePlan,
+        sheetPrompt,
+        videoPrompt: prompt,
+      },
+      prompt,
+      video: {
+        storagePath: uploadedVideo.storagePath,
+        thumbnailStoragePath: uploadedSheet.storagePath,
+        url: uploadedVideo.url,
+        thumbnailUrl: uploadedSheet.url,
+        model: input.model,
+        mimeType: 'video/mp4',
+      },
+      animationSheet: {
+        storagePath: uploadedSheet.storagePath,
+        url: uploadedSheet.url,
+        model: input.sheetModel,
+        prompt: sheetPrompt,
+        tokenUsage: generatedSheet.tokenUsage,
+      },
+      warnings: generated.warnings,
+      providerMetadata: generated.providerMetadata,
+    } satisfies AnimationGenerationResult);
+  } catch (error) {
+    const cleanupErrors = await deleteStoragePaths({
+      storage: input.storage,
+      storagePaths: uploadedStoragePaths,
+    });
+
+    if (cleanupErrors.length > 0) {
+      const cleanupMessage = cleanupErrors
+        .map((item) => item.message)
+        .join('; ');
+      const failureMessage =
+        error instanceof Error ? error.message : 'Unknown animation failure';
+
+      throw new Error(
+        `Logo animation generation failed (${failureMessage}) and uploaded assets could not be fully cleaned up: ${cleanupMessage}`,
+      );
+    }
+
+    throw error;
+  }
+}
+
 export async function runLogoAnimationWorkflow(
   rawInput: LogoAnimationWorkflowInput,
   options: LogoAnimationWorkflowOptions = {},
@@ -616,6 +872,10 @@ export async function runLogoAnimationWorkflow(
 
   if (input.mode === 'cinematic') {
     return await runCinematicAnimationWorkflow(input, options);
+  }
+
+  if (input.mode === 'sheet-guided') {
+    return await runSheetGuidedAnimationWorkflow(input, options);
   }
 
   return await runLoopedAnimationWorkflow(input, options);

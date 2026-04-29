@@ -10,6 +10,8 @@ const deleteFileFromS3Mock = vi.fn();
 const fetchImageAsBufferMock = vi.fn();
 const generateCinematicAnimationStrategyMock = vi.fn();
 const generateLoopedAnimationStrategyMock = vi.fn();
+const generateSheetGuidedAnimationStrategyMock = vi.fn();
+const generateAnimationSheetImageMock = vi.fn();
 const invalidOptionErrorPattern = /Invalid option/;
 
 const onePixelPng = Buffer.from(
@@ -27,6 +29,7 @@ vi.mock('ai', () => ({
 }));
 
 vi.mock('@namefi-astra/storage', () => ({
+  createS3Client: vi.fn(() => ({})),
   deleteFileFromS3: deleteFileFromS3Mock,
   generateCloudFrontUrl: ({
     cloudfrontDomain,
@@ -35,6 +38,8 @@ vi.mock('@namefi-astra/storage', () => ({
     cloudfrontDomain: string;
     s3Key: string;
   }) => `https://${cloudfrontDomain}/${s3Key}`,
+  generateUrlFromStoragePath: (storagePath: string, cloudfrontDomain: string) =>
+    `https://${cloudfrontDomain}/${storagePath}`,
   uploadFileToS3: uploadFileToS3Mock,
 }));
 
@@ -45,6 +50,12 @@ vi.mock('../utils/images', () => ({
 vi.mock('../agents/strategists', () => ({
   generateCinematicAnimationStrategy: generateCinematicAnimationStrategyMock,
   generateLoopedAnimationStrategy: generateLoopedAnimationStrategyMock,
+  generateSheetGuidedAnimationStrategy:
+    generateSheetGuidedAnimationStrategyMock,
+}));
+
+vi.mock('../agents/generators', () => ({
+  generateAnimationSheetImage: generateAnimationSheetImageMock,
 }));
 
 vi.mock('../env', () => ({
@@ -121,6 +132,72 @@ describe('runLogoAnimationWorkflow', () => {
         totalTokens: 24,
       },
       modelId: 'gpt-5.2',
+    });
+
+    generateSheetGuidedAnimationStrategyMock.mockResolvedValue({
+      object: {
+        brandAttributes: ['premium', 'precise'],
+        targetAudience: 'Design-conscious founders',
+        rationale:
+          'The logo has sharp contours that will read best as a staged trace and hero reveal.',
+        motionPreset: 'orbital-reveal',
+        logoVisualSummary:
+          'A compact monochrome logo with a clean symbol and short wordmark.',
+        animationConcept:
+          'A luminous contour trace forms the symbol before the wordmark settles.',
+        shapeNotes: [
+          'Trace the outer symbol edge first.',
+          'Resolve the inner negative space before the wordmark appears.',
+          'Keep the final wordmark crisp and centered.',
+        ],
+        stagePlan: [
+          {
+            label: 'Signal',
+            timeRange: '0.0s-1.5s',
+            visualState: 'Small luminous strokes gather on a dark field.',
+            motionInstruction: 'Draw the first logo contour.',
+          },
+          {
+            label: 'Trace',
+            timeRange: '1.5s-3.5s',
+            visualState: 'The symbol outline becomes recognizable.',
+            motionInstruction: 'Continue contour tracing.',
+          },
+          {
+            label: 'Assemble',
+            timeRange: '3.5s-6.0s',
+            visualState: 'Wordmark forms beside the symbol.',
+            motionInstruction: 'Fade and slide letters into place.',
+          },
+          {
+            label: 'Lockup',
+            timeRange: '6.0s-8.0s',
+            visualState: 'Original logo resolves fully.',
+            motionInstruction: 'Settle to a sharp final frame.',
+          },
+        ],
+        direction:
+          'Use an elegant logo-specific trace and arc reveal, then settle on the original lockup.',
+        sheetPrompt:
+          'Show the contour trace, wordmark assembly, and final lockup with timing labels.',
+        videoPrompt:
+          'Follow the animation sheet timings and resolve to the original logo.',
+      },
+      totalUsage: {
+        inputTokens: 20,
+        outputTokens: 28,
+        totalTokens: 48,
+      },
+      modelId: 'gpt-5.2',
+    });
+
+    generateAnimationSheetImageMock.mockResolvedValue({
+      imageBase64: onePixelPng.toString('base64'),
+      tokenUsage: {
+        inputTokens: 30,
+        outputTokens: 8,
+        totalTokens: 38,
+      },
     });
   });
 
@@ -250,6 +327,76 @@ describe('runLogoAnimationWorkflow', () => {
     );
     expect(result.video.thumbnailStoragePath).toBe(
       'animations/domain/source.png',
+    );
+  });
+
+  it('creates a GPT Image 2 animation sheet and uses it as the Seedance reference', async () => {
+    experimentalGenerateVideoMock.mockResolvedValue({
+      video: { uint8Array: new Uint8Array([4, 5, 6]) },
+      warnings: [],
+      providerMetadata: { provider: 'bytedance' },
+    });
+    uploadFileToS3Mock
+      .mockResolvedValueOnce({ key: 'animations/domain/sheet.png' })
+      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' });
+
+    const result = await runLogoAnimationWorkflow({
+      mode: 'sheet-guided',
+      domain: 'example.com',
+      referenceLogoUrl: 'https://cdn.test/logo.png',
+      motionPreset: 'let-ai-choose',
+      model: 'bytedance/seedance-v1.5-pro',
+      sheetModel: 'gpt-image-2',
+      storage,
+    });
+
+    expect(generateSheetGuidedAnimationStrategyMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        domain: 'example.com',
+        motionPreset: 'let-ai-choose',
+        referenceLogoDataUrl: expect.stringMatching(/^data:image\/png;base64,/),
+      }),
+    );
+    expect(generateAnimationSheetImageMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        model: 'gpt-image-2',
+        referenceLogoDataUrl: expect.stringMatching(/^data:image\/png;base64,/),
+        prompt: expect.stringContaining('1536x1024'),
+      }),
+    );
+    expect(gatewayVideoMock).toHaveBeenCalledWith(
+      'bytedance/seedance-v1.5-pro',
+    );
+
+    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
+    expect(generateVideoCall.aspectRatio).toBe('16:9');
+    expect(generateVideoCall.duration).toBe(8);
+    expect(generateVideoCall.prompt).toEqual({
+      image: 'https://cdn.test/animations/domain/sheet.png',
+      text: expect.stringContaining(
+        'following the provided animation sheet reference exactly',
+      ),
+    });
+    expect(generateVideoCall.providerOptions.bytedance).toEqual(
+      expect.objectContaining({
+        cameraFixed: true,
+        watermark: false,
+        generateAudio: false,
+        pollTimeoutMs: 600_000,
+      }),
+    );
+    expect(generateVideoCall.providerOptions.bytedance).not.toHaveProperty(
+      'lastFrameImage',
+    );
+    expect(result.animationSheet).toEqual(
+      expect.objectContaining({
+        storagePath: 'animations/domain/sheet.png',
+        url: 'https://cdn.test/animations/domain/sheet.png',
+        model: 'gpt-image-2',
+      }),
+    );
+    expect(result.video.thumbnailStoragePath).toBe(
+      'animations/domain/sheet.png',
     );
   });
 

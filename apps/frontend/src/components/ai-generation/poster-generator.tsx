@@ -52,6 +52,7 @@ const posterFormSchema = baseFormSchema.extend({
     .enum([
       'gpt-image-1',
       'gpt-image-1.5',
+      'gpt-image-2',
       'gemini-2.5-flash-image',
       'gemini-3-pro-image-preview',
     ])
@@ -265,9 +266,11 @@ export function PosterGenerator({
             ? 'Gemini 3 Pro (preview)'
             : selectedModel === 'gemini-2.5-flash-image'
               ? 'Gemini 2.5 (legacy)'
-              : selectedModel === 'gpt-image-1.5'
-                ? 'OpenAI 1.5'
-                : 'OpenAI (legacy)';
+              : selectedModel === 'gpt-image-2'
+                ? 'OpenAI 2'
+                : selectedModel === 'gpt-image-1.5'
+                  ? 'OpenAI 1.5'
+                  : 'OpenAI (legacy)';
         controlButtons.push({
           key: 'model',
           label: 'Model',
@@ -366,6 +369,7 @@ export function PosterGenerator({
                           <SelectItem value="gpt-image-1.5">
                             OpenAI 1.5
                           </SelectItem>
+                          <SelectItem value="gpt-image-2">OpenAI 2</SelectItem>
                           <SelectItem value="gpt-image-1">
                             OpenAI (legacy)
                           </SelectItem>

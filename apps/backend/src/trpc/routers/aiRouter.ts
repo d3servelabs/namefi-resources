@@ -53,6 +53,7 @@ const storageBaseConfig = {
 const imageModelIds = [
   'gpt-image-1',
   'gpt-image-1.5',
+  'gpt-image-2',
   'gemini-2.5-flash-image',
   'gemini-3-pro-image-preview',
 ] as const;
@@ -537,9 +538,24 @@ const generateLoopedAnimationInputSchema = generateAnimationCommonInputSchema
   })
   .strict();
 
+const generateSheetGuidedAnimationInputSchema =
+  generateAnimationCommonInputSchema
+    .extend({
+      mode: z.literal('sheet-guided'),
+      motionPreset: z
+        .enum(CINEMATIC_ANIMATION_MOTION_PRESET_IDS)
+        .default('let-ai-choose'),
+      model: z
+        .enum(LOOPED_ANIMATION_MODEL_IDS)
+        .default('bytedance/seedance-v1.5-pro'),
+      sheetModel: z.enum(['gpt-image-2']).default('gpt-image-2'),
+    })
+    .strict();
+
 export const generateAnimationInputSchema = z.discriminatedUnion('mode', [
   generateCinematicAnimationInputSchema,
   generateLoopedAnimationInputSchema,
+  generateSheetGuidedAnimationInputSchema,
 ]);
 
 export const aiRouter = createContractTRPCRouter<typeof aiContract>({
@@ -776,14 +792,23 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
               motionPreset: input.motionPreset,
               model: input.model,
             }
-          : {
-              type: 'animation' as const,
-              mode: 'looped' as const,
-              description: input.description,
-              motionPreset: input.motionPreset,
-              motionIntensity: input.motionIntensity,
-              model: input.model,
-            };
+          : input.mode === 'sheet-guided'
+            ? {
+                type: 'animation' as const,
+                mode: 'sheet-guided' as const,
+                description: input.description,
+                motionPreset: input.motionPreset,
+                model: input.model,
+                sheetModel: input.sheetModel,
+              }
+            : {
+                type: 'animation' as const,
+                mode: 'looped' as const,
+                description: input.description,
+                motionPreset: input.motionPreset,
+                motionIntensity: input.motionIntensity,
+                model: input.model,
+              };
 
       const [generationRecord] = await db
         .insert(aiGenerationsTable)

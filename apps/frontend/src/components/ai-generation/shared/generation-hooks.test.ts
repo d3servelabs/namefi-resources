@@ -55,6 +55,31 @@ describe('createAnimationGenerationPayload', () => {
     expect('sourceMode' in payload).toBe(false);
   });
 
+  it('returns a sheet-guided payload with GPT Image 2 sheet generation', () => {
+    const payload = createAnimationGenerationPayload({
+      domain: atlasDomain,
+      description: 'Analyze the logo first',
+      selectedLogoId: '44444444-4444-4444-8444-444444444444',
+      mode: 'sheet-guided',
+      sourceMode: 'exact-frame',
+      motionPreset: 'prismatic-bloom',
+      motionIntensity: 'bold',
+      model: 'bytedance/seedance-v1.5-pro',
+    } satisfies AnimationFormData);
+
+    expect(payload).toEqual({
+      domain: 'atlas.com',
+      description: 'Analyze the logo first',
+      referenceLogoGenerationId: '44444444-4444-4444-8444-444444444444',
+      mode: 'sheet-guided',
+      motionPreset: 'prismatic-bloom',
+      model: 'bytedance/seedance-v1.5-pro',
+      sheetModel: 'gpt-image-2',
+    });
+    expect('sourceMode' in payload).toBe(false);
+    expect('motionIntensity' in payload).toBe(false);
+  });
+
   it('normalizes incompatible values to the selected mode family', () => {
     const payload = createAnimationGenerationPayload({
       domain: atlasDomain,

@@ -326,4 +326,162 @@ describe('generateLogoAnimation', () => {
       }),
     );
   });
+
+  it('passes sheet-guided animation inputs through and stores sheet metadata', async () => {
+    const generation = {
+      id: 'animation-3',
+      type: 'animation',
+      status: 'PENDING',
+      isDeleted: false,
+      startedAt: null,
+      finishedAt: null,
+      updatedAt: new Date('2026-03-25T00:00:00.000Z'),
+      referenceGenerationId: 'logo-3',
+      domain: 'brand.xyz',
+      metadata: {},
+      input: {
+        type: 'animation',
+        mode: 'sheet-guided',
+        description: 'Make it logo-specific',
+        motionPreset: 'orbital-reveal',
+        model: 'bytedance/seedance-v1.5-pro',
+        sheetModel: 'gpt-image-2',
+      },
+      output: {
+        type: 'animation',
+        thumbnailStoragePath: 'logos/logo-3.png',
+        mimeType: 'video/mp4',
+        model: 'bytedance/seedance-v1.5-pro',
+      },
+    };
+
+    const referenceLogo = {
+      id: 'logo-3',
+      type: 'logo',
+      isDeleted: false,
+      output: {
+        type: 'logo',
+        storagePath: 'logos/logo-3.png',
+      },
+    };
+
+    const selectWhereMock = vi
+      .fn()
+      .mockResolvedValueOnce([generation])
+      .mockResolvedValueOnce([referenceLogo]);
+    const selectFromMock = vi.fn(() => ({ where: selectWhereMock }));
+    dbMock.select.mockImplementation(() => ({ from: selectFromMock }));
+
+    const returningMock = vi
+      .fn()
+      .mockResolvedValueOnce([{ ...generation, status: 'PROCESSING' }])
+      .mockResolvedValueOnce([]);
+    const updateWhereMock = vi.fn(() => ({ returning: returningMock }));
+    const updateSetMock = vi.fn(() => ({ where: updateWhereMock }));
+    dbMock.update.mockImplementation(() => ({ set: updateSetMock }));
+
+    runLogoAnimationWorkflowMock.mockResolvedValue({
+      analysis: {
+        mode: 'sheet-guided',
+        brandAttributes: ['precise'],
+        targetAudience: 'Founders',
+        rationale: 'The mark has geometry worth tracing.',
+        resolvedMotionPreset: 'orbital-reveal',
+        direction: 'Trace the mark and settle to the lockup.',
+        model: 'gpt-5.2',
+        tokenUsage: {
+          inputTokens: 11,
+          outputTokens: 13,
+        },
+        logoVisualSummary: 'A sharp symbol with a short wordmark.',
+        animationConcept: 'Contour trace into a final lockup.',
+        shapeNotes: ['Trace the symbol', 'Settle the wordmark'],
+        stagePlan: [
+          {
+            label: 'Trace',
+            timeRange: '0.0s-4.0s',
+            visualState: 'Symbol line appears.',
+            motionInstruction: 'Draw the outline.',
+          },
+          {
+            label: 'Lockup',
+            timeRange: '4.0s-8.0s',
+            visualState: 'Logo resolves.',
+            motionInstruction: 'Settle the final logo.',
+          },
+        ],
+        sheetPrompt: 'Create the sheet.',
+        videoPrompt: 'Follow the sheet.',
+      },
+      prompt: 'Create an 8-second sheet-guided logo animation.',
+      video: {
+        storagePath: 'animations/video.mp4',
+        thumbnailStoragePath: 'animations/sheet.png',
+        url: 'https://cdn.test/animations/video.mp4',
+        thumbnailUrl: 'https://cdn.test/animations/sheet.png',
+        model: 'bytedance/seedance-v1.5-pro',
+        mimeType: 'video/mp4',
+      },
+      animationSheet: {
+        storagePath: 'animations/sheet.png',
+        url: 'https://cdn.test/animations/sheet.png',
+        model: 'gpt-image-2',
+        prompt: 'Create the sheet.',
+        tokenUsage: {
+          inputTokens: 17,
+          outputTokens: 19,
+        },
+      },
+      warnings: [],
+      providerMetadata: {},
+    });
+
+    await expect(
+      generateLogoAnimation({ generationId: generation.id }),
+    ).resolves.toEqual({
+      generationId: generation.id,
+      status: 'SUCCEEDED',
+    });
+
+    expect(runLogoAnimationWorkflowMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mode: 'sheet-guided',
+        domain: 'brand.xyz',
+        motionPreset: 'orbital-reveal',
+        model: 'bytedance/seedance-v1.5-pro',
+        sheetModel: 'gpt-image-2',
+        referenceLogoUrl: 'https://cdn.test/logo.png',
+      }),
+      expect.any(Object),
+    );
+    expect(updateSetMock).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({
+          animationMode: 'sheet-guided',
+          animationConcept: 'Contour trace into a final lockup.',
+          animationSheetPrompt: 'Create the sheet.',
+          animationSheetStoragePath: 'animations/sheet.png',
+          animationSheetUrl: 'https://cdn.test/animations/sheet.png',
+          sheetModel: 'gpt-image-2',
+        }),
+        output: expect.objectContaining({
+          thumbnailStoragePath: 'animations/sheet.png',
+          model: 'bytedance/seedance-v1.5-pro',
+        }),
+        tokenUsage: [
+          {
+            model: 'gpt-5.2',
+            inputTokens: 11,
+            outputTokens: 13,
+          },
+          {
+            model: 'gpt-image-2',
+            inputTokens: 17,
+            outputTokens: 19,
+          },
+        ],
+        status: 'SUCCEEDED',
+      }),
+    );
+  });
 });
