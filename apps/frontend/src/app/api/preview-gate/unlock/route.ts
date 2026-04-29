@@ -4,7 +4,11 @@
 // preview-gate handler module graph is dead-code-eliminated. Only the 404
 // short-circuit remains.
 export async function POST(request: Request): Promise<Response> {
+  console.log('[preview-gate/route] POST', {
+    bundled: process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED,
+  });
   if (process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED !== '1') {
+    console.log('[preview-gate/route] not bundled -> 404');
     return new Response(null, { status: 404 });
   }
   const { handleUnlock } = await import('@/lib/preview-gate/handle-unlock');

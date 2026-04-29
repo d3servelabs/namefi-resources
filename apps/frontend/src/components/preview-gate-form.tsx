@@ -14,6 +14,8 @@ import {
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { PasswordInput } from '@/components/password-input';
 
+const LOG_PREFIX = '[preview-gate/form]';
+
 export function PreviewGateForm() {
   const router = useRouter();
   const [input, setInput] = useState('');
@@ -21,6 +23,7 @@ export function PreviewGateForm() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(LOG_PREFIX, 'submit', { passwordLength: input.length });
     setSubmitting(true);
     try {
       const res = await fetch('/api/preview-gate/unlock', {
@@ -28,7 +31,12 @@ export function PreviewGateForm() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ password: input }),
       });
+      console.log(LOG_PREFIX, 'response', {
+        status: res.status,
+        ok: res.ok,
+      });
       if (res.ok) {
+        console.log(LOG_PREFIX, 'unlocked, refreshing');
         router.refresh();
         return;
       }
@@ -36,7 +44,8 @@ export function PreviewGateForm() {
         description: 'Check the password and try again.',
       });
       setInput('');
-    } catch {
+    } catch (err) {
+      console.log(LOG_PREFIX, 'fetch error', err);
       toast.error('Unable to verify password', {
         description: 'Please try again in a moment.',
       });
