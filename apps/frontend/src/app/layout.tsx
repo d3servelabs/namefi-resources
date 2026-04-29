@@ -26,15 +26,14 @@ import './globals.css';
 // `null`, the `dynamic(() => import(...))` is unreachable, and the entire
 // preview-gate module graph (component, form, state check, cookie helpers) is
 // dead-code-eliminated from the build output.
-const PreviewGate =
-  process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED === '1'
-    ? dynamic(() =>
-        import('@/components/preview-gate').then((m) => m.PreviewGate),
-      )
-    : null;
+const PreviewGate = dynamic(() =>
+  import('@/components/preview-gate').then((m) => m.PreviewGate),
+);
+
 console.log({
   PreviewGate: !!PreviewGate,
-  env: process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED,
+  NEXT_PUBLIC_PREVIEW_GATE_BUNDLED:
+    process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED,
 });
 
 const geistSans = Geist({
@@ -58,14 +57,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootLayout({ children }: PropsWithChildren) {
-  const shell = (
-    <SidebarProvider defaultOpen={false}>
-      <AppSidebar />
-      <Main>{children}</Main>
-      <UnofficialTldsInjector />
-    </SidebarProvider>
-  );
-
   return (
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <body
@@ -75,21 +66,38 @@ export default function RootLayout({ children }: PropsWithChildren) {
           'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col',
         )}
       >
-        <GoogleAnalyticsBootstrap />
-        <DatadogObservability />
-        <Suspense>
-          <Providers>
-            <GoogleAnalyticsCookieConsentGated />
-            <ReactQueryDevtoolsWrapper />
-            <OriginBackground />
-            <Toaster expand={true} visibleToasts={3} />
-            <AddToCartFromUrl />
-            {PreviewGate ? <PreviewGate>{shell}</PreviewGate> : shell}
-            <ImpersonationBanner />
-            <SkipAuthBanner />
-          </Providers>
-        </Suspense>
+        {process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED === '1' ? (
+          <PreviewGate>
+            <RootLayoutInner>{children}</RootLayoutInner>
+          </PreviewGate>
+        ) : (
+          <RootLayoutInner>{children}</RootLayoutInner>
+        )}
       </body>
     </html>
+  );
+}
+function RootLayoutInner({ children }: PropsWithChildren) {
+  return (
+    <>
+      <GoogleAnalyticsBootstrap />
+      <DatadogObservability />
+      <Suspense>
+        <Providers>
+          <GoogleAnalyticsCookieConsentGated />
+          <ReactQueryDevtoolsWrapper />
+          <OriginBackground />
+          <Toaster expand={true} visibleToasts={3} />
+          <AddToCartFromUrl />
+          <SidebarProvider defaultOpen={false}>
+            <AppSidebar />
+            <Main>{children}</Main>
+            <UnofficialTldsInjector />
+          </SidebarProvider>
+          <ImpersonationBanner />
+          <SkipAuthBanner />
+        </Providers>
+      </Suspense>
+    </>
   );
 }
