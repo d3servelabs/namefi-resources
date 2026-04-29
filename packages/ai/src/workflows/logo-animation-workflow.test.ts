@@ -330,7 +330,7 @@ describe('runLogoAnimationWorkflow', () => {
     );
   });
 
-  it('creates a GPT Image 2 animation sheet and uses it as the Seedance reference', async () => {
+  it('creates a GPT Image 2 animation sheet and uses logo plus sheet as Seedance references', async () => {
     experimentalGenerateVideoMock.mockResolvedValue({
       video: { uint8Array: new Uint8Array([4, 5, 6]) },
       warnings: [],
@@ -371,19 +371,22 @@ describe('runLogoAnimationWorkflow', () => {
     const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
     expect(generateVideoCall.aspectRatio).toBe('16:9');
     expect(generateVideoCall.duration).toBe(8);
-    expect(generateVideoCall.prompt).toEqual({
-      image: 'https://cdn.test/animations/domain/sheet.png',
-      text: expect.stringContaining(
-        'following the provided animation sheet reference exactly',
-      ),
-    });
+    expect(generateVideoCall.prompt).toEqual(
+      expect.stringContaining('Use [Image 2] only as the animation sheet'),
+    );
     expect(generateVideoCall.providerOptions.bytedance).toEqual(
       expect.objectContaining({
-        cameraFixed: true,
+        referenceImages: [
+          'https://cdn.test/logo.png',
+          'https://cdn.test/animations/domain/sheet.png',
+        ],
         watermark: false,
         generateAudio: false,
         pollTimeoutMs: 600_000,
       }),
+    );
+    expect(generateVideoCall.providerOptions.bytedance).not.toHaveProperty(
+      'cameraFixed',
     );
     expect(generateVideoCall.providerOptions.bytedance).not.toHaveProperty(
       'lastFrameImage',

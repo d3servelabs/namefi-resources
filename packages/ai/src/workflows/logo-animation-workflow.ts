@@ -68,6 +68,30 @@ const gateway = createGateway({
   apiKey: secrets.AI_GATEWAY_API_KEY,
 });
 
+function isSeedance2Model(model: z.infer<typeof loopedAnimationModelEnum>) {
+  return (
+    model === 'bytedance/seedance-2.0' ||
+    model === 'bytedance/seedance-2.0-fast'
+  );
+}
+
+function buildSeedanceProviderOptions(input: {
+  model: z.infer<typeof loopedAnimationModelEnum>;
+  lastFrameImage?: string;
+  referenceImages?: string[];
+}) {
+  return {
+    ...(input.lastFrameImage ? { lastFrameImage: input.lastFrameImage } : {}),
+    ...(input.referenceImages?.length
+      ? { referenceImages: input.referenceImages }
+      : {}),
+    ...(isSeedance2Model(input.model) ? {} : { cameraFixed: true }),
+    watermark: false,
+    generateAudio: false,
+    pollTimeoutMs: 600_000,
+  };
+}
+
 const cinematicAnalysisSchema = z.object({
   mode: z.literal('cinematic'),
   brandAttributes: z.array(z.string()),
@@ -321,12 +345,13 @@ function buildSheetGuidedAnimationPrompt(input: {
   stagePlan: Array<z.output<typeof sheetGuidedStagePlanSchema>>;
 }) {
   return [
-    'Create an 8-second 16:9 logo animation following the provided animation sheet reference exactly.',
+    'Create an 8-second 16:9 logo animation from scratch using the provided references for guidance.',
+    'Use [Image 1] only as the exact logo identity and final lockup reference.',
+    'Use [Image 2] only as the animation sheet/storyboard reference for timing, composition, transformation, and easing guidance.',
     'Keep the overall read as a premium logo animation: the logo is always the hero, and every movement should clarify its construction, identity, and final lockup.',
     `Brand-specific motion direction: ${input.direction.trim()}.`,
     `Animation-sheet video direction: ${input.videoPrompt.trim()}.`,
-    `Match these stage timings from the sheet: ${JSON.stringify(input.stagePlan)}.`,
-    'Use the animation sheet as timing, composition, transformation, and easing guidance, not as an object to show in-frame.',
+    `Match these [Image 2] stage timings: ${JSON.stringify(input.stagePlan)}.`,
     'Preserve the original logo shapes, letterforms, colors, proportions, and final lockup.',
     'No new text, no extra symbols, no mascot characters, no scene cuts, no destructive effects, and no morphing into a different mark.',
     'End on a sharp, fully legible hero frame with the logo cleanly resolved.',
@@ -654,13 +679,10 @@ async function runLoopedAnimationWorkflow(
       aspectRatio: '1:1',
       duration: 4,
       providerOptions: {
-        bytedance: {
+        bytedance: buildSeedanceProviderOptions({
+          model: input.model,
           lastFrameImage: uploadedPreparedFrame.url,
-          cameraFixed: true,
-          watermark: false,
-          generateAudio: false,
-          pollTimeoutMs: 600_000,
-        },
+        }),
       },
       abortSignal: options.abortSignal,
     });
@@ -775,19 +797,14 @@ async function runSheetGuidedAnimationWorkflow(
 
     const generated = await experimental_generateVideo({
       model: gateway.video(input.model),
-      prompt: {
-        image: uploadedSheet.url,
-        text: prompt,
-      },
+      prompt,
       aspectRatio: '16:9',
       duration: SHEET_GUIDED_DURATION_SECONDS,
       providerOptions: {
-        bytedance: {
-          cameraFixed: true,
-          watermark: false,
-          generateAudio: false,
-          pollTimeoutMs: 600_000,
-        },
+        bytedance: buildSeedanceProviderOptions({
+          model: input.model,
+          referenceImages: [input.referenceLogoUrl, uploadedSheet.url],
+        }),
       },
       abortSignal: options.abortSignal,
     });
