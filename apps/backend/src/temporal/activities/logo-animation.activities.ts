@@ -118,6 +118,107 @@ function asMetadataRecord(value: unknown): Record<string, unknown> {
     : {};
 }
 
+function getErrorProperty(error: unknown, key: string) {
+  return error && typeof error === 'object' && key in error
+    ? (error as Record<string, unknown>)[key]
+    : undefined;
+}
+
+function getStringErrorProperty(error: unknown, key: string) {
+  const value = getErrorProperty(error, key);
+  return typeof value === 'string' ? value : undefined;
+}
+
+function getNumberErrorProperty(error: unknown, key: string) {
+  const value = getErrorProperty(error, key);
+  return typeof value === 'number' ? value : undefined;
+}
+
+function parseProviderFailurePayload(message: string) {
+  const jsonStart = message.indexOf('{');
+  if (jsonStart < 0) {
+    return undefined;
+  }
+
+  try {
+    const parsed = JSON.parse(message.slice(jsonStart)) as unknown;
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>)
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function buildProviderFailureMetadata(
+  providerFailure?: Record<string, unknown>,
+) {
+  if (!providerFailure) {
+    return {};
+  }
+
+  return {
+    providerFailure,
+    providerJobId:
+      typeof providerFailure.id === 'string' ? providerFailure.id : undefined,
+    providerModel:
+      typeof providerFailure.model === 'string'
+        ? providerFailure.model
+        : undefined,
+    providerStatus:
+      typeof providerFailure.status === 'string'
+        ? providerFailure.status
+        : undefined,
+  };
+}
+
+function buildErrorCauseMetadata(cause: unknown) {
+  if (!(cause instanceof Error)) {
+    return {};
+  }
+
+  return {
+    cause: {
+      name: cause.name,
+      message: cause.message,
+      ...(getNumberErrorProperty(cause, 'statusCode') != null
+        ? { statusCode: getNumberErrorProperty(cause, 'statusCode') }
+        : {}),
+      ...(getStringErrorProperty(cause, 'responseBody')
+        ? { responseBody: getStringErrorProperty(cause, 'responseBody') }
+        : {}),
+    },
+  };
+}
+
+function buildAnimationFailureMetadata(error: unknown, failedAt: Date) {
+  const message =
+    error instanceof Error ? error.message : 'Logo animation generation failed';
+  const providerFailure = parseProviderFailurePayload(message);
+
+  return {
+    failedAt: failedAt.toISOString(),
+    message,
+    ...(error instanceof Error
+      ? {
+          name: error.name,
+          stack: error.stack,
+        }
+      : {}),
+    ...(getStringErrorProperty(error, 'type')
+      ? { type: getStringErrorProperty(error, 'type') }
+      : {}),
+    ...(getNumberErrorProperty(error, 'statusCode') != null
+      ? { statusCode: getNumberErrorProperty(error, 'statusCode') }
+      : {}),
+    ...(getStringErrorProperty(error, 'generationId')
+      ? { gatewayGenerationId: getStringErrorProperty(error, 'generationId') }
+      : {}),
+    ...buildProviderFailureMetadata(providerFailure),
+    ...buildErrorCauseMetadata(getErrorProperty(error, 'cause')),
+  };
+}
+
 function buildAnimationTokenUsageEntries(
   result: Awaited<ReturnType<typeof runLogoAnimationWorkflow>>,
 ) {
@@ -386,17 +487,23 @@ export async function generateLogoAnimation({
       status: 'SUCCEEDED' as const,
     };
   } catch (error) {
+    const failedAt = new Date();
     const message =
       error instanceof Error
         ? error.message
         : 'Logo animation generation failed';
+    const metadata = asMetadataRecord(claimedGeneration.metadata);
 
     await db
       .update(aiGenerationsTable)
       .set({
         status: 'FAILED',
-        finishedAt: new Date(),
+        finishedAt: failedAt,
         errorMessage: message,
+        metadata: {
+          ...metadata,
+          animationFailure: buildAnimationFailureMetadata(error, failedAt),
+        },
         updatedAt: new Date(),
       })
       .where(

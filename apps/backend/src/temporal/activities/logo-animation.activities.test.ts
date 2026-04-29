@@ -208,6 +208,12 @@ describe('generateLogoAnimation', () => {
       2,
       expect.objectContaining({
         errorMessage: 'Reference logo logo-1 was not found',
+        metadata: expect.objectContaining({
+          animationFailure: expect.objectContaining({
+            message: 'Reference logo logo-1 was not found',
+            name: 'Error',
+          }),
+        }),
         status: 'FAILED',
       }),
     );
