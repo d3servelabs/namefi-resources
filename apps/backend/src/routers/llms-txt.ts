@@ -119,6 +119,15 @@ Supported types: A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV, CAA, DS, TLSA, SSHF
 - \`ttl\`: Integer 0-2147483647 (seconds).
 - \`zoneName\`: Normalized lowercase domain without trailing dot (e.g. \`example.com\`).
 
+## x402 Payments (HTTP 402)
+
+Buy a domain with stablecoin (USDC) using the [x402 protocol](https://x402.org). No Namefi account or EIP-712 signing required — the buyer's wallet signs an EIP-3009 \`transferWithAuthorization\`.
+
+- \`GET /x402/domain/{domainName}\` — without an \`X-PAYMENT\` header, returns \`402 Payment Required\` with payment options (network, asset, amount in USDC). With a valid \`X-PAYMENT\` header, verifies the signature, starts the registration workflow, and settles payment.
+  - Optional query params: \`years\` (1-10, default 1), \`nftReceivingWalletAddress\` (defaults to the buyer wallet).
+- \`GET /x402/purchase/{purchaseId}\` — poll purchase status. Returns JSON when \`?content-type=json\` or the \`Accept\` header isn't HTML; otherwise redirects to the frontend progress page.
+- namefi-api-skills have the full details about all possible payment options.
+
 ## Optional
 
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json)
