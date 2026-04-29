@@ -13,6 +13,7 @@ const LLMS_TXT = `# Namefi API
 - [npm: @namefi/api-client](https://www.npmjs.com/package/@namefi/api-client): Install with \`npm install @namefi/api-client\`.
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
 - [namefi-api-skills (GitHub)](https://github.com/d3servelabs/namefi-api-skills): Signer-neutral helper scripts for preparing auth payloads.
+- Buy domain (X402): https://api.namefi.io/x402/domain/{domainName}
 
 ## Base URLs
 
