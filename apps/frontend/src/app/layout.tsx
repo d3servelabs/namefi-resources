@@ -17,7 +17,25 @@ import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
 import SkipAuthBanner from '@/components/SkipAuthBanner';
 import { UnofficialTldsInjector } from '@/components/providers/unofficial-tlds';
+import dynamic from 'next/dynamic';
 import './globals.css';
+
+// `NEXT_PUBLIC_PREVIEW_GATE_BUNDLED` is statically inlined by `compiler.define`
+// in next.config.mjs (set to '0' for production builds, '1' otherwise). The
+// equality folds to a literal at build time: in prod the ternary collapses to
+// `null`, the `dynamic(() => import(...))` is unreachable, and the entire
+// preview-gate module graph (component, form, state check, cookie helpers) is
+// dead-code-eliminated from the build output.
+const PreviewGate =
+  process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED === '1'
+    ? dynamic(() =>
+        import('@/components/preview-gate').then((m) => m.PreviewGate),
+      )
+    : null;
+console.log({
+  PreviewGate: !!PreviewGate,
+  env: process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED,
+});
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -40,6 +58,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootLayout({ children }: PropsWithChildren) {
+  const shell = (
+    <SidebarProvider defaultOpen={false}>
+      <AppSidebar />
+      <Main>{children}</Main>
+      <UnofficialTldsInjector />
+    </SidebarProvider>
+  );
+
   return (
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <body
@@ -58,11 +84,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <OriginBackground />
             <Toaster expand={true} visibleToasts={3} />
             <AddToCartFromUrl />
-            <SidebarProvider defaultOpen={false}>
-              <AppSidebar />
-              <Main>{children}</Main>
-              <UnofficialTldsInjector />
-            </SidebarProvider>
+            {PreviewGate ? <PreviewGate>{shell}</PreviewGate> : shell}
             <ImpersonationBanner />
             <SkipAuthBanner />
           </Providers>

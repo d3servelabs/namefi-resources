@@ -8,7 +8,15 @@ declare global {
   var namefi_tlds: string[];
 }
 
-const FALLBACK_UNOFFICIAL_TLDS: string[] = ['namefi', 'test', 'nfi', 'nmfi'];
+export const FALLBACK_UNOFFICIAL_TLDS: string[] = [
+  'namefi',
+  'test',
+  'nfi',
+  'nmfi',
+  'uniswap',
+  'aave',
+  'maker',
+];
 const PERSISTENCE_KEY = 'unofficial-tlds-config';
 const PERSISTENCE_EXPIRY = 60 * 60 * 1000;
 

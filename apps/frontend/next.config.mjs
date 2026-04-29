@@ -62,6 +62,11 @@ const nextConfig = {
           ),
         ),
       ),
+      // Statically inlined so the preview-gate component and its imports are
+      // dead-code-eliminated from production builds. '1' = bundle the gate;
+      // '0' = strip it. See apps/frontend/src/app/layout.tsx.
+      'process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED':
+        appConfig.TYPE === 'production' ? '0' : '1',
     },
   },
   logging: {

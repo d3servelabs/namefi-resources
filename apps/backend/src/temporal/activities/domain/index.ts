@@ -89,7 +89,6 @@ export async function getDomainChain(
   return domain.chainId;
 }
 
-
 export async function fillDefaultDomainConfig(
   normalizedDomainName: NamefiNormalizedDomain,
   userId: string,
