@@ -11,6 +11,13 @@ import {
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@namefi-astra/ui/components/shadcn/dialog';
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -31,6 +38,7 @@ import {
   Copy,
   Download,
   Image as ImageIcon,
+  Maximize2,
   Sparkles,
   Trash2,
   Type,
@@ -174,14 +182,18 @@ function resolveAnimationMotionIntensity(
   return generation.input.motionIntensity;
 }
 
+function isSheetGuidedAnimation(generation: GenerationData | undefined) {
+  return (
+    generation?.type === 'animation' &&
+    generation.input?.type === 'animation' &&
+    generation.input.mode === 'sheet-guided'
+  );
+}
+
 function resolveAnimationSheetReference(
   generation: GenerationData | undefined,
 ) {
-  if (
-    generation?.type !== 'animation' ||
-    generation.input?.type !== 'animation' ||
-    generation.input.mode !== 'sheet-guided'
-  ) {
+  if (!isSheetGuidedAnimation(generation)) {
     return undefined;
   }
 
@@ -194,19 +206,9 @@ function resolveAnimationSheetReference(
 
   return {
     url,
-    prompt:
-      typeof metadata.animationSheetPrompt === 'string'
-        ? metadata.animationSheetPrompt
-        : undefined,
     model:
       typeof metadata.sheetModel === 'string' ? metadata.sheetModel : undefined,
   };
-}
-
-function truncatePrompt(value: string, maxLength = 220) {
-  return value.length > maxLength
-    ? `${value.slice(0, maxLength).trim()}...`
-    : value;
 }
 
 const LoadingSkeleton = () => (
@@ -292,7 +294,6 @@ function AnimationPreview(props: {
     : 'logo';
 
   return (
-    // biome-ignore lint/a11y/useMediaCaption: generated animation clips are silent and do not include audio tracks
     <video
       aria-label={`AI-generated ${modeLabel} animation for ${props.domain}`}
       autoPlay={isLooped}
@@ -327,6 +328,7 @@ export function GenerationDetailsClient({
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isSheetPreviewOpen, setIsSheetPreviewOpen] = useState(false);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -437,6 +439,7 @@ export function GenerationDetailsClient({
         : undefined;
 
   const animationModeValue = resolveAnimationMode(generation);
+  const isSheetGuidedAnimationValue = isSheetGuidedAnimation(generation);
   const motionPresetValue = resolveAnimationMotionPresetId(generation);
   const animationSourceModeValue = resolveAnimationSourceMode(generation);
   const animationMotionIntensityValue =
@@ -577,7 +580,11 @@ export function GenerationDetailsClient({
                     <AnimationPreview
                       domain={domain}
                       mode={animationModeValue}
-                      posterUrl={generation.thumbnailUrl}
+                      posterUrl={
+                        isSheetGuidedAnimationValue
+                          ? undefined
+                          : generation.thumbnailUrl
+                      }
                       url={generation.url}
                     />
                   ) : previewUrl ? (
@@ -987,13 +994,21 @@ export function GenerationDetailsClient({
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg bg-muted">
+                  <button
+                    type="button"
+                    className="group relative aspect-[3/2] w-full overflow-hidden rounded-lg bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    onClick={() => setIsSheetPreviewOpen(true)}
+                    aria-label="Open animation sheet preview"
+                  >
                     <img
                       src={animationSheetReference.url}
                       alt={`Generated animation sheet for ${domain}`}
                       className="h-full w-full object-contain"
                     />
-                  </div>
+                    <span className="absolute right-2 top-2 flex size-8 items-center justify-center rounded-full bg-black/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                      <Maximize2 className="size-4" />
+                    </span>
+                  </button>
 
                   {animationSheetReference.model && (
                     <div>
@@ -1001,15 +1016,6 @@ export function GenerationDetailsClient({
                       <Badge variant="outline" className="ml-2">
                         {animationSheetReference.model}
                       </Badge>
-                    </div>
-                  )}
-
-                  {animationSheetReference.prompt && (
-                    <div className="space-y-1 border-t pt-3">
-                      <span className="text-sm font-medium">Sheet prompt</span>
-                      <p className="text-xs leading-relaxed text-muted-foreground">
-                        {truncatePrompt(animationSheetReference.prompt)}
-                      </p>
                     </div>
                   )}
                 </CardContent>
@@ -1030,11 +1036,32 @@ export function GenerationDetailsClient({
         hasShared={false}
         isCheckingStatus={false}
         isSubmitting={false}
-        onSubmit={async () => {}}
+        onSubmit={async () => {
+          // Share confirmation is handled outside this details view.
+        }}
         trackShares={false}
         campaignKey={undefined}
         featureKey="ai_generation"
       />
+      <Dialog open={isSheetPreviewOpen} onOpenChange={setIsSheetPreviewOpen}>
+        <DialogContent className="!max-w-6xl overflow-hidden p-0">
+          <DialogHeader className="border-b px-5 py-4">
+            <DialogTitle>Animation sheet</DialogTitle>
+            <DialogDescription>
+              The generated storyboard used to guide this animation.
+            </DialogDescription>
+          </DialogHeader>
+          {animationSheetReference && (
+            <div className="max-h-[78vh] overflow-auto bg-muted/30 p-4">
+              <img
+                src={animationSheetReference.url}
+                alt={`Generated animation sheet for ${domain}`}
+                className="mx-auto h-auto max-w-full rounded-lg"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

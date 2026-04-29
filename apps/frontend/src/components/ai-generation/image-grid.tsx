@@ -104,19 +104,11 @@ export function ImageGrid({
             const cardContent = (
               <Card key={itemKey} className="overflow-hidden">
                 <div className="relative aspect-square">
-                  {previewUrl ? (
-                    /** biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight */
-                    <img
-                      src={previewUrl}
-                      alt={`${title} ${index + 1}`}
-                      className="object-cover w-full h-full"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
-                      Preview unavailable
-                    </div>
-                  )}
+                  <GeneratedItemPreview
+                    item={item}
+                    previewUrl={previewUrl}
+                    alt={`${title} ${index + 1}`}
+                  />
                 </div>
                 {/* Action buttons below image */}
                 <div className="p-3 border-b border-t flex justify-center">
@@ -259,5 +251,53 @@ export function ImageGrid({
         featureKey="ai_generation"
       />
     </>
+  );
+}
+
+function GeneratedItemPreview({
+  alt,
+  item,
+  previewUrl,
+}: {
+  alt: string;
+  item: GeneratedItem;
+  previewUrl?: string | null;
+}) {
+  const videoUrl =
+    item.kind === 'animation' &&
+    item.url &&
+    (!previewUrl || previewUrl === item.url)
+      ? item.url
+      : undefined;
+
+  if (videoUrl) {
+    return (
+      <video
+        aria-label={alt}
+        className="h-full w-full object-cover"
+        muted
+        playsInline
+        preload="metadata"
+        src={videoUrl}
+      />
+    );
+  }
+
+  if (!previewUrl) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
+        Preview unavailable
+      </div>
+    );
+  }
+
+  return (
+    // biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight
+    <img
+      src={previewUrl}
+      alt={alt}
+      className="h-full w-full object-cover"
+      loading="lazy"
+    />
   );
 }

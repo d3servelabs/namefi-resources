@@ -376,12 +376,23 @@ function getGenerationUrl(output: AssetOutput) {
   );
 }
 
-function getGenerationThumbnailUrl(output: AssetOutput) {
+function getGenerationThumbnailUrl(output: AssetOutput, metadata?: unknown) {
   if (output.type === 'animation') {
-    return generateUrlFromStoragePath(
+    const metadataRecord = asMetadataRecord(metadata);
+    const thumbnailUrl = generateUrlFromStoragePath(
       output.thumbnailStoragePath,
       config.CLOUD_FRONT_DOMAIN,
     );
+
+    if (
+      metadataRecord.animationSheetStoragePath ===
+        output.thumbnailStoragePath ||
+      metadataRecord.animationSheetUrl === thumbnailUrl
+    ) {
+      return null;
+    }
+
+    return thumbnailUrl;
   }
 
   return getGenerationUrl(output);
@@ -395,7 +406,10 @@ function mapAiGenerationRecord<T extends AiGenerationRow>(generation: T) {
   return {
     ...generation,
     url: getGenerationUrl(generation.output),
-    thumbnailUrl: getGenerationThumbnailUrl(generation.output),
+    thumbnailUrl: getGenerationThumbnailUrl(
+      generation.output,
+      generation.metadata,
+    ),
     mimeType: getGenerationMimeType(generation.output),
   };
 }
@@ -1000,6 +1014,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
         status: aiGenerationsTable.status,
         errorMessage: aiGenerationsTable.errorMessage,
         createdAt: aiGenerationsTable.createdAt,
+        metadata: aiGenerationsTable.metadata,
         output: aiGenerationsTable.output,
       };
 
@@ -1037,7 +1052,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
           errorMessage: row.errorMessage,
           createdAt: row.createdAt,
           url: getGenerationUrl(row.output),
-          thumbnailUrl: getGenerationThumbnailUrl(row.output),
+          thumbnailUrl: getGenerationThumbnailUrl(row.output, row.metadata),
           mimeType: getGenerationMimeType(row.output),
         }));
 

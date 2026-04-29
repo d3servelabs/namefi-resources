@@ -399,7 +399,7 @@ describe('runLogoAnimationWorkflow', () => {
       }),
     );
     expect(result.video.thumbnailStoragePath).toBe(
-      'animations/domain/sheet.png',
+      'animations/domain/video.mp4',
     );
   });
 

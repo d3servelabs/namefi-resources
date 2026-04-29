@@ -22,6 +22,18 @@ const toGalleryStatus = (generation: GalleryGeneration) => {
   }
 };
 
+const resolveGenerationPreviewUrl = (generation: GalleryGeneration) => {
+  if (
+    generation.type === 'animation' &&
+    generation.input?.type === 'animation' &&
+    generation.input.mode === 'sheet-guided'
+  ) {
+    return generation.url;
+  }
+
+  return generation.thumbnailUrl ?? generation.url;
+};
+
 interface UseGenerationsGalleryOptions {
   domains: DomainPreview[];
   filters: GalleryFilters;
@@ -97,7 +109,7 @@ export const useGenerationsGalleryData = ({
         domain: generation?.domain ?? pending.domain,
         type: generation?.type ?? pending.type,
         url: generation?.url,
-        previewUrl: generation?.thumbnailUrl ?? generation?.url,
+        previewUrl: generation ? resolveGenerationPreviewUrl(generation) : null,
         thumbnailUrl: generation?.thumbnailUrl,
         mimeType: generation?.mimeType,
         generation,
@@ -131,7 +143,7 @@ export const useGenerationsGalleryData = ({
           domain: generation.domain,
           type: generation.type,
           url: generation.url,
-          previewUrl: generation.thumbnailUrl ?? generation.url,
+          previewUrl: resolveGenerationPreviewUrl(generation),
           thumbnailUrl: generation.thumbnailUrl,
           mimeType: generation.mimeType,
           generation,
@@ -190,6 +202,7 @@ export const useGenerationsGalleryData = ({
         previewUrl: string | null;
         mimeType: string | null;
         domain: string;
+        type?: 'logo' | 'marketing' | 'animation';
       }>;
     }
     const fr = featuredQuery.data as FeaturedRecent;
@@ -200,6 +213,7 @@ export const useGenerationsGalleryData = ({
       previewUrl: string | null;
       mimeType: string | null;
       domain: string;
+      type?: 'logo' | 'marketing' | 'animation';
     }> = [];
     for (const generation of fr.featured ?? []) {
       if (seen.has(generation.id)) continue;
@@ -209,6 +223,7 @@ export const useGenerationsGalleryData = ({
         previewUrl: generation.thumbnailUrl ?? generation.url,
         mimeType: generation.mimeType,
         domain: generation.domain,
+        type: generation.type,
       });
       seen.add(generation.id);
     }
@@ -220,6 +235,7 @@ export const useGenerationsGalleryData = ({
         previewUrl: generation.thumbnailUrl ?? generation.url,
         mimeType: generation.mimeType,
         domain: generation.domain,
+        type: generation.type,
       });
       seen.add(generation.id);
     }

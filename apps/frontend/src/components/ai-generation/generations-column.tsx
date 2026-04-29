@@ -704,17 +704,7 @@ function ReadyGenerationTile({
       }}
       className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      {item.previewUrl ? (
-        <GalleryImage
-          src={item.previewUrl}
-          alt={item.domain}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
-          Preview Unavailable
-        </div>
-      )}
+      <GalleryPreview item={item} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       <div className="absolute inset-0 flex flex-col justify-between p-3 opacity-0 transition-opacity group-hover:opacity-100">
         <div className="flex items-start justify-between gap-3 text-white">
@@ -866,17 +856,7 @@ function AsyncGenerationTile({
       }}
       className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      {item.previewUrl ? (
-        <GalleryImage
-          src={item.previewUrl}
-          alt={item.domain}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
-          Preview unavailable
-        </div>
-      )}
+      <GalleryPreview item={item} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-black/55" />
       <div className="absolute inset-0 flex flex-col justify-between p-3 text-white">
         <div className="space-y-2">
@@ -962,6 +942,7 @@ interface FeaturedGenerationTileProps {
     previewUrl: string | null;
     mimeType: string | null;
     domain: string;
+    type?: 'logo' | 'marketing' | 'animation';
   };
   onNavigate: (id: string) => void;
   onCopy: (id: string) => void;
@@ -992,17 +973,7 @@ function FeaturedGenerationTile({
       }}
       className="group relative block aspect-[1/1] cursor-pointer overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs transition hover:border-border hover:shadow-md focus:outline-none"
     >
-      {item.previewUrl ? (
-        <GalleryImage
-          src={item.previewUrl}
-          alt={item.domain}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
-          Preview unavailable
-        </div>
-      )}
+      <GalleryPreview item={item} className="h-full w-full object-cover" />
       <div className="absolute inset-0 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100" />
       <div className="absolute inset-0 flex flex-col justify-between p-3 opacity-0 transition-opacity group-hover:opacity-100">
         <div className="text-sm font-semibold text-white drop-shadow-sm">
@@ -1035,15 +1006,54 @@ function FeaturedGenerationTile({
   );
 }
 
-interface GalleryImageProps {
-  src: string;
-  alt: string;
+interface GalleryPreviewProps {
+  item: {
+    domain: string;
+    previewUrl?: string | null;
+    type?: 'logo' | 'marketing' | 'animation';
+    url?: string | null;
+  };
   className?: string;
 }
 
-function GalleryImage({ src, alt, className }: GalleryImageProps) {
-  // biome-ignore lint/performance/noImgElement: gallery tiles rely on native img for lightweight rendering
-  return <img src={src} alt={alt} className={className} loading="lazy" />;
+function GalleryPreview({ item, className }: GalleryPreviewProps) {
+  const videoUrl =
+    item.type === 'animation' &&
+    item.url &&
+    (!item.previewUrl || item.previewUrl === item.url)
+      ? item.url
+      : undefined;
+
+  if (videoUrl) {
+    return (
+      <video
+        aria-label={`Animation preview for ${item.domain}`}
+        className={className}
+        muted
+        playsInline
+        preload="metadata"
+        src={videoUrl}
+      />
+    );
+  }
+
+  if (!item.previewUrl) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
+        Preview unavailable
+      </div>
+    );
+  }
+
+  return (
+    // biome-ignore lint/performance/noImgElement: gallery tiles rely on native img for lightweight rendering
+    <img
+      src={item.previewUrl}
+      alt={item.domain}
+      className={className}
+      loading="lazy"
+    />
+  );
 }
 
 const GALLERY_SKELETON_KEYS = ['a', 'b', 'c', 'd', 'e', 'f'] as const;

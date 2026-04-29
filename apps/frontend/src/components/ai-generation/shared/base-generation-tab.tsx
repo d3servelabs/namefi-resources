@@ -156,6 +156,17 @@ export const convertPosterGenerations = (
   }));
 };
 
+const resolveAnimationGenerationPreviewUrl = (generation: Generation) => {
+  if (
+    generation.input?.type === 'animation' &&
+    generation.input.mode === 'sheet-guided'
+  ) {
+    return generation.url;
+  }
+
+  return generation.thumbnailUrl ?? generation.url;
+};
+
 export const convertAnimationGenerations = (
   generations: Generation[],
   availableLogos: Generation[] = [],
@@ -199,7 +210,7 @@ export const convertAnimationGenerations = (
   return generations.map((gen) => ({
     id: gen.id,
     url: gen.url,
-    previewUrl: gen.thumbnailUrl ?? gen.url,
+    previewUrl: resolveAnimationGenerationPreviewUrl(gen),
     thumbnailUrl: gen.thumbnailUrl,
     mimeType: gen.mimeType,
     timestamp: new Date(gen.createdAt).toISOString(),

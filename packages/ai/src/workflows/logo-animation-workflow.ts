@@ -838,9 +838,9 @@ async function runSheetGuidedAnimationWorkflow(
       prompt,
       video: {
         storagePath: uploadedVideo.storagePath,
-        thumbnailStoragePath: uploadedSheet.storagePath,
+        thumbnailStoragePath: uploadedVideo.storagePath,
         url: uploadedVideo.url,
-        thumbnailUrl: uploadedSheet.url,
+        thumbnailUrl: uploadedVideo.url,
         model: input.model,
         mimeType: 'video/mp4',
       },
