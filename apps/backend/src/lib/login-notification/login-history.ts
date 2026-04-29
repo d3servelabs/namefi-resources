@@ -120,6 +120,12 @@ export async function recordLoginEvent(
         isNewLocation: novelty.isNewLocation,
         isFirstSession: novelty.isFirstSession,
         notificationSent: false,
+        // The system "recognizes" a session iff neither the IP nor the
+        // location are new. `isFirstSession` already forces both novelty
+        // flags false in `detectNoveltyFlags`, so first-session rows
+        // pick up `true` automatically — no special case here.
+        systemRecognizedSessionDetails:
+          !novelty.isNewIp && !novelty.isNewLocation,
         metadata: {
           protocol: requestInfo?.protocol ?? undefined,
           deviceType: requestInfo?.deviceType ?? undefined,

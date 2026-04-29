@@ -1447,6 +1447,10 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           isNewIp: userLoginHistoryTable.isNewIp,
           isNewLocation: userLoginHistoryTable.isNewLocation,
           isFirstSession: userLoginHistoryTable.isFirstSession,
+          systemRecognizedSessionDetails:
+            userLoginHistoryTable.systemRecognizedSessionDetails,
+          userRecognizedSessionDetails:
+            userLoginHistoryTable.userRecognizedSessionDetails,
         })
         .from(userLoginHistoryTable)
         .where(eq(userLoginHistoryTable.userId, ctx.user.id))
@@ -1459,5 +1463,34 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         .limit(input.limit);
 
       return { items: rows };
+    }),
+
+  acknowledgeLoginSession: protectedProcedure
+    .input(usersContract.acknowledgeLoginSession.input)
+    .output(usersContract.acknowledgeLoginSession.output)
+    .mutation(async ({ ctx, input }) => {
+      // Ownership-scoped UPDATE: a user can only acknowledge their own
+      // login-history rows. The WHERE userId = ctx.user.id clause is the
+      // entire authorization layer for this mutation; an arbitrary id
+      // owned by someone else simply matches no rows.
+      const updated = await db
+        .update(userLoginHistoryTable)
+        .set({ userRecognizedSessionDetails: input.recognized })
+        .where(
+          and(
+            eq(userLoginHistoryTable.id, input.id),
+            eq(userLoginHistoryTable.userId, ctx.user.id),
+          ),
+        )
+        .returning({ id: userLoginHistoryTable.id });
+
+      if (updated.length === 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Login session not found',
+        });
+      }
+
+      return { ok: true as const };
     }),
 });

@@ -652,6 +652,13 @@
       "when": 1777026407137,
       "tag": "0092_famous_colossus",
       "breakpoints": true
+    },
+    {
+      "idx": 93,
+      "version": "7",
+      "when": 1777389980462,
+      "tag": "0093_slimy_quicksilver",
+      "breakpoints": true
     }
   ]
 }

@@ -264,6 +264,10 @@ const myLoginHistoryRowSchema = z.object({
   isNewIp: z.boolean(),
   isNewLocation: z.boolean(),
   isFirstSession: z.boolean(),
+  /** True iff the system considered this session's IP+location not-new. */
+  systemRecognizedSessionDetails: z.boolean(),
+  /** Tri-state: null = no decision, true = recognized, false = rejected. */
+  userRecognizedSessionDetails: z.boolean().nullable(),
 });
 
 const listMyLoginHistoryInputSchema = z.object({
@@ -272,6 +276,16 @@ const listMyLoginHistoryInputSchema = z.object({
 
 const listMyLoginHistoryOutputSchema = z.object({
   items: z.array(myLoginHistoryRowSchema),
+});
+
+const acknowledgeLoginSessionInputSchema = z.object({
+  id: z.string().uuid(),
+  /** null clears the user's prior decision (undo). */
+  recognized: z.boolean().nullable(),
+});
+
+const acknowledgeLoginSessionOutputSchema = z.object({
+  ok: z.literal(true),
 });
 
 // ---------------------------------------------------------------------------
@@ -383,6 +397,11 @@ export const usersContract = createContract(
       type: 'query',
       input: listMyLoginHistoryInputSchema,
       output: listMyLoginHistoryOutputSchema,
+    },
+    acknowledgeLoginSession: {
+      type: 'mutation',
+      input: acknowledgeLoginSessionInputSchema,
+      output: acknowledgeLoginSessionOutputSchema,
     },
   },
 );

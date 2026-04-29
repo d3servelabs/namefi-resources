@@ -4,7 +4,7 @@ import { AdminGuard } from '@/components/admin/admin-guard';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Card,
   CardContent,
@@ -24,7 +24,8 @@ import { format } from 'date-fns';
 import { UTCDate } from '@date-fns/utc';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Check, X } from 'lucide-react';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import { z } from 'zod';
 
@@ -57,6 +58,8 @@ type LoginHistoryRow = {
   isNewLocation: boolean;
   isFirstSession: boolean;
   notificationSent: boolean;
+  systemRecognizedSessionDetails: boolean;
+  userRecognizedSessionDetails: boolean | null;
 };
 
 export default function AdminLoginHistoryPage() {
@@ -232,9 +235,38 @@ function LoginHistoryTable() {
                 Notified
               </Badge>
             ) : null}
+            {row.original.systemRecognizedSessionDetails ? (
+              <Badge
+                variant="outline"
+                className="gap-1 text-xs border-green-400/60 text-green-700"
+              >
+                <Check className="h-3 w-3" /> System
+              </Badge>
+            ) : null}
+            {row.original.userRecognizedSessionDetails === true ? (
+              <Badge
+                variant="outline"
+                className="gap-1 text-xs border-green-400/60 text-green-700"
+              >
+                <Check className="h-3 w-3" /> User
+              </Badge>
+            ) : row.original.userRecognizedSessionDetails === false ? (
+              <Badge
+                variant="outline"
+                className="gap-1 text-xs border-red-400/60 text-red-700"
+              >
+                <X className="h-3 w-3" /> User rejected
+              </Badge>
+            ) : null}
           </div>
         ),
-        size: 180,
+        size: 220,
+      },
+      {
+        id: 'recognition-actions',
+        header: 'Recognition',
+        cell: ({ row }) => <RecognitionActions row={row.original} />,
+        size: 200,
       },
       {
         accessorKey: 'sessionId',
@@ -411,5 +443,81 @@ function LoginHistoryTable() {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/**
+ * Per-row Recognize / Reject / Undo controls. Lets customer-support
+ * record the decision they captured during a support call. Mirrors the
+ * profile-side controls in `apps/frontend/src/components/profile/security/login-history.tsx`
+ * but uses the admin-scoped mutation (gated by `READ_USERS`) so the
+ * column being written remains `user_recognized_session_details`.
+ */
+function RecognitionActions({ row }: { row: LoginHistoryRow }) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  const acknowledge = useMutation(
+    trpc.admin.loginHistory.acknowledgeSession.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.admin.loginHistory.listLoginHistory.queryKey(),
+        });
+      },
+      onError: (err) => {
+        toast.error("Couldn't update the user's decision", {
+          description: err.message,
+        });
+      },
+    }),
+  );
+
+  const userDecision = row.userRecognizedSessionDetails;
+  const flagged = !(
+    row.systemRecognizedSessionDetails || userDecision === true
+  );
+
+  const onAcknowledge = (recognized: boolean | null) => {
+    acknowledge.mutate({ id: row.id, recognized });
+  };
+
+  if (userDecision !== null) {
+    return (
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => onAcknowledge(null)}
+        disabled={acknowledge.isPending}
+      >
+        Clear decision
+      </Button>
+    );
+  }
+
+  if (!flagged) {
+    return <span className="text-xs text-muted-foreground">—</span>;
+  }
+
+  return (
+    <div className="flex gap-1">
+      <Button
+        variant="outline"
+        size="sm"
+        className="border-green-400/60 text-green-700 hover:bg-green-50 dark:hover:bg-green-950"
+        onClick={() => onAcknowledge(true)}
+        disabled={acknowledge.isPending}
+      >
+        <Check className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        className="border-red-400/60 text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+        onClick={() => onAcknowledge(false)}
+        disabled={acknowledge.isPending}
+      >
+        <X className="h-4 w-4" />
+      </Button>
+    </div>
   );
 }

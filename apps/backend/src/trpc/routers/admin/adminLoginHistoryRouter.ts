@@ -123,6 +123,10 @@ export const adminLoginHistoryRouter = createContractTRPCRouter<
             isNewLocation: userLoginHistoryTable.isNewLocation,
             isFirstSession: userLoginHistoryTable.isFirstSession,
             notificationSent: userLoginHistoryTable.notificationSent,
+            systemRecognizedSessionDetails:
+              userLoginHistoryTable.systemRecognizedSessionDetails,
+            userRecognizedSessionDetails:
+              userLoginHistoryTable.userRecognizedSessionDetails,
           })
           .from(userLoginHistoryTable)
           .innerJoin(
@@ -179,6 +183,8 @@ export const adminLoginHistoryRouter = createContractTRPCRouter<
           isNewLocation: r.isNewLocation,
           isFirstSession: r.isFirstSession,
           notificationSent: r.notificationSent,
+          systemRecognizedSessionDetails: r.systemRecognizedSessionDetails,
+          userRecognizedSessionDetails: r.userRecognizedSessionDetails,
         }));
 
         const total = countRow[0]?.count ?? 0;
@@ -196,5 +202,31 @@ export const adminLoginHistoryRouter = createContractTRPCRouter<
           message: 'Failed to list login history',
         });
       }
+    }),
+
+  acknowledgeSession: adminProcedureWithPermissions([Permission.READ_USERS])
+    .input(adminLoginHistoryContract.acknowledgeSession.input)
+    .output(adminLoginHistoryContract.acknowledgeSession.output)
+    .mutation(async ({ input }) => {
+      // Admin variant — acts on a row by id alone (no userId scope) so
+      // customer-support staff can record the recognize/reject decision
+      // they captured during a support call. The column being written is
+      // still `user_recognized_session_details` regardless of who clicked
+      // — if forensic auditing of the actor matters later, add a separate
+      // `recognized_by_user_id` column.
+      const updated = await db
+        .update(userLoginHistoryTable)
+        .set({ userRecognizedSessionDetails: input.recognized })
+        .where(eq(userLoginHistoryTable.id, input.id))
+        .returning({ id: userLoginHistoryTable.id });
+
+      if (updated.length === 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Login session not found',
+        });
+      }
+
+      return { ok: true as const };
     }),
 });

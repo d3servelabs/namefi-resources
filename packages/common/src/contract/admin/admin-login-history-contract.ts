@@ -10,9 +10,11 @@ import { createContract } from '../create-contract';
  * `createContractTRPCRouter<typeof adminLoginHistoryContract>`. Procedures use
  * `adminProcedureWithPermissions([Permission.READ_USERS])`.
  *
- * This admin surface is a read-only view onto `user_login_history`. Rows are
- * written by the login-notification pipeline
- * (`apps/backend/src/lib/login-notification/login-history.ts`).
+ * This admin surface is mostly a paginated view onto `user_login_history`
+ * (rows are written by the login-notification pipeline at
+ * `apps/backend/src/lib/login-notification/login-history.ts`), plus an
+ * `acknowledgeSession` mutation so customer-support staff can record
+ * recognize/reject decisions captured during a support call.
  */
 
 const sortingSchema = z.object({
@@ -56,6 +58,20 @@ const loginHistoryRowSchema = z.object({
   isNewLocation: z.boolean(),
   isFirstSession: z.boolean(),
   notificationSent: z.boolean(),
+  /** True iff the system considered this session's IP+location not-new. */
+  systemRecognizedSessionDetails: z.boolean(),
+  /** Tri-state: null = no decision, true = recognized, false = rejected. */
+  userRecognizedSessionDetails: z.boolean().nullable(),
+});
+
+const acknowledgeSessionInputSchema = z.object({
+  id: z.string().uuid(),
+  /** null clears the prior decision (undo). */
+  recognized: z.boolean().nullable(),
+});
+
+const acknowledgeSessionOutputSchema = z.object({
+  ok: z.literal(true),
 });
 
 const paginatedLoginHistoryOutputSchema = z.object({
@@ -73,6 +89,11 @@ export const adminLoginHistoryContract = createContract(
       type: 'query',
       input: listInputSchema,
       output: paginatedLoginHistoryOutputSchema,
+    },
+    acknowledgeSession: {
+      type: 'mutation',
+      input: acknowledgeSessionInputSchema,
+      output: acknowledgeSessionOutputSchema,
     },
   },
 );

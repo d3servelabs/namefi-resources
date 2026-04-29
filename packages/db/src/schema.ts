@@ -238,6 +238,26 @@ export const userLoginHistoryTable = pgTable(
     isNewLocation: boolean('is_new_location').notNull().default(false),
     isFirstSession: boolean('is_first_session').notNull().default(false),
     notificationSent: boolean('notification_sent').notNull().default(false),
+    /**
+     * True iff the system considered this session's IP and location
+     * already-known at sign-in time (`!isNewIp && !isNewLocation`).
+     * Materially redundant with the novelty flags above, but stored so
+     * we can index on it (e.g. "all sessions the system flagged but the
+     * user never reviewed") and so the value remains stable as-of-record
+     * if novelty thresholds change later.
+     */
+    systemRecognizedSessionDetails: boolean('system_recognized_session_details')
+      .notNull()
+      .default(false),
+    /**
+     * The row owner's (or an admin acting on their behalf) decision:
+     * `null` = no action yet, `true` = recognized ("yes that was me"),
+     * `false` = rejected ("no that wasn't me"). Combined with
+     * `systemRecognizedSessionDetails` to drive the row's warning
+     * color: a row is flagged iff
+     * `!(systemRecognizedSessionDetails || userRecognizedSessionDetails === true)`.
+     */
+    userRecognizedSessionDetails: boolean('user_recognized_session_details'),
     metadata: jsonb('metadata').default({}).$type<{
       protocol?: string;
       deviceType?: string;
