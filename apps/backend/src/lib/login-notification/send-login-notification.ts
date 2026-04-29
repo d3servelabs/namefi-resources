@@ -69,18 +69,30 @@ export async function sendLoginNotificationEmail({
       timestamp: timestampString,
       isNewIp: sessionInfo.isNewIp,
       isNewLocation: sessionInfo.isNewLocation,
+      isNewFingerprint: sessionInfo.isNewFingerprint,
       isFirstSession: sessionInfo.isFirstSession,
+      systemRecognized: sessionInfo.systemRecognized,
       mapImageCid,
     });
 
     const html = await render(emailContent);
     const plainText = await render(emailContent, { plainText: true });
 
-    const subject = sessionInfo.isNewLocation
-      ? '[Namefi] New Login From an Unfamiliar Location'
-      : sessionInfo.isNewIp
-        ? '[Namefi] New Login From an Unfamiliar IP Address'
-        : '[Namefi] New Login to Your Account';
+    // Subject ladder, top-down priority:
+    //   1. first-ever sign-in → calm "Welcome to Namefi"
+    //   2. system recognized any of IP / location / fingerprint → "Welcome back"
+    //   3. specifically unfamiliar location → existing alert subject
+    //   4. specifically unfamiliar IP → existing alert subject
+    //   5. fallback → existing "New Login to Your Account"
+    const subject = sessionInfo.isFirstSession
+      ? '[Namefi] Welcome to Namefi'
+      : sessionInfo.systemRecognized
+        ? '[Namefi] Welcome back'
+        : sessionInfo.isNewLocation
+          ? '[Namefi] New Login From an Unfamiliar Location'
+          : sessionInfo.isNewIp
+            ? '[Namefi] New Login From an Unfamiliar IP Address'
+            : '[Namefi] New Login to Your Account';
 
     await sendMail({
       to: [userEmail],

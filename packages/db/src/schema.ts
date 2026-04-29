@@ -237,6 +237,22 @@ export const userLoginHistoryTable = pgTable(
     isNewIp: boolean('is_new_ip').notNull().default(false),
     isNewLocation: boolean('is_new_location').notNull().default(false),
     isFirstSession: boolean('is_first_session').notNull().default(false),
+    /**
+     * FingerprintJS visitorId from the browser, sent on every tRPC
+     * request via `X-Browser-Fingerprint`. Null when the client didn't
+     * send one (privacy mode, blocker) or for non-browser callers
+     * (server scripts, API key consumers). Used as a third recognition
+     * signal alongside IP and geolocation.
+     */
+    browserFingerprint: text('browser_fingerprint'),
+    /**
+     * True iff the browser fingerprint wasn't seen on this user's prior
+     * 90 days of sessions. Forced false when the current sign-in didn't
+     * carry a fingerprint at all (no signal contributed). Parallel to
+     * `is_new_ip` / `is_new_location` so the UI / email can show a
+     * "New Browser" badge consistently.
+     */
+    isNewFingerprint: boolean('is_new_fingerprint').notNull().default(false),
     notificationSent: boolean('notification_sent').notNull().default(false),
     /**
      * True iff the system considered this session's IP and location
@@ -276,6 +292,13 @@ export const userLoginHistoryTable = pgTable(
       table.signedInAt,
     ),
     index('user_login_history_ip_idx').on(table.ipAddress),
+    // Composite (userId, fingerprint) so novelty detection can answer
+    // "has this user signed in with this fingerprint before?" without a
+    // full table scan.
+    index('user_login_history_user_fingerprint_idx').on(
+      table.userId,
+      table.browserFingerprint,
+    ),
   ],
 );
 

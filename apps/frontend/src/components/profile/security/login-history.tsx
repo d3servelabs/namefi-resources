@@ -161,19 +161,10 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
   };
 
   return (
-    <div
-      className={cn(
-        'flex items-start justify-between gap-3 rounded-lg border p-4',
-        flagged && 'border-amber-300/60 bg-amber-100/10',
-      )}
-    >
+    <div className="flex items-start justify-between gap-3 rounded-lg border p-4">
       <div className="flex items-start gap-3 min-w-0">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 shrink-0">
-          {flagged ? (
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
-          ) : (
-            <Monitor className="h-4 w-4" />
-          )}
+          <Monitor className="h-4 w-4" />
         </div>
         <div className="space-y-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -183,19 +174,18 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
             </span>
             {row.device ? <Badge variant="outline">{row.device}</Badge> : null}
             {row.isNewIp && !row.isFirstSession ? (
-              <Badge
-                variant="outline"
-                className="gap-1 border-amber-300 text-amber-600"
-              >
+              <Badge variant="outline" className="gap-1">
                 New IP
               </Badge>
             ) : null}
             {row.isNewLocation && !row.isFirstSession ? (
-              <Badge
-                variant="outline"
-                className="gap-1 border-amber-300 text-amber-600"
-              >
+              <Badge variant="outline" className="gap-1">
                 New location
+              </Badge>
+            ) : null}
+            {row.isNewFingerprint && !row.isFirstSession ? (
+              <Badge variant="outline" className="gap-1">
+                New browser
               </Badge>
             ) : null}
             {row.isFirstSession ? (

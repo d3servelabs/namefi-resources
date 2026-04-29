@@ -45,7 +45,15 @@ export interface RecordLoginEventResult {
   isNewRow: boolean;
   isNewIp: boolean;
   isNewLocation: boolean;
+  isNewFingerprint: boolean;
   isFirstSession: boolean;
+  /**
+   * `!isNewIp || !isNewLocation || !isNewFingerprint` — true iff *any* of
+   * the three signals matched the user's prior 90 days. Loosens the
+   * pre-fingerprint AND rule so a known browser on a new network is
+   * still recognized.
+   */
+  systemRecognized: boolean;
 }
 
 /**
@@ -78,12 +86,15 @@ export async function recordLoginEvent(
 
   const isInOuterTx = client !== db;
 
+  const browserFingerprint = requestInfo?.browserFingerprint ?? null;
+
   try {
     const novelty = await detectNoveltyFlags(
       {
         userId,
         ipAddress,
         geo,
+        browserFingerprint,
       },
       client,
     );
@@ -95,6 +106,13 @@ export async function recordLoginEvent(
       geo.lat !== null && Number.isFinite(geo.lat) ? geo.lat.toString() : null;
     const lngText =
       geo.lng !== null && Number.isFinite(geo.lng) ? geo.lng.toString() : null;
+
+    // OR over "known signals" — any one match recognizes the session.
+    // `isFirstSession` already forces all three novelty flags false in
+    // `detectNoveltyFlags`, so first-session rows pick up `true`
+    // automatically (nothing to compare against, no alarms either way).
+    const systemRecognized =
+      !novelty.isNewIp || !novelty.isNewLocation || !novelty.isNewFingerprint;
 
     const inserted = await client
       .insert(userLoginHistoryTable)
@@ -118,14 +136,11 @@ export async function recordLoginEvent(
         isGoogleLB: requestInfo?.isGoogleLB ?? false,
         isNewIp: novelty.isNewIp,
         isNewLocation: novelty.isNewLocation,
+        isNewFingerprint: novelty.isNewFingerprint,
+        browserFingerprint,
         isFirstSession: novelty.isFirstSession,
         notificationSent: false,
-        // The system "recognizes" a session iff neither the IP nor the
-        // location are new. `isFirstSession` already forces both novelty
-        // flags false in `detectNoveltyFlags`, so first-session rows
-        // pick up `true` automatically — no special case here.
-        systemRecognizedSessionDetails:
-          !novelty.isNewIp && !novelty.isNewLocation,
+        systemRecognizedSessionDetails: systemRecognized,
         metadata: {
           protocol: requestInfo?.protocol ?? undefined,
           deviceType: requestInfo?.deviceType ?? undefined,
@@ -155,7 +170,9 @@ export async function recordLoginEvent(
       isNewRow,
       isNewIp: novelty.isNewIp,
       isNewLocation: novelty.isNewLocation,
+      isNewFingerprint: novelty.isNewFingerprint,
       isFirstSession: novelty.isFirstSession,
+      systemRecognized,
     };
   } catch (error) {
     if (isInOuterTx) throw error;
@@ -167,7 +184,12 @@ export async function recordLoginEvent(
       isNewRow: false,
       isNewIp: false,
       isNewLocation: false,
+      isNewFingerprint: false,
       isFirstSession: false,
+      // Fail-closed: when we can't record history we also can't trust
+      // the recognition signal — treat as not-recognized so the email
+      // path errs on the side of alerting the user.
+      systemRecognized: false,
     };
   }
 }
@@ -232,11 +254,14 @@ interface DetectNoveltyInput {
   userId: string;
   ipAddress: string;
   geo: GeoLocationResult;
+  /** Browser fingerprint hash for the current sign-in, or null if absent. */
+  browserFingerprint: string | null;
 }
 
 /**
- * Computes `isNewIp` / `isNewLocation` / `isFirstSession` for a sign-in by
- * scanning the user's own history rows over the last 90 days.
+ * Computes `isNewIp` / `isNewLocation` / `isNewFingerprint` /
+ * `isFirstSession` for a sign-in by scanning the user's own history rows
+ * over the last 90 days.
  *
  * Location novelty:
  *  - when the current sign-in has usable lat/lng *and* any prior row has
@@ -244,6 +269,11 @@ interface DetectNoveltyInput {
  *  - otherwise we fall back to exact (city, subdivision, countryCode) match.
  *    Nulls never match, so missing data biases toward "new" on the current
  *    side and "no match" on the prior side (which also biases toward new).
+ *
+ * Fingerprint novelty:
+ *  - if the current sign-in didn't carry a fingerprint at all, returns
+ *    `false` (no signal contributed; recognition falls back to IP/location).
+ *  - otherwise: `true` iff no prior row in the window has the same hash.
  *
  * `isFirstSession` is true when zero prior rows exist — used upstream to
  * suppress the "new location detected" copy on a user's very first sign-in.
@@ -254,9 +284,10 @@ export async function detectNoveltyFlags(
 ): Promise<{
   isNewIp: boolean;
   isNewLocation: boolean;
+  isNewFingerprint: boolean;
   isFirstSession: boolean;
 }> {
-  const { userId, ipAddress, geo } = input;
+  const { userId, ipAddress, geo, browserFingerprint } = input;
   const since = new Date(
     Date.now() - NOVELTY_LOOKBACK_DAYS * 24 * 60 * 60 * 1000,
   );
@@ -272,6 +303,7 @@ export async function detectNoveltyFlags(
     geoRegionCode: string | null;
     geoLat: string | null;
     geoLng: string | null;
+    browserFingerprint: string | null;
   }>;
   try {
     priorRows = await client
@@ -282,6 +314,7 @@ export async function detectNoveltyFlags(
         geoRegionCode: userLoginHistoryTable.geoRegionCode,
         geoLat: userLoginHistoryTable.geoLat,
         geoLng: userLoginHistoryTable.geoLng,
+        browserFingerprint: userLoginHistoryTable.browserFingerprint,
       })
       .from(userLoginHistoryTable)
       .where(
@@ -298,16 +331,34 @@ export async function detectNoveltyFlags(
       { error, userId },
       'Failed to load prior login history for novelty detection',
     );
-    return { isNewIp: false, isNewLocation: false, isFirstSession: false };
+    return {
+      isNewIp: false,
+      isNewLocation: false,
+      isNewFingerprint: false,
+      isFirstSession: false,
+    };
   }
 
   const isFirstSession = priorRows.length === 0;
   if (isFirstSession) {
-    return { isNewIp: false, isNewLocation: false, isFirstSession: true };
+    return {
+      isNewIp: false,
+      isNewLocation: false,
+      isNewFingerprint: false,
+      isFirstSession: true,
+    };
   }
 
   const isNewIp = normalizedIp
     ? !priorRows.some((r) => r.ipAddress === normalizedIp)
+    : false;
+
+  // Fingerprint novelty: only contributes a signal when the current
+  // sign-in actually carried a fingerprint. A null current fingerprint
+  // means "we have no opinion" — keep it false so the OR-of-knowns
+  // recognition rule isn't artificially poisoned.
+  const isNewFingerprint = browserFingerprint
+    ? !priorRows.some((r) => r.browserFingerprint === browserFingerprint)
     : false;
 
   const currentLat = geo.lat;
@@ -367,7 +418,12 @@ export async function detectNoveltyFlags(
     isNewLocation = !cityMatchFallback(priorRows, geo);
   }
 
-  return { isNewIp, isNewLocation, isFirstSession: false };
+  return {
+    isNewIp,
+    isNewLocation,
+    isNewFingerprint,
+    isFirstSession: false,
+  };
 }
 
 function cityMatchFallback(

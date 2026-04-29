@@ -171,7 +171,10 @@ async function processLoginNotification(
         isNewIp: historyResult.isNewIp,
         isNewLocation:
           historyResult.isNewLocation && !historyResult.isFirstSession,
+        isNewFingerprint:
+          historyResult.isNewFingerprint && !historyResult.isFirstSession,
         isFirstSession: historyResult.isFirstSession,
+        systemRecognized: historyResult.systemRecognized,
       };
 
       const result = await sendLoginNotificationEmail({

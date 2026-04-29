@@ -226,16 +226,45 @@ function isSkipAuthActive(): boolean {
   }
 }
 
+// Lazy-loaded, cached browser fingerprint. The visitorId is a stable hash of
+// hardware/software signals that lets the backend recognize a returning
+// browser even when the user is on a brand-new IP / location. We
+// dynamically import FingerprintJS so the ~30 KB lib stays out of the
+// first-paint bundle, and we cache the resolved id in a module-level
+// promise so every tRPC request after the first reuses the same value.
+// On any failure (privacy mode, ad-blocker, etc.) we resolve to null
+// silently — backend treats the missing header as "no signal."
+let fingerprintPromise: Promise<string | null> | null = null;
+async function getBrowserFingerprint(): Promise<string | null> {
+  if (typeof window === 'undefined') return null;
+  if (!fingerprintPromise) {
+    fingerprintPromise = (async () => {
+      try {
+        const FingerprintJs = await import('@fingerprintjs/fingerprintjs');
+        const fp = await FingerprintJs.load();
+        const result = await fp.get();
+        return result.visitorId;
+      } catch {
+        return null;
+      }
+    })();
+  }
+  return fingerprintPromise;
+}
+
 async function getHeaders(): Promise<Record<string, string>> {
   const skipAuth = isSkipAuthActive();
+  const fingerprint = await getBrowserFingerprint();
 
   // If skip auth is active, send the skip auth header instead of the real token
   if (skipAuth) {
     console.log('[skip-auth] Adding X-Skip-Auth header to tRPC request');
-    return {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       'X-Skip-Auth': '1',
     };
+    if (fingerprint) headers['X-Browser-Fingerprint'] = fingerprint;
+    return headers;
   }
 
   const token = await getAccessToken();
@@ -245,5 +274,6 @@ async function getHeaders(): Promise<Record<string, string>> {
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
+  if (fingerprint) headers['X-Browser-Fingerprint'] = fingerprint;
   return headers;
 }

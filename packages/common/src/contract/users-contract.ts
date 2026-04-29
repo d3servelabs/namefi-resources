@@ -263,8 +263,18 @@ const myLoginHistoryRowSchema = z.object({
   geoRegionCode: z.string().nullable(),
   isNewIp: z.boolean(),
   isNewLocation: z.boolean(),
+  /**
+   * True when the browser fingerprint wasn't seen on this user's prior
+   * 90 days. Always false for sign-ins that didn't carry a fingerprint
+   * (privacy mode, blocker, non-browser caller).
+   */
+  isNewFingerprint: z.boolean(),
   isFirstSession: z.boolean(),
-  /** True iff the system considered this session's IP+location not-new. */
+  /**
+   * True iff *any* of (IP, location, fingerprint) matched a prior 90-day
+   * session — the OR-of-knowns recognition rule. Drives whether the
+   * profile row gets the alarm treatment + recognize/reject buttons.
+   */
   systemRecognizedSessionDetails: z.boolean(),
   /** Tri-state: null = no decision, true = recognized, false = rejected. */
   userRecognizedSessionDetails: z.boolean().nullable(),

@@ -120,6 +120,7 @@ app.use(async (...args) => {
       'x-c15t-region',
       'accept-language',
       'x-skip-auth',
+      'x-browser-fingerprint',
       ...X402Headers,
     ],
     credentials: true, // Allow cookies if needed

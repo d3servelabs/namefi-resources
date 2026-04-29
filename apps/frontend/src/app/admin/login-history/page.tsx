@@ -56,6 +56,7 @@ type LoginHistoryRow = {
   isGoogleLB: boolean;
   isNewIp: boolean;
   isNewLocation: boolean;
+  isNewFingerprint: boolean;
   isFirstSession: boolean;
   notificationSent: boolean;
   systemRecognizedSessionDetails: boolean;
@@ -221,13 +222,18 @@ function LoginHistoryTable() {
               </Badge>
             ) : null}
             {row.original.isNewIp ? (
-              <Badge variant="outline" className="text-xs text-amber-600">
+              <Badge variant="outline" className="text-xs">
                 New IP
               </Badge>
             ) : null}
             {row.original.isNewLocation ? (
-              <Badge variant="outline" className="text-xs text-amber-600">
+              <Badge variant="outline" className="text-xs">
                 New location
+              </Badge>
+            ) : null}
+            {row.original.isNewFingerprint ? (
+              <Badge variant="outline" className="text-xs">
+                New browser
               </Badge>
             ) : null}
             {row.original.notificationSent ? (

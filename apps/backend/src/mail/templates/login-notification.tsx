@@ -23,7 +23,21 @@ export type LoginNotificationProps = {
   timestamp: string;
   isNewIp: boolean;
   isNewLocation: boolean;
+  /**
+   * True when the browser fingerprint wasn't seen in the user's prior 90
+   * days. Drives the "New Browser" badge rendered next to the OS / Browser
+   * cells. False when no fingerprint was sent (no signal contributed).
+   */
+  isNewFingerprint: boolean;
   isFirstSession: boolean;
+  /**
+   * True iff *any* of (IP, location, fingerprint) matched a prior 90-day
+   * session. When true, the email renders in a calmer "Welcome back"
+   * tone: header copy softens and the red alertBox section is omitted,
+   * keeping the per-cell "New" badges so the user can still see what
+   * shifted.
+   */
+  systemRecognized: boolean;
   /** Content-ID of an inline PNG attachment; null when no map was attached. */
   mapImageCid: string | null;
 };
@@ -41,27 +55,48 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
     timestamp,
     isNewIp,
     isNewLocation,
+    isNewFingerprint,
     isFirstSession,
+    systemRecognized,
     mapImageCid,
   }) => {
-    const showAlert = !isFirstSession && (isNewIp || isNewLocation);
+    // Only show the loud red alert section when *no* signal recognized
+    // the session (and it's not the user's first sign-in either). The
+    // per-cell "New" badges below still convey what shifted in the
+    // calmer "Welcome back" path.
+    const showAlert = !systemRecognized && !isFirstSession;
     const alertText = isNewLocation
       ? `This sign-in came from a location we haven't seen on your account in the last 90 days.`
-      : `This sign-in came from an IP address we haven't seen on your account in the last 90 days.`;
+      : isNewIp
+        ? `This sign-in came from an IP address we haven't seen on your account in the last 90 days.`
+        : `This sign-in came from a browser we haven't seen on your account in the last 90 days.`;
+
+    const title = isFirstSession
+      ? 'Welcome to Namefi'
+      : systemRecognized
+        ? 'Welcome back to Namefi'
+        : 'New Login to Your Namefi Account';
+    const greeting = systemRecognized ? 'Welcome back,' : 'Hello,';
+    const intro = isFirstSession
+      ? 'Welcome aboard — here are the details for your records:'
+      : systemRecognized
+        ? 'We noticed a sign-in just now. Here are the details for your records:'
+        : 'Someone just logged in to your Namefi account. Here are the details of this login:';
 
     return (
-      <NamefiEmailContainer title="New Login to Your Namefi Account">
-        <Text style={styles.greeting}>Hello,</Text>
+      <NamefiEmailContainer title={title}>
+        <Text style={styles.greeting}>{greeting}</Text>
 
-        <Text style={styles.paragraph}>
-          Someone just logged in to your Namefi account. Here are the details of
-          this login:
-        </Text>
+        <Text style={styles.paragraph}>{intro}</Text>
 
         {showAlert ? (
           <Section style={styles.alertBox}>
             <Text style={styles.alertHeading}>
-              {isNewLocation ? 'New location detected' : 'New IP address'}
+              {isNewLocation
+                ? 'New location detected'
+                : isNewIp
+                  ? 'New IP address'
+                  : 'New browser'}
             </Text>
             <Text style={styles.alertBody}>{alertText}</Text>
           </Section>
@@ -145,6 +180,9 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
                 </td>
                 <td className="namefi-key-value-value" style={styles.valueCell}>
                   {browser}
+                  {isNewFingerprint && !isFirstSession ? (
+                    <span style={styles.inlineBadge}> New</span>
+                  ) : null}
                 </td>
               </tr>
               <tr className="namefi-key-value-row">
@@ -202,8 +240,13 @@ export const LoginNotification = buildTemplate<LoginNotificationProps>(
     timestamp: 'January 27, 2026 at 10:30 AM UTC',
     isNewIp: true,
     isNewLocation: true,
+    isNewFingerprint: false,
     isFirstSession: false,
-    mapImageCid: 'login-location-map@namefi',
+    // Default the preview to the alarmed branch so iterating on the
+    // alertBox + warningText copy is straightforward; flip to true to
+    // preview the calmer "Welcome back" path.
+    systemRecognized: false,
+    mapImageCid: 'login-location-map@namefi.io',
   },
 );
 

@@ -1446,6 +1446,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           geoRegionCode: userLoginHistoryTable.geoRegionCode,
           isNewIp: userLoginHistoryTable.isNewIp,
           isNewLocation: userLoginHistoryTable.isNewLocation,
+          isNewFingerprint: userLoginHistoryTable.isNewFingerprint,
           isFirstSession: userLoginHistoryTable.isFirstSession,
           systemRecognizedSessionDetails:
             userLoginHistoryTable.systemRecognizedSessionDetails,

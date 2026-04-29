@@ -38,6 +38,15 @@ export interface RequestInfo {
   protocol: string | null;
   /** True iff the request arrived through the Google Cloud LB. */
   isGoogleLB: boolean;
+  /**
+   * Browser fingerprint hash (FingerprintJS visitorId), set by the
+   * frontend in `X-Browser-Fingerprint`. Null if the client didn't send
+   * one (privacy mode, ad-blocker, non-browser caller). Always trusted
+   * for *recognition* (suppress alert) but not for *authentication*; a
+   * forged value can only ever cause an email alert to be skipped, not
+   * an auth bypass.
+   */
+  browserFingerprint: string | null;
 }
 
 const EMPTY_GEO: RequestGeo = {
@@ -113,6 +122,11 @@ export function resolveRequestInfo(
   const googleLbFlag = c.req.header('X-GCLOUD-LB')?.toLowerCase();
   const isGoogleLb = googleLbFlag === 'true';
 
+  // The browser fingerprint is sent by our own frontend regardless of
+  // whether traffic arrives via GCLB; the LB passes the header through
+  // unchanged. Read it once and merge into every return path.
+  const browserFingerprint = emptyish(c.req.header('X-Browser-Fingerprint'));
+
   if (isGoogleLb) {
     const ip =
       emptyish(c.req.header('X-Client-Ip-Address')) ??
@@ -140,6 +154,7 @@ export function resolveRequestInfo(
       deviceType: emptyish(c.req.header('X-Client-Device-Type')),
       protocol: emptyish(c.req.header('X-Client-Proto')),
       isGoogleLB: true,
+      browserFingerprint,
     };
   }
 
@@ -153,6 +168,7 @@ export function resolveRequestInfo(
       deviceType: null,
       protocol: null,
       isGoogleLB: false,
+      browserFingerprint,
     };
   }
 
@@ -166,6 +182,7 @@ export function resolveRequestInfo(
       deviceType: null,
       protocol: null,
       isGoogleLB: false,
+      browserFingerprint,
     };
   }
 
@@ -177,5 +194,6 @@ export function resolveRequestInfo(
     deviceType: null,
     protocol: null,
     isGoogleLB: false,
+    browserFingerprint,
   };
 }

@@ -121,6 +121,7 @@ export const adminLoginHistoryRouter = createContractTRPCRouter<
             isGoogleLB: userLoginHistoryTable.isGoogleLB,
             isNewIp: userLoginHistoryTable.isNewIp,
             isNewLocation: userLoginHistoryTable.isNewLocation,
+            isNewFingerprint: userLoginHistoryTable.isNewFingerprint,
             isFirstSession: userLoginHistoryTable.isFirstSession,
             notificationSent: userLoginHistoryTable.notificationSent,
             systemRecognizedSessionDetails:
@@ -181,6 +182,7 @@ export const adminLoginHistoryRouter = createContractTRPCRouter<
           isGoogleLB: r.isGoogleLB,
           isNewIp: r.isNewIp,
           isNewLocation: r.isNewLocation,
+          isNewFingerprint: r.isNewFingerprint,
           isFirstSession: r.isFirstSession,
           notificationSent: r.notificationSent,
           systemRecognizedSessionDetails: r.systemRecognizedSessionDetails,

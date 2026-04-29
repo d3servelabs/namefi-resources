@@ -56,6 +56,11 @@ const loginHistoryRowSchema = z.object({
   isGoogleLB: z.boolean(),
   isNewIp: z.boolean(),
   isNewLocation: z.boolean(),
+  /**
+   * True when the browser fingerprint wasn't seen on this user's prior
+   * 90 days. Always false for sign-ins that didn't carry a fingerprint.
+   */
+  isNewFingerprint: z.boolean(),
   isFirstSession: z.boolean(),
   notificationSent: z.boolean(),
   /** True iff the system considered this session's IP+location not-new. */
