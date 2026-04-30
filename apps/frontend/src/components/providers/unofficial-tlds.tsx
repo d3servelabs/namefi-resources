@@ -8,7 +8,7 @@ declare global {
   var namefi_tlds: string[];
 }
 
-export const FALLBACK_UNOFFICIAL_TLDS: string[] = [
+const FALLBACK_UNOFFICIAL_TLDS: string[] = [
   'namefi',
   'test',
   'nfi',

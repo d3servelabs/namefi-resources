@@ -1,7 +1,6 @@
 import { cookies, headers } from 'next/headers';
 import type { PropsWithChildren } from 'react';
 import { config } from '@/lib/env';
-import { FALLBACK_UNOFFICIAL_TLDS } from '@/components/providers/unofficial-tlds';
 import {
   PREVIEW_GATE_COOKIE_HASH,
   PREVIEW_GATE_COOKIE_SALT,
@@ -9,6 +8,15 @@ import {
 import { previewGateHash, safeEqualHex } from '@/lib/preview-gate/hash';
 import { PreviewGateForm } from './preview-gate-form';
 
+const FALLBACK_UNOFFICIAL_TLDS: string[] = [
+  'namefi',
+  'test',
+  'nfi',
+  'nmfi',
+  'uniswap',
+  'aave',
+  'maker',
+]; //TODO: replace with request to backend
 const PROTECTED_SUFFIXES = ['.astra.namefi.dev', '.poweredby.namefi.dev'];
 const LOG_PREFIX = '[preview-gate/check]';
 
@@ -18,7 +26,7 @@ function getHostFromHeaders(h: Headers): string | null {
   return h.get('host');
 }
 
-function hostnameMatches(host: string, tlds: readonly string[]): boolean {
+function hostnameMatches(host: string, tlds: readonly string[] = []): boolean {
   const lower = host.toLowerCase().split(':')[0];
   return PROTECTED_SUFFIXES.some((suffix) =>
     tlds.some((tld) => lower === `${tld}${suffix}`),
