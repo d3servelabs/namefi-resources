@@ -22,13 +22,38 @@ const toGalleryStatus = (generation: GalleryGeneration) => {
   }
 };
 
-const resolveGenerationPreviewUrl = (generation: GalleryGeneration) => {
-  if (
-    generation.type === 'animation' &&
-    generation.input?.type === 'animation' &&
-    generation.input.mode === 'sheet-guided'
-  ) {
-    return generation.url;
+const resolveLogoPreviewUrl = (generation: GalleryGeneration) =>
+  generation.type === 'logo'
+    ? (generation.thumbnailUrl ?? generation.url)
+    : null;
+
+const resolveReferenceLogoPreviewUrl = (
+  generation: GalleryGeneration,
+  logoPreviewById: ReadonlyMap<string, string | null>,
+) => {
+  if (generation.type !== 'animation' || !generation.referenceGenerationId) {
+    return null;
+  }
+
+  return logoPreviewById.get(generation.referenceGenerationId) ?? null;
+};
+
+const resolveGenerationPreviewUrl = (
+  generation: GalleryGeneration,
+  logoPreviewById: ReadonlyMap<string, string | null>,
+  pendingPreviewUrl?: string | null,
+) => {
+  if (generation.type === 'animation') {
+    return (
+      pendingPreviewUrl ??
+      resolveReferenceLogoPreviewUrl(generation, logoPreviewById) ??
+      (generation.input?.type === 'animation' &&
+      generation.input.mode === 'sheet-guided'
+        ? generation.url
+        : null) ??
+      generation.thumbnailUrl ??
+      generation.url
+    );
   }
 
   return generation.thumbnailUrl ?? generation.url;
@@ -95,6 +120,47 @@ export const useGenerationsGalleryData = ({
   const filteredGenerations =
     (filteredQuery.data as GalleryGeneration[] | undefined) ?? [];
 
+  const shouldFetchReferenceLogos =
+    activeTab === 'yours' &&
+    (filters.type === 'animation' ||
+      filteredGenerations.some(
+        (generation) =>
+          generation.type === 'animation' && generation.referenceGenerationId,
+      ));
+
+  const referenceLogosQuery = useQuery({
+    ...trpc.ai.getUserGenerationsFiltered.queryOptions(
+      {
+        types: ['logo'],
+        domains: filters.selectedBrands.length
+          ? (filters.selectedBrands as [string, ...string[]])
+          : undefined,
+        limit: 240,
+      },
+      {
+        enabled: shouldFetchReferenceLogos,
+        staleTime: 10_000,
+      },
+    ),
+  });
+
+  const referenceLogoGenerations =
+    (referenceLogosQuery.data as GalleryGeneration[] | undefined) ?? [];
+
+  const logoPreviewById = useMemo(() => {
+    const previews = new Map<string, string | null>();
+    for (const generation of [
+      ...filteredGenerations,
+      ...referenceLogoGenerations,
+    ]) {
+      const previewUrl = resolveLogoPreviewUrl(generation);
+      if (previewUrl) {
+        previews.set(generation.id, previewUrl);
+      }
+    }
+    return previews;
+  }, [filteredGenerations, referenceLogoGenerations]);
+
   const pendingGalleryItems = useMemo<GalleryItem[]>(() => {
     const items: GalleryItem[] = [];
 
@@ -110,7 +176,11 @@ export const useGenerationsGalleryData = ({
         type: generation?.type ?? pending.type,
         url: generation?.url,
         previewUrl: generation
-          ? resolveGenerationPreviewUrl(generation)
+          ? resolveGenerationPreviewUrl(
+              generation,
+              logoPreviewById,
+              pending.previewUrl,
+            )
           : (pending.previewUrl ?? null),
         thumbnailUrl: generation?.thumbnailUrl,
         mimeType: generation?.mimeType,
@@ -123,7 +193,7 @@ export const useGenerationsGalleryData = ({
     }
 
     return items;
-  }, [pendingItems, getPendingProgress]);
+  }, [pendingItems, getPendingProgress, logoPreviewById]);
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: aggregation merges pending, cached, and preview items with deduplication
   const galleryItems = useMemo<GalleryItem[]>(() => {
@@ -145,7 +215,7 @@ export const useGenerationsGalleryData = ({
           domain: generation.domain,
           type: generation.type,
           url: generation.url,
-          previewUrl: resolveGenerationPreviewUrl(generation),
+          previewUrl: resolveGenerationPreviewUrl(generation, logoPreviewById),
           thumbnailUrl: generation.thumbnailUrl,
           mimeType: generation.mimeType,
           generation,
@@ -176,7 +246,7 @@ export const useGenerationsGalleryData = ({
     }
 
     return items;
-  }, [pendingGalleryItems, filteredGenerations, domains]);
+  }, [pendingGalleryItems, filteredGenerations, domains, logoPreviewById]);
 
   const filteredGalleryItems = useMemo(() => {
     if (!filters.selectedBrands.length && filters.type === 'all') {

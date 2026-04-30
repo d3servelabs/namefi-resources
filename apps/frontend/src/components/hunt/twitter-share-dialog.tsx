@@ -22,7 +22,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, type FormEvent } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { XBrandIcon } from '@namefi-astra/ui/components/namefi/brand-icons';
@@ -31,11 +31,57 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
+const TWITTER_POST_URL_MESSAGE = 'Please enter a valid Twitter/X post URL';
+const URL_PROTOCOL_REGEX = /^https?:\/\//i;
+const LEADING_WWW_REGEX = /^www\./;
+
+const normalizePostUrl = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  return URL_PROTOCOL_REGEX.test(trimmed) ? trimmed : `https://${trimmed}`;
+};
+
+const isTwitterPostUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase().replace(LEADING_WWW_REGEX, '');
+    if (
+      hostname !== 'x.com' &&
+      hostname !== 'twitter.com' &&
+      hostname !== 'mobile.twitter.com'
+    ) {
+      return false;
+    }
+
+    const parts = url.pathname.split('/').filter(Boolean);
+    return (
+      (parts.length >= 3 &&
+        (parts[1] === 'status' || parts[1] === 'statuses')) ||
+      (parts[0] === 'i' && parts[1] === 'web' && parts[2] === 'status')
+    );
+  } catch {
+    return false;
+  }
+};
+
 const shareFormSchema = z.object({
-  postUrl: z.string().url('Please enter a valid Twitter/X post URL'),
+  postUrl: z
+    .string()
+    .trim()
+    .min(1, TWITTER_POST_URL_MESSAGE)
+    .transform(normalizePostUrl)
+    .pipe(z.string().url(TWITTER_POST_URL_MESSAGE))
+    .refine(isTwitterPostUrl, { message: TWITTER_POST_URL_MESSAGE }),
 });
 
 type ShareFormData = z.infer<typeof shareFormSchema>;
+
+export type TwitterShareSubject =
+  | 'domain'
+  | 'logo'
+  | 'poster'
+  | 'animation'
+  | 'generation';
 
 interface TwitterShareDialogProps {
   isOpen: boolean;
@@ -49,6 +95,54 @@ interface TwitterShareDialogProps {
   trackShares?: boolean; // Whether to show tracking-related UI
   campaignKey?: string; // Campaign key for analytics tracking
   featureKey: string; // Feature identifier for analytics source
+  shareSubject?: TwitterShareSubject;
+}
+
+function resolveTwitterShareCopy({
+  domainName,
+  featureKey,
+  shareSubject,
+  trackShares,
+}: {
+  domainName: NamefiNormalizedDomain | null;
+  featureKey: string;
+  shareSubject?: TwitterShareSubject;
+  trackShares: boolean;
+}) {
+  const resolvedShareSubject =
+    shareSubject ?? (featureKey === 'ai_generation' ? 'generation' : 'domain');
+  const shareSubjectLabel =
+    resolvedShareSubject === 'domain' ? 'domain' : resolvedShareSubject;
+  const shareTarget =
+    resolvedShareSubject === 'domain'
+      ? domainName
+      : `this ${shareSubjectLabel} for ${domainName}`;
+  const dialogTitle =
+    resolvedShareSubject === 'domain'
+      ? `Share ${domainName}`
+      : `Share ${shareSubjectLabel} for ${domainName}`;
+  const dialogDescription =
+    resolvedShareSubject === 'domain'
+      ? `Share this domain on Twitter/X to help others discover it${
+          trackShares ? ' and earn rewards.' : '.'
+        }`
+      : `Share this ${shareSubjectLabel} on Twitter/X.`;
+  const tweetText =
+    resolvedShareSubject === 'domain'
+      ? `Check out ${domainName} on Namefi Hunt.`
+      : `Check out this ${shareSubjectLabel} for ${domainName}, generated with Namefi.`;
+  const hashtags =
+    resolvedShareSubject === 'domain'
+      ? 'Namefi,DomainHunt'
+      : 'Namefi,AIBranding';
+
+  return {
+    dialogDescription,
+    dialogTitle,
+    hashtags,
+    shareTarget,
+    tweetText,
+  };
 }
 
 export function TwitterShareDialog({
@@ -63,6 +157,7 @@ export function TwitterShareDialog({
   trackShares = true,
   campaignKey,
   featureKey,
+  shareSubject,
 }: TwitterShareDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -82,19 +177,26 @@ export function TwitterShareDialog({
     formState: { errors, isValid },
   } = form;
 
+  const { dialogDescription, dialogTitle, hashtags, shareTarget, tweetText } =
+    resolveTwitterShareCopy({
+      domainName,
+      featureKey,
+      shareSubject,
+      trackShares,
+    });
+
   // Generate Twitter intent URL
   const twitterIntentUrl = useMemo(() => {
     if (!shareUrl || !domainName) return null;
 
-    const tweetText = `Check out ${domainName} — discovered on Namefi Hunt! 🔥`;
     const params = new URLSearchParams({
       text: tweetText,
       url: shareUrl,
-      hashtags: 'Namefi,DomainHunt',
+      hashtags,
     });
 
     return `https://twitter.com/intent/tweet?${params.toString()}`;
-  }, [shareUrl, domainName]);
+  }, [shareUrl, domainName, tweetText, hashtags]);
 
   // Copy share URL to clipboard
   const handleCopyUrl = useCallback(async () => {
@@ -103,7 +205,7 @@ export function TwitterShareDialog({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setHasCopied(true);
-      toast.success('Share URL copied to clipboard!');
+      toast.success('Share URL copied.');
       setTimeout(() => setHasCopied(false), 2000);
 
       // Track copy intent
@@ -118,7 +220,7 @@ export function TwitterShareDialog({
         },
       });
     } catch {
-      toast.error('Failed to copy URL');
+      toast.error('Could not copy URL');
     }
   }, [
     shareUrl,
@@ -148,6 +250,26 @@ export function TwitterShareDialog({
       }
     },
     [onSubmit, reset, setError],
+  );
+
+  const handleShareFormSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      void handleSubmit(handleFormSubmit)(event).catch((error: unknown) => {
+        const message =
+          error instanceof z.ZodError
+            ? (error.issues.find((issue) => issue.path[0] === 'postUrl')
+                ?.message ?? TWITTER_POST_URL_MESSAGE)
+            : 'Please check the post URL and try again.';
+
+        setError('postUrl', {
+          type: 'validate',
+          message,
+        });
+      });
+    },
+    [handleSubmit, handleFormSubmit, setError],
   );
 
   // Handle dialog close
@@ -193,12 +315,9 @@ export function TwitterShareDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <XBrandIcon className="h-5 w-5 text-blue-500" />
-            Share {domainName}
+            {dialogTitle}
           </DialogTitle>
-          <DialogDescription>
-            Share this domain on Twitter/X to help others discover it
-            {trackShares ? ' and earn rewards!' : '!'}
-          </DialogDescription>
+          <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -231,11 +350,11 @@ export function TwitterShareDialog({
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
               <XBrandIcon className="mr-2 h-4 w-4" />
-              Tweet about {domainName}
+              Share on Twitter/X
               <ExternalLink className="h-4 w-4 ml-2" />
             </Button>
             <p className="text-xs text-muted-foreground">
-              Opens Twitter/X with a pre-filled tweet including your share URL
+              Opens Twitter/X with a pre-filled post for {shareTarget}
             </p>
           </div>
 
@@ -256,10 +375,7 @@ export function TwitterShareDialog({
           {trackShares && !hasShared && (
             <div className="space-y-4 border-t pt-4">
               <Form {...form}>
-                <form
-                  onSubmit={handleSubmit(handleFormSubmit)}
-                  className="space-y-4"
-                >
+                <form onSubmit={handleShareFormSubmit} className="space-y-4">
                   <FormField
                     control={form.control}
                     name="postUrl"

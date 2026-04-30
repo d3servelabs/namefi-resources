@@ -53,11 +53,11 @@ import {
   Play,
 } from 'lucide-react';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import {
-  defaultShareConfig,
-  useTwitterShareDialog,
-} from '@/hooks/use-twitter-share';
+  TwitterShareDialog,
+  type TwitterShareSubject,
+} from '@/components/hunt/twitter-share-dialog';
+import { useTwitterShareDialog } from '@/hooks/use-twitter-share';
 import {
   useDerivativeFlow,
   type DerivativeSource,
@@ -89,7 +89,10 @@ type ShareState = {
   isOpen: boolean;
   url: string | null;
   domain: NamefiNormalizedDomain | null;
+  subject?: TwitterShareSubject;
 };
+
+type ShareableGenerationItem = Pick<GalleryItem, 'id' | 'domain' | 'type'>;
 
 type DeleteTarget = {
   id: string;
@@ -99,6 +102,13 @@ type DeleteTarget = {
 
 const GENERIC_GENERATION_ERROR_MESSAGE =
   "We couldn't finish this generation. Please try again.";
+
+const getGenerationShareSubject = (
+  type?: GalleryItem['type'],
+): TwitterShareSubject => {
+  if (type === 'marketing') return 'poster';
+  return type ?? 'generation';
+};
 
 interface GenerationsColumnProps {
   domains: DomainPreview[];
@@ -121,7 +131,6 @@ export function GenerationsColumn({
   const previousPendingCountRef = useRef(0);
 
   const shareDialog = useTwitterShareDialog({
-    ...defaultShareConfig,
     enabled: true,
     trackShares: false,
     featureKey: 'ai_generation',
@@ -238,8 +247,8 @@ export function GenerationsColumn({
     void copyGenerationLink({ id });
   };
 
-  const handleOpenShareDialog = (id: string, domain: string) => {
-    const url = resolveGenerationLink({ id });
+  const handleOpenShareDialog = (item: ShareableGenerationItem) => {
+    const url = resolveGenerationLink({ id: item.id });
     if (!url) {
       toast.error('Unable to share', {
         description: 'A shareable link is not available for this generation.',
@@ -250,9 +259,10 @@ export function GenerationsColumn({
     setShareState({
       isOpen: true,
       url,
-      domain: domain as NamefiNormalizedDomain,
+      domain: item.domain as NamefiNormalizedDomain,
+      subject: getGenerationShareSubject(item.type),
     });
-    shareDialog.openDialog(domain as NamefiNormalizedDomain);
+    shareDialog.openDialog(item.domain as NamefiNormalizedDomain);
   };
 
   const handleDeleteRequest = (item: GalleryItem) => {
@@ -441,6 +451,7 @@ export function GenerationsColumn({
         trackShares={false}
         campaignKey={undefined}
         featureKey="ai_generation"
+        shareSubject={shareState.subject}
       />
       <AlertDialog
         open={!!deleteTarget}
@@ -640,7 +651,7 @@ interface ReadyGenerationTileProps {
   item: GalleryItem;
   onNavigate: (id: string) => void;
   onCopy: (id: string) => void;
-  onShare: (id: string, domain: string) => void;
+  onShare: (item: ShareableGenerationItem) => void;
   onDownload: (
     item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
   ) => void;
@@ -745,7 +756,7 @@ function ReadyGenerationTile({
           onShare={(event) => {
             event.stopPropagation();
             event.preventDefault();
-            onShare(item.id, item.domain);
+            onShare(item);
           }}
           onDownload={(event) => {
             event.stopPropagation();
@@ -774,7 +785,7 @@ interface AsyncGenerationTileProps {
   item: GalleryItem;
   onNavigate: (id: string) => void;
   onCopy: (id: string) => void;
-  onShare: (id: string, domain: string) => void;
+  onShare: (item: ShareableGenerationItem) => void;
   onDownload: (
     item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
   ) => void;
@@ -911,7 +922,7 @@ function AsyncGenerationTile({
           onShare={(event) => {
             event.stopPropagation();
             event.preventDefault();
-            onShare(item.id, item.domain);
+            onShare(item);
           }}
           onDownload={(event) => {
             event.stopPropagation();
@@ -947,7 +958,7 @@ interface FeaturedGenerationTileProps {
   };
   onNavigate: (id: string) => void;
   onCopy: (id: string) => void;
-  onShare: (id: string, domain: string) => void;
+  onShare: (item: ShareableGenerationItem) => void;
   onDownload: (
     item: Pick<GalleryItem, 'id' | 'domain' | 'url' | 'mimeType'>,
   ) => void;
@@ -990,7 +1001,7 @@ function FeaturedGenerationTile({
           onShare={(event) => {
             event.stopPropagation();
             event.preventDefault();
-            onShare(item.id, item.domain);
+            onShare(item);
           }}
           onDownload={(event) => {
             event.stopPropagation();

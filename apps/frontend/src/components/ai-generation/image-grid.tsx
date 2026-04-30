@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
-import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import {
-  defaultShareConfig,
-  useTwitterShareDialog,
-} from '@/hooks/use-twitter-share';
+  TwitterShareDialog,
+  type TwitterShareSubject,
+} from '@/components/hunt/twitter-share-dialog';
+import { useTwitterShareDialog } from '@/hooks/use-twitter-share';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -42,6 +42,13 @@ export interface GeneratedItem {
   domain?: NamefiNormalizedDomain;
 }
 
+const getGenerationShareSubject = (
+  kind?: GeneratedItem['kind'],
+): TwitterShareSubject => {
+  if (kind === 'marketing') return 'poster';
+  return kind ?? 'generation';
+};
+
 interface LogoAction {
   label: string;
   onClick: (item: GeneratedItem) => void;
@@ -63,7 +70,6 @@ export function ImageGrid({
   logoActions,
 }: ImageGridProps) {
   const shareDialog = useTwitterShareDialog({
-    ...defaultShareConfig,
     enabled: true,
     trackShares: false,
     featureKey: 'ai_generation',
@@ -72,6 +78,7 @@ export function ImageGrid({
     open: boolean;
     url?: string;
     domain?: NamefiNormalizedDomain;
+    subject?: TwitterShareSubject;
   }>({ open: false });
   const router = useRouter();
   const handleOpenShare = (
@@ -88,7 +95,12 @@ export function ImageGrid({
       return;
     }
     shareDialog.openDialog(domain);
-    setDialogState({ open: true, url: link, domain });
+    setDialogState({
+      open: true,
+      url: link,
+      domain,
+      subject: getGenerationShareSubject(item.kind),
+    });
   };
 
   if (items.length === 0) return null;
@@ -250,6 +262,7 @@ export function ImageGrid({
         trackShares={false}
         campaignKey={undefined}
         featureKey="ai_generation"
+        shareSubject={dialogState.subject}
       />
     </>
   );

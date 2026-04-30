@@ -156,7 +156,32 @@ export const convertPosterGenerations = (
   }));
 };
 
-const resolveAnimationGenerationPreviewUrl = (generation: Generation) => {
+const resolveReferenceLogoPreviewUrl = (
+  generation: Generation,
+  availableLogos: Generation[],
+) => {
+  if (!generation.referenceGenerationId) {
+    return undefined;
+  }
+
+  const logo = availableLogos.find(
+    (candidate) => candidate.id === generation.referenceGenerationId,
+  );
+  return logo?.thumbnailUrl ?? logo?.url ?? undefined;
+};
+
+const resolveAnimationGenerationPreviewUrl = (
+  generation: Generation,
+  availableLogos: Generation[],
+) => {
+  const referenceLogoPreviewUrl = resolveReferenceLogoPreviewUrl(
+    generation,
+    availableLogos,
+  );
+  if (referenceLogoPreviewUrl) {
+    return referenceLogoPreviewUrl;
+  }
+
   if (
     generation.input?.type === 'animation' &&
     generation.input.mode === 'sheet-guided'
@@ -210,7 +235,7 @@ export const convertAnimationGenerations = (
   return generations.map((gen) => ({
     id: gen.id,
     url: gen.url,
-    previewUrl: resolveAnimationGenerationPreviewUrl(gen),
+    previewUrl: resolveAnimationGenerationPreviewUrl(gen, availableLogos),
     thumbnailUrl: gen.thumbnailUrl,
     mimeType: gen.mimeType,
     timestamp: new Date(gen.createdAt).toISOString(),

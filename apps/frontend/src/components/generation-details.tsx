@@ -45,11 +45,11 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { TwitterIcon } from 'react-share';
-import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import {
-  defaultShareConfig,
-  useTwitterShareDialog,
-} from '@/hooks/use-twitter-share';
+  TwitterShareDialog,
+  type TwitterShareSubject,
+} from '@/components/hunt/twitter-share-dialog';
+import { useTwitterShareDialog } from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
 import type { AppRouterOutput } from '@/lib/trpc';
@@ -89,6 +89,13 @@ interface GenerationDetailsClientProps {
 
 const GENERIC_GENERATION_ERROR_MESSAGE =
   "We couldn't finish this generation. Please try again.";
+
+const getGenerationShareSubject = (
+  type?: GenerationData['type'],
+): TwitterShareSubject => {
+  if (type === 'marketing') return 'poster';
+  return type ?? 'generation';
+};
 
 const detailActionButtonClassName =
   'min-h-11 w-full justify-center gap-2 px-4 text-center leading-tight whitespace-normal [&_svg]:shrink-0';
@@ -321,7 +328,6 @@ export function GenerationDetailsClient({
   const trpc = useTRPC();
   const [currentUrl, setCurrentUrl] = useState('');
   const shareDialog = useTwitterShareDialog({
-    ...defaultShareConfig,
     enabled: true,
     trackShares: false,
     featureKey: 'ai_generation',
@@ -503,6 +509,7 @@ export function GenerationDetailsClient({
   const shareableDomain = generation?.domain
     ? (generation.domain as NamefiNormalizedDomain)
     : null;
+  const shareSubject = getGenerationShareSubject(generation?.type);
 
   const canDelete =
     isAuthenticated &&
@@ -1042,6 +1049,7 @@ export function GenerationDetailsClient({
         trackShares={false}
         campaignKey={undefined}
         featureKey="ai_generation"
+        shareSubject={shareSubject}
       />
       <Dialog open={isSheetPreviewOpen} onOpenChange={setIsSheetPreviewOpen}>
         <DialogContent className="!max-w-6xl overflow-hidden p-0">
