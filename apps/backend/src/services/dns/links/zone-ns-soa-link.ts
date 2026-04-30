@@ -12,6 +12,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { and, desc, eq, gt, sql } from 'drizzle-orm';
 import { SEPARATE_ZONES_FOR_SUBDOMAINS } from './helpers';
+import * as DnsResUtils from '../dns-response-utils';
 import { buildNsAndSoaRecordsForZone, isRecordZoneApex } from './zone-helpers';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
@@ -70,11 +71,12 @@ export function createZoneNsAndSoaLink(): DnsRequestLink {
     const { recordName, recordType } = context.question;
 
     const result = await next();
+
     if (
       result &&
       isNotNil(result.RCODE) &&
-      ((result.RCODE === 0 && !!result?.Answer?.length) ||
-        (result.RCODE !== 0 && result.RCODE !== 3))
+      (DnsResUtils.isNotAny(result, 'NXDOMAIN', 'NODATA') ||
+        DnsResUtils.isResultNoErrorWithData(result))
     ) {
       return result;
     }
