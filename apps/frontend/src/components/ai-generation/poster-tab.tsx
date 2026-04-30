@@ -55,10 +55,6 @@ export function PosterTab({
     }
   }, [focusedLogo?.id]);
 
-  const generatePosterMutation = usePosterGeneration({
-    domain: effectiveDomain,
-  });
-
   const logosWithFocus = useMemo(() => {
     if (!focusedLogo) return logoGenerations;
     const alreadyIncludes = logoGenerations.some(
@@ -67,6 +63,11 @@ export function PosterTab({
     if (alreadyIncludes) return logoGenerations;
     return [...logoGenerations, focusedLogo as Generation];
   }, [logoGenerations, focusedLogo]);
+
+  const generatePosterMutation = usePosterGeneration({
+    domain: effectiveDomain,
+    availableLogos: logosWithFocus,
+  });
 
   const handleGeneratePosters = (data: PosterFormData) => {
     lastGenerationParams.current = data;

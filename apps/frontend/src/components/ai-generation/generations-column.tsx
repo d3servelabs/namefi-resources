@@ -50,6 +50,7 @@ import {
   Loader2,
   ArrowUpRight,
   Sparkles,
+  Play,
 } from 'lucide-react';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
@@ -1012,11 +1013,22 @@ interface GalleryPreviewProps {
     previewUrl?: string | null;
     type?: 'logo' | 'marketing' | 'animation';
     url?: string | null;
+    status?: GalleryItem['status'];
   };
   className?: string;
 }
 
 function GalleryPreview({ item, className }: GalleryPreviewProps) {
+  const isTransientStatus =
+    item.status === 'pending' ||
+    item.status === 'processing' ||
+    item.status === 'failed';
+  const showPlayIndicator =
+    item.type === 'animation' &&
+    Boolean(item.url) &&
+    item.status !== 'pending' &&
+    item.status !== 'processing' &&
+    item.status !== 'failed';
   const videoUrl =
     item.type === 'animation' &&
     item.url &&
@@ -1026,18 +1038,25 @@ function GalleryPreview({ item, className }: GalleryPreviewProps) {
 
   if (videoUrl) {
     return (
-      <video
-        aria-label={`Animation preview for ${item.domain}`}
-        className={className}
-        muted
-        playsInline
-        preload="metadata"
-        src={videoUrl}
-      />
+      <>
+        <video
+          aria-label={`Animation preview for ${item.domain}`}
+          className={className}
+          muted
+          playsInline
+          preload="metadata"
+          src={videoUrl}
+        />
+        {showPlayIndicator && <VideoPlayIndicator />}
+      </>
     );
   }
 
   if (!item.previewUrl) {
+    if (isTransientStatus) {
+      return <div className="h-full w-full bg-muted/30" />;
+    }
+
     return (
       <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
         Preview unavailable
@@ -1046,13 +1065,29 @@ function GalleryPreview({ item, className }: GalleryPreviewProps) {
   }
 
   return (
-    // biome-ignore lint/performance/noImgElement: gallery tiles rely on native img for lightweight rendering
-    <img
-      src={item.previewUrl}
-      alt={item.domain}
-      className={className}
-      loading="lazy"
-    />
+    <>
+      {/** biome-ignore lint/performance/noImgElement: gallery tiles rely on native img for lightweight rendering */}
+      <img
+        src={item.previewUrl}
+        alt={item.domain}
+        className={className}
+        loading="lazy"
+      />
+      {showPlayIndicator && <VideoPlayIndicator />}
+    </>
+  );
+}
+
+function VideoPlayIndicator() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+    >
+      <div className="flex size-12 items-center justify-center rounded-full border border-white/45 bg-black/55 text-white shadow-lg backdrop-blur-sm">
+        <Play className="ml-0.5 size-5 fill-current" />
+      </div>
+    </div>
   );
 }
 

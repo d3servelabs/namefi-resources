@@ -109,7 +109,9 @@ export const useGenerationsGalleryData = ({
         domain: generation?.domain ?? pending.domain,
         type: generation?.type ?? pending.type,
         url: generation?.url,
-        previewUrl: generation ? resolveGenerationPreviewUrl(generation) : null,
+        previewUrl: generation
+          ? resolveGenerationPreviewUrl(generation)
+          : (pending.previewUrl ?? null),
         thumbnailUrl: generation?.thumbnailUrl,
         mimeType: generation?.mimeType,
         generation,

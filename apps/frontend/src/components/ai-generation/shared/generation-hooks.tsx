@@ -227,9 +227,28 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
 
 interface UsePosterGenerationProps {
   domain?: NamefiNormalizedDomain;
+  availableLogos?: readonly LogoPreviewSource[];
 }
 
-export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
+type LogoPreviewSource = {
+  id?: string | null;
+  url?: string | null;
+  thumbnailUrl?: string | null;
+};
+
+function resolveLogoPreviewUrl(
+  logos: readonly LogoPreviewSource[] | undefined,
+  logoId?: string | null,
+) {
+  if (!logoId) return null;
+  const logo = logos?.find((candidate) => candidate.id === logoId);
+  return logo?.thumbnailUrl ?? logo?.url ?? null;
+}
+
+export function usePosterGeneration({
+  domain,
+  availableLogos,
+}: UsePosterGenerationProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { addPendingItem, removePendingItem, resolvePendingItem } =
@@ -243,6 +262,10 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
         const pendingId = addPendingItem({
           domain: pendingDomain,
           type: 'marketing',
+          previewUrl: resolveLogoPreviewUrl(
+            availableLogos,
+            variables.referenceLogoGenerationId,
+          ),
         });
         return { pendingId } as { pendingId?: string };
       },
@@ -271,10 +294,12 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
 
 interface UseAnimationGenerationProps {
   domain?: NamefiNormalizedDomain;
+  availableLogos?: readonly LogoPreviewSource[];
 }
 
 export function useAnimationGeneration({
   domain,
+  availableLogos,
 }: UseAnimationGenerationProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -288,6 +313,10 @@ export function useAnimationGeneration({
         const pendingId = addPendingItem({
           domain: pendingDomain,
           type: 'animation',
+          previewUrl: resolveLogoPreviewUrl(
+            availableLogos,
+            variables.referenceLogoGenerationId,
+          ),
         });
         return { pendingId } as { pendingId?: string };
       },

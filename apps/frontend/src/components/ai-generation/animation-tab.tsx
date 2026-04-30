@@ -58,10 +58,6 @@ export function AnimationTab({
     }
   }, [focusedLogo?.id]);
 
-  const generateAnimationMutation = useAnimationGeneration({
-    domain: effectiveDomain,
-  });
-
   const logosWithFocus = useMemo(() => {
     if (!focusedLogo) return logoGenerations;
     const alreadyIncludes = logoGenerations.some(
@@ -70,6 +66,11 @@ export function AnimationTab({
     if (alreadyIncludes) return logoGenerations;
     return [...logoGenerations, focusedLogo as Generation];
   }, [focusedLogo, logoGenerations]);
+
+  const generateAnimationMutation = useAnimationGeneration({
+    domain: effectiveDomain,
+    availableLogos: logosWithFocus,
+  });
 
   const handleGenerateAnimation = (data: AnimationFormData) => {
     lastGenerationParams.current = data;

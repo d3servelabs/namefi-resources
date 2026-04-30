@@ -10,6 +10,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { Play } from 'lucide-react';
 import {
   buildDownloadFilename,
   copyGenerationLink,
@@ -263,6 +264,7 @@ function GeneratedItemPreview({
   item: GeneratedItem;
   previewUrl?: string | null;
 }) {
+  const showPlayIndicator = item.kind === 'animation' && Boolean(item.url);
   const videoUrl =
     item.kind === 'animation' &&
     item.url &&
@@ -272,14 +274,17 @@ function GeneratedItemPreview({
 
   if (videoUrl) {
     return (
-      <video
-        aria-label={alt}
-        className="h-full w-full object-cover"
-        muted
-        playsInline
-        preload="metadata"
-        src={videoUrl}
-      />
+      <>
+        <video
+          aria-label={alt}
+          className="h-full w-full object-cover"
+          muted
+          playsInline
+          preload="metadata"
+          src={videoUrl}
+        />
+        {showPlayIndicator && <VideoPlayIndicator />}
+      </>
     );
   }
 
@@ -292,12 +297,28 @@ function GeneratedItemPreview({
   }
 
   return (
-    // biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight
-    <img
-      src={previewUrl}
-      alt={alt}
-      className="h-full w-full object-cover"
-      loading="lazy"
-    />
+    <>
+      {/** biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight */}
+      <img
+        src={previewUrl}
+        alt={alt}
+        className="h-full w-full object-cover"
+        loading="lazy"
+      />
+      {showPlayIndicator && <VideoPlayIndicator />}
+    </>
+  );
+}
+
+function VideoPlayIndicator() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+    >
+      <div className="flex size-12 items-center justify-center rounded-full border border-white/45 bg-black/55 text-white shadow-lg backdrop-blur-sm">
+        <Play className="ml-0.5 size-5 fill-current" />
+      </div>
+    </div>
   );
 }

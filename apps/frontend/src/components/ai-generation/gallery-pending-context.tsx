@@ -15,6 +15,7 @@ export type PendingGalleryItem = {
   id: string;
   domain: string;
   type: 'logo' | 'marketing' | 'animation';
+  previewUrl?: string | null;
   startedAt: number;
   generation?: AppRouterOutput['ai']['getUserGenerationsFiltered'][number];
 };
