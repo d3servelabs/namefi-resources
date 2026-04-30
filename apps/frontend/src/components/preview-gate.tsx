@@ -6,6 +6,10 @@ import {
   PREVIEW_GATE_COOKIE_SALT,
 } from '@/lib/preview-gate/cookie';
 import { previewGateHash, safeEqualHex } from '@/lib/preview-gate/hash';
+import {
+  getTldFromHost,
+  getValidPasscodesForTld,
+} from '@/lib/preview-gate/passcode';
 import { PreviewGateForm } from './preview-gate-form';
 
 const FALLBACK_UNOFFICIAL_TLDS: string[] = [
@@ -16,8 +20,13 @@ const FALLBACK_UNOFFICIAL_TLDS: string[] = [
   'uniswap',
   'aave',
   'maker',
+  'lido',
+  'dydx',
+  'lifi',
+  'curve',
+  'compound',
+  'arb',
 ]; //TODO: replace with request to backend
-const PROTECTED_SUFFIXES = ['.astra.namefi.dev', '.poweredby.namefi.dev'];
 const LOG_PREFIX = '[preview-gate/check]';
 
 function getHostFromHeaders(h: Headers): string | null {
@@ -26,27 +35,11 @@ function getHostFromHeaders(h: Headers): string | null {
   return h.get('host');
 }
 
-function hostnameMatches(host: string, tlds: readonly string[] = []): boolean {
-  const lower = host.toLowerCase().split(':')[0];
-  return PROTECTED_SUFFIXES.some((suffix) =>
-    tlds.some((tld) => lower === `${tld}${suffix}`),
-  );
-}
-
 async function isUnlocked(): Promise<boolean> {
   console.log(LOG_PREFIX, 'enter', { configType: config.TYPE });
 
   if (config.TYPE === 'production') {
     console.log(LOG_PREFIX, 'production -> passthrough');
-    return true;
-  }
-
-  const expected = process.env.FRONTEND_PREVIEW_GATE_PASSWORD ?? '';
-  if (expected.length === 0) {
-    console.log(
-      LOG_PREFIX,
-      'FRONTEND_PREVIEW_GATE_PASSWORD unset -> passthrough',
-    );
     return true;
   }
 
@@ -62,17 +55,28 @@ async function isUnlocked(): Promise<boolean> {
     return true;
   }
 
-  const matched = hostnameMatches(host, FALLBACK_UNOFFICIAL_TLDS);
-  console.log(LOG_PREFIX, 'hostname match', {
+  const tld = getTldFromHost(host);
+  const protectedTld = tld != null && FALLBACK_UNOFFICIAL_TLDS.includes(tld);
+  console.log(LOG_PREFIX, 'tld lookup', {
     host,
-    matched,
-    suffixes: PROTECTED_SUFFIXES,
-    tlds: FALLBACK_UNOFFICIAL_TLDS,
+    tld,
+    protectedTld,
+    knownTlds: FALLBACK_UNOFFICIAL_TLDS,
   });
-  if (!matched) {
+  if (!protectedTld) {
+    console.log(LOG_PREFIX, 'host not in protected TLD list -> passthrough');
+    return true;
+  }
+
+  const validPasscodes = getValidPasscodesForTld(tld);
+  console.log(LOG_PREFIX, 'valid passcodes', {
+    tld,
+    count: validPasscodes.length,
+  });
+  if (validPasscodes.length === 0) {
     console.log(
       LOG_PREFIX,
-      'host does not match protected pattern -> passthrough',
+      'no master or per-tld passcode configured -> passthrough',
     );
     return true;
   }
@@ -91,8 +95,15 @@ async function isUnlocked(): Promise<boolean> {
     return false;
   }
 
-  const expectedHash = previewGateHash(expected, salt);
-  const ok = safeEqualHex(hash, expectedHash);
+  // Cookie was issued from one of the valid passcodes; the hash matches if any
+  // current passcode reproduces it. (Walk all candidates so the comparison
+  // doesn't short-circuit and leak which one matched.)
+  let ok = false;
+  for (const passcode of validPasscodes) {
+    if (safeEqualHex(hash, previewGateHash(passcode, salt))) {
+      ok = true;
+    }
+  }
   console.log(LOG_PREFIX, 'hash compare', { ok });
   return ok;
 }

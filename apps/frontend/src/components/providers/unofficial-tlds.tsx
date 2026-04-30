@@ -16,7 +16,13 @@ const FALLBACK_UNOFFICIAL_TLDS: string[] = [
   'uniswap',
   'aave',
   'maker',
-];
+  'lido',
+  'dydx',
+  'lifi',
+  'curve',
+  'compound',
+  'arb',
+]; //TODO: replace with request to backend
 const PERSISTENCE_KEY = 'unofficial-tlds-config';
 const PERSISTENCE_EXPIRY = 60 * 60 * 1000;
 

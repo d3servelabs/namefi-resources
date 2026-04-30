@@ -15,8 +15,8 @@ import {
   getValidPasscodesForTld,
 } from './passcode';
 
-const LOG_PREFIX = '[preview-gate/unlock]';
-const NOT_FOUND_BODY = { error: 'not_found' } as const;
+const LOG_PREFIX = '[preview-gate/access]';
+const ACCESS_CODE_QUERY_PARAM = 'code';
 
 function getHostFromHeaders(h: Headers): string | null {
   const forwarded = h.get('x-forwarded-host');
@@ -24,12 +24,19 @@ function getHostFromHeaders(h: Headers): string | null {
   return h.get('host');
 }
 
-export async function handleUnlock(request: Request): Promise<Response> {
-  console.log(LOG_PREFIX, 'POST received', { configType: config.TYPE });
+export async function handleAccess(request: Request): Promise<Response> {
+  const requestUrl = new URL(request.url);
+  const redirectUrl = new URL('/', request.url);
+  const submitted = requestUrl.searchParams.get(ACCESS_CODE_QUERY_PARAM) ?? '';
+  console.log(LOG_PREFIX, 'GET received', {
+    configType: config.TYPE,
+    codeLength: submitted.length,
+    redirectTo: redirectUrl.toString(),
+  });
 
   if (config.TYPE === 'production') {
     console.log(LOG_PREFIX, 'production -> 404');
-    return NextResponse.json(NOT_FOUND_BODY, { status: 404 });
+    return new Response(null, { status: 404 });
   }
 
   const headersList = await headers();
@@ -41,46 +48,27 @@ export async function handleUnlock(request: Request): Promise<Response> {
     tld,
     validPasscodeCount: validPasscodes.length,
   });
-  if (validPasscodes.length === 0) {
-    console.log(LOG_PREFIX, 'no passcode configured for tld -> 404');
-    return NextResponse.json(NOT_FOUND_BODY, { status: 404 });
-  }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch (err) {
-    console.log(LOG_PREFIX, 'invalid body', { err: String(err) });
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 });
-  }
-
-  const submitted =
-    typeof body === 'object' &&
-    body !== null &&
-    'accessCode' in body &&
-    typeof (body as { accessCode: unknown }).accessCode === 'string'
-      ? (body as { accessCode: string }).accessCode
-      : '';
-
-  const matched = findMatchingPasscode(submitted, validPasscodes);
-  console.log(LOG_PREFIX, 'compare', {
-    submittedLength: submitted.length,
-    matched: matched != null,
-  });
+  const matched =
+    validPasscodes.length === 0 || submitted.length === 0
+      ? null
+      : findMatchingPasscode(submitted, validPasscodes);
   if (matched == null) {
-    console.log(LOG_PREFIX, 'access code mismatch -> 401');
-    return NextResponse.json({ error: 'invalid_access_code' }, { status: 401 });
+    console.log(LOG_PREFIX, 'mismatch -> redirect without unlock', {
+      hadCandidates: validPasscodes.length > 0,
+      hadCode: submitted.length > 0,
+    });
+    return NextResponse.redirect(redirectUrl, { status: 303 });
   }
 
   const salt = randomBytes(PREVIEW_GATE_SALT_BYTES).toString('hex');
   const hash = previewGateHash(matched, salt);
-  console.log(LOG_PREFIX, 'matched, issuing cookies', {
+  console.log(LOG_PREFIX, 'match, issuing cookies', {
     saltLength: salt.length,
     hashLength: hash.length,
-    secure: config.TYPE !== 'local',
   });
 
-  const response = NextResponse.json({ ok: true });
+  const response = NextResponse.redirect(redirectUrl, { status: 303 });
   const cookieOpts = {
     httpOnly: true,
     sameSite: 'lax' as const,
@@ -98,6 +86,6 @@ export async function handleUnlock(request: Request): Promise<Response> {
     value: salt,
     ...cookieOpts,
   });
-  console.log(LOG_PREFIX, 'cookies set, returning 200');
+  console.log(LOG_PREFIX, 'cookies set, redirecting');
   return response;
 }
