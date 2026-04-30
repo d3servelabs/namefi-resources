@@ -228,6 +228,7 @@ export function useMyDomainsColumns({
             }
             chainId={row.original.chainId ?? null}
             tokenId={row.original.tokenId}
+            orderId={row.original.orderId ?? null}
             isMobile={isMobile}
             onListForSaleClick={onListForSaleClick}
           />

@@ -1,7 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import { differenceInDays } from 'date-fns';
-import { BadgeDollarSign, Compass, MoreVertical } from 'lucide-react';
+import {
+  BadgeDollarSign,
+  Compass,
+  MoreVertical,
+  ReceiptText,
+} from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   DropdownMenu,
@@ -21,6 +27,8 @@ interface ActionsCellProps {
   expirationDate: Date | string | null | undefined;
   chainId: number | null;
   tokenId: bigint | number | null | undefined;
+  /** ID of the earliest SUCCEEDED order item; null when there isn't one. */
+  orderId: string | null;
   isMobile: boolean;
   onListForSaleClick: (domainName: string) => void;
 }
@@ -30,6 +38,7 @@ export function ActionsCell({
   expirationDate,
   chainId,
   tokenId,
+  orderId,
   isMobile,
   onListForSaleClick,
 }: ActionsCellProps) {
@@ -52,6 +61,24 @@ export function ActionsCell({
       <BadgeDollarSign className="w-4 h-4" />
     </Button>
   );
+
+  const orderButton = orderId ? (
+    <Button
+      variant="outline"
+      size="sm"
+      className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-emerald-400')}
+      render={
+        <Link
+          href={`/orders/${orderId}/details`}
+          aria-label={`View order for ${domainName}`}
+          className="flex justify-start items-center"
+        />
+      }
+      nativeButton={false}
+    >
+      <ReceiptText className="w-4 h-4" />
+    </Button>
+  ) : null;
 
   const explorerButton =
     !isExpired && explorerUrl ? (
@@ -94,6 +121,7 @@ export function ActionsCell({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>{listForSaleButton}</DropdownMenuItem>
+          {orderButton && <DropdownMenuItem>{orderButton}</DropdownMenuItem>}
           {explorerButton && (
             <DropdownMenuItem>{explorerButton}</DropdownMenuItem>
           )}
@@ -105,6 +133,9 @@ export function ActionsCell({
   return (
     <div className="flex gap-2">
       <ActionTooltip label="List for sale">{listForSaleButton}</ActionTooltip>
+      {orderButton ? (
+        <ActionTooltip label="View order">{orderButton}</ActionTooltip>
+      ) : null}
       {explorerButton ? (
         <ActionTooltip label="View NFT">{explorerButton}</ActionTooltip>
       ) : null}

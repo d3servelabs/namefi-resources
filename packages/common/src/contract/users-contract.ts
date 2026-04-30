@@ -185,7 +185,15 @@ const currentUserDomainSchema = z.object({
   autoRenewEnabled: z.boolean(),
   autoEnsEnabled: z.boolean(),
   dnssecEnabled: z.boolean(),
+  // Earliest mint event blockTime for this token, sourced from
+  // managed_indexer_data.TransferLog. Null when the indexer hasn't seen the
+  // mint yet.
   dateTokenized: z.date().nullable(),
+  // ID of the earliest SUCCEEDED order item that produced this domain, so the
+  // UI can deep-link from My Domains → /orders/<orderId>/details. Null when
+  // the domain wasn't acquired through an order (e.g. imported / manually
+  // minted).
+  orderId: z.string().nullable(),
   dnsStatus: z.object({
     nameservers: z.array(z.string()),
     isUsingNamefiNameservers: z.boolean(),

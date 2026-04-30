@@ -94,6 +94,7 @@ const mockDomains: DomainRow[] = [
     autoRenewEnabled: true,
     autoEnsEnabled: false,
     dnssecEnabled: false,
+    orderId: null,
     dateTokenized: new Date('2025-06-15T10:30:00Z'),
     dnsStatus: {
       nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
@@ -114,6 +115,7 @@ const mockDomains: DomainRow[] = [
     autoRenewEnabled: false,
     autoEnsEnabled: true,
     dnssecEnabled: false,
+    orderId: null,
     dateTokenized: new Date('2025-03-20T14:00:00Z'),
     dnsStatus: {
       nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
@@ -134,6 +136,7 @@ const mockDomains: DomainRow[] = [
     autoRenewEnabled: true,
     autoEnsEnabled: false,
     dnssecEnabled: false,
+    orderId: null,
     dateTokenized: new Date('2025-12-01T08:15:00Z'),
     dnsStatus: {
       nameservers: ['ns1.external.com', 'ns2.external.com'],
@@ -154,6 +157,7 @@ const mockDomains: DomainRow[] = [
     autoRenewEnabled: false,
     autoEnsEnabled: false,
     dnssecEnabled: false,
+    orderId: null,
     dateTokenized: new Date('2026-01-25T16:45:00Z'),
     dnsStatus: {
       nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
@@ -493,6 +497,7 @@ export const PunycodeDomains: Story = {
           autoRenewEnabled: true,
           autoEnsEnabled: false,
           dnssecEnabled: false,
+          orderId: null,
           dateTokenized: new Date('2025-06-15T10:30:00Z'),
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
@@ -514,6 +519,7 @@ export const PunycodeDomains: Story = {
           autoRenewEnabled: false,
           autoEnsEnabled: true,
           dnssecEnabled: false,
+          orderId: null,
           dateTokenized: new Date('2025-08-20T14:00:00Z'),
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
@@ -535,6 +541,7 @@ export const PunycodeDomains: Story = {
           autoRenewEnabled: true,
           autoEnsEnabled: false,
           dnssecEnabled: false,
+          orderId: null,
           dateTokenized: new Date('2026-01-10T08:15:00Z'),
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
@@ -555,6 +562,7 @@ export const PunycodeDomains: Story = {
           autoRenewEnabled: false,
           autoEnsEnabled: false,
           dnssecEnabled: false,
+          orderId: null,
           dateTokenized: new Date('2026-03-01T16:45:00Z'),
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],

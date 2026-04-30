@@ -8,6 +8,7 @@ import {
   namefiNftCte,
   burnedNamefiNftCte,
   transferLogsCte,
+  transferLogsView,
   indexedDomainsTable,
   domainConfigTable,
   dnsRecordsTable,
@@ -809,11 +810,32 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         )
         .as('dns_flags');
 
-      const dateTokenizedLateral = db
+      // Authoritative tokenization timestamp: the latest mint event for this
+      // (tokenId, chainId). `latest` instead of `earliest` so that re-mints
+      // after a burn surface the most recent mint, which matches the user's
+      // current ownership.
+      const mintEventLateral = db
+        .with(transferLogsCte)
         .select({
-          dateTokenized: sql<Date | null>`MIN(${orderItemsTable.createdAt})`.as(
-            'date_tokenized',
+          dateTokenized: transferLogsView.blockTime,
+        })
+        .from(transferLogsView)
+        .where(
+          and(
+            eq(transferLogsView.tokenId, namefiNftView.tokenId),
+            eq(transferLogsView.chainId, namefiNftView.chainId),
+            eq(transferLogsView.isMint, true),
           ),
+        )
+        .orderBy(sql`${transferLogsView.blockTimestamp} DESC`)
+        .limit(1)
+        .as('mint_event_lateral');
+
+      // Earliest SUCCEEDED order for this domain — exposes the orderId so the
+      // My Domains UI can deep-link to /orders/<orderId>/details.
+      const firstSucceededOrderLateral = db
+        .select({
+          orderId: orderItemsTable.orderId,
         })
         .from(orderItemsTable)
         .where(
@@ -822,13 +844,27 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
               orderItemsTable.normalizedDomainName,
               namefiNftView.normalizedDomainName,
             ),
-            eq(orderItemsTable.status, 'SUCCEEDED'),
+            or(
+              eq(orderItemsTable.status, 'SUCCEEDED'),
+              eq(orderItemsTable.status, 'PARTIALLY_COMPLETED'),
+              eq(orderItemsTable.status, 'CREATED'),
+              eq(orderItemsTable.status, 'PROCESSING'), //TODO fix legacy-orders to avoid this status match
+            ),
+            or(
+              eq(orderItemsTable.type, 'REGISTER'),
+              eq(orderItemsTable.type, 'IMPORT'),
+            ),
           ),
         )
-        .as('date_tokenized_lateral');
+        .orderBy(
+          sql`${orderItemsTable.createdAt} ASC`,
+          sql`${orderItemsTable.id} ASC`,
+        )
+        .limit(1)
+        .as('first_succeeded_order_lateral');
 
       const rows = await db
-        .with(namefiNftCte)
+        .with(namefiNftCte, transferLogsCte)
         .select({
           normalizedDomainName: namefiNftView.normalizedDomainName,
           tokenId: namefiNftView.tokenId,
@@ -850,7 +886,8 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
             OR COALESCE(${domainConfigTable.autoParkEnabled}, false)
             OR (${domainConfigTable.forwardTo} IS NOT NULL)
           `,
-          dateTokenized: dateTokenizedLateral.dateTokenized,
+          dateTokenized: mintEventLateral.dateTokenized,
+          orderId: firstSucceededOrderLateral.orderId,
         })
         .from(namefiNftView)
         .leftJoin(
@@ -878,7 +915,8 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           ),
         )
         .leftJoinLateral(dnsFlagsLateral, sql`true`)
-        .leftJoinLateral(dateTokenizedLateral, sql`true`)
+        .leftJoinLateral(mintEventLateral, sql`true`)
+        .leftJoinLateral(firstSucceededOrderLateral, sql`true`)
         .where(and(...whereConditions))
         .$withCache({
           config: { ex: 15 },
@@ -896,6 +934,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         autoEnsEnabled: row.autoEnsEnabled ?? false,
         dnssecEnabled: row.dnssecEnabled ?? false,
         dateTokenized: row.dateTokenized ?? null,
+        orderId: row.orderId ?? null,
         dnsStatus: {
           nameservers: row.nameservers ?? [],
           isUsingNamefiNameservers: row.isUsingNamefiNameservers ?? false,

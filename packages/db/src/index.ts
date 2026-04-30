@@ -12,6 +12,7 @@ export {
   namefiNftOwnersCte,
   burnedNamefiNftCte,
   transferLogsCte,
+  transferLogsView,
 } from './schemas/onchain-indexers';
 export { mapper } from './schemas/common';
 export * from './drizzle-helpers';

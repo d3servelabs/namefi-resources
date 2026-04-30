@@ -1,6 +1,14 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { sql } from 'drizzle-orm';
-import { pgView, QueryBuilder, timestamp } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  boolean,
+  integer,
+  pgView,
+  QueryBuilder,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 import { db } from '../../client';
 import { nftIndexSchema } from './schema-def';
 
@@ -13,9 +21,10 @@ const mapper = pgView('mapper', {
 const qb = new QueryBuilder();
 
 /**
- * [REPLACE WITH CTE]
+ * [REPLACED WITH CTE] (deprecated view)
  * TransferLogsView - View for accessing transfer logs from indexer
- * This view provides access to historical burn events from the ponder indexer.
+ * This view provides access to historical burn/mint/transfer events from the
+ * ponder indexer.
  *
  * Note: View is created manually in SQL, this is just the Drizzle type definition.
  */
@@ -45,6 +54,38 @@ export const transferLogsCte = qb.$with('transfer_logs_cte').as((qb) => {
     })
     .from(sql`${nftIndexSchema}."TransferLog"`);
 });
+
+/**
+ * [REPLACED WITH CTE] (deprecated view)
+ * This is a workaround because drizzle does not handle column disambiguation
+ * correctly with CTEs. We expose the CTE alias as a typed view so callers can
+ * select columns through it without losing type info.
+ * @deprecated This view is deprecated and will be removed in the future.
+ * @see transferLogsCte for the new CTE.
+ * you still need to include the CTE in the query like this:
+ * ```typescript
+ * const result = await db
+ *   .with(transferLogsCte)
+ *   .select()
+ *   .from(transferLogsView)
+ *   .limit(1);
+ * ```
+ */
+export const transferLogsView = pgView('transfer_logs_cte', {
+  tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
+  normalizedDomainName: text('normalized_domain_name')
+    .notNull()
+    .$type<NamefiNormalizedDomain>(),
+  fromAddress: text('from_address').notNull(),
+  toAddress: text('to_address').notNull(),
+  chainId: integer('chain_id').notNull(),
+  blockNumber: bigint('block_number', { mode: 'bigint' }).notNull(),
+  blockTimestamp: bigint('block_timestamp', { mode: 'bigint' }).notNull(),
+  blockTime: timestamp('block_time').notNull(),
+  isBurn: boolean('is_burn').notNull(),
+  isMint: boolean('is_mint').notNull(),
+  transactionHash: text('transaction_hash').notNull(),
+}).existing();
 
 async function _selectFromTransferLogsView() {
   const res = await db
