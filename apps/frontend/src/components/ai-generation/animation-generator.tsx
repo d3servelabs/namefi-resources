@@ -50,10 +50,12 @@ import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { Generation } from './shared/types';
 
+const DEFAULT_ANIMATION_MODE = 'sheet-guided' satisfies AnimationMode;
+
 const animationFormSchema = baseFormSchema
   .extend({
     selectedLogoId: z.string().uuid(),
-    mode: z.enum(ANIMATION_MODE_IDS).default('looped' satisfies AnimationMode),
+    mode: z.enum(ANIMATION_MODE_IDS).default(DEFAULT_ANIMATION_MODE),
     sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).optional(),
     motionPreset: z
       .enum(ANIMATION_MOTION_PRESET_IDS)
@@ -414,7 +416,7 @@ function AnimationGeneratorPanels({
   setOpenPanel,
 }: AnimationGeneratorPanelsProps) {
   const selectedLogoId = form.watch('selectedLogoId');
-  const selectedMode = form.watch('mode') ?? ANIMATION_MODE_IDS[0];
+  const selectedMode = form.watch('mode') ?? DEFAULT_ANIMATION_MODE;
   const selectedSourceMode = form.watch('sourceMode');
   const selectedModel = form.watch('model') ?? ANIMATION_MODEL_IDS[0];
   const selectedMotionPreset =
@@ -713,12 +715,12 @@ export function AnimationGenerator({
   > | null>(null);
   const activeDomain = fixedDomain ?? selectedDomain;
 
-  const defaultValues = useMemo(
+  const defaultValues = useMemo<AnimationFormInput>(
     () => ({
       domain: fixedDomain || '',
       description: '',
       selectedLogoId: '',
-      mode: 'looped' as const,
+      mode: DEFAULT_ANIMATION_MODE,
       sourceMode: 'exact-frame' as const,
       motionPreset: 'let-ai-choose' as const,
       motionIntensity: 'subtle' as const,
