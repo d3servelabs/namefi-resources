@@ -1,9 +1,11 @@
 import { writeFile } from 'node:fs/promises';
-import path from 'node:path';
+import path, { dirname } from 'node:path';
 import axios from 'axios';
 import { load } from 'cheerio';
 import jsesc from 'jsesc';
+import { fileURLToPath } from 'node:url';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const URL =
   'https://www.verisign.com/assets/allowedcode/idn-allowed-code-points.html';
 
@@ -48,13 +50,10 @@ const scrapeCodePoints = async (): Promise<void> => {
     });
 
     await writeJson(
-      path.join(import.meta.dirname, '../generated/code-points.json'),
+      path.join(__dirname, '../generated/code-points.json'),
       codePoints,
     );
-    await writeJson(
-      path.join(import.meta.dirname, '../generated/symbols.json'),
-      symbols,
-    );
+    await writeJson(path.join(__dirname, '../generated/symbols.json'), symbols);
 
     console.log('Scraping completed successfully.');
   } catch (error) {

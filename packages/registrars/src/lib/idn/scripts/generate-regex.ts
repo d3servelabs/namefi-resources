@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import path from 'node:path';
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import regenerate from 'regenerate';
 import codePoints from '../generated/code-points.json';
@@ -13,10 +13,8 @@ function generateRegex() {
   try {
     const pattern = regenerate(codePoints).toString();
     const source = `export const IDN_REGEX = /${pattern}/;\n`;
-    const outputPath = path.join(
-      import.meta.dirname,
-      '../generated/idn-regex.ts',
-    );
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const outputPath = path.join(__dirname, '../generated/idn-regex.ts');
 
     fs.writeFileSync(outputPath, source);
     console.log('Successfully generated IDN regex file');

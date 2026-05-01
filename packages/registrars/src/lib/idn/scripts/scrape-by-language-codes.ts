@@ -1,10 +1,12 @@
 import { mkdir, writeFile } from 'node:fs/promises';
-import path from 'node:path';
+import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import axios from 'axios';
 import { load } from 'cheerio';
 import jsesc from 'jsesc';
 import { LANGUAGE_CODES, type LanguageCode } from '../language-codes';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const getUrl = (languageCode: LanguageCode) =>
   `https://www.verisign.com/assets/languagefiles/${languageCode}.html`;
@@ -49,23 +51,16 @@ const scrapeCodePoints = async (languageCode: LanguageCode): Promise<void> => {
       symbols.push(codePointToSymbol(codePoint));
     });
 
-    await mkdir(
-      path.join(import.meta.dirname, `../generated/${languageCode}`),
-      { recursive: true },
-    );
+    await mkdir(path.join(__dirname, `../generated/${languageCode}`), {
+      recursive: true,
+    });
 
     await writeJson(
-      path.join(
-        import.meta.dirname,
-        `../generated/${languageCode}/code-points.json`,
-      ),
+      path.join(__dirname, `../generated/${languageCode}/code-points.json`),
       codePoints,
     );
     await writeJson(
-      path.join(
-        import.meta.dirname,
-        `../generated/${languageCode}/symbols.json`,
-      ),
+      path.join(__dirname, `../generated/${languageCode}/symbols.json`),
       symbols,
     );
 
