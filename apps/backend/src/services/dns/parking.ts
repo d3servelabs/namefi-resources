@@ -1,17 +1,13 @@
 import { db, dnsRecordsTable } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { RecordType, type recordSchema } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
 import { and, eq, inArray } from 'drizzle-orm';
-import type { z } from 'zod';
-import { areRecordsEqual } from './helpers';
 import {
   getNonUserSpecificDomainPreferencesAndConfig,
   updateDomainConfig,
 } from '#lib/domains/domain-preferences';
 
 import { PARKED_DOMAIN_RECORDS } from './managed-records';
-import { validateZone } from './service';
 export { PARKED_DOMAIN_RECORDS } from './managed-records';
 
 /**

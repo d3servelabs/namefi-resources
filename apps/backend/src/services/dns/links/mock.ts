@@ -1,12 +1,12 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import type { RecordType } from '@namefi-astra/zod-dns';
+import type { DnsStringRecordTypeCode } from '#lib/dns/record-type-codes';
 import { dnsRecordTypeCodes } from '#lib/dns/record-type-codes';
 import type { DnsResponse, DnsTable } from '#lib/dns/types';
 import { logger } from '#lib/logger';
 
 export function getAnswerForDnsQueryMock(
   recordName: NamefiNormalizedDomain,
-  recordType: RecordType,
+  recordType: DnsStringRecordTypeCode,
 ): Promise<DnsResponse | null> {
   const qType = dnsRecordTypeCodes.get(recordType);
   if (!qType) {

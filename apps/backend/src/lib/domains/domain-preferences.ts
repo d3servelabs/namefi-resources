@@ -14,6 +14,7 @@ import { TRPCError } from '@trpc/server';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 import type { PgTransaction } from 'drizzle-orm/pg-core';
 import { isNotNil, keys, omit, pick } from 'ramda';
+import type { DnsStringRecordTypeCode } from '#lib/dns/record-type-codes';
 import {
   ENS_TXT_PREFIX,
   FORWARDING_TXT_PREFIX,
@@ -254,7 +255,7 @@ export const updateDomainPreferencesAndConfig = async (
  */
 export const getAnswerForDnsQueryFromPreferences = async (
   recordName: NamefiNormalizedDomain,
-  qTypeEnum: RecordType,
+  qTypeEnum: DnsStringRecordTypeCode,
 ): Promise<DnsResponse | null> => {
   logger.trace(
     { recordName, qTypeEnum },

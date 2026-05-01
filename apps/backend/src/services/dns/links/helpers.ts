@@ -23,7 +23,8 @@ import {
 } from '@namefi-astra/db';
 import { resolve, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
-import type { RecordType } from '@namefi-astra/zod-dns';
+import type { DnsStringRecordTypeCode } from '#lib/dns/record-type-codes';
+
 import { and, eq, sql } from 'drizzle-orm';
 import { config } from '#lib/env';
 import { dnsRecordTypeCodes } from '#lib/dns/record-type-codes';
@@ -117,7 +118,7 @@ const dnsRecordFqdnSql = sql<string>`
  */
 export async function getAnswerForDnsQueryFromDnsRecords(
   recordName: NamefiNormalizedDomain,
-  recordType: RecordType,
+  recordType: DnsStringRecordTypeCode,
 ): Promise<DnsResponse | null> {
   const recordLabels = dnsLabelsFromText(dnsRecordFqdnSql);
   const queryLabels = dnsLabelsFromText(recordName);
@@ -209,7 +210,7 @@ export async function getAnswerForDnsQueryFromDnsRecords(
 
 export async function getNsAndSoaRecords(
   recordName: NamefiNormalizedDomain,
-  recordType: RecordType,
+  recordType: DnsStringRecordTypeCode,
 ): Promise<DnsResponse | null> {
   if (recordType !== 'NS' && recordType !== 'SOA') {
     logger.trace({ recordName, recordType }, 'Not returning NS or SOA records');
