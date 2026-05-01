@@ -2,12 +2,13 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import type { DnsResponse } from '#lib/dns/types';
 import type { Logger } from '#lib/logger';
+import type { DnsStringRecordTypeCode } from '#lib/dns/record-type-codes';
 
 export interface DnsQuestion {
   rawName: string;
   rawType: number;
   recordName: NamefiNormalizedDomain;
-  recordType: RecordType;
+  recordType: DnsStringRecordTypeCode;
   wildcard: boolean;
 }
 

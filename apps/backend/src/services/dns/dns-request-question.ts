@@ -4,7 +4,10 @@ import {
 } from '@namefi-astra/utils';
 import { fqdnLowercaseSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
-import { dnsRecordTypeCodes } from '#lib/dns/record-type-codes';
+import {
+  dnsRecordTypeCodes,
+  isValidStringRecordType,
+} from '#lib/dns/record-type-codes';
 import { createLogger } from '#lib/logger';
 import type {
   DnsRequestQuery,
@@ -30,10 +33,15 @@ const requestQuerySchema = z.object({
     .string()
     .superRefine((value, ctx) => {
       if (Number.isNaN(Number(value))) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Type must be a numeric DNS record type (1-255). Received: "${value}"`,
-        });
+        const numericValue = dnsRecordTypeCodes.get(value as any);
+        if (!numericValue) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Type must be a numeric DNS record type (1-255). Received: "${value}"`,
+          });
+        } else {
+          ctx.value = numericValue.toString();
+        }
       }
     })
     .transform(Number)
@@ -69,9 +77,9 @@ export function parseDnsQuestion(
     rawType === dnsRecordTypeCodes.get('ANY')
       ? 'A'
       : dnsRecordTypeCodes.inverse.get(rawType as never);
-  const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
+  const validStringRcode = isValidStringRecordType(qTypeString);
 
-  if (!qTypeEnumParseResult.success) {
+  if (!validStringRcode) {
     if (qTypeString) {
       return {
         ok: false,
@@ -108,7 +116,7 @@ export function parseDnsQuestion(
       rawName,
       rawType,
       recordName,
-      recordType: qTypeEnumParseResult.data,
+      recordType: qTypeString,
       wildcard,
     },
   };

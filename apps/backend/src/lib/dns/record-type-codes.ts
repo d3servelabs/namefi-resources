@@ -77,3 +77,12 @@ export const dnsRecordTypeCodes = BiMap.from(_dnsRecordTypeCodes) as BiMap<
   DnsStringRecordTypeCode,
   DnsNumericRecordTypeCode
 >;
+
+export const isValidStringRecordType = (
+  value: string | null | undefined,
+): value is DnsStringRecordTypeCode =>
+  dnsRecordTypeCodes.get(value as any) !== undefined;
+export const isValidNumericRecordType = (
+  value: number | string | null | undefined,
+): value is DnsNumericRecordTypeCode =>
+  dnsRecordTypeCodes.inverse.get(value as any) !== undefined;
