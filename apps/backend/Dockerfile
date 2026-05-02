@@ -2,22 +2,29 @@
 
 # Enable BuildKit support
 # DOCKER_BUILDKIT=1 docker build -t namefi-astra-backend .
-
+ARG BASE_IMAGE=node:jod-bullseye-slim
+ARG BASE_PRUNER=node:jod-bullseye-slim
+ARG DEPS_BUILD=oven/bun:1.3.12-slim
 #
 # ##############################################################################
 # Stage 1: Setup base with Node.js 22 Debian Bullseye
 # ##############################################################################
 #
-FROM node:jod-bullseye-slim AS base
+FROM ${BASE_IMAGE} AS base
 WORKDIR /app
 
+ARG BASE_IMAGE=node:jod-bullseye-slim
 # Set to production environment
-ENV NODE_ENV production
+ENV NODE_ENV=production
 ENV ENVIRONMENT=production
 ENV NODE_OPTIONS="--max-old-space-size=2048"
 ENV CI="true"
 
-RUN apt-get update && apt-get install -y bash curl dnsutils
+RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
+        apt-get update && apt-get install -y bash curl dnsutils; \
+    else \
+        echo "USING CACHED IMAGE"; \
+    fi
 
 
 #
@@ -25,11 +32,12 @@ RUN apt-get update && apt-get install -y bash curl dnsutils
 # Stage 2: Prune the monorepo to only include backend dependencies
 # ##############################################################################
 #
-FROM node:jod-bullseye-slim AS pruner
+FROM ${BASE_PRUNER} AS base_pruner
 WORKDIR /app
-
 # Install turbo globally
 RUN npm install -g turbo@2.9.5
+
+FROM base_pruner AS pruner
 # Copy the entire monorepo
 COPY . .
 # Prune the monorepo for the backend app
@@ -41,7 +49,7 @@ RUN turbo prune @namefi-astra/backend --docker
 # Stage 3: Use Bun for dependency installation
 # ##############################################################################
 #
-FROM oven/bun:1.3.12-slim AS deps_prod
+FROM $DEPS_BUILD AS deps_prod
 ENV CI="true"
 WORKDIR /app
 

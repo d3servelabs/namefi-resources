@@ -1,0 +1,122 @@
+name: Push Docker Layers for caching
+
+on:
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }} # GCP project ID
+  REGION: ${{ vars.GCP_REGION }} # GCP region
+  REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }} # Slack webhook URL
+jobs:
+  display_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Push Event Details
+        run: |
+          echo "Ref: ${{ github.event.ref }}"
+          echo "Before SHA: ${{ github.event.before }}"
+          echo "After SHA: ${{ github.event.after }}"
+          echo "Base Ref (for push events, usually null): ${{ github.event.base_ref }}"
+
+  # Backend build job
+  build-push-containers:
+    name: Build And Push Containers
+    runs-on: "blacksmith-8vcpu-ubuntu-2404"
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+    outputs:
+      image_exists: ${{ steps.check-image.outputs.exists }}
+      image_tag: ${{ steps.set-tag.outputs.image_tag }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # Set up Google Cloud authentication using WIF
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Set Docker tag
+        id: set-tag
+        run: |
+          # Use SHA-based tag without environment label for reusability
+          #
+          IMAGES_BASE_PATH="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}"
+          #
+          IMAGE_TAG_DEPS_BUILD="$IMAGES_BASE_PATH/namefi-astra-api-deps-build:${{ github.sha }}"
+          LATEST_IMAGE_TAG_DEPS_BUILD="$IMAGES_BASE_PATH/namefi-astra-api-deps-build:latest"
+          echo "image_tag_deps_build=$IMAGE_TAG_DEPS_BUILD" >> $GITHUB_OUTPUT
+          echo "latest_image_tag_deps_build=$LATEST_IMAGE_TAG_DEPS_BUILD" >> $GITHUB_OUTPUT
+          #
+          IMAGE_TAG_BASE_PRUNER="$IMAGES_BASE_PATH/namefi-astra-api-base-pruner:${{ github.sha }}"
+          LATEST_IMAGE_TAG_BASE_PRUNER="$IMAGES_BASE_PATH/namefi-astra-api-base-pruner:latest"
+          echo "image_tag_base_pruner=$IMAGE_TAG_BASE_PRUNER" >> $GITHUB_OUTPUT
+          echo "latest_image_tag_base_pruner=$LATEST_IMAGE_TAG_BASE_PRUNER" >> $GITHUB_OUTPUT
+          #
+          IMAGE_TAG_BASE="$IMAGES_BASE_PATH/namefi-astra-api-base-image:${{ github.sha }}"
+          LATEST_IMAGE_TAG_BASE="$IMAGES_BASE_PATH/namefi-astra-api-base-image:latest"
+          echo "image_tag_base=$IMAGE_TAG_BASE" >> $GITHUB_OUTPUT
+          echo "latest_image_tag_base=$LATEST_IMAGE_TAG_BASE" >> $GITHUB_OUTPUT
+
+
+      - name: Check if Docker image exists
+        id: check-image
+        run: |
+          echo "Failed to check image: $IMAGE_TAG"
+          echo "base_image_exists=false" >> $GITHUB_OUTPUT
+          echo "deps_build_image_exists=false" >> $GITHUB_OUTPUT
+          echo "base_pruner_image_exists=false" >> $GITHUB_OUTPUT
+          echo "any_needs_build=true" >> $GITHUB_OUTPUT
+
+
+      - name: Set up Docker Buildx
+        if: steps.check-image.outputs.any_needs_build == 'true'
+        uses: useblacksmith/setup-docker-builder@v1
+
+      - name: Build and Push Container (base_image)
+        if: steps.check-image.outputs.base_image_exists != 'true'
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.latest_image_tag_base }},${{ steps.set-tag.outputs.image_tag_base }}
+          push: true
+          context: .
+          file: ./apps/backend/Dockerfile
+          target: base
+
+      - name: Build and Push Container (deps_build)
+        if: steps.check-image.outputs.deps_build_image_exists != 'true'
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.latest_image_tag_deps_build }},${{ steps.set-tag.outputs.image_tag_deps_build }}
+          push: true
+          context: .
+          file: ./apps/backend/Dockerfile
+          target: deps_build
+
+      - name: Build and Push Container (base_pruner)
+        if: steps.check-image.outputs.base_pruner_image_exists != 'true'
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.latest_image_tag_base_pruner }},${{ steps.set-tag.outputs.image_tag_base_pruner }}
+          push: true
+          context: .
+          file: ./apps/backend/Dockerfile
+          target: base_pruner
+
+      - name: Skip build
+        if: steps.check-image.outputs.any_needs_build != 'true'
+        run: |
+          echo "Skipping build - image already exists"
+          echo "Using existing image: ${{ steps.set-tag.outputs.image_tag }}"
