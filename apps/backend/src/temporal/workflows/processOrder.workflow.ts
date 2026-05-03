@@ -916,14 +916,14 @@ export async function processOrderWorkflow(
       );
     }
 
-    const amountToRefund = failedItems.reduce((acc, item) => {
+    const amountToRefundInUsdCents = failedItems.reduce((acc, item) => {
       return acc + item.amountInUSDCents;
     }, 0);
 
-    if (amountToRefund > 0) {
+    if (amountToRefundInUsdCents > 0) {
       updateRefund({
         status: 'PROCESSING',
-        amountInUsdCents: amountToRefund,
+        amountInUsdCents: amountToRefundInUsdCents,
       });
       setStepStatus('refund', 'IN_PROGRESS');
       try {
@@ -932,7 +932,7 @@ export async function processOrderWorkflow(
             {
               orderId: input.orderId,
               paymentIds: orderDetails.payments.map((p) => p.id),
-              amountToRefundInUsdCents: amountToRefund,
+              amountToRefundInUsdCents: amountToRefundInUsdCents,
             },
           ],
           workflowId: `multi-refund-order-[${input.orderId}]`,
@@ -970,7 +970,7 @@ export async function processOrderWorkflow(
     const notificationSummary = await _notifyUserOrderProcessed(
       updatedOrder,
       orderItemResults,
-      amountToRefund,
+      amountToRefundInUsdCents,
     );
     updateNotification({
       status: notificationSummary.status,
@@ -1137,7 +1137,7 @@ async function postProcessOrder() {
 async function _notifyUserOrderProcessed(
   orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
   orderItemsResults: PromiseSettledResult<void>[],
-  amountToRefund: number,
+  amountToRefundInUsdCents: number,
 ): Promise<NotificationResult> {
   const { notifyUserOrderProcessed, maybeGetUserEmail } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.NOTIFY,
@@ -1171,6 +1171,7 @@ async function _notifyUserOrderProcessed(
   }
 
   try {
+    workflow.deprecatePatch('refund-cents-fix');
     await notifyUserOrderProcessed({
       orderId: orderDetails.order.id,
       recipientName: userEmail,
@@ -1189,11 +1190,9 @@ async function _notifyUserOrderProcessed(
       paymentMethodCharged,
       paymentMethodIdentifier,
       refund:
-        amountToRefund > 0
+        amountToRefundInUsdCents > 0
           ? {
-              amountInUsd: workflow.patched('refund-cents-fix')
-                ? amountToRefund / 100
-                : amountToRefund,
+              amountInUsd: amountToRefundInUsdCents / 100,
               status: 'PROCESSING',
             }
           : undefined,
