@@ -159,20 +159,47 @@ export interface RunDnsvizProbeOptions {
  */
 export async function runDnsvizProbe(
   domain: string,
-  opts: RunDnsvizProbeOptions = {},
+  config: { index?: number; opts?: RunDnsvizProbeOptions } = {},
 ): Promise<unknown> {
+  const { opts = {}, index } = config;
+
   const dnsResolvers = [
-    '8.8.8.8',
-    '8.8.4.4',
-    '9.9.9.9',
-    '9.9.9.10',
-    '9.9.9.11',
+    //Google
+    '8.8.8.8,8.8.4.4',
+
+    //Quad9
+    '9.9.9.9,149.112.112.112',
+
+    '9.9.9.10,149.112.112.10',
+
+    '9.9.9.11,149.112.112.11',
+
+    //Cloudflare
+    '1.1.1.1,1.0.0.1',
+
+    '1.1.1.2,1.0.0.2',
+
+    '1.1.1.3,1.0.0.3',
+
+    //OpenDNS
+    '208.67.222.222,208.67.220.220',
+    '208.67.222.123,208.67.220.123',
+    //AdGuard
+    '94.140.14.14,94.140.15.15',
+    '94.140.14.15,94.140.15.16',
+
+    //MullvadDns
+    '194.242.2.2,193.19.108.2',
+    //NextDns
+    '45.90.28.0,45.90.30.0',
   ];
+  const serverIdx =
+    (index ?? randomInt(0, dnsResolvers.length)) % dnsResolvers.length;
 
   const args = [
     'probe',
     '-s',
-    dnsResolvers[randomInt(0, dnsResolvers.length)],
+    dnsResolvers[serverIdx],
     '--rr-types',
     'A,AAAA,TXT,PTR,MX,NS,SOA,CNAME,CAA', //'SRV,NAPTR,TLSA,NSEC3PARAM,CDNSKEY,CDS',
     '--threads',

@@ -122,6 +122,17 @@ export interface AnalyzeDomainsBatchResult {
   insecure: number;
   bogus: number;
   error: number;
+  /**
+   * Domains that ended up with `status=ERROR` after this batch (probe/grok
+   * failure or malformed grok output). The workflow can hand these back
+   * into `analyzeDomainsBatch` for a one-shot retry; ON CONFLICT will
+   * overwrite the original ERROR rows with whatever verdict the retry
+   * produces.
+   */
+  erroredDomains: Array<{
+    domainName: NamefiNormalizedDomain;
+    registrarKey: string;
+  }>;
 }
 
 /**
@@ -147,12 +158,13 @@ export async function analyzeDomainsBatch(
     insecure: 0,
     bogus: 0,
     error: 0,
+    erroredDomains: [],
   };
   const expiresAt = computeExpiresAt(input.analysisDate, input.retentionDays);
 
   await pMap(
     input.domains,
-    async (target) => {
+    async (target, index) => {
       ctx.heartbeat({ stage: 'start', domain: target.domainName });
       const startedAt = new Date();
       let status: DnsvizAnalysisStatus = 'ERROR';
@@ -164,7 +176,7 @@ export async function analyzeDomainsBatch(
       let errorMessage: string | null = null;
 
       try {
-        probeData = await runDnsvizProbe(target.domainName);
+        probeData = await runDnsvizProbe(target.domainName, { index });
         ctx.heartbeat({ stage: 'probed', domain: target.domainName });
         grokData = await runDnsvizGrok(probeData);
         ctx.heartbeat({ stage: 'grokked', domain: target.domainName });
@@ -237,6 +249,12 @@ export async function analyzeDomainsBatch(
 
       counts.processed++;
       counts[statusToCountKey(status)]++;
+      if (status === 'ERROR') {
+        counts.erroredDomains.push({
+          domainName: target.domainName,
+          registrarKey: target.registrarKey,
+        });
+      }
       ctx.heartbeat({ stage: 'persisted', domain: target.domainName, status });
     },
     { concurrency: Math.max(1, input.perDomainConcurrency) },

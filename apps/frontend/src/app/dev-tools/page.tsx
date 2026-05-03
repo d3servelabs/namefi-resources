@@ -7,6 +7,7 @@ import {
   BarChart3,
   FileText,
   Shield,
+  ShieldCheck,
   Clock,
   History,
   Globe,
@@ -120,6 +121,15 @@ const DEV_TOOLS_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-sky-100',
         iconTextColor: 'text-sky-600',
         permissions: [Permission.FLUSH_DNS_CACHE],
+      },
+      {
+        title: 'DNSSEC Analyses',
+        description:
+          'Browse DNSViz daily-digest results, run on-demand probes for specific domains, and download chain-of-trust graphs.',
+        href: '/admin/dnsviz',
+        icon: ShieldCheck,
+        iconBgColor: 'bg-teal-100',
+        iconTextColor: 'text-teal-600',
       },
       {
         title: 'Crash Testing',

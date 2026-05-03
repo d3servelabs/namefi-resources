@@ -240,7 +240,7 @@ function DnsvizAnalysesPanel() {
       },
       {
         id: 'supportsDnssec',
-        header: 'DNSSEC',
+        header: 'Supports DNSSEC',
         cell: ({ row }) => {
           const supports = row.original.supportsDnssec;
           if (supports == null) {

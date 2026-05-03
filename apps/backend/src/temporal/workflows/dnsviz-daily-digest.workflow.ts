@@ -73,10 +73,10 @@ export interface DnsvizDailyDigestWorkflowOutput {
   analysisDate: string;
 }
 
-const DEFAULT_BATCH_SIZE = 50;
+const DEFAULT_BATCH_SIZE = 15;
 const DEFAULT_PER_DOMAIN_CONCURRENCY = 3;
-const DEFAULT_RETENTION_DAYS = 30;
-const DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS = 30;
+const DEFAULT_RETENTION_DAYS = 7;
+const DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS = 15;
 
 export async function dnsvizDailyDigestWorkflow({
   batchSize = DEFAULT_BATCH_SIZE,
@@ -163,6 +163,41 @@ export async function dnsvizDailyDigestWorkflow({
       totals.insecure += batchResult.insecure;
       totals.bogus += batchResult.bogus;
       totals.error += batchResult.error;
+
+      // One-shot retry of any domains that errored on the first pass.
+      // The retry's upserts overwrite the original ERROR rows, so we
+      // back out the original error count before adding the retry's
+      // verdicts to keep totals reflecting the final DB state.
+      if (batchResult.erroredDomains.length > 0) {
+        workflow.log.debug(
+          `Retrying ${batchResult.erroredDomains.length} errored domain(s) from batch ${i + 1}`,
+        );
+        const retryResult = await catchAndAlertLocally(
+          () =>
+            analyzeDomainsBatch({
+              domains: batchResult.erroredDomains,
+              analysisDate,
+              retentionDays,
+              workflowRunId: info.runId,
+              perDomainConcurrency,
+            }),
+          {
+            message: 'dnsviz batch retry failed',
+            details: {
+              batchIndex: i,
+              retryCount: batchResult.erroredDomains.length,
+              analysisDate,
+            },
+          },
+        );
+        if (retryResult) {
+          totals.error -= batchResult.error;
+          totals.secure += retryResult.secure;
+          totals.insecure += retryResult.insecure;
+          totals.bogus += retryResult.bogus;
+          totals.error += retryResult.error;
+        }
+      }
     }
 
     // Sleep between batches (skip after the last) to avoid being rate-

@@ -196,6 +196,40 @@ export async function dnsvizOnDemandWorkflow({
       totals.insecure += batchResult.insecure;
       totals.bogus += batchResult.bogus;
       totals.error += batchResult.error;
+
+      // One-shot retry of any domains that errored on the first pass.
+      // The retry's upserts overwrite the original ERROR rows, so back
+      // out the original error count before adding the retry's verdicts.
+      if (batchResult.erroredDomains.length > 0) {
+        workflow.log.debug(
+          `Retrying ${batchResult.erroredDomains.length} errored domain(s) from on-demand batch ${i + 1}`,
+        );
+        const retryResult = await catchAndAlertLocally(
+          () =>
+            analyzeDomainsBatch({
+              domains: batchResult.erroredDomains,
+              analysisDate,
+              retentionDays,
+              workflowRunId: info.runId,
+              perDomainConcurrency,
+            }),
+          {
+            message: 'dnsviz on-demand batch retry failed',
+            details: {
+              batchIndex: i,
+              retryCount: batchResult.erroredDomains.length,
+              analysisDate,
+            },
+          },
+        );
+        if (retryResult) {
+          totals.error -= batchResult.error;
+          totals.secure += retryResult.secure;
+          totals.insecure += retryResult.insecure;
+          totals.bogus += retryResult.bogus;
+          totals.error += retryResult.error;
+        }
+      }
     }
 
     if (delayBetweenBatchesSeconds > 0 && i < batches.length - 1) {
