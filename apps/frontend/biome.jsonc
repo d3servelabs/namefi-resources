@@ -1,5 +1,19 @@
 {
   "extends": "//",
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!temp",
+      "!**/generated",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/.vercel",
+      "!**/.turbo",
+      "!**/public/dnsviz"
+    ],
+    "maxSize": 1536000
+  },
   "linter": {
     "domains": {
       "next": "recommended"

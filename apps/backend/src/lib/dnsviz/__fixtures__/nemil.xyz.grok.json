@@ -1,0 +1,1035 @@
+{
+  ".": {
+    "status": "NOERROR",
+    "queries": {
+      "./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "./8/20326",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "8/54393",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/38696",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/20326",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ]
+  },
+  "xyz.": {
+    "status": "NOERROR",
+    "queries": {
+      "xyz./IN/DS": {
+        "answer": [
+          {
+            "id": "xyz./IN/DS",
+            "rrsig": [
+              {
+                "id": "./8/54393",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "xyz./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "xyz./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "xyz./8/18130",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "8/65206",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/18130",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ],
+    "delegation": {
+      "ds": [
+        {
+          "id": "8/3599/2",
+          "status": "INDETERMINATE_NO_DNSKEY",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+        },
+        {
+          "id": "8/18130/2",
+          "status": "VALID",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+        }
+      ],
+      "status": "SECURE"
+    }
+  },
+  "nemil.xyz.": {
+    "status": "NOERROR",
+    "queries": {
+      "nemil.xyz./IN/A": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/A",
+            "rrsig": [
+              {
+                "id": "nemil.xyz./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/NS": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/NS",
+            "rrsig": [
+              {
+                "id": "nemil.xyz./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/CNAME": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/CNAME",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/SOA": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/SOA",
+            "rrsig": [
+              {
+                "id": "nemil.xyz./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/PTR": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/PTR",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/MX": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/MX",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/TXT": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/TXT",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/AAAA": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/AAAA",
+            "rrsig": [
+              {
+                "id": "nemil.xyz./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/SRV": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/SRV",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/NAPTR": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/NAPTR",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/DS": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/DS",
+            "rrsig": [
+              {
+                "id": "xyz./8/65206",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "nemil.xyz./13/43974",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/NSEC3PARAM": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/NSEC3PARAM",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/TLSA": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/TLSA",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["337m36"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["337m36"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["337m36"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["337m36"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/CDS": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/CDS",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/CDNSKEY": {
+        "nodata": [
+          {
+            "id": "nemil.xyz./IN/CDNSKEY",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "nemil.xyz./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "nemil.xyz./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: nemil.xyz/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "nemil.xyz./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "nemil.xyz./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "nemil.xyz./IN/CAA": {
+        "answer": [
+          {
+            "id": "nemil.xyz./IN/CAA",
+            "rrsig": [
+              {
+                "id": "nemil.xyz./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "13/38234",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "13/43974",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ],
+    "delegation": {
+      "ds": [
+        {
+          "id": "13/43974/2",
+          "status": "VALID",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+        }
+      ],
+      "status": "SECURE"
+    }
+  }
+}

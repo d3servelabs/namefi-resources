@@ -18,7 +18,8 @@
       "!**/.vercel",
       "!**/.turbo",
       "!**/db/src/migrations",
-      "!**/apps/listmonk"
+      "!**/apps/listmonk",
+      "!**/apps/frontend/public/dnsviz"
     ],
     "maxSize": 1536000
   },

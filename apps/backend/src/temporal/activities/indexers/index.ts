@@ -6,6 +6,7 @@ import { triggerGenerateAndUpdateDataForDomains } from '../../schedules/generate
 import { domainExportTrackingSchedule } from '../../schedules/domain-export-tracking';
 import { triggerSyncPonderIndex } from '../../schedules/sync-ponder-index';
 import * as DomainIndexActivities from './domain-index.activities';
+import * as DnsvizActivities from './dnsviz.activities';
 import * as NftManagementReportActivities from './reporting/nft-management-report.activities';
 import * as NamefiGptDomainProcessingActivities from './namefi-gpt-domain-processing.activities';
 import * as NftMarketplaceActivities from './nft-marketplace.activities';
@@ -15,6 +16,7 @@ import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 
 export const IndexersActivities = {
   ...DomainIndexActivities,
+  ...DnsvizActivities,
   ...NftManagementReportActivities,
   triggerUpdateDomainIndex,
   ...NamefiGptDomainProcessingActivities,

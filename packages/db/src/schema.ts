@@ -30,6 +30,7 @@ import {
   boolean,
   numeric,
   check,
+  date,
   foreignKey,
   index,
   integer,
@@ -1071,6 +1072,91 @@ export const indexedDomainsTable = pgTable(
     unique('indexed_domains_registrar_domain_unique').on(
       table.registrarKey,
       table.normalizedDomainName,
+    ),
+  ],
+);
+
+/**
+ * Daily DNSSEC analysis status for an indexed domain, derived from the leaf
+ * zone's `delegation.status` field in the `dnsviz grok` JSON output.
+ *
+ * - SECURE: full DNSSEC chain of trust validates
+ * - INSECURE: zone has no DS at parent (no DNSSEC)
+ * - BOGUS: signatures or DS digests fail to validate (the actionable case)
+ * - ERROR: probe or grok itself failed before a verdict could be reached
+ */
+export const dnsvizAnalysisStatusEnum = pgEnum('dnsviz_analysis_status', [
+  'SECURE',
+  'INSECURE',
+  'BOGUS',
+  'ERROR',
+]);
+
+export type DnsvizAnalysisStatus =
+  (typeof dnsvizAnalysisStatusEnum.enumValues)[number];
+
+/**
+ * Small derived snapshot of a `dnsviz grok` result, kept under ~2 KB so it can
+ * be queried/aggregated cheaply without unpacking the full grok blob.
+ *
+ * `ignoredErrorsCount` / `ignoredWarningsCount` count the entries that were
+ * suppressed by the default `DEFAULT_IGNORED_DNSVIZ_ERROR_CODES` filter
+ * (see `apps/backend/src/lib/dnsviz/parse-grok.ts`). They're optional
+ * because rows written before the field was added don't have them set.
+ */
+export type DnsvizAnalysisSummary = {
+  delegationStatus: string | null;
+  zoneStatus: string | null;
+  parentChainStatuses: Record<string, string>;
+  topErrors: string[];
+  topWarnings: string[];
+  ignoredErrorsCount?: number;
+  ignoredWarningsCount?: number;
+};
+
+/**
+ * One row per (domain, day) DNSViz analysis. Populated by the daily digest
+ * Temporal workflow, consumed by the admin graph endpoint and the failure
+ * summary email. Bounded by the cleanup workflow which deletes rows past
+ * `expires_at`.
+ *
+ * `probe_data` and `grok_data` hold the raw dnsviz JSON outputs as jsonb;
+ * `probe_data` is required by the `/v1/dnsviz/analyses/:id/graph` endpoint
+ * which streams it through `dnsviz graph`.
+ */
+export const dnsvizAnalysesTable = pgTable(
+  'dnsviz_analyses',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    registrarKey: text('registrar_key').notNull(),
+    analysisDate: date('analysis_date').notNull(),
+    analysisStartedAt: timestamp('analysis_started_at').notNull().defaultNow(),
+    durationMs: integer('duration_ms'),
+    status: dnsvizAnalysisStatusEnum('status').notNull(),
+    errorsCount: integer('errors_count').notNull().default(0),
+    warningsCount: integer('warnings_count').notNull().default(0),
+    summary: jsonb('summary').$type<DnsvizAnalysisSummary>(),
+    probeData: jsonb('probe_data'),
+    grokData: jsonb('grok_data'),
+    errorMessage: text('error_message'),
+    workflowRunId: text('workflow_run_id'),
+    expiresAt: timestamp('expires_at').notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    index('dnsviz_analyses_domain_date_idx').on(
+      table.normalizedDomainName,
+      table.analysisDate.desc(),
+    ),
+    index('dnsviz_analyses_analysis_date_idx').on(table.analysisDate.desc()),
+    index('dnsviz_analyses_status_idx').on(table.status),
+    index('dnsviz_analyses_expires_at_idx').on(table.expiresAt),
+    unique('dnsviz_analyses_domain_date_unique').on(
+      table.normalizedDomainName,
+      table.analysisDate,
     ),
   ],
 );

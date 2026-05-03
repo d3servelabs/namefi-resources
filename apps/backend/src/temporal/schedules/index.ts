@@ -40,6 +40,8 @@ import {
   weeklyDisableAutoRenewalDynadotRegularSchedule,
 } from './weekly-disable-auto-renewal';
 import { syncPonderIndexSchedule } from './sync-ponder-index';
+import { dnsvizDailyDigestSchedule } from './dnsviz-daily-digest';
+import { dnsvizCleanupSchedule } from './dnsviz-cleanup';
 
 const logger = createLogger({ name: 'schedules' });
 
@@ -159,6 +161,8 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [weeklyDisableAutoRenewalDynadotRegularSchedule.config.scheduleId]:
     weeklyDisableAutoRenewalDynadotRegularSchedule,
   [syncPonderIndexSchedule.config.scheduleId]: syncPonderIndexSchedule,
+  [dnsvizDailyDigestSchedule.config.scheduleId]: dnsvizDailyDigestSchedule,
+  [dnsvizCleanupSchedule.config.scheduleId]: dnsvizCleanupSchedule,
 };
 
 /**
@@ -285,6 +289,23 @@ export async function getAllScheduleStatuses() {
 }
 
 // Export individual schedules for backward compatibility and direct access
+export { dnsvizDailyDigestSchedule, dnsvizCleanupSchedule };
+export {
+  submitScheduleForDnsvizDailyDigest,
+  triggerDnsvizDailyDigest,
+  pauseDnsvizDailyDigestSchedule,
+  unpauseDnsvizDailyDigestSchedule,
+  getDnsvizDailyDigestScheduleStatus,
+  deleteDnsvizDailyDigestSchedule,
+} from './dnsviz-daily-digest';
+export {
+  submitScheduleForDnsvizCleanup,
+  triggerDnsvizCleanup,
+  pauseDnsvizCleanupSchedule,
+  unpauseDnsvizCleanupSchedule,
+  getDnsvizCleanupScheduleStatus,
+  deleteDnsvizCleanupSchedule,
+} from './dnsviz-cleanup';
 export { updateDomainIndexSchedule };
 export { updatePrivyCacheSchedule };
 export { backfillNftWalletUsersSchedule };

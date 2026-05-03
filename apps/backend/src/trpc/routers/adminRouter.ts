@@ -18,6 +18,7 @@ import { adminOrdersRouter } from './admin/adminOrdersRouter';
 import { exportTrackingRouter } from './admin/exportTrackingRouter';
 import { bigQueryAuditRouter } from './admin/bigQueryAuditRouter';
 import { adminLoginHistoryRouter } from './admin/adminLoginHistoryRouter';
+import { adminDnsvizRouter } from './admin/adminDnsvizRouter';
 
 export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   isUserAdmin: protectedProcedure
@@ -44,4 +45,5 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   exportTracking: exportTrackingRouter,
   bigQueryAudit: bigQueryAuditRouter,
   loginHistory: adminLoginHistoryRouter,
+  dnsviz: adminDnsvizRouter,
 });

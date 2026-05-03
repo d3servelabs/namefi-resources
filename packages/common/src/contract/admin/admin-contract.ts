@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { adminAutoRenewalContract } from './admin-auto-renewal-contract';
 import { adminBigQueryAuditContract } from './admin-big-query-audit-contract';
 import { adminBulkBurnContract } from './admin-bulk-burn-contract';
+import { adminDnsvizContract } from './admin-dnsviz-contract';
 import { adminDomainPreferencesContract } from './admin-domain-preferences-contract';
 import { adminEmailCampaignsContract } from './admin-email-campaigns-contract';
 import { adminEppTestingContract } from './admin-epp-testing-contract';
@@ -57,6 +58,7 @@ export const adminContract = {
   exportTracking: adminExportTrackingContract,
   bigQueryAudit: adminBigQueryAuditContract,
   loginHistory: adminLoginHistoryContract,
+  dnsviz: adminDnsvizContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;

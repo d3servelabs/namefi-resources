@@ -1,0 +1,625 @@
+{
+  ".": {
+    "type": "recursive",
+    "stub": false,
+    "cookie_standin": "cccccccccccccccc",
+    "cookie_bad": "bbbbbbbbbbbbbbbb",
+    "analysis_start": "2026-05-01 12:42:28 UTC",
+    "analysis_end": "2026-05-01 12:42:29 UTC",
+    "clients_ipv4": ["100.124.188.71"],
+    "clients_ipv6": [],
+    "cookie_rdtype": "NS",
+    "explicit_delegation": true,
+    "auth_ns_ip_mapping": { "ns0.": ["100.100.100.100"] },
+    "queries": [
+      {
+        "qname": ".",
+        "qclass": "IN",
+        "qtype": "NS",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22e"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "lMmBoAABAA4AAAABAAACAAEAAAIAAQAH5MgAFAFrDHJvb3Qtc2VydmVycwNuZXQAAAACAAEAB+TIAAQBYcAeAAACAAEAB+TIAAQBZMAeAAACAAEAB+TIAAQBYsAeAAACAAEAB+TIAAQBbcAeAAACAAEAB+TIAAQBasAeAAACAAEAB+TIAAQBZcAeAAACAAEAB+TIAAQBY8AeAAACAAEAB+TIAAQBZsAeAAACAAEAB+TIAAQBbMAeAAACAAEAB+TIAAQBZ8AeAAACAAEAB+TIAAQBaMAeAAACAAEAB+TIAAQBacAeAAAuAAEAB+TIARMAAggAAAfpAGoFVtBp9CVA1HkAc9r5GM8rWwK+XGWaF9/7CGMa6K/rLtZfdWdjPju2vQJXR6Oma+KL0VyAwDWMRkRGryh+qkER3QK3A67P3hybvnVIHBpjNc2l/e2jlFK+nC/5cgH/XyypMQL5cM6fWP3UtYuwtM+flef2NtOqy4Pud3nSqPCZ+Xc3UDL6ubo4B320K8IVCtq+tAMi7W6TJ4np4dKDpojRrn1HxOPaPYi8fBQokL2hTA0fdXn1mTOgzhaEhP8uHFsPHts+MEtyOc9EvggbIqZ95HoQBSkdvpRx5tCHVaA9skKr11BvXCN4oJ0Xz4mDT8rJSUYQ6Wct6htbiMfQIqq/Xq+W4iuQDv2EtgAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 536,
+              "time_elapsed": 88,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": ".",
+        "qclass": "IN",
+        "qtype": "DNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "+H2BoAABAAQAAAABAAAwAAEAADAAAQAAAywBCAEAAwgDAQABvl0Nh9+mAAnxVQYvBC1Zc+VBayMgUm0IzTT9dopT7yWf6h9qHerYrEQiO/NCD6ep3FGP7x6a0+d7Wa1hxsVY/hD0T4OeI4ksrT1HTkW7O8ZusbsMN1ENRf9x50V1Xs7ykUQBikmpg1H0EJMgBX3vcM7ZuJq4pIDfVvsjaUr/CjGhHW1/lyonhIxslS+K4eJwAShSLYBOzCWhk1Z3lPm2GYQVmfEXHsPlSAoJjuh+VLv4ZTt00nAS2YWdZhURMc3SQddXPpqC6i5oBmnvTphc0ihH+JOBCGaxHtdf7AvRnxAzYvFAjJTq9FnTojK4kwZEyLCRK4YSVu6bIG3XYllutQAAMAABAAADLAEIAQEDCAMBAAGveo3rpJ2ZWnkq78gCY+mR79vIYTipMd6yxl1Wguq107A3OOPf3InZbaZMhsAiTZzgJRTShdowaLGQVOXnh7KWkFjpjhJWbIyAjEDAt2nh2xokob2bMeMDGEox/Hu1a4W7uoq8As1QQKREo21HaVlphJ4WrYVrtY6PrIhVIkQAMZvasiTYP8Dmaqsy/3S/6vD5HEVOaFChKVIHu9TN3o9v+wj6qXVcLjKE76AfmTk+GHhssTLx5m68ZRcxjhzoo7czfrtU0DWrV9lwbs2TUNSvrNgl5DyGaO7OiYGcr2gXr2LcT72C8OM/Zkeytr2hdfFGB/WfRjVFHmsn3ygu9z2HAAAwAAEAAAMsAQgBAQMIAwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTOiW1vkIbzxeF3+/4RgWOq7HrxRixHlFlExOLAJr5emLvN7SWXgnLh4+B5xQlNVz8Og8kvArMtNROxVQuCaSnIDdD5LKyWbRd2n9WGe2R8PzgCmr3EgVLrjyBxWezF0jLHwVN8efS3rCj/EWgvIWgb9tarpVUDK/b58Da+sqqls3eNbuv7pr+eoZG+SrDK6nWeL3c6H5Apxz7LjVc1uTIdsIXxuOLYA4/ilBmSVIzuDWfdRUfhHdY6+cn8HFRm+2hM8AnXGXws9555KrUB5qihylGa8subX2Nn6UwNR1AkUTV74bUAAC4AAQAAAywBEwAwCAAAAqMAag+cgGnz7QBPZgBcLhjMmm6LFerl4X2305de+s20HT7SCz8w7eVf4mh1l5+4CvZTid7P7pH8j1BF+AmrB8Ki3OgTwAtSKQ3GkVTD6F93hsQwh37qJh+P7uBZVBEzaaxkCJ0J1ung1114dgOuWzI56XhAGWdQk/IkV6RDKAFvdl/J8uXQcRQP0FvVHgLW4ru0CmtUA/xdcDSfw8yEYSavVJeCh2IemRn1fhLfVqFGHe1KlOfV4bPTiTJ2azCHDxEPMJ13XwFcFkYNKnMUFJJSvW21GRCaNNlsEWQ2sbT3YPjIO7uHbFWt4+YxyNkyGktQjvkqza9c7p1fTyh7L2xsMB7M7Bm29IuV33frAAApBNAAAIAAAAsAAwAHNTI1bTEyMg==",
+              "msg_size": 1150,
+              "time_elapsed": 106,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": ".",
+        "qclass": "IN",
+        "qtype": "DNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 512,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "+H2BoAABAAQAAAABAAAwAAEAADAAAQAAAywBCAEBAwgDAQABrP+0CbzJOfgx96Hl7Ij3pZJV7FMEC+QyAnOQpM6JbW+QhvPF4Xf7/hGBY6rsevFGLEeUWUTE4sAmvl6Yu83tJZeCcuHj4HnFCU1XPw6DyS8Csy01E7FVC4JpKcgN0PksrJZtF3af1YZ7ZHw/OAKavcSBUuuPIHFZ7MXSMsfBU3x59LesKP8RaC8haBv21qulVQMr9vnwNr6yqqWzd41u6/umv56hkb5KsMrqdZ4vdzofkCnHPsuNVzW5Mh2whfG44tgDj+KUGZJUjO4NZ91FR+Ed1jr5yfwcVGb7aEzwCdcZfCz3nnkqtQHmqKHKUZryy5tfY2fpTA1HUCRRNXvhtQAAMAABAAADLAEIAQADCAMBAAG+XQ2H36YACfFVBi8ELVlz5UFrIyBSbQjNNP12ilPvJZ/qH2od6tisRCI780IPp6ncUY/vHprT53tZrWHGxVj+EPRPg54jiSytPUdORbs7xm6xuww3UQ1F/3HnRXVezvKRRAGKSamDUfQQkyAFfe9wztm4mrikgN9W+yNpSv8KMaEdbX+XKieEjGyVL4rh4nABKFItgE7MJaGTVneU+bYZhBWZ8Rcew+VICgmO6H5Uu/hlO3TScBLZhZ1mFRExzdJB11c+moLqLmgGae9OmFzSKEf4k4EIZrEe11/sC9GfEDNi8UCMlOr0WdOiMriTBkTIsJErhhJW7psgbddiWW61AAAwAAEAAAMsAQgBAQMIAwEAAa96jeuknZlaeSrvyAJj6ZHv28hhOKkx3rLGXVaC6rXTsDc449/cidltpkyGwCJNnOAlFNKF2jBosZBU5eeHspaQWOmOElZsjICMQMC3aeHbGiShvZsx4wMYSjH8e7Vrhbu6irwCzVBApESjbUdpWWmEnhathWu1jo+siFUiRAAxm9qyJNg/wOZqqzL/dL/q8PkcRU5oUKEpUge71M3ej2/7CPqpdVwuMoTvoB+ZOT4YeGyxMvHmbrxlFzGOHOijtzN+u1TQNatX2XBuzZNQ1K+s2CXkPIZo7s6JgZyvaBevYtxPvYLw4z9mR7K2vaF18UYH9Z9GNUUeayffKC73PYcAAC4AAQAAAywBEwAwCAAAAqMAag+cgGnz7QBPZgBcLhjMmm6LFerl4X2305de+s20HT7SCz8w7eVf4mh1l5+4CvZTid7P7pH8j1BF+AmrB8Ki3OgTwAtSKQ3GkVTD6F93hsQwh37qJh+P7uBZVBEzaaxkCJ0J1ung1114dgOuWzI56XhAGWdQk/IkV6RDKAFvdl/J8uXQcRQP0FvVHgLW4ru0CmtUA/xdcDSfw8yEYSavVJeCh2IemRn1fhLfVqFGHe1KlOfV4bPTiTJ2azCHDxEPMJ13XwFcFkYNKnMUFJJSvW21GRCaNNlsEWQ2sbT3YPjIO7uHbFWt4+YxyNkyGktQjvkqza9c7p1fTyh7L2xsMB7M7Bm29IuV33frAAApBNAAAIAAAAsAAwAHNTI1bTEyMg==",
+              "msg_size": 1150,
+              "time_elapsed": 93,
+              "history": []
+            }
+          }
+        }
+      }
+    ]
+  },
+  "net.": {
+    "type": "recursive",
+    "stub": false,
+    "cookie_standin": "cccccccccccccccc",
+    "cookie_bad": "bbbbbbbbbbbbbbbb",
+    "analysis_start": "2026-05-01 12:42:28 UTC",
+    "analysis_end": "2026-05-01 12:42:28 UTC",
+    "clients_ipv4": ["100.124.188.71"],
+    "clients_ipv6": [],
+    "parent": ".",
+    "cookie_rdtype": "NS",
+    "explicit_delegation": true,
+    "auth_ns_ip_mapping": { "ns0.": ["100.100.100.100"] },
+    "queries": [
+      {
+        "qname": "net.",
+        "qclass": "IN",
+        "qtype": "NS",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22e"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "tdOBoAABAA4AAAABA25ldAAAAgABwAwAAgABAAJ/PQARAWYMZ3RsZC1zZXJ2ZXJzwAzADAACAAEAAn89AAQBasAjwAwAAgABAAJ/PQAEAWjAI8AMAAIAAQACfz0ABAFtwCPADAACAAEAAn89AAQBacAjwAwAAgABAAJ/PQAEAWfAI8AMAAIAAQACfz0ABAFkwCPADAACAAEAAn89AAQBY8AjwAwAAgABAAJ/PQAEAWHAI8AMAAIAAQACfz0ABAFswCPADAACAAEAAn89AAQBYsAjwAwAAgABAAJ/PQAEAWXAI8AMAAIAAQACfz0ABAFrwCPADAAuAAEAAn89AFcAAg0BAAKjAGn9Vxlp9AwxBhgDbmV0APeKSIclA1MR6i+1cgxWgUqzfNnOJEr4/tYh1Cbske+0a9Pf/V97K3jZ6lcrwob7YBt+6aAtZirbQrqG4DT0S3AAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 363,
+              "time_elapsed": 126,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "net.",
+        "qclass": "IN",
+        "qtype": "DS",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "UhmBoAABAAIAAAABA25ldAAAKwABwAwAKwABAAE7KgAkkdMNAi8L7C1ved+9HQj9IaOvktDjmkue8eP0ER//KCSQ2kU7wAwALgABAAE7KgETACsIAQABUYBqBVbQafQlQNR5AA3wrsvq4PEkLj2GOTR24LwK9np6Qcz6tilZ9BPcqHnkzyhYWcKelzDy0HMpN8lvpU4/RbYTH9v52ECvz2BbdEHBlcuVgAkLI+vBIfO0eHSgv+CqEyMJjc0tqkWYL+hVrjj5izZ+g1R4OB7TGDdeIM2vWd8nj0i8nm4GztDgV7Xxg47664pbuFkP6szvofsTb/SAN8Pl+0KlrWL7XypDsk2pbji6A+Y8iN75tNs+Pf55Je5ra/tWlc6lIRyaaXb4anEsUbVg1Vx7Ny0hoQUmDeRWDTEMmUlT/J7GpZuAIwADZFDSQjc3c2VO/YmKkHNq3Z3slh3Jcca+GrbraJMLy5YAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 378,
+              "time_elapsed": 119,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "net.",
+        "qclass": "IN",
+        "qtype": "DNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "IeKBoAABAAMAAAABA25ldAAAMAABwAwAMAABAAAArgBEAQADDbdkq2BQVvo/knxvaOheeYD+ae05HyhfaiF1wmMw87/IIOu0/zPNDLpeFAEye8h+xdCHLcpeqOgnffqvZiaHqM7ADAAwAAEAAACuAEQBAQMNHiBoGpzDRAgrDmUXXTSnl7jCX6Hx5bzkU2jSxMbVI01yS+13EyOghnCidBXU0bH2gi2w9GhYGacpU6CrtwoFNsAMAC4AAQAAAK4AVwAwDQEAAVGAagM022nvbS+R0wNuZXQA/y9vReNEcnN6cg+bx9lgtNgneJ5jy1/1wvVDCCMCKMXYiob8qW/7Y2l56kzQz5G+kXOh2+L6UQEyIfDxZuOZlQAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 302,
+              "time_elapsed": 186,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "net.",
+        "qclass": "IN",
+        "qtype": "DNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 512,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "IeKBoAABAAMAAAABA25ldAAAMAABwAwAMAABAAAArgBEAQEDDR4gaBqcw0QIKw5lF100p5e4wl+h8eW85FNo0sTG1SNNckvtdxMjoIZwonQV1NGx9oItsPRoWBmnKVOgq7cKBTbADAAwAAEAAACuAEQBAAMNt2SrYFBW+j+SfG9o6F55gP5p7TkfKF9qIXXCYzDzv8gg67T/M80Mul4UATJ7yH7F0Ictyl6o6Cd9+q9mJoeozsAMAC4AAQAAAK4AVwAwDQEAAVGAagM022nvbS+R0wNuZXQA/y9vReNEcnN6cg+bx9lgtNgneJ5jy1/1wvVDCCMCKMXYiob8qW/7Y2l56kzQz5G+kXOh2+L6UQEyIfDxZuOZlQAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 302,
+              "time_elapsed": 189,
+              "history": []
+            }
+          }
+        }
+      }
+    ]
+  },
+  "samyx.net.": {
+    "type": "recursive",
+    "stub": false,
+    "cookie_standin": "cccccccccccccccc",
+    "cookie_bad": "bbbbbbbbbbbbbbbb",
+    "analysis_start": "2026-05-01 12:42:27 UTC",
+    "analysis_end": "2026-05-01 12:42:28 UTC",
+    "clients_ipv4": ["100.124.188.71"],
+    "clients_ipv6": [],
+    "parent": "net.",
+    "cookie_rdtype": "A",
+    "explicit_delegation": true,
+    "auth_ns_ip_mapping": { "ns0.": ["100.100.100.100"] },
+    "queries": [
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "A",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22e"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "E3yBoAABAAIAAAABBXNhbXl4A25ldAAAAQABwAwAAQABAAAAGQAEGMdKIcAMAC4AAQAAABkAXQABDQIAAA4Qaf8Kdmn0VEaVWgVzYW15eANuZXQA1ROX0MkCq+s60zszhweL239E8l81rkZ77H86Ygg8oK3qxAQ7rNJdd+kiioiv3y9x3kxeCGdEajnJdRvIDnt2tgAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 170,
+              "time_elapsed": 424,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "NS",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "v2CBoAABAAMAAAABBXNhbXl4A25ldAAAAgABwAwAAgABAAABAQAPA25zMwZuYW1lZmkCaW8AwAwAAgABAAABAQAGA25zNMArwAwALgABAAABAQBdAAINAgAADhBp/pggafPh8JVaBXNhbXl4A25ldACa8XESF5sRffrcXwa5mptOwDCFkDSiTFAS7k2DqdlE+WqobmAXcQ984z1dAcyY/fAuMgxPTN/2gODMMad7yYa1AAApBNAAAIAAAAsAAwAHNTI1bTEyMg==",
+              "msg_size": 199,
+              "time_elapsed": 336,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "CNAME",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "QdCBoAABAAAABAABBXNhbXl4A25ldAAABQABwAwABgABAAABCgArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAAQoAXQAGDQIAAA4Qaf6VvWnz342VWgVzYW15eANuZXQAjA/CYiFkLdCCzXlpPfWnCmkR2/fi1mEnKXBC5vlXYo5oLQV5qOVqYncN0qdi2t3EsDG8nbU8iT7mP+Jalu61LsAMAC8AAQAAAQoAHAEABXNhbXl4A25ldAAADWIFgAxEC4kEAAAAABDADAAuAAEAAAEKAF0ALw0CAAAOEGn/GShp9GL4lVoFc2FteXgDbmV0AMOEkwpvn0wWP8RpeLh4F7wWaHj6SMO2E2z4j8wA2+l/+a2GrCajFUAdhBTGhiJO69qzXaNPG/IQZNbzn6QYL7IAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 336,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "SOA",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "CRWBoAABAAIAAAABBXNhbXl4A25ldAAABgABwAwABgABAAABCQArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAAQkAXQAGDQIAAA4Qaf8bt2n0ZYeVWgVzYW15eANuZXQAN/S3z/LVSuBULzTPWjlaGNGnQCC77DdHqebiUD6Jt9kWLs+AhmZr5JHnuWzrE0qOmkv7W/pZTQ2gMg97GCFm8QAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 209,
+              "time_elapsed": 336,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "PTR",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "GMeBoAABAAAABAABBXNhbXl4A25ldAAADAABwAwABgABAAABLAArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAASwAXQAGDQIAAA4Qaf8bt2n0ZYeVWgVzYW15eANuZXQAN/S3z/LVSuBULzTPWjlaGNGnQCC77DdHqebiUD6Jt9kWLs+AhmZr5JHnuWzrE0qOmkv7W/pZTQ2gMg97GCFm8cAMAC8AAQAAASwAHAEABXNhbXl4A25ldAAADWIFgAxEC4kEAAAAABDADAAuAAEAAAEsAF0ALw0CAAAOEGn/Ik9p9GwflVoFc2FteXgDbmV0AJb4ldK+rDD+fBfzFF7J2xrhPtN2xm7Ri5KDPNw3ScS1ot9BFZLg4Z8hizYLTxLL7MQ4+AQbKwNKmkOoEfT66zcAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 362,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "MX",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "Ya2BoAABAAMAAAABBXNhbXl4A25ldAAADwABwAwADwABAAAAGQAVAAoDbXgyDGZvcndhcmRlbWFpbMASwAwADwABAAAAGQAIAAoDbXgxwC3ADAAuAAEAAAAZAF0ADw0CAAAOEGn+3Whp9Cc4lVoFc2FteXgDbmV0AA3fYPydwWH/GiQ089sT24PpFtdGbD7aVD5x0ZSh9w1bYt0pnQ3B8E9jTj76GZxHBKI7QFGT74DZwWjHHRR7R/AAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 207,
+              "time_elapsed": 336,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "TXT",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "COOBoAABAAUAAAABBXNhbXl4A25ldAAAEAABwAwAEAABAAAAGQAmJWZvcndhcmQtZW1haWw9c2FtaXNoYWwuMTk5OEBnbWFpbC5jb23ADAAQAAEAAAAZAD49LS1uZmktcmVkaXJlY3Q9aHR0cHM6Ly9ob21hcnItc2FtaXNoYWwxOTk4Lnppb24udXNieC5tZS9ib2FyZMAMABAAAQAAABkAQ0J2PXNwZjEgaW5jbHVkZTpfc3BmLmdvb2dsZS5jb20gaW5jbHVkZTpfc3BmLm14LmNsb3VkZmxhcmUubmV0IH5hbGzADAAQAAEAAAAZAEA/RU5TMSBkbnNuYW1lLmVucy5ldGggMHg0RWVEQzE0MjUyOTFGYTUzRmQ3MTgzOUZhNUNiNDRDREEwZWEwNUIzwAwALgABAAAAGQBdABANAgAADhBp/wG+afRLjpVaBXNhbXl4A25ldACrBVgS0GF8ptNktI8bt+8hEOw+0OX3UexiweYf3GXooX4fkJzAqYRe5NTqVmNlRU/sv93d8nESss92N0X/M15vAAApBNAAAIAAAAsAAwAHNTI1bTEyMg==",
+              "msg_size": 433,
+              "time_elapsed": 336,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "AAAA",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "otmBoAABAAIAAAABBXNhbXl4A25ldAAAHAABwAwAHAABAAAAGQAQJgSogAAEAdAAAAAABBdwAMAMAC4AAQAAABkAXQAcDQIAAA4Qaf8goWn0anGVWgVzYW15eANuZXQA969x3oti80JlZEsFWgBdFxqq8B9UM/9gzDPKvor1c/1i+nBe43NzZwALW09q+HtRqXFz88F1EMbN7bCMlRwOMgAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 182,
+              "time_elapsed": 324,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "SRV",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "e7iBoAABAAAABAABBXNhbXl4A25ldAAAIQABwAwABgABAAABLAArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAASwAXQAGDQIAAA4Qaf6QZmnz2jaVWgVzYW15eANuZXQAUusNdm9biJ2cy0KkUK3p00EQRZHec60TFVBVj8nBOrkHoDq8Y2F6ZQdRuBskUcJnJ05YijaB/4g0I3zP/J0KJsAMAC8AAQAAASwAHAEABXNhbXl4A25ldAAADWIFgAwEC4kEAAAAABDADAAuAAEAAAEsAF0ALw0CAAAOEGn/K7Rp9HWElVoFc2FteXgDbmV0ADS3T1iVLx39jqAuz3D1+Ft5qAjnGBi4yWhS3UGPS41vh/7fe2ndDn8TVSr6v1O7bJiPetmnOpTZW5B54ghojnQAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 381,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "NAPTR",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "ibSBoAABAAAABAABBXNhbXl4A25ldAAAIwABwAwABgABAAABLAArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAASwAXQAGDQIAAA4Qaf6VvWnz342VWgVzYW15eANuZXQAjA/CYiFkLdCCzXlpPfWnCmkR2/fi1mEnKXBC5vlXYo5oLQV5qOVqYncN0qdi2t3EsDG8nbU8iT7mP+Jalu61LsAMAC8AAQAAASwAHAEABXNhbXl4A25ldAAADWIFgAxEC4kEAAAAABDADAAuAAEAAAEsAF0ALw0CAAAOEGn/GShp9GL4lVoFc2FteXgDbmV0AMOEkwpvn0wWP8RpeLh4F7wWaHj6SMO2E2z4j8wA2+l/+a2GrCajFUAdhBTGhiJO69qzXaNPG/IQZNbzn6QYL7IAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 389,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "DS",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "+pmBoAABAAIAAAABBXNhbXl4A25ldAAAKwABwAwAKwABAAFRgAAkq8YNAjY2Q1V4vVER/xyzin69iAIJ4Fhwve05455dJEZ8efBywAwALgABAAFRgABXACsNAgABUYBp+WH4afAXEAYYA25ldAB7at+uASsYfKLoqH/QyPDpPkiVmPJ0RhQDApNuaAS5y+aOhj7LdOveGCr9uwQ1QyO8r8pP3zj/zBmw4LC4iH0eAAApBNAAAIAAAAsAAwAHNTI1bTEyMg==",
+              "msg_size": 196,
+              "time_elapsed": 107,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "DNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "/WqBoAABAAMAAAABBXNhbXl4A25ldAAAMAABwAwAMAABAAAAPABEAQEDDa7APF0N9s6/CiI/YmXPLmL7offnaM2YufNfhYkEKAj8PlpwFrpiG16mjqFloBUAHrQESRk4XggABeBCG/8OljDADAAwAAEAAAA8AEQBAAMNV+5OjKiKRPviwGh2GFpGcwfm5tKjEbZRfcChYai14/rrfW0hHhTg8gFhzLpGJXV7p2MWxFGhk/tLI5NPmuBg3sAMAC4AAQAAADwAXQAwDQIAAA4Qaf8ZKGn0YvirxgVzYW15eANuZXQAq9uJOu1i8uDmOfObJ3gWarzIXdwcr4vtB8BL4olMVunE24oGu89x8jt98h4DDDNVSH6VjV/7guTUF+Kia79hMwAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 314,
+              "time_elapsed": 119,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "DNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 512,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "/WqBoAABAAMAAAABBXNhbXl4A25ldAAAMAABwAwAMAABAAAAPABEAQEDDa7APF0N9s6/CiI/YmXPLmL7offnaM2YufNfhYkEKAj8PlpwFrpiG16mjqFloBUAHrQESRk4XggABeBCG/8OljDADAAwAAEAAAA8AEQBAAMNV+5OjKiKRPviwGh2GFpGcwfm5tKjEbZRfcChYai14/rrfW0hHhTg8gFhzLpGJXV7p2MWxFGhk/tLI5NPmuBg3sAMAC4AAQAAADwAXQAwDQIAAA4Qaf8ZKGn0YvirxgVzYW15eANuZXQAq9uJOu1i8uDmOfObJ3gWarzIXdwcr4vtB8BL4olMVunE24oGu89x8jt98h4DDDNVSH6VjV/7guTUF+Kia79hMwAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 314,
+              "time_elapsed": 127,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "NSEC3PARAM",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "vkqBoAABAAAABAABBXNhbXl4A25ldAAAMwABwAwABgABAAABDQArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAAQ0AXQAGDQIAAA4Qaf6QZmnz2jaVWgVzYW15eANuZXQAUusNdm9biJ2cy0KkUK3p00EQRZHec60TFVBVj8nBOrkHoDq8Y2F6ZQdRuBskUcJnJ05YijaB/4g0I3zP/J0KJsAMAC8AAQAAAQ0AHAEABXNhbXl4A25ldAAADWIFgAxEC4kEAAAAABDADAAuAAEAAAENAF0ALw0CAAAOEGn/KUNp9HMTlVoFc2FteXgDbmV0AH6q78/uvaXmW07qNfWybR/Ma7OJB5PYkbT3dzNGDKWRH5dlnc4y6oSURcwS2fpMCOzJU8Y2kUE4gu1xsgKzWu4AACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 336,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "TLSA",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "DPyBoAABAAAABAABBXNhbXl4A25ldAAANAABwAwABgABAAABLAArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAASwAXQAGDQIAAA4Qaf6VvWnz342VWgVzYW15eANuZXQAjA/CYiFkLdCCzXlpPfWnCmkR2/fi1mEnKXBC5vlXYo5oLQV5qOVqYncN0qdi2t3EsDG8nbU8iT7mP+Jalu61LsAMAC8AAQAAASwAHAEABXNhbXl4A25ldAAADWIFgAxEC4EEAAAAABDADAAuAAEAAAEsAF0ALw0CAAAOEGn/JtJp9HCilVoFc2FteXgDbmV0APWBT2S69z/xhkwfnYazg0ww0NUq8Txa8FB2ghdMjhDU2ksojx9HHe/BPqJ2vQGzJP5z0N0R659rrhIWaDr5wpAAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 403,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "CDS",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "vaWBoAABAAAABAABBXNhbXl4A25ldAAAOwABwAwABgABAAABCQArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAAQkAXQAGDQIAAA4Qaf6VvWnz342VWgVzYW15eANuZXQAjA/CYiFkLdCCzXlpPfWnCmkR2/fi1mEnKXBC5vlXYo5oLQV5qOVqYncN0qdi2t3EsDG8nbU8iT7mP+Jalu61LsAMAC8AAQAAAQkAHAEABXNhbXl4A25ldAAADWIFgAxEC4kEAAAAABDADAAuAAEAAAEJAF0ALw0CAAAOEGn/GShp9GL4lVoFc2FteXgDbmV0AMOEkwpvn0wWP8RpeLh4F7wWaHj6SMO2E2z4j8wA2+l/+a2GrCajFUAdhBTGhiJO69qzXaNPG/IQZNbzn6QYL7IAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 333,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "CDNSKEY",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "426BoAABAAAABAABBXNhbXl4A25ldAAAPAABwAwABgABAAABCgArA25zMwZuYW1lZmkCaW8ABWFkbWluwCt4lcPFAAAAPAAAAB4AAAEsAAAAPMAMAC4AAQAAAQoAXQAGDQIAAA4Qaf8bt2n0ZYeVWgVzYW15eANuZXQAN/S3z/LVSuBULzTPWjlaGNGnQCC77DdHqebiUD6Jt9kWLs+AhmZr5JHnuWzrE0qOmkv7W/pZTQ2gMg97GCFm8cAMAC8AAQAAAQoAHAEABXNhbXl4A25ldAAADWIFgAxEC4kEAAAAABDADAAuAAEAAAEKAF0ALw0CAAAOEGn/Ik9p9GwflVoFc2FteXgDbmV0AJb4ldK+rDD+fBfzFF7J2xrhPtN2xm7Ri5KDPNw3ScS1ot9BFZLg4Z8hizYLTxLL7MQ4+AQbKwNKmkOoEfT66zcAACkE0AAAgAAACwADAAc1MjVtMTIy",
+              "msg_size": 354,
+              "time_elapsed": 332,
+              "history": []
+            }
+          }
+        }
+      },
+      {
+        "qname": "samyx.net.",
+        "qclass": "IN",
+        "qtype": "CAA",
+        "options": {
+          "flags": 256,
+          "edns_version": 0,
+          "edns_max_udp_payload": 4096,
+          "edns_flags": 32768,
+          "edns_options": [[3, ""], [10, "c3162619fe4cf22ecccccccccccccccc"]],
+          "tcp": false
+        },
+        "responses": {
+          "100.100.100.100": {
+            "100.124.188.71": {
+              "message": "ci6BoAABAAMAAAABBXNhbXl4A25ldAABAQABwAwBAQABAAAAPAASAAVpc3N1ZXplcm9zc2wuY29twAwBAQABAAAAPAAWAAVpc3N1ZWxldHNlbmNyeXB0Lm9yZ8AMAC4AAQAAADwAXQEBDQIAAA4Qaf8m0mn0cKKVWgVzYW15eANuZXQAqJYZnvoM6iTwOE+E5QAAPPsNOBYDYZqraPLW0sIRaRepEbWlLRtHYQVDwedYVZqVdMjqZYjUWI63b8X7+KNUrgAAKQTQAACAAAALAAMABzUyNW0xMjI=",
+              "msg_size": 218,
+              "time_elapsed": 353,
+              "history": []
+            }
+          }
+        }
+      }
+    ]
+  },
+  "_meta._dnsviz.": { "version": 1.2, "names": ["samyx.net."] }
+}

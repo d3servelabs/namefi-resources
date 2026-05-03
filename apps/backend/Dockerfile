@@ -21,10 +21,22 @@ ENV NODE_OPTIONS="--max-old-space-size=2048"
 ENV CI="true"
 
 RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
-        apt-get update && apt-get install -y bash curl dnsutils; \
+        apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils; \
     else \
         echo "USING CACHED IMAGE"; \
     fi
+# `dns-root-data` is the Debian-maintained IANA root trust anchor —
+# `/usr/share/dns/root.key` (DNSKEY in zone-file format). dnsviz needs
+# this passed via `-t` to validate the chain back to the root; without
+# it, `dnsviz grok` can mark intermediate zones SECURE based only on
+# local chain integrity, not full chain-of-trust validation, which is
+# why probes were failing in deployed environments.
+RUN apt-get install -y dnsviz dns-root-data
+
+# Picked up by `runDnsvizGrok` / `runDnsvizGraphStream` in
+# apps/backend/src/lib/dnsviz/runner.ts. Override per-environment if a
+# different anchor file is preferred.
+# ENV DNSVIZ_TRUSTED_KEYS_FILE=/usr/share/dns/root.key
 
 
 #

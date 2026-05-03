@@ -39,9 +39,14 @@ import { validateApiKey } from './lib/validate-api-key';
 import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema-def';
 import { rdapRouter } from './routers/rdap';
 import { whoisRouter } from './routers/whois';
+import { dnsvizRouter } from './routers/dnsviz';
 import { x402Router } from './routers/x402';
 import { mppRouter } from './routers/mpp';
 import { mlsRssProxyRouter } from './routers/mls-rss-proxy';
+import {
+  rawGithubProxyRouter,
+  RAW_GITHUB_PROXY_MOUNT,
+} from './routers/raw-github-proxy';
 import { llmsTxtRouter } from './routers/llms-txt';
 import { auditLogsTestRouter } from './routers/audit-logs-test';
 
@@ -171,6 +176,7 @@ app.route('v1/public/ai', publicAiRouter);
 app.route('v1/public', publicRouter);
 app.route('v1/rdap', rdapRouter);
 app.route('v1/whois', whoisRouter);
+app.route('v1/dnsviz', dnsvizRouter);
 app.route('/webhooks', webhooksRouter);
 app.route('/altcha', altchaRouter);
 app.route('/monitors', monitorsRouter);
@@ -183,6 +189,7 @@ app.route('x402', x402Router);
 app.route('mpp', mppRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
+app.route(RAW_GITHUB_PROXY_MOUNT, rawGithubProxyRouter);
 app.route('llms.txt', llmsTxtRouter);
 app.route('audit-logs-test', auditLogsTestRouter);
 

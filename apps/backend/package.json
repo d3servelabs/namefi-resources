@@ -8,6 +8,7 @@
     "./openapi": "./src/routers/openapi.ts"
   },
   "imports": {
+    "#lib/dnsviz": "./src/lib/dnsviz/index.ts",
     "#lib/env": "./src/lib/env/index.ts",
     "#lib/login-notification": "./src/lib/login-notification/index.ts",
     "#lib/*": "./src/lib/*.ts",

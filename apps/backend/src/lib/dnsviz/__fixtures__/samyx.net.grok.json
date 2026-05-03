@@ -1,0 +1,951 @@
+{
+  ".": {
+    "status": "NOERROR",
+    "queries": {
+      "./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "./8/20326",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "8/54393",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/38696",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/20326",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ]
+  },
+  "net.": {
+    "status": "NOERROR",
+    "queries": {
+      "net./IN/DS": {
+        "answer": [
+          {
+            "id": "net./IN/DS",
+            "rrsig": [
+              {
+                "id": "./8/54393",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "net./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "net./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "net./13/37331",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "13/1560",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "13/37331",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ],
+    "delegation": {
+      "ds": [
+        {
+          "id": "13/37331/2",
+          "status": "VALID",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+        }
+      ],
+      "status": "SECURE"
+    }
+  },
+  "samyx.net.": {
+    "status": "NOERROR",
+    "queries": {
+      "samyx.net./IN/A": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/A",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/NS": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/NS",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/CNAME": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/CNAME",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/SOA": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/SOA",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/PTR": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/PTR",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/MX": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/MX",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/TXT": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/TXT",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/AAAA": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/AAAA",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/SRV": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/SRV",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/NAPTR": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/NAPTR",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/DS": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/DS",
+            "rrsig": [
+              {
+                "id": "net./13/1560",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/43974",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/NSEC3PARAM": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/NSEC3PARAM",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/TLSA": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/TLSA",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/CDS": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/CDS",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/CDNSKEY": {
+        "nodata": [
+          {
+            "id": "samyx.net./IN/CDNSKEY",
+            "proof": [
+              {
+                "id": "NSEC",
+                "nsec": [
+                  {
+                    "id": "samyx.net./IN/NSEC",
+                    "rrsig": [
+                      {
+                        "id": "samyx.net./13/38234",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "errors": [
+                  {
+                    "description": "The following queries resulted in an answer response, even though the bitmap in the NSEC RR indicates that the queried records don't exist: samyx.net/CAA  See RFC 4035, Sec. 3.1.3.1.",
+                    "code": "EXISTING_TYPE_NOT_IN_BITMAP"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "samyx.net./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "samyx.net./13/38234",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "samyx.net./IN/CAA": {
+        "answer": [
+          {
+            "id": "samyx.net./IN/CAA",
+            "rrsig": [
+              {
+                "id": "samyx.net./13/38234",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "13/43974",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "13/38234",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ],
+    "delegation": {
+      "ds": [
+        {
+          "id": "13/43974/2",
+          "status": "VALID",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+        }
+      ],
+      "status": "SECURE"
+    }
+  }
+}

@@ -1,0 +1,623 @@
+{
+  ".": {
+    "status": "NOERROR",
+    "queries": {
+      "./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "./8/20326",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "8/20326",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/54393",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/38696",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ]
+  },
+  "dev.": {
+    "status": "NOERROR",
+    "queries": {
+      "dev./IN/DS": {
+        "answer": [
+          {
+            "id": "dev./IN/DS",
+            "rrsig": [
+              {
+                "id": "./8/54393",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "dev./IN/DNSKEY": {
+        "answer": [
+          {
+            "id": "dev./IN/DNSKEY",
+            "rrsig": [
+              {
+                "id": "dev./8/60074",
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": [
+                  "UDP_+_EDNS0_4096_D_NK",
+                  "UDP_+_EDNS0_512_D_NK"
+                ]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dnskey": [
+      {
+        "id": "8/60074",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      },
+      {
+        "id": "8/27810",
+        "servers": ["100.100.100.100"],
+        "ns_names": ["ns0."],
+        "nsid_values": ["525m122"],
+        "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"]
+      }
+    ],
+    "delegation": {
+      "ds": [
+        {
+          "id": "8/60074/2",
+          "status": "VALID",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+        }
+      ],
+      "status": "SECURE"
+    }
+  },
+  "namefi.dev.": {
+    "status": "NOERROR",
+    "queries": {
+      "namefi.dev./IN/A": {
+        "answer": [
+          {
+            "id": "namefi.dev./IN/A",
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/NS": {
+        "answer": [
+          {
+            "id": "namefi.dev./IN/NS",
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/CNAME": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/CNAME",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/SOA": {
+        "answer": [
+          {
+            "id": "namefi.dev./IN/SOA",
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/PTR": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/PTR",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/MX": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/MX",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/TXT": {
+        "answer": [
+          {
+            "id": "namefi.dev./IN/TXT",
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/AAAA": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/AAAA",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/SRV": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/SRV",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/NAPTR": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/NAPTR",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/DS": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/DS",
+            "proof": [
+              {
+                "id": "NSEC3",
+                "nsec3": [
+                  {
+                    "id": "S924266REIQV5MO07D9EA308U82AQVOM.dev./IN/NSEC3",
+                    "rrsig": [
+                      {
+                        "id": "dev./8/27810",
+                        "status": "VALID",
+                        "servers": ["100.100.100.100"],
+                        "ns_names": ["ns0."],
+                        "nsid_values": ["525m122"],
+                        "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                      }
+                    ]
+                  }
+                ],
+                "status": "VALID",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."],
+                "nsid_values": ["525m122"],
+                "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+                "warnings": [
+                  {
+                    "description": "The salt value for an NSEC3 record should be empty.  See RFC 9276, Sec. 3.1.",
+                    "code": "NONEMPTY_NSEC3_SALT"
+                  }
+                ],
+                "errors": [
+                  {
+                    "description": "An iterations count of 0 must be used in NSEC3 records to alleviate computational burdens.  See RFC 9276, Sec. 3.1.",
+                    "code": "NONZERO_NSEC3_ITERATION_COUNT"
+                  }
+                ]
+              }
+            ],
+            "soa": [
+              {
+                "id": "dev./IN/SOA",
+                "rrsig": [
+                  {
+                    "id": "dev./8/27810",
+                    "status": "VALID",
+                    "servers": ["100.100.100.100"],
+                    "ns_names": ["ns0."],
+                    "nsid_values": ["525m122"],
+                    "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                  }
+                ],
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/DNSKEY": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/DNSKEY",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK", "UDP_+_EDNS0_512_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/NSEC3PARAM": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/NSEC3PARAM",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/TLSA": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/TLSA",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/CDS": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/CDS",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/CDNSKEY": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/CDNSKEY",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      },
+      "namefi.dev./IN/CAA": {
+        "nodata": [
+          {
+            "id": "namefi.dev./IN/CAA",
+            "soa": [
+              {
+                "id": "namefi.dev./IN/SOA",
+                "servers": ["100.100.100.100"],
+                "ns_names": ["ns0."]
+              }
+            ],
+            "servers": ["100.100.100.100"],
+            "ns_names": ["ns0."],
+            "nsid_values": ["525m122"],
+            "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+            "cookie_status": {
+              "100.100.100.100": {
+                "request": "CLIENT_COOKIE_ONLY",
+                "response": "NO_COOKIE_OPT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "delegation": {
+      "insecurity_proof": [
+        {
+          "id": "NSEC3",
+          "nsec3": [
+            {
+              "id": "S924266REIQV5MO07D9EA308U82AQVOM.dev./IN/NSEC3",
+              "rrsig": [
+                {
+                  "id": "dev./8/27810",
+                  "status": "VALID",
+                  "servers": ["100.100.100.100"],
+                  "ns_names": ["ns0."],
+                  "nsid_values": ["525m122"],
+                  "query_options": ["UDP_+_EDNS0_4096_D_NK"]
+                }
+              ]
+            }
+          ],
+          "status": "VALID",
+          "servers": ["100.100.100.100"],
+          "ns_names": ["ns0."],
+          "nsid_values": ["525m122"],
+          "query_options": ["UDP_+_EDNS0_4096_D_NK"],
+          "warnings": [
+            {
+              "description": "The salt value for an NSEC3 record should be empty.  See RFC 9276, Sec. 3.1.",
+              "code": "NONEMPTY_NSEC3_SALT"
+            }
+          ],
+          "errors": [
+            {
+              "description": "An iterations count of 0 must be used in NSEC3 records to alleviate computational burdens.  See RFC 9276, Sec. 3.1.",
+              "code": "NONZERO_NSEC3_ITERATION_COUNT"
+            }
+          ]
+        }
+      ],
+      "status": "INSECURE"
+    }
+  }
+}
