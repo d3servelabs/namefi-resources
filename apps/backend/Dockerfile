@@ -20,18 +20,15 @@ ENV ENVIRONMENT=production
 ENV NODE_OPTIONS="--max-old-space-size=2048"
 ENV CI="true"
 
+# `dns-root-data` is the Debian-maintained IANA root trust anchor —
+# `/usr/share/dns/root.key` (DNSKEY in zone-file format).
 RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
-        apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils; \
+        apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils dns-root-data; \
+        apt-get install -y dnsviz; \
+        rm -rf /var/lib/apt/lists/*; \
     else \
         echo "USING CACHED IMAGE"; \
     fi
-# `dns-root-data` is the Debian-maintained IANA root trust anchor —
-# `/usr/share/dns/root.key` (DNSKEY in zone-file format). dnsviz needs
-# this passed via `-t` to validate the chain back to the root; without
-# it, `dnsviz grok` can mark intermediate zones SECURE based only on
-# local chain integrity, not full chain-of-trust validation, which is
-# why probes were failing in deployed environments.
-RUN apt-get install -y dnsviz dns-root-data
 
 # Picked up by `runDnsvizGrok` / `runDnsvizGraphStream` in
 # apps/backend/src/lib/dnsviz/runner.ts. Override per-environment if a
@@ -46,8 +43,14 @@ RUN apt-get install -y dnsviz dns-root-data
 #
 FROM ${BASE_PRUNER} AS base_pruner
 WORKDIR /app
+
+ARG BASE_PRUNER=node:jod-bullseye-slim
 # Install turbo globally
-RUN npm install -g turbo@2.9.5
+RUN if [ "$BASE_PRUNER" = "node:jod-bullseye-slim" ]; then \
+        npm install -g turbo@2.9.5; \
+    else \
+        echo "USING CACHED IMAGE"; \
+    fi
 
 FROM base_pruner AS pruner
 # Copy the entire monorepo
