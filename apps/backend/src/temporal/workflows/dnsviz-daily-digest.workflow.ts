@@ -73,8 +73,8 @@ export interface DnsvizDailyDigestWorkflowOutput {
   analysisDate: string;
 }
 
-const DEFAULT_BATCH_SIZE = 11;
-const DEFAULT_PER_DOMAIN_CONCURRENCY = 3;
+const DEFAULT_BATCH_SIZE = 10;
+const DEFAULT_PER_DOMAIN_CONCURRENCY = 5;
 const DEFAULT_RETENTION_DAYS = 7;
 const DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS = 15;
 
