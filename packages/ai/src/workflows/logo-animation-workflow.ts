@@ -348,6 +348,7 @@ function buildSheetGuidedAnimationPrompt(input: {
     'Create an 8-second 16:9 logo animation from scratch using the provided references for guidance.',
     'Use [Image 1] only as the exact logo identity and final lockup reference.',
     'Use [Image 2] only as the animation sheet/storyboard reference for timing, composition, transformation, and easing guidance.',
+    'Do not render, copy, preserve, or animate any non-logo [Image 2] annotation artifacts in the video: arrows, labels, captions, timing bars, timecodes, panel borders, callout lines, guide marks, storyboard frames, or explanatory text are planning instructions only, never visual content.',
     'Keep the overall read as a premium logo animation: the logo is always the hero, and every movement should clarify its construction, identity, and final lockup.',
     `Brand-specific motion direction: ${input.direction.trim()}.`,
     `Animation-sheet video direction: ${input.videoPrompt.trim()}.`,

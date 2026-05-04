@@ -374,6 +374,9 @@ describe('runLogoAnimationWorkflow', () => {
     expect(generateVideoCall.prompt).toEqual(
       expect.stringContaining('Use [Image 2] only as the animation sheet'),
     );
+    expect(generateVideoCall.prompt).toEqual(
+      expect.stringContaining('non-logo [Image 2] annotation artifacts'),
+    );
     expect(generateVideoCall.providerOptions.bytedance).toEqual(
       expect.objectContaining({
         referenceImages: [
