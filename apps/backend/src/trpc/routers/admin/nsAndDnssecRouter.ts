@@ -4,10 +4,21 @@ import {
   namefiNftView,
   usersTable,
   indexedDomainsTable,
+  domainConfigTable,
 } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, asc, eq, inArray, sql, type SQL } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  eq,
+  inArray,
+  like,
+  not,
+  or,
+  sql,
+  type SQL,
+} from 'drizzle-orm';
 import {
   buildWhereClause,
   buildSortClause,
@@ -33,6 +44,7 @@ import {
   submitNameserversChangeWorkflow,
   submitResetNameserversWorkflow,
 } from '#lib/domains/nameservers';
+import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { logger } from '#lib/logger';
 import { ResourceType } from '#lib/auditor';
 import { config } from '#lib/env';
@@ -164,7 +176,7 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
     .input(adminNsAndDnssecContract.listDomainsNsAndDnssec.input)
     .output(adminNsAndDnssecContract.listDomainsNsAndDnssec.output)
     .query(async ({ input }) => {
-      const { page, pageSize, filters, sorting } = input;
+      const { page, pageSize, filters, sorting, pbnFilter } = input;
       const offset = (page - 1) * pageSize;
 
       await ensurePrivyTableFresh();
@@ -173,6 +185,13 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
         userId: usersTable.id,
         normalizedDomainName: namefiNftView.normalizedDomainName,
         ownerAddress: namefiNftView.ownerAddress,
+        // Text-cast so the drizzler filter middleware can apply
+        // eq/neq/isNull/isNotNull. NULL appears when no `domainConfigTable`
+        // row exists for the domain (LEFT JOIN miss); the underlying
+        // column itself is `notNull default false`.
+        zoneHasActiveDnssec: sql<
+          string | null
+        >`${domainConfigTable.dnssecEnabled}::text`,
       };
 
       const baseQuery = db
@@ -192,6 +211,13 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
           namefiNftView,
           sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
         )
+        .leftJoin(
+          domainConfigTable,
+          eq(
+            domainConfigTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
+        )
         .$dynamic();
 
       const whereClauses: SQL[] = [];
@@ -201,6 +227,33 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
           filters as FilterOptions<any>,
         );
         if (drizzlerWhere) whereClauses.push(drizzlerWhere);
+      }
+
+      // PBN-subdomain filter: derived predicate, not a single-column
+      // comparison, so it lives outside the drizzler middleware. We OR
+      // together a `LIKE '%.<parent>'` clause for each PBN parent, then
+      // either include or exclude the match depending on the mode. Using
+      // Drizzle's parametrized `like` builders — never raw SQL.
+      if (pbnFilter !== 'all') {
+        const parents = await getPoweredByNamefi3PDomains();
+        const subdomainClauses = parents.map((parent) =>
+          like(namefiNftView.normalizedDomainName, `%.${parent}`),
+        );
+        const subdomainPredicate = subdomainClauses.length
+          ? or(...subdomainClauses)
+          : undefined;
+        if (subdomainPredicate) {
+          whereClauses.push(
+            pbnFilter === 'pbnOnly'
+              ? subdomainPredicate
+              : (not(subdomainPredicate) as SQL),
+          );
+        } else if (pbnFilter === 'pbnOnly') {
+          // No PBN parents configured — `pbnOnly` matches nothing. Force
+          // an unsatisfiable clause so the page renders zero rows
+          // consistently between data and count queries.
+          whereClauses.push(sql`FALSE`);
+        }
       }
 
       let query = baseQuery;
@@ -223,6 +276,13 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
         .innerJoin(
           namefiNftView,
           sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          domainConfigTable,
+          eq(
+            domainConfigTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
         )
         .$dynamic();
 

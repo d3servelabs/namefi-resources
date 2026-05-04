@@ -52,10 +52,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@namefi-astra/ui/components/shadcn/select';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { UserWalletAvatar } from '@/components/user-avatar';
 import { getTemporalWorkflowUrl } from '@/components/admin/temporal-workflow-url';
+
+type PbnFilter = 'all' | 'pbnOnly' | 'excludePbn';
 
 type ActiveWorkflow = {
   operation:
@@ -87,6 +98,7 @@ type NsAndDnssecRow = {
 type TemporalConfig = { apiUrl: string; namespace: string };
 
 const DEFAULT_COLUMN_VISIBILITY = {
+  user: true,
   nameservers: true,
   dnssec: true,
   pendingWorkflows: true,
@@ -161,6 +173,8 @@ function NsAndDnssecTable() {
     drizzlerFilterState,
     500,
   );
+  const [pbnFilter, setPbnFilter] = useState<PbnFilter>('all');
+  const [debouncedPbnFilter] = useDebounceValue(pbnFilter, 500);
 
   const backendFilters = useMemo(
     () =>
@@ -185,6 +199,7 @@ function NsAndDnssecTable() {
         pageSize,
         filters: backendFilters,
         sorting: backendSorting,
+        pbnFilter: debouncedPbnFilter,
       },
       {
         // Refresh active workflow / DNSSEC info regularly while the page
@@ -217,6 +232,17 @@ function NsAndDnssecTable() {
         type: 'text',
         columnId: 'ownerAddress',
       },
+      zoneHasActiveDnssec: {
+        id: 'zoneHasActiveDnssec',
+        label: 'Zone Signing',
+        type: 'select',
+        columnId: 'zoneHasActiveDnssec',
+        options: [
+          { value: 'true', label: 'On' },
+          { value: 'false', label: 'Off' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
     },
     onDrizzlerFilterChange: (newFilterState) => {
       setPage(1);
@@ -238,6 +264,13 @@ function NsAndDnssecTable() {
             {row.original.normalizedDomainName}
           </AutoTruncateTextV2>
         ),
+        size: 220,
+      },
+      {
+        id: 'user',
+        header: 'User',
+        enableSorting: false,
+        cell: ({ row }) => <UserCell row={row.original} />,
         size: 220,
       },
       {
@@ -277,29 +310,91 @@ function NsAndDnssecTable() {
   );
 
   return (
-    <ExtensibleDataTable<NsAndDnssecRow, typeof filterStrategy>
-      filterStrategy={filterStrategy}
-      columns={columns}
-      data={query.data?.data ?? []}
-      isLoading={query.isLoading}
-      isFetching={query.isFetching}
-      page={page}
-      pageSize={pageSize}
-      totalPages={query.data?.pagination.totalPages ?? 1}
-      totalCount={query.data?.pagination.totalCount ?? 0}
-      onPageChange={setPage}
-      onPageSizeChange={(size) => {
-        setPage(1);
-        setPageSize(size);
-      }}
-      sorting={sorting}
-      onSortingChange={setSorting}
-      emptyMessage="No domains found"
-      loadingMessage="Loading NS & DNSSEC..."
-      columnVisibility={columnVisibility}
-      onColumnVisibilityChange={setColumnVisibility}
-      onResetPreferences={resetToDefaults}
-    />
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <Label htmlFor="ns-pbn-filter" className="text-sm">
+          PoweredByNamefi
+        </Label>
+        <Select
+          value={pbnFilter}
+          onValueChange={(value) => {
+            setPage(1);
+            setPbnFilter(value as PbnFilter);
+          }}
+        >
+          <SelectTrigger id="ns-pbn-filter" className="w-[280px]">
+            <SelectValue placeholder="All domains" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All domains</SelectItem>
+            <SelectItem value="pbnOnly">
+              PoweredByNamefi subdomains only
+            </SelectItem>
+            <SelectItem value="excludePbn">
+              Exclude PoweredByNamefi subdomains
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <ExtensibleDataTable<NsAndDnssecRow, typeof filterStrategy>
+        filterStrategy={filterStrategy}
+        columns={columns}
+        data={query.data?.data ?? []}
+        isLoading={query.isLoading}
+        isFetching={query.isFetching}
+        page={page}
+        pageSize={pageSize}
+        totalPages={query.data?.pagination.totalPages ?? 1}
+        totalCount={query.data?.pagination.totalCount ?? 0}
+        onPageChange={setPage}
+        onPageSizeChange={(size) => {
+          setPage(1);
+          setPageSize(size);
+        }}
+        sorting={sorting}
+        onSortingChange={setSorting}
+        emptyMessage="No domains found"
+        loadingMessage="Loading NS & DNSSEC..."
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
+        onResetPreferences={resetToDefaults}
+      />
+    </div>
+  );
+}
+
+function UserCell({ row }: { row: NsAndDnssecRow }) {
+  const userId = row.userId;
+  const ownerAddress = row.ownerAddress;
+  const tail = ownerAddress
+    ? `${ownerAddress.slice(0, 6)}…${ownerAddress.slice(-4)}`
+    : null;
+  return (
+    <div className="flex items-center gap-2">
+      <UserWalletAvatar
+        address={ownerAddress ?? undefined}
+        userId={userId ?? undefined}
+        className="size-6 rounded-md"
+      />
+      <div className="flex flex-col leading-tight">
+        {userId ? (
+          <AutoTruncateTextV2
+            initialCharactersCountToDisplay={14}
+            minCharactersToDisplay={10}
+            className="text-xs"
+          >
+            {userId}
+          </AutoTruncateTextV2>
+        ) : (
+          <span className="text-xs text-amber-600">No user</span>
+        )}
+        {tail ? (
+          <span className="font-mono text-[10px] text-muted-foreground">
+            {tail}
+          </span>
+        ) : null}
+      </div>
+    </div>
   );
 }
 

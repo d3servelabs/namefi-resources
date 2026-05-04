@@ -20,6 +20,16 @@ const listInputSchema = z.object({
   pageSize: z.number().min(1).max(100).default(25),
   filters: z.any().optional(),
   sorting: z.any().optional(),
+  /**
+   * Filter rows by whether the domain is a subdomain of any
+   * PoweredByNamefi (PBN) parent (third-party domains we manage DNS for).
+   * - `all` (default): no PBN constraint
+   * - `pbnOnly`: only rows whose normalizedDomainName ends with `.<pbn-parent>`
+   * - `excludePbn`: drop those rows
+   * The PBN parent list is resolved server-side from
+   * `getPoweredByNamefi3PDomains()` (Redis-cached 12h).
+   */
+  pbnFilter: z.enum(['all', 'pbnOnly', 'excludePbn']).default('all'),
 });
 
 /**
