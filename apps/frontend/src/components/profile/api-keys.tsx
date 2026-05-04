@@ -27,24 +27,49 @@ import {
   ShieldOff,
   Trash2,
   Clock,
+  Settings2,
 } from 'lucide-react';
 import { type HTMLAttributes, useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { CreateApiKeyDialog } from './create-api-key-dialog';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import {
+  API_KEY_RESTRICTIONS_FLAG,
+  CreateApiKeyDialog,
+  PUBLIC_PRIVATE_KEY_FLAG,
+} from './create-api-key-dialog';
+import {
+  EditApiKeyDialog,
+  type EditableApiKeyRestrictions,
+} from './edit-api-key-dialog';
 import { RevokeApiKeyDialog } from './revoke-api-key-dialog';
 import { formatDistanceToNow } from 'date-fns';
 
 interface ApiKeysProps extends HTMLAttributes<HTMLDivElement> {}
 const SHOW_COPY = false;
+const API_KEY_ADMIN_FLAGS = [
+  PUBLIC_PRIVATE_KEY_FLAG,
+  API_KEY_RESTRICTIONS_FLAG,
+];
+
 export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
+  useRegisterAdminFlags(API_KEY_ADMIN_FLAGS);
+
   const trpc = useTRPC();
+  const [enableApiKeyRestrictions] = useAdminFeatureFlag(
+    API_KEY_RESTRICTIONS_FLAG,
+  );
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isRevokeDialogOpen, setIsRevokeDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [keyToRevoke, setKeyToRevoke] = useState<{
     id: string;
     name: string;
   } | null>(null);
+  const [keyToEdit, setKeyToEdit] = useState<EditableApiKeyRestrictions | null>(
+    null,
+  );
 
   const {
     data: apiKeys,
@@ -64,6 +89,33 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
     setIsRevokeDialogOpen(true);
   }, []);
 
+  const handleEditClick = useCallback(
+    (
+      key: Pick<EditableApiKeyRestrictions, 'id' | 'name' | 'type'> &
+        Partial<
+          Pick<
+            EditableApiKeyRestrictions,
+            | 'allowedIps'
+            | 'allowedOrigins'
+            | 'allowBrowserRequests'
+            | 'allowServerRequests'
+          >
+        >,
+    ) => {
+      setKeyToEdit({
+        id: key.id,
+        name: key.name,
+        type: key.type,
+        allowedIps: key.allowedIps ?? null,
+        allowedOrigins: key.allowedOrigins ?? null,
+        allowBrowserRequests: key.allowBrowserRequests ?? false,
+        allowServerRequests: key.allowServerRequests ?? false,
+      });
+      setIsEditDialogOpen(true);
+    },
+    [],
+  );
+
   const handleCreateSuccess = useCallback(() => {
     refetch();
   }, [refetch]);
@@ -72,6 +124,12 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
     refetch();
     setIsRevokeDialogOpen(false);
     setKeyToRevoke(null);
+  }, [refetch]);
+
+  const handleEditSuccess = useCallback(() => {
+    refetch();
+    setIsEditDialogOpen(false);
+    setKeyToEdit(null);
   }, [refetch]);
 
   const getKeyTypeIcon = (type: string) => {
@@ -234,6 +292,28 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                     </TooltipProvider>
                   )}
 
+                  {enableApiKeyRestrictions &&
+                    key.isActive &&
+                    key.type === 'PLAIN' && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => handleEditClick(key)}
+                                aria-label="Edit API key restrictions"
+                              />
+                            }
+                          >
+                            <Settings2 className="h-4 w-4" />
+                          </TooltipTrigger>
+                          <TooltipContent>Edit restrictions</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+
                   {key.isActive && (
                     <TooltipProvider>
                       <Tooltip>
@@ -274,6 +354,15 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
         keyToRevoke={keyToRevoke}
         onSuccess={handleRevokeSuccess}
       />
+
+      {enableApiKeyRestrictions && (
+        <EditApiKeyDialog
+          isOpen={isEditDialogOpen}
+          onOpenChange={setIsEditDialogOpen}
+          apiKey={keyToEdit}
+          onSuccess={handleEditSuccess}
+        />
+      )}
     </Card>
   );
 };

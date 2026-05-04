@@ -2100,6 +2100,29 @@ export const apiKeysTable = pgTable(
     // Last time the key was used for authentication
     lastUsedAt: timestamp('last_used_at'),
 
+    // ============ PLAIN key restrictions ============
+    // These fields only apply to PLAIN keys, not PUBLIC_PRIVATE keys
+
+    // Allowed IP addresses and CIDR ranges (e.g., ['192.168.1.1', '10.0.0.0/8', '2001:db8::/32'])
+    // null or empty array = no IP restriction (allow all)
+    allowedIps: text('allowed_ips').array(),
+
+    // Allowed origins with wildcard support (e.g., ['https://example.com', 'https://*.example.com'])
+    // null or empty array = no origin restriction (allow all)
+    allowedOrigins: text('allowed_origins').array(),
+
+    // Whether to allow requests with Origin header (browser requests)
+    // Default false for new keys (secure by default)
+    allowBrowserRequests: boolean('allow_browser_requests')
+      .notNull()
+      .default(false),
+
+    // Whether to allow requests without Origin header (server-to-server requests)
+    // Default false for new keys (secure by default)
+    allowServerRequests: boolean('allow_server_requests')
+      .notNull()
+      .default(false),
+
     ...timestamps,
   },
   (table) => [

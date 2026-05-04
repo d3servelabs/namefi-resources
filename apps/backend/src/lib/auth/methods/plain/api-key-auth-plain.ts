@@ -17,12 +17,18 @@ import type {
   AuthRequestContext,
   AuthMethodResult,
 } from '../../auth-registry';
+import { validateApiKeyRestrictions } from '../../api-key-restrictions';
 
 /**
  * PLAIN API Key Authentication
  *
  * This module handles authentication using PLAIN API keys.
  * PLAIN keys are passed in the X-API-Key header.
+ *
+ * Supports restrictions:
+ * - IP/CIDR allowlist
+ * - Origin allowlist (with wildcard support)
+ * - Browser/server request type control
  */
 
 /**
@@ -51,10 +57,14 @@ async function updateApiKeyLastUsed(apiKeyId: string): Promise<void> {
  * Authenticate a request using a PLAIN API key
  *
  * @param apiKey - The API key from the X-API-Key header
+ * @param clientIp - The client's IP address (for IP restriction validation)
+ * @param origin - The Origin header value (for origin restriction validation)
  * @returns Authentication result with user if successful
  */
 export async function authenticateWithPlainApiKey(
   apiKey: string,
+  clientIp: string | null,
+  origin: string | null,
 ): Promise<ApiKeyAuthResult> {
   try {
     // Validate key format
@@ -92,6 +102,27 @@ export async function authenticateWithPlainApiKey(
 
       const isValid = await verifyPlainApiKey(apiKey, apiKeyRecord.keyHash);
       if (isValid) {
+        // Validate restrictions (IP, origin, browser/server)
+        const restrictionResult = validateApiKeyRestrictions(clientIp, origin, {
+          allowedIps: apiKeyRecord.allowedIps,
+          allowedOrigins: apiKeyRecord.allowedOrigins,
+          allowBrowserRequests: apiKeyRecord.allowBrowserRequests,
+          allowServerRequests: apiKeyRecord.allowServerRequests,
+        });
+
+        if (!restrictionResult.valid) {
+          logger.warn(
+            {
+              apiKeyId: apiKeyRecord.id,
+              clientIp,
+              origin,
+              error: restrictionResult.error,
+            },
+            'API key restriction validation failed',
+          );
+          return { success: false, error: restrictionResult.error };
+        }
+
         // Update last used timestamp (fire and forget)
         updateApiKeyLastUsed(apiKeyRecord.id).catch((err) => {
           logger.warn(
@@ -161,7 +192,10 @@ async function authenticatePlainFromContext(
     return { success: false, error: 'Missing API key', methodId: 'plain' };
   }
 
-  return { ...(await authenticateWithPlainApiKey(apiKey)), methodId: 'plain' };
+  return {
+    ...(await authenticateWithPlainApiKey(apiKey, ctx.clientIp, ctx.origin)),
+    methodId: 'plain',
+  };
 }
 
 /**

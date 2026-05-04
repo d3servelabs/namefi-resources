@@ -15,6 +15,10 @@ import {
   privyClient,
 } from '../utils';
 import { getAddress } from 'viem';
+import {
+  validateIpList,
+  validateOriginList,
+} from '#lib/auth/api-key-restrictions';
 
 /**
  * EIP-712 types for creating an API key
@@ -28,6 +32,10 @@ const CREATE_API_KEY_EIP712_TYPES: Record<
     { name: 'keyType', type: 'string' },
     { name: 'publicKey', type: 'string' },
     { name: 'expiresAt', type: 'uint256' },
+    { name: 'allowedIps', type: 'string' }, // JSON stringified array
+    { name: 'allowedOrigins', type: 'string' }, // JSON stringified array
+    { name: 'allowBrowserRequests', type: 'bool' },
+    { name: 'allowServerRequests', type: 'bool' },
     { name: 'timestamp', type: 'uint256' },
   ],
 };
@@ -55,6 +63,23 @@ const UPDATE_API_KEY_NAME_EIP712_TYPES: Record<
   UpdateApiKeyName: [
     { name: 'keyId', type: 'string' },
     { name: 'newName', type: 'string' },
+    { name: 'timestamp', type: 'uint256' },
+  ],
+};
+
+/**
+ * EIP-712 types for updating API key restrictions
+ */
+const UPDATE_API_KEY_RESTRICTIONS_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  UpdateApiKeyRestrictions: [
+    { name: 'keyId', type: 'string' },
+    { name: 'allowedIps', type: 'string' }, // JSON stringified array
+    { name: 'allowedOrigins', type: 'string' }, // JSON stringified array
+    { name: 'allowBrowserRequests', type: 'bool' },
+    { name: 'allowServerRequests', type: 'bool' },
     { name: 'timestamp', type: 'uint256' },
   ],
 };
@@ -162,6 +187,7 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
           createApiKey: CREATE_API_KEY_EIP712_TYPES,
           revokeApiKey: REVOKE_API_KEY_EIP712_TYPES,
           updateApiKeyName: UPDATE_API_KEY_NAME_EIP712_TYPES,
+          updateApiKeyRestrictions: UPDATE_API_KEY_RESTRICTIONS_EIP712_TYPES,
         },
       };
     }),
@@ -184,6 +210,11 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
           revokedAt: apiKeysTable.revokedAt,
           lastUsedAt: apiKeysTable.lastUsedAt,
           createdAt: apiKeysTable.createdAt,
+          // Restriction fields
+          allowedIps: apiKeysTable.allowedIps,
+          allowedOrigins: apiKeysTable.allowedOrigins,
+          allowBrowserRequests: apiKeysTable.allowBrowserRequests,
+          allowServerRequests: apiKeysTable.allowServerRequests,
         })
         .from(apiKeysTable)
         .where(eq(apiKeysTable.userId, ctx.user.id))
@@ -208,7 +239,15 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
     .input(apiKeysContract.create.input)
     .output(apiKeysContract.create.output)
     .mutation(async ({ ctx, input }) => {
-      const { keyName, keyType, publicKey, expiresAt } = input.payload;
+      const {
+        keyName,
+        keyType,
+        expiresAt,
+        allowedIps,
+        allowedOrigins,
+        allowBrowserRequests,
+        allowServerRequests,
+      } = input.payload;
 
       // Verify optional EIP-712 signature
       const signedBy = await verifyOptionalSignature({
@@ -257,12 +296,44 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
       let keyPrefix: string;
       let plainKeyToReturn: string | null = null;
 
+      // Restriction values (only used for PLAIN keys)
+      let storedAllowedIps: string[] | null = null;
+      let storedAllowedOrigins: string[] | null = null;
+      let storedAllowBrowserRequests = false;
+      let storedAllowServerRequests = false;
+
       if (keyType === 'PLAIN') {
         // Generate a new PLAIN API key
         const generated = await generatePlainApiKey();
         keyHash = generated.keyHash;
         keyPrefix = generated.keyPrefix;
         plainKeyToReturn = generated.plainKey;
+
+        // Validate and store restrictions for PLAIN keys
+        if (allowedIps.length > 0) {
+          const ipValidation = validateIpList(allowedIps);
+          if (!ipValidation.valid) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: ipValidation.error || 'Invalid IP/CIDR entries',
+            });
+          }
+          storedAllowedIps = allowedIps.map((ip) => ip.trim());
+        }
+
+        if (allowedOrigins.length > 0) {
+          const originValidation = validateOriginList(allowedOrigins);
+          if (!originValidation.valid) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: originValidation.error || 'Invalid origin patterns',
+            });
+          }
+          storedAllowedOrigins = allowedOrigins.map((origin) => origin.trim());
+        }
+
+        storedAllowBrowserRequests = allowBrowserRequests;
+        storedAllowServerRequests = allowServerRequests;
       } else {
         throw new TRPCError({
           code: 'NOT_IMPLEMENTED',
@@ -282,6 +353,11 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
           publicKey: storedPublicKey,
           keyPrefix,
           expiresAt: expiresAtDate,
+          // Restriction fields
+          allowedIps: storedAllowedIps,
+          allowedOrigins: storedAllowedOrigins,
+          allowBrowserRequests: storedAllowBrowserRequests,
+          allowServerRequests: storedAllowServerRequests,
         })
         .returning({
           id: apiKeysTable.id,
@@ -290,6 +366,10 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
           keyPrefix: apiKeysTable.keyPrefix,
           expiresAt: apiKeysTable.expiresAt,
           createdAt: apiKeysTable.createdAt,
+          allowedIps: apiKeysTable.allowedIps,
+          allowedOrigins: apiKeysTable.allowedOrigins,
+          allowBrowserRequests: apiKeysTable.allowBrowserRequests,
+          allowServerRequests: apiKeysTable.allowServerRequests,
         });
 
       logger.debug(
@@ -452,6 +532,151 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
     }),
 
   /**
+   * Update an API key's restrictions
+   * Requires EIP-712 signature for security
+   * Only applicable for PLAIN keys
+   */
+  updateApiKeyRestrictions: protectedProcedure
+    .input(apiKeysContract.updateApiKeyRestrictions.input)
+    .output(apiKeysContract.updateApiKeyRestrictions.output)
+    .mutation(async ({ ctx, input }) => {
+      const {
+        keyId,
+        allowedIps,
+        allowedOrigins,
+        allowBrowserRequests,
+        allowServerRequests,
+      } = input.payload;
+
+      // Verify optional EIP-712 signature
+      const signedBy = await verifyOptionalSignature({
+        signature: input.signature,
+        types: UPDATE_API_KEY_RESTRICTIONS_EIP712_TYPES,
+        primaryType: 'UpdateApiKeyRestrictions',
+        message: {
+          ...input.payload,
+          // Convert arrays to JSON strings for EIP-712 signing
+          allowedIps: JSON.stringify(input.payload.allowedIps),
+          allowedOrigins: JSON.stringify(input.payload.allowedOrigins),
+        } as unknown as Record<string, unknown>,
+        privyUserId: ctx.user.privyUserId,
+        userId: ctx.user.id,
+      });
+
+      // Validate timestamp only when signature is provided
+      if (input.signature) {
+        const now = Math.floor(Date.now() / 1000);
+        if (
+          input.payload.timestamp < now - 300 ||
+          input.payload.timestamp > now + 30
+        ) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Signature timestamp is invalid or expired',
+          });
+        }
+      }
+
+      // Find the key and verify ownership
+      const [existingKey] = await db
+        .select()
+        .from(apiKeysTable)
+        .where(
+          and(eq(apiKeysTable.id, keyId), eq(apiKeysTable.userId, ctx.user.id)),
+        );
+
+      if (!existingKey) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'API key not found',
+        });
+      }
+
+      if (existingKey.revokedAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'API key is already revoked',
+        });
+      }
+
+      // Only allow updating restrictions for PLAIN keys
+      if (existingKey.type !== 'PLAIN') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Restrictions can only be updated for PLAIN API keys',
+        });
+      }
+
+      // Validate IP list
+      let storedAllowedIps: string[] | null = null;
+      if (allowedIps.length > 0) {
+        const ipValidation = validateIpList(allowedIps);
+        if (!ipValidation.valid) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: ipValidation.error || 'Invalid IP/CIDR entries',
+          });
+        }
+        storedAllowedIps = allowedIps.map((ip) => ip.trim());
+      }
+
+      // Validate origin list
+      let storedAllowedOrigins: string[] | null = null;
+      if (allowedOrigins.length > 0) {
+        const originValidation = validateOriginList(allowedOrigins);
+        if (!originValidation.valid) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: originValidation.error || 'Invalid origin patterns',
+          });
+        }
+        storedAllowedOrigins = allowedOrigins.map((origin) => origin.trim());
+      }
+
+      // Update restrictions
+      const [updatedKey] = await db
+        .update(apiKeysTable)
+        .set({
+          allowedIps: storedAllowedIps,
+          allowedOrigins: storedAllowedOrigins,
+          allowBrowserRequests,
+          allowServerRequests,
+        })
+        .where(eq(apiKeysTable.id, keyId))
+        .returning({
+          id: apiKeysTable.id,
+          name: apiKeysTable.name,
+          publicKey: apiKeysTable.publicKey,
+          type: apiKeysTable.type,
+          allowedIps: apiKeysTable.allowedIps,
+          allowedOrigins: apiKeysTable.allowedOrigins,
+          allowBrowserRequests: apiKeysTable.allowBrowserRequests,
+          allowServerRequests: apiKeysTable.allowServerRequests,
+          keyPrefix: apiKeysTable.keyPrefix,
+          expiresAt: apiKeysTable.expiresAt,
+          createdAt: apiKeysTable.createdAt,
+        });
+
+      logger.info(
+        {
+          userId: ctx.user.id,
+          keyId,
+          allowBrowserRequests,
+          allowServerRequests,
+          allowedIpsCount: storedAllowedIps?.length ?? 0,
+          allowedOriginsCount: storedAllowedOrigins?.length ?? 0,
+          signedBy,
+        },
+        'API key restrictions updated',
+      );
+
+      return {
+        ...updatedKey,
+        signedBy: signedBy ?? undefined,
+      };
+    }),
+
+  /**
    * Get a single API key by ID
    */
   getById: protectedProcedure
@@ -468,6 +693,11 @@ export const apiKeysRouter = createContractTRPCRouter<typeof apiKeysContract>({
           revokedAt: apiKeysTable.revokedAt,
           lastUsedAt: apiKeysTable.lastUsedAt,
           createdAt: apiKeysTable.createdAt,
+          // Restriction fields
+          allowedIps: apiKeysTable.allowedIps,
+          allowedOrigins: apiKeysTable.allowedOrigins,
+          allowBrowserRequests: apiKeysTable.allowBrowserRequests,
+          allowServerRequests: apiKeysTable.allowServerRequests,
         })
         .from(apiKeysTable)
         .where(

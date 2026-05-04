@@ -717,6 +717,11 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
       logger.trace({ error }, 'verifying user auth and creation');
       throw new TRPCError({
         code: 'UNAUTHORIZED',
+        message: ctx.apiAuthResult?.error,
+        cause: {
+          method: ctx.apiAuthResult?.methodId,
+          error: ctx.apiAuthResult?.error,
+        },
       });
     }
   },

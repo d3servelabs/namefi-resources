@@ -37,15 +37,16 @@ import {
   Key,
   Shield,
   ShieldCheck,
-  Hash,
   CheckCircle,
   RefreshCw,
-  Eye,
-  EyeOff,
+  Globe,
+  Server,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
-import * as secp256k1 from '@noble/secp256k1';
+import { getPublicKey, utils as secp256k1Utils } from '@noble/secp256k1';
 
 /**
  * Convert Uint8Array to hex string
@@ -69,6 +70,10 @@ const CREATE_API_KEY_EIP712_TYPES: Record<
     { name: 'keyType', type: 'string' },
     { name: 'publicKey', type: 'string' },
     { name: 'expiresAt', type: 'uint256' },
+    { name: 'allowedIps', type: 'string' },
+    { name: 'allowedOrigins', type: 'string' },
+    { name: 'allowBrowserRequests', type: 'bool' },
+    { name: 'allowServerRequests', type: 'bool' },
     { name: 'timestamp', type: 'uint256' },
   ],
 };
@@ -79,7 +84,7 @@ interface CreateApiKeyDialogProps {
   onSuccess: () => void;
 }
 
-type KeyType = 'PLAIN' | 'PUBLIC_PRIVATE' | 'HMAC';
+type KeyType = 'PLAIN' | 'PUBLIC_PRIVATE';
 
 const EXPIRATION_OPTIONS = [
   { label: 'Never', value: '0' },
@@ -93,7 +98,7 @@ const EXPIRATION_OPTIONS = [
  * When disabled (default), only PLAIN API keys are available.
  * Enable via query param: ?ffp_profile_api_key_public_private=true
  */
-const PUBLIC_PRIVATE_KEY_FLAG: FeatureFlagDefinition = {
+export const PUBLIC_PRIVATE_KEY_FLAG: FeatureFlagDefinition = {
   key: 'api_key_public_private',
   label: 'Public/Private API Keys',
   description: 'Enable public/private key pair authentication for API keys',
@@ -103,14 +108,13 @@ const PUBLIC_PRIVATE_KEY_FLAG: FeatureFlagDefinition = {
 };
 
 /**
- * Feature flag for enabling HMAC API keys.
- * When disabled (default), HMAC keys are not available.
- * Enable via query param: ?ffp_profile_api_key_hmac=true
+ * Feature flag for enabling API key request restrictions.
+ * Enable via query param: ?ffp_profile_api_key_restrictions=true
  */
-const HMAC_KEY_FLAG: FeatureFlagDefinition = {
-  key: 'api_key_hmac',
-  label: 'HMAC API Keys',
-  description: 'Enable HMAC-SHA256 signed authentication for API keys',
+export const API_KEY_RESTRICTIONS_FLAG: FeatureFlagDefinition = {
+  key: 'api_key_restrictions',
+  label: 'API Key Restrictions',
+  description: 'Enable request type, IP, and origin restrictions for API keys',
   scope: 'page',
   pageKey: 'profile',
   defaultValue: false,
@@ -141,13 +145,22 @@ export function CreateApiKeyDialog({
   const [isGeneratingKeypair, setIsGeneratingKeypair] = useState(false);
   const [createdKey, setCreatedKey] = useState<string | null>(null);
   const [step, setStep] = useState<'form' | 'success'>('form');
-  const [isKeyVisible, setIsKeyVisible] = useState(false);
 
-  // Feature flags to enable different key types
+  // Restriction state (for PLAIN keys only)
+  const [allowBrowserRequests, setAllowBrowserRequests] = useState(false);
+  const [allowServerRequests, setAllowServerRequests] = useState(false);
+  const [allowedIpsText, setAllowedIpsText] = useState('');
+  const [allowedOriginsText, setAllowedOriginsText] = useState('');
+  const [showAdvancedRestrictions, setShowAdvancedRestrictions] =
+    useState(false);
+
+  // Feature flag to enable PUBLIC_PRIVATE key type
   const [enablePublicPrivateKeys] = useAdminFeatureFlag(
     PUBLIC_PRIVATE_KEY_FLAG,
   );
-  const [enableHmacKeys] = useAdminFeatureFlag(HMAC_KEY_FLAG);
+  const [enableApiKeyRestrictions] = useAdminFeatureFlag(
+    API_KEY_RESTRICTIONS_FLAG,
+  );
 
   const handleWalletConnected = useCallback((_walletAddress: string) => {
     if (pendingWalletConnectionResolve.current) {
@@ -166,7 +179,12 @@ export function CreateApiKeyDialog({
     setSignWithWallet(false);
     setCreatedKey(null);
     setStep('form');
-    setIsKeyVisible(false);
+    // Reset restrictions
+    setAllowBrowserRequests(false);
+    setAllowServerRequests(false);
+    setAllowedIpsText('');
+    setAllowedOriginsText('');
+    setShowAdvancedRestrictions(false);
   }, []);
 
   /**
@@ -178,11 +196,11 @@ export function CreateApiKeyDialog({
       setIsGeneratingKeypair(true);
 
       // Generate a random private key (32 bytes)
-      const privateKeyBytes = secp256k1.utils.randomSecretKey();
+      const privateKeyBytes = secp256k1Utils.randomSecretKey();
       const privateKeyHex = bytesToHex(privateKeyBytes);
 
       // Derive the uncompressed public key (65 bytes, starts with 04)
-      const publicKeyBytes = secp256k1.getPublicKey(privateKeyBytes, false);
+      const publicKeyBytes = getPublicKey(privateKeyBytes, false);
       const publicKeyHex = bytesToHex(publicKeyBytes);
 
       // Set the keys
@@ -190,8 +208,7 @@ export function CreateApiKeyDialog({
       setGeneratedPrivateKey(privateKeyHex);
 
       toast.success('Keypair generated! Make sure to save your private key.');
-    } catch (error) {
-      console.error('Failed to generate keypair:', error);
+    } catch {
       toast.error('Failed to generate keypair');
     } finally {
       setIsGeneratingKeypair(false);
@@ -223,10 +240,6 @@ export function CreateApiKeyDialog({
   );
 
   const handleSubmit = async () => {
-    if (keyType === 'HMAC') {
-      toast.error('HMAC is not implemented yet');
-      return;
-    }
     if (!keyName.trim()) {
       toast.error('Please enter a name for the API key');
       return;
@@ -255,11 +268,31 @@ export function CreateApiKeyDialog({
           ? Math.floor(Date.now() / 1000) + expiresInSeconds
           : 0;
 
-      const payload = {
+      const canSetRestrictions =
+        enableApiKeyRestrictions && keyType === 'PLAIN';
+
+      // Parse IP and origin lists (one per line, filter empty lines)
+      const allowedIps = allowedIpsText
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
+      const allowedOrigins = allowedOriginsText
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
+
+      // Create the payload for signing (arrays as JSON strings for EIP-712)
+      const signPayload = {
         keyName: keyName.trim(),
         keyType,
         publicKey: keyType === 'PUBLIC_PRIVATE' ? publicKey.trim() : '',
         expiresAt,
+        allowedIps: JSON.stringify(canSetRestrictions ? allowedIps : []),
+        allowedOrigins: JSON.stringify(
+          canSetRestrictions ? allowedOrigins : [],
+        ),
+        allowBrowserRequests: canSetRestrictions ? allowBrowserRequests : true,
+        allowServerRequests: canSetRestrictions ? allowServerRequests : true,
         timestamp: Math.floor(Date.now() / 1000),
       };
 
@@ -267,6 +300,10 @@ export function CreateApiKeyDialog({
 
       if (signWithWallet) {
         const walletToUse = selectedWallet || activeWalletAddress;
+        if (!walletToUse) {
+          toast.error('Please select a wallet to sign with');
+          return;
+        }
 
         // Request wallet connection
         await new Promise<void>((resolve, reject) => {
@@ -277,17 +314,30 @@ export function CreateApiKeyDialog({
           }
 
           pendingWalletConnectionResolve.current = resolve;
-          currentRef.requestWalletConnection(walletToUse!);
+          currentRef.requestWalletConnection(walletToUse);
         });
 
         // Sign the payload
         signature = await signTypedData({
           types: CREATE_API_KEY_EIP712_TYPES,
           primaryType: 'CreateApiKey',
-          message: payload,
+          message: signPayload,
           chainId: 1,
         });
       }
+
+      // Create the API payload (arrays as actual arrays for tRPC)
+      const payload = {
+        keyName: keyName.trim(),
+        keyType,
+        publicKey: keyType === 'PUBLIC_PRIVATE' ? publicKey.trim() : '',
+        expiresAt,
+        allowedIps: canSetRestrictions ? allowedIps : [],
+        allowedOrigins: canSetRestrictions ? allowedOrigins : [],
+        allowBrowserRequests: canSetRestrictions ? allowBrowserRequests : true,
+        allowServerRequests: canSetRestrictions ? allowServerRequests : true,
+        timestamp: signPayload.timestamp,
+      };
 
       // Create the API key
       const result = await trpcClient.apiKeys.create.mutate({
@@ -296,9 +346,7 @@ export function CreateApiKeyDialog({
       });
 
       if (result.plainKey) {
-        // For PLAIN and HMAC keys, the secret is returned in plainKey
         setCreatedKey(result.plainKey);
-        setIsKeyVisible(false);
         setStep('success');
       } else if (keyType === 'PUBLIC_PRIVATE' && generatedPrivateKey) {
         // For PUBLIC_PRIVATE keys with generated keypair, show success with private key reminder
@@ -393,24 +441,151 @@ export function CreateApiKeyDialog({
                           </div>
                         </SelectItem>
                       )}
-                      {enableHmacKeys && (
-                        <SelectItem value="HMAC">
-                          <div className="flex items-center gap-2">
-                            <Hash className="h-4 w-4" />
-                            <span>HMAC Signed Key</span>
-                          </div>
-                        </SelectItem>
-                      )}
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-muted-foreground">
                     {keyType === 'PLAIN'
                       ? 'A random API key will be generated. You must save it securely.'
-                      : keyType === 'PUBLIC_PRIVATE'
-                        ? 'Provide your public key. Sign requests with your private key.'
-                        : 'A secret key will be generated. Use it to sign each request with HMAC-SHA256.'}
+                      : 'Provide your public key. Sign requests with your private key.'}
                   </p>
                 </div>
+
+                {/* Restrictions (for PLAIN keys only) */}
+                {enableApiKeyRestrictions && keyType === 'PLAIN' && (
+                  <div className="space-y-4 rounded-lg border border-zinc-700 p-4">
+                    <div className="space-y-3">
+                      <Label className="text-sm font-medium">
+                        Request Types
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Select which types of requests this API key can make. At
+                        least one must be enabled.
+                      </p>
+
+                      {/* Allow Browser Requests */}
+                      <div className="flex items-start space-x-3">
+                        <Checkbox
+                          id="allowBrowserRequests"
+                          checked={allowBrowserRequests}
+                          onCheckedChange={(checked) =>
+                            setAllowBrowserRequests(checked === true)
+                          }
+                        />
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="allowBrowserRequests"
+                            className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
+                          >
+                            <Globe className="h-4 w-4" />
+                            Allow browser requests
+                          </label>
+                          <p className="text-xs text-muted-foreground">
+                            Requests with an Origin header (e.g., from web
+                            browsers)
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Allow Server Requests */}
+                      <div className="flex items-start space-x-3">
+                        <Checkbox
+                          id="allowServerRequests"
+                          checked={allowServerRequests}
+                          onCheckedChange={(checked) =>
+                            setAllowServerRequests(checked === true)
+                          }
+                        />
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="allowServerRequests"
+                            className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
+                          >
+                            <Server className="h-4 w-4" />
+                            Allow server requests
+                          </label>
+                          <p className="text-xs text-muted-foreground">
+                            Requests without an Origin header (e.g., from
+                            backend servers)
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Warning if neither is selected */}
+                      {!allowBrowserRequests && !allowServerRequests && (
+                        <div className="flex items-center gap-2 text-yellow-500 text-xs">
+                          <AlertTriangle className="h-3 w-3" />
+                          <span>
+                            No request types enabled. The key will reject all
+                            requests.
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Advanced Restrictions Toggle */}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowAdvancedRestrictions(!showAdvancedRestrictions)
+                      }
+                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showAdvancedRestrictions ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                      Advanced restrictions (IP & Origin)
+                    </button>
+
+                    {showAdvancedRestrictions && (
+                      <div className="space-y-4 pt-2">
+                        {/* Allowed IPs */}
+                        <div className="space-y-2">
+                          <Label htmlFor="allowedIps">
+                            Allowed IP Addresses / CIDR Ranges
+                          </Label>
+                          <Textarea
+                            id="allowedIps"
+                            value={allowedIpsText}
+                            onChange={(e) => setAllowedIpsText(e.target.value)}
+                            placeholder="192.168.1.1&#10;10.0.0.0/8&#10;2001:db8::/32"
+                            className="font-mono text-xs"
+                            rows={3}
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            One IP or CIDR per line. Supports IPv4 and IPv6.
+                            Leave empty to allow all IPs.
+                          </p>
+                        </div>
+
+                        {/* Allowed Origins (only if browser requests are enabled) */}
+                        {allowBrowserRequests && (
+                          <div className="space-y-2">
+                            <Label htmlFor="allowedOrigins">
+                              Allowed Origins
+                            </Label>
+                            <Textarea
+                              id="allowedOrigins"
+                              value={allowedOriginsText}
+                              onChange={(e) =>
+                                setAllowedOriginsText(e.target.value)
+                              }
+                              placeholder="https://example.com&#10;https://*.example.com"
+                              className="font-mono text-xs"
+                              rows={3}
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              One origin per line. Supports wildcards (e.g.,
+                              https://*.example.com). Leave empty to allow all
+                              origins.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Public/Private Key (for PUBLIC_PRIVATE only) */}
                 {keyType === 'PUBLIC_PRIVATE' && (
@@ -638,9 +813,7 @@ export function CreateApiKeyDialog({
                 </DialogTitle>
                 <DialogDescription>
                   {createdKey
-                    ? keyType === 'HMAC'
-                      ? "Your HMAC secret key has been created. Copy it now - you won't be able to see it again!"
-                      : "Your API key has been created. Copy it now - you won't be able to see it again!"
+                    ? "Your API key has been created. Copy it now - you won't be able to see it again!"
                     : 'Your API key has been created. Make sure you have saved your private key!'}
                 </DialogDescription>
               </DialogHeader>
@@ -652,72 +825,38 @@ export function CreateApiKeyDialog({
                     <div className="space-y-1">
                       <p className="font-medium text-yellow-500">
                         {createdKey
-                          ? keyType === 'HMAC'
-                            ? 'Save your HMAC secret key'
-                            : 'Save your API key'
+                          ? 'Save your API key'
                           : 'Save your Private Key'}
                       </p>
                       <p className="text-sm text-yellow-500/80">
                         {createdKey
-                          ? keyType === 'HMAC'
-                            ? 'This is the only time you will see your HMAC secret key. Use it to sign each API request with HMAC-SHA256.'
-                            : 'This is the only time you will see your API key. Please copy it and store it securely.'
+                          ? 'This is the only time you will see your API key. Please copy it and store it securely.'
                           : 'Make sure you have copied and saved your private key. You will need it to sign API requests.'}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Show PLAIN or HMAC API Key */}
+                {/* Show PLAIN API Key */}
                 {createdKey && (
                   <div className="space-y-2">
-                    <Label>
-                      {keyType === 'HMAC'
-                        ? 'Your HMAC Secret Key'
-                        : 'Your API Key'}
-                    </Label>
+                    <Label>Your API Key</Label>
                     <div className="flex gap-2">
                       <Textarea
                         value={createdKey}
                         readOnly
-                        className={`font-mono text-xs break-all resize-none ${
-                          isKeyVisible ? '' : 'blur-xl select-none'
-                        }`}
+                        className="font-mono text-xs break-all resize-none"
                         rows={2}
                       />
-                      <div className="flex flex-col gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={handleCopyKey}
-                          className="flex-shrink-0"
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => setIsKeyVisible((prev) => !prev)}
-                          className="flex-shrink-0"
-                          aria-label={
-                            isKeyVisible ? 'Hide API key' : 'View API key'
-                          }
-                        >
-                          {isKeyVisible ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={handleCopyKey}
+                        className="flex-shrink-0 self-start"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
                     </div>
-                    {keyType === 'HMAC' && (
-                      <p className="text-xs text-muted-foreground">
-                        Use this secret key to sign requests with HMAC-SHA256.
-                        Include headers: X-Namefi-Key-Id, X-Namefi-Timestamp,
-                        X-Namefi-Signature
-                      </p>
-                    )}
                   </div>
                 )}
 
