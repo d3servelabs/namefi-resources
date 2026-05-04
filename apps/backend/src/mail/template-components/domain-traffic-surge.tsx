@@ -244,10 +244,13 @@ function getTrafficEmailTitle({
   fallbackSubject: string;
 }) {
   if (!topDomain) return fallbackSubject;
+  const trafficSummary = hasMultipleTrafficDomains
+    ? `${formatLookupMetric(totalWeeklyQueries)} across ${formatDomainCountLabel(domainCount)}`
+    : `${formatLookupMetric(topDomain.weeklyQueries)} for ${topDomain.domain}`;
   if (hasMultipleTrafficDomains) {
-    return `${formatLookupMetric(totalWeeklyQueries)} across ${formatDomainCountLabel(domainCount)}`;
+    return `Your domains are heating up: Namefi measured ${trafficSummary}`;
   }
-  return `${formatLookupMetric(topDomain.weeklyQueries)} for ${topDomain.domain}`;
+  return `Your domain is heating up: Namefi measured ${trafficSummary}`;
 }
 
 export function getDomainTrafficSurgeEmailTitle({
@@ -313,30 +316,30 @@ function TrafficSummaryPanel({
               Namefi recorded this activity {measuredScope} in the latest 7-day
               window.
             </Text>
-            <table
-              role="presentation"
-              cellPadding="0"
-              cellSpacing="0"
-              style={summaryStyles.topDomainTable}
-            >
-              <tbody>
-                <tr>
-                  <td style={summaryStyles.topDomainCell}>
-                    <Text style={summaryStyles.topDomainLabel}>
-                      {hasMultipleTrafficDomains
-                        ? 'Most active domain'
-                        : 'Active domain'}
-                    </Text>
-                    <Text style={summaryStyles.topDomainName}>
-                      {topDomain.domain}
-                    </Text>
-                    <Text style={summaryStyles.topDomainMetric}>
-                      {formatLookupMetric(topDomain.weeklyQueries)}
-                    </Text>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            {!hasMultipleTrafficDomains ? (
+              <table
+                role="presentation"
+                cellPadding="0"
+                cellSpacing="0"
+                style={summaryStyles.topDomainTable}
+              >
+                <tbody>
+                  <tr>
+                    <td style={summaryStyles.topDomainCell}>
+                      <Text style={summaryStyles.topDomainLabel}>
+                        Active domain
+                      </Text>
+                      <Text style={summaryStyles.topDomainName}>
+                        {topDomain.domain}
+                      </Text>
+                      <Text style={summaryStyles.topDomainMetric}>
+                        {formatLookupMetric(topDomain.weeklyQueries)}
+                      </Text>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : null}
           </td>
         </tr>
       </tbody>
@@ -403,10 +406,14 @@ function TrafficActivitySection({
   poweredByNamefiDomain: string | null;
   cta: string;
 }) {
+  const heatingIntro = hasMultipleTrafficDomains
+    ? 'Your domains are heating up.'
+    : 'Your domain is heating up.';
+
   return (
     <>
       <Text style={{ ...paragraph, marginBottom: '12px' }}>
-        Here is what Namefi measured on your domains.
+        {heatingIntro} Here is what Namefi measured in the latest 7-day window.
       </Text>
       <TrafficSummaryPanel
         topDomain={topDomain}

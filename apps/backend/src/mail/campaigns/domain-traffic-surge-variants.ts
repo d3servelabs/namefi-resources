@@ -5,7 +5,7 @@ export type DomainTrafficSurgeVariant = {
 
 const DOMAIN_TRAFFIC_SURGE_VARIANTS: DomainTrafficSurgeVariant[] = [
   {
-    subject: '[Namefi] Activity measured on your domains',
+    subject: '[Namefi] Your domains are heating up',
     cta: 'Review domains in Namefi',
   },
 ];

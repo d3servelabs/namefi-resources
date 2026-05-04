@@ -1,6 +1,9 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { render } from '@react-email/render';
+import { createElement } from 'react';
 import { describe, expect, it } from 'vitest';
 import {
+  DomainTrafficSurgeTemplate,
   formatCompactTrafficQueryCount,
   formatDomainCountLabel,
   formatLookupMetric,
@@ -43,16 +46,18 @@ describe('domain traffic surge formatting', () => {
     expect(
       getDomainTrafficSurgeEmailTitle({
         domains: [],
-        fallbackSubject: '[Namefi] Activity measured on your domains',
+        fallbackSubject: '[Namefi] Your domains are heating up',
       }),
-    ).toBe('[Namefi] Activity measured on your domains');
+    ).toBe('[Namefi] Your domains are heating up');
 
     expect(
       getDomainTrafficSurgeEmailTitle({
         domains: [{ domain: domain('brightlabs.com'), weeklyQueries: 94_320 }],
         fallbackSubject: 'fallback',
       }),
-    ).toBe('94k lookups for brightlabs.com');
+    ).toBe(
+      'Your domain is heating up: Namefi measured 94k lookups for brightlabs.com',
+    );
 
     expect(
       getDomainTrafficSurgeEmailTitle({
@@ -62,12 +67,47 @@ describe('domain traffic surge formatting', () => {
         ],
         fallbackSubject: 'fallback',
       }),
-    ).toBe('136k lookups across 2 domains');
+    ).toBe(
+      'Your domains are heating up: Namefi measured 136k lookups across 2 domains',
+    );
   });
 
   it('uses aggregate suggestion copy for multiple heating domains', () => {
     expect(getSuggestedDomainsHeading()).toBe(
       'Similar domains to the ones heating up',
     );
+  });
+
+  it('does not duplicate the top domain summary for multiple heating domains', async () => {
+    const html = await render(
+      createElement(DomainTrafficSurgeTemplate, {
+        recipientName: 'Jordan',
+        recipientEmail: 'jordan@example.com',
+        domains: [
+          { domain: domain('brightlabs.io'), weeklyQueries: 41_880 },
+          { domain: domain('brightlabs.com'), weeklyQueries: 94_320 },
+        ],
+      }),
+      { pretty: false },
+    );
+
+    expect(html).toContain('Your domains are heating up.');
+    expect(html).toContain('Most active domains');
+    expect(html).not.toMatch(/Most active domain(?!s)/);
+  });
+
+  it('keeps the active domain summary when only one domain heated up', async () => {
+    const html = await render(
+      createElement(DomainTrafficSurgeTemplate, {
+        recipientName: 'Jordan',
+        recipientEmail: 'jordan@example.com',
+        domains: [{ domain: domain('brightlabs.com'), weeklyQueries: 94_320 }],
+      }),
+      { pretty: false },
+    );
+
+    expect(html).toContain('Your domain is heating up.');
+    expect(html).toContain('Active domain');
+    expect(html).not.toContain('Most active domains');
   });
 });
