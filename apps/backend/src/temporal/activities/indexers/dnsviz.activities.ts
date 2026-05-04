@@ -125,13 +125,32 @@ export interface AnalyzeDomainsBatchResult {
   /**
    * Domains that ended up with `status=ERROR` after this batch (probe/grok
    * failure or malformed grok output). The workflow can hand these back
-   * into `analyzeDomainsBatch` for a one-shot retry; ON CONFLICT will
-   * overwrite the original ERROR rows with whatever verdict the retry
-   * produces.
+   * into `analyzeDomainsBatch` for a retry; ON CONFLICT will overwrite the
+   * original ERROR rows with whatever verdict the retry produces.
    */
   erroredDomains: Array<{
     domainName: NamefiNormalizedDomain;
     registrarKey: string;
+  }>;
+  /**
+   * Domains that ended up with `status=BOGUS` after this batch (DNSSEC
+   * misconfigured per dnsviz). BOGUS is sometimes transient (mid-key-roll,
+   * stale signers) so the workflow may retry these too.
+   */
+  bogusDomains: Array<{
+    domainName: NamefiNormalizedDomain;
+    registrarKey: string;
+  }>;
+  /**
+   * Final status of every domain in the input, in the same order. The
+   * workflow uses this map to drive its retry queues and to compute final
+   * SECURE/INSECURE/BOGUS/ERROR totals after all retry rounds without
+   * having to re-query the DB.
+   */
+  domainResults: Array<{
+    domainName: NamefiNormalizedDomain;
+    registrarKey: string;
+    status: DnsvizAnalysisStatus;
   }>;
 }
 
@@ -159,6 +178,8 @@ export async function analyzeDomainsBatch(
     bogus: 0,
     error: 0,
     erroredDomains: [],
+    bogusDomains: [],
+    domainResults: [],
   };
   const expiresAt = computeExpiresAt(input.analysisDate, input.retentionDays);
 
@@ -254,7 +275,17 @@ export async function analyzeDomainsBatch(
           domainName: target.domainName,
           registrarKey: target.registrarKey,
         });
+      } else if (status === 'BOGUS') {
+        counts.bogusDomains.push({
+          domainName: target.domainName,
+          registrarKey: target.registrarKey,
+        });
       }
+      counts.domainResults.push({
+        domainName: target.domainName,
+        registrarKey: target.registrarKey,
+        status,
+      });
       ctx.heartbeat({ stage: 'persisted', domain: target.domainName, status });
     },
     { concurrency: Math.max(1, input.perDomainConcurrency) },

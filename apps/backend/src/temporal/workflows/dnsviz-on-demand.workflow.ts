@@ -31,10 +31,10 @@
  */
 import * as workflow from '@temporalio/workflow';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { splitEvery } from 'ramda';
 import { longRunningOpts, TEMPORAL_ENUMS } from '../shared';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { runDnsvizAnalysisWithRetries } from './dnsviz-retry';
 
 const {
   getRegistrarKeysForDomains,
@@ -84,6 +84,18 @@ export interface DnsvizOnDemandWorkflowInput {
    * `indexed_domains`. Default `AD_HOC`.
    */
   fallbackRegistrarKey?: string;
+  /**
+   * How many retry rounds an `ERROR` domain gets before we give up. ERRORs
+   * are typically transient (probe/grok failure, network blip, rate limit)
+   * so this defaults to 3 — total attempts up to 4 (initial + 3 retries).
+   */
+  maxErrorRetries?: number;
+  /**
+   * How many retry rounds a `BOGUS` domain gets. BOGUS means DNSSEC is
+   * misconfigured per dnsviz; most are persistent, but key-roll and stale-
+   * signer windows clear within minutes, so we retry once by default.
+   */
+  maxBogusRetries?: number;
 }
 
 export interface DnsvizOnDemandWorkflowOutput {
@@ -111,6 +123,8 @@ const DEFAULT_PER_DOMAIN_CONCURRENCY = 5;
 const DEFAULT_RETENTION_DAYS = 7;
 const DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS = 15;
 const DEFAULT_FALLBACK_REGISTRAR_KEY = 'AD_HOC';
+const DEFAULT_MAX_ERROR_RETRIES = 3;
+const DEFAULT_MAX_BOGUS_RETRIES = 1;
 
 export async function dnsvizOnDemandWorkflow({
   domains,
@@ -121,6 +135,8 @@ export async function dnsvizOnDemandWorkflow({
   sendDigestEmail = false,
   delayBetweenBatchesSeconds = DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS,
   fallbackRegistrarKey = DEFAULT_FALLBACK_REGISTRAR_KEY,
+  maxErrorRetries = DEFAULT_MAX_ERROR_RETRIES,
+  maxBogusRetries = DEFAULT_MAX_BOGUS_RETRIES,
 }: DnsvizOnDemandWorkflowInput): Promise<DnsvizOnDemandWorkflowOutput> {
   const startTime = Date.now();
   const info = workflow.workflowInfo();
@@ -135,20 +151,14 @@ export async function dnsvizOnDemandWorkflow({
     batchSize,
     perDomainConcurrency,
     retentionDays,
+    maxErrorRetries,
+    maxBogusRetries,
   });
-
-  const totals = {
-    secure: 0,
-    insecure: 0,
-    bogus: 0,
-    error: 0,
-    processed: 0,
-  };
 
   if (normalized.length === 0) {
     workflow.log.warn('No valid domains supplied; finishing early');
     return finalize({
-      totals,
+      totals: { secure: 0, insecure: 0, bogus: 0, error: 0, processed: 0 },
       emailSent: false,
       emailRowCount: 0,
       emailIssueCount: 0,
@@ -167,76 +177,19 @@ export async function dnsvizOnDemandWorkflow({
     registrarKey: registrarKeys[d] ?? fallbackRegistrarKey,
   }));
 
-  const batches = splitEvery(Math.max(1, Math.floor(batchSize)), enriched);
-
-  for (let i = 0; i < batches.length; i++) {
-    const batch = batches[i];
-    workflow.log.debug(`On-demand dnsviz batch ${i + 1}/${batches.length}`, {
-      batchSize: batch.length,
-    });
-
-    const batchResult = await catchAndAlertLocally(
-      () =>
-        analyzeDomainsBatch({
-          domains: batch,
-          analysisDate,
-          retentionDays,
-          workflowRunId: info.runId,
-          perDomainConcurrency,
-        }),
-      {
-        message: 'dnsviz on-demand batch failed',
-        details: { batchIndex: i, batchSize: batch.length, analysisDate },
-      },
-    );
-
-    if (batchResult) {
-      totals.processed += batchResult.processed;
-      totals.secure += batchResult.secure;
-      totals.insecure += batchResult.insecure;
-      totals.bogus += batchResult.bogus;
-      totals.error += batchResult.error;
-
-      // One-shot retry of any domains that errored on the first pass.
-      // The retry's upserts overwrite the original ERROR rows, so back
-      // out the original error count before adding the retry's verdicts.
-      if (batchResult.erroredDomains.length > 0) {
-        await workflow.sleep((delayBetweenBatchesSeconds || 10) * 1000);
-        workflow.log.debug(
-          `Retrying ${batchResult.erroredDomains.length} errored domain(s) from on-demand batch ${i + 1}`,
-        );
-        const retryResult = await catchAndAlertLocally(
-          () =>
-            analyzeDomainsBatch({
-              domains: batchResult.erroredDomains,
-              analysisDate,
-              retentionDays,
-              workflowRunId: info.runId,
-              perDomainConcurrency,
-            }),
-          {
-            message: 'dnsviz on-demand batch retry failed',
-            details: {
-              batchIndex: i,
-              retryCount: batchResult.erroredDomains.length,
-              analysisDate,
-            },
-          },
-        );
-        if (retryResult) {
-          totals.error -= batchResult.error;
-          totals.secure += retryResult.secure;
-          totals.insecure += retryResult.insecure;
-          totals.bogus += retryResult.bogus;
-          totals.error += retryResult.error;
-        }
-      }
-    }
-
-    if (delayBetweenBatchesSeconds > 0 && i < batches.length - 1) {
-      await workflow.sleep(delayBetweenBatchesSeconds * 1000);
-    }
-  }
+  const totals = await runDnsvizAnalysisWithRetries({
+    domains: enriched,
+    analysisDate,
+    retentionDays,
+    workflowRunId: info.runId,
+    perDomainConcurrency,
+    batchSize,
+    delayBetweenBatchesSeconds,
+    maxErrorRetries,
+    maxBogusRetries,
+    logPrefix: 'dnsviz on-demand',
+    analyzeDomainsBatch,
+  });
 
   let emailSent = false;
   let emailRowCount = 0;
