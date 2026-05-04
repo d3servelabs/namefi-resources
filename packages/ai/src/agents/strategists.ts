@@ -214,7 +214,7 @@ export const sheetGuidedAnimationMotionPlanSchema = z.object({
   sheetPrompt: z
     .string()
     .describe(
-      'A prompt-ready animation sheet image prompt for GPT Image 2, including layout, labels, timing, and visual style.',
+      'A prompt-ready custom animation sheet image prompt for GPT Image 2, grounded in the uploaded logo analysis. It may use text labels, stage numbers, timing scales, captions, and easing notes, but must avoid arrows, arrowheads, chevrons, pointer icons, callout lines, guide marks, and motion-path strokes.',
     ),
   videoPrompt: z
     .string()
@@ -274,7 +274,7 @@ You will receive the actual logo image. Analyze that image first, then choose a 
 
 GOAL:
 - Produce a motion plan that will be turned into a GPT Image 2 animation sheet and then a Seedance video.
-- The sheet must guide timing, transformation, staging, and final logo lockup clearly enough for image-to-video generation.
+- The sheet must guide timing, transformation, staging, and final logo lockup clearly enough for image-to-video generation without using visual motion artifacts that can leak into the video.
 - Favor logo-specific construction, morph, trace, reveal, or material behavior over generic effects.
 
 RULES:
@@ -284,8 +284,10 @@ RULES:
 - stagePlan must contain 4 to 6 clear stages with explicit time ranges that cover 0.0s to 8.0s.
 - The final stage must resolve to the original logo, fully legible, centered, and intact.
 - shapeNotes must describe actual visual features from the uploaded logo, not generic placeholder shapes.
-- sheetPrompt must ask GPT Image 2 for a clean landscape animation sheet with labeled keyframes, arrows, timing bars, easing notes, and a focused shape/morph breakdown.
-- videoPrompt must tell Seedance to follow the animation sheet reference closely and match the staged timing.`;
+- sheetPrompt must be a custom GPT Image 2 prompt tailored to the uploaded logo and motion concept.
+- sheetPrompt may ask for text labels, stage numbers, captions, timing scales, timing bars, timecodes, and easing notes, preferably in margins or outside the logo artwork.
+- sheetPrompt must not ask for arrows, arrowheads, chevrons, pointer icons, callout lines, guide marks, path lines, vector strokes, or motion trails that could be copied as visible animation content.
+- videoPrompt must tell Seedance to follow the animation sheet reference closely while rendering only logo-derived visual content and matching the staged timing.`;
 }
 
 type StructuredGenerationResult<T> = {

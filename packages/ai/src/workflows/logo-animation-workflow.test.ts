@@ -179,7 +179,7 @@ describe('runLogoAnimationWorkflow', () => {
         direction:
           'Use an elegant logo-specific trace and arc reveal, then settle on the original lockup.',
         sheetPrompt:
-          'Show the contour trace, wordmark assembly, and final lockup with timing labels.',
+          'Show a custom contour-trace storyboard for this logo with stage labels, timing scale, easing notes, and wordmark assembly captions. Avoid arrows and path strokes.',
         videoPrompt:
           'Follow the animation sheet timings and resolve to the original logo.',
       },
@@ -366,16 +366,43 @@ describe('runLogoAnimationWorkflow', () => {
         prompt: expect.stringContaining('1536x1024'),
       }),
     );
+    const sheetPrompt =
+      generateAnimationSheetImageMock.mock.calls[0]?.[0]?.prompt ?? '';
+    expect(sheetPrompt).toEqual(
+      expect.stringContaining('Custom sheet direction from the strategist'),
+    );
+    expect(sheetPrompt).toEqual(
+      expect.stringContaining('contour-trace storyboard'),
+    );
+    expect(sheetPrompt).toEqual(
+      expect.stringContaining('clear timing scale from 0.0s to 8.0s'),
+    );
+    expect(sheetPrompt).toEqual(
+      expect.stringContaining('Do not render arrows'),
+    );
+    expect(sheetPrompt).not.toContain('arrows showing motion flow');
     expect(gatewayVideoMock).toHaveBeenCalledWith('bytedance/seedance-2.0');
 
     const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
     expect(generateVideoCall.aspectRatio).toBe('16:9');
     expect(generateVideoCall.duration).toBe(8);
     expect(generateVideoCall.prompt).toEqual(
-      expect.stringContaining('Use [Image 2] only as the animation sheet'),
+      expect.stringContaining(
+        'Use [Image 2] only as a private motion reference',
+      ),
+    );
+    expect(generateVideoCall.prompt).toEqual(
+      expect.stringContaining('The only durable visual source is [Image 1]'),
     );
     expect(generateVideoCall.prompt).toEqual(
       expect.stringContaining('non-logo [Image 2] annotation artifacts'),
+    );
+    expect(
+      generateVideoCall.prompt.indexOf(
+        'non-logo [Image 2] annotation artifacts',
+      ),
+    ).toBeGreaterThan(
+      generateVideoCall.prompt.indexOf('Animation-sheet video direction:'),
     );
     expect(generateVideoCall.providerOptions.bytedance).toEqual(
       expect.objectContaining({
