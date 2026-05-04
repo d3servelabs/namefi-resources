@@ -873,6 +873,7 @@ type AiGenerationInput =
       logoType: string;
       logoStyle: string;
       description?: string;
+      imageModel?: string;
       textTreatment?: string;
       typography?: string;
     }
@@ -885,6 +886,7 @@ type AiGenerationInput =
         | 'vehicle'
         | 'product'
         | 'let_ai_choose';
+      imageModel?: string;
     }
   | {
       type: 'animation';
@@ -919,6 +921,7 @@ type AiGenerationOutput =
       logoStyle?: string;
       textTreatment?: string;
       typography?: string;
+      imageModel?: string;
     }
   | {
       type: 'marketing';
@@ -929,6 +932,7 @@ type AiGenerationOutput =
         | 'vehicle'
         | 'product'
         | 'let_ai_choose';
+      imageModel?: string;
     }
   | {
       type: 'animation';

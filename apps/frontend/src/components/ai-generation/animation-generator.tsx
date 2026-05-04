@@ -820,6 +820,11 @@ export function AnimationGenerator({
       submitLoadingText="Generating"
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
+      creditCostConfig={{
+        type: 'animation',
+        getMode: (values) => values.mode,
+        getModel: (values) => values.model,
+      }}
     >
       {({ form, openPanel, setOpenPanel }) => (
         <AnimationGeneratorPanels

@@ -387,6 +387,10 @@ export function LogoGenerator({
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
       onPosterRequest={onPosterRequest}
+      creditCostConfig={{
+        type: 'logo',
+        getModel: (values) => values.model,
+      }}
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedType = form.watch('type');

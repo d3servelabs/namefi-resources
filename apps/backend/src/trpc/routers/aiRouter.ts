@@ -5,6 +5,10 @@ import { TEMPORAL_QUEUES } from '#temporal/shared';
 import { generateLogoAnimationWorkflow } from '#temporal/workflows/logo-animation.workflow';
 import { db } from '@namefi-astra/db';
 import {
+  getAiGenerationCreditCost as resolveAiGenerationCreditCost,
+  type AiGenerationCreditType,
+} from '@namefi-astra/common/ai-generation-credits';
+import {
   aiGenerationsTable,
   internalAiGenerationsTable,
 } from '@namefi-astra/db/schema';
@@ -63,6 +67,7 @@ type InternalAiGenerationRow = typeof internalAiGenerationsTable.$inferSelect;
 type AssetOutput =
   | AiGenerationRow['output']
   | InternalAiGenerationRow['output'];
+type AiGenerationCreditRow = Pick<AiGenerationRow, 'input' | 'output' | 'type'>;
 type AnimationWorkflowStartResult =
   | { state: 'started' }
   | { state: 'not-found' | 'unknown'; error: unknown };
@@ -80,10 +85,17 @@ function createStorageConfig(baseFolder: string) {
   };
 }
 
-function createLimitReachedError() {
+function createInsufficientGenerationCreditsError(params: {
+  maxCredits: number;
+  remainingCredits: number;
+  requestedCredits: number;
+}) {
+  const requestedLabel = params.requestedCredits === 1 ? 'credit' : 'credits';
+  const remainingLabel = params.remainingCredits === 1 ? 'credit' : 'credits';
+
   return new TRPCError({
     code: 'FORBIDDEN',
-    message: `You have reached the maximum limit of ${config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
+    message: `This generation needs ${params.requestedCredits} AI ${requestedLabel}, but you have ${params.remainingCredits} ${remainingLabel} left this month. Your monthly limit is ${params.maxCredits} AI credits.`,
   });
 }
 
@@ -423,18 +435,70 @@ function mapInternalGenerationRecord<
   };
 }
 
-async function checkUserGenerationLimit(userId: string): Promise<boolean> {
-  const currentCount = await getCurrentMonthlyGenerationCount(userId);
-  return currentCount >= config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
+export function getAiGenerationCreditCost(params: {
+  mode?: string;
+  model?: string;
+  type: AiGenerationCreditType;
+}) {
+  return resolveAiGenerationCreditCost({
+    creditCosts: config.AI_GENERATION_CREDIT_COSTS,
+    ...params,
+  });
 }
 
-export async function getCurrentMonthlyGenerationCount(
+function getAiGenerationPrimaryModel(generation: AiGenerationCreditRow) {
+  if (generation.output.type === 'animation') {
+    return generation.output.model;
+  }
+
+  if (generation.output.type === 'logo') {
+    return (
+      generation.output.imageModel ??
+      (generation.input.type === 'logo'
+        ? generation.input.imageModel
+        : undefined)
+    );
+  }
+
+  if (generation.output.type === 'marketing') {
+    return (
+      generation.output.imageModel ??
+      (generation.input.type === 'marketing'
+        ? generation.input.imageModel
+        : undefined)
+    );
+  }
+
+  return undefined;
+}
+
+function getAiGenerationMode(generation: AiGenerationCreditRow) {
+  return generation.input.type === 'animation'
+    ? generation.input.mode
+    : undefined;
+}
+
+export function getAiGenerationCreditCostForRow(
+  generation: AiGenerationCreditRow,
+) {
+  return getAiGenerationCreditCost({
+    mode: getAiGenerationMode(generation),
+    type: generation.type,
+    model: getAiGenerationPrimaryModel(generation),
+  });
+}
+
+export async function getCurrentMonthlyGenerationCreditUsage(
   userId: string,
 ): Promise<number> {
   await reconcileUnconfirmedAnimationGenerationsForUser(userId);
 
-  const result = await db
-    .select({ count: count() })
+  const generations = await db
+    .select({
+      input: aiGenerationsTable.input,
+      output: aiGenerationsTable.output,
+      type: aiGenerationsTable.type,
+    })
     .from(aiGenerationsTable)
     .where(
       and(
@@ -449,7 +513,39 @@ export async function getCurrentMonthlyGenerationCount(
       ),
     );
 
-  return result[0]?.count || 0;
+  return generations.reduce(
+    (totalCredits, generation) =>
+      totalCredits + getAiGenerationCreditCostForRow(generation),
+    0,
+  );
+}
+
+async function getUserGenerationCreditUsage(userId: string) {
+  const currentCredits = await getCurrentMonthlyGenerationCreditUsage(userId);
+  const maxCredits = config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
+  const remainingCredits = Math.max(0, maxCredits - currentCredits);
+
+  return {
+    currentCredits,
+    hasReachedLimit: remainingCredits <= 0,
+    maxCredits,
+    remainingCredits,
+  };
+}
+
+async function assertUserCanSpendGenerationCredits(params: {
+  requestedCredits: number;
+  userId: string;
+}) {
+  const usage = await getUserGenerationCreditUsage(params.userId);
+
+  if (usage.currentCredits + params.requestedCredits > usage.maxCredits) {
+    throw createInsufficientGenerationCreditsError({
+      maxCredits: usage.maxCredits,
+      remainingCredits: usage.remainingCredits,
+      requestedCredits: params.requestedCredits,
+    });
+  }
 }
 
 export async function getAnimationStartStateAfterError(
@@ -573,10 +669,13 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .output(aiContract.generateLogo.output)
     .mutation(async ({ input, ctx }) => {
       try {
-        const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
-        if (hasReachedLimit) {
-          throw createLimitReachedError();
-        }
+        await assertUserCanSpendGenerationCredits({
+          requestedCredits: getAiGenerationCreditCost({
+            type: 'logo',
+            model: input.model,
+          }),
+          userId: ctx.user.id,
+        });
 
         const now = new Date();
         const {
@@ -634,6 +733,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
               logoType: type,
               logoStyle: style,
               description,
+              imageModel: model,
               textTreatment,
               typography,
             },
@@ -644,6 +744,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
               logoStyle: resolvedLogoStyle,
               textTreatment: resolvedTextTreatment,
               typography: resolvedTypography,
+              imageModel: logoResult.image.model,
             },
             tokenUsage: aggregateTokenUsage,
           })
@@ -669,10 +770,13 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .output(aiContract.generatePoster.output)
     .mutation(async ({ input, ctx }) => {
       try {
-        const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
-        if (hasReachedLimit) {
-          throw createLimitReachedError();
-        }
+        await assertUserCanSpendGenerationCredits({
+          requestedCredits: getAiGenerationCreditCost({
+            type: 'marketing',
+            model: input.model,
+          }),
+          userId: ctx.user.id,
+        });
 
         const now = new Date();
         const {
@@ -734,11 +838,13 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
               type: 'marketing',
               description,
               collateralType,
+              imageModel: model,
             },
             output: {
               type: 'marketing',
               storagePath: marketingResult.image.storagePath,
               collateralType: marketingResult.analysis.resolvedCollateralType,
+              imageModel: marketingResult.image.model,
             },
             tokenUsage: aggregateTokenUsage,
             referenceGenerationId: referenceLogoGenerationId,
@@ -764,10 +870,14 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .input(aiContract.generateAnimation.input)
     .output(aiContract.generateAnimation.output)
     .mutation(async ({ input, ctx }) => {
-      const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
-      if (hasReachedLimit) {
-        throw createLimitReachedError();
-      }
+      await assertUserCanSpendGenerationCredits({
+        requestedCredits: getAiGenerationCreditCost({
+          type: 'animation',
+          mode: input.mode,
+          model: input.model,
+        }),
+        userId: ctx.user.id,
+      });
 
       const referenceLogoGeneration = await findOwnedLogoGeneration({
         generationId: input.referenceLogoGenerationId,
@@ -1175,19 +1285,17 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .input(aiContract.getUserGenerationUsage.input)
     .output(aiContract.getUserGenerationUsage.output)
     .query(async ({ ctx }) => {
-      const currentCount = await getCurrentMonthlyGenerationCount(ctx.user.id);
-      const remainingGenerations = Math.max(
-        0,
-        config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH - currentCount,
-      );
-      const hasReachedLimit =
-        currentCount >= config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
+      const usage = await getUserGenerationCreditUsage(ctx.user.id);
 
       return {
-        currentCount,
-        maxGenerations: config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH,
-        remainingGenerations,
-        hasReachedLimit,
+        currentCredits: usage.currentCredits,
+        maxCredits: usage.maxCredits,
+        remainingCredits: usage.remainingCredits,
+        currentCount: usage.currentCredits,
+        maxGenerations: usage.maxCredits,
+        remainingGenerations: usage.remainingCredits,
+        hasReachedLimit: usage.hasReachedLimit,
+        creditCosts: config.AI_GENERATION_CREDIT_COSTS,
       };
     }),
 });

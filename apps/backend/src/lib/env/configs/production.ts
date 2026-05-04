@@ -41,6 +41,46 @@ const productionConfig: ConfigInput = {
   DEV_NFSC_SIGNUP_MINT_AMOUNT: 0,
   DEV_NFSC_FAUCET_AMOUNT: 0,
   DEV_NFSC_FAUCET_COOLDOWN_HOURS: 6,
+  MAX_AI_GENERATIONS_PER_USER_PER_MONTH: 25,
+  AI_GENERATION_CREDIT_COSTS: {
+    default: 1,
+    logo: {
+      default: 1,
+      models: {
+        'gpt-image-2': 2,
+        'gemini-3-pro-image-preview': 2,
+      },
+    },
+    marketing: {
+      default: 1,
+      models: {
+        'gpt-image-2': 2,
+        'gemini-3-pro-image-preview': 2,
+      },
+    },
+    animation: {
+      default: 3,
+      models: {
+        'veo-3.1-generate-preview': 8,
+        'veo-3.1-fast-generate-preview': 4,
+        'bytedance/seedance-2.0': 3,
+        'bytedance/seedance-2.0-fast': 2,
+        'bytedance/seedance-v1.0-pro': 3,
+        'bytedance/seedance-v1.5-pro': 3,
+      },
+      modes: {
+        'sheet-guided': {
+          default: 7,
+          models: {
+            'bytedance/seedance-2.0': 7,
+            'bytedance/seedance-2.0-fast': 6,
+            'bytedance/seedance-v1.0-pro': 6,
+            'bytedance/seedance-v1.5-pro': 6,
+          },
+        },
+      },
+    },
+  },
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [
       '0x.city',

@@ -32,32 +32,31 @@ export function GenerationUsage({ className = '' }: GenerationUsageProps) {
 
   if (!usage) return null;
 
-  const {
-    currentCount,
-    maxGenerations,
-    remainingGenerations,
-    hasReachedLimit,
-  } = usage;
+  const { currentCredits, maxCredits, remainingCredits, hasReachedLimit } =
+    usage;
 
   return (
     <Card className={className}>
       <CardContent>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <Sparkles className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">AI Generations</span>
+            <span className="text-sm font-medium">AI credits</span>
             <span className="text-xs text-muted-foreground">
-              {currentCount} of {maxGenerations} used this month
+              {currentCredits} of {maxCredits} used this month
             </span>
           </div>
           <div className="flex items-center gap-2">
             {hasReachedLimit ? (
               <Badge variant="destructive" className="flex items-center gap-1">
                 <AlertCircle className="h-3 w-3" />
-                Limit Reached
+                Credit limit reached
               </Badge>
             ) : (
-              <Badge variant="secondary">{remainingGenerations} left</Badge>
+              <Badge variant="secondary">
+                {remainingCredits}{' '}
+                {remainingCredits === 1 ? 'credit' : 'credits'} left
+              </Badge>
             )}
           </div>
         </div>

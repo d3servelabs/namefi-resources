@@ -1,3 +1,7 @@
+import {
+  aiGenerationCreditCostsSchema,
+  defaultAiGenerationCreditCosts,
+} from '@namefi-astra/common/ai-generation-credits';
 import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
 import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
@@ -246,9 +250,18 @@ export const configSchema = z.object({
   DEV_NFSC_FAUCET_AMOUNT: z.number().default(0),
   DEV_NFSC_FAUCET_COOLDOWN_HOURS: z.number().default(6),
   /**
-   * Maximum number of AI generations allowed per user per month
+   * Maximum weighted AI generation credits allowed per user per month.
+   * Production uses 25 credits, which backs into a $5 planning budget at
+   * $0.20 per credit.
    */
   MAX_AI_GENERATIONS_PER_USER_PER_MONTH: z.number().default(25),
+  /**
+   * Credit costs by generation type, mode, and primary model. Unknown models
+   * fall back to the type default, then the global default.
+   */
+  AI_GENERATION_CREDIT_COSTS: aiGenerationCreditCostsSchema.default(
+    defaultAiGenerationCreditCosts,
+  ),
 
   /**
    * Default Listmonk list ID for new subscribers

@@ -30,6 +30,41 @@ vi.mock('#lib/env', () => ({
       ANIMATIONS: 'animations',
     },
     CLOUD_FRONT_DOMAIN: 'cdn.test',
+    AI_GENERATION_CREDIT_COSTS: {
+      default: 1,
+      logo: {
+        default: 1,
+        models: {
+          'gpt-image-2': 2,
+        },
+      },
+      marketing: {
+        default: 1,
+        models: {
+          'gpt-image-2': 2,
+        },
+      },
+      animation: {
+        default: 3,
+        models: {
+          'veo-3.1-generate-preview': 8,
+          'veo-3.1-fast-generate-preview': 4,
+          'bytedance/seedance-2.0': 3,
+          'bytedance/seedance-2.0-fast': 2,
+          'bytedance/seedance-v1.0-pro': 3,
+          'bytedance/seedance-v1.5-pro': 3,
+        },
+        modes: {
+          'sheet-guided': {
+            default: 7,
+            models: {
+              'bytedance/seedance-2.0': 7,
+              'bytedance/seedance-2.0-fast': 6,
+            },
+          },
+        },
+      },
+    },
     MAX_AI_GENERATIONS_PER_USER_PER_MONTH: 25,
     STORAGE_BUCKET: 'test-bucket',
     AWS_REGION: 'us-east-1',
@@ -107,6 +142,8 @@ vi.mock('../../base', () => ({
 
 const {
   generateAnimationInputSchema,
+  getAiGenerationCreditCost,
+  getAiGenerationCreditCostForRow,
   getAnimationStartStateAfterError,
   startLogoAnimationWorkflowWithRecovery,
 } = await import('../aiRouter');
@@ -311,5 +348,117 @@ describe('generateAnimationInputSchema', () => {
         model: 'bytedance/seedance-2.0',
       }),
     ).toThrow();
+  });
+});
+
+describe('AI generation credit costs', () => {
+  it('resolves model-specific costs for logo, poster, and animation generations', () => {
+    expect(
+      getAiGenerationCreditCost({ type: 'logo', model: 'gpt-image-2' }),
+    ).toBe(2);
+    expect(
+      getAiGenerationCreditCost({ type: 'marketing', model: 'gpt-image-2' }),
+    ).toBe(2);
+    expect(
+      getAiGenerationCreditCost({
+        type: 'animation',
+        mode: 'looped',
+        model: 'bytedance/seedance-2.0',
+      }),
+    ).toBe(3);
+    expect(
+      getAiGenerationCreditCost({
+        type: 'animation',
+        mode: 'looped',
+        model: 'bytedance/seedance-2.0-fast',
+      }),
+    ).toBe(2);
+    expect(
+      getAiGenerationCreditCost({
+        type: 'animation',
+        mode: 'cinematic',
+        model: 'veo-3.1-generate-preview',
+      }),
+    ).toBe(8);
+  });
+
+  it('falls back to the type default for unknown or historical generation models', () => {
+    expect(
+      getAiGenerationCreditCost({ type: 'logo', model: 'gpt-image-1' }),
+    ).toBe(1);
+    expect(getAiGenerationCreditCost({ type: 'marketing' })).toBe(1);
+    expect(getAiGenerationCreditCost({ type: 'animation' })).toBe(3);
+  });
+
+  it('uses mode-specific animation costs when configured', () => {
+    expect(
+      getAiGenerationCreditCost({
+        type: 'animation',
+        mode: 'sheet-guided',
+        model: 'bytedance/seedance-2.0',
+      }),
+    ).toBe(7);
+    expect(
+      getAiGenerationCreditCost({
+        type: 'animation',
+        mode: 'sheet-guided',
+        model: 'bytedance/seedance-2.0-fast',
+      }),
+    ).toBe(6);
+  });
+
+  it('uses persisted output model metadata when scoring existing rows', () => {
+    expect(
+      getAiGenerationCreditCostForRow({
+        type: 'logo',
+        input: {
+          type: 'logo',
+          logoType: 'let-ai-choose',
+          logoStyle: 'let-ai-choose',
+          imageModel: 'gpt-image-1',
+        },
+        output: {
+          type: 'logo',
+          storagePath: 'logos/example.png',
+          imageModel: 'gpt-image-2',
+        },
+      }),
+    ).toBe(2);
+
+    expect(
+      getAiGenerationCreditCostForRow({
+        type: 'animation',
+        input: {
+          type: 'animation',
+          mode: 'looped',
+          motionIntensity: 'subtle',
+          motionPreset: 'light-sweep',
+          model: 'bytedance/seedance-2.0-fast',
+        },
+        output: {
+          type: 'animation',
+          thumbnailStoragePath: 'animations/thumb.png',
+          mimeType: 'video/mp4',
+          model: 'bytedance/seedance-2.0-fast',
+        },
+      }),
+    ).toBe(2);
+
+    expect(
+      getAiGenerationCreditCostForRow({
+        type: 'animation',
+        input: {
+          type: 'animation',
+          mode: 'sheet-guided',
+          model: 'bytedance/seedance-2.0',
+        },
+        output: {
+          type: 'animation',
+          thumbnailStoragePath: 'animations/thumb.png',
+          mimeType: 'video/mp4',
+          model: 'bytedance/seedance-2.0',
+        },
+      }),
+    ).toBe(7);
   });
 });

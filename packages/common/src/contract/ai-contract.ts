@@ -1,8 +1,8 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { aiGenerationCreditCostsSchema } from '../ai-generation-credits';
 import { createContract } from './create-contract';
-import type { RouterContract } from './trpc-contract';
 
 /**
  * Contract for the AI router.
@@ -228,6 +228,7 @@ const aiLogoInputSchema = z.object({
   logoType: z.string(),
   logoStyle: z.string(),
   description: z.string().optional(),
+  imageModel: z.string().optional(),
   textTreatment: z.string().optional(),
   typography: z.string().optional(),
 });
@@ -236,6 +237,7 @@ const aiMarketingInputSchema = z.object({
   type: z.literal('marketing'),
   description: z.string().optional(),
   collateralType: marketingCollateralTypeSchema,
+  imageModel: z.string().optional(),
 });
 
 const aiCinematicAnimationInputRowSchema = z.object({
@@ -280,12 +282,14 @@ const aiLogoOutputSchema = z.object({
   logoStyle: z.string().optional(),
   textTreatment: z.string().optional(),
   typography: z.string().optional(),
+  imageModel: z.string().optional(),
 });
 
 const aiMarketingOutputSchema = z.object({
   type: z.literal('marketing'),
   storagePath: z.string(),
   collateralType: marketingCollateralTypeSchema,
+  imageModel: z.string().optional(),
 });
 
 const aiAnimationOutputSchema = z.object({
@@ -392,10 +396,14 @@ const getInternalGenerationsByDomainsOutputSchema = z.record(
 );
 
 const getUserGenerationUsageOutputSchema = z.object({
+  currentCredits: z.number(),
+  maxCredits: z.number(),
+  remainingCredits: z.number(),
   currentCount: z.number(),
   maxGenerations: z.number(),
   remainingGenerations: z.number(),
   hasReachedLimit: z.boolean(),
+  creditCosts: aiGenerationCreditCostsSchema,
 });
 
 // ---------------------------------------------------------------------------

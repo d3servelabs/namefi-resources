@@ -182,6 +182,10 @@ export function PosterGenerator({
       submitLoadingText="Generating"
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
+      creditCostConfig={{
+        type: 'marketing',
+        getModel: (values) => values.model,
+      }}
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedLogoId = form.watch('selectedLogoId');
