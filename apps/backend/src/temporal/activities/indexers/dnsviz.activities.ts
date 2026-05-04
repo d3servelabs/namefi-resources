@@ -405,7 +405,10 @@ export async function sendDnsvizDigestEmail(
   });
 
   await sendMail({
-    to: ['reports+dnssec@d3serve.xyz'],
+    to: [
+      'reports+dnssec@d3serve.xyz',
+      'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
+    ],
     subject,
     content: { html, plain },
     from: 'DNSViz <noreply@d3serve.xyz>',
