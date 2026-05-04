@@ -45,14 +45,13 @@ import {
   PlayCircle,
   Calendar,
   Hash,
-  Globe,
-  Link,
   Flame,
   Wrench,
   RefreshCw,
   ExternalLink,
 } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
+import { getTemporalWorkflowUrl } from './temporal-workflow-url';
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -105,12 +104,12 @@ function WorkflowHistoryContent() {
   // Generate Temporal UI link for workflow details
   const getWorkflowLink = (workflowId: string, runId?: string) => {
     if (!data?.temporal) return null;
-    const { apiUrl, namespace } = data.temporal;
-    // Convert API URL to UI URL (replace api. with ui. if needed)
-    const uiUrl = apiUrl.includes('localhost')
-      ? 'http://localhost:8233'
-      : 'https://cloud.temporal.io';
-    return `${uiUrl}/namespaces/${namespace}/workflows/${workflowId}${runId ? `/${runId}` : ''}`;
+    return getTemporalWorkflowUrl({
+      apiUrl: data.temporal.apiUrl,
+      namespace: data.temporal.namespace,
+      workflowId,
+      runId,
+    });
   };
 
   const handleDaysChange = useCallback((value: '1' | '3' | '7' | null) => {

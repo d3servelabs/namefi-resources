@@ -15,6 +15,7 @@ import {
   Megaphone,
   Settings,
   History,
+  ShieldCheck,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -117,6 +118,16 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-emerald-100',
         iconTextColor: 'text-emerald-600',
         permissions: [Permission.READ_DOMAIN_PREFERENCES],
+      },
+      {
+        title: 'NS & DNSSEC',
+        description:
+          'Review nameservers and DNSSEC status across all user domains; trigger admin overrides.',
+        href: '/admin/ns-and-dnssec',
+        icon: ShieldCheck,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.READ_NS_DNSSEC],
       },
       {
         title: 'Bulk Burn',

@@ -13,6 +13,7 @@ import { adminFreeClaimsContract } from './admin-free-claims-contract';
 import { adminLoginHistoryContract } from './admin-login-history-contract';
 import { adminNfscContract } from './admin-nfsc-contract';
 import { adminNftContract } from './admin-nft-contract';
+import { adminNsAndDnssecContract } from './admin-ns-and-dnssec-contract';
 import { adminOrdersContract } from './admin-orders-contract';
 import { adminPermissionsContract } from './admin-permissions-contract';
 import { adminPoweredByNamefiContract } from './admin-powered-by-namefi-contract';
@@ -61,6 +62,7 @@ export const adminContract = {
   bigQueryAudit: adminBigQueryAuditContract,
   loginHistory: adminLoginHistoryContract,
   dnsviz: adminDnsvizContract,
+  nsAndDnssec: adminNsAndDnssecContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;
