@@ -106,7 +106,7 @@ export interface DnsvizOnDemandWorkflowOutput {
   analysisDate: string;
 }
 
-const DEFAULT_BATCH_SIZE = 15;
+const DEFAULT_BATCH_SIZE = 11;
 const DEFAULT_PER_DOMAIN_CONCURRENCY = 3;
 const DEFAULT_RETENTION_DAYS = 7;
 const DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS = 20;
@@ -201,6 +201,7 @@ export async function dnsvizOnDemandWorkflow({
       // The retry's upserts overwrite the original ERROR rows, so back
       // out the original error count before adding the retry's verdicts.
       if (batchResult.erroredDomains.length > 0) {
+        await workflow.sleep((delayBetweenBatchesSeconds || 10) * 1000);
         workflow.log.debug(
           `Retrying ${batchResult.erroredDomains.length} errored domain(s) from on-demand batch ${i + 1}`,
         );

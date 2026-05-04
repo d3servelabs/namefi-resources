@@ -73,7 +73,7 @@ export interface DnsvizDailyDigestWorkflowOutput {
   analysisDate: string;
 }
 
-const DEFAULT_BATCH_SIZE = 15;
+const DEFAULT_BATCH_SIZE = 11;
 const DEFAULT_PER_DOMAIN_CONCURRENCY = 3;
 const DEFAULT_RETENTION_DAYS = 7;
 const DEFAULT_DELAY_BETWEEN_BATCHES_SECONDS = 15;
@@ -169,6 +169,7 @@ export async function dnsvizDailyDigestWorkflow({
       // back out the original error count before adding the retry's
       // verdicts to keep totals reflecting the final DB state.
       if (batchResult.erroredDomains.length > 0) {
+        await workflow.sleep((delayBetweenBatchesSeconds || 10) * 1000);
         workflow.log.debug(
           `Retrying ${batchResult.erroredDomains.length} errored domain(s) from batch ${i + 1}`,
         );
