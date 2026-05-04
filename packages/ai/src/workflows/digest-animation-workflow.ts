@@ -13,6 +13,7 @@ import { createRunId } from '../utils/files';
 const IMAGE_GENERATION_TOOL = 'image_generation' as const;
 const DIGEST_ANIMATION_DURATION_SECONDS = 8;
 const DIGEST_ANIMATION_ASPECT_RATIO = '16:9';
+const DIGEST_ANIMATION_VIDEO_POLL_TIMEOUT_MS = 15 * 60 * 1000;
 const DATA_URL_PATTERN =
   /^data:(image\/[a-zA-Z0-9.+-]+);base64,([A-Za-z0-9+/=\s]+)$/;
 
@@ -256,7 +257,7 @@ function buildSeedanceProviderOptions(input: { referenceImages: string[] }) {
     referenceImages: input.referenceImages,
     watermark: false,
     generateAudio: false,
-    pollTimeoutMs: 600_000,
+    pollTimeoutMs: DIGEST_ANIMATION_VIDEO_POLL_TIMEOUT_MS,
   };
 }
 
