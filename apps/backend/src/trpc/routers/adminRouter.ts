@@ -15,6 +15,7 @@ import { freeClaimsRouter } from './admin/freeClaimsRouter';
 import { adminUsersRouter } from './admin/adminUsersRouter';
 import { domainPreferencesRouter } from './admin/domainPreferencesRouter';
 import { adminOrdersRouter } from './admin/adminOrdersRouter';
+import { adminFinancialAnalyticsRouter } from './admin/adminFinancialAnalyticsRouter';
 import { exportTrackingRouter } from './admin/exportTrackingRouter';
 import { bigQueryAuditRouter } from './admin/bigQueryAuditRouter';
 import { adminLoginHistoryRouter } from './admin/adminLoginHistoryRouter';
@@ -42,6 +43,7 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   users: adminUsersRouter,
   domainPreferences: domainPreferencesRouter,
   orders: adminOrdersRouter,
+  financials: adminFinancialAnalyticsRouter,
   exportTracking: exportTrackingRouter,
   bigQueryAudit: bigQueryAuditRouter,
   loginHistory: adminLoginHistoryRouter,

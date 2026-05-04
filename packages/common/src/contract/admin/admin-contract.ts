@@ -8,6 +8,7 @@ import { adminDomainPreferencesContract } from './admin-domain-preferences-contr
 import { adminEmailCampaignsContract } from './admin-email-campaigns-contract';
 import { adminEppTestingContract } from './admin-epp-testing-contract';
 import { adminExportTrackingContract } from './admin-export-tracking-contract';
+import { adminFinancialAnalyticsContract } from './admin-financial-analytics-contract';
 import { adminFreeClaimsContract } from './admin-free-claims-contract';
 import { adminLoginHistoryContract } from './admin-login-history-contract';
 import { adminNfscContract } from './admin-nfsc-contract';
@@ -25,7 +26,7 @@ import type { RouterContract } from '../trpc-contract';
  * The router (`apps/backend/src/trpc/routers/adminRouter.ts`) is
  * type-checked against this contract via
  * `createContractTRPCRouter<typeof adminContract>`. It contains a single
- * top-level `isUserAdmin` query and 15 nested sub-contracts — each one
+ * top-level `isUserAdmin` query and nested sub-contracts — each one
  * corresponds to a sub-router under
  * `apps/backend/src/trpc/routers/admin/*`.
  *
@@ -55,6 +56,7 @@ export const adminContract = {
   users: adminUsersContract,
   domainPreferences: adminDomainPreferencesContract,
   orders: adminOrdersContract,
+  financials: adminFinancialAnalyticsContract,
   exportTracking: adminExportTrackingContract,
   bigQueryAudit: adminBigQueryAuditContract,
   loginHistory: adminLoginHistoryContract,

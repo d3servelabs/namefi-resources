@@ -346,7 +346,10 @@ function SingleConditionEditor({
           }}
         >
           <SelectTrigger className="h-6 w-28">
-            <SelectValue />
+            <SelectValue>
+              {operators.find((op) => op.value === condition.operator)?.label ??
+                condition.operator}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {operators.map((op) => (
@@ -379,7 +382,11 @@ function SingleConditionEditor({
               }}
             >
               <SelectTrigger className="h-9">
-                <SelectValue placeholder="Select..." />
+                <SelectValue placeholder="Select...">
+                  {fieldOptions.find(
+                    (option) => option.value?.toString() === localValue,
+                  )?.label ?? 'Select...'}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {fieldOptions.map((option) => (

@@ -24,6 +24,7 @@ import {
   SlidersHorizontal,
   Megaphone,
   AlertTriangle,
+  DollarSign,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -182,6 +183,21 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-indigo-100',
         iconTextColor: 'text-indigo-600',
         permissions: [Permission.READ_ORDERS, Permission.READ_USERS],
+        permissionsMode: 'every',
+      },
+      {
+        title: 'Financials',
+        description:
+          'Review revenue, refunds, payment methods, registrars, and order-level financial exports.',
+        href: '/admin/financials',
+        icon: DollarSign,
+        iconBgColor: 'bg-emerald-100',
+        iconTextColor: 'text-emerald-600',
+        permissions: [
+          Permission.READ_ANALYTICS,
+          Permission.READ_ORDERS,
+          Permission.READ_USERS,
+        ],
         permissionsMode: 'every',
       },
       {
