@@ -8,17 +8,7 @@ import {
 } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import {
-  and,
-  asc,
-  eq,
-  inArray,
-  like,
-  not,
-  or,
-  sql,
-  type SQL,
-} from 'drizzle-orm';
+import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
 import {
   buildWhereClause,
   buildSortClause,
@@ -44,7 +34,6 @@ import {
   submitNameserversChangeWorkflow,
   submitResetNameserversWorkflow,
 } from '#lib/domains/nameservers';
-import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { logger } from '#lib/logger';
 import { ResourceType } from '#lib/auditor';
 import { config } from '#lib/env';
@@ -176,7 +165,7 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
     .input(adminNsAndDnssecContract.listDomainsNsAndDnssec.input)
     .output(adminNsAndDnssecContract.listDomainsNsAndDnssec.output)
     .query(async ({ input }) => {
-      const { page, pageSize, filters, sorting, pbnFilter } = input;
+      const { page, pageSize, filters, sorting } = input;
       const offset = (page - 1) * pageSize;
 
       await ensurePrivyTableFresh();
@@ -194,13 +183,25 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
         >`${domainConfigTable.dnssecEnabled}::text`,
       };
 
-      const baseQuery = db
+      // We LEFT JOIN `indexedDomainsTable` directly so nameservers +
+      // cached DNSSEC status come back in one query. The
+      // `(registrar_key, normalized_domain_name)` unique constraint
+      // permits multiple rows per name across registrars, but in
+      // steady state each domain lives at exactly one registrar — so
+      // 1:1 in practice. If a domain ever has multiple registrar
+      // entries the page would show duplicates; acceptable for v1.
+      const dataQuery = db
         .with(namefiNftCte)
         .select({
           userId: usersTable.id,
           normalizedDomainName: namefiNftView.normalizedDomainName,
           chainId: namefiNftView.chainId,
           ownerAddress: namefiNftView.ownerAddress,
+          nameservers: indexedDomainsTable.nameservers,
+          isUsingNamefiNameservers:
+            indexedDomainsTable.isUsingNamefiNameservers,
+          dnssecStatus: indexedDomainsTable.dnssecStatus,
+          dnssecLastUpdatedAt: indexedDomainsTable.dnssecLastUpdatedAt,
         })
         .from(privyUsersTableSchema)
         .leftJoin(
@@ -218,6 +219,13 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
             namefiNftView.normalizedDomainName,
           ),
         )
+        .leftJoin(
+          indexedDomainsTable,
+          eq(
+            indexedDomainsTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
+        )
         .$dynamic();
 
       const whereClauses: SQL[] = [];
@@ -229,34 +237,7 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
         if (drizzlerWhere) whereClauses.push(drizzlerWhere);
       }
 
-      // PBN-subdomain filter: derived predicate, not a single-column
-      // comparison, so it lives outside the drizzler middleware. We OR
-      // together a `LIKE '%.<parent>'` clause for each PBN parent, then
-      // either include or exclude the match depending on the mode. Using
-      // Drizzle's parametrized `like` builders — never raw SQL.
-      if (pbnFilter !== 'all') {
-        const parents = await getPoweredByNamefi3PDomains();
-        const subdomainClauses = parents.map((parent) =>
-          like(namefiNftView.normalizedDomainName, `%.${parent}`),
-        );
-        const subdomainPredicate = subdomainClauses.length
-          ? or(...subdomainClauses)
-          : undefined;
-        if (subdomainPredicate) {
-          whereClauses.push(
-            pbnFilter === 'pbnOnly'
-              ? subdomainPredicate
-              : (not(subdomainPredicate) as SQL),
-          );
-        } else if (pbnFilter === 'pbnOnly') {
-          // No PBN parents configured — `pbnOnly` matches nothing. Force
-          // an unsatisfiable clause so the page renders zero rows
-          // consistently between data and count queries.
-          whereClauses.push(sql`FALSE`);
-        }
-      }
-
-      let query = baseQuery;
+      let query = dataQuery;
       if (whereClauses.length > 0) {
         query = query.where(and(...whereClauses));
       }
@@ -284,6 +265,13 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
             namefiNftView.normalizedDomainName,
           ),
         )
+        .leftJoin(
+          indexedDomainsTable,
+          eq(
+            indexedDomainsTable.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
+          ),
+        )
         .$dynamic();
 
       let countQueryWithWhere = countQuery;
@@ -301,75 +289,20 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
         ]);
         const total = countRow[0]?.count ?? 0;
 
-        const domainNames = rows.map((r) => r.normalizedDomainName);
-
-        // Batch-load nameservers from the indexed-domains table.
-        const indexedRows =
-          domainNames.length > 0
-            ? await db
-                .select({
-                  normalizedDomainName:
-                    indexedDomainsTable.normalizedDomainName,
-                  nameservers: indexedDomainsTable.nameservers,
-                  isUsingNamefiNameservers:
-                    indexedDomainsTable.isUsingNamefiNameservers,
-                })
-                .from(indexedDomainsTable)
-                .where(
-                  inArray(
-                    indexedDomainsTable.normalizedDomainName,
-                    domainNames,
-                  ),
-                )
-            : [];
-        const nsByDomain = new Map(
-          indexedRows.map((r) => [
-            r.normalizedDomainName,
-            {
-              nameservers: r.nameservers ?? [],
-              isUsingNamefiNameservers: !!r.isUsingNamefiNameservers,
-            },
-          ]),
-        );
-
-        const [activeWorkflows, dnssecResults] = await Promise.all([
-          getActiveWorkflowsForDomains(domainNames),
-          // Live DNSSEC details — one registrar call per domain. We fan out
-          // in parallel and degrade rows whose call fails so a single bad
-          // domain doesn't fail the page.
-          Promise.allSettled(
-            domainNames.map((d) =>
-              getDnssecStatusDetails(toPunycodeDomainName(d)),
-            ),
-          ),
-        ]);
-
-        const data = rows.map((row, idx) => {
-          const ns = nsByDomain.get(row.normalizedDomainName);
-          const wf = activeWorkflows.get(row.normalizedDomainName) ?? {
-            dnssec: null,
-            ns: null,
-          };
-          const dnssecResult = dnssecResults[idx];
-          const dnssecOk = dnssecResult?.status === 'fulfilled';
-          const dnssec = dnssecOk ? dnssecResult.value : undefined;
+        const data = rows.map((row) => {
+          const dnssec = row.dnssecStatus ?? null;
           return {
             userId: row.userId ?? null,
             normalizedDomainName: row.normalizedDomainName,
             ownerAddress: row.ownerAddress ?? null,
             chainId: Number(row.chainId),
-            nameservers: ns?.nameservers ?? dnssec?.nameservers ?? [],
-            isUsingNamefiNameservers:
-              ns?.isUsingNamefiNameservers ??
-              dnssec?.isUsingNamefiNameservers ??
-              false,
+            nameservers: row.nameservers ?? [],
+            isUsingNamefiNameservers: !!row.isUsingNamefiNameservers,
             dnssecZoneHasActiveDnssec: dnssec?.zoneHasActiveDnssec ?? null,
             dnssecHasDelegationSigner: dnssec?.hasDelegationSigner ?? null,
             dnssecIsUsingNamefiDelegationSigner:
               dnssec?.isUsingNamefiDelegationSigner ?? null,
-            dnssecError: !dnssecOk,
-            activeDnssecWorkflow: wf.dnssec,
-            activeNameserversWorkflow: wf.ns,
+            dnssecLastUpdatedAt: row.dnssecLastUpdatedAt ?? null,
           };
         });
 
@@ -381,10 +314,6 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
             totalCount: total,
             totalPages: Math.ceil(total / pageSize),
           },
-          temporal: {
-            apiUrl: config.TEMPORAL_API_URL,
-            namespace: config.TEMPORAL_NAMESPACE,
-          },
         };
       } catch (error) {
         logger.error({ error }, 'Failed to list NS & DNSSEC for admin page');
@@ -392,6 +321,62 @@ export const nsAndDnssecRouter = createContractTRPCRouter<
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to list NS & DNSSEC',
         });
+      }
+    }),
+
+  /**
+   * Active Temporal workflows for the supplied page of domains. Split
+   * from `listDomainsNsAndDnssec` so that the slower workflow.list call
+   * does not block the table render — the frontend fires this query
+   * after the list resolves and shows a per-row spinner in the
+   * "Pending Workflow" column until it completes.
+   */
+  getActiveWorkflowsForPage: adminProcedureWithPermissions(
+    Permission.READ_NS_DNSSEC,
+  )
+    .input(adminNsAndDnssecContract.getActiveWorkflowsForPage.input)
+    .output(adminNsAndDnssecContract.getActiveWorkflowsForPage.output)
+    .query(async ({ input }) => {
+      const map = await getActiveWorkflowsForDomains(input.domainNames);
+      const workflows: Record<
+        string,
+        { dnssec: ActiveWorkflow | null; ns: ActiveWorkflow | null }
+      > = {};
+      for (const [domain, slots] of map) {
+        workflows[domain] = slots;
+      }
+      return {
+        temporal: {
+          apiUrl: config.TEMPORAL_API_URL,
+          namespace: config.TEMPORAL_NAMESPACE,
+        },
+        workflows,
+      };
+    }),
+
+  /**
+   * Live `getDnssecStatusDetails` for a single domain. Used by the
+   * Toggle DNSSEC modal so the admin sees current delegation-signer
+   * info that's fresher than the indexed cache.
+   */
+  getDnssecDetails: adminProcedureWithPermissions(Permission.READ_NS_DNSSEC)
+    .input(adminNsAndDnssecContract.getDnssecDetails.input)
+    .output(adminNsAndDnssecContract.getDnssecDetails.output)
+    .query(async ({ input }) => {
+      const punycode = toPunycodeDomainName(input.domainName);
+      try {
+        const details = await getDnssecStatusDetails(punycode);
+        return { success: true as const, ...details };
+      } catch (error) {
+        logger.warn(
+          { error, domainName: punycode },
+          'Live DNSSEC lookup failed for admin getDnssecDetails',
+        );
+        return {
+          success: false as const,
+          domainName: punycode,
+          error: error instanceof Error ? error.message : String(error),
+        };
       }
     }),
 

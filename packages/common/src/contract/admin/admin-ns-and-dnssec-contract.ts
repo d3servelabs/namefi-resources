@@ -20,16 +20,6 @@ const listInputSchema = z.object({
   pageSize: z.number().min(1).max(100).default(25),
   filters: z.any().optional(),
   sorting: z.any().optional(),
-  /**
-   * Filter rows by whether the domain is a subdomain of any
-   * PoweredByNamefi (PBN) parent (third-party domains we manage DNS for).
-   * - `all` (default): no PBN constraint
-   * - `pbnOnly`: only rows whose normalizedDomainName ends with `.<pbn-parent>`
-   * - `excludePbn`: drop those rows
-   * The PBN parent list is resolved server-side from
-   * `getPoweredByNamefi3PDomains()` (Redis-cached 12h).
-   */
-  pbnFilter: z.enum(['all', 'pbnOnly', 'excludePbn']).default('all'),
 });
 
 /**
@@ -52,9 +42,13 @@ const activeWorkflowSchema = z.object({
 });
 
 /**
- * Per-row payload. Most DNSSEC fields are optional because the registrar
- * call may fail/time-out for an individual domain — the row falls back
- * to `dnssecError: true` in that case so the table can still render.
+ * Per-row payload. DNSSEC fields are sourced from the cached
+ * `indexed_domains.dnssec_status` jsonb (`IndexedDomainDnssecStatus`),
+ * not a live registrar call — so they're nullable when the domain has
+ * never been indexed, and `dnssecLastUpdatedAt` exposes freshness so
+ * the UI can flag stale rows. Active-workflow info has been split out
+ * into `getActiveWorkflowsForPage` to keep this list query fast and
+ * cacheable.
  */
 const nsAndDnssecRowSchema = z.object({
   userId: z.string().nullable(),
@@ -66,9 +60,7 @@ const nsAndDnssecRowSchema = z.object({
   dnssecZoneHasActiveDnssec: z.boolean().nullable(),
   dnssecHasDelegationSigner: z.boolean().nullable(),
   dnssecIsUsingNamefiDelegationSigner: z.boolean().nullable(),
-  dnssecError: z.boolean(),
-  activeDnssecWorkflow: activeWorkflowSchema.nullable(),
-  activeNameserversWorkflow: activeWorkflowSchema.nullable(),
+  dnssecLastUpdatedAt: z.date().nullable(),
 });
 
 const listOutputSchema = z.object({
@@ -79,16 +71,73 @@ const listOutputSchema = z.object({
     totalCount: z.number(),
     totalPages: z.number(),
   }),
-  /**
-   * Temporal config exposed to the frontend so it can construct workflow
-   * UI URLs. Mirrors the `temporal: { apiUrl, namespace }` field returned
-   * by `apps/backend/src/trpc/routers/admin/nftRouter.ts:884`.
-   */
-  temporal: z.object({
-    apiUrl: z.string(),
-    namespace: z.string(),
-  }),
 });
+
+const temporalConfigSchema = z.object({
+  apiUrl: z.string(),
+  namespace: z.string(),
+});
+
+const activeWorkflowsInputSchema = z.object({
+  /**
+   * Domain names whose active workflows we want. Capped at the page
+   * size cap (100) since the frontend only fires this for the visible
+   * page.
+   */
+  domainNames: z.array(z.string()).max(100),
+});
+
+const activeWorkflowsOutputSchema = z.object({
+  /** Same Temporal config the workflow-history admin view returns. */
+  temporal: temporalConfigSchema,
+  /**
+   * Map of normalized domain name → at most one DNSSEC and one
+   * nameservers workflow. Domains not present in the input are absent;
+   * domains with no active workflow have both slots null.
+   */
+  workflows: z.record(
+    z.string(),
+    z.object({
+      dnssec: activeWorkflowSchema.nullable(),
+      ns: activeWorkflowSchema.nullable(),
+    }),
+  ),
+});
+
+/**
+ * Mirror of `DnssecStatusDetails` from `apps/backend/src/lib/domains/dnssec.ts`.
+ * Same shape as the user-facing `domainConfig.dnssec.getDomainDnssecDetails`
+ * output; we duplicate the schema here (rather than importing) so this
+ * sub-contract stays self-contained.
+ */
+const dnssecDetailsSuccessSchema = z.object({
+  success: z.literal(true),
+  dnssecStatus: z.string(),
+  supportsDnssec: z.boolean(),
+  hasDelegationSigner: z.boolean(),
+  isUsingNamefiDelegationSigner: z.boolean().optional(),
+  zoneHasActiveDnssec: z.boolean(),
+  isUsingNamefiNameservers: z.boolean(),
+  nameservers: z.array(z.string()),
+  delegationSigners: z.array(z.any()).optional(),
+  zoneSigningConfig: z.any().optional(),
+});
+
+/**
+ * Failure-shaped response so the registrar/probe call failing doesn't
+ * surface as a hard query error. The frontend can show "live lookup
+ * failed, showing cached data" rather than retrying a 500 three times.
+ */
+const dnssecDetailsFailureSchema = z.object({
+  success: z.literal(false),
+  domainName: z.string(),
+  error: z.string(),
+});
+
+const dnssecDetailsResponseSchema = z.discriminatedUnion('success', [
+  dnssecDetailsSuccessSchema,
+  dnssecDetailsFailureSchema,
+]);
 
 const domainNameInputSchema = z.object({
   domainName: namefiNormalizedDomainSchema,
@@ -116,6 +165,26 @@ export const adminNsAndDnssecContract = createContract(
       type: 'query',
       input: listInputSchema,
       output: listOutputSchema,
+    },
+    /**
+     * Live-fetch active Temporal workflows for the current page. Split
+     * from the list query so the table renders immediately and the
+     * Pending Workflow column streams in independently.
+     */
+    getActiveWorkflowsForPage: {
+      type: 'query',
+      input: activeWorkflowsInputSchema,
+      output: activeWorkflowsOutputSchema,
+    },
+    /**
+     * Live `getDnssecStatusDetails(domainName)`, used by the per-row
+     * modals when the admin opens them — gives them up-to-date
+     * delegation-signer detail without paying that cost on the list.
+     */
+    getDnssecDetails: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: dnssecDetailsResponseSchema,
     },
     enableDnssec: {
       type: 'mutation',

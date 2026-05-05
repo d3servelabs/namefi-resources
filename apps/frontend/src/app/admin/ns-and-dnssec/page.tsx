@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { toast } from 'sonner';
 import {
@@ -52,21 +52,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/alert-dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@namefi-astra/ui/components/shadcn/select';
-import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { getTemporalWorkflowUrl } from '@/components/admin/temporal-workflow-url';
-
-type PbnFilter = 'all' | 'pbnOnly' | 'excludePbn';
 
 type ActiveWorkflow = {
   operation:
@@ -87,15 +77,23 @@ type NsAndDnssecRow = {
   chainId: number;
   nameservers: string[];
   isUsingNamefiNameservers: boolean;
+  /**
+   * DNSSEC fields are sourced from the cached
+   * `indexed_domains.dnssec_status`. They're `null` when the domain has
+   * never been indexed; `dnssecLastUpdatedAt` exposes freshness.
+   */
   dnssecZoneHasActiveDnssec: boolean | null;
   dnssecHasDelegationSigner: boolean | null;
   dnssecIsUsingNamefiDelegationSigner: boolean | null;
-  dnssecError: boolean;
-  activeDnssecWorkflow: ActiveWorkflow | null;
-  activeNameserversWorkflow: ActiveWorkflow | null;
+  dnssecLastUpdatedAt: Date | null;
 };
 
 type TemporalConfig = { apiUrl: string; namespace: string };
+
+type DomainWorkflows = {
+  dnssec: ActiveWorkflow | null;
+  ns: ActiveWorkflow | null;
+};
 
 const DEFAULT_COLUMN_VISIBILITY = {
   user: true,
@@ -104,6 +102,26 @@ const DEFAULT_COLUMN_VISIBILITY = {
   pendingWorkflows: true,
   actions: true,
 };
+
+/**
+ * After any mutation that changes a domain's NS or DNSSEC state, refresh
+ * both the workflows query (so the Pending Workflow column shows the
+ * newly-started run without waiting for the 10s refetch interval) and
+ * the list query (so cached `dnssec_status` and `nameservers` stay
+ * roughly in sync once the indexer catches up).
+ */
+function useInvalidateNsAndDnssecQueries() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  return () => {
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.nsAndDnssec.getActiveWorkflowsForPage.queryKey(),
+    });
+    queryClient.invalidateQueries({
+      queryKey: trpc.admin.nsAndDnssec.listDomainsNsAndDnssec.queryKey(),
+    });
+  };
+}
 
 export default function NsAndDnssecAdminPage() {
   return (
@@ -173,8 +191,6 @@ function NsAndDnssecTable() {
     drizzlerFilterState,
     500,
   );
-  const [pbnFilter, setPbnFilter] = useState<PbnFilter>('all');
-  const [debouncedPbnFilter] = useDebounceValue(pbnFilter, 500);
 
   const backendFilters = useMemo(
     () =>
@@ -199,18 +215,62 @@ function NsAndDnssecTable() {
         pageSize,
         filters: backendFilters,
         sorting: backendSorting,
-        pbnFilter: debouncedPbnFilter,
       },
       {
-        // Refresh active workflow / DNSSEC info regularly while the page
-        // is open so the "pending workflow" column stays accurate.
+        placeholderData: (prev) => prev,
+      },
+    ),
+  );
+
+  // Active workflows live on a separate query so the slow
+  // `temporalClient.workflow.list` call does not block the table
+  // render. The query keys off the visible page's domain names —
+  // changing pages or filters triggers a fresh fetch. We debounce
+  // the input list (joined as a stable cache key) so rapid filter
+  // changes don't fire the call once per keystroke.
+  const visibleDomainNames = useMemo(() => {
+    // Sort so the React Query cache key for `getActiveWorkflowsForPage`
+    // doesn't churn just because two fetches returned the same set of
+    // rows in a different order.
+    return [
+      ...(query.data?.data ?? []).map((r) => r.normalizedDomainName),
+    ].sort();
+  }, [query.data?.data]);
+  const debouncedDomainNamesKey = useDebounceValue(
+    visibleDomainNames.join('\n'),
+    500,
+  )[0];
+  const debouncedDomainNames = useMemo(() => {
+    // Empty-/whitespace-only key → no domains. Without this guard a key
+    // like `'\n'` would split to `['', '']` and we'd fan a workflow
+    // lookup out for empty domain names.
+    if (!debouncedDomainNamesKey || !debouncedDomainNamesKey.trim()) {
+      return [];
+    }
+    return debouncedDomainNamesKey
+      .split('\n')
+      .filter((name) => name.length > 0);
+  }, [debouncedDomainNamesKey]);
+
+  const workflowsQuery = useQuery(
+    trpc.admin.nsAndDnssec.getActiveWorkflowsForPage.queryOptions(
+      { domainNames: debouncedDomainNames },
+      {
+        enabled: debouncedDomainNames.length > 0,
+        // Keep this column lively without re-fetching the table.
         refetchInterval: 10_000,
         placeholderData: (prev) => prev,
       },
     ),
   );
 
-  const temporal: TemporalConfig | undefined = query.data?.temporal;
+  const temporal: TemporalConfig | undefined = workflowsQuery.data?.temporal;
+  // Keep `workflowsByDomain` undefined while the query is in flight —
+  // a `{}` fallback would let consumers treat "loading" as "no active
+  // workflow" and let admins fire mutations on top of a running one.
+  const workflowsByDomain = workflowsQuery.data?.workflows;
+  const isWorkflowsLoading =
+    debouncedDomainNames.length > 0 && !workflowsQuery.data;
 
   const filterStrategy = useDrizzlerServerFilterStrategy({
     filterConfig: {
@@ -291,75 +351,63 @@ function NsAndDnssecTable() {
         id: 'pendingWorkflows',
         header: 'Pending Workflow',
         enableSorting: false,
-        cell: ({ row }) => (
-          <PendingWorkflowsCell row={row.original} temporal={temporal} />
-        ),
+        cell: ({ row }) => {
+          const wf = workflowsByDomain?.[row.original.normalizedDomainName];
+          return (
+            <PendingWorkflowsCell
+              workflows={wf}
+              temporal={temporal}
+              isLoading={isWorkflowsLoading}
+            />
+          );
+        },
         size: 240,
       },
       {
         id: 'actions',
         header: 'Actions',
         enableSorting: false,
-        cell: ({ row }) => (
-          <RowActions row={row.original} canWrite={canWrite} />
-        ),
+        cell: ({ row }) => {
+          const wf = workflowsByDomain?.[row.original.normalizedDomainName];
+          return (
+            <RowActions
+              row={row.original}
+              workflows={wf}
+              canWrite={canWrite}
+              isWorkflowsLoading={isWorkflowsLoading}
+            />
+          );
+        },
         size: 240,
       },
     ],
-    [canWrite, temporal],
+    [canWrite, isWorkflowsLoading, temporal, workflowsByDomain],
   );
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Label htmlFor="ns-pbn-filter" className="text-sm">
-          PoweredByNamefi
-        </Label>
-        <Select
-          value={pbnFilter}
-          onValueChange={(value) => {
-            setPage(1);
-            setPbnFilter(value as PbnFilter);
-          }}
-        >
-          <SelectTrigger id="ns-pbn-filter" className="w-[280px]">
-            <SelectValue placeholder="All domains" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All domains</SelectItem>
-            <SelectItem value="pbnOnly">
-              PoweredByNamefi subdomains only
-            </SelectItem>
-            <SelectItem value="excludePbn">
-              Exclude PoweredByNamefi subdomains
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <ExtensibleDataTable<NsAndDnssecRow, typeof filterStrategy>
-        filterStrategy={filterStrategy}
-        columns={columns}
-        data={query.data?.data ?? []}
-        isLoading={query.isLoading}
-        isFetching={query.isFetching}
-        page={page}
-        pageSize={pageSize}
-        totalPages={query.data?.pagination.totalPages ?? 1}
-        totalCount={query.data?.pagination.totalCount ?? 0}
-        onPageChange={setPage}
-        onPageSizeChange={(size) => {
-          setPage(1);
-          setPageSize(size);
-        }}
-        sorting={sorting}
-        onSortingChange={setSorting}
-        emptyMessage="No domains found"
-        loadingMessage="Loading NS & DNSSEC..."
-        columnVisibility={columnVisibility}
-        onColumnVisibilityChange={setColumnVisibility}
-        onResetPreferences={resetToDefaults}
-      />
-    </div>
+    <ExtensibleDataTable<NsAndDnssecRow, typeof filterStrategy>
+      filterStrategy={filterStrategy}
+      columns={columns}
+      data={query.data?.data ?? []}
+      isLoading={query.isLoading}
+      isFetching={query.isFetching}
+      page={page}
+      pageSize={pageSize}
+      totalPages={query.data?.pagination.totalPages ?? 1}
+      totalCount={query.data?.pagination.totalCount ?? 0}
+      onPageChange={setPage}
+      onPageSizeChange={(size) => {
+        setPage(1);
+        setPageSize(size);
+      }}
+      sorting={sorting}
+      onSortingChange={setSorting}
+      emptyMessage="No domains found"
+      loadingMessage="Loading NS & DNSSEC..."
+      columnVisibility={columnVisibility}
+      onColumnVisibilityChange={setColumnVisibility}
+      onResetPreferences={resetToDefaults}
+    />
   );
 }
 
@@ -425,10 +473,8 @@ function NameserversCell({ row }: { row: NsAndDnssecRow }) {
 }
 
 function DnssecCell({ row }: { row: NsAndDnssecRow }) {
-  if (row.dnssecError) {
-    return (
-      <span className="text-xs text-amber-600">Failed to load DNSSEC</span>
-    );
+  if (row.dnssecZoneHasActiveDnssec === null) {
+    return <span className="text-xs text-amber-600">Not indexed</span>;
   }
   return (
     <div className="flex flex-col gap-1 text-xs">
@@ -512,22 +558,31 @@ function operationLabel(op: ActiveWorkflow['operation']): string {
 }
 
 function PendingWorkflowsCell({
-  row,
+  workflows,
   temporal,
+  isLoading,
 }: {
-  row: NsAndDnssecRow;
+  workflows: DomainWorkflows | undefined;
   temporal: TemporalConfig | undefined;
+  isLoading: boolean;
 }) {
-  const workflows = [
-    row.activeDnssecWorkflow,
-    row.activeNameserversWorkflow,
-  ].filter((w): w is ActiveWorkflow => !!w);
-  if (workflows.length === 0) {
+  if (isLoading || !workflows) {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+        <Loader2 className="w-3 h-3 animate-spin" />
+        Checking…
+      </span>
+    );
+  }
+  const list = [workflows.dnssec, workflows.ns].filter(
+    (w): w is ActiveWorkflow => !!w,
+  );
+  if (list.length === 0) {
     return <span className="text-xs text-muted-foreground">—</span>;
   }
   return (
     <div className="flex flex-col gap-1">
-      {workflows.map((w) => (
+      {list.map((w) => (
         <div key={w.workflowId} className="flex items-center gap-2 text-xs">
           <Loader2 className="w-3 h-3 animate-spin" />
           <span>{operationLabel(w.operation)}</span>
@@ -540,19 +595,27 @@ function PendingWorkflowsCell({
 
 function RowActions({
   row,
+  workflows,
   canWrite,
+  isWorkflowsLoading,
 }: {
   row: NsAndDnssecRow;
+  workflows: DomainWorkflows | undefined;
   canWrite: boolean;
+  isWorkflowsLoading: boolean;
 }) {
   const [nsOpen, setNsOpen] = useState(false);
   const [dnssecOpen, setDnssecOpen] = useState(false);
+  // Disable while we don't yet know whether a workflow is running for
+  // this domain — otherwise an admin could fire a mutation on top of a
+  // pending workflow during the load window.
+  const blocked = !canWrite || isWorkflowsLoading || !workflows;
   return (
     <div className="flex items-center gap-2">
       <Button
         variant="outline"
         size="sm"
-        disabled={!canWrite}
+        disabled={blocked}
         onClick={() => setNsOpen(true)}
       >
         Edit Nameservers
@@ -560,7 +623,7 @@ function RowActions({
       <Button
         variant="outline"
         size="sm"
-        disabled={!canWrite}
+        disabled={blocked}
         onClick={() => setDnssecOpen(true)}
       >
         Toggle DNSSEC
@@ -569,11 +632,13 @@ function RowActions({
         open={nsOpen}
         onOpenChange={setNsOpen}
         row={row}
+        activeWorkflow={workflows?.ns ?? null}
       />
       <AdminToggleDnssecDialog
         open={dnssecOpen}
         onOpenChange={setDnssecOpen}
         row={row}
+        activeWorkflow={workflows?.dnssec ?? null}
       />
     </div>
   );
@@ -589,15 +654,22 @@ function ActiveWorkflowBanner({
   scope: 'dnssec' | 'nameservers';
 }) {
   const trpc = useTRPC();
+  const invalidate = useInvalidateNsAndDnssecQueries();
   const cancelDnssec = useMutation(
     trpc.admin.nsAndDnssec.cancelDnssecWorkflow.mutationOptions({
-      onSuccess: () => toast.success('Cancellation requested'),
+      onSuccess: () => {
+        toast.success('Cancellation requested');
+        invalidate();
+      },
       onError: (error) => toast.error(`Failed to cancel: ${error.message}`),
     }),
   );
   const cancelNs = useMutation(
     trpc.admin.nsAndDnssec.cancelNameserversWorkflow.mutationOptions({
-      onSuccess: () => toast.success('Cancellation requested'),
+      onSuccess: () => {
+        toast.success('Cancellation requested');
+        invalidate();
+      },
       onError: (error) => toast.error(`Failed to cancel: ${error.message}`),
     }),
   );
@@ -640,10 +712,12 @@ function AdminEditNameserversDialog({
   open,
   onOpenChange,
   row,
+  activeWorkflow,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   row: NsAndDnssecRow;
+  activeWorkflow: ActiveWorkflow | null;
 }) {
   const trpc = useTRPC();
   const initial = useMemo(() => {
@@ -658,10 +732,12 @@ function AdminEditNameserversDialog({
     if (open) setDraft(initial);
   }, [open, initial]);
 
+  const invalidate = useInvalidateNsAndDnssecQueries();
   const changeMutation = useMutation(
     trpc.admin.nsAndDnssec.changeNameservers.mutationOptions({
       onSuccess: () => {
         toast.success('Nameservers change submitted');
+        invalidate();
         onOpenChange(false);
       },
       onError: (error) =>
@@ -672,6 +748,7 @@ function AdminEditNameserversDialog({
     trpc.admin.nsAndDnssec.resetNameservers.mutationOptions({
       onSuccess: () => {
         toast.success('Reset to Namefi nameservers submitted');
+        invalidate();
         onOpenChange(false);
       },
       onError: (error) =>
@@ -681,7 +758,7 @@ function AdminEditNameserversDialog({
 
   const trimmed = draft.map((v) => v.trim()).filter((v) => v.length > 0);
   const isValid = trimmed.length >= 2 && trimmed.length <= 4;
-  const hasActive = !!row.activeNameserversWorkflow;
+  const hasActive = !!activeWorkflow;
 
   const onAdd = () => {
     if (draft.length >= 4) return;
@@ -708,7 +785,7 @@ function AdminEditNameserversDialog({
         </DialogHeader>
 
         <ActiveWorkflowBanner
-          workflow={row.activeNameserversWorkflow}
+          workflow={activeWorkflow}
           domainName={row.normalizedDomainName}
           scope="nameservers"
         />
@@ -792,16 +869,20 @@ function AdminToggleDnssecDialog({
   open,
   onOpenChange,
   row,
+  activeWorkflow,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   row: NsAndDnssecRow;
+  activeWorkflow: ActiveWorkflow | null;
 }) {
   const trpc = useTRPC();
+  const invalidate = useInvalidateNsAndDnssecQueries();
   const enableMutation = useMutation(
     trpc.admin.nsAndDnssec.enableDnssec.mutationOptions({
       onSuccess: () => {
         toast.success('Enable DNSSEC submitted');
+        invalidate();
         onOpenChange(false);
       },
       onError: (error) =>
@@ -812,6 +893,7 @@ function AdminToggleDnssecDialog({
     trpc.admin.nsAndDnssec.disableDnssec.mutationOptions({
       onSuccess: () => {
         toast.success('Disable DNSSEC submitted');
+        invalidate();
         onOpenChange(false);
       },
       onError: (error) =>
@@ -819,10 +901,53 @@ function AdminToggleDnssecDialog({
     }),
   );
 
-  const isUsingNamefiSigning =
-    row.dnssecIsUsingNamefiDelegationSigner === true &&
-    row.dnssecZoneHasActiveDnssec === true;
-  const hasActive = !!row.activeDnssecWorkflow;
+  // Fetch live DNSSEC details only while the dialog is open. The list
+  // table renders cached values from `indexed_domains.dnssec_status`;
+  // the modal hits the registrar so the admin's decision is based on
+  // up-to-date delegation-signer info.
+  const detailsQuery = useQuery(
+    trpc.admin.nsAndDnssec.getDnssecDetails.queryOptions(
+      { domainName: row.normalizedDomainName },
+      { enabled: open },
+    ),
+  );
+  const detailsResponse = detailsQuery.data;
+  const details = detailsResponse?.success ? detailsResponse : undefined;
+  const liveError =
+    detailsResponse && !detailsResponse.success ? detailsResponse.error : null;
+
+  // Fall back to the cached row values until the live fetch resolves so
+  // the dialog isn't blank on open.
+  const zoneOn = details?.zoneHasActiveDnssec ?? row.dnssecZoneHasActiveDnssec;
+  const hasDs = details?.hasDelegationSigner ?? row.dnssecHasDelegationSigner;
+  const isNamefiDs =
+    details?.isUsingNamefiDelegationSigner ??
+    row.dnssecIsUsingNamefiDelegationSigner;
+
+  const isUsingNamefiSigning = isNamefiDs === true && zoneOn === true;
+  const hasActive = !!activeWorkflow;
+  // Cached `row.*` values seed the summary so the dialog isn't blank on
+  // open, but actions stay locked until we have a successful live
+  // response. A pending or errored live query means the inferred
+  // Enable/Disable choice could be wrong, and clicking would fire a
+  // workflow against stale state.
+  const liveLoaded = !!details;
+  const actionsBlocked = hasActive || !liveLoaded;
+
+  // Render labels that preserve the tri-state. Cached row values are
+  // `null` for never-indexed domains; we must not collapse that to a
+  // concrete "Off"/"None" or the dialog will misrepresent reality.
+  const zoneSigningLabel = zoneOn === null ? 'Unknown' : zoneOn ? 'On' : 'Off';
+  const delegationSignerLabel =
+    hasDs === null
+      ? 'Unknown'
+      : !hasDs
+        ? 'None'
+        : isNamefiDs == null
+          ? 'Configured (signer unknown)'
+          : isNamefiDs
+            ? 'Namefi'
+            : 'Custom';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -835,25 +960,28 @@ function AdminToggleDnssecDialog({
         </DialogHeader>
 
         <ActiveWorkflowBanner
-          workflow={row.activeDnssecWorkflow}
+          workflow={activeWorkflow}
           domainName={row.normalizedDomainName}
           scope="dnssec"
         />
 
         <div className="flex flex-col gap-2 text-sm">
+          {detailsQuery.isLoading ? (
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Loading live status…
+            </span>
+          ) : null}
+          {liveError ? (
+            <span className="text-xs text-amber-600">
+              Live lookup failed — showing cached values. ({liveError})
+            </span>
+          ) : null}
           <div>
-            Zone signing:{' '}
-            <strong>{row.dnssecZoneHasActiveDnssec ? 'On' : 'Off'}</strong>
+            Zone signing: <strong>{zoneSigningLabel}</strong>
           </div>
           <div>
-            Delegation signer:{' '}
-            <strong>
-              {row.dnssecHasDelegationSigner
-                ? row.dnssecIsUsingNamefiDelegationSigner
-                  ? 'Namefi'
-                  : 'Custom'
-                : 'None'}
-            </strong>
+            Delegation signer: <strong>{delegationSignerLabel}</strong>
           </div>
         </div>
 
@@ -870,7 +998,7 @@ function AdminToggleDnssecDialog({
                     variant="destructive"
                     isLoading={disableMutation.isPending}
                     loadingText="Disabling..."
-                    disabled={hasActive}
+                    disabled={actionsBlocked}
                   />
                 }
               >
@@ -904,7 +1032,7 @@ function AdminToggleDnssecDialog({
           ) : (
             <AsyncButton
               size="sm"
-              disabled={hasActive}
+              disabled={actionsBlocked}
               onClick={async () =>
                 enableMutation.mutateAsync({
                   domainName: row.normalizedDomainName,
