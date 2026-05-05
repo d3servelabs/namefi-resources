@@ -65,6 +65,8 @@ import { isNotEmpty, isNotNil } from 'ramda';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
+import { CustomDelegationSignerPanel } from './custom-delegation-signer-panel';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 
 const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
   key: 'cancel_dns_workflow',
@@ -73,6 +75,20 @@ const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
   scope: 'global',
   defaultValue: false,
 };
+
+const CUSTOM_DELEGATION_SIGNER_FLAG: FeatureFlagDefinition = {
+  key: 'dnssec_custom_delegation_signer',
+  label: 'DNSSEC: Custom Delegation Signer',
+  description:
+    'Show the advanced Custom Delegation Signer panel (add + DNSKEY validation) for domains not on Namefi nameservers. Hides the Namefi enable/disable buttons in that case.',
+  scope: 'page',
+  pageKey: 'dnssec',
+  defaultValue: false,
+};
+
+const DNSSEC_PANEL_FLAGS: FeatureFlagDefinition[] = [
+  CUSTOM_DELEGATION_SIGNER_FLAG,
+];
 
 type DnssecStatusDetails =
   AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
@@ -175,6 +191,10 @@ export const DnssecPanelInner = ({
   domainName: PunycodeDomainName;
 }) => {
   const trpc = useTRPC();
+  useRegisterAdminFlags(DNSSEC_PANEL_FLAGS);
+  const [customDelegationSignerEnabled] = useAdminFeatureFlag(
+    CUSTOM_DELEGATION_SIGNER_FLAG,
+  );
 
   const { data, isLoading } = useQuery(
     trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions(
@@ -302,11 +322,19 @@ export const DnssecPanelInner = ({
           {zoneSigningStatus}
         </div>
 
-        <DnssecPanelAction
-          domainName={domainName}
-          dnssecDetails={data}
-          disableAllButtons={disableAllButtons}
-        />
+        {customDelegationSignerEnabled && !data.isUsingNamefiNameservers ? (
+          <CustomDelegationSignerPanel
+            domainName={domainName}
+            dnssecDetails={data}
+            disableAllButtons={disableAllButtons}
+          />
+        ) : (
+          <DnssecPanelAction
+            domainName={domainName}
+            dnssecDetails={data}
+            disableAllButtons={disableAllButtons}
+          />
+        )}
 
         <div className="text-sm text-zinc-500 mt-4">
           <p>

@@ -7,6 +7,10 @@ import {
   getActiveDnssecOperationWorkflows,
   getDnssecStatusDetails,
 } from '#lib/domains/dnssec';
+import {
+  deriveDsFromDnskey,
+  validateDelegationSignerAgainstPublishedDnskeys,
+} from '#lib/domains/dnssec-validation';
 
 import { createLogger, logger } from '#lib/logger';
 
@@ -103,6 +107,56 @@ export const domainDnssecRouter = createContractTRPCRouter<
       );
 
       _logger.debug('Successfully associated delegation signer');
+    }),
+
+  /**
+   * Validate a user-supplied DS record against the DNSKEY RRset
+   * published at the domain's authoritative nameservers. Used by the
+   * Custom Delegation Signer form before submission.
+   */
+  validateDelegationSigner: protectedProcedure
+    .input(domainConfigContract.dnssec.validateDelegationSigner.input)
+    .output(domainConfigContract.dnssec.validateDelegationSigner.output)
+    .mutation(async ({ input, ctx }) => {
+      _logger.assign({
+        method: 'validateDelegationSigner',
+        domainName: input.domainName,
+        keyTag: input.signingConfig.keyTag,
+        algorithm: input.signingConfig.algorithm,
+      });
+      _logger.debug('Validating user-supplied DS against published DNSKEYs');
+
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return validateDelegationSignerAgainstPublishedDnskeys({
+        domainName: toPunycodeDomainName(input.domainName),
+        signingConfig: input.signingConfig as Parameters<
+          typeof validateDelegationSignerAgainstPublishedDnskeys
+        >[0]['signingConfig'],
+      });
+    }),
+
+  /**
+   * Derive DS fields (keyTag + digest) from a user-pasted DNSKEY
+   * record. Pure helper used by the Custom Delegation Signer form
+   * to autofill the DS-fields tab when the user has only a DNSKEY.
+   */
+  deriveDsFromDnskey: protectedProcedure
+    .input(domainConfigContract.dnssec.deriveDsFromDnskey.input)
+    .output(domainConfigContract.dnssec.deriveDsFromDnskey.output)
+    .mutation(async ({ input, ctx }) => {
+      _logger.assign({
+        method: 'deriveDsFromDnskey',
+        domainName: input.domainName,
+        digestType: input.digestType,
+      });
+      _logger.debug('Deriving DS from user-pasted DNSKEY');
+
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return deriveDsFromDnskey({
+        domainName: toPunycodeDomainName(input.domainName),
+        dnskeyRecord: input.dnskeyRecord,
+        digestType: input.digestType,
+      });
     }),
 
   /**

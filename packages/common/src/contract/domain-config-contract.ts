@@ -290,6 +290,36 @@ const cancelDnssecWorkflowInputSchema = z.object({
   operation: z.enum(['ENABLE_DNSSEC', 'REMOVE_DNSSEC']),
 });
 
+const validateDelegationSignerResultSchema = z.object({
+  isValid: z.boolean(),
+  matchedDnskey: z
+    .object({
+      keyTag: z.number().int(),
+      flags: z.number().int(),
+      algorithm: z.number().int(),
+      publicKey: z.string(),
+    })
+    .optional(),
+  publishedDnskeys: z.array(
+    z.object({
+      flags: z.number().int(),
+      algorithm: z.number().int(),
+      publicKey: z.string(),
+      computedKeyTag: z.number().int(),
+      computedDigest: z.string(),
+      matchesProvided: z.boolean(),
+    }),
+  ),
+  nameserversQueried: z.array(z.string()),
+  errorMessage: z.string().optional(),
+});
+
+const deriveDsFromDnskeyInputSchema = z.object({
+  domainName: namefiNormalizedDomainSchema,
+  dnskeyRecord: z.string().min(1),
+  digestType: z.nativeEnum(DnssecDigestType),
+});
+
 const domainDnssecContract = createContract(
   { softOutput: true },
   {
@@ -312,6 +342,16 @@ const domainDnssecContract = createContract(
       type: 'mutation',
       input: associateDelegationSignerInputSchema,
       output: z.void(),
+    },
+    validateDelegationSigner: {
+      type: 'mutation',
+      input: associateDelegationSignerInputSchema,
+      output: validateDelegationSignerResultSchema,
+    },
+    deriveDsFromDnskey: {
+      type: 'mutation',
+      input: deriveDsFromDnskeyInputSchema,
+      output: dnssecSigningConfigSchema,
     },
     getActiveDnssecOperationWorkflows: {
       type: 'query',
