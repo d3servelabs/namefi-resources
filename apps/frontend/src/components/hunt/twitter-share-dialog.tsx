@@ -19,9 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@namefi-astra/ui/components/shadcn/form';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useCallback, useMemo, type FormEvent } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from '@/hooks/use-pending-toast';
@@ -75,6 +74,35 @@ const shareFormSchema = z.object({
 });
 
 type ShareFormData = z.infer<typeof shareFormSchema>;
+
+const getPostUrlValidationMessage = (error: z.ZodError<unknown>) =>
+  error.issues.find((issue) => issue.path[0] === 'postUrl')?.message ??
+  TWITTER_POST_URL_MESSAGE;
+
+const shareFormResolver: Resolver<ShareFormData> = async (values) => {
+  const result = await shareFormSchema.safeParseAsync(values);
+
+  if (result.success) {
+    return {
+      errors: {} as Record<string, never>,
+      values: result.data,
+    };
+  }
+
+  const postUrlIssue = result.error.issues.find(
+    (issue) => issue.path[0] === 'postUrl',
+  );
+
+  return {
+    errors: {
+      postUrl: {
+        type: postUrlIssue?.code ?? 'validate',
+        message: getPostUrlValidationMessage(result.error),
+      },
+    },
+    values: {},
+  };
+};
 
 export type TwitterShareSubject =
   | 'domain'
@@ -163,7 +191,7 @@ export function TwitterShareDialog({
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const form = useForm<ShareFormData>({
-    resolver: zodResolver(shareFormSchema),
+    resolver: shareFormResolver,
     mode: 'onChange',
     defaultValues: {
       postUrl: '',
@@ -174,8 +202,9 @@ export function TwitterShareDialog({
     handleSubmit,
     reset,
     setError,
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
+  const shouldShowTrackingForm = trackShares && !hasShared;
 
   const { dialogDescription, dialogTitle, hashtags, shareTarget, tweetText } =
     resolveTwitterShareCopy({
@@ -259,8 +288,7 @@ export function TwitterShareDialog({
       void handleSubmit(handleFormSubmit)(event).catch((error: unknown) => {
         const message =
           error instanceof z.ZodError
-            ? (error.issues.find((issue) => issue.path[0] === 'postUrl')
-                ?.message ?? TWITTER_POST_URL_MESSAGE)
+            ? getPostUrlValidationMessage(error)
             : 'Please check the post URL and try again.';
 
         setError('postUrl', {
@@ -372,7 +400,7 @@ export function TwitterShareDialog({
           )}
 
           {/* Form for manual URL submission - only show if tracking is enabled and not already shared */}
-          {trackShares && !hasShared && (
+          {shouldShowTrackingForm && (
             <div className="space-y-4 border-t pt-4">
               <Form {...form}>
                 <form onSubmit={handleShareFormSubmit} className="space-y-4">
@@ -416,7 +444,11 @@ export function TwitterShareDialog({
                     </Button>
                     <Button
                       type="submit"
-                      disabled={!isValid || isSubmitting || isCheckingStatus}
+                      disabled={
+                        !form.formState.isValid ||
+                        isSubmitting ||
+                        isCheckingStatus
+                      }
                     >
                       {isSubmitting ? 'Recording...' : 'Record Share'}
                     </Button>

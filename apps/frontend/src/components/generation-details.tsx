@@ -103,6 +103,34 @@ const detailActionButtonClassName =
 const logoCtaButtonClassName =
   'min-h-11 w-full justify-center gap-2 border border-brand-primary/20 bg-brand-primary px-5 text-center text-sm font-semibold leading-tight whitespace-normal text-primary-foreground shadow-[0_14px_28px_-18px_rgba(16,185,129,0.75)] transition-colors hover:bg-brand-primary/90 [&_svg]:shrink-0';
 
+function formatGenerationCreatedAt(value: GenerationData['createdAt']) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  const isoTimestamp = date.toISOString();
+  return `${isoTimestamp.slice(0, 10)} at ${isoTimestamp.slice(11, 16)} UTC`;
+}
+
+function formatGenerationCreatedAtLocal(value: GenerationData['createdAt']) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  }).format(date);
+}
+
 function getGenerationMetadataRecord(
   generation: GenerationData | undefined,
 ): Record<string, unknown> | undefined {
@@ -327,6 +355,9 @@ export function GenerationDetailsClient({
   const { isAuthenticated, user } = useAuth();
   const trpc = useTRPC();
   const [currentUrl, setCurrentUrl] = useState('');
+  const [localCreatedAtDisplay, setLocalCreatedAtDisplay] = useState<
+    string | null
+  >(null);
   const shareDialog = useTwitterShareDialog({
     enabled: true,
     trackShares: false,
@@ -360,6 +391,17 @@ export function GenerationDetailsClient({
         : false;
     },
   });
+
+  useEffect(() => {
+    if (!generation?.createdAt) {
+      setLocalCreatedAtDisplay(null);
+      return;
+    }
+
+    setLocalCreatedAtDisplay(
+      formatGenerationCreatedAtLocal(generation.createdAt),
+    );
+  }, [generation?.createdAt]);
 
   const deleteMutation = useDeleteGeneration({
     onSuccess: () => {
@@ -469,6 +511,10 @@ export function GenerationDetailsClient({
           : 'Ready';
 
   const previewUrl = generation?.thumbnailUrl ?? generation?.url;
+  const createdAtDisplay = generation
+    ? formatGenerationCreatedAt(generation.createdAt)
+    : null;
+  const visibleCreatedAtDisplay = localCreatedAtDisplay ?? createdAtDisplay;
 
   const handleCopyLink = useCallback(async () => {
     try {
@@ -863,24 +909,7 @@ export function GenerationDetailsClient({
                   <div className="flex-1">
                     <span className="text-sm">Created:</span>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(generation.createdAt).toLocaleDateString(
-                        undefined,
-                        {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        },
-                      )}{' '}
-                      at{' '}
-                      {new Date(generation.createdAt).toLocaleTimeString(
-                        undefined,
-                        {
-                          hour: 'numeric',
-                          minute: '2-digit',
-                          hour12: true,
-                        },
-                      )}
+                      {visibleCreatedAtDisplay ?? 'Unknown'}
                     </p>
                   </div>
                 </div>
