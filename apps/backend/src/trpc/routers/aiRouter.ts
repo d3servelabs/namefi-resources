@@ -524,8 +524,12 @@ async function getUserGenerationCreditUsage(userId: string) {
   const currentCredits = await getCurrentMonthlyGenerationCreditUsage(userId);
   const maxCredits = config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
   const remainingCredits = Math.max(0, maxCredits - currentCredits);
+  const now = new Date();
 
   return {
+    creditsRefreshAt: new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1),
+    ),
     currentCredits,
     hasReachedLimit: remainingCredits <= 0,
     maxCredits,
@@ -1291,6 +1295,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
         currentCredits: usage.currentCredits,
         maxCredits: usage.maxCredits,
         remainingCredits: usage.remainingCredits,
+        creditsRefreshAt: usage.creditsRefreshAt,
         currentCount: usage.currentCredits,
         maxGenerations: usage.maxCredits,
         remainingGenerations: usage.remainingCredits,

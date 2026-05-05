@@ -3,9 +3,16 @@
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { Sparkles, AlertCircle } from 'lucide-react';
+import { AlertCircle, Info, Sparkles } from 'lucide-react';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 
 interface GenerationUsageProps {
   className?: string;
@@ -32,8 +39,13 @@ export function GenerationUsage({ className = '' }: GenerationUsageProps) {
 
   if (!usage) return null;
 
-  const { currentCredits, maxCredits, remainingCredits, hasReachedLimit } =
-    usage;
+  const {
+    creditsRefreshAt,
+    currentCredits,
+    maxCredits,
+    remainingCredits,
+    hasReachedLimit,
+  } = usage;
 
   return (
     <Card className={className}>
@@ -58,9 +70,51 @@ export function GenerationUsage({ className = '' }: GenerationUsageProps) {
                 {remainingCredits === 1 ? 'credit' : 'credits'} left
               </Badge>
             )}
+            <CreditsRefreshTooltip creditsRefreshAt={creditsRefreshAt} />
           </div>
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+function useLocalCreditsRefreshText(date: Date) {
+  const [refreshText, setRefreshText] = useState<string | null>(null);
+  const refreshTimestamp = date.getTime();
+
+  useEffect(() => {
+    setRefreshText(format(new Date(refreshTimestamp), 'MMM d, h:mm a'));
+  }, [refreshTimestamp]);
+
+  return refreshText;
+}
+
+function CreditsRefreshTooltip({
+  creditsRefreshAt,
+}: {
+  creditsRefreshAt: Date;
+}) {
+  const creditsRefreshText = useLocalCreditsRefreshText(creditsRefreshAt);
+
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={(props) => (
+          <button
+            {...props}
+            type="button"
+            className="inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            aria-label="AI credit refresh time"
+          >
+            <Info className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+        )}
+      />
+      <TooltipContent sideOffset={6}>
+        {creditsRefreshText
+          ? `Credits refresh ${creditsRefreshText}`
+          : 'Credits refresh monthly'}
+      </TooltipContent>
+    </Tooltip>
   );
 }

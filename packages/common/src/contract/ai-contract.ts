@@ -399,6 +399,7 @@ const getUserGenerationUsageOutputSchema = z.object({
   currentCredits: z.number(),
   maxCredits: z.number(),
   remainingCredits: z.number(),
+  creditsRefreshAt: z.date(),
   currentCount: z.number(),
   maxGenerations: z.number(),
   remainingGenerations: z.number(),
