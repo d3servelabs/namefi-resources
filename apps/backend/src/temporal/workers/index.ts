@@ -7,7 +7,7 @@ import {
 
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
-import { createLogger, logger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 import { ACTIVITIES } from './activity-registry';
 import pProps from 'p-props';
 import { fromPairs } from 'ramda';

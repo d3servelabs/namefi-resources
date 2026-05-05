@@ -141,6 +141,25 @@ function getGenerationMetadataRecord(
     : undefined;
 }
 
+function isAnimationWaitingForVideoCapacity(
+  generation: GenerationData | undefined,
+) {
+  if (generation?.type !== 'animation') {
+    return false;
+  }
+
+  const metadata = getGenerationMetadataRecord(generation);
+  const quotaMetadata = metadata?.vercelGatewayVideoQuota;
+
+  return (
+    quotaMetadata != null &&
+    typeof quotaMetadata === 'object' &&
+    !Array.isArray(quotaMetadata) &&
+    'state' in quotaMetadata &&
+    quotaMetadata.state === 'waiting'
+  );
+}
+
 function resolveAnimationMotionPresetId(
   generation: GenerationData | undefined,
 ): AnimationMotionPresetId | undefined {
@@ -500,15 +519,23 @@ export function GenerationDetailsClient({
       : generation?.input?.type === 'animation'
         ? generation.input.model
         : undefined;
+  const isWaitingForVideoCapacity =
+    isAnimationWaitingForVideoCapacity(generation);
 
   const statusLabel =
     generation?.status === 'PENDING'
       ? 'Pending'
       : generation?.status === 'PROCESSING'
-        ? 'Processing'
+        ? isWaitingForVideoCapacity
+          ? 'Submitted'
+          : 'Processing'
         : generation?.status === 'FAILED'
           ? 'Failed'
           : 'Ready';
+  const pendingStatusMessage =
+    generation?.type === 'animation'
+      ? 'Submitted. It will start when video capacity is available.'
+      : 'Your generation is queued and will appear here shortly.';
 
   const previewUrl = generation?.thumbnailUrl ?? generation?.url;
   const createdAtDisplay = generation
@@ -671,8 +698,10 @@ export function GenerationDetailsClient({
                           {generation.status === 'FAILED'
                             ? GENERIC_GENERATION_ERROR_MESSAGE
                             : generation.status === 'PROCESSING'
-                              ? 'Your generation is still running.'
-                              : 'Your generation is queued and will appear here shortly.'}
+                              ? isWaitingForVideoCapacity
+                                ? pendingStatusMessage
+                                : 'Your generation is still running.'
+                              : pendingStatusMessage}
                         </div>
                       </div>
                     </div>

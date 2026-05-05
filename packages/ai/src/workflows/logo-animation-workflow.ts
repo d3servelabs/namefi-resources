@@ -216,8 +216,18 @@ export type LogoAnimationWorkflowOutput = z.output<
   typeof logoAnimationWorkflowOutputSchema
 >;
 
+export interface LogoAnimationVideoGenerationContext {
+  mode: 'looped' | 'sheet-guided';
+  model: z.infer<typeof loopedAnimationModelEnum>;
+  provider: 'vercel-ai-gateway';
+}
+
 export interface LogoAnimationWorkflowOptions {
   abortSignal?: AbortSignal;
+  runVercelGatewayVideoGeneration?: <T>(
+    context: LogoAnimationVideoGenerationContext,
+    operation: () => Promise<T>,
+  ) => Promise<T>;
 }
 
 const cinematicMotionPromptByPreset: Record<
@@ -503,6 +513,18 @@ async function deleteStoragePaths(params: {
   return cleanupErrors;
 }
 
+async function runVercelGatewayVideoGeneration<T>(
+  options: LogoAnimationWorkflowOptions,
+  context: LogoAnimationVideoGenerationContext,
+  operation: () => Promise<T>,
+) {
+  if (options.runVercelGatewayVideoGeneration) {
+    return await options.runVercelGatewayVideoGeneration(context, operation);
+  }
+
+  return await operation();
+}
+
 async function runCinematicAnimationWorkflow(
   input: z.output<typeof cinematicAnimationWorkflowInputSchema>,
   options: LogoAnimationWorkflowOptions,
@@ -675,22 +697,31 @@ async function runLoopedAnimationWorkflow(
       direction: strategy.object.direction,
     });
 
-    const generated = await experimental_generateVideo({
-      model: gateway.video(input.model),
-      prompt: {
-        image: uploadedPreparedFrame.url,
-        text: prompt,
+    const generated = await runVercelGatewayVideoGeneration(
+      options,
+      {
+        mode: 'looped',
+        model: input.model,
+        provider: 'vercel-ai-gateway',
       },
-      aspectRatio: '1:1',
-      duration: 4,
-      providerOptions: {
-        bytedance: buildSeedanceProviderOptions({
-          model: input.model,
-          lastFrameImage: uploadedPreparedFrame.url,
+      () =>
+        experimental_generateVideo({
+          model: gateway.video(input.model),
+          prompt: {
+            image: uploadedPreparedFrame.url,
+            text: prompt,
+          },
+          aspectRatio: '1:1',
+          duration: 4,
+          providerOptions: {
+            bytedance: buildSeedanceProviderOptions({
+              model: input.model,
+              lastFrameImage: uploadedPreparedFrame.url,
+            }),
+          },
+          abortSignal: options.abortSignal,
         }),
-      },
-      abortSignal: options.abortSignal,
-    });
+    );
 
     const videoBuffer = Buffer.from(generated.video.uint8Array);
     const uploadedVideo = await uploadBufferToStorage({
@@ -800,19 +831,28 @@ async function runSheetGuidedAnimationWorkflow(
       stagePlan: strategy.object.stagePlan,
     });
 
-    const generated = await experimental_generateVideo({
-      model: gateway.video(input.model),
-      prompt,
-      aspectRatio: '16:9',
-      duration: SHEET_GUIDED_DURATION_SECONDS,
-      providerOptions: {
-        bytedance: buildSeedanceProviderOptions({
-          model: input.model,
-          referenceImages: [input.referenceLogoUrl, uploadedSheet.url],
-        }),
+    const generated = await runVercelGatewayVideoGeneration(
+      options,
+      {
+        mode: 'sheet-guided',
+        model: input.model,
+        provider: 'vercel-ai-gateway',
       },
-      abortSignal: options.abortSignal,
-    });
+      () =>
+        experimental_generateVideo({
+          model: gateway.video(input.model),
+          prompt,
+          aspectRatio: '16:9',
+          duration: SHEET_GUIDED_DURATION_SECONDS,
+          providerOptions: {
+            bytedance: buildSeedanceProviderOptions({
+              model: input.model,
+              referenceImages: [input.referenceLogoUrl, uploadedSheet.url],
+            }),
+          },
+          abortSignal: options.abortSignal,
+        }),
+    );
 
     const videoBuffer = Buffer.from(generated.video.uint8Array);
     const uploadedVideo = await uploadBufferToStorage({

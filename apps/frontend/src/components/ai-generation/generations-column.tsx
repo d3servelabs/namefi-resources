@@ -110,6 +110,35 @@ const getGenerationShareSubject = (
   return type ?? 'generation';
 };
 
+function getGenerationMetadataRecord(
+  generation: GalleryGeneration | undefined,
+): Record<string, unknown> | undefined {
+  return generation?.metadata &&
+    typeof generation.metadata === 'object' &&
+    !Array.isArray(generation.metadata)
+    ? (generation.metadata as Record<string, unknown>)
+    : undefined;
+}
+
+function isAnimationWaitingForVideoCapacity(
+  generation: GalleryGeneration | undefined,
+) {
+  if (generation?.type !== 'animation') {
+    return false;
+  }
+
+  const metadata = getGenerationMetadataRecord(generation);
+  const quotaMetadata = metadata?.vercelGatewayVideoQuota;
+
+  return (
+    quotaMetadata != null &&
+    typeof quotaMetadata === 'object' &&
+    !Array.isArray(quotaMetadata) &&
+    'state' in quotaMetadata &&
+    quotaMetadata.state === 'waiting'
+  );
+}
+
 interface GenerationsColumnProps {
   domains: DomainPreview[];
   className?: string;
@@ -638,7 +667,7 @@ function PendingGenerationTile({
           {item.type === 'marketing'
             ? 'Generating Poster'
             : item.type === 'animation'
-              ? 'Preparing Animation'
+              ? 'Submitting Animation'
               : 'Generating Logo'}{' '}
           · {item.domain}
         </div>
@@ -841,12 +870,21 @@ function AsyncGenerationTile({
           },
         ]
       : undefined;
+  const isWaitingForVideoCapacity = isAnimationWaitingForVideoCapacity(
+    item.generation,
+  );
   const statusLabel =
     item.status === 'failed'
       ? 'Failed'
       : item.status === 'processing'
-        ? 'Processing'
+        ? isWaitingForVideoCapacity
+          ? 'Submitted'
+          : 'Processing'
         : 'Pending';
+  const pendingMessage =
+    item.type === 'animation'
+      ? 'Submitted. It will start when video capacity is available.'
+      : 'Your generation is queued and will appear here shortly.';
 
   return (
     // biome-ignore lint/a11y/useSemanticElements: container wraps nested action buttons within the card
@@ -906,8 +944,10 @@ function AsyncGenerationTile({
               {item.status === 'failed'
                 ? GENERIC_GENERATION_ERROR_MESSAGE
                 : item.status === 'processing'
-                  ? 'Your generation is still running.'
-                  : 'Your generation is queued and will appear here shortly.'}
+                  ? isWaitingForVideoCapacity
+                    ? pendingMessage
+                    : 'Your generation is still running.'
+                  : pendingMessage}
             </div>
           </div>
         </div>

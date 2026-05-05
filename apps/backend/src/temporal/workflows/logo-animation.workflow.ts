@@ -11,7 +11,7 @@ export async function generateLogoAnimationWorkflow({
   const { generateLogoAnimation } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
-      startToCloseTimeout: '30 minutes',
+      startToCloseTimeout: '2 hours',
       heartbeatTimeout: '30 seconds',
       retry: {
         maximumAttempts: 1,
