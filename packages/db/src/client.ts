@@ -7,7 +7,7 @@ import * as schema from './schema';
 import * as c15tschema from './schemas/c15t';
 import { InMemoryDrizzleCache } from '@samyx/drizzler-utils/cache';
 
-type Schema = typeof schema & typeof relations;
+type Schema = typeof schema & typeof relations & typeof c15tschema;
 
 let db: NeonDatabase<Schema> | NodePgDatabase<Schema>;
 

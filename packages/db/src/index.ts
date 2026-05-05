@@ -2,6 +2,7 @@ export * from './schema';
 export * from './relations';
 export * from './types';
 export * from './client';
+export * from './schemas/c15t';
 // Hidden config schema tables
 export { appConfigSchema, userPermissionsTable } from './schema';
 export {
