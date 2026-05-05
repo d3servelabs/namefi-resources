@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { orderStatusValues } from '../../shared-schemas';
 import { createContract } from '../create-contract';
 
 const dateRangeSchema = z.object({
@@ -11,9 +10,7 @@ const dateRangeSchema = z.object({
 const financialFiltersSchema = z
   .object({
     searchTerm: z.string().optional(),
-    orderStatus: z.enum(orderStatusValues).optional(),
-    autoRenew: z.boolean().optional(),
-    legacyBackfilled: z.boolean().optional(),
+    filterOptions: z.any().optional(),
   })
   .default({});
 

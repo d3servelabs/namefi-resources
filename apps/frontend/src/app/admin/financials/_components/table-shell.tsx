@@ -111,14 +111,14 @@ function ExportMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onSelect={() => onExport('csv')}
+          onClick={() => onExport('csv')}
           disabled={isExporting}
         >
           <FileText className="h-4 w-4 mr-2" />
           Download CSV
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => onExport('json')}
+          onClick={() => onExport('json')}
           disabled={isExporting}
         >
           <FileJson className="h-4 w-4 mr-2" />

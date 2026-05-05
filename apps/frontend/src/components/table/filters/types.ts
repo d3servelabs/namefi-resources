@@ -1,5 +1,5 @@
-import type { ReactNode, ComponentType } from 'react';
-import type { ColumnDef, Row } from '@tanstack/react-table';
+import type { ReactNode } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
 import type { FilterOperators } from '@samyx/drizzler-filters-sorters';
 
 export type DefaultFilterField = {
@@ -26,6 +26,7 @@ export type DrizzlerFilterFieldConfig = {
   type: 'text' | 'number' | 'date' | 'select' | 'array';
   allowedOperators?: FilterOperators[]; // undefined = all operators allowed
   maxConditions?: number; // undefined = unlimited conditions
+  defaultLogicalOperator?: 'and' | 'or';
   options?: { value: string; label: string }[];
   columnId: string; // SQL column name for buildWhereClause
   typeSpecificOptions?: {

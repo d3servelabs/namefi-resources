@@ -36,9 +36,7 @@ type FinancialDateRangeInput = {
 
 type FinancialGlobalFilters = {
   searchTerm?: string;
-  orderStatus?: string;
-  autoRenew?: boolean;
-  legacyBackfilled?: boolean;
+  filterOptions?: unknown;
 };
 
 type FinancialTableInput = {
@@ -278,10 +276,8 @@ export const adminFinancialAnalyticsRouter = createContractTRPCRouter<
         mode: input.mode,
         format: input.format,
         dateRange: input.dateRange,
-        orderStatus: input.globalFilters?.orderStatus,
-        autoRenew: input.globalFilters?.autoRenew,
-        legacyBackfilled: input.globalFilters?.legacyBackfilled,
         hasSearchTerm: Boolean(input.globalFilters?.searchTerm),
+        hasAdvancedGlobalFilters: Boolean(input.globalFilters?.filterOptions),
         hasTableFilters: Boolean(input.tableFilters),
         hasSorting: Boolean(input.sorting),
         containsPiiFields: ['user_email'],
@@ -976,6 +972,12 @@ const orderFilterStructure = {
   userEmail: usersTable.primaryEmail,
 };
 
+const globalFilterStructure = {
+  orderStatus: ordersTable.status,
+  autoRenew: orderAutoRenewSql(ordersTable.id),
+  legacyBackfilled: orderLegacyBackfilledSql(ordersTable.id),
+};
+
 function appendDrizzlerWhere(
   whereClauses: SQL[],
   tableStructure: Record<string, unknown>,
@@ -1037,24 +1039,11 @@ function buildOrderWhereClauses(
     sql`${ordersTable.createdAt} < ${endExclusive}`,
   ];
 
-  if (filters?.orderStatus) {
-    whereClauses.push(sql`${ordersTable.status} = ${filters.orderStatus}`);
-  }
-
-  if (filters?.autoRenew !== undefined) {
-    whereClauses.push(
-      booleanCondition(orderAutoRenewSql(ordersTable.id), filters.autoRenew),
-    );
-  }
-
-  if (filters?.legacyBackfilled !== undefined) {
-    whereClauses.push(
-      booleanCondition(
-        orderLegacyBackfilledSql(ordersTable.id),
-        filters.legacyBackfilled,
-      ),
-    );
-  }
+  appendDrizzlerWhere(
+    whereClauses,
+    globalFilterStructure,
+    normalizeGlobalFilterOptions(filters?.filterOptions),
+  );
 
   const term = filters?.searchTerm?.trim().toLowerCase();
   if (term) {
@@ -1091,23 +1080,52 @@ function buildOrderWhereClauses(
   return whereClauses;
 }
 
-function booleanCondition(condition: SQL<boolean>, expected: boolean) {
-  return sql<boolean>`COALESCE(${condition}, false) = ${expected}`;
+function normalizeGlobalFilterOptions(filters: unknown): unknown {
+  if (!filters || typeof filters !== 'object') return filters;
+  if (Array.isArray(filters)) return filters.map(normalizeGlobalFilterOptions);
+
+  return Object.fromEntries(
+    Object.entries(filters as Record<string, unknown>).map(([key, value]) => {
+      if (key === 'conditions') {
+        return [key, normalizeGlobalFilterOptions(value)];
+      }
+      if (key === 'autoRenew' || key === 'legacyBackfilled') {
+        return [key, normalizeBooleanFilterOperators(value)];
+      }
+      return [key, normalizeGlobalFilterOptions(value)];
+    }),
+  );
+}
+
+function normalizeBooleanFilterOperators(value: unknown): unknown {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(
+      ([operator, entry]) => [operator, normalizeBooleanFilterValue(entry)],
+    ),
+  );
+}
+
+function normalizeBooleanFilterValue(value: unknown): unknown {
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  if (Array.isArray(value)) return value.map(normalizeBooleanFilterValue);
+  return value;
 }
 
 function orderAutoRenewSql(orderId: unknown): SQL<boolean> {
-  return sql<boolean>`(
+  return sql<boolean>`COALESCE((
     ${ordersTable.metadata}->>'autoRenew' = 'true'
     OR EXISTS (
       SELECT 1 FROM ${orderItemsTable} oi_auto_renew
       WHERE oi_auto_renew.order_id = ${orderId}
       AND oi_auto_renew.metadata->>'autoRenew' = 'true'
     )
-  )`;
+  ), false)`;
 }
 
 function orderLegacyBackfilledSql(orderId: unknown): SQL<boolean> {
-  return sql<boolean>`(
+  return sql<boolean>`COALESCE((
     ${ordersTable.metadata}->'legacyOrderMetadata' IS NOT NULL
     OR ${ordersTable.metadata}->>'backfilled_started_finished_at' = 'true'
     OR ${ordersTable.metadata}->>'source' = 'legacy'
@@ -1120,7 +1138,7 @@ function orderLegacyBackfilledSql(orderId: unknown): SQL<boolean> {
         OR oi_legacy_backfilled.metadata->>'source' = 'legacy'
       )
     )
-  )`;
+  ), false)`;
 }
 
 function resolveDateRange(input: FinancialDateRangeInput) {

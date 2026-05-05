@@ -1,6 +1,7 @@
 import type { DrizzlerFilterFieldConfig } from '@/components/table/filters/types';
 import {
   itemTypeValues,
+  orderStatusValues,
   paymentProviderValues,
   paymentStatusValues,
 } from '@namefi-astra/common/shared-schemas';
@@ -13,7 +14,6 @@ export const tableModeLabels: Record<TableMode, string> = {
   ordersWithItems: 'Orders Expand OrderItems and Payments',
 };
 
-export const allSelectValue = '__all__';
 export const absoluteDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 const chainOptions = [
@@ -21,6 +21,45 @@ const chainOptions = [
   { value: String(CHAINS.mainnet.id), label: CHAINS.mainnet.name },
   { value: String(CHAINS.sepolia.id), label: CHAINS.sepolia.name },
 ];
+
+export const globalFilterConfig: Record<string, DrizzlerFilterFieldConfig> = {
+  orderStatus: {
+    id: 'orderStatus',
+    label: 'Order Status',
+    type: 'select',
+    columnId: 'orderStatus',
+    options: orderStatusValues.map((status) => ({
+      value: status,
+      label: status,
+    })),
+    allowedOperators: ['eq', 'neq'],
+    defaultLogicalOperator: 'or',
+  },
+  autoRenew: {
+    id: 'autoRenew',
+    label: 'Auto-renew Order',
+    type: 'select',
+    columnId: 'autoRenew',
+    options: [
+      { value: 'true', label: 'Auto-renew only' },
+      { value: 'false', label: 'Manual only' },
+    ],
+    allowedOperators: ['eq', 'neq'],
+    maxConditions: 1,
+  },
+  legacyBackfilled: {
+    id: 'legacyBackfilled',
+    label: 'Legacy Backfilled',
+    type: 'select',
+    columnId: 'legacyBackfilled',
+    options: [
+      { value: 'true', label: 'Backfilled only' },
+      { value: 'false', label: 'Native only' },
+    ],
+    allowedOperators: ['eq', 'neq'],
+    maxConditions: 1,
+  },
+};
 
 export const orderItemFilterConfig: Record<string, DrizzlerFilterFieldConfig> =
   {

@@ -80,12 +80,6 @@ export function compactObject<T extends Record<string, unknown>>(value: T): T {
   ) as T;
 }
 
-export function countActiveFilters(filters: Record<string, unknown>) {
-  return Object.values(filters).filter(
-    (value) => value !== undefined && value !== '',
-  ).length;
-}
-
 export function getDefaultDateRange(): DateRangeInput {
   const endDate = new Date();
   return {

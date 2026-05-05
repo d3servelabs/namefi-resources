@@ -1,5 +1,4 @@
 import type { DrizzlerFilterFieldConfig } from '@/components/table/filters/types';
-import type { orderStatusValues } from '@namefi-astra/common/shared-schemas';
 import type { SortingState } from '@tanstack/react-table';
 
 export type TableMode =
@@ -16,9 +15,7 @@ export type DateRangeInput = {
 
 export type GlobalFilters = {
   searchTerm?: string;
-  orderStatus?: (typeof orderStatusValues)[number];
-  autoRenew?: boolean;
-  legacyBackfilled?: boolean;
+  filterOptions?: unknown;
 };
 
 export type BackendSorting = Array<{ column: string; order: 'asc' | 'desc' }>;

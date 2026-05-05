@@ -1,6 +1,12 @@
 'use client';
 
 import { NaturalLanguageDatePicker } from '@/components/date-picker/natural-language-date-picker';
+import { DrizzlerFilterPanel } from '@/components/table/filters/components/drizzler-filter-panel';
+import type {
+  DrizzlerFilterFieldConfig,
+  DrizzlerFilterState,
+} from '@/components/table/filters/types';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
@@ -11,52 +17,44 @@ import {
 } from '@namefi-astra/ui/components/shadcn/card';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@namefi-astra/ui/components/shadcn/select';
-import { orderStatusValues } from '@namefi-astra/common/shared-schemas';
-import { RotateCcw } from 'lucide-react';
+import { Filter, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { subDays } from 'date-fns';
-import { allSelectValue } from './constants';
-import type { DateRangeInput, GlobalFilters } from './types';
+import type { DateRangeInput } from './types';
 import {
   formatDateForBackend,
   renderParsedDateTagline,
   toNaturalDateValue,
 } from './utils';
 
+const emptyFilterConfig: Record<string, DrizzlerFilterFieldConfig> = {};
+
 export function GlobalFiltersCard({
   dateRange,
   onDateRangeChange,
   searchTerm,
-  orderStatus,
-  autoRenew,
-  legacyBackfilled,
+  filterState,
+  filterConfig,
   activeFilterCount,
   onSearchTermChange,
-  onOrderStatusChange,
-  onAutoRenewChange,
-  onLegacyBackfilledChange,
+  onFilterStateChange,
   onReset,
 }: {
   dateRange: DateRangeInput;
   onDateRangeChange: (dateRange: DateRangeInput) => void;
   searchTerm: string;
-  orderStatus: GlobalFilters['orderStatus'];
-  autoRenew: boolean | undefined;
-  legacyBackfilled: boolean | undefined;
+  filterState: DrizzlerFilterState;
+  filterConfig: Record<string, DrizzlerFilterFieldConfig>;
   activeFilterCount: number;
   onSearchTermChange: (value: string) => void;
-  onOrderStatusChange: (value: GlobalFilters['orderStatus']) => void;
-  onAutoRenewChange: (value: boolean | undefined) => void;
-  onLegacyBackfilledChange: (value: boolean | undefined) => void;
+  onFilterStateChange: (value: DrizzlerFilterState) => void;
   onReset: () => void;
 }) {
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const advancedFilterCount =
+    Object.keys(filterState.columnFilters).length +
+    Object.keys(filterState.customFilters).length;
+
   return (
     <Card>
       <CardHeader>
@@ -95,33 +93,40 @@ export function GlobalFiltersCard({
                 placeholder="Orders, users, domains, wallets, payments..."
               />
             </div>
-            <SelectFilter
-              label="Order Status"
-              value={orderStatus}
-              options={orderStatusValues.map((status) => ({
-                value: status,
-                label: status,
-              }))}
-              onChange={(value) =>
-                onOrderStatusChange(value as GlobalFilters['orderStatus'])
-              }
-            />
-            <BooleanSelectFilter
-              label="Auto-renew Order"
-              value={autoRenew}
-              trueLabel="Auto-renew only"
-              falseLabel="Manual only"
-              onChange={onAutoRenewChange}
-            />
-            <BooleanSelectFilter
-              label="Legacy Backfilled"
-              value={legacyBackfilled}
-              trueLabel="Backfilled only"
-              falseLabel="Native only"
-              onChange={onLegacyBackfilledChange}
-            />
+            <div className="space-y-2">
+              <Label>Advanced Filters</Label>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => setFilterPanelOpen(true)}
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                Configure Filters
+                {advancedFilterCount > 0 && (
+                  <Badge variant="secondary" className="ml-2">
+                    {advancedFilterCount}
+                  </Badge>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                Filter by order status, auto-renewal, and legacy backfill with
+                multiple conditions.
+              </p>
+            </div>
           </div>
         </div>
+        <DrizzlerFilterPanel
+          open={filterPanelOpen}
+          onOpenChange={setFilterPanelOpen}
+          filterState={filterState}
+          filterConfig={emptyFilterConfig}
+          customFiltersConfig={filterConfig}
+          onFilterStateChange={onFilterStateChange}
+          onClearAll={() =>
+            onFilterStateChange({ columnFilters: {}, customFilters: {} })
+          }
+        />
       </CardContent>
     </Card>
   );
@@ -214,83 +219,5 @@ function FinancialDateRangeControl({
         />
       </div>
     </div>
-  );
-}
-
-function SelectFilter({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: string | undefined;
-  options: Array<{ value: string; label: string }>;
-  onChange: (value: string | undefined) => void;
-}) {
-  const selectedLabel = value
-    ? (options.find((option) => option.value === value)?.label ?? value)
-    : 'All';
-
-  return (
-    <div className="space-y-2">
-      <Label>{label}</Label>
-      <Select
-        value={value ?? allSelectValue}
-        onValueChange={(nextValue) => {
-          if (!nextValue || nextValue === allSelectValue) {
-            onChange(undefined);
-            return;
-          }
-          onChange(nextValue);
-        }}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder={`All ${label.toLowerCase()}`}>
-            {selectedLabel}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value={allSelectValue}>All</SelectItem>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
-}
-
-function BooleanSelectFilter({
-  label,
-  value,
-  trueLabel,
-  falseLabel,
-  onChange,
-}: {
-  label: string;
-  value: boolean | undefined;
-  trueLabel: string;
-  falseLabel: string;
-  onChange: (value: boolean | undefined) => void;
-}) {
-  return (
-    <SelectFilter
-      label={label}
-      value={value === undefined ? undefined : String(value)}
-      options={[
-        { value: 'true', label: trueLabel },
-        { value: 'false', label: falseLabel },
-      ]}
-      onChange={(nextValue) => {
-        if (nextValue === undefined) {
-          onChange(undefined);
-          return;
-        }
-        onChange(nextValue === 'true');
-      }}
-    />
   );
 }

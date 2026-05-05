@@ -205,7 +205,11 @@ export function DrizzlerFilterPanel({
                         <DrizzlerFilterField
                           field={field}
                           conditions={filterForField?.conditions ?? []}
-                          logicalOperator={filterForField?.operator ?? 'and'}
+                          logicalOperator={
+                            filterForField?.operator ??
+                            field.defaultLogicalOperator ??
+                            'and'
+                          }
                           onChange={(conditions, logicalOperator) =>
                             handleFilterChange(
                               'custom',
@@ -281,7 +285,11 @@ export function DrizzlerFilterPanel({
                         <DrizzlerFilterField
                           field={field}
                           conditions={filterForField?.conditions ?? []}
-                          logicalOperator={filterForField?.operator ?? 'and'}
+                          logicalOperator={
+                            filterForField?.operator ??
+                            field.defaultLogicalOperator ??
+                            'and'
+                          }
                           onChange={(conditions, logicalOperator) =>
                             handleFilterChange(
                               'column',

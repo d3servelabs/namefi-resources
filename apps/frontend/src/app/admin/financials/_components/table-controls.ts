@@ -103,7 +103,7 @@ export function useResetPageOnGlobalInputChange(
   dateRange: DateRangeInput,
   globalFilters: GlobalFilters,
 ) {
-  const resetKey = `${dateRange.startDate}|${dateRange.endDate}|${globalFilters.searchTerm ?? ''}|${globalFilters.orderStatus ?? ''}|${String(globalFilters.autoRenew ?? '')}|${String(globalFilters.legacyBackfilled ?? '')}`;
+  const resetKey = `${dateRange.startDate}|${dateRange.endDate}|${globalFilters.searchTerm ?? ''}|${JSON.stringify(globalFilters.filterOptions ?? '')}`;
 
   useEffect(() => {
     if (resetKey.length > 0) {

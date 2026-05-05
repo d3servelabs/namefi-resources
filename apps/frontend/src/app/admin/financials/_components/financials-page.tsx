@@ -3,6 +3,8 @@
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { AdminGuard } from '@/components/admin/admin-guard';
 import { PageShell } from '@/components/page-shell';
+import { convertToDrizzlerFilterOptions } from '@/components/table/filters/strategies/drizzler-server-filter-strategy';
+import type { DrizzlerFilterState } from '@/components/table/filters/types';
 import { useTRPC } from '@/lib/trpc';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -17,6 +19,7 @@ import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useDebounceValue } from 'usehooks-ts';
 import { DetailsSection } from './detail-tables';
+import { globalFilterConfig } from './constants';
 import { GlobalFiltersCard } from './global-filters-card';
 import { FinancialCharts, SummaryCards } from './overview';
 import type {
@@ -27,12 +30,12 @@ import type {
   PageTab,
   TableMode,
 } from './types';
-import {
-  compactObject,
-  countActiveFilters,
-  downloadExport,
-  getDefaultDateRange,
-} from './utils';
+import { compactObject, downloadExport, getDefaultDateRange } from './utils';
+
+const emptyDrizzlerFilterState: DrizzlerFilterState = {
+  columnFilters: {},
+  customFilters: {},
+};
 
 export function FinancialsPage() {
   return (
@@ -58,21 +61,30 @@ function FinancialsPageContent() {
   const [dateRange, setDateRange] =
     useState<DateRangeInput>(getDefaultDateRange);
   const [searchTerm, setSearchTerm] = useState('');
-  const [orderStatus, setOrderStatus] =
-    useState<GlobalFilters['orderStatus']>();
-  const [autoRenew, setAutoRenew] = useState<boolean>();
-  const [legacyBackfilled, setLegacyBackfilled] = useState<boolean>();
+  const [globalDrizzlerFilterState, setGlobalDrizzlerFilterState] =
+    useState<DrizzlerFilterState>(emptyDrizzlerFilterState);
   const [debouncedSearchTerm] = useDebounceValue(searchTerm, 400);
+  const [debouncedGlobalDrizzlerFilterState] = useDebounceValue(
+    globalDrizzlerFilterState,
+    500,
+  );
+
+  const globalFilterOptions = useMemo(
+    () =>
+      convertToDrizzlerFilterOptions<Record<string, unknown>>({
+        ...debouncedGlobalDrizzlerFilterState.columnFilters,
+        ...debouncedGlobalDrizzlerFilterState.customFilters,
+      }),
+    [debouncedGlobalDrizzlerFilterState],
+  );
 
   const globalFilters = useMemo<GlobalFilters>(
     () =>
       compactObject({
         searchTerm: debouncedSearchTerm.trim() || undefined,
-        orderStatus,
-        autoRenew,
-        legacyBackfilled,
+        filterOptions: globalFilterOptions,
       }),
-    [debouncedSearchTerm, orderStatus, autoRenew, legacyBackfilled],
+    [debouncedSearchTerm, globalFilterOptions],
   );
 
   const summaryQuery = useQuery(
@@ -105,13 +117,14 @@ function FinancialsPageContent() {
   );
 
   const summary = summaryQuery.data as FinancialSummary | undefined;
-  const globalFilterCount = countActiveFilters(globalFilters);
+  const globalFilterCount =
+    (searchTerm.trim() ? 1 : 0) +
+    Object.keys(globalDrizzlerFilterState.columnFilters).length +
+    Object.keys(globalDrizzlerFilterState.customFilters).length;
 
   const handleResetGlobalFilters = () => {
     setSearchTerm('');
-    setOrderStatus(undefined);
-    setAutoRenew(undefined);
-    setLegacyBackfilled(undefined);
+    setGlobalDrizzlerFilterState(emptyDrizzlerFilterState);
   };
 
   const handleExport = (request: ExportRequest) => {
@@ -152,14 +165,11 @@ function FinancialsPageContent() {
         dateRange={dateRange}
         onDateRangeChange={setDateRange}
         searchTerm={searchTerm}
-        orderStatus={orderStatus}
-        autoRenew={autoRenew}
-        legacyBackfilled={legacyBackfilled}
+        filterState={globalDrizzlerFilterState}
+        filterConfig={globalFilterConfig}
         activeFilterCount={globalFilterCount}
         onSearchTermChange={setSearchTerm}
-        onOrderStatusChange={setOrderStatus}
-        onAutoRenewChange={setAutoRenew}
-        onLegacyBackfilledChange={setLegacyBackfilled}
+        onFilterStateChange={setGlobalDrizzlerFilterState}
         onReset={handleResetGlobalFilters}
       />
 
