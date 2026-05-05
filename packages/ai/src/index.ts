@@ -11,7 +11,6 @@ import {
 } from './workflows/marketing-workflow';
 import {
   runLogoAnimationWorkflow as executeLogoAnimationWorkflow,
-  type LogoAnimationVideoGenerationContext,
   type logoAnimationWorkflowInputSchema,
   type logoAnimationWorkflowOutputSchema,
 } from './workflows/logo-animation-workflow';
@@ -34,7 +33,6 @@ export type LogoAnimationWorkflowInput = z.input<
 export type LogoAnimationWorkflowOutput = z.output<
   typeof logoAnimationWorkflowOutputSchema
 >;
-export type { LogoAnimationVideoGenerationContext };
 export type DigestAnimationWorkflowOutput = z.output<
   typeof digestAnimationWorkflowOutputSchema
 >;

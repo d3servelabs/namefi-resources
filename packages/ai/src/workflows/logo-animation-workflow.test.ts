@@ -330,46 +330,6 @@ describe('runLogoAnimationWorkflow', () => {
     );
   });
 
-  it('wraps Vercel Gateway video generation in looped mode', async () => {
-    experimentalGenerateVideoMock.mockResolvedValue({
-      video: { uint8Array: new Uint8Array([7, 8, 9]) },
-      warnings: [],
-      providerMetadata: {},
-    });
-    uploadFileToS3Mock
-      .mockResolvedValueOnce({ key: 'animations/domain/source.png' })
-      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' });
-    const quotaWrapper = vi.fn(async (_context, operation) => {
-      expect(experimentalGenerateVideoMock).not.toHaveBeenCalled();
-      return await operation();
-    });
-
-    await runLogoAnimationWorkflow(
-      {
-        mode: 'looped',
-        domain: 'example.com',
-        referenceLogoUrl: 'https://cdn.test/logo.png',
-        motionPreset: 'let-ai-choose',
-        motionIntensity: 'subtle',
-        model: 'bytedance/seedance-v1.5-pro',
-        storage,
-      },
-      {
-        runVercelGatewayVideoGeneration: quotaWrapper,
-      },
-    );
-
-    expect(quotaWrapper).toHaveBeenCalledWith(
-      {
-        mode: 'looped',
-        model: 'bytedance/seedance-v1.5-pro',
-        provider: 'vercel-ai-gateway',
-      },
-      expect.any(Function),
-    );
-    expect(experimentalGenerateVideoMock).toHaveBeenCalledTimes(1);
-  });
-
   it('creates a GPT Image 2 animation sheet and uses logo plus sheet as Seedance references', async () => {
     experimentalGenerateVideoMock.mockResolvedValue({
       video: { uint8Array: new Uint8Array([4, 5, 6]) },
@@ -471,45 +431,6 @@ describe('runLogoAnimationWorkflow', () => {
     expect(result.video.thumbnailStoragePath).toBe(
       'animations/domain/video.mp4',
     );
-  });
-
-  it('wraps Vercel Gateway video generation in sheet-guided mode', async () => {
-    experimentalGenerateVideoMock.mockResolvedValue({
-      video: { uint8Array: new Uint8Array([4, 5, 6]) },
-      warnings: [],
-      providerMetadata: {},
-    });
-    uploadFileToS3Mock
-      .mockResolvedValueOnce({ key: 'animations/domain/sheet.png' })
-      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' });
-    const quotaWrapper = vi.fn(async (_context, operation) => {
-      expect(experimentalGenerateVideoMock).not.toHaveBeenCalled();
-      return await operation();
-    });
-
-    await runLogoAnimationWorkflow(
-      {
-        mode: 'sheet-guided',
-        domain: 'example.com',
-        referenceLogoUrl: 'https://cdn.test/logo.png',
-        model: 'bytedance/seedance-2.0',
-        sheetModel: 'gpt-image-2',
-        storage,
-      },
-      {
-        runVercelGatewayVideoGeneration: quotaWrapper,
-      },
-    );
-
-    expect(quotaWrapper).toHaveBeenCalledWith(
-      {
-        mode: 'sheet-guided',
-        model: 'bytedance/seedance-2.0',
-        provider: 'vercel-ai-gateway',
-      },
-      expect.any(Function),
-    );
-    expect(experimentalGenerateVideoMock).toHaveBeenCalledTimes(1);
   });
 
   it('rejects invalid cross-mode combinations', async () => {

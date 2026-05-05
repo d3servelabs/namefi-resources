@@ -327,9 +327,6 @@ export function useAnimationGeneration({
           removePendingItem(context.pendingId);
         }
 
-        toast.success('Animation submitted', {
-          description: 'It will start when video capacity is available.',
-        });
         invalidateGenerationQueries(queryClient, trpc);
       },
       onError: (error, _variables, context) => {

@@ -817,7 +817,7 @@ export function AnimationGenerator({
         }
       }}
       submitButtonText={logosToShow.length > 0 ? 'Animate' : 'Select a brand'}
-      submitLoadingText="Submitting"
+      submitLoadingText="Generating"
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
       creditCostConfig={{
