@@ -46,6 +46,8 @@ import {
   RefreshCw,
   ListTree,
   Play,
+  ShieldCheckIcon,
+  ShieldXIcon,
   X as XIcon,
 } from 'lucide-react';
 import JsonView from '@uiw/react-json-view';
@@ -239,24 +241,18 @@ function DnsvizAnalysesPanel() {
         size: 120,
       },
       {
-        id: 'supportsDnssec',
-        header: 'Supports DNSSEC',
-        cell: ({ row }) => {
-          const supports = row.original.supportsDnssec;
-          if (supports == null) {
-            return <span className="text-xs text-muted-foreground">—</span>;
-          }
-          return supports ? (
-            <Badge variant="outline" className="text-xs">
-              Yes
-            </Badge>
-          ) : (
-            <Badge variant="secondary" className="text-xs">
-              No
-            </Badge>
-          );
-        },
-        size: 90,
+        id: 'nameservers',
+        header: 'Nameservers',
+        enableSorting: false,
+        cell: ({ row }) => <NameserversCell row={row.original} />,
+        size: 280,
+      },
+      {
+        id: 'dnssec',
+        header: 'DNSSEC',
+        enableSorting: false,
+        cell: ({ row }) => <DnssecCell row={row.original} />,
+        size: 220,
       },
       {
         accessorKey: 'errorsCount',
@@ -582,6 +578,132 @@ function RunOnDemandDialog({
   );
 }
 
+/**
+ * Nameservers + Namefi/Custom badge from `indexed_domains.nameservers`.
+ * Mirrors the `NameserversCell` in
+ * `apps/frontend/src/app/admin/ns-and-dnssec/page.tsx` so the two admin
+ * views render the same way for the same source data.
+ */
+function NameserversCell({ row }: { row: DnsvizAnalysisRow }) {
+  if (row.nameservers == null) {
+    return <span className="text-xs text-muted-foreground">—</span>;
+  }
+  if (row.nameservers.length === 0) {
+    return <span className="text-xs text-amber-600">Not indexed</span>;
+  }
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-2">
+        {/*
+          Explicit null check before the boolean branches: the contract
+          types `isUsingNamefiNameservers` as `boolean | null`, so a
+          partial snapshot would otherwise be silently labelled "Custom".
+        */}
+        {row.isUsingNamefiNameservers == null ? (
+          <Badge variant="outline" className="text-xs text-muted-foreground">
+            Unknown
+          </Badge>
+        ) : row.isUsingNamefiNameservers === true ? (
+          <Badge variant="secondary" className="text-xs">
+            Namefi
+          </Badge>
+        ) : (
+          <Badge variant="outline" className="text-xs">
+            Custom
+          </Badge>
+        )}
+      </div>
+      <ul className="text-xs text-muted-foreground font-mono leading-tight">
+        {row.nameservers.map((ns) => (
+          <li key={ns}>{ns}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * Zone-signing + delegation-signer status, sourced from
+ * `indexed_domains.dnssec_status`. Same visual as the `DnssecCell` in
+ * `apps/frontend/src/app/admin/ns-and-dnssec/page.tsx`.
+ */
+function DnssecCell({ row }: { row: DnsvizAnalysisRow }) {
+  if (row.dnssecZoneHasActiveDnssec === null) {
+    return <span className="text-xs text-amber-600">Not indexed</span>;
+  }
+  return (
+    <div className="flex flex-col gap-1 text-xs">
+      {/*
+        `supportsDnssec` rolls up the rest of the dnssec_status snapshot
+        ("does this zone have any DNSSEC at all?") so it goes first as
+        the at-a-glance signal. Rendered defensively — if the parent
+        sibling fields are populated but this one isn't (partial
+        snapshot), the row is omitted rather than guessing.
+      */}
+      {row.supportsDnssec !== null ? (
+        <div className="flex items-center gap-2">
+          {row.supportsDnssec ? (
+            <>
+              <ShieldCheckIcon className="w-4 h-4 text-green-500" />
+              <span>Supports DNSSEC</span>
+            </>
+          ) : (
+            <>
+              <ShieldXIcon className="w-4 h-4 text-red-500" />
+              <span>No DNSSEC</span>
+            </>
+          )}
+        </div>
+      ) : null}
+      <div className="flex items-center gap-2">
+        {row.dnssecZoneHasActiveDnssec ? (
+          <>
+            <ShieldCheckIcon className="w-4 h-4 text-green-500" />
+            <span>Zone signing on</span>
+          </>
+        ) : (
+          <>
+            <ShieldXIcon className="w-4 h-4 text-red-500" />
+            <span>Zone signing off</span>
+          </>
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        {/*
+          DS branch handles unknown explicitly: both flags are
+          contract-typed `boolean | null`, so collapsing null into the
+          `false` branch would mislabel a partial snapshot as "No DS"
+          or "Custom DS".
+        */}
+        {row.dnssecHasDelegationSigner == null ||
+        row.dnssecIsUsingNamefiDelegationSigner == null ? (
+          <>
+            <ShieldXIcon className="w-4 h-4 text-muted-foreground" />
+            <span className="text-muted-foreground">DS unknown</span>
+          </>
+        ) : row.dnssecHasDelegationSigner === true ? (
+          row.dnssecIsUsingNamefiDelegationSigner === true ? (
+            <>
+              <ShieldCheckIcon className="w-4 h-4 text-green-500" />
+              <span>Namefi DS</span>
+            </>
+          ) : (
+            <>
+              <ShieldCheckIcon className="w-4 h-4 text-amber-500" />
+              <span>Custom DS</span>
+            </>
+          )
+        ) : (
+          <>
+            <ShieldXIcon className="w-4 h-4 text-red-500" />
+            <span>No DS</span>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function RowActions({
   row,
   onView,
@@ -706,7 +828,7 @@ function GraphPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="!max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="!max-w-[85vw] !min-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {target?.domainName ?? 'DNSViz graph'}{' '}

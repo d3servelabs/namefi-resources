@@ -75,6 +75,17 @@ const dnsvizAnalysisRowSchema = z.object({
    * view / generated column later.
    */
   supportsDnssec: z.boolean().nullable(),
+  /**
+   * Snapshot of `indexed_domains.nameservers` + `is_using_namefi_nameservers`
+   * + the rest of `indexed_domains.dnssec_status` for the matching domain.
+   * All fields are `null` when the domain isn't in the index. Same
+   * post-query mapping as `supportsDnssec`.
+   */
+  nameservers: z.array(z.string()).nullable(),
+  isUsingNamefiNameservers: z.boolean().nullable(),
+  dnssecHasDelegationSigner: z.boolean().nullable(),
+  dnssecIsUsingNamefiDelegationSigner: z.boolean().nullable(),
+  dnssecZoneHasActiveDnssec: z.boolean().nullable(),
 });
 
 const listOutputSchema = z.object({

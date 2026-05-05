@@ -2,10 +2,10 @@ import { db, dnsvizAnalysesTable, indexedDomainsTable } from '@namefi-astra/db';
 import type {
   DnsvizAnalysisStatus,
   DnsvizAnalysisSummary,
+  IndexedDomainDnssecStatus,
 } from '@namefi-astra/db/schema';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, asc, desc, eq, ilike, inArray, type SQL, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, ilike, type SQL, sql } from 'drizzle-orm';
 import { adminProcedure } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { adminDnsvizContract } from '@namefi-astra/common/contract/admin/admin-dnsviz-contract';
@@ -94,6 +94,16 @@ export const adminDnsvizRouter = createContractTRPCRouter<
       // Stable tie-breaker for deterministic pagination.
       orderByClauses.push(asc(dnsvizAnalysesTable.id));
 
+      // LEFT JOIN `indexed_domains` so nameservers + cached DNSSEC
+      // status come back in one query and become first-class columns
+      // for future drizzler-filter wiring (filter / sort by
+      // `is_using_namefi_nameservers`, `dnssec_status->>...`, etc.).
+      // The `(registrar_key, normalized_domain_name)` unique constraint
+      // means at most one match per dnsviz row, so no row-multiplication
+      // worry. AD_HOC dnsviz rows (third-party domains run via on-demand)
+      // are never in `indexed_domains`, so LEFT JOIN gives nulls there
+      // and `indexedSnapshotForRow` projects them as nulls in the
+      // contract output.
       const baseQuery = db
         .select({
           id: dnsvizAnalysesTable.id,
@@ -109,8 +119,25 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           errorMessage: dnsvizAnalysesTable.errorMessage,
           workflowRunId: dnsvizAnalysesTable.workflowRunId,
           expiresAt: dnsvizAnalysesTable.expiresAt,
+          joinedNameservers: indexedDomainsTable.nameservers,
+          joinedIsUsingNamefiNameservers:
+            indexedDomainsTable.isUsingNamefiNameservers,
+          joinedDnssecStatus: indexedDomainsTable.dnssecStatus,
         })
-        .from(dnsvizAnalysesTable);
+        .from(dnsvizAnalysesTable)
+        .leftJoin(
+          indexedDomainsTable,
+          and(
+            eq(
+              indexedDomainsTable.normalizedDomainName,
+              dnsvizAnalysesTable.normalizedDomainName,
+            ),
+            eq(
+              indexedDomainsTable.registrarKey,
+              dnsvizAnalysesTable.registrarKey,
+            ),
+          ),
+        );
 
       const rowsQuery = whereClause ? baseQuery.where(whereClause) : baseQuery;
       const rows = await rowsQuery
@@ -118,6 +145,10 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         .limit(pageSize)
         .offset(offset);
 
+      // The COUNT can stay against the base table — the LEFT JOIN never
+      // multiplies rows (1:1 via the registrar_key + domain unique
+      // constraint), and we don't filter on joined columns yet, so an
+      // un-joined COUNT is faster.
       const totalQuery = db
         .select({ count: sql<number>`COUNT(*)::int` })
         .from(dnsvizAnalysesTable);
@@ -125,21 +156,23 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         ? await totalQuery.where(whereClause)
         : await totalQuery;
 
-      // Map `supportsDnssec` from indexed_domains. Mapped post-query for
-      // now — see the contract row schema for the future-direction note.
-      // Domain may live at multiple registrars; we just take any matching
-      // row's flag since DNSSEC support is a property of the zone.
-      const supportsDnssecByDomain = await loadSupportsDnssecMap(
-        rows.map((r) => r.normalizedDomainName),
-      );
-
       return {
-        rows: rows.map((r) => ({
-          ...r,
-          reasoning: deriveReasoningString(r),
-          supportsDnssec:
-            supportsDnssecByDomain.get(r.normalizedDomainName) ?? null,
-        })),
+        rows: rows.map(
+          ({
+            joinedNameservers,
+            joinedIsUsingNamefiNameservers,
+            joinedDnssecStatus,
+            ...r
+          }) => ({
+            ...r,
+            reasoning: deriveReasoningString(r),
+            ...indexedSnapshotForRow({
+              nameservers: joinedNameservers,
+              isUsingNamefiNameservers: joinedIsUsingNamefiNameservers,
+              dnssecStatus: joinedDnssecStatus,
+            }),
+          }),
+        ),
         total,
         totalPages: Math.max(1, Math.ceil(total / pageSize)),
       };
@@ -149,6 +182,9 @@ export const adminDnsvizRouter = createContractTRPCRouter<
     .input(adminDnsvizContract.getAnalysisDetails.input)
     .output(adminDnsvizContract.getAnalysisDetails.output)
     .query(async ({ input }) => {
+      // LEFT JOIN to indexed_domains for the same reason as
+      // listAnalyses — keeps both procedures projecting the same shape
+      // off the same source.
       const [row] = await db
         .select({
           id: dnsvizAnalysesTable.id,
@@ -165,8 +201,25 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           workflowRunId: dnsvizAnalysesTable.workflowRunId,
           expiresAt: dnsvizAnalysesTable.expiresAt,
           grokData: dnsvizAnalysesTable.grokData,
+          joinedNameservers: indexedDomainsTable.nameservers,
+          joinedIsUsingNamefiNameservers:
+            indexedDomainsTable.isUsingNamefiNameservers,
+          joinedDnssecStatus: indexedDomainsTable.dnssecStatus,
         })
         .from(dnsvizAnalysesTable)
+        .leftJoin(
+          indexedDomainsTable,
+          and(
+            eq(
+              indexedDomainsTable.normalizedDomainName,
+              dnsvizAnalysesTable.normalizedDomainName,
+            ),
+            eq(
+              indexedDomainsTable.registrarKey,
+              dnsvizAnalysesTable.registrarKey,
+            ),
+          ),
+        )
         .where(eq(dnsvizAnalysesTable.id, input.id))
         .limit(1);
 
@@ -194,16 +247,22 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         }
       }
 
-      const { grokData, ...rowWithoutGrok } = row;
-      const supportsDnssecMap = await loadSupportsDnssecMap([
-        rowWithoutGrok.normalizedDomainName,
-      ]);
+      const {
+        grokData,
+        joinedNameservers,
+        joinedIsUsingNamefiNameservers,
+        joinedDnssecStatus,
+        ...rowWithoutGrok
+      } = row;
       return {
         row: {
           ...rowWithoutGrok,
           reasoning: deriveReasoningString(rowWithoutGrok),
-          supportsDnssec:
-            supportsDnssecMap.get(rowWithoutGrok.normalizedDomainName) ?? null,
+          ...indexedSnapshotForRow({
+            nameservers: joinedNameservers,
+            isUsingNamefiNameservers: joinedIsUsingNamefiNameservers,
+            dnssecStatus: joinedDnssecStatus,
+          }),
         },
         messages,
         counts,
@@ -343,39 +402,42 @@ interface RowForReasoning {
 }
 
 /**
- * Bulk lookup `supportsDnssec` for the given domains from
- * `indexed_domains.dnssec_status`. Returns a map keyed by domain name —
- * domains absent from the index simply don't appear in the map (callers
- * substitute `null`).
+ * Project the LEFT-JOINed `indexed_domains` columns into the field shape
+ * the `DnsvizAnalysisRow` contract expects, with explicit `null` for
+ * every field when the join missed (AD_HOC dnsviz rows have no
+ * `indexed_domains` match). Centralised so list / details routers stay
+ * in sync.
  *
- * Done as a separate query rather than a JOIN because (a) it's simpler to
- * keep `listAnalyses` against a single table, (b) makes it easy to swap
- * out for a postgres-native source later (view, generated column) without
- * touching the main row query.
+ * Detects a join miss via `nameservers`: that column is `notNull
+ * default []` on `indexed_domains`, so a non-null value here means the
+ * row exists. `dnssec_status` is independently nullable (the indexer
+ * backfills it asynchronously) and projected as null fields if absent.
  */
-async function loadSupportsDnssecMap(
-  domains: string[],
-): Promise<Map<string, boolean | null>> {
-  if (domains.length === 0) return new Map();
-  const distinct = Array.from(new Set(domains));
-  const indexedRows = await db
-    .select({
-      domainName: indexedDomainsTable.normalizedDomainName,
-      dnssecStatus: indexedDomainsTable.dnssecStatus,
-    })
-    .from(indexedDomainsTable)
-    .where(
-      inArray(
-        indexedDomainsTable.normalizedDomainName,
-        distinct as NamefiNormalizedDomain[],
-      ),
-    );
-  const map = new Map<string, boolean | null>();
-  for (const r of indexedRows) {
-    if (map.has(r.domainName)) continue;
-    map.set(r.domainName, r.dnssecStatus?.supportsDnssec ?? null);
+function indexedSnapshotForRow(joined: {
+  nameservers: string[] | null;
+  isUsingNamefiNameservers: boolean | null;
+  dnssecStatus: IndexedDomainDnssecStatus | null;
+}) {
+  if (joined.nameservers === null) {
+    return {
+      supportsDnssec: null,
+      nameservers: null,
+      isUsingNamefiNameservers: null,
+      dnssecHasDelegationSigner: null,
+      dnssecIsUsingNamefiDelegationSigner: null,
+      dnssecZoneHasActiveDnssec: null,
+    };
   }
-  return map;
+  const ds = joined.dnssecStatus;
+  return {
+    supportsDnssec: ds?.supportsDnssec ?? null,
+    nameservers: joined.nameservers,
+    isUsingNamefiNameservers: joined.isUsingNamefiNameservers,
+    dnssecHasDelegationSigner: ds?.hasDelegationSigner ?? null,
+    dnssecIsUsingNamefiDelegationSigner:
+      ds?.isUsingNamefiDelegationSigner ?? null,
+    dnssecZoneHasActiveDnssec: ds?.zoneHasActiveDnssec ?? null,
+  };
 }
 
 /**
