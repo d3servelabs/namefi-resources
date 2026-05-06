@@ -5,12 +5,15 @@ import {
   type SubmitHandler,
   useForm,
   type ControllerRenderProps,
+  type UseFormReturn,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   CheckCircle2Icon,
+  EyeIcon,
   Loader2,
+  PencilIcon,
   RadarIcon,
   ShieldAlertIcon,
 } from 'lucide-react';
@@ -139,8 +142,8 @@ export function CustomDelegationSignerForm({
     },
   });
 
-  const [inputMode, setInputMode] = useState<'manual' | 'auto-detect'>(
-    'manual',
+  const [inputMode, setInputMode] = useState<'auto-detect' | 'manual'>(
+    'auto-detect',
   );
   const [pastedText, setPastedText] = useState('');
   const [autoDetectCandidates, setAutoDetectCandidates] = useState<
@@ -152,6 +155,7 @@ export function CustomDelegationSignerForm({
   });
   const [acknowledge, setAcknowledge] = useState(false);
   const [publicKeyMissingNotice, setPublicKeyMissingNotice] = useState(false);
+  const [viewMode, setViewMode] = useState<'summary' | 'edit'>('summary');
 
   // Reset validation + ack whenever any DS field changes.
   useEffect(() => {
@@ -327,12 +331,12 @@ export function CustomDelegationSignerForm({
         <Tabs
           value={inputMode}
           onValueChange={(value) =>
-            setInputMode(value as 'manual' | 'auto-detect')
+            setInputMode(value as 'auto-detect' | 'manual')
           }
         >
           <TabsList>
-            <TabsTrigger value="manual">Manual</TabsTrigger>
             <TabsTrigger value="auto-detect">Automatic Detection</TabsTrigger>
+            <TabsTrigger value="manual">Manual</TabsTrigger>
           </TabsList>
 
           <TabsContent value="manual" className="flex flex-col gap-3 min-w-0">
@@ -414,127 +418,158 @@ export function CustomDelegationSignerForm({
           </TabsContent>
         </Tabs>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
-          <FormField
-            control={form.control}
-            name="keyTag"
-            render={({ field }) => (
-              <FormItem className="min-w-0">
-                <FormLabel>Key tag</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    max={65535}
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <h3 className="text-sm font-medium">DS values</h3>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              setViewMode((prev) => (prev === 'summary' ? 'edit' : 'summary'))
+            }
+          >
+            {viewMode === 'summary' ? (
+              <>
+                <PencilIcon className="w-4 h-4" />
+                Edit
+              </>
+            ) : (
+              <>
+                <EyeIcon className="w-4 h-4" />
+                View summary
+              </>
             )}
-          />
-
-          <FormField
-            control={form.control}
-            name="algorithm"
-            render={({ field }) => (
-              <FormItem className="min-w-0">
-                <FormLabel>Algorithm</FormLabel>
-                <FormControl>
-                  <SelectField
-                    field={field}
-                    options={SUPPORTED_ALGORITHMS}
-                    placeholder="Select algorithm"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="flags"
-            render={({ field }) => (
-              <FormItem className="min-w-0">
-                <FormLabel>Flags</FormLabel>
-                <FormControl>
-                  <SelectField
-                    field={field}
-                    options={FLAG_OPTIONS}
-                    placeholder="Select flag"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="digestType"
-            render={({ field }) => (
-              <FormItem className="min-w-0">
-                <FormLabel>Digest type</FormLabel>
-                <FormControl>
-                  <SelectField
-                    field={field}
-                    options={DIGEST_TYPE_OPTIONS}
-                    placeholder="Select digest type"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          </Button>
         </div>
 
-        <FormField
-          control={form.control}
-          name="publicKey"
-          render={({ field }) => (
-            <FormItem className="min-w-0">
-              <FormLabel>Public key (base64)</FormLabel>
-              <FormControl>
-                <Textarea
-                  rows={3}
-                  className="font-mono text-xs w-full max-w-full"
-                  placeholder="mdsswUyr3DPW132mOi8V/+T..."
-                  {...field}
-                />
-              </FormControl>
-              {publicKeyMissingNotice && !field.value?.trim() ? (
-                <p className="text-xs text-amber-400 mt-1">
-                  Public key not present in the pasted DS. Use{' '}
-                  <span className="font-medium">Automatic Detection</span> or
-                  paste the DNSKEY record so we can submit to the registrar.
-                </p>
-              ) : null}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {viewMode === 'summary' ? (
+          <DsSummaryTable form={form} />
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+              <FormField
+                control={form.control}
+                name="keyTag"
+                render={({ field }) => (
+                  <FormItem className="min-w-0">
+                    <FormLabel>Key tag</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min={0}
+                        max={65535}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="digest"
-          render={({ field }) => (
-            <FormItem className="min-w-0">
-              <FormLabel>Digest (hex)</FormLabel>
-              <FormControl>
-                <Textarea
-                  rows={2}
-                  className="font-mono text-xs w-full max-w-full"
-                  placeholder="2BB183AF5F22588179A53B0A98631FAD1A292118..."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <FormField
+                control={form.control}
+                name="algorithm"
+                render={({ field }) => (
+                  <FormItem className="min-w-0">
+                    <FormLabel>Algorithm</FormLabel>
+                    <FormControl>
+                      <SelectField
+                        field={field}
+                        options={SUPPORTED_ALGORITHMS}
+                        placeholder="Select algorithm"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="flags"
+                render={({ field }) => (
+                  <FormItem className="min-w-0">
+                    <FormLabel>Flags</FormLabel>
+                    <FormControl>
+                      <SelectField
+                        field={field}
+                        options={FLAG_OPTIONS}
+                        placeholder="Select flag"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="digestType"
+                render={({ field }) => (
+                  <FormItem className="min-w-0">
+                    <FormLabel>Digest type</FormLabel>
+                    <FormControl>
+                      <SelectField
+                        field={field}
+                        options={DIGEST_TYPE_OPTIONS}
+                        placeholder="Select digest type"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="publicKey"
+              render={({ field }) => (
+                <FormItem className="min-w-0">
+                  <FormLabel>Public key (base64)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={3}
+                      className="font-mono text-xs w-full max-w-full"
+                      placeholder="mdsswUyr3DPW132mOi8V/+T..."
+                      {...field}
+                    />
+                  </FormControl>
+                  {publicKeyMissingNotice && !field.value?.trim() ? (
+                    <p className="text-xs text-amber-400 mt-1">
+                      Public key not present in the pasted DS. Use{' '}
+                      <span className="font-medium">Automatic Detection</span>{' '}
+                      or paste the DNSKEY record so we can submit to the
+                      registrar.
+                    </p>
+                  ) : null}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="digest"
+              render={({ field }) => (
+                <FormItem className="min-w-0">
+                  <FormLabel>Digest (hex)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={2}
+                      className="font-mono text-xs w-full max-w-full"
+                      placeholder="2BB183AF5F22588179A53B0A98631FAD1A292118..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
 
         <ValidationResultPanel state={validation} />
 
@@ -579,6 +614,78 @@ export function CustomDelegationSignerForm({
       </form>
     </Form>
   );
+}
+
+function DsSummaryTable({ form }: { form: UseFormReturn<FormValues> }) {
+  const values = form.watch();
+  const algorithmLabel =
+    SUPPORTED_ALGORITHMS.find((opt) => opt.value === values.algorithm)?.label ??
+    String(values.algorithm);
+  const flagsLabel =
+    FLAG_OPTIONS.find((opt) => opt.value === values.flags)?.label ??
+    String(values.flags);
+  const digestTypeLabel =
+    DIGEST_TYPE_OPTIONS.find((opt) => opt.value === values.digestType)?.label ??
+    String(values.digestType);
+
+  return (
+    <div className="rounded-md border border-zinc-800 overflow-hidden min-w-0">
+      <table className="w-full text-xs">
+        <tbody>
+          <SummaryRow label="Key tag">{values.keyTag}</SummaryRow>
+          <SummaryRow label="Algorithm">{algorithmLabel}</SummaryRow>
+          <SummaryRow label="Flags">{flagsLabel}</SummaryRow>
+          <SummaryRow label="Digest type">{digestTypeLabel}</SummaryRow>
+          <SummaryRow label="Public key">
+            {values.publicKey ? (
+              <span
+                className="font-mono break-all text-zinc-200"
+                title={values.publicKey}
+              >
+                {truncateMiddle(values.publicKey, 64)}
+              </span>
+            ) : (
+              <span className="italic text-amber-400">not set</span>
+            )}
+          </SummaryRow>
+          <SummaryRow label="Digest">
+            {values.digest ? (
+              <span
+                className="font-mono break-all text-zinc-200"
+                title={values.digest}
+              >
+                {values.digest}
+              </span>
+            ) : (
+              <span className="italic text-zinc-500">—</span>
+            )}
+          </SummaryRow>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function SummaryRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <tr className="border-b border-zinc-800 last:border-b-0">
+      <td className="p-2 text-zinc-400 align-top w-32 shrink-0">{label}</td>
+      <td className="p-2 min-w-0 break-words">{children}</td>
+    </tr>
+  );
+}
+
+function truncateMiddle(value: string, max: number): string {
+  if (value.length <= max) return value;
+  const head = Math.ceil((max - 1) / 2);
+  const tail = Math.floor((max - 1) / 2);
+  return `${value.slice(0, head)}…${value.slice(-tail)}`;
 }
 
 function SelectField({

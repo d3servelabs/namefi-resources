@@ -1,16 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { PlusIcon, Trash2Icon } from 'lucide-react';
+import { toast } from 'sonner';
 
-import type { AppRouterOutput } from '@/lib/trpc';
+import { LoadingButton } from '@/components/buttons/loading-button';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@namefi-astra/ui/components/shadcn/accordion';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
@@ -26,6 +34,15 @@ import { CustomDelegationSignerForm } from './custom-delegation-signer-form';
 type DnssecStatusDetails =
   AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
 
+type CustomSigner = {
+  id?: string;
+  keyTag?: number;
+  algorithm?: number;
+  digestType?: number;
+  digest?: string;
+  publicKey?: string;
+};
+
 export type CustomDelegationSignerPanelProps = {
   domainName: PunycodeDomainName;
   dnssecDetails: DnssecStatusDetails;
@@ -39,12 +56,8 @@ export function CustomDelegationSignerPanel({
 }: CustomDelegationSignerPanelProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const customSigners = (dnssecDetails.delegationSigners ?? []) as Array<{
-    keyTag?: number;
-    algorithm?: number;
-    digestType?: number;
-    digest?: string;
-  }>;
+  const customSigners = (dnssecDetails.delegationSigners ??
+    []) as CustomSigner[];
 
   return (
     <div className="flex flex-col gap-3 w-full pt-4 border-t border-zinc-800">
@@ -91,6 +104,7 @@ export function CustomDelegationSignerPanel({
                 <th className="text-left p-2">Algorithm</th>
                 <th className="text-left p-2">Digest type</th>
                 <th className="text-left p-2">Digest</th>
+                <th className="text-right p-2 w-10" aria-label="Actions" />
               </tr>
             </thead>
             <tbody className="font-mono">
@@ -108,6 +122,13 @@ export function CustomDelegationSignerPanel({
                   >
                     {signer.digest ?? '—'}
                   </td>
+                  <td className="p-2 text-right">
+                    <DisassociateButton
+                      domainName={domainName}
+                      signer={signer}
+                      disabled={disableAllButtons}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -119,5 +140,101 @@ export function CustomDelegationSignerPanel({
         </p>
       )}
     </div>
+  );
+}
+
+function resolveSignerKeyId(signer: CustomSigner): string | null {
+  if (signer.id) return signer.id;
+  if (signer.publicKey) return signer.publicKey;
+  if (typeof signer.keyTag === 'number') return String(signer.keyTag);
+  return null;
+}
+
+function DisassociateButton({
+  domainName,
+  signer,
+  disabled,
+}: {
+  domainName: PunycodeDomainName;
+  signer: CustomSigner;
+  disabled: boolean;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+
+  const keyId = resolveSignerKeyId(signer);
+
+  const mutation = useMutation(
+    trpc.domainConfig.dnssec.disassociateDelegationSigner.mutationOptions({
+      async onSuccess() {
+        toast.success(
+          `Removed delegation signer${signer.keyTag ? ` (key tag ${signer.keyTag})` : ''}`,
+        );
+        await queryClient.invalidateQueries({
+          queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+            domainName,
+          }),
+        });
+        setOpen(false);
+      },
+      onError(error) {
+        toast.error(`Failed to remove delegation signer: ${error.message}`);
+      },
+    }),
+  );
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7 text-zinc-400 hover:text-red-400"
+            disabled={disabled || !keyId}
+            aria-label="Remove delegation signer"
+          >
+            <Trash2Icon className="w-4 h-4" />
+          </Button>
+        }
+      />
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Remove delegation signer?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This disassociates the DS at the registrar.{' '}
+            {signer.keyTag ? `Key tag ${signer.keyTag}. ` : ''}If this is the
+            only DS for the domain, DNSSEC validation will break globally within
+            a few hours. Make sure you've already published a replacement at the
+            parent or are intentionally turning DNSSEC off.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            render={
+              <LoadingButton
+                variant="destructive"
+                isLoading={mutation.isPending}
+                loadingText="Removing..."
+                onClick={(event) => {
+                  event.preventDefault();
+                  if (!keyId) {
+                    toast.error(
+                      'Cannot determine which key to remove (no id, publicKey, or keyTag).',
+                    );
+                    return;
+                  }
+                  mutation.mutate({ domainName, keyId });
+                }}
+              >
+                Remove
+              </LoadingButton>
+            }
+          />
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

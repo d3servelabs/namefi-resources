@@ -286,6 +286,16 @@ const associateDelegationSignerInputSchema = z.object({
   signingConfig: dnssecSigningConfigSchema,
 });
 
+const disassociateDelegationSignerInputSchema = z.object({
+  domainName: namefiNormalizedDomainSchema,
+  /**
+   * Identifier the registrar uses to address the DS to remove. Frontend
+   * passes whichever of `id` / `publicKey` / `keyTag` (as string) it has
+   * for the row being removed.
+   */
+  keyId: z.string().min(1),
+});
+
 const cancelDnssecWorkflowInputSchema = z.object({
   domainName: namefiNormalizedDomainSchema,
   operation: z.enum(['ENABLE_DNSSEC', 'REMOVE_DNSSEC']),
@@ -353,6 +363,11 @@ const domainDnssecContract = createContract(
     associateDelegationSigner: {
       type: 'mutation',
       input: associateDelegationSignerInputSchema,
+      output: z.void(),
+    },
+    disassociateDelegationSigner: {
+      type: 'mutation',
+      input: disassociateDelegationSignerInputSchema,
       output: z.void(),
     },
     validateDelegationSigner: {

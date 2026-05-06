@@ -3,6 +3,7 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import {
   associateDelegationSigner,
   disableDnssecForDomain,
+  disassociateDelegationSigner,
   enableAutoDnssecForDomain,
   getActiveDnssecOperationWorkflows,
   getDnssecStatusDetails,
@@ -107,6 +108,29 @@ export const domainDnssecRouter = createContractTRPCRouter<
       );
 
       _logger.debug('Successfully associated delegation signer');
+    }),
+
+  /**
+   * Remove a single delegation signer from the domain. The frontend passes
+   * the row identifier (id / publicKey / keyTag-as-string) it has for the
+   * signer being removed.
+   */
+  disassociateDelegationSigner: protectedProcedure
+    .input(domainConfigContract.dnssec.disassociateDelegationSigner.input)
+    .output(domainConfigContract.dnssec.disassociateDelegationSigner.output)
+    .mutation(async ({ input, ctx }) => {
+      _logger.assign({
+        method: 'disassociateDelegationSigner',
+        domainName: input.domainName,
+        keyId: input.keyId,
+      });
+      _logger.debug('Disassociating delegation signer');
+
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      await disassociateDelegationSigner(
+        toPunycodeDomainName(input.domainName),
+        input.keyId,
+      );
     }),
 
   /**
