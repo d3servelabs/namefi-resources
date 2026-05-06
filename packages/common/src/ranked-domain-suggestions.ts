@@ -26,9 +26,8 @@ export type SafeRankedDomainSuggestionsResult =
 /**
  * Generates the same ranked-TLD first-party suggestions as the API path.
  *
- * This throws for invalid search text to match the existing backend suggestion
- * behavior. UI render paths should use `safeGenerateRankedDomainSuggestions`
- * when invalid input is an expected typing state.
+ * Returns an empty result page when search text contains no usable domain-label
+ * characters, so user-entered search text does not produce a parser error UX.
  */
 export function generateRankedDomainSuggestions(
   query: string,
@@ -37,7 +36,7 @@ export function generateRankedDomainSuggestions(
 ): RankedDomainSuggestionsResult {
   const sanitizedResult = sanitizeDomainSearchQueryResult(query);
   if (!sanitizedResult.success) {
-    throw sanitizedResult.error;
+    return createEmptyRankedDomainSuggestionsResult(page, pageSize);
   }
 
   return generateRankedDomainSuggestionsForSanitizedQuery(
@@ -55,18 +54,26 @@ export function safeGenerateRankedDomainSuggestions(
   page = 1,
   pageSize = DEFAULT_RANKED_TLD_PAGE_SIZE,
 ): SafeRankedDomainSuggestionsResult {
-  const sanitizedResult = sanitizeDomainSearchQueryResult(query);
-  if (!sanitizedResult.success) {
-    return sanitizedResult;
-  }
-
   return {
     success: true,
-    data: generateRankedDomainSuggestionsForSanitizedQuery(
-      sanitizedResult.data,
-      page,
-      pageSize,
-    ),
+    data: generateRankedDomainSuggestions(query, page, pageSize),
+  };
+}
+
+function createEmptyRankedDomainSuggestionsResult(
+  page: number,
+  pageSize: number,
+): RankedDomainSuggestionsResult {
+  const normalizedPageSize = Math.trunc(pageSize);
+  const effectivePageSize =
+    normalizedPageSize > 0 ? normalizedPageSize : DEFAULT_RANKED_TLD_PAGE_SIZE;
+
+  return {
+    domains: [],
+    page: Math.max(Math.trunc(page) || 1, 1),
+    totalPages: 1,
+    nextPage: null,
+    pageSize: effectivePageSize,
   };
 }
 
@@ -109,9 +116,8 @@ function generateRankedDomainSuggestionsForSanitizedQuery(
 /**
  * Sanitizes search text using the existing backend suggestion semantics.
  *
- * This mirrors the backend suggestion sanitizer: strip URL path/query/hash
- * suffixes, trim, lowercase, collapse repeated dots, remove unsupported
- * characters, preserve valid `_` labels, and then validate with Namefi rules.
+ * Strip URL path/query/hash suffixes and ports, then convert each label to the
+ * closest Namefi-valid label so search can keep moving for typo-heavy input.
  */
 export function sanitizeDomainSearchQuery(
   query: string,
@@ -133,14 +139,15 @@ function sanitizeDomainSearchQueryResult(query: string):
       error: Error;
     } {
   const cleaned = query
-    .replace(/^[a-z][a-z0-9+.-]*:\/\//i, '')
-    .replace(/[/?#].*$/s, '')
     .normalize('NFKC')
     .trim()
     .toLowerCase()
+    .replace(/^[a-z][a-z0-9+.-]*:\/\//i, '')
+    .replace(/[/?#].*$/s, '')
+    .replace(/:\d+$/g, '')
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
     .replace(/\.{2,}/g, '.')
-    .replace(/^\.|\.$/g, '')
-    .replace(/[^\p{L}\p{N}_\u2010\-.]/gu, '');
+    .replace(/^\.|\.$/g, '');
 
   if (!cleaned) {
     return { success: false, error: new Error('empty domain') };
@@ -148,24 +155,27 @@ function sanitizeDomainSearchQueryResult(query: string):
 
   const asciiLabels: string[] = [];
   for (const label of cleaned.split('.')) {
-    const ascii = toASCII(label);
-    if (ascii.length < 1 || ascii.length > 63) {
-      return {
-        success: false,
-        error: new Error(`label "${label}" is invalid or >63 chars`),
-      };
+    const ascii = sanitizeDomainSearchLabel(label);
+    if (ascii) {
+      asciiLabels.push(ascii);
     }
-    asciiLabels.push(ascii);
   }
 
-  const asciiJoined = toASCII(asciiLabels.join('.'));
+  if (asciiLabels.length === 0) {
+    return { success: false, error: new Error('empty domain') };
+  }
+
+  const domainLabels = trimDomainLabelsToMaxLength(asciiLabels);
+  if (domainLabels.length === 0) {
+    return { success: false, error: new Error('empty domain') };
+  }
+
+  const asciiJoined = domainLabels.join('.');
 
   if (!verifyNormalized(asciiJoined)) {
     return {
       success: false,
-      error: new Error(
-        'violates Namefi rules (lowercase a-z/0-9/-/_, max 255 chars)',
-      ),
+      error: new Error('unable to sanitize search query'),
     };
   }
 
@@ -188,4 +198,81 @@ function filterNamefiNormalizedDomains(
     }
   }
   return result;
+}
+
+function toASCIIDomainLabel(label: string): string {
+  if (isASCII(label)) {
+    return label;
+  }
+
+  return toASCII(label);
+}
+
+function sanitizeDomainSearchLabel(label: string): string | null {
+  const cleaned = label
+    .trim()
+    .replace(/[^\p{L}\p{N}_-]+/gu, '-')
+    .replace(/[\u2010-\u2015\u2212]/g, '-');
+  if (!cleaned) {
+    return null;
+  }
+
+  const labelWithValidUnderscores = [...cleaned]
+    .map((character, index, characters) =>
+      character === '_' && index > 0 && index < characters.length - 1
+        ? '-'
+        : character,
+    )
+    .join('')
+    .replace(/^-+|-+$/g, '');
+  if (!labelWithValidUnderscores) {
+    return null;
+  }
+
+  const ascii = toASCIIDomainLabel(labelWithValidUnderscores)
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  if (!ascii) {
+    return null;
+  }
+
+  return trimDomainLabel(ascii);
+}
+
+function trimDomainLabel(label: string): string | null {
+  const trimmed = label.slice(0, 63).replace(/-+$/g, '');
+
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function trimDomainLabelsToMaxLength(labels: string[]): string[] {
+  const result: string[] = [];
+  let remainingLength = 255;
+
+  for (const label of labels) {
+    const separatorLength = result.length > 0 ? 1 : 0;
+    const availableLength = remainingLength - separatorLength;
+    if (availableLength <= 0) {
+      break;
+    }
+
+    if (label.length <= availableLength) {
+      result.push(label);
+      remainingLength -= separatorLength + label.length;
+      continue;
+    }
+
+    const trimmedLabel = trimDomainLabel(label.slice(0, availableLength));
+    if (trimmedLabel) {
+      result.push(trimmedLabel);
+    }
+    break;
+  }
+
+  return result;
+}
+
+function isASCII(value: string): boolean {
+  return [...value].every((character) => character.charCodeAt(0) <= 0x7f);
 }

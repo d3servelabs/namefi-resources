@@ -4,6 +4,7 @@ import {
   parseDomainName,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
+import { sanitizeDomainSearchQuery } from '@namefi-astra/common/ranked-domain-suggestions';
 import { DEFAULT_RANKED_TLD_PAGE_SIZE, RANKED_TLDS } from './tld-rank';
 import { getTags } from '@namefi/cat';
 import {
@@ -18,9 +19,7 @@ import {
   toUnicodeDomainName,
   type PunycodeDomainName,
   type UnicodeDomainName,
-  domainLabelSchema,
 } from '@namefi-astra/registrars/lib/data/validations';
-import { verifyNormalized } from '@namefi-astra/zod-dns';
 
 export interface SanitisedDomain {
   ascii: PunycodeDomainName;
@@ -30,49 +29,20 @@ export interface SanitisedDomain {
 export const sanitisedQuerySchema = z
   .string()
   .transform<SanitisedDomain>((raw, ctx) => {
-    const cleaned = raw
-      .replace(/^[a-z][a-z0-9+.-]*:\/\//i, '') // rm scheme
-      .replace(/[/?#].*$/s, '') // rm path/query/hash
-      .normalize('NFKC')
-      .trim()
-      .toLowerCase()
-      .replace(/\.{2,}/g, '.') // collapse ..
-      .replace(/^\.|\.$/g, '') // rm edge dots
-      .replace(/[^\p{L}\p{N}_\u2010\-.]/gu, ''); // keep letters, numbers, _, -, …
+    try {
+      const ascii = toPunycodeDomainName(sanitizeDomainSearchQuery(raw));
 
-    if (!cleaned) {
-      ctx.addIssue({ code: 'custom', message: 'empty domain' });
-      return z.NEVER;
-    }
-
-    const asciiLabels: string[] = [];
-    for (const lbl of cleaned.split('.')) {
-      const ascii = toPunycodeDomainName(lbl); // => xn--…
-      // length ≤ 63 & not empty
-      if (!domainLabelSchema.safeParse(ascii).success) {
-        ctx.addIssue({
-          code: 'custom',
-          message: `label "${lbl}" is invalid or >63 chars`,
-        });
-        return z.NEVER;
-      }
-      asciiLabels.push(ascii);
-    }
-
-    const asciiJoined = toPunycodeDomainName(asciiLabels.join('.'));
-    // total length ≤ 255, only [a-z0-9-_] etc.
-    if (!verifyNormalized(asciiJoined)) {
+      return {
+        ascii,
+        unicode: toUnicodeDomainName(ascii),
+      };
+    } catch (error) {
       ctx.addIssue({
         code: 'custom',
-        message: 'violates Namefi rules (lowercase a-z/0-9/-/_, max 255 chars)',
+        message: error instanceof Error ? error.message : 'invalid domain',
       });
       return z.NEVER;
     }
-
-    return {
-      ascii: asciiJoined,
-      unicode: toUnicodeDomainName(asciiJoined),
-    };
   });
 
 type Tag = ReturnType<typeof getTags>[number];
@@ -99,10 +69,21 @@ export function generateDomainSuggestions(
   page = 1,
   pageSize = DEFAULT_RANKED_TLD_PAGE_SIZE,
 ): DomainSuggestionsResult {
-  const { ascii: sanitizedQuery } = sanitisedQuerySchema.parse(query);
   const normalizedPageSize = Math.trunc(pageSize);
   const effectivePageSize =
     normalizedPageSize > 0 ? normalizedPageSize : DEFAULT_RANKED_TLD_PAGE_SIZE;
+  const parsedSanitizedQuery = sanitisedQuerySchema.safeParse(query);
+  if (!parsedSanitizedQuery.success) {
+    return {
+      domains: [],
+      page: Math.max(Math.trunc(page) || 1, 1),
+      totalPages: 1,
+      nextPage: null,
+      pageSize: effectivePageSize,
+    };
+  }
+
+  const { ascii: sanitizedQuery } = parsedSanitizedQuery.data;
 
   // Third-party domains don't paginate; always return a single page
   if (parentDomain) {
