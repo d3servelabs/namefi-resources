@@ -81,6 +81,10 @@ const STATUS_BADGE_VARIANT: Record<
   INSECURE: 'secondary',
   BOGUS: 'destructive',
   ERROR: 'destructive',
+  // Reclassified buckets — the underlying row landed in BOGUS/ERROR
+  // but the indexed-domain state explains why, so it's not actionable.
+  EXPECTED_ERROR: 'outline',
+  WARN: 'secondary',
 };
 
 function DnsvizAnalysesPanel() {
@@ -212,6 +216,8 @@ function DnsvizAnalysesPanel() {
           { value: 'INSECURE', label: 'INSECURE' },
           { value: 'BOGUS', label: 'BOGUS' },
           { value: 'ERROR', label: 'ERROR' },
+          { value: 'EXPECTED_ERROR', label: 'EXPECTED ERROR' },
+          { value: 'WARN', label: 'WARN' },
         ],
       },
       registrarKey: {
@@ -745,6 +751,12 @@ function CountsCard({
           label="ERROR"
           count={byStatus.ERROR}
           variant="destructive"
+        />
+        <StatusCount label="WARN" count={byStatus.WARN} variant="secondary" />
+        <StatusCount
+          label="EXPECTED ERROR"
+          count={byStatus.EXPECTED_ERROR}
+          variant="outline"
         />
       </div>
       {showBreakdown ? (

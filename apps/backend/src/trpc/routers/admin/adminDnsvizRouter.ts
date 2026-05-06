@@ -7,10 +7,14 @@ import {
   usersTable,
 } from '@namefi-astra/db';
 import type {
-  DnsvizAnalysisStatus,
+  // Raw 4-value enum stored on `dnsviz_analyses.status`; used for
+  // verdict-explanation strings (which are derived from the underlying
+  // grok output, not from the reclassification overlay).
+  DnsvizAnalysisStatus as DnsvizRawAnalysisStatus,
   DnsvizAnalysisSummary,
   IndexedDomainDnssecStatus,
 } from '@namefi-astra/db/schema';
+import type { DnsvizAnalysisStatus } from '@namefi-astra/common/contract/admin/admin-dnsviz-contract';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, type SQL, sql } from 'drizzle-orm';
 import {
@@ -38,6 +42,56 @@ import { dnsvizOnDemandWorkflow } from '#temporal/workflows/dnsviz-on-demand.wor
 import { randomBytes } from 'node:crypto';
 
 const logger = createLogger({ module: 'admin-dnsviz-router' });
+
+/**
+ * SQL `CASE` overlay that reclassifies the raw `dnsviz_analyses.status`
+ * into the wider `dnsvizAnalysisStatusSchema` enum (see contract for
+ * full semantics). Used in `SELECT` (so `status` returned to the UI is
+ * the effective value) AND in `DNSVIZ_FILTER_TABLE_STRUCTURE` (so
+ * filter+sort target the same effective value the user sees).
+ *
+ * Expects the `indexed_domains` LEFT JOIN to already be in the FROM
+ * clause; references `dnssec_status` jsonb keys directly. Returns text
+ * (the enum values), not the pg enum type, since the `CASE` mixes
+ * static literals with the enum-typed column.
+ *
+ * Rules (in priority order):
+ *  1. `summary->>'delegationStatus' IS NULL` AND any of:
+ *       a) `supportsDnssec` is missing/false (TLD doesn't sign), OR
+ *       b) Namefi NS AND `hasDelegationSigner = zoneHasActiveDnssec`
+ *          (XNOR — config is consistent, so the missing delegation
+ *          isn't a Namefi-side bug), OR
+ *       c) custom NS AND `hasDelegationSigner` is missing/false (DS
+ *          isn't published, so a missing delegation is expected)
+ *      → `EXPECTED_ERROR`.
+ *  2. raw status IN (BOGUS, ERROR) AND `supportsDnssec` AND custom NS
+ *      → `WARN` (we don't control the NS, so it's a heads-up not an
+ *      actionable failure).
+ *  3. otherwise pass the raw status through.
+ */
+const effectiveStatusSql = sql<string>`
+  CASE
+    WHEN ${dnsvizAnalysesTable.summary} ->> 'delegationStatus' IS NULL
+     AND (
+       COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec')::boolean, false) = false
+       OR (
+         COALESCE(${indexedDomainsTable.isUsingNamefiNameservers}, false) = true
+         AND COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'hasDelegationSigner')::boolean, false)
+           = COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'zoneHasActiveDnssec')::boolean, false)
+       )
+       OR (
+         COALESCE(${indexedDomainsTable.isUsingNamefiNameservers}, true) = false
+         AND COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'hasDelegationSigner')::boolean, false) = false
+       )
+     )
+    THEN 'EXPECTED_ERROR'
+    WHEN ${dnsvizAnalysesTable.status} IN ('BOGUS', 'ERROR')
+     AND COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec')::boolean, false) = true
+     AND COALESCE(${indexedDomainsTable.isUsingNamefiNameservers}, true) = false
+    THEN 'WARN'
+    ELSE ${dnsvizAnalysesTable.status}::text
+  END
+`;
 
 /**
  * Read-only admin surface onto `dnsviz_analyses`. Powers
@@ -103,7 +157,11 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           analysisDate: dnsvizAnalysesTable.analysisDate,
           analysisStartedAt: dnsvizAnalysesTable.analysisStartedAt,
           durationMs: dnsvizAnalysesTable.durationMs,
-          status: dnsvizAnalysesTable.status,
+          // Effective status (see `effectiveStatusSql` for the rules).
+          // The raw enum is kept around for `deriveReasoningString` so the
+          // verdict-explanation text reflects the underlying analysis.
+          status: effectiveStatusSql.as('effective_status'),
+          rawStatus: dnsvizAnalysesTable.status,
           errorsCount: dnsvizAnalysesTable.errorsCount,
           warningsCount: dnsvizAnalysesTable.warningsCount,
           summary: dnsvizAnalysesTable.summary,
@@ -206,10 +264,16 @@ export const adminDnsvizRouter = createContractTRPCRouter<
             joinedOwnerAddress,
             joinedChainId,
             joinedUserId,
+            rawStatus,
+            status,
             ...r
           }) => ({
             ...r,
-            reasoning: deriveReasoningString(r),
+            // SQL `CASE` returns text; cast to the wider enum here.
+            status: status as DnsvizAnalysisStatus,
+            // Reasoning is derived from the raw verdict so it reflects
+            // the underlying grok output, not the reclassification.
+            reasoning: deriveReasoningString({ ...r, status: rawStatus }),
             ...indexedSnapshotForRow({
               nameservers: joinedNameservers,
               isUsingNamefiNameservers: joinedIsUsingNamefiNameservers,
@@ -242,7 +306,8 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           analysisDate: dnsvizAnalysesTable.analysisDate,
           analysisStartedAt: dnsvizAnalysesTable.analysisStartedAt,
           durationMs: dnsvizAnalysesTable.durationMs,
-          status: dnsvizAnalysesTable.status,
+          status: effectiveStatusSql.as('effective_status'),
+          rawStatus: dnsvizAnalysesTable.status,
           errorsCount: dnsvizAnalysesTable.errorsCount,
           warningsCount: dnsvizAnalysesTable.warningsCount,
           summary: dnsvizAnalysesTable.summary,
@@ -322,12 +387,18 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         joinedOwnerAddress,
         joinedChainId,
         joinedUserId,
+        rawStatus,
+        status,
         ...rowWithoutGrok
       } = row;
       return {
         row: {
           ...rowWithoutGrok,
-          reasoning: deriveReasoningString(rowWithoutGrok),
+          status: status as DnsvizAnalysisStatus,
+          reasoning: deriveReasoningString({
+            ...rowWithoutGrok,
+            status: rawStatus,
+          }),
           ...indexedSnapshotForRow({
             nameservers: joinedNameservers,
             isUsingNamefiNameservers: joinedIsUsingNamefiNameservers,
@@ -386,7 +457,10 @@ export const adminDnsvizRouter = createContractTRPCRouter<
       const rowsQuery = db
         .with(namefiNftCte)
         .select({
-          status: dnsvizAnalysesTable.status,
+          // Group by effective status so the donut + breakdown match
+          // what the table shows. Drop down to the raw enum if you ever
+          // need a "before reclassification" view.
+          status: effectiveStatusSql.as('effective_status'),
           total: sql<number>`COUNT(DISTINCT ${id})::int`,
           usingNamefiNs: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${usingNamefi})::int`,
           customNs: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${customNs})::int`,
@@ -424,23 +498,35 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           usersTable,
           eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
         )
-        .groupBy(dnsvizAnalysesTable.status);
+        .groupBy(effectiveStatusSql);
 
       const aggregateRows = await (whereClause
         ? rowsQuery.where(whereClause)
         : rowsQuery);
 
-      const byStatus = { SECURE: 0, INSECURE: 0, BOGUS: 0, ERROR: 0 };
+      const byStatus: Record<DnsvizAnalysisStatus, number> = {
+        SECURE: 0,
+        INSECURE: 0,
+        BOGUS: 0,
+        ERROR: 0,
+        EXPECTED_ERROR: 0,
+        WARN: 0,
+      };
       const failureBreakdown = {
         BOGUS: emptyFailureBreakdown(),
         ERROR: emptyFailureBreakdown(),
       };
       let total = 0;
       for (const r of aggregateRows) {
-        byStatus[r.status] = r.total;
+        const effective = r.status as DnsvizAnalysisStatus;
+        byStatus[effective] = r.total;
         total += r.total;
-        if (r.status === 'BOGUS' || r.status === 'ERROR') {
-          failureBreakdown[r.status] = {
+        // Failure breakdown stays scoped to the post-reclassification
+        // BOGUS/ERROR buckets — those are the rows that actually need
+        // operator attention (`EXPECTED_ERROR`/`WARN` were filtered
+        // out by the CASE overlay).
+        if (effective === 'BOGUS' || effective === 'ERROR') {
+          failureBreakdown[effective] = {
             usingNamefiNs: r.usingNamefiNs,
             customNs: r.customNs,
             unknownNs: r.unknownNs,
@@ -580,7 +666,7 @@ export const adminDnsvizRouter = createContractTRPCRouter<
 
 interface RowForReasoning {
   normalizedDomainName: string;
-  status: DnsvizAnalysisStatus;
+  status: DnsvizRawAnalysisStatus;
   summary: DnsvizAnalysisSummary | null;
   errorMessage: string | null;
 }
@@ -604,7 +690,10 @@ const DNSVIZ_FILTER_TABLE_STRUCTURE = {
   registrarKey: dnsvizAnalysesTable.registrarKey,
   analysisDate: dnsvizAnalysesTable.analysisDate,
   analysisStartedAt: dnsvizAnalysesTable.analysisStartedAt,
-  status: dnsvizAnalysesTable.status,
+  // Filter+sort target the *effective* status (matches what the user
+  // sees in the table). Use `rawStatus` for the underlying enum.
+  status: effectiveStatusSql,
+  rawStatus: dnsvizAnalysesTable.status,
   errorsCount: dnsvizAnalysesTable.errorsCount,
   warningsCount: dnsvizAnalysesTable.warningsCount,
   // indexed_domains

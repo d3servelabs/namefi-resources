@@ -12,11 +12,33 @@ import { createContract } from '../create-contract';
  * modal preview + download dropdown.
  */
 
+/**
+ * Effective status surfaced on the admin UI. The DB column
+ * (`dnsviz_analyses.status`) only stores the four "raw" verdicts —
+ * `SECURE | INSECURE | BOGUS | ERROR` — derived from grok's
+ * `delegation.status`. The router applies a SQL `CASE` overlay before
+ * returning rows to reclassify two operational patterns:
+ *
+ *   - `EXPECTED_ERROR`: `delegation.status` was missing AND the
+ *     domain's indexed DNSSEC state explains why
+ *     (`!supportsDnssec`, or Namefi NS with consistent
+ *     hasDS/hasZoneSigning, or custom NS with no DS).
+ *
+ *   - `WARN`: a `BOGUS`/`ERROR` row where the TLD supports DNSSEC but
+ *     the domain is on custom (non-Namefi) nameservers. We can't fix
+ *     it ourselves, so it shouldn't sit in the same alert bucket as
+ *     real Namefi-NS misconfigurations.
+ *
+ * The raw enum value is preserved on the row (not exposed yet); only
+ * the effective status flows through `status`.
+ */
 const dnsvizAnalysisStatusSchema = z.enum([
   'SECURE',
   'INSECURE',
   'BOGUS',
   'ERROR',
+  'EXPECTED_ERROR',
+  'WARN',
 ]);
 
 const dnsvizGraphTypeSchema = z.enum(['png', 'svg', 'html']);
@@ -194,12 +216,19 @@ const failureBreakdownSchema = z.object({
 const analysesCountsOutputSchema = z.object({
   /** Total rows matching the filter, before any breakdown. */
   total: z.number(),
-  /** Counts per status enum value. Always all four keys present. */
+  /**
+   * Counts per effective-status enum value. All six keys are always
+   * present — see `dnsvizAnalysisStatusSchema` for the reclassification
+   * rules. The two reclassified buckets (`EXPECTED_ERROR`, `WARN`)
+   * subtract from the raw `BOGUS`/`ERROR` totals.
+   */
   byStatus: z.object({
     SECURE: z.number(),
     INSECURE: z.number(),
     BOGUS: z.number(),
     ERROR: z.number(),
+    EXPECTED_ERROR: z.number(),
+    WARN: z.number(),
   }),
   /**
    * For each "actionable failure" status (BOGUS + ERROR), how the
