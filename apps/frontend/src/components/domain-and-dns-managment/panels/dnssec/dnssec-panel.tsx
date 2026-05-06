@@ -67,6 +67,12 @@ import { toast } from 'sonner';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
 import { CustomDelegationSignerPanel } from './custom-delegation-signer-panel';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@namefi-astra/ui/components/shadcn/accordion';
 
 const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
   key: 'cancel_dns_workflow',
@@ -339,15 +345,24 @@ export const DnssecPanelInner = ({
             )}
           </div>
 
-          {zoneSigningStatus}
+          {data.isUsingNamefiNameservers ? zoneSigningStatus : undefined}
         </div>
 
         {customDelegationSignerEnabled && !data.isUsingNamefiNameservers ? (
-          <CustomDelegationSignerPanel
-            domainName={domainName}
-            dnssecDetails={data}
-            disableAllButtons={disableAllButtons}
-          />
+          <Accordion className="w-full">
+            <AccordionItem value="advanced-dnssec">
+              <AccordionTrigger>Advanced</AccordionTrigger>
+              <AccordionContent>
+                <div className="animate-in fade-in-50 slide-in-from-top-2">
+                  <CustomDelegationSignerPanel
+                    domainName={domainName}
+                    dnssecDetails={data}
+                    disableAllButtons={disableAllButtons}
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         ) : (
           <DnssecPanelAction
             domainName={domainName}
