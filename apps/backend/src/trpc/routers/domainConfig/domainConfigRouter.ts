@@ -1064,6 +1064,12 @@ async function getSupportedFeaturesForSubdomain(
           message: `DNSSEC is automatically managed by Namefi for subdomains of ${parsedDomainName.immediateParentDomain}.`,
         },
       },
+      customDnssecManagement: {
+        enabled: false,
+        config: {
+          showPanel: false,
+        },
+      },
       domainPreferencesManagement: {
         enabled: isUsingNamefiNameservers && !disableAllFeatures,
         config: {
@@ -1160,6 +1166,12 @@ async function getSupportedFeaturesForEppDomain(
                 'DNSSEC management is not available in the late renewal period or grace restoration period.',
             },
           },
+          customDnssecManagement: {
+            enabled: false,
+            config: {
+              showPanel: false,
+            },
+          },
           domainPreferencesManagement: {
             enabled: false,
             config: {
@@ -1220,6 +1232,12 @@ async function getSupportedFeaturesForEppDomain(
               'You are using the legacy Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
             redirectTo: `https://app.namefi.io/dashboard/domains/${normalizedDomainName}`,
             redirectToLabel: 'Redirect to NamefiApp',
+          },
+        },
+        customDnssecManagement: {
+          enabled: false,
+          config: {
+            showPanel: false,
           },
         },
         nameserversManagement: {
@@ -1285,6 +1303,12 @@ async function getSupportedFeaturesForEppDomain(
             : 'You are using other nameservers. You need to head to your nameserver provider to manage your dnssec.',
         },
       },
+      customDnssecManagement: {
+        enabled: !isUsingNamefiNameservers && !disableAllFeatures,
+        config: {
+          showPanel: !isUsingNamefiNameservers && !disableAllFeatures,
+        },
+      },
       domainPreferencesManagement: {
         enabled: isUsingNamefiNameservers && !disableAllFeatures,
         config: {
@@ -1324,6 +1348,7 @@ type DomainFeatureFlags = {
   dnsManagement: BaseFeatureConfig;
   nameserversManagement: BaseFeatureConfig;
   dnssecManagement: BaseFeatureConfig<{ autoManaged?: boolean }>;
+  customDnssecManagement: BaseFeatureConfig;
   domainPreferencesManagement: BaseFeatureConfig;
   domainExport: BaseFeatureConfig;
 };

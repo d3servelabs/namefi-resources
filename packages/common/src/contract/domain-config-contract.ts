@@ -152,6 +152,7 @@ const domainSupportedFeaturesSchema = z.object({
     dnsManagement: baseFeatureConfigSchema,
     nameserversManagement: baseFeatureConfigSchema,
     dnssecManagement: dnssecFeatureConfigSchema,
+    customDnssecManagement: baseFeatureConfigSchema,
     domainPreferencesManagement: baseFeatureConfigSchema,
     domainExport: baseFeatureConfigSchema,
   }),

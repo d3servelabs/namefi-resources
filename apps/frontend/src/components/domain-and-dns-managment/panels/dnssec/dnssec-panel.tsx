@@ -137,6 +137,10 @@ export const DnssecPanel = ({
   domainName: PunycodeDomainName;
 }) => {
   const trpc = useTRPC();
+  useRegisterAdminFlags(DNSSEC_PANEL_FLAGS);
+  const [customDelegationSignerEnabled] = useAdminFeatureFlag(
+    CUSTOM_DELEGATION_SIGNER_FLAG,
+  );
   const {
     data: { features: domainSupportedFeatures },
   } = useSuspenseQuery(
@@ -160,13 +164,29 @@ export const DnssecPanel = ({
       }
     );
   }, [domainSupportedFeatures]);
-  if (!dnssecManagement.config.showPanel) {
+  const customDnssecManagement = useMemo(() => {
+    return (
+      domainSupportedFeatures.customDnssecManagement ?? {
+        enabled: false,
+        config: { showPanel: false },
+      }
+    );
+  }, [domainSupportedFeatures]);
+  // Custom DS only takes over when the admin flag is on AND the backend
+  // says custom DS is the right path for this domain (i.e. domain is on
+  // third-party authoritative NS, not in late renewal, not a subdomain).
+  const customDnssecActive =
+    customDelegationSignerEnabled && customDnssecManagement.enabled;
+  if (!dnssecManagement.config.showPanel && !customDnssecActive) {
     return false;
   }
   if (dnssecManagement.enabled) {
     if (dnssecManagement.config.autoManaged) {
       return <AutoManagedDnssecPanel />;
     }
+    return <DnssecPanelInner domainName={domainName} />;
+  }
+  if (customDnssecActive) {
     return <DnssecPanelInner domainName={domainName} />;
   }
   if (dnssecManagement.config.message) {
