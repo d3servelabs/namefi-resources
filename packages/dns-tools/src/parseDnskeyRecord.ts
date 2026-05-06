@@ -43,11 +43,11 @@ export function parseDnskeyRecord(record: string): DnskeyRecord {
     throw new Error('Invalid TTL value in DNSKEY record');
   }
 
-  const rdataParts = rdata.split(' ');
+  const rdataParts = rdata.split(/[\s\t]+/);
   const flags = Number.parseInt(rdataParts[0]);
   const protocol = Number.parseInt(rdataParts[1]);
   const algorithm = Number.parseInt(rdataParts[2]);
-  const publicKey = rdataParts[3];
+  const publicKey = rdataParts.slice(3).join('');
 
   if (Number.isNaN(flags)) {
     throw new Error('Invalid flags value in DNSKEY record');
