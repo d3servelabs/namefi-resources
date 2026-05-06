@@ -3,7 +3,7 @@ import {
   dnsvizAnalysesTable,
   indexedDomainsTable,
   namefiNftCte,
-  namefiNftOwnersView,
+  namefiNftView,
   usersTable,
 } from '@namefi-astra/db';
 import type {
@@ -114,8 +114,8 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           joinedIsUsingNamefiNameservers:
             indexedDomainsTable.isUsingNamefiNameservers,
           joinedDnssecStatus: indexedDomainsTable.dnssecStatus,
-          joinedOwnerAddress: namefiNftOwnersView.ownerAddress,
-          joinedChainId: namefiNftOwnersView.chainId,
+          joinedOwnerAddress: namefiNftView.ownerAddress,
+          joinedChainId: namefiNftView.chainId,
           joinedUserId: usersTable.id,
         })
         .from(dnsvizAnalysesTable)
@@ -133,15 +133,15 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           ),
         )
         .leftJoin(
-          namefiNftOwnersView,
+          namefiNftView,
           eq(
-            namefiNftOwnersView.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
             dnsvizAnalysesTable.normalizedDomainName,
           ),
         )
         .leftJoin(
           privyUsersTableSchema,
-          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
         )
         .leftJoin(
           usersTable,
@@ -179,15 +179,15 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           ),
         )
         .leftJoin(
-          namefiNftOwnersView,
+          namefiNftView,
           eq(
-            namefiNftOwnersView.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
             dnsvizAnalysesTable.normalizedDomainName,
           ),
         )
         .leftJoin(
           privyUsersTableSchema,
-          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
         )
         .leftJoin(
           usersTable,
@@ -254,8 +254,8 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           joinedIsUsingNamefiNameservers:
             indexedDomainsTable.isUsingNamefiNameservers,
           joinedDnssecStatus: indexedDomainsTable.dnssecStatus,
-          joinedOwnerAddress: namefiNftOwnersView.ownerAddress,
-          joinedChainId: namefiNftOwnersView.chainId,
+          joinedOwnerAddress: namefiNftView.ownerAddress,
+          joinedChainId: namefiNftView.chainId,
           joinedUserId: usersTable.id,
         })
         .from(dnsvizAnalysesTable)
@@ -273,15 +273,15 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           ),
         )
         .leftJoin(
-          namefiNftOwnersView,
+          namefiNftView,
           eq(
-            namefiNftOwnersView.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
             dnsvizAnalysesTable.normalizedDomainName,
           ),
         )
         .leftJoin(
           privyUsersTableSchema,
-          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
         )
         .leftJoin(
           usersTable,
@@ -410,15 +410,15 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           ),
         )
         .leftJoin(
-          namefiNftOwnersView,
+          namefiNftView,
           eq(
-            namefiNftOwnersView.normalizedDomainName,
+            namefiNftView.normalizedDomainName,
             dnsvizAnalysesTable.normalizedDomainName,
           ),
         )
         .leftJoin(
           privyUsersTableSchema,
-          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
         )
         .leftJoin(
           usersTable,
@@ -624,8 +624,8 @@ const DNSVIZ_FILTER_TABLE_STRUCTURE = {
     string | null
   >`(${indexedDomainsTable.dnssecStatus} ->> 'isUsingNamefiDelegationSigner')`,
   // namefi_nft_owners
-  ownerAddress: namefiNftOwnersView.ownerAddress,
-  chainId: namefiNftOwnersView.chainId,
+  ownerAddress: namefiNftView.ownerAddress,
+  chainId: namefiNftView.chainId,
   // users
   userId: usersTable.id,
 } as const;
