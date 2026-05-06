@@ -28,8 +28,15 @@ import {
   DnssecFlags,
 } from '@namefi-astra/zod-dns';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@namefi-astra/ui/components/shadcn/accordion';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import {
   Form,
   FormControl,
@@ -176,44 +183,6 @@ export function CustomDelegationSignerForm({
     setPublicKeyMissingNotice(candidate.publicKey === '');
   };
 
-  const deriveMutation = useMutation(
-    trpc.domainConfig.dnssec.deriveDelegationSigner.mutationOptions({
-      onSuccess(result, variables) {
-        if (result.candidates.length === 0) {
-          toast.error('No DS or DNSKEY could be derived from input');
-          return;
-        }
-        // Auto-detect mode tracks all candidates so user can switch.
-        if (!variables.text) {
-          setAutoDetectCandidates(result.candidates);
-          setSelectedCandidateIdx(0);
-          populateFromCandidate(result.candidates[0]);
-          if (result.candidates.length > 1) {
-            toast.info(
-              `${result.candidates.length} KSKs published — pick one below.`,
-            );
-          } else {
-            toast.success(
-              `DNSKEY found (key tag ${result.candidates[0].keyTag})`,
-            );
-          }
-          return;
-        }
-        // Manual paste — always one candidate.
-        setAutoDetectCandidates([]);
-        populateFromCandidate(result.candidates[0]);
-        if (result.candidates[0].publicKey === '') {
-          toast.success('DS fields populated. Public key still required.');
-        } else {
-          toast.success('Form populated from pasted record');
-        }
-      },
-      onError(error) {
-        toast.error(error.message);
-      },
-    }),
-  );
-
   const validateMutation = useMutation(
     trpc.domainConfig.dnssec.validateDelegationSigner.mutationOptions({
       onSuccess(result) {
@@ -232,6 +201,61 @@ export function CustomDelegationSignerForm({
           status: 'done',
           result: { authoritative: empty, publicDns: empty },
         });
+      },
+    }),
+  );
+
+  const triggerValidate = (candidate: DerivedCandidate) => {
+    if (!candidate.publicKey) return; // DS-only paste — can't validate yet
+    setValidation({ status: 'pending' });
+    validateMutation.mutate({
+      domainName,
+      signingConfig: {
+        algorithm: candidate.algorithm,
+        publicKey: candidate.publicKey,
+        flags: candidate.flags,
+        keyTag: candidate.keyTag,
+        digestType: candidate.digestType,
+        digest: candidate.digest,
+      },
+    });
+  };
+
+  const deriveMutation = useMutation(
+    trpc.domainConfig.dnssec.deriveDelegationSigner.mutationOptions({
+      onSuccess(result, variables) {
+        if (result.candidates.length === 0) {
+          toast.error('No DS or DNSKEY could be derived from input');
+          return;
+        }
+        const first = result.candidates[0];
+        // Auto-detect mode tracks all candidates so user can switch.
+        if (!variables.text) {
+          setAutoDetectCandidates(result.candidates);
+          setSelectedCandidateIdx(0);
+          populateFromCandidate(first);
+          if (result.candidates.length > 1) {
+            toast.info(
+              `${result.candidates.length} KSKs published — pick one below.`,
+            );
+          } else {
+            toast.success(`DNSKEY found (key tag ${first.keyTag})`);
+          }
+          triggerValidate(first);
+          return;
+        }
+        // Manual paste — always one candidate.
+        setAutoDetectCandidates([]);
+        populateFromCandidate(first);
+        if (first.publicKey === '') {
+          toast.success('DS fields populated. Public key still required.');
+        } else {
+          toast.success('Form populated from pasted record');
+          triggerValidate(first);
+        }
+      },
+      onError(error) {
+        toast.error(error.message);
       },
     }),
   );
@@ -284,7 +308,10 @@ export function CustomDelegationSignerForm({
   const handleSelectCandidate = (idx: number) => {
     setSelectedCandidateIdx(idx);
     const candidate = autoDetectCandidates[idx];
-    if (candidate) populateFromCandidate(candidate);
+    if (candidate) {
+      populateFromCandidate(candidate);
+      triggerValidate(candidate);
+    }
   };
 
   const handleValidate = async () => {
@@ -342,7 +369,14 @@ export function CustomDelegationSignerForm({
           <TabsContent value="manual" className="flex flex-col gap-3 min-w-0">
             <p className="text-sm text-zinc-400">
               Paste a DNSKEY or DS record (full zone-file line or just rdata).
-              We'll auto-detect the format.
+              We'll auto-detect the format.{' '}
+              <button
+                type="button"
+                onClick={() => setViewMode('edit')}
+                className="inline rounded bg-blue-500/15 px-1.5 py-0.5 text-blue-300 hover:bg-blue-500/25 cursor-pointer transition-colors"
+              >
+                or enter fields manually
+              </button>
             </p>
             <Textarea
               value={pastedText}
@@ -724,6 +758,8 @@ function SelectField({
 
 // --- Validation result rendering ----------------------------------------
 
+const VALIDATION_LANE_VALUES = ['authoritative', 'public-dns'] as const;
+
 function ValidationResultPanel({ state }: { state: ValidationState }) {
   if (state.status === 'idle') return null;
   if (state.status === 'pending') {
@@ -735,104 +771,149 @@ function ValidationResultPanel({ state }: { state: ValidationState }) {
     );
   }
   return (
-    <div className="flex flex-col gap-2 min-w-0">
+    <Accordion
+      multiple
+      defaultValue={VALIDATION_LANE_VALUES as unknown as string[]}
+      className="flex flex-col gap-2 min-w-0"
+    >
       <ValidationLane
+        value="authoritative"
         title="Authoritative nameservers"
         lane={state.result.authoritative}
       />
       <ValidationLane
+        value="public-dns"
         title="Public DNS (Google)"
         lane={state.result.publicDns}
       />
-    </div>
+    </Accordion>
   );
 }
 
+type LanePalette = {
+  bg: string;
+  border: string;
+  triggerText: string;
+  subtitleText: string;
+  icon: React.ReactNode;
+  statusLabel: string;
+};
+
+function pickPalette(lane: ValidateResult['authoritative']): LanePalette {
+  if (lane.errorMessage) {
+    return {
+      bg: 'bg-red-950/40',
+      border: 'border-red-900/50',
+      triggerText: 'text-red-400',
+      subtitleText: 'text-red-300/80',
+      icon: <ShieldAlertIcon className="w-4 h-4 shrink-0" />,
+      statusLabel: 'could not validate',
+    };
+  }
+  if (lane.isValid) {
+    return {
+      bg: 'bg-green-950/30',
+      border: 'border-green-900/50',
+      triggerText: 'text-green-400',
+      subtitleText: 'text-green-300/80',
+      icon: <CheckCircle2Icon className="w-4 h-4 shrink-0" />,
+      statusLabel: 'match',
+    };
+  }
+  return {
+    bg: 'bg-amber-950/30',
+    border: 'border-amber-900/50',
+    triggerText: 'text-amber-400',
+    subtitleText: 'text-amber-300/80',
+    icon: <ShieldAlertIcon className="w-4 h-4 shrink-0" />,
+    statusLabel: 'no matching DNSKEY',
+  };
+}
+
 function ValidationLane({
+  value,
   title,
   lane,
 }: {
+  value: string;
   title: string;
   lane: ValidateResult['authoritative'];
 }) {
   const sourceLabel = lane.queriedSource.length
     ? lane.queriedSource.join(', ')
     : '—';
+  const palette = pickPalette(lane);
 
-  if (lane.errorMessage) {
-    return (
-      <div className="flex flex-col gap-1 text-sm text-red-400 bg-red-950/40 border border-red-900/50 rounded-md p-3 min-w-0">
-        <div className="flex items-start gap-2">
-          <ShieldAlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
-          <div className="min-w-0">
-            <p className="font-medium">{title} — could not validate</p>
-            <p className="text-xs text-red-300/80 mt-1 break-words">
+  return (
+    <AccordionItem
+      value={value}
+      className={cn(
+        'rounded-md border min-w-0 not-last:border-b',
+        palette.bg,
+        palette.border,
+      )}
+    >
+      <AccordionTrigger
+        className={cn('px-3 py-2 hover:no-underline', palette.triggerText)}
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          {palette.icon}
+          <span className="font-medium truncate">{title}</span>
+          <span className="text-xs opacity-80">— {palette.statusLabel}</span>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent className="px-3 text-sm">
+        {lane.errorMessage ? (
+          <div className="flex flex-col gap-1 min-w-0">
+            <p className={cn('text-xs break-words', palette.subtitleText)}>
               {lane.errorMessage}
             </p>
-            <p className="text-xs text-zinc-500 mt-1">Queried: {sourceLabel}</p>
+            <p className="text-xs text-zinc-500">Queried: {sourceLabel}</p>
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (lane.isValid) {
-    return (
-      <div className="flex items-start gap-2 text-sm text-green-400 bg-green-950/30 border border-green-900/50 rounded-md p-3 min-w-0">
-        <CheckCircle2Icon className="w-4 h-4 mt-0.5 shrink-0" />
-        <div className="min-w-0">
-          <p className="font-medium">{title} — match</p>
-          <p className="text-xs text-green-300/80 mt-1 break-words">
+        ) : lane.isValid ? (
+          <p className={cn('text-xs break-words', palette.subtitleText)}>
             Computed key tag {lane.matchedDnskey?.keyTag}. Source: {sourceLabel}
             .
           </p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-2 text-sm text-amber-400 bg-amber-950/30 border border-amber-900/50 rounded-md p-3 min-w-0">
-      <div className="flex items-start gap-2">
-        <ShieldAlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
-        <div className="min-w-0">
-          <p className="font-medium">{title} — no matching DNSKEY</p>
-          <p className="text-xs text-amber-300/80 mt-1 break-words">
-            None of the published DNSKEYs at {sourceLabel} produces the digest
-            you entered.
-          </p>
-        </div>
-      </div>
-      {lane.publishedDnskeys.length > 0 ? (
-        <div className="text-xs text-zinc-300 mt-1 overflow-x-auto">
-          <table className="w-full font-mono">
-            <thead className="text-zinc-500">
-              <tr>
-                <th className="text-left pr-3">Flags</th>
-                <th className="text-left pr-3">Alg</th>
-                <th className="text-left pr-3">Computed key tag</th>
-                <th className="text-left">Computed digest</th>
-              </tr>
-            </thead>
-            <tbody>
-              {lane.publishedDnskeys.map((d) => (
-                <tr key={d.publicKey}>
-                  <td className="pr-3">{d.flags}</td>
-                  <td className="pr-3">{d.algorithm}</td>
-                  <td className="pr-3">{d.computedKeyTag}</td>
-                  <td
-                    className="truncate max-w-[20ch]"
-                    title={d.computedDigest}
-                  >
-                    {d.computedDigest}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : null}
-    </div>
+        ) : (
+          <div className="flex flex-col gap-2 min-w-0">
+            <p className={cn('text-xs break-words', palette.subtitleText)}>
+              None of the published DNSKEYs at {sourceLabel} produces the digest
+              you entered.
+            </p>
+            {lane.publishedDnskeys.length > 0 ? (
+              <div className="text-xs text-zinc-300 overflow-x-auto">
+                <table className="w-full font-mono">
+                  <thead className="text-zinc-500">
+                    <tr>
+                      <th className="text-left pr-3">Flags</th>
+                      <th className="text-left pr-3">Alg</th>
+                      <th className="text-left pr-3">Computed key tag</th>
+                      <th className="text-left">Computed digest</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lane.publishedDnskeys.map((d) => (
+                      <tr key={d.publicKey}>
+                        <td className="pr-3">{d.flags}</td>
+                        <td className="pr-3">{d.algorithm}</td>
+                        <td className="pr-3">{d.computedKeyTag}</td>
+                        <td
+                          className="truncate max-w-[20ch]"
+                          title={d.computedDigest}
+                        >
+                          {d.computedDigest}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+          </div>
+        )}
+      </AccordionContent>
+    </AccordionItem>
   );
 }
 
