@@ -1,11 +1,28 @@
-import { db, dnsvizAnalysesTable, indexedDomainsTable } from '@namefi-astra/db';
+import {
+  db,
+  dnsvizAnalysesTable,
+  indexedDomainsTable,
+  namefiNftCte,
+  namefiNftOwnersView,
+  usersTable,
+} from '@namefi-astra/db';
 import type {
   DnsvizAnalysisStatus,
   DnsvizAnalysisSummary,
   IndexedDomainDnssecStatus,
 } from '@namefi-astra/db/schema';
 import { TRPCError } from '@trpc/server';
-import { and, asc, desc, eq, ilike, type SQL, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, type SQL, sql } from 'drizzle-orm';
+import {
+  buildSortClause,
+  buildWhereClause,
+  type FilterOptions,
+  type SortOptions,
+} from '@samyx/drizzler-filters-sorters';
+import {
+  ensurePrivyTableFresh,
+  privyUsersTableSchema,
+} from '../../../services/admin/privy-user-cache';
 import { adminProcedure } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { adminDnsvizContract } from '@namefi-astra/common/contract/admin/admin-dnsviz-contract';
@@ -35,58 +52,27 @@ export const adminDnsvizRouter = createContractTRPCRouter<
     .input(adminDnsvizContract.listAnalyses.input)
     .output(adminDnsvizContract.listAnalyses.output)
     .query(async ({ input }) => {
-      const { page, pageSize, domainSearch, status, analysisDate, sorting } =
-        input;
+      const { page, pageSize, filters, sorting } = input;
       const offset = (page - 1) * pageSize;
 
-      const whereClauses: SQL[] = [];
+      // The privy users cache is the source of the wallet → privy_user_id
+      // mapping that powers the user JOIN. Refresh it so newly-linked
+      // wallets show up here without waiting for the cache TTL.
+      await ensurePrivyTableFresh();
 
-      if (status) {
-        whereClauses.push(eq(dnsvizAnalysesTable.status, status));
-      }
-      if (analysisDate) {
-        whereClauses.push(eq(dnsvizAnalysesTable.analysisDate, analysisDate));
-      }
-      const trimmedSearch = domainSearch?.trim().toLowerCase();
-      if (trimmedSearch) {
-        whereClauses.push(
-          ilike(dnsvizAnalysesTable.normalizedDomainName, `%${trimmedSearch}%`),
-        );
-      }
+      const whereClause = filters
+        ? buildWhereClause(
+            DNSVIZ_FILTER_TABLE_STRUCTURE,
+            filters as FilterOptions<typeof DNSVIZ_FILTER_TABLE_STRUCTURE>,
+          )
+        : undefined;
 
-      const whereClause =
-        whereClauses.length > 0 ? and(...whereClauses) : undefined;
-
-      const orderByClauses: SQL[] = [];
-      if (sorting && sorting.length > 0) {
-        for (const sort of sorting) {
-          let columnSql: SQL | undefined;
-          switch (sort.id) {
-            case 'analysisDate':
-              columnSql = sql`${dnsvizAnalysesTable.analysisDate}`;
-              break;
-            case 'analysisStartedAt':
-              columnSql = sql`${dnsvizAnalysesTable.analysisStartedAt}`;
-              break;
-            case 'normalizedDomainName':
-              columnSql = sql`${dnsvizAnalysesTable.normalizedDomainName}`;
-              break;
-            case 'status':
-              columnSql = sql`${dnsvizAnalysesTable.status}`;
-              break;
-            case 'errorsCount':
-              columnSql = sql`${dnsvizAnalysesTable.errorsCount}`;
-              break;
-          }
-          if (columnSql) {
-            orderByClauses.push(
-              sort.desc
-                ? sql`${columnSql} DESC NULLS LAST`
-                : sql`${columnSql} ASC NULLS LAST`,
-            );
-          }
-        }
-      }
+      const orderByClauses: SQL[] = sorting
+        ? buildSortClause(
+            DNSVIZ_FILTER_TABLE_STRUCTURE,
+            sorting as SortOptions<typeof DNSVIZ_FILTER_TABLE_STRUCTURE>,
+          )
+        : [];
       if (orderByClauses.length === 0) {
         orderByClauses.push(desc(dnsvizAnalysesTable.analysisDate));
         orderByClauses.push(asc(dnsvizAnalysesTable.normalizedDomainName));
@@ -94,17 +80,22 @@ export const adminDnsvizRouter = createContractTRPCRouter<
       // Stable tie-breaker for deterministic pagination.
       orderByClauses.push(asc(dnsvizAnalysesTable.id));
 
-      // LEFT JOIN `indexed_domains` so nameservers + cached DNSSEC
-      // status come back in one query and become first-class columns
-      // for future drizzler-filter wiring (filter / sort by
-      // `is_using_namefi_nameservers`, `dnssec_status->>...`, etc.).
-      // The `(registrar_key, normalized_domain_name)` unique constraint
-      // means at most one match per dnsviz row, so no row-multiplication
-      // worry. AD_HOC dnsviz rows (third-party domains run via on-demand)
-      // are never in `indexed_domains`, so LEFT JOIN gives nulls there
-      // and `indexedSnapshotForRow` projects them as nulls in the
-      // contract output.
+      // LEFT JOIN chain:
+      //   indexed_domains      → nameservers + dnssec_status snapshot
+      //   namefi_nft_owners    → ownerAddress + chainId per domain
+      //   privy_users          → privy user id by matching wallet
+      //   users                → internal user id
+      //
+      // All LEFT — third-party (AD_HOC) domains and not-yet-tokenized
+      // domains stay in the result with null right-side columns. The
+      // namefi_nft_owners JOIN can in principle return >1 row per domain
+      // (one per chain); in practice 1:1, matching the
+      // `apps/backend/src/trpc/routers/admin/nsAndDnssecRouter.ts`
+      // convention. The COUNT query intentionally stays against the
+      // base table since none of the current filters touch joined
+      // columns; revisit when drizzler-filter brings user / NS filters.
       const baseQuery = db
+        .with(namefiNftCte)
         .select({
           id: dnsvizAnalysesTable.id,
           normalizedDomainName: dnsvizAnalysesTable.normalizedDomainName,
@@ -123,6 +114,9 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           joinedIsUsingNamefiNameservers:
             indexedDomainsTable.isUsingNamefiNameservers,
           joinedDnssecStatus: indexedDomainsTable.dnssecStatus,
+          joinedOwnerAddress: namefiNftOwnersView.ownerAddress,
+          joinedChainId: namefiNftOwnersView.chainId,
+          joinedUserId: usersTable.id,
         })
         .from(dnsvizAnalysesTable)
         .leftJoin(
@@ -137,6 +131,21 @@ export const adminDnsvizRouter = createContractTRPCRouter<
               dnsvizAnalysesTable.registrarKey,
             ),
           ),
+        )
+        .leftJoin(
+          namefiNftOwnersView,
+          eq(
+            namefiNftOwnersView.normalizedDomainName,
+            dnsvizAnalysesTable.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          privyUsersTableSchema,
+          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
         );
 
       const rowsQuery = whereClause ? baseQuery.where(whereClause) : baseQuery;
@@ -145,13 +154,45 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         .limit(pageSize)
         .offset(offset);
 
-      // The COUNT can stay against the base table — the LEFT JOIN never
-      // multiplies rows (1:1 via the registrar_key + domain unique
-      // constraint), and we don't filter on joined columns yet, so an
-      // un-joined COUNT is faster.
+      // Filters can now reference joined columns (isUsingNamefiNameservers,
+      // dnssec_status->>..., ownerAddress, userId) so the COUNT must run
+      // against the same JOIN tree. `COUNT(DISTINCT id)` guards against
+      // 1:N inflation from the namefi_nft_owners JOIN, in case a domain
+      // ever has NFTs on multiple chains.
       const totalQuery = db
-        .select({ count: sql<number>`COUNT(*)::int` })
-        .from(dnsvizAnalysesTable);
+        .with(namefiNftCte)
+        .select({
+          count: sql<number>`COUNT(DISTINCT ${dnsvizAnalysesTable.id})::int`,
+        })
+        .from(dnsvizAnalysesTable)
+        .leftJoin(
+          indexedDomainsTable,
+          and(
+            eq(
+              indexedDomainsTable.normalizedDomainName,
+              dnsvizAnalysesTable.normalizedDomainName,
+            ),
+            eq(
+              indexedDomainsTable.registrarKey,
+              dnsvizAnalysesTable.registrarKey,
+            ),
+          ),
+        )
+        .leftJoin(
+          namefiNftOwnersView,
+          eq(
+            namefiNftOwnersView.normalizedDomainName,
+            dnsvizAnalysesTable.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          privyUsersTableSchema,
+          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+        );
       const [{ count: total }] = whereClause
         ? await totalQuery.where(whereClause)
         : await totalQuery;
@@ -162,6 +203,9 @@ export const adminDnsvizRouter = createContractTRPCRouter<
             joinedNameservers,
             joinedIsUsingNamefiNameservers,
             joinedDnssecStatus,
+            joinedOwnerAddress,
+            joinedChainId,
+            joinedUserId,
             ...r
           }) => ({
             ...r,
@@ -171,6 +215,9 @@ export const adminDnsvizRouter = createContractTRPCRouter<
               isUsingNamefiNameservers: joinedIsUsingNamefiNameservers,
               dnssecStatus: joinedDnssecStatus,
             }),
+            userId: joinedUserId ?? null,
+            ownerAddress: joinedOwnerAddress ?? null,
+            chainId: joinedChainId ?? null,
           }),
         ),
         total,
@@ -182,10 +229,12 @@ export const adminDnsvizRouter = createContractTRPCRouter<
     .input(adminDnsvizContract.getAnalysisDetails.input)
     .output(adminDnsvizContract.getAnalysisDetails.output)
     .query(async ({ input }) => {
-      // LEFT JOIN to indexed_domains for the same reason as
-      // listAnalyses — keeps both procedures projecting the same shape
-      // off the same source.
+      await ensurePrivyTableFresh();
+
+      // Same JOIN chain as `listAnalyses` so the projected row shape stays
+      // identical between the two procedures.
       const [row] = await db
+        .with(namefiNftCte)
         .select({
           id: dnsvizAnalysesTable.id,
           normalizedDomainName: dnsvizAnalysesTable.normalizedDomainName,
@@ -205,6 +254,9 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           joinedIsUsingNamefiNameservers:
             indexedDomainsTable.isUsingNamefiNameservers,
           joinedDnssecStatus: indexedDomainsTable.dnssecStatus,
+          joinedOwnerAddress: namefiNftOwnersView.ownerAddress,
+          joinedChainId: namefiNftOwnersView.chainId,
+          joinedUserId: usersTable.id,
         })
         .from(dnsvizAnalysesTable)
         .leftJoin(
@@ -219,6 +271,21 @@ export const adminDnsvizRouter = createContractTRPCRouter<
               dnsvizAnalysesTable.registrarKey,
             ),
           ),
+        )
+        .leftJoin(
+          namefiNftOwnersView,
+          eq(
+            namefiNftOwnersView.normalizedDomainName,
+            dnsvizAnalysesTable.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          privyUsersTableSchema,
+          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
         )
         .where(eq(dnsvizAnalysesTable.id, input.id))
         .limit(1);
@@ -252,6 +319,9 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         joinedNameservers,
         joinedIsUsingNamefiNameservers,
         joinedDnssecStatus,
+        joinedOwnerAddress,
+        joinedChainId,
+        joinedUserId,
         ...rowWithoutGrok
       } = row;
       return {
@@ -263,11 +333,125 @@ export const adminDnsvizRouter = createContractTRPCRouter<
             isUsingNamefiNameservers: joinedIsUsingNamefiNameservers,
             dnssecStatus: joinedDnssecStatus,
           }),
+          userId: joinedUserId ?? null,
+          ownerAddress: joinedOwnerAddress ?? null,
+          chainId: joinedChainId ?? null,
         },
         messages,
         counts,
         grokData,
       };
+    }),
+
+  /**
+   * Aggregate counts for the same filter as `listAnalyses` (no
+   * page/sorting). Returns `byStatus` for the headline donut, plus a
+   * `failureBreakdown` cross-tab for BOGUS+ERROR rows split by
+   * `is_using_namefi_nameservers` and `supportsDnssec` so an admin can
+   * see whether a failure spike correlates with a specific NS provider
+   * or DNSSEC state.
+   *
+   * Implemented as a single GROUP BY + FILTER aggregate query so it
+   * stays cheap even at high analysis-row counts.
+   */
+  getAnalysesCounts: adminProcedure
+    .input(adminDnsvizContract.getAnalysesCounts.input)
+    .output(adminDnsvizContract.getAnalysesCounts.output)
+    .query(async ({ input }) => {
+      // Same drizzler filters as listAnalyses; same JOIN chain so any
+      // joined column referenced by the filter resolves.
+      await ensurePrivyTableFresh();
+      const whereClause = input.filters
+        ? buildWhereClause(
+            DNSVIZ_FILTER_TABLE_STRUCTURE,
+            input.filters as FilterOptions<
+              typeof DNSVIZ_FILTER_TABLE_STRUCTURE
+            >,
+          )
+        : undefined;
+
+      // `FILTER (WHERE ...)` runs the COUNT only on rows matching the
+      // sub-predicate; combined with GROUP BY status this gives the
+      // full status × NS × supportsDnssec breakdown in one round trip.
+      // `COUNT(DISTINCT id)` so a 1:N namefi_nft_owners JOIN doesn't
+      // inflate counts.
+      const id = dnsvizAnalysesTable.id;
+      const usingNamefi = sql`${indexedDomainsTable.isUsingNamefiNameservers} = true`;
+      const customNs = sql`${indexedDomainsTable.isUsingNamefiNameservers} = false`;
+      const unknownNs = sql`${indexedDomainsTable.isUsingNamefiNameservers} IS NULL`;
+      const supportsDnssec = sql`(${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec') = 'true'`;
+      const noSupportsDnssec = sql`(${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec') = 'false'`;
+      const unknownSupportsDnssec = sql`(${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec') IS NULL`;
+
+      const rowsQuery = db
+        .with(namefiNftCte)
+        .select({
+          status: dnsvizAnalysesTable.status,
+          total: sql<number>`COUNT(DISTINCT ${id})::int`,
+          usingNamefiNs: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${usingNamefi})::int`,
+          customNs: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${customNs})::int`,
+          unknownNs: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${unknownNs})::int`,
+          supportsDnssec: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${supportsDnssec})::int`,
+          noSupportsDnssec: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${noSupportsDnssec})::int`,
+          unknownSupportsDnssec: sql<number>`COUNT(DISTINCT ${id}) FILTER (WHERE ${unknownSupportsDnssec})::int`,
+        })
+        .from(dnsvizAnalysesTable)
+        .leftJoin(
+          indexedDomainsTable,
+          and(
+            eq(
+              indexedDomainsTable.normalizedDomainName,
+              dnsvizAnalysesTable.normalizedDomainName,
+            ),
+            eq(
+              indexedDomainsTable.registrarKey,
+              dnsvizAnalysesTable.registrarKey,
+            ),
+          ),
+        )
+        .leftJoin(
+          namefiNftOwnersView,
+          eq(
+            namefiNftOwnersView.normalizedDomainName,
+            dnsvizAnalysesTable.normalizedDomainName,
+          ),
+        )
+        .leftJoin(
+          privyUsersTableSchema,
+          sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+        )
+        .leftJoin(
+          usersTable,
+          eq(usersTable.privyUserId, privyUsersTableSchema.privyUserId),
+        )
+        .groupBy(dnsvizAnalysesTable.status);
+
+      const aggregateRows = await (whereClause
+        ? rowsQuery.where(whereClause)
+        : rowsQuery);
+
+      const byStatus = { SECURE: 0, INSECURE: 0, BOGUS: 0, ERROR: 0 };
+      const failureBreakdown = {
+        BOGUS: emptyFailureBreakdown(),
+        ERROR: emptyFailureBreakdown(),
+      };
+      let total = 0;
+      for (const r of aggregateRows) {
+        byStatus[r.status] = r.total;
+        total += r.total;
+        if (r.status === 'BOGUS' || r.status === 'ERROR') {
+          failureBreakdown[r.status] = {
+            usingNamefiNs: r.usingNamefiNs,
+            customNs: r.customNs,
+            unknownNs: r.unknownNs,
+            supportsDnssec: r.supportsDnssec,
+            noSupportsDnssec: r.noSupportsDnssec,
+            unknownSupportsDnssec: r.unknownSupportsDnssec,
+          };
+        }
+      }
+
+      return { total, byStatus, failureBreakdown };
     }),
 
   /**
@@ -399,6 +583,62 @@ interface RowForReasoning {
   status: DnsvizAnalysisStatus;
   summary: DnsvizAnalysisSummary | null;
   errorMessage: string | null;
+}
+
+/**
+ * Maps filter/sort column IDs to drizzle columns / SQL expressions, used
+ * by `buildWhereClause` and `buildSortClause`. Boolean and jsonb-extract
+ * fields are text-cast (`::text` / `->> 'key'`) so the drizzler
+ * `eq`/`neq`/`isNull`/`isNotNull` operators can compare them with
+ * `'true'`/`'false'` strings — matches the convention in
+ * `apps/backend/src/trpc/routers/admin/nsAndDnssecRouter.ts`.
+ *
+ * Adding a new filterable column means adding both an entry here
+ * (server-side projection) and an entry in the frontend `filterConfig`
+ * (UI definition).
+ */
+const DNSVIZ_FILTER_TABLE_STRUCTURE = {
+  // dnsviz_analyses
+  id: dnsvizAnalysesTable.id,
+  normalizedDomainName: dnsvizAnalysesTable.normalizedDomainName,
+  registrarKey: dnsvizAnalysesTable.registrarKey,
+  analysisDate: dnsvizAnalysesTable.analysisDate,
+  analysisStartedAt: dnsvizAnalysesTable.analysisStartedAt,
+  status: dnsvizAnalysesTable.status,
+  errorsCount: dnsvizAnalysesTable.errorsCount,
+  warningsCount: dnsvizAnalysesTable.warningsCount,
+  // indexed_domains
+  isUsingNamefiNameservers: sql<
+    string | null
+  >`${indexedDomainsTable.isUsingNamefiNameservers}::text`,
+  supportsDnssec: sql<
+    string | null
+  >`(${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec')`,
+  dnssecZoneHasActiveDnssec: sql<
+    string | null
+  >`(${indexedDomainsTable.dnssecStatus} ->> 'zoneHasActiveDnssec')`,
+  dnssecHasDelegationSigner: sql<
+    string | null
+  >`(${indexedDomainsTable.dnssecStatus} ->> 'hasDelegationSigner')`,
+  dnssecIsUsingNamefiDelegationSigner: sql<
+    string | null
+  >`(${indexedDomainsTable.dnssecStatus} ->> 'isUsingNamefiDelegationSigner')`,
+  // namefi_nft_owners
+  ownerAddress: namefiNftOwnersView.ownerAddress,
+  chainId: namefiNftOwnersView.chainId,
+  // users
+  userId: usersTable.id,
+} as const;
+
+function emptyFailureBreakdown() {
+  return {
+    usingNamefiNs: 0,
+    customNs: 0,
+    unknownNs: 0,
+    supportsDnssec: 0,
+    noSupportsDnssec: 0,
+    unknownSupportsDnssec: 0,
+  };
 }
 
 /**

@@ -1,9 +1,17 @@
 'use client';
 
 import { AdminGuard } from '@/components/admin/admin-guard';
-import { ServerDataTable } from '@/components/table/server-data-table';
+import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
+import {
+  convertToDrizzlerFilterOptions,
+  useDrizzlerServerFilterStrategy,
+  type DrizzlerFilterState,
+} from '@/components/table/filters';
+import { UserWalletAvatar } from '@/components/user-avatar';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDebounceValue } from 'usehooks-ts';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import {
   Card,
@@ -29,14 +37,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
-import { Input } from '@namefi-astra/ui/components/shadcn/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@namefi-astra/ui/components/shadcn/select';
 import {
   Eye,
   Download,
@@ -58,8 +58,10 @@ import { UTCDate } from '@date-fns/utc';
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import type {
+  DnsvizAnalysesCounts,
   DnsvizAnalysisRow,
   DnsvizAnalysisStatus,
+  DnsvizFailureBreakdown,
   DnsvizGraphType,
 } from '@namefi-astra/common/contract/admin/admin-dnsviz-contract';
 
@@ -70,17 +72,6 @@ export default function AdminDnsvizPage() {
     </AdminGuard>
   );
 }
-
-const STATUS_FILTERS: Array<{
-  value: 'ANY' | DnsvizAnalysisStatus;
-  label: string;
-}> = [
-  { value: 'ANY', label: 'Any status' },
-  { value: 'BOGUS', label: 'BOGUS' },
-  { value: 'ERROR', label: 'ERROR' },
-  { value: 'INSECURE', label: 'INSECURE' },
-  { value: 'SECURE', label: 'SECURE' },
-];
 
 const STATUS_BADGE_VARIANT: Record<
   DnsvizAnalysisStatus,
@@ -96,14 +87,33 @@ function DnsvizAnalysesPanel() {
   const trpc = useTRPC();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
-  const [domainSearch, setDomainSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<
-    'ANY' | DnsvizAnalysisStatus
-  >('ANY');
-  const [analysisDate, setAnalysisDate] = useState('');
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'analysisDate', desc: true },
   ]);
+  // Drizzler filter strategy: per-column filters with multiple
+  // conditions + AND/OR. The state is converted to `FilterOptions`
+  // server-side via `convertToDrizzlerFilterOptions`. Debounced 500ms
+  // so a typing user doesn't fan out a request per keystroke.
+  const [drizzlerFilterState, setDrizzlerFilterState] =
+    useState<DrizzlerFilterState>({ columnFilters: {}, customFilters: {} });
+  const [debouncedDrizzlerFilterState] = useDebounceValue(
+    drizzlerFilterState,
+    500,
+  );
+  const backendFilters = useMemo(
+    () =>
+      convertToDrizzlerFilterOptions(
+        debouncedDrizzlerFilterState.columnFilters,
+      ),
+    [debouncedDrizzlerFilterState],
+  );
+  const backendSorting = useMemo(() => {
+    if (!sorting || sorting.length === 0) return undefined;
+    return sorting.map((s) => ({
+      column: s.id,
+      order: s.desc ? ('desc' as const) : ('asc' as const),
+    }));
+  }, [sorting]);
   const [graphTarget, setGraphTarget] = useState<{
     id: string;
     domainName: string;
@@ -129,11 +139,18 @@ function DnsvizAnalysesPanel() {
       {
         page,
         pageSize,
-        domainSearch: domainSearch.trim() || undefined,
-        status: statusFilter === 'ANY' ? undefined : statusFilter,
-        analysisDate: analysisDate || undefined,
-        sorting: sorting.length > 0 ? sorting : undefined,
+        filters: backendFilters,
+        sorting: backendSorting,
       },
+      { placeholderData: (prev) => prev },
+    ),
+  );
+
+  // Same filters minus pagination/sorting — driven independently so
+  // it doesn't refetch when the user only pages or re-sorts.
+  const countsQuery = useQuery(
+    trpc.admin.dnsviz.getAnalysesCounts.queryOptions(
+      { filters: backendFilters },
       { placeholderData: (prev) => prev },
     ),
   );
@@ -170,6 +187,115 @@ function DnsvizAnalysesPanel() {
     [],
   );
   const clearSelection = useCallback(() => setSelectedRows(new Map()), []);
+
+  const filterStrategy = useDrizzlerServerFilterStrategy({
+    filterConfig: {
+      normalizedDomainName: {
+        id: 'normalizedDomainName',
+        label: 'Domain',
+        type: 'text',
+        columnId: 'normalizedDomainName',
+      },
+      analysisDate: {
+        id: 'analysisDate',
+        label: 'Analysis date',
+        type: 'date',
+        columnId: 'analysisDate',
+      },
+      status: {
+        id: 'status',
+        label: 'Status',
+        type: 'select',
+        columnId: 'status',
+        options: [
+          { value: 'SECURE', label: 'SECURE' },
+          { value: 'INSECURE', label: 'INSECURE' },
+          { value: 'BOGUS', label: 'BOGUS' },
+          { value: 'ERROR', label: 'ERROR' },
+        ],
+      },
+      registrarKey: {
+        id: 'registrarKey',
+        label: 'Registrar',
+        type: 'text',
+        columnId: 'registrarKey',
+      },
+      // Booleans are text-cast on the server (`::text` / `->> 'key'`)
+      // so eq/neq accept 'true'/'false'; isNull/isNotNull cover the
+      // join-miss case.
+      isUsingNamefiNameservers: {
+        id: 'isUsingNamefiNameservers',
+        label: 'Namefi NS',
+        type: 'select',
+        columnId: 'isUsingNamefiNameservers',
+        options: [
+          { value: 'true', label: 'Namefi' },
+          { value: 'false', label: 'Custom' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      supportsDnssec: {
+        id: 'supportsDnssec',
+        label: 'Supports DNSSEC',
+        type: 'select',
+        columnId: 'supportsDnssec',
+        options: [
+          { value: 'true', label: 'Yes' },
+          { value: 'false', label: 'No' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      dnssecZoneHasActiveDnssec: {
+        id: 'dnssecZoneHasActiveDnssec',
+        label: 'Zone Signing',
+        type: 'select',
+        columnId: 'dnssecZoneHasActiveDnssec',
+        options: [
+          { value: 'true', label: 'On' },
+          { value: 'false', label: 'Off' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      dnssecHasDelegationSigner: {
+        id: 'dnssecHasDelegationSigner',
+        label: 'Has DS',
+        type: 'select',
+        columnId: 'dnssecHasDelegationSigner',
+        options: [
+          { value: 'true', label: 'Yes' },
+          { value: 'false', label: 'No' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      dnssecIsUsingNamefiDelegationSigner: {
+        id: 'dnssecIsUsingNamefiDelegationSigner',
+        label: 'Namefi DS',
+        type: 'select',
+        columnId: 'dnssecIsUsingNamefiDelegationSigner',
+        options: [
+          { value: 'true', label: 'Yes' },
+          { value: 'false', label: 'No' },
+        ],
+        allowedOperators: ['eq', 'neq', 'isNull', 'isNotNull'],
+      },
+      userId: {
+        id: 'userId',
+        label: 'User ID',
+        type: 'text',
+        columnId: 'userId',
+      },
+      ownerAddress: {
+        id: 'ownerAddress',
+        label: 'Owner wallet',
+        type: 'text',
+        columnId: 'ownerAddress',
+      },
+    },
+    onDrizzlerFilterChange: (newFilterState) => {
+      setPage(1);
+      setDrizzlerFilterState(newFilterState);
+    },
+  });
 
   const columns = useMemo<ColumnDef<DnsvizAnalysisRow>[]>(
     () => [
@@ -241,18 +367,57 @@ function DnsvizAnalysesPanel() {
         size: 120,
       },
       {
+        id: 'user',
+        header: 'User',
+        enableSorting: false,
+        cell: ({ row }) => <UserCell row={row.original} />,
+        size: 220,
+      },
+      {
+        id: 'isUsingNamefiNameservers',
+        header: 'Namefi NS',
+        enableSorting: false,
+        cell: ({ row }) => (
+          <NamefiNsBadgeCell value={row.original.isUsingNamefiNameservers} />
+        ),
+        size: 110,
+      },
+      {
         id: 'nameservers',
         header: 'Nameservers',
         enableSorting: false,
-        cell: ({ row }) => <NameserversCell row={row.original} />,
-        size: 280,
+        cell: ({ row }) => <NameserversListCell row={row.original} />,
+        size: 220,
       },
       {
-        id: 'dnssec',
-        header: 'DNSSEC',
+        id: 'supportsDnssec',
+        header: 'Supports DNSSEC',
         enableSorting: false,
-        cell: ({ row }) => <DnssecCell row={row.original} />,
-        size: 220,
+        cell: ({ row }) => (
+          <SupportsDnssecCell value={row.original.supportsDnssec} />
+        ),
+        size: 140,
+      },
+      {
+        id: 'zoneSigning',
+        header: 'Zone Signing',
+        enableSorting: false,
+        cell: ({ row }) => (
+          <ZoneSigningCell value={row.original.dnssecZoneHasActiveDnssec} />
+        ),
+        size: 150,
+      },
+      {
+        id: 'dsStatus',
+        header: 'DS Status',
+        enableSorting: false,
+        cell: ({ row }) => (
+          <DsStatusCell
+            hasDs={row.original.dnssecHasDelegationSigner}
+            isNamefiDs={row.original.dnssecIsUsingNamefiDelegationSigner}
+          />
+        ),
+        size: 140,
       },
       {
         accessorKey: 'errorsCount',
@@ -346,69 +511,17 @@ function DnsvizAnalysesPanel() {
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex flex-wrap gap-2 items-end">
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="dnsviz-domain-search"
-              className="text-xs text-muted-foreground"
-            >
-              Domain
-            </label>
-            <Input
-              id="dnsviz-domain-search"
-              placeholder="search by domain…"
-              value={domainSearch}
-              onChange={(e) => {
-                setPage(1);
-                setDomainSearch(e.target.value);
-              }}
-              className="w-64"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="dnsviz-status-filter"
-              className="text-xs text-muted-foreground"
-            >
-              Status
-            </label>
-            <Select
-              value={statusFilter}
-              onValueChange={(v) => {
-                setPage(1);
-                setStatusFilter(v as 'ANY' | DnsvizAnalysisStatus);
-              }}
-            >
-              <SelectTrigger id="dnsviz-status-filter" className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {STATUS_FILTERS.map((s) => (
-                  <SelectItem key={s.value} value={s.value}>
-                    {s.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="dnsviz-date-filter"
-              className="text-xs text-muted-foreground"
-            >
-              Analysis date
-            </label>
-            <Input
-              id="dnsviz-date-filter"
-              type="date"
-              value={analysisDate}
-              onChange={(e) => {
-                setPage(1);
-                setAnalysisDate(e.target.value);
-              }}
-              className="w-44"
-            />
-          </div>
+        <CountsCard
+          data={countsQuery.data}
+          isLoading={countsQuery.isLoading}
+          isError={countsQuery.isError}
+        />
+        {/*
+          Refresh button is the only loose control left here — filters
+          all live in the drizzler `<ExtensibleDataTable>` filter panel
+          below, sourced from `filterStrategy`.
+        */}
+        <div className="flex justify-end">
           <Button
             variant="outline"
             size="sm"
@@ -456,7 +569,8 @@ function DnsvizAnalysesPanel() {
             <span>Failed to load: {query.error.message}</span>
           </div>
         ) : (
-          <ServerDataTable
+          <ExtensibleDataTable<DnsvizAnalysisRow, typeof filterStrategy>
+            filterStrategy={filterStrategy}
             columns={columns}
             data={rows}
             isLoading={query.isLoading}
@@ -579,12 +693,198 @@ function RunOnDemandDialog({
 }
 
 /**
- * Nameservers + Namefi/Custom badge from `indexed_domains.nameservers`.
- * Mirrors the `NameserversCell` in
- * `apps/frontend/src/app/admin/ns-and-dnssec/page.tsx` so the two admin
- * views render the same way for the same source data.
+ * Aggregate-counts banner shown above the table. Uses
+ * `getAnalysesCounts` (same filters as the list, no pagination) so it
+ * reflects whatever the table is currently filtered to. The
+ * BOGUS+ERROR breakdown is rendered only when there's at least one
+ * actionable failure — for clean days the card stays compact.
  */
-function NameserversCell({ row }: { row: DnsvizAnalysisRow }) {
+function CountsCard({
+  data,
+  isLoading,
+  isError,
+}: {
+  data: DnsvizAnalysesCounts | undefined;
+  isLoading: boolean;
+  isError: boolean;
+}) {
+  if (isError) {
+    return (
+      <div className="rounded border border-destructive/50 bg-destructive/10 p-3 text-xs">
+        Failed to load count distribution
+      </div>
+    );
+  }
+  if (!data) {
+    return (
+      <div className="rounded border bg-muted/30 p-3 text-xs text-muted-foreground">
+        {isLoading ? 'Loading distribution…' : 'No data'}
+      </div>
+    );
+  }
+  const { byStatus, total, failureBreakdown } = data;
+  const showBreakdown = byStatus.BOGUS > 0 || byStatus.ERROR > 0;
+  return (
+    <div className="rounded border bg-muted/20 p-3 text-xs">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="font-semibold">
+          {total} {total === 1 ? 'analysis' : 'analyses'}
+        </span>
+        <StatusCount label="SECURE" count={byStatus.SECURE} variant="default" />
+        <StatusCount
+          label="INSECURE"
+          count={byStatus.INSECURE}
+          variant="secondary"
+        />
+        <StatusCount
+          label="BOGUS"
+          count={byStatus.BOGUS}
+          variant="destructive"
+        />
+        <StatusCount
+          label="ERROR"
+          count={byStatus.ERROR}
+          variant="destructive"
+        />
+      </div>
+      {showBreakdown ? (
+        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {(['BOGUS', 'ERROR'] as const).map((s) =>
+            byStatus[s] > 0 ? (
+              <FailureBreakdownBlock
+                key={s}
+                status={s}
+                breakdown={failureBreakdown[s]}
+              />
+            ) : null,
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function StatusCount({
+  label,
+  count,
+  variant,
+}: {
+  label: string;
+  count: number;
+  variant: 'default' | 'secondary' | 'outline' | 'destructive';
+}) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <Badge variant={variant} className="font-mono">
+        {label}
+      </Badge>
+      <span className="font-mono">{count}</span>
+    </span>
+  );
+}
+
+function FailureBreakdownBlock({
+  status,
+  breakdown,
+}: {
+  status: 'BOGUS' | 'ERROR';
+  breakdown: DnsvizFailureBreakdown;
+}) {
+  return (
+    <div className="rounded border bg-background p-2">
+      <div className="mb-1 font-semibold">{status} breakdown</div>
+      <div className="grid grid-cols-2 gap-x-3 font-mono">
+        <div>
+          <div className="text-muted-foreground">Nameservers</div>
+          <div>Namefi: {breakdown.usingNamefiNs}</div>
+          <div>Custom: {breakdown.customNs}</div>
+          <div>Unknown: {breakdown.unknownNs}</div>
+        </div>
+        <div>
+          <div className="text-muted-foreground">Supports DNSSEC</div>
+          <div>Yes: {breakdown.supportsDnssec}</div>
+          <div>No: {breakdown.noSupportsDnssec}</div>
+          <div>Unknown: {breakdown.unknownSupportsDnssec}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * NFT-owner + Namefi user, joined server-side from
+ * `namefi_nft_owners_view` → `privy_users` → `users`. All fields nullable —
+ * AD_HOC dnsviz rows (third-party domains run via the on-demand workflow)
+ * have no NFT and no Namefi user.
+ */
+function UserCell({ row }: { row: DnsvizAnalysisRow }) {
+  const { userId, ownerAddress } = row;
+  if (!userId && !ownerAddress) {
+    return <span className="text-xs text-muted-foreground">—</span>;
+  }
+  const tail = ownerAddress
+    ? `${ownerAddress.slice(0, 6)}…${ownerAddress.slice(-4)}`
+    : null;
+  return (
+    <div className="flex items-center gap-2">
+      <UserWalletAvatar
+        address={ownerAddress ?? undefined}
+        userId={userId ?? undefined}
+        className="size-6 rounded-md"
+      />
+      <div className="flex flex-col leading-tight">
+        {userId ? (
+          <AutoTruncateTextV2
+            initialCharactersCountToDisplay={14}
+            minCharactersToDisplay={10}
+            className="text-xs"
+          >
+            {userId}
+          </AutoTruncateTextV2>
+        ) : (
+          <span className="text-xs text-amber-600">No user</span>
+        )}
+        {tail ? (
+          <span className="font-mono text-[10px] text-muted-foreground">
+            {tail}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Single-cell badge for `is_using_namefi_nameservers`. Split out of the
+ * combined "Nameservers" cell so the column is filterable on its own.
+ * Renders Namefi / Custom / Unknown explicitly to avoid collapsing null
+ * into "Custom".
+ */
+function NamefiNsBadgeCell({ value }: { value: boolean | null }) {
+  if (value == null) {
+    return (
+      <Badge variant="outline" className="text-xs text-muted-foreground">
+        Unknown
+      </Badge>
+    );
+  }
+  if (value === true) {
+    return (
+      <Badge variant="secondary" className="text-xs">
+        Namefi
+      </Badge>
+    );
+  }
+  return (
+    <Badge variant="outline" className="text-xs">
+      Custom
+    </Badge>
+  );
+}
+
+/** Just the list of NS hostnames; the Namefi/Custom badge moved to its
+ *  own column above. */
+function NameserversListCell({ row }: { row: DnsvizAnalysisRow }) {
   if (row.nameservers == null) {
     return <span className="text-xs text-muted-foreground">—</span>;
   }
@@ -592,114 +892,109 @@ function NameserversCell({ row }: { row: DnsvizAnalysisRow }) {
     return <span className="text-xs text-amber-600">Not indexed</span>;
   }
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-2">
-        {/*
-          Explicit null check before the boolean branches: the contract
-          types `isUsingNamefiNameservers` as `boolean | null`, so a
-          partial snapshot would otherwise be silently labelled "Custom".
-        */}
-        {row.isUsingNamefiNameservers == null ? (
-          <Badge variant="outline" className="text-xs text-muted-foreground">
-            Unknown
-          </Badge>
-        ) : row.isUsingNamefiNameservers === true ? (
-          <Badge variant="secondary" className="text-xs">
-            Namefi
-          </Badge>
-        ) : (
-          <Badge variant="outline" className="text-xs">
-            Custom
-          </Badge>
-        )}
+    <ul className="text-xs text-muted-foreground font-mono leading-tight">
+      {row.nameservers.map((ns) => (
+        <li key={ns}>{ns}</li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * Each of the three DNSSEC signals from `indexed_domains.dnssec_status`
+ * gets its own column so it's individually filterable. Each cell handles
+ * the null / true / false trichotomy with a fixed 4×4 icon (`size-4`)
+ * for consistent column widths.
+ */
+function SupportsDnssecCell({ value }: { value: boolean | null }) {
+  if (value == null) {
+    return (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldXIcon className="size-4 text-muted-foreground" />
+        <span className="text-muted-foreground">Unknown</span>
       </div>
-      <ul className="text-xs text-muted-foreground font-mono leading-tight">
-        {row.nameservers.map((ns) => (
-          <li key={ns}>{ns}</li>
-        ))}
-      </ul>
+    );
+  }
+  if (value === true) {
+    return (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldCheckIcon className="size-4 text-green-500" />
+        <span>Yes</span>
+      </div>
+    );
+  }
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <ShieldXIcon className="size-4 text-red-500" />
+      <span>No</span>
+    </div>
+  );
+}
+
+function ZoneSigningCell({ value }: { value: boolean | null }) {
+  if (value == null) {
+    return (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldXIcon className="size-4 text-muted-foreground" />
+        <span className="text-muted-foreground">Unknown</span>
+      </div>
+    );
+  }
+  if (value === true) {
+    return (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldCheckIcon className="size-4 text-green-500" />
+        <span>On</span>
+      </div>
+    );
+  }
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <ShieldXIcon className="size-4 text-red-500" />
+      <span>Off</span>
     </div>
   );
 }
 
 /**
- * Zone-signing + delegation-signer status, sourced from
- * `indexed_domains.dnssec_status`. Same visual as the `DnssecCell` in
- * `apps/frontend/src/app/admin/ns-and-dnssec/page.tsx`.
+ * Combines the two DS flags (`hasDelegationSigner` +
+ * `isUsingNamefiDelegationSigner`) into a single 4-state cell — Namefi
+ * DS / Custom DS / No DS / Unknown. They're inherently coupled (you
+ * can't have "Namefi DS" without "has DS"), so a single column is the
+ * right granularity even though the underlying source has two booleans.
  */
-function DnssecCell({ row }: { row: DnsvizAnalysisRow }) {
-  if (row.dnssecZoneHasActiveDnssec === null) {
-    return <span className="text-xs text-amber-600">Not indexed</span>;
+function DsStatusCell({
+  hasDs,
+  isNamefiDs,
+}: {
+  hasDs: boolean | null;
+  isNamefiDs: boolean | null;
+}) {
+  if (hasDs == null || isNamefiDs == null) {
+    return (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldXIcon className="size-4 text-muted-foreground" />
+        <span className="text-muted-foreground">Unknown</span>
+      </div>
+    );
+  }
+  if (hasDs === true) {
+    return isNamefiDs === true ? (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldCheckIcon className="size-4 text-green-500" />
+        <span>Namefi DS</span>
+      </div>
+    ) : (
+      <div className="flex items-center gap-2 text-xs">
+        <ShieldCheckIcon className="size-4 text-amber-500" />
+        <span>Custom DS</span>
+      </div>
+    );
   }
   return (
-    <div className="flex flex-col gap-1 text-xs">
-      {/*
-        `supportsDnssec` rolls up the rest of the dnssec_status snapshot
-        ("does this zone have any DNSSEC at all?") so it goes first as
-        the at-a-glance signal. Rendered defensively — if the parent
-        sibling fields are populated but this one isn't (partial
-        snapshot), the row is omitted rather than guessing.
-      */}
-      {row.supportsDnssec !== null ? (
-        <div className="flex items-center gap-2">
-          {row.supportsDnssec ? (
-            <>
-              <ShieldCheckIcon className="w-4 h-4 text-green-500" />
-              <span>Supports DNSSEC</span>
-            </>
-          ) : (
-            <>
-              <ShieldXIcon className="w-4 h-4 text-red-500" />
-              <span>No DNSSEC</span>
-            </>
-          )}
-        </div>
-      ) : null}
-      <div className="flex items-center gap-2">
-        {row.dnssecZoneHasActiveDnssec ? (
-          <>
-            <ShieldCheckIcon className="w-4 h-4 text-green-500" />
-            <span>Zone signing on</span>
-          </>
-        ) : (
-          <>
-            <ShieldXIcon className="w-4 h-4 text-red-500" />
-            <span>Zone signing off</span>
-          </>
-        )}
-      </div>
-      <div className="flex items-center gap-2">
-        {/*
-          DS branch handles unknown explicitly: both flags are
-          contract-typed `boolean | null`, so collapsing null into the
-          `false` branch would mislabel a partial snapshot as "No DS"
-          or "Custom DS".
-        */}
-        {row.dnssecHasDelegationSigner == null ||
-        row.dnssecIsUsingNamefiDelegationSigner == null ? (
-          <>
-            <ShieldXIcon className="w-4 h-4 text-muted-foreground" />
-            <span className="text-muted-foreground">DS unknown</span>
-          </>
-        ) : row.dnssecHasDelegationSigner === true ? (
-          row.dnssecIsUsingNamefiDelegationSigner === true ? (
-            <>
-              <ShieldCheckIcon className="w-4 h-4 text-green-500" />
-              <span>Namefi DS</span>
-            </>
-          ) : (
-            <>
-              <ShieldCheckIcon className="w-4 h-4 text-amber-500" />
-              <span>Custom DS</span>
-            </>
-          )
-        ) : (
-          <>
-            <ShieldXIcon className="w-4 h-4 text-red-500" />
-            <span>No DS</span>
-          </>
-        )}
-      </div>
+    <div className="flex items-center gap-2 text-xs">
+      <ShieldXIcon className="size-4 text-red-500" />
+      <span>No DS</span>
     </div>
   );
 }

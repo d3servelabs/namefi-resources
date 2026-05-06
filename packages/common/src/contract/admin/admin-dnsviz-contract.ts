@@ -12,11 +12,6 @@ import { createContract } from '../create-contract';
  * modal preview + download dropdown.
  */
 
-const sortingSchema = z.object({
-  id: z.string(),
-  desc: z.boolean(),
-});
-
 const dnsvizAnalysisStatusSchema = z.enum([
   'SECURE',
   'INSECURE',
@@ -38,16 +33,19 @@ const dnsvizAnalysisSummarySchema = z
   })
   .nullable();
 
+/**
+ * `filters` and `sorting` are typed as `z.any()` because they come from
+ * `@samyx/drizzler-filters-sorters` (`FilterOptions`/`SortOptions`) — a
+ * recursive shape we don't want to mirror here. The router calls
+ * `buildWhereClause` / `buildSortClause` against the `tableStructure`
+ * mapping defined in `adminDnsvizRouter.ts` to translate them into SQL.
+ * Same convention as `admin-ns-and-dnssec-contract.ts`.
+ */
 const listInputSchema = z.object({
   page: z.int().min(1).default(1),
   pageSize: z.int().min(1).max(100).default(25),
-  /** Substring match on `normalized_domain_name`. */
-  domainSearch: z.string().optional(),
-  /** Filter by status — single status only. */
-  status: dnsvizAnalysisStatusSchema.optional(),
-  /** Filter to a specific `analysis_date` (YYYY-MM-DD). */
-  analysisDate: z.string().optional(),
-  sorting: z.array(sortingSchema).optional(),
+  filters: z.any().optional(),
+  sorting: z.any().optional(),
 });
 
 const dnsvizAnalysisRowSchema = z.object({
@@ -86,6 +84,15 @@ const dnsvizAnalysisRowSchema = z.object({
   dnssecHasDelegationSigner: z.boolean().nullable(),
   dnssecIsUsingNamefiDelegationSigner: z.boolean().nullable(),
   dnssecZoneHasActiveDnssec: z.boolean().nullable(),
+  /**
+   * NFT owner snapshot, joined from `namefi_nft_owners_view` →
+   * `privy_users` → `users`. All `null` when the domain has no NFT
+   * minted (e.g. third-party domains run via the on-demand workflow,
+   * or a domain that hasn't been tokenized yet).
+   */
+  userId: z.string().uuid().nullable(),
+  ownerAddress: z.string().nullable(),
+  chainId: z.number().int().nullable(),
 });
 
 const listOutputSchema = z.object({
@@ -159,6 +166,54 @@ const getAnalysisJsonOutputSchema = z.object({
   contentJson: z.string(),
 });
 
+/**
+ * Same filter shape as `listAnalyses` minus pagination/sorting — used by
+ * `getAnalysesCounts` so the count view tracks whatever the table view
+ * is currently filtered to. Drizzler-shaped `filters` payload, same as
+ * the list query.
+ */
+const analysesCountsInputSchema = z.object({
+  filters: z.any().optional(),
+});
+
+const failureBreakdownSchema = z.object({
+  /** `is_using_namefi_nameservers` is `true` for these failing rows. */
+  usingNamefiNs: z.number(),
+  /** `is_using_namefi_nameservers` is `false`. */
+  customNs: z.number(),
+  /** No matching `indexed_domains` row, so the flag is unknown. */
+  unknownNs: z.number(),
+  /** `dnssec_status->>'supportsDnssec'` is true. */
+  supportsDnssec: z.number(),
+  /** `dnssec_status->>'supportsDnssec'` is false. */
+  noSupportsDnssec: z.number(),
+  /** No `dnssec_status` jsonb (or no indexed row). */
+  unknownSupportsDnssec: z.number(),
+});
+
+const analysesCountsOutputSchema = z.object({
+  /** Total rows matching the filter, before any breakdown. */
+  total: z.number(),
+  /** Counts per status enum value. Always all four keys present. */
+  byStatus: z.object({
+    SECURE: z.number(),
+    INSECURE: z.number(),
+    BOGUS: z.number(),
+    ERROR: z.number(),
+  }),
+  /**
+   * For each "actionable failure" status (BOGUS + ERROR), how the
+   * failing rows distribute across `is_using_namefi_nameservers` and
+   * `dnssec_status->>'supportsDnssec'`. Useful for spotting whether a
+   * spike of failures correlates with a specific NS provider or DNSSEC
+   * support state.
+   */
+  failureBreakdown: z.object({
+    BOGUS: failureBreakdownSchema,
+    ERROR: failureBreakdownSchema,
+  }),
+});
+
 const runOnDemandAnalysisInputSchema = z.object({
   /**
    * Normalized domain names to analyze. The on-demand workflow handles
@@ -192,6 +247,11 @@ export const adminDnsvizContract = {
     input: getAnalysisDetailsInputSchema,
     output: getAnalysisDetailsOutputSchema,
   },
+  getAnalysesCounts: {
+    type: 'query',
+    input: analysesCountsInputSchema,
+    output: analysesCountsOutputSchema,
+  },
   getAnalysisJson: {
     type: 'query',
     input: getAnalysisJsonInputSchema,
@@ -210,6 +270,8 @@ export type DnsvizAnalysisStatus = z.infer<typeof dnsvizAnalysisStatusSchema>;
 export type DnsvizGraphType = z.infer<typeof dnsvizGraphTypeSchema>;
 export type DnsvizMessageEntry = z.infer<typeof dnsvizMessageEntrySchema>;
 export type DnsvizJsonKind = z.infer<typeof dnsvizJsonKindSchema>;
+export type DnsvizAnalysesCounts = z.infer<typeof analysesCountsOutputSchema>;
+export type DnsvizFailureBreakdown = z.infer<typeof failureBreakdownSchema>;
 
 // Mark the createContract import as used so the file shape matches its
 // siblings under this folder, even though we don't apply softOutput here.
