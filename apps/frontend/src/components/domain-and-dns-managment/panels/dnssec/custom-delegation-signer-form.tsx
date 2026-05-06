@@ -260,15 +260,27 @@ export function CustomDelegationSignerForm({
     }),
   );
 
+  const invalidateAfterSubmit = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+          domainName,
+        }),
+      }),
+      queryClient.invalidateQueries({
+        queryKey:
+          trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryKey(
+            { domainName },
+          ),
+      }),
+    ]);
+  };
+
   const associateMutation = useMutation(
     trpc.domainConfig.dnssec.associateDelegationSigner.mutationOptions({
       async onSuccess() {
         toast.success('Delegation signer associated');
-        await queryClient.invalidateQueries({
-          queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
-            domainName,
-          }),
-        });
+        await invalidateAfterSubmit();
         onSuccess();
       },
       onError(error) {
@@ -277,13 +289,40 @@ export function CustomDelegationSignerForm({
     }),
   );
 
+  const deferredMutation = useMutation(
+    trpc.domainConfig.dnssec.submitDeferredDelegationSigner.mutationOptions({
+      async onSuccess() {
+        toast.success(
+          "DS submission scheduled — we'll associate it once your DNSKEY validates.",
+        );
+        await invalidateAfterSubmit();
+        onSuccess();
+      },
+      onError(error) {
+        toast.error(`Failed to schedule DS submission: ${error.message}`);
+      },
+    }),
+  );
+
   const ackInfo = useMemo(() => buildAckInfo(validation), [validation]);
 
+  const validationFailed =
+    validation.status === 'done' &&
+    !(
+      validation.result.authoritative.isValid &&
+      validation.result.publicDns.isValid
+    );
+
   const submitDisabled = useMemo(() => {
-    if (associateMutation.isPending) return true;
+    if (associateMutation.isPending || deferredMutation.isPending) return true;
     if (validation.status !== 'done') return true;
     return !acknowledge;
-  }, [associateMutation.isPending, validation.status, acknowledge]);
+  }, [
+    associateMutation.isPending,
+    deferredMutation.isPending,
+    validation.status,
+    acknowledge,
+  ]);
 
   const handleManualDerive = () => {
     const trimmed = pastedText.trim();
@@ -336,17 +375,20 @@ export function CustomDelegationSignerForm({
   };
 
   const onSubmit: SubmitHandler<FormValues> = (values) => {
-    associateMutation.mutate({
-      domainName,
-      signingConfig: {
-        algorithm: values.algorithm,
-        publicKey: values.publicKey,
-        flags: values.flags,
-        keyTag: values.keyTag,
-        digestType: values.digestType,
-        digest: values.digest,
-      },
-    });
+    const signingConfig = {
+      algorithm: values.algorithm,
+      publicKey: values.publicKey,
+      flags: values.flags,
+      keyTag: values.keyTag,
+      digestType: values.digestType,
+      digest: values.digest,
+    };
+    if (validationFailed) {
+      // Failing validation + ack checked → schedule deferred workflow.
+      deferredMutation.mutate({ domainName, signingConfig });
+      return;
+    }
+    associateMutation.mutate({ domainName, signingConfig });
   };
 
   return (
@@ -404,9 +446,7 @@ export function CustomDelegationSignerForm({
             className="flex flex-col gap-3 min-w-0"
           >
             <p className="text-sm text-zinc-400">
-              Query your domain's authoritative nameservers and pick the KSK
-              DNSKEY (flags 257). The form below will be populated
-              automatically.
+              Query your domain's delegated nameservers and detect
             </p>
             <div className="flex items-center justify-between gap-2">
               <LoadingButton
@@ -417,7 +457,7 @@ export function CustomDelegationSignerForm({
                 onClick={handleAutoDetect}
               >
                 <RadarIcon className="w-4 h-4" />
-                Detect from authoritative nameservers
+                Detect from delegated nameservers
               </LoadingButton>
               {autoDetectCandidates.length > 1 ? (
                 <div className="flex items-center gap-2 min-w-0">
@@ -608,15 +648,24 @@ export function CustomDelegationSignerForm({
         <ValidationResultPanel state={validation} />
 
         {ackInfo ? (
-          <div className="flex items-start gap-2 text-sm text-zinc-300">
-            <Checkbox
-              id="ds-ack"
-              checked={acknowledge}
-              onCheckedChange={(checked) => setAcknowledge(checked === true)}
-            />
-            <label htmlFor="ds-ack" className="cursor-pointer">
-              {ackInfo.label}
-            </label>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-start gap-2 text-sm text-zinc-300">
+              <Checkbox
+                id="ds-ack"
+                checked={acknowledge}
+                onCheckedChange={(checked) => setAcknowledge(checked === true)}
+              />
+              <label htmlFor="ds-ack" className="cursor-pointer">
+                {ackInfo.label}
+              </label>
+            </div>
+            {validationFailed ? (
+              <p className="text-xs text-zinc-500 ml-6">
+                We'll run this as a background workflow that polls validation
+                and only submits when both lanes pass. You'll get an email when
+                it lands or times out.
+              </p>
+            ) : null}
           </div>
         ) : null}
 
@@ -637,11 +686,15 @@ export function CustomDelegationSignerForm({
             </Button>
             <LoadingButton
               type="submit"
-              isLoading={associateMutation.isPending}
-              loadingText="Submitting..."
+              isLoading={
+                associateMutation.isPending || deferredMutation.isPending
+              }
+              loadingText={
+                deferredMutation.isPending ? 'Scheduling...' : 'Submitting...'
+              }
               disabled={submitDisabled}
             >
-              Submit DS
+              {validationFailed ? 'Schedule DS' : 'Submit DS'}
             </LoadingButton>
           </div>
         </div>
@@ -773,7 +826,7 @@ function ValidationResultPanel({ state }: { state: ValidationState }) {
   return (
     <Accordion
       multiple
-      defaultValue={VALIDATION_LANE_VALUES as unknown as string[]}
+      defaultValue={[] as string[]}
       className="flex flex-col gap-2 min-w-0"
     >
       <ValidationLane

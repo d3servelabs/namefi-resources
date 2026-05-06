@@ -16,9 +16,16 @@ import {
 import { createLogger, logger } from '#lib/logger';
 
 import { TRPCError } from '@trpc/server';
+import { WorkflowIdReusePolicy } from '@temporalio/common';
 import { temporalClient } from '../../../temporal/client';
 import { enableDnssecWorkflow } from '../../../temporal/workflows/enable-dnssec.workflow';
 import { disableDnssecWorkflow } from '../../../temporal/workflows/disable-dnssec.workflow';
+import {
+  DEFERRED_DS_DEFAULTS,
+  deferredAssociateDelegationSignerWorkflow,
+  getDeferredAssociateDsProgressQuery,
+} from '../../../temporal/workflows/deferred-associate-delegation-signer.workflow';
+import { TEMPORAL_QUEUES } from '../../../temporal/shared';
 import { protectedProcedure } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { domainConfigContract } from '@namefi-astra/common/contract/domain-config-contract';
@@ -131,6 +138,230 @@ export const domainDnssecRouter = createContractTRPCRouter<
         toPunycodeDomainName(input.domainName),
         input.keyId,
       );
+    }),
+
+  /**
+   * Start a deferred-DS workflow that polls authoritative-NS validation, then
+   * public-DNS validation, then submits the DS to the registrar. Used when
+   * the user clicks Submit with the override checkbox on a failing
+   * validation.
+   */
+  submitDeferredDelegationSigner: protectedProcedure
+    .input(domainConfigContract.dnssec.submitDeferredDelegationSigner.input)
+    .output(domainConfigContract.dnssec.submitDeferredDelegationSigner.output)
+    .mutation(async ({ input, ctx }) => {
+      _logger.assign({
+        method: 'submitDeferredDelegationSigner',
+        domainName: input.domainName,
+        keyTag: input.signingConfig.keyTag,
+      });
+      _logger.debug('Starting deferred DS association workflow');
+
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+
+      const punycodeDomain = toPunycodeDomainName(input.domainName);
+      const authoritativeTimeoutMs = input.authoritativeTimeoutMinutes
+        ? input.authoritativeTimeoutMinutes * 60_000
+        : DEFERRED_DS_DEFAULTS.authoritativeTimeoutMs;
+      const publicDnsTimeoutMs = input.publicDnsTimeoutMinutes
+        ? input.publicDnsTimeoutMinutes * 60_000
+        : DEFERRED_DS_DEFAULTS.publicDnsTimeoutMs;
+
+      const workflowId = deferredAssociateDelegationSignerWorkflow.generateId({
+        domainName: punycodeDomain,
+        signingConfig: input.signingConfig,
+      });
+
+      try {
+        await temporalClient.workflow.start(
+          deferredAssociateDelegationSignerWorkflow,
+          {
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            workflowId,
+            workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
+            workflowIdConflictPolicy: 'FAIL',
+            args: [
+              {
+                domainName: punycodeDomain,
+                signingConfig: input.signingConfig as Parameters<
+                  typeof deferredAssociateDelegationSignerWorkflow
+                >[0]['signingConfig'],
+                userId: ctx.user.id,
+                authoritativeTimeoutMs,
+                publicDnsTimeoutMs,
+              },
+            ],
+          },
+        );
+      } catch (error) {
+        _logger.error(
+          { error, workflowId },
+          'Failed to start deferred-DS workflow',
+        );
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message:
+            error instanceof Error
+              ? error.message
+              : 'Failed to start deferred DS workflow',
+          cause: error,
+        });
+      }
+
+      return { workflowId };
+    }),
+
+  /**
+   * List running deferred-DS workflows for the given domain. Each row
+   * carries the live signingConfig + phase so the frontend panel can render
+   * a Pending row with phase tooltip.
+   */
+  getPendingDeferredDelegationSigners: protectedProcedure
+    .input(
+      domainConfigContract.dnssec.getPendingDeferredDelegationSigners.input,
+    )
+    .output(
+      domainConfigContract.dnssec.getPendingDeferredDelegationSigners.output,
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+
+      // The workflow's `domainName` search attribute is set to the punycode
+      // form (see submitDeferredDelegationSigner above and the workflow's
+      // upsertSearchAttributes call). Filter on the same form so IDN
+      // domains aren't silently missed.
+      const punycodeDomain = toPunycodeDomainName(input.domainName);
+      const escapedDomain = punycodeDomain.replace(/'/g, "''");
+      const workflows = temporalClient.workflow.list({
+        query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND WorkflowType = 'deferredAssociateDelegationSignerWorkflow' AND \`domainName\` = '${escapedDomain}'`,
+      });
+
+      const pending: Array<{
+        workflowId: string;
+        runId: string;
+        signingConfig: ReturnType<
+          (typeof domainConfigContract.dnssec.getPendingDeferredDelegationSigners.output)['parse']
+        >['pending'][number]['signingConfig'];
+        phase:
+          | 'await-authoritative-validation'
+          | 'await-public-dns-validation'
+          | 'submit-to-registrar';
+        startedAtMs: number;
+        phaseStartedAtMs?: number;
+        authoritativeTimeoutMs: number;
+        publicDnsTimeoutMs: number;
+      }> = [];
+
+      for await (const workflowExec of workflows) {
+        try {
+          const handle = temporalClient.workflow.getHandle(
+            workflowExec.workflowId,
+            workflowExec.runId,
+          );
+          const live = await handle.query(getDeferredAssociateDsProgressQuery);
+          const inFlight = live.progress.steps.find(
+            (s) => s.status === 'IN_PROGRESS',
+          );
+          // If no step is in-flight (race between phases), pick the most
+          // recently started not-completed step. Fall back to the first
+          // unfinished one.
+          const phaseStep =
+            inFlight ??
+            live.progress.steps.find((s) => s.status !== 'COMPLETED');
+          if (!phaseStep) continue;
+          pending.push({
+            workflowId: workflowExec.workflowId,
+            runId: workflowExec.runId,
+            // The workflow input requires all DnssecKey fields to be set, so
+            // the live state is safe to assert as the strict contract shape.
+            signingConfig:
+              live.signingConfig as (typeof pending)[number]['signingConfig'],
+            phase: phaseStep.id as
+              | 'await-authoritative-validation'
+              | 'await-public-dns-validation'
+              | 'submit-to-registrar',
+            startedAtMs: live.startedAtMs,
+            // The current step's start timestamp — used by the frontend to
+            // compute "remaining" against the phase-specific timeout.
+            phaseStartedAtMs: phaseStep.startedAt,
+            authoritativeTimeoutMs: live.authoritativeTimeoutMs,
+            publicDnsTimeoutMs: live.publicDnsTimeoutMs,
+          });
+        } catch (error) {
+          _logger.warn(
+            {
+              error,
+              workflowId: workflowExec.workflowId,
+              runId: workflowExec.runId,
+            },
+            'Skipping pending workflow row — query handler unavailable',
+          );
+        }
+      }
+
+      return { pending };
+    }),
+
+  /**
+   * Cancel a deferred-DS workflow. Mirrors `cancelDnssecWorkflow` but keyed
+   * on `workflowId` so the row in the panel can be cancelled deterministically.
+   */
+  cancelDeferredDelegationSigner: protectedProcedure
+    .input(domainConfigContract.dnssec.cancelDeferredDelegationSigner.input)
+    .output(domainConfigContract.dnssec.cancelDeferredDelegationSigner.output)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+
+      try {
+        const handle = temporalClient.workflow.getHandle(input.workflowId);
+        const description = await handle.describe();
+        if (description.status.name !== 'RUNNING') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Workflow is not running',
+          });
+        }
+        // Bind the workflowId to the domain the caller owns. Otherwise an
+        // owner of domain A could pass A's domainName + B's workflowId and
+        // bypass the owner-guard above to cancel B's workflow.
+        if (description.type !== 'deferredAssociateDelegationSignerWorkflow') {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Workflow is not a deferred-DS submission workflow',
+          });
+        }
+        // The workflow stores the punycode form in its `domainName` search
+        // attribute, so compare against the same normalization the submit
+        // handler used.
+        const storedDomain = description.searchAttributes?.domainName?.[0];
+        if (storedDomain !== toPunycodeDomainName(input.domainName)) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Workflow does not belong to this domain',
+          });
+        }
+        await handle.cancel();
+        _logger.info(
+          {
+            domainName: input.domainName,
+            workflowId: input.workflowId,
+            userId: ctx.user.id,
+          },
+          'Deferred-DS workflow cancellation requested',
+        );
+        return { success: true, workflowId: input.workflowId };
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+        _logger.error(
+          { error, workflowId: input.workflowId },
+          'Failed to cancel deferred-DS workflow',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to cancel workflow',
+          cause: error,
+        });
+      }
     }),
 
   /**

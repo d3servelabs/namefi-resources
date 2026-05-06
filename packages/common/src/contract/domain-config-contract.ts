@@ -342,6 +342,57 @@ const deriveDelegationSignerOutputSchema = z.object({
   candidates: z.array(dnssecSigningConfigSchema),
 });
 
+const submitDeferredDelegationSignerInputSchema = z.object({
+  domainName: namefiNormalizedDomainSchema,
+  signingConfig: dnssecSigningConfigSchema,
+  /** Optional override for the authoritative-NS validation timeout. */
+  authoritativeTimeoutMinutes: z.number().int().positive().optional(),
+  /** Optional override for the public-DNS validation timeout. */
+  publicDnsTimeoutMinutes: z.number().int().positive().optional(),
+});
+
+const submitDeferredDelegationSignerOutputSchema = z.object({
+  workflowId: z.string(),
+});
+
+const pendingDeferredDelegationSignerSchema = z.object({
+  workflowId: z.string(),
+  runId: z.string(),
+  signingConfig: dnssecSigningConfigSchema,
+  phase: z.enum([
+    'await-authoritative-validation',
+    'await-public-dns-validation',
+    'submit-to-registrar',
+  ]),
+  /** When the workflow started (epoch ms). */
+  startedAtMs: z.number().int(),
+  /**
+   * When the *current* phase started (epoch ms). The two timeouts below are
+   * phase-specific (counted from this timestamp, not from `startedAtMs`).
+   * Optional because Temporal's progress object only sets `startedAt` once
+   * the step transitions to IN_PROGRESS — a freshly-started workflow may
+   * not have populated it yet, in which case the frontend can fall back to
+   * `startedAtMs`.
+   */
+  phaseStartedAtMs: z.number().int().optional(),
+  authoritativeTimeoutMs: z.number().int(),
+  publicDnsTimeoutMs: z.number().int(),
+});
+
+const getPendingDeferredDelegationSignersOutputSchema = z.object({
+  pending: z.array(pendingDeferredDelegationSignerSchema),
+});
+
+const cancelDeferredDelegationSignerInputSchema = z.object({
+  domainName: namefiNormalizedDomainSchema,
+  workflowId: z.string().min(1),
+});
+
+const cancelDeferredDelegationSignerOutputSchema = z.object({
+  success: z.boolean(),
+  workflowId: z.string(),
+});
+
 const domainDnssecContract = createContract(
   { softOutput: true },
   {
@@ -379,6 +430,21 @@ const domainDnssecContract = createContract(
       type: 'mutation',
       input: deriveDelegationSignerInputSchema,
       output: deriveDelegationSignerOutputSchema,
+    },
+    submitDeferredDelegationSigner: {
+      type: 'mutation',
+      input: submitDeferredDelegationSignerInputSchema,
+      output: submitDeferredDelegationSignerOutputSchema,
+    },
+    getPendingDeferredDelegationSigners: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: getPendingDeferredDelegationSignersOutputSchema,
+    },
+    cancelDeferredDelegationSigner: {
+      type: 'mutation',
+      input: cancelDeferredDelegationSignerInputSchema,
+      output: cancelDeferredDelegationSignerOutputSchema,
     },
     getActiveDnssecOperationWorkflows: {
       type: 'query',

@@ -262,21 +262,32 @@ export async function fetchDnskeysAtAuthoritativeNs(
   }> = [];
   let anyResponded = false;
 
-  for (const ns of nameservers) {
-    const response = await resolve(
-      execAsync(
-        [
-          'dig',
-          `@${ns}`,
-          '+noall',
-          '+answer',
-          '+tries=3',
-          '+time=15',
-          domain,
-          'DNSKEY',
-        ].join(' '),
+  // Query all nameservers in parallel — a single slow / unresponsive NS
+  // (worst case 3 × 15 s = 45 s with `+tries=3 +time=15`) must not block the
+  // others, otherwise the wall-clock time of this loop can exceed the
+  // activity's startToCloseTimeout.
+  const responses = await Promise.all(
+    nameservers.map((ns) =>
+      resolve(
+        execAsync(
+          [
+            'dig',
+            `@${ns}`,
+            '+noall',
+            '+answer',
+            '+tries=3',
+            '+time=15',
+            domain,
+            'DNSKEY',
+          ].join(' '),
+        ),
       ),
-    );
+    ),
+  );
+
+  for (let i = 0; i < responses.length; i++) {
+    const ns = nameservers[i];
+    const response = responses[i];
     if (response.failed) {
       _logger.warn(
         { error: response.error, ns, domain },
@@ -491,6 +502,111 @@ function buildLaneResult({
   };
 }
 
+function assertSigningConfigComplete(signingConfig: DnssecKey) {
+  if (
+    isNil(signingConfig.digest) ||
+    isNil(signingConfig.digestType) ||
+    isNil(signingConfig.algorithm) ||
+    isNil(signingConfig.flags)
+  ) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message:
+        'Validation requires algorithm, flags, digestType, and digest to be provided.',
+    });
+  }
+}
+
+/**
+ * Validate a DS against the DNSKEYs published at the domain's authoritative
+ * nameservers. Returns a `ValidationLaneResult`; never throws — DNS / network
+ * failures are converted into `errorMessage` so the caller (workflow polling
+ * or two-lane endpoint) can react uniformly.
+ */
+export async function validateDsAgainstAuthoritative({
+  domainName,
+  signingConfig,
+}: {
+  domainName: PunycodeDomainName;
+  signingConfig: DnssecKey;
+}): Promise<ValidationLaneResult> {
+  assertSigningConfigComplete(signingConfig);
+  let nameservers: string[] = [];
+  try {
+    const details = await sldRegistrar.getDomainDetails(domainName);
+    nameservers = details.nameservers.map((ns) => toPunycodeFqdn(ns));
+    const dnskeys = await fetchDnskeysAtAuthoritativeNs(
+      domainName,
+      nameservers,
+    );
+    if (isEmpty(dnskeys)) {
+      return {
+        isValid: false,
+        publishedDnskeys: [],
+        queriedSource: nameservers,
+        errorMessage: `No DNSKEY records returned by authoritative nameservers for "${domainName}".`,
+      };
+    }
+    return buildLaneResult({
+      domainName,
+      signingConfig,
+      publishedDnskeys: dnskeys,
+      queriedSource: nameservers,
+    });
+  } catch (error) {
+    return {
+      isValid: false,
+      publishedDnskeys: [],
+      queriedSource: nameservers,
+      errorMessage:
+        error instanceof Error
+          ? error.message
+          : 'Authoritative DNSKEY query failed.',
+    };
+  }
+}
+
+/**
+ * Validate a DS against the DNSKEYs visible via Google's public DoH resolver.
+ * Same shape as `validateDsAgainstAuthoritative`; never throws.
+ */
+export async function validateDsAgainstPublicDns({
+  domainName,
+  signingConfig,
+}: {
+  domainName: PunycodeDomainName;
+  signingConfig: DnssecKey;
+}): Promise<ValidationLaneResult> {
+  assertSigningConfigComplete(signingConfig);
+  try {
+    const dnskeys = await fetchDnskeysViaPublicResolver(domainName);
+    if (isEmpty(dnskeys)) {
+      return {
+        isValid: false,
+        publishedDnskeys: [],
+        queriedSource: [PUBLIC_DOH_LABEL],
+        errorMessage: `No DNSKEY records returned by ${PUBLIC_DOH_LABEL} for "${domainName}".`,
+      };
+    }
+    return buildLaneResult({
+      domainName,
+      signingConfig,
+      publishedDnskeys: dnskeys,
+      queriedSource: [PUBLIC_DOH_LABEL],
+    });
+  } catch (error) {
+    return {
+      isValid: false,
+      publishedDnskeys: [],
+      queriedSource: [PUBLIC_DOH_LABEL],
+      errorMessage:
+        error instanceof Error
+          ? error.message
+          : 'Public DoH DNSKEY query failed.',
+    };
+  }
+}
+
 /**
  * Validate a user-supplied DS record against the DNSKEY RRset published at
  * the domain's authoritative nameservers AND at a public recursive resolver
@@ -504,77 +620,10 @@ export async function validateDelegationSignerAgainstPublishedDnskeys({
   domainName: PunycodeDomainName;
   signingConfig: DnssecKey;
 }): Promise<ValidateDelegationSignerResult> {
-  if (
-    isNil(signingConfig.digest) ||
-    isNil(signingConfig.digestType) ||
-    isNil(signingConfig.algorithm) ||
-    isNil(signingConfig.flags)
-  ) {
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message:
-        'Validation requires algorithm, flags, digestType, and digest to be provided.',
-    });
-  }
-
-  const details = await sldRegistrar.getDomainDetails(domainName);
-  const nameservers = details.nameservers.map((ns) => toPunycodeFqdn(ns));
-
-  const [authResult, publicResult] = await Promise.allSettled([
-    fetchDnskeysAtAuthoritativeNs(domainName, nameservers),
-    fetchDnskeysViaPublicResolver(domainName),
+  const [authoritative, publicDns] = await Promise.all([
+    validateDsAgainstAuthoritative({ domainName, signingConfig }),
+    validateDsAgainstPublicDns({ domainName, signingConfig }),
   ]);
-
-  const authoritative: ValidationLaneResult =
-    authResult.status === 'fulfilled'
-      ? isEmpty(authResult.value)
-        ? {
-            isValid: false,
-            publishedDnskeys: [],
-            queriedSource: nameservers,
-            errorMessage: `No DNSKEY records returned by authoritative nameservers for "${domainName}".`,
-          }
-        : buildLaneResult({
-            domainName,
-            signingConfig,
-            publishedDnskeys: authResult.value,
-            queriedSource: nameservers,
-          })
-      : {
-          isValid: false,
-          publishedDnskeys: [],
-          queriedSource: nameservers,
-          errorMessage:
-            authResult.reason instanceof Error
-              ? authResult.reason.message
-              : 'Authoritative DNSKEY query failed.',
-        };
-
-  const publicDns: ValidationLaneResult =
-    publicResult.status === 'fulfilled'
-      ? isEmpty(publicResult.value)
-        ? {
-            isValid: false,
-            publishedDnskeys: [],
-            queriedSource: [PUBLIC_DOH_LABEL],
-            errorMessage: `No DNSKEY records returned by ${PUBLIC_DOH_LABEL} for "${domainName}".`,
-          }
-        : buildLaneResult({
-            domainName,
-            signingConfig,
-            publishedDnskeys: publicResult.value,
-            queriedSource: [PUBLIC_DOH_LABEL],
-          })
-      : {
-          isValid: false,
-          publishedDnskeys: [],
-          queriedSource: [PUBLIC_DOH_LABEL],
-          errorMessage:
-            publicResult.reason instanceof Error
-              ? publicResult.reason.message
-              : 'Public DoH DNSKEY query failed.',
-        };
-
   return { authoritative, publicDns };
 }
 

@@ -15,6 +15,7 @@ export * from './update-nft-index.workflow';
 export * from './disable-dnssec.workflow';
 export * from './reset-nameservers.workflow';
 export * from './enable-dnssec.workflow';
+export * from './deferred-associate-delegation-signer.workflow';
 export * from './change-nameservers.workflow';
 export * from './domain-ownership/acquire-domain.workflow';
 export * from './domain-ownership/domain-setup.workflow';
