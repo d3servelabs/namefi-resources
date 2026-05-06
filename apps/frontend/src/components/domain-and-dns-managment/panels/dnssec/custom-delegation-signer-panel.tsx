@@ -5,6 +5,12 @@ import { PlusIcon } from 'lucide-react';
 
 import type { AppRouterOutput } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@namefi-astra/ui/components/shadcn/accordion';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
@@ -63,8 +69,8 @@ export function CustomDelegationSignerPanel({
             <DialogHeader>
               <DialogTitle>Add Custom Delegation Signer</DialogTitle>
               <DialogDescription>
-                Validate the DS against the DNSKEY published at your
-                authoritative nameservers before submitting.
+                Paste your DNSKEY/DS or auto-detect from your nameservers, then
+                validate before submitting.
               </DialogDescription>
             </DialogHeader>
             <CustomDelegationSignerForm

@@ -8,12 +8,17 @@ import {
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CheckCircle2Icon, Loader2, ShieldAlertIcon } from 'lucide-react';
+import {
+  CheckCircle2Icon,
+  Loader2,
+  RadarIcon,
+  ShieldAlertIcon,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { LoadingButton } from '@/components/buttons/loading-button';
-import { useTRPC } from '@/lib/trpc';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import {
   DnssecAlgorithms,
   DnssecDigestType,
@@ -89,25 +94,23 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+type ValidateResult =
+  AppRouterOutput['domainConfig']['dnssec']['validateDelegationSigner'];
+type DerivedCandidate =
+  AppRouterOutput['domainConfig']['dnssec']['deriveDelegationSigner']['candidates'][number];
+
 type ValidationState =
   | { status: 'idle' }
   | { status: 'pending' }
-  | {
-      status: 'done';
-      isValid: boolean;
-      matchedKeyTag?: number;
-      matchedNs?: string;
-      publishedDnskeys: Array<{
-        flags: number;
-        algorithm: number;
-        publicKey: string;
-        computedKeyTag: number;
-        computedDigest: string;
-        matchesProvided: boolean;
-      }>;
-      nameserversQueried: string[];
-      errorMessage?: string;
-    };
+  | { status: 'done'; result: ValidateResult };
+
+const PASTE_PLACEHOLDER = [
+  'Examples (any of):',
+  'example.com.  3600  IN  DNSKEY  257 3 13 mdsswUyr3...',
+  'example.com.  3600  IN  DS      36011 8 2 83E49D5079...',
+  '257 3 13 mdsswUyr3...',
+  '36011 8 2 83E49D5079...',
+].join('\n');
 
 export type CustomDelegationSignerFormProps = {
   domainName: PunycodeDomainName;
@@ -136,42 +139,73 @@ export function CustomDelegationSignerForm({
     },
   });
 
-  const [inputMode, setInputMode] = useState<'paste-dnskey' | 'enter-ds'>(
-    'paste-dnskey',
+  const [inputMode, setInputMode] = useState<'manual' | 'auto-detect'>(
+    'manual',
   );
-  const [dnskeyText, setDnskeyText] = useState('');
+  const [pastedText, setPastedText] = useState('');
+  const [autoDetectCandidates, setAutoDetectCandidates] = useState<
+    DerivedCandidate[]
+  >([]);
+  const [selectedCandidateIdx, setSelectedCandidateIdx] = useState(0);
   const [validation, setValidation] = useState<ValidationState>({
     status: 'idle',
   });
-  const [acknowledgeMismatch, setAcknowledgeMismatch] = useState(false);
+  const [acknowledge, setAcknowledge] = useState(false);
+  const [publicKeyMissingNotice, setPublicKeyMissingNotice] = useState(false);
 
-  // Reset validation whenever the user edits any DS field that contributes
-  // to it. `form.watch(callback)` returns a subscription that fires on
-  // every value change without re-running the effect on every render.
+  // Reset validation + ack whenever any DS field changes.
   useEffect(() => {
     const subscription = form.watch(() => {
       setValidation({ status: 'idle' });
-      setAcknowledgeMismatch(false);
+      setAcknowledge(false);
     });
     return () => subscription.unsubscribe();
   }, [form]);
 
+  const populateFromCandidate = (candidate: DerivedCandidate) => {
+    form.setValue('keyTag', candidate.keyTag, { shouldValidate: true });
+    form.setValue('algorithm', candidate.algorithm, { shouldValidate: true });
+    form.setValue('flags', candidate.flags, { shouldValidate: true });
+    form.setValue('publicKey', candidate.publicKey, { shouldValidate: true });
+    form.setValue('digestType', candidate.digestType, { shouldValidate: true });
+    form.setValue('digest', candidate.digest, { shouldValidate: true });
+    setPublicKeyMissingNotice(candidate.publicKey === '');
+  };
+
   const deriveMutation = useMutation(
-    trpc.domainConfig.dnssec.deriveDsFromDnskey.mutationOptions({
-      onSuccess(result) {
-        form.setValue('keyTag', result.keyTag, { shouldValidate: true });
-        form.setValue('algorithm', result.algorithm, { shouldValidate: true });
-        form.setValue('flags', result.flags, { shouldValidate: true });
-        form.setValue('publicKey', result.publicKey, { shouldValidate: true });
-        form.setValue('digestType', result.digestType, {
-          shouldValidate: true,
-        });
-        form.setValue('digest', result.digest, { shouldValidate: true });
-        setInputMode('enter-ds');
-        toast.success('DS fields populated from DNSKEY');
+    trpc.domainConfig.dnssec.deriveDelegationSigner.mutationOptions({
+      onSuccess(result, variables) {
+        if (result.candidates.length === 0) {
+          toast.error('No DS or DNSKEY could be derived from input');
+          return;
+        }
+        // Auto-detect mode tracks all candidates so user can switch.
+        if (!variables.text) {
+          setAutoDetectCandidates(result.candidates);
+          setSelectedCandidateIdx(0);
+          populateFromCandidate(result.candidates[0]);
+          if (result.candidates.length > 1) {
+            toast.info(
+              `${result.candidates.length} KSKs published — pick one below.`,
+            );
+          } else {
+            toast.success(
+              `DNSKEY found (key tag ${result.candidates[0].keyTag})`,
+            );
+          }
+          return;
+        }
+        // Manual paste — always one candidate.
+        setAutoDetectCandidates([]);
+        populateFromCandidate(result.candidates[0]);
+        if (result.candidates[0].publicKey === '') {
+          toast.success('DS fields populated. Public key still required.');
+        } else {
+          toast.success('Form populated from pasted record');
+        }
       },
       onError(error) {
-        toast.error(`Could not parse DNSKEY: ${error.message}`);
+        toast.error(error.message);
       },
     }),
   );
@@ -179,24 +213,20 @@ export function CustomDelegationSignerForm({
   const validateMutation = useMutation(
     trpc.domainConfig.dnssec.validateDelegationSigner.mutationOptions({
       onSuccess(result) {
-        const matched = result.publishedDnskeys.find((d) => d.matchesProvided);
-        setValidation({
-          status: 'done',
-          isValid: result.isValid,
-          matchedKeyTag: matched?.computedKeyTag,
-          matchedNs: result.nameserversQueried[0],
-          publishedDnskeys: result.publishedDnskeys,
-          nameserversQueried: result.nameserversQueried,
-          errorMessage: result.errorMessage,
-        });
+        setValidation({ status: 'done', result });
       },
       onError(error) {
-        setValidation({
-          status: 'done',
+        // Both lanes failed at the same fundamental point (e.g. owner-guard).
+        // Surface as a top-level error result.
+        const empty = {
           isValid: false,
           publishedDnskeys: [],
-          nameserversQueried: [],
+          queriedSource: [],
           errorMessage: error.message,
+        };
+        setValidation({
+          status: 'done',
+          result: { authoritative: empty, publicDns: empty },
         });
       },
     }),
@@ -219,24 +249,38 @@ export function CustomDelegationSignerForm({
     }),
   );
 
+  const ackInfo = useMemo(() => buildAckInfo(validation), [validation]);
+
   const submitDisabled = useMemo(() => {
     if (associateMutation.isPending) return true;
     if (validation.status !== 'done') return true;
-    if (validation.isValid) return false;
-    return !acknowledgeMismatch;
-  }, [associateMutation.isPending, validation, acknowledgeMismatch]);
+    return !acknowledge;
+  }, [associateMutation.isPending, validation.status, acknowledge]);
 
-  const handleDeriveFromDnskey = () => {
-    const trimmed = dnskeyText.trim();
+  const handleManualDerive = () => {
+    const trimmed = pastedText.trim();
     if (trimmed.length === 0) {
-      toast.error('Paste a DNSKEY record first');
+      toast.error('Paste a DNSKEY or DS record first');
       return;
     }
     deriveMutation.mutate({
       domainName,
-      dnskeyRecord: trimmed,
+      text: trimmed,
       digestType: form.getValues('digestType'),
     });
+  };
+
+  const handleAutoDetect = () => {
+    deriveMutation.mutate({
+      domainName,
+      digestType: form.getValues('digestType'),
+    });
+  };
+
+  const handleSelectCandidate = (idx: number) => {
+    setSelectedCandidateIdx(idx);
+    const candidate = autoDetectCandidates[idx];
+    if (candidate) populateFromCandidate(candidate);
   };
 
   const handleValidate = async () => {
@@ -278,61 +322,104 @@ export function CustomDelegationSignerForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 min-w-0"
       >
         <Tabs
           value={inputMode}
           onValueChange={(value) =>
-            setInputMode(value as 'paste-dnskey' | 'enter-ds')
+            setInputMode(value as 'manual' | 'auto-detect')
           }
         >
           <TabsList>
-            <TabsTrigger value="paste-dnskey">Paste DNSKEY</TabsTrigger>
-            <TabsTrigger value="enter-ds">Enter DS fields</TabsTrigger>
+            <TabsTrigger value="manual">Manual</TabsTrigger>
+            <TabsTrigger value="auto-detect">Automatic Detection</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="paste-dnskey" className="flex flex-col gap-3">
+          <TabsContent value="manual" className="flex flex-col gap-3 min-w-0">
             <p className="text-sm text-zinc-400">
-              Paste the full DNSKEY record from your DNS provider. We'll derive
-              the matching DS values for the digest type selected below.
+              Paste a DNSKEY or DS record (full zone-file line or just rdata).
+              We'll auto-detect the format.
             </p>
             <Textarea
-              value={dnskeyText}
-              onChange={(e) => setDnskeyText(e.target.value)}
-              placeholder={`${domainName}. 3600 IN DNSKEY 257 3 13 mdsswUyr3...`}
-              rows={4}
-              className="font-mono text-xs"
+              value={pastedText}
+              onChange={(e) => setPastedText(e.target.value)}
+              placeholder={PASTE_PLACEHOLDER}
+              rows={5}
+              className="font-mono text-xs w-full max-w-full"
             />
-            <div className="flex items-center justify-between gap-2">
-              <p className="text-xs text-zinc-500">
-                Accepts full record or just the rdata (flags protocol algorithm
-                publicKey).
-              </p>
+            <div className="flex items-center justify-end">
               <LoadingButton
                 type="button"
                 variant="secondary"
                 isLoading={deriveMutation.isPending}
                 loadingText="Deriving..."
-                onClick={handleDeriveFromDnskey}
-                disabled={dnskeyText.trim().length === 0}
+                onClick={handleManualDerive}
+                disabled={pastedText.trim().length === 0}
               >
                 Derive DS fields
               </LoadingButton>
             </div>
           </TabsContent>
 
-          <TabsContent value="enter-ds" className="text-sm text-zinc-400">
-            Edit the DS fields below directly. Use this when your DNS provider
-            shows DS values rather than DNSKEY.
+          <TabsContent
+            value="auto-detect"
+            className="flex flex-col gap-3 min-w-0"
+          >
+            <p className="text-sm text-zinc-400">
+              Query your domain's authoritative nameservers and pick the KSK
+              DNSKEY (flags 257). The form below will be populated
+              automatically.
+            </p>
+            <div className="flex items-center justify-between gap-2">
+              <LoadingButton
+                type="button"
+                variant="secondary"
+                isLoading={deriveMutation.isPending}
+                loadingText="Detecting..."
+                onClick={handleAutoDetect}
+              >
+                <RadarIcon className="w-4 h-4" />
+                Detect from authoritative nameservers
+              </LoadingButton>
+              {autoDetectCandidates.length > 1 ? (
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-xs text-zinc-400 shrink-0">
+                    KSK candidate
+                  </span>
+                  <Select
+                    value={String(selectedCandidateIdx)}
+                    onValueChange={(value) => {
+                      if (value === null) return;
+                      handleSelectCandidate(Number(value));
+                    }}
+                  >
+                    <SelectTrigger className="min-w-[200px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {autoDetectCandidates.map((candidate, idx) => (
+                        <SelectItem
+                          // biome-ignore lint/suspicious/noArrayIndexKey: candidate list is stable per detect call
+                          key={`${candidate.keyTag}-${idx}`}
+                          value={String(idx)}
+                        >
+                          key tag {candidate.keyTag} — alg {candidate.algorithm}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              ) : null}
+            </div>
           </TabsContent>
         </Tabs>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
           <FormField
             control={form.control}
             name="keyTag"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="min-w-0">
                 <FormLabel>Key tag</FormLabel>
                 <FormControl>
                   <Input
@@ -353,7 +440,7 @@ export function CustomDelegationSignerForm({
             control={form.control}
             name="algorithm"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="min-w-0">
                 <FormLabel>Algorithm</FormLabel>
                 <FormControl>
                   <SelectField
@@ -371,7 +458,7 @@ export function CustomDelegationSignerForm({
             control={form.control}
             name="flags"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="min-w-0">
                 <FormLabel>Flags</FormLabel>
                 <FormControl>
                   <SelectField
@@ -389,7 +476,7 @@ export function CustomDelegationSignerForm({
             control={form.control}
             name="digestType"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="min-w-0">
                 <FormLabel>Digest type</FormLabel>
                 <FormControl>
                   <SelectField
@@ -408,16 +495,23 @@ export function CustomDelegationSignerForm({
           control={form.control}
           name="publicKey"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="min-w-0">
               <FormLabel>Public key (base64)</FormLabel>
               <FormControl>
                 <Textarea
                   rows={3}
-                  className="font-mono text-xs"
+                  className="font-mono text-xs w-full max-w-full"
                   placeholder="mdsswUyr3DPW132mOi8V/+T..."
                   {...field}
                 />
               </FormControl>
+              {publicKeyMissingNotice && !field.value?.trim() ? (
+                <p className="text-xs text-amber-400 mt-1">
+                  Public key not present in the pasted DS. Use{' '}
+                  <span className="font-medium">Automatic Detection</span> or
+                  paste the DNSKEY record so we can submit to the registrar.
+                </p>
+              ) : null}
               <FormMessage />
             </FormItem>
           )}
@@ -427,12 +521,12 @@ export function CustomDelegationSignerForm({
           control={form.control}
           name="digest"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="min-w-0">
               <FormLabel>Digest (hex)</FormLabel>
               <FormControl>
                 <Textarea
                   rows={2}
-                  className="font-mono text-xs"
+                  className="font-mono text-xs w-full max-w-full"
                   placeholder="2BB183AF5F22588179A53B0A98631FAD1A292118..."
                   {...field}
                 />
@@ -442,20 +536,17 @@ export function CustomDelegationSignerForm({
           )}
         />
 
-        <ValidationResult state={validation} />
+        <ValidationResultPanel state={validation} />
 
-        {validation.status === 'done' && !validation.isValid ? (
+        {ackInfo ? (
           <div className="flex items-start gap-2 text-sm text-zinc-300">
             <Checkbox
-              id="ds-mismatch-ack"
-              checked={acknowledgeMismatch}
-              onCheckedChange={(checked) =>
-                setAcknowledgeMismatch(checked === true)
-              }
+              id="ds-ack"
+              checked={acknowledge}
+              onCheckedChange={(checked) => setAcknowledge(checked === true)}
             />
-            <label htmlFor="ds-mismatch-ack" className="cursor-pointer">
-              I understand validation didn't pass and want to associate this DS
-              anyway (e.g. staging before flipping nameservers).
+            <label htmlFor="ds-ack" className="cursor-pointer">
+              {ackInfo.label}
             </label>
           </div>
         ) : null}
@@ -469,7 +560,7 @@ export function CustomDelegationSignerForm({
             onClick={handleValidate}
           >
             <ShieldAlertIcon className="w-4 h-4" />
-            Validate against published DNSKEY
+            Validate
           </LoadingButton>
           <div className="flex items-center gap-2">
             <Button type="button" variant="ghost" onClick={onCancel}>
@@ -524,55 +615,88 @@ function SelectField({
   );
 }
 
-function ValidationResult({ state }: { state: ValidationState }) {
+// --- Validation result rendering ----------------------------------------
+
+function ValidationResultPanel({ state }: { state: ValidationState }) {
   if (state.status === 'idle') return null;
   if (state.status === 'pending') {
     return (
       <div className="flex items-center gap-2 text-sm text-zinc-400 bg-zinc-800/50 rounded-md p-3">
         <Loader2 className="w-4 h-4 animate-spin" />
-        Querying DNSKEY records at authoritative nameservers...
-      </div>
-    );
-  }
-  if (state.errorMessage) {
-    return (
-      <div className="flex items-start gap-2 text-sm text-red-400 bg-red-950/40 border border-red-900/50 rounded-md p-3">
-        <ShieldAlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
-        <div>
-          <p className="font-medium">Could not validate</p>
-          <p className="text-xs text-red-300/80 mt-1">{state.errorMessage}</p>
-        </div>
-      </div>
-    );
-  }
-  if (state.isValid) {
-    return (
-      <div className="flex items-start gap-2 text-sm text-green-400 bg-green-950/30 border border-green-900/50 rounded-md p-3">
-        <CheckCircle2Icon className="w-4 h-4 mt-0.5 shrink-0" />
-        <div>
-          <p className="font-medium">
-            Matches DNSKEY published at {state.matchedNs}
-          </p>
-          <p className="text-xs text-green-300/80 mt-1">
-            Computed key tag: {state.matchedKeyTag}. Safe to submit.
-          </p>
-        </div>
+        Querying DNSKEY records at authoritative nameservers and public DNS...
       </div>
     );
   }
   return (
-    <div className="flex flex-col gap-2 text-sm text-amber-400 bg-amber-950/30 border border-amber-900/50 rounded-md p-3">
-      <div className="flex items-start gap-2">
-        <ShieldAlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
-        <div>
-          <p className="font-medium">No matching DNSKEY found</p>
-          <p className="text-xs text-amber-300/80 mt-1">
-            None of the DNSKEYs published at your nameservers produces the
-            digest you entered. Compare the values below.
+    <div className="flex flex-col gap-2 min-w-0">
+      <ValidationLane
+        title="Authoritative nameservers"
+        lane={state.result.authoritative}
+      />
+      <ValidationLane
+        title="Public DNS (Google)"
+        lane={state.result.publicDns}
+      />
+    </div>
+  );
+}
+
+function ValidationLane({
+  title,
+  lane,
+}: {
+  title: string;
+  lane: ValidateResult['authoritative'];
+}) {
+  const sourceLabel = lane.queriedSource.length
+    ? lane.queriedSource.join(', ')
+    : '—';
+
+  if (lane.errorMessage) {
+    return (
+      <div className="flex flex-col gap-1 text-sm text-red-400 bg-red-950/40 border border-red-900/50 rounded-md p-3 min-w-0">
+        <div className="flex items-start gap-2">
+          <ShieldAlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
+          <div className="min-w-0">
+            <p className="font-medium">{title} — could not validate</p>
+            <p className="text-xs text-red-300/80 mt-1 break-words">
+              {lane.errorMessage}
+            </p>
+            <p className="text-xs text-zinc-500 mt-1">Queried: {sourceLabel}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (lane.isValid) {
+    return (
+      <div className="flex items-start gap-2 text-sm text-green-400 bg-green-950/30 border border-green-900/50 rounded-md p-3 min-w-0">
+        <CheckCircle2Icon className="w-4 h-4 mt-0.5 shrink-0" />
+        <div className="min-w-0">
+          <p className="font-medium">{title} — match</p>
+          <p className="text-xs text-green-300/80 mt-1 break-words">
+            Computed key tag {lane.matchedDnskey?.keyTag}. Source: {sourceLabel}
+            .
           </p>
         </div>
       </div>
-      {state.publishedDnskeys.length > 0 ? (
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2 text-sm text-amber-400 bg-amber-950/30 border border-amber-900/50 rounded-md p-3 min-w-0">
+      <div className="flex items-start gap-2">
+        <ShieldAlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
+        <div className="min-w-0">
+          <p className="font-medium">{title} — no matching DNSKEY</p>
+          <p className="text-xs text-amber-300/80 mt-1 break-words">
+            None of the published DNSKEYs at {sourceLabel} produces the digest
+            you entered.
+          </p>
+        </div>
+      </div>
+      {lane.publishedDnskeys.length > 0 ? (
         <div className="text-xs text-zinc-300 mt-1 overflow-x-auto">
           <table className="w-full font-mono">
             <thead className="text-zinc-500">
@@ -584,7 +708,7 @@ function ValidationResult({ state }: { state: ValidationState }) {
               </tr>
             </thead>
             <tbody>
-              {state.publishedDnskeys.map((d) => (
+              {lane.publishedDnskeys.map((d) => (
                 <tr key={d.publicKey}>
                   <td className="pr-3">{d.flags}</td>
                   <td className="pr-3">{d.algorithm}</td>
@@ -603,4 +727,26 @@ function ValidationResult({ state }: { state: ValidationState }) {
       ) : null}
     </div>
   );
+}
+
+// --- Acknowledgement copy -----------------------------------------------
+
+function buildAckInfo(state: ValidationState): { label: string } | null {
+  if (state.status !== 'done') return null;
+  const auth = state.result.authoritative;
+  const pub = state.result.publicDns;
+  // Treat "errored" lanes as not-valid for ack purposes.
+  if (!auth.isValid) {
+    return {
+      label:
+        "I understand validation didn't pass and want to associate this DS anyway (e.g. staging before flipping nameservers).",
+    };
+  }
+  if (auth.isValid && pub.isValid) {
+    return { label: "I'm sure, associate this DS." };
+  }
+  return {
+    label:
+      'I understand that DNSKEY has not fully reflect in all regions and some regions might have a slight downtime after this change. I want to associate this DS anyway.',
+  };
 }

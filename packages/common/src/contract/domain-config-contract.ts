@@ -291,7 +291,7 @@ const cancelDnssecWorkflowInputSchema = z.object({
   operation: z.enum(['ENABLE_DNSSEC', 'REMOVE_DNSSEC']),
 });
 
-const validateDelegationSignerResultSchema = z.object({
+const validationLaneResultSchema = z.object({
   isValid: z.boolean(),
   matchedDnskey: z
     .object({
@@ -311,14 +311,25 @@ const validateDelegationSignerResultSchema = z.object({
       matchesProvided: z.boolean(),
     }),
   ),
-  nameserversQueried: z.array(z.string()),
+  /** Authoritative NS hostnames for the auth lane, resolver label for public. */
+  queriedSource: z.array(z.string()),
   errorMessage: z.string().optional(),
 });
 
-const deriveDsFromDnskeyInputSchema = z.object({
+const validateDelegationSignerResultSchema = z.object({
+  authoritative: validationLaneResultSchema,
+  publicDns: validationLaneResultSchema,
+});
+
+const deriveDelegationSignerInputSchema = z.object({
   domainName: namefiNormalizedDomainSchema,
-  dnskeyRecord: z.string().min(1),
+  /** Optional pasted DNSKEY/DS in any of four formats. Omit for autodetect. */
+  text: z.string().optional(),
   digestType: z.nativeEnum(DnssecDigestType),
+});
+
+const deriveDelegationSignerOutputSchema = z.object({
+  candidates: z.array(dnssecSigningConfigSchema),
 });
 
 const domainDnssecContract = createContract(
@@ -349,10 +360,10 @@ const domainDnssecContract = createContract(
       input: associateDelegationSignerInputSchema,
       output: validateDelegationSignerResultSchema,
     },
-    deriveDsFromDnskey: {
+    deriveDelegationSigner: {
       type: 'mutation',
-      input: deriveDsFromDnskeyInputSchema,
-      output: dnssecSigningConfigSchema,
+      input: deriveDelegationSignerInputSchema,
+      output: deriveDelegationSignerOutputSchema,
     },
     getActiveDnssecOperationWorkflows: {
       type: 'query',
