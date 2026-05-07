@@ -134,8 +134,8 @@ const mockDomainDetails = (domainName: string, isExpired: boolean) => ({
   nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
   registrarKey: 'DynadotGdg',
   expirationTime: isExpired
-    ? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-    : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+    ? new Date('2025-12-01T00:00:00Z').toISOString()
+    : new Date('2027-06-15T00:00:00Z').toISOString(),
   domainName,
   creationTime: new Date('2024-01-01').toISOString(),
   autoRenewOption: 'AUTOMATIC',
@@ -159,11 +159,9 @@ const mockPendingTransfer = (state: MockDomainState) =>
         id: 'transfer-123',
         domainName: state.domainName,
         status: 'pending',
-        requestedAt: new Date().toISOString(),
+        requestedAt: new Date('2026-06-01T10:00:00Z').toISOString(),
         requestingRegistrarId: 'external-registrar-123',
-        actionDate: new Date(
-          Date.now() + 7 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
+        actionDate: new Date('2026-06-08T10:00:00Z').toISOString(),
       }
     : null;
 
@@ -231,7 +229,12 @@ function MockTrpcProvider({
             case 'domainConfig.requestDomainExport':
               return Promise.resolve([
                 null,
-                { success: true, exportRequestedAt: new Date().toISOString() },
+                {
+                  success: true,
+                  exportRequestedAt: new Date(
+                    '2026-06-01T10:00:00Z',
+                  ).toISOString(),
+                },
               ] as const);
             case 'domainConfig.getAuthCode':
               return Promise.resolve([
