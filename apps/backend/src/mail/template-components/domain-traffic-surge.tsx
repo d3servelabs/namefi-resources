@@ -1,23 +1,23 @@
-// biome-ignore lint/correctness/noUnusedImports: required for react-email runtime JSX
-import React, { type CSSProperties } from 'react';
-import { Button, Text } from '@react-email/components';
+import type React from 'react';
+import type { CSSProperties } from 'react';
+import {
+  Body,
+  Container,
+  Head,
+  Html,
+  Preview,
+  Text,
+} from '@react-email/components';
 import {
   type NamefiNormalizedDomain,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
-import { NamefiEmailContainer } from '../components/namefi-email-container';
+import {
+  EmailTrackingPixel,
+  useEmailTrackingUrl,
+} from '../components/email-tracking';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
-import {
-  astraTheme,
-  button,
-  inlineActionLink,
-  lineHeights,
-  monospaceText,
-  paragraph,
-  sectionHeading,
-  typeScale,
-} from '../styles';
 import { getDomainTrafficSurgeVariant } from '../campaigns/domain-traffic-surge-variants';
 
 export type DomainTrafficSurgeProps = {
@@ -34,172 +34,450 @@ export type DomainTrafficSurgeProps = {
 
 type TrafficDomain = DomainTrafficSurgeProps['domains'][number];
 
-const summaryStyles = {
-  panelTable: {
-    borderCollapse: 'separate',
-    borderSpacing: '0',
-    margin: '16px 0 18px',
-    width: '100%',
-  },
-  panelCell: {
-    backgroundColor: astraTheme.surface,
-    border: `1px solid ${astraTheme.infoBorder}`,
-    padding: '18px 20px 20px',
-  },
-  label: {
-    color: astraTheme.infoInk,
-    fontSize: typeScale.xs,
-    fontWeight: 700,
-    letterSpacing: '0.04em',
-    lineHeight: lineHeights.xs,
-    margin: '0 0 8px',
-    textTransform: 'uppercase',
-  },
-  metric: {
-    color: astraTheme.textPrimary,
-    fontSize: '34px',
-    fontWeight: 800,
-    lineHeight: '40px',
-    margin: '0',
-  },
-  meta: {
-    color: astraTheme.textSecondary,
-    fontSize: typeScale.sm,
-    lineHeight: lineHeights.sm,
-    margin: '6px 0 0',
-  },
-  topDomainTable: {
-    borderCollapse: 'separate',
-    borderSpacing: '0',
-    marginTop: '14px',
-    width: '100%',
-  },
-  topDomainCell: {
-    backgroundColor: astraTheme.card,
-    border: `1px solid ${astraTheme.border}`,
-    borderLeft: `5px solid ${astraTheme.brandPrimary}`,
-    padding: '12px 14px',
-  },
-  topDomainLabel: {
-    color: astraTheme.textMuted,
-    fontSize: typeScale.xs,
-    fontWeight: 700,
-    letterSpacing: '0.04em',
-    lineHeight: lineHeights.xs,
-    margin: '0 0 6px',
-    textTransform: 'uppercase',
-  },
-  topDomainName: {
-    ...monospaceText,
-    color: astraTheme.textPrimary,
-    fontSize: typeScale.md,
-    fontWeight: 700,
-    lineHeight: lineHeights.md,
-    margin: '0',
-  },
-  topDomainMetric: {
-    color: astraTheme.textMuted,
-    fontSize: typeScale.sm,
-    lineHeight: lineHeights.sm,
-    margin: '4px 0 0',
-  },
-} satisfies Record<string, CSSProperties>;
+const trafficColors = {
+  void: '#05090E',
+  panel: '#0D141C',
+  panelDeep: '#0A1118',
+  card: '#FCFEFF',
+  cardSoft: '#F2F6FA',
+  green: '#1CD17D',
+  greenStrong: '#14B86D',
+  text: '#FFFFFF',
+  textInverse: '#05090E',
+  muted: '#8A9BAE',
+  mutedInverse: '#5A6B7C',
+  border: 'rgba(255, 255, 255, 0.07)',
+  greenBorder: 'rgba(28, 209, 125, 0.32)',
+  greenGlow: 'rgba(28, 209, 125, 0.18)',
+} as const;
 
-const domainCardStyles = {
-  listTable: {
-    borderCollapse: 'separate',
-    borderSpacing: '0 10px',
-    margin: '0 0 8px',
-    width: '100%',
+const trafficSurgeResponsiveCss = `
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap');
+
+.traffic-surge-body {
+  margin: 0;
+}
+
+@media only screen and (max-width: 620px) {
+  .traffic-surge-body {
+    box-sizing: border-box !important;
+    padding: 16px 8px 24px !important;
+    width: auto !important;
+  }
+
+  .traffic-surge-shell {
+    border-radius: 14px !important;
+  }
+
+  .traffic-surge-hero {
+    padding: 54px 20px 44px !important;
+  }
+
+  .traffic-surge-hero-number {
+    font-size: 74px !important;
+    line-height: 78px !important;
+  }
+
+  .traffic-surge-hero-number-suffix {
+    font-size: 54px !important;
+    line-height: 58px !important;
+  }
+
+  .traffic-surge-hero-title {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .traffic-surge-section {
+    padding: 30px 20px 18px !important;
+  }
+
+  .traffic-surge-grid-table,
+  .traffic-surge-grid-table tbody,
+  .traffic-surge-grid-table tr {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .traffic-surge-grid-column {
+    box-sizing: border-box !important;
+    display: block !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .traffic-surge-domain-card {
+    min-height: 0 !important;
+  }
+
+  .traffic-surge-domain-name {
+    font-size: 18px !important;
+    line-height: 24px !important;
+  }
+
+  .traffic-surge-domain-name,
+  .traffic-surge-suggestion-domain {
+    white-space: normal !important;
+  }
+}
+`;
+
+const emailShellStyles = {
+  body: {
+    backgroundColor: trafficColors.void,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    padding: '30px 12px 36px',
   },
-  cardCell: {
-    backgroundColor: astraTheme.card,
-    border: `1px solid ${astraTheme.border}`,
-    borderLeft: `5px solid ${astraTheme.brandPrimary}`,
-    padding: '13px 14px',
-  },
-  cardInnerTable: {
-    borderCollapse: 'collapse',
-    width: '100%',
-  },
-  rankCell: {
-    padding: '0 12px 0 0',
-    verticalAlign: 'top',
-    width: '42px',
-  },
-  contentCell: {
+  container: {
+    backgroundColor: trafficColors.void,
+    border: `1px solid ${trafficColors.border}`,
+    borderRadius: '24px',
+    boxShadow: '0 24px 80px rgba(0, 0, 0, 0.45)',
+    margin: '0 auto',
+    maxWidth: '640px',
+    overflow: 'hidden',
     padding: '0',
-    verticalAlign: 'top',
-  },
-  rankText: {
-    backgroundColor: astraTheme.warningBackground,
-    border: `1px solid ${astraTheme.warningBorder}`,
-    color: astraTheme.warningInk,
-    display: 'inline-block',
-    fontSize: typeScale.xs,
-    fontWeight: 700,
-    lineHeight: lineHeights.xs,
-    margin: '0 0 8px',
-    padding: '2px 8px',
-  },
-  domain: {
-    ...monospaceText,
-    color: astraTheme.textPrimary,
-    fontSize: typeScale.md,
-    fontWeight: 700,
-    lineHeight: lineHeights.md,
-    margin: '0',
-  },
-  metric: {
-    color: astraTheme.textPrimary,
-    fontSize: typeScale.lg,
-    fontWeight: 800,
-    lineHeight: lineHeights.lg,
-    margin: '6px 0 0',
+    width: '100%',
   },
 } satisfies Record<string, CSSProperties>;
 
-const suggestionStyles = {
-  listTable: {
-    borderCollapse: 'separate',
-    borderSpacing: '0 10px',
-    margin: '0 0 4px',
+const trafficSurgeStyles = {
+  hero: {
+    backgroundColor: trafficColors.void,
+    backgroundImage:
+      'radial-gradient(circle at 50% 26%, rgba(28, 209, 125, 0.18) 0%, rgba(28, 209, 125, 0.08) 34%, rgba(5, 9, 14, 0) 68%)',
+    overflow: 'hidden',
+    padding: '74px 36px 58px',
+    position: 'relative',
+    textAlign: 'center',
+  },
+  heroSvg: {
+    height: '100%',
+    left: '0',
+    position: 'absolute',
+    top: '0',
     width: '100%',
   },
-  cardCell: {
-    backgroundColor: astraTheme.surfaceStripe,
-    border: `1px solid ${astraTheme.border}`,
-    padding: '12px 14px',
+  heroContent: {
+    position: 'relative',
+    zIndex: 2,
   },
-  cardInnerTable: {
+  eyebrow: {
+    backgroundColor: 'rgba(28, 209, 125, 0.12)',
+    border: '1px solid rgba(28, 209, 125, 0.28)',
+    borderRadius: '999px',
+    color: trafficColors.green,
+    display: 'inline-block',
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '13px',
+    fontWeight: 800,
+    letterSpacing: '0.06em',
+    lineHeight: '18px',
+    margin: '0 0 24px',
+    padding: '7px 16px',
+    textTransform: 'uppercase',
+  },
+  eyebrowDot: {
+    backgroundColor: trafficColors.green,
+    borderRadius: '50%',
+    boxShadow: `0 0 10px ${trafficColors.green}`,
+    display: 'inline-block',
+    height: '8px',
+    margin: '0 10px 1px 0',
+    verticalAlign: 'middle',
+    width: '8px',
+  },
+  heroNumber: {
+    color: '#EAF2FA',
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '108px',
+    fontWeight: 900,
+    letterSpacing: '0',
+    lineHeight: '108px',
+    margin: '0',
+    textShadow: '0 10px 28px rgba(0, 0, 0, 0.45)',
+  },
+  heroNumberSuffix: {
+    color: trafficColors.green,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '78px',
+    fontWeight: 900,
+    letterSpacing: '0',
+    lineHeight: '82px',
+    verticalAlign: 'baseline',
+  },
+  heroTitle: {
+    color: trafficColors.text,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '24px',
+    fontWeight: 400,
+    lineHeight: '32px',
+    margin: '12px 0 0',
+  },
+  heroCopy: {
+    color: trafficColors.muted,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '16px',
+    lineHeight: '24px',
+    margin: '18px auto 0',
+    maxWidth: '420px',
+  },
+  section: {
+    backgroundColor: trafficColors.panel,
+    borderTop: `1px solid ${trafficColors.border}`,
+    padding: '42px 40px 24px',
+  },
+  sectionDeep: {
+    backgroundColor: trafficColors.panelDeep,
+    borderTop: `1px solid ${trafficColors.greenBorder}`,
+    padding: '42px 40px 24px',
+  },
+  sectionHeading: {
+    color: trafficColors.text,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '23px',
+    fontWeight: 800,
+    lineHeight: '30px',
+    margin: '0 0 24px',
+  },
+  gridTable: {
     borderCollapse: 'collapse',
+    tableLayout: 'fixed',
     width: '100%',
   },
-  domainCell: {
-    padding: '0 12px 0 0',
+  domainCard: {
+    backgroundColor: trafficColors.card,
+    backgroundImage: `linear-gradient(145deg, ${trafficColors.card} 0%, ${trafficColors.cardSoft} 100%)`,
+    border: `1px solid ${trafficColors.greenBorder}`,
+    borderRadius: '14px',
+    boxShadow: `0 12px 34px ${trafficColors.greenGlow}`,
+    height: '176px',
+    overflow: 'hidden',
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  domainCardCell: {
+    height: '176px',
+    padding: '18px 20px',
+    textAlign: 'center',
     verticalAlign: 'middle',
   },
-  actionCell: {
+  rankBadge: {
+    borderRadius: '999px',
+    display: 'inline-block',
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '13px',
+    fontWeight: 900,
+    letterSpacing: '0.08em',
+    lineHeight: '18px',
+    margin: '0 0 12px',
+    padding: '5px 15px',
+    textTransform: 'uppercase',
+  },
+  domainName: {
+    color: trafficColors.textInverse,
+    fontFamily:
+      '"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono","Courier New",monospace',
+    fontSize: '16px',
+    fontWeight: 800,
+    letterSpacing: '0',
+    lineHeight: '22px',
+    margin: '0',
+    overflowWrap: 'normal',
+    whiteSpace: 'nowrap',
+    wordBreak: 'normal',
+  },
+  domainHeaderFrameTable: {
+    borderCollapse: 'collapse',
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  domainHeaderFrameSideCell: {
+    padding: '0',
+    verticalAlign: 'middle',
+    width: '42px',
+  },
+  domainHeaderFrameCenterCell: {
+    padding: '0',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+  },
+  domainHeaderTable: {
+    borderCollapse: 'collapse',
+    width: 'auto',
+  },
+  domainHeaderNameCell: {
+    padding: '0 12px 0 0',
+    textAlign: 'left',
+    verticalAlign: 'middle',
+  },
+  domainHeaderActionCell: {
     padding: '0',
     textAlign: 'right',
     verticalAlign: 'middle',
+    width: '36px',
+  },
+  manageAction: {
+    backgroundColor: trafficColors.green,
+    border: `1px solid ${trafficColors.greenStrong}`,
+    borderRadius: '8px',
+    color: trafficColors.textInverse,
+    display: 'inline-block',
+    height: '34px',
+    lineHeight: '34px',
+    padding: '0',
+    textAlign: 'center',
+    textDecoration: 'none',
+    width: '34px',
+  },
+  domainMetric: {
+    color: trafficColors.textInverse,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '15px',
+    fontWeight: 800,
+    lineHeight: '24px',
+    margin: '14px 0 0',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  domainMetricValue: {
+    color: '#02060A',
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '40px',
+    fontWeight: 900,
+    letterSpacing: '0',
+    lineHeight: '42px',
+  },
+  domainMetricLabel: {
+    color: trafficColors.mutedInverse,
+    fontSize: '14px',
+    fontWeight: 800,
+    letterSpacing: '0.05em',
+    lineHeight: '18px',
+    paddingLeft: '8px',
+    verticalAlign: 'baseline',
+  },
+  suggestionCard: {
+    backgroundColor: trafficColors.card,
+    border: '1px solid rgba(5, 9, 14, 0.08)',
+    borderRadius: '12px',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
+    height: '82px',
+    overflow: 'hidden',
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  suggestionCell: {
+    height: '82px',
+    padding: '12px 20px',
+    verticalAlign: 'middle',
+  },
+  suggestionInnerTable: {
+    borderCollapse: 'collapse',
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  suggestionDomainCell: {
+    padding: '0 14px 0 0',
+    verticalAlign: 'middle',
+    width: '1%',
     whiteSpace: 'nowrap',
-    width: '96px',
   },
-  domain: {
-    ...monospaceText,
-    color: astraTheme.textPrimary,
-    fontSize: typeScale.md,
-    fontWeight: 700,
-    lineHeight: lineHeights.md,
-    margin: '0 0 10px',
+  suggestionSpacerCell: {
+    padding: '0',
+    verticalAlign: 'middle',
+    width: '100%',
   },
-  action: {
-    ...inlineActionLink,
+  suggestionActionCell: {
+    padding: '0',
+    textAlign: 'right',
+    verticalAlign: 'middle',
+    width: '52px',
+  },
+  suggestionDomain: {
+    color: trafficColors.textInverse,
+    fontFamily:
+      '"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono","Courier New",monospace',
+    fontSize: '16px',
+    fontWeight: 800,
+    lineHeight: '24px',
+    margin: '0',
+    overflowWrap: 'normal',
+    whiteSpace: 'nowrap',
+    wordBreak: 'normal',
+  },
+  suggestionAction: {
+    backgroundColor: trafficColors.green,
+    border: `1px solid ${trafficColors.greenStrong}`,
+    borderRadius: '9px',
+    color: trafficColors.textInverse,
+    display: 'inline-block',
+    height: '42px',
+    lineHeight: '42px',
+    padding: '0',
+    textAlign: 'center',
+    textDecoration: 'none',
+    width: '42px',
+  },
+  footer: {
+    backgroundColor: trafficColors.void,
+    borderTop: `1px solid ${trafficColors.border}`,
+    padding: '34px 40px 38px',
+    textAlign: 'center',
+  },
+  footerText: {
+    color: trafficColors.muted,
+    fontSize: '13px',
+    lineHeight: '20px',
+    margin: '0',
+  },
+  footerLink: {
+    color: trafficColors.green,
+    fontSize: '13px',
+    fontWeight: 400,
+    lineHeight: '20px',
+    textDecoration: 'underline',
   },
 } satisfies Record<string, CSSProperties>;
 
+const rankBadgeVariants = [
+  {
+    backgroundColor: '#FFC928',
+    boxShadow: '0 6px 16px rgba(255, 201, 40, 0.32)',
+    color: '#05090E',
+  },
+  {
+    backgroundColor: '#C8CED6',
+    boxShadow: '0 6px 16px rgba(200, 206, 214, 0.34)',
+    color: '#05090E',
+  },
+  {
+    backgroundColor: '#C7782D',
+    boxShadow: '0 6px 16px rgba(199, 120, 45, 0.32)',
+    color: '#FFFFFF',
+  },
+  {
+    backgroundColor: '#7F91A4',
+    boxShadow: '0 6px 16px rgba(127, 145, 164, 0.28)',
+    color: '#FFFFFF',
+  },
+] satisfies CSSProperties[];
+
+const defaultRankBadgeVariant: CSSProperties = rankBadgeVariants[3] ?? {};
+
 const TRAILING_ZERO_DECIMAL_REGEX = /\.0$/;
+const COMPACT_METRIC_PARTS_REGEX = /^([0-9.,]+)([a-zA-Z]+)$/;
 
 export function normalizeTrafficQueryCount(value: number) {
   return Math.max(0, Math.round(value));
@@ -279,111 +557,133 @@ export function getDomainTrafficSurgeEmailTitle({
 }
 
 export function getSuggestedDomainsHeading() {
-  return 'Similar domains to the ones heating up';
+  return 'Similar domains available';
 }
 
-function TrafficSummaryPanel({
-  topDomain,
+function getLookupUnit(value: number) {
+  return normalizeTrafficQueryCount(value) === 1 ? 'lookup' : 'lookups';
+}
+
+function splitCompactMetric(value: number) {
+  const formatted = formatCompactTrafficQueryCount(value);
+  const match = formatted.match(COMPACT_METRIC_PARTS_REGEX);
+  if (!match) {
+    return { value: formatted, suffix: '' };
+  }
+  return { value: match[1] ?? formatted, suffix: match[2] ?? '' };
+}
+
+function getHeroCopy({
   hasMultipleTrafficDomains,
-  totalWeeklyQueries,
-  domainCount,
+  recipientName,
 }: {
-  topDomain: TrafficDomain;
   hasMultipleTrafficDomains: boolean;
-  totalWeeklyQueries: number;
-  domainCount: number;
+  recipientName: string | null;
 }) {
-  const measuredMetric = hasMultipleTrafficDomains
-    ? formatLookupMetric(totalWeeklyQueries)
-    : formatLookupMetric(topDomain.weeklyQueries);
-  const measuredScope = hasMultipleTrafficDomains
-    ? `across ${formatDomainCountLabel(domainCount)}`
-    : `for ${topDomain.domain}`;
-
-  return (
-    <table
-      role="presentation"
-      cellPadding="0"
-      cellSpacing="0"
-      style={summaryStyles.panelTable}
-    >
-      <tbody>
-        <tr>
-          <td style={summaryStyles.panelCell}>
-            <Text style={summaryStyles.label}>Activity measured</Text>
-            <Text style={summaryStyles.metric}>{measuredMetric}</Text>
-            <Text style={summaryStyles.meta}>
-              Namefi recorded this activity {measuredScope} in the latest 7-day
-              window.
-            </Text>
-            {!hasMultipleTrafficDomains ? (
-              <table
-                role="presentation"
-                cellPadding="0"
-                cellSpacing="0"
-                style={summaryStyles.topDomainTable}
-              >
-                <tbody>
-                  <tr>
-                    <td style={summaryStyles.topDomainCell}>
-                      <Text style={summaryStyles.topDomainLabel}>
-                        Active domain
-                      </Text>
-                      <Text style={summaryStyles.topDomainName}>
-                        {topDomain.domain}
-                      </Text>
-                      <Text style={summaryStyles.topDomainMetric}>
-                        {formatLookupMetric(topDomain.weeklyQueries)}
-                      </Text>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            ) : null}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  );
+  const scope = hasMultipleTrafficDomains ? 'domains are' : 'domain is';
+  const baseCopy = `Congratulations! Your ${scope} popular.`;
+  if (!recipientName) return baseCopy;
+  return `${recipientName}, ${baseCopy.charAt(0).toLowerCase()}${baseCopy.slice(1)}`;
 }
 
-function MeasuredDomainCards({ domains }: { domains: TrafficDomain[] }) {
+function getTopDomainsHeading(domainCount: number) {
+  return domainCount === 1 ? 'Top Performing Domain' : 'Top Performing Domains';
+}
+
+function formatOrdinalRank(value: number) {
+  const mod100 = value % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${value}th`;
+  switch (value % 10) {
+    case 1:
+      return `${value}st`;
+    case 2:
+      return `${value}nd`;
+    case 3:
+      return `${value}rd`;
+    default:
+      return `${value}th`;
+  }
+}
+
+function getRankBadgeStyle(index: number): CSSProperties {
+  return {
+    ...trafficSurgeStyles.rankBadge,
+    ...(rankBadgeVariants[index] ?? defaultRankBadgeVariant),
+  };
+}
+
+function chunkIntoPairs<T>(items: T[]): T[][] {
+  const rows: T[][] = [];
+  for (let index = 0; index < items.length; index += 2) {
+    rows.push(items.slice(index, index + 2));
+  }
+  return rows;
+}
+
+function getGridColumnStyle({
+  cellIndex,
+  isSingleCell,
+}: {
+  cellIndex: number;
+  isSingleCell: boolean;
+}): CSSProperties {
+  if (isSingleCell) {
+    return {
+      padding: '0 0 16px',
+      verticalAlign: 'top',
+      width: '100%',
+    };
+  }
+
+  return {
+    padding: cellIndex === 0 ? '0 8px 16px 0' : '0 0 16px 8px',
+    verticalAlign: 'top',
+    width: '50%',
+  };
+}
+
+function TrafficTileGrid<T>({
+  items,
+  getKey,
+  renderItem,
+}: {
+  items: T[];
+  getKey: (item: T, index: number) => string;
+  renderItem: (item: T, index: number) => React.ReactNode;
+}) {
+  const rows = chunkIntoPairs(items);
   return (
     <table
       role="presentation"
       cellPadding="0"
       cellSpacing="0"
-      style={domainCardStyles.listTable}
+      className="traffic-surge-grid-table"
+      width="100%"
+      style={trafficSurgeStyles.gridTable}
     >
       <tbody>
-        {domains.map((domain, index) => (
-          <tr key={domain.domain}>
-            <td style={domainCardStyles.cardCell}>
-              <table
-                role="presentation"
-                cellPadding="0"
-                cellSpacing="0"
-                style={domainCardStyles.cardInnerTable}
-              >
-                <tbody>
-                  <tr>
-                    <td style={domainCardStyles.rankCell}>
-                      <Text style={domainCardStyles.rankText}>
-                        #{index + 1}
-                      </Text>
-                    </td>
-                    <td style={domainCardStyles.contentCell}>
-                      <Text style={domainCardStyles.domain}>
-                        {domain.domain}
-                      </Text>
-                      <Text style={domainCardStyles.metric}>
-                        {formatLookupMetric(domain.weeklyQueries)}
-                      </Text>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
+        {rows.map((row, rowIndex) => (
+          <tr
+            key={row
+              .map((item, cellIndex) => getKey(item, rowIndex * 2 + cellIndex))
+              .join('|')}
+          >
+            {row.map((item, cellIndex) => {
+              const itemIndex = rowIndex * 2 + cellIndex;
+              return (
+                <td
+                  className="traffic-surge-grid-column"
+                  key={getKey(item, itemIndex)}
+                  width={row.length === 1 ? '100%' : '50%'}
+                  style={getGridColumnStyle({
+                    cellIndex,
+                    isSingleCell: row.length === 1,
+                  })}
+                >
+                  {renderItem(item, itemIndex)}
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>
@@ -391,50 +691,322 @@ function MeasuredDomainCards({ domains }: { domains: TrafficDomain[] }) {
   );
 }
 
-function TrafficActivitySection({
-  domains,
-  topDomain,
+function HeroDecoration() {
+  return (
+    <svg
+      aria-hidden="true"
+      style={trafficSurgeStyles.heroSvg}
+      viewBox="0 0 640 390"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 46H640M0 92H640M0 138H640M0 184H640M0 230H640M0 276H640M0 322H640"
+        fill="none"
+        opacity="0.58"
+        stroke="rgba(255,255,255,0.05)"
+      />
+      <path
+        d="M102 0V390M205 0V390M320 0V390M435 0V390M538 0V390"
+        fill="none"
+        opacity="0.58"
+        stroke="rgba(255,255,255,0.05)"
+      />
+      <circle
+        cx="320"
+        cy="178"
+        fill="none"
+        opacity="0.5"
+        r="132"
+        stroke="rgba(255,255,255,0.08)"
+      />
+      <circle
+        cx="320"
+        cy="178"
+        fill="none"
+        opacity="0.44"
+        r="220"
+        stroke="rgba(255,255,255,0.08)"
+      />
+      <path
+        d="M-58 238C105 238 192 112 278 154C366 198 382 267 470 272C542 276 586 276 698 318"
+        fill="none"
+        opacity="0.68"
+        stroke="#1CD17D"
+        strokeDasharray="7 9"
+        strokeWidth="2.5"
+      />
+      <path
+        d="M-64 74C58 121 172 108 261 118C371 130 382 270 488 212C565 170 590 170 704 200"
+        fill="none"
+        opacity="0.43"
+        stroke="#1CD17D"
+        strokeDasharray="7 9"
+        strokeWidth="2.5"
+      />
+      <path
+        d="M-46 290C114 276 185 214 265 180C352 142 438 128 514 126C584 124 628 136 694 150"
+        fill="none"
+        opacity="0.72"
+        stroke="#1CD17D"
+        strokeDasharray="7 9"
+        strokeWidth="2.5"
+      />
+      <path
+        d="M203 132L208 137L213 132L208 127Z"
+        fill="#FFFFFF"
+        opacity="0.9"
+      />
+      <path
+        d="M456 226L461 231L466 226L461 221Z"
+        fill="#FFFFFF"
+        opacity="0.9"
+      />
+      <path d="M520 108L524 112L528 108L524 104Z" fill="#1CD17D" />
+      <path d="M114 270L118 274L122 270L118 266Z" fill="#1CD17D" />
+      <circle cx="96" cy="82" fill="#1CD17D" opacity="0.54" r="4" />
+      <circle cx="541" cy="286" fill="#1CD17D" opacity="0.9" r="4" />
+      <path
+        d="M490 196L496 202M496 196L490 202"
+        opacity="0.78"
+        stroke="#1CD17D"
+        strokeLinecap="round"
+        strokeWidth="2.5"
+      />
+      <path
+        d="M166 304L171 309M171 304L166 309"
+        opacity="0.44"
+        stroke="#FFFFFF"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function SettingsIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height="18"
+      style={{ verticalAlign: 'middle' }}
+      viewBox="0 0 24 24"
+      width="18"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="12" cy="12" r="3" stroke="#05090E" strokeWidth="2" />
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"
+        stroke="#05090E"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function CartIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height="22"
+      style={{ verticalAlign: 'middle' }}
+      viewBox="0 0 24 24"
+      width="22"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="9" cy="21" r="1" stroke="#05090E" strokeWidth="2" />
+      <circle cx="20" cy="21" r="1" stroke="#05090E" strokeWidth="2" />
+      <path
+        d="M1 1h4l2.68 13.39A2 2 0 0 0 9.64 16h9.72a2 2 0 0 0 1.96-1.61L23 6H6"
+        stroke="#05090E"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function TrafficHero({
   hasMultipleTrafficDomains,
+  recipientName,
   totalWeeklyQueries,
-  poweredByNamefiDomain,
-  cta,
 }: {
-  domains: TrafficDomain[];
-  topDomain: TrafficDomain;
   hasMultipleTrafficDomains: boolean;
+  recipientName: string | null;
   totalWeeklyQueries: number;
-  poweredByNamefiDomain: string | null;
-  cta: string;
 }) {
-  const heatingIntro = hasMultipleTrafficDomains
-    ? 'Your domains are heating up.'
-    : 'Your domain is heating up.';
+  const heroMetric = splitCompactMetric(totalWeeklyQueries);
+  const heroCopy = getHeroCopy({
+    hasMultipleTrafficDomains,
+    recipientName,
+  });
 
   return (
-    <>
-      <Text style={{ ...paragraph, marginBottom: '12px' }}>
-        {heatingIntro} Here is what Namefi measured in the latest 7-day window.
+    <div className="traffic-surge-hero" style={trafficSurgeStyles.hero}>
+      <HeroDecoration />
+      <div style={trafficSurgeStyles.heroContent}>
+        <div style={trafficSurgeStyles.eyebrow}>
+          <span style={trafficSurgeStyles.eyebrowDot} />
+          Weekly Report
+        </div>
+        <div
+          className="traffic-surge-hero-number"
+          style={trafficSurgeStyles.heroNumber}
+        >
+          {heroMetric.value}
+          {heroMetric.suffix ? (
+            <span
+              className="traffic-surge-hero-number-suffix"
+              style={trafficSurgeStyles.heroNumberSuffix}
+            >
+              {heroMetric.suffix}
+            </span>
+          ) : null}
+        </div>
+        <Text
+          className="traffic-surge-hero-title"
+          style={trafficSurgeStyles.heroTitle}
+        >
+          Total Domain Lookups
+        </Text>
+        <Text style={trafficSurgeStyles.heroCopy}>
+          {heroCopy}
+          <br />
+          Keep the momentum going.
+        </Text>
+      </div>
+    </div>
+  );
+}
+
+function TopDomainCard({
+  domain,
+  index,
+  poweredByNamefiDomain,
+}: {
+  domain: TrafficDomain;
+  index: number;
+  poweredByNamefiDomain: string | null;
+}) {
+  return (
+    <table
+      role="presentation"
+      cellPadding="0"
+      cellSpacing="0"
+      className="traffic-surge-domain-card"
+      width="100%"
+      style={trafficSurgeStyles.domainCard}
+    >
+      <tbody>
+        <tr>
+          <td style={trafficSurgeStyles.domainCardCell}>
+            <div style={getRankBadgeStyle(index)}>
+              {formatOrdinalRank(index + 1)}
+            </div>
+            <table
+              role="presentation"
+              cellPadding="0"
+              cellSpacing="0"
+              width="100%"
+              style={trafficSurgeStyles.domainHeaderFrameTable}
+            >
+              <tbody>
+                <tr>
+                  <td
+                    width="42"
+                    style={trafficSurgeStyles.domainHeaderFrameSideCell}
+                  />
+                  <td
+                    align="center"
+                    style={trafficSurgeStyles.domainHeaderFrameCenterCell}
+                  >
+                    <table
+                      role="presentation"
+                      align="center"
+                      cellPadding="0"
+                      cellSpacing="0"
+                      style={trafficSurgeStyles.domainHeaderTable}
+                    >
+                      <tbody>
+                        <tr>
+                          <td style={trafficSurgeStyles.domainHeaderNameCell}>
+                            <Text
+                              className="traffic-surge-domain-name"
+                              style={trafficSurgeStyles.domainName}
+                            >
+                              {domain.domain}
+                            </Text>
+                          </td>
+                          <td
+                            width="36"
+                            style={trafficSurgeStyles.domainHeaderActionCell}
+                          >
+                            <a
+                              aria-label={`Manage DNS for ${domain.domain}`}
+                              className="traffic-surge-manage-action"
+                              href={NamefiEmailLinks.domainSettings({
+                                domain: domain.domain,
+                                poweredByNamefiDomain,
+                              })}
+                              style={trafficSurgeStyles.manageAction}
+                            >
+                              <SettingsIcon />
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                  <td
+                    width="42"
+                    style={trafficSurgeStyles.domainHeaderFrameSideCell}
+                  />
+                </tr>
+              </tbody>
+            </table>
+            <Text style={trafficSurgeStyles.domainMetric}>
+              <span style={trafficSurgeStyles.domainMetricValue}>
+                {formatCompactTrafficQueryCount(domain.weeklyQueries)}
+              </span>
+              <span style={trafficSurgeStyles.domainMetricLabel}>
+                {getLookupUnit(domain.weeklyQueries)}
+              </span>
+            </Text>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
+function TopDomainsSection({
+  domains,
+  poweredByNamefiDomain,
+}: {
+  domains: TrafficDomain[];
+  poweredByNamefiDomain: string | null;
+}) {
+  return (
+    <div className="traffic-surge-section" style={trafficSurgeStyles.section}>
+      <Text style={trafficSurgeStyles.sectionHeading}>
+        {getTopDomainsHeading(domains.length)}
       </Text>
-      <TrafficSummaryPanel
-        topDomain={topDomain}
-        hasMultipleTrafficDomains={hasMultipleTrafficDomains}
-        totalWeeklyQueries={totalWeeklyQueries}
-        domainCount={domains.length}
+      <TrafficTileGrid
+        getKey={(domain) => domain.domain}
+        items={domains}
+        renderItem={(domain, index) => (
+          <TopDomainCard
+            domain={domain}
+            index={index}
+            poweredByNamefiDomain={poweredByNamefiDomain}
+          />
+        )}
       />
-      {hasMultipleTrafficDomains ? (
-        <>
-          <Text style={sectionHeading}>Most active domains</Text>
-          <MeasuredDomainCards domains={domains} />
-        </>
-      ) : null}
-      <Button
-        className="namefi-button-mobile"
-        style={button}
-        href={NamefiEmailLinks.domains({ poweredByNamefiDomain })}
-      >
-        {cta}
-      </Button>
-    </>
+    </div>
   );
 }
 
@@ -446,50 +1018,109 @@ function SuggestedDomainsSection({
   poweredByNamefiDomain: string | null;
 }) {
   return (
-    <>
-      <Text style={sectionHeading}>{getSuggestedDomainsHeading()}</Text>
-      <table
-        role="presentation"
-        cellPadding="0"
-        cellSpacing="0"
-        style={suggestionStyles.listTable}
-      >
-        <tbody>
-          {domains.map((domain) => (
-            <tr key={domain}>
-              <td style={suggestionStyles.cardCell}>
-                <table
-                  role="presentation"
-                  cellPadding="0"
-                  cellSpacing="0"
-                  style={suggestionStyles.cardInnerTable}
-                >
-                  <tbody>
-                    <tr>
-                      <td style={suggestionStyles.domainCell}>
-                        <Text style={suggestionStyles.domain}>{domain}</Text>
-                      </td>
-                      <td style={suggestionStyles.actionCell}>
-                        <a
-                          aria-label={`Register ${domain}`}
-                          href={NamefiEmailLinks.addToCartFromUrl({
-                            domain,
-                            poweredByNamefiDomain,
-                          })}
-                          style={suggestionStyles.action}
+    <div
+      className="traffic-surge-section"
+      style={trafficSurgeStyles.sectionDeep}
+    >
+      <Text style={trafficSurgeStyles.sectionHeading}>
+        {getSuggestedDomainsHeading()}
+      </Text>
+      <TrafficTileGrid
+        getKey={(domain) => domain}
+        items={domains}
+        renderItem={(domain) => (
+          <table
+            role="presentation"
+            cellPadding="0"
+            cellSpacing="0"
+            width="100%"
+            style={trafficSurgeStyles.suggestionCard}
+          >
+            <tbody>
+              <tr>
+                <td style={trafficSurgeStyles.suggestionCell}>
+                  <table
+                    role="presentation"
+                    cellPadding="0"
+                    cellSpacing="0"
+                    width="100%"
+                    style={trafficSurgeStyles.suggestionInnerTable}
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          width="1%"
+                          style={trafficSurgeStyles.suggestionDomainCell}
                         >
-                          Register
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+                          <Text
+                            className="traffic-surge-suggestion-domain"
+                            style={trafficSurgeStyles.suggestionDomain}
+                          >
+                            {domain}
+                          </Text>
+                        </td>
+                        <td
+                          width="100%"
+                          style={trafficSurgeStyles.suggestionSpacerCell}
+                        />
+                        <td
+                          align="right"
+                          width="52"
+                          style={trafficSurgeStyles.suggestionActionCell}
+                        >
+                          <a
+                            aria-label={`Add ${domain} to cart`}
+                            className="traffic-surge-suggestion-action"
+                            href={NamefiEmailLinks.addToCartFromUrl({
+                              domain,
+                              poweredByNamefiDomain,
+                            })}
+                            style={trafficSurgeStyles.suggestionAction}
+                          >
+                            <CartIcon />
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+      />
+    </div>
+  );
+}
+
+function TrafficEmailFooter({
+  poweredByNamefiDomain,
+}: {
+  poweredByNamefiDomain: string | null;
+}) {
+  return (
+    <div style={trafficSurgeStyles.footer}>
+      <Text style={trafficSurgeStyles.footerText}>
+        This is an automated domain activity notification.
+        <br />
+        All metrics are accurate as of send time.
+      </Text>
+      <Text style={{ ...trafficSurgeStyles.footerText, margin: '14px 0 0' }}>
+        <a
+          href="mailto:support@namefi.io"
+          style={trafficSurgeStyles.footerLink}
+        >
+          Contact support
+        </a>
+        {' | '}
+        <a
+          href={NamefiEmailLinks.emailSubscription({ poweredByNamefiDomain })}
+          style={trafficSurgeStyles.footerLink}
+        >
+          Manage notification preferences
+        </a>
+      </Text>
+    </div>
   );
 }
 
@@ -497,12 +1128,14 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
   const poweredByNamefiDomain = usePoweredByNamefiDomain(
     props.poweredByNamefiDomain,
   );
-  const safeRecipientName = props.recipientName?.trim()
-    ? props.recipientName
-    : 'there';
+  const trackingUrl = useEmailTrackingUrl();
+  const trackingPixel = trackingUrl ? (
+    <EmailTrackingPixel trackingUrl={trackingUrl} />
+  ) : null;
   const { variant: copyVariant } = getDomainTrafficSurgeVariant(
     props.variant ?? 0,
   );
+  const recipientName = props.recipientName.trim() || null;
 
   const sortedDomains = [...props.domains].sort(
     (a, b) => b.weeklyQueries - a.weeklyQueries,
@@ -520,27 +1153,40 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
   const suggestedDomains = props.suggestedDomains ?? [];
 
   return (
-    <NamefiEmailContainer title={emailTitle} headerSubtitle={false}>
-      <Text style={{ ...paragraph, marginBottom: '12px' }}>
-        Hi {safeRecipientName},
-      </Text>
-      {topDomain ? (
-        <TrafficActivitySection
-          domains={sortedDomains}
-          topDomain={topDomain}
-          hasMultipleTrafficDomains={hasMultipleTrafficDomains}
-          totalWeeklyQueries={totalWeeklyQueries}
-          poweredByNamefiDomain={poweredByNamefiDomain}
-          cta={copyVariant.cta}
-        />
-      ) : null}
-      {suggestedDomains.length > 0 ? (
-        <SuggestedDomainsSection
-          domains={suggestedDomains}
-          poweredByNamefiDomain={poweredByNamefiDomain}
-        />
-      ) : null}
-    </NamefiEmailContainer>
+    <Html>
+      <Head>
+        <style>{trafficSurgeResponsiveCss}</style>
+      </Head>
+      <Preview>{emailTitle}</Preview>
+      <Body className="traffic-surge-body" style={emailShellStyles.body}>
+        <Container
+          className="traffic-surge-shell"
+          style={emailShellStyles.container}
+        >
+          {topDomain ? (
+            <>
+              <TrafficHero
+                hasMultipleTrafficDomains={hasMultipleTrafficDomains}
+                recipientName={recipientName}
+                totalWeeklyQueries={totalWeeklyQueries}
+              />
+              <TopDomainsSection
+                domains={sortedDomains}
+                poweredByNamefiDomain={poweredByNamefiDomain}
+              />
+            </>
+          ) : null}
+          {suggestedDomains.length > 0 ? (
+            <SuggestedDomainsSection
+              domains={suggestedDomains}
+              poweredByNamefiDomain={poweredByNamefiDomain}
+            />
+          ) : null}
+          <TrafficEmailFooter poweredByNamefiDomain={poweredByNamefiDomain} />
+          {trackingPixel}
+        </Container>
+      </Body>
+    </Html>
   );
 };
 

@@ -73,12 +73,10 @@ describe('domain traffic surge formatting', () => {
   });
 
   it('uses aggregate suggestion copy for multiple heating domains', () => {
-    expect(getSuggestedDomainsHeading()).toBe(
-      'Similar domains to the ones heating up',
-    );
+    expect(getSuggestedDomainsHeading()).toBe('Similar domains available');
   });
 
-  it('does not duplicate the top domain summary for multiple heating domains', async () => {
+  it('renders tiled top domains with Manage DNS links', async () => {
     const html = await render(
       createElement(DomainTrafficSurgeTemplate, {
         recipientName: 'Jordan',
@@ -91,12 +89,19 @@ describe('domain traffic surge formatting', () => {
       { pretty: false },
     );
 
-    expect(html).toContain('Your domains are heating up.');
-    expect(html).toContain('Most active domains');
-    expect(html).not.toMatch(/Most active domain(?!s)/);
+    expect(html).toContain(
+      'Jordan, congratulations! Your domains are popular.',
+    );
+    expect(html).toContain('Keep the momentum going.');
+    expect(html).toContain('Top Performing Domains');
+    expect(html).toContain('Manage DNS');
+    expect(html).not.toContain('>Manage DNS<');
+    expect(html).toContain('/m/user/domains/brightlabs.com');
+    expect(html).toContain('/m/user/domains/brightlabs.io');
+    expect(html).toContain('traffic-surge-grid-column');
   });
 
-  it('keeps the active domain summary when only one domain heated up', async () => {
+  it('uses the single-domain variation without suggestions', async () => {
     const html = await render(
       createElement(DomainTrafficSurgeTemplate, {
         recipientName: 'Jordan',
@@ -106,8 +111,31 @@ describe('domain traffic surge formatting', () => {
       { pretty: false },
     );
 
-    expect(html).toContain('Your domain is heating up.');
-    expect(html).toContain('Active domain');
-    expect(html).not.toContain('Most active domains');
+    expect(html).toContain('Jordan, congratulations! Your domain is popular.');
+    expect(html).toContain('Keep the momentum going.');
+    expect(html).toContain('Top Performing Domain');
+    expect(html).not.toContain('Top Performing Domains');
+    expect(html).not.toContain('Similar domains available');
+  });
+
+  it('renders suggested domain tiles with add-to-cart actions', async () => {
+    const html = await render(
+      createElement(DomainTrafficSurgeTemplate, {
+        recipientName: 'Jordan',
+        recipientEmail: 'jordan@example.com',
+        domains: [{ domain: domain('brightlabs.com'), weeklyQueries: 94_320 }],
+        suggestedDomains: [
+          domain('brightlabshq.com'),
+          domain('brightlabsteam.com'),
+        ],
+      }),
+      { pretty: false },
+    );
+
+    expect(html).toContain('Similar domains available');
+    expect(html).not.toContain('Available now');
+    expect(html).toContain('Add brightlabshq.com to cart');
+    expect(html).not.toContain('>Add to cart<');
+    expect(html).toContain('/m/cart?add_to_cart=brightlabshq.com');
   });
 });
