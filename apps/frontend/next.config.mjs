@@ -126,6 +126,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/llms.txt',
+        destination: `${appConfig.BACKEND_URL}/llms.txt`,
+      },
+      {
         source: '/r',
         destination: `${resourcesProxyOrigin}/r`,
       },

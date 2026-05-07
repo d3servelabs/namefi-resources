@@ -34,6 +34,23 @@ That global security block is descriptive, but it is not enough to infer per-ope
 
 ## API key authentication
 
+The simplest authentication method. Works for **all operations** including DNS record creation, updates, deletes, domain registration, and parking.
+
+**Important:** The API key inherits permissions from the wallet that generated it. To manage DNS records for a domain, generate the key from the wallet that owns that domain's NFT.
+
+### Direct HTTP usage (no SDK needed)
+
+For AI agents, scripts, and quick integrations, pass the API key directly as an HTTP header:
+
+```bash
+curl -X POST "https://api.namefi.io/v-next/dns/records" \
+  -H "x-api-key: nfk_YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"zoneName":"example.com","type":"A","name":"@","rdata":"1.2.3.4","ttl":300}'
+```
+
+### SDK usage
+
 Create a client with an API key:
 
 ```ts

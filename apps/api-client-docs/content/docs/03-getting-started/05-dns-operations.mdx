@@ -3,7 +3,30 @@ title: DNS Operations
 description: Individual record operations, batch deletes, and domain parking
 ---
 
-This guide covers DNS operations beyond the [full-flow example](/docs/03-getting-started/03-manage-dns-records). All DNS mutation operations require EIP-712 authentication — the client handles this automatically with both `API_KEY` and `EIP712` auth types.
+This guide covers DNS operations beyond the [full-flow example](/docs/03-getting-started/03-manage-dns-records). All DNS mutation operations require domain ownership (verified via on-chain NFT ownership). The client handles authentication automatically with both `API_KEY` and `EIP712` auth types.
+
+## Quick start with curl
+
+You can manage DNS records with just `curl` and an API key — no SDK installation required:
+
+```bash
+# List existing records (no auth needed)
+curl "https://api.namefi.io/v-next/dns/records?zoneName=example.com"
+
+# Create a CNAME record
+curl -X POST "https://api.namefi.io/v-next/dns/records" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"zoneName":"example.com","type":"CNAME","name":"www","rdata":"cname.vercel-dns.com.","ttl":300}'
+
+# Create a TXT record
+curl -X POST "https://api.namefi.io/v-next/dns/records" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"zoneName":"example.com","type":"TXT","name":"_verify","rdata":"some-verification-token","ttl":300}'
+```
+
+This is the recommended approach for AI agents and scripts that need simple DNS management.
 
 ## Read records
 
@@ -141,3 +164,19 @@ The API supports standard DNS record types including:
 - `updateRecord` and `updateRecords` require the record `id` — use `getRecords` first.
 - `overrideExistingRecords` on parking operations controls whether current records are replaced or preserved.
 - All batch operations are scoped to a single `zoneName` per request.
+
+## Troubleshooting
+
+### UNAUTHORIZED (401) on write operations
+
+- **API key not associated with domain owner:** The API key must be generated from the wallet that owns the domain on-chain. Go to [API Keys management](https://namefi.io/profile?tab=api-keys), connect the wallet that holds the domain NFT, and generate a new key.
+- **Expired or revoked key:** Generate a fresh API key.
+- **Wrong base URL:** Use `https://api.namefi.io/v-next/` (production) or `https://backend.astra.namefi.io/v-next/` (SDK default). Both point to the same backend.
+
+### FORBIDDEN (403) on write operations
+
+- Your API key is valid but the authenticated wallet does not own the target domain. Verify ownership at [My Domains](https://namefi.io/domains).
+
+### SDK alternative: direct HTTP
+
+If you encounter issues with the `@namefi/api-client` SDK, you can always fall back to direct HTTP with `curl` or any HTTP client. Pass your API key as the `x-api-key` header. See the [curl quick start](#quick-start-with-curl) above.
