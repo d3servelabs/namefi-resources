@@ -1,5 +1,6 @@
 import {
   DeleteObjectCommand,
+  GetObjectCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -112,6 +113,46 @@ export const deleteFileFromS3 = async ({
   } catch (error) {
     throw new Error(
       `Failed to delete file from S3: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
+  }
+};
+
+export interface DownloadFileFromS3Params extends BaseStorageParams {
+  key: string;
+  abortSignal?: AbortSignal;
+}
+
+export interface DownloadFileFromS3Result {
+  bytes: Buffer;
+  contentType?: string;
+}
+
+export const downloadFileFromS3 = async ({
+  s3Client,
+  bucketName,
+  key,
+  abortSignal,
+}: DownloadFileFromS3Params): Promise<DownloadFileFromS3Result> => {
+  try {
+    const result = await s3Client.send(
+      new GetObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      }),
+      abortSignal ? { abortSignal } : undefined,
+    );
+
+    if (!result.Body) {
+      throw new Error('Download failed: No body returned');
+    }
+
+    return {
+      bytes: Buffer.from(await result.Body.transformToByteArray()),
+      contentType: result.ContentType,
+    };
+  } catch (error) {
+    throw new Error(
+      `Failed to download file from S3: ${error instanceof Error ? error.message : 'Unknown error'}`,
     );
   }
 };

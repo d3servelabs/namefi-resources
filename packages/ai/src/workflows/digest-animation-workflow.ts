@@ -2,6 +2,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createGateway, experimental_generateVideo, ToolLoopAgent } from 'ai';
 import type { LanguageModelUsage } from 'ai';
 import {
+  downloadFileFromS3,
   generateCloudFrontUrl,
   uploadFileToS3,
   type StorageConfig,
@@ -64,6 +65,33 @@ const digestAnimationWorkflowInputSchema = z
   })
   .strict();
 
+const uploadedDigestAnimationSourceImageSchema = z
+  .object({
+    storagePath: z.string().min(1),
+    url: z.string().url(),
+    mimeType: z.string().min(1),
+  })
+  .strict();
+
+const uploadedDigestAnimationSourceImageInputSchema = z
+  .object({
+    storagePath: z.string().min(1),
+    mimeType: z.string().min(1),
+  })
+  .strict();
+
+const digestAnimationWorkflowFromUploadedSourceInputSchema = z
+  .object({
+    title: z.string().trim().min(1).max(160),
+    sourceImage: uploadedDigestAnimationSourceImageInputSchema,
+    domains: z.array(z.string().trim().min(3).max(253)).max(12).default([]),
+    summary: z.string().trim().max(2000).optional(),
+    model: digestAnimationModelEnum.default('bytedance/seedance-2.0'),
+    sheetModel: digestAnimationSheetModelEnum.default('gpt-image-2'),
+    storage: z.custom<StorageConfig>(),
+  })
+  .strict();
+
 export const digestAnimationWorkflowOutputSchema = z.object({
   sourceImage: z.object({
     storagePath: z.string(),
@@ -98,9 +126,19 @@ export const digestAnimationWorkflowOutputSchema = z.object({
 export type DigestAnimationWorkflowInput = z.input<
   typeof digestAnimationWorkflowInputSchema
 >;
+export type DigestAnimationWorkflowFromUploadedSourceInput = z.input<
+  typeof digestAnimationWorkflowFromUploadedSourceInputSchema
+>;
+export type DigestAnimationUploadedSourceImage = z.output<
+  typeof uploadedDigestAnimationSourceImageSchema
+>;
 export type DigestAnimationWorkflowOutput = z.output<
   typeof digestAnimationWorkflowOutputSchema
 >;
+
+export interface DigestAnimationWorkflowOptions {
+  abortSignal?: AbortSignal;
+}
 
 interface ParsedImageDataUrl {
   bytes: Buffer;
@@ -188,8 +226,10 @@ export function buildDigestAnimationVideoPrompt(input: {
 async function generateDigestAnimationSheet(input: {
   prompt: string;
   referenceImage: ParsedImageDataUrl;
+  abortSignal?: AbortSignal;
 }): Promise<{ imageBase64: string; tokenUsage?: LanguageModelUsage }> {
   const result = await digestAnimationSheetAgent.generate({
+    abortSignal: input.abortSignal,
     messages: [
       {
         role: 'user',
@@ -231,9 +271,7 @@ async function uploadBufferToStorage(params: {
   label: string;
   storage: StorageConfig;
 }) {
-  const folder = [params.storage.baseFolder, 'sales-digest']
-    .filter(Boolean)
-    .join('/');
+  const folder = buildDigestAnimationStorageFolder(params.storage);
   const uploaded = await uploadFileToS3({
     s3Client: params.storage.s3Client,
     bucketName: params.storage.bucketName,
@@ -250,6 +288,22 @@ async function uploadBufferToStorage(params: {
       s3Key: uploaded.key,
     }),
   };
+}
+
+function buildDigestAnimationStorageFolder(storage: StorageConfig) {
+  return [storage.baseFolder, 'sales-digest'].filter(Boolean).join('/');
+}
+
+function assertDigestAnimationStoragePath(params: {
+  storagePath: string;
+  storage: StorageConfig;
+}) {
+  const folder = buildDigestAnimationStorageFolder(params.storage);
+  if (!params.storagePath.startsWith(`${folder}/`)) {
+    throw new Error(
+      `Digest animation source image storagePath must be under ${folder}.`,
+    );
+  }
 }
 
 function buildSeedanceProviderOptions(input: { referenceImages: string[] }) {
@@ -274,19 +328,104 @@ function getImageExtensionFromMimeType(mimeType: string): string {
   }
 }
 
-export async function runDigestAnimationWorkflow(
-  rawInput: DigestAnimationWorkflowInput,
-): Promise<DigestAnimationWorkflowOutput> {
-  const input = digestAnimationWorkflowInputSchema.parse(rawInput);
-  const sourceImage = parseImageDataUrl(input.imageDataUrl);
-
+export async function uploadDigestAnimationSourceImage({
+  imageDataUrl,
+  storage,
+}: {
+  imageDataUrl: string;
+  storage: StorageConfig;
+}): Promise<DigestAnimationUploadedSourceImage> {
+  const sourceImage = parseImageDataUrl(imageDataUrl);
   const uploadedSource = await uploadBufferToStorage({
     buffer: sourceImage.bytes,
     contentType: sourceImage.mimeType,
     label: `${createRunId('digest-animation-source')}.${getImageExtensionFromMimeType(sourceImage.mimeType)}`,
-    storage: input.storage,
+    storage,
   });
 
+  return uploadedDigestAnimationSourceImageSchema.parse({
+    storagePath: uploadedSource.storagePath,
+    url: uploadedSource.url,
+    mimeType: sourceImage.mimeType,
+  });
+}
+
+function canonicalizeUploadedDigestAnimationSourceImage(
+  sourceImage: z.output<typeof uploadedDigestAnimationSourceImageInputSchema>,
+  storage: StorageConfig,
+): DigestAnimationUploadedSourceImage {
+  assertDigestAnimationStoragePath({
+    storagePath: sourceImage.storagePath,
+    storage,
+  });
+
+  return uploadedDigestAnimationSourceImageSchema.parse({
+    storagePath: sourceImage.storagePath,
+    url: generateCloudFrontUrl({
+      cloudfrontDomain: storage.cloudfrontDomain,
+      s3Key: sourceImage.storagePath,
+    }),
+    mimeType: sourceImage.mimeType,
+  });
+}
+
+async function loadUploadedDigestAnimationSourceImage(
+  sourceImage: DigestAnimationUploadedSourceImage,
+  storage: StorageConfig,
+  options: DigestAnimationWorkflowOptions = {},
+): Promise<ParsedImageDataUrl> {
+  const declaredMimeType = sourceImage.mimeType.toLowerCase();
+  if (!declaredMimeType.startsWith('image/')) {
+    throw new Error(
+      `Digest animation source image must be an image, received ${sourceImage.mimeType}.`,
+    );
+  }
+
+  const downloaded = await downloadFileFromS3({
+    s3Client: storage.s3Client,
+    bucketName: storage.bucketName,
+    key: sourceImage.storagePath,
+    abortSignal: options.abortSignal,
+  });
+  if (downloaded.bytes.length === 0) {
+    throw new Error('Digest animation source image is empty.');
+  }
+
+  const downloadedMimeType = downloaded.contentType
+    ?.split(';')[0]
+    ?.trim()
+    .toLowerCase();
+  const mimeType = downloadedMimeType || sourceImage.mimeType;
+  if (!mimeType.toLowerCase().startsWith('image/')) {
+    throw new Error(
+      `Digest animation source image must be an image, received ${mimeType}.`,
+    );
+  }
+
+  return {
+    bytes: downloaded.bytes,
+    mimeType,
+  };
+}
+
+async function runDigestAnimationWorkflowWithSource({
+  input,
+  options = {},
+  sourceImage,
+  uploadedSource,
+}: {
+  input: {
+    title: string;
+    domains: ReadonlyArray<string>;
+    summary?: string;
+    model: z.output<typeof digestAnimationModelEnum>;
+    sheetModel: z.output<typeof digestAnimationSheetModelEnum>;
+    storage: StorageConfig;
+  };
+  options?: DigestAnimationWorkflowOptions;
+  sourceImage: ParsedImageDataUrl;
+  uploadedSource: DigestAnimationUploadedSourceImage;
+}): Promise<DigestAnimationWorkflowOutput> {
   const sheetPrompt = buildDigestAnimationSheetPrompt({
     title: input.title,
     domains: input.domains,
@@ -295,6 +434,7 @@ export async function runDigestAnimationWorkflow(
   const generatedSheet = await generateDigestAnimationSheet({
     prompt: sheetPrompt,
     referenceImage: sourceImage,
+    abortSignal: options.abortSignal,
   });
   const uploadedSheet = await uploadBufferToStorage({
     buffer: Buffer.from(
@@ -320,6 +460,7 @@ export async function runDigestAnimationWorkflow(
     providerOptions: {
       bytedance: buildSeedanceProviderOptions({ referenceImages }),
     },
+    abortSignal: options.abortSignal,
   }).catch((error) => {
     const generationError = new Error(
       `Digest animation video generation failed for model ${input.model} (${DIGEST_ANIMATION_ASPECT_RATIO}, ${DIGEST_ANIMATION_DURATION_SECONDS}s, references: ${referenceImages.join(', ')}).`,
@@ -336,11 +477,7 @@ export async function runDigestAnimationWorkflow(
   });
 
   return digestAnimationWorkflowOutputSchema.parse({
-    sourceImage: {
-      storagePath: uploadedSource.storagePath,
-      url: uploadedSource.url,
-      mimeType: sourceImage.mimeType,
-    },
+    sourceImage: uploadedSource,
     animationSheet: {
       storagePath: uploadedSheet.storagePath,
       url: uploadedSheet.url,
@@ -357,5 +494,48 @@ export async function runDigestAnimationWorkflow(
     prompt,
     warnings: generated.warnings,
     providerMetadata: generated.providerMetadata,
+  });
+}
+
+export async function runDigestAnimationWorkflow(
+  rawInput: DigestAnimationWorkflowInput,
+  options: DigestAnimationWorkflowOptions = {},
+): Promise<DigestAnimationWorkflowOutput> {
+  const input = digestAnimationWorkflowInputSchema.parse(rawInput);
+  const sourceImage = parseImageDataUrl(input.imageDataUrl);
+  const uploadedSource = await uploadDigestAnimationSourceImage({
+    imageDataUrl: input.imageDataUrl,
+    storage: input.storage,
+  });
+
+  return runDigestAnimationWorkflowWithSource({
+    input,
+    options,
+    sourceImage,
+    uploadedSource,
+  });
+}
+
+export async function runDigestAnimationWorkflowFromUploadedSource(
+  rawInput: DigestAnimationWorkflowFromUploadedSourceInput,
+  options: DigestAnimationWorkflowOptions = {},
+): Promise<DigestAnimationWorkflowOutput> {
+  const input =
+    digestAnimationWorkflowFromUploadedSourceInputSchema.parse(rawInput);
+  const uploadedSource = canonicalizeUploadedDigestAnimationSourceImage(
+    input.sourceImage,
+    input.storage,
+  );
+  const sourceImage = await loadUploadedDigestAnimationSourceImage(
+    uploadedSource,
+    input.storage,
+    options,
+  );
+
+  return runDigestAnimationWorkflowWithSource({
+    input,
+    options,
+    sourceImage,
+    uploadedSource,
   });
 }
