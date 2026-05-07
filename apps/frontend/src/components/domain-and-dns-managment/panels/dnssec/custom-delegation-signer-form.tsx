@@ -205,19 +205,27 @@ export function CustomDelegationSignerForm({
     }),
   );
 
+  const runValidate = (signingConfig: {
+    algorithm: DnssecAlgorithms;
+    publicKey: string;
+    flags: DnssecFlags;
+    keyTag: number;
+    digestType: DnssecDigestType;
+    digest: string;
+  }) => {
+    setValidation({ status: 'pending' });
+    validateMutation.mutate({ domainName, signingConfig });
+  };
+
   const triggerValidate = (candidate: DerivedCandidate) => {
     if (!candidate.publicKey) return; // DS-only paste — can't validate yet
-    setValidation({ status: 'pending' });
-    validateMutation.mutate({
-      domainName,
-      signingConfig: {
-        algorithm: candidate.algorithm,
-        publicKey: candidate.publicKey,
-        flags: candidate.flags,
-        keyTag: candidate.keyTag,
-        digestType: candidate.digestType,
-        digest: candidate.digest,
-      },
+    runValidate({
+      algorithm: candidate.algorithm,
+      publicKey: candidate.publicKey,
+      flags: candidate.flags,
+      keyTag: candidate.keyTag,
+      digestType: candidate.digestType,
+      digest: candidate.digest,
     });
   };
 
@@ -353,35 +361,49 @@ export function CustomDelegationSignerForm({
     }
   };
 
-  const handleValidate = async () => {
-    const isFormValid = await form.trigger();
-    if (!isFormValid) {
-      toast.error('Fix the form errors before validating');
+  const handleValidate = () => {
+    // Read current form values and sanitize the two free-form fields
+    // (publicKey base64 and digest hex). Persist the cleaned values back
+    // into the form state via setValue so the subsequent Submit click —
+    // which reads from form.getValues() — sends the same sanitized
+    // payload as Validate did. The watcher's idle-reset is suppressed
+    // here by passing { shouldValidate: false } so the validation result
+    // we're about to fire remains the source of truth.
+    const values = form.getValues();
+    const cleanedPublicKey = (values.publicKey ?? '').replace(/\s+/g, '');
+    const cleanedDigest = (values.digest ?? '').replace(/\s+/g, '');
+    if (!cleanedPublicKey || !cleanedDigest) {
+      toast.error('Public key and digest are required to validate');
       return;
     }
-    setValidation({ status: 'pending' });
-    const values = form.getValues();
-    validateMutation.mutate({
-      domainName,
-      signingConfig: {
-        algorithm: values.algorithm,
-        publicKey: values.publicKey,
-        flags: values.flags,
-        keyTag: values.keyTag,
-        digestType: values.digestType,
-        digest: values.digest,
-      },
+    if (cleanedPublicKey !== values.publicKey) {
+      form.setValue('publicKey', cleanedPublicKey, { shouldValidate: false });
+    }
+    if (cleanedDigest !== values.digest) {
+      form.setValue('digest', cleanedDigest, { shouldValidate: false });
+    }
+    runValidate({
+      algorithm: values.algorithm,
+      publicKey: cleanedPublicKey,
+      flags: values.flags,
+      keyTag: values.keyTag,
+      digestType: values.digestType,
+      digest: cleanedDigest,
     });
   };
 
   const onSubmit: SubmitHandler<FormValues> = (values) => {
+    // Sanitize at the boundary too (defensive): handleValidate already
+    // writes cleaned values back into the form, but a defensive strip
+    // here prevents a whitespace-laden publicKey / digest from reaching
+    // the registrar via any path we might add later.
     const signingConfig = {
       algorithm: values.algorithm,
-      publicKey: values.publicKey,
+      publicKey: (values.publicKey ?? '').replace(/\s+/g, ''),
       flags: values.flags,
       keyTag: values.keyTag,
       digestType: values.digestType,
-      digest: values.digest,
+      digest: (values.digest ?? '').replace(/\s+/g, ''),
     };
     if (validationFailed) {
       // Failing validation + ack checked → schedule deferred workflow.
