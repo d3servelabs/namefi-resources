@@ -1333,7 +1333,7 @@ async function _sendOrderCompletionSlackAlert(
 
   const domains = orderDetails.items.map((item, index) => ({
     normalizedDomainName: item.normalizedDomainName,
-    type: (item.type as 'REGISTER' | 'IMPORT') ?? 'REGISTER',
+    type: item.type,
     status:
       orderItemsResults[index].status === 'fulfilled'
         ? ('SUCCEEDED' as const)

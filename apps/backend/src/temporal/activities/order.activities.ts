@@ -1003,7 +1003,7 @@ export interface SendOrderCompletionSlackAlertInput {
   walletAddress?: string;
   domains: Array<{
     normalizedDomainName: NamefiNormalizedDomain;
-    type: 'REGISTER' | 'IMPORT';
+    type: 'REGISTER' | 'IMPORT' | 'RENEW';
     status: 'SUCCEEDED' | 'FAILED';
   }>;
   workflowId: string;
@@ -1038,29 +1038,36 @@ export async function sendOrderCompletionSlackAlert(
       ? `${input.walletAddress.slice(0, 6)}...${input.walletAddress.slice(-4)}`
       : 'someone';
 
-  const registerDomains = succeededDomains.filter((d) => d.type === 'REGISTER');
-  const importDomains = succeededDomains.filter((d) => d.type === 'IMPORT');
+  const buildDomainListMessage = (
+    operationType: (typeof succeededDomains)[number]['type'],
+  ) => {
+    const list = succeededDomains.filter((d) => d.type === operationType);
+    if (list.length < 1) {
+      return;
+    }
 
-  let operationType: string;
-  if (registerDomains.length > 0 && importDomains.length > 0) {
-    operationType = 'register and transfer';
-  } else if (importDomains.length > 0) {
-    operationType = 'transfer';
-  } else {
-    operationType = 'register';
-  }
+    const first5Text = list
+      .map((d) => d.normalizedDomainName)
+      .slice(0, 5)
+      .join(', ');
 
-  const domainList = succeededDomains
-    .map((d) => d.normalizedDomainName)
-    .slice(0, 5)
-    .join(', ');
-  const additionalCount = succeededDomains.length - 5;
-  const domainDisplay =
-    additionalCount > 0
-      ? `${domainList} (+${additionalCount} more)`
-      : domainList;
+    const additionalCount = list.length - 5;
+    const domainDisplay =
+      additionalCount > 0
+        ? `${first5Text} (+${additionalCount} more)`
+        : first5Text;
 
-  const message = `:tada: ${userIdentifier} has just made an order to "${operationType}" ${succeededDomains.length} domain${succeededDomains.length > 1 ? 's' : ''}: ${domainDisplay}`;
+    return `- "${operationType.toLowerCase()}": ${domainDisplay}`;
+  };
+
+  const message = [
+    `:tada: ${userIdentifier} has just made an order to:`,
+    buildDomainListMessage('REGISTER'),
+    buildDomainListMessage('IMPORT'),
+    buildDomainListMessage('RENEW'),
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   try {
     const slackMessage = {
