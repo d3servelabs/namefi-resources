@@ -202,7 +202,7 @@ export function useUserChainBalances(
   );
 
   const canUseBalance = useMemo(
-    () => totalBalanceInUsdCents > 0,
+    () => totalBalanceInUsdCents >= 1,
     [totalBalanceInUsdCents],
   );
 

@@ -59,7 +59,7 @@ export function calculateHybridPayments({
 }): HybridPaymentCalculation {
   // Sort balances by chain priority
   const sortedBalances = chainBalances
-    .filter((cb) => cb.balanceInUsdCents > 0)
+    .filter((cb) => cb.balanceInUsdCents >= 1)
     .sort((a, b) => {
       const aPriority = CHAIN_PRIORITY.indexOf(a.chainId);
       const bPriority = CHAIN_PRIORITY.indexOf(b.chainId);
