@@ -13,6 +13,7 @@ import { bulkBurnRouter } from './admin/bulkBurnRouter';
 import { nftRouter } from './admin/nftRouter';
 import { freeClaimsRouter } from './admin/freeClaimsRouter';
 import { adminUsersRouter } from './admin/adminUsersRouter';
+import { domainDetailsRouter } from './admin/domainDetailsRouter';
 import { domainPreferencesRouter } from './admin/domainPreferencesRouter';
 import { adminOrdersRouter } from './admin/adminOrdersRouter';
 import { adminFinancialAnalyticsRouter } from './admin/adminFinancialAnalyticsRouter';
@@ -43,6 +44,7 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   freeClaims: freeClaimsRouter,
   users: adminUsersRouter,
   domainPreferences: domainPreferencesRouter,
+  domainDetails: domainDetailsRouter,
   orders: adminOrdersRouter,
   financials: adminFinancialAnalyticsRouter,
   exportTracking: exportTrackingRouter,

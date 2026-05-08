@@ -73,6 +73,7 @@ import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { PermissionGate } from '@/components/access/PermissionGate';
+import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
 
 type AdminUserDetails = AppRouterOutput['admin']['users']['getUserDetails'];
 type AdminWalletDetails = AppRouterOutput['admin']['users']['getWalletDetails'];
@@ -115,7 +116,7 @@ const dispatchAdminUserDetailsCloseEvent = () => {
   window.dispatchEvent(new CustomEvent(ADMIN_USER_DETAILS_CLOSE_EVENT));
 };
 
-const formatDateOnly = (value: Date | string | null | undefined) => {
+export const formatDateOnly = (value: Date | string | null | undefined) => {
   if (!value) {
     return '-';
   }
@@ -123,7 +124,7 @@ const formatDateOnly = (value: Date | string | null | undefined) => {
   return format(new Date(value), 'yyyy-MM-dd');
 };
 
-const formatDateTime = (value: Date | string | null | undefined) => {
+export const formatDateTime = (value: Date | string | null | undefined) => {
   if (!value) {
     return '-';
   }
@@ -252,14 +253,19 @@ function ErrorDialogBody({
   );
 }
 
-function SummaryCard({
+export function SummaryCard({
   label,
   value,
   description,
   icon,
 }: {
   label: string;
-  value: string;
+  /**
+   * Loosened to ReactNode so callers can pass small composite cells
+   * (chain badge, wallet avatar, copyable badge) instead of just text.
+   * String values still render unchanged.
+   */
+  value: ReactNode;
   description?: string;
   icon?: ReactNode;
 }) {
@@ -281,7 +287,7 @@ function SummaryCard({
   );
 }
 
-function InfoGrid({
+export function InfoGrid({
   items,
 }: {
   items: Array<{ label: string; value: ReactNode }>;
@@ -300,7 +306,13 @@ function InfoGrid({
   );
 }
 
-function EmptyTableRow({ colSpan, label }: { colSpan: number; label: string }) {
+export function EmptyTableRow({
+  colSpan,
+  label,
+}: {
+  colSpan: number;
+  label: string;
+}) {
   return (
     <TableRow>
       <TableCell
@@ -313,7 +325,7 @@ function EmptyTableRow({ colSpan, label }: { colSpan: number; label: string }) {
   );
 }
 
-function ExternalPageButton({
+export function ExternalPageButton({
   href,
   children,
   closeAdminDetailDialogs = false,
@@ -357,7 +369,13 @@ async function copyToClipboard(value: string, label: string) {
   }
 }
 
-function CopyableBadge({ label, value }: { label: string; value: string }) {
+export function CopyableBadge({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
   return (
     <Badge
       variant="outline"
@@ -377,7 +395,7 @@ function CopyableBadge({ label, value }: { label: string; value: string }) {
   );
 }
 
-function DomainLabel({ domain }: { domain: string }) {
+export function DomainLabel({ domain }: { domain: string }) {
   return (
     <div className="inline-flex items-center gap-2 text-sm">
       <Globe className="h-4 w-4 text-muted-foreground" />
@@ -386,7 +404,13 @@ function DomainLabel({ domain }: { domain: string }) {
   );
 }
 
-function ChainCell({ chainId, label }: { chainId: number; label?: string }) {
+export function ChainCell({
+  chainId,
+  label,
+}: {
+  chainId: number;
+  label?: string;
+}) {
   return (
     <div className="inline-flex items-center gap-2">
       <NetworkLogo network={chainId} className="h-5 w-5 bg-transparent" />
@@ -395,7 +419,7 @@ function ChainCell({ chainId, label }: { chainId: number; label?: string }) {
   );
 }
 
-function WalletAddressCell({
+export function WalletAddressCell({
   address,
   modalTarget = 'wallet',
 }: {
@@ -415,7 +439,7 @@ function WalletAddressCell({
   );
 }
 
-function TokenExplorerCell({
+export function TokenExplorerCell({
   chainId,
   tokenId,
 }: {
@@ -1237,7 +1261,13 @@ function UserDomainsTable({ data }: { data: AdminUserDetails }) {
           data.domains.map((domain) => (
             <TableRow key={`${domain.chainId}-${domain.tokenId}`}>
               <TableCell>
-                <DomainLabel domain={domain.normalizedDomainName} />
+                <div className="flex items-center gap-1">
+                  <DomainLabel domain={domain.normalizedDomainName} />
+                  <AdminDomainDetailsButton
+                    domainName={domain.normalizedDomainName}
+                    size="icon-xs"
+                  />
+                </div>
               </TableCell>
               <TableCell>
                 <ChainCell chainId={domain.chainId} />

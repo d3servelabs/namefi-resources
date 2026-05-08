@@ -4,6 +4,7 @@ import { adminAutoRenewalContract } from './admin-auto-renewal-contract';
 import { adminBigQueryAuditContract } from './admin-big-query-audit-contract';
 import { adminBulkBurnContract } from './admin-bulk-burn-contract';
 import { adminDnsvizContract } from './admin-dnsviz-contract';
+import { adminDomainDetailsContract } from './admin-domain-details-contract';
 import { adminDomainPreferencesContract } from './admin-domain-preferences-contract';
 import { adminEmailCampaignsContract } from './admin-email-campaigns-contract';
 import { adminEppTestingContract } from './admin-epp-testing-contract';
@@ -56,6 +57,7 @@ export const adminContract = {
   freeClaims: adminFreeClaimsContract,
   users: adminUsersContract,
   domainPreferences: adminDomainPreferencesContract,
+  domainDetails: adminDomainDetailsContract,
   orders: adminOrdersContract,
   financials: adminFinancialAnalyticsContract,
   exportTracking: adminExportTrackingContract,

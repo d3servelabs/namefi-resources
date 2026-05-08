@@ -9,6 +9,7 @@ import {
   type DrizzlerFilterState,
 } from '@/components/table/filters';
 import { UserWalletAvatar } from '@/components/user-avatar';
+import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
@@ -343,11 +344,17 @@ function DnsvizAnalysesPanel() {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
-          <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-            {row.original.normalizedDomainName}
-          </code>
+          <div className="flex items-center gap-1">
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+              {row.original.normalizedDomainName}
+            </code>
+            <AdminDomainDetailsButton
+              domainName={row.original.normalizedDomainName}
+              size="icon-xs"
+            />
+          </div>
         ),
-        size: 220,
+        size: 240,
       },
       {
         accessorKey: 'status',

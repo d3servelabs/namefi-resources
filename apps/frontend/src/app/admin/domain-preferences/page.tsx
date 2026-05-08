@@ -20,12 +20,17 @@ import {
   type DrizzlerFilterState,
 } from '@/components/table/filters';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
-import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { AddressWithChain as AddressWithChainId } from '@/components/address-with-chain';
+import {
+  ForwardToField,
+  NOT_SET_DEFAULTS,
+  NotSetText,
+  PreferenceToggle,
+} from '@/components/admin/preference-fields';
+import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
 
 type DomainPreferencesRow = {
   userId: string | null;
@@ -54,15 +59,6 @@ const DEFAULT_COLUMN_VISIBILITY = {
   forwardTo: true,
   actions: true,
 };
-
-const NOT_SET_DEFAULTS = {
-  autoRenewEnabled: false,
-  autoEnsEnabled: true,
-  autoParkEnabled: false,
-  forwardTo: '',
-} as const;
-
-const NOT_SET_TEXT_CLASSNAME = 'text-xs text-amber-600';
 
 export default function DomainPreferencesAdminPage() {
   return (
@@ -351,15 +347,21 @@ function DomainPreferencesTable() {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={32}
-            minCharactersToDisplay={16}
-            className="font-medium"
-          >
-            {row.original.normalizedDomainName}
-          </AutoTruncateTextV2>
+          <div className="flex items-center gap-1">
+            <AutoTruncateTextV2
+              initialCharactersCountToDisplay={32}
+              minCharactersToDisplay={16}
+              className="font-medium"
+            >
+              {row.original.normalizedDomainName}
+            </AutoTruncateTextV2>
+            <AdminDomainDetailsButton
+              domainName={row.original.normalizedDomainName}
+              size="icon-xs"
+            />
+          </div>
         ),
-        size: 220,
+        size: 240,
       },
       {
         accessorKey: 'userId',
@@ -575,66 +577,4 @@ function DomainPreferencesTable() {
       onResetPreferences={resetToDefaults}
     />
   );
-}
-
-function PreferenceToggle({
-  value,
-  isNotSet,
-  disabled,
-  onChange,
-}: {
-  value: boolean;
-  isNotSet: boolean;
-  disabled: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  const checked = value;
-  const label = isNotSet ? 'Not set' : checked ? 'Enabled' : 'Disabled';
-
-  return (
-    <div className="flex items-center gap-2">
-      <Switch
-        checked={checked}
-        onCheckedChange={(next) => onChange(Boolean(next))}
-        disabled={disabled}
-      />
-      <span
-        className={
-          isNotSet ? NOT_SET_TEXT_CLASSNAME : 'text-xs text-muted-foreground'
-        }
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
-
-function ForwardToField({
-  value,
-  disabled,
-  isNotSet,
-  onChange,
-}: {
-  value: string;
-  disabled: boolean;
-  isNotSet: boolean;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div className="min-w-[180px]">
-      <Input
-        value={value}
-        placeholder="Not set"
-        disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
-      />
-      {isNotSet && value === '' ? (
-        <div className={`${NOT_SET_TEXT_CLASSNAME} mt-1`}>Not set</div>
-      ) : null}
-    </div>
-  );
-}
-
-function NotSetText() {
-  return <span className={NOT_SET_TEXT_CLASSNAME}>Not set</span>;
 }
