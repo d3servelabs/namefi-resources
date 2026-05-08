@@ -10,10 +10,14 @@
  *                                 upserts dnsviz_analyses rows
  * - sendDnsvizDigestEmail         emails ops a digest table with
  *                                 Domain | Status | Registrar | Reasoning
- *                                 columns. Sorts BOGUS → ERROR → INSECURE
- *                                 → SECURE; in unscoped/daily mode the
- *                                 SECURE tail is truncated to keep email
- *                                 size bounded.
+ *                                 columns. Sorts BOGUS → ERROR → WARN →
+ *                                 INSECURE → EXPECTED_ERROR → SECURE
+ *                                 (worst-first); status uses the same
+ *                                 reclassification overlay as the admin
+ *                                 UI (see `dnsvizEffectiveStatusSql`).
+ *                                 In unscoped/daily mode the SECURE and
+ *                                 EXPECTED_ERROR tails are truncated to
+ *                                 keep email size bounded.
  * - deleteExpiredDnsvizAnalyses   prunes rows past expires_at, used by the
  *                                 cleanup workflow
  *
@@ -28,9 +32,13 @@ import { db as database } from '@namefi-astra/db';
 import {
   dnsvizAnalysesTable,
   indexedDomainsTable,
+  // Raw 4-value enum on `dnsviz_analyses.status` (used for batch
+  // results / persistence). The digest email surfaces the wider
+  // *effective* enum via `DnsvizEffectiveStatus` below.
   type DnsvizAnalysisStatus,
   type DnsvizAnalysisSummary,
 } from '@namefi-astra/db/schema';
+import type { DnsvizAnalysisStatus as DnsvizEffectiveStatus } from '@namefi-astra/common/contract/admin/admin-dnsviz-contract';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { createLogger } from '#lib/logger';
 import {
@@ -39,6 +47,7 @@ import {
   runDnsvizGrok,
   runDnsvizProbe,
 } from '#lib/dnsviz';
+import { dnsvizEffectiveStatusSql } from '#lib/dnsviz-effective-status-sql';
 import { sendMail } from '../../../mail/mail-client';
 
 const logger = createLogger({ module: 'dnsviz-activities' });
@@ -313,10 +322,15 @@ export interface SendDnsvizDigestEmailInput {
 export interface SendDnsvizDigestEmailResult {
   sent: boolean;
   totalRows: number;
+  // Counts mirror `DigestCounts` (effective-status buckets after the
+  // reclassification overlay). See `dnsvizEffectiveStatusSql` for the
+  // overlay rules.
   secureCount: number;
   insecureCount: number;
   bogusCount: number;
   errorCount: number;
+  expectedErrorCount: number;
+  warnCount: number;
 }
 
 const DIGEST_LIST_TRUNCATE = 50;
@@ -347,27 +361,59 @@ export async function sendDnsvizDigestEmail(
     );
   }
 
-  const rows = await database
+  // LEFT JOIN `indexed_domains` so the shared
+  // `dnsvizEffectiveStatusSql` overlay (same one powering the admin UI)
+  // can read `nameservers` + `dnssec_status` to reclassify rows. The
+  // join is on `(normalized_domain_name, registrar_key)` mirroring the
+  // dnsviz_analyses unique key; ad-hoc third-party domains run via the
+  // on-demand workflow have no `indexed_domains` match and pass
+  // through with the raw status (CASE evaluates the indexed columns
+  // as NULL → all reclassification predicates fail).
+  const dbRows = await database
     .select({
       id: dnsvizAnalysesTable.id,
       domainName: dnsvizAnalysesTable.normalizedDomainName,
       registrarKey: dnsvizAnalysesTable.registrarKey,
-      status: dnsvizAnalysesTable.status,
+      status: dnsvizEffectiveStatusSql.as('effective_status'),
+      // Raw status drives `formatStatusReasoning` (the per-row
+      // explanation reads from the underlying grok verdict, not the
+      // reclassification overlay).
+      rawStatus: dnsvizAnalysesTable.status,
       summary: dnsvizAnalysesTable.summary,
       errorMessage: dnsvizAnalysesTable.errorMessage,
     })
     .from(dnsvizAnalysesTable)
+    .leftJoin(
+      indexedDomainsTable,
+      and(
+        eq(
+          indexedDomainsTable.normalizedDomainName,
+          dnsvizAnalysesTable.normalizedDomainName,
+        ),
+        eq(indexedDomainsTable.registrarKey, dnsvizAnalysesTable.registrarKey),
+      ),
+    )
     .where(and(...whereClauses))
     .orderBy(asc(dnsvizAnalysesTable.normalizedDomainName));
 
-  const counts = {
+  const rows: DigestRow[] = dbRows.map((r) => ({
+    ...r,
+    // SQL `CASE` returns text; cast to the wider enum.
+    status: r.status as DnsvizEffectiveStatus,
+  }));
+
+  const counts: DigestCounts = {
     secureCount: 0,
     insecureCount: 0,
     bogusCount: 0,
     errorCount: 0,
+    expectedErrorCount: 0,
+    warnCount: 0,
   };
   for (const r of rows) {
-    counts[`${statusToCountKey(r.status)}Count` as keyof typeof counts]++;
+    counts[
+      `${effectiveStatusToCountKey(r.status)}Count` as keyof DigestCounts
+    ]++;
   }
 
   if (rows.length === 0) {
@@ -380,12 +426,17 @@ export async function sendDnsvizDigestEmail(
 
   const isScoped = !!(input.domainFilter && input.domainFilter.length > 0);
   const subjectPrefix = input.subjectPrefix ?? '[DNSViz]';
+  // Lead with the actionable buckets (BOGUS / ERROR / WARN), then the
+  // non-actionable / informational ones, so the subject line reads
+  // worst-first at a glance.
   const subject =
     `${subjectPrefix} ${input.analysisDate}: ` +
-    `${counts.secureCount} secure, ` +
-    `${counts.insecureCount} insecure, ` +
     `${counts.bogusCount} bogus, ` +
-    `${counts.errorCount} error`;
+    `${counts.errorCount} error, ` +
+    `${counts.warnCount} warn, ` +
+    `${counts.expectedErrorCount} expected, ` +
+    `${counts.insecureCount} insecure, ` +
+    `${counts.secureCount} secure`;
 
   const html = renderDigestEmailHtml({
     rows,
@@ -500,6 +551,29 @@ function statusToCountKey(
   }
 }
 
+/**
+ * Six-bucket counterpart to `statusToCountKey`, used by the digest
+ * email which surfaces effective (post-reclassification) statuses.
+ */
+function effectiveStatusToCountKey(
+  s: DnsvizEffectiveStatus,
+): 'secure' | 'insecure' | 'bogus' | 'error' | 'expectedError' | 'warn' {
+  switch (s) {
+    case 'SECURE':
+      return 'secure';
+    case 'INSECURE':
+      return 'insecure';
+    case 'BOGUS':
+      return 'bogus';
+    case 'ERROR':
+      return 'error';
+    case 'EXPECTED_ERROR':
+      return 'expectedError';
+    case 'WARN':
+      return 'warn';
+  }
+}
+
 function formatErrorMessage(err: unknown): string {
   if (err instanceof DnsvizError) {
     const tail = err.stderr ? ` | stderr: ${err.stderr.slice(0, 400)}` : '';
@@ -515,7 +589,10 @@ interface DigestRow {
   id: string;
   domainName: NamefiNormalizedDomain;
   registrarKey: string;
-  status: DnsvizAnalysisStatus;
+  /** Effective status (post-reclassification overlay). */
+  status: DnsvizEffectiveStatus;
+  /** Raw `dnsviz_analyses.status`, used by `formatStatusReasoning`. */
+  rawStatus: DnsvizAnalysisStatus;
   summary: DnsvizAnalysisSummary | null;
   errorMessage: string | null;
 }
@@ -525,6 +602,8 @@ interface DigestCounts {
   insecureCount: number;
   bogusCount: number;
   errorCount: number;
+  expectedErrorCount: number;
+  warnCount: number;
 }
 
 interface DigestEmailArgs {
@@ -561,7 +640,10 @@ function formatStatusReasoning(row: DigestRow): string {
     .join(', ');
   const parentsTail = parents ? `; parents: ${parents}` : '';
 
-  switch (row.status) {
+  // Reasoning is always derived from the *raw* grok verdict — the
+  // overlay reclassification is operational metadata, not a different
+  // verdict from the analyzer.
+  switch (row.rawStatus) {
     case 'SECURE':
       return `delegation.status=SECURE for ${leafKey}${parentsTail}`;
     case 'INSECURE':
@@ -580,11 +662,16 @@ function formatStatusReasoning(row: DigestRow): string {
   }
 }
 
-const STATUS_PRIORITY: Record<DnsvizAnalysisStatus, number> = {
+// Worst-first sort order. Actionable buckets (BOGUS / ERROR) come
+// before the heads-up bucket (WARN), then the informational ones
+// (INSECURE / EXPECTED_ERROR / SECURE).
+const STATUS_PRIORITY: Record<DnsvizEffectiveStatus, number> = {
   BOGUS: 0,
   ERROR: 1,
-  INSECURE: 2,
-  SECURE: 3,
+  WARN: 2,
+  INSECURE: 3,
+  EXPECTED_ERROR: 4,
+  SECURE: 5,
 };
 
 function sortByStatusPriority(rows: DigestRow[]): DigestRow[] {
@@ -596,30 +683,47 @@ function sortByStatusPriority(rows: DigestRow[]): DigestRow[] {
 }
 
 /**
- * In daily (unscoped) mode the SECURE bucket can have thousands of rows;
- * surfacing all of them would make the email enormous. Truncate to the
- * first N SECURE rows and append a "+rest" placeholder; non-SECURE rows
- * are never truncated. In scoped mode (on-demand) every input row is
- * shown by name.
+ * In daily (unscoped) mode the SECURE and EXPECTED_ERROR buckets can
+ * each have thousands of rows; surfacing all of them would make the
+ * email enormous. Truncate each non-actionable bucket to the first N
+ * rows and append a "+rest" placeholder. Actionable buckets
+ * (BOGUS/ERROR/WARN) and INSECURE are never truncated. In scoped mode
+ * (on-demand) every input row is shown by name.
  */
-function truncateSecureRows(
+function truncateNoiseRows(
   rows: DigestRow[],
   isScoped: boolean,
-): { shown: DigestRow[]; secureOverflow: number } {
-  if (isScoped) return { shown: rows, secureOverflow: 0 };
-  const nonSecure = rows.filter((r) => r.status !== 'SECURE');
+): {
+  shown: DigestRow[];
+  secureOverflow: number;
+  expectedErrorOverflow: number;
+} {
+  if (isScoped)
+    return { shown: rows, secureOverflow: 0, expectedErrorOverflow: 0 };
+  const visible = rows.filter(
+    (r) => r.status !== 'SECURE' && r.status !== 'EXPECTED_ERROR',
+  );
   const secure = rows.filter((r) => r.status === 'SECURE');
+  const expectedError = rows.filter((r) => r.status === 'EXPECTED_ERROR');
   const shownSecure = secure.slice(0, DIGEST_LIST_TRUNCATE);
+  const shownExpectedError = expectedError.slice(0, DIGEST_LIST_TRUNCATE);
   return {
-    shown: [...nonSecure, ...shownSecure],
+    shown: [...visible, ...shownExpectedError, ...shownSecure],
     secureOverflow: secure.length - shownSecure.length,
+    expectedErrorOverflow: expectedError.length - shownExpectedError.length,
   };
 }
 
-const STATUS_COLOR: Record<DnsvizAnalysisStatus, string> = {
+const STATUS_COLOR: Record<DnsvizEffectiveStatus, string> = {
   BOGUS: '#cf222e',
   ERROR: '#cf222e',
+  // WARN: amber — heads-up because the domain is on custom NS, but
+  // not actionable from the Namefi side.
+  WARN: '#9a6700',
   INSECURE: '#9a6700',
+  // EXPECTED_ERROR: muted — explained by indexed-domain state, no
+  // operator action needed.
+  EXPECTED_ERROR: '#6e7781',
   SECURE: '#1a7f37',
 };
 
@@ -631,15 +735,20 @@ function renderDigestEmailHtml(args: DigestEmailArgs): string {
 <div style="background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:16px 20px;margin:16px 0;font-size:13px">
   <strong>Summary for ${escapeHtml(analysisDate)}</strong> — ${totalRows} domain(s) analyzed
   <ul style="margin:8px 0 0 0;padding-left:20px">
-    <li><span style="color:${STATUS_COLOR.SECURE}">SECURE</span>: <strong>${counts.secureCount}</strong></li>
-    <li><span style="color:${STATUS_COLOR.INSECURE}">INSECURE</span>: <strong>${counts.insecureCount}</strong> (no DNSSEC)</li>
     <li><span style="color:${STATUS_COLOR.BOGUS}">BOGUS</span>: <strong>${counts.bogusCount}</strong> (DNSSEC misconfigured — actionable)</li>
     <li><span style="color:${STATUS_COLOR.ERROR}">ERROR</span>: <strong>${counts.errorCount}</strong> (probe/grok failed)</li>
+    <li><span style="color:${STATUS_COLOR.WARN}">WARN</span>: <strong>${counts.warnCount}</strong> (DNSSEC issue on custom NS — not actionable from Namefi)</li>
+    <li><span style="color:${STATUS_COLOR.INSECURE}">INSECURE</span>: <strong>${counts.insecureCount}</strong> (no DNSSEC)</li>
+    <li><span style="color:${STATUS_COLOR.EXPECTED_ERROR}">EXPECTED ERROR</span>: <strong>${counts.expectedErrorCount}</strong> (no delegation, but indexed state explains why)</li>
+    <li><span style="color:${STATUS_COLOR.SECURE}">SECURE</span>: <strong>${counts.secureCount}</strong></li>
   </ul>
 </div>`;
 
   const sorted = sortByStatusPriority(rows);
-  const { shown, secureOverflow } = truncateSecureRows(sorted, isScoped);
+  const { shown, secureOverflow, expectedErrorOverflow } = truncateNoiseRows(
+    sorted,
+    isScoped,
+  );
 
   const tableRows = shown
     .map((r) => {
@@ -653,10 +762,18 @@ function renderDigestEmailHtml(args: DigestEmailArgs): string {
     })
     .join('\n');
 
-  const overflowRow =
-    secureOverflow > 0
-      ? `<tr><td colspan="4" style="text-align:center;color:#666;font-style:italic">… +${secureOverflow} more SECURE row(s) — list truncated in daily mode</td></tr>`
-      : '';
+  const overflowRows: string[] = [];
+  if (expectedErrorOverflow > 0) {
+    overflowRows.push(
+      `<tr><td colspan="4" style="text-align:center;color:#666;font-style:italic">… +${expectedErrorOverflow} more EXPECTED ERROR row(s) — list truncated in daily mode</td></tr>`,
+    );
+  }
+  if (secureOverflow > 0) {
+    overflowRows.push(
+      `<tr><td colspan="4" style="text-align:center;color:#666;font-style:italic">… +${secureOverflow} more SECURE row(s) — list truncated in daily mode</td></tr>`,
+    );
+  }
+  const overflowRow = overflowRows.join('\n');
 
   const tableSection =
     rows.length === 0
@@ -687,10 +804,12 @@ function renderDigestEmailPlain(args: DigestEmailArgs): string {
   );
   lines.push('');
   lines.push(`Summary (${totalRows} analyzed):`);
-  lines.push(`  SECURE   ${counts.secureCount}`);
-  lines.push(`  INSECURE ${counts.insecureCount}`);
-  lines.push(`  BOGUS    ${counts.bogusCount}`);
-  lines.push(`  ERROR    ${counts.errorCount}`);
+  lines.push(`  BOGUS          ${counts.bogusCount}`);
+  lines.push(`  ERROR          ${counts.errorCount}`);
+  lines.push(`  WARN           ${counts.warnCount}`);
+  lines.push(`  INSECURE       ${counts.insecureCount}`);
+  lines.push(`  EXPECTED_ERROR ${counts.expectedErrorCount}`);
+  lines.push(`  SECURE         ${counts.secureCount}`);
   lines.push('');
 
   if (rows.length === 0) {
@@ -699,13 +818,21 @@ function renderDigestEmailPlain(args: DigestEmailArgs): string {
   }
 
   const sorted = sortByStatusPriority(rows);
-  const { shown, secureOverflow } = truncateSecureRows(sorted, isScoped);
+  const { shown, secureOverflow, expectedErrorOverflow } = truncateNoiseRows(
+    sorted,
+    isScoped,
+  );
 
   lines.push('=== Verdicts ===');
   for (const r of shown) {
     const reasoning = formatStatusReasoning(r);
     lines.push(
       `- ${r.domainName}\t${r.status}\t${r.registrarKey}\t${reasoning}`,
+    );
+  }
+  if (expectedErrorOverflow > 0) {
+    lines.push(
+      `  … +${expectedErrorOverflow} more EXPECTED_ERROR rows (truncated in daily mode)`,
     );
   }
   if (secureOverflow > 0) {

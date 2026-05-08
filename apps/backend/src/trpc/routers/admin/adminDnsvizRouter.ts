@@ -35,6 +35,7 @@ import {
   extractAllDnsvizMessages,
   runDnsvizGraphBuffered,
 } from '#lib/dnsviz';
+import { dnsvizEffectiveStatusSql as effectiveStatusSql } from '#lib/dnsviz-effective-status-sql';
 import { createLogger } from '#lib/logger';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
@@ -42,56 +43,6 @@ import { dnsvizOnDemandWorkflow } from '#temporal/workflows/dnsviz-on-demand.wor
 import { randomBytes } from 'node:crypto';
 
 const logger = createLogger({ module: 'admin-dnsviz-router' });
-
-/**
- * SQL `CASE` overlay that reclassifies the raw `dnsviz_analyses.status`
- * into the wider `dnsvizAnalysisStatusSchema` enum (see contract for
- * full semantics). Used in `SELECT` (so `status` returned to the UI is
- * the effective value) AND in `DNSVIZ_FILTER_TABLE_STRUCTURE` (so
- * filter+sort target the same effective value the user sees).
- *
- * Expects the `indexed_domains` LEFT JOIN to already be in the FROM
- * clause; references `dnssec_status` jsonb keys directly. Returns text
- * (the enum values), not the pg enum type, since the `CASE` mixes
- * static literals with the enum-typed column.
- *
- * Rules (in priority order):
- *  1. `summary->>'delegationStatus' IS NULL` AND any of:
- *       a) `supportsDnssec` is missing/false (TLD doesn't sign), OR
- *       b) Namefi NS AND `hasDelegationSigner = zoneHasActiveDnssec`
- *          (XNOR — config is consistent, so the missing delegation
- *          isn't a Namefi-side bug), OR
- *       c) custom NS AND `hasDelegationSigner` is missing/false (DS
- *          isn't published, so a missing delegation is expected)
- *      → `EXPECTED_ERROR`.
- *  2. raw status IN (BOGUS, ERROR) AND `supportsDnssec` AND custom NS
- *      → `WARN` (we don't control the NS, so it's a heads-up not an
- *      actionable failure).
- *  3. otherwise pass the raw status through.
- */
-const effectiveStatusSql = sql<string>`
-  CASE
-    WHEN ${dnsvizAnalysesTable.summary} ->> 'delegationStatus' IS NULL
-     AND (
-       COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec')::boolean, false) = false
-       OR (
-         COALESCE(${indexedDomainsTable.isUsingNamefiNameservers}, false) = true
-         AND COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'hasDelegationSigner')::boolean, false)
-           = COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'zoneHasActiveDnssec')::boolean, false)
-       )
-       OR (
-         COALESCE(${indexedDomainsTable.isUsingNamefiNameservers}, true) = false
-         AND COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'hasDelegationSigner')::boolean, false) = false
-       )
-     )
-    THEN 'EXPECTED_ERROR'
-    WHEN ${dnsvizAnalysesTable.status} IN ('BOGUS', 'ERROR')
-     AND COALESCE((${indexedDomainsTable.dnssecStatus} ->> 'supportsDnssec')::boolean, false) = true
-     AND COALESCE(${indexedDomainsTable.isUsingNamefiNameservers}, true) = false
-    THEN 'WARN'
-    ELSE ${dnsvizAnalysesTable.status}::text
-  END
-`;
 
 /**
  * Read-only admin surface onto `dnsviz_analyses`. Powers
