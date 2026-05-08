@@ -25,7 +25,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { ExternalLink, Globe, Loader2 } from 'lucide-react';
+import { Settings, Globe, Loader2 } from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
@@ -128,7 +128,7 @@ export function AdminDomainDetailsButton({
         title={title}
         aria-label={title}
       >
-        {children ?? <ExternalLink className="h-4 w-4" />}
+        {children ?? <Settings className="h-4 w-4" />}
       </Button>
       {open ? (
         <AdminDomainDetailsDialog
@@ -179,7 +179,7 @@ export function AdminDomainDetailsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-4xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="!max-w-[85vw] min-w-[1024px] max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-zinc-500" />
