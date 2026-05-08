@@ -1,0 +1,217 @@
+name: Auto Close Stale PRs
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      include_drafts:
+        description: 'Include draft pull requests'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  auto-close-stale-prs:
+    name: Auto close stale PRs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create NameFi bot token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Process stale PRs
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const noAutoCloseLabel = 'no-auto-close';
+            const autoClosedLabel = 'auto-closed';
+            const warningMarker = '<!-- auto-close-stale-pr-warning -->';
+            const closeMarker = '<!-- auto-close-stale-pr-closed -->';
+            const warningAgeDays = 14;
+            const closeAgeDays = 17;
+            const millisecondsPerDay = 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            const { owner, repo } = context.repo;
+            const includeDrafts = context.eventName === 'workflow_dispatch' && ${{ inputs.include_drafts || false }};
+
+            async function ensureLabel(name, color, description) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner,
+                  repo,
+                  name,
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+
+                try {
+                  await github.rest.issues.createLabel({
+                    owner,
+                    repo,
+                    name,
+                    color,
+                    description,
+                  });
+                } catch (createError) {
+                  if (createError.status !== 422) {
+                    throw createError;
+                  }
+                }
+              }
+            }
+
+            function getAgeDays(createdAt) {
+              return Math.floor((now - Date.parse(createdAt)) / millisecondsPerDay);
+            }
+
+            function getLabelNames(labels) {
+              return labels.map((label) => label.name).filter(Boolean);
+            }
+
+            function getCreatorMention(pr) {
+              return pr.user?.login ? `@${pr.user.login}` : 'the PR creator';
+            }
+
+            async function hasMarkerComment(prNumber, marker) {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner,
+                repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+
+              return comments.some((comment) => comment.body?.includes(marker));
+            }
+
+            async function commentOnce(prNumber, body, marker) {
+              if (await hasMarkerComment(prNumber, marker)) {
+                return false;
+              }
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body,
+              });
+
+              return true;
+            }
+
+            await ensureLabel(
+              noAutoCloseLabel,
+              '5319e7',
+              'Prevents automated stale pull request closure.',
+            );
+            await ensureLabel(
+              autoClosedLabel,
+              'ededed',
+              'Pull requests closed automatically after inactivity.',
+            );
+
+            const pullRequests = await github.paginate(github.rest.pulls.list, {
+              owner,
+              repo,
+              state: 'open',
+              sort: 'created',
+              direction: 'asc',
+              per_page: 100,
+            });
+
+            let skippedCount = 0;
+            let skippedDraftCount = 0;
+            let warnedCount = 0;
+            let alreadyWarnedCount = 0;
+            let closedCount = 0;
+
+            for (const pr of pullRequests) {
+              if (pr.draft && !includeDrafts) {
+                skippedDraftCount += 1;
+                console.log(`Skipping PR #${pr.number}: draft PR`);
+                continue;
+              }
+
+              const labelNames = getLabelNames(pr.labels);
+
+              if (labelNames.includes(noAutoCloseLabel)) {
+                skippedCount += 1;
+                console.log(`Skipping PR #${pr.number}: ${noAutoCloseLabel} label present`);
+                continue;
+              }
+
+              const ageDays = getAgeDays(pr.created_at);
+
+              if (ageDays >= closeAgeDays) {
+                const mention = getCreatorMention(pr);
+                const commentBody = [
+                  `${mention} this PR has been open for ${ageDays} days without the \`${noAutoCloseLabel}\` label.`,
+                  `It is being automatically closed because it is at least ${closeAgeDays} days old. If this PR should stay open, please reopen it and add the \`${noAutoCloseLabel}\` label.`,
+                  closeMarker,
+                ].join('\n\n');
+
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  labels: [autoClosedLabel],
+                });
+
+                await commentOnce(pr.number, commentBody, closeMarker);
+
+                await github.rest.pulls.update({
+                  owner,
+                  repo,
+                  pull_number: pr.number,
+                  state: 'closed',
+                });
+
+                closedCount += 1;
+                console.log(`Closed PR #${pr.number}: ${ageDays} days old`);
+                continue;
+              }
+
+              if (ageDays >= warningAgeDays) {
+                const mention = getCreatorMention(pr);
+                const commentBody = [
+                  `${mention} this PR has been open for ${ageDays} days.`,
+                  `It will be closed in 3 days unless the \`${noAutoCloseLabel}\` label is added.`,
+                  warningMarker,
+                ].join('\n\n');
+                const didComment = await commentOnce(pr.number, commentBody, warningMarker);
+
+                if (didComment) {
+                  warnedCount += 1;
+                  console.log(`Warned PR #${pr.number}: ${ageDays} days old`);
+                } else {
+                  alreadyWarnedCount += 1;
+                  console.log(`PR #${pr.number} already has a warning comment`);
+                }
+              }
+            }
+
+            core.summary
+              .addHeading('Auto Close Stale PRs')
+              .addRaw(`Open PRs checked: ${pullRequests.length}\n`)
+              .addRaw(`Skipped with ${noAutoCloseLabel}: ${skippedCount}\n`)
+              .addRaw(`Skipped drafts: ${skippedDraftCount}\n`)
+              .addRaw(`Warned: ${warnedCount}\n`)
+              .addRaw(`Already warned: ${alreadyWarnedCount}\n`)
+              .addRaw(`Closed: ${closedCount}\n`);
+
+            await core.summary.write();
