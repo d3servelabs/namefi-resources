@@ -8,6 +8,7 @@ import * as styles from '../styles';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
+import { EmailButtonIcon } from '../components/email-action-icon';
 
 export type DomainExportPendingProps = {
   recipientName?: string;
@@ -49,6 +50,7 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
               })}
               style={styles.button}
             >
+              <EmailButtonIcon icon="settings" />
               Review Export Request
             </Button>
           </Card>

@@ -18,6 +18,7 @@ import {
 } from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
+import { EmailButtonIcon } from '../components/email-action-icon';
 import { NamefiEmailLinks } from '../email-links';
 import { toUnicode } from 'punycode';
 
@@ -133,6 +134,7 @@ export const InternalReservationNotification =
             style={button}
             href={NamefiEmailLinks.freeMints({ poweredByNamefiDomain })}
           >
+            <EmailButtonIcon icon="register" />
             Go to Dashboard
           </Button>
 

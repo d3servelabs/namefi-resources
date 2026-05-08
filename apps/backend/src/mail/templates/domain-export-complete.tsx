@@ -8,6 +8,7 @@ import * as styles from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { NamefiEmailLinks } from '../email-links';
 import { Card } from '../components/card';
+import { EmailButtonIcon } from '../components/email-action-icon';
 import punycode from 'punycode';
 
 export type DomainExportCompleteProps = {
@@ -96,6 +97,7 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
                   style={styles.button}
                   href={NamefiEmailLinks.domains({ poweredByNamefiDomain })}
                 >
+                  <EmailButtonIcon icon="search" />
                   Explore More Domains
                 </Button>
               </td>
@@ -108,6 +110,7 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
                   style={styles.button}
                   href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
                 >
+                  <EmailButtonIcon icon="dashboard" />
                   Go To Namefi Dashboard
                 </Button>
               </td>

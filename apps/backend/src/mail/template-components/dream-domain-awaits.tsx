@@ -10,6 +10,10 @@ import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
 import {
+  EmailButtonIcon,
+  EmailIconButton,
+} from '../components/email-action-icon';
+import {
   EmailTable,
   EmailTableCell,
   EmailTableHeaderCell,
@@ -44,9 +48,6 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
   const suggestionsTableStyle = {
     ...styles.table,
     margin: 0,
-  };
-  const addToCartLinkStyle = {
-    ...styles.inlineActionLink,
   };
 
   return (
@@ -90,15 +91,14 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
                       padding: '8px 10px',
                     }}
                   >
-                    <a
+                    <EmailIconButton
                       href={NamefiEmailLinks.addToCartFromUrl({
                         domain,
                         poweredByNamefiDomain,
                       })}
-                      style={addToCartLinkStyle}
-                    >
-                      Add to Cart
-                    </a>
+                      icon="cart"
+                      label={`Add ${domain} to cart`}
+                    />
                   </EmailTableCell>
                 </EmailTableRow>
               ))}
@@ -121,6 +121,7 @@ export const DreamDomainAwaitsTemplate = (props: DreamDomainAwaitsProps) => {
         style={styles.button}
         href={NamefiEmailLinks.home({ poweredByNamefiDomain })}
       >
+        <EmailButtonIcon icon="search" />
         {copyVariant.cta}
       </Button>
       <Text style={{ ...styles.paragraph, marginTop: '12px' }}>

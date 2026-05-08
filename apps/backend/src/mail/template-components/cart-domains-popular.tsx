@@ -8,6 +8,7 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { Card } from '../components/card';
+import { EmailButtonIcon } from '../components/email-action-icon';
 import {
   EmailTable,
   EmailTableCell,
@@ -130,6 +131,7 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
         style={styles.button}
         href={NamefiEmailLinks.cart({ poweredByNamefiDomain })}
       >
+        <EmailButtonIcon icon="cart" />
         {copyVariant.cta}
       </Button>
       <Text style={{ ...styles.paragraph, marginTop: '12px' }}>

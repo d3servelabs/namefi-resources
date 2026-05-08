@@ -1,4 +1,5 @@
 import { Button } from '@react-email/components';
+import { EmailButtonIcon } from './email-action-icon';
 import { button } from '../styles';
 import { usePoweredByNamefiDomain } from './powered-by-namefi-url-context';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
@@ -14,6 +15,7 @@ export function GoToDashboard() {
         style={button}
         href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
       >
+        <EmailButtonIcon icon="dashboard" />
         Go To Namefi Dashboard
       </Button>
     </div>

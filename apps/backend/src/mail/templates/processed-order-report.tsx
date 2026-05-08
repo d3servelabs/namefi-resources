@@ -27,6 +27,7 @@ import {
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
+import { EmailButtonIcon } from '../components/email-action-icon';
 import {
   EmailTable,
   EmailTableCell,
@@ -462,6 +463,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                   style={button}
                   href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
                 >
+                  <EmailButtonIcon icon="dashboard" />
                   Go To Namefi Dashboard
                 </Button>
               </td>

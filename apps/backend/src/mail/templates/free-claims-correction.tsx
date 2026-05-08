@@ -29,6 +29,7 @@ import {
 } from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
+import { EmailButtonIcon } from '../components/email-action-icon';
 import { NamefiEmailLinks } from '../email-links';
 import pluralize from 'pluralize';
 
@@ -262,6 +263,7 @@ export const FreeClaimsCorrection = buildTemplate<FreeClaimsCorrectionProps>(
               poweredByNamefiDomain,
             })}
           >
+            <EmailButtonIcon icon="register" />
             Claim Your {correctParentDomain} Domains
           </Button>
         </div>

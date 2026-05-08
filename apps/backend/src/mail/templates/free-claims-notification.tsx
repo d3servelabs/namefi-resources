@@ -29,6 +29,7 @@ import {
 } from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
+import { EmailButtonIcon } from '../components/email-action-icon';
 import { NamefiEmailLinks } from '../email-links';
 import pluralize from 'pluralize';
 
@@ -227,6 +228,7 @@ export const FreeClaimsNotification =
               poweredByNamefiDomain,
             })}
           >
+            <EmailButtonIcon icon="register" />
             Claim Your Free Domains
           </Button>
           <div style={{ ...panelText, marginTop: '12px' }}>

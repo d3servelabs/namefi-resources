@@ -1,5 +1,6 @@
 import { Button } from '@react-email/components';
 import { Card } from '../components/card';
+import { EmailButtonIcon } from '../components/email-action-icon';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -448,6 +449,11 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
                             poweredByNamefiDomain: null,
                           })}
                         >
+                          <EmailButtonIcon
+                            icon="settings"
+                            size={14}
+                            style={{ marginRight: '6px' }}
+                          />
                           Renew Now
                         </a>
                       </EmailTableCell>
