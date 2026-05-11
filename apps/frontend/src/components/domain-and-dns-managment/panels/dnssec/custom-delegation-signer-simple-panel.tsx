@@ -91,7 +91,7 @@ export function CustomDelegationSignerSimplePanel({
   );
 
   return (
-    <div className="flex flex-col gap-3 w-full pt-4 border-t border-zinc-800">
+    <div className="flex flex-col gap-3 w-full">
       <ReadinessCard
         status={status}
         isLoading={isStatusLoading}
@@ -259,11 +259,11 @@ function ErrorCard({ onRecheck }: { onRecheck: () => void }) {
         <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-zinc-100">
-            We couldn't check your DNSSEC status
+            Couldn't check DNSSEC status
           </p>
           <p className="text-xs text-zinc-400">
-            Something went wrong reaching your registrar or nameservers. This is
-            usually temporary — try again in a moment.
+            We couldn't reach your registrar or nameservers. Try again in a
+            moment.
           </p>
         </div>
       </div>
@@ -332,9 +332,8 @@ function PendingCard({
             DNSSEC setup in progress
           </p>
           <p className="text-xs text-zinc-400">
-            We're waiting for your DNSSEC {keyWord} to become visible globally
-            before activating. This usually takes a few hours but can take up to
-            48 hours. We'll email you when it's done.
+            Waiting for your DNSSEC {keyWord} to propagate globally. Usually a
+            few hours, up to 48. We'll email you when it's done.
           </p>
         </div>
       </div>
@@ -416,6 +415,7 @@ function ReadyCard({
   disabled: boolean;
 }) {
   const kskWord = kskCount === 1 ? 'DNSKEY' : 'DNSKEYs';
+  const sample = firstAndMore(sampleNameservers);
   return (
     <div className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3">
       <div className="flex items-start gap-3">
@@ -427,24 +427,15 @@ function ReadyCard({
             <span className="text-zinc-200">
               {kskCount} {kskWord}
             </span>{' '}
-            at your delegation nameservers
-            {sampleNameservers.length > 0 ? (
+            at your nameservers
+            {sample ? (
               <>
                 {' ('}
-                <span className="font-mono text-zinc-300">
-                  {[
-                    sampleNameservers.slice(0, 1),
-                    sampleNameservers.slice(1).length
-                      ? `+${sampleNameservers.slice(1).length} more`
-                      : null,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}
-                </span>
+                <span className="font-mono text-zinc-300">{sample}</span>
                 {')'}
               </>
             ) : null}
-            . Click Enable to auto setup DNSSEC for you.
+            . Click Enable to set it up.
           </p>
         </div>
       </div>
@@ -478,12 +469,8 @@ function NoDnskeyCard({
   const providerName =
     detectedProvider.name !== 'unknown' ? detectedProvider.name : null;
   const setupUrl = detectedProvider.dnssecSetupUrl;
-  const title = providerName
-    ? `Enable DNSSEC at ${providerName} first`
-    : 'Enable DNSSEC at your DNS provider first';
-  const body = providerName
-    ? `We checked your authoritative nameservers and didn't find a DNSKEY yet. Enable DNSSEC at ${providerName}, then come back to publish the DS record.`
-    : "We checked your authoritative nameservers and didn't find a DNSKEY yet. Enable DNSSEC at your DNS provider, then come back to publish the DS record.";
+  const title = `Enable DNSSEC at ${providerName || 'your DNS provider'} first`;
+  const body = `We checked your nameservers and it seems DNSSEC is not enabled. Enable DNSSEC at ${providerName || 'your DNS provider'}, then come back to enable it here.`;
 
   return (
     <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3">
@@ -496,7 +483,7 @@ function NoDnskeyCard({
             <p className="text-xs text-zinc-500 mt-1">
               Detected nameservers:{' '}
               <span className="font-mono text-zinc-400">
-                {sampleNameservers.join(', ')}
+                {firstAndMore(sampleNameservers)}
               </span>
             </p>
           ) : null}
@@ -586,20 +573,14 @@ function MismatchCard({
             DNSSEC is misconfigured
           </p>
           <p className="text-xs text-zinc-400">
-            A DS record is published with us, but your DNS provider isn't
-            signing the zone — the DNSSEC key is missing. This breaks DNSSEC
-            validation, and visitors using DNSSEC-validating resolvers may not
-            reach your domain.
+            A DNSSEC is enabled here, but it's not enabled on your custom
+            nameservers. Either enable it at{' '}
+            {providerName || 'your DNS provider'}, or remove the DS record.
           </p>
-          <p className="text-xs text-zinc-400 mt-2">To fix this, either:</p>
-          <ul className="text-xs text-zinc-400 list-disc pl-5 space-y-0.5">
-            <li>
-              Enable DNSSEC at{' '}
-              {providerName ? providerName : 'your DNS provider'} so the key
-              gets published, or
-            </li>
-            <li>Remove the DS record from us.</li>
-          </ul>
+          <p className="text-xs text-zinc-400">
+            If no action is taken, Namefi will automatically fix it for you to
+            avoid issues with your domain.
+          </p>
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-end gap-2">
@@ -753,4 +734,18 @@ function notifyRemoveResult(
     return;
   }
   toast.error('Failed to remove DS records.');
+}
+
+function firstAndMore(items: string[]) {
+  if (items.length > 0) {
+    const first = items.slice(0, 1);
+    const remaining = items.slice(1);
+    const remainingCount = remaining.length;
+    if (remainingCount <= 1) {
+      return items.join(', ');
+    }
+
+    return [first, `+${remainingCount} more`].join(', ');
+  }
+  return null;
 }

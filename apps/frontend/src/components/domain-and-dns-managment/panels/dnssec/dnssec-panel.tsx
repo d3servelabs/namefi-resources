@@ -346,7 +346,7 @@ export const DnssecPanelInner = ({
         />
         {isUsingNamefiSigning ? (
           <div className="flex items-center gap-2">
-            <p>Namefi is signing records for this domain</p>
+            <p>Namefi is automatically handling DNSSEC for this domain.</p>
           </div>
         ) : undefined}
 
@@ -356,10 +356,19 @@ export const DnssecPanelInner = ({
             isNotEmpty(data.delegationSigners) ? (
               data.isUsingNamefiDelegationSigner &&
               data.delegationSigners.length === 1 ? (
-                <>
-                  <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-                  <p>Namefi is the only delegation signer for this domain</p>
-                </>
+                dnssecMode === 'simple' ? (
+                  <>
+                    <ShieldCheckIcon className="w-6 h-6 text-green-500" />
+                    <p>All Secure</p>
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheckIcon className="w-6 h-6 text-green-500" />
+                    <p>Namefi is the only delegation signer for this domain</p>
+                  </>
+                )
+              ) : dnssecMode === 'simple' ? (
+                false
               ) : (
                 <>
                   <ShieldCheckIcon className="w-6 h-6 text-sky-500" />
@@ -369,7 +378,11 @@ export const DnssecPanelInner = ({
             ) : (
               <>
                 <ShieldXIcon className="w-6 h-6 text-red-500" />
-                <p>No delegation signers</p>
+                {dnssecMode === 'simple' ? (
+                  <p>DNSSEC not enabled</p>
+                ) : (
+                  <p>No delegation signers</p>
+                )}
               </>
             )}
           </div>
