@@ -109,7 +109,7 @@ const Layout = ({
   headerActions?: React.ReactNode;
 }) => {
   return (
-    <Card className="bg-zinc-900 border-zinc-800">
+    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="flex items-center gap-2">

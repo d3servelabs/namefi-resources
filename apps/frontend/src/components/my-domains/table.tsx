@@ -310,7 +310,12 @@ export function MyDomainsTable(props: {
   );
   const renewalPriceUsdPerYearByTld = useMemo(() => {
     const map = new Map<string, number | null>();
-    for (const row of tldPricingQuery.data?.tldPricing ?? []) {
+    const tldPricing = tldPricingQuery.data?.tldPricing ?? [];
+    if (typeof tldPricing[Symbol.iterator] !== 'function') {
+      // we should have to do this but this was throwing an error on the frontend
+      return map;
+    }
+    for (const row of tldPricing) {
       if (!row?.tld) continue;
       map.set(
         String(row.tld).toLowerCase(),

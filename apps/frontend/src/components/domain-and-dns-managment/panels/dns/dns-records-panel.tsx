@@ -51,7 +51,13 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
   }, []);
 
   return (
-    <Card className={cn('bg-zinc-900 border-zinc-800', className)} {...rest}>
+    <Card
+      className={cn(
+        'relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5',
+        className,
+      )}
+      {...rest}
+    >
       <AddEditRecordsDialog
         zoneName={domain as NamefiNormalizedDomain}
         isOpen={isAddEditDialogOpen}

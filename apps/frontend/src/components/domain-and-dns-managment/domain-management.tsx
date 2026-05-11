@@ -38,20 +38,40 @@ import {
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '../dialogs/email-required-dialog';
 import { DnsOverviewPanel } from './panels/dns/dns-overview-panel';
+import { DomainOverviewPanel } from './panels/dns/domain-overview-panel';
 import { DnsRecordsPanel } from './panels/dns/dns-records-panel';
 import { DnssecPanel } from './panels/dnssec/dnssec-panel';
 import { DomainConfigAndPrefs } from './panels/domain-config-and-prefs/domain-config-and-prefs';
 import { NameserversPanel } from './panels/nameservers/nameservers-panel';
 import { useAuth } from '@/hooks/use-auth';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
+
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
+
+const DOMAIN_FLAG_DEFINITION: FeatureFlagDefinition[] = [
+  {
+    key: 'new_overview_page',
+    label: 'New Overview Page',
+    description: 'use the new overview page',
+    scope: 'page',
+    pageKey: 'users',
+    defaultValue: true,
+  },
+];
 
 export const DomainManagement: FC<DomainManagementProps> = ({
   domain,
   className,
   ...rest
 }: DomainManagementProps) => {
+  useRegisterAdminFlags(DOMAIN_FLAG_DEFINITION);
+
+  const [newOverviewComponent] = useAdminFeatureFlag(DOMAIN_FLAG_DEFINITION[0]);
+
   const searchParams = useSearchParams();
   const requestedTab = searchParams.get('tab');
   const requestedSection = searchParams.get('section');
@@ -66,10 +86,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   );
 
   // Set default tab based on whether it's a third-party hostname
-  const defaultTab = isPbn ? 'dns-management' : 'dns-overview';
+  const defaultTab = isPbn ? 'dns-management' : 'domain-overview';
   const [currentTab, setCurrentTab] = useState(() => {
     if (
-      requestedTab === 'dns-overview' ||
+      requestedTab === 'domain-overview' ||
       requestedTab === 'dns-records' ||
       requestedTab === 'dns-management'
     ) {
@@ -122,7 +142,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
   useEffect(() => {
     if (
-      requestedTab !== 'dns-overview' &&
+      requestedTab !== 'domain-overview' &&
       requestedTab !== 'dns-records' &&
       requestedTab !== 'dns-management'
     ) {
@@ -203,7 +223,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           </AlertDescription>
         </Alert>
       )}
-      <h1 className="text-4xl font-bold my-2">{domain}</h1>
+      <h1 className="text-4xl font-bold my-2 font-mono">
+        {capitalizeFirstLetter(domain)}
+      </h1>
 
       {domainSupportedFeatures.domainManagement.enabled ? (
         <Tabs defaultValue="dns-setting" className="w-full">
@@ -211,8 +233,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
           <TabsContent value="dns-setting">
             <Tabs value={currentTab} onValueChange={handleTabChange}>
-              <TabsList className="mb-8">
-                <TabsTrigger value="dns-overview">Domain Overview</TabsTrigger>
+              <TabsList className="border-1 border-brand-primary/5 bg-gradient-to-r from-brand-primary/15 via-transparent to-brand-secondary/15 mb-8">
+                <TabsTrigger value="domain-overview">
+                  Domain Overview
+                </TabsTrigger>
 
                 {showDnsTable && (
                   <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
@@ -224,11 +248,18 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                 )}
               </TabsList>
 
-              <TabsContent value="dns-overview">
-                <DnsOverviewPanel
-                  domain={domain as PunycodeDomainName}
-                  nftChainId={nft.chainId}
-                />
+              <TabsContent value="domain-overview">
+                {newOverviewComponent ? (
+                  <DomainOverviewPanel
+                    domain={domain as PunycodeDomainName}
+                    nftChainId={nft.chainId}
+                  />
+                ) : (
+                  <DnsOverviewPanel
+                    domain={domain as PunycodeDomainName}
+                    nftChainId={nft.chainId}
+                  />
+                )}
               </TabsContent>
 
               {showDnsTable && (
@@ -315,3 +346,6 @@ export const ComingSoonCard = ({ title }: { title: string }) => {
     </Card>
   );
 };
+function capitalizeFirstLetter(text: string) {
+  return text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase();
+}

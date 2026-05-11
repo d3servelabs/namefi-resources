@@ -108,7 +108,7 @@ const DOMAIN_ACTIONS = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Card className="bg-zinc-900 border-zinc-800">
+    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           Nameservers Management

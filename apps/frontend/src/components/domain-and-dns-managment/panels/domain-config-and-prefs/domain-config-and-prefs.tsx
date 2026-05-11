@@ -67,7 +67,7 @@ function isApexRecordName(name: string) {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Card className="bg-zinc-900 border-zinc-800">
+    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           Domain Preferences
@@ -453,7 +453,7 @@ export const DomainConfigAndPrefsForm = ({
       <div className="grid grid-cols-2 gap-2 w-full">
         {dnssecDetails.isUsingNamefiNameservers ? (
           <>
-            <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+            <div className="flex items-center justify-between rounded-2xl bg-black/50 border border-brand-primary/20 p-4">
               <div className="space-y-0.5">
                 <Label htmlFor="auto-ens">Auto ENS</Label>
                 <p className="text-sm text-muted-foreground">
@@ -510,7 +510,7 @@ export const DomainConfigAndPrefsForm = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+            <div className="flex items-center justify-between rounded-2xl bg-black/50 border border-brand-primary/20 p-4">
               <div className="space-y-0.5">
                 <Label htmlFor="auto-park">Auto Park</Label>
                 <p className="text-sm text-muted-foreground">
@@ -526,7 +526,7 @@ export const DomainConfigAndPrefsForm = ({
               />
             </div>
 
-            <div className="flex flex-col items-start justify-between col-span-2 rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-2">
+            <div className="flex flex-col items-start justify-between col-span-2 rounded-2xl bg-black/50 border border-brand-primary/20 p-4 gap-2">
               <div className="space-y-0.5">
                 <Label htmlFor="forward-to">Forward To</Label>
                 <p className="text-sm text-muted-foreground">
