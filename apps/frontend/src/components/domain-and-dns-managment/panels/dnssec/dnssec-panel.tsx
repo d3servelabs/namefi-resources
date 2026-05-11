@@ -66,13 +66,10 @@ import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
 import { CustomDelegationSignerPanel } from './custom-delegation-signer-panel';
+import { CustomDelegationSignerSimplePanel } from './custom-delegation-signer-simple-panel';
+import { DnssecModeToggle } from './dnssec-mode-toggle';
+import { useDnssecModePreference } from './use-dnssec-mode-preference';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@namefi-astra/ui/components/shadcn/accordion';
 
 const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
   key: 'cancel_dns_workflow',
@@ -99,30 +96,46 @@ const DNSSEC_PANEL_FLAGS: FeatureFlagDefinition[] = [
 type DnssecStatusDetails =
   AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({
+  children,
+  headerActions,
+}: {
+  children: React.ReactNode;
+  /**
+   * Optional content rendered on the right side of the header. Used by the
+   * custom-NS branch to host the Simple/Advanced toggle without bloating
+   * every other Layout call site.
+   */
+  headerActions?: React.ReactNode;
+}) => {
   return (
     <Card className="bg-zinc-900 border-zinc-800">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          DNSSEC Management
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <span className="inline-flex h-4 w-4 text-zinc-500 cursor-help" />
-                }
-              >
-                <Info className="h-4 w-4" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  DNSSEC is a security feature that helps to protect your domain
-                  from phishing attacks.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </CardTitle>
+        <div className="flex items-start justify-between gap-4">
+          <CardTitle className="flex items-center gap-2">
+            DNSSEC Management
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <span className="inline-flex h-4 w-4 text-zinc-500 cursor-help" />
+                  }
+                >
+                  <Info className="h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    DNSSEC is a security feature that helps to protect your
+                    domain from phishing attacks.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </CardTitle>
+          {headerActions ? (
+            <div className="shrink-0">{headerActions}</div>
+          ) : null}
+        </div>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
@@ -190,10 +203,20 @@ export const DnssecPanel = ({
     if (dnssecManagement.config.autoManaged) {
       return <AutoManagedDnssecPanel />;
     }
-    return <DnssecPanelInner domainName={domainName} />;
+    return (
+      <DnssecPanelInner
+        domainName={domainName}
+        customDnssecActive={customDnssecActive}
+      />
+    );
   }
   if (customDnssecActive) {
-    return <DnssecPanelInner domainName={domainName} />;
+    return (
+      <DnssecPanelInner
+        domainName={domainName}
+        customDnssecActive={customDnssecActive}
+      />
+    );
   }
   if (dnssecManagement.config.message) {
     return (
@@ -213,14 +236,20 @@ export const DnssecPanel = ({
 
 export const DnssecPanelInner = ({
   domainName,
+  customDnssecActive,
 }: {
   domainName: PunycodeDomainName;
+  /**
+   * Whether the custom-DNSSEC flow should take over for this domain.
+   * Computed by the outer `DnssecPanel` from both the admin feature flag
+   * and the backend's per-domain `customDnssecManagement.enabled` so the
+   * inner branch can't drift from the backend's decision.
+   */
+  customDnssecActive: boolean;
 }) => {
   const trpc = useTRPC();
   useRegisterAdminFlags(DNSSEC_PANEL_FLAGS);
-  const [customDelegationSignerEnabled] = useAdminFeatureFlag(
-    CUSTOM_DELEGATION_SIGNER_FLAG,
-  );
+  const [dnssecMode, setDnssecMode] = useDnssecModePreference(domainName);
 
   const { data, isLoading } = useQuery(
     trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions(
@@ -303,7 +332,13 @@ export const DnssecPanelInner = ({
     data.isUsingNamefiDelegationSigner && data.zoneHasActiveDnssec;
 
   return (
-    <Layout>
+    <Layout
+      headerActions={
+        customDnssecActive ? (
+          <DnssecModeToggle mode={dnssecMode} onChange={setDnssecMode} />
+        ) : undefined
+      }
+    >
       <div className="flex flex-col items-start gap-4">
         <ActiveNameserversChangeWorkflowBanner
           activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
@@ -319,24 +354,18 @@ export const DnssecPanelInner = ({
           <div className="flex items-center gap-2">
             {isNotNil(data.delegationSigners) &&
             isNotEmpty(data.delegationSigners) ? (
-              <>
-                {data.isUsingNamefiDelegationSigner &&
-                data.delegationSigners.length === 1 ? (
-                  <>
-                    <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-                    <p>Namefi is the only delegation signer for this domain</p>
-                  </>
-                ) : (
-                  <>
-                    <p>Custom delegation signers:</p>
-                    <p>
-                      {data.delegationSigners
-                        ?.map((signer) => signer.keyTag)
-                        .join(', ')}
-                    </p>
-                  </>
-                )}
-              </>
+              data.isUsingNamefiDelegationSigner &&
+              data.delegationSigners.length === 1 ? (
+                <>
+                  <ShieldCheckIcon className="w-6 h-6 text-green-500" />
+                  <p>Namefi is the only delegation signer for this domain</p>
+                </>
+              ) : (
+                <>
+                  <ShieldCheckIcon className="w-6 h-6 text-sky-500" />
+                  <p>Custom delegation signers</p>
+                </>
+              )
             ) : (
               <>
                 <ShieldXIcon className="w-6 h-6 text-red-500" />
@@ -348,21 +377,22 @@ export const DnssecPanelInner = ({
           {data.isUsingNamefiNameservers ? zoneSigningStatus : undefined}
         </div>
 
-        {customDelegationSignerEnabled && !data.isUsingNamefiNameservers ? (
-          <Accordion className="w-full">
-            <AccordionItem value="advanced-dnssec">
-              <AccordionTrigger>Advanced</AccordionTrigger>
-              <AccordionContent>
-                <div className="animate-in fade-in-50 slide-in-from-top-2">
-                  <CustomDelegationSignerPanel
-                    domainName={domainName}
-                    dnssecDetails={data}
-                    disableAllButtons={disableAllButtons}
-                  />
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+        {customDnssecActive ? (
+          <div className="w-full animate-in fade-in-50 slide-in-from-top-2">
+            {dnssecMode === 'simple' ? (
+              <CustomDelegationSignerSimplePanel
+                domainName={domainName}
+                dnssecDetails={data}
+                disableAllButtons={disableAllButtons}
+              />
+            ) : (
+              <CustomDelegationSignerPanel
+                domainName={domainName}
+                dnssecDetails={data}
+                disableAllButtons={disableAllButtons}
+              />
+            )}
+          </div>
         ) : (
           <DnssecPanelAction
             domainName={domainName}

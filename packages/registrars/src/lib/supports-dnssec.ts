@@ -1,5 +1,5 @@
 import { parse as tldtsParse } from 'tldts';
-import { DNSSEC_SUPPORTED_TLDS } from './abstract-registrar/data/dnssec-tlds';
+import { NAMEFI_DNSSEC_SUPPORTED_TLDS } from './abstract-registrar/data/dnssec-tlds';
 
 /**
  * @param domainName
@@ -10,5 +10,5 @@ export function supportsDnssec(domainName: string): boolean {
   if (!parsed.publicSuffix) {
     return false;
   }
-  return DNSSEC_SUPPORTED_TLDS.has(parsed.publicSuffix);
+  return NAMEFI_DNSSEC_SUPPORTED_TLDS.has(parsed.publicSuffix);
 }

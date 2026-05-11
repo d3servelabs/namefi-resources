@@ -394,6 +394,56 @@ const cancelDeferredDelegationSignerOutputSchema = z.object({
   workflowId: z.string(),
 });
 
+const customDnssecEnableStatusOutputSchema = z.object({
+  /**
+   * - `'no-dnskey'`: domain's authoritative NS isn't publishing a KSK yet.
+   *   The Simple panel renders the "Enable DNSSEC at <Provider>" sad-path CTA.
+   * - `'ready'`: at least one KSK is published and not yet associated. The
+   *   Simple panel renders the green Enable button.
+   * - `'already-active'`: every KSK at the authoritative NS is already in the
+   *   registrar's DS list. Quiet "DNSSEC is enabled for this domain" line.
+   */
+  readiness: z.enum(['no-dnskey', 'ready', 'already-active', 'mismatch']),
+  kskCount: z.number().int().nonnegative(),
+  detectedProvider: z.object({
+    name: z.string(),
+    dnssecSetupUrl: z.string().optional(),
+    confidence: z.enum(['all', 'majority', 'unknown']),
+  }),
+  /** First few NS hostnames for display under the CTA. Capped server-side. */
+  sampleNameservers: z.array(z.string()),
+});
+
+/**
+ * Per-KSK result of the `enableCustomDnssec` orchestrator. Discriminated by
+ * `outcome` so `workflowId` is required exactly on the deferred variant and
+ * forbidden on the others — keeps backend and frontend agreeing on the shape
+ * of each branch without runtime checks.
+ */
+const enableCustomDnssecResultBaseSchema = z.object({
+  keyTag: z.number().int(),
+  algorithm: z.nativeEnum(DnssecAlgorithms),
+  digestType: z.nativeEnum(DnssecDigestType),
+  digest: z.string(),
+});
+
+const enableCustomDnssecResultSchema = z.discriminatedUnion('outcome', [
+  enableCustomDnssecResultBaseSchema.extend({
+    outcome: z.literal('submitted-immediate'),
+  }),
+  enableCustomDnssecResultBaseSchema.extend({
+    outcome: z.literal('submitted-deferred'),
+    workflowId: z.string(),
+  }),
+  enableCustomDnssecResultBaseSchema.extend({
+    outcome: z.literal('skipped-already-active'),
+  }),
+]);
+
+const enableCustomDnssecOutputSchema = z.object({
+  results: z.array(enableCustomDnssecResultSchema),
+});
+
 const domainDnssecContract = createContract(
   { softOutput: true },
   {
@@ -446,6 +496,16 @@ const domainDnssecContract = createContract(
       type: 'mutation',
       input: cancelDeferredDelegationSignerInputSchema,
       output: cancelDeferredDelegationSignerOutputSchema,
+    },
+    getCustomDnssecEnableStatus: {
+      type: 'query',
+      input: domainNameInputSchema,
+      output: customDnssecEnableStatusOutputSchema,
+    },
+    enableCustomDnssec: {
+      type: 'mutation',
+      input: domainNameInputSchema,
+      output: enableCustomDnssecOutputSchema,
     },
     getActiveDnssecOperationWorkflows: {
       type: 'query',

@@ -1,0 +1,756 @@
+'use client';
+
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  AlertTriangleIcon,
+  ExternalLinkIcon,
+  Loader2Icon,
+  RefreshCwIcon,
+  ShieldCheckIcon,
+  ShieldPlusIcon,
+  ShieldXIcon,
+  Trash2Icon,
+} from 'lucide-react';
+import { toast } from 'sonner';
+
+import { LoadingButton } from '@/components/buttons/loading-button';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+
+import type { ActiveSigner, PendingSigner } from './delegation-signers-table';
+
+type DnssecStatusDetails =
+  AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
+type EnableStatus =
+  AppRouterOutput['domainConfig']['dnssec']['getCustomDnssecEnableStatus'];
+type EnableResult =
+  AppRouterOutput['domainConfig']['dnssec']['enableCustomDnssec'];
+
+export type CustomDelegationSignerSimplePanelProps = {
+  domainName: PunycodeDomainName;
+  dnssecDetails: DnssecStatusDetails;
+  disableAllButtons: boolean;
+};
+
+export function CustomDelegationSignerSimplePanel({
+  domainName,
+  dnssecDetails,
+  disableAllButtons,
+}: CustomDelegationSignerSimplePanelProps) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  const customSigners = (dnssecDetails.delegationSigners ??
+    []) as ActiveSigner[];
+
+  const { data: pendingResult } = useQuery(
+    trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryOptions(
+      { domainName },
+      { refetchInterval: 15_000 },
+    ),
+  );
+  const pending = pendingResult?.pending ?? [];
+
+  const {
+    data: status,
+    isLoading: isStatusLoading,
+    isRefetching: isStatusRefetching,
+    isError: isStatusError,
+    refetch: refetchStatus,
+  } = useQuery(
+    trpc.domainConfig.dnssec.getCustomDnssecEnableStatus.queryOptions(
+      { domainName },
+      { refetchInterval: 30_000 },
+    ),
+  );
+
+  const enableMutation = useMutation(
+    trpc.domainConfig.dnssec.enableCustomDnssec.mutationOptions({
+      async onSuccess(data) {
+        const counts = countOutcomes(data.results);
+        toast.success(buildSuccessToast(counts));
+        await invalidateAll(queryClient, trpc, domainName);
+      },
+      onError(error) {
+        toast.error(`Couldn't enable DNSSEC: ${error.message}`);
+      },
+    }),
+  );
+
+  return (
+    <div className="flex flex-col gap-3 w-full pt-4 border-t border-zinc-800">
+      <ReadinessCard
+        status={status}
+        isLoading={isStatusLoading}
+        isRefetching={isStatusRefetching}
+        isError={isStatusError}
+        pending={pending}
+        activeSigners={customSigners}
+        domainName={domainName}
+        onEnable={() => enableMutation.mutate({ domainName })}
+        onRecheck={() => {
+          void refetchStatus();
+        }}
+        enabling={enableMutation.isPending}
+        disabled={disableAllButtons}
+      />
+    </div>
+  );
+}
+
+async function invalidateAll(
+  queryClient: ReturnType<typeof useQueryClient>,
+  trpc: ReturnType<typeof useTRPC>,
+  domainName: PunycodeDomainName,
+) {
+  await Promise.all([
+    queryClient.invalidateQueries({
+      queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+        domainName,
+      }),
+    }),
+    queryClient.invalidateQueries({
+      queryKey:
+        trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryKey({
+          domainName,
+        }),
+    }),
+    queryClient.invalidateQueries({
+      queryKey: trpc.domainConfig.dnssec.getCustomDnssecEnableStatus.queryKey({
+        domainName,
+      }),
+    }),
+  ]);
+}
+
+type OutcomeCounts = {
+  immediate: number;
+  deferred: number;
+  skipped: number;
+};
+
+function countOutcomes(results: EnableResult['results']): OutcomeCounts {
+  const counts: OutcomeCounts = { immediate: 0, deferred: 0, skipped: 0 };
+  for (const r of results) {
+    if (r.outcome === 'submitted-immediate') counts.immediate += 1;
+    else if (r.outcome === 'submitted-deferred') counts.deferred += 1;
+    else counts.skipped += 1;
+  }
+  return counts;
+}
+
+function buildSuccessToast(counts: OutcomeCounts): string {
+  const parts: string[] = [];
+  if (counts.immediate > 0) parts.push(`${counts.immediate} active`);
+  if (counts.deferred > 0) parts.push(`${counts.deferred} pending validation`);
+  if (counts.skipped > 0 && parts.length === 0) {
+    return `DNSSEC already enabled (${counts.skipped} key${counts.skipped > 1 ? 's' : ''})`;
+  }
+  if (parts.length === 0) return 'DNSSEC enable submitted.';
+  return `DNSSEC submitted (${parts.join(', ')})`;
+}
+
+function ReadinessCard({
+  status,
+  isLoading,
+  isRefetching,
+  isError,
+  pending,
+  activeSigners,
+  domainName,
+  onEnable,
+  onRecheck,
+  enabling,
+  disabled,
+}: {
+  status: EnableStatus | undefined;
+  isLoading: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+  pending: PendingSigner[];
+  activeSigners: ActiveSigner[];
+  domainName: PunycodeDomainName;
+  onEnable: () => void;
+  onRecheck: () => void;
+  enabling: boolean;
+  disabled: boolean;
+}) {
+  // Pending takes precedence: the user just clicked Enable and a deferred
+  // workflow is now polling. Show the pending card regardless of what the
+  // readiness query reports (it might still be `'ready'` until the DS lands
+  // at the registrar).
+  if (pending.length > 0) {
+    return (
+      <PendingCard
+        pending={pending}
+        domainName={domainName}
+        disabled={disabled}
+      />
+    );
+  }
+
+  // Status missing: separate the loading case (initial fetch / refetch) from
+  // the error case (registrar API failure, DNS lookup throw, etc.). Without
+  // the split, an error after the first load would silently show the spinner
+  // forever.
+  if (!status) {
+    if (isLoading || isRefetching) return <DetectingCard />;
+    if (isError) return <ErrorCard onRecheck={onRecheck} />;
+    return <DetectingCard />;
+  }
+
+  if (status.readiness === 'mismatch') {
+    return (
+      <MismatchCard
+        detectedProvider={status.detectedProvider}
+        activeSigners={activeSigners}
+        domainName={domainName}
+        disabled={disabled}
+      />
+    );
+  }
+  if (status.readiness === 'already-active') return <AlreadyActiveCard />;
+  if (status.readiness === 'ready') {
+    return (
+      <ReadyCard
+        kskCount={status.kskCount}
+        sampleNameservers={status.sampleNameservers}
+        onEnable={onEnable}
+        enabling={enabling}
+        disabled={disabled}
+      />
+    );
+  }
+  return (
+    <NoDnskeyCard
+      detectedProvider={status.detectedProvider}
+      sampleNameservers={status.sampleNameservers}
+      onRecheck={onRecheck}
+      isRefetching={isRefetching}
+    />
+  );
+}
+
+function DetectingCard() {
+  return (
+    <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4 text-xs text-zinc-500">
+      Detecting DNSKEY at your nameservers…
+    </div>
+  );
+}
+
+function ErrorCard({ onRecheck }: { onRecheck: () => void }) {
+  return (
+    <div className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-zinc-100">
+            We couldn't check your DNSSEC status
+          </p>
+          <p className="text-xs text-zinc-400">
+            Something went wrong reaching your registrar or nameservers. This is
+            usually temporary — try again in a moment.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          variant="default"
+          size="sm"
+          onClick={onRecheck}
+          className="text-xs"
+        >
+          <RefreshCwIcon className="h-3.5 w-3.5" />
+          Try again
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function PendingCard({
+  pending,
+  domainName,
+  disabled,
+}: {
+  pending: PendingSigner[];
+  domainName: PunycodeDomainName;
+  disabled: boolean;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+
+  const cancelMutation = useMutation(
+    trpc.domainConfig.dnssec.cancelDeferredDelegationSigner.mutationOptions({}),
+  );
+
+  const handleCancelAll = async () => {
+    setIsCancelling(true);
+    try {
+      let cancelled = 0;
+      let failed = 0;
+      for (const item of pending) {
+        const result = await cancelOneWorkflow(
+          item.workflowId,
+          domainName,
+          (input) => cancelMutation.mutateAsync(input),
+        );
+        if (result === 'cancelled') cancelled += 1;
+        else failed += 1;
+      }
+      notifyCancelResult(cancelled, failed, pending.length);
+      await invalidateAll(queryClient, trpc, domainName);
+      setCancelDialogOpen(false);
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
+  const keyWord = pending.length === 1 ? 'key' : 'keys';
+  return (
+    <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <Loader2Icon className="h-5 w-5 text-amber-400 mt-0.5 shrink-0 animate-spin" />
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-zinc-100">
+            DNSSEC setup in progress
+          </p>
+          <p className="text-xs text-zinc-400">
+            We're waiting for your DNSSEC {keyWord} to become visible globally
+            before activating. This usually takes a few hours but can take up to
+            48 hours. We'll email you when it's done.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center justify-end gap-2">
+        <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+          <AlertDialogTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs"
+                disabled={disabled || pending.length === 0}
+              >
+                Cancel setup
+              </Button>
+            }
+          />
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Cancel DNSSEC setup{pending.length === 1 ? '' : 's'}?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This stops the validation poll for{' '}
+                {pending.length === 1
+                  ? 'your pending DNSSEC key'
+                  : `all ${pending.length} pending DNSSEC keys`}
+                . No DS will be associated. You can start again any time by
+                clicking Enable DNSSEC.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isCancelling}>
+                Keep waiting
+              </AlertDialogCancel>
+              <AlertDialogAction
+                render={
+                  <LoadingButton
+                    variant="destructive"
+                    isLoading={isCancelling}
+                    loadingText="Cancelling…"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      void handleCancelAll();
+                    }}
+                  >
+                    Cancel setup
+                  </LoadingButton>
+                }
+              />
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
+  );
+}
+
+function AlreadyActiveCard() {
+  return (
+    <div className="flex items-center gap-2 rounded-md border border-green-500/30 bg-green-500/10 p-3 text-xs text-green-300">
+      <ShieldCheckIcon className="h-4 w-4" />
+      <span>DNSSEC is enabled for this domain.</span>
+    </div>
+  );
+}
+
+function ReadyCard({
+  kskCount,
+  sampleNameservers,
+  onEnable,
+  enabling,
+  disabled,
+}: {
+  kskCount: number;
+  sampleNameservers: string[];
+  onEnable: () => void;
+  enabling: boolean;
+  disabled: boolean;
+}) {
+  const kskWord = kskCount === 1 ? 'DNSKEY' : 'DNSKEYs';
+  return (
+    <div className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <ShieldPlusIcon className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-zinc-100">Enable DNSSEC</p>
+          <p className="text-xs text-zinc-400">
+            We detected{' '}
+            <span className="text-zinc-200">
+              {kskCount} {kskWord}
+            </span>{' '}
+            at your delegation nameservers
+            {sampleNameservers.length > 0 ? (
+              <>
+                {' ('}
+                <span className="font-mono text-zinc-300">
+                  {[
+                    sampleNameservers.slice(0, 1),
+                    sampleNameservers.slice(1).length
+                      ? `+${sampleNameservers.slice(1).length} more`
+                      : null,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </span>
+                {')'}
+              </>
+            ) : null}
+            . Click Enable to auto setup DNSSEC for you.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center justify-end gap-2">
+        <LoadingButton
+          variant="default"
+          isLoading={enabling}
+          loadingText="Enabling…"
+          disabled={disabled}
+          onClick={onEnable}
+        >
+          <ShieldPlusIcon className="h-4 w-4" />
+          Enable DNSSEC
+        </LoadingButton>
+      </div>
+    </div>
+  );
+}
+
+function NoDnskeyCard({
+  detectedProvider,
+  sampleNameservers,
+  onRecheck,
+  isRefetching,
+}: {
+  detectedProvider: EnableStatus['detectedProvider'];
+  sampleNameservers: string[];
+  onRecheck: () => void;
+  isRefetching: boolean;
+}) {
+  const providerName =
+    detectedProvider.name !== 'unknown' ? detectedProvider.name : null;
+  const setupUrl = detectedProvider.dnssecSetupUrl;
+  const title = providerName
+    ? `Enable DNSSEC at ${providerName} first`
+    : 'Enable DNSSEC at your DNS provider first';
+  const body = providerName
+    ? `We checked your authoritative nameservers and didn't find a DNSKEY yet. Enable DNSSEC at ${providerName}, then come back to publish the DS record.`
+    : "We checked your authoritative nameservers and didn't find a DNSKEY yet. Enable DNSSEC at your DNS provider, then come back to publish the DS record.";
+
+  return (
+    <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <ShieldXIcon className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-zinc-100">{title}</p>
+          <p className="text-xs text-zinc-400">{body}</p>
+          {sampleNameservers.length > 0 ? (
+            <p className="text-xs text-zinc-500 mt-1">
+              Detected nameservers:{' '}
+              <span className="font-mono text-zinc-400">
+                {sampleNameservers.join(', ')}
+              </span>
+            </p>
+          ) : null}
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onRecheck}
+          disabled={isRefetching}
+          className="text-xs"
+        >
+          <RefreshCwIcon
+            className={`h-3.5 w-3.5 ${isRefetching ? 'animate-spin' : ''}`}
+          />
+          Re-check
+        </Button>
+        {setupUrl && providerName ? (
+          <Button
+            variant="default"
+            size="sm"
+            className="text-xs"
+            render={
+              <a href={setupUrl} target="_blank" rel="noreferrer">
+                <ExternalLinkIcon className="h-3.5 w-3.5" />
+                Open {providerName} DNSSEC setup
+              </a>
+            }
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function MismatchCard({
+  detectedProvider,
+  activeSigners,
+  domainName,
+  disabled,
+}: {
+  detectedProvider: EnableStatus['detectedProvider'];
+  activeSigners: ActiveSigner[];
+  domainName: PunycodeDomainName;
+  disabled: boolean;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const providerName =
+    detectedProvider.name !== 'unknown' ? detectedProvider.name : null;
+  const setupUrl = detectedProvider.dnssecSetupUrl;
+
+  const disassociateMutation = useMutation(
+    trpc.domainConfig.dnssec.disassociateDelegationSigner.mutationOptions({}),
+  );
+
+  const handleRemoveAll = async () => {
+    setIsRemoving(true);
+    try {
+      let removed = 0;
+      let failed = 0;
+      for (const signer of activeSigners) {
+        const result = await removeOneSigner(signer, domainName, (input) =>
+          disassociateMutation.mutateAsync(input),
+        );
+        if (result === 'removed') removed += 1;
+        else failed += 1;
+      }
+      notifyRemoveResult(removed, failed, activeSigners.length);
+      await invalidateAll(queryClient, trpc, domainName);
+      setRemoveDialogOpen(false);
+    } finally {
+      setIsRemoving(false);
+    }
+  };
+
+  return (
+    <div className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-zinc-100">
+            DNSSEC is misconfigured
+          </p>
+          <p className="text-xs text-zinc-400">
+            A DS record is published with us, but your DNS provider isn't
+            signing the zone — the DNSSEC key is missing. This breaks DNSSEC
+            validation, and visitors using DNSSEC-validating resolvers may not
+            reach your domain.
+          </p>
+          <p className="text-xs text-zinc-400 mt-2">To fix this, either:</p>
+          <ul className="text-xs text-zinc-400 list-disc pl-5 space-y-0.5">
+            <li>
+              Enable DNSSEC at{' '}
+              {providerName ? providerName : 'your DNS provider'} so the key
+              gets published, or
+            </li>
+            <li>Remove the DS record from us.</li>
+          </ul>
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <AlertDialog open={removeDialogOpen} onOpenChange={setRemoveDialogOpen}>
+          <AlertDialogTrigger
+            render={
+              <Button
+                variant="destructive"
+                size="sm"
+                className="text-xs"
+                disabled={disabled || activeSigners.length === 0}
+              >
+                <Trash2Icon className="h-3.5 w-3.5" />
+                Remove DS record{activeSigners.length === 1 ? '' : 's'}
+              </Button>
+            }
+          />
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Remove {activeSigners.length} DS record
+                {activeSigners.length === 1 ? '' : 's'}?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This disassociates every DS at the registrar. DNSSEC will be
+                turned off for this domain. You can re-enable it later once your
+                DNS provider is publishing a DNSKEY again.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isRemoving}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                render={
+                  <LoadingButton
+                    variant="destructive"
+                    isLoading={isRemoving}
+                    loadingText="Removing…"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      void handleRemoveAll();
+                    }}
+                  >
+                    Remove
+                  </LoadingButton>
+                }
+              />
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        {setupUrl && providerName ? (
+          <Button
+            variant="default"
+            size="sm"
+            className="text-xs"
+            render={
+              <a href={setupUrl} target="_blank" rel="noreferrer">
+                <ExternalLinkIcon className="h-3.5 w-3.5" />
+                Open {providerName} DNSSEC setup
+              </a>
+            }
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function resolveKeyId(signer: ActiveSigner): string | null {
+  if (signer.id) return signer.id;
+  if (signer.publicKey) return signer.publicKey;
+  if (typeof signer.keyTag === 'number') return String(signer.keyTag);
+  return null;
+}
+
+async function cancelOneWorkflow(
+  workflowId: string,
+  domainName: PunycodeDomainName,
+  mutate: (input: {
+    domainName: PunycodeDomainName;
+    workflowId: string;
+  }) => Promise<unknown>,
+): Promise<'cancelled' | 'failed'> {
+  try {
+    await mutate({ domainName, workflowId });
+    return 'cancelled';
+  } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: surfaced via toast at caller
+    console.error('Failed to cancel deferred-DS workflow', {
+      workflowId,
+      error,
+    });
+    return 'failed';
+  }
+}
+
+function notifyCancelResult(
+  cancelled: number,
+  failed: number,
+  total: number,
+): void {
+  if (failed === 0) {
+    toast.success(
+      `Cancelled ${cancelled} pending setup${cancelled === 1 ? '' : 's'}.`,
+    );
+    return;
+  }
+  if (cancelled > 0) {
+    toast.warning(
+      `Cancelled ${cancelled} of ${total} pending setups. ${failed} couldn't be cancelled.`,
+    );
+    return;
+  }
+  toast.error('Failed to cancel pending setup.');
+}
+
+async function removeOneSigner(
+  signer: ActiveSigner,
+  domainName: PunycodeDomainName,
+  mutate: (input: {
+    domainName: PunycodeDomainName;
+    keyId: string;
+  }) => Promise<unknown>,
+): Promise<'removed' | 'failed'> {
+  const keyId = resolveKeyId(signer);
+  if (!keyId) return 'failed';
+  try {
+    await mutate({ domainName, keyId });
+    return 'removed';
+  } catch (error) {
+    // biome-ignore lint/suspicious/noConsole: surfaced via toast at caller
+    console.error('Failed to remove DS', { keyId, error });
+    return 'failed';
+  }
+}
+
+function notifyRemoveResult(
+  removed: number,
+  failed: number,
+  total: number,
+): void {
+  if (failed === 0) {
+    toast.success(`Removed ${removed} DS record${removed === 1 ? '' : 's'}.`);
+    return;
+  }
+  if (removed > 0) {
+    toast.warning(
+      `Removed ${removed} of ${total} DS records. ${failed} couldn't be removed.`,
+    );
+    return;
+  }
+  toast.error('Failed to remove DS records.');
+}

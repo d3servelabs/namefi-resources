@@ -1,6 +1,11 @@
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 import {
+  enableCustomDnssec,
+  getCustomDnssecEnableStatus,
+  startDeferredAssociateDelegationSignerWorkflow,
+} from '#lib/domains/custom-dnssec';
+import {
   associateDelegationSigner,
   disableDnssecForDomain,
   disassociateDelegationSigner,
@@ -16,13 +21,11 @@ import {
 import { createLogger, logger } from '#lib/logger';
 
 import { TRPCError } from '@trpc/server';
-import { WorkflowIdReusePolicy } from '@temporalio/common';
 import { temporalClient } from '../../../temporal/client';
 import { enableDnssecWorkflow } from '../../../temporal/workflows/enable-dnssec.workflow';
 import { disableDnssecWorkflow } from '../../../temporal/workflows/disable-dnssec.workflow';
 import {
   DEFERRED_DS_DEFAULTS,
-  deferredAssociateDelegationSignerWorkflow,
   getDeferredAssociateDsProgressQuery,
 } from '../../../temporal/workflows/deferred-associate-delegation-signer.workflow';
 import { TEMPORAL_QUEUES } from '../../../temporal/shared';
@@ -167,37 +170,27 @@ export const domainDnssecRouter = createContractTRPCRouter<
         ? input.publicDnsTimeoutMinutes * 60_000
         : DEFERRED_DS_DEFAULTS.publicDnsTimeoutMs;
 
-      const workflowId = deferredAssociateDelegationSignerWorkflow.generateId({
-        domainName: punycodeDomain,
-        signingConfig: input.signingConfig,
-      });
-
       try {
-        await temporalClient.workflow.start(
-          deferredAssociateDelegationSignerWorkflow,
-          {
-            taskQueue: TEMPORAL_QUEUES.DOMAINS,
-            workflowId,
-            workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
-            workflowIdConflictPolicy: 'FAIL',
-            args: [
-              {
-                domainName: punycodeDomain,
-                signingConfig: input.signingConfig as Parameters<
-                  typeof deferredAssociateDelegationSignerWorkflow
-                >[0]['signingConfig'],
-                userId: ctx.user.id,
-                authoritativeTimeoutMs,
-                publicDnsTimeoutMs,
-              },
-            ],
-          },
-        );
+        const { workflowId, existed } =
+          await startDeferredAssociateDelegationSignerWorkflow({
+            domainName: punycodeDomain,
+            signingConfig: input.signingConfig as Parameters<
+              typeof startDeferredAssociateDelegationSignerWorkflow
+            >[0]['signingConfig'],
+            userId: ctx.user.id,
+            authoritativeTimeoutMs,
+            publicDnsTimeoutMs,
+          });
+        if (existed) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message:
+              'A deferred DS submission is already running for this key tag.',
+          });
+        }
+        return { workflowId };
       } catch (error) {
-        _logger.error(
-          { error, workflowId },
-          'Failed to start deferred-DS workflow',
-        );
+        if (error instanceof TRPCError) throw error;
         throw new TRPCError({
           code: 'CONFLICT',
           message:
@@ -207,8 +200,6 @@ export const domainDnssecRouter = createContractTRPCRouter<
           cause: error,
         });
       }
-
-      return { workflowId };
     }),
 
   /**
@@ -362,6 +353,51 @@ export const domainDnssecRouter = createContractTRPCRouter<
           cause: error,
         });
       }
+    }),
+
+  /**
+   * Read-only "what will Enable DNSSEC do?" check for the Simple-mode panel.
+   * Reports readiness, the detected DNS provider, and a sample of the
+   * authoritative NS hostnames so the panel can render the right CTA card
+   * (green Enable / amber sad-path / quiet already-active) without the user
+   * clicking anything.
+   */
+  getCustomDnssecEnableStatus: protectedProcedure
+    .input(domainConfigContract.dnssec.getCustomDnssecEnableStatus.input)
+    .output(domainConfigContract.dnssec.getCustomDnssecEnableStatus.output)
+    .query(async ({ input, ctx }) => {
+      _logger.assign({
+        method: 'getCustomDnssecEnableStatus',
+        domainName: input.domainName,
+      });
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return getCustomDnssecEnableStatus(
+        toPunycodeDomainName(input.domainName),
+      );
+    }),
+
+  /**
+   * Simple-mode "Enable DNSSEC" orchestrator. Detects KSK(s) at authoritative
+   * NS, derives DS for each, and either submits immediately (both validation
+   * lanes pass) or starts a deferred-DS workflow (at least one lane lags).
+   * Returns one result entry per KSK so the frontend can compose an accurate
+   * toast.
+   */
+  enableCustomDnssec: protectedProcedure
+    .input(domainConfigContract.dnssec.enableCustomDnssec.input)
+    .output(domainConfigContract.dnssec.enableCustomDnssec.output)
+    .mutation(async ({ input, ctx }) => {
+      _logger.assign({
+        method: 'enableCustomDnssec',
+        domainName: input.domainName,
+      });
+      _logger.debug('Running custom-DNSSEC enable orchestrator');
+
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return enableCustomDnssec({
+        domainName: toPunycodeDomainName(input.domainName),
+        userId: ctx.user.id,
+      });
     }),
 
   /**

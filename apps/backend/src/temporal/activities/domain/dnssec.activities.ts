@@ -17,7 +17,14 @@ import {
   getPropagatedNameservers,
 } from '#lib/domains/nameservers';
 import { createLogger } from '#lib/logger';
-import { maybeGetUserEmail, sendEmailOrThrow } from '../notify.activities';
+import { db, usersTable } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
+import { render } from '@react-email/components';
+import React from 'react';
+import { sendMail } from '../../../mail/mail-client';
+import { DnssecDeferredDsOutcome } from '../../../mail/templates/dnssec-deferred-ds-outcome';
+import { privyStorageToPrivyCustomMetadata } from '../../../trpc/types';
+import { privyClient } from '../../../trpc/utils';
 
 export interface DisableDnssecInput {
   domainName: PunycodeDomainName;
@@ -154,11 +161,76 @@ export type DeferredDsOutcome =
   | 'cancelled'
   | 'failed';
 
+const DEFERRED_DS_EMAIL_BCC = [
+  'customer-email-archive@d3serve.xyz',
+  'sami@d3serve.xyz',
+  'zzn@d3serve.xyz',
+];
+
+function subjectForOutcome(
+  outcome: DeferredDsOutcome,
+  domain: PunycodeDomainName,
+): string {
+  switch (outcome) {
+    case 'success':
+      return `[Namefi] DNSSEC is now active for ${domain}`;
+    case 'authoritative-timeout':
+      return `[Namefi] DNSSEC setup didn't complete for ${domain}`;
+    case 'public-dns-timeout':
+      return `[Namefi] DNSSEC setup is still propagating for ${domain}`;
+    case 'cancelled':
+      return `[Namefi] DNSSEC setup cancelled for ${domain}`;
+    case 'failed':
+      return `[Namefi] We couldn't finish DNSSEC setup for ${domain}`;
+  }
+}
+
+type RecipientContact = {
+  email: string;
+  /** Display name; falls back to the email's local-part if Privy has no `fullName`. */
+  name: string;
+};
+
 /**
- * Send the terminal-state notification for a deferred-DS workflow. Always
- * tries the user email lane (best-effort) and always returns; the dev-team
- * Slack lane is handled via `generalAlertNamefi` from the workflow itself
- * so this stays focused on the user-facing email.
+ * Look up email + display name for a user. Mirrors `maybeGetUserEmail`'s
+ * privy-walk but additionally pulls `customMetadata.fullName` so the email
+ * greeting can be personalized. Falls back to the email's local-part when
+ * Privy has no `fullName` (matches the pattern in
+ * `free-claims-correction.activities.ts`). Returns `null` when neither
+ * lookup yields an email.
+ */
+async function maybeGetRecipientContact(
+  userId: string,
+): Promise<RecipientContact | null> {
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.id, userId),
+  });
+  if (!user) return null;
+  const privyUser = await privyClient.getUserById(user.privyUserId);
+  if (!privyUser) return null;
+
+  const email =
+    privyUser.email?.address ??
+    privyUser.linkedAccounts.find((account) => account.type === 'email')
+      ?.address;
+  if (!email) return null;
+
+  let name = email.split('@')[0] ?? '';
+  const parsed = privyStorageToPrivyCustomMetadata.safeParse(
+    privyUser.customMetadata,
+  );
+  if (parsed.success && parsed.data.fullName) {
+    name = parsed.data.fullName;
+  }
+  return { email, name };
+}
+
+/**
+ * Send the terminal-state notification for a deferred-DS workflow. Renders
+ * the `DnssecDeferredDsOutcome` React-Email template — copy is plain
+ * language with no DNSKEY/DS jargon, and the CTA links to the domain's DNS
+ * settings page. Best-effort; never throws (the dev-team Slack lane is
+ * handled separately from the workflow via `generalAlertNamefi`).
  */
 export async function sendDeferredDsOutcomeEmailToUser(input: {
   domainName: PunycodeDomainName;
@@ -167,72 +239,52 @@ export async function sendDeferredDsOutcomeEmailToUser(input: {
   outcome: DeferredDsOutcome;
   reason?: string;
 }): Promise<void> {
-  const email = await maybeGetUserEmail(input.userId);
-  if (!email) {
-    _logger.warn(
-      { userId: input.userId, domainName: input.domainName },
-      'Skipping deferred-DS user email — no address on file',
-    );
-    return;
-  }
-  const subject = subjectForOutcome(input.outcome, input.domainName);
-  const plain = bodyForOutcome(input);
   try {
-    await sendEmailOrThrow({
-      to: [email],
-      subject,
-      content: { plain, html: `<p>${plain}</p>` },
+    // Look up email + display name inside the try so DB/Privy failures honor
+    // the "never throws" contract on this activity.
+    const contact = await maybeGetRecipientContact(input.userId);
+    if (!contact) {
+      _logger.warn(
+        { userId: input.userId, domainName: input.domainName },
+        'Skipping deferred-DS user email — no address on file',
+      );
+      return;
+    }
+    const populatedTemplate = React.createElement(DnssecDeferredDsOutcome, {
+      recipientName: contact.name,
+      recipientEmail: contact.email,
+      // Deferred-DS notifications fire on the user's own custom-NS domain,
+      // not a PBN-tenant context — leave the override null so the hook reads
+      // whatever the email-tracking HOC provides via context (usually null).
+      poweredByNamefiDomain: null,
+      domain: input.domainName,
+      outcome: input.outcome,
+    });
+    const html = await render(populatedTemplate, {
+      pretty: false,
+      plainText: false,
+    });
+    const plain = await render(populatedTemplate, {
+      pretty: false,
+      plainText: true,
+    });
+    await sendMail({
+      to: [contact.email],
+      bcc: DEFERRED_DS_EMAIL_BCC,
+      subject: subjectForOutcome(input.outcome, input.domainName),
+      content: { html, plain },
     });
   } catch (error) {
+    // Log non-PII identifiers — recipient email stays out of operational logs.
     _logger.warn(
       {
         error,
-        to: email,
+        userId: input.userId,
         outcome: input.outcome,
         domainName: input.domainName,
       },
       'Failed to send deferred-DS outcome email',
     );
-  }
-}
-
-function subjectForOutcome(
-  outcome: DeferredDsOutcome,
-  domain: PunycodeDomainName,
-): string {
-  switch (outcome) {
-    case 'success':
-      return `DNSSEC delegation signer associated for ${domain}`;
-    case 'authoritative-timeout':
-      return `DNSSEC DS submission timed out (authoritative validation) for ${domain}`;
-    case 'public-dns-timeout':
-      return `DNSSEC DS submission timed out (public DNS validation) for ${domain}`;
-    case 'cancelled':
-      return `DNSSEC DS submission cancelled for ${domain}`;
-    case 'failed':
-      return `DNSSEC DS submission failed for ${domain}`;
-  }
-}
-
-function bodyForOutcome(input: {
-  domainName: PunycodeDomainName;
-  signingConfig: DnssecKey;
-  outcome: DeferredDsOutcome;
-  reason?: string;
-}): string {
-  const { domainName, signingConfig, outcome, reason } = input;
-  const tag = signingConfig.keyTag ?? '—';
-  switch (outcome) {
-    case 'success':
-      return `Your delegation signer (key tag ${tag}) for ${domainName} has been associated at the registrar after the DNSKEY validated at both your authoritative nameservers and public DNS.`;
-    case 'authoritative-timeout':
-      return `We waited for the DNSKEY at your authoritative nameservers to match the DS you submitted (key tag ${tag}) for ${domainName}, but it never did within the allotted time. No DS was associated. Verify the DNSKEY published at your nameservers, then re-submit from the DNSSEC panel.`;
-    case 'public-dns-timeout':
-      return `Your authoritative nameservers published the DNSKEY for ${domainName} (key tag ${tag}), but the change did not propagate to public DNS within the allotted time. No DS was associated. Once propagation completes, re-submit from the DNSSEC panel.`;
-    case 'cancelled':
-      return `The deferred DS submission for ${domainName} (key tag ${tag}) was cancelled. No DS was associated.`;
-    case 'failed':
-      return `The deferred DS submission for ${domainName} (key tag ${tag}) failed unexpectedly. No DS was associated.${reason ? ` Reason: ${reason}` : ''}`;
   }
 }
 

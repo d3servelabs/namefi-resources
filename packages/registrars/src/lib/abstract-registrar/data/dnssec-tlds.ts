@@ -265,7 +265,11 @@ const tldsDnssecAlgorithmsSupported = new Map([
   ['net.mt', [8]],
   ['org.mt', [8]],
   ['mw', [8]],
-  ['my', [8]],
+  // TODO: algorithm 13 (ECDSAP256SHA256) acceptance on `.my` is unverified —
+  // no public MYNIC EPP/DS policy doc confirms it. Keeping it provisionally
+  // so Namefi-signed `.my` domains aren't blocked; revert to `[8]` if a DS
+  // submission fails at the registry.
+  ['my', [8, 13]],
   ['net.my', [8]],
   ['org.my', [8]],
   ['co.na', [8]],
@@ -2533,8 +2537,26 @@ const tldsDnssecAlgorithmsSupported = new Map([
   ['org.zw', []],
 ]);
 
+/**
+ * TLDs whose parent registry accepts algorithm 13 (ECDSAP256SHA256). Used by
+ * `supports-dnssec.ts` to decide whether Namefi's hardcoded KSK (ECDSA P-256)
+ * can sign the zone — a TLD missing here can't go through the Namefi
+ * auto-signing flow even if it supports DNSSEC under other algorithms.
+ */
+export const NAMEFI_DNSSEC_SUPPORTED_TLDS = new Set(
+  Array.from(tldsDnssecAlgorithmsSupported.entries())
+    .filter(([_tld, algorithms]) => algorithms.includes(13))
+    .map(([tld]) => tld),
+);
+
+/**
+ * TLDs that accept *any* DNSSEC algorithm at the parent zone. Use for
+ * "does DNSSEC work at all at this registry?" checks — distinct from
+ * `NAMEFI_DNSSEC_SUPPORTED_TLDS` which is the narrower "can Namefi sign it?"
+ * predicate.
+ */
 export const DNSSEC_SUPPORTED_TLDS = new Set(
   Array.from(tldsDnssecAlgorithmsSupported.entries())
-    .filter(([tld, algorithms]) => algorithms.includes(13))
-    .map(([tld, algorithms]) => tld),
+    .filter(([_tld, algorithms]) => algorithms.length > 0)
+    .map(([tld]) => tld),
 );
