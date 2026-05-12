@@ -418,12 +418,21 @@ export const DnssecPanelInner = ({
           />
         )}
 
-        <div className="text-sm text-zinc-500 mt-4">
-          <p>
-            Changes to DNSSEC are not immediate. It can take up to 24-48 hours
-            to propagate globally.
-          </p>
-        </div>
+        {/*
+         * Only surface the propagation footnote in Custom-NS Advanced mode.
+         * Simple mode's cards (PendingCard, ReadyCard) already mention
+         * "globally" / "up to 48 hours" inline; the Namefi-managed flow
+         * surfaces propagation via its progress timeline. Showing this
+         * blanket line elsewhere just adds noise.
+         */}
+        {customDnssecActive && dnssecMode === 'advanced' ? (
+          <div className="text-sm text-zinc-500 mt-4">
+            <p>
+              Changes to DNSSEC are not immediate. It can take up to 24-48 hours
+              to propagate globally.
+            </p>
+          </div>
+        ) : null}
       </div>
     </Layout>
   );

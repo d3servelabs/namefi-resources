@@ -83,6 +83,16 @@ export function CustomDelegationSignerSimplePanel({
         const counts = countOutcomes(data.results);
         toast.success(buildSuccessToast(counts));
         await refetchAll(queryClient, trpc, domainName);
+        // Registrar + Temporal state can lag a moment after the mutation
+        // returns (deferred workflows in particular need a beat to register
+        // as RUNNING). Re-poll at 1s and 3s so the UI catches up without
+        // the user having to hit Refresh.
+        setTimeout(() => {
+          void refetchAll(queryClient, trpc, domainName);
+        }, 1000);
+        setTimeout(() => {
+          void refetchAll(queryClient, trpc, domainName);
+        }, 3000);
       },
       onError(error) {
         toast.error(`Couldn't enable DNSSEC: ${error.message}`);
@@ -226,7 +236,23 @@ function ReadinessCard({
       />
     );
   }
-  if (status.readiness === 'already-active') return <AlreadyActiveCard />;
+  if (status.readiness === 'already-active') {
+    // `status` and `activeSigners` come from separate queries
+    // (`getCustomDnssecEnableStatus` vs `getDomainDnssecDetails`). If the
+    // status query flips to `'already-active'` before the details refetch
+    // catches up, this would render "0 DS records" with a disabled
+    // Disable button. Show the detecting state until both align.
+    if (activeSigners.length === 0) {
+      return <DetectingCard />;
+    }
+    return (
+      <AlreadyActiveCard
+        activeSigners={activeSigners}
+        domainName={domainName}
+        disabled={disabled}
+      />
+    );
+  }
   if (status.readiness === 'ready') {
     return (
       <ReadyCard
@@ -396,11 +422,109 @@ function PendingCard({
   );
 }
 
-function AlreadyActiveCard() {
+function AlreadyActiveCard({
+  activeSigners,
+  domainName,
+  disabled,
+}: {
+  activeSigners: ActiveSigner[];
+  domainName: PunycodeDomainName;
+  disabled: boolean;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [disableDialogOpen, setDisableDialogOpen] = useState(false);
+  const [isDisabling, setIsDisabling] = useState(false);
+
+  const disassociateMutation = useMutation(
+    trpc.domainConfig.dnssec.disassociateDelegationSigner.mutationOptions({}),
+  );
+
+  const handleDisable = async () => {
+    setIsDisabling(true);
+    try {
+      let removed = 0;
+      let failed = 0;
+      for (const signer of activeSigners) {
+        const result = await removeOneSigner(signer, domainName, (input) =>
+          disassociateMutation.mutateAsync(input),
+        );
+        if (result === 'removed') removed += 1;
+        else failed += 1;
+      }
+      notifyRemoveResult(removed, failed, activeSigners.length);
+      await refetchAll(queryClient, trpc, domainName);
+      setDisableDialogOpen(false);
+    } finally {
+      setIsDisabling(false);
+    }
+  };
+
+  const count = activeSigners.length;
+  const recordWord = count === 1 ? 'DS record' : 'DS records';
+
   return (
-    <div className="flex items-center gap-2 rounded-md border border-green-500/30 bg-green-500/10 p-3 text-xs text-green-300">
-      <ShieldCheckIcon className="h-4 w-4" />
-      <span>DNSSEC is enabled for this domain.</span>
+    <div className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3">
+      <div className="flex items-start gap-3">
+        <ShieldCheckIcon className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-zinc-100">DNSSEC is enabled</p>
+          <p className="text-xs text-zinc-400">
+            Your domain is signed with {count} {recordWord}. Disable to remove
+            the {recordWord} and turn DNSSEC off.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center justify-end gap-2">
+        <AlertDialog
+          open={disableDialogOpen}
+          onOpenChange={setDisableDialogOpen}
+        >
+          <AlertDialogTrigger
+            render={
+              <Button
+                variant="destructive"
+                size="sm"
+                className="text-xs"
+                disabled={disabled || count === 0}
+              >
+                <Trash2Icon className="h-3.5 w-3.5" />
+                Disable DNSSEC
+              </Button>
+            }
+          />
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Disable DNSSEC?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This removes {count} {recordWord} at the registrar and turns
+                DNSSEC off for this domain. You can re-enable it any time by
+                clicking Enable DNSSEC.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isDisabling}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                render={
+                  <LoadingButton
+                    variant="destructive"
+                    isLoading={isDisabling}
+                    loadingText="Disabling…"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      void handleDisable();
+                    }}
+                  >
+                    Disable
+                  </LoadingButton>
+                }
+              />
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 }
