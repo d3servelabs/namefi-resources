@@ -268,14 +268,16 @@ export function CustomDelegationSignerForm({
     }),
   );
 
-  const invalidateAfterSubmit = async () => {
+  const refetchAfterSubmit = async () => {
+    // Force refetch — `getPendingDeferredDelegationSigners` is workflow state
+    // that needs to update immediately after submit, not on stale-window expiry.
     await Promise.all([
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
           domainName,
         }),
       }),
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey:
           trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryKey(
             { domainName },
@@ -288,7 +290,7 @@ export function CustomDelegationSignerForm({
     trpc.domainConfig.dnssec.associateDelegationSigner.mutationOptions({
       async onSuccess() {
         toast.success('Delegation signer associated');
-        await invalidateAfterSubmit();
+        await refetchAfterSubmit();
         onSuccess();
       },
       onError(error) {
@@ -303,7 +305,7 @@ export function CustomDelegationSignerForm({
         toast.success(
           "DS submission scheduled — we'll associate it once your DNSKEY validates.",
         );
-        await invalidateAfterSubmit();
+        await refetchAfterSubmit();
         onSuccess();
       },
       onError(error) {

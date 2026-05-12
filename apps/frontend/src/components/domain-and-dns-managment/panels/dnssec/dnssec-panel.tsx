@@ -55,6 +55,7 @@ import {
 import {
   Info,
   Loader2,
+  RefreshCwIcon,
   ShieldCheckIcon,
   ShieldMinusIcon,
   ShieldPlusIcon,
@@ -335,7 +336,10 @@ export const DnssecPanelInner = ({
     <Layout
       headerActions={
         customDnssecActive ? (
-          <DnssecModeToggle mode={dnssecMode} onChange={setDnssecMode} />
+          <div className="flex items-center gap-2">
+            <DnssecRefreshButton domainName={domainName} />
+            <DnssecModeToggle mode={dnssecMode} onChange={setDnssecMode} />
+          </div>
         ) : undefined
       }
     >
@@ -426,6 +430,80 @@ export const DnssecPanelInner = ({
 };
 
 /**
+ * Header refresh button shown next to the Simple/Advanced toggle when the
+ * custom-DNSSEC flow is active. Force-refetches every query that drives the
+ * panel body so a user can re-sync after a manual change at their DNS
+ * provider without waiting for the next polling tick.
+ */
+function DnssecRefreshButton({
+  domainName,
+}: {
+  domainName: PunycodeDomainName;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await Promise.all([
+        queryClient.refetchQueries({
+          queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+            domainName,
+          }),
+        }),
+        queryClient.refetchQueries({
+          queryKey:
+            trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryKey(
+              { domainName },
+            ),
+        }),
+        queryClient.refetchQueries({
+          queryKey:
+            trpc.domainConfig.dnssec.getCustomDnssecEnableStatus.queryKey({
+              domainName,
+            }),
+        }),
+        queryClient.refetchQueries({
+          queryKey:
+            trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryKey(
+              { domainName },
+            ),
+        }),
+      ]);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              disabled={isRefreshing}
+              onClick={handleRefresh}
+              aria-label="Refresh DNSSEC status"
+            >
+              <RefreshCwIcon
+                className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`}
+              />
+            </Button>
+          }
+        />
+        <TooltipContent>Refresh</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+/**
  * Modal component to show DNSSEC operation progress
  */
 function DnssecProgressModal({
@@ -450,9 +528,11 @@ function DnssecProgressModal({
 
   const cancelMutation = useMutation(
     trpc.domainConfig.dnssec.cancelDnssecWorkflow.mutationOptions({
-      onSuccess() {
+      async onSuccess() {
         toast.success('Cancellation requested');
-        queryClient.invalidateQueries({
+        // Force refetch — workflow-listing query needs to drop the running
+        // entry immediately, not on the next stale-window lapse.
+        await queryClient.refetchQueries({
           queryKey:
             trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryKey(
               { domainName },
@@ -560,17 +640,21 @@ export const DnssecPanelAction = ({
     dnssecDetails.zoneHasActiveDnssec;
 
   const refetchQueries = async () => {
-    await queryClient.invalidateQueries({
-      queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
-        domainName,
-      }),
-    });
-    await queryClient.refetchQueries({
-      queryKey:
-        trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryKey({
+    // Force refetch on both — DNSSEC details + active-workflow list need to
+    // reflect the just-fired enable/disable mutation immediately.
+    await Promise.all([
+      queryClient.refetchQueries({
+        queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
           domainName,
         }),
-    });
+      }),
+      queryClient.refetchQueries({
+        queryKey:
+          trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryKey({
+            domainName,
+          }),
+      }),
+    ]);
   };
 
   const enableDnssecMutationOptions =

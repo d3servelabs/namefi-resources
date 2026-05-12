@@ -263,7 +263,7 @@ function DisassociateButton({
         toast.success(
           `Removed delegation signer${signer.keyTag ? ` (key tag ${signer.keyTag})` : ''}`,
         );
-        await queryClient.invalidateQueries({
+        await queryClient.refetchQueries({
           queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
             domainName,
           }),
@@ -350,7 +350,7 @@ function CancelDeferredButton({
         toast.success(
           `Cancelled deferred submission (key tag ${pending.signingConfig.keyTag})`,
         );
-        await queryClient.invalidateQueries({
+        await queryClient.refetchQueries({
           queryKey:
             trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryKey(
               { domainName },

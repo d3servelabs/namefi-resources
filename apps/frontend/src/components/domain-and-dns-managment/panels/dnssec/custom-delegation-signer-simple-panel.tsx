@@ -82,7 +82,7 @@ export function CustomDelegationSignerSimplePanel({
       async onSuccess(data) {
         const counts = countOutcomes(data.results);
         toast.success(buildSuccessToast(counts));
-        await invalidateAll(queryClient, trpc, domainName);
+        await refetchAll(queryClient, trpc, domainName);
       },
       onError(error) {
         toast.error(`Couldn't enable DNSSEC: ${error.message}`);
@@ -111,24 +111,28 @@ export function CustomDelegationSignerSimplePanel({
   );
 }
 
-async function invalidateAll(
+async function refetchAll(
   queryClient: ReturnType<typeof useQueryClient>,
   trpc: ReturnType<typeof useTRPC>,
   domainName: PunycodeDomainName,
 ) {
+  // Force refetch over invalidate: workflow-listing queries
+  // (`getPendingDeferredDelegationSigners`) and registrar state must update
+  // the UI immediately after a mutation, not whenever a stale-window
+  // happens to lapse.
   await Promise.all([
-    queryClient.invalidateQueries({
+    queryClient.refetchQueries({
       queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
         domainName,
       }),
     }),
-    queryClient.invalidateQueries({
+    queryClient.refetchQueries({
       queryKey:
         trpc.domainConfig.dnssec.getPendingDeferredDelegationSigners.queryKey({
           domainName,
         }),
     }),
-    queryClient.invalidateQueries({
+    queryClient.refetchQueries({
       queryKey: trpc.domainConfig.dnssec.getCustomDnssecEnableStatus.queryKey({
         domainName,
       }),
@@ -315,7 +319,7 @@ function PendingCard({
         else failed += 1;
       }
       notifyCancelResult(cancelled, failed, pending.length);
-      await invalidateAll(queryClient, trpc, domainName);
+      await refetchAll(queryClient, trpc, domainName);
       setCancelDialogOpen(false);
     } finally {
       setIsCancelling(false);
@@ -557,7 +561,7 @@ function MismatchCard({
         else failed += 1;
       }
       notifyRemoveResult(removed, failed, activeSigners.length);
-      await invalidateAll(queryClient, trpc, domainName);
+      await refetchAll(queryClient, trpc, domainName);
       setRemoveDialogOpen(false);
     } finally {
       setIsRemoving(false);
