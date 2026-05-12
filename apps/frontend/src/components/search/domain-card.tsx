@@ -319,6 +319,19 @@ export const DomainCard: FC<{
     );
   }, [availabilityInfo?.pricingDetails?.renewalPrice]);
 
+  // For REGISTER operations only, treat the renewal price as the "original"
+  // price when registration is cheaper (i.e., a first-year promotional discount).
+  // Currency/unit: USD (whole dollars from computeChargesInUsdOrThrow).
+  const originalRegistrationPriceInUsd = useMemo(() => {
+    if (operationType !== itemTypeSchema.enum.REGISTER) {
+      return undefined;
+    }
+    if (!isNotNil(priceInUsd) || !isNotNil(renewalPriceInUsd)) {
+      return undefined;
+    }
+    return priceInUsd < renewalPriceInUsd ? renewalPriceInUsd : undefined;
+  }, [operationType, priceInUsd, renewalPriceInUsd]);
+
   // Split domain into subdomain and parent domain
   const parts = domain?.split('.');
   const subdomain = parts?.[0];
@@ -495,7 +508,18 @@ export const DomainCard: FC<{
               ) : isNotNil(priceInUsd) ? (
                 <div className="flex flex-col gap-0.5 text-left transition-opacity duration-200 ease-out">
                   <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl">
-                    {`${formatAmountInUSD(priceInUsd)} USD`}
+                    {isNotNil(originalRegistrationPriceInUsd) ? (
+                      <>
+                        <span className="mr-2 text-muted-foreground line-through">
+                          {formatAmountInUSD(originalRegistrationPriceInUsd)}
+                        </span>
+                        <span className="font-semibold text-brand-primary">
+                          {`${formatAmountInUSD(priceInUsd)} USD`}
+                        </span>
+                      </>
+                    ) : (
+                      `${formatAmountInUSD(priceInUsd)} USD`
+                    )}
                   </p>
                   {isNotNil(renewalPriceInUsd) && (
                     <p className="text-[10px] text-muted-foreground sm:text-[11px] md:text-sm">

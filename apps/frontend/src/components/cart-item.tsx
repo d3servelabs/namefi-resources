@@ -6,6 +6,7 @@ import { CartItemDurationControl } from '@/components/cart-item-duration-stepper
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Trash2 } from 'lucide-react';
 import { useCartRow } from '@/hooks/use-cart-row';
@@ -55,6 +56,39 @@ export function CartItem({
   }, [item.normalizedDomainName]);
 
   const isPunycode = displayName !== item.normalizedDomainName;
+
+  const displayedAmountInUsdCents =
+    overrideAmountInUSDCents ?? item.amountInUSDCents;
+
+  // For REGISTER items, surface a "discount" indicator when the registration
+  // total is lower than the equivalent renewal total for the same duration.
+  // Currency: USD. Units: cents for displayed amounts; whole USD from
+  // computeChargesInUsdOrThrow (converted to cents for comparison).
+  const originalAmountInUsdCents = useMemo(() => {
+    if (item.type !== itemTypeSchema.enum.REGISTER) {
+      return undefined;
+    }
+    const renewalPrice = domainAvailabilityInfo?.pricingDetails?.renewalPrice;
+    if (!renewalPrice) {
+      return undefined;
+    }
+    try {
+      const renewalTotalInCents = Math.round(
+        computeChargesInUsdOrThrow(renewalPrice, item.durationInYears) * 100,
+      );
+      if (renewalTotalInCents <= displayedAmountInUsdCents) {
+        return undefined;
+      }
+      return renewalTotalInCents;
+    } catch {
+      return undefined;
+    }
+  }, [
+    item.type,
+    item.durationInYears,
+    domainAvailabilityInfo?.pricingDetails?.renewalPrice,
+    displayedAmountInUsdCents,
+  ]);
 
   const handleDurationChange = useCallback(
     async (itemId: string, newDuration: number) => {
@@ -126,12 +160,20 @@ export function CartItem({
               isDisabled={isDisabled || updatingBusy || !!readOnly}
             />
           </div>
-          <span className="text-xl">
-            {formatAmountInUSD(
-              overrideAmountInUSDCents ?? item.amountInUSDCents,
-              true,
-            )}
-          </span>
+          {originalAmountInUsdCents !== undefined ? (
+            <span className="flex items-baseline gap-2">
+              <span className="text-sm text-muted-foreground line-through">
+                {formatAmountInUSD(originalAmountInUsdCents, true)}
+              </span>
+              <span className="text-xl font-semibold text-brand-primary">
+                {formatAmountInUSD(displayedAmountInUsdCents, true)}
+              </span>
+            </span>
+          ) : (
+            <span className="text-xl">
+              {formatAmountInUSD(displayedAmountInUsdCents, true)}
+            </span>
+          )}
         </div>
       </div>
       {showSeparator && (
