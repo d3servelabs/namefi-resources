@@ -16,6 +16,7 @@ import {
   Settings,
   History,
   ShieldCheck,
+  BarChart3,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -78,6 +79,16 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-sky-600',
         permissions: [Permission.READ_USERS, Permission.READ_ORDERS],
         permissionsMode: 'every',
+      },
+      {
+        title: 'Email Engagement',
+        description:
+          'Track opens and per-link clicks for every campaign key, including ad-hoc bulk sends.',
+        href: '/admin/email-engagement',
+        icon: BarChart3,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.READ_USERS],
       },
       {
         title: 'Free Claims',
