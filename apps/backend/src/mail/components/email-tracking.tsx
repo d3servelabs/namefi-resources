@@ -222,11 +222,18 @@ export function EmailTrackingPixel({
 
 export function withEmailTracking<T extends object>(
   Component: React.ComponentType<T>,
-): React.ComponentType<T & { trackingUrl?: string | null }> {
-  function WrappedComponent(props: T & { trackingUrl?: string | null }) {
-    const { trackingUrl, ...rest } = props;
+): React.ComponentType<
+  T & { trackingUrl?: string | null; campaignKey?: string | null }
+> {
+  function WrappedComponent(
+    props: T & { trackingUrl?: string | null; campaignKey?: string | null },
+  ) {
+    const { trackingUrl, campaignKey, ...rest } = props;
     return (
-      <EmailTrackingProvider trackingUrl={trackingUrl ?? null}>
+      <EmailTrackingProvider
+        trackingUrl={trackingUrl ?? null}
+        campaignKey={campaignKey ?? null}
+      >
         <Component {...(rest as T)} />
       </EmailTrackingProvider>
     );

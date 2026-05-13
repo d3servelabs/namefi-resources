@@ -3,10 +3,7 @@ import { render } from '@react-email/components';
 import Handlebars from 'handlebars';
 import React from 'react';
 import { config } from '#lib/env';
-import {
-  EmailTrackingProvider,
-  buildEmailAnalyticsUrl,
-} from '../components/email-tracking';
+import { buildEmailAnalyticsUrl } from '../components/email-tracking';
 import { rewriteTrackLinksInHtml } from '../components/email-link-tracking';
 import { BaseEmailTemplate } from './base-email-template';
 
@@ -71,19 +68,20 @@ export async function renderBulkOneOffEmail(
     : null;
 
   const style = input.templateStyle ?? {};
-  const baseElement = React.createElement(BaseEmailTemplate, {
+  // `BaseEmailTemplate` is wrapped via `buildTemplate(withEmailTracking(...))`,
+  // so `trackingUrl` and `campaignKey` flow through the HOC and into the
+  // `EmailTrackingProvider` it installs. Wrapping a second provider here
+  // would be shadowed by the inner one.
+  const element = React.createElement(BaseEmailTemplate, {
     title: input.subject,
     content: hydratedMarkdown,
     useContainer: style.useContainer ?? true,
     useHeader: style.useHeader ?? true,
     useFooter: style.useFooter ?? true,
     showGoToDashboard: false,
+    trackingUrl,
+    campaignKey: input.campaignKey ?? null,
   });
-  const element = React.createElement(
-    EmailTrackingProvider,
-    { trackingUrl, campaignKey: input.campaignKey ?? null },
-    baseElement,
-  );
 
   const [rawHtml, plainText] = await Promise.all([
     render(element).then((value) =>

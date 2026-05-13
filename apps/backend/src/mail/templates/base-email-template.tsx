@@ -3,6 +3,10 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeExternalLinks from 'rehype-external-links';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
+import {
+  EmailTrackingPixel,
+  useEmailTrackingUrl,
+} from '../components/email-tracking';
 import { GoToDashboard } from '../components/go-to-dashboard';
 import { buildTemplate } from '../components/build-template';
 import {
@@ -56,23 +60,13 @@ export const BaseEmailTemplate = buildTemplate<BaseEmailTemplateProps>(
       );
     }
 
-    // Non-container mode: direct markdown rendering
+    // Non-container mode: direct markdown rendering.
     return (
-      <>
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: needed for markdown comment */}
-        <div dangerouslySetInnerHTML={{ __html: originalContentComment }} />
-        <ReactMarkdown
-          rehypePlugins={[
-            [
-              rehypeExternalLinks,
-              { target: '_blank', rel: ['noopener', 'noreferrer'] },
-            ],
-          ]}
-        >
-          {content}
-        </ReactMarkdown>
-        {showGoToDashboard && <GoToDashboard />}
-      </>
+      <PlainModeBody
+        originalContentComment={originalContentComment}
+        content={content}
+        showGoToDashboard={showGoToDashboard}
+      />
     );
   },
   {
@@ -84,6 +78,40 @@ export const BaseEmailTemplate = buildTemplate<BaseEmailTemplateProps>(
     showGoToDashboard: true,
   },
 );
+
+// Extracted so the `useEmailTrackingUrl` hook lives at the top of a real
+// component rather than after a conditional return inside `BaseEmailTemplate`.
+// In plain mode the branded shell (which normally hosts the pixel via
+// `NamefiEmailContainer`) is skipped, so the pixel must render here.
+function PlainModeBody({
+  originalContentComment,
+  content,
+  showGoToDashboard,
+}: {
+  originalContentComment: string;
+  content: string;
+  showGoToDashboard: boolean;
+}) {
+  const trackingUrl = useEmailTrackingUrl();
+  return (
+    <>
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: needed for markdown comment */}
+      <div dangerouslySetInnerHTML={{ __html: originalContentComment }} />
+      <ReactMarkdown
+        rehypePlugins={[
+          [
+            rehypeExternalLinks,
+            { target: '_blank', rel: ['noopener', 'noreferrer'] },
+          ],
+        ]}
+      >
+        {content}
+      </ReactMarkdown>
+      {showGoToDashboard && <GoToDashboard />}
+      {trackingUrl ? <EmailTrackingPixel trackingUrl={trackingUrl} /> : null}
+    </>
+  );
+}
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default BaseEmailTemplate;
