@@ -415,6 +415,8 @@ export const configSchema = z.object({
     .optional()
     .default('2')
     .pipe(z.coerce.number()),
+  // Listmonk email service
+  LISTMONK_URL: z.string().url(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

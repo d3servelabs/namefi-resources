@@ -100,6 +100,13 @@ const localConfig: ConfigInput = {
   X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
   X402_FACILITATOR_URL: 'https://x402.org/facilitator',
   PONDER_INDEXER_URL: 'https://indexer.namefi.io',
+  // Listmonk email service.
+  //
+  // Defaults to a local-only placeholder so developers don't accidentally
+  // create / mutate templates against the production Listmonk instance.
+  // Override via the `LISTMONK_URL` env var when running an integration
+  // test against a real Listmonk (e.g. a dev instance you control).
+  LISTMONK_URL: 'http://localhost:9000',
 };
 
 export default localConfig;

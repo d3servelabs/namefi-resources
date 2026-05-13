@@ -21,6 +21,7 @@ import { adminPoweredByNamefiContract } from './admin-powered-by-namefi-contract
 import { adminSchedulesContract } from './admin-schedules-contract';
 import { adminUsersContract } from './admin-users-contract';
 import type { RouterContract } from '../trpc-contract';
+import { adminEmailsContract } from './admin-emails-contract';
 
 /**
  * Top-level contract for the admin router.
@@ -65,6 +66,7 @@ export const adminContract = {
   loginHistory: adminLoginHistoryContract,
   dnsviz: adminDnsvizContract,
   nsAndDnssec: adminNsAndDnssecContract,
+  emails: adminEmailsContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;

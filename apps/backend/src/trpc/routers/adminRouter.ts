@@ -1,4 +1,4 @@
-import { protectedProcedure } from '../base';
+import { adminProcedure, protectedProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { adminContract } from '@namefi-astra/common/contract/admin/admin-contract';
 import { canUserAccessAdminPanel } from '../utils';
@@ -22,6 +22,14 @@ import { bigQueryAuditRouter } from './admin/bigQueryAuditRouter';
 import { adminLoginHistoryRouter } from './admin/adminLoginHistoryRouter';
 import { adminDnsvizRouter } from './admin/adminDnsvizRouter';
 import { nsAndDnssecRouter } from './admin/nsAndDnssecRouter';
+import { emailsRouter } from './admin/adminEmailsRouter';
+import { config, secrets } from '#lib/env';
+import { render } from '@react-email/components';
+import React from 'react';
+import { BaseEmailTemplate } from '../../mail/templates/base-email-template';
+import z from 'zod';
+import { TRPCError } from '@trpc/server';
+import { adminEmailsContract } from '@namefi-astra/common/contract/admin/admin-emails-contract';
 
 export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   isUserAdmin: protectedProcedure
@@ -52,4 +60,5 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   loginHistory: adminLoginHistoryRouter,
   dnsviz: adminDnsvizRouter,
   nsAndDnssec: nsAndDnssecRouter,
+  emails: emailsRouter,
 });

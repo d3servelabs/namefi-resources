@@ -33,6 +33,8 @@ const testConfig: ConfigInput = {
     },
   ],
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 1000,
+  // Listmonk email service
+  LISTMONK_URL: 'http://localhost:9000',
 };
 
 export default testConfig;

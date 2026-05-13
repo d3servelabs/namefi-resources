@@ -79,6 +79,8 @@ const developmentConfig: ConfigInput = {
   X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
   X402_FACILITATOR_URL: 'https://x402.org/facilitator',
   PONDER_INDEXER_URL: 'https://indexer.namefi.io',
+  // Listmonk email service
+  LISTMONK_URL: 'https://marketing.namefi.io',
 };
 
 export default developmentConfig;

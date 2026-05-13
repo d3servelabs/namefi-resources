@@ -130,6 +130,8 @@ const productionConfig: ConfigInput = {
   X402_NETWORK: 'eip155:8453',
   X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
   X402_FACILITATOR_URL: 'https://api.cdp.coinbase.com/platform/v2/x402',
+  // Listmonk email service
+  LISTMONK_URL: 'https://marketing.namefi.io',
 };
 
 export default productionConfig;
