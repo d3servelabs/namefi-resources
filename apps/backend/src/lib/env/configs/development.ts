@@ -63,7 +63,7 @@ const developmentConfig: ConfigInput = {
     },
   ],
   SKIP_AUTH_USER_ID: '202832e8-304f-4f4a-81c9-df32fd1e5364',
-  EMAIL_ANALYTICS_URL: 'https://backend.astra.namefi.dev/v1/email/track/open',
+  EMAIL_ANALYTICS_URL: 'https://api.namefi.dev/v1/email/analytics/open',
   EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS: 30 / 86_400,
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 10,
   EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS: 30 / 86_400,

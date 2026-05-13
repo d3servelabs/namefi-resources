@@ -1273,6 +1273,33 @@ export const emailCampaignsRouter = createContractTRPCRouter<
 
       const sent = results.filter((r) => r.status === 'sent').length;
       const failed = results.length - sent;
+
+      // Seed an `email_campaign_opens` row with `openCount: 0` so the
+      // campaign key is immediately discoverable in the autocomplete
+      // (and the engagement dashboard) without waiting for the first
+      // recipient to load the tracking pixel. Idempotent — a real open
+      // arriving later will increment the row via the existing
+      // `ON CONFLICT DO UPDATE`. Failure is non-blocking; the send
+      // already succeeded.
+      if (input.campaignKey) {
+        try {
+          await db
+            .insert(emailCampaignOpensTable)
+            .values({
+              campaignKey: input.campaignKey,
+              openCount: 0,
+            })
+            .onConflictDoNothing({
+              target: emailCampaignOpensTable.campaignKey,
+            });
+        } catch (error) {
+          logger.warn(
+            { error, campaignKey: input.campaignKey },
+            'Failed to seed email_campaign_opens row for newly-sent campaign',
+          );
+        }
+      }
+
       logger.debug(
         {
           campaignKey: input.campaignKey ?? null,

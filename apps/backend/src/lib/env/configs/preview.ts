@@ -106,7 +106,7 @@ const previewConfig: ConfigInput = {
   X402_NETWORK: 'eip155:84532',
   X402_SIGNER_ADDRESS: '0xEe15C2735eD48C80f50fe666b45fE9ec699daEE5',
   X402_FACILITATOR_URL: 'https://x402.org/facilitator',
-  EMAIL_ANALYTICS_URL: 'https://api.namefi.dev/v1/email/track/open',
+  EMAIL_ANALYTICS_URL: 'https://api.namefi.dev/v1/email/analytics/open',
   // Listmonk email service — preview deployments share Namefi's hosted
   // marketing instance by default. Env-overridable so a preview can be
   // pointed at a non-prod Listmonk without a code change.

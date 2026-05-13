@@ -47,7 +47,7 @@ const TestEmail = withEmailTracking(
 async function main(): Promise<void> {
   const trackingUrl = await buildEmailAnalyticsUrl({
     trackUrl:
-      'https://armipotent-servilely-sarita.ngrok-free.dev/v1/email/track/open/',
+      'https://armipotent-servilely-sarita.ngrok-free.dev/v1/email/analytics/open/',
     data: { userId: '1234567890', email: 'test@example.com' } as any,
   });
   console.log('trackingUrl', trackingUrl);

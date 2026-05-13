@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import {
   ChevronDown,
@@ -135,6 +135,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
   );
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
 
   const previewQuery = useQuery({
     ...trpc.admin.emailCampaigns.previewBulkOneOffEmail.queryOptions(
@@ -201,6 +202,15 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
           toast.success(`Sent ${sent} ${sent === 1 ? 'email' : 'emails'}`);
         } else {
           toast.warning(`${sent} sent, ${failed} failed — see results panel`);
+        }
+        // The backend seeds an `email_campaign_opens` row on send so the
+        // new campaign key is immediately discoverable. Invalidate the
+        // autocomplete cache so the next compose sees it.
+        if (data.summary.campaignKey) {
+          queryClient.invalidateQueries({
+            queryKey:
+              trpc.admin.emailCampaigns.listKnownCampaignKeys.queryKey(),
+          });
         }
       },
       onError: (error) => {
