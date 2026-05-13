@@ -87,7 +87,7 @@ const CUSTOM_DELEGATION_SIGNER_FLAG: FeatureFlagDefinition = {
     'Show the advanced Custom Delegation Signer panel (add + DNSKEY validation) for domains not on Namefi nameservers. Hides the Namefi enable/disable buttons in that case.',
   scope: 'page',
   pageKey: 'dnssec',
-  defaultValue: false,
+  defaultValue: true,
 };
 
 const DNSSEC_PANEL_FLAGS: FeatureFlagDefinition[] = [

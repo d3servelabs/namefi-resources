@@ -42,7 +42,7 @@ import {
   XCircleIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { type FormEvent, useEffect, useMemo, useState } from 'react';
+import { type FormEvent, useMemo, useState } from 'react';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -59,7 +59,6 @@ import {
   AlertDescription,
 } from '@namefi-astra/ui/components/shadcn/alert';
 import { NetworkLogo } from '@/components/network-logo';
-import { PageShell } from '@/components/page-shell';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { formatDuration, intervalToDuration, addSeconds } from 'date-fns';
 import { cn } from '@namefi-astra/ui/lib/cn';
@@ -194,94 +193,88 @@ export function OrderDetailsContent({ id }: { id: string }) {
 
   if (isLoading) {
     return (
-      <PageShell>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Order Information Skeleton */}
-          <div>
-            <CartCard title="Order Information">
-              <div className="flex flex-col gap-4 mt-6">
-                {/* Order Status */}
-                <div className="flex items-center justify-between h-8">
-                  <Skeleton className="h-6 w-24" />
-                  <Skeleton className="h-6 w-20" />
-                </div>
-                {/* Order ID */}
-                <div className="flex items-center justify-between h-8">
-                  <Skeleton className="h-6 w-24" />
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="h-6 w-32" />
-                    <Skeleton className="h-8 w-8 rounded-md" />
-                  </div>
-                </div>
-                {/* Payment ID */}
-                <div className="flex items-center justify-between h-8">
-                  <Skeleton className="h-6 w-24" />
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="h-6 w-32" />
-                    <Skeleton className="h-8 w-8 rounded-md" />
-                  </div>
-                </div>
-                {/* Payment Status */}
-                <div className="flex items-center justify-between h-8">
-                  <Skeleton className="h-6 w-24" />
-                  <Skeleton className="h-6 w-20" />
-                </div>
-                {/* Payment */}
-                <div className="flex items-center justify-between">
-                  <Skeleton className="h-6 w-24" />
-                  <div className="flex flex-col items-end gap-1">
-                    <Skeleton className="h-6 w-32" />
-                    <Skeleton className="h-4 w-24" />
-                  </div>
-                </div>
-                {/* Recipient */}
-                <div className="flex items-center justify-between h-8">
-                  <Skeleton className="h-6 w-24" />
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="h-6 w-32" />
-                    <Skeleton className="h-8 w-8 rounded-md" />
-                  </div>
-                </div>
+      <>
+        <h1 className="text-4xl font-bold my-2 font-mono">Order Details</h1>
+        <CartCard className="mb-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center justify-between h-8">
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-6 w-20" />
+            </div>
+            <div className="flex items-center justify-between h-8">
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-6 w-32" />
+            </div>
+            <div className="flex items-center justify-between h-8">
+              <Skeleton className="h-6 w-24" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-8 w-8 rounded-md" />
               </div>
-            </CartCard>
+            </div>
           </div>
+        </CartCard>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Order Items Skeleton */}
-          <div>
-            <CartCard title="Order Items">
-              <div className="flex flex-col mt-6">
-                {/* Order Items */}
-                {[1, 2].map((_, index) => (
-                  <div key={index}>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Skeleton className="h-8 w-48" />
-                          <Skeleton className="h-6 w-20" />
-                        </div>
-                        <Skeleton className="h-8 w-24" />
-                      </div>
+          <CartCard title="Order Items">
+            <div className="flex flex-col gap-3 mt-2">
+              {[1, 2].map((_, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-white/10 bg-white/[0.02] p-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-6 w-48" />
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-5 w-16" />
+                      <Skeleton className="h-5 w-20" />
                     </div>
-                    {index < 1 && (
-                      <div className="my-6">
-                        <Separator />
-                      </div>
-                    )}
                   </div>
-                ))}
-                <div className="mt-6">
-                  <Separator />
+                  <div className="mt-2 flex items-center justify-between">
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-5 w-20" />
+                  </div>
                 </div>
-                {/* Total */}
-                <div className="flex items-center justify-between pt-4">
-                  <Skeleton className="h-8 w-16" />
-                  <Skeleton className="h-8 w-24" />
+              ))}
+            </div>
+            <div className="mt-6">
+              <Separator />
+            </div>
+            <div className="flex items-center justify-between pt-4">
+              <Skeleton className="h-8 w-16" />
+              <Skeleton className="h-8 w-24" />
+            </div>
+          </CartCard>
+
+          {/* Payments Skeleton */}
+          <CartCard title="Payments">
+            <div className="flex flex-col gap-3 mt-2">
+              {[1].map((_, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-white/10 bg-white/[0.02] p-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-5 w-24" />
+                    <Skeleton className="h-5 w-20" />
+                  </div>
+                  <div className="mt-2 flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-4 w-24" />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-4 w-20" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </CartCard>
-          </div>
+              ))}
+            </div>
+          </CartCard>
         </div>
-      </PageShell>
+      </>
     );
   }
   if (
@@ -295,330 +288,332 @@ export function OrderDetailsContent({ id }: { id: string }) {
   }
   if (!order) {
     return (
-      <PageShell>
-        <CartCard
-          title="Order not found"
-          description="The order you are looking for could not be found. Please check the order ID and try again."
-          footer={
-            <Button onClick={() => router.push('/orders')}>
-              Back to Orders
-            </Button>
-          }
-        />
-      </PageShell>
+      <CartCard
+        title="Order not found"
+        description="The order you are looking for could not be found. Please check the order ID and try again."
+        footer={
+          <Button onClick={() => router.push('/orders')}>Back to Orders</Button>
+        }
+      />
     );
   }
   const singlePayment = payments.length === 1;
 
   return (
-    <PageShell>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {requiredActionItems.length > 0 && items ? (
-          <Alert
-            variant="default"
-            className="w-full border border-amber-500/30 bg-amber-800/20 col-span-full"
-          >
-            <AlertTitle className="font-semibold"> Action required</AlertTitle>
-            <AlertDescription>
-              <div className="w-full flex flex-row flex-wrap justify-between items-start ">
-                <div>
-                  {requiredActionItems.length === items?.length ? (
-                    requiredActionItems.length === 1 ? (
-                      <p>
-                        <span>
-                          The domain{' '}
-                          <span className="font-semibold">
-                            {safeToUnicode(
-                              requiredActionItems[0].normalizedDomainName,
-                            )}
-                          </span>{' '}
-                          requires further action from your side.
-                        </span>
-                        <br />
-                        <span className="mt-2">
-                          {requiredActionItems[0].metadata?.requiredAction
-                            ? getRequiredActionText(
-                                requiredActionItems[0].metadata.requiredAction,
-                              )
-                            : ''}
-                        </span>
-                      </p>
-                    ) : (
-                      'All items in this order require further action from your side.'
-                    )
-                  ) : (
-                    `${requiredActionItems.length} of ${items?.length} items in this order require further action from your side.`
-                  )}
-                </div>
-
-                <AlertDialog>
-                  <AlertDialogTrigger
-                    onClick={
-                      requiredActionItems.length === items?.length &&
-                      requiredActionItems.length === 1
-                        ? (e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            setSelectedItemId(requiredActionItems[0].id);
-                          }
-                        : undefined
-                    }
-                  >
-                    <InfoIcon className="h-4 w-4" />
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="max-w-2xl">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Action Required</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Some items in this order require action. Please review
-                        the details and take necessary actions.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogDescription>
-                      <div className="flex flex-col gap-2 py-3">
-                        {requiredActionItems?.map((item) => {
-                          return (
-                            <button
-                              type="button"
-                              key={item.id}
-                              onClick={() => setSelectedItemId(item.id)}
-                              className="w-full text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
-                            >
-                              <div className="flex items-center justify-between">
-                                <span className="text-base font-medium break-all">
-                                  {safeToUnicode(item.normalizedDomainName)}
-                                </span>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
-                                    {humanizeItemType(item.type)}
-                                  </span>
-                                  <StatusBadge
-                                    status={'REQUIRES_ACTION'}
-                                    type="order"
-                                  />
-                                </div>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      <div className="flex flex-row justify-end w-full">
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      </div>
-                    </AlertDialogDescription>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-            </AlertDescription>
-          </Alert>
-        ) : null}
-        {/* Left Column - Order + Payments */}
-        <div className="space-y-4">
-          <CartCard title="Order" className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-6 right-6 h-8 w-8"
-              onClick={() => setIsTechModalOpen(true)}
-              title="View order details"
-            >
-              <Info size={16} />
-            </Button>
-            <div className="relative flex flex-col gap-1 mt-2">
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Status</span>
-                <div className="flex items-center">
-                  {order.status ? (
-                    <StatusBadge status={order.status} type="order" />
-                  ) : (
-                    <span>-</span>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Placed At</span>
-                <span className="text-sm text-gray-500">
-                  {format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">NFT Wallet</span>
-
-                <div className="flex items-center gap-2">
-                  {recipientWalletAddress && !isRecipientLinked && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger
-                          render={
-                            <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600" />
-                          }
-                        >
-                          <Info className="h-3.5 w-3.5" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>This wallet isn't linked to your account.</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                  {!!order.nftChainId && (
-                    <NetworkLogo
-                      className="size-4"
-                      network={order.nftChainId}
-                    />
-                  )}
-                  <span className="text-sm text-gray-500">
-                    {recipientWalletAddress
-                      ? getShortAddress(recipientWalletAddress)
-                      : '-'}
-                  </span>
-
-                  {!!recipientWalletAddress && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger
-                          render={
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => {
-                                if (!recipientWalletAddress) return;
-                                copyToClipboard(
-                                  recipientWalletAddress,
-                                  'recipientWalletAddress',
-                                );
-                              }}
-                            />
-                          }
-                        >
-                          {copiedFields.recipientWalletAddress ? (
-                            <Check size={16} />
-                          ) : (
-                            <ClipboardCopy size={16} />
+    <>
+      {requiredActionItems.length > 0 && items ? (
+        <Alert
+          variant="default"
+          className="w-full border border-amber-500/30 bg-amber-800/20 mb-4"
+        >
+          <AlertTitle className="font-semibold"> Action required</AlertTitle>
+          <AlertDescription>
+            <div className="w-full flex flex-row flex-wrap justify-between items-start ">
+              <div>
+                {requiredActionItems.length === items?.length ? (
+                  requiredActionItems.length === 1 ? (
+                    <p>
+                      <span>
+                        The domain{' '}
+                        <span className="font-semibold">
+                          {safeToUnicode(
+                            requiredActionItems[0].normalizedDomainName,
                           )}
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            {copiedFields.recipientWalletAddress
-                              ? 'Copied!'
-                              : 'Copy Wallet Address'}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                </div>
+                        </span>{' '}
+                        requires further action from your side.
+                      </span>
+                      <br />
+                      <span className="mt-2">
+                        {requiredActionItems[0].metadata?.requiredAction
+                          ? getRequiredActionText(
+                              requiredActionItems[0].metadata.requiredAction,
+                            )
+                          : ''}
+                      </span>
+                    </p>
+                  ) : (
+                    'All items in this order require further action from your side.'
+                  )
+                ) : (
+                  `${requiredActionItems.length} of ${items?.length} items in this order require further action from your side.`
+                )}
               </div>
 
-              <div className="my-2">
-                <Separator className="opacity-50" />
-              </div>
-              <div className="font-medium mb-2">Payments</div>
-
-              <div className="flex flex-col gap-3">
-                {payments.map((payment, index) => (
-                  <PaymentSummaryCard
-                    key={payment.id}
-                    payment={payment}
-                    index={index}
-                    singlePayment={singlePayment}
-                    onClick={() => setSelectedPaymentId(payment.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </CartCard>
-        </div>
-
-        {/* Right Column - Order Items */}
-        <div className="h-fit">
-          <CartCard title="Order Items">
-            <div className="flex flex-col gap-3 mt-6">
-              {items?.map((item) => {
-                const mintTransaction =
-                  item.metadata?.mintTransaction ??
-                  orderMintTransactions?.[item.id];
-                const tokenId = getTokenIdFromDomainName(
-                  item.normalizedDomainName,
-                );
-                const requiredAction = item.metadata?.requiredAction;
-                const failureDetailsText =
-                  item.status === 'FAILED'
-                    ? getFailureDetailsText(item.metadata?.failureDetails)
-                    : null;
-                const chainId = order.nftChainId ?? null;
-                return (
-                  <button
-                    type="button"
-                    key={item.id}
-                    onClick={() => setSelectedItemId(item.id)}
-                    className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="min-w-0">
-                        <span className="text-base font-medium break-all">
-                          {safeToUnicode(item.normalizedDomainName)}
-                        </span>
-                        {safeToUnicode(item.normalizedDomainName) !==
-                          item.normalizedDomainName && (
-                          <span className="block text-xs text-muted-foreground break-all">
-                            {item.normalizedDomainName}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
-                          {humanizeItemType(item.type)}
-                        </span>
-                        {requiredAction ? (
-                          <StatusBadge
-                            status={'REQUIRES_ACTION'}
-                            type="order"
-                          />
-                        ) : item.status ? (
-                          <StatusBadge status={item.status} type="order" />
-                        ) : (
-                          <span>-</span>
-                        )}
-                      </div>
+              <AlertDialog>
+                <AlertDialogTrigger
+                  onClick={
+                    requiredActionItems.length === items?.length &&
+                    requiredActionItems.length === 1
+                      ? (e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setSelectedItemId(requiredActionItems[0].id);
+                        }
+                      : undefined
+                  }
+                >
+                  <InfoIcon className="h-4 w-4" />
+                </AlertDialogTrigger>
+                <AlertDialogContent className="max-w-2xl">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Action Required</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Some items in this order require action. Please review the
+                      details and take necessary actions.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogDescription>
+                    <div className="flex flex-col gap-2 py-3">
+                      {requiredActionItems?.map((item) => {
+                        return (
+                          <button
+                            type="button"
+                            key={item.id}
+                            onClick={() => setSelectedItemId(item.id)}
+                            className="w-full text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-base font-medium break-all">
+                                {safeToUnicode(item.normalizedDomainName)}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                                  {humanizeItemType(item.type)}
+                                </span>
+                                <StatusBadge
+                                  status={'REQUIRES_ACTION'}
+                                  type="order"
+                                />
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
-                    <div className="mt-2 text-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Amount</span>
-                        <span className="font-medium">
-                          {formatAmountInUSD(item.amountInUSDCents, true)}
-                        </span>
-                      </div>
-                      {failureDetailsText ? (
-                        <div className="mt-2 text-xs text-muted-foreground">
-                          {failureDetailsText}
-                        </div>
-                      ) : null}
-                      {mintTransaction && tokenId ? (
-                        <MintTokenRow
-                          label="Minted NFT"
-                          chainId={chainId}
-                          tokenId={tokenId}
-                        />
-                      ) : null}
+                    <div className="flex flex-row justify-end w-full">
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
                     </div>
-                  </button>
-                );
-              })}
+                  </AlertDialogDescription>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
-            <div className="mt-6">
-              <Separator />
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
+      {/* Top - Order Details header */}
+      <h1 className="text-4xl font-bold my-2 font-mono">Order Details</h1>
+      <CartCard
+        className="relative mb-4"
+        gradient="minimal"
+        headerAction={
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setIsTechModalOpen(true)}
+            title="View order details"
+            aria-label="View technical order details"
+          >
+            <Info size={16} />
+          </Button>
+        }
+      >
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+          <div className="flex items-center justify-between h-8">
+            <span className="font-medium">Status</span>
+            <div className="flex items-center">
+              {order.status ? (
+                <StatusBadge status={order.status} type="order" />
+              ) : (
+                <span>-</span>
+              )}
             </div>
-            <div className="flex items-center justify-between pt-4">
-              <span className="text-xl font-medium">Total</span>
-              <span className="text-xl font-bold">
-                {formatAmountInUSD(order.amountInUSDCents, true)}
+          </div>
+          <div className="flex items-center justify-between h-8">
+            <span className="font-medium">Placed At</span>
+            <span className="text-sm text-gray-500">
+              {format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between h-8">
+            <span className="font-medium">NFT Wallet</span>
+
+            <div className="flex items-center gap-2">
+              {recipientWalletAddress && !isRecipientLinked && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600" />
+                      }
+                    >
+                      <Info className="h-3.5 w-3.5" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>This wallet isn't linked to your account.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {!!order.nftChainId && (
+                <NetworkLogo className="size-4" network={order.nftChainId} />
+              )}
+              <span className="text-sm text-gray-500">
+                {recipientWalletAddress
+                  ? getShortAddress(recipientWalletAddress)
+                  : '-'}
               </span>
+
+              {!!recipientWalletAddress && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          aria-label={
+                            copiedFields.recipientWalletAddress
+                              ? 'Wallet address copied'
+                              : 'Copy wallet address'
+                          }
+                          onClick={() => {
+                            if (!recipientWalletAddress) return;
+                            copyToClipboard(
+                              recipientWalletAddress,
+                              'recipientWalletAddress',
+                            );
+                          }}
+                        />
+                      }
+                    >
+                      {copiedFields.recipientWalletAddress ? (
+                        <Check size={16} />
+                      ) : (
+                        <ClipboardCopy size={16} />
+                      )}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        {copiedFields.recipientWalletAddress
+                          ? 'Copied!'
+                          : 'Copy Wallet Address'}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
             </div>
-          </CartCard>
+          </div>
         </div>
+      </CartCard>
+
+      {/* Two-column - Order Items left, Payments right */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <CartCard title="Order Items" className="h-fit" gradient="default">
+          <div className="flex flex-col gap-3 mt-2">
+            {items?.map((item) => {
+              const mintTransaction =
+                item.metadata?.mintTransaction ??
+                orderMintTransactions?.[item.id];
+              const tokenId = getTokenIdFromDomainName(
+                item.normalizedDomainName,
+              );
+              const requiredAction = item.metadata?.requiredAction;
+              const failureDetailsText =
+                item.status === 'FAILED'
+                  ? getFailureDetailsText(item.metadata?.failureDetails)
+                  : null;
+              const chainId = order.nftChainId ?? null;
+              return (
+                <button
+                  type="button"
+                  key={item.id}
+                  onClick={() => setSelectedItemId(item.id)}
+                  className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="min-w-0">
+                      <span className="text-base font-medium break-all">
+                        {safeToUnicode(item.normalizedDomainName)}
+                      </span>
+                      {safeToUnicode(item.normalizedDomainName) !==
+                        item.normalizedDomainName && (
+                        <span className="block text-xs text-muted-foreground break-all">
+                          {item.normalizedDomainName}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                        {humanizeItemType(item.type)}
+                      </span>
+                      {requiredAction ? (
+                        <StatusBadge status={'REQUIRES_ACTION'} type="order" />
+                      ) : item.status ? (
+                        <StatusBadge status={item.status} type="order" />
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Amount</span>
+                      <span className="font-medium">
+                        {formatAmountInUSD(item.amountInUSDCents, true)}
+                      </span>
+                    </div>
+                    {failureDetailsText ? (
+                      <div className="mt-2 text-xs text-muted-foreground">
+                        {failureDetailsText}
+                      </div>
+                    ) : null}
+                    {mintTransaction && tokenId ? (
+                      <MintTokenRow
+                        label="Minted NFT"
+                        chainId={chainId}
+                        tokenId={tokenId}
+                      />
+                    ) : null}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <div className="mt-6">
+            <Separator />
+          </div>
+          <div className="flex items-center justify-between pt-4">
+            <span className="text-xl font-medium">Total</span>
+            <span className="text-xl font-bold">
+              {formatAmountInUSD(order.amountInUSDCents, true)}
+            </span>
+          </div>
+        </CartCard>
+
+        <CartCard title="Payments" className="h-fit" gradient="minimal-reverse">
+          <div className="flex flex-col gap-3 mt-2">
+            {payments.length === 0 ? (
+              <div className="text-sm text-muted-foreground">
+                No payments yet.
+              </div>
+            ) : (
+              payments.map((payment, index) => (
+                <PaymentSummaryCard
+                  key={payment.id}
+                  payment={payment}
+                  index={index}
+                  singlePayment={singlePayment}
+                  onClick={() => setSelectedPaymentId(payment.id)}
+                />
+              ))
+            )}
+          </div>
+        </CartCard>
       </div>
 
       {/* Technical Details Modal */}
@@ -755,7 +750,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
         onOpenChange={setSelectedItemId}
         orderId={order.id}
       />
-    </PageShell>
+    </>
   );
 }
 
@@ -876,6 +871,33 @@ function PaymentSummaryCard({
       enabled: !!payment.id && isAuthenticated,
     });
 
+  const { data: refunds = [] } = useQuery({
+    ...trpc.orders.getPaymentRefunds.queryOptions({
+      paymentId: payment.id,
+    }),
+    enabled: !!payment.id && isAuthenticated,
+  });
+
+  const { refundedAmountCents, pendingRefundCents } = useMemo(() => {
+    let succeeded = 0;
+    let pending = 0;
+    for (const refund of refunds) {
+      if (refund.status === 'SUCCEEDED') {
+        succeeded += refund.amountInUSDCents;
+      } else if (
+        refund.status === 'CREATED' ||
+        refund.status === 'PROCESSING' ||
+        refund.status === 'REQUIRES_ACTION'
+      ) {
+        pending += refund.amountInUSDCents;
+      }
+    }
+    return { refundedAmountCents: succeeded, pendingRefundCents: pending };
+  }, [refunds]);
+
+  const totalAmountCents = payment.amountInUSDCents - refundedAmountCents;
+  const hasRefund = refundedAmountCents > 0 || pendingRefundCents > 0;
+
   const isX402Payment = payment.paymentProvider === 'X402';
   const rightLabel = useMemo(() => {
     if (isLoading) return '…';
@@ -949,12 +971,45 @@ function PaymentSummaryCard({
             {paymentMethodDisplay}
           </span>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Amount</span>
-          <span className="font-medium">
-            {formatAmountInUSD(payment.amountInUSDCents, true)}
-          </span>
-        </div>
+        {hasRefund ? (
+          <>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Charged</span>
+              <span className="font-medium">
+                {formatAmountInUSD(payment.amountInUSDCents, true)}
+              </span>
+            </div>
+            {refundedAmountCents > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Refunded</span>
+                <span className="font-medium text-amber-400">
+                  -{formatAmountInUSD(refundedAmountCents, true)}
+                </span>
+              </div>
+            )}
+            {pendingRefundCents > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Refund pending</span>
+                <span className="text-xs text-amber-300">
+                  {formatAmountInUSD(pendingRefundCents, true)}
+                </span>
+              </div>
+            )}
+            <div className="flex items-center justify-between border-t border-white/10 mt-2 pt-2">
+              <span className="text-muted-foreground">Total</span>
+              <span className="font-semibold">
+                {formatAmountInUSD(totalAmountCents, true)}
+              </span>
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">Amount</span>
+            <span className="font-medium">
+              {formatAmountInUSD(payment.amountInUSDCents, true)}
+            </span>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">{walletLabel}</span>
           <span className="font-mono text-xs">{rightLabel}</span>
