@@ -403,22 +403,17 @@ export function OrderDetailsContent({ id }: { id: string }) {
 
       {/* Top - Order Details header */}
       <h1 className="text-4xl font-bold my-2 font-mono">Order Details</h1>
-      <CartCard
-        className="relative mb-4"
-        gradient="minimal"
-        headerAction={
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => setIsTechModalOpen(true)}
-            title="View order details"
-            aria-label="View technical order details"
-          >
-            <Info size={16} />
-          </Button>
-        }
-      >
+      <CartCard className="relative mb-8" gradient="minimal">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-6 right-6 z-10 h-8 w-8"
+          onClick={() => setIsTechModalOpen(true)}
+          title="View order details"
+          aria-label="View technical order details"
+        >
+          <Info size={16} />
+        </Button>
         <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
           <div className="flex items-center justify-between h-8">
             <span className="font-medium">Status</span>
@@ -512,8 +507,12 @@ export function OrderDetailsContent({ id }: { id: string }) {
       </CartCard>
 
       {/* Two-column - Order Items left, Payments right */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <CartCard title="Order Items" className="h-fit" gradient="default">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8">
+        <CartCard
+          title="Order Items"
+          className="h-fit lg:col-span-2"
+          gradient="default"
+        >
           <div className="flex flex-col gap-3 mt-2">
             {items?.map((item) => {
               const mintTransaction =
