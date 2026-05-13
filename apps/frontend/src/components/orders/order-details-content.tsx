@@ -407,7 +407,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-6 right-6 z-10 h-8 w-8"
+          className="absolute top-1 right-6 z-10 h-8 w-8"
           onClick={() => setIsTechModalOpen(true)}
           title="View order details"
           aria-label="View technical order details"
