@@ -577,6 +577,80 @@ export const emailCampaignSendsTable = pgTable(
 );
 
 /**
+ * Aggregate per-campaign open counts. One row per `campaignKey`,
+ * incremented atomically each time the tracking pixel for an email tagged
+ * with `type: 'campaign_email_open'` is loaded. Counts every pixel hit
+ * (no per-recipient deduplication).
+ *
+ * `campaignKey` is a free-form string sharing the same convention as
+ * `email_campaign_sends.campaign_key` (e.g. `cart-domains-popular`).
+ */
+export const emailCampaignOpensTable = pgTable(
+  'email_campaign_opens',
+  {
+    ...randomUuid,
+    campaignKey: text('campaign_key').notNull(),
+    openCount: integer('open_count').notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [
+    unique('email_campaign_opens_campaign_key_unique').on(table.campaignKey),
+    check('email_campaign_opens_open_count_nonnegative', sql`open_count >= 0`),
+    // Defense-in-depth against rows inserted outside the API layer
+    // (e.g. ad-hoc psql, future migrations). The contract already enforces
+    // `min(1)`; this keeps the aggregate buckets well-formed at the DB level.
+    check(
+      'email_campaign_opens_campaign_key_nonempty',
+      sql`length(trim(campaign_key)) > 0`,
+    ),
+  ],
+);
+
+/**
+ * Aggregate per-link click counts for email campaigns. One row per
+ * (`campaignKey`, `groupIdentifier`) pair, incremented atomically each time
+ * the click-tracking redirect endpoint is hit for a link whose JWT carries
+ * `type: 'campaign_link_click'`. Counts every redirect hit (no
+ * per-recipient deduplication).
+ *
+ * `groupIdentifier` is set by the click route handler as follows:
+ *   1. The explicit `groupIdentifier` from the JWT payload, if present
+ *      (e.g. `cta-button`, `footer-link`).
+ *   2. Otherwise `${destination.hostname}${destination.pathname}` of the
+ *      redirect URL, so distinct destinations within a campaign aggregate
+ *      separately even when the template author didn't tag them.
+ *
+ * Stored as `''` only for legacy rows; new inserts always carry a derived
+ * value, which lets the composite unique constraint be enforced without
+ * NULL handling.
+ */
+export const emailCampaignClicksTable = pgTable(
+  'email_campaign_clicks',
+  {
+    ...randomUuid,
+    campaignKey: text('campaign_key').notNull(),
+    groupIdentifier: text('group_identifier').notNull().default(''),
+    clickCount: integer('click_count').notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [
+    unique('email_campaign_clicks_campaign_group_unique').on(
+      table.campaignKey,
+      table.groupIdentifier,
+    ),
+    check(
+      'email_campaign_clicks_click_count_nonnegative',
+      sql`click_count >= 0`,
+    ),
+    // See comment on `email_campaign_opens_campaign_key_nonempty`.
+    check(
+      'email_campaign_clicks_campaign_key_nonempty',
+      sql`length(trim(campaign_key)) > 0`,
+    ),
+  ],
+);
+
+/**
  * Order payments join table (Stage 3)
  * Links orders to multiple payments; isPrimary marks the primary payment.
  * Note: Deferrable constraints (unique on payment_id, etc.) will be applied via raw SQL migrations.

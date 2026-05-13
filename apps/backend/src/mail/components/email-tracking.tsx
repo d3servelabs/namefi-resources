@@ -17,6 +17,25 @@ export const EmailAnalyticsPayloadSchema = z.discriminatedUnion('type', [
     emailAddress: z.email(),
     nonce: z.string(),
   }),
+  // Generic per-campaign open tracking. Increments
+  // `email_campaign_opens.open_count` keyed by `campaignKey` on each pixel hit.
+  z.object({
+    type: z.literal('campaign_email_open'),
+    campaignKey: z.string().min(1),
+    userEmail: z.email(),
+    nonce: z.string(),
+  }),
+  // Per-link click tracking. The redirect endpoint decodes this token,
+  // increments `email_campaign_clicks.click_count` keyed by
+  // (campaignKey, groupIdentifier), then 302-redirects to `destinationUrl`.
+  z.object({
+    type: z.literal('campaign_link_click'),
+    campaignKey: z.string().min(1),
+    groupIdentifier: z.string().optional(),
+    destinationUrl: z.url(),
+    userEmail: z.email().optional(),
+    nonce: z.string(),
+  }),
 ]);
 
 export type EmailAnalyticsPayload = z.infer<typeof EmailAnalyticsPayloadSchema>;
