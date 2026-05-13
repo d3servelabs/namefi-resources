@@ -1,8 +1,11 @@
 import {
+  and,
   asc,
   compileQuery,
   createClient,
+  eq,
   gt,
+  type SQL,
   sql as ponderSql,
 } from '@ponder/client';
 import * as schema from '@namefi-astra/indexer/schema';
@@ -144,9 +147,18 @@ export class PonderSqlClient {
       .from(ponderSchema.NamefiNft)
       .$dynamic();
 
+    const predicates: SQL[] = [];
     if (options?.sinceBlock !== undefined) {
-      query = query.where(
+      predicates.push(
         gt(ponderSchema.NamefiNft.lastUpdatedBlock, options.sinceBlock),
+      );
+    }
+    if (options?.chainId !== undefined) {
+      predicates.push(eq(ponderSchema.NamefiNft.chainId, options.chainId));
+    }
+    if (predicates.length > 0) {
+      query = query.where(
+        predicates.length === 1 ? predicates[0] : and(...predicates),
       );
     }
 
@@ -186,9 +198,20 @@ export class PonderSqlClient {
       .from(ponderSchema.BurnedNamefiNftLog)
       .$dynamic();
 
+    const predicates: SQL[] = [];
     if (options?.sinceBlock !== undefined) {
-      query = query.where(
+      predicates.push(
         gt(ponderSchema.BurnedNamefiNftLog.burnedBlock, options.sinceBlock),
+      );
+    }
+    if (options?.chainId !== undefined) {
+      predicates.push(
+        eq(ponderSchema.BurnedNamefiNftLog.chainId, options.chainId),
+      );
+    }
+    if (predicates.length > 0) {
+      query = query.where(
+        predicates.length === 1 ? predicates[0] : and(...predicates),
       );
     }
 
@@ -228,9 +251,18 @@ export class PonderSqlClient {
       .from(ponderSchema.TransferLog)
       .$dynamic();
 
+    const predicates: SQL[] = [];
     if (options?.sinceBlock !== undefined) {
-      query = query.where(
+      predicates.push(
         gt(ponderSchema.TransferLog.blockNumber, options.sinceBlock),
+      );
+    }
+    if (options?.chainId !== undefined) {
+      predicates.push(eq(ponderSchema.TransferLog.chainId, options.chainId));
+    }
+    if (predicates.length > 0) {
+      query = query.where(
+        predicates.length === 1 ? predicates[0] : and(...predicates),
       );
     }
 
@@ -272,9 +304,20 @@ export class PonderSqlClient {
       .from(ponderSchema.ExpirationChangeLog)
       .$dynamic();
 
+    const predicates: SQL[] = [];
     if (options?.sinceBlock !== undefined) {
-      query = query.where(
+      predicates.push(
         gt(ponderSchema.ExpirationChangeLog.blockNumber, options.sinceBlock),
+      );
+    }
+    if (options?.chainId !== undefined) {
+      predicates.push(
+        eq(ponderSchema.ExpirationChangeLog.chainId, options.chainId),
+      );
+    }
+    if (predicates.length > 0) {
+      query = query.where(
+        predicates.length === 1 ? predicates[0] : and(...predicates),
       );
     }
 

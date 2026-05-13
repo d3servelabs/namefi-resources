@@ -91,6 +91,10 @@ export type PonderFetchOptions = {
    */
   sinceBlock?: bigint;
   /**
+   * Only fetch records for this chain id
+   */
+  chainId?: number;
+  /**
    * Maximum number of records to fetch (for pagination)
    */
   limit?: number;
