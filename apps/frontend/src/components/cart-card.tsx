@@ -43,10 +43,10 @@ export function CartCard({
             </>
           ),
           minimal: (
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-primary-500/5 via-transparent to-transparent pointer-events-none" />
           ),
           'minimal-reverse': (
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-emerald-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-brand-primary-500/5 pointer-events-none" />
           ),
         },
         false,
