@@ -261,6 +261,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         permissionsMode: 'every',
       },
       {
+        title: 'Email Engagement',
+        description:
+          'Track opens and per-link clicks for every campaign key, including ad-hoc bulk sends.',
+        href: '/admin/email-engagement',
+        icon: BarChart3,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.READ_USERS],
+      },
+      {
         title: 'Email Templates',
         description:
           'Create, edit, and manage email templates for your campaigns and transactional emails.',

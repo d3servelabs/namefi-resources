@@ -1420,4 +1420,38 @@ export const emailCampaignsRouter = createContractTRPCRouter<
 
       return { results };
     }),
+  listCampaignEngagement: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminEmailCampaignsContract.listCampaignEngagement.input)
+    .output(adminEmailCampaignsContract.listCampaignEngagement.output)
+    .query(async () => {
+      // Intentionally unbounded: both tables are pre-aggregated counter
+      // tables — `email_campaign_opens` is UNIQUE on `campaign_key`
+      // (one row per campaign) and `email_campaign_clicks` is UNIQUE on
+      // `(campaign_key, group_identifier)` (one row per unique link).
+      // Total row count grows with `campaigns × distinct-links-per-campaign`,
+      // not with traffic volume, and stays in the low hundreds at expected
+      // scale. If/when that assumption breaks the contract should switch
+      // to a paginated/time-windowed input shape.
+      const [opens, clicks] = await Promise.all([
+        db
+          .select({
+            campaignKey: emailCampaignOpensTable.campaignKey,
+            openCount: emailCampaignOpensTable.openCount,
+            createdAt: emailCampaignOpensTable.createdAt,
+            updatedAt: emailCampaignOpensTable.updatedAt,
+          })
+          .from(emailCampaignOpensTable),
+        db
+          .select({
+            campaignKey: emailCampaignClicksTable.campaignKey,
+            groupIdentifier: emailCampaignClicksTable.groupIdentifier,
+            clickCount: emailCampaignClicksTable.clickCount,
+            createdAt: emailCampaignClicksTable.createdAt,
+            updatedAt: emailCampaignClicksTable.updatedAt,
+          })
+          .from(emailCampaignClicksTable),
+      ]);
+
+      return { opens, clicks };
+    }),
 });

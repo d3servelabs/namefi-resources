@@ -247,6 +247,40 @@ const listKnownCampaignKeysOutputSchema = z.object({
   keys: z.array(z.string()),
 });
 
+/**
+ * Engagement dashboard payload — raw rows from `email_campaign_opens` and
+ * `email_campaign_clicks`. The frontend joins them by `campaignKey` to
+ * produce the aggregate view.
+ *
+ * Intentionally unbounded for now: both tables are pre-aggregated counter
+ * tables (UNIQUE on `campaign_key` for opens, UNIQUE on
+ * `(campaign_key, group_identifier)` for clicks), so row count grows
+ * linearly with `campaigns × distinct-links-per-campaign`, not with
+ * traffic volume. Total rows stays in the low hundreds at expected scale.
+ * If that assumption breaks, the contract input should switch to a
+ * bounded shape (cursor + limit, or date window) and the procedure
+ * should aggregate server-side by `campaignKey` / `groupIdentifier`.
+ */
+const listCampaignEngagementOutputSchema = z.object({
+  opens: z.array(
+    z.object({
+      campaignKey: z.string(),
+      openCount: z.number(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  ),
+  clicks: z.array(
+    z.object({
+      campaignKey: z.string(),
+      groupIdentifier: z.string(),
+      clickCount: z.number(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  ),
+});
+
 export const adminEmailCampaignsContract = createContract(
   { softOutput: true },
   {
@@ -299,6 +333,11 @@ export const adminEmailCampaignsContract = createContract(
       type: 'query',
       input: lookupUsersByEmailInputSchema,
       output: lookupUsersByEmailOutputSchema,
+    },
+    listCampaignEngagement: {
+      type: 'query',
+      input: z.void(),
+      output: listCampaignEngagementOutputSchema,
     },
   },
 );
