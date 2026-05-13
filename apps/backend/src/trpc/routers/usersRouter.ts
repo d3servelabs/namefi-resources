@@ -14,6 +14,7 @@ import {
   dnsRecordsTable,
   domainUserPreferencesTable,
   orderItemsTable,
+  mapper,
 } from '@namefi-astra/db';
 import {
   checksumWalletAddressSchema,
@@ -870,10 +871,12 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           tokenId: namefiNftView.tokenId,
           chainId: namefiNftView.chainId,
           ownerAddress: namefiNftView.ownerAddress,
-          expirationDate: indexedDomainsTable.expirationTime,
+          expirationDate:
+            sql<Date | null>`COALESCE(${indexedDomainsTable.expirationTime}, ${namefiNftView.expirationTime})`.mapWith(
+              mapper.time,
+            ),
           nameservers: indexedDomainsTable.nameservers,
-          isUsingNamefiNameservers:
-            indexedDomainsTable.isUsingNamefiNameservers,
+          isUsingNamefiNameservers: sql<boolean>`CASE WHEN (${indexedDomainsTable.normalizedDomainName} IS NOT NULL) THEN ${indexedDomainsTable.isUsingNamefiNameservers} ELSE TRUE END`,
           autoEnsEnabled: domainConfigTable.autoEnsEnabled,
           autoParkEnabled: domainConfigTable.autoParkEnabled,
           dnssecEnabled: domainConfigTable.dnssecEnabled,

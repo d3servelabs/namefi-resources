@@ -37,12 +37,6 @@ const FloatingBatchButton = dynamic(() =>
   ),
 );
 
-console.log({
-  PreviewGate: !!PreviewGate,
-  NEXT_PUBLIC_PREVIEW_GATE_BUNDLED:
-    process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED,
-});
-
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],

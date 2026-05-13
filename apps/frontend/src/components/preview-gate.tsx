@@ -36,7 +36,7 @@ function getHostFromHeaders(h: Headers): string | null {
 }
 
 async function isUnlocked(): Promise<boolean> {
-  console.log(LOG_PREFIX, 'enter', { configType: config.TYPE });
+  // console.log(LOG_PREFIX, 'enter', { configType: config.TYPE });
 
   if (config.TYPE === 'production') {
     console.log(LOG_PREFIX, 'production -> passthrough');
