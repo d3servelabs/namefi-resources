@@ -483,7 +483,7 @@ function AlreadyActiveCard({
           <AlertDialogTrigger
             render={
               <Button
-                variant="destructive"
+                variant="secondary"
                 size="sm"
                 className="text-xs"
                 disabled={disabled || count === 0}
