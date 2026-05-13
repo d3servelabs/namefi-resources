@@ -9,7 +9,12 @@ import {
 } from '@react-email/components';
 // biome-ignore lint/performance/noNamespaceImport: email shell styles are grouped as shared tokens.
 import * as styles from '../styles';
-import { EmailTrackingPixel, useEmailTrackingUrl } from './email-tracking';
+import {
+  EMAIL_CAMPAIGN_KEY_META_NAME,
+  EmailTrackingPixel,
+  useEmailCampaignKey,
+  useEmailTrackingUrl,
+} from './email-tracking';
 import { NamefiFooter } from './namefi-footer';
 import { NamefiHeader } from './namefi-header';
 // biome-ignore lint/style/useImportType: required for react-email
@@ -30,6 +35,7 @@ export function NamefiEmailContainer({
   headerSubtitle?: string | false;
 }) {
   const trackingUrl = useEmailTrackingUrl();
+  const campaignKey = useEmailCampaignKey();
   const trackingPixel = trackingUrl ? (
     <EmailTrackingPixel trackingUrl={trackingUrl} />
   ) : null;
@@ -42,6 +48,9 @@ export function NamefiEmailContainer({
     <Tailwind>
       <Html>
         <Head>
+          {campaignKey ? (
+            <meta name={EMAIL_CAMPAIGN_KEY_META_NAME} content={campaignKey} />
+          ) : null}
           <style>
             {`
 #markdown-table {

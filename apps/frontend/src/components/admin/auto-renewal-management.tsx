@@ -6,6 +6,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@namefi-astra/ui/components/shadcn/card';
+import { AddToEmailBatchButton } from '@/components/admin/email-batch/add-to-email-batch-button';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
@@ -1483,14 +1484,20 @@ function DomainsTable({
                       'Thank you.';
                     const href = `mailto:${info.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                     return (
-                      <a href={href} onClick={(e) => e.stopPropagation()}>
-                        <Badge
-                          variant="outline"
-                          className="text-xs border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
-                        >
-                          Contact user about payment
-                        </Badge>
-                      </a>
+                      <>
+                        <a href={href} onClick={(e) => e.stopPropagation()}>
+                          <Badge
+                            variant="outline"
+                            className="text-xs border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
+                          >
+                            Contact user about payment
+                          </Badge>
+                        </a>
+                        <AddToEmailBatchButton
+                          email={info.email}
+                          userId={userId}
+                        />
+                      </>
                     );
                   })()}
               </>
@@ -1889,14 +1896,20 @@ function DomainsTable({
                     const params = new URLSearchParams({ subject, body });
                     const href = `mailto:${row.original.userEmail}?${params.toString()}`;
                     return (
-                      <a href={href} onClick={(e) => e.stopPropagation()}>
-                        <Badge
-                          variant="outline"
-                          className="text-xs w-fit border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
-                        >
-                          {row.original.actionRequired}
-                        </Badge>
-                      </a>
+                      <>
+                        <a href={href} onClick={(e) => e.stopPropagation()}>
+                          <Badge
+                            variant="outline"
+                            className="text-xs w-fit border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
+                          >
+                            {row.original.actionRequired}
+                          </Badge>
+                        </a>
+                        <AddToEmailBatchButton
+                          email={row.original.userEmail}
+                          userId={row.original.userId}
+                        />
+                      </>
                     );
                   })()
                 ) : (

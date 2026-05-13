@@ -3,6 +3,8 @@ import pMap from 'p-map';
 import { z } from 'zod';
 import {
   cartItemsTable,
+  emailCampaignClicksTable,
+  emailCampaignOpensTable,
   emailCampaignSendsTable,
   indexedDomainsTable,
   namefiNftOwnersCte,
@@ -10,6 +12,12 @@ import {
   ordersTable,
   usersTable,
 } from '@namefi-astra/db';
+import { sendMail } from '../../../mail/mail-client';
+import {
+  BulkEmailTemplateError,
+  renderBulkOneOffEmail,
+  type BulkOneOffEmailContext,
+} from '../../../mail/templates/render-bulk-one-off-email';
 import type { EmailCampaignSendMetadata } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { and, desc, eq, ilike, inArray, lte, or, sql } from 'drizzle-orm';
@@ -263,6 +271,126 @@ function isScheduleNotConfiguredError(error: unknown): boolean {
       ? error.message.toLowerCase()
       : String(error).toLowerCase();
   return message.includes('schedule') && message.includes('not found');
+}
+
+/**
+ * Resolve a one-off bulk-email recipient to a `(user, privyUser)` pair for
+ * Handlebars hydration. Tries identifiers in order: userId → privyUserId →
+ * lookup by primaryEmail. Returns nulls (rather than throwing) when nothing
+ * resolves so the template still renders against a typed-but-empty context.
+ */
+/**
+ * Find a user by their email, checking BOTH `usersTable.primaryEmail` and
+ * the cached `privyUsersTableSchema.email` (some users have NULL
+ * `primary_email` but a Privy email on file). Mirrors the COALESCE pattern
+ * used by `searchUsers` so both surfaces stay consistent.
+ *
+ * Returns the joined user row plus the resolved Privy display name, or
+ * `null` if neither table has a match.
+ */
+async function findUserByEmail(email: string) {
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) return null;
+  const rows = await db
+    .select({
+      user: usersTable,
+      privyDisplayName: privyUsersTableSchema.displayName,
+    })
+    .from(usersTable)
+    .leftJoin(
+      privyUsersTableSchema,
+      eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+    )
+    .where(
+      or(
+        sql`lower(${usersTable.primaryEmail}) = ${normalized}`,
+        sql`lower(${privyUsersTableSchema.email}) = ${normalized}`,
+      ),
+    )
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+async function resolveBulkOneOffRecipient(input: {
+  email: string;
+  userId?: string | null;
+  privyUserId?: string | null;
+}): Promise<BulkOneOffEmailContext> {
+  let user: typeof usersTable.$inferSelect | null = null;
+
+  if (input.userId) {
+    user =
+      (await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, input.userId),
+      })) ?? null;
+  }
+
+  if (!user && input.privyUserId) {
+    user =
+      (await db.query.usersTable.findFirst({
+        where: eq(usersTable.privyUserId, input.privyUserId),
+      })) ?? null;
+  }
+
+  if (!user) {
+    // Broader fallback: also checks the Privy email cache so users with
+    // NULL `primary_email` still resolve.
+    user = (await findUserByEmail(input.email))?.user ?? null;
+  } else {
+    // Cross-identifier consistency guard: when the user was resolved via
+    // `userId` / `privyUserId`, verify the *delivery email* actually
+    // belongs to that user. A stale or tampered payload could otherwise
+    // hydrate user B's `{ user, privyUser }` template context into an
+    // email being delivered to user A's address.
+    const normalizedEmail = input.email.trim().toLowerCase();
+    if (normalizedEmail) {
+      const primaryMatches =
+        user.primaryEmail?.trim().toLowerCase() === normalizedEmail;
+      let privyMatches = false;
+      if (!primaryMatches && user.privyUserId) {
+        const privyRows = await db
+          .select({ email: privyUsersTableSchema.email })
+          .from(privyUsersTableSchema)
+          .where(eq(privyUsersTableSchema.privyUserId, user.privyUserId))
+          .limit(1);
+        privyMatches =
+          privyRows[0]?.email?.trim().toLowerCase() === normalizedEmail;
+      }
+      if (!primaryMatches && !privyMatches) {
+        logger.warn(
+          {
+            resolvedUserId: user.id,
+            // No raw email in the log — see the Email-PII trace logging
+            // policy in the open/click handlers.
+          },
+          'Bulk one-off email: recipient identifier(s) mismatch the delivery email; dropping per-recipient template context',
+        );
+        user = null;
+      }
+    }
+  }
+
+  // The Privy fetch must use the resolved user's own `privyUserId`. We
+  // intentionally do NOT fall back to `input.privyUserId` independently:
+  // doing so would let a tampered or stale payload hydrate Privy data
+  // for a user that doesn't own the delivery email.
+  const privyUserId = user?.privyUserId ?? null;
+  let privyUser: unknown = null;
+  if (privyUserId) {
+    const [error, fetched] = await resolve(
+      privyClient.getUserById(privyUserId),
+    );
+    if (error) {
+      logger.trace(
+        { error, privyUserId },
+        'Bulk one-off email: failed to fetch Privy user; continuing with null',
+      );
+    } else {
+      privyUser = fetched ?? null;
+    }
+  }
+
+  return { user, privyUser };
 }
 
 async function getEligibleUserIds(
@@ -998,5 +1126,298 @@ export const emailCampaignsRouter = createContractTRPCRouter<
           cause: error,
         });
       }
+    }),
+
+  previewBulkOneOffEmail: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminEmailCampaignsContract.previewBulkOneOffEmail.input)
+    .output(adminEmailCampaignsContract.previewBulkOneOffEmail.output)
+    .query(async ({ input }) => {
+      const context = await resolveBulkOneOffRecipient({
+        email: input.sampleRecipient.email,
+        userId: input.sampleRecipient.userId,
+        privyUserId: input.sampleRecipient.privyUserId,
+      });
+
+      try {
+        const { html } = await renderBulkOneOffEmail({
+          subject: input.subject,
+          markdown: input.markdown,
+          campaignKey: input.campaignKey,
+          recipientEmail: input.sampleRecipient.email,
+          context,
+          templateStyle: input.templateStyle,
+        });
+        return {
+          html,
+          sampleContext: {
+            user: context.user,
+            privyUser: context.privyUser,
+            recipientEmail: input.sampleRecipient.email,
+          },
+          error: null,
+        };
+      } catch (error) {
+        if (error instanceof BulkEmailTemplateError) {
+          return {
+            html: '',
+            sampleContext: {
+              user: context.user,
+              privyUser: context.privyUser,
+              recipientEmail: input.sampleRecipient.email,
+            },
+            error: error.message,
+          };
+        }
+        logger.error(
+          { error, sampleRecipient: input.sampleRecipient.email },
+          'Failed to render bulk one-off email preview',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to render preview',
+          cause: error,
+        });
+      }
+    }),
+
+  sendBulkOneOffEmail: auditedAdminProcedureWithPermissions(
+    [Permission.READ_USERS, Permission.WRITE_USERS],
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.WORKFLOW,
+      resourceId: input.campaignKey ?? 'bulk-one-off',
+      action: 'send_bulk_one_off_email',
+      // Don't dump the rendered template into the audit log — keep the
+      // recipient list + envelope, drop the body.
+      extraInput: {
+        subject: input.subject,
+        campaignKey: input.campaignKey,
+        recipientCount: input.recipients.length,
+        recipientEmails: input.recipients.map(
+          (r: { email: string }) => r.email,
+        ),
+        ccCount: input.cc?.length ?? 0,
+        bccCount: input.bcc?.length ?? 0,
+        from: input.from,
+      },
+    }),
+    { mode: 'every' },
+  )
+    .input(adminEmailCampaignsContract.sendBulkOneOffEmail.input)
+    .output(adminEmailCampaignsContract.sendBulkOneOffEmail.output)
+    .mutation(async ({ ctx, input }) => {
+      // Defense-in-depth recipient cap. The contract already declares
+      // `.max(200)` but a clear runtime error is friendlier than a Zod
+      // validation failure if anything ever bypasses the wire validator.
+      if (input.recipients.length > 200) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot send to more than 200 recipients at once (got ${input.recipients.length}).`,
+        });
+      }
+      const adminEmail = ctx.user.primaryEmail;
+      const replyTo = adminEmail ? [adminEmail] : [];
+      const results = await pMap(
+        input.recipients,
+        async (recipient) => {
+          try {
+            const context = await resolveBulkOneOffRecipient({
+              email: recipient.email,
+              userId: recipient.userId,
+              privyUserId: recipient.privyUserId,
+            });
+            const { html, plainText } = await renderBulkOneOffEmail({
+              subject: input.subject,
+              markdown: input.markdown,
+              campaignKey: input.campaignKey,
+              recipientEmail: recipient.email,
+              context,
+              templateStyle: input.templateStyle,
+            });
+            await sendMail({
+              to: [recipient.email],
+              subject: input.subject,
+              content: { html, plain: plainText },
+              replyTo,
+              from: input.from,
+              cc: input.cc,
+              bcc: input.bcc,
+            });
+            return {
+              email: recipient.email,
+              status: 'sent' as const,
+              error: null,
+            };
+          } catch (error) {
+            const message =
+              error instanceof Error ? error.message : 'Unknown error';
+            logger.warn(
+              {
+                error,
+                recipient: recipient.email,
+                campaignKey: input.campaignKey,
+              },
+              'Bulk one-off email send failed for recipient',
+            );
+            return {
+              email: recipient.email,
+              status: 'failed' as const,
+              error: message,
+            };
+          }
+        },
+        { concurrency: 5 },
+      );
+
+      const sent = results.filter((r) => r.status === 'sent').length;
+      const failed = results.length - sent;
+      logger.debug(
+        {
+          campaignKey: input.campaignKey ?? null,
+          total: results.length,
+          sent,
+          failed,
+          actor: ctx.user.id,
+          from: input.from ?? null,
+          ccCount: input.cc?.length ?? 0,
+          bccCount: input.bcc?.length ?? 0,
+        },
+        'Bulk one-off email send completed',
+      );
+
+      return {
+        results,
+        summary: {
+          total: results.length,
+          sent,
+          failed,
+          campaignKey: input.campaignKey ?? null,
+        },
+      };
+    }),
+
+  listKnownCampaignKeys: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminEmailCampaignsContract.listKnownCampaignKeys.input)
+    .output(adminEmailCampaignsContract.listKnownCampaignKeys.output)
+    .query(async () => {
+      try {
+        const [opensRows, clicksRows] = await Promise.all([
+          db
+            .selectDistinct({ key: emailCampaignOpensTable.campaignKey })
+            .from(emailCampaignOpensTable),
+          db
+            .selectDistinct({ key: emailCampaignClicksTable.campaignKey })
+            .from(emailCampaignClicksTable),
+        ]);
+
+        const observed = new Set<string>();
+        for (const row of opensRows) {
+          if (row.key) observed.add(row.key);
+        }
+        for (const row of clicksRows) {
+          if (row.key) observed.add(row.key);
+        }
+        // Always include the predefined scheduled-campaign keys so admins can
+        // align ad-hoc sends with existing campaigns by selecting from the
+        // same suggestion list.
+        for (const key of EMAIL_CAMPAIGN_KEY_LIST) {
+          observed.add(key);
+        }
+
+        const keys = Array.from(observed).sort((a, b) => a.localeCompare(b));
+        return { keys };
+      } catch (error) {
+        // Admin list endpoints should degrade to an empty array rather
+        // than break the modal — the autocomplete is a nice-to-have, not
+        // load-bearing.
+        logger.warn({ error }, 'Failed to load known campaign keys');
+        return { keys: [] };
+      }
+    }),
+
+  lookupUsersByEmail: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminEmailCampaignsContract.lookupUsersByEmail.input)
+    .output(adminEmailCampaignsContract.lookupUsersByEmail.output)
+    .query(async ({ input }) => {
+      // Dedupe + normalize to lowercase for the DB lookup, but remember
+      // the original casing for the client-side keying so the frontend
+      // can look up chips by their displayed email verbatim.
+      const originalsByNormalized = new Map<string, string[]>();
+      for (const email of input.emails) {
+        const normalized = email.trim().toLowerCase();
+        if (!normalized) continue;
+        const bucket = originalsByNormalized.get(normalized);
+        if (bucket) {
+          bucket.push(email);
+        } else {
+          originalsByNormalized.set(normalized, [email]);
+        }
+      }
+
+      const normalizedList = Array.from(originalsByNormalized.keys());
+      const results: Record<
+        string,
+        {
+          userId: string | null;
+          privyUserId: string | null;
+          displayName: string | null;
+        } | null
+      > = {};
+      for (const email of input.emails) {
+        results[email] = null;
+      }
+
+      if (normalizedList.length === 0) {
+        return { results };
+      }
+
+      const rows = await db
+        .select({
+          userId: usersTable.id,
+          privyUserId: usersTable.privyUserId,
+          primaryEmail: usersTable.primaryEmail,
+          privyEmail: privyUsersTableSchema.email,
+          privyDisplayName: privyUsersTableSchema.displayName,
+        })
+        .from(usersTable)
+        .leftJoin(
+          privyUsersTableSchema,
+          eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+        )
+        .where(
+          or(
+            inArray(
+              sql<string>`lower(${usersTable.primaryEmail})`,
+              normalizedList,
+            ),
+            inArray(
+              sql<string>`lower(${privyUsersTableSchema.email})`,
+              normalizedList,
+            ),
+          ),
+        );
+
+      for (const row of rows) {
+        const candidates = [row.primaryEmail, row.privyEmail].filter(
+          (value): value is string => Boolean(value),
+        );
+        for (const candidate of candidates) {
+          const normalized = candidate.trim().toLowerCase();
+          const originals = originalsByNormalized.get(normalized);
+          if (!originals) continue;
+          for (const original of originals) {
+            if (results[original]) continue; // already resolved
+            results[original] = {
+              userId: row.userId,
+              privyUserId: row.privyUserId ?? null,
+              displayName: row.privyDisplayName ?? null,
+            };
+          }
+        }
+      }
+
+      return { results };
     }),
 });

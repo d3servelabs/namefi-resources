@@ -31,6 +31,7 @@ import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress } from '@/lib/string';
+import { AddToEmailBatchButton } from '@/components/admin/email-batch/add-to-email-batch-button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { NetworkLogo } from '@/components/network-logo';
 import { UserWalletAvatar } from '@/components/user-avatar';
@@ -191,26 +192,29 @@ function UserActionButtons({
         </PermissionGate>
       )}
       {!!primaryEmail && (
-        <Button
-          size="sm"
-          variant="secondary"
-          render={(props) => (
-            <a
-              {...props}
-              href={`mailto:${primaryEmail}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Send email"
-              className={cn('flex', props.className)}
-            >
-              {props.children}
-            </a>
-          )}
-          nativeButton={false}
-        >
-          <Mail className="h-4 w-4" />
-          Send Email
-        </Button>
+        <>
+          <Button
+            size="sm"
+            variant="secondary"
+            render={(props) => (
+              <a
+                {...props}
+                href={`mailto:${primaryEmail}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Send email"
+                className={cn('flex', props.className)}
+              >
+                {props.children}
+              </a>
+            )}
+            nativeButton={false}
+          >
+            <Mail className="h-4 w-4" />
+            Send Email
+          </Button>
+          <AddToEmailBatchButton email={primaryEmail} userId={userId} />
+        </>
       )}
     </div>
   );

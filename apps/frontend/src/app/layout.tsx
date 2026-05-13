@@ -30,6 +30,13 @@ const PreviewGate = dynamic(() =>
   import('@/components/preview-gate').then((m) => m.PreviewGate),
 );
 
+// Admin-only floating widget; lazy so non-admin pages don't pay the cost.
+const FloatingBatchButton = dynamic(() =>
+  import('@/components/admin/email-batch/floating-batch-button').then(
+    (m) => m.FloatingBatchButton,
+  ),
+);
+
 console.log({
   PreviewGate: !!PreviewGate,
   NEXT_PUBLIC_PREVIEW_GATE_BUNDLED:
@@ -96,6 +103,7 @@ function RootLayoutInner({ children }: PropsWithChildren) {
           </SidebarProvider>
           <ImpersonationBanner />
           <SkipAuthBanner />
+          <FloatingBatchButton />
         </Providers>
       </Suspense>
     </>

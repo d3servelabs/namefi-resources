@@ -1,6 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import { mailSecrets } from '../env';
-import { buildEmailAnalyticsUrl } from './email-tracking';
+import {
+  EMAIL_CAMPAIGN_KEY_META_NAME,
+  buildEmailAnalyticsUrl,
+} from './email-tracking';
 
 export type BuildEmailTrackedLinkOptions = {
   /**
@@ -22,9 +25,14 @@ export type BuildEmailTrackedLinkOptions = {
   nonce?: string;
 };
 
-const TRACK_LINK_SUFFIX_REGEX = /@TrackLink(?:\(([^)]*)\))?$/;
+// Case-insensitive: WHATWG URL parsing (and some downstream sanitizers) can
+// lowercase the host when a URL like `https://example.com@TrackLink(cta)` is
+// re-serialized — the part after `@` is treated as the host and lowercased
+// to `tracklink(cta)`. Matching case-insensitively means we still recognize
+// (and strip) the sentinel after that has happened.
+const TRACK_LINK_SUFFIX_REGEX = /@TrackLink(?:\(([^)]*)\))?$/i;
 const HREF_TRACK_LINK_REGEX =
-  /href=(["'])([^"']*?)@TrackLink(?:\(([^"']*?)\))?\1/g;
+  /href=(["'])([^"']*?)@TrackLink(?:\(([^"']*?)\))?\1/gi;
 
 /**
  * Build a tracking redirect URL for a single destination URL.
@@ -62,13 +70,44 @@ export async function buildEmailTrackedLink(
 }
 
 export type RewriteTrackLinksOptions = {
-  /** Full URL to the email-open tracking endpoint — see `buildEmailTrackedLink`. */
-  trackUrl: string;
-  /** Free-form campaign identifier applied to every rewritten link. */
-  campaignKey: string;
+  /**
+   * Full URL to the email-open tracking endpoint — see
+   * `buildEmailTrackedLink`. Optional: when omitted, the rewriter still
+   * runs and strips the `@TrackLink` sentinel from every matched href
+   * (so the destination URL still works), but no click-tracking wrapper
+   * is applied.
+   */
+  trackUrl?: string;
+  /**
+   * Free-form campaign identifier applied to every rewritten link. When
+   * omitted, the rewriter scans the input HTML for a hidden
+   * `<meta name="namefi-campaign-key" content="...">` marker (emitted by
+   * `NamefiEmailContainer` when an `EmailTrackingProvider` carries a
+   * `campaignKey`). If neither is present, the sentinel is still stripped
+   * but the link is left as-is (clicks aren't tracked).
+   */
+  campaignKey?: string;
   /** Optional recipient email — applied to every rewritten link. */
   userEmail?: string;
 };
+
+/**
+ * Matches `<meta name="namefi-campaign-key" content="...">` (any attribute
+ * order, single or double quotes). Used as a fallback when the caller
+ * doesn't pass `campaignKey` explicitly.
+ */
+const CAMPAIGN_KEY_META_REGEX = new RegExp(
+  `<meta\\s+(?:[^>]*?\\s+)?(?:name=(["'])${EMAIL_CAMPAIGN_KEY_META_NAME}\\1\\s+(?:[^>]*?\\s+)?content=(["'])([^"']*)\\2|content=(["'])([^"']*)\\4\\s+(?:[^>]*?\\s+)?name=(["'])${EMAIL_CAMPAIGN_KEY_META_NAME}\\6)[^>]*?>`,
+  'i',
+);
+
+export function extractCampaignKeyFromHtml(html: string): string | null {
+  const match = html.match(CAMPAIGN_KEY_META_REGEX);
+  if (!match) return null;
+  // Either capture group (3) or (5) holds the content depending on attribute order.
+  const value = (match[3] ?? match[5] ?? '').trim();
+  return value.length > 0 ? value : null;
+}
 
 /**
  * Scan rendered email HTML for hrefs ending in the literal sentinel
@@ -84,12 +123,19 @@ export type RewriteTrackLinksOptions = {
  */
 export async function rewriteTrackLinksInHtml(
   html: string,
-  options: RewriteTrackLinksOptions,
+  options: RewriteTrackLinksOptions = {},
 ): Promise<string> {
   const matches = [...html.matchAll(HREF_TRACK_LINK_REGEX)];
   if (matches.length === 0) {
     return html;
   }
+
+  const resolvedCampaignKey =
+    options.campaignKey ?? extractCampaignKeyFromHtml(html) ?? null;
+  // We can only build a tracked redirect when both a track endpoint URL and
+  // a resolvable campaign key are available. Either missing → strip the
+  // sentinel only.
+  const canTrack = Boolean(options.trackUrl && resolvedCampaignKey);
 
   const replacements = await Promise.all(
     matches.map(async (match) => {
@@ -99,13 +145,16 @@ export async function rewriteTrackLinksInHtml(
       const destinationUrl = decodeHtmlEntities(match[2]);
       const groupIdentifier = match[3];
 
-      const trackedUrl = await buildEmailTrackedLink({
-        trackUrl: options.trackUrl,
-        destinationUrl,
-        campaignKey: options.campaignKey,
-        groupIdentifier: groupIdentifier?.trim() || undefined,
-        userEmail: options.userEmail,
-      });
+      const trackedUrl =
+        canTrack && options.trackUrl && resolvedCampaignKey
+          ? await buildEmailTrackedLink({
+              trackUrl: options.trackUrl,
+              destinationUrl,
+              campaignKey: resolvedCampaignKey,
+              groupIdentifier: groupIdentifier?.trim() || undefined,
+              userEmail: options.userEmail,
+            })
+          : destinationUrl;
 
       return {
         original: match[0],

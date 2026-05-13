@@ -106,7 +106,7 @@ const localConfig: ConfigInput = {
   // create / mutate templates against the production Listmonk instance.
   // Override via the `LISTMONK_URL` env var when running an integration
   // test against a real Listmonk (e.g. a dev instance you control).
-  LISTMONK_URL: 'http://localhost:9000',
+  LISTMONK_URL: process.env.LISTMONK_URL || 'http://localhost:9000',
 };
 
 export default localConfig;

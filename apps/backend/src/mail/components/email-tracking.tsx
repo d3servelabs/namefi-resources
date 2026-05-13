@@ -61,19 +61,32 @@ type JwtHeader = {
 
 type EmailAnalyticsContextType = {
   trackingUrl: string | null;
+  campaignKey: string | null;
 };
 
 const EmailAnalyticsContext = React.createContext<EmailAnalyticsContextType>({
   trackingUrl: null,
+  campaignKey: null,
 });
 
 export function EmailTrackingProvider(props: {
   trackingUrl?: string | null;
+  /**
+   * Optional campaign identifier. When set, downstream renderers (e.g.
+   * `NamefiEmailContainer`) emit a hidden `<meta>` marker so that
+   * post-render passes (link rewriter, analytics agents) can associate
+   * the email with this campaign without needing the value plumbed through
+   * code separately. Mirrors the JWT payload's `campaignKey` field.
+   */
+  campaignKey?: string | null;
   children?: React.ReactNode;
 }) {
   return (
     <EmailAnalyticsContext.Provider
-      value={{ trackingUrl: props.trackingUrl ?? null }}
+      value={{
+        trackingUrl: props.trackingUrl ?? null,
+        campaignKey: props.campaignKey ?? null,
+      }}
     >
       {props.children}
     </EmailAnalyticsContext.Provider>
@@ -87,6 +100,21 @@ export function useEmailTrackingUrl(trackingUrl?: string | null) {
   }
   return trackingUrl ?? context.trackingUrl;
 }
+
+export function useEmailCampaignKey(campaignKey?: string | null) {
+  const context = React.useContext(EmailAnalyticsContext);
+  if (!context) {
+    return campaignKey ?? null;
+  }
+  return campaignKey ?? context.campaignKey;
+}
+
+/**
+ * Name of the meta tag emitted in rendered campaign emails. Both the
+ * link-rewriter fallback and any external analytics agent that scans
+ * delivered HTML can key off this name.
+ */
+export const EMAIL_CAMPAIGN_KEY_META_NAME = 'namefi-campaign-key';
 
 export async function buildEmailAnalyticsUrl(
   trackingInfo: EmailTrackingInfo,

@@ -108,8 +108,9 @@ const previewConfig: ConfigInput = {
   X402_FACILITATOR_URL: 'https://x402.org/facilitator',
   EMAIL_ANALYTICS_URL: 'https://api.namefi.dev/v1/email/track/open',
   // Listmonk email service — preview deployments share Namefi's hosted
-  // marketing instance.
-  LISTMONK_URL: 'https://marketing.namefi.io',
+  // marketing instance by default. Env-overridable so a preview can be
+  // pointed at a non-prod Listmonk without a code change.
+  LISTMONK_URL: process.env.LISTMONK_URL || 'https://marketing.namefi.io',
 };
 
 export default previewConfig;

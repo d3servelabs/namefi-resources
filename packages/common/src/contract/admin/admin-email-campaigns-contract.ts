@@ -116,6 +116,137 @@ const sendNowOutputSchema = z.object({
   periodStart: z.date(),
 });
 
+/**
+ * Bulk one-off email composer: ad-hoc admin send to a curated batch of
+ * recipients. The template is Handlebars rendered against `{ user, privyUser }`
+ * per recipient. Distinct from scheduled `email_campaign_sends` — no period
+ * tracking; engagement is observed via `email_campaign_opens` /
+ * `email_campaign_clicks` only when `campaignKey` is provided.
+ */
+const bulkOneOffRecipientSchema = z.object({
+  email: z.string().email(),
+  userId: z.string().uuid().optional(),
+  privyUserId: z.string().min(1).optional(),
+});
+
+const campaignKeyFreeFormSchema = z
+  .string()
+  .min(1)
+  .max(120)
+  .regex(/^[a-z0-9][a-z0-9_-]*$/i, {
+    message:
+      'Use letters, digits, hyphens, or underscores; must not start with a separator.',
+  })
+  .optional();
+
+/**
+ * From-address restriction for bulk one-off sends. Accepts either a bare
+ * email or RFC-5321 `Name <email@domain>` form, as long as the email
+ * domain is one of the namefi-owned domains. Exported so the frontend
+ * can run the same regex for inline validation.
+ */
+export const bulkOneOffFromAddressSchema = z
+  .string()
+  .min(3)
+  .max(160)
+  .regex(/^\s*(?:[^<>]+<\s*)?[^@<>\s]+@(?:d3serve\.xyz|namefi\.io)\s*>?\s*$/i, {
+    message:
+      'From must end in @d3serve.xyz or @namefi.io (e.g. "Namefi <support@namefi.io>")',
+  });
+
+/**
+ * Per-send template-style toggles. All optional; defaults give the full
+ * branded layout (`useContainer + useHeader + useFooter` all on). Set
+ * `useContainer: false` for a plain, unbranded email — header/footer are
+ * implicitly ignored in that mode by `BaseEmailTemplate`.
+ */
+const bulkOneOffTemplateStyleSchema = z.object({
+  useContainer: z.boolean().optional(),
+  useHeader: z.boolean().optional(),
+  useFooter: z.boolean().optional(),
+});
+
+const previewBulkOneOffEmailInputSchema = z.object({
+  subject: z.string().min(1).max(200),
+  markdown: z.string().min(1).max(50_000),
+  campaignKey: campaignKeyFreeFormSchema,
+  sampleRecipient: bulkOneOffRecipientSchema,
+  templateStyle: bulkOneOffTemplateStyleSchema.optional(),
+});
+
+const previewBulkOneOffEmailOutputSchema = z.object({
+  html: z.string(),
+  // `null` when the sample recipient has no resolvable identifier.
+  sampleContext: z
+    .object({
+      user: z.any().nullable(),
+      privyUser: z.any().nullable(),
+      recipientEmail: z.string().email(),
+    })
+    .nullable(),
+  error: z.string().nullable(),
+});
+
+const sendBulkOneOffEmailInputSchema = z.object({
+  subject: z.string().min(1).max(200),
+  markdown: z.string().min(1).max(50_000),
+  campaignKey: campaignKeyFreeFormSchema,
+  recipients: z.array(bulkOneOffRecipientSchema).min(1).max(200),
+  templateStyle: bulkOneOffTemplateStyleSchema.optional(),
+  from: bulkOneOffFromAddressSchema.optional(),
+  cc: z.array(z.string().email()).max(50).optional(),
+  bcc: z.array(z.string().email()).max(50).optional(),
+});
+
+/**
+ * Powers the per-recipient "is this email known?" amber indicator in the
+ * bulk one-off composer. Returns a map keyed by the input email; a `null`
+ * value means no user matched in either `users.primary_email` or the
+ * Privy email cache.
+ */
+const lookupUsersByEmailInputSchema = z.object({
+  emails: z.array(z.string().email()).max(200),
+});
+
+const lookupUsersByEmailOutputSchema = z.object({
+  results: z.record(
+    z.string(),
+    z
+      .object({
+        userId: z.string().uuid().nullable(),
+        privyUserId: z.string().nullable(),
+        displayName: z.string().nullable(),
+      })
+      .nullable(),
+  ),
+});
+
+const sendBulkOneOffEmailOutputSchema = z.object({
+  results: z.array(
+    z.object({
+      email: z.string().email(),
+      status: z.enum(['sent', 'failed']),
+      error: z.string().nullable(),
+    }),
+  ),
+  summary: z.object({
+    total: z.number(),
+    sent: z.number(),
+    failed: z.number(),
+    campaignKey: z.string().nullable(),
+  }),
+});
+
+/**
+ * Powers the campaign-key autocomplete in the bulk one-off composer.
+ * Returns the union of predefined scheduled-campaign keys and every
+ * distinct ad-hoc key observed in `email_campaign_opens` /
+ * `email_campaign_clicks`.
+ */
+const listKnownCampaignKeysOutputSchema = z.object({
+  keys: z.array(z.string()),
+});
+
 export const adminEmailCampaignsContract = createContract(
   { softOutput: true },
   {
@@ -148,6 +279,26 @@ export const adminEmailCampaignsContract = createContract(
       type: 'mutation',
       input: sendNowInputSchema,
       output: sendNowOutputSchema,
+    },
+    previewBulkOneOffEmail: {
+      type: 'query',
+      input: previewBulkOneOffEmailInputSchema,
+      output: previewBulkOneOffEmailOutputSchema,
+    },
+    sendBulkOneOffEmail: {
+      type: 'mutation',
+      input: sendBulkOneOffEmailInputSchema,
+      output: sendBulkOneOffEmailOutputSchema,
+    },
+    listKnownCampaignKeys: {
+      type: 'query',
+      input: z.void(),
+      output: listKnownCampaignKeysOutputSchema,
+    },
+    lookupUsersByEmail: {
+      type: 'query',
+      input: lookupUsersByEmailInputSchema,
+      output: lookupUsersByEmailOutputSchema,
     },
   },
 );

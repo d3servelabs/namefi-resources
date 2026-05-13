@@ -1,5 +1,6 @@
 'use client';
 
+import { AddToEmailBatchButton } from '@/components/admin/email-batch/add-to-email-batch-button';
 import { AdminGuard } from '@/components/admin/admin-guard';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -259,6 +260,13 @@ function UsersTableV2() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
+                <AddToEmailBatchButton
+                  email={row.original.primaryEmail}
+                  userId={row.original.id}
+                  privyUserId={row.original.privyUserId ?? undefined}
+                  displayLabel={row.original.displayName ?? undefined}
+                  className="!h-6 !w-6"
+                />
                 <CopyIconButton
                   text={row.original.primaryEmail}
                   classNames={{
@@ -557,6 +565,14 @@ function UsersTableV2() {
                   Send Email
                 </span>
               </Button>
+            )}
+            {!!row.original.primaryEmail && (
+              <AddToEmailBatchButton
+                email={row.original.primaryEmail}
+                userId={row.original.id}
+                privyUserId={row.original.privyUserId ?? undefined}
+                displayLabel={row.original.displayName ?? undefined}
+              />
             )}
           </div>
         ),
