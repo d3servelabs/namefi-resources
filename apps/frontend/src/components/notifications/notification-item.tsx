@@ -5,7 +5,7 @@ import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 import type { NotificationDto } from '@namefi-astra/common/contract/notifications-contract';
-import { Archive, ArchiveRestore, Check, RotateCcw } from 'lucide-react';
+import { Archive, ArchiveRestore, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import type { Route } from 'next';
 import { useRef } from 'react';
@@ -108,7 +108,7 @@ export function NotificationItem({
                 aria-label="Mark as unseen"
                 onClick={() => onMarkUnseen(notification.id)}
               >
-                <RotateCcw className="size-3.5" />
+                <EyeOff className="size-3.5" />
               </Button>
             ) : (
               <Button
@@ -119,7 +119,7 @@ export function NotificationItem({
                 aria-label="Mark as seen"
                 onClick={() => onMarkSeen(notification.id)}
               >
-                <Check className="size-3.5" />
+                <Eye className="size-3.5" />
               </Button>
             )}
             {notification.isArchived ? (

@@ -20,11 +20,11 @@ import { useTRPC } from '@/lib/trpc';
 import {
   Archive,
   ArchiveRestore,
-  Check,
+  Eye,
+  EyeOff,
   Filter as FilterIcon,
   Loader2,
   RefreshCw,
-  RotateCcw,
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -364,7 +364,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={markAsSeenMutation.isPending}
               onClick={() => markAsSeenMutation.mutate({ ids: selectedArray })}
             >
-              <Check className="mr-1 size-3.5" /> Seen
+              <Eye className="mr-1 size-3.5" /> Seen
             </Button>
             <Button
               type="button"
@@ -376,7 +376,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
                 markAsUnseenMutation.mutate({ ids: selectedArray })
               }
             >
-              <RotateCcw className="mr-1 size-3.5" /> Unseen
+              <EyeOff className="mr-1 size-3.5" /> Unseen
             </Button>
             <Button
               type="button"
