@@ -32,20 +32,24 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import {
   ArrowUpRight,
+  Building2,
   CheckCircle2,
   Clock3,
   Copy,
   ExternalLink,
+  FileText,
   Loader2,
   Mail,
   Play,
   Search,
   Send,
   Sparkles,
+  Target,
   UserRoundSearch,
   XCircle,
   type LucideIcon,
 } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -88,6 +92,19 @@ const PROTOCOL_RE = /^https?:\/\//;
 const TRAILING_DOT_RE = /\.$/;
 const WHITESPACE_RE = /\s+/g;
 const getLeadgenRunHref = (runId: string) => `/leadgen/${runId}` as Route;
+const leadgenStatusLabels = {
+  QUEUED: 'Queued',
+  RUNNING: 'Searching',
+  SUCCEEDED: 'Success',
+  FAILED: 'Failed',
+  CANCELED: 'Canceled',
+} satisfies Record<LeadgenSnapshot['status'], string>;
+const leadBucketLabels = {
+  general: 'Category match',
+  substring: 'Name match',
+} satisfies Record<LeadgenLead['bucket'], string>;
+const negativeTimelineMessageRe =
+  /\b(?:no|not|failed|failure|error|without|couldn['\u2019]?t|could not|didn['\u2019]?t|did not|unable|invalid|canceled|cancelled)\b/i;
 
 export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -156,7 +173,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         });
       },
       onError(error) {
-        toast.error('Leadgen could not start', {
+        toast.error('Could not start buyer search', {
           description: error.message,
         });
       },
@@ -178,7 +195,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const handleSubmit = () => {
     const normalized = normalizeDomainInput(domain);
     if (!isLikelyDomain(normalized)) {
-      toast.error('Enter a real domain', {
+      toast.error('Enter a domain', {
         description: 'Use a domain you own or represent, like example.com.',
       });
       return;
@@ -200,12 +217,13 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
           <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Astra leadgen
-                </p>
-                <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-                  Find buyers, emails, and first drafts.
+                <h1 className="text-2xl font-semibold tracking-tight">
+                  Find buyers for your domains
                 </h1>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Enter a domain and get buyer angles, public contacts, and
+                  ready-to-send first drafts.
+                </p>
               </div>
               <div className="rounded-md bg-emerald-500/10 p-2 text-emerald-300">
                 <UserRoundSearch className="size-5" />
@@ -237,7 +255,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
               </div>
 
               <div>
-                <p className="mb-1.5 text-sm font-medium">Research depth</p>
+                <p className="mb-1.5 text-sm font-medium">Search depth</p>
                 <div className="grid grid-cols-3 gap-1 rounded-md bg-muted/40 p-1">
                   {reasoningOptions.map((option) => (
                     <button
@@ -270,7 +288,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 ) : (
                   <Play />
                 )}
-                Start leadgen
+                Find buyers
               </Button>
             </div>
           </section>
@@ -366,8 +384,9 @@ function RunWorkspace({
 
   return (
     <div className="flex h-full min-h-[calc(100vh-8rem)] flex-col">
-      <div className="border-b border-border/70 p-5">
-        <div className="flex min-h-[7rem] flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="relative overflow-hidden border-b border-border/70 p-5">
+        {isRunning && <WorkingBackdrop />}
+        <div className="relative z-10 flex min-h-[7rem] flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-2xl font-semibold tracking-tight">
@@ -385,15 +404,6 @@ function RunWorkspace({
             <Metric label="Drafts" value={run.draftCount} />
           </div>
         </div>
-
-        <div className="mt-4 h-1 overflow-hidden rounded-full bg-muted/50">
-          <div
-            className={cn(
-              'h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-amber-300',
-              isRunning ? 'w-2/3 opacity-100' : 'w-full opacity-0',
-            )}
-          />
-        </div>
       </div>
 
       <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -401,7 +411,7 @@ function RunWorkspace({
           {run.intentQueries.length > 0 && (
             <div className="mb-5">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Buyer intent buckets
+                Buyer angles
               </p>
               <div className="flex flex-wrap gap-2">
                 {run.intentQueries.map((query) => (
@@ -419,10 +429,10 @@ function RunWorkspace({
           <Tabs defaultValue="general">
             <TabsList>
               <TabsTrigger value="general">
-                Category leads ({buckets.general.length})
+                Likely buyers ({buckets.general.length})
               </TabsTrigger>
               <TabsTrigger value="substring">
-                Exact matches ({buckets.substring.length})
+                Name matches ({buckets.substring.length})
               </TabsTrigger>
             </TabsList>
             <TabsContent value="general" className="mt-4">
@@ -452,6 +462,50 @@ function RunWorkspace({
   );
 }
 
+function WorkingBackdrop() {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <motion.div
+        className="absolute inset-0 opacity-45"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgba(103, 232, 249, 0.22) 1px, transparent 0)',
+          backgroundSize: '18px 18px',
+        }}
+        animate={
+          prefersReducedMotion
+            ? undefined
+            : { backgroundPosition: ['0px 0px', '18px 18px'] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : {
+                duration: 1.8,
+                ease: 'linear',
+                repeat: Number.POSITIVE_INFINITY,
+              }
+        }
+      />
+      {!prefersReducedMotion && (
+        <motion.div
+          className="absolute -inset-y-16 left-0 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent blur-xl"
+          animate={{ x: ['-150%', '360%'] }}
+          transition={{
+            duration: 2.2,
+            ease: [0.22, 1, 0.36, 1],
+            repeat: Number.POSITIVE_INFINITY,
+            repeatDelay: 0.35,
+          }}
+        />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-r from-card/75 via-card/45 to-card/75" />
+    </div>
+  );
+}
+
 function LeadList({
   leads,
   sourceDomain,
@@ -466,7 +520,7 @@ function LeadList({
   if (leads.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
-        Leads will appear here as soon as the run finds them.
+        Buyer matches will appear here as they are found.
       </div>
     );
   }
@@ -522,7 +576,7 @@ function LeadCard({
               {lead.businessDomain}
               <ExternalLink className="size-3.5" />
             </a>
-            <Badge variant="secondary">{lead.bucket}</Badge>
+            <Badge variant="secondary">{leadBucketLabels[lead.bucket]}</Badge>
           </div>
           <div className="mt-2 flex flex-col gap-1.5">
             {descriptionLines.map((line) => (
@@ -608,7 +662,11 @@ function LeadOutreachSummary({
   return (
     <div className="min-w-0">
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        Outreach
+        {primaryContact
+          ? 'Contact found'
+          : primaryDraft
+            ? 'Draft ready'
+            : 'Prepare outreach'}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
         <LeadOutreachSummaryText
@@ -862,7 +920,7 @@ function Timeline({
     <div className="flex h-full min-h-[360px] flex-col">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          Run timeline
+          Updates
         </p>
         {isRunning && (
           <span className="text-xs font-medium text-cyan-200">Live</span>
@@ -871,7 +929,7 @@ function Timeline({
       <div className="min-h-0 flex-1 overflow-y-auto pr-1">
         {visibleEvents.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            Events will appear after the worker claims this run.
+            Updates will appear as buyer matches land.
           </p>
         ) : (
           <div className="flex flex-col gap-3">
@@ -905,7 +963,7 @@ function PastRuns({
   return (
     <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold">Past runs</h2>
+        <h2 className="text-sm font-semibold">Recent searches</h2>
         <Clock3 className="size-4 text-muted-foreground" />
       </div>
       {isLoading ? (
@@ -916,7 +974,7 @@ function PastRuns({
         </div>
       ) : runs.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          Your completed and in-progress runs will stay here.
+          Your buyer searches will stay here.
         </p>
       ) : (
         <div className="space-y-2">
@@ -959,8 +1017,9 @@ function EmptyWorkspace() {
           Start with the domain, not a spreadsheet.
         </h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Astra will infer buyer angles, search for company websites, find
-          public emails for the first leads, and draft outreach as results land.
+          Namefi Leadgen AI will infer buyer angles, search for company
+          websites, find public emails for the first leads, and draft outreach
+          as results land.
         </p>
       </div>
     </div>
@@ -990,13 +1049,14 @@ function getRunHeaderSubtitle(run: LeadgenSnapshot) {
 
   switch (run.status) {
     case 'SUCCEEDED':
-      return 'Research complete.';
+      return 'Buyer search complete.';
     case 'FAILED':
+      return 'Buyer search failed. Any saved leads remain available below.';
     case 'CANCELED':
-      return 'This run has ended. Any saved leads remain available below.';
+      return 'Buyer search canceled. Any saved leads remain available below.';
     case 'QUEUED':
     case 'RUNNING':
-      return 'Astra is researching buyer angles, contacts, and outreach drafts.';
+      return 'Namefi Leadgen AI is researching buyer angles, contacts, and outreach drafts.';
   }
 }
 
@@ -1041,12 +1101,12 @@ function TimelineEventIcon({ event }: { event: DisplayableLeadgenEvent }) {
 
 function getTimelineEventIcon(event: DisplayableLeadgenEvent) {
   if (event.eventType === 'error') return XCircle;
-  if (event.eventType === 'intent-queries') return Sparkles;
-  if (event.eventType === 'lead') return ArrowUpRight;
-  if (event.eventType === 'contact') return UserRoundSearch;
-  if (event.eventType === 'draft') return Send;
+  if (event.eventType === 'intent-queries') return Target;
+  if (event.eventType === 'lead') return Building2;
+  if (event.eventType === 'contact') return Mail;
+  if (event.eventType === 'draft') return FileText;
   if (event.stage === 'complete') return CheckCircle2;
-  if (event.stage === 'contacts') return UserRoundSearch;
+  if (event.stage === 'contacts') return Mail;
   if (event.stage === 'search') return Search;
   return Clock3;
 }
@@ -1055,13 +1115,19 @@ function getTimelineEventIconClassName(event: DisplayableLeadgenEvent) {
   if (event.eventType === 'error') {
     return 'border-destructive/30 bg-destructive/10 text-destructive';
   }
-  if (event.eventType === 'draft') {
+  if (event.eventType === 'intent-queries') {
     return 'border-amber-300/30 bg-amber-300/10 text-amber-200';
   }
+  if (event.eventType === 'draft') {
+    return 'border-violet-300/30 bg-violet-300/10 text-violet-200';
+  }
   if (event.eventType === 'contact' || event.stage === 'contacts') {
+    return 'border-sky-300/30 bg-sky-300/10 text-sky-200';
+  }
+  if (event.eventType === 'lead') {
     return 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200';
   }
-  if (event.eventType === 'lead' || event.stage === 'search') {
+  if (event.stage === 'search') {
     return 'border-cyan-300/30 bg-cyan-300/10 text-cyan-200';
   }
   return 'border-border/70 bg-muted/40 text-muted-foreground';
@@ -1071,7 +1137,14 @@ function isDisplayableLeadgenEvent(
   event: LeadgenEvent,
 ): event is DisplayableLeadgenEvent {
   const message = event.message?.trim();
-  if (!message || event.transient) return false;
+  if (
+    !message ||
+    event.transient ||
+    event.eventType === 'error' ||
+    negativeTimelineMessageRe.test(message)
+  ) {
+    return false;
+  }
 
   switch (event.eventType) {
     case 'status':
@@ -1293,7 +1366,7 @@ function RunStatusBadge({ status }: { status: LeadgenSnapshot['status'] }) {
       variant={isFailed ? 'destructive' : isDone ? 'secondary' : 'outline'}
       className={cn(!isFailed && !isDone && 'border-cyan-400/50 text-cyan-200')}
     >
-      {status.toLowerCase()}
+      {leadgenStatusLabels[status]}
     </Badge>
   );
 }
