@@ -218,6 +218,9 @@ export function surfaceBrowserNotification(
       body: stripMarkdownToPlain(input.body),
       tag: input.id,
       icon: '/favicon.ico',
+      silent: false,
+      requireInteraction: true,
+      lang: 'en',
     });
   } catch {
     // Construction can throw e.g. when the document is no longer
