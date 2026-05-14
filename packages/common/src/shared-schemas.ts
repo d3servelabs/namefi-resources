@@ -53,6 +53,40 @@ export const freeClaimClaimingStatusValues = [
   'CLAIMED',
 ] as const;
 
+export const notificationBodyTypeValues = ['markdown', 'plain'] as const;
+export const notificationBodyTypeSchema = z.enum(notificationBodyTypeValues);
+export type NotificationBodyType = z.infer<typeof notificationBodyTypeSchema>;
+
+/**
+ * Discriminator for a notification's related-resource pointer.
+ * Keep in sync with `notificationsTable.relatedResources` in
+ * `packages/db/src/schema.ts`. Add new kinds as the product grows.
+ */
+export const notificationResourceTypeValues = [
+  'user',
+  'domain',
+  'wallet',
+  'order',
+  'order_item',
+  'payment',
+  'cart',
+  'dns_record',
+] as const;
+export const notificationResourceTypeSchema = z.enum(
+  notificationResourceTypeValues,
+);
+export type NotificationResourceType = z.infer<
+  typeof notificationResourceTypeSchema
+>;
+
+export const notificationRelatedResourceSchema = z.object({
+  type: notificationResourceTypeSchema,
+  identifier: z.string().min(1),
+});
+export type NotificationRelatedResource = z.infer<
+  typeof notificationRelatedResourceSchema
+>;
+
 export const orderStatusSchema = z.enum(orderStatusValues);
 export const paymentStatusSchema = z.enum(paymentStatusValues);
 export const refundStatusSchema = z.enum(refundStatusValues);

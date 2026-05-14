@@ -22,6 +22,7 @@ import { adminSchedulesContract } from './admin-schedules-contract';
 import { adminUsersContract } from './admin-users-contract';
 import type { RouterContract } from '../trpc-contract';
 import { adminEmailsContract } from './admin-emails-contract';
+import { adminNotificationsContract } from './admin-notifications-contract';
 
 /**
  * Top-level contract for the admin router.
@@ -67,6 +68,7 @@ export const adminContract = {
   dnsviz: adminDnsvizContract,
   nsAndDnssec: adminNsAndDnssecContract,
   emails: adminEmailsContract,
+  notifications: adminNotificationsContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;

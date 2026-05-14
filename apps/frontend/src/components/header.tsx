@@ -5,6 +5,7 @@ import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { FreeMintsDropdown } from '@/components/dropdowns/free-mints-dropdown';
 import { HeaderMissingEmailWarning } from '@/components/header-missing-email-warning';
+import { NotificationsBell } from '@/components/notifications/notifications-bell';
 import {
   SidebarTrigger,
   useSidebar,
@@ -60,6 +61,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       <motion.div className="flex w-full items-center gap-4" layout layoutRoot>
         <motion.div className="ml-auto flex items-center gap-3 sm:gap-4" layout>
           <HeaderMissingEmailWarning />
+          {isMobile && <NotificationsBell variant="topbar" />}
           <CartDropdown
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />

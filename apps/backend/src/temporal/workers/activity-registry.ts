@@ -1,6 +1,7 @@
 import {
   MigrationActivities,
   NotifyActivities,
+  InAppNotificationActivities,
   OrderActivities,
   PaymentActivities,
   HuntActivities,
@@ -20,6 +21,18 @@ import { IndexersActivities } from '../activities/indexers';
 import { defaultTaskQueueActivities } from '../activities/default';
 import { LogoGenerationActivities } from '../activities';
 import { mintTaskQueueActivities } from '../activities/mint';
+
+// Detect silent activity-name collisions in the merged NOTIFY namespace
+// at module load. Spreading two activity bundles into one queue can
+// otherwise overwrite handlers without any startup signal.
+const duplicateNotifyActivityKeys = Object.keys(
+  InAppNotificationActivities,
+).filter((key) => key in NotifyActivities);
+if (duplicateNotifyActivityKeys.length > 0) {
+  throw new Error(
+    `Duplicate NOTIFY activity keys detected: ${duplicateNotifyActivityKeys.join(', ')}`,
+  );
+}
 
 export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DEFAULT]: {
@@ -41,7 +54,10 @@ export const ACTIVITIES = {
   },
   [TEMPORAL_ENUMS.MINT]: mintTaskQueueActivities,
   [TEMPORAL_ENUMS.DOMAINS]: DomainsActivities,
-  [TEMPORAL_ENUMS.NOTIFY]: NotifyActivities,
+  [TEMPORAL_ENUMS.NOTIFY]: {
+    ...NotifyActivities,
+    ...InAppNotificationActivities,
+  },
   [TEMPORAL_ENUMS.INDEXERS]: IndexersActivities,
   [TEMPORAL_ENUMS.HUNT]: HuntActivities,
 };

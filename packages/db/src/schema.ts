@@ -19,10 +19,14 @@ import {
 import {
   itemTypeValues,
   freeClaimClaimingStatusValues,
+  notificationBodyTypeValues,
+  notificationResourceTypeValues,
   orderStatusValues,
   paymentProviderValues,
   paymentStatusValues,
   refundStatusValues,
+  type NotificationRelatedResource,
+  type NotificationResourceType,
 } from '@namefi-astra/common/shared-schemas';
 import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
@@ -2618,5 +2622,66 @@ export const x402PurchasesTable = pgTable(
     index('x402_purchases_domain_idx').on(table.normalizedDomainName),
     // Unique constraint on payment nonce to prevent duplicate purchases
     unique('x402_purchases_payment_nonce_unique').on(table.paymentNonce),
+  ],
+);
+
+/**
+ * In-app notifications
+ *
+ * Backing table for the bell/inbox UI. Designed for speed over durability:
+ * the table is created UNLOGGED (see post-Drizzle SQL edit in the migration)
+ * because short-lived UX surfacings are acceptable to lose on a DB crash.
+ * Hot reads (unread count) are additionally cached in Redis.
+ *
+ * `isSeen` / `isArchived` are derived in the API layer from `seenAt` /
+ * `archivedAt` (truthy iff non-null) rather than via a generated column.
+ */
+export const notificationBodyTypeEnum = pgEnum(
+  'notification_body_type',
+  notificationBodyTypeValues,
+);
+export type { NotificationRelatedResource, NotificationResourceType };
+
+export type NotificationMetadata = {
+  autoMarkedAsSeen?: boolean;
+  source?: string;
+  [k: string]: unknown;
+};
+
+export const notificationsTable = pgTable(
+  'notifications',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    title: text('title').notNull(),
+    subtitle: text('subtitle'),
+    body: text('body').notNull(),
+    bodyType: notificationBodyTypeEnum('body_type').notNull().default('plain'),
+    relatedResources: jsonb('related_resources')
+      .$type<NotificationRelatedResource[]>()
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    metadata: jsonb('metadata')
+      .$type<NotificationMetadata>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    seenAt: timestamp('seen_at'),
+    archivedAt: timestamp('archived_at'),
+    ...timestamps,
+  },
+  (table) => [
+    index('notifications_user_created_idx').on(
+      table.userId,
+      table.createdAt.desc(),
+    ),
+    index('notifications_user_unseen_idx')
+      .on(table.userId)
+      .where(sql`${table.seenAt} IS NULL AND ${table.archivedAt} IS NULL`),
+    index('notifications_related_resources_gin_idx').using(
+      'gin',
+      table.relatedResources,
+    ),
   ],
 );

@@ -16,6 +16,7 @@ import type { huntContract } from '@namefi-astra/common/contract/hunt-contract';
 import type { leadgenContract } from '@namefi-astra/common/contract/leadgen-contract';
 import type { mlsContract } from '@namefi-astra/common/contract/mls-contract';
 import type { newsletterContract } from '@namefi-astra/common/contract/newsletter-contract';
+import type { notificationsContract } from '@namefi-astra/common/contract/notifications-contract';
 import type { ordersContract } from '@namefi-astra/common/contract/orders-contract';
 import type { paymentsContract } from '@namefi-astra/common/contract/payments-contract';
 import type { pbnIssuanceReservationsContract } from '@namefi-astra/common/contract/pbn-issuance-reservations-contract';
@@ -65,6 +66,7 @@ type ContractBackedRecord = {
   leadgen: ContractRouter<typeof leadgenContract>;
   mls: ContractRouter<typeof mlsContract>;
   newsletter: ContractRouter<typeof newsletterContract>;
+  notifications: ContractRouter<typeof notificationsContract>;
   orders: ContractRouter<typeof ordersContract>;
   payments: ContractRouter<typeof paymentsContract>;
   pbnOwner: ContractRouter<typeof poweredByNamefiOwnerContract>;

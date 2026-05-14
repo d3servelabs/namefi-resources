@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { BrandLogo } from '@/components/brand-logo';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
+import { NotificationsBell } from '@/components/notifications/notifications-bell';
 import { SidebarItems } from '@/components/sidebars/sidebar-items';
 import {
   Sidebar,
@@ -98,6 +99,7 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <div className="flex flex-col gap-2 w-full">
+          <NotificationsBell variant="sidebar" className="hidden md:block" />
           <UserDropdown forceExpanded={false} />
           <AppSidebarHydratedFooter isCollapsed={isCollapsed} />
         </div>

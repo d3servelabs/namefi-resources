@@ -6,6 +6,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
+import { NotificationsBell } from '@/components/notifications/notifications-bell';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { cn } from '@namefi-astra/ui/lib/cn';
@@ -223,9 +224,16 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           </AlertDescription>
         </Alert>
       )}
-      <h1 className="text-4xl font-bold my-2 font-mono">
-        {capitalizeFirstLetter(domain)}
-      </h1>
+      <div className="my-2 flex items-center gap-3">
+        <h1 className="text-4xl font-bold font-mono">
+          {capitalizeFirstLetter(domain)}
+        </h1>
+        <NotificationsBell
+          variant="inline"
+          filter={{ type: 'domain', identifier: domain }}
+          autoSurfaceOnIncrease
+        />
+      </div>
 
       {domainSupportedFeatures.domainManagement.enabled ? (
         <Tabs defaultValue="dns-setting" className="w-full">

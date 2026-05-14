@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { Footer } from './footer';
 import { Header } from './header';
+import { NotificationsModal } from './notifications/notifications-modal';
 import {
   SidebarInset,
   SidebarTrigger,
@@ -42,6 +43,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
         {children}
       </div>
       <Footer className="row-start-3 col-start-1" />
+      <NotificationsModal />
     </SidebarInset>
   );
 };
