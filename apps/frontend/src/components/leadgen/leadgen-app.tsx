@@ -771,7 +771,7 @@ function LeadEmailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[620px]">
+      <DialogContent className="max-h-[min(90vh,860px)] w-[calc(100vw-2rem)] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden sm:max-w-[620px]">
         <DialogHeader>
           <DialogTitle>Email {lead.businessDomain}</DialogTitle>
           <DialogDescription>
@@ -779,61 +779,64 @@ function LeadEmailDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {recipients.length > 0 && selectedRecipient && selectedDraft ? (
-          <div className="flex flex-col gap-4">
-            <RadioGroup
-              aria-label="Recipients"
-              value={selectedRecipient.email}
-              onValueChange={setSelectedEmail}
-              className="flex flex-col gap-2"
-            >
-              {recipients.map((recipient) => (
-                <label
-                  key={recipient.email}
-                  htmlFor={`leadgen-recipient-${lead.id}-${recipient.email}`}
-                  className="flex cursor-pointer items-start gap-3 rounded-md border border-border/70 p-3 hover:bg-muted/30"
-                >
-                  <RadioGroupItem
-                    id={`leadgen-recipient-${lead.id}-${recipient.email}`}
-                    value={recipient.email}
-                    className="mt-0.5"
-                  />
-                  <span className="min-w-0">
-                    <span className="block text-sm font-medium">
-                      {recipient.name || recipient.email}
+        <div className="min-h-0 min-w-0 overflow-y-auto pr-1">
+          {recipients.length > 0 && selectedRecipient && selectedDraft ? (
+            <div className="flex min-w-0 flex-col gap-4">
+              <RadioGroup
+                aria-label="Recipients"
+                value={selectedRecipient.email}
+                onValueChange={setSelectedEmail}
+                className="flex min-w-0 flex-col gap-2"
+              >
+                {recipients.map((recipient) => (
+                  <label
+                    key={recipient.email}
+                    htmlFor={`leadgen-recipient-${lead.id}-${recipient.email}`}
+                    className="flex min-w-0 cursor-pointer items-start gap-3 rounded-md border border-border/70 p-3 hover:bg-muted/30"
+                  >
+                    <RadioGroupItem
+                      id={`leadgen-recipient-${lead.id}-${recipient.email}`}
+                      value={recipient.email}
+                      className="mt-0.5"
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium">
+                        {recipient.name || recipient.email}
+                      </span>
+                      <span className="block truncate text-xs text-muted-foreground">
+                        {recipient.title
+                          ? `${recipient.title} / ${recipient.email}`
+                          : recipient.email}
+                      </span>
                     </span>
-                    <span className="block truncate text-xs text-muted-foreground">
-                      {recipient.title
-                        ? `${recipient.title} / ${recipient.email}`
-                        : recipient.email}
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </RadioGroup>
+                  </label>
+                ))}
+              </RadioGroup>
 
-            <div className="flex flex-col gap-2">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Subject
-                </p>
-                <p className="mt-1 text-sm font-medium">
-                  {selectedDraft.subject}
-                </p>
+              <div className="flex flex-col gap-2">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    Subject
+                  </p>
+                  <p className="mt-1 break-words text-sm font-medium">
+                    {selectedDraft.subject}
+                  </p>
+                </div>
+                <Textarea
+                  aria-label="Draft preview"
+                  readOnly
+                  value={selectedDraft.fullEmail}
+                  wrap="soft"
+                  className="min-h-44 max-w-full resize-none overflow-y-auto field-sizing-fixed text-sm leading-6"
+                />
               </div>
-              <Textarea
-                aria-label="Draft preview"
-                readOnly
-                value={selectedDraft.fullEmail}
-                className="min-h-44 resize-none text-sm leading-6"
-              />
             </div>
-          </div>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            Choose a lead with a saved email address to compose outreach.
-          </p>
-        )}
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              Choose a lead with a saved email address to compose outreach.
+            </p>
+          )}
+        </div>
 
         <DialogFooter>
           {selectedDraft && (
