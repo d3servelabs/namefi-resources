@@ -19,6 +19,7 @@ import {
 } from '#lib/domains/dnssec-validation';
 
 import { createLogger, logger } from '#lib/logger';
+import { sendUserNotification } from '#lib/notifications/send-user-notification';
 
 import { TRPCError } from '@trpc/server';
 import { temporalClient } from '../../../temporal/client';
@@ -115,10 +116,34 @@ export const domainDnssecRouter = createContractTRPCRouter<
       _logger.debug('Associating delegation signer with domain');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      await associateDelegationSigner(
-        toPunycodeDomainName(input.domainName),
-        input.signingConfig as Parameters<typeof associateDelegationSigner>[1],
-      );
+      try {
+        await associateDelegationSigner(
+          toPunycodeDomainName(input.domainName),
+          input.signingConfig as Parameters<
+            typeof associateDelegationSigner
+          >[1],
+        );
+      } catch (error) {
+        // Best-effort, fire-and-forget — `sendUserNotification` never throws.
+        void sendUserNotification({
+          userId: ctx.user.id,
+          title: 'Custom DS association failed',
+          subject: `Couldn't add your DS record for ${input.domainName}`,
+          messageMarkdown: `We couldn't add your custom DS record for **${input.domainName}**.`,
+          relatedResources: [{ type: 'domain', identifier: input.domainName }],
+          source: 'mutation:associateDelegationSigner',
+        });
+        throw error;
+      }
+
+      void sendUserNotification({
+        userId: ctx.user.id,
+        title: 'Custom DS associated',
+        subject: `Your DS record was added for ${input.domainName}`,
+        messageMarkdown: `Your custom DS record is now associated with **${input.domainName}**.`,
+        relatedResources: [{ type: 'domain', identifier: input.domainName }],
+        source: 'mutation:associateDelegationSigner',
+      });
 
       _logger.debug('Successfully associated delegation signer');
     }),
@@ -140,10 +165,33 @@ export const domainDnssecRouter = createContractTRPCRouter<
       _logger.debug('Disassociating delegation signer');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      await disassociateDelegationSigner(
-        toPunycodeDomainName(input.domainName),
-        input.keyId,
-      );
+      try {
+        await disassociateDelegationSigner(
+          toPunycodeDomainName(input.domainName),
+          input.keyId,
+        );
+      } catch (error) {
+        void sendUserNotification({
+          userId: ctx.user.id,
+          title: 'Custom DS removal failed',
+          subject: `Couldn't remove the DS record for ${input.domainName}`,
+          messageMarkdown: `We couldn't remove the custom DS record from **${input.domainName}**.${
+            error instanceof Error ? `\n\nReason: ${error.message}` : ''
+          }`,
+          relatedResources: [{ type: 'domain', identifier: input.domainName }],
+          source: 'mutation:disassociateDelegationSigner',
+        });
+        throw error;
+      }
+
+      void sendUserNotification({
+        userId: ctx.user.id,
+        title: 'Custom DS removed',
+        subject: `A DS record was removed from ${input.domainName}`,
+        messageMarkdown: `A custom DS record has been removed from **${input.domainName}**.`,
+        relatedResources: [{ type: 'domain', identifier: input.domainName }],
+        source: 'mutation:disassociateDelegationSigner',
+      });
     }),
 
   /**
@@ -397,10 +445,46 @@ export const domainDnssecRouter = createContractTRPCRouter<
       _logger.debug('Running custom-DNSSEC enable orchestrator');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      return enableCustomDnssec({
-        domainName: toPunycodeDomainName(input.domainName),
-        userId: ctx.user.id,
-      });
+      let result: Awaited<ReturnType<typeof enableCustomDnssec>>;
+      try {
+        result = await enableCustomDnssec({
+          domainName: toPunycodeDomainName(input.domainName),
+          userId: ctx.user.id,
+        });
+      } catch (error) {
+        void sendUserNotification({
+          userId: ctx.user.id,
+          title: 'Custom DNSSEC enable failed',
+          subject: `Couldn't enable DNSSEC for ${input.domainName}`,
+          messageMarkdown: `We couldn't enable custom DNSSEC for **${input.domainName}**.${
+            error instanceof Error ? `\n\nReason: ${error.message}` : ''
+          }`,
+          relatedResources: [{ type: 'domain', identifier: input.domainName }],
+          source: 'mutation:enableCustomDnssec',
+        });
+        throw error;
+      }
+
+      // `submitted-deferred` results notify via their own deferred-DS
+      // workflow — only the immediate associations need a notification
+      // from here.
+      const immediateCount = result.results.filter(
+        (r) => r.outcome === 'submitted-immediate',
+      ).length;
+      if (immediateCount > 0) {
+        void sendUserNotification({
+          userId: ctx.user.id,
+          title: 'Custom DNSSEC enabled',
+          subject: `DNSSEC is now active for ${input.domainName}`,
+          messageMarkdown: `${immediateCount} custom DS record${
+            immediateCount > 1 ? 's are' : ' is'
+          } now active for **${input.domainName}**.`,
+          relatedResources: [{ type: 'domain', identifier: input.domainName }],
+          source: 'mutation:enableCustomDnssec',
+        });
+      }
+
+      return result;
     }),
 
   /**
