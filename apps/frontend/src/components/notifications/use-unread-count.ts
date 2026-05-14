@@ -5,13 +5,18 @@ import { useQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 
-const POLL_INTERVAL_MS = 30_000;
+import { getNotificationsPollInterval } from './polling-policy';
+
 const BUMP_HOLD_MS = 2500;
 
 type Options = {
   filter?: NotificationRelatedResource;
-  /** Override polling cadence. Defaults to 30s. */
-  refetchInterval?: number;
+  /**
+   * Override polling cadence. When omitted, polls every
+   * `POLL_INTERVAL_MS` and pauses after the tab has been hidden for
+   * `IDLE_HIDDEN_PAUSE_MS` (see `polling-policy.ts`).
+   */
+  refetchInterval?: number | false | (() => number | false);
 };
 
 export type UseUnreadCountResult = {
@@ -29,7 +34,7 @@ export type UseUnreadCountResult = {
  */
 export function useUnreadCount({
   filter,
-  refetchInterval = POLL_INTERVAL_MS,
+  refetchInterval,
 }: Options = {}): UseUnreadCountResult {
   const trpc = useTRPC();
   const queryOptions = trpc.notifications.getUnreadCount.queryOptions(
@@ -40,8 +45,16 @@ export function useUnreadCount({
         }
       : {},
     {
-      refetchInterval,
-      refetchIntervalInBackground: false,
+      refetchInterval:
+        refetchInterval ?? (() => getNotificationsPollInterval()),
+      // Keep polling when the tab is in the background so that the
+      // OS-level notification banner can fire (via the watcher) even
+      // when the user is in another window.
+      refetchIntervalInBackground: true,
+      // Override the global 60s staleTime so a tab re-focus triggers
+      // an immediate refetch. Without this, a user who left the tab
+      // for less than 60s wouldn't see updated counts on return.
+      staleTime: 0,
     },
   );
   const { data, isLoading } = useQuery(queryOptions);

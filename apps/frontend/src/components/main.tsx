@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { Footer } from './footer';
 import { Header } from './header';
+import { BrowserNotificationWatcher } from './notifications/browser-notification-watcher';
 import { NotificationsModal } from './notifications/notifications-modal';
 import {
   SidebarInset,
@@ -44,6 +45,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
       </div>
       <Footer className="row-start-3 col-start-1" />
       <NotificationsModal />
+      <BrowserNotificationWatcher />
     </SidebarInset>
   );
 };

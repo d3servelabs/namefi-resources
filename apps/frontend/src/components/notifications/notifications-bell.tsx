@@ -2,6 +2,12 @@
 
 import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 import { HeaderActionButton } from '@/components/header-action-button';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@namefi-astra/ui/components/shadcn/popover';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 import NumberFlow from '@number-flow/react';
@@ -9,12 +15,21 @@ import { Bell } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   forwardRef,
+  type ReactNode,
   useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
 
+import {
+  dismissPermissionTooltip,
+  isPermissionTooltipDismissed,
+  requestBrowserNotificationPermissionForce,
+  requestBrowserNotificationPermissionOnce,
+  useBrowserNotificationCapability,
+} from './browser-notifications';
 import { openNotificationsModal } from './store';
 import { useUnreadCount } from './use-unread-count';
 
@@ -36,6 +51,8 @@ export type NotificationsBellHandle = {
   scrollIntoView: () => void;
 };
 
+const TOOLTIP_AUTOSHOW_DELAY_MS = 1500;
+
 /**
  * The bell shown in the topbar (mobile), the sidebar footer (desktop), and
  * inline next to resource titles. Same lazy-loaded count, same click-to-
@@ -44,6 +61,11 @@ export type NotificationsBellHandle = {
  * Bumps `animate-bounce` + a pinging dot for ~2.5s whenever the unread
  * count rises while the bell is mounted, so users notice fresh activity
  * without us having to push state.
+ *
+ * Global bells (`topbar` / `sidebar`) also surface a small popover
+ * tooltip when the user hasn't granted browser-notification permission,
+ * with Enable / Dismiss actions. Inline bells skip the tooltip — the
+ * global one is the right place to ask.
  */
 export const NotificationsBell = forwardRef<
   NotificationsBellHandle,
@@ -70,6 +92,8 @@ export const NotificationsBell = forwardRef<
   }));
 
   const handleClick = useCallback(() => {
+    // Self-guarded — only the very first ever click triggers a prompt.
+    void requestBrowserNotificationPermissionOnce();
     openNotificationsModal(filter ?? null);
   }, [filter]);
 
@@ -112,9 +136,9 @@ export const NotificationsBell = forwardRef<
     </AnimatePresence>
   );
 
-  if (variant === 'topbar') {
-    return (
-      <div ref={wrapperRef} className={cn('relative', className)}>
+  const bellInner = (() => {
+    if (variant === 'topbar') {
+      return (
         <HeaderActionButton
           type="button"
           actionVariant="icon"
@@ -127,13 +151,11 @@ export const NotificationsBell = forwardRef<
           <Bell className="h-5 w-5" />
           {badge}
         </HeaderActionButton>
-      </div>
-    );
-  }
+      );
+    }
 
-  if (variant === 'sidebar') {
-    return (
-      <div ref={wrapperRef} className={cn('w-full', className)}>
+    if (variant === 'sidebar') {
+      return (
         <button
           type="button"
           onClick={handleClick}
@@ -153,16 +175,11 @@ export const NotificationsBell = forwardRef<
             Notifications
           </span>
         </button>
-      </div>
-    );
-  }
+      );
+    }
 
-  // inline variant
-  return (
-    <div
-      ref={wrapperRef}
-      className={cn('relative inline-flex items-center', className)}
-    >
+    // inline variant
+    return (
       <button
         type="button"
         onClick={handleClick}
@@ -179,8 +196,81 @@ export const NotificationsBell = forwardRef<
         <Bell className="h-4 w-4" />
         {badge}
       </button>
+    );
+  })();
+
+  const wrapperClassName = (() => {
+    if (variant === 'topbar') return cn('relative', className);
+    if (variant === 'sidebar') return cn('w-full', className);
+    return cn('relative inline-flex items-center', className);
+  })();
+
+  return (
+    <div ref={wrapperRef} className={wrapperClassName}>
+      {variant === 'inline' ? (
+        bellInner
+      ) : (
+        <PermissionPromptTooltip>{bellInner}</PermissionPromptTooltip>
+      )}
     </div>
   );
 });
 
 NotificationsBell.displayName = 'NotificationsBell';
+
+function PermissionPromptTooltip({ children }: { children: ReactNode }) {
+  const capability = useBrowserNotificationCapability();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (capability !== 'default') {
+      setOpen(false);
+      return;
+    }
+    if (isPermissionTooltipDismissed()) return;
+    const t = setTimeout(() => setOpen(true), TOOLTIP_AUTOSHOW_DELAY_MS);
+    return () => clearTimeout(t);
+  }, [capability]);
+
+  if (capability !== 'default') return <>{children}</>;
+  if (isPermissionTooltipDismissed() && !open) return <>{children}</>;
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger render={<span className="inline-block" />}>
+        {children}
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-3" align="end" sideOffset={8}>
+        <p className="text-sm text-foreground">
+          Don't miss any notifications, enable notifications for Namefi Webapp.
+        </p>
+        <div className="mt-3 flex items-center justify-end gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-7 text-xs"
+            onClick={() => {
+              dismissPermissionTooltip();
+              setOpen(false);
+            }}
+          >
+            Dismiss
+          </Button>
+          <Button
+            type="button"
+            variant="default"
+            size="sm"
+            className="h-7 text-xs"
+            onClick={async () => {
+              await requestBrowserNotificationPermissionForce();
+              setOpen(false);
+            }}
+          >
+            Enable
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}

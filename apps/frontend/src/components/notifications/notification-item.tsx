@@ -3,16 +3,18 @@
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import type {
-  NotificationRelatedResource,
-  NotificationResourceType,
-} from '@namefi-astra/common/shared-schemas';
+import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 import type { NotificationDto } from '@namefi-astra/common/contract/notifications-contract';
 import { Archive, ArchiveRestore, Check, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import type { Route } from 'next';
 import { useRef } from 'react';
 
+import {
+  LINKABLE_NOTIFICATION_RESOURCE_TYPES,
+  resourceHref,
+  resourceLabel,
+} from './resource-href';
 import { useNotificationRenderTracking } from './use-render-tracking';
 
 export type NotificationItemProps = {
@@ -25,42 +27,6 @@ export type NotificationItemProps = {
   onUnarchive: (id: string) => void;
   onAutoMarkSeen: (id: string) => void;
 };
-
-const RESOURCE_LINK_TYPES: ReadonlySet<NotificationResourceType> = new Set([
-  'domain',
-  'order',
-  'order_item',
-]);
-
-function resourceHref(
-  resource: NotificationRelatedResource,
-): Route | string | null {
-  switch (resource.type) {
-    case 'domain':
-      return `/domains/${encodeURIComponent(resource.identifier)}`;
-    case 'order':
-      return `/orders/${encodeURIComponent(resource.identifier)}`;
-    case 'order_item':
-      // Order items don't have a standalone page; route to the order list as a
-      // fallback. Replace with a deep link once the orders page accepts item ids.
-      return '/orders';
-    default:
-      return null;
-  }
-}
-
-function resourceLabel(resource: NotificationRelatedResource): string {
-  switch (resource.type) {
-    case 'domain':
-      return 'Domain';
-    case 'order':
-      return 'Order';
-    case 'order_item':
-      return 'Order item';
-    default:
-      return resource.type;
-  }
-}
 
 const BADGE_IDENTIFIER_MAX_CHARS = 10;
 
@@ -80,7 +46,6 @@ function truncateResourceIdentifier(
   }
   return `${resource.identifier.slice(0, BADGE_IDENTIFIER_MAX_CHARS - 1)}…`;
 }
-
 export function NotificationItem({
   notification,
   selected,
@@ -93,7 +58,7 @@ export function NotificationItem({
 }: NotificationItemProps) {
   const liRef = useRef<HTMLLIElement | null>(null);
   const linkableResources = notification.relatedResources.filter((r) =>
-    RESOURCE_LINK_TYPES.has(r.type),
+    LINKABLE_NOTIFICATION_RESOURCE_TYPES.has(r.type),
   );
 
   useNotificationRenderTracking({
