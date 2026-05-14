@@ -22,6 +22,7 @@ import {
   isNotEmpty,
 } from 'ramda';
 import { sendMail } from '../../../mail/mail-client';
+import { tryCreateInAppNotification } from '#lib/notifications/try-create-notification';
 import {
   db,
   namefiNftOwnersView,
@@ -669,6 +670,23 @@ export async function sendEmailNotificationForUpcomingRenew(
       plain,
     },
   });
+
+  const renewalBodyLines = domains.map((d) => {
+    const expDate = new Date(d.expirationTime).toISOString().slice(0, 10);
+    const auto = d.autoRenewOption === 'AUTOMATIC' ? 'auto-renew' : 'manual';
+    return `- **${d.normalizedDomainName}** expires ${expDate} (${auto}) — $${d.renewalPrice.toFixed(2)}`;
+  });
+  await tryCreateInAppNotification({
+    userId,
+    title: 'Domain renewal reminder',
+    body: renewalBodyLines.join('\n'),
+    bodyType: 'markdown',
+    relatedResources: domains.map((d) => ({
+      type: 'domain' as const,
+      identifier: d.normalizedDomainName,
+    })),
+    metadata: { source: 'activity:sendEmailNotificationForUpcomingRenew' },
+  });
 }
 
 export async function sendEmailNotificationForRenewResult({
@@ -789,6 +807,60 @@ export async function sendEmailNotificationForRenewResult({
       plain,
     },
   });
+
+  const resultBodySections: string[] = [];
+  if (adjustedOrderDetails.domainLdhRenewSucceeded.length > 0) {
+    resultBodySections.push(
+      `**Renewed**\n${adjustedOrderDetails.domainLdhRenewSucceeded
+        .map(
+          (d) =>
+            `- ${d}${
+              chargeAmountInUsdByDomainLdh[d] !== undefined
+                ? ` ($${chargeAmountInUsdByDomainLdh[d].toFixed(2)})`
+                : ''
+            }`,
+        )
+        .join('\n')}`,
+    );
+  }
+  if (adjustedOrderDetails.domainLdhRenewFailed.length > 0) {
+    resultBodySections.push(
+      `**Failed**\n${adjustedOrderDetails.domainLdhRenewFailed
+        .map((d) => `- ${d}`)
+        .join('\n')}`,
+    );
+  }
+  if (adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds.length > 0) {
+    resultBodySections.push(
+      `**Skipped (insufficient balance)**\n${adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds
+        .map((d) => `- ${d}`)
+        .join('\n')}`,
+    );
+  }
+  if (refundAmountInUsd && refundAmountInUsd > 0) {
+    resultBodySections.push(
+      `Refund ${refundStatus.toLowerCase()}: $${refundAmountInUsd.toFixed(2)}`,
+    );
+  }
+  const allResultDomains = [
+    ...adjustedOrderDetails.domainLdhRenewSucceeded,
+    ...adjustedOrderDetails.domainLdhRenewFailed,
+    ...adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds,
+  ];
+  await tryCreateInAppNotification({
+    userId,
+    title: subject,
+    body: resultBodySections.join('\n\n'),
+    bodyType: 'markdown',
+    relatedResources: [
+      ...allResultDomains.map((d) => ({
+        type: 'domain' as const,
+        identifier: d,
+      })),
+      ...(orderId ? [{ type: 'order' as const, identifier: orderId }] : []),
+    ],
+    metadata: { source: 'activity:sendEmailNotificationForRenewResult' },
+  });
 }
 
 export async function sendEmailNotificationForRenewFailedToCharge({
@@ -834,6 +906,31 @@ export async function sendEmailNotificationForRenewFailedToCharge({
     content: {
       html,
       plain,
+    },
+  });
+
+  const failedToChargeLines = domainsToRenew.map((d) => {
+    const charge = chargeAmountInUsdByDomainLdh[d];
+    const exp = expirationDatesByDomainLdh[d];
+    const expStr = exp ? new Date(exp).toISOString().slice(0, 10) : 'unknown';
+    return `- **${d}** expires ${expStr}${
+      charge !== undefined ? ` — $${charge.toFixed(2)}` : ''
+    }`;
+  });
+  const tail = `\n\nAvailable balance: $${availableBalanceInNfsc.toFixed(
+    2,
+  )}. Add a payment method to keep these domains active.`;
+  await tryCreateInAppNotification({
+    userId,
+    title: 'Domain renewal — payment failed',
+    body: `${failedToChargeLines.join('\n')}${tail}`,
+    bodyType: 'markdown',
+    relatedResources: domainsToRenew.map((d) => ({
+      type: 'domain' as const,
+      identifier: d,
+    })),
+    metadata: {
+      source: 'activity:sendEmailNotificationForRenewFailedToCharge',
     },
   });
 }

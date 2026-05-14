@@ -1162,5 +1162,14 @@ export async function sendOrderRequiresFurtherActionEmail({
     subject: '[Namefi] Action required to continue your order',
     showGoToDashboard: false,
     messageMarkdown: `${message}\n\n[Open order details](${orderDetailsLink})`,
+    inAppNotification: {
+      subtitle: requiredAction,
+      relatedResources: [
+        { type: 'order', identifier: orderId },
+        { type: 'order_item', identifier: orderItemId },
+        { type: 'domain', identifier: normalizedDomainName },
+      ],
+      source: 'activity:sendOrderRequiresFurtherActionEmail',
+    },
   });
 }

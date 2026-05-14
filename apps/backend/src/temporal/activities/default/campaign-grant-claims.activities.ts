@@ -16,6 +16,7 @@ import { render } from '@react-email/components';
 import { sendMail } from '../../../mail/mail-client';
 import { FreeClaimsNotification } from '../../../mail/templates/free-claims-notification';
 import { maybeGetUserEmail } from '../notify.activities';
+import { tryCreateInAppNotification } from '#lib/notifications/try-create-notification';
 
 const logger = createLogger({ module: 'campaign-grant-claims' });
 
@@ -286,7 +287,11 @@ export async function sendNotifications(
         };
       });
 
-      const totalClaimsGranted = batch.grantedCount;
+      // Use the fetched claim rows as the source of truth for both the
+      // email and in-app copy so they can't drift from each other when
+      // the batch count differs (e.g. a row was deleted between grant
+      // and notify, or duplicates were de-duped at the DB level).
+      const totalClaimsGranted = userClaims.length;
       const parentDomain = batch.parentDomain;
       // Create email content using template
       const emailTemplate = React.createElement(FreeClaimsNotification, {
@@ -310,6 +315,18 @@ export async function sendNotifications(
         content: {
           html,
           plain: plainText,
+        },
+      });
+
+      const plural = totalClaimsGranted > 1 ? 's' : '';
+      await tryCreateInAppNotification({
+        userId: batch.userId,
+        title: `You've been granted ${totalClaimsGranted} free claim${plural}`,
+        body: `You were granted **${totalClaimsGranted}** free claim${plural} for **${parentDomain}** (${campaignName}).`,
+        bodyType: 'markdown',
+        relatedResources: [{ type: 'domain', identifier: parentDomain }],
+        metadata: {
+          source: `activity:sendNotifications:freeClaims:${batch.campaignKey}`,
         },
       });
 

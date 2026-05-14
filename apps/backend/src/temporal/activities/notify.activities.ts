@@ -1,5 +1,12 @@
-import { db, usersTable, type PaymentProvider } from '@namefi-astra/db';
+import {
+  db,
+  ordersTable,
+  usersTable,
+  type PaymentProvider,
+} from '@namefi-astra/db';
+import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 import { eq } from 'drizzle-orm';
+import { tryCreateInAppNotification } from '#lib/notifications/try-create-notification';
 import { type SendMailInput, sendMail } from '../../mail/mail-client';
 import { privyClient } from '../../trpc/utils';
 import {
@@ -292,6 +299,62 @@ export async function notifyUserOrderProcessed(
     subject,
     content,
   });
+
+  // Mirror the email in the in-app inbox. The order rows carry the userId;
+  // look it up here so callers don't need to thread one more parameter.
+  const order = await db.query.ordersTable.findFirst({
+    where: eq(ordersTable.id, input.orderId),
+    columns: { userId: true },
+  });
+  if (!order) return;
+
+  await tryCreateInAppNotification({
+    userId: order.userId,
+    title: subject,
+    body: buildProcessedOrderInAppBody(input),
+    bodyType: 'markdown',
+    relatedResources: [
+      { type: 'order', identifier: input.orderId },
+      ...input.items.map((item) => ({
+        type: 'domain' as const,
+        identifier: item.normalizedDomainName,
+      })),
+    ],
+    metadata: { source: 'activity:notifyUserOrderProcessed' },
+  });
+}
+
+function buildProcessedOrderInAppBody(
+  input: GetProcessedOrderEmailInput,
+): string {
+  const succeeded = input.items.filter((i) => i.status === 'SUCCEEDED');
+  const failed = input.items.filter((i) => i.status === 'FAILED');
+  const processing = input.items.filter((i) => i.status === 'PROCESSING');
+
+  const sections: string[] = [];
+  const bullets = (names: string[]) => names.map((n) => `- ${n}`).join('\n');
+
+  if (succeeded.length > 0) {
+    sections.push(
+      `**Completed**\n${bullets(succeeded.map((i) => i.normalizedDomainName))}`,
+    );
+  }
+  if (processing.length > 0) {
+    sections.push(
+      `**Still processing**\n${bullets(processing.map((i) => i.normalizedDomainName))}`,
+    );
+  }
+  if (failed.length > 0) {
+    sections.push(
+      `**Needs attention**\n${bullets(failed.map((i) => i.normalizedDomainName))}`,
+    );
+  }
+  if (input.refund) {
+    sections.push(
+      `Refund ${input.refund.status.toLowerCase()}: **$${input.refund.amountInUsd.toFixed(2)}**`,
+    );
+  }
+  return sections.join('\n\n');
 }
 
 // Extracted helper (place near the top of the file, e.g. after imports)
@@ -339,6 +402,21 @@ async function determineHostnameFromCartItems(
 }
 
 /**
+ * Optional carry payload that lets the caller drop a row in the in-app
+ * notifications inbox alongside the email. Default behavior (when the
+ * `inAppNotification` field is omitted) is to write the inbox row with
+ * sensible defaults — pass `{ enabled: false }` to opt out for a
+ * specific call. See `tryCreateInAppNotification` for failure semantics.
+ */
+export type InAppNotificationCarry = {
+  enabled?: boolean;
+  subtitle?: string;
+  relatedResources?: NotificationRelatedResource[];
+  /** Override the `metadata.source` label. */
+  source?: string;
+};
+
+/**
  * Sends a styled email notification to a user
  *
  * @param userId - The user ID to send notification to
@@ -346,6 +424,8 @@ async function determineHostnameFromCartItems(
  * @param showGoToDashboard - Whether to show a dashboard link
  * @param title - Email title
  * @param subject - Optional email subject (defaults to title)
+ * @param inAppNotification - Optional payload to also surface the message
+ *   in the user's in-app inbox. Defaults to enabled with no extra context.
  * @returns Promise indicating success
  */
 
@@ -355,12 +435,14 @@ export async function sendStyledEmailNotificationForUser({
   showGoToDashboard,
   title,
   subject,
+  inAppNotification,
 }: {
   userId: string;
   messageMarkdown: string;
   showGoToDashboard: boolean;
   title: string;
   subject?: string;
+  inAppNotification?: InAppNotificationCarry;
 }) {
   const ctx = Context.current();
   try {
@@ -403,6 +485,23 @@ export async function sendStyledEmailNotificationForUser({
     ctx.log.info(
       `Successfully sent styled email to user ${userId} (${userEmail})`,
     );
+
+    if (inAppNotification?.enabled !== false) {
+      await tryCreateInAppNotification({
+        userId,
+        title,
+        subtitle: inAppNotification?.subtitle,
+        body: messageMarkdown,
+        bodyType: 'markdown',
+        relatedResources: inAppNotification?.relatedResources ?? [],
+        metadata: {
+          source:
+            inAppNotification?.source ??
+            'activity:sendStyledEmailNotificationForUser',
+        },
+      });
+    }
+
     return { status: 'SUCCESS' };
   } catch (error: any) {
     ctx.log.error(
