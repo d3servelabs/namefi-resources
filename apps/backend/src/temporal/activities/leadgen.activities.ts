@@ -26,6 +26,7 @@ const logger = createLogger({ module: 'leadgen-activities' });
 
 const DEFAULT_CONTACT_DISCOVERY_LIMIT = 6;
 const DEFAULT_SEARCH_RESULTS_PER_QUERY = 8;
+const LEADGEN_HEARTBEAT_INTERVAL_MS = 20_000;
 
 export interface InitializeLeadgenRunParams {
   runId: string;
@@ -67,6 +68,7 @@ export interface FailLeadgenRunParams {
 
 type LeadRow = typeof leadgenLeadsTable.$inferSelect;
 type ContactRow = typeof leadgenContactsTable.$inferSelect;
+type LeadgenActivityContext = Pick<Context, 'cancellationSignal' | 'heartbeat'>;
 type LeadgenSearchRuntime = {
   seenDomains: Set<string>;
   contactTasks: Map<string, Promise<void>>;
@@ -74,6 +76,98 @@ type LeadgenSearchRuntime = {
   inserted: number;
   rank: number;
 };
+
+export async function heartbeatLeadgenWhile<T>(
+  operation: (abortSignal: AbortSignal) => Promise<T>,
+  details: Record<string, unknown>,
+  intervalMs = LEADGEN_HEARTBEAT_INTERVAL_MS,
+  ctx: LeadgenActivityContext = Context.current(),
+): Promise<T> {
+  const abortController = new AbortController();
+
+  if (ctx.cancellationSignal.aborted) {
+    abortController.abort(ctx.cancellationSignal.reason);
+    throw new Error('activity-cancelled');
+  }
+
+  return await new Promise<T>((resolve, reject) => {
+    let settled = false;
+    let interval: ReturnType<typeof setInterval> | undefined;
+
+    const cleanup = () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      ctx.cancellationSignal.removeEventListener('abort', cancelOperation);
+    };
+
+    const resolveOnce = (value: T) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      cleanup();
+      resolve(value);
+    };
+
+    const rejectOnce = (error: unknown) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      cleanup();
+      reject(error);
+    };
+
+    const cancelOperation = () => {
+      abortController.abort(ctx.cancellationSignal.reason);
+      rejectOnce(new Error('activity-cancelled'));
+    };
+
+    ctx.cancellationSignal.addEventListener('abort', cancelOperation, {
+      once: true,
+    });
+
+    const sendHeartbeat = () => {
+      try {
+        ctx.heartbeat(details);
+      } catch (error) {
+        logger.debug(
+          { error, details },
+          'Leadgen activity heartbeat failed; aborting in-flight work',
+        );
+        abortController.abort(error);
+        rejectOnce(
+          error instanceof Error
+            ? error
+            : new Error('leadgen-activity-heartbeat-failed'),
+        );
+      }
+    };
+
+    sendHeartbeat();
+
+    if (settled) {
+      return;
+    }
+
+    interval = setInterval(sendHeartbeat, intervalMs);
+
+    void operation(abortController.signal).then(resolveOnce).catch(rejectOnce);
+  });
+}
+
+function throwIfLeadgenAborted(abortSignal: AbortSignal) {
+  if (!abortSignal.aborted) {
+    return;
+  }
+
+  throw abortSignal.reason instanceof Error
+    ? abortSignal.reason
+    : new Error('activity-cancelled');
+}
 
 export async function initializeLeadgenRun({
   runId,
@@ -104,11 +198,15 @@ export async function generateLeadgenIntentsActivity({
   reasoningEffort,
   maxQueries,
 }: LeadgenIntentActivityParams) {
-  Context.current().heartbeat({ stage: 'intent', domain });
-  const result = await generateLeadgenIntentQueries(domain, {
-    reasoningEffort,
-    maxQueries: maxQueries ?? (reasoningEffort === 'low' ? 3 : 5),
-  });
+  const result = await heartbeatLeadgenWhile(
+    (abortSignal) =>
+      generateLeadgenIntentQueries(domain, {
+        abortSignal,
+        reasoningEffort,
+        maxQueries: maxQueries ?? (reasoningEffort === 'low' ? 3 : 5),
+      }),
+    { stage: 'intent', runId, domain },
+  );
   const queries = result.output.queries;
 
   await persistLeadgenEvent({
@@ -128,6 +226,20 @@ export async function generateLeadgenIntentsActivity({
 
 export async function searchLeadgenProspectsActivity(
   params: LeadgenSearchActivityParams,
+) {
+  return await heartbeatLeadgenWhile(
+    (abortSignal) => searchLeadgenProspects({ ...params, abortSignal }),
+    {
+      stage: 'search',
+      runId: params.runId,
+      bucket: params.bucket,
+      queryCount: params.queries.length,
+    },
+  );
+}
+
+async function searchLeadgenProspects(
+  params: LeadgenSearchActivityParams & { abortSignal: AbortSignal },
 ) {
   const {
     runId,
@@ -157,6 +269,7 @@ export async function searchLeadgenProspectsActivity(
         : 'Searching buyer categories in parallel.',
     payload: { bucket, queries },
   });
+  throwIfLeadgenAborted(params.abortSignal);
 
   const queryResults = await Promise.allSettled(
     queries.map((query) =>
@@ -168,10 +281,12 @@ export async function searchLeadgenProspectsActivity(
         reasoningEffort,
         maxResultsPerQuery,
         contactDiscoveryLimit,
+        abortSignal: params.abortSignal,
         runtime,
       }),
     ),
   );
+  throwIfLeadgenAborted(params.abortSignal);
 
   for (const result of queryResults) {
     if (result.status === 'rejected') {
@@ -184,6 +299,8 @@ export async function searchLeadgenProspectsActivity(
 
   if (runtime.contactTasks.size > 0) {
     const results = await Promise.allSettled(runtime.contactTasks.values());
+    throwIfLeadgenAborted(params.abortSignal);
+
     for (const result of results) {
       if (result.status === 'rejected') {
         logger.warn(
@@ -207,6 +324,7 @@ async function processLeadgenQuery(params: {
   reasoningEffort: LeadgenReasoningEffort;
   maxResultsPerQuery: number;
   contactDiscoveryLimit: number;
+  abortSignal: AbortSignal;
   runtime: LeadgenSearchRuntime;
 }) {
   await persistLeadgenEvent({
@@ -235,6 +353,8 @@ async function processLeadgenQuery(params: {
       });
     }
   } catch (error) {
+    throwIfLeadgenAborted(params.abortSignal);
+
     logger.warn(
       {
         error,
@@ -265,15 +385,18 @@ async function streamAndPersistSearchCandidates(params: {
   reasoningEffort: LeadgenReasoningEffort;
   maxResultsPerQuery: number;
   contactDiscoveryLimit: number;
+  abortSignal: AbortSignal;
   runtime: LeadgenSearchRuntime;
 }) {
   const stream =
     params.bucket === 'substring'
       ? await streamLeadgenSubstringSearchResults(params.sourceDomain, {
+          abortSignal: params.abortSignal,
           reasoningEffort: params.reasoningEffort,
           maxResults: params.maxResultsPerQuery,
         })
       : await streamLeadgenSearchResults(params.query, {
+          abortSignal: params.abortSignal,
           reasoningEffort: params.reasoningEffort,
           maxResults: params.maxResultsPerQuery,
         });
@@ -290,12 +413,6 @@ async function streamAndPersistSearchCandidates(params: {
       candidates: partial.slice(processedCount, nextLength),
     });
     processedCount = nextLength;
-    Context.current().heartbeat({
-      stage: 'search',
-      bucket: params.bucket,
-      query: params.query,
-      processedCount,
-    });
   }
 
   const finalOutput = await stream.output;
@@ -314,10 +431,13 @@ async function persistSearchCandidates(params: {
   query: string;
   reasoningEffort: LeadgenReasoningEffort;
   contactDiscoveryLimit: number;
+  abortSignal: AbortSignal;
   runtime: LeadgenSearchRuntime;
   candidates: LeadgenBusinessResult[];
 }) {
   for (const candidate of params.candidates) {
+    throwIfLeadgenAborted(params.abortSignal);
+
     const lead = await persistLeadCandidate({
       runId: params.runId,
       candidate,
@@ -339,8 +459,11 @@ async function scheduleContactDiscovery(params: {
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
   contactDiscoveryLimit: number;
+  abortSignal: AbortSignal;
   runtime: LeadgenSearchRuntime;
 }) {
+  throwIfLeadgenAborted(params.abortSignal);
+
   if (params.runtime.contactTasks.size >= params.contactDiscoveryLimit) return;
   if (params.runtime.contactTasks.has(params.lead.businessDomain)) return;
 
@@ -365,6 +488,7 @@ async function scheduleContactDiscovery(params: {
       sourceDomain: params.sourceDomain,
       lead: params.lead,
       reasoningEffort: params.reasoningEffort,
+      abortSignal: params.abortSignal,
     }),
   );
 }
@@ -494,50 +618,56 @@ export async function generateLeadgenLeadOutreachActivity({
   sourceDomain,
   reasoningEffort,
 }: GenerateLeadgenLeadOutreachParams) {
-  const lead = await db.query.leadgenLeadsTable.findFirst({
-    where: and(
-      eq(leadgenLeadsTable.runId, runId),
-      eq(leadgenLeadsTable.id, leadId),
-    ),
-  });
+  return await heartbeatLeadgenWhile(
+    async (abortSignal) => {
+      const lead = await db.query.leadgenLeadsTable.findFirst({
+        where: and(
+          eq(leadgenLeadsTable.runId, runId),
+          eq(leadgenLeadsTable.id, leadId),
+        ),
+      });
 
-  if (!lead) {
-    throw new Error('Lead not found for this run');
-  }
+      if (!lead) {
+        throw new Error('Lead not found for this run');
+      }
 
-  await persistLeadgenEvent({
-    runId,
-    eventType: 'status',
-    stage: 'contacts',
-    message: `Finding contacts and drafting outreach for ${lead.businessDomain}.`,
-    payload: {
-      leadId: lead.id,
-      businessDomain: lead.businessDomain,
+      await persistLeadgenEvent({
+        runId,
+        eventType: 'status',
+        stage: 'contacts',
+        message: `Finding contacts and drafting outreach for ${lead.businessDomain}.`,
+        payload: {
+          leadId: lead.id,
+          businessDomain: lead.businessDomain,
+        },
+      });
+
+      await discoverContactsAndDraft({
+        runId,
+        sourceDomain,
+        lead,
+        reasoningEffort,
+        abortSignal,
+      });
+
+      const counts = await refreshLeadgenRunCounts(runId);
+
+      await persistLeadgenEvent({
+        runId,
+        eventType: 'status',
+        stage: 'contacts',
+        message: `Finished outreach prep for ${lead.businessDomain}.`,
+        payload: {
+          leadId: lead.id,
+          businessDomain: lead.businessDomain,
+          ...counts,
+        },
+      });
+
+      return counts;
     },
-  });
-
-  await discoverContactsAndDraft({
-    runId,
-    sourceDomain,
-    lead,
-    reasoningEffort,
-  });
-
-  const counts = await refreshLeadgenRunCounts(runId);
-
-  await persistLeadgenEvent({
-    runId,
-    eventType: 'status',
-    stage: 'contacts',
-    message: `Finished outreach prep for ${lead.businessDomain}.`,
-    payload: {
-      leadId: lead.id,
-      businessDomain: lead.businessDomain,
-      ...counts,
-    },
-  });
-
-  return counts;
+    { stage: 'contacts', runId, leadId },
+  );
 }
 
 async function discoverContactsAndDraft(params: {
@@ -545,6 +675,7 @@ async function discoverContactsAndDraft(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  abortSignal: AbortSignal;
 }) {
   const existingContacts = await loadCurrentContactsForLead({
     runId: params.runId,
@@ -575,9 +706,12 @@ async function draftForSavedContacts(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  abortSignal: AbortSignal;
   contacts: ContactRow[];
 }) {
   for (const contact of params.contacts) {
+    throwIfLeadgenAborted(params.abortSignal);
+
     await draftForContact({
       runId: params.runId,
       sourceDomain: params.sourceDomain,
@@ -585,6 +719,7 @@ async function draftForSavedContacts(params: {
       contact,
       reasoningEffort: params.reasoningEffort,
       fromCache: contact.fromCache,
+      abortSignal: params.abortSignal,
     });
   }
 }
@@ -594,9 +729,12 @@ async function persistCachedContactsAndDraft(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  abortSignal: AbortSignal;
   cachedContacts: ContactRow[];
 }) {
   for (const cached of params.cachedContacts) {
+    throwIfLeadgenAborted(params.abortSignal);
+
     const contact = await upsertContact({
       runId: params.runId,
       leadId: params.lead.id,
@@ -618,6 +756,7 @@ async function persistCachedContactsAndDraft(params: {
       contact,
       reasoningEffort: params.reasoningEffort,
       fromCache: true,
+      abortSignal: params.abortSignal,
     });
   }
 }
@@ -627,11 +766,13 @@ async function discoverNewContactsAndDraft(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  abortSignal: AbortSignal;
 }) {
   try {
     const result = await generateLeadgenContacts(
       [{ domain: params.lead.businessDomain }],
       {
+        abortSignal: params.abortSignal,
         reasoningEffort: params.reasoningEffort,
         targetContacts: 3,
       },
@@ -678,8 +819,11 @@ async function discoverNewContactsAndDraft(params: {
       contact: firstContact,
       reasoningEffort: params.reasoningEffort,
       fromCache: false,
+      abortSignal: params.abortSignal,
     });
   } catch (error) {
+    throwIfLeadgenAborted(params.abortSignal);
+
     await persistLeadgenEvent({
       runId: params.runId,
       eventType: 'error',
@@ -803,7 +947,10 @@ async function draftForContact(params: {
   contact: ContactRow;
   reasoningEffort: LeadgenReasoningEffort;
   fromCache: boolean;
+  abortSignal: AbortSignal;
 }) {
+  throwIfLeadgenAborted(params.abortSignal);
+
   const existing = await db.query.leadgenEmailDraftsTable.findFirst({
     where: and(
       eq(leadgenEmailDraftsTable.runId, params.runId),
@@ -829,7 +976,10 @@ async function draftForContact(params: {
         context: params.contact.context ?? null,
       },
     },
-    { reasoningEffort: params.reasoningEffort },
+    {
+      abortSignal: params.abortSignal,
+      reasoningEffort: params.reasoningEffort,
+    },
   );
 
   const [saved] = await db

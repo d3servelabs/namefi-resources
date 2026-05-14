@@ -33,18 +33,21 @@ const intentOutputSchema = z
 export type LeadgenIntentOutput = z.infer<typeof intentOutputSchema>;
 
 export interface LeadgenIntentOptions {
+  abortSignal?: AbortSignal;
   maxToolCalls?: number;
   maxQueries?: number;
   reasoningEffort?: LeadgenReasoningEffort;
 }
 
 export interface LeadgenSearchOptions {
+  abortSignal?: AbortSignal;
   maxToolCalls?: number;
   maxResults?: number;
   reasoningEffort?: LeadgenReasoningEffort;
 }
 
 export interface LeadgenContactOptions {
+  abortSignal?: AbortSignal;
   maxToolCalls?: number;
   targetContacts?: number;
   reasoningEffort?: LeadgenReasoningEffort;
@@ -105,6 +108,7 @@ export async function generateLeadgenIntentQueries(
     providerOptions: providerOptions(reasoningEffort, maxToolCalls, {
       supportsReasoning: !usesFastModel,
     }),
+    abortSignal: options?.abortSignal,
     output: Output.object({ schema: intentOutputSchema }),
   });
 
@@ -161,14 +165,20 @@ export async function streamLeadgenSearchResults(
   query: string,
   options?: LeadgenSearchOptions,
 ) {
-  return createSearchAgent(options).stream({ prompt: query });
+  return createSearchAgent(options).stream({
+    prompt: query,
+    abortSignal: options?.abortSignal,
+  });
 }
 
 export async function generateLeadgenSearchResults(
   query: string,
   options?: LeadgenSearchOptions,
 ) {
-  return createSearchAgent(options).generate({ prompt: query });
+  return createSearchAgent(options).generate({
+    prompt: query,
+    abortSignal: options?.abortSignal,
+  });
 }
 
 function substringSearchInstructions(
@@ -242,6 +252,7 @@ export async function streamLeadgenSubstringSearchResults(
 ) {
   return createSubstringSearchAgent(domain, options).stream({
     prompt: `Domain to mirror: ${domain}. Focus on substring, abbreviation, translation, and brand-extension aligned company domains.`,
+    abortSignal: options?.abortSignal,
   });
 }
 
@@ -251,6 +262,7 @@ export async function generateLeadgenSubstringSearchResults(
 ) {
   return createSubstringSearchAgent(domain, options).generate({
     prompt: `Domain to mirror: ${domain}. Focus on substring, abbreviation, translation, and brand-extension aligned company domains.`,
+    abortSignal: options?.abortSignal,
   });
 }
 
@@ -301,6 +313,7 @@ export async function generateLeadgenContacts(
       webSearch: openai.tools.webSearch(),
     },
     providerOptions: providerOptions(reasoningEffort, maxToolCalls),
+    abortSignal: options?.abortSignal,
     output: Output.array({
       element: leadgenContactResultSchema,
     }),
@@ -332,7 +345,10 @@ Domain Acquisition Team
 
 export async function generateLeadgenEmailDraft(
   brief: LeadgenEmailBrief,
-  options?: { reasoningEffort?: LeadgenReasoningEffort },
+  options?: {
+    abortSignal?: AbortSignal;
+    reasoningEffort?: LeadgenReasoningEffort;
+  },
 ) {
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
 
@@ -343,6 +359,7 @@ export async function generateLeadgenEmailDraft(
     providerOptions: providerOptions(reasoningEffort, undefined, {
       supportsReasoning: false,
     }),
+    abortSignal: options?.abortSignal,
     output: Output.object({
       schema: leadgenEmailDraftSchema,
     }),

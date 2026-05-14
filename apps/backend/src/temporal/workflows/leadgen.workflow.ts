@@ -20,16 +20,24 @@ export interface LeadgenWorkflowResult {
   draftCount: number;
 }
 
+function resolveLeadgenRunLimits(input: LeadgenWorkflowInput) {
+  const isCampaignShortRun = input.runProfile === 'campaign_short';
+
+  return {
+    maxIntentQueries:
+      input.maxIntentQueries ?? (isCampaignShortRun ? 3 : undefined),
+    maxResultsPerQuery:
+      input.maxResultsPerQuery ?? (isCampaignShortRun ? 5 : undefined),
+    contactDiscoveryLimit:
+      input.contactDiscoveryLimit ?? (isCampaignShortRun ? 5 : undefined),
+  };
+}
+
 export async function runLeadgenWorkflow(
   input: LeadgenWorkflowInput,
 ): Promise<LeadgenWorkflowResult> {
-  const isCampaignShortRun = input.runProfile === 'campaign_short';
-  const maxIntentQueries =
-    input.maxIntentQueries ?? (isCampaignShortRun ? 3 : undefined);
-  const maxResultsPerQuery =
-    input.maxResultsPerQuery ?? (isCampaignShortRun ? 5 : undefined);
-  const contactDiscoveryLimit =
-    input.contactDiscoveryLimit ?? (isCampaignShortRun ? 5 : undefined);
+  const { maxIntentQueries, maxResultsPerQuery, contactDiscoveryLimit } =
+    resolveLeadgenRunLimits(input);
   const {
     initializeLeadgenRun,
     generateLeadgenIntentsActivity,
@@ -40,7 +48,7 @@ export async function runLeadgenWorkflow(
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
       startToCloseTimeout: '20 minutes',
-      heartbeatTimeout: '1 minute',
+      heartbeatTimeout: '2 minutes',
       retry: {
         initialInterval: '10 seconds',
         backoffCoefficient: 2,
