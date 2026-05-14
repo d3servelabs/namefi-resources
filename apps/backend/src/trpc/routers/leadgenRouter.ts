@@ -11,6 +11,7 @@ import { and, desc, eq } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 
 import { startLeadgenRunForUser } from '#lib/leadgen/runs';
+import { generateLeadgenLeadOutreachActivity } from '#temporal/activities/leadgen.activities';
 import { createContractTRPCRouter } from '../contract';
 import { protectedProcedure } from '../base';
 
@@ -41,6 +42,28 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
     .query(async ({ input, ctx }) => {
       return await getLeadgenRunSnapshotForUser({
         runId: input.runId,
+        userId: ctx.user.id,
+      });
+    }),
+
+  generateLeadOutreach: protectedProcedure
+    .input(leadgenContract.generateLeadOutreach.input)
+    .output(leadgenContract.generateLeadOutreach.output)
+    .mutation(async ({ input, ctx }) => {
+      const run = await getLeadgenRunForUser({
+        runId: input.runId,
+        userId: ctx.user.id,
+      });
+
+      await generateLeadgenLeadOutreachActivity({
+        runId: run.id,
+        leadId: input.leadId,
+        sourceDomain: run.domain,
+        reasoningEffort: run.reasoningEffort,
+      });
+
+      return await getLeadgenRunSnapshotForUser({
+        runId: run.id,
         userId: ctx.user.id,
       });
     }),
@@ -103,22 +126,7 @@ export async function getLeadgenRunSnapshotForUser(params: {
   runId: string;
   userId: string;
 }) {
-  const [run] = await db
-    .select()
-    .from(leadgenRunsTable)
-    .where(
-      and(
-        eq(leadgenRunsTable.id, params.runId),
-        eq(leadgenRunsTable.userId, params.userId),
-      ),
-    );
-
-  if (!run) {
-    throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: 'Leadgen run not found',
-    });
-  }
+  const run = await getLeadgenRunForUser(params);
 
   const [events, leads, contacts, drafts] = await Promise.all([
     db
@@ -228,6 +236,27 @@ export async function getLeadgenRunSnapshotForUser(params: {
         })),
     })),
   };
+}
+
+async function getLeadgenRunForUser(params: { runId: string; userId: string }) {
+  const [run] = await db
+    .select()
+    .from(leadgenRunsTable)
+    .where(
+      and(
+        eq(leadgenRunsTable.id, params.runId),
+        eq(leadgenRunsTable.userId, params.userId),
+      ),
+    );
+
+  if (!run) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Leadgen run not found',
+    });
+  }
+
+  return run;
 }
 
 function extractIntentQueries(

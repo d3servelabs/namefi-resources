@@ -51,6 +51,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { buildMailtoHref } from './leadgen-mailto';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
@@ -283,7 +284,11 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 
         <main className="min-w-0 rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
           {run ? (
-            <RunWorkspace run={run} isRunning={isRunning} />
+            <RunWorkspace
+              run={run}
+              isRunning={isRunning}
+              onRunUpdated={setLiveRun}
+            />
           ) : (
             <EmptyWorkspace />
           )}
@@ -296,10 +301,17 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 function RunWorkspace({
   run,
   isRunning,
+  onRunUpdated,
 }: {
   run: LeadgenSnapshot;
   isRunning: boolean;
+  onRunUpdated: (run: LeadgenSnapshot) => void;
 }) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [pendingOutreachLeadId, setPendingOutreachLeadId] = useState<
+    string | null
+  >(null);
   const buckets = useMemo(() => {
     const grouped: Record<'general' | 'substring', LeadgenLead[]> = {
       general: [],
@@ -310,6 +322,45 @@ function RunWorkspace({
     }
     return grouped;
   }, [run.leads]);
+
+  const generateLeadOutreach = useMutation(
+    trpc.leadgen.generateLeadOutreach.mutationOptions({
+      onSuccess(snapshot, variables) {
+        onRunUpdated(snapshot);
+        queryClient.setQueryData(
+          trpc.leadgen.getRun.queryKey({ runId: snapshot.id }),
+          snapshot,
+        );
+        void queryClient.invalidateQueries({
+          queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
+        });
+        const updatedLead = snapshot.leads.find(
+          (lead) => lead.id === variables.leadId,
+        );
+        if (!updatedLead || updatedLead.contacts.length === 0) {
+          toast('No public contacts found');
+        } else if (updatedLead.drafts.length === 0) {
+          toast.success('Contacts saved');
+        } else {
+          toast.success('Outreach prepared');
+        }
+      },
+      onError(error) {
+        toast.error('Outreach prep failed', {
+          description: error.message,
+        });
+      },
+      onSettled() {
+        setPendingOutreachLeadId(null);
+      },
+    }),
+  );
+
+  const handleGenerateLeadOutreach = (leadId: string) => {
+    if (pendingOutreachLeadId) return;
+    setPendingOutreachLeadId(leadId);
+    generateLeadOutreach.mutate({ runId: run.id, leadId });
+  };
 
   const headerSubtitle = getRunHeaderSubtitle(run);
 
@@ -375,10 +426,20 @@ function RunWorkspace({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="general" className="mt-4">
-              <LeadList leads={buckets.general} sourceDomain={run.domain} />
+              <LeadList
+                leads={buckets.general}
+                sourceDomain={run.domain}
+                pendingOutreachLeadId={pendingOutreachLeadId}
+                onGenerateLeadOutreach={handleGenerateLeadOutreach}
+              />
             </TabsContent>
             <TabsContent value="substring" className="mt-4">
-              <LeadList leads={buckets.substring} sourceDomain={run.domain} />
+              <LeadList
+                leads={buckets.substring}
+                sourceDomain={run.domain}
+                pendingOutreachLeadId={pendingOutreachLeadId}
+                onGenerateLeadOutreach={handleGenerateLeadOutreach}
+              />
             </TabsContent>
           </Tabs>
         </section>
@@ -394,9 +455,13 @@ function RunWorkspace({
 function LeadList({
   leads,
   sourceDomain,
+  pendingOutreachLeadId,
+  onGenerateLeadOutreach,
 }: {
   leads: LeadgenLead[];
   sourceDomain: string;
+  pendingOutreachLeadId: string | null;
+  onGenerateLeadOutreach: (leadId: string) => void;
 }) {
   if (leads.length === 0) {
     return (
@@ -413,6 +478,8 @@ function LeadList({
           key={`${lead.bucket}-${lead.businessDomain}`}
           lead={lead}
           sourceDomain={sourceDomain}
+          isPreparingOutreach={pendingOutreachLeadId === lead.id}
+          onGenerateLeadOutreach={onGenerateLeadOutreach}
         />
       ))}
     </div>
@@ -422,16 +489,24 @@ function LeadList({
 function LeadCard({
   lead,
   sourceDomain,
+  isPreparingOutreach,
+  onGenerateLeadOutreach,
 }: {
   lead: LeadgenLead;
   sourceDomain: string;
+  isPreparingOutreach: boolean;
+  onGenerateLeadOutreach: (leadId: string) => void;
 }) {
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
   const primaryDraft = lead.drafts[0];
   const primaryContact = lead.contacts[0];
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
   const descriptionLines = getLeadDescription(lead);
-  const hasEmailCta = recipients.length > 0;
+  const hasEmailCta = recipients.length > 0 && lead.drafts.length > 0;
+  const shouldPrepareOutreach =
+    lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length;
+  const showOutreachPanel =
+    primaryContact || primaryDraft || shouldPrepareOutreach;
 
   return (
     <article className="rounded-lg border border-border/70 bg-background/60 p-4">
@@ -463,42 +538,17 @@ function LeadCard({
         </div>
       </div>
 
-      {(primaryContact || primaryDraft) && (
-        <div className="mt-4 flex flex-col gap-3 border-t border-border/70 pt-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Outreach
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {primaryContact ? (
-                <>
-                  <span className="font-medium text-foreground">
-                    {primaryContact.name || primaryContact.email}
-                  </span>
-                  {primaryContact.title ? `, ${primaryContact.title}` : ''}
-                </>
-              ) : (
-                'Draft ready'
-              )}
-              {primaryDraft ? (
-                <>
-                  <span className="mx-2 text-border">/</span>
-                  <span>{primaryDraft.subject}</span>
-                </>
-              ) : null}
-            </p>
-          </div>
-          {hasEmailCta && (
-            <Button
-              size="sm"
-              onClick={() => setIsEmailDialogOpen(true)}
-              className="w-full sm:w-auto"
-            >
-              <Send data-icon="inline-start" />
-              Email lead
-            </Button>
-          )}
-        </div>
+      {showOutreachPanel && (
+        <LeadOutreachPanel
+          lead={lead}
+          primaryContact={primaryContact}
+          primaryDraft={primaryDraft}
+          hasEmailCta={hasEmailCta}
+          shouldPrepareOutreach={shouldPrepareOutreach}
+          isPreparingOutreach={isPreparingOutreach}
+          onGenerateLeadOutreach={onGenerateLeadOutreach}
+          onOpenEmailDialog={() => setIsEmailDialogOpen(true)}
+        />
       )}
       <LeadEmailDialog
         lead={lead}
@@ -508,6 +558,150 @@ function LeadCard({
         onOpenChange={setIsEmailDialogOpen}
       />
     </article>
+  );
+}
+
+function LeadOutreachPanel({
+  lead,
+  primaryContact,
+  primaryDraft,
+  hasEmailCta,
+  shouldPrepareOutreach,
+  isPreparingOutreach,
+  onGenerateLeadOutreach,
+  onOpenEmailDialog,
+}: {
+  lead: LeadgenLead;
+  primaryContact: LeadgenLead['contacts'][number] | undefined;
+  primaryDraft: LeadgenLead['drafts'][number] | undefined;
+  hasEmailCta: boolean;
+  shouldPrepareOutreach: boolean;
+  isPreparingOutreach: boolean;
+  onGenerateLeadOutreach: (leadId: string) => void;
+  onOpenEmailDialog: () => void;
+}) {
+  return (
+    <div className="mt-4 flex flex-col gap-3 border-t border-border/70 pt-3 lg:flex-row lg:items-center lg:justify-between">
+      <LeadOutreachSummary
+        primaryContact={primaryContact}
+        primaryDraft={primaryDraft}
+      />
+      <LeadOutreachActions
+        lead={lead}
+        hasEmailCta={hasEmailCta}
+        shouldPrepareOutreach={shouldPrepareOutreach}
+        isPreparingOutreach={isPreparingOutreach}
+        onGenerateLeadOutreach={onGenerateLeadOutreach}
+        onOpenEmailDialog={onOpenEmailDialog}
+      />
+    </div>
+  );
+}
+
+function LeadOutreachSummary({
+  primaryContact,
+  primaryDraft,
+}: {
+  primaryContact: LeadgenLead['contacts'][number] | undefined;
+  primaryDraft: LeadgenLead['drafts'][number] | undefined;
+}) {
+  return (
+    <div className="min-w-0">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        Outreach
+      </p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        <LeadOutreachSummaryText
+          primaryContact={primaryContact}
+          primaryDraft={primaryDraft}
+        />
+      </p>
+    </div>
+  );
+}
+
+function LeadOutreachSummaryText({
+  primaryContact,
+  primaryDraft,
+}: {
+  primaryContact: LeadgenLead['contacts'][number] | undefined;
+  primaryDraft: LeadgenLead['drafts'][number] | undefined;
+}) {
+  if (!primaryContact && !primaryDraft) {
+    return 'Contacts and draft are not prepared yet.';
+  }
+
+  return (
+    <>
+      {primaryContact ? (
+        <>
+          <span className="font-medium text-foreground">
+            {primaryContact.name || primaryContact.email}
+          </span>
+          {primaryContact.title ? `, ${primaryContact.title}` : ''}
+        </>
+      ) : (
+        'Draft ready'
+      )}
+      {primaryDraft && (
+        <>
+          <span className="mx-2 text-border">/</span>
+          <span>{primaryDraft.subject}</span>
+        </>
+      )}
+    </>
+  );
+}
+
+function LeadOutreachActions({
+  lead,
+  hasEmailCta,
+  shouldPrepareOutreach,
+  isPreparingOutreach,
+  onGenerateLeadOutreach,
+  onOpenEmailDialog,
+}: {
+  lead: LeadgenLead;
+  hasEmailCta: boolean;
+  shouldPrepareOutreach: boolean;
+  isPreparingOutreach: boolean;
+  onGenerateLeadOutreach: (leadId: string) => void;
+  onOpenEmailDialog: () => void;
+}) {
+  const prepareOutreachLabel =
+    lead.contacts.length === 0 ? 'Find contacts' : 'Draft email';
+  const PrepareOutreachIcon =
+    lead.contacts.length === 0 ? UserRoundSearch : Sparkles;
+
+  return (
+    <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+      {shouldPrepareOutreach && (
+        <Button
+          size="sm"
+          variant={hasEmailCta ? 'outline' : 'default'}
+          disabled={isPreparingOutreach}
+          onClick={() => onGenerateLeadOutreach(lead.id)}
+          className="w-full sm:w-auto"
+        >
+          {isPreparingOutreach ? (
+            <Loader2 data-icon="inline-start" className="animate-spin" />
+          ) : (
+            <PrepareOutreachIcon data-icon="inline-start" />
+          )}
+          {prepareOutreachLabel}
+        </Button>
+      )}
+      {hasEmailCta && (
+        <Button
+          size="sm"
+          onClick={onOpenEmailDialog}
+          className="w-full sm:w-auto"
+        >
+          <Send data-icon="inline-start" />
+          Email lead
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -683,7 +877,7 @@ function Timeline({
           <div className="flex flex-col gap-3">
             {visibleEvents.map((event) => (
               <div key={event.id} className="flex gap-3">
-                <div className="mt-1.5 size-2 shrink-0 rounded-full bg-cyan-300" />
+                <TimelineEventIcon event={event} />
                 <div className="min-w-0">
                   <p className="text-sm leading-5">{event.message}</p>
                   <p className="text-xs text-muted-foreground">
@@ -785,7 +979,7 @@ function LeadgenSkeleton() {
 }
 
 function getRunHeaderSubtitle(run: LeadgenSnapshot) {
-  const latestEvent = [...run.events].reverse().find(isDisplayableLeadgenEvent);
+  const latestEvent = getTimelineEvents(run.events).at(-1);
   if (latestEvent) return latestEvent.message;
   if (run.status === 'SUCCEEDED' && run.leadCount > 0) {
     return (
@@ -809,8 +1003,16 @@ function getRunHeaderSubtitle(run: LeadgenSnapshot) {
 function getTimelineEvents(events: LeadgenSnapshot['events']) {
   const visibleEvents: DisplayableLeadgenEvent[] = [];
   const seenMessages = new Set<string>();
+  const orderedEvents = events
+    .map((event, index) => ({ event, index }))
+    .sort((left, right) => {
+      const dateDelta =
+        new Date(left.event.createdAt).getTime() -
+        new Date(right.event.createdAt).getTime();
+      return dateDelta || left.index - right.index;
+    });
 
-  for (const event of events) {
+  for (const { event } of orderedEvents) {
     if (!isDisplayableLeadgenEvent(event)) continue;
 
     const dedupeKey = `${event.eventType}:${event.message}`;
@@ -821,6 +1023,48 @@ function getTimelineEvents(events: LeadgenSnapshot['events']) {
   }
 
   return visibleEvents;
+}
+
+function TimelineEventIcon({ event }: { event: DisplayableLeadgenEvent }) {
+  const Icon = getTimelineEventIcon(event);
+  return (
+    <div
+      className={cn(
+        'mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md border',
+        getTimelineEventIconClassName(event),
+      )}
+    >
+      <Icon className="size-3.5" />
+    </div>
+  );
+}
+
+function getTimelineEventIcon(event: DisplayableLeadgenEvent) {
+  if (event.eventType === 'error') return XCircle;
+  if (event.eventType === 'intent-queries') return Sparkles;
+  if (event.eventType === 'lead') return ArrowUpRight;
+  if (event.eventType === 'contact') return UserRoundSearch;
+  if (event.eventType === 'draft') return Send;
+  if (event.stage === 'complete') return CheckCircle2;
+  if (event.stage === 'contacts') return UserRoundSearch;
+  if (event.stage === 'search') return Search;
+  return Clock3;
+}
+
+function getTimelineEventIconClassName(event: DisplayableLeadgenEvent) {
+  if (event.eventType === 'error') {
+    return 'border-destructive/30 bg-destructive/10 text-destructive';
+  }
+  if (event.eventType === 'draft') {
+    return 'border-amber-300/30 bg-amber-300/10 text-amber-200';
+  }
+  if (event.eventType === 'contact' || event.stage === 'contacts') {
+    return 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200';
+  }
+  if (event.eventType === 'lead' || event.stage === 'search') {
+    return 'border-cyan-300/30 bg-cyan-300/10 text-cyan-200';
+  }
+  return 'border-border/70 bg-muted/40 text-muted-foreground';
 }
 
 function isDisplayableLeadgenEvent(
@@ -849,6 +1093,8 @@ function isDisplayableLeadgenEvent(
         hasPayloadString(event.payload, 'draftId') ||
         hasPayloadString(event.payload, 'contactEmail')
       );
+    case 'error':
+      return true;
     default:
       return false;
   }
@@ -1010,19 +1256,6 @@ function buildFallbackEmailDraft({
 
 function getFirstName(name: string | null) {
   return name?.trim().split(WHITESPACE_RE)[0] ?? '';
-}
-
-function buildMailtoHref({
-  to,
-  subject,
-  body,
-}: {
-  to: string;
-  subject: string;
-  body: string;
-}) {
-  const params = new URLSearchParams({ subject, body });
-  return `mailto:${to}?${params.toString()}`;
 }
 
 function openMailto(href: string) {

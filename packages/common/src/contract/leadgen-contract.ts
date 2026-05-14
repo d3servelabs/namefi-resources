@@ -105,6 +105,10 @@ const runIdInputSchema = z.object({
   runId: z.string().uuid(),
 });
 
+const generateLeadOutreachInputSchema = runIdInputSchema.extend({
+  leadId: z.string().uuid(),
+});
+
 const listRunsInputSchema = z
   .object({
     limit: z.number().int().min(1).max(50).default(12),
@@ -122,6 +126,11 @@ export const leadgenContract = createContract(
     getRun: {
       type: 'query',
       input: runIdInputSchema,
+      output: leadgenRunSnapshotSchema,
+    },
+    generateLeadOutreach: {
+      type: 'mutation',
+      input: generateLeadOutreachInputSchema,
       output: leadgenRunSnapshotSchema,
     },
     listRuns: {

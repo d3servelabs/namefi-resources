@@ -19,7 +19,7 @@ import {
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
-import { and, count, desc, eq } from 'drizzle-orm';
+import { and, count, desc, eq, isNull, or } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 
 const logger = createLogger({ module: 'leadgen-activities' });
@@ -49,6 +49,13 @@ export interface LeadgenSearchActivityParams {
   contactDiscoveryLimit?: number;
 }
 
+export interface GenerateLeadgenLeadOutreachParams {
+  runId: string;
+  leadId: string;
+  sourceDomain: string;
+  reasoningEffort: LeadgenReasoningEffort;
+}
+
 export interface CompleteLeadgenRunParams {
   runId: string;
 }
@@ -63,6 +70,7 @@ type ContactRow = typeof leadgenContactsTable.$inferSelect;
 type LeadgenSearchRuntime = {
   seenDomains: Set<string>;
   contactTasks: Map<string, Promise<void>>;
+  contactDiscoveryAnnounced: boolean;
   inserted: number;
   rank: number;
 };
@@ -134,6 +142,7 @@ export async function searchLeadgenProspectsActivity(
   const runtime: LeadgenSearchRuntime = {
     seenDomains: new Set<string>(),
     contactTasks: new Map<string, Promise<void>>(),
+    contactDiscoveryAnnounced: false,
     inserted: 0,
     rank: bucket === 'substring' ? 10_000 : 0,
   };
@@ -174,14 +183,6 @@ export async function searchLeadgenProspectsActivity(
   }
 
   if (runtime.contactTasks.size > 0) {
-    await persistLeadgenEvent({
-      runId,
-      eventType: 'status',
-      stage: 'contacts',
-      message: `Finding contacts for ${runtime.contactTasks.size} top ${runtime.contactTasks.size === 1 ? 'lead' : 'leads'}.`,
-      payload: { bucket, count: runtime.contactTasks.size },
-    });
-
     const results = await Promise.allSettled(runtime.contactTasks.values());
     for (const result of results) {
       if (result.status === 'rejected') {
@@ -328,11 +329,11 @@ async function persistSearchCandidates(params: {
     if (!lead) continue;
 
     params.runtime.inserted += 1;
-    scheduleContactDiscovery({ ...params, lead });
+    await scheduleContactDiscovery({ ...params, lead });
   }
 }
 
-function scheduleContactDiscovery(params: {
+async function scheduleContactDiscovery(params: {
   runId: string;
   sourceDomain: string;
   lead: LeadRow;
@@ -342,6 +343,20 @@ function scheduleContactDiscovery(params: {
 }) {
   if (params.runtime.contactTasks.size >= params.contactDiscoveryLimit) return;
   if (params.runtime.contactTasks.has(params.lead.businessDomain)) return;
+
+  if (!params.runtime.contactDiscoveryAnnounced) {
+    params.runtime.contactDiscoveryAnnounced = true;
+    await persistLeadgenEvent({
+      runId: params.runId,
+      eventType: 'status',
+      stage: 'contacts',
+      message: 'Finding contacts and drafting outreach for top leads.',
+      payload: {
+        bucket: params.lead.bucket,
+        contactDiscoveryLimit: params.contactDiscoveryLimit,
+      },
+    });
+  }
 
   params.runtime.contactTasks.set(
     params.lead.businessDomain,
@@ -466,45 +481,153 @@ async function persistLeadCandidate(params: {
   return lead;
 }
 
+/**
+ * On-demand activity for preparing outreach for one lead in an existing run.
+ *
+ * `runId` and `leadId` identify the persisted run and lead; the activity
+ * persists timeline events, finds contacts/drafts outreach, refreshes run
+ * counts, and returns those refreshed counts.
+ */
+export async function generateLeadgenLeadOutreachActivity({
+  runId,
+  leadId,
+  sourceDomain,
+  reasoningEffort,
+}: GenerateLeadgenLeadOutreachParams) {
+  const lead = await db.query.leadgenLeadsTable.findFirst({
+    where: and(
+      eq(leadgenLeadsTable.runId, runId),
+      eq(leadgenLeadsTable.id, leadId),
+    ),
+  });
+
+  if (!lead) {
+    throw new Error('Lead not found for this run');
+  }
+
+  await persistLeadgenEvent({
+    runId,
+    eventType: 'status',
+    stage: 'contacts',
+    message: `Finding contacts and drafting outreach for ${lead.businessDomain}.`,
+    payload: {
+      leadId: lead.id,
+      businessDomain: lead.businessDomain,
+    },
+  });
+
+  await discoverContactsAndDraft({
+    runId,
+    sourceDomain,
+    lead,
+    reasoningEffort,
+  });
+
+  const counts = await refreshLeadgenRunCounts(runId);
+
+  await persistLeadgenEvent({
+    runId,
+    eventType: 'status',
+    stage: 'contacts',
+    message: `Finished outreach prep for ${lead.businessDomain}.`,
+    payload: {
+      leadId: lead.id,
+      businessDomain: lead.businessDomain,
+      ...counts,
+    },
+  });
+
+  return counts;
+}
+
 async function discoverContactsAndDraft(params: {
   runId: string;
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
 }) {
+  const existingContacts = await loadCurrentContactsForLead({
+    runId: params.runId,
+    leadId: params.lead.id,
+    businessDomain: params.lead.businessDomain,
+  });
+
+  if (existingContacts.length > 0) {
+    await draftForSavedContacts({ ...params, contacts: existingContacts });
+    return;
+  }
+
   const cachedContacts = await loadCachedContactsForDomain({
     runId: params.runId,
     businessDomain: params.lead.businessDomain,
   });
 
   if (cachedContacts.length > 0) {
-    for (const cached of cachedContacts) {
-      const contact = await upsertContact({
-        runId: params.runId,
-        leadId: params.lead.id,
-        businessDomain: params.lead.businessDomain,
-        contact: {
-          email: cached.email,
-          name: cached.name ?? null,
-          title: cached.title ?? null,
-          sourceUrl: cached.sourceUrl ?? null,
-          context: cached.context ?? null,
-        },
-        notes: cached.notes ?? undefined,
-        fromCache: true,
-      });
-      await draftForContact({
-        runId: params.runId,
-        sourceDomain: params.sourceDomain,
-        lead: params.lead,
-        contact,
-        reasoningEffort: params.reasoningEffort,
-        fromCache: true,
-      });
-    }
+    await persistCachedContactsAndDraft({ ...params, cachedContacts });
     return;
   }
 
+  await discoverNewContactsAndDraft(params);
+}
+
+async function draftForSavedContacts(params: {
+  runId: string;
+  sourceDomain: string;
+  lead: LeadRow;
+  reasoningEffort: LeadgenReasoningEffort;
+  contacts: ContactRow[];
+}) {
+  for (const contact of params.contacts) {
+    await draftForContact({
+      runId: params.runId,
+      sourceDomain: params.sourceDomain,
+      lead: params.lead,
+      contact,
+      reasoningEffort: params.reasoningEffort,
+      fromCache: contact.fromCache,
+    });
+  }
+}
+
+async function persistCachedContactsAndDraft(params: {
+  runId: string;
+  sourceDomain: string;
+  lead: LeadRow;
+  reasoningEffort: LeadgenReasoningEffort;
+  cachedContacts: ContactRow[];
+}) {
+  for (const cached of params.cachedContacts) {
+    const contact = await upsertContact({
+      runId: params.runId,
+      leadId: params.lead.id,
+      businessDomain: params.lead.businessDomain,
+      contact: {
+        email: cached.email,
+        name: cached.name ?? null,
+        title: cached.title ?? null,
+        sourceUrl: cached.sourceUrl ?? null,
+        context: cached.context ?? null,
+      },
+      notes: cached.notes ?? undefined,
+      fromCache: true,
+    });
+    await draftForContact({
+      runId: params.runId,
+      sourceDomain: params.sourceDomain,
+      lead: params.lead,
+      contact,
+      reasoningEffort: params.reasoningEffort,
+      fromCache: true,
+    });
+  }
+}
+
+async function discoverNewContactsAndDraft(params: {
+  runId: string;
+  sourceDomain: string;
+  lead: LeadRow;
+  reasoningEffort: LeadgenReasoningEffort;
+}) {
   try {
     const result = await generateLeadgenContacts(
       [{ domain: params.lead.businessDomain }],
@@ -568,6 +691,27 @@ async function discoverContactsAndDraft(params: {
       },
     });
   }
+}
+
+async function loadCurrentContactsForLead(params: {
+  runId: string;
+  leadId: string;
+  businessDomain: string;
+}) {
+  return await db
+    .select()
+    .from(leadgenContactsTable)
+    .where(
+      and(
+        eq(leadgenContactsTable.runId, params.runId),
+        eq(leadgenContactsTable.businessDomain, params.businessDomain),
+        or(
+          eq(leadgenContactsTable.leadId, params.leadId),
+          isNull(leadgenContactsTable.leadId),
+        ),
+      ),
+    )
+    .orderBy(desc(leadgenContactsTable.createdAt));
 }
 
 async function loadCachedContactsForDomain(params: {
