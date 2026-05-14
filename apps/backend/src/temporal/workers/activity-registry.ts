@@ -12,6 +12,7 @@ import {
   GreetActivities,
   LogoAnimationActivities,
   PublicDigestAnimationActivities,
+  LeadgenActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import { TEMPORAL_ENUMS } from '../shared';
@@ -32,6 +33,7 @@ export const ACTIVITIES = {
     ...LogoGenerationActivities,
     ...LogoAnimationActivities,
     ...PublicDigestAnimationActivities,
+    ...LeadgenActivities,
 
     ...FreeClaimActivities,
     ...FreeClaimsCorrectionActivities,

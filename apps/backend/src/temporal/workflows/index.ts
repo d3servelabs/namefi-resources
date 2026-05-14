@@ -52,6 +52,7 @@ export * from './weekly-disable-auto-renewal.workflow';
 export * from './logo-generation.workflow';
 export * from './logo-animation.workflow';
 export * from './public-digest-animation.workflow';
+export * from './leadgen.workflow';
 export * from './cart-domains-popular.workflow';
 export * from './dream-domain-awaits.workflow';
 export * from './domain-traffic-surge.workflow';

@@ -19,7 +19,9 @@ import {
   Compass,
   CreditCard,
   Globe,
+  Palette,
   PenToolIcon,
+  Search,
   Sparkles,
   TrendingUp,
   Heart,
@@ -35,7 +37,16 @@ const ITEMS: NavItem[] = [
   { title: 'My Free Mints', href: '/free-mints', icon: Gift },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
   { title: 'Manage', href: '/manage', icon: PenToolIcon },
-  { title: "Just AI'ng™", href: '/ai-brand-generator', icon: Sparkles },
+  {
+    title: "Just AI'ng™",
+    href: '/ai-brand-generator',
+    icon: Sparkles,
+    pattern: /^\/(ai-brand-generator|leadgen)/,
+    submenu: [
+      { title: 'Branding', href: '/ai-brand-generator', icon: Palette },
+      { title: 'Leadgen', href: '/leadgen', icon: Search },
+    ],
+  },
   { title: 'Hunt', href: '/hunt', icon: TrendingUp },
 ];
 

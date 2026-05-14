@@ -6,6 +6,7 @@ import {
   type WorkerOptions,
 } from '@temporalio/worker';
 import { isNotNil } from 'ramda';
+import webpack from 'webpack';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import { type TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
@@ -83,6 +84,27 @@ export async function createWorker({
       activities: wrapActivities(activities),
       bundlerOptions: {
         ignoreModules: ['process', 'inspector'],
+        // Temporal workflow bundles must be self-contained and deterministic
+        // during replay, so avoid runtime chunks, split chunks, and external
+        // asset paths that could require dynamic loading.
+        webpackConfigHook(config) {
+          return {
+            ...config,
+            optimization: {
+              ...config.optimization,
+              runtimeChunk: false,
+              splitChunks: false,
+            },
+            output: {
+              ...config.output,
+              publicPath: '',
+            },
+            plugins: [
+              ...(config.plugins ?? []),
+              new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+            ],
+          };
+        },
       },
     });
 

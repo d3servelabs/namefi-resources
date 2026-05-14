@@ -43,7 +43,6 @@ import {
   Lock,
   FileCheck,
 } from 'lucide-react';
-import Link from 'next/link';
 import { NetworkLogo } from '@/components/network-logo';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { getShortAddress } from '@/lib/string';
@@ -181,14 +180,14 @@ function InfoTooltip({
         <TooltipContent className="max-w-xs">
           <p className="text-sm">{content}</p>
           {learnMoreUrl && (
-            <Link
+            <a
               href={learnMoreUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-brand-primary hover:underline mt-1 inline-block"
             >
               Learn more
-            </Link>
+            </a>
           )}
         </TooltipContent>
       </Tooltip>
@@ -401,18 +400,14 @@ function NFTOwnershipCard({
             variant="outline"
             className="w-full bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50"
             render={
-              <Link
-                href={explorerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
+              <a href={explorerUrl} target="_blank" rel="noopener noreferrer">
+                <FileCheck className="h-4 w-4 mr-2" />
+                Verify on Block Explorer
+                <ExternalLink className="h-3.5 w-3.5 ml-auto" />
+              </a>
             }
             nativeButton={false}
-          >
-            <FileCheck className="h-4 w-4 mr-2" />
-            Verify on Block Explorer
-            <ExternalLink className="h-3.5 w-3.5 ml-auto" />
-          </Button>
+          />
         )}
       </CardContent>
     </Card>

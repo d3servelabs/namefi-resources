@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noBarrelFile lint/performance/noReExportAll: expected */
 export * as MigrationActivities from './migration.activities';
 export * as GreetActivities from './greet.activities';
 export * as MintActivities from './mint/mint.activities';
@@ -16,3 +17,4 @@ export * as LogoAnimationActivities from './logo-animation.activities';
 export * as PublicDigestAnimationActivities from './public-digest-animation.activities';
 export * as PbnIssuanceReservationsActivities from './pbn-issuance-reservations.activities';
 export * as X402Activities from './x402.activities';
+export * as LeadgenActivities from './leadgen.activities';

@@ -70,12 +70,13 @@ export function usePoweredByNamefiDomain(
 
 /**
  * Adds powered by Namefi tracking parameters to a URL for email link tracking.
- * Automatically adds utm_source=email and powered-by-namefi domain parameters.
+ * Automatically adds utm_source=email and powered-by-namefi domain parameters
+ * when a powered-by domain is available, and always merges extra parameters.
  *
  * @param url - The base URL to modify
- * @param poweredByNamefiDomain - The domain being powered by Namefi. If null, returns original URL unchanged
+ * @param poweredByNamefiDomain - The domain being powered by Namefi. If provided, adds email tracking parameters.
  * @param extraSearchParams - Additional search parameters to add to the URL
- * @returns The modified URL with tracking parameters, or original URL if no domain provided
+ * @returns The modified URL with tracking and/or extra parameters, or original URL if both optional inputs are absent
  *
  * @example
  * ```tsx
@@ -92,14 +93,18 @@ export function addPoweredByNamefiToUrl(
   poweredByNamefiDomain: string | null,
   extraSearchParams?: Record<string, string>,
 ) {
-  if (!poweredByNamefiDomain) {
+  if (!poweredByNamefiDomain && !extraSearchParams) {
     return url;
   }
 
   return addSearchParamsToUrl(url, {
     ...(extraSearchParams ?? {}),
-    utm_source: 'email',
-    'powered-by-namefi': poweredByNamefiDomain,
+    ...(poweredByNamefiDomain
+      ? {
+          utm_source: 'email',
+          'powered-by-namefi': poweredByNamefiDomain,
+        }
+      : {}),
   });
 }
 

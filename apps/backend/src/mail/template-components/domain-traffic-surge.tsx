@@ -31,9 +31,21 @@ export type DomainTrafficSurgeProps = {
     weeklyQueries: number;
   }>;
   suggestedDomains?: NamefiNormalizedDomain[];
+  leadgen?: {
+    runId: string;
+    sourceDomain: NamefiNormalizedDomain;
+    leads: Array<{
+      leadId: string;
+      businessDomain: string;
+      rationale: string;
+      hasDraft?: boolean;
+    }>;
+  };
 };
 
 type TrafficDomain = DomainTrafficSurgeProps['domains'][number];
+
+const TRAFFIC_SURGE_LEAD_LIMIT = 5;
 
 const trafficColors = {
   void: '#05090E',
@@ -118,8 +130,30 @@ const trafficSurgeResponsiveCss = `
   }
 
   .traffic-surge-domain-name,
-  .traffic-surge-suggestion-domain {
+  .traffic-surge-suggestion-domain,
+  .traffic-surge-lead-domain {
     white-space: normal !important;
+  }
+
+  .traffic-surge-lead-table,
+  .traffic-surge-lead-table tbody,
+  .traffic-surge-lead-table tr,
+  .traffic-surge-lead-main,
+  .traffic-surge-lead-action-cell {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .traffic-surge-lead-action-cell {
+    box-sizing: border-box !important;
+    padding: 12px 0 0 !important;
+    text-align: left !important;
+  }
+
+  .traffic-surge-lead-action {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
   }
 }
 `;
@@ -430,6 +464,79 @@ const trafficSurgeStyles = {
     textAlign: 'center',
     textDecoration: 'none',
     width: '42px',
+  },
+  leadIntro: {
+    color: trafficColors.muted,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '15px',
+    lineHeight: '22px',
+    margin: '-12px 0 22px',
+  },
+  leadCard: {
+    backgroundColor: '#FFFFFF',
+    border: `1px solid ${trafficColors.greenBorder}`,
+    borderRadius: '14px',
+    boxShadow: '0 10px 28px rgba(0, 0, 0, 0.16)',
+    overflow: 'hidden',
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  leadCell: {
+    padding: '16px 18px',
+    verticalAlign: 'middle',
+  },
+  leadInnerTable: {
+    borderCollapse: 'collapse',
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  leadMainCell: {
+    padding: '0 16px 0 0',
+    verticalAlign: 'middle',
+    width: '100%',
+  },
+  leadActionCell: {
+    padding: '0',
+    textAlign: 'right',
+    verticalAlign: 'middle',
+    width: '116px',
+  },
+  leadDomain: {
+    color: trafficColors.textInverse,
+    fontFamily:
+      '"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono","Courier New",monospace',
+    fontSize: '16px',
+    fontWeight: 800,
+    lineHeight: '22px',
+    margin: '0 0 5px',
+    overflowWrap: 'anywhere',
+    wordBreak: 'normal',
+  },
+  leadRationale: {
+    color: trafficColors.mutedInverse,
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '13px',
+    lineHeight: '19px',
+    margin: '0',
+  },
+  leadAction: {
+    backgroundColor: trafficColors.green,
+    border: `1px solid ${trafficColors.greenStrong}`,
+    borderRadius: '9px',
+    color: trafficColors.textInverse,
+    display: 'inline-block',
+    fontFamily:
+      '"Outfit","Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    fontSize: '13px',
+    fontWeight: 900,
+    lineHeight: '40px',
+    padding: '0 15px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    textTransform: 'uppercase',
+    whiteSpace: 'nowrap',
   },
   footer: {
     backgroundColor: trafficColors.void,
@@ -1047,6 +1154,101 @@ function SuggestedDomainsSection({
   );
 }
 
+function LeadgenSection({
+  leadgen,
+  poweredByNamefiDomain,
+}: {
+  leadgen: NonNullable<DomainTrafficSurgeProps['leadgen']>;
+  poweredByNamefiDomain: string | null;
+}) {
+  const leads = leadgen.leads.slice(0, TRAFFIC_SURGE_LEAD_LIMIT);
+
+  return (
+    <div
+      className="traffic-surge-section"
+      style={trafficSurgeStyles.sectionDeep}
+    >
+      <Text style={trafficSurgeStyles.sectionHeading}>
+        Buyers to approach for {leadgen.sourceDomain}
+      </Text>
+      <Text style={trafficSurgeStyles.leadIntro}>
+        Astra found companies that could have a practical reason to upgrade to
+        this domain. Open any lead to review the saved run and tailor the draft.
+      </Text>
+      <div>
+        {leads.map((lead, index) => (
+          <table
+            key={lead.leadId}
+            role="presentation"
+            cellPadding="0"
+            cellSpacing="0"
+            width="100%"
+            style={{
+              ...trafficSurgeStyles.leadCard,
+              margin: index === leads.length - 1 ? '0' : '0 0 12px',
+            }}
+          >
+            <tbody>
+              <tr>
+                <td style={trafficSurgeStyles.leadCell}>
+                  <table
+                    role="presentation"
+                    cellPadding="0"
+                    cellSpacing="0"
+                    className="traffic-surge-lead-table"
+                    width="100%"
+                    style={trafficSurgeStyles.leadInnerTable}
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          className="traffic-surge-lead-main"
+                          style={trafficSurgeStyles.leadMainCell}
+                        >
+                          <Text
+                            className="traffic-surge-lead-domain"
+                            style={trafficSurgeStyles.leadDomain}
+                          >
+                            {lead.businessDomain}
+                          </Text>
+                          <Text style={trafficSurgeStyles.leadRationale}>
+                            {lead.rationale}
+                          </Text>
+                        </td>
+                        <td
+                          align="right"
+                          className="traffic-surge-lead-action-cell"
+                          style={trafficSurgeStyles.leadActionCell}
+                        >
+                          <a
+                            aria-label={`Open leadgen draft for ${lead.businessDomain}`}
+                            className="traffic-surge-lead-action"
+                            href={NamefiEmailLinks.leadgenRun({
+                              runId: leadgen.runId,
+                              poweredByNamefiDomain,
+                              extraSearchParams: {
+                                lead: lead.leadId,
+                                source: 'traffic-surge-email',
+                              },
+                            })}
+                            style={trafficSurgeStyles.leadAction}
+                          >
+                            {lead.hasDraft ? 'Open draft' : 'Open lead'}
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function TrafficEmailFooter({
   poweredByNamefiDomain,
 }: {
@@ -1105,6 +1307,8 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
     fallbackSubject: copyVariant.subject,
   });
   const suggestedDomains = props.suggestedDomains ?? [];
+  const leadgen =
+    props.leadgen && props.leadgen.leads.length > 0 ? props.leadgen : null;
 
   return (
     <Html>
@@ -1129,6 +1333,12 @@ export const DomainTrafficSurgeTemplate = (props: DomainTrafficSurgeProps) => {
                 poweredByNamefiDomain={poweredByNamefiDomain}
               />
             </>
+          ) : null}
+          {leadgen ? (
+            <LeadgenSection
+              leadgen={leadgen}
+              poweredByNamefiDomain={poweredByNamefiDomain}
+            />
           ) : null}
           {suggestedDomains.length > 0 ? (
             <SuggestedDomainsSection
@@ -1163,4 +1373,24 @@ export const domainTrafficSurgePreviewBase: DomainTrafficSurgeProps = {
     namefiNormalizedDomainSchema.parse('brightlabshq.com'),
     namefiNormalizedDomainSchema.parse('brightlabsteam.com'),
   ],
+  leadgen: {
+    runId: '00000000-0000-4000-8000-000000000000',
+    sourceDomain: namefiNormalizedDomainSchema.parse('brightlabs.com'),
+    leads: [
+      {
+        leadId: '00000000-0000-4000-8000-000000000001',
+        businessDomain: 'growthlabs.com',
+        rationale:
+          'Brand alignment with growth software and lab-style product positioning.',
+        hasDraft: true,
+      },
+      {
+        leadId: '00000000-0000-4000-8000-000000000002',
+        businessDomain: 'bright.ai',
+        rationale:
+          'AI positioning makes the domain a natural upgrade for brand authority.',
+        hasDraft: true,
+      },
+    ],
+  },
 };

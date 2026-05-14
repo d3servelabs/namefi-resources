@@ -3,6 +3,10 @@ import {
   aiGenerationsTable,
   apiKeysTable,
   cartItemsTable,
+  leadgenContactsTable,
+  leadgenEmailDraftsTable,
+  leadgenLeadsTable,
+  leadgenRunsTable,
   huntEdgesTable,
   linkSharesTable,
   orderItemsTable,
@@ -19,6 +23,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   cartItems: many(cartItemsTable),
   orders: many(ordersTable),
   aiGenerations: many(aiGenerationsTable),
+  leadgenRuns: many(leadgenRunsTable),
   wishlistedDomains: many(wishlistedDomainsTable),
   linkShares: many(linkSharesTable),
   feedbackResponses: many(feedbackResponsesTable),
@@ -75,6 +80,64 @@ export const aiGenerationsRelations = relations(
     user: one(usersTable, {
       fields: [aiGenerationsTable.userId],
       references: [usersTable.id],
+    }),
+  }),
+);
+
+export const leadgenRunsRelations = relations(
+  leadgenRunsTable,
+  ({ one, many }) => ({
+    user: one(usersTable, {
+      fields: [leadgenRunsTable.userId],
+      references: [usersTable.id],
+    }),
+    leads: many(leadgenLeadsTable),
+    contacts: many(leadgenContactsTable),
+    emailDrafts: many(leadgenEmailDraftsTable),
+  }),
+);
+
+export const leadgenLeadsRelations = relations(
+  leadgenLeadsTable,
+  ({ one, many }) => ({
+    run: one(leadgenRunsTable, {
+      fields: [leadgenLeadsTable.runId],
+      references: [leadgenRunsTable.id],
+    }),
+    contacts: many(leadgenContactsTable),
+    emailDrafts: many(leadgenEmailDraftsTable),
+  }),
+);
+
+export const leadgenContactsRelations = relations(
+  leadgenContactsTable,
+  ({ one, many }) => ({
+    run: one(leadgenRunsTable, {
+      fields: [leadgenContactsTable.runId],
+      references: [leadgenRunsTable.id],
+    }),
+    lead: one(leadgenLeadsTable, {
+      fields: [leadgenContactsTable.leadId],
+      references: [leadgenLeadsTable.id],
+    }),
+    emailDrafts: many(leadgenEmailDraftsTable),
+  }),
+);
+
+export const leadgenEmailDraftsRelations = relations(
+  leadgenEmailDraftsTable,
+  ({ one }) => ({
+    run: one(leadgenRunsTable, {
+      fields: [leadgenEmailDraftsTable.runId],
+      references: [leadgenRunsTable.id],
+    }),
+    lead: one(leadgenLeadsTable, {
+      fields: [leadgenEmailDraftsTable.leadId],
+      references: [leadgenLeadsTable.id],
+    }),
+    contact: one(leadgenContactsTable, {
+      fields: [leadgenEmailDraftsTable.contactId],
+      references: [leadgenContactsTable.id],
     }),
   }),
 );

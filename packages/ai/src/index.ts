@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noBarrelFile lint/performance/noReExportAll: package public API */
 import type { z } from 'zod';
 import {
   runLogoWorkflow as executeLogoWorkflow,
@@ -43,6 +44,9 @@ export const runLogoAnimationWorkflow = executeLogoAnimationWorkflow;
 export const runDigestAnimationWorkflow = executeDigestAnimationWorkflow;
 
 export * from './agents/dream-domain-suggestions';
+export * from './leadgen/agents';
+export * from './leadgen/domain';
+export * from './leadgen/types';
 export * from './types/generation';
 export * from './types/logo-options';
 export * from './workflows/digest-animation-workflow';

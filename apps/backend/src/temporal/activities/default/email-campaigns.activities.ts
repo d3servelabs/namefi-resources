@@ -41,6 +41,10 @@ import {
 import { getUserDomainSuggestions } from '../../../lib/email-campaigns/domain-suggestions';
 import { toDate } from '../../../services/email-campaigns/utils';
 import { config } from '#lib/env';
+import {
+  ensureDomainTrafficSurgeLeadgenRun,
+  getLeadgenEmailLeads,
+} from '#lib/leadgen/runs';
 
 const CART_DOMAINS_POPULAR_CAMPAIGN_KEY = 'cart-domains-popular';
 const DREAM_DOMAIN_AWAITS_CAMPAIGN_KEY = 'dream-domain-awaits';
@@ -211,6 +215,27 @@ async function markCampaignSendSent(recordId: string) {
     .where(eq(emailCampaignSendsTable.id, recordId));
 }
 
+async function mergeCampaignSendMetadata(
+  recordId: string,
+  metadata: EmailCampaignSendMetadata,
+) {
+  const record = await db.query.emailCampaignSendsTable.findFirst({
+    where: eq(emailCampaignSendsTable.id, recordId),
+    columns: { metadata: true },
+  });
+
+  await db
+    .update(emailCampaignSendsTable)
+    .set({
+      metadata: {
+        ...parseMetadata(record?.metadata),
+        ...metadata,
+      },
+      updatedAt: new Date(),
+    })
+    .where(eq(emailCampaignSendsTable.id, recordId));
+}
+
 async function isUserSubscribedToEmails(userId: string): Promise<boolean> {
   const user = await db.query.usersTable.findFirst({
     where: eq(usersTable.id, userId),
@@ -246,6 +271,7 @@ async function sendCampaignEmail({
     recipientEmail: string;
   }) => string;
   buildEmailContent: (args: {
+    recordId: string;
     variantIndex: number;
     recipientName: string;
     recipientEmail: string;
@@ -291,6 +317,7 @@ async function sendCampaignEmail({
         recipientEmail: userEmail,
       }) ?? copyVariant.subject;
     const emailContent = await buildEmailContent({
+      recordId,
       variantIndex,
       recipientName: fallbackRecipientName,
       recipientEmail: userEmail,
@@ -555,15 +582,78 @@ export async function sendDomainTrafficSurgeEmail({
         domains: limitedDomains,
         fallbackSubject: variant.subject,
       }),
-    buildEmailContent: ({ recipientName, recipientEmail, variantIndex }) =>
-      React.createElement(DomainTrafficSurge, {
+    buildEmailContent: async ({
+      recordId,
+      recipientName,
+      recipientEmail,
+      variantIndex,
+    }) => {
+      const leadgen = await getDomainTrafficSurgeLeadgenSection({
+        userId,
+        recordId,
+        periodStart: periodStartDate,
+        domains: limitedDomains,
+      });
+
+      return React.createElement(DomainTrafficSurge, {
         recipientName,
         recipientEmail,
         variant: variantIndex,
         domains: limitedDomains,
+        ...(leadgen ? { leadgen } : {}),
         suggestedDomains:
           suggestedDomains.length > 0 ? suggestedDomains : undefined,
-      }),
+      });
+    },
     errorLogMessage: 'Failed to send domain traffic surge email',
   });
+}
+
+async function getDomainTrafficSurgeLeadgenSection({
+  userId,
+  recordId,
+  periodStart,
+  domains,
+}: {
+  userId: string;
+  recordId: string;
+  periodStart: Date;
+  domains: DomainTrafficCandidate['domains'];
+}) {
+  const topDomain = domains[0]?.domain;
+  if (!topDomain) return null;
+
+  try {
+    const run = await ensureDomainTrafficSurgeLeadgenRun({
+      userId,
+      domain: topDomain,
+      campaignSendId: recordId,
+      periodStart,
+    });
+    const leads = await getLeadgenEmailLeads({ runId: run.id, limit: 5 });
+
+    if (leads.length === 0) {
+      return null;
+    }
+
+    await mergeCampaignSendMetadata(recordId, {
+      leadgenRunId: run.id,
+      leadgenSourceDomain: topDomain,
+      leadgenLeadCount: leads.length,
+    });
+
+    return {
+      runId: run.id,
+      sourceDomain: topDomain,
+      leads,
+    };
+  } catch (error) {
+    Context.current().log.warn('Skipping leadgen section for surge email', {
+      userId,
+      recordId,
+      domain: topDomain,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
 }

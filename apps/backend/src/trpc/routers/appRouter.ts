@@ -26,6 +26,7 @@ import { testSignedPayloadRouter } from './testSignedPayloadRouter';
 import { dnsCacheRouter } from './dnsCacheRouter';
 import { x402Router } from './x402Router';
 import { mlsRouter } from './mlsRouter';
+import { leadgenRouter } from './leadgenRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -52,6 +53,7 @@ export const appRouter = createTRPCRouter({
   feedback: feedbackRouter,
   dnsCache: dnsCacheRouter,
   mls: mlsRouter,
+  leadgen: leadgenRouter,
 
   version: publicProcedure
     .input(versionContract.input)

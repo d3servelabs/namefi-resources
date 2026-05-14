@@ -311,6 +311,9 @@ export const emailCampaignSendMetadataSchema = z
     cartItemDomains: z.array(z.string().min(1)).optional(),
     trafficDomainCount: z.number().int().min(0).optional(),
     trafficDomains: z.array(z.string().min(1)).optional(),
+    leadgenRunId: z.string().uuid().optional(),
+    leadgenSourceDomain: z.string().min(1).optional(),
+    leadgenLeadCount: z.number().int().min(0).optional(),
   })
   .strict();
 
@@ -900,11 +903,42 @@ export const aiGenerationStatusEnum = pgEnum('ai_generation_status', [
   'FAILED',
 ] as const);
 
+export const leadgenRunStatusEnum = pgEnum('leadgen_run_status', [
+  'QUEUED',
+  'RUNNING',
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELED',
+] as const);
+
+export const leadgenReasoningEffortEnum = pgEnum('leadgen_reasoning_effort', [
+  'low',
+  'medium',
+  'high',
+] as const);
+
+export const leadgenBucketEnum = pgEnum('leadgen_bucket', [
+  'general',
+  'substring',
+] as const);
+
 type AiGenerationTokenUsage = Array<{
   model: string;
   inputTokens: number;
   outputTokens: number;
 }>;
+
+type LeadgenRunInput = {
+  domain: NamefiNormalizedDomain;
+  reasoningEffort: 'low' | 'medium' | 'high';
+  runProfile?: 'full' | 'campaign_short';
+  source?: string;
+  maxIntentQueries?: number;
+  maxResultsPerQuery?: number;
+  contactDiscoveryLimit?: number;
+};
+
+type LeadgenMetadata = Record<string, unknown>;
 
 type CinematicAnimationModel =
   | 'veo-3.1-generate-preview'
@@ -1476,6 +1510,154 @@ export const internalAiGenerationsTable = pgTable(
     index('ai_internal_generations_domain_idx').on(table.domain),
     index('ai_internal_generations_type_idx').on(table.type),
     index('ai_internal_generations_batch_id_idx').on(table.batchId),
+  ],
+);
+
+export const leadgenRunsTable = pgTable(
+  'leadgen_runs',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
+    status: leadgenRunStatusEnum('status').notNull().default('QUEUED'),
+    reasoningEffort: leadgenReasoningEffortEnum('reasoning_effort')
+      .notNull()
+      .default('medium'),
+    workflowId: text('workflow_id').unique(),
+    errorMessage: text('error_message'),
+    summary: text('summary'),
+    leadCount: integer('lead_count').notNull().default(0),
+    contactCount: integer('contact_count').notNull().default(0),
+    draftCount: integer('draft_count').notNull().default(0),
+    input: jsonb('input').notNull().$type<LeadgenRunInput>(),
+    metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
+    ...lifecycleTimestamps,
+    ...timestamps,
+  },
+  (table) => [
+    index('leadgen_runs_user_created_idx').on(table.userId, table.createdAt),
+    index('leadgen_runs_user_status_idx').on(table.userId, table.status),
+    index('leadgen_runs_domain_idx').on(table.domain),
+  ],
+);
+
+export const leadgenEventsTable = pgTable(
+  'leadgen_events',
+  {
+    ...randomUuid,
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
+    eventType: text('event_type').notNull(),
+    stage: text('stage'),
+    message: text('message'),
+    payload: jsonb('payload').default({}).$type<LeadgenMetadata>(),
+    transient: boolean('transient').notNull().default(false),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (table) => [
+    index('leadgen_events_run_created_idx').on(table.runId, table.createdAt),
+  ],
+);
+
+export const leadgenLeadsTable = pgTable(
+  'leadgen_leads',
+  {
+    ...randomUuid,
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
+    businessDomain: text('business_domain').notNull(),
+    bucket: leadgenBucketEnum('bucket').notNull(),
+    query: text('query').notNull(),
+    rationale: text('rationale').notNull(),
+    content: text('content').notNull(),
+    rank: integer('rank').notNull().default(0),
+    metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
+    ...timestamps,
+  },
+  (table) => [
+    index('leadgen_leads_run_bucket_rank_idx').on(
+      table.runId,
+      table.bucket,
+      table.rank,
+    ),
+    unique('leadgen_leads_run_domain_bucket_unique').on(
+      table.runId,
+      table.businessDomain,
+      table.bucket,
+    ),
+  ],
+);
+
+export const leadgenContactsTable = pgTable(
+  'leadgen_contacts',
+  {
+    ...randomUuid,
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
+    leadId: uuid('lead_id').references(() => leadgenLeadsTable.id, {
+      onDelete: 'set null',
+    }),
+    businessDomain: text('business_domain').notNull(),
+    email: text('email').notNull(),
+    name: text('name'),
+    title: text('title'),
+    sourceUrl: text('source_url'),
+    context: text('context'),
+    notes: text('notes'),
+    errorMessage: text('error_message'),
+    fromCache: boolean('from_cache').notNull().default(false),
+    metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
+    ...timestamps,
+  },
+  (table) => [
+    index('leadgen_contacts_run_domain_idx').on(
+      table.runId,
+      table.businessDomain,
+    ),
+    unique('leadgen_contacts_run_domain_email_unique').on(
+      table.runId,
+      table.businessDomain,
+      table.email,
+    ),
+  ],
+);
+
+export const leadgenEmailDraftsTable = pgTable(
+  'leadgen_email_drafts',
+  {
+    ...randomUuid,
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
+    leadId: uuid('lead_id').references(() => leadgenLeadsTable.id, {
+      onDelete: 'set null',
+    }),
+    contactId: uuid('contact_id').references(() => leadgenContactsTable.id, {
+      onDelete: 'set null',
+    }),
+    businessDomain: text('business_domain').notNull(),
+    contactEmail: text('contact_email').notNull(),
+    subject: text('subject').notNull(),
+    fullEmail: text('full_email').notNull(),
+    fromCache: boolean('from_cache').notNull().default(false),
+    metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
+    ...timestamps,
+  },
+  (table) => [
+    index('leadgen_email_drafts_run_domain_idx').on(
+      table.runId,
+      table.businessDomain,
+    ),
+    unique('leadgen_email_drafts_run_domain_email_unique').on(
+      table.runId,
+      table.businessDomain,
+      table.contactEmail,
+    ),
   ],
 );
 

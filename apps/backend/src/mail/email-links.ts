@@ -53,6 +53,8 @@ export const NamefiEmailLinks = withPoweredByNamefiDomain({
   cart: () => `${baseUrl}/m/cart`,
   addToCartFromUrl: (args: { domain: string }) =>
     `${baseUrl}/m/cart?add_to_cart=${encodeURIComponent(args.domain)}`,
+  leadgenRun: (args: { runId: string }) =>
+    `${baseUrl}/leadgen/${encodeURIComponent(args.runId)}`,
 
   emailSubscription: () => `${baseUrl}/m/user/email/subscription`,
   freeMints: () => `${baseUrl}/m/user/rewards/domains`,

@@ -329,11 +329,21 @@ export async function runDnsvizGraphBuffered(
   opts: RunDnsvizGraphStreamOptions = {},
 ): Promise<Buffer> {
   const stream = runDnsvizGraphStream(probeJson, type, opts);
-  const chunks: Buffer[] = [];
+  const chunks: Array<Uint8Array<ArrayBuffer>> = [];
+  let byteLength = 0;
   for await (const c of stream) {
-    chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c as string));
+    const buffer = Buffer.from(c);
+    const chunk = new Uint8Array(buffer.byteLength);
+    chunk.set(buffer);
+    chunks.push(chunk);
+    byteLength += chunk.byteLength;
   }
-  const raw = Buffer.concat(chunks);
+  const raw = Buffer.allocUnsafe(byteLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    raw.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
   if (type !== 'html') return raw;
   const rewritten = rewriteDnsvizHtmlAssets(raw.toString('utf8'));
   return Buffer.from(rewritten, 'utf8');

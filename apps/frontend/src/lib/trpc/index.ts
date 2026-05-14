@@ -13,6 +13,7 @@ import type { domainConfigContract } from '@namefi-astra/common/contract/domain-
 import type { feedbackContract } from '@namefi-astra/common/contract/feedback-contract';
 import type { freeClaimsContract } from '@namefi-astra/common/contract/free-claims-contract';
 import type { huntContract } from '@namefi-astra/common/contract/hunt-contract';
+import type { leadgenContract } from '@namefi-astra/common/contract/leadgen-contract';
 import type { mlsContract } from '@namefi-astra/common/contract/mls-contract';
 import type { newsletterContract } from '@namefi-astra/common/contract/newsletter-contract';
 import type { ordersContract } from '@namefi-astra/common/contract/orders-contract';
@@ -61,6 +62,7 @@ type ContractBackedRecord = {
   feedback: ContractRouter<typeof feedbackContract>;
   freeClaims: ContractRouter<typeof freeClaimsContract>;
   hunt: ContractRouter<typeof huntContract>;
+  leadgen: ContractRouter<typeof leadgenContract>;
   mls: ContractRouter<typeof mlsContract>;
   newsletter: ContractRouter<typeof newsletterContract>;
   orders: ContractRouter<typeof ordersContract>;
@@ -111,15 +113,19 @@ export type TrpcErrorShape = {
 };
 
 export type AppRouter = {
+  // biome-ignore lint/style/useNamingConvention: matches tRPC internals.
   _def: TRPCRouterDef<
     {
+      // biome-ignore lint/suspicious/noExplicitAny: mirrors tRPC router definition generics.
       ctx: any;
+      // biome-ignore lint/suspicious/noExplicitAny: mirrors tRPC router definition generics.
       meta: any;
       errorShape: TrpcErrorShape;
       transformer: true;
     },
     ContractBackedRecord
   >;
+  // biome-ignore lint/suspicious/noExplicitAny: caller type is supplied by tRPC runtime.
   createCaller: any;
 };
 

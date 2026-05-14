@@ -138,4 +138,41 @@ describe('domain traffic surge formatting', () => {
     expect(html).not.toContain('>Add to cart<');
     expect(html).toContain('/m/cart?add_to_cart=brightlabshq.com');
   });
+
+  it('renders leadgen buyer leads with draft CTAs', async () => {
+    const html = await render(
+      createElement(DomainTrafficSurgeTemplate, {
+        recipientName: 'Jordan',
+        recipientEmail: 'jordan@example.com',
+        domains: [{ domain: domain('brightlabs.com'), weeklyQueries: 94_320 }],
+        leadgen: {
+          runId: '00000000-0000-4000-8000-000000000000',
+          sourceDomain: domain('brightlabs.com'),
+          leads: [
+            {
+              leadId: '00000000-0000-4000-8000-000000000001',
+              businessDomain: 'growthlabs.com',
+              rationale: 'Clear brand fit for growth software teams.',
+              hasDraft: true,
+            },
+          ],
+        },
+      }),
+      { pretty: false },
+    );
+    const normalizedHtml = html.replace(/<!--.*?-->/g, '');
+
+    expect(normalizedHtml).toContain('Buyers to approach for brightlabs.com');
+    expect(normalizedHtml).toContain('growthlabs.com');
+    expect(normalizedHtml).toContain(
+      'Clear brand fit for growth software teams.',
+    );
+    expect(normalizedHtml).toContain('Open draft');
+    expect(normalizedHtml).toContain(
+      '/leadgen/00000000-0000-4000-8000-000000000000',
+    );
+    expect(normalizedHtml).toContain(
+      'lead=00000000-0000-4000-8000-000000000001',
+    );
+  });
 });
