@@ -6,7 +6,19 @@ import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from '@namefi-astra/ui/components/shadcn/radio-group';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Tabs,
@@ -14,34 +26,26 @@ import {
   TabsList,
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
+import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
-import NumberFlow from '@number-flow/react';
 import {
   ArrowUpRight,
-  Building2,
   CheckCircle2,
   Clock3,
   Copy,
   ExternalLink,
-  FileText,
   Loader2,
   Mail,
   Play,
   Search,
+  Send,
   Sparkles,
-  Target,
   UserRoundSearch,
   XCircle,
   type LucideIcon,
 } from 'lucide-react';
-import {
-  AnimatePresence,
-  LayoutGroup,
-  motion,
-  useReducedMotion,
-} from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -52,7 +56,21 @@ type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
 type LeadgenLead = LeadgenSnapshot['leads'][number];
 type LeadgenEvent = LeadgenSnapshot['events'][number];
+type DisplayableLeadgenEvent = LeadgenEvent & { message: string };
+type LeadgenContact = LeadgenLead['contacts'][number];
 type ReasoningEffort = LeadgenSnapshot['reasoningEffort'];
+type OutreachRecipient = {
+  email: string;
+  name: string | null;
+  title: string | null;
+  context: string | null;
+  sourceUrl: string | null;
+};
+
+type EmailDraftContent = {
+  subject: string;
+  fullEmail: string;
+};
 
 const reasoningOptions: Array<{
   value: ReasoningEffort;
@@ -67,41 +85,8 @@ const DOMAIN_INPUT_ID = 'leadgen-domain-input';
 const DOMAIN_LIKE_RE = /^[a-z0-9-]+(\.[a-z0-9-]+)+$/;
 const PROTOCOL_RE = /^https?:\/\//;
 const TRAILING_DOT_RE = /\.$/;
+const WHITESPACE_RE = /\s+/g;
 const getLeadgenRunHref = (runId: string) => `/leadgen/${runId}` as Route;
-const layoutSpring = {
-  type: 'spring',
-  stiffness: 520,
-  damping: 42,
-  mass: 0.8,
-} as const;
-const softSpring = {
-  type: 'spring',
-  stiffness: 380,
-  damping: 34,
-  mass: 0.7,
-} as const;
-const leadgenStatusLabels = {
-  QUEUED: 'Queued',
-  RUNNING: 'Searching',
-  SUCCEEDED: 'Complete',
-  FAILED: 'Needs review',
-  CANCELED: 'Canceled',
-} satisfies Record<LeadgenSnapshot['status'], string>;
-const leadBucketLabels = {
-  general: 'Category match',
-  substring: 'Name match',
-} satisfies Record<LeadgenLead['bucket'], string>;
-const skeletonRows = ['first', 'second', 'third'];
-const negativeTimelineMessageRe =
-  /\b(?:no|not|failed|failure|error|without|couldn['’]?t|could not|didn['’]?t|did not|unable|invalid|canceled|cancelled)\b/i;
-
-function isActiveRunStatus(status: LeadgenSnapshot['status']) {
-  return status === 'QUEUED' || status === 'RUNNING';
-}
-
-function isTerminalRunStatus(status: LeadgenSnapshot['status']) {
-  return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
-}
 
 export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -145,7 +130,11 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         enabled: isAuthenticated && Boolean(activeRunId),
         onData(snapshot) {
           setLiveRun(snapshot);
-          if (isTerminalRunStatus(snapshot.status)) {
+          if (
+            snapshot.status === 'SUCCEEDED' ||
+            snapshot.status === 'FAILED' ||
+            snapshot.status === 'CANCELED'
+          ) {
             void queryClient.invalidateQueries({
               queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
             });
@@ -166,7 +155,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         });
       },
       onError(error) {
-        toast.error('Could not start buyer search', {
+        toast.error('Leadgen could not start', {
           description: error.message,
         });
       },
@@ -182,14 +171,13 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   }
 
   const run = liveRun ?? activeRunQuery.data ?? null;
-  const isRunning = run ? isActiveRunStatus(run.status) : false;
-  const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
+  const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const canSubmit = isLikelyDomain(domain) && !startRun.isPending;
 
   const handleSubmit = () => {
     const normalized = normalizeDomainInput(domain);
     if (!isLikelyDomain(normalized)) {
-      toast.error('Enter a domain', {
+      toast.error('Enter a real domain', {
         description: 'Use a domain you own or represent, like example.com.',
       });
       return;
@@ -211,13 +199,12 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
           <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
-                <h1 className="text-2xl font-semibold tracking-tight">
-                  Find buyers for your domains
-                </h1>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Enter a domain and get buyer angles, public contacts, and
-                  ready-to-send first drafts.
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Astra leadgen
                 </p>
+                <h1 className="mt-1 text-2xl font-semibold tracking-tight">
+                  Find buyers, emails, and first drafts.
+                </h1>
               </div>
               <div className="rounded-md bg-emerald-500/10 p-2 text-emerald-300">
                 <UserRoundSearch className="size-5" />
@@ -249,7 +236,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
               </div>
 
               <div>
-                <p className="mb-1.5 text-sm font-medium">Search depth</p>
+                <p className="mb-1.5 text-sm font-medium">Research depth</p>
                 <div className="grid grid-cols-3 gap-1 rounded-md bg-muted/40 p-1">
                   {reasoningOptions.map((option) => (
                     <button
@@ -282,7 +269,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 ) : (
                   <Play />
                 )}
-                Find buyers
+                Start leadgen
               </Button>
             </div>
           </section>
@@ -294,36 +281,16 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
           />
         </aside>
 
-        <main className="min-w-0 overflow-hidden rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
-          <LeadgenWorkspacePanel
-            isRunLoading={isRunLoading}
-            isRunning={isRunning}
-            run={run}
-          />
+        <main className="min-w-0 rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
+          {run ? (
+            <RunWorkspace run={run} isRunning={isRunning} />
+          ) : (
+            <EmptyWorkspace />
+          )}
         </main>
       </div>
     </PageShell>
   );
-}
-
-function LeadgenWorkspacePanel({
-  isRunLoading,
-  isRunning,
-  run,
-}: {
-  isRunLoading: boolean;
-  isRunning: boolean;
-  run: LeadgenSnapshot | null;
-}) {
-  if (isRunLoading) {
-    return <RunWorkspaceSkeleton />;
-  }
-
-  if (run) {
-    return <RunWorkspace run={run} isRunning={isRunning} />;
-  }
-
-  return <EmptyWorkspace />;
 }
 
 function RunWorkspace({
@@ -344,170 +311,131 @@ function RunWorkspace({
     return grouped;
   }, [run.leads]);
 
-  const latestEvent = [...run.events].reverse().find((event) => event.message);
+  const headerSubtitle = getRunHeaderSubtitle(run);
 
   return (
-    <LayoutGroup id={`leadgen-run-${run.id}`}>
-      <motion.div
-        layout
-        className="flex h-full min-h-[calc(100vh-8rem)] flex-col"
-        transition={{ layout: layoutSpring }}
-      >
-        <div className="relative overflow-hidden border-b border-border/70 p-5">
-          {isRunning && <WorkingBackdrop />}
-          <div className="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h2 className="text-2xl font-semibold tracking-tight">
-                  {run.domain}
-                </h2>
-                <RunStatusBadge status={run.status} />
-              </div>
-              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-                {latestEvent?.message ??
-                  'Namefi Leadgen AI is preparing buyer research for this domain.'}
-              </p>
+    <div className="flex h-full min-h-[calc(100vh-8rem)] flex-col">
+      <div className="border-b border-border/70 p-5">
+        <div className="flex min-h-[7rem] flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-2xl font-semibold tracking-tight">
+                {run.domain}
+              </h2>
+              <RunStatusBadge status={run.status} />
             </div>
-            <div className="grid grid-cols-3 gap-2 sm:min-w-[320px]">
-              <Metric label="Leads" value={run.leadCount} />
-              <Metric label="Contacts" value={run.contactCount} />
-              <Metric label="Drafts" value={run.draftCount} />
-            </div>
+            <p className="mt-2 min-h-10 max-w-2xl text-sm leading-5 text-muted-foreground line-clamp-2">
+              {headerSubtitle}
+            </p>
+          </div>
+          <div className="grid grid-cols-3 gap-2 sm:min-w-[320px]">
+            <Metric label="Leads" value={run.leadCount} />
+            <Metric label="Contacts" value={run.contactCount} />
+            <Metric label="Drafts" value={run.draftCount} />
           </div>
         </div>
 
-        <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <section className="min-w-0 overflow-auto p-5">
-            <AnimatePresence initial={false}>
-              {run.intentQueries.length > 0 && (
-                <motion.div
-                  layout
-                  className="mb-5"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{
-                    layout: layoutSpring,
-                    opacity: { duration: 0.2 },
-                  }}
-                >
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Buyer angles
-                  </p>
-                  <motion.div layout className="flex flex-wrap gap-2">
-                    <AnimatePresence initial={false}>
-                      {run.intentQueries.map((query, index) => (
-                        <motion.span
-                          layout
-                          key={query}
-                          className="rounded-md border border-border/70 bg-background/70 px-2.5 py-1 text-xs text-muted-foreground shadow-sm"
-                          initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -6, scale: 0.98 }}
-                          transition={{
-                            delay: index * 0.025,
-                            layout: layoutSpring,
-                            scale: { duration: 0.18 },
-                          }}
-                        >
-                          {query}
-                        </motion.span>
-                      ))}
-                    </AnimatePresence>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <Tabs defaultValue="general">
-              <TabsList>
-                <TabsTrigger value="general">
-                  <span className="inline-flex items-center gap-1.5">
-                    Likely buyers
-                    <NumberFlow value={buckets.general.length} />
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger value="substring">
-                  <span className="inline-flex items-center gap-1.5">
-                    Name matches
-                    <NumberFlow value={buckets.substring.length} />
-                  </span>
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="general" className="mt-4">
-                <LeadList leads={buckets.general} />
-              </TabsContent>
-              <TabsContent value="substring" className="mt-4">
-                <LeadList leads={buckets.substring} />
-              </TabsContent>
-            </Tabs>
-          </section>
-
-          <aside className="border-t border-border/70 p-5 lg:border-l lg:border-t-0">
-            <Timeline events={run.events} isRunning={isRunning} />
-          </aside>
+        <div className="mt-4 h-1 overflow-hidden rounded-full bg-muted/50">
+          <div
+            className={cn(
+              'h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-amber-300',
+              isRunning ? 'w-2/3 opacity-100' : 'w-full opacity-0',
+            )}
+          />
         </div>
-      </motion.div>
-    </LayoutGroup>
+      </div>
+
+      <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <section className="min-w-0 overflow-auto p-5">
+          {run.intentQueries.length > 0 && (
+            <div className="mb-5">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Buyer intent buckets
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {run.intentQueries.map((query) => (
+                  <span
+                    key={query}
+                    className="rounded-md border border-border/70 bg-background/60 px-2.5 py-1 text-xs text-muted-foreground"
+                  >
+                    {query}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <Tabs defaultValue="general">
+            <TabsList>
+              <TabsTrigger value="general">
+                Category leads ({buckets.general.length})
+              </TabsTrigger>
+              <TabsTrigger value="substring">
+                Exact matches ({buckets.substring.length})
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="general" className="mt-4">
+              <LeadList leads={buckets.general} sourceDomain={run.domain} />
+            </TabsContent>
+            <TabsContent value="substring" className="mt-4">
+              <LeadList leads={buckets.substring} sourceDomain={run.domain} />
+            </TabsContent>
+          </Tabs>
+        </section>
+
+        <aside className="min-h-0 border-t border-border/70 p-5 lg:border-l lg:border-t-0">
+          <Timeline events={run.events} isRunning={isRunning} />
+        </aside>
+      </div>
+    </div>
   );
 }
 
-function LeadList({ leads }: { leads: LeadgenLead[] }) {
+function LeadList({
+  leads,
+  sourceDomain,
+}: {
+  leads: LeadgenLead[];
+  sourceDomain: string;
+}) {
+  if (leads.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
+        Leads will appear here as soon as the run finds them.
+      </div>
+    );
+  }
+
   return (
-    <motion.div
-      layout
-      className="grid gap-3"
-      transition={{ layout: layoutSpring }}
-    >
-      <AnimatePresence initial={false}>
-        {leads.length === 0 ? (
-          <motion.div
-            key="empty-leads"
-            layout
-            className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ layout: layoutSpring, opacity: { duration: 0.18 } }}
-          >
-            Buyer matches will appear here as they are found.
-          </motion.div>
-        ) : (
-          leads.map((lead, index) => (
-            <LeadCard
-              key={`${lead.bucket}-${lead.businessDomain}`}
-              lead={lead}
-              index={index}
-            />
-          ))
-        )}
-      </AnimatePresence>
-    </motion.div>
+    <div className="grid gap-3">
+      {leads.map((lead) => (
+        <LeadCard
+          key={`${lead.bucket}-${lead.businessDomain}`}
+          lead={lead}
+          sourceDomain={sourceDomain}
+        />
+      ))}
+    </div>
   );
 }
 
-function LeadCard({ lead, index }: { lead: LeadgenLead; index: number }) {
+function LeadCard({
+  lead,
+  sourceDomain,
+}: {
+  lead: LeadgenLead;
+  sourceDomain: string;
+}) {
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
   const primaryDraft = lead.drafts[0];
   const primaryContact = lead.contacts[0];
+  const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
+  const descriptionLines = getLeadDescription(lead);
+  const hasEmailCta = recipients.length > 0;
 
   return (
-    <motion.article
-      layout
-      className="rounded-lg border border-border/70 bg-background/70 p-4 shadow-sm"
-      initial={{ opacity: 0, y: 16, scale: 0.985 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -10, scale: 0.985 }}
-      transition={{
-        delay: index * 0.025,
-        layout: layoutSpring,
-        opacity: { duration: 0.18 },
-        scale: { duration: 0.22 },
-      }}
-    >
-      <motion.div
-        layout
-        className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between"
-      >
+    <article className="rounded-lg border border-border/70 bg-background/60 p-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <a
@@ -519,110 +447,211 @@ function LeadCard({ lead, index }: { lead: LeadgenLead; index: number }) {
               {lead.businessDomain}
               <ExternalLink className="size-3.5" />
             </a>
-            <Badge variant="secondary">{leadBucketLabels[lead.bucket]}</Badge>
+            <Badge variant="secondary">{lead.bucket}</Badge>
           </div>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {lead.rationale}
-          </p>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {descriptionLines.map((line) => (
+              <p key={line} className="text-sm leading-6 text-muted-foreground">
+                {line}
+              </p>
+            ))}
+          </div>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
-          <TinyStat
-            icon={Mail}
-            value={lead.contacts.length}
-            label={lead.contacts.length === 1 ? 'contact' : 'contacts'}
-          />
-          <TinyStat
-            icon={Sparkles}
-            value={lead.drafts.length}
-            label={lead.drafts.length === 1 ? 'draft' : 'drafts'}
-          />
+          <TinyStat icon={Mail} label={`${lead.contacts.length} contacts`} />
+          <TinyStat icon={Sparkles} label={`${lead.drafts.length} drafts`} />
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        layout
-        className="mt-3 rounded-md border border-border/60 bg-muted/20 p-3 text-xs leading-5 text-muted-foreground"
-      >
-        {lead.content}
-      </motion.div>
-
-      <AnimatePresence initial={false}>
-        {(primaryContact || primaryDraft) && (
-          <motion.div
-            key="lead-results"
-            layout
-            className="mt-3 grid gap-3 xl:grid-cols-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ layout: layoutSpring, opacity: { duration: 0.18 } }}
-          >
-            <AnimatePresence initial={false}>
-              {primaryContact && (
-                <motion.div
-                  key={`contact-${primaryContact.id}`}
-                  layout
-                  className="rounded-md border border-emerald-500/20 bg-emerald-500/5 p-3"
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                  transition={{
-                    layout: softSpring,
-                    opacity: { duration: 0.2 },
-                  }}
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300">
-                    Contact found
-                  </p>
-                  <p className="mt-1 text-sm font-medium">
+      {(primaryContact || primaryDraft) && (
+        <div className="mt-4 flex flex-col gap-3 border-t border-border/70 pt-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              Outreach
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {primaryContact ? (
+                <>
+                  <span className="font-medium text-foreground">
                     {primaryContact.name || primaryContact.email}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {primaryContact.title || primaryContact.email}
-                  </p>
-                </motion.div>
+                  </span>
+                  {primaryContact.title ? `, ${primaryContact.title}` : ''}
+                </>
+              ) : (
+                'Draft ready'
               )}
-              {primaryDraft && (
-                <motion.div
-                  key={`draft-${primaryDraft.id}`}
-                  layout
-                  className="rounded-md border border-cyan-500/20 bg-cyan-500/5 p-3"
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                  transition={{
-                    layout: softSpring,
-                    opacity: { duration: 0.2 },
-                  }}
+              {primaryDraft ? (
+                <>
+                  <span className="mx-2 text-border">/</span>
+                  <span>{primaryDraft.subject}</span>
+                </>
+              ) : null}
+            </p>
+          </div>
+          {hasEmailCta && (
+            <Button
+              size="sm"
+              onClick={() => setIsEmailDialogOpen(true)}
+              className="w-full sm:w-auto"
+            >
+              <Send data-icon="inline-start" />
+              Email lead
+            </Button>
+          )}
+        </div>
+      )}
+      <LeadEmailDialog
+        lead={lead}
+        open={isEmailDialogOpen}
+        recipients={recipients}
+        sourceDomain={sourceDomain}
+        onOpenChange={setIsEmailDialogOpen}
+      />
+    </article>
+  );
+}
+
+function LeadEmailDialog({
+  lead,
+  open,
+  recipients,
+  sourceDomain,
+  onOpenChange,
+}: {
+  lead: LeadgenLead;
+  open: boolean;
+  recipients: OutreachRecipient[];
+  sourceDomain: string;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const [selectedEmail, setSelectedEmail] = useState(
+    recipients[0]?.email ?? '',
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    if (recipients.length === 0) {
+      setSelectedEmail('');
+      return;
+    }
+    const selectedEmailKey = normalizeEmailKey(selectedEmail);
+    if (
+      !recipients.some(
+        (recipient) => normalizeEmailKey(recipient.email) === selectedEmailKey,
+      )
+    ) {
+      setSelectedEmail(recipients[0]?.email ?? '');
+    }
+  }, [open, recipients, selectedEmail]);
+
+  const selectedEmailKey = normalizeEmailKey(selectedEmail);
+  const selectedRecipient =
+    recipients.find(
+      (recipient) => normalizeEmailKey(recipient.email) === selectedEmailKey,
+    ) ??
+    recipients[0] ??
+    null;
+  const selectedDraft = selectedRecipient
+    ? getEmailDraftForRecipient({
+        lead,
+        recipient: selectedRecipient,
+        sourceDomain,
+      })
+    : null;
+  const mailtoHref =
+    selectedRecipient && selectedDraft
+      ? buildMailtoHref({
+          to: selectedRecipient.email,
+          subject: selectedDraft.subject,
+          body: selectedDraft.fullEmail,
+        })
+      : null;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[620px]">
+        <DialogHeader>
+          <DialogTitle>Email {lead.businessDomain}</DialogTitle>
+          <DialogDescription>
+            Choose a recipient and open the draft in your email client.
+          </DialogDescription>
+        </DialogHeader>
+
+        {recipients.length > 0 && selectedRecipient && selectedDraft ? (
+          <div className="flex flex-col gap-4">
+            <RadioGroup
+              aria-label="Recipients"
+              value={selectedRecipient.email}
+              onValueChange={setSelectedEmail}
+              className="flex flex-col gap-2"
+            >
+              {recipients.map((recipient) => (
+                <label
+                  key={recipient.email}
+                  htmlFor={`leadgen-recipient-${lead.id}-${recipient.email}`}
+                  className="flex cursor-pointer items-start gap-3 rounded-md border border-border/70 p-3 hover:bg-muted/30"
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-300">
-                        Draft ready
-                      </p>
-                      <p className="mt-1 text-sm font-medium">
-                        {primaryDraft.subject}
-                      </p>
-                    </div>
-                    <Button
-                      aria-label="Copy draft"
-                      size="icon-xs"
-                      variant="ghost"
-                      onClick={() => copyDraft(primaryDraft.fullEmail)}
-                    >
-                      <Copy />
-                    </Button>
-                  </div>
-                  <p className="mt-2 line-clamp-3 text-xs leading-5 text-muted-foreground">
-                    {primaryDraft.fullEmail}
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                  <RadioGroupItem
+                    id={`leadgen-recipient-${lead.id}-${recipient.email}`}
+                    value={recipient.email}
+                    className="mt-0.5"
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-sm font-medium">
+                      {recipient.name || recipient.email}
+                    </span>
+                    <span className="block truncate text-xs text-muted-foreground">
+                      {recipient.title
+                        ? `${recipient.title} / ${recipient.email}`
+                        : recipient.email}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </RadioGroup>
+
+            <div className="flex flex-col gap-2">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Subject
+                </p>
+                <p className="mt-1 text-sm font-medium">
+                  {selectedDraft.subject}
+                </p>
+              </div>
+              <Textarea
+                aria-label="Draft preview"
+                readOnly
+                value={selectedDraft.fullEmail}
+                className="min-h-44 resize-none text-sm leading-6"
+              />
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Choose a lead with a saved email address to compose outreach.
+          </p>
         )}
-      </AnimatePresence>
-    </motion.article>
+
+        <DialogFooter>
+          {selectedDraft && (
+            <Button
+              variant="outline"
+              onClick={() => copyDraft(selectedDraft.fullEmail)}
+            >
+              <Copy data-icon="inline-start" />
+              Copy draft
+            </Button>
+          )}
+          {mailtoHref && (
+            <Button onClick={() => openMailto(mailtoHref)}>
+              <Mail data-icon="inline-start" />
+              Open email
+            </Button>
+          )}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -633,75 +662,40 @@ function Timeline({
   events: LeadgenSnapshot['events'];
   isRunning: boolean;
 }) {
-  const visibleEvents = useMemo(
-    () => events.filter((event) => isPositiveTimelineEvent(event)).slice(-18),
-    [events],
-  );
+  const visibleEvents = getTimelineEvents(events);
 
   return (
-    <motion.div layout transition={{ layout: layoutSpring }}>
+    <div className="flex h-full min-h-[360px] flex-col">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          Search updates
+          Run timeline
         </p>
-        {isRunning && <WorkingStatus />}
-      </div>
-      <motion.div layout className="relative space-y-3">
-        {visibleEvents.length === 0 ? (
-          <motion.p
-            key="empty-timeline"
-            layout
-            className="text-sm text-muted-foreground"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            Positive updates will appear as buyer matches land.
-          </motion.p>
-        ) : (
-          <>
-            <div className="absolute bottom-2 left-3 top-3 w-px bg-gradient-to-b from-border via-border to-transparent" />
-            <AnimatePresence initial={false}>
-              {visibleEvents.map((event) => {
-                const marker = getTimelineMarker(event);
-                const Icon = marker.icon;
-
-                return (
-                  <motion.div
-                    layout
-                    key={event.id}
-                    className="relative flex gap-3"
-                    initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
-                    transition={{
-                      layout: layoutSpring,
-                      opacity: { duration: 0.18 },
-                      filter: { duration: 0.18 },
-                    }}
-                  >
-                    <div
-                      className={cn(
-                        'mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-md border shadow-sm backdrop-blur',
-                        marker.className,
-                      )}
-                    >
-                      <Icon className="size-3.5" />
-                    </div>
-                    <div className="min-w-0 rounded-md border border-border/50 bg-background/45 px-3 py-2">
-                      <p className="text-sm leading-5">{event.message}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {formatTime(event.createdAt)}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </>
+        {isRunning && (
+          <span className="text-xs font-medium text-cyan-200">Live</span>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+        {visibleEvents.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            Events will appear after the worker claims this run.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {visibleEvents.map((event) => (
+              <div key={event.id} className="flex gap-3">
+                <div className="mt-1.5 size-2 shrink-0 rounded-full bg-cyan-300" />
+                <div className="min-w-0">
+                  <p className="text-sm leading-5">{event.message}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {formatTime(event.createdAt)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -717,67 +711,44 @@ function PastRuns({
   return (
     <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold">Recent searches</h2>
+        <h2 className="text-sm font-semibold">Past runs</h2>
         <Clock3 className="size-4 text-muted-foreground" />
       </div>
       {isLoading ? (
         <div className="space-y-2">
-          {skeletonRows.map((row) => (
-            <div
-              key={`past-run-${row}`}
-              className="rounded-md border border-border/70 bg-background/40 p-3"
-            >
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="mt-2 h-3 w-20" />
-            </div>
-          ))}
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
         </div>
       ) : runs.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          Your buyer searches will stay here.
+          Your completed and in-progress runs will stay here.
         </p>
       ) : (
-        <motion.div layout className="space-y-2">
-          <AnimatePresence initial={false}>
-            {runs.map((run) => (
-              <motion.div
-                layout
-                key={run.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{
-                  layout: layoutSpring,
-                  opacity: { duration: 0.18 },
-                }}
-              >
-                <Link
-                  href={getLeadgenRunHref(run.id)}
-                  className={cn(
-                    'block rounded-md border p-3 transition-colors hover:bg-muted/40',
-                    run.id === activeRunId
-                      ? 'border-primary/60 bg-primary/5'
-                      : 'border-border/70 bg-background/40',
-                  )}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="truncate text-sm font-medium">
-                      {run.domain}
-                    </span>
-                    <RunStatusIcon status={run.status} />
-                  </div>
-                  <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <NumberFlow value={run.leadCount} />
-                    leads
-                    <span className="text-border">/</span>
-                    <NumberFlow value={run.draftCount} />
-                    drafts
-                  </p>
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <div className="space-y-2">
+          {runs.map((run) => (
+            <Link
+              key={run.id}
+              href={getLeadgenRunHref(run.id)}
+              className={cn(
+                'block rounded-md border p-3 transition-colors hover:bg-muted/40',
+                run.id === activeRunId
+                  ? 'border-primary/60 bg-primary/5'
+                  : 'border-border/70 bg-background/40',
+              )}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="truncate text-sm font-medium">
+                  {run.domain}
+                </span>
+                <RunStatusIcon status={run.status} />
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {run.leadCount} leads · {run.draftCount} drafts
+              </p>
+            </Link>
+          ))}
+        </div>
       )}
     </section>
   );
@@ -794,9 +765,8 @@ function EmptyWorkspace() {
           Start with the domain, not a spreadsheet.
         </h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Namefi Leadgen AI will infer buyer angles, search for company
-          websites, find public emails for the first leads, and draft outreach
-          as results land.
+          Astra will infer buyer angles, search for company websites, find
+          public emails for the first leads, and draft outreach as results land.
         </p>
       </div>
     </div>
@@ -806,313 +776,277 @@ function EmptyWorkspace() {
 function LeadgenSkeleton() {
   return (
     <PageShell size="full" padding="none" shellClassName="px-5 py-6 lg:px-8">
-      <div className="grid min-h-[calc(100vh-8rem)] gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
-        <aside className="flex flex-col gap-4">
-          <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div className="flex-1">
-                <Skeleton className="h-7 w-56" />
-                <Skeleton className="mt-3 h-4 w-full" />
-                <Skeleton className="mt-2 h-4 w-4/5" />
-              </div>
-              <Skeleton className="size-9 rounded-md" />
-            </div>
-            <div className="space-y-3">
-              <div>
-                <Skeleton className="mb-2 h-4 w-24" />
-                <Skeleton className="h-10 w-full rounded-md" />
-              </div>
-              <div>
-                <Skeleton className="mb-2 h-4 w-24" />
-                <div className="grid grid-cols-3 gap-1 rounded-md bg-muted/30 p-1">
-                  {skeletonRows.map((row) => (
-                    <Skeleton
-                      key={`depth-${row}`}
-                      className="h-12 rounded-sm"
-                    />
-                  ))}
-                </div>
-              </div>
-              <Skeleton className="h-10 w-full rounded-md" />
-            </div>
-          </section>
-          <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
-            <div className="mb-3 flex items-center justify-between">
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="size-4 rounded-full" />
-            </div>
-            <div className="space-y-2">
-              {skeletonRows.map((row) => (
-                <div
-                  key={`history-${row}`}
-                  className="rounded-md border border-border/70 bg-background/40 p-3"
-                >
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="mt-2 h-3 w-24" />
-                </div>
-              ))}
-            </div>
-          </section>
-        </aside>
-        <main className="min-w-0 overflow-hidden rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
-          <RunWorkspaceSkeleton />
-        </main>
+      <div className="grid gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
+        <Skeleton className="h-[520px] rounded-lg" />
+        <Skeleton className="h-[620px] rounded-lg" />
       </div>
     </PageShell>
   );
 }
 
-function RunWorkspaceSkeleton() {
-  return (
-    <div className="flex h-full min-h-[calc(100vh-8rem)] flex-col">
-      <div className="relative overflow-hidden border-b border-border/70 p-5">
-        <WorkingBackdrop />
-        <div className="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-7 w-44" />
-              <Skeleton className="h-6 w-20 rounded-full" />
-            </div>
-            <Skeleton className="mt-3 h-4 w-full max-w-xl" />
-            <Skeleton className="mt-2 h-4 w-2/3 max-w-md" />
-          </div>
-          <div className="grid grid-cols-3 gap-2 sm:min-w-[320px]">
-            {skeletonRows.map((row) => (
-              <div
-                key={`metric-${row}`}
-                className="rounded-md border border-border/70 bg-background/70 p-3"
-              >
-                <Skeleton className="h-3 w-14" />
-                <Skeleton className="mt-3 h-7 w-10" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+function getRunHeaderSubtitle(run: LeadgenSnapshot) {
+  const latestEvent = [...run.events].reverse().find(isDisplayableLeadgenEvent);
+  if (latestEvent) return latestEvent.message;
+  if (run.status === 'SUCCEEDED' && run.leadCount > 0) {
+    return (
+      run.summary ??
+      `Found ${run.leadCount} leads, ${run.contactCount} contacts, and ${run.draftCount} drafts.`
+    );
+  }
 
-      <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <section className="min-w-0 p-5">
-          <div className="mb-5">
-            <Skeleton className="mb-2 h-3 w-24" />
-            <div className="flex flex-wrap gap-2">
-              {skeletonRows.map((row) => (
-                <Skeleton
-                  key={`intent-${row}`}
-                  className="h-7 w-28 rounded-md"
-                />
-              ))}
-            </div>
-          </div>
-          <div className="mb-4 flex gap-2">
-            <Skeleton className="h-9 w-28 rounded-md" />
-            <Skeleton className="h-9 w-28 rounded-md" />
-          </div>
-          <div className="grid gap-3">
-            {skeletonRows.map((row) => (
-              <div
-                key={`lead-${row}`}
-                className="rounded-lg border border-border/70 bg-background/70 p-4"
-              >
-                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                  <div className="min-w-0 flex-1">
-                    <Skeleton className="h-5 w-40" />
-                    <Skeleton className="mt-3 h-4 w-full" />
-                    <Skeleton className="mt-2 h-4 w-4/5" />
-                  </div>
-                  <div className="flex gap-2">
-                    <Skeleton className="h-7 w-20 rounded-md" />
-                    <Skeleton className="h-7 w-20 rounded-md" />
-                  </div>
-                </div>
-                <Skeleton className="mt-3 h-16 w-full rounded-md" />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <aside className="border-t border-border/70 p-5 lg:border-l lg:border-t-0">
-          <div className="mb-3 flex items-center justify-between">
-            <Skeleton className="h-3 w-28" />
-            <Skeleton className="h-5 w-16 rounded-full" />
-          </div>
-          <div className="space-y-3">
-            {skeletonRows.map((row) => (
-              <div key={`timeline-${row}`} className="flex gap-3">
-                <Skeleton className="mt-1 size-2 rounded-full" />
-                <div className="flex-1 rounded-md border border-border/50 bg-background/45 px-3 py-2">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="mt-2 h-3 w-16" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </aside>
-      </div>
-    </div>
-  );
+  switch (run.status) {
+    case 'SUCCEEDED':
+      return 'Research complete.';
+    case 'FAILED':
+    case 'CANCELED':
+      return 'This run has ended. Any saved leads remain available below.';
+    case 'QUEUED':
+    case 'RUNNING':
+      return 'Astra is researching buyer angles, contacts, and outreach drafts.';
+  }
 }
 
-function WorkingBackdrop() {
-  const prefersReducedMotion = useReducedMotion();
+function getTimelineEvents(events: LeadgenSnapshot['events']) {
+  const visibleEvents: DisplayableLeadgenEvent[] = [];
+  const seenMessages = new Set<string>();
 
-  return (
-    <div className="pointer-events-none absolute inset-0">
-      <motion.div
-        className="absolute inset-0 opacity-45"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 1px 1px, rgba(103, 232, 249, 0.22) 1px, transparent 0)',
-          backgroundSize: '18px 18px',
-        }}
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : { backgroundPosition: ['0px 0px', '18px 18px'] }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : {
-                duration: 1.8,
-                ease: 'linear',
-                repeat: Number.POSITIVE_INFINITY,
-              }
-        }
-      />
-      {!prefersReducedMotion && (
-        <motion.div
-          className="absolute -inset-y-16 left-0 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent blur-xl"
-          animate={{ x: ['-150%', '360%'] }}
-          transition={{
-            duration: 2.2,
-            ease: [0.22, 1, 0.36, 1],
-            repeat: Number.POSITIVE_INFINITY,
-            repeatDelay: 0.35,
-          }}
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-r from-card/75 via-card/45 to-card/75" />
-    </div>
-  );
+  for (const event of events) {
+    if (!isDisplayableLeadgenEvent(event)) continue;
+
+    const dedupeKey = `${event.eventType}:${event.message}`;
+    if (seenMessages.has(dedupeKey)) continue;
+
+    seenMessages.add(dedupeKey);
+    visibleEvents.push(event);
+  }
+
+  return visibleEvents;
 }
 
-function WorkingStatus() {
-  const prefersReducedMotion = useReducedMotion();
+function isDisplayableLeadgenEvent(
+  event: LeadgenEvent,
+): event is DisplayableLeadgenEvent {
+  const message = event.message?.trim();
+  if (!message || event.transient) return false;
 
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-0.5 text-[11px] font-medium text-cyan-200">
-      <motion.span
-        className="size-1.5 rounded-full bg-cyan-200"
-        animate={
-          prefersReducedMotion ? undefined : { opacity: [0.35, 1, 0.35] }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : {
-                duration: 1.2,
-                ease: 'easeInOut',
-                repeat: Number.POSITIVE_INFINITY,
-              }
-        }
-      />
-      Working
-    </span>
-  );
+  switch (event.eventType) {
+    case 'status':
+      return isDisplayableStatusEvent(event);
+    case 'intent-queries':
+      return getPayloadArray(event.payload, 'queries').length > 0;
+    case 'lead':
+      return (
+        hasPayloadString(event.payload, 'leadId') ||
+        hasPayloadString(event.payload, 'businessDomain')
+      );
+    case 'contact':
+      return (
+        hasPayloadString(event.payload, 'contactId') ||
+        hasPayloadString(event.payload, 'email')
+      );
+    case 'draft':
+      return (
+        hasPayloadString(event.payload, 'draftId') ||
+        hasPayloadString(event.payload, 'contactEmail')
+      );
+    default:
+      return false;
+  }
 }
 
-function isPositiveTimelineEvent(event: LeadgenEvent) {
-  if (!event.message || event.transient || event.eventType === 'error') {
-    return false;
-  }
-
-  return !negativeTimelineMessageRe.test(event.message);
-}
-
-function getTimelineMarker(event: LeadgenEvent): {
-  icon: LucideIcon;
-  className: string;
-} {
-  if (event.eventType === 'intent-queries' || event.stage === 'intent') {
-    return {
-      icon: Target,
-      className: 'border-amber-300/25 bg-amber-300/10 text-amber-200',
-    };
-  }
-
-  if (event.eventType === 'lead') {
-    return {
-      icon: Building2,
-      className: 'border-emerald-300/25 bg-emerald-300/10 text-emerald-200',
-    };
-  }
-
-  if (event.eventType === 'contact') {
-    return {
-      icon: Mail,
-      className: 'border-sky-300/25 bg-sky-300/10 text-sky-200',
-    };
-  }
-
-  if (event.eventType === 'draft') {
-    return {
-      icon: FileText,
-      className: 'border-violet-300/25 bg-violet-300/10 text-violet-200',
-    };
-  }
-
+function isDisplayableStatusEvent(event: LeadgenEvent) {
   if (event.stage === 'complete') {
-    return {
-      icon: CheckCircle2,
-      className: 'border-emerald-300/25 bg-emerald-300/10 text-emerald-200',
-    };
+    return getPayloadNumber(event.payload, 'leadCount') > 0;
   }
 
-  if (event.eventType === 'search-progress' || event.stage === 'search') {
-    return {
-      icon: Search,
-      className: 'border-cyan-300/25 bg-cyan-300/10 text-cyan-200',
-    };
+  return (
+    event.stage === 'intent' ||
+    event.stage === 'search' ||
+    event.stage === 'contacts'
+  );
+}
+
+function getPayloadRecord(payload: unknown): Record<string, unknown> {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    return {};
   }
+
+  return payload as Record<string, unknown>;
+}
+
+function getPayloadArray(payload: unknown, key: string) {
+  const value = getPayloadRecord(payload)[key];
+  return Array.isArray(value) ? value : [];
+}
+
+function getPayloadNumber(payload: unknown, key: string) {
+  const value = getPayloadRecord(payload)[key];
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+function hasPayloadString(payload: unknown, key: string) {
+  const value = getPayloadRecord(payload)[key];
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function getLeadDescription(lead: LeadgenLead) {
+  const lines = [lead.rationale.trim()];
+  const content = lead.content.trim();
+
+  if (content && !isDuplicateLeadText(lines[0], content)) {
+    lines.push(content);
+  }
+
+  return lines;
+}
+
+function isDuplicateLeadText(primary: string, secondary: string) {
+  const normalizedPrimary = normalizeComparableText(primary);
+  const normalizedSecondary = normalizeComparableText(secondary);
+
+  if (!normalizedPrimary || !normalizedSecondary) return false;
+  return (
+    normalizedPrimary === normalizedSecondary ||
+    normalizedPrimary.includes(normalizedSecondary) ||
+    normalizedSecondary.includes(normalizedPrimary)
+  );
+}
+
+function normalizeComparableText(value: string) {
+  return value.toLowerCase().replace(WHITESPACE_RE, ' ').trim();
+}
+
+function normalizeEmailKey(email: string) {
+  return email.trim().toLowerCase();
+}
+
+function getOutreachRecipients(lead: LeadgenLead) {
+  const recipients = new Map<string, OutreachRecipient>();
+
+  for (const contact of lead.contacts) {
+    recipients.set(
+      normalizeEmailKey(contact.email),
+      mapContactToRecipient(contact),
+    );
+  }
+
+  for (const draft of lead.drafts) {
+    const emailKey = normalizeEmailKey(draft.contactEmail);
+    if (!recipients.has(emailKey)) {
+      recipients.set(emailKey, {
+        email: draft.contactEmail.trim(),
+        name: null,
+        title: null,
+        context: null,
+        sourceUrl: null,
+      });
+    }
+  }
+
+  return [...recipients.values()];
+}
+
+function mapContactToRecipient(contact: LeadgenContact): OutreachRecipient {
+  return {
+    email: contact.email.trim(),
+    name: contact.name,
+    title: contact.title,
+    context: contact.context,
+    sourceUrl: contact.sourceUrl,
+  };
+}
+
+function getEmailDraftForRecipient({
+  lead,
+  recipient,
+  sourceDomain,
+}: {
+  lead: LeadgenLead;
+  recipient: OutreachRecipient;
+  sourceDomain: string;
+}): EmailDraftContent {
+  const recipientEmailKey = normalizeEmailKey(recipient.email);
+  const draft = lead.drafts.find(
+    (candidate) =>
+      normalizeEmailKey(candidate.contactEmail) === recipientEmailKey,
+  );
+
+  return draft ?? buildFallbackEmailDraft({ lead, recipient, sourceDomain });
+}
+
+function buildFallbackEmailDraft({
+  lead,
+  recipient,
+  sourceDomain,
+}: {
+  lead: LeadgenLead;
+  recipient: OutreachRecipient;
+  sourceDomain: string;
+}): EmailDraftContent {
+  const firstName = getFirstName(recipient.name);
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,';
+  const evidence = lead.content.trim();
+  const body = [
+    greeting,
+    '',
+    `I'm reaching out because ${lead.businessDomain} looks aligned with ${sourceDomain}. ${lead.rationale.trim()}`,
+    evidence && !isDuplicateLeadText(lead.rationale, evidence)
+      ? `I also noticed: ${evidence}`
+      : null,
+    '',
+    'Would you be open to a quick call to discuss acquiring this domain?',
+    '',
+    'Best,',
+    'Domain Acquisition Team',
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   return {
-    icon: Sparkles,
-    className: 'border-border bg-muted/30 text-muted-foreground',
+    subject: `Acquiring ${sourceDomain}`,
+    fullEmail: body,
   };
+}
+
+function getFirstName(name: string | null) {
+  return name?.trim().split(WHITESPACE_RE)[0] ?? '';
+}
+
+function buildMailtoHref({
+  to,
+  subject,
+  body,
+}: {
+  to: string;
+  subject: string;
+  body: string;
+}) {
+  const params = new URLSearchParams({ subject, body });
+  return `mailto:${to}?${params.toString()}`;
+}
+
+function openMailto(href: string) {
+  window.location.href = href;
 }
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <motion.div
-      layout
-      className="rounded-md border border-border/70 bg-background/70 p-3 shadow-sm"
-      transition={{ layout: layoutSpring }}
-    >
+    <div className="min-h-[72px] rounded-md border border-border/70 bg-background/60 p-3">
       <p className="text-xs text-muted-foreground">{label}</p>
-      <NumberFlow
-        value={value}
-        className="mt-1 block text-2xl font-semibold tabular-nums"
-      />
-    </motion.div>
+      <p
+        aria-live="polite"
+        className="mt-1 text-2xl font-semibold tabular-nums"
+      >
+        {value}
+      </p>
+    </div>
   );
 }
 
-function TinyStat({
-  icon: Icon,
-  value,
-  label,
-}: {
-  icon: LucideIcon;
-  value: number;
-  label: string;
-}) {
+function TinyStat({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
     <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-muted/30 px-2 py-1 text-xs text-muted-foreground">
       <Icon className="size-3.5" />
-      <NumberFlow
-        value={value}
-        className="font-medium tabular-nums text-foreground"
-      />
       {label}
     </span>
   );
@@ -1126,7 +1060,7 @@ function RunStatusBadge({ status }: { status: LeadgenSnapshot['status'] }) {
       variant={isFailed ? 'destructive' : isDone ? 'secondary' : 'outline'}
       className={cn(!isFailed && !isDone && 'border-cyan-400/50 text-cyan-200')}
     >
-      {leadgenStatusLabels[status]}
+      {status.toLowerCase()}
     </Badge>
   );
 }
@@ -1155,11 +1089,12 @@ function normalizeDomainInput(value: string) {
     .replace(TRAILING_DOT_RE, '');
 }
 
-function formatTime(value: Date) {
+function formatTime(value: Date | string) {
+  const date = value instanceof Date ? value : new Date(value);
   return new Intl.DateTimeFormat(undefined, {
     hour: 'numeric',
     minute: '2-digit',
-  }).format(value);
+  }).format(date);
 }
 
 function copyDraft(value: string) {

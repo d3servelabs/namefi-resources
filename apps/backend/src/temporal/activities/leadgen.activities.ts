@@ -107,10 +107,11 @@ export async function generateLeadgenIntentsActivity({
     runId,
     eventType: 'intent-queries',
     stage: 'intent',
-    message:
-      queries.length > 0
-        ? `Built ${queries.length} buyer search ${queries.length === 1 ? 'query' : 'queries'}.`
-        : 'No buyer search queries were generated.',
+    ...(queries.length > 0
+      ? {
+          message: `Built ${queries.length} buyer search ${queries.length === 1 ? 'query' : 'queries'}.`,
+        }
+      : {}),
     payload: { queries },
   });
 
@@ -218,21 +219,20 @@ async function processLeadgenQuery(params: {
 
   try {
     const hits = await streamAndPersistSearchCandidates(params);
-    await persistLeadgenEvent({
-      runId: params.runId,
-      eventType: 'search-progress',
-      stage: 'search',
-      message:
-        hits.length > 0
-          ? `Found ${hits.length} candidates for one intent.`
-          : 'No direct candidates for one intent.',
-      payload: {
-        bucket: params.bucket,
-        query: params.query,
-        status: 'complete',
-        count: hits.length,
-      },
-    });
+    if (hits.length > 0) {
+      await persistLeadgenEvent({
+        runId: params.runId,
+        eventType: 'search-progress',
+        stage: 'search',
+        message: `Found ${hits.length} candidates for one intent.`,
+        payload: {
+          bucket: params.bucket,
+          query: params.query,
+          status: 'complete',
+          count: hits.length,
+        },
+      });
+    }
   } catch (error) {
     logger.warn(
       {
@@ -247,7 +247,6 @@ async function processLeadgenQuery(params: {
       runId: params.runId,
       eventType: 'error',
       stage: 'search',
-      message: `Search failed for "${params.query}".`,
       payload: {
         bucket: params.bucket,
         query: params.query,
@@ -367,7 +366,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
       summary:
         counts.leadCount > 0
           ? `Found ${counts.leadCount} leads, ${counts.contactCount} contacts, and ${counts.draftCount} drafts.`
-          : 'No strong leads found.',
+          : 'Research complete.',
     })
     .where(eq(leadgenRunsTable.id, runId));
 
@@ -378,7 +377,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
     message:
       counts.leadCount > 0
         ? `Finished with ${counts.leadCount} leads and ${counts.draftCount} drafts.`
-        : 'Finished without strong lead matches.',
+        : 'Research complete.',
     payload: counts,
   });
 
@@ -404,7 +403,7 @@ export async function failLeadgenRun({
     runId,
     eventType: 'error',
     stage: 'complete',
-    message: errorMessage,
+    payload: { errorMessage },
   });
 }
 
@@ -522,7 +521,6 @@ async function discoverContactsAndDraft(params: {
         runId: params.runId,
         eventType: 'contact',
         stage: 'contacts',
-        message: `No public email found for ${params.lead.businessDomain}.`,
         payload: {
           leadId: params.lead.id,
           businessDomain: params.lead.businessDomain,
@@ -563,7 +561,6 @@ async function discoverContactsAndDraft(params: {
       runId: params.runId,
       eventType: 'error',
       stage: 'contacts',
-      message: `Contact discovery failed for ${params.lead.businessDomain}.`,
       payload: {
         leadId: params.lead.id,
         businessDomain: params.lead.businessDomain,
