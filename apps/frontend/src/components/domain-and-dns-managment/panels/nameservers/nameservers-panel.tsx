@@ -64,6 +64,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { useSignTypedData } from '@/hooks/use-sign-typed-data';
+import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
 import {
   RequestWalletConnection,
   type RequestWalletConnectionRef,
@@ -206,6 +207,20 @@ const NameserversPanelForm = React.memo(
     const disableAllButtons = useMemo(() => {
       return !!loadingOperation || !!activeNameserversChangeWorkflow;
     }, [loadingOperation, activeNameserversChangeWorkflow]);
+
+    // Refresh the bell when the nameservers-change workflow settles —
+    // detected as the active-workflow query transitioning from a running
+    // workflow back to none. The workflow writes an in-app notification
+    // on success or failure.
+    const invalidateNotifications = useInvalidateNotifications();
+    const hadActiveWorkflow = useRef(!!activeNameserversChangeWorkflow);
+    useEffect(() => {
+      const hasActive = !!activeNameserversChangeWorkflow;
+      if (hadActiveWorkflow.current && !hasActive) {
+        invalidateNotifications();
+      }
+      hadActiveWorkflow.current = hasActive;
+    }, [activeNameserversChangeWorkflow, invalidateNotifications]);
 
     const invalidateQueries = useCallback(async () => {
       // Refetch active workflow first so the banner appears immediately

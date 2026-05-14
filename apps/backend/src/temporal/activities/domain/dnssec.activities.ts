@@ -17,6 +17,7 @@ import {
   getPropagatedNameservers,
 } from '#lib/domains/nameservers';
 import { createLogger } from '#lib/logger';
+import { createNotification } from '#lib/notifications/create-notification';
 import { db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { render } from '@react-email/components';
@@ -185,6 +186,46 @@ function subjectForOutcome(
   }
 }
 
+/**
+ * In-app notification copy for a deferred-DS terminal outcome. Mirrors the
+ * email's plain-language tone; rendered as markdown in the bell modal.
+ */
+function inAppCopyForOutcome(
+  outcome: DeferredDsOutcome,
+  domain: PunycodeDomainName,
+  reason?: string,
+): { title: string; body: string } {
+  switch (outcome) {
+    case 'success':
+      return {
+        title: 'DNSSEC enabled',
+        body: `Your custom DS record is now active for **${domain}**.`,
+      };
+    case 'authoritative-timeout':
+      return {
+        title: "DNSSEC setup didn't complete",
+        body: `We couldn't verify your DNSKEY at your nameservers in time for **${domain}**. You can retry the DS submission from the domain's DNS settings.`,
+      };
+    case 'public-dns-timeout':
+      return {
+        title: 'DNSSEC still propagating',
+        body: `Your DNSKEY for **${domain}** is taking longer than expected to propagate to public DNS.`,
+      };
+    case 'cancelled':
+      return {
+        title: 'DNSSEC setup cancelled',
+        body: `The DNSSEC setup for **${domain}** was cancelled.`,
+      };
+    case 'failed':
+      return {
+        title: 'DNSSEC setup failed',
+        body: `We couldn't finish DNSSEC setup for **${domain}**.${
+          reason ? `\n\nReason: ${reason}` : ''
+        }`,
+      };
+  }
+}
+
 type RecipientContact = {
   email: string;
   /** Display name; falls back to the email's local-part if Privy has no `fullName`. */
@@ -284,6 +325,35 @@ export async function sendDeferredDsOutcomeEmailToUser(input: {
         domainName: input.domainName,
       },
       'Failed to send deferred-DS outcome email',
+    );
+  }
+
+  // Mirror the email in the in-app inbox. Independent best-effort block so a
+  // notification-write failure can't mask a successful email send (and
+  // vice-versa) — keeps the activity's "never throws" contract.
+  try {
+    const copy = inAppCopyForOutcome(
+      input.outcome,
+      input.domainName,
+      input.reason,
+    );
+    await createNotification({
+      userId: input.userId,
+      title: copy.title,
+      body: copy.body,
+      bodyType: 'markdown',
+      relatedResources: [{ type: 'domain', identifier: input.domainName }],
+      metadata: { source: 'workflow:deferred-associate-ds' },
+    });
+  } catch (error) {
+    _logger.warn(
+      {
+        error,
+        userId: input.userId,
+        outcome: input.outcome,
+        domainName: input.domainName,
+      },
+      'Failed to create deferred-DS in-app notification',
     );
   }
 }

@@ -72,7 +72,10 @@ export const domainDnssecRouter = createContractTRPCRouter<
       _logger.debug('Enabling DNSSEC for domain');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      await enableAutoDnssecForDomain(toPunycodeDomainName(input.domainName));
+      await enableAutoDnssecForDomain(
+        toPunycodeDomainName(input.domainName),
+        ctx.user.id,
+      );
 
       _logger.debug('Successfully enabled DNSSEC');
     }),

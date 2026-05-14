@@ -31,6 +31,12 @@ export const getEnableDnssecProgressQuery = defineQuery<
 
 export interface EnableDnssecWorkflowInput {
   domainName: PunycodeDomainName;
+  /**
+   * The user who triggered the operation. When present, the workflow
+   * emails them + writes an in-app notification on settlement (success
+   * or failure). Absent for system-triggered runs — those stay silent.
+   */
+  userId?: string;
 }
 
 /**
@@ -101,6 +107,49 @@ export async function enableDnssecWorkflow(
 
   const { pollDsRecordAssociationStatus } = longRunningActivities;
   const { updateDomainIndexRows } = indexerActivities;
+
+  // Notification lane — one NOTIFY-queue activity sends the email AND
+  // writes the in-app row via its `inAppNotification` carry.
+  const { sendStyledEmailNotificationForUser } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: { ...shortRunningOpts },
+  });
+
+  /**
+   * Best-effort settlement notification. No-ops when the run wasn't
+   * triggered by a user; never lets a notification failure fail the
+   * workflow (mirrors the deferred-DS workflow's `notify()` pattern).
+   */
+  const notify = async (
+    outcome: 'success' | 'failure',
+    reason?: string,
+  ): Promise<void> => {
+    if (!input.userId) return;
+    try {
+      await sendStyledEmailNotificationForUser({
+        userId: input.userId,
+        title:
+          outcome === 'success' ? 'DNSSEC enabled' : 'DNSSEC enable failed',
+        subject:
+          outcome === 'success'
+            ? `DNSSEC enabled for ${input.domainName}`
+            : `DNSSEC could not be enabled for ${input.domainName}`,
+        showGoToDashboard: true,
+        messageMarkdown:
+          outcome === 'success'
+            ? `DNSSEC is now active for **${input.domainName}**.`
+            : `We couldn't enable DNSSEC for **${input.domainName}**.${
+                reason ? `\n\nReason: ${reason}` : ''
+              }`,
+        inAppNotification: {
+          relatedResources: [{ type: 'domain', identifier: input.domainName }],
+          source: 'workflow:enable-dnssec',
+        },
+      });
+    } catch {
+      // Best-effort — the activity logs its own failures.
+    }
+  };
 
   const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
 
@@ -229,6 +278,7 @@ export async function enableDnssecWorkflow(
     );
 
     progress.complete();
+    await notify('success');
   } catch (e) {
     // On cancellation during polling/activities, rollback zone signing
     if (hasCancellationSupport && workflow.isCancellation(e)) {
@@ -240,12 +290,15 @@ export async function enableDnssecWorkflow(
         }
       });
       progress.fail('Workflow cancelled');
+      // No notification on user-initiated cancellation — the user
+      // already knows; they pressed cancel.
       throw e;
     }
     // Only update progress if not already failed
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));
     }
+    await notify('failure', e instanceof Error ? e.message : String(e));
     throw e;
   }
 }

@@ -379,6 +379,7 @@ export const domainConfigRouter = createContractTRPCRouter<
       await submitNameserversChangeWorkflow(
         toPunycodeDomainName(input.payload.domainName),
         nameserversList.map((nameserver) => toPunycodeFqdn(nameserver)),
+        ctx.user.id,
       );
     }),
 

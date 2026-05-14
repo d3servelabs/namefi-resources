@@ -31,6 +31,13 @@ export const getDisableDnssecProgressQuery = defineQuery<
 
 export interface DisableDnssecWorkflowInput {
   domainName: PunycodeDomainName;
+  /**
+   * The user who triggered the operation. When present, the workflow
+   * emails them + writes an in-app notification on settlement (success
+   * or failure). Absent for system-triggered runs and when invoked as a
+   * child of `changeNameserversWorkflow` (the parent notifies instead).
+   */
+  userId?: string;
 }
 
 /**
@@ -101,6 +108,49 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
   const { pollDsRecordRemovalStatus, pollDsRecordRemovalPropagation } =
     longRunningActivities;
   const { updateDomainIndexRows } = indexerActivities;
+
+  // Notification lane — one NOTIFY-queue activity sends the email AND
+  // writes the in-app row via its `inAppNotification` carry.
+  const { sendStyledEmailNotificationForUser } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: { ...shortRunningOpts },
+  });
+
+  /**
+   * Best-effort settlement notification. No-ops when the run wasn't
+   * triggered by a user (e.g. invoked as a child of change-nameservers);
+   * never lets a notification failure fail the workflow.
+   */
+  const notify = async (
+    outcome: 'success' | 'failure',
+    reason?: string,
+  ): Promise<void> => {
+    if (!input.userId) return;
+    try {
+      await sendStyledEmailNotificationForUser({
+        userId: input.userId,
+        title:
+          outcome === 'success' ? 'DNSSEC disabled' : 'DNSSEC disable failed',
+        subject:
+          outcome === 'success'
+            ? `DNSSEC disabled for ${input.domainName}`
+            : `DNSSEC could not be disabled for ${input.domainName}`,
+        showGoToDashboard: true,
+        messageMarkdown:
+          outcome === 'success'
+            ? `DNSSEC has been turned off for **${input.domainName}**.`
+            : `We couldn't disable DNSSEC for **${input.domainName}**.${
+                reason ? `\n\nReason: ${reason}` : ''
+              }`,
+        inAppNotification: {
+          relatedResources: [{ type: 'domain', identifier: input.domainName }],
+          source: 'workflow:disable-dnssec',
+        },
+      });
+    } catch {
+      // Best-effort — the activity logs its own failures.
+    }
+  };
 
   const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
 
@@ -244,6 +294,7 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
       'DNSSEC disabled successfully',
     );
     progress.complete();
+    await notify('success');
     return progress.state;
   } catch (e) {
     // On cancellation, rollback: re-associate DS if it was removed
@@ -258,12 +309,14 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
         }
       });
       progress.fail('Workflow cancelled');
+      // No notification on user-initiated cancellation.
       throw e;
     }
     // Only update progress if not already failed
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));
     }
+    await notify('failure', e instanceof Error ? e.message : String(e));
     throw e;
   }
 }

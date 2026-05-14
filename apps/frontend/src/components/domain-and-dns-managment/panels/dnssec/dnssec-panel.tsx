@@ -63,8 +63,9 @@ import {
   XCircleIcon,
 } from 'lucide-react';
 import { isNotEmpty, isNotNil } from 'ramda';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
 import { CustomDelegationSignerPanel } from './custom-delegation-signer-panel';
 import { CustomDelegationSignerSimplePanel } from './custom-delegation-signer-simple-panel';
@@ -534,6 +535,22 @@ function DnssecProgressModal({
   const disableProgress = useDisableDnssecProgress(domainName, {
     enabled: open && operation === 'REMOVE_DNSSEC',
   });
+
+  // Refresh the bell the moment the DNSSEC workflow settles — the
+  // enable/disable workflows write an in-app notification on success or
+  // failure, and we don't want the user waiting for the next poll tick.
+  const invalidateNotifications = useInvalidateNotifications();
+  const hasCompleted =
+    operation === 'ENABLE_DNSSEC'
+      ? enableProgress.hasCompleted
+      : disableProgress.hasCompleted;
+  const prevHasCompleted = useRef(hasCompleted);
+  useEffect(() => {
+    if (hasCompleted && !prevHasCompleted.current) {
+      invalidateNotifications();
+    }
+    prevHasCompleted.current = hasCompleted;
+  }, [hasCompleted, invalidateNotifications]);
 
   const cancelMutation = useMutation(
     trpc.domainConfig.dnssec.cancelDnssecWorkflow.mutationOptions({

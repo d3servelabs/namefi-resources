@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   AlertTriangleIcon,
@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 
 import { LoadingButton } from '@/components/buttons/loading-button';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import {
   AlertDialog,
@@ -63,6 +64,19 @@ export function CustomDelegationSignerSimplePanel({
     ),
   );
   const pending = pendingResult?.pending ?? [];
+
+  // Refresh the bell when a deferred-DS workflow settles — observed as
+  // the pending-signers list shrinking (an entry leaves the list whether
+  // it succeeded, timed out, or failed). The deferred-DS activity writes
+  // an in-app notification on every terminal outcome.
+  const invalidateNotifications = useInvalidateNotifications();
+  const prevPendingCount = useRef(pending.length);
+  useEffect(() => {
+    if (pending.length < prevPendingCount.current) {
+      invalidateNotifications();
+    }
+    prevPendingCount.current = pending.length;
+  }, [pending.length, invalidateNotifications]);
 
   const {
     data: status,

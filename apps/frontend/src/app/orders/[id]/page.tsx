@@ -9,6 +9,7 @@ import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { redirect } from 'next/navigation';
 import { AddressWithChain } from '@/components/address-with-chain';
 import { useAuth } from '@/hooks/use-auth';
+import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
 import {
   useLinkedWalletAddresses,
   useUserWalletAddresses,
@@ -382,15 +383,24 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const workflowPhase = getWorkflowProgressPhase(orderProgress.data ?? null);
   const prevWorkflowPhase = useRef<WorkflowProgressPhase>(workflowPhase);
+  const invalidateNotifications = useInvalidateNotifications();
 
   useEffect(() => {
     const previousPhase = prevWorkflowPhase.current;
     if (workflowPhase === 'terminal' && previousPhase !== 'terminal') {
       refetchOrderDetails();
       refetchInternalAiGenerations();
+      // The order workflow writes an in-app notification on settlement;
+      // refresh the bell now instead of waiting for its next poll tick.
+      invalidateNotifications();
     }
     prevWorkflowPhase.current = workflowPhase;
-  }, [workflowPhase, refetchOrderDetails, refetchInternalAiGenerations]);
+  }, [
+    workflowPhase,
+    refetchOrderDetails,
+    refetchInternalAiGenerations,
+    invalidateNotifications,
+  ]);
 
   // Track if we've already triggered feedback for this order
   const hasFeedbackTriggeredRef = useRef(false);

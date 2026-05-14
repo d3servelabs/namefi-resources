@@ -15,11 +15,7 @@ import {
   type NotificationRelatedResource,
   type NotificationResourceType,
 } from '@namefi-astra/common/shared-schemas';
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import {
   Archive,
@@ -32,6 +28,7 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
 
 import { NotificationItem } from './notification-item';
 
@@ -61,7 +58,7 @@ const RELATED_TO_LABELS: Record<NotificationResourceType, string> = {
 
 export function NotificationsList({ initialFilter }: NotificationsListProps) {
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
+  const invalidateNotifications = useInvalidateNotifications();
 
   const [filterType, setFilterType] = useState<NotificationResourceType | ''>(
     initialFilter?.type ?? '',
@@ -150,12 +147,6 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
     observer.observe(target);
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const invalidateNotifications = useCallback(() => {
-    void queryClient.invalidateQueries({
-      queryKey: trpc.notifications.pathKey(),
-    });
-  }, [queryClient, trpc.notifications]);
 
   const markAsSeenMutation = useMutation(
     trpc.notifications.markAsSeen.mutationOptions({

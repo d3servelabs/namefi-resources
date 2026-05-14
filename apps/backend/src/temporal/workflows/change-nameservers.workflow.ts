@@ -36,6 +36,12 @@ export const getChangeNameserversProgressQuery = defineQuery<
 export interface ChangeNameserversWorkflowInput {
   domainName: PunycodeDomainName;
   nameservers: Nameserver[];
+  /**
+   * The user who triggered the operation. When present, the workflow
+   * emails them + writes an in-app notification on settlement (success
+   * or failure). Absent for system-triggered runs — those stay silent.
+   */
+  userId?: string;
 }
 
 /**
@@ -45,6 +51,7 @@ export interface ChangeNameserversWorkflowInput {
 export async function changeNameserversWorkflow({
   domainName,
   nameservers,
+  userId,
 }: ChangeNameserversWorkflowInput) {
   // Initialize progress tracking
   const progress = createWorkflowProgress<ChangeNameserversStepId>(
@@ -84,6 +91,52 @@ export async function changeNameserversWorkflow({
       startToCloseTimeout: '2m',
     },
   });
+
+  // Notification lane — one NOTIFY-queue activity sends the email AND
+  // writes the in-app row via its `inAppNotification` carry.
+  const { sendStyledEmailNotificationForUser } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: { ...shortRunningOpts },
+  });
+
+  /**
+   * Best-effort settlement notification. No-ops when the run wasn't
+   * triggered by a user; never lets a notification failure fail the
+   * workflow. The embedded `disableDnssecWorkflow` is invoked WITHOUT a
+   * `userId` so only this top-level workflow notifies (no double-send).
+   */
+  const notify = async (
+    outcome: 'success' | 'failure',
+    reason?: string,
+  ): Promise<void> => {
+    if (!userId) return;
+    try {
+      await sendStyledEmailNotificationForUser({
+        userId,
+        title:
+          outcome === 'success'
+            ? 'Nameservers updated'
+            : 'Nameserver update failed',
+        subject:
+          outcome === 'success'
+            ? `Nameservers updated for ${domainName}`
+            : `Nameservers could not be updated for ${domainName}`,
+        showGoToDashboard: true,
+        messageMarkdown:
+          outcome === 'success'
+            ? `The nameservers for **${domainName}** were updated successfully.`
+            : `We couldn't update the nameservers for **${domainName}**.${
+                reason ? `\n\nReason: ${reason}` : ''
+              }`,
+        inAppNotification: {
+          relatedResources: [{ type: 'domain', identifier: domainName }],
+          source: 'workflow:change-nameservers',
+        },
+      });
+    } catch {
+      // Best-effort — the activity logs its own failures.
+    }
+  };
 
   try {
     // Step 1: Disable DNSSEC (embedded workflow with substeps)
@@ -170,11 +223,13 @@ export async function changeNameserversWorkflow({
       // No compensation needed: DNSSEC rollback handled by embedded workflow,
       // nameserver change can't be rolled back once submitted to registrar.
       progress.fail('Workflow cancelled');
+      // No notification on user-initiated cancellation.
       throw e;
     }
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));
     }
+    await notify('failure', e instanceof Error ? e.message : String(e));
     throw e;
   }
 
@@ -199,6 +254,8 @@ export async function changeNameserversWorkflow({
       },
     },
   );
+
+  await notify('success');
 }
 
 /**

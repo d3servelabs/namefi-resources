@@ -324,14 +324,18 @@ export async function submitResetNameserversWorkflow(
  * Submits a nameservers change workflow for a domain
  * @param domainName - The domain name to submit the nameservers change workflow for
  * @param nameservers - The nameservers to set for the domain
+ * @param userId - Optional triggering user. When present, the workflow
+ *   emails them + writes an in-app notification on settlement.
  */
 export async function submitNameserversChangeWorkflow(
   domainName: PunycodeDomainName,
   nameservers: Nameserver[],
+  userId?: string,
 ) {
   const workflowInput: ChangeNameserversWorkflowInput = {
     domainName: toPunycodeDomainName(domainName),
     nameservers: nameservers.map((nameserver) => toPunycodeFqdn(nameserver)),
+    userId,
   };
   const workflowId = changeNameserversWorkflow.generateId(workflowInput);
   await temporalClient.workflow.start(changeNameserversWorkflow, {

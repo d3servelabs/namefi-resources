@@ -312,7 +312,10 @@ export async function enableAutoDnssecForDomain(
   _logger.debug(`Submitting Request to enable DNSSEC for domain ${domainName}`);
 
   try {
-    const workflowInput = { domainName };
+    // `userId` (when present) lets the workflow email + in-app-notify the
+    // triggering user on settlement. `generateId` only keys off
+    // `domainName`, so the extra field doesn't affect the workflow id.
+    const workflowInput = { domainName, userId };
     await temporalClient.workflow.start(enableDnssecWorkflow, {
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: enableDnssecWorkflow.generateId(workflowInput),
@@ -394,7 +397,10 @@ export async function disableDnssecForDomain(
   );
 
   try {
-    const workflowInput = { domainName };
+    // `userId` (when present) lets the workflow email + in-app-notify the
+    // triggering user on settlement. `generateId` only keys off
+    // `domainName`, so the extra field doesn't affect the workflow id.
+    const workflowInput = { domainName, userId };
     await temporalClient.workflow.start(disableDnssecWorkflow, {
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: disableDnssecWorkflow.generateId(workflowInput),
