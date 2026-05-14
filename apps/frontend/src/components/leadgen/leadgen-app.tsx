@@ -42,7 +42,6 @@ import {
   Mail,
   Play,
   Search,
-  Send,
   Sparkles,
   Target,
   UserRoundSearch,
@@ -105,6 +104,7 @@ const leadBucketLabels = {
 } satisfies Record<LeadgenLead['bucket'], string>;
 const negativeTimelineMessageRe =
   /\b(?:no|not|failed|failure|error|without|couldn['\u2019]?t|could not|didn['\u2019]?t|did not|unable|invalid|canceled|cancelled)\b/i;
+const skeletonRows = ['first', 'second', 'third'];
 
 export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -190,6 +190,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 
   const run = liveRun ?? activeRunQuery.data ?? null;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
+  const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
   const canSubmit = isLikelyDomain(domain) && !startRun.isPending;
 
   const handleSubmit = () => {
@@ -300,20 +301,45 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
           />
         </aside>
 
-        <main className="min-w-0 rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
-          {run ? (
-            <RunWorkspace
-              run={run}
-              isRunning={isRunning}
-              onRunUpdated={setLiveRun}
-            />
-          ) : (
-            <EmptyWorkspace />
-          )}
+        <main className="min-w-0 overflow-hidden rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
+          <LeadgenWorkspacePanel
+            isRunLoading={isRunLoading}
+            isRunning={isRunning}
+            run={run}
+            onRunUpdated={setLiveRun}
+          />
         </main>
       </div>
     </PageShell>
   );
+}
+
+function LeadgenWorkspacePanel({
+  isRunLoading,
+  isRunning,
+  run,
+  onRunUpdated,
+}: {
+  isRunLoading: boolean;
+  isRunning: boolean;
+  run: LeadgenSnapshot | null;
+  onRunUpdated: (run: LeadgenSnapshot) => void;
+}) {
+  if (isRunLoading) {
+    return <RunWorkspaceSkeleton />;
+  }
+
+  if (run) {
+    return (
+      <RunWorkspace
+        run={run}
+        isRunning={isRunning}
+        onRunUpdated={onRunUpdated}
+      />
+    );
+  }
+
+  return <EmptyWorkspace />;
 }
 
 function RunWorkspace({
@@ -328,6 +354,9 @@ function RunWorkspace({
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [pendingOutreachLeadId, setPendingOutreachLeadId] = useState<
+    string | null
+  >(null);
+  const [reviewOutreachLeadId, setReviewOutreachLeadId] = useState<
     string | null
   >(null);
   const buckets = useMemo(() => {
@@ -358,9 +387,19 @@ function RunWorkspace({
         if (!updatedLead || updatedLead.contacts.length === 0) {
           toast('No public contacts found');
         } else if (updatedLead.drafts.length === 0) {
-          toast.success('Contacts saved');
+          toast.success('Contacts saved', {
+            action: {
+              label: 'Review outreach',
+              onClick: () => setReviewOutreachLeadId(updatedLead.id),
+            },
+          });
         } else {
-          toast.success('Outreach prepared');
+          toast.success('Outreach prepared', {
+            action: {
+              label: 'Review outreach',
+              onClick: () => setReviewOutreachLeadId(updatedLead.id),
+            },
+          });
         }
       },
       onError(error) {
@@ -404,6 +443,15 @@ function RunWorkspace({
             <Metric label="Drafts" value={run.draftCount} />
           </div>
         </div>
+
+        <div className="relative z-10 mt-4 h-1 overflow-hidden rounded-full bg-muted/50">
+          <div
+            className={cn(
+              'h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-amber-300',
+              isRunning ? 'w-2/3 opacity-100' : 'w-full opacity-0',
+            )}
+          />
+        </div>
       </div>
 
       <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -440,7 +488,9 @@ function RunWorkspace({
                 leads={buckets.general}
                 sourceDomain={run.domain}
                 pendingOutreachLeadId={pendingOutreachLeadId}
+                reviewOutreachLeadId={reviewOutreachLeadId}
                 onGenerateLeadOutreach={handleGenerateLeadOutreach}
+                onReviewOutreachLead={setReviewOutreachLeadId}
               />
             </TabsContent>
             <TabsContent value="substring" className="mt-4">
@@ -448,7 +498,9 @@ function RunWorkspace({
                 leads={buckets.substring}
                 sourceDomain={run.domain}
                 pendingOutreachLeadId={pendingOutreachLeadId}
+                reviewOutreachLeadId={reviewOutreachLeadId}
                 onGenerateLeadOutreach={handleGenerateLeadOutreach}
+                onReviewOutreachLead={setReviewOutreachLeadId}
               />
             </TabsContent>
           </Tabs>
@@ -462,60 +514,20 @@ function RunWorkspace({
   );
 }
 
-function WorkingBackdrop() {
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <div className="pointer-events-none absolute inset-0">
-      <motion.div
-        className="absolute inset-0 opacity-45"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 1px 1px, rgba(103, 232, 249, 0.22) 1px, transparent 0)',
-          backgroundSize: '18px 18px',
-        }}
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : { backgroundPosition: ['0px 0px', '18px 18px'] }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : {
-                duration: 1.8,
-                ease: 'linear',
-                repeat: Number.POSITIVE_INFINITY,
-              }
-        }
-      />
-      {!prefersReducedMotion && (
-        <motion.div
-          className="absolute -inset-y-16 left-0 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent blur-xl"
-          animate={{ x: ['-150%', '360%'] }}
-          transition={{
-            duration: 2.2,
-            ease: [0.22, 1, 0.36, 1],
-            repeat: Number.POSITIVE_INFINITY,
-            repeatDelay: 0.35,
-          }}
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-r from-card/75 via-card/45 to-card/75" />
-    </div>
-  );
-}
-
 function LeadList({
   leads,
   sourceDomain,
   pendingOutreachLeadId,
+  reviewOutreachLeadId,
   onGenerateLeadOutreach,
+  onReviewOutreachLead,
 }: {
   leads: LeadgenLead[];
   sourceDomain: string;
   pendingOutreachLeadId: string | null;
+  reviewOutreachLeadId: string | null;
   onGenerateLeadOutreach: (leadId: string) => void;
+  onReviewOutreachLead: (leadId: string | null) => void;
 }) {
   if (leads.length === 0) {
     return (
@@ -533,7 +545,11 @@ function LeadList({
           lead={lead}
           sourceDomain={sourceDomain}
           isPreparingOutreach={pendingOutreachLeadId === lead.id}
+          isReviewingOutreach={reviewOutreachLeadId === lead.id}
           onGenerateLeadOutreach={onGenerateLeadOutreach}
+          onReviewOutreachChange={(open) =>
+            onReviewOutreachLead(open ? lead.id : null)
+          }
         />
       ))}
     </div>
@@ -544,23 +560,23 @@ function LeadCard({
   lead,
   sourceDomain,
   isPreparingOutreach,
+  isReviewingOutreach,
   onGenerateLeadOutreach,
+  onReviewOutreachChange,
 }: {
   lead: LeadgenLead;
   sourceDomain: string;
   isPreparingOutreach: boolean;
+  isReviewingOutreach: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
+  onReviewOutreachChange: (open: boolean) => void;
 }) {
-  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
-  const primaryDraft = lead.drafts[0];
-  const primaryContact = lead.contacts[0];
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
   const descriptionLines = getLeadDescription(lead);
   const hasEmailCta = recipients.length > 0 && lead.drafts.length > 0;
   const shouldPrepareOutreach =
     lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length;
-  const showOutreachPanel =
-    primaryContact || primaryDraft || shouldPrepareOutreach;
+  const showOutreachPanel = hasEmailCta || shouldPrepareOutreach;
 
   return (
     <article className="rounded-lg border border-border/70 bg-background/60 p-4">
@@ -587,29 +603,35 @@ function LeadCard({
           </div>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
-          <TinyStat icon={Mail} label={`${lead.contacts.length} contacts`} />
-          <TinyStat icon={Sparkles} label={`${lead.drafts.length} drafts`} />
+          <TinyStat
+            icon={Mail}
+            label={`${lead.contacts.length} contacts`}
+            tone="contacts"
+          />
+          <TinyStat
+            icon={Sparkles}
+            label={`${lead.drafts.length} drafts`}
+            tone="drafts"
+          />
         </div>
       </div>
 
       {showOutreachPanel && (
         <LeadOutreachPanel
           lead={lead}
-          primaryContact={primaryContact}
-          primaryDraft={primaryDraft}
           hasEmailCta={hasEmailCta}
           shouldPrepareOutreach={shouldPrepareOutreach}
           isPreparingOutreach={isPreparingOutreach}
           onGenerateLeadOutreach={onGenerateLeadOutreach}
-          onOpenEmailDialog={() => setIsEmailDialogOpen(true)}
+          onOpenEmailDialog={() => onReviewOutreachChange(true)}
         />
       )}
       <LeadEmailDialog
         lead={lead}
-        open={isEmailDialogOpen}
+        open={isReviewingOutreach}
         recipients={recipients}
         sourceDomain={sourceDomain}
-        onOpenChange={setIsEmailDialogOpen}
+        onOpenChange={onReviewOutreachChange}
       />
     </article>
   );
@@ -617,8 +639,6 @@ function LeadCard({
 
 function LeadOutreachPanel({
   lead,
-  primaryContact,
-  primaryDraft,
   hasEmailCta,
   shouldPrepareOutreach,
   isPreparingOutreach,
@@ -626,8 +646,6 @@ function LeadOutreachPanel({
   onOpenEmailDialog,
 }: {
   lead: LeadgenLead;
-  primaryContact: LeadgenLead['contacts'][number] | undefined;
-  primaryDraft: LeadgenLead['drafts'][number] | undefined;
   hasEmailCta: boolean;
   shouldPrepareOutreach: boolean;
   isPreparingOutreach: boolean;
@@ -635,11 +653,7 @@ function LeadOutreachPanel({
   onOpenEmailDialog: () => void;
 }) {
   return (
-    <div className="mt-4 flex flex-col gap-3 border-t border-border/70 pt-3 lg:flex-row lg:items-center lg:justify-between">
-      <LeadOutreachSummary
-        primaryContact={primaryContact}
-        primaryDraft={primaryDraft}
-      />
+    <div className="mt-4 flex flex-col gap-2 border-t border-border/70 pt-3 sm:flex-row sm:justify-end">
       <LeadOutreachActions
         lead={lead}
         hasEmailCta={hasEmailCta}
@@ -649,65 +663,6 @@ function LeadOutreachPanel({
         onOpenEmailDialog={onOpenEmailDialog}
       />
     </div>
-  );
-}
-
-function LeadOutreachSummary({
-  primaryContact,
-  primaryDraft,
-}: {
-  primaryContact: LeadgenLead['contacts'][number] | undefined;
-  primaryDraft: LeadgenLead['drafts'][number] | undefined;
-}) {
-  return (
-    <div className="min-w-0">
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        {primaryContact
-          ? 'Contact found'
-          : primaryDraft
-            ? 'Draft ready'
-            : 'Prepare outreach'}
-      </p>
-      <p className="mt-1 text-sm text-muted-foreground">
-        <LeadOutreachSummaryText
-          primaryContact={primaryContact}
-          primaryDraft={primaryDraft}
-        />
-      </p>
-    </div>
-  );
-}
-
-function LeadOutreachSummaryText({
-  primaryContact,
-  primaryDraft,
-}: {
-  primaryContact: LeadgenLead['contacts'][number] | undefined;
-  primaryDraft: LeadgenLead['drafts'][number] | undefined;
-}) {
-  if (!primaryContact && !primaryDraft) {
-    return 'Contacts and draft are not prepared yet.';
-  }
-
-  return (
-    <>
-      {primaryContact ? (
-        <>
-          <span className="font-medium text-foreground">
-            {primaryContact.name || primaryContact.email}
-          </span>
-          {primaryContact.title ? `, ${primaryContact.title}` : ''}
-        </>
-      ) : (
-        'Draft ready'
-      )}
-      {primaryDraft && (
-        <>
-          <span className="mx-2 text-border">/</span>
-          <span>{primaryDraft.subject}</span>
-        </>
-      )}
-    </>
   );
 }
 
@@ -726,11 +681,6 @@ function LeadOutreachActions({
   onGenerateLeadOutreach: (leadId: string) => void;
   onOpenEmailDialog: () => void;
 }) {
-  const prepareOutreachLabel =
-    lead.contacts.length === 0 ? 'Find contacts' : 'Draft email';
-  const PrepareOutreachIcon =
-    lead.contacts.length === 0 ? UserRoundSearch : Sparkles;
-
   return (
     <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
       {shouldPrepareOutreach && (
@@ -744,9 +694,9 @@ function LeadOutreachActions({
           {isPreparingOutreach ? (
             <Loader2 data-icon="inline-start" className="animate-spin" />
           ) : (
-            <PrepareOutreachIcon data-icon="inline-start" />
+            <Sparkles data-icon="inline-start" />
           )}
-          {prepareOutreachLabel}
+          Prepare outreach
         </Button>
       )}
       {hasEmailCta && (
@@ -755,8 +705,8 @@ function LeadOutreachActions({
           onClick={onOpenEmailDialog}
           className="w-full sm:w-auto"
         >
-          <Send data-icon="inline-start" />
-          Email lead
+          <Mail data-icon="inline-start" />
+          Review outreach
         </Button>
       )}
     </div>
@@ -922,9 +872,7 @@ function Timeline({
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           Updates
         </p>
-        {isRunning && (
-          <span className="text-xs font-medium text-cyan-200">Live</span>
-        )}
+        {isRunning && <WorkingStatus />}
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto pr-1">
         {visibleEvents.length === 0 ? (
@@ -968,9 +916,15 @@ function PastRuns({
       </div>
       {isLoading ? (
         <div className="space-y-2">
-          <Skeleton className="h-14 w-full" />
-          <Skeleton className="h-14 w-full" />
-          <Skeleton className="h-14 w-full" />
+          {skeletonRows.map((row) => (
+            <div
+              key={`past-run-${row}`}
+              className="rounded-md border border-border/70 bg-background/40 p-3"
+            >
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="mt-2 h-3 w-20" />
+            </div>
+          ))}
         </div>
       ) : runs.length === 0 ? (
         <p className="text-sm text-muted-foreground">
@@ -1029,11 +983,223 @@ function EmptyWorkspace() {
 function LeadgenSkeleton() {
   return (
     <PageShell size="full" padding="none" shellClassName="px-5 py-6 lg:px-8">
-      <div className="grid gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
-        <Skeleton className="h-[520px] rounded-lg" />
-        <Skeleton className="h-[620px] rounded-lg" />
+      <div className="grid min-h-[calc(100vh-8rem)] gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
+        <aside className="flex flex-col gap-4">
+          <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <div className="flex-1">
+                <Skeleton className="h-7 w-56" />
+                <Skeleton className="mt-3 h-4 w-full" />
+                <Skeleton className="mt-2 h-4 w-4/5" />
+              </div>
+              <Skeleton className="size-9 rounded-md" />
+            </div>
+            <div className="space-y-3">
+              <div>
+                <Skeleton className="mb-2 h-4 w-24" />
+                <Skeleton className="h-10 w-full rounded-md" />
+              </div>
+              <div>
+                <Skeleton className="mb-2 h-4 w-24" />
+                <div className="grid grid-cols-3 gap-1 rounded-md bg-muted/30 p-1">
+                  {skeletonRows.map((row) => (
+                    <Skeleton
+                      key={`depth-${row}`}
+                      className="h-12 rounded-sm"
+                    />
+                  ))}
+                </div>
+              </div>
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+          </section>
+          <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
+            <div className="mb-3 flex items-center justify-between">
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="size-4 rounded-full" />
+            </div>
+            <div className="space-y-2">
+              {skeletonRows.map((row) => (
+                <div
+                  key={`history-${row}`}
+                  className="rounded-md border border-border/70 bg-background/40 p-3"
+                >
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="mt-2 h-3 w-24" />
+                </div>
+              ))}
+            </div>
+          </section>
+        </aside>
+        <main className="min-w-0 overflow-hidden rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
+          <RunWorkspaceSkeleton />
+        </main>
       </div>
     </PageShell>
+  );
+}
+
+function RunWorkspaceSkeleton() {
+  return (
+    <div className="flex h-full min-h-[calc(100vh-8rem)] flex-col">
+      <div className="relative overflow-hidden border-b border-border/70 p-5">
+        <WorkingBackdrop />
+        <div className="relative z-10 flex min-h-[7rem] flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-7 w-44" />
+              <Skeleton className="h-5 w-20 rounded-4xl" />
+            </div>
+            <Skeleton className="mt-3 h-4 w-full max-w-xl" />
+            <Skeleton className="mt-2 h-4 w-2/3 max-w-md" />
+          </div>
+          <div className="grid grid-cols-3 gap-2 sm:min-w-[320px]">
+            {skeletonRows.map((row) => (
+              <div
+                key={`metric-${row}`}
+                className="min-h-[72px] rounded-md border border-border/70 bg-background/60 p-3"
+              >
+                <Skeleton className="h-3 w-14" />
+                <Skeleton className="mt-3 h-6 w-10" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <section className="min-w-0 p-5">
+          <div className="mb-5">
+            <Skeleton className="mb-2 h-3 w-24" />
+            <div className="flex flex-wrap gap-2">
+              {skeletonRows.map((row) => (
+                <Skeleton
+                  key={`intent-${row}`}
+                  className="h-7 w-28 rounded-md"
+                />
+              ))}
+            </div>
+          </div>
+          <div className="mb-4 flex gap-2">
+            <Skeleton className="h-9 w-28 rounded-md" />
+            <Skeleton className="h-9 w-28 rounded-md" />
+          </div>
+          <div className="grid gap-3">
+            {skeletonRows.map((row) => (
+              <div
+                key={`lead-${row}`}
+                className="rounded-lg border border-border/70 bg-background/60 p-4"
+              >
+                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-5 w-40" />
+                      <Skeleton className="h-5 w-16 rounded-4xl" />
+                    </div>
+                    <Skeleton className="mt-3 h-4 w-full" />
+                    <Skeleton className="mt-2 h-4 w-4/5" />
+                  </div>
+                  <div className="flex gap-2">
+                    <Skeleton className="h-5 w-20 rounded-4xl" />
+                    <Skeleton className="h-5 w-20 rounded-4xl" />
+                  </div>
+                </div>
+                <div className="mt-4 flex justify-end border-t border-border/70 pt-3">
+                  <Skeleton className="h-8 w-32 rounded-md" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <aside className="border-t border-border/70 p-5 lg:border-l lg:border-t-0">
+          <div className="mb-3 flex items-center justify-between">
+            <Skeleton className="h-3 w-28" />
+            <Skeleton className="h-5 w-16 rounded-full" />
+          </div>
+          <div className="space-y-3">
+            {skeletonRows.map((row) => (
+              <div key={`timeline-${row}`} className="flex gap-3">
+                <Skeleton className="mt-0.5 size-7 rounded-md" />
+                <div className="flex-1 rounded-md border border-border/50 bg-background/45 px-3 py-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="mt-2 h-3 w-16" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+function WorkingBackdrop() {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <motion.div
+        className="absolute inset-0 opacity-35"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgba(103, 232, 249, 0.18) 1px, transparent 0)',
+          backgroundSize: '18px 18px',
+        }}
+        animate={
+          prefersReducedMotion
+            ? undefined
+            : { backgroundPosition: ['0px 0px', '18px 18px'] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : {
+                duration: 1.8,
+                ease: 'linear',
+                repeat: Number.POSITIVE_INFINITY,
+              }
+        }
+      />
+      {!prefersReducedMotion && (
+        <motion.div
+          className="absolute -inset-y-16 left-0 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-cyan-200/15 to-transparent blur-xl"
+          animate={{ x: ['-150%', '360%'] }}
+          transition={{
+            duration: 2.2,
+            ease: [0.22, 1, 0.36, 1],
+            repeat: Number.POSITIVE_INFINITY,
+            repeatDelay: 0.35,
+          }}
+        />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-r from-card/85 via-card/60 to-card/85" />
+    </div>
+  );
+}
+
+function WorkingStatus() {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <span className="inline-flex h-5 items-center gap-1.5 rounded-4xl border border-cyan-400/20 bg-cyan-400/10 px-2 text-[11px] font-medium text-cyan-200">
+      <motion.span
+        className="size-1.5 rounded-full bg-cyan-200"
+        animate={
+          prefersReducedMotion ? undefined : { opacity: [0.35, 1, 0.35] }
+        }
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : {
+                duration: 1.2,
+                ease: 'easeInOut',
+                repeat: Number.POSITIVE_INFINITY,
+              }
+        }
+      />
+      Working
+    </span>
   );
 }
 
@@ -1349,12 +1515,28 @@ function Metric({ label, value }: { label: string; value: number }) {
   );
 }
 
-function TinyStat({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
+function TinyStat({
+  icon: Icon,
+  label,
+  tone,
+}: {
+  icon: LucideIcon;
+  label: string;
+  tone: 'contacts' | 'drafts';
+}) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-muted/30 px-2 py-1 text-xs text-muted-foreground">
-      <Icon className="size-3.5" />
+    <Badge
+      variant="outline"
+      className={cn(
+        'border px-2 font-medium',
+        tone === 'contacts'
+          ? 'border-cyan-300/35 bg-cyan-400/10 text-cyan-100'
+          : 'border-amber-300/35 bg-amber-300/10 text-amber-100',
+      )}
+    >
+      <Icon data-icon="inline-start" />
       {label}
-    </span>
+    </Badge>
   );
 }
 
