@@ -108,11 +108,21 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
   const {
     data,
     isLoading,
+    isFetching,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
     refetch,
   } = useInfiniteQuery(infiniteQueryOptions);
+
+  // Refetch once when the list mounts — i.e. when the modal opens (the
+  // modal renders `NotificationsList` only while open, so a mount effect
+  // fires on every open). The global 60s `staleTime` would otherwise
+  // serve a possibly-stale cache on reopen.
+  useEffect(() => {
+    void refetch();
+    // Mount-only — `refetch` is stable from react-query.
+  }, [refetch]);
 
   const items = useMemo(
     () => (data?.pages ?? []).flatMap((page) => page.items),
@@ -240,9 +250,12 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           size="sm"
           className="h-8 text-xs"
           onClick={() => void refetch()}
+          disabled={isFetching}
           aria-label="Refresh notifications"
         >
-          <RefreshCw className="mr-1 size-3.5" />
+          <RefreshCw
+            className={cn('mr-1 size-3.5', isFetching && 'animate-spin')}
+          />
           Refresh
         </Button>
       </div>
