@@ -16,7 +16,7 @@ import {
   surfaceBrowserNotification,
 } from './browser-notifications';
 import { playNewNotificationSound } from './notification-sound';
-import { getNotificationsPollInterval } from './polling-policy';
+import { useNotificationsPollInterval } from './polling-policy';
 import { resourceHref } from './resource-href';
 import { openNotificationsModal } from './store';
 
@@ -101,6 +101,7 @@ async function surfaceUpToDelta(args: {
 export function useBrowserNotificationWatcher(): void {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const pollInterval = useNotificationsPollInterval();
 
   const countQuery = useQuery(
     trpc.notifications.getUnreadCount.queryOptions(
@@ -108,7 +109,7 @@ export function useBrowserNotificationWatcher(): void {
       {
         // Shares the cache key with the bell — react-query dedupes the
         // network call so this is effectively free in the foreground.
-        refetchInterval: () => getNotificationsPollInterval(),
+        refetchInterval: pollInterval,
         refetchIntervalInBackground: true,
         // Refocus must refetch immediately; see comment in
         // `use-unread-count.ts`.

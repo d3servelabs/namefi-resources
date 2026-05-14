@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { BellRing } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 import {
   requestBrowserNotificationPermissionForce,
@@ -22,16 +23,28 @@ import { setNotificationsModalOpen, useNotificationsModalState } from './store';
  * `apps/frontend/src/components/main.tsx`). The list inside the dialog is
  * not rendered until the dialog opens, so the closed-state cost is just
  * the wrapper.
+ *
+ * The DialogContent renders inside a base-ui portal at `document.body`.
+ * `<html>` carries the hardcoded `dark` class and the next-themes
+ * `data-theme` attribute, so theme tokens cascade through to the portal
+ * via CSS variables. We also re-apply both attributes locally as a
+ * belt-and-suspenders measure for any code path that bypasses
+ * `<html>`-level inheritance (e.g. iframes, dev-only theme switchers).
  */
 export function NotificationsModal() {
   const { isOpen, filter } = useNotificationsModalState();
+  const { resolvedTheme, theme } = useTheme();
+  const activeTheme = resolvedTheme ?? theme ?? 'astra';
 
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(next) => setNotificationsModalOpen(next)}
     >
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent
+        className="dark bg-background text-foreground sm:max-w-5xl"
+        data-theme={activeTheme}
+      >
         <DialogHeader>
           <DialogTitle>Notifications</DialogTitle>
           <DialogDescription className="sr-only">

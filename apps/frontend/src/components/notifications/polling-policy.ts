@@ -1,28 +1,67 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 /**
  * Polling cadence for the notifications bell + watcher.
  *
- * react-query keeps the interval-based refetch running even while the
- * tab is in the background (we pass `refetchIntervalInBackground: true`
- * at the query site), modulo the browser's own setInterval throttling
- * for inactive tabs. Combined with `staleTime: 0` on the notification
- * queries, this guarantees a fresh count immediately on tab re-focus
- * (via the default `refetchOnWindowFocus`) on top of the periodic
- * refetch.
+ * The hook below owns a `visibilitychange` listener so the
+ * attach/detach happens with the consuming component's lifecycle — no
+ * module-level side effects, no listeners left dangling after a hot
+ * reload or unmount.
  *
- * Earlier revisions paused polling after the tab had been hidden for
- * 2 minutes. That interacted poorly with the global
- * `staleTime: 60 * 1000` (set in `providers/trpc.tsx`): once the
- * function returned `false`, the next refocus saw a still-fresh cache
- * entry and skipped the focus refetch, so the count stayed stale until
- * the user manually opened the modal. Always returning the same number
- * sidesteps the issue at negligible network cost.
+ * Behaviour:
+ *   - foreground or recently-hidden tab → poll every `POLL_INTERVAL_MS`
+ *   - tab hidden for ≥ `IDLE_HIDDEN_PAUSE_MS` → return `false`, react-
+ *     query stops the interval
+ *   - on tab refocus → flip back to `POLL_INTERVAL_MS`; combined with
+ *     `staleTime: 0` (set at the query site) react-query also refetches
+ *     immediately via `refetchOnWindowFocus`
  */
 
 export const POLL_INTERVAL_MS = 10_000;
+export const IDLE_HIDDEN_PAUSE_MS = 10 * 60_000;
 
-/** Function form for parity with the react-query callback signature. */
-export function getNotificationsPollInterval(): number {
-  return POLL_INTERVAL_MS;
+/**
+ * Returns the desired `refetchInterval` value for a notification
+ * polling query. Re-renders the consumer whenever the value flips,
+ * so passing the return directly into react-query's options works
+ * correctly.
+ */
+export function useNotificationsPollInterval(): number | false {
+  const [pollInterval, setPollInterval] = useState<number | false>(
+    POLL_INTERVAL_MS,
+  );
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    let pauseTimer: ReturnType<typeof setTimeout> | null = null;
+    const cancelPauseTimer = () => {
+      if (pauseTimer) {
+        clearTimeout(pauseTimer);
+        pauseTimer = null;
+      }
+    };
+    const reschedule = () => {
+      cancelPauseTimer();
+      if (document.hidden) {
+        pauseTimer = setTimeout(() => {
+          setPollInterval(false);
+        }, IDLE_HIDDEN_PAUSE_MS);
+      } else {
+        setPollInterval(POLL_INTERVAL_MS);
+      }
+    };
+
+    // Honour the current visibility on mount (the tab could already be
+    // hidden when the hook first runs).
+    reschedule();
+    document.addEventListener('visibilitychange', reschedule);
+    return () => {
+      document.removeEventListener('visibilitychange', reschedule);
+      cancelPauseTimer();
+    };
+  }, []);
+
+  return pollInterval;
 }

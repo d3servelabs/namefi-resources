@@ -5,16 +5,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 
-import { getNotificationsPollInterval } from './polling-policy';
+import { useNotificationsPollInterval } from './polling-policy';
 
 const BUMP_HOLD_MS = 2500;
 
 type Options = {
   filter?: NotificationRelatedResource;
   /**
-   * Override polling cadence. When omitted, polls every
-   * `POLL_INTERVAL_MS` and pauses after the tab has been hidden for
-   * `IDLE_HIDDEN_PAUSE_MS` (see `polling-policy.ts`).
+   * Override polling cadence. When omitted, defers to
+   * `useNotificationsPollInterval` (polls every `POLL_INTERVAL_MS` and
+   * pauses after the tab has been hidden for `IDLE_HIDDEN_PAUSE_MS`).
    */
   refetchInterval?: number | false | (() => number | false);
 };
@@ -37,6 +37,7 @@ export function useUnreadCount({
   refetchInterval,
 }: Options = {}): UseUnreadCountResult {
   const trpc = useTRPC();
+  const pollInterval = useNotificationsPollInterval();
   const queryOptions = trpc.notifications.getUnreadCount.queryOptions(
     filter
       ? {
@@ -45,15 +46,16 @@ export function useUnreadCount({
         }
       : {},
     {
-      refetchInterval:
-        refetchInterval ?? (() => getNotificationsPollInterval()),
+      refetchInterval: refetchInterval ?? pollInterval,
       // Keep polling when the tab is in the background so that the
       // OS-level notification banner can fire (via the watcher) even
       // when the user is in another window.
       refetchIntervalInBackground: true,
       // Override the global 60s staleTime so a tab re-focus triggers
-      // an immediate refetch. Without this, a user who left the tab
-      // for less than 60s wouldn't see updated counts on return.
+      // an immediate refetch. This pairs with the visibility-driven
+      // pause in `useNotificationsPollInterval`: when the user comes
+      // back to a paused tab, refocus refetches immediately AND the
+      // hook flips polling back on for the next tick.
       staleTime: 0,
     },
   );
