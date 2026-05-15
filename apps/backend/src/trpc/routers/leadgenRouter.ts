@@ -11,7 +11,7 @@ import { and, desc, eq } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 
 import { startLeadgenRunForUser } from '#lib/leadgen/runs';
-import { generateLeadgenLeadOutreachActivity } from '#temporal/activities/leadgen.activities';
+import { generateLeadgenLeadOutreach } from '../../services/leadgen/outreach.service';
 import { createContractTRPCRouter } from '../contract';
 import { protectedProcedure } from '../base';
 
@@ -55,7 +55,7 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         userId: ctx.user.id,
       });
 
-      await generateLeadgenLeadOutreachActivity({
+      await generateLeadgenLeadOutreach({
         runId: run.id,
         leadId: input.leadId,
         sourceDomain: run.domain,
@@ -161,6 +161,13 @@ export async function getLeadgenRunSnapshotForUser(params: {
   ]);
 
   const intentQueries = extractIntentQueries(events);
+  // getRun already fetches full detail rows, so surface live counts here while
+  // listRuns keeps using persisted aggregates for the lightweight index view.
+  const liveCounts = {
+    leadCount: leads.length,
+    contactCount: contacts.length,
+    draftCount: drafts.length,
+  };
 
   return {
     id: run.id,
@@ -173,9 +180,7 @@ export async function getLeadgenRunSnapshotForUser(params: {
     finishedAt: run.finishedAt,
     errorMessage: run.errorMessage,
     summary: run.summary,
-    leadCount: run.leadCount,
-    contactCount: run.contactCount,
-    draftCount: run.draftCount,
+    ...liveCounts,
     createdAt: run.createdAt,
     updatedAt: run.updatedAt,
     intentQueries,
