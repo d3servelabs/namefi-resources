@@ -52,7 +52,7 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
     initialPageParam: null,
     queryFn: ({ pageParam }) => {
       if (!normalizedHandleSlug) {
-        throw new Error('Invalid MLS handle.');
+        throw new Error('Invalid seller handle.');
       }
 
       return trpcClient.mls.getHandleListings.query({
@@ -114,7 +114,7 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
         hasValidHandle={hasValidHandle}
         isLoading={isLoading}
         isError={isError}
-        errorMessage={error?.message ?? 'Failed to load MLS seller listings.'}
+        errorMessage={error?.message ?? 'Failed to load seller listings.'}
         listings={listings}
         hasNextPage={Boolean(hasNextPage)}
         isFetchingNextPage={isFetchingNextPage}
@@ -354,7 +354,7 @@ function MlsHandleCompletionState({
 
 function getSellerSubtitle(hasValidHandle: boolean, totalDomains: number) {
   if (!hasValidHandle) {
-    return 'Invalid MLS handle.';
+    return 'Invalid seller handle.';
   }
 
   if (totalDomains === 0) {

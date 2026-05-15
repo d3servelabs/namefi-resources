@@ -444,7 +444,7 @@ const availabilityScenarios: Scenario[] = [
   {
     title: 'Buy On X',
     description:
-      'MLS listings add the external social CTA next to the taken badge.',
+      'Feed listings add the external social CTA next to the taken badge.',
     props: {
       domain: 'signal.club' as NamefiNormalizedDomain,
       availabilityInfo: createAvailabilityInfo(
@@ -516,7 +516,7 @@ const importScenarios: Scenario[] = [
   {
     title: 'Importable + Buy On X',
     description:
-      'Stress case with EPP input, import CTA, MLS CTA, and a long domain in the same card.',
+      'Stress case with EPP input, import CTA, feed CTA, and a long domain in the same card.',
     props: {
       domain:
         'this-is-a-very-long-domain-name-built-for-import-market-testing.club' as NamefiNormalizedDomain,
@@ -659,7 +659,7 @@ function AllStatesStory() {
           />
           <StateSection
             title="Availability"
-            description="Primary search result states driven by availability, support, claims, and MLS data."
+            description="Primary search result states driven by availability, support, claims, and feed data."
             scenarios={availabilityScenarios}
           />
           <StateSection

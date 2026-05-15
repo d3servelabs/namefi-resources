@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { MlsHandleFeed } from '@/components/mls/mls-handle-feed';
 
 export const metadata: Metadata = {
-  title: 'MLS Seller Listings | Namefi',
+  title: 'Seller Listings | Namefi Feed',
   description:
-    'Browse domains listed by a specific seller from the MLS Twitter feed.',
+    'Browse domains listed by a specific seller from the Namefi Feed.',
 };
 
 interface MlsSellerPageProps {
