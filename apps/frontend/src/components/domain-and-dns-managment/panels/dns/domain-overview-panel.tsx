@@ -2,6 +2,7 @@
 
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useDomainRenewal } from '@/hooks/use-domain-renewal';
+import { useWatchAssets } from '@/hooks/use-watch-assets';
 import {
   Card,
   CardContent,
@@ -42,8 +43,10 @@ import {
   ChevronUp,
   Lock,
   FileCheck,
+  Wallet,
 } from 'lucide-react';
 import { NetworkLogo } from '@/components/network-logo';
+import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { getShortAddress } from '@/lib/string';
 import {
@@ -253,6 +256,23 @@ function NFTOwnershipCard({
 }) {
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [copiedTokenId, setCopiedTokenId] = useState(false);
+  const { watchNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
+
+  const handleWatchNft = async () => {
+    if (!tokenId) return;
+    try {
+      const added = await watchNamefiNftInWallet(tokenId, chainId);
+      if (added) {
+        toast.success('NFT added to your wallet');
+      } else {
+        toast.error("Couldn't add NFT to your wallet");
+      }
+    } catch (error) {
+      toast.error('Failed to add NFT to wallet', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  };
 
   const handleCopyAddress = async () => {
     if (!ownerAddress) return;
@@ -374,9 +394,9 @@ function NFTOwnershipCard({
                   <InfoTooltip content="A unique identifier for your domain NFT on the blockchain. Think of it like a serial number for your digital asset." />
                 </p>
                 <p className="text-sm font-mono">
-                  {tokenId.length > 12
-                    ? `${tokenId.slice(0, 6)}...${tokenId.slice(-4)}`
-                    : tokenId}
+                  <TruncatedTextWithHover maxLength={13}>
+                    {tokenId}
+                  </TruncatedTextWithHover>
                 </p>
               </div>
               <Button
@@ -408,6 +428,18 @@ function NFTOwnershipCard({
             }
             nativeButton={false}
           />
+        )}
+
+        {tokenId && isAnyWalletConnected && (
+          <AsyncButton
+            variant="outline"
+            className="w-full bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50"
+            onClick={handleWatchNft}
+            loadingText="Adding to wallet..."
+          >
+            <Wallet className="h-4 w-4 mr-2" />
+            Show NFT in Wallet
+          </AsyncButton>
         )}
       </CardContent>
     </Card>

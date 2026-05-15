@@ -7,7 +7,10 @@ import {
   Compass,
   MoreVertical,
   ReceiptText,
+  Wallet,
 } from 'lucide-react';
+import { useCallback } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   DropdownMenu,
@@ -17,6 +20,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
+import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { ActionTooltip } from '../action-tooltip';
 
 const ACTION_BUTTON_BASE_CLASSES =
@@ -125,6 +129,13 @@ export function ActionsCell({
           {explorerButton && (
             <DropdownMenuItem>{explorerButton}</DropdownMenuItem>
           )}
+          <WatchNftButton
+            domainName={domainName}
+            tokenId={tokenId}
+            chainId={chainId}
+            isExpired={isExpired}
+            isMobile
+          />
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -139,6 +150,81 @@ export function ActionsCell({
       {explorerButton ? (
         <ActionTooltip label="View NFT">{explorerButton}</ActionTooltip>
       ) : null}
+      <WatchNftButton
+        domainName={domainName}
+        tokenId={tokenId}
+        chainId={chainId}
+        isExpired={isExpired}
+        isMobile={false}
+      />
     </div>
   );
+}
+
+interface WatchNftButtonProps {
+  domainName: string;
+  tokenId: bigint | number | null | undefined;
+  chainId: number | null;
+  isExpired: boolean;
+  isMobile: boolean;
+}
+
+/**
+ * Adds the domain's Namefi NFT to the user's connected wallet via
+ * `wallet_watchAsset`. Renders nothing when the domain is expired, has no
+ * token id or chain id, or no wallet is connected.
+ */
+function WatchNftButton({
+  domainName,
+  tokenId,
+  chainId,
+  isExpired,
+  isMobile,
+}: WatchNftButtonProps) {
+  const { watchNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
+
+  const handleWatchNft = useCallback(async () => {
+    if (tokenId == null || chainId == null) {
+      return;
+    }
+    try {
+      const added = await watchNamefiNftInWallet(tokenId.toString(), chainId);
+      if (added) {
+        toast.success(`${domainName} added to your wallet`);
+      } else {
+        toast.error(`Couldn't add ${domainName} to your wallet`);
+      }
+    } catch (error) {
+      toast.error('Failed to add NFT to wallet', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }, [tokenId, chainId, domainName, watchNamefiNftInWallet]);
+
+  if (
+    isExpired ||
+    tokenId == null ||
+    chainId == null ||
+    !isAnyWalletConnected
+  ) {
+    return null;
+  }
+
+  const button = (
+    <Button
+      variant="outline"
+      size="sm"
+      className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-violet-400')}
+      onClick={handleWatchNft}
+      aria-label={`Show ${domainName} NFT in wallet`}
+    >
+      <Wallet className="w-4 h-4" />
+    </Button>
+  );
+
+  if (isMobile) {
+    return <DropdownMenuItem>{button}</DropdownMenuItem>;
+  }
+
+  return <ActionTooltip label="Show NFT in wallet">{button}</ActionTooltip>;
 }
