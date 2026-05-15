@@ -1,5 +1,13 @@
 import { leadgenContract } from '@namefi-astra/common/contract/leadgen-contract';
 import {
+  getLeadgenOutreachCreditEstimate,
+  getLeadgenRunCreditEstimate,
+} from '@namefi-astra/common/ai-generation-credits';
+import {
+  LEADGEN_CONTACT_MODEL,
+  getLeadgenPrimaryResearchModel,
+} from '@namefi-astra/ai';
+import {
   db,
   leadgenContactsTable,
   leadgenEmailDraftsTable,
@@ -11,19 +19,36 @@ import { and, desc, eq } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 
 import { startLeadgenRunForUser } from '#lib/leadgen/runs';
-import { generateLeadgenLeadOutreach } from '../../services/leadgen/outreach.service';
+import { config } from '#lib/env';
+import { createLogger } from '#lib/logger';
+import {
+  generateLeadgenLeadOutreach,
+  persistLeadgenEvent,
+} from '../../services/leadgen/outreach.service';
 import { createContractTRPCRouter } from '../contract';
 import { protectedProcedure } from '../base';
+import { assertUserCanSpendGenerationCredits } from './aiRouter';
 
 function isTerminalRunStatus(status: string) {
   return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
 }
+
+const logger = createLogger({ module: 'leadgen-router' });
 
 export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
   startRun: protectedProcedure
     .input(leadgenContract.startRun.input)
     .output(leadgenContract.startRun.output)
     .mutation(async ({ input, ctx }) => {
+      await assertUserCanSpendGenerationCredits({
+        userId: ctx.user.id,
+        requestedCredits: getLeadgenRunCreditEstimate({
+          creditCosts: config.AI_GENERATION_CREDIT_COSTS,
+          reasoningEffort: input.reasoningEffort,
+          model: getLeadgenPrimaryResearchModel(input.reasoningEffort),
+        }),
+      });
+
       const run = await startLeadgenRunForUser({
         userId: ctx.user.id,
         domain: input.domain,
@@ -55,12 +80,41 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         userId: ctx.user.id,
       });
 
+      const estimatedCredits = getLeadgenOutreachCreditEstimate({
+        creditCosts: config.AI_GENERATION_CREDIT_COSTS,
+        reasoningEffort: run.reasoningEffort,
+        model: LEADGEN_CONTACT_MODEL,
+      });
+      await assertUserCanSpendGenerationCredits({
+        userId: ctx.user.id,
+        requestedCredits: estimatedCredits,
+      });
+
       await generateLeadgenLeadOutreach({
         runId: run.id,
         leadId: input.leadId,
         sourceDomain: run.domain,
         reasoningEffort: run.reasoningEffort,
       });
+      // Record the estimate only after successful generation so failed
+      // outreach attempts do not consume monthly credits.
+      try {
+        await persistLeadgenEvent({
+          runId: run.id,
+          eventType: 'credit-estimate',
+          stage: 'credits',
+          payload: {
+            operation: 'leadgen-outreach',
+            leadId: input.leadId,
+            estimatedCredits,
+          },
+        });
+      } catch (error) {
+        logger.warn(
+          { error, runId: run.id, leadId: input.leadId, estimatedCredits },
+          'Failed to persist leadgen outreach credit estimate',
+        );
+      }
 
       return await getLeadgenRunSnapshotForUser({
         runId: run.id,
@@ -87,6 +141,7 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
           leadCount: leadgenRunsTable.leadCount,
           contactCount: leadgenRunsTable.contactCount,
           draftCount: leadgenRunsTable.draftCount,
+          tokenUsage: leadgenRunsTable.tokenUsage,
           createdAt: leadgenRunsTable.createdAt,
           updatedAt: leadgenRunsTable.updatedAt,
         })
@@ -181,6 +236,7 @@ export async function getLeadgenRunSnapshotForUser(params: {
     errorMessage: run.errorMessage,
     summary: run.summary,
     ...liveCounts,
+    tokenUsage: run.tokenUsage,
     createdAt: run.createdAt,
     updatedAt: run.updatedAt,
     intentQueries,

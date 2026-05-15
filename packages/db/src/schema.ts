@@ -932,6 +932,8 @@ type AiGenerationTokenUsage = Array<{
   outputTokens: number;
 }>;
 
+type LeadgenTokenUsage = AiGenerationTokenUsage;
+
 type LeadgenRunInput = {
   domain: NamefiNormalizedDomain;
   reasoningEffort: 'low' | 'medium' | 'high';
@@ -1535,6 +1537,10 @@ export const leadgenRunsTable = pgTable(
     leadCount: integer('lead_count').notNull().default(0),
     contactCount: integer('contact_count').notNull().default(0),
     draftCount: integer('draft_count').notNull().default(0),
+    tokenUsage: jsonb('token_usage')
+      .$type<LeadgenTokenUsage>()
+      .notNull()
+      .default([]),
     input: jsonb('input').notNull().$type<LeadgenRunInput>(),
     metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
     ...lifecycleTimestamps,

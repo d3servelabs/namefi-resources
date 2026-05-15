@@ -1,6 +1,7 @@
 import { Context } from '@temporalio/activity';
 import {
   generateLeadgenIntentQueries,
+  getLeadgenPrimaryResearchModel,
   normalizeLeadgenDomain,
   streamLeadgenSubstringSearchResults,
   streamLeadgenSearchResults,
@@ -17,6 +18,7 @@ import {
   persistLeadgenEvent,
   refreshLeadgenRunCounts,
 } from '../../services/leadgen/outreach.service';
+import { appendLeadgenTokenUsageFromResult } from '../../services/leadgen/token-usage';
 
 const logger = createLogger({ module: 'leadgen-activities' });
 
@@ -202,6 +204,11 @@ export async function generateLeadgenIntentsActivity({
       }),
     { stage: 'intent', runId, domain },
   );
+  await recordLeadgenTokenUsageFromResult({
+    runId,
+    result,
+    fallbackModel: getLeadgenPrimaryResearchModel(reasoningEffort),
+  });
   const queries = result.output.queries;
 
   await persistLeadgenEvent({
@@ -411,6 +418,11 @@ async function streamAndPersistSearchCandidates(params: {
   }
 
   const finalOutput = await stream.output;
+  await recordLeadgenTokenUsageFromResult({
+    runId: params.runId,
+    result: stream,
+    fallbackModel: getLeadgenPrimaryResearchModel(params.reasoningEffort),
+  });
   const hits = Array.isArray(finalOutput)
     ? finalOutput.slice(0, params.maxResultsPerQuery)
     : [];
@@ -624,4 +636,19 @@ export async function generateLeadgenLeadOutreachActivity({
       }),
     { stage: 'contacts', runId, leadId },
   );
+}
+
+async function recordLeadgenTokenUsageFromResult(params: {
+  runId: string;
+  result: unknown;
+  fallbackModel: string;
+}) {
+  try {
+    await appendLeadgenTokenUsageFromResult(params);
+  } catch (error) {
+    logger.warn(
+      { error, runId: params.runId, fallbackModel: params.fallbackModel },
+      'Failed to persist leadgen token usage',
+    );
+  }
 }

@@ -1,4 +1,6 @@
 import {
+  LEADGEN_CONTACT_MODEL,
+  LEADGEN_EMAIL_MODEL,
   generateLeadgenContacts,
   generateLeadgenEmailDraft,
   normalizeLeadgenEmail,
@@ -14,10 +16,14 @@ import {
   leadgenRunsTable,
 } from '@namefi-astra/db';
 import { and, count, desc, eq, isNull, ne, or } from 'drizzle-orm';
+import { createLogger } from '#lib/logger';
+import { appendLeadgenTokenUsageFromResult } from './token-usage';
 
 type LeadRow = typeof leadgenLeadsTable.$inferSelect;
 type ContactRow = typeof leadgenContactsTable.$inferSelect;
 type LeadgenOutreachTrigger = 'auto' | 'manual';
+
+const logger = createLogger({ module: 'leadgen-outreach' });
 
 export interface GenerateLeadgenLeadOutreachInput {
   runId: string;
@@ -319,6 +325,11 @@ async function discoverNewContactsAndDraft(params: {
         targetContacts: 3,
       },
     );
+    await recordLeadgenTokenUsageFromResult({
+      runId: params.runId,
+      result,
+      fallbackModel: LEADGEN_CONTACT_MODEL,
+    });
     const contactResult = result.output[0];
     const contacts = contactResult?.contacts ?? [];
 
@@ -534,6 +545,11 @@ async function draftForContact(params: {
       reasoningEffort: params.reasoningEffort,
     },
   );
+  await recordLeadgenTokenUsageFromResult({
+    runId: params.runId,
+    result: draft,
+    fallbackModel: LEADGEN_EMAIL_MODEL,
+  });
 
   const [saved] = await db
     .insert(leadgenEmailDraftsTable)
@@ -600,4 +616,21 @@ function throwIfLeadgenAborted(abortSignal: AbortSignal) {
 
 export function getLeadgenErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : String(error);
+}
+
+async function recordLeadgenTokenUsageFromResult(params: {
+  runId: string;
+  result: unknown;
+  fallbackModel: string;
+}) {
+  try {
+    await appendLeadgenTokenUsageFromResult(params);
+  } catch (error) {
+    logger.warn(
+      { error, runId: params.runId, fallbackModel: params.fallbackModel },
+      'Failed to persist leadgen token usage in outreach',
+    );
+    // Token usage is operational accounting; do not fail the user-facing
+    // outreach path if the usage update races or fails transiently.
+  }
 }

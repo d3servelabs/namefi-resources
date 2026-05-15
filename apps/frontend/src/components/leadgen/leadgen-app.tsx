@@ -1,9 +1,14 @@
 'use client';
 
 import { AuthRequired } from '@/components/auth-required';
+import { GenerationUsage } from '@/components/ai-generation/generation-usage';
 import { PageShell } from '@/components/page-shell';
 import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import {
+  getLeadgenOutreachCreditEstimate,
+  getLeadgenRunCreditEstimate,
+} from '@namefi-astra/common/ai-generation-credits';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -127,6 +132,10 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     ...trpc.leadgen.listRuns.queryOptions({ limit: 12 }),
     enabled: isAuthenticated,
   });
+  const usageQuery = useQuery({
+    ...trpc.ai.getUserGenerationUsage.queryOptions(),
+    enabled: isAuthenticated,
+  });
 
   const activeRunQuery = useQuery({
     ...trpc.leadgen.getRun.queryOptions({ runId: activeRunId ?? '' }),
@@ -171,6 +180,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         void queryClient.invalidateQueries({
           queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
         });
+        void queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
+        });
       },
       onError(error) {
         toast.error('Could not start buyer search', {
@@ -191,7 +203,21 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const run = liveRun ?? activeRunQuery.data ?? null;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
-  const canSubmit = isLikelyDomain(domain) && !startRun.isPending;
+  const estimatedRunCredits = usageQuery.data
+    ? getLeadgenRunCreditEstimate({
+        creditCosts: usageQuery.data.creditCosts,
+        reasoningEffort,
+      })
+    : undefined;
+  const hasInsufficientRunCredits =
+    usageQuery.data && estimatedRunCredits !== undefined
+      ? estimatedRunCredits > usageQuery.data.remainingCredits
+      : false;
+  const canSubmit =
+    isLikelyDomain(domain) &&
+    !startRun.isPending &&
+    !usageQuery.isLoading &&
+    !hasInsufficientRunCredits;
 
   const handleSubmit = () => {
     const normalized = normalizeDomainInput(domain);
@@ -291,8 +317,18 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 )}
                 Find buyers
               </Button>
+
+              <LeadgenCreditEstimate
+                isLoading={usageQuery.isLoading}
+                isError={usageQuery.isError}
+                requestedCredits={estimatedRunCredits}
+                remainingCredits={usageQuery.data?.remainingCredits}
+                noun="buyer search"
+              />
             </div>
           </section>
+
+          <GenerationUsage />
 
           <PastRuns
             runs={runsQuery.data ?? []}
@@ -353,6 +389,9 @@ function RunWorkspace({
 }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const usageQuery = useQuery({
+    ...trpc.ai.getUserGenerationUsage.queryOptions(),
+  });
   const [pendingOutreachLeadId, setPendingOutreachLeadId] = useState<
     string | null
   >(null);
@@ -380,6 +419,9 @@ function RunWorkspace({
         );
         void queryClient.invalidateQueries({
           queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
         });
         const updatedLead = snapshot.leads.find(
           (lead) => lead.id === variables.leadId,
@@ -413,8 +455,30 @@ function RunWorkspace({
     }),
   );
 
+  const estimatedOutreachCredits = usageQuery.data
+    ? getLeadgenOutreachCreditEstimate({
+        creditCosts: usageQuery.data.creditCosts,
+        reasoningEffort: run.reasoningEffort,
+      })
+    : undefined;
+  const hasInsufficientOutreachCredits =
+    usageQuery.data && estimatedOutreachCredits !== undefined
+      ? estimatedOutreachCredits > usageQuery.data.remainingCredits
+      : false;
+
   const handleGenerateLeadOutreach = (leadId: string) => {
     if (pendingOutreachLeadId) return;
+    if (
+      usageQuery.data &&
+      estimatedOutreachCredits !== undefined &&
+      estimatedOutreachCredits > usageQuery.data.remainingCredits
+    ) {
+      toast.error('Not enough AI credits', {
+        description: `Preparing outreach needs ${formatAiCredits(estimatedOutreachCredits)}.`,
+      });
+      return;
+    }
+
     setPendingOutreachLeadId(leadId);
     generateLeadOutreach.mutate({ runId: run.id, leadId });
   };
@@ -489,6 +553,11 @@ function RunWorkspace({
                 sourceDomain={run.domain}
                 pendingOutreachLeadId={pendingOutreachLeadId}
                 reviewOutreachLeadId={reviewOutreachLeadId}
+                estimatedOutreachCredits={estimatedOutreachCredits}
+                remainingCredits={usageQuery.data?.remainingCredits}
+                isOutreachCreditLoading={usageQuery.isLoading}
+                isOutreachCreditError={usageQuery.isError}
+                isOutreachCreditBlocked={hasInsufficientOutreachCredits}
                 onGenerateLeadOutreach={handleGenerateLeadOutreach}
                 onReviewOutreachLead={setReviewOutreachLeadId}
               />
@@ -499,6 +568,11 @@ function RunWorkspace({
                 sourceDomain={run.domain}
                 pendingOutreachLeadId={pendingOutreachLeadId}
                 reviewOutreachLeadId={reviewOutreachLeadId}
+                estimatedOutreachCredits={estimatedOutreachCredits}
+                remainingCredits={usageQuery.data?.remainingCredits}
+                isOutreachCreditLoading={usageQuery.isLoading}
+                isOutreachCreditError={usageQuery.isError}
+                isOutreachCreditBlocked={hasInsufficientOutreachCredits}
                 onGenerateLeadOutreach={handleGenerateLeadOutreach}
                 onReviewOutreachLead={setReviewOutreachLeadId}
               />
@@ -523,6 +597,11 @@ function LeadList({
   sourceDomain,
   pendingOutreachLeadId,
   reviewOutreachLeadId,
+  estimatedOutreachCredits,
+  remainingCredits,
+  isOutreachCreditLoading,
+  isOutreachCreditError,
+  isOutreachCreditBlocked,
   onGenerateLeadOutreach,
   onReviewOutreachLead,
 }: {
@@ -530,6 +609,11 @@ function LeadList({
   sourceDomain: string;
   pendingOutreachLeadId: string | null;
   reviewOutreachLeadId: string | null;
+  estimatedOutreachCredits?: number;
+  remainingCredits?: number;
+  isOutreachCreditLoading: boolean;
+  isOutreachCreditError: boolean;
+  isOutreachCreditBlocked: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachLead: (leadId: string | null) => void;
 }) {
@@ -550,6 +634,11 @@ function LeadList({
           sourceDomain={sourceDomain}
           isPreparingOutreach={pendingOutreachLeadId === lead.id}
           isReviewingOutreach={reviewOutreachLeadId === lead.id}
+          estimatedOutreachCredits={estimatedOutreachCredits}
+          remainingCredits={remainingCredits}
+          isOutreachCreditLoading={isOutreachCreditLoading}
+          isOutreachCreditError={isOutreachCreditError}
+          isOutreachCreditBlocked={isOutreachCreditBlocked}
           onGenerateLeadOutreach={onGenerateLeadOutreach}
           onReviewOutreachChange={(open) =>
             onReviewOutreachLead(open ? lead.id : null)
@@ -565,6 +654,11 @@ function LeadCard({
   sourceDomain,
   isPreparingOutreach,
   isReviewingOutreach,
+  estimatedOutreachCredits,
+  remainingCredits,
+  isOutreachCreditLoading,
+  isOutreachCreditError,
+  isOutreachCreditBlocked,
   onGenerateLeadOutreach,
   onReviewOutreachChange,
 }: {
@@ -572,6 +666,11 @@ function LeadCard({
   sourceDomain: string;
   isPreparingOutreach: boolean;
   isReviewingOutreach: boolean;
+  estimatedOutreachCredits?: number;
+  remainingCredits?: number;
+  isOutreachCreditLoading: boolean;
+  isOutreachCreditError: boolean;
+  isOutreachCreditBlocked: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachChange: (open: boolean) => void;
 }) {
@@ -626,6 +725,11 @@ function LeadCard({
           hasEmailCta={hasEmailCta}
           shouldPrepareOutreach={shouldPrepareOutreach}
           isPreparingOutreach={isPreparingOutreach}
+          estimatedOutreachCredits={estimatedOutreachCredits}
+          remainingCredits={remainingCredits}
+          isOutreachCreditLoading={isOutreachCreditLoading}
+          isOutreachCreditError={isOutreachCreditError}
+          isOutreachCreditBlocked={isOutreachCreditBlocked}
           onGenerateLeadOutreach={onGenerateLeadOutreach}
           onOpenEmailDialog={() => onReviewOutreachChange(true)}
         />
@@ -646,6 +750,11 @@ function LeadOutreachPanel({
   hasEmailCta,
   shouldPrepareOutreach,
   isPreparingOutreach,
+  estimatedOutreachCredits,
+  remainingCredits,
+  isOutreachCreditLoading,
+  isOutreachCreditError,
+  isOutreachCreditBlocked,
   onGenerateLeadOutreach,
   onOpenEmailDialog,
 }: {
@@ -653,16 +762,35 @@ function LeadOutreachPanel({
   hasEmailCta: boolean;
   shouldPrepareOutreach: boolean;
   isPreparingOutreach: boolean;
+  estimatedOutreachCredits?: number;
+  remainingCredits?: number;
+  isOutreachCreditLoading: boolean;
+  isOutreachCreditError: boolean;
+  isOutreachCreditBlocked: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
   onOpenEmailDialog: () => void;
 }) {
   return (
-    <div className="mt-4 flex flex-col gap-2 border-t border-border/70 pt-3 sm:flex-row sm:justify-end">
+    <div className="mt-4 flex flex-col gap-2 border-t border-border/70 pt-3 sm:flex-row sm:items-center sm:justify-between">
+      {shouldPrepareOutreach ? (
+        <LeadgenCreditEstimate
+          isLoading={isOutreachCreditLoading}
+          isError={isOutreachCreditError}
+          requestedCredits={estimatedOutreachCredits}
+          remainingCredits={remainingCredits}
+          noun="outreach prep"
+          className="sm:max-w-sm"
+        />
+      ) : (
+        <span aria-hidden="true" />
+      )}
       <LeadOutreachActions
         lead={lead}
         hasEmailCta={hasEmailCta}
         shouldPrepareOutreach={shouldPrepareOutreach}
         isPreparingOutreach={isPreparingOutreach}
+        isOutreachCreditLoading={isOutreachCreditLoading}
+        isOutreachCreditBlocked={isOutreachCreditBlocked}
         onGenerateLeadOutreach={onGenerateLeadOutreach}
         onOpenEmailDialog={onOpenEmailDialog}
       />
@@ -675,6 +803,8 @@ function LeadOutreachActions({
   hasEmailCta,
   shouldPrepareOutreach,
   isPreparingOutreach,
+  isOutreachCreditLoading,
+  isOutreachCreditBlocked,
   onGenerateLeadOutreach,
   onOpenEmailDialog,
 }: {
@@ -682,6 +812,8 @@ function LeadOutreachActions({
   hasEmailCta: boolean;
   shouldPrepareOutreach: boolean;
   isPreparingOutreach: boolean;
+  isOutreachCreditLoading: boolean;
+  isOutreachCreditBlocked: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
   onOpenEmailDialog: () => void;
 }) {
@@ -691,7 +823,11 @@ function LeadOutreachActions({
         <Button
           size="sm"
           variant={hasEmailCta ? 'outline' : 'default'}
-          disabled={isPreparingOutreach}
+          disabled={
+            isPreparingOutreach ||
+            isOutreachCreditLoading ||
+            isOutreachCreditBlocked
+          }
           onClick={() => onGenerateLeadOutreach(lead.id)}
           className="w-full sm:w-auto"
         >
@@ -1222,6 +1358,63 @@ function LeadgenSkeleton() {
         </main>
       </div>
     </PageShell>
+  );
+}
+
+function formatAiCredits(credits: number) {
+  return `${credits} AI ${credits === 1 ? 'credit' : 'credits'}`;
+}
+
+function LeadgenCreditEstimate({
+  isLoading,
+  isError,
+  requestedCredits,
+  remainingCredits,
+  noun,
+  className,
+}: {
+  isLoading: boolean;
+  isError: boolean;
+  requestedCredits?: number;
+  remainingCredits?: number;
+  noun: string;
+  className?: string;
+}) {
+  if (isLoading) {
+    return (
+      <p className={cn('text-xs text-muted-foreground', className)}>
+        Checking AI credit balance...
+      </p>
+    );
+  }
+
+  if (
+    isError ||
+    requestedCredits === undefined ||
+    remainingCredits === undefined
+  ) {
+    return (
+      <p className={cn('text-xs text-muted-foreground', className)}>
+        We will check your AI credit balance before starting.
+      </p>
+    );
+  }
+
+  const remainingAfterGeneration = remainingCredits - requestedCredits;
+  if (remainingAfterGeneration < 0) {
+    return (
+      <p className={cn('text-xs text-destructive', className)}>
+        This {noun} is estimated at {formatAiCredits(requestedCredits)}. You
+        have {formatAiCredits(remainingCredits)} left this month.
+      </p>
+    );
+  }
+
+  return (
+    <p className={cn('text-xs text-muted-foreground', className)}>
+      Estimated {noun} cost: {formatAiCredits(requestedCredits)}. You will have{' '}
+      {formatAiCredits(remainingAfterGeneration)} left this month.
+    </p>
   );
 }
 

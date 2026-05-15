@@ -1,6 +1,7 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 
+import { aiTokenUsageEntrySchema } from '../ai-generation-credits';
 import { createContract } from './create-contract';
 
 export const leadgenReasoningEffortSchema = z.enum(['low', 'medium', 'high']);
@@ -86,6 +87,7 @@ const leadgenRunBaseSchema = z.object({
   leadCount: z.number(),
   contactCount: z.number(),
   draftCount: z.number(),
+  tokenUsage: z.array(aiTokenUsageEntrySchema),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

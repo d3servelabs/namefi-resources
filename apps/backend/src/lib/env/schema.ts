@@ -1,6 +1,8 @@
 import {
   aiGenerationCreditCostsSchema,
+  aiTokenCreditRatesSchema,
   defaultAiGenerationCreditCosts,
+  defaultAiTokenCreditRates,
 } from '@namefi-astra/common/ai-generation-credits';
 import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
 import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
@@ -261,6 +263,13 @@ export const configSchema = z.object({
    */
   AI_GENERATION_CREDIT_COSTS: aiGenerationCreditCostsSchema.default(
     defaultAiGenerationCreditCosts,
+  ),
+  /**
+   * Token-backed credit rates by model. These let variable-cost workflows
+   * such as leadgen back-calculate credits from persisted input/output usage.
+   */
+  AI_TOKEN_CREDIT_RATES: aiTokenCreditRatesSchema.default(
+    defaultAiTokenCreditRates,
   ),
 
   /**

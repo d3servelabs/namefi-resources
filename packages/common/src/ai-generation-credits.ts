@@ -1,24 +1,50 @@
 import { z } from 'zod';
 
-export type AiGenerationCreditType = 'logo' | 'marketing' | 'animation';
+export type AiGenerationCreditType =
+  | 'logo'
+  | 'marketing'
+  | 'animation'
+  | 'leadgen'
+  | 'leadgenOutreach';
 
 export const aiGenerationCreditCostSchema = z.number().int().min(0).max(1_000);
 
-export const aiGenerationTypeCreditCostsSchema = z.object({
+export const aiTokenUsageEntrySchema = z.object({
+  model: z.string(),
+  inputTokens: z.number().int().min(0),
+  outputTokens: z.number().int().min(0),
+});
+
+export const aiTokenCreditRateSchema = z.object({
+  inputCreditsPerMillionTokens: z.number().min(0),
+  outputCreditsPerMillionTokens: z.number().min(0),
+});
+
+export const aiTokenCreditRatesSchema = z.object({
+  default: aiTokenCreditRateSchema,
+  models: z.record(z.string(), aiTokenCreditRateSchema).default({}),
+});
+
+const aiGenerationModeCreditCostsSchema = z.object({
   default: aiGenerationCreditCostSchema.optional(),
   models: z.record(z.string(), aiGenerationCreditCostSchema).default({}),
 });
 
-export const aiAnimationCreditCostsSchema =
-  aiGenerationTypeCreditCostsSchema.extend({
-    modes: z.record(z.string(), aiGenerationTypeCreditCostsSchema).default({}),
-  });
+export const aiGenerationTypeCreditCostsSchema = z.object({
+  default: aiGenerationCreditCostSchema.optional(),
+  models: z.record(z.string(), aiGenerationCreditCostSchema).default({}),
+  modes: z.record(z.string(), aiGenerationModeCreditCostsSchema).default({}),
+});
+
+export const aiAnimationCreditCostsSchema = aiGenerationTypeCreditCostsSchema;
 
 const aiGenerationCreditCostsShapeSchema = z.object({
   default: aiGenerationCreditCostSchema,
   logo: aiGenerationTypeCreditCostsSchema,
   marketing: aiGenerationTypeCreditCostsSchema,
   animation: aiAnimationCreditCostsSchema,
+  leadgen: aiGenerationTypeCreditCostsSchema,
+  leadgenOutreach: aiGenerationTypeCreditCostsSchema,
 });
 
 export const defaultAiGenerationCreditCosts = {
@@ -29,6 +55,7 @@ export const defaultAiGenerationCreditCosts = {
       'gpt-image-2': 2,
       'gemini-3-pro-image-preview': 2,
     },
+    modes: {},
   },
   marketing: {
     default: 1,
@@ -36,6 +63,7 @@ export const defaultAiGenerationCreditCosts = {
       'gpt-image-2': 2,
       'gemini-3-pro-image-preview': 2,
     },
+    modes: {},
   },
   animation: {
     default: 3,
@@ -59,7 +87,96 @@ export const defaultAiGenerationCreditCosts = {
       },
     },
   },
+  leadgen: {
+    default: 8,
+    models: {
+      'gpt-4o': 5,
+      'gpt-5.2': 8,
+    },
+    modes: {
+      'full:low': {
+        default: 5,
+        models: {
+          'gpt-4o': 5,
+        },
+      },
+      'full:medium': {
+        default: 8,
+        models: {
+          'gpt-5.2': 8,
+        },
+      },
+      'full:high': {
+        default: 12,
+        models: {
+          'gpt-5.2': 12,
+        },
+      },
+      'campaign_short:low': {
+        default: 3,
+        models: {
+          'gpt-4o': 3,
+        },
+      },
+      'campaign_short:medium': {
+        default: 4,
+        models: {
+          'gpt-5.2': 4,
+        },
+      },
+      'campaign_short:high': {
+        default: 6,
+        models: {
+          'gpt-5.2': 6,
+        },
+      },
+    },
+  },
+  leadgenOutreach: {
+    default: 2,
+    models: {
+      'gpt-5.2': 2,
+      'gpt-4o': 1,
+    },
+    modes: {
+      low: {
+        default: 1,
+        models: {
+          'gpt-5.2': 1,
+        },
+      },
+      medium: {
+        default: 2,
+        models: {
+          'gpt-5.2': 2,
+        },
+      },
+      high: {
+        default: 3,
+        models: {
+          'gpt-5.2': 3,
+        },
+      },
+    },
+  },
 } satisfies z.output<typeof aiGenerationCreditCostsShapeSchema>;
+
+export const defaultAiTokenCreditRates = {
+  default: {
+    inputCreditsPerMillionTokens: 13,
+    outputCreditsPerMillionTokens: 70,
+  },
+  models: {
+    'gpt-4o': {
+      inputCreditsPerMillionTokens: 13,
+      outputCreditsPerMillionTokens: 50,
+    },
+    'gpt-5.2': {
+      inputCreditsPerMillionTokens: 9,
+      outputCreditsPerMillionTokens: 70,
+    },
+  },
+} satisfies z.output<typeof aiTokenCreditRatesSchema>;
 
 export const aiGenerationCreditCostsSchema = z.object({
   default: aiGenerationCreditCostSchema.default(
@@ -73,6 +190,12 @@ export const aiGenerationCreditCostsSchema = z.object({
   ),
   animation: aiAnimationCreditCostsSchema.default(
     defaultAiGenerationCreditCosts.animation,
+  ),
+  leadgen: aiGenerationTypeCreditCostsSchema.default(
+    defaultAiGenerationCreditCosts.leadgen,
+  ),
+  leadgenOutreach: aiGenerationTypeCreditCostsSchema.default(
+    defaultAiGenerationCreditCosts.leadgenOutreach,
   ),
 });
 
@@ -88,6 +211,10 @@ export type AiGenerationCreditCosts = z.infer<
   typeof aiGenerationCreditCostsSchema
 >;
 
+export type AiTokenUsageEntry = z.infer<typeof aiTokenUsageEntrySchema>;
+
+export type AiTokenCreditRates = z.infer<typeof aiTokenCreditRatesSchema>;
+
 export function getAiGenerationCreditCost(params: {
   creditCosts: AiGenerationCreditCosts;
   mode?: string;
@@ -95,10 +222,7 @@ export function getAiGenerationCreditCost(params: {
   type: AiGenerationCreditType;
 }) {
   const typeConfig = params.creditCosts[params.type];
-  const modeConfig =
-    params.type === 'animation' && params.mode
-      ? params.creditCosts.animation.modes[params.mode]
-      : undefined;
+  const modeConfig = params.mode ? typeConfig.modes[params.mode] : undefined;
   const modelCost = params.model
     ? (modeConfig?.models[params.model] ?? typeConfig.models[params.model])
     : undefined;
@@ -109,4 +233,54 @@ export function getAiGenerationCreditCost(params: {
     typeConfig.default ??
     params.creditCosts.default
   );
+}
+
+export function getLeadgenRunCreditEstimate(params: {
+  creditCosts: AiGenerationCreditCosts;
+  reasoningEffort: 'low' | 'medium' | 'high';
+  runProfile?: 'full' | 'campaign_short';
+  model?: string;
+}) {
+  const runProfile = params.runProfile ?? 'full';
+  const primaryModel =
+    params.model ?? (params.reasoningEffort === 'low' ? 'gpt-4o' : 'gpt-5.2');
+
+  return getAiGenerationCreditCost({
+    creditCosts: params.creditCosts,
+    type: 'leadgen',
+    mode: `${runProfile}:${params.reasoningEffort}`,
+    model: primaryModel,
+  });
+}
+
+export function getLeadgenOutreachCreditEstimate(params: {
+  creditCosts: AiGenerationCreditCosts;
+  reasoningEffort: 'low' | 'medium' | 'high';
+  model?: string;
+}) {
+  return getAiGenerationCreditCost({
+    creditCosts: params.creditCosts,
+    type: 'leadgenOutreach',
+    mode: params.reasoningEffort,
+    model: params.model ?? 'gpt-5.2',
+  });
+}
+
+export function getAiTokenUsageCreditCost(params: {
+  tokenCreditRates: AiTokenCreditRates;
+  tokenUsage: AiTokenUsageEntry[];
+}) {
+  const rawCredits = params.tokenUsage.reduce((totalCredits, usage) => {
+    const rates =
+      params.tokenCreditRates.models[usage.model] ??
+      params.tokenCreditRates.default;
+
+    return (
+      totalCredits +
+      (usage.inputTokens / 1_000_000) * rates.inputCreditsPerMillionTokens +
+      (usage.outputTokens / 1_000_000) * rates.outputCreditsPerMillionTokens
+    );
+  }, 0);
+
+  return Math.ceil(rawCredits);
 }

@@ -56,6 +56,18 @@ export interface LeadgenContactOptions {
 const DEFAULT_REASONING_EFFORT: LeadgenReasoningEffort = 'medium';
 const ABSOLUTE_URL_RE = /^[a-z]+:\/\//i;
 const DOMAIN_URL_RE = /^[\w.-]+\.[a-z]{2,}(\/.*)?$/i;
+export const LEADGEN_FAST_MODEL = 'gpt-4o';
+export const LEADGEN_RESEARCH_MODEL = 'gpt-5.2';
+export const LEADGEN_CONTACT_MODEL = 'gpt-5.2';
+export const LEADGEN_EMAIL_MODEL = 'gpt-4o';
+
+export function getLeadgenPrimaryResearchModel(
+  reasoningEffort: LeadgenReasoningEffort,
+) {
+  return reasoningEffort === 'low'
+    ? LEADGEN_FAST_MODEL
+    : LEADGEN_RESEARCH_MODEL;
+}
 
 function providerOptions(
   reasoningEffort: LeadgenReasoningEffort,
@@ -99,7 +111,7 @@ export async function generateLeadgenIntentQueries(
   const usesFastModel = reasoningEffort === 'low';
 
   const result = await generateText({
-    model: openai(usesFastModel ? 'gpt-4o' : 'gpt-5.2'),
+    model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
     system: intentInstructions(reasoningEffort),
     messages: [{ role: 'user', content: domain }],
     tools: {
@@ -147,7 +159,7 @@ function createSearchAgent(options?: LeadgenSearchOptions) {
   const usesFastModel = reasoningEffort === 'low';
 
   return new ToolLoopAgent({
-    model: openai(usesFastModel ? 'gpt-4o' : 'gpt-5.2'),
+    model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
     instructions: searchInstructions(reasoningEffort),
     tools: {
       webSearch: openai.tools.webSearch(),
@@ -229,7 +241,7 @@ function createSubstringSearchAgent(
   const normalizedDomain = normalizeLeadgenDomain(domain) ?? domain.trim();
 
   return new ToolLoopAgent({
-    model: openai(usesFastModel ? 'gpt-4o' : 'gpt-5.2'),
+    model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
     instructions: substringSearchInstructions(
       normalizedDomain,
       reasoningEffort,
@@ -306,7 +318,7 @@ export async function generateLeadgenContacts(
   ].join('\n');
 
   const result = await generateText({
-    model: openai('gpt-5.2'),
+    model: openai(LEADGEN_CONTACT_MODEL),
     system: contactInstructions(),
     messages: [{ role: 'user', content: prompt }],
     tools: {
@@ -353,7 +365,7 @@ export async function generateLeadgenEmailDraft(
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
 
   return generateText({
-    model: openai('gpt-4o'),
+    model: openai(LEADGEN_EMAIL_MODEL),
     system: EMAIL_INSTRUCTIONS,
     messages: [{ role: 'user', content: formatEmailBrief(brief) }],
     providerOptions: providerOptions(reasoningEffort, undefined, {

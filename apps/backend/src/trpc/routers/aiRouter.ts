@@ -5,12 +5,16 @@ import { TEMPORAL_QUEUES } from '#temporal/shared';
 import { generateLogoAnimationWorkflow } from '#temporal/workflows/logo-animation.workflow';
 import { db } from '@namefi-astra/db';
 import {
+  getAiTokenUsageCreditCost,
   getAiGenerationCreditCost as resolveAiGenerationCreditCost,
+  getLeadgenRunCreditEstimate,
   type AiGenerationCreditType,
 } from '@namefi-astra/common/ai-generation-credits';
 import {
   aiGenerationsTable,
   internalAiGenerationsTable,
+  leadgenEventsTable,
+  leadgenRunsTable,
 } from '@namefi-astra/db/schema';
 import {
   ANIMATION_MOTION_INTENSITY_IDS,
@@ -24,6 +28,7 @@ import {
   LOOPED_ANIMATION_MODEL_IDS,
   LOOPED_ANIMATION_MOTION_PRESET_IDS,
   MARKETING_COLLATERAL_TYPE_INPUT_IDS,
+  getLeadgenPrimaryResearchModel,
   runLogoWorkflow,
   runMarketingWorkflow,
 } from '@namefi-astra/ai';
@@ -68,6 +73,10 @@ type AssetOutput =
   | AiGenerationRow['output']
   | InternalAiGenerationRow['output'];
 type AiGenerationCreditRow = Pick<AiGenerationRow, 'input' | 'output' | 'type'>;
+type LeadgenRunCreditRow = Pick<
+  typeof leadgenRunsTable.$inferSelect,
+  'id' | 'input' | 'metadata' | 'reasoningEffort' | 'tokenUsage'
+>;
 type AnimationWorkflowStartResult =
   | { state: 'started' }
   | { state: 'not-found' | 'unknown'; error: unknown };
@@ -493,31 +502,139 @@ export async function getCurrentMonthlyGenerationCreditUsage(
 ): Promise<number> {
   await reconcileUnconfirmedAnimationGenerationsForUser(userId);
 
-  const generations = await db
-    .select({
-      input: aiGenerationsTable.input,
-      output: aiGenerationsTable.output,
-      type: aiGenerationsTable.type,
-    })
-    .from(aiGenerationsTable)
-    .where(
-      and(
-        eq(aiGenerationsTable.userId, userId),
-        sql`${aiGenerationsTable.createdAt} >= date_trunc('month', now())`,
-        ne(aiGenerationsTable.status, 'FAILED'),
-        sql`NOT (
+  const [generations, leadgenCredits] = await Promise.all([
+    db
+      .select({
+        input: aiGenerationsTable.input,
+        output: aiGenerationsTable.output,
+        type: aiGenerationsTable.type,
+      })
+      .from(aiGenerationsTable)
+      .where(
+        and(
+          eq(aiGenerationsTable.userId, userId),
+          sql`${aiGenerationsTable.createdAt} >= date_trunc('month', now())`,
+          ne(aiGenerationsTable.status, 'FAILED'),
+          sql`NOT (
           ${aiGenerationsTable.type} = 'animation'
           AND ${aiGenerationsTable.status} = 'PENDING'
           AND COALESCE(${aiGenerationsTable.metadata}->>'workflowStartState', '') = ${ANIMATION_WORKFLOW_START_STATE_UNCONFIRMED}
         )`,
+        ),
       ),
-    );
+    getCurrentMonthlyLeadgenCreditUsage(userId),
+  ]);
 
-  return generations.reduce(
+  const generationCredits = generations.reduce(
     (totalCredits, generation) =>
       totalCredits + getAiGenerationCreditCostForRow(generation),
     0,
   );
+
+  return generationCredits + leadgenCredits;
+}
+
+async function getCurrentMonthlyLeadgenCreditUsage(userId: string) {
+  const runs = await db
+    .select({
+      id: leadgenRunsTable.id,
+      input: leadgenRunsTable.input,
+      metadata: leadgenRunsTable.metadata,
+      reasoningEffort: leadgenRunsTable.reasoningEffort,
+      tokenUsage: leadgenRunsTable.tokenUsage,
+    })
+    .from(leadgenRunsTable)
+    .where(
+      and(
+        eq(leadgenRunsTable.userId, userId),
+        sql`${leadgenRunsTable.createdAt} >= date_trunc('month', now())`,
+        ne(leadgenRunsTable.status, 'FAILED'),
+        ne(leadgenRunsTable.status, 'CANCELED'),
+        sql`COALESCE(${leadgenRunsTable.metadata}->>'source', ${leadgenRunsTable.input}->>'source', 'leadgen') = 'leadgen'`,
+      ),
+    );
+
+  const creditEvents = await db
+    .select({
+      runId: leadgenEventsTable.runId,
+      payload: leadgenEventsTable.payload,
+    })
+    .from(leadgenEventsTable)
+    .innerJoin(
+      leadgenRunsTable,
+      eq(leadgenEventsTable.runId, leadgenRunsTable.id),
+    )
+    .where(
+      and(
+        eq(leadgenRunsTable.userId, userId),
+        eq(leadgenEventsTable.eventType, 'credit-estimate'),
+        sql`${leadgenEventsTable.createdAt} >= date_trunc('month', now())`,
+        sql`COALESCE(${leadgenRunsTable.metadata}->>'source', ${leadgenRunsTable.input}->>'source', 'leadgen') = 'leadgen'`,
+      ),
+    );
+
+  const currentMonthRunIds = new Set(runs.map((run) => run.id));
+  const additionalCreditsByRunId = new Map<string, number>();
+  let outreachCreditsForPriorMonthRuns = 0;
+
+  for (const event of creditEvents) {
+    const estimatedCredits = getEstimatedCreditsFromEventPayload(event.payload);
+    if (estimatedCredits <= 0) continue;
+
+    if (!currentMonthRunIds.has(event.runId)) {
+      outreachCreditsForPriorMonthRuns += estimatedCredits;
+      continue;
+    }
+
+    additionalCreditsByRunId.set(
+      event.runId,
+      (additionalCreditsByRunId.get(event.runId) ?? 0) + estimatedCredits,
+    );
+  }
+
+  return runs.reduce(
+    (totalCredits, run) =>
+      totalCredits +
+      getLeadgenCreditCostForRun({
+        run,
+        additionalEstimatedCredits: additionalCreditsByRunId.get(run.id) ?? 0,
+      }),
+    outreachCreditsForPriorMonthRuns,
+  );
+}
+
+function getLeadgenCreditCostForRun(params: {
+  run: LeadgenRunCreditRow;
+  additionalEstimatedCredits: number;
+}) {
+  const runProfile =
+    params.run.input.runProfile === 'campaign_short'
+      ? 'campaign_short'
+      : 'full';
+  const estimatedCredits =
+    getLeadgenRunCreditEstimate({
+      creditCosts: config.AI_GENERATION_CREDIT_COSTS,
+      reasoningEffort: params.run.reasoningEffort,
+      runProfile,
+      model: getLeadgenPrimaryResearchModel(params.run.reasoningEffort),
+    }) + params.additionalEstimatedCredits;
+  const actualCredits = getAiTokenUsageCreditCost({
+    tokenCreditRates: config.AI_TOKEN_CREDIT_RATES,
+    tokenUsage: params.run.tokenUsage,
+  });
+
+  return Math.max(estimatedCredits, actualCredits);
+}
+
+function getEstimatedCreditsFromEventPayload(payload: unknown) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    return 0;
+  }
+
+  const value = (payload as { estimatedCredits?: unknown }).estimatedCredits;
+  return typeof value === 'number' && Number.isFinite(value)
+    ? Math.max(0, Math.trunc(value))
+    : 0;
 }
 
 async function getUserGenerationCreditUsage(userId: string) {
@@ -537,7 +654,7 @@ async function getUserGenerationCreditUsage(userId: string) {
   };
 }
 
-async function assertUserCanSpendGenerationCredits(params: {
+export async function assertUserCanSpendGenerationCredits(params: {
   requestedCredits: number;
   userId: string;
 }) {
