@@ -17,6 +17,7 @@ import { and, count, desc, eq, isNull, ne, or } from 'drizzle-orm';
 
 type LeadRow = typeof leadgenLeadsTable.$inferSelect;
 type ContactRow = typeof leadgenContactsTable.$inferSelect;
+type LeadgenOutreachTrigger = 'auto' | 'manual';
 
 export interface GenerateLeadgenLeadOutreachInput {
   runId: string;
@@ -31,6 +32,7 @@ export interface DiscoverLeadgenContactsAndDraftInput {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  trigger?: LeadgenOutreachTrigger;
   abortSignal?: AbortSignal;
 }
 
@@ -60,6 +62,7 @@ export async function generateLeadgenLeadOutreach({
     payload: {
       leadId: lead.id,
       businessDomain: lead.businessDomain,
+      trigger: 'manual',
     },
   });
 
@@ -68,10 +71,16 @@ export async function generateLeadgenLeadOutreach({
     sourceDomain,
     lead,
     reasoningEffort,
+    trigger: 'manual',
     abortSignal,
   });
 
   const counts = await refreshLeadgenRunCounts(runId);
+  const leadOutreachCounts = await countLeadOutreach({
+    runId,
+    leadId: lead.id,
+    businessDomain: lead.businessDomain,
+  });
 
   await persistLeadgenEvent({
     runId,
@@ -81,6 +90,9 @@ export async function generateLeadgenLeadOutreach({
     payload: {
       leadId: lead.id,
       businessDomain: lead.businessDomain,
+      trigger: 'manual',
+      leadContactCount: leadOutreachCounts.contactCount,
+      leadDraftCount: leadOutreachCounts.draftCount,
       ...counts,
     },
   });
@@ -155,6 +167,48 @@ export async function refreshLeadgenRunCounts(runId: string) {
   return counts;
 }
 
+async function countLeadOutreach(params: {
+  runId: string;
+  leadId: string;
+  businessDomain: string;
+}) {
+  // Mirror loadCurrentContactsForLead: NULL leadId rows are domain-level
+  // cached outreach items that should count with this lead's assigned rows.
+  const [[contactCountRow], [draftCountRow]] = await Promise.all([
+    db
+      .select({ value: count() })
+      .from(leadgenContactsTable)
+      .where(
+        and(
+          eq(leadgenContactsTable.runId, params.runId),
+          eq(leadgenContactsTable.businessDomain, params.businessDomain),
+          or(
+            eq(leadgenContactsTable.leadId, params.leadId),
+            isNull(leadgenContactsTable.leadId),
+          ),
+        ),
+      ),
+    db
+      .select({ value: count() })
+      .from(leadgenEmailDraftsTable)
+      .where(
+        and(
+          eq(leadgenEmailDraftsTable.runId, params.runId),
+          eq(leadgenEmailDraftsTable.businessDomain, params.businessDomain),
+          or(
+            eq(leadgenEmailDraftsTable.leadId, params.leadId),
+            isNull(leadgenEmailDraftsTable.leadId),
+          ),
+        ),
+      ),
+  ]);
+
+  return {
+    contactCount: contactCountRow?.value ?? 0,
+    draftCount: draftCountRow?.value ?? 0,
+  };
+}
+
 export async function persistLeadgenEvent(params: {
   runId: string;
   eventType: string;
@@ -178,6 +232,7 @@ async function draftForSavedContacts(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  trigger?: LeadgenOutreachTrigger;
   abortSignal: AbortSignal;
   contacts: ContactRow[];
 }) {
@@ -191,6 +246,7 @@ async function draftForSavedContacts(params: {
       contact,
       reasoningEffort: params.reasoningEffort,
       fromCache: contact.fromCache,
+      trigger: params.trigger ?? 'auto',
       abortSignal: params.abortSignal,
     });
   }
@@ -201,6 +257,7 @@ async function persistCachedContactsAndDraft(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  trigger?: LeadgenOutreachTrigger;
   abortSignal: AbortSignal;
   cachedContacts: ContactRow[];
 }) {
@@ -222,6 +279,7 @@ async function persistCachedContactsAndDraft(params: {
       },
       notes: cached.notes ?? undefined,
       fromCache: true,
+      trigger: params.trigger ?? 'auto',
     });
     savedContacts.push(contact);
   }
@@ -238,6 +296,7 @@ async function persistCachedContactsAndDraft(params: {
       contact,
       reasoningEffort: params.reasoningEffort,
       fromCache: true,
+      trigger: params.trigger ?? 'auto',
       abortSignal: params.abortSignal,
     });
   }
@@ -248,6 +307,7 @@ async function discoverNewContactsAndDraft(params: {
   sourceDomain: string;
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
+  trigger?: LeadgenOutreachTrigger;
   abortSignal: AbortSignal;
 }) {
   try {
@@ -271,6 +331,7 @@ async function discoverNewContactsAndDraft(params: {
           leadId: params.lead.id,
           businessDomain: params.lead.businessDomain,
           notes: contactResult?.notes ?? null,
+          trigger: params.trigger ?? 'auto',
         },
       });
       return;
@@ -285,6 +346,7 @@ async function discoverNewContactsAndDraft(params: {
           contact,
           notes: contactResult?.notes ?? undefined,
           fromCache: false,
+          trigger: params.trigger ?? 'auto',
         }),
       ),
     );
@@ -301,6 +363,7 @@ async function discoverNewContactsAndDraft(params: {
       contact: firstContact,
       reasoningEffort: params.reasoningEffort,
       fromCache: false,
+      trigger: params.trigger ?? 'auto',
       abortSignal: params.abortSignal,
     });
   } catch (error) {
@@ -314,6 +377,7 @@ async function discoverNewContactsAndDraft(params: {
         leadId: params.lead.id,
         businessDomain: params.lead.businessDomain,
         error: getLeadgenErrorMessage(error),
+        trigger: params.trigger ?? 'auto',
       },
     });
   }
@@ -364,6 +428,7 @@ async function upsertContact(params: {
   contact: LeadgenContact;
   notes?: string;
   fromCache: boolean;
+  trigger: LeadgenOutreachTrigger;
 }) {
   const email = normalizeLeadgenEmail(params.contact.email);
   if (!email) {
@@ -420,6 +485,7 @@ async function upsertContact(params: {
       name: saved.name,
       title: saved.title,
       fromCache: params.fromCache,
+      trigger: params.trigger,
     },
   });
 
@@ -433,6 +499,7 @@ async function draftForContact(params: {
   contact: ContactRow;
   reasoningEffort: LeadgenReasoningEffort;
   fromCache: boolean;
+  trigger: LeadgenOutreachTrigger;
   abortSignal: AbortSignal;
 }) {
   throwIfLeadgenAborted(params.abortSignal);
@@ -512,6 +579,7 @@ async function draftForContact(params: {
       contactEmail: params.contact.email,
       subject: saved.subject,
       fromCache: params.fromCache,
+      trigger: params.trigger,
     },
   });
 

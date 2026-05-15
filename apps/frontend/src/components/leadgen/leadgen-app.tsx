@@ -507,7 +507,11 @@ function RunWorkspace({
         </section>
 
         <aside className="min-h-0 border-t border-border/70 p-5 lg:border-l lg:border-t-0">
-          <Timeline events={run.events} isRunning={isRunning} />
+          <Timeline
+            run={run}
+            isRunning={isRunning}
+            pendingOutreachLeadId={pendingOutreachLeadId}
+          />
         </aside>
       </div>
     </div>
@@ -860,14 +864,46 @@ function LeadEmailDialog({
   );
 }
 
+type TimelinePhaseStatus = 'pending' | 'active' | 'complete' | 'error';
+type TimelineSubtaskTone = 'name' | 'category' | 'contacts' | 'drafts';
+
+type TimelineSubtask = {
+  id: string;
+  label: string;
+  value: string;
+  tone: TimelineSubtaskTone;
+  icon: LucideIcon;
+  status: TimelinePhaseStatus;
+};
+
+type TimelinePhase = {
+  id: string;
+  title: string;
+  status: TimelinePhaseStatus;
+  icon: LucideIcon;
+  timestamp?: string;
+  badge?: string;
+  domain?: string;
+  subtasks?: TimelineSubtask[];
+};
+
 function Timeline({
-  events,
+  run,
   isRunning,
+  pendingOutreachLeadId,
 }: {
-  events: LeadgenSnapshot['events'];
+  run: LeadgenSnapshot;
   isRunning: boolean;
+  pendingOutreachLeadId: string | null;
 }) {
-  const visibleEvents = getTimelineEvents(events);
+  const pendingOutreachLead =
+    run.leads.find((lead) => lead.id === pendingOutreachLeadId) ?? null;
+  const phases = getCompactTimelinePhases({
+    run,
+    isRunning,
+    pendingOutreachLead,
+  });
+  const activePhase = phases.findLast((phase) => phase.status === 'active');
 
   return (
     <div className="flex h-full min-h-[360px] flex-col">
@@ -875,30 +911,177 @@ function Timeline({
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           Updates
         </p>
-        {isRunning && <WorkingStatus />}
+        {activePhase && <WorkingStatus />}
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-        {visibleEvents.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            Updates will appear as buyer matches land.
-          </p>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {visibleEvents.map((event) => (
-              <div key={event.id} className="flex gap-3">
-                <TimelineEventIcon event={event} />
-                <div className="min-w-0">
-                  <p className="text-sm leading-5">{event.message}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {formatTime(event.createdAt)}
-                  </p>
-                </div>
-              </div>
+        <div className="flex flex-col">
+          {phases.map((phase, index) => (
+            <TimelinePhaseRow
+              key={phase.id}
+              phase={phase}
+              isLast={index === phases.length - 1}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TimelinePhaseRow({
+  phase,
+  isLast,
+}: {
+  phase: TimelinePhase;
+  isLast: boolean;
+}) {
+  const Icon = phase.icon;
+
+  return (
+    <div className="relative flex gap-2.5 pb-3 last:pb-0">
+      {!isLast && (
+        <span className="absolute left-[13px] top-7 bottom-0 w-px bg-border/60" />
+      )}
+      <div
+        className={cn(
+          'relative z-10 mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md border bg-background',
+          getTimelinePhaseIconClassName(phase.status),
+        )}
+      >
+        <Icon className="size-3.5" />
+      </div>
+      <div
+        className={cn(
+          'min-w-0 flex-1 rounded-md border px-3 py-2.5',
+          phase.status === 'active'
+            ? 'border-cyan-400/25 bg-cyan-400/[0.06]'
+            : 'border-border/60 bg-background/45',
+          phase.status === 'pending' && 'opacity-70',
+          phase.status === 'error' && 'border-destructive/25 bg-destructive/5',
+        )}
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="truncate text-[13px] font-semibold leading-5">
+              {phase.title}
+            </p>
+            <span className="sr-only">
+              Status: {getTimelineStatusLabel(phase.status)}
+            </span>
+            {phase.domain && (
+              <span className="mt-1 inline-flex max-w-full rounded-sm border border-border/60 bg-muted/35 px-1.5 py-0.5 text-[11px] leading-4 text-muted-foreground">
+                <span className="truncate">{phase.domain}</span>
+              </span>
+            )}
+          </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            {phase.badge && (
+              <span className="rounded-sm border border-border/60 bg-muted/35 px-1.5 py-0.5 text-[11px] font-medium leading-4 tabular-nums text-muted-foreground">
+                {phase.badge}
+              </span>
+            )}
+            {phase.timestamp && (
+              <span className="text-[10px] leading-4 text-muted-foreground/80">
+                {phase.timestamp}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {phase.subtasks && phase.subtasks.length > 0 && (
+          <div className="mt-2 grid gap-1.5">
+            {phase.subtasks.map((subtask) => (
+              <TimelineSubtaskCard key={subtask.id} subtask={subtask} />
             ))}
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+function TimelineSubtaskCard({ subtask }: { subtask: TimelineSubtask }) {
+  const Icon = subtask.icon;
+
+  return (
+    <div
+      className={cn(
+        'flex min-w-0 items-center gap-2 rounded-md border px-2 py-1.5',
+        getTimelineSubtaskClassName(subtask.tone, subtask.status),
+      )}
+    >
+      <span className="flex size-6 shrink-0 items-center justify-center rounded-sm bg-background/50">
+        <Icon className="size-3.5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[11px] leading-4 text-muted-foreground">
+          {subtask.label}
+        </p>
+        <p className="truncate text-xs font-semibold leading-4 tabular-nums text-foreground">
+          {subtask.value}
+        </p>
+      </div>
+      <span className="sr-only">
+        Status: {getTimelineStatusLabel(subtask.status)}
+      </span>
+      <TimelineStatusMark status={subtask.status} />
+    </div>
+  );
+}
+
+function TimelineStatusMark({ status }: { status: TimelinePhaseStatus }) {
+  if (status === 'active') {
+    return <ActivityDots />;
+  }
+  if (status === 'complete') {
+    return <CheckCircle2 className="size-3.5 shrink-0 text-emerald-300" />;
+  }
+  if (status === 'error') {
+    return <XCircle className="size-3.5 shrink-0 text-destructive" />;
+  }
+  return <Clock3 className="size-3.5 shrink-0 text-muted-foreground/70" />;
+}
+
+function getTimelineStatusLabel(status: TimelinePhaseStatus) {
+  switch (status) {
+    case 'active':
+      return 'In progress';
+    case 'complete':
+      return 'Complete';
+    case 'error':
+      return 'Error';
+    case 'pending':
+      return 'Pending';
+  }
+}
+
+function ActivityDots() {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <span className="flex shrink-0 items-center gap-0.5" aria-hidden="true">
+      {[0, 1, 2].map((dot) => (
+        <motion.span
+          key={dot}
+          className="size-1 rounded-full bg-cyan-200"
+          animate={
+            prefersReducedMotion
+              ? undefined
+              : { opacity: [0.35, 1, 0.35], y: [0, -1, 0] }
+          }
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : {
+                  duration: 0.9,
+                  ease: 'easeInOut',
+                  repeat: Number.POSITIVE_INFINITY,
+                  delay: dot * 0.12,
+                }
+          }
+        />
+      ))}
+    </span>
   );
 }
 
@@ -1181,11 +1364,11 @@ function WorkingBackdrop() {
   );
 }
 
-function WorkingStatus() {
+function WorkingStatus({ label = 'Working' }: { label?: string }) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <span className="inline-flex h-5 items-center gap-1.5 rounded-4xl border border-cyan-400/20 bg-cyan-400/10 px-2 text-[11px] font-medium text-cyan-200">
+    <span className="inline-flex h-5 max-w-40 items-center gap-1.5 rounded-4xl border border-cyan-400/20 bg-cyan-400/10 px-2 text-[11px] font-medium text-cyan-200">
       <motion.span
         className="size-1.5 rounded-full bg-cyan-200"
         animate={
@@ -1201,9 +1384,539 @@ function WorkingStatus() {
               }
         }
       />
-      Working
+      <span className="truncate">{label}</span>
     </span>
   );
+}
+
+function getCompactTimelinePhases({
+  run,
+  isRunning,
+  pendingOutreachLead,
+}: {
+  run: LeadgenSnapshot;
+  isRunning: boolean;
+  pendingOutreachLead: LeadgenLead | null;
+}): TimelinePhase[] {
+  const orderedEvents = getOrderedLeadgenEvents(run.events);
+  const terminal = isTerminalLeadgenStatus(run.status);
+  const intentEvent =
+    findLastLeadgenEvent(
+      orderedEvents,
+      (event) => event.eventType === 'intent-queries',
+    ) ??
+    findLastLeadgenEvent(orderedEvents, (event) => event.stage === 'intent');
+  const searchEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.stage === 'search' || event.eventType === 'lead',
+  );
+  const completeEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.stage === 'complete',
+  );
+  const manualOutreach = getManualOutreachSummary(orderedEvents);
+  const leadSearch = getLeadSearchTimelineCounts(run);
+  const queryCount = Math.max(
+    run.intentQueries.length,
+    getIntentQueryCount(orderedEvents),
+  );
+  const searchStarted = Boolean(searchEvent);
+  const initialOutreach = getInitialOutreachTimelineState({
+    run,
+    orderedEvents,
+    manualOutreach,
+    terminal,
+    isRunning,
+  });
+  const searchStatus = getPhaseStatus({
+    complete: terminal && (searchStarted || queryCount > 0),
+    active: isRunning && (searchStarted || queryCount > 0),
+  });
+  const intentStatus = getPhaseStatus({
+    complete: queryCount > 0 || searchStarted,
+    active: isRunning,
+  });
+  const completion = getCompletionTimelineState(run);
+  const phases: TimelinePhase[] = [
+    {
+      id: 'buyer-angles',
+      title: 'Buyer angles',
+      status: intentStatus,
+      icon: Target,
+      timestamp: getTimelineTimestamp(intentEvent, intentStatus),
+      badge: queryCount > 0 ? `${queryCount} angles` : undefined,
+    },
+    {
+      id: 'searching-buyers',
+      title: 'Searching buyers',
+      status: searchStatus,
+      icon: Search,
+      timestamp: getTimelineTimestamp(searchEvent, searchStatus),
+      subtasks: [
+        {
+          id: 'name-matches',
+          label: 'Name matches',
+          value: `${leadSearch.nameLeadCount} found`,
+          tone: 'name',
+          icon: Target,
+          status: getSubtaskStatus(searchStatus, leadSearch.nameLeadCount),
+        },
+        {
+          id: 'category-matches',
+          label: 'Category matches',
+          value: `${leadSearch.categoryLeadCount} found`,
+          tone: 'category',
+          icon: Building2,
+          status: getSubtaskStatus(searchStatus, leadSearch.categoryLeadCount),
+        },
+      ],
+    },
+    {
+      id: 'initial-outreach',
+      title: 'Initial outreach',
+      status: initialOutreach.status,
+      icon: Mail,
+      timestamp: getTimelineTimestamp(
+        initialOutreach.event,
+        initialOutreach.status,
+      ),
+      subtasks: [
+        {
+          id: 'initial-contacts',
+          label: 'Contacts',
+          value: `${initialOutreach.contactCount} found`,
+          tone: 'contacts',
+          icon: Mail,
+          status: getSubtaskStatus(
+            initialOutreach.status,
+            initialOutreach.contactCount,
+          ),
+        },
+        {
+          id: 'initial-drafts',
+          label: 'Drafts',
+          value: `${initialOutreach.draftCount} ready`,
+          tone: 'drafts',
+          icon: FileText,
+          status: getSubtaskStatus(
+            initialOutreach.status,
+            initialOutreach.draftCount,
+          ),
+        },
+      ],
+    },
+    {
+      id: 'search-complete',
+      title: completion.title,
+      status: completion.status,
+      icon: CheckCircle2,
+      timestamp: completeEvent
+        ? formatTime(completeEvent.createdAt)
+        : undefined,
+      badge: completion.badge,
+    },
+  ];
+
+  const additionalOutreachPhase = getAdditionalOutreachPhase({
+    manualOutreach,
+    pendingOutreachLead,
+  });
+  if (additionalOutreachPhase) {
+    phases.push(additionalOutreachPhase);
+  }
+
+  return phases;
+}
+
+function getLeadSearchTimelineCounts(run: LeadgenSnapshot) {
+  return {
+    nameLeadCount: run.leads.filter((lead) => lead.bucket === 'substring')
+      .length,
+    categoryLeadCount: run.leads.filter((lead) => lead.bucket === 'general')
+      .length,
+  };
+}
+
+function getInitialOutreachTimelineState({
+  run,
+  orderedEvents,
+  manualOutreach,
+  terminal,
+  isRunning,
+}: {
+  run: LeadgenSnapshot;
+  orderedEvents: LeadgenSnapshot['events'];
+  manualOutreach: ReturnType<typeof getManualOutreachSummary>;
+  terminal: boolean;
+  isRunning: boolean;
+}) {
+  const contactEventCount = countUniqueLeadgenEvents(
+    orderedEvents,
+    isInitialContactEvent,
+    (event) =>
+      getPayloadString(event.payload, 'contactId') ??
+      getPayloadString(event.payload, 'email') ??
+      event.id,
+  );
+  const draftEventCount = countUniqueLeadgenEvents(
+    orderedEvents,
+    isInitialDraftEvent,
+    (event) =>
+      getPayloadString(event.payload, 'draftId') ??
+      getPayloadString(event.payload, 'contactEmail') ??
+      event.id,
+  );
+  const contactCount = Math.max(
+    contactEventCount,
+    Math.max(0, run.contactCount - manualOutreach.contactCount),
+  );
+  const draftCount = Math.max(
+    draftEventCount,
+    Math.max(0, run.draftCount - manualOutreach.draftCount),
+  );
+  const event = findLastLeadgenEvent(
+    orderedEvents,
+    (candidate) =>
+      (candidate.stage === 'contacts' || candidate.stage === 'drafts') &&
+      !isManualOutreachEvent(candidate),
+  );
+  const status = getPhaseStatus({
+    complete: terminal && Boolean(event),
+    active: isRunning && Boolean(event),
+  });
+
+  return { contactCount, draftCount, event, status };
+}
+
+function getCompletionTimelineState(run: LeadgenSnapshot) {
+  if (run.status === 'FAILED') {
+    return {
+      title: 'Search failed',
+      status: 'error' as const,
+      badge: undefined,
+    };
+  }
+  if (run.status === 'CANCELED') {
+    return {
+      title: 'Search canceled',
+      status: 'error' as const,
+      badge: undefined,
+    };
+  }
+
+  return {
+    title: 'Search complete',
+    status:
+      run.status === 'SUCCEEDED' ? ('complete' as const) : ('pending' as const),
+    badge: run.status === 'SUCCEEDED' ? `${run.leadCount} leads` : undefined,
+  };
+}
+
+function getAdditionalOutreachPhase({
+  manualOutreach,
+  pendingOutreachLead,
+}: {
+  manualOutreach: ReturnType<typeof getManualOutreachSummary>;
+  pendingOutreachLead: LeadgenLead | null;
+}): TimelinePhase | null {
+  if (!manualOutreach.hasEvents && !pendingOutreachLead) return null;
+
+  const active = Boolean(pendingOutreachLead);
+  const cardDomain =
+    pendingOutreachLead?.businessDomain ?? manualOutreach.domain;
+  const domainSummary = cardDomain
+    ? manualOutreach.domainSummaries.get(cardDomain)
+    : null;
+  const lastEventWasError =
+    domainSummary?.lastEventWasError ?? manualOutreach.lastEventWasError;
+  const status = getAdditionalOutreachStatus(active, lastEventWasError);
+  const contactCount = Math.max(
+    domainSummary?.contactCount ?? 0,
+    pendingOutreachLead?.contacts.length ?? 0,
+  );
+  const draftCount = Math.max(
+    domainSummary?.draftCount ?? 0,
+    pendingOutreachLead?.drafts.length ?? 0,
+  );
+  const lastEvent = domainSummary?.lastEvent ?? manualOutreach.lastEvent;
+
+  return {
+    id: 'additional-outreach',
+    title: 'Additional outreach',
+    status,
+    icon: Sparkles,
+    timestamp: getAdditionalOutreachTimestamp(active, lastEvent),
+    domain: cardDomain,
+    subtasks: [
+      {
+        id: 'additional-contacts',
+        label: 'Contacts',
+        value: `${contactCount} found`,
+        tone: 'contacts',
+        icon: Mail,
+        status,
+      },
+      {
+        id: 'additional-drafts',
+        label: 'Drafts',
+        value: `${draftCount} ready`,
+        tone: 'drafts',
+        icon: FileText,
+        status,
+      },
+    ],
+  };
+}
+
+function getAdditionalOutreachStatus(
+  active: boolean,
+  lastEventWasError: boolean,
+): TimelinePhaseStatus {
+  if (active) return 'active';
+  return lastEventWasError ? 'error' : 'complete';
+}
+
+function getAdditionalOutreachTimestamp(
+  active: boolean,
+  lastEvent: LeadgenEvent | null,
+) {
+  if (active) return 'now';
+  return lastEvent ? formatTime(lastEvent.createdAt) : undefined;
+}
+
+function getManualOutreachSummary(events: LeadgenSnapshot['events']) {
+  const manualEvents = events.filter(isManualOutreachEvent);
+  const counts = getManualOutreachCounts(manualEvents);
+  const eventsByDomain = new Map<string, LeadgenEvent[]>();
+  for (const event of manualEvents) {
+    const domain = getManualOutreachEventDomain(event);
+    if (!domain) continue;
+
+    const domainEvents = eventsByDomain.get(domain);
+    if (domainEvents) {
+      domainEvents.push(event);
+    } else {
+      eventsByDomain.set(domain, [event]);
+    }
+  }
+  const domainSummaries = new Map<
+    string,
+    {
+      contactCount: number;
+      draftCount: number;
+      lastEvent: LeadgenEvent | null;
+      lastEventWasError: boolean;
+    }
+  >();
+  for (const [domain, domainEvents] of eventsByDomain) {
+    const domainCounts = getManualOutreachCounts(domainEvents);
+    const domainLastEvent = domainEvents.at(-1) ?? null;
+    domainSummaries.set(domain, {
+      ...domainCounts,
+      lastEvent: domainLastEvent,
+      lastEventWasError: domainLastEvent?.eventType === 'error',
+    });
+  }
+  const lastEvent = manualEvents.at(-1) ?? null;
+  const latestDomainEvent = findLastLeadgenEvent(manualEvents, (event) =>
+    Boolean(getManualOutreachEventDomain(event)),
+  );
+
+  return {
+    hasEvents: manualEvents.length > 0,
+    lastEvent,
+    lastEventWasError: lastEvent?.eventType === 'error',
+    domain: latestDomainEvent
+      ? (getManualOutreachEventDomain(latestDomainEvent) ?? undefined)
+      : undefined,
+    contactCount: counts.contactCount,
+    draftCount: counts.draftCount,
+    domainSummaries,
+  };
+}
+
+function getManualOutreachCounts(events: LeadgenEvent[]) {
+  const latestManualStatus = findLastLeadgenEvent(
+    events,
+    (event) => event.eventType === 'status',
+  );
+  const contactEventCount = countUniqueLeadgenEvents(
+    events,
+    (event) =>
+      event.eventType === 'contact' &&
+      (hasPayloadString(event.payload, 'contactId') ||
+        hasPayloadString(event.payload, 'email')),
+    (event) =>
+      getPayloadString(event.payload, 'contactId') ??
+      getPayloadString(event.payload, 'email') ??
+      event.id,
+  );
+  const draftEventCount = countUniqueLeadgenEvents(
+    events,
+    (event) =>
+      event.eventType === 'draft' &&
+      (hasPayloadString(event.payload, 'draftId') ||
+        hasPayloadString(event.payload, 'contactEmail')),
+    (event) =>
+      getPayloadString(event.payload, 'draftId') ??
+      getPayloadString(event.payload, 'contactEmail') ??
+      event.id,
+  );
+  const leadContactCount = latestManualStatus
+    ? getPayloadNumber(latestManualStatus.payload, 'leadContactCount')
+    : 0;
+  const leadDraftCount = latestManualStatus
+    ? getPayloadNumber(latestManualStatus.payload, 'leadDraftCount')
+    : 0;
+
+  return {
+    contactCount: Math.max(contactEventCount, leadContactCount),
+    draftCount: Math.max(draftEventCount, leadDraftCount),
+  };
+}
+
+function getManualOutreachEventDomain(event: LeadgenEvent) {
+  return getPayloadString(event.payload, 'businessDomain');
+}
+
+function getSubtaskStatus(
+  phaseStatus: TimelinePhaseStatus,
+  count: number,
+): TimelinePhaseStatus {
+  if (phaseStatus === 'active') return 'active';
+  if (phaseStatus === 'error') return 'error';
+  if (phaseStatus === 'complete' || count > 0) return 'complete';
+  return 'pending';
+}
+
+function getPhaseStatus({
+  complete,
+  active,
+}: {
+  complete: boolean;
+  active: boolean;
+}): TimelinePhaseStatus {
+  if (complete) return 'complete';
+  if (active) return 'active';
+  return 'pending';
+}
+
+function getTimelineTimestamp(
+  event: LeadgenEvent | null | undefined,
+  status: TimelinePhaseStatus,
+) {
+  if (status === 'active') return 'now';
+  return event ? formatTime(event.createdAt) : undefined;
+}
+
+function getTimelinePhaseIconClassName(status: TimelinePhaseStatus) {
+  if (status === 'active') {
+    return 'border-cyan-300/30 bg-cyan-400/10 text-cyan-200';
+  }
+  if (status === 'complete') {
+    return 'border-emerald-300/30 bg-emerald-400/10 text-emerald-200';
+  }
+  if (status === 'error') {
+    return 'border-destructive/30 bg-destructive/10 text-destructive';
+  }
+  return 'border-border/70 bg-muted/35 text-muted-foreground';
+}
+
+function getTimelineSubtaskClassName(
+  tone: TimelineSubtaskTone,
+  status: TimelinePhaseStatus,
+) {
+  if (status === 'pending') {
+    return 'border-border/50 bg-muted/20 text-muted-foreground';
+  }
+  if (status === 'error') {
+    return 'border-destructive/20 bg-destructive/5 text-destructive';
+  }
+
+  switch (tone) {
+    case 'name':
+      return 'border-emerald-300/20 bg-emerald-400/10 text-emerald-100';
+    case 'category':
+      return 'border-cyan-300/20 bg-cyan-400/10 text-cyan-100';
+    case 'contacts':
+      return 'border-sky-300/20 bg-sky-400/10 text-sky-100';
+    case 'drafts':
+      return 'border-amber-300/20 bg-amber-300/10 text-amber-100';
+  }
+}
+
+function getOrderedLeadgenEvents(events: LeadgenSnapshot['events']) {
+  return events
+    .map((event, index) => ({ event, index }))
+    .sort((left, right) => {
+      const dateDelta =
+        new Date(left.event.createdAt).getTime() -
+        new Date(right.event.createdAt).getTime();
+      return dateDelta || left.index - right.index;
+    })
+    .map(({ event }) => event);
+}
+
+function findLastLeadgenEvent(
+  events: LeadgenSnapshot['events'],
+  predicate: (event: LeadgenEvent) => boolean,
+) {
+  return events.findLast(predicate) ?? null;
+}
+
+function countUniqueLeadgenEvents(
+  events: LeadgenSnapshot['events'],
+  predicate: (event: LeadgenEvent) => boolean,
+  getKey: (event: LeadgenEvent) => string,
+) {
+  const keys = new Set<string>();
+  for (const event of events) {
+    if (predicate(event)) keys.add(getKey(event));
+  }
+  return keys.size;
+}
+
+function getIntentQueryCount(events: LeadgenSnapshot['events']) {
+  const intentEvent = findLastLeadgenEvent(
+    events,
+    (event) => event.eventType === 'intent-queries',
+  );
+  return intentEvent
+    ? getPayloadArray(intentEvent.payload, 'queries').length
+    : 0;
+}
+
+function isManualOutreachEvent(event: LeadgenEvent) {
+  if (getPayloadString(event.payload, 'trigger') === 'manual') return true;
+
+  return (
+    event.eventType === 'status' &&
+    event.stage === 'contacts' &&
+    hasPayloadString(event.payload, 'leadId') &&
+    hasPayloadString(event.payload, 'businessDomain')
+  );
+}
+
+function isInitialContactEvent(event: LeadgenEvent) {
+  return (
+    event.eventType === 'contact' &&
+    !isManualOutreachEvent(event) &&
+    (hasPayloadString(event.payload, 'contactId') ||
+      hasPayloadString(event.payload, 'email'))
+  );
+}
+
+function isInitialDraftEvent(event: LeadgenEvent) {
+  return (
+    event.eventType === 'draft' &&
+    !isManualOutreachEvent(event) &&
+    (hasPayloadString(event.payload, 'draftId') ||
+      hasPayloadString(event.payload, 'contactEmail'))
+  );
+}
+
+function isTerminalLeadgenStatus(status: LeadgenSnapshot['status']) {
+  return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
 }
 
 function getRunHeaderSubtitle(run: LeadgenSnapshot) {
@@ -1252,54 +1965,6 @@ function getTimelineEvents(events: LeadgenSnapshot['events']) {
   }
 
   return visibleEvents;
-}
-
-function TimelineEventIcon({ event }: { event: DisplayableLeadgenEvent }) {
-  const Icon = getTimelineEventIcon(event);
-  return (
-    <div
-      className={cn(
-        'mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md border',
-        getTimelineEventIconClassName(event),
-      )}
-    >
-      <Icon className="size-3.5" />
-    </div>
-  );
-}
-
-function getTimelineEventIcon(event: DisplayableLeadgenEvent) {
-  if (event.eventType === 'error') return XCircle;
-  if (event.eventType === 'intent-queries') return Target;
-  if (event.eventType === 'lead') return Building2;
-  if (event.eventType === 'contact') return Mail;
-  if (event.eventType === 'draft') return FileText;
-  if (event.stage === 'complete') return CheckCircle2;
-  if (event.stage === 'contacts') return Mail;
-  if (event.stage === 'search') return Search;
-  return Clock3;
-}
-
-function getTimelineEventIconClassName(event: DisplayableLeadgenEvent) {
-  if (event.eventType === 'error') {
-    return 'border-destructive/30 bg-destructive/10 text-destructive';
-  }
-  if (event.eventType === 'intent-queries') {
-    return 'border-amber-300/30 bg-amber-300/10 text-amber-200';
-  }
-  if (event.eventType === 'draft') {
-    return 'border-violet-300/30 bg-violet-300/10 text-violet-200';
-  }
-  if (event.eventType === 'contact' || event.stage === 'contacts') {
-    return 'border-sky-300/30 bg-sky-300/10 text-sky-200';
-  }
-  if (event.eventType === 'lead') {
-    return 'border-emerald-300/30 bg-emerald-300/10 text-emerald-200';
-  }
-  if (event.stage === 'search') {
-    return 'border-cyan-300/30 bg-cyan-300/10 text-cyan-200';
-  }
-  return 'border-border/70 bg-muted/40 text-muted-foreground';
 }
 
 function isDisplayableLeadgenEvent(
@@ -1372,9 +2037,15 @@ function getPayloadNumber(payload: unknown, key: string) {
   return typeof value === 'number' && Number.isFinite(value) ? value : 0;
 }
 
-function hasPayloadString(payload: unknown, key: string) {
+function getPayloadString(payload: unknown, key: string) {
   const value = getPayloadRecord(payload)[key];
-  return typeof value === 'string' && value.trim().length > 0;
+  return typeof value === 'string' && value.trim().length > 0
+    ? value.trim()
+    : null;
+}
+
+function hasPayloadString(payload: unknown, key: string) {
+  return Boolean(getPayloadString(payload, key));
 }
 
 function getLeadDescription(lead: LeadgenLead) {
