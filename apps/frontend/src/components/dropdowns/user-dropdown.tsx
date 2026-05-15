@@ -80,6 +80,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
+import { useWatchAssets } from '@/hooks/use-watch-assets';
+import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
+import NfscSwapDialog from '@/components/dialogs/nfsc-swap-dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
@@ -166,12 +175,44 @@ export const UserDropdown = ErrorBoundary.with(
     );
     const [isFindUserDialogOpen, setIsFindUserDialogOpen] = useState(false);
     const [isAdminQuickAccessOpen, setIsAdminQuickAccessOpen] = useState(false);
+    // Balance dialog state lives here (not inside the dropdown item) so the
+    // dialog survives the dropdown closing on item-click. Otherwise the menu
+    // item unmounts and takes the dialog down with it.
+    const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
+
+    // Data fetched once at the parent and shared between the dropdown preview
+    // and the dialog content; react-query dedupes the underlying request.
+    const { userWalletAddresses } = useUserWalletAddresses();
+    const nfscWalletAddresses = useMemo(
+      () =>
+        userWalletAddresses.filter(
+          (address): address is `0x${string}` =>
+            typeof address === 'string' && address.startsWith('0x'),
+        ),
+      [userWalletAddresses],
+    );
+    const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
+      useUserChainBalances({
+        enabled: isAuthenticated && nfscWalletAddresses.length > 0,
+        walletAddresses: nfscWalletAddresses,
+      });
 
     const items: UserDropdownItemProps[] = useMemo(() => {
       return getUserDropdownItems({
         showBalanceInUserDropdown,
+        balanceItem: {
+          onOpen: () => setIsBalanceDialogOpen(true),
+          totalBalanceInUsdCents,
+          isLoadingBalance,
+          hasWallets: nfscWalletAddresses.length > 0,
+        },
       });
-    }, [showBalanceInUserDropdown]);
+    }, [
+      showBalanceInUserDropdown,
+      totalBalanceInUsdCents,
+      isLoadingBalance,
+      nfscWalletAddresses.length,
+    ]);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -371,6 +412,14 @@ export const UserDropdown = ErrorBoundary.with(
           open={isAdminQuickAccessOpen}
           onOpenChange={setIsAdminQuickAccessOpen}
         />
+        <BalanceBreakdownDialog
+          open={isBalanceDialogOpen}
+          onOpenChange={setIsBalanceDialogOpen}
+          chainBalances={chainBalances}
+          totalBalanceInUsdCents={totalBalanceInUsdCents}
+          isLoadingBalances={isLoadingBalance}
+          walletAddresses={nfscWalletAddresses}
+        />
       </div>
     );
   }) as ForwardRefExoticComponent<UserDropdownProps>,
@@ -394,6 +443,14 @@ function BalanceBreakdownDialog({
   isLoadingBalances,
   walletAddresses,
 }: BalanceBreakdownDialogProps) {
+  const trpc = useTRPC();
+  const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
+  // The swap dialog is opened from inside this dialog; rendered as a sibling
+  // and keyed by wallet so closing the balance dialog doesn't unmount it.
+  const [swapDialogWalletAddress, setSwapDialogWalletAddress] = useState<
+    string | null
+  >(null);
+
   const walletGroups = useMemo(() => {
     const addressMap = walletAddresses.map((walletAddress) => {
       const balances = chainBalances.filter(
@@ -409,89 +466,176 @@ function BalanceBreakdownDialog({
   const hasWallets = walletAddresses.length > 0;
   const hasBalances = chainBalances.length > 0;
 
+  // Recent NFSC top-up orders — fetched only while the dialog is open. The
+  // query is user-scoped server-side; no wallet filter so the user sees their
+  // history across every linked wallet.
+  const { data: nfscOrders, isLoading: isLoadingOrders } = useQuery({
+    ...trpc.orders.getMyNfscOrders.queryOptions({ limit: 20 }),
+    enabled: open,
+  });
+
+  const handleWatchNfsc = useCallback(async () => {
+    try {
+      await watchNfscInWallet();
+      toast.success('NFSC token added to your wallet');
+    } catch (error) {
+      toast.error('Failed to add NFSC to wallet', {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    }
+  }, [watchNfscInWallet]);
+
+  const handleAddFunds = useCallback(
+    (walletAddress: string) => {
+      // Close this dialog first, then open the swap dialog. Stacking two
+      // modals is visually noisy.
+      onOpenChange(false);
+      setSwapDialogWalletAddress(walletAddress);
+    },
+    [onOpenChange],
+  );
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>NFSC Balance</DialogTitle>
-          <DialogDescription>
-            Review your available $NFSC across linked wallets and supported
-            chains.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-border/60 bg-muted/10 px-4 py-3">
-            <div className="text-xs uppercase tracking-wide text-muted-foreground">
-              Total Available
-            </div>
-            <div className="text-2xl font-semibold">
-              {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
-            </div>
-          </div>
-          {isLoadingBalances ? (
-            <div className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground">
-              <Loader2Icon className="h-4 w-4 animate-spin" />
-              Fetching balances...
-            </div>
-          ) : !hasWallets ? (
-            <EmptyState message="Link or connect a wallet to view your $NFSC balances." />
-          ) : !hasBalances ? (
-            <EmptyState message="No $NFSC detected across your wallets yet." />
-          ) : (
-            <div className="space-y-3">
-              {walletGroups.map(({ walletAddress, balances }) => {
-                const walletTotal = balances.reduce(
-                  (sum, balance) => sum + balance.balanceInUsdCents,
-                  0,
-                );
-                return (
-                  <div
-                    key={walletAddress}
-                    className="rounded-lg border border-border/60 p-3"
-                  >
-                    <div className="flex items-center justify-between text-sm font-medium">
-                      <span>{getShortAddress(walletAddress)}</span>
-                      <span>{formatAmountInUSD(walletTotal, true)} NFSC</span>
-                    </div>
-                    <div className="mt-2 space-y-1.5">
-                      {balances.map((balance) => (
-                        <div
-                          key={`${walletAddress}-${balance.chainId}`}
-                          className="flex items-center justify-between text-xs text-muted-foreground"
-                        >
-                          <span>{balance.chainName}</span>
-                          <span className="font-medium text-foreground">
-                            {formatAmountInUSD(balance.balanceInUsdCents, true)}{' '}
-                            NFSC
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>NFSC Balance</DialogTitle>
+            <DialogDescription>
+              Review your available $NFSC across linked wallets and supported
+              chains.
+            </DialogDescription>
+          </DialogHeader>
+
+          <Tabs defaultValue="balance" className="mt-2">
+            <TabsList className="grid grid-cols-2 w-full">
+              <TabsTrigger value="balance">Balance</TabsTrigger>
+              <TabsTrigger value="orders">Recent NFSC orders</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="balance" className="mt-4 space-y-4">
+              <div className="rounded-lg border border-border/60 bg-muted/10 px-4 py-3">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Total Available
+                </div>
+                <div className="text-2xl font-semibold">
+                  {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
+                </div>
+              </div>
+
+              {isAnyWalletConnected && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="w-full"
+                  onClick={handleWatchNfsc}
+                >
+                  <CoinsIcon className="mr-2 h-4 w-4" />
+                  Show NFSC in wallet
+                </Button>
+              )}
+
+              {isLoadingBalances ? (
+                <div className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground">
+                  <Loader2Icon className="h-4 w-4 animate-spin" />
+                  Fetching balances...
+                </div>
+              ) : !hasWallets ? (
+                <EmptyState message="Link or connect a wallet to view your $NFSC balances." />
+              ) : !hasBalances ? (
+                <EmptyState message="No $NFSC detected across your wallets yet." />
+              ) : (
+                <div className="space-y-3">
+                  {walletGroups.map(({ walletAddress, balances }) => {
+                    const walletTotal = balances.reduce(
+                      (sum, balance) => sum + balance.balanceInUsdCents,
+                      0,
+                    );
+                    return (
+                      <div
+                        key={walletAddress}
+                        className="rounded-lg border border-border/60 p-3 space-y-2"
+                      >
+                        <div className="flex items-center justify-between text-sm font-medium">
+                          <span>{getShortAddress(walletAddress)}</span>
+                          <span>
+                            {formatAmountInUSD(walletTotal, true)} NFSC
                           </span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-        <DialogFooter className="flex flex-col gap-2 sm:flex-row">
-          <Button
-            variant="secondary"
-            className="w-full sm:flex-1"
-            onClick={() => onOpenChange(false)}
-            render={<Link href="/payment-methods" />}
-            nativeButton={false}
-          >
-            Go to Payment Methods
-          </Button>
-          <Button
-            className="w-full sm:flex-1"
-            onClick={() => onOpenChange(false)}
-          >
-            Close
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+                        <div className="space-y-1.5">
+                          {balances.map((balance) => (
+                            <div
+                              key={`${walletAddress}-${balance.chainId}`}
+                              className="flex items-center justify-between text-xs text-muted-foreground"
+                            >
+                              <span>{balance.chainName}</span>
+                              <span className="font-medium text-foreground">
+                                {formatAmountInUSD(
+                                  balance.balanceInUsdCents,
+                                  true,
+                                )}{' '}
+                                NFSC
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => handleAddFunds(walletAddress)}
+                        >
+                          Add funds
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="orders" className="mt-4 space-y-3">
+              <p className="rounded-md border border-border/60 bg-muted/10 px-3 py-2 text-xs text-muted-foreground">
+                These are credit-card NFSC top-ups across all your wallets.
+                NFSC-paid domain orders appear in your full order history.
+              </p>
+              <NfscOrdersList
+                orders={nfscOrders}
+                isLoading={isLoadingOrders}
+                emptyMessage="No NFSC top-ups yet."
+              />
+            </TabsContent>
+          </Tabs>
+
+          <DialogFooter className="flex flex-col gap-2 sm:flex-row">
+            <Button
+              variant="secondary"
+              className="w-full sm:flex-1"
+              onClick={() => onOpenChange(false)}
+              render={<Link href="/payment-methods" />}
+              nativeButton={false}
+            >
+              Go to Payment Methods
+            </Button>
+            <Button
+              className="w-full sm:flex-1"
+              onClick={() => onOpenChange(false)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <NfscSwapDialog
+        key={swapDialogWalletAddress ?? 'no-wallet'}
+        open={Boolean(swapDialogWalletAddress)}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen) setSwapDialogWalletAddress(null);
+        }}
+        walletAddress={swapDialogWalletAddress ?? undefined}
+      />
+    </>
   );
 }
 
@@ -586,17 +730,27 @@ const BASE_ITEMS: UserDropdownItemProps[] = [
   { type: 'link', title: 'Profile', href: '/profile', icon: UserIcon },
 ];
 
+type BalanceDropdownItemProps = {
+  onOpen: () => void;
+  totalBalanceInUsdCents: number;
+  isLoadingBalance: boolean;
+  hasWallets: boolean;
+};
+
 function getUserDropdownItems(options: {
   showBalanceInUserDropdown: boolean;
+  balanceItem: BalanceDropdownItemProps;
 }): UserDropdownItemProps[] {
-  const { showBalanceInUserDropdown } = options;
+  const { showBalanceInUserDropdown, balanceItem } = options;
 
   const items: (UserDropdownItemProps | boolean | undefined | null)[][] = [
     showBalanceInUserDropdown
       ? [
           {
             type: 'custom',
-            custom: <UserBalanceDropdownItem key="user-balance" />,
+            custom: (
+              <UserBalanceDropdownItem key="user-balance" {...balanceItem} />
+            ),
           },
         ]
       : [],
@@ -1018,62 +1172,41 @@ function SyncPonderIndexQuickAccessCard({ onDone }: { onDone: () => void }) {
   );
 }
 
-function UserBalanceDropdownItem() {
-  const { userWalletAddresses } = useUserWalletAddresses();
-  const nfscWalletAddresses = useMemo(
-    () =>
-      userWalletAddresses.filter(
-        (address): address is `0x${string}` =>
-          typeof address === 'string' && address.startsWith('0x'),
-      ),
-    [userWalletAddresses],
-  );
-  const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
-
-  const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
-    useUserChainBalances({
-      enabled: nfscWalletAddresses.length > 0,
-      walletAddresses: nfscWalletAddresses,
-    });
+function UserBalanceDropdownItem({
+  onOpen,
+  totalBalanceInUsdCents,
+  isLoadingBalance,
+  hasWallets,
+}: BalanceDropdownItemProps) {
   const formattedBalance = formatAmountInUSD(totalBalanceInUsdCents, true);
 
   return (
-    <>
-      <DropdownMenuItem
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsBalanceDialogOpen(true);
-        }}
-        className="cursor-pointer"
-      >
-        <div className="flex w-full items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-sm">
-            <CoinsIcon className="h-4 w-4" />
-            <span>Balance</span>
-          </div>
-          <div className="flex flex-col items-end leading-tight font-mono">
-            {isLoadingBalance ? (
-              <Skeleton className="h-6 w-[10ch] bg-white/20" />
-            ) : (
-              <span className="text-sm font-semibold">
-                {nfscWalletAddresses.length > 0
-                  ? `${formattedBalance} NFSC`
-                  : '0.00 NFSC'}
-              </span>
-            )}
-          </div>
+    <DropdownMenuItem
+      // Dropdown closes on click as normal — the dialog state lives in the
+      // parent so the dialog survives the dropdown unmounting.
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onOpen();
+      }}
+      className="cursor-pointer"
+    >
+      <div className="flex w-full items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-sm">
+          <CoinsIcon className="h-4 w-4" />
+          <span>Balance</span>
         </div>
-      </DropdownMenuItem>
-      <BalanceBreakdownDialog
-        open={isBalanceDialogOpen}
-        onOpenChange={setIsBalanceDialogOpen}
-        chainBalances={chainBalances}
-        totalBalanceInUsdCents={totalBalanceInUsdCents}
-        isLoadingBalances={isLoadingBalance}
-        walletAddresses={nfscWalletAddresses}
-      />
-    </>
+        <div className="flex flex-col items-end leading-tight font-mono">
+          {isLoadingBalance ? (
+            <Skeleton className="h-6 w-[10ch] bg-white/20" />
+          ) : (
+            <span className="text-sm font-semibold">
+              {hasWallets ? `${formattedBalance} NFSC` : '0.00 NFSC'}
+            </span>
+          )}
+        </div>
+      </div>
+    </DropdownMenuItem>
   );
 }
 

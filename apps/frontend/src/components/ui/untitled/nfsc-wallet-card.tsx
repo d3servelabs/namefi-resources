@@ -244,10 +244,16 @@ function RecentNfscOrdersTab({
   });
 
   return (
-    <NfscOrdersList
-      orders={orders}
-      isLoading={isLoading}
-      emptyMessage="No NFSC top-ups yet for this wallet."
-    />
+    <div className="space-y-3">
+      <p className="rounded-md border border-border/60 bg-muted/10 px-3 py-2 text-xs text-muted-foreground">
+        These are credit-card NFSC top-ups for this wallet. NFSC-paid domain
+        orders appear in your full order history.
+      </p>
+      <NfscOrdersList
+        orders={orders}
+        isLoading={isLoading}
+        emptyMessage="No NFSC top-ups yet for this wallet."
+      />
+    </div>
   );
 }
