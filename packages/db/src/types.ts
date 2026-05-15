@@ -32,6 +32,7 @@ import {
   cartItemsTable,
   dnsRecordsTable,
   orderItemsTable,
+  orderNfscItemsTable,
   ordersTable,
   paymentsTable,
   refundsTable,
@@ -45,10 +46,16 @@ import {
   cartItemMetadataSchema,
   orderMetadataSchema,
   orderItemMetadataSchema,
+  orderNfscItemMetadataSchema,
   x402PurchasesTable,
   x402PurchaseStatusEnum,
 } from './schema';
-export type { OrderItemMetadata, OrderMintTransactionMetadata } from './schema';
+export type {
+  NfscMintReconciliation,
+  OrderItemMetadata,
+  OrderMintTransactionMetadata,
+  OrderNfscItemMetadata,
+} from './schema';
 import type { PgUpdateSetSource } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
@@ -237,6 +244,25 @@ export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable, {
   metadata: orderItemMetadataSchema.optional(),
 });
 
+export const orderNfscItemInsertSchema = createInsertSchema(
+  orderNfscItemsTable,
+  {
+    metadata: orderNfscItemMetadataSchema.optional(),
+  },
+);
+export const orderNfscItemSelectSchema = createSelectSchema(
+  orderNfscItemsTable,
+  {
+    metadata: orderNfscItemMetadataSchema.optional(),
+  },
+);
+export const orderNfscItemUpdateSchema = createUpdateSchema(
+  orderNfscItemsTable,
+  {
+    metadata: orderNfscItemMetadataSchema.optional(),
+  },
+);
+
 export const freeClaimInsertSchema = createInsertSchema(freeClaimsTable, {
   exactDomainName: namefiNormalizedDomainSchema.nullable().optional(),
   parentDomain: namefiNormalizedDomainSchema.nullable().optional(),
@@ -375,6 +401,11 @@ export type OrderUpdate = z.infer<typeof orderUpdateSchema>;
 export type OrderItemInsert = z.infer<typeof orderItemInsertSchema>;
 export type OrderItemSelect = z.infer<typeof orderItemSelectSchema>;
 export type OrderItemUpdate = z.infer<typeof orderItemUpdateSchema>;
+
+// OrderNfscItem types
+export type OrderNfscItemInsert = z.infer<typeof orderNfscItemInsertSchema>;
+export type OrderNfscItemSelect = z.infer<typeof orderNfscItemSelectSchema>;
+export type OrderNfscItemUpdate = z.infer<typeof orderNfscItemUpdateSchema>;
 
 // DNS Record types
 export type DnsRecordInsert = z.infer<typeof dnsRecordInsertSchema>;

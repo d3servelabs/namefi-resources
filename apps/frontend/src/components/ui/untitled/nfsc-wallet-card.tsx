@@ -9,11 +9,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
 import { NetworkLogo } from '@/components/network-logo';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
+import { useTRPC } from '@/lib/trpc';
+import { useQuery } from '@tanstack/react-query';
 
 interface NFSCWalletCardProps
   extends Omit<WalletCardProps, 'networks' | 'bottomContent'> {
@@ -173,29 +182,72 @@ export function NFSCWalletCard({
         bottomContent={bottomContent}
       />
 
-      {/* Balance Breakdown Modal */}
+      {/* Wallet details modal — balance breakdown + recent NFSC orders */}
       <Dialog open={showBalanceModal} onOpenChange={setShowBalanceModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Balance Breakdown</DialogTitle>
+            <DialogTitle>Wallet details</DialogTitle>
           </DialogHeader>
 
-          <div className="mt-4">
-            {/* Total NFSC */}
-            <div className="bg-muted rounded-lg p-4 mb-4">
-              <div className="text-sm text-muted-foreground mb-1">
-                Total NFSC Balance
-              </div>
-              <div className="text-2xl font-bold font-mono">
-                ${formatBalanceInUsdCents(currentWalletTotal)}
-              </div>
-            </div>
+          <Tabs defaultValue="balance" className="mt-4">
+            <TabsList className="grid grid-cols-2 w-full">
+              <TabsTrigger value="balance">Balance</TabsTrigger>
+              <TabsTrigger value="orders">Recent NFSC orders</TabsTrigger>
+            </TabsList>
 
-            {/* Per-chain breakdown */}
-            <BalanceBreakdown balances={completeBalances} />
-          </div>
+            <TabsContent value="balance" className="mt-4">
+              {/* Total NFSC */}
+              <div className="bg-muted rounded-lg p-4 mb-4">
+                <div className="text-sm text-muted-foreground mb-1">
+                  Total NFSC Balance
+                </div>
+                <div className="text-2xl font-bold font-mono">
+                  ${formatBalanceInUsdCents(currentWalletTotal)}
+                </div>
+              </div>
+
+              {/* Per-chain breakdown */}
+              <BalanceBreakdown balances={completeBalances} />
+            </TabsContent>
+
+            <TabsContent value="orders" className="mt-4">
+              <RecentNfscOrdersTab
+                walletAddress={address}
+                enabled={showBalanceModal}
+              />
+            </TabsContent>
+          </Tabs>
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+/**
+ * Recent NFSC top-up orders for a wallet — loaded only while the wallet-details
+ * dialog is open so we don't fan out queries for every wallet card on the page.
+ */
+function RecentNfscOrdersTab({
+  walletAddress,
+  enabled,
+}: {
+  walletAddress: string;
+  enabled: boolean;
+}) {
+  const trpc = useTRPC();
+  const { data: orders, isLoading } = useQuery({
+    ...trpc.orders.getMyNfscOrders.queryOptions({
+      recipientWalletAddress: walletAddress,
+      limit: 20,
+    }),
+    enabled,
+  });
+
+  return (
+    <NfscOrdersList
+      orders={orders}
+      isLoading={isLoading}
+      emptyMessage="No NFSC top-ups yet for this wallet."
+    />
   );
 }

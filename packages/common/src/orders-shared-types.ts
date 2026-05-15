@@ -4,6 +4,7 @@ import type {
   OrderItemForUser,
   OrderItemSelect,
   OrderItemsForUser,
+  OrderNfscItemSelect,
   OrderSelect,
   PaymentSelect,
   UserSelect,
@@ -34,6 +35,11 @@ import type { OrderStatus } from './shared-schemas';
 export type OrderWithPayments = {
   order: OrderSelect;
   items: OrderItemSelect[];
+  /**
+   * NFSC top-up line items. Empty for domain orders; an order is an NFSC
+   * top-up order iff this is non-empty and `items` is empty.
+   */
+  nfscItems: OrderNfscItemSelect[];
   payments: PaymentSelect[];
   user: UserSelect;
 };
@@ -56,10 +62,33 @@ export type CreatedOrder = {
 };
 
 /**
+ * Shape returned by `createNfscOrderWithExistingPayments` (and the `buyNfsc`
+ * tRPC mutation): the analogue of `CreatedOrder` for NFSC top-up orders, with
+ * `nfscItems[]` instead of `items[]`.
+ */
+export type CreatedNfscOrder = {
+  id: string;
+  userId: string;
+  amountInUSDCents: number;
+  nftWalletAddress: string | null;
+  nftChainId: number | null;
+  nfscItems: OrderNfscItemSelect[];
+};
+
+/**
  * Row shape returned by `getOrderItemsForUser` — every order item column
  * plus three columns lifted from the joined order.
  */
 export type { OrderItemForUser, OrderItemsForUser };
+
+/**
+ * Row shape returned by `getNfscOrderItemsForUser` — every NFSC item column
+ * plus the order's status and createdAt for grouping/filtering on the UI side.
+ */
+export type NfscOrderItemForUser = OrderNfscItemSelect & {
+  orderStatus: OrderStatus;
+  orderCreatedAt: Date;
+};
 
 /**
  * Return type of
@@ -179,6 +208,12 @@ export interface ProcessOrderWorkflowItemProgress {
   status: ProcessOrderWorkflowItemStatus;
   lastUpdatedAt: number;
   message?: string;
+  /**
+   * Discriminates a regular domain line item from an NFSC top-up line item.
+   * Absent for domain orders (the field predates them). Mirrored in the
+   * backend workflow's `ProcessOrderWorkflowItemProgress`.
+   */
+  itemKind?: 'DOMAIN' | 'NFSC';
 }
 
 export type ProcessOrderWorkflowPhase =

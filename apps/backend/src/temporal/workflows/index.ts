@@ -6,6 +6,7 @@ export * from './mint-dev-signup-nfsc.workflow';
 export * from './mint-nfsc-by-user-id.workflow';
 export * from './processOrder.workflow';
 export * from './processOrderItem.workflow';
+export * from './processNfscOrderItem.workflow';
 export * from './post-process-order-item.workflow';
 export * from './chargeUser.workflow';
 export * from './refund-user.workflow';

@@ -103,6 +103,53 @@ export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
 });
 export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;
 
+/**
+ * Result of the before/after on-chain NFSC balance check performed by the
+ * `reconcileNfscMint` activity for an NFSC top-up order item.
+ *
+ * All balance/delta fields are in NFSC token units (not USD cents). At the
+ * fixed 1 USD = 1 NFSC rate they are numerically equal to the USD amount.
+ * - `OK`: the observed balance delta matched the minted amount.
+ * - `JUSTIFIED_ANOMALY`: the delta differed, but the difference is fully
+ *   explained by concurrent NFSC mints/charges/refunds on the same wallet+chain.
+ * - `UNJUSTIFIED_ANOMALY`: the delta differed and could not be explained — an
+ *   alert is raised to Namefi.
+ * - `BALANCE_READ_FAILED`: a before/after balance read failed; reconciliation
+ *   was skipped (observability gap, not an order failure).
+ */
+export const nfscMintReconciliationSchema = z.object({
+  outcome: z.enum([
+    'OK',
+    'JUSTIFIED_ANOMALY',
+    'UNJUSTIFIED_ANOMALY',
+    'BALANCE_READ_FAILED',
+  ]),
+  balanceBefore: z.number().nullable(),
+  balanceAfter: z.number().nullable(),
+  expectedDelta: z.number(),
+  actualDelta: z.number().nullable(),
+  sumConcurrentMints: z.number(),
+  sumConcurrentCharges: z.number(),
+  sumConcurrentRefunds: z.number(),
+  unexplainedDelta: z.number().nullable(),
+  concurrentMintItemIds: z.array(z.string()),
+  concurrentChargePaymentIds: z.array(z.string()),
+  concurrentRefundIds: z.array(z.string()),
+  windowStart: z.string(),
+  checkedAt: z.string(),
+});
+export type NfscMintReconciliation = z.infer<
+  typeof nfscMintReconciliationSchema
+>;
+
+export const orderNfscItemMetadataSchema = z
+  .object({
+    mintTransaction: orderMintTransactionMetadataSchema.optional(),
+    reconciliation: nfscMintReconciliationSchema.optional(),
+  })
+  .loose();
+export type OrderNfscItemMetadata = z.infer<typeof orderNfscItemMetadataSchema>;
+
 export const legacyOrderMetadataSchema = z.object({
   source: z.literal('legacy'),
   type: z.literal('legacy-migration'),
@@ -232,6 +279,30 @@ export const orderItemSchema = z.object({
   ...lifecycleTimestampFieldsSchema,
 });
 export type OrderItemSelect = z.infer<typeof orderItemSchema>;
+
+/**
+ * Wire shape of a row in the `order_nfsc_items` table — a single NFSC top-up
+ * line item. Kept structurally separate from `orderItemSchema` because NFSC
+ * items have no domain/registrar/duration.
+ *
+ * Monetary units: `amountInUSDCents` is USD cents (financial source of truth);
+ * `nfscAmount` is the NFSC token amount as an exact decimal string (the
+ * `numeric` column is serialized as a string in JS).
+ */
+export const orderNfscItemSchema = z.object({
+  id: z.string(),
+  orderId: z.string(),
+  amountInUSDCents: z.number(),
+  nfscAmount: z.string(),
+  recipientWalletAddress: z.string(),
+  chainId: z.number(),
+  mintTxHash: z.string().nullable(),
+  status: orderStatusSchema.nullable(),
+  metadata: orderNfscItemMetadataSchema.optional(),
+  ...timestampFieldsSchema,
+  ...lifecycleTimestampFieldsSchema,
+});
+export type OrderNfscItemSelect = z.infer<typeof orderNfscItemSchema>;
 
 export const paymentSchema = z.object({
   id: z.string(),

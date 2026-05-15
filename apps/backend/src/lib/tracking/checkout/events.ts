@@ -20,7 +20,7 @@ type LogGaEventOrderPlacedInput = CheckoutAnalyticsBaseInput & {
   amountUsdCents: number;
   itemCount: number;
   paymentCount: number;
-  orderSource?: 'checkout' | 'instant_buy';
+  orderSource?: 'checkout' | 'instant_buy' | 'nfsc_topup';
 };
 type LogGaEventOrderProcessingStartedInput = CheckoutAnalyticsBaseInput & {
   orderId: string;

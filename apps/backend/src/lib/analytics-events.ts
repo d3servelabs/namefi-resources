@@ -113,7 +113,8 @@ export const BACKEND_ANALYTICS_CUSTOM_DIMENSIONS = [
   {
     parameterName: 'order_source',
     displayName: 'Order Source',
-    description: 'Source of order placement such as checkout or instant buy.',
+    description:
+      'Source of order placement such as checkout, instant buy, or NFSC top-up.',
     scope: 'EVENT',
   },
   {
@@ -264,7 +265,7 @@ type OrderPlacedParams = CheckoutAnalyticsBaseParams & {
   amount_usd_cents: number;
   item_count: number;
   payment_count: number;
-  order_source?: 'checkout' | 'instant_buy';
+  order_source?: 'checkout' | 'instant_buy' | 'nfsc_topup';
 };
 
 type OrderProcessingStartedParams = CheckoutAnalyticsBaseParams;

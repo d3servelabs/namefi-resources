@@ -10,10 +10,12 @@ import {
   cartItemMetadataSchema,
   orderItemMetadataSchema,
   orderMetadataSchema,
+  orderNfscItemMetadataSchema,
   paymentMetadataSchema,
   type CartItemMetadata,
   type OrderItemMetadata,
   type OrderMetadata,
+  type OrderNfscItemMetadata,
   type PaymentMetadata,
 } from '@namefi-astra/common/contract/entity-schemas';
 import {
@@ -58,20 +60,24 @@ export {
   cartItemMetadataSchema,
   legacyOrderItemMetadataSchema,
   legacyOrderMetadataSchema,
+  nfscMintReconciliationSchema,
   orderItemFailureDetailsSchema,
   orderItemFailureResolutionSchema,
   orderItemMetadataSchema,
   orderItemRequiredActionSchema,
   orderMetadataSchema,
   orderMintTransactionMetadataSchema,
+  orderNfscItemMetadataSchema,
   paymentMetadataSchema,
   postProcessOrderItemSchema,
 } from '@namefi-astra/common/contract/entity-schemas';
 export type {
   CartItemMetadata,
+  NfscMintReconciliation,
   OrderItemMetadata,
   OrderMintTransactionMetadata,
   OrderMetadata,
+  OrderNfscItemMetadata,
   PaymentMetadata,
   PostProcessOrderItem,
 } from '@namefi-astra/common/contract/entity-schemas';
@@ -541,6 +547,55 @@ export const orderItemsTable = pgTable(
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
     index('order_items_order_id_idx').on(table.orderId),
     index('order_items_status_idx').on(table.status),
+  ],
+);
+
+/**
+ * Order NFSC items table.
+ *
+ * One row per NFSC top-up order item. Kept separate from `order_items`
+ * because that table is strictly domain-shaped (NOT NULL
+ * normalized_domain_name / duration_in_years / registrar, and a `type` enum
+ * of REGISTER | IMPORT | RENEW). An order is an NFSC top-up order iff it has
+ * one or more `order_nfsc_items` rows and no `order_items` rows.
+ *
+ * Monetary units:
+ * - `amount_in_usd_cents` is USD cents and is the financial source of truth.
+ * - `nfsc_amount` is the NFSC token amount (an 18-decimal on-chain token)
+ *   stored as an exact decimal. At the fixed 1 USD = 1 NFSC rate it equals
+ *   amount_in_usd_cents / 100; it is stored explicitly so the row is
+ *   self-describing and resilient to a future rate change.
+ *
+ * The recipient wallet/chain live on the item (not on the order's
+ * domain-NFT `nft_wallet_address` / `nft_chain_id` columns, which stay NULL
+ * for NFSC orders).
+ */
+export const orderNfscItemsTable = pgTable(
+  'order_nfsc_items',
+  {
+    ...randomUuid,
+    orderId: uuid('order_id')
+      .notNull()
+      .references(() => ordersTable.id, { onDelete: 'cascade' }),
+    ...amountInUsdCents,
+    nfscAmount: numeric('nfsc_amount', { precision: 38, scale: 18 }).notNull(),
+    recipientWalletAddress: text('recipient_wallet_address').notNull(),
+    chainId: integer('chain_id').notNull(),
+    mintTxHash: text('mint_tx_hash'),
+    status: orderStatusEnum('status').default('CREATED'),
+    metadata: jsonb('metadata').$type<OrderNfscItemMetadata>().default({}),
+    ...timestamps,
+    ...lifecycleTimestamps,
+  },
+  (table) => [
+    check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
+    index('order_nfsc_items_order_id_idx').on(table.orderId),
+    index('order_nfsc_items_status_idx').on(table.status),
+    // Drives reconcileNfscMint's "recent NFSC mints to this wallet+chain" query.
+    index('order_nfsc_items_recipient_chain_idx').on(
+      table.recipientWalletAddress,
+      table.chainId,
+    ),
   ],
 );
 

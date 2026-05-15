@@ -1,8 +1,4 @@
-import {
-  orderStatusSchema,
-  type OrderSelect,
-  type OrderStatus,
-} from '@namefi-astra/db/types';
+import { orderStatusSchema, type OrderStatus } from '@namefi-astra/db/types';
 import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,
@@ -16,6 +12,7 @@ import { generateLogosForAliveNftsWorkflow } from './logo-generation.workflow';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import type { ChargeUserWorkflowInput } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
+import { processNfscOrderItemWorkflow } from './processNfscOrderItem.workflow';
 import { multiChargeWorkflow } from './multi-charge.workflow';
 import { multiRefundWorkflow } from './multi-refund.workflow';
 import { postProcessOrderItemWorkflow } from './post-process-order-item.workflow';
@@ -75,6 +72,12 @@ export interface ProcessOrderWorkflowItemProgress {
   status: ProcessOrderWorkflowItemStatus;
   lastUpdatedAt: number;
   message?: string;
+  /**
+   * Discriminates a regular domain line item from an NFSC top-up line item.
+   * Defaults to `'DOMAIN'` semantics when absent (domain orders predate this
+   * field). Mirrored in `@namefi-astra/common/orders-shared-types`.
+   */
+  itemKind?: 'DOMAIN' | 'NFSC';
 }
 
 export type ProcessOrderWorkflowPhase =
@@ -150,6 +153,21 @@ const BASE_STEPS: ProcessOrderWorkflowStep[] = [
   createStep('notification', 'Sending confirmation'),
 ];
 
+/**
+ * NFSC-top-up step labels. Same step ids as `BASE_STEPS` (so the public state
+ * shape and `getOrderProgressQuery` are unchanged) but labels worded for the
+ * NFSC top-up flow. The NFSC branch relabels `state.steps` in place by id.
+ */
+const NFSC_BASE_STEPS: ProcessOrderWorkflowStep[] = [
+  createStep('order-details', 'Preparing your top-up'),
+  createStep('payments', 'Collecting payment'),
+  createStep('items', 'Minting NFSC tokens'),
+  createStep('post-processing', 'Finishing background tasks'),
+  createStep('final-status', 'Finalizing top-up status'),
+  createStep('refund', 'Processing refunds'),
+  createStep('notification', 'Sending confirmation'),
+];
+
 const { triggerUpdateDomainIndex } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
   options: {
@@ -160,6 +178,7 @@ const { triggerUpdateDomainIndex } = typedProxyActivities({
 const {
   getOrderDetailsOrThrow,
   updateOrderItemStatusOrThrow,
+  updateOrderNfscItemStatusOrThrow,
   updateOrderStatusOrThrow,
   logGaEventOrderProcessingStarted,
   logGaEventOrderItemsProcessingStarted,
@@ -351,6 +370,291 @@ export async function processOrderWorkflow(
 
   workflow.setHandler(getOrderProgressQuery, () => state);
 
+  /**
+   * NFSC top-up branch of `processOrderWorkflow`.
+   *
+   * Reuses the generic charge / refund / public-state / notification
+   * machinery but mints NFSC instead of acquiring domains, and skips every
+   * domain-specific post-processing step (domain index, logo generation,
+   * post-process order items). Detected and dispatched below, immediately
+   * after order details are fetched, so the domain-only guards and code path
+   * are never reached for an NFSC order.
+   */
+  const runNfscTopUpOrder = async (orderDetails: OrderWithPayments) => {
+    // Same step ids, NFSC-worded labels.
+    for (const step of state.steps) {
+      const nfscStep = NFSC_BASE_STEPS.find((s) => s.id === step.id);
+      if (nfscStep) {
+        step.label = nfscStep.label;
+      }
+    }
+    touch();
+
+    const nfscItems = orderDetails.nfscItems;
+
+    for (const item of nfscItems) {
+      ensureItem({
+        itemId: item.id,
+        domain: '' as NamefiNormalizedDomain,
+        type: 'REGISTER',
+        durationInYears: 0,
+        registrarKey: 'NFSC',
+        status: 'PENDING',
+        lastUpdatedAt: temporalNow(),
+        itemKind: 'NFSC',
+      });
+    }
+
+    await updateOrderStatusOrThrow({
+      orderId: input.orderId,
+      status: orderStatusSchema.enum.PROCESSING,
+    });
+    updateOrderStatus(orderStatusSchema.enum.PROCESSING);
+    setStepStatus('order-details', 'COMPLETED');
+
+    if (orderDetails.payments.length === 0) {
+      await updateOrderStatusOrThrow({
+        orderId: input.orderId,
+        status: orderStatusSchema.enum.FAILED,
+      });
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      setStepStatus(
+        'payments',
+        'FAILED',
+        'No payment information available for this order',
+      );
+      setPhase('FAILED');
+      throw new workflow.ApplicationFailure('No payment found');
+    }
+
+    // ---- Charge ----
+    try {
+      setPhase('CHARGING');
+      setStepStatus('payments', 'IN_PROGRESS');
+      updatePayment('CHARGING');
+      await workflow.executeChild(multiChargeWorkflow, {
+        args: [
+          {
+            orderId: input.orderId,
+            userId: orderDetails.order.userId,
+            paymentsData: orderDetails.payments.map((p) => ({
+              paymentId: p.id,
+              amountInUSDCents: p.amountInUSDCents,
+              metadata: input.paymentsMetadata[p.id],
+            })),
+          },
+        ],
+        workflowId: `multi-charge-order-[${input.orderId}]`,
+        taskQueue: TEMPORAL_QUEUES.DEFAULT,
+        retry: { maximumAttempts: 1 },
+      });
+      updatePayment('CHARGED');
+      setStepStatus('payments', 'COMPLETED');
+    } catch (error) {
+      for (const item of nfscItems) {
+        const [updateStatusError] = await resolve(
+          updateOrderNfscItemStatusOrThrow({
+            nfscItemId: item.id,
+            status: orderStatusSchema.enum.CANCELLED,
+          }),
+        );
+        if (updateStatusError) {
+          workflow.log.error(
+            `Failed to update NFSC orderItem ${item.id} status to ${orderStatusSchema.enum.CANCELLED}: ${
+              updateStatusError instanceof Error
+                ? updateStatusError.message
+                : String(updateStatusError)
+            }`,
+          );
+        }
+        updateItem(item.id, {
+          status: 'CANCELLED',
+          message: 'Cancelled after payment failure',
+        });
+      }
+      await updateOrderStatusOrThrow({
+        orderId: input.orderId,
+        status: orderStatusSchema.enum.FAILED,
+      });
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      updatePayment(
+        'FAILED',
+        error instanceof Error ? error.message : String(error),
+      );
+      setStepStatus('payments', 'FAILED', 'Payment attempt failed');
+      setPhase('FAILED');
+      throw error instanceof Error ? error : new Error(String(error));
+    }
+
+    // ---- Mint NFSC items ----
+    setPhase('PROCESSING_ITEMS');
+    setStepStatus('items', 'IN_PROGRESS');
+
+    const nfscItemPromises = nfscItems.map((item) => {
+      updateItem(item.id, { status: 'PROCESSING', message: undefined });
+
+      return workflow
+        .executeChild(processNfscOrderItemWorkflow, {
+          args: [
+            {
+              orderId: input.orderId,
+              nfscItemId: item.id,
+              userId: orderDetails.order.userId,
+              chainId: item.chainId,
+              recipientWalletAddress:
+                item.recipientWalletAddress as `0x${string}`,
+              nfscAmount: item.nfscAmount,
+              amountInUsdCents: item.amountInUSDCents,
+            },
+          ],
+          workflowId: `process-nfsc-order-item-[${item.id}]`,
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          retry: { maximumAttempts: 1 },
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        })
+        .then(() => {
+          updateItem(item.id, { status: 'SUCCEEDED', message: undefined });
+        })
+        .catch((error) => {
+          updateItem(item.id, {
+            status: 'FAILED',
+            message: error instanceof Error ? error.message : String(error),
+          });
+          throw error;
+        });
+    });
+
+    const nfscItemResults = await Promise.allSettled(nfscItemPromises);
+    recomputeSummary();
+
+    const failedNfscItems = nfscItems.filter(
+      (_, index) => nfscItemResults[index].status === 'rejected',
+    );
+    const succeededNfscItems = nfscItems.filter(
+      (_, index) => nfscItemResults[index].status === 'fulfilled',
+    );
+    const derivedOrderStatus =
+      failedNfscItems.length === 0
+        ? orderStatusSchema.enum.SUCCEEDED
+        : succeededNfscItems.length === 0
+          ? orderStatusSchema.enum.FAILED
+          : orderStatusSchema.enum.PARTIALLY_COMPLETED;
+
+    if (failedNfscItems.length === 0) {
+      setStepStatus('items', 'COMPLETED', 'NFSC credited successfully');
+    } else if (succeededNfscItems.length === 0) {
+      setStepStatus('items', 'FAILED', 'NFSC top-up failed during processing');
+    } else {
+      setStepStatus('items', 'COMPLETED', 'Some NFSC top-ups need attention');
+    }
+
+    // ---- Post-processing: nothing domain-specific for NFSC top-ups ----
+    setStepStatus(
+      'post-processing',
+      'SKIPPED',
+      'No post-processing for NFSC top-up',
+    );
+
+    // ---- Finalize order status ----
+    setPhase('FINALIZING');
+    setStepStatus('final-status', 'IN_PROGRESS');
+    await updateOrderStatusOrThrow({
+      orderId: input.orderId,
+      status: derivedOrderStatus,
+    });
+    updateOrderStatus(derivedOrderStatus);
+    if (derivedOrderStatus === orderStatusSchema.enum.SUCCEEDED) {
+      setStepStatus('final-status', 'COMPLETED', 'Top-up completed');
+    } else if (derivedOrderStatus === orderStatusSchema.enum.FAILED) {
+      setStepStatus(
+        'final-status',
+        'FAILED',
+        'Top-up failed, no NFSC was credited',
+      );
+    } else {
+      setStepStatus(
+        'final-status',
+        'COMPLETED',
+        'Top-up completed with partial success',
+      );
+    }
+
+    // ---- Refund failed items ----
+    const amountToRefundInUsdCents = failedNfscItems.reduce(
+      (acc, item) => acc + item.amountInUSDCents,
+      0,
+    );
+    if (amountToRefundInUsdCents > 0) {
+      updateRefund({
+        status: 'PROCESSING',
+        amountInUsdCents: amountToRefundInUsdCents,
+      });
+      setStepStatus('refund', 'IN_PROGRESS');
+      try {
+        await workflow.executeChild(multiRefundWorkflow, {
+          args: [
+            {
+              orderId: input.orderId,
+              paymentIds: orderDetails.payments.map((p) => p.id),
+              amountToRefundInUsdCents,
+            },
+          ],
+          workflowId: `multi-refund-order-[${input.orderId}]`,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          retry: { maximumAttempts: 1 },
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        });
+        updateRefund({ status: 'COMPLETED' });
+        setStepStatus('refund', 'COMPLETED');
+      } catch (error) {
+        updateRefund({ status: 'FAILED' });
+        setStepStatus(
+          'refund',
+          'FAILED',
+          error instanceof Error ? error.message : String(error),
+        );
+        throw error;
+      }
+    } else {
+      updateRefund({ status: 'NOT_REQUIRED', amountInUsdCents: 0 });
+      setStepStatus('refund', 'SKIPPED', 'No refund required');
+    }
+
+    // ---- Notify ----
+    setStepStatus('notification', 'IN_PROGRESS');
+    const updatedOrder = await getOrderDetailsOrThrow(input.orderId);
+    const notificationSummary = await _notifyUserNfscTopUpProcessed(
+      updatedOrder,
+      nfscItemResults,
+      amountToRefundInUsdCents,
+    );
+    updateNotification({
+      status: notificationSummary.status,
+      message: notificationSummary.message,
+    });
+    if (notificationSummary.status === 'FAILED') {
+      setStepStatus(
+        'notification',
+        'FAILED',
+        notificationSummary.message ??
+          'Unable to send confirmation at this time',
+      );
+    } else if (notificationSummary.status === 'SKIPPED') {
+      setStepStatus(
+        'notification',
+        'SKIPPED',
+        notificationSummary.message ?? 'Notification skipped',
+      );
+    } else {
+      setStepStatus('notification', 'COMPLETED');
+    }
+
+    setPhase('COMPLETED');
+    state.timestamps.completedAt = temporalNow();
+  };
+
   workflow.log.info('Processing order', {
     orderId: input.orderId,
   });
@@ -383,6 +687,19 @@ export async function processOrderWorkflow(
         description: `Processing order ${input.orderId}`,
       },
     });
+
+    // NFSC top-up orders run a dedicated branch that reuses the
+    // charge/refund/notification machinery but mints NFSC instead of
+    // acquiring domains. Gated on `workflow.patched` so in-flight domain
+    // workflows continue down the original path on replay.
+    const isNfscTopUpOrder =
+      workflow.patched('nfsc-topup-orders-v1') &&
+      (orderDetails.nfscItems?.length ?? 0) > 0 &&
+      (orderDetails.items?.length ?? 0) === 0;
+    if (isNfscTopUpOrder) {
+      await runNfscTopUpOrder(orderDetails);
+      return;
+    }
 
     if (orderDetails.items) {
       for (const item of orderDetails.items) {
@@ -1201,6 +1518,98 @@ async function _notifyUserOrderProcessed(
   } catch (e) {
     workflow.log.error(
       `Failed to notify user for order ${orderDetails.order.id}. Error: ${e}`,
+    );
+    const message = e instanceof Error ? e.message : String(e);
+    return {
+      status: 'FAILED',
+      message,
+    };
+  }
+}
+
+/**
+ * Send the NFSC top-up confirmation email. The NFSC-branch analogue of
+ * `_notifyUserOrderProcessed`: reuses `_selectPaymentForNotification` (NFSC
+ * providers are rejected at order creation, so the chosen payment is always
+ * STRIPE/MPP/X402) and returns a `NotificationResult` for the shared
+ * notification step handling.
+ */
+async function _notifyUserNfscTopUpProcessed(
+  orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
+  nfscItemResults: PromiseSettledResult<void>[],
+  amountToRefundInUsdCents: number,
+): Promise<NotificationResult> {
+  const { notifyUserNfscTopUpProcessed, maybeGetUserEmail } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+      options: {
+        ...shortRunningOpts,
+      },
+    });
+
+  const firstItem = orderDetails.nfscItems[0];
+  if (!firstItem) {
+    const message = `No NFSC items found for order ${orderDetails.order.id}`;
+    workflow.log.warn(message);
+    return { status: 'SKIPPED', message };
+  }
+
+  const userEmail = await maybeGetUserEmail(orderDetails.order.userId);
+  if (!userEmail) {
+    const message = `Failed to notify user for order ${orderDetails.order.id}. User has no primary email`;
+    workflow.upsertMemo({
+      notifyUserNfscTopUpProcessed: {
+        message,
+      },
+    });
+    workflow.log.warn(message);
+    return { status: 'SKIPPED', message };
+  }
+
+  const { paymentMethodCharged, paymentMethodIdentifier } =
+    _selectPaymentForNotification(orderDetails.payments);
+
+  if (!paymentMethodCharged || !paymentMethodIdentifier) {
+    const message = `Failed to notify user for order ${orderDetails.order.id}. Payment method identifier is missing`;
+    workflow.upsertMemo({
+      notifyUserNfscTopUpProcessed: {
+        message,
+      },
+    });
+    workflow.log.warn(message);
+    return { status: 'SKIPPED', message };
+  }
+
+  const allSucceeded =
+    nfscItemResults.length > 0 &&
+    nfscItemResults.every((result) => result.status === 'fulfilled');
+  const status: 'SUCCEEDED' | 'FAILED' = allSucceeded ? 'SUCCEEDED' : 'FAILED';
+
+  try {
+    await notifyUserNfscTopUpProcessed({
+      orderId: orderDetails.order.id,
+      recipientName: userEmail,
+      recipientEmail: userEmail,
+      // 1 USD = 1 NFSC — derive a clean display amount from the USD total.
+      nfscAmount: (orderDetails.order.amountInUSDCents / 100).toString(),
+      chargedAmountInUsdCents: orderDetails.order.amountInUSDCents,
+      paymentMethodCharged,
+      paymentMethodIdentifier,
+      recipientWalletAddress: firstItem.recipientWalletAddress,
+      chainId: firstItem.chainId,
+      status,
+      refund:
+        amountToRefundInUsdCents > 0
+          ? {
+              amountInUsd: amountToRefundInUsdCents / 100,
+              status: 'PROCESSING',
+            }
+          : undefined,
+    });
+    return { status: 'SENT' };
+  } catch (e) {
+    workflow.log.error(
+      `Failed to notify user for NFSC top-up order ${orderDetails.order.id}. Error: ${e}`,
     );
     const message = e instanceof Error ? e.message : String(e);
     return {

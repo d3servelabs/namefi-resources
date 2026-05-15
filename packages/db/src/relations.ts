@@ -10,6 +10,7 @@ import {
   huntEdgesTable,
   linkSharesTable,
   orderItemsTable,
+  orderNfscItemsTable,
   ordersTable,
   feedbackResponsesTable,
   paymentsTable,
@@ -45,6 +46,7 @@ export const ordersRelations = relations(ordersTable, ({ one, many }) => ({
     references: [usersTable.id],
   }),
   items: many(orderItemsTable),
+  nfscItems: many(orderNfscItemsTable),
   payments: many(paymentsTable),
 }));
 
@@ -55,6 +57,17 @@ export const orderItemsRelations = relations(orderItemsTable, ({ one }) => ({
     references: [ordersTable.id],
   }),
 }));
+
+// Order NFSC items relations
+export const orderNfscItemsRelations = relations(
+  orderNfscItemsTable,
+  ({ one }) => ({
+    order: one(ordersTable, {
+      fields: [orderNfscItemsTable.orderId],
+      references: [ordersTable.id],
+    }),
+  }),
+);
 
 // Payment relations
 export const paymentsRelations = relations(paymentsTable, ({ one, many }) => ({

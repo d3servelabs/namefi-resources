@@ -34,6 +34,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@namefi-astra/ui/components/shadcn/tabs';
+import { NfscCardTopUpTab } from '@/components/dialogs/nfsc-card-topup-tab';
+import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
+import { useTRPC } from '@/lib/trpc';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   open: boolean;
@@ -69,6 +79,24 @@ export default function NFSCSwapDialog(props: Props) {
   const { nfscBalance, nativeBalance, isLoading } = useNfscBalance();
   const { data: conversionRate, isLoading: isConversionRateLoading } =
     useGetNfscExchangeRate();
+
+  // Pending NFSC top-ups for this wallet — shown above the tabs so users see
+  // anything already in flight before they start another. Polled while the
+  // dialog is open so newly-started top-ups appear without manual refresh.
+  const trpc = useTRPC();
+  const { data: pendingNfscOrders } = useQuery({
+    ...trpc.orders.getMyNfscOrders.queryOptions(
+      checksummedAddress
+        ? {
+            recipientWalletAddress: checksummedAddress,
+            statuses: ['CREATED', 'PROCESSING'],
+            limit: 5,
+          }
+        : { limit: 5 },
+    ),
+    enabled: open && Boolean(checksummedAddress),
+    refetchInterval: open ? 5000 : false,
+  });
   const { writeContractAsync: exchangeNfsc, isPending } = useBuyNfsc({
     onSuccess: () => {
       toast.success('Successfully Swapped', {
@@ -190,9 +218,7 @@ export default function NFSCSwapDialog(props: Props) {
     }
   }, [amountReceive]);
 
-  if (isLoading || isConversionRateLoading) {
-    return null;
-  }
+  const isEthTabLoading = isLoading || isConversionRateLoading;
 
   const isButtonDisabled = insufficientBalance || isPending || !isInputValid();
   const formattedRate = conversionRate
@@ -279,109 +305,147 @@ export default function NFSCSwapDialog(props: Props) {
           </div>
         </DialogHeader>
 
-        <div className="flex flex-col gap-2">
-          <div className="relative mx-6">
-            <div className="bg-zinc-900 rounded-lg p-4 mb-1">
-              <p className="text-gray-400 mb-2">You pay (excluding gas fee)</p>
-              <div className="flex justify-between items-center">
-                <Input
-                  type="text"
-                  placeholder={'0'}
-                  value={amountPay}
-                  onChange={(e) => handlePayChange(e.target.value)}
-                  className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
-                />
-                <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
-                  <Image
-                    src="/assets/payment/eth.svg"
-                    alt="ETH"
-                    width={16}
-                    height={16}
-                    className="text-secondary-foreground"
-                  />
-                  <span className="font-medium">ETH</span>
+        {pendingNfscOrders && pendingNfscOrders.length > 0 && (
+          <div className="px-6 pb-3">
+            <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">
+              Pending top-ups for this wallet
+            </p>
+            <NfscOrdersList orders={pendingNfscOrders} />
+          </div>
+        )}
+
+        <Tabs defaultValue="eth" className="w-full">
+          <TabsList className="grid grid-cols-2 mx-6">
+            <TabsTrigger value="eth">Pay with ETH</TabsTrigger>
+            <TabsTrigger value="card">Pay with card</TabsTrigger>
+          </TabsList>
+          <TabsContent value="eth">
+            {isEthTabLoading ? (
+              <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Loading...
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <div className="relative mx-6">
+                  <div className="bg-zinc-900 rounded-lg p-4 mb-1">
+                    <p className="text-gray-400 mb-2">
+                      You pay (excluding gas fee)
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <Input
+                        type="text"
+                        placeholder={'0'}
+                        value={amountPay}
+                        onChange={(e) => handlePayChange(e.target.value)}
+                        className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                      />
+                      <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
+                        <Image
+                          src="/assets/payment/eth.svg"
+                          alt="ETH"
+                          width={16}
+                          height={16}
+                          className="text-secondary-foreground"
+                        />
+                        <span className="font-medium">ETH</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <p
+                        className={`text-sm mt-2 ${insufficientBalance ? 'text-red-500' : 'text-gray-400'}`}
+                      >
+                        Balance: {formattedEthBalance} ETH
+                        {insufficientBalance && (
+                          <span className="ml-2">• Insufficient balance</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                    <div className="size-[48px] bg-zinc-950 rounded-full border-2 border-zinc-800 p-2 flex items-center justify-center">
+                      <ArrowDown className="h-5 w-5 text-gray-400" />
+                    </div>
+                  </div>
+
+                  <div className="bg-zinc-900 rounded-lg p-4">
+                    <p className="text-gray-400 mb-2">You receive</p>
+                    <div className="flex justify-between items-center">
+                      <Input
+                        type="text"
+                        placeholder={'0'}
+                        readOnly={true}
+                        value={displayReceiveAmount()}
+                        className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                      />
+                      <div className="flex items-center bg-zinc-700 gap-2 p-2 px-4 rounded-md">
+                        <Image
+                          src="/nfsc.svg"
+                          alt="Swap"
+                          width={24}
+                          height={24}
+                        />
+                        <span className="font-medium">NFSC</span>
+                      </div>
+                    </div>
+                    <p className="text-gray-400 text-sm mt-2">
+                      Balance: {formattedNfscBalance} NFSC
+                    </p>
+                  </div>
+                </div>
+
+                {errorMessage && (
+                  <div className="px-6 pt-2">
+                    <Alert
+                      variant="destructive"
+                      className="bg-red-900/50 border-red-800 text-red-300"
+                    >
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription className="break-words overflow-auto max-h-[200px] text-ellipsis max-w-full">
+                        {errorMessage}
+                      </AlertDescription>
+                    </Alert>
+                  </div>
+                )}
+
+                <div className="px-6 pb-6 pt-2">
+                  <div className="flex justify-between text-gray-400 mb-4">
+                    <span>Rate</span>
+                    <span>1 ETH = {formattedRate} NFSC</span>
+                  </div>
+
+                  <div className="flex justify-between text-gray-400 mb-4">
+                    <span>Gas Fee</span>
+                    <span>ETH</span>
+                  </div>
+
+                  <Button
+                    className="w-full mt-4 items-center bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground font-medium py-6 rounded-full flex justify-center gap-2"
+                    onClick={handleOnExchange}
+                    disabled={isButtonDisabled}
+                  >
+                    {isPending && <Loader2 className="h-5 w-5 animate-spin" />}
+                    {isPending
+                      ? 'Processing...'
+                      : insufficientBalance
+                        ? 'Insufficient ETH Balance'
+                        : isInputValid()
+                          ? 'Swap Tokens'
+                          : 'Enter an amount'}
+                  </Button>
                 </div>
               </div>
-              <div className="flex justify-between items-center">
-                <p
-                  className={`text-sm mt-2 ${insufficientBalance ? 'text-red-500' : 'text-gray-400'}`}
-                >
-                  Balance: {formattedEthBalance} ETH
-                  {insufficientBalance && (
-                    <span className="ml-2">• Insufficient balance</span>
-                  )}
-                </p>
-              </div>
-            </div>
-
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              <div className="size-[48px] bg-zinc-950 rounded-full border-2 border-zinc-800 p-2 flex items-center justify-center">
-                <ArrowDown className="h-5 w-5 text-gray-400" />
-              </div>
-            </div>
-
-            <div className="bg-zinc-900 rounded-lg p-4">
-              <p className="text-gray-400 mb-2">You receive</p>
-              <div className="flex justify-between items-center">
-                <Input
-                  type="text"
-                  placeholder={'0'}
-                  readOnly={true}
-                  value={displayReceiveAmount()}
-                  className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
-                />
-                <div className="flex items-center bg-zinc-700 gap-2 p-2 px-4 rounded-md">
-                  <Image src="/nfsc.svg" alt="Swap" width={24} height={24} />
-                  <span className="font-medium">NFSC</span>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm mt-2">
-                Balance: {formattedNfscBalance} NFSC
-              </p>
-            </div>
-          </div>
-
-          {errorMessage && (
-            <div className="px-6 pt-2">
-              <Alert
-                variant="destructive"
-                className="bg-red-900/50 border-red-800 text-red-300"
-              >
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="break-words overflow-auto max-h-[200px] text-ellipsis max-w-full">
-                  {errorMessage}
-                </AlertDescription>
-              </Alert>
-            </div>
-          )}
-
-          <div className="px-6 pb-6 pt-2">
-            <div className="flex justify-between text-gray-400 mb-4">
-              <span>Rate</span>
-              <span>1 ETH = {formattedRate} NFSC</span>
-            </div>
-
-            <div className="flex justify-between text-gray-400 mb-4">
-              <span>Gas Fee</span>
-              <span>ETH</span>
-            </div>
-
-            <Button
-              className="w-full mt-4 items-center bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground font-medium py-6 rounded-full flex justify-center gap-2"
-              onClick={handleOnExchange}
-              disabled={isButtonDisabled}
-            >
-              {isPending && <Loader2 className="h-5 w-5 animate-spin" />}
-              {isPending
-                ? 'Processing...'
-                : insufficientBalance
-                  ? 'Insufficient ETH Balance'
-                  : isInputValid()
-                    ? 'Swap Tokens'
-                    : 'Enter an amount'}
-            </Button>
-          </div>
-        </div>
+            )}
+          </TabsContent>
+          <TabsContent value="card">
+            <NfscCardTopUpTab
+              recipientWalletAddress={checksummedAddress}
+              chainId={chainId}
+              onClose={() => onOpenChange(false)}
+            />
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

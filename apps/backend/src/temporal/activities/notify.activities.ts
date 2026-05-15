@@ -13,10 +13,12 @@ import {
   ProcessedOrderReport,
   type ProcessedOrderItem,
 } from '../../mail/templates/processed-order-report';
+import { NfscTopUpConfirmation } from '../../mail/templates/nfsc-topup-confirmation';
 import React from 'react';
 import { render } from '@react-email/components';
 import { groupBy, map, prop } from 'ramda';
 import {
+  getChain,
   parseDomainName,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
@@ -355,6 +357,111 @@ function buildProcessedOrderInAppBody(
     );
   }
   return sections.join('\n\n');
+}
+
+type NotifyUserNfscTopUpProcessedInput = {
+  orderId: string;
+  recipientName: string;
+  recipientEmail: string;
+  /** NFSC token amount credited, as a decimal string (1 USD = 1 NFSC). */
+  nfscAmount: string;
+  /** Amount charged, in USD cents. */
+  chargedAmountInUsdCents: number;
+  paymentMethodCharged: PaymentProvider;
+  /**
+   * Stripe payment method id or wallet address — resolved to a public-safe
+   * identifier (card last-4 or abbreviated address) before rendering.
+   */
+  paymentMethodIdentifier?: string;
+  recipientWalletAddress: string;
+  chainId: number;
+  status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
+  refund?: {
+    amountInUsd: number;
+    status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
+  };
+};
+
+/**
+ * Send the NFSC top-up confirmation email. Mirrors `notifyUserOrderProcessed`
+ * but for the non-domain NFSC top-up flow: resolves a public-safe payment
+ * identifier, maps the chain id to a human-readable network name, renders the
+ * `NfscTopUpConfirmation` template, and sends it.
+ */
+export async function notifyUserNfscTopUpProcessed(
+  input: NotifyUserNfscTopUpProcessedInput,
+) {
+  const {
+    orderId,
+    recipientName,
+    recipientEmail,
+    nfscAmount,
+    chargedAmountInUsdCents,
+    paymentMethodCharged,
+    paymentMethodIdentifier: paymentMethodIdentifierRaw,
+    recipientWalletAddress,
+    chainId,
+    status,
+    refund,
+  } = input;
+
+  const paymentMethodDisplayName =
+    displayNameForPaymentMethod(paymentMethodCharged);
+  // Start empty so a failed Stripe last-4 lookup cannot fall back to the raw
+  // payment-method id and leak it into the email body.
+  let paymentMethodIdentifier = '';
+  if (paymentMethodIdentifierRaw) {
+    if (paymentMethodCharged === 'STRIPE') {
+      const [_, last4] = await resolve(
+        getStripePaymentMethodPublicIdentifier({
+          paymentMethodId: paymentMethodIdentifierRaw,
+        }),
+      );
+      if (last4) {
+        paymentMethodIdentifier = `....${last4}`;
+      }
+    } else {
+      paymentMethodIdentifier = abbreviateEvmAddress(
+        paymentMethodIdentifierRaw,
+      );
+    }
+  }
+
+  const chainName = getChain(chainId)?.name ?? `Chain ${chainId}`;
+
+  const content = React.createElement(NfscTopUpConfirmation, {
+    orderId,
+    recipientName,
+    recipientEmail,
+    nfscAmount,
+    chargedAmountInUsdCents,
+    paymentMethodCharged: paymentMethodDisplayName,
+    paymentMethodIdentifier,
+    recipientWalletAddress,
+    chainName,
+    status,
+    refund,
+    // NFSC top-ups are not powered-by-namefi scoped — always canonical.
+    poweredByNamefiDomain: 'namefi.io',
+  });
+
+  const html = await render(content);
+  const plainText = await render(content, { plainText: true });
+
+  let subject =
+    status === 'SUCCEEDED'
+      ? '[Namefi] Your NFSC top-up is complete'
+      : status === 'PROCESSING'
+        ? '[Namefi] Your NFSC top-up is being processed'
+        : '[Namefi] Your NFSC top-up needs attention';
+  // Defensive: avoid SMTP header injection via CRLF in subject.
+  subject = subject.replaceAll(/\r|\n/g, ' ');
+
+  await sendEmailOrThrow({
+    to: [recipientEmail],
+    subject,
+    content: { html, plain: plainText },
+  });
 }
 
 // Extracted helper (place near the top of the file, e.g. after imports)

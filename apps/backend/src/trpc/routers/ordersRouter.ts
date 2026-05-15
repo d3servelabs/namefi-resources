@@ -33,6 +33,7 @@ import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import {
   orderService,
   type CreateOrderItemInput,
+  type CreateOrderNfscItemInput,
   ensureOrderOwnership,
   getOrderItemsForUser,
   buildPaymentMethodDetails,
@@ -1022,6 +1023,198 @@ export const ordersRouter = createContractTRPCRouter<typeof ordersContract>({
         );
       }
       return order;
+    }),
+
+  buyNfsc: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'buy_nfsc',
+      extraInput: redactX402PaymentPayloadsFromAuditInput(input),
+    }),
+  )
+    .input(ordersContract.buyNfsc.input)
+    .output(ordersContract.buyNfsc.output)
+    .mutation(async ({ ctx, input }) => {
+      const { amountInUsdCents, payments, recipient } = input;
+
+      const gaEventTracking =
+        await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id);
+
+      // 1. Get user details from Privy
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(ctx.user.privyUserId),
+      );
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Could not find user details',
+        });
+      }
+
+      // 2. Validate the recipient wallet is linked to the user
+      const userWallets = new Set(
+        getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser }),
+      );
+      if (!userWallets.has(recipient.recipientWalletAddress)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Recipient wallet ${recipient.recipientWalletAddress} is not linked to your account`,
+        });
+      }
+
+      // 3. Validate payments total matches the requested top-up amount
+      const inputPaymentsTotal = sum(pluck('amountInUsdCents', payments));
+      if (inputPaymentsTotal !== amountInUsdCents) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Payments total (${inputPaymentsTotal}) does not match top-up amount (${amountInUsdCents})`,
+        });
+      }
+
+      // 4. Reject NFSC payment providers — an NFSC top-up cannot be paid with
+      // NFSC. The contract and the service layer also enforce this; this is
+      // defense in depth.
+      for (const p of payments) {
+        if (p.paymentProviderDetails.paymentProvider.startsWith('NFSC_')) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'NFSC top-up cannot be paid with NFSC',
+          });
+        }
+      }
+
+      // 5. Validate x402 payments (buyer/receiver/network/signer checks) before
+      // encryption and persistence — mirror what `createOrderV2` does on the
+      // payment-critical path.
+      const x402Payments = payments
+        .map((p) => p.paymentProviderDetails)
+        .filter((p): p is X402PaymentProviderDetails => isX402Payment(p));
+      for (const p of x402Payments) {
+        validateX402PaymentProviderDetails({
+          paymentProviderDetails: p,
+          userWallets,
+        });
+      }
+
+      // 6. Create the order in a transaction
+      const order = await db.transaction(async (tx) => {
+        const createdPayments: PaymentSelect[] = [];
+        for (const p of payments) {
+          const paymentProviderDetails = isX402Payment(p.paymentProviderDetails)
+            ? encryptX402PaymentProviderDetails(p.paymentProviderDetails)
+            : p.paymentProviderDetails;
+
+          const created = await createPayment(
+            {
+              amountInUsdCents: p.amountInUsdCents,
+              paymentProviderDetails,
+            },
+            { tx },
+          );
+          createdPayments.push(created);
+        }
+
+        // Fixed rate: 1 USD = 1 NFSC. Stored as an exact 18-decimal value.
+        const nfscAmount = (amountInUsdCents / 100).toFixed(18);
+
+        const order = await orderService.createNfscOrderWithExistingPayments(
+          {
+            amountInUSDCents: amountInUsdCents,
+            userId: ctx.user.id,
+            paymentIds: createdPayments.map((p) => p.id),
+            nfscItems: [
+              {
+                amountInUSDCents: amountInUsdCents,
+                nfscAmount,
+                recipientWalletAddress: recipient.recipientWalletAddress,
+                chainId: recipient.nfscChainId,
+              } satisfies CreateOrderNfscItemInput,
+            ],
+          },
+          { tx },
+        );
+
+        // Build per-payment metadata map and start the workflow.
+        const paymentsMetadata = createdPayments.reduce<{
+          [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
+        }>((acc, p, i) => {
+          acc[p.id] = payments[i]?.paymentMetadata as
+            | ChargeUserWorkflowInput['metadata']
+            | undefined;
+          return acc;
+        }, {});
+
+        try {
+          await temporalClient.workflow.start(processOrderWorkflow, {
+            args: [
+              {
+                orderId: order.id,
+                paymentsMetadata,
+                gaEventTracking,
+              },
+            ],
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            workflowId: `process-order-${order.id}`,
+          });
+        } catch (workflowError) {
+          logger.error(
+            { error: workflowError },
+            'Could not start process order workflow for NFSC top-up',
+          );
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message:
+              'Could not initiate the order, please contact support if the issue persists',
+          });
+        }
+
+        logger.debug(
+          {
+            orderId: order.id,
+            userId: ctx.user.id,
+            amountInUsdCents,
+            recipientWalletAddress: recipient.recipientWalletAddress,
+            chainId: recipient.nfscChainId,
+          },
+          'NFSC top-up order created successfully',
+        );
+
+        return order;
+      });
+
+      if (gaEventTracking.trackGaEvents) {
+        void gaEventOrderPlaced({
+          userId: ctx.user.id,
+          orderId: order.id,
+          amountUsdCents: order.amountInUSDCents,
+          itemCount: order.nfscItems.length,
+          paymentCount: payments.length,
+          orderSource: 'nfsc_topup',
+        });
+      } else {
+        logger.info(
+          {
+            orderId: order.id,
+            userId: ctx.user.id,
+            gaEventTracking,
+          },
+          'Skipping GA order_placed event because tracking is disabled',
+        );
+      }
+
+      return order;
+    }),
+
+  getMyNfscOrders: protectedProcedure
+    .input(ordersContract.getMyNfscOrders.input)
+    .output(ordersContract.getMyNfscOrders.output)
+    .query(async ({ ctx, input }) => {
+      return orderService.getNfscOrderItemsForUser(ctx.user.id, input);
     }),
 
   getOrderPaymentMethodsDetails: protectedProcedure

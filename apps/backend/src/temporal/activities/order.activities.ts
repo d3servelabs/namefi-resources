@@ -11,13 +11,21 @@ import {
   db,
   ordersTable,
   orderItemsTable,
+  orderNfscItemsTable,
   paymentsTable,
+  refundsTable,
   orderStatusSchema,
-  type OrderItemMetadata,
   paymentStatusSchema,
+  refundStatusSchema,
+  type OrderItemMetadata,
   type OrderMintTransactionMetadata,
+  type NfscMintReconciliation,
 } from '@namefi-astra/db';
-import { eq, and, sql, inArray } from 'drizzle-orm';
+import { eq, and, sql, inArray, ne, gte, lte, isNotNull } from 'drizzle-orm';
+import {
+  deriveNfscMintReconciliation,
+  NFSC_RECONCILIATION_WINDOW_SLACK_MS,
+} from './order-helpers/nfsc-reconciliation';
 import { CHAINS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { NamefiEmailLinks } from '../../mail/email-links';
@@ -66,6 +74,29 @@ export async function updateOrderItemStatusOrThrow({
   }
 
   return updatedOrderItem;
+}
+
+export async function updateOrderNfscItemStatusOrThrow({
+  nfscItemId,
+  status,
+}: {
+  nfscItemId: string;
+  status: OrderStatus;
+}) {
+  const [updatedNfscItem] = await db
+    .update(orderNfscItemsTable)
+    .set({
+      status,
+      ...buildOrderStatusLifecycleTransition(status),
+    })
+    .where(eq(orderNfscItemsTable.id, nfscItemId))
+    .returning();
+
+  if (!updatedNfscItem) {
+    throw new Error(`OrderNfscItem not found with id ${nfscItemId}`);
+  }
+
+  return updatedNfscItem;
 }
 
 export async function updateOrderStatusOrThrow({
@@ -581,6 +612,224 @@ export async function recordOrderMintTransaction({
   );
 }
 
+/**
+ * Record the NFSC mint transaction hash on an `order_nfsc_items` row: both the
+ * dedicated `mint_tx_hash` column and `metadata.mintTransaction`, plus an
+ * aggregate entry on the order's `metadata.mintTransactions` map. Mirrors
+ * `recordOrderMintTransaction` for the NFSC top-up flow.
+ */
+export async function recordNfscMintTransaction({
+  orderId,
+  nfscItemId,
+  txHash,
+}: {
+  orderId: string;
+  nfscItemId: string;
+  txHash: string;
+}) {
+  const recordedAt = new Date().toISOString();
+  const details: OrderMintTransactionMetadata = { txHash, recordedAt };
+
+  await db.transaction(async (tx) => {
+    const [updatedNfscItem] = await tx
+      .update(orderNfscItemsTable)
+      .set({
+        mintTxHash: txHash,
+        metadata: sql`jsonb_set(
+          coalesce(${orderNfscItemsTable.metadata}, '{}'::jsonb),
+          '{mintTransaction}',
+          ${JSON.stringify(details)}::jsonb,
+          true
+        )`,
+      })
+      .where(
+        and(
+          eq(orderNfscItemsTable.id, nfscItemId),
+          eq(orderNfscItemsTable.orderId, orderId),
+        ),
+      )
+      .returning({ id: orderNfscItemsTable.id });
+
+    if (!updatedNfscItem) {
+      throw new Error(
+        `Order NFSC item not found when recording mint metadata (orderId=${orderId}, nfscItemId=${nfscItemId})`,
+      );
+    }
+
+    const mintedEntry = { [nfscItemId]: details };
+
+    const [updatedOrder] = await tx
+      .update(ordersTable)
+      .set({
+        metadata: sql`jsonb_set(
+          coalesce(${ordersTable.metadata}, '{}'::jsonb),
+          '{mintTransactions}',
+          coalesce(${ordersTable.metadata} -> 'mintTransactions', '{}'::jsonb) || ${JSON.stringify(mintedEntry)}::jsonb,
+          true
+        )`,
+      })
+      .where(eq(ordersTable.id, orderId))
+      .returning({ id: ordersTable.id });
+
+    if (!updatedOrder) {
+      throw new Error(
+        `Order not found when recording NFSC mint metadata (orderId=${orderId})`,
+      );
+    }
+  });
+
+  logger.debug(
+    { orderId, nfscItemId, txHash },
+    'Recorded NFSC mint transaction metadata for order %s item %s',
+    orderId,
+    nfscItemId,
+  );
+}
+
+/** Map a chain id to its NFSC payment provider, or null if NFSC is not on that chain. */
+function nfscPaymentProviderForChain(chainId: number): PaymentProvider | null {
+  if (chainId === CHAINS.mainnet.id) return 'NFSC_ETHEREUM';
+  if (chainId === CHAINS.sepolia.id) return 'NFSC_ETHEREUM_SEPOLIA';
+  if (chainId === CHAINS.base.id) return 'NFSC_BASE';
+  return null;
+}
+
+/**
+ * Reconcile a candidate NFSC mint balance anomaly.
+ *
+ * Called by `processNfscOrderItemWorkflow` only when the observed before/after
+ * on-chain balance delta did not match the minted amount. Nets out other
+ * recent NFSC activity on the same wallet+chain — concurrent top-up mints (+),
+ * concurrent NFSC charges/spends (-), and concurrent NFSC refunds (+) — within
+ * a time window anchored to this item's processing start. If the discrepancy
+ * is fully explained the outcome is `JUSTIFIED_ANOMALY`; otherwise
+ * `UNJUSTIFIED_ANOMALY` and the caller raises a critical alert.
+ *
+ * All deltas/sums are in NFSC token units. Payment/refund amounts are USD
+ * cents and converted at the fixed 1 USD = 1 NFSC rate (`/ 100`). The result
+ * is stamped onto the item's `metadata.reconciliation` for auditability.
+ */
+export async function reconcileNfscMint(input: {
+  orderId: string;
+  nfscItemId: string;
+  chainId: number;
+  recipientWalletAddress: string;
+  /** NFSC units this mint was expected to add. */
+  expectedDelta: number;
+  /** NFSC units actually observed (balanceAfter - balanceBefore). */
+  actualDelta: number;
+  balanceBefore: number;
+  balanceAfter: number;
+}): Promise<NfscMintReconciliation> {
+  const checkedAt = new Date().toISOString();
+
+  const thisItem = await db.query.orderNfscItemsTable.findFirst({
+    where: eq(orderNfscItemsTable.id, input.nfscItemId),
+    columns: { startedAt: true, createdAt: true },
+  });
+  const windowStart = new Date(
+    (thisItem?.startedAt ?? thisItem?.createdAt ?? new Date()).getTime() -
+      NFSC_RECONCILIATION_WINDOW_SLACK_MS,
+  );
+  const windowEnd = new Date();
+
+  // (+) other NFSC top-up mints crediting the same wallet+chain in the window.
+  const concurrentMints = await db
+    .select({
+      id: orderNfscItemsTable.id,
+      nfscAmount: orderNfscItemsTable.nfscAmount,
+    })
+    .from(orderNfscItemsTable)
+    .where(
+      and(
+        eq(
+          orderNfscItemsTable.recipientWalletAddress,
+          input.recipientWalletAddress,
+        ),
+        eq(orderNfscItemsTable.chainId, input.chainId),
+        ne(orderNfscItemsTable.id, input.nfscItemId),
+        isNotNull(orderNfscItemsTable.mintTxHash),
+        gte(orderNfscItemsTable.startedAt, windowStart),
+        lte(orderNfscItemsTable.startedAt, windowEnd),
+      ),
+    );
+
+  // (-) concurrent NFSC charges/spends from the same wallet+chain in the window.
+  // The NFSC payment provider already encodes the chain.
+  const nfscProvider = nfscPaymentProviderForChain(input.chainId);
+  const concurrentCharges = nfscProvider
+    ? await db
+        .select({
+          id: paymentsTable.id,
+          amountInUSDCents: paymentsTable.amountInUSDCents,
+        })
+        .from(paymentsTable)
+        .where(
+          and(
+            eq(paymentsTable.paymentProvider, nfscProvider),
+            eq(paymentsTable.status, paymentStatusSchema.enum.SUCCEEDED),
+            sql`${paymentsTable.nfscPaymentDetails}->>'walletAddress' = ${input.recipientWalletAddress}`,
+            gte(paymentsTable.updatedAt, windowStart),
+            lte(paymentsTable.updatedAt, windowEnd),
+          ),
+        )
+    : [];
+
+  // (+) concurrent NFSC refunds crediting the same wallet+chain in the window.
+  const concurrentRefunds = await db
+    .select({
+      id: refundsTable.id,
+      amountInUSDCents: refundsTable.amountInUSDCents,
+    })
+    .from(refundsTable)
+    .where(
+      and(
+        eq(refundsTable.walletAddress, input.recipientWalletAddress),
+        eq(refundsTable.chainId, input.chainId),
+        eq(refundsTable.status, refundStatusSchema.enum.SUCCEEDED),
+        gte(refundsTable.updatedAt, windowStart),
+        lte(refundsTable.updatedAt, windowEnd),
+      ),
+    );
+
+  const reconciliation = deriveNfscMintReconciliation({
+    expectedDelta: input.expectedDelta,
+    actualDelta: input.actualDelta,
+    balanceBefore: input.balanceBefore,
+    balanceAfter: input.balanceAfter,
+    concurrentMints,
+    concurrentCharges,
+    concurrentRefunds,
+    windowStart: windowStart.toISOString(),
+    checkedAt,
+  });
+
+  await db
+    .update(orderNfscItemsTable)
+    .set({
+      metadata: sql`jsonb_set(
+        coalesce(${orderNfscItemsTable.metadata}, '{}'::jsonb),
+        '{reconciliation}',
+        ${JSON.stringify(reconciliation)}::jsonb,
+        true
+      )`,
+    })
+    .where(eq(orderNfscItemsTable.id, input.nfscItemId));
+
+  logger.debug(
+    {
+      ...reconciliation,
+      orderId: input.orderId,
+      nfscItemId: input.nfscItemId,
+    },
+    'NFSC mint reconciliation for item %s: %s',
+    input.nfscItemId,
+    reconciliation.outcome,
+  );
+
+  return reconciliation;
+}
+
 export async function setOrderItemRequiredAction({
   orderItemId,
   orderId,
@@ -692,6 +941,7 @@ export async function convertRequiredActionToFailureReason({
 export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
   updateOrderItemStatusOrThrow: typeof updateOrderItemStatusOrThrow;
+  updateOrderNfscItemStatusOrThrow: typeof updateOrderNfscItemStatusOrThrow;
   updateOrderStatusOrThrow: typeof updateOrderStatusOrThrow;
   logGaEventOrderProcessingStarted: typeof logGaEventOrderProcessingStarted;
   logGaEventOrderItemsProcessingStarted: typeof logGaEventOrderItemsProcessingStarted;
@@ -706,6 +956,8 @@ export type OrderActivities = {
   logGaEventOrderFinishedEmailOpened: typeof logGaEventOrderFinishedEmailOpened;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
+  recordNfscMintTransaction: typeof recordNfscMintTransaction;
+  reconcileNfscMint: typeof reconcileNfscMint;
   setOrderItemRequiredAction: typeof setOrderItemRequiredAction;
   convertRequiredActionToFailureReason: typeof convertRequiredActionToFailureReason;
   createFreeAutoRenewOrder: typeof createFreeAutoRenewOrder;

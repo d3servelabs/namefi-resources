@@ -4,6 +4,7 @@ import {
   ordersTable,
   paymentsTable,
   orderItemsTable,
+  orderNfscItemsTable,
   cartItemsTable,
   $withTransaction,
   usersTable,
@@ -16,11 +17,14 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import type {
+  NfscOrderItemForUser,
   OrderWithPayments,
   PaymentMethodDetails,
 } from '@namefi-astra/common/orders-shared-types';
+import type { OrderStatus } from '@namefi-astra/common/shared-schemas';
 import type {
   OrderItemSelect,
+  OrderNfscItemSelect,
   PaymentSelect,
   UserSelect,
 } from '@namefi-astra/common/contract/entity-schemas';
@@ -40,7 +44,11 @@ import Stripe from 'stripe';
 import pMap from 'p-map';
 import z from 'zod';
 import { OrderNotFoundError } from './errors';
-import type { OrderItemInsert, OrderInsert } from '@namefi-astra/db';
+import type {
+  OrderItemInsert,
+  OrderInsert,
+  OrderNfscItemInsert,
+} from '@namefi-astra/db';
 import { defaultKeyv } from '#lib/keyv';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { logger } from '#lib/logger';
@@ -63,6 +71,7 @@ export async function getOrderDetailsOrThrow(
     where: eq(ordersTable.id, orderId),
     with: {
       items: true,
+      nfscItems: true,
       user: true,
       payments: true,
     },
@@ -72,11 +81,12 @@ export async function getOrderDetailsOrThrow(
     throw new OrderNotFoundError({ orderId });
   }
 
-  const { items, user, payments, ...order } = orderWithDetails;
+  const { items, nfscItems, user, payments, ...order } = orderWithDetails;
   return {
     order,
     payments: payments as PaymentSelect[],
     items: items as OrderItemSelect[],
+    nfscItems: nfscItems as OrderNfscItemSelect[],
     user: user as UserSelect,
   };
 }
@@ -164,9 +174,11 @@ export const orderService = {
   getOrderDetailsOrThrow,
   createOrderWithExistingMultiplePayments,
   createOrderWithExistingSinglePayment,
+  createNfscOrderWithExistingPayments,
   shouldTrackOrderCheckoutFlowForUser,
   ensureOrderOwnership,
   getOrderItemsForUser,
+  getNfscOrderItemsForUser,
   buildPaymentMethodDetails,
   buildOrderPaymentMethodsDetails,
   validateNfscWalletAddresses,
@@ -294,6 +306,130 @@ export async function createOrderWithExistingSinglePayment(
   );
 }
 
+export type CreateOrderNfscItemInput = Omit<
+  OrderNfscItemInsert,
+  'orderId' | 'id' | 'createdAt' | 'updatedAt'
+>;
+
+export type CreateNfscOrderWithExistingPaymentsInput = Omit<
+  OrderInsert,
+  'id' | 'createdAt' | 'updatedAt'
+> & {
+  paymentIds: string[];
+  nfscItems: CreateOrderNfscItemInput[];
+};
+
+/**
+ * Create an NFSC top-up order from already-created payments.
+ *
+ * Sibling of `createOrderWithExistingMultiplePayments`, but writes into
+ * `order_nfsc_items` (not `order_items`) so the domain-shaped table is left
+ * untouched. Same serializable/deferrable transaction and payment-linking
+ * guards. Additionally rejects any `NFSC_*` payment provider — an NFSC
+ * top-up cannot be paid for with NFSC (the tRPC contract enforces this too;
+ * this is defense in depth).
+ */
+export async function createNfscOrderWithExistingPayments(
+  {
+    paymentIds,
+    nfscItems,
+    ...orderInsert
+  }: CreateNfscOrderWithExistingPaymentsInput,
+  { tx }: { tx?: typeof db } = {},
+): Promise<{
+  id: string;
+  userId: string;
+  amountInUSDCents: number;
+  nftWalletAddress: string | null;
+  nftChainId: number | null;
+  nfscItems: OrderNfscItemSelect[];
+}> {
+  if (!paymentIds.length) {
+    throw new Error('At least one paymentId is required');
+  }
+  if (!nfscItems.length) {
+    throw new Error('At least one NFSC item is required');
+  }
+
+  return $withTransaction(
+    async (tx) => {
+      // Load and validate payments (within tx)
+      const payments = await tx.query.paymentsTable.findMany({
+        where: inArray(paymentsTable.id, paymentIds),
+      });
+
+      if (paymentIds.length !== payments.length) {
+        throw new Error('Some payments not found');
+      }
+      if (payments.some((p) => p.orderId)) {
+        throw new Error('Some payments are already linked to an order');
+      }
+      if (payments.some((p) => p.paymentProvider.startsWith('NFSC_'))) {
+        throw new Error('NFSC top-up orders cannot be paid with NFSC');
+      }
+
+      const totalAmountFromItems = nfscItems.reduce(
+        (acc, it) => acc + (it.amountInUSDCents ?? 0),
+        0,
+      );
+      const paymentsTotal = payments.reduce(
+        (acc, p) => acc + p.amountInUSDCents,
+        0,
+      );
+
+      if (
+        paymentsTotal !== totalAmountFromItems ||
+        orderInsert.amountInUSDCents !== totalAmountFromItems
+      ) {
+        throw new Error(
+          `Payments total (${paymentsTotal}) does not match order total (${totalAmountFromItems})`,
+        );
+      }
+
+      const [order] = await tx
+        .insert(ordersTable)
+        .values({
+          ...orderInsert,
+        })
+        .returning();
+
+      const insertedNfscItems = await tx
+        .insert(orderNfscItemsTable)
+        .values(
+          nfscItems.map((it) => ({
+            ...it,
+            orderId: order.id,
+          })),
+        )
+        .returning();
+
+      // Link provided payments to this order, guarding against reusing a
+      // payment that is already linked elsewhere.
+      const updated = await tx
+        .update(paymentsTable)
+        .set({ orderId: order.id })
+        .where(
+          and(
+            inArray(paymentsTable.id, paymentIds),
+            isNull(paymentsTable.orderId),
+          ),
+        )
+        .returning({ id: paymentsTable.id });
+
+      if (updated.length !== paymentIds.length) {
+        throw new Error('One or more payments are already linked to an order');
+      }
+
+      return {
+        ...order,
+        nfscItems: insertedNfscItems as OrderNfscItemSelect[],
+      };
+    },
+    { deferrable: true, isolationLevel: 'serializable' },
+    tx,
+  );
+}
+
 // -------- Extracted shared functions --------
 
 export async function ensureOrderOwnership(orderId: string, userId: string) {
@@ -349,6 +485,53 @@ export async function getOrderItemsForUser(
     .orderBy(desc(ordersTable.createdAt));
 
   return items;
+}
+
+/**
+ * Return a user's NFSC top-up order items, newest first, with the parent
+ * order's status and createdAt joined in for UI grouping/filtering. All
+ * filters are optional and AND-combined.
+ */
+export async function getNfscOrderItemsForUser(
+  userId: string,
+  filters?: {
+    recipientWalletAddress?: string;
+    chainId?: number;
+    statuses?: OrderStatus[];
+    limit?: number;
+  },
+): Promise<NfscOrderItemForUser[]> {
+  const limit = Math.min(Math.max(filters?.limit ?? 20, 1), 100);
+
+  const rows = await db
+    .select({
+      ...getTableColumns(orderNfscItemsTable),
+      orderStatus: ordersTable.status,
+      orderCreatedAt: ordersTable.createdAt,
+    })
+    .from(orderNfscItemsTable)
+    .innerJoin(ordersTable, eq(orderNfscItemsTable.orderId, ordersTable.id))
+    .where(
+      and(
+        eq(ordersTable.userId, userId),
+        filters?.recipientWalletAddress
+          ? eq(
+              orderNfscItemsTable.recipientWalletAddress,
+              filters.recipientWalletAddress,
+            )
+          : undefined,
+        filters?.chainId !== undefined
+          ? eq(orderNfscItemsTable.chainId, filters.chainId)
+          : undefined,
+        filters?.statuses && filters.statuses.length > 0
+          ? inArray(ordersTable.status, filters.statuses)
+          : undefined,
+      ),
+    )
+    .orderBy(desc(ordersTable.createdAt))
+    .limit(limit);
+
+  return rows as NfscOrderItemForUser[];
 }
 
 export async function buildPaymentMethodDetails(

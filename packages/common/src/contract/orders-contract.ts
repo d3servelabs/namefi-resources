@@ -6,7 +6,9 @@ import {
 } from '../order-input';
 import { paymentProviderDetailsSchema } from '../payment-provider';
 import type {
+  CreatedNfscOrder,
   CreatedOrder,
+  NfscOrderItemForUser,
   OrderItemsForUser,
   OrderProgressPayload,
   OrderWithPayments,
@@ -14,6 +16,7 @@ import type {
   PaymentRefundEntry,
   ReflectCartChangesSummary,
 } from '../orders-shared-types';
+import { orderStatusSchema } from '../shared-schemas';
 import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 
@@ -156,6 +159,33 @@ export const instantBuyInputSchema = z.object({
 
 export type InstantBuyInput = z.infer<typeof instantBuyInputSchema>;
 
+/**
+ * Input for `buyNfsc` — an immediate, single-item NFSC top-up order paid with
+ * a non-NFSC method. Rate is fixed at 1 USD = 1 NFSC, so `amountInUsdCents`
+ * is both the amount charged and (÷100) the NFSC amount credited.
+ */
+export const buyNfscInputSchema = z.object({
+  amountInUsdCents: z.number().int().positive(),
+  payments: paymentsArraySchema,
+  recipient: z.object({
+    recipientWalletAddress: checksumWalletAddressSchema,
+    nfscChainId: z.number().refine(
+      (chainId) => {
+        // Runtime allow-list is enforced server-side; this static fallback
+        // catches obviously-invalid values at parse time.
+        const allowedChains = [1, 11155111, 8453];
+        return allowedChains.includes(chainId);
+      },
+      {
+        message: 'Chain ID provided is not allowed for NFSC top-up',
+        path: ['nfscChainId'],
+      },
+    ),
+  }),
+});
+
+export type BuyNfscInput = z.infer<typeof buyNfscInputSchema>;
+
 // ---------------------------------------------------------------------------
 // Per-procedure input schemas
 // ---------------------------------------------------------------------------
@@ -173,6 +203,17 @@ const updateImportAuthCodeInputSchema = orderItemActionInputSchema.extend({
 
 const orderProgressInputSchema = z.object({
   orderId: z.string().min(1),
+});
+
+/**
+ * Input for `getMyNfscOrders` — all filters are optional and AND-combined.
+ * The result is always scoped to `ctx.user.id` server-side.
+ */
+const getMyNfscOrdersInputSchema = z.object({
+  recipientWalletAddress: z.string().optional(),
+  chainId: z.number().int().optional(),
+  statuses: z.array(orderStatusSchema).optional(),
+  limit: z.number().int().min(1).max(100).optional(),
 });
 
 const paymentIdInputSchema = z.object({ paymentId: z.string() });
@@ -204,6 +245,25 @@ const instantBuyContractInputSchema = instantBuyInputSchema.superRefine(
   },
 );
 
+// `buyNfsc` additionally rejects NFSC payment providers — an NFSC top-up
+// cannot be paid for with NFSC. The service layer re-checks this.
+const buyNfscContractInputSchema = buyNfscInputSchema.superRefine(
+  (input, ctx) => {
+    for (const [idx, p] of input.payments.entries()) {
+      const provider = (
+        p.paymentProviderDetails as { paymentProvider?: string }
+      )?.paymentProvider;
+      if (typeof provider === 'string' && provider.startsWith('NFSC_')) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['payments', idx, 'paymentProviderDetails', 'paymentProvider'],
+          message: 'NFSC top-up cannot be paid with NFSC',
+        });
+      }
+    }
+  },
+);
+
 // `getOrderItems` is the only procedure that takes no input — model that as
 // `z.void()` so the contract type stays uniform and the wire shape stays
 // `undefined`.
@@ -218,11 +278,19 @@ const successAckSchema = z.object({ success: z.literal(true) });
 // TODO(contract): replace with structural schema derived from drizzle-zod
 const createdOrderSchema = z.custom<CreatedOrder>(() => true);
 
+// TODO(contract): replace with structural schema derived from drizzle-zod
+const createdNfscOrderSchema = z.custom<CreatedNfscOrder>(() => true);
+
 // TODO(contract): replace with structural schema for OrderWithPayments
 const orderDetailsSchema = z.custom<OrderWithPayments>(() => true);
 
 // TODO(contract): replace with structural schema for getOrderItemsForUser rows
 const orderItemsForUserSchema = z.custom<OrderItemsForUser>(() => true);
+
+// TODO(contract): replace with structural schema for getNfscOrderItemsForUser rows
+const nfscOrderItemsForUserSchema = z.custom<NfscOrderItemForUser[]>(
+  () => true,
+);
 
 // TODO(contract): replace with structural schema for OrderProgressPayload
 const orderProgressPayloadSchema = z.custom<OrderProgressPayload>(() => true);
@@ -301,6 +369,18 @@ export const ordersContract = createContract(
       type: 'mutation',
       input: instantBuyContractInputSchema,
       output: createdOrderSchema,
+    },
+
+    buyNfsc: {
+      type: 'mutation',
+      input: buyNfscContractInputSchema,
+      output: createdNfscOrderSchema,
+    },
+
+    getMyNfscOrders: {
+      type: 'query',
+      input: getMyNfscOrdersInputSchema,
+      output: nfscOrderItemsForUserSchema,
     },
 
     getOrderPaymentMethodsDetails: {
