@@ -4,6 +4,7 @@ import { config } from '@/lib/env';
 import type { AdminSection } from '@/components/admin/admin-tile-card';
 import { AdminTileCard } from '@/components/admin/admin-tile-card';
 import {
+  Bell,
   Mail,
   Settings,
   Users,
@@ -269,6 +270,17 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-sky-100',
         iconTextColor: 'text-sky-600',
         permissions: [Permission.READ_USERS],
+      },
+      {
+        title: 'Send Notification',
+        description:
+          'Compose and send an in-app notification to specific users or to everyone.',
+        href: '/admin/notifications',
+        icon: Bell,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.WRITE_NOTIFICATIONS],
+        permissionsMode: 'some',
       },
       {
         title: 'Email Templates',

@@ -198,7 +198,7 @@ export function NotificationItem({
 // don't reach for `react-markdown` because the modal lives in the app shell
 // and the dep is too heavy for the value (notification bodies are short).
 
-function NotificationBody({
+export function NotificationBody({
   body,
   bodyType,
 }: {

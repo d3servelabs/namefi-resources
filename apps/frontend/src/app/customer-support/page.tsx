@@ -17,6 +17,7 @@ import {
   History,
   ShieldCheck,
   BarChart3,
+  Bell,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -89,6 +90,17 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-sky-100',
         iconTextColor: 'text-sky-600',
         permissions: [Permission.READ_USERS],
+      },
+      {
+        title: 'Send Notification',
+        description:
+          'Compose and send an in-app notification to specific users or to everyone.',
+        href: '/admin/notifications',
+        icon: Bell,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.WRITE_NOTIFICATIONS],
+        permissionsMode: 'some',
       },
       {
         title: 'Free Claims',
