@@ -119,7 +119,7 @@ const productionConfig: ConfigInput = {
   ALLOW_LIVE_REGISTRARS: true,
   CENTRALNIC_BALANCE_ENDPOINT:
     'https://registrar-console.centralnic.com/json/balance',
-  CENTRALNIC_KEY: Registrars.CentralNic,
+  // CENTRALNIC_KEY: Registrars.CentralNic,
   EMAIL_ANALYTICS_URL: 'https://api.namefi.io/v1/email/analytics/open',
   EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: 500,
   MPP_ENABLED: 'true',
