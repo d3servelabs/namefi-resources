@@ -19,6 +19,18 @@ const searchUsersInputSchema = z.object({
 });
 
 /**
+ * Powers the `UserSelectComboBox` picker — a focused search returning
+ * distinct user rows that match the term against id / privyUserId / Privy
+ * email / Privy displayName (full-name) / wallets / owned-domain-name.
+ * `excludeUserIds` lets the frontend hide already-selected rows.
+ */
+const searchUsersForPickerInputSchema = z.object({
+  searchTerm: z.string().min(1).max(100),
+  limit: z.number().int().min(1).max(50).default(20),
+  excludeUserIds: z.array(z.string().uuid()).max(500).optional(),
+});
+
+/**
  * Mirror of `adminUserReferenceInput` from the router's user-details helper.
  * Exactly one of userId / privyUserId / walletAddress must be provided.
  */
@@ -269,6 +281,11 @@ export const adminUsersContract = createContract(
     searchUsers: {
       type: 'query',
       input: searchUsersInputSchema,
+      output: adminUserRowsSchema,
+    },
+    searchUsersForPicker: {
+      type: 'query',
+      input: searchUsersForPickerInputSchema,
       output: adminUserRowsSchema,
     },
     resolveUserReference: {

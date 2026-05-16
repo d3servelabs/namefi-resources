@@ -1,7 +1,7 @@
 import { db, usersTable, namefiNftCte, namefiNftView } from '@namefi-astra/db';
 import { checksumWalletAddressSchema, Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, asc, desc, eq, or, type SQL, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, notInArray, or, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { adminProcedureWithPermissions } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
@@ -208,6 +208,161 @@ export const adminUsersRouter = createContractTRPCRouter<
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to search users',
+        });
+      }
+    }),
+
+  /**
+   * Server-side search backing the admin `UserSelectComboBox` picker.
+   *
+   * Differences vs. `searchUsers`:
+   *  - No exact-match short-circuit (UUID/wallet/ENS) — the picker is a
+   *    free-form autocomplete, so we run a single OR-WHERE over all
+   *    searchable fields and let SQL rank by an alphabetical fallback.
+   *  - Domain matches go through a *separate* query against
+   *    `namefiNftView` (collects owner wallets, then folds them back into
+   *    the wallet-array filter) instead of an inline EXISTS subquery,
+   *    so the planner doesn't re-run the view per row.
+   *  - Honors `excludeUserIds` so already-selected chips disappear from
+   *    the dropdown.
+   *  - Returns DISTINCT rows.
+   */
+  searchUsersForPicker: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(adminUsersContract.searchUsersForPicker.input)
+    .output(adminUsersContract.searchUsersForPicker.output)
+    .query(async ({ input }) => {
+      const { searchTerm, limit, excludeUserIds } = input;
+
+      try {
+        const trimmedSearchTerm = searchTerm.trim();
+        if (trimmedSearchTerm.length === 0) {
+          return [];
+        }
+        const lowerSearchTerm = trimmedSearchTerm.toLowerCase();
+        const lowerLikeTerm = `%${lowerSearchTerm}%`;
+
+        await ensurePrivyTableFresh();
+
+        // Step 1 — separate query: find owner wallet addresses for any
+        // domain whose name ILIKE-matches the term. Skipped for short
+        // terms and obvious wallet-looking inputs to avoid wasting a
+        // full-name view scan on every keystroke.
+        //
+        // `namefiNftView` is a `pgView` aliased to the CTE name
+        // `namefi_nft_cte`; it is only usable when the query also
+        // declares the CTE via `.with(namefiNftCte)` (same pattern as
+        // the existing `searchUsers` procedure).
+        const looksLikeWallet = /^0x[a-f0-9]+$/.test(lowerSearchTerm);
+        let ownerAddresses: string[] = [];
+        if (lowerSearchTerm.length >= 3 && !looksLikeWallet) {
+          const domainOwnerRows = await db
+            .with(namefiNftCte)
+            .selectDistinct({
+              ownerAddress:
+                sql<string>`LOWER(${namefiNftView.ownerAddress})`.as(
+                  'owner_address',
+                ),
+            })
+            .from(namefiNftView)
+            .where(
+              sql`LOWER(${namefiNftView.normalizedDomainName}) ILIKE ${lowerLikeTerm}`,
+            )
+            .limit(200);
+          ownerAddresses = domainOwnerRows
+            .map((row) => row.ownerAddress)
+            .filter((addr): addr is string => Boolean(addr));
+        }
+
+        const orClauses: SQL[] = [
+          sql`LOWER(${usersTable.id}::text) LIKE ${lowerLikeTerm}`,
+          sql`LOWER(${usersTable.privyUserId}) LIKE ${lowerLikeTerm}`,
+          sql`LOWER(COALESCE(${privyUsersTableSchema.email}, '')) LIKE ${lowerLikeTerm}`,
+          sql`LOWER(COALESCE(${privyUsersTableSchema.displayName}, '')) LIKE ${lowerLikeTerm}`,
+          sql`EXISTS (
+            SELECT 1
+            FROM unnest(COALESCE(array_lowercase(${privyUsersTableSchema.wallets}), ARRAY[]::text[])) AS wallet
+            WHERE wallet LIKE ${lowerLikeTerm}
+          )`,
+        ];
+        if (ownerAddresses.length > 0) {
+          // Build `ARRAY[$1, $2, …]::text[]` explicitly via `sql.join` so
+          // each address is a bound parameter — directly casting a JS
+          // array parameter to `text[]` is brittle across pg drivers.
+          const ownerArraySql = sql`ARRAY[${sql.join(
+            ownerAddresses.map((addr) => sql`${addr}`),
+            sql`, `,
+          )}]::text[]`;
+          orClauses.push(
+            sql`array_lowercase(${privyUsersTableSchema.wallets}) && ${ownerArraySql}`,
+          );
+        }
+
+        const orClause = or(...orClauses);
+        if (!orClause) {
+          return [];
+        }
+        const hasExclusions =
+          Array.isArray(excludeUserIds) && excludeUserIds.length > 0;
+        const whereClause = hasExclusions
+          ? and(orClause, notInArray(usersTable.id, excludeUserIds))
+          : orClause;
+
+        // The `users LEFT JOIN privy_users` shape is 1:1 (privy_users PK
+        // is privyUserId), so each users row appears at most once — no
+        // DISTINCT is needed, and dropping it sidesteps the SELECT
+        // DISTINCT / ORDER BY interaction.
+        const rows = await db
+          .select({
+            id: usersTable.id,
+            privyUserId: usersTable.privyUserId,
+            primaryEmail: sql<
+              string | null
+            >`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email})`.as(
+              'primary_email',
+            ),
+            walletAddresses: sql<
+              string[]
+            >`COALESCE(${privyUsersTableSchema.wallets}, ARRAY[]::text[])`.as(
+              'wallet_addresses',
+            ),
+            displayName: privyUsersTableSchema.displayName,
+            twitterUsername: privyUsersTableSchema.twitterUsername,
+          })
+          .from(usersTable)
+          .leftJoin(
+            privyUsersTableSchema,
+            eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+          )
+          .where(whereClause)
+          .orderBy(
+            asc(
+              sql`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email}, ${privyUsersTableSchema.displayName}, ${usersTable.id}::text)`,
+            ),
+          )
+          .limit(limit);
+
+        return rows.map((row) => ({
+          id: row.id,
+          privyUserId: row.privyUserId,
+          primaryEmail: row.primaryEmail ?? null,
+          walletAddresses: row.walletAddresses ?? [],
+          displayName: row.displayName ?? null,
+          twitterUsername: row.twitterUsername ?? null,
+        }));
+      } catch (error) {
+        // Admin-only procedure — surface the raw Postgres / Drizzle
+        // message unconditionally so SQL bugs in this still-young
+        // procedure aren't masked by a generic 500.
+        const rawMessage =
+          error instanceof Error ? error.message : String(error);
+        logger.error(
+          { error, searchTerm },
+          'Failed to search users for picker',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `searchUsersForPicker failed: ${rawMessage}`,
+          cause: error instanceof Error ? error : undefined,
         });
       }
     }),

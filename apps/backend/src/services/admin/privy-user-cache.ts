@@ -4,6 +4,7 @@ import { sql, eq, or, type SQL } from 'drizzle-orm';
 import { privyClient } from '../../trpc/utils';
 import { logger } from '#lib/logger';
 import { assoc, map } from 'ramda';
+import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 
 /**
  * Cache TTL is 5 minutes to balance freshness with API call reduction
@@ -122,8 +123,21 @@ async function buildSimplifiedPrivyUsers(): Promise<SimplifiedPrivyUser[]> {
       .filter(Boolean);
 
     const email = String(p.email?.address || '').toLowerCase();
-    // Use email prefix as display name (e.g., "john" from "john@example.com")
-    const displayName = email ? email.split('@')[0] : '';
+    // Prefer the user's self-declared full name from Privy customMetadata
+    // (parsed via privyStorageToPrivyCustomMetadata — Privy stores it as
+    // `{ data: <json-string> }`). Fall back to the email prefix so legacy
+    // accounts without a fullName still get a non-empty searchable label.
+    const customMetadataParse = privyStorageToPrivyCustomMetadata.safeParse(
+      p.customMetadata,
+    );
+    const fullNameFromMetadata = customMetadataParse.success
+      ? customMetadataParse.data.fullName?.trim()
+      : undefined;
+    const emailPrefix = email ? email.split('@')[0] : '';
+    const displayName =
+      fullNameFromMetadata && fullNameFromMetadata.length > 0
+        ? fullNameFromMetadata
+        : emailPrefix;
 
     // Include main wallet if not already in wallets array
     const mainWallet = String(p.wallet?.address || '').toLowerCase();
