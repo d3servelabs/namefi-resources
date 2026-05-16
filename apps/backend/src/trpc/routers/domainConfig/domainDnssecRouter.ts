@@ -130,6 +130,7 @@ export const domainDnssecRouter = createContractTRPCRouter<
           title: 'Custom DS association failed',
           subject: `Couldn't add your DS record for ${input.domainName}`,
           messageMarkdown: `We couldn't add your custom DS record for **${input.domainName}**.`,
+          priority: 'high',
           relatedResources: [{ type: 'domain', identifier: input.domainName }],
           source: 'mutation:associateDelegationSigner',
         });
@@ -178,6 +179,7 @@ export const domainDnssecRouter = createContractTRPCRouter<
           messageMarkdown: `We couldn't remove the custom DS record from **${input.domainName}**.${
             error instanceof Error ? `\n\nReason: ${error.message}` : ''
           }`,
+          priority: 'high',
           relatedResources: [{ type: 'domain', identifier: input.domainName }],
           source: 'mutation:disassociateDelegationSigner',
         });
@@ -459,6 +461,7 @@ export const domainDnssecRouter = createContractTRPCRouter<
           messageMarkdown: `We couldn't enable custom DNSSEC for **${input.domainName}**.${
             error instanceof Error ? `\n\nReason: ${error.message}` : ''
           }`,
+          priority: 'high',
           relatedResources: [{ type: 'domain', identifier: input.domainName }],
           source: 'mutation:enableCustomDnssec',
         });

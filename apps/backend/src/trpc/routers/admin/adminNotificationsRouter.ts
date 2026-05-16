@@ -61,6 +61,7 @@ export const adminNotificationsRouter = createContractTRPCRouter<
         subtitle: input.subtitle,
         body: input.body,
         bodyType: input.bodyType,
+        priority: input.priority,
         relatedResources: input.relatedResources,
         metadata: {
           ...(input.metadata ?? {}),
@@ -113,6 +114,7 @@ export const adminNotificationsRouter = createContractTRPCRouter<
               subtitle: input.subtitle,
               body: input.body,
               bodyType: input.bodyType,
+              priority: input.priority,
               metadata: { source },
             });
             return { userId, status: 'created' as const, error: null };
@@ -172,6 +174,7 @@ export const adminNotificationsRouter = createContractTRPCRouter<
             subtitle: input.subtitle,
             body: input.body,
             bodyType: input.bodyType,
+            priority: input.priority,
             source: `admin:broadcast:${ctx.user.id}`,
           },
         ],

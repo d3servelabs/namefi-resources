@@ -3,28 +3,30 @@
 import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useDebounceValue } from 'usehooks-ts';
-import { Info, Loader2, Send, Trash2, X } from 'lucide-react';
+import { Loader2, Send } from 'lucide-react';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@namefi-astra/ui/components/shadcn/select';
+import {
   Tabs,
   TabsList,
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
-import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { NotificationBody } from '@/components/notifications/notification-item';
+import {
+  UserSelectComboBox,
+  type UserOption,
+} from '@/components/admin/user-select-combobox';
 
 const MarkdownEditor = dynamic(
   () => import('@/components/admin/markdown-editor'),
@@ -36,21 +38,36 @@ const MarkdownEditor = dynamic(
   },
 );
 
-const RECIPIENT_LOOKUP_DEBOUNCE_MS = 200;
 /** Matches the contract cap on `adminCreateBulk.userIds`. */
 const MAX_SPECIFIC_RECIPIENTS = 500;
 
 type SendMode = 'specific' | 'everyone';
 type NotificationBodyType = 'plain' | 'markdown';
+type NotificationPriority = 'silent' | 'low' | 'normal' | 'high' | 'critical';
 
-type RecipientResolutionMap = Record<
-  string,
+/**
+ * Priority labels surfaced in the dropdown. Order mirrors the audibility
+ * threshold — anything `normal` or above plays the bell sound on rise.
+ */
+const PRIORITY_OPTIONS: Array<{
+  value: NotificationPriority;
+  label: string;
+  hint: string;
+}> = [
+  { value: 'silent', label: 'Silent', hint: 'No sound, no banner emphasis.' },
+  { value: 'low', label: 'Low', hint: 'No sound. Informational.' },
+  { value: 'normal', label: 'Normal', hint: 'Plays the bell sound. Default.' },
   {
-    userId: string | null;
-    privyUserId: string | null;
-    displayName: string | null;
-  } | null
-> | null;
+    value: 'high',
+    label: 'High',
+    hint: 'Plays the bell sound. Use for action-required.',
+  },
+  {
+    value: 'critical',
+    label: 'Critical',
+    hint: 'Plays the bell sound. Reserve for emergencies.',
+  },
+];
 
 type BulkResult = {
   userId: string;
@@ -62,35 +79,26 @@ export function NotificationComposer() {
   const trpc = useTRPC();
 
   const [mode, setMode] = useState<SendMode>('specific');
-  const [recipients, setRecipients] = useState<string[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<UserOption[]>([]);
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [body, setBody] = useState('');
   const [bodyType, setBodyType] = useState<NotificationBodyType>('markdown');
+  const [priority, setPriority] = useState<NotificationPriority>('normal');
   const [confirmingSend, setConfirmingSend] = useState(false);
   const [bulkResults, setBulkResults] = useState<BulkResult[] | null>(null);
+  // Frozen `userIdToLabel` for the in-flight / just-completed send. The
+  // live `userIdToLabel` tracks the combobox's current selection, but the
+  // results panel must render labels for the *sent* set — otherwise an
+  // admin who deselects a user mid-flight would see that user's failed
+  // row fall back to a raw UUID. Set in `handleSend`, read in `SendPanel`.
+  const [sentLabelSnapshot, setSentLabelSnapshot] = useState<
+    Map<string, string>
+  >(() => new Map());
 
   const trimmedTitle = title.trim();
   const trimmedSubtitle = subtitle.trim();
   const trimmedBody = body.trim();
-
-  // Resolve recipient emails to user ids — only resolved users can be
-  // notified, and unresolved emails get an amber `<Info/>` indicator.
-  const [debouncedRecipients] = useDebounceValue(
-    recipients,
-    RECIPIENT_LOOKUP_DEBOUNCE_MS,
-  );
-  const recipientLookupQuery = useQuery({
-    ...trpc.admin.notifications.lookupUsersByEmail.queryOptions(
-      { emails: debouncedRecipients },
-      { trpc: { context: { skipBatch: true } } },
-    ),
-    enabled: mode === 'specific' && debouncedRecipients.length > 0,
-    refetchOnWindowFocus: false,
-    staleTime: 60_000,
-  });
-  const resolutions: RecipientResolutionMap =
-    recipientLookupQuery.data?.results ?? null;
 
   const audienceQuery = useQuery({
     ...trpc.admin.notifications.getBroadcastAudienceSize.queryOptions(
@@ -102,22 +110,18 @@ export function NotificationComposer() {
     staleTime: 30_000,
   });
 
-  // Emails the lookup resolved to a real user id — the only ones we can
-  // actually deliver to. `userIdToEmail` lets us label the failed-result
-  // rows by the email the admin typed.
-  const { resolvedUserIds, userIdToEmail } = useMemo(() => {
+  // Each chip in the combobox is already a resolved user — no email
+  // round-trip needed. `userIdToLabel` is used to label per-row failures
+  // in the send results panel with the same string the admin saw selected.
+  const { resolvedUserIds, userIdToLabel } = useMemo(() => {
     const ids: string[] = [];
-    const idToEmail = new Map<string, string>();
-    if (!resolutions) return { resolvedUserIds: ids, userIdToEmail: idToEmail };
-    for (const email of recipients) {
-      const userId = resolutions[email]?.userId ?? null;
-      if (userId && !idToEmail.has(userId)) {
-        ids.push(userId);
-        idToEmail.set(userId, email);
-      }
+    const idToLabel = new Map<string, string>();
+    for (const user of selectedUsers) {
+      ids.push(user.id);
+      idToLabel.set(user.id, user.primaryEmail ?? user.displayName ?? user.id);
     }
-    return { resolvedUserIds: ids, userIdToEmail: idToEmail };
-  }, [recipients, resolutions]);
+    return { resolvedUserIds: ids, userIdToLabel: idToLabel };
+  }, [selectedUsers]);
 
   const createBulkMutation = useMutation(
     trpc.admin.notifications.adminCreateBulk.mutationOptions({
@@ -165,47 +169,11 @@ export function NotificationComposer() {
   const isPending = createBulkMutation.isPending || broadcastMutation.isPending;
   const composeIncomplete = !trimmedTitle || !trimmedBody;
   const tooManyRecipients = resolvedUserIds.length > MAX_SPECIFIC_RECIPIENTS;
-  // Block send while the email→userId lookup is still in flight in
-  // specific mode. Without this guard, an admin who clicks send within
-  // the 200ms debounce window after adding a new recipient would silently
-  // ship a `userIds` array that omits the just-typed addresses.
-  const isResolvingRecipients =
-    mode === 'specific' && recipientLookupQuery.isFetching;
   const sendDisabled =
     isPending ||
-    isResolvingRecipients ||
     composeIncomplete ||
     (mode === 'specific' &&
       (resolvedUserIds.length === 0 || tooManyRecipients));
-
-  const handleAddRecipients = (raw: string) => {
-    const candidates = raw
-      .split(/[,;\s]+/)
-      .map((token) => token.trim())
-      .filter(Boolean);
-    let added = 0;
-    let skipped = 0;
-    const next = new Set(recipients);
-    for (const candidate of candidates) {
-      const parsed = z.string().email().safeParse(candidate);
-      if (parsed.success && !next.has(parsed.data)) {
-        next.add(parsed.data);
-        added += 1;
-      } else if (!parsed.success) {
-        skipped += 1;
-      }
-    }
-    if (added > 0) setRecipients(Array.from(next));
-    if (skipped > 0) {
-      toast.error(
-        `Skipped ${skipped} invalid email${skipped === 1 ? '' : 's'}`,
-      );
-    }
-  };
-
-  const handleRemoveRecipient = (email: string) => {
-    setRecipients((prev) => prev.filter((value) => value !== email));
-  };
 
   const handleSend = () => {
     if (sendDisabled) return;
@@ -215,8 +183,13 @@ export function NotificationComposer() {
       subtitle: trimmedSubtitle || undefined,
       body: trimmedBody,
       bodyType,
+      priority,
     };
     if (mode === 'specific') {
+      // Snapshot labels for the user ids we're sending to — see
+      // `sentLabelSnapshot` declaration. Clone so future selection
+      // edits don't mutate this map.
+      setSentLabelSnapshot(new Map(userIdToLabel));
       createBulkMutation.mutate({
         ...composeFields,
         userIds: resolvedUserIds,
@@ -252,13 +225,8 @@ export function NotificationComposer() {
 
         {mode === 'specific' ? (
           <RecipientsPanel
-            recipients={recipients}
-            resolutions={resolutions}
-            isResolutionLoading={recipientLookupQuery.isFetching}
-            resolvedCount={resolvedUserIds.length}
-            onAdd={handleAddRecipients}
-            onRemove={handleRemoveRecipient}
-            onClearAll={() => setRecipients([])}
+            selectedUsers={selectedUsers}
+            onChange={setSelectedUsers}
           />
         ) : (
           <EveryonePanel
@@ -291,6 +259,37 @@ export function NotificationComposer() {
             onChange={(event) => setSubtitle(event.target.value)}
             placeholder="Supporting context"
           />
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="notification-priority">Priority</Label>
+          <Select
+            value={priority}
+            onValueChange={(value) =>
+              setPriority(value as NotificationPriority)
+            }
+          >
+            <SelectTrigger id="notification-priority" className="w-full">
+              <SelectValue>
+                {(value) =>
+                  PRIORITY_OPTIONS.find((option) => option.value === value)
+                    ?.label ?? 'Normal'
+                }
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {PRIORITY_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  <div className="flex flex-col">
+                    <span>{option.label}</span>
+                    <span className="text-muted-foreground text-xs">
+                      {option.hint}
+                    </span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-1.5">
@@ -328,7 +327,7 @@ export function NotificationComposer() {
           audienceSize={audienceSize}
           tooManyRecipients={tooManyRecipients}
           results={bulkResults}
-          userIdToEmail={userIdToEmail}
+          userIdToLabel={sentLabelSnapshot}
         />
       </div>
 
@@ -348,136 +347,25 @@ export function NotificationComposer() {
 }
 
 function RecipientsPanel({
-  recipients,
-  resolutions,
-  isResolutionLoading,
-  resolvedCount,
-  onAdd,
-  onRemove,
-  onClearAll,
+  selectedUsers,
+  onChange,
 }: {
-  recipients: string[];
-  resolutions: RecipientResolutionMap;
-  isResolutionLoading: boolean;
-  resolvedCount: number;
-  onAdd: (raw: string) => void;
-  onRemove: (email: string) => void;
-  onClearAll: () => void;
+  selectedUsers: UserOption[];
+  onChange: (next: UserOption[]) => void;
 }) {
-  const [entry, setEntry] = useState('');
-
-  const commit = () => {
-    const raw = entry.trim();
-    if (!raw) return;
-    onAdd(raw);
-    setEntry('');
-  };
-
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <Label className="text-xs uppercase tracking-wide text-muted-foreground">
-          Recipients ({recipients.length}
-          {recipients.length > 0 ? `, ${resolvedCount} matched` : ''})
-        </Label>
-        {recipients.length > 0 && (
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={onClearAll}
-            className="h-7 px-2"
-          >
-            <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear all
-          </Button>
-        )}
-      </div>
-
-      {recipients.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 max-h-32 overflow-auto rounded-md border p-2">
-          {recipients.map((email) => {
-            const resolution = resolutions ? resolutions[email] : undefined;
-            // `undefined` = lookup hasn't returned yet. `null` or a row
-            // without a `userId` = no matching user — can't be notified.
-            const isUnresolved =
-              resolution === null ||
-              (resolution !== undefined && !resolution.userId);
-            return (
-              <span
-                key={email}
-                className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs"
-                title={email}
-              >
-                <span className="max-w-[22ch] truncate">{email}</span>
-                {isUnresolved ? (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger
-                        render={(triggerProps) => (
-                          <span
-                            {...triggerProps}
-                            role="img"
-                            aria-label="No matching user record"
-                            className={cn(
-                              'inline-flex items-center',
-                              triggerProps.className,
-                            )}
-                          >
-                            <Info className="h-3 w-3 text-amber-500" />
-                          </span>
-                        )}
-                      />
-                      <TooltipContent>
-                        <p className="max-w-[260px]">
-                          No matching user — this recipient will be skipped.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : null}
-                <button
-                  type="button"
-                  onClick={() => onRemove(email)}
-                  className="text-muted-foreground hover:text-foreground"
-                  aria-label={`Remove ${email}`}
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </span>
-            );
-          })}
-        </div>
-      )}
-
-      <div className="flex items-center gap-2">
-        <Input
-          value={entry}
-          onChange={(event) => setEntry(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              commit();
-            }
-          }}
-          placeholder="Add by email — comma-separated for bulk paste"
-          className="h-8 text-xs"
-          aria-label="Add recipient by email"
-        />
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={commit}
-          disabled={!entry.trim()}
-          className="h-8"
-        >
-          Add
-        </Button>
-        {isResolutionLoading && recipients.length > 0 ? (
-          <Loader2
-            className="h-3 w-3 animate-spin text-muted-foreground"
-            aria-label="Resolving users"
-          />
-        ) : null}
-      </div>
+      <Label className="text-xs uppercase tracking-wide text-muted-foreground">
+        Recipients ({selectedUsers.length} of {MAX_SPECIFIC_RECIPIENTS})
+      </Label>
+      <UserSelectComboBox
+        mode="multiple"
+        value={selectedUsers}
+        onChange={onChange}
+        maxSelected={MAX_SPECIFIC_RECIPIENTS}
+        placeholder="Search by email, name, wallet, or domain…"
+        ariaLabel="Recipients"
+      />
     </div>
   );
 }
@@ -523,7 +411,7 @@ function SendPanel({
   audienceSize,
   tooManyRecipients,
   results,
-  userIdToEmail,
+  userIdToLabel,
 }: {
   mode: SendMode;
   confirming: boolean;
@@ -535,7 +423,7 @@ function SendPanel({
   audienceSize: number;
   tooManyRecipients: boolean;
   results: BulkResult[] | null;
-  userIdToEmail: Map<string, string>;
+  userIdToLabel: Map<string, string>;
 }) {
   const created = results?.filter((r) => r.status === 'created').length ?? 0;
   const failed = results?.filter((r) => r.status === 'failed') ?? [];
@@ -557,7 +445,7 @@ function SendPanel({
             <ul className="text-xs space-y-1 max-h-40 overflow-auto">
               {failed.map((r) => (
                 <li key={r.userId} className="text-destructive">
-                  {userIdToEmail.get(r.userId) ?? r.userId}
+                  {userIdToLabel.get(r.userId) ?? r.userId}
                   {r.error ? ` — ${r.error}` : ''}
                 </li>
               ))}

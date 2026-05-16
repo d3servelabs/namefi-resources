@@ -142,6 +142,7 @@ export async function enableDnssecWorkflow(
                 reason ? `\n\nReason: ${reason}` : ''
               }`,
         inAppNotification: {
+          priority: outcome === 'failure' ? 'high' : 'normal',
           relatedResources: [{ type: 'domain', identifier: input.domainName }],
           source: 'workflow:enable-dnssec',
         },

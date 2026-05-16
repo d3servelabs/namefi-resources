@@ -143,6 +143,7 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
                 reason ? `\n\nReason: ${reason}` : ''
               }`,
         inAppNotification: {
+          priority: outcome === 'failure' ? 'high' : 'normal',
           relatedResources: [{ type: 'domain', identifier: input.domainName }],
           source: 'workflow:disable-dnssec',
         },

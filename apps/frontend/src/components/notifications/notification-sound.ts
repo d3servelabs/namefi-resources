@@ -1,11 +1,13 @@
 'use client';
 
 /**
- * Audio cue for fresh notifications. Played by the watcher hook
- * whenever the unread count rises. Best-effort: browsers block
+ * Audio cue for fresh notifications. Played by the watcher hook on
+ * count rise *only if* the rising set contains a notification at
+ * `'normal'` priority or higher (see
+ * `isAudibleNotificationPriority`). Best-effort: browsers block
  * autoplay until the user has interacted with the page, so the first
- * rise after a hard load may be silent. Subsequent rises play as soon
- * as the user has clicked anywhere (including the bell).
+ * audible rise after a hard load may be silent. Subsequent rises
+ * play as soon as the user has clicked anywhere (including the bell).
  */
 
 const AUDIO_SRC = '/audio/blop-boop.wav';

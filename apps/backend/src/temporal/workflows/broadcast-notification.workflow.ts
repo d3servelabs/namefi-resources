@@ -1,4 +1,7 @@
-import type { NotificationBodyType } from '@namefi-astra/common/shared-schemas';
+import type {
+  NotificationBodyType,
+  NotificationPriority,
+} from '@namefi-astra/common/shared-schemas';
 import * as workflow from '@temporalio/workflow';
 import pMap from 'p-map';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
@@ -9,6 +12,8 @@ export interface BroadcastNotificationWorkflowInput {
   subtitle?: string;
   body: string;
   bodyType?: NotificationBodyType;
+  /** Defaults to `'normal'` if omitted. */
+  priority?: NotificationPriority;
   /** `metadata.source` label written on every row in the broadcast. */
   source: string;
 }
@@ -64,6 +69,7 @@ export async function broadcastNotificationWorkflow(
           subtitle: input.subtitle,
           body: input.body,
           bodyType: input.bodyType,
+          priority: input.priority,
           source: input.source,
         });
         return { created, attempted: batch.length };

@@ -5,6 +5,10 @@ import {
   useQueryClient,
   type QueryClient,
 } from '@tanstack/react-query';
+import {
+  type NotificationPriority,
+  isAudibleNotificationPriority,
+} from '@namefi-astra/common/shared-schemas';
 import { useTRPC } from '@/lib/trpc';
 import { useEffect, useRef } from 'react';
 
@@ -33,6 +37,7 @@ type NotificationListItem = {
   title: string;
   subtitle: string | null;
   body: string;
+  priority: NotificationPriority;
   relatedResources: Array<{ type: string; identifier: string }>;
 };
 
@@ -41,19 +46,34 @@ type NotificationListPage = {
   nextCursor: string | null;
 };
 
-async function surfaceUpToDelta(args: {
+/**
+ * Walks the rising-set of unseen notifications once, performing two
+ * jobs in lockstep:
+ *
+ * 1. Decide whether the bell sound should play — true iff at least one
+ *    item in the rise is `'normal'` priority or higher.
+ * 2. If OS-banner permission is granted, surface up to
+ *    `MAX_BANNERS_PER_RISE` banners.
+ *
+ * Folded into a single pass so we don't fetch the same page twice.
+ * `target` always equals the visit budget (`min(delta, MAX_…)`); banners
+ * are surfaced only when capability allows but we still inspect every
+ * visited item for the sound decision.
+ */
+async function inspectRise(args: {
   queryClient: QueryClient;
   trpc: ReturnType<typeof useTRPC>;
   delta: number;
-}): Promise<void> {
+}): Promise<{ anyAudible: boolean }> {
   const { queryClient, trpc, delta } = args;
-  if (getBrowserNotificationCapability() !== 'granted') return;
   const target = Math.min(delta, MAX_BANNERS_PER_RISE);
-  if (target <= 0) return;
-  let surfaced = 0;
+  if (target <= 0) return { anyAudible: false };
+  const canSurface = getBrowserNotificationCapability() === 'granted';
+  let visited = 0;
+  let anyAudible = false;
   let cursor: string | null = null;
   try {
-    while (surfaced < target) {
+    while (visited < target) {
       const page = (await queryClient.fetchQuery(
         trpc.notifications.list.queryOptions({
           limit: FETCH_PAGE_LIMIT,
@@ -64,20 +84,22 @@ async function surfaceUpToDelta(args: {
       )) as NotificationListPage;
       if (page.items.length === 0) break;
       for (const item of page.items) {
-        if (surfaced >= target) break;
+        if (visited >= target) break;
+        visited += 1;
+        if (isAudibleNotificationPriority(item.priority)) anyAudible = true;
+        if (!canSurface) continue;
         if (hasSurfaced(item.id)) continue;
         const firstResource = (item.relatedResources[0] ?? null) as
           | NamefiNotifOpenEventDetail['filter']
           | null;
         const href = firstResource ? resourceHref(firstResource) : null;
-        const ok = surfaceBrowserNotification({
+        surfaceBrowserNotification({
           id: item.id,
           title: item.title,
           body: item.subtitle ?? item.body,
           filter: firstResource,
           href: typeof href === 'string' ? href : null,
         });
-        if (ok) surfaced += 1;
       }
       if (!page.nextCursor) break;
       cursor = page.nextCursor;
@@ -86,6 +108,7 @@ async function surfaceUpToDelta(args: {
     // Best-effort — if the list fetch fails, fall back to the
     // bell-only animation and try again on the next rise.
   }
+  return { anyAudible };
 }
 
 /**
@@ -117,21 +140,34 @@ export function useBrowserNotificationWatcher(): void {
       },
     ),
   );
-  const count = countQuery.data?.count ?? 0;
+  // Deliberately keep `count` as `number | undefined`: while the first
+  // fetch is in flight `countQuery.data` is `undefined`, and we must
+  // not seed the ref from a `0` fallback — otherwise the initial
+  // `0 → N` transition when the real fetch lands would look like a rise
+  // and play a sound on every page load.
+  const count = countQuery.data?.count;
   const previousCountRef = useRef<number | null>(null);
 
   useEffect(() => {
+    // No real observation yet — don't touch the ref, don't compare.
+    if (count === undefined) return;
     const previous = previousCountRef.current;
     previousCountRef.current = count;
-    // First observation never fires — same semantics as the bell.
+    // First *real* observation seeds the baseline silently. Sound only
+    // fires when a subsequent poll returns a strictly higher count.
     if (previous === null) return;
     if (count <= previous) return;
 
-    playNewNotificationSound();
-    void surfaceUpToDelta({
+    // Inspect the rising-set once: we need the priority of the new
+    // items to decide whether to play the sound, and the surface pass
+    // can piggy-back on the same fetch (one page over the wire, not
+    // two). Sound plays only if `anyAudible` (≥ `'normal'`).
+    void inspectRise({
       queryClient,
       trpc,
       delta: count - previous,
+    }).then(({ anyAudible }) => {
+      if (anyAudible) playNewNotificationSound();
     });
   }, [count, queryClient, trpc]);
 

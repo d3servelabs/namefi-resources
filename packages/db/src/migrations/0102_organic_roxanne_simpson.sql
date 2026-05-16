@@ -1,0 +1,2 @@
+CREATE TYPE "public"."notification_priority" AS ENUM('silent', 'low', 'normal', 'high', 'critical');--> statement-breakpoint
+ALTER TABLE "notifications" ADD COLUMN "priority" "notification_priority" DEFAULT 'normal' NOT NULL;

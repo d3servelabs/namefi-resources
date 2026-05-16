@@ -1,4 +1,7 @@
-import type { NotificationBodyType } from '@namefi-astra/common/shared-schemas';
+import type {
+  NotificationBodyType,
+  NotificationPriority,
+} from '@namefi-astra/common/shared-schemas';
 import {
   db,
   notificationsTable,
@@ -47,6 +50,8 @@ export type CreateInAppNotificationsBulkInput = {
   subtitle?: string | null;
   body: string;
   bodyType?: NotificationBodyType;
+  /** Defaults to `'normal'` if omitted. See `CreateNotificationInput.priority`. */
+  priority?: NotificationPriority;
   /** `metadata.source` label written on every row in the batch. */
   source: string;
 };
@@ -64,12 +69,14 @@ export async function createInAppNotificationsBulk(
   input: CreateInAppNotificationsBulkInput,
 ): Promise<{ created: number }> {
   const metadata: NotificationMetadata = { source: input.source };
+  const priority = input.priority ?? 'normal';
   const rows = input.userIds.map((userId) => ({
     userId,
     title: input.title,
     subtitle: input.subtitle ?? null,
     body: input.body,
     bodyType: input.bodyType ?? 'plain',
+    priority,
     relatedResources: [],
     metadata,
   }));

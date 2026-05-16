@@ -1415,6 +1415,9 @@ export async function sendOrderRequiresFurtherActionEmail({
     showGoToDashboard: false,
     messageMarkdown: `${message}\n\n[Open order details](${orderDetailsLink})`,
     inAppNotification: {
+      // Action-required notifications gate further order progress — high
+      // priority so the user is prompted audibly.
+      priority: 'high',
       subtitle: requiredAction,
       relatedResources: [
         { type: 'order', identifier: orderId },

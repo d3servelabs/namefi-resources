@@ -1,5 +1,8 @@
 import { render } from '@react-email/components';
-import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
+import type {
+  NotificationPriority,
+  NotificationRelatedResource,
+} from '@namefi-astra/common/shared-schemas';
 import { createElement } from 'react';
 import { createLogger } from '#lib/logger';
 import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
@@ -33,6 +36,8 @@ export type SendUserNotificationInput = {
   /** Whether the email shows the dashboard CTA. Defaults to `true`. */
   showGoToDashboard?: boolean;
   subtitle?: string;
+  /** Audibility — see `CreateNotificationInput.priority`. Defaults to `'normal'`. */
+  priority?: NotificationPriority;
   relatedResources?: NotificationRelatedResource[];
   /** `metadata.source` label for the in-app row. */
   source?: string;
@@ -88,6 +93,7 @@ export async function sendUserNotification(
       subtitle: input.subtitle,
       body: input.messageMarkdown,
       bodyType: 'markdown',
+      priority: input.priority,
       relatedResources: input.relatedResources ?? [],
       metadata: { source: input.source ?? 'lib:send-user-notification' },
     });

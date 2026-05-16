@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import {
   notificationBodyTypeSchema,
+  notificationPrioritySchema,
   notificationRelatedResourceSchema,
   notificationResourceTypeSchema,
 } from '../shared-schemas';
@@ -47,6 +48,7 @@ export const notificationDtoSchema = z.object({
   subtitle: z.string().nullable(),
   body: z.string(),
   bodyType: notificationBodyTypeSchema,
+  priority: notificationPrioritySchema,
   relatedResources: z.array(notificationRelatedResourceSchema),
   metadata: notificationMetadataSchema,
   seenAt: z.date().nullable(),

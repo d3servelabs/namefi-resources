@@ -5,6 +5,7 @@ import {
 } from '@namefi-astra/db';
 import type {
   NotificationBodyType,
+  NotificationPriority,
   NotificationRelatedResource,
 } from '@namefi-astra/common/shared-schemas';
 import { createLogger } from '#lib/logger';
@@ -32,6 +33,12 @@ export type CreateNotificationInput = {
   subtitle?: string | null;
   body: string;
   bodyType?: NotificationBodyType;
+  /**
+   * Audibility hint — `'silent'` / `'low'` never play the bell sound.
+   * Defaults to `'normal'` when omitted. Failure notifications should
+   * pass `'high'`; informational reminders can pass `'low'`.
+   */
+  priority?: NotificationPriority;
   relatedResources?: NotificationRelatedResource[];
   metadata?: NotificationMetadata;
 };
@@ -62,6 +69,7 @@ export async function createNotification(
       subtitle: input.subtitle ?? null,
       body: input.body,
       bodyType: input.bodyType ?? 'plain',
+      priority: input.priority ?? 'normal',
       relatedResources: input.relatedResources ?? [],
       metadata: input.metadata ?? {},
     })
@@ -110,6 +118,8 @@ export type NotificationTemplate<P> = {
   body: (props: P) => string;
   /** Defaults to `markdown` since most template bodies use bullets / emphasis. */
   bodyType?: NotificationBodyType;
+  /** Defaults to `'normal'` — set `'high'` for templates that fire on failure. */
+  priority?: NotificationPriority | ((props: P) => NotificationPriority);
   relatedResources?: (props: P) => NotificationRelatedResource[];
 };
 
@@ -128,12 +138,17 @@ export async function createNotificationFromTemplate<P>(args: {
 }): Promise<NotificationRow> {
   const { template, userId, props, extraMetadata } = args;
   const subtitle = template.subtitle?.(props) ?? undefined;
+  const priority =
+    typeof template.priority === 'function'
+      ? template.priority(props)
+      : template.priority;
   return createNotification({
     userId,
     title: template.title(props),
     subtitle,
     body: template.body(props),
     bodyType: template.bodyType ?? 'markdown',
+    priority,
     relatedResources: template.relatedResources?.(props) ?? [],
     metadata: {
       ...extraMetadata,

@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import {
   notificationBodyTypeSchema,
+  notificationPrioritySchema,
   notificationRelatedResourceSchema,
 } from '../../shared-schemas';
 import { createContract } from '../create-contract';
@@ -23,6 +24,8 @@ const composeFields = {
   subtitle: z.string().max(400).optional(),
   body: z.string().min(1),
   bodyType: notificationBodyTypeSchema.optional(),
+  /** Admin can override; backend defaults to `'normal'` when omitted. */
+  priority: notificationPrioritySchema.optional(),
 };
 
 const adminCreateInputSchema = z.object({

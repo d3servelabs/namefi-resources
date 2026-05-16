@@ -342,6 +342,7 @@ export async function sendDeferredDsOutcomeEmailToUser(input: {
       title: copy.title,
       body: copy.body,
       bodyType: 'markdown',
+      priority: input.outcome === 'success' ? 'normal' : 'high',
       relatedResources: [{ type: 'domain', identifier: input.domainName }],
       metadata: { source: 'workflow:deferred-associate-ds' },
     });

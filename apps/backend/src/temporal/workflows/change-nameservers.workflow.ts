@@ -129,6 +129,7 @@ export async function changeNameserversWorkflow({
                 reason ? `\n\nReason: ${reason}` : ''
               }`,
         inAppNotification: {
+          priority: outcome === 'failure' ? 'high' : 'normal',
           relatedResources: [{ type: 'domain', identifier: domainName }],
           source: 'workflow:change-nameservers',
         },

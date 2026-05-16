@@ -22,6 +22,7 @@ import {
   itemTypeValues,
   freeClaimClaimingStatusValues,
   notificationBodyTypeValues,
+  notificationPriorityValues,
   notificationResourceTypeValues,
   orderStatusValues,
   paymentProviderValues,
@@ -2701,6 +2702,10 @@ export const notificationBodyTypeEnum = pgEnum(
   'notification_body_type',
   notificationBodyTypeValues,
 );
+export const notificationPriorityEnum = pgEnum(
+  'notification_priority',
+  notificationPriorityValues,
+);
 export type { NotificationRelatedResource, NotificationResourceType };
 
 export type NotificationMetadata = {
@@ -2720,6 +2725,13 @@ export const notificationsTable = pgTable(
     subtitle: text('subtitle'),
     body: text('body').notNull(),
     bodyType: notificationBodyTypeEnum('body_type').notNull().default('plain'),
+    /**
+     * Urgency hint that drives the audio cue on rise. `silent` / `low`
+     * never play a sound; `normal` and above do. Defaults to `normal`
+     * for existing rows (Drizzle adds the column with this default,
+     * which backfills history in place).
+     */
+    priority: notificationPriorityEnum('priority').notNull().default('normal'),
     relatedResources: jsonb('related_resources')
       .$type<NotificationRelatedResource[]>()
       .notNull()

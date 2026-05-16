@@ -4,7 +4,10 @@ import {
   usersTable,
   type PaymentProvider,
 } from '@namefi-astra/db';
-import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
+import type {
+  NotificationPriority,
+  NotificationRelatedResource,
+} from '@namefi-astra/common/shared-schemas';
 import { eq } from 'drizzle-orm';
 import { tryCreateInAppNotification } from '#lib/notifications/try-create-notification';
 import { type SendMailInput, sendMail } from '../../mail/mail-client';
@@ -315,6 +318,9 @@ export async function notifyUserOrderProcessed(
     title: subject,
     body: buildProcessedOrderInAppBody(input),
     bodyType: 'markdown',
+    // Orders are the user's intentional purchases — surface them audibly
+    // whether they succeeded or partially failed.
+    priority: 'high',
     relatedResources: [
       { type: 'order', identifier: input.orderId },
       ...input.items.map((item) => ({
@@ -518,6 +524,12 @@ async function determineHostnameFromCartItems(
 export type InAppNotificationCarry = {
   enabled?: boolean;
   subtitle?: string;
+  /**
+   * Audibility for the in-app row — see `CreateNotificationInput.priority`.
+   * Defaults to `'normal'`. Set `'high'` on the failure-side `notify()`
+   * lambdas so the bell sounds for things the user should look at now.
+   */
+  priority?: NotificationPriority;
   relatedResources?: NotificationRelatedResource[];
   /** Override the `metadata.source` label. */
   source?: string;
@@ -600,6 +612,7 @@ export async function sendStyledEmailNotificationForUser({
         subtitle: inAppNotification?.subtitle,
         body: messageMarkdown,
         bodyType: 'markdown',
+        priority: inAppNotification?.priority,
         relatedResources: inAppNotification?.relatedResources ?? [],
         metadata: {
           source:

@@ -852,6 +852,13 @@ export async function sendEmailNotificationForRenewResult({
     title: subject,
     body: resultBodySections.join('\n\n'),
     bodyType: 'markdown',
+    // Any failed renewal in the batch promotes the row to high — the user
+    // typically needs to take action (re-attempt, top up balance).
+    priority:
+      adjustedOrderDetails.domainLdhRenewFailed.length > 0 ||
+      adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds.length > 0
+        ? 'high'
+        : 'normal',
     relatedResources: [
       ...allResultDomains.map((d) => ({
         type: 'domain' as const,
@@ -925,6 +932,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
     title: 'Domain renewal — payment failed',
     body: `${failedToChargeLines.join('\n')}${tail}`,
     bodyType: 'markdown',
+    priority: 'high',
     relatedResources: domainsToRenew.map((d) => ({
       type: 'domain' as const,
       identifier: d,

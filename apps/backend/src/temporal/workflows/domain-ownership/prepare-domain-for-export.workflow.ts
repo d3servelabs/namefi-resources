@@ -185,6 +185,11 @@ export async function prepareDomainForExportWorkflow({
           `,
             showGoToDashboard: true,
             title: '[Namefi] Error preparing domain for export',
+            inAppNotification: {
+              priority: 'high',
+              relatedResources: [{ type: 'domain', identifier: domainName }],
+              source: 'workflow:prepare-domain-for-export:failure',
+            },
           });
         },
         {
