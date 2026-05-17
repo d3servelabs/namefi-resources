@@ -1,7 +1,7 @@
 import { createLogger } from '#lib/logger';
-import { CHECKOUT_FLOW_EVENT_SEQUENCE } from './analytics-client';
 import {
   CHECKOUT_FLOW_EVENT_LABELS,
+  CHECKOUT_FLOW_EVENT_SEQUENCE,
   CHECKOUT_PRIMARY_FUNNEL_SEQUENCE,
   type CheckoutFlowAnalyticsParsed,
   type CheckoutFlowAnalyticsReportRaw,

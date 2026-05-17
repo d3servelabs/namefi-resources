@@ -6,8 +6,9 @@ import {
   emailCampaignClicksTable,
   emailCampaignOpensTable,
 } from '@namefi-astra/db';
-import { sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import {
+  type EmailAnalyticsPayload,
   EmailAnalyticsPayloadSchema,
   getEmailTrackDataFromUrl,
 } from '../mail/components/email-tracking';
@@ -20,6 +21,46 @@ const pixel = Buffer.from(
   'R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
   'base64',
 );
+
+export type OrderReadyEmailOpenPayload = Extract<
+  EmailAnalyticsPayload,
+  { type: 'order_ready' }
+>;
+
+type OrderReadyEmailOpenTrackingInput = {
+  orderId: string;
+  userId: string;
+  emailId: string;
+};
+
+export function buildOrderReadyEmailOpenTrackingInput(
+  payload: OrderReadyEmailOpenPayload,
+): OrderReadyEmailOpenTrackingInput {
+  return {
+    orderId: payload.orderId,
+    userId: payload.userId,
+    emailId: payload.nonce,
+  };
+}
+
+async function trackOrderReadyEmailOpen(
+  payload: OrderReadyEmailOpenPayload,
+): Promise<void> {
+  const trackingInput = buildOrderReadyEmailOpenTrackingInput(payload);
+
+  try {
+    await gaEventOrderFinishedEmailOpened(trackingInput);
+  } catch (error) {
+    logger.warn(
+      {
+        error,
+        orderId: payload.orderId,
+        userId: payload.userId,
+      },
+      'Failed to send GA order_finished_email_opened event',
+    );
+  }
+}
 
 emailAnalyticsRouter.get('/analytics/open', async (c) => {
   const token = c.req.query('token') ?? '';
@@ -42,16 +83,19 @@ emailAnalyticsRouter.get('/analytics/open', async (c) => {
     if (parsed.success) {
       switch (parsed.data.type) {
         case 'order_ready_count_only':
-          await gaEventOrderFinishedEmailOpened({
-            emailId: parsed.data.nonce,
-          });
+          try {
+            await gaEventOrderFinishedEmailOpened({
+              emailId: parsed.data.nonce,
+            });
+          } catch (error) {
+            logger.warn(
+              { error },
+              'Failed to send GA order_finished_email_opened event',
+            );
+          }
           break;
         case 'order_ready':
-          await gaEventOrderFinishedEmailOpened({
-            orderId: parsed.data.orderId,
-            userId: parsed.data.userId,
-            emailId: parsed.data.nonce,
-          });
+          await trackOrderReadyEmailOpen(parsed.data);
           break;
         case 'campaign_email_open':
           // Isolate counter-write failures: the pixel response must always

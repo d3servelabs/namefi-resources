@@ -16,17 +16,13 @@ import { generateDomainSuggestions } from '#lib/domain-suggestions';
 import { drop, take, isNil, isNotNil, isEmpty } from 'ramda';
 import type { UserSelect } from '@namefi-astra/db';
 import { promiseWithAbortSignal } from '@namefi-astra/utils/promises/promiseWithAbortSignal';
-import {
-  getUserUnusedClaims,
-  checkItemClaimEligibility,
-} from '#temporal/activities/free-claim.activities';
 import pMap from 'p-map';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { resolveNs } from 'node:dns/promises';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { gaEventUserBeginSearch } from '#lib/tracking/checkout/events';
-import { orderService } from '#services/orders/orders.service';
+import { resolveWebCheckoutTracking } from '#lib/tracking/checkout/context';
 
 export const searchRouter = createContractTRPCRouter<typeof searchContract>({
   isDomainAvailable: authedOrPublicProcedure
@@ -34,35 +30,6 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
     .output(searchContract.isDomainAvailable.output)
     .query(async ({ input, ctx }) => {
       const { domain } = input;
-      // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
-      const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
-      const gaEventTracking = ctx.user?.id
-        ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
-        : { trackGaEvents: true };
-      const gaEventTrackingReason =
-        'reason' in gaEventTracking
-          ? (gaEventTracking.reason ?? 'DEFAULT')
-          : 'DEFAULT';
-
-      if ((ctx.user?.id || clientId) && gaEventTracking.trackGaEvents) {
-        void gaEventUserBeginSearch({
-          userId: ctx.user?.id,
-          clientId,
-          searchTerm: domain,
-          parentDomain: ctx.poweredByNamefiDomain ?? undefined,
-        });
-      } else if (!gaEventTracking.trackGaEvents) {
-        logger.info(
-          {
-            userId: ctx.user?.id,
-            domain,
-            eventName: 'user_begin_search',
-            gaEventTrackingReason,
-          },
-          'Skipping GA user_begin_search event because tracking is disabled',
-        );
-      }
-
       const availability = await getDomainListInfo([domain], ctx.user);
 
       if (availability.length !== 1) {
@@ -103,38 +70,47 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
       const { query, page = 1, pageSize } = input;
       const parentDomain =
         input.parentDomain ?? ctx.poweredByNamefiDomain ?? undefined;
-      // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
-      const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
-      const gaEventTracking = ctx.user?.id
-        ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
-        : { trackGaEvents: true };
-      const gaEventTrackingReason =
-        'reason' in gaEventTracking
-          ? (gaEventTracking.reason ?? 'DEFAULT')
-          : 'DEFAULT';
-      if (
-        page === 1 &&
-        (ctx.user?.id || clientId) &&
-        gaEventTracking.trackGaEvents
-      ) {
+      return generateDomainSuggestions(query, parentDomain, page, pageSize);
+    }),
+
+  trackUserBeginSearch: authedOrPublicProcedure
+    .input(searchContract.trackUserBeginSearch.input)
+    .output(searchContract.trackUserBeginSearch.output)
+    .mutation(async ({ input, ctx }) => {
+      const searchTerm = input.query.trim();
+
+      const parentDomain =
+        input.parentDomain ?? ctx.poweredByNamefiDomain ?? undefined;
+      const gaEventTracking = await resolveWebCheckoutTracking({
+        userId: ctx.user?.id,
+        gaIdentity: {
+          clientId: ctx.gaClientId,
+          sessionId: ctx.gaSessionId,
+        },
+        consentDomainName: ctx.consentDomainName,
+        requestMeasurementConsentState: ctx.requestMeasurementConsentState,
+        getMeasurementConsentAutoGranted: ctx.getMeasurementConsentAutoGranted,
+      });
+      const gaEventTrackingReason = gaEventTracking.reason ?? 'DEFAULT';
+
+      if (gaEventTracking.trackGaEvents) {
         void gaEventUserBeginSearch({
           userId: ctx.user?.id,
-          clientId,
-          searchTerm: query.trim(),
+          identity: gaEventTracking.identity,
+          searchTerm,
           parentDomain,
         });
-      } else if (page === 1 && !gaEventTracking.trackGaEvents) {
+      } else {
         logger.info(
           {
             userId: ctx.user?.id,
-            query: query.trim(),
+            searchTerm,
             eventName: 'user_begin_search',
             gaEventTrackingReason,
           },
           'Skipping GA user_begin_search event because tracking is disabled',
         );
       }
-      return generateDomainSuggestions(query, parentDomain, page, pageSize);
     }),
 
   /**
@@ -149,38 +125,11 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
    */
   streamDomainAvailability: authedOrPublicProcedure
     .input(searchContract.streamDomainAvailability.input)
-    .subscription(async function* ({ input: { domains }, signal, ctx }) {
+    .subscription(async function* ({ input, signal, ctx }) {
+      const { domains } = input;
       if (domains.length === 0 || signal?.aborted) {
         yield* [];
         return;
-      }
-
-      // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
-      const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
-      const gaEventTracking = ctx.user?.id
-        ? await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id)
-        : { trackGaEvents: true };
-      const gaEventTrackingReason =
-        'reason' in gaEventTracking
-          ? (gaEventTracking.reason ?? 'DEFAULT')
-          : 'DEFAULT';
-      if ((ctx.user?.id || clientId) && gaEventTracking.trackGaEvents) {
-        void gaEventUserBeginSearch({
-          userId: ctx.user?.id,
-          clientId,
-          searchTerm: domains[0],
-          parentDomain: ctx.poweredByNamefiDomain ?? undefined,
-        });
-      } else if (!gaEventTracking.trackGaEvents) {
-        logger.info(
-          {
-            userId: ctx.user?.id,
-            domain: domains[0],
-            eventName: 'user_begin_search',
-            gaEventTrackingReason,
-          },
-          'Skipping GA user_begin_search event because tracking is disabled',
-        );
       }
 
       const remainingDomains = drop(1, domains);
@@ -223,6 +172,9 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
     .query(async ({ input, ctx }) => {
       const { domains } = input;
       const { user } = ctx;
+      const { getUserUnusedClaims, checkItemClaimEligibility } = await import(
+        '#temporal/activities/free-claim.activities'
+      );
 
       // Get all unused claims for this user
       const unusedClaims = await getUserUnusedClaims(user.id);

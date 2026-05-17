@@ -49,6 +49,18 @@ import type { ORPCMeta } from '@orpc/trpc';
 import type { AuthMethodResult } from '#lib/auth/auth-registry';
 import type { MiddlewareBuilder } from '@trpc/server/unstable-core-do-not-import';
 import { differenceInMinutes } from 'date-fns';
+import {
+  C15T_CONSENT_COOKIE_NAME,
+  C15T_MEASUREMENT_CONSENT_HEADER,
+  GA_CLIENT_ID_HEADER,
+  GA_SESSION_ID_HEADER,
+  getC15tMeasurementConsentState,
+  mergeC15tMeasurementConsentStates,
+  normalizeGaClientId,
+  normalizeGaSessionId,
+  parseC15tMeasurementConsentHeader,
+  type C15tMeasurementConsentState,
+} from '@namefi-astra/common/google-analytics';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -108,6 +120,27 @@ export async function getPbnDomainFromOriginOrThrow(
     });
   }
   return thirdPartyDomainFromHostname;
+}
+
+function getGaClientIdFromHeader(headerValue: string | undefined | null) {
+  return normalizeGaClientId(headerValue);
+}
+
+function getGaSessionIdFromHeader(headerValue: string | undefined | null) {
+  const normalizedSessionId = normalizeGaSessionId(headerValue);
+  if (!normalizedSessionId) return null;
+  const sessionId = Number(normalizedSessionId);
+  return Number.isSafeInteger(sessionId) && sessionId > 0 ? sessionId : null;
+}
+
+function getHostnameFromOrigin(originText: string | undefined | null) {
+  if (!originText) return null;
+
+  try {
+    return new URL(originText).hostname.toLowerCase() || null;
+  } catch {
+    return null;
+  }
 }
 
 type ValidateApiKeyAndGetDetailsResult =
@@ -174,6 +207,27 @@ export const createContext = async (
 ): Promise<TrpcContext> => {
   const originText = c.req.header('Origin');
   const apiKeyFromHeader = c.req.header('x-api-key') || null;
+  const gaClientId = getGaClientIdFromHeader(c.req.header(GA_CLIENT_ID_HEADER));
+  const gaSessionId = getGaSessionIdFromHeader(
+    c.req.header(GA_SESSION_ID_HEADER),
+  );
+  const requestMeasurementConsentState = mergeC15tMeasurementConsentStates(
+    getC15tMeasurementConsentState(
+      await getCookie(c, C15T_CONSENT_COOKIE_NAME),
+    ),
+    parseC15tMeasurementConsentHeader(
+      c.req.header(C15T_MEASUREMENT_CONSENT_HEADER),
+    ),
+  );
+  const consentDomainName = getHostnameFromOrigin(originText);
+  let measurementConsentAutoGrantedPromise: Promise<boolean> | null = null;
+  const getMeasurementConsentAutoGranted = () => {
+    measurementConsentAutoGrantedPromise ??= import('../routers/c15t').then(
+      ({ isC15tMeasurementConsentAutoGranted }) =>
+        isC15tMeasurementConsentAutoGranted(c.req.raw.headers),
+    );
+    return measurementConsentAutoGrantedPromise;
+  };
 
   let poweredByNamefiDomain: string | null = null;
   let result: ValidateApiKeyAndGetDetailsResult;
@@ -243,6 +297,11 @@ export const createContext = async (
      */
     testUser: skipAuthTestUser,
     sessionId: null as string | null,
+    gaClientId,
+    gaSessionId,
+    requestMeasurementConsentState,
+    consentDomainName,
+    getMeasurementConsentAutoGranted,
     honoVars: c.var as {
       requestId: string;
       connInfo: ConnInfo;
@@ -266,6 +325,11 @@ export type TrpcContext = {
   userPermissions?: Permission[];
   testUser: UserSelect | null;
   sessionId?: string | null;
+  gaClientId?: string | null;
+  gaSessionId?: number | null;
+  requestMeasurementConsentState?: C15tMeasurementConsentState;
+  consentDomainName?: string | null;
+  getMeasurementConsentAutoGranted?: () => Promise<boolean>;
   honoVars?: {
     requestId: string;
     connInfo: ConnInfo;

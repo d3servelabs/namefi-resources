@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import { analyticsContract } from '@namefi-astra/common/contract/analytics-contract';
+import {
+  analyticsContract,
+  checkoutFlowEventSourceSchema,
+} from '@namefi-astra/common/contract/analytics-contract';
 import {
   adminProcedureWithPermissions,
   publicProcedure,
@@ -13,7 +16,7 @@ import {
 } from '../../lib/analytics_client';
 import { secrets } from '../../lib/env';
 import { createLogger } from '#lib/logger';
-import { dnsRcodes } from '../../lib/dns/rcodes';
+import { dnsRcodes, type DnsNumericRCode } from '../../lib/dns/rcodes';
 import { parseDnsAnalyticsReportData } from '#lib/analytics-parser';
 import { createCheckoutFlowGA4Client } from '#lib/tracking/checkout/analytics-client';
 import { parseCheckoutFlowReportData } from '#lib/tracking/checkout/analytics-parser';
@@ -85,7 +88,10 @@ function mapRcodesToNames(data: any) {
         };
       }
 
-      const rcodeName = dnsRcodes.inverse.get(rcode); // Use string key, not number
+      const rcodeNumber = /^\d+$/.test(rcode) ? Number(rcode) : Number.NaN;
+      const rcodeName = Number.isSafeInteger(rcodeNumber)
+        ? dnsRcodes.inverse.get(rcodeNumber as DnsNumericRCode)
+        : undefined;
 
       // Format as: NOERROR(RCODE:0)
       const formattedValue = rcodeName
@@ -200,6 +206,7 @@ const dateRangeSchema = z.object({
 
 export const getCheckoutFlowOverviewInputSchema = z.object({
   ...dateRangeSchema.shape,
+  eventSource: checkoutFlowEventSourceSchema,
 });
 
 export async function getCheckoutFlowOverview(
@@ -211,12 +218,17 @@ export async function getCheckoutFlowOverview(
     endDate: input.endDate,
   };
 
-  logger.debug({ dateRange }, 'Getting checkout flow overview');
+  logger.debug(
+    { dateRange, eventSource: input.eventSource },
+    'Getting checkout flow overview',
+  );
 
   try {
     const [eventCounts, eventCountsByStatus] = await Promise.all([
-      client.getEventCounts(dateRange),
-      client.getEventCountsByStatus(dateRange),
+      client.getEventCounts(dateRange, { eventSource: input.eventSource }),
+      client.getEventCountsByStatus(dateRange, {
+        eventSource: input.eventSource,
+      }),
     ]);
 
     return parseCheckoutFlowReportData({
@@ -224,7 +236,10 @@ export async function getCheckoutFlowOverview(
       eventCountsByStatus,
     });
   } catch (error) {
-    logger.error({ error, dateRange }, 'Error getting checkout flow overview');
+    logger.error(
+      { error, dateRange, eventSource: input.eventSource },
+      'Error getting checkout flow overview',
+    );
     throw error;
   }
 }

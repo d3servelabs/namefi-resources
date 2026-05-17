@@ -1,5 +1,20 @@
 import type { GaReportLike } from '#lib/analytics-parser';
-import type { CheckoutFlowEventName } from './analytics-client';
+
+export const CHECKOUT_FLOW_EVENT_SEQUENCE = [
+  'user_begin_search',
+  'order_placed',
+  'payment_processed',
+  'domain_acquisition_started',
+  'domain_acquisition_finished',
+  'dns_records_propagated',
+  'parking_finished',
+  'payment_refunded',
+  'order_finished_email_sent',
+  'order_finished_email_opened',
+] as const;
+
+export type CheckoutFlowEventName =
+  (typeof CHECKOUT_FLOW_EVENT_SEQUENCE)[number];
 
 /**
  * Human-friendly labels for checkout flow events.
@@ -39,11 +54,11 @@ type CheckoutPrimaryFunnelEventName =
  * Raw GA4 reports required to build checkout flow analytics.
  */
 export interface CheckoutFlowAnalyticsReportRaw {
-  /** Event totals grouped by `eventName`. */
+  /** Event counts grouped by `eventName`. */
   eventCounts: GaReportLike;
 
   /**
-   * Event totals grouped by `eventName`, `status`, and `order_status`.
+   * Event counts grouped by `eventName`, `status`, and `order_status`.
    *
    * @remarks
    * `order_status` is primarily used by email events.
@@ -55,16 +70,16 @@ export interface CheckoutFlowAnalyticsReportRaw {
  * Aggregate KPIs displayed in the checkout analytics summary cards.
  */
 export interface CheckoutFlowSummary {
-  /** Total `user_begin_search` events. */
+  /** Number of `user_begin_search` events. */
   beginSearchCount: number;
 
-  /** Total `order_placed` events. */
+  /** Number of `order_placed` events. */
   orderPlacedCount: number;
 
-  /** Success-only count for `domain_acquisition_finished`. */
+  /** Number of successful `domain_acquisition_finished` events. */
   domainAcquisitionFinishedSuccessCount: number;
 
-  /** Total `payment_refunded` events. */
+  /** Number of `payment_refunded` events. */
   refundedCount: number;
 
   /** `order_placed / user_begin_search`, represented as percent. */
@@ -86,7 +101,7 @@ export interface CheckoutFlowStep {
   /** Human-friendly event label. */
   label: string;
 
-  /** Raw event count for the row event. */
+  /** Event count for the row event. */
   count: number;
 
   /**
@@ -186,7 +201,7 @@ export interface CheckoutFlowEventBreakdown {
  * Parsed event payload for one checkout flow event.
  */
 export interface CheckoutFlowEventParsed {
-  /** Total event count. */
+  /** Event count for this event. */
   count: number;
 
   /** Breakdown buckets by status/order status/outcome. */

@@ -34,12 +34,21 @@ const dateRangeSchema = z.object({
   endDate: gaDateToken.default('today'),
 });
 
+export const checkoutFlowEventSourceSchema = z
+  .enum(['all', 'api', 'non_api'])
+  .default('all');
+
+export type CheckoutFlowEventSourceFilter = z.infer<
+  typeof checkoutFlowEventSourceSchema
+>;
+
 // ---------------------------------------------------------------------------
 // Per-procedure input schemas
 // ---------------------------------------------------------------------------
 
 const getCheckoutFlowOverviewInputSchema = z.object({
   ...dateRangeSchema.shape,
+  eventSource: checkoutFlowEventSourceSchema,
 });
 
 const getDashboardOverviewInputSchema = z.object({

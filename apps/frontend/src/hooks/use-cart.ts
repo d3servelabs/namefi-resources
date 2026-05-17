@@ -783,7 +783,21 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
               eppAuthorizationCode: p.eppAuthorizationCode,
             }));
             sync.local.addLocalItems(locals);
-            return sync.normalize(locals.map(stripForLocalStorage));
+            const unified = sync.normalize(locals.map(stripForLocalStorage));
+            if (unified.length) {
+              unified.forEach((item) => {
+                sync.logEventWithInteractionLoggers({
+                  name: InteractionLoggingEventName.AddToCart,
+                  properties: {
+                    cartItem: {
+                      amountInUSDCents: item.amountInUSDCents,
+                      normalizedDomainName: item.normalizedDomainName,
+                    },
+                  },
+                });
+              });
+            }
+            return unified;
           } finally {
             payload.forEach((p) => {
               sync.busy.clearBusy(

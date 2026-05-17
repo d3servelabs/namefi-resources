@@ -2,8 +2,8 @@ import type { GaReportRow } from '#lib/analytics-parser';
 import {
   CHECKOUT_FLOW_EVENT_SEQUENCE,
   type CheckoutFlowEventName,
-} from './analytics-client';
-import type { CheckoutFlowEventParsed } from './analytics-types';
+  type CheckoutFlowEventParsed,
+} from './analytics-types';
 
 /**
  * Standard marker used when GA4 omits or cannot determine a value.

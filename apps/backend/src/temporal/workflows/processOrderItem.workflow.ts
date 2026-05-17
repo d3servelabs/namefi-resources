@@ -12,16 +12,17 @@ import {
   extendDomainRegistrationWorkflow,
   type ExtendDomainRegistrationWorkflowInput,
 } from './domain-ownership/extend-registration.workflow';
+import {
+  resolveWorkflowCheckoutTracking,
+  type WorkflowCheckoutTrackingInput,
+} from '../shared/workflow-helpers/checkout-tracking';
 
 export interface ProcessOrderItemWorkflowInput
   extends Omit<AcquireDomainWorkflowInput, 'operationType'> {
   operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
   orderId: string;
   itemId: string;
-  gaEventTracking?: {
-    trackGaEvents: boolean;
-    reason?: string;
-  };
+  gaEventTracking?: WorkflowCheckoutTrackingInput;
 }
 
 /**
@@ -41,9 +42,12 @@ export async function processOrderItemWorkflow(
     encryptedEppAuthorizationCode,
     encryptionKeyId,
   } = input;
-  workflow.deprecatePatch('toggle-tracking');
-  const trackGaEvents = input.gaEventTracking?.trackGaEvents ?? true;
-  const gaEventTrackingReason = input.gaEventTracking?.reason ?? 'DEFAULT';
+  const gaTracking = resolveWorkflowCheckoutTracking(input.gaEventTracking);
+  const {
+    trackGaEvents,
+    reason: gaEventTrackingReason,
+    identity: gaEventIdentity,
+  } = gaTracking;
 
   const {
     updateOrderItemStatusOrThrow,
@@ -98,6 +102,7 @@ export async function processOrderItemWorkflow(
             orderItemId: input.itemId,
             itemType: operationType,
             domainName: normalizedDomainName,
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -138,6 +143,7 @@ export async function processOrderItemWorkflow(
             registrarKey,
             durationInYears,
             chainId,
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -204,6 +210,7 @@ export async function processOrderItemWorkflow(
             durationInYears,
             chainId,
             status: 'SUCCESS',
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -245,6 +252,7 @@ export async function processOrderItemWorkflow(
             itemType: operationType,
             domainName: normalizedDomainName,
             itemStatus: 'SUCCEEDED',
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -291,6 +299,7 @@ export async function processOrderItemWorkflow(
             itemType: operationType,
             domainName: normalizedDomainName,
             itemStatus: 'FAILED',
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -316,6 +325,7 @@ export async function processOrderItemWorkflow(
             durationInYears,
             chainId,
             status: 'FAILURE',
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(

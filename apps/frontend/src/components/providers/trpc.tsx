@@ -19,10 +19,22 @@ import {
   splitLink,
 } from '@trpc/client';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import {
+  BROWSER_FINGERPRINT_HEADER,
+  C15T_MEASUREMENT_CONSENT_HEADER,
+  GA_CLIENT_ID_HEADER,
+  GA_SESSION_ID_HEADER,
+  normalizeGaClientId,
+  normalizeGaSessionId,
+  parseGaClientIdFromCookieValue,
+  parseGaSessionIdFromCookieValue,
+} from '@namefi-astra/common/google-analytics';
 import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
 import { TRPCProvider } from '@/lib/trpc';
+
+const GA_MEASUREMENT_ID_PREFIX_REGEX = /^G-/;
 
 function toDatadogError(error: unknown): Error {
   if (error instanceof Error) {
@@ -252,9 +264,185 @@ async function getBrowserFingerprint(): Promise<string | null> {
   return fingerprintPromise;
 }
 
+function getCookieValue(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+
+  const cookie = document.cookie
+    .split(';')
+    .map((cookie) => cookie.trim())
+    .find((cookie) => cookie.startsWith(`${name}=`));
+
+  const cookieValue = cookie?.split('=').slice(1).join('=');
+  if (!cookieValue) return null;
+
+  try {
+    return decodeURIComponent(cookieValue);
+  } catch {
+    return null;
+  }
+}
+
+function parseGaClientIdFromCookie(): string | null {
+  return parseGaClientIdFromCookieValue(getCookieValue('_ga'));
+}
+
+function parseGaSessionIdFromCookie(): string | null {
+  if (!config.GA_MEASUREMENT_ID) return null;
+
+  const measurementIdSuffix = config.GA_MEASUREMENT_ID.replace(
+    GA_MEASUREMENT_ID_PREFIX_REGEX,
+    '',
+  );
+  return parseGaSessionIdFromCookieValue(
+    getCookieValue(`_ga_${measurementIdSuffix}`),
+  );
+}
+
+let cachedGaClientId: string | null = null;
+let gaClientIdPromise: Promise<string | null> | null = null;
+let cachedGaSessionId: string | null = null;
+let gaSessionIdPromise: Promise<string | null> | null = null;
+
+function hasGoogleAnalyticsMeasurementConsent(): boolean {
+  if (typeof window === 'undefined') return false;
+  return getGoogleAnalyticsMeasurementConsentHeaderValue() === 'granted';
+}
+
+function getGoogleAnalyticsMeasurementConsentHeaderValue():
+  | 'granted'
+  | 'denied'
+  | null {
+  if (typeof window === 'undefined') return null;
+  const measurementConsent = (
+    window as typeof window & { namefiMeasurementConsent?: boolean }
+  ).namefiMeasurementConsent;
+
+  if (measurementConsent === true) return 'granted';
+  if (measurementConsent === false) return 'denied';
+  return null;
+}
+
+async function getGoogleAnalyticsClientId(): Promise<string | null> {
+  if (typeof window === 'undefined' || !config.GA_MEASUREMENT_ID) return null;
+  if (!hasGoogleAnalyticsMeasurementConsent()) {
+    cachedGaClientId = null;
+    return null;
+  }
+  if (cachedGaClientId) return cachedGaClientId;
+
+  const cookieClientId = parseGaClientIdFromCookie();
+  if (cookieClientId) {
+    cachedGaClientId = cookieClientId;
+    return cookieClientId;
+  }
+
+  if (!gaClientIdPromise) {
+    gaClientIdPromise = new Promise<string | null>((resolve) => {
+      let settled = false;
+      const finish = (clientId: string | null) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(fallbackTimer);
+        const resolvedClientId = hasGoogleAnalyticsMeasurementConsent()
+          ? clientId
+          : null;
+        cachedGaClientId = resolvedClientId;
+        resolve(resolvedClientId);
+      };
+
+      const fallbackTimer = window.setTimeout(() => {
+        finish(parseGaClientIdFromCookie());
+      }, 250);
+
+      const gtag = window.gtag;
+      if (!gtag) {
+        finish(parseGaClientIdFromCookie());
+        return;
+      }
+
+      gtag('get', config.GA_MEASUREMENT_ID, 'client_id', (clientId: unknown) =>
+        finish(
+          typeof clientId === 'string'
+            ? (normalizeGaClientId(clientId) ?? parseGaClientIdFromCookie())
+            : parseGaClientIdFromCookie(),
+        ),
+      );
+    }).finally(() => {
+      gaClientIdPromise = null;
+    });
+  }
+
+  return gaClientIdPromise;
+}
+
+async function getGoogleAnalyticsSessionId(): Promise<string | null> {
+  if (typeof window === 'undefined' || !config.GA_MEASUREMENT_ID) return null;
+  if (!hasGoogleAnalyticsMeasurementConsent()) {
+    cachedGaSessionId = null;
+    gaSessionIdPromise = null;
+    return null;
+  }
+
+  const cookieSessionId = parseGaSessionIdFromCookie();
+  if (cookieSessionId) {
+    cachedGaSessionId = cookieSessionId;
+    return cookieSessionId;
+  }
+  if (cachedGaSessionId) return cachedGaSessionId;
+
+  if (!gaSessionIdPromise) {
+    gaSessionIdPromise = new Promise<string | null>((resolve) => {
+      let settled = false;
+      const finish = (sessionId: string | null) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(fallbackTimer);
+        const resolvedSessionId = hasGoogleAnalyticsMeasurementConsent()
+          ? normalizeGaSessionId(sessionId)
+          : null;
+        cachedGaSessionId = resolvedSessionId;
+        resolve(resolvedSessionId);
+      };
+
+      const fallbackTimer = window.setTimeout(() => {
+        finish(parseGaSessionIdFromCookie());
+      }, 250);
+
+      const gtag = window.gtag;
+      if (!gtag) {
+        finish(parseGaSessionIdFromCookie());
+        return;
+      }
+
+      gtag(
+        'get',
+        config.GA_MEASUREMENT_ID,
+        'session_id',
+        (sessionId: unknown) =>
+          finish(
+            typeof sessionId === 'string' || typeof sessionId === 'number'
+              ? (normalizeGaSessionId(sessionId) ??
+                  parseGaSessionIdFromCookie())
+              : parseGaSessionIdFromCookie(),
+          ),
+      );
+    }).finally(() => {
+      gaSessionIdPromise = null;
+    });
+  }
+
+  return gaSessionIdPromise;
+}
+
 async function getHeaders(): Promise<Record<string, string>> {
   const skipAuth = isSkipAuthActive();
-  const fingerprint = await getBrowserFingerprint();
+  const measurementConsentHeader =
+    getGoogleAnalyticsMeasurementConsentHeaderValue();
+  const [fingerprint, gaClientId, gaSessionId] = await Promise.all([
+    getBrowserFingerprint(),
+    getGoogleAnalyticsClientId(),
+    getGoogleAnalyticsSessionId(),
+  ]);
 
   // If skip auth is active, send the skip auth header instead of the real token
   if (skipAuth) {
@@ -263,7 +451,12 @@ async function getHeaders(): Promise<Record<string, string>> {
       'Content-Type': 'application/json',
       'X-Skip-Auth': '1',
     };
-    if (fingerprint) headers['X-Browser-Fingerprint'] = fingerprint;
+    if (measurementConsentHeader) {
+      headers[C15T_MEASUREMENT_CONSENT_HEADER] = measurementConsentHeader;
+    }
+    if (fingerprint) headers[BROWSER_FINGERPRINT_HEADER] = fingerprint;
+    if (gaClientId) headers[GA_CLIENT_ID_HEADER] = gaClientId;
+    if (gaSessionId) headers[GA_SESSION_ID_HEADER] = gaSessionId;
     return headers;
   }
 
@@ -274,6 +467,11 @@ async function getHeaders(): Promise<Record<string, string>> {
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-  if (fingerprint) headers['X-Browser-Fingerprint'] = fingerprint;
+  if (measurementConsentHeader) {
+    headers[C15T_MEASUREMENT_CONSENT_HEADER] = measurementConsentHeader;
+  }
+  if (fingerprint) headers[BROWSER_FINGERPRINT_HEADER] = fingerprint;
+  if (gaClientId) headers[GA_CLIENT_ID_HEADER] = gaClientId;
+  if (gaSessionId) headers[GA_SESSION_ID_HEADER] = gaSessionId;
   return headers;
 }

@@ -1,24 +1,67 @@
 /** biome-ignore-all lint/style/useNamingConvention: GA4 recommends snake_case for event names and parameter keys */
-import type { BackendAnalyticsEventName } from '#lib/analytics-events';
+import type {
+  BackendAnalyticsEventName,
+  BackendAnalyticsEventSource,
+} from '#lib/analytics-events';
 import { sendGA4Event, type GA4Event } from '#lib/ga4-measurement';
 import { createLogger } from '#lib/logger';
-import type { PaymentProvider } from '@namefi-astra/common/payment-provider';
 import type { OrderStatus } from '@namefi-astra/common/shared-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import type {
+  CheckoutTrackingContext,
+  CheckoutTrackingIdentity,
+} from './context';
 
 const logger = createLogger({ name: 'tracking-checkout' });
+const GA4_STANDARD_PARAM_VALUE_MAX_LENGTH = 100;
+
+function formatGaStringParam(value?: string): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) return undefined;
+  return trimmed.slice(0, GA4_STANDARD_PARAM_VALUE_MAX_LENGTH);
+}
 
 type CheckoutAnalyticsBaseInput = {
   userId?: string;
+  identity?: CheckoutTrackingIdentity;
   orderId?: string;
   normalizedDomainName?: NamefiNormalizedDomain;
   orderItemId?: string;
+};
+
+type CheckoutEmailEventIdentity = {
+  clientId?: string;
+  sessionId?: number;
+  eventSource: 'email';
+};
+
+type CheckoutEventIdentity =
+  | CheckoutTrackingIdentity
+  | CheckoutEmailEventIdentity;
+
+type CheckoutEventBaseParamsInput = Omit<
+  CheckoutAnalyticsBaseInput,
+  'identity'
+> & {
+  identity?: CheckoutEventIdentity;
 };
 
 type LogGaEventOrderPlacedInput = CheckoutAnalyticsBaseInput & {
   orderId: string;
   amountUsdCents: number;
   itemCount: number;
+  paymentCount: number;
+  orderSource?: 'checkout' | 'instant_buy' | 'nfsc_topup';
+};
+type EmitOrderPlacedIfTrackedInput = {
+  tracking: CheckoutTrackingContext;
+  userId: string;
+  order: {
+    id: string;
+    amountInUSDCents: number;
+    items?: readonly unknown[];
+    nfscItems?: readonly unknown[];
+  };
   paymentCount: number;
   orderSource?: 'checkout' | 'instant_buy' | 'nfsc_topup';
 };
@@ -104,6 +147,9 @@ type CheckoutEventBaseParams = {
   order_id?: string;
   normalized_domain_name?: string;
   order_item_id?: string;
+  event_source?: BackendAnalyticsEventSource;
+  session_id?: number;
+  engagement_time_msec?: number;
 };
 
 function baseEventParams({
@@ -111,26 +157,42 @@ function baseEventParams({
   orderId,
   normalizedDomainName,
   orderItemId,
-}: CheckoutAnalyticsBaseInput): CheckoutEventBaseParams {
+  identity,
+}: CheckoutEventBaseParamsInput): CheckoutEventBaseParams {
   return {
     user_id: userId,
     order_id: orderId,
     normalized_domain_name: normalizedDomainName,
     order_item_id: orderItemId,
+    event_source: identity?.eventSource,
+    session_id: identity?.sessionId,
+    engagement_time_msec: identity?.sessionId ? 1 : undefined,
   };
 }
 
 async function sendCheckoutEvent<E extends BackendAnalyticsEventName>({
   userId,
+  identity,
   event,
   metadata,
 }: {
   userId?: string;
+  identity?: CheckoutEventIdentity;
   event: GA4Event<E>;
   metadata?: Record<string, unknown>;
 }) {
+  const isServerSource =
+    identity?.eventSource === 'api' || identity?.eventSource === 'email';
+  if (!identity?.clientId && !isServerSource) {
+    logger.info(
+      { eventName: event.name, userId, ...metadata },
+      'Skipping GA checkout event because browser GA clientId is missing',
+    );
+    return;
+  }
+
   try {
-    await sendGA4Event({ userId, event });
+    await sendGA4Event({ userId, clientId: identity?.clientId, event });
   } catch (error) {
     logger.warn(
       { error, eventName: event.name, ...metadata },
@@ -144,6 +206,7 @@ export async function gaEventOrderPlaced(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_placed',
       params: {
@@ -161,11 +224,43 @@ export async function gaEventOrderPlaced(
   });
 }
 
+export async function emitOrderPlacedIfTracked({
+  tracking,
+  userId,
+  order,
+  paymentCount,
+  orderSource,
+}: EmitOrderPlacedIfTrackedInput): Promise<void> {
+  if (!tracking.trackGaEvents) {
+    logger.info(
+      {
+        orderId: order.id,
+        userId,
+        gaEventTrackingReason: tracking.reason ?? 'DEFAULT',
+        gaEventSource: tracking.identity?.eventSource,
+      },
+      'Skipping GA order_placed event because tracking is disabled',
+    );
+    return;
+  }
+
+  await gaEventOrderPlaced({
+    userId,
+    identity: tracking.identity,
+    orderId: order.id,
+    amountUsdCents: order.amountInUSDCents,
+    itemCount: order.items?.length ?? order.nfscItems?.length ?? 0,
+    paymentCount,
+    orderSource,
+  });
+}
+
 export async function gaEventOrderProcessingStarted(
   input: LogGaEventOrderProcessingStartedInput,
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_processing_started',
       params: {
@@ -183,6 +278,7 @@ export async function gaEventOrderItemsProcessingStarted(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_items_processing_started',
       params: {
@@ -201,6 +297,7 @@ export async function gaEventOrderItemsProcessingFinished(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_items_processing_finished',
       params: {
@@ -221,6 +318,7 @@ export async function gaEventOrderProcessingFinished(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_processing_finished',
       params: {
@@ -241,6 +339,7 @@ export async function gaEventOrderItemProcessingStarted(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_item_processing_started',
       params: {
@@ -263,6 +362,7 @@ export async function gaEventOrderItemProcessingFinished(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_item_processing_finished',
       params: {
@@ -286,6 +386,7 @@ export async function gaEventPaymentSuccess(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'payment_processed',
       params: {
@@ -305,6 +406,7 @@ export async function gaEventPaymentFailed(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'payment_processed',
       params: {
@@ -325,6 +427,7 @@ export async function gaEventPaymentRefunded(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'payment_refunded',
       params: {
@@ -345,6 +448,7 @@ export async function gaEventDomainAcquisitionStarted(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'domain_acquisition_started',
       params: {
@@ -372,6 +476,7 @@ export async function gaEventDomainAcquisitionFinished(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'domain_acquisition_finished',
       params: {
@@ -399,6 +504,7 @@ export async function gaEventDnsRecordsPropagated(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'dns_records_propagated',
       params: {
@@ -420,6 +526,7 @@ export async function gaEventParkingFinished(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'parking_finished',
       params: {
@@ -443,6 +550,7 @@ export async function gaEventOrderFinishedEmailSent(
 ): Promise<void> {
   return sendCheckoutEvent({
     userId: input.userId,
+    identity: input.identity,
     event: {
       name: 'order_finished_email_sent',
       params: {
@@ -460,12 +568,21 @@ export async function gaEventOrderFinishedEmailSent(
 export async function gaEventOrderFinishedEmailOpened(
   input: LogGaEventOrderFinishedEmailOpenedInput,
 ): Promise<void> {
+  const identity =
+    input.identity?.clientId ||
+    input.identity?.sessionId ||
+    input.identity?.eventSource
+      ? input.identity
+      : { eventSource: 'email' as const };
+  const isEmailOnlySource = identity.eventSource === 'email';
+
   return sendCheckoutEvent({
-    userId: input.userId,
+    userId: isEmailOnlySource ? undefined : input.userId,
+    identity,
     event: {
       name: 'order_finished_email_opened',
       params: {
-        ...baseEventParams(input),
+        ...baseEventParams({ ...input, identity }),
         email_distinct_id: input.emailId,
       },
     },
@@ -478,78 +595,43 @@ export async function gaEventOrderFinishedEmailOpened(
 
 export async function gaEventUserBeginSearch({
   userId,
-  clientId,
+  identity,
   searchTerm,
   parentDomain,
 }: {
   userId?: string;
-  clientId: string | null;
+  identity?: CheckoutTrackingIdentity | null;
   searchTerm: string;
   parentDomain?: string;
 }) {
-  if (!searchTerm) return;
-  if (!userId && !clientId) return;
+  const gaSearchTerm = formatGaStringParam(searchTerm);
+  if (!gaSearchTerm) return;
+  if (!identity?.clientId) return;
+
   try {
     await sendGA4Event({
       userId,
-      clientId: clientId ?? undefined,
+      clientId: identity.clientId,
       event: {
         name: 'user_begin_search',
         params: {
-          search_term: searchTerm,
-          parent_domain: parentDomain,
+          search_term: gaSearchTerm,
+          parent_domain: formatGaStringParam(parentDomain),
+          session_id: identity.sessionId,
+          engagement_time_msec: identity.sessionId ? 1 : undefined,
         },
       },
     });
   } catch (error) {
     logger.warn(
-      { error, userId, clientId: clientId ?? undefined, searchTerm },
+      {
+        error,
+        userId,
+        hasClientId: Boolean(identity.clientId),
+        eventSource: identity.eventSource,
+        searchTerm,
+      },
       'Failed to send GA search event',
-    );
-  }
-}
-
-export async function gaEventPaymentProcessed({
-  userId,
-  orderId,
-  amountInUsdCents,
-  paymentCount,
-  paymentProviders,
-  status,
-}: {
-  userId: string;
-  orderId: string;
-  amountInUsdCents: number;
-  paymentCount: number;
-  paymentProviders: PaymentProvider[];
-  status: 'FAILURE' | 'SUCCESS' | 'TIMEOUT';
-}) {
-  const uniqueProviders = Array.from(new Set(paymentProviders));
-  const paymentProvider =
-    uniqueProviders.length === 1 ? uniqueProviders[0] : undefined;
-  const paymentProvidersParam =
-    uniqueProviders.length > 1 ? uniqueProviders.join(',') : undefined;
-
-  try {
-    await sendGA4Event({
-      userId,
-      event: {
-        name: 'payment_processed',
-        params: {
-          user_id: userId,
-          order_id: orderId,
-          amount_usd_cents: amountInUsdCents,
-          payment_count: paymentCount,
-          payment_provider: paymentProvider,
-          payment_providers: paymentProvidersParam,
-          status,
-        },
-      },
-    });
-  } catch (error) {
-    logger.warn(
-      { error, orderId, userId },
-      'Failed to send GA payment_processed event',
     );
   }
 }

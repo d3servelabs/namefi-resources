@@ -127,15 +127,6 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
         },
       };
     }
-    case InteractionLoggingEventName.Search: {
-      const { search_term } = event.properties;
-      return {
-        name: event.name,
-        properties: {
-          search_term,
-        },
-      };
-    }
     case InteractionLoggingEventName.MyDomainsListForSaleClicked: {
       const { domainName, tableKind } = event.properties;
       return {

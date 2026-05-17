@@ -39,35 +39,42 @@ vi.mock('@namefi-astra/db', () => ({
     validUntil: 'consent.validUntil',
     purposeIds: 'consent.purposeIds',
     domainId: 'consent.domainId',
+    givenAt: 'consent.givenAt',
   },
 }));
 
 vi.mock('drizzle-orm', () => ({
   and: (...conditions: unknown[]) => ({ op: 'and', conditions }),
+  desc: (column: unknown) => ({ op: 'desc', column }),
   eq: (column: unknown, value: unknown) => ({ op: 'eq', column, value }),
   gt: (column: unknown, value: unknown) => ({ op: 'gt', column, value }),
   isNull: (column: unknown) => ({ op: 'isNull', column }),
   or: (...conditions: unknown[]) => ({ op: 'or', conditions }),
-  sql: (strings: TemplateStringsArray, ...values: unknown[]) => ({
-    op: 'sql',
-    strings,
-    values,
-  }),
 }));
 
-const { hasUserCookieConsent } = await import('./consent');
+const { getUserCookieConsentState, hasUserCookieConsent } = await import(
+  './consent'
+);
 
 describe('hasUserCookieConsent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('fails closed when domainName is missing', async () => {
-    const hasConsent = hasUserCookieConsent as unknown as (args: {
+  it('returns unknown when domainName is missing', async () => {
+    const resolveConsentState = getUserCookieConsentState as unknown as (args: {
       userId: string;
-    }) => Promise<boolean>;
+    }) => Promise<string>;
 
-    await expect(hasConsent({ userId: 'user-1' })).resolves.toBe(false);
+    await expect(resolveConsentState({ userId: 'user-1' })).resolves.toBe(
+      'unknown',
+    );
+    await expect(
+      hasUserCookieConsent({
+        userId: 'user-1',
+        domainName: '',
+      }),
+    ).resolves.toBe(false);
 
     expect(mockDb.query.consentPurpose.findFirst).not.toHaveBeenCalled();
     expect(mockDb.query.consent.findFirst).not.toHaveBeenCalled();
@@ -81,23 +88,32 @@ describe('hasUserCookieConsent', () => {
     mockDb.query.domain.findFirst.mockResolvedValue(null);
 
     await expect(
-      hasUserCookieConsent({
+      getUserCookieConsentState({
         userId: 'user-1',
         domainName: 'missing.example',
       }),
-    ).resolves.toBe(false);
+    ).resolves.toBe('unknown');
 
     expect(mockDb.query.consent.findFirst).not.toHaveBeenCalled();
   });
 
-  it('filters consent by the resolved domain', async () => {
+  it('returns granted when the latest active consent includes the purpose', async () => {
     mockDb.query.consentPurpose.findFirst.mockResolvedValue({
       id: 'purpose-1',
     });
     mockDb.query.subject.findFirst.mockResolvedValue({ id: 'subject-1' });
     mockDb.query.domain.findFirst.mockResolvedValue({ id: 'domain-1' });
-    mockDb.query.consent.findFirst.mockResolvedValue({ id: 'consent-1' });
+    mockDb.query.consent.findFirst.mockResolvedValue({
+      id: 'consent-1',
+      purposeIds: ['purpose-1'],
+    });
 
+    await expect(
+      getUserCookieConsentState({
+        userId: 'user-1',
+        domainName: 'app.example',
+      }),
+    ).resolves.toBe('granted');
     await expect(
       hasUserCookieConsent({
         userId: 'user-1',
@@ -116,13 +132,39 @@ describe('hasUserCookieConsent', () => {
       }),
     });
     expect(mockDb.query.consent.findFirst).toHaveBeenCalledWith({
-      columns: { id: true },
+      columns: { id: true, purposeIds: true },
       where: expect.objectContaining({
         op: 'and',
         conditions: expect.arrayContaining([
           { op: 'eq', column: 'consent.domainId', value: 'domain-1' },
         ]),
       }),
+      orderBy: [{ op: 'desc', column: 'consent.givenAt' }],
     });
+  });
+
+  it('returns denied when the latest active consent excludes the purpose', async () => {
+    mockDb.query.consentPurpose.findFirst.mockResolvedValue({
+      id: 'purpose-1',
+    });
+    mockDb.query.subject.findFirst.mockResolvedValue({ id: 'subject-1' });
+    mockDb.query.domain.findFirst.mockResolvedValue({ id: 'domain-1' });
+    mockDb.query.consent.findFirst.mockResolvedValue({
+      id: 'consent-1',
+      purposeIds: ['necessary-purpose'],
+    });
+
+    await expect(
+      getUserCookieConsentState({
+        userId: 'user-1',
+        domainName: 'app.example',
+      }),
+    ).resolves.toBe('denied');
+    await expect(
+      hasUserCookieConsent({
+        userId: 'user-1',
+        domainName: 'app.example',
+      }),
+    ).resolves.toBe(false);
   });
 });

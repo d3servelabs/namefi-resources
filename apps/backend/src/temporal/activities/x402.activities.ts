@@ -36,6 +36,13 @@ import {
   resolveX402PaymentPayloadEncryptionPrivateKey,
   getX402ResourceServer,
 } from '#lib/x402/helpers';
+import {
+  type CheckoutTrackingContext,
+  resolveApiCheckoutTracking,
+  toGaEventTracking,
+} from '#lib/tracking/checkout/context';
+import { emitOrderPlacedIfTracked } from '#lib/tracking/checkout/events';
+import type { WorkflowCheckoutTrackingInput } from '#temporal/shared/workflow-helpers/checkout-tracking';
 
 const logger = createLogger({ context: 'X402_ACTIVITIES' });
 
@@ -522,6 +529,7 @@ export interface CreateX402OrderResult {
   orderItemId: string;
   paymentId: string;
   registrar: string;
+  gaEventTracking?: WorkflowCheckoutTrackingInput;
 }
 
 /**
@@ -633,7 +641,42 @@ export async function createX402Order(
     'Created x402 order',
   );
 
-  return result;
+  let gaEventTracking: CheckoutTrackingContext = {
+    trackGaEvents: false,
+    reason: 'OTHER',
+  };
+  try {
+    gaEventTracking = await resolveApiCheckoutTracking({
+      userId: input.userId,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, userId: input.userId, orderId: result.orderId },
+      'Failed to resolve checkout tracking for x402 order',
+    );
+  }
+
+  void emitOrderPlacedIfTracked({
+    tracking: gaEventTracking,
+    userId: input.userId,
+    order: {
+      id: result.orderId,
+      amountInUSDCents: input.amountInUsdCents,
+      items: [input.normalizedDomainName],
+    },
+    paymentCount: 1,
+    orderSource: 'instant_buy',
+  }).catch((error) => {
+    logger.warn(
+      { error, userId: input.userId, orderId: result.orderId },
+      'Failed to emit x402 order_placed analytics event',
+    );
+  });
+
+  return {
+    ...result,
+    gaEventTracking: toGaEventTracking(gaEventTracking),
+  };
 }
 
 /**

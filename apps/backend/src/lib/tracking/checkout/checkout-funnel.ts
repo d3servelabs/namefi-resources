@@ -1,6 +1,6 @@
-import type { CheckoutFlowEventName } from './analytics-client';
 import {
   CHECKOUT_FLOW_EVENT_LABELS,
+  type CheckoutFlowEventName,
   type CheckoutFlowEventsParsed,
   type CheckoutFlowFunnelPoint,
 } from './analytics-types';

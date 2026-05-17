@@ -302,6 +302,7 @@ export async function processX402PurchaseWorkflow(
         {
           orderId: orderResult.orderId,
           paymentsMetadata: {}, // No additional metadata needed for x402
+          gaEventTracking: orderResult.gaEventTracking,
         },
       ],
       workflowId: childWorkflowId,

@@ -46,8 +46,23 @@ import {
   gaEventPaymentFailed,
   gaEventPaymentSuccess,
 } from '#lib/tracking/checkout/events';
+import type { CheckoutTrackingIdentity } from '#lib/tracking/checkout/context';
 import { getPreferredEvmWalletAddressToBeCharged } from './payment.activities';
 import { sendAlertToSlack } from './domain/renew.activities';
+
+function pickCheckoutTrackingIdentity(
+  input: CheckoutTrackingIdentity,
+): CheckoutTrackingIdentity | undefined {
+  const identity = {
+    clientId: input.clientId,
+    sessionId: input.sessionId,
+    eventSource: input.eventSource,
+  };
+
+  return identity.clientId || identity.sessionId || identity.eventSource
+    ? identity
+    : undefined;
+}
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -122,21 +137,25 @@ export async function updateOrderStatusOrThrow({
   return updatedOrder;
 }
 
-export async function logGaEventPaymentProcessed({
-  userId,
-  orderId,
-  amountInUsdCents,
-  paymentCount,
-  paymentProviders,
-  status,
-}: {
-  userId: string;
-  orderId: string;
-  amountInUsdCents: number;
-  paymentCount: number;
-  paymentProviders: PaymentProvider[];
-  status: 'SUCCESS' | 'FAILURE';
-}) {
+export async function logGaEventPaymentProcessed(
+  input: {
+    userId: string;
+    orderId: string;
+    amountInUsdCents: number;
+    paymentCount: number;
+    paymentProviders: PaymentProvider[];
+    status: 'SUCCESS' | 'FAILURE';
+  } & CheckoutTrackingIdentity,
+) {
+  const {
+    userId,
+    orderId,
+    amountInUsdCents,
+    paymentCount,
+    paymentProviders,
+    status,
+  } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   const uniqueProviders = Array.from(new Set(paymentProviders));
   const paymentProvider =
     uniqueProviders.length === 1 ? uniqueProviders[0] : undefined;
@@ -147,6 +166,7 @@ export async function logGaEventPaymentProcessed({
     if (status === 'SUCCESS') {
       await gaEventPaymentSuccess({
         userId,
+        identity,
         orderId,
         amountUsdCents: amountInUsdCents,
         paymentCount,
@@ -156,6 +176,7 @@ export async function logGaEventPaymentProcessed({
     } else if (status === 'FAILURE') {
       await gaEventPaymentFailed({
         userId,
+        identity,
         orderId,
         amountUsdCents: amountInUsdCents,
         paymentCount,
@@ -175,16 +196,18 @@ export async function logGaEventPaymentProcessed({
   }
 }
 
-export async function logGaEventOrderProcessingStarted({
-  userId,
-  orderId,
-}: {
-  userId: string;
-  orderId: string;
-}) {
+export async function logGaEventOrderProcessingStarted(
+  input: {
+    userId: string;
+    orderId: string;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderProcessingStarted({
       userId,
+      identity,
       orderId,
     });
   } catch (error) {
@@ -195,18 +218,19 @@ export async function logGaEventOrderProcessingStarted({
   }
 }
 
-export async function logGaEventOrderItemsProcessingStarted({
-  userId,
-  orderId,
-  itemsCount,
-}: {
-  userId: string;
-  orderId: string;
-  itemsCount: number;
-}) {
+export async function logGaEventOrderItemsProcessingStarted(
+  input: {
+    userId: string;
+    orderId: string;
+    itemsCount: number;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, itemsCount } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderItemsProcessingStarted({
       userId,
+      identity,
       orderId,
       itemsCount,
     });
@@ -218,22 +242,22 @@ export async function logGaEventOrderItemsProcessingStarted({
   }
 }
 
-export async function logGaEventOrderItemsProcessingFinished({
-  userId,
-  orderId,
-  itemsCount,
-  successItemsCount,
-  failedItemsCount,
-}: {
-  userId: string;
-  orderId: string;
-  itemsCount: number;
-  successItemsCount: number;
-  failedItemsCount: number;
-}) {
+export async function logGaEventOrderItemsProcessingFinished(
+  input: {
+    userId: string;
+    orderId: string;
+    itemsCount: number;
+    successItemsCount: number;
+    failedItemsCount: number;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, itemsCount, successItemsCount, failedItemsCount } =
+    input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderItemsProcessingFinished({
       userId,
+      identity,
       orderId,
       itemsCount,
       successItemsCount,
@@ -254,22 +278,21 @@ export async function logGaEventOrderItemsProcessingFinished({
   }
 }
 
-export async function logGaEventOrderProcessingFinished({
-  userId,
-  orderId,
-  orderStatus,
-  refundNeeded,
-  refundType,
-}: {
-  userId: string;
-  orderId: string;
-  orderStatus: OrderStatus;
-  refundNeeded: boolean;
-  refundType: 'NONE' | 'FULL' | 'PARTIAL';
-}) {
+export async function logGaEventOrderProcessingFinished(
+  input: {
+    userId: string;
+    orderId: string;
+    orderStatus: OrderStatus;
+    refundNeeded: boolean;
+    refundType: 'NONE' | 'FULL' | 'PARTIAL';
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, orderStatus, refundNeeded, refundType } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderProcessingFinished({
       userId,
+      identity,
       orderId,
       orderStatus,
       refundNeeded,
@@ -283,22 +306,21 @@ export async function logGaEventOrderProcessingFinished({
   }
 }
 
-export async function logGaEventOrderItemProcessingStarted({
-  userId,
-  orderId,
-  orderItemId,
-  itemType,
-  domainName,
-}: {
-  userId: string;
-  orderId: string;
-  orderItemId: string;
-  itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
-  domainName: NamefiNormalizedDomain;
-}) {
+export async function logGaEventOrderItemProcessingStarted(
+  input: {
+    userId: string;
+    orderId: string;
+    orderItemId: string;
+    itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
+    domainName: NamefiNormalizedDomain;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, orderItemId, itemType, domainName } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderItemProcessingStarted({
       userId,
+      identity,
       orderId,
       orderItemId,
       itemType,
@@ -312,24 +334,23 @@ export async function logGaEventOrderItemProcessingStarted({
   }
 }
 
-export async function logGaEventOrderItemProcessingFinished({
-  userId,
-  orderId,
-  orderItemId,
-  itemType,
-  domainName,
-  itemStatus,
-}: {
-  userId: string;
-  orderId: string;
-  orderItemId: string;
-  itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
-  domainName: NamefiNormalizedDomain;
-  itemStatus: 'SUCCEEDED' | 'FAILED';
-}) {
+export async function logGaEventOrderItemProcessingFinished(
+  input: {
+    userId: string;
+    orderId: string;
+    orderItemId: string;
+    itemType: 'REGISTER' | 'IMPORT' | 'RENEW';
+    domainName: NamefiNormalizedDomain;
+    itemStatus: 'SUCCEEDED' | 'FAILED';
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, orderItemId, itemType, domainName, itemStatus } =
+    input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderItemProcessingFinished({
       userId,
+      identity,
       orderId,
       orderItemId,
       itemType,
@@ -344,28 +365,33 @@ export async function logGaEventOrderItemProcessingFinished({
   }
 }
 
-export async function logGaEventDomainAcquisitionStarted({
-  userId,
-  orderId,
-  orderItemId,
-  normalizedDomainName,
-  operationType,
-  registrarKey,
-  durationInYears,
-  chainId,
-}: {
-  userId: string;
-  orderId: string;
-  orderItemId: string;
-  normalizedDomainName: NamefiNormalizedDomain;
-  operationType: 'REGISTER' | 'IMPORT';
-  registrarKey?: string;
-  durationInYears?: number;
-  chainId?: number;
-}) {
+export async function logGaEventDomainAcquisitionStarted(
+  input: {
+    userId: string;
+    orderId: string;
+    orderItemId: string;
+    normalizedDomainName: NamefiNormalizedDomain;
+    operationType: 'REGISTER' | 'IMPORT';
+    registrarKey?: string;
+    durationInYears?: number;
+    chainId?: number;
+  } & CheckoutTrackingIdentity,
+) {
+  const {
+    userId,
+    orderId,
+    orderItemId,
+    normalizedDomainName,
+    operationType,
+    registrarKey,
+    durationInYears,
+    chainId,
+  } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventDomainAcquisitionStarted({
       userId,
+      identity,
       orderId,
       orderItemId,
       normalizedDomainName,
@@ -382,32 +408,37 @@ export async function logGaEventDomainAcquisitionStarted({
   }
 }
 
-export async function logGaEventDomainAcquisitionFinished({
-  userId,
-  orderId,
-  orderItemId,
-  normalizedDomainName,
-  operationType,
-  registrarKey,
-  durationInYears,
-  chainId,
-  status,
-  failureReason,
-}: {
-  userId: string;
-  orderId: string;
-  orderItemId: string;
-  normalizedDomainName: NamefiNormalizedDomain;
-  operationType: 'REGISTER' | 'IMPORT';
-  registrarKey?: string;
-  durationInYears?: number;
-  chainId?: number;
-  status: 'SUCCESS' | 'FAILURE';
-  failureReason?: string;
-}) {
+export async function logGaEventDomainAcquisitionFinished(
+  input: {
+    userId: string;
+    orderId: string;
+    orderItemId: string;
+    normalizedDomainName: NamefiNormalizedDomain;
+    operationType: 'REGISTER' | 'IMPORT';
+    registrarKey?: string;
+    durationInYears?: number;
+    chainId?: number;
+    status: 'SUCCESS' | 'FAILURE';
+    failureReason?: string;
+  } & CheckoutTrackingIdentity,
+) {
+  const {
+    userId,
+    orderId,
+    orderItemId,
+    normalizedDomainName,
+    operationType,
+    registrarKey,
+    durationInYears,
+    chainId,
+    status,
+    failureReason,
+  } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventDomainAcquisitionFinished(status, {
       userId,
+      identity,
       orderId,
       orderItemId,
       normalizedDomainName,
@@ -425,49 +456,51 @@ export async function logGaEventDomainAcquisitionFinished({
   }
 }
 
-export async function logGaEventOrderFinishedEmailSent({
-  userId,
-  orderId,
-  orderStatus,
-}: {
-  userId: string;
-  orderId?: string;
-  orderStatus: OrderStatus;
-}) {
+export async function logGaEventOrderFinishedEmailSent(
+  input: {
+    userId: string;
+    orderId?: string;
+    orderStatus: OrderStatus;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, orderStatus } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderFinishedEmailSent({
       userId,
+      identity,
       orderId,
       orderStatus,
     });
   } catch (error) {
     logger.warn(
       { error, orderId, userId, orderStatus },
-      'Failed to send GA domain_ready_email_sent event',
+      'Failed to send GA order_finished_email_sent event',
     );
   }
 }
 
-export async function logGaEventOrderFinishedEmailOpened({
-  userId,
-  orderId,
-  orderItemId,
-  normalizedDomainName,
-}: {
-  userId: string;
-  orderId?: string;
-  orderItemId?: string;
-  normalizedDomainName?: NamefiNormalizedDomain;
-}) {
+export async function logGaEventOrderFinishedEmailOpened(
+  input: {
+    userId: string;
+    orderId?: string;
+    orderItemId?: string;
+    normalizedDomainName?: NamefiNormalizedDomain;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, orderItemId, normalizedDomainName } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
   try {
     await gaEventOrderFinishedEmailOpened({
       userId,
+      identity,
       orderId,
+      orderItemId,
     });
   } catch (error) {
     logger.warn(
       { error, orderId, orderItemId, userId, normalizedDomainName },
-      'Failed to send GA domain_ready_email_opened event',
+      'Failed to send GA order_finished_email_opened event',
     );
   }
 }

@@ -1,22 +1,48 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { protos } from '@google-analytics/data';
-import {
-  getDashboardOverview,
-  getCheckoutFlowOverview,
-  getFullReportByRecordName,
-} from '../analyticsRouter';
 import { parseDnsAnalyticsReportData } from '#lib/analytics-parser';
 
+vi.mock('#temporal/client', () => ({
+  temporalClient: {
+    workflow: {
+      start: vi.fn(),
+      getHandle: vi.fn(),
+      list: vi.fn(),
+    },
+    connection: {
+      ensureConnected: vi.fn(),
+    },
+    workflowService: {
+      listWorkflowExecutions: vi.fn(),
+    },
+  },
+}));
+
 // Mock env for GA property id
-vi.mock('../../../lib/env', async () => {
-  const actual: any = await vi.importActual('../../../lib/env');
+vi.mock('../../../lib/env', () => {
   return {
-    ...actual,
+    config: {
+      ALLOW_ALL_ORIGINS: true,
+      ALLOW_LOGIN_NOTIFICATIONS: false,
+      ALLOWED_CHAINS: {
+        DNS_SERVING_ALLOWED_NFT_CHAINS: [11155111],
+        NFSC_BALANCE_ALLOWED_CHAINS: [11155111],
+        NFT_ALLOWED_CHAINS: [11155111],
+      },
+      DEV_NFSC_ENABLED: false,
+      DEV_NFSC_SIGNUP_MINT_AMOUNT: 0,
+      LOG_LEVEL: 'debug',
+      NAMEFI_FIRST_PARTY_HOSTNAMES: ['namefi.test'],
+    },
     secrets: {
-      ...actual.secrets,
+      ALCHEMY_API_KEY: 'test-alchemy-api-key',
+      API_AUTH_KEY: 'test-api-key',
       GA4_DNS_PROPERTY_ID: 'test-property-id',
       GA4_APP_PROPERTY_ID: 'test-app-property-id',
       GA4_KEY_FILE_PATH: undefined,
+      PRIVY_SIGNATURE_VERIFICATION_KEY: undefined,
+      PRIVY_WEBHOOK_SECRET: undefined,
+      STRIPE_SECRET_KEY: 'sk_test_analytics_router',
     },
   };
 });
@@ -63,7 +89,7 @@ vi.mock('../../../lib/analytics_client', () => {
           ],
         } as any;
       case 'customEvent:rcode':
-        return { rows: [row('0', 200), row('3', 50)] } as any; // 0=NOERROR, 3=NXDOMAIN
+        return { rows: [row('0', 200), row('3', 50), row('3abc', 5)] } as any; // 0=NOERROR, 3=NXDOMAIN
       case 'customEvent:query_type':
         return { rows: [row('A', 180), row('AAAA', 70)] } as any;
       case 'customEvent:cache_hit':
@@ -115,43 +141,91 @@ vi.mock('../../../lib/analytics_client', () => {
   };
 });
 
-vi.mock('#lib/tracking/checkout/analytics-client', () => {
+vi.mock('@google-analytics/data', () => {
   return {
-    createCheckoutFlowGA4Client: (_config: any) => ({
-      getEventCounts: async () => {
-        return {
-          rows: [
-            row('user_begin_search', 1000),
-            row('order_placed', 700),
-            row('payment_processed', 650),
-            row('domain_acquisition_started', 640),
-            row('domain_acquisition_finished', 630),
-            row('dns_records_propagated', 520),
-            row('parking_finished', 500),
-            row('payment_refunded', 70),
-            row('order_finished_email_sent', 480),
-            row('order_finished_email_opened', 300),
-          ],
-        } as any;
-      },
-      getEventCountsByStatus: async () => {
-        return {
-          rows: [
-            row3('payment_processed', 'SUCCESS', '(not set)', 610),
-            row3('payment_processed', 'FAILURE', '(not set)', 40),
-            row3('domain_acquisition_finished', 'SUCCESS', '(not set)', 560),
-            row3('domain_acquisition_finished', 'FAILURE', '(not set)', 50),
-            row3('domain_acquisition_finished', 'TIMEOUT', '(not set)', 20),
-            row3('parking_finished', 'SUCCESS', '(not set)', 480),
-            row3('parking_finished', 'TIMEOUT', '(not set)', 20),
-            row3('order_finished_email_sent', '(not set)', 'COMPLETED', 420),
-            row3('order_finished_email_sent', '(not set)', 'FAILED', 60),
-          ],
-        } as any;
-      },
-    }),
+    BetaAnalyticsDataClient: class {
+      async runReport(request: {
+        dimensions?: Array<{ name?: string | null }>;
+      }) {
+        const dimensionNames =
+          request.dimensions?.map((dimension) => dimension.name) ?? [];
+
+        if (dimensionNames[0] === 'eventName' && dimensionNames.length === 1) {
+          return [
+            {
+              rows: [
+                row('user_begin_search', 1000),
+                row('order_placed', 700),
+                row('payment_processed', 650),
+                row('domain_acquisition_started', 640),
+                row('domain_acquisition_finished', 630),
+                row('dns_records_propagated', 520),
+                row('parking_finished', 500),
+                row('payment_refunded', 70),
+                row('order_finished_email_sent', 480),
+                row('order_finished_email_opened', 300),
+              ],
+            },
+          ];
+        }
+
+        if (
+          dimensionNames[0] === 'eventName' &&
+          dimensionNames[1] === 'customEvent:status' &&
+          dimensionNames[2] === 'customEvent:order_status'
+        ) {
+          return [
+            {
+              rows: [
+                row3('payment_processed', 'SUCCESS', '(not set)', 610),
+                row3('payment_processed', 'FAILURE', '(not set)', 40),
+                row3(
+                  'domain_acquisition_finished',
+                  'SUCCESS',
+                  '(not set)',
+                  560,
+                ),
+                row3('domain_acquisition_finished', 'FAILURE', '(not set)', 50),
+                row3('domain_acquisition_finished', 'TIMEOUT', '(not set)', 20),
+                row3('parking_finished', 'SUCCESS', '(not set)', 480),
+                row3('parking_finished', 'TIMEOUT', '(not set)', 20),
+                row3(
+                  'order_finished_email_sent',
+                  '(not set)',
+                  'COMPLETED',
+                  420,
+                ),
+                row3('order_finished_email_sent', '(not set)', 'FAILED', 60),
+              ],
+            },
+          ];
+        }
+
+        return [{ rows: [] }];
+      }
+    },
   };
 });
+
+vi.mock('@google-analytics/admin', () => {
+  return {
+    AnalyticsAdminServiceClient: class {
+      async createCustomDimension() {
+        return [{}];
+      }
+
+      async createCustomMetric() {
+        return [{}];
+      }
+    },
+  };
+});
+
+const {
+  getDashboardOverview,
+  getCheckoutFlowOverview,
+  getFullReportByRecordName,
+} = await import('../analyticsRouter');
 
 describe('Analytics Router + Parser (e2e-style)', () => {
   beforeEach(() => {
@@ -184,6 +258,8 @@ describe('Analytics Router + Parser (e2e-style)', () => {
     const rcodes = parsed.queriesByResponseCode.map((r) => r.rcode);
     expect(rcodes.some((r) => r.includes('NOERROR'))).toBe(true);
     expect(rcodes.some((r) => r.includes('NXDOMAIN'))).toBe(true);
+    expect(rcodes).toContain('RCODE:3abc');
+    expect(rcodes).not.toContain('NXDOMAIN(3abc)');
 
     // Top domains
     expect(parsed.topDomains[0]).toEqual({ domain: 'example.com', count: 120 });
@@ -226,6 +302,7 @@ describe('Analytics Router + Parser (e2e-style)', () => {
     const parsed = await getCheckoutFlowOverview({
       startDate: '7daysAgo',
       endDate: 'today',
+      eventSource: 'all',
     });
 
     expect(parsed.summary.beginSearchCount).toBe(1000);
@@ -267,6 +344,12 @@ describe('Analytics Router + Parser (e2e-style)', () => {
       ),
     ).toBe(true);
 
+    expect(
+      parsed.sankey.links.some(
+        (link) =>
+          link.source === 'user_begin_search' && link.target === 'order_placed',
+      ),
+    ).toBe(true);
     expect(
       parsed.sankey.links.some(
         (link) =>

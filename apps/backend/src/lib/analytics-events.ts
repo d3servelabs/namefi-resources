@@ -55,7 +55,16 @@ export interface BackendAnalyticsCustomMetric {
   scope: 'EVENT';
 }
 
+export type BackendAnalyticsEventSource = 'api' | 'email';
+
 export const BACKEND_ANALYTICS_CUSTOM_DIMENSIONS = [
+  {
+    parameterName: 'event_source',
+    displayName: 'Event Source',
+    description:
+      'Originating source for backend analytics events, such as api or email.',
+    scope: 'EVENT',
+  },
   {
     parameterName: 'search_term',
     displayName: 'Search Term',
@@ -258,6 +267,9 @@ type CheckoutAnalyticsBaseParams = {
   order_id?: string;
   normalized_domain_name?: string;
   order_item_id?: string;
+  event_source?: BackendAnalyticsEventSource;
+  session_id?: number;
+  engagement_time_msec?: number;
 };
 
 type OrderPlacedParams = CheckoutAnalyticsBaseParams & {
@@ -348,6 +360,8 @@ type DnsRecordsPropagatedParams = CheckoutAnalyticsBaseParams & {
 type UserBeginSearchParams = {
   search_term: string;
   parent_domain?: string;
+  session_id?: number;
+  engagement_time_msec?: number;
 };
 
 export type BackendAnalyticsEventName =

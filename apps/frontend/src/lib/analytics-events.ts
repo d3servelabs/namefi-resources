@@ -6,7 +6,6 @@ export enum InteractionLoggingEventName {
   BeginCheckout = 'begin_checkout',
   Purchase = 'purchase',
   RemoveFromCart = 'remove_from_cart',
-  Search = 'search',
   SignUp = 'sign_up',
 
   // Checkout Events
@@ -75,7 +74,6 @@ export type InteractionLoggingEvent =
         cartItems: InteractionLoggingCartItem[];
       }
     >
-  | BaseEvent<InteractionLoggingEventName.Search, { search_term: string }>
   | BaseEvent<
       InteractionLoggingEventName.Vote,
       {

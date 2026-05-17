@@ -33,7 +33,10 @@ import * as workflow from '@temporalio/workflow';
 import { getStripePaymentMethodPublicIdentifier } from './payment.activities';
 import { resolve } from '@namefi-astra/utils';
 import { domainToUnicode } from 'node:url';
-import { buildEmailAnalyticsUrl } from '../../mail/components/email-tracking';
+import {
+  buildEmailAnalyticsUrl,
+  type EmailAnalyticsPayload,
+} from '../../mail/components/email-tracking';
 import { config } from '#lib/env';
 import { randomUUID } from 'node:crypto';
 
@@ -282,13 +285,17 @@ async function maybeGetOrderFinishedAnalyticsUrl(): Promise<string | null> {
 
   if (config.EMAIL_ANALYTICS_URL) {
     try {
+      const payload = {
+        nonce: randomUUID(),
+        type: 'order_ready_count_only',
+      } satisfies EmailAnalyticsPayload;
       const analyticsUrlResult = await buildEmailAnalyticsUrl({
         trackUrl: config.EMAIL_ANALYTICS_URL,
-        data: { nonce: randomUUID(), type: 'order_ready_count_only' },
+        data: payload,
       });
       return analyticsUrlResult.url;
     } catch (error) {
-      logger.trace('Failed to build analytics URL:', error);
+      logger.trace({ error }, 'Failed to build analytics URL');
     }
   }
   return null;
@@ -311,6 +318,7 @@ export async function notifyUserOrderProcessed(
     where: eq(ordersTable.id, input.orderId),
     columns: { userId: true },
   });
+
   if (!order) return;
 
   await tryCreateInAppNotification({

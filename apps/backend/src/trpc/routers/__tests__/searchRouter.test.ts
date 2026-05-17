@@ -1,8 +1,8 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import * as namefiRegistry from '#lib/namefi-registry';
+import type * as NamefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../../base';
-import { searchRouter } from '../searchRouter';
+import type { searchRouter as SearchRouter } from '../searchRouter';
 import { RANKED_TLDS } from '#lib/tld-rank';
 import {
   rotateString,
@@ -10,6 +10,29 @@ import {
   windowedSubStrings,
 } from '#lib/domain-suggestions';
 import type { DomainAvailabilityInfo } from '#lib/namefi-registry';
+
+vi.mock('#temporal/client', () => ({
+  temporalClient: {
+    workflow: {
+      start: vi.fn(),
+      getHandle: vi.fn(),
+      list: vi.fn(),
+    },
+    connection: {
+      ensureConnected: vi.fn(),
+    },
+    workflowService: {
+      listWorkflowExecutions: vi.fn(),
+    },
+  },
+}));
+
+const namefiRegistry = (await import(
+  '#lib/namefi-registry'
+)) as typeof NamefiRegistry;
+const { searchRouter } = (await import('../searchRouter')) as {
+  searchRouter: typeof SearchRouter;
+};
 
 const testUser = {
   privyUserId: '123',

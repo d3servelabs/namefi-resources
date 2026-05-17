@@ -1,9 +1,7 @@
 import {
+  CHECKOUT_FLOW_EVENT_LABELS,
   CHECKOUT_FLOW_EVENT_SEQUENCE,
   type CheckoutFlowEventName,
-} from './analytics-client';
-import {
-  CHECKOUT_FLOW_EVENT_LABELS,
   type CheckoutFlowEventsParsed,
   type CheckoutFlowSankeyLink,
   type CheckoutFlowSankeyNode,
@@ -80,6 +78,25 @@ function normalizeOutcomeRows(rows: OutcomeCountRow[]): OutcomeCountRow[] {
 
 function sumNodeCounts(nodes: SankeyNodeVariant[]): number {
   return nodes.reduce((sum, node) => sum + node.count, 0);
+}
+
+function isSuccessOutcomeNode(node: SankeyNodeVariant): boolean {
+  return Boolean(
+    node.outcome &&
+      SUCCESS_EQUIVALENT_OUTCOMES.has(normalizeOutcomeValue(node.outcome)),
+  );
+}
+
+function selectSuccessPathSourceNodes(
+  nodes: SankeyNodeVariant[],
+): SankeyNodeVariant[] {
+  const successNodes = nodes.filter(isSuccessOutcomeNode);
+  if (successNodes.length > 0) return successNodes;
+
+  const nodesWithoutOutcome = nodes.filter(
+    (node) => node.outcome === undefined,
+  );
+  return nodesWithoutOutcome;
 }
 
 function buildNodeVariantsFromOutcomeRows({
@@ -209,62 +226,16 @@ const EVENT_NODE_VARIANT_BUILDERS: Record<
 function buildSankeyNodeVariants(
   events: CheckoutFlowEventsParsed,
 ): Record<CheckoutFlowEventName, SankeyNodeVariant[]> {
-  return {
-    user_begin_search: EVENT_NODE_VARIANT_BUILDERS.user_begin_search({
-      eventName: 'user_begin_search',
-      event: events.user_begin_search,
-      allEvents: events,
-    }),
-    order_placed: EVENT_NODE_VARIANT_BUILDERS.order_placed({
-      eventName: 'order_placed',
-      event: events.order_placed,
-      allEvents: events,
-    }),
-    payment_processed: EVENT_NODE_VARIANT_BUILDERS.payment_processed({
-      eventName: 'payment_processed',
-      event: events.payment_processed,
-      allEvents: events,
-    }),
-    domain_acquisition_started:
-      EVENT_NODE_VARIANT_BUILDERS.domain_acquisition_started({
-        eventName: 'domain_acquisition_started',
-        event: events.domain_acquisition_started,
+  return Object.fromEntries(
+    CHECKOUT_FLOW_EVENT_SEQUENCE.map((eventName) => [
+      eventName,
+      EVENT_NODE_VARIANT_BUILDERS[eventName]({
+        eventName,
+        event: events[eventName],
         allEvents: events,
       }),
-    domain_acquisition_finished:
-      EVENT_NODE_VARIANT_BUILDERS.domain_acquisition_finished({
-        eventName: 'domain_acquisition_finished',
-        event: events.domain_acquisition_finished,
-        allEvents: events,
-      }),
-    dns_records_propagated: EVENT_NODE_VARIANT_BUILDERS.dns_records_propagated({
-      eventName: 'dns_records_propagated',
-      event: events.dns_records_propagated,
-      allEvents: events,
-    }),
-    parking_finished: EVENT_NODE_VARIANT_BUILDERS.parking_finished({
-      eventName: 'parking_finished',
-      event: events.parking_finished,
-      allEvents: events,
-    }),
-    payment_refunded: EVENT_NODE_VARIANT_BUILDERS.payment_refunded({
-      eventName: 'payment_refunded',
-      event: events.payment_refunded,
-      allEvents: events,
-    }),
-    order_finished_email_sent:
-      EVENT_NODE_VARIANT_BUILDERS.order_finished_email_sent({
-        eventName: 'order_finished_email_sent',
-        event: events.order_finished_email_sent,
-        allEvents: events,
-      }),
-    order_finished_email_opened:
-      EVENT_NODE_VARIANT_BUILDERS.order_finished_email_opened({
-        eventName: 'order_finished_email_opened',
-        event: events.order_finished_email_opened,
-        allEvents: events,
-      }),
-  };
+    ]),
+  ) as Record<CheckoutFlowEventName, SankeyNodeVariant[]>;
 }
 
 function flattenSankeyNodes(
@@ -367,28 +338,6 @@ function distributeFlow({
   }
 }
 
-/**
- * Fan-out helper: run independent distribution passes from the same source
- * into multiple target groups (shared-source semantics).
- */
-function shareFlow({
-  linksByKey,
-  sourceNodes,
-  targetGroups,
-}: {
-  linksByKey: Map<string, CheckoutFlowSankeyLink>;
-  sourceNodes: SankeyNodeVariant[];
-  targetGroups: SankeyNodeVariant[][];
-}): void {
-  for (const targetNodes of targetGroups) {
-    distributeFlow({
-      linksByKey,
-      sourceNodes,
-      targetNodes,
-    });
-  }
-}
-
 export function buildSankeyGraph({
   events,
 }: {
@@ -406,10 +355,6 @@ export function buildSankeyGraph({
   const domainAcquisitionStartedNodes = nodesByEvent.domain_acquisition_started;
   const domainAcquisitionFinishedNodes =
     nodesByEvent.domain_acquisition_finished;
-  const domainSuccessNodes = domainAcquisitionFinishedNodes.filter((node) => {
-    if (!node.outcome) return false;
-    return SUCCESS_EQUIVALENT_OUTCOMES.has(normalizeOutcomeValue(node.outcome));
-  });
   const domainNonSuccessNodes = domainAcquisitionFinishedNodes.filter(
     (node) => {
       if (!node.outcome) return false;
@@ -418,16 +363,9 @@ export function buildSankeyGraph({
       );
     },
   );
-  const domainNodesWithoutOutcome = domainAcquisitionFinishedNodes.filter(
-    (node) => node.outcome === undefined,
+  const sourceNodesForDomainSuccessPath = selectSuccessPathSourceNodes(
+    domainAcquisitionFinishedNodes,
   );
-
-  const sourceNodesForDomainSuccessPath =
-    domainSuccessNodes.length > 0
-      ? domainSuccessNodes
-      : domainNodesWithoutOutcome.length > 0
-        ? domainNodesWithoutOutcome
-        : domainAcquisitionFinishedNodes;
 
   const dnsRecordsPropagatedNodes = nodesByEvent.dns_records_propagated;
   const parkingFinishedNodes = nodesByEvent.parking_finished;
@@ -441,10 +379,14 @@ export function buildSankeyGraph({
     nodesByEvent.order_finished_email_sent.filter(
       (node) => !SUCCESS_EQUIVALENT_OUTCOMES.has(node.outcome ?? ''),
     );
-
   const orderFinishedEmailOpenedNodes =
     nodesByEvent.order_finished_email_opened;
 
+  distributeFlow({
+    linksByKey,
+    sourceNodes: beginSearchNodes,
+    targetNodes: orderPlacedNodes,
+  });
   distributeFlow({
     linksByKey,
     sourceNodes: orderPlacedNodes,
@@ -475,13 +417,13 @@ export function buildSankeyGraph({
   distributeFlow({
     linksByKey,
     sourceNodes: domainNonSuccessNodes,
-    targetNodes: orderFailedEmailSentNodes,
+    targetNodes: paymentRefundedNodes,
   });
 
   distributeFlow({
     linksByKey,
-    sourceNodes: orderFailedEmailSentNodes,
-    targetNodes: paymentRefundedNodes,
+    sourceNodes: paymentRefundedNodes,
+    targetNodes: orderFailedEmailSentNodes,
   });
 
   distributeFlow({
@@ -530,13 +472,13 @@ export function buildSankeyGraphDomainAcquisition({
     targetNodes: domainAcquisitionFinishedNodes,
   });
 
-  const domainSuccessNodes = domainAcquisitionFinishedNodes.filter((node) =>
-    SUCCESS_EQUIVALENT_OUTCOMES.has(node.outcome ?? ''),
+  const domainSuccessPathSourceNodes = selectSuccessPathSourceNodes(
+    domainAcquisitionFinishedNodes,
   );
 
   distributeFlow({
     linksByKey,
-    sourceNodes: domainSuccessNodes,
+    sourceNodes: domainSuccessPathSourceNodes,
     targetNodes: dnsRecordsPropagatedNodes,
   });
   distributeFlow({
@@ -579,13 +521,6 @@ export function buildSankeyGraphCheckout({
     (node) => SUCCESS_EQUIVALENT_OUTCOMES.has(node.outcome ?? ''),
   );
   const orderNonSuccessEmailSentNodes = orderFinishedEmailSentNodes.filter(
-    (node) => !SUCCESS_EQUIVALENT_OUTCOMES.has(node.outcome ?? ''),
-  );
-
-  const paymentProcessedSuccessNodes = paymentProcessedNodes.filter((node) =>
-    SUCCESS_EQUIVALENT_OUTCOMES.has(node.outcome ?? ''),
-  );
-  const paymentProcessedNonSuccessNodes = paymentProcessedNodes.filter(
     (node) => !SUCCESS_EQUIVALENT_OUTCOMES.has(node.outcome ?? ''),
   );
 

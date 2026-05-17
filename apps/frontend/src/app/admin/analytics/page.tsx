@@ -42,6 +42,7 @@ import DateRangePicker from '@/components/admin/analytics/DateRangePicker';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { PageShell } from '@/components/page-shell';
+import type { CheckoutFlowEventSourceFilter } from '@namefi-astra/common/contract/analytics-contract';
 
 function AnalyticsPageContent() {
   const [dateRange, setDateRange] = useState({
@@ -49,6 +50,8 @@ function AnalyticsPageContent() {
     endDate: 'today',
   });
   const [analyticsView, setAnalyticsView] = useState<'dns' | 'checkout'>('dns');
+  const [checkoutEventSource, setCheckoutEventSource] =
+    useState<CheckoutFlowEventSourceFilter>('all');
 
   const [publicSuffixFilter, setPublicSuffixFilter] = useState<string>('');
   const [domainFilter, setDomainFilter] = useState<string>('');
@@ -78,6 +81,7 @@ function AnalyticsPageContent() {
   } = useQuery({
     ...trpc.analytics.getCheckoutFlowOverview.queryOptions({
       ...dateRange,
+      eventSource: checkoutEventSource,
     }),
     placeholderData: (previousData) => previousData,
   });
@@ -112,6 +116,12 @@ function AnalyticsPageContent() {
   const handleAnalyticsViewChange = (value: string) => {
     if (value === 'dns' || value === 'checkout') {
       setAnalyticsView(value);
+    }
+  };
+
+  const handleCheckoutEventSourceChange = (value: string) => {
+    if (value === 'all' || value === 'api' || value === 'non_api') {
+      setCheckoutEventSource(value);
     }
   };
 
@@ -506,7 +516,19 @@ function AnalyticsPageContent() {
       )}
 
       {analyticsView === 'checkout' && (
-        <div className="mt-2">
+        <div className="mt-2 space-y-4">
+          <div className="flex justify-end">
+            <Tabs
+              value={checkoutEventSource}
+              onValueChange={handleCheckoutEventSourceChange}
+            >
+              <TabsList>
+                <TabsTrigger value="all">All Sources</TabsTrigger>
+                <TabsTrigger value="api">API Events</TabsTrigger>
+                <TabsTrigger value="non_api">Non-API Events</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
           <CheckoutFlowOverview
             data={checkoutFlowData}
             isLoading={isCheckoutFlowLoading}

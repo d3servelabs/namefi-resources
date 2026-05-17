@@ -1,9 +1,11 @@
 export {
   CHECKOUT_FLOW_EVENT_LABELS,
+  CHECKOUT_FLOW_EVENT_SEQUENCE,
   CHECKOUT_PRIMARY_FUNNEL_SEQUENCE,
   type CheckoutFlowAnalyticsParsed,
   type CheckoutFlowAnalyticsReportRaw,
   type CheckoutFlowEventBreakdown,
+  type CheckoutFlowEventName,
   type CheckoutFlowEventParsed,
   type CheckoutFlowEventsParsed,
   type CheckoutFlowFunnelPoint,

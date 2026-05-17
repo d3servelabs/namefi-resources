@@ -6,24 +6,64 @@ import {
   BACKEND_ANALYTICS_CUSTOM_DIMENSIONS,
   BACKEND_ANALYTICS_CUSTOM_METRICS,
 } from '#lib/analytics-events';
-
-export const CHECKOUT_FLOW_EVENT_SEQUENCE = [
-  'user_begin_search',
-  'order_placed',
-  'payment_processed',
-  'domain_acquisition_started',
-  'domain_acquisition_finished',
-  'dns_records_propagated',
-  'parking_finished',
-  'payment_refunded',
-  'order_finished_email_sent',
-  'order_finished_email_opened',
-] as const;
-
-export type CheckoutFlowEventName =
-  (typeof CHECKOUT_FLOW_EVENT_SEQUENCE)[number];
+import type { CheckoutFlowEventSourceFilter } from '@namefi-astra/common/contract/analytics-contract';
+import { CHECKOUT_FLOW_EVENT_SEQUENCE } from './analytics-types';
+export {
+  CHECKOUT_FLOW_EVENT_SEQUENCE,
+  type CheckoutFlowEventName,
+} from './analytics-types';
 
 type RunReportResponse = protos.google.analytics.data.v1beta.IRunReportResponse;
+type FilterExpression = protos.google.analytics.data.v1beta.IFilterExpression;
+
+type CheckoutFlowReportOptions = {
+  eventSource?: CheckoutFlowEventSourceFilter;
+};
+
+const EVENT_SOURCE_DIMENSION = 'customEvent:event_source';
+
+function createCheckoutFlowEventNameFilter(): FilterExpression {
+  return {
+    filter: {
+      fieldName: 'eventName',
+      inListFilter: {
+        values: [...CHECKOUT_FLOW_EVENT_SEQUENCE],
+      },
+    },
+  };
+}
+
+export function createCheckoutFlowDimensionFilter(
+  options: CheckoutFlowReportOptions = {},
+): FilterExpression {
+  const eventNameFilter = createCheckoutFlowEventNameFilter();
+  const eventSource = options.eventSource ?? 'all';
+
+  if (eventSource === 'all') {
+    return eventNameFilter;
+  }
+
+  const apiSourceFilter: FilterExpression = {
+    filter: {
+      fieldName: EVENT_SOURCE_DIMENSION,
+      stringFilter: {
+        matchType: 'EXACT',
+        value: 'api',
+      },
+    },
+  };
+
+  const eventSourceFilter =
+    eventSource === 'api'
+      ? apiSourceFilter
+      : { notExpression: apiSourceFilter };
+
+  return {
+    andGroup: {
+      expressions: [eventNameFilter, eventSourceFilter],
+    },
+  };
+}
 
 export class CheckoutFlowGA4AnalyticsClient {
   private client: BetaAnalyticsDataClient;
@@ -55,19 +95,13 @@ export class CheckoutFlowGA4AnalyticsClient {
 
   async getEventCounts(
     dateRange: DateRange = { startDate: '7daysAgo', endDate: 'today' },
+    options: CheckoutFlowReportOptions = {},
   ): Promise<RunReportResponse> {
     return this.runReport({
       dateRanges: [dateRange],
       metrics: [{ name: 'eventCount' }],
       dimensions: [{ name: 'eventName' }],
-      dimensionFilter: {
-        filter: {
-          fieldName: 'eventName',
-          inListFilter: {
-            values: [...CHECKOUT_FLOW_EVENT_SEQUENCE],
-          },
-        },
-      },
+      dimensionFilter: createCheckoutFlowDimensionFilter(options),
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       limit: CHECKOUT_FLOW_EVENT_SEQUENCE.length,
     });
@@ -75,6 +109,7 @@ export class CheckoutFlowGA4AnalyticsClient {
 
   async getEventCountsByStatus(
     dateRange: DateRange = { startDate: '7daysAgo', endDate: 'today' },
+    options: CheckoutFlowReportOptions = {},
   ): Promise<RunReportResponse> {
     return this.runReport({
       dateRanges: [dateRange],
@@ -84,14 +119,7 @@ export class CheckoutFlowGA4AnalyticsClient {
         { name: 'customEvent:status' },
         { name: 'customEvent:order_status' },
       ],
-      dimensionFilter: {
-        filter: {
-          fieldName: 'eventName',
-          inListFilter: {
-            values: [...CHECKOUT_FLOW_EVENT_SEQUENCE],
-          },
-        },
-      },
+      dimensionFilter: createCheckoutFlowDimensionFilter(options),
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       limit: 500,
     });

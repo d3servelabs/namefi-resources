@@ -116,7 +116,7 @@ function buildSankeyRows(
   );
 
   return [
-    ['From', 'To', 'Sessions'],
+    ['From', 'To', 'Events'],
     ...graph.links.map((link) => [
       labelByNodeId.get(link.source) ?? link.source,
       labelByNodeId.get(link.target) ?? link.target,

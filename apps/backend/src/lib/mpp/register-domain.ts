@@ -19,6 +19,11 @@ import { TEMPORAL_QUEUES } from '#temporal/shared';
 import { processOrderWorkflow } from '#temporal/workflows/processOrder.workflow';
 import { getDefaultAllowedNftChainId } from '#lib/env/allowed-chains';
 import { createLogger } from '#lib/logger';
+import { emitOrderPlacedIfTracked } from '#lib/tracking/checkout/events';
+import {
+  resolveApiCheckoutTracking,
+  toGaEventTracking,
+} from '#lib/tracking/checkout/context';
 import {
   findOrCreateUserFromWallet,
   type FindOrCreateUserFromWalletResult,
@@ -137,6 +142,9 @@ export async function createMppInstantRegistration(
     nftReceivingWalletAddress: input.nftReceivingWalletAddress,
     user: input.user,
   });
+  const gaEventTracking = await resolveApiCheckoutTracking({
+    userId: resolvedUserContext.userId,
+  });
 
   const orderResult = await db.transaction(async (tx) => {
     const lockKey = `mpp-register:${input.normalizedDomainName}`;
@@ -224,7 +232,7 @@ export async function createMppInstantRegistration(
     await temporalClient.workflow.start(processOrderWorkflow, {
       args: [
         {
-          gaEventTracking: undefined,
+          gaEventTracking: toGaEventTracking(gaEventTracking),
           orderId: orderResult.orderId,
           paymentsMetadata: {},
         },
@@ -243,6 +251,23 @@ export async function createMppInstantRegistration(
         'Could not initiate the order, please contact support if the issue persists',
     });
   }
+
+  void emitOrderPlacedIfTracked({
+    tracking: gaEventTracking,
+    userId: resolvedUserContext.userId,
+    order: {
+      id: orderResult.orderId,
+      amountInUSDCents: input.validation.priceInUsdCents,
+      items: [input.normalizedDomainName],
+    },
+    paymentCount: 1,
+    orderSource: 'instant_buy',
+  }).catch((error) => {
+    logger.warn(
+      { error, orderId: orderResult.orderId },
+      'Failed to emit MPP order_placed analytics event',
+    );
+  });
 
   return {
     domain: input.normalizedDomainName,

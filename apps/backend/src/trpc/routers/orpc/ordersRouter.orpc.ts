@@ -53,6 +53,10 @@ import {
   getAllowedChainsForNft,
   getDefaultAllowedNftChainId,
 } from '#lib/env/allowed-chains';
+import {
+  resolveApiCheckoutTracking,
+  type CheckoutTrackingContext,
+} from '#lib/tracking/checkout/context';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import {
   buildX402PaymentRequiredResponse,
@@ -200,10 +204,7 @@ type RegisterDomainWithRecordsInput = {
   ctx: { user: { id: string; privyUserId: string } };
   input: RegisterDomainInput;
   postProcessOrderItem?: PostProcessOrderItem;
-  gaEventTracking?: {
-    trackGaEvents: boolean;
-    reason?: string;
-  };
+  gaEventTracking?: CheckoutTrackingContext;
 };
 
 const buildPostProcessOrderItem = (
@@ -220,7 +221,7 @@ const registerDomainWithRecords = async ({
 }: RegisterDomainWithRecordsInput) => {
   const gaEventTracking =
     gaEventTrackingInput ??
-    (await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id));
+    (await resolveApiCheckoutTracking({ userId: ctx.user.id }));
   const { normalizedDomainName, durationInYears } = input;
   const parsedDomainResult = parseDomainName(normalizedDomainName);
   if (!parsedDomainResult.valid) {
@@ -679,8 +680,9 @@ export const ordersRouterOrpc = createTRPCRouter({
               ],
             })
           : undefined;
-      const gaEventTracking =
-        await orderService.shouldTrackOrderCheckoutFlowForUser(ctx.user.id);
+      const gaEventTracking = await resolveApiCheckoutTracking({
+        userId: ctx.user.id,
+      });
 
       return registerDomainWithRecords({
         ctx,

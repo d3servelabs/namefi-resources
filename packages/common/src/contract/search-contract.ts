@@ -37,6 +37,11 @@ const getDomainSuggestionsInputSchema = z.object({
   pageSize: z.number().int().min(1).max(100).optional(),
 });
 
+const trackUserBeginSearchInputSchema = z.object({
+  query: z.string().trim().min(1),
+  parentDomain: z.string().trim().min(1).optional(),
+});
+
 const streamDomainAvailabilityInputSchema = z.object({
   domains: z.array(namefiNormalizedDomainSchema).min(1),
 });
@@ -131,6 +136,11 @@ export const searchContract = createContract(
       type: 'query',
       input: getDomainSuggestionsInputSchema,
       output: domainSuggestionsResultSchema,
+    },
+    trackUserBeginSearch: {
+      type: 'mutation',
+      input: trackUserBeginSearchInputSchema,
+      output: z.void(),
     },
     /**
      * Streams `DomainAvailabilityInfo` events as the backend resolves each

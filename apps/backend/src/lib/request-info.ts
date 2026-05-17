@@ -1,5 +1,6 @@
 import type { Context as HonoContext } from 'hono';
 import type { ConnInfo } from 'hono/conninfo';
+import { BROWSER_FINGERPRINT_HEADER } from '@namefi-astra/common/google-analytics';
 
 /**
  * Source of the IP/geo/device info we ended up using for a request.
@@ -125,7 +126,7 @@ export function resolveRequestInfo(
   // The browser fingerprint is sent by our own frontend regardless of
   // whether traffic arrives via GCLB; the LB passes the header through
   // unchanged. Read it once and merge into every return path.
-  const browserFingerprint = emptyish(c.req.header('X-Browser-Fingerprint'));
+  const browserFingerprint = emptyish(c.req.header(BROWSER_FINGERPRINT_HEADER));
 
   if (isGoogleLb) {
     const ip =

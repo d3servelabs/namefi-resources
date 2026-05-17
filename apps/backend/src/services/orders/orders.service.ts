@@ -7,7 +7,6 @@ import {
   orderNfscItemsTable,
   cartItemsTable,
   $withTransaction,
-  usersTable,
   isMppPayment,
   isNfscPayment,
   isX402Payment,
@@ -48,18 +47,15 @@ import {
   sql,
   type SQL,
 } from 'drizzle-orm';
-import { isNil, isNotNil, filter, pluck, indexBy, omit, prop } from 'ramda';
+import { isNil, isNotNil, indexBy, omit, prop } from 'ramda';
 import Stripe from 'stripe';
 import pMap from 'p-map';
-import z from 'zod';
 import { OrderNotFoundError } from './errors';
 import type {
   OrderItemInsert,
   OrderInsert,
   OrderNfscItemInsert,
 } from '@namefi-astra/db';
-import { defaultKeyv } from '#lib/keyv';
-import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { logger } from '#lib/logger';
 import { secrets } from '#lib/env';
 import { createPayment } from '../../temporal/activities/payment.activities';
@@ -67,7 +63,11 @@ import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
-import { gaEventOrderPlaced } from '#lib/tracking/checkout/events';
+import { emitOrderPlacedIfTracked } from '#lib/tracking/checkout/events';
+import {
+  toGaEventTracking,
+  type CheckoutTrackingContext,
+} from '#lib/tracking/checkout/context';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -100,91 +100,11 @@ export async function getOrderDetailsOrThrow(
   };
 }
 
-export const GA_EVENT_TRACKING_REASON_LITERALS = [
-  'DEFAULT',
-  'BACKFILL',
-  'TEST',
-  'PRIVACY',
-  'EXPERIMENT',
-  'INCIDENT_MITIGATION',
-  'INTERNAL', // requests coming from our team
-  'OTHER',
-] as const;
-
-export const gaEventTrackingReasonLiteralSchema = z.enum(
-  GA_EVENT_TRACKING_REASON_LITERALS,
-);
-
-export type GaEventTrackingReasonLiteral =
-  (typeof GA_EVENT_TRACKING_REASON_LITERALS)[number];
-
-export const gaEventTrackingReasonSchema = z
-  .string()
-  .trim()
-  .min(1, 'GA event tracking reason is required')
-  .max(200, 'GA event tracking reason must be at most 200 characters');
-
-export const gaEventTrackingSchema = z.object({
-  trackGaEvents: z.boolean(),
-  reason: gaEventTrackingReasonSchema.optional(),
-});
-
-let teamMembersPromise: Promise<string[] | null> | null = null;
-
-async function getTeamMembersIds(): Promise<string[] | null> {
-  try {
-    const cached = await defaultKeyv.get<string[]>('namefi-team-members');
-    if (cached) return cached;
-
-    // Reuse in-flight promise if exists
-    if (teamMembersPromise) return teamMembersPromise;
-
-    teamMembersPromise = (async () => {
-      const users = await db
-        .select({ userId: usersTable.id })
-        .from(privyUsersTableSchema)
-        .leftJoin(
-          usersTable,
-          eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
-        )
-        .where(ilike(privyUsersTableSchema.email, '%@d3serve.xyz'));
-      const usersIds = filter(isNotNil, pluck('userId', users)) as string[];
-      await defaultKeyv.set<string[]>('namefi-team-members', usersIds);
-      teamMembersPromise = null;
-      return usersIds;
-    })();
-
-    return teamMembersPromise;
-  } catch (error) {
-    teamMembersPromise = null;
-    logger.warn({ error }, 'getTeamMemebersIds failed');
-  }
-  return null;
-}
-
-export async function shouldTrackOrderCheckoutFlowForUser(
-  userId: string,
-): Promise<z.infer<typeof gaEventTrackingSchema>> {
-  const namefiTeamMembersIds = await getTeamMembersIds();
-
-  if (namefiTeamMembersIds?.includes(userId)) {
-    return {
-      trackGaEvents: false,
-      reason: 'INTERNAL',
-    };
-  }
-
-  return {
-    trackGaEvents: true,
-  };
-}
-
 export const orderService = {
   getOrderDetailsOrThrow,
   createOrderWithExistingMultiplePayments,
   createOrderWithExistingSinglePayment,
   createNfscOrderWithExistingPayments,
-  shouldTrackOrderCheckoutFlowForUser,
   ensureOrderOwnership,
   getOrderItemsForUser,
   getNfscOrderItemsForUser,
@@ -1008,7 +928,7 @@ export type CreateOrderWithWorkflowInput = {
         userId: string;
         normalizedDomainName: NamefiNormalizedDomain;
       };
-  gaEventTracking: z.infer<typeof gaEventTrackingSchema>;
+  gaEventTracking: CheckoutTrackingContext;
   orderSource?: 'checkout' | 'instant_buy';
 };
 
@@ -1082,7 +1002,7 @@ export async function createOrderWithWorkflow(
           {
             orderId: order.id,
             paymentsMetadata,
-            gaEventTracking: input.gaEventTracking,
+            gaEventTracking: toGaEventTracking(input.gaEventTracking),
           },
         ],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
@@ -1101,25 +1021,13 @@ export async function createOrderWithWorkflow(
   });
 
   // 6. GA event tracking (after transaction)
-  if (input.gaEventTracking.trackGaEvents) {
-    void gaEventOrderPlaced({
-      userId: input.userId,
-      orderId: order.id,
-      amountUsdCents: order.amountInUSDCents,
-      itemCount: order.items.length,
-      paymentCount: input.payments.length,
-      orderSource: input.orderSource,
-    });
-  } else {
-    logger.info(
-      {
-        orderId: order.id,
-        userId: input.userId,
-        gaEventTracking: input.gaEventTracking,
-      },
-      'Skipping GA order_placed event because tracking is disabled',
-    );
-  }
+  void emitOrderPlacedIfTracked({
+    tracking: input.gaEventTracking,
+    userId: input.userId,
+    order,
+    paymentCount: input.payments.length,
+    orderSource: input.orderSource,
+  });
 
   return order;
 }

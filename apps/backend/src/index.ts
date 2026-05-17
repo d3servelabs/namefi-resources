@@ -49,6 +49,12 @@ import {
 } from './routers/raw-github-proxy';
 import { llmsTxtRouter } from './routers/llms-txt';
 import { auditLogsTestRouter } from './routers/audit-logs-test';
+import {
+  BROWSER_FINGERPRINT_HEADER,
+  C15T_MEASUREMENT_CONSENT_HEADER,
+  GA_CLIENT_ID_HEADER,
+  GA_SESSION_ID_HEADER,
+} from '@namefi-astra/common/google-analytics';
 
 type HonoVariables = {
   requestId: string;
@@ -76,6 +82,12 @@ const X402Headers = [
   'x-payment-signature',
   'payment-signature',
 ];
+const TRACKING_HEADERS = [
+  BROWSER_FINGERPRINT_HEADER,
+  C15T_MEASUREMENT_CONSENT_HEADER,
+  GA_CLIENT_ID_HEADER,
+  GA_SESSION_ID_HEADER,
+].map((header) => header.toLowerCase());
 
 async function resolveCorsOrigin(origin: string | undefined, path: string) {
   if (config.ALLOW_ALL_ORIGINS) {
@@ -126,7 +138,7 @@ app.use(async (...args) => {
       'x-c15t-region',
       'accept-language',
       'x-skip-auth',
-      'x-browser-fingerprint',
+      ...TRACKING_HEADERS,
       ...X402Headers,
     ],
     credentials: true, // Allow cookies if needed

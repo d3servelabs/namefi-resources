@@ -18,6 +18,11 @@ import { multiRefundWorkflow } from './multi-refund.workflow';
 import { postProcessOrderItemWorkflow } from './post-process-order-item.workflow';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import type { OrderWithPayments } from '#services/orders/orders.service';
+import {
+  resolveWorkflowCheckoutTracking,
+  type WorkflowCheckoutTracking,
+  type WorkflowCheckoutTrackingInput,
+} from '../shared/workflow-helpers/checkout-tracking';
 
 // These types are defined locally in the workflow file rather than
 // imported from `@namefi-astra/common`. Temporal workflow code runs inside
@@ -198,10 +203,7 @@ export interface ProcessOrderWorkflowInput {
   paymentsMetadata: {
     [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
   };
-  gaEventTracking?: {
-    trackGaEvents: boolean;
-    reason?: string;
-  };
+  gaEventTracking?: WorkflowCheckoutTrackingInput;
 }
 
 /**
@@ -221,9 +223,12 @@ export async function processOrderWorkflow(
     const info = workflow.workflowInfo();
     return info.unsafe?.now ? info.unsafe.now() : Date.now();
   };
-  workflow.deprecatePatch('toggle-tracking');
-  const trackGaEvents = input.gaEventTracking?.trackGaEvents ?? true;
-  const gaEventTrackingReason = input.gaEventTracking?.reason ?? 'DEFAULT';
+  const gaTracking = resolveWorkflowCheckoutTracking(input.gaEventTracking);
+  const {
+    trackGaEvents,
+    reason: gaEventTrackingReason,
+    identity: gaEventIdentity,
+  } = gaTracking;
 
   const startedAt = temporalNow();
   const state: ProcessOrderWorkflowPublicState = {
@@ -774,6 +779,7 @@ export async function processOrderWorkflow(
           await logGaEventOrderProcessingStarted({
             userId: orderDetails.order.userId,
             orderId: input.orderId,
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -820,6 +826,7 @@ export async function processOrderWorkflow(
               (payment) => payment.paymentProvider,
             ),
             status: 'SUCCESS',
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -877,6 +884,7 @@ export async function processOrderWorkflow(
               (payment) => payment.paymentProvider,
             ),
             status: 'FAILURE',
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -982,6 +990,7 @@ export async function processOrderWorkflow(
             userId: orderDetails.order.userId,
             orderId: input.orderId,
             itemsCount: orderDetails.items.length,
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -1066,6 +1075,7 @@ export async function processOrderWorkflow(
             itemsCount: orderDetails.items.length,
             successItemsCount: succeededItems.length,
             failedItemsCount: failedItems.length,
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -1081,6 +1091,7 @@ export async function processOrderWorkflow(
             orderStatus: derivedOrderStatus,
             refundNeeded: derivedRefundNeeded,
             refundType: derivedRefundType,
+            ...gaEventIdentity,
           });
         } catch (error) {
           workflow.log.warn(
@@ -1312,10 +1323,7 @@ export async function processOrderWorkflow(
     }
 
     if (notificationSummary.status === 'SENT') {
-      await _trackOrderFinishedEmailSent(updatedOrder, {
-        trackGaEvents,
-        reason: gaEventTrackingReason,
-      });
+      await _trackOrderFinishedEmailSent(updatedOrder, gaTracking);
     }
 
     // Send Slack notification for order completion (non-blocking)
@@ -1621,20 +1629,15 @@ async function _notifyUserNfscTopUpProcessed(
 
 async function _trackOrderFinishedEmailSent(
   orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
-  gaEventTracking: {
-    trackGaEvents: boolean;
-    reason?: string;
-  },
+  gaEventTracking: WorkflowCheckoutTracking,
 ): Promise<void> {
-  if (workflow.patched('toggle-tracking')) {
-    if (!gaEventTracking?.trackGaEvents) {
-      workflow.log.info('Skipping GA event because tracking is disabled', {
-        orderId: orderDetails.order.id,
-        eventName: 'domain_ready_email_sent',
-        gaEventTrackingReason: gaEventTracking.reason,
-      });
-      return;
-    }
+  if (!gaEventTracking.trackGaEvents) {
+    workflow.log.info('Skipping GA event because tracking is disabled', {
+      orderId: orderDetails.order.id,
+      eventName: 'order_finished_email_sent',
+      gaEventTrackingReason: gaEventTracking.reason,
+    });
+    return;
   }
 
   try {
@@ -1642,10 +1645,11 @@ async function _trackOrderFinishedEmailSent(
       userId: orderDetails.order.userId,
       orderId: orderDetails.order.id,
       orderStatus: orderDetails.order.status,
+      ...gaEventTracking.identity,
     });
   } catch (error) {
     workflow.log.warn(
-      `Failed to track domain_ready_email_sent event for order ${orderDetails.order.id}: ${
+      `Failed to track order_finished_email_sent event for order ${orderDetails.order.id}: ${
         error instanceof Error ? error.message : String(error)
       }`,
     );

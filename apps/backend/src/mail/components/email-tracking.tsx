@@ -9,7 +9,9 @@ export const EmailAnalyticsPayloadSchema = z.discriminatedUnion('type', [
     nonce: z.string(),
     type: z.literal('order_ready_count_only'),
   }),
-  // this one is not used but it's left here as an example
+  // Transactional order email open tracking. This shape is retained for signed
+  // order/user metadata tokens even though processed-order emails currently
+  // emit the count-only variant.
   z.object({
     type: z.literal('order_ready'),
     orderId: z.uuid(),

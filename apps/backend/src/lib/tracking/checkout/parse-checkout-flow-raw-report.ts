@@ -1,11 +1,12 @@
-import type { CheckoutFlowEventName } from './analytics-client';
 import type {
+  CheckoutFlowEventName,
   CheckoutFlowAnalyticsReportRaw,
   CheckoutFlowEventParsed,
   CheckoutFlowEventsParsed,
   CheckoutFlowRawReportParsed,
   CheckoutFlowStatus,
 } from './analytics-types';
+import { CHECKOUT_FLOW_EVENT_SEQUENCE } from './analytics-types';
 import {
   OUTCOME_NOT_SET,
   isCheckoutFlowEventName,
@@ -42,6 +43,17 @@ type CheckoutFlowEventBuilder = (
 ) => CheckoutFlowEventParsed;
 
 type BreakdownRow = { key: string; count: number };
+
+function mapCheckoutFlowEventNames<T>(
+  factory: (eventName: CheckoutFlowEventName) => T,
+): Record<CheckoutFlowEventName, T> {
+  return Object.fromEntries(
+    CHECKOUT_FLOW_EVENT_SEQUENCE.map((eventName) => [
+      eventName,
+      factory(eventName),
+    ]),
+  ) as Record<CheckoutFlowEventName, T>;
+}
 
 function incrementMapCount(map: CountMap, key: string, count: number): void {
   if (count <= 0) return;
@@ -87,18 +99,7 @@ function createEmptyEventAccumulator(): CheckoutFlowEventAccumulator {
 }
 
 function createEmptyEventAccumulators(): CheckoutFlowEventAccumulatorByName {
-  return {
-    user_begin_search: createEmptyEventAccumulator(),
-    order_placed: createEmptyEventAccumulator(),
-    payment_processed: createEmptyEventAccumulator(),
-    domain_acquisition_started: createEmptyEventAccumulator(),
-    domain_acquisition_finished: createEmptyEventAccumulator(),
-    dns_records_propagated: createEmptyEventAccumulator(),
-    parking_finished: createEmptyEventAccumulator(),
-    payment_refunded: createEmptyEventAccumulator(),
-    order_finished_email_sent: createEmptyEventAccumulator(),
-    order_finished_email_opened: createEmptyEventAccumulator(),
-  };
+  return mapCheckoutFlowEventNames(() => createEmptyEventAccumulator());
 }
 
 function createEmptyCheckoutFlowEventParsed(): CheckoutFlowEventParsed {
@@ -113,18 +114,7 @@ function createEmptyCheckoutFlowEventParsed(): CheckoutFlowEventParsed {
 }
 
 export function createEmptyCheckoutFlowEventsParsed(): CheckoutFlowEventsParsed {
-  return {
-    user_begin_search: createEmptyCheckoutFlowEventParsed(),
-    order_placed: createEmptyCheckoutFlowEventParsed(),
-    payment_processed: createEmptyCheckoutFlowEventParsed(),
-    domain_acquisition_started: createEmptyCheckoutFlowEventParsed(),
-    domain_acquisition_finished: createEmptyCheckoutFlowEventParsed(),
-    dns_records_propagated: createEmptyCheckoutFlowEventParsed(),
-    parking_finished: createEmptyCheckoutFlowEventParsed(),
-    payment_refunded: createEmptyCheckoutFlowEventParsed(),
-    order_finished_email_sent: createEmptyCheckoutFlowEventParsed(),
-    order_finished_email_opened: createEmptyCheckoutFlowEventParsed(),
-  };
+  return mapCheckoutFlowEventNames(() => createEmptyCheckoutFlowEventParsed());
 }
 
 function getResolvedEventCount(
@@ -309,50 +299,15 @@ function buildParsedEvent(
 function buildParsedEvents(
   accumulators: CheckoutFlowEventAccumulatorByName,
 ): CheckoutFlowEventsParsed {
-  return {
-    user_begin_search: buildParsedEvent('user_begin_search', accumulators),
-    order_placed: buildParsedEvent('order_placed', accumulators),
-    payment_processed: buildParsedEvent('payment_processed', accumulators),
-    domain_acquisition_started: buildParsedEvent(
-      'domain_acquisition_started',
-      accumulators,
-    ),
-    domain_acquisition_finished: buildParsedEvent(
-      'domain_acquisition_finished',
-      accumulators,
-    ),
-    dns_records_propagated: buildParsedEvent(
-      'dns_records_propagated',
-      accumulators,
-    ),
-    parking_finished: buildParsedEvent('parking_finished', accumulators),
-    payment_refunded: buildParsedEvent('payment_refunded', accumulators),
-    order_finished_email_sent: buildParsedEvent(
-      'order_finished_email_sent',
-      accumulators,
-    ),
-    order_finished_email_opened: buildParsedEvent(
-      'order_finished_email_opened',
-      accumulators,
-    ),
-  };
+  return mapCheckoutFlowEventNames((eventName) =>
+    buildParsedEvent(eventName, accumulators),
+  );
 }
 
 export function buildEventCountsByName(
   events: CheckoutFlowEventsParsed,
 ): Record<CheckoutFlowEventName, number> {
-  return {
-    user_begin_search: events.user_begin_search.count,
-    order_placed: events.order_placed.count,
-    payment_processed: events.payment_processed.count,
-    domain_acquisition_started: events.domain_acquisition_started.count,
-    domain_acquisition_finished: events.domain_acquisition_finished.count,
-    dns_records_propagated: events.dns_records_propagated.count,
-    parking_finished: events.parking_finished.count,
-    payment_refunded: events.payment_refunded.count,
-    order_finished_email_sent: events.order_finished_email_sent.count,
-    order_finished_email_opened: events.order_finished_email_opened.count,
-  };
+  return mapCheckoutFlowEventNames((eventName) => events[eventName].count);
 }
 
 export function parseCheckoutFlowRawReportData(

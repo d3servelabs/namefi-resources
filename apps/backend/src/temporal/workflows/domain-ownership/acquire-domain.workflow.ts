@@ -19,6 +19,7 @@ import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
 import { resolve } from '../../../utils/resolve';
 import { eppRegisterOrImportWorkflow } from './epp-register-or-import.workflow';
 import { domainParkingTrackingWorkflow } from '../domain-parking-tracking.workflow';
+import type { WorkflowCheckoutTrackingInput } from '../../shared/workflow-helpers/checkout-tracking';
 
 export interface AcquireDomainWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -32,10 +33,7 @@ export interface AcquireDomainWorkflowInput {
   encryptionKeyId?: string | null;
   orderId?: string;
   orderItemId?: string;
-  gaEventTracking?: {
-    trackGaEvents: boolean;
-    reason?: string;
-  };
+  gaEventTracking?: WorkflowCheckoutTrackingInput;
 }
 
 export type AcquireDomainWorkflowOutput = {
@@ -161,7 +159,14 @@ export async function acquireDomainWorkflow(
           gaEventTracking: input.gaEventTracking,
         },
       ],
-      workflowId: `domain-parking-dns-analytics-${input.normalizedDomainName}`,
+      workflowId: workflow.patched('domain-parking-tracking-workflow-id-v2')
+        ? domainParkingTrackingWorkflow.generateId({
+            domainName: input.normalizedDomainName,
+            orderId: input.orderId,
+            orderItemId: input.orderItemId,
+            userId: input.userId,
+          })
+        : `domain-parking-dns-analytics-${input.normalizedDomainName}`,
       parentClosePolicy: 'ABANDON',
     }),
   );

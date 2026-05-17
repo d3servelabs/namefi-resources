@@ -4,6 +4,11 @@ import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import * as workflow from '@temporalio/workflow';
+import {
+  resolveWorkflowCheckoutTracking,
+  type WorkflowCheckoutTrackingIdentity,
+  type WorkflowCheckoutTrackingInput,
+} from '../shared/workflow-helpers/checkout-tracking';
 
 export interface DomainParkingTrackingWorkflowInput {
   domainName: NamefiNormalizedDomain;
@@ -12,10 +17,7 @@ export interface DomainParkingTrackingWorkflowInput {
   orderItemId?: string;
   registrar?: string;
   dnsProvider?: 'NAMEFI' | 'OTHER';
-  gaEventTracking?: {
-    trackGaEvents: boolean;
-    reason?: string;
-  };
+  gaEventTracking?: WorkflowCheckoutTrackingInput;
 }
 
 const pollingActivities = typedProxyActivities({
@@ -43,31 +45,33 @@ const { parseDomainName: parseDomainNameActivity } = typedProxyActivities({
 export async function domainParkingTrackingWorkflow(
   input: DomainParkingTrackingWorkflowInput,
 ): Promise<void> {
-  if (workflow.patched('toggle-tracking')) {
-    const trackGaEvents = input.gaEventTracking?.trackGaEvents ?? true;
-    const gaEventTrackingReason = input.gaEventTracking?.reason ?? 'DEFAULT';
+  const gaTracking = resolveWorkflowCheckoutTracking(input.gaEventTracking, {
+    toggleTrackingPatch: 'active',
+  });
 
-    if (!trackGaEvents) {
-      workflow.log.info(
-        'Skipping parking and DNS GA tracking because tracking is disabled',
-        {
-          domainName: input.domainName,
-          orderId: input.orderId,
-          orderItemId: input.orderItemId,
-          gaEventTrackingReason,
-        },
-      );
-      return;
-    }
+  if (!gaTracking.trackGaEvents) {
+    workflow.log.info(
+      'Skipping parking and DNS GA tracking because tracking is disabled',
+      {
+        domainName: input.domainName,
+        orderId: input.orderId,
+        orderItemId: input.orderItemId,
+        gaEventTrackingReason: gaTracking.reason,
+      },
+    );
+    return;
   }
 
   await Promise.allSettled([
-    _parkingPropagated(input),
-    _dnsRecordsPropagated(input),
+    _parkingPropagated(input, gaTracking.identity),
+    _dnsRecordsPropagated(input, gaTracking.identity),
   ]);
 }
 
-async function _parkingPropagated(input: DomainParkingTrackingWorkflowInput) {
+async function _parkingPropagated(
+  input: DomainParkingTrackingWorkflowInput,
+  gaEventIdentity: WorkflowCheckoutTrackingIdentity,
+) {
   const { autoParkEnabled } =
     await getNonUserSpecificDomainPreferencesAndConfig(input.domainName);
 
@@ -80,6 +84,7 @@ async function _parkingPropagated(input: DomainParkingTrackingWorkflowInput) {
       registrarKey: input.registrar,
       optOut: true,
       status: 'SUCCESS',
+      identity: gaEventIdentity,
     });
     return;
   }
@@ -94,10 +99,12 @@ async function _parkingPropagated(input: DomainParkingTrackingWorkflowInput) {
     registrarKey: input.registrar,
     optOut: false,
     status: 'SUCCESS',
+    identity: gaEventIdentity,
   });
 }
 async function _dnsRecordsPropagated(
   input: DomainParkingTrackingWorkflowInput,
+  gaEventIdentity: WorkflowCheckoutTrackingIdentity,
 ): Promise<void> {
   if (!workflow.patched('fix-dns-records-propagated')) {
     await pollDefaultNsPropagated(input.domainName as PunycodeDomainName);
@@ -108,6 +115,7 @@ async function _dnsRecordsPropagated(
       orderItemId: input.orderItemId,
       normalizedDomainName: input.domainName,
       dnsProvider: input.dnsProvider || 'NAMEFI',
+      identity: gaEventIdentity,
     });
   } else {
     if (input.dnsProvider === 'OTHER') {
@@ -117,6 +125,7 @@ async function _dnsRecordsPropagated(
         orderItemId: input.orderItemId,
         normalizedDomainName: input.domainName,
         dnsProvider: input.dnsProvider,
+        identity: gaEventIdentity,
       });
       return;
     }
@@ -133,6 +142,7 @@ async function _dnsRecordsPropagated(
         orderItemId: input.orderItemId,
         normalizedDomainName: input.domainName,
         dnsProvider: input.dnsProvider || 'NAMEFI',
+        identity: gaEventIdentity,
       });
     }
   }
@@ -141,5 +151,8 @@ async function _dnsRecordsPropagated(
 domainParkingTrackingWorkflow.generateId = (
   input: DomainParkingTrackingWorkflowInput,
 ): string => {
-  return `domain-parking-tracking-[${input.domainName}]`;
+  const trackingScope =
+    input.orderItemId ??
+    (input.orderId ? `${input.orderId}-${input.domainName}` : input.domainName);
+  return `domain-parking-tracking-[${trackingScope}]`;
 };

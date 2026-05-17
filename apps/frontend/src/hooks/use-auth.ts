@@ -1,4 +1,4 @@
-import { useTRPC, useTRPCClient } from '@/lib/trpc';
+import { useTRPC } from '@/lib/trpc';
 import {
   usePrivy,
   useLogin as usePrivyLogin,
@@ -11,10 +11,8 @@ import { useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
-import { config } from '@/lib/env';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 import { TRPCClientError } from '@trpc/client';
-import { useConsentManager } from '@c15t/nextjs';
 import { useSkipAuth, SKIP_AUTH_MOCK_USER } from './use-skip-auth';
 import { useConsentIdentify } from './use-consent-identify';
 import { useMockPrivy } from '@/lib/mock/privy';
@@ -166,9 +164,6 @@ export function useAuth() {
 
 export function useLogin(callbacks?: LoginCallbacks) {
   const { showEmailPrompt } = useEmailPrompt();
-  const { has } = useConsentManager();
-  const hasMeasurement = has('measurement');
-  const trpcClient = useTRPCClient();
   const { stagePreAuthAugmentations } = usePreAuthSignals();
 
   const combinedCallbacks = useMemo(() => {
@@ -176,20 +171,6 @@ export function useLogin(callbacks?: LoginCallbacks) {
       onComplete: async (params) => {
         if (!params.user.email?.address) {
           showEmailPrompt();
-        }
-
-        if (hasMeasurement && config.GA_MEASUREMENT_ID) {
-          try {
-            const userData = await trpcClient.users.getUser.query();
-            if (userData?.id) {
-              window.gtag?.('config', config.GA_MEASUREMENT_ID, {
-                user_id: userData.id,
-                update: true,
-              });
-            }
-          } catch {
-            // Do nothing
-          }
         }
 
         // Stage any one-time augmentations derived from pre-auth signals
@@ -206,13 +187,7 @@ export function useLogin(callbacks?: LoginCallbacks) {
       },
     };
     return loginCallbacks;
-  }, [
-    showEmailPrompt,
-    callbacks,
-    trpcClient,
-    hasMeasurement,
-    stagePreAuthAugmentations,
-  ]);
+  }, [showEmailPrompt, callbacks, stagePreAuthAugmentations]);
 
   const { login: privyLogin } = usePrivyLogin(combinedCallbacks);
 
@@ -235,13 +210,6 @@ export function useLogout(callbacks?: LogoutCallbacks) {
     () => ({
       onSuccess: () => {
         clearLocalCart();
-
-        if (config.GA_MEASUREMENT_ID) {
-          window.gtag?.('config', config.GA_MEASUREMENT_ID, {
-            user_id: null,
-            update: true,
-          });
-        }
 
         callbacks?.onSuccess?.();
       },

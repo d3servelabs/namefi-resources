@@ -28,6 +28,7 @@ declare global {
   interface Window {
     getTimingDetails: () => TimingDetails;
     printTimingDetails: () => void;
+    namefiMeasurementConsent?: boolean;
   }
 }
 type TldPricingInfo =
@@ -222,6 +223,7 @@ export const useSearch = (
     numberOfResponses: 0,
     timestamps: [],
   });
+  const trackedBeginSearchKeysRef = useRef<Set<string>>(new Set());
   useEffect(() => {
     setAuthoritativeDomainInfo((previous) => {
       if (domains.length === 0) {
@@ -276,8 +278,38 @@ export const useSearch = (
     enabled: domains.length > 0,
   });
 
+  const trackBeginSearch = useCallback(
+    (searchTerm: string) => {
+      const trimmedSearchTerm = searchTerm.trim();
+      if (trimmedSearchTerm.length === 0) return;
+
+      const trackingKey = `${parentDomain ?? ''}:${trimmedSearchTerm}`;
+      if (window.namefiMeasurementConsent !== true) {
+        return;
+      }
+
+      if (trackedBeginSearchKeysRef.current.has(trackingKey)) return;
+      trackedBeginSearchKeysRef.current.add(trackingKey);
+      void trpcClient.search.trackUserBeginSearch
+        .mutate({
+          query: trimmedSearchTerm,
+          ...(parentDomain && { parentDomain }),
+        })
+        .catch(() => undefined);
+    },
+    [parentDomain, trpcClient],
+  );
+
+  useEffect(() => {
+    if (sanitized.length === 0 || domains.length === 0) return;
+    trackBeginSearch(sanitized);
+  }, [domains.length, sanitized, trackBeginSearch]);
+
   const runSearch = useCallback(() => {
-    if (query.trim().length === 0) return;
+    const searchTerm = query.trim();
+    if (searchTerm.length === 0) return;
+
+    trackBeginSearch(searchTerm);
     if (searchMode === SearchMode.REGISTER) {
       if (useClientRankedSuggestions) {
         setClientSuggestionPagination({
@@ -298,6 +330,7 @@ export const useSearch = (
     resetAvailStatus,
     clientSuggestionKey,
     useClientRankedSuggestions,
+    trackBeginSearch,
   ]);
 
   const loadMore = useCallback(() => {
