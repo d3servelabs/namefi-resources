@@ -1319,25 +1319,48 @@ export const dnsvizAnalysesTable = pgTable(
 );
 
 /**
- * Domain export transfer status enum
- * Tracks the lifecycle of a domain being exported/transferred out
+ * Domain export transfer status enum.
+ *
+ * Lifecycle of a domain being exported / transferred out. Statuses are split
+ * into transient, active, and terminal categories:
+ *
+ *  - Transient (decision-only, not persisted as a primary row state):
+ *    `NO_SIGNAL`, `UNDETERMINED`.
+ *  - Active (a row in one of these statuses has `isActive = true`):
+ *    `PENDING_TRANSFER`, `TRANSFER_PERIOD`, `NEEDS_ADMIN_REVIEW`.
+ *  - Terminal (a row in one of these statuses has `isActive = false` and is
+ *    frozen — subsequent tracking creates a new row):
+ *    `TRANSFER_COMPLETED`, `TRANSFER_FAILED`, `RESOLVED`.
+ *
+ * Notification state (was previously tracked via the `NOTIFIED` enum value)
+ * now lives in dedicated per-email-type columns; see `pendingExportEmail*`
+ * and `completedExportEmail*` below.
  */
 export const domainExportStatusEnum = pgEnum('domain_export_status', [
-  'NO_SIGNAL', // Explicitly checked and found no transfer evidence
-  'UNDETERMINED', // Check completed but evidence was ambiguous/unavailable
-  'PENDING_TRANSFER', // Transfer has been initiated (EPP status: pendingTransfer)
-  'TRANSFER_PERIOD', // Transfer completed, in 60-day lock period (EPP status: transferPeriod)
-  'TRANSFER_COMPLETED', // Transfer fully completed and domain no longer in our account
-  'TRANSFER_FAILED', // Transfer failed or was cancelled
-  'NEEDS_ADMIN_REVIEW', // Awaiting admin review before user-facing side effects
-  'NOTIFIED', // User/admin notification delivered after approval
-  'RESOLVED', // Tracking item was resolved or dismissed
+  'NO_SIGNAL', // Transient: decision found no transfer evidence; not persisted as primary state
+  'UNDETERMINED', // Transient: evidence ambiguous or all sources unavailable; row persisted for retry visibility
+  'PENDING_TRANSFER', // Active: transfer initiated (EPP pendingTransfer or R53 IN_PROGRESS)
+  'TRANSFER_PERIOD', // Active: post-transfer lock period (EPP transferPeriod)
+  'TRANSFER_COMPLETED', // Terminal: transfer confirmed (admin verified or auto-confirmed)
+  'TRANSFER_FAILED', // Terminal: transfer cancelled / rejected
+  'NEEDS_ADMIN_REVIEW', // Active: completion detected, awaiting admin gate before user-facing effects
+  'RESOLVED', // Terminal: admin closed the case without notification
 ]);
 
 /**
- * Domain export tracking table
- * Tracks domains that are being exported/transferred out of Namefi
- * Used for monitoring export status and notifying users of status changes
+ * Domain export tracking table.
+ *
+ * Tracks domains being exported / transferred out of Namefi. Used to monitor
+ * external transfer signals and gate user notifications / NFT burns.
+ *
+ * Row lifecycle:
+ *  1. Workflow detects an in-progress transfer → row created with active status.
+ *  2. Row is updated as evidence accumulates (still `isActive = true`).
+ *  3. Row reaches a terminal status → `isActive` flips to `false` in the same
+ *     UPDATE, and the row is never mutated again.
+ *  4. A new tracking cycle on the same `(normalizedDomainName, chainId)` pair
+ *     inserts a new row. The partial unique index below allows multiple
+ *     terminal rows but at most one active row per pair.
  */
 export const domainExportTrackingTable = pgTable(
   'domain_export_tracking',
@@ -1347,7 +1370,7 @@ export const domainExportTrackingTable = pgTable(
     chainId: integer('chain_id').notNull(),
     ownerAddress: text('owner_address').notNull(),
 
-    // Status tracking
+    // Lifecycle status — see domainExportStatusEnum for terminal vs active semantics.
     status: domainExportStatusEnum('status').notNull(),
     previousStatus: domainExportStatusEnum('previous_status'),
     statusHistory: jsonb('status_history')
@@ -1360,58 +1383,115 @@ export const domainExportTrackingTable = pgTable(
       >()
       .default([]),
 
-    // EPP/RDAP/WHOIS data
+    /**
+     * Whether this row represents the current / active tracking state for the
+     * (normalizedDomainName, chainId) pair. Set to `false` on the same UPDATE
+     * that transitions the row to a terminal status (TRANSFER_COMPLETED,
+     * TRANSFER_FAILED, RESOLVED). Frozen forever after that.
+     *
+     * The partial unique index `domain_export_tracking_active_domain_chain_unique`
+     * enforces at most one active row per (domain, chainId) pair, while
+     * allowing multiple terminal rows to accumulate as historical lifecycles.
+     */
+    isActive: boolean('is_active').notNull().default(true),
+
+    // EPP/RDAP/WHOIS raw data (kept for back-compat with admin reports).
     eppStatuses: jsonb('epp_statuses').$type<string[]>(),
     whoisData: jsonb('whois_data').$type<Json>(),
+
+    /**
+     * Latest evidence snapshot from `gatherEvidenceForDomain`. Stores the
+     * full per-source array so admins can inspect each source's verdict
+     * independently in the admin UI. See `EvidenceSourceResult` in
+     * apps/backend/src/temporal/activities/domain/export-tracking.activities.ts.
+     */
     latestEvidence: jsonb('latest_evidence').$type<{
       checkedAt: string;
-      evidenceSource: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
       decisionAction: string;
       decisionReason: string;
-      accountCheck: {
-        inOurAccount: boolean;
-        confirmed: boolean;
-      };
-      rdapTransferEvent: {
-        detected: boolean;
-        eventAction?: string;
-        eventDate?: string;
-      };
-      hasPendingTransfer: boolean;
-      hasTransferPeriod: boolean;
-      hasExportConfirmedFinished: boolean;
-      undetermined: boolean;
-      directPendingTransferStatus?: string;
+      sources: Array<{
+        source:
+          | 'AccountCheck'
+          | 'RDAPStatus'
+          | 'RDAPEvents'
+          | 'WHOIS'
+          | 'DirectRegistrar';
+        status:
+          | 'positive_pending'
+          | 'positive_period'
+          | 'positive_completed'
+          | 'positive_failed'
+          | 'negative'
+          | 'no_data'
+          | 'error';
+        evidence?: unknown;
+        error?: string;
+        checkedAt: string;
+      }>;
       eppStatuses?: string[];
     }>(),
 
-    // Registrar information
     registrarKey: text('registrar_key'),
 
-    // Timestamps
+    // Lifecycle timestamps
     statusChangedAt: timestamp('status_changed_at').notNull().defaultNow(),
     firstDetectedAt: timestamp('first_detected_at').notNull().defaultNow(),
     lastCheckedAt: timestamp('last_checked_at').notNull().defaultNow(),
     transferCompletedAt: timestamp('transfer_completed_at'),
 
-    // User notification tracking
-    pendingNotifiedAt: timestamp('pending_notified_at'),
-    userNotified: boolean('user_notified').notNull().default(false),
-    notifiedAt: timestamp('notified_at'),
+    /**
+     * Per-email-type notification state.
+     *
+     * Each row supports up to three independent user-facing emails over its
+     * lifecycle:
+     *  - `pending`  — sent when a transfer is detected as in-progress.
+     *  - `failed`   — sent when a transfer is detected as cancelled/failed.
+     *  - `completed` — sent when admin verifies the export.
+     *
+     * Per email type we track: when it was successfully sent (`sentAt`),
+     * when it was last attempted (`lastAttemptAt`), how many attempts were
+     * made (`attempts`), the most recent error message (`lastError`), and
+     * the resolved recipient address (`recipient`). On a successful send the
+     * code clears `lastError` and writes `sentAt`. On a failed send, only
+     * `lastAttemptAt`, `attempts`, and `lastError` are written so retries
+     * are visible to admins.
+     */
+    pendingExportEmailSentAt: timestamp('pending_export_email_sent_at'),
+    pendingExportEmailLastAttemptAt: timestamp(
+      'pending_export_email_last_attempt_at',
+    ),
+    pendingExportEmailAttempts: integer('pending_export_email_attempts')
+      .notNull()
+      .default(0),
+    pendingExportEmailLastError: text('pending_export_email_last_error'),
+    pendingExportEmailRecipient: text('pending_export_email_recipient'),
+
+    failedExportEmailSentAt: timestamp('failed_export_email_sent_at'),
+    failedExportEmailLastAttemptAt: timestamp(
+      'failed_export_email_last_attempt_at',
+    ),
+    failedExportEmailAttempts: integer('failed_export_email_attempts')
+      .notNull()
+      .default(0),
+    failedExportEmailLastError: text('failed_export_email_last_error'),
+    failedExportEmailRecipient: text('failed_export_email_recipient'),
+
+    completedExportEmailSentAt: timestamp('completed_export_email_sent_at'),
+    completedExportEmailLastAttemptAt: timestamp(
+      'completed_export_email_last_attempt_at',
+    ),
+    completedExportEmailAttempts: integer('completed_export_email_attempts')
+      .notNull()
+      .default(0),
+    completedExportEmailLastError: text('completed_export_email_last_error'),
+    completedExportEmailRecipient: text('completed_export_email_recipient'),
 
     // Approval tracking for safe NFT burning
     clientApprovedAt: timestamp('client_approved_at'),
-    // TODO: [HIGH-IMPACT BUG] Column name typo: 'verfyingAdminId' should be 'verifyingAdminId'.
-    // This typo in the database column name ('verifying_admin_id' is correct in SQL but the JS property
-    // is misspelled as 'verfyingAdminId') will cause confusion and potential bugs when accessing this
-    // field in application code. Any code using `row.verfyingAdminId` works, but developers may
-    // mistakenly use `row.verifyingAdminId` (correct spelling) which would be undefined.
-    // Impact: Medium-High - Could cause silent failures in admin verification workflows.
-    // Fix: Requires a database migration to rename the column and update all references.
-    verfyingAdminId: uuid('verifying_admin_id'),
+    verifyingAdminId: uuid('verifying_admin_id'),
     adminVerifiedAt: timestamp('admin_verified_at'),
 
-    // Time-based confirmation tracking
+    // Time-based confirmation tracking — gates the 36-hour automatic burn
     confirmedOutOfAccountAt: timestamp('confirmed_out_of_account_at'),
 
     // NFT burn tracking
@@ -1421,6 +1501,21 @@ export const domainExportTrackingTable = pgTable(
     ...timestamps,
   },
   (table) => [
+    // Counters can only ever be incremented; guard at the DB level so a
+    // buggy update or manual SQL can't push them below zero.
+    check(
+      'domain_export_tracking_pending_email_attempts_nonnegative',
+      sql`${table.pendingExportEmailAttempts} >= 0`,
+    ),
+    check(
+      'domain_export_tracking_failed_email_attempts_nonnegative',
+      sql`${table.failedExportEmailAttempts} >= 0`,
+    ),
+    check(
+      'domain_export_tracking_completed_email_attempts_nonnegative',
+      sql`${table.completedExportEmailAttempts} >= 0`,
+    ),
+
     // Primary lookup indexes
     index('domain_export_tracking_domain_idx').on(table.normalizedDomainName),
     index('domain_export_tracking_status_idx').on(table.status),
@@ -1443,16 +1538,18 @@ export const domainExportTrackingTable = pgTable(
     ),
     index('domain_export_tracking_last_checked_idx').on(table.lastCheckedAt),
 
-    // Notification queries
-    index('domain_export_tracking_unnotified_idx')
-      .on(table.userNotified)
-      .where(sql`${table.userNotified} = false`),
+    // Hot-path index for "find the active tracking row" — used by every
+    // workflow tick and admin lookup.
+    index('domain_export_tracking_active_idx')
+      .on(table.normalizedDomainName, table.chainId)
+      .where(sql`${table.isActive} = true`),
 
-    // Unique constraint to prevent duplicate tracking entries
-    unique('domain_export_tracking_domain_chain_unique').on(
-      table.normalizedDomainName,
-      table.chainId,
-    ),
+    // Partial unique constraint: at most one active row per (domain, chainId).
+    // Terminal rows (isActive = false) are exempt, so the table accumulates
+    // an append-only history of completed export lifecycles.
+    uniqueIndex('domain_export_tracking_active_domain_chain_unique')
+      .on(table.normalizedDomainName, table.chainId)
+      .where(sql`${table.isActive} = true`),
   ],
 );
 

@@ -37,13 +37,14 @@ const statusConfig: Record<
     label: 'Transfer Completed',
     className:
       'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    description: 'Transfer completion was detected (legacy complete status).',
+    description:
+      'Export confirmed by admin; domain has left our account. Row is terminal (frozen).',
   },
   TRANSFER_FAILED: {
     label: 'Transfer Failed',
     className: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
     description:
-      'Transfer no longer appears in progress and was treated as failed.',
+      'Transfer no longer appears in progress and was treated as failed. Row is terminal (frozen).',
   },
   NEEDS_ADMIN_REVIEW: {
     label: 'Needs Admin Review',
@@ -51,12 +52,6 @@ const statusConfig: Record<
       'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
     description:
       'Completion detected and waiting for admin review before notification/burn flow.',
-  },
-  NOTIFIED: {
-    label: 'Notified',
-    className:
-      'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200',
-    description: 'User notification has been sent for this export.',
   },
   RESOLVED: {
     label: 'Resolved',

@@ -24,10 +24,12 @@ type ExportTrackingRecord = {
   id: string;
   normalizedDomainName: string;
   status: string;
+  isActive: boolean;
   adminVerifiedAt: Date | null;
   nftBurnedAt: Date | null;
-  pendingNotifiedAt: Date | null;
-  userNotified: boolean;
+  pendingExportEmailSentAt: Date | null;
+  failedExportEmailSentAt: Date | null;
+  completedExportEmailSentAt: Date | null;
 };
 
 type VerifyButtonProps = {
@@ -40,7 +42,7 @@ type VerifyButtonProps = {
   'data-testid'?: string;
 };
 
-type ExportTrackingEmailType = 'pending' | 'complete';
+type ExportTrackingEmailType = 'pending' | 'failed' | 'complete';
 
 const getEmailTypeForStatus = (
   status: string,
@@ -49,12 +51,11 @@ const getEmailTypeForStatus = (
     return 'pending';
   }
 
-  if (
-    status === 'TRANSFER_COMPLETED' ||
-    status === 'NEEDS_ADMIN_REVIEW' ||
-    status === 'NOTIFIED' ||
-    status === 'RESOLVED'
-  ) {
+  if (status === 'TRANSFER_FAILED') {
+    return 'failed';
+  }
+
+  if (status === 'TRANSFER_COMPLETED' || status === 'NEEDS_ADMIN_REVIEW') {
     return 'complete';
   }
 
@@ -124,57 +125,74 @@ export function VerifyButton({
     resolveMutation.isPending ||
     sendEmailMutation.isPending;
 
+  // Approve / Resolve are only valid on active (non-terminal) rows. Email
+  // resends remain valid on terminal rows for admin support purposes.
   const canApprove =
+    record.isActive &&
     !record.nftBurnedAt &&
     !record.adminVerifiedAt &&
-    (record.status === 'NEEDS_ADMIN_REVIEW' ||
-      record.status === 'TRANSFER_COMPLETED');
+    record.status === 'NEEDS_ADMIN_REVIEW';
 
   const canResolve =
+    record.isActive &&
     !record.nftBurnedAt &&
-    (record.status === 'NEEDS_ADMIN_REVIEW' ||
-      record.status === 'TRANSFER_COMPLETED' ||
-      record.status === 'NOTIFIED');
+    record.status === 'NEEDS_ADMIN_REVIEW';
 
   const emailType = getEmailTypeForStatus(record.status);
   const emailAlreadySent =
     emailType === 'pending'
-      ? Boolean(record.pendingNotifiedAt)
-      : emailType === 'complete'
-        ? Boolean(record.userNotified)
-        : false;
+      ? Boolean(record.pendingExportEmailSentAt)
+      : emailType === 'failed'
+        ? Boolean(record.failedExportEmailSentAt)
+        : emailType === 'complete'
+          ? Boolean(record.completedExportEmailSentAt)
+          : false;
 
-  const emailActionText =
-    emailType === 'pending'
-      ? emailAlreadySent
-        ? 'Resend Pending Email'
-        : 'Send Pending Email'
-      : emailAlreadySent
-        ? 'Resend Completion Email'
-        : 'Send Completion Email';
+  const emailLabels: Record<
+    NonNullable<typeof emailType>,
+    {
+      short: string;
+      dialogTitle: string;
+      dialogDescription: string;
+    }
+  > = {
+    pending: {
+      short: 'Pending Email',
+      dialogTitle: 'Pending Export Email',
+      dialogDescription:
+        'This will send the pending export notice to the user for:',
+    },
+    failed: {
+      short: 'Failed Email',
+      dialogTitle: 'Failed Export Email',
+      dialogDescription:
+        'This will send the export-did-not-complete notice to the user for:',
+    },
+    complete: {
+      short: 'Completion Email',
+      dialogTitle: 'Export Completion Email',
+      dialogDescription:
+        'This will send the export completion notice to the user for:',
+    },
+  };
 
-  const emailDialogTitle =
-    emailType === 'pending'
-      ? emailAlreadySent
-        ? 'Resend Pending Export Email'
-        : 'Send Pending Export Email'
-      : emailAlreadySent
-        ? 'Resend Export Completion Email'
-        : 'Send Export Completion Email';
-
-  const emailDialogDescription =
-    emailType === 'pending'
-      ? emailAlreadySent
-        ? 'This will resend the pending export notice to the user for:'
-        : 'This will send the pending export notice to the user for:'
-      : emailAlreadySent
-        ? 'This will resend the export completion notice to the user for:'
-        : 'This will send the export completion notice to the user for:';
+  const emailLabel = emailType ? emailLabels[emailType] : undefined;
+  const emailActionText = emailLabel
+    ? `${emailAlreadySent ? 'Resend' : 'Send'} ${emailLabel.short}`
+    : '';
+  const emailDialogTitle = emailLabel
+    ? `${emailAlreadySent ? 'Resend' : 'Send'} ${emailLabel.dialogTitle}`
+    : '';
+  const emailDialogDescription = emailLabel
+    ? emailAlreadySent
+      ? emailLabel.dialogDescription.replace('will send', 'will resend')
+      : emailLabel.dialogDescription
+    : '';
 
   const hasAction = canApprove || canResolve || emailType !== null;
 
   if (!hasAction) {
-    if (record.status === 'NOTIFIED' || record.adminVerifiedAt) {
+    if (!record.isActive || record.adminVerifiedAt) {
       return (
         <Badge
           variant="outline"

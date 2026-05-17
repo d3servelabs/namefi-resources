@@ -17,6 +17,7 @@ import { adminExportTrackingContract } from '@namefi-astra/common/contract/admin
 import {
   getUserIdFromOwnerAddress,
   sendPendingExportEmail,
+  sendFailedExportEmail,
   sendExportCompleteEmail,
 } from '#temporal/activities/domain/export-tracking.activities';
 import {
@@ -33,7 +34,7 @@ export const exportTrackingRouter = createContractTRPCRouter<
   typeof adminExportTrackingContract
 >({
   /**
-   * Get export tracking records with pagination and filtering
+   * Get export tracking records with pagination and filtering.
    */
   getExportTrackingRecords: adminProcedureWithPermissions(Permission.READ_NFT)
     .input(adminExportTrackingContract.getExportTrackingRecords.input)
@@ -42,7 +43,6 @@ export const exportTrackingRouter = createContractTRPCRouter<
       const { page, pageSize, filters, sorting } = input;
       const offset = (page - 1) * pageSize;
 
-      // Define table structure for drizzler
       const tableStructure = {
         id: domainExportTrackingTable.id,
         normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
@@ -50,15 +50,25 @@ export const exportTrackingRouter = createContractTRPCRouter<
         ownerAddress: domainExportTrackingTable.ownerAddress,
         status: domainExportTrackingTable.status,
         previousStatus: domainExportTrackingTable.previousStatus,
+        isActive: domainExportTrackingTable.isActive,
         registrarKey: domainExportTrackingTable.registrarKey,
         statusChangedAt: domainExportTrackingTable.statusChangedAt,
         firstDetectedAt: domainExportTrackingTable.firstDetectedAt,
         lastCheckedAt: domainExportTrackingTable.lastCheckedAt,
         transferCompletedAt: domainExportTrackingTable.transferCompletedAt,
-        pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
-        notifiedAt: domainExportTrackingTable.notifiedAt,
+        pendingExportEmailSentAt:
+          domainExportTrackingTable.pendingExportEmailSentAt,
+        pendingExportEmailAttempts:
+          domainExportTrackingTable.pendingExportEmailAttempts,
+        failedExportEmailSentAt:
+          domainExportTrackingTable.failedExportEmailSentAt,
+        failedExportEmailAttempts:
+          domainExportTrackingTable.failedExportEmailAttempts,
+        completedExportEmailSentAt:
+          domainExportTrackingTable.completedExportEmailSentAt,
+        completedExportEmailAttempts:
+          domainExportTrackingTable.completedExportEmailAttempts,
         latestEvidence: domainExportTrackingTable.latestEvidence,
-        userNotified: domainExportTrackingTable.userNotified,
         clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
         adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
         confirmedOutOfAccountAt:
@@ -68,7 +78,6 @@ export const exportTrackingRouter = createContractTRPCRouter<
         updatedAt: domainExportTrackingTable.updatedAt,
       };
 
-      // Build base query
       const baseQuery = db
         .select({
           id: domainExportTrackingTable.id,
@@ -77,6 +86,7 @@ export const exportTrackingRouter = createContractTRPCRouter<
           ownerAddress: domainExportTrackingTable.ownerAddress,
           status: domainExportTrackingTable.status,
           previousStatus: domainExportTrackingTable.previousStatus,
+          isActive: domainExportTrackingTable.isActive,
           statusHistory: domainExportTrackingTable.statusHistory,
           eppStatuses: domainExportTrackingTable.eppStatuses,
           registrarKey: domainExportTrackingTable.registrarKey,
@@ -84,12 +94,39 @@ export const exportTrackingRouter = createContractTRPCRouter<
           firstDetectedAt: domainExportTrackingTable.firstDetectedAt,
           lastCheckedAt: domainExportTrackingTable.lastCheckedAt,
           transferCompletedAt: domainExportTrackingTable.transferCompletedAt,
-          pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
-          userNotified: domainExportTrackingTable.userNotified,
-          notifiedAt: domainExportTrackingTable.notifiedAt,
+          pendingExportEmailSentAt:
+            domainExportTrackingTable.pendingExportEmailSentAt,
+          pendingExportEmailLastAttemptAt:
+            domainExportTrackingTable.pendingExportEmailLastAttemptAt,
+          pendingExportEmailAttempts:
+            domainExportTrackingTable.pendingExportEmailAttempts,
+          pendingExportEmailLastError:
+            domainExportTrackingTable.pendingExportEmailLastError,
+          pendingExportEmailRecipient:
+            domainExportTrackingTable.pendingExportEmailRecipient,
+          failedExportEmailSentAt:
+            domainExportTrackingTable.failedExportEmailSentAt,
+          failedExportEmailLastAttemptAt:
+            domainExportTrackingTable.failedExportEmailLastAttemptAt,
+          failedExportEmailAttempts:
+            domainExportTrackingTable.failedExportEmailAttempts,
+          failedExportEmailLastError:
+            domainExportTrackingTable.failedExportEmailLastError,
+          failedExportEmailRecipient:
+            domainExportTrackingTable.failedExportEmailRecipient,
+          completedExportEmailSentAt:
+            domainExportTrackingTable.completedExportEmailSentAt,
+          completedExportEmailLastAttemptAt:
+            domainExportTrackingTable.completedExportEmailLastAttemptAt,
+          completedExportEmailAttempts:
+            domainExportTrackingTable.completedExportEmailAttempts,
+          completedExportEmailLastError:
+            domainExportTrackingTable.completedExportEmailLastError,
+          completedExportEmailRecipient:
+            domainExportTrackingTable.completedExportEmailRecipient,
           latestEvidence: domainExportTrackingTable.latestEvidence,
           clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
-          verfyingAdminId: domainExportTrackingTable.verfyingAdminId,
+          verifyingAdminId: domainExportTrackingTable.verifyingAdminId,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
           confirmedOutOfAccountAt:
             domainExportTrackingTable.confirmedOutOfAccountAt,
@@ -101,10 +138,8 @@ export const exportTrackingRouter = createContractTRPCRouter<
         .from(domainExportTrackingTable)
         .$dynamic();
 
-      // Build WHERE clauses
       const whereClauses: SQL[] = [];
 
-      // Add column filters using drizzler buildWhereClause
       if (filters) {
         const drizzlerWhere = buildWhereClause(
           tableStructure,
@@ -115,31 +150,26 @@ export const exportTrackingRouter = createContractTRPCRouter<
         }
       }
 
-      // Apply WHERE clauses
       let query = baseQuery;
       if (whereClauses.length > 0) {
         query = query.where(and(...whereClauses));
       }
 
-      // Build ORDER BY using drizzler buildSortClause or default
       const orderByClauses = sorting
         ? buildSortClause(tableStructure, sorting as SortOptions<any>)
         : [sql`${domainExportTrackingTable.statusChangedAt} DESC`];
 
       try {
-        // Build count query
         const countQuery = db
           .select({ count: sql<number>`COUNT(*)::int` })
           .from(domainExportTrackingTable)
           .$dynamic();
 
-        // Apply same WHERE to count query
         let countQueryWithWhere = countQuery;
         if (whereClauses.length > 0) {
           countQueryWithWhere = countQuery.where(and(...whereClauses));
         }
 
-        // Execute queries in parallel
         const [rows, countRow] = await Promise.all([
           query
             .orderBy(...orderByClauses)
@@ -169,9 +199,11 @@ export const exportTrackingRouter = createContractTRPCRouter<
     }),
 
   /**
-   * Admin verify an export tracking record
-   * This sets the adminVerifiedAt timestamp and verfyingAdminId,
-   * which makes the domain eligible for NFT burning
+   * Admin verify an export tracking record.
+   *
+   * Transitions NEEDS_ADMIN_REVIEW → TRANSFER_COMPLETED (terminal),
+   * sends the completion email, and flips `isActive = false` on the
+   * same UPDATE. Refuses to operate on rows that are not active.
    */
   verifyExportTracking: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NFT,
@@ -188,7 +220,6 @@ export const exportTrackingRouter = createContractTRPCRouter<
     .input(adminExportTrackingContract.verifyExportTracking.input)
     .output(adminExportTrackingContract.verifyExportTracking.output)
     .mutation(async ({ ctx, input }) => {
-      // First verify the record exists and is in TRANSFER_COMPLETED status
       const existingRecord = await db
         .select({
           id: domainExportTrackingTable.id,
@@ -196,8 +227,10 @@ export const exportTrackingRouter = createContractTRPCRouter<
           chainId: domainExportTrackingTable.chainId,
           ownerAddress: domainExportTrackingTable.ownerAddress,
           status: domainExportTrackingTable.status,
+          isActive: domainExportTrackingTable.isActive,
           statusHistory: domainExportTrackingTable.statusHistory,
-          userNotified: domainExportTrackingTable.userNotified,
+          completedExportEmailSentAt:
+            domainExportTrackingTable.completedExportEmailSentAt,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
         })
@@ -213,6 +246,13 @@ export const exportTrackingRouter = createContractTRPCRouter<
       }
 
       const record = existingRecord[0];
+
+      if (!record.isActive) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Cannot verify a terminal (frozen) export tracking row',
+        });
+      }
 
       if (record.adminVerifiedAt) {
         throw new TRPCError({
@@ -231,11 +271,14 @@ export const exportTrackingRouter = createContractTRPCRouter<
       if (!canApproveExportTrackingStatus(record.status)) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `Cannot verify export with status: ${record.status}. Only NEEDS_ADMIN_REVIEW records (or legacy TRANSFER_COMPLETED records) can be verified.`,
+          message: `Cannot verify export with status: ${record.status}. Only NEEDS_ADMIN_REVIEW records can be verified.`,
         });
       }
 
-      if (!record.userNotified) {
+      // Send the completion email first; the email function self-writes
+      // attempt counters and the recipient column. If send fails, the
+      // tracking row records the failure and we refuse the transition.
+      if (!record.completedExportEmailSentAt) {
         const userId = await getUserIdFromOwnerAddress(record.ownerAddress);
         if (!userId) {
           throw new TRPCError({
@@ -245,16 +288,19 @@ export const exportTrackingRouter = createContractTRPCRouter<
         }
 
         const notifyResult = await sendExportCompleteEmail({
+          trackingRecordId: record.id,
           userId,
           domain: record.normalizedDomainName,
           chainId: record.chainId,
         });
 
         if (!notifyResult.sent) {
+          const reason =
+            notifyResult.error ??
+            'user does not have a deliverable email address';
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message:
-              'Cannot send export notification: user does not have a deliverable email address',
+            message: `Cannot send export notification: ${reason}`,
           });
         }
       }
@@ -263,22 +309,20 @@ export const exportTrackingRouter = createContractTRPCRouter<
       const updatedHistory = appendExportTrackingStatusHistory(
         (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
           [],
-        'NOTIFIED',
+        'TRANSFER_COMPLETED',
         now,
       );
 
-      // Update the record with admin verification
       await db
         .update(domainExportTrackingTable)
         .set({
           previousStatus: sql`${domainExportTrackingTable.status}`,
-          status: 'NOTIFIED',
+          status: 'TRANSFER_COMPLETED',
           statusHistory: updatedHistory,
-          verfyingAdminId: ctx.user.id,
+          verifyingAdminId: ctx.user.id,
           adminVerifiedAt: now,
-          userNotified: true,
-          notifiedAt: now,
           statusChangedAt: now,
+          isActive: false,
           updatedAt: now,
         })
         .where(eq(domainExportTrackingTable.id, input.id));
@@ -294,12 +338,13 @@ export const exportTrackingRouter = createContractTRPCRouter<
 
       return {
         success: true,
-        message: `Export for ${record.normalizedDomainName} has been verified and marked as notified`,
+        message: `Export for ${record.normalizedDomainName} has been verified`,
       };
     }),
 
   /**
-   * Admin resolve an export tracking review without sending user notification
+   * Admin resolve an export tracking review without sending notification.
+   * Transitions NEEDS_ADMIN_REVIEW → RESOLVED (terminal, isActive=false).
    */
   resolveExportTracking: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NFT,
@@ -321,6 +366,7 @@ export const exportTrackingRouter = createContractTRPCRouter<
           id: domainExportTrackingTable.id,
           normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
           status: domainExportTrackingTable.status,
+          isActive: domainExportTrackingTable.isActive,
           statusHistory: domainExportTrackingTable.statusHistory,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
         })
@@ -337,10 +383,10 @@ export const exportTrackingRouter = createContractTRPCRouter<
 
       const record = existingRecord[0];
 
-      if (record.status === 'RESOLVED') {
+      if (!record.isActive) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Export tracking record is already resolved',
+          message: 'Export tracking record is already terminal',
         });
       }
 
@@ -372,9 +418,10 @@ export const exportTrackingRouter = createContractTRPCRouter<
           previousStatus: sql`${domainExportTrackingTable.status}`,
           status: 'RESOLVED',
           statusHistory: updatedHistory,
-          verfyingAdminId: ctx.user.id,
+          verifyingAdminId: ctx.user.id,
           adminVerifiedAt: sql`COALESCE(${domainExportTrackingTable.adminVerifiedAt}, NOW())`,
           statusChangedAt: now,
+          isActive: false,
           updatedAt: now,
         })
         .where(eq(domainExportTrackingTable.id, input.id));
@@ -395,11 +442,18 @@ export const exportTrackingRouter = createContractTRPCRouter<
     }),
 
   /**
-   * Send export notification email based on current export tracking status
-   * - pending statuses => pending export email
-   * - completed/review/resolved statuses => export complete email
+   * Send export notification email based on current export tracking status.
+   *  - pending statuses → pending export email
+   *  - TRANSFER_FAILED → failed export email
+   *  - completed/review statuses → export complete email
    *
-   * By default this is one-time per email type. Use forceResend to override.
+   * The email-send activity self-writes per-email-type columns on the row
+   * (attempt counter, last attempt timestamp, recipient, last error) for
+   * both success and failure cases.
+   *
+   * One-time-per-email-type by default; use `forceResend: true` to override.
+   * Resending is allowed on terminal (isActive=false) rows for support
+   * purposes.
    */
   sendExportTrackingEmail: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NFT,
@@ -424,9 +478,12 @@ export const exportTrackingRouter = createContractTRPCRouter<
           ownerAddress: domainExportTrackingTable.ownerAddress,
           status: domainExportTrackingTable.status,
           registrarKey: domainExportTrackingTable.registrarKey,
-          pendingNotifiedAt: domainExportTrackingTable.pendingNotifiedAt,
-          userNotified: domainExportTrackingTable.userNotified,
-          notifiedAt: domainExportTrackingTable.notifiedAt,
+          pendingExportEmailSentAt:
+            domainExportTrackingTable.pendingExportEmailSentAt,
+          failedExportEmailSentAt:
+            domainExportTrackingTable.failedExportEmailSentAt,
+          completedExportEmailSentAt:
+            domainExportTrackingTable.completedExportEmailSentAt,
           nftBurnTxHash: domainExportTrackingTable.nftBurnTxHash,
         })
         .from(domainExportTrackingTable)
@@ -452,16 +509,20 @@ export const exportTrackingRouter = createContractTRPCRouter<
 
       const alreadySent =
         emailType === 'pending'
-          ? Boolean(record.pendingNotifiedAt)
-          : Boolean(record.userNotified);
+          ? Boolean(record.pendingExportEmailSentAt)
+          : emailType === 'failed'
+            ? Boolean(record.failedExportEmailSentAt)
+            : Boolean(record.completedExportEmailSentAt);
 
       if (alreadySent && !input.forceResend) {
+        const labels: Record<typeof emailType, string> = {
+          pending: 'Pending export email',
+          failed: 'Failed export email',
+          complete: 'Export complete email',
+        };
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message:
-            emailType === 'pending'
-              ? 'Pending export email was already sent. Set forceResend=true to resend.'
-              : 'Export complete email was already sent. Set forceResend=true to resend.',
+          message: `${labels[emailType]} was already sent. Set forceResend=true to resend.`,
         });
       }
 
@@ -475,27 +536,21 @@ export const exportTrackingRouter = createContractTRPCRouter<
 
       if (emailType === 'pending') {
         const pendingResult = await sendPendingExportEmail({
+          trackingRecordId: record.id,
           userId,
           domain: record.normalizedDomainName,
           registrarKey: record.registrarKey ?? 'unknown',
         });
 
         if (!pendingResult.sent) {
+          const reason =
+            pendingResult.error ??
+            'user does not have a deliverable email address';
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message:
-              'Cannot send pending export notification: user does not have a deliverable email address',
+            message: `Cannot send pending export notification: ${reason}`,
           });
         }
-
-        const now = new Date();
-        await db
-          .update(domainExportTrackingTable)
-          .set({
-            pendingNotifiedAt: now,
-            updatedAt: now,
-          })
-          .where(eq(domainExportTrackingTable.id, input.id));
 
         return {
           success: true,
@@ -506,7 +561,34 @@ export const exportTrackingRouter = createContractTRPCRouter<
         };
       }
 
+      if (emailType === 'failed') {
+        const failedResult = await sendFailedExportEmail({
+          trackingRecordId: record.id,
+          userId,
+          domain: record.normalizedDomainName,
+        });
+
+        if (!failedResult.sent) {
+          const reason =
+            failedResult.error ??
+            'user does not have a deliverable email address';
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `Cannot send failed export notification: ${reason}`,
+          });
+        }
+
+        return {
+          success: true,
+          emailType,
+          message: input.forceResend
+            ? `Failed export email resent for ${record.normalizedDomainName}`
+            : `Failed export email sent for ${record.normalizedDomainName}`,
+        };
+      }
+
       const completeResult = await sendExportCompleteEmail({
+        trackingRecordId: record.id,
         userId,
         domain: record.normalizedDomainName,
         chainId: record.chainId,
@@ -514,22 +596,14 @@ export const exportTrackingRouter = createContractTRPCRouter<
       });
 
       if (!completeResult.sent) {
+        const reason =
+          completeResult.error ??
+          'user does not have a deliverable email address';
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message:
-            'Cannot send export completion notification: user does not have a deliverable email address',
+          message: `Cannot send export completion notification: ${reason}`,
         });
       }
-
-      const now = new Date();
-      await db
-        .update(domainExportTrackingTable)
-        .set({
-          userNotified: true,
-          notifiedAt: now,
-          updatedAt: now,
-        })
-        .where(eq(domainExportTrackingTable.id, input.id));
 
       return {
         success: true,

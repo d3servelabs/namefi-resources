@@ -867,9 +867,17 @@ export const domainConfigRouter = createContractTRPCRouter<
 
       const result = await sldRegistrar.approveTransfer(domainName);
 
-      // Upsert export tracking record to mark client approval
-      // This allows safe NFT burning once domain leaves our account
-      // The record might not exist yet if the export tracking workflow hasn't detected the pending transfer
+      // Upsert export tracking record to mark client approval.
+      // This allows safe NFT burning once the domain leaves our account.
+      // The record might not exist yet if the export tracking workflow
+      // hasn't detected the pending transfer.
+      //
+      // The conflict target must match the partial unique index
+      // `domain_export_tracking_active_domain_chain_unique` which is
+      // scoped to `WHERE is_active = true` (terminal rows are exempt so
+      // the table can keep historical lifecycles per domain+chain).
+      // Postgres requires the conflict target's predicate to match the
+      // index, hence the `targetWhere` clause.
       await db
         .insert(domainExportTrackingTable)
         .values({
@@ -884,6 +892,7 @@ export const domainConfigRouter = createContractTRPCRouter<
             domainExportTrackingTable.normalizedDomainName,
             domainExportTrackingTable.chainId,
           ],
+          targetWhere: eq(domainExportTrackingTable.isActive, true),
           set: {
             clientApprovedAt: new Date(),
             updatedAt: new Date(),

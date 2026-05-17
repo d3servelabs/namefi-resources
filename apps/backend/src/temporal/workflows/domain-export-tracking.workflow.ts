@@ -56,7 +56,7 @@ export interface DomainExportTrackingWorkflowOutput {
   nftsBurned: number;
   nftBurnsFailed: number;
   pendingExportEmailsSent: number;
-  exportCompleteEmailsSent: number;
+  failedExportEmailsSent: number;
   success: boolean;
 }
 
@@ -100,6 +100,7 @@ export async function domainExportTrackingWorkflow(
     let undetermined = 0;
     let noChange = 0;
     let pendingExportEmailsSent = 0;
+    let failedExportEmailsSent = 0;
 
     if (lockedNfts.length > 0) {
       workflow.log.info('Processing locked NFTs in parallel');
@@ -136,6 +137,9 @@ export async function domainExportTrackingWorkflow(
           if ('pendingEmailSent' in result && result.pendingEmailSent) {
             pendingExportEmailsSent++;
           }
+          if ('failedEmailSent' in result && result.failedEmailSent) {
+            failedExportEmailsSent++;
+          }
 
           switch (result.action) {
             case 'created':
@@ -168,6 +172,7 @@ export async function domainExportTrackingWorkflow(
         undetermined,
         noChange,
         pendingExportEmailsSent,
+        failedExportEmailsSent,
       });
     }
 
@@ -200,6 +205,7 @@ export async function domainExportTrackingWorkflow(
               id: record.id,
               domain: record.domain,
               chainId: record.chainId,
+              ownerAddress: record.ownerAddress,
               currentStatus: record.status,
               statusHistory: record.statusHistory,
             }).catch((error) => {
@@ -218,6 +224,9 @@ export async function domainExportTrackingWorkflow(
             transfersCompleted++;
           } else if (result.action === 'failed') {
             transfersFailed++;
+            if ('failedEmailSent' in result && result.failedEmailSent) {
+              failedExportEmailsSent++;
+            }
           }
         }
       }
@@ -226,6 +235,7 @@ export async function domainExportTrackingWorkflow(
         checked: pendingTransfers.length,
         completed: transfersCompleted,
         failed: transfersFailed,
+        failedExportEmailsSent,
       });
     }
 
@@ -235,7 +245,6 @@ export async function domainExportTrackingWorkflow(
 
     let nftsBurned = 0;
     let nftBurnsFailed = 0;
-    const exportCompleteEmailsSent = 0;
 
     if (eligibleForBurn.length > 0) {
       workflow.log.info('Processing burn eligibility', {
@@ -313,7 +322,6 @@ export async function domainExportTrackingWorkflow(
       workflow.log.info('Completed burn eligibility processing', {
         burned: nftsBurned,
         failed: nftBurnsFailed,
-        emailsSent: exportCompleteEmailsSent,
       });
     }
 
@@ -345,7 +353,7 @@ export async function domainExportTrackingWorkflow(
       nftsBurned,
       nftBurnsFailed,
       pendingExportEmailsSent,
-      exportCompleteEmailsSent,
+      failedExportEmailsSent,
       success: true,
     };
 

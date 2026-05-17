@@ -16,14 +16,28 @@ type StatusHistoryEntry = {
 
 type StatusHistorySubrowProps = {
   statusHistory: StatusHistoryEntry[];
-  pendingNotifiedAt?: Date | string | null;
-  notifiedAt?: Date | string | null;
+  pendingExportEmailSentAt?: Date | string | null;
+  pendingExportEmailAttempts?: number | null;
+  pendingExportEmailLastError?: string | null;
+  failedExportEmailSentAt?: Date | string | null;
+  failedExportEmailAttempts?: number | null;
+  failedExportEmailLastError?: string | null;
+  completedExportEmailSentAt?: Date | string | null;
+  completedExportEmailAttempts?: number | null;
+  completedExportEmailLastError?: string | null;
 };
 
 export function StatusHistorySubrow({
   statusHistory,
-  pendingNotifiedAt,
-  notifiedAt,
+  pendingExportEmailSentAt,
+  pendingExportEmailAttempts,
+  pendingExportEmailLastError,
+  failedExportEmailSentAt,
+  failedExportEmailAttempts,
+  failedExportEmailLastError,
+  completedExportEmailSentAt,
+  completedExportEmailAttempts,
+  completedExportEmailLastError,
 }: StatusHistorySubrowProps) {
   // Sort by timestamp descending (most recent first)
   const sortedHistory = [...statusHistory].sort(
@@ -46,17 +60,75 @@ export function StatusHistorySubrow({
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground">Pending Email Sent:</span>
           <span>
-            {pendingNotifiedAt
-              ? new Date(pendingNotifiedAt).toLocaleString()
+            {pendingExportEmailSentAt
+              ? new Date(pendingExportEmailSentAt).toLocaleString()
               : '-'}
           </span>
+          {pendingExportEmailAttempts ? (
+            <span className="text-muted-foreground">
+              ({pendingExportEmailAttempts} attempt
+              {pendingExportEmailAttempts === 1 ? '' : 's'})
+            </span>
+          ) : null}
         </div>
+        {pendingExportEmailLastError ? (
+          <div className="flex items-start gap-2">
+            <span className="text-muted-foreground">
+              Pending Email Last Error:
+            </span>
+            <span className="text-red-600 font-mono">
+              {pendingExportEmailLastError}
+            </span>
+          </div>
+        ) : null}
+        <div className="flex items-center gap-2">
+          <span className="text-muted-foreground">Failed Email Sent:</span>
+          <span>
+            {failedExportEmailSentAt
+              ? new Date(failedExportEmailSentAt).toLocaleString()
+              : '-'}
+          </span>
+          {failedExportEmailAttempts ? (
+            <span className="text-muted-foreground">
+              ({failedExportEmailAttempts} attempt
+              {failedExportEmailAttempts === 1 ? '' : 's'})
+            </span>
+          ) : null}
+        </div>
+        {failedExportEmailLastError ? (
+          <div className="flex items-start gap-2">
+            <span className="text-muted-foreground">
+              Failed Email Last Error:
+            </span>
+            <span className="text-red-600 font-mono">
+              {failedExportEmailLastError}
+            </span>
+          </div>
+        ) : null}
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground">Completion Email Sent:</span>
           <span>
-            {notifiedAt ? new Date(notifiedAt).toLocaleString() : '-'}
+            {completedExportEmailSentAt
+              ? new Date(completedExportEmailSentAt).toLocaleString()
+              : '-'}
           </span>
+          {completedExportEmailAttempts ? (
+            <span className="text-muted-foreground">
+              ({completedExportEmailAttempts} attempt
+              {completedExportEmailAttempts === 1 ? '' : 's'})
+            </span>
+          ) : null}
         </div>
+        {completedExportEmailLastError ? (
+          <div className="flex items-start gap-2">
+            <span className="text-muted-foreground">
+              Completion Email Last Error:
+            </span>
+            <span className="text-red-600 font-mono">
+              {completedExportEmailLastError}
+            </span>
+          </div>
+        ) : null}
       </div>
 
       <Table>

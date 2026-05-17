@@ -43,6 +43,7 @@ import type {
   Nameserver,
   Nameservers,
   PendingTransferInfo,
+  TransferStatus,
   PricingDetails,
   RdapDomainStatus,
 } from '#lib/data';
@@ -1120,11 +1121,102 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return finalOutput;
   }
 
+  /**
+   * Query AWS Route 53 for the most recent TRANSFER_OUT_DOMAIN operation
+   * affecting the given domain.
+   *
+   * Route 53 doesn't expose a direct "get pending transfer" endpoint, but
+   * `ListOperationsCommand` returns the operation history filtered by type.
+   * We pull TRANSFER_OUT_DOMAIN operations sorted by submitted-date desc,
+   * paginate until we either match the domain name or exhaust the history
+   * (bounded by `maxPages` for safety), and map AWS `OperationStatus` to
+   * EPP-style `TransferStatus`:
+   *
+   *   SUBMITTED / IN_PROGRESS  → 'pending'
+   *   SUCCESSFUL               → 'serverApproved'
+   *   FAILED                   → 'serverCancelled'
+   *   ERROR                    → 'serverRejected'
+   *
+   * Returns `null` when there is no TRANSFER_OUT_DOMAIN operation for the
+   * domain. AWS exceptions propagate so the activity layer can record an
+   * `error` source-status (rather than silently treating them as no-data).
+   */
   async queryPendingTransfer(
-    _domainName: PunycodeDomainName,
+    domainName: PunycodeDomainName,
   ): Promise<PendingTransferInfo | null> {
-    // Route53 does not support querying pending transfers via API
-    return null;
+    assertPunycodeDomainName(domainName);
+
+    const normalizedTarget = domainName.toLowerCase();
+
+    let marker: string | undefined;
+    let pageCount = 0;
+    const maxPages = 100; // Safety bound; typically the match is on page 1
+    let matchedOperation:
+      | NonNullable<ListOperationsCommandOutput['Operations']>[number]
+      | undefined;
+
+    do {
+      const input: ListOperationsCommandInput = {
+        SortBy: 'SubmittedDate',
+        SortOrder: 'DESC',
+        Marker: marker,
+        MaxItems: 100,
+        Type: ['TRANSFER_OUT_DOMAIN'],
+      };
+      const response = await this.send(new ListOperationsCommand(input));
+      marker = response.NextPageMarker;
+      pageCount++;
+
+      matchedOperation = response.Operations?.find(
+        (op) => op.DomainName?.toLowerCase() === normalizedTarget,
+      );
+
+      if (matchedOperation || pageCount >= maxPages) {
+        break;
+      }
+    } while (marker);
+
+    if (!matchedOperation) {
+      return null;
+    }
+
+    let mappedStatus: TransferStatus;
+    switch (matchedOperation.Status) {
+      case 'SUBMITTED':
+      case 'IN_PROGRESS':
+        mappedStatus = 'pending';
+        break;
+      case 'SUCCESSFUL':
+        mappedStatus = 'serverApproved';
+        break;
+      case 'FAILED':
+        mappedStatus = 'serverCancelled';
+        break;
+      case 'ERROR':
+        mappedStatus = 'serverRejected';
+        break;
+      default:
+        // Defensive: future AWS additions default to 'pending' so we don't
+        // accidentally treat an unknown status as a terminal outcome.
+        mappedStatus = 'pending';
+    }
+
+    const submittedDate = matchedOperation.SubmittedDate
+      ? new Date(matchedOperation.SubmittedDate)
+      : new Date();
+
+    return {
+      domainName: toPunycodeDomainName(
+        matchedOperation.DomainName ?? domainName,
+      ),
+      status: mappedStatus,
+      // R53 doesn't expose the gaining (requesting) registrar in this API.
+      requestingRegistrarId: 'external',
+      requestDate: submittedDate,
+      actionRegistrarId: this.key,
+      actionDate: submittedDate,
+      expirationDate: undefined,
+    };
   }
 
   async approveTransfer(

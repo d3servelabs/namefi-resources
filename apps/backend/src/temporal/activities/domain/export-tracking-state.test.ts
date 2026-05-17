@@ -7,12 +7,13 @@ import {
   getExportTrackingEmailType,
   isAdminApprovedForPendingNotification,
   isBurnEligibleExportStatus,
+  isTerminalStatus,
   mapDecisionToPersistedStatus,
 } from './export-tracking-state';
 
 describe('export-tracking-state', () => {
   describe('mapDecisionToPersistedStatus', () => {
-    it('maps transfer completion to admin review state', () => {
+    it('routes TRANSFER_COMPLETED decisions through the admin gate', () => {
       expect(mapDecisionToPersistedStatus('TRANSFER_COMPLETED')).toBe(
         'NEEDS_ADMIN_REVIEW',
       );
@@ -29,6 +30,12 @@ describe('export-tracking-state', () => {
         'TRANSFER_PERIOD',
       );
     });
+
+    it('persists TRANSFER_FAILED as a terminal failure', () => {
+      expect(mapDecisionToPersistedStatus('TRANSFER_FAILED')).toBe(
+        'TRANSFER_FAILED',
+      );
+    });
   });
 
   describe('actionToTrackingStatus', () => {
@@ -37,33 +44,48 @@ describe('export-tracking-state', () => {
       expect(actionToTrackingStatus('UNDETERMINED')).toBe('UNDETERMINED');
     });
 
-    it('keeps transfer completed as transfer completed for compatibility', () => {
+    it('preserves TRANSFER_COMPLETED action mapping', () => {
       expect(actionToTrackingStatus('TRANSFER_COMPLETED')).toBe(
         'TRANSFER_COMPLETED',
       );
     });
   });
 
-  describe('admin review gating', () => {
-    it('allows approval for needs-admin-review and legacy transfer-completed', () => {
-      expect(canApproveExportTrackingStatus('NEEDS_ADMIN_REVIEW')).toBe(true);
-      expect(canApproveExportTrackingStatus('TRANSFER_COMPLETED')).toBe(true);
+  describe('isTerminalStatus', () => {
+    it('returns true for terminal statuses', () => {
+      expect(isTerminalStatus('TRANSFER_COMPLETED')).toBe(true);
+      expect(isTerminalStatus('TRANSFER_FAILED')).toBe(true);
+      expect(isTerminalStatus('RESOLVED')).toBe(true);
     });
 
-    it('rejects approval for non-review states', () => {
+    it('returns false for active and transient statuses', () => {
+      expect(isTerminalStatus('PENDING_TRANSFER')).toBe(false);
+      expect(isTerminalStatus('TRANSFER_PERIOD')).toBe(false);
+      expect(isTerminalStatus('NEEDS_ADMIN_REVIEW')).toBe(false);
+      expect(isTerminalStatus('NO_SIGNAL')).toBe(false);
+      expect(isTerminalStatus('UNDETERMINED')).toBe(false);
+    });
+  });
+
+  describe('admin review gating', () => {
+    it('allows approval only for NEEDS_ADMIN_REVIEW', () => {
+      expect(canApproveExportTrackingStatus('NEEDS_ADMIN_REVIEW')).toBe(true);
+    });
+
+    it('rejects approval for terminal and active non-review states', () => {
       expect(canApproveExportTrackingStatus('PENDING_TRANSFER')).toBe(false);
-      expect(canApproveExportTrackingStatus('NOTIFIED')).toBe(false);
+      expect(canApproveExportTrackingStatus('TRANSFER_COMPLETED')).toBe(false);
       expect(canApproveExportTrackingStatus('RESOLVED')).toBe(false);
     });
 
-    it('allows resolve for review and notified states', () => {
+    it('allows resolve only for NEEDS_ADMIN_REVIEW', () => {
       expect(canResolveExportTrackingStatus('NEEDS_ADMIN_REVIEW')).toBe(true);
-      expect(canResolveExportTrackingStatus('NOTIFIED')).toBe(true);
-      expect(canResolveExportTrackingStatus('TRANSFER_COMPLETED')).toBe(true);
     });
 
-    it('rejects resolve for pending status', () => {
+    it('rejects resolve for terminal rows and non-review active states', () => {
       expect(canResolveExportTrackingStatus('PENDING_TRANSFER')).toBe(false);
+      expect(canResolveExportTrackingStatus('TRANSFER_COMPLETED')).toBe(false);
+      expect(canResolveExportTrackingStatus('RESOLVED')).toBe(false);
     });
   });
 
@@ -71,12 +93,12 @@ describe('export-tracking-state', () => {
     it('allows burn for export-complete states', () => {
       expect(isBurnEligibleExportStatus('TRANSFER_COMPLETED')).toBe(true);
       expect(isBurnEligibleExportStatus('NEEDS_ADMIN_REVIEW')).toBe(true);
-      expect(isBurnEligibleExportStatus('NOTIFIED')).toBe(true);
     });
 
-    it('rejects burn for unresolved and pending states', () => {
+    it('rejects burn for unresolved, pending, and resolved states', () => {
       expect(isBurnEligibleExportStatus('PENDING_TRANSFER')).toBe(false);
       expect(isBurnEligibleExportStatus('RESOLVED')).toBe(false);
+      expect(isBurnEligibleExportStatus('TRANSFER_FAILED')).toBe(false);
     });
   });
 
@@ -88,14 +110,17 @@ describe('export-tracking-state', () => {
 
     it('uses complete email type for export-complete statuses', () => {
       expect(getExportTrackingEmailType('NEEDS_ADMIN_REVIEW')).toBe('complete');
-      expect(getExportTrackingEmailType('NOTIFIED')).toBe('complete');
-      expect(getExportTrackingEmailType('RESOLVED')).toBe('complete');
+      expect(getExportTrackingEmailType('TRANSFER_COMPLETED')).toBe('complete');
     });
 
-    it('returns null for statuses that should not email', () => {
+    it('uses failed email type for TRANSFER_FAILED', () => {
+      expect(getExportTrackingEmailType('TRANSFER_FAILED')).toBe('failed');
+    });
+
+    it('returns null for statuses without an applicable email template', () => {
       expect(getExportTrackingEmailType('NO_SIGNAL')).toBeNull();
       expect(getExportTrackingEmailType('UNDETERMINED')).toBeNull();
-      expect(getExportTrackingEmailType('TRANSFER_FAILED')).toBeNull();
+      expect(getExportTrackingEmailType('RESOLVED')).toBeNull();
     });
   });
 
@@ -133,14 +158,14 @@ describe('export-tracking-state', () => {
       const at = new Date('2026-02-23T10:00:00.000Z');
       const result = appendExportTrackingStatusHistory(
         undefined,
-        'NOTIFIED',
+        'TRANSFER_COMPLETED',
         at,
       );
 
       expect(result).toEqual([
         {
           timestamp: '2026-02-23T10:00:00.000Z',
-          status: 'NOTIFIED',
+          status: 'TRANSFER_COMPLETED',
         },
       ]);
     });

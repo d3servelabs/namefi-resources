@@ -21,25 +21,264 @@ import { ExportTrackingCard } from './export-tracking-card';
 import {
   ChainCell,
   formatDateTime,
-  LatestEvidenceCell,
   OwnerAddressCell,
 } from './export-tracking-cells';
 import { StatusHistorySubrow } from './status-history-subrow';
-import type { ExportTrackingRecord } from './types';
+import type { ExportTrackingRecord as BaseExportTrackingRecord } from './types';
 import { VerifyButton } from './verify-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@namefi-astra/ui/components/shadcn/popover';
+
+type EvidenceSourceEntry = {
+  source:
+  | 'AccountCheck'
+  | 'RDAPStatus'
+  | 'RDAPEvents'
+  | 'WHOIS'
+  | 'DirectRegistrar';
+  status:
+  | 'positive_pending'
+  | 'positive_period'
+  | 'positive_completed'
+  | 'positive_failed'
+  | 'negative'
+  | 'no_data'
+  | 'error';
+  evidence?: unknown;
+  error?: string;
+  checkedAt: string;
+};
+
+type SourceBasedLatestEvidence = {
+  checkedAt?: string;
+  decisionAction?: string;
+  decisionReason?: string;
+  sources?: EvidenceSourceEntry[];
+  eppStatuses?: string[];
+};
+
+type TableLatestEvidence =
+  | BaseExportTrackingRecord['latestEvidence']
+  | SourceBasedLatestEvidence
+  | null;
+
+type TableExportTrackingRecord = Omit<
+  BaseExportTrackingRecord,
+  'latestEvidence'
+> & {
+  isActive?: boolean;
+  verifyingAdminId?: string | null;
+  pendingExportEmailSentAt?: Date | string | null;
+  pendingExportEmailLastAttemptAt?: Date | string | null;
+  pendingExportEmailAttempts?: number | null;
+  pendingExportEmailLastError?: string | null;
+  pendingExportEmailRecipient?: string | null;
+  failedExportEmailSentAt?: Date | string | null;
+  failedExportEmailLastAttemptAt?: Date | string | null;
+  failedExportEmailAttempts?: number | null;
+  failedExportEmailLastError?: string | null;
+  failedExportEmailRecipient?: string | null;
+  completedExportEmailSentAt?: Date | string | null;
+  completedExportEmailLastAttemptAt?: Date | string | null;
+  completedExportEmailAttempts?: number | null;
+  completedExportEmailLastError?: string | null;
+  completedExportEmailRecipient?: string | null;
+  latestEvidence: TableLatestEvidence;
+};
+
+const toDateOrNull = (value: Date | string | null | undefined): Date | null =>
+  value ? new Date(value) : null;
+
+const getPendingEmailSentAt = (
+  record: TableExportTrackingRecord,
+): Date | string | null | undefined =>
+  record.pendingExportEmailSentAt ?? record.pendingNotifiedAt;
+
+const getCompletedEmailSentAt = (
+  record: TableExportTrackingRecord,
+): Date | string | null | undefined =>
+  record.completedExportEmailSentAt ?? record.notifiedAt;
 
 /**
  * Whether a row has any expandable detail (status-history timeline / email
  * timestamps). Shared by the desktop `getRowCanExpand` and the mobile card so
  * both gate the expander on the exact same condition.
  */
-const rowCanExpand = (record: ExportTrackingRecord): boolean =>
+const rowCanExpand = (record: TableExportTrackingRecord): boolean =>
   (record.statusHistory?.length ?? 0) > 0 ||
-  Boolean(record.pendingNotifiedAt) ||
-  Boolean(record.notifiedAt);
+  Boolean(getPendingEmailSentAt(record)) ||
+  Boolean(record.failedExportEmailSentAt) ||
+  Boolean(getCompletedEmailSentAt(record));
+
+const buildVerifyButtonRecord = (record: TableExportTrackingRecord) => ({
+  id: record.id,
+  normalizedDomainName: record.normalizedDomainName,
+  status: record.status,
+  isActive: record.isActive ?? true,
+  adminVerifiedAt: record.adminVerifiedAt,
+  nftBurnedAt: record.nftBurnedAt,
+  pendingExportEmailSentAt: toDateOrNull(getPendingEmailSentAt(record)),
+  failedExportEmailSentAt: toDateOrNull(record.failedExportEmailSentAt),
+  completedExportEmailSentAt: toDateOrNull(getCompletedEmailSentAt(record)),
+});
+
+const buildCardRecord = (
+  record: TableExportTrackingRecord,
+): BaseExportTrackingRecord => ({
+  ...record,
+  pendingNotifiedAt: toDateOrNull(getPendingEmailSentAt(record)),
+  notifiedAt: toDateOrNull(getCompletedEmailSentAt(record)),
+  latestEvidence:
+    'sources' in (record.latestEvidence ?? {})
+      ? null
+      : (record.latestEvidence as BaseExportTrackingRecord['latestEvidence']),
+});
+
+const hasSourceEvidence = (
+  latestEvidence: TableLatestEvidence,
+): latestEvidence is SourceBasedLatestEvidence =>
+  Boolean(
+    latestEvidence &&
+    'sources' in latestEvidence &&
+    Array.isArray(latestEvidence.sources),
+  );
+
+const formatSourceBasedAccountSummary = (
+  latestEvidence: SourceBasedLatestEvidence,
+): string => {
+  const accountSource = latestEvidence.sources?.find(
+    (source) => source.source === 'AccountCheck',
+  );
+
+  if (!accountSource) return 'No data';
+  if (accountSource.status === 'positive_completed') {
+    return 'Out of account (confirmed)';
+  }
+  if (accountSource.status === 'negative') {
+    return 'In account (confirmed)';
+  }
+  if (accountSource.status === 'error') {
+    return `Error: ${accountSource.error ?? 'unknown'}`;
+  }
+  if (accountSource.status === 'no_data') {
+    return 'No data';
+  }
+
+  return accountSource.status;
+};
+
+const formatSourceBasedRdapSummary = (
+  latestEvidence: SourceBasedLatestEvidence,
+): string => {
+  const rdapEventsSource = latestEvidence.sources?.find(
+    (source) => source.source === 'RDAPEvents',
+  );
+  const rdapEvidence = rdapEventsSource?.evidence as
+    | { eventAction?: string; eventDate?: string }
+    | undefined;
+
+  if (!rdapEventsSource) return 'No data';
+  if (rdapEventsSource.status === 'positive_completed') {
+    return rdapEvidence?.eventDate
+      ? `Detected (${new Date(rdapEvidence.eventDate).toLocaleString()})`
+      : 'Detected';
+  }
+  if (rdapEventsSource.status === 'negative') {
+    return 'Not detected';
+  }
+  if (rdapEventsSource.status === 'error') {
+    return `Error: ${rdapEventsSource.error ?? 'unknown'}`;
+  }
+  if (rdapEventsSource.status === 'no_data') {
+    return 'No data';
+  }
+
+  return rdapEventsSource.status;
+};
+
+function LatestEvidenceTableCell({
+  latestEvidence,
+}: {
+  latestEvidence: TableLatestEvidence;
+}) {
+  if (!latestEvidence) {
+    return <span className="text-xs text-muted-foreground">-</span>;
+  }
+
+  const accountSummary = hasSourceEvidence(latestEvidence)
+    ? formatSourceBasedAccountSummary(latestEvidence)
+    : latestEvidence.accountCheck
+      ? `${latestEvidence.accountCheck.inOurAccount ? 'In account' : 'Out of account'} (${latestEvidence.accountCheck.confirmed ? 'confirmed' : 'unconfirmed'})`
+      : 'Unknown';
+
+  const rdapSummary = hasSourceEvidence(latestEvidence)
+    ? formatSourceBasedRdapSummary(latestEvidence)
+    : latestEvidence.rdapTransferEvent?.detected
+      ? latestEvidence.rdapTransferEvent.eventDate
+        ? `Detected (${new Date(latestEvidence.rdapTransferEvent.eventDate).toLocaleString()})`
+        : 'Detected'
+      : 'Not detected';
+
+  return (
+    <div className="space-y-0.5 text-xs max-w-[300px]">
+      <div>
+        <span className="text-muted-foreground">Account:</span>{' '}
+        <span>{accountSummary}</span>
+      </div>
+      <div>
+        <span className="text-muted-foreground">RDAP transfer:</span>{' '}
+        <span>{rdapSummary}</span>
+      </div>
+      {latestEvidence.checkedAt && (
+        <div className="text-muted-foreground">
+          Checked: {new Date(latestEvidence.checkedAt).toLocaleString()}
+        </div>
+      )}
+      {hasSourceEvidence(latestEvidence) ? (
+        <div className="text-muted-foreground">
+          Sources: {latestEvidence.sources?.length ?? 0} (
+          {latestEvidence.sources?.filter((source) => source.status === 'error')
+            .length ?? 0}{' '}
+          errored)
+        </div>
+      ) : latestEvidence.evidenceSource ? (
+        <div className="text-muted-foreground">
+          Source: {latestEvidence.evidenceSource}
+        </div>
+      ) : null}
+      <Popover>
+        <PopoverTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 px-2 text-xs -ms-2"
+            />
+          }
+        >
+          View JSON
+        </PopoverTrigger>
+        <PopoverContent
+          align="start"
+          className="w-[440px] max-sm:w-[calc(100vw-2rem)] p-3"
+        >
+          <div className="space-y-2">
+            <div className="text-xs font-medium">Latest Evidence</div>
+            <pre className="max-h-80 overflow-auto rounded-md bg-muted p-2 text-[11px] leading-relaxed">
+              {JSON.stringify(latestEvidence, null, 2)}
+            </pre>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
 
 export function ExportTrackingTable() {
   const trpc = useTRPC();
@@ -66,6 +305,13 @@ export function ExportTrackingTable() {
         statusChangedAt: false,
         registrarKey: false,
         latestEvidence: false,
+        pendingExportEmailAttempts: false,
+        pendingExportEmailLastError: false,
+        failedExportEmailSentAt: false,
+        failedExportEmailAttempts: false,
+        failedExportEmailLastError: false,
+        completedExportEmailAttempts: false,
+        completedExportEmailLastError: false,
       },
     },
   });
@@ -153,6 +399,16 @@ export function ExportTrackingTable() {
           { value: 'RESOLVED', label: 'Resolved' },
         ],
       },
+      isActive: {
+        id: 'isActive',
+        label: 'Row state',
+        type: 'select',
+        columnId: 'isActive',
+        options: [
+          { value: 'true', label: 'Active' },
+          { value: 'false', label: 'Terminal (frozen)' },
+        ],
+      },
       chainId: {
         id: 'chainId',
         label: 'Chain',
@@ -190,10 +446,7 @@ export function ExportTrackingTable() {
           id: 'expander',
           header: '',
           cell: ({ row }) => {
-            const hasHistory =
-              row.original.statusHistory &&
-              row.original.statusHistory.length > 0;
-            if (!hasHistory) return null;
+            if (!rowCanExpand(row.original)) return null;
 
             return (
               <button
@@ -276,16 +529,87 @@ export function ExportTrackingTable() {
           size: 160,
         },
         {
-          accessorKey: 'pendingNotifiedAt',
+          accessorKey: 'pendingExportEmailSentAt',
           header: 'Pending Email Sent',
-          cell: ({ row }) => formatDateTime(row.original.pendingNotifiedAt),
+          cell: ({ row }) =>
+            formatDateTime(getPendingEmailSentAt(row.original)),
           size: 180,
         },
         {
-          accessorKey: 'notifiedAt',
+          accessorKey: 'pendingExportEmailAttempts',
+          header: 'Pending Attempts',
+          cell: ({ row }) => row.original.pendingExportEmailAttempts ?? 0,
+          size: 140,
+        },
+        {
+          accessorKey: 'pendingExportEmailLastError',
+          header: 'Pending Last Error',
+          enableSorting: false,
+          cell: ({ row }) => (
+            <span className="text-xs text-red-600 font-mono">
+              {row.original.pendingExportEmailLastError ?? '-'}
+            </span>
+          ),
+          size: 220,
+        },
+        {
+          accessorKey: 'failedExportEmailSentAt',
+          header: 'Failed Email Sent',
+          cell: ({ row }) =>
+            formatDateTime(row.original.failedExportEmailSentAt),
+          size: 180,
+        },
+        {
+          accessorKey: 'failedExportEmailAttempts',
+          header: 'Failed Attempts',
+          cell: ({ row }) => row.original.failedExportEmailAttempts ?? 0,
+          size: 140,
+        },
+        {
+          accessorKey: 'failedExportEmailLastError',
+          header: 'Failed Last Error',
+          enableSorting: false,
+          cell: ({ row }) => (
+            <span className="text-xs text-red-600 font-mono">
+              {row.original.failedExportEmailLastError ?? '-'}
+            </span>
+          ),
+          size: 220,
+        },
+        {
+          accessorKey: 'completedExportEmailSentAt',
           header: 'Completion Email Sent',
-          cell: ({ row }) => formatDateTime(row.original.notifiedAt),
-          size: 190,
+          cell: ({ row }) =>
+            formatDateTime(getCompletedEmailSentAt(row.original)),
+          size: 200,
+        },
+        {
+          accessorKey: 'completedExportEmailAttempts',
+          header: 'Completion Attempts',
+          cell: ({ row }) => row.original.completedExportEmailAttempts ?? 0,
+          size: 150,
+        },
+        {
+          accessorKey: 'completedExportEmailLastError',
+          header: 'Completion Last Error',
+          enableSorting: false,
+          cell: ({ row }) => (
+            <span className="text-xs text-red-600 font-mono">
+              {row.original.completedExportEmailLastError ?? '-'}
+            </span>
+          ),
+          size: 220,
+        },
+        {
+          accessorKey: 'isActive',
+          header: 'Active',
+          cell: ({ row }) =>
+            (row.original.isActive ?? true) ? (
+              <span className="text-xs font-medium">Active</span>
+            ) : (
+              <span className="text-xs text-muted-foreground">Terminal</span>
+            ),
+          size: 90,
         },
         {
           accessorKey: 'nftBurnedAt',
@@ -298,7 +622,7 @@ export function ExportTrackingTable() {
           header: 'Latest Evidence',
           enableSorting: false,
           cell: ({ row }) => (
-            <LatestEvidenceCell
+            <LatestEvidenceTableCell
               latestEvidence={row.original.latestEvidence}
               data-testid={`admin.export-tracking.list.row.${row.original.id}.latest-evidence`}
             />
@@ -310,21 +634,28 @@ export function ExportTrackingTable() {
           header: 'Actions',
           cell: ({ row }) => (
             <VerifyButton
-              record={row.original}
+              record={buildVerifyButtonRecord(row.original)}
               data-testid={`admin.export-tracking.row.${row.original.id}.actions`}
             />
           ),
           size: 280,
         },
-      ] satisfies ColumnDef<ExportTrackingRecord>[],
+      ] satisfies ColumnDef<TableExportTrackingRecord>[],
     [],
   );
 
-  const renderSubRow = (row: Row<ExportTrackingRecord>) => (
+  const renderSubRow = (row: Row<TableExportTrackingRecord>) => (
     <StatusHistorySubrow
       statusHistory={row.original.statusHistory ?? []}
-      pendingNotifiedAt={row.original.pendingNotifiedAt}
-      notifiedAt={row.original.notifiedAt}
+      pendingExportEmailSentAt={getPendingEmailSentAt(row.original)}
+      pendingExportEmailAttempts={row.original.pendingExportEmailAttempts}
+      pendingExportEmailLastError={row.original.pendingExportEmailLastError}
+      failedExportEmailSentAt={row.original.failedExportEmailSentAt}
+      failedExportEmailAttempts={row.original.failedExportEmailAttempts}
+      failedExportEmailLastError={row.original.failedExportEmailLastError}
+      completedExportEmailSentAt={getCompletedEmailSentAt(row.original)}
+      completedExportEmailAttempts={row.original.completedExportEmailAttempts}
+      completedExportEmailLastError={row.original.completedExportEmailLastError}
     />
   );
 
@@ -345,11 +676,11 @@ export function ExportTrackingTable() {
   // instead of a horizontally-scrolling table. Gated internally by
   // ExtensibleDataTable on useIsMobile().
   const renderMobileCard = useCallback(
-    (row: Row<ExportTrackingRecord>) => {
+    (row: Row<TableExportTrackingRecord>) => {
       const record = row.original;
       return (
         <ExportTrackingCard
-          record={record}
+          record={buildCardRecord(record)}
           canExpand={rowCanExpand(record)}
           isExpanded={expandedCardIds.has(record.id)}
           onToggleExpanded={() => handleToggleCardExpanded(record.id)}
@@ -382,10 +713,10 @@ export function ExportTrackingTable() {
         </PermissionGate>
       </div>
 
-      <ExtensibleDataTable<ExportTrackingRecord, typeof filterStrategy>
+      <ExtensibleDataTable<TableExportTrackingRecord, typeof filterStrategy>
         filterStrategy={filterStrategy}
         columns={columns}
-        data={query.data?.data ?? []}
+        data={(query.data?.data ?? []) as TableExportTrackingRecord[]}
         isLoading={query.isLoading}
         isFetching={query.isFetching}
         page={page}
