@@ -41,6 +41,7 @@ import {
   CheckCircle2,
   Clock3,
   Copy,
+  Download,
   ExternalLink,
   FileText,
   Loader2,
@@ -59,6 +60,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import {
+  buildLeadgenCrmCsv,
+  isLeadgenCrmCsvExportAvailable,
+} from './leadgen-export';
 import { buildMailtoHref } from './leadgen-mailto';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
@@ -116,6 +121,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const trpc = useTRPC();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { exportingRunId, exportRunCsv } = useLeadgenRunCsvExport();
   const [domain, setDomain] = useState('');
   const [reasoningEffort, setReasoningEffort] =
     useState<ReasoningEffort>('medium');
@@ -334,6 +340,8 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
             runs={runsQuery.data ?? []}
             activeRunId={activeRunId}
             isLoading={runsQuery.isLoading}
+            exportingRunId={exportingRunId}
+            onExportRun={exportRunCsv}
           />
         </aside>
 
@@ -348,6 +356,40 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       </div>
     </PageShell>
   );
+}
+
+function useLeadgenRunCsvExport() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [exportingRunId, setExportingRunId] = useState<string | null>(null);
+
+  const exportRunCsv = async (runId: string) => {
+    if (exportingRunId) return;
+
+    setExportingRunId(runId);
+    try {
+      const run = await queryClient.fetchQuery(
+        trpc.leadgen.getRun.queryOptions({ runId }),
+      );
+
+      if (!isLeadgenCrmCsvExportAvailable(run)) {
+        toast('This run is not ready to export');
+        return;
+      }
+
+      downloadLeadgenCrmCsv(run);
+      toast.success('CRM CSV exported');
+    } catch (error) {
+      toast.error('Could not export CRM CSV', {
+        description:
+          error instanceof Error ? error.message : 'Please try again.',
+      });
+    } finally {
+      setExportingRunId(null);
+    }
+  };
+
+  return { exportingRunId, exportRunCsv };
 }
 
 function LeadgenWorkspacePanel({
@@ -488,6 +530,17 @@ function RunWorkspace({
   };
 
   const headerSubtitle = getRunHeaderSubtitle(run);
+  const canExport = isLeadgenCrmCsvExportAvailable(run);
+
+  const handleExportCrmCsv = () => {
+    if (!canExport) {
+      toast('This run is not ready to export');
+      return;
+    }
+
+    downloadLeadgenCrmCsv(run);
+    toast.success('CRM CSV exported');
+  };
 
   return (
     <div className="flex h-full min-h-[calc(100vh-8rem)] flex-col">
@@ -505,10 +558,25 @@ function RunWorkspace({
               {headerSubtitle}
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-2 sm:min-w-[320px]">
-            <Metric label="Leads" value={run.leadCount} />
-            <Metric label="Contacts" value={run.contactCount} />
-            <Metric label="Drafts" value={run.draftCount} />
+          <div className="flex shrink-0 flex-col gap-3 sm:min-w-[320px]">
+            {canExport && (
+              <div className="flex lg:justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportCrmCsv}
+                >
+                  <Download data-icon="inline-start" />
+                  Export CRM CSV
+                </Button>
+              </div>
+            )}
+            <div className="grid grid-cols-3 gap-2">
+              <Metric label="Leads" value={run.leadCount} />
+              <Metric label="Contacts" value={run.contactCount} />
+              <Metric label="Drafts" value={run.draftCount} />
+            </div>
           </div>
         </div>
 
@@ -1230,10 +1298,14 @@ function PastRuns({
   runs,
   activeRunId,
   isLoading,
+  exportingRunId,
+  onExportRun,
 }: {
   runs: LeadgenRunSummary[];
   activeRunId: string | null;
   isLoading: boolean;
+  exportingRunId: string | null;
+  onExportRun: (runId: string) => Promise<void>;
 }) {
   return (
     <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
@@ -1258,29 +1330,58 @@ function PastRuns({
           Your buyer searches will stay here.
         </p>
       ) : (
-        <div className="space-y-2">
-          {runs.map((run) => (
-            <Link
-              key={run.id}
-              href={getLeadgenRunHref(run.id)}
-              className={cn(
-                'block rounded-md border p-3 transition-colors hover:bg-muted/40',
-                run.id === activeRunId
-                  ? 'border-primary/60 bg-primary/5'
-                  : 'border-border/70 bg-background/40',
-              )}
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="truncate text-sm font-medium">
-                  {run.domain}
-                </span>
-                <RunStatusIcon status={run.status} />
+        <div className="flex flex-col gap-2">
+          {runs.map((run) => {
+            const canExport = isLeadgenCrmCsvExportAvailable(run);
+            const isExporting = exportingRunId === run.id;
+
+            return (
+              <div
+                key={run.id}
+                className={cn(
+                  'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
+                  run.id === activeRunId
+                    ? 'border-primary/60 bg-primary/5'
+                    : 'border-border/70',
+                )}
+              >
+                <div className="flex items-start gap-2">
+                  <Link
+                    href={getLeadgenRunHref(run.id)}
+                    className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate text-sm font-medium">
+                        {run.domain}
+                      </span>
+                      <RunStatusIcon status={run.status} />
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {run.leadCount} leads · {run.draftCount} drafts
+                    </p>
+                  </Link>
+                  {canExport && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      disabled={isExporting}
+                      aria-label={`Download CRM CSV for ${run.domain}`}
+                      onClick={() => {
+                        void onExportRun(run.id);
+                      }}
+                    >
+                      {isExporting ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        <Download />
+                      )}
+                    </Button>
+                  )}
+                </div>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {run.leadCount} leads · {run.draftCount} drafts
-              </p>
-            </Link>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
@@ -2143,6 +2244,28 @@ function isInitialDraftEvent(event: LeadgenEvent) {
 
 function isTerminalLeadgenStatus(status: LeadgenSnapshot['status']) {
   return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
+}
+
+function downloadLeadgenCrmCsv(run: LeadgenSnapshot) {
+  const csv = buildLeadgenCrmCsv(run);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+
+  anchor.href = url;
+  anchor.download = buildLeadgenCrmFilename(run.domain);
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
+function buildLeadgenCrmFilename(domain: string) {
+  const safeDomain = domain
+    .replace(/[^a-z0-9.-]+/gi, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return `namefi-leadgen-${safeDomain || 'results'}.csv`;
 }
 
 function getRunHeaderSubtitle(run: LeadgenSnapshot) {
