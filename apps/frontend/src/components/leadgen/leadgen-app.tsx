@@ -392,9 +392,9 @@ function RunWorkspace({
   const usageQuery = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
   });
-  const [pendingOutreachLeadId, setPendingOutreachLeadId] = useState<
-    string | null
-  >(null);
+  const [pendingOutreachLeadIds, setPendingOutreachLeadIds] = useState<
+    string[]
+  >([]);
   const [reviewOutreachLeadId, setReviewOutreachLeadId] = useState<
     string | null
   >(null);
@@ -449,8 +449,10 @@ function RunWorkspace({
           description: error.message,
         });
       },
-      onSettled() {
-        setPendingOutreachLeadId(null);
+      onSettled(_snapshot, _error, variables) {
+        setPendingOutreachLeadIds((leadIds) =>
+          leadIds.filter((leadId) => leadId !== variables.leadId),
+        );
       },
     }),
   );
@@ -467,7 +469,7 @@ function RunWorkspace({
       : false;
 
   const handleGenerateLeadOutreach = (leadId: string) => {
-    if (pendingOutreachLeadId) return;
+    if (pendingOutreachLeadIds.includes(leadId)) return;
     if (
       usageQuery.data &&
       estimatedOutreachCredits !== undefined &&
@@ -479,7 +481,9 @@ function RunWorkspace({
       return;
     }
 
-    setPendingOutreachLeadId(leadId);
+    setPendingOutreachLeadIds((leadIds) =>
+      leadIds.includes(leadId) ? leadIds : [...leadIds, leadId],
+    );
     generateLeadOutreach.mutate({ runId: run.id, leadId });
   };
 
@@ -551,7 +555,7 @@ function RunWorkspace({
               <LeadList
                 leads={buckets.general}
                 sourceDomain={run.domain}
-                pendingOutreachLeadId={pendingOutreachLeadId}
+                pendingOutreachLeadIds={pendingOutreachLeadIds}
                 reviewOutreachLeadId={reviewOutreachLeadId}
                 estimatedOutreachCredits={estimatedOutreachCredits}
                 remainingCredits={usageQuery.data?.remainingCredits}
@@ -566,7 +570,7 @@ function RunWorkspace({
               <LeadList
                 leads={buckets.substring}
                 sourceDomain={run.domain}
-                pendingOutreachLeadId={pendingOutreachLeadId}
+                pendingOutreachLeadIds={pendingOutreachLeadIds}
                 reviewOutreachLeadId={reviewOutreachLeadId}
                 estimatedOutreachCredits={estimatedOutreachCredits}
                 remainingCredits={usageQuery.data?.remainingCredits}
@@ -584,7 +588,7 @@ function RunWorkspace({
           <Timeline
             run={run}
             isRunning={isRunning}
-            pendingOutreachLeadId={pendingOutreachLeadId}
+            pendingOutreachLeadIds={pendingOutreachLeadIds}
           />
         </aside>
       </div>
@@ -595,7 +599,7 @@ function RunWorkspace({
 function LeadList({
   leads,
   sourceDomain,
-  pendingOutreachLeadId,
+  pendingOutreachLeadIds,
   reviewOutreachLeadId,
   estimatedOutreachCredits,
   remainingCredits,
@@ -607,7 +611,7 @@ function LeadList({
 }: {
   leads: LeadgenLead[];
   sourceDomain: string;
-  pendingOutreachLeadId: string | null;
+  pendingOutreachLeadIds: string[];
   reviewOutreachLeadId: string | null;
   estimatedOutreachCredits?: number;
   remainingCredits?: number;
@@ -632,7 +636,7 @@ function LeadList({
           key={`${lead.bucket}-${lead.businessDomain}`}
           lead={lead}
           sourceDomain={sourceDomain}
-          isPreparingOutreach={pendingOutreachLeadId === lead.id}
+          isPreparingOutreach={pendingOutreachLeadIds.includes(lead.id)}
           isReviewingOutreach={reviewOutreachLeadId === lead.id}
           estimatedOutreachCredits={estimatedOutreachCredits}
           remainingCredits={remainingCredits}
@@ -1026,18 +1030,19 @@ type TimelinePhase = {
 function Timeline({
   run,
   isRunning,
-  pendingOutreachLeadId,
+  pendingOutreachLeadIds,
 }: {
   run: LeadgenSnapshot;
   isRunning: boolean;
-  pendingOutreachLeadId: string | null;
+  pendingOutreachLeadIds: string[];
 }) {
-  const pendingOutreachLead =
-    run.leads.find((lead) => lead.id === pendingOutreachLeadId) ?? null;
+  const pendingOutreachLeads = run.leads.filter((lead) =>
+    pendingOutreachLeadIds.includes(lead.id),
+  );
   const phases = getCompactTimelinePhases({
     run,
     isRunning,
-    pendingOutreachLead,
+    pendingOutreachLeads,
   });
   const activePhase = phases.findLast((phase) => phase.status === 'active');
 
@@ -1585,11 +1590,11 @@ function WorkingStatus({ label = 'Working' }: { label?: string }) {
 function getCompactTimelinePhases({
   run,
   isRunning,
-  pendingOutreachLead,
+  pendingOutreachLeads,
 }: {
   run: LeadgenSnapshot;
   isRunning: boolean;
-  pendingOutreachLead: LeadgenLead | null;
+  pendingOutreachLeads: LeadgenLead[];
 }): TimelinePhase[] {
   const orderedEvents = getOrderedLeadgenEvents(run.events);
   const terminal = isTerminalLeadgenStatus(run.status);
@@ -1712,7 +1717,7 @@ function getCompactTimelinePhases({
 
   const additionalOutreachPhase = getAdditionalOutreachPhase({
     manualOutreach,
-    pendingOutreachLead,
+    pendingOutreachLeads,
   });
   if (additionalOutreachPhase) {
     phases.push(additionalOutreachPhase);
@@ -1807,29 +1812,36 @@ function getCompletionTimelineState(run: LeadgenSnapshot) {
 
 function getAdditionalOutreachPhase({
   manualOutreach,
-  pendingOutreachLead,
+  pendingOutreachLeads,
 }: {
   manualOutreach: ReturnType<typeof getManualOutreachSummary>;
-  pendingOutreachLead: LeadgenLead | null;
+  pendingOutreachLeads: LeadgenLead[];
 }): TimelinePhase | null {
-  if (!manualOutreach.hasEvents && !pendingOutreachLead) return null;
+  if (!manualOutreach.hasEvents && pendingOutreachLeads.length === 0) {
+    return null;
+  }
 
-  const active = Boolean(pendingOutreachLead);
-  const cardDomain =
-    pendingOutreachLead?.businessDomain ?? manualOutreach.domain;
-  const domainSummary = cardDomain
-    ? manualOutreach.domainSummaries.get(cardDomain)
-    : null;
+  const active = pendingOutreachLeads.length > 0;
+  const primaryPendingLead = pendingOutreachLeads[0] ?? null;
+  const cardDomain = getAdditionalOutreachDomainLabel({
+    manualOutreach,
+    pendingOutreachLeads,
+  });
+  const domainSummary = primaryPendingLead
+    ? manualOutreach.domainSummaries.get(primaryPendingLead.businessDomain)
+    : cardDomain
+      ? manualOutreach.domainSummaries.get(cardDomain)
+      : null;
   const lastEventWasError =
     domainSummary?.lastEventWasError ?? manualOutreach.lastEventWasError;
   const status = getAdditionalOutreachStatus(active, lastEventWasError);
   const contactCount = Math.max(
     domainSummary?.contactCount ?? 0,
-    pendingOutreachLead?.contacts.length ?? 0,
+    getPendingLeadContactCount(pendingOutreachLeads),
   );
   const draftCount = Math.max(
     domainSummary?.draftCount ?? 0,
-    pendingOutreachLead?.drafts.length ?? 0,
+    getPendingLeadDraftCount(pendingOutreachLeads),
   );
   const lastEvent = domainSummary?.lastEvent ?? manualOutreach.lastEvent;
 
@@ -1859,6 +1871,27 @@ function getAdditionalOutreachPhase({
       },
     ],
   };
+}
+
+function getAdditionalOutreachDomainLabel({
+  manualOutreach,
+  pendingOutreachLeads,
+}: {
+  manualOutreach: ReturnType<typeof getManualOutreachSummary>;
+  pendingOutreachLeads: LeadgenLead[];
+}) {
+  if (pendingOutreachLeads.length > 1) {
+    return `${pendingOutreachLeads.length} leads`;
+  }
+  return pendingOutreachLeads[0]?.businessDomain ?? manualOutreach.domain;
+}
+
+function getPendingLeadContactCount(leads: LeadgenLead[]) {
+  return leads.reduce((count, lead) => count + lead.contacts.length, 0);
+}
+
+function getPendingLeadDraftCount(leads: LeadgenLead[]) {
+  return leads.reduce((count, lead) => count + lead.drafts.length, 0);
 }
 
 function getAdditionalOutreachStatus(
