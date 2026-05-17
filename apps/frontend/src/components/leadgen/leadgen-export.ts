@@ -35,6 +35,7 @@ type LeadgenCrmCsvRow = Record<(typeof leadgenCrmCsvHeaders)[number], string>;
 
 const LEAD_SOURCE = 'Namefi Leadgen';
 const CSV_ESCAPE_RE = /[",\r\n]/;
+const CSV_FORMULA_RE = /^[=+\-@]/;
 
 export function isLeadgenCrmCsvExportAvailable(
   run: LeadgenCrmExportAvailability,
@@ -95,9 +96,13 @@ function buildLeadgenCrmRow({
 }
 
 function escapeCsvCell(value: string) {
-  if (!CSV_ESCAPE_RE.test(value)) {
-    return value;
+  const normalized = CSV_FORMULA_RE.test(value.trimStart())
+    ? `'${value}`
+    : value;
+
+  if (!CSV_ESCAPE_RE.test(normalized)) {
+    return normalized;
   }
 
-  return `"${value.replaceAll('"', '""')}"`;
+  return `"${normalized.replaceAll('"', '""')}"`;
 }

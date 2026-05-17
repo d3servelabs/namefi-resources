@@ -110,6 +110,33 @@ describe('buildLeadgenCrmCsv', () => {
       ].join('\r\n'),
     );
   });
+
+  it('escapes CSV formula prefixes', () => {
+    const csv = buildLeadgenCrmCsv({
+      leads: [
+        {
+          businessDomain: 'formula.com',
+          rationale: '=2+2',
+          contacts: [
+            {
+              email: '+sales@example.com',
+              name: null,
+              title: '@admin',
+              sourceUrl: null,
+              context: '-10',
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(csv).toBe(
+      [
+        'company_domain,website,contact_email,contact_name,contact_title,lead_source,lead_notes,source_url',
+        "formula.com,https://formula.com,'+sales@example.com,,'@admin,Namefi Leadgen,'=2+2; -10,'",
+      ].join('\r\n'),
+    );
+  });
 });
 
 describe('isLeadgenCrmCsvExportAvailable', () => {
