@@ -1,13 +1,10 @@
 'use client';
 
-import { useBrowserNotificationWatcher } from './use-browser-notification-watcher';
-
 /**
- * Headless mount-point. Lives once at the top of `Main` so the
- * OS-notification logic runs exactly once per page, regardless of how
- * many bells are on screen.
+ * @deprecated Superseded by `LeaderCoordinator`
+ * (`components/notifications/leader/leader-coordinator.tsx`) mounted in
+ * `Main`. Kept exported as a no-op for any consumers we miss.
  */
 export function BrowserNotificationWatcher() {
-  useBrowserNotificationWatcher();
   return null;
 }

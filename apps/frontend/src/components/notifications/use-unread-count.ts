@@ -38,6 +38,13 @@ export function useUnreadCount({
 }: Options = {}): UseUnreadCountResult {
   const trpc = useTRPC();
   const pollInterval = useNotificationsPollInterval();
+  // The unfiltered count is polled exactly once per browser (across all
+  // tabs) by `LeaderCoordinator`, which hydrates this query's cache via
+  // `setQueryData`. Disabling the local poll here prevents every bell
+  // in every tab from also firing its own network call. Filtered bells
+  // (per-resource scope, page-local) aren't multi-tab amplified, so
+  // they keep their own per-instance polling.
+  const isCoordinated = !filter;
   const queryOptions = trpc.notifications.getUnreadCount.queryOptions(
     filter
       ? {
@@ -46,20 +53,20 @@ export function useUnreadCount({
         }
       : {},
     {
-      refetchInterval: refetchInterval ?? pollInterval,
-      // Keep polling when the tab is in the background so that the
-      // OS-level notification banner can fire (via the watcher) even
-      // when the user is in another window.
+      refetchInterval: isCoordinated
+        ? false
+        : (refetchInterval ?? pollInterval),
       refetchIntervalInBackground: true,
       // Override the global 60s staleTime so a tab re-focus triggers
-      // an immediate refetch. This pairs with the visibility-driven
-      // pause in `useNotificationsPollInterval`: when the user comes
-      // back to a paused tab, refocus refetches immediately AND the
-      // hook flips polling back on for the next tick.
+      // an immediate refetch (only relevant for the filtered path now;
+      // for the coordinated path the leader's tick is the only fetch).
       staleTime: 0,
     },
   );
-  const { data, isLoading } = useQuery(queryOptions);
+  const { data, isLoading } = useQuery({
+    ...queryOptions,
+    enabled: !isCoordinated,
+  });
   const count = data?.count ?? 0;
 
   const [justIncreased, setJustIncreased] = useState(false);
