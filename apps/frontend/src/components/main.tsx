@@ -22,7 +22,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
       : 'calc(var(--sidebar-width) + 1.25rem)';
 
   return (
-    <SidebarInset className="grid grid-cols-1 grid-rows-[auto_1fr_auto] relative overflow-y-auto bg-transparent">
+    <SidebarInset className="relative grid h-svh min-h-0 grid-cols-1 grid-rows-[auto_1fr_auto] overflow-y-auto bg-transparent">
       <Header className="row-start-1 col-start-1 z-40 pointer-events-auto" />
       <div
         className={cn(

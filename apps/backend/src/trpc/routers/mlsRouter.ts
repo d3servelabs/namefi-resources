@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server';
 import {
   MAX_MLS_FEED_LIMIT,
   type MlsDomainSearchResponse,
+  type MlsFeedPage,
   type MlsListing,
   mlsContract,
   mlsDomainSearchResponseSchema,
@@ -14,56 +15,75 @@ import { publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 
 const REQUEST_TIMEOUT_MS = 5_000;
+const MAX_FILTERED_FEED_UPSTREAM_PAGES = 8;
 const TRAILING_SLASHES_PATTERN = /\/+$/;
 const LEADING_AT_SYMBOL = /^@/;
 const HANDLE_PATTERN = /^[a-z0-9_]+$/i;
+const EDGE_DOTS_PATTERN = /^\.+|\.+$/g;
+const TLD_FILTER_PATTERN =
+  /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
 
 export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
   getFeed: publicProcedure
     .input(mlsContract.getFeed.input)
     .output(mlsContract.getFeed.output)
     .query(async ({ input }) => {
-      const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
-      upstreamUrl.searchParams.set(
-        'limit',
-        String(clamp(input.limit, 1, MAX_MLS_FEED_LIMIT)),
-      );
-      if (input.cursor) {
-        upstreamUrl.searchParams.set('cursor', input.cursor);
-      }
+      const limit = clamp(input.limit, 1, MAX_MLS_FEED_LIMIT);
+      const query = normalizeFeedSearchQuery(input.query);
+      const requestedTld = input.tld?.trim() ?? '';
+      const tld = normalizeTldFilter(input.tld);
 
-      const upstreamResponse = await fetch(upstreamUrl.toString(), {
-        cache: 'no-store',
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-        headers: {
-          Accept: 'application/json',
-        },
-      }).catch(() => null);
-
-      if (!upstreamResponse) {
+      if (requestedTld && !tld) {
         throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Unable to load MLS feed right now.',
+          code: 'BAD_REQUEST',
+          message: 'Invalid TLD filter.',
         });
       }
 
-      if (!upstreamResponse.ok) {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Failed to fetch the upstream MLS feed.',
+      if (!tld) {
+        return fetchUpstreamFeedPage({
+          cursor: input.cursor ?? null,
+          limit,
+          query,
+          tld,
         });
       }
 
-      const payload = await upstreamResponse.json();
-      const parsed = mlsFeedPageSchema.safeParse(payload);
-      if (!parsed.success) {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Upstream MLS feed returned an invalid payload.',
+      const rows: MlsListing[] = [];
+      let cursor = input.cursor ?? null;
+      let lastPage: MlsFeedPage | null = null;
+      let fetchedPages = 0;
+
+      while (
+        rows.length < limit &&
+        fetchedPages < MAX_FILTERED_FEED_UPSTREAM_PAGES
+      ) {
+        const page = await fetchUpstreamFeedPage({
+          cursor,
+          limit: limit - rows.length,
+          query,
+          tld,
         });
+        fetchedPages += 1;
+        lastPage = page;
+        // Upstream TLD filtering narrows the page; this suffix check keeps the response exact.
+        const matchingRows = page.rows
+          .filter((listing) => domainMatchesTld(listing.domain, tld))
+          .slice(0, limit - rows.length);
+        rows.push(...matchingRows);
+        cursor = page.nextCursor;
+
+        if (!page.hasMore || !cursor) {
+          break;
+        }
       }
 
-      return parsed.data;
+      return {
+        rows,
+        nextCursor: lastPage?.nextCursor ?? null,
+        hasMore: Boolean(lastPage?.hasMore && lastPage.nextCursor),
+        limit,
+      };
     }),
 
   getHandleListings: publicProcedure
@@ -223,7 +243,7 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
         }),
       }).catch(() => null);
 
-      if (!upstreamResponse || !upstreamResponse.ok) {
+      if (!upstreamResponse?.ok) {
         return {
           offersByDomain: {},
           generatedAt: new Date().toISOString(),
@@ -242,6 +262,66 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       return normalizeDomainSearchResponse(parsed.data);
     }),
 });
+
+async function fetchUpstreamFeedPage({
+  cursor,
+  limit,
+  query,
+  tld,
+}: {
+  cursor: string | null;
+  limit: number;
+  query: string | null;
+  tld: string | null;
+}) {
+  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
+  upstreamUrl.searchParams.set(
+    'limit',
+    String(clamp(limit, 1, MAX_MLS_FEED_LIMIT)),
+  );
+  if (cursor) {
+    upstreamUrl.searchParams.set('cursor', cursor);
+  }
+  if (query) {
+    upstreamUrl.searchParams.set('q', query);
+  }
+  if (tld) {
+    upstreamUrl.searchParams.set('tld', tld);
+  }
+
+  const upstreamResponse = await fetch(upstreamUrl.toString(), {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    headers: {
+      Accept: 'application/json',
+    },
+  }).catch(() => null);
+
+  if (!upstreamResponse) {
+    throw new TRPCError({
+      code: 'BAD_GATEWAY',
+      message: 'Unable to load MLS feed right now.',
+    });
+  }
+
+  if (!upstreamResponse.ok) {
+    throw new TRPCError({
+      code: 'BAD_GATEWAY',
+      message: 'Failed to fetch the upstream MLS feed.',
+    });
+  }
+
+  const payload = await upstreamResponse.json();
+  const parsed = mlsFeedPageSchema.safeParse(payload);
+  if (!parsed.success) {
+    throw new TRPCError({
+      code: 'BAD_GATEWAY',
+      message: 'Upstream MLS feed returned an invalid payload.',
+    });
+  }
+
+  return parsed.data;
+}
 
 function buildUpstreamHandleUrl(handle: string) {
   const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
@@ -288,6 +368,29 @@ function normalizeMlsHandleSlug(value: string) {
   }
 
   return normalized.toLowerCase();
+}
+
+function normalizeFeedSearchQuery(value?: string | null) {
+  const normalized = value?.trim().replace(/\s+/g, ' ');
+  return normalized ? normalized : null;
+}
+
+function normalizeTldFilter(value?: string | null) {
+  const normalized = value?.trim().toLowerCase().replace(EDGE_DOTS_PATTERN, '');
+
+  if (!normalized || !TLD_FILTER_PATTERN.test(normalized)) {
+    return null;
+  }
+
+  return normalized;
+}
+
+function domainMatchesTld(domain: string, tld: string) {
+  return domain
+    .trim()
+    .toLowerCase()
+    .replace(EDGE_DOTS_PATTERN, '')
+    .endsWith(`.${tld}`);
 }
 
 function uniqueLowercaseStrings(values: string[]) {

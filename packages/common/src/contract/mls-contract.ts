@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { createContract } from './create-contract';
-import type { RouterContract } from './trpc-contract';
 
 /**
  * Contract for the MLS (Marketplace Listing Service) router.
@@ -72,6 +71,8 @@ export const mlsFeedInputSchema = z.object({
     .optional()
     .default(DEFAULT_MLS_FEED_LIMIT),
   cursor: z.string().trim().min(1).nullish(),
+  query: z.string().trim().max(120).nullish(),
+  tld: z.string().trim().max(191).nullish(),
 });
 
 export const mlsFeedPageSchema = z.object({
