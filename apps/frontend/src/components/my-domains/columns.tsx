@@ -97,6 +97,19 @@ export function useMyDomainsColumns({
         cell: ({ row }) => (
           <DomainNameCell
             domainName={row.getValue('normalizedDomainName') as string}
+            actionMenuProps={{
+              domainName: row.getValue('normalizedDomainName') as string,
+              expirationDate: row.getValue('expirationDate') as
+                | Date
+                | string
+                | null
+                | undefined,
+              chainId: row.original.chainId ?? null,
+              tokenId: row.original.tokenId,
+              orderId: row.original.orderId ?? null,
+              isMobile: isMobile,
+              onListForSaleClick: onListForSaleClick,
+            }}
           />
         ),
       },
@@ -116,6 +129,13 @@ export function useMyDomainsColumns({
         header: 'Renewal',
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
+          const customPrice = getCustomRenewalPrice(domainName ?? '');
+          const resolvedPrice =
+            customPrice ??
+            getRenewalPriceUsdPerYearForDomain(
+              domainName,
+              renewalPriceUsdPerYearByTld,
+            );
           return (
             <RenewalCell
               domainName={domainName}
@@ -130,6 +150,10 @@ export function useMyDomainsColumns({
               isToggling={togglingAutoRenew.has(domainName)}
               onToggleAutoRenew={onToggleAutoRenew}
               onOpenRenewModal={onOpenRenewModal}
+              renewPricingCellProps={{
+                domainName,
+                resolvedPrice,
+              }}
             />
           );
         },
@@ -171,28 +195,28 @@ export function useMyDomainsColumns({
         size: 140,
         enableSorting: true,
       },
-      {
-        id: 'renewPricing',
-        header: 'Renew (USD/yr)',
-        accessorFn: (row) => {
-          const customPrice = getCustomRenewalPrice(
-            row.normalizedDomainName ?? '',
-          );
-          if (customPrice !== null) return customPrice;
-          return getRenewalPriceUsdPerYearForDomain(
-            row.normalizedDomainName,
-            renewalPriceUsdPerYearByTld,
-          );
-        },
-        cell: ({ row }) => (
-          <RenewPricingCell
-            domainName={row.original.normalizedDomainName ?? ''}
-            resolvedPrice={row.getValue('renewPricing') as number | null}
-          />
-        ),
-        size: 140,
-        enableSorting: true,
-      },
+      // {
+      //   id: 'renewPricing',
+      //   header: 'Renew (USD/yr)',
+      //   accessorFn: (row) => {
+      //     const customPrice = getCustomRenewalPrice(
+      //       row.normalizedDomainName ?? '',
+      //     );
+      //     if (customPrice !== null) return customPrice;
+      //     return getRenewalPriceUsdPerYearForDomain(
+      //       row.normalizedDomainName,
+      //       renewalPriceUsdPerYearByTld,
+      //     );
+      //   },
+      //   cell: ({ row }) => (
+      //     <RenewPricingCell
+      //       domainName={row.original.normalizedDomainName ?? ''}
+      //       resolvedPrice={row.getValue('renewPricing') as number | null}
+      //     />
+      //   ),
+      //   size: 140,
+      //   enableSorting: true,
+      // },
       {
         id: 'dnsStatus',
         header: 'DNS Records',
@@ -217,25 +241,25 @@ export function useMyDomainsColumns({
         },
         size: 200,
       },
-      {
-        id: 'actions',
-        header: 'Actions',
-        cell: ({ row }) => (
-          <ActionsCell
-            domainName={row.getValue('normalizedDomainName') as string}
-            expirationDate={
-              row.getValue('expirationDate') as Date | string | null | undefined
-            }
-            chainId={row.original.chainId ?? null}
-            tokenId={row.original.tokenId}
-            orderId={row.original.orderId ?? null}
-            isMobile={isMobile}
-            onListForSaleClick={onListForSaleClick}
-          />
-        ),
-        size: 280,
-        enableSorting: false,
-      },
+      // {
+      //   id: 'actions',
+      //   header: 'Actions',
+      //   cell: ({ row }) => (
+      //     <ActionsCell
+      //       domainName={row.getValue('normalizedDomainName') as string}
+      //       expirationDate={
+      //         row.getValue('expirationDate') as Date | string | null | undefined
+      //       }
+      //       chainId={row.original.chainId ?? null}
+      //       tokenId={row.original.tokenId}
+      //       orderId={row.original.orderId ?? null}
+      //       isMobile={isMobile}
+      //       onListForSaleClick={onListForSaleClick}
+      //     />
+      //   ),
+      //   size: 280,
+      //   enableSorting: false,
+      // },
     ],
     [
       pageSelectionState,

@@ -103,24 +103,26 @@ export function MyDomainsTable(props: {
   const defaultColumnVisibility: VisibilityState = {
     select: true,
     account: false,
+    autoEns: false,
     normalizedDomainName: true,
     expirationDate: true,
     dateTokenized: false,
-    renewPricing: false,
-    urlForward: true,
-    listForSale: true,
-    actions: true,
   };
 
-  const { preferences, setColumnVisibility, setSorting, setPageSize } =
-    useTablePreferences({
-      tableId: `my-domains-${kind}`,
-      defaultPreferences: {
-        columnVisibility: defaultColumnVisibility,
-        sorting: [{ id: 'expirationDate', desc: false }],
-        pageSize: DEFAULT_DOMAIN_LIST_PAGE_SIZE,
-      },
-    });
+  const {
+    preferences,
+    setColumnVisibility,
+    setSorting,
+    setPageSize,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: `my-domains-${kind}-simplified`,
+    defaultPreferences: {
+      columnVisibility: defaultColumnVisibility,
+      sorting: [{ id: 'expirationDate', desc: false }],
+      pageSize: DEFAULT_DOMAIN_LIST_PAGE_SIZE,
+    },
+  });
 
   const {
     columnVisibility: persistedColumnVisibility,
@@ -134,13 +136,10 @@ export function MyDomainsTable(props: {
     () => ({
       select: true,
       account: false,
+      autoEns: false,
       normalizedDomainName: true,
       expirationDate: true,
       dateTokenized: false,
-      renewPricing: false,
-      urlForward: false,
-      listForSale: false,
-      actions: true,
     }),
     [],
   );
@@ -806,6 +805,7 @@ export function MyDomainsTable(props: {
         filterStrategy={filterStrategy}
         columnVisibility={columnVisibility}
         onColumnVisibilityChange={isMobile ? undefined : setColumnVisibility}
+        onResetPreferences={resetToDefaults}
         emptyMessage="No domains match your filters"
         loadingMessage="Loading domains..."
         paginationVisibility="auto"

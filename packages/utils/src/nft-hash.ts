@@ -98,7 +98,7 @@ export function getTokenIdFromDomainName(domainName: string): string | null {
 export function getNftExplorerUrl(
   chainId: number | null | undefined,
   tokenId: string | null | undefined,
-): string | null {
+) {
   if (chainId === null || chainId === undefined) return null;
   if (!tokenId) return null;
   const chain = getChain(chainId);
@@ -108,6 +108,51 @@ export function getNftExplorerUrl(
     ? baseUrl.slice(0, -1)
     : baseUrl;
   return `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
+}
+
+/**
+ * Builds a URL to view an NFT on the chain's default block explorer, if available.
+ */
+export function getNftExplorerData(
+  chainId: number | null | undefined,
+  tokenId: string | null | undefined,
+) {
+  if (chainId === null || chainId === undefined) {
+    return {
+      nftUrl: null,
+      explorerBaseUrl: null,
+      explorerName: null,
+    };
+  }
+
+  const chain = getChain(chainId);
+  const baseUrl = chain?.blockExplorers?.default?.url;
+  const explorerName = chain?.blockExplorers?.default?.name;
+
+  if (!baseUrl) {
+    return {
+      nftUrl: null,
+      explorerBaseUrl: null,
+      explorerName: null,
+    };
+  }
+
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+
+  if (!tokenId) {
+    return {
+      nftUrl: null,
+      explorerBaseUrl: normalizedBaseUrl,
+      explorerName,
+    };
+  }
+  return {
+    nftUrl: `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`,
+    explorerBaseUrl: normalizedBaseUrl,
+    explorerName,
+  };
 }
 
 function toAsciiDomain(domain: string): string {

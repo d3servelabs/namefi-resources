@@ -5,7 +5,9 @@ import { differenceInDays } from 'date-fns';
 import {
   BadgeDollarSign,
   Compass,
+  ExternalLinkIcon,
   MoreVertical,
+  MoreHorizontal,
   ReceiptText,
   Wallet,
 } from 'lucide-react';
@@ -19,14 +21,17 @@ import {
   DropdownMenuTrigger,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
+import {
+  getNftExplorerData,
+  getNftExplorerUrl,
+} from '@namefi-astra/utils/nft-hash';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { ActionTooltip } from '../action-tooltip';
 
 const ACTION_BUTTON_BASE_CLASSES =
   'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5 !text-white border-0 bg-transparent shadow-none hover:bg-muted/30 xl:border xl:bg-background xl:shadow-xs';
 
-interface ActionsCellProps {
+export interface ActionsCellProps {
   domainName: string;
   expirationDate: Date | string | null | undefined;
   chainId: number | null;
@@ -223,8 +228,130 @@ function WatchNftButton({
   );
 
   if (isMobile) {
-    return <DropdownMenuItem>{button}</DropdownMenuItem>;
+    return (
+      <DropdownMenuItem
+        onClick={handleWatchNft}
+        aria-label={`Show ${domainName} NFT in wallet`}
+        className={'hover:!text-violet-400'}
+      >
+        <Wallet className="w-4 h-4" /> Show NFT in wallet
+      </DropdownMenuItem>
+    );
   }
 
   return <ActionTooltip label="Show NFT in wallet">{button}</ActionTooltip>;
+}
+
+export function DropdownDomainActionsMenu({
+  domainName,
+  expirationDate,
+  chainId,
+  tokenId,
+  orderId,
+  onListForSaleClick,
+}: ActionsCellProps) {
+  const expiry = expirationDate ? new Date(expirationDate) : null;
+  const isExpired =
+    expiry !== null ? differenceInDays(expiry, new Date()) < 0 : false;
+  const { nftUrl, explorerName } = getNftExplorerData(
+    chainId ?? null,
+    tokenId?.toString() ?? null,
+  ) ?? { nftUrl: null, explorerName: null };
+
+  const listForSaleButton = (
+    <DropdownMenuItem
+      className={cn('hover:!text-orange-400')}
+      onClick={() => onListForSaleClick(domainName)}
+      aria-label={`List ${domainName} for sale`}
+    >
+      <BadgeDollarSign className="w-4 h-4" /> List for sale
+    </DropdownMenuItem>
+  );
+
+  const orderButton = orderId ? (
+    <DropdownMenuItem
+      className={cn('hover:!text-emerald-400')}
+      render={(props) => (
+        <Link
+          {...props}
+          href={`/orders/${orderId}/details`}
+          aria-label={`View order for ${domainName}`}
+          className={cn('flex justify-start items-center', props.className)}
+        />
+      )}
+    >
+      <ReceiptText className="w-4 h-4" /> View Order
+    </DropdownMenuItem>
+  ) : null;
+
+  const explorerButton =
+    !isExpired && nftUrl ? (
+      <DropdownMenuItem
+        className={cn('hover:!text-blue-400')}
+        render={(props) => (
+          <a
+            {...props}
+            href={nftUrl}
+            aria-label={`View NFT for ${domainName}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn('flex justify-start items-center', props.className)}
+          >
+            {props.children}
+          </a>
+        )}
+      >
+        <Compass className="w-4 h-4" /> View NFT on {explorerName ?? 'Scan'}
+      </DropdownMenuItem>
+    ) : null;
+
+  const visitDomain = (
+    <DropdownMenuItem
+      className={cn('hover:!text-blue-400')}
+      render={(props) => (
+        <a
+          {...props}
+          href={`https://${domainName}`}
+          aria-label={`Visit ${domainName}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn('flex justify-start items-center', props.className)}
+        >
+          {props.children}
+        </a>
+      )}
+    >
+      <ExternalLinkIcon className="w-4 h-4" /> Visit Domain
+    </DropdownMenuItem>
+  );
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
+            aria-label={`Actions for ${domainName}`}
+          />
+        }
+      >
+        <MoreHorizontal className="w-4 h-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className={'min-w-fit !max-w-lg'} align={'start'}>
+        {visitDomain}
+        {listForSaleButton}
+        {orderButton}
+        {explorerButton}
+        <WatchNftButton
+          domainName={domainName}
+          tokenId={tokenId}
+          chainId={chainId}
+          isExpired={isExpired}
+          isMobile
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 }
