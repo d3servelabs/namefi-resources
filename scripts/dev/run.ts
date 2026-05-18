@@ -200,13 +200,11 @@ async function main(): Promise<void> {
   const projectRoot = fileURLToPath(projectRootUrl);
 
   // Load .env file from project root
-  // biome-ignore lint/correctness/noUndeclaredDependencies: available in monorepo
   const dotenv = await import('dotenv');
   dotenv.config({ path: `${projectRoot}.env`, override: true });
 
   // Load Infisical secrets
   try {
-    // biome-ignore lint/correctness/noUndeclaredDependencies: available in monorepo
     const { loadInfisicalSecretsIfConfigured } = await import(
       '@namefi-astra/env/infisical'
     );

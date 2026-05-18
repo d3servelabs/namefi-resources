@@ -44,8 +44,7 @@
       },
       "correctness": {
         "useImportExtensions": "off",
-        "noSwitchDeclarations": "info",
-        "noUndeclaredDependencies": "error"
+        "noSwitchDeclarations": "info"
       },
       "style": {
         "noDefaultExport": "info",

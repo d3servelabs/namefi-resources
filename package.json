@@ -82,6 +82,7 @@
     "link-infisical": "bun run scripts/link-infisical.ts",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
+    "check:staged": "biome check . --staged --diagnostic-level=error --no-errors-on-unmatched --files-ignore-unknown=true",
     "check:fix": "biome check --write .",
     "check:unsafe": "biome check --write --unsafe .",
     "dev:backend:api": "bun run scripts/dev/run.ts --backend-only",
@@ -98,6 +99,7 @@
     "dev": "bun run scripts/dev/run.ts",
     "dev:base": "bun run scripts/dev/run.ts --base",
     "typecheck": "turbo run typecheck",
+    "typecheck:affected": "turbo run typecheck --affected --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-2} --output-logs=errors-only",
     "test": "NODE_ENV=test turbo run test",
     "test:watch": "NODE_ENV=test turbo run test:watch",
     "test:coverage": "NODE_ENV=test turbo run test:coverage",
@@ -108,6 +110,7 @@
     "sgr": "bun run scripts/run-sgr.ts scan *",
     "sgr:fix": "bun run scripts/run-sgr.ts scan --fix *",
     "validate": "concurrently -n 'typecheck,biome,sherif,sgr' -c 'blue.bold,green.bold,yellow.bold,red.bold' \"turbo run typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-4}\" \"turbo run check:error --concurrency ${TURBO_CHECKERROR_CONCURRENCY:-4}\" \"bun sherif\" \"bun sgr\"",
+    "validate:staged": "concurrently -n 'typecheck,biome,sherif' -c 'blue.bold,green.bold,yellow.bold' \"bun run typecheck:affected\" \"bun run check:staged\" \"bun sherif\"",
     "validate:pre-push": "concurrently -n 'typecheck,biome,sherif' -c 'blue.bold,green.bold,yellow.bold' \"turbo run typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-1}\" \"bun check:error\" \"bun sherif\"",
     "validate:secrets": "turbo run validate:secrets",
     "knip": "bunx knip"
