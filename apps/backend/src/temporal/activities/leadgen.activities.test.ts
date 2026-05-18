@@ -21,13 +21,15 @@ vi.mock('@temporalio/activity', () => ({
 }));
 
 vi.mock('@namefi-astra/ai', () => ({
+  generateLeadgenDomainThesisProfile: vi.fn(),
+  generateLeadgenOpportunityTriages: vi.fn(),
   generateLeadgenContacts: vi.fn(),
   generateLeadgenEmailDraft: vi.fn(),
-  generateLeadgenIntentQueries: vi.fn(),
+  getLeadgenPrimaryResearchModel: vi.fn(() => 'gpt-5.5'),
   normalizeLeadgenDomain: vi.fn(),
   normalizeLeadgenEmail: vi.fn(),
-  streamLeadgenSearchResults: vi.fn(),
-  streamLeadgenSubstringSearchResults: vi.fn(),
+  sanitizeCandidateSignals: vi.fn((signals) => signals),
+  streamLeadgenCandidateSignals: vi.fn(),
 }));
 
 vi.mock('@namefi-astra/db', () => ({
@@ -35,6 +37,7 @@ vi.mock('@namefi-astra/db', () => ({
   leadgenContactsTable: {},
   leadgenEmailDraftsTable: {},
   leadgenEventsTable: {},
+  leadgenLeadSignalsTable: {},
   leadgenLeadsTable: {},
   leadgenRunsTable: {},
 }));

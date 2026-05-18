@@ -12,10 +12,11 @@ import {
   leadgenContactsTable,
   leadgenEmailDraftsTable,
   leadgenEventsTable,
+  leadgenLeadSignalsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
-import { and, count, desc, eq, isNull, ne, or } from 'drizzle-orm';
+import { and, count, desc, eq, inArray, isNull, ne, or } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import { appendLeadgenTokenUsageFromResult } from './token-usage';
 
@@ -24,6 +25,12 @@ type ContactRow = typeof leadgenContactsTable.$inferSelect;
 type LeadgenOutreachTrigger = 'auto' | 'manual';
 
 const logger = createLogger({ module: 'leadgen-outreach' });
+const CONTACT_READINESS_RANK: Record<LeadRow['contactReadiness'], number> = {
+  not_searched: 0,
+  not_found: 1,
+  generic_fallback: 2,
+  contact_found: 3,
+};
 
 export interface GenerateLeadgenLeadOutreachInput {
   runId: string;
@@ -39,6 +46,7 @@ export interface DiscoverLeadgenContactsAndDraftInput {
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
+  draftEmails?: boolean;
   abortSignal?: AbortSignal;
 }
 
@@ -58,6 +66,10 @@ export async function generateLeadgenLeadOutreach({
 
   if (!lead) {
     throw new Error('Lead not found for this run');
+  }
+
+  if (lead.status === 'suppressed') {
+    throw new Error('Lead was reviewed out and cannot receive outreach.');
   }
 
   await persistLeadgenEvent({
@@ -117,6 +129,12 @@ export async function discoverLeadgenContactsAndDraft({
   });
 
   if (existingContacts.length > 0) {
+    await updateLeadContactReadiness({
+      leadId: params.lead.id,
+      readiness: getContactReadiness(existingContacts),
+    });
+    if (params.draftEmails === false) return;
+
     await draftForSavedContacts({
       ...params,
       contacts: existingContacts,
@@ -264,6 +282,7 @@ async function persistCachedContactsAndDraft(params: {
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
+  draftEmails?: boolean;
   abortSignal: AbortSignal;
   cachedContacts: ContactRow[];
 }) {
@@ -291,6 +310,12 @@ async function persistCachedContactsAndDraft(params: {
   }
 
   await refreshLeadgenRunCounts(params.runId);
+  await updateLeadContactReadiness({
+    leadId: params.lead.id,
+    readiness: getContactReadiness(savedContacts),
+  });
+
+  if (params.draftEmails === false) return;
 
   for (const contact of savedContacts) {
     throwIfLeadgenAborted(params.abortSignal);
@@ -314,6 +339,7 @@ async function discoverNewContactsAndDraft(params: {
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
+  draftEmails?: boolean;
   abortSignal: AbortSignal;
 }) {
   try {
@@ -334,6 +360,10 @@ async function discoverNewContactsAndDraft(params: {
     const contacts = contactResult?.contacts ?? [];
 
     if (contacts.length === 0) {
+      await updateLeadContactReadiness({
+        leadId: params.lead.id,
+        readiness: 'not_found',
+      });
       await persistLeadgenEvent({
         runId: params.runId,
         eventType: 'contact',
@@ -363,6 +393,12 @@ async function discoverNewContactsAndDraft(params: {
     );
 
     await refreshLeadgenRunCounts(params.runId);
+    await updateLeadContactReadiness({
+      leadId: params.lead.id,
+      readiness: getContactReadiness(savedContacts),
+    });
+
+    if (params.draftEmails === false) return;
 
     const firstContact = savedContacts[0];
     if (!firstContact) return;
@@ -531,6 +567,8 @@ async function draftForContact(params: {
         domain: params.lead.businessDomain,
         content: params.lead.content,
         rationale: params.lead.rationale,
+        thesis: params.lead.thesis,
+        signals: await loadLeadSignalsForDraft(params.lead.id),
       },
       contact: {
         email: params.contact.email,
@@ -602,6 +640,72 @@ async function draftForContact(params: {
   await refreshLeadgenRunCounts(params.runId);
 
   return saved;
+}
+
+async function loadLeadSignalsForDraft(leadId: string) {
+  const signals = await db
+    .select({
+      signalType: leadgenLeadSignalsTable.signalType,
+      evidenceSnippet: leadgenLeadSignalsTable.evidenceSnippet,
+      evidenceUrl: leadgenLeadSignalsTable.evidenceUrl,
+    })
+    .from(leadgenLeadSignalsTable)
+    .where(eq(leadgenLeadSignalsTable.leadId, leadId))
+    .orderBy(leadgenLeadSignalsTable.createdAt)
+    .limit(5);
+
+  return signals;
+}
+
+async function updateLeadContactReadiness(params: {
+  leadId: string;
+  readiness: LeadRow['contactReadiness'];
+}) {
+  const allowedExistingValues = (
+    Object.entries(CONTACT_READINESS_RANK) as Array<
+      [LeadRow['contactReadiness'], number]
+    >
+  )
+    .filter(([, rank]) => rank <= CONTACT_READINESS_RANK[params.readiness])
+    .map(([readiness]) => readiness);
+
+  await db
+    .update(leadgenLeadsTable)
+    .set({
+      contactReadiness: params.readiness,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(leadgenLeadsTable.id, params.leadId),
+        inArray(leadgenLeadsTable.contactReadiness, allowedExistingValues),
+      ),
+    );
+}
+
+function getContactReadiness(
+  contacts: Array<{ email: string }>,
+): LeadRow['contactReadiness'] {
+  if (contacts.length === 0) return 'not_found';
+  return contacts.some((contact) => !isGenericEmail(contact.email))
+    ? 'contact_found'
+    : 'generic_fallback';
+}
+
+function isGenericEmail(email: string) {
+  const localPart = email.split('@')[0]?.toLowerCase() ?? '';
+  return [
+    'admin',
+    'contact',
+    'hello',
+    'hi',
+    'info',
+    'marketing',
+    'partnerships',
+    'sales',
+    'support',
+    'team',
+  ].includes(localPart);
 }
 
 function throwIfLeadgenAborted(abortSignal: AbortSignal) {

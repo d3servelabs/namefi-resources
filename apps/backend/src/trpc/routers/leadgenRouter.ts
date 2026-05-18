@@ -12,6 +12,7 @@ import {
   leadgenContactsTable,
   leadgenEmailDraftsTable,
   leadgenEventsTable,
+  leadgenLeadSignalsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
@@ -53,6 +54,7 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         userId: ctx.user.id,
         domain: input.domain,
         reasoningEffort: input.reasoningEffort,
+        askingPriceUsd: input.askingPriceUsd,
       });
 
       return await getLeadgenRunSnapshotForUser({
@@ -183,7 +185,7 @@ export async function getLeadgenRunSnapshotForUser(params: {
 }) {
   const run = await getLeadgenRunForUser(params);
 
-  const [events, leads, contacts, drafts] = await Promise.all([
+  const [events, leads, contacts, drafts, signals] = await Promise.all([
     db
       .select({
         id: leadgenEventsTable.id,
@@ -213,9 +215,27 @@ export async function getLeadgenRunSnapshotForUser(params: {
       .from(leadgenEmailDraftsTable)
       .where(eq(leadgenEmailDraftsTable.runId, run.id))
       .orderBy(leadgenEmailDraftsTable.createdAt),
+    db
+      .select()
+      .from(leadgenLeadSignalsTable)
+      .where(eq(leadgenLeadSignalsTable.runId, run.id))
+      .orderBy(leadgenLeadSignalsTable.createdAt),
   ]);
 
-  const intentQueries = extractIntentQueries(events);
+  const publicEvents = events.map((event) => ({
+    ...event,
+    payload: sanitizeLeadgenEventPayload(event.payload),
+  }));
+  const intentQueries = extractIntentQueries(publicEvents);
+  const signalsByLeadId = new Map<string, Array<(typeof signals)[number]>>();
+  for (const signal of signals) {
+    const groupedSignals = signalsByLeadId.get(signal.leadId);
+    if (groupedSignals) {
+      groupedSignals.push(signal);
+    } else {
+      signalsByLeadId.set(signal.leadId, [signal]);
+    }
+  }
   // getRun already fetches full detail rows, so surface live counts here while
   // listRuns keeps using persisted aggregates for the lightweight index view.
   const liveCounts = {
@@ -240,18 +260,34 @@ export async function getLeadgenRunSnapshotForUser(params: {
     createdAt: run.createdAt,
     updatedAt: run.updatedAt,
     intentQueries,
-    events,
+    events: publicEvents,
     leads: leads.map((lead) => ({
       id: lead.id,
       runId: lead.runId,
       businessDomain: lead.businessDomain,
-      bucket: lead.bucket,
-      query: lead.query,
+      companyName: lead.companyName,
+      status: lead.status,
+      score: lead.score,
+      motion: lead.motion,
+      thesis: lead.thesis,
+      riskLevel: lead.riskLevel,
+      riskNote: lead.riskNote,
+      contactReadiness: lead.contactReadiness,
       rationale: lead.rationale,
       content: lead.content,
       rank: lead.rank,
       createdAt: lead.createdAt,
       updatedAt: lead.updatedAt,
+      signals: (signalsByLeadId.get(lead.id) ?? []).map((signal) => ({
+        id: signal.id,
+        runId: signal.runId,
+        leadId: signal.leadId,
+        signalType: signal.signalType,
+        evidenceUrl: signal.evidenceUrl,
+        evidenceSnippet: signal.evidenceSnippet,
+        createdAt: signal.createdAt,
+        updatedAt: signal.updatedAt,
+      })),
       contacts: contacts
         // Some cached contacts are linked by domain before a lead FK exists.
         .filter(
@@ -332,6 +368,17 @@ function extractIntentQueries(
   return Array.isArray(queries)
     ? queries.filter((query): query is string => typeof query === 'string')
     : [];
+}
+
+function sanitizeLeadgenEventPayload(payload: unknown) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    return payload;
+  }
+
+  const publicPayload = { ...(payload as Record<string, unknown>) };
+  delete publicPayload.recipe;
+  delete publicPayload.recipeGroup;
+  return publicPayload;
 }
 
 function sleep(ms: number, signal?: AbortSignal) {

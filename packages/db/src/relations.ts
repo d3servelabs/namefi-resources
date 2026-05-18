@@ -5,6 +5,7 @@ import {
   cartItemsTable,
   leadgenContactsTable,
   leadgenEmailDraftsTable,
+  leadgenLeadSignalsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
   huntEdgesTable,
@@ -105,6 +106,7 @@ export const leadgenRunsRelations = relations(
       references: [usersTable.id],
     }),
     leads: many(leadgenLeadsTable),
+    leadSignals: many(leadgenLeadSignalsTable),
     contacts: many(leadgenContactsTable),
     emailDrafts: many(leadgenEmailDraftsTable),
   }),
@@ -117,8 +119,23 @@ export const leadgenLeadsRelations = relations(
       fields: [leadgenLeadsTable.runId],
       references: [leadgenRunsTable.id],
     }),
+    signals: many(leadgenLeadSignalsTable),
     contacts: many(leadgenContactsTable),
     emailDrafts: many(leadgenEmailDraftsTable),
+  }),
+);
+
+export const leadgenLeadSignalsRelations = relations(
+  leadgenLeadSignalsTable,
+  ({ one }) => ({
+    run: one(leadgenRunsTable, {
+      fields: [leadgenLeadSignalsTable.runId],
+      references: [leadgenRunsTable.id],
+    }),
+    lead: one(leadgenLeadsTable, {
+      fields: [leadgenLeadSignalsTable.leadId],
+      references: [leadgenLeadsTable.id],
+    }),
   }),
 );
 

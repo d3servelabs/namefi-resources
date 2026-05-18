@@ -1,15 +1,26 @@
 import { Context } from '@temporalio/activity';
 import {
-  generateLeadgenIntentQueries,
+  generateLeadgenDomainThesisProfile,
+  generateLeadgenOpportunityTriages,
   getLeadgenPrimaryResearchModel,
   normalizeLeadgenDomain,
-  streamLeadgenSubstringSearchResults,
-  streamLeadgenSearchResults,
-  type LeadgenBusinessResult,
+  sanitizeCandidateSignals,
+  streamLeadgenCandidateSignals,
+  type LeadgenCandidateSignal,
+  type LeadgenDiscoveryRecipe,
+  type LeadgenDomainProfile,
+  type LeadgenOpportunityStatus,
+  type LeadgenOpportunityTriage,
   type LeadgenReasoningEffort,
+  type LeadgenTriageCandidate,
 } from '@namefi-astra/ai';
-import { db, leadgenLeadsTable, leadgenRunsTable } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import {
+  db,
+  leadgenLeadSignalsTable,
+  leadgenLeadsTable,
+  leadgenRunsTable,
+} from '@namefi-astra/db';
+import { and, asc, count, eq, inArray, ne, sql } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import {
   discoverLeadgenContactsAndDraft,
@@ -22,30 +33,69 @@ import { appendLeadgenTokenUsageFromResult } from '../../services/leadgen/token-
 
 const logger = createLogger({ module: 'leadgen-activities' });
 
-const DEFAULT_CONTACT_DISCOVERY_LIMIT = 6;
-const DEFAULT_SEARCH_RESULTS_PER_QUERY = 8;
 const LEADGEN_HEARTBEAT_INTERVAL_MS = 20_000;
+const SEED_RECIPES: LeadgenDiscoveryRecipe[] = [
+  'exact_near_name_search',
+  'broad_sanity_search',
+];
+const RECIPE_ORDER: LeadgenDiscoveryRecipe[] = [
+  'category_operator_search',
+  'paid_demand_check',
+  'growth_trigger_search',
+  'domain_weakness_check',
+  'local_business_search',
+];
+const STATUS_RANK: Record<LeadgenOpportunityStatus, number> = {
+  contact_now: 0,
+  checking: 2_000,
+  low_priority: 3_000,
+  suppressed: 4_000,
+};
 
 export interface InitializeLeadgenRunParams {
   runId: string;
   workflowId: string;
 }
 
-export interface LeadgenIntentActivityParams {
+export interface LeadgenDomainProfileActivityParams {
   runId: string;
   domain: string;
   reasoningEffort: LeadgenReasoningEffort;
-  maxQueries?: number;
+  maxTheses?: number;
 }
 
-export interface LeadgenSearchActivityParams {
+export interface LeadgenSeedDiscoveryActivityParams {
   runId: string;
   sourceDomain: string;
-  bucket: 'general' | 'substring';
-  queries: string[];
   reasoningEffort: LeadgenReasoningEffort;
-  maxResultsPerQuery?: number;
+  rawCandidateLimit?: number;
+  askingPriceUsd?: number;
+}
+
+export interface LeadgenRecipeDiscoveryActivityParams {
+  runId: string;
+  sourceDomain: string;
+  domainProfile: LeadgenDomainProfile;
+  reasoningEffort: LeadgenReasoningEffort;
+  selectedRecipeLimit?: number;
+  rawCandidateLimit?: number;
+  askingPriceUsd?: number;
+}
+
+export interface FinalizeLeadgenOpportunitiesParams {
+  runId: string;
+  sourceDomain: string;
+  domainProfile: LeadgenDomainProfile;
+  reasoningEffort: LeadgenReasoningEffort;
+  askingPriceUsd?: number;
   contactDiscoveryLimit?: number;
+}
+
+export interface DiscoverLeadgenEarlyContactsParams {
+  runId: string;
+  sourceDomain: string;
+  reasoningEffort: LeadgenReasoningEffort;
+  contactDiscoveryLimit: number;
 }
 
 export interface GenerateLeadgenLeadOutreachParams {
@@ -65,13 +115,34 @@ export interface FailLeadgenRunParams {
 }
 
 type LeadRow = typeof leadgenLeadsTable.$inferSelect;
+type SignalRow = typeof leadgenLeadSignalsTable.$inferSelect;
 type LeadgenActivityContext = Pick<Context, 'cancellationSignal' | 'heartbeat'>;
-type LeadgenSearchRuntime = {
-  seenDomains: Set<string>;
-  contactTasks: Map<string, Promise<void>>;
-  contactDiscoveryAnnounced: boolean;
-  inserted: number;
-  rank: number;
+type LeadgenEffortConfig = {
+  maxTheses: number;
+  rawCandidateLimit: number;
+  triageLeadLimit: number;
+  contactDiscoveryLimit: number;
+  selectedRecipeLimit: number;
+  discoveryMaxResults: number;
+  recipeConcurrency: number;
+  triageBatchSize: number;
+};
+type DiscoveryRecipeJob = {
+  recipe: LeadgenDiscoveryRecipe;
+  queries: string[];
+};
+type DiscoveryRuntime = {
+  sourceDomain: string;
+  domainProfile?: LeadgenDomainProfile | null;
+  reasoningEffort: LeadgenReasoningEffort;
+  askingPriceUsd?: number;
+  abortSignal: AbortSignal;
+  config: LeadgenEffortConfig;
+  pendingTriageDomains: Set<string>;
+  emittedLeadDomains: Set<string>;
+  persistedSignalKeys: Set<string>;
+  persistedSignalCount: number;
+  nextRank: number;
 };
 
 export async function heartbeatLeadgenWhile<T>(
@@ -185,22 +256,22 @@ export async function initializeLeadgenRun({
     runId,
     eventType: 'status',
     stage: 'intent',
-    message: 'Building buyer intent buckets.',
+    message: 'Finding buyer angles.',
   });
 }
 
-export async function generateLeadgenIntentsActivity({
+export async function generateLeadgenDomainProfileActivity({
   runId,
   domain,
   reasoningEffort,
-  maxQueries,
-}: LeadgenIntentActivityParams) {
+  maxTheses,
+}: LeadgenDomainProfileActivityParams) {
   const result = await heartbeatLeadgenWhile(
     (abortSignal) =>
-      generateLeadgenIntentQueries(domain, {
+      generateLeadgenDomainThesisProfile(domain, {
         abortSignal,
         reasoningEffort,
-        maxQueries: maxQueries ?? (reasoningEffort === 'low' ? 3 : 5),
+        maxTheses,
       }),
     { stage: 'intent', runId, domain },
   );
@@ -209,295 +280,631 @@ export async function generateLeadgenIntentsActivity({
     result,
     fallbackModel: getLeadgenPrimaryResearchModel(reasoningEffort),
   });
-  const queries = result.output.queries;
+  await persistDomainProfile({ runId, domainProfile: result.output });
 
+  const angleTitles = result.output.theses.map((thesis) => thesis.title);
   await persistLeadgenEvent({
     runId,
     eventType: 'intent-queries',
     stage: 'intent',
-    ...(queries.length > 0
-      ? {
-          message: `Built ${queries.length} buyer search ${queries.length === 1 ? 'query' : 'queries'}.`,
-        }
-      : {}),
-    payload: { queries },
+    message:
+      angleTitles.length > 0
+        ? `Found ${angleTitles.length} buyer ${angleTitles.length === 1 ? 'angle' : 'angles'}.`
+        : 'Buyer angles ready.',
+    payload: {
+      queries: angleTitles,
+      buyerAngles: angleTitles,
+    },
   });
 
-  return { queries };
+  return { domainProfile: result.output };
 }
 
-export async function searchLeadgenProspectsActivity(
-  params: LeadgenSearchActivityParams,
+export async function discoverLeadgenSeedCandidatesActivity(
+  params: LeadgenSeedDiscoveryActivityParams,
 ) {
   return await heartbeatLeadgenWhile(
-    (abortSignal) => searchLeadgenProspects({ ...params, abortSignal }),
+    (abortSignal) =>
+      discoverLeadgenSignals({
+        ...params,
+        abortSignal,
+        domainProfile: null,
+        jobs: buildSeedRecipeJobs(params.sourceDomain),
+        eventMessage: 'Finding early prospects.',
+      }),
     {
       stage: 'search',
       runId: params.runId,
-      bucket: params.bucket,
-      queryCount: params.queries.length,
+      recipeGroup: 'seed',
     },
   );
 }
 
-async function searchLeadgenProspects(
-  params: LeadgenSearchActivityParams & { abortSignal: AbortSignal },
+export async function discoverLeadgenRecipeCandidatesActivity(
+  params: LeadgenRecipeDiscoveryActivityParams,
 ) {
-  const {
-    runId,
-    sourceDomain,
-    bucket,
-    queries,
-    reasoningEffort,
-    maxResultsPerQuery = DEFAULT_SEARCH_RESULTS_PER_QUERY,
-    contactDiscoveryLimit = DEFAULT_CONTACT_DISCOVERY_LIMIT,
-  } = params;
+  return await heartbeatLeadgenWhile(
+    (abortSignal) =>
+      discoverLeadgenSignals({
+        ...params,
+        abortSignal,
+        jobs: buildProfileRecipeJobs({
+          sourceDomain: params.sourceDomain,
+          domainProfile: params.domainProfile,
+          selectedRecipeLimit:
+            params.selectedRecipeLimit ??
+            getLeadgenEffortConfig(params.reasoningEffort).selectedRecipeLimit,
+        }),
+        eventMessage: 'Expanding best buyer angles.',
+      }),
+    {
+      stage: 'search',
+      runId: params.runId,
+      recipeGroup: 'profile',
+    },
+  );
+}
 
-  const runtime: LeadgenSearchRuntime = {
-    seenDomains: new Set<string>(),
-    contactTasks: new Map<string, Promise<void>>(),
-    contactDiscoveryAnnounced: false,
-    inserted: 0,
-    rank: bucket === 'substring' ? 10_000 : 0,
+export async function finalizeLeadgenOpportunitiesActivity(
+  params: FinalizeLeadgenOpportunitiesParams,
+) {
+  return await heartbeatLeadgenWhile(
+    async (abortSignal) => {
+      const config = getLeadgenEffortConfig(params.reasoningEffort, {
+        contactDiscoveryLimit: params.contactDiscoveryLimit,
+      });
+
+      await triageLeadgenCandidates({
+        runId: params.runId,
+        sourceDomain: params.sourceDomain,
+        domainProfile: params.domainProfile,
+        reasoningEffort: params.reasoningEffort,
+        askingPriceUsd: params.askingPriceUsd,
+        limit: config.triageLeadLimit,
+        abortSignal,
+      });
+
+      await discoverContactsForPromotedLeads({
+        runId: params.runId,
+        sourceDomain: params.sourceDomain,
+        reasoningEffort: params.reasoningEffort,
+        contactDiscoveryLimit: config.contactDiscoveryLimit,
+        abortSignal,
+      });
+
+      return await refreshLeadgenRunCounts(params.runId);
+    },
+    {
+      stage: 'contacts',
+      runId: params.runId,
+    },
+  );
+}
+
+export async function discoverLeadgenEarlyContactsActivity(
+  params: DiscoverLeadgenEarlyContactsParams,
+) {
+  if (params.contactDiscoveryLimit <= 0) {
+    return await refreshLeadgenRunCounts(params.runId);
+  }
+
+  return await heartbeatLeadgenWhile(
+    async (abortSignal) => {
+      await discoverContactsForPromotedLeads({
+        runId: params.runId,
+        sourceDomain: params.sourceDomain,
+        reasoningEffort: params.reasoningEffort,
+        contactDiscoveryLimit: params.contactDiscoveryLimit,
+        abortSignal,
+      });
+
+      return await refreshLeadgenRunCounts(params.runId);
+    },
+    {
+      stage: 'contacts',
+      runId: params.runId,
+      early: true,
+    },
+  );
+}
+
+async function discoverLeadgenSignals(params: {
+  runId: string;
+  sourceDomain: string;
+  domainProfile?: LeadgenDomainProfile | null;
+  reasoningEffort: LeadgenReasoningEffort;
+  askingPriceUsd?: number;
+  rawCandidateLimit?: number;
+  abortSignal: AbortSignal;
+  jobs: DiscoveryRecipeJob[];
+  eventMessage: string;
+}) {
+  const config = getLeadgenEffortConfig(params.reasoningEffort, {
+    rawCandidateLimit: params.rawCandidateLimit,
+  });
+  if (params.jobs.length === 0) {
+    return { inserted: 0 };
+  }
+
+  const runtime: DiscoveryRuntime = {
+    sourceDomain: params.sourceDomain,
+    domainProfile: params.domainProfile,
+    reasoningEffort: params.reasoningEffort,
+    askingPriceUsd: params.askingPriceUsd,
+    abortSignal: params.abortSignal,
+    config,
+    pendingTriageDomains: new Set<string>(),
+    emittedLeadDomains: new Set<string>(),
+    persistedSignalKeys: new Set<string>(),
+    persistedSignalCount: 0,
+    nextRank: await getNextLeadgenRank(params.runId),
   };
 
   await persistLeadgenEvent({
-    runId,
+    runId: params.runId,
     eventType: 'status',
     stage: 'search',
-    message:
-      bucket === 'substring'
-        ? 'Scanning exact and substring-aligned companies.'
-        : 'Searching buyer categories in parallel.',
-    payload: { bucket, queries },
+    message: params.eventMessage,
+    payload: {
+      queryCount: params.jobs.reduce(
+        (count, job) => count + job.queries.length,
+        0,
+      ),
+    },
   });
-  throwIfLeadgenAborted(params.abortSignal);
 
-  const queryResults = await Promise.allSettled(
-    queries.map((query) =>
-      processLeadgenQuery({
-        runId,
-        sourceDomain,
-        bucket,
-        query,
-        reasoningEffort,
-        maxResultsPerQuery,
-        contactDiscoveryLimit,
-        abortSignal: params.abortSignal,
-        runtime,
-      }),
-    ),
+  const recipeLimit = Math.max(
+    1,
+    Math.ceil(config.rawCandidateLimit / Math.max(1, params.jobs.length)),
   );
-  throwIfLeadgenAborted(params.abortSignal);
 
-  for (const result of queryResults) {
-    if (result.status === 'rejected') {
-      logger.warn(
-        { error: result.reason, runId, bucket },
-        'Leadgen query processing failed',
-      );
-    }
-  }
+  await runWithConcurrency(
+    params.jobs,
+    config.recipeConcurrency,
+    async (job) => {
+      await processDiscoveryRecipe({
+        runId: params.runId,
+        job,
+        maxResults: Math.min(recipeLimit, config.discoveryMaxResults),
+        runtime,
+      });
+    },
+  );
 
-  if (runtime.contactTasks.size > 0) {
-    const results = await Promise.allSettled(runtime.contactTasks.values());
-    throwIfLeadgenAborted(params.abortSignal);
+  await triagePendingDomains({
+    runId: params.runId,
+    runtime,
+    force: true,
+  });
+  await refreshLeadgenRunCounts(params.runId);
 
-    for (const result of results) {
-      if (result.status === 'rejected') {
-        logger.warn(
-          { error: result.reason, runId, bucket },
-          'Leadgen contact task failed',
-        );
-      }
-    }
-  }
-
-  await refreshLeadgenRunCounts(runId);
-
-  return { inserted: runtime.inserted };
+  return { inserted: runtime.emittedLeadDomains.size };
 }
 
-async function processLeadgenQuery(params: {
+async function processDiscoveryRecipe(params: {
   runId: string;
-  sourceDomain: string;
-  bucket: 'general' | 'substring';
-  query: string;
-  reasoningEffort: LeadgenReasoningEffort;
-  maxResultsPerQuery: number;
-  contactDiscoveryLimit: number;
-  abortSignal: AbortSignal;
-  runtime: LeadgenSearchRuntime;
+  job: DiscoveryRecipeJob;
+  maxResults: number;
+  runtime: DiscoveryRuntime;
 }) {
-  await persistLeadgenEvent({
-    runId: params.runId,
-    eventType: 'search-progress',
-    stage: 'search',
-    message: `Searching: ${params.query}`,
-    payload: { bucket: params.bucket, query: params.query, status: 'loading' },
-    transient: true,
-  });
+  throwIfLeadgenAborted(params.runtime.abortSignal);
 
   try {
-    const hits = await streamAndPersistSearchCandidates(params);
-    if (hits.length > 0) {
-      await persistLeadgenEvent({
+    const stream = await streamLeadgenCandidateSignals({
+      sourceDomain: params.runtime.sourceDomain,
+      recipe: params.job.recipe,
+      queries: params.job.queries,
+      options: {
+        abortSignal: params.runtime.abortSignal,
+        domainProfile: params.runtime.domainProfile ?? undefined,
+        maxResults: params.maxResults,
+        reasoningEffort: params.runtime.reasoningEffort,
+      },
+    });
+
+    for await (const partial of stream.partialOutputStream) {
+      throwIfLeadgenAborted(params.runtime.abortSignal);
+      if (!Array.isArray(partial)) continue;
+
+      await persistCandidateSignals({
         runId: params.runId,
-        eventType: 'search-progress',
-        stage: 'search',
-        message: `Found ${hits.length} candidates for one intent.`,
-        payload: {
-          bucket: params.bucket,
-          query: params.query,
-          status: 'complete',
-          count: hits.length,
-        },
+        recipe: params.job.recipe,
+        signals: sanitizeCandidateSignals(
+          partial.slice(0, params.maxResults),
+          params.runtime.sourceDomain,
+          params.job.recipe,
+        ),
+        runtime: params.runtime,
       });
     }
-  } catch (error) {
-    throwIfLeadgenAborted(params.abortSignal);
 
+    const finalOutput = await stream.output;
+    await recordLeadgenTokenUsageFromResult({
+      runId: params.runId,
+      result: stream,
+      fallbackModel: getLeadgenPrimaryResearchModel(
+        params.runtime.reasoningEffort,
+      ),
+    });
+    await persistCandidateSignals({
+      runId: params.runId,
+      recipe: params.job.recipe,
+      signals: sanitizeCandidateSignals(
+        Array.isArray(finalOutput)
+          ? finalOutput.slice(0, params.maxResults)
+          : [],
+        params.runtime.sourceDomain,
+        params.job.recipe,
+      ),
+      runtime: params.runtime,
+    });
+  } catch (error) {
+    throwIfLeadgenAborted(params.runtime.abortSignal);
     logger.warn(
       {
         error,
         runId: params.runId,
-        bucket: params.bucket,
-        query: params.query,
+        recipe: params.job.recipe,
       },
-      'Leadgen search query failed',
+      'Leadgen discovery recipe failed',
     );
     await persistLeadgenEvent({
       runId: params.runId,
       eventType: 'error',
       stage: 'search',
       payload: {
-        bucket: params.bucket,
-        query: params.query,
+        recipe: params.job.recipe,
         error: getLeadgenErrorMessage(error),
       },
     });
   }
 }
 
-async function streamAndPersistSearchCandidates(params: {
+async function persistCandidateSignals(params: {
   runId: string;
-  sourceDomain: string;
-  bucket: 'general' | 'substring';
-  query: string;
-  reasoningEffort: LeadgenReasoningEffort;
-  maxResultsPerQuery: number;
-  contactDiscoveryLimit: number;
-  abortSignal: AbortSignal;
-  runtime: LeadgenSearchRuntime;
+  recipe: LeadgenDiscoveryRecipe;
+  signals: LeadgenCandidateSignal[];
+  runtime: DiscoveryRuntime;
 }) {
-  const stream =
-    params.bucket === 'substring'
-      ? await streamLeadgenSubstringSearchResults(params.sourceDomain, {
-          abortSignal: params.abortSignal,
-          reasoningEffort: params.reasoningEffort,
-          maxResults: params.maxResultsPerQuery,
-        })
-      : await streamLeadgenSearchResults(params.query, {
-          abortSignal: params.abortSignal,
-          reasoningEffort: params.reasoningEffort,
-          maxResults: params.maxResultsPerQuery,
-        });
-  let processedCount = 0;
+  for (const signal of params.signals) {
+    throwIfLeadgenAborted(params.runtime.abortSignal);
 
-  for await (const partial of stream.partialOutputStream) {
-    if (!Array.isArray(partial)) continue;
+    if (
+      params.runtime.persistedSignalCount >=
+      params.runtime.config.rawCandidateLimit
+    ) {
+      return;
+    }
 
-    const nextLength = Math.min(partial.length, params.maxResultsPerQuery);
-    if (nextLength <= processedCount) continue;
+    const signalKey = [
+      signal.domain,
+      signal.recipe,
+      signal.signalType.toLowerCase(),
+      signal.evidenceSnippet.toLowerCase(),
+    ].join(':');
+    if (params.runtime.persistedSignalKeys.has(signalKey)) continue;
+    params.runtime.persistedSignalKeys.add(signalKey);
 
-    await persistSearchCandidates({
-      ...params,
-      candidates: partial.slice(processedCount, nextLength),
-    });
-    processedCount = nextLength;
-  }
-
-  const finalOutput = await stream.output;
-  await recordLeadgenTokenUsageFromResult({
-    runId: params.runId,
-    result: stream,
-    fallbackModel: getLeadgenPrimaryResearchModel(params.reasoningEffort),
-  });
-  const hits = Array.isArray(finalOutput)
-    ? finalOutput.slice(0, params.maxResultsPerQuery)
-    : [];
-
-  await persistSearchCandidates({ ...params, candidates: hits });
-  return hits;
-}
-
-async function persistSearchCandidates(params: {
-  runId: string;
-  sourceDomain: string;
-  bucket: 'general' | 'substring';
-  query: string;
-  reasoningEffort: LeadgenReasoningEffort;
-  contactDiscoveryLimit: number;
-  abortSignal: AbortSignal;
-  runtime: LeadgenSearchRuntime;
-  candidates: LeadgenBusinessResult[];
-}) {
-  for (const candidate of params.candidates) {
-    throwIfLeadgenAborted(params.abortSignal);
-
-    const lead = await persistLeadCandidate({
+    const lead = await persistCandidateSignal({
       runId: params.runId,
-      candidate,
-      bucket: params.bucket,
-      query: params.query,
-      rank: params.runtime.rank++,
-      seenDomains: params.runtime.seenDomains,
+      signal: {
+        ...signal,
+        recipe: params.recipe,
+      },
+      rank: params.runtime.nextRank++,
     });
     if (!lead) continue;
 
-    params.runtime.inserted += 1;
-    await refreshLeadgenRunCounts(params.runId);
-    await scheduleContactDiscovery({ ...params, lead });
+    params.runtime.persistedSignalCount += 1;
+    params.runtime.pendingTriageDomains.add(lead.businessDomain);
+
+    if (!params.runtime.emittedLeadDomains.has(lead.businessDomain)) {
+      params.runtime.emittedLeadDomains.add(lead.businessDomain);
+      await refreshLeadgenRunCounts(params.runId);
+      await persistLeadgenEvent({
+        runId: params.runId,
+        eventType: 'lead',
+        stage: 'search',
+        message: `Checking ${lead.companyName ?? lead.businessDomain}.`,
+        payload: {
+          leadId: lead.id,
+          businessDomain: lead.businessDomain,
+          companyName: lead.companyName,
+          status: lead.status,
+          signalType: signal.signalType,
+        },
+      });
+    }
+
+    await triagePendingDomains({
+      runId: params.runId,
+      runtime: params.runtime,
+      force: false,
+    });
   }
 }
 
-async function scheduleContactDiscovery(params: {
+async function persistCandidateSignal(params: {
+  runId: string;
+  signal: LeadgenCandidateSignal;
+  rank: number;
+}) {
+  const businessDomain = normalizeLeadgenDomain(params.signal.domain);
+  if (!businessDomain) return null;
+
+  const now = new Date();
+  const [lead] = await db
+    .insert(leadgenLeadsTable)
+    .values({
+      runId: params.runId,
+      businessDomain,
+      companyName: params.signal.companyName ?? null,
+      status: 'checking',
+      score: 0,
+      motion: 'Still checking',
+      thesis: 'Checking buyer fit.',
+      riskLevel: 'low',
+      contactReadiness: 'not_searched',
+      query: params.signal.query,
+      rationale: params.signal.candidateReason,
+      content: params.signal.evidenceSnippet,
+      rank: params.rank,
+    })
+    .onConflictDoUpdate({
+      target: [leadgenLeadsTable.runId, leadgenLeadsTable.businessDomain],
+      set: {
+        companyName: sql`coalesce(${leadgenLeadsTable.companyName}, ${params.signal.companyName ?? null})`,
+        query: params.signal.query,
+        rationale: params.signal.candidateReason,
+        content: params.signal.evidenceSnippet,
+        updatedAt: now,
+      },
+    })
+    .returning();
+
+  if (!lead) return null;
+
+  await db
+    .insert(leadgenLeadSignalsTable)
+    .values({
+      runId: params.runId,
+      leadId: lead.id,
+      recipe: params.signal.recipe,
+      signalType: params.signal.signalType,
+      query: params.signal.query,
+      evidenceUrl: params.signal.evidenceUrl ?? null,
+      evidenceSnippet: params.signal.evidenceSnippet,
+      metadata: {
+        candidateReason: params.signal.candidateReason,
+        companyName: params.signal.companyName,
+      },
+    })
+    .onConflictDoUpdate({
+      target: [
+        leadgenLeadSignalsTable.leadId,
+        leadgenLeadSignalsTable.recipe,
+        leadgenLeadSignalsTable.signalType,
+        leadgenLeadSignalsTable.evidenceSnippet,
+      ],
+      set: {
+        query: params.signal.query,
+        evidenceUrl: params.signal.evidenceUrl ?? null,
+        metadata: {
+          candidateReason: params.signal.candidateReason,
+          companyName: params.signal.companyName,
+        },
+        updatedAt: now,
+      },
+    });
+
+  return lead;
+}
+
+async function triagePendingDomains(params: {
+  runId: string;
+  runtime: DiscoveryRuntime;
+  force: boolean;
+}) {
+  if (
+    params.runtime.pendingTriageDomains.size === 0 ||
+    (!params.force &&
+      params.runtime.pendingTriageDomains.size <
+        params.runtime.config.triageBatchSize)
+  ) {
+    return;
+  }
+
+  const domains = [...params.runtime.pendingTriageDomains];
+  params.runtime.pendingTriageDomains.clear();
+  await triageLeadgenCandidates({
+    runId: params.runId,
+    sourceDomain: params.runtime.sourceDomain,
+    domainProfile: params.runtime.domainProfile,
+    reasoningEffort: params.runtime.reasoningEffort,
+    askingPriceUsd: params.runtime.askingPriceUsd,
+    domains,
+    abortSignal: params.runtime.abortSignal,
+  });
+}
+
+async function triageLeadgenCandidates(params: {
   runId: string;
   sourceDomain: string;
-  lead: LeadRow;
+  domainProfile?: LeadgenDomainProfile | null;
   reasoningEffort: LeadgenReasoningEffort;
-  contactDiscoveryLimit: number;
+  askingPriceUsd?: number;
+  domains?: string[];
+  limit?: number;
   abortSignal: AbortSignal;
-  runtime: LeadgenSearchRuntime;
 }) {
   throwIfLeadgenAborted(params.abortSignal);
 
-  if (params.runtime.contactTasks.size >= params.contactDiscoveryLimit) return;
-  if (params.runtime.contactTasks.has(params.lead.businessDomain)) return;
+  const leads = await loadTriageLeads({
+    runId: params.runId,
+    domains: params.domains,
+    limit: params.limit,
+  });
+  if (leads.length === 0) return;
 
-  if (!params.runtime.contactDiscoveryAnnounced) {
-    params.runtime.contactDiscoveryAnnounced = true;
-    await persistLeadgenEvent({
+  const signalsByLeadId = await loadSignalsByLeadId(
+    leads.map((lead) => lead.id),
+  );
+  const candidates = leads
+    .map((lead): LeadgenTriageCandidate | null => {
+      const signals = signalsByLeadId.get(lead.id) ?? [];
+      if (signals.length === 0) return null;
+
+      return {
+        domain: lead.businessDomain,
+        companyName: lead.companyName,
+        existingStatus: lead.status,
+        existingScore: lead.score,
+        signals: signals.slice(0, 8).map((signal) => ({
+          recipe: signal.recipe,
+          signalType: signal.signalType,
+          evidenceSnippet: signal.evidenceSnippet,
+          evidenceUrl: signal.evidenceUrl,
+        })),
+      };
+    })
+    .filter((candidate): candidate is LeadgenTriageCandidate =>
+      Boolean(candidate),
+    );
+  if (candidates.length === 0) return;
+
+  const result = await generateLeadgenOpportunityTriages({
+    sourceDomain: params.sourceDomain,
+    candidates,
+    options: {
+      abortSignal: params.abortSignal,
+      askingPriceUsd: params.askingPriceUsd,
+      domainProfile: params.domainProfile,
+      reasoningEffort: params.reasoningEffort,
+    },
+  });
+  await recordLeadgenTokenUsageFromResult({
+    runId: params.runId,
+    result,
+    fallbackModel: getLeadgenPrimaryResearchModel(params.reasoningEffort),
+  });
+
+  const triagesByDomain = new Map(
+    result.output.map((triage) => [triage.domain, triage]),
+  );
+
+  for (const lead of leads) {
+    const triage = triagesByDomain.get(lead.businessDomain);
+    if (!triage) continue;
+
+    await updateLeadFromTriage({
       runId: params.runId,
-      eventType: 'status',
-      stage: 'contacts',
-      message: 'Finding contacts and drafting outreach for top leads.',
-      payload: {
-        bucket: params.lead.bucket,
-        contactDiscoveryLimit: params.contactDiscoveryLimit,
-      },
+      lead,
+      triage,
     });
   }
 
-  const task = discoverLeadgenContactsAndDraft({
+  await refreshLeadgenRunCounts(params.runId);
+}
+
+async function updateLeadFromTriage(params: {
+  runId: string;
+  lead: LeadRow;
+  triage: LeadgenOpportunityTriage;
+}) {
+  const now = new Date();
+  await db
+    .update(leadgenLeadsTable)
+    .set({
+      status: params.triage.status,
+      score: params.triage.score,
+      motion: params.triage.motion,
+      thesis: params.triage.thesis,
+      riskLevel: 'low',
+      riskNote: null,
+      contactReadiness: params.lead.contactReadiness,
+      rank: getOpportunityRank(params.triage.status, params.triage.score),
+      updatedAt: now,
+    })
+    .where(eq(leadgenLeadsTable.id, params.lead.id));
+
+  if (
+    params.triage.status === 'contact_now' ||
+    params.triage.status === 'suppressed'
+  ) {
+    await persistLeadgenEvent({
+      runId: params.runId,
+      eventType: 'triage',
+      stage: 'triage',
+      message: getTriageEventMessage(params.lead, params.triage),
+      payload: {
+        leadId: params.lead.id,
+        businessDomain: params.lead.businessDomain,
+        status: params.triage.status,
+        score: params.triage.score,
+      },
+    });
+  }
+}
+
+async function discoverContactsForPromotedLeads(params: {
+  runId: string;
+  sourceDomain: string;
+  reasoningEffort: LeadgenReasoningEffort;
+  contactDiscoveryLimit: number;
+  abortSignal: AbortSignal;
+}) {
+  const [searchedCountRow] = await db
+    .select({ value: count() })
+    .from(leadgenLeadsTable)
+    .where(
+      and(
+        eq(leadgenLeadsTable.runId, params.runId),
+        ne(leadgenLeadsTable.contactReadiness, 'not_searched'),
+      ),
+    );
+  const remainingContactSearches = Math.max(
+    0,
+    params.contactDiscoveryLimit - (searchedCountRow?.value ?? 0),
+  );
+  if (remainingContactSearches === 0) return;
+
+  const leads = await db
+    .select()
+    .from(leadgenLeadsTable)
+    .where(
+      and(
+        eq(leadgenLeadsTable.runId, params.runId),
+        eq(leadgenLeadsTable.status, 'contact_now'),
+        eq(leadgenLeadsTable.contactReadiness, 'not_searched'),
+      ),
+    )
+    .orderBy(asc(leadgenLeadsTable.rank), asc(leadgenLeadsTable.createdAt))
+    .limit(remainingContactSearches);
+
+  if (leads.length === 0) return;
+
+  await persistLeadgenEvent({
     runId: params.runId,
-    sourceDomain: params.sourceDomain,
-    lead: params.lead,
-    reasoningEffort: params.reasoningEffort,
-    abortSignal: params.abortSignal,
+    eventType: 'status',
+    stage: 'contacts',
+    message: `Finding public contacts for ${leads.length} top ${leads.length === 1 ? 'prospect' : 'prospects'}.`,
+    payload: {
+      contactDiscoveryLimit: params.contactDiscoveryLimit,
+      remainingContactSearches,
+    },
   });
-  void task.catch(() => undefined);
-  params.runtime.contactTasks.set(params.lead.businessDomain, task);
+
+  await runWithConcurrency(leads, 2, async (lead) => {
+    throwIfLeadgenAborted(params.abortSignal);
+    await discoverLeadgenContactsAndDraft({
+      runId: params.runId,
+      sourceDomain: params.sourceDomain,
+      lead,
+      reasoningEffort: params.reasoningEffort,
+      abortSignal: params.abortSignal,
+    });
+  });
+  await refreshLeadgenRunCounts(params.runId);
 }
 
 export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
@@ -511,7 +918,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
       updatedAt: now,
       summary:
         counts.leadCount > 0
-          ? `Found ${counts.leadCount} leads, ${counts.contactCount} contacts, and ${counts.draftCount} drafts.`
+          ? `Found ${counts.leadCount} prospects and ${counts.contactCount} contacts.`
           : 'Research complete.',
     })
     .where(eq(leadgenRunsTable.id, runId));
@@ -522,7 +929,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
     stage: 'complete',
     message:
       counts.leadCount > 0
-        ? `Finished with ${counts.leadCount} leads and ${counts.draftCount} drafts.`
+        ? `Finished with ${counts.leadCount} prospects and ${counts.contactCount} contacts.`
         : 'Research complete.',
     payload: counts,
   });
@@ -553,65 +960,6 @@ export async function failLeadgenRun({
   });
 }
 
-async function persistLeadCandidate(params: {
-  runId: string;
-  candidate: LeadgenBusinessResult;
-  bucket: 'general' | 'substring';
-  query: string;
-  rank: number;
-  seenDomains: Set<string>;
-}): Promise<LeadRow | null> {
-  const businessDomain = normalizeLeadgenDomain(params.candidate.domain);
-  if (!businessDomain) return null;
-  if (params.seenDomains.has(businessDomain)) return null;
-  params.seenDomains.add(businessDomain);
-
-  const [lead] = await db
-    .insert(leadgenLeadsTable)
-    .values({
-      runId: params.runId,
-      businessDomain,
-      bucket: params.bucket,
-      query: params.query,
-      rationale: params.candidate.justification.trim(),
-      content: params.candidate.content.trim(),
-      rank: params.rank,
-    })
-    .onConflictDoUpdate({
-      target: [
-        leadgenLeadsTable.runId,
-        leadgenLeadsTable.businessDomain,
-        leadgenLeadsTable.bucket,
-      ],
-      set: {
-        query: params.query,
-        rationale: params.candidate.justification.trim(),
-        content: params.candidate.content.trim(),
-        updatedAt: new Date(),
-      },
-    })
-    .returning();
-
-  if (!lead) return null;
-
-  await persistLeadgenEvent({
-    runId: params.runId,
-    eventType: 'lead',
-    stage: 'search',
-    message: `Found ${businessDomain}`,
-    payload: {
-      leadId: lead.id,
-      businessDomain,
-      bucket: params.bucket,
-      query: params.query,
-      rationale: lead.rationale,
-      content: lead.content,
-    },
-  });
-
-  return lead;
-}
-
 /**
  * On-demand activity for preparing outreach for one lead in an existing run.
  *
@@ -636,6 +984,301 @@ export async function generateLeadgenLeadOutreachActivity({
       }),
     { stage: 'contacts', runId, leadId },
   );
+}
+
+async function persistDomainProfile(params: {
+  runId: string;
+  domainProfile: LeadgenDomainProfile;
+}) {
+  const [run] = await db
+    .select({ metadata: leadgenRunsTable.metadata })
+    .from(leadgenRunsTable)
+    .where(eq(leadgenRunsTable.id, params.runId))
+    .limit(1);
+
+  await db
+    .update(leadgenRunsTable)
+    .set({
+      metadata: {
+        ...(isRecord(run?.metadata) ? run.metadata : {}),
+        domainProfile: params.domainProfile,
+      },
+      updatedAt: new Date(),
+    })
+    .where(eq(leadgenRunsTable.id, params.runId));
+}
+
+async function loadTriageLeads(params: {
+  runId: string;
+  domains?: string[];
+  limit?: number;
+}) {
+  const where =
+    params.domains && params.domains.length > 0
+      ? and(
+          eq(leadgenLeadsTable.runId, params.runId),
+          inArray(leadgenLeadsTable.businessDomain, params.domains),
+        )
+      : eq(leadgenLeadsTable.runId, params.runId);
+
+  return await db
+    .select()
+    .from(leadgenLeadsTable)
+    .where(where)
+    .orderBy(asc(leadgenLeadsTable.rank), asc(leadgenLeadsTable.createdAt))
+    .limit(params.limit ?? 50);
+}
+
+async function loadSignalsByLeadId(leadIds: string[]) {
+  if (leadIds.length === 0) return new Map<string, SignalRow[]>();
+
+  const signals = await db
+    .select()
+    .from(leadgenLeadSignalsTable)
+    .where(inArray(leadgenLeadSignalsTable.leadId, leadIds))
+    .orderBy(asc(leadgenLeadSignalsTable.createdAt));
+  const signalsByLeadId = new Map<string, SignalRow[]>();
+
+  for (const signal of signals) {
+    const group = signalsByLeadId.get(signal.leadId);
+    if (group) {
+      group.push(signal);
+    } else {
+      signalsByLeadId.set(signal.leadId, [signal]);
+    }
+  }
+
+  return signalsByLeadId;
+}
+
+async function getNextLeadgenRank(runId: string) {
+  const [row] = await db
+    .select({
+      value: sql<number>`coalesce(max(${leadgenLeadsTable.rank}), 0)`,
+    })
+    .from(leadgenLeadsTable)
+    .where(eq(leadgenLeadsTable.runId, runId));
+
+  return (row?.value ?? 0) + 1;
+}
+
+function buildSeedRecipeJobs(sourceDomain: string): DiscoveryRecipeJob[] {
+  return SEED_RECIPES.map((recipe) => ({
+    recipe,
+    queries: getRecipeQueries({
+      sourceDomain,
+      recipe,
+      profileQueries: [],
+    }),
+  }));
+}
+
+function buildProfileRecipeJobs(params: {
+  sourceDomain: string;
+  domainProfile: LeadgenDomainProfile;
+  selectedRecipeLimit: number;
+}): DiscoveryRecipeJob[] {
+  const recipeQueries = new Map<LeadgenDiscoveryRecipe, string[]>();
+
+  for (const direction of params.domainProfile.searchDirections) {
+    if (
+      direction.recipe === 'exact_near_name_search' ||
+      direction.recipe === 'broad_sanity_search'
+    ) {
+      continue;
+    }
+
+    recipeQueries.set(direction.recipe, [
+      ...(recipeQueries.get(direction.recipe) ?? []),
+      direction.intent,
+    ]);
+  }
+
+  for (const thesis of params.domainProfile.theses) {
+    for (const recipe of thesis.discoveryRecipes) {
+      if (
+        recipe === 'exact_near_name_search' ||
+        recipe === 'broad_sanity_search'
+      ) {
+        continue;
+      }
+
+      recipeQueries.set(recipe, [
+        ...(recipeQueries.get(recipe) ?? []),
+        ...thesis.seedQueries,
+      ]);
+    }
+  }
+
+  const selectedRecipes = [
+    ...RECIPE_ORDER.filter((recipe) => recipeQueries.has(recipe)),
+    ...RECIPE_ORDER.filter((recipe) => !recipeQueries.has(recipe)),
+  ].slice(0, params.selectedRecipeLimit);
+
+  return selectedRecipes.map((recipe) => ({
+    recipe,
+    queries: getRecipeQueries({
+      sourceDomain: params.sourceDomain,
+      recipe,
+      profileQueries: [
+        ...(recipeQueries.get(recipe) ?? []),
+        ...params.domainProfile.seedQueries,
+      ],
+    }),
+  }));
+}
+
+function getRecipeQueries(params: {
+  sourceDomain: string;
+  recipe: LeadgenDiscoveryRecipe;
+  profileQueries: string[];
+}) {
+  const normalizedDomain =
+    normalizeLeadgenDomain(params.sourceDomain) ?? params.sourceDomain.trim();
+  const core = getDomainCore(normalizedDomain);
+  const quotedCore = `"${core}"`;
+  const fallbackByRecipe: Record<LeadgenDiscoveryRecipe, string[]> = {
+    exact_near_name_search: [
+      `"${normalizedDomain}"`,
+      `${quotedCore} official company`,
+      `${quotedCore} brand official website`,
+    ],
+    broad_sanity_search: [
+      `${quotedCore} company official`,
+      `${quotedCore} product startup official`,
+      `${quotedCore} service brand`,
+    ],
+    category_operator_search: [
+      `${quotedCore} company official website`,
+      `${quotedCore} product company`,
+      `${quotedCore} service provider official`,
+    ],
+    local_business_search: [
+      `${quotedCore} local business official`,
+      `${quotedCore} near me company official`,
+      `${quotedCore} regional service provider`,
+    ],
+    paid_demand_check: [
+      `${quotedCore} sponsored official company`,
+      `${quotedCore} pricing software company`,
+      `${quotedCore} ads landing page official`,
+    ],
+    growth_trigger_search: [
+      `${quotedCore} funding company official`,
+      `${quotedCore} hiring official company`,
+      `${quotedCore} new product launch company`,
+    ],
+    domain_weakness_check: [
+      `${quotedCore} company official site`,
+      `${quotedCore} brand on get started`,
+      `${quotedCore} app official`,
+    ],
+  };
+
+  return [
+    ...new Set(
+      [...params.profileQueries, ...fallbackByRecipe[params.recipe]]
+        .map((query) => query.trim())
+        .filter(Boolean),
+    ),
+  ].slice(0, 6);
+}
+
+function getLeadgenEffortConfig(
+  reasoningEffort: LeadgenReasoningEffort,
+  overrides?: {
+    rawCandidateLimit?: number;
+    contactDiscoveryLimit?: number;
+  },
+): LeadgenEffortConfig {
+  const base: Record<LeadgenReasoningEffort, LeadgenEffortConfig> = {
+    low: {
+      maxTheses: 2,
+      rawCandidateLimit: 20,
+      triageLeadLimit: 12,
+      contactDiscoveryLimit: 2,
+      selectedRecipeLimit: 1,
+      discoveryMaxResults: 8,
+      recipeConcurrency: 1,
+      triageBatchSize: 3,
+    },
+    medium: {
+      maxTheses: 3,
+      rawCandidateLimit: 45,
+      triageLeadLimit: 25,
+      contactDiscoveryLimit: 5,
+      selectedRecipeLimit: 3,
+      discoveryMaxResults: 15,
+      recipeConcurrency: 2,
+      triageBatchSize: 5,
+    },
+    high: {
+      maxTheses: 3,
+      rawCandidateLimit: 90,
+      triageLeadLimit: 45,
+      contactDiscoveryLimit: 8,
+      selectedRecipeLimit: 5,
+      discoveryMaxResults: 25,
+      recipeConcurrency: 3,
+      triageBatchSize: 5,
+    },
+  };
+
+  return {
+    ...base[reasoningEffort],
+    ...(overrides?.rawCandidateLimit != null
+      ? { rawCandidateLimit: overrides.rawCandidateLimit }
+      : {}),
+    ...(overrides?.contactDiscoveryLimit != null
+      ? { contactDiscoveryLimit: overrides.contactDiscoveryLimit }
+      : {}),
+  };
+}
+
+function getOpportunityRank(status: LeadgenOpportunityStatus, score: number) {
+  return STATUS_RANK[status] + (100 - score);
+}
+
+function getTriageEventMessage(
+  lead: LeadRow,
+  triage: LeadgenOpportunityTriage,
+) {
+  if (triage.status === 'contact_now') {
+    return `${lead.companyName ?? lead.businessDomain} is ready for contact research.`;
+  }
+  return `${lead.companyName ?? lead.businessDomain} was added to secondary prospects.`;
+}
+
+function getDomainCore(domain: string) {
+  const normalized = normalizeLeadgenDomain(domain) ?? domain.trim();
+  return normalized
+    .split('.')[0]
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+async function runWithConcurrency<T>(
+  items: T[],
+  concurrency: number,
+  worker: (item: T) => Promise<void>,
+) {
+  const queue = [...items];
+  const workers = Array.from(
+    { length: Math.max(1, Math.min(concurrency, items.length)) },
+    async () => {
+      while (queue.length > 0) {
+        const item = queue.shift();
+        if (!item) return;
+        await worker(item);
+      }
+    },
+  );
+
+  await Promise.all(workers);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value));
 }
 
 async function recordLeadgenTokenUsageFromResult(params: {

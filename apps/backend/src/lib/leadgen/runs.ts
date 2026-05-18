@@ -17,6 +17,7 @@ import { TEMPORAL_QUEUES } from '#temporal/shared';
 import { runLeadgenWorkflow } from '#temporal/workflows/leadgen.workflow';
 
 const logger = createLogger({ module: 'leadgen-runs' });
+const FIRST_SENTENCE_RE = /^.*?[.!?](?:\s|$)/;
 
 type LeadgenRunRow = typeof leadgenRunsTable.$inferSelect;
 type LeadgenReasoningEffort = 'low' | 'medium' | 'high';
@@ -36,8 +37,9 @@ export async function startLeadgenRunForUser({
   runProfile = 'full',
   source,
   metadata = {},
-  maxIntentQueries,
-  maxResultsPerQuery,
+  askingPriceUsd,
+  selectedRecipeLimit,
+  rawCandidateLimit,
   contactDiscoveryLimit,
 }: {
   userId: string;
@@ -46,22 +48,24 @@ export async function startLeadgenRunForUser({
   runProfile?: LeadgenRunProfile;
   source?: string;
   metadata?: Record<string, unknown>;
-  maxIntentQueries?: number;
-  maxResultsPerQuery?: number;
+  askingPriceUsd?: number;
+  selectedRecipeLimit?: number;
+  rawCandidateLimit?: number;
   contactDiscoveryLimit?: number;
 }): Promise<LeadgenRunRow> {
   const normalizedDomain = namefiNormalizedDomainSchema.parse(domain);
   const runId = randomUUID();
   const workflowId = `leadgen-${runId}`;
-  const input = {
+  const input = buildLeadgenRunInput({
     domain: normalizedDomain,
     reasoningEffort,
-    ...(runProfile !== 'full' ? { runProfile } : {}),
-    ...(source ? { source } : {}),
-    ...(maxIntentQueries ? { maxIntentQueries } : {}),
-    ...(maxResultsPerQuery ? { maxResultsPerQuery } : {}),
-    ...(contactDiscoveryLimit ? { contactDiscoveryLimit } : {}),
-  };
+    runProfile,
+    source,
+    askingPriceUsd,
+    selectedRecipeLimit,
+    rawCandidateLimit,
+    contactDiscoveryLimit,
+  });
 
   const [run] = await db
     .insert(leadgenRunsTable)
@@ -91,12 +95,7 @@ export async function startLeadgenRunForUser({
         {
           runId,
           userId,
-          domain: normalizedDomain,
-          reasoningEffort,
-          ...(runProfile !== 'full' ? { runProfile } : {}),
-          ...(maxIntentQueries ? { maxIntentQueries } : {}),
-          ...(maxResultsPerQuery ? { maxResultsPerQuery } : {}),
-          ...(contactDiscoveryLimit ? { contactDiscoveryLimit } : {}),
+          ...input,
         },
       ],
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
@@ -121,6 +120,36 @@ export async function startLeadgenRunForUser({
   }
 
   return getLeadgenRunOrThrow(runId);
+}
+
+function buildLeadgenRunInput(params: {
+  domain: NamefiNormalizedDomain;
+  reasoningEffort: LeadgenReasoningEffort;
+  runProfile: LeadgenRunProfile;
+  source?: string;
+  askingPriceUsd?: number;
+  selectedRecipeLimit?: number;
+  rawCandidateLimit?: number;
+  contactDiscoveryLimit?: number;
+}) {
+  return {
+    domain: params.domain,
+    reasoningEffort: params.reasoningEffort,
+    ...(params.runProfile !== 'full' ? { runProfile: params.runProfile } : {}),
+    ...(params.source ? { source: params.source } : {}),
+    ...(params.askingPriceUsd != null
+      ? { askingPriceUsd: params.askingPriceUsd }
+      : {}),
+    ...(params.selectedRecipeLimit != null
+      ? { selectedRecipeLimit: params.selectedRecipeLimit }
+      : {}),
+    ...(params.rawCandidateLimit != null
+      ? { rawCandidateLimit: params.rawCandidateLimit }
+      : {}),
+    ...(params.contactDiscoveryLimit != null
+      ? { contactDiscoveryLimit: params.contactDiscoveryLimit }
+      : {}),
+  };
 }
 
 export async function ensureDomainTrafficSurgeLeadgenRun({
@@ -155,8 +184,8 @@ export async function ensureDomainTrafficSurgeLeadgenRun({
     reasoningEffort: 'medium',
     runProfile: 'campaign_short',
     source: 'domain-traffic-surge',
-    maxIntentQueries: 3,
-    maxResultsPerQuery: 5,
+    selectedRecipeLimit: 3,
+    rawCandidateLimit: 5,
     contactDiscoveryLimit: 5,
     metadata: {
       sourceKey,
@@ -182,12 +211,18 @@ export async function getLeadgenEmailLeads({
         id: leadgenLeadsTable.id,
         businessDomain: leadgenLeadsTable.businessDomain,
         rationale: leadgenLeadsTable.rationale,
+        status: leadgenLeadsTable.status,
+        score: leadgenLeadsTable.score,
         rank: leadgenLeadsTable.rank,
         createdAt: leadgenLeadsTable.createdAt,
       })
       .from(leadgenLeadsTable)
       .where(eq(leadgenLeadsTable.runId, runId))
-      .orderBy(leadgenLeadsTable.rank, leadgenLeadsTable.createdAt)
+      .orderBy(
+        leadgenLeadsTable.rank,
+        sql`${leadgenLeadsTable.score} desc`,
+        leadgenLeadsTable.createdAt,
+      )
       .limit(limit * 3),
     db
       .select({
@@ -292,7 +327,7 @@ function buildDomainTrafficSurgeLeadgenSourceKey({
 
 function crispRationale(value: string) {
   const clean = value.replace(/\s+/g, ' ').trim();
-  const firstSentence = clean.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() ?? clean;
+  const firstSentence = clean.match(FIRST_SENTENCE_RE)?.[0]?.trim() ?? clean;
   if (firstSentence.length <= 132) return firstSentence;
 
   const clipped = firstSentence.slice(0, 129);

@@ -1,50 +1,25 @@
 import { type OpenAIResponsesProviderOptions, openai } from '@ai-sdk/openai';
 import { generateText, Output, ToolLoopAgent } from 'ai';
-import { z } from 'zod';
 
 import { normalizeLeadgenDomain } from './domain';
 import {
-  leadgenBusinessResultSchema,
+  leadgenCandidateSignalSchema,
   leadgenContactResultSchema,
+  leadgenDiscoveryRecipeValues,
+  leadgenDomainProfileSchema,
   leadgenEmailDraftSchema,
+  leadgenOpportunityTriageSchema,
+  type LeadgenCandidateSignalInput,
   type LeadgenContact,
   type LeadgenContactResult,
+  type LeadgenCandidateSignal,
+  type LeadgenDiscoveryRecipe,
+  type LeadgenDomainProfile,
   type LeadgenEmailBrief,
+  type LeadgenOpportunityTriage,
+  type LeadgenRecommendedAction,
   type LeadgenReasoningEffort,
 } from './types';
-
-const intentOutputSchema = z
-  .object({
-    queries: z
-      .array(
-        z
-          .string()
-          .min(1)
-          .max(400)
-          .describe(
-            'Focused web search query for official brand or company websites.',
-          ),
-      )
-      .min(1)
-      .max(5),
-  })
-  .strict();
-
-export type LeadgenIntentOutput = z.infer<typeof intentOutputSchema>;
-
-export interface LeadgenIntentOptions {
-  abortSignal?: AbortSignal;
-  maxToolCalls?: number;
-  maxQueries?: number;
-  reasoningEffort?: LeadgenReasoningEffort;
-}
-
-export interface LeadgenSearchOptions {
-  abortSignal?: AbortSignal;
-  maxToolCalls?: number;
-  maxResults?: number;
-  reasoningEffort?: LeadgenReasoningEffort;
-}
 
 export interface LeadgenContactOptions {
   abortSignal?: AbortSignal;
@@ -53,13 +28,64 @@ export interface LeadgenContactOptions {
   reasoningEffort?: LeadgenReasoningEffort;
 }
 
+export interface LeadgenDomainProfileOptions {
+  abortSignal?: AbortSignal;
+  maxTheses?: number;
+  maxToolCalls?: number;
+  reasoningEffort?: LeadgenReasoningEffort;
+}
+
+export interface LeadgenDiscoveryOptions {
+  abortSignal?: AbortSignal;
+  domainProfile?: LeadgenDomainProfile;
+  maxResults?: number;
+  maxToolCalls?: number;
+  reasoningEffort?: LeadgenReasoningEffort;
+}
+
+export interface LeadgenTriageOptions {
+  abortSignal?: AbortSignal;
+  askingPriceUsd?: number;
+  domainProfile?: LeadgenDomainProfile | null;
+  reasoningEffort?: LeadgenReasoningEffort;
+}
+
+export type LeadgenTriageCandidate = {
+  domain: string;
+  companyName?: string | null;
+  existingStatus?: string;
+  existingScore?: number;
+  signals: Array<{
+    recipe: string;
+    signalType: string;
+    evidenceSnippet: string;
+    evidenceUrl?: string | null;
+  }>;
+};
+
 const DEFAULT_REASONING_EFFORT: LeadgenReasoningEffort = 'medium';
 const ABSOLUTE_URL_RE = /^[a-z]+:\/\//i;
 const DOMAIN_URL_RE = /^[\w.-]+\.[a-z]{2,}(\/.*)?$/i;
-export const LEADGEN_FAST_MODEL = 'gpt-4o';
-export const LEADGEN_RESEARCH_MODEL = 'gpt-5.2';
-export const LEADGEN_CONTACT_MODEL = 'gpt-5.2';
-export const LEADGEN_EMAIL_MODEL = 'gpt-4o';
+const SENTENCE_BOUNDARY_RE = /^(.{1,220}?[.!?])(?:\s|$)/;
+const RECIPE_SIGNAL_LABELS: Record<LeadgenDiscoveryRecipe, string> = {
+  exact_near_name_search: 'Name match',
+  category_operator_search: 'Category fit',
+  local_business_search: 'Local fit',
+  paid_demand_check: 'Paid demand',
+  growth_trigger_search: 'Growth signal',
+  domain_weakness_check: 'Domain upgrade',
+  broad_sanity_search: 'Market signal',
+};
+const ACTION_LABELS: Record<LeadgenRecommendedAction, string> = {
+  ready_to_contact: 'Ready to contact',
+  finding_contact: 'Finding contact',
+  keep_as_backup: 'Keep as backup',
+  filtered: 'Filtered',
+};
+export const LEADGEN_FAST_MODEL = 'gpt-5.5';
+export const LEADGEN_RESEARCH_MODEL = 'gpt-5.5';
+export const LEADGEN_CONTACT_MODEL = 'gpt-5.5';
+export const LEADGEN_EMAIL_MODEL = 'gpt-5.5';
 
 export function getLeadgenPrimaryResearchModel(
   reasoningEffort: LeadgenReasoningEffort,
@@ -84,216 +110,387 @@ function providerOptions(
   };
 }
 
-function intentInstructions(reasoningEffort: LeadgenReasoningEffort) {
-  const targetCount = reasoningEffort === 'low' ? '2-3' : '3-5';
-  return `You are "Domain -> Search Engine Query Builder".
+const FIXED_RECIPE_LIST = leadgenDiscoveryRecipeValues.join(', ');
 
-Goal:
-Given one seller-owned domain, output ONLY ${targetCount} search-engine-ready queries that surface official websites of prospective companies or brands likely to want this domain. No parameters, no excludes, no extra fields.
-
-How to think internally:
-1) Parse the SLD and TLD. Infer category, geography, and brand vibe from tokens, phonetics, and TLD signals such as ".co.in" for India or ".ai" for AI/technology.
-2) Brainstorm multiple monetizable narratives: literal use, aspirational lifestyle, emotional or brandable angles, and adjacent industries that could stretch into the name. Avoid repeating near-identical intents.
-3) Generate discovery queries that target official company or product websites, not the current owner, domain marketplaces, directories, social profiles, job boards, reseller pages, or articles.
-4) Bias queries toward official registrable root domains for brands and companies. Use rich synonym sets and optional geo/TLD spelling when helpful.
-5) Cover at least one literal angle, one aspirational or brandable angle, and one adjacent category when the domain supports it.
-
-Output only:
-{ "queries": ["<q1>", "<q2>", "<q3>", "<q4?>", "<q5?>"] }`;
+function domainThesisInstructions(reasoningEffort: LeadgenReasoningEffort) {
+  const targetTheses = reasoningEffort === 'low' ? '1-2' : '2-3';
+  return `Role: You are "Domain Thesis Agent", a broker-grade domain outbound planner.
+Goal: For one seller-owned domain, produce a grounded opportunity frame and ${targetTheses} buyer theses that can drive end-user outbound.
+Success criteria: You have checked current web evidence for commercial meaning, exact or near-name usage, category/geo meaning, and buyer-specific evidence patterns.
+Evidence rules: Use web search. Do not invent market demand or active companies. The opportunity frame must explain what kind of domain asset this is and what evidence standard makes a buyer real for this domain.
+Tool budget: Search until the commercial/category/name context is clear, then stop. Prefer fewer precise searches over broad wandering.
+Constraints: Choose discovery recipes only from this fixed list: ${FIXED_RECIPE_LIST}. Always include seed queries that can find official company websites. For short/acronym/brandable domains, allow acronym, brand-upgrade, funded-company, and weak-domain evidence rather than requiring keyword usage. Do not expose internal reasoning.
+Output: Return the structured DomainThesisProfile only.`;
 }
 
-export async function generateLeadgenIntentQueries(
+export async function generateLeadgenDomainThesisProfile(
   domain: string,
-  options?: LeadgenIntentOptions,
+  options?: LeadgenDomainProfileOptions,
 ) {
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
-  const maxToolCalls = options?.maxToolCalls ?? 4;
-  const usesFastModel = reasoningEffort === 'low';
+  const maxToolCalls =
+    options?.maxToolCalls ?? (reasoningEffort === 'low' ? 4 : 7);
 
   const result = await generateText({
     model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
-    system: intentInstructions(reasoningEffort),
-    messages: [{ role: 'user', content: domain }],
+    system: domainThesisInstructions(reasoningEffort),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          `Seller-owned domain: ${domain}`,
+          `Maximum theses: ${options?.maxTheses ?? (reasoningEffort === 'low' ? 2 : 3)}`,
+          'Optimize for high-conviction outbound opportunities, not broad lead volume.',
+        ].join('\n'),
+      },
+    ],
     tools: {
       webSearch: openai.tools.webSearch(),
     },
-    providerOptions: providerOptions(reasoningEffort, maxToolCalls, {
-      supportsReasoning: !usesFastModel,
-    }),
+    toolChoice: { type: 'tool', toolName: 'webSearch' },
+    providerOptions: providerOptions(reasoningEffort, maxToolCalls),
     abortSignal: options?.abortSignal,
-    output: Output.object({ schema: intentOutputSchema }),
+    output: Output.object({ schema: leadgenDomainProfileSchema }),
   });
 
-  if (options?.maxQueries && options.maxQueries > 0) {
-    result.output.queries.splice(options.maxQueries);
-  }
-
-  return result;
-}
-
-function searchInstructions(reasoningEffort: LeadgenReasoningEffort) {
-  return `You are "Domain -> Brand Prospect Researcher".
-Your job is to discover official company websites for organisations that would plausibly want to acquire the provided seller-owned domain.
-
-Operating guidelines:
-- Prioritise official brand domains that clearly represent a company, product, manufacturer, services firm, or funded startup.
-- Only surface canonical registrable root domains such as example.com or example.co.uk. Never return subdomains, protocols, paths, query strings, fragments, marketplace listings, directories, review aggregators, job boards, SaaS catalogs, news articles, social networks, reseller platforms, or hosted storefronts.
-- Discard any hit where the domain value is a path, snippet, placeholder text, instruction text, or anything that is not a valid hostname.
-- Prefer home pages, /about, /company, /products, or /services pages owned by the brand itself.
-- If search results are noisy, craft new searches around products, services, region-specific qualifiers, and adjacent buyer language.
-- Keep track of previously seen domains and continue exploring adjacent keywords when coverage is thin.
-- Prefer defensible end buyers: companies whose products, positioning, audience, geography, or brand strategy makes this domain an obvious upgrade.
-
-Output expectations:
-${reasoningEffort === 'low' ? '- Output only the 5 strongest leads.' : ''}
-- Return unique primary domains only, with no duplicates and no query strings.
-- Every domain field MUST be a bare registrable root hostname with no protocol, path, query, fragment, or subdomain. If you cannot confirm such a hostname, omit the candidate.
-- Justification must be a short buyer-fit explanation in plain language for a domainer.
-- Never output instructions, apologies, or "please specify" text in place of a domain.
-- Return concise JSON only.`;
-}
-
-function createSearchAgent(options?: LeadgenSearchOptions) {
-  const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
-  const maxToolCalls = options?.maxToolCalls ?? 5;
-  const usesFastModel = reasoningEffort === 'low';
-
-  return new ToolLoopAgent({
-    model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
-    instructions: searchInstructions(reasoningEffort),
-    tools: {
-      webSearch: openai.tools.webSearch(),
-    },
-    output: Output.array({
-      element: leadgenBusinessResultSchema,
+  return {
+    ...result,
+    output: sanitizeDomainProfile(result.output, {
+      maxTheses: options?.maxTheses ?? (reasoningEffort === 'low' ? 2 : 3),
     }),
-    providerOptions: providerOptions(reasoningEffort, maxToolCalls, {
-      supportsReasoning: !usesFastModel,
-    }),
-  });
+  };
 }
 
-export async function streamLeadgenSearchResults(
-  query: string,
-  options?: LeadgenSearchOptions,
-) {
-  return createSearchAgent(options).stream({
-    prompt: query,
-    abortSignal: options?.abortSignal,
-  });
+function sanitizeDomainProfile(
+  profile: LeadgenDomainProfile,
+  options: { maxTheses: number },
+): LeadgenDomainProfile {
+  const seedQueries = [
+    ...new Set(
+      profile.seedQueries.map((query) => query.trim()).filter(Boolean),
+    ),
+  ];
+  const theses = profile.theses.slice(0, options.maxTheses).map((thesis) => ({
+    ...thesis,
+    // Every thesis keeps a bounded baseline exact-name and broad sanity pass
+    // before adding vetted thesis recipes, so weak or narrow profiles still
+    // get fallback coverage without exceeding the five-recipe cap.
+    discoveryRecipes: [
+      ...new Set([
+        'exact_near_name_search' as const,
+        'broad_sanity_search' as const,
+        ...thesis.discoveryRecipes.filter((recipe) =>
+          leadgenDiscoveryRecipeValues.includes(recipe),
+        ),
+      ]),
+    ].slice(0, 5),
+    seedQueries: [
+      ...new Set(
+        thesis.seedQueries.map((query) => query.trim()).filter(Boolean),
+      ),
+    ].slice(0, 5),
+  }));
+  const searchDirections = profile.searchDirections
+    .filter((direction) =>
+      leadgenDiscoveryRecipeValues.includes(direction.recipe),
+    )
+    .map((direction) => ({
+      recipe: direction.recipe,
+      intent: clipToSentence(direction.intent.trim(), 140),
+    }));
+
+  return {
+    evidenceStandards: uniqueNonEmpty(profile.evidenceStandards).slice(0, 6),
+    searchDirections: searchDirections.length
+      ? searchDirections.slice(0, 6)
+      : [
+          {
+            recipe: 'broad_sanity_search',
+            intent: 'Find official company sites with buyer-specific evidence.',
+          },
+        ],
+    traits: profile.traits.slice(0, 8),
+    theses,
+    cautions: profile.cautions.slice(0, 5),
+    seedQueries: [
+      ...new Set(
+        [
+          `${profile.seedQueries[0] ?? ''}`.trim(),
+          `"${profile.seedQueries[1] ?? profile.seedQueries[0] ?? ''}" official company`.trim(),
+          ...seedQueries,
+        ].filter(Boolean),
+      ),
+    ].slice(0, 8),
+  };
 }
 
-export async function generateLeadgenSearchResults(
-  query: string,
-  options?: LeadgenSearchOptions,
-) {
-  return createSearchAgent(options).generate({
-    prompt: query,
-    abortSignal: options?.abortSignal,
-  });
-}
-
-function substringSearchInstructions(
-  domain: string,
+function discoveryInstructions(
+  recipe: LeadgenDiscoveryRecipe,
   reasoningEffort: LeadgenReasoningEffort,
 ) {
   const target =
     reasoningEffort === 'low'
-      ? '8'
+      ? '5-8'
       : reasoningEffort === 'medium'
-        ? '15'
-        : '25';
-  return `You are "Substring Brand Prospector".
+        ? '8-15'
+        : '12-25';
 
-Goal: Find official company domains whose brand name closely matches the provided domain's core word through substrings, abbreviations, translations, or strong brandable extensions.
-
-Input domain: ${domain}
-
-Priorities, in order:
-1) Direct substring, prefix, suffix, or infix matches.
-2) Abbreviation expansions or stylized spellings.
-3) Strong translations or cross-language equivalents.
-4) Adjacent brandable riffs that clearly contain or extend the core word.
-
-Operating guidelines:
-- Use the same quality bar as general business search.
-- Prioritise official brand domains that clearly represent a company, product, manufacturer, services firm, or funded startup.
-- Only surface canonical registrable root domains such as example.com or example.co.uk; never return subdomains. Strip protocols, paths, queries, fragments, and "www".
-- Reject marketplaces, directories, review aggregators, job boards, SaaS catalogs, social networks, reseller platforms, news articles, and third-party hosted storefronts.
-- Infer geo and industry signals from TLDs, second-level ccTLDs, and tokens. Bias to that region when relevant while allowing strong global matches.
-- Derive the core token yourself from the full hostname, including multi-part TLDs such as .com.au, .co.uk, and .co.in.
-- Keep track of previously seen domains to avoid repetitions.
-
-Output expectations:
-- Return up to ${target} high-confidence candidates.
-- Output bare registrable root hostnames only.
-- Provide a short justification explaining how the brand relates by substring, abbreviation, translation, or brand extension and why it fits as a buyer.
-- Return concise JSON only.`;
+  return `Role: You are "Opportunity Discovery Agent", an evidence collector for domain outbound.
+Goal: Find official company root domains that may have a buyer-specific reason to care about the seller-owned domain.
+Success criteria: Return only candidates with a canonical official root domain and a concise web-supported evidence snippet.
+Evidence rules: Use web search. Same-vibe or same-industry is insufficient unless there is a concrete offer, domain pain, paid demand, growth trigger, local/category fit, or exact/near-name alignment.
+Tool budget: Use the active recipe "${recipe}" and stop after finding the strongest ${target} candidates or when searches repeat low-quality results.
+Constraints: Do not score leads, suppress leads, draft outreach, or expose recipe names to the user. Reject marketplaces, directories, review aggregators, social profiles, hosted storefronts, job boards, news pages, and the seller domain.
+Output: Return structured candidate signals only.`;
 }
 
-function createSubstringSearchAgent(
-  domain: string,
-  options?: LeadgenSearchOptions,
+function createDiscoveryAgent(
+  recipe: LeadgenDiscoveryRecipe,
+  options?: LeadgenDiscoveryOptions,
 ) {
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
-  const maxToolCalls = options?.maxToolCalls ?? 6;
-  const usesFastModel = reasoningEffort === 'low';
-  const normalizedDomain = normalizeLeadgenDomain(domain) ?? domain.trim();
+  const maxToolCalls =
+    options?.maxToolCalls ??
+    (reasoningEffort === 'low' ? 4 : reasoningEffort === 'medium' ? 6 : 9);
 
   return new ToolLoopAgent({
     model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
-    instructions: substringSearchInstructions(
-      normalizedDomain,
-      reasoningEffort,
-    ),
+    instructions: discoveryInstructions(recipe, reasoningEffort),
     tools: {
       webSearch: openai.tools.webSearch(),
     },
+    toolChoice: { type: 'tool', toolName: 'webSearch' },
     output: Output.array({
-      element: leadgenBusinessResultSchema,
+      element: leadgenCandidateSignalSchema,
     }),
-    providerOptions: providerOptions(reasoningEffort, maxToolCalls, {
-      supportsReasoning: !usesFastModel,
-    }),
+    providerOptions: providerOptions(reasoningEffort, maxToolCalls),
   });
 }
 
-export async function streamLeadgenSubstringSearchResults(
-  domain: string,
-  options?: LeadgenSearchOptions,
-) {
-  return createSubstringSearchAgent(domain, options).stream({
-    prompt: `Domain to mirror: ${domain}. Focus on substring, abbreviation, translation, and brand-extension aligned company domains.`,
-    abortSignal: options?.abortSignal,
+export async function streamLeadgenCandidateSignals(params: {
+  sourceDomain: string;
+  recipe: LeadgenDiscoveryRecipe;
+  queries: string[];
+  options?: LeadgenDiscoveryOptions;
+}) {
+  const normalizedDomain =
+    normalizeLeadgenDomain(params.sourceDomain) ?? params.sourceDomain.trim();
+  const profileSummary = formatDomainProfileForPrompt(
+    params.options?.domainProfile,
+  );
+  const prompt = [
+    `Seller-owned domain: ${normalizedDomain}`,
+    `Active recipe: ${params.recipe}`,
+    profileSummary,
+    'Search queries to use or adapt:',
+    ...params.queries.map((query, index) => `${index + 1}. ${query}`),
+    `Return at most ${params.options?.maxResults ?? 12} candidate signals.`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  return createDiscoveryAgent(params.recipe, params.options).stream({
+    prompt,
+    abortSignal: params.options?.abortSignal,
   });
 }
 
-export async function generateLeadgenSubstringSearchResults(
-  domain: string,
-  options?: LeadgenSearchOptions,
-) {
-  return createSubstringSearchAgent(domain, options).generate({
-    prompt: `Domain to mirror: ${domain}. Focus on substring, abbreviation, translation, and brand-extension aligned company domains.`,
-    abortSignal: options?.abortSignal,
+export async function generateLeadgenCandidateSignals(params: {
+  sourceDomain: string;
+  recipe: LeadgenDiscoveryRecipe;
+  queries: string[];
+  options?: LeadgenDiscoveryOptions;
+}) {
+  const stream = await streamLeadgenCandidateSignals(params);
+  const output = await stream.output;
+  const maxResults = params.options?.maxResults ?? 12;
+  const sanitizedSignals = sanitizeCandidateSignals(
+    Array.isArray(output) ? output : [],
+    params.sourceDomain,
+    params.recipe,
+  );
+
+  return {
+    ...stream,
+    output: sanitizedSignals.slice(0, maxResults),
+  };
+}
+
+function triageInstructions() {
+  return `Role: You are "Opportunity Triage Agent", a domain outbound deal desk.
+Goal: Rank canonical buyer opportunities for one seller-owned domain.
+Success criteria: Promote only buyers with a buyer-specific reason to care. Same-vibe, same-industry, or generic budget alone cannot become a ready-to-contact opportunity. Each thesis says what the company does and why this domain fits in one concise buyer-facing sentence.
+Evidence rules: Use only supplied evidence and the domain evidence standards. Do not browse, invent facts, infer contacts, or add claims not in signals.
+Tool budget: No tools.
+Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Use recommendedAction as the user-facing next step. Keep thesis to one natural sentence under 180 characters. Do not write separate rationale/evidence recaps or repeat the same fact in motion and thesis. Keep motion to a short action label under 40 characters.
+Output: Return structured opportunity triage records only.`;
+}
+
+export async function generateLeadgenOpportunityTriages(params: {
+  sourceDomain: string;
+  candidates: LeadgenTriageCandidate[];
+  options?: LeadgenTriageOptions;
+}) {
+  if (params.candidates.length === 0) {
+    throw new Error('Triage candidates list must not be empty.');
+  }
+
+  const reasoningEffort =
+    params.options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
+  const result = await generateText({
+    model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
+    system: triageInstructions(),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          `Seller-owned domain: ${params.sourceDomain}`,
+          params.options?.askingPriceUsd
+            ? `Seller asking price: $${params.options.askingPriceUsd}`
+            : 'Seller asking price: unknown',
+          formatDomainProfileForPrompt(params.options?.domainProfile),
+          'Canonical buyer candidates:',
+          JSON.stringify(params.candidates, null, 2),
+        ]
+          .filter(Boolean)
+          .join('\n'),
+      },
+    ],
+    providerOptions: providerOptions(reasoningEffort),
+    abortSignal: params.options?.abortSignal,
+    output: Output.array({
+      element: leadgenOpportunityTriageSchema,
+    }),
   });
+
+  return {
+    ...result,
+    output: sanitizeTriages(result.output),
+  };
+}
+
+function formatDomainProfileForPrompt(profile?: LeadgenDomainProfile | null) {
+  if (!profile) return '';
+  return [
+    'Domain thesis profile:',
+    JSON.stringify(
+      {
+        evidenceStandards: profile.evidenceStandards,
+        searchDirections: profile.searchDirections,
+        traits: profile.traits,
+        theses: profile.theses.map((thesis) => ({
+          title: thesis.title,
+          confidence: thesis.confidence,
+          requiredEvidence: thesis.requiredEvidence,
+        })),
+        cautions: profile.cautions,
+      },
+      null,
+      2,
+    ),
+  ].join('\n');
+}
+
+export function sanitizeCandidateSignals(
+  signals: LeadgenCandidateSignalInput[],
+  sourceDomain?: string,
+  recipe: LeadgenDiscoveryRecipe = 'broad_sanity_search',
+): LeadgenCandidateSignal[] {
+  const source = sourceDomain ? normalizeLeadgenDomain(sourceDomain) : null;
+  const seen = new Set<string>();
+  const sanitized: LeadgenCandidateSignal[] = [];
+
+  for (const signal of signals) {
+    const domain = normalizeLeadgenDomain(signal.domain);
+    if (!domain || domain === source) continue;
+
+    const normalizedDomain = String(domain);
+    const signalRecipe = recipe ?? 'broad_sanity_search';
+    const dedupeKey = [
+      normalizedDomain,
+      signalRecipe,
+      signal.signalType.trim().toLowerCase(),
+      signal.evidenceSnippet.trim().toLowerCase(),
+    ].join(':');
+    if (seen.has(dedupeKey)) continue;
+    seen.add(dedupeKey);
+
+    sanitized.push({
+      ...signal,
+      recipe: signalRecipe,
+      domain: normalizedDomain,
+      companyName: cleanNullableString(signal.companyName) ?? null,
+      signalType: cleanSignalType(signal.signalType, signalRecipe),
+      query: signal.query.trim(),
+      evidenceUrl: normalizeSourceUrl(signal.evidenceUrl) ?? null,
+      evidenceSnippet: signal.evidenceSnippet.trim(),
+      candidateReason: signal.candidateReason.trim(),
+    });
+  }
+
+  return sanitized;
+}
+
+function sanitizeTriages(
+  triages: LeadgenOpportunityTriage[],
+): LeadgenOpportunityTriage[] {
+  const seen = new Set<string>();
+  const sanitized: LeadgenOpportunityTriage[] = [];
+
+  for (const triage of triages) {
+    const domain = normalizeLeadgenDomain(triage.domain);
+    if (!domain || seen.has(domain)) continue;
+    seen.add(domain);
+
+    const recommendedAction = triage.recommendedAction;
+    const status = getStatusForRecommendedAction(recommendedAction);
+
+    sanitized.push({
+      ...triage,
+      domain: String(domain),
+      status,
+      score: Math.max(0, Math.min(100, Math.trunc(triage.score))),
+      recommendedAction,
+      motion: getActionMotion(recommendedAction),
+      thesis: clipToSentence(triage.thesis.trim(), 180),
+    });
+  }
+
+  return sanitized;
+}
+
+function getStatusForRecommendedAction(
+  action: LeadgenRecommendedAction,
+): LeadgenOpportunityTriage['status'] {
+  if (action === 'filtered') return 'suppressed';
+  if (action === 'keep_as_backup') return 'low_priority';
+  return 'contact_now';
+}
+
+function getActionMotion(action: LeadgenRecommendedAction) {
+  return ACTION_LABELS[action];
+}
+
+function uniqueNonEmpty(values: string[]) {
+  return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
+}
+
+function clipToSentence(value: string, maxLength: number) {
+  const sentence =
+    SENTENCE_BOUNDARY_RE.exec(value)?.[1]?.trim() ?? value.trim();
+  if (sentence.length <= maxLength) return sentence;
+
+  return `${sentence.slice(0, Math.max(0, maxLength - 1)).trimEnd()}.`;
 }
 
 function contactInstructions() {
-  return `You are "Domain -> Outreach Researcher".
-
-Given target brand root domains, find 1-3 decision makers per domain and their verified public email addresses.
-
-Guidelines:
-- Treat each provided domain as the canonical registrable company domain. Do not replace it with a subdomain, hosted platform domain, directory listing, or marketplace URL.
-- Use web search to confirm each contact through official bios, press releases, corporate contact pages, LinkedIn summaries, PDF brochures, or credible directories.
-- Prioritize seniority: founder, CEO, CMO, Head/VP/Director of Marketing, Growth, Brand, Partnerships, Business Development, GTM, or other C-level roles relevant to buying a domain.
-- Prefer corporate email domains that match the company. Avoid generic gmail/outlook unless explicitly official.
-- Provide short context explaining why the contact is relevant if the title is ambiguous.
-- Include a credible sourceUrl for each email when available. Do not invent sources.
-- If no named executive with direct email is available, include the best corporate or departmental email such as marketing@, partnerships@, or support@ and explain the limitation in context or notes.
-- Do not fabricate addresses, but do not leave contacts empty when legitimate generic addresses exist.
-- If absolutely no email address can be located, return contacts: [] and concise notes.
-- Return concise JSON only.`;
+  return `Role: You are "Contact Agent", an outreach researcher for domain acquisition opportunities.
+Goal: Find 1-3 public, source-backed decision-maker emails per target company.
+Success criteria: Prioritize founder, CEO, CMO, Head/VP/Director of Marketing, Growth, Brand, Partnerships, Business Development, GTM, or another role that could plausibly evaluate a domain acquisition.
+Evidence rules: Use web search. Confirm contacts through official bios, press releases, corporate contact pages, LinkedIn summaries, PDFs, or credible directories. Do not invent emails or sources.
+Tool budget: Search each company until a credible named contact or legitimate generic fallback is found, then stop.
+Constraints: Treat each input as the canonical company root domain. Do not replace it with subdomains, hosted platforms, directories, or marketplaces. Generic emails such as marketing@ or partnerships@ are allowed only as explicit fallback with notes.
+Output: Return structured contact results only.`;
 }
 
 export async function generateLeadgenContacts(
@@ -324,6 +521,7 @@ export async function generateLeadgenContacts(
     tools: {
       webSearch: openai.tools.webSearch(),
     },
+    toolChoice: { type: 'tool', toolName: 'webSearch' },
     providerOptions: providerOptions(reasoningEffort, maxToolCalls),
     abortSignal: options?.abortSignal,
     output: Output.array({
@@ -337,23 +535,15 @@ export async function generateLeadgenContacts(
   };
 }
 
-const EMAIL_INSTRUCTIONS = `You are "Domain -> Acquisition Outreach Copywriter".
-
-Task: craft a concise, high-converting first-touch email that introduces the opportunity for the recipient's organisation to acquire the sender's domain.
-
-Guidelines:
-- Personalize the note using the supplied prospect insight and contact information.
-- Reference the source domain explicitly and connect it to the prospect's brand rationale.
-- Keep the tone professional, warm, and credible.
-- Do not fabricate facts, contacts, or URLs beyond the supplied data.
-- Subject line must be no more than 9 words and 90 characters.
-- Compose no more than three concise paragraphs under 170 total words.
-- Use the recipient's first name when available; otherwise use a friendly professional greeting.
-- Use this call to action exactly once: "Would you be open to a quick call to discuss acquiring this domain?"
-- End with this signature block exactly:
+const EMAIL_INSTRUCTIONS = `Role: You are "Outreach Agent", a domain acquisition copywriter.
+Goal: Write a concise first-touch email that connects the seller-owned domain to the prospect's specific opportunity thesis.
+Success criteria: The email is credible, buyer-specific, and easy to reply to.
+Evidence rules: Use only supplied thesis, signals, and contact context. Do not invent facts, urgency, price, traffic, or SEO claims.
+Tool budget: No tools.
+Constraints: Subject line must be no more than 9 words and 90 characters. Body must be at most three concise paragraphs under 170 words. Use this call to action exactly once: "Would you be open to a quick call to discuss acquiring this domain?" End with this signature block exactly:
 Best,
 Domain Acquisition Team
-- Return valid JSON only, with plain text and no markdown.`;
+Output: Return the structured email draft only, with plain text and no markdown.`;
 
 export async function generateLeadgenEmailDraft(
   brief: LeadgenEmailBrief,
@@ -419,12 +609,47 @@ function cleanNullableString(value?: string | null): string | undefined {
   return trimmed || undefined;
 }
 
+function cleanSignalType(value: string, recipe: LeadgenDiscoveryRecipe) {
+  const fallback = RECIPE_SIGNAL_LABELS[recipe];
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+
+  const normalized = trimmed.toLowerCase().replace(/[\s-]+/g, '_');
+  if (
+    leadgenDiscoveryRecipeValues.includes(
+      normalized as LeadgenDiscoveryRecipe,
+    ) ||
+    normalized.endsWith('_search') ||
+    normalized.endsWith('_check')
+  ) {
+    return fallback;
+  }
+
+  return trimmed;
+}
+
 function formatEmailBrief(brief: LeadgenEmailBrief) {
   return [
     `Source domain: ${brief.sourceDomain}`,
     `Prospect domain: ${brief.prospect.domain}`,
+    brief.prospect.thesis
+      ? `Opportunity thesis: ${brief.prospect.thesis}`
+      : null,
     `Prospect rationale: ${brief.prospect.rationale}`,
     `Prospect evidence: ${brief.prospect.content}`,
+    brief.prospect.signals?.length
+      ? [
+          'Evidence signals:',
+          ...brief.prospect.signals.map((signal) =>
+            [
+              `- ${signal.signalType}: ${signal.evidenceSnippet}`,
+              signal.evidenceUrl ? `Source: ${signal.evidenceUrl}` : null,
+            ]
+              .filter(Boolean)
+              .join(' '),
+          ),
+        ].join('\n')
+      : null,
     'Contact:',
     `- Email: ${brief.contact.email}`,
     brief.contact.name ? `- Name: ${brief.contact.name}` : null,

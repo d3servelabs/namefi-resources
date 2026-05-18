@@ -8,9 +8,10 @@ export interface LeadgenWorkflowInput {
   userId: string;
   domain: string;
   reasoningEffort: 'low' | 'medium' | 'high';
+  askingPriceUsd?: number;
   runProfile?: 'full' | 'campaign_short';
-  maxIntentQueries?: number;
-  maxResultsPerQuery?: number;
+  selectedRecipeLimit?: number;
+  rawCandidateLimit?: number;
   contactDiscoveryLimit?: number;
 }
 
@@ -22,26 +23,87 @@ export interface LeadgenWorkflowResult {
 
 function resolveLeadgenRunLimits(input: LeadgenWorkflowInput) {
   const isCampaignShortRun = input.runProfile === 'campaign_short';
+  const toLimit = (value: number | undefined, fallback: number) =>
+    value == null ? fallback : Math.max(0, Math.floor(value));
+  const effortDefaults = {
+    low: {
+      rawCandidateLimit: 20,
+      contactDiscoveryLimit: 2,
+      earlyContactDiscoveryLimit: 1,
+      selectedRecipeLimit: 1,
+    },
+    medium: {
+      rawCandidateLimit: 45,
+      contactDiscoveryLimit: 5,
+      earlyContactDiscoveryLimit: 2,
+      selectedRecipeLimit: 3,
+    },
+    high: {
+      rawCandidateLimit: 90,
+      contactDiscoveryLimit: 8,
+      earlyContactDiscoveryLimit: 3,
+      selectedRecipeLimit: 5,
+    },
+  }[input.reasoningEffort];
+
+  const selectedRecipeLimit = toLimit(
+    input.selectedRecipeLimit,
+    isCampaignShortRun ? 1 : effortDefaults.selectedRecipeLimit,
+  );
+  const rawCandidateLimit = toLimit(
+    input.rawCandidateLimit,
+    isCampaignShortRun ? 20 : effortDefaults.rawCandidateLimit,
+  );
+  const contactDiscoveryLimit = toLimit(
+    input.contactDiscoveryLimit,
+    isCampaignShortRun ? 5 : effortDefaults.contactDiscoveryLimit,
+  );
 
   return {
-    maxIntentQueries:
-      input.maxIntentQueries ?? (isCampaignShortRun ? 3 : undefined),
-    maxResultsPerQuery:
-      input.maxResultsPerQuery ?? (isCampaignShortRun ? 5 : undefined),
-    contactDiscoveryLimit:
-      input.contactDiscoveryLimit ?? (isCampaignShortRun ? 5 : undefined),
+    maxTheses: input.reasoningEffort === 'low' ? 2 : 3,
+    selectedRecipeLimit,
+    rawCandidateLimit,
+    contactDiscoveryLimit,
+    earlyContactDiscoveryLimit: isCampaignShortRun
+      ? Math.min(2, contactDiscoveryLimit)
+      : Math.min(
+          effortDefaults.earlyContactDiscoveryLimit,
+          contactDiscoveryLimit,
+        ),
   };
 }
 
 export async function runLeadgenWorkflow(
   input: LeadgenWorkflowInput,
 ): Promise<LeadgenWorkflowResult> {
-  const { maxIntentQueries, maxResultsPerQuery, contactDiscoveryLimit } =
-    resolveLeadgenRunLimits(input);
+  const {
+    maxTheses,
+    selectedRecipeLimit,
+    rawCandidateLimit,
+    contactDiscoveryLimit,
+    earlyContactDiscoveryLimit,
+  } = resolveLeadgenRunLimits(input);
+  const reservedRecipeCandidateLimit =
+    selectedRecipeLimit > 0 && rawCandidateLimit > 1 ? 1 : 0;
+  const seedCandidateLimit =
+    rawCandidateLimit === 0
+      ? 0
+      : Math.min(
+          12,
+          Math.max(0, rawCandidateLimit - reservedRecipeCandidateLimit),
+          Math.max(6, Math.ceil(rawCandidateLimit * 0.35)),
+        );
+  const recipeCandidateLimit = Math.max(
+    0,
+    rawCandidateLimit - seedCandidateLimit,
+  );
   const {
     initializeLeadgenRun,
-    generateLeadgenIntentsActivity,
-    searchLeadgenProspectsActivity,
+    generateLeadgenDomainProfileActivity,
+    discoverLeadgenSeedCandidatesActivity,
+    discoverLeadgenRecipeCandidatesActivity,
+    discoverLeadgenEarlyContactsActivity,
+    finalizeLeadgenOpportunitiesActivity,
     completeLeadgenRun,
     failLeadgenRun,
   } = typedProxyActivities({
@@ -64,40 +126,53 @@ export async function runLeadgenWorkflow(
       workflowId: workflowInfo().workflowId,
     });
 
-    const { queries } = await generateLeadgenIntentsActivity({
+    const profileTask = generateLeadgenDomainProfileActivity({
       runId: input.runId,
       domain: input.domain,
       reasoningEffort: input.reasoningEffort,
-      ...(maxIntentQueries ? { maxQueries: maxIntentQueries } : {}),
+      maxTheses,
     });
 
-    const searchTasks = [
-      searchLeadgenProspectsActivity({
-        runId: input.runId,
-        sourceDomain: input.domain,
-        bucket: 'substring',
-        queries: [input.domain],
-        reasoningEffort: input.reasoningEffort,
-        ...(maxResultsPerQuery ? { maxResultsPerQuery } : {}),
-        ...(contactDiscoveryLimit ? { contactDiscoveryLimit } : {}),
-      }),
-    ];
+    const seedDiscoveryTask = discoverLeadgenSeedCandidatesActivity({
+      runId: input.runId,
+      sourceDomain: input.domain,
+      reasoningEffort: input.reasoningEffort,
+      rawCandidateLimit: seedCandidateLimit,
+      askingPriceUsd: input.askingPriceUsd,
+    });
 
-    if (queries.length > 0) {
-      searchTasks.push(
-        searchLeadgenProspectsActivity({
-          runId: input.runId,
-          sourceDomain: input.domain,
-          bucket: 'general',
-          queries,
-          reasoningEffort: input.reasoningEffort,
-          ...(maxResultsPerQuery ? { maxResultsPerQuery } : {}),
-          ...(contactDiscoveryLimit ? { contactDiscoveryLimit } : {}),
-        }),
-      );
-    }
+    const { domainProfile } = await profileTask;
+    const recipeDiscoveryTask =
+      recipeCandidateLimit > 0 && selectedRecipeLimit > 0
+        ? discoverLeadgenRecipeCandidatesActivity({
+            runId: input.runId,
+            sourceDomain: input.domain,
+            domainProfile,
+            reasoningEffort: input.reasoningEffort,
+            selectedRecipeLimit,
+            rawCandidateLimit: recipeCandidateLimit,
+            askingPriceUsd: input.askingPriceUsd,
+          })
+        : Promise.resolve({ inserted: 0 });
 
-    await Promise.all(searchTasks);
+    await seedDiscoveryTask;
+    const earlyContactTask = discoverLeadgenEarlyContactsActivity({
+      runId: input.runId,
+      sourceDomain: input.domain,
+      reasoningEffort: input.reasoningEffort,
+      contactDiscoveryLimit: earlyContactDiscoveryLimit,
+    });
+
+    await Promise.all([recipeDiscoveryTask, earlyContactTask]);
+
+    await finalizeLeadgenOpportunitiesActivity({
+      runId: input.runId,
+      sourceDomain: input.domain,
+      domainProfile,
+      reasoningEffort: input.reasoningEffort,
+      askingPriceUsd: input.askingPriceUsd,
+      contactDiscoveryLimit,
+    });
 
     return await completeLeadgenRun({ runId: input.runId });
   } catch (error) {

@@ -51,6 +51,7 @@ import {
   timestamp,
   unique,
   uuid,
+  varchar,
 } from 'drizzle-orm/pg-core';
 import type { Json } from 'drizzle-zod';
 import type { Permission } from '@namefi-astra/utils';
@@ -977,9 +978,28 @@ export const leadgenReasoningEffortEnum = pgEnum('leadgen_reasoning_effort', [
   'high',
 ] as const);
 
-export const leadgenBucketEnum = pgEnum('leadgen_bucket', [
-  'general',
-  'substring',
+export const leadgenOpportunityStatusEnum = pgEnum(
+  'leadgen_opportunity_status',
+  [
+    'checking',
+    'contact_now',
+    'validate_first',
+    'low_priority',
+    'suppressed',
+  ] as const,
+);
+
+export const leadgenRiskLevelEnum = pgEnum('leadgen_risk_level', [
+  'low',
+  'medium',
+  'high',
+] as const);
+
+export const leadgenContactReadinessEnum = pgEnum('leadgen_contact_readiness', [
+  'not_searched',
+  'contact_found',
+  'generic_fallback',
+  'not_found',
 ] as const);
 
 type AiGenerationTokenUsage = Array<{
@@ -995,8 +1015,13 @@ type LeadgenRunInput = {
   reasoningEffort: 'low' | 'medium' | 'high';
   runProfile?: 'full' | 'campaign_short';
   source?: string;
-  maxIntentQueries?: number;
-  maxResultsPerQuery?: number;
+  // Optional seller ask in USD; forwarded to triage only as deal context.
+  askingPriceUsd?: number;
+  // Optional cap for selected discovery recipes; 0 disables recipe expansion.
+  selectedRecipeLimit?: number;
+  // Optional cap for raw candidate signals before filtering; 0 disables discovery.
+  rawCandidateLimit?: number;
+  // Optional cap for public-contact searches; early and final passes share it.
   contactDiscoveryLimit?: number;
 };
 
@@ -1636,7 +1661,18 @@ export const leadgenLeadsTable = pgTable(
       .notNull()
       .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
     businessDomain: text('business_domain').notNull(),
-    bucket: leadgenBucketEnum('bucket').notNull(),
+    companyName: text('company_name'),
+    status: leadgenOpportunityStatusEnum('status')
+      .notNull()
+      .default('checking'),
+    score: integer('score').notNull().default(0),
+    motion: text('motion').notNull().default('Checking fit'),
+    thesis: text('thesis').notNull().default('Checking buyer fit.'),
+    riskLevel: leadgenRiskLevelEnum('risk_level').notNull().default('low'),
+    riskNote: text('risk_note'),
+    contactReadiness: leadgenContactReadinessEnum('contact_readiness')
+      .notNull()
+      .default('not_searched'),
     query: text('query').notNull(),
     rationale: text('rationale').notNull(),
     content: text('content').notNull(),
@@ -1645,15 +1681,43 @@ export const leadgenLeadsTable = pgTable(
     ...timestamps,
   },
   (table) => [
-    index('leadgen_leads_run_bucket_rank_idx').on(
+    index('leadgen_leads_run_status_rank_idx').on(
       table.runId,
-      table.bucket,
+      table.status,
       table.rank,
     ),
-    unique('leadgen_leads_run_domain_bucket_unique').on(
+    unique('leadgen_leads_run_domain_unique').on(
       table.runId,
       table.businessDomain,
-      table.bucket,
+    ),
+  ],
+);
+
+export const leadgenLeadSignalsTable = pgTable(
+  'leadgen_lead_signals',
+  {
+    ...randomUuid,
+    runId: uuid('run_id')
+      .notNull()
+      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
+    leadId: uuid('lead_id')
+      .notNull()
+      .references(() => leadgenLeadsTable.id, { onDelete: 'cascade' }),
+    recipe: text('recipe').notNull(),
+    signalType: text('signal_type').notNull(),
+    query: text('query').notNull(),
+    evidenceUrl: text('evidence_url'),
+    evidenceSnippet: varchar('evidence_snippet', { length: 700 }).notNull(),
+    metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
+    ...timestamps,
+  },
+  (table) => [
+    index('leadgen_lead_signals_run_lead_idx').on(table.runId, table.leadId),
+    unique('leadgen_lead_signals_lead_signal_unique').on(
+      table.leadId,
+      table.recipe,
+      table.signalType,
+      table.evidenceSnippet,
     ),
   ],
 );

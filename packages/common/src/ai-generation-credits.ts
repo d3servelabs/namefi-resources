@@ -90,44 +90,43 @@ export const defaultAiGenerationCreditCosts = {
   leadgen: {
     default: 8,
     models: {
-      'gpt-4o': 5,
-      'gpt-5.2': 8,
+      'gpt-5.5': 8,
     },
     modes: {
       'full:low': {
         default: 5,
         models: {
-          'gpt-4o': 5,
+          'gpt-5.5': 5,
         },
       },
       'full:medium': {
         default: 8,
         models: {
-          'gpt-5.2': 8,
+          'gpt-5.5': 8,
         },
       },
       'full:high': {
         default: 12,
         models: {
-          'gpt-5.2': 12,
+          'gpt-5.5': 12,
         },
       },
       'campaign_short:low': {
         default: 3,
         models: {
-          'gpt-4o': 3,
+          'gpt-5.5': 3,
         },
       },
       'campaign_short:medium': {
         default: 4,
         models: {
-          'gpt-5.2': 4,
+          'gpt-5.5': 4,
         },
       },
       'campaign_short:high': {
         default: 6,
         models: {
-          'gpt-5.2': 6,
+          'gpt-5.5': 6,
         },
       },
     },
@@ -135,26 +134,25 @@ export const defaultAiGenerationCreditCosts = {
   leadgenOutreach: {
     default: 2,
     models: {
-      'gpt-5.2': 2,
-      'gpt-4o': 1,
+      'gpt-5.5': 2,
     },
     modes: {
       low: {
         default: 1,
         models: {
-          'gpt-5.2': 1,
+          'gpt-5.5': 1,
         },
       },
       medium: {
         default: 2,
         models: {
-          'gpt-5.2': 2,
+          'gpt-5.5': 2,
         },
       },
       high: {
         default: 3,
         models: {
-          'gpt-5.2': 3,
+          'gpt-5.5': 3,
         },
       },
     },
@@ -172,6 +170,10 @@ export const defaultAiTokenCreditRates = {
       outputCreditsPerMillionTokens: 50,
     },
     'gpt-5.2': {
+      inputCreditsPerMillionTokens: 9,
+      outputCreditsPerMillionTokens: 70,
+    },
+    'gpt-5.5': {
       inputCreditsPerMillionTokens: 9,
       outputCreditsPerMillionTokens: 70,
     },
@@ -242,8 +244,7 @@ export function getLeadgenRunCreditEstimate(params: {
   model?: string;
 }) {
   const runProfile = params.runProfile ?? 'full';
-  const primaryModel =
-    params.model ?? (params.reasoningEffort === 'low' ? 'gpt-4o' : 'gpt-5.2');
+  const primaryModel = params.model ?? 'gpt-5.5';
 
   return getAiGenerationCreditCost({
     creditCosts: params.creditCosts,
@@ -262,7 +263,7 @@ export function getLeadgenOutreachCreditEstimate(params: {
     creditCosts: params.creditCosts,
     type: 'leadgenOutreach',
     mode: params.reasoningEffort,
-    model: params.model ?? 'gpt-5.2',
+    model: params.model ?? 'gpt-5.5',
   });
 }
 

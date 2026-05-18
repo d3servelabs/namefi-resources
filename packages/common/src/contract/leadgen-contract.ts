@@ -14,7 +14,22 @@ export const leadgenRunStatusSchema = z.enum([
   'CANCELED',
 ]);
 
-export const leadgenBucketSchema = z.enum(['general', 'substring']);
+export const leadgenOpportunityStatusSchema = z.enum([
+  'checking',
+  'contact_now',
+  'validate_first',
+  'low_priority',
+  'suppressed',
+]);
+
+export const leadgenRiskLevelSchema = z.enum(['low', 'medium', 'high']);
+
+export const leadgenContactReadinessSchema = z.enum([
+  'not_searched',
+  'contact_found',
+  'generic_fallback',
+  'not_found',
+]);
 
 const leadgenContactSchema = z.object({
   id: z.string(),
@@ -47,17 +62,35 @@ const leadgenDraftSchema = z.object({
   updatedAt: z.date(),
 });
 
+const leadgenSignalSchema = z.object({
+  id: z.string(),
+  runId: z.string(),
+  leadId: z.string(),
+  signalType: z.string(),
+  evidenceUrl: z.string().nullable(),
+  evidenceSnippet: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
 const leadgenLeadSchema = z.object({
   id: z.string(),
   runId: z.string(),
   businessDomain: z.string(),
-  bucket: leadgenBucketSchema,
-  query: z.string(),
+  companyName: z.string().nullable(),
+  status: leadgenOpportunityStatusSchema,
+  score: z.number(),
+  motion: z.string(),
+  thesis: z.string(),
+  riskLevel: leadgenRiskLevelSchema,
+  riskNote: z.string().nullable(),
+  contactReadiness: leadgenContactReadinessSchema,
   rationale: z.string(),
   content: z.string(),
   rank: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  signals: z.array(leadgenSignalSchema).default([]),
   contacts: z.array(leadgenContactSchema).default([]),
   drafts: z.array(leadgenDraftSchema).default([]),
 });
@@ -101,6 +134,7 @@ export const leadgenRunSnapshotSchema = leadgenRunBaseSchema.extend({
 const startRunInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   reasoningEffort: leadgenReasoningEffortSchema.default('medium'),
+  askingPriceUsd: z.number().int().positive().max(100_000_000).optional(),
 });
 
 const runIdInputSchema = z.object({

@@ -66,6 +66,11 @@ import {
   isLeadgenCrmCsvExportAvailable,
 } from './leadgen-export';
 import { buildMailtoHref } from './leadgen-mailto';
+import {
+  buildLeadPresentationModel,
+  type LeadPresentation,
+  type LeadPresentationModel,
+} from './leadgen-presentation';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
@@ -79,6 +84,7 @@ type LeadgenLead = LeadgenSnapshot['leads'][number];
 type LeadgenEvent = LeadgenSnapshot['events'][number];
 type DisplayableLeadgenEvent = LeadgenEvent & { message: string };
 type LeadgenContact = LeadgenLead['contacts'][number];
+type UserGenerationUsage = AppRouterOutput['ai']['getUserGenerationUsage'];
 type ReasoningEffort = LeadgenSnapshot['reasoningEffort'];
 type OutreachRecipient = {
   email: string;
@@ -115,10 +121,6 @@ const leadgenStatusLabels = {
   FAILED: 'Failed',
   CANCELED: 'Canceled',
 } satisfies Record<LeadgenSnapshot['status'], string>;
-const leadBucketLabels = {
-  general: 'Category match',
-  substring: 'Name match',
-} satisfies Record<LeadgenLead['bucket'], string>;
 const negativeTimelineMessageRe =
   /\b(?:no|not|failed|failure|error|without|couldn['\u2019]?t|could not|didn['\u2019]?t|did not|unable|invalid|canceled|cancelled)\b/i;
 const skeletonRows = ['first', 'second', 'third'];
@@ -175,11 +177,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         enabled: isAuthenticated && Boolean(activeRunId),
         onData(snapshot) {
           setLiveRun(snapshot);
-          if (
-            snapshot.status === 'SUCCEEDED' ||
-            snapshot.status === 'FAILED' ||
-            snapshot.status === 'CANCELED'
-          ) {
+          if (isTerminalLeadgenStatus(snapshot.status)) {
             void queryClient.invalidateQueries({
               queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
             });
@@ -231,34 +229,25 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const run = liveRun ?? activeRunQuery.data ?? null;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
-  const estimatedRunCredits = usageQuery.data
-    ? getLeadgenRunCreditEstimate({
-        creditCosts: usageQuery.data.creditCosts,
-        reasoningEffort,
-      })
-    : undefined;
-  const remainingCredits = usageQuery.data?.remainingCredits;
-  const hasInsufficientRunCredits =
-    remainingCredits !== undefined &&
-    estimatedRunCredits !== undefined &&
-    estimatedRunCredits > remainingCredits;
-  const canSubmit =
-    isLikelyDomain(domain) &&
-    !startRun.isPending &&
-    !usageQuery.isLoading &&
-    !hasInsufficientRunCredits;
+  const estimatedRunCredits = getEstimatedRunCredits({
+    usage: usageQuery.data,
+    reasoningEffort,
+  });
+  const { canSubmit } = getLeadgenSubmitState({
+    domain,
+    estimatedRunCredits,
+    isCreditLoading: usageQuery.isLoading,
+    isSubmitting: startRun.isPending,
+    usage: usageQuery.data,
+  });
 
   const handleSubmit = () => {
-    const normalized = normalizeDomainInput(domain);
-    if (!isLikelyDomain(normalized)) {
-      toast.error('Enter a domain', {
-        description: 'Use a domain you own or represent, like example.com.',
-      });
-      return;
-    }
-
-    setDomain(normalized);
-    startRun.mutate({ domain: normalized, reasoningEffort });
+    submitLeadgenRun({
+      domain,
+      reasoningEffort,
+      setDomain,
+      startRun: startRun.mutate,
+    });
   };
 
   const handleSelectStartSuggestion = (suggestion: LeadgenStartSuggestion) => {
@@ -286,7 +275,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 </h1>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   Enter a domain and get buyer angles, public contacts, and
-                  ready-to-send first drafts.
+                  on-demand outreach drafts.
                 </p>
               </div>
               <div className="rounded-md bg-emerald-500/10 p-2 text-emerald-300">
@@ -486,16 +475,8 @@ function RunWorkspace({
   const [reviewOutreachLeadId, setReviewOutreachLeadId] = useState<
     string | null
   >(null);
-  const buckets = useMemo(() => {
-    const grouped: Record<'general' | 'substring', LeadgenLead[]> = {
-      general: [],
-      substring: [],
-    };
-    for (const lead of run.leads) {
-      grouped[lead.bucket].push(lead);
-    }
-    return grouped;
-  }, [run.leads]);
+  const presentation = useMemo(() => buildLeadPresentationModel(run), [run]);
+  const buyerAngles = getBuyerAngles(run);
 
   const generateLeadOutreach = useMutation(
     trpc.leadgen.generateLeadOutreach.mutationOptions({
@@ -619,8 +600,8 @@ function RunWorkspace({
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:min-w-[320px]">
             <div className="grid grid-cols-3 gap-2">
-              <Metric label="Leads" value={run.leadCount} />
-              <Metric label="Contacts" value={run.contactCount} />
+              <Metric label="Top" value={presentation.counts.top} />
+              <Metric label="Contacts" value={presentation.counts.contacts} />
               <Metric label="Drafts" value={run.draftCount} />
             </div>
           </div>
@@ -638,36 +619,43 @@ function RunWorkspace({
 
       <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section className="min-w-0 overflow-auto p-5">
-          {run.intentQueries.length > 0 && (
+          {buyerAngles.length > 0 && (
             <div className="mb-5">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Buyer angles
               </p>
               <div className="flex flex-wrap gap-2">
-                {run.intentQueries.map((query) => (
+                {buyerAngles.map((angle) => (
                   <span
-                    key={query}
+                    key={angle}
                     className="rounded-md border border-border/70 bg-background/60 px-2.5 py-1 text-xs text-muted-foreground"
                   >
-                    {query}
+                    {angle}
                   </span>
                 ))}
               </div>
             </div>
           )}
 
-          <Tabs defaultValue="general">
-            <TabsList>
-              <TabsTrigger value="general">
-                Likely buyers ({buckets.general.length})
-              </TabsTrigger>
-              <TabsTrigger value="substring">
-                Name matches ({buckets.substring.length})
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="general" className="mt-4">
+          <Tabs defaultValue="best">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <TabsList>
+                <TabsTrigger value="best">
+                  Top prospects ({presentation.counts.top})
+                </TabsTrigger>
+                <TabsTrigger value="more">
+                  Secondary ({presentation.counts.secondary})
+                </TabsTrigger>
+              </TabsList>
+              {presentation.counts.checking > 0 && (
+                <span className="text-xs text-muted-foreground">
+                  Still checking {presentation.counts.checking}
+                </span>
+              )}
+            </div>
+            <TabsContent value="best" className="mt-4">
               <LeadList
-                leads={buckets.general}
+                leads={presentation.groups.top}
                 sourceDomain={run.domain}
                 pendingOutreachLeadIds={pendingOutreachLeadIds}
                 reviewOutreachLeadId={reviewOutreachLeadId}
@@ -680,9 +668,9 @@ function RunWorkspace({
                 onReviewOutreachLead={setReviewOutreachLeadId}
               />
             </TabsContent>
-            <TabsContent value="substring" className="mt-4">
+            <TabsContent value="more" className="mt-4">
               <LeadList
-                leads={buckets.substring}
+                leads={presentation.groups.secondary}
                 sourceDomain={run.domain}
                 pendingOutreachLeadIds={pendingOutreachLeadIds}
                 reviewOutreachLeadId={reviewOutreachLeadId}
@@ -701,6 +689,7 @@ function RunWorkspace({
         <aside className="min-h-0 border-t border-border/70 p-5 lg:border-l lg:border-t-0">
           <Timeline
             run={run}
+            presentation={presentation}
             isRunning={isRunning}
             pendingOutreachLeadIds={pendingOutreachLeadIds}
           />
@@ -723,7 +712,7 @@ function LeadList({
   onGenerateLeadOutreach,
   onReviewOutreachLead,
 }: {
-  leads: LeadgenLead[];
+  leads: LeadPresentation[];
   sourceDomain: string;
   pendingOutreachLeadIds: string[];
   reviewOutreachLeadId: string | null;
@@ -738,37 +727,37 @@ function LeadList({
   if (leads.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
-        Buyer matches will appear here as they are found.
+        Prospects will appear here as they are found.
       </div>
     );
   }
 
-  return (
-    <div className="grid gap-3">
-      {leads.map((lead) => (
-        <LeadCard
-          key={`${lead.bucket}-${lead.businessDomain}`}
-          lead={lead}
-          sourceDomain={sourceDomain}
-          isPreparingOutreach={pendingOutreachLeadIds.includes(lead.id)}
-          isReviewingOutreach={reviewOutreachLeadId === lead.id}
-          estimatedOutreachCredits={estimatedOutreachCredits}
-          remainingCredits={remainingCredits}
-          isOutreachCreditLoading={isOutreachCreditLoading}
-          isOutreachCreditError={isOutreachCreditError}
-          isOutreachCreditBlocked={isOutreachCreditBlocked}
-          onGenerateLeadOutreach={onGenerateLeadOutreach}
-          onReviewOutreachChange={(open) =>
-            onReviewOutreachLead(open ? lead.id : null)
-          }
-        />
-      ))}
-    </div>
+  const renderLeadCard = (presentation: LeadPresentation) => (
+    <LeadCard
+      key={presentation.lead.id}
+      presentation={presentation}
+      sourceDomain={sourceDomain}
+      isPreparingOutreach={pendingOutreachLeadIds.includes(
+        presentation.lead.id,
+      )}
+      isReviewingOutreach={reviewOutreachLeadId === presentation.lead.id}
+      estimatedOutreachCredits={estimatedOutreachCredits}
+      remainingCredits={remainingCredits}
+      isOutreachCreditLoading={isOutreachCreditLoading}
+      isOutreachCreditError={isOutreachCreditError}
+      isOutreachCreditBlocked={isOutreachCreditBlocked}
+      onGenerateLeadOutreach={onGenerateLeadOutreach}
+      onReviewOutreachChange={(open) =>
+        onReviewOutreachLead(open ? presentation.lead.id : null)
+      }
+    />
   );
+
+  return <div className="grid gap-3">{leads.map(renderLeadCard)}</div>;
 }
 
 function LeadCard({
-  lead,
+  presentation,
   sourceDomain,
   isPreparingOutreach,
   isReviewingOutreach,
@@ -780,7 +769,7 @@ function LeadCard({
   onGenerateLeadOutreach,
   onReviewOutreachChange,
 }: {
-  lead: LeadgenLead;
+  presentation: LeadPresentation;
   sourceDomain: string;
   isPreparingOutreach: boolean;
   isReviewingOutreach: boolean;
@@ -792,12 +781,15 @@ function LeadCard({
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachChange: (open: boolean) => void;
 }) {
+  const { lead } = presentation;
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
-  const descriptionLines = getLeadDescription(lead);
+  const canPrepareOutreach = lead.status === 'contact_now';
   const hasEmailCta = recipients.length > 0 && lead.drafts.length > 0;
   const shouldPrepareOutreach =
-    lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length;
-  const showOutreachPanel = hasEmailCta || shouldPrepareOutreach;
+    canPrepareOutreach &&
+    (lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length);
+  const showOutreachPanel =
+    canPrepareOutreach && (hasEmailCta || shouldPrepareOutreach);
 
   return (
     <article className="rounded-lg border border-border/70 bg-background/60 p-4">
@@ -813,27 +805,10 @@ function LeadCard({
               {lead.businessDomain}
               <ExternalLink className="size-3.5" />
             </a>
-            <Badge variant="secondary">{leadBucketLabels[lead.bucket]}</Badge>
           </div>
-          <div className="mt-2 flex flex-col gap-1.5">
-            {descriptionLines.map((line) => (
-              <p key={line} className="text-sm leading-6 text-muted-foreground">
-                {line}
-              </p>
-            ))}
-          </div>
-        </div>
-        <div className="flex shrink-0 flex-wrap gap-2">
-          <TinyStat
-            icon={Mail}
-            label={`${lead.contacts.length} contacts`}
-            tone="contacts"
-          />
-          <TinyStat
-            icon={Sparkles}
-            label={`${lead.drafts.length} drafts`}
-            tone="drafts"
-          />
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+            {presentation.buyerSummary}
+          </p>
         </div>
       </div>
 
@@ -1119,7 +1094,7 @@ function LeadEmailDialog({
 }
 
 type TimelinePhaseStatus = 'pending' | 'active' | 'complete' | 'error';
-type TimelineSubtaskTone = 'name' | 'category' | 'contacts' | 'drafts';
+type TimelineSubtaskTone = 'best' | 'checking' | 'more' | 'contacts' | 'drafts';
 
 type TimelineSubtask = {
   id: string;
@@ -1138,15 +1113,18 @@ type TimelinePhase = {
   timestamp?: string;
   badge?: string;
   domain?: string;
+  detail?: string;
   subtasks?: TimelineSubtask[];
 };
 
 function Timeline({
   run,
+  presentation,
   isRunning,
   pendingOutreachLeadIds,
 }: {
   run: LeadgenSnapshot;
+  presentation: LeadPresentationModel;
   isRunning: boolean;
   pendingOutreachLeadIds: string[];
 }) {
@@ -1155,6 +1133,7 @@ function Timeline({
   );
   const phases = getCompactTimelinePhases({
     run,
+    presentation,
     isRunning,
     pendingOutreachLeads,
   });
@@ -1203,7 +1182,11 @@ function TimelinePhaseRow({
           getTimelinePhaseIconClassName(phase.status),
         )}
       >
-        <Icon className="size-3.5" />
+        {phase.status === 'active' ? (
+          <ActivityDots />
+        ) : (
+          <Icon className="size-3.5" />
+        )}
       </div>
       <div
         className={cn(
@@ -1227,6 +1210,11 @@ function TimelinePhaseRow({
               <span className="mt-1 inline-flex max-w-full rounded-sm border border-border/60 bg-muted/35 px-1.5 py-0.5 text-[11px] leading-4 text-muted-foreground">
                 <span className="truncate">{phase.domain}</span>
               </span>
+            )}
+            {phase.detail && (
+              <p className="mt-1 line-clamp-2 text-[11px] leading-4 text-muted-foreground">
+                {phase.detail}
+              </p>
             )}
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
@@ -1398,7 +1386,9 @@ function PastRuns({
                   >
                     <p className="truncate text-sm font-medium">{run.domain}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {run.leadCount} leads · {run.draftCount} drafts
+                      {isTerminalLeadgenStatus(run.status)
+                        ? `${run.leadCount} leads - ${run.draftCount} drafts`
+                        : 'Searching...'}
                     </p>
                   </Link>
                   {canExport && (
@@ -1957,10 +1947,12 @@ function WorkingStatus({ label = 'Working' }: { label?: string }) {
 
 function getCompactTimelinePhases({
   run,
+  presentation,
   isRunning,
   pendingOutreachLeads,
 }: {
   run: LeadgenSnapshot;
+  presentation: LeadPresentationModel;
   isRunning: boolean;
   pendingOutreachLeads: LeadgenLead[];
 }): TimelinePhase[] {
@@ -1976,104 +1968,155 @@ function getCompactTimelinePhases({
     orderedEvents,
     (event) => event.stage === 'search' || event.eventType === 'lead',
   );
+  const triageEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.stage === 'triage' || event.eventType === 'triage',
+  );
+  const contactEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.stage === 'contacts' || event.eventType === 'contact',
+  );
   const completeEvent = findLastLeadgenEvent(
     orderedEvents,
     (event) => event.stage === 'complete',
   );
   const manualOutreach = getManualOutreachSummary(orderedEvents);
-  const leadSearch = getLeadSearchTimelineCounts(run);
   const queryCount = Math.max(
-    run.intentQueries.length,
+    getBuyerAngles(run).length,
     getIntentQueryCount(orderedEvents),
   );
+  const hasBuyerAngles = Boolean(intentEvent) || queryCount > 0;
   const searchStarted = Boolean(searchEvent);
-  const initialOutreach = getInitialOutreachTimelineState({
-    run,
-    orderedEvents,
-    manualOutreach,
-    terminal,
-    isRunning,
-  });
-  const searchStatus = getPhaseStatus({
-    complete: terminal && (searchStarted || queryCount > 0),
-    active: isRunning && (searchStarted || queryCount > 0),
-  });
+  const visibleLeadCount =
+    presentation.counts.top +
+    presentation.counts.secondary +
+    presentation.counts.checking;
+  const scoredLeadCount =
+    presentation.counts.top + presentation.counts.secondary;
+  const contactPendingCount = presentation.groups.top.filter(
+    (lead) =>
+      lead.lead.contactReadiness === 'not_searched' &&
+      lead.lead.contacts.length < 3,
+  ).length;
   const intentStatus = getPhaseStatus({
-    complete: queryCount > 0 || searchStarted,
-    active: isRunning,
+    complete: hasBuyerAngles,
+    active: isRunning && !hasBuyerAngles,
   });
-  const completion = getCompletionTimelineState(run);
+  const earlySearchStatus = getPhaseStatus({
+    complete:
+      terminal || (visibleLeadCount > 0 && presentation.counts.checking === 0),
+    active:
+      isRunning &&
+      (searchStarted || visibleLeadCount > 0) &&
+      (visibleLeadCount === 0 || presentation.counts.checking > 0),
+  });
+  const scoringStatus = getPhaseStatus({
+    complete: scoredLeadCount > 0 && presentation.counts.checking === 0,
+    active: isRunning && presentation.counts.checking > 0,
+  });
+  const contactStatus = getPhaseStatus({
+    complete:
+      presentation.counts.contacts > 0 ||
+      terminal ||
+      (Boolean(contactEvent) && contactPendingCount === 0),
+    active: isRunning && Boolean(contactEvent) && contactPendingCount > 0,
+  });
+  const completion = getCompletionTimelineState(run, presentation);
   const phases: TimelinePhase[] = [
     {
       id: 'buyer-angles',
-      title: 'Buyer angles',
+      title: 'Finding buyer angles',
       status: intentStatus,
       icon: Target,
       timestamp: getTimelineTimestamp(intentEvent, intentStatus),
       badge: queryCount > 0 ? `${queryCount} angles` : undefined,
+      detail: getActiveEventMessage(intentEvent, intentStatus),
     },
     {
-      id: 'searching-buyers',
-      title: 'Searching buyers',
-      status: searchStatus,
+      id: 'checking-early-prospects',
+      title: 'Checking early prospects',
+      status: earlySearchStatus,
       icon: Search,
-      timestamp: getTimelineTimestamp(searchEvent, searchStatus),
-      subtasks: [
-        {
-          id: 'name-matches',
-          label: 'Name matches',
-          value: `${leadSearch.nameLeadCount} found`,
-          tone: 'name',
-          icon: Target,
-          status: getSubtaskStatus(searchStatus, leadSearch.nameLeadCount),
-        },
-        {
-          id: 'category-matches',
-          label: 'Category matches',
-          value: `${leadSearch.categoryLeadCount} found`,
-          tone: 'category',
-          icon: Building2,
-          status: getSubtaskStatus(searchStatus, leadSearch.categoryLeadCount),
-        },
-      ],
+      timestamp: getTimelineTimestamp(searchEvent, earlySearchStatus),
+      detail: getActiveEventMessage(searchEvent, earlySearchStatus),
+      subtasks: getTimelineSubtasks([
+        presentation.counts.checking > 0
+          ? {
+              id: 'checking',
+              label: 'Still checking',
+              value: `${presentation.counts.checking} live`,
+              tone: 'checking',
+              icon: Building2,
+              status: getSubtaskStatus(
+                earlySearchStatus,
+                presentation.counts.checking,
+              ),
+            }
+          : null,
+      ]),
     },
     {
-      id: 'initial-outreach',
-      title: 'Initial outreach',
-      status: initialOutreach.status,
+      id: 'scoring-prospects',
+      title: 'Scoring prospects',
+      status: scoringStatus,
+      icon: Target,
+      timestamp: getTimelineTimestamp(triageEvent, scoringStatus),
+      detail: getActiveEventMessage(triageEvent, scoringStatus),
+      subtasks: getTimelineSubtasks([
+        presentation.counts.top > 0
+          ? {
+              id: 'top-prospects',
+              label: 'Top prospects',
+              value: `${presentation.counts.top} found`,
+              tone: 'best',
+              icon: Target,
+              status: getSubtaskStatus(scoringStatus, presentation.counts.top),
+            }
+          : null,
+        presentation.counts.secondary > 0
+          ? {
+              id: 'secondary-prospects',
+              label: 'Secondary',
+              value: `${presentation.counts.secondary} found`,
+              tone: 'more',
+              icon: Search,
+              status: getSubtaskStatus(
+                scoringStatus,
+                presentation.counts.secondary,
+              ),
+            }
+          : null,
+      ]),
+    },
+    {
+      id: 'finding-contacts',
+      title: 'Finding contacts',
+      status: contactStatus,
       icon: Mail,
-      timestamp: getTimelineTimestamp(
-        initialOutreach.event,
-        initialOutreach.status,
-      ),
-      subtasks: [
-        {
-          id: 'initial-contacts',
-          label: 'Contacts',
-          value: `${initialOutreach.contactCount} found`,
-          tone: 'contacts',
-          icon: Mail,
-          status: getSubtaskStatus(
-            initialOutreach.status,
-            initialOutreach.contactCount,
-          ),
-        },
-        {
-          id: 'initial-drafts',
-          label: 'Drafts',
-          value: `${initialOutreach.draftCount} ready`,
-          tone: 'drafts',
-          icon: FileText,
-          status: getSubtaskStatus(
-            initialOutreach.status,
-            initialOutreach.draftCount,
-          ),
-        },
-      ],
+      timestamp: getTimelineTimestamp(contactEvent, contactStatus),
+      detail: getActiveEventMessage(contactEvent, contactStatus),
+      subtasks: getTimelineSubtasks([
+        presentation.counts.contacts > 0
+          ? {
+              id: 'contacts',
+              label: 'Contacts',
+              value: `${presentation.counts.contacts} found`,
+              tone: 'contacts',
+              icon: Mail,
+              status: getSubtaskStatus(
+                contactStatus,
+                presentation.counts.contacts,
+              ),
+            }
+          : null,
+      ]),
     },
     {
       id: 'search-complete',
-      title: completion.title,
+      title:
+        run.status === 'SUCCEEDED' || run.status === 'FAILED'
+          ? completion.title
+          : 'Wrapping up',
       status: completion.status,
       icon: CheckCircle2,
       timestamp: completeEvent
@@ -2094,67 +2137,33 @@ function getCompactTimelinePhases({
   return phases;
 }
 
-function getLeadSearchTimelineCounts(run: LeadgenSnapshot) {
-  return {
-    nameLeadCount: run.leads.filter((lead) => lead.bucket === 'substring')
-      .length,
-    categoryLeadCount: run.leads.filter((lead) => lead.bucket === 'general')
-      .length,
-  };
+function getTimelineSubtasks(
+  subtasks: Array<TimelineSubtask | null>,
+): TimelineSubtask[] | undefined {
+  const visibleSubtasks = subtasks.filter(
+    (subtask): subtask is TimelineSubtask => Boolean(subtask),
+  );
+
+  return visibleSubtasks.length > 0 ? visibleSubtasks : undefined;
 }
 
-function getInitialOutreachTimelineState({
-  run,
-  orderedEvents,
-  manualOutreach,
-  terminal,
-  isRunning,
-}: {
-  run: LeadgenSnapshot;
-  orderedEvents: LeadgenSnapshot['events'];
-  manualOutreach: ReturnType<typeof getManualOutreachSummary>;
-  terminal: boolean;
-  isRunning: boolean;
-}) {
-  const contactEventCount = countUniqueLeadgenEvents(
-    orderedEvents,
-    isInitialContactEvent,
-    (event) =>
-      getPayloadString(event.payload, 'contactId') ??
-      getPayloadString(event.payload, 'email') ??
-      event.id,
-  );
-  const draftEventCount = countUniqueLeadgenEvents(
-    orderedEvents,
-    isInitialDraftEvent,
-    (event) =>
-      getPayloadString(event.payload, 'draftId') ??
-      getPayloadString(event.payload, 'contactEmail') ??
-      event.id,
-  );
-  const contactCount = Math.max(
-    contactEventCount,
-    Math.max(0, run.contactCount - manualOutreach.contactCount),
-  );
-  const draftCount = Math.max(
-    draftEventCount,
-    Math.max(0, run.draftCount - manualOutreach.draftCount),
-  );
-  const event = findLastLeadgenEvent(
-    orderedEvents,
-    (candidate) =>
-      (candidate.stage === 'contacts' || candidate.stage === 'drafts') &&
-      !isManualOutreachEvent(candidate),
-  );
-  const status = getPhaseStatus({
-    complete: terminal && Boolean(event),
-    active: isRunning && Boolean(event),
-  });
-
-  return { contactCount, draftCount, event, status };
+function getEventMessage(event: LeadgenEvent | null | undefined) {
+  const message = event?.message?.trim();
+  if (!event || !message) return undefined;
+  return isDisplayableLeadgenEvent({ ...event, message }) ? message : undefined;
 }
 
-function getCompletionTimelineState(run: LeadgenSnapshot) {
+function getActiveEventMessage(
+  event: LeadgenEvent | null | undefined,
+  status: TimelinePhaseStatus,
+) {
+  return status === 'active' ? getEventMessage(event) : undefined;
+}
+
+function getCompletionTimelineState(
+  run: LeadgenSnapshot,
+  presentation: LeadPresentationModel,
+) {
   if (run.status === 'FAILED') {
     return {
       title: 'Search failed',
@@ -2174,7 +2183,10 @@ function getCompletionTimelineState(run: LeadgenSnapshot) {
     title: 'Search complete',
     status:
       run.status === 'SUCCEEDED' ? ('complete' as const) : ('pending' as const),
-    badge: run.status === 'SUCCEEDED' ? `${run.leadCount} leads` : undefined,
+    badge:
+      run.status === 'SUCCEEDED'
+        ? `${presentation.counts.top + presentation.counts.secondary} prospects`
+        : undefined,
   };
 }
 
@@ -2227,7 +2239,10 @@ function getAdditionalOutreachPhase({
         value: `${contactCount} found`,
         tone: 'contacts',
         icon: Mail,
-        status,
+        status: getAdditionalOutreachSubtaskStatus({
+          phaseStatus: status,
+          complete: contactCount >= 3 || (!active && !lastEventWasError),
+        }),
       },
       {
         id: 'additional-drafts',
@@ -2235,7 +2250,12 @@ function getAdditionalOutreachPhase({
         value: `${draftCount} ready`,
         tone: 'drafts',
         icon: FileText,
-        status,
+        status: getAdditionalOutreachSubtaskStatus({
+          phaseStatus: status,
+          complete:
+            draftCount > 0 ||
+            (!active && !lastEventWasError && contactCount === 0),
+        }),
       },
     ],
   };
@@ -2268,6 +2288,17 @@ function getAdditionalOutreachStatus(
 ): TimelinePhaseStatus {
   if (active) return 'active';
   return lastEventWasError ? 'error' : 'complete';
+}
+
+function getAdditionalOutreachSubtaskStatus({
+  phaseStatus,
+  complete,
+}: {
+  phaseStatus: TimelinePhaseStatus;
+  complete: boolean;
+}): TimelinePhaseStatus {
+  if (phaseStatus === 'error') return 'error';
+  return complete ? 'complete' : phaseStatus;
 }
 
 function getAdditionalOutreachTimestamp(
@@ -2390,8 +2421,8 @@ function getPhaseStatus({
   complete: boolean;
   active: boolean;
 }): TimelinePhaseStatus {
-  if (complete) return 'complete';
   if (active) return 'active';
+  if (complete) return 'complete';
   return 'pending';
 }
 
@@ -2428,10 +2459,12 @@ function getTimelineSubtaskClassName(
   }
 
   switch (tone) {
-    case 'name':
+    case 'best':
       return 'border-emerald-300/20 bg-emerald-400/10 text-emerald-100';
-    case 'category':
+    case 'checking':
       return 'border-cyan-300/20 bg-cyan-400/10 text-cyan-100';
+    case 'more':
+      return 'border-muted-foreground/20 bg-muted/20 text-muted-foreground';
     case 'contacts':
       return 'border-sky-300/20 bg-sky-400/10 text-sky-100';
     case 'drafts':
@@ -2478,6 +2511,10 @@ function getIntentQueryCount(events: LeadgenSnapshot['events']) {
   return intentEvent
     ? getPayloadArray(intentEvent.payload, 'queries').length
     : 0;
+}
+
+function getBuyerAngles(run: LeadgenSnapshot) {
+  return run.intentQueries;
 }
 
 function isManualOutreachEvent(event: LeadgenEvent) {
@@ -2541,7 +2578,7 @@ function getRunHeaderSubtitle(run: LeadgenSnapshot) {
   if (run.status === 'SUCCEEDED' && run.leadCount > 0) {
     return (
       run.summary ??
-      `Found ${run.leadCount} leads, ${run.contactCount} contacts, and ${run.draftCount} drafts.`
+      `Found ${run.leadCount} prospects and ${run.contactCount} contacts.`
     );
   }
 
@@ -2554,7 +2591,7 @@ function getRunHeaderSubtitle(run: LeadgenSnapshot) {
       return 'Buyer search canceled. Any saved leads remain available below.';
     case 'QUEUED':
     case 'RUNNING':
-      return 'Namefi Leadgen AI is researching buyer angles, contacts, and outreach drafts.';
+      return 'Namefi Leadgen AI is researching buyer angles, prospects, and public contacts.';
   }
 }
 
@@ -2602,6 +2639,7 @@ function isDisplayableLeadgenEvent(
     case 'intent-queries':
       return getPayloadArray(event.payload, 'queries').length > 0;
     case 'lead':
+    case 'triage':
       return (
         hasPayloadString(event.payload, 'leadId') ||
         hasPayloadString(event.payload, 'businessDomain')
@@ -2662,17 +2700,6 @@ function getPayloadString(payload: unknown, key: string) {
 
 function hasPayloadString(payload: unknown, key: string) {
   return Boolean(getPayloadString(payload, key));
-}
-
-function getLeadDescription(lead: LeadgenLead) {
-  const lines = [lead.rationale.trim()];
-  const content = lead.content.trim();
-
-  if (content && !isDuplicateLeadText(lines[0], content)) {
-    lines.push(content);
-  }
-
-  return lines;
 }
 
 function isDuplicateLeadText(primary: string, secondary: string) {
@@ -2761,11 +2788,12 @@ function buildFallbackEmailDraft({
   const firstName = getFirstName(recipient.name);
   const greeting = firstName ? `Hi ${firstName},` : 'Hi,';
   const evidence = lead.content.trim();
+  const thesis = lead.thesis.trim() || lead.rationale.trim();
   const body = [
     greeting,
     '',
-    `I'm reaching out because ${lead.businessDomain} looks aligned with ${sourceDomain}. ${lead.rationale.trim()}`,
-    evidence && !isDuplicateLeadText(lead.rationale, evidence)
+    `I'm reaching out because ${lead.businessDomain} looks aligned with ${sourceDomain}. ${thesis}`,
+    evidence && !isDuplicateLeadText(thesis, evidence)
       ? `I also noticed: ${evidence}`
       : null,
     '',
@@ -2805,31 +2833,6 @@ function Metric({ label, value }: { label: string; value: number }) {
   );
 }
 
-function TinyStat({
-  icon: Icon,
-  label,
-  tone,
-}: {
-  icon: LucideIcon;
-  label: string;
-  tone: 'contacts' | 'drafts';
-}) {
-  return (
-    <Badge
-      variant="outline"
-      className={cn(
-        'border px-2 font-medium',
-        tone === 'contacts'
-          ? 'border-cyan-300/35 bg-cyan-400/10 text-cyan-100'
-          : 'border-amber-300/35 bg-amber-300/10 text-amber-100',
-      )}
-    >
-      <Icon data-icon="inline-start" />
-      {label}
-    </Badge>
-  );
-}
-
 function RunStatusBadge({ status }: { status: LeadgenSnapshot['status'] }) {
   const isDone = status === 'SUCCEEDED';
   const isFailed = status === 'FAILED' || status === 'CANCELED';
@@ -2851,6 +2854,75 @@ function RunStatusIcon({ status }: { status: LeadgenRunSummary['status'] }) {
     return <XCircle className="size-4 text-destructive" />;
   }
   return <ArrowUpRight className="size-4 text-cyan-300" />;
+}
+
+function getEstimatedRunCredits({
+  usage,
+  reasoningEffort,
+}: {
+  usage?: UserGenerationUsage;
+  reasoningEffort: ReasoningEffort;
+}) {
+  return usage
+    ? getLeadgenRunCreditEstimate({
+        creditCosts: usage.creditCosts,
+        reasoningEffort,
+      })
+    : undefined;
+}
+
+function getLeadgenSubmitState({
+  domain,
+  estimatedRunCredits,
+  isCreditLoading,
+  isSubmitting,
+  usage,
+}: {
+  domain: string;
+  estimatedRunCredits?: number;
+  isCreditLoading: boolean;
+  isSubmitting: boolean;
+  usage?: UserGenerationUsage;
+}) {
+  const hasInsufficientRunCredits =
+    usage && estimatedRunCredits !== undefined
+      ? estimatedRunCredits > usage.remainingCredits
+      : false;
+
+  return {
+    hasInsufficientRunCredits,
+    canSubmit:
+      isLikelyDomain(domain) &&
+      !isSubmitting &&
+      !isCreditLoading &&
+      !hasInsufficientRunCredits,
+  };
+}
+
+function submitLeadgenRun({
+  domain,
+  reasoningEffort,
+  setDomain,
+  startRun,
+}: {
+  domain: string;
+  reasoningEffort: ReasoningEffort;
+  setDomain: (domain: string) => void;
+  startRun: (input: {
+    domain: string;
+    reasoningEffort: ReasoningEffort;
+  }) => void;
+}) {
+  const normalized = normalizeDomainInput(domain);
+  if (!isLikelyDomain(normalized)) {
+    toast.error('Enter a domain', {
+      description: 'Use a domain you own or represent, like example.com.',
+    });
+    return;
+  }
+
+  setDomain(normalized);
+  startRun({ domain: normalized, reasoningEffort });
 }
 
 function isLikelyDomain(value: string) {
