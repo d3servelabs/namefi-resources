@@ -49,7 +49,7 @@ export const getProgressMessage = (value: number) => {
 
 export const buildGenerationShareUrl = (id: string) => {
   if (typeof window === 'undefined') return '';
-  return `${window.location.origin}/ai-brand-generator/${id}`;
+  return `${window.location.origin}/studio/${id}`;
 };
 
 export const downloadImageFromUrl = async (url: string, filename: string) => {

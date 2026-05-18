@@ -92,7 +92,7 @@ const FOOTER_SECTIONS: Array<{
     title: 'Explore',
     links: [
       { label: 'Discover Domains', href: '/' },
-      { label: 'AI Brand Generator', href: '/ai-brand-generator' },
+      { label: 'Namefi Brand Studio', href: '/studio' },
       { label: 'Domain Hunt', href: '/hunt' },
       {
         label: 'Newsletter',

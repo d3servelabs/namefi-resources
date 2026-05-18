@@ -229,13 +229,13 @@ export function ImageGrid({
                 className="cursor-pointer"
                 onClick={() => {
                   if (item.id) {
-                    router.push(`/ai-brand-generator/${item.id}`);
+                    router.push(`/studio/${item.id}`);
                   }
                 }}
                 onKeyDown={(e) => {
                   if ((e.key === 'Enter' || e.key === ' ') && item.id) {
                     e.preventDefault();
-                    router.push(`/ai-brand-generator/${item.id}`);
+                    router.push(`/studio/${item.id}`);
                   }
                 }}
               >

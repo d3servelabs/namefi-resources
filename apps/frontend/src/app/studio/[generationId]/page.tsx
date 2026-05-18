@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : 'brand asset';
     const title = hasGeneration
       ? `AI-generated ${generationLabel} for ${generation.domain}`
-      : 'AI Brand Generation';
+      : 'Namefi Brand Studio';
     const description = hasGeneration
       ? generation.type === 'logo'
         ? `AI-generated logo design for ${generation.domain}. Created with advanced AI technology to help establish your brand identity with professional logo design.`
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           ? `AI-generated logo animation for ${generation.domain}. Motion-ready brand visuals created with artificial intelligence for premium social and product storytelling.`
           : `AI-generated marketing image for ${generation.domain}. Professional marketing visuals created with artificial intelligence to enhance your brand presence and promotional materials.`
       : 'View AI-generated brand assets.';
-    const canonicalPath = `/ai-brand-generator/${generationId}`;
+    const canonicalPath = `/studio/${generationId}`;
     const openGraphImagePath = `${canonicalPath}/opengraph-image`;
 
     return {
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } catch {
     // Fallback metadata if the API call fails
     return {
-      title: 'AI Brand Generation',
+      title: 'Namefi Brand Studio',
       description: 'View AI-generated brand assets.',
       robots: {
         index: false,

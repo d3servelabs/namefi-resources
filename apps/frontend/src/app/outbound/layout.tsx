@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 
-const title = 'Namefi Leadgen AI | Find Domain Buyers';
+const title = 'Namefi Outbound | Find Domain Buyers';
 const description =
-  'Research likely domain buyers, discover public contacts, and draft outreach for domain sales with Namefi Leadgen AI.';
-const canonicalPath = '/leadgen';
-const openGraphImagePath = '/assets/leadgen/opengraph-image.png';
+  'Research likely domain buyers, discover public contacts, and draft outreach for domain sales with Namefi Outbound.';
+const canonicalPath = '/outbound';
+const openGraphImagePath = '/assets/outbound/opengraph-image.png';
 
 export const metadata: Metadata = {
   title,
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: openGraphImagePath,
         width: 1200,
         height: 630,
-        alt: 'Namefi Leadgen AI buyer discovery and outreach workflow',
+        alt: 'Namefi Outbound buyer discovery and outreach workflow',
       },
     ],
   },
@@ -38,12 +38,12 @@ export const metadata: Metadata = {
         url: openGraphImagePath,
         width: 1200,
         height: 630,
-        alt: 'Namefi Leadgen AI buyer discovery and outreach workflow',
+        alt: 'Namefi Outbound buyer discovery and outreach workflow',
       },
     ],
   },
 };
 
-export default function LeadgenLayout({ children }: PropsWithChildren) {
+export default function OutboundLayout({ children }: PropsWithChildren) {
   return children;
 }

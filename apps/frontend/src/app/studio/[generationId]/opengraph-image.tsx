@@ -66,7 +66,7 @@ export default async function Image({
     const domain = generation.domain?.trim();
     const destinationUrl = domain
       ? `https://${domain}`
-      : `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/${generationId}`;
+      : `${config.FIRST_PARTY_DEPLOYMENT_URL}/studio/${generationId}`;
     const domainLabel = domain || new URL(destinationUrl).host;
     const generationPreviewUrl = generation.thumbnailUrl ?? generation.url;
 

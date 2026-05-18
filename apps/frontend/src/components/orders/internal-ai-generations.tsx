@@ -93,7 +93,7 @@ export const InternalAIGenerations = ({
   return (
     <CartCard className="mb-6 bg-black/[0.03] border-white/10">
       <Link
-        href="/ai-brand-generator"
+        href="/studio"
         className="inline-flex items-center gap-2 text-white underline underline-offset-4 text-xl font-semibold"
       >
         <ExternalLink className="h-5 w-5" />

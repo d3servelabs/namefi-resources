@@ -240,7 +240,7 @@ export function GenerationsColumn({
   };
 
   const handleNavigateToGeneration = (id: string) => {
-    router.push(`/ai-brand-generator/${id}`);
+    router.push(`/studio/${id}`);
   };
 
   const handleCopyLink = (id: string) => {

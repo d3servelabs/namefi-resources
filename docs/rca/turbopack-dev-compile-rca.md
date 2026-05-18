@@ -66,8 +66,8 @@ GET / 200 in 10.9s (compile: 9.5s, render: 1362ms)
 GET /domains 200 in 3.4s (compile: 3.2s, render: 148ms)
 ○ Compiling /orders ...
 GET /orders 200 in 4.7s (compile: 4.6s, render: 122ms)
-○ Compiling /ai-brand-generator/[generationId] ...
-GET /ai-brand-generator/... 200 in 5.2s (compile: 3.9s, render: 1332ms)
+○ Compiling /studio/[generationId] ...
+GET /studio/... 200 in 5.2s (compile: 3.9s, render: 1332ms)
 ```
 
 **My observation:** The compile phase dominates the total response time; render is comparatively small.
@@ -229,8 +229,8 @@ GET / 200 in 10.9s (compile: 9.5s, render: 1362ms)
 GET /domains 200 in 3.4s (compile: 3.2s, render: 148ms)
 ○ Compiling /orders ...
 GET /orders 200 in 4.7s (compile: 4.6s, render: 122ms)
-○ Compiling /ai-brand-generator/[generationId] ...
-GET /ai-brand-generator/... 200 in 5.2s (compile: 3.9s, render: 1332ms)
+○ Compiling /studio/[generationId] ...
+GET /studio/... 200 in 5.2s (compile: 3.9s, render: 1332ms)
 ```
 
 ### Hot‑reload probe (file edit)

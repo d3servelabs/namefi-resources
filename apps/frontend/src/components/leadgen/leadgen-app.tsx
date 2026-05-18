@@ -113,7 +113,7 @@ const DOMAIN_LIKE_RE = /^[a-z0-9-]+(\.[a-z0-9-]+)+$/;
 const PROTOCOL_RE = /^https?:\/\//;
 const TRAILING_DOT_RE = /\.$/;
 const WHITESPACE_RE = /\s+/g;
-const getLeadgenRunHref = (runId: string) => `/leadgen/${runId}` as Route;
+const getLeadgenRunHref = (runId: string) => `/outbound/${runId}` as Route;
 const leadgenStatusLabels = {
   QUEUED: 'Queued',
   RUNNING: 'Searching',
@@ -1533,7 +1533,7 @@ function EmptyWorkspace({
           <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
             {hasSuggestions
               ? 'Select one from your portfolio, or enter another domain you own.'
-              : 'Enter a domain you own or represent. Leadgen will build buyer angles and outreach drafts from there.'}
+              : 'Enter a domain you own or represent. Namefi Outbound will build buyer angles and outreach drafts from there.'}
           </p>
         </div>
 
@@ -2650,7 +2650,7 @@ function buildLeadgenCrmFilename(domain: string) {
     .replace(/[^a-z0-9.-]+/gi, '-')
     .replace(/^-+|-+$/g, '');
 
-  return `namefi-leadgen-${safeDomain || 'results'}.csv`;
+  return `namefi-outbound-${safeDomain || 'results'}.csv`;
 }
 
 function getRunHeaderSubtitle(run: LeadgenSnapshot) {
@@ -2672,7 +2672,7 @@ function getRunHeaderSubtitle(run: LeadgenSnapshot) {
       return 'Buyer search canceled. Any saved leads remain available below.';
     case 'QUEUED':
     case 'RUNNING':
-      return 'Namefi Leadgen AI is researching buyer angles, prospects, contacts, and drafts.';
+      return 'Namefi Outbound is researching buyer angles, prospects, contacts, and drafts.';
   }
 }
 

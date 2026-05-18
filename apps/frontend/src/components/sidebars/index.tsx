@@ -59,12 +59,12 @@ const ITEMS: NavItem[] = [
   { title: 'Manage', href: '/manage', icon: PenToolIcon, requiresAuth: true },
   {
     title: "Just AI'ng™",
-    href: '/ai-brand-generator',
+    href: '/studio',
     icon: Sparkles,
-    pattern: /^\/(ai-brand-generator|leadgen)/,
+    pattern: /^\/(studio|outbound)/,
     submenu: [
-      { title: 'Branding', href: '/ai-brand-generator', icon: Palette },
-      { title: 'Leadgen', href: '/leadgen', icon: Search },
+      { title: 'Namefi Brand Studio', href: '/studio', icon: Palette },
+      { title: 'Namefi Outbound', href: '/outbound', icon: Search },
     ],
   },
   { title: 'Namefi Feed', href: '/feed', icon: Rss },

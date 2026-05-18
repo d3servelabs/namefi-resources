@@ -55,8 +55,8 @@ const FOOTER_SECTIONS: Array<{
     links: [
       { label: 'Discover Domains', href: 'https://namefi.io/' },
       {
-        label: 'AI Brand Generator',
-        href: 'https://namefi.io/ai-brand-generator',
+        label: 'Namefi Brand Studio',
+        href: 'https://namefi.io/studio',
       },
       { label: 'Domain Hunt', href: 'https://namefi.io/hunt' },
       { label: 'Newsletter', href: 'https://namefi.io/newsletter' },

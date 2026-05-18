@@ -22,7 +22,7 @@ import { GalleryPendingProvider } from '@/components/ai-generation/gallery-pendi
 import { useEffect, useRef } from 'react';
 import { PageShell } from '@/components/page-shell';
 
-export default function AIBrandGeneratorPage() {
+export default function NamefiBrandStudioPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -106,25 +106,10 @@ function PageHeader() {
         width={141}
         height={22}
       />
-      <h2 className="text-2xl font-bold">AI Brand Generator</h2>
+      <h2 className="text-2xl font-bold">Namefi Brand Studio</h2>
       <p className="text-muted-foreground mt-2">
         Create custom logos, posters, and animations for your brand
       </p>
-      <a
-        href="https://www.producthunt.com/products/namefi?embed=true&utm_source=badge-featured&utm_medium=badge"
-        target="_blank"
-        rel="noreferrer noopener"
-        className="mt-4 inline-block"
-      >
-        {/* biome-ignore lint/performance/noImgElement: Product Hunt provides this badge as a fixed remote embed image */}
-        <img
-          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1015110&theme=light&t=1758010170449"
-          alt="Just AI'ng by Namefi on Product Hunt"
-          width="250"
-          height="54"
-          style={{ width: 250, height: 54 }}
-        />
-      </a>
     </div>
   );
 }
@@ -199,10 +184,7 @@ function DerivativeFlowInitializer() {
     params.delete('poster');
     params.delete('animation');
     const query = params.toString();
-    router.replace(
-      query ? `/ai-brand-generator?${query}` : '/ai-brand-generator',
-      { scroll: false },
-    );
+    router.replace(query ? `/studio?${query}` : '/studio', { scroll: false });
   }, [
     activeLogoId,
     animationId,

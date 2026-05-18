@@ -46,7 +46,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const appDir = path.join(projectRoot, 'apps', 'frontend');
 
-const DEFAULT_ROUTES = ['/', '/domains', '/ai-brand-generator'];
+const DEFAULT_ROUTES = ['/', '/domains', '/studio'];
 const DEFAULT_PRIMARY_LABEL = 'Next.js';
 const DEFAULT_SECONDARY_LABEL = 'Application code';
 

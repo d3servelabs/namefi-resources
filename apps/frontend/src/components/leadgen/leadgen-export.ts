@@ -33,7 +33,7 @@ type LeadgenCrmExportAvailability = {
 
 type LeadgenCrmCsvRow = Record<(typeof leadgenCrmCsvHeaders)[number], string>;
 
-const LEAD_SOURCE = 'Namefi Leadgen';
+const LEAD_SOURCE = 'Namefi Outbound';
 const CSV_ESCAPE_RE = /[",\r\n]/;
 const CSV_FORMULA_RE = /^[=+\-@]/;
 

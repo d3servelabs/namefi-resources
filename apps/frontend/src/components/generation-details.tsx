@@ -424,7 +424,7 @@ export function GenerationDetailsClient({
   });
 
   const handleGoBack = useCallback(() => {
-    router.push('/ai-brand-generator');
+    router.push('/studio');
   }, [router]);
 
   const handleDownload = useCallback(async () => {
@@ -535,7 +535,7 @@ export function GenerationDetailsClient({
     if (!generation?.id || !generation?.domain) return;
     const params = new URLSearchParams();
     params.set('poster', generation.id);
-    router.push(`/ai-brand-generator?${params.toString()}`);
+    router.push(`/studio?${params.toString()}`);
   }, [generation?.domain, generation?.id, generation?.type, router]);
 
   const handleCreateAnimation = useCallback(() => {
@@ -543,7 +543,7 @@ export function GenerationDetailsClient({
     if (!generation?.id) return;
     const params = new URLSearchParams();
     params.set('animation', generation.id);
-    router.push(`/ai-brand-generator?${params.toString()}`);
+    router.push(`/studio?${params.toString()}`);
   }, [generation?.id, generation?.type, router]);
 
   // Create brand name from domain
@@ -603,11 +603,11 @@ export function GenerationDetailsClient({
             variant="ghost"
             size="sm"
             onClick={handleGoBack}
-            aria-label="Back to generator"
+            aria-label="Back to Namefi Brand Studio"
             className="flex items-center gap-2 cursor-pointer self-start"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to generator
+            Back to Namefi Brand Studio
           </Button>
           <div>
             <h1 className="text-2xl font-bold">
@@ -782,7 +782,7 @@ export function GenerationDetailsClient({
                         onClick={() => {
                           setDeleteDialogOpen(false);
                           deleteMutation.mutate({ id: generationId });
-                          router.replace('/ai-brand-generator');
+                          router.replace('/studio');
                         }}
                         disabled={deleteMutation.isPending}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -999,7 +999,7 @@ export function GenerationDetailsClient({
                             size="sm"
                             onClick={() =>
                               router.push(
-                                `/ai-brand-generator/${generation.referenceGenerationId}`,
+                                `/studio/${generation.referenceGenerationId}`,
                               )
                             }
                             className="text-xs"

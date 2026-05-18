@@ -154,6 +154,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/ai-brand-generator/:path*',
+        destination: '/studio/:path*',
+        permanent: true,
+      },
+      {
+        source: '/leadgen/:path*',
+        destination: '/outbound/:path*',
+        permanent: true,
+      },
+      {
         source: '/mls',
         destination: '/feed',
         permanent: true,

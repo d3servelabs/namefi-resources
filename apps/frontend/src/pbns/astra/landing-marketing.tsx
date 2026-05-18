@@ -552,7 +552,7 @@ const STORY_PANELS: StoryPanel[] = [
   },
   {
     id: 'intelligence',
-    badge: 'AI Brand Generator',
+    badge: 'Namefi Brand Studio',
     title: 'Spin up brand directions and domain ideas in minutes.',
     description:
       'Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.',

@@ -1,5 +1,5 @@
 import { LeadgenApp } from '@/components/leadgen/leadgen-app';
 
-export default function LeadgenPage() {
+export default function OutboundPage() {
   return <LeadgenApp />;
 }
