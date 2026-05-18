@@ -224,7 +224,7 @@ export const UserDropdown = ErrorBoundary.with(
     );
 
     const actionVariant = isExpanded ? 'pill' : 'icon';
-    const expandedPaddingClass = isExpanded ? 'pl-[3px] pr-4' : undefined;
+    const expandedAvatarPaddingClass = isExpanded ? 'pl-1 pr-4' : undefined;
 
     return (
       <div
@@ -256,13 +256,10 @@ export const UserDropdown = ErrorBoundary.with(
                 actionVariant={actionVariant}
                 disableBackdropBlur={disableBackdropBlur}
                 stretch={shouldStretch}
-                className={cn(
-                  expandedPaddingClass,
-                  !isExpanded && 'text-white/90',
-                )}
+                className={cn(!isExpanded && 'text-white/90')}
                 disabled={true}
               >
-                <Loader2Icon className="animate-spin size-6" />
+                <Loader2Icon className="size-5 animate-spin" />
                 {isExpanded && <span>Loading...</span>}
               </HeaderActionButton>
             </motion.div>
@@ -288,12 +285,11 @@ export const UserDropdown = ErrorBoundary.with(
                 actionVariant={actionVariant}
                 disableBackdropBlur={disableBackdropBlur}
                 stretch={shouldStretch}
-                className={expandedPaddingClass}
                 onClick={() => {
                   void handleConnect();
                 }}
               >
-                <WalletIcon className="size-6" />
+                <WalletIcon className="size-5" />
                 {isExpanded && <span>Sign In</span>}
               </HeaderActionButton>
             </motion.div>
@@ -322,7 +318,7 @@ export const UserDropdown = ErrorBoundary.with(
                       actionVariant={actionVariant}
                       disableBackdropBlur={disableBackdropBlur}
                       stretch={shouldStretch}
-                      className={expandedPaddingClass}
+                      className={expandedAvatarPaddingClass}
                     />
                   }
                 >
