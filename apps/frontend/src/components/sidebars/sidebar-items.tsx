@@ -47,6 +47,22 @@ export type SidebarItemsProps = HTMLAttributes<HTMLDivElement> & {
   items: NavItem[];
 };
 
+export const filterSidebarItemsByAuth = (
+  items: NavItem[],
+  isAuthenticated: boolean,
+): NavItem[] => {
+  return items
+    .filter((item) => isAuthenticated || !item.requiresAuth)
+    .map((item) => {
+      if (!item.submenu) return item;
+
+      return {
+        ...item,
+        submenu: filterSidebarItemsByAuth(item.submenu, isAuthenticated),
+      };
+    });
+};
+
 const logSidebarItemsError = (error: Error, info: ErrorInfo) => {
   reportReactBoundaryError('SidebarItems', error, info);
 };

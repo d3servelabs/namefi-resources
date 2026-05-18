@@ -7,6 +7,7 @@ import type {
 export interface NavItem {
   title: string;
   href: string;
+  requiresAuth?: boolean;
   target?: HTMLAttributeAnchorTarget;
   icon?: ComponentType<{ className?: string }>;
   submenu?: NavItem[];

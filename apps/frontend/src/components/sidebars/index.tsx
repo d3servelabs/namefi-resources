@@ -4,7 +4,10 @@ import dynamic from 'next/dynamic';
 import { BrandLogo } from '@/components/brand-logo';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { NotificationsBell } from '@/components/notifications/notifications-bell';
-import { SidebarItems } from '@/components/sidebars/sidebar-items';
+import {
+  filterSidebarItemsByAuth,
+  SidebarItems,
+} from '@/components/sidebars/sidebar-items';
 import {
   Sidebar,
   SidebarHeader,
@@ -33,12 +36,27 @@ import { useEffect, useState } from 'react';
 
 const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },
-  { title: 'My Domains', href: '/domains', icon: Globe },
+  { title: 'My Domains', href: '/domains', icon: Globe, requiresAuth: true },
   { title: 'My Wishlist', href: '/wishlist', icon: Heart },
-  { title: 'My Orders', href: '/orders', icon: ClipboardList },
-  { title: 'My Free Mints', href: '/free-mints', icon: Gift },
-  { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
-  { title: 'Manage', href: '/manage', icon: PenToolIcon },
+  {
+    title: 'My Orders',
+    href: '/orders',
+    icon: ClipboardList,
+    requiresAuth: true,
+  },
+  {
+    title: 'My Free Mints',
+    href: '/free-mints',
+    icon: Gift,
+    requiresAuth: true,
+  },
+  {
+    title: 'My Payment Methods',
+    href: '/payment-methods',
+    icon: CreditCard,
+    requiresAuth: true,
+  },
+  { title: 'Manage', href: '/manage', icon: PenToolIcon, requiresAuth: true },
   {
     title: "Just AI'ng™",
     href: '/ai-brand-generator',
@@ -52,6 +70,7 @@ const ITEMS: NavItem[] = [
   { title: 'Namefi Feed', href: '/feed', icon: Rss },
   { title: 'Hunt', href: '/hunt', icon: TrendingUp },
 ];
+const PUBLIC_ITEMS = filterSidebarItemsByAuth(ITEMS, false);
 
 const AppSidebarHydratedContent = dynamic(
   () =>
@@ -60,7 +79,7 @@ const AppSidebarHydratedContent = dynamic(
     ),
   {
     ssr: false,
-    loading: () => <SidebarItems items={ITEMS} />,
+    loading: () => <SidebarItems items={PUBLIC_ITEMS} />,
   },
 );
 
@@ -95,7 +114,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {!hasHydrated && <SidebarItems items={ITEMS} />}
+        {!hasHydrated && <SidebarItems items={PUBLIC_ITEMS} />}
         {hasHydrated && <AppSidebarHydratedContent items={ITEMS} />}
       </SidebarContent>
 

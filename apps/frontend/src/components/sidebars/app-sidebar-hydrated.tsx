@@ -1,7 +1,10 @@
 'use client';
 
 import { SidebarDomains } from '@/components/sidebars/sidebar-domains';
-import { SidebarItems } from '@/components/sidebars/sidebar-items';
+import {
+  filterSidebarItemsByAuth,
+  SidebarItems,
+} from '@/components/sidebars/sidebar-items';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints } from '@/hooks/use-free-mints';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
@@ -14,6 +17,47 @@ import { useMemo, type FC } from 'react';
 
 export type AppSidebarHydratedContentProps = {
   items: NavItem[];
+};
+
+type SidebarBadgeOptions = {
+  availableFreeMintsCount: number;
+  isAuthLoading: boolean;
+  isFreeMintsLoading: boolean;
+  isWishlistLoading: boolean;
+  wishlistCount?: number;
+};
+
+const withSidebarBadge = (
+  item: NavItem,
+  {
+    availableFreeMintsCount,
+    isAuthLoading,
+    isFreeMintsLoading,
+    isWishlistLoading,
+    wishlistCount,
+  }: SidebarBadgeOptions,
+): NavItem => {
+  if (item.href === '/wishlist') {
+    return {
+      ...item,
+      badge:
+        !(isWishlistLoading || isAuthLoading) && wishlistCount != null
+          ? { content: wishlistCount }
+          : undefined,
+    };
+  }
+
+  if (item.href === '/free-mints') {
+    return {
+      ...item,
+      badge:
+        !(isFreeMintsLoading || isAuthLoading) && availableFreeMintsCount > 0
+          ? { content: availableFreeMintsCount }
+          : undefined,
+    };
+  }
+
+  return item;
 };
 
 /**
@@ -55,37 +99,25 @@ export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
   ]);
 
   const computedItems = useMemo(() => {
-    return items
+    const badgeOptions = {
+      availableFreeMintsCount,
+      isAuthLoading,
+      isFreeMintsLoading,
+      isWishlistLoading,
+      wishlistCount: wishlistData?.length,
+    };
+
+    return filterSidebarItemsByAuth(items, isAuthenticated)
       .filter((item) => {
         if (item.title.toLowerCase() === 'manage') {
           return showManageEntrypoint;
         }
         return true;
       })
-      .map((item) => {
-        if (item.href === '/wishlist') {
-          return {
-            ...item,
-            badge:
-              !(isWishlistLoading || isAuthLoading) && wishlistData
-                ? { content: wishlistData.length }
-                : undefined,
-          };
-        }
-        if (item.href === '/free-mints') {
-          return {
-            ...item,
-            badge:
-              !(isFreeMintsLoading || isAuthLoading) &&
-              availableFreeMintsCount > 0
-                ? { content: availableFreeMintsCount }
-                : undefined,
-          };
-        }
-        return item;
-      });
+      .map((item) => withSidebarBadge(item, badgeOptions));
   }, [
     items,
+    isAuthenticated,
     showManageEntrypoint,
     isAuthLoading,
     isFreeMintsLoading,
