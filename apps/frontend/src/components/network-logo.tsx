@@ -11,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
-import { NetworkIcon } from '@web3icons/react';
 
 const TEST_NETS: number[] = [CHAINS.sepolia.id, CHAINS.baseSepolia.id];
 const BASE_NETWORKS: number[] = [CHAINS.base.id, CHAINS.baseSepolia.id];
@@ -65,12 +64,6 @@ export const NetworkLogo = ({
                 className={'w-full h-full aspect-square rounded-2xl'}
               />
             </div>
-          ) : networkId ? (
-            <NetworkIcon
-              variant="branded"
-              chainId={networkId}
-              className={cn('w-full h-full')}
-            />
           ) : (
             <div
               className={cn(

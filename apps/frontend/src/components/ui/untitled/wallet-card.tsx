@@ -1,6 +1,8 @@
 'use client';
 
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { WalletIcon as GenericWalletIcon } from 'lucide-react';
+import type { ComponentType, SVGProps } from 'react';
 import { useState } from 'react';
 import {
   Dialog,
@@ -9,9 +11,53 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { NetworkLogo } from '@/components/network-logo';
-import { WalletIcon } from '@web3icons/react';
-import Image from 'next/image';
 import { NamefiMonoLogo } from '@/components/namefi-logotype-mono';
+import {
+  WalletAlphaWallet,
+  WalletArgent,
+  WalletAtomic,
+  WalletBackpack,
+  WalletBitbox,
+  WalletBlue,
+  WalletClave,
+  WalletCoin98,
+  WalletCoinbase,
+  WalletEnkrypt,
+  WalletExodus,
+  WalletGlow,
+  WalletImtoken,
+  WalletKeplr,
+  WalletKraken,
+  WalletKukai,
+  WalletLedger,
+  WalletLit,
+  WalletMetamask,
+  WalletMyEtherWallet,
+  WalletOkx,
+  WalletPhantom,
+  WalletPillar,
+  WalletPortal,
+  WalletRabby,
+  WalletRainbow,
+  WalletRonin,
+  WalletSafe,
+  WalletSender,
+  WalletSequence,
+  WalletSolflare,
+  WalletSoul,
+  WalletSquads,
+  WalletTemple,
+  WalletTokenPocket,
+  WalletTrezor,
+  WalletTrust,
+  WalletUnipass,
+  WalletVenly,
+  WalletWallet3,
+  WalletWalletConnect,
+  WalletXdefi,
+  WalletZengo,
+  WalletZerion,
+} from '@web3icons/react';
 
 export type WalletProvider =
   | 'metamask'
@@ -78,6 +124,74 @@ export interface WalletCardProps {
   className?: string;
   onNetworksClick?: () => void;
   bottomContent?: React.ReactNode;
+}
+
+type Web3WalletIconVariant = 'branded' | 'mono' | 'background';
+type Web3WalletIconProps = SVGProps<SVGSVGElement> & {
+  size?: string | number;
+  variant?: Web3WalletIconVariant;
+};
+type Web3WalletIconComponent = ComponentType<Web3WalletIconProps>;
+
+const walletIconsById: Record<string, Web3WalletIconComponent> = {
+  'alpha-wallet': WalletAlphaWallet,
+  argent: WalletArgent,
+  atomic: WalletAtomic,
+  backpack: WalletBackpack,
+  bitbox: WalletBitbox,
+  bluewallet: WalletBlue,
+  clave: WalletClave,
+  coin98: WalletCoin98,
+  coinbase: WalletCoinbase,
+  enkrypt: WalletEnkrypt,
+  exodus: WalletExodus,
+  glow: WalletGlow,
+  imtoken: WalletImtoken,
+  keplr: WalletKeplr,
+  kraken: WalletKraken,
+  kukai: WalletKukai,
+  ledger: WalletLedger,
+  litprotocol: WalletLit,
+  metamask: WalletMetamask,
+  myetherwallet: WalletMyEtherWallet,
+  okx: WalletOkx,
+  phantom: WalletPhantom,
+  pillar: WalletPillar,
+  portal: WalletPortal,
+  rabby: WalletRabby,
+  rainbow: WalletRainbow,
+  ronin: WalletRonin,
+  safe: WalletSafe,
+  sender: WalletSender,
+  sequence: WalletSequence,
+  solflare: WalletSolflare,
+  soul: WalletSoul,
+  squads: WalletSquads,
+  temple: WalletTemple,
+  'token-pocket': WalletTokenPocket,
+  trezor: WalletTrezor,
+  trust: WalletTrust,
+  unipass: WalletUnipass,
+  venly: WalletVenly,
+  wallet3: WalletWallet3,
+  'wallet-connect': WalletWalletConnect,
+  xdefi: WalletXdefi,
+  zengo: WalletZengo,
+  zerion: WalletZerion,
+};
+
+function StaticWalletIcon({
+  id,
+  variant,
+  ...props
+}: Web3WalletIconProps & { id: string }) {
+  const Icon = walletIconsById[id];
+
+  if (!Icon) {
+    return <GenericWalletIcon aria-hidden="true" {...props} />;
+  }
+
+  return <Icon variant={variant} {...props} />;
 }
 
 // Helper function to create radial gradient with more saturated center
@@ -495,7 +609,7 @@ export function WalletCard({
               className="w-[75%] h-auto opacity-30 saturate-60 blur-[3px]"
             />
           ) : (
-            <WalletIcon
+            <StaticWalletIcon
               id={style.walletId}
               variant={style.backgroundIconVariant}
               size={'100%'}
@@ -534,7 +648,7 @@ export function WalletCard({
                 />
               ) : (
                 <>
-                  <WalletIcon
+                  <StaticWalletIcon
                     id={style.walletId}
                     variant={style.cornerIconVariant ?? 'mono'}
                     size={24}
