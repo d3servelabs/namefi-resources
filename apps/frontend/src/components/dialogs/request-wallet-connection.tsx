@@ -22,7 +22,7 @@ import {
   useImperativeHandle,
 } from 'react';
 import { toast } from 'sonner';
-import { useAccount, useConfig } from 'wagmi';
+import { Config, useAccount, useConfig, UseConfigParameters } from 'wagmi';
 import { getAccount } from 'wagmi/actions';
 import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useConnectWallet } from '@privy-io/react-auth';
@@ -68,7 +68,7 @@ export const RequestWalletConnection = forwardRef<
       setConnectionState('checking');
     }
   }, []);
-  const config = useConfig();
+  const config = useSafeConfig();
   const [_connectionState, setConnectionState] =
     useState<ConnectionState>('checking');
   const [requestedWalletAddress, setRequestedWalletAddress] = useState<
@@ -170,6 +170,9 @@ export const RequestWalletConnection = forwardRef<
   // Handle connect wallet button click with callbacks
   const handleConnectClick = useCallback(
     async (requestedWalletAddress: string) => {
+      if (!config) {
+        return null;
+      }
       setConnectionState('connecting');
 
       try {
@@ -274,6 +277,9 @@ export const RequestWalletConnection = forwardRef<
     onRequestedWalletConnected,
     onOpenChange,
   ]);
+  if (!config) {
+    return null;
+  }
   return (
     <Dialog open={open} modal={true}>
       <DialogContent className="max-w-md">
@@ -469,3 +475,13 @@ export const RequestWalletConnection = forwardRef<
     </Dialog>
   );
 });
+
+function useSafeConfig(parameters?: UseConfigParameters<Config> | undefined) {
+  try {
+    // biome-ignore lint/correctness/useHookAtTopLevel: this is need to get around setting up wagmi for storybook
+    const config = useConfig(parameters);
+    return config;
+  } catch (e) {
+    return null;
+  }
+}
