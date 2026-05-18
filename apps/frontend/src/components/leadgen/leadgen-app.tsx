@@ -557,10 +557,8 @@ function RunWorkspace({
             <p className="mt-2 min-h-10 max-w-2xl text-sm leading-5 text-muted-foreground line-clamp-2">
               {headerSubtitle}
             </p>
-          </div>
-          <div className="flex shrink-0 flex-col gap-3 sm:min-w-[320px]">
             {canExport && (
-              <div className="flex lg:justify-end">
+              <div className="mt-3 flex">
                 <Button
                   type="button"
                   variant="outline"
@@ -572,6 +570,8 @@ function RunWorkspace({
                 </Button>
               </div>
             )}
+          </div>
+          <div className="flex shrink-0 flex-col gap-3 sm:min-w-[320px]">
             <div className="grid grid-cols-3 gap-2">
               <Metric label="Leads" value={run.leadCount} />
               <Metric label="Contacts" value={run.contactCount} />
@@ -1345,17 +1345,12 @@ function PastRuns({
                     : 'border-border/70',
                 )}
               >
-                <div className="flex items-start gap-2">
+                <div className="flex items-center gap-2">
                   <Link
                     href={getLeadgenRunHref(run.id)}
                     className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                   >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-sm font-medium">
-                        {run.domain}
-                      </span>
-                      <RunStatusIcon status={run.status} />
-                    </div>
+                    <p className="truncate text-sm font-medium">{run.domain}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {run.leadCount} leads · {run.draftCount} drafts
                     </p>
@@ -1378,6 +1373,9 @@ function PastRuns({
                       )}
                     </Button>
                   )}
+                  <span className="flex w-4 shrink-0 items-center justify-center">
+                    <RunStatusIcon status={run.status} />
+                  </span>
                 </div>
               </div>
             );
