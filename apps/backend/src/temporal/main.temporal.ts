@@ -17,9 +17,22 @@ import { validateApiKey } from '#lib/validate-api-key';
 import workersRouter from './workers.router';
 import { logLevelRouter } from '../routers/log-level';
 import { logger } from '#lib/logger';
+import { submitScheduleForRefreshCentralnicOte2Index } from './schedules/refresh-centralnic-ote2-index';
 
 async function main() {
   await initWorkers();
+
+  if (process.env.ENVIRONMENT !== 'production') {
+    try {
+      await submitScheduleForRefreshCentralnicOte2Index();
+      logger.info('Submitted CentralNic OTE2 index refresh schedule');
+    } catch (error) {
+      logger.error(
+        { error },
+        'Failed to submit CentralNic OTE2 index refresh schedule (continuing startup)',
+      );
+    }
+  }
 
   const app = new Hono();
 

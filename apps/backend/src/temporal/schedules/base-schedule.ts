@@ -45,6 +45,17 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
    * Submit/create the schedule
    */
   async submit(): Promise<void> {
+    if (
+      this.config.nonProductionOnly &&
+      process.env.ENVIRONMENT === 'production'
+    ) {
+      this.logger.info(
+        { scheduleId: this.config.scheduleId },
+        'Skipping submission of non-production-only schedule in production',
+      );
+      return;
+    }
+
     try {
       const workflowType = this.getWorkflowType();
 

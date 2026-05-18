@@ -14,6 +14,7 @@ import * as NftMarketplaceActivities from './nft-marketplace.activities';
 import * as PrivyCacheActivities from './privy-cache.activities';
 import * as PonderSyncActivities from './ponder-sync.activities';
 import { InFlightNftTxActivities } from './in-flight-nft-tx.activities';
+import * as RefreshCentralnicOte2IndexActivities from './refresh-centralnic-ote2-index.activities';
 import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 
 export const IndexersActivities = {
@@ -28,6 +29,7 @@ export const IndexersActivities = {
   ...PonderSyncActivities.PonderSyncActivities,
   // (InFlightNftTxActivities is a curated functions-only object — safe to spread)
   ...InFlightNftTxActivities,
+  ...RefreshCentralnicOte2IndexActivities,
   triggerGenerateAndUpdateDataForDomains,
   triggerSyncPonderIndex,
   addCategoriesToDomainsWithNoCategories,

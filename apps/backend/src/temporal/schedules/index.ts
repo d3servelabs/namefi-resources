@@ -47,6 +47,7 @@ import {
   weeklyDisableAutoRenewalDynadotRegularSchedule,
 } from './weekly-disable-auto-renewal';
 import { syncPonderIndexSchedule } from './sync-ponder-index';
+import { refreshCentralnicOte2IndexSchedule } from './refresh-centralnic-ote2-index';
 import { dnsvizDailyDigestSchedule } from './dnsviz-daily-digest';
 import { dnsvizCleanupSchedule } from './dnsviz-cleanup';
 import { inFlightNftTxCleanupSchedule } from './in-flight-nft-tx-cleanup';
@@ -185,6 +186,8 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [weeklyDisableAutoRenewalDynadotRegularSchedule.config.scheduleId]:
     weeklyDisableAutoRenewalDynadotRegularSchedule,
   [syncPonderIndexSchedule.config.scheduleId]: syncPonderIndexSchedule,
+  [refreshCentralnicOte2IndexSchedule.config.scheduleId]:
+    refreshCentralnicOte2IndexSchedule,
   [dnsvizDailyDigestSchedule.config.scheduleId]: dnsvizDailyDigestSchedule,
   [dnsvizCleanupSchedule.config.scheduleId]: dnsvizCleanupSchedule,
   [inFlightNftTxCleanupSchedule.config.scheduleId]:

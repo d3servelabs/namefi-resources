@@ -37,6 +37,11 @@ export interface ScheduleConfig<T extends Workflow> {
   owner: string;
   /** Category/purpose of the schedule */
   category: 'indexer' | 'reporting' | 'notification' | 'hunt' | 'maintenance';
+  /**
+   * When true, `submit()` is a no-op in production. Use for schedules that
+   * must only run in local/development/preview environments.
+   */
+  nonProductionOnly?: boolean;
 }
 
 export interface ScheduleStatus {

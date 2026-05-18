@@ -13,6 +13,7 @@ import { createLogger, logger } from '#lib/logger';
 import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import type { DomainIndexFunctions } from '@namefi-astra/registrars/centralnic/domain-index';
 import { addYears } from 'date-fns';
+import { centralnicOte2DomainIndex } from './centralnic-ote2-index';
 
 const UnclaimedDomainsIndex = (key: Registrars) => {
   const baseQuery = db
@@ -145,7 +146,7 @@ function getCentralnicRegistrarOte2(connection: any) {
     pw: secrets.CENTRALNIC_OTE2_PASS,
     supportedTlds: CENTRALNIC_OTE_TLDS,
     tls: true,
-    domainIndex: UnclaimedDomainsIndex(Registrars.CentralNic_OTE_02),
+    domainIndex: centralnicOte2DomainIndex,
     host: secrets.CENTRALNIC_OTE2_HOST,
     port: 700,
     logParsed: true,
