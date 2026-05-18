@@ -275,7 +275,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 </h1>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   Enter a domain and get buyer angles, public contacts, and
-                  on-demand outreach drafts.
+                  ready-to-send outreach drafts.
                 </p>
               </div>
               <div className="rounded-md bg-emerald-500/10 p-2 text-emerald-300">
@@ -783,7 +783,8 @@ function LeadCard({
 }) {
   const { lead } = presentation;
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
-  const canPrepareOutreach = lead.status === 'contact_now';
+  const canPrepareOutreach =
+    lead.status !== 'checking' && lead.status !== 'suppressed';
   const hasEmailCta = recipients.length > 0 && lead.drafts.length > 0;
   const shouldPrepareOutreach =
     canPrepareOutreach &&
@@ -810,6 +811,7 @@ function LeadCard({
             {presentation.buyerSummary}
           </p>
         </div>
+        <LeadContactCountBadge contactCount={lead.contacts.length} />
       </div>
 
       {showOutreachPanel && (
@@ -835,6 +837,15 @@ function LeadCard({
         onOpenChange={onReviewOutreachChange}
       />
     </article>
+  );
+}
+
+function LeadContactCountBadge({ contactCount }: { contactCount: number }) {
+  return (
+    <span className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 text-xs font-medium tabular-nums text-muted-foreground">
+      <Mail className="size-3.5" />
+      {contactCount} {contactCount === 1 ? 'contact' : 'contacts'}
+    </span>
   );
 }
 
@@ -1958,12 +1969,14 @@ function getCompactTimelinePhases({
 }): TimelinePhase[] {
   const orderedEvents = getOrderedLeadgenEvents(run.events);
   const terminal = isTerminalLeadgenStatus(run.status);
-  const intentEvent =
-    findLastLeadgenEvent(
-      orderedEvents,
-      (event) => event.eventType === 'intent-queries',
-    ) ??
-    findLastLeadgenEvent(orderedEvents, (event) => event.stage === 'intent');
+  const intentResultEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.eventType === 'intent-queries',
+  );
+  const intentStatusEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.stage === 'intent',
+  );
   const searchEvent = findLastLeadgenEvent(
     orderedEvents,
     (event) => event.stage === 'search' || event.eventType === 'lead',
@@ -1972,9 +1985,14 @@ function getCompactTimelinePhases({
     orderedEvents,
     (event) => event.stage === 'triage' || event.eventType === 'triage',
   );
-  const contactEvent = findLastLeadgenEvent(
+  const outreachEvent = findLastLeadgenEvent(
     orderedEvents,
-    (event) => event.stage === 'contacts' || event.eventType === 'contact',
+    (event) =>
+      !isManualOutreachEvent(event) &&
+      (event.stage === 'contacts' ||
+        event.stage === 'drafts' ||
+        event.eventType === 'contact' ||
+        event.eventType === 'draft'),
   );
   const completeEvent = findLastLeadgenEvent(
     orderedEvents,
@@ -1985,7 +2003,7 @@ function getCompactTimelinePhases({
     getBuyerAngles(run).length,
     getIntentQueryCount(orderedEvents),
   );
-  const hasBuyerAngles = Boolean(intentEvent) || queryCount > 0;
+  const hasBuyerAngles = Boolean(intentResultEvent) || queryCount > 0;
   const searchStarted = Boolean(searchEvent);
   const visibleLeadCount =
     presentation.counts.top +
@@ -1998,6 +2016,15 @@ function getCompactTimelinePhases({
       lead.lead.contactReadiness === 'not_searched' &&
       lead.lead.contacts.length < 3,
   ).length;
+  const initialOutreachCounts = getInitialOutreachTimelineCounts({
+    run,
+    orderedEvents,
+    manualOutreach,
+  });
+  const pendingDraftCount = Math.max(
+    0,
+    initialOutreachCounts.contactCount - initialOutreachCounts.draftCount,
+  );
   const intentStatus = getPhaseStatus({
     complete: hasBuyerAngles,
     active: isRunning && !hasBuyerAngles,
@@ -2014,46 +2041,45 @@ function getCompactTimelinePhases({
     complete: scoredLeadCount > 0 && presentation.counts.checking === 0,
     active: isRunning && presentation.counts.checking > 0,
   });
-  const contactStatus = getPhaseStatus({
+  const outreachStatus = getPhaseStatus({
     complete:
-      presentation.counts.contacts > 0 ||
+      initialOutreachCounts.draftCount > 0 ||
       terminal ||
-      (Boolean(contactEvent) && contactPendingCount === 0),
-    active: isRunning && Boolean(contactEvent) && contactPendingCount > 0,
+      (Boolean(outreachEvent) &&
+        contactPendingCount === 0 &&
+        pendingDraftCount === 0),
+    active:
+      isRunning &&
+      Boolean(outreachEvent) &&
+      (contactPendingCount > 0 || pendingDraftCount > 0),
   });
   const completion = getCompletionTimelineState(run, presentation);
+  const showOutreachSubtasks =
+    outreachStatus !== 'pending' ||
+    initialOutreachCounts.contactCount > 0 ||
+    initialOutreachCounts.draftCount > 0;
   const phases: TimelinePhase[] = [
     {
       id: 'buyer-angles',
       title: 'Finding buyer angles',
       status: intentStatus,
       icon: Target,
-      timestamp: getTimelineTimestamp(intentEvent, intentStatus),
+      timestamp: getTimelineTimestamp(
+        intentResultEvent ?? intentStatusEvent,
+        intentStatus,
+      ),
       badge: queryCount > 0 ? `${queryCount} angles` : undefined,
-      detail: getActiveEventMessage(intentEvent, intentStatus),
     },
     {
       id: 'checking-early-prospects',
-      title: 'Checking early prospects',
+      title: 'Finding prospects',
       status: earlySearchStatus,
       icon: Search,
       timestamp: getTimelineTimestamp(searchEvent, earlySearchStatus),
-      detail: getActiveEventMessage(searchEvent, earlySearchStatus),
-      subtasks: getTimelineSubtasks([
-        presentation.counts.checking > 0
-          ? {
-              id: 'checking',
-              label: 'Still checking',
-              value: `${presentation.counts.checking} live`,
-              tone: 'checking',
-              icon: Building2,
-              status: getSubtaskStatus(
-                earlySearchStatus,
-                presentation.counts.checking,
-              ),
-            }
-          : null,
-      ]),
+      badge:
+        visibleLeadCount > 0
+          ? `${visibleLeadCount} ${visibleLeadCount === 1 ? 'prospect' : 'prospects'}`
+          : undefined,
     },
     {
       id: 'scoring-prospects',
@@ -2076,7 +2102,7 @@ function getCompactTimelinePhases({
         presentation.counts.secondary > 0
           ? {
               id: 'secondary-prospects',
-              label: 'Secondary',
+              label: 'Secondary prospects',
               value: `${presentation.counts.secondary} found`,
               tone: 'more',
               icon: Search,
@@ -2089,27 +2115,41 @@ function getCompactTimelinePhases({
       ]),
     },
     {
-      id: 'finding-contacts',
-      title: 'Finding contacts',
-      status: contactStatus,
-      icon: Mail,
-      timestamp: getTimelineTimestamp(contactEvent, contactStatus),
-      detail: getActiveEventMessage(contactEvent, contactStatus),
-      subtasks: getTimelineSubtasks([
-        presentation.counts.contacts > 0
-          ? {
+      id: 'preparing-outreach',
+      title: 'Preparing outreach',
+      status: outreachStatus,
+      icon: Sparkles,
+      timestamp: getTimelineTimestamp(outreachEvent, outreachStatus),
+      detail: getActiveEventMessage(outreachEvent, outreachStatus),
+      subtasks: showOutreachSubtasks
+        ? [
+            {
               id: 'contacts',
               label: 'Contacts',
-              value: `${presentation.counts.contacts} found`,
+              value: `${initialOutreachCounts.contactCount} found`,
               tone: 'contacts',
               icon: Mail,
               status: getSubtaskStatus(
-                contactStatus,
-                presentation.counts.contacts,
+                outreachStatus,
+                initialOutreachCounts.contactCount,
               ),
-            }
-          : null,
-      ]),
+            },
+            {
+              id: 'drafts',
+              label: 'Drafts',
+              value: `${initialOutreachCounts.draftCount} ready`,
+              tone: 'drafts',
+              icon: FileText,
+              status:
+                outreachStatus === 'active' && pendingDraftCount > 0
+                  ? 'active'
+                  : getSubtaskStatus(
+                      outreachStatus,
+                      initialOutreachCounts.draftCount,
+                    ),
+            },
+          ]
+        : undefined,
     },
     {
       id: 'search-complete',
@@ -2187,6 +2227,47 @@ function getCompletionTimelineState(
       run.status === 'SUCCEEDED'
         ? `${presentation.counts.top + presentation.counts.secondary} prospects`
         : undefined,
+  };
+}
+
+// Prefer explicit automated outreach events, but fall back to run totals minus
+// manualOutreach because subscriptions can contain aggregated counts before all
+// contact/draft events are present. Math.max keeps the timeline from regressing.
+function getInitialOutreachTimelineCounts({
+  run,
+  orderedEvents,
+  manualOutreach,
+}: {
+  run: LeadgenSnapshot;
+  orderedEvents: LeadgenSnapshot['events'];
+  manualOutreach: ReturnType<typeof getManualOutreachSummary>;
+}) {
+  const contactEventCount = countUniqueLeadgenEvents(
+    orderedEvents,
+    isInitialContactEvent,
+    (event) =>
+      getPayloadString(event.payload, 'contactId') ??
+      getPayloadString(event.payload, 'email') ??
+      event.id,
+  );
+  const draftEventCount = countUniqueLeadgenEvents(
+    orderedEvents,
+    isInitialDraftEvent,
+    (event) =>
+      getPayloadString(event.payload, 'draftId') ??
+      getPayloadString(event.payload, 'contactEmail') ??
+      event.id,
+  );
+
+  return {
+    contactCount: Math.max(
+      contactEventCount,
+      Math.max(0, run.contactCount - manualOutreach.contactCount),
+    ),
+    draftCount: Math.max(
+      draftEventCount,
+      Math.max(0, run.draftCount - manualOutreach.draftCount),
+    ),
   };
 }
 
@@ -2591,7 +2672,7 @@ function getRunHeaderSubtitle(run: LeadgenSnapshot) {
       return 'Buyer search canceled. Any saved leads remain available below.';
     case 'QUEUED':
     case 'RUNNING':
-      return 'Namefi Leadgen AI is researching buyer angles, prospects, and public contacts.';
+      return 'Namefi Leadgen AI is researching buyer angles, prospects, contacts, and drafts.';
   }
 }
 

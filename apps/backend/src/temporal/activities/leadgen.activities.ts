@@ -2,6 +2,7 @@ import { Context } from '@temporalio/activity';
 import {
   generateLeadgenDomainThesisProfile,
   generateLeadgenOpportunityTriages,
+  getLeadgenDomainProfileModel,
   getLeadgenPrimaryResearchModel,
   normalizeLeadgenDomain,
   sanitizeCandidateSignals,
@@ -278,7 +279,7 @@ export async function generateLeadgenDomainProfileActivity({
   await recordLeadgenTokenUsageFromResult({
     runId,
     result,
-    fallbackModel: getLeadgenPrimaryResearchModel(reasoningEffort),
+    fallbackModel: getLeadgenDomainProfileModel(),
   });
   await persistDomainProfile({ runId, domainProfile: result.output });
 
@@ -310,7 +311,7 @@ export async function discoverLeadgenSeedCandidatesActivity(
         abortSignal,
         domainProfile: null,
         jobs: buildSeedRecipeJobs(params.sourceDomain),
-        eventMessage: 'Finding early prospects.',
+        eventMessage: 'Finding prospects.',
       }),
     {
       stage: 'search',
@@ -335,7 +336,7 @@ export async function discoverLeadgenRecipeCandidatesActivity(
             params.selectedRecipeLimit ??
             getLeadgenEffortConfig(params.reasoningEffort).selectedRecipeLimit,
         }),
-        eventMessage: 'Expanding best buyer angles.',
+        eventMessage: 'Finding more prospects from buyer angles.',
       }),
     {
       stage: 'search',
@@ -887,7 +888,7 @@ async function discoverContactsForPromotedLeads(params: {
     runId: params.runId,
     eventType: 'status',
     stage: 'contacts',
-    message: `Finding public contacts for ${leads.length} top ${leads.length === 1 ? 'prospect' : 'prospects'}.`,
+    message: `Finding contacts and drafting outreach for ${leads.length} ${leads.length === 1 ? 'prospect' : 'prospects'}.`,
     payload: {
       contactDiscoveryLimit: params.contactDiscoveryLimit,
       remainingContactSearches,
@@ -918,7 +919,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
       updatedAt: now,
       summary:
         counts.leadCount > 0
-          ? `Found ${counts.leadCount} prospects and ${counts.contactCount} contacts.`
+          ? `Found ${counts.leadCount} prospects, ${counts.contactCount} contacts, and ${counts.draftCount} drafts.`
           : 'Research complete.',
     })
     .where(eq(leadgenRunsTable.id, runId));
@@ -929,7 +930,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
     stage: 'complete',
     message:
       counts.leadCount > 0
-        ? `Finished with ${counts.leadCount} prospects and ${counts.contactCount} contacts.`
+        ? `Finished with ${counts.leadCount} prospects, ${counts.contactCount} contacts, and ${counts.draftCount} drafts.`
         : 'Research complete.',
     payload: counts,
   });

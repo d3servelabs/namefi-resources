@@ -4,7 +4,7 @@ import {
   getLeadgenRunCreditEstimate,
 } from '@namefi-astra/common/ai-generation-credits';
 import {
-  LEADGEN_CONTACT_MODEL,
+  getLeadgenContactModel,
   getLeadgenPrimaryResearchModel,
 } from '@namefi-astra/ai';
 import {
@@ -85,7 +85,7 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
       const estimatedCredits = getLeadgenOutreachCreditEstimate({
         creditCosts: config.AI_GENERATION_CREDIT_COSTS,
         reasoningEffort: run.reasoningEffort,
-        model: LEADGEN_CONTACT_MODEL,
+        model: getLeadgenContactModel(run.reasoningEffort),
       });
       await assertUserCanSpendGenerationCredits({
         userId: ctx.user.id,

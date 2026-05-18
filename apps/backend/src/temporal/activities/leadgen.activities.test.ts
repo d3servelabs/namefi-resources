@@ -21,11 +21,15 @@ vi.mock('@temporalio/activity', () => ({
 }));
 
 vi.mock('@namefi-astra/ai', () => ({
+  LEADGEN_CONTACT_MODEL: 'gpt-5.4-mini',
+  LEADGEN_EMAIL_MODEL: 'gpt-5.4-mini',
   generateLeadgenDomainThesisProfile: vi.fn(),
   generateLeadgenOpportunityTriages: vi.fn(),
   generateLeadgenContacts: vi.fn(),
   generateLeadgenEmailDraft: vi.fn(),
-  getLeadgenPrimaryResearchModel: vi.fn(() => 'gpt-5.5'),
+  getLeadgenContactModel: vi.fn(() => 'gpt-5.4-mini'),
+  getLeadgenDomainProfileModel: vi.fn(() => 'gpt-5.4-mini'),
+  getLeadgenPrimaryResearchModel: vi.fn(() => 'gpt-5.4-mini'),
   normalizeLeadgenDomain: vi.fn(),
   normalizeLeadgenEmail: vi.fn(),
   sanitizeCandidateSignals: vi.fn((signals) => signals),
@@ -70,13 +74,13 @@ describe('heartbeatLeadgenWhile', () => {
 
     expect(heartbeat).toHaveBeenCalledTimes(1);
 
-    await vi.advanceTimersByTimeAsync(2_500);
+    vi.advanceTimersByTime(2_500);
     expect(heartbeat).toHaveBeenCalledTimes(3);
 
     resolveOperation('done');
     await expect(promise).resolves.toBe('done');
 
-    await vi.advanceTimersByTimeAsync(2_000);
+    vi.advanceTimersByTime(2_000);
     expect(heartbeat).toHaveBeenCalledTimes(3);
   });
 

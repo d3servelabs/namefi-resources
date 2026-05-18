@@ -1,8 +1,8 @@
 import {
-  LEADGEN_CONTACT_MODEL,
   LEADGEN_EMAIL_MODEL,
   generateLeadgenContacts,
   generateLeadgenEmailDraft,
+  getLeadgenContactModel,
   normalizeLeadgenEmail,
   type LeadgenContact,
   type LeadgenReasoningEffort,
@@ -263,16 +263,44 @@ async function draftForSavedContacts(params: {
   for (const contact of params.contacts) {
     throwIfLeadgenAborted(params.abortSignal);
 
-    await draftForContact({
-      runId: params.runId,
-      sourceDomain: params.sourceDomain,
-      lead: params.lead,
-      contact,
-      reasoningEffort: params.reasoningEffort,
-      fromCache: contact.fromCache,
-      trigger: params.trigger ?? 'auto',
-      abortSignal: params.abortSignal,
-    });
+    try {
+      await draftForContact({
+        runId: params.runId,
+        sourceDomain: params.sourceDomain,
+        lead: params.lead,
+        contact,
+        reasoningEffort: params.reasoningEffort,
+        fromCache: contact.fromCache,
+        trigger: params.trigger ?? 'auto',
+        abortSignal: params.abortSignal,
+      });
+    } catch (error) {
+      throwIfLeadgenAborted(params.abortSignal);
+
+      logger.warn(
+        {
+          error,
+          runId: params.runId,
+          leadId: params.lead.id,
+          contactId: contact.id,
+          contactEmail: contact.email,
+        },
+        'Leadgen email draft failed for contact',
+      );
+      await persistLeadgenEvent({
+        runId: params.runId,
+        eventType: 'error',
+        stage: 'drafts',
+        payload: {
+          leadId: params.lead.id,
+          contactId: contact.id,
+          businessDomain: params.lead.businessDomain,
+          contactEmail: contact.email,
+          error: getLeadgenErrorMessage(error),
+          trigger: params.trigger ?? 'auto',
+        },
+      });
+    }
   }
 }
 
@@ -348,13 +376,12 @@ async function discoverNewContactsAndDraft(params: {
       {
         abortSignal: params.abortSignal,
         reasoningEffort: params.reasoningEffort,
-        targetContacts: 3,
       },
     );
     await recordLeadgenTokenUsageFromResult({
       runId: params.runId,
       result,
-      fallbackModel: LEADGEN_CONTACT_MODEL,
+      fallbackModel: getLeadgenContactModel(params.reasoningEffort),
     });
     const contactResult = result.output[0];
     const contacts = contactResult?.contacts ?? [];
@@ -400,18 +427,9 @@ async function discoverNewContactsAndDraft(params: {
 
     if (params.draftEmails === false) return;
 
-    const firstContact = savedContacts[0];
-    if (!firstContact) return;
-
-    await draftForContact({
-      runId: params.runId,
-      sourceDomain: params.sourceDomain,
-      lead: params.lead,
-      contact: firstContact,
-      reasoningEffort: params.reasoningEffort,
-      fromCache: false,
-      trigger: params.trigger ?? 'auto',
-      abortSignal: params.abortSignal,
+    await draftForSavedContacts({
+      ...params,
+      contacts: savedContacts,
     });
   } catch (error) {
     throwIfLeadgenAborted(params.abortSignal);
@@ -580,7 +598,8 @@ async function draftForContact(params: {
     },
     {
       abortSignal: params.abortSignal,
-      reasoningEffort: params.reasoningEffort,
+      // Drafting is deterministic copywriting from supplied evidence; keep it low effort for throughput.
+      reasoningEffort: 'low',
     },
   );
   await recordLeadgenTokenUsageFromResult({

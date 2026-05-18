@@ -42,52 +42,60 @@ const creditCosts = {
     },
   },
   leadgen: {
-    default: 8,
+    default: 4,
     models: {
+      'gpt-5.4-mini': 4,
       'gpt-5.5': 8,
     },
     modes: {
       'full:low': {
-        default: 5,
+        default: 3,
         models: {
+          'gpt-5.4-mini': 3,
           'gpt-5.5': 5,
         },
       },
       'full:medium': {
-        default: 8,
+        default: 4,
         models: {
+          'gpt-5.4-mini': 4,
           'gpt-5.5': 8,
         },
       },
       'full:high': {
         default: 12,
         models: {
+          'gpt-5.4-mini': 6,
           'gpt-5.5': 12,
         },
       },
       'campaign_short:medium': {
-        default: 4,
+        default: 3,
         models: {
+          'gpt-5.4-mini': 3,
           'gpt-5.5': 4,
         },
       },
     },
   },
   leadgenOutreach: {
-    default: 2,
+    default: 1,
     models: {
+      'gpt-5.4-mini': 1,
       'gpt-5.5': 2,
     },
     modes: {
       medium: {
-        default: 2,
+        default: 1,
         models: {
+          'gpt-5.4-mini': 1,
           'gpt-5.5': 2,
         },
       },
       high: {
         default: 3,
         models: {
+          'gpt-5.4-mini': 2,
           'gpt-5.5': 3,
         },
       },
@@ -160,14 +168,14 @@ describe('getAiGenerationCreditCost', () => {
         creditCosts,
         reasoningEffort: 'medium',
       }),
-    ).toBe(8);
+    ).toBe(4);
     expect(
       getLeadgenRunCreditEstimate({
         creditCosts,
         reasoningEffort: 'medium',
         runProfile: 'campaign_short',
       }),
-    ).toBe(4);
+    ).toBe(3);
     expect(
       getLeadgenRunCreditEstimate({
         creditCosts,
@@ -181,6 +189,19 @@ describe('getAiGenerationCreditCost', () => {
         reasoningEffort: 'high',
       }),
     ).toBe(3);
+    expect(
+      getLeadgenOutreachCreditEstimate({
+        creditCosts,
+        reasoningEffort: 'medium',
+      }),
+    ).toBe(1);
+    expect(
+      getLeadgenOutreachCreditEstimate({
+        creditCosts,
+        reasoningEffort: 'medium',
+        model: 'gpt-5.4-mini',
+      }),
+    ).toBe(1);
   });
 });
 

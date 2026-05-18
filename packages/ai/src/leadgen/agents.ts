@@ -82,17 +82,70 @@ const ACTION_LABELS: Record<LeadgenRecommendedAction, string> = {
   keep_as_backup: 'Keep as backup',
   filtered: 'Filtered',
 };
-export const LEADGEN_FAST_MODEL = 'gpt-5.5';
+export const LEADGEN_FAST_MODEL = 'gpt-5.4-mini';
 export const LEADGEN_RESEARCH_MODEL = 'gpt-5.5';
-export const LEADGEN_CONTACT_MODEL = 'gpt-5.5';
-export const LEADGEN_EMAIL_MODEL = 'gpt-5.5';
+export const LEADGEN_DOMAIN_PROFILE_MODEL = 'gpt-5.4-mini';
+export const LEADGEN_CONTACT_MODEL = 'gpt-5.4-mini';
+export const LEADGEN_CONTACT_RESEARCH_MODEL = 'gpt-5.5';
+export const LEADGEN_EMAIL_MODEL = 'gpt-5.4-mini';
 
 export function getLeadgenPrimaryResearchModel(
   reasoningEffort: LeadgenReasoningEffort,
 ) {
-  return reasoningEffort === 'low'
+  return reasoningEffort === 'low' || reasoningEffort === 'medium'
     ? LEADGEN_FAST_MODEL
     : LEADGEN_RESEARCH_MODEL;
+}
+
+export function getLeadgenDomainProfileModel() {
+  return LEADGEN_DOMAIN_PROFILE_MODEL;
+}
+
+export function getLeadgenContactModel(
+  reasoningEffort: LeadgenReasoningEffort,
+) {
+  return reasoningEffort === 'high'
+    ? LEADGEN_CONTACT_RESEARCH_MODEL
+    : LEADGEN_CONTACT_MODEL;
+}
+
+// Effort levels tune search-call and contact-count budgets. Revalidate cost,
+// throughput, and contact success-rate targets whenever these values change.
+function getLeadgenDomainProfileMaxToolCalls(
+  reasoningEffort: LeadgenReasoningEffort,
+) {
+  switch (reasoningEffort) {
+    case 'low':
+      return 2;
+    case 'medium':
+      return 4;
+    case 'high':
+      return 6;
+  }
+}
+
+function getLeadgenContactMaxToolCalls(
+  reasoningEffort: LeadgenReasoningEffort,
+) {
+  switch (reasoningEffort) {
+    case 'low':
+      return 4;
+    case 'medium':
+      return 6;
+    case 'high':
+      return 9;
+  }
+}
+
+function getLeadgenTargetContactCount(reasoningEffort: LeadgenReasoningEffort) {
+  switch (reasoningEffort) {
+    case 'low':
+      return 1;
+    case 'medium':
+      return 2;
+    case 'high':
+      return 3;
+  }
 }
 
 function providerOptions(
@@ -129,10 +182,11 @@ export async function generateLeadgenDomainThesisProfile(
 ) {
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
   const maxToolCalls =
-    options?.maxToolCalls ?? (reasoningEffort === 'low' ? 4 : 7);
+    options?.maxToolCalls ??
+    getLeadgenDomainProfileMaxToolCalls(reasoningEffort);
 
   const result = await generateText({
-    model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
+    model: openai(getLeadgenDomainProfileModel()),
     system: domainThesisInstructions(reasoningEffort),
     messages: [
       {
@@ -251,7 +305,7 @@ function createDiscoveryAgent(
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
   const maxToolCalls =
     options?.maxToolCalls ??
-    (reasoningEffort === 'low' ? 4 : reasoningEffort === 'medium' ? 6 : 9);
+    (reasoningEffort === 'low' ? 3 : reasoningEffort === 'medium' ? 5 : 8);
 
   return new ToolLoopAgent({
     model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
@@ -501,9 +555,11 @@ export async function generateLeadgenContacts(
     throw new Error('Prospects list must contain at least one domain.');
   }
 
-  const targetContacts = options?.targetContacts ?? 3;
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
-  const maxToolCalls = options?.maxToolCalls ?? 12;
+  const targetContacts =
+    options?.targetContacts ?? getLeadgenTargetContactCount(reasoningEffort);
+  const maxToolCalls =
+    options?.maxToolCalls ?? getLeadgenContactMaxToolCalls(reasoningEffort);
   const prompt = [
     'Prospect domains:',
     ...prospects.map((prospect, index) => {
@@ -515,7 +571,7 @@ export async function generateLeadgenContacts(
   ].join('\n');
 
   const result = await generateText({
-    model: openai(LEADGEN_CONTACT_MODEL),
+    model: openai(getLeadgenContactModel(reasoningEffort)),
     system: contactInstructions(),
     messages: [{ role: 'user', content: prompt }],
     tools: {
@@ -552,15 +608,13 @@ export async function generateLeadgenEmailDraft(
     reasoningEffort?: LeadgenReasoningEffort;
   },
 ) {
-  const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
+  const reasoningEffort = options?.reasoningEffort ?? 'low';
 
   return generateText({
     model: openai(LEADGEN_EMAIL_MODEL),
     system: EMAIL_INSTRUCTIONS,
     messages: [{ role: 'user', content: formatEmailBrief(brief) }],
-    providerOptions: providerOptions(reasoningEffort, undefined, {
-      supportsReasoning: false,
-    }),
+    providerOptions: providerOptions(reasoningEffort),
     abortSignal: options?.abortSignal,
     output: Output.object({
       schema: leadgenEmailDraftSchema,
