@@ -28,6 +28,7 @@ import {
   getDomainsUpForRenewalGroupedByOwner,
 } from './renew.activities';
 import * as DisableAutoRenewalActivities from './disable-auto-renewal.activities';
+import * as UpdateContactsActivities from './update-contacts.activities';
 import * as AutoRenewReportActivities from './autorenew-report.activities';
 import * as AutoRenewReportAttachmentActivities from './autorenew-report-attachments.activities';
 import * as ExportExpirationReportActivities from './export-expiration-report.activities';
@@ -54,6 +55,8 @@ export const DomainsActivities = {
   getDomainDurationConstraints,
   // Auto-renewal disabling activities
   ...DisableAutoRenewalActivities,
+  // Admin contact-update activities
+  ...UpdateContactsActivities,
   ...AutoRenewReportActivities,
   ...AutoRenewReportAttachmentActivities,
   // Export/expiration reporting activities

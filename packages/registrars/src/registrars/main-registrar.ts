@@ -228,8 +228,11 @@ export class RegistrarService extends AbstractRegistrarService {
   async updateDomainContacts(
     domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
+    options?: { overrideRegistrar?: Registrars },
   ): Promise<LongRunningOperationResult<any>> {
-    const provider = await this.getRegistrar(domainName);
+    const provider = options?.overrideRegistrar
+      ? this._getRegistrar(options.overrideRegistrar)
+      : await this.getRegistrar(domainName);
     return provider
       .updateDomainContacts(domainName, contacts)
       .then(injectRegistrar(provider.key));
