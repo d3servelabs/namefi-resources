@@ -22,6 +22,7 @@ import {
   Globe,
   Palette,
   PenToolIcon,
+  Rss,
   Search,
   Sparkles,
   TrendingUp,
@@ -48,6 +49,7 @@ const ITEMS: NavItem[] = [
       { title: 'Leadgen', href: '/leadgen', icon: Search },
     ],
   },
+  { title: 'Namefi Feed', href: '/feed', icon: Rss },
   { title: 'Hunt', href: '/hunt', icon: TrendingUp },
 ];
 
