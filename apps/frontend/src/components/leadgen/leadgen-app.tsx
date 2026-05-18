@@ -9,6 +9,7 @@ import {
   getLeadgenOutreachCreditEstimate,
   getLeadgenRunCreditEstimate,
 } from '@namefi-astra/common/ai-generation-credits';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -68,6 +69,12 @@ import { buildMailtoHref } from './leadgen-mailto';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
+type UserDomain = AppRouterOutput['users']['getCurrentUserDomains'][number];
+type LeadgenStartSuggestion = {
+  domain: string;
+  reason: 'parked' | 'unconfigured' | 'active' | 'owned';
+  hasPreviousRun: boolean;
+};
 type LeadgenLead = LeadgenSnapshot['leads'][number];
 type LeadgenEvent = LeadgenSnapshot['events'][number];
 type DisplayableLeadgenEvent = LeadgenEvent & { message: string };
@@ -138,6 +145,11 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     ...trpc.leadgen.listRuns.queryOptions({ limit: 12 }),
     enabled: isAuthenticated,
   });
+  const userDomainsQuery = useQuery({
+    ...trpc.users.getCurrentUserDomains.queryOptions(),
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
   const usageQuery = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
     enabled: isAuthenticated,
@@ -197,6 +209,16 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       },
     }),
   );
+  const startSuggestions = useMemo(
+    () =>
+      getStartSuggestions({
+        domains: userDomainsQuery.data ?? [],
+        runs: runsQuery.data ?? [],
+      }),
+    [userDomainsQuery.data, runsQuery.data],
+  );
+  const isStartSuggestionsLoading =
+    userDomainsQuery.isLoading || runsQuery.isLoading;
 
   if (isAuthLoading) {
     return <LeadgenSkeleton />;
@@ -215,10 +237,11 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         reasoningEffort,
       })
     : undefined;
+  const remainingCredits = usageQuery.data?.remainingCredits;
   const hasInsufficientRunCredits =
-    usageQuery.data && estimatedRunCredits !== undefined
-      ? estimatedRunCredits > usageQuery.data.remainingCredits
-      : false;
+    remainingCredits !== undefined &&
+    estimatedRunCredits !== undefined &&
+    estimatedRunCredits > remainingCredits;
   const canSubmit =
     isLikelyDomain(domain) &&
     !startRun.isPending &&
@@ -236,6 +259,14 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 
     setDomain(normalized);
     startRun.mutate({ domain: normalized, reasoningEffort });
+  };
+
+  const handleSelectStartSuggestion = (suggestion: LeadgenStartSuggestion) => {
+    setDomain(suggestion.domain);
+    setReasoningEffort('medium');
+    requestAnimationFrame(() => {
+      document.getElementById(DOMAIN_INPUT_ID)?.focus();
+    });
   };
 
   return (
@@ -350,6 +381,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
             isRunLoading={isRunLoading}
             isRunning={isRunning}
             run={run}
+            startSuggestions={startSuggestions}
+            isStartSuggestionsLoading={isStartSuggestionsLoading}
+            onSelectStartSuggestion={handleSelectStartSuggestion}
             onRunUpdated={setLiveRun}
           />
         </main>
@@ -396,11 +430,17 @@ function LeadgenWorkspacePanel({
   isRunLoading,
   isRunning,
   run,
+  startSuggestions,
+  isStartSuggestionsLoading,
+  onSelectStartSuggestion,
   onRunUpdated,
 }: {
   isRunLoading: boolean;
   isRunning: boolean;
   run: LeadgenSnapshot | null;
+  startSuggestions: LeadgenStartSuggestion[];
+  isStartSuggestionsLoading: boolean;
+  onSelectStartSuggestion: (suggestion: LeadgenStartSuggestion) => void;
   onRunUpdated: (run: LeadgenSnapshot) => void;
 }) {
   if (isRunLoading) {
@@ -417,7 +457,13 @@ function LeadgenWorkspacePanel({
     );
   }
 
-  return <EmptyWorkspace />;
+  return (
+    <EmptyWorkspace
+      suggestions={startSuggestions}
+      isLoading={isStartSuggestionsLoading}
+      onSelectSuggestion={onSelectStartSuggestion}
+    />
+  );
 }
 
 function RunWorkspace({
@@ -1386,24 +1432,243 @@ function PastRuns({
   );
 }
 
-function EmptyWorkspace() {
+function getStartSuggestions({
+  domains,
+  runs,
+}: {
+  domains: UserDomain[];
+  runs: LeadgenRunSummary[];
+}): LeadgenStartSuggestion[] {
+  const previousRunDomains = new Set(
+    runs.map((run) => normalizeDomainInput(run.domain)),
+  );
+
+  return domains
+    .map((domain) => {
+      const suggestion = {
+        domain: domain.normalizedDomainName,
+        reason: getStartSuggestionReason(domain),
+        hasPreviousRun: previousRunDomains.has(domain.normalizedDomainName),
+      };
+      return {
+        suggestion,
+        score: getStartSuggestionScore(domain, suggestion),
+      };
+    })
+    .sort((a, b) => {
+      const scoreDifference = b.score - a.score;
+      if (scoreDifference !== 0) return scoreDifference;
+      return a.suggestion.domain.localeCompare(b.suggestion.domain);
+    })
+    .slice(0, 3)
+    .map((item) => item.suggestion);
+}
+
+function getStartSuggestionReason(
+  domain: UserDomain,
+): LeadgenStartSuggestion['reason'] {
+  const dns = domain.dnsStatus;
+  if (
+    dns.isUsingNamefiNameservers &&
+    dns.isParkingEnabled &&
+    !dns.hasWebRecords &&
+    !dns.forwardTo
+  ) {
+    return 'parked';
+  }
+  if (dns.isUsingNamefiNameservers && !dns.hasWebRecords && !dns.forwardTo) {
+    return 'unconfigured';
+  }
+  if (dns.hasWebRecords || dns.hasMxRecords) return 'active';
+  return 'owned';
+}
+
+function getStartSuggestionScore(
+  domain: UserDomain,
+  suggestion: LeadgenStartSuggestion,
+) {
+  const dns = domain.dnsStatus;
+  let score = 0;
+  if (suggestion.reason === 'parked') score += 45;
+  if (suggestion.reason === 'unconfigured') score += 25;
+  if (dns.hasWebRecords || dns.hasMxRecords) score += 10;
+  if (isTraditionalDomain(domain.normalizedDomainName)) score += 12;
+  if (suggestion.hasPreviousRun) score -= 20;
+  return score;
+}
+
+function isTraditionalDomain(domain: UserDomain['normalizedDomainName']) {
+  const parsed = parseDomainName(domain);
+  return parsed.valid && parsed.registryType === 'traditional';
+}
+
+function EmptyWorkspace({
+  suggestions,
+  isLoading,
+  onSelectSuggestion,
+}: {
+  suggestions: LeadgenStartSuggestion[];
+  isLoading: boolean;
+  onSelectSuggestion: (suggestion: LeadgenStartSuggestion) => void;
+}) {
+  const hasSuggestions = suggestions.length > 0;
+
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center p-8 text-center">
-      <div className="max-w-md">
-        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-300">
-          <Search className="size-6" />
+    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center p-5">
+      <div className="w-full max-w-3xl">
+        <div className="mb-5 flex justify-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/55 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+            <Sparkles className="size-3.5 text-cyan-300" />
+            Suggested starts
+          </div>
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight">
-          Start with the domain, not a spreadsheet.
-        </h2>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Namefi Leadgen AI will infer buyer angles, search for company
-          websites, find public emails for the first leads, and draft outreach
-          as results land.
-        </p>
+
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {hasSuggestions
+              ? 'Choose a starting domain'
+              : 'Start with a domain'}
+          </h2>
+          <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-muted-foreground">
+            {hasSuggestions
+              ? 'Select one from your portfolio, or enter another domain you own.'
+              : 'Enter a domain you own or represent. Leadgen will build buyer angles and outreach drafts from there.'}
+          </p>
+        </div>
+
+        <div className="mt-6 grid auto-rows-fr gap-2 lg:grid-cols-3">
+          {isLoading
+            ? skeletonRows.map((row) => (
+                <div
+                  key={`leadgen-empty-suggestion-${row}`}
+                  className={emptyStateCardClassName}
+                >
+                  <Skeleton className="size-9 shrink-0 self-start rounded-md" />
+                  <div className="min-w-0 flex-1">
+                    <Skeleton className="h-4 w-32 max-w-full" />
+                  </div>
+                  <Skeleton className="size-4 rounded-full" />
+                </div>
+              ))
+            : hasSuggestions
+              ? suggestions.map((suggestion) => (
+                  <LeadgenStartSuggestionButton
+                    key={suggestion.domain}
+                    suggestion={suggestion}
+                    onSelect={onSelectSuggestion}
+                  />
+                ))
+              : fallbackEmptyPrompts.map((prompt) => {
+                  const Icon = prompt.icon;
+                  return (
+                    <div key={prompt.title} className={emptyStateCardClassName}>
+                      <div className="flex size-9 shrink-0 self-start items-center justify-center rounded-md bg-muted text-muted-foreground">
+                        <Icon className="size-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium">
+                          {prompt.title}
+                        </p>
+                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                          {prompt.description}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+        </div>
       </div>
     </div>
   );
+}
+
+const emptyStateCardClassName =
+  'flex h-20 items-start gap-3 rounded-lg border border-border/70 bg-background/45 p-3';
+
+const fallbackEmptyPrompts: Array<{
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}> = [
+  {
+    title: 'Use a primary domain',
+    description: 'Primary domains are usually the simplest place to start.',
+    icon: Search,
+  },
+  {
+    title: 'Pick a clear market',
+    description:
+      'A domain tied to an industry, product, or location can lead to stronger buyer ideas.',
+    icon: Sparkles,
+  },
+  {
+    title: 'Try a brandable name',
+    description:
+      'Short, memorable names are good candidates for outreach drafts.',
+    icon: Building2,
+  },
+];
+
+function LeadgenStartSuggestionButton({
+  suggestion,
+  onSelect,
+}: {
+  suggestion: LeadgenStartSuggestion;
+  onSelect: (suggestion: LeadgenStartSuggestion) => void;
+}) {
+  const Icon = getStartSuggestionIcon(suggestion.reason);
+  const label = getStartSuggestionLabel(suggestion);
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(suggestion)}
+      className={cn(
+        emptyStateCardClassName,
+        'group w-full text-left transition-colors hover:border-cyan-300/45 hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/50',
+      )}
+    >
+      <div className="flex size-9 shrink-0 self-start items-center justify-center rounded-md bg-cyan-500/10 text-cyan-300 transition-colors group-hover:bg-cyan-500/15">
+        <Icon className="size-4" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 items-center gap-2">
+          <p className="min-w-0 flex-1 truncate text-sm font-medium">
+            Find buyers for {suggestion.domain}
+          </p>
+          {label ? (
+            <span className="shrink-0 rounded-full border border-border/70 bg-muted/50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-normal text-muted-foreground">
+              {label}
+            </span>
+          ) : null}
+        </div>
+      </div>
+      <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-cyan-300" />
+    </button>
+  );
+}
+
+function getStartSuggestionIcon(
+  reason: LeadgenStartSuggestion['reason'],
+): LucideIcon {
+  switch (reason) {
+    case 'parked':
+      return Search;
+    case 'unconfigured':
+      return Sparkles;
+    case 'active':
+      return Building2;
+    case 'owned':
+      return UserRoundSearch;
+  }
+}
+
+function getStartSuggestionLabel(suggestion: LeadgenStartSuggestion) {
+  if (suggestion.hasPreviousRun) {
+    return 'refresh';
+  }
+
+  return null;
 }
 
 function LeadgenSkeleton() {
