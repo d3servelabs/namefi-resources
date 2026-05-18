@@ -2,6 +2,15 @@
 
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
@@ -12,11 +21,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@namefi-astra/ui/components/shadcn/sidebar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
 import type { NavItem } from '@/lib/types/nav-item';
 import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import {
@@ -27,10 +31,17 @@ import {
 import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { ErrorInfo, FC, HTMLAttributes, ReactElement } from 'react';
+import { useState } from 'react';
+import type { ErrorInfo, FC, HTMLAttributes } from 'react';
 import { isRouteActive } from './utils';
 import { ErrorBoundary } from '@suspensive/react';
 import { ChevronRight } from 'lucide-react';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 
 export type SidebarItemsProps = HTMLAttributes<HTMLDivElement> & {
   items: NavItem[];
@@ -40,25 +51,98 @@ const logSidebarItemsError = (error: Error, info: ErrorInfo) => {
   reportReactBoundaryError('SidebarItems', error, info);
 };
 
-const SidebarItemTooltip: FC<{
-  label: string;
-  children: ReactElement;
-}> = ({ label, children }) => {
-  const { state, isMobile } = useSidebar();
+const CollapsedSidebarSubmenuItem: FC<{
+  item: NavItem;
+  pathname: string;
+}> = ({ item, pathname }) => {
+  const [open, setOpen] = useState(false);
+  const [suppressTooltip, setSuppressTooltip] = useState(false);
+  const Icon = item.icon;
+  const submenuItems = item.submenu ?? [];
+  const isActive = isRouteActive(item, pathname);
 
-  if (state !== 'collapsed' || isMobile) {
-    return children;
-  }
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+
+    if (nextOpen || suppressTooltip) {
+      setSuppressTooltip(true);
+    }
+  };
 
   return (
-    <Tooltip>
-      <TooltipTrigger render={<span className="flex w-full" />}>
-        {children}
-      </TooltipTrigger>
-      <TooltipContent side="right" align="center">
-        {label}
-      </TooltipContent>
-    </Tooltip>
+    <SidebarMenuItem>
+      <DropdownMenu open={open} onOpenChange={handleOpenChange}>
+        <Tooltip disabled={open || suppressTooltip}>
+          <DropdownMenuTrigger
+            render={
+              <TooltipTrigger
+                render={
+                  <SidebarMenuButton
+                    aria-label={item.title}
+                    isActive={isActive}
+                    onPointerDown={() => {
+                      setSuppressTooltip(true);
+                    }}
+                    onPointerEnter={() => {
+                      if (!open) {
+                        setSuppressTooltip(false);
+                      }
+                    }}
+                    onFocus={() => {
+                      setSuppressTooltip(true);
+                    }}
+                  />
+                }
+              />
+            }
+          >
+            {Icon && <Icon />}
+            <span className="whitespace-nowrap">{item.title}</span>
+          </DropdownMenuTrigger>
+          <TooltipContent
+            side="right"
+            align="center"
+            hidden={open || suppressTooltip}
+          >
+            {item.title}
+          </TooltipContent>
+        </Tooltip>
+        <DropdownMenuContent
+          side="right"
+          align="start"
+          sideOffset={10}
+          className="w-52"
+        >
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>{item.title}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {submenuItems.map((subItem) => {
+              const SubIcon = subItem.icon;
+              const subItemActive = isRouteActive(subItem, pathname);
+              return (
+                <DropdownMenuItem
+                  key={subItem.href}
+                  className={cn(
+                    'cursor-pointer',
+                    subItemActive && 'bg-accent text-accent-foreground',
+                  )}
+                  render={
+                    <Link
+                      aria-current={subItemActive ? 'page' : undefined}
+                      href={subItem.href as Route}
+                      target={subItem.target}
+                    />
+                  }
+                >
+                  {SubIcon && <SubIcon />}
+                  <span>{subItem.title}</span>
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </SidebarMenuItem>
   );
 };
 
@@ -67,7 +151,8 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
   ...rest
 }: SidebarItemsProps) => {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile, state } = useSidebar();
+  const isDesktopCollapsed = state === 'collapsed' && !isMobile;
 
   return (
     <SidebarGroup {...rest}>
@@ -77,30 +162,39 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
             const Icon = item.icon;
             const hasSubmenu = (item.submenu?.length ?? 0) > 0;
             const isActive = isRouteActive(item, pathname);
+            const submenuItems = item.submenu ?? [];
             return (
               <ErrorBoundary
                 key={item.href}
                 fallback={null}
                 onError={logSidebarItemsError}
               >
-                {hasSubmenu ? (
+                {hasSubmenu && isDesktopCollapsed ? (
+                  <CollapsedSidebarSubmenuItem
+                    item={item}
+                    pathname={pathname}
+                  />
+                ) : hasSubmenu ? (
                   <Collapsible
                     defaultOpen={isActive}
                     className="w-full group/collapsible"
                     render={<SidebarMenuItem />}
                   >
-                    <SidebarItemTooltip label={item.title}>
-                      <CollapsibleTrigger
-                        render={<SidebarMenuButton isActive={isActive} />}
-                      >
-                        {Icon && <Icon />}
-                        <span className="whitespace-nowrap">{item.title}</span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-data-[collapsible=icon]:hidden" />
-                      </CollapsibleTrigger>
-                    </SidebarItemTooltip>
+                    <CollapsibleTrigger
+                      render={
+                        <SidebarMenuButton
+                          className="group/collapsible-trigger"
+                          isActive={isActive}
+                        />
+                      }
+                    >
+                      {Icon && <Icon />}
+                      <span className="whitespace-nowrap">{item.title}</span>
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-panel-open/collapsible-trigger:rotate-90 group-data-[collapsible=icon]:hidden" />
+                    </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        {item.submenu?.map((subItem) => {
+                        {submenuItems.map((subItem) => {
                           const SubIcon = subItem.icon;
                           return (
                             <SidebarMenuSubItem key={subItem.href}>
@@ -129,42 +223,41 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                   </Collapsible>
                 ) : (
                   <SidebarMenuItem>
-                    <SidebarItemTooltip label={item.title}>
-                      <SidebarMenuButton
-                        isActive={isActive}
-                        render={
-                          <Link
-                            href={item.href as Route}
-                            target={item.target}
-                            onClick={() => {
-                              if (isMobile) {
-                                setOpenMobile(false);
-                              }
-                            }}
-                            className="relative"
-                          />
-                        }
-                      >
-                        {Icon && <Icon />}
-                        <span className="whitespace-nowrap">{item.title}</span>
-                        {item.badge &&
-                          item.badge.content != null &&
-                          item.badge.content !== 0 &&
-                          item.badge.content !== '0' && (
-                            <Badge
-                              className="absolute text-secondary-foreground bg-brand-primary flex items-center justify-center rounded-full p-0 transition-all duration-200 ease-in-out z-10
+                    <SidebarMenuButton
+                      isActive={isActive}
+                      tooltip={item.title}
+                      render={
+                        <Link
+                          href={item.href as Route}
+                          target={item.target}
+                          onClick={() => {
+                            if (isMobile) {
+                              setOpenMobile(false);
+                            }
+                          }}
+                          className="relative"
+                        />
+                      }
+                    >
+                      {Icon && <Icon />}
+                      <span className="whitespace-nowrap">{item.title}</span>
+                      {item.badge &&
+                        item.badge.content != null &&
+                        item.badge.content !== 0 &&
+                        item.badge.content !== '0' && (
+                          <Badge
+                            className="absolute text-secondary-foreground bg-brand-primary flex items-center justify-center rounded-full p-0 transition-all duration-200 ease-in-out z-10
                           h-5 w-5 min-w-5 right-2 top-1/2 -translate-y-1/2
                           group-data-[collapsible=icon]:h-2 group-data-[collapsible=icon]:w-2 group-data-[collapsible=icon]:min-w-2
                           group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1
                           group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:translate-y-0"
-                            >
-                              <span className="group-data-[collapsible=icon]:hidden">
-                                {item.badge.content}
-                              </span>
-                            </Badge>
-                          )}
-                      </SidebarMenuButton>
-                    </SidebarItemTooltip>
+                          >
+                            <span className="group-data-[collapsible=icon]:hidden">
+                              {item.badge.content}
+                            </span>
+                          </Badge>
+                        )}
+                    </SidebarMenuButton>
                   </SidebarMenuItem>
                 )}
               </ErrorBoundary>
