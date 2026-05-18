@@ -1536,16 +1536,17 @@ function EmptyWorkspace({
           </p>
         </div>
 
-        <div className="mt-6 grid auto-rows-fr gap-2 lg:grid-cols-3">
+        <div className="mt-7 grid items-stretch gap-3 lg:grid-cols-3">
           {isLoading
             ? skeletonRows.map((row) => (
                 <div
                   key={`leadgen-empty-suggestion-${row}`}
                   className={emptyStateCardClassName}
                 >
-                  <Skeleton className="size-9 shrink-0 self-start rounded-md" />
-                  <div className="min-w-0 flex-1">
-                    <Skeleton className="h-4 w-32 max-w-full" />
+                  <Skeleton className="size-10 shrink-0 rounded-md" />
+                  <div className="min-w-0 flex-1 space-y-2">
+                    <Skeleton className="h-3 w-24 max-w-full" />
+                    <Skeleton className="h-4 w-36 max-w-full" />
                   </div>
                   <Skeleton className="size-4 rounded-full" />
                 </div>
@@ -1562,11 +1563,11 @@ function EmptyWorkspace({
                   const Icon = prompt.icon;
                   return (
                     <div key={prompt.title} className={emptyStateCardClassName}>
-                      <div className="flex size-9 shrink-0 self-start items-center justify-center rounded-md bg-muted text-muted-foreground">
+                      <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
                         <Icon className="size-4" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium">
+                        <p className="text-sm font-medium leading-5">
                           {prompt.title}
                         </p>
                         <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
@@ -1583,7 +1584,7 @@ function EmptyWorkspace({
 }
 
 const emptyStateCardClassName =
-  'flex h-20 items-start gap-3 rounded-lg border border-border/70 bg-background/45 p-3';
+  'flex min-h-24 items-center gap-4 rounded-lg border border-border/70 bg-background/55 p-4 shadow-sm';
 
 const fallbackEmptyPrompts: Array<{
   title: string;
@@ -1628,13 +1629,13 @@ function LeadgenStartSuggestionButton({
         'group w-full text-left transition-colors hover:border-cyan-300/45 hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/50',
       )}
     >
-      <div className="flex size-9 shrink-0 self-start items-center justify-center rounded-md bg-cyan-500/10 text-cyan-300 transition-colors group-hover:bg-cyan-500/15">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-cyan-500/10 text-cyan-300 transition-colors group-hover:bg-cyan-500/15">
         <Icon className="size-4" />
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex min-w-0 items-center gap-2">
-          <p className="min-w-0 flex-1 truncate text-sm font-medium">
-            Find buyers for {suggestion.domain}
+      <div className="min-w-0 flex-1 py-0.5">
+        <div className="flex min-w-0 items-start justify-between gap-2">
+          <p className="text-xs font-medium leading-4 text-muted-foreground">
+            Find buyers for
           </p>
           {label ? (
             <span className="shrink-0 rounded-full border border-border/70 bg-muted/50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-normal text-muted-foreground">
@@ -1642,6 +1643,9 @@ function LeadgenStartSuggestionButton({
             </span>
           ) : null}
         </div>
+        <p className="mt-1 text-sm font-semibold leading-5 text-foreground [overflow-wrap:anywhere]">
+          {suggestion.domain}
+        </p>
       </div>
       <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-cyan-300" />
     </button>
