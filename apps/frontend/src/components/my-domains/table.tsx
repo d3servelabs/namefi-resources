@@ -9,18 +9,10 @@ import {
   useState,
 } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import type { VisibilityState } from '@tanstack/react-table';
 import { toast } from 'sonner';
-import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@namefi-astra/ui/components/shadcn/dialog';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -70,9 +62,7 @@ export function MyDomainsTable(props: {
   const preferencesMutation = useDomainPreferencesMutation();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const tableKind = kind;
-  const [listForSaleDialogDomain, setListForSaleDialogDomain] = useState<
-    string | null
-  >(null);
+  const router = useRouter();
   const [selectedDomainIds, setSelectedDomainIds] = useState<
     Set<NamefiNormalizedDomain>
   >(() => new Set<NamefiNormalizedDomain>());
@@ -157,9 +147,9 @@ export function MyDomainsTable(props: {
         name: InteractionLoggingEventName.MyDomainsListForSaleClicked,
         properties: { domainName, tableKind },
       });
-      setListForSaleDialogDomain(domainName);
+      router.push(`/domains/${encodeURIComponent(domainName)}?tab=marketplace`);
     },
-    [logEventWithInteractionLoggers, tableKind],
+    [logEventWithInteractionLoggers, tableKind, router],
   );
 
   // Handle auto-renewal toggle for a single domain. Optimistic update + rollback
@@ -731,39 +721,6 @@ export function MyDomainsTable(props: {
 
   return (
     <>
-      <Dialog
-        open={listForSaleDialogDomain !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setListForSaleDialogDomain(null);
-          }
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Coming soon</DialogTitle>
-            <DialogDescription>
-              Listing domains for sale isn’t available yet.
-              {listForSaleDialogDomain ? (
-                <>
-                  {' '}
-                  You clicked:{' '}
-                  <span className="font-medium">{listForSaleDialogDomain}</span>
-                </>
-              ) : null}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setListForSaleDialogDomain(null)}
-            >
-              Close
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       {/* Renew Now Modal */}
       <RenewNowModal
         isOpen={renewNowModalDomains.length > 0}

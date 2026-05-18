@@ -44,6 +44,7 @@
     "@next/mdx": "catalog:",
     "@noble/secp256k1": "^3.0.0",
     "@number-flow/react": "^0.5.10",
+    "@opensea/sdk": "^10.5.0",
     "@privy-io/react-auth": "^2.7.2",
     "@privy-io/wagmi": "^1.0.3",
     "@samyx/drizzler-filters-sorters": "^0.0.5",

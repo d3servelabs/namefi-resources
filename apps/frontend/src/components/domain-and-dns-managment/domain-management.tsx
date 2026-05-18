@@ -43,6 +43,7 @@ import { DomainOverviewPanel } from './panels/dns/domain-overview-panel';
 import { DnsRecordsPanel } from './panels/dns/dns-records-panel';
 import { DnssecPanel } from './panels/dnssec/dnssec-panel';
 import { DomainConfigAndPrefs } from './panels/domain-config-and-prefs/domain-config-and-prefs';
+import { MarketplacePanel } from './panels/marketplace/marketplace-panel';
 import { NameserversPanel } from './panels/nameservers/nameservers-panel';
 import { useAuth } from '@/hooks/use-auth';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
@@ -62,6 +63,14 @@ const DOMAIN_FLAG_DEFINITION: FeatureFlagDefinition[] = [
     pageKey: 'users',
     defaultValue: true,
   },
+  {
+    key: 'marketplace_listing',
+    label: 'Marketplace Listing',
+    description: 'show the Marketplace tab on the domain detail page',
+    scope: 'page',
+    pageKey: 'users',
+    defaultValue: false,
+  },
 ];
 
 export const DomainManagement: FC<DomainManagementProps> = ({
@@ -72,6 +81,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   useRegisterAdminFlags(DOMAIN_FLAG_DEFINITION);
 
   const [newOverviewComponent] = useAdminFeatureFlag(DOMAIN_FLAG_DEFINITION[0]);
+  const [marketplaceListingEnabled] = useAdminFeatureFlag(
+    DOMAIN_FLAG_DEFINITION[1],
+  );
 
   const searchParams = useSearchParams();
   const requestedTab = searchParams.get('tab');
@@ -92,7 +104,8 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     if (
       requestedTab === 'domain-overview' ||
       requestedTab === 'dns-records' ||
-      requestedTab === 'dns-management'
+      requestedTab === 'dns-management' ||
+      (requestedTab === 'marketplace' && marketplaceListingEnabled)
     ) {
       return requestedTab;
     }
@@ -145,12 +158,13 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     if (
       requestedTab !== 'domain-overview' &&
       requestedTab !== 'dns-records' &&
-      requestedTab !== 'dns-management'
+      requestedTab !== 'dns-management' &&
+      !(requestedTab === 'marketplace' && marketplaceListingEnabled)
     ) {
       return;
     }
     setCurrentTab((prev) => (prev === requestedTab ? prev : requestedTab));
-  }, [requestedTab]);
+  }, [requestedTab, marketplaceListingEnabled]);
 
   const handleTabChange = (value: string) => {
     // If user doesn't have email, don't allow tab changes
@@ -254,6 +268,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                     DNS Management
                   </TabsTrigger>
                 )}
+                {marketplaceListingEnabled && (
+                  <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
+                )}
               </TabsList>
 
               <TabsContent value="domain-overview">
@@ -289,6 +306,12 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                       domainName={domain as PunycodeDomainName}
                     />
                   </div>
+                </TabsContent>
+              )}
+
+              {marketplaceListingEnabled && (
+                <TabsContent value="marketplace">
+                  <MarketplacePanel domain={domain} nftChainId={nft.chainId} />
                 </TabsContent>
               )}
             </Tabs>

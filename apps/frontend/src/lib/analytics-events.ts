@@ -21,6 +21,10 @@ export enum InteractionLoggingEventName {
 
   // My Domains Events
   MyDomainsListForSaleClicked = 'my_domains_list_for_sale_clicked',
+
+  // Marketplace Events
+  MarketplaceListingCreated = 'marketplace_listing_created',
+  MarketplaceListingCancelled = 'marketplace_listing_cancelled',
 }
 
 export type InteractionLoggingCartItem = Pick<
@@ -115,6 +119,24 @@ export type InteractionLoggingEvent =
   | BaseEvent<
       InteractionLoggingEventName.MyDomainsListForSaleClicked,
       { domainName: string; tableKind: 'active' | 'inactive' }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.MarketplaceListingCreated,
+      {
+        domainName: string;
+        marketplaceId: string;
+        chainId: number;
+        priceWei: string;
+        currencySymbol: string;
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.MarketplaceListingCancelled,
+      {
+        domainName: string;
+        marketplaceId: string;
+        chainId: number;
+      }
     >
   | BaseEvent<
       InteractionLoggingEventName.PromoClick,
