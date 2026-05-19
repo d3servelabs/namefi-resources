@@ -1,6 +1,12 @@
-import { isNotNil, pick, pluck, toPairs, values } from 'ramda';
-import * as _Chains from 'viem/chains';
-import type { Chain } from 'viem/chains';
+import {
+  base,
+  baseSepolia,
+  mainnet,
+  sepolia,
+  tempo,
+  tempoModerato,
+} from 'viem/chains';
+import type { Chain as ViemChain } from 'viem/chains';
 export type { Chain } from 'viem/chains';
 
 const robinhoodTestnet = {
@@ -31,35 +37,33 @@ const robinhoodTestnet = {
     },
   },
   /** Source Chain ID (ie. the L1 chain) */
-  sourceId: _Chains.sepolia.id,
+  sourceId: sepolia.id,
   /** Flag for test networks */
   testnet: true,
-} satisfies Chain;
-
-const Chains = {
-  ..._Chains,
-  robinhoodTestnet,
-};
+} satisfies ViemChain;
 
 /**
- * Object containing all supported blockchain chains from viem/chains, indexed by name.
- * @remarks [ The module exports other data, but we only need the chains that's why we filter them out by isNotNil(chain.id) ]
+ * Keep this registry explicit. A namespace import from `viem/chains` pulls every
+ * chain definition into frontend route graphs even when the app uses only this set.
  */
-export const CHAINS = pick(
-  toPairs(Chains)
-    .filter(([_, chain]) => isNotNil(chain.id))
-    .map(([key]) => key),
-  Chains,
-);
+export const CHAINS = {
+  mainnet,
+  sepolia,
+  base,
+  baseSepolia,
+  tempo,
+  tempoModerato,
+  robinhoodTestnet,
+} as const satisfies Record<string, ViemChain>;
 
-// export type CHAINS = typeof Chains & Record<string, Chain>
+const CHAINS_LIST = Object.values(CHAINS);
 
 /**
  * Map of chain objects indexed by their chain ID for efficient lookups.
  */
-const CHAINS_BY_ID = new Map(values(CHAINS).map((chain) => [chain.id, chain]));
+const CHAINS_BY_ID = new Map(CHAINS_LIST.map((chain) => [chain.id, chain]));
 
-export const CHAINS_IDS = pluck('id', values(Chains)) as number[];
+export const CHAINS_IDS = CHAINS_LIST.map((chain) => chain.id) as number[];
 
 /**
  * Gets a chain object by its chain ID.
@@ -67,9 +71,7 @@ export const CHAINS_IDS = pluck('id', values(Chains)) as number[];
  * @returns The chain object if found, undefined otherwise
  */
 export function getChain(chainId: number) {
-  return CHAINS_BY_ID.get(chainId as any);
+  return CHAINS_BY_ID.get(chainId);
 }
 
-export const TEST_CHAINS = Object.values(CHAINS).filter(
-  (chain) => chain.testnet,
-);
+export const TEST_CHAINS = CHAINS_LIST.filter((chain) => chain.testnet);
