@@ -13,7 +13,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
 import DatadogObservability from '@/components/datadog-observability';
-import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
 import SkipAuthBanner from '@/components/SkipAuthBanner';
 import { UnofficialTldsInjector } from '@/components/providers/unofficial-tlds';
@@ -29,6 +28,14 @@ import './globals.css';
 const PreviewGate = dynamic(() =>
   import('@/components/preview-gate').then((m) => m.PreviewGate),
 );
+
+// Keep the TanStack Query Devtools in the recommended root position when
+// explicitly enabled, while letting the default dev graph dead-code-eliminate
+// the @tanstack/react-query-devtools package.
+const ReactQueryDevtoolsWrapper =
+  process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_BUNDLED === '1'
+    ? dynamic(() => import('@/components/react-query-devtools-lazy'))
+    : null;
 
 // Admin-only floating widget; lazy so non-admin pages don't pay the cost.
 const FloatingBatchButton = dynamic(() =>
@@ -86,7 +93,7 @@ function RootLayoutInner({ children }: PropsWithChildren) {
       <Suspense>
         <Providers>
           <GoogleAnalyticsCookieConsentGated />
-          <ReactQueryDevtoolsWrapper />
+          {ReactQueryDevtoolsWrapper ? <ReactQueryDevtoolsWrapper /> : null}
           <OriginBackground />
           <Toaster expand={true} visibleToasts={3} />
           <AddToCartFromUrl />

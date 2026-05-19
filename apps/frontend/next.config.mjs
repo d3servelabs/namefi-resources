@@ -67,6 +67,14 @@ const nextConfig = {
       // '0' = strip it. See apps/frontend/src/app/layout.tsx.
       'process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED':
         appConfig.TYPE === 'production' ? '0' : '1',
+      // TanStack Query Devtools are useful during focused debugging, but they
+      // add a large root-layout compile edge. Keep them out of the default dev
+      // graph; opt in before starting Next with NEXT_PUBLIC_REACT_QUERY_DEVTOOLS=1.
+      'process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_BUNDLED':
+        appConfig.TYPE !== 'production' &&
+        process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS === '1'
+          ? '1'
+          : '0',
     },
   },
   logging: {
