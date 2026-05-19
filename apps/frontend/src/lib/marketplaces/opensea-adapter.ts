@@ -210,7 +210,10 @@ export class OpenSeaAdapter implements MarketPlace {
   }
 
   async getExistingListings(query: ListingsQuery): Promise<Listing[]> {
-    const slug = await this.getCollectionSlug(query.tokenAddress);
+    const slug = await this.getCollectionSlug(
+      query.tokenAddress,
+      query.tokenId,
+    );
     if (!slug) return [];
     try {
       const best = await this.sdk.api.getBestListing(slug, query.tokenId);
@@ -266,7 +269,10 @@ export class OpenSeaAdapter implements MarketPlace {
   // -------- offers (buyer side, seller-accepts) --------
 
   async getOffersForListing(query: OffersQuery): Promise<Offer[]> {
-    const slug = await this.getCollectionSlug(query.tokenAddress);
+    const slug = await this.getCollectionSlug(
+      query.tokenAddress,
+      query.tokenId,
+    );
     if (!slug) return [];
     try {
       const best = await this.sdk.api.getBestOffer(slug, query.tokenId);
@@ -327,25 +333,33 @@ export class OpenSeaAdapter implements MarketPlace {
 
   // ---- collection slug cache ----
 
-  private getCollectionSlug(tokenAddress: Address): Promise<string | null> {
+  private getCollectionSlug(
+    tokenAddress: Address,
+    tokenId: string,
+  ): Promise<string | null> {
     const key = tokenAddress.toLowerCase();
     const cached = this.collectionSlugByContract.get(key);
     if (cached) return cached;
-    const fetched = this.fetchCollectionSlug(tokenAddress).catch(() => null);
+    // Cache is keyed by contract only — the slug is constant per contract. The
+    // tokenId is just needed for the lookup endpoint to address an indexed NFT.
+    const fetched = this.fetchCollectionSlug(tokenAddress, tokenId).catch(
+      () => null,
+    );
     this.collectionSlugByContract.set(key, fetched);
     return fetched;
   }
 
   private async fetchCollectionSlug(
     tokenAddress: Address,
+    tokenId: string,
   ): Promise<string | null> {
     try {
-      // Any indexed tokenId works — the collection slug is constant per contract.
-      // Use `'1'` as a probe; if the NFT contract doesn't have token #1, OpenSea
-      // still returns the collection mapping.
+      // The slug-lookup endpoint requires a real, indexed tokenId — passing a
+      // placeholder like "1" 404s for collections whose token IDs are hashed
+      // (e.g. the Namefi NFT uses keccak256(domainName) for tokenId).
       const collection = await this.sdk.api.getNFTCollection(
         tokenAddress,
-        '1',
+        tokenId,
         this.openSeaChain,
       );
       return collection?.collection ?? null;
