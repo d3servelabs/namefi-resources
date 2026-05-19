@@ -14,8 +14,8 @@ import {
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useEmailBatch } from './use-email-batch';
 
-// Lazy-load the heavy modal (markdown editor + iframe) so non-admin pages
-// and admins with empty batches don't pay the bundle cost.
+// Lazy-load the heavy modal (markdown editor + iframe) so admins with empty
+// batches don't pay the browser bundle cost.
 const BulkEmailModal = dynamic(
   () => import('./bulk-email-modal').then((m) => m.BulkEmailModal),
   { ssr: false },

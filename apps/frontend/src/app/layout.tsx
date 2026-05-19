@@ -37,13 +37,6 @@ const ReactQueryDevtoolsWrapper =
     ? dynamic(() => import('@/components/react-query-devtools-lazy'))
     : null;
 
-// Admin-only floating widget; lazy so non-admin pages don't pay the cost.
-const FloatingBatchButton = dynamic(() =>
-  import('@/components/admin/email-batch/floating-batch-button').then(
-    (m) => m.FloatingBatchButton,
-  ),
-);
-
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -104,7 +97,6 @@ function RootLayoutInner({ children }: PropsWithChildren) {
           </SidebarProvider>
           <ImpersonationBanner />
           <SkipAuthBanner />
-          <FloatingBatchButton />
         </Providers>
       </Suspense>
     </>
