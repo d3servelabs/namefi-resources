@@ -7,6 +7,10 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { type CSSProperties, useEffect, useState } from 'react';
+import {
+  getMlsDomainDisplayParts,
+  getMlsDomainMark,
+} from '@/components/mls/mls-domain-display';
 import { MlsReportListingDialog } from '@/components/mls/mls-report-listing-dialog';
 import {
   buildMlsSaleCardFallbackTheme,
@@ -52,7 +56,7 @@ export function MlsSaleCard({
   );
   const postedLabel = formatPostedLabel(listing.postedAt);
   const excerpt = formatExcerpt(listing.messageText);
-  const domainParts = splitDomainForDisplay(listing.domain);
+  const domainParts = getMlsDomainDisplayParts(listing.domain);
   const otherDomainsCount = Math.max(0, listing.otherDomainsCount);
   const theme = useMlsSaleCardTheme(
     logoUrl,
@@ -134,7 +138,8 @@ export function MlsSaleCard({
               target="_blank"
               rel="noopener noreferrer"
               className="min-w-0 flex flex-wrap items-baseline gap-1.5 no-underline"
-              aria-label={`Open ${listing.domain}`}
+              aria-label={`Open ${domainParts.full}`}
+              title={domainParts.full}
             >
               <h2
                 className={cn(
@@ -173,7 +178,7 @@ export function MlsSaleCard({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-w-0 max-w-full items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60 sm:max-w-[58%]"
-            aria-label={`Open source post for ${listing.domain}`}
+            aria-label={`Open source post for ${domainParts.full}`}
           >
             <span className="truncate">{excerpt}</span>
             <ExternalLink className="size-3.5 shrink-0" />
@@ -182,7 +187,7 @@ export function MlsSaleCard({
           <div className="flex w-full items-center justify-end gap-1 sm:w-auto sm:shrink-0">
             <MlsReportListingDialog
               listingId={listing.id}
-              domain={listing.domain}
+              domain={domainParts.full}
             />
           </div>
         </div>
@@ -204,7 +209,7 @@ function MlsSaleCardLogo({
   logoUrl,
   theme,
 }: MlsSaleCardLogoProps) {
-  const domainMark = getDomainMark(label);
+  const domainMark = getMlsDomainMark(label);
 
   if (logoUrl) {
     return (
@@ -219,7 +224,7 @@ function MlsSaleCardLogo({
         />
         <img
           src={logoUrl}
-          alt={`${domain} logo`}
+          alt={`${label || domain} logo`}
           className="relative h-auto max-h-[3rem] w-auto max-w-[3rem] object-contain sm:max-h-[3.5rem] sm:max-w-[3.5rem]"
           style={{
             filter: 'drop-shadow(0 8px 18px var(--mls-accent-shadow))',
@@ -368,20 +373,6 @@ function formatAskingPrice(
   }
 }
 
-function splitDomainForDisplay(domain: string) {
-  const normalizedDomain = domain.trim();
-  const splitIndex = normalizedDomain.indexOf('.');
-
-  if (splitIndex <= 0 || splitIndex === normalizedDomain.length - 1) {
-    return { label: normalizedDomain, tld: null };
-  }
-
-  return {
-    label: normalizedDomain.slice(0, splitIndex),
-    tld: normalizedDomain.slice(splitIndex + 1),
-  };
-}
-
 function formatPostedLabel(value: string) {
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) {
@@ -414,13 +405,4 @@ function formatExcerpt(value: string | null) {
     return 'No excerpt available';
   }
   return normalized;
-}
-
-function getDomainMark(label: string) {
-  const characters = Array.from(label.replace(/[^a-z0-9]/gi, ''));
-  if (characters.length === 0) {
-    return '?';
-  }
-
-  return characters[0]?.toUpperCase() ?? '?';
 }
