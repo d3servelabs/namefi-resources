@@ -66,7 +66,7 @@ describe('buildLeadPresentation', () => {
       }),
     );
 
-    expect(presentation.group).toBe('top');
+    expect(presentation.group).toBe('ranked');
     expect(presentation.action).toBe('ready_to_contact');
   });
 
@@ -91,20 +91,20 @@ describe('buildLeadPresentation', () => {
       }),
     );
 
-    expect(presentation.group).toBe('top');
+    expect(presentation.group).toBe('ranked');
     expect(presentation.action).toBe('finding_contact');
   });
 
-  it('keeps checking leads separate and puts suppressed leads in secondary', () => {
+  it('keeps checking leads separate and puts reviewed leads in the ranked list', () => {
     expect(buildLeadPresentation(baseLead).group).toBe('checking');
     expect(buildLeadPresentation(lead({ status: 'suppressed' })).group).toBe(
-      'secondary',
+      'ranked',
     );
   });
 });
 
 describe('buildLeadPresentationModel', () => {
-  it('uses one count model for visible prospect groups', () => {
+  it('uses one count model for ranked and pending prospects', () => {
     const model = buildLeadPresentationModel({
       id: 'run-1',
       userId: 'user-1',
@@ -133,8 +133,7 @@ describe('buildLeadPresentationModel', () => {
     });
 
     expect(model.counts).toMatchObject({
-      top: 1,
-      secondary: 2,
+      ranked: 3,
       checking: 1,
     });
   });

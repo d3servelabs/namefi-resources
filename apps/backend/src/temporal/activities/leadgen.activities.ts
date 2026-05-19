@@ -355,6 +355,13 @@ export async function finalizeLeadgenOpportunitiesActivity(
         contactDiscoveryLimit: params.contactDiscoveryLimit,
       });
 
+      await persistLeadgenEvent({
+        runId: params.runId,
+        eventType: 'status',
+        stage: 'triage',
+        message: 'Scoring ranked prospects.',
+      });
+
       await triageLeadgenCandidates({
         runId: params.runId,
         sourceDomain: params.sourceDomain,
@@ -1247,7 +1254,10 @@ function getTriageEventMessage(
   if (triage.status === 'contact_now') {
     return `${lead.companyName ?? lead.businessDomain} is ready for contact research.`;
   }
-  return `${lead.companyName ?? lead.businessDomain} was added to secondary prospects.`;
+  if (triage.status === 'suppressed') {
+    return `${lead.companyName ?? lead.businessDomain} was filtered from outreach.`;
+  }
+  return `${lead.companyName ?? lead.businessDomain} was ranked.`;
 }
 
 function getDomainCore(domain: string) {

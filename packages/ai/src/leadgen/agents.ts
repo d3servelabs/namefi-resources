@@ -79,7 +79,7 @@ const RECIPE_SIGNAL_LABELS: Record<LeadgenDiscoveryRecipe, string> = {
 const ACTION_LABELS: Record<LeadgenRecommendedAction, string> = {
   ready_to_contact: 'Ready to contact',
   finding_contact: 'Finding contact',
-  keep_as_backup: 'Keep as backup',
+  defer_contact: 'Ranked prospect',
   filtered: 'Filtered',
 };
 export const LEADGEN_FAST_MODEL = 'gpt-5.4-mini';
@@ -118,9 +118,9 @@ function getLeadgenDomainProfileMaxToolCalls(
     case 'low':
       return 1;
     case 'medium':
-      return 2;
+      return 1;
     case 'high':
-      return 4;
+      return 2;
   }
 }
 
@@ -397,7 +397,7 @@ Goal: Rank canonical buyer opportunities for one seller-owned domain.
 Success criteria: Promote only buyers with a buyer-specific reason to care. Same-vibe, same-industry, or generic budget alone cannot become a ready-to-contact opportunity. Each thesis says what the company does and why this domain fits in one concise buyer-facing sentence.
 Evidence rules: Use only supplied evidence and the domain evidence standards. Do not browse, invent facts, infer contacts, or add claims not in signals.
 Tool budget: No tools.
-Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Use recommendedAction as the user-facing next step. Keep thesis to one natural sentence under 180 characters. Do not write separate rationale/evidence recaps or repeat the same fact in motion and thesis. Keep motion to a short action label under 40 characters.
+Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Do not emit list-tier labels; the app shows one ranked prospect list. Use recommendedAction only to indicate whether contact research should run now. Keep thesis to one natural sentence under 180 characters. Do not write separate rationale/evidence recaps or repeat the same fact in motion and thesis. Keep motion to a short action label under 40 characters.
 Output: Return structured opportunity triage records only.`;
 }
 
@@ -538,7 +538,7 @@ function getStatusForRecommendedAction(
   action: LeadgenRecommendedAction,
 ): LeadgenOpportunityTriage['status'] {
   if (action === 'filtered') return 'suppressed';
-  if (action === 'keep_as_backup') return 'low_priority';
+  if (action === 'defer_contact') return 'low_priority';
   return 'contact_now';
 }
 

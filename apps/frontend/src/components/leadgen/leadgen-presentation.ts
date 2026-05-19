@@ -3,11 +3,11 @@ import type { AppRouterOutput } from '@/lib/trpc';
 export type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 export type LeadgenLead = LeadgenSnapshot['leads'][number];
 
-export type LeadPresentationGroup = 'top' | 'secondary' | 'checking';
+export type LeadPresentationGroup = 'ranked' | 'checking';
 export type LeadPresentationAction =
   | 'ready_to_contact'
   | 'finding_contact'
-  | 'backup'
+  | 'ranked'
   | 'checking';
 
 export type LeadPresentation = {
@@ -18,7 +18,7 @@ export type LeadPresentation = {
 };
 
 export type LeadPresentationCounts = Record<
-  'top' | 'secondary' | 'checking' | 'contacts',
+  'ranked' | 'checking' | 'contacts',
   number
 >;
 
@@ -35,8 +35,7 @@ export function buildLeadPresentationModel(
   run: LeadgenSnapshot,
 ): LeadPresentationModel {
   const groups: Record<LeadPresentationGroup, LeadPresentation[]> = {
-    top: [],
-    secondary: [],
+    ranked: [],
     checking: [],
   };
   const leads = run.leads.map((lead) => buildLeadPresentation(lead));
@@ -49,8 +48,7 @@ export function buildLeadPresentationModel(
     leads,
     groups,
     counts: {
-      top: groups.top.length,
-      secondary: groups.secondary.length,
+      ranked: groups.ranked.length,
       checking: groups.checking.length,
       contacts: run.contactCount,
     },
@@ -71,12 +69,12 @@ export function buildLeadPresentation(lead: LeadgenLead): LeadPresentation {
 
 function getPresentationGroup(lead: LeadgenLead): LeadPresentationGroup {
   if (lead.status === 'checking') return 'checking';
-  return lead.status === 'contact_now' ? 'top' : 'secondary';
+  return 'ranked';
 }
 
 function getPresentationAction(lead: LeadgenLead): LeadPresentationAction {
   if (lead.status === 'checking') return 'checking';
-  if (lead.status !== 'contact_now') return 'backup';
+  if (lead.status !== 'contact_now') return 'ranked';
   return lead.contacts.length > 0 ||
     lead.contactReadiness === 'contact_found' ||
     lead.contactReadiness === 'generic_fallback'

@@ -49,7 +49,7 @@ export type LeadgenContactReadiness = z.infer<
 export const leadgenRecommendedActionSchema = z.enum([
   'ready_to_contact',
   'finding_contact',
-  'keep_as_backup',
+  'defer_contact',
   'filtered',
 ]);
 

@@ -26,12 +26,6 @@ import {
   RadioGroupItem,
 } from '@namefi-astra/ui/components/shadcn/radio-group';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@namefi-astra/ui/components/shadcn/tabs';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -600,7 +594,7 @@ function RunWorkspace({
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:min-w-[320px]">
             <div className="grid grid-cols-3 gap-2">
-              <Metric label="Top" value={presentation.counts.top} />
+              <Metric label="Prospects" value={presentation.counts.ranked} />
               <Metric label="Contacts" value={presentation.counts.contacts} />
               <Metric label="Drafts" value={run.draftCount} />
             </div>
@@ -637,53 +631,29 @@ function RunWorkspace({
             </div>
           )}
 
-          <Tabs defaultValue="best">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <TabsList>
-                <TabsTrigger value="best">
-                  Top prospects ({presentation.counts.top})
-                </TabsTrigger>
-                <TabsTrigger value="more">
-                  Secondary ({presentation.counts.secondary})
-                </TabsTrigger>
-              </TabsList>
-              {presentation.counts.checking > 0 && (
-                <span className="text-xs text-muted-foreground">
-                  Still checking {presentation.counts.checking}
-                </span>
-              )}
-            </div>
-            <TabsContent value="best" className="mt-4">
-              <LeadList
-                leads={presentation.groups.top}
-                sourceDomain={run.domain}
-                pendingOutreachLeadIds={pendingOutreachLeadIds}
-                reviewOutreachLeadId={reviewOutreachLeadId}
-                estimatedOutreachCredits={estimatedOutreachCredits}
-                remainingCredits={usageQuery.data?.remainingCredits}
-                isOutreachCreditLoading={usageQuery.isLoading}
-                isOutreachCreditError={usageQuery.isError}
-                isOutreachCreditBlocked={hasInsufficientOutreachCredits}
-                onGenerateLeadOutreach={handleGenerateLeadOutreach}
-                onReviewOutreachLead={setReviewOutreachLeadId}
-              />
-            </TabsContent>
-            <TabsContent value="more" className="mt-4">
-              <LeadList
-                leads={presentation.groups.secondary}
-                sourceDomain={run.domain}
-                pendingOutreachLeadIds={pendingOutreachLeadIds}
-                reviewOutreachLeadId={reviewOutreachLeadId}
-                estimatedOutreachCredits={estimatedOutreachCredits}
-                remainingCredits={usageQuery.data?.remainingCredits}
-                isOutreachCreditLoading={usageQuery.isLoading}
-                isOutreachCreditError={usageQuery.isError}
-                isOutreachCreditBlocked={hasInsufficientOutreachCredits}
-                onGenerateLeadOutreach={handleGenerateLeadOutreach}
-                onReviewOutreachLead={setReviewOutreachLeadId}
-              />
-            </TabsContent>
-          </Tabs>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Ranked prospects ({presentation.counts.ranked})
+            </p>
+          </div>
+          <LeadList
+            leads={presentation.groups.ranked}
+            emptyStateMessage={
+              presentation.counts.checking > 0
+                ? 'Scoring is still in progress. Ranked prospects will appear here when they are ready.'
+                : 'No ranked prospects found.'
+            }
+            sourceDomain={run.domain}
+            pendingOutreachLeadIds={pendingOutreachLeadIds}
+            reviewOutreachLeadId={reviewOutreachLeadId}
+            estimatedOutreachCredits={estimatedOutreachCredits}
+            remainingCredits={usageQuery.data?.remainingCredits}
+            isOutreachCreditLoading={usageQuery.isLoading}
+            isOutreachCreditError={usageQuery.isError}
+            isOutreachCreditBlocked={hasInsufficientOutreachCredits}
+            onGenerateLeadOutreach={handleGenerateLeadOutreach}
+            onReviewOutreachLead={setReviewOutreachLeadId}
+          />
         </section>
 
         <aside className="min-h-0 border-t border-border/70 p-5 lg:border-l lg:border-t-0">
@@ -701,6 +671,7 @@ function RunWorkspace({
 
 function LeadList({
   leads,
+  emptyStateMessage,
   sourceDomain,
   pendingOutreachLeadIds,
   reviewOutreachLeadId,
@@ -713,6 +684,7 @@ function LeadList({
   onReviewOutreachLead,
 }: {
   leads: LeadPresentation[];
+  emptyStateMessage: string;
   sourceDomain: string;
   pendingOutreachLeadIds: string[];
   reviewOutreachLeadId: string | null;
@@ -727,7 +699,7 @@ function LeadList({
   if (leads.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
-        Prospects will appear here as they are found.
+        {emptyStateMessage}
       </div>
     );
   }
@@ -1105,7 +1077,7 @@ function LeadEmailDialog({
 }
 
 type TimelinePhaseStatus = 'pending' | 'active' | 'complete' | 'error';
-type TimelineSubtaskTone = 'best' | 'checking' | 'more' | 'contacts' | 'drafts';
+type TimelineSubtaskTone = 'prospects' | 'contacts' | 'drafts';
 
 type TimelineSubtask = {
   id: string;
@@ -1956,6 +1928,7 @@ function WorkingStatus({ label = 'Working' }: { label?: string }) {
   );
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: this consolidates independent timeline signals into one ordered phase model.
 function getCompactTimelinePhases({
   run,
   presentation,
@@ -1980,6 +1953,10 @@ function getCompactTimelinePhases({
   const searchEvent = findLastLeadgenEvent(
     orderedEvents,
     (event) => event.stage === 'search' || event.eventType === 'lead',
+  );
+  const scoringStartedEvent = findLastLeadgenEvent(
+    orderedEvents,
+    (event) => event.eventType === 'status' && event.stage === 'triage',
   );
   const triageEvent = findLastLeadgenEvent(
     orderedEvents,
@@ -2006,13 +1983,11 @@ function getCompactTimelinePhases({
   const hasBuyerAngles = Boolean(intentResultEvent) || queryCount > 0;
   const searchStarted = Boolean(searchEvent);
   const visibleLeadCount =
-    presentation.counts.top +
-    presentation.counts.secondary +
-    presentation.counts.checking;
-  const scoredLeadCount =
-    presentation.counts.top + presentation.counts.secondary;
-  const contactPendingCount = presentation.groups.top.filter(
+    presentation.counts.ranked + presentation.counts.checking;
+  const triageStarted = Boolean(scoringStartedEvent);
+  const contactPendingCount = presentation.groups.ranked.filter(
     (lead) =>
+      lead.lead.status === 'contact_now' &&
       lead.lead.contactReadiness === 'not_searched' &&
       lead.lead.contacts.length < 3,
   ).length;
@@ -2029,22 +2004,21 @@ function getCompactTimelinePhases({
     complete: hasBuyerAngles,
     active: isRunning && !hasBuyerAngles,
   });
+  const scoringStarted = triageStarted || Boolean(outreachEvent) || terminal;
   const earlySearchStatus = getPhaseStatus({
-    complete:
-      terminal ||
-      (hasBuyerAngles &&
-        visibleLeadCount > 0 &&
-        presentation.counts.checking === 0),
+    complete: terminal || triageStarted,
     active:
       isRunning &&
-      (searchStarted || visibleLeadCount > 0) &&
-      (!hasBuyerAngles ||
-        visibleLeadCount === 0 ||
-        presentation.counts.checking > 0),
+      (hasBuyerAngles || searchStarted || visibleLeadCount > 0) &&
+      !triageStarted,
   });
   const scoringStatus = getPhaseStatus({
-    complete: scoredLeadCount > 0 && presentation.counts.checking === 0,
-    active: isRunning && presentation.counts.checking > 0,
+    complete:
+      scoringStarted &&
+      (terminal ||
+        Boolean(outreachEvent) ||
+        presentation.counts.checking === 0),
+    active: isRunning && triageStarted && !outreachEvent,
   });
   const outreachStatus = getPhaseStatus({
     complete:
@@ -2091,29 +2065,22 @@ function getCompactTimelinePhases({
       title: 'Scoring prospects',
       status: scoringStatus,
       icon: Target,
-      timestamp: getTimelineTimestamp(triageEvent, scoringStatus),
+      timestamp: getTimelineTimestamp(
+        scoringStartedEvent ?? triageEvent,
+        scoringStatus,
+      ),
       detail: getActiveEventMessage(triageEvent, scoringStatus),
       subtasks: getTimelineSubtasks([
-        presentation.counts.top > 0
+        presentation.counts.ranked > 0
           ? {
-              id: 'top-prospects',
-              label: 'Top prospects',
-              value: `${presentation.counts.top} found`,
-              tone: 'best',
-              icon: Target,
-              status: getSubtaskStatus(scoringStatus, presentation.counts.top),
-            }
-          : null,
-        presentation.counts.secondary > 0
-          ? {
-              id: 'secondary-prospects',
-              label: 'Secondary prospects',
-              value: `${presentation.counts.secondary} found`,
-              tone: 'more',
+              id: 'ranked-prospects',
+              label: 'Ranked prospects',
+              value: `${presentation.counts.ranked} found`,
+              tone: 'prospects',
               icon: Search,
               status: getSubtaskStatus(
                 scoringStatus,
-                presentation.counts.secondary,
+                presentation.counts.ranked,
               ),
             }
           : null,
@@ -2230,7 +2197,7 @@ function getCompletionTimelineState(
       run.status === 'SUCCEEDED' ? ('complete' as const) : ('pending' as const),
     badge:
       run.status === 'SUCCEEDED'
-        ? `${presentation.counts.top + presentation.counts.secondary} prospects`
+        ? `${presentation.counts.ranked} prospects`
         : undefined,
   };
 }
@@ -2545,12 +2512,8 @@ function getTimelineSubtaskClassName(
   }
 
   switch (tone) {
-    case 'best':
-      return 'border-emerald-300/20 bg-emerald-400/10 text-emerald-100';
-    case 'checking':
+    case 'prospects':
       return 'border-cyan-300/20 bg-cyan-400/10 text-cyan-100';
-    case 'more':
-      return 'border-muted-foreground/20 bg-muted/20 text-muted-foreground';
     case 'contacts':
       return 'border-sky-300/20 bg-sky-400/10 text-sky-100';
     case 'drafts':
