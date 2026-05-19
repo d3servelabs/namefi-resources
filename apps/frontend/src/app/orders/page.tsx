@@ -40,8 +40,34 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
+import { OrdersPageV2 } from './_components/orders-v2';
+
+const ORDERS_FEATURE_FLAGS: FeatureFlagDefinition[] = [
+  {
+    key: 'orders_v2',
+    label: 'Orders: grouped v2 with filters',
+    description:
+      'Switch the Orders page to the v2 layout: orders grouped with their items, sort/filter controls, and PBN reveal toggles.',
+    scope: 'page',
+    pageKey: 'orders',
+    defaultValue: false,
+  },
+];
 
 export default function OrdersPage() {
+  useRegisterAdminFlags(ORDERS_FEATURE_FLAGS);
+  const [useV2] = useAdminFeatureFlag(ORDERS_FEATURE_FLAGS[0]);
+
+  if (useV2) {
+    return <OrdersPageV2 />;
+  }
+  return <OrdersPageV1 />;
+}
+
+function OrdersPageV1() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();

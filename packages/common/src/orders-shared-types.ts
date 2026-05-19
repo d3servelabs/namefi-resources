@@ -91,6 +91,52 @@ export type NfscOrderItemForUser = OrderNfscItemSelect & {
 };
 
 /**
+ * One order with its items, as returned by `getMyOrders`.
+ *
+ * The order-level fields mirror the columns the v1 `getOrderItemsForUser`
+ * lifted into each item row (`nftWalletAddress`, `nftChainId`,
+ * `metadata`) — keeping them on the order itself avoids duplicating them on
+ * every item.
+ */
+export type OrderWithItemsForUser = Pick<
+  OrderSelect,
+  | 'id'
+  | 'status'
+  | 'amountInUSDCents'
+  | 'nftWalletAddress'
+  | 'nftChainId'
+  | 'createdAt'
+  | 'updatedAt'
+> & {
+  metadata: OrderSelect['metadata'];
+  items: OrderItemSelect[];
+  /**
+   * Stable per-user order number. The user's oldest order is `#1`, the
+   * newest is `#n`. The number is global identity — it does NOT depend on
+   * the active filter or sort, so `Order #42` always refers to the same
+   * order regardless of how the list is currently scoped. NFSC top-up
+   * orders consume a number even though they don't appear in this feed,
+   * to keep domain-order numbering stable across product changes.
+   */
+  rowNum: number;
+};
+
+/**
+ * Wire shape of `getMyOrders`. `nextCursor` is `null` when there are no more
+ * pages; otherwise pass it back as the `cursor` input to fetch the next page.
+ */
+export type GetMyOrdersResult = {
+  orders: OrderWithItemsForUser[];
+  nextCursor: string | null;
+  /**
+   * Total number of orders matching the current filters (across all pages).
+   * Computed in the same window pass as `rowNum`; useful for "showing N of T"
+   * UI affordances and for hinting the user when no orders match a filter.
+   */
+  totalCount: number;
+};
+
+/**
  * Return type of
  * `apps/backend/src/lib/carts/cart-validation.ts:reflectChangesInCartItemsIfAnyAndReturnSummary`
  * — either an array of human-readable change summaries, or `undefined` if

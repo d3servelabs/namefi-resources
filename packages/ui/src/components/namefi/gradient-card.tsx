@@ -67,10 +67,6 @@ export const GradientCard = forwardRef<HTMLDivElement, GradientCardProps>(
             <div className="absolute inset-0 bg-gradient-to-tl from-brand-primary/5 via-transparent to-brand-secondary/5 pointer-events-none" />
           );
 
-        case 'minimal-horizontal':
-          return (
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-primary/5 pointer-events-none" />
-          );
         case 'minimal':
           return (
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 via-transparent to-transparent pointer-events-none" />
@@ -138,6 +134,7 @@ export const GradientCard = forwardRef<HTMLDivElement, GradientCardProps>(
           return 'relative overflow-hidden border-0 bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800';
 
         case 'minimal-horizontal':
+          return 'border-0 overflow-hidden relative bg-gradient-to-r from-brand-primary/5 via-zinc-900 to-brand-primary/5 hover:from-brand-primary/10 hover:to-brand-primary/10';
         case 'minimal-top':
         case 'minimal-bottom':
         case 'minimal-right':

@@ -8,6 +8,7 @@ import { paymentProviderDetailsSchema } from '../payment-provider';
 import type {
   CreatedNfscOrder,
   CreatedOrder,
+  GetMyOrdersResult,
   NfscOrderItemForUser,
   OrderItemsForUser,
   OrderProgressPayload,
@@ -18,7 +19,6 @@ import type {
 } from '../orders-shared-types';
 import { orderStatusSchema } from '../shared-schemas';
 import { createContract } from './create-contract';
-import type { RouterContract } from './trpc-contract';
 
 /**
  * Contract for the orders router.
@@ -216,6 +216,48 @@ const getMyNfscOrdersInputSchema = z.object({
   limit: z.number().int().min(1).max(100).optional(),
 });
 
+/**
+ * Input for `getMyOrders` — the v2 orders feed (grouped by order, with items
+ * nested). All filters are optional and AND-combined and the result is always
+ * scoped to `ctx.user.id` server-side. The procedure deliberately ignores the
+ * request origin / `poweredByNamefiDomain` so the frontend can decide how to
+ * present PBN vs non-PBN items.
+ */
+const getMyOrdersFiltersSchema = z
+  .object({
+    /** Substring (ILIKE) match against any item's normalizedDomainName. */
+    domainName: z.string().trim().min(1).optional(),
+    /** Order-level status filter — OR'd within the array, AND'd with the rest. */
+    orderStatuses: z.array(orderStatusSchema).optional(),
+    /** Exact match on order id. */
+    orderId: z.string().trim().min(1).optional(),
+    /** Exact match on the order's NFT receiving wallet address. */
+    nftReceivingWalletAddress: z.string().trim().min(1).optional(),
+    /** Exact match on the order's NFT receiving chain id. */
+    nftReceivingChainId: z.number().int().positive().optional(),
+  })
+  .default({});
+
+const getMyOrdersInputSchema = z.object({
+  sortBy: z.enum(['date', 'price']).default('date'),
+  sortDirection: z.enum(['asc', 'desc']).default('desc'),
+  filters: getMyOrdersFiltersSchema,
+  limit: z.number().int().min(1).max(50).default(25),
+  /**
+   * Opaque keyset cursor returned in `nextCursor`. Encodes the (sortValue,
+   * orderId) pair of the last row of the previous page so the next page can
+   * resume without skipping/duplicating.
+   */
+  cursor: z.string().optional(),
+  /**
+   * On a PBN deployment (request `Origin` resolves to a third-party parent
+   * like `0x.city`), the backend filters out orders that don't contain any
+   * item under that parent. Setting this to `true` disables that filter so
+   * the user can see their other orders. No-op on first-party deployments.
+   */
+  includeAllParents: z.boolean().default(false),
+});
+
 const paymentIdInputSchema = z.object({ paymentId: z.string() });
 
 const refreshCartItemsInputSchema = z.object({
@@ -287,6 +329,9 @@ const orderDetailsSchema = z.custom<OrderWithPayments>(() => true);
 // TODO(contract): replace with structural schema for getOrderItemsForUser rows
 const orderItemsForUserSchema = z.custom<OrderItemsForUser>(() => true);
 
+// TODO(contract): replace with structural schema for getMyOrders payload
+const getMyOrdersResultSchema = z.custom<GetMyOrdersResult>(() => true);
+
 // TODO(contract): replace with structural schema for getNfscOrderItemsForUser rows
 const nfscOrderItemsForUserSchema = z.custom<NfscOrderItemForUser[]>(
   () => true,
@@ -351,6 +396,12 @@ export const ordersContract = createContract(
       type: 'query',
       input: noInputSchema,
       output: orderItemsForUserSchema,
+    },
+
+    getMyOrders: {
+      type: 'query',
+      input: getMyOrdersInputSchema,
+      output: getMyOrdersResultSchema,
     },
 
     getOrderProgress: {

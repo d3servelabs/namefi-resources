@@ -98,6 +98,12 @@ export const RequiresCapture: Story = {
     type: 'payment',
   },
 };
+export const RequiresAction: Story = {
+  args: {
+    status: 'REQUIRES_ACTION',
+    type: 'payment',
+  },
+};
 
 export const AllStatuses: Story = {
   args: {
@@ -115,6 +121,7 @@ export const AllStatuses: Story = {
           <StatusBadge status="FAILED" type="order" />
           <StatusBadge status="CANCELLED" type="order" />
           <StatusBadge status="PARTIALLY_COMPLETED" type="order" />
+          <StatusBadge status="REQUIRES_ACTION" type="order" />
         </div>
       </div>
       <div className="flex flex-col gap-2">

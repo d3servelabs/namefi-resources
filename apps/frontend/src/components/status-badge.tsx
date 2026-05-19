@@ -40,8 +40,8 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
       case 'FAILED':
         return (
           <Badge
-            variant="destructive"
-            className="bg-red-600 text-secondary-foreground hover:bg-red-700"
+            variant="secondary"
+            className="bg-red-900 text-secondary-foreground hover:bg-red-950"
           >
             Failed
           </Badge>
@@ -50,7 +50,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="outline"
-            className="border-red-300 bg-red-50 text-red-700 hover:bg-red-100"
+            className="border-orange-500 bg-orange-400 text-secondary-foreground hover:bg-orange-500"
           >
             Cancelled
           </Badge>
@@ -59,7 +59,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="outline"
-            className="border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100"
+            className="border-amber-400 bg-amber-200 text-gray-800 hover:text-secondary-foreground hover:bg-amber-400"
           >
             Partially Completed
           </Badge>
@@ -68,7 +68,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="outline"
-            className="border-amber-300 bg-amber-200 text-amber-800 hover:bg-amber-100"
+            className="border-amber-500 bg-amber-300 text-gray-800 hover:text-secondary-foreground hover:bg-amber-500"
           >
             Waiting For User
           </Badge>
@@ -77,7 +77,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="outline"
-            className="border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100"
+            className="border-amber-500 bg-amber-300 text-gray-800 hover:text-secondary-foreground hover:bg-amber-500"
           >
             Pending
           </Badge>
@@ -86,7 +86,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="outline"
-            className="border-purple-300 bg-purple-50 text-purple-800 hover:bg-purple-100"
+            className="border-purple-500 bg-purple-300 text-gray-800 hover:text-secondary-foreground hover:bg-purple-500"
           >
             Refunded
           </Badge>
@@ -95,7 +95,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="outline"
-            className="border-orange-300 bg-orange-50 text-orange-800 hover:bg-orange-100"
+            className="border-orange-500 bg-orange-300 text-gray-800 hover:text-secondary-foreground hover:bg-orange-500"
           >
             Requires Capture
           </Badge>

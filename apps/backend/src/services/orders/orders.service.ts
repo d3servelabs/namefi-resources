@@ -17,7 +17,9 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import type {
+  GetMyOrdersResult,
   NfscOrderItemForUser,
+  OrderWithItemsForUser,
   OrderWithPayments,
   PaymentMethodDetails,
 } from '@namefi-astra/common/orders-shared-types';
@@ -32,12 +34,19 @@ import type { NfscPaymentProviderDetails } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import {
   and,
+  asc,
   desc,
   eq,
+  exists,
   getTableColumns,
+  gt,
   ilike,
   inArray,
   isNull,
+  lt,
+  or,
+  sql,
+  type SQL,
 } from 'drizzle-orm';
 import { isNil, isNotNil, filter, pluck, indexBy, omit, prop } from 'ramda';
 import Stripe from 'stripe';
@@ -485,6 +494,289 @@ export async function getOrderItemsForUser(
     .orderBy(desc(ordersTable.createdAt));
 
   return items;
+}
+
+/**
+ * Input shape for `getMyOrders` — mirrors the parsed contract input.
+ */
+export type GetMyOrdersInput = {
+  sortBy: 'date' | 'price';
+  sortDirection: 'asc' | 'desc';
+  filters: {
+    domainName?: string;
+    orderStatuses?: OrderStatus[];
+    orderId?: string;
+    nftReceivingWalletAddress?: string;
+    nftReceivingChainId?: number;
+  };
+  limit: number;
+  cursor?: string;
+  /** When true, do not restrict to orders containing PBN-matching items. */
+  includeAllParents: boolean;
+};
+
+/**
+ * Keyset cursor payload. `v` is the sort value of the last row of the
+ * previous page (either a `createdAt` epoch ms or an `amountInUSDCents`
+ * integer) and `i` is its order id — the deterministic tie-breaker so
+ * pagination stays stable when two orders share the same sort value.
+ *
+ * Pagination has to be keyset rather than row-number-based because the
+ * row number is computed against the user's full chronological history
+ * (regardless of the current sort) and so isn't monotonic with the
+ * outer-query sort.
+ */
+type MyOrdersCursor = { v: number; i: string };
+
+function encodeMyOrdersCursor(c: MyOrdersCursor): string {
+  return Buffer.from(JSON.stringify(c), 'utf8').toString('base64url');
+}
+
+function decodeMyOrdersCursor(s: string): MyOrdersCursor | null {
+  try {
+    const parsed = JSON.parse(Buffer.from(s, 'base64url').toString('utf8'));
+    if (
+      parsed &&
+      typeof parsed === 'object' &&
+      typeof parsed.v === 'number' &&
+      Number.isFinite(parsed.v) &&
+      typeof parsed.i === 'string' &&
+      parsed.i.length > 0
+    ) {
+      return { v: parsed.v, i: parsed.i };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Escape PostgreSQL `LIKE`/`ILIKE` wildcards (`%`, `_`) and the escape
+ * character itself (`\`) so user-supplied search text is matched literally.
+ * Backslash is PostgreSQL's default `LIKE` escape character, so escaping
+ * inside the pattern works without an explicit `ESCAPE` clause.
+ */
+function escapeLikePattern(value: string): string {
+  return value.replace(/[\\%_]/g, '\\$&');
+}
+
+/**
+ * v2 orders feed — return a page of the current user's orders with their
+ * items nested.
+ *
+ * The row number is a stable per-user identity: the oldest order is always
+ * `#1`, the newest is `#n`. It does NOT depend on the active filter or
+ * sort — it's computed in an inner subquery over the user's full orders
+ * table (including NFSC top-ups, so that a domain order's `#5` doesn't
+ * silently shift when an unrelated NFSC top-up is created). The outer
+ * query then applies all filters (structural and user-controlled), sorts
+ * by the requested column, and paginates with a keyset cursor on the sort
+ * column + id. `COUNT(*) OVER ()` in the outer query yields the post-
+ * filter total so the UI can show "Showing K of T".
+ *
+ * Structural filters (always applied):
+ * - at least one row in `order_items` — excludes NFSC-top-up-only orders,
+ *   which live in `order_nfsc_items` only.
+ * - on PBN deployments, at least one item under the request's PBN
+ *   parent. Caller can opt out via `includeAllParents`.
+ *
+ * Perf note: numbering is O(N) in the user's total orders (the planner has
+ * to read all of them before assigning row numbers). For typical histories
+ * (<1k orders) it's negligible. Users with tens of thousands of orders
+ * would want a composite `(user_id, created_at, id)` index — not present
+ * today.
+ */
+export async function getMyOrders(
+  userId: string,
+  poweredByNamefiDomain: string | null | undefined,
+  input: GetMyOrdersInput,
+): Promise<GetMyOrdersResult> {
+  const { sortBy, sortDirection, filters, limit, cursor, includeAllParents } =
+    input;
+
+  const decodedCursor = cursor ? decodeMyOrdersCursor(cursor) : null;
+  // A cursor that fails to decode is a client bug, not "start from page 1" —
+  // silently falling back would return duplicate first-page data and hide it.
+  if (cursor && !decodedCursor) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Invalid or malformed pagination cursor',
+    });
+  }
+
+  // Inner subquery: every order the user has ever placed, numbered by
+  // chronological position (oldest = 1). NO filters here — the row number
+  // is a stable identity, not a query-relative position.
+  const numbered = db
+    .select({
+      id: ordersTable.id,
+      status: ordersTable.status,
+      amountInUSDCents: ordersTable.amountInUSDCents,
+      nftWalletAddress: ordersTable.nftWalletAddress,
+      nftChainId: ordersTable.nftChainId,
+      metadata: ordersTable.metadata,
+      createdAt: ordersTable.createdAt,
+      updatedAt: ordersTable.updatedAt,
+      rowNum:
+        sql<number>`row_number() over (order by ${ordersTable.createdAt} asc, ${ordersTable.id} asc)`.as(
+          'row_num',
+        ),
+    })
+    .from(ordersTable)
+    .where(eq(ordersTable.userId, userId))
+    .as('numbered_orders');
+
+  // EXISTS subquery builder — every condition we attach to `order_items`
+  // already joins on `order_id = numbered.id`, so we factor that out.
+  const itemsExistsWhere = (...extraConditions: (SQL | undefined)[]) =>
+    exists(
+      db
+        .select({ one: sql`1` })
+        .from(orderItemsTable)
+        .where(
+          and(eq(orderItemsTable.orderId, numbered.id), ...extraConditions),
+        ),
+    );
+
+  // Structural: at least one domain item. Excludes NFSC-top-up-only orders
+  // from the visible list (they still consume a row number in the inner
+  // subquery so the user's other order numbers stay stable).
+  const hasAnyDomainItemCondition = itemsExistsWhere();
+
+  // Structural-ish: on PBN deployments, hide orders with no PBN-matching
+  // items unless the caller opts out via `includeAllParents`.
+  const pbnFilterActive = Boolean(poweredByNamefiDomain) && !includeAllParents;
+  const hasPbnItemCondition =
+    pbnFilterActive && poweredByNamefiDomain
+      ? itemsExistsWhere(
+          ilike(
+            orderItemsTable.normalizedDomainName,
+            `%.${poweredByNamefiDomain}`,
+          ),
+        )
+      : undefined;
+
+  // User's `domainName` substring filter — a separate EXISTS so it doesn't
+  // collide with the PBN clause (an order may satisfy both via different
+  // items: one under the PBN parent and one matching the user's pattern
+  // outside it). The input is escaped so a literal `%`/`_` isn't treated
+  // as a wildcard.
+  const domainNameCondition = filters.domainName
+    ? itemsExistsWhere(
+        ilike(
+          orderItemsTable.normalizedDomainName,
+          `%${escapeLikePattern(filters.domainName)}%`,
+        ),
+      )
+    : undefined;
+
+  const sortColumn =
+    sortBy === 'date' ? numbered.createdAt : numbered.amountInUSDCents;
+  const sortFn = sortDirection === 'asc' ? asc : desc;
+  const cmpFn = sortDirection === 'asc' ? gt : lt;
+
+  const cursorSortValue: Date | number | null = decodedCursor
+    ? sortBy === 'date'
+      ? new Date(decodedCursor.v)
+      : decodedCursor.v
+    : null;
+
+  const cursorCondition =
+    decodedCursor && cursorSortValue !== null
+      ? or(
+          cmpFn(sortColumn, cursorSortValue as never),
+          and(
+            eq(sortColumn, cursorSortValue as never),
+            cmpFn(numbered.id, decodedCursor.i),
+          ),
+        )
+      : undefined;
+
+  // Outer query: apply all filters + sort + cursor + limit, and emit a
+  // post-filter total via COUNT(*) OVER ().
+  const orderRows = await db
+    .select({
+      id: numbered.id,
+      status: numbered.status,
+      amountInUSDCents: numbered.amountInUSDCents,
+      nftWalletAddress: numbered.nftWalletAddress,
+      nftChainId: numbered.nftChainId,
+      metadata: numbered.metadata,
+      createdAt: numbered.createdAt,
+      updatedAt: numbered.updatedAt,
+      rowNum: numbered.rowNum,
+      totalCount: sql<number>`count(*) over ()`.as('total_count'),
+    })
+    .from(numbered)
+    .where(
+      and(
+        hasAnyDomainItemCondition,
+        hasPbnItemCondition,
+        filters.orderId ? eq(numbered.id, filters.orderId) : undefined,
+        filters.orderStatuses && filters.orderStatuses.length > 0
+          ? inArray(numbered.status, filters.orderStatuses)
+          : undefined,
+        // Case-insensitive: stored addresses are checksummed, but a user
+        // can paste any casing into the filter.
+        filters.nftReceivingWalletAddress
+          ? sql`lower(${numbered.nftWalletAddress}) = lower(${filters.nftReceivingWalletAddress})`
+          : undefined,
+        filters.nftReceivingChainId !== undefined
+          ? eq(numbered.nftChainId, filters.nftReceivingChainId)
+          : undefined,
+        domainNameCondition,
+        cursorCondition,
+      ),
+    )
+    .orderBy(sortFn(sortColumn), sortFn(numbered.id))
+    .limit(limit + 1);
+
+  const hasMore = orderRows.length > limit;
+  const keptOrders = hasMore ? orderRows.slice(0, limit) : orderRows;
+
+  // COUNT(*) OVER () is the same value on every returned row. When the
+  // slice is empty there were no matches, so 0 is the correct fallback.
+  const totalCount = keptOrders[0]?.totalCount ?? 0;
+
+  const nextCursor =
+    hasMore && keptOrders.length > 0
+      ? encodeMyOrdersCursor({
+          v:
+            sortBy === 'date'
+              ? keptOrders[keptOrders.length - 1].createdAt.getTime()
+              : keptOrders[keptOrders.length - 1].amountInUSDCents,
+          i: keptOrders[keptOrders.length - 1].id,
+        })
+      : null;
+
+  if (keptOrders.length === 0) {
+    return { orders: [], nextCursor, totalCount };
+  }
+
+  const orderIds = keptOrders.map((o) => o.id);
+  const itemRows = await db
+    .select()
+    .from(orderItemsTable)
+    .where(inArray(orderItemsTable.orderId, orderIds))
+    .orderBy(asc(orderItemsTable.createdAt));
+
+  const itemsByOrderId = new Map<string, (typeof itemRows)[number][]>();
+  for (const item of itemRows) {
+    const list = itemsByOrderId.get(item.orderId);
+    if (list) {
+      list.push(item);
+    } else {
+      itemsByOrderId.set(item.orderId, [item]);
+    }
+  }
+
+  const orders = keptOrders.map((order) => ({
+    ...order,
+    items: itemsByOrderId.get(order.id) ?? [],
+  })) as unknown as OrderWithItemsForUser[];
+
+  return { orders, nextCursor, totalCount };
 }
 
 /**

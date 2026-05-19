@@ -35,6 +35,7 @@ import {
   type CreateOrderItemInput,
   type CreateOrderNfscItemInput,
   ensureOrderOwnership,
+  getMyOrders,
   getOrderItemsForUser,
   buildPaymentMethodDetails,
   buildOrderPaymentMethodsDetails,
@@ -613,6 +614,17 @@ export const ordersRouter = createContractTRPCRouter<typeof ordersContract>({
     .output(ordersContract.getOrderItems.output)
     .query(async ({ ctx: { user, poweredByNamefiDomain } }) => {
       return getOrderItemsForUser(user.id, poweredByNamefiDomain);
+    }),
+
+  // v2 orders feed. Returns orders with their items nested and supports
+  // sort/filter/cursor pagination. On PBN deployments the service
+  // additionally requires at least one PBN-matching item per order; the
+  // client can opt out via `includeAllParents`.
+  getMyOrders: protectedProcedure
+    .input(ordersContract.getMyOrders.input)
+    .output(ordersContract.getMyOrders.output)
+    .query(async ({ input, ctx: { user, poweredByNamefiDomain } }) => {
+      return getMyOrders(user.id, poweredByNamefiDomain, input);
     }),
 
   getOrderProgress: protectedProcedure
