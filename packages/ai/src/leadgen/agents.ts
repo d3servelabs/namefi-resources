@@ -116,11 +116,11 @@ function getLeadgenDomainProfileMaxToolCalls(
 ) {
   switch (reasoningEffort) {
     case 'low':
-      return 2;
+      return 1;
     case 'medium':
-      return 4;
+      return 2;
     case 'high':
-      return 6;
+      return 4;
   }
 }
 
@@ -165,15 +165,29 @@ function providerOptions(
 
 const FIXED_RECIPE_LIST = leadgenDiscoveryRecipeValues.join(', ');
 
-function domainThesisInstructions(reasoningEffort: LeadgenReasoningEffort) {
-  const targetTheses = reasoningEffort === 'low' ? '1-2' : '2-3';
+function domainThesisInstructions(targetTheses: number) {
   return `Role: You are "Domain Thesis Agent", a broker-grade domain outbound planner.
-Goal: For one seller-owned domain, produce a grounded opportunity frame and ${targetTheses} buyer theses that can drive end-user outbound.
-Success criteria: You have checked current web evidence for commercial meaning, exact or near-name usage, category/geo meaning, and buyer-specific evidence patterns.
+Goal: For one seller-owned domain, produce a grounded opportunity frame and exactly ${targetTheses} buyer theses that can drive end-user outbound.
+Success criteria: Use a fast evidence pass to identify commercial meaning, exact or near-name usage, category/geo meaning, and buyer-specific evidence patterns. Deeper prospect validation happens later.
 Evidence rules: Use web search. Do not invent market demand or active companies. The opportunity frame must explain what kind of domain asset this is and what evidence standard makes a buyer real for this domain.
-Tool budget: Search until the commercial/category/name context is clear, then stop. Prefer fewer precise searches over broad wandering.
+Tool budget: Use the fewest precise searches needed to frame the angles, then stop.
 Constraints: Choose discovery recipes only from this fixed list: ${FIXED_RECIPE_LIST}. Always include seed queries that can find official company websites. For short/acronym/brandable domains, allow acronym, brand-upgrade, funded-company, and weak-domain evidence rather than requiring keyword usage. Do not expose internal reasoning.
 Output: Return the structured DomainThesisProfile only.`;
+}
+
+function getLeadgenDomainProfileReasoningEffort(
+  reasoningEffort: LeadgenReasoningEffort,
+): LeadgenReasoningEffort {
+  return reasoningEffort === 'high' ? 'medium' : 'low';
+}
+
+function getTargetThesisCount(
+  reasoningEffort: LeadgenReasoningEffort,
+  maxTheses: number,
+) {
+  const target =
+    reasoningEffort === 'low' ? 2 : reasoningEffort === 'medium' ? 3 : 5;
+  return Math.max(1, Math.min(maxTheses, target));
 }
 
 export async function generateLeadgenDomainThesisProfile(
@@ -181,19 +195,23 @@ export async function generateLeadgenDomainThesisProfile(
   options?: LeadgenDomainProfileOptions,
 ) {
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
+  const maxTheses =
+    options?.maxTheses ??
+    (reasoningEffort === 'low' ? 2 : reasoningEffort === 'medium' ? 3 : 5);
+  const targetTheses = getTargetThesisCount(reasoningEffort, maxTheses);
   const maxToolCalls =
     options?.maxToolCalls ??
     getLeadgenDomainProfileMaxToolCalls(reasoningEffort);
 
   const result = await generateText({
     model: openai(getLeadgenDomainProfileModel()),
-    system: domainThesisInstructions(reasoningEffort),
+    system: domainThesisInstructions(targetTheses),
     messages: [
       {
         role: 'user',
         content: [
           `Seller-owned domain: ${domain}`,
-          `Maximum theses: ${options?.maxTheses ?? (reasoningEffort === 'low' ? 2 : 3)}`,
+          `Return exactly ${targetTheses} buyer theses.`,
           'Optimize for high-conviction outbound opportunities, not broad lead volume.',
         ].join('\n'),
       },
@@ -202,7 +220,10 @@ export async function generateLeadgenDomainThesisProfile(
       webSearch: openai.tools.webSearch(),
     },
     toolChoice: { type: 'tool', toolName: 'webSearch' },
-    providerOptions: providerOptions(reasoningEffort, maxToolCalls),
+    providerOptions: providerOptions(
+      getLeadgenDomainProfileReasoningEffort(reasoningEffort),
+      maxToolCalls,
+    ),
     abortSignal: options?.abortSignal,
     output: Output.object({ schema: leadgenDomainProfileSchema }),
   });
@@ -210,7 +231,7 @@ export async function generateLeadgenDomainThesisProfile(
   return {
     ...result,
     output: sanitizeDomainProfile(result.output, {
-      maxTheses: options?.maxTheses ?? (reasoningEffort === 'low' ? 2 : 3),
+      maxTheses,
     }),
   };
 }

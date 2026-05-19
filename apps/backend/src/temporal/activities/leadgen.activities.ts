@@ -1214,7 +1214,7 @@ function getLeadgenEffortConfig(
       triageBatchSize: 5,
     },
     high: {
-      maxTheses: 3,
+      maxTheses: 5,
       rawCandidateLimit: 90,
       triageLeadLimit: 45,
       contactDiscoveryLimit: 8,

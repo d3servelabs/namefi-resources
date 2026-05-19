@@ -87,7 +87,7 @@ export const leadgenDomainProfileSchema = z
     evidenceStandards: z.array(z.string().trim().min(1).max(140)).min(1).max(6),
     searchDirections: z.array(leadgenSearchDirectionSchema).min(1).max(6),
     traits: z.array(leadgenDomainTraitSchema).max(8),
-    theses: z.array(leadgenDomainThesisSchema).min(1).max(3),
+    theses: z.array(leadgenDomainThesisSchema).min(1).max(5),
     cautions: z.array(z.string().trim().min(1).max(220)).max(5),
     seedQueries: z.array(z.string().trim().min(1).max(300)).min(1).max(8),
   })

@@ -5,6 +5,30 @@ import {
   leadgenOpportunityTriageSchema,
 } from './types';
 
+function buildDomainProfileInput(thesisCount: number) {
+  return {
+    evidenceStandards: [
+      'Company naming, category relevance, and upgrade value are required.',
+    ],
+    searchDirections: [
+      {
+        recipe: 'domain_weakness_check',
+        intent: 'Find companies with weaker current domains.',
+      },
+    ],
+    traits: [],
+    theses: Array.from({ length: thesisCount }, (_, index) => ({
+      title: `Buyer angle ${index + 1}`,
+      confidence: 0.7,
+      discoveryRecipes: ['domain_weakness_check'],
+      requiredEvidence: ['Company with weak current domain'],
+      seedQueries: [`buyer angle ${index + 1} official`],
+    })),
+    cautions: [],
+    seedQueries: ['startup official'],
+  };
+}
+
 describe('leadgenDomainProfileSchema', () => {
   it('requires opportunity framing fields', () => {
     const parsed = leadgenDomainProfileSchema.parse({
@@ -33,6 +57,18 @@ describe('leadgenDomainProfileSchema', () => {
 
     expect(parsed.evidenceStandards).toHaveLength(1);
     expect(parsed.searchDirections[0]?.recipe).toBe('domain_weakness_check');
+  });
+
+  it('allows five buyer theses for high-effort runs', () => {
+    const parsed = leadgenDomainProfileSchema.parse(buildDomainProfileInput(5));
+
+    expect(parsed.theses).toHaveLength(5);
+  });
+
+  it('rejects more than five buyer theses', () => {
+    expect(() =>
+      leadgenDomainProfileSchema.parse(buildDomainProfileInput(6)),
+    ).toThrow();
   });
 });
 

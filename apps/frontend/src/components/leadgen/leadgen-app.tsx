@@ -2031,11 +2031,16 @@ function getCompactTimelinePhases({
   });
   const earlySearchStatus = getPhaseStatus({
     complete:
-      terminal || (visibleLeadCount > 0 && presentation.counts.checking === 0),
+      terminal ||
+      (hasBuyerAngles &&
+        visibleLeadCount > 0 &&
+        presentation.counts.checking === 0),
     active:
       isRunning &&
       (searchStarted || visibleLeadCount > 0) &&
-      (visibleLeadCount === 0 || presentation.counts.checking > 0),
+      (!hasBuyerAngles ||
+        visibleLeadCount === 0 ||
+        presentation.counts.checking > 0),
   });
   const scoringStatus = getPhaseStatus({
     complete: scoredLeadCount > 0 && presentation.counts.checking === 0,

@@ -27,18 +27,21 @@ function resolveLeadgenRunLimits(input: LeadgenWorkflowInput) {
     value == null ? fallback : Math.max(0, Math.floor(value));
   const effortDefaults = {
     low: {
+      maxTheses: 2,
       rawCandidateLimit: 20,
       contactDiscoveryLimit: 2,
       earlyContactDiscoveryLimit: 1,
       selectedRecipeLimit: 1,
     },
     medium: {
+      maxTheses: 3,
       rawCandidateLimit: 45,
       contactDiscoveryLimit: 5,
       earlyContactDiscoveryLimit: 2,
       selectedRecipeLimit: 3,
     },
     high: {
+      maxTheses: 5,
       rawCandidateLimit: 90,
       contactDiscoveryLimit: 8,
       earlyContactDiscoveryLimit: 3,
@@ -60,7 +63,7 @@ function resolveLeadgenRunLimits(input: LeadgenWorkflowInput) {
   );
 
   return {
-    maxTheses: input.reasoningEffort === 'low' ? 2 : 3,
+    maxTheses: effortDefaults.maxTheses,
     selectedRecipeLimit,
     rawCandidateLimit,
     contactDiscoveryLimit,
