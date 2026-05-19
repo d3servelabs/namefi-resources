@@ -12,6 +12,7 @@ import { mock } from 'wagmi/connectors';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { MarketplacePanel } from '@/components/domain-and-dns-managment/panels/marketplace/marketplace-panel';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
+import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 import { MockPrivyProvider } from '@/lib/mock/privy';
 import { ETHEREUM_MAINNET_CHAIN_ID } from '@/lib/marketplaces/chains';
 import type { Listing } from '@/lib/marketplaces/types';
@@ -152,20 +153,22 @@ function MarketplacePanelStory({
         <QueryClientProvider client={queryClient}>
           <AdminFeatureFlagsProvider>
             <ConsentManagerProvider options={{ mode: 'offline' }}>
-              <InteractionLoggersProvider>
-                <ListingsCachePrimer
-                  tokenId={tokenId}
-                  chainId={nftChainId}
-                  data={listings}
-                >
-                  <div className="max-w-4xl mx-auto p-6">
-                    <MarketplacePanel
-                      domain={MOCK_DOMAIN}
-                      nftChainId={nftChainId}
-                    />
-                  </div>
-                </ListingsCachePrimer>
-              </InteractionLoggersProvider>
+              <PreAuthSignalsProvider>
+                <InteractionLoggersProvider>
+                  <ListingsCachePrimer
+                    tokenId={tokenId}
+                    chainId={nftChainId}
+                    data={listings}
+                  >
+                    <div className="max-w-4xl mx-auto p-6">
+                      <MarketplacePanel
+                        domain={MOCK_DOMAIN}
+                        nftChainId={nftChainId}
+                      />
+                    </div>
+                  </ListingsCachePrimer>
+                </InteractionLoggersProvider>
+              </PreAuthSignalsProvider>
             </ConsentManagerProvider>
           </AdminFeatureFlagsProvider>
         </QueryClientProvider>
