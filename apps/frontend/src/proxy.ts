@@ -1,11 +1,59 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from './lib/env/consts';
 import { config as configEnv } from './lib/env';
+import {
+  isThirdPartyOriginKey,
+  getThirdPartyOriginRouteSegment,
+  type ThirdPartyOriginKey,
+} from './lib/origin/keys';
 
-const isPoweredByNamefiDomains = (domain: string) => {
-  return POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.includes(domain);
-};
+function getOwnRecordValue(
+  record: Record<string, string>,
+  key: string,
+): string | null {
+  return Object.hasOwn(record, key) ? (record[key] ?? null) : null;
+}
+
+function getCanonicalThirdPartyHostname(
+  hostname: string,
+): ThirdPartyOriginKey | null {
+  if (isThirdPartyOriginKey(hostname)) {
+    return hostname;
+  }
+
+  const mappedHostname = getOwnRecordValue(
+    configEnv.ADDITIONAL_HOSTNAME_MAP,
+    hostname,
+  );
+
+  return mappedHostname && isThirdPartyOriginKey(mappedHostname)
+    ? mappedHostname
+    : null;
+}
+
+function getRequestHostname(request: NextRequest): string {
+  const forwardedHost =
+    request.headers.get('x-forwarded-host') ??
+    request.headers.get('host') ??
+    request.nextUrl.host;
+
+  const candidate = forwardedHost.split(',')[0]?.trim();
+  if (!candidate) {
+    return '';
+  }
+
+  try {
+    return new URL(`http://${candidate}`).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function rewritePath(request: NextRequest, pathname: string): NextResponse {
+  const destination = request.nextUrl.clone();
+  destination.pathname = pathname;
+  return NextResponse.rewrite(destination);
+}
 
 /**
  * Extracts path params from a pathname based on a route pattern.
@@ -92,6 +140,19 @@ const redirectRoutes = [
 export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
+  if (pathname === '/') {
+    const hostname = getRequestHostname(request);
+    const canonicalHostname = getCanonicalThirdPartyHostname(hostname);
+
+    if (canonicalHostname) {
+      const routeSegment = getThirdPartyOriginRouteSegment(canonicalHostname);
+      return rewritePath(
+        request,
+        `/site/${routeSegment}/landing/${routeSegment}`,
+      );
+    }
+  }
+
   // Only process /m/* paths
   if (!pathname.startsWith('/m/')) {
     return NextResponse.next();
@@ -119,11 +180,13 @@ export function proxy(request: NextRequest) {
   }
 
   let redirectHostname = defaultHost;
-  const maybePoweredByNamefiDomain = searchParams.get('powered-by-namefi');
+  const maybePoweredByNamefiDomain = searchParams
+    .get('powered-by-namefi')
+    ?.toLowerCase();
 
   if (
     maybePoweredByNamefiDomain &&
-    isPoweredByNamefiDomains(maybePoweredByNamefiDomain)
+    isThirdPartyOriginKey(maybePoweredByNamefiDomain)
   ) {
     redirectHostname = maybePoweredByNamefiDomain;
   }
@@ -151,5 +214,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/m/:path*',
+  matcher: ['/', '/m/:path*'],
 };

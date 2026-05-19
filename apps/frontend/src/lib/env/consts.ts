@@ -1,17 +1,4 @@
-export const POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES = [
-  'aave',
-  'uniswap',
-  '0x.city',
-  'token.com',
-  'taylor.cv',
-  'ali.cv',
-  'li.cv',
-  'muller.cv',
-  'kumar.cv',
-  'victor.cv',
-  'starts.today',
-  'ends.today',
-  'promos.today',
-  'available.today',
-  'discounts.today',
-];
+export {
+  THIRD_PARTY_ORIGIN_KEYS as POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES,
+  type ThirdPartyOriginKey as PoweredByNamefiThirdPartyHostname,
+} from '../origin/keys';

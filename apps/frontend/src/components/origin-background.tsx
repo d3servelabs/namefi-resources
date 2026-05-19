@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useOrigin } from '@/components/providers/origin';
 import { usePathname } from 'next/navigation';
+import { isLandingPath } from '@/lib/origin/keys';
 
 const OriginBackground = () => {
   const origin = useOrigin();
@@ -13,7 +14,7 @@ const OriginBackground = () => {
   }
 
   // Note: only show the background on the landing page
-  if (pathname !== '/') {
+  if (!isLandingPath(pathname)) {
     return null;
   }
 

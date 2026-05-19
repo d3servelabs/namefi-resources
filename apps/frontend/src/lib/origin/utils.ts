@@ -1,8 +1,14 @@
 import { config } from '@/lib/env';
 import { getHostname } from '@/lib/string';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { originConfig } from './config';
-import type { OriginConfig, OriginInfo } from './types';
+import {
+  getThirdPartyOriginCanonicalOrigin,
+  type ThirdPartyOriginKey,
+} from './keys';
+import type { OriginConfig, OriginRuntime } from './types';
+
+export const FIRST_PARTY_ORIGIN_URL = new URL(config.FIRST_PARTY_DEPLOYMENT_URL)
+  .origin;
 
 /**
  * Get the host from server-side headers
@@ -45,33 +51,25 @@ export function getDomainForPoweredByNamefiThirdPartyOrigin(
   return config.ADDITIONAL_HOSTNAME_MAP[hostname] || null;
 }
 
-/**
- * Get full origin configuration based on current origin
- */
-function getOriginConfig(origin: string | null): OriginConfig {
-  if (!origin) {
-    return originConfig.firstParty;
-  }
-
-  // Check if it's a third-party origin
-  const thirdPartyDomain = getDomainForPoweredByNamefiThirdPartyOrigin(origin);
-  if (thirdPartyDomain && originConfig.thirdParty[thirdPartyDomain]) {
-    return originConfig.thirdParty[thirdPartyDomain];
-  }
-
-  return originConfig.firstParty;
+export function getStaticFirstPartyOriginRuntime(
+  originConfig: OriginConfig,
+): OriginRuntime {
+  return {
+    origin: FIRST_PARTY_ORIGIN_URL,
+    isFirstPartyOrigin: true,
+    thirdPartyHostname: null,
+    config: originConfig,
+  };
 }
 
-export const getOriginInfo = (origin: string): OriginInfo => {
-  const isFirstPartyOrigin = isNamefiFirstPartyOrigin(origin);
-  const hostname = getHostname(origin);
-  const processedHostname = isFirstPartyOrigin
-    ? hostname
-    : getDomainForPoweredByNamefiThirdPartyOrigin(origin) || hostname;
-
+export function getStaticThirdPartyOriginRuntime(
+  hostname: ThirdPartyOriginKey,
+  originConfig: OriginConfig,
+): OriginRuntime {
   return {
-    isFirstPartyOrigin,
-    thirdPartyHostname: processedHostname,
-    config: getOriginConfig(origin),
+    origin: getThirdPartyOriginCanonicalOrigin(hostname),
+    isFirstPartyOrigin: false,
+    thirdPartyHostname: hostname,
+    config: originConfig,
   };
-};
+}

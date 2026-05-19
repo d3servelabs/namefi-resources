@@ -12,6 +12,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from '@namefi-astra/ui/components/shadcn/sidebar';
+import { isLandingPath } from '@/lib/origin/keys';
 
 export const Main = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
@@ -38,7 +39,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
         className={cn(
           'row-start-1 col-start-1 z-0',
           // Note: this is done to allow the landing component to bleed into the header
-          pathname !== '/' && 'pt-16',
+          !isLandingPath(pathname) && 'pt-16',
         )}
       >
         {children}

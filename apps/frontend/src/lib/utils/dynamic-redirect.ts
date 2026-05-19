@@ -2,7 +2,7 @@ import type { Route } from 'next';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { config } from '@/lib/env';
-import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '@/lib/env/consts';
+import { isThirdPartyOriginKey } from '@/lib/origin/keys';
 
 /**
  * @deprecated This utility is no longer the preferred approach for email redirects.
@@ -14,7 +14,7 @@ import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '@/lib/env/consts';
  */
 
 const isPoweredByNamefiDomains = (domain: string) => {
-  return POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.includes(domain);
+  return isThirdPartyOriginKey(domain);
 };
 
 export type ResolvePathFunction = (args: {
@@ -62,7 +62,7 @@ export async function poweredByNamefiRedirect(
   let redirectHostname = new URL(config.FIRST_PARTY_DEPLOYMENT_URL).host;
   const maybePoweredByNamefiDomain =
     typeof searchParams['powered-by-namefi'] === 'string'
-      ? searchParams['powered-by-namefi']
+      ? searchParams['powered-by-namefi'].toLowerCase()
       : undefined;
 
   if (

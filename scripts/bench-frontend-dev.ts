@@ -208,7 +208,7 @@ function parseTimingLine(line: string, route: string): Timing | null {
   const routePattern = escapeRegExp(route);
   const match = line.match(
     new RegExp(
-      `GET\\s+${routePattern}\\s+\\d+\\s+in\\s+([^\\s]+)\\s+\\(next\\.js:\\s*([^,]+),\\s*application-code:\\s*([^)]+)\\)`,
+      `GET\\s+${routePattern}\\s+\\d+\\s+in\\s+([^\\s]+)\\s+\\(([^)]+)\\)`,
       'i',
     ),
   );
@@ -217,8 +217,20 @@ function parseTimingLine(line: string, route: string): Timing | null {
   }
 
   const totalMs = parseTimeToMs(match[1] ?? '');
-  const primaryMs = parseTimeToMs(match[2] ?? '');
-  const secondaryMs = parseTimeToMs(match[3] ?? '');
+  const phaseTimings = new Map<string, number>();
+  for (const phase of (match[2] ?? '').split(',')) {
+    const [rawLabel, rawValue] = phase.split(':');
+    if (!rawLabel || !rawValue) {
+      continue;
+    }
+    const parsedValue = parseTimeToMs(rawValue);
+    if (parsedValue === null) {
+      continue;
+    }
+    phaseTimings.set(rawLabel.trim().toLowerCase(), parsedValue);
+  }
+  const primaryMs = phaseTimings.get('next.js') ?? null;
+  const secondaryMs = phaseTimings.get('application-code') ?? null;
 
   if (totalMs === null || primaryMs === null || secondaryMs === null) {
     return null;

@@ -1,4 +1,3 @@
-import type { LandingComponent } from '@/components/search/types';
 import type { Metadata } from 'next';
 import type { StaticImageData } from 'next/image';
 
@@ -62,7 +61,6 @@ export type PbnLogo = {
 };
 
 export type LandingPage = {
-  component?: LandingComponent;
   headerIsBlurred?: boolean;
 };
 

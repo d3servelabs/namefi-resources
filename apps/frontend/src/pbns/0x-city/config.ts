@@ -1,5 +1,4 @@
 import type { OriginConfig } from '@/lib/origin/types';
-import { Landing } from './landing';
 
 export const originConfig: OriginConfig = {
   metadata: {
@@ -22,7 +21,6 @@ export const originConfig: OriginConfig = {
     alt: '0x.city Background',
   },
   landingPage: {
-    component: Landing,
     headerIsBlurred: true,
   },
 };

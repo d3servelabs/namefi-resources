@@ -1,5 +1,4 @@
 import type { OriginConfig } from '@/lib/origin/types';
-import { Landing } from './landing';
 
 export const originConfig: OriginConfig = {
   metadata: {
@@ -29,7 +28,6 @@ export const originConfig: OriginConfig = {
     alt: 'Aave logo',
   },
   landingPage: {
-    component: Landing,
     headerIsBlurred: true,
   },
 };

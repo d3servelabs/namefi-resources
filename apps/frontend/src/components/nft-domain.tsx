@@ -1,4 +1,4 @@
-import { getOriginInfo } from '@/lib/origin/utils';
+import { getOriginInfo } from '@/lib/origin/utils.sync';
 import type { OriginInfo } from '@/lib/origin/types';
 import Image from 'next/image';
 import { cn } from '@namefi-astra/ui/lib/cn';

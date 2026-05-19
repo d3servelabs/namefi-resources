@@ -1,5 +1,4 @@
 import type { OriginConfig } from '@/lib/origin/types';
-import { Landing } from './landing';
 
 export const originConfig: OriginConfig = {
   metadata: {
@@ -33,7 +32,6 @@ export const originConfig: OriginConfig = {
     monoImage: '/assets/token-com/logos/token-powered-by-namefi-mono.svg',
   },
   landingPage: {
-    component: Landing,
     headerIsBlurred: true,
   },
 };

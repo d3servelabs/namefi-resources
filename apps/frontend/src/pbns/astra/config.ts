@@ -1,5 +1,4 @@
 import type { OriginConfig } from '@/lib/origin/types';
-import { Landing } from './landing';
 
 export const originConfig: OriginConfig = {
   metadata: {
@@ -55,8 +54,5 @@ export const originConfig: OriginConfig = {
     alt: 'Namefi Logo',
     width: 66,
     height: 19.8,
-  },
-  landingPage: {
-    component: Landing,
   },
 };
