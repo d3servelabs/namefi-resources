@@ -1,8 +1,6 @@
 import {
   type FulfillmentDataResponse,
   FulfillmentDataResponseSchema,
-  type OpenSeaApiOrder,
-  OpenSeaOrdersResponseSchema,
 } from './api-schemas';
 import {
   OPENSEA_API_BASE_MAINNET,
@@ -15,28 +13,25 @@ interface OpenSeaRestClientArgs {
   apiKey: string | undefined;
 }
 
-interface ListingsQuery {
-  tokenAddress: string;
-  tokenId: string;
-}
-
 interface OfferFulfillmentArgs {
   orderHash: string;
   fulfillerAddress: string;
-  /** OpenSea expects the asset items that will be transferred to the buyer. */
+  protocolAddress: string;
+  /** Asset items the seller is transferring to the buyer. */
   consideration: ReadonlyArray<{
     token: string;
     identifier: string;
     quantity?: string;
   }>;
-  protocolAddress: string;
 }
 
 /**
- * Typed wrapper around OpenSea's v2 REST API.
+ * Typed wrapper around the small slice of OpenSea v2 REST API the SDK doesn't cover.
  *
- * Every response is parsed through a zod schema (see `./api-schemas.ts`) so a shape
- * change in OpenSea's API surfaces as a clear error instead of corrupt UI state.
+ * The SDK handles listing/offer reads via slug-based endpoints (see
+ * `opensea-adapter.ts` for the integration). The only operation we still POST to the
+ * raw REST API for is `/api/v2/offers/fulfillment_data` — OpenSea returns ready-to-send
+ * transaction calldata, which we forward to viem's `walletClient.sendTransaction(...)`.
  */
 export class OpenSeaRestClient {
   private readonly chainSlug: string;
@@ -49,14 +44,6 @@ export class OpenSeaRestClient {
       ? OPENSEA_API_BASE_TESTNET
       : OPENSEA_API_BASE_MAINNET;
     this.apiKey = args.apiKey;
-  }
-
-  async listListings(query: ListingsQuery): Promise<OpenSeaApiOrder[]> {
-    return this.fetchOrders('listings', query);
-  }
-
-  async listOffers(query: ListingsQuery): Promise<OpenSeaApiOrder[]> {
-    return this.fetchOrders('offers', query);
   }
 
   async getOfferFulfillmentData(
@@ -87,32 +74,6 @@ export class OpenSeaRestClient {
       );
     }
     return FulfillmentDataResponseSchema.parse(await response.json());
-  }
-
-  private async fetchOrders(
-    kind: 'listings' | 'offers',
-    query: ListingsQuery,
-  ): Promise<OpenSeaApiOrder[]> {
-    const url = new URL(
-      `/api/v2/orders/${this.chainSlug}/seaport/${kind}`,
-      this.apiBaseUrl,
-    );
-    url.searchParams.set('asset_contract_address', query.tokenAddress);
-    url.searchParams.set('token_ids', query.tokenId);
-    url.searchParams.set('order_by', 'created_date');
-    url.searchParams.set('order_direction', 'desc');
-    url.searchParams.set('limit', '20');
-
-    const response = await fetch(url.toString(), {
-      headers: this.buildHeaders(),
-    });
-    if (!response.ok) {
-      throw new Error(
-        `OpenSea ${kind} fetch failed (${response.status}): ${await response.text()}`,
-      );
-    }
-    const payload = OpenSeaOrdersResponseSchema.parse(await response.json());
-    return payload.orders;
   }
 
   private buildHeaders(): HeadersInit {

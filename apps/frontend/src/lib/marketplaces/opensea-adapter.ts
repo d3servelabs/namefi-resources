@@ -1,10 +1,11 @@
 import {
-  Chain,
+  type Chain,
   type Listing as OpenSeaListingV2,
+  type Offer as OpenSeaOfferV2,
   OpenSeaSDK,
+  OrderStatus as OpenSeaOrderStatus,
 } from '@opensea/sdk/viem';
 import { type Address, formatUnits, getAddress } from 'viem';
-import { clientSideEnv } from '@/lib/env';
 import {
   findCurrencyByAddress,
   getDefaultListingCurrencyForChain,
@@ -16,7 +17,6 @@ import {
   MarketplaceUnsupportedOperationError,
 } from './marketplace.interface';
 import type {
-  OpenSeaApiOrder,
   OpenSeaProtocolData,
   SeaportOrderParameters,
 } from './opensea/api-schemas';
@@ -43,17 +43,19 @@ import type {
   OffersQuery,
   OrderStatus,
 } from './types';
-import type { GetMarketplaceArgs } from './factory';
+import type { OpenSeaAdapterArgs } from './factory';
 
 /**
  * Hybrid OpenSea adapter:
- *   - `@opensea/sdk/viem` builds + signs + posts orders (createListing,
- *     offchain cancel) — the SDK handles EIP-712, fees, conduit approval,
- *     counter fetching, etc.
- *   - `OpenSeaRestClient` (raw v2 REST + zod) for reads + fulfillment-data lookups.
- *   - viem `walletClient.sendTransaction` for the actual fulfillment tx after
- *     OpenSea hands us ready-to-send `{to, data, value}` from `/offers/fulfillment_data`.
- *   - viem `writeContract` for the on-chain `Seaport.cancel` fallback.
+ *   - `@opensea/sdk/viem` builds + signs + posts orders (createListing, off-chain
+ *     cancel) and serves all read endpoints (getBestListing / getBestOffer via the
+ *     slug-based v2 paths).
+ *   - `OpenSeaRestClient` (raw v2 REST + zod) for `/api/v2/offers/fulfillment_data`,
+ *     which the SDK doesn't wrap.
+ *   - viem `walletClient.sendTransaction(...)` for the actual fulfillment tx after
+ *     OpenSea hands us ready-to-send `{to, data, value}`.
+ *   - viem `writeContract` for the on-chain `Seaport.cancel` fallback when the
+ *     off-chain cancel can't be applied.
  *
  * v1 scope is fixed-price listings in the chain's native asset (ETH). Dutch + English
  * auctions and ERC-20 listings require dropping to manual Seaport order construction
@@ -66,13 +68,20 @@ export class OpenSeaAdapter implements MarketPlace {
 
   private readonly sdk: OpenSeaSDK;
   private readonly rest: OpenSeaRestClient;
-  private readonly publicClient: GetMarketplaceArgs['publicClient'];
-  private readonly walletClient: GetMarketplaceArgs['walletClient'];
+  private readonly publicClient: OpenSeaAdapterArgs['publicClient'];
+  private readonly walletClient: OpenSeaAdapterArgs['walletClient'];
   private readonly walletAddress: Address | undefined;
+  private readonly openSeaChain: Chain;
   private readonly chainSlug: string;
   private readonly externalSiteBaseUrl: string;
 
-  constructor(args: GetMarketplaceArgs) {
+  /** Lazy `contractAddress.toLowerCase() → collection-slug` cache. */
+  private readonly collectionSlugByContract = new Map<
+    string,
+    Promise<string | null>
+  >();
+
+  constructor(args: OpenSeaAdapterArgs) {
     const openSeaChain = CHAIN_ID_TO_OPENSEA_CHAIN[args.chainId];
     const chainSlug = CHAIN_ID_TO_OPENSEA_SLUG[args.chainId];
     if (!openSeaChain || !chainSlug) {
@@ -83,6 +92,7 @@ export class OpenSeaAdapter implements MarketPlace {
     this.publicClient = args.publicClient;
     this.walletClient = args.walletClient;
     this.walletAddress = args.walletClient?.account?.address;
+    this.openSeaChain = openSeaChain;
     this.chainSlug = chainSlug;
 
     const isTestnet = TESTNET_CHAIN_IDS.has(args.chainId);
@@ -90,26 +100,23 @@ export class OpenSeaAdapter implements MarketPlace {
       ? OPENSEA_SITE_BASE_TESTNET
       : OPENSEA_SITE_BASE_MAINNET;
 
-    const apiKey = clientSideEnv.NEXT_PUBLIC_OPENSEA_API_KEY;
     this.sdk = new OpenSeaSDK(
       {
         publicClient: args.publicClient,
         walletClient: args.walletClient,
       },
-      { chain: openSeaChain, apiKey },
+      { chain: openSeaChain, apiKey: args.apiKey },
     );
     this.rest = new OpenSeaRestClient({
       chainSlug,
       isTestnet,
-      apiKey,
+      apiKey: args.apiKey,
     });
   }
 
   // -------- discovery --------
 
   getAvailableListingTypes(): readonly ListingType[] {
-    // SDK 10.5's `createListing` only exposes fixed-price. Dutch + English require
-    // manual Seaport order construction (deliberately out of scope for v1).
     return ['fixed-price'];
   }
 
@@ -131,17 +138,10 @@ export class OpenSeaAdapter implements MarketPlace {
       marketplaceFeeBps: OPENSEA_PROTOCOL_FEE_BPS,
       royaltyFeeBps,
       netToSellerWei: input.priceWei - feeWei,
-      // Royalties are read by the SDK from the collection's on-chain ERC-2981
-      // implementation at signing time; we report the preview as an estimate so
-      // the UI can show the final number after the order is posted.
       isEstimate: true,
     };
   }
 
-  /**
-   * Per-token on-chain royalty lookup. Used by `calculateListingFeesForToken` (UI
-   * helper). Returns `0` if the collection doesn't implement ERC-2981.
-   */
   async readRoyaltyBpsForToken(
     tokenAddress: Address,
     tokenId: bigint,
@@ -191,9 +191,6 @@ export class OpenSeaAdapter implements MarketPlace {
     const expirationSeconds = listingStartSeconds + input.durationSeconds;
     const amountDecimal = formatUnits(input.priceWei, currency.decimals);
 
-    // The SDK handles conduit approval, EIP-712 signing, OpenSea API posting, and
-    // returns a `Listing` payload that mirrors the v2 REST shape (with snake_case
-    // fields). We adapt it to our internal `Listing` type below.
     const order = await this.sdk.createListing({
       asset: {
         tokenAddress: input.tokenAddress,
@@ -213,13 +210,17 @@ export class OpenSeaAdapter implements MarketPlace {
   }
 
   async getExistingListings(query: ListingsQuery): Promise<Listing[]> {
-    const orders = await this.rest.listListings({
-      tokenAddress: query.tokenAddress,
-      tokenId: query.tokenId,
-    });
-    return orders
-      .filter((o) => deriveStatus(o) === 'active')
-      .map((o) => this.adaptApiOrderToListing(o, query));
+    const slug = await this.getCollectionSlug(query.tokenAddress);
+    if (!slug) return [];
+    try {
+      const best = await this.sdk.api.getBestListing(slug, query.tokenId);
+      if (!best || normalizeSdkStatus(best.status) !== 'active') return [];
+      const currency = this.resolveCurrencyFromSdk(best);
+      return [this.adaptSdkListing(best, currency, query)];
+    } catch (error) {
+      if (isNotFoundError(error)) return [];
+      throw error;
+    }
   }
 
   async cancelListing(listing: Listing): Promise<{ txHash?: `0x${string}` }> {
@@ -227,17 +228,17 @@ export class OpenSeaAdapter implements MarketPlace {
       throw new Error('Wallet not connected — cannot cancel OpenSea listing.');
     }
     const protocolAddress =
-      (listing.raw as OpenSeaApiOrder | undefined)?.protocol_address ??
-      SEAPORT_V1_6_ADDRESS;
-    const chain = CHAIN_ID_TO_OPENSEA_CHAIN[this.chainId];
+      (listing.raw as { protocol_address?: string } | undefined)
+        ?.protocol_address ?? SEAPORT_V1_6_ADDRESS;
 
     try {
-      // Gas-free path. SDK signs a personal-cancel message and POSTs to OpenSea.
-      await this.sdk.offchainCancelOrder(protocolAddress, listing.id, chain);
+      await this.sdk.offchainCancelOrder(
+        protocolAddress,
+        listing.id,
+        this.openSeaChain,
+      );
       return {};
     } catch {
-      // On-chain fallback. Requires the full OrderComponents payload, which we
-      // get from the listing's `raw` (validated by zod).
       const params = readOrderParameters(listing.raw);
       if (!params) {
         throw new Error(
@@ -258,7 +259,6 @@ export class OpenSeaAdapter implements MarketPlace {
   }
 
   async updateListing(listing: Listing, input: ListingInput): Promise<Listing> {
-    // Seaport has no native update — cancel-old + create-new, two wallet prompts.
     await this.cancelListing(listing);
     return this.createListing(input);
   }
@@ -266,13 +266,17 @@ export class OpenSeaAdapter implements MarketPlace {
   // -------- offers (buyer side, seller-accepts) --------
 
   async getOffersForListing(query: OffersQuery): Promise<Offer[]> {
-    const orders = await this.rest.listOffers({
-      tokenAddress: query.tokenAddress,
-      tokenId: query.tokenId,
-    });
-    return orders
-      .filter((o) => deriveStatus(o) === 'active')
-      .map((o) => this.adaptApiOrderToOffer(o, query));
+    const slug = await this.getCollectionSlug(query.tokenAddress);
+    if (!slug) return [];
+    try {
+      const best = await this.sdk.api.getBestOffer(slug, query.tokenId);
+      if (!best || normalizeSdkStatus(best.status) !== 'active') return [];
+      const currency = this.resolveCurrencyFromSdk(best);
+      return [this.adaptSdkOffer(best, currency, query)];
+    } catch (error) {
+      if (isNotFoundError(error)) return [];
+      throw error;
+    }
   }
 
   async approveOffer(offer: Offer): Promise<{ txHash?: `0x${string}` }> {
@@ -280,21 +284,15 @@ export class OpenSeaAdapter implements MarketPlace {
       throw new Error('Wallet not connected — cannot accept OpenSea offer.');
     }
     const protocolAddress =
-      (offer.raw as OpenSeaApiOrder | undefined)?.protocol_address ??
-      SEAPORT_V1_6_ADDRESS;
+      (offer.raw as { protocol_address?: string } | undefined)
+        ?.protocol_address ?? SEAPORT_V1_6_ADDRESS;
 
-    // OpenSea returns ready-to-send transaction data. We forward it verbatim to
-    // viem's `sendTransaction`, which handles signing + broadcasting.
     const fulfillment = await this.rest.getOfferFulfillmentData({
       orderHash: offer.id,
       fulfillerAddress: this.walletAddress,
       protocolAddress,
       consideration: [
-        {
-          token: offer.tokenAddress,
-          identifier: offer.tokenId,
-          quantity: '1',
-        },
+        { token: offer.tokenAddress, identifier: offer.tokenId, quantity: '1' },
       ],
     });
 
@@ -327,7 +325,36 @@ export class OpenSeaAdapter implements MarketPlace {
     );
   }
 
-  // ---- helpers ----
+  // ---- collection slug cache ----
+
+  private getCollectionSlug(tokenAddress: Address): Promise<string | null> {
+    const key = tokenAddress.toLowerCase();
+    const cached = this.collectionSlugByContract.get(key);
+    if (cached) return cached;
+    const fetched = this.fetchCollectionSlug(tokenAddress).catch(() => null);
+    this.collectionSlugByContract.set(key, fetched);
+    return fetched;
+  }
+
+  private async fetchCollectionSlug(
+    tokenAddress: Address,
+  ): Promise<string | null> {
+    try {
+      // Any indexed tokenId works — the collection slug is constant per contract.
+      // Use `'1'` as a probe; if the NFT contract doesn't have token #1, OpenSea
+      // still returns the collection mapping.
+      const collection = await this.sdk.api.getNFTCollection(
+        tokenAddress,
+        '1',
+        this.openSeaChain,
+      );
+      return collection?.collection ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  // ---- adaptation helpers ----
 
   private requireCurrency(contract: Address): ListingCurrency {
     const currency = findCurrencyByAddress(this.chainId, contract);
@@ -339,15 +366,20 @@ export class OpenSeaAdapter implements MarketPlace {
     return currency;
   }
 
-  private resolveCurrency(order: OpenSeaApiOrder): ListingCurrency {
+  private resolveCurrencyFromSdk(
+    order: OpenSeaListingV2 | OpenSeaOfferV2,
+  ): ListingCurrency {
     const fallback =
       getDefaultListingCurrencyForChain(this.chainId) ??
       getListingCurrenciesForChain(this.chainId)[0];
-    const paymentToken = order.payment_token_contract?.address;
-    if (paymentToken) {
+    const currencyAddress =
+      order.price && 'current' in order.price
+        ? order.price.current.currency
+        : (order.price as { currency?: string } | undefined)?.currency;
+    if (currencyAddress) {
       const matched = findCurrencyByAddress(
         this.chainId,
-        paymentToken as Address,
+        currencyAddress as Address,
       );
       if (matched) return matched;
     }
@@ -361,83 +393,61 @@ export class OpenSeaAdapter implements MarketPlace {
     };
   }
 
-  private adaptApiOrderToListing(
-    raw: OpenSeaApiOrder,
-    query: ListingsQuery,
-  ): Listing {
-    const currency = this.resolveCurrency(raw);
-    return {
-      id: raw.order_hash,
-      marketplace: this.id,
-      source: 'OpenSea',
-      tokenAddress: query.tokenAddress,
-      tokenId: query.tokenId,
-      seller: (raw.maker?.address ?? '0x0') as Address,
-      price: priceFromWei(raw.current_price ?? '0', currency),
-      createdAt: raw.created_date ?? new Date().toISOString(),
-      expirationTime: raw.expiration_time
-        ? secondsToIso(raw.expiration_time)
-        : new Date(0).toISOString(),
-      status: deriveStatus(raw),
-      externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
-      raw,
-    };
-  }
-
-  private adaptApiOrderToOffer(
-    raw: OpenSeaApiOrder,
-    query: OffersQuery,
-  ): Offer {
-    const currency = this.resolveCurrency(raw);
-    return {
-      id: raw.order_hash,
-      marketplace: this.id,
-      source: 'OpenSea',
-      tokenAddress: query.tokenAddress,
-      tokenId: query.tokenId,
-      bidder: (raw.maker?.address ?? '0x0') as Address,
-      price: priceFromWei(raw.current_price ?? '0', currency),
-      createdAt: raw.created_date ?? new Date().toISOString(),
-      expirationTime: raw.expiration_time
-        ? secondsToIso(raw.expiration_time)
-        : new Date(0).toISOString(),
-      status: deriveStatus(raw),
-      externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
-      raw,
-    };
-  }
-
-  /**
-   * Adapt the SDK's `Listing` payload to our internal type.
-   *
-   * The SDK returns a v2-shaped order with snake_case fields. We don't run it through
-   * the zod schema (it comes from a typed call inside the SDK, not over the wire), but
-   * we still defensively read every field.
-   */
   private adaptSdkListing(
-    sdkListing: OpenSeaListingV2,
+    raw: OpenSeaListingV2,
     currency: ListingCurrency,
     query: ListingsQuery,
   ): Listing {
-    const priceWei = sdkListing.price?.current?.value ?? '0';
-    const params = sdkListing.protocol_data?.parameters;
-    const expirationSeconds = params ? Number(params.endTime) : 0;
-    const createdSeconds = params
-      ? Number(params.startTime)
-      : Math.floor(Date.now() / 1000);
+    const priceWei = raw.price?.current?.value ?? '0';
+    const params = raw.protocol_data?.parameters;
     return {
-      id: sdkListing.order_hash,
+      id: raw.order_hash,
       marketplace: this.id,
       source: 'OpenSea',
       tokenAddress: query.tokenAddress,
       tokenId: query.tokenId,
       seller: (params?.offerer ?? this.walletAddress ?? '0x0') as Address,
       price: priceFromWei(priceWei, currency),
-      createdAt: secondsToIso(createdSeconds),
-      expirationTime: secondsToIso(expirationSeconds),
-      status: 'active',
+      createdAt: params?.startTime
+        ? secondsToIso(Number(params.startTime))
+        : new Date().toISOString(),
+      expirationTime: params?.endTime
+        ? secondsToIso(Number(params.endTime))
+        : new Date(0).toISOString(),
+      status: normalizeSdkStatus(raw.status),
       externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
-      raw: sdkListing as unknown as OpenSeaApiOrder,
+      raw,
+    };
+  }
+
+  private adaptSdkOffer(
+    raw: OpenSeaOfferV2,
+    currency: ListingCurrency,
+    query: OffersQuery,
+  ): Offer {
+    const priceWei =
+      (raw.price as { current?: { value?: string }; value?: string })?.current
+        ?.value ??
+      (raw.price as { value?: string })?.value ??
+      '0';
+    const params = raw.protocol_data?.parameters;
+    return {
+      id: raw.order_hash,
+      marketplace: this.id,
+      source: 'OpenSea',
+      tokenAddress: query.tokenAddress,
+      tokenId: query.tokenId,
+      bidder: (params?.offerer ?? '0x0') as Address,
+      price: priceFromWei(priceWei, currency),
+      createdAt: params?.startTime
+        ? secondsToIso(Number(params.startTime))
+        : new Date().toISOString(),
+      expirationTime: params?.endTime
+        ? secondsToIso(Number(params.endTime))
+        : new Date(0).toISOString(),
+      status: normalizeSdkStatus(raw.status),
+      externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
+      raw,
     };
   }
 
@@ -465,23 +475,34 @@ function secondsToIso(seconds: number): string {
   return new Date(seconds * 1000).toISOString();
 }
 
-/**
- * Derive a normalized `OrderStatus` from the v2 REST shape (boolean flags +
- * `remaining_quantity` + `expiration_time`). The API has no single `status` string.
- */
-function deriveStatus(order: OpenSeaApiOrder): OrderStatus {
-  if (order.cancelled === true) return 'cancelled';
-  if (order.marked_invalid === true) return 'expired';
-  if (order.finalized === true) return 'filled';
-  if (
-    typeof order.remaining_quantity === 'number' &&
-    order.remaining_quantity === 0
-  ) {
-    return 'filled';
+function normalizeSdkStatus(
+  status: OpenSeaOrderStatus | string | undefined,
+): OrderStatus {
+  switch (status) {
+    case OpenSeaOrderStatus.ACTIVE:
+    case 'ACTIVE':
+      return 'active';
+    case OpenSeaOrderStatus.FULFILLED:
+    case 'FULFILLED':
+      return 'filled';
+    case OpenSeaOrderStatus.CANCELLED:
+    case 'CANCELLED':
+      return 'cancelled';
+    case OpenSeaOrderStatus.EXPIRED:
+    case 'EXPIRED':
+      return 'expired';
+    case OpenSeaOrderStatus.INACTIVE:
+    case 'INACTIVE':
+      return 'expired';
+    default:
+      return 'active';
   }
-  const expirationMs = (order.expiration_time ?? 0) * 1000;
-  if (expirationMs > 0 && expirationMs < Date.now()) return 'expired';
-  return 'active';
+}
+
+function isNotFoundError(error: unknown): boolean {
+  if (!error) return false;
+  const message = error instanceof Error ? error.message : String(error);
+  return /\b404\b/.test(message) || /not\s*found/i.test(message);
 }
 
 function readOrderParameters(raw: unknown): SeaportOrderParameters | undefined {
@@ -490,11 +511,6 @@ function readOrderParameters(raw: unknown): SeaportOrderParameters | undefined {
   return protocolData?.parameters;
 }
 
-/**
- * `Seaport.cancel` accepts `OrderComponents[]`, which equals `OrderParameters` minus
- * `totalOriginalConsiderationItems` plus `counter`. The API payload may include
- * either field; this normalizes to the cancel-call shape.
- */
 function orderComponentsForCancel(params: SeaportOrderParameters) {
   return {
     offerer: params.offerer as Address,
@@ -524,20 +540,13 @@ function orderComponentsForCancel(params: SeaportOrderParameters) {
   };
 }
 
-/**
- * The `/offers/fulfillment_data` response can return `input_data` either as raw
- * calldata hex or as a structured object. We pass through hex strings unchanged.
- */
 function encodeInputData(inputData: unknown): `0x${string}` {
   if (typeof inputData === 'string' && inputData.startsWith('0x')) {
     return inputData as `0x${string}`;
   }
-  // If OpenSea ever returns a structured shape here, we'd need to abi-encode it
-  // ourselves. For Seaport `fulfillOrder` flows the API returns raw calldata.
   throw new Error(
     'OpenSea fulfillment_data returned an unexpected input_data shape (expected hex calldata).',
   );
 }
 
-// Re-export for downstream type checks (the addresses below come from viem).
 void getAddress;

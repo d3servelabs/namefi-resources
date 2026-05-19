@@ -46,8 +46,6 @@ export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
 
 export const clientSideEnvSchema = z.object({
   NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
-  NEXT_PUBLIC_OPENSEA_API_KEY: z.string().optional(),
-  NEXT_PUBLIC_RESERVOIR_API_KEY: z.string().optional(),
 } satisfies Record<`NEXT_PUBLIC_${string}`, ZodSchema>);
 
 export type ClientSideEnvInput = z.input<typeof clientSideEnvSchema>;

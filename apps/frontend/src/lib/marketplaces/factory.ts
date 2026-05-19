@@ -15,11 +15,22 @@ export interface GetMarketplaceArgs {
 }
 
 /**
+ * Internal — args passed into the adapter constructor after the factory resolves
+ * the auto-requested OpenSea API key.
+ */
+export interface OpenSeaAdapterArgs extends GetMarketplaceArgs {
+  apiKey: string | undefined;
+}
+
+/**
  * Build a marketplace adapter for the given (id, chain) pair.
  *
  * The adapter modules are loaded via dynamic `import()` so their dependencies stay out
  * of the Next.js app-shell bundle — they only enter the client bundle when the
  * Marketplace tab is opened.
+ *
+ * On first call (per session) the factory awaits an auto-requested OpenSea API key
+ * (free 30-day instant key, cached in localStorage). Subsequent calls hit the cache.
  *
  * @throws MarketplaceUnsupportedChainError when the (id, chainId) combination is not allowed.
  */
@@ -30,8 +41,14 @@ export async function getMarketplace(
     throw new MarketplaceUnsupportedChainError(args.id, args.chainId);
   }
 
-  const { OpenSeaAdapter } = await import('./opensea-adapter');
-  return new OpenSeaAdapter(args);
+  const [{ OpenSeaAdapter }, { getOrRequestApiKey }, { getOpenSeaApiBaseUrl }] =
+    await Promise.all([
+      import('./opensea-adapter'),
+      import('./opensea/api-key'),
+      import('./opensea/constants'),
+    ]);
+  const apiKey = await getOrRequestApiKey(getOpenSeaApiBaseUrl(args.chainId));
+  return new OpenSeaAdapter({ ...args, apiKey });
 }
 
 export const MARKETPLACE_OPTIONS: ReadonlyArray<{

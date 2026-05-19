@@ -22,7 +22,12 @@ import {
   useImperativeHandle,
 } from 'react';
 import { toast } from 'sonner';
-import { Config, useAccount, useConfig, UseConfigParameters } from 'wagmi';
+import {
+  type Config,
+  useAccount,
+  useConfig,
+  type UseConfigParameters,
+} from 'wagmi';
 import { getAccount } from 'wagmi/actions';
 import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useConnectWallet } from '@privy-io/react-auth';

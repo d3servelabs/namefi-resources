@@ -40,6 +40,12 @@ export const OPENSEA_API_BASE_TESTNET = 'https://testnets-api.opensea.io';
 export const OPENSEA_SITE_BASE_MAINNET = 'https://opensea.io';
 export const OPENSEA_SITE_BASE_TESTNET = 'https://testnets.opensea.io';
 
+export function getOpenSeaApiBaseUrl(chainId: number): string {
+  return TESTNET_CHAIN_IDS.has(chainId)
+    ? OPENSEA_API_BASE_TESTNET
+    : OPENSEA_API_BASE_MAINNET;
+}
+
 /**
  * OpenSea protocol fee in basis points.
  *

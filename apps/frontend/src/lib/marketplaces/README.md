@@ -17,13 +17,21 @@ owners list their domains for sale on OpenSea, view incoming offers, and accept 
 
 **v1 adapter**: `OpenSeaAdapter` — hybrid integration:
 - `@opensea/sdk/viem` for order construction + EIP-712 signing + off-chain cancel
-  (the parts that are bug-prone when done manually).
-- Raw OpenSea v2 REST endpoints validated through `zod` schemas for reads
-  (listings + offers).
-- `POST /api/v2/offers/fulfillment_data` + viem `walletClient.sendTransaction(...)`
-  for accepting offers (OpenSea returns ready-to-send transaction data).
+  + reads (`sdk.api.getBestListing` / `getBestOffer` against OpenSea's slug-based
+  v2 endpoints).
+- `OpenSeaRestClient` (raw v2 REST + zod) for the one endpoint the SDK doesn't
+  wrap: `POST /api/v2/offers/fulfillment_data` — OpenSea returns ready-to-send
+  transaction calldata which we forward to viem's `walletClient
+  .sendTransaction(...)` for the actual accept-offer tx.
 - viem `writeContract` against Seaport's `cancel(OrderComponents[])` as the
   on-chain fallback for cancel when the off-chain path is unavailable.
+
+**API key**: auto-requested via `OpenSeaSDK.requestInstantApiKey(apiBaseUrl)` on
+first use, cached in `localStorage` keyed by base URL (mainnet + testnet keys are
+separate), refreshed when within 1 day of the API-returned `expires_at`. No
+`NEXT_PUBLIC_OPENSEA_API_KEY` env var is required — the key is requested
+client-side per-user. If the request fails (rate-limited, offline), the adapter
+falls back to an unauthenticated client (still works, just rate-limited reads).
 
 **v1 interface surface** (`marketplace.interface.ts`):
 - `getAvailableListingTypes` — `['fixed-price']` (SDK 10.5 doesn't expose Dutch/English)
@@ -55,12 +63,15 @@ owners list their domains for sale on OpenSea, view incoming offers, and accept 
   dynamic `import('./opensea-adapter')` so the SDK chunk stays out of the app shell.
 - `opensea-adapter.ts` — the hybrid adapter described above.
 - `opensea/` — OpenSea-specific helpers:
-  - `constants.ts` — chain-ID → SDK `Chain` enum + REST path slug map, base URLs,
-    protocol fee constant (100 bps as of Sep 2025).
-  - `api-schemas.ts` — `zod` schemas for every v2 REST response we consume. Single
-    source of truth for the API contract.
-  - `rest-client.ts` — typed `fetch` wrapper that runs every response through the
-    `api-schemas.ts` parsers and throws on shape mismatch.
+  - `constants.ts` — chain-ID → SDK `Chain` enum + REST path slug map, base URLs
+    (+ `getOpenSeaApiBaseUrl(chainId)` helper), protocol fee constant (100 bps as
+    of Sep 2025).
+  - `api-key.ts` — `getOrRequestApiKey(apiBaseUrl)`: localStorage-cached instant
+    API key, auto-refreshed via `OpenSeaSDK.requestInstantApiKey`.
+  - `api-schemas.ts` — `zod` schemas for the v2 REST shapes the SDK doesn't
+    parse for us (currently just `/offers/fulfillment_data`).
+  - `rest-client.ts` — typed `fetch` wrapper for `/offers/fulfillment_data`
+    (the only endpoint the SDK doesn't cover).
 - `seaport/` — Seaport contract bits used only for the on-chain cancel fallback:
   - `constants.ts` — `SEAPORT_V1_6_ADDRESS` (deterministic across chains).
   - `abi.ts` — minimal Seaport `cancel(OrderComponents[])` + ERC-2981 `royaltyInfo`.
@@ -71,12 +82,17 @@ owners list their domains for sale on OpenSea, view incoming offers, and accept 
   orders by hand (`order-builder.ts`) and re-implemented EIP-712 signing — both got
   brittle after API/protocol changes. The SDK is the right line of defense for those
   details.
-- **Zod validates every read response.** If OpenSea adds/renames a field, the parse
-  throws a clear error — we discover the change immediately instead of silently
-  rendering corrupt UI.
-- **Status detection uses the real API shape** (`cancelled` / `finalized` /
-  `marked_invalid` boolean flags + `remaining_quantity` + `expiration_time`). There is
-  no `status` string field in the v2 API.
+- **SDK serves reads.** Listings/offers go through `sdk.api.getBestListing(slug,
+  tokenId)` and `getBestOffer(slug, tokenId)`. The previous direct
+  `/api/v2/orders/{chain}/seaport/listings` GET path returned 405 (that endpoint is
+  POST-only for order creation). The SDK uses the correct slug-based read paths
+  (`/api/v2/listings/collection/{slug}/nfts/{tokenId}/best`).
+- **Collection slug lookup** is cached per-adapter via `sdk.api.getNFTCollection`.
+  One extra API call on first read for a given contract; subsequent reads are
+  cache hits.
+- **Status detection** uses the SDK's normalized `OrderStatus` enum (the SDK maps
+  v2's boolean flags into `ACTIVE` / `FULFILLED` / `CANCELLED` / `EXPIRED` /
+  `INACTIVE` for us).
 - **Offer acceptance uses OpenSea's pre-built transaction**, not a manual Seaport
   `fulfillOrder` ABI call. The `/offers/fulfillment_data` endpoint returns
   `{ to, value, input_data }` ready to send via `walletClient.sendTransaction`.
