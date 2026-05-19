@@ -1379,6 +1379,26 @@ export const domainExportTrackingTable = pgTable(
           timestamp: string;
           status: string;
           eppStatuses?: string[];
+          /** Human-readable reason for the transition (audit trail). */
+          reason?: string;
+          /**
+           * Snapshot of the evidence that drove this transition; same shape
+           * as `latestEvidence` so the timeline UI can render any entry.
+           */
+          evidence?: {
+            checkedAt?: string;
+            decisionAction?: string;
+            decisionReason?: string;
+            sources?: Array<{
+              source: string;
+              status: string;
+              evidence?: unknown;
+              error?: string;
+              checkedAt: string;
+            }>;
+            eppStatuses?: string[];
+            actor?: 'workflow' | 'admin' | 'system';
+          };
         }>
       >()
       .default([]),

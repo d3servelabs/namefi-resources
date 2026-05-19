@@ -937,7 +937,12 @@ export async function processSingleDomainExportStatus(input: {
           | ExportTrackingStatusHistoryEntry[]
           | null,
         persistedStatus,
-        now,
+        {
+          now,
+          reason: decision.reason,
+          evidence: { ...latestEvidence, actor: 'workflow' },
+          eppStatuses,
+        },
       );
 
       await db
@@ -1032,13 +1037,16 @@ export async function processSingleDomainExportStatus(input: {
 
   // No active row exists: insert a fresh one.
   const now = new Date();
-  const initialHistory: ExportTrackingStatusHistoryEntry[] = [
+  const initialHistory = appendExportTrackingStatusHistory(
+    [],
+    persistedStatus,
     {
-      timestamp: now.toISOString(),
-      status: persistedStatus,
+      now,
+      reason: decision.reason,
+      evidence: { ...latestEvidence, actor: 'workflow' },
       eppStatuses,
     },
-  ];
+  );
 
   const insertedRows = await db
     .insert(domainExportTrackingTable)
@@ -1301,7 +1309,12 @@ export async function checkSinglePendingTransfer(input: {
       const updatedHistory = appendExportTrackingStatusHistory(
         statusHistory as ExportTrackingStatusHistoryEntry[] | null,
         statusFromDecision,
-        now,
+        {
+          now,
+          reason: decision.reason,
+          evidence: { ...latestEvidence, actor: 'workflow' },
+          eppStatuses,
+        },
       );
       await db
         .update(domainExportTrackingTable)
@@ -1339,7 +1352,12 @@ export async function checkSinglePendingTransfer(input: {
     const updatedHistory = appendExportTrackingStatusHistory(
       statusHistory as ExportTrackingStatusHistoryEntry[] | null,
       'TRANSFER_FAILED',
-      now,
+      {
+        now,
+        reason: decision.reason,
+        evidence: { ...latestEvidence, actor: 'workflow' },
+        eppStatuses,
+      },
     );
     await db
       .update(domainExportTrackingTable)
@@ -1385,7 +1403,13 @@ export async function checkSinglePendingTransfer(input: {
       const updatedHistory = appendExportTrackingStatusHistory(
         statusHistory as ExportTrackingStatusHistoryEntry[] | null,
         'TRANSFER_FAILED',
-        now,
+        {
+          now,
+          reason:
+            'Heuristic: previously-pending transfer cleared and domain is back in our account — treating as failed transfer',
+          evidence: { ...latestEvidence, actor: 'workflow' },
+          eppStatuses,
+        },
       );
       await db
         .update(domainExportTrackingTable)
@@ -1424,7 +1448,12 @@ export async function checkSinglePendingTransfer(input: {
   const updatedHistory = appendExportTrackingStatusHistory(
     statusHistory as ExportTrackingStatusHistoryEntry[] | null,
     'NEEDS_ADMIN_REVIEW',
-    now,
+    {
+      now,
+      reason: decision.reason,
+      evidence: { ...latestEvidence, actor: 'workflow' },
+      eppStatuses,
+    },
   );
   await db
     .update(domainExportTrackingTable)
@@ -2186,6 +2215,15 @@ export async function recordNftBurn(input: {
     const updatedHistory = appendExportTrackingStatusHistory(
       (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ?? [],
       'RESOLVED',
+      {
+        reason: `NFT burn confirmed (tx ${txHash}); marking export tracking as resolved.`,
+        evidence: {
+          actor: 'system',
+          checkedAt: new Date().toISOString(),
+          decisionAction: 'RESOLVED',
+          decisionReason: 'NFT burn transaction landed on-chain',
+        },
+      },
     );
 
     await db

@@ -159,7 +159,7 @@ describe('export-tracking-state', () => {
       const result = appendExportTrackingStatusHistory(
         undefined,
         'TRANSFER_COMPLETED',
-        at,
+        { now: at },
       );
 
       expect(result).toEqual([
@@ -180,7 +180,7 @@ describe('export-tracking-state', () => {
           },
         ],
         'RESOLVED',
-        at,
+        { now: at },
       );
 
       expect(result).toEqual([
@@ -191,6 +191,48 @@ describe('export-tracking-state', () => {
         {
           timestamp: '2026-02-23T11:00:00.000Z',
           status: 'RESOLVED',
+        },
+      ]);
+    });
+
+    it('persists reason and evidence when provided', () => {
+      const at = new Date('2026-02-23T12:00:00.000Z');
+      const result = appendExportTrackingStatusHistory([], 'PENDING_TRANSFER', {
+        now: at,
+        reason: 'Direct registrar reports pending transfer',
+        evidence: {
+          actor: 'workflow',
+          decisionAction: 'PENDING_TRANSFER',
+          decisionReason: 'Direct registrar reports pending transfer',
+          sources: [
+            {
+              source: 'DirectRegistrar',
+              status: 'positive_pending',
+              checkedAt: '2026-02-23T12:00:00.000Z',
+            },
+          ],
+        },
+        eppStatuses: ['pendingTransfer'],
+      });
+
+      expect(result).toEqual([
+        {
+          timestamp: '2026-02-23T12:00:00.000Z',
+          status: 'PENDING_TRANSFER',
+          eppStatuses: ['pendingTransfer'],
+          reason: 'Direct registrar reports pending transfer',
+          evidence: {
+            actor: 'workflow',
+            decisionAction: 'PENDING_TRANSFER',
+            decisionReason: 'Direct registrar reports pending transfer',
+            sources: [
+              {
+                source: 'DirectRegistrar',
+                status: 'positive_pending',
+                checkedAt: '2026-02-23T12:00:00.000Z',
+              },
+            ],
+          },
         },
       ]);
     });

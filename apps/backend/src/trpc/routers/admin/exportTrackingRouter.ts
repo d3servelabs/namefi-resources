@@ -229,6 +229,7 @@ export const exportTrackingRouter = createContractTRPCRouter<
           status: domainExportTrackingTable.status,
           isActive: domainExportTrackingTable.isActive,
           statusHistory: domainExportTrackingTable.statusHistory,
+          latestEvidence: domainExportTrackingTable.latestEvidence,
           completedExportEmailSentAt:
             domainExportTrackingTable.completedExportEmailSentAt,
           adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
@@ -310,7 +311,17 @@ export const exportTrackingRouter = createContractTRPCRouter<
         (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
           [],
         'TRANSFER_COMPLETED',
-        now,
+        {
+          now,
+          reason: `Admin ${ctx.user.id} verified export and sent user notification`,
+          evidence: {
+            ...(record.latestEvidence ?? undefined),
+            actor: 'admin',
+            checkedAt: now.toISOString(),
+            decisionAction: 'TRANSFER_COMPLETED',
+            decisionReason: 'Admin verify action',
+          },
+        },
       );
 
       await db
@@ -368,6 +379,7 @@ export const exportTrackingRouter = createContractTRPCRouter<
           status: domainExportTrackingTable.status,
           isActive: domainExportTrackingTable.isActive,
           statusHistory: domainExportTrackingTable.statusHistory,
+          latestEvidence: domainExportTrackingTable.latestEvidence,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
         })
         .from(domainExportTrackingTable)
@@ -409,7 +421,17 @@ export const exportTrackingRouter = createContractTRPCRouter<
         (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
           [],
         'RESOLVED',
-        now,
+        {
+          now,
+          reason: `Admin ${ctx.user.id} resolved export review without notification`,
+          evidence: {
+            ...(record.latestEvidence ?? undefined),
+            actor: 'admin',
+            checkedAt: now.toISOString(),
+            decisionAction: 'RESOLVED',
+            decisionReason: 'Admin resolve action',
+          },
+        },
       );
 
       await db
