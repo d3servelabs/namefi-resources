@@ -38,6 +38,7 @@ import {
 type EvidenceSourceEntry = {
   source:
   | 'AccountCheck'
+  | 'DomainIndex'
   | 'RDAPStatus'
   | 'RDAPEvents'
   | 'WHOIS'
@@ -202,6 +203,30 @@ const formatSourceBasedRdapSummary = (
   return rdapEventsSource.status;
 };
 
+const formatSourceBasedDomainIndexSummary = (
+  latestEvidence: SourceBasedLatestEvidence,
+): string => {
+  const domainIndexSource = latestEvidence.sources?.find(
+    (source) => source.source === 'DomainIndex',
+  );
+
+  if (!domainIndexSource) return 'No data';
+  if (domainIndexSource.status === 'positive_completed') {
+    return 'Missing from registrar';
+  }
+  if (domainIndexSource.status === 'negative') {
+    return 'Present (indexed)';
+  }
+  if (domainIndexSource.status === 'error') {
+    return `Error: ${domainIndexSource.error ?? 'unknown'}`;
+  }
+  if (domainIndexSource.status === 'no_data') {
+    return 'Not indexed';
+  }
+
+  return domainIndexSource.status;
+};
+
 function LatestEvidenceTableCell({
   latestEvidence,
 }: {
@@ -225,6 +250,10 @@ function LatestEvidenceTableCell({
         : 'Detected'
       : 'Not detected';
 
+  const domainIndexSummary = hasSourceEvidence(latestEvidence)
+    ? formatSourceBasedDomainIndexSummary(latestEvidence)
+    : null;
+
   return (
     <div className="space-y-0.5 text-xs max-w-[300px]">
       <div>
@@ -235,6 +264,12 @@ function LatestEvidenceTableCell({
         <span className="text-muted-foreground">RDAP transfer:</span>{' '}
         <span>{rdapSummary}</span>
       </div>
+      {domainIndexSummary ? (
+        <div>
+          <span className="text-muted-foreground">Domain index:</span>{' '}
+          <span>{domainIndexSummary}</span>
+        </div>
+      ) : null}
       {latestEvidence.checkedAt && (
         <div className="text-muted-foreground">
           Checked: {new Date(latestEvidence.checkedAt).toLocaleString()}

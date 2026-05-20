@@ -87,6 +87,7 @@ function EvidenceSummary({ evidence }: { evidence?: EvidenceSnapshot }) {
 
   const sources = evidence.sources ?? [];
   const accountSource = sources.find((s) => s.source === 'AccountCheck');
+  const domainIndexSource = sources.find((s) => s.source === 'DomainIndex');
   const rdapEventsSource = sources.find((s) => s.source === 'RDAPEvents');
   const directSource = sources.find((s) => s.source === 'DirectRegistrar');
 
@@ -115,6 +116,12 @@ function EvidenceSummary({ evidence }: { evidence?: EvidenceSnapshot }) {
         <div>
           <span className="text-muted-foreground">Account:</span>{' '}
           <span>{formatSourceStatus(accountSource)}</span>
+        </div>
+      )}
+      {domainIndexSource && (
+        <div>
+          <span className="text-muted-foreground">Domain index:</span>{' '}
+          <span>{formatSourceStatus(domainIndexSource)}</span>
         </div>
       )}
       {rdapSummary && (

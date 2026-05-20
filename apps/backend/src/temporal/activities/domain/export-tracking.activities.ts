@@ -67,6 +67,10 @@ import {
   type ExportTrackingStatusHistoryEntry,
   type TransferDecisionAction,
 } from './export-tracking-state';
+import {
+  isDomainStateError,
+  isRegistrarDomainNotFoundError,
+} from '@namefi-astra/registrars/errors';
 
 // =====================================================================
 // CONFIG
@@ -95,6 +99,7 @@ const logger = createLogger({ name: 'export-tracking' });
  */
 export type EvidenceSourceName =
   | 'AccountCheck' // sldRegistrar.getDomainDetails — is the domain in our account?
+  | 'DomainIndex' // indexed_domains row — our reconciled cache (incl. isMissingFromRegistrar)
   | 'RDAPStatus' // RDAP queryDomain — EPP-like status[] field
   | 'RDAPEvents' // RDAP queryDomain — events[] field with transfer actions
   | 'WHOIS' // WhoisClient queryDomain — fallback status parsing
@@ -207,6 +212,32 @@ function extractWhoisStatuses(whoisData: unknown): string[] {
   );
 }
 
+/**
+ * Detect the registrar layer's "this domain is not in any of our accounts"
+ * failure. `main-registrar.determineRegistrar` throws `unknown-registrar`
+ * when the domain is absent from the `indexed_domains` table (its
+ * registrar-resolution source of truth), and `could-not-choose-registrar`
+ * when no registrar will claim it.
+ *
+ * This is NOT a transient error — it is a positive signal that the domain
+ * has left every managed account, which the evidence layer must surface as
+ * `positive_completed` rather than swallowing as `error`.
+ */
+function isDomainNotInAccountsError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error ?? '');
+  const causeMessage =
+    error instanceof Error && error.cause && (error.cause as any).message
+      ? error.cause.message
+      : String(error?.cause ?? '');
+  return (
+    isRegistrarDomainNotFoundError(error) ||
+    message.includes('unknown-registrar') ||
+    message.includes('could-not-choose-registrar') ||
+    causeMessage.includes('unknown-registrar') ||
+    causeMessage.includes('could-not-choose-registrar')
+  );
+}
+
 function findRdapTransferEvent(rdap: RdapResponse): {
   eventAction: string;
   eventDate?: string;
@@ -240,9 +271,13 @@ function findRdapTransferEvent(rdap: RdapResponse): {
  * Is the domain currently in one of our managed registrar accounts?
  *
  * Returns:
- *  - `positive_completed`: domain is confirmed out of our account (it left).
+ *  - `positive_completed`: domain is confirmed out of our accounts — either
+ *    `getDomainDetails` returned nothing, or the registrar layer could not
+ *    resolve the domain to any managed account AND the `indexed_domains`
+ *    table (the registrar-resolution source of truth) no longer lists it.
  *  - `negative`: domain is still in our account.
- *  - `error`: registrar call threw.
+ *  - `error`: a genuine transient failure (network/5xx) — the domain is
+ *    still indexed, so its absence from the registrar call is unexplained.
  */
 async function queryAccountCheck(
   domain: NamefiNormalizedDomain,
@@ -269,8 +304,107 @@ async function queryAccountCheck(
       checkedAt,
     };
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    // A registrar-resolution failure means the domain is not in any of our
+    // accounts — a completion signal, not an error. Corroborate against the
+    // domain index so a genuine transient failure (which leaves the domain
+    // still indexed) is still surfaced as `error`.
+    if (isDomainNotInAccountsError(error)) {
+      const indexedRegistrarKey = await getDomainRegistrarFromIndex(
+        domain,
+      ).catch(() => null);
+      if (!indexedRegistrarKey) {
+        return {
+          source: 'AccountCheck',
+          status: 'positive_completed',
+          evidence: {
+            inOurAccount: false,
+            reason:
+              'domain is no longer resolvable to any managed registrar account and is absent from the domain index',
+            registrarError: message,
+          },
+          checkedAt,
+        };
+      }
+    }
+
     return {
       source: 'AccountCheck',
+      status: 'error',
+      error: message,
+      checkedAt,
+    };
+  }
+}
+
+/**
+ * What does our reconciled domain index (`indexed_domains`) say?
+ *
+ * The index is a distinct signal from the live registrar call: a background
+ * reconciliation refreshes it and explicitly flags rows it can no longer
+ * find at the registrar via `isMissingFromRegistrar`.
+ *
+ * Returns:
+ *  - `positive_completed`: the index row exists but is flagged
+ *    `isMissingFromRegistrar` — reconciliation confirmed the domain left
+ *    the registrar even though we still carry a cache row.
+ *  - `negative`: the index row exists and is not flagged missing — the
+ *    index believes the domain is still in our account.
+ *  - `no_data`: no index row at all — the index has no opinion (the
+ *    AccountCheck source already covers "not resolvable to any account").
+ *  - `error`: the index query threw.
+ */
+async function queryDomainIndexEvidence(
+  domain: NamefiNormalizedDomain,
+): Promise<EvidenceSourceResult> {
+  const checkedAt = new Date().toISOString();
+  try {
+    const rows = await db
+      .select({
+        registrarKey: indexedDomainsTable.registrarKey,
+        isMissingFromRegistrar: indexedDomainsTable.isMissingFromRegistrar,
+        missingFromRegistrarSince:
+          indexedDomainsTable.missingFromRegistrarSince,
+        lastIndexedAt: indexedDomainsTable.lastIndexedAt,
+      })
+      .from(indexedDomainsTable)
+      .where(eq(indexedDomainsTable.normalizedDomainName, domain))
+      .limit(1);
+
+    const row = rows[0];
+    if (!row) {
+      return { source: 'DomainIndex', status: 'no_data', checkedAt };
+    }
+
+    if (row.isMissingFromRegistrar) {
+      return {
+        source: 'DomainIndex',
+        status: 'positive_completed',
+        evidence: {
+          isMissingFromRegistrar: true,
+          missingFromRegistrarSince:
+            row.missingFromRegistrarSince?.toISOString() ?? null,
+          registrarKey: row.registrarKey,
+          lastIndexedAt: row.lastIndexedAt?.toISOString() ?? null,
+        },
+        checkedAt,
+      };
+    }
+
+    return {
+      source: 'DomainIndex',
+      status: 'negative',
+      evidence: {
+        isMissingFromRegistrar: false,
+        registrarKey: row.registrarKey,
+        lastIndexedAt: row.lastIndexedAt?.toISOString() ?? null,
+      },
+      checkedAt,
+    };
+  } catch (error) {
+    return {
+      source: 'DomainIndex',
       status: 'error',
       error: error instanceof Error ? error.message : String(error),
       checkedAt,
@@ -475,10 +609,24 @@ async function queryDirectRegistrarEvidence(
       checkedAt,
     };
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    // The domain no longer resolving to any managed account means there is
+    // simply no pending transfer to find — `no_data`, not a hard error, so
+    // it doesn't pollute the decision function's "all sources errored" gate.
+    if (isDomainNotInAccountsError(error)) {
+      return {
+        source: 'DirectRegistrar',
+        status: 'no_data',
+        evidence: { registrarError: message },
+        checkedAt,
+      };
+    }
+
     return {
       source: 'DirectRegistrar',
       status: 'error',
-      error: error instanceof Error ? error.message : String(error),
+      error: message,
       checkedAt,
     };
   }
@@ -510,17 +658,26 @@ export async function gatherEvidenceForDomain(input: {
       .then((data) => ({ data }))
       .catch((error) => ({ error }));
 
-  const [accountCheck, rdapResult, whois, directRegistrar] = await Promise.all([
-    queryAccountCheck(domain),
-    rdapPromise,
-    queryWhoisEvidence(domain),
-    queryDirectRegistrarEvidence(domain),
-  ]);
+  const [accountCheck, domainIndex, rdapResult, whois, directRegistrar] =
+    await Promise.all([
+      queryAccountCheck(domain),
+      queryDomainIndexEvidence(domain),
+      rdapPromise,
+      queryWhoisEvidence(domain),
+      queryDirectRegistrarEvidence(domain),
+    ]);
 
   const rdapStatus = rdapStatusToEvidence(rdapResult);
   const rdapEvents = rdapEventsToEvidence(rdapResult);
 
-  return [accountCheck, rdapStatus, rdapEvents, whois, directRegistrar];
+  return [
+    accountCheck,
+    domainIndex,
+    rdapStatus,
+    rdapEvents,
+    whois,
+    directRegistrar,
+  ];
 }
 
 // =====================================================================
@@ -558,17 +715,23 @@ function getEvidenceBy(
  *   2. Any source reports `positive_period` → TRANSFER_PERIOD.
  *   3. Direct registrar reports `positive_failed` → TRANSFER_FAILED.
  *      (Registrar-native cancellation is authoritative.)
- *   4. AccountCheck confirms domain is gone (`positive_completed`) AND
- *      at least one other source corroborates (`positive_completed`
- *      from DirectRegistrar or RDAPEvents) → TRANSFER_COMPLETED.
- *   5. AccountCheck confirms domain is gone, with no contradicting in-flight
- *      signal → TRANSFER_COMPLETED.
- *   6. Every source is `error` or `no_data` → UNDETERMINED.
- *   7. Otherwise → NO_SIGNAL.
+ *   4. An account-presence source (AccountCheck — live registrar — or
+ *      DomainIndex — our reconciled cache) confirms the domain is gone
+ *      AND a corroborating source agrees → TRANSFER_COMPLETED. The two
+ *      account-presence sources corroborate each other; DirectRegistrar
+ *      and RDAPEvents `positive_completed` also corroborate.
+ *   5. AccountCheck (live registrar) confirms the domain is gone — live
+ *      truth is authoritative on its own → TRANSFER_COMPLETED.
+ *   6. DomainIndex confirms the domain is gone (`isMissingFromRegistrar`)
+ *      and AccountCheck does NOT contradict it (i.e. AccountCheck is not
+ *      `negative`) → TRANSFER_COMPLETED.
+ *   7. Every source is `error` or `no_data` → UNDETERMINED.
+ *   8. Otherwise → NO_SIGNAL.
  *
- * Tie-breaking: in-progress beats completion (rule #1 wins over #4-5),
+ * Tie-breaking: in-progress beats completion (rules #1–2 win over #4–6),
  * because we'd rather wait an extra cycle than burn an NFT for a domain
- * that's still ours.
+ * that's still ours. The live registrar (AccountCheck) outranks the
+ * cached index (DomainIndex) when they conflict.
  *
  * An `error` from one source does NOT block — as long as some other source
  * gave a usable verdict, we proceed. UNDETERMINED only fires when nothing
@@ -606,7 +769,10 @@ export function decideExportTrackingState(evidence: EvidenceSourceResult[]): {
   }
 
   const accountCheck = getEvidenceBy(evidence, 'AccountCheck');
+  const domainIndex = getEvidenceBy(evidence, 'DomainIndex');
   const accountConfirmsGone = accountCheck?.status === 'positive_completed';
+  const accountConfirmsPresent = accountCheck?.status === 'negative';
+  const indexConfirmsGone = domainIndex?.status === 'positive_completed';
   const directCorroborates = hasSourceStatus(
     evidence,
     'DirectRegistrar',
@@ -618,20 +784,37 @@ export function decideExportTrackingState(evidence: EvidenceSourceResult[]): {
     'positive_completed',
   );
 
-  if (accountConfirmsGone && (directCorroborates || rdapEventsCorroborates)) {
-    const sources: string[] = ['AccountCheck'];
-    if (directCorroborates) sources.push('DirectRegistrar');
-    if (rdapEventsCorroborates) sources.push('RDAPEvents');
-    return {
-      action: 'TRANSFER_COMPLETED',
-      reason: `confirmed export from: ${sources.join(', ')}`,
-    };
+  // Rule 4: an account-presence source says gone, with a corroborating source.
+  if (accountConfirmsGone || indexConfirmsGone) {
+    const corroboratingSources: string[] = [];
+    if (accountConfirmsGone) corroboratingSources.push('AccountCheck');
+    if (indexConfirmsGone) corroboratingSources.push('DomainIndex');
+    if (directCorroborates) corroboratingSources.push('DirectRegistrar');
+    if (rdapEventsCorroborates) corroboratingSources.push('RDAPEvents');
+
+    if (corroboratingSources.length >= 2) {
+      return {
+        action: 'TRANSFER_COMPLETED',
+        reason: `confirmed export from: ${corroboratingSources.join(', ')}`,
+      };
+    }
   }
 
+  // Rule 5: the live registrar (AccountCheck) confirms gone — authoritative.
   if (accountConfirmsGone) {
     return {
       action: 'TRANSFER_COMPLETED',
       reason: 'AccountCheck confirms domain is no longer in our account',
+    };
+  }
+
+  // Rule 6: the reconciled index flagged the domain missing from the
+  // registrar and the live registrar check does not contradict it.
+  if (indexConfirmsGone && !accountConfirmsPresent) {
+    return {
+      action: 'TRANSFER_COMPLETED',
+      reason:
+        'DomainIndex reports the domain is missing from the registrar (isMissingFromRegistrar)',
     };
   }
 

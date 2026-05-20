@@ -1432,6 +1432,7 @@ export const domainExportTrackingTable = pgTable(
       sources: Array<{
         source:
           | 'AccountCheck'
+          | 'DomainIndex'
           | 'RDAPStatus'
           | 'RDAPEvents'
           | 'WHOIS'
