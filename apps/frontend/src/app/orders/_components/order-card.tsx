@@ -148,7 +148,7 @@ export function OrderCard({
           </span>
         </MobileTableItemTitle>
         <div className="flex flex-row-reverse sm:flex-row flex-wrap gap-x-2">
-          <span className="flex items-center gap-2">
+          <span className="flex items-center min-w-[9.375rem]">
             {order.nftWalletAddress ? (
               <>
                 <AddressWithChain
