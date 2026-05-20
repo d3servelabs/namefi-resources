@@ -17,6 +17,7 @@ import {
   MarketplaceUnsupportedOperationError,
 } from './marketplace.interface';
 import type {
+  OpenSeaApiOrder,
   OpenSeaProtocolData,
   SeaportOrderParameters,
 } from './opensea/api-schemas';
@@ -104,6 +105,11 @@ export class OpenSeaAdapter implements MarketPlace {
       {
         publicClient: args.publicClient,
         walletClient: args.walletClient,
+        // The SDK bridges to ethers/seaport-js internally for order construction;
+        // that bridge needs a concrete RPC URL. Pass it explicitly so calls like
+        // `Seaport.getCounter` resolve against the right chain instead of the
+        // bridge's mainnet default (which CALL_EXCEPTIONs for non-mainnet NFTs).
+        rpcUrl: extractRpcUrl(args.publicClient),
       },
       { chain: openSeaChain, apiKey: args.apiKey },
     );
@@ -221,7 +227,7 @@ export class OpenSeaAdapter implements MarketPlace {
       const currency = this.resolveCurrencyFromSdk(best);
       return [this.adaptSdkListing(best, currency, query)];
     } catch (error) {
-      if (isNotFoundError(error)) return [];
+      if (isEmptyResultError(error)) return [];
       throw error;
     }
   }
@@ -275,12 +281,19 @@ export class OpenSeaAdapter implements MarketPlace {
     );
     if (!slug) return [];
     try {
-      const best = await this.sdk.api.getBestOffer(slug, query.tokenId);
-      if (!best || normalizeSdkStatus(best.status) !== 'active') return [];
-      const currency = this.resolveCurrencyFromSdk(best);
-      return [this.adaptSdkOffer(best, currency, query)];
+      // `GET /api/v2/offers/collection/{slug}/nfts/{tokenId}` returns ALL active
+      // offers on the token (paginated). The SDK only exposes `getBestOffer` which
+      // would lose all but the top bid — for the per-domain panel we want to show
+      // every offer so the seller can accept a non-top bid if they prefer.
+      const orders = await this.rest.listOffersForNft({
+        collectionSlug: slug,
+        tokenId: query.tokenId,
+      });
+      return orders
+        .filter((o) => deriveStatus(o) === 'active')
+        .map((o) => this.adaptApiOrderToOffer(o, query));
     } catch (error) {
-      if (isNotFoundError(error)) return [];
+      if (isEmptyResultError(error)) return [];
       throw error;
     }
   }
@@ -297,9 +310,10 @@ export class OpenSeaAdapter implements MarketPlace {
       orderHash: offer.id,
       fulfillerAddress: this.walletAddress,
       protocolAddress,
-      consideration: [
-        { token: offer.tokenAddress, identifier: offer.tokenId, quantity: '1' },
-      ],
+      consideration: {
+        tokenAddress: offer.tokenAddress,
+        tokenId: offer.tokenId,
+      },
     });
 
     const tx =
@@ -465,6 +479,57 @@ export class OpenSeaAdapter implements MarketPlace {
     };
   }
 
+  /**
+   * Adapt a raw v2 REST order payload (boolean status flags, `payment_token_contract`
+   * for currency) into our internal `Offer` shape.
+   */
+  private adaptApiOrderToOffer(
+    raw: OpenSeaApiOrder,
+    query: OffersQuery,
+  ): Offer {
+    const currency = this.resolveCurrencyFromApi(raw);
+    const priceWei = raw.current_price ?? '0';
+    const params = raw.protocol_data?.parameters;
+    return {
+      id: raw.order_hash,
+      marketplace: this.id,
+      source: 'OpenSea',
+      tokenAddress: query.tokenAddress,
+      tokenId: query.tokenId,
+      bidder: (raw.maker?.address ?? params?.offerer ?? '0x0') as Address,
+      price: priceFromWei(priceWei, currency),
+      createdAt: raw.created_date ?? new Date().toISOString(),
+      expirationTime: raw.expiration_time
+        ? secondsToIso(raw.expiration_time)
+        : new Date(0).toISOString(),
+      status: deriveStatus(raw),
+      externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
+      raw,
+    };
+  }
+
+  private resolveCurrencyFromApi(order: OpenSeaApiOrder): ListingCurrency {
+    const fallback =
+      getDefaultListingCurrencyForChain(this.chainId) ??
+      getListingCurrenciesForChain(this.chainId)[0];
+    const paymentToken = order.payment_token_contract?.address;
+    if (paymentToken) {
+      const matched = findCurrencyByAddress(
+        this.chainId,
+        paymentToken as Address,
+      );
+      if (matched) return matched;
+    }
+    if (fallback) return fallback;
+    return {
+      contract: '0x0000000000000000000000000000000000000000',
+      name: 'Unknown',
+      symbol: '?',
+      decimals: 18,
+      isNative: true,
+    };
+  }
+
   private buildExternalUrl(tokenAddress: string, tokenId: string): string {
     if (!tokenAddress || !tokenId) return this.externalSiteBaseUrl;
     return `${this.externalSiteBaseUrl}/assets/${this.chainSlug}/${tokenAddress}/${tokenId}`;
@@ -487,6 +552,25 @@ function secondsToIso(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds <= 0)
     return new Date(0).toISOString();
   return new Date(seconds * 1000).toISOString();
+}
+
+/**
+ * Derive a normalized `OrderStatus` from the v2 REST shape (boolean flags +
+ * `remaining_quantity` + `expiration_time`). The raw API has no `status` string.
+ */
+function deriveStatus(order: OpenSeaApiOrder): OrderStatus {
+  if (order.cancelled === true) return 'cancelled';
+  if (order.marked_invalid === true) return 'expired';
+  if (order.finalized === true) return 'filled';
+  if (
+    typeof order.remaining_quantity === 'number' &&
+    order.remaining_quantity === 0
+  ) {
+    return 'filled';
+  }
+  const expirationMs = (order.expiration_time ?? 0) * 1000;
+  if (expirationMs > 0 && expirationMs < Date.now()) return 'expired';
+  return 'active';
 }
 
 function normalizeSdkStatus(
@@ -513,10 +597,37 @@ function normalizeSdkStatus(
   }
 }
 
-function isNotFoundError(error: unknown): boolean {
+/**
+ * True when an error from OpenSea means "there's simply nothing here" rather than a
+ * real failure. OpenSea returns HTTP 500 (not 404) with a body like
+ * `No listings found for NFT … in collection …` when a token has no orders — that
+ * should surface as an empty list, not a red error banner.
+ */
+function isEmptyResultError(error: unknown): boolean {
   if (!error) return false;
   const message = error instanceof Error ? error.message : String(error);
-  return /\b404\b/.test(message) || /not\s*found/i.test(message);
+  return (
+    /\b404\b/.test(message) ||
+    /not\s*found/i.test(message) ||
+    /no\s+(listings?|offers?|orders?)\s+found/i.test(message)
+  );
+}
+
+/**
+ * Extract a concrete HTTP RPC URL from a viem `PublicClient` for the OpenSea SDK's
+ * ethers/seaport-js bridge. Falls back to the chain's default RPC.
+ */
+function extractRpcUrl(
+  publicClient: OpenSeaAdapterArgs['publicClient'],
+): string | undefined {
+  const transport = publicClient.transport as
+    | { url?: string; transports?: Array<{ value?: { url?: string } }> }
+    | undefined;
+  if (typeof transport?.url === 'string') return transport.url;
+  // Fallback transport: take the first inner transport's URL.
+  const innerUrl = transport?.transports?.[0]?.value?.url;
+  if (typeof innerUrl === 'string') return innerUrl;
+  return publicClient.chain?.rpcUrls?.default?.http?.[0];
 }
 
 function readOrderParameters(raw: unknown): SeaportOrderParameters | undefined {

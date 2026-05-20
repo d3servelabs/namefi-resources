@@ -170,9 +170,12 @@ export function CreateListingCard({
 
   if (availableMarketplaceOptions.length === 0) {
     return (
-      <Card className="bg-zinc-900/50 border-zinc-800">
+      <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
         <CardHeader>
-          <CardTitle className="text-zinc-100">Create listing</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-zinc-100">
+            <ShoppingBag className="h-4 w-4 text-brand-primary" />
+            Create listing
+          </CardTitle>
           <CardDescription>
             No marketplaces support this network yet.
           </CardDescription>
@@ -232,7 +235,7 @@ export function CreateListingCard({
   );
 
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
+    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <CardTitle className="text-zinc-100">Create listing</CardTitle>
         <CardDescription>
@@ -432,6 +435,12 @@ function friendlyErrorMessage(message: string): string {
     lowered.includes('api key')
   ) {
     return 'The marketplace integration is not configured for this environment.';
+  }
+  if (
+    lowered.includes('call_exception') ||
+    lowered.includes('missing revert data')
+  ) {
+    return "Couldn't reach the marketplace contract on this network. Make sure your wallet is connected to the same chain as the domain NFT.";
   }
   return message;
 }

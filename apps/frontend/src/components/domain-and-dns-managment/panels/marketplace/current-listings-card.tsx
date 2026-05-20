@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
-import { ExternalLink, X } from 'lucide-react';
+import { ExternalLink, Tag, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { Address } from 'viem';
@@ -73,9 +73,12 @@ export function CurrentListingsCard({
   };
 
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
+    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
-        <CardTitle className="text-zinc-100">Current listings</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-zinc-100">
+          <Tag className="h-4 w-4 text-brand-primary" />
+          Current listings
+        </CardTitle>
         <CardDescription>
           Active sale listings across supported marketplaces.
         </CardDescription>

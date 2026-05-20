@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
-import { Check, ExternalLink } from 'lucide-react';
+import { Check, ExternalLink, HandCoins } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { Address } from 'viem';
@@ -60,9 +60,12 @@ export function OffersCard({ chainId, tokenAddress, tokenId }: Props) {
   };
 
   return (
-    <Card className="bg-zinc-900/50 border-zinc-800">
+    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
-        <CardTitle className="text-zinc-100">Incoming offers</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-zinc-100">
+          <HandCoins className="h-4 w-4 text-brand-primary" />
+          Incoming offers
+        </CardTitle>
         <CardDescription>
           Bids placed on this domain across supported marketplaces. Accepting an
           offer transfers the NFT to the bidder and credits you the bid amount.
