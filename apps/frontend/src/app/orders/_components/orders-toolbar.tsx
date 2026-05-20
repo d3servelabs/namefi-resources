@@ -190,6 +190,14 @@ export function OrdersToolbar({
 }: OrdersToolbarProps) {
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [sortPopoverOpen, setSortPopoverOpen] = useState(false);
+  const pbn = useMemo(() => {
+    if (typeof window !== 'undefined' && window !== undefined) {
+      const url = new URL(window.location.href);
+      const hostname = url.hostname;
+      return hostname.replace(/\.(astra|poweredby).namefi.(dev|io)$/, '');
+    }
+    return 'current parent domain';
+  }, []);
 
   const sortLabel = useMemo(() => {
     const fieldLabel = sort.sortBy === 'date' ? 'Date' : 'Price';
@@ -280,15 +288,15 @@ export function OrdersToolbar({
       {showPbnToggle && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground ml-1">
           <Switch
-            id="orders-show-all-parents"
-            checked={showAllParents}
+            id="orders-show-only-curret-pbn"
+            checked={!showAllParents}
             onCheckedChange={onShowAllParentsChange}
           />
           <Label
-            htmlFor="orders-show-all-parents"
+            htmlFor="orders-show-only-curret-pbn"
             className="cursor-pointer font-normal text-muted-foreground"
           >
-            Show all parents
+            Only <code>{pbn}</code> domains
           </Label>
         </div>
       )}
