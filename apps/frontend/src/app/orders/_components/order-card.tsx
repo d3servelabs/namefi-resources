@@ -284,7 +284,7 @@ function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
   return (
     <li className="flex items-center justify-between gap-3 text-sm px-5 hover:border-l-2 border-white/50 py-0.5">
       <div className="min-w-0 flex-1 flex flex-row gap-2">
-        <div className="font-medium truncate min-w-[20ch]">
+        <div className="font-medium truncate min-w-[18ch] max-w-[18ch]">
           {item.normalizedDomainName}
         </div>
         <div className="text-xs text-muted-foreground gap-2 flex">
