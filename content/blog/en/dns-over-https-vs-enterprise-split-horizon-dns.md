@@ -6,6 +6,7 @@ tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
 authors: ['namefiteam']
 draft: false
 description: DNS over HTTPS (DoH) protects user privacy by encrypting DNS queries inside HTTPS. Enterprise split-horizon DNS relies on the network being able to see those queries. The collision between the two is reshaping how corporate networks, browsers, and operating systems handle name resolution.
+ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns over https', 'doh', 'split horizon dns', 'enterprise dns', 'dot', 'encrypted dns', 'internal dns', 'name resolution', 'namefi']
 ---
 
