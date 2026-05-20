@@ -2,7 +2,8 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Address, PublicClient, WalletClient } from 'viem';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { useConfig, usePublicClient } from 'wagmi';
+import { getPublicClient, getWalletClient } from 'wagmi/actions';
 import { getMarketplacesSupportedOnChain } from '@/lib/marketplaces/chains';
 import { getMarketplace } from '@/lib/marketplaces/factory';
 import type {
@@ -146,14 +147,18 @@ export function useCreateListing(args: {
   onSuccess?: (listing: Listing) => void;
 }) {
   const queryClient = useQueryClient();
-  const publicClient = usePublicClient({ chainId: args.chainId });
-  const { data: walletClient } = useWalletClient({ chainId: args.chainId });
+  const config = useConfig();
 
   return useMutation({
     mutationFn: async ({ marketplaceId, input }: CreateListingArgs) => {
+      // Fetch the clients fresh inside the mutation (not from a render-time hook)
+      // so a chain switch that just completed in the UI is already reflected —
+      // no stale wallet/public client bound to the previous chain.
+      const publicClient = getPublicClient(config, { chainId: args.chainId });
+      const walletClient = await getWalletClient(config, {
+        chainId: args.chainId,
+      }).catch(() => undefined);
       assertReady(publicClient, walletClient);
-      // chainId always comes from args (binds to publicClient/walletClient above) so
-      // the adapter never resolves for a chain different from the connected clients.
       const adapter = await getMarketplace({
         id: marketplaceId,
         chainId: args.chainId,
@@ -180,11 +185,14 @@ export function useCancelListing(args: {
   onSuccess?: (listing: Listing) => void;
 }) {
   const queryClient = useQueryClient();
-  const publicClient = usePublicClient({ chainId: args.chainId });
-  const { data: walletClient } = useWalletClient({ chainId: args.chainId });
+  const config = useConfig();
 
   return useMutation({
     mutationFn: async ({ listing }: CancelListingArgs) => {
+      const publicClient = getPublicClient(config, { chainId: args.chainId });
+      const walletClient = await getWalletClient(config, {
+        chainId: args.chainId,
+      }).catch(() => undefined);
       assertReady(publicClient, walletClient);
       const adapter = await getMarketplace({
         id: listing.marketplace,
@@ -213,11 +221,14 @@ export function useAcceptOffer(args: {
   onSuccess?: (offer: Offer) => void;
 }) {
   const queryClient = useQueryClient();
-  const publicClient = usePublicClient({ chainId: args.chainId });
-  const { data: walletClient } = useWalletClient({ chainId: args.chainId });
+  const config = useConfig();
 
   return useMutation({
     mutationFn: async ({ offer }: AcceptOfferArgs) => {
+      const publicClient = getPublicClient(config, { chainId: args.chainId });
+      const walletClient = await getWalletClient(config, {
+        chainId: args.chainId,
+      }).catch(() => undefined);
       assertReady(publicClient, walletClient);
       const adapter = await getMarketplace({
         id: offer.marketplace,

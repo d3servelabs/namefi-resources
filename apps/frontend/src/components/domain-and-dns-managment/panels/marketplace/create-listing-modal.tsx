@@ -2,13 +2,16 @@
 
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@namefi-astra/ui/components/shadcn/card';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@namefi-astra/ui/components/shadcn/dialog';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
@@ -24,7 +27,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
-import { ShoppingBag } from 'lucide-react';
+import { Plus, ShoppingBag } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { type Address, formatUnits, getAddress, parseUnits } from 'viem';
@@ -42,7 +45,7 @@ import type {
   ListingFees,
   MarketplaceId,
 } from '@/lib/marketplaces/types';
-import { useCreateListing } from './use-listings';
+import { useCreateListing, useListings } from './use-listings';
 
 const DURATION_OPTIONS: ReadonlyArray<{ label: string; seconds: number }> = [
   { label: '1 day', seconds: 24 * 60 * 60 },
@@ -57,16 +60,25 @@ interface Props {
   tokenId: string;
 }
 
-export function CreateListingCard({
+export function CreateListingModal({
   domain,
   chainId,
   tokenAddress,
   tokenId,
 }: Props) {
+  const [open, setOpen] = useState(false);
   const { address: connectedAddress } = useAccount();
   const activeChainId = useChainId();
   const { switchChainAsync } = useSwitchChain();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+
+  // Existing listings — a marketplace that already has an active listing for this
+  // token is disabled in the selector (OpenSea allows only one listing per NFT).
+  const listingsQuery = useListings({ chainId, tokenAddress, tokenId });
+  const marketplacesWithListings = useMemo(
+    () => new Set((listingsQuery.data ?? []).map((l) => l.marketplace)),
+    [listingsQuery.data],
+  );
 
   const supportedMarketplaces = useMemo(
     () => getMarketplacesSupportedOnChain(chainId),
@@ -74,9 +86,17 @@ export function CreateListingCard({
   );
   const availableMarketplaceOptions = useMemo(
     () =>
-      MARKETPLACE_OPTIONS.filter((o) => supportedMarketplaces.includes(o.id)),
-    [supportedMarketplaces],
+      MARKETPLACE_OPTIONS.filter((o) =>
+        supportedMarketplaces.includes(o.id),
+      ).map((o) => ({
+        ...o,
+        alreadyListed: marketplacesWithListings.has(o.id),
+      })),
+    [supportedMarketplaces, marketplacesWithListings],
   );
+  const allMarketplacesListed =
+    availableMarketplaceOptions.length > 0 &&
+    availableMarketplaceOptions.every((o) => o.alreadyListed);
 
   const [marketplaceId, setMarketplaceId] = useState<MarketplaceId>(
     () => availableMarketplaceOptions[0]?.id ?? 'opensea',
@@ -85,16 +105,21 @@ export function CreateListingCard({
     DURATION_OPTIONS[1]?.seconds ?? 7 * 24 * 60 * 60,
   );
 
+  // Keep `marketplaceId` on a selectable (chain-supported, not-already-listed)
+  // option as listings load in or the chain changes.
   useEffect(() => {
-    if (!supportedMarketplaces.includes(marketplaceId)) {
-      const next = supportedMarketplaces[0];
-      if (next) setMarketplaceId(next);
+    const selectable = availableMarketplaceOptions.filter(
+      (o) => !o.alreadyListed,
+    );
+    const current = availableMarketplaceOptions.find(
+      (o) => o.id === marketplaceId,
+    );
+    if ((!current || current.alreadyListed) && selectable[0]) {
+      setMarketplaceId(selectable[0].id);
     }
-  }, [supportedMarketplaces, marketplaceId]);
+  }, [availableMarketplaceOptions, marketplaceId]);
 
-  // OpenSea SDK 10.5 settles listings in the chain's native asset only. The currency
-  // selector therefore shows the single native option per chain; we leave the UI in
-  // place so adding ERC-20 support later is a one-line change in `currencies.ts`.
+  // OpenSea SDK 10.5 settles listings in the chain's native asset only.
   const availableCurrencies = useMemo(
     () => getListingCurrenciesForChain(chainId).filter((c) => c.isNative),
     [chainId],
@@ -165,28 +190,27 @@ export function CreateListingCard({
           },
         },
       );
+      setOpen(false);
     },
   });
 
-  if (availableMarketplaceOptions.length === 0) {
-    return (
-      <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-zinc-100">
-            <ShoppingBag className="h-4 w-4 text-brand-primary" />
-            Create listing
-          </CardTitle>
-          <CardDescription>
-            No marketplaces support this network yet.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    );
-  }
+  const selectedMarketplace = availableMarketplaceOptions.find(
+    (o) => o.id === marketplaceId,
+  );
+  const selectedDuration = DURATION_OPTIONS.find(
+    (d) => d.seconds === durationSeconds,
+  );
+  const selectedMarketplaceListed = selectedMarketplace?.alreadyListed ?? false;
 
   const handleSubmit = async () => {
     if (!connectedAddress) {
       toast.error('Connect a wallet to list this domain.');
+      return;
+    }
+    if (selectedMarketplaceListed) {
+      toast.error('This domain already has an active listing there.', {
+        description: 'Cancel the existing listing before creating a new one.',
+      });
       return;
     }
     if (!currency) {
@@ -227,120 +251,152 @@ export function CreateListingCard({
     }
   };
 
-  const selectedMarketplace = availableMarketplaceOptions.find(
-    (o) => o.id === marketplaceId,
-  );
-  const selectedDuration = DURATION_OPTIONS.find(
-    (d) => d.seconds === durationSeconds,
-  );
-
   return (
-    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
-      <CardHeader>
-        <CardTitle className="text-zinc-100">Create listing</CardTitle>
-        <CardDescription>
-          Sell this domain on OpenSea. The listing is signed by your wallet and
-          posted to OpenSea's Seaport orderbook.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-5">
-        <div className="space-y-2">
-          <Label className="text-sm text-zinc-300">Marketplace</Label>
-          <Select
-            value={marketplaceId}
-            onValueChange={(v) => setMarketplaceId(v as MarketplaceId)}
-          >
-            <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
-              <SelectValue>{selectedMarketplace?.label}</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              {availableMarketplaceOptions.map((option) => (
-                <SelectItem key={option.id} value={option.id}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {selectedMarketplace ? (
-            <p className="text-xs text-zinc-500">
-              {selectedMarketplace.description}
-            </p>
-          ) : null}
-        </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        render={
+          <Button
+            size="sm"
+            className="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
+          />
+        }
+      >
+        <Plus className="h-4 w-4 mr-1.5" />
+        Create listing
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-zinc-100">
+            <ShoppingBag className="h-4 w-4 text-brand-primary" />
+            Create listing
+          </DialogTitle>
+          <DialogDescription>
+            Sell this domain on OpenSea. The listing is signed by your wallet
+            and posted to OpenSea's Seaport orderbook.
+          </DialogDescription>
+        </DialogHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2 md:col-span-2">
-            <Label
-              htmlFor="marketplace-price"
-              className="text-sm text-zinc-300"
-            >
-              Price ({currency?.symbol ?? '—'})
-            </Label>
-            <Input
-              id="marketplace-price"
-              type="number"
-              min="0"
-              step="0.0001"
-              placeholder="0.05"
-              value={priceInput}
-              onChange={(e) => setPriceInput(e.target.value)}
-              className="bg-zinc-950/40 border-zinc-800 text-zinc-100 font-mono"
-            />
+        {availableMarketplaceOptions.length === 0 ? (
+          <p className="text-sm text-zinc-400">
+            No marketplaces support this network yet.
+          </p>
+        ) : (
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <Label className="text-sm text-zinc-300">Marketplace</Label>
+              <Select
+                value={marketplaceId}
+                onValueChange={(v) => setMarketplaceId(v as MarketplaceId)}
+              >
+                <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
+                  <SelectValue>{selectedMarketplace?.label}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {availableMarketplaceOptions.map((option) => (
+                    <SelectItem
+                      key={option.id}
+                      value={option.id}
+                      disabled={option.alreadyListed}
+                    >
+                      {option.label}
+                      {option.alreadyListed ? ' — already listed' : ''}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {allMarketplacesListed ? (
+                <p className="text-xs text-amber-300">
+                  This domain is already listed on every supported marketplace.
+                  Cancel an existing listing to relist.
+                </p>
+              ) : selectedMarketplace ? (
+                <p className="text-xs text-zinc-500">
+                  {selectedMarketplace.description}
+                </p>
+              ) : null}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2 md:col-span-2">
+                <Label
+                  htmlFor="marketplace-price"
+                  className="text-sm text-zinc-300"
+                >
+                  Price ({currency?.symbol ?? '—'})
+                </Label>
+                <Input
+                  id="marketplace-price"
+                  type="number"
+                  min="0"
+                  step="0.0001"
+                  placeholder="0.05"
+                  value={priceInput}
+                  onChange={(e) => setPriceInput(e.target.value)}
+                  className="bg-zinc-950/40 border-zinc-800 text-zinc-100 font-mono"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-zinc-300">Currency</Label>
+                <Select
+                  value={currencyAddress}
+                  onValueChange={(v) => setCurrencyAddress(v as Address)}
+                >
+                  <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
+                    <SelectValue>{currency?.symbol}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableCurrencies.map((c) => (
+                      <SelectItem key={c.contract} value={c.contract}>
+                        {c.symbol} — {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm text-zinc-300">Duration</Label>
+              <Select
+                value={String(durationSeconds)}
+                onValueChange={(v) => setDurationSeconds(Number(v))}
+              >
+                <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
+                  <SelectValue>{selectedDuration?.label}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {DURATION_OPTIONS.map((d) => (
+                    <SelectItem key={d.seconds} value={String(d.seconds)}>
+                      {d.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <FeePreview fees={fees} currency={currency} priceWei={priceWei} />
           </div>
-          <div className="space-y-2">
-            <Label className="text-sm text-zinc-300">Currency</Label>
-            <Select
-              value={currencyAddress}
-              onValueChange={(v) => setCurrencyAddress(v as Address)}
-            >
-              <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
-                <SelectValue>{currency?.symbol}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {availableCurrencies.map((c) => (
-                  <SelectItem key={c.contract} value={c.contract}>
-                    {c.symbol} — {c.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
+        )}
 
-        <div className="space-y-2">
-          <Label className="text-sm text-zinc-300">Duration</Label>
-          <Select
-            value={String(durationSeconds)}
-            onValueChange={(v) => setDurationSeconds(Number(v))}
-          >
-            <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
-              <SelectValue>{selectedDuration?.label}</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              {DURATION_OPTIONS.map((d) => (
-                <SelectItem key={d.seconds} value={String(d.seconds)}>
-                  {d.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <FeePreview fees={fees} currency={currency} priceWei={priceWei} />
-
-        <div className="flex justify-end">
+        <DialogFooter>
           <AsyncButton
             size="lg"
             onClick={handleSubmit}
-            disabled={!priceWei || !connectedAddress || !currency}
+            disabled={
+              !priceWei ||
+              !connectedAddress ||
+              !currency ||
+              selectedMarketplaceListed ||
+              allMarketplacesListed
+            }
             className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
           >
             <ShoppingBag className="h-4 w-4 mr-2" />
             List on {selectedMarketplace?.label ?? marketplaceId}
           </AsyncButton>
-        </div>
-      </CardContent>
-    </Card>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -401,9 +457,9 @@ function useEstimatedFees(
 ): ListingFees | undefined {
   return useMemo(() => {
     if (!priceWei) return undefined;
-    // Mirror the adapter's `OPENSEA_PROTOCOL_FEE_BPS` (1.0% as of Sep 2025). Royalty
-    // is left at 0 in the preview; the SDK adds it from the collection's on-chain
-    // ERC-2981 implementation at signing time.
+    // Mirror the adapter's `OPENSEA_PROTOCOL_FEE_BPS` (1.0% as of Sep 2025).
+    // Royalty is left at 0 in the preview; the SDK adds it from the collection's
+    // on-chain ERC-2981 implementation at signing time.
     const marketplaceFeeBps = 100;
     const royaltyFeeBps = 0;
     const totalBps = BigInt(marketplaceFeeBps + royaltyFeeBps);
@@ -438,9 +494,10 @@ function friendlyErrorMessage(message: string): string {
   }
   if (
     lowered.includes('call_exception') ||
-    lowered.includes('missing revert data')
+    lowered.includes('missing revert data') ||
+    lowered.includes("seaport contract isn't available")
   ) {
-    return "Couldn't reach the marketplace contract on this network. Make sure your wallet is connected to the same chain as the domain NFT.";
+    return "Couldn't reach OpenSea's Seaport contract on this network. Make sure your wallet is connected to the same chain as the domain NFT, then try again.";
   }
   return message;
 }

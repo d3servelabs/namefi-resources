@@ -25,6 +25,7 @@ import type { Address } from 'viem';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import type { Listing } from '@/lib/marketplaces/types';
+import { CreateListingModal } from './create-listing-modal';
 import { toSafeExternalUrl } from './safe-external-url';
 import { useCancelListing, useListings } from './use-listings';
 
@@ -75,13 +76,23 @@ export function CurrentListingsCard({
   return (
     <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-zinc-100">
-          <Tag className="h-4 w-4 text-brand-primary" />
-          Current listings
-        </CardTitle>
-        <CardDescription>
-          Active sale listings across supported marketplaces.
-        </CardDescription>
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1.5">
+            <CardTitle className="flex items-center gap-2 text-zinc-100">
+              <Tag className="h-4 w-4 text-brand-primary" />
+              Current listings
+            </CardTitle>
+            <CardDescription>
+              Active sale listings across supported marketplaces.
+            </CardDescription>
+          </div>
+          <CreateListingModal
+            domain={domain}
+            chainId={chainId}
+            tokenAddress={tokenAddress}
+            tokenId={tokenId}
+          />
+        </div>
       </CardHeader>
       <CardContent>
         {listingsQuery.isLoading ? (
@@ -95,7 +106,8 @@ export function CurrentListingsCard({
           </p>
         ) : !listingsQuery.data || listingsQuery.data.length === 0 ? (
           <p className="text-sm text-zinc-400">
-            No active listings. Create one below to put this domain up for sale.
+            No active listings. Use “Create listing” to put this domain up for
+            sale.
           </p>
         ) : (
           <Table>

@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { getTokenIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { MARKETPLACE_SUPPORTED_CHAINS } from '@/lib/marketplaces/chains';
-import { CreateListingCard } from './create-listing-card';
 import { CurrentListingsCard } from './current-listings-card';
 import { OffersCard } from './offers-card';
 import { UnsupportedChainEmptyState } from './unsupported-chain-empty-state';
@@ -32,12 +31,6 @@ export function MarketplacePanel({ domain, nftChainId }: Props) {
         tokenId={tokenId}
       />
       <OffersCard
-        chainId={chainId}
-        tokenAddress={NAMEFI_NFT_CONTRACT_ADDRESS}
-        tokenId={tokenId}
-      />
-      <CreateListingCard
-        domain={domain}
         chainId={chainId}
         tokenAddress={NAMEFI_NFT_CONTRACT_ADDRESS}
         tokenId={tokenId}
