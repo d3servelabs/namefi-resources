@@ -50,7 +50,7 @@ What you *can* have for arbitrary NP statements:
 
 So when a real system—Groth16, PLONK, Halo2, STARK, Bulletproofs—says it is "zero-knowledge," it virtually always means *computational* zero-knowledge. The proof reveals nothing to a polynomial-time verifier, conditional on assumptions about elliptic curves, hash functions, or other cryptographic primitives.
 
-If those assumptions break—say, a future algorithm breaks the discrete log problem on the curve used by the trusted setup—the zero-knowledge property *also* breaks, retroactively. Anyone who recorded the proof transcripts can recover the witness.
+If those assumptions break—say, a future algorithm breaks the discrete log problem on a curve that a scheme relies on—the zero-knowledge argument can weaken retroactively. Exactly what becomes possible depends on the construction: an attacker may be able to distinguish real transcripts from simulated ones, forge proofs, or extract information that was previously protected. You should not assume old computational-ZK transcripts retain the same privacy margin after their underlying assumptions fail.
 
 ## A worked example: commitment schemes
 

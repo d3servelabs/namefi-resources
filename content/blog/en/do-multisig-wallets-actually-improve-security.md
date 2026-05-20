@@ -114,7 +114,7 @@ Namefi takes this further by representing ownership as an on-chain record that c
 ## Sources and further reading
 
 - Safe — [Smart account contracts and audits](https://safe.global/).
-- IETF FROST — [Threshold signature draft for EdDSA](https://datatracker.ietf.org/doc/draft-irtf-cfrg-frost/).
+- IETF FROST — [RFC 9591, the Flexible Round-Optimized Schnorr Threshold protocol](https://www.rfc-editor.org/rfc/rfc9591#:~:text=FROST%20signatures%20can%20be%20issued%20after%20a%20threshold%20number%20of%20entities%20cooperate%20to%20compute%20a%20signature).
 - Bitcoin — [BIP-174 PSBT](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 - Parity — [Multisig freeze post-mortem](https://www.parity.io/blog/security-alert/).
 - a16z crypto — [Practical guide to running a Safe multisig](https://a16zcrypto.com/posts/article/secure-your-tokens-set-up-a-safe-multisig/).
