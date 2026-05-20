@@ -2,6 +2,7 @@
 
 import type { FC, PropsWithChildren } from 'react';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
+import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
 import { FeedbackProvider } from './feedback';
 import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 
@@ -14,7 +15,10 @@ export const DeferredProviders: FC<PropsWithChildren> = ({ children }) => {
   return (
     <AdminFeatureFlagsProvider>
       <FreeMintsGuidanceProvider>
-        <FeedbackProvider>{children}</FeedbackProvider>
+        <FeedbackProvider>
+          {children}
+          <AdminFeatureFlagsSheet />
+        </FeedbackProvider>
       </FreeMintsGuidanceProvider>
     </AdminFeatureFlagsProvider>
   );

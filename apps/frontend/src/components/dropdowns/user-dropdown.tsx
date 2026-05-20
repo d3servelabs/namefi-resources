@@ -96,7 +96,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
-import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useRegisterAdminFlags } from '../admin/feature-flags/register';
@@ -1262,20 +1261,16 @@ function LogoutDropdownItem() {
 function AdminFeatureFlagsDropdownItem() {
   const { setOpen: openFeatureFlags } = useAdminFeatureFlagsSheet();
   return (
-    <>
-      <UserDropdownItem
-        item={{
-          type: 'button',
-          onClick: (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openFeatureFlags(true);
-          },
-          title: 'Admin Feature Flags',
-          icon: LayoutListIcon,
-        }}
-      />
-      <AdminFeatureFlagsSheet />
-    </>
+    <UserDropdownItem
+      item={{
+        type: 'button',
+        onClick: (e) => {
+          e.stopPropagation();
+          window.setTimeout(() => openFeatureFlags(true), 0);
+        },
+        title: 'Admin Feature Flags',
+        icon: LayoutListIcon,
+      }}
+    />
   );
 }
