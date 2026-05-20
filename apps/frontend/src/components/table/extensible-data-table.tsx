@@ -116,6 +116,9 @@ type ExtensibleDataTableProps<TData, FS extends IFilterStrategy<TData>> = {
 
   // Reset preferences
   onResetPreferences?: () => void;
+
+  /** Extra controls rendered in the toolbar, immediately before the Filters button. */
+  toolbarActions?: ReactNode;
 };
 
 export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
@@ -157,6 +160,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     columnOrder: controlledColumnOrder,
     onColumnOrderChange,
     onResetPreferences,
+    toolbarActions,
   } = props;
   const {
     filterState: controlledFilterState,
@@ -331,6 +335,8 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
       <div className="flex items-center justify-between gap-3 px-1">
         <div className="flex items-center gap-3">{searchInput}</div>
         <div className="flex items-center gap-2">
+          {toolbarActions}
+
           {/* Filter Panel Toggle */}
           {filterStrategy?.onFilterStateChange &&
             filterDisplayOptions?.showInPanel !== false && (

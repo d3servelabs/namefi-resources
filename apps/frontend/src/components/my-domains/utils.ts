@@ -106,3 +106,38 @@ export function getCustomRenewalPrice(domainName: string) {
   }
   return null;
 }
+
+/**
+ * Groups domains into per-(chain, wallet) batches for `watchBulkNamefiNftInWallet`,
+ * which adds NFTs one wallet and one chain at a time. Domains missing a chain id,
+ * owner address, or token id are skipped.
+ */
+export function groupDomainsForWalletWatch(
+  domains: Array<{
+    chainId?: number | null;
+    ownerAddress?: string | null;
+    tokenId?: bigint | number | null;
+  }>,
+): Array<{ chainId: number; walletAddress: string; tokenIds: string[] }> {
+  const groups = new Map<
+    string,
+    { chainId: number; walletAddress: string; tokenIds: string[] }
+  >();
+  for (const { chainId, ownerAddress, tokenId } of domains) {
+    if (chainId == null || !ownerAddress || tokenId == null) {
+      continue;
+    }
+    const key = `${chainId}:${ownerAddress.toLowerCase()}`;
+    const existing = groups.get(key);
+    if (existing) {
+      existing.tokenIds.push(tokenId.toString());
+    } else {
+      groups.set(key, {
+        chainId,
+        walletAddress: ownerAddress,
+        tokenIds: [tokenId.toString()],
+      });
+    }
+  }
+  return Array.from(groups.values());
+}

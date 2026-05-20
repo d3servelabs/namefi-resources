@@ -26,6 +26,7 @@ import {
   Globe,
   Hexagon,
   Link as LinkIcon,
+  Wallet,
   X,
 } from 'lucide-react';
 import type { CSSProperties, FC } from 'react';
@@ -53,6 +54,9 @@ export interface FloatingActionPanelProps {
     }>,
   ) => void;
   onBatchAction: (action: 'ns' | 'web' | 'mx' | 'ens' | 'forward') => void;
+  /** Adds the selected domains' Namefi NFTs to the connected wallet. */
+  onWatchSelectedInWallet: () => void;
+  isWatchingInWallet: boolean;
 }
 
 const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
@@ -64,6 +68,8 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
   renewableDomainsCount,
   renewableDomains,
   onRenewNow,
+  onWatchSelectedInWallet,
+  isWatchingInWallet,
   onBatchAction,
 }) => {
   const canAnimate = useCanAnimate();
@@ -262,6 +268,34 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                         <Hexagon className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>Set ENS Record</TooltipContent>
+                    </Tooltip>
+
+                    <Separator
+                      orientation="vertical"
+                      className="h-4 bg-border mx-1"
+                    />
+
+                    <Tooltip>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={onWatchSelectedInWallet}
+                            className="h-8 w-8"
+                            disabled={isWatchingInWallet}
+                            aria-label={`Show ${selectedDomainCount} NFT${
+                              selectedDomainCount !== 1 ? 's' : ''
+                            } in wallet`}
+                          />
+                        }
+                      >
+                        <Wallet className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Show {selectedDomainCount} NFT
+                        {selectedDomainCount !== 1 ? 's' : ''} in wallet
+                      </TooltipContent>
                     </Tooltip>
                   </div>
                 </div>

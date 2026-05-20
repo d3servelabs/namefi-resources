@@ -13,6 +13,9 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import type { VisibilityState } from '@tanstack/react-table';
 import { toast } from 'sonner';
+import { Wallet } from 'lucide-react';
+import { useAccount } from 'wagmi';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -31,6 +34,7 @@ import {
   useDomainRenewal,
 } from '@/hooks/use-domain-renewal';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
+import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { useTRPC } from '@/lib/trpc';
 import { useMyDomainsColumns } from './columns';
 import { triggerCelebrationAtPosition } from './confetti-celebration';
@@ -41,6 +45,7 @@ import {
   DEFAULT_DOMAIN_LIST_PAGE_SIZE,
   getCustomRenewalPrice,
   getRenewalPriceUsdPerYearForDomain,
+  groupDomainsForWalletWatch,
   isDomainPossiblyRenewable,
   truncateWalletAddress,
 } from './utils';
@@ -50,6 +55,50 @@ import {
 const FloatingActionPanel = dynamic(() => import('./floating-action-panel'), {
   ssr: false,
 });
+
+/**
+ * Adds each (chain, owner wallet) batch of NFTs to the connected wallet,
+ * tallying how many tokens were prompted successfully vs. failed. A failure in
+ * one batch (e.g. user rejection) does not abort the remaining batches.
+ */
+async function watchNftGroupsInWallet(
+  watchGroups: ReturnType<typeof groupDomainsForWalletWatch>,
+  watchBulk: (
+    chainId: number,
+    walletAddress: string,
+    tokenIds: string[],
+  ) => Promise<PromiseSettledResult<unknown>[] | undefined>,
+): Promise<{ addedCount: number; failedCount: number }> {
+  let addedCount = 0;
+  let failedCount = 0;
+  for (const group of watchGroups) {
+    try {
+      const results = await watchBulk(
+        group.chainId,
+        group.walletAddress,
+        group.tokenIds,
+      );
+      if (!results) {
+        // The bulk call short-circuited (no wallet connected / unknown owner).
+        failedCount += group.tokenIds.length;
+        continue;
+      }
+      // `watchBulk` settles every per-token request, so tally each token rather
+      // than assuming the whole batch succeeded once the promise resolves.
+      for (const result of results) {
+        if (result.status === 'fulfilled') {
+          addedCount += 1;
+        } else {
+          failedCount += 1;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      failedCount += group.tokenIds.length;
+    }
+  }
+  return { addedCount, failedCount };
+}
 
 export function MyDomainsTable(props: {
   title?: string;
@@ -89,6 +138,7 @@ export function MyDomainsTable(props: {
   );
   const [page, setPage] = useState(1);
   const [domainSearch, setDomainSearch] = useState('');
+  const [isWatchingInWallet, setIsWatchingInWallet] = useState(false);
 
   const defaultColumnVisibility: VisibilityState = {
     select: true,
@@ -140,6 +190,8 @@ export function MyDomainsTable(props: {
 
   const { renewDomains } = useDomainRenewal();
   const { gate: gateDnsEmail, modal: dnsEmailModal } = useDnsEmailGate();
+  const { watchBulkNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
+  const { address: connectedAddress } = useAccount();
 
   const handleListForSaleClick = useCallback(
     (domainName: string) => {
@@ -719,6 +771,77 @@ export function MyDomainsTable(props: {
     onListForSaleClick: handleListForSaleClick,
   });
 
+  // Adds the given domains' Namefi NFTs to the connected wallet via
+  // `wallet_watchAsset`. Domains are batched per (chain, owner wallet) since
+  // `watchBulkNamefiNftInWallet` prompts one wallet and chain at a time.
+  const handleWatchDomainsInWallet = useCallback(
+    async (domainsToWatch: DomainRow[]) => {
+      const watchGroups = groupDomainsForWalletWatch(domainsToWatch);
+      if (watchGroups.length === 0) {
+        toast.error('No NFTs available to add to your wallet');
+        return;
+      }
+      setIsWatchingInWallet(true);
+      const { addedCount, failedCount } = await watchNftGroupsInWallet(
+        watchGroups,
+        watchBulkNamefiNftInWallet,
+      ).finally(() => setIsWatchingInWallet(false));
+      if (addedCount > 0) {
+        toast.success(
+          `Added ${addedCount} NFT${addedCount === 1 ? '' : 's'} to your wallet`,
+        );
+      }
+      if (failedCount > 0) {
+        toast.error(
+          `Couldn't add ${failedCount} NFT${
+            failedCount === 1 ? '' : 's'
+          } to your wallet`,
+        );
+      }
+    },
+    [watchBulkNamefiNftInWallet],
+  );
+
+  // Domains in this table owned by the currently connected wallet — the basis
+  // for the toolbar "Show NFTs in Wallet" action.
+  const connectedWalletDomains = useMemo(() => {
+    if (!connectedAddress) {
+      return [];
+    }
+    const target = connectedAddress.toLowerCase();
+    return domains.filter(
+      (domain) => (domain.ownerAddress ?? '').toLowerCase() === target,
+    );
+  }, [domains, connectedAddress]);
+
+  // Count only the NFTs that can actually be added: `groupDomainsForWalletWatch`
+  // drops domains missing a chain id, owner address, or token id, so the toolbar
+  // action stays consistent with what `handleWatchDomainsInWallet` will prompt.
+  const watchableNftCount = useMemo(
+    () =>
+      groupDomainsForWalletWatch(connectedWalletDomains).reduce(
+        (total, group) => total + group.tokenIds.length,
+        0,
+      ),
+    [connectedWalletDomains],
+  );
+
+  const watchInWalletToolbarAction =
+    isAnyWalletConnected && watchableNftCount > 0 ? (
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => handleWatchDomainsInWallet(connectedWalletDomains)}
+        disabled={isWatchingInWallet}
+        aria-label={`Show ${watchableNftCount} NFT${
+          watchableNftCount === 1 ? '' : 's'
+        } in wallet`}
+      >
+        <Wallet className="h-3 w-3 mr-1" />
+        Show NFTs in Wallet
+      </Button>
+    ) : null;
+
   return (
     <>
       {/* Renew Now Modal */}
@@ -763,6 +886,7 @@ export function MyDomainsTable(props: {
         columnVisibility={columnVisibility}
         onColumnVisibilityChange={isMobile ? undefined : setColumnVisibility}
         onResetPreferences={resetToDefaults}
+        toolbarActions={watchInWalletToolbarAction}
         emptyMessage="No domains match your filters"
         loadingMessage="Loading domains..."
         paginationVisibility="auto"
@@ -781,6 +905,10 @@ export function MyDomainsTable(props: {
           renewableDomains={renewableDomains}
           onRenewNow={(domains) => setRenewNowModalDomains(domains)}
           onBatchAction={(action) => gateDnsEmail(() => setBatchAction(action))}
+          onWatchSelectedInWallet={() =>
+            handleWatchDomainsInWallet(selectedDomainRows)
+          }
+          isWatchingInWallet={isWatchingInWallet}
         />
       </Suspense>
       <BatchDnsDialog

@@ -4,15 +4,11 @@ import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   NFSC_CONTRACT_ADDRESS,
 } from '@namefi-astra/utils/contract-addresses';
-import {
-  useConfig,
-  useWatchAsset,
-  useWalletClient,
-  useSwitchChain,
-} from 'wagmi';
+import { useConfig, useWatchAsset, useSwitchChain } from 'wagmi';
 
 export function useWatchAssets() {
   const { connectedEthereumWallets } = useConnectedWallets();
+
   const isAnyWalletConnected = useMemo(() => {
     return connectedEthereumWallets.length > 0;
   }, [connectedEthereumWallets]);
@@ -69,10 +65,57 @@ export function useWatchAssets() {
     },
     [isAnyWalletConnected, switchChainAsync, watchAssetAsync],
   );
+
+  const watchBulkNamefiNftInWallet = useCallback(
+    async (chainId: number, walletAddress: string, tokenIds: string[]) => {
+      if (!isAnyWalletConnected) {
+        return;
+      }
+      const connectedWallet = connectedEthereumWallets.find(
+        (wallet) =>
+          wallet.address.toLowerCase() === walletAddress.toLowerCase(),
+      );
+      if (!connectedWallet) {
+        console.warn(
+          `Wallet address ${walletAddress} not found among connected wallets.`,
+        );
+        return;
+      }
+
+      // Talk to the target wallet's provider directly instead of wagmi's
+      // active-wallet `walletClient`: `useWalletClient` only refreshes on the
+      // next render, so a client captured in this callback would still point at
+      // the previously active wallet after a switch. `switchChain` does not
+      // mutate existing provider instances, so request the provider afterwards.
+      await connectedWallet.switchChain(chainId);
+      const provider = await connectedWallet.getEthereumProvider();
+
+      // wallet_watchAsset also accepts ERC721 at the RPC level even though the
+      // EIP-1193 `request` types only model array params; cast to opt into it.
+      const result = await Promise.allSettled(
+        tokenIds.map((tokenId) =>
+          provider.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC721',
+              options: {
+                address: NAMEFI_NFT_CONTRACT_ADDRESS,
+                tokenId,
+              },
+            },
+          } as any),
+        ),
+      );
+      return result;
+    },
+    [isAnyWalletConnected, connectedEthereumWallets],
+  );
+
   return {
     watchNfscInWallet,
     isMetaMask,
     isAnyWalletConnected,
     watchNamefiNftInWallet,
+    watchBulkNamefiNftInWallet,
   };
 }
