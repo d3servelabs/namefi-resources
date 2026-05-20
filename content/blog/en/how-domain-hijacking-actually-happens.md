@@ -6,6 +6,7 @@ tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['namefiteam']
 draft: false
 description: A practical walk-through of the five ways attackers actually take over domains in the real world—social engineering, registrar account compromise, DNS provider takeover, NS hijacks, and expired-domain reclamation—and the specific controls that block each one.
+ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['domain hijacking', 'domain security', 'registrar lock', 'transfer lock', 'dnssec', 'two factor authentication', 'social engineering', 'dangling dns', 'namefi']
 ---
 

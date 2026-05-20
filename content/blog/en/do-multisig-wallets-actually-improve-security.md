@@ -6,6 +6,7 @@ tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
 authors: ['namefiteam']
 draft: false
 description: Multisignature wallets are widely treated as the default secure custody pattern in crypto, but the answer to "do they actually improve security?" depends entirely on the threat model. This post walks through what multisig defeats, what it does not, and where it can make things worse.
+ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['multisig wallet', 'multisignature', 'safe wallet', 'gnosis safe', 'key management', 'self custody', 'threshold signature', 'social recovery', 'namefi']
 ---
 

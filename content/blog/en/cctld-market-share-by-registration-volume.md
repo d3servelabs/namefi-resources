@@ -6,6 +6,7 @@ tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['namefiteam']
 draft: false
 description: A look at which country-code top-level domains command the largest share of registrations worldwide, why the leaders differ from what most people expect, and what the volume numbers tell us about how the internet is actually used.
+ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['cctld market share', 'country code domains', '.cn', '.de', '.uk', '.tk', '.io', 'domain statistics', 'registry data', 'namefi']
 ---
 
