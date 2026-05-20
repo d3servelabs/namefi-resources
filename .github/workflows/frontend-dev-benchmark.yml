@@ -87,7 +87,10 @@ jobs:
             const oneHourAgo = new Date(now - 60 * 60 * 1000).toISOString();
             const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000).toISOString();
 
-            // Fetch completed and in-progress runs in the last 24 hours
+            // Fetch completed and in-progress runs in the last 24 hours.
+            // Only runs where the benchmark job actually ran should count
+            // toward the benchmark rate limit; lightweight trigger-gate-only
+            // runs are expected to be frequent and should not self-throttle CI.
             const [completedRes, inProgressRes] = await Promise.all([
               github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner,
@@ -114,13 +117,38 @@ jobs:
               ...inProgressRes.data.workflow_runs,
             ].filter(run => run.id !== currentRunId);
 
-            const lastHourCount = allRuns.filter(
+            const benchmarkJobName = 'Run Frontend Dev Benchmark';
+            const benchmarkRuns = [];
+
+            for (const run of allRuns) {
+              const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: run.id,
+                per_page: 100,
+              });
+
+              const benchmarkJob = jobs.find(job => job.name === benchmarkJobName);
+              if (!benchmarkJob) {
+                core.info(`Ignoring run ${run.id}: benchmark job was not created.`);
+                continue;
+              }
+
+              if (benchmarkJob.conclusion === 'skipped') {
+                core.info(`Ignoring run ${run.id}: benchmark job was skipped.`);
+                continue;
+              }
+
+              benchmarkRuns.push(run);
+            }
+
+            const lastHourCount = benchmarkRuns.filter(
               run => new Date(run.created_at) >= new Date(oneHourAgo)
             ).length;
-            const last24hCount = allRuns.length;
+            const last24hCount = benchmarkRuns.length;
 
-            core.info(`Runs in last hour (excl. current): ${lastHourCount}`);
-            core.info(`Runs in last 24h (excl. current): ${last24hCount}`);
+            core.info(`Benchmark runs in last hour (excl. current): ${lastHourCount}`);
+            core.info(`Benchmark runs in last 24h (excl. current): ${last24hCount}`);
 
             if (lastHourCount >= 1) {
               core.info('Skipping: workflow already ran in the last hour.');
