@@ -54,7 +54,7 @@ Chrome's DoH implementation only upgrades the system resolver to DoH if the syst
 
 ### Firefox's TRR (Trusted Recursive Resolver) model
 
-Firefox's approach has been more controversial. By default in the U.S. it routes DNS to Cloudflare regardless of the OS-level resolver, unless one of several "canary domains" returns a specific response (e.g., `use-application-dns.net`). Enterprise networks can publish that canary record to tell Firefox to back off and use the system resolver. Mozilla's [TRR documentation](https://wiki.mozilla.org/Trusted_Recursive_Resolver) describes the policy.
+Firefox's approach has been more controversial. In locales where Mozilla has enabled DoH by default, Firefox uses a default resolver such as Cloudflare in the U.S., but it also runs enterprise and network heuristics before enabling DoH. One important signal is the canary domain `use-application-dns.net`: when the local resolver returns a negative result, Firefox disables application-level DNS for users whose DoH was enabled by default. Mozilla also documents an important split-horizon nuance: internal-only names can fall back to ordinary DNS if DoH resolution fails, but public names that resolve differently inside the network require enterprise policy to disable DoH.
 
 ### Apple's encrypted DNS (iOS 14+, macOS Big Sur+)
 
@@ -62,7 +62,7 @@ Apple lets apps and configuration profiles opt-in to DoH or DoT for the whole sy
 
 ### Windows native DoH
 
-Since Windows 11, the OS itself can use DoH for the system resolver. Group Policy controls whether DoH is allowed, required, or forbidden, and which servers are permitted. This is arguably the cleanest model: the security team chooses the policy, the OS enforces it.
+Since Windows 11, and on Windows Server 2022 and later, the OS itself can use DoH for the system resolver. Group Policy controls whether DoH is allowed, required, or prohibited, and Windows only enables DoH against configured DNS servers that are known to support it. This is arguably the cleanest model: the security team chooses the policy, the OS enforces it.
 
 The pattern is clear: **DoH that lives in a single app (the browser) is hard for the network to control; DoH that lives in the OS-level resolver is controllable through normal MDM channels**. The IETF and OS vendors have largely agreed that policy belongs in the OS layer.
 
@@ -92,7 +92,7 @@ Pretending the conflict does not exist, leaving defaults in place, and assuming 
 
 ## Privacy is not the only thing DoH gives up
 
-A subtler effect of DoH is that *every query goes to one resolver operator*. When Chrome routes DoH to Google, Firefox to Cloudflare, or Windows to Quad9, that operator now sees the full browsing history of every user on the network—a level of centralization that does not exist with the traditional ISP-resolver model where queries are distributed across thousands of ISPs.
+A subtler effect of DoH is resolver centralization. When a browser or OS is configured to use a public DoH resolver, more of that user's DNS stream may go to one resolver operator. Chrome's automatic mode is explicitly designed to preserve the user's existing DNS provider where possible, and Firefox's default rollout is locale- and heuristic-dependent, so this is not literally "every query" in every deployment. But the architectural trade-off remains: encrypted DNS can move trust from the local network or ISP to a smaller set of selected resolver operators.
 
 Whether that trade is acceptable depends on the threat model. For a user on a hostile coffee-shop network, centralizing trust with Cloudflare is a clear improvement over trusting the coffee shop. For an enterprise that already had a contractual relationship with its ISP, it can be a regression. The [EFF has been writing about this trade-off](https://www.eff.org/deeplinks/2019/10/encrypted-dns-could-help-close-biggest-privacy-gap-internet) since the early DoH rollouts.
 
@@ -102,7 +102,7 @@ The cleanest answer is the same as Strategy B above: run your own DoH resolver, 
 
 If you run a domain that is consumed by enterprises—a SaaS app, a developer tool, an API—the relevant facts are:
 
-- Some fraction of your users will resolve you through a public DoH endpoint, regardless of how their corporate network is configured. CNAME chains, subdomain delegations, and any clever DNS tricks you do for personalization need to work the same when resolved from an arbitrary public resolver as from a customer's internal one.
+- Some fraction of your users will resolve you through a public DoH endpoint, especially on unmanaged devices or explicitly configured browsers. CNAME chains, subdomain delegations, and any clever DNS tricks you do for personalization need to work the same when resolved from an arbitrary public resolver as from a customer's internal one.
 - DNS-based censorship circumvention is a real use case for DoH. If your domain is blocked by a government's DNS filter (as several encrypted-messaging and VPN domains have been), users will reach you over DoH from a public resolver. The mechanics are the same; the political stakes are different.
 - Internal split-horizon should never resolve a public-facing name to something *only meaningful internally*, in a way that would break if a user accidentally queried over DoH. The classic failure is internal-only `app.example.com` returning a private IP that no DoH user can reach—then a remote employee in a hotel finds the same hostname unreachable and files a bug. Use a clearly separate internal-only zone (`app.example.internal`).
 
@@ -116,6 +116,7 @@ The deeper point: encrypted DNS is here to stay, and so is enterprise visibility
 
 - IETF — [DNS over HTTPS, RFC 8484](https://datatracker.ietf.org/doc/html/rfc8484) and [DNS over TLS, RFC 7858](https://datatracker.ietf.org/doc/html/rfc7858).
 - Chrome Enterprise — [DoH policy controls](https://chromeenterprise.google/policies/?policy=DnsOverHttpsMode).
-- Mozilla — [Trusted Recursive Resolver program](https://wiki.mozilla.org/Trusted_Recursive_Resolver) and canary domain.
-- Microsoft — [Configure DNS over HTTPS in Windows 11](https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support).
+- Mozilla — [Trusted Recursive Resolver program](https://wiki.mozilla.org/Trusted_Recursive_Resolver), [canary domain behavior](https://support.mozilla.org/en-US/kb/canary-domain-use-application-dnsnet#:~:text=A%20negative%20result%20will%20be%20a%20signal%20to%20disable%20application%20DNS%2C%20(i.e.%2C%20DoH).), and [split-horizon fallback guidance](https://support.mozilla.org/gu-IN/kb/dns-over-https-doh-faqs#:~:text=If%20Firefox%20fails%20to%20resolve%20a%20domain%20via%20DoH%2C%20it%20will%20fall%20back%20to%20the%20DNS.).
+- Chromium — [Chrome's same-provider DoH auto-upgrade model](https://www.chromium.org/developers/dns-over-https/#:~:text=Chrome's%20auto%2Dupgrade%20approach%20does%20not%20change%20the%20DNS%20provider).
+- Microsoft — [Configure DNS over HTTPS in Windows](https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support#:~:text=Allow%20DoH.%20Queries%20will%20be%20performed%20using%20DoH%20if%20the%20specified%20DNS%20servers%20support%20the%20protocol.).
 - EFF — [Encrypted DNS could help close one of the internet's biggest privacy gaps](https://www.eff.org/deeplinks/2019/10/encrypted-dns-could-help-close-biggest-privacy-gap-internet).

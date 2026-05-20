@@ -15,16 +15,16 @@ This post walks through which ccTLDs lead by registration volume, why the leader
 
 ## The leaders, roughly ordered
 
-Public registry data (from operators that publish counts, plus aggregator snapshots like [Verisign's Domain Name Industry Brief](https://www.verisign.com/en_US/domain-names/dnib/index.xhtml) and [nic.de](https://www.denic.de/en/know-how/statistics/)) puts the top tier of ccTLDs in roughly this order:
+Public registry data (from operators that publish counts, plus aggregator snapshots like [DNIB's Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) and [DENIC's .de statistics](https://www.denic.de/en/products/statistics-about-de/)) puts the top tier of ccTLDs in roughly this order:
 
 - **.cn (China)** — somewhere in the range of 20 million names. Largest ccTLD on most days.
 - **.de (Germany)** — around 17 million. Run by DENIC; remarkably stable year over year.
 - **.uk (United Kingdom)** — around 10 million across `.uk` and `.co.uk` combined.
 - **.nl (Netherlands)** — about 6 million. Outsized for a country of 17 million people.
 - **.ru (Russia)** — around 5 million, plus several million on `.рф` (the Cyrillic IDN equivalent).
-- **.br (Brazil)** — around 5 million on `.com.br` and other second-levels.
-- **.eu (European Union)** — around 3.5 million. Technically a "regional" ccTLD.
-- **.it, .fr, .pl, .au, .ca** — each in the 3-4 million range.
+- **.br (Brazil)** and **.fr (France)** — each around the next large tier, with `.br` concentrated heavily under `.com.br`.
+- **.au (Australia)**, **.in (India)**, and **.eu (European Union)** — each in the next tier; `.eu` is technically a regional ccTLD rather than a single-country namespace.
+- **.it, .pl, .ca** — important national namespaces that sit just outside or near the current top-10 band depending on the reporting period and source.
 
 Below that band, a long tail of country-code zones sit between hundreds of thousands and a couple of million.
 
@@ -57,7 +57,7 @@ For most of the 2010s, Freenom offered free registrations on `.tk`, `.ml`, `.ga`
 
 ### Restricted ccTLDs stay small on purpose
 
-Some ccTLDs have eligibility rules—you need a local address, a local company, a national ID. `.jp`, `.no`, `.fi`, and `.ch` fall in this category. They will never compete on raw volume with open zones, but the names that exist there are unusually clean: low abuse rates, low parking rates, and high renewal rates. If you want a registry whose volume number you can actually trust, restricted ccTLDs are a good place to look.
+Some ccTLDs have eligibility rules—you need a local address, a local company, a national ID. `.jp` and `.no` fall squarely in this category: JPRS requires a permanent postal address in Japan for `.jp`, and Norid requires Norwegian identity or organization eligibility plus a Norwegian mailing address for `.no`. `.fi` is a useful counterexample: Traficom now allows companies, organizations, and private persons to register regardless of domicile. Restricted zones will never compete on raw volume with fully open zones, but the names that exist there are often unusually clean: low abuse rates, low parking rates, and high renewal rates. If you want a registry whose volume number you can actually trust, restricted ccTLDs are a good place to look.
 
 ## Volume vs. value: what the numbers do and don't tell you
 
@@ -87,7 +87,11 @@ The deeper point: ccTLD market share is a story about *trust signals* on the ope
 ## Sources and further reading
 
 - Verisign — [Domain Name Industry Brief](https://www.verisign.com/en_US/domain-names/dnib/index.xhtml), the most cited quarterly snapshot of the TLD market.
+- DNIB — [Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.), the current top-10 ccTLD ordering used above.
 - DENIC — [Statistics for .de](https://www.denic.de/en/know-how/statistics/), the German registry's public dashboard.
 - Nominet — [Statistics for .uk](https://www.nominet.uk/news/reports-statistics/) and policy.
+- JPRS — [.jp registration eligibility](https://jprs.co.jp/en/jpdomain.html#:~:text=Any%20individual%2C%20group%20or%20organization%20having%20a%20permanent%20postal%20address%20in%20Japan%20is%20eligible%20for%20registration.).
+- Norid — [.no general requirements](https://teknisk.norid.no/en/administrere-domenenavn/generelle-krav/#:~:text=must%20have%20a%20mailing%20address%20in%20Norway).
+- Traficom — [.fi registration eligibility](https://traficom.fi/en/fi-domains/applying-and-using-fi-domains/how-get-fi-domain-name#:~:text=Companies%2C%20organisations%20and%20private%20persons%2C%20regardless%20of%20their%20domicile%2C%20can%20all%20have%20fi%2Ddomain%20names%20registered%20for%20them.).
 - ICANN — [Centralized Zone Data Service](https://czds.icann.org/) for zone file access where available.
 - ISO — [ISO 3166-1 country codes](https://www.iso.org/iso-3166-country-codes.html), the source of every ccTLD label.
