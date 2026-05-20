@@ -1,6 +1,6 @@
 ---
 title: 'DNS over HTTPS vs Enterprise Split-Horizon DNS: A Standoff That Will Not Resolve Itself'
-date: '2026-05-20'
+date: '2026-05-04'
 language: en
 tags: ['dns', 'doh', 'enterprise', 'security', 'networking']
 authors: ['namefiteam']

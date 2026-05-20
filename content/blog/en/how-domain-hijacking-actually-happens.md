@@ -1,6 +1,6 @@
 ---
 title: 'How Domain Hijacking Actually Happens: Five Attack Paths and the Controls That Stop Them'
-date: '2026-05-20'
+date: '2026-05-10'
 language: en
 tags: ['security', 'domains', 'registrar', 'incident-response']
 authors: ['namefiteam']

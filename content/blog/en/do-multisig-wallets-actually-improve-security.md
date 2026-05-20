@@ -1,6 +1,6 @@
 ---
 title: 'Do Multisig Wallets Actually Improve Security? A Threat-Model View'
-date: '2026-05-20'
+date: '2026-05-07'
 language: en
 tags: ['security', 'wallets', 'multisig', 'web3', 'key-management']
 authors: ['namefiteam']

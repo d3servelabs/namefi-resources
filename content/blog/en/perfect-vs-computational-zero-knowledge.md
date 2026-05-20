@@ -1,6 +1,6 @@
 ---
 title: 'Perfect vs Computational Zero-Knowledge: What the Distinction Actually Means'
-date: '2026-05-20'
+date: '2026-05-13'
 language: en
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['namefiteam']

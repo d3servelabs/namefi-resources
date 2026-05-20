@@ -1,6 +1,6 @@
 ---
 title: 'ccTLD Market Share by Registration Volume: Who Actually Runs the National Namespace?'
-date: '2026-05-20'
+date: '2026-05-01'
 language: en
 tags: ['cctld', 'domains', 'market-analysis', 'registry']
 authors: ['namefiteam']
