@@ -1,6 +1,6 @@
-# Frontend Benchmark (Next.js dev cold/hot)
+# Frontend Benchmark (Next.js dev cold/warm)
 
-This benchmark uses `scripts/bench-frontend-dev.ts` to capture cold and hot compile timings from the Next.js dev server logs.
+This benchmark uses `scripts/bench-frontend-dev.ts` to capture isolated cold and warm compile timings from the Next.js dev server logs.
 
 ## Prereqs
 - Bun installed.
@@ -13,9 +13,9 @@ bun scripts/bench-frontend-dev.ts
 ```
 
 The script:
-- Deletes `apps/frontend/.next` before each run to force cold compiles.
-- Starts its own dev server (do not run `bun dev` separately).
-- Hits the configured routes twice per run (cold then hot).
+- Deletes `apps/frontend/.next` before each route measurement.
+- Starts its own dev server for each route measurement (do not run `bun dev` separately).
+- Hits one route for a true cold compile, hits the same route again for the warm timing, then stops that dev server.
 - Writes a report and per-run logs under `apps/frontend/.benchmarks/`.
 
 ## Output

@@ -18,8 +18,8 @@ type RouteResult = Record<string, Timing | null>;
 
 type RunResult = {
   cold: RouteResult;
-  hot: RouteResult;
-  logPath: string;
+  warm: RouteResult;
+  logPaths: Record<string, string>;
 };
 
 type Options = {
@@ -49,6 +49,12 @@ const appDir = path.join(projectRoot, 'apps', 'frontend');
 const DEFAULT_ROUTES = ['/', '/domains', '/studio'];
 const DEFAULT_PRIMARY_LABEL = 'Next.js';
 const DEFAULT_SECONDARY_LABEL = 'Application code';
+const READY_LOG_REGEX = /Local:|Ready in|started server|Ready on/;
+const FAILED_START_REGEX = /Failed to start server/;
+const LEADING_SLASHES_REGEX = /^\/+/;
+const UNSAFE_LOG_SLUG_CHARS_REGEX = /[^a-zA-Z0-9._-]+/g;
+const EDGE_DASHES_REGEX = /^-+|-+$/g;
+const TRAILING_CR_REGEX = /\r$/;
 
 function parseArgs(argv: string[]): Partial<Options> {
   const args: Partial<Options> = {};
@@ -94,6 +100,12 @@ function escapeRegExp(value: string) {
 function parseTimeToMs(value: string): number | null {
   const trimmed = value.trim();
   if (!trimmed) return null;
+  if (trimmed.endsWith('µs')) {
+    return Number.parseFloat(trimmed.replace('µs', '')) / 1000;
+  }
+  if (trimmed.endsWith('us')) {
+    return Number.parseFloat(trimmed.replace('us', '')) / 1000;
+  }
   if (trimmed.endsWith('ms')) {
     return Number.parseFloat(trimmed.replace('ms', ''));
   }
@@ -151,13 +163,11 @@ async function waitForReady(
   timeoutMs: number,
 ) {
   const start = Date.now();
-  const readyRegex = /Local:|Ready in|started server|Ready on/;
-  const failedRegex = /Failed to start server/;
 
   while (Date.now() - start < timeoutMs) {
     const recent = lines.slice(-20);
-    if (recent.some((line) => readyRegex.test(line))) return;
-    if (recent.some((line) => failedRegex.test(line))) {
+    if (recent.some((line) => READY_LOG_REGEX.test(line))) return;
+    if (recent.some((line) => FAILED_START_REGEX.test(line))) {
       throw new Error('Dev server failed to start');
     }
     if (child.exitCode !== null) {
@@ -189,7 +199,7 @@ async function waitForRoutes(
       const line = lines[cursor] ?? '';
       for (const route of Array.from(remaining)) {
         const regex = regexes.get(route);
-        if (regex && regex.test(line)) {
+        if (regex?.test(line)) {
           remaining.delete(route);
         }
       }
@@ -219,10 +229,13 @@ function parseTimingLine(line: string, route: string): Timing | null {
   const totalMs = parseTimeToMs(match[1] ?? '');
   const phaseTimings = new Map<string, number>();
   for (const phase of (match[2] ?? '').split(',')) {
-    const [rawLabel, rawValue] = phase.split(':');
-    if (!rawLabel || !rawValue) {
+    const separatorIndex = phase.indexOf(':');
+    if (separatorIndex === -1) {
       continue;
     }
+
+    const rawLabel = phase.slice(0, separatorIndex);
+    const rawValue = phase.slice(separatorIndex + 1);
     const parsedValue = parseTimeToMs(rawValue);
     if (parsedValue === null) {
       continue;
@@ -230,18 +243,22 @@ function parseTimingLine(line: string, route: string): Timing | null {
     phaseTimings.set(rawLabel.trim().toLowerCase(), parsedValue);
   }
   const primaryMs = phaseTimings.get('next.js') ?? null;
-  const secondaryMs = phaseTimings.get('application-code') ?? null;
+  const applicationCodeMs = phaseTimings.get('application-code') ?? null;
+  const proxyMs = phaseTimings.get('proxy.ts') ?? null;
 
-  if (totalMs === null || primaryMs === null || secondaryMs === null) {
+  if (totalMs === null || primaryMs === null || applicationCodeMs === null) {
     return null;
   }
+
+  const secondaryMs = applicationCodeMs + (proxyMs ?? 0);
 
   return {
     totalMs,
     primaryMs,
     secondaryMs,
     primaryLabel: DEFAULT_PRIMARY_LABEL,
-    secondaryLabel: DEFAULT_SECONDARY_LABEL,
+    secondaryLabel:
+      proxyMs === null ? DEFAULT_SECONDARY_LABEL : 'Proxy + application code',
     raw: line.trim(),
   };
 }
@@ -350,13 +367,20 @@ async function requestRoute(baseUrl: string, route: string, timeoutMs: number) {
   throw new Error(`Timed out requesting route ${route}`);
 }
 
-async function hitRoutes(baseUrl: string, routes: string[], timeoutMs: number) {
-  for (const route of routes) {
-    await requestRoute(baseUrl, route, timeoutMs);
-  }
+function routeToLogSlug(route: string) {
+  const slug = route
+    .replace(LEADING_SLASHES_REGEX, '')
+    .replace(UNSAFE_LOG_SLUG_CHARS_REGEX, '-')
+    .replace(EDGE_DASHES_REGEX, '');
+
+  return slug || 'root';
 }
 
-async function runOnce(index: number, options: Options): Promise<RunResult> {
+async function runRouteOnce(
+  index: number,
+  route: string,
+  options: Options,
+): Promise<{ cold: Timing; warm: Timing; logPath: string }> {
   await fs.rm(path.join(appDir, '.next'), { recursive: true, force: true });
 
   const logLines: string[] = [];
@@ -364,7 +388,7 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
 
   const logPath = path.join(
     options.outputDir,
-    `run-${index.toString().padStart(2, '0')}.log`,
+    `run-${index.toString().padStart(2, '0')}-${routeToLogSlug(route)}.log`,
   );
 
   const child = spawn(options.devCmd, {
@@ -382,7 +406,7 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
     let newlineIndex = buffer.indexOf('\n');
     while (newlineIndex !== -1) {
       const line = buffer.slice(0, newlineIndex);
-      logLines.push(line.replace(/\r$/, ''));
+      logLines.push(line.replace(TRAILING_CR_REGEX, ''));
       buffer = buffer.slice(newlineIndex + 1);
       newlineIndex = buffer.indexOf('\n');
     }
@@ -409,39 +433,44 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
     await waitForReady(logLines, child, options.timeoutMs);
 
     const coldStart = logLines.length;
-    await hitRoutes(options.baseUrl, options.routes, options.phaseTimeoutMs);
+    await requestRoute(options.baseUrl, route, options.phaseTimeoutMs);
     const coldEnd = await waitForRoutes(
       logLines,
-      options.routes,
+      [route],
       coldStart,
       options.phaseTimeoutMs,
     );
 
-    const hotStart = logLines.length;
-    await hitRoutes(options.baseUrl, options.routes, options.phaseTimeoutMs);
-    const hotEnd = await waitForRoutes(
+    const warmStart = logLines.length;
+    await requestRoute(options.baseUrl, route, options.phaseTimeoutMs);
+    const warmEnd = await waitForRoutes(
       logLines,
-      options.routes,
-      hotStart,
+      [route],
+      warmStart,
       options.phaseTimeoutMs,
     );
 
-    const cold = parseSegment(
-      logLines.slice(coldStart, coldEnd),
-      options.routes,
-    );
-    const hot = parseSegment(logLines.slice(hotStart, hotEnd), options.routes);
+    const cold = parseSegment(logLines.slice(coldStart, coldEnd), [route]);
+    const warm = parseSegment(logLines.slice(warmStart, warmEnd), [route]);
+    const coldTiming = cold[route] ?? null;
+    const warmTiming = warm[route] ?? null;
+
+    if (!coldTiming || !warmTiming) {
+      throw new Error(
+        `Benchmark run ${index} for route ${route} did not capture timing results`,
+      );
+    }
 
     if (buffer.length > 0) {
-      logLines.push(buffer.replace(/\r$/, ''));
+      logLines.push(buffer.replace(TRAILING_CR_REGEX, ''));
       buffer = '';
     }
     await fs.writeFile(logPath, logLines.join('\n'));
 
-    return { cold, hot, logPath };
+    return { cold: coldTiming, warm: warmTiming, logPath };
   } catch (error) {
     if (buffer.length > 0) {
-      logLines.push(buffer.replace(/\r$/, ''));
+      logLines.push(buffer.replace(TRAILING_CR_REGEX, ''));
       buffer = '';
     }
     await fs.writeFile(logPath, logLines.join('\n'));
@@ -454,6 +483,25 @@ async function runOnce(index: number, options: Options): Promise<RunResult> {
       await waitForExit(child, 5000);
     }
   }
+}
+
+async function runOnce(index: number, options: Options): Promise<RunResult> {
+  const cold: RouteResult = Object.fromEntries(
+    options.routes.map((route) => [route, null]),
+  );
+  const warm: RouteResult = Object.fromEntries(
+    options.routes.map((route) => [route, null]),
+  );
+  const logPaths: Record<string, string> = {};
+
+  for (const route of options.routes) {
+    const result = await runRouteOnce(index, route, options);
+    cold[route] = result.cold;
+    warm[route] = result.warm;
+    logPaths[route] = result.logPath;
+  }
+
+  return { cold, warm, logPaths };
 }
 
 function renderTable(results: RouteResult, unit: 's' | 'ms') {
@@ -480,34 +528,34 @@ function renderTable(results: RouteResult, unit: 's' | 'ms') {
 
 export function renderAverages(
   cold: ReturnType<typeof averageTimings>,
-  hot: ReturnType<typeof averageTimings>,
+  warm: ReturnType<typeof averageTimings>,
 ) {
-  const routes = new Set([...Object.keys(cold), ...Object.keys(hot)]);
+  const routes = new Set([...Object.keys(cold), ...Object.keys(warm)]);
   const coldLabels =
     Object.keys(cold).length > 0
       ? resolveAverageLabels(cold)
-      : resolveAverageLabels(hot);
-  const hotLabels =
-    Object.keys(hot).length > 0
-      ? resolveAverageLabels(hot)
+      : resolveAverageLabels(warm);
+  const warmLabels =
+    Object.keys(warm).length > 0
+      ? resolveAverageLabels(warm)
       : resolveAverageLabels(cold);
   const lines: string[] = [];
   lines.push(
-    `| Route | Cold total | Cold ${coldLabels.primaryLabel} | Cold ${coldLabels.secondaryLabel} | Hot total | Hot ${hotLabels.primaryLabel} | Hot ${hotLabels.secondaryLabel} |`,
+    `| Route | Cold total | Cold ${coldLabels.primaryLabel} | Cold ${coldLabels.secondaryLabel} | Warm total | Warm ${warmLabels.primaryLabel} | Warm ${warmLabels.secondaryLabel} |`,
   );
   lines.push('| --- | --- | --- | --- | --- | --- | --- |');
   for (const route of routes) {
     const coldTiming = cold[route];
-    const hotTiming = hot[route];
+    const warmTiming = warm[route];
     lines.push(
       `| ${route} | ${formatMs(coldTiming?.totalMs ?? null, 's')} | ${formatMs(
         coldTiming?.primaryMs ?? null,
         's',
       )} | ${formatMs(coldTiming?.secondaryMs ?? null, 'ms')} | ${formatMs(
-        hotTiming?.totalMs ?? null,
+        warmTiming?.totalMs ?? null,
         'ms',
-      )} | ${formatMs(hotTiming?.primaryMs ?? null, 'ms')} | ${formatMs(
-        hotTiming?.secondaryMs ?? null,
+      )} | ${formatMs(warmTiming?.primaryMs ?? null, 'ms')} | ${formatMs(
+        warmTiming?.secondaryMs ?? null,
         'ms',
       )} |`,
     );
@@ -564,10 +612,10 @@ async function main() {
   }
 
   const coldAvg = averageTimings(runResults.map((result) => result.cold));
-  const hotAvg = averageTimings(runResults.map((result) => result.hot));
+  const warmAvg = averageTimings(runResults.map((result) => result.warm));
 
   const lines: string[] = [];
-  lines.push('# Next.js Dev Cold/Hot Benchmark');
+  lines.push('# Next.js Dev Cold/Warm Benchmark');
   lines.push('');
   lines.push(`Generated: ${new Date().toLocaleString()}`);
   lines.push('');
@@ -575,6 +623,12 @@ async function main() {
   lines.push(`- Runs: ${runs}`);
   lines.push(`- Base URL: ${baseUrl}`);
   lines.push(`- Routes: ${routes.join(', ')}`);
+  lines.push(
+    '- Isolation: each route gets a fresh `.next` directory and dev-server process',
+  );
+  lines.push(
+    '- Warm request: immediate second request to the same route in that process',
+  );
   lines.push(`- Dev command: \`${devCmd}\``);
   lines.push(`- Ready timeout: ${Math.round(options.timeoutMs / 1000)}s`);
   lines.push(`- Phase timeout: ${Math.round(options.phaseTimeoutMs / 1000)}s`);
@@ -588,7 +642,7 @@ async function main() {
   lines.push(`- Bun: ${machine.bun}`);
   lines.push('');
   lines.push('## Averages');
-  lines.push(renderAverages(coldAvg, hotAvg));
+  lines.push(renderAverages(coldAvg, warmAvg));
   lines.push('');
 
   runResults.forEach((result, index) => {
@@ -597,10 +651,15 @@ async function main() {
     lines.push('### Cold');
     lines.push(renderTable(result.cold, 's'));
     lines.push('');
-    lines.push('### Hot');
-    lines.push(renderTable(result.hot, 'ms'));
+    lines.push('### Warm');
+    lines.push(renderTable(result.warm, 'ms'));
     lines.push('');
-    lines.push(`Log: \`${path.relative(projectRoot, result.logPath)}\``);
+    lines.push('Logs:');
+    for (const route of routes) {
+      const logPath = result.logPaths[route];
+      if (!logPath) continue;
+      lines.push(`- ${route}: \`${path.relative(projectRoot, logPath)}\``);
+    }
     lines.push('');
   });
 
