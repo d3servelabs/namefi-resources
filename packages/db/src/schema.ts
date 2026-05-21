@@ -1666,8 +1666,6 @@ export const leadgenLeadsTable = pgTable(
       .notNull()
       .default('checking'),
     score: integer('score').notNull().default(0),
-    motion: text('motion').notNull().default('Checking fit'),
-    thesis: text('thesis').notNull().default('Checking buyer fit.'),
     riskLevel: leadgenRiskLevelEnum('risk_level').notNull().default('low'),
     riskNote: text('risk_note'),
     contactReadiness: leadgenContactReadinessEnum('contact_readiness')

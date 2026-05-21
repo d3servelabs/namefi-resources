@@ -268,8 +268,6 @@ export async function getLeadgenRunSnapshotForUser(params: {
       companyName: lead.companyName,
       status: lead.status,
       score: lead.score,
-      motion: lead.motion,
-      thesis: lead.thesis,
       riskLevel: lead.riskLevel,
       riskNote: lead.riskNote,
       contactReadiness: lead.contactReadiness,

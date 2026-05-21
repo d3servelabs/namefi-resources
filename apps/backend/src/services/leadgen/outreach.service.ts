@@ -585,7 +585,6 @@ async function draftForContact(params: {
         domain: params.lead.businessDomain,
         content: params.lead.content,
         rationale: params.lead.rationale,
-        thesis: params.lead.thesis,
         signals: await loadLeadSignalsForDraft(params.lead.id),
       },
       contact: {

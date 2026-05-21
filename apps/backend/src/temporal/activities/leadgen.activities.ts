@@ -649,8 +649,6 @@ async function persistCandidateSignal(params: {
       companyName: params.signal.companyName ?? null,
       status: 'checking',
       score: 0,
-      motion: 'Still checking',
-      thesis: 'Checking buyer fit.',
       riskLevel: 'low',
       contactReadiness: 'not_searched',
       query: params.signal.query,
@@ -663,8 +661,6 @@ async function persistCandidateSignal(params: {
       set: {
         companyName: sql`coalesce(${leadgenLeadsTable.companyName}, ${params.signal.companyName ?? null})`,
         query: params.signal.query,
-        rationale: params.signal.candidateReason,
-        content: params.signal.evidenceSnippet,
         updatedAt: now,
       },
     })
@@ -825,8 +821,6 @@ async function updateLeadFromTriage(params: {
     .set({
       status: params.triage.status,
       score: params.triage.score,
-      motion: params.triage.motion,
-      thesis: params.triage.thesis,
       riskLevel: 'low',
       riskNote: null,
       contactReadiness: params.lead.contactReadiness,

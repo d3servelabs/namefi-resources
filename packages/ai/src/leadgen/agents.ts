@@ -8,7 +8,7 @@ import {
   leadgenDiscoveryRecipeValues,
   leadgenDomainProfileSchema,
   leadgenEmailDraftSchema,
-  leadgenOpportunityTriageSchema,
+  leadgenOpportunityTriageModelSchema,
   type LeadgenCandidateSignalInput,
   type LeadgenContact,
   type LeadgenContactResult,
@@ -17,6 +17,7 @@ import {
   type LeadgenDomainProfile,
   type LeadgenEmailBrief,
   type LeadgenOpportunityTriage,
+  type LeadgenOpportunityTriageModel,
   type LeadgenRecommendedAction,
   type LeadgenReasoningEffort,
 } from './types';
@@ -75,12 +76,6 @@ const RECIPE_SIGNAL_LABELS: Record<LeadgenDiscoveryRecipe, string> = {
   growth_trigger_search: 'Growth signal',
   domain_weakness_check: 'Domain upgrade',
   broad_sanity_search: 'Market signal',
-};
-const ACTION_LABELS: Record<LeadgenRecommendedAction, string> = {
-  ready_to_contact: 'Ready to contact',
-  finding_contact: 'Finding contact',
-  defer_contact: 'Ranked prospect',
-  filtered: 'Filtered',
 };
 export const LEADGEN_FAST_MODEL = 'gpt-5.4-mini';
 export const LEADGEN_RESEARCH_MODEL = 'gpt-5.5';
@@ -394,10 +389,10 @@ export async function generateLeadgenCandidateSignals(params: {
 function triageInstructions() {
   return `Role: You are "Opportunity Triage Agent", a domain outbound deal desk.
 Goal: Rank canonical buyer opportunities for one seller-owned domain.
-Success criteria: Promote only buyers with a buyer-specific reason to care. Same-vibe, same-industry, or generic budget alone cannot become a ready-to-contact opportunity. Each thesis says what the company does and why this domain fits in one concise buyer-facing sentence.
+Success criteria: Promote only buyers with a buyer-specific reason to care. Same-vibe, same-industry, or generic budget alone cannot become a ready-to-contact opportunity.
 Evidence rules: Use only supplied evidence and the domain evidence standards. Do not browse, invent facts, infer contacts, or add claims not in signals.
 Tool budget: No tools.
-Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Do not emit list-tier labels; the app shows one ranked prospect list. Use recommendedAction only to indicate whether contact research should run now. Keep thesis to one natural sentence under 180 characters. Do not write separate rationale/evidence recaps or repeat the same fact in motion and thesis. Keep motion to a short action label under 40 characters.
+Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Do not emit list-tier labels, copy, rationales, evidence recaps, theses, or action-label prose. Use recommendedAction only to indicate whether contact research should run now.
 Output: Return structured opportunity triage records only.`;
 }
 
@@ -434,7 +429,7 @@ export async function generateLeadgenOpportunityTriages(params: {
     providerOptions: providerOptions(reasoningEffort),
     abortSignal: params.options?.abortSignal,
     output: Output.array({
-      element: leadgenOpportunityTriageSchema,
+      element: leadgenOpportunityTriageModelSchema,
     }),
   });
 
@@ -507,7 +502,7 @@ export function sanitizeCandidateSignals(
 }
 
 function sanitizeTriages(
-  triages: LeadgenOpportunityTriage[],
+  triages: LeadgenOpportunityTriageModel[],
 ): LeadgenOpportunityTriage[] {
   const seen = new Set<string>();
   const sanitized: LeadgenOpportunityTriage[] = [];
@@ -526,8 +521,6 @@ function sanitizeTriages(
       status,
       score: Math.max(0, Math.min(100, Math.trunc(triage.score))),
       recommendedAction,
-      motion: getActionMotion(recommendedAction),
-      thesis: clipToSentence(triage.thesis.trim(), 180),
     });
   }
 
@@ -540,10 +533,6 @@ function getStatusForRecommendedAction(
   if (action === 'filtered') return 'suppressed';
   if (action === 'defer_contact') return 'low_priority';
   return 'contact_now';
-}
-
-function getActionMotion(action: LeadgenRecommendedAction) {
-  return ACTION_LABELS[action];
 }
 
 function uniqueNonEmpty(values: string[]) {
@@ -613,9 +602,9 @@ export async function generateLeadgenContacts(
 }
 
 const EMAIL_INSTRUCTIONS = `Role: You are "Outreach Agent", a domain acquisition copywriter.
-Goal: Write a concise first-touch email that connects the seller-owned domain to the prospect's specific opportunity thesis.
+Goal: Write a concise first-touch email that connects the seller-owned domain to the prospect's specific opportunity summary.
 Success criteria: The email is credible, buyer-specific, and easy to reply to.
-Evidence rules: Use only supplied thesis, signals, and contact context. Do not invent facts, urgency, price, traffic, or SEO claims.
+Evidence rules: Use only supplied prospect summary, signals, evidence, and contact context. Do not invent facts, urgency, price, traffic, or SEO claims.
 Tool budget: No tools.
 Constraints: Subject line must be no more than 9 words and 90 characters. Body must be at most three concise paragraphs under 170 words. Use this call to action exactly once: "Would you be open to a quick call to discuss acquiring this domain?" End with this signature block exactly:
 Best,
@@ -707,10 +696,7 @@ function formatEmailBrief(brief: LeadgenEmailBrief) {
   return [
     `Source domain: ${brief.sourceDomain}`,
     `Prospect domain: ${brief.prospect.domain}`,
-    brief.prospect.thesis
-      ? `Opportunity thesis: ${brief.prospect.thesis}`
-      : null,
-    `Prospect rationale: ${brief.prospect.rationale}`,
+    `Prospect summary: ${brief.prospect.rationale}`,
     `Prospect evidence: ${brief.prospect.content}`,
     brief.prospect.signals?.length
       ? [

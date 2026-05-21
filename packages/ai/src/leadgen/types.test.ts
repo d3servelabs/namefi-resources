@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   leadgenDomainProfileSchema,
+  leadgenOpportunityTriageModelSchema,
   leadgenOpportunityTriageSchema,
 } from './types';
 
@@ -73,17 +74,29 @@ describe('leadgenDomainProfileSchema', () => {
 });
 
 describe('leadgenOpportunityTriageSchema', () => {
+  it('keeps model triage output free of derived status and prose fields', () => {
+    const parsed = leadgenOpportunityTriageModelSchema.parse({
+      domain: 'buyer.com',
+      score: 86,
+      recommendedAction: 'ready_to_contact',
+    });
+
+    expect(parsed).toEqual({
+      domain: 'buyer.com',
+      score: 86,
+      recommendedAction: 'ready_to_contact',
+    });
+  });
+
   it('enforces short action-oriented triage output', () => {
     const parsed = leadgenOpportunityTriageSchema.parse({
       domain: 'buyer.com',
       status: 'contact_now',
       score: 86,
       recommendedAction: 'ready_to_contact',
-      motion: 'Ready to contact',
-      thesis: 'Buyer is a strong exact-name upgrade candidate.',
     });
 
     expect(parsed.recommendedAction).toBe('ready_to_contact');
-    expect(parsed.motion).toBe('Ready to contact');
+    expect(parsed.score).toBe(86);
   });
 });

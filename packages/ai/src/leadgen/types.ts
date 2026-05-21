@@ -118,16 +118,22 @@ export type LeadgenCandidateSignal = LeadgenCandidateSignalInput & {
   recipe: LeadgenDiscoveryRecipe;
 };
 
-export const leadgenOpportunityTriageSchema = z
+export const leadgenOpportunityTriageModelSchema = z
   .object({
     domain: z.string().trim().min(1).max(255),
-    status: leadgenOpportunityStatusSchema,
     score: z.number().int().min(0).max(100),
     recommendedAction: leadgenRecommendedActionSchema,
-    motion: z.string().trim().min(1).max(40),
-    thesis: z.string().trim().min(1).max(180),
   })
   .strict();
+
+export const leadgenOpportunityTriageSchema =
+  leadgenOpportunityTriageModelSchema.extend({
+    status: leadgenOpportunityStatusSchema,
+  });
+
+export type LeadgenOpportunityTriageModel = z.infer<
+  typeof leadgenOpportunityTriageModelSchema
+>;
 
 export type LeadgenOpportunityTriage = z.infer<
   typeof leadgenOpportunityTriageSchema
@@ -166,7 +172,6 @@ export interface LeadgenEmailBrief {
     domain: string;
     content: string;
     rationale: string;
-    thesis?: string;
     signals?: Array<{
       signalType: string;
       evidenceSnippet: string;

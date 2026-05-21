@@ -18,7 +18,7 @@ export type LeadPresentation = {
 };
 
 export type LeadPresentationCounts = Record<
-  'ranked' | 'checking' | 'contacts',
+  'prospects' | 'ranked' | 'checking' | 'contacts',
   number
 >;
 
@@ -29,7 +29,6 @@ export type LeadPresentationModel = {
 };
 
 const whitespaceRe = /\s+/g;
-const sentenceBoundaryRe = /^(.{1,220}?[.!?])(?:\s|$)/;
 
 export function buildLeadPresentationModel(
   run: LeadgenSnapshot,
@@ -48,6 +47,7 @@ export function buildLeadPresentationModel(
     leads,
     groups,
     counts: {
+      prospects: leads.length,
       ranked: groups.ranked.length,
       checking: groups.checking.length,
       contacts: run.contactCount,
@@ -83,22 +83,11 @@ function getPresentationAction(lead: LeadgenLead): LeadPresentationAction {
 }
 
 function getBuyerSummary(lead: LeadgenLead) {
-  if (lead.status === 'checking') return 'Checking buyer fit.';
-
-  return (
-    cleanSummary(lead.thesis, 180) ??
-    cleanSummary(lead.rationale, 180) ??
-    cleanSummary(lead.content, 180) ??
-    'Potential buyer fit found.'
-  );
+  return cleanText(lead.rationale) ?? 'Potential buyer fit found.';
 }
 
-function cleanSummary(value: string | null | undefined, maxLength: number) {
+function cleanText(value: string | null | undefined) {
   const normalized = value?.replace(whitespaceRe, ' ').trim();
   if (!normalized) return null;
-
-  const sentence =
-    sentenceBoundaryRe.exec(normalized)?.[1]?.trim() ?? normalized;
-  if (sentence.length <= maxLength) return sentence;
-  return `${sentence.slice(0, Math.max(0, maxLength - 1)).trimEnd()}.`;
+  return normalized;
 }

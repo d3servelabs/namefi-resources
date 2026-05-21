@@ -16,8 +16,6 @@ const baseLead = {
   companyName: 'Buyer',
   status: 'checking',
   score: 0,
-  motion: 'Still checking',
-  thesis: 'Checking buyer fit.',
   riskLevel: 'low',
   riskNote: null,
   contactReadiness: 'not_searched',
@@ -44,7 +42,6 @@ describe('buildLeadPresentation', () => {
       lead({
         status: 'contact_now',
         score: 88,
-        thesis: 'Buyer has direct campaign demand for the seller domain.',
         contacts: [
           {
             id: 'contact-1',
@@ -133,8 +130,24 @@ describe('buildLeadPresentationModel', () => {
     });
 
     expect(model.counts).toMatchObject({
+      prospects: 4,
       ranked: 3,
       checking: 1,
     });
+  });
+
+  it('uses the discovery rationale as the full stable card summary', () => {
+    const presentation = buildLeadPresentation(
+      lead({
+        status: 'checking',
+        rationale:
+          'Buyer has direct campaign demand for the seller domain. Keep this second sentence because card summaries are not truncated.',
+        content: 'Separate evidence snippet.',
+      }),
+    );
+
+    expect(presentation.buyerSummary).toBe(
+      'Buyer has direct campaign demand for the seller domain. Keep this second sentence because card summaries are not truncated.',
+    );
   });
 });

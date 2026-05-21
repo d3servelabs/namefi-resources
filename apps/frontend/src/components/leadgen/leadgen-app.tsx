@@ -594,7 +594,7 @@ function RunWorkspace({
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:min-w-[320px]">
             <div className="grid grid-cols-3 gap-2">
-              <Metric label="Prospects" value={presentation.counts.ranked} />
+              <Metric label="Prospects" value={presentation.counts.prospects} />
               <Metric label="Contacts" value={presentation.counts.contacts} />
               <Metric label="Drafts" value={run.draftCount} />
             </div>
@@ -633,16 +633,12 @@ function RunWorkspace({
 
           <div className="mb-3 flex items-center justify-between gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              Ranked prospects ({presentation.counts.ranked})
+              Prospects ({presentation.counts.prospects})
             </p>
           </div>
           <LeadList
-            leads={presentation.groups.ranked}
-            emptyStateMessage={
-              presentation.counts.checking > 0
-                ? 'Scoring is still in progress. Ranked prospects will appear here when they are ready.'
-                : 'No ranked prospects found.'
-            }
+            leads={presentation.leads}
+            emptyStateMessage="Prospects will appear here as search finds them."
             sourceDomain={run.domain}
             pendingOutreachLeadIds={pendingOutreachLeadIds}
             reviewOutreachLeadId={reviewOutreachLeadId}
@@ -2837,12 +2833,12 @@ function buildFallbackEmailDraft({
   const firstName = getFirstName(recipient.name);
   const greeting = firstName ? `Hi ${firstName},` : 'Hi,';
   const evidence = lead.content.trim();
-  const thesis = lead.thesis.trim() || lead.rationale.trim();
+  const summary = lead.rationale.trim();
   const body = [
     greeting,
     '',
-    `I'm reaching out because ${lead.businessDomain} looks aligned with ${sourceDomain}. ${thesis}`,
-    evidence && !isDuplicateLeadText(thesis, evidence)
+    `I'm reaching out because ${lead.businessDomain} looks aligned with ${sourceDomain}. ${summary}`,
+    evidence && !isDuplicateLeadText(summary, evidence)
       ? `I also noticed: ${evidence}`
       : null,
     '',

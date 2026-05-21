@@ -80,8 +80,6 @@ const leadgenLeadSchema = z.object({
   companyName: z.string().nullable(),
   status: leadgenOpportunityStatusSchema,
   score: z.number(),
-  motion: z.string(),
-  thesis: z.string(),
   riskLevel: leadgenRiskLevelSchema,
   riskNote: z.string().nullable(),
   contactReadiness: leadgenContactReadinessSchema,
