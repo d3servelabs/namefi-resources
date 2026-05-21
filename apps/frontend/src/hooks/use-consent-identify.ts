@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { useConsentManager } from '@c15t/nextjs';
 import { useReadLocalStorage } from 'usehooks-ts';
+import {
+  canUseStoredConsentSubjectForUser,
+  type StoredConsentInfo,
+} from './use-consent-identify-utils';
 
 const identifiedConsentUserIds = new Set<string>();
-
-type StoredConsentInfo = {
-  id?: string;
-  identified?: boolean;
-};
 
 type StoredConsentSnapshot = {
   consentInfo?: StoredConsentInfo;
@@ -29,16 +28,25 @@ export function useConsentIdentify({
   const storedConsent = useReadLocalStorage<StoredConsentSnapshot>('c15t');
 
   const hasUserConsented = hasConsented();
-  const consentId = consentInfo?.id ?? null;
-  const isConsentIdentified = consentInfo?.identified ?? false;
-  const storedConsentId = storedConsent?.consentInfo?.id ?? null;
+  const currentConsentSubjectId = consentInfo?.subjectId ?? null;
+  const isConsentIdentified =
+    consentInfo?.externalId === userId &&
+    consentInfo?.identityProvider === 'namefi';
+  const storedConsentInfo = storedConsent?.consentInfo;
+  const storedConsentSubjectId = storedConsentInfo?.subjectId ?? null;
+  const canIdentifyStoredConsentSubject = canUseStoredConsentSubjectForUser(
+    storedConsentInfo,
+    userId,
+  );
 
   useEffect(() => {
     if (!ready || !authenticated) return;
     if (!userId) return;
-    if (!hasUserConsented || !consentId || isConsentIdentified) return;
+    if (!hasUserConsented || !currentConsentSubjectId || isConsentIdentified) {
+      return;
+    }
 
-    const identifyKey = `${userId}:${consentId}`;
+    const identifyKey = `${userId}:${currentConsentSubjectId}`;
     if (identifiedConsentUserIds.has(identifyKey)) return;
     identifiedConsentUserIds.add(identifyKey);
     void identifyUser({ id: userId, identityProvider: 'namefi' }).catch(() => {
@@ -46,7 +54,7 @@ export function useConsentIdentify({
     });
   }, [
     authenticated,
-    consentId,
+    currentConsentSubjectId,
     hasUserConsented,
     identifyUser,
     isConsentIdentified,
@@ -57,15 +65,23 @@ export function useConsentIdentify({
   useEffect(() => {
     if (!ready || !authenticated) return;
     if (!userId) return;
-    if (!hasUserConsented || !storedConsentId || consentId || !manager) return;
+    if (
+      !hasUserConsented ||
+      !storedConsentSubjectId ||
+      !canIdentifyStoredConsentSubject ||
+      currentConsentSubjectId ||
+      !manager
+    ) {
+      return;
+    }
 
-    const identifyKey = `${userId}:${storedConsentId}`;
+    const identifyKey = `${userId}:${storedConsentSubjectId}`;
     if (identifiedConsentUserIds.has(identifyKey)) return;
     identifiedConsentUserIds.add(identifyKey);
     void manager
       .identifyUser({
         body: {
-          consentId: storedConsentId,
+          subjectId: storedConsentSubjectId,
           externalId: userId,
           identityProvider: 'namefi',
         },
@@ -75,11 +91,12 @@ export function useConsentIdentify({
       });
   }, [
     authenticated,
-    consentId,
+    canIdentifyStoredConsentSubject,
+    currentConsentSubjectId,
     hasUserConsented,
     manager,
     ready,
-    storedConsentId,
+    storedConsentSubjectId,
     userId,
   ]);
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth, useLogin } from '@/hooks/use-auth';
+import type { Route } from 'next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
@@ -162,7 +163,7 @@ export function useStoredPostAuthIntentExecutor<
       ? `${pathname}?${searchParamsString}`
       : pathname;
     if (currentReturnPath !== intent.returnPath) {
-      router.replace(intent.returnPath);
+      router.replace(intent.returnPath as Route);
       return;
     }
 

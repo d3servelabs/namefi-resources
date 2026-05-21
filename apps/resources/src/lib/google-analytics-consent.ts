@@ -5,16 +5,17 @@ import {
 } from '@namefi-astra/common/google-analytics';
 
 export {
-  buildC15tShowConsentBannerHeaders,
-  fetchC15tInitialBannerData,
+  buildC15tInitHeaders,
+  fetchC15tInitData,
   C15T_CONSENT_COOKIE_NAME,
+  getC15tMeasurementConsentState,
   getGoogleConsentDefaultState,
   getGoogleConsentState,
-  isC15tInitialBannerData,
+  isC15tInitData,
   parseC15tConsentCookie,
   resolveInitialMeasurementConsent,
-  type C15tInitialBannerData,
-  type FetchC15tInitialBannerDataOptions,
+  type C15tInitData,
+  type FetchC15tInitDataOptions,
   type GoogleConsentDefaultState,
   type GoogleConsentState,
 } from '@namefi-astra/common/google-analytics';
@@ -44,6 +45,7 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
   measurementGranted: boolean;
   originDomain: string;
   debugMode: boolean;
+  c15tPrefetchBackendUrl?: string;
 }): string {
   return buildSharedGoogleAnalyticsBootstrapScript({
     ...args,

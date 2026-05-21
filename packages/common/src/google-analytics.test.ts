@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
-  buildC15tShowConsentBannerHeaders,
-  fetchC15tInitialBannerData,
+  buildGoogleAnalyticsBootstrapScript,
+  buildC15tInitHeaders,
+  fetchC15tInitData,
   getC15tMeasurementConsentState,
   mergeC15tMeasurementConsentStates,
   normalizeGaClientId,
@@ -87,13 +88,13 @@ describe('google analytics helpers', () => {
     );
   });
 
-  it('resolves initial measurement consent from stored consent before geo defaults', () => {
+  it('resolves initial measurement consent from stored consent before policy defaults', () => {
     expect(
       resolveInitialMeasurementConsent({
         consentCookieValue: 'c.necessary:1',
-        initialBannerData: {
-          showConsentBanner: false,
-          jurisdiction: { code: 'NONE' },
+        initData: {
+          jurisdiction: 'NONE',
+          policy: { model: 'none', ui: { mode: 'none' } },
         },
       }),
     ).toBe(false);
@@ -101,58 +102,79 @@ describe('google analytics helpers', () => {
     expect(
       resolveInitialMeasurementConsent({
         consentCookieValue: 'c.necessary:1,c.measurement:1',
-        initialBannerData: {
-          showConsentBanner: true,
-          jurisdiction: { code: 'GDPR' },
+        initData: {
+          jurisdiction: 'GDPR',
+          policy: { model: 'opt-in', ui: { mode: 'banner' } },
         },
       }),
     ).toBe(true);
   });
 
-  it('auto-grants measurement only for no-banner c15t NONE jurisdiction', () => {
+  it('auto-grants measurement for permissive c15t runtime policies', () => {
     expect(
       resolveInitialMeasurementConsent({
-        initialBannerData: {
-          showConsentBanner: false,
-          jurisdiction: { code: 'NONE' },
+        initData: {
+          jurisdiction: 'NONE',
+          policy: { model: 'none', ui: { mode: 'none' } },
         },
       }),
     ).toBe(true);
 
     expect(
       resolveInitialMeasurementConsent({
-        initialBannerData: {
-          showConsentBanner: false,
-          jurisdiction: { code: 'GDPR' },
+        initData: {
+          jurisdiction: 'CCPA',
+          policy: { model: 'opt-out', ui: { mode: 'none' } },
+        },
+      }),
+    ).toBe(true);
+
+    expect(
+      resolveInitialMeasurementConsent({
+        initData: {
+          jurisdiction: 'CCPA',
+          policy: { model: 'opt-out', ui: { mode: 'none' } },
+        },
+        requestHasGlobalPrivacyControl: true,
+      }),
+    ).toBe(false);
+
+    expect(
+      resolveInitialMeasurementConsent({
+        initData: {
+          jurisdiction: 'GDPR',
+          policy: { model: 'opt-in', ui: { mode: 'banner' } },
         },
       }),
     ).toBe(false);
   });
 
-  it('builds c15t show-banner headers from proxy geo headers', () => {
-    const headers = buildC15tShowConsentBannerHeaders(
+  it('builds c15t init headers from proxy geo headers', () => {
+    const headers = buildC15tInitHeaders(
       new Headers({
         'x-client-geo-location-region': 'US',
         'x-client-geo-location-region-subdivision': 'USCA',
         'accept-language': 'en-US,en;q=0.9',
+        'sec-gpc': '1',
       }),
     );
 
     expect(headers?.get('x-c15t-country')).toBe('US');
     expect(headers?.get('x-c15t-region')).toBe('USCA');
     expect(headers?.get('accept-language')).toBe('en-US,en;q=0.9');
+    expect(headers?.get('sec-gpc')).toBe('1');
   });
 
-  it('fetches and validates initial c15t banner data', async () => {
+  it('fetches and validates initial c15t init data', async () => {
     const fetcher = vi.fn(async () =>
       Response.json({
-        showConsentBanner: false,
-        jurisdiction: { code: 'NONE' },
+        jurisdiction: 'NONE',
+        policy: { model: 'none', ui: { mode: 'none' } },
       }),
     );
 
     await expect(
-      fetchC15tInitialBannerData({
+      fetchC15tInitData({
         backendUrl: 'https://api.example.test',
         requestHeaders: new Headers({
           'x-client-geo-location-region': 'US',
@@ -160,12 +182,12 @@ describe('google analytics helpers', () => {
         fetcher,
       }),
     ).resolves.toEqual({
-      showConsentBanner: false,
-      jurisdiction: { code: 'NONE' },
+      jurisdiction: 'NONE',
+      policy: { model: 'none', ui: { mode: 'none' } },
     });
 
     expect(fetcher).toHaveBeenCalledWith(
-      'https://api.example.test/c15t/show-consent-banner',
+      'https://api.example.test/c15t/init',
       expect.objectContaining({
         method: 'GET',
         cache: 'no-store',
@@ -174,7 +196,7 @@ describe('google analytics helpers', () => {
     );
   });
 
-  it('aborts initial c15t banner fetches after the configured timeout', async () => {
+  it('aborts initial c15t init fetches after the configured timeout', async () => {
     vi.useFakeTimers();
     try {
       const onError = vi.fn();
@@ -187,7 +209,7 @@ describe('google analytics helpers', () => {
           }),
       ) as typeof fetch;
 
-      const resultPromise = fetchC15tInitialBannerData({
+      const resultPromise = fetchC15tInitData({
         backendUrl: 'https://api.example.test',
         requestHeaders: new Headers({
           'x-client-geo-location-region': 'US',
@@ -206,11 +228,11 @@ describe('google analytics helpers', () => {
     }
   });
 
-  it('does not fetch initial c15t banner data without relevant request headers', async () => {
+  it('does not fetch initial c15t init data without relevant request headers', async () => {
     const fetcher = vi.fn();
 
     await expect(
-      fetchC15tInitialBannerData({
+      fetchC15tInitData({
         backendUrl: 'https://api.example.test',
         requestHeaders: new Headers(),
         fetcher,
@@ -220,11 +242,11 @@ describe('google analytics helpers', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
-  it('ignores malformed initial c15t banner data', async () => {
-    const fetcher = vi.fn(async () => Response.json({ jurisdiction: 'NONE' }));
+  it('ignores malformed initial c15t init data', async () => {
+    const fetcher = vi.fn(async () => Response.json({ jurisdiction: 123 }));
 
     await expect(
-      fetchC15tInitialBannerData({
+      fetchC15tInitData({
         backendUrl: 'https://api.example.test',
         requestHeaders: new Headers({
           'x-client-geo-location-region': 'US',
@@ -233,4 +255,121 @@ describe('google analytics helpers', () => {
       }),
     ).resolves.toBeNull();
   });
+
+  it('updates GA consent from c15t prefetch for grant-by-default policies', async () => {
+    const script = buildGoogleAnalyticsBootstrapScript({
+      measurementId: 'G-TEST',
+      measurementGranted: false,
+      originType: 'first_party',
+      originDomain: 'namefi.test',
+      debugMode: false,
+      exposeMeasurementConsent: true,
+      c15tPrefetchBackendUrl: '/api/c15t',
+    });
+    const windowMock = createGoogleAnalyticsWindowMock({
+      gpc: false,
+      initData: {
+        jurisdiction: 'NONE',
+        policy: { model: 'none', ui: { mode: 'none' } },
+      },
+    });
+
+    runGoogleAnalyticsBootstrapScript(script, windowMock);
+    await Promise.resolve();
+
+    expect(windowMock.namefiMeasurementConsent).toBe(true);
+    expect(getGoogleAnalyticsCalls(windowMock)).toContainEqual([
+      'consent',
+      'update',
+      expect.objectContaining({ analytics_storage: 'granted' }),
+    ]);
+  });
+
+  it('keeps GA denied when c15t prefetch reports Global Privacy Control', async () => {
+    const script = buildGoogleAnalyticsBootstrapScript({
+      measurementId: 'G-TEST',
+      measurementGranted: false,
+      originType: 'first_party',
+      originDomain: 'namefi.test',
+      debugMode: false,
+      exposeMeasurementConsent: true,
+      c15tPrefetchBackendUrl: '/api/c15t',
+    });
+    const windowMock = createGoogleAnalyticsWindowMock({
+      gpc: true,
+      initData: {
+        jurisdiction: 'CCPA',
+        policy: { model: 'opt-out', ui: { mode: 'none' } },
+      },
+    });
+
+    runGoogleAnalyticsBootstrapScript(script, windowMock);
+    await Promise.resolve();
+
+    expect(windowMock.namefiMeasurementConsent).toBe(false);
+    expect(
+      getGoogleAnalyticsCalls(windowMock).some(
+        ([command, action]) => command === 'consent' && action === 'update',
+      ),
+    ).toBe(false);
+  });
 });
+
+type GoogleAnalyticsWindowMock = {
+  location: { origin: string };
+  dataLayer: IArguments[];
+  namefiMeasurementConsent?: boolean;
+  __c15tInitialDataPromises: Record<
+    string,
+    {
+      promise: Promise<{
+        init: {
+          jurisdiction: string;
+          policy: { model: 'none' | 'opt-out'; ui: { mode: 'none' } };
+        };
+        metadata: { requestContext: { gpc: boolean } };
+      }>;
+      requestContext: { backendURL: string; gpc: boolean };
+    }
+  >;
+};
+
+function createGoogleAnalyticsWindowMock({
+  gpc,
+  initData,
+}: {
+  gpc: boolean;
+  initData: {
+    jurisdiction: string;
+    policy: { model: 'none' | 'opt-out'; ui: { mode: 'none' } };
+  };
+}): GoogleAnalyticsWindowMock {
+  return {
+    location: { origin: 'https://namefi.test' },
+    dataLayer: [],
+    __c15tInitialDataPromises: {
+      'prefetch-key': {
+        requestContext: {
+          backendURL: 'https://namefi.test/api/c15t',
+          gpc,
+        },
+        promise: Promise.resolve({
+          init: initData,
+          metadata: { requestContext: { gpc } },
+        }),
+      },
+    },
+  };
+}
+
+function runGoogleAnalyticsBootstrapScript(
+  script: string,
+  windowMock: GoogleAnalyticsWindowMock,
+) {
+  const runScript = new Function('window', 'setTimeout', script);
+  runScript(windowMock, (callback: () => void) => callback());
+}
+
+function getGoogleAnalyticsCalls(windowMock: GoogleAnalyticsWindowMock) {
+  return windowMock.dataLayer.map((entry) => Array.from(entry));
+}

@@ -7,6 +7,7 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils/namefi-flavor';
 import { useQuery } from '@tanstack/react-query';
+import type { Route } from 'next';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import {
@@ -79,7 +80,7 @@ export function useClearStudioDerivativeRoute() {
       ? `/studio?${searchParamsString}`
       : '/studio';
     if (cleanPath !== currentPath) {
-      router.replace(cleanPath, { scroll: false });
+      router.replace(cleanPath as Route, { scroll: false });
     }
   }, [router, searchParamsString]);
 }

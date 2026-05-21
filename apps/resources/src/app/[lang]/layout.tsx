@@ -7,7 +7,9 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { Providers } from '@/components/providers';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
+import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { C15tPrefetch } from '@c15t/nextjs';
 import type { Metadata } from 'next';
 import '../globals.css';
 
@@ -47,6 +49,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={direction}>
+      <head>
+        <C15tPrefetch backendURL={C15T_BROWSER_BACKEND_URL} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased ${
           isRtl ? 'rtl' : 'ltr'

@@ -1,18 +1,19 @@
 export {
-  buildC15tShowConsentBannerHeaders,
+  buildC15tInitHeaders,
   C15T_CONSENT_COOKIE_NAME,
-  fetchC15tInitialBannerData,
+  fetchC15tInitData,
+  getC15tMeasurementConsentState,
   getGoogleAnalyticsConfig,
   getGoogleConsentDefaultState,
   getGoogleConsentState,
-  isC15tInitialBannerData,
+  isC15tInitData,
   parseC15tConsentCookie,
   resolveInitialMeasurementConsent,
-  type C15tInitialBannerData,
+  type C15tInitData,
   type GoogleAnalyticsConfig,
   type GoogleConsentDefaultState,
   type GoogleConsentState,
-  type FetchC15tInitialBannerDataOptions,
+  type FetchC15tInitDataOptions,
 } from '@namefi-astra/common/google-analytics';
 
 import {
@@ -26,6 +27,7 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
   originType: GoogleAnalyticsOriginType;
   originDomain: string;
   debugMode: boolean;
+  c15tPrefetchBackendUrl?: string;
 }): string {
   return buildSharedGoogleAnalyticsBootstrapScript({
     ...args,

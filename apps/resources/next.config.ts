@@ -46,6 +46,15 @@ const nextConfig: NextConfig = {
     // Note: validate is run on CI with build
     ignoreBuildErrors: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/r/api/c15t/:path*',
+        destination: `${appConfig.BACKEND_URL}/c15t/:path*`,
+        basePath: false,
+      },
+    ];
+  },
 };
 
 // biome-ignore lint/style/noDefaultExport: Next.js requires a default export for the config file.

@@ -93,7 +93,7 @@ const FOOTER_SECTIONS: Array<{
 const YEAR = new Date().getFullYear();
 
 export function SiteFooter() {
-  const { setIsPrivacyDialogOpen } = useConsentManager();
+  const { setActiveUI } = useConsentManager();
 
   return (
     <footer className="border-t border-white/10 bg-background/90 py-16 md:py-24">
@@ -164,7 +164,7 @@ export function SiteFooter() {
               type="button"
               className="text-white/70 transition hover:text-white"
               aria-label="Open cookie settings dialog"
-              onClick={() => setIsPrivacyDialogOpen(true)}
+              onClick={() => setActiveUI('dialog', { force: true })}
             >
               Cookie Settings
             </button>

@@ -107,7 +107,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   { className, ...rest }: FooterProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const { setIsPrivacyDialogOpen } = useConsentManager();
+  const { setActiveUI } = useConsentManager();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
 
@@ -211,7 +211,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               type="button"
               className="text-white/70 transition hover:text-white"
               aria-label="Open cookie settings dialog"
-              onClick={() => setIsPrivacyDialogOpen(true)}
+              onClick={() => setActiveUI('dialog', { force: true })}
             >
               Cookie Settings
             </button>

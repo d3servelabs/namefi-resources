@@ -138,6 +138,10 @@ const nextConfig = {
         destination: `${appConfig.BACKEND_URL}/llms.txt`,
       },
       {
+        source: '/api/c15t/:path*',
+        destination: `${appConfig.BACKEND_URL}/c15t/:path*`,
+      },
+      {
         source: '/r',
         destination: `${resourcesProxyOrigin}/r`,
       },

@@ -9,6 +9,8 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
+// c15t v2 tenant columns are nullable while existing rows stay single-tenant.
+// Keep upstream ID-scoped FKs until a tenant backfill can make tenantId required.
 export const subject = pgTable('subject', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   isIdentified: boolean('isIdentified').notNull().default(false),
@@ -18,9 +20,10 @@ export const subject = pgTable('subject', {
   subjectTimezone: text('subjectTimezone'),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+  tenantId: text('tenantId'),
 });
 
-export const subjectRelations = relations(subject, ({ one, many }) => ({
+export const subjectRelations = relations(subject, ({ many }) => ({
   consents: many(consent, {
     relationName: 'consent_subject',
   }),
@@ -41,9 +44,10 @@ export const domain = pgTable('domain', {
   isActive: boolean('isActive').notNull().default(true),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+  tenantId: text('tenantId'),
 });
 
-export const domainRelations = relations(domain, ({ one, many }) => ({
+export const domainRelations = relations(domain, ({ many }) => ({
   consents: many(consent, {
     relationName: 'consent_domain',
   }),
@@ -53,20 +57,70 @@ export const consentPolicy = pgTable('consentPolicy', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   version: text('version').notNull(),
   type: text('type').notNull(),
-  name: text('name').notNull(),
+  name: text('name'),
+  hash: text('hash'),
   effectiveDate: timestamp('effectiveDate').notNull(),
   expirationDate: timestamp('expirationDate'),
-  content: text('content').notNull(),
-  contentHash: text('contentHash').notNull(),
+  content: text('content'),
+  contentHash: text('contentHash'),
   isActive: boolean('isActive').notNull().default(true),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
+  tenantId: text('tenantId'),
 });
 
-export const consentPolicyRelations = relations(
-  consentPolicy,
+export const consentPolicyRelations = relations(consentPolicy, ({ many }) => ({
+  consents: many(consent, {
+    relationName: 'consent_consentPolicy',
+  }),
+  runtimePolicyDecisions: many(runtimePolicyDecision, {
+    relationName: 'runtimePolicyDecision_consentPolicy',
+  }),
+}));
+
+export const runtimePolicyDecision = pgTable(
+  'runtimePolicyDecision',
+  {
+    id: varchar('id', { length: 255 }).notNull().primaryKey(),
+    tenantId: text('tenantId'),
+    policyId: text('policyId').notNull(),
+    fingerprint: text('fingerprint').notNull(),
+    matchedBy: text('matchedBy').notNull(),
+    countryCode: text('countryCode'),
+    regionCode: text('regionCode'),
+    jurisdiction: text('jurisdiction').notNull(),
+    language: text('language'),
+    model: text('model').notNull(),
+    policyI18n: json('policyI18n'),
+    uiMode: text('uiMode'),
+    bannerUi: json('bannerUi'),
+    dialogUi: json('dialogUi'),
+    categories: json('categories'),
+    preselectedCategories: json('preselectedCategories'),
+    proofConfig: json('proofConfig'),
+    dedupeKey: text('dedupeKey').notNull().unique(),
+    createdAt: timestamp('createdAt').notNull().defaultNow(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.policyId],
+      foreignColumns: [consentPolicy.id],
+      name: 'runtimePolicyDecision_consentPolicy_policy_fk',
+    })
+      .onUpdate('restrict')
+      .onDelete('restrict'),
+  ],
+);
+
+export const runtimePolicyDecisionRelations = relations(
+  runtimePolicyDecision,
   ({ one, many }) => ({
+    policy: one(consentPolicy, {
+      relationName: 'runtimePolicyDecision_consentPolicy',
+      fields: [runtimePolicyDecision.policyId],
+      references: [consentPolicy.id],
+    }),
     consents: many(consent, {
-      relationName: 'consent_consentPolicy',
+      relationName: 'consent_runtimePolicyDecision',
     }),
   }),
 );
@@ -74,14 +128,15 @@ export const consentPolicyRelations = relations(
 export const consentPurpose = pgTable('consentPurpose', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   code: text('code').notNull(),
-  name: text('name').notNull(),
-  description: text('description').notNull(),
-  isEssential: boolean('isEssential').notNull(),
+  name: text('name'),
+  description: text('description'),
+  isEssential: boolean('isEssential').notNull().default(false),
   dataCategory: text('dataCategory'),
   legalBasis: text('legalBasis'),
   isActive: boolean('isActive').notNull().default(true),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
   updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+  tenantId: text('tenantId'),
 });
 
 export const consent = pgTable(
@@ -100,6 +155,14 @@ export const consent = pgTable(
     givenAt: timestamp('givenAt').notNull().defaultNow(),
     validUntil: timestamp('validUntil'),
     isActive: boolean('isActive').notNull().default(true),
+    jurisdiction: text('jurisdiction'),
+    jurisdictionModel: text('jurisdictionModel'),
+    tcString: text('tcString'),
+    uiSource: text('uiSource'),
+    consentAction: text('consentAction'),
+    runtimePolicyDecisionId: text('runtimePolicyDecisionId'),
+    runtimePolicySource: text('runtimePolicySource'),
+    tenantId: text('tenantId'),
   },
   (table) => [
     foreignKey({
@@ -123,6 +186,13 @@ export const consent = pgTable(
     })
       .onUpdate('restrict')
       .onDelete('restrict'),
+    foreignKey({
+      columns: [table.runtimePolicyDecisionId],
+      foreignColumns: [runtimePolicyDecision.id],
+      name: 'consent_runtimePolicyDecision_runtimePolicyDecision_fk',
+    })
+      .onUpdate('restrict')
+      .onDelete('restrict'),
   ],
 );
 
@@ -141,6 +211,11 @@ export const consentRelations = relations(consent, ({ one, many }) => ({
     relationName: 'consent_consentPolicy',
     fields: [consent.policyId],
     references: [consentPolicy.id],
+  }),
+  runtimePolicyDecision: one(runtimePolicyDecision, {
+    relationName: 'consent_runtimePolicyDecision',
+    fields: [consent.runtimePolicyDecisionId],
+    references: [runtimePolicyDecision.id],
   }),
   consentRecords: many(consentRecord, {
     relationName: 'consentRecord_consent',
@@ -161,6 +236,7 @@ export const auditLog = pgTable(
     metadata: json('metadata'),
     createdAt: timestamp('createdAt').notNull().defaultNow(),
     eventTimezone: text('eventTimezone').notNull().default('UTC'),
+    tenantId: text('tenantId'),
   },
   (table) => [
     foreignKey({
@@ -173,7 +249,7 @@ export const auditLog = pgTable(
   ],
 );
 
-export const auditLogRelations = relations(auditLog, ({ one, many }) => ({
+export const auditLogRelations = relations(auditLog, ({ one }) => ({
   subject: one(subject, {
     relationName: 'auditLog_subject',
     fields: [auditLog.subjectId],
@@ -209,21 +285,18 @@ export const consentRecord = pgTable(
   ],
 );
 
-export const consentRecordRelations = relations(
-  consentRecord,
-  ({ one, many }) => ({
-    subject: one(subject, {
-      relationName: 'consentRecord_subject',
-      fields: [consentRecord.subjectId],
-      references: [subject.id],
-    }),
-    consent: one(consent, {
-      relationName: 'consentRecord_consent',
-      fields: [consentRecord.consentId],
-      references: [consent.id],
-    }),
+export const consentRecordRelations = relations(consentRecord, ({ one }) => ({
+  subject: one(subject, {
+    relationName: 'consentRecord_subject',
+    fields: [consentRecord.subjectId],
+    references: [subject.id],
   }),
-);
+  consent: one(consent, {
+    relationName: 'consentRecord_consent',
+    fields: [consentRecord.consentId],
+    references: [consent.id],
+  }),
+}));
 
 export const private_c15t_settings = pgTable('private_c15t_settings', {
   id: varchar('id', { length: 255 }).primaryKey().notNull(),

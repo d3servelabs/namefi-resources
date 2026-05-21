@@ -9,6 +9,7 @@ import { Providers } from '@/components/providers';
 import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
+import { C15tPrefetch } from '@c15t/nextjs';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
@@ -18,6 +19,8 @@ import SkipAuthBanner from '@/components/SkipAuthBanner';
 import { UnofficialTldsInjector } from '@/components/providers/unofficial-tlds';
 import dynamic from 'next/dynamic';
 import './globals.css';
+
+const C15T_BROWSER_BACKEND_URL = '/api/c15t';
 
 // `NEXT_PUBLIC_PREVIEW_GATE_BUNDLED` is statically inlined by `compiler.define`
 // in next.config.mjs (set to '0' for production builds, '1' otherwise). The
@@ -66,6 +69,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
+      <head>
+        <C15tPrefetch backendURL={C15T_BROWSER_BACKEND_URL} />
+      </head>
       <body
         className={cn(
           geistSans.variable,

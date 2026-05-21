@@ -72,29 +72,45 @@ async function authClient() {
   const saKey = process.env.GSC_SA_KEY_PATH;
   if (saKey) {
     console.log(`Authenticating as service account from ${saKey}`);
-    const auth = new google.auth.GoogleAuth({ keyFile: resolve(saKey), scopes: SCOPES });
+    const auth = new google.auth.GoogleAuth({
+      keyFile: resolve(saKey),
+      scopes: SCOPES,
+    });
     return auth.getClient();
   }
 
   if (!existsSync(OAUTH_CLIENT_PATH)) {
     console.error(`Missing OAuth client file: ${OAUTH_CLIENT_PATH}`);
-    console.error('Download from GCP → Credentials → OAuth client ID (Desktop app) and save there.');
+    console.error(
+      'Download from GCP → Credentials → OAuth client ID (Desktop app) and save there.',
+    );
     process.exit(1);
   }
 
   if (existsSync(OAUTH_TOKEN_PATH)) {
     const creds = JSON.parse(readFileSync(OAUTH_TOKEN_PATH, 'utf8'));
     const clientFile = JSON.parse(readFileSync(OAUTH_CLIENT_PATH, 'utf8'));
-    const { client_id, client_secret, redirect_uris } = clientFile.installed ?? clientFile.web;
-    const oauth2 = new google.auth.OAuth2(client_id, client_secret, redirect_uris?.[0]);
+    const { client_id, client_secret, redirect_uris } =
+      clientFile.installed ?? clientFile.web;
+    const oauth2 = new google.auth.OAuth2(
+      client_id,
+      client_secret,
+      redirect_uris?.[0],
+    );
     oauth2.setCredentials(creds);
     return oauth2;
   }
 
   console.log('Opening browser for Google sign-in...');
-  const client = await authenticate({ keyfilePath: OAUTH_CLIENT_PATH, scopes: SCOPES });
+  const client = await authenticate({
+    keyfilePath: OAUTH_CLIENT_PATH,
+    scopes: SCOPES,
+  });
   if (client.credentials) {
-    writeFileSync(OAUTH_TOKEN_PATH, JSON.stringify(client.credentials, null, 2));
+    writeFileSync(
+      OAUTH_TOKEN_PATH,
+      JSON.stringify(client.credentials, null, 2),
+    );
     console.log(`Cached refresh token → ${OAUTH_TOKEN_PATH}`);
   }
   return client;
@@ -106,7 +122,11 @@ async function authClient() {
  * (only URL Inspection works per-URL), so we use SA top URLs as candidates
  * and inspect each one.
  */
-async function listCandidateUrls(siteUrl: string, daysBack: number, limit: number) {
+async function listCandidateUrls(
+  siteUrl: string,
+  daysBack: number,
+  limit: number,
+) {
   const webmasters = google.webmasters('v3');
   const endDate = new Date();
   const startDate = new Date();
@@ -122,7 +142,9 @@ async function listCandidateUrls(siteUrl: string, daysBack: number, limit: numbe
       rowLimit: limit,
     },
   });
-  return (res.data.rows ?? []).map((r) => r.keys?.[0]).filter(Boolean) as string[];
+  return (res.data.rows ?? [])
+    .map((r) => r.keys?.[0])
+    .filter(Boolean) as string[];
 }
 
 async function inspectUrl(siteUrl: string, url: string) {
@@ -161,10 +183,14 @@ async function fetchHtmlSnapshot(url: string) {
     });
     const text = await res.text();
     const bodyMatch = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? text;
-    const stripped = bodyMatch.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<[^>]+>/g, ' ');
+    const stripped = bodyMatch
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<[^>]+>/g, ' ');
     const wordCount = stripped.split(/\s+/).filter(Boolean).length;
     const hasNoindex = /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(text);
-    const canonicalMatch = text.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i);
+    const canonicalMatch = text.match(
+      /<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i,
+    );
     return {
       status: res.status,
       wordCount,
@@ -172,7 +198,13 @@ async function fetchHtmlSnapshot(url: string) {
       canonical: canonicalMatch?.[1] ?? null,
     };
   } catch (e: any) {
-    return { status: 0, wordCount: 0, hasNoindex: false, canonical: null, error: e?.message };
+    return {
+      status: 0,
+      wordCount: 0,
+      hasNoindex: false,
+      canonical: null,
+      error: e?.message,
+    };
   }
 }
 
@@ -185,12 +217,18 @@ function diagnose(row: {
 }): string {
   const reasons: string[] = [];
   if (row.hasNoindex) reasons.push('noindex meta tag');
-  if ((row.htmlWords ?? 0) < 100) reasons.push('thin server-rendered HTML (likely client-only render)');
-  if (row.canonical && row.canonical !== row.url) reasons.push(`canonical points elsewhere (${row.canonical})`);
-  if (row.coverageState?.toLowerCase().includes('duplicate')) reasons.push('duplicate per GSC');
-  if (row.coverageState?.toLowerCase().includes('crawled')) reasons.push('crawled-not-indexed (quality signal)');
-  if (row.coverageState?.toLowerCase().includes('discovered')) reasons.push('discovered-not-crawled (crawl budget / internal linking)');
-  if (row.coverageState?.toLowerCase().includes('soft 404')) reasons.push('soft 404 (empty state)');
+  if ((row.htmlWords ?? 0) < 100)
+    reasons.push('thin server-rendered HTML (likely client-only render)');
+  if (row.canonical && row.canonical !== row.url)
+    reasons.push(`canonical points elsewhere (${row.canonical})`);
+  if (row.coverageState?.toLowerCase().includes('duplicate'))
+    reasons.push('duplicate per GSC');
+  if (row.coverageState?.toLowerCase().includes('crawled'))
+    reasons.push('crawled-not-indexed (quality signal)');
+  if (row.coverageState?.toLowerCase().includes('discovered'))
+    reasons.push('discovered-not-crawled (crawl budget / internal linking)');
+  if (row.coverageState?.toLowerCase().includes('soft 404'))
+    reasons.push('soft 404 (empty state)');
   return reasons.join('; ') || 'unknown';
 }
 
@@ -214,7 +252,9 @@ async function main() {
       .filter((u): u is string => !!u && /^https?:\/\//.test(u))
       .slice(0, limit);
   } else {
-    console.log(`Fetching top ${limit} URLs from ${siteUrl} (last ${daysBack}d)...`);
+    console.log(
+      `Fetching top ${limit} URLs from ${siteUrl} (last ${daysBack}d)...`,
+    );
     urls = await listCandidateUrls(siteUrl, daysBack, limit);
   }
   console.log(`Got ${urls.length} candidate URLs.`);
@@ -227,7 +267,8 @@ async function main() {
     process.stdout.write(`\rInspecting ${i}/${urls.length}`);
     const inspection: any = await inspectUrl(siteUrl, url);
     const indexStatus = inspection?.indexStatusResult ?? {};
-    const coverageState: string = indexStatus.coverageState ?? inspection?.error ?? 'unknown';
+    const coverageState: string =
+      indexStatus.coverageState ?? inspection?.error ?? 'unknown';
     const verdict: string = indexStatus.verdict ?? '';
     const lastCrawl: string = indexStatus.lastCrawlTime ?? '';
     const gscCanonical: string = indexStatus.googleCanonical ?? '';
@@ -246,7 +287,13 @@ async function main() {
       httpStatus = snap.status;
     }
 
-    const reason = diagnose({ coverageState, htmlWords, hasNoindex, canonical, url });
+    const reason = diagnose({
+      coverageState,
+      htmlWords,
+      hasNoindex,
+      canonical,
+      url,
+    });
 
     rows.push({
       url,
@@ -274,18 +321,22 @@ async function main() {
   const sortedBuckets = [...bucketCounts.entries()].sort((a, b) => b[1] - a[1]);
 
   console.log('\nTop buckets (template | coverageState | count):');
-  for (const [k, v] of sortedBuckets.slice(0, 20)) console.log(`  ${v.toString().padStart(4)}  ${k}`);
+  for (const [k, v] of sortedBuckets.slice(0, 20))
+    console.log(`  ${v.toString().padStart(4)}  ${k}`);
 
   // Write CSV
   if (!existsSync('out')) mkdirSync('out');
   const ts = new Date().toISOString().replace(/[:.]/g, '-');
   const outPath = `out/gsc-diagnose-${ts}.csv`;
   const headers = Object.keys(rows[0] ?? { url: '' });
-  const escape = (v: unknown) => {
+  const escapeCsvField = (v: unknown) => {
     const s = String(v ?? '');
     return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
-  const csv = [headers.join(','), ...rows.map((r) => headers.map((h) => escape(r[h])).join(','))].join('\n');
+  const csv = [
+    headers.join(','),
+    ...rows.map((r) => headers.map((h) => escapeCsvField(r[h])).join(',')),
+  ].join('\n');
   writeFileSync(outPath, csv);
   console.log(`\nWrote ${rows.length} rows → ${outPath}`);
 }

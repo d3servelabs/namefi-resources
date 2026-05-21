@@ -1,6 +1,6 @@
 'use client';
 
-import { CookieBanner, ConsentManagerDialog } from '@c15t/nextjs';
+import { ConsentBanner, ConsentDialog } from '@c15t/nextjs';
 
 /**
  * Client-only consent UI components.
@@ -11,8 +11,11 @@ import { CookieBanner, ConsentManagerDialog } from '@c15t/nextjs';
 export function ConsentUIComponents() {
   return (
     <>
-      <CookieBanner />
-      <ConsentManagerDialog />
+      <ConsentBanner
+        layout={['customize', ['reject', 'accept']]}
+        primaryButton="accept"
+      />
+      <ConsentDialog />
     </>
   );
 }

@@ -1,12 +1,13 @@
 import { cookies, headers } from 'next/headers';
 import Script from 'next/script';
 import { config } from '@/lib/env';
+import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { resolveBaseUrl } from '@/lib/site-url';
 import {
   buildGoogleAnalyticsBootstrapScript,
   C15T_CONSENT_COOKIE_NAME,
-  fetchC15tInitialBannerData,
   GA_MEASUREMENT_ID,
+  getC15tMeasurementConsentState,
   resolveInitialMeasurementConsent,
 } from '@/lib/google-analytics-consent';
 
@@ -31,25 +32,25 @@ export async function GoogleAnalyticsBootstrap() {
     headers(),
     cookies(),
   ]);
-  const initialBannerData = await fetchC15tInitialBannerData({
-    backendUrl: config.BACKEND_URL,
-    requestHeaders,
-    onError(error) {
-      console.error('[ga-bootstrap:consent-banner-fetch]', {
-        name: error instanceof Error ? error.name : 'unknown',
-        message: error instanceof Error ? error.message : String(error),
-      });
-    },
-  });
+  const consentCookieValue = cookieStore.get(C15T_CONSENT_COOKIE_NAME)?.value;
+  const measurementConsentState =
+    getC15tMeasurementConsentState(consentCookieValue);
   const measurementGranted = resolveInitialMeasurementConsent({
-    consentCookieValue: cookieStore.get(C15T_CONSENT_COOKIE_NAME)?.value,
-    initialBannerData,
+    consentCookieValue,
   });
+  // First-page GA bootstrap is intentionally policy-blind: awaiting /c15t/init
+  // here would put every route back on the request-render critical path this PR
+  // removes. Browser prefetch consumes hosted policy data and can grant GA for
+  // opt-out/no-banner jurisdictions without blocking server rendering.
   const bootstrapScript = buildGoogleAnalyticsBootstrapScript({
     measurementId: GA_MEASUREMENT_ID,
     measurementGranted,
     originDomain: resolveOriginDomain(requestHeaders),
     debugMode: config.TYPE === 'development' || config.TYPE === 'local',
+    c15tPrefetchBackendUrl:
+      measurementConsentState === 'unknown'
+        ? C15T_BROWSER_BACKEND_URL
+        : undefined,
   });
 
   return (

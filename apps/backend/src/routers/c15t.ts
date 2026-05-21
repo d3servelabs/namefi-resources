@@ -1,13 +1,13 @@
-import { c15tInstance } from '@c15t/backend/v2';
-import { drizzleAdapter } from '@c15t/backend/v2/db/adapters/drizzle';
+import { c15tInstance, policyPackPresets } from '@c15t/backend';
+import { drizzleAdapter } from '@c15t/backend/db/adapters/drizzle';
 import { Hono } from 'hono';
 import { config } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { db } from '@namefi-astra/db';
 import {
-  buildC15tShowConsentBannerHeaders,
-  isC15tInitialBannerData,
+  buildC15tInitHeaders,
+  isC15tInitData,
   resolveInitialMeasurementConsent,
 } from '@namefi-astra/common/google-analytics';
 
@@ -27,10 +27,18 @@ const c15tLoggers = {
   debug: c15tLogger.debug.bind(c15tLogger),
   info: c15tLogger.info.bind(c15tLogger),
 };
+const policyPacks = [
+  policyPackPresets.europeOptIn(),
+  policyPackPresets.californiaOptOut(),
+  policyPackPresets.quebecOptIn(),
+  policyPackPresets.worldNoBanner(),
+];
+
 const c15t = c15tInstance({
   appName: 'namefi-astra',
   basePath: '/c15t',
   trustedOrigins,
+  policyPacks,
   logger: {
     level: config.LOG_LEVEL,
     appName: 'namefi-astra',
@@ -66,56 +74,54 @@ const c15t = c15tInstance({
       logFn({ args }, message);
     },
   },
-  advanced: {
-    telemetry: {
-      disabled: true,
-    },
-  },
-  adapter: drizzleAdapter({
-    db,
-    provider: 'postgresql',
-  }),
+  telemetry: { enabled: false },
+  adapter: drizzleAdapter({ db, provider: 'postgresql' }),
 });
 
 export async function isC15tMeasurementConsentAutoGranted(
   requestHeaders: Headers,
 ): Promise<boolean> {
   try {
+    const initHeaders = buildC15tInitHeaders(requestHeaders);
+    if (!initHeaders) return false;
+
     const response = await c15t.handler(
-      new Request('http://namefi.local/c15t/show-consent-banner', {
+      new Request('http://namefi.local/c15t/init', {
         method: 'GET',
-        headers:
-          buildC15tShowConsentBannerHeaders(requestHeaders) ?? new Headers(),
+        headers: initHeaders,
       }),
     );
 
     if (!response.ok) {
       c15tLogger.debug(
         { status: response.status },
-        'c15t show-consent-banner returned non-OK while resolving analytics auto-grant',
+        'c15t init returned non-OK while resolving analytics auto-grant',
       );
       return false;
     }
 
-    const initialBannerData: unknown = await response.json();
-    if (!isC15tInitialBannerData(initialBannerData)) {
-      const bannerDataMeta =
-        initialBannerData && typeof initialBannerData === 'object'
+    const initData: unknown = await response.json();
+    if (!isC15tInitData(initData)) {
+      const initDataMeta =
+        initData && typeof initData === 'object'
           ? {
-              initialBannerDataType: 'object',
-              initialBannerDataKeys: Object.keys(
-                initialBannerData as Record<string, unknown>,
+              initDataType: 'object',
+              initDataKeys: Object.keys(
+                initData as Record<string, unknown>,
               ).slice(0, 20),
             }
-          : { initialBannerDataType: typeof initialBannerData };
+          : { initDataType: typeof initData };
       c15tLogger.warn(
-        bannerDataMeta,
-        'c15t show-consent-banner returned unexpected shape while resolving analytics auto-grant',
+        initDataMeta,
+        'c15t init returned unexpected shape while resolving analytics auto-grant',
       );
       return false;
     }
 
-    return resolveInitialMeasurementConsent({ initialBannerData });
+    return resolveInitialMeasurementConsent({
+      initData,
+      requestHasGlobalPrivacyControl: requestHeaders.get('sec-gpc') === '1',
+    });
   } catch (error) {
     c15tLogger.warn(
       { error },

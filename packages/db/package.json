@@ -23,7 +23,7 @@
     "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
-    "@c15t/backend": "^1.8.0",
+    "@c15t/backend": "^2.1.0",
     "@namefi-astra/common": "workspace:*",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/utils": "workspace:*",

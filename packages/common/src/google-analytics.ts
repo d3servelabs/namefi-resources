@@ -27,14 +27,20 @@ type ParsedC15tConsentCookie = {
 
 export type C15tMeasurementConsentState = 'granted' | 'denied' | 'unknown';
 
-export type C15tInitialBannerData = {
-  showConsentBanner: boolean;
-  jurisdiction?: {
-    code?: string | null;
-  } | null;
+type C15tPolicyModel = 'opt-in' | 'opt-out' | 'none' | 'iab';
+type C15tPolicyUIMode = 'none' | 'banner' | 'dialog';
+
+export type C15tInitData = {
+  jurisdiction: string;
+  policy?: {
+    model: C15tPolicyModel;
+    ui?: {
+      mode?: C15tPolicyUIMode;
+    };
+  };
 };
 
-export type FetchC15tInitialBannerDataOptions = {
+export type FetchC15tInitDataOptions = {
   backendUrl: string;
   requestHeaders: Pick<Headers, 'get'>;
   fetcher?: typeof fetch;
@@ -60,10 +66,11 @@ const C15T_REGION_HEADER_PRIORITY = [
   'x-region-code',
 ] as const;
 
-const C15T_SHOW_BANNER_PASSTHROUGH_HEADERS = [
+const C15T_INIT_PASSTHROUGH_HEADERS = [
   ...C15T_COUNTRY_HEADER_PRIORITY,
   ...C15T_REGION_HEADER_PRIORITY,
   'accept-language',
+  'sec-gpc',
   'user-agent',
   'x-forwarded-host',
   'x-forwarded-for',
@@ -206,13 +213,13 @@ export function mergeC15tMeasurementConsentStates(
   return 'unknown';
 }
 
-export function buildC15tShowConsentBannerHeaders(
+export function buildC15tInitHeaders(
   requestHeaders: Pick<Headers, 'get'>,
 ): Headers | null {
   const relevantHeaders = new Headers();
   let hasRelevantHeader = false;
 
-  for (const header of C15T_SHOW_BANNER_PASSTHROUGH_HEADERS) {
+  for (const header of C15T_INIT_PASSTHROUGH_HEADERS) {
     const value = requestHeaders.get(header);
     if (value) {
       relevantHeaders.set(header, value);
@@ -243,37 +250,52 @@ export function buildC15tShowConsentBannerHeaders(
   return hasRelevantHeader ? relevantHeaders : null;
 }
 
-export function isC15tInitialBannerData(
-  value: unknown,
-): value is C15tInitialBannerData {
+export function isC15tInitData(value: unknown): value is C15tInitData {
   if (!value || typeof value !== 'object') return false;
   const response = value as {
-    showConsentBanner?: unknown;
-    jurisdiction?: { code?: unknown } | null;
+    jurisdiction?: unknown;
+    policy?: {
+      model?: unknown;
+      ui?: { mode?: unknown };
+    } | null;
   };
 
   return (
-    typeof response.showConsentBanner === 'boolean' &&
-    (response.jurisdiction == null ||
-      typeof response.jurisdiction.code === 'string' ||
-      response.jurisdiction.code == null)
+    typeof response.jurisdiction === 'string' &&
+    (response.policy == null ||
+      (isC15tPolicyModel(response.policy.model) &&
+        (response.policy.ui?.mode == null ||
+          isC15tPolicyUIMode(response.policy.ui.mode))))
   );
 }
 
-export async function fetchC15tInitialBannerData({
+function isC15tPolicyModel(value: unknown): value is C15tPolicyModel {
+  return (
+    value === 'opt-in' ||
+    value === 'opt-out' ||
+    value === 'none' ||
+    value === 'iab'
+  );
+}
+
+function isC15tPolicyUIMode(value: unknown): value is C15tPolicyUIMode {
+  return value === 'none' || value === 'banner' || value === 'dialog';
+}
+
+export async function fetchC15tInitData({
   backendUrl,
   requestHeaders,
   fetcher = fetch,
   timeoutMs = 1500,
   onError,
-}: FetchC15tInitialBannerDataOptions): Promise<C15tInitialBannerData | null> {
-  const forwardedHeaders = buildC15tShowConsentBannerHeaders(requestHeaders);
+}: FetchC15tInitDataOptions): Promise<C15tInitData | null> {
+  const forwardedHeaders = buildC15tInitHeaders(requestHeaders);
   if (!forwardedHeaders) return null;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const response = await fetcher(`${backendUrl}/c15t/show-consent-banner`, {
+    const response = await fetcher(`${backendUrl}/c15t/init`, {
       method: 'GET',
       headers: forwardedHeaders,
       cache: 'no-store',
@@ -282,10 +304,8 @@ export async function fetchC15tInitialBannerData({
 
     if (!response.ok) return null;
 
-    const initialBannerData: unknown = await response.json();
-    return isC15tInitialBannerData(initialBannerData)
-      ? initialBannerData
-      : null;
+    const initData: unknown = await response.json();
+    return isC15tInitData(initData) ? initData : null;
   } catch (error) {
     onError?.(error);
     return null;
@@ -296,17 +316,20 @@ export async function fetchC15tInitialBannerData({
 
 export function resolveInitialMeasurementConsent(args: {
   consentCookieValue?: string;
-  initialBannerData?: C15tInitialBannerData | null;
+  initData?: C15tInitData | null;
+  requestHasGlobalPrivacyControl?: boolean;
 }): boolean {
   const storedConsent = getC15tMeasurementConsentState(args.consentCookieValue);
   if (storedConsent !== 'unknown') {
     return storedConsent === 'granted';
   }
 
-  return (
-    args.initialBannerData?.jurisdiction?.code === 'NONE' &&
-    args.initialBannerData.showConsentBanner === false
-  );
+  if (args.requestHasGlobalPrivacyControl) return false;
+
+  const policyModel = args.initData?.policy?.model;
+  if (policyModel === 'none' || policyModel === 'opt-out') return true;
+
+  return false;
 }
 
 export function getGoogleConsentState(
@@ -359,6 +382,7 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
   originDomain: string;
   debugMode: boolean;
   exposeMeasurementConsent?: boolean;
+  c15tPrefetchBackendUrl?: string;
 }): string {
   const consentState = escapeInlineScriptJson(
     JSON.stringify(getGoogleConsentDefaultState(args.measurementGranted)),
@@ -372,6 +396,12 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
       }),
     ),
   );
+  const prefetchConsentUpdateScript = args.c15tPrefetchBackendUrl
+    ? buildC15tPrefetchConsentUpdateScript({
+        backendUrl: args.c15tPrefetchBackendUrl,
+        exposeMeasurementConsent: args.exposeMeasurementConsent,
+      })
+    : undefined;
 
   return [
     'window.dataLayer = window.dataLayer || [];',
@@ -380,9 +410,74 @@ export function buildGoogleAnalyticsBootstrapScript(args: {
       : undefined,
     'window.gtag = window.gtag || function gtag(){window.dataLayer.push(arguments);};',
     `window.gtag('consent', 'default', ${consentState});`,
+    prefetchConsentUpdateScript,
     "window.gtag('js', new Date());",
     `window.gtag('config', ${JSON.stringify(args.measurementId)}, ${configState});`,
   ]
     .filter((line): line is string => Boolean(line))
     .join('\n');
+}
+
+function buildC15tPrefetchConsentUpdateScript(args: {
+  backendUrl: string;
+  exposeMeasurementConsent?: boolean;
+}): string {
+  const backendUrl = escapeInlineScriptJson(JSON.stringify(args.backendUrl));
+  const grantedConsentState = escapeInlineScriptJson(
+    JSON.stringify(getGoogleConsentState(true)),
+  );
+
+  return `(() => {
+  if (typeof window === 'undefined') return;
+
+  const backendURL = ${backendUrl};
+  const targetBackendURL = (() => {
+    try {
+      const trimmed = backendURL === '/' ? backendURL : backendURL.replace(/\\/+$/, '');
+      if (/^https?:\\/\\//.test(trimmed)) {
+        return new URL(trimmed).toString().replace(/\\/+$/, '');
+      }
+      if (!trimmed.startsWith('/')) return undefined;
+      return new URL(trimmed, window.location.origin).toString().replace(/\\/+$/, '');
+    } catch {
+      return undefined;
+    }
+  })();
+  if (!targetBackendURL) return;
+
+  const applyPrefetchedConsent = () => {
+    const entries = Object.values(window.__c15tInitialDataPromises || {});
+    const entry = entries.find((candidate) => {
+      const requestContext = candidate && candidate.requestContext;
+      return requestContext && requestContext.backendURL === targetBackendURL;
+    });
+    const promise = entry && entry.promise;
+    if (!promise || typeof promise.then !== 'function') return false;
+
+    promise
+      .then((data) => {
+        const init = data && data.init;
+        const model = init && init.policy && init.policy.model;
+        const requestContext =
+          (data && data.metadata && data.metadata.requestContext) ||
+          entry.requestContext ||
+          {};
+        if (requestContext.gpc === true) return;
+        if (model !== 'none' && model !== 'opt-out') return;
+        if (typeof window.gtag !== 'function') return;
+        ${
+          args.exposeMeasurementConsent
+            ? 'window.namefiMeasurementConsent = true;'
+            : ''
+        }
+        window.gtag('consent', 'update', ${grantedConsentState});
+      })
+      .catch(() => undefined);
+    return true;
+  };
+
+  if (!applyPrefetchedConsent()) {
+    setTimeout(applyPrefetchedConsent, 0);
+  }
+})();`;
 }
