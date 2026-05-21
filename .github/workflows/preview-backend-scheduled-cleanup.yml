@@ -1,0 +1,261 @@
+name: Scheduled Cleanup Backend Preview
+
+on:
+  schedule:
+    # Run daily at 03:00 UTC
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run mode - only log what would be cleaned up without deleting"
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+
+jobs:
+  cleanup-stale-previews:
+    name: Cleanup Stale Backend Preview Resources
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: read
+    steps:
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Find and cleanup stale preview revisions
+        uses: actions/github-script@v7
+        env:
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        with:
+          script: |
+            const { execFileSync, execSync } = require('child_process');
+            const dryRun = process.env.DRY_RUN === 'true';
+
+            if (dryRun) {
+              console.log('=== DRY RUN MODE - No changes will be made ===\n');
+            }
+
+            console.log('Fetching Cloud Run service traffic configuration...');
+
+            // Get all traffic entries with tags from the Cloud Run service
+            let service;
+            try {
+              const serviceJson = execSync(
+                `gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="json"`,
+                { encoding: 'utf-8' }
+              );
+              service = JSON.parse(serviceJson);
+            } catch (error) {
+              console.error('Failed to fetch Cloud Run service configuration:', error.message);
+              throw new Error('Unable to retrieve Cloud Run service. Check service name, region, and authentication.');
+            }
+
+            const trafficEntries = service.status?.traffic || [];
+
+            // Filter for entries with pr-<number> tags
+            const prTagPattern = /^pr-(\d+)$/;
+            const prRevisions = trafficEntries
+              .filter(entry => entry.tag && prTagPattern.test(entry.tag))
+              .map(entry => ({
+                tag: entry.tag,
+                prNumber: parseInt(entry.tag.match(prTagPattern)[1], 10),
+                revisionName: entry.revisionName
+              }));
+
+            console.log(`Found ${prRevisions.length} PR-tagged revisions`);
+
+            if (prRevisions.length === 0) {
+              console.log('No PR-tagged revisions found. Nothing to clean up.');
+              return;
+            }
+
+            const revisionsToCleanup = [];
+            const prCheckErrors = [];
+
+            // Check each PR's status
+            for (const revision of prRevisions) {
+              console.log(`Checking PR #${revision.prNumber}...`);
+
+              try {
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: revision.prNumber
+                });
+
+                console.log(`  PR #${revision.prNumber}: state=${pr.state}, merged=${pr.merged}`);
+
+                // If PR is closed (merged or just closed), mark for cleanup
+                if (pr.state === 'closed') {
+                  console.log(`  -> Marking for cleanup (PR is ${pr.merged ? 'merged' : 'closed'})`);
+                  revisionsToCleanup.push(revision);
+                } else {
+                  console.log(`  -> Skipping (PR is still open)`);
+                }
+              } catch (error) {
+                if (error.status === 404) {
+                  console.log(`  PR #${revision.prNumber} not found. Marking for cleanup.`);
+                  revisionsToCleanup.push(revision);
+                } else {
+                  const errorMessage = error.message || String(error);
+                  console.error(`  Error checking PR #${revision.prNumber}:`, errorMessage);
+                  prCheckErrors.push({ prNumber: revision.prNumber, message: errorMessage });
+                }
+              }
+            }
+
+            if (prCheckErrors.length > 0) {
+              const errorSummary = prCheckErrors
+                .map(error => `PR #${error.prNumber}: ${error.message}`)
+                .join('; ');
+              throw new Error(`Failed to check ${prCheckErrors.length} PR status(es): ${errorSummary}`);
+            }
+
+            console.log(`\nRevisions to cleanup: ${revisionsToCleanup.length}`);
+
+            let cleanedCount = 0;
+            const cleanupErrors = [];
+
+            // Cleanup each stale revision
+            for (const revision of revisionsToCleanup) {
+              console.log(`\nCleaning up revision for PR #${revision.prNumber}...`);
+
+              if (dryRun) {
+                console.log(`  [DRY RUN] Would remove tag ${revision.tag}`);
+                if (revision.revisionName) {
+                  console.log(`  [DRY RUN] Would delete revision ${revision.revisionName}`);
+                }
+                console.log(`  [DRY RUN] Would delete Neon branch pr-${revision.prNumber}`);
+                cleanedCount++;
+                continue;
+              }
+
+              try {
+                // Remove the tag from the service
+                console.log(`  Removing tag ${revision.tag}...`);
+                execSync(
+                  `gcloud run services update-traffic namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --remove-tags "${revision.tag}" --quiet`,
+                  { encoding: 'utf-8', stdio: 'inherit' }
+                );
+
+                // Delete the revision
+                if (revision.revisionName) {
+                  console.log(`  Deleting revision ${revision.revisionName}...`);
+                  execSync(
+                    `gcloud run revisions delete "${revision.revisionName}" --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --quiet`,
+                    { encoding: 'utf-8', stdio: 'inherit' }
+                  );
+                }
+
+                // Delete Neon branch
+                console.log(`  Deleting Neon branch pr-${revision.prNumber}...`);
+                const branchId = `pr-${revision.prNumber}`;
+                try {
+                  if (!process.env.NEON_PROJECT_ID || !process.env.NEON_API_KEY) {
+                    throw new Error('NEON_PROJECT_ID and NEON_API_KEY are required to delete Neon branches.');
+                  }
+
+                  const branchesJson = execFileSync(
+                    'bun',
+                    [
+                      'run',
+                      'neonctl',
+                      'branches',
+                      'list',
+                      '--project-id',
+                      process.env.NEON_PROJECT_ID,
+                      '--api-key',
+                      process.env.NEON_API_KEY,
+                      '--json'
+                    ],
+                    { encoding: 'utf-8' }
+                  );
+                  const parsedBranches = JSON.parse(branchesJson);
+                  const branches = Array.isArray(parsedBranches) ? parsedBranches : parsedBranches.branches || [];
+                  const branchExists = branches.some(branch => branch.id === branchId || branch.name === branchId);
+
+                  if (branchExists) {
+                    execFileSync(
+                      'bun',
+                      [
+                        'run',
+                        'neonctl',
+                        'branches',
+                        'delete',
+                        branchId,
+                        '--project-id',
+                        process.env.NEON_PROJECT_ID,
+                        '--api-key',
+                        process.env.NEON_API_KEY,
+                        '--force'
+                      ],
+                      { stdio: 'inherit' }
+                    );
+                    console.log(`  Neon branch ${branchId} deleted.`);
+                  } else {
+                    console.log(`  Neon branch ${branchId} not found.`);
+                  }
+                } catch (neonError) {
+                  console.error(`  Error deleting Neon branch:`, neonError.message);
+                  throw neonError;
+                }
+
+                console.log(`  Cleanup complete for PR #${revision.prNumber}`);
+                cleanedCount++;
+              } catch (error) {
+                const errorMessage = error.message || String(error);
+                console.error(`  Error cleaning up PR #${revision.prNumber}:`, errorMessage);
+                cleanupErrors.push({ prNumber: revision.prNumber, message: errorMessage });
+              }
+            }
+
+            // Summary
+            console.log('\n=== Cleanup Summary ===');
+            if (dryRun) {
+              console.log('Mode: DRY RUN (no changes made)');
+            }
+            console.log(`Total PR revisions found: ${prRevisions.length}`);
+            console.log(`Revisions cleanup attempted: ${revisionsToCleanup.length}`);
+            console.log(`Revisions successfully cleaned up: ${cleanedCount}`);
+            console.log(`Revisions failed cleanup: ${cleanupErrors.length}`);
+            console.log(`Revisions kept (open PRs): ${prRevisions.length - revisionsToCleanup.length}`);
+
+            if (cleanupErrors.length > 0) {
+              const errorSummary = cleanupErrors
+                .map(error => `PR #${error.prNumber}: ${error.message}`)
+                .join('; ');
+              throw new Error(`Failed to cleanup ${cleanupErrors.length} revision(s): ${errorSummary}`);
+            }
