@@ -13,7 +13,7 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { config } from '@/lib/env';
 import { useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
 import {
   type FC,
@@ -128,6 +128,17 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     trpc.domainConfig.getDomainOwnerWallet.queryOptions({
       domainName: domain,
     }),
+  );
+
+  // A domain that's exportable to another registrar can't be listed on a
+  // marketplace — its NFT may be burned when the export completes. Fetched
+  // here (only when the Marketplace tab is enabled) so a direct
+  // `?tab=marketplace` link renders the right state without a loading flash.
+  const domainExportDetailsQuery = useQuery(
+    trpc.domainConfig.getDomainExportDetails.queryOptions(
+      { domainName: domain },
+      { enabled: marketplaceListingEnabled },
+    ),
   );
 
   const {
@@ -311,7 +322,14 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
               {marketplaceListingEnabled && (
                 <TabsContent value="marketplace">
-                  <MarketplacePanel domain={domain} nftChainId={nft.chainId} />
+                  <MarketplacePanel
+                    domain={domain}
+                    nftChainId={nft.chainId}
+                    isReadyForExport={
+                      domainExportDetailsQuery.data?.readyToExport ?? false
+                    }
+                    isExportStatusLoading={domainExportDetailsQuery.isLoading}
+                  />
                 </TabsContent>
               )}
             </Tabs>

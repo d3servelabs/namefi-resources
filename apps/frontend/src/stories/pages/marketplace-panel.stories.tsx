@@ -100,6 +100,7 @@ interface StoryArgs {
   nftChainId?: number;
   prefilledListings?: 'empty' | 'with-listings';
   isAuthenticated?: boolean;
+  isReadyForExport?: boolean;
 }
 
 function ListingsCachePrimer({
@@ -139,6 +140,7 @@ function MarketplacePanelStory({
   nftChainId = ETHEREUM_MAINNET_CHAIN_ID,
   prefilledListings = 'empty',
   isAuthenticated = true,
+  isReadyForExport = false,
 }: StoryArgs) {
   const queryClient = createStoryQueryClient();
   const tokenId = '12345';
@@ -164,6 +166,7 @@ function MarketplacePanelStory({
                       <MarketplacePanel
                         domain={MOCK_DOMAIN}
                         nftChainId={nftChainId}
+                        isReadyForExport={isReadyForExport}
                       />
                     </div>
                   </ListingsCachePrimer>
@@ -194,6 +197,7 @@ const meta: Meta<StoryArgs> = {
       options: ['empty', 'with-listings'],
     },
     isAuthenticated: { control: 'boolean' },
+    isReadyForExport: { control: 'boolean' },
   },
 };
 
@@ -229,5 +233,13 @@ export const WalletNotConnected: Story = {
     nftChainId: ETHEREUM_MAINNET_CHAIN_ID,
     prefilledListings: 'empty',
     isAuthenticated: false,
+  },
+};
+
+export const ExportBlocked: Story = {
+  args: {
+    nftChainId: ETHEREUM_MAINNET_CHAIN_ID,
+    isAuthenticated: true,
+    isReadyForExport: true,
   },
 };
