@@ -290,7 +290,7 @@ export function OrdersToolbar({
           <Switch
             id="orders-show-only-curret-pbn"
             checked={!showAllParents}
-            onCheckedChange={onShowAllParentsChange}
+            onCheckedChange={(checked) => onShowAllParentsChange(!checked)}
           />
           <Label
             htmlFor="orders-show-only-curret-pbn"
