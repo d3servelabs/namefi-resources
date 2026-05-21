@@ -61,10 +61,88 @@ jobs:
           NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          CLEANUP_SUMMARY_PATH: ${{ runner.temp }}/preview-backend-cleanup-summary.json
         with:
           script: |
+            const fs = require('fs');
             const { execFileSync, execSync } = require('child_process');
             const dryRun = process.env.DRY_RUN === 'true';
+            const summaryPath = process.env.CLEANUP_SUMMARY_PATH;
+            const report = {
+              mode: dryRun ? 'dry_run' : 'run',
+              generatedAt: new Date().toISOString(),
+              status: 'running',
+              error: null,
+              totals: {
+                found: 0,
+                markedForCleanup: 0,
+                wouldCleanup: 0,
+                kept: 0,
+                prCheckErrors: 0,
+                cleanupAttempted: 0,
+                cleaned: 0,
+                failed: 0
+              },
+              revisions: []
+            };
+            const writeReport = () => {
+              if (!summaryPath) {
+                return;
+              }
+
+              fs.writeFileSync(summaryPath, `${JSON.stringify(report, null, 2)}\n`);
+            };
+            const updateTotals = () => {
+              report.totals = {
+                found: report.revisions.length,
+                markedForCleanup: report.revisions.filter(revision => revision.plannedAction === 'cleanup').length,
+                wouldCleanup: report.revisions.filter(revision => revision.cleanupResult === 'would_cleanup').length,
+                kept: report.revisions.filter(revision => revision.plannedAction === 'keep').length,
+                prCheckErrors: report.revisions.filter(revision => revision.prLookupStatus === 'error').length,
+                cleanupAttempted: report.revisions.filter(revision => ['cleaned', 'failed'].includes(revision.cleanupResult)).length,
+                cleaned: report.revisions.filter(revision => revision.cleanupResult === 'cleaned').length,
+                failed: report.revisions.filter(revision => revision.cleanupResult === 'failed').length
+              };
+            };
+            const failWithReport = (error) => {
+              updateTotals();
+              report.status = 'failed';
+              report.error = error.message || String(error);
+              writeReport();
+              throw error;
+            };
+            const getRevisionDetails = (revisionName) => {
+              if (!revisionName) {
+                return {};
+              }
+
+              try {
+                const revisionJson = execFileSync(
+                  'gcloud',
+                  [
+                    'run',
+                    'revisions',
+                    'describe',
+                    revisionName,
+                    '--region',
+                    process.env.REGION,
+                    '--project',
+                    process.env.PROJECT_ID,
+                    '--format=json'
+                  ],
+                  { encoding: 'utf-8' }
+                );
+                const revision = JSON.parse(revisionJson);
+                const readyCondition = revision.status?.conditions?.find(condition => condition.type === 'Ready');
+                return {
+                  revisionCreatedAt: revision.metadata?.creationTimestamp || null,
+                  revisionReadyStatus: readyCondition?.status || null,
+                  revisionReadyReason: readyCondition?.reason || null
+                };
+              } catch (error) {
+                return { revisionLookupError: error.message || String(error) };
+              }
+            };
 
             if (dryRun) {
               console.log('=== DRY RUN MODE - No changes will be made ===\n');
@@ -81,8 +159,9 @@ jobs:
               );
               service = JSON.parse(serviceJson);
             } catch (error) {
-              console.error('Failed to fetch Cloud Run service configuration:', error.message);
-              throw new Error('Unable to retrieve Cloud Run service. Check service name, region, and authentication.');
+              const errorMessage = error.message || String(error);
+              console.error('Failed to fetch Cloud Run service configuration:', errorMessage);
+              failWithReport(new Error(`Unable to retrieve Cloud Run service. Check service name, region, and authentication. ${errorMessage}`));
             }
 
             const trafficEntries = service.status?.traffic || [];
@@ -91,16 +170,30 @@ jobs:
             const prTagPattern = /^pr-(\d+)$/;
             const prRevisions = trafficEntries
               .filter(entry => entry.tag && prTagPattern.test(entry.tag))
-              .map(entry => ({
-                tag: entry.tag,
-                prNumber: parseInt(entry.tag.match(prTagPattern)[1], 10),
-                revisionName: entry.revisionName
-              }));
+              .map(entry => {
+                const revisionName = entry.revisionName || null;
+                return {
+                  tag: entry.tag,
+                  prNumber: parseInt(entry.tag.match(prTagPattern)[1], 10),
+                  revisionName,
+                  url: entry.url || null,
+                  percent: entry.percent ?? null,
+                  plannedAction: 'unknown',
+                  cleanupResult: 'pending',
+                  ...getRevisionDetails(revisionName)
+                };
+              });
+            report.revisions = prRevisions;
+            updateTotals();
+            writeReport();
 
             console.log(`Found ${prRevisions.length} PR-tagged revisions`);
 
             if (prRevisions.length === 0) {
               console.log('No PR-tagged revisions found. Nothing to clean up.');
+              report.status = 'success';
+              updateTotals();
+              writeReport();
               return;
             }
 
@@ -119,36 +212,69 @@ jobs:
                 });
 
                 console.log(`  PR #${revision.prNumber}: state=${pr.state}, merged=${pr.merged}`);
+                Object.assign(revision, {
+                  prLookupStatus: 'found',
+                  prState: pr.state,
+                  prMerged: Boolean(pr.merged),
+                  prTitle: pr.title,
+                  prUrl: pr.html_url,
+                  prCreatedAt: pr.created_at,
+                  prUpdatedAt: pr.updated_at,
+                  prClosedAt: pr.closed_at,
+                  prMergedAt: pr.merged_at
+                });
 
                 // If PR is closed (merged or just closed), mark for cleanup
                 if (pr.state === 'closed') {
                   console.log(`  -> Marking for cleanup (PR is ${pr.merged ? 'merged' : 'closed'})`);
+                  revision.plannedAction = 'cleanup';
+                  revision.cleanupReason = `PR is ${pr.merged ? 'merged' : 'closed'}`;
                   revisionsToCleanup.push(revision);
                 } else {
                   console.log(`  -> Skipping (PR is still open)`);
+                  revision.plannedAction = 'keep';
+                  revision.cleanupResult = 'kept';
+                  revision.cleanupReason = 'PR is still open';
                 }
               } catch (error) {
                 if (error.status === 404) {
                   console.log(`  PR #${revision.prNumber} not found. Marking for cleanup.`);
+                  Object.assign(revision, {
+                    prLookupStatus: 'not_found',
+                    prState: 'not_found',
+                    prMerged: null,
+                    plannedAction: 'cleanup',
+                    cleanupReason: 'PR was not found'
+                  });
                   revisionsToCleanup.push(revision);
                 } else {
                   const errorMessage = error.message || String(error);
                   console.error(`  Error checking PR #${revision.prNumber}:`, errorMessage);
+                  Object.assign(revision, {
+                    prLookupStatus: 'error',
+                    prState: 'check_error',
+                    prMerged: null,
+                    cleanupResult: 'skipped',
+                    cleanupError: errorMessage
+                  });
                   prCheckErrors.push({ prNumber: revision.prNumber, message: errorMessage });
                 }
               }
             }
+            updateTotals();
+            writeReport();
 
             if (prCheckErrors.length > 0) {
               const errorSummary = prCheckErrors
                 .map(error => `PR #${error.prNumber}: ${error.message}`)
                 .join('; ');
-              throw new Error(`Failed to check ${prCheckErrors.length} PR status(es): ${errorSummary}`);
+              failWithReport(new Error(`Failed to check ${prCheckErrors.length} PR status(es): ${errorSummary}`));
             }
 
             console.log(`\nRevisions to cleanup: ${revisionsToCleanup.length}`);
 
             let cleanedCount = 0;
+            let wouldCleanupCount = 0;
             const cleanupErrors = [];
 
             // Cleanup each stale revision
@@ -161,7 +287,13 @@ jobs:
                   console.log(`  [DRY RUN] Would delete revision ${revision.revisionName}`);
                 }
                 console.log(`  [DRY RUN] Would delete Neon branch pr-${revision.prNumber}`);
-                cleanedCount++;
+                revision.cleanupResult = 'would_cleanup';
+                revision.cleanupActions = [
+                  'remove Cloud Run tag',
+                  revision.revisionName ? 'delete Cloud Run revision' : null,
+                  'delete Neon branch if it exists'
+                ].filter(Boolean);
+                wouldCleanupCount++;
                 continue;
               }
 
@@ -172,6 +304,7 @@ jobs:
                   `gcloud run services update-traffic namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --remove-tags "${revision.tag}" --quiet`,
                   { encoding: 'utf-8', stdio: 'inherit' }
                 );
+                revision.cloudRunTagRemoved = true;
 
                 // Delete the revision
                 if (revision.revisionName) {
@@ -180,6 +313,7 @@ jobs:
                     `gcloud run revisions delete "${revision.revisionName}" --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --quiet`,
                     { encoding: 'utf-8', stdio: 'inherit' }
                   );
+                  revision.cloudRunRevisionDeleted = true;
                 }
 
                 // Delete Neon branch
@@ -208,6 +342,7 @@ jobs:
                   const parsedBranches = JSON.parse(branchesJson);
                   const branches = Array.isArray(parsedBranches) ? parsedBranches : parsedBranches.branches || [];
                   const branchExists = branches.some(branch => branch.id === branchId || branch.name === branchId);
+                  revision.neonBranchFound = branchExists;
 
                   if (branchExists) {
                     execFileSync(
@@ -226,8 +361,10 @@ jobs:
                       ],
                       { stdio: 'inherit' }
                     );
+                    revision.neonBranchDeleted = true;
                     console.log(`  Neon branch ${branchId} deleted.`);
                   } else {
+                    revision.neonBranchDeleted = false;
                     console.log(`  Neon branch ${branchId} not found.`);
                   }
                 } catch (neonError) {
@@ -236,10 +373,14 @@ jobs:
                 }
 
                 console.log(`  Cleanup complete for PR #${revision.prNumber}`);
+                revision.cleanupResult = 'cleaned';
+                revision.cleanupCompletedAt = new Date().toISOString();
                 cleanedCount++;
               } catch (error) {
                 const errorMessage = error.message || String(error);
                 console.error(`  Error cleaning up PR #${revision.prNumber}:`, errorMessage);
+                revision.cleanupResult = 'failed';
+                revision.cleanupError = errorMessage;
                 cleanupErrors.push({ prNumber: revision.prNumber, message: errorMessage });
               }
             }
@@ -248,16 +389,231 @@ jobs:
             console.log('\n=== Cleanup Summary ===');
             if (dryRun) {
               console.log('Mode: DRY RUN (no changes made)');
+              console.log(`Revisions that would be cleaned up: ${wouldCleanupCount}`);
             }
             console.log(`Total PR revisions found: ${prRevisions.length}`);
             console.log(`Revisions cleanup attempted: ${revisionsToCleanup.length}`);
             console.log(`Revisions successfully cleaned up: ${cleanedCount}`);
             console.log(`Revisions failed cleanup: ${cleanupErrors.length}`);
             console.log(`Revisions kept (open PRs): ${prRevisions.length - revisionsToCleanup.length}`);
+            report.status = cleanupErrors.length > 0 ? 'failed' : 'success';
+            updateTotals();
+            writeReport();
 
             if (cleanupErrors.length > 0) {
               const errorSummary = cleanupErrors
                 .map(error => `PR #${error.prNumber}: ${error.message}`)
                 .join('; ');
-              throw new Error(`Failed to cleanup ${cleanupErrors.length} revision(s): ${errorSummary}`);
+              failWithReport(new Error(`Failed to cleanup ${cleanupErrors.length} revision(s): ${errorSummary}`));
             }
+
+      - name: Post cleanup summary
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          CLEANUP_SUMMARY_PATH: ${{ runner.temp }}/preview-backend-cleanup-summary.json
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = process.env.CLEANUP_SUMMARY_PATH;
+
+            if (!reportPath || !fs.existsSync(reportPath)) {
+              await core.summary
+                .addHeading('Backend Preview Cleanup Summary')
+                .addRaw('\nNo cleanup report was written. Check previous step logs for setup or authentication failures.\n')
+                .write();
+              return;
+            }
+
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+            const isDryRun = report.mode === 'dry_run';
+            const referenceTime = Date.parse(report.generatedAt || new Date().toISOString());
+            const totals = report.totals || {};
+            const revisions = report.revisions || [];
+            const escapeCell = (value) => {
+              const text = value === null || value === undefined || value === '' ? 'N/A' : String(value);
+              return text.replace(/\|/g, '\\|').replace(/\r?\n/g, '<br>');
+            };
+            const ageText = (timestamp) => {
+              if (!timestamp) {
+                return 'Unknown';
+              }
+
+              const timestampMs = Date.parse(timestamp);
+              if (!Number.isFinite(timestampMs)) {
+                return 'Unknown';
+              }
+
+              const ageMs = Math.max(0, referenceTime - timestampMs);
+              const days = Math.floor(ageMs / 86_400_000);
+              const hours = Math.floor((ageMs % 86_400_000) / 3_600_000);
+              const minutes = Math.floor((ageMs % 3_600_000) / 60_000);
+
+              if (days > 0) {
+                return `${days}d ${hours}h`;
+              }
+
+              if (hours > 0) {
+                return `${hours}h ${minutes}m`;
+              }
+
+              return `${minutes}m`;
+            };
+            const prCell = (revision) => {
+              if (revision.prUrl) {
+                return `[#${revision.prNumber}](${revision.prUrl})`;
+              }
+
+              return `#${revision.prNumber}`;
+            };
+            const prStateText = (revision) => {
+              if (revision.prLookupStatus === 'not_found') {
+                return 'Not found';
+              }
+
+              if (revision.prLookupStatus === 'error') {
+                return 'Check failed';
+              }
+
+              if (revision.prState === 'closed') {
+                return revision.prMerged ? 'Closed, merged' : 'Closed, not merged';
+              }
+
+              return revision.prState || 'Unknown';
+            };
+            const resultText = (revision) => {
+              if (isDryRun) {
+                if (revision.cleanupResult === 'would_cleanup') {
+                  return 'Would clean up';
+                }
+
+                if (revision.plannedAction === 'keep') {
+                  return 'Would keep';
+                }
+
+                return 'Would skip';
+              }
+
+              if (revision.cleanupResult === 'cleaned') {
+                return 'Cleaned';
+              }
+
+              if (revision.cleanupResult === 'failed') {
+                return 'Failed';
+              }
+
+              if (revision.cleanupResult === 'kept') {
+                return 'Kept';
+              }
+
+              if (revision.cleanupResult === 'skipped') {
+                return 'Skipped';
+              }
+
+              return 'Pending';
+            };
+            const detailsText = (revision) => {
+              const details = [];
+
+              if (revision.cleanupReason) {
+                details.push(revision.cleanupReason);
+              }
+
+              if (revision.prTitle) {
+                details.push(revision.prTitle);
+              }
+
+              if (revision.prMergedAt) {
+                details.push(`PR merged ${ageText(revision.prMergedAt)} ago`);
+              } else if (revision.prClosedAt) {
+                details.push(`PR closed ${ageText(revision.prClosedAt)} ago`);
+              } else if (revision.prUpdatedAt) {
+                details.push(`PR updated ${ageText(revision.prUpdatedAt)} ago`);
+              }
+
+              if (revision.revisionReadyStatus) {
+                details.push(`Revision ready status: ${revision.revisionReadyStatus}`);
+              }
+
+              if (revision.revisionReadyReason) {
+                details.push(`Revision ready reason: ${revision.revisionReadyReason}`);
+              }
+
+              if (isDryRun && revision.cleanupActions?.length > 0) {
+                details.push(`Would: ${revision.cleanupActions.join(', ')}`);
+              }
+
+              if (!isDryRun && revision.cleanupResult === 'cleaned') {
+                const completed = [];
+                if (revision.cloudRunTagRemoved) {
+                  completed.push('removed Cloud Run tag');
+                }
+                if (revision.cloudRunRevisionDeleted) {
+                  completed.push('deleted Cloud Run revision');
+                }
+                if (revision.neonBranchDeleted) {
+                  completed.push('deleted Neon branch');
+                } else if (revision.neonBranchFound === false) {
+                  completed.push('Neon branch not found');
+                }
+                if (completed.length > 0) {
+                  details.push(`Completed: ${completed.join(', ')}`);
+                }
+              }
+
+              if (revision.revisionLookupError) {
+                details.push(`Revision lookup failed: ${revision.revisionLookupError}`);
+              }
+
+              if (revision.cleanupError) {
+                details.push(`Cleanup error: ${revision.cleanupError}`);
+              }
+
+              if (revision.url) {
+                details.push(`[Preview URL](${revision.url})`);
+              }
+
+              return details.join('<br>') || 'N/A';
+            };
+
+            const summary = [
+              '# Backend Preview Cleanup Summary',
+              '',
+              `Mode: ${isDryRun ? 'Dry run (no changes made)' : 'Actual run'}`,
+              `Result: ${report.status || 'unknown'}`,
+              `Generated: ${report.generatedAt || 'N/A'}`,
+              '',
+              `Total PR-tagged previews found: ${totals.found ?? 0}`,
+              `Marked for cleanup: ${totals.markedForCleanup ?? 0}`,
+              isDryRun ? `Would clean up: ${totals.wouldCleanup ?? 0}` : `Cleanup attempted: ${totals.cleanupAttempted ?? 0}`,
+              `Successfully cleaned up: ${totals.cleaned ?? 0}`,
+              `Failed cleanup: ${totals.failed ?? 0}`,
+              `Kept because PR is open: ${totals.kept ?? 0}`,
+              `PR check errors: ${totals.prCheckErrors ?? 0}`,
+            ];
+
+            if (report.error) {
+              summary.push('', `Error: ${report.error}`);
+            }
+
+            if (revisions.length === 0) {
+              summary.push('', report.status === 'failed' ? 'No revision details were available.' : 'No PR-tagged previews were found.');
+            } else {
+              summary.push(
+                '',
+                `| ${isDryRun ? 'Planned action' : 'Result'} | PR | PR state | PR age | Preview age | Tag | Revision | Details |`,
+                '|---|---|---|---|---|---|---|---|',
+                ...revisions.map(revision => [
+                  resultText(revision),
+                  prCell(revision),
+                  prStateText(revision),
+                  ageText(revision.prCreatedAt),
+                  ageText(revision.revisionCreatedAt),
+                  revision.tag,
+                  revision.revisionName,
+                  detailsText(revision)
+                ].map(escapeCell).join(' | ')).map(row => `| ${row} |`)
+              );
+            }
+
+            await core.summary.addRaw(`${summary.join('\n')}\n`).write();
