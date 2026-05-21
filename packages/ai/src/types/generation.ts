@@ -474,7 +474,7 @@ export interface MarketingGenerationInput extends BaseWorkflowStorageInput {
   domain: NamefiNormalizedDomain;
   model: ImageModel;
   description?: string;
-  referenceLogoUrl?: string;
+  referenceLogoUrl: string;
   collateralType?: MarketingCollateralTypeInput;
 }
 

@@ -34,6 +34,7 @@ import type {
   MarketingCollateralTypeInput,
 } from '@namefi-astra/ai/types';
 import { MARKETING_COLLATERAL_TYPE_INPUT_IDS } from '@namefi-astra/ai/types';
+import { useAuth } from '@/hooks/use-auth';
 
 export const collateralLabels: Record<MarketingCollateralTypeInput, string> = {
   billboard: 'Billboard',
@@ -86,6 +87,7 @@ export function PosterGenerator({
   const [selectedDomain, setSelectedDomain] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const trpc = useTRPC();
+  const { isAuthenticated } = useAuth();
   const formRef = useRef<UseFormReturn<
     PosterFormInput,
     unknown,
@@ -106,7 +108,7 @@ export function PosterGenerator({
       domain: selectedDomain as NamefiNormalizedDomain,
       type: 'logo',
     }),
-    enabled: !!selectedDomain,
+    enabled: isAuthenticated && !!selectedDomain,
     staleTime: 10_000,
   });
 

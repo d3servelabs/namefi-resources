@@ -4,6 +4,12 @@ import { AuthRequired } from '@/components/auth-required';
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
 import { PageShell } from '@/components/page-shell';
 import { useAuth } from '@/hooks/use-auth';
+import {
+  getCurrentReturnPath,
+  usePostAuthIntentExecutor,
+  useRequirePostAuthIntent,
+  type PostAuthIntentFor,
+} from '@/hooks/use-post-auth-intent';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import {
   getLeadgenOutreachCreditEstimate,
@@ -53,7 +59,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import {
   buildLeadgenCrmCsv,
@@ -118,9 +124,11 @@ const leadgenStatusLabels = {
 const negativeTimelineMessageRe =
   /\b(?:no|not|failed|failure|error|without|couldn['\u2019]?t|could not|didn['\u2019]?t|did not|unable|invalid|canceled|cancelled)\b/i;
 const skeletonRows = ['first', 'second', 'third'];
+const recentRunsQueryInput = { limit: 12 };
 
 export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const requirePostAuthIntent = useRequirePostAuthIntent();
   const trpc = useTRPC();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -138,7 +146,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   }, [initialRunId]);
 
   const runsQuery = useQuery({
-    ...trpc.leadgen.listRuns.queryOptions({ limit: 12 }),
+    ...trpc.leadgen.listRuns.queryOptions(recentRunsQueryInput),
     enabled: isAuthenticated,
   });
   const userDomainsQuery = useQuery({
@@ -156,13 +164,37 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     enabled: isAuthenticated && Boolean(activeRunId),
   });
 
+  const syncRunSnapshot = useCallback(
+    (snapshot: LeadgenSnapshot) => {
+      setLiveRun(snapshot);
+      queryClient.setQueryData(
+        trpc.leadgen.getRun.queryKey({ runId: snapshot.id }),
+        snapshot,
+      );
+      queryClient.setQueryData(
+        trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
+        (runs: LeadgenRunSummary[] | undefined) =>
+          upsertLeadgenRunSummary(runs, snapshot),
+      );
+    },
+    [queryClient, trpc],
+  );
+
   useEffect(() => {
     if (activeRunQuery.data) {
-      setLiveRun(activeRunQuery.data);
+      syncRunSnapshot(activeRunQuery.data);
       setDomain(activeRunQuery.data.domain);
       setReasoningEffort(activeRunQuery.data.reasoningEffort);
     }
-  }, [activeRunQuery.data]);
+  }, [activeRunQuery.data, syncRunSnapshot]);
+
+  useEffect(() => {
+    if (isAuthLoading || isAuthenticated) return;
+    setLiveRun(null);
+    if (!initialRunId) {
+      setActiveRunId(null);
+    }
+  }, [initialRunId, isAuthLoading, isAuthenticated]);
 
   useSubscription({
     ...trpc.leadgen.watchRun.subscriptionOptions(
@@ -170,10 +202,10 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       {
         enabled: isAuthenticated && Boolean(activeRunId),
         onData(snapshot) {
-          setLiveRun(snapshot);
+          syncRunSnapshot(snapshot);
           if (isTerminalLeadgenStatus(snapshot.status)) {
             void queryClient.invalidateQueries({
-              queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
+              queryKey: trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
             });
           }
         },
@@ -185,10 +217,10 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     trpc.leadgen.startRun.mutationOptions({
       onSuccess(snapshot) {
         setActiveRunId(snapshot.id);
-        setLiveRun(snapshot);
+        syncRunSnapshot(snapshot);
         router.push(getLeadgenRunHref(snapshot.id));
         void queryClient.invalidateQueries({
-          queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
+          queryKey: trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
         });
         void queryClient.invalidateQueries({
           queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
@@ -201,47 +233,78 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       },
     }),
   );
+  const postAuthHandlers = useMemo(
+    () => ({
+      'leadgen.run.start': async (
+        intent: PostAuthIntentFor<'leadgen.run.start'>,
+      ) => {
+        setDomain(intent.payload.domain);
+        setReasoningEffort(intent.payload.reasoningEffort);
+        await startRun.mutateAsync(intent.payload);
+      },
+    }),
+    [startRun],
+  );
+
+  usePostAuthIntentExecutor(postAuthHandlers);
+
   const startSuggestions = useMemo(
     () =>
       getStartSuggestions({
-        domains: userDomainsQuery.data ?? [],
-        runs: runsQuery.data ?? [],
+        domains: isAuthenticated ? (userDomainsQuery.data ?? []) : [],
+        runs: isAuthenticated ? (runsQuery.data ?? []) : [],
       }),
-    [userDomainsQuery.data, runsQuery.data],
+    [isAuthenticated, userDomainsQuery.data, runsQuery.data],
   );
   const isStartSuggestionsLoading =
-    userDomainsQuery.isLoading || runsQuery.isLoading;
+    isAuthenticated && (userDomainsQuery.isLoading || runsQuery.isLoading);
 
   if (isAuthLoading) {
     return <LeadgenSkeleton />;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && initialRunId) {
     return <AuthRequired />;
   }
 
-  const run = liveRun ?? activeRunQuery.data ?? null;
+  const run = isAuthenticated ? (liveRun ?? activeRunQuery.data ?? null) : null;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
+  const usageData = isAuthenticated ? usageQuery.data : undefined;
   const estimatedRunCredits = getEstimatedRunCredits({
-    usage: usageQuery.data,
+    usage: usageData,
     reasoningEffort,
   });
   const { canSubmit } = getLeadgenSubmitState({
     domain,
     estimatedRunCredits,
-    isCreditLoading: usageQuery.isLoading,
+    isCreditLoading: isAuthenticated && usageQuery.isLoading,
     isSubmitting: startRun.isPending,
-    usage: usageQuery.data,
+    usage: usageData,
   });
 
   const handleSubmit = () => {
-    submitLeadgenRun({
-      domain,
-      reasoningEffort,
-      setDomain,
-      startRun: startRun.mutate,
-    });
+    const normalized = normalizeDomainInput(domain);
+    if (!isLikelyDomain(normalized)) {
+      toast.error('Enter a domain', {
+        description: 'Use a domain you own or represent, like example.com.',
+      });
+      return;
+    }
+
+    setDomain(normalized);
+    const payload = { domain: normalized, reasoningEffort };
+    if (
+      !requirePostAuthIntent({
+        kind: 'leadgen.run.start',
+        returnPath: getCurrentReturnPath(),
+        payload,
+      })
+    ) {
+      return;
+    }
+
+    startRun.mutate(payload);
   };
 
   const handleSelectStartSuggestion = (suggestion: LeadgenStartSuggestion) => {
@@ -339,24 +402,26 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
               </Button>
 
               <LeadgenCreditEstimate
-                isLoading={usageQuery.isLoading}
-                isError={usageQuery.isError}
+                isLoading={isAuthenticated && usageQuery.isLoading}
+                isError={isAuthenticated && usageQuery.isError}
                 requestedCredits={estimatedRunCredits}
-                remainingCredits={usageQuery.data?.remainingCredits}
+                remainingCredits={usageData?.remainingCredits}
                 noun="buyer search"
               />
             </div>
           </section>
 
-          <GenerationUsage />
+          {isAuthenticated && <GenerationUsage />}
 
-          <PastRuns
-            runs={runsQuery.data ?? []}
-            activeRunId={activeRunId}
-            isLoading={runsQuery.isLoading}
-            exportingRunId={exportingRunId}
-            onExportRun={exportRunCsv}
-          />
+          {isAuthenticated && (
+            <PastRuns
+              runs={runsQuery.data ?? []}
+              activeRunId={activeRunId}
+              isLoading={runsQuery.isLoading}
+              exportingRunId={exportingRunId}
+              onExportRun={exportRunCsv}
+            />
+          )}
         </aside>
 
         <main className="min-w-0 overflow-hidden rounded-lg border border-border/70 bg-card/60 shadow-sm backdrop-blur">
@@ -367,7 +432,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
             startSuggestions={startSuggestions}
             isStartSuggestionsLoading={isStartSuggestionsLoading}
             onSelectStartSuggestion={handleSelectStartSuggestion}
-            onRunUpdated={setLiveRun}
+            onRunUpdated={syncRunSnapshot}
           />
         </main>
       </div>
@@ -476,12 +541,8 @@ function RunWorkspace({
     trpc.leadgen.generateLeadOutreach.mutationOptions({
       onSuccess(snapshot, variables) {
         onRunUpdated(snapshot);
-        queryClient.setQueryData(
-          trpc.leadgen.getRun.queryKey({ runId: snapshot.id }),
-          snapshot,
-        );
         void queryClient.invalidateQueries({
-          queryKey: trpc.leadgen.listRuns.queryKey({ limit: 12 }),
+          queryKey: trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
         });
         void queryClient.invalidateQueries({
           queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
@@ -1401,6 +1462,39 @@ function PastRuns({
   );
 }
 
+function upsertLeadgenRunSummary(
+  runs: LeadgenRunSummary[] | undefined,
+  snapshot: LeadgenSnapshot,
+): LeadgenRunSummary[] {
+  const summary = toLeadgenRunSummary(snapshot);
+  const currentRuns = runs ?? [];
+  return [
+    summary,
+    ...currentRuns.filter((run) => run.id !== snapshot.id),
+  ].slice(0, recentRunsQueryInput.limit);
+}
+
+function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
+  return {
+    id: snapshot.id,
+    userId: snapshot.userId,
+    domain: snapshot.domain,
+    status: snapshot.status,
+    reasoningEffort: snapshot.reasoningEffort,
+    workflowId: snapshot.workflowId,
+    startedAt: snapshot.startedAt,
+    finishedAt: snapshot.finishedAt,
+    errorMessage: snapshot.errorMessage,
+    summary: snapshot.summary,
+    leadCount: snapshot.leadCount,
+    contactCount: snapshot.contactCount,
+    draftCount: snapshot.draftCount,
+    tokenUsage: snapshot.tokenUsage,
+    createdAt: snapshot.createdAt,
+    updatedAt: snapshot.updatedAt,
+  };
+}
+
 function getStartSuggestions({
   domains,
   runs,
@@ -1483,7 +1577,7 @@ function EmptyWorkspace({
   const hasSuggestions = suggestions.length > 0;
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center p-5">
+    <div className="flex h-full min-h-[calc(100vh-8rem)] items-center justify-center overflow-y-auto p-5 py-8">
       <div className="w-full max-w-3xl">
         <div className="mb-5 flex justify-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/55 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
@@ -1505,7 +1599,7 @@ function EmptyWorkspace({
           </p>
         </div>
 
-        <div className="mt-7 grid items-stretch gap-3 lg:grid-cols-3">
+        <div className="mt-7 grid items-stretch gap-3 md:grid-cols-3">
           {isLoading
             ? skeletonRows.map((row) => (
                 <div
@@ -1539,7 +1633,7 @@ function EmptyWorkspace({
                         <p className="text-sm font-medium leading-5">
                           {prompt.title}
                         </p>
-                        <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                        <p className="mt-1 text-xs leading-5 text-muted-foreground">
                           {prompt.description}
                         </p>
                       </div>
@@ -1553,7 +1647,7 @@ function EmptyWorkspace({
 }
 
 const emptyStateCardClassName =
-  'flex min-h-24 items-center gap-4 rounded-lg border border-border/70 bg-background/55 p-4 shadow-sm';
+  'flex h-full min-h-28 items-start gap-4 rounded-lg border border-border/70 bg-background/55 p-4 shadow-sm';
 
 const fallbackEmptyPrompts: Array<{
   title: string;
@@ -1595,7 +1689,7 @@ function LeadgenStartSuggestionButton({
       onClick={() => onSelect(suggestion)}
       className={cn(
         emptyStateCardClassName,
-        'group w-full text-left transition-colors hover:border-cyan-300/45 hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/50',
+        'group w-full items-center text-left transition-colors hover:border-cyan-300/45 hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/50',
       )}
     >
       <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-cyan-500/10 text-cyan-300 transition-colors group-hover:bg-cyan-500/15">
@@ -2942,32 +3036,6 @@ function getLeadgenSubmitState({
       !isCreditLoading &&
       !hasInsufficientRunCredits,
   };
-}
-
-function submitLeadgenRun({
-  domain,
-  reasoningEffort,
-  setDomain,
-  startRun,
-}: {
-  domain: string;
-  reasoningEffort: ReasoningEffort;
-  setDomain: (domain: string) => void;
-  startRun: (input: {
-    domain: string;
-    reasoningEffort: ReasoningEffort;
-  }) => void;
-}) {
-  const normalized = normalizeDomainInput(domain);
-  if (!isLikelyDomain(normalized)) {
-    toast.error('Enter a domain', {
-      description: 'Use a domain you own or represent, like example.com.',
-    });
-    return;
-  }
-
-  setDomain(normalized);
-  startRun({ domain: normalized, reasoningEffort });
 }
 
 function isLikelyDomain(value: string) {

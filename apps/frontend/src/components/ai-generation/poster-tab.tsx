@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PosterGenerator, type PosterFormData } from './poster-generator';
@@ -13,6 +13,8 @@ import {
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './shared/types';
 import type { DerivativeSource } from './derivative-flow-context';
+import { useRequirePostAuthIntent } from '@/hooks/use-post-auth-intent';
+import { useDerivativeGenerationState } from './shared/use-derivative-generation-state';
 
 interface PosterTabProps {
   existingGenerations?: Generation[];
@@ -29,45 +31,31 @@ export function PosterTab({
   focusedLogo,
   onDismiss,
 }: PosterTabProps) {
-  const [domainOverride, setDomainOverride] = useState<
-    NamefiNormalizedDomain | undefined
-  >(brandDomain ?? (focusedLogo?.domain as NamefiNormalizedDomain | undefined));
-  const [focusedLogoId, setFocusedLogoId] = useState<string | null>(
-    focusedLogo?.id ?? null,
-  );
-  const lastGenerationParams = useRef<PosterFormData | null>(null);
-  const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
-    null,
-  );
-
-  const effectiveDomain = domainOverride;
-
-  useEffect(() => {
-    const nextDomain = brandDomain ?? focusedLogo?.domain;
-    if (nextDomain && nextDomain !== domainOverride) {
-      setDomainOverride(nextDomain as NamefiNormalizedDomain);
-    }
-  }, [brandDomain, focusedLogo?.domain, domainOverride]);
-
-  useEffect(() => {
-    if (focusedLogo?.id) {
-      setFocusedLogoId(focusedLogo.id);
-    }
-  }, [focusedLogo?.id]);
-
-  const logosWithFocus = useMemo(() => {
-    if (!focusedLogo) return logoGenerations;
-    const alreadyIncludes = logoGenerations.some(
-      (g) => g.id === focusedLogo.id,
-    );
-    if (alreadyIncludes) return logoGenerations;
-    return [...logoGenerations, focusedLogo as Generation];
-  }, [logoGenerations, focusedLogo]);
+  const {
+    effectiveDomain,
+    focusedLogoId,
+    lastGenerationParams,
+    latestGeneration,
+    logosWithFocus,
+    setLatestGeneration,
+  } = useDerivativeGenerationState<PosterFormData>({
+    brandDomain,
+    focusedLogo,
+    logoGenerations,
+  });
 
   const generatePosterMutation = usePosterGeneration({
     domain: effectiveDomain,
     availableLogos: logosWithFocus,
   });
+  const requirePostAuthIntent = useRequirePostAuthIntent();
+
+  const handlePosterSuccess = useCallback(
+    (result: Generation) => {
+      setLatestGeneration(result);
+    },
+    [setLatestGeneration],
+  );
 
   const handleGeneratePosters = (data: PosterFormData) => {
     lastGenerationParams.current = data;
@@ -75,10 +63,18 @@ export function PosterTab({
     setLatestGeneration(null);
 
     const payload = createPosterGenerationPayload(data);
+    if (
+      !requirePostAuthIntent({
+        kind: 'ai.poster.generate',
+        returnPath: `/studio?poster=${encodeURIComponent(data.selectedLogoId)}`,
+        payload,
+      })
+    ) {
+      return;
+    }
+
     generatePosterMutation.mutate(payload, {
-      onSuccess: (result) => {
-        setLatestGeneration(result);
-      },
+      onSuccess: handlePosterSuccess,
     });
   };
 

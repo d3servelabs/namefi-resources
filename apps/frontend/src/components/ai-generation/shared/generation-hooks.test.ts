@@ -2,9 +2,33 @@ import { describe, expect, it } from 'vitest';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 
 import type { AnimationFormData } from '../animation-generator';
-import { createAnimationGenerationPayload } from './generation-hooks';
+import type { PosterFormData } from '../poster-generator';
+import {
+  createAnimationGenerationPayload,
+  createPosterGenerationPayload,
+} from './generation-hooks';
 
 const atlasDomain = namefiNormalizedDomainSchema.parse('atlas.com');
+
+describe('createPosterGenerationPayload', () => {
+  it('always includes the selected logo generation id', () => {
+    const payload = createPosterGenerationPayload({
+      domain: atlasDomain,
+      description: 'Product launch',
+      selectedLogoId: '55555555-5555-4555-8555-555555555555',
+      collateralType: 'product',
+      model: 'gpt-image-2',
+    } satisfies PosterFormData);
+
+    expect(payload).toEqual({
+      domain: 'atlas.com',
+      description: 'Product launch',
+      referenceLogoGenerationId: '55555555-5555-4555-8555-555555555555',
+      collateralType: 'product',
+      model: 'gpt-image-2',
+    });
+  });
+});
 
 describe('createAnimationGenerationPayload', () => {
   it('returns a cinematic payload with cinematic-only fields', () => {

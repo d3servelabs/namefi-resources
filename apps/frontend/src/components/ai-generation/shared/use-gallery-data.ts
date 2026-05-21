@@ -65,6 +65,7 @@ interface UseGenerationsGalleryOptions {
   pendingItems: PendingGalleryItem[];
   getPendingProgress: (pendingId: string, startedAt?: number) => number;
   activeTab: 'yours' | 'featured';
+  isAuthenticated: boolean;
 }
 
 export const useGenerationsGalleryData = ({
@@ -73,6 +74,7 @@ export const useGenerationsGalleryData = ({
   pendingItems,
   getPendingProgress,
   activeTab,
+  isAuthenticated,
 }: UseGenerationsGalleryOptions) => {
   const trpc = useTRPC();
 
@@ -91,7 +93,7 @@ export const useGenerationsGalleryData = ({
         limit: 120,
       },
       {
-        enabled: activeTab === 'yours',
+        enabled: isAuthenticated && activeTab === 'yours',
         staleTime: 10_000,
         placeholderData: (previousData) => previousData,
         refetchInterval: (query) => {
@@ -122,6 +124,7 @@ export const useGenerationsGalleryData = ({
 
   const shouldFetchReferenceLogos =
     activeTab === 'yours' &&
+    isAuthenticated &&
     (filters.type === 'animation' ||
       filteredGenerations.some(
         (generation) =>
@@ -317,10 +320,11 @@ export const useGenerationsGalleryData = ({
   const hasPendingGenerations = pendingItems.length > 0;
   const hasUserGenerations = filteredGenerations.length > 0;
   const shouldShowYoursTab =
-    hasUserGenerations ||
-    hasPendingGenerations ||
-    filteredQuery.isLoading ||
-    filteredQuery.isFetching;
+    isAuthenticated &&
+    (hasUserGenerations ||
+      hasPendingGenerations ||
+      filteredQuery.isLoading ||
+      filteredQuery.isFetching);
 
   return {
     filteredQuery,

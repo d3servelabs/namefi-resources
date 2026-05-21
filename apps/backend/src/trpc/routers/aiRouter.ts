@@ -27,7 +27,6 @@ import {
   LOGO_TYPOGRAPHY_INPUT_IDS,
   LOOPED_ANIMATION_MODEL_IDS,
   LOOPED_ANIMATION_MOTION_PRESET_IDS,
-  MARKETING_COLLATERAL_TYPE_INPUT_IDS,
   getLeadgenPrimaryResearchModel,
   runLogoWorkflow,
   runMarketingWorkflow,
@@ -44,6 +43,7 @@ import { z } from 'zod';
 import { aiContract } from '@namefi-astra/common/contract/ai-contract';
 import { protectedProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
+import { resolveOwnedLogoReference } from './ai-generation-references';
 
 const logger = createLogger({ module: 'ai-router' });
 
@@ -699,24 +699,6 @@ export async function getAnimationStartStateAfterError(
   return 'unknown';
 }
 
-async function findOwnedLogoGeneration(params: {
-  generationId: string;
-  userId: string;
-}) {
-  return await db
-    .select()
-    .from(aiGenerationsTable)
-    .where(
-      and(
-        eq(aiGenerationsTable.userId, params.userId),
-        eq(aiGenerationsTable.id, params.generationId),
-        eq(aiGenerationsTable.type, 'logo'),
-        eq(aiGenerationsTable.isDeleted, false),
-      ),
-    )
-    .then((rows) => rows[0]);
-}
-
 const generateLogoInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
@@ -727,19 +709,9 @@ const generateLogoInputSchema = z.object({
   model: z.enum(imageModelIds).default('gpt-image-2'),
 });
 
-const generateMarketingImageInputSchema = z.object({
-  domain: namefiNormalizedDomainSchema,
-  description: z.string().optional(),
-  referenceLogoGenerationId: z.string().optional(),
-  collateralType: z
-    .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
-    .default('let_ai_choose'),
-  model: z.enum(imageModelIds).default('gpt-image-2'),
-});
-
 const generateAnimationCommonInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
-  referenceLogoGenerationId: z.string(),
+  referenceLogoGenerationId: z.string().min(1),
   description: z.string().optional(),
 });
 
@@ -891,14 +863,6 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .output(aiContract.generatePoster.output)
     .mutation(async ({ input, ctx }) => {
       try {
-        await assertUserCanSpendGenerationCredits({
-          requestedCredits: getAiGenerationCreditCost({
-            type: 'marketing',
-            model: input.model,
-          }),
-          userId: ctx.user.id,
-        });
-
         const now = new Date();
         const {
           domain,
@@ -908,20 +872,22 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
           collateralType,
         } = input;
 
-        let referenceLogoPublicUrl: string | undefined;
-        if (referenceLogoGenerationId) {
-          const referenceLogoGeneration = await findOwnedLogoGeneration({
-            generationId: referenceLogoGenerationId,
-            userId: ctx.user.id,
-          });
+        const {
+          referenceLogoGeneration: verifiedReferenceLogoGeneration,
+          referenceLogoPublicUrl,
+        } = await resolveOwnedLogoReference({
+          domain,
+          generationId: referenceLogoGenerationId,
+          userId: ctx.user.id,
+        });
 
-          if (referenceLogoGeneration?.output.type === 'logo') {
-            referenceLogoPublicUrl = generateUrlFromStoragePath(
-              referenceLogoGeneration.output.storagePath,
-              config.CLOUD_FRONT_DOMAIN,
-            );
-          }
-        }
+        await assertUserCanSpendGenerationCredits({
+          requestedCredits: getAiGenerationCreditCost({
+            type: 'marketing',
+            model,
+          }),
+          userId: ctx.user.id,
+        });
 
         const marketingResult = await runMarketingWorkflow({
           domain,
@@ -968,7 +934,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
               imageModel: marketingResult.image.model,
             },
             tokenUsage: aggregateTokenUsage,
-            referenceGenerationId: referenceLogoGenerationId,
+            referenceGenerationId: verifiedReferenceLogoGeneration.id,
           })
           .returning();
 
@@ -991,6 +957,12 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .input(aiContract.generateAnimation.input)
     .output(aiContract.generateAnimation.output)
     .mutation(async ({ input, ctx }) => {
+      const { referenceLogoGeneration } = await resolveOwnedLogoReference({
+        domain: input.domain,
+        generationId: input.referenceLogoGenerationId,
+        userId: ctx.user.id,
+      });
+
       await assertUserCanSpendGenerationCredits({
         requestedCredits: getAiGenerationCreditCost({
           type: 'animation',
@@ -999,28 +971,6 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
         }),
         userId: ctx.user.id,
       });
-
-      const referenceLogoGeneration = await findOwnedLogoGeneration({
-        generationId: input.referenceLogoGenerationId,
-        userId: ctx.user.id,
-      });
-
-      if (
-        !referenceLogoGeneration ||
-        referenceLogoGeneration.output.type !== 'logo'
-      ) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Reference logo generation not found',
-        });
-      }
-
-      if (referenceLogoGeneration.domain !== input.domain) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Reference logo must match the requested domain',
-        });
-      }
 
       const animationGenerationInput =
         input.mode === 'cinematic'

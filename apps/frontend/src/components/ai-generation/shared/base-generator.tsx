@@ -25,6 +25,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor'
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './types';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/use-auth';
 
 const domainInputSchema = z
   .string()
@@ -111,6 +112,7 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
   type FormInput = BaseGeneratorInput<TSchema>;
   type FormOutput = BaseGeneratorOutput<TSchema>;
   const [openPanel, setOpenPanel] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   const trpc = useTRPC();
   const {
@@ -119,6 +121,7 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
     isError: isUsageError,
   } = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
+    enabled: isAuthenticated,
   });
 
   const usageErrorNotifiedRef = useRef(false);
@@ -137,6 +140,11 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
   const watchedValues = useWatch({ control: form.control });
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      usageErrorNotifiedRef.current = false;
+      return;
+    }
+
     if (isUsageError && !usageErrorNotifiedRef.current) {
       usageErrorNotifiedRef.current = true;
       toast.error('Unable to check AI credit balance', {
@@ -144,7 +152,7 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
           'We could not verify your remaining credits, but you can still try generating assets.',
       });
     }
-  }, [isUsageError]);
+  }, [isAuthenticated, isUsageError]);
 
   useEffect(() => {
     if (onFormReady) onFormReady(form);
@@ -168,12 +176,15 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
     }
   }, [onDomainChange, domainToUse]);
 
+  const effectiveUsageData = isAuthenticated ? usageData : undefined;
+  const effectiveUsageError = isAuthenticated && isUsageError;
+
   // Check if user has reached the monthly limit
-  const isLimitReached = usageData?.hasReachedLimit ?? false;
+  const isLimitReached = effectiveUsageData?.hasReachedLimit ?? false;
   const estimatedCreditCost =
-    usageData && creditCostConfig
+    effectiveUsageData && creditCostConfig
       ? getAiGenerationCreditCost({
-          creditCosts: usageData.creditCosts,
+          creditCosts: effectiveUsageData.creditCosts,
           type: creditCostConfig.type,
           mode: creditCostConfig.getMode?.(watchedValues as Partial<FormInput>),
           model: creditCostConfig.getModel?.(
@@ -182,15 +193,15 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
         })
       : undefined;
   const isInsufficientCredits =
-    usageData && estimatedCreditCost !== undefined
-      ? estimatedCreditCost > usageData.remainingCredits
+    effectiveUsageData && estimatedCreditCost !== undefined
+      ? estimatedCreditCost > effectiveUsageData.remainingCredits
       : false;
   const isDisabled =
     !form.formState.isValid ||
     disabled ||
     isLimitReached ||
     isInsufficientCredits ||
-    isUsageLoading;
+    (isAuthenticated && isUsageLoading);
 
   return (
     <Form {...form}>
@@ -226,10 +237,10 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
         </Card>
 
         <GenerationCreditCostPreview
-          isLoading={isUsageLoading}
-          isError={isUsageError}
+          isLoading={isAuthenticated && isUsageLoading}
+          isError={effectiveUsageError}
           requestedCredits={estimatedCreditCost}
-          remainingCredits={usageData?.remainingCredits}
+          remainingCredits={effectiveUsageData?.remainingCredits}
         />
 
         {/* Submit Button */}

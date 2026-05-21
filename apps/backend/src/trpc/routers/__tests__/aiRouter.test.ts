@@ -10,6 +10,10 @@ const mockLogger = {
 
 const describeMock = vi.fn();
 const startMock = vi.fn();
+const generateUrlFromStoragePathMock = vi.fn(
+  (storagePath: string, cloudfrontDomain: string) =>
+    `https://${cloudfrontDomain}/${storagePath}`,
+);
 
 const procedureBuilder = {
   input: vi.fn(() => procedureBuilder),
@@ -131,7 +135,7 @@ vi.mock('@namefi-astra/ai', () => ({
 
 vi.mock('@namefi-astra/storage', () => ({
   createS3Client: vi.fn(() => ({})),
-  generateUrlFromStoragePath: vi.fn(),
+  generateUrlFromStoragePath: generateUrlFromStoragePathMock,
 }));
 
 vi.mock('../../base', () => ({
@@ -147,6 +151,20 @@ const {
   getAnimationStartStateAfterError,
   startLogoAnimationWorkflowWithRecovery,
 } = await import('../aiRouter');
+const { resolveLogoReferenceDetails } = await import(
+  '../ai-generation-references'
+);
+
+function expectTRPCErrorCode(action: () => unknown, code: string) {
+  try {
+    action();
+  } catch (error) {
+    expect(error).toMatchObject({ code });
+    return;
+  }
+
+  throw new Error(`Expected TRPC error code ${code}`);
+}
 
 describe('getAnimationStartStateAfterError', () => {
   beforeEach(() => {
@@ -262,6 +280,17 @@ describe('startLogoAnimationWorkflowWithRecovery', () => {
 });
 
 describe('generateAnimationInputSchema', () => {
+  it('requires a non-empty reference logo generation id', () => {
+    expect(() =>
+      generateAnimationInputSchema.parse({
+        mode: 'looped',
+        domain: 'example.com',
+        referenceLogoGenerationId: '',
+        model: 'bytedance/seedance-2.0',
+      }),
+    ).toThrow();
+  });
+
   it('accepts cinematic animation inputs', () => {
     expect(
       generateAnimationInputSchema.parse({
@@ -348,6 +377,73 @@ describe('generateAnimationInputSchema', () => {
         model: 'bytedance/seedance-2.0',
       }),
     ).toThrow();
+  });
+});
+
+describe('resolveLogoReferenceDetails', () => {
+  beforeEach(() => {
+    generateUrlFromStoragePathMock.mockClear();
+  });
+
+  it('rejects a missing or non-owned reference logo', () => {
+    expectTRPCErrorCode(
+      () =>
+        resolveLogoReferenceDetails({
+          domain: 'example.com',
+          referenceLogoGeneration: undefined,
+        }),
+      'NOT_FOUND',
+    );
+  });
+
+  it('rejects a reference that is not a logo output', () => {
+    expectTRPCErrorCode(
+      () =>
+        resolveLogoReferenceDetails({
+          domain: 'example.com',
+          referenceLogoGeneration: {
+            id: 'generation-1',
+            domain: 'example.com',
+            output: { type: 'marketing', storagePath: 'posters/poster.png' },
+          } as any,
+        }),
+      'NOT_FOUND',
+    );
+  });
+
+  it('rejects a reference logo for a different domain', () => {
+    expectTRPCErrorCode(
+      () =>
+        resolveLogoReferenceDetails({
+          domain: 'example.com',
+          referenceLogoGeneration: {
+            id: 'logo-1',
+            domain: 'other.com',
+            output: { type: 'logo', storagePath: 'logos/logo.png' },
+          } as any,
+        }),
+      'BAD_REQUEST',
+    );
+  });
+
+  it('returns a concrete public URL for a valid owned logo reference', () => {
+    const result = resolveLogoReferenceDetails({
+      domain: 'example.com',
+      referenceLogoGeneration: {
+        id: 'logo-1',
+        domain: 'example.com',
+        output: { type: 'logo', storagePath: 'logos/logo.png' },
+      } as any,
+    });
+
+    expect(generateUrlFromStoragePathMock).toHaveBeenCalledWith(
+      'logos/logo.png',
+      'cdn.test',
+    );
+    expect(result.referenceLogoPublicUrl).toBe(
+      'https://cdn.test/logos/logo.png',
+    );
+    expect(result.referenceLogoGeneration.id).toBe('logo-1');
   });
 });
 

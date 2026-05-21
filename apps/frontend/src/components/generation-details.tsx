@@ -515,6 +515,11 @@ export function GenerationDetailsClient({
     ? formatGenerationCreatedAt(generation.createdAt)
     : null;
   const visibleCreatedAtDisplay = localCreatedAtDisplay ?? createdAtDisplay;
+  const canDelete =
+    isAuthenticated &&
+    !!user?.id &&
+    !!generation?.userId &&
+    user.id === generation.userId;
 
   const handleCopyLink = useCallback(async () => {
     try {
@@ -534,17 +539,27 @@ export function GenerationDetailsClient({
     if (generation?.type !== 'logo') return;
     if (!generation?.id || !generation?.domain) return;
     const params = new URLSearchParams();
-    params.set('poster', generation.id);
+    if (canDelete) {
+      params.set('poster', generation.id);
+    } else {
+      params.set('next', 'poster');
+      params.set('domain', generation.domain);
+    }
     router.push(`/studio?${params.toString()}`);
-  }, [generation?.domain, generation?.id, generation?.type, router]);
+  }, [canDelete, generation?.domain, generation?.id, generation?.type, router]);
 
   const handleCreateAnimation = useCallback(() => {
     if (generation?.type !== 'logo') return;
-    if (!generation?.id) return;
+    if (!generation?.id || !generation?.domain) return;
     const params = new URLSearchParams();
-    params.set('animation', generation.id);
+    if (canDelete) {
+      params.set('animation', generation.id);
+    } else {
+      params.set('next', 'animation');
+      params.set('domain', generation.domain);
+    }
     router.push(`/studio?${params.toString()}`);
-  }, [generation?.id, generation?.type, router]);
+  }, [canDelete, generation?.domain, generation?.id, generation?.type, router]);
 
   // Create brand name from domain
   const brandName = domain
@@ -556,12 +571,6 @@ export function GenerationDetailsClient({
     ? (generation.domain as NamefiNormalizedDomain)
     : null;
   const shareSubject = getGenerationShareSubject(generation?.type);
-
-  const canDelete =
-    isAuthenticated &&
-    !!user?.id &&
-    !!generation?.userId &&
-    user.id === generation.userId;
 
   useEffect(() => {
     if (generation?.status !== 'FAILED' || !generation.errorMessage) return;

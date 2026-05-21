@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -16,6 +16,8 @@ import {
 } from './shared/generation-hooks';
 import type { DerivativeSource } from './derivative-flow-context';
 import type { Generation } from './shared/types';
+import { useRequirePostAuthIntent } from '@/hooks/use-post-auth-intent';
+import { useDerivativeGenerationState } from './shared/use-derivative-generation-state';
 
 interface AnimationTabProps {
   existingGenerations?: Generation[];
@@ -32,55 +34,51 @@ export function AnimationTab({
   focusedLogo,
   onDismiss,
 }: AnimationTabProps) {
-  const [domainOverride, setDomainOverride] = useState<
-    NamefiNormalizedDomain | undefined
-  >(brandDomain ?? (focusedLogo?.domain as NamefiNormalizedDomain | undefined));
-  const [focusedLogoId, setFocusedLogoId] = useState<string | null>(
-    focusedLogo?.id ?? null,
-  );
-  const lastGenerationParams = useRef<AnimationFormData | null>(null);
-  const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
-    null,
-  );
-
-  const effectiveDomain = domainOverride;
-
-  useEffect(() => {
-    const nextDomain = brandDomain ?? focusedLogo?.domain;
-    if (nextDomain && nextDomain !== domainOverride) {
-      setDomainOverride(nextDomain as NamefiNormalizedDomain);
-    }
-  }, [brandDomain, focusedLogo?.domain, domainOverride]);
-
-  useEffect(() => {
-    if (focusedLogo?.id) {
-      setFocusedLogoId(focusedLogo.id);
-    }
-  }, [focusedLogo?.id]);
-
-  const logosWithFocus = useMemo(() => {
-    if (!focusedLogo) return logoGenerations;
-    const alreadyIncludes = logoGenerations.some(
-      (generation) => generation.id === focusedLogo.id,
-    );
-    if (alreadyIncludes) return logoGenerations;
-    return [...logoGenerations, focusedLogo as Generation];
-  }, [focusedLogo, logoGenerations]);
+  const {
+    effectiveDomain,
+    focusedLogoId,
+    lastGenerationParams,
+    latestGeneration,
+    logosWithFocus,
+    setLatestGeneration,
+  } = useDerivativeGenerationState<AnimationFormData>({
+    brandDomain,
+    focusedLogo,
+    logoGenerations,
+  });
 
   const generateAnimationMutation = useAnimationGeneration({
     domain: effectiveDomain,
     availableLogos: logosWithFocus,
   });
+  const requirePostAuthIntent = useRequirePostAuthIntent();
+
+  const handleAnimationSuccess = useCallback(
+    (result: Generation) => {
+      setLatestGeneration(result);
+    },
+    [setLatestGeneration],
+  );
 
   const handleGenerateAnimation = (data: AnimationFormData) => {
     lastGenerationParams.current = data;
     setLatestGeneration(null);
 
     const payload = createAnimationGenerationPayload(data);
+    if (
+      !requirePostAuthIntent({
+        kind: 'ai.animation.generate',
+        returnPath: `/studio?animation=${encodeURIComponent(
+          data.selectedLogoId,
+        )}`,
+        payload,
+      })
+    ) {
+      return;
+    }
+
     generateAnimationMutation.mutate(payload, {
-      onSuccess: (result) => {
-        setLatestGeneration(result);
-      },
+      onSuccess: handleAnimationSuccess,
     });
   };
 

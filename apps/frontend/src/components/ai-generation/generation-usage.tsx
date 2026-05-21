@@ -13,6 +13,11 @@ import { useQuery } from '@tanstack/react-query';
 import { AlertCircle, Info, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/hooks/use-auth';
+import {
+  getGenerationUsageViewState,
+  shouldFetchGenerationUsage,
+} from './generation-usage-state';
 
 interface GenerationUsageProps {
   className?: string;
@@ -20,11 +25,19 @@ interface GenerationUsageProps {
 
 export function GenerationUsage({ className = '' }: GenerationUsageProps) {
   const trpc = useTRPC();
+  const { isAuthenticated } = useAuth();
   const { data: usage, isLoading } = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
+    enabled: shouldFetchGenerationUsage(isAuthenticated),
+  });
+  const viewState = getGenerationUsageViewState({
+    isAuthenticated,
+    isLoading,
+    usage,
   });
 
-  if (isLoading) {
+  if (viewState.kind === 'hidden') return null;
+  if (viewState.kind === 'loading') {
     return (
       <Card className={className}>
         <CardContent className="p-4">
@@ -37,15 +50,13 @@ export function GenerationUsage({ className = '' }: GenerationUsageProps) {
     );
   }
 
-  if (!usage) return null;
-
   const {
     creditsRefreshAt,
     currentCredits,
     maxCredits,
     remainingCredits,
     hasReachedLimit,
-  } = usage;
+  } = viewState.usage;
 
   return (
     <Card className={className}>

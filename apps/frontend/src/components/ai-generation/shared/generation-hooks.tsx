@@ -273,10 +273,7 @@ export function usePosterGeneration({
         if (context?.pendingId) {
           resolvePendingItem(context.pendingId, data);
         }
-        const targetDomain =
-          data?.domain ??
-          (variables as { domain?: NamefiNormalizedDomain })?.domain ??
-          domain;
+        const targetDomain = data?.domain ?? variables.domain ?? domain;
         seedGenerationCaches(queryClient, trpc, data, targetDomain);
         invalidateGenerationQueries(queryClient, trpc);
       },
@@ -372,20 +369,16 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
   const requestBody: {
     domain: NamefiNormalizedDomain;
     description?: string;
-    referenceLogoGenerationId?: string;
+    referenceLogoGenerationId: string;
     model: Model;
     collateralType: MarketingCollateralTypeInput;
   } = {
     domain: data.domain,
     description: data.description,
+    referenceLogoGenerationId: data.selectedLogoId,
     model: data.model as Model,
     collateralType: data.collateralType,
   };
-
-  // If a logo is selected, include the logo generation ID for reference
-  if (data.selectedLogoId) {
-    requestBody.referenceLogoGenerationId = data.selectedLogoId;
-  }
 
   return requestBody;
 };

@@ -33,7 +33,7 @@ export const marketingWorkflowInputSchema = z.object({
   collateralType: collateralTypeInputEnum.default('let_ai_choose'),
   imageModel: imageModelEnum.default('gpt-image-2'),
   storage: z.custom<StorageConfig>(),
-  referenceLogoUrl: z.string().optional(),
+  referenceLogoUrl: z.string().url(),
 });
 
 export const marketingWorkflowOutputSchema = z.object({
@@ -63,12 +63,6 @@ export async function runMarketingWorkflow(
   rawInput: MarketingWorkflowInput,
 ): Promise<MarketingWorkflowOutput> {
   const input = marketingWorkflowInputSchema.parse(rawInput);
-
-  if (!input.referenceLogoUrl) {
-    throw new Error(
-      'referenceLogoUrl is required to generate marketing collateral',
-    );
-  }
 
   const strategy = await generatePosterStrategy({
     domain: input.domain,

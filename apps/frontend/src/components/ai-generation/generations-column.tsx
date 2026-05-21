@@ -75,6 +75,7 @@ import { usePendingGenerationProgress } from './shared/use-gallery-progress';
 import { useGenerationsGalleryData } from './shared/use-gallery-data';
 import { GenerationActionButtons } from './shared/generation-action-buttons';
 import { useDeleteGeneration } from './shared/generation-hooks';
+import { useAuth } from '@/hooks/use-auth';
 import type {
   DomainPreview,
   GalleryFilters,
@@ -120,6 +121,7 @@ export function GenerationsColumn({
   className,
 }: GenerationsColumnProps) {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const { pendingItems, removePendingItem } = useGalleryPending();
   const { openAnimation, openPoster } = useDerivativeFlow();
 
@@ -127,7 +129,9 @@ export function GenerationsColumn({
     selectedBrands: [],
     type: 'all',
   });
-  const [activeTab, setActiveTab] = useState<TabValue>('yours');
+  const [activeTab, setActiveTab] = useState<TabValue>(
+    isAuthenticated ? 'yours' : 'featured',
+  );
   const previousPendingCountRef = useRef(0);
 
   const shareDialog = useTwitterShareDialog({
@@ -154,6 +158,7 @@ export function GenerationsColumn({
     pendingItems,
     getPendingProgress: getProgressValue,
     activeTab,
+    isAuthenticated,
   });
 
   const {
@@ -174,13 +179,19 @@ export function GenerationsColumn({
   const pendingCount = pendingItems.length;
 
   useEffect(() => {
+    if (!isAuthenticated && activeTab !== 'featured') {
+      setActiveTab('featured');
+    }
+  }, [activeTab, isAuthenticated]);
+
+  useEffect(() => {
     const previousCount = previousPendingCountRef.current;
-    if (pendingCount > previousCount) {
+    if (isAuthenticated && pendingCount > previousCount) {
       setFilters({ selectedBrands: [], type: 'all' });
       setActiveTab('yours');
     }
     previousPendingCountRef.current = pendingCount;
-  }, [pendingCount]);
+  }, [isAuthenticated, pendingCount]);
 
   useEffect(() => {
     if (
@@ -193,10 +204,10 @@ export function GenerationsColumn({
   }, [shouldShowYoursTab, activeTab, isFilteredLoading, isFilteredFetching]);
 
   useEffect(() => {
-    if (pendingCount > 0) {
+    if (isAuthenticated && pendingCount > 0) {
       setActiveTab('yours');
     }
-  }, [pendingCount]);
+  }, [isAuthenticated, pendingCount]);
 
   useEffect(() => {
     if (pendingCount === 0) return;

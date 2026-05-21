@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useFeedback } from '@/components/providers/feedback';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -12,7 +12,16 @@ import {
   createLogoGenerationPayload,
 } from './shared/generation-hooks';
 import type { Generation } from './shared/types';
-import { useDerivativeFlow } from './derivative-flow-context';
+import {
+  type RequestedDerivativeMode,
+  useDerivativeFlow,
+} from './derivative-flow-context';
+import {
+  getCurrentReturnPath,
+  usePostAuthIntentExecutor,
+  useRequirePostAuthIntent,
+  type PostAuthIntentFor,
+} from '@/hooks/use-post-auth-intent';
 
 interface LogoTabProps {
   existingGenerations?: Generation[];
@@ -31,20 +40,63 @@ export function LogoTab({
   const generateLogoMutation = useLogoGeneration({
     domain: brandDomain,
   });
-  const { openAnimation, openPoster } = useDerivativeFlow();
+  const { openAnimation, openPoster, requestedMode } = useDerivativeFlow();
   const { requestFeedback } = useFeedback();
+  const requirePostAuthIntent = useRequirePostAuthIntent();
+
+  const handleLogoSuccess = useCallback(
+    (
+      result: Generation,
+      nextMode: RequestedDerivativeMode | null = requestedMode,
+    ) => {
+      setLatestGeneration(result);
+      requestFeedback(feedbackTriggerSchema.enum.MILESTONE_LOGO_GENERATED);
+
+      if (nextMode === 'poster') {
+        openPoster(result);
+      } else if (nextMode === 'animation') {
+        openAnimation(result);
+      }
+    },
+    [openAnimation, openPoster, requestFeedback, requestedMode],
+  );
+
+  const postAuthHandlers = useMemo(
+    () => ({
+      'ai.logo.generate': async (
+        intent: PostAuthIntentFor<'ai.logo.generate'>,
+      ) => {
+        const { requestedMode: intentRequestedMode, ...payload } =
+          intent.payload;
+        const result = await generateLogoMutation.mutateAsync(payload);
+        handleLogoSuccess(result, intentRequestedMode ?? null);
+      },
+    }),
+    [generateLogoMutation, handleLogoSuccess],
+  );
+
+  usePostAuthIntentExecutor(postAuthHandlers);
 
   const handleGenerateLogo = (data: LogoFormData) => {
     lastGenerationParams.current = data;
     setLatestGeneration(null);
 
     const payload = createLogoGenerationPayload(data);
+    if (
+      !requirePostAuthIntent({
+        kind: 'ai.logo.generate',
+        returnPath: getCurrentReturnPath(),
+        payload: {
+          ...payload,
+          requestedMode: requestedMode ?? undefined,
+        },
+      })
+    ) {
+      return;
+    }
+
     generateLogoMutation.mutate(payload, {
-      onSuccess: (result) => {
-        setLatestGeneration(result);
-        // Trigger feedback for logo generation milestone
-        requestFeedback(feedbackTriggerSchema.enum.MILESTONE_LOGO_GENERATED);
-      },
+      onSuccess: (result) => handleLogoSuccess(result),
     });
   };
 

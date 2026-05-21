@@ -141,14 +141,14 @@ const generateLogoInputSchema = z.object({
 const generatePosterInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
-  referenceLogoGenerationId: z.string().optional(),
+  referenceLogoGenerationId: z.string().min(1),
   collateralType: marketingCollateralTypeSchema.default('let_ai_choose'),
   model: imageModelSchema.default('gpt-image-2'),
 });
 
 const generateAnimationCommonInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
-  referenceLogoGenerationId: z.string(),
+  referenceLogoGenerationId: z.string().min(1),
   description: z.string().optional(),
 });
 

@@ -49,6 +49,7 @@ import { useTRPC } from '@/lib/trpc';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { Generation } from './shared/types';
+import { useAuth } from '@/hooks/use-auth';
 
 const DEFAULT_ANIMATION_MODE = 'sheet-guided' satisfies AnimationMode;
 
@@ -708,6 +709,7 @@ export function AnimationGenerator({
     NamefiNormalizedDomain | ''
   >(fixedDomain ?? '');
   const trpc = useTRPC();
+  const { isAuthenticated } = useAuth();
   const formRef = useRef<UseFormReturn<
     AnimationFormInput,
     unknown,
@@ -734,7 +736,7 @@ export function AnimationGenerator({
       domain: activeDomain as NamefiNormalizedDomain,
       type: 'logo',
     }),
-    enabled: !!activeDomain,
+    enabled: isAuthenticated && !!activeDomain,
     staleTime: 10_000,
   });
 
