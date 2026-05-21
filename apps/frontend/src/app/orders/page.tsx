@@ -53,7 +53,7 @@ const ORDERS_FEATURE_FLAGS: FeatureFlagDefinition[] = [
       'Switch the Orders page to the v2 layout: orders grouped with their items, sort/filter controls, and PBN reveal toggles.',
     scope: 'page',
     pageKey: 'orders',
-    defaultValue: false,
+    defaultValue: true,
   },
 ];
 
