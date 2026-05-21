@@ -46,6 +46,13 @@ export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
 
 export const clientSideEnvSchema = z.object({
   NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
+  /**
+   * Rarible API key (developer portal). Required for the Rarible marketplace
+   * adapter — Rarible has no instant-key endpoint, so this must be set per env.
+   * When absent, the Rarible adapter is treated as unconfigured and the
+   * Marketplace panel degrades gracefully (OpenSea unaffected).
+   */
+  NEXT_PUBLIC_RARIBLE_API_KEY: z.string().optional(),
 } satisfies Record<`NEXT_PUBLIC_${string}`, ZodSchema>);
 
 export type ClientSideEnvInput = z.input<typeof clientSideEnvSchema>;

@@ -19,6 +19,7 @@ export const MARKETPLACE_SUPPORTED_CHAINS: readonly number[] = [
 
 const ADAPTER_CHAIN_SUPPORT: Record<MarketplaceId, readonly number[]> = {
   opensea: MARKETPLACE_SUPPORTED_CHAINS,
+  rarible: MARKETPLACE_SUPPORTED_CHAINS,
 };
 
 export function isMarketplaceSupportedOnChain(

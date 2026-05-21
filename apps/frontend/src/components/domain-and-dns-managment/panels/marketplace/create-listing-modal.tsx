@@ -478,6 +478,8 @@ function errorToMessage(error: unknown): string {
   return String(error);
 }
 
+const HTTP_429_PATTERN = /\b429\b/;
+
 function friendlyErrorMessage(message: string): string {
   const lowered = message.toLowerCase();
   if (lowered.includes('user rejected') || lowered.includes('user denied')) {
@@ -491,6 +493,13 @@ function friendlyErrorMessage(message: string): string {
     lowered.includes('api key')
   ) {
     return 'The marketplace integration is not configured for this environment.';
+  }
+  if (
+    HTTP_429_PATTERN.test(lowered) ||
+    lowered.includes('too many requests') ||
+    lowered.includes('rate limit')
+  ) {
+    return 'The marketplace is rate-limiting requests right now. Wait a minute and try again.';
   }
   if (
     lowered.includes('call_exception') ||

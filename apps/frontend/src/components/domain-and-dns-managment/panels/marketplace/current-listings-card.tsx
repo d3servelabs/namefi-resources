@@ -19,6 +19,7 @@ import {
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
 import { ExternalLink, Tag, X } from 'lucide-react';
+import Image from 'next/image';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { Address } from 'viem';
@@ -123,7 +124,17 @@ export function CurrentListingsCard({
               {listingsQuery.data.map((listing) => (
                 <TableRow key={`${listing.marketplace}:${listing.id}`}>
                   <TableCell>
-                    <Badge variant="outline" className="text-zinc-200">
+                    <Badge
+                      variant="outline"
+                      className="h-auto gap-1.5 px-3 py-1.5 text-zinc-200"
+                    >
+                      <Image
+                        src={`/${listing.marketplace}.svg`}
+                        alt=""
+                        width={20}
+                        height={20}
+                        unoptimized
+                      />
                       {listing.source}
                     </Badge>
                   </TableCell>
@@ -152,9 +163,8 @@ export function CurrentListingsCard({
                       })()}
                       <AsyncButton
                         size="sm"
-                        variant="outline"
                         onClick={() => handleCancel(listing)}
-                        className="border-red-500/40 text-red-300 hover:bg-red-500/10"
+                        className="bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30"
                       >
                         <X className="h-3 w-3 mr-1" />
                         Cancel

@@ -1,7 +1,7 @@
 import type { Address } from 'viem';
 
 /** Stable identifier for a marketplace adapter. */
-export type MarketplaceId = 'opensea';
+export type MarketplaceId = 'opensea' | 'rarible';
 
 /** Listing types a marketplace may support. */
 export type ListingType = 'fixed-price' | 'english-auction' | 'dutch-auction';

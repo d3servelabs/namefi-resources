@@ -2,10 +2,10 @@
 
 ## Purpose
 
-Framework-agnostic abstraction layer over the OpenSea marketplace. The `MarketPlace`
-interface exposes a uniform API (create / read / cancel / update listings, view / accept
-offers, fee + currency discovery) so adding a new marketplace later is a matter of
-writing a new adapter — the UI in `panels/marketplace/` stays unchanged.
+Framework-agnostic abstraction layer over the OpenSea and Rarible marketplaces. The
+`MarketPlace` interface exposes a uniform API (create / read / cancel / update listings,
+view / accept offers, fee + currency discovery) so adding a new marketplace is a matter
+of writing a new adapter — the UI in `panels/marketplace/` stays unchanged.
 
 ## Context
 
@@ -26,7 +26,27 @@ owners list their domains for sale on OpenSea, view incoming offers, and accept 
 - viem `writeContract` against Seaport's `cancel(OrderComponents[])` as the
   on-chain fallback for cancel when the off-chain path is unavailable.
 
-**API key**: auto-requested via `OpenSeaSDK.requestInstantApiKey(apiBaseUrl)` on
+**Rarible adapter**: `RaribleAdapter` — also hybrid:
+- `RaribleRestClient` (raw Rarible v0.1 REST + zod) for all reads
+  (`/v0.1/orders/sell/byItem` + `/orders/bids/byItem`, filtered to
+  `platform=RARIBLE` so OpenSea-aggregated orders aren't double-counted). Reads
+  need no wallet and no SDK.
+- `@rarible/sdk` for writes: `createListing` → `sdk.order.sell`, `cancelListing`
+  → `sdk.order.cancel`, `approveOffer` → `sdk.order.acceptBid`. The Rarible SDK
+  is ethers-only, so a viem `WalletClient` is bridged to an ethers v5
+  `Web3Provider` (`rarible/viem-ethers-signer.ts`) and wrapped in
+  `EthereumWallet(new EthersWeb3ProviderEthereum(...))`. The SDK + ethers are
+  dynamically imported inside the write methods, so the large multichain SDK
+  never enters the read path or app shell.
+- Rarible's `cancel` is an on-chain transaction (gas), unlike OpenSea's
+  gas-free off-chain cancel.
+
+**Rarible API key**: required, supplied via `NEXT_PUBLIC_RARIBLE_API_KEY`
+(`clientSideEnvSchema`). Rarible has no instant-key endpoint. When absent,
+`getMarketplace('rarible', …)` throws `MarketplaceNotConfiguredError`; the panel
+degrades gracefully via the hooks' `Promise.allSettled` (OpenSea unaffected).
+
+**OpenSea API key**: auto-requested via `OpenSeaSDK.requestInstantApiKey(apiBaseUrl)` on
 first use, cached in `localStorage` keyed by base URL (mainnet + testnet keys are
 separate), refreshed when within 1 day of the API-returned `expires_at`. No
 `NEXT_PUBLIC_OPENSEA_API_KEY` env var is required — the key is requested
@@ -59,9 +79,10 @@ falls back to an unauthenticated client (still works, just rate-limited reads).
 - `currencies.ts` — `(chainId → ListingCurrency[])` hardcoded matrix. Includes ERC-20
   entries (WETH/USDC/USDT/DAI/EURC) for future use, but the OpenSea adapter currently
   filters to the native asset only.
-- `factory.ts` — `getMarketplace({ id, chainId, publicClient, walletClient })` with a
-  dynamic `import('./opensea-adapter')` so the SDK chunk stays out of the app shell.
-- `opensea-adapter.ts` — the hybrid adapter described above.
+- `factory.ts` — `getMarketplace({ id, chainId, publicClient, walletClient })` —
+  branches on `id` and dynamically `import()`s the selected adapter so neither
+  marketplace SDK enters the app shell. Also exports `MARKETPLACE_OPTIONS`.
+- `opensea-adapter.ts` — the hybrid OpenSea adapter described above.
 - `opensea/` — OpenSea-specific helpers:
   - `constants.ts` — chain-ID → SDK `Chain` enum + REST path slug map, base URLs
     (+ `getOpenSeaApiBaseUrl(chainId)` helper), protocol fee constant (100 bps as
@@ -72,6 +93,15 @@ falls back to an unauthenticated client (still works, just rate-limited reads).
     parse for us (currently just `/offers/fulfillment_data`).
   - `rest-client.ts` — typed `fetch` wrapper for `/offers/fulfillment_data`
     (the only endpoint the SDK doesn't cover).
+- `rarible-adapter.ts` — the hybrid Rarible adapter described above.
+- `rarible/` — Rarible-specific helpers:
+  - `constants.ts` — chain-ID → Rarible blockchain id (`ETHEREUM`/`BASE`) + SDK
+    env (`prod`/`testnet`) maps, API + site base URLs, protocol fee constant.
+  - `viem-ethers-signer.ts` — bridges a viem `WalletClient` to an ethers v5
+    `Web3Provider` (the Rarible SDK is ethers-only); ethers is dynamically imported.
+  - `api-schemas.ts` — `zod` schemas for the Rarible v0.1 order responses.
+  - `rest-client.ts` — typed `fetch` wrapper for the Rarible order read endpoints
+    (`getSellOrdersByItem` / `getBidOrdersByItem` / `getOrderById`).
 - `seaport/` — Seaport contract bits used only for the on-chain cancel fallback:
   - `constants.ts` — `SEAPORT_V1_6_ADDRESS` (deterministic across chains).
   - `abi.ts` — minimal Seaport `cancel(OrderComponents[])` + ERC-2981 `royaltyInfo`.
@@ -102,3 +132,13 @@ falls back to an unauthenticated client (still works, just rate-limited reads).
 - **Per-call adapter construction** — viem `publicClient` and `walletClient` are
   captured in the adapter's closure, so individual methods don't take them as args.
   Switching chains means building a new adapter via `getMarketplace`.
+- **Rarible is ethers-only.** The `@rarible/sdk` EVM path requires an ethers v5
+  signer. `rarible/viem-ethers-signer.ts` wraps the viem `WalletClient`'s EIP-1193
+  `transport` in an ethers v5 `Web3Provider` (wagmi's documented adapter pattern).
+  ethers v5 is pinned to match `@rarible/ethers-ethereum`'s range so the tree
+  dedupes to one copy; it coexists with the ethers v6 the OpenSea SDK pulls
+  transitively (different majors, isolated).
+- **Multi-marketplace fan-out is automatic.** The `panels/marketplace/` hooks
+  iterate `getMarketplacesSupportedOnChain(chainId)` and `Promise.allSettled` over
+  every adapter, so a new adapter shows up in the panel with no UI changes — and
+  one adapter failing (e.g. Rarible with no API key) doesn't break the others.

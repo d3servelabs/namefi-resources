@@ -1,7 +1,9 @@
 import type { PublicClient, WalletClient } from 'viem';
+import { clientSideEnv } from '../env';
 import { isMarketplaceSupportedOnChain } from './chains';
 import {
   type MarketPlace,
+  MarketplaceNotConfiguredError,
   MarketplaceUnsupportedChainError,
 } from './marketplace.interface';
 import type { MarketplaceId } from './types';
@@ -23,6 +25,15 @@ export interface OpenSeaAdapterArgs extends GetMarketplaceArgs {
 }
 
 /**
+ * Internal — args passed into the Rarible adapter constructor. The factory
+ * resolves the API key from env and throws `MarketplaceNotConfiguredError`
+ * when it's absent, so (unlike OpenSea's auto-requested key) this is required.
+ */
+export interface RaribleAdapterArgs extends GetMarketplaceArgs {
+  apiKey: string;
+}
+
+/**
  * Build a marketplace adapter for the given (id, chain) pair.
  *
  * The adapter modules are loaded via dynamic `import()` so their dependencies stay out
@@ -39,6 +50,19 @@ export async function getMarketplace(
 ): Promise<MarketPlace> {
   if (!isMarketplaceSupportedOnChain(args.id, args.chainId)) {
     throw new MarketplaceUnsupportedChainError(args.id, args.chainId);
+  }
+
+  if (args.id === 'rarible') {
+    // Rarible has no instant-key endpoint — the key comes from env.
+    const apiKey = clientSideEnv.NEXT_PUBLIC_RARIBLE_API_KEY;
+    if (!apiKey) {
+      throw new MarketplaceNotConfiguredError(
+        'rarible',
+        'NEXT_PUBLIC_RARIBLE_API_KEY',
+      );
+    }
+    const { RaribleAdapter } = await import('./rarible-adapter');
+    return new RaribleAdapter({ ...args, apiKey });
   }
 
   const [{ OpenSeaAdapter }, { getOrRequestApiKey }, { getOpenSeaApiBaseUrl }] =
@@ -60,5 +84,10 @@ export const MARKETPLACE_OPTIONS: ReadonlyArray<{
     id: 'opensea',
     label: 'OpenSea',
     description: 'Post directly to the OpenSea Seaport orderbook.',
+  },
+  {
+    id: 'rarible',
+    label: 'Rarible',
+    description: 'Post directly to the Rarible orderbook.',
   },
 ];

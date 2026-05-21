@@ -19,6 +19,7 @@ import {
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
 import { Check, ExternalLink, HandCoins } from 'lucide-react';
+import Image from 'next/image';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { Address } from 'viem';
@@ -100,7 +101,17 @@ export function OffersCard({ chainId, tokenAddress, tokenId }: Props) {
               {offersQuery.data.map((offer) => (
                 <TableRow key={`${offer.marketplace}:${offer.id}`}>
                   <TableCell>
-                    <Badge variant="outline" className="text-zinc-200">
+                    <Badge
+                      variant="outline"
+                      className="h-auto gap-1.5 px-3 py-1.5 text-zinc-200"
+                    >
+                      <Image
+                        src={`/${offer.marketplace}.svg`}
+                        alt=""
+                        width={20}
+                        height={20}
+                        unoptimized
+                      />
                       {offer.source}
                     </Badge>
                   </TableCell>
