@@ -1,9 +1,11 @@
-// biome-ignore lint/correctness/noNodejsModules: og route reads static asset from disk on the server.
-import fs from 'node:fs/promises';
+// This route renders the generated open-graph PNG fallback for blog posts
+// that don't have a hand-made asset. Posts that do have a hand-made asset are
+// served directly from /r/blog-assets/<slug>-og.<ext> — see
+// generateMetadata in ./page.tsx for the URL switch.
 import { ImageResponse } from 'next/og';
 import { localeLabels, type Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
-import { getPostCached, getPostOgAsset } from '@/lib/content';
+import { getPostCached } from '@/lib/content';
 import { OgLogotype } from '../../../og/logotype';
 
 export const size = {
@@ -55,26 +57,6 @@ export default async function Image({
         status: 404,
       },
     );
-  }
-
-  // Prefer the hand-made OG asset committed under data/content/assets when one
-  // exists for this slug. Falls through to the generated ImageResponse below
-  // so posts without a custom asset still get a usable preview. The try/catch
-  // covers TOCTOU between existsSync and readFile — if the file vanishes or
-  // becomes unreadable, we still return a usable OG rather than a 500.
-  const ogAsset = getPostOgAsset(slug);
-  if (ogAsset) {
-    try {
-      const buffer = await fs.readFile(ogAsset.absolutePath);
-      return new Response(new Uint8Array(buffer), {
-        headers: {
-          'content-type': ogAsset.contentType,
-          'cache-control': 'public, max-age=31536000, immutable',
-        },
-      });
-    } catch {
-      // fall through to the generated ImageResponse below
-    }
   }
 
   const dictionary = await getDictionary(locale);

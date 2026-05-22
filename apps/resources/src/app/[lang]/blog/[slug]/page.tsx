@@ -13,11 +13,6 @@ import {
   type AuthorEntry,
   getAuthorNames,
 } from '@/lib/content';
-// The default static `contentType` exported from opengraph-image.tsx is only
-// accurate for the generated PNG fallback. When a hand-made asset of a
-// different type (jpg/webp) is served, we surface the real content-type via
-// openGraph.images[*].type so the rendered og:image:type meta tag matches the
-// HTTP Content-Type header on the asset response.
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
@@ -48,9 +43,16 @@ export async function generateMetadata({
     locale === 'en' || !getPostCached('en', slug)
       ? selfUrl
       : `${baseUrl}/r/en/blog/${slug}`;
-  const ogImagePath = `${selfPath}/opengraph-image`;
-  const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const ogImageType = getPostOgAsset(slug)?.contentType ?? 'image/png';
+  // Prefer the hand-made asset when one is committed under
+  // data/content/assets — it's served as a static file via the
+  // public/blog-assets symlink, so CDN handles it directly with no Function
+  // involvement. Falls back to the dynamically-generated opengraph-image
+  // route for posts that don't have a custom asset.
+  const ogAsset = getPostOgAsset(slug);
+  const ogImageUrl = ogAsset
+    ? `${baseUrl}/r/blog-assets/${slug}-og${ogAsset.extension}`
+    : `${baseUrl}${selfPath}/opengraph-image`;
+  const ogImageType = ogAsset?.contentType ?? 'image/png';
   const authorNames = getAuthorNames(locale, entry.frontmatter.authors);
   const siteName = resolveTitle(locale);
   const publishedTime = entry.publishedAt.toISOString();
@@ -155,13 +157,14 @@ export default async function BlogPostPage({
     }),
   );
   // When a hand-made hero asset exists for this slug, render it inline above
-  // the post body. We reuse the opengraph-image route which already serves the
-  // same file with long-lived caching headers.
-  const hasOgAsset = Boolean(getPostOgAsset(slug));
-  // Mirrors the /r basePath baked into the OG metadata URL above; raw <img>
-  // src doesn't get Next's basePath auto-prefix.
-  const heroImageUrl = hasOgAsset
-    ? `/r/${locale}/blog/${slug}/opengraph-image`
+  // the post body. Served as a plain static file under public/blog-assets
+  // (which symlinks to the data submodule), so the URL is CDN-cacheable and
+  // resolves without invoking the opengraph-image function.
+  const heroOgAsset = getPostOgAsset(slug);
+  // The /r basePath is baked into the path here; raw <img> src doesn't get
+  // Next's basePath auto-prefix.
+  const heroImageUrl = heroOgAsset
+    ? `/r/blog-assets/${slug}-og${heroOgAsset.extension}`
     : undefined;
 
   return (
