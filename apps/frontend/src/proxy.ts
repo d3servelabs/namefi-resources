@@ -185,9 +185,9 @@ export function proxy(request: NextRequest) {
 
     if (canonicalHostname) {
       const routeSegment = getThirdPartyOriginRouteSegment(canonicalHostname);
-      return rewritePath(
+      return withHostPolicyHeader(
         request,
-        `/site/${routeSegment}/landing/${routeSegment}`,
+        rewritePath(request, `/site/${routeSegment}/landing/${routeSegment}`),
       );
     }
   }
@@ -204,7 +204,7 @@ export function proxy(request: NextRequest) {
   );
 
   if (!matchedRoute) {
-    return NextResponse.next();
+    return withHostPolicyHeader(request, NextResponse.next());
   }
 
   // Get default hostname from environment
@@ -250,7 +250,10 @@ export function proxy(request: NextRequest) {
     queryString ? `?${queryString}` : ''
   }`;
 
-  return NextResponse.redirect(destination, { status: 307 });
+  return withHostPolicyHeader(
+    request,
+    NextResponse.redirect(destination, { status: 307 }),
+  );
 }
 
 export const config = {
