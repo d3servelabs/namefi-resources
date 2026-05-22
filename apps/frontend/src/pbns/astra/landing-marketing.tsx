@@ -437,6 +437,31 @@ const FAQS: Array<{ question: string; answer: ReactNode }> = [
       </div>
     ),
   },
+  {
+    question: 'Is Namefi ICANN-accredited?',
+    answer: (
+      <div className="space-y-3 text-muted-foreground">
+        <p>
+          Yes. Namefi is operated by D3Serve Labs Inc., an ICANN-accredited
+          registrar. We register and manage domains directly under ICANN
+          policies and optionally tokenize the resulting DNS ownership as NFTs.
+        </p>
+      </div>
+    ),
+  },
+  {
+    question: 'Which blockchains does Namefi support?',
+    answer: (
+      <div className="space-y-3 text-muted-foreground">
+        <p>
+          Namefi&apos;s domain tokenization is based on the ERC-721 NFT
+          standard. Its contracts are deployed on Ethereum mainnet and Base
+          mainnet. AutoENS lets you route crypto payments to your DNS names via
+          gasless DNSSEC, working with ENS-compatible wallets.
+        </p>
+      </div>
+    ),
+  },
 ];
 
 const COMMUNITY_LINKS = [

@@ -21,8 +21,26 @@ export const HOMEPAGE_JSON_LD = {
       '@type': 'Organization',
       '@id': `${HOMEPAGE_URL}#organization`,
       name: 'Namefi',
+      legalName: 'D3Serve Labs Inc.',
       url: HOMEPAGE_URL,
       logo: `${HOMEPAGE_URL}/logotype.svg`,
+      description:
+        'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+      founder: {
+        '@type': 'Person',
+        name: 'Zainan Victor Zhou',
+        url: 'https://zzn.im',
+      },
+      knowsAbout: [
+        'domain registration',
+        'domain tokenization',
+        'NFT domains',
+        'ENS',
+        'ICANN',
+        'DNSSEC',
+        'AutoENS',
+        'Ethereum',
+      ],
       sameAs: [
         'https://twitter.com/namefi_io',
         'https://discord.gg/PKW52TXS',
@@ -30,6 +48,71 @@ export const HOMEPAGE_JSON_LD = {
         'https://t.me/namefidao',
         'https://www.linkedin.com/company/d3servelabs',
         'https://www.youtube.com/@Namefi_io',
+        'https://namefi.medium.com',
+        'https://www.wikidata.org/wiki/Q139894560',
+        'https://www.crunchbase.com/organization/namefi',
+      ],
+      funder: [
+        {
+          '@type': 'Organization',
+          name: 'Orange DAO',
+          url: 'https://www.orangedao.xyz/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Bloccelerate VC',
+          url: 'https://bloccelerate.vc/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'SNZ Holding',
+          url: 'https://snzholding.com/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Alchemy Ventures',
+          url: 'https://www.alchemy.com/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Aleph Crypto Fund',
+          url: 'https://alephcrypto.xyz/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Foothill Ventures',
+          url: 'https://www.foothill.ventures/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Sinovel Angel Fund',
+          url: 'https://sinovel.org/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'TSVC',
+          url: 'https://www.tsvcap.com/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Avant Blockchain Capital',
+          url: 'https://avant.fund/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Rebase D. Ventures',
+          url: 'https://rebased.ventures/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Google Cloud',
+          url: 'https://cloud.google.com/',
+        },
+        {
+          '@type': 'Organization',
+          name: 'Amazon Web Services',
+          url: 'https://aws.amazon.com/startups',
+        },
       ],
     },
     {
@@ -109,6 +192,22 @@ export const HOMEPAGE_JSON_LD = {
           acceptedAnswer: {
             '@type': 'Answer',
             text: 'Namefi is gradually expanding beta access and plans wider availability after early tester rollout.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is Namefi ICANN-accredited?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. Namefi is operated by D3Serve Labs Inc., an ICANN-accredited registrar. We register and manage domains directly under ICANN policies and optionally tokenize the resulting DNS ownership as NFTs.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Which blockchains does Namefi support?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: "Namefi's domain tokenization is based on the ERC-721 NFT standard. Its contracts are deployed on Ethereum mainnet and Base mainnet. AutoENS lets you route crypto payments to your DNS names via gasless DNSSEC, working with ENS-compatible wallets.",
           },
         },
       ],

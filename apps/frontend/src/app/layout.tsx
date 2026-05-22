@@ -9,7 +9,7 @@ import { Providers } from '@/components/providers';
 import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
 import DatadogObservability from '@/components/datadog-observability';
@@ -46,6 +46,12 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
+
+export const viewport: Viewport = {
+  themeColor: '#0a0a0a',
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const { origin, config: originConfig } = await getOriginRuntime();

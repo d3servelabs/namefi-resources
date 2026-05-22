@@ -7,6 +7,17 @@ function getEnvBaseOrigin() {
   return new URL(config.FIRST_PARTY_DEPLOYMENT_URL).origin;
 }
 
+// AI / generative-engine crawler user agents. Listed explicitly so the
+// indexability decision for GEO surfaces (ChatGPT, Claude, Gemini, Perplexity,
+// Common Crawl) is intentional and reviewable, not implicit via the `*` rule.
+const AI_BOT_USER_AGENTS = [
+  'GPTBot',
+  'ClaudeBot',
+  'Google-Extended',
+  'PerplexityBot',
+  'CCBot',
+] as const;
+
 // Per-host robots policy. The frontend Vercel project is bound to multiple
 // hosts (namefi.io, www.namefi.io, astra.namefi.io, app.namefi.io, plus
 // preview deployment URLs). Only the canonical apex hosts are indexable;
@@ -17,6 +28,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   const host = (await headers()).get('host');
 
   if (!isIndexableHost(host)) {
+    // `userAgent: '*'` already covers AI bots; no extra rules needed.
     return { rules: [{ userAgent: '*', disallow: '/' }] };
   }
 
@@ -25,7 +37,10 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   // env's FIRST_PARTY_DEPLOYMENT_URL. Fall back to env when host is missing.
   const requestOrigin = host ? `https://${bareHost(host)}` : getEnvBaseOrigin();
   return {
-    rules: [{ userAgent: '*', allow: '/' }],
+    rules: [
+      { userAgent: '*', allow: '/' },
+      ...AI_BOT_USER_AGENTS.map((userAgent) => ({ userAgent, allow: '/' })),
+    ],
     host: requestOrigin,
     sitemap: `${requestOrigin}/sitemap.xml`,
   };
