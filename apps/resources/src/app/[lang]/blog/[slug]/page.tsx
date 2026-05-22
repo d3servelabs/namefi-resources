@@ -8,6 +8,7 @@ import { getDictionary } from '@/get-dictionary';
 import {
   getAuthor,
   getPostCached,
+  getPostOgAsset,
   getPostParams,
   type AuthorEntry,
   getAuthorNames,
@@ -146,6 +147,15 @@ export default async function BlogPostPage({
       return { author, Module: module.default };
     }),
   );
+  // When a hand-made hero asset exists for this slug, render it inline above
+  // the post body. We reuse the opengraph-image route which already serves the
+  // same file with long-lived caching headers.
+  const hasOgAsset = Boolean(getPostOgAsset(slug));
+  // Mirrors the /r basePath baked into the OG metadata URL above; raw <img>
+  // src doesn't get Next's basePath auto-prefix.
+  const heroImageUrl = hasOgAsset
+    ? `/r/${locale}/blog/${slug}/opengraph-image`
+    : undefined;
 
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
@@ -197,6 +207,18 @@ export default async function BlogPostPage({
           </p>
         )}
       </header>
+
+      {heroImageUrl && (
+        // biome-ignore lint/performance/noImgElement: hero is served via a Next route handler, not the image optimizer.
+        <img
+          src={heroImageUrl}
+          alt={entry.frontmatter.title}
+          width={1200}
+          height={630}
+          loading="eager"
+          className="h-auto w-full rounded-3xl border border-border/60 shadow-lg shadow-black/5"
+        />
+      )}
 
       <PostContent components={postComponents} />
 

@@ -1,7 +1,9 @@
+// biome-ignore lint/correctness/noNodejsModules: og route reads static asset from disk on the server.
+import fs from 'node:fs/promises';
 import { ImageResponse } from 'next/og';
 import { localeLabels, type Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
-import { getPostCached } from '@/lib/content';
+import { getPostCached, getPostOgAsset } from '@/lib/content';
 import { OgLogotype } from '../../../og/logotype';
 
 export const size = {
@@ -53,6 +55,20 @@ export default async function Image({
         status: 404,
       },
     );
+  }
+
+  // Prefer the hand-made OG asset committed under data/content/assets when one
+  // exists for this slug. Falls through to the generated ImageResponse below
+  // so posts without a custom asset still get a usable preview.
+  const ogAsset = getPostOgAsset(slug);
+  if (ogAsset) {
+    const buffer = await fs.readFile(ogAsset.absolutePath);
+    return new Response(new Uint8Array(buffer), {
+      headers: {
+        'content-type': ogAsset.contentType,
+        'cache-control': 'public, max-age=31536000, immutable',
+      },
+    });
   }
 
   const dictionary = await getDictionary(locale);

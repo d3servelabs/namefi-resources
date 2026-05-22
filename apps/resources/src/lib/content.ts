@@ -851,6 +851,52 @@ export const getPostCached = cache((locale: Locale, slug: string) =>
   getPost(locale, slug),
 );
 
+const ASSETS_ROOT = path.join(DATA_ROOT, 'assets');
+const POST_OG_ASSET_EXTENSIONS: readonly string[] = [
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+];
+
+export type PostOgAsset = {
+  absolutePath: string;
+  extension: string;
+  contentType: string;
+};
+
+function extensionToContentType(extension: string): string {
+  switch (extension) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.webp':
+      return 'image/webp';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
+// Looks up the hand-made open-graph hero image for a blog post by convention:
+// data/content/assets/<slug>-og.{jpg,jpeg,png,webp}. Shared across locales —
+// translations reuse the source-language asset. Returns undefined when no
+// asset is committed for the slug; callers should fall back to generated OG.
+export function getPostOgAsset(slug: string): PostOgAsset | undefined {
+  for (const extension of POST_OG_ASSET_EXTENSIONS) {
+    const absolutePath = path.join(ASSETS_ROOT, `${slug}-og${extension}`);
+    if (fs.existsSync(absolutePath)) {
+      return {
+        absolutePath,
+        extension,
+        contentType: extensionToContentType(extension),
+      };
+    }
+  }
+  return undefined;
+}
+
 export function getAuthor(
   locale: Locale,
   slug: string,
