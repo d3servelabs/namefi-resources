@@ -46,36 +46,6 @@ const nextConfig: NextConfig = {
     // Note: validate is run on CI with build
     ignoreBuildErrors: true,
   },
-  // 308 redirect legacy r.namefi.{io,dev} hosts to their canonical
-  // namefi.{io,dev}/r/* equivalents. Guarded on `missing: x-forwarded-host`
-  // so the frontend's internal proxy fetch (which sets that header) does not
-  // redirect-loop. Only direct browser/Googlebot hits to r.namefi.* trigger.
-  // `basePath: false` opts out of the /r basePath being prefixed onto sources,
-  // so we can match paths that legacy Google-indexed URLs use (no /r prefix).
-  async redirects() {
-    const buildRules = (legacyHost: string, canonicalHost: string) => [
-      {
-        source: '/r/:path*',
-        has: [{ type: 'host' as const, value: legacyHost }],
-        missing: [{ type: 'header' as const, key: 'x-forwarded-host' }],
-        destination: `https://${canonicalHost}/r/:path*`,
-        permanent: true,
-        basePath: false as const,
-      },
-      {
-        source: '/:path*',
-        has: [{ type: 'host' as const, value: legacyHost }],
-        missing: [{ type: 'header' as const, key: 'x-forwarded-host' }],
-        destination: `https://${canonicalHost}/r/:path*`,
-        permanent: true,
-        basePath: false as const,
-      },
-    ];
-    return [
-      ...buildRules('r.namefi.io', 'namefi.io'),
-      ...buildRules('r.namefi.dev', 'namefi.dev'),
-    ];
-  },
 };
 
 // biome-ignore lint/style/noDefaultExport: Next.js requires a default export for the config file.
