@@ -109,7 +109,7 @@ export function SiteFooter() {
               priority={false}
             />
             <p className="max-w-md text-sm text-muted-foreground">
-              Namefi is an ICANN-accredited registrar bringing onchain security
+              Namefi is an ICANN Accredited Registrar bringing onchain security
               and AI tooling to modern domain operations. Explore insights,
               updates, and best practices from the Namefi team.
             </p>

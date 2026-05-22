@@ -199,7 +199,7 @@ export const HOMEPAGE_JSON_LD = {
           name: 'Is Namefi ICANN-accredited?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes. Namefi is operated by D3Serve Labs Inc., an ICANN-accredited registrar. We register and manage domains directly under ICANN policies and optionally tokenize the resulting DNS ownership as NFTs.',
+            text: 'Yes. Namefi is operated by D3Serve Labs Inc., an ICANN Accredited Registrar. We register and manage domains directly under ICANN policies and optionally tokenize the resulting DNS ownership as NFTs.',
           },
         },
         {

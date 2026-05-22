@@ -181,9 +181,8 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               />
             </div>
             <p className="max-w-md text-sm text-muted-foreground">
-              Namefi is an ICANN-accredited registrar that tokenizes DNS
-              ownership so you can register, trade, and build with AI tooling
-              and onchain security.
+              Namefi is an ICANN Accredited Registrar tokenizing internet domain
+              names for trading, DeFi and future of Internet.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               {SOCIAL_LINKS.map(({ name, href, icon: Icon }) => (

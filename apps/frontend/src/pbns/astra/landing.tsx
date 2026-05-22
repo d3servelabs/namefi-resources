@@ -127,7 +127,7 @@ const HeroSection = ({
           transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
           className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[8px] md:text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur"
         >
-          ICANN-accredited registrar on Ethereum & Base
+          ICANN Accredited Registrar on Ethereum & Base
         </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 18 }}
