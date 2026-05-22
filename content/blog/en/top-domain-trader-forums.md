@@ -68,7 +68,7 @@ Most of these are invite-based and grow around individual brokers, platforms (e.
 
 ### Domaining.com and the domainer blog ring
 
-[Domaining.com](https://www.domaining.com/) is not a forum; it is the canonical aggregator of domainer blogs. Most of the long-form English discussion in the industry happens in the comments sections of those blogs — [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/), [DomainNameWire](https://domainnamewire.com/), and [Rick Schwartz's blog](https://www.ricksblog.com/), among others. If "where do domainers talk?" means "where is the substantive written analysis?", the answer is here.
+[Domaining.com](https://www.domaining.com/) is not a forum; it is the canonical aggregator of domainer blogs. Most of the long-form English discussion in the industry happens in the comments sections of those blogs — [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/), and [DomainNameWire](https://domainnamewire.com/), among others. If "where do domainers talk?" means "where is the substantive written analysis?", the answer splits in two — individual voices are covered in the [famous domainer blogs and newsletters post](/blog/famous-domainer-blogs-and-newsletters), and the news outlets in the [domain industry media post](/blog/domain-industry-media).
 
 ### LinkedIn
 
@@ -90,6 +90,8 @@ If you are also evaluating where to *list* names (rather than where to talk abou
 
 **Related reading:**
 
+- [Famous Domainer Blogs, Substacks, and Newsletters](/blog/famous-domainer-blogs-and-newsletters) — the individual voices the forum threads link to.
+- [Famous Domain Industry Media](/blog/domain-industry-media) — the news outlets that cover this market as journalism.
 - [Complete Domain Name Terminology Guide](/blog/domain-terminology-guide) — the language domainers use in these forums.
 - [ccTLD Market Share by Registration Volume](/blog/cctld-market-share-by-registration-volume) — context for the country-code threads you will see on NamePros.
 - [Tokenized Domain Use Cases 2026](/blog/tokenized-domain-use-cases-2026) — where the conversation is heading next.
