@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  bareHost,
-  getCanonicalRedirect,
-  isIndexableHost,
-} from './host-policy';
+import { bareHost, getCanonicalRedirect, isIndexableHost } from './host-policy';
 
 describe('bareHost', () => {
   it('strips port and lowercases', () => {
@@ -16,12 +12,14 @@ describe('bareHost', () => {
 });
 
 describe('isIndexableHost', () => {
-  it.each([['namefi.io'], ['namefi.dev'], ['NAMEFI.IO'], ['namefi.io:443']])(
-    'allows %s',
-    (host) => {
-      expect(isIndexableHost(host)).toBe(true);
-    },
-  );
+  it.each([
+    ['namefi.io'],
+    ['namefi.dev'],
+    ['NAMEFI.IO'],
+    ['namefi.io:443'],
+  ])('allows %s', (host) => {
+    expect(isIndexableHost(host)).toBe(true);
+  });
 
   it.each([
     ['app.namefi.io'],

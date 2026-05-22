@@ -165,7 +165,10 @@ export function proxy(request: NextRequest) {
   // Done first so the redirect short-circuits all other proxy logic.
   const canonicalOrigin = getCanonicalRedirect(host);
   if (canonicalOrigin) {
-    const redirectTo = new URL(pathname + request.nextUrl.search, canonicalOrigin);
+    const redirectTo = new URL(
+      pathname + request.nextUrl.search,
+      canonicalOrigin,
+    );
     return NextResponse.redirect(redirectTo, 308);
   }
 
