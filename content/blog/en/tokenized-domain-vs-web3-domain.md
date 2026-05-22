@@ -9,7 +9,7 @@ description: A clear, practical comparison of tokenized ICANN domains (like a to
 keywords: ['tokenized domain vs web3 domain', 'tokenized domain vs ENS', 'ICANN domain vs ENS', '.com vs .eth', 'tokenized .com vs .crypto', 'tokenized domain vs unstoppable', 'web3 domain comparison', 'ENS vs tokenized domain', 'NFT domain vs ENS', 'web3 naming', 'on-chain naming difference', 'browser support web3 domain', 'web3 domain resolution']
 ---
 
-A reasonable question, asked daily: *"I already have a `.eth` name (or `.crypto`, or `.x`). Why would I tokenize my `.com`? Aren't they the same thing?"*
+A reasonable question, asked daily: *"I already have a `.eth` name (or `.crypto`, or `.x`). Why would I [tokenize](/en/glossary/tokenize/) my `.com`? Aren't they the same thing?"*
 
 They aren't. They overlap a little in vibes and a lot in branding, but operationally they're solving different problems. This post breaks down where each one fits.
 
@@ -19,8 +19,8 @@ If you want the long form on tokenized domains specifically, start with [What Ar
 
 ## The One-Liner
 
-- **Tokenized domain** = a real ICANN domain (`.com`, `.xyz`, `.io`, etc.) with an added on-chain ownership token on top.
-- **Web3 domain** = a name that lives **only** on-chain (`.eth`, `.crypto`, `.x`, etc.). It's a separate naming system, not part of DNS.
+- **Tokenized domain** = a real [ICANN](/en/glossary/icann/) domain (`.com`, `.xyz`, `.io`, etc.) with an added [on-chain](/en/glossary/on-chain/) ownership token on top.
+- [**Web3**](/en/glossary/web3/) **domain** = a name that lives **only** on-chain (`.eth`, `.crypto`, `.x`, etc.). It's a separate naming system, not part of [DNS](/en/glossary/dns/).
 
 A tokenized domain *extends* the existing DNS world. A Web3 domain *replaces* it (or sits beside it, depending on how you use it).
 
@@ -92,9 +92,9 @@ See [DNS Still Works](/en/blog/dns-on-tokenized-domains/) for the practical deta
 
 ### ENS / Web3-name resolution
 
-You type `vitalik.eth`. A Web3-aware client (MetaMask, a dapp, certain browsers with ENS support) queries the ENS smart contract on Ethereum, gets the associated address or content hash, and renders accordingly. A non-Web3-aware client (Chrome without extensions, your office email server, your SSL CA) doesn't know what `.eth` means and won't resolve it.
+You type `vitalik.eth`. A Web3-aware client (MetaMask, a dapp, certain browsers with [ENS](/en/glossary/ens/) support) queries the ENS [smart contract](/en/glossary/smart-contract/) on Ethereum, gets the associated address or content hash, and renders accordingly. A non-Web3-aware client (Chrome without extensions, your office email server, your SSL CA) doesn't know what `.eth` means and won't resolve it.
 
-That's not a flaw — it's the design. ENS and similar systems are built for a Web3-native experience, not for replacing the broader internet's naming layer.
+That's not a flaw — it's the design. ENS and similar systems are built for a Web3-native experience, not for replacing the broader internet's naming layer. See the [official ENS documentation](https://docs.ens.domains/) for the underlying architecture.
 
 ---
 

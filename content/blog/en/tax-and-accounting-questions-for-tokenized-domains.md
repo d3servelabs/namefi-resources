@@ -11,10 +11,10 @@ keywords: ['NFT domain tax', 'tokenized domain cost basis', 'tokenized domain ac
 
 > **Read this first.** This post is **not** tax, accounting, legal, or financial advice. We are not your CPA, we are not your lawyer, and we have no idea what jurisdiction you're in. This is a *list of questions* to bring to a real professional. Use it as a prep sheet, not as a position to rely on. The full disclaimer is at the bottom and applies *especially* to this post.
 
-Owning a tokenized domain straddles two worlds the tax code mostly understands separately:
+Owning a [tokenized domain](/en/blog/what-are-tokenized-domains/) straddles two worlds the tax code mostly understands separately:
 
-- A **registered domain name**, which has been treated under intangible asset / Section 197 rules in many jurisdictions for decades.
-- An **NFT**, which is much newer and which various tax authorities have taken different positions on (sometimes treating as a collectible, sometimes as property, sometimes as a digital asset with its own emerging category).
+- A **registered domain name**, which has been treated under intangible asset / [Section 197](https://www.irs.gov/publications/p535) rules in many jurisdictions for decades.
+- An [**NFT**](/en/glossary/nft/), which is much newer and which various tax authorities have taken different positions on (sometimes treating as a collectible, sometimes as property, sometimes as a digital asset with its own emerging category — see [IRS Notice 2023-27](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) for the US treatment of NFTs as collectibles).
 
 The combination is novel. Don't assume your CPA has seen one before. Don't assume they haven't, either. The right move is to bring them the right questions and let them do their job.
 
@@ -22,12 +22,12 @@ The combination is novel. Don't assume your CPA has seen one before. Don't assum
 
 ## Why "Just Treat It Like a Domain" Isn't Enough
 
-Tokenized domains have ongoing on-chain events that traditional domains don't:
+Tokenized domains have ongoing [on-chain](/en/glossary/on-chain/) events that traditional domains don't:
 
-- Minting (the moment of tokenization itself — is that a taxable event? Probably not in most jurisdictions, but ask.)
+- Minting (the moment of [tokenization](/en/glossary/tokenize/) itself — is that a taxable event? Probably not in most jurisdictions, but ask.)
 - On-chain transfers, including gifts and inheritance flows.
-- Sales conducted entirely on-chain, paid in crypto or stablecoins.
-- Possible use as DeFi collateral (e.g., borrowing against the domain).
+- Sales conducted entirely on-chain, paid in crypto or [stablecoins](/en/glossary/stablecoin/).
+- Possible use as [DeFi](/en/glossary/defi/) [collateral](/en/glossary/collateral/) (e.g., borrowing against the domain).
 - Bridging or moving the token between chains.
 
 Each of those interactions has tax implications in some jurisdictions and not others. The list below is the menu of questions worth working through with a professional.

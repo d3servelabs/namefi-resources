@@ -1,0 +1,11 @@
+---
+title: Seed Phrase (Recovery Phrase, Mnemonic)
+date: '2026-05-22'
+language: en
+tags: ['glossary']
+authors: ['namefiteam']
+description: What is a seed phrase and why is it the single most important thing to back up?
+keywords: ['seed phrase', 'recovery phrase', 'mnemonic phrase', 'wallet backup', 'BIP39', '12 words', '24 words', 'crypto recovery']
+---
+
+A **seed phrase** — also called a **recovery phrase** or **mnemonic phrase** — is a human-readable list of 12 or 24 words that encodes the master private key for a [wallet](/en/glossary/wallet/). The format is standardized by [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and is used by most modern wallets (MetaMask, Ledger, Trezor, Rabby, Coinbase Wallet, etc.). With the seed phrase, you can restore the wallet — and any assets in it, including [tokenized domains](/en/blog/what-are-tokenized-domains/) — on any compatible device. Without it, lost device access usually means permanently lost funds, because there is no central authority to issue a "password reset." Best practices: write the seed phrase on paper or a metal backup, store at least two copies in separate physical locations, and **never** type it into any computer, cloud document, password manager that touches the cloud, chat, or AI assistant. See [Recovering a Tokenized Domain After Wallet Loss](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) for the full operational guide.

@@ -19,8 +19,8 @@ Short answer: **yes, yes, no.** A tokenized domain is still a real ICANN domain.
 
 A tokenized domain has **two layers**:
 
-1. **The DNS/registry layer** — the same one your `.com` has always lived in. ICANN, registrar, root servers, recursive resolvers.
-2. **The on-chain layer** — an NFT in your wallet that represents *ownership*.
+1. **The [DNS](/en/glossary/dns/) / registry layer** — the same one your `.com` has always lived in. [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), root servers, recursive resolvers.
+2. **The [on-chain](/en/glossary/on-chain/) layer** — an [NFT](/en/glossary/nft/) in your [wallet](/en/glossary/wallet/) that represents *ownership*.
 
 DNS resolution — turning `example.com` into an IP address — happens entirely on layer 1. The on-chain layer is about **who controls the domain**, not how it resolves. Browsers, email servers, CDNs, and certificate authorities never need to know that a blockchain exists.
 
@@ -75,8 +75,8 @@ Most owners manage DNS records inside the Namefi dashboard after tokenization �
 
 ### Transferring the domain
 
-Before: registrar transfer flow, with auth codes and 60-day cooldowns.
-After: **transfer the NFT.** A single on-chain transaction moves ownership. The registrar-side record is kept in sync by the protocol. This is dramatically faster — and is why tokenized-domain marketplaces don't need traditional escrow (see [From Listing to Settlement](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
+Before: [cross-registrar transfer](/en/glossary/cross-registrar-transfer/) flow, with [auth codes](/en/glossary/auth-code/) and 60-day cooldowns.
+After: [**transfer the NFT**](/en/glossary/atomic-transfer/). A single on-chain transaction moves ownership. The registrar-side record is kept in sync by the protocol. This is dramatically faster — and is why tokenized-domain marketplaces don't need traditional [escrow](/en/glossary/escrow/) (see [From Listing to Settlement](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 You can still do a traditional registrar transfer if you want; the on-chain layer doesn't prevent that.
 
@@ -84,13 +84,13 @@ You can still do a traditional registrar transfer if you want; the on-chain laye
 
 ## DNSSEC on a Tokenized Domain
 
-DNSSEC works. If you had it enabled before, it stays enabled. If you didn't, you can enable it after tokenizing. The chain of trust runs through the registry as usual — the on-chain layer doesn't sit anywhere on that path.
+[DNSSEC](/en/glossary/dnssec/) works. If you had it enabled before, it stays enabled. If you didn't, you can enable it after tokenizing. The chain of trust runs through the registry as usual — the on-chain layer doesn't sit anywhere on that path. (Background: [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) defines the protocol; [ICANN's KSK ceremony explainer](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) describes the root-of-trust process.)
 
 A few practical notes:
 
 - If your DNS is at Cloudflare or Route53, those providers handle DNSSEC signing for you. Just toggle it on at the registrar side, which you can do through the Namefi dashboard.
 - DS records are managed at the registrar / registry level. If you rotate KSKs, you'll publish new DS records through the same flow you've always used.
-- DNSSEC failures are visible in standard tools (`dig +dnssec`, dnsviz.net, Verisign's DNSSEC analyzer). Tokenization doesn't introduce a new failure mode.
+- DNSSEC failures are visible in standard tools (`dig +dnssec`, [dnsviz.net](https://dnsviz.net/), [Verisign's DNSSEC analyzer](https://dnssec-debugger.verisignlabs.com/)). Tokenization doesn't introduce a new failure mode.
 
 ---
 

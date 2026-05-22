@@ -17,9 +17,9 @@ We'll keep this platform-neutral. The use cases below apply across [Namefi](http
 
 ## Use Case 1: Wallet-Native Sale and Settlement
 
-**What it is:** Sell a domain by signing a single on-chain transaction. The buyer pays, the NFT moves, the registrar record updates, all atomically. No escrow service, no auth code, no 5-day registrar lock.
+**What it is:** Sell a domain by signing a single [on-chain](/en/glossary/on-chain/) transaction. The buyer pays, the [NFT](/en/glossary/nft/) moves, the [registrar](/en/glossary/registrar/) record updates, [atomically](/en/glossary/atomic-transfer/). No [escrow](/en/glossary/escrow/) service, no [auth code](/en/glossary/auth-code/), no 5-day registrar lock.
 
-**Why it matters:** Traditional domain sales rely on third-party escrow services (Escrow.com, Sav, Sedo) to hold funds while the registrar transfer is in progress. That's slow and expensive — escrow fees of 3–6% and timelines measured in days, not minutes. Tokenized sales replace this with on-chain atomic settlement.
+**Why it matters:** Traditional domain sales rely on third-party escrow services ([Escrow.com](https://www.escrow.com/), Sav, Sedo) to hold funds while the registrar transfer is in progress. That's slow and expensive — escrow fees of 3–6% and timelines measured in days, not minutes. Tokenized sales replace this with on-chain atomic settlement.
 
 **Reality check:** This is **live and working** in 2026 across multiple platforms. The hardest part is liquidity (do enough buyers find your listing?), not the mechanics.
 
@@ -29,9 +29,9 @@ For the deep dive, see [From Listing to Settlement](/en/blog/how-tokenized-marke
 
 ## Use Case 2: DeFi Collateral / Borrowing
 
-**What it is:** Lock your tokenized domain in a lending protocol and borrow stablecoins against its value. If you repay the loan, you get the domain back. If you don't, the domain gets liquidated.
+**What it is:** Lock your tokenized domain in a [lending protocol](/en/glossary/lending-protocol/) and borrow [stablecoins](/en/glossary/stablecoin/) against its value as [collateral](/en/glossary/collateral/). If you repay the loan, you get the domain back. If you don't, the domain gets liquidated.
 
-**Why it matters:** Domain portfolios were historically illiquid — you owned the asset but couldn't easily borrow against it without selling. NFT-aware lending markets (Pine, Arcade, NFTfi, Doma Prime, and protocols that integrate with tokenized domains specifically) change that.
+**Why it matters:** Domain portfolios were historically illiquid — you owned the asset but couldn't easily borrow against it without selling. NFT-aware [DeFi](/en/glossary/defi/) lending markets ([NFTfi](https://www.nftfi.com/), [Arcade](https://www.arcade.xyz/), and protocols that integrate with tokenized domains specifically) change that.
 
 **Reality check:** Real, but still maturing. Pricing tokenized domains for lending is the hard part — they're heterogeneous assets (every domain is unique), unlike fungible tokens. Expect conservative loan-to-value ratios and ongoing iteration on valuation models. Liquidations happen and are public.
 
@@ -41,7 +41,7 @@ This is also the use case where the [tax questions](/en/blog/tax-and-accounting-
 
 ## Use Case 3: Leasing
 
-**What it is:** Rent out the use of a domain for a period without selling it. The owner keeps the NFT; the lessee gets time-bounded rights to operate the domain.
+**What it is:** [Rent out](/en/glossary/leasing/) the use of a domain for a period without selling it. The owner keeps the NFT; the lessee gets time-bounded rights to operate the domain.
 
 **Why it matters:** Portfolio holders often have domains that are valuable but unused. Leasing turns the inventory into cash flow without giving up ownership.
 
@@ -51,7 +51,7 @@ This is also the use case where the [tax questions](/en/blog/tax-and-accounting-
 
 ## Use Case 4: Fractional Ownership
 
-**What it is:** Split ownership of a premium domain across multiple holders, each owning fractional shares.
+**What it is:** Split ownership of a premium domain across multiple holders, each owning [fractional shares](/en/glossary/fractional-ownership/).
 
 **Why it matters:** A `LLM.com` or `crypto.com`-class domain is worth millions. Splitting it across a community of holders unlocks investment in those assets without anyone needing to be a sole owner. Domora has built its thesis around this; Doma Prime and Mizu Launchpad have related primitives.
 
@@ -61,9 +61,9 @@ This is also the use case where the [tax questions](/en/blog/tax-and-accounting-
 
 ## Use Case 5: AI Agent Identity
 
-**What it is:** An AI agent (a piece of software acting on a user's behalf) holds a wallet, and that wallet holds a tokenized domain. The domain becomes the agent's identity — addressable, verifiable, monetizable.
+**What it is:** An [AI agent](/en/glossary/ai-agent/) (a piece of software acting on a user's behalf) holds a [wallet](/en/glossary/wallet/), and that wallet holds a tokenized domain. The domain becomes the agent's identity — addressable, verifiable, monetizable.
 
-**Why it matters:** As AI agents start doing real economic activity (booking, buying, paying), they need persistent identifiers, payment endpoints, and reputational scaffolding. Tokenized domains can serve all three: a unique name, a wallet for receiving payments (e.g., via x402), and an on-chain history.
+**Why it matters:** As AI agents start doing real economic activity (booking, buying, paying), they need persistent identifiers, payment endpoints, and reputational scaffolding. Tokenized domains can serve all three: a unique name, a wallet for receiving payments (e.g., via [x402](/en/glossary/x402/)), and an on-chain history.
 
 **Reality check:** Emerging. The pattern is plausible and being built. Most production examples right now are demos or specific deployments rather than broad adoption. If you're building agent infrastructure, this is a use case to design around. If you're an end user, expect to see more of this through 2026 and 2027.
 
@@ -73,7 +73,7 @@ See [Google Unveils Universal Commerce Protocol](/en/blog/google-unveils-univers
 
 ## Use Case 6: Marketplace Listings That Don't Suck
 
-**What it is:** List your tokenized domain on OpenSea, Blur, Magic Eden, or platform-specific marketplaces — same UX as listing any NFT.
+**What it is:** List your tokenized domain on [OpenSea](https://opensea.io/), [Blur](https://blur.io/), [Magic Eden](https://magiceden.io/), or platform-specific [marketplaces](/en/glossary/marketplace/) — same UX as listing any [ERC-721](/en/glossary/erc-721/) NFT.
 
 **Why it matters:** Traditional domain marketplaces have always been a closed circuit (Sedo, Afternic, Dan.com). Tokenization opens distribution to the broader NFT marketplace ecosystem, which has built UX, search, social, and pricing tooling that the traditional market doesn't have.
 
@@ -83,7 +83,7 @@ See [Google Unveils Universal Commerce Protocol](/en/blog/google-unveils-univers
 
 ## Use Case 7: Programmable Domains
 
-**What it is:** Domains that respond to on-chain conditions — e.g., a smart contract that transfers a domain only if a deposit is paid, or a domain whose DNS records can be voted on by a DAO of holders.
+**What it is:** Domains that respond to on-chain conditions — e.g., a [smart contract](/en/glossary/smart-contract/) that transfers a domain only if a deposit is paid, or a domain whose DNS records can be voted on by a [DAO](/en/glossary/dao/) of holders. This is what [composability](/en/glossary/composability/) looks like for domain assets.
 
 **Why it matters:** Once a domain is a token, it becomes composable with any smart contract logic you can write. Conditional transfers, treasury-owned domains, time-locked sales, automatic auctions, and so on.
 
