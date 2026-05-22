@@ -12,7 +12,7 @@ import { type NextRequest, NextResponse } from 'next/server';
  * Unconditional because every host this app serves is non-indexable —
  * there's no allowlisted host on this Vercel project.
  */
-export function middleware(_request: NextRequest) {
+export function proxy(_request: NextRequest) {
   const response = NextResponse.next();
   response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   return response;

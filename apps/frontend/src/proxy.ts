@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import {
+  getCanonicalRedirect,
+  isIndexableHost,
+} from '@namefi-astra/common/host-policy';
 import { config as configEnv } from './lib/env';
 import {
   isThirdPartyOriginKey,
@@ -137,8 +141,33 @@ const redirectRoutes = [
   },
 ];
 
+/**
+ * Apply host-indexing policy to a response: stamp X-Robots-Tag when the
+ * incoming host is not on the public-indexable allowlist. Pairs with
+ * the robots.ts allowlist for belt-and-suspenders coverage.
+ */
+function withHostPolicyHeader(
+  request: NextRequest,
+  response: NextResponse,
+): NextResponse {
+  if (!isIndexableHost(request.headers.get('host'))) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
+  const host = request.headers.get('host');
+
+  // 308 redirect deprecated/duplicate hosts (astra.namefi.io, app.namefi.io,
+  // www.namefi.io) to their canonical equivalents. Preserves path + query.
+  // Done first so the redirect short-circuits all other proxy logic.
+  const canonicalOrigin = getCanonicalRedirect(host);
+  if (canonicalOrigin) {
+    const redirectTo = new URL(pathname + request.nextUrl.search, canonicalOrigin);
+    return NextResponse.redirect(redirectTo, 308);
+  }
 
   if (pathname === '/') {
     const hostname = getRequestHostname(request);
@@ -153,9 +182,10 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Only process /m/* paths
+  // Only process /m/* paths for further redirect handling; everything else
+  // passes through with the host-policy header applied.
   if (!pathname.startsWith('/m/')) {
-    return NextResponse.next();
+    return withHostPolicyHeader(request, NextResponse.next());
   }
 
   // Find matching route
@@ -214,5 +244,10 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/m/:path*'],
+  // Matcher runs on:
+  //   - `/` and `/m/:path*` for the original third-party-origin / mobile-app
+  //     redirect logic
+  //   - everything else (except Next.js internals) so the host-policy
+  //     X-Robots-Tag header and the canonical-host 308 redirect can apply
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };
