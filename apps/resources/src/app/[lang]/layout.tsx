@@ -21,9 +21,22 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(resolveBaseUrl()),
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  // Only English is indexed. Non-English locales return noindex,follow so
+  // Google can still traverse hreflang links to discover the English canonical
+  // but won't index translated variants as separate pages. Pairs with the
+  // English-only sitemap in apps/resources/src/app/sitemap.ts.
+  const isEnglish = lang === 'en';
+  return {
+    metadataBase: new URL(resolveBaseUrl()),
+    robots: isEnglish ? undefined : { index: false, follow: true },
+  };
+}
 
 export async function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));

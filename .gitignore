@@ -317,3 +317,7 @@ storybook-static
 .rulesync/rules/*.local.md
 rulesync.local.jsonc
 !.rulesync/.aiignore
+scripts/.gsc-oauth-*.json
+scripts/.gsc-deps/
+out/
+.gstack/
