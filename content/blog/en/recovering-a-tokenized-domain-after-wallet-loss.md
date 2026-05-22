@@ -9,7 +9,7 @@ description: What actually happens if you lose access to the wallet that holds y
 keywords: ['recover NFT domain', 'lost wallet domain', 'tokenized domain wallet lost', 'wallet recovery domain', 'NFT domain backup', 'tokenized domain hardware wallet', 'multisig tokenized domain', 'tokenized domain key recovery', 'lost seed phrase domain', 'NFT domain security', 'tokenized domain backup', 'domain key management', 'wallet loss recovery']
 ---
 
-Of all the things people don't think about before tokenizing a domain, **wallet loss recovery** is the biggest. Once a domain is tokenized, the wallet holding the NFT is the source of truth for ownership. Lose the wallet, and you have a real problem.
+Of all the things people don't think about before [tokenizing a domain](/en/blog/what-are-tokenized-domains/), **wallet loss recovery** is the biggest. Once a domain is tokenized, the [wallet](/en/glossary/wallet/) holding the [NFT](/en/glossary/nft/) is the source of truth for ownership. Lose the wallet, and you have a real problem.
 
 This post explains, honestly, what your options actually look like — and how to set things up *now* so the worst case is recoverable.
 
@@ -35,19 +35,19 @@ Do these *before* you tokenize, or right after.
 
 ### 1. Write down your seed phrase. Twice. On paper. Or steel.
 
-The single biggest source of permanent loss is seed phrases that lived in only one place and that place is now gone.
+The single biggest source of permanent loss is [seed phrases](/en/glossary/seed-phrase/) that lived in only one place and that place is now gone.
 
-- Write the 12 or 24 words on paper. Twice. Different physical locations.
-- For higher-value portfolios, use a metal backup plate (Cryptosteel, Billfodl, etc.). Fire and water won't destroy it.
+- Write the 12 or 24 words on paper. Twice. Different physical locations. (The [BIP-39 specification](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) defines the wordlist most wallets use.)
+- For higher-value portfolios, use a metal backup plate. Fire and water won't destroy it.
 - Never type a real seed phrase into a computer, a cloud doc, a password manager that touches the cloud, a chat, or an LLM.
 
 ### 2. Use a hardware wallet for storage
 
-The wallet you use to *interact* with apps can be a hot wallet (MetaMask, Rabby). The wallet that *holds* the domain NFT long-term should be a **hardware wallet** (Ledger, Trezor, GridPlus, Keystone, etc.). Move the NFT to it after minting.
+The wallet you use to *interact* with apps can be a hot wallet (MetaMask, Rabby). The wallet that *holds* the domain NFT long-term should be a [**hardware wallet**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Move the NFT to it after minting.
 
 ### 3. Consider a multisig for high-value domains
 
-For domains that represent a business — your company's primary `.com`, a key brand — a **multisig wallet** (Safe, formerly Gnosis Safe) is a strong choice. Set up 2-of-3 or 3-of-5 signers across different devices and people. Losing one signer doesn't lose the domain.
+For domains that represent a business — your company's primary `.com`, a key brand — a [**multisig wallet**](/en/glossary/multi-sig/) ([Safe](https://safe.global/), formerly Gnosis Safe) is a strong choice. Set up 2-of-3 or 3-of-5 signers across different devices and people. Losing one signer doesn't lose the domain.
 
 Make sure you actually understand how to *execute* multisig transactions, not just hold them. A multisig you've lost signers on is a domain you've lost. Practice transfer of a tiny token before it matters.
 
@@ -84,7 +84,7 @@ Move the NFT to a new wallet *right now*, while the device still works. Then re-
 This is the hard one. Cryptographically, the NFT is now inaccessible. Options:
 
 1. **Platform-side recovery.** If the platform (e.g., Namefi) has an account-bound identity tied to your registration email and KYC (where applicable), you may be able to prove you are the registrant and request a platform-managed remediation. This is **not guaranteed**, requires identity verification, and typically only applies under specific conditions. Contact support immediately — the longer you wait, the harder it gets.
-2. **Registry / registrar appeals.** As a real ICANN domain, the underlying registration record still exists. Registrars have processes for proving ownership (Whois history, billing records, government ID). These are slow, paperwork-heavy, and not a sure thing — but they exist.
+2. **Registry / registrar appeals.** As a real [ICANN](/en/glossary/icann/) domain, the underlying registration record still exists. [Registrars](/en/glossary/registrar/) have processes for proving ownership ([WHOIS / RDAP](/en/glossary/whois/) history, billing records, government ID). These are slow, paperwork-heavy, and not a sure thing — but they exist.
 3. **Legal route.** For high-value domains held in a corporate or estate context, lawyers and recovery firms specialize in this. Expensive, slow, and case-dependent.
 
 What no one can do: brute-force the private key. Don't trust anyone who claims they can.
@@ -121,7 +121,7 @@ The downside is operational overhead: every transfer / signature requires coordi
 
 ## Social Recovery Wallets
 
-Account-abstraction wallets (Argent, Safe with social recovery modules, ERC-4337 smart accounts) let you nominate "guardians" who can collectively help you recover access. This is excellent for individuals who don't want to manage a multisig directly.
+Account-abstraction wallets ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) with social recovery modules, [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) smart accounts) let you nominate "guardians" who can collectively help you recover access. This is excellent for individuals who don't want to manage a [multisig](/en/glossary/multi-sig/) directly.
 
 Pros: forgiving, user-friendly.
 Cons: still relatively new, the guardian set has to actually exist and respond, and the smart-contract code itself is one more thing to trust.

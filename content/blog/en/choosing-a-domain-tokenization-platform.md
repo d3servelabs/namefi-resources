@@ -9,7 +9,7 @@ description: An honest, side-by-side look at the major domain tokenization platf
 keywords: ['domain tokenization platforms', 'Doma alternative', 'D3 Global Inc alternative', '3DNS alternative', 'compare domain tokenization', 'Namefi vs Doma', 'Namefi vs D3 Global Inc', 'Namefi vs 3DNS', 'best domain tokenization', 'Namefi review', 'Doma Protocol review', 'D3 Global Inc review', '3DNS review', 'choose domain tokenization', 'domain tokenization comparison']
 ---
 
-If you're shopping for a domain tokenization platform in 2026, you're probably looking at a handful of names: Namefi, Doma Protocol, D3 Global Inc (also written as D3.inc or D3 Inc), 3DNS, Domora, WebUnited, and GBM. They all have "tokenized domains" on the homepage. They don't all do the same thing.
+If you're shopping for a domain tokenization platform in 2026, you're probably looking at a handful of names: [Namefi](https://namefi.io), [Doma Protocol](https://doma.xyz), D3 Global Inc (also written as [D3.inc](https://d3.inc) or D3 Inc), 3DNS, [Domora](https://domora.com), [WebUnited](https://webunited.com), and [GBM](https://gbm.auction). They all have "tokenized domains" on the homepage. They don't all do the same thing.
 
 This post is our honest attempt to lay out who's good at what. We obviously work on Namefi, so take the framing with the appropriate salt — but we'll try to be specific enough that you can verify each claim yourself.
 
@@ -31,9 +31,9 @@ These categories overlap. Some platforms span more than one. But "what camp does
 
 ### Namefi
 
-**Best for:** owners who want a real `.com`/`.xyz`/`.io` tokenized on Ethereum or Base, with broad NFT-marketplace and DeFi-lending support, and DNS management that doesn't feel like a step backward from Cloudflare.
+**Best for:** owners who want a real `.com`/`.xyz`/`.io` [tokenized](/en/glossary/tokenize/) on Ethereum or Base, with broad NFT-marketplace and [DeFi](/en/glossary/defi/)-lending support, and DNS management that doesn't feel like a step backward from Cloudflare.
 
-**Notable:** ICANN-recognized domains across many TLDs, on-chain ownership via standard NFTs (so wallets, marketplaces, and on-chain tooling Just Work), full DNS management including DNSSEC, an in-app marketplace, and integrations with on-chain payments (x402). Multi-chain. Self-custody from day one.
+**Notable:** [ICANN](/en/glossary/icann/)-recognized domains across many [TLDs](/en/glossary/tld/), on-chain ownership via standard [NFTs](/en/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), so wallets, marketplaces, and on-chain tooling Just Work), full DNS management including [DNSSEC](/en/glossary/dnssec/), an in-app [marketplace](/en/glossary/marketplace/), and integrations with on-chain payments ([x402](/en/glossary/x402/)). Multi-chain. Self-custody from day one.
 
 **Less suited for:** people who want a brand-new TLD they don't already own, or people who only want a Web3-native name like `name.eth`.
 
@@ -117,7 +117,7 @@ If a platform's documentation doesn't make any of these clear, that itself is a 
 | Fractional / co-ownership of premium names | Domora |
 | Web2↔Web3 DNS bridging | WebUnited |
 | Auction-style sales infrastructure | GBM |
-| Pure on-chain identity (e.g., `name.eth`) — *different category* | ENS, Unstoppable Domains, Freename |
+| Pure on-chain identity (e.g., `name.eth`) — *different category* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
 The last row is important: **on-chain identity names like `.eth` are a sibling category, not a tokenized ICANN domain.** They're useful for different things. See [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/) for that breakdown.
 

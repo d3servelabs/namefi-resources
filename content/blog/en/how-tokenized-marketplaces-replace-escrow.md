@@ -11,12 +11,12 @@ keywords: ['domain marketplace blockchain', 'atomic domain transfer', 'tokenized
 
 The traditional flow for selling a `.com` looks something like this:
 
-1. List on Sedo, Afternic, or Dan.com.
+1. List on [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/), or Dan.com.
 2. Negotiate.
-3. Open an escrow at Escrow.com or similar. Buyer wires funds.
-4. Seller unlocks the domain and provides the auth code.
-5. Buyer initiates transfer at their registrar.
-6. Wait 5–7 days for the ICANN transfer to clear.
+3. Open an [escrow](/en/glossary/escrow/) at [Escrow.com](https://www.escrow.com/) or similar. Buyer wires funds.
+4. Seller unlocks the domain and provides the [auth code](/en/glossary/auth-code/).
+5. Buyer initiates [cross-registrar transfer](/en/glossary/cross-registrar-transfer/) at their [registrar](/en/glossary/registrar/).
+6. Wait 5–7 days for the [ICANN](/en/glossary/icann/) transfer to clear.
 7. Confirm the transfer; escrow releases funds.
 8. Pay 3–6% in escrow fees, plus marketplace cuts.
 
@@ -28,13 +28,13 @@ Tokenized-domain sales compress the whole thing into one transaction. This post 
 
 ## The New Flow, End-to-End
 
-1. List the tokenized domain on a marketplace (Namefi's own, Doma's, OpenSea, Blur, etc.).
-2. Buyer pays. The NFT moves to the buyer's wallet. The registrar-side record is kept in sync by the platform.
+1. List the [tokenized domain](/en/blog/what-are-tokenized-domains/) on a [marketplace](/en/glossary/marketplace/) (Namefi's own, Doma's, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
+2. Buyer pays. The [NFT](/en/glossary/nft/) moves to the buyer's [wallet](/en/glossary/wallet/). The [registrar](/en/glossary/registrar/)-side record is kept in sync by the platform.
 3. Done.
 
-That's it. Two steps. No auth code, no escrow, no 5-day registrar lock, no "I sent the wire, now I'm trusting you" gap.
+That's it. Two steps. No [auth code](/en/glossary/auth-code/), no [escrow](/en/glossary/escrow/), no 5-day registrar lock, no "I sent the wire, now I'm trusting you" gap.
 
-This works because the **NFT is the canonical ownership record**, and on-chain transactions are atomic: payment and asset transfer happen in the same block, or neither happens.
+This works because the **NFT is the canonical ownership record**, and [on-chain](/en/glossary/on-chain/) transactions are [atomic](/en/glossary/atomic-transfer/): payment and asset transfer happen in the same block, or neither happens.
 
 ---
 
@@ -66,7 +66,7 @@ There's a related rule — the 60-day cooldown after a registrar transfer — th
 
 ### Wire transfers and bank delays
 
-**Replaced by crypto and stablecoin payments.** USDC, ETH, and other on-chain payments settle in seconds. Wire transfers settle in days. The difference is most stark for international sales.
+**Replaced by crypto and [stablecoin](/en/glossary/stablecoin/) payments.** USDC, ETH, and other on-chain payments settle in seconds. Wire transfers settle in days. The difference is most stark for international sales.
 
 ### "I'm trusting the other person to do their part"
 
@@ -88,7 +88,7 @@ The marketplace smart contract is the new "escrow." If it has a bug, weird thing
 
 ### Front-running and MEV
 
-On-chain listings are public. A determined actor can try to front-run a transaction. Major marketplaces have mitigations, but it's a category of risk that didn't exist in the traditional flow.
+On-chain listings are public. A determined actor can try to front-run a transaction (the umbrella term is [MEV — Maximal Extractable Value](https://ethereum.org/en/developers/docs/mev/)). Major marketplaces have mitigations, but it's a category of risk that didn't exist in the traditional flow.
 
 ### Stolen-asset risk
 

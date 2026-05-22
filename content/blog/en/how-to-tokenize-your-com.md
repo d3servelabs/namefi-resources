@@ -21,10 +21,10 @@ This post assumes you already want to do it.
 
 You'll have a much smoother time if these are true before you click anything:
 
-- **You control the domain at its current registrar.** You can log in, change nameservers, and approve transfer/auth codes.
-- **You have a self-custodied wallet.** MetaMask, Rabby, Coinbase Wallet, or any standard EVM wallet. Make sure you actually have the seed phrase — not just an exchange account.
-- **The wallet has a small amount of gas.** A few dollars of ETH or Base ETH covers the on-chain minting transaction. You don't need much.
-- **The domain isn't locked, expiring, or mid-transfer.** Domains within ~60 days of a recent transfer, or within 30 days of expiry, often can't move. Check first.
+- **You control the domain at its current [registrar](/en/glossary/registrar/).** You can log in, change nameservers, and approve transfer / [auth codes](/en/glossary/auth-code/).
+- **You have a self-custodied [wallet](/en/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet, or any standard EVM wallet. Make sure you actually have the [seed phrase](/en/glossary/seed-phrase/) — not just an exchange account.
+- **The wallet has a small amount of [gas](/en/glossary/gas/).** A few dollars of ETH or Base ETH covers the [on-chain](/en/glossary/on-chain/) minting transaction. You don't need much.
+- **The domain isn't locked, expiring, or mid-transfer.** Domains within ~60 days of a recent [cross-registrar transfer](/en/glossary/cross-registrar-transfer/), or within 30 days of expiry, often can't move. Check first.
 - **You have time.** Plan for ~30 minutes of attention, plus up to 5–7 days of background processing for cross-registrar moves.
 
 If any of those is shaky, fix it before you start. The process tolerates patience much better than it tolerates surprises.
@@ -41,7 +41,7 @@ Head to [namefi.io](https://namefi.io) and click "Connect Wallet". Approve the c
 
 ## Step 2: Add the Domain You Want to Tokenize
 
-In your Namefi dashboard, search for or add the domain you already own. Namefi will check eligibility — the registrar it's currently at, whether it's lockable, whether it's within ICANN transfer rules, and whether the TLD is supported.
+In your Namefi dashboard, search for or add the domain you already own. Namefi will check eligibility — the [registrar](/en/glossary/registrar/) it's currently at, whether it's lockable, whether it's within [ICANN](/en/glossary/icann/) transfer rules, and whether the [TLD](/en/glossary/tld/) is supported.
 
 You'll see one of three statuses:
 
@@ -64,7 +64,7 @@ You'll see the path that applies to your domain. The dashboard will show the est
 
 ## Step 4: Confirm Auth Code / Approve Transfer (if needed)
 
-For the transfer-in path, you'll grab the **auth code** (sometimes called EPP code) from your current registrar and paste it into Namefi. You may also need to:
+For the transfer-in path, you'll grab the [**auth code**](/en/glossary/auth-code/) (sometimes called EPP code) from your current registrar and paste it into Namefi. You may also need to:
 
 - Unlock the domain at your current registrar.
 - Approve a confirmation email sent to the registrant contact.
@@ -75,12 +75,12 @@ This is the slowest part of the whole process. Plan for 5–7 days for the cross
 
 ## Step 5: Mint the On-Chain Token
 
-Once the domain is under the Namefi registrar integration, you'll be prompted to **mint** the NFT representation. Your wallet pops up; you confirm a transaction; gas is paid; the token lands in your wallet.
+Once the domain is under the Namefi registrar integration, you'll be prompted to **mint** the [NFT](/en/glossary/nft/) representation (a standard [ERC-721](/en/glossary/erc-721/) token). Your wallet pops up; you confirm a transaction; [gas](/en/glossary/gas/) is paid; the token lands in your wallet.
 
-This is the moment the domain becomes *tokenized*. You now have:
+This is the moment the domain becomes [*tokenized*](/en/glossary/tokenize/). You now have:
 
-- The traditional DNS / registrar record (still real, still ICANN-recognized).
-- An on-chain NFT in your wallet that represents ownership.
+- The traditional [DNS](/en/glossary/dns/) / registrar record (still real, still ICANN-recognized).
+- An [on-chain](/en/glossary/on-chain/) NFT in your wallet that represents ownership.
 
 The two are kept in sync by the protocol going forward.
 
@@ -90,7 +90,7 @@ The two are kept in sync by the protocol going forward.
 
 Open your wallet's NFT tab. You should see the new tokenized domain NFT. Click through to a block explorer (Etherscan, Basescan, etc.) to confirm the contract and ownership address. This is a good moment to take a screenshot for your own records.
 
-If you have a hardware wallet, this is a great moment to move the NFT to it. The transfer is a normal NFT transfer and costs gas.
+If you have a [hardware wallet](/en/glossary/hardware-wallet/), this is a great moment to move the NFT to it. The transfer is a normal NFT transfer and costs gas.
 
 ---
 
@@ -121,7 +121,7 @@ There is no hidden surprise. If a number isn't on the confirmation screen, it is
 - **"My registrar won't release the auth code."** Some registrars hide this deep in their UI or require a support ticket. Be patient and persistent.
 - **"I unlocked the domain but the system still says locked."** Registrars often cache lock status for up to 24 hours. Wait a day, refresh.
 - **"My wallet shows the NFT, but the domain still appears at my old registrar."** During the transfer window, both sides may briefly show ownership. The on-chain side becomes authoritative after the transfer settles.
-- **"I want to use a multisig as the owner."** Supported. Connect the multisig wallet. Just be sure you can actually execute transactions from it — a multisig you've lost signers on is a domain you've lost too.
+- **"I want to use a [multisig](/en/glossary/multi-sig/) as the owner."** Supported. Connect the multisig wallet. Just be sure you can actually execute transactions from it — a multisig you've lost signers on is a domain you've lost too. Background: [Do Multisig Wallets Actually Improve Security?](/en/blog/do-multisig-wallets-actually-improve-security/)
 
 ---
 
