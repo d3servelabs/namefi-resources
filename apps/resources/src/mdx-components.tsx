@@ -19,9 +19,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
 const TRUSTED_REFERRER_HOSTS = [
   // First-party
   'namefi.io',
-  'namefi.dev',
   'd3serve.xyz',
-  'd3servelabs.com',
   // Standards bodies / authoritative references
   'icann.org',
   'iana.org',
