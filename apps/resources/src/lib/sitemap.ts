@@ -1,15 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { i18n, type Locale } from '@/i18n-config';
 import {
-  getAvailableLocalesForGlossary,
-  getAvailableLocalesForPartner,
   getAvailableLocalesForSlug,
   getAvailableLocalesForTld,
-  getGlossaryCached,
   getGlossaryEntriesForLocale,
-  getGlossaryParams,
-  getPartnerCached,
-  getPartnerParams,
   getPartnersForLocale,
   getPostCached,
   getPostParams,
@@ -210,28 +204,6 @@ export function buildSitemapEntries(
 
   entries.push(
     ...buildCollectionEntries(baseUrl, {
-      params: getGlossaryParams().filter(({ lang }) => localeSet.has(lang)),
-      getEntry: getGlossaryCached,
-      getLocales: getAvailableLocalesForGlossary,
-      pathBuilder: (lang, slug) => `/r/${lang}/glossary/${slug}`,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    }),
-  );
-
-  entries.push(
-    ...buildCollectionEntries(baseUrl, {
-      params: getPartnerParams().filter(({ lang }) => localeSet.has(lang)),
-      getEntry: getPartnerCached,
-      getLocales: getAvailableLocalesForPartner,
-      pathBuilder: (lang, slug) => `/r/${lang}/partners/${slug}`,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    }),
-  );
-
-  entries.push(
-    ...buildCollectionEntries(baseUrl, {
       params: getTldParams().filter(({ lang }) => localeSet.has(lang)),
       getEntry: getTldCached,
       getLocales: getAvailableLocalesForTld,
@@ -240,6 +212,14 @@ export function buildSitemapEntries(
       priority: 0.6,
     }),
   );
+
+  // Intentionally omitted: glossary and partners detail pages.
+  // Both are templated reference content (short entries, similar structure)
+  // that Google's quality algorithms tend to deprioritize. Announcing them
+  // in the sitemap competes with higher-value blog/tld pages for crawl
+  // budget. They remain fully discoverable via internal links from blog
+  // posts and TLD pages, and their index pages (/r/en/glossary,
+  // /r/en/partners) are still announced via buildLocaleIndexEntries.
 
   return entries;
 }
