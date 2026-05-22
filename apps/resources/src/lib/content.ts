@@ -883,9 +883,13 @@ function extensionToContentType(extension: string): string {
 // data/content/assets/<slug>-og.{jpg,jpeg,png,webp}. Shared across locales —
 // translations reuse the source-language asset. Returns undefined when no
 // asset is committed for the slug; callers should fall back to generated OG.
+// Slugs traverse the user-facing URL, so we resolve and assert containment
+// inside ASSETS_ROOT before touching the filesystem.
 export function getPostOgAsset(slug: string): PostOgAsset | undefined {
+  const assetsRootWithSep = `${ASSETS_ROOT}${path.sep}`;
   for (const extension of POST_OG_ASSET_EXTENSIONS) {
-    const absolutePath = path.join(ASSETS_ROOT, `${slug}-og${extension}`);
+    const absolutePath = path.resolve(ASSETS_ROOT, `${slug}-og${extension}`);
+    if (!absolutePath.startsWith(assetsRootWithSep)) continue;
     if (fs.existsSync(absolutePath)) {
       return {
         absolutePath,

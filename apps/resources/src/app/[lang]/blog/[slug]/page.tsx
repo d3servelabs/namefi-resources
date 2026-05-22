@@ -13,6 +13,11 @@ import {
   type AuthorEntry,
   getAuthorNames,
 } from '@/lib/content';
+// The default static `contentType` exported from opengraph-image.tsx is only
+// accurate for the generated PNG fallback. When a hand-made asset of a
+// different type (jpg/webp) is served, we surface the real content-type via
+// openGraph.images[*].type so the rendered og:image:type meta tag matches the
+// HTTP Content-Type header on the asset response.
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
@@ -45,6 +50,7 @@ export async function generateMetadata({
       : `${baseUrl}/r/en/blog/${slug}`;
   const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
+  const ogImageType = getPostOgAsset(slug)?.contentType ?? 'image/png';
   const authorNames = getAuthorNames(locale, entry.frontmatter.authors);
   const siteName = resolveTitle(locale);
   const publishedTime = entry.publishedAt.toISOString();
@@ -81,6 +87,7 @@ export async function generateMetadata({
           width: 1200,
           height: 630,
           alt: entry.frontmatter.title,
+          type: ogImageType,
         },
       ],
     },

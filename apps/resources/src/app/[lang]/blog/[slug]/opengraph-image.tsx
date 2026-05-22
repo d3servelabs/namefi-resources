@@ -59,16 +59,22 @@ export default async function Image({
 
   // Prefer the hand-made OG asset committed under data/content/assets when one
   // exists for this slug. Falls through to the generated ImageResponse below
-  // so posts without a custom asset still get a usable preview.
+  // so posts without a custom asset still get a usable preview. The try/catch
+  // covers TOCTOU between existsSync and readFile — if the file vanishes or
+  // becomes unreadable, we still return a usable OG rather than a 500.
   const ogAsset = getPostOgAsset(slug);
   if (ogAsset) {
-    const buffer = await fs.readFile(ogAsset.absolutePath);
-    return new Response(new Uint8Array(buffer), {
-      headers: {
-        'content-type': ogAsset.contentType,
-        'cache-control': 'public, max-age=31536000, immutable',
-      },
-    });
+    try {
+      const buffer = await fs.readFile(ogAsset.absolutePath);
+      return new Response(new Uint8Array(buffer), {
+        headers: {
+          'content-type': ogAsset.contentType,
+          'cache-control': 'public, max-age=31536000, immutable',
+        },
+      });
+    } catch {
+      // fall through to the generated ImageResponse below
+    }
   }
 
   const dictionary = await getDictionary(locale);
