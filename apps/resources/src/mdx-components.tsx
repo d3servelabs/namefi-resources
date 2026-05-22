@@ -12,6 +12,38 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
+// Hosts where we trust the destination enough to send a Referer header.
+// External links to any host NOT in this list get rel="noreferrer" so we
+// don't leak our visitors' browsing context to competitors or third
+// parties. `noopener` stays on every external link for tab-hijack safety.
+const TRUSTED_REFERRER_HOSTS = [
+  // First-party
+  'namefi.io',
+  'namefi.dev',
+  'd3serve.xyz',
+  'd3servelabs.com',
+  // Standards bodies / authoritative references
+  'icann.org',
+  'iana.org',
+  'ietf.org',
+  'w3.org',
+  'wikipedia.org',
+  'github.com',
+  'developer.mozilla.org',
+];
+
+const isTrustedReferrerHost = (href: string): boolean => {
+  let host: string;
+  try {
+    host = new URL(href).hostname.toLowerCase();
+  } catch {
+    return false;
+  }
+  return TRUSTED_REFERRER_HOSTS.some(
+    (trusted) => host === trusted || host.endsWith(`.${trusted}`),
+  );
+};
+
 const Anchor = ({
   children,
   className,
@@ -22,11 +54,14 @@ const Anchor = ({
     className,
   );
   if (href?.startsWith('http')) {
+    const rel = isTrustedReferrerHost(href)
+      ? 'noopener'
+      : 'noopener noreferrer';
     return (
       <a
         href={href}
         target="_blank"
-        rel="noopener noreferrer"
+        rel={rel}
         className={derivedClassName}
       >
         {children}
