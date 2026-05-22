@@ -15,8 +15,9 @@ export async function generateMetadata({
     ? (lang as Locale)
     : i18n.defaultLocale;
   const baseUrl = resolveBaseUrl();
-  const canonicalPath = `/r/${locale}`;
-  const url = new URL(canonicalPath, baseUrl);
+  // SEO: declare the English home as canonical so ranking signals
+  // consolidate on the English page across locales.
+  const canonicalUrl = new URL('/r/en', baseUrl);
   const rssFeedUrl = new URL(`/r/${locale}/rss.xml`, baseUrl);
   const title = resolveTitle(locale);
   const description = 'Blog posts about Namefi';
@@ -33,7 +34,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: url.toString(),
+      canonical: canonicalUrl.toString(),
       languages: languageAlternates,
       types: {
         'application/rss+xml': rssFeedUrl.toString(),

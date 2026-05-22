@@ -33,9 +33,15 @@ export async function generateMetadata({
   if (!entry) return {};
 
   const baseUrl = resolveBaseUrl();
-  const canonicalPath = `/r/${locale}/partners/${slug}`;
-  const url = `${baseUrl}${canonicalPath}`;
-  const ogImagePath = `${canonicalPath}/opengraph-image`;
+  const selfPath = `/r/${locale}/partners/${slug}`;
+  const selfUrl = `${baseUrl}${selfPath}`;
+  // SEO: declare the English version (when it exists) as the canonical so
+  // ranking signals consolidate on the English page.
+  const canonicalUrl =
+    locale === 'en' || !getPartnerCached('en', slug)
+      ? selfUrl
+      : `${baseUrl}/r/en/partners/${slug}`;
+  const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
   const authorNames = getAuthorNames(locale, entry.frontmatter.authors);
   const siteName = resolveTitle(locale);
@@ -54,7 +60,7 @@ export async function generateMetadata({
 
   return {
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
       languages: languageAlternates,
     },
     title: entry.frontmatter.title,
@@ -63,7 +69,7 @@ export async function generateMetadata({
     openGraph: {
       title: entry.frontmatter.title,
       description: summary,
-      url,
+      url: selfUrl,
       locale,
       type: 'article',
       tags: entry.frontmatter.tags,

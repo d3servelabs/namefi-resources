@@ -28,9 +28,12 @@ export async function generateMetadata({
   const sectionDescription = dictionary.tld.indexDescription ?? navLabel;
 
   const baseUrl = resolveBaseUrl();
-  const canonicalPath = `/r/${locale}/tld`;
-  const url = `${baseUrl}${canonicalPath}`;
-  const ogImagePath = `${canonicalPath}/opengraph-image`;
+  const selfPath = `/r/${locale}/tld`;
+  const selfUrl = `${baseUrl}${selfPath}`;
+  // SEO: declare the English index as canonical so ranking signals
+  // consolidate on the English page across locales.
+  const canonicalUrl = `${baseUrl}/r/en/tld`;
+  const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
   const pageTitle = `${baseTitle} – ${sectionTitle}`;
   const description = sectionDescription;
@@ -43,7 +46,7 @@ export async function generateMetadata({
 
   return {
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
       languages: languageAlternates,
     },
     title: pageTitle,
@@ -51,7 +54,7 @@ export async function generateMetadata({
     openGraph: {
       title: pageTitle,
       description,
-      url,
+      url: selfUrl,
       locale,
       type: 'website',
       siteName: baseTitle,

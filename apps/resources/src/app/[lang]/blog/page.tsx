@@ -23,9 +23,12 @@ export async function generateMetadata({
     : i18n.defaultLocale;
 
   const baseUrl = resolveBaseUrl();
-  const canonicalPath = `/r/${locale}/blog`;
-  const url = `${baseUrl}${canonicalPath}`;
-  const ogImagePath = `${canonicalPath}/opengraph-image`;
+  const selfPath = `/r/${locale}/blog`;
+  const selfUrl = `${baseUrl}${selfPath}`;
+  // SEO: declare the English index as canonical so ranking signals
+  // consolidate on the English page across locales.
+  const canonicalUrl = `${baseUrl}/r/en/blog`;
+  const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
   const rssFeedUrl = `${baseUrl}/r/${locale}/rss.xml`;
   const title = resolveTitle(locale);
@@ -39,7 +42,7 @@ export async function generateMetadata({
 
   return {
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
       languages: languageAlternates,
       types: {
         'application/rss+xml': rssFeedUrl,
@@ -50,7 +53,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url,
+      url: selfUrl,
       locale,
       type: 'website',
       siteName: title,
