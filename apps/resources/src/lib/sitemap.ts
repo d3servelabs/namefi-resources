@@ -198,7 +198,10 @@ export function buildSitemapEntries(
       getLocales: getAvailableLocalesForSlug,
       pathBuilder: (lang, slug) => `/r/${lang}/blog/${slug}`,
       changeFrequency: 'monthly',
-      priority: 0.6,
+      // Blog posts are unique long-form content and our highest-value pages.
+      // Note: Google ignores <priority>, but Bing/Yandex still respect it and
+      // it serves as a declared-intent signal for any future internal tooling.
+      priority: 0.8,
     }),
   );
 
@@ -209,7 +212,9 @@ export function buildSitemapEntries(
       getLocales: getAvailableLocalesForTld,
       pathBuilder: (lang, slug) => `/r/${lang}/tld/${slug}`,
       changeFrequency: 'monthly',
-      priority: 0.6,
+      // TLD detail pages are templated landing pages; deprioritized vs blog
+      // to express our preference that crawl effort favors blog content.
+      priority: 0.2,
     }),
   );
 
