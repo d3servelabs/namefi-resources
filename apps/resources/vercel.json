@@ -6,34 +6,6 @@
   "installCommand": "curl -fsSL https://bun.com/install | bash -s \"bun-v$(cat .bun-version 2>/dev/null || cat ../../.bun-version)\" && ~/.bun/bin/bun install",
   "redirects": [
     {
-      "source": "/r/:path*",
-      "has": [{ "type": "host", "value": "r.namefi.io" }],
-      "missing": [{ "type": "header", "key": "x-forwarded-host" }],
-      "destination": "https://namefi.io/r/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "r.namefi.io" }],
-      "missing": [{ "type": "header", "key": "x-forwarded-host" }],
-      "destination": "https://namefi.io/r/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/r/:path*",
-      "has": [{ "type": "host", "value": "r.namefi.dev" }],
-      "missing": [{ "type": "header", "key": "x-forwarded-host" }],
-      "destination": "https://namefi.dev/r/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "r.namefi.dev" }],
-      "missing": [{ "type": "header", "key": "x-forwarded-host" }],
-      "destination": "https://namefi.dev/r/:path*",
-      "permanent": true
-    },
-    {
       "source": "/",
       "destination": "/r",
       "permanent": false
