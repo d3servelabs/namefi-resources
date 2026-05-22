@@ -101,18 +101,61 @@ jobs:
       label: ${{ steps.compute.outputs.label }}
       vercel_env: ${{ steps.compute.outputs.vercel_env }}
     steps:
+      - name: Checkout repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Determine before commit
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: determine-before-commit
+        uses: ./.github/actions/determine-before-commit
+
+      - name: Detect content-only change
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: content-only
+        run: |
+          # A push is "content-only" when every changed path lives under
+          # apps/resources/data/ (the namefi-resources submodule). Such pushes
+          # are blog/copy bumps and can be auto-promoted straight to prod —
+          # the submodule SHA itself is the audit trail / rollback handle.
+          BEFORE="${{ steps.determine-before-commit.outputs.before-commit }}"
+          HEAD="${{ github.sha }}"
+          CHANGED=$(git diff --name-only "$BEFORE" "$HEAD")
+          echo "Changed files between $BEFORE and $HEAD:"
+          echo "$CHANGED"
+
+          if [[ -z "$CHANGED" ]]; then
+            echo "is_content_only=false" >> $GITHUB_OUTPUT
+            echo "No changed files detected; treating as non-content-only"
+            exit 0
+          fi
+
+          if echo "$CHANGED" | grep -qvE '^apps/resources/data($|/)'; then
+            echo "is_content_only=false" >> $GITHUB_OUTPUT
+            echo "Non-content paths changed; not content-only"
+          else
+            echo "is_content_only=true" >> $GITHUB_OUTPUT
+            echo "All changes are inside apps/resources/data — content-only"
+          fi
+
       - name: Compute environment values
         id: compute
         run: |
-          # Simple logic:
-          # - Tag push (astra-resources/v*) = production
-          # - Manual dispatch with production = production
-          # - Everything else = dev
+          # Production triggers:
+          # - Tag push (astra-resources/v*)
+          # - Manual dispatch with environment=production
+          # - Main branch push whose only changes are content (apps/resources/data/**)
+          # Everything else deploys to dev.
 
           IS_PROD="false"
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
             IS_PROD="true"
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
+            IS_PROD="true"
+          elif [[ "${{ steps.content-only.outputs.is_content_only }}" == "true" ]]; then
             IS_PROD="true"
           fi
 
@@ -128,6 +171,7 @@ jobs:
           # Output for debugging
           echo "Event: ${{ github.event_name }}"
           echo "Ref: ${{ github.ref }}"
+          echo "Content-only: ${{ steps.content-only.outputs.is_content_only }}"
           echo "Is Production: $IS_PROD"
           echo "Label: $([ "$IS_PROD" == "true" ] && echo "prod" || echo "dev")"
           echo "Vercel Env: $([ "$IS_PROD" == "true" ] && echo "production" || echo "dev")"
