@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
+
+# Synced from data/content/assets by the sync-blog-assets script (pre-build/dev).
+# Source of truth lives in the namefi-resources submodule.
+/public/blog-assets/
