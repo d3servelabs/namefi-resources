@@ -25,7 +25,7 @@ export const HOMEPAGE_JSON_LD = {
       url: HOMEPAGE_URL,
       logo: `${HOMEPAGE_URL}/logotype.svg`,
       description:
-        'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+        'Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.',
       founder: {
         '@type': 'Person',
         name: 'Zainan Victor Zhou',
@@ -121,7 +121,7 @@ export const HOMEPAGE_JSON_LD = {
       url: HOMEPAGE_URL,
       name: 'Namefi',
       description:
-        'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+        'Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.',
       publisher: {
         '@id': `${HOMEPAGE_URL}#organization`,
       },

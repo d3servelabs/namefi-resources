@@ -44,7 +44,7 @@ const mockOriginRuntime: OriginRuntime = {
     metadata: {
       title: 'Tokenized domains for the future internet - Namefi',
       description:
-        'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+        'Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.',
     },
     logo: {
       type: 'lottie',

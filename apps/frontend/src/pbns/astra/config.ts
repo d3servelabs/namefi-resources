@@ -4,7 +4,7 @@ export const originConfig: OriginConfig = {
   metadata: {
     title: 'Tokenized domains for the future internet - Namefi',
     description:
-      'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+      'Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.',
     keywords: [
       'domain',
       'NFT',
@@ -31,7 +31,7 @@ export const originConfig: OriginConfig = {
     openGraph: {
       title: 'Tokenized domains for the future internet - Namefi',
       description:
-        'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+        'Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.',
       url: 'https://namefi.io/',
       siteName: 'Namefi',
       type: 'website',
@@ -42,7 +42,7 @@ export const originConfig: OriginConfig = {
       card: 'summary_large_image',
       title: 'Tokenized domains for the future internet - Namefi',
       description:
-        'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
+        'Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.',
       images: ['/og-image-simple.jpg'],
       site: '@namefi_io',
     },
