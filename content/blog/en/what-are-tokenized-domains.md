@@ -100,7 +100,7 @@ Because both layers exist, you get the union of capabilities:
 
 Domain tokenization is no longer a single-vendor experiment—several platforms now offer ways to tokenize a domain or work with tokenized domains, each with a slightly different approach. Here is a snapshot of the most recognizable names in the space.
 
-> External links below use `rel="noopener noreferrer"`—we reference them for completeness, not endorsement.
+> External links below are provided as helpful pointers, not endorsements.
 
 ### 1. Namefi (that's us)
 
@@ -114,35 +114,35 @@ Domain tokenization is no longer a single-vendor experiment—several platforms 
 
 **Approach:** A platform focused on bringing new and existing TLDs on-chain at the registry level, partnering with TLD operators and ICANN-aligned infrastructure.
 
-**Best for:** Registry-level tokenization initiatives and new tokenized TLD launches. Site: <a href="https://d3.inc" rel="noopener noreferrer" target="_blank">d3.inc</a>.
+**Best for:** Registry-level tokenization initiatives and new tokenized TLD launches. Site: [d3.inc](https://d3.inc).
 
 ### 3. Doma Protocol
 
 **Approach:** A protocol-layer effort to standardize how real domains are represented and transferred on-chain across registrars and chains.
 
-**Best for:** Builders looking at protocol-level abstractions for domain tokenization. Site: <a href="https://doma.xyz" rel="noopener noreferrer" target="_blank">doma.xyz</a>.
+**Best for:** Builders looking at protocol-level abstractions for domain tokenization. Site: [doma.xyz](https://doma.xyz).
 
 ### 4. Domora
 
 **Approach:** Another emerging platform in the tokenized domain space, focused on bringing real domain names on-chain.
 
-**Best for:** Users evaluating alternatives in the tokenized-DNS-domain category. Site: <a href="https://domora.com" rel="noopener noreferrer" target="_blank">domora.com</a>.
+**Best for:** Users evaluating alternatives in the tokenized-DNS-domain category. Site: [domora.com](https://domora.com).
 
 ### 5. WebUnited
 
 **Approach:** A player exploring on-chain domain representation and related infrastructure for real domain names.
 
-**Best for:** Teams looking at additional tokenized-domain options. Site: <a href="https://webunited.com" rel="noopener noreferrer" target="_blank">webunited.com</a>.
+**Best for:** Teams looking at additional tokenized-domain options. Site: [webunited.com](https://webunited.com).
 
 ### 6. GBM (Global Brand Marketplace / GBM Auctions)
 
 **Approach:** Known for on-chain auction infrastructure that has been applied to tokenized domain sales and brand assets.
 
-**Best for:** Auction-driven discovery and sale of tokenized domains and related digital brand assets. Site: <a href="https://gbm.auction" rel="noopener noreferrer" target="_blank">gbm.auction</a>.
+**Best for:** Auction-driven discovery and sale of tokenized domains and related digital brand assets. Site: [gbm.auction](https://gbm.auction).
 
 ### 7. Traditional registrars exploring tokenization
 
-Some incumbent ICANN [registrars](/en/glossary/registrar/) and registries (e.g. <a href="https://www.godaddy.com" rel="noopener noreferrer" target="_blank">GoDaddy</a>, <a href="https://www.identity.digital" rel="noopener noreferrer" target="_blank">Identity Digital</a>) have announced exploratory tokenization initiatives or partnerships. Coverage and availability vary widely, and most of their core business remains traditional DNS-only registration.
+Some incumbent ICANN [registrars](/en/glossary/registrar/) and registries (e.g. [GoDaddy](https://www.godaddy.com), [Identity Digital](https://www.identity.digital)) have announced exploratory tokenization initiatives or partnerships. Coverage and availability vary widely, and most of their core business remains traditional DNS-only registration.
 
 ---
 
@@ -159,9 +159,9 @@ Web3 domains are a thoughtfully different design from tokenized ICANN domains. H
 
 The leading Web3-domain platforms, with appreciation for what each contributes:
 
-- <a href="https://ens.domains" rel="noopener noreferrer" target="_blank">ENS</a> — a foundational Ethereum-native naming system (`.eth`) and one of the most important primitives in Web3. ENS also offers thoughtful bridges to real DNS names via [DNSSEC](/en/glossary/dnssec/).
-- <a href="https://unstoppabledomains.com" rel="noopener noreferrer" target="_blank">Unstoppable Domains</a> — an early and influential pioneer of blockchain-native names like `.crypto`, `.x`, and `.nft`, with broad wallet and dApp integrations.
-- <a href="https://freename.io" rel="noopener noreferrer" target="_blank">Freename</a> — an inventive approach to user-created Web3 TLDs and namespaces.
+- [ENS](https://ens.domains) — a foundational Ethereum-native naming system (`.eth`) and one of the most important primitives in Web3. ENS also offers thoughtful bridges to real DNS names via [DNSSEC](/en/glossary/dnssec/).
+- [Unstoppable Domains](https://unstoppabledomains.com) — an early and influential pioneer of blockchain-native names like `.crypto`, `.x`, and `.nft`, with broad wallet and dApp integrations.
+- [Freename](https://freename.io) — an inventive approach to user-created Web3 TLDs and namespaces.
 
 If your primary goal is **on-chain identity** or **Web3 naming**, these platforms are excellent and well worth exploring. If your primary goal is a name that **also** works in any browser, any email client, any CDN, and any SSL certificate authority—i.e., a real ICANN domain you can additionally hold and program from your wallet—then the tokenized-domain platforms above (Namefi, D3 Global Inc, Doma Protocol, Domora, WebUnited, GBM) are designed for that use case. Both categories can happily coexist, and many users hold both.
 
