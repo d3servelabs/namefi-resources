@@ -56,12 +56,7 @@ const Anchor = ({
       ? 'noopener'
       : 'noopener noreferrer';
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel={rel}
-        className={derivedClassName}
-      >
+      <a href={href} target="_blank" rel={rel} className={derivedClassName}>
         {children}
       </a>
     );
