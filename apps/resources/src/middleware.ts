@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest, MiddlewareConfig } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { isIndexableHost } from '@namefi-astra/common/host-policy';
 import { i18n, type Locale } from '@/i18n-config';
 import { LEGACY_RESOURCES_HOSTNAME_MAP } from '@/lib/resources-host-map';
 
@@ -103,40 +102,16 @@ function resolveCanonicalResourcesHostRedirect(
   return redirectUrl;
 }
 
-/**
- * True iff this request is a direct external hit (browser/Googlebot) on the
- * resources project, not a server-side proxy fetch from the frontend's
- * `/r/*` rewrite.
- *
- * Direct hits: x-forwarded-host matches the actual host (or is missing).
- * Proxy fetches: x-forwarded-host is the user-facing host (e.g., namefi.io)
- * while the actual host is the proxy origin (e.g., r.namefi.io).
- */
-function isDirectExternalRequest(request: NextRequest): boolean {
-  const requestHost = request.nextUrl.hostname.toLowerCase();
-  const forwardedHost = request.headers
-    .get('x-forwarded-host')
-    ?.split(',')[0]
-    ?.trim()
-    .toLowerCase();
-  return !forwardedHost || forwardedHost === requestHost;
-}
-
-function withNoindexIfDirect(
-  request: NextRequest,
-  response: NextResponse,
-): NextResponse {
-  // Only set X-Robots-Tag on direct hits to non-indexable hosts. Proxy
-  // fetches must NOT carry this header back to the user-facing apex
-  // response, since the apex is indexable.
-  if (
-    !isIndexableHost(request.nextUrl.hostname) &&
-    isDirectExternalRequest(request)
-  ) {
-    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
-  }
-  return response;
-}
+// X-Robots-Tag injection was removed from this middleware (#4218 follow-up).
+// Rationale: when the frontend's /r/* rewrite proxies through this resources
+// app, Vercel's server-side proxy fetch arrives with x-forwarded-host set to
+// the destination host (r.namefi.io), not the user-facing apex (namefi.io).
+// The "is direct hit" heuristic therefore misfires and the noindex header
+// leaked back through the proxy to user-facing namefi.io/r/* responses —
+// suppressing the indexable apex content from Google. r.namefi.io is still
+// covered by its host-aware robots.txt (Disallow: /); that signal plus the
+// canonical consolidation from #4207 are sufficient to keep r.namefi.io out
+// of the index without risking the apex.
 
 export function middleware(request: NextRequest) {
   const canonicalRedirectUrl = resolveCanonicalResourcesHostRedirect(request);
@@ -150,7 +125,7 @@ export function middleware(request: NextRequest) {
   const pathnameHasLocale = hasLocalePrefix(pathnameWithoutBasePath);
 
   if (pathnameHasLocale || PUBLIC_FILE.test(pathnameWithoutBasePath)) {
-    return withNoindexIfDirect(request, NextResponse.next());
+    return NextResponse.next();
   }
 
   const locale = getLocale(request);
@@ -167,10 +142,10 @@ export function middleware(request: NextRequest) {
   if (redirectUrl.pathname === localizedHomePath) {
     redirectUrl.pathname = `${localizedHomePath}/blog`;
     redirectUrl.search = search ? search : '';
-    return withNoindexIfDirect(request, NextResponse.redirect(redirectUrl));
+    return NextResponse.redirect(redirectUrl);
   }
 
-  return withNoindexIfDirect(request, NextResponse.redirect(redirectUrl));
+  return NextResponse.redirect(redirectUrl);
 }
 
 export const config = {
