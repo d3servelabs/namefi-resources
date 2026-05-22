@@ -44,8 +44,8 @@ export async function generateMetadata({
       ? selfUrl
       : `${baseUrl}/r/en/blog/${slug}`;
   // Prefer the hand-made asset when one is committed under
-  // data/content/assets — it's served as a static file via the
-  // public/blog-assets symlink, so CDN handles it directly with no Function
+  // data/content/assets — the sync-blog-assets prebuild step copies it into
+  // public/blog-assets so Vercel's CDN serves it directly with no Function
   // involvement. Falls back to the dynamically-generated opengraph-image
   // route for posts that don't have a custom asset.
   const ogAsset = getPostOgAsset(slug);
@@ -158,8 +158,9 @@ export default async function BlogPostPage({
   );
   // When a hand-made hero asset exists for this slug, render it inline above
   // the post body. Served as a plain static file under public/blog-assets
-  // (which symlinks to the data submodule), so the URL is CDN-cacheable and
-  // resolves without invoking the opengraph-image function.
+  // (synced from the data submodule by the sync-blog-assets prebuild step),
+  // so the URL is CDN-cacheable and resolves without invoking the
+  // opengraph-image function.
   const heroOgAsset = getPostOgAsset(slug);
   // The /r basePath is baked into the path here; raw <img> src doesn't get
   // Next's basePath auto-prefix.
