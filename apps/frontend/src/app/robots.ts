@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { headers } from 'next/headers';
-import { isIndexableHost } from '@namefi-astra/common/host-policy';
+import { bareHost, isIndexableHost } from '@namefi-astra/common/host-policy';
 import { config } from '@/lib/env';
 
-function getBaseOrigin() {
+function getEnvBaseOrigin() {
   return new URL(config.FIRST_PARTY_DEPLOYMENT_URL).origin;
 }
 
@@ -20,10 +20,13 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     return { rules: [{ userAgent: '*', disallow: '/' }] };
   }
 
-  const baseOrigin = getBaseOrigin();
+  // Emit host / sitemap that match the requested host on the allowlist
+  // (e.g., namefi.dev when served from namefi.dev) rather than always the
+  // env's FIRST_PARTY_DEPLOYMENT_URL. Fall back to env when host is missing.
+  const requestOrigin = host ? `https://${bareHost(host)}` : getEnvBaseOrigin();
   return {
     rules: [{ userAgent: '*', allow: '/' }],
-    host: baseOrigin,
-    sitemap: `${baseOrigin}/sitemap.xml`,
+    host: requestOrigin,
+    sitemap: `${requestOrigin}/sitemap.xml`,
   };
 }

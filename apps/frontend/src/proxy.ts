@@ -163,12 +163,19 @@ export function proxy(request: NextRequest) {
   // 308 redirect deprecated/duplicate hosts (astra.namefi.io, app.namefi.io,
   // www.namefi.io) to their canonical equivalents. Preserves path + query.
   // Done first so the redirect short-circuits all other proxy logic.
+  //
+  // Security: do NOT compose the destination as
+  //   new URL(pathname + search, canonicalOrigin)
+  // because the URL constructor would interpret a pathname starting with
+  // `//attacker.com` as a scheme-relative reference and switch the origin
+  // to attacker.com — an open redirect. Instead, start from the canonical
+  // origin and assign pathname/search on the resulting URL; that pins the
+  // origin regardless of what the pathname contains.
   const canonicalOrigin = getCanonicalRedirect(host);
   if (canonicalOrigin) {
-    const redirectTo = new URL(
-      pathname + request.nextUrl.search,
-      canonicalOrigin,
-    );
+    const redirectTo = new URL(canonicalOrigin);
+    redirectTo.pathname = pathname;
+    redirectTo.search = request.nextUrl.search;
     return NextResponse.redirect(redirectTo, 308);
   }
 
