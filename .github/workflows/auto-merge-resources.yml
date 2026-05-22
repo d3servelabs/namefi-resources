@@ -17,15 +17,14 @@ jobs:
     name: Auto merge resources data PR
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     if: |
-      github.event_name == 'workflow_dispatch' ||
-      startsWith(github.event.pull_request.head.ref, 'chore/resources-data/')
+      github.event_name == 'workflow_dispatch'
     steps:
       - name: Create NameFi bot token
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
-          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+          app-id: ${{ vars.NAMEFI_MERGE_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_MERGE_BOT_PRIVATE_KEY }}
 
       - name: Get PR info
         id: pr-info
