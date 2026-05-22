@@ -14,9 +14,9 @@ If you are getting into domain investing — or coming back to it after a few ye
 
 ## The forums that still matter
 
-### 1. NamePros — namepros.com
+### 1. NamePros — [namepros.com](https://www.namepros.com/)
 
-The center of gravity. If you only join one community, this is it. NamePros has been the largest English-language domain forum for well over a decade, and the membership skews toward people who actually buy, sell, and broker domains — not just hobbyists. You will find:
+The center of gravity. If you only join one community, this is it. [NamePros](https://www.namepros.com/) has been the largest English-language domain forum for well over a decade, and the membership skews toward people who actually buy, sell, and broker domains — not just hobbyists. You will find:
 
 - **Sales boards** for fixed-price, make-offer, and auction listings.
 - **Appraisal threads** where the community will tell you, with varying levels of tact, what your name is worth.
@@ -25,21 +25,21 @@ The center of gravity. If you only join one community, this is it. NamePros has 
 
 NamePros is not perfect — the appraisal subforum in particular has a reputation for harsh, sometimes wrong, and occasionally cruel feedback — but the signal-to-noise ratio is still the best in the English-speaking domain world.
 
-### 2. DNForum — dnforum.com
+### 2. DNForum — [dnforum.com](https://www.dnforum.com/)
 
-One of the oldest domain forums on the internet. Much smaller than it used to be, but still active enough to be worth reading. The culture is a little quieter and a little more old-school than NamePros, which some people prefer.
+One of the oldest domain forums on the internet. Much smaller than it used to be, but still active enough to be worth reading. The culture is a little quieter and a little more old-school than [NamePros](https://www.namepros.com/), which some people prefer.
 
-### 3. DomainState — domainstate.com
+### 3. DomainState — [domainstate.com](https://www.domainstate.com/)
 
-Half community, half toolset. DomainState is best known for its drop and auction tracking tools, but it also hosts a forum that picks up traffic around expired-domain strategy and platform discussion.
+Half community, half toolset. [DomainState](https://www.domainstate.com/) is best known for its drop and auction tracking tools, but it also hosts a forum that picks up traffic around expired-domain strategy and platform discussion.
 
 ### 4. DNGeek and smaller niche forums
 
-Newer and smaller communities (DNGeek and similar) come and go. They are worth a look if you want a slower, less-crowded room, but do not expect the depth of NamePros.
+Newer and smaller communities ([DNGeek](https://www.dngeek.com/) and similar) come and go. They are worth a look if you want a slower, less-crowded room, but do not expect the depth of NamePros.
 
-### 5. Reddit — r/Domains and r/Domaining
+### 5. Reddit — [r/Domains](https://www.reddit.com/r/Domains/) and [r/Domaining](https://www.reddit.com/r/Domaining/)
 
-Reddit is where beginners ask their first questions. The quality is uneven, but [r/Domains](https://www.reddit.com/r/Domains/) and r/Domaining are reasonable places to lurk if you want a sense of what newcomers are confused about — which is a useful market signal in itself.
+Reddit is where beginners ask their first questions. The quality is uneven, but [r/Domains](https://www.reddit.com/r/Domains/) and [r/Domaining](https://www.reddit.com/r/Domaining/) are reasonable places to lurk if you want a sense of what newcomers are confused about — which is a useful market signal in itself.
 
 ## Not forums, but where the actual conversation happens
 
@@ -47,7 +47,20 @@ This is the part most "best domain forums" lists miss. In 2026, a lot of the liv
 
 ### Twitter / X — "domain Twitter"
 
-For breaking sales, hot takes on registrar policy, end-user negotiation stories, and informal deal flow, **X is now arguably more active than any single forum**. Follow a handful of long-time domain investors, brokers, and industry reporters and you will see the news before it hits any aggregator. The downside is that it is unsearchable in any serious way — good for a feed, bad for an archive.
+For breaking sales, hot takes on registrar policy, end-user negotiation stories, and informal deal flow, **[X](https://x.com/) is now arguably more active than any single forum**. Follow a handful of long-time domain investors, brokers, and industry reporters and you will see the news before it hits any aggregator. The downside is that it is unsearchable in any serious way — good for a feed, bad for an archive.
+
+If you do not know anyone to follow yet, the fastest way in is to search the hashtags. The ones with the most consistent daily volume in English domain Twitter:
+
+- [#domaining](https://x.com/hashtag/domaining) — the broadest catch-all; sales screenshots, market commentary, broker chatter.
+- [#domains](https://x.com/hashtag/domains) — noisier (overlaps with generic "domain expertise" content), but high volume.
+- [#domainnames](https://x.com/hashtag/domainnames) — slightly more curated than `#domains`.
+- [#domainforsale](https://x.com/hashtag/domainforsale) — listings; useful for watching what is being offered and at what asks.
+- [#domainsales](https://x.com/hashtag/domainsales) — closed-deal reports (often from [NameBio](https://namebio.com/) and the major brokers).
+- [#domaininvesting](https://x.com/hashtag/domaininvesting) — more analytical, fewer listings.
+- [#domainnameinvesting](https://x.com/hashtag/domainnameinvesting) — same crowd, less noise.
+- [#NamePros](https://x.com/hashtag/NamePros) — when threads on the forum spill onto X.
+
+For niche TLDs, the convention is to just hashtag the extension itself — [#dotcom](https://x.com/hashtag/dotcom), [#dotai](https://x.com/hashtag/dotai), [#dotio](https://x.com/hashtag/dotio), and so on. The `.ai` and `.io` tags in particular are where most of the current "new extension" chatter lives.
 
 ### Telegram and Discord groups
 
@@ -55,11 +68,11 @@ Most of these are invite-based and grow around individual brokers, platforms (e.
 
 ### Domaining.com and the domainer blog ring
 
-[Domaining.com](https://www.domaining.com/) is not a forum; it is the canonical aggregator of domainer blogs. Most of the long-form English discussion in the industry happens in the comments sections of those blogs — [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/), [DomainNameWire](https://domainnamewire.com/), and Rick Schwartz's blog, among others. If "where do domainers talk?" means "where is the substantive written analysis?", the answer is here.
+[Domaining.com](https://www.domaining.com/) is not a forum; it is the canonical aggregator of domainer blogs. Most of the long-form English discussion in the industry happens in the comments sections of those blogs — [DomainInvesting.com](https://domaininvesting.com/) (Elliot Silver), [OnlineDomain.com](https://onlinedomain.com/) (Konstantinos Zournas), [DomainGang](https://domaingang.com/), [TheDomains](https://thedomains.com/), [DomainNameWire](https://domainnamewire.com/), and [Rick Schwartz's blog](https://www.ricksblog.com/), among others. If "where do domainers talk?" means "where is the substantive written analysis?", the answer is here.
 
 ### LinkedIn
 
-Often overlooked, but increasingly useful for the *end-user side* of domain sales — the brand managers, founders, and corporate IP folks who are actually buying the names. It is not a place to hang out, but it is a place to find buyers.
+Often overlooked, but [LinkedIn](https://www.linkedin.com/) is increasingly useful for the *end-user side* of domain sales — the brand managers, founders, and corporate IP folks who are actually buying the names. It is not a place to hang out, but it is a place to find buyers.
 
 ## Choosing one if you are new
 
