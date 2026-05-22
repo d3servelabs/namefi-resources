@@ -6,7 +6,7 @@ tags: ['faq']
 authors: ['namefiteam']
 draft: false
 description: A plain-language introduction to tokenized domains and domain tokenization—what it means to tokenize a domain, how tokenizing domains works, and how a tokenized domain differs from traditional domains and blockchain-only names like ENS.
-keywords: ['tokenized domain', 'tokenized domains', 'tokenize a domain', 'tokenize domains', 'tokenize domain', 'tokenizing a domain', 'tokenizing domains', 'domain tokenization', 'tokenization of domains', 'tokenization of a domain', 'domain name tokenization', 'how to tokenize a domain', 'what is a tokenized domain', 'what are tokenized domains', 'NFT domains', 'NFT domain', 'on-chain domains', 'on-chain domain', 'blockchain domains', 'blockchain domain', 'DNS', 'ICANN domains', 'web3 domains', 'web3 domain', 'domain NFT', 'domain as NFT', 'namefi', 'ENS', 'domain ownership', 'domain asset tokenization']
+keywords: ['tokenized domain', 'tokenized domains', 'tokenize a domain', 'tokenize domains', 'tokenize domain', 'tokenizing a domain', 'tokenizing domains', 'domain tokenization', 'tokenization of domains', 'tokenization of a domain', 'domain name tokenization', 'how to tokenize a domain', 'what is a tokenized domain', 'what are tokenized domains', 'NFT domains', 'NFT domain', 'on-chain domains', 'on-chain domain', 'blockchain domains', 'blockchain domain', 'DNS', 'ICANN domains', 'web3 domains', 'web3 domain', 'domain NFT', 'domain as NFT', 'namefi', 'domain ownership', 'domain asset tokenization', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'tokenized domain vs ENS', 'tokenized domain vs web3 domain', 'ICANN domain vs web3 domain', 'compare tokenized domain platforms']
 ---
 
 You may have heard phrases like "tokenized domain," "tokenize a domain," or "domain tokenization" and wondered what they actually mean. Is a tokenized domain a new kind of domain? A blockchain-only name? A replacement for `.com`? And what does it mean to *tokenize* a domain in the first place?
@@ -17,7 +17,7 @@ This article answers the **"what"** question directly: what a tokenized domain *
 
 ---
 
-## 🧩 The Short Definition
+## The Short Definition
 
 A **tokenized domain** is a regular, [ICANN](/en/glossary/icann/)-recognized [domain name](/en/blog/what-is-domain/) (like `mybrand.xyz` or `example.com`) whose ownership is also represented as a **token on a blockchain**—typically an [NFT](/en/glossary/nft/). The process of creating that token-backed representation is called **domain tokenization**, and the act itself is what people mean when they say *tokenize a domain* or *tokenize domains*.
 
@@ -29,7 +29,7 @@ When you transfer the token, the underlying domain follows. When the domain expi
 
 ---
 
-## 🪞 Two Layers, One Domain
+## Two Layers, One Domain
 
 It helps to picture a tokenized domain as having two synchronized records:
 
@@ -44,33 +44,33 @@ This is different from owning a domain *only* at a registrar (the traditional mo
 
 ---
 
-## 🧠 What Tokenized Domains Are *Not*
+## What Tokenized Domains Are *Not*
 
 A few common misconceptions about domain tokenization worth clearing up:
 
-### ❌ Not a new TLD
+### Not a new TLD
 
 A tokenized domain isn't a `.crypto`, `.eth`, or `.x` style name. When you tokenize a domain through Namefi, you use the same TLDs you already know—`.com`, `.xyz`, `.io`, `.art`, etc.—that resolve in any browser, email client, or DNS resolver in the world.
 
-### ❌ Not the same as ENS or "blockchain names"
+### Not the same as ENS or "blockchain names"
 
 [ENS](/en/glossary/ens/) names (like `vitalik.eth`) live entirely on-chain and don't resolve in standard DNS without bridges or special resolvers. Tokenized domains, by contrast, are **real DNS domains** that *also* have an on-chain representation. Domain tokenization adds the on-chain layer to a real DNS name; it doesn't replace DNS with a parallel naming system.
 
-| Feature                  | Traditional Domain | ENS / Blockchain Name | Tokenized Domain |
-|--------------------------|--------------------|------------------------|------------------|
-| Works in any browser     | ✅                 | ⚠️ Requires resolver    | ✅               |
-| Recognized by ICANN      | ✅                 | ❌                      | ✅               |
-| Held in your wallet      | ❌                 | ✅                      | ✅               |
-| Transferable on-chain    | ❌                 | ✅                      | ✅               |
-| Composable with smart contracts | ❌          | ✅                      | ✅               |
+| Feature                          | Traditional Domain | ENS / Blockchain Name | Tokenized Domain |
+|----------------------------------|--------------------|------------------------|------------------|
+| Works in any browser             | Yes                | Requires resolver      | Yes              |
+| Recognized by ICANN              | Yes                | No                     | Yes              |
+| Held in your wallet              | No                 | Yes                    | Yes              |
+| Transferable on-chain            | No                 | Yes                    | Yes              |
+| Composable with smart contracts  | No                 | Yes                    | Yes              |
 
-### ❌ Not censorship-proof or "outside the law"
+### Not censorship-proof or "outside the law"
 
 Because the underlying asset is a real DNS domain, tokenized domains are still subject to renewal, [ICANN](/en/glossary/icann/) policy, [UDRP](/en/glossary/udrp/) disputes, and applicable law. The token reflects ownership; it doesn't exempt the domain from real-world rules.
 
 ---
 
-## 🛠️ How Tokenizing a Domain Works in Practice
+## How Tokenizing a Domain Works in Practice
 
 Here is what actually happens when you tokenize a domain (or register a brand-new tokenized domain) on Namefi:
 
@@ -83,7 +83,7 @@ The end user experience is: *one domain, two ways to interact with it*—the fam
 
 ---
 
-## 🔑 What You Can Do With a Tokenized Domain
+## What You Can Do With a Tokenized Domain
 
 Because both layers exist, you get the union of capabilities:
 
@@ -96,11 +96,11 @@ Because both layers exist, you get the union of capabilities:
 
 ---
 
-## 🏷️ Top Platforms That Tokenize Domains
+## Top Platforms That Tokenize Domains
 
 Domain tokenization is no longer a single-vendor experiment—several platforms now offer ways to tokenize a domain or work with tokenized domains, each with a slightly different approach. Here is a snapshot of the most recognizable names in the space.
 
-> External links below use `rel="nofollow noopener noreferrer"`—we reference them for completeness, not endorsement.
+> External links below use `rel="noopener noreferrer"`—we reference them for completeness, not endorsement.
 
 ### 1. Namefi (that's us)
 
@@ -114,39 +114,39 @@ Domain tokenization is no longer a single-vendor experiment—several platforms 
 
 **Approach:** A platform focused on bringing new and existing TLDs on-chain at the registry level, partnering with TLD operators and ICANN-aligned infrastructure.
 
-**Best for:** Registry-level tokenization initiatives and new tokenized TLD launches. Site: <a href="https://d3.inc" rel="nofollow noopener noreferrer" target="_blank">d3.inc</a>.
+**Best for:** Registry-level tokenization initiatives and new tokenized TLD launches. Site: <a href="https://d3.inc" rel="noopener noreferrer" target="_blank">d3.inc</a>.
 
 ### 3. Doma Protocol
 
 **Approach:** A protocol-layer effort to standardize how real domains are represented and transferred on-chain across registrars and chains.
 
-**Best for:** Builders looking at protocol-level abstractions for domain tokenization. Site: <a href="https://doma.xyz" rel="nofollow noopener noreferrer" target="_blank">doma.xyz</a>.
+**Best for:** Builders looking at protocol-level abstractions for domain tokenization. Site: <a href="https://doma.xyz" rel="noopener noreferrer" target="_blank">doma.xyz</a>.
 
 ### 4. Domora
 
 **Approach:** Another emerging platform in the tokenized domain space, focused on bringing real domain names on-chain.
 
-**Best for:** Users evaluating alternatives in the tokenized-DNS-domain category. Site: <a href="https://domora.com" rel="nofollow noopener noreferrer" target="_blank">domora.com</a>.
+**Best for:** Users evaluating alternatives in the tokenized-DNS-domain category. Site: <a href="https://domora.com" rel="noopener noreferrer" target="_blank">domora.com</a>.
 
 ### 5. WebUnited
 
 **Approach:** A player exploring on-chain domain representation and related infrastructure for real domain names.
 
-**Best for:** Teams looking at additional tokenized-domain options. Site: <a href="https://webunited.com" rel="nofollow noopener noreferrer" target="_blank">webunited.com</a>.
+**Best for:** Teams looking at additional tokenized-domain options. Site: <a href="https://webunited.com" rel="noopener noreferrer" target="_blank">webunited.com</a>.
 
 ### 6. GBM (Global Brand Marketplace / GBM Auctions)
 
 **Approach:** Known for on-chain auction infrastructure that has been applied to tokenized domain sales and brand assets.
 
-**Best for:** Auction-driven discovery and sale of tokenized domains and related digital brand assets. Site: <a href="https://gbm.auction" rel="nofollow noopener noreferrer" target="_blank">gbm.auction</a>.
+**Best for:** Auction-driven discovery and sale of tokenized domains and related digital brand assets. Site: <a href="https://gbm.auction" rel="noopener noreferrer" target="_blank">gbm.auction</a>.
 
 ### 7. Traditional registrars exploring tokenization
 
-Some incumbent ICANN [registrars](/en/glossary/registrar/) and registries (e.g. <a href="https://www.godaddy.com" rel="nofollow noopener noreferrer" target="_blank">GoDaddy</a>, <a href="https://www.identity.digital" rel="nofollow noopener noreferrer" target="_blank">Identity Digital</a>) have announced exploratory tokenization initiatives or partnerships. Coverage and availability vary widely, and most of their core business remains traditional DNS-only registration.
+Some incumbent ICANN [registrars](/en/glossary/registrar/) and registries (e.g. <a href="https://www.godaddy.com" rel="noopener noreferrer" target="_blank">GoDaddy</a>, <a href="https://www.identity.digital" rel="noopener noreferrer" target="_blank">Identity Digital</a>) have announced exploratory tokenization initiatives or partnerships. Coverage and availability vary widely, and most of their core business remains traditional DNS-only registration.
 
 ---
 
-## 🌱 A Sibling Category: ENS, Unstoppable Domains, Freename and Web3 Domains
+## A Sibling Category: ENS, Unstoppable Domains, Freename and Web3 Domains
 
 A close cousin to tokenized domains is the family of **Web3 domains**—a category pioneered by excellent projects like ENS, Unstoppable Domains, and Freename. We want to be clear about the distinction not to diminish their work (they've contributed enormously to on-chain naming and identity), but to help readers pick the right tool for their goals.
 
@@ -159,15 +159,15 @@ Web3 domains are a thoughtfully different design from tokenized ICANN domains. H
 
 The leading Web3-domain platforms, with appreciation for what each contributes:
 
-- <a href="https://ens.domains" rel="nofollow noopener noreferrer" target="_blank">ENS</a> — a foundational Ethereum-native naming system (`.eth`) and one of the most important primitives in Web3. ENS also offers thoughtful bridges to real DNS names via [DNSSEC](/en/glossary/dnssec/).
-- <a href="https://unstoppabledomains.com" rel="nofollow noopener noreferrer" target="_blank">Unstoppable Domains</a> — an early and influential pioneer of blockchain-native names like `.crypto`, `.x`, and `.nft`, with broad wallet and dApp integrations.
-- <a href="https://freename.io" rel="nofollow noopener noreferrer" target="_blank">Freename</a> — an inventive approach to user-created Web3 TLDs and namespaces.
+- <a href="https://ens.domains" rel="noopener noreferrer" target="_blank">ENS</a> — a foundational Ethereum-native naming system (`.eth`) and one of the most important primitives in Web3. ENS also offers thoughtful bridges to real DNS names via [DNSSEC](/en/glossary/dnssec/).
+- <a href="https://unstoppabledomains.com" rel="noopener noreferrer" target="_blank">Unstoppable Domains</a> — an early and influential pioneer of blockchain-native names like `.crypto`, `.x`, and `.nft`, with broad wallet and dApp integrations.
+- <a href="https://freename.io" rel="noopener noreferrer" target="_blank">Freename</a> — an inventive approach to user-created Web3 TLDs and namespaces.
 
 If your primary goal is **on-chain identity** or **Web3 naming**, these platforms are excellent and well worth exploring. If your primary goal is a name that **also** works in any browser, any email client, any CDN, and any SSL certificate authority—i.e., a real ICANN domain you can additionally hold and program from your wallet—then the tokenized-domain platforms above (Namefi, D3 Global Inc, Doma Protocol, Domora, WebUnited, GBM) are designed for that use case. Both categories can happily coexist, and many users hold both.
 
 ---
 
-## 🧭 How to Choose Between Them
+## How to Choose Between Them
 
 A quick way to think about it:
 
@@ -186,7 +186,7 @@ The key distinction to remember: **tokenizing a domain (in the Namefi sense) mea
 
 ---
 
-## 📦 A Simple Mental Model
+## A Simple Mental Model
 
 If a traditional domain is a **deed held by a third party on your behalf**, a tokenized domain is the **same deed, with a cryptographic copy in your own pocket**—and the two are kept in lockstep.
 
@@ -194,7 +194,7 @@ You don't lose the legal/registry layer. You gain a programmable one on top.
 
 ---
 
-## ✅ Summary
+## Summary
 
 - A **tokenized domain** is a real DNS domain with an on-chain token (usually an NFT) that mirrors its ownership.
 - **Domain tokenization** (also called *domain name tokenization* or *tokenization of a domain*) is the process of creating and maintaining that on-chain representation.
