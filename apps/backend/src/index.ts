@@ -144,6 +144,20 @@ app.use(async (...args) => {
     credentials: true, // Allow cookies if needed
   })(...args);
 });
+// SEO: backend serves no public HTML and should never appear in search results.
+// Set X-Robots-Tag on every response so any URL Google reaches via backlinks
+// or stray crawls is marked non-indexable. Paired with /robots.txt below.
+app.use(async (c, next) => {
+  await next();
+  c.header('X-Robots-Tag', 'noindex, nofollow');
+});
+
+// Disallow crawling entirely. Backend is an API; no surfaces should be crawled.
+app.get('/robots.txt', (c) => {
+  c.header('Content-Type', 'text/plain; charset=utf-8');
+  return c.body('User-agent: *\nDisallow: /\n');
+});
+
 app.use(prettyJSON());
 app.use(async (c, next) => {
   const requestId = c.req.header('x-request-id') ?? genRequestId();

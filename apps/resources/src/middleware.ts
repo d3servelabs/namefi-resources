@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest, MiddlewareConfig } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
+import { isIndexableHost } from '@namefi-astra/common/host-policy';
 import { i18n, type Locale } from '@/i18n-config';
 import { LEGACY_RESOURCES_HOSTNAME_MAP } from '@/lib/resources-host-map';
 
@@ -102,6 +103,41 @@ function resolveCanonicalResourcesHostRedirect(
   return redirectUrl;
 }
 
+/**
+ * True iff this request is a direct external hit (browser/Googlebot) on the
+ * resources project, not a server-side proxy fetch from the frontend's
+ * `/r/*` rewrite.
+ *
+ * Direct hits: x-forwarded-host matches the actual host (or is missing).
+ * Proxy fetches: x-forwarded-host is the user-facing host (e.g., namefi.io)
+ * while the actual host is the proxy origin (e.g., r.namefi.io).
+ */
+function isDirectExternalRequest(request: NextRequest): boolean {
+  const requestHost = request.nextUrl.hostname.toLowerCase();
+  const forwardedHost = request.headers
+    .get('x-forwarded-host')
+    ?.split(',')[0]
+    ?.trim()
+    .toLowerCase();
+  return !forwardedHost || forwardedHost === requestHost;
+}
+
+function withNoindexIfDirect(
+  request: NextRequest,
+  response: NextResponse,
+): NextResponse {
+  // Only set X-Robots-Tag on direct hits to non-indexable hosts. Proxy
+  // fetches must NOT carry this header back to the user-facing apex
+  // response, since the apex is indexable.
+  if (
+    !isIndexableHost(request.nextUrl.hostname) &&
+    isDirectExternalRequest(request)
+  ) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+  return response;
+}
+
 export function middleware(request: NextRequest) {
   const canonicalRedirectUrl = resolveCanonicalResourcesHostRedirect(request);
   if (canonicalRedirectUrl) {
@@ -114,7 +150,7 @@ export function middleware(request: NextRequest) {
   const pathnameHasLocale = hasLocalePrefix(pathnameWithoutBasePath);
 
   if (pathnameHasLocale || PUBLIC_FILE.test(pathnameWithoutBasePath)) {
-    return NextResponse.next();
+    return withNoindexIfDirect(request, NextResponse.next());
   }
 
   const locale = getLocale(request);
@@ -131,10 +167,10 @@ export function middleware(request: NextRequest) {
   if (redirectUrl.pathname === localizedHomePath) {
     redirectUrl.pathname = `${localizedHomePath}/blog`;
     redirectUrl.search = search ? search : '';
-    return NextResponse.redirect(redirectUrl);
+    return withNoindexIfDirect(request, NextResponse.redirect(redirectUrl));
   }
 
-  return NextResponse.redirect(redirectUrl);
+  return withNoindexIfDirect(request, NextResponse.redirect(redirectUrl));
 }
 
 export const config = {
