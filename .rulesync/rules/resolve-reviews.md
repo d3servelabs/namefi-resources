@@ -76,17 +76,16 @@ After creating the plan and making fixes:
 - Wait for the user's approval before proceeding with any commits or further actions
 - If any reviews require discussion or clarification, present them separately for the user's input
 
-## 5. Commit, Update Stack, and Resolve Reviews
+## 5. Commit, Push, and Resolve Reviews
 
 After receiving user approval:
 
 1. **Commit the changes**:
-   - Use `gt modify -a --no-edit` to amend the current commit with the fixes (this automatically restacks any dependent branches)
-   - Or use `gt create <branch-name> -m "..." --all --no-interactive` if creating a new commit
-   - Follow the project's conventional commit style
+   - Create a new commit with `git commit` following the project's conventional commit style
+   - Or amend the current commit with `git commit --amend` when appropriate
 
-2. **Update the Graphite stack**:
-   - Run `gt submit --stack --no-interactive` to push updates to all affected PRs in the stack
+2. **Push the updates**:
+   - Run `git push` to update the PR
 
 3. **Resolve all review threads**:
 
@@ -127,4 +126,3 @@ After receiving user approval:
 - If the PR number cannot be determined automatically, ask the user
 - Be thorough in understanding each review comment before making changes
 - If a review seems unclear or requires clarification, flag it for the user rather than guessing
-- Remember to request approval for git operations as per user rules before executing step 5

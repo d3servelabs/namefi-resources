@@ -2,22 +2,13 @@
 targets:
   - '*'
 root: false
-description: >-
-  Trigger when agent is asked to use Git (e.g. `git commit`) or Graphite
-  (`gt`cli e.g. `gt create`)
+description: Trigger when agent is asked to use Git (e.g. `git commit`)
 globs: []
 cursor:
   alwaysApply: false
-  description: >-
-    Trigger when agent is asked to use Git (e.g. `git commit`) or Graphite
-    (`gt`cli e.g. `gt create`)
+  description: Trigger when agent is asked to use Git (e.g. `git commit`)
 ---
-# git / gt related
-
-## Approval requirement
-
-- If running **as a Cursor Cloud Agent**, you may proceed directly with `git add`, `git commit`, and `git push` as needed to complete the task.
-- If **not** running as a Cloud Agent (e.g. local/non-agent assistance), never execute `git add`, `git commit`, or `git push` unless I explicitly ask you to.
+# git related
 
 ## Cloud Agent PR behavior (when committing)
 
@@ -45,9 +36,6 @@ cursor:
 
 - Run `git --no-pager log -n 100 --pretty=format:"%h %s"` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
 
-## When asked for `gt create`
-This is graphite function to create a NEW pull request on top of the one below (new_branch_name), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. 
-
 ## ClickUp & GitHub Integration Rules
 
 **Precondition:** Apply these rules ONLY if a ClickUp Task ID (e.g., `1abc2de`) or a custom ID matching the pattern `NFI-<number>` is provided in the context.
@@ -68,7 +56,7 @@ This is graphite function to create a NEW pull request on top of the one below (
 
 ## Respond
 
-Based on the current staged git changes, please summarize them as a branch name and a `git commit` or `gt create` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.
+Based on the current staged git changes, please summarize them as a branch name and a `git commit` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.
 
 ## PR Labels
 - If the PR needs a fully functional preview deployment for testing, add the label `preview`.
