@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearch } from '@/hooks/use-search';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useSearchModeFromHash } from '@/hooks/use-search-mode-from-hash';
+import { useScrollToHash } from '@/hooks/use-scroll-to-hash';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
@@ -401,7 +402,12 @@ export const Landing: LandingComponent = ({ origin }) => {
     [onSearchModeChange],
   );
 
+  // Order matters: useSearchModeFromHash consumes & clears `#import` /
+  // `#register` before useScrollToHash looks for a scrollable target. For
+  // any other hash (e.g. `#newsletter`), the first hook no-ops and the
+  // second scrolls to the matching `id` once the client tree has hydrated.
   useSearchModeFromHash(enhancedOnSearchModeChange);
+  useScrollToHash();
 
   useEffect(() => {
     initializeEppCodes();
