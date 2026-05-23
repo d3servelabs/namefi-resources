@@ -12,7 +12,7 @@ import { PageShell } from '@/components/page-shell';
 // 0xmaks.eth — a public, well-known wallet with a diverse Namefi NFT
 // portfolio. Hardcoded as the featured holder so this page renders meaningful
 // content today without a new backend endpoint.
-// TODO(https://github.com/d3servelabs/namefi-astra/issues/NFT-GALLERY-RECENT):
+// TODO(https://github.com/d3servelabs/namefi-astra/issues/4242):
 // replace this single-wallet feature with a proper `registry.listRecentDomains`
 // procedure that aggregates recent mints across all wallets.
 const FEATURED_GALLERY_WALLET = '0x1151465023a03f7b2a652c47ba3d580a1d0adbb0';
