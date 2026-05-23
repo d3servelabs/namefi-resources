@@ -5,6 +5,7 @@
   "nav": {
     "resources": "Recursos",
     "blog": "Blog",
+    "watch": "Videos",
     "glossary": "Glosario",
     "tld": "TLDs",
     "partners": "Socios"
@@ -18,6 +19,17 @@
     "detailBy": "Por",
     "detailAuthorsHeading": "Sobre quienes escriben",
     "detailSourceLanguage": "Idioma original"
+  },
+  "watch": {
+    "indexEmpty": "Todavía no hay videos. Vuelve pronto.",
+    "indexTitle": "Videos",
+    "indexDescription": "Charlas, explicaciones y conversaciones del equipo de Namefi.",
+    "featuredTitle": "Destacado",
+    "otherTitle": "Más videos",
+    "detailBack": "Volver a todos los videos",
+    "chaptersHeading": "Capítulos",
+    "descriptionHeading": "Sobre este video",
+    "watchOnYoutube": "Ver en YouTube"
   },
   "glossary": {
     "indexEmpty": "Todavía no hay entradas de glosario disponibles en este idioma. Vuelve pronto.",

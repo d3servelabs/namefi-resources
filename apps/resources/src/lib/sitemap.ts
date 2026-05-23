@@ -12,6 +12,8 @@ import {
   getTldParams,
   getTldsForLocale,
 } from '@/lib/content';
+import { getWatchVideos } from '@/lib/watch';
+import type { WatchVideo } from '@/lib/watch';
 
 function toAbsoluteUrl(baseUrl: string, path: string): string {
   return `${baseUrl}${path}`;
@@ -65,6 +67,7 @@ function createEntry(options: {
 function buildLocaleIndexEntries(
   baseUrl: string,
   locales: readonly Locale[],
+  watchLatest: Date | undefined,
 ): MetadataRoute.Sitemap {
   const homeAlternates = createLanguageAlternates(
     baseUrl,
@@ -91,6 +94,11 @@ function buildLocaleIndexEntries(
     i18n.locales,
     (locale) => `/r/${locale}/tld`,
   );
+  const watchAlternates = createLanguageAlternates(
+    baseUrl,
+    i18n.locales,
+    (locale) => `/r/${locale}/watch`,
+  );
 
   return locales.flatMap((locale) => {
     const posts = getPostsForLocale(locale);
@@ -103,6 +111,7 @@ function buildLocaleIndexEntries(
       glossaryEntries[0]?.publishedAt,
       partners[0]?.publishedAt,
       tlds[0]?.publishedAt,
+      watchLatest,
     ]);
     const blogLastModified = posts[0]?.publishedAt ?? homeLastModified;
     const glossaryLastModified =
@@ -124,6 +133,13 @@ function buildLocaleIndexEntries(
         priority: 0.8,
         lastModified: blogLastModified,
         alternates: blogAlternates,
+      }),
+      createEntry({
+        url: toAbsoluteUrl(baseUrl, `/r/${locale}/watch`),
+        changeFrequency: 'weekly',
+        priority: 0.7,
+        lastModified: watchLatest,
+        alternates: watchAlternates,
       }),
       createEntry({
         url: toAbsoluteUrl(baseUrl, `/r/${locale}/glossary`),
@@ -182,14 +198,24 @@ function buildCollectionEntries(
   return entries;
 }
 
-export function buildSitemapEntries(
+export async function buildSitemapEntries(
   baseUrl: string,
   locales: readonly Locale[],
-): MetadataRoute.Sitemap {
+): Promise<MetadataRoute.Sitemap> {
   const localeSet = new Set(locales);
   const entries: MetadataRoute.Sitemap = [];
 
-  entries.push(...buildLocaleIndexEntries(baseUrl, locales));
+  // Watch videos pull from YouTube at build/ISR time. Tolerate failures so
+  // a transient YouTube outage doesn't break the entire sitemap.
+  let watchVideos: Awaited<ReturnType<typeof getWatchVideos>> = [];
+  try {
+    watchVideos = await getWatchVideos();
+  } catch (error) {
+    console.error('Failed to load watch videos for sitemap:', error);
+  }
+  const watchLatest = latestDate(watchVideos.map((video) => video.publishedAt));
+
+  entries.push(...buildLocaleIndexEntries(baseUrl, locales, watchLatest));
 
   entries.push(
     ...buildCollectionEntries(baseUrl, {
@@ -218,6 +244,12 @@ export function buildSitemapEntries(
     }),
   );
 
+  // Watch detail pages are intentionally NOT included here — they live in
+  // their own sitemap (/r/sitemap-videos.xml) with Google's <video:video>
+  // schema, referenced from /r/sitemap.xml (the sitemap index). This keeps
+  // the page sitemap focused on document URLs and lets the video sitemap
+  // carry rich video-search metadata (thumbnail, duration, embed URL).
+
   // Intentionally omitted: glossary and partners detail pages.
   // Both are templated reference content (short entries, similar structure)
   // that Google's quality algorithms tend to deprioritize. Announcing them
@@ -227,4 +259,140 @@ export function buildSitemapEntries(
   // /r/en/partners) are still announced via buildLocaleIndexEntries.
 
   return entries;
+}
+
+// XML serialization helpers — used by the route handlers under app/.
+// We render XML by hand instead of relying on Next.js's MetadataRoute
+// rendering so the video sitemap can declare the xmlns:video namespace
+// and emit <video:video> children, which the metadata route type doesn't
+// support.
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function renderSitemapEntry(entry: MetadataRoute.Sitemap[number]): string {
+  const parts: string[] = ['  <url>', `    <loc>${escapeXml(entry.url)}</loc>`];
+  if (entry.lastModified) {
+    const iso =
+      entry.lastModified instanceof Date
+        ? entry.lastModified.toISOString()
+        : entry.lastModified;
+    parts.push(`    <lastmod>${escapeXml(iso)}</lastmod>`);
+  }
+  if (entry.changeFrequency) {
+    parts.push(`    <changefreq>${entry.changeFrequency}</changefreq>`);
+  }
+  if (typeof entry.priority === 'number') {
+    parts.push(`    <priority>${entry.priority.toFixed(1)}</priority>`);
+  }
+  const languageAlternates = entry.alternates?.languages;
+  if (languageAlternates) {
+    for (const [hreflang, href] of Object.entries(languageAlternates)) {
+      if (!href) continue;
+      parts.push(
+        `    <xhtml:link rel="alternate" hreflang="${escapeXml(hreflang)}" href="${escapeXml(href)}" />`,
+      );
+    }
+  }
+  parts.push('  </url>');
+  return parts.join('\n');
+}
+
+export function renderSitemapXml(entries: MetadataRoute.Sitemap): string {
+  const body = entries.map(renderSitemapEntry).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${body}
+</urlset>
+`;
+}
+
+export function renderSitemapIndexXml(
+  sitemapUrls: readonly string[],
+  lastModified?: Date,
+): string {
+  const iso = lastModified ? lastModified.toISOString() : undefined;
+  const body = sitemapUrls
+    .map((url) => {
+      const lines = ['  <sitemap>', `    <loc>${escapeXml(url)}</loc>`];
+      if (iso) lines.push(`    <lastmod>${escapeXml(iso)}</lastmod>`);
+      lines.push('  </sitemap>');
+      return lines.join('\n');
+    })
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${body}
+</sitemapindex>
+`;
+}
+
+// Truncates a video description for the <video:description> element, which
+// Google caps at 2048 characters. We trim conservatively and append an
+// ellipsis when truncation actually happens.
+function truncateForVideoDescription(value: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length <= 2048) return trimmed;
+  return `${trimmed.slice(0, 2045).trim()}...`;
+}
+
+function renderVideoEntry(baseUrl: string, video: WatchVideo): string {
+  const pageUrl = `${baseUrl}/r/en/watch/${video.videoId}`;
+  const watchUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${video.videoId}`;
+  const description = truncateForVideoDescription(
+    video.description || video.title,
+  );
+  const publicationDate = video.publishedAt.toISOString();
+  const videoLines = [
+    '    <video:video>',
+    `      <video:thumbnail_loc>${escapeXml(video.thumbnailUrl)}</video:thumbnail_loc>`,
+    `      <video:title>${escapeXml(video.title)}</video:title>`,
+    `      <video:description>${escapeXml(description)}</video:description>`,
+    `      <video:player_loc allow_embed="yes">${escapeXml(embedUrl)}</video:player_loc>`,
+    `      <video:content_loc>${escapeXml(watchUrl)}</video:content_loc>`,
+  ];
+  if (video.durationSeconds > 0) {
+    // Google supports values between 0 and 28800 (8 hours); clamp to be safe.
+    const safeDuration = Math.min(
+      Math.max(0, Math.floor(video.durationSeconds)),
+      28800,
+    );
+    videoLines.push(`      <video:duration>${safeDuration}</video:duration>`);
+  }
+  videoLines.push(
+    `      <video:publication_date>${escapeXml(publicationDate)}</video:publication_date>`,
+    '      <video:family_friendly>yes</video:family_friendly>',
+    `      <video:platform relationship="allow">web mobile tv</video:platform>`,
+    '    </video:video>',
+  );
+  return [
+    '  <url>',
+    `    <loc>${escapeXml(pageUrl)}</loc>`,
+    `    <lastmod>${escapeXml(publicationDate)}</lastmod>`,
+    ...videoLines,
+    '  </url>',
+  ].join('\n');
+}
+
+export function renderVideoSitemapXml(
+  baseUrl: string,
+  videos: readonly WatchVideo[],
+): string {
+  const body = videos
+    .map((video) => renderVideoEntry(baseUrl, video))
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+${body}
+</urlset>
+`;
 }

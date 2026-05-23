@@ -5,6 +5,7 @@
   "nav": {
     "resources": "الموارد",
     "blog": "المدونة",
+    "watch": "الفيديوهات",
     "glossary": "مسرد المصطلحات",
     "tld": "نطاقات TLD",
     "partners": "الشركاء"
@@ -18,6 +19,17 @@
     "detailBy": "بقلم",
     "detailAuthorsHeading": "عن الكاتب/الكاتبة",
     "detailSourceLanguage": "اللغة الأصلية"
+  },
+  "watch": {
+    "indexEmpty": "لا توجد فيديوهات بعد. عد لاحقًا.",
+    "indexTitle": "الفيديوهات",
+    "indexDescription": "محادثات وشروحات وعروض من فريق Namefi.",
+    "featuredTitle": "المميز",
+    "otherTitle": "المزيد من الفيديوهات",
+    "detailBack": "العودة إلى جميع الفيديوهات",
+    "chaptersHeading": "الفصول",
+    "descriptionHeading": "عن هذا الفيديو",
+    "watchOnYoutube": "شاهد على YouTube"
   },
   "glossary": {
     "indexEmpty": "لا توجد مصطلحات متاحة بهذه اللغة بعد. عد لاحقًا.",

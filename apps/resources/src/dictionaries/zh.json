@@ -5,6 +5,7 @@
   "nav": {
     "resources": "资源",
     "blog": "博客",
+    "watch": "视频",
     "glossary": "术语表",
     "tld": "TLD 指南",
     "partners": "合作伙伴"
@@ -18,6 +19,17 @@
     "detailBy": "作者",
     "detailAuthorsHeading": "关于作者",
     "detailSourceLanguage": "原始语言"
+  },
+  "watch": {
+    "indexEmpty": "暂时没有视频，敬请期待。",
+    "indexTitle": "视频",
+    "indexDescription": "Namefi 团队的演讲、解说与对谈。",
+    "featuredTitle": "精选",
+    "otherTitle": "更多视频",
+    "detailBack": "返回所有视频",
+    "chaptersHeading": "章节",
+    "descriptionHeading": "关于本视频",
+    "watchOnYoutube": "在 YouTube 上观看"
   },
   "glossary": {
     "indexEmpty": "该语言暂时没有术语条目，敬请期待。",

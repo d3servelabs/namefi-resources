@@ -5,6 +5,7 @@
   "nav": {
     "resources": "संसाधन",
     "blog": "ब्लॉग",
+    "watch": "वीडियो",
     "glossary": "शब्दावली",
     "tld": "टीएलडी",
     "partners": "साझेदार"
@@ -18,6 +19,17 @@
     "detailBy": "द्वारा",
     "detailAuthorsHeading": "लेखक के बारे में",
     "detailSourceLanguage": "मूल भाषा"
+  },
+  "watch": {
+    "indexEmpty": "अभी कोई वीडियो उपलब्ध नहीं है। जल्द ही वापस देखें।",
+    "indexTitle": "वीडियो",
+    "indexDescription": "Namefi टीम की बातचीत, स्पष्टीकरण और चर्चाएँ।",
+    "featuredTitle": "विशेष",
+    "otherTitle": "और वीडियो",
+    "detailBack": "सभी वीडियो पर वापस जाएँ",
+    "chaptersHeading": "अध्याय",
+    "descriptionHeading": "इस वीडियो के बारे में",
+    "watchOnYoutube": "YouTube पर देखें"
   },
   "glossary": {
     "indexEmpty": "इस भाषा में अभी कोई शब्दावली प्रविष्टियाँ उपलब्ध नहीं हैं। जल्द ही वापस देखें।",
