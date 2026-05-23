@@ -74,6 +74,7 @@ import pMap from 'p-map';
 import { namefiNftView } from '@namefi-astra/db';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import type { PrepareMultiPaymentsOutput } from '#temporal/workflows/prepare-multi-payments.workflow';
+import { setTimeout } from 'node:timers/promises';
 
 export type DomainRenewInfo = {
   normalizedDomainName: NamefiNormalizedDomain;
@@ -950,7 +951,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
  */
 export async function getRenewPriceByDomainInUsd({
   normalizeDomainNameList,
-  retriesForFailedDomains = 5,
+  retriesForFailedDomains = 10,
 }: {
   normalizeDomainNameList: NamefiNormalizedDomain[];
   retriesForFailedDomains?: number;
@@ -996,6 +997,7 @@ export async function getRenewPriceByDomainInUsd({
     ).filter((domain) => domainChargeAmounts[domain] === null);
 
     if (failedDomains.length > 0) {
+      await setTimeout(250);
       const retryDomainChargeAmounts = await getRenewPriceByDomainInUsd({
         normalizeDomainNameList: failedDomains,
         retriesForFailedDomains: retriesForFailedDomains - 1,

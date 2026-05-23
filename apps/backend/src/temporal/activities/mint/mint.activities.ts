@@ -28,6 +28,7 @@ import {
   getViemWalletClient,
 } from '#lib/crypto/viem-clients';
 import { CHAINS } from '@namefi-astra/utils';
+import { logger } from '#lib/logger';
 
 export type PreparedTxOnlySerializableParams = Omit<
   PrepareTransactionRequestReturnType,
@@ -339,8 +340,7 @@ export const getNfscBalanceInUSD = async (
   account: Address,
   publicClient = getViemPublicClient(chainId),
 ): Promise<number> => {
-  const ctx = Context.current();
-  ctx.log.info(
+  logger.info(
     `Getting NFSC balance - chainId: ${chainId}, account: ${account}`,
   );
 
@@ -351,7 +351,13 @@ export const getNfscBalanceInUSD = async (
   });
 
   const balance = await nfscContract.read.balanceOf([account]);
-  return Number(formatUnits(balance, 18));
+  const balanceInUsdCents = Math.trunc(
+    Number(formatUnits(balance, 18 - 2 /** cents */)),
+  );
+  // we need to trunctate fractions of cents to avoid rounding to a whole cent
+  // which can cause issues with charging (e.g. if balance is 0.0099 USD,
+  // we'll endup assuming that it has 0.01USD and we want to charge 0.01 and it will fail)
+  return Number.parseFloat((balanceInUsdCents / 100).toFixed(2));
 };
 
 function multiplyBigIntByFraction(

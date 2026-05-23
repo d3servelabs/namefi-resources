@@ -71,7 +71,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
   ownersIdFilter,
   allowExpired = true,
   overrideRecipientEmail,
-  userWorkflowsConcurrency = 3,
+  userWorkflowsConcurrency = 1,
 }: {
   dryRun?: boolean;
   forceSendReport?: boolean;
@@ -207,7 +207,10 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
 
 const { getRenewPriceByDomainInUsd } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-  options: shortRunningOpts,
+  options: {
+    ...shortRunningOpts,
+    startToCloseTimeout: '2 minutes',
+  },
 });
 
 type UserDomainsUpForRenewal = Exclude<

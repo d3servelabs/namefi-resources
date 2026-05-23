@@ -111,19 +111,21 @@ function setupLimiter({
 
   limiter = new Bottleneck({
     id: 'r53-registrar',
-    reservoir: 4, // initial available tokens
-    reservoirRefreshAmount: 4, // refill 4 tokens...
-    reservoirRefreshInterval: 1000, // ...every 1000 ms (1 second)
+    reservoir: 3, // initial available tokens
+    reservoirRefreshAmount: 3, // refill 3 tokens...
+    reservoirRefreshInterval: 2000, // ...every 2000 ms (2 second)
     connection,
-    maxConcurrent: 2,
-    minTime: 200,
+    maxConcurrent: 1,
+    minTime: 300,
   });
 
   limiter.on('failed', async (error, jobInfo) => {
     const id = jobInfo.options.id;
     logger.warn(`Job ${id} failed: ${error}`);
-    if (jobInfo.retryCount > 5) {
-      logger.debug('Job failed too many times, skipping');
+
+    //Absolute Max Retries is 25
+    if (jobInfo.retryCount > 25) {
+      logger.debug({ error }, 'Job failed too many times, skipping');
       return;
     }
 
@@ -132,14 +134,22 @@ function setupLimiter({
         error.name === 'ThrottlingException' ||
         error.message.includes('Rate exceeded') ||
         error.name === 'TimeoutError' ||
-        (error as any).code === 'ETIMEDOUT'
+        (error as any).code === 'ETIMEDOUT' ||
+        (error as any).code === 'ECONNREFUSED'
       ) {
         const delay = crypto.randomInt(1500, 4000);
         return delay;
       }
       logger.warn({ error }, 'R53 error');
-    } else {
-      logger.warn({ error }, 'Other error');
+    }
+
+    if (jobInfo.retryCount > 5) {
+      // Max retries for unknown errors
+      logger.debug(
+        { error },
+        'Job failed 5 times with unknown error, skipping',
+      );
+      return;
     }
   });
   limiter.on('error', (error) => {
