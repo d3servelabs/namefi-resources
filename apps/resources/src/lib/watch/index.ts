@@ -64,7 +64,17 @@ async function loadWatchData(): Promise<WatchData> {
     return { featured: [], playlists: [], extras: [], all: [] };
   }
 
-  const videos = await fetchVideosByIds(allCandidateIds);
+  // Same resilience pattern as playlist + metadata fetches above: a YouTube
+  // hiccup on this enrichment call shouldn't bring down the entire watch
+  // page. Returning empty data lets the index render the empty state and
+  // recovers automatically on the next ISR refresh.
+  let videos: WatchVideo[] = [];
+  try {
+    videos = await fetchVideosByIds(allCandidateIds);
+  } catch (error) {
+    console.error('[watch] Failed to fetch video details:', error);
+    return { featured: [], playlists: [], extras: [], all: [] };
+  }
   const videoById = new Map(videos.map((video) => [video.videoId, video]));
 
   // First-wins assignment so a video never appears in two sections.

@@ -28,6 +28,10 @@ export async function generateMetadata({
   const baseUrl = resolveBaseUrl();
   const selfPath = `/r/${locale}/watch`;
   const selfUrl = `${baseUrl}${selfPath}`;
+  // SEO: declare the English index as canonical so ranking signals
+  // consolidate on one page across locales. Same approach as the blog
+  // index — hreflang alternates below make translated versions
+  // discoverable without diluting authority across duplicates.
   const canonicalUrl = `${baseUrl}/r/en/watch`;
   const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
@@ -117,7 +121,10 @@ export default async function WatchIndex({
     dateStyle: 'long',
   });
   const baseUrl = resolveBaseUrl();
-  const canonicalUrl = `${baseUrl}/r/${locale}/watch`;
+  // Match the canonical URL declared in generateMetadata so the JSON-LD
+  // CollectionPage.@id / url and the HTML <link rel="canonical"> agree.
+  // Mismatched canonicals cause Google to distrust the structured data.
+  const canonicalUrl = `${baseUrl}/r/en/watch`;
 
   const isEmpty =
     data.featured.length === 0 &&
