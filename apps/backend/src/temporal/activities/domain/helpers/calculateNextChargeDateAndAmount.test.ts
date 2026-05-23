@@ -1,7 +1,8 @@
 import { addDays, differenceInCalendarDays } from 'date-fns';
 import { calculateNextChargeDateAndAmount } from './calculateNextChargeDateAndAmount';
 import { describe, test, expect } from 'vitest';
-const RENEW_EARLY_BY_DAYS = 30;
+
+const RENEW_EARLY_BY_DAYS = 15;
 
 describe('Testing Next Charge Date And Amount Calculation', () => {
   test('no next charge', () => {
