@@ -19,8 +19,9 @@ export async function GET() {
         latestVideoDate = video.publishedAt;
       }
     }
-  } catch {
+  } catch (error) {
     // Non-fatal: index still references both children even if YouTube errors.
+    console.error('[sitemap-index] Failed to compute watch lastmod:', error);
   }
   const xml = renderSitemapIndexXml(
     [`${baseUrl}/r/sitemap-pages.xml`, `${baseUrl}/r/sitemap-videos.xml`],

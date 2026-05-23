@@ -23,10 +23,29 @@ async function loadWatchData(): Promise<WatchData> {
   // Fetch playlist contents and metadata in parallel. fetchPlaylistVideoIds
   // runs per-playlist (paginated); fetchPlaylistMetadata batches all titles
   // into a single playlists.list call.
-  const [playlistVideoIdLists, playlistMetadataList] = await Promise.all([
-    Promise.all(watchConfig.playlistIds.map((id) => fetchPlaylistVideoIds(id))),
-    fetchPlaylistMetadata(watchConfig.playlistIds),
-  ]);
+  //
+  // We use allSettled rather than Promise.all so a single failing playlist
+  // (404, throttling, transient network blip) degrades to that playlist
+  // being empty instead of 500-ing the whole watch page.
+  const idListsSettled = await Promise.allSettled(
+    watchConfig.playlistIds.map((id) => fetchPlaylistVideoIds(id)),
+  );
+  const playlistVideoIdLists = idListsSettled.map((result, index) => {
+    if (result.status === 'fulfilled') return result.value;
+    console.error(
+      `[watch] Failed to fetch videos for playlist ${watchConfig.playlistIds[index]}:`,
+      result.reason,
+    );
+    return [] as string[];
+  });
+
+  let playlistMetadataList: Awaited<ReturnType<typeof fetchPlaylistMetadata>> =
+    [];
+  try {
+    playlistMetadataList = await fetchPlaylistMetadata(watchConfig.playlistIds);
+  } catch (error) {
+    console.error('[watch] Failed to fetch playlist metadata:', error);
+  }
   const metadataByPlaylistId = new Map(
     playlistMetadataList.map((meta) => [meta.playlistId, meta]),
   );

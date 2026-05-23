@@ -16,9 +16,11 @@ export async function GET() {
   let videos: Awaited<ReturnType<typeof getWatchVideos>> = [];
   try {
     videos = await getWatchVideos();
-  } catch {
+  } catch (error) {
     // Empty video sitemap is still valid XML; failing the route would
-    // surface as a 500 to search crawlers, which is worse.
+    // surface as a 500 to search crawlers, which is worse. Log so the
+    // failure is visible in Vercel function logs.
+    console.error('[sitemap-videos] Failed to fetch watch videos:', error);
   }
   const xml = renderVideoSitemapXml(baseUrl, videos);
   return new Response(xml, {

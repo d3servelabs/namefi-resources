@@ -51,9 +51,13 @@ export function parseChaptersFromDescription(
 }
 
 export function formatChapterTime(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
+  // Floor each component defensively in case a fractional input ever slips
+  // through (e.g. from a future API source) — without it, seconds would
+  // render as "12.345" instead of "12".
+  const safe = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(safe / 3600);
+  const minutes = Math.floor((safe % 3600) / 60);
+  const seconds = safe % 60;
   const mm = String(minutes).padStart(hours > 0 ? 2 : 1, '0');
   const ss = String(seconds).padStart(2, '0');
   return hours > 0 ? `${hours}:${mm}:${ss}` : `${mm}:${ss}`;

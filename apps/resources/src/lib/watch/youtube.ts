@@ -56,6 +56,11 @@ function requireApiKey(): string {
   return apiKey;
 }
 
+// Cap each YouTube API call so a hung upstream doesn't pin a Vercel function
+// for the full 300s execution limit. 10s is comfortably above p99 for these
+// endpoints and short enough that ISR can fail fast and serve stale.
+const YOUTUBE_FETCH_TIMEOUT_MS = 10_000;
+
 async function youtubeFetch<T>(
   path: string,
   params: URLSearchParams,
@@ -64,6 +69,7 @@ async function youtubeFetch<T>(
   const url = `${YOUTUBE_API_BASE}/${path}?${params.toString()}`;
   const response = await fetch(url, {
     next: { revalidate: watchConfig.revalidateSeconds, tags: ['watch'] },
+    signal: AbortSignal.timeout(YOUTUBE_FETCH_TIMEOUT_MS),
   });
   if (!response.ok) {
     const body = await response.text().catch(() => '');

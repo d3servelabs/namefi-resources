@@ -114,6 +114,9 @@ export default async function WatchVideoPage({
   params: Promise<{ lang: string; videoId: string }>;
 }) {
   const { lang, videoId } = await params;
+  if (!i18n.locales.includes(lang as Locale)) {
+    notFound();
+  }
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
   const video = await getWatchVideo(videoId);

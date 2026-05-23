@@ -345,19 +345,23 @@ function truncateForVideoDescription(value: string): string {
 
 function renderVideoEntry(baseUrl: string, video: WatchVideo): string {
   const pageUrl = `${baseUrl}/r/en/watch/${video.videoId}`;
-  const watchUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
   const embedUrl = `https://www.youtube-nocookie.com/embed/${video.videoId}`;
   const description = truncateForVideoDescription(
     video.description || video.title,
   );
   const publicationDate = video.publishedAt.toISOString();
+  // Per Google's video sitemap spec, <video:content_loc> must be a direct
+  // media-file URL (mp4/flv/etc.) -- not a watch/page URL. YouTube doesn't
+  // expose direct media URLs for our channel, so we omit content_loc and
+  // rely on <video:player_loc>, which Google's docs explicitly endorse for
+  // YouTube/iframe-hosted content.
+  // https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps
   const videoLines = [
     '    <video:video>',
     `      <video:thumbnail_loc>${escapeXml(video.thumbnailUrl)}</video:thumbnail_loc>`,
     `      <video:title>${escapeXml(video.title)}</video:title>`,
     `      <video:description>${escapeXml(description)}</video:description>`,
     `      <video:player_loc allow_embed="yes">${escapeXml(embedUrl)}</video:player_loc>`,
-    `      <video:content_loc>${escapeXml(watchUrl)}</video:content_loc>`,
   ];
   if (video.durationSeconds > 0) {
     // Google supports values between 0 and 28800 (8 hours); clamp to be safe.

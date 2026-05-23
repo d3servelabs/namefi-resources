@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeDateLocales } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
@@ -105,6 +106,9 @@ export default async function WatchIndex({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
+  if (!i18n.locales.includes(lang as Locale)) {
+    notFound();
+  }
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
   const data = await getWatchData();
