@@ -28,11 +28,21 @@ function getBaseOrigin() {
 
 export function buildSitemapEntries(): MetadataRoute.Sitemap {
   const staticEntries: MetadataRoute.Sitemap = PUBLIC_STATIC_ROUTES.map(
-    (route) => ({
-      url: toAbsoluteUrl(route.path),
-      changeFrequency: route.changeFrequency,
-      priority: route.priority,
-    }),
+    (route) => {
+      const entry: MetadataRoute.Sitemap[number] = {
+        url: toAbsoluteUrl(route.path),
+        changeFrequency: route.changeFrequency,
+        priority: route.priority,
+      };
+      // The homepage aggregates frequently-changing content (hunt highlights,
+      // feeds, featured TLDs), so we announce it as updated each time the
+      // sitemap is generated. Other static pages omit lastModified so we
+      // don't send a misleading freshness signal for unchanged copy.
+      if (route.path === '/') {
+        entry.lastModified = new Date();
+      }
+      return entry;
+    },
   );
 
   const campaignEntries: MetadataRoute.Sitemap =
