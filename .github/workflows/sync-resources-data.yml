@@ -51,6 +51,9 @@ jobs:
 
       - name: Update data submodule
         id: update-submodule
+        env:
+          DISPATCH_REF: ${{ github.event.client_payload.ref }}
+          DISPATCH_SHA: ${{ github.event.client_payload.sha }}
         run: |
           set -e
           TARGET_REF="${{ steps.target.outputs.ref }}"
@@ -61,6 +64,23 @@ jobs:
           git fetch origin "$TARGET_REF" --tags
           git checkout "$TARGET_REF"
           TARGET_SHA=$(git rev-parse HEAD)
+
+          # Because all sync runs reuse a single PR branch, a stale repository_dispatch
+          # can serialize behind a newer one and regress the submodule pointer. Skip the
+          # update when the dispatched ref no longer points at the dispatched SHA — the
+          # newer dispatch (or its successor) will produce the authoritative update.
+          if [ "${{ github.event_name }}" = "repository_dispatch" ] && [ -n "$DISPATCH_REF" ] && [ -n "$DISPATCH_SHA" ]; then
+            REMOTE_HEAD_SHA=$(git rev-parse "origin/$DISPATCH_REF")
+            if [ "$TARGET_SHA" != "$REMOTE_HEAD_SHA" ]; then
+              echo "Stale dispatch: $DISPATCH_SHA on $DISPATCH_REF is behind current tip $REMOTE_HEAD_SHA; skipping."
+              echo "sha=$TARGET_SHA" >> "$GITHUB_OUTPUT"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "stale=true" >> "$GITHUB_OUTPUT"
+              popd
+              exit 0
+            fi
+          fi
+
           echo "sha=$TARGET_SHA" >> "$GITHUB_OUTPUT"
           popd
 
@@ -171,7 +191,12 @@ jobs:
 
       - name: No changes
         if: steps.update-submodule.outputs.changed != 'true'
-        run: echo "Submodule already up to date; nothing to do."
+        run: |
+          if [ "${{ steps.update-submodule.outputs.stale }}" = "true" ]; then
+            echo "Skipped: dispatch payload is stale; a newer dispatch will handle this update."
+          else
+            echo "Submodule already up to date; nothing to do."
+          fi
 
       - name: PR details
         if: steps.cpr.outputs.pull-request-url != ''
