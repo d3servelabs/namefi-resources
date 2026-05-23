@@ -19,6 +19,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: sync-resources-data
+  cancel-in-progress: false
+
 jobs:
   sync:
     name: Update data submodule and open PR
@@ -90,7 +94,7 @@ jobs:
         if: steps.update-submodule.outputs.changed == 'true'
         run: bun run --cwd apps/resources data:validate
 
-      - name: Create pull request
+      - name: Create or update pull request
         id: cpr
         if: steps.update-submodule.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
@@ -105,7 +109,11 @@ jobs:
             - Source ref: `${{ steps.target.outputs.ref }}`
             - Source commit: `${{ steps.update-submodule.outputs.sha }}`
             - Trigger: `${{ github.event_name }}`
-          branch: "chore/resources-data/${{ steps.update-submodule.outputs.sha }}"
+
+            This PR is automatically force-updated whenever a new resources submodule
+            commit is published. Each update replaces the previous content so only one
+            open PR exists at a time.
+          branch: chore/resources-data/sync
           base: main
           labels: |
             resources
