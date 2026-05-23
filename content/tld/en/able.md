@@ -6,6 +6,7 @@ tags: ['tld', 'branding', 'domain-names', 'web3']
 authors: ['namefiteam']
 draft: false
 description: "Discover the creative power of the .able domain extension. Learn how this versatile TLD boosts branding for startups, developers, and creatives. Secure yours at Namefi."
+keywords: ['.able domain', '.able TLD', 'what is .able', 'why choose .able', 'domain hacks', 'new gTLD', 'startup domains', 'creative domains', 'brandable domains', 'tokenized domains', 'register .able domain', 'buy .able domain']
 ---
 
 ## **What is .able?**

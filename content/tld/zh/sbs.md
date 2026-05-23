@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .sbs 代表「side by side」（並肩作戰），非常適合協作項目、合作夥伴關係和副業。
+keywords: ['.sbs 域名', '.sbs TLD', '什麼是 .sbs', 'side by side', '副業域名', '協作項目', '合作夥伴域名', '新 gTLD', '平價 TLD', '代幣化域名', '註冊 .sbs', '購買 .sbs 域名']
 ---
 
 ## **什麼是 .sbs？**

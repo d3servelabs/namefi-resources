@@ -6,6 +6,7 @@ tags: ['tld', 'domain-names', 'branding', 'internet-security']
 authors: ['namefiteam']
 draft: false
 description: "Discover the purpose of the .aarp Top-Level Domain. Learn how this restricted TLD represents security and community, and how to secure your own digital identity."
+keywords: ['.aarp domain', '.aarp TLD', 'what is .aarp', 'brand TLD', 'restricted TLD', 'retirement community', 'senior services', 'ICANN new gTLD', 'phishing protection', 'trusted domain', 'tokenized domains']
 ---
 
 ## **What is .aarp?**

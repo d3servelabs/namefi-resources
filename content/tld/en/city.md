@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .city is the domain for local businesses, municipal services, and city-focused websites. Perfect for establishing local presence.
+keywords: ['.city domain', '.city TLD', 'what is .city', 'local business domain', 'municipal websites', 'geographic TLD', 'city-focused domain', 'local SEO', 'community domain', 'tokenized domains', 'register .city domain', 'buy .city domain']
 ---
 
 ## **What is .city?**

@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .eth domains are blockchain-based names that replace complex wallet addresses with human-readable names. Learn how ENS is transforming Web3 identity and digital ownership.
+keywords: ['.eth domain', 'ENS', 'Ethereum Name Service', 'web3 identity', 'wallet address replacement', 'crypto username', 'blockchain naming', 'human-readable wallet', 'NFT domain', 'decentralized identity', 'register .eth domain']
 ---
 
 ## **What is .eth?**

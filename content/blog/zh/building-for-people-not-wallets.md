@@ -6,6 +6,7 @@ tags: ['partners']
 authors: ['namefiteam']
 draft: false
 description: 一场关于 Henri Stern 构建 Privy 的深度对话，探讨其在可用性、客户驱动的产品开发，以及从加密复杂性转向以人为本设计的旅程。
+keywords: ['privy', 'henri stern', '加密可用性', 'web3 用户体验', 'web3 入门', '钱包', '嵌入式钱包', '客户驱动产品开发', '以人为本设计', '稳定币', 'friend.tech', 'stripe']
 ---
 
 作者：Namefi 的 Victor Zhou — 2025 年 10 月

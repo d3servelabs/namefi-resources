@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .dev is Google's secure domain for developers and development projects. Learn why it's the top choice for programmers, tech companies, and development teams.
+keywords: ['.dev domain', '.dev TLD', 'what is .dev', 'why choose .dev', 'google domain', 'developer domains', 'HSTS preload', 'secure domain', 'tech domains', 'open source projects', 'tokenized domains', 'register .dev domain', 'buy .dev domain']
 ---
 
 ## **What is .dev?**

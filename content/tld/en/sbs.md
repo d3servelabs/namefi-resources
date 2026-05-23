@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .sbs stands for "side by side" and is perfect for collaborative projects, partnerships, and side businesses.
+keywords: ['.sbs domain', '.sbs TLD', 'what is .sbs', 'side by side', 'side business domain', 'collaborative projects', 'partnership domains', 'new gTLD', 'affordable TLD', 'tokenized domains', 'register .sbs domain', 'buy .sbs domain']
 ---
 
 ## **What is .sbs?**

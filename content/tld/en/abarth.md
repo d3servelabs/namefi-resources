@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: Learn about the .abarth TLD, its uses, advantages, and how to register your .abarth domain with Namefi. Secure your unique online identity today!
+keywords: ['.abarth domain', '.abarth TLD', 'what is .abarth', 'brand gTLD', 'automotive domains', 'italian automobile', 'abarth racing', 'high-performance vehicles', 'fiat abarth', 'brand domain', 'tokenized domains']
 ---
 
 ## **What is .abarth?**

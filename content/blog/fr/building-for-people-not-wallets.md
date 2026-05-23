@@ -6,6 +6,7 @@ tags: ['partners']
 authors: ['namefiteam']
 draft: false
 description: Une exploration guidée par la conversation du parcours d’Henri Stern dans la création de Privy, centrée sur l’utilisabilité, le développement produit dirigé par les clients, et la transition de la complexité crypto vers un design véritablement centré sur l’humain.
+keywords: ['privy', 'henri stern', 'utilisabilité crypto', 'expérience utilisateur web3', 'onboarding web3', 'portefeuilles', 'portefeuilles embarqués', 'développement piloté par les clients', 'design centré sur l’humain', 'stablecoins', 'friend.tech', 'stripe']
 ---
 
 Par Victor Zhou de Namefi — Octobre 2025

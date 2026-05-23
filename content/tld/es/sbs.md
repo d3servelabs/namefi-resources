@@ -5,6 +5,7 @@ language: es
 tags: ["tld"]
 authors: ["namefiteam"]
 description: .sbs significa "side by side" (lado a lado) y es perfecto para proyectos colaborativos, asociaciones y negocios secundarios.
+keywords: ['dominio .sbs', 'TLD .sbs', 'qué es .sbs', 'side by side', 'dominio para negocio secundario', 'proyectos colaborativos', 'dominios de asociación', 'nuevo gTLD', 'TLD asequible', 'dominios tokenizados', 'registrar .sbs', 'comprar dominio .sbs']
 ---
 
 

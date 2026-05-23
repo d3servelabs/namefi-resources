@@ -11,6 +11,7 @@ authors:
   - namefiteam
 draft: false
 description: 探索 .abbvie 顶级域名的独特之处。作为艾伯维公司的专属品牌域名，它代表了极致的安全与信任。了解其背后的价值，并在 Namefi 开启您的域名注册之旅。
+keywords: ['.abbvie 域名', '.abbvie 顶级域名', '什么是 .abbvie', '品牌 gTLD', '艾伯维', 'AbbVie 公司', '生物制药域名', '医药行业 TLD', '封闭式 gTLD', '受限注册局', '代币化域名']
 ---
 
 ## **什么是 .abbvie？**

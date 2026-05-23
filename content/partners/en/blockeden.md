@@ -5,6 +5,7 @@ language: en
 tags: ['partners']
 authors: ['namefiteam']
 description: BlockEden.xyz is a developer-first infrastructure platform built for Web3 scalability and reliability.
+keywords: ['blockeden.xyz', 'web3 infrastructure', 'rpc nodes', 'blockchain indexers', 'eden pay', 'api marketplace', 'aptos', 'sui', 'solana', 'evm', 'developer infrastructure', 'namefi partners']
 ---
 
 ## **Introducing BlockEden.xyz to the Namefi Ecosystem**

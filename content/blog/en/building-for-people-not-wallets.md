@@ -6,6 +6,7 @@ tags: ['partners', 'namefi space']
 authors: ['namefiteam']
 draft: false
 description: A conversation-driven exploration of Henri Stern’s journey building Privy, focusing on usability, customer-led product development, and the shift from crypto complexity to human-centered design.
+keywords: ['privy', 'henri stern', 'crypto usability', 'crypto ux', 'web3 onboarding', 'wallets', 'embedded wallets', 'customer-led product development', 'human-centered design', 'stablecoins', 'friend.tech', 'stripe']
 ---
 
 By Victor Zhou of Namefi — October 2025

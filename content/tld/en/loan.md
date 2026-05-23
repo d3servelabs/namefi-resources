@@ -6,6 +6,7 @@ tags: ['tld']
 authors: ['namefiteam']
 draft: false
 description: .loan is a specialized domain extension designed for financial services, lending institutions, and personal finance platforms. Discover its purpose, uses, and benefits.
+keywords: ['.loan domain', '.loan TLD', 'what is .loan', 'why choose .loan', 'lending domains', 'fintech domains', 'mortgage domains', 'financial services domains', 'industry-specific TLD', 'tokenized domains', 'register .loan domain', 'buy .loan domain']
 ---
 
 ## **What is .loan?**

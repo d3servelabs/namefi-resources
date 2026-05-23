@@ -6,6 +6,7 @@ tags: ['tld', '域名注册', '品牌建设', 'abb']
 authors: ['namefiteam']
 draft: false
 description: '深入探索 .abb 顶级域名的独特价值。了解其在提升品牌信任度、SEO 优化及简短易记方面的优势，并立即在 Namefi 锁定您的理想域名。'
+keywords: ['.abb 域名', '.abb 顶级域名', '什么是 .abb', '品牌 gTLD', '工业自动化', '电力技术', '能源行业域名', '受限注册局', 'ABB 集团', '代币化域名']
 ---
 
 ## **什么是 .abb？**
