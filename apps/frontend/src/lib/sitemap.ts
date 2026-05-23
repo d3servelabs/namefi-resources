@@ -1,6 +1,14 @@
 import type { MetadataRoute } from 'next';
 import { config } from '@/lib/env';
 
+// Hunt campaign keys to exclude from the sitemap. The campaign pages remain
+// reachable via direct links and existing UI surfaces, but are no longer
+// announced to search engines.
+const SITEMAP_EXCLUDED_CAMPAIGN_KEYS = new Set<string>(['cv-2025-07-16']);
+
+// Legal / compliance pages (/abuse, /registration-agreement, /tos) are
+// intentionally omitted: they have no organic-search value and consume
+// crawl budget. They remain discoverable via footer links.
 const PUBLIC_STATIC_ROUTES = [
   { path: '/', priority: 1, changeFrequency: 'daily' },
   { path: '/hunt', priority: 0.9, changeFrequency: 'daily' },
@@ -8,9 +16,6 @@ const PUBLIC_STATIC_ROUTES = [
   { path: '/tlds', priority: 0.8, changeFrequency: 'weekly' },
   { path: '/newsletter', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/education', priority: 0.5, changeFrequency: 'monthly' },
-  { path: '/abuse', priority: 0.4, changeFrequency: 'yearly' },
-  { path: '/registration-agreement', priority: 0.4, changeFrequency: 'yearly' },
-  { path: '/tos', priority: 0.4, changeFrequency: 'yearly' },
 ] as const;
 
 function toAbsoluteUrl(path: string): string {
@@ -30,13 +35,14 @@ export function buildSitemapEntries(): MetadataRoute.Sitemap {
     }),
   );
 
-  const campaignEntries: MetadataRoute.Sitemap = config.HUNT_CAMPAIGN_KEYS.map(
-    (campaignKey) => ({
+  const campaignEntries: MetadataRoute.Sitemap =
+    config.HUNT_CAMPAIGN_KEYS.filter(
+      (campaignKey) => !SITEMAP_EXCLUDED_CAMPAIGN_KEYS.has(campaignKey),
+    ).map((campaignKey) => ({
       url: toAbsoluteUrl(`/hunt/campaigns/${campaignKey}`),
       changeFrequency: 'daily',
       priority: 0.7,
-    }),
-  );
+    }));
 
   return [...staticEntries, ...campaignEntries];
 }
@@ -50,11 +56,15 @@ function escapeXml(value: string): string {
     .replaceAll("'", '&apos;');
 }
 
+// Flat sitemap index — points directly at leaf urlsets. We avoid listing
+// /r/sitemap.xml because it is itself a sitemap index, and Google does not
+// support sitemap-index files that reference other sitemap-index files.
 export function buildSitemapIndexXml(): string {
   const baseOrigin = getBaseOrigin();
   const sitemapUrls = [
     new URL('/sitemap/sitemap.xml', baseOrigin).toString(),
-    new URL('/r/sitemap.xml', baseOrigin).toString(),
+    new URL('/r/sitemap-pages.xml', baseOrigin).toString(),
+    new URL('/r/sitemap-videos.xml', baseOrigin).toString(),
   ];
   const sitemapsXml = sitemapUrls
     .map(
