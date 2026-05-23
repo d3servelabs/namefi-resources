@@ -9,12 +9,34 @@ const SITEMAP_EXCLUDED_CAMPAIGN_KEYS = new Set<string>(['cv-2025-07-16']);
 // Legal / compliance pages (/abuse, /registration-agreement, /tos) are
 // intentionally omitted: they have no organic-search value and consume
 // crawl budget. They remain discoverable via footer links.
+//
+// Routes are ordered + weighted to steer Google sitelinks toward the six
+// surfaces we want surfaced on the brand SERP:
+//   1. "What Are Tokenized Domains?" — lives in the resources submodule and
+//      is sitemapped via /r/sitemap-pages.xml (referenced by the sitemap
+//      index below), so it does not appear in this list.
+//   2. Import a Domain — /#import (homepage anchor; not separately indexable,
+//      so no sitemap entry. The hash deep-link is for in-app/footer use.)
+//   3. Manage Domains & DNS — /manage
+//   4. NFT Gallery — /gallery
+//   5. Customer Support — /customer-support
+//   6. Newsletter — /newsletter (308 → /#newsletter; kept here so the URL is
+//      crawlable and the redirect signal flows to the homepage anchor)
+// `/hunt` was previously the highest-priority static route and dominated
+// sitelinks; demoted so it stops crowding out the targets above.
 const PUBLIC_STATIC_ROUTES = [
   { path: '/', priority: 1, changeFrequency: 'daily' },
-  { path: '/hunt', priority: 0.9, changeFrequency: 'daily' },
-  { path: '/feed', priority: 0.8, changeFrequency: 'daily' },
+  // Promoted — sitelink targets
+  { path: '/gallery', priority: 0.9, changeFrequency: 'daily' },
+  { path: '/manage', priority: 0.9, changeFrequency: 'weekly' },
+  { path: '/customer-support', priority: 0.85, changeFrequency: 'monthly' },
+  { path: '/newsletter', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/tlds', priority: 0.8, changeFrequency: 'weekly' },
-  { path: '/newsletter', priority: 0.6, changeFrequency: 'monthly' },
+  // Indexable but demoted so they don't compete for sitelink slots.
+  // `/hunt` is intentionally omitted from this static list so it cannot
+  // surface as a brand-SERP sitelink; the page itself remains reachable
+  // via the in-app nav and is not noindexed.
+  { path: '/feed', priority: 0.5, changeFrequency: 'daily' },
   { path: '/education', priority: 0.5, changeFrequency: 'monthly' },
 ] as const;
 

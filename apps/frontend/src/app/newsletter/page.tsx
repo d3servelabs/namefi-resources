@@ -1,35 +1,11 @@
-import { NewsletterFormWithSearchQuery } from '@/components/newsletter/newsletter-form';
+import { permanentRedirect } from 'next/navigation';
 
-export const metadata = {
-  title: 'Newsletter Subscription - Namefi Astra',
-  description:
-    'Subscribe to the Namefi Astra newsletter for the latest updates, announcements, and domain releases.',
-};
-
-export default function NewsletterPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-background to-muted/20">
-      <div className="w-full max-w-xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">Join Our Newsletter</h1>
-          <p className="text-lg text-muted-foreground">
-            Get the latest updates delivered straight to your inbox
-          </p>
-        </div>
-
-        <NewsletterFormWithSearchQuery
-          key="newsletter-form"
-          from="namefi-astra/newsletter-page"
-          title="Stay in the Loop"
-          description="Be the first to know about new domain releases, platform updates, exclusive features, and special announcements."
-          showNameField={true}
-          variant="default"
-        />
-
-        <div className="mt-8 text-center text-sm text-muted-foreground">
-          <p>We respect your privacy. You can unsubscribe at any time.</p>
-        </div>
-      </div>
-    </div>
-  );
+// The dedicated /newsletter page used to host its own NewsletterForm. We
+// consolidate newsletter intent onto the homepage anchor (/#newsletter) so a
+// single, primary section captures subscriptions and so all "Newsletter" CTAs
+// (nav, footer, sitelinks, emails) point to one canonical surface. The hash is
+// preserved in the Location header on a 308; browsers honor it and scroll to
+// the section automatically.
+export default function NewsletterRedirect(): never {
+  permanentRedirect('/#newsletter');
 }

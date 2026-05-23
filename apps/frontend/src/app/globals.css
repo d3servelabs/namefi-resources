@@ -35,6 +35,12 @@ body {
   scrollbar-gutter: stable both-edges;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @property --ring-angle {
   syntax: "<angle>";
   initial-value: 0deg;

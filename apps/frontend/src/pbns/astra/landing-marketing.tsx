@@ -984,7 +984,11 @@ const CommunitySection = ({
 }: {
   newsletterRef: RefObject<HTMLDivElement | null>;
 }) => (
-  <section ref={newsletterRef} className="space-y-10">
+  <section
+    id="newsletter"
+    ref={newsletterRef}
+    className="scroll-mt-24 space-y-10"
+  >
     <SectionHeading
       title="Join the Namefi community"
       description="A global network of domainers, builders, contributors, and onchain enthusiasts."

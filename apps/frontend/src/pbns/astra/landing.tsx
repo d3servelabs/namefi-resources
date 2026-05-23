@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearch } from '@/hooks/use-search';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
+import { useSearchModeFromHash } from '@/hooks/use-search-mode-from-hash';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
@@ -399,6 +400,8 @@ export const Landing: LandingComponent = ({ origin }) => {
     },
     [onSearchModeChange],
   );
+
+  useSearchModeFromHash(enhancedOnSearchModeChange);
 
   useEffect(() => {
     initializeEppCodes();
