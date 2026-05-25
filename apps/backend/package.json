@@ -5,7 +5,8 @@
   "exports": {
     "./trpc": "./src/trpc/index.ts",
     "./trpc/types": "./src/trpc/types.ts",
-    "./openapi": "./src/routers/openapi.ts"
+    "./openapi": "./src/routers/openapi.ts",
+    "./lib/analytics-types": "./src/lib/analytics-parser.ts"
   },
   "imports": {
     "#lib/dnsviz": "./src/lib/dnsviz/index.ts",

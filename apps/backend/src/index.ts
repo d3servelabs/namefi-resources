@@ -55,6 +55,7 @@ import {
   GA_CLIENT_ID_HEADER,
   GA_SESSION_ID_HEADER,
 } from '@namefi-astra/common/google-analytics';
+import { x402AnalyticsRouter } from './routers/x402-analytics';
 
 type HonoVariables = {
   requestId: string;
@@ -212,6 +213,7 @@ app.route('/c15t', c15tRouter);
 app.route('/log-level', logLevelRouter);
 app.route('/client-events', browserLogsProxyRouter);
 app.route('x402', x402Router);
+app.route('/x402/analytics', x402AnalyticsRouter);
 app.route('mpp', mppRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));

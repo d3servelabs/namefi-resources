@@ -52,3 +52,14 @@ export { buildPaywallHtml, escapeHtml } from './shared/html-builder';
 
 // Backwards compatibility: re-export DomainPaywallConfig as PaywallTemplateConfig
 export type { DomainPaywallConfig as PaywallTemplateConfig } from './shared/types';
+
+// JWT access token utilities
+export {
+  generateAccessToken,
+  verifyAccessToken,
+  tokenMatchesResource,
+  type X402AccessTokenPayload,
+  type VerifiedAccessToken,
+  type InvalidAccessToken,
+  type AccessTokenVerificationResult,
+} from './jwt-access';

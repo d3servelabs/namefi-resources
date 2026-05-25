@@ -173,6 +173,12 @@ export const secretsSchema = z.object({
   OKX_API_SECRET: z.string().optional(),
   OKX_API_PASSPHRASE: z.string().optional(),
   LOOKSRARE_API_KEY: z.string().optional(),
+  /**
+   * JWT secret for x402 access tokens
+   * Used to sign tokens that allow re-access to paid resources
+   * Falls back to API_AUTH_KEY if not set
+   */
+  X402_JWT_SECRET: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
