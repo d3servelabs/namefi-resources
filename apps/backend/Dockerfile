@@ -77,6 +77,10 @@ COPY --from=pruner /app/out/full/packages/coredns-client ./packages/coredns-clie
 # explicitly because Turbo's json output only includes root package manifests.
 COPY ./scripts/prepare.sh ./scripts/prepare.sh
 COPY ./bunfig.toml ./
+# Turbo's pruned bun.lock is derived from the full monorepo lockfile, but Bun
+# validates it against this assembled Docker install context. Normalize that
+# pruned lockfile once, then keep the real installs frozen.
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install --lockfile-only --ignore-scripts
 RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install --frozen-lockfile --production
 
 FROM deps_prod AS deps_build
