@@ -10,6 +10,7 @@ import { getViemLoaderScript } from './viem-loader';
 import { getTailwindScript, getBaseStyles } from './styles';
 import {
   getDebugLoggingScript,
+  getBalanceCheckingScript,
   getViemHelpersScript,
   getWalletStateScript,
   getConnectMetaMaskScript,
@@ -119,9 +120,7 @@ export function buildPaywallHtml(options: HtmlBuilderOptions): string {
             onclick="connectMetaMask()"
             class="w-full bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
           >
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21.8 8.2l-9-5.2c-.5-.3-1.1-.3-1.6 0l-9 5.2c-.5.3-.8.8-.8 1.4v10.8c0 .6.3 1.1.8 1.4l9 5.2c.5.3 1.1.3 1.6 0l9-5.2c.5-.3.8-.8.8-1.4V9.6c0-.6-.3-1.1-.8-1.4z"/>
-            </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet-icon lucide-wallet"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
             <span id="btn-metamask-text">Connect Wallet</span>
           </button>
 
@@ -152,6 +151,11 @@ export function buildPaywallHtml(options: HtmlBuilderOptions): string {
               <span class="text-sm text-muted">Connected</span>
             </div>
             <span id="connected-address" class="text-sm text-foreground font-mono"></span>
+          </div>
+          
+          <!-- Balance Display -->
+          <div id="balance-container" class="hidden bg-background rounded-lg p-3 border border-border">
+            <!-- Balance content will be populated by JavaScript -->
           </div>
           <button
             id="btn-pay"
@@ -229,6 +233,7 @@ export function buildPaywallHtml(options: HtmlBuilderOptions): string {
     window.x402Config = ${options.configJson};
 
     ${getDebugLoggingScript()}
+    ${getBalanceCheckingScript()}
     ${getViemHelpersScript()}
     ${getWalletStateScript()}
     ${getConnectMetaMaskScript()}

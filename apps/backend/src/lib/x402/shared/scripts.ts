@@ -26,6 +26,233 @@ export function getDebugLoggingScript(): string {
 }
 
 /**
+ * Balance checking functions for USDC
+ */
+export function getBalanceCheckingScript(): string {
+  return `
+    // USDC ABI for balance checking
+    // const USDC_ABI = [
+    //   {
+    //     name: 'balanceOf',
+    //     type: 'function',
+    //     stateMutability: 'view',
+    //     inputs: [{ name: 'owner', type: 'address' }],
+    //     outputs: [{ type: 'uint256' }]
+    //   },
+    //   {
+    //     name: 'decimals',
+    //     type: 'function',
+    //     stateMutability: 'view',
+    //     inputs: [],
+    //     outputs: [{ type: 'uint8' }]
+    //   }
+    // ];
+    const USDC_ABI = [
+      'function transfer(address recipient, uint256 amount) external returns (bool)',
+      'function balanceOf(address account) external view returns (uint256)',
+      'function decimals() external view returns (uint8)',
+    ];
+
+    // Escape a value for safe interpolation into HTML text or attributes.
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Fetch USDC balance for a specific chain
+    async function fetchUsdcBalance(address, chainConfig) {
+      try {
+        log('Fetching balance for address:', address, 'on chain:', chainConfig.name);
+
+        // Use the existing viem library loaded via ESM
+        if (!window.viem) {
+          log('Viem not loaded yet');
+          return null;
+        }
+        const { createPublicClient, http, parseAbi, formatUnits } = window.viem;
+        if (!createPublicClient) {
+          log('Viem functions not available');
+          return null;
+        }
+
+        // Create a public client for the specific chain
+        // Try to use predefined chain if available, otherwise create custom
+        let chainDefinition;
+        if (chainConfig.chainId === 8453) {
+          chainDefinition = window.viemChains.base;
+        } else if (chainConfig.chainId === 84532) {
+          chainDefinition = window.viemChains.baseSepolia;
+        } else {
+          // Fallback to custom chain definition
+          chainDefinition = {
+            id: chainConfig.chainId,
+            name: chainConfig.name,
+            nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+            rpcUrls: { default: { http: [chainConfig.rpcUrl] } },
+            blockExplorers: { default: { name: 'Explorer', url: chainConfig.blockExplorer } }
+          };
+        }
+
+        const publicClient = createPublicClient({
+          chain: chainDefinition,
+          transport: http()
+        });
+
+        // Parse ABI and create contract
+        const abi = parseAbi(USDC_ABI);
+
+        // Fetch balance and decimals using direct contract calls
+        const [balance, decimals] = await Promise.all([
+          publicClient.readContract({
+            address: chainConfig.usdcAddress,
+            abi,
+            functionName: 'balanceOf',
+            args: [address]
+          }),
+          publicClient.readContract({
+            address: chainConfig.usdcAddress,
+            abi,
+            functionName: 'decimals'
+          })
+        ]);
+
+        // Convert to human readable format
+        const balanceInUsdc = Number(formatUnits(balance, decimals));
+        log('Raw balance:', balance.toString(), 'Decimals:', decimals, 'Formatted:', balanceInUsdc);
+
+        return balanceInUsdc;
+      } catch (error) {
+        log('Error fetching USDC balance for chain', chainConfig.name, ':', error);
+        return null;
+      }
+    }
+
+    // Fetch balances for all accepted payment methods
+    async function fetchAllBalances(address) {
+      if (!address || !window.x402Config.paymentRequired?.accepts) {
+        log('No address or accepts found, returning empty array');
+        log('Address:', address);
+        log('PaymentRequired:', window.x402Config.paymentRequired);
+        log('ChainConfigs:', window.x402Config.chainConfigs);
+        return [];
+      }
+
+      const accepts = window.x402Config.paymentRequired.accepts;
+      const balancePromises = [];
+
+      log('Processing accepts array:', accepts);
+
+      for (const requirement of accepts) {
+        const chainConfig = window.x402Config.chainConfigs[requirement.network];
+        log('Looking for chain config for network:', requirement.network, 'found:', !!chainConfig);
+
+        if (chainConfig) {
+          balancePromises.push(
+            fetchUsdcBalance(address, chainConfig)
+              .then(balance => ({
+                network: requirement.network,
+                chainName: chainConfig.name,
+                chainId: chainConfig.chainId,
+                balance: balance,
+                error: balance === null ? 'Failed to fetch balance' : null
+              }))
+          );
+        } else {
+          balancePromises.push(Promise.resolve({
+            network: requirement.network,
+            chainName: 'Unknown Chain',
+            chainId: null,
+            balance: null,
+            error: 'Chain config not found'
+          }));
+        }
+      }
+
+      const results = await Promise.allSettled(balancePromises);
+      const settledResults = results.map(result =>
+        result.status === 'fulfilled' ? result.value : {
+          network: result.reason.network || 'unknown',
+          chainName: result.reason.chainName || 'Unknown Chain',
+          chainId: result.reason.chainId || null,
+          balance: null,
+          error: result.reason.message || result.reason.toString()
+        }
+      );
+      log('Fetched balances (settled):', settledResults);
+      return settledResults;
+    }
+
+    // Update balance display in UI
+    async function updateBalanceDisplay(address) {
+      const balanceContainer = document.getElementById('balance-container');
+      if (!balanceContainer) {
+        log('Balance container not found!');
+        return;
+      }
+
+      log('Updating balance display for address:', address);
+      log('Balance container found, classes:', balanceContainer.className);
+
+      // Show loading state
+      balanceContainer.innerHTML = \`
+        <div class="text-center py-2">
+          <div class="inline-block w-4 h-4 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+          <span class="text-xs text-muted ml-2">Checking balances...</span>
+        </div>
+      \`;
+
+      try {
+        const balances = await fetchAllBalances(address);
+
+        if (balances.length === 0) {
+          balanceContainer.innerHTML = '<p class="text-xs text-muted text-center">No payment methods available</p>';
+          return;
+        }
+
+        // Build balance display HTML
+        let balanceHtml = '<div class="space-y-2">';
+
+        for (const balanceInfo of balances) {
+          if (balanceInfo.error) {
+            balanceHtml += \`
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-muted">\${escapeHtml(balanceInfo.chainName)}</span>
+                <span class="text-destructive" title="\${escapeHtml(balanceInfo.error)}">Failed</span>
+              </div>
+            \`;
+          } else {
+            const formattedBalance = balanceInfo.balance >= 0.01
+              ? balanceInfo.balance.toFixed(2)
+              : balanceInfo.balance.toFixed(6).replace(/\\.?0+$/, '');
+
+            balanceHtml += \`
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-muted">\${escapeHtml(balanceInfo.chainName)}</span>
+                <span class="text-foreground font-medium">\${formattedBalance} USDC</span>
+              </div>
+            \`;
+          }
+        }
+
+        balanceHtml += '</div>';
+        log('Setting balance HTML:', balanceHtml);
+        balanceContainer.innerHTML = balanceHtml;
+        log('Balance container updated successfully');
+
+      } catch (error) {
+        log('Error updating balance display:', error);
+        balanceContainer.innerHTML = '<p class="text-xs text-destructive text-center">Failed to load balances</p>';
+        log('Error state applied to balance container');
+      }
+    }
+  `;
+}
+
+/**
  * Viem helper functions (address checksumming)
  */
 export function getViemHelpersScript(): string {
@@ -89,6 +316,23 @@ export function getWalletStateScript(): string {
 
     function resetState() {
       connectedAddress = null;
+
+      // Hide balance container
+      const balanceContainer = document.getElementById('balance-container');
+      if (balanceContainer) {
+        balanceContainer.classList.add('hidden');
+      }
+
+      // Reset button text based on wallet availability
+      const btnText = document.getElementById('btn-metamask-text');
+      if (btnText) {
+        if (!hasInjectedWallet() && isMobile()) {
+          btnText.textContent = 'Open in MetaMask';
+        } else {
+          btnText.textContent = 'Connect Wallet';
+        }
+      }
+
       showState('connect');
     }
 
@@ -176,6 +420,14 @@ export function getConnectMetaMaskScript(): string {
 
         // Update UI
         document.getElementById('connected-address').textContent = shortenAddress(connectedAddress);
+
+        // Show balance container and fetch balances
+        const balanceContainer = document.getElementById('balance-container');
+        if (balanceContainer) {
+          balanceContainer.classList.remove('hidden');
+          updateBalanceDisplay(connectedAddress);
+        }
+
         showState('connected');
 
       } catch (error) {

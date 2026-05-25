@@ -74,6 +74,8 @@ export interface DomainPaywallConfig extends BasePaywallConfig {
   domain: string;
   durationInYears: number;
   purchaseId?: string;
+  /** Chain configurations for balance checking */
+  chainConfigs?: Record<string, ChainConfig>;
 }
 
 /**
@@ -101,6 +103,8 @@ export interface GenericPaywallConfig extends BasePaywallConfig {
   successRedirectDelaySeconds?: number;
   autoSuccessRedirect?: boolean;
   successRedirectBtnLabel?: string;
+  /** Chain configurations for balance checking */
+  chainConfigs?: Record<string, ChainConfig>;
 }
 
 /**

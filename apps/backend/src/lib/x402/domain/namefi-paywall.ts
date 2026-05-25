@@ -90,6 +90,8 @@ export const namefiEvmPaywall: PaywallNetworkHandler = {
       // Read WalletConnect project ID from environment config
       walletConnectProjectId: envConfig.X402_WALLETCONNECT_PROJECT_ID,
       paymentRequired,
+      // Chain configs for balance checking
+      chainConfigs: CHAIN_CONFIG,
       // Theme and branding (use provided or defaults)
       theme: config.theme || NAMEFI_THEME,
       branding: config.branding || {

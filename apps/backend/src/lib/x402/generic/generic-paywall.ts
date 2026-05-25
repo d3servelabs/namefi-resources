@@ -78,6 +78,8 @@ export const genericEvmPaywall: PaywallNetworkHandler = {
       // Read WalletConnect project ID from environment config
       walletConnectProjectId: envConfig.X402_WALLETCONNECT_PROJECT_ID,
       paymentRequired,
+      // Chain configs for balance checking
+      chainConfigs: CHAIN_CONFIG,
       // Generic-specific options
       resourceDescription,
       successRedirectUrl: config.successRedirectUrl,
