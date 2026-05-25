@@ -1,0 +1,82 @@
+name: Storybook Smoke
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/ui/**"
+      - "apps/frontend/src/**/*.ts"
+      - "apps/frontend/src/**/*.tsx"
+      - "apps/frontend/src/**/*.css"
+      - "apps/frontend/.storybook/**"
+      - "apps/frontend/package.json"
+      - "!**/*.md"
+      - "!**/*.test.ts"
+      - "!**/*.test.tsx"
+      - "!**/*.spec.ts"
+      - "!**/*.spec.tsx"
+  pull_request:
+    branches-ignore:
+      - prod
+    paths:
+      - "packages/ui/**"
+      - "apps/frontend/src/components/**"
+      - "apps/frontend/src/stories/**"
+      - "apps/frontend/src/pbns/**"
+      - "apps/frontend/src/app/**"
+      - "apps/frontend/.storybook/**"
+      - "apps/frontend/package.json"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NODE_OPTIONS: --max-old-space-size=8192
+  ENVIRONMENT: test
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+jobs:
+  storybook-smoke:
+    name: Storybook Smoke Tests
+    runs-on: "blacksmith-8vcpu-ubuntu-2404"
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('apps/frontend/package.json') }}
+
+      - name: Install Playwright (chromium)
+        run: bunx playwright install --with-deps chromium
+        working-directory: apps/frontend
+
+      - name: Build Storybook
+        run: bun run build-storybook --quiet
+        working-directory: apps/frontend
+
+      - name: Run Storybook smoke tests
+        run: bun run test-storybook:ci
+        working-directory: apps/frontend
