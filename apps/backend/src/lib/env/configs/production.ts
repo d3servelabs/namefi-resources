@@ -134,6 +134,8 @@ const productionConfig: ConfigInput = {
   X402_FACILITATOR_URL: 'https://api.cdp.coinbase.com/platform/v2/x402',
   // Listmonk email service
   LISTMONK_URL: 'https://marketing.namefi.io',
+  DYNADOT_BASE_URL:
+    process.env.DYNADOT_BASE_URL || 'https://api.dynadot.com/api3.json',
 };
 
 export default productionConfig;
