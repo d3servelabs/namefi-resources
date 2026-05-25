@@ -162,6 +162,17 @@ export const secretsSchema = z.object({
   // Ponder indexer API key for service-to-service sync
   PONDER_INDEXER_API_KEY: z.string().optional(),
   MAIN_REDIS_URL: z.string().url().optional(),
+
+  // NFT marketplace proxy credentials. The frontend OKX adapters
+  // cannot hold these — OKX HMAC-signs every request with the secret
+  // — so the calls are
+  // proxied through `nftMarketplacesRouter`. Optional: when unset the proxy
+  // procedures fail with a configuration error and the marketplace panel
+  // degrades to the client-side OpenSea / Rarible adapters.
+  OKX_API_KEY: z.string().optional(),
+  OKX_API_SECRET: z.string().optional(),
+  OKX_API_PASSPHRASE: z.string().optional(),
+  LOOKSRARE_API_KEY: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

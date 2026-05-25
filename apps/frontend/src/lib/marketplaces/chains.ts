@@ -1,3 +1,4 @@
+import { clientSideEnv } from '../env';
 import type { MarketplaceId } from './types';
 
 export const ETHEREUM_MAINNET_CHAIN_ID = 1;
@@ -20,6 +21,8 @@ export const MARKETPLACE_SUPPORTED_CHAINS: readonly number[] = [
 const ADAPTER_CHAIN_SUPPORT: Record<MarketplaceId, readonly number[]> = {
   opensea: MARKETPLACE_SUPPORTED_CHAINS,
   rarible: MARKETPLACE_SUPPORTED_CHAINS,
+  // OKX's NFT marketplace API has no testnet — Ethereum mainnet + Base only.
+  okx: [ETHEREUM_MAINNET_CHAIN_ID, BASE_MAINNET_CHAIN_ID],
 };
 
 export function isMarketplaceSupportedOnChain(

@@ -24,6 +24,7 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { Address } from 'viem';
 import { getShortAddress } from '@/lib/string';
+import { MARKETPLACE_ICONS } from '@/lib/marketplaces/factory';
 import type { Offer } from '@/lib/marketplaces/types';
 import { toSafeExternalUrl } from './safe-external-url';
 import { useAcceptOffer, useOffers } from './use-listings';
@@ -106,7 +107,7 @@ export function OffersCard({ chainId, tokenAddress, tokenId }: Props) {
                       className="h-auto gap-1.5 px-3 py-1.5 text-zinc-200"
                     >
                       <Image
-                        src={`/${offer.marketplace}.svg`}
+                        src={MARKETPLACE_ICONS[offer.marketplace]}
                         alt=""
                         width={20}
                         height={20}

@@ -65,6 +65,13 @@ export async function getMarketplace(
     return new RaribleAdapter({ ...args, apiKey });
   }
 
+  if (args.id === 'okx') {
+    // OKX needs no client-side key — its HMAC secret lives in the backend
+    // `nftMarketplaces` proxy that the adapter calls.
+    const { OkxAdapter } = await import('./okx-adapter');
+    return new OkxAdapter(args);
+  }
+
   const [{ OpenSeaAdapter }, { getOrRequestApiKey }, { getOpenSeaApiBaseUrl }] =
     await Promise.all([
       import('./opensea-adapter'),
@@ -90,4 +97,20 @@ export const MARKETPLACE_OPTIONS: ReadonlyArray<{
     label: 'Rarible',
     description: 'Post directly to the Rarible orderbook.',
   },
+  {
+    id: 'okx',
+    label: 'OKX',
+    description: 'Post directly to the OKX NFT marketplace.',
+  },
 ];
+
+/**
+ * Per-marketplace badge icon — a path under `apps/frontend/public/`, rendered
+ * by the listings / offers cards. Extensions differ per asset (OpenSea and
+ * Rarible ship as SVG, OKX as PNG).
+ */
+export const MARKETPLACE_ICONS: Record<MarketplaceId, string> = {
+  opensea: '/opensea.svg',
+  rarible: '/rarible.svg',
+  okx: '/okx.png',
+};

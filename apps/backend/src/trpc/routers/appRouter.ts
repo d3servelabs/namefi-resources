@@ -28,6 +28,7 @@ import { x402Router } from './x402Router';
 import { mlsRouter } from './mlsRouter';
 import { leadgenRouter } from './leadgenRouter';
 import { notificationsRouter } from './notificationsRouter';
+import { nftMarketplacesRouter } from './nftMarketplacesRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -56,6 +57,7 @@ export const appRouter = createTRPCRouter({
   mls: mlsRouter,
   leadgen: leadgenRouter,
   notifications: notificationsRouter,
+  nftMarketplaces: nftMarketplacesRouter,
 
   version: publicProcedure
     .input(versionContract.input)

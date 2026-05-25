@@ -21,7 +21,6 @@ import {
 } from './rarible/constants';
 import { RaribleRestClient } from './rarible/rest-client';
 import { withRaribleRetry } from './rarible/retry';
-import { clientToSigner } from './rarible/viem-ethers-signer';
 import type {
   Listing,
   ListingCurrency,
@@ -248,7 +247,10 @@ export class RaribleAdapter implements MarketPlace {
     if (!this.walletClient) {
       throw new Error('Wallet not connected.');
     }
-    const [{ createRaribleSdk }] = await Promise.all([import('@rarible/sdk')]);
+    const [{ createRaribleSdk }, { clientToSigner }] = await Promise.all([
+      import('@rarible/sdk'),
+      import('./rarible/viem-ethers-signer'),
+    ]);
     const signer = clientToSigner(this.walletClient);
 
     return createRaribleSdk(signer, this.raribleEnv, {

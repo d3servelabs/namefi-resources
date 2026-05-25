@@ -25,6 +25,7 @@ import { toast } from 'sonner';
 import type { Address } from 'viem';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { MARKETPLACE_ICONS } from '@/lib/marketplaces/factory';
 import type { Listing } from '@/lib/marketplaces/types';
 import { CreateListingModal } from './create-listing-modal';
 import { toSafeExternalUrl } from './safe-external-url';
@@ -129,7 +130,7 @@ export function CurrentListingsCard({
                       className="h-auto gap-1.5 px-3 py-1.5 text-zinc-200"
                     >
                       <Image
-                        src={`/${listing.marketplace}.svg`}
+                        src={MARKETPLACE_ICONS[listing.marketplace]}
                         alt=""
                         width={20}
                         height={20}

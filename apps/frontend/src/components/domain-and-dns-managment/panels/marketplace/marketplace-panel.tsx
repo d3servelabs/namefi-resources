@@ -7,8 +7,15 @@ import { useMemo } from 'react';
 import { MARKETPLACE_SUPPORTED_CHAINS } from '@/lib/marketplaces/chains';
 import { CurrentListingsCard } from './current-listings-card';
 import { ExportBlockedCard } from './export-blocked-card';
-import { OffersCard } from './offers-card';
 import { UnsupportedChainEmptyState } from './unsupported-chain-empty-state';
+import dynamic from 'next/dynamic';
+
+const OffersCard = dynamic(
+  () => import('./offers-card').then((m) => m.OffersCard),
+  {
+    ssr: false,
+  },
+);
 
 interface Props {
   domain: string;

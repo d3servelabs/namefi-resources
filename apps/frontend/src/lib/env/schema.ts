@@ -53,6 +53,21 @@ export const clientSideEnvSchema = z.object({
    * Marketplace panel degrades gracefully (OpenSea unaffected).
    */
   NEXT_PUBLIC_RARIBLE_API_KEY: z.string().optional(),
+  /**
+   * Enables the LooksRare marketplace adapter. LooksRare is opt-in: it is
+   * Ethereum-mainnet only, and its API is public (the backend
+   * `LOOKSRARE_API_KEY` is optional — it only raises rate limits), so this
+   * flag is the single on/off switch. When `false` (the default) LooksRare is
+   * absent from the marketplace panel entirely.
+   */
+  NEXT_PUBLIC_LOOKSRARE_ENABLED: z.stringbool().optional().default(false),
+  /**
+   * Enables the lending-protocols facade (`lib/lending-protocols/`). The BendDAO
+   * and NFTfi adapters currently ship as stubs, so this flag defaults off — when
+   * `false` every protocol maps to no chains and the facade drops out of
+   * discovery entirely.
+   */
+  NEXT_PUBLIC_LENDING_ENABLED: z.stringbool().optional().default(false),
 } satisfies Record<`NEXT_PUBLIC_${string}`, ZodSchema>);
 
 export type ClientSideEnvInput = z.input<typeof clientSideEnvSchema>;

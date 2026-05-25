@@ -43,12 +43,22 @@ import { DomainOverviewPanel } from './panels/dns/domain-overview-panel';
 import { DnsRecordsPanel } from './panels/dns/dns-records-panel';
 import { DnssecPanel } from './panels/dnssec/dnssec-panel';
 import { DomainConfigAndPrefs } from './panels/domain-config-and-prefs/domain-config-and-prefs';
-import { MarketplacePanel } from './panels/marketplace/marketplace-panel';
 import { NameserversPanel } from './panels/nameservers/nameservers-panel';
 import { useAuth } from '@/hooks/use-auth';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
+import dynamic from 'next/dynamic';
+
+const MarketplacePanel = dynamic(
+  () =>
+    import('./panels/marketplace/marketplace-panel').then(
+      (m) => m.MarketplacePanel,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
