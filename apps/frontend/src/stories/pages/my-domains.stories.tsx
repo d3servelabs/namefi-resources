@@ -17,6 +17,9 @@ import {
   type ErrorInfo,
 } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider, createConfig, http } from 'wagmi';
+import { base, mainnet, sepolia } from 'wagmi/chains';
+import { mock } from 'wagmi/connectors';
 import { TRPCProvider } from '@/lib/trpc';
 import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@/lib/trpc';
@@ -27,6 +30,18 @@ import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
+
+const MOCK_WALLET_ADDRESS = '0x1234567890abcdef1234567890abcdef12345678';
+
+const mockWagmiConfig = createConfig({
+  chains: [mainnet, sepolia, base],
+  connectors: [mock({ accounts: [MOCK_WALLET_ADDRESS as `0x${string}`] })],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [base.id]: http(),
+  },
+});
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -307,29 +322,31 @@ function StoryProviders({
         } as any
       }
     >
-      <AdminFeatureFlagsProvider>
-        <OriginProvider originInfo={origin}>
-          <MockTrpcProvider mockState={mockState}>
-            <NuqsAdapter>
-              <ConsentManagerProvider options={{ mode: 'offline' }}>
-                <PreAuthSignalsProvider>
-                  <InteractionLoggersProvider>
-                    <WishlistProvider>
-                      <CartProvider>
-                        <SidebarProvider defaultOpen={false}>
-                          <FreeMintsGuidanceProvider>
-                            {children}
-                          </FreeMintsGuidanceProvider>
-                        </SidebarProvider>
-                      </CartProvider>
-                    </WishlistProvider>
-                  </InteractionLoggersProvider>
-                </PreAuthSignalsProvider>
-              </ConsentManagerProvider>
-            </NuqsAdapter>
-          </MockTrpcProvider>
-        </OriginProvider>
-      </AdminFeatureFlagsProvider>
+      <WagmiProvider config={mockWagmiConfig}>
+        <AdminFeatureFlagsProvider>
+          <OriginProvider originInfo={origin}>
+            <MockTrpcProvider mockState={mockState}>
+              <NuqsAdapter>
+                <ConsentManagerProvider options={{ mode: 'offline' }}>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      <WishlistProvider>
+                        <CartProvider>
+                          <SidebarProvider defaultOpen={false}>
+                            <FreeMintsGuidanceProvider>
+                              {children}
+                            </FreeMintsGuidanceProvider>
+                          </SidebarProvider>
+                        </CartProvider>
+                      </WishlistProvider>
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
+                </ConsentManagerProvider>
+              </NuqsAdapter>
+            </MockTrpcProvider>
+          </OriginProvider>
+        </AdminFeatureFlagsProvider>
+      </WagmiProvider>
     </MockPrivyProvider>
   );
 }
