@@ -67,7 +67,7 @@ const FOOTER_SECTIONS: Array<{
     title: 'Explore',
     links: [
       { label: 'Discover Domains', href: '/' },
-      { label: 'Namefi Brand Studio', href: '/studio' },
+      { label: 'Namefi Brand Studio', href: '/features/brand-studio' },
       { label: 'Namefi Outbound', href: '/outbound' },
       { label: 'Domain Hunt', href: '/hunt' },
       { label: 'Newsletter', href: '/newsletter' },
