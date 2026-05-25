@@ -2,6 +2,8 @@ import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import superjson from 'superjson';
 import { config } from '@/lib/env';
 import type { AppRouter } from '@/lib/trpc';
+import { BROWSER_FINGERPRINT_HEADER } from '@namefi-astra/common/google-analytics';
+import { getAccessToken } from '@privy-io/react-auth';
 
 /**
  * Vanilla (non-React) tRPC client for the marketplace adapters.
@@ -28,6 +30,19 @@ export const marketplaceProxyClient = createTRPCClient<AppRouter>({
       fetch(url, options) {
         return fetch(url, { ...options, credentials: 'include' });
       },
+      headers: getHeaders,
     }),
   ],
 });
+
+async function getHeaders(): Promise<Record<string, string>> {
+  const token = await getAccessToken();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+}

@@ -21,13 +21,8 @@ import { config } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
-import {
-  paymentMiddleware,
-  x402ResourceServer as X402ResourceServer,
-  type PaymentPayload,
-} from '@x402/hono';
-import { ExactEvmScheme } from '@x402/evm/exact/server';
-import { HTTPFacilitatorClient, type RouteConfig } from '@x402/core/server';
+import { paymentMiddleware, type PaymentPayload } from '@x402/hono';
+import type { RouteConfig } from '@x402/core/server';
 import { decodePaymentSignatureHeader } from '@x402/core/http';
 import type { SettleResponse } from '@x402/core/types';
 import { createPaywall } from '@x402/paywall';
@@ -48,7 +43,7 @@ import {
   tokenMatchesResource,
   type X402AccessTokenPayload,
 } from '../lib/x402/jwt-access';
-import { centsToUsdc } from '#lib/x402/helpers';
+import { centsToUsdc, getX402ResourceServer } from '#lib/x402/helpers';
 
 const logger = createLogger({ context: 'X402_ANALYTICS_ROUTER' });
 
@@ -94,17 +89,7 @@ const paywall = createPaywall()
     testnet: config.X402_NETWORK === 'eip155:84532',
   })
   .build();
-
-// Setup x402 facilitator and resource server
-const facilitatorClient = new HTTPFacilitatorClient({
-  url: config.X402_FACILITATOR_URL,
-});
-
-const x402ResourceServer = new X402ResourceServer(facilitatorClient).register(
-  config.X402_NETWORK,
-  new ExactEvmScheme(),
-);
-x402ResourceServer.initialize();
+const x402ResourceServer = await getX402ResourceServer();
 
 /**
  * Build x402 payment option for exact scheme
