@@ -52,4 +52,21 @@ describe('aiContract.generateAnimation', () => {
       }),
     ).toThrow();
   });
+
+  it('accepts Gemini Omni for sheet-guided animation', () => {
+    expect(
+      aiContract.generateAnimation.input.parse({
+        mode: 'sheet-guided',
+        domain: 'example.com',
+        referenceLogoGenerationId: 'logo-generation-id',
+        model: 'gemini-omni-flash',
+      }),
+    ).toEqual({
+      mode: 'sheet-guided',
+      domain: 'example.com',
+      referenceLogoGenerationId: 'logo-generation-id',
+      model: 'gemini-omni-flash',
+      sheetModel: 'gpt-image-2',
+    });
+  });
 });

@@ -16,6 +16,7 @@ import {
   CINEMATIC_ANIMATION_MODEL_IDS,
   CINEMATIC_ANIMATION_MOTION_PRESET_IDS,
   CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
+  isGeminiOmniAnimationModel,
   LOOPED_ANIMATION_MODEL_IDS,
   LOOPED_ANIMATION_MOTION_PRESET_IDS,
   LOOPED_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
@@ -42,6 +43,7 @@ const LOOPED_SAFE_MARGIN_RATIO = 0.16;
 const SHEET_GUIDED_DURATION_SECONDS = 8;
 const LIGHT_BACKGROUND = '#F8FAFC';
 const DARK_BACKGROUND = '#0F172A';
+const GOOGLE_VIDEO_POLL_TIMEOUT_MS = 600_000;
 
 const cinematicAnimationModelEnum = z.enum(CINEMATIC_ANIMATION_MODEL_IDS);
 const loopedAnimationModelEnum = z.enum(LOOPED_ANIMATION_MODEL_IDS);
@@ -89,6 +91,36 @@ function buildSeedanceProviderOptions(input: {
     watermark: false,
     generateAudio: false,
     pollTimeoutMs: 600_000,
+  };
+}
+
+function buildGoogleReferenceImage(input: {
+  image: Buffer | Uint8Array | string;
+  mediaType?: string;
+  referenceType?: 'asset' | 'style';
+}) {
+  return {
+    image: {
+      bytesBase64Encoded:
+        typeof input.image === 'string'
+          ? input.image
+          : Buffer.from(input.image).toString('base64'),
+      mimeType: input.mediaType ?? 'image/png',
+    },
+    referenceType: input.referenceType ?? 'asset',
+  };
+}
+
+function buildGoogleVideoProviderOptions(
+  input: {
+    referenceImages?: Array<ReturnType<typeof buildGoogleReferenceImage>>;
+  } = {},
+) {
+  return {
+    pollTimeoutMs: GOOGLE_VIDEO_POLL_TIMEOUT_MS,
+    ...(input.referenceImages?.length
+      ? { referenceImages: input.referenceImages }
+      : {}),
   };
 }
 
@@ -520,6 +552,10 @@ async function runCinematicAnimationWorkflow(
           safeMarginRatio: CINEMATIC_SAFE_MARGIN_RATIO,
         })
       : null;
+  const subjectReferenceLogo =
+    input.sourceMode === 'subject-reference'
+      ? await createLogoReferenceImage(logoBuffer)
+      : null;
 
   const strategy = await generateCinematicAnimationStrategy({
     domain: input.domain,
@@ -547,22 +583,18 @@ async function runCinematicAnimationWorkflow(
     resolution: '1280x720',
     duration: 8,
     providerOptions: {
-      google: {
-        pollTimeoutMs: 600_000,
-        ...(input.sourceMode === 'subject-reference'
+      google: buildGoogleVideoProviderOptions(
+        subjectReferenceLogo
           ? {
               referenceImages: [
-                {
-                  image: {
-                    bytesBase64Encoded: logoBuffer.toString('base64'),
-                    mimeType: 'image/png',
-                  },
-                  referenceType: 'asset',
-                },
+                buildGoogleReferenceImage({
+                  image: subjectReferenceLogo.image,
+                  mediaType: subjectReferenceLogo.mediaType,
+                }),
               ],
             }
-          : {}),
-      },
+          : {},
+      ),
     },
     abortSignal: options.abortSignal,
   });
@@ -674,21 +706,31 @@ async function runLoopedAnimationWorkflow(
       motionIntensity: input.motionIntensity,
       direction: strategy.object.direction,
     });
+    const usesGoogleVideo = isGeminiOmniAnimationModel(input.model);
 
     const generated = await experimental_generateVideo({
-      model: gateway.video(input.model),
-      prompt: {
-        image: uploadedPreparedFrame.url,
-        text: prompt,
-      },
+      model: usesGoogleVideo
+        ? google.video(input.model)
+        : gateway.video(input.model),
+      prompt: usesGoogleVideo
+        ? {
+            image: preparedFrame.frame,
+            text: prompt,
+          }
+        : {
+            image: uploadedPreparedFrame.url,
+            text: prompt,
+          },
       aspectRatio: '1:1',
       duration: 4,
-      providerOptions: {
-        bytedance: buildSeedanceProviderOptions({
-          model: input.model,
-          lastFrameImage: uploadedPreparedFrame.url,
-        }),
-      },
+      providerOptions: usesGoogleVideo
+        ? { google: buildGoogleVideoProviderOptions() }
+        : {
+            bytedance: buildSeedanceProviderOptions({
+              model: input.model,
+              lastFrameImage: uploadedPreparedFrame.url,
+            }),
+          },
       abortSignal: options.abortSignal,
     });
 
@@ -799,18 +841,36 @@ async function runSheetGuidedAnimationWorkflow(
       videoPrompt: strategy.object.videoPrompt,
       stagePlan: strategy.object.stagePlan,
     });
+    const usesGoogleVideo = isGeminiOmniAnimationModel(input.model);
 
     const generated = await experimental_generateVideo({
-      model: gateway.video(input.model),
+      model: usesGoogleVideo
+        ? google.video(input.model)
+        : gateway.video(input.model),
       prompt,
       aspectRatio: '16:9',
       duration: SHEET_GUIDED_DURATION_SECONDS,
-      providerOptions: {
-        bytedance: buildSeedanceProviderOptions({
-          model: input.model,
-          referenceImages: [input.referenceLogoUrl, uploadedSheet.url],
-        }),
-      },
+      providerOptions: usesGoogleVideo
+        ? {
+            google: buildGoogleVideoProviderOptions({
+              referenceImages: [
+                buildGoogleReferenceImage({
+                  image: referenceLogo.image,
+                  mediaType: referenceLogo.mediaType,
+                }),
+                buildGoogleReferenceImage({
+                  image: generatedSheet.imageBase64,
+                  mediaType: 'image/png',
+                }),
+              ],
+            }),
+          }
+        : {
+            bytedance: buildSeedanceProviderOptions({
+              model: input.model,
+              referenceImages: [input.referenceLogoUrl, uploadedSheet.url],
+            }),
+          },
       abortSignal: options.abortSignal,
     });
 

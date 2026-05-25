@@ -58,6 +58,7 @@ vi.mock('@namefi-astra/ai', () => ({
   CINEMATIC_ANIMATION_MODEL_IDS: [
     'veo-3.1-generate-preview',
     'veo-3.1-fast-generate-preview',
+    'gemini-omni-flash',
   ],
   CINEMATIC_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
   LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
@@ -67,6 +68,7 @@ vi.mock('@namefi-astra/ai', () => ({
   LOOPED_ANIMATION_MODEL_IDS: [
     'bytedance/seedance-2.0',
     'bytedance/seedance-2.0-fast',
+    'gemini-omni-flash',
     'bytedance/seedance-v1.5-pro',
     'bytedance/seedance-v1.0-pro',
   ],

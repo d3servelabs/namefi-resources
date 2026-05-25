@@ -103,6 +103,28 @@ describe('createAnimationGenerationPayload', () => {
     expect('motionIntensity' in payload).toBe(false);
   });
 
+  it('keeps Gemini Omni for sheet-guided animation payloads', () => {
+    const payload = createAnimationGenerationPayload({
+      domain: atlasDomain,
+      description: 'Use the sheet as motion guidance',
+      selectedLogoId: '66666666-6666-4666-8666-666666666666',
+      mode: 'sheet-guided',
+      sourceMode: 'exact-frame',
+      motionPreset: 'prismatic-bloom',
+      motionIntensity: 'bold',
+      model: 'gemini-omni-flash',
+    } satisfies AnimationFormData);
+
+    expect(payload).toEqual({
+      domain: 'atlas.com',
+      description: 'Use the sheet as motion guidance',
+      referenceLogoGenerationId: '66666666-6666-4666-8666-666666666666',
+      mode: 'sheet-guided',
+      model: 'gemini-omni-flash',
+      sheetModel: 'gpt-image-2',
+    });
+  });
+
   it('normalizes incompatible values to the selected mode family', () => {
     const payload = createAnimationGenerationPayload({
       domain: atlasDomain,

@@ -97,6 +97,7 @@ const cinematicMotionPresetSchema = z.enum([
 const cinematicModelSchema = z.enum([
   'veo-3.1-fast-generate-preview',
   'veo-3.1-generate-preview',
+  'gemini-omni-flash',
 ]);
 
 const loopedMotionPresetSchema = z.enum([
@@ -118,6 +119,7 @@ const loopedModelSchema = z.enum([
   'bytedance/seedance-2.0-fast',
   'bytedance/seedance-v1.0-pro',
   'bytedance/seedance-v1.5-pro',
+  'gemini-omni-flash',
 ]);
 
 const animationSheetModelSchema = z.enum(['gpt-image-2']);

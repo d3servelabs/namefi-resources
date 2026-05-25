@@ -57,6 +57,12 @@ export const CINEMATIC_ANIMATION_MODELS = {
     name: 'Veo 3.1 Fast',
     description: 'Lower-latency animation generation.',
   },
+  'gemini-omni-flash': {
+    id: 'gemini-omni-flash',
+    name: 'Gemini Omni Flash',
+    description:
+      'Google multimodal video model for reference-guided animation.',
+  },
 } as const;
 
 export type CinematicAnimationModel = keyof typeof CINEMATIC_ANIMATION_MODELS;
@@ -71,6 +77,14 @@ export const LOOPED_ANIMATION_MODELS = {
     id: 'bytedance/seedance-2.0-fast',
     name: 'Seedance 2.0 Fast',
     description: 'Faster Seedance 2.0 logo animation.',
+  },
+  // Gemini Omni accepts looped and sheet-guided inputs, but generated assets
+  // are grouped as cinematic because Google does not expose a loop boundary API.
+  'gemini-omni-flash': {
+    id: 'gemini-omni-flash',
+    name: 'Gemini Omni Flash',
+    description:
+      'Google multimodal video model for reference-guided animation.',
   },
   'bytedance/seedance-v1.5-pro': {
     id: 'bytedance/seedance-v1.5-pro',
@@ -96,18 +110,30 @@ export type AnimationModel = keyof typeof ANIMATION_MODELS;
 export const CINEMATIC_ANIMATION_MODEL_IDS = [
   'veo-3.1-generate-preview',
   'veo-3.1-fast-generate-preview',
+  'gemini-omni-flash',
 ] as const satisfies [CinematicAnimationModel, ...CinematicAnimationModel[]];
 
 export const LOOPED_ANIMATION_MODEL_IDS = [
   'bytedance/seedance-2.0',
   'bytedance/seedance-2.0-fast',
+  'gemini-omni-flash',
   'bytedance/seedance-v1.5-pro',
   'bytedance/seedance-v1.0-pro',
 ] as const satisfies [LoopedAnimationModel, ...LoopedAnimationModel[]];
 
+const LOOPED_ONLY_ANIMATION_MODEL_IDS = [
+  'bytedance/seedance-2.0',
+  'bytedance/seedance-2.0-fast',
+  'bytedance/seedance-v1.5-pro',
+  'bytedance/seedance-v1.0-pro',
+] as const satisfies [
+  Exclude<LoopedAnimationModel, CinematicAnimationModel>,
+  ...Array<Exclude<LoopedAnimationModel, CinematicAnimationModel>>,
+];
+
 export const ANIMATION_MODEL_IDS = [
   ...CINEMATIC_ANIMATION_MODEL_IDS,
-  ...LOOPED_ANIMATION_MODEL_IDS,
+  ...LOOPED_ONLY_ANIMATION_MODEL_IDS,
 ] as const satisfies [AnimationModel, ...AnimationModel[]];
 
 export function isCinematicAnimationModel(
@@ -122,7 +148,17 @@ export function isLoopedAnimationModel(
   return model in LOOPED_ANIMATION_MODELS;
 }
 
+export function isGeminiOmniAnimationModel(
+  model: string,
+): model is 'gemini-omni-flash' {
+  return model === 'gemini-omni-flash';
+}
+
 export function getAnimationModeForModel(model: AnimationModel): AnimationMode {
+  if (isGeminiOmniAnimationModel(model)) {
+    return 'cinematic';
+  }
+
   return isLoopedAnimationModel(model) ? 'looped' : 'cinematic';
 }
 

@@ -269,7 +269,7 @@ describe('runLogoAnimationWorkflow', () => {
     expect(generateVideoCall.providerOptions.google.referenceImages).toEqual([
       {
         image: {
-          bytesBase64Encoded: onePixelPng.toString('base64'),
+          bytesBase64Encoded: expect.any(String),
           mimeType: 'image/png',
         },
         referenceType: 'asset',
@@ -328,6 +328,45 @@ describe('runLogoAnimationWorkflow', () => {
     expect(result.video.thumbnailStoragePath).toBe(
       'animations/domain/source.png',
     );
+  });
+
+  it('routes Gemini Omni looped animations through Google video generation', async () => {
+    experimentalGenerateVideoMock.mockResolvedValue({
+      video: { uint8Array: new Uint8Array([7, 8, 9]) },
+      warnings: [],
+      providerMetadata: { provider: 'google' },
+    });
+    uploadFileToS3Mock
+      .mockResolvedValueOnce({ key: 'animations/domain/source.png' })
+      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' });
+
+    const result = await runLogoAnimationWorkflow({
+      mode: 'looped',
+      domain: 'example.com',
+      referenceLogoUrl: 'https://cdn.test/logo.png',
+      motionPreset: 'let-ai-choose',
+      motionIntensity: 'balanced',
+      model: 'gemini-omni-flash',
+      storage,
+    });
+
+    expect(googleVideoMock).toHaveBeenCalledWith('gemini-omni-flash');
+    expect(gatewayVideoMock).not.toHaveBeenCalled();
+
+    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
+    expect(generateVideoCall.aspectRatio).toBe('1:1');
+    expect(generateVideoCall.duration).toBe(4);
+    expect(generateVideoCall.prompt).toEqual({
+      image: expect.any(Buffer),
+      text: expect.stringContaining(
+        'seamless 4-second square animated logo loop',
+      ),
+    });
+    expect(generateVideoCall.providerOptions.google).toEqual({
+      pollTimeoutMs: 600_000,
+    });
+    expect(generateVideoCall.providerOptions).not.toHaveProperty('bytedance');
+    expect(result.video.model).toBe('gemini-omni-flash');
   });
 
   it('creates a GPT Image 2 animation sheet and uses logo plus sheet as Seedance references', async () => {
@@ -431,6 +470,54 @@ describe('runLogoAnimationWorkflow', () => {
     expect(result.video.thumbnailStoragePath).toBe(
       'animations/domain/video.mp4',
     );
+  });
+
+  it('routes Gemini Omni sheet-guided animations through Google with logo and sheet references', async () => {
+    experimentalGenerateVideoMock.mockResolvedValue({
+      video: { uint8Array: new Uint8Array([4, 5, 6]) },
+      warnings: [],
+      providerMetadata: { provider: 'google' },
+    });
+    uploadFileToS3Mock
+      .mockResolvedValueOnce({ key: 'animations/domain/sheet.png' })
+      .mockResolvedValueOnce({ key: 'animations/domain/video.mp4' });
+
+    const result = await runLogoAnimationWorkflow({
+      mode: 'sheet-guided',
+      domain: 'example.com',
+      referenceLogoUrl: 'https://cdn.test/logo.png',
+      model: 'gemini-omni-flash',
+      sheetModel: 'gpt-image-2',
+      storage,
+    });
+
+    expect(googleVideoMock).toHaveBeenCalledWith('gemini-omni-flash');
+    expect(gatewayVideoMock).not.toHaveBeenCalled();
+
+    const generateVideoCall = experimentalGenerateVideoMock.mock.calls[0]?.[0];
+    expect(generateVideoCall.aspectRatio).toBe('16:9');
+    expect(generateVideoCall.duration).toBe(8);
+    expect(generateVideoCall.providerOptions.google).toEqual({
+      pollTimeoutMs: 600_000,
+      referenceImages: [
+        expect.objectContaining({
+          image: expect.objectContaining({
+            bytesBase64Encoded: expect.any(String),
+            mimeType: 'image/png',
+          }),
+          referenceType: 'asset',
+        }),
+        {
+          image: {
+            bytesBase64Encoded: onePixelPng.toString('base64'),
+            mimeType: 'image/png',
+          },
+          referenceType: 'asset',
+        },
+      ],
+    });
+    expect(generateVideoCall.providerOptions).not.toHaveProperty('bytedance');
+    expect(result.video.model).toBe('gemini-omni-flash');
   });
 
   it('rejects invalid cross-mode combinations', async () => {
