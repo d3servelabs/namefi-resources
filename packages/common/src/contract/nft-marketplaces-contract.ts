@@ -74,6 +74,30 @@ const okxCreateListingInputSchema = z.object({
 });
 
 /**
+ * Args for OKX's website-internal `/priapi/v1/nft/trading/createListing` — the
+ * working alternative to the now-dead public `okx.createListing`. Keyed by
+ * OKX's internal `nftId` (resolve via `okx.getNftDetailInfo`) and uses the
+ * numeric chain id as a string (e.g. `"8453"`).
+ */
+const okxCreateListingPriapiInputSchema = z.object({
+  chain: z.string().min(1),
+  walletAddress: z.string().min(1),
+  items: z
+    .array(
+      z.object({
+        nftId: z.string().min(1),
+        price: z.string().min(1),
+        currencyAddress: z.string().min(1),
+        count: z.number().int().positive(),
+        validTime: z.number().int().positive(),
+        source: z.number().int(),
+        royaltyFeePoints: z.number().int().nonnegative(),
+      }),
+    )
+    .min(1),
+});
+
+/**
  * Submit a signed OKX order. `createListing` returns the Seaport
  * `OrderComponents` to sign; the adapter signs them and posts the result
  * here. `endpoint` + `body` come straight from the create-listing response's
@@ -98,6 +122,44 @@ const okxBuyInputSchema = z.object({
     )
     .min(1),
 });
+
+/**
+ * OKX marketplace trade fees. `tradeFees` is a percentage (`0.00` = 0%); the
+ * endpoint is the source of truth as OKX's fee schedule shifts.
+ */
+const okxGetTradeFeesInputSchema = z.object({
+  chain: z.number().int().positive().optional(),
+  nftId: z.string().min(1).optional(),
+});
+
+const okxTradeFeesOutputSchema = z.object({
+  /** OKX marketplace fee as a percentage (e.g. `0.00` = 0%, `2.5` = 2.5%). */
+  tradeFees: z.number().nonnegative(),
+  /** Address that receives the marketplace fee. */
+  tradeFeesAddress: z.string().min(1),
+});
+
+/**
+ * Look up OKX's internal `nftId` for a given (chain, contractAddress, tokenId).
+ * Resolves to OKX's website-internal `/priapi/v1/nft/detail-info` payload — the
+ * `id` field in the response IS the `nftId` the `/priapi/.../createListing`
+ * flow requires.
+ */
+const okxGetNftDetailInfoInputSchema = z.object({
+  /** Numeric chain id (e.g. `8453` for Base) — NOT the `/api/v5/` chain key string. */
+  chain: z.number().int().positive(),
+  contractAddress: z.string().min(1),
+  tokenId: z.string().min(1),
+});
+
+const okxNftDetailInfoOutputSchema = z
+  .object({
+    /** OKX's internal NFT id — the `nftId` the create-listing flow needs. */
+    id: z.string().min(1),
+    /** Whether OKX supports trading this NFT — if `false`, listing will fail. */
+    supportTrade: z.boolean(),
+  })
+  .passthrough();
 
 // ---------------------------------------------------------------------------
 // Contract
@@ -131,6 +193,21 @@ export const nftMarketplacesContract = createContract(
         type: 'mutation',
         input: okxBuyInputSchema,
         output: opaqueJsonSchema,
+      },
+      createListingPriapi: {
+        type: 'mutation',
+        input: okxCreateListingPriapiInputSchema,
+        output: opaqueJsonSchema,
+      },
+      getNftDetailInfo: {
+        type: 'query',
+        input: okxGetNftDetailInfoInputSchema,
+        output: okxNftDetailInfoOutputSchema,
+      },
+      getTradeFees: {
+        type: 'query',
+        input: okxGetTradeFeesInputSchema,
+        output: okxTradeFeesOutputSchema,
       },
     },
   },

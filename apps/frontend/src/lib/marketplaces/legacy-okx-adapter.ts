@@ -73,7 +73,7 @@ import type {
  * v1 scope is fixed-price listings. OKX supports Ethereum mainnet and Base
  * (no testnet) — see `ADAPTER_CHAIN_SUPPORT` in `chains.ts`.
  */
-export class OkxAdapter implements MarketPlace {
+export class LegacyOkxAdapter implements MarketPlace {
   readonly id = 'okx' as const;
   readonly displayName = 'OKX';
   readonly chainId: number;
@@ -585,17 +585,9 @@ function priceFromWei(rawWei: string, currency: ListingCurrency): ListingPrice {
   };
 }
 
-/**
- * Far-future sentinel for "no/unknown timestamp". Epoch-0 was wrong here —
- * it made any order with a missing OKX timestamp render as "expired" in the
- * panel, even though the OKX-side status was still `active`. A far-future
- * ISO keeps such orders sorted as "latest expiry / most recent" instead.
- */
-const UNKNOWN_TIMESTAMP_ISO = '9999-12-31T23:59:59.000Z';
-
 function secondsToIso(seconds: number | undefined): string {
   if (seconds === undefined || !Number.isFinite(seconds) || seconds <= 0) {
-    return UNKNOWN_TIMESTAMP_ISO;
+    return new Date(0).toISOString();
   }
   return new Date(seconds * 1000).toISOString();
 }
@@ -647,41 +639,14 @@ function rethrowIfOkxDiscontinued(error: unknown, operation: string): never {
   throw error instanceof Error ? error : new Error(message);
 }
 
-/**
- * Pull the Seaport `OrderComponents` out of a listing's `raw` blob.
- *
- * `raw` carries one of two shapes:
- *   1. an OKX read-side order (`getListings` / `getOffers`) — parameters
- *      live under `protocolData.parameters`.
- *   2. an OKX `create-listing` response (stashed by `createListing` so a
- *      freshly-built listing is cancelable without a refetch) — parameters
- *      live on the signature step's `item.data`.
- */
 function readOkxOrderParameters(raw: unknown): OkxOrderParameters | undefined {
-  const order = OkxOrderSchema.safeParse(raw);
-  if (order.success) return order.data.protocolData?.parameters;
-
-  const created = OkxCreateListingResponseSchema.safeParse(raw);
-  if (created.success) {
-    for (const step of created.data.steps) {
-      for (const item of step.items) {
-        if (item.kind !== 'signature') continue;
-        const params = OkxOrderParametersSchema.safeParse(item.data);
-        if (params.success) return params.data;
-      }
-    }
-  }
-  return undefined;
+  const parsed = OkxOrderSchema.safeParse(raw);
+  return parsed.success ? parsed.data.protocolData?.parameters : undefined;
 }
 
 function readOkxOrderId(raw: unknown): string | undefined {
-  const order = OkxOrderSchema.safeParse(raw);
-  if (order.success) return order.data.orderId;
-
-  const created = OkxCreateListingResponseSchema.safeParse(raw);
-  if (created.success) return created.data.orders[0]?.id;
-
-  return undefined;
+  const parsed = OkxOrderSchema.safeParse(raw);
+  return parsed.success ? parsed.data.orderId : undefined;
 }
 
 /** Build the viem `OrderComponents` tuple for the on-chain `Seaport.cancel`. */

@@ -13,6 +13,13 @@ const OKX_API_BASE = 'https://web3.okx.com';
 const OKX_NFT_API_PREFIX = '/api/v5/mktplace/nft';
 
 /**
+ * Path prefix for OKX's website-internal NFT API (`/priapi/`). Some workflows
+ * (e.g. `createListing` → `submitOrder`) require values OKX only exposes through
+ * `/priapi/` — most notably the internal `nftId` returned by `detail-info`.
+ */
+const OKX_PRIAPI_NFT_PREFIX = '/priapi/v1/nft';
+
+/**
  * Path prefixes the `submitListing` passthrough may forward to. `createListing`
  * returns a `post` instruction whose `endpoint` the adapter relays here
  * verbatim; restricting it to known OKX paths keeps the passthrough from
@@ -26,11 +33,46 @@ const OKX_SUBMIT_ALLOWED_PREFIXES = [
 /** Per-request timeout — OKX order builds can be slow. */
 const OKX_REQUEST_TIMEOUT_MS = 20_000;
 
+/**
+ * Browser-looking User-Agent. OKX's `/priapi/` endpoints reject server-side /
+ * Node-like UAs with `"Request header 'OK-VERIFY-SIGN' can't be empty"` — even
+ * when no other auth headers are sent. A real browser UA bypasses that check.
+ */
+const OKX_BROWSER_UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36';
+
 /** Standard OKX `{ code, data, msg }` envelope. `code === 0` means success. */
 interface OkxEnvelope<T = unknown> {
   code: number;
   data: T;
   msg: string;
+}
+
+/**
+ * Subset of OKX's `/priapi/v1/nft/detail-info` response we care about. `id` is
+ * the internal `nftId` the `/priapi/.../createListing` flow requires; other
+ * fields surface trading flags + collection refs useful for building the
+ * `createListing` body. The endpoint returns many more fields — typed as
+ * `unknown` to stay forward-compatible.
+ */
+export interface OkxNftDetailInfo {
+  /** OKX's internal NFT id (a ~17-digit decimal string) — the `nftId` the create-listing flow needs. */
+  id: string;
+  /** Whether OKX supports trading this NFT — if `false`, listing will fail. */
+  supportTrade: boolean;
+  /** Echoed numeric chain id (e.g. `8453`). */
+  chain?: number;
+  /** Echoed contract address (lowercase). */
+  contractAddress?: string;
+  /** Echoed tokenId. */
+  tokenId?: string;
+  /** OKX collection slug. */
+  collectionName?: string;
+  /** OKX-internal project id (collection level). */
+  project?: number;
+  /** OKX-internal source enum (`4` for OKX-native listings). */
+  source?: number;
+  [key: string]: unknown;
 }
 
 interface OkxOrdersQuery {
@@ -57,6 +99,27 @@ interface OkxBuyArgs {
   chain: string;
   walletAddress: string;
   items: ReadonlyArray<{ orderId: string; takeCount: number }>;
+}
+
+/**
+ * Args for OKX's website-internal `/priapi/v1/nft/trading/createListing` — the
+ * working alternative to the now-dead public `/api/v5/.../create-listing`.
+ * Different shape: keyed by OKX's internal `nftId` (resolve via
+ * `getNftDetailInfo`) instead of `collectionAddress` + `tokenId`, and `chain`
+ * is the numeric chain id as a string (e.g. `"8453"`, not `"base"`).
+ */
+interface OkxCreateListingPriapiArgs {
+  chain: string;
+  walletAddress: string;
+  items: ReadonlyArray<{
+    nftId: string;
+    price: string;
+    currencyAddress: string;
+    count: number;
+    validTime: number;
+    source: number;
+    royaltyFeePoints: number;
+  }>;
 }
 
 /**
@@ -114,31 +177,42 @@ class OkxClient {
     /** Path under `OKX_API_BASE`, including a leading slash and (for GET) the query string. */
     path: string;
     body?: unknown;
+    /**
+     * Add OK-ACCESS-* HMAC headers (default `true`). Set to `false` for
+     * `/priapi/` endpoints that reject partial OK-ACCESS-* auth — they require
+     * either the browser's `OK-VERIFY-SIGN` (which we can't replicate) or no
+     * auth at all.
+     */
+    signed?: boolean;
   }): Promise<T> {
-    const { apiKey, apiSecret, apiPassphrase } = this.requireCredentials();
-    const timestamp = new Date().toISOString();
     // The signed string must byte-match the sent body, so serialize once here
     // and hand axios the exact string (an object would be re-serialized).
     const bodyStr = args.body === undefined ? '' : JSON.stringify(args.body);
-    const sign = this.sign(
-      apiSecret,
-      timestamp,
-      args.method,
-      args.path,
-      bodyStr,
-    );
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'User-Agent': OKX_BROWSER_UA,
+    };
+    if (args.signed !== false) {
+      const { apiKey, apiSecret, apiPassphrase } = this.requireCredentials();
+      const timestamp = new Date().toISOString();
+      const sign = this.sign(
+        apiSecret,
+        timestamp,
+        args.method,
+        args.path,
+        bodyStr,
+      );
+      headers['OK-ACCESS-KEY'] = apiKey;
+      headers['OK-ACCESS-SIGN'] = sign;
+      headers['OK-ACCESS-TIMESTAMP'] = timestamp;
+      headers['OK-ACCESS-PASSPHRASE'] = apiPassphrase;
+    }
 
     const config: AxiosRequestConfig = {
       method: args.method,
       url: `${OKX_API_BASE}${args.path}`,
       timeout: OKX_REQUEST_TIMEOUT_MS,
-      headers: {
-        'Content-Type': 'application/json',
-        'OK-ACCESS-KEY': apiKey,
-        'OK-ACCESS-SIGN': sign,
-        'OK-ACCESS-TIMESTAMP': timestamp,
-        'OK-ACCESS-PASSPHRASE': apiPassphrase,
-      },
+      headers,
       ...(args.method === 'POST' ? { data: bodyStr } : {}),
     };
 
@@ -189,8 +263,13 @@ class OkxClient {
     return payload.data;
   }
 
-  /** Log operation-level errors OKX nests in an otherwise-OK (code 0) response. */
-  private logResultErrors(operation: string, data: unknown): void {
+  /**
+   * Throw on per-item failures OKX nests in an otherwise-OK (`code === 0`)
+   * response. A 200 + `code: 0` doesn't imply success — OKX still surfaces
+   * partial failures in `data.errors`, so callers must not treat the wrapper
+   * code alone as success.
+   */
+  private requireNoOperationErrors(operation: string, data: unknown): void {
     const errors = (data as { errors?: unknown[] } | undefined)?.errors;
     if (Array.isArray(errors) && errors.length > 0) {
       logger.error(
@@ -198,6 +277,7 @@ class OkxClient {
         'OKX %s returned operation-level errors',
         operation,
       );
+      throw new Error(`OKX ${operation} failed: ${JSON.stringify(errors)}`);
     }
   }
 
@@ -237,6 +317,117 @@ class OkxClient {
   }
 
   /**
+   * Retrieve NFT details from OKX's public marketplace API. Returns OKX's raw
+   * `data` for the NFT — used to probe whether the response carries an OKX
+   * internal `nftId` (which the `create-listing` flow requires) as a passthrough
+   * field beyond the documented shape.
+   */
+  async getNftDetail(query: {
+    chain: string;
+    contractAddress: string;
+    tokenId: string;
+  }): Promise<unknown> {
+    const qs = new URLSearchParams({
+      chain: query.chain,
+      contractAddress: query.contractAddress,
+      tokenId: query.tokenId,
+    }).toString();
+    const payload = await this.request<OkxEnvelope>({
+      method: 'GET',
+      path: `${OKX_NFT_API_PREFIX}/asset/detail?${qs}`,
+    });
+    return this.unwrap(payload);
+  }
+
+  /**
+   * List a wallet's NFTs on a chain (optionally narrowed to one collection).
+   * Returns OKX's raw `data` — used to probe for the internal `nftId` field
+   * beyond what the public schema documents.
+   */
+  async getOwnerAssets(query: {
+    chain: string;
+    ownerAddress: string;
+    contractAddress?: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<unknown> {
+    const params: Record<string, string> = {
+      chain: query.chain,
+      ownerAddress: query.ownerAddress,
+      limit: String(query.limit ?? 10),
+    };
+    if (query.contractAddress) params.contractAddress = query.contractAddress;
+    if (query.cursor) params.cursor = query.cursor;
+    const qs = new URLSearchParams(params).toString();
+    const payload = await this.request<OkxEnvelope>({
+      method: 'GET',
+      path: `${OKX_NFT_API_PREFIX}/owner/asset-list?${qs}`,
+    });
+    return this.unwrap(payload);
+  }
+
+  /**
+   * Fetch OKX's current marketplace trade fee — `tradeFees` is a percentage
+   * (e.g. `0.00` = 0%, `2.5` = 2.5%). As of 2026-05 OKX charges 0%, but the
+   * endpoint is the source of truth; fall back to the constant in
+   * `okx/constants.ts` if this fails. Unsigned + browser UA — `/priapi/`
+   * doesn't accept partial OK-ACCESS-* auth.
+   */
+  async getTradeFees(
+    query: { chain?: number; nftId?: string } = {},
+  ): Promise<{ tradeFees: number; tradeFeesAddress: string }> {
+    const params: Record<string, string> = { t: String(Date.now()) };
+    if (query.chain !== undefined) {
+      params.chain = String(query.chain);
+    }
+    if (query.nftId !== undefined) {
+      params.nftId = query.nftId;
+    }
+    const qs = new URLSearchParams(params).toString();
+    const payload = await this.request<
+      OkxEnvelope<{ tradeFees: number; tradeFeesAddress: string }>
+    >({
+      method: 'GET',
+      path: `${OKX_PRIAPI_NFT_PREFIX}/order/tradeFees?${qs}`,
+      signed: false,
+    });
+    return this.unwrap(payload);
+  }
+
+  /**
+   * Look up OKX's internal `nftId` for `(chain, contractAddress, tokenId)` — the
+   * value `/priapi/v1/nft/trading/createListing` requires.
+   *
+   * Calls OKX's website-internal `/priapi/v1/nft/detail-info` (the same endpoint
+   * the NFT detail page on web3.okx.com hydrates on the client). The endpoint
+   * is publicly callable; the HMAC headers `request()` adds are accepted and
+   * ignored. The `nftId` is exposed as `data.id` (a ~17-digit decimal string) —
+   * the response's own `deeplink` field confirms `id` is the `nftId`.
+   *
+   * @param query.chain numeric chain id (e.g. `8453` for Base) — NOT the public
+   *                    `/api/v5/` chain key string like `'base'`.
+   */
+  async getNftDetailInfo(query: {
+    chain: number;
+    contractAddress: string;
+    tokenId: string;
+  }): Promise<OkxNftDetailInfo> {
+    const qs = new URLSearchParams({
+      contractAddress: query.contractAddress,
+      tokenId: query.tokenId,
+      chain: String(query.chain),
+      looker: '',
+      t: String(Date.now()),
+    }).toString();
+    const payload = await this.request<OkxEnvelope<OkxNftDetailInfo>>({
+      method: 'GET',
+      path: `${OKX_PRIAPI_NFT_PREFIX}/detail-info?${qs}`,
+      signed: false,
+    });
+    return this.unwrap(payload);
+  }
+
+  /**
    * Build a listing. Returns OKX's `{ errors, orders, steps }` — the `steps`
    * carry the NFT approval and the Seaport `OrderComponents` to EIP-712 sign.
    */
@@ -251,7 +442,35 @@ class OkxClient {
       },
     });
     const data = this.unwrap(payload);
-    this.logResultErrors('create-listing', data);
+    this.requireNoOperationErrors('create-listing', data);
+    return data;
+  }
+
+  /**
+   * Build a listing via OKX's website-internal endpoint. Returns the same
+   * `{ errors, orders, steps }` shape the (now-dead) public `createListing`
+   * does — `steps[]` carries the NFT approval + the Seaport order to sign.
+   *
+   * The public `/api/v5/.../markets/create-listing` returns
+   * `{ code: -1, "No longer available" }`; this endpoint — the one OKX's
+   * website actually uses — still works. Unsigned + browser UA (see the
+   * `signed` doc on `request()` for the `/priapi/` auth wall).
+   */
+  async createListingPriapi(
+    args: OkxCreateListingPriapiArgs,
+  ): Promise<unknown> {
+    const payload = await this.request<OkxEnvelope>({
+      method: 'POST',
+      path: `${OKX_PRIAPI_NFT_PREFIX}/trading/createListing?t=${Date.now()}`,
+      body: {
+        chain: args.chain,
+        walletAddress: args.walletAddress,
+        items: args.items,
+      },
+      signed: false,
+    });
+    const data = this.unwrap(payload);
+    this.requireNoOperationErrors('create-listing-priapi', data);
     return data;
   }
 
@@ -260,10 +479,9 @@ class OkxClient {
    * response's `SignOrders` step `post` instruction (with the signature
    * filled in). `endpoint` is validated against `OKX_SUBMIT_ALLOWED_PREFIXES`.
    *
-   * Note: OKX points the submit at `/priapi/v1/nft/trading/...`, its internal
-   * API surface rather than the documented `/api/v5/*` one. Whether it honors
-   * the `OK-ACCESS-*` HMAC headers needs live verification once credentials
-   * are provisioned; the request is signed the same way regardless.
+   * OKX points the submit at `/priapi/v1/nft/trading/seaport/step/submitOrder`,
+   * its internal API surface. `/priapi/` rejects partial `OK-ACCESS-*` auth
+   * (see `request()`'s `signed` doc), so we send it unsigned.
    */
   async submitListing(args: {
     endpoint: string;
@@ -275,11 +493,14 @@ class OkxClient {
     if (!OKX_SUBMIT_ALLOWED_PREFIXES.some((p) => endpoint.startsWith(p))) {
       throw new Error(`OKX submit endpoint not allowed: ${endpoint}`);
     }
+    // /priapi/ rejects partial OK-ACCESS-* auth — strip HMAC for it.
+    const signed = !endpoint.startsWith('/priapi/');
     // /priapi may not use the { code, data, msg } envelope — return raw.
     return this.request<unknown>({
       method: 'POST',
       path: endpoint,
       body: args.body,
+      signed,
     });
   }
 
@@ -298,7 +519,7 @@ class OkxClient {
       },
     });
     const data = this.unwrap(payload);
-    this.logResultErrors('buy', data);
+    this.requireNoOperationErrors('buy', data);
     return data;
   }
 }

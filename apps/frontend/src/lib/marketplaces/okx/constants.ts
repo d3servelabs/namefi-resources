@@ -43,14 +43,14 @@ export const OKX_SUBMIT_ORDER_ENDPOINT =
 export const OKX_LISTING_PLATFORM = 'okx';
 
 /**
- * OKX marketplace protocol fee, in basis points — estimate only.
+ * OKX marketplace protocol fee fallback, in basis points. Used by
+ * `calculateListingFees` only when the live `okx.getTradeFees` query fails.
  *
- * Derived from the documented `create-listing` example (a 50,000,000-unit
- * listing splits into 49,000,000 to the seller + 1,000,000 to OKX = 2%). The
- * authoritative fee is whatever OKX bakes into the Seaport `consideration`
- * at order-build time; this constant only drives the pre-listing fee preview.
+ * As of 2026-05 OKX charges 0% — `/priapi/v1/nft/order/tradeFees` returns
+ * `tradeFees: 0.00`. Kept as `0` (not the older 2% guess) so an outage of
+ * the live fetch still produces a fee preview that matches today's reality.
  */
-export const OKX_PROTOCOL_FEE_BPS = 200;
+export const OKX_PROTOCOL_FEE_BPS = 0;
 
 /** Minimal ERC-721 ABI — `setApprovalForAll`, for the OKX listing approval step. */
 export const ERC721_SET_APPROVAL_FOR_ALL_ABI = [

@@ -67,7 +67,8 @@ export async function getMarketplace(
 
   if (args.id === 'okx') {
     // OKX needs no client-side key — its HMAC secret lives in the backend
-    // `nftMarketplaces` proxy that the adapter calls.
+    // `nftMarketplaces` proxy that the adapter calls. The OKX `/priapi/`
+    // createListing flow + nftId lookup goes through `OkxAdapter`;
     const { OkxAdapter } = await import('./okx-adapter');
     return new OkxAdapter(args);
   }

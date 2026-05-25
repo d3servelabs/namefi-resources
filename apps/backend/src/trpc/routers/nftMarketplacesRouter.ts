@@ -45,5 +45,17 @@ export const nftMarketplacesRouter = createContractTRPCRouter<
       .input(nftMarketplacesContract.okx.buy.input)
       .output(nftMarketplacesContract.okx.buy.output)
       .mutation(({ input }) => okxClient.buy(input)),
+    createListingPriapi: publicProcedure
+      .input(nftMarketplacesContract.okx.createListingPriapi.input)
+      .output(nftMarketplacesContract.okx.createListingPriapi.output)
+      .mutation(({ input }) => okxClient.createListingPriapi(input)),
+    getNftDetailInfo: publicProcedure
+      .input(nftMarketplacesContract.okx.getNftDetailInfo.input)
+      .output(nftMarketplacesContract.okx.getNftDetailInfo.output)
+      .query(({ input }) => okxClient.getNftDetailInfo(input)),
+    getTradeFees: publicProcedure
+      .input(nftMarketplacesContract.okx.getTradeFees.input)
+      .output(nftMarketplacesContract.okx.getTradeFees.output)
+      .query(({ input }) => okxClient.getTradeFees(input)),
   },
 });
