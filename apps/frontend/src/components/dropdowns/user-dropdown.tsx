@@ -17,7 +17,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/card';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
-import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import {
   useUserChainBalances,
   type ChainBalance,
@@ -181,14 +181,16 @@ export const UserDropdown = ErrorBoundary.with(
 
     // Data fetched once at the parent and shared between the dropdown preview
     // and the dialog content; react-query dedupes the underlying request.
-    const { userWalletAddresses } = useUserWalletAddresses();
+    const { linkedWallets, linkedWalletsReady } = useLinkedWallets();
     const nfscWalletAddresses = useMemo(
       () =>
-        userWalletAddresses.filter(
-          (address): address is `0x${string}` =>
-            typeof address === 'string' && address.startsWith('0x'),
-        ),
-      [userWalletAddresses],
+        linkedWallets
+          .map(({ address }) => address)
+          .filter(
+            (address): address is `0x${string}` =>
+              typeof address === 'string' && address.startsWith('0x'),
+          ),
+      [linkedWallets],
     );
     const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
       useUserChainBalances({
