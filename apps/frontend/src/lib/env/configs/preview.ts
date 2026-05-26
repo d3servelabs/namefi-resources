@@ -70,6 +70,7 @@ const previewConfig: ConfigInput = {
     : ['cv-2025-07-16', 'cta-2025-07-16']
   ).map((campaign) => campaign.trim()),
   DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
+  LAUNCHDARKLY_CLIENT_SIDE_ID: '6a155e4748c03f0a9f351d57',
 };
 
 export default previewConfig;

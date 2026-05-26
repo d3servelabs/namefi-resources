@@ -33,6 +33,7 @@ export const configSchema = z.object({
     .string()
     .default('pub8e11bd5c37f5798e2df1b8b503c24ed8'),
   DATADOG_LOGS_SESSION_SAMPLE_RATE: z.number().min(0).max(100).default(100),
+  LAUNCHDARKLY_CLIENT_SIDE_ID: z.string().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

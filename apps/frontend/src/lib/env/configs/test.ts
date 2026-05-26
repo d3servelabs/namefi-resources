@@ -23,6 +23,7 @@ const testConfig: ConfigInput = {
   ALLOWED_CHAINS: [chains.sepolia.id],
   HUNT_CAMPAIGN_KEYS: ['XXXXXXXXXX'],
   DATADOG_LOGS_SESSION_SAMPLE_RATE: 0,
+  LAUNCHDARKLY_CLIENT_SIDE_ID: '6a155e4748c03f0a9f351d57',
 };
 
 export default testConfig;

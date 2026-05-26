@@ -17,9 +17,7 @@ import { MyPreviouslyOwnedDomainsContent } from '@/components/my-previously-owne
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useTRPC } from '@/lib/trpc';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
-import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
-import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
-import type { FeatureFlagDefinition } from '@/types/feature-flags';
+import { useFlag } from '@openfeature/react-sdk';
 import { MyDomainsEmptyPlaceholder } from './empty-placeholder';
 import { MyDomainsTable } from './table';
 import { OtherWalletOrdersTable } from './other-wallet-orders-table';
@@ -35,22 +33,10 @@ const MarketplaceOrdersTab = dynamic(
   { ssr: false },
 );
 
-const MY_DOMAINS_FLAG_DEFINITIONS: FeatureFlagDefinition[] = [
-  {
-    key: 'marketplace_orders',
-    label: 'Marketplace Orders',
-    description:
-      'show the "My Listings & Offers" tab on /domains (cross-marketplace order view)',
-    scope: 'page',
-    pageKey: 'users',
-    defaultValue: false,
-  },
-];
-
 export const MyDomainsContent = () => {
-  useRegisterAdminFlags(MY_DOMAINS_FLAG_DEFINITIONS);
-  const [marketplaceOrdersEnabled] = useAdminFeatureFlag(
-    MY_DOMAINS_FLAG_DEFINITIONS[0],
+  const { value: marketplaceOrdersEnabled } = useFlag(
+    'marketplace-listings',
+    false,
   );
 
   const trpc = useTRPC();

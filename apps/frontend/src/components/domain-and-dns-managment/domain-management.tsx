@@ -48,6 +48,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
+import { useFlag } from '@openfeature/react-sdk';
 import dynamic from 'next/dynamic';
 
 const MarketplacePanel = dynamic(
@@ -73,14 +74,6 @@ const DOMAIN_FLAG_DEFINITION: FeatureFlagDefinition[] = [
     pageKey: 'users',
     defaultValue: true,
   },
-  {
-    key: 'marketplace_listing',
-    label: 'Marketplace Listing',
-    description: 'show the Marketplace tab on the domain detail page',
-    scope: 'page',
-    pageKey: 'users',
-    defaultValue: false,
-  },
 ];
 
 export const DomainManagement: FC<DomainManagementProps> = ({
@@ -91,8 +84,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   useRegisterAdminFlags(DOMAIN_FLAG_DEFINITION);
 
   const [newOverviewComponent] = useAdminFeatureFlag(DOMAIN_FLAG_DEFINITION[0]);
-  const [marketplaceListingEnabled] = useAdminFeatureFlag(
-    DOMAIN_FLAG_DEFINITION[1],
+  const { value: marketplaceListingEnabled } = useFlag(
+    'marketplace-listings',
+    false,
   );
 
   const searchParams = useSearchParams();

@@ -5,6 +5,7 @@ import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/cont
 import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
 import { FeedbackProvider } from './feedback';
 import { FreeMintsGuidanceProvider } from './free-mints-guidance';
+import { OpenFeatureClientProvider } from './openfeature';
 
 /**
  * Deferred providers that are not critical for first paint.
@@ -16,8 +17,10 @@ export const DeferredProviders: FC<PropsWithChildren> = ({ children }) => {
     <AdminFeatureFlagsProvider>
       <FreeMintsGuidanceProvider>
         <FeedbackProvider>
-          {children}
-          <AdminFeatureFlagsSheet />
+          <OpenFeatureClientProvider>
+            {children}
+            <AdminFeatureFlagsSheet />
+          </OpenFeatureClientProvider>
         </FeedbackProvider>
       </FreeMintsGuidanceProvider>
     </AdminFeatureFlagsProvider>
