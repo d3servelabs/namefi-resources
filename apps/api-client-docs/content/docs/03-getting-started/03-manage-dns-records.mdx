@@ -8,10 +8,12 @@ This guide covers the full DNS flow:
 2. Fetch the current zone records.
 3. Update existing records in batch.
 4. Create any missing records.
-5. Create any missing records.
-6. Verify final state.
+5. Verify final state.
 
 ## End-to-end example
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
@@ -134,6 +136,245 @@ console.table(
   })),
 );
 ```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+import { setTimeout as sleep } from 'node:timers/promises';
+
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+const zoneName = 'example.com';
+
+// 1) Register domain and seed initial DNS records
+const orderRes = await fetch(`${BASE}/orders/register-domain/records`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: zoneName,
+    durationInYears: 1,
+    records: [
+      { name: '@', type: 'A', rdata: '203.0.113.10', ttl: 300 },
+      { name: 'www', type: 'CNAME', rdata: 'example.com.', ttl: 300 },
+    ],
+  }),
+});
+const order = await orderRes.json();
+
+// 2) Wait for order processing to finish
+const terminalStatuses = new Set([
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELLED',
+  'PARTIALLY_COMPLETED',
+]);
+
+while (true) {
+  const r = await fetch(`${BASE}/orders/${order.id}`, { headers });
+  const current = await r.json();
+  if (terminalStatuses.has(current.order.status)) {
+    console.log('Final order status:', current.order.status);
+    break;
+  }
+  await sleep(5_000);
+}
+
+// 3) Check existing records
+const existingRes = await fetch(
+  `${BASE}/dns/records?zoneName=${encodeURIComponent(zoneName)}`,
+  { headers },
+);
+const existing = await existingRes.json();
+
+// 4) Update existing records by ID
+const apexA = existing.find((r: any) => r.name === '@' && r.type === 'A');
+const wwwCname = existing.find(
+  (r: any) => r.name === 'www' && r.type === 'CNAME',
+);
+
+const recordsToUpdate: Array<{ id: string; rdata: string; ttl: number }> = [];
+if (apexA) recordsToUpdate.push({ id: apexA.id, rdata: '198.51.100.42', ttl: 300 });
+if (wwwCname) recordsToUpdate.push({ id: wwwCname.id, rdata: 'example.com.', ttl: 300 });
+
+if (recordsToUpdate.length > 0) {
+  await fetch(`${BASE}/dns/records/batch`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ zoneName, records: recordsToUpdate }),
+  });
+}
+
+// 5) Create records that do not exist yet
+const recordsToCreate: Array<{ name: string; type: string; rdata: string; ttl: number }> = [];
+if (!apexA) recordsToCreate.push({ name: '@', type: 'A', rdata: '198.51.100.42', ttl: 300 });
+if (!wwwCname) recordsToCreate.push({ name: 'www', type: 'CNAME', rdata: 'example.com.', ttl: 300 });
+
+if (recordsToCreate.length > 0) {
+  await fetch(`${BASE}/dns/records/batch`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ zoneName, records: recordsToCreate }),
+  });
+}
+
+// 6) Verify final records
+const finalRes = await fetch(
+  `${BASE}/dns/records?zoneName=${encodeURIComponent(zoneName)}`,
+  { headers },
+);
+console.table(await finalRes.json());
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# 1) Register domain and seed initial DNS records
+ORDER_ID=$(curl -s -X POST "https://api.namefi.io/v-next/orders/register-domain/records" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "durationInYears": 1,
+    "records": [
+      { "name": "@",   "type": "A",     "rdata": "203.0.113.10", "ttl": 300 },
+      { "name": "www", "type": "CNAME", "rdata": "example.com.", "ttl": 300 }
+    ]
+  }' | jq -r '.id')
+
+# 2) Wait for the order to finish
+while true; do
+  status=$(curl -s "https://api.namefi.io/v-next/orders/$ORDER_ID" \
+    -H "x-api-key: $NAMEFI_API_KEY" | jq -r '.order.status')
+  echo "Order $ORDER_ID: $status"
+  case "$status" in
+    SUCCEEDED|FAILED|CANCELLED|PARTIALLY_COMPLETED) break ;;
+  esac
+  sleep 5
+done
+
+# 3) Check existing records
+curl "https://api.namefi.io/v-next/dns/records?zoneName=example.com"
+
+# 4) Update existing records by ID (substitute the IDs from step 3)
+curl -X PUT "https://api.namefi.io/v-next/dns/records/batch" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "zoneName": "example.com",
+    "records": [
+      { "id": "<apex-a-id>",   "rdata": "198.51.100.42", "ttl": 300 },
+      { "id": "<www-cname-id>", "rdata": "example.com.",  "ttl": 300 }
+    ]
+  }'
+
+# 5) Create records that do not exist yet
+curl -X POST "https://api.namefi.io/v-next/dns/records/batch" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "zoneName": "example.com",
+    "records": [
+      { "name": "@",   "type": "A",     "rdata": "198.51.100.42", "ttl": 300 },
+      { "name": "www", "type": "CNAME", "rdata": "example.com.",  "ttl": 300 }
+    ]
+  }'
+
+# 6) Verify final records
+curl "https://api.namefi.io/v-next/dns/records?zoneName=example.com"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import time
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+zone_name = "example.com"
+
+# 1) Register domain and seed initial DNS records
+order = requests.post(
+    f"{BASE}/orders/register-domain/records",
+    headers=HEADERS,
+    json={
+        "normalizedDomainName": zone_name,
+        "durationInYears": 1,
+        "records": [
+            {"name": "@",   "type": "A",     "rdata": "203.0.113.10", "ttl": 300},
+            {"name": "www", "type": "CNAME", "rdata": "example.com.", "ttl": 300},
+        ],
+    },
+).json()
+
+# 2) Wait for the order to finish
+terminal = {"SUCCEEDED", "FAILED", "CANCELLED", "PARTIALLY_COMPLETED"}
+while True:
+    current = requests.get(f"{BASE}/orders/{order['id']}", headers=HEADERS).json()
+    if current["order"]["status"] in terminal:
+        print("Final order status:", current["order"]["status"])
+        break
+    time.sleep(5)
+
+# 3) Check existing records
+existing = requests.get(
+    f"{BASE}/dns/records",
+    params={"zoneName": zone_name},
+    headers=HEADERS,
+).json()
+
+# 4) Update existing records by ID
+apex_a = next((r for r in existing if r["name"] == "@"   and r["type"] == "A"),     None)
+www_cname = next((r for r in existing if r["name"] == "www" and r["type"] == "CNAME"), None)
+
+records_to_update = []
+if apex_a:
+    records_to_update.append({"id": apex_a["id"],   "rdata": "198.51.100.42", "ttl": 300})
+if www_cname:
+    records_to_update.append({"id": www_cname["id"], "rdata": "example.com.",  "ttl": 300})
+
+if records_to_update:
+    requests.put(
+        f"{BASE}/dns/records/batch",
+        headers=HEADERS,
+        json={"zoneName": zone_name, "records": records_to_update},
+    )
+
+# 5) Create records that do not exist yet
+records_to_create = []
+if not apex_a:
+    records_to_create.append({"name": "@",   "type": "A",     "rdata": "198.51.100.42", "ttl": 300})
+if not www_cname:
+    records_to_create.append({"name": "www", "type": "CNAME", "rdata": "example.com.",  "ttl": 300})
+
+if records_to_create:
+    requests.post(
+        f"{BASE}/dns/records/batch",
+        headers=HEADERS,
+        json={"zoneName": zone_name, "records": records_to_create},
+    )
+
+# 6) Verify final records
+final = requests.get(
+    f"{BASE}/dns/records",
+    params={"zoneName": zone_name},
+    headers=HEADERS,
+).json()
+for r in final:
+    print(r["name"], r["type"], r["rdata"], r["ttl"])
+```
+
+</Tab>
+</CodeTabs>
 
 ## Notes
 

@@ -8,6 +8,9 @@ If you are testing, request faucet tokens first in the [Balance and Faucet guide
 
 ## Check availability and register
 
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
+
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
 
@@ -34,9 +37,101 @@ const order = await client.orders.registerDomain({
 console.log('Order created', order.id);
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+const domain = 'example.com';
+
+const availabilityRes = await fetch(
+  `${BASE}/search/availability?domain=${encodeURIComponent(domain)}`,
+  { headers },
+);
+const availability = await availabilityRes.json();
+
+if (!availability.availability) {
+  throw new Error(`${domain} is not available`);
+}
+
+const orderRes = await fetch(`${BASE}/orders/register-domain`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: domain,
+    durationInYears: 1,
+  }),
+});
+const order = await orderRes.json();
+
+console.log('Order created', order.id);
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# 1. Check availability
+curl "https://api.namefi.io/v-next/search/availability?domain=example.com" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+
+# 2. Register the domain (only if availability.availability === true)
+curl -X POST "https://api.namefi.io/v-next/orders/register-domain" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "durationInYears": 1
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+headers = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+domain = "example.com"
+
+availability = requests.get(
+    f"{BASE}/search/availability",
+    params={"domain": domain},
+    headers=headers,
+).json()
+
+if not availability["availability"]:
+    raise RuntimeError(f"{domain} is not available")
+
+order = requests.post(
+    f"{BASE}/orders/register-domain",
+    headers=headers,
+    json={
+        "normalizedDomainName": domain,
+        "durationInYears": 1,
+    },
+).json()
+
+print("Order created", order["id"])
+```
+
+</Tab>
+</CodeTabs>
+
 ## Register with DNS records (`registerWithRecords`)
 
 Use `registerWithRecords` if you want initial records applied as soon as the order finishes.
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
@@ -61,9 +156,82 @@ const order = await client.orders.registerWithRecords({
 console.log('Order created', order.id);
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch(
+  'https://api.namefi.io/v-next/orders/register-domain/records',
+  {
+    method: 'POST',
+    headers: {
+      'x-api-key': process.env.NAMEFI_API_KEY!,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      normalizedDomainName: 'example.com',
+      durationInYears: 1,
+      records: [
+        { name: '@', type: 'A', rdata: '203.0.113.10', ttl: 300 },
+        { name: 'www', type: 'CNAME', rdata: 'example.com.', ttl: 300 },
+      ],
+    }),
+  },
+);
+const order = await res.json();
+
+console.log('Order created', order.id);
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X POST "https://api.namefi.io/v-next/orders/register-domain/records" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "durationInYears": 1,
+    "records": [
+      { "name": "@",   "type": "A",     "rdata": "203.0.113.10", "ttl": 300 },
+      { "name": "www", "type": "CNAME", "rdata": "example.com.", "ttl": 300 }
+    ]
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+order = requests.post(
+    "https://api.namefi.io/v-next/orders/register-domain/records",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+    json={
+        "normalizedDomainName": "example.com",
+        "durationInYears": 1,
+        "records": [
+            {"name": "@",   "type": "A",     "rdata": "203.0.113.10", "ttl": 300},
+            {"name": "www", "type": "CNAME", "rdata": "example.com.", "ttl": 300},
+        ],
+    },
+).json()
+
+print("Order created", order["id"])
+```
+
+</Tab>
+</CodeTabs>
+
 ## Poll order status
 
 Order processing is asynchronous. Poll `orders.getOrder` until status is terminal.
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
@@ -101,3 +269,100 @@ while (true) {
   await sleep(5_000);
 }
 ```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+import { setTimeout as sleep } from 'node:timers/promises';
+
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+const orderRes = await fetch(`${BASE}/orders/register-domain/records`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: 'example.com',
+    durationInYears: 1,
+    records: [{ name: '@', type: 'A', rdata: '203.0.113.10', ttl: 300 }],
+  }),
+});
+const order = await orderRes.json();
+
+const terminalStatuses = new Set([
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELLED',
+  'PARTIALLY_COMPLETED',
+]);
+
+while (true) {
+  const currentRes = await fetch(`${BASE}/orders/${order.id}`, { headers });
+  const current = await currentRes.json();
+  console.log(`Order ${order.id}:`, current.order.status);
+
+  if (terminalStatuses.has(current.order.status)) {
+    break;
+  }
+
+  await sleep(5_000);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# Poll the order until its status is one of:
+#   SUCCEEDED, FAILED, CANCELLED, PARTIALLY_COMPLETED
+ORDER_ID="<order id from the previous step>"
+
+while true; do
+  status=$(curl -s "https://api.namefi.io/v-next/orders/$ORDER_ID" \
+    -H "x-api-key: $NAMEFI_API_KEY" \
+    | jq -r '.order.status')
+  echo "Order $ORDER_ID: $status"
+  case "$status" in
+    SUCCEEDED|FAILED|CANCELLED|PARTIALLY_COMPLETED) break ;;
+  esac
+  sleep 5
+done
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import time
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+headers = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+order = requests.post(
+    f"{BASE}/orders/register-domain/records",
+    headers=headers,
+    json={
+        "normalizedDomainName": "example.com",
+        "durationInYears": 1,
+        "records": [{"name": "@", "type": "A", "rdata": "203.0.113.10", "ttl": 300}],
+    },
+).json()
+
+terminal = {"SUCCEEDED", "FAILED", "CANCELLED", "PARTIALLY_COMPLETED"}
+
+while True:
+    current = requests.get(f"{BASE}/orders/{order['id']}", headers=headers).json()
+    print(f"Order {order['id']}: {current['order']['status']}")
+    if current["order"]["status"] in terminal:
+        break
+    time.sleep(5)
+```
+
+</Tab>
+</CodeTabs>

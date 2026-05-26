@@ -18,6 +18,9 @@ All domain registration operations return an order. Orders are processed asynchr
 
 ## Register a domain and poll
 
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
+
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -70,9 +73,144 @@ while (true) {
 }
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+import { setTimeout as sleep } from 'node:timers/promises';
+
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+// Check availability first
+const availabilityRes = await fetch(
+  `${BASE}/search/availability?domain=example.com`,
+  { headers },
+);
+const { availability } = await availabilityRes.json();
+
+if (!availability) {
+  throw new Error('Domain is not available');
+}
+
+// Create the order
+const orderRes = await fetch(`${BASE}/orders/register-domain`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: 'example.com',
+    durationInYears: 1,
+  }),
+});
+const order = await orderRes.json();
+
+console.log('Order created:', order.id);
+
+// Poll until terminal
+const terminalStatuses = new Set([
+  'SUCCEEDED',
+  'FAILED',
+  'CANCELLED',
+  'PARTIALLY_COMPLETED',
+]);
+
+while (true) {
+  const r = await fetch(`${BASE}/orders/${order.id}`, { headers });
+  const { order: current } = await r.json();
+
+  console.log(`Status: ${current.status}`);
+
+  if (terminalStatuses.has(current.status)) {
+    break;
+  }
+
+  await sleep(5_000);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# Check availability first
+curl "https://api.namefi.io/v-next/search/availability?domain=example.com" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+
+# Create the order
+ORDER_ID=$(curl -s -X POST "https://api.namefi.io/v-next/orders/register-domain" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "durationInYears": 1
+  }' | jq -r '.id')
+
+echo "Order created: $ORDER_ID"
+
+# Poll until terminal
+while true; do
+  status=$(curl -s "https://api.namefi.io/v-next/orders/$ORDER_ID" \
+    -H "x-api-key: $NAMEFI_API_KEY" | jq -r '.order.status')
+  echo "Status: $status"
+  case "$status" in
+    SUCCEEDED|FAILED|CANCELLED|PARTIALLY_COMPLETED) break ;;
+  esac
+  sleep 5
+done
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import time
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+# Check availability first
+availability = requests.get(
+    f"{BASE}/search/availability",
+    params={"domain": "example.com"},
+    headers=HEADERS,
+).json()["availability"]
+
+if not availability:
+    raise RuntimeError("Domain is not available")
+
+# Create the order
+order = requests.post(
+    f"{BASE}/orders/register-domain",
+    headers=HEADERS,
+    json={"normalizedDomainName": "example.com", "durationInYears": 1},
+).json()
+
+print("Order created:", order["id"])
+
+# Poll until terminal
+terminal = {"SUCCEEDED", "FAILED", "CANCELLED", "PARTIALLY_COMPLETED"}
+while True:
+    current = requests.get(f"{BASE}/orders/{order['id']}", headers=HEADERS).json()["order"]
+    print(f"Status: {current['status']}")
+    if current["status"] in terminal:
+        break
+    time.sleep(5)
+```
+
+</Tab>
+</CodeTabs>
+
 ## Register with a custom NFT wallet
 
 By default, the domain NFT is minted to your primary wallet. Pass `nftReceivinggWallet` to send it elsewhere:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 const order = await client.orders.registerDomain({
@@ -85,9 +223,75 @@ const order = await client.orders.registerDomain({
 });
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch(
+  'https://api.namefi.io/v-next/orders/register-domain',
+  {
+    method: 'POST',
+    headers: {
+      'x-api-key': process.env.NAMEFI_API_KEY!,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      normalizedDomainName: 'example.com',
+      durationInYears: 2,
+      nftReceivinggWallet: {
+        walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
+        chainId: 8453, // Base
+      },
+    }),
+  },
+);
+const order = await res.json();
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X POST "https://api.namefi.io/v-next/orders/register-domain" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "durationInYears": 2,
+    "nftReceivinggWallet": {
+      "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "chainId": 8453
+    }
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+order = requests.post(
+    "https://api.namefi.io/v-next/orders/register-domain",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+    json={
+        "normalizedDomainName": "example.com",
+        "durationInYears": 2,
+        "nftReceivinggWallet": {
+            "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+            "chainId": 8453,  # Base
+        },
+    },
+).json()
+```
+
+</Tab>
+</CodeTabs>
+
 ## Register a trial domain
 
 Trial domains are free subdomains under specific parent domains (e.g. `*.0x.city`). List available trial parent domains, then register:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 // List available trial parent domains
@@ -102,9 +306,80 @@ const order = await client.orders.registerDomainForTrial({
 console.log('Trial order created:', order.id);
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+// List available trial parent domains
+const trialRes = await fetch(`${BASE}/trial/domains/available`, { headers });
+const trialDomains = await trialRes.json();
+console.log('Available trial parents:', trialDomains);
+
+// Register a trial subdomain
+const orderRes = await fetch(`${BASE}/orders/register-domain-trial`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({ normalizedDomainName: 'myname.0x.city' }),
+});
+const order = await orderRes.json();
+
+console.log('Trial order created:', order.id);
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# List available trial parent domains
+curl "https://api.namefi.io/v-next/trial/domains/available" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+
+# Register a trial subdomain
+curl -X POST "https://api.namefi.io/v-next/orders/register-domain-trial" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{"normalizedDomainName":"myname.0x.city"}'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+# List available trial parent domains
+trial_domains = requests.get(f"{BASE}/trial/domains/available", headers=HEADERS).json()
+print("Available trial parents:", trial_domains)
+
+# Register a trial subdomain
+order = requests.post(
+    f"{BASE}/orders/register-domain-trial",
+    headers=HEADERS,
+    json={"normalizedDomainName": "myname.0x.city"},
+).json()
+
+print("Trial order created:", order["id"])
+```
+
+</Tab>
+</CodeTabs>
+
 Trial registration requires EIP-712 authentication. If you are using `type: 'API_KEY'`, the API key handles this transparently.
 
 ## List your orders
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 const orders = await client.user.getUserOrders();
@@ -114,9 +389,50 @@ for (const order of orders) {
 }
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch('https://api.namefi.io/v-next/user/orders', {
+  headers: { 'x-api-key': process.env.NAMEFI_API_KEY! },
+});
+const orders = await res.json();
+
+for (const order of orders) {
+  console.log(`${order.id}: ${order.status}`);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl "https://api.namefi.io/v-next/user/orders" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+orders = requests.get(
+    "https://api.namefi.io/v-next/user/orders",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+).json()
+
+for order in orders:
+    print(f"{order['id']}: {order['status']}")
+```
+
+</Tab>
+</CodeTabs>
+
 ## List your domains
 
 After registration completes, your domains appear in the user domains list:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 const domains = await client.user.getDomains();
@@ -126,9 +442,50 @@ for (const domain of domains) {
 }
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch('https://api.namefi.io/v-next/user/domains', {
+  headers: { 'x-api-key': process.env.NAMEFI_API_KEY! },
+});
+const domains = await res.json();
+
+for (const domain of domains) {
+  console.log(`${domain.normalizedDomainName} — expires ${domain.expiresAt}`);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl "https://api.namefi.io/v-next/user/domains" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+domains = requests.get(
+    "https://api.namefi.io/v-next/user/domains",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+).json()
+
+for domain in domains:
+    print(f"{domain['normalizedDomainName']} — expires {domain['expiresAt']}")
+```
+
+</Tab>
+</CodeTabs>
+
 ## Get order payment methods
 
 Check which payment methods are available for an order:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 const methods = await client.orders.getOrderPaymentMethodsDetails({
@@ -137,3 +494,39 @@ const methods = await client.orders.getOrderPaymentMethodsDetails({
 
 console.log('Available payment methods:', methods);
 ```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch(
+  `https://api.namefi.io/v-next/orders/${order.id}/payment-methods`,
+  { headers: { 'x-api-key': process.env.NAMEFI_API_KEY! } },
+);
+const methods = await res.json();
+
+console.log('Available payment methods:', methods);
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl "https://api.namefi.io/v-next/orders/$ORDER_ID/payment-methods" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+methods = requests.get(
+    f"https://api.namefi.io/v-next/orders/{order['id']}/payment-methods",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+).json()
+
+print("Available payment methods:", methods)
+```
+
+</Tab>
+</CodeTabs>

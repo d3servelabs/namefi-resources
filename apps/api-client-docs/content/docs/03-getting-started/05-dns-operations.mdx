@@ -32,6 +32,9 @@ This is the recommended approach for AI agents and scripts that need simple DNS 
 
 Fetch all DNS records for a zone:
 
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
+
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
 
@@ -52,7 +55,49 @@ for (const r of records) {
 }
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch(
+  'https://api.namefi.io/v-next/dns/records?zoneName=example.com',
+);
+const records = await res.json();
+
+for (const r of records) {
+  console.log(`${r.name} ${r.type} ${r.rdata} (TTL: ${r.ttl}, ID: ${r.id})`);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl "https://api.namefi.io/v-next/dns/records?zoneName=example.com"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import requests
+
+records = requests.get(
+    "https://api.namefi.io/v-next/dns/records",
+    params={"zoneName": "example.com"},
+).json()
+
+for r in records:
+    print(f"{r['name']} {r['type']} {r['rdata']} (TTL: {r['ttl']}, ID: {r['id']})")
+```
+
+</Tab>
+</CodeTabs>
+
 ## Create a single record
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 await client.dnsRecords.createDnsRecord({
@@ -64,9 +109,71 @@ await client.dnsRecords.createDnsRecord({
 });
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+await fetch('https://api.namefi.io/v-next/dns/records', {
+  method: 'POST',
+  headers: {
+    'x-api-key': process.env.NAMEFI_API_KEY!,
+    'content-type': 'application/json',
+  },
+  body: JSON.stringify({
+    zoneName: 'example.com',
+    type: 'A',
+    name: '@',
+    rdata: '203.0.113.10',
+    ttl: 300,
+  }),
+});
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X POST "https://api.namefi.io/v-next/dns/records" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "zoneName": "example.com",
+    "type": "A",
+    "name": "@",
+    "rdata": "203.0.113.10",
+    "ttl": 300
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+requests.post(
+    "https://api.namefi.io/v-next/dns/records",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+    json={
+        "zoneName": "example.com",
+        "type": "A",
+        "name": "@",
+        "rdata": "203.0.113.10",
+        "ttl": 300,
+    },
+)
+```
+
+</Tab>
+</CodeTabs>
+
 ## Update a single record
 
 Update an existing record by its ID. Fetch records first to get the ID:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 const records = await client.dnsRecords.getRecords({
@@ -85,7 +192,94 @@ if (apex) {
 }
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+const recordsRes = await fetch(`${BASE}/dns/records?zoneName=example.com`, {
+  headers,
+});
+const records = await recordsRes.json();
+
+const apex = records.find((r: any) => r.name === '@' && r.type === 'A');
+
+if (apex) {
+  await fetch(`${BASE}/dns/record`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({
+      id: apex.id,
+      zoneName: 'example.com',
+      rdata: '198.51.100.42',
+      ttl: 600,
+    }),
+  });
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# Fetch records first to get the ID
+curl "https://api.namefi.io/v-next/dns/records?zoneName=example.com"
+
+# Update by ID
+curl -X PUT "https://api.namefi.io/v-next/dns/record" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "id": "<record-id>",
+    "zoneName": "example.com",
+    "rdata": "198.51.100.42",
+    "ttl": 600
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+records = requests.get(
+    f"{BASE}/dns/records",
+    params={"zoneName": "example.com"},
+    headers=HEADERS,
+).json()
+
+apex = next((r for r in records if r["name"] == "@" and r["type"] == "A"), None)
+
+if apex:
+    requests.put(
+        f"{BASE}/dns/record",
+        headers=HEADERS,
+        json={
+            "id": apex["id"],
+            "zoneName": "example.com",
+            "rdata": "198.51.100.42",
+            "ttl": 600,
+        },
+    )
+```
+
+</Tab>
+</CodeTabs>
+
 ## Delete a single record
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 await client.dnsRecords.deleteRecord({
@@ -94,9 +288,56 @@ await client.dnsRecords.deleteRecord({
 });
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+await fetch('https://api.namefi.io/v-next/dns/record', {
+  method: 'DELETE',
+  headers: {
+    'x-api-key': process.env.NAMEFI_API_KEY!,
+    'content-type': 'application/json',
+  },
+  body: JSON.stringify({
+    id: apex.id,
+    zoneName: 'example.com',
+  }),
+});
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X DELETE "https://api.namefi.io/v-next/dns/record" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "id": "<record-id>",
+    "zoneName": "example.com"
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+requests.delete(
+    "https://api.namefi.io/v-next/dns/record",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+    json={"id": apex["id"], "zoneName": "example.com"},
+)
+```
+
+</Tab>
+</CodeTabs>
+
 ## Batch delete records
 
 Delete multiple records at once by their IDs:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 const records = await client.dnsRecords.getRecords({
@@ -113,9 +354,81 @@ if (txtRecords.length > 0) {
 }
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+const recordsRes = await fetch(`${BASE}/dns/records?zoneName=example.com`, {
+  headers,
+});
+const records = await recordsRes.json();
+const txtRecords = records.filter((r: any) => r.type === 'TXT');
+
+if (txtRecords.length > 0) {
+  await fetch(`${BASE}/dns/records/batch`, {
+    method: 'DELETE',
+    headers,
+    body: JSON.stringify({
+      zoneName: 'example.com',
+      recordsIds: txtRecords.map((r: any) => r.id),
+    }),
+  });
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X DELETE "https://api.namefi.io/v-next/dns/records/batch" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "zoneName": "example.com",
+    "recordsIds": ["<record-id-1>", "<record-id-2>"]
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+records = requests.get(
+    f"{BASE}/dns/records",
+    params={"zoneName": "example.com"},
+    headers=HEADERS,
+).json()
+txt_ids = [r["id"] for r in records if r["type"] == "TXT"]
+
+if txt_ids:
+    requests.delete(
+        f"{BASE}/dns/records/batch",
+        headers=HEADERS,
+        json={"zoneName": "example.com", "recordsIds": txt_ids},
+    )
+```
+
+</Tab>
+</CodeTabs>
+
 ## Domain parking
 
 Park a domain to serve a default landing page. This replaces DNS records with parking records:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 // Park a domain
@@ -132,9 +445,93 @@ const { parked } = await client.dnsRecords.isDomainParked({
 console.log('Parked:', parked);
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+// Park a domain
+await fetch(`${BASE}/dns/park`, {
+  method: 'POST',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: 'example.com',
+    overrideExistingRecords: true,
+  }),
+});
+
+// Check if a domain is parked
+const res = await fetch(
+  `${BASE}/dns/parked?normalizedDomainName=example.com`,
+  { headers },
+);
+const { parked } = await res.json();
+
+console.log('Parked:', parked);
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# Park a domain
+curl -X POST "https://api.namefi.io/v-next/dns/park" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "overrideExistingRecords": true
+  }'
+
+# Check if a domain is parked
+curl "https://api.namefi.io/v-next/dns/parked?normalizedDomainName=example.com" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+# Park a domain
+requests.post(
+    f"{BASE}/dns/park",
+    headers=HEADERS,
+    json={
+        "normalizedDomainName": "example.com",
+        "overrideExistingRecords": True,
+    },
+)
+
+# Check if a domain is parked
+parked = requests.get(
+    f"{BASE}/dns/parked",
+    params={"normalizedDomainName": "example.com"},
+    headers=HEADERS,
+).json()["parked"]
+
+print("Parked:", parked)
+```
+
+</Tab>
+</CodeTabs>
+
 ## Toggle parking
 
 Enable or disable parking without removing existing records:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 // Disable parking, keep existing records
@@ -151,6 +548,100 @@ await client.dnsRecords.toggleDomainParking({
   overrideExistingRecords: false,
 });
 ```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const BASE = 'https://api.namefi.io/v-next';
+const headers = {
+  'x-api-key': process.env.NAMEFI_API_KEY!,
+  'content-type': 'application/json',
+};
+
+// Disable parking, keep existing records
+await fetch(`${BASE}/dns/park`, {
+  method: 'PUT',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: 'example.com',
+    enableParking: false,
+    overrideExistingRecords: false,
+  }),
+});
+
+// Re-enable parking
+await fetch(`${BASE}/dns/park`, {
+  method: 'PUT',
+  headers,
+  body: JSON.stringify({
+    normalizedDomainName: 'example.com',
+    enableParking: true,
+    overrideExistingRecords: false,
+  }),
+});
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# Disable parking, keep existing records
+curl -X PUT "https://api.namefi.io/v-next/dns/park" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "enableParking": false,
+    "overrideExistingRecords": false
+  }'
+
+# Re-enable parking
+curl -X PUT "https://api.namefi.io/v-next/dns/park" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "normalizedDomainName": "example.com",
+    "enableParking": true,
+    "overrideExistingRecords": false
+  }'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+BASE = "https://api.namefi.io/v-next"
+HEADERS = {"x-api-key": os.environ["NAMEFI_API_KEY"]}
+
+# Disable parking, keep existing records
+requests.put(
+    f"{BASE}/dns/park",
+    headers=HEADERS,
+    json={
+        "normalizedDomainName": "example.com",
+        "enableParking": False,
+        "overrideExistingRecords": False,
+    },
+)
+
+# Re-enable parking
+requests.put(
+    f"{BASE}/dns/park",
+    headers=HEADERS,
+    json={
+        "normalizedDomainName": "example.com",
+        "enableParking": True,
+        "overrideExistingRecords": False,
+    },
+)
+```
+
+</Tab>
+</CodeTabs>
 
 ## Supported record types
 

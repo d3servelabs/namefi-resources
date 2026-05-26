@@ -8,6 +8,9 @@ description: Request faucet NFSC (test) and check your balance across chains
 Use `client.user.requestNfscFaucet` to request test NFSC.
 If you refer to this as `requestNFSC` internally, this is the client method to call.
 
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
+
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
 
@@ -27,13 +30,108 @@ console.log('Wallet', faucet.walletAddress);
 console.log('Next eligible at', faucet.nextEligibleAt);
 ```
 
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch('https://api.namefi.io/v-next/user/faucet', {
+  method: 'POST',
+  headers: {
+    'x-api-key': process.env.NAMEFI_API_KEY!,
+    'content-type': 'application/json',
+  },
+  body: JSON.stringify({}),
+});
+const faucet = await res.json();
+
+console.log('Status', faucet.status); // started
+console.log('Workflow ID', faucet.workflowId);
+console.log('Wallet', faucet.walletAddress);
+console.log('Next eligible at', faucet.nextEligibleAt);
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X POST "https://api.namefi.io/v-next/user/faucet" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{}'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+faucet = requests.post(
+    "https://api.namefi.io/v-next/user/faucet",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+    json={},
+).json()
+
+print("Status", faucet["status"])  # started
+print("Workflow ID", faucet["workflowId"])
+print("Wallet", faucet["walletAddress"])
+print("Next eligible at", faucet["nextEligibleAt"])
+```
+
+</Tab>
+</CodeTabs>
+
 To request for a specific linked wallet:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 await client.user.requestNfscFaucet({
   walletAddress: '0x1111111111111111111111111111111111111111',
 });
 ```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+await fetch('https://api.namefi.io/v-next/user/faucet', {
+  method: 'POST',
+  headers: {
+    'x-api-key': process.env.NAMEFI_API_KEY!,
+    'content-type': 'application/json',
+  },
+  body: JSON.stringify({
+    walletAddress: '0x1111111111111111111111111111111111111111',
+  }),
+});
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl -X POST "https://api.namefi.io/v-next/user/faucet" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{"walletAddress":"0x1111111111111111111111111111111111111111"}'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+requests.post(
+    "https://api.namefi.io/v-next/user/faucet",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+    json={"walletAddress": "0x1111111111111111111111111111111111111111"},
+)
+```
+
+</Tab>
+</CodeTabs>
 
 If you hit rate limits, the API returns `429` with the next eligible timestamp.
 
@@ -44,6 +142,9 @@ Use the Namefi dashboard to top up NFSC in production environments.
 ## Check Your Balance
 
 Check balances with the API:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
 
 ```ts
 import { createNamefiClient } from '@namefi/api-client';
@@ -67,3 +168,55 @@ for (const entry of balance.balances) {
   );
 }
 ```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch('https://api.namefi.io/v-next/balance', {
+  headers: { 'x-api-key': process.env.NAMEFI_API_KEY! },
+});
+const balance = await res.json();
+
+console.log('Total USD', balance.totalBalanceInUsd);
+console.log('Total USD cents', balance.totalBalanceInUsdCents);
+
+for (const entry of balance.balances) {
+  console.log(
+    `${entry.chainName} (${entry.chainId}) - ${entry.walletAddress}: $${entry.balanceInUsd}`
+  );
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+curl "https://api.namefi.io/v-next/balance" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+balance = requests.get(
+    "https://api.namefi.io/v-next/balance",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+).json()
+
+print("Total USD", balance["totalBalanceInUsd"])
+print("Total USD cents", balance["totalBalanceInUsdCents"])
+
+for entry in balance["balances"]:
+    print(
+        f"{entry['chainName']} ({entry['chainId']}) - "
+        f"{entry['walletAddress']}: ${entry['balanceInUsd']}"
+    )
+```
+
+</Tab>
+</CodeTabs>
