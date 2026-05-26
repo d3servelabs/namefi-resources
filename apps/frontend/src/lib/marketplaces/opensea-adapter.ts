@@ -1,5 +1,6 @@
 import {
   type Chain,
+  type GetOrderByHashResponse,
   type Listing as OpenSeaListingV2,
   type Offer as OpenSeaOfferV2,
   OpenSeaSDK,
@@ -32,6 +33,8 @@ import { OpenSeaRestClient } from './opensea/rest-client';
 import { Erc2981Abi, SeaportCancelAbi } from './seaport/abi';
 import { SEAPORT_V1_6_ADDRESS } from './seaport/constants';
 import type {
+  CollectionListingsQuery,
+  CollectionOffersQuery,
   Listing,
   ListingCurrency,
   ListingFees,
@@ -39,6 +42,9 @@ import type {
   ListingPrice,
   ListingType,
   ListingsQuery,
+  MakerListingsQuery,
+  MakerOffersQuery,
+  MarketplaceCapabilities,
   Offer,
   OffersQuery,
   OrderStatus,
@@ -77,6 +83,12 @@ export class OpenSeaAdapter implements MarketPlace {
 
   /** Lazy `contractAddress.toLowerCase() → collection-slug` cache. */
   private readonly collectionSlugByContract = new Map<
+    string,
+    Promise<string | null>
+  >();
+  /** Lazy `contractAddress.toLowerCase() → collection-slug` cache for the
+   *  contract-only (no tokenId) lookup path used by collection-scoped queries. */
+  private readonly collectionSlugByContractOnly = new Map<
     string,
     Promise<string | null>
   >();
@@ -129,6 +141,12 @@ export class OpenSeaAdapter implements MarketPlace {
     // SDK 10.5's `createListing` doesn't accept `paymentTokenAddress`, so listings
     // always settle in the chain's native asset (ETH on every supported chain).
     return getListingCurrenciesForChain(this.chainId).filter((c) => c.isNative);
+  }
+
+  getCapabilities(): MarketplaceCapabilities {
+    // `sdk.api.getProfileListings/getProfileOffers` cover the maker scope;
+    // `sdk.api.getAllListings/getCollectionOffers` cover the collection scope.
+    return { byMaker: true, byCollection: true };
   }
 
   async calculateListingFees(input: {
@@ -343,6 +361,165 @@ export class OpenSeaAdapter implements MarketPlace {
     );
   }
 
+  // -------- maker- / collection-scoped queries --------
+
+  async getListingsByMaker(query: MakerListingsQuery): Promise<Listing[]> {
+    const args = await this.buildProfileOrdersArgs(query.collectionAddress);
+    if (args === null) return []; // collection not on OpenSea — empty result
+    const { listings } = await this.sdk.api.getProfileListings(
+      query.makerAddress,
+      args,
+    );
+    const enriched = await this.enrichOrdersByHash<OpenSeaListingV2>(
+      (listings ?? []) as OpenSeaListingV2[],
+    );
+    return enriched
+      .filter((l) => normalizeSdkStatus(l.status) === 'active')
+      .map((l) =>
+        this.adaptSdkListing(
+          l,
+          this.resolveCurrencyFromSdk(l),
+          extractListingToken(l),
+        ),
+      );
+  }
+
+  async getOffersByMaker(query: MakerOffersQuery): Promise<Offer[]> {
+    const args = await this.buildProfileOrdersArgs(query.collectionAddress);
+    if (args === null) return [];
+    const { offers } = await this.sdk.api.getProfileOffers(
+      query.makerAddress,
+      args,
+    );
+    const enriched = await this.enrichOrdersByHash<OpenSeaOfferV2>(
+      (offers ?? []) as OpenSeaOfferV2[],
+    );
+    return enriched
+      .filter((o) => normalizeSdkStatus(o.status) === 'active')
+      .map((o) =>
+        this.adaptSdkOffer(
+          o,
+          this.resolveCurrencyFromSdk(o),
+          extractOfferToken(o),
+        ),
+      );
+  }
+
+  async getListingsByCollection(
+    query: CollectionListingsQuery,
+  ): Promise<Listing[]> {
+    const slug = await this.getCollectionSlugByContract(
+      query.collectionAddress,
+    );
+    if (!slug) return [];
+    try {
+      const { listings } = await this.sdk.api.getAllListings(slug);
+      const enriched = await this.enrichOrdersByHash<OpenSeaListingV2>(
+        (listings ?? []) as OpenSeaListingV2[],
+      );
+      return enriched
+        .filter((l) => normalizeSdkStatus(l.status) === 'active')
+        .map((l) =>
+          this.adaptSdkListing(
+            l,
+            this.resolveCurrencyFromSdk(l),
+            extractListingToken(l),
+          ),
+        );
+    } catch (error) {
+      if (isEmptyResultError(error)) return [];
+      throw error;
+    }
+  }
+
+  async getOffersByCollection(query: CollectionOffersQuery): Promise<Offer[]> {
+    const slug = await this.getCollectionSlugByContract(
+      query.collectionAddress,
+    );
+    if (!slug) return [];
+    try {
+      const { offers } = await this.sdk.api.getAllOffers(slug);
+      const enriched = await this.enrichOrdersByHash<OpenSeaOfferV2>(
+        (offers ?? []) as OpenSeaOfferV2[],
+      );
+      return enriched
+        .filter((o) => normalizeSdkStatus(o.status) === 'active')
+        .map((o) =>
+          this.adaptSdkOffer(
+            o,
+            this.resolveCurrencyFromSdk(o),
+            extractOfferToken(o),
+          ),
+        );
+    } catch (error) {
+      if (isEmptyResultError(error)) return [];
+      throw error;
+    }
+  }
+
+  /**
+   * Re-fetch each lightweight profile/collection order through
+   * `sdk.api.getOrderByHash(orderHash, protocolAddress, chain)` to populate
+   * the `protocol_data` block that the profile-scoped responses strip for
+   * bandwidth. Without this enrichment, `extractListingToken` returns
+   * `(0x0…0, "")` and `deriveExpirationFromRaw` falls back to the
+   * 9999-12-31 sentinel — so every downstream feature (nested bids,
+   * expiration display, domain-detail lookup) breaks.
+   *
+   * Calls are issued in chunks of `ENRICHMENT_CONCURRENCY` to keep
+   * cross-wallet × cross-chain aggregation from bursting all at once and
+   * tripping OpenSea's rate limits. `Promise.allSettled` per chunk so a
+   * single 404/timeout doesn't lose the rest of the batch — failed
+   * enrichments keep their lightweight original (the card will still
+   * render, just with the "Never expires" / truncated-token fallback for
+   * that one row).
+   */
+  private async enrichOrdersByHash<T extends OpenSeaListingV2 | OpenSeaOfferV2>(
+    items: T[],
+  ): Promise<T[]> {
+    if (items.length === 0) return items;
+    const results: Array<PromiseSettledResult<GetOrderByHashResponse>> = [];
+    for (let i = 0; i < items.length; i += ENRICHMENT_CONCURRENCY) {
+      const chunk = items.slice(i, i + ENRICHMENT_CONCURRENCY);
+      const chunkResults = await Promise.allSettled(
+        chunk.map((item) => {
+          const protocolAddress = item.protocol_address ?? SEAPORT_V1_6_ADDRESS;
+          return this.sdk.api.getOrderByHash(
+            item.order_hash,
+            protocolAddress,
+            this.openSeaChain,
+          );
+        }),
+      );
+      results.push(...chunkResults);
+    }
+    return items.map((original, idx) => {
+      const r = results[idx];
+      if (r.status !== 'fulfilled' || !r.value) return original;
+      // `getOrderByHash` returns the union `Listing | Offer`; since we ask
+      // by hash and the original is of type `T`, the response is the same
+      // shape (a sell-order hash returns a Listing, a bid hash returns an
+      // Offer). Cast back to `T` to preserve the call-site narrowing.
+      return r.value as unknown as T;
+    });
+  }
+
+  /**
+   * Build the `ProfileOrdersArgs` for `getProfileListings`/`getProfileOffers`
+   * narrowed to this adapter's chain (and optionally a single collection).
+   * Returns `null` when the caller asked for a collection that doesn't have an
+   * OpenSea slug — short-circuit to an empty result instead of querying every
+   * collection on the account.
+   */
+  private async buildProfileOrdersArgs(
+    collectionAddress: Address | undefined,
+  ): Promise<{ chains: string[]; collection_slugs?: string[] } | null> {
+    if (!collectionAddress) return { chains: [this.chainSlug] };
+    const slug = await this.getCollectionSlugByContract(collectionAddress);
+    if (!slug) return null;
+    return { chains: [this.chainSlug], collection_slugs: [slug] };
+  }
+
   // ---- collection slug cache ----
 
   private getCollectionSlug(
@@ -378,6 +555,32 @@ export class OpenSeaAdapter implements MarketPlace {
     } catch {
       return null;
     }
+  }
+
+  /**
+   * Resolve the OpenSea collection slug from a contract address alone (no
+   * tokenId). Used by the collection-scoped query methods; the contract-only
+   * endpoint avoids the per-token quirks of `getNFTCollection`.
+   */
+  private getCollectionSlugByContract(
+    tokenAddress: Address,
+  ): Promise<string | null> {
+    const key = tokenAddress.toLowerCase();
+    const cached = this.collectionSlugByContractOnly.get(key);
+    if (cached) return cached;
+    const fetched = (async () => {
+      try {
+        const contract = await this.sdk.api.getContract(
+          tokenAddress,
+          this.openSeaChain,
+        );
+        return contract?.collection ?? null;
+      } catch {
+        return null;
+      }
+    })();
+    this.collectionSlugByContractOnly.set(key, fetched);
+    return fetched;
   }
 
   // ---- adaptation helpers ----
@@ -434,12 +637,8 @@ export class OpenSeaAdapter implements MarketPlace {
       tokenId: query.tokenId,
       seller: (params?.offerer ?? this.walletAddress ?? '0x0') as Address,
       price: priceFromWei(priceWei, currency),
-      createdAt: params?.startTime
-        ? secondsToIso(Number(params.startTime))
-        : new Date().toISOString(),
-      expirationTime: params?.endTime
-        ? secondsToIso(Number(params.endTime))
-        : new Date(0).toISOString(),
+      createdAt: deriveCreatedAtFromRaw(raw, params?.startTime),
+      expirationTime: deriveExpirationFromRaw(params?.endTime),
       status: normalizeSdkStatus(raw.status),
       externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
       raw,
@@ -465,12 +664,8 @@ export class OpenSeaAdapter implements MarketPlace {
       tokenId: query.tokenId,
       bidder: (params?.offerer ?? '0x0') as Address,
       price: priceFromWei(priceWei, currency),
-      createdAt: params?.startTime
-        ? secondsToIso(Number(params.startTime))
-        : new Date().toISOString(),
-      expirationTime: params?.endTime
-        ? secondsToIso(Number(params.endTime))
-        : new Date(0).toISOString(),
+      createdAt: deriveCreatedAtFromRaw(raw, params?.startTime),
+      expirationTime: deriveExpirationFromRaw(params?.endTime),
       status: normalizeSdkStatus(raw.status),
       externalUrl: this.buildExternalUrl(query.tokenAddress, query.tokenId),
       raw,
@@ -499,6 +694,67 @@ function secondsToIso(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds <= 0)
     return new Date(0).toISOString();
   return new Date(seconds * 1000).toISOString();
+}
+
+/**
+ * Sentinel for orders whose `protocol_data.parameters.endTime` is missing —
+ * profile-listing responses from `getProfileListings` sometimes omit
+ * `protocol_data` entirely, and falling back to `new Date(0)` made every
+ * such row render as "expires 1970-01-01" in the My-Listings panel. A
+ * far-future ISO keeps the order sorted at "latest expiry" and the UI can
+ * detect it to render "Never".
+ */
+const NO_EXPIRATION_ISO = '9999-12-31T23:59:59.000Z';
+
+/**
+ * Pick the best createdAt for an OpenSea listing/offer:
+ *   1. `protocol_data.parameters.startTime` (unix seconds, may be string /
+ *      number / bigint depending on the SDK encoding) — present on per-token
+ *      reads via `getBestListing` / `getOffersByNFT`.
+ *   2. `order_created_at` (unix seconds, optional on api-types `Listing`) —
+ *      what `getProfileListings`/`getAllListings` return when
+ *      `protocol_data` is absent. The SDK's own `OpenSeaListingV2` type
+ *      doesn't model this field, so we read it via an `unknown` cast.
+ *   3. Current time — final fallback so the row doesn't sort as "1970".
+ */
+function deriveCreatedAtFromRaw(
+  raw: unknown,
+  startTime: string | number | bigint | undefined,
+): string {
+  const startSeconds = toFiniteSeconds(startTime);
+  if (startSeconds !== null) return secondsToIso(startSeconds);
+  const createdAt = (raw as { order_created_at?: unknown } | null | undefined)
+    ?.order_created_at;
+  const createdSeconds = toFiniteSeconds(createdAt);
+  if (createdSeconds !== null) return secondsToIso(createdSeconds);
+  return new Date().toISOString();
+}
+
+/**
+ * Pick the best expirationTime — same fallback chain as createdAt minus the
+ * "current time" leg (which would render as already-expired). Falls back to
+ * `NO_EXPIRATION_ISO` so the row sorts to the end and the UI can render
+ * "Never" instead of "1970-01-01".
+ */
+function deriveExpirationFromRaw(
+  endTime: string | number | bigint | undefined,
+): string {
+  const endSeconds = toFiniteSeconds(endTime);
+  if (endSeconds !== null) return secondsToIso(endSeconds);
+  return NO_EXPIRATION_ISO;
+}
+
+/** Coerce an arbitrary timestamp scalar to positive finite seconds, or `null`. */
+function toFiniteSeconds(value: unknown): number | null {
+  if (value === undefined || value === null || value === '') return null;
+  const n =
+    typeof value === 'bigint'
+      ? Number(value)
+      : typeof value === 'number'
+        ? value
+        : Number(value);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return n;
 }
 
 function normalizeSdkStatus(
@@ -562,6 +818,60 @@ function readOrderParameters(raw: unknown): SeaportOrderParameters | undefined {
   const protocolData = (raw as { protocol_data?: OpenSeaProtocolData })
     ?.protocol_data;
   return protocolData?.parameters;
+}
+
+/** Seaport `itemType` values for NFT items (ERC721 / ERC1155, including criteria-based). */
+const NFT_SEAPORT_ITEM_TYPES = new Set([2, 3, 4, 5]);
+
+/**
+ * Max in-flight `getOrderByHash` calls during profile-listing enrichment.
+ * The maker/collection methods can return dozens of orders per wallet ×
+ * chain combination, and the My-Listings panel fans out across every
+ * supported chain — so the unbounded `Promise.all` we previously used
+ * could burst 50+ requests in a single tick and trip OpenSea's
+ * rate limits. 5 is conservative; raise if the throughput becomes a
+ * pain-point.
+ */
+const ENRICHMENT_CONCURRENCY = 5;
+
+/**
+ * Pull (tokenAddress, tokenId) off a sell-order's `protocol_data` — for a
+ * sell order the NFT lives in `offer[0]`.
+ */
+function extractListingToken(raw: OpenSeaListingV2): {
+  tokenAddress: Address;
+  tokenId: string;
+} {
+  const params = readOrderParameters(raw);
+  const item =
+    params?.offer.find((o) => NFT_SEAPORT_ITEM_TYPES.has(Number(o.itemType))) ??
+    params?.offer[0];
+  return {
+    tokenAddress: ((item?.token as string | undefined) ??
+      '0x0000000000000000000000000000000000000000') as Address,
+    tokenId: item ? String(item.identifierOrCriteria) : '',
+  };
+}
+
+/**
+ * Pull (tokenAddress, tokenId) off an offer's `protocol_data` — for an offer
+ * the NFT lives in `consideration` (bidder receives the NFT), typically at
+ * index 0 with the remaining items being fee/royalty payouts.
+ */
+function extractOfferToken(raw: OpenSeaOfferV2): {
+  tokenAddress: Address;
+  tokenId: string;
+} {
+  const params = readOrderParameters(raw);
+  const item =
+    params?.consideration.find((c) =>
+      NFT_SEAPORT_ITEM_TYPES.has(Number(c.itemType)),
+    ) ?? params?.consideration[0];
+  return {
+    tokenAddress: ((item?.token as string | undefined) ??
+      '0x0000000000000000000000000000000000000000') as Address,
+    tokenId: item ? String(item.identifierOrCriteria) : '',
+  };
 }
 
 function orderComponentsForCancel(params: SeaportOrderParameters) {

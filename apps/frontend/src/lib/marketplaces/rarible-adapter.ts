@@ -22,6 +22,8 @@ import {
 import { RaribleRestClient } from './rarible/rest-client';
 import { withRaribleRetry } from './rarible/retry';
 import type {
+  CollectionListingsQuery,
+  CollectionOffersQuery,
   Listing,
   ListingCurrency,
   ListingFees,
@@ -29,6 +31,9 @@ import type {
   ListingPrice,
   ListingType,
   ListingsQuery,
+  MakerListingsQuery,
+  MakerOffersQuery,
+  MarketplaceCapabilities,
   Offer,
   OffersQuery,
   OrderStatus,
@@ -90,6 +95,13 @@ export class RaribleAdapter implements MarketPlace {
     // v1 lists in the chain native asset only — consistent with the OpenSea
     // adapter and the create-listing modal.
     return getListingCurrenciesForChain(this.chainId).filter((c) => c.isNative);
+  }
+
+  getCapabilities(): MarketplaceCapabilities {
+    // Rarible's `byMaker` endpoints accept an optional `collection` filter but
+    // there's no "all listings/offers in collection X" endpoint without a
+    // maker, so `byCollection` stays false.
+    return { byMaker: true, byCollection: false };
   }
 
   async calculateListingFees(input: {
@@ -234,6 +246,85 @@ export class RaribleAdapter implements MarketPlace {
       'reject an offer',
       "Rarible orderbooks don't support active rejection — bids expire, get filled, or the bidder cancels them.",
     );
+  }
+
+  // -------- maker- / collection-scoped queries --------
+
+  async getListingsByMaker(query: MakerListingsQuery): Promise<Listing[]> {
+    const initial = await this.rest.getSellOrdersByMaker({
+      maker: this.toUnionAddress(query.makerAddress),
+      blockchain: this.blockchain,
+      collection: query.collectionAddress
+        ? this.toUnionAddress(query.collectionAddress)
+        : undefined,
+    });
+    const orders = await this.enrichOrders(initial);
+    return orders
+      .filter((o) => deriveStatus(o) === 'active')
+      .map((o) => {
+        // Sell order: `make` is the NFT, `take` is the currency.
+        const tokenQuery = extractTokenFromAsset(o.make.type);
+        return this.adaptOrderToListing(o, tokenQuery);
+      });
+  }
+
+  async getOffersByMaker(query: MakerOffersQuery): Promise<Offer[]> {
+    const initial = await this.rest.getOrderBidsByMaker({
+      maker: this.toUnionAddress(query.makerAddress),
+      blockchain: this.blockchain,
+      collection: query.collectionAddress
+        ? this.toUnionAddress(query.collectionAddress)
+        : undefined,
+    });
+    const orders = await this.enrichOrders(initial);
+    return orders
+      .filter((o) => deriveStatus(o) === 'active')
+      .map((o) => {
+        // Bid order: `make` is the currency, `take` is the NFT.
+        const tokenQuery = extractTokenFromAsset(o.take.type);
+        return this.adaptOrderToOffer(o, tokenQuery);
+      });
+  }
+
+  /**
+   * Re-fetch each by-maker order via the batch `getOrdersByIds` endpoint to
+   * populate optional fields (`endedAt`, full `make`/`take.type`) the by-maker
+   * shape may omit. Falls back to the lightweight original if the enrichment
+   * call fails for the whole batch — partial-failure isn't surfaced by the
+   * batch endpoint, so one error means "use what we have".
+   */
+  private async enrichOrders(orders: RaribleOrder[]): Promise<RaribleOrder[]> {
+    if (orders.length === 0) return orders;
+    const ids = orders.map((o) => o.id);
+    let detailed: RaribleOrder[] = [];
+    try {
+      detailed = await this.rest.getOrdersByIds(ids);
+    } catch {
+      return orders;
+    }
+    const byId = new Map(detailed.map((o) => [o.id, o]));
+    return orders.map((o) => byId.get(o.id) ?? o);
+  }
+
+  getListingsByCollection(_query: CollectionListingsQuery): Promise<Listing[]> {
+    throw new MarketplaceUnsupportedOperationError(
+      'rarible',
+      'list listings by collection',
+      "Rarible's order endpoints filter by maker (with optional collection); there's no maker-less collection-scoped endpoint.",
+    );
+  }
+
+  getOffersByCollection(_query: CollectionOffersQuery): Promise<Offer[]> {
+    throw new MarketplaceUnsupportedOperationError(
+      'rarible',
+      'list offers by collection',
+      "Rarible's order endpoints filter by maker (with optional collection); there's no maker-less collection-scoped endpoint.",
+    );
+  }
+
+  /** Convert a plain address into a Rarible union address (`BLOCKCHAIN:0x…`). */
+  private toUnionAddress(address: Address): string {
+    return `${this.blockchain}:${address}`;
   }
 
   // ---- write SDK ----
@@ -437,6 +528,23 @@ function assetValueToWei(value: string | number, decimals: number): string {
 function stripUnionPrefix(value: string): string {
   const colon = value.lastIndexOf(':');
   return colon >= 0 ? value.slice(colon + 1) : value;
+}
+
+/**
+ * Pull the (tokenAddress, tokenId) pair off a Rarible asset type. Used by the
+ * maker-scoped query methods where each returned order is on a different NFT,
+ * so the caller can't pre-specify the token.
+ */
+function extractTokenFromAsset(assetType: RaribleAssetType): {
+  tokenAddress: Address;
+  tokenId: string;
+} {
+  return {
+    tokenAddress: (assetType.contract
+      ? stripUnionPrefix(assetType.contract)
+      : '0x0000000000000000000000000000000000000000') as Address,
+    tokenId: assetType.tokenId !== undefined ? String(assetType.tokenId) : '',
+  };
 }
 
 /** Derive a normalized `OrderStatus` from a Rarible order. */

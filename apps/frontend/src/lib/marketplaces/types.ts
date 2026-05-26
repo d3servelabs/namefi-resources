@@ -114,3 +114,45 @@ export interface ListingsQuery {
 }
 
 export type OffersQuery = ListingsQuery;
+
+/**
+ * Per-adapter capability discovery — the panel uses these flags to skip
+ * adapters that don't support a given query scope, instead of try/catching
+ * around `MarketplaceUnsupportedOperationError`.
+ *
+ * `byToken` (the existing `getExistingListings` / `getOffersForListing`)
+ * is implicit — every adapter supports it — so it isn't listed here.
+ */
+export interface MarketplaceCapabilities {
+  /**
+   * Adapter can query listings/offers by maker (wallet) address.
+   * Implementations may optionally accept a `collectionAddress` to narrow
+   * the result to a single collection.
+   */
+  readonly byMaker: boolean;
+  /**
+   * Adapter can query all listings/offers in a collection *without* a maker
+   * filter (the OpenSea "all listings for collection X" endpoint). Adapters
+   * whose only maker endpoint requires the collection as a filter (Rarible)
+   * still report `false` here.
+   */
+  readonly byCollection: boolean;
+}
+
+/**
+ * Query args for "all my listings (or offers) across a chain".
+ * `collectionAddress` is optional — when set, narrows to a single collection.
+ */
+export interface MakerListingsQuery {
+  makerAddress: Address;
+  collectionAddress?: Address;
+}
+
+export type MakerOffersQuery = MakerListingsQuery;
+
+/** Query args for "all listings (or offers) in a collection, no maker filter". */
+export interface CollectionListingsQuery {
+  collectionAddress: Address;
+}
+
+export type CollectionOffersQuery = CollectionListingsQuery;

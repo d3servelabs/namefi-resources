@@ -1,5 +1,6 @@
 import {
   checksumWalletAddressSchema,
+  NAMEFI_NFT_CONTRACT_ADDRESS,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
 import { registryContract } from '@namefi-astra/common/contract/registry-contract';
@@ -20,7 +21,7 @@ import {
 import { authedOrPublicProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { TRPCError } from '@trpc/server';
-import { sql } from 'drizzle-orm';
+import { inArray, sql } from 'drizzle-orm';
 import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 
 /**
@@ -150,6 +151,96 @@ export const registryRouter = createContractTRPCRouter<typeof registryContract>(
       }),
 
     /**
+     * Resolve Namefi domain details for a batch of NFT `(chainId, tokenId)`
+     * pairs. Powers the cross-marketplace "My Listings & Offers" panel on
+     * `/domains`, which only has `(tokenAddress, tokenId)` from
+     * OpenSea/Rarible orders and needs to display the human-readable
+     * domain name + image.
+     *
+     * Returns one entry per input `tokenIds[i]` in the same order; a
+     * `null` slot means the token isn't a Namefi domain on that chain
+     * (either the contract address doesn't match the singleton Namefi
+     * NFT contract, or the on-chain indexer has no row for that pair).
+     */
+    getDomainDetailsByTokenIds: publicProcedure
+      .input(registryContract.getDomainDetailsByTokenIds.input)
+      .output(registryContract.getDomainDetailsByTokenIds.output)
+      .query(async ({ input }) => {
+        const nullResults = {
+          results: input.tokenIds.map(() => null),
+        };
+        // Single Namefi NFT contract address shared across chains. A
+        // non-Namefi token can't be resolved here.
+        if (
+          input.contractAddress.toLowerCase() !==
+          NAMEFI_NFT_CONTRACT_ADDRESS.toLowerCase()
+        ) {
+          return nullResults;
+        }
+
+        // Normalize each input tokenId to its canonical decimal form
+        // (`String(BigInt(raw))`) so the lookup map keyed by the same
+        // canonical form matches regardless of input encoding — e.g.
+        // `"001"`, `"0x1"`, `" 1 "` all canonicalize to `"1"`. Invalid
+        // inputs map to `null` and fall through to a null result slot
+        // without using exceptions for control flow.
+        const canonicalInputIds = input.tokenIds.map((raw) =>
+          DECIMAL_OR_HEX_PATTERN.test(raw.trim())
+            ? String(BigInt(raw.trim()))
+            : null,
+        );
+        const queryBigInts = Array.from(
+          new Set(canonicalInputIds.filter((id): id is string => id !== null)),
+        ).map((id) => BigInt(id));
+        if (queryBigInts.length === 0) return nullResults;
+
+        const records = await db
+          .with(namefiNftCte)
+          .select({
+            tokenId: namefiNftCte.tokenId,
+            normalizedDomainName: namefiNftCte.normalizedDomainName,
+            chainId: namefiNftCte.chainId,
+            ownerAddress: namefiNftCte.ownerAddress,
+            isLocked: namefiNftCte.isLocked,
+            expirationTime: namefiNftCte.expirationTime,
+          })
+          .from(namefiNftCte)
+          .where(
+            sql`${namefiNftCte.chainId} = ${input.chainId} AND ${inArray(
+              namefiNftCte.tokenId,
+              queryBigInts,
+            )}`,
+          );
+
+        const byCanonicalTokenId = new Map<string, (typeof records)[number]>();
+        for (const row of records) {
+          // `tokenId` is a `bigint` selected via `sql<bigint>` — `.toString()`
+          // produces the same canonical decimal form as `canonicalInputIds`.
+          byCanonicalTokenId.set(String(row.tokenId), row);
+        }
+
+        const chainSegment = chainSegmentForChainId(input.chainId);
+
+        return {
+          results: canonicalInputIds.map((canonicalId) => {
+            if (canonicalId === null) return null;
+            const row = byCanonicalTokenId.get(canonicalId);
+            if (!row) return null;
+            return {
+              tokenId: canonicalId,
+              chainId: row.chainId,
+              normalizedDomainName: row.normalizedDomainName,
+              expirationTime: row.expirationTime,
+              ownerAddress: row.ownerAddress,
+              isLocked: row.isLocked ?? false,
+              imageUrl: `https://md.namefi.io/${chainSegment}/svg/${row.normalizedDomainName}/image.svg`,
+              metadataUrl: `https://md.namefi.io/${row.normalizedDomainName}`,
+            };
+          }),
+        };
+      }),
+
+    /**
      * Generates domain name suggestions based on a query string.
      * Combines the query with adjectives and colors to create unique domain names.
      * @param input.query - Base query string to generate suggestions from
@@ -209,3 +300,33 @@ export const registryRouter = createContractTRPCRouter<typeof registryContract>(
       .query(async () => 100),
   },
 );
+
+/**
+ * Matches a non-empty decimal or `0x…` hex literal — the two input
+ * encodings BigInt accepts without throwing. Used to gate
+ * `getDomainDetailsByTokenIds` input normalization without resorting to
+ * try/catch for control flow.
+ */
+const DECIMAL_OR_HEX_PATTERN = /^(?:\d+|0x[0-9a-fA-F]+)$/;
+
+/**
+ * Map an EVM chainId to the URL segment `md.namefi.io` uses for that
+ * chain (e.g. `https://md.namefi.io/ethereum/svg/<domain>/image.svg`).
+ * Falls back to `ethereum` for unknown chains so the URL is still
+ * well-formed; the metadata CDN will 404 cleanly if the domain isn't
+ * indexed there.
+ */
+function chainSegmentForChainId(chainId: number): string {
+  switch (chainId) {
+    case 1:
+      return 'ethereum';
+    case 8453:
+      return 'base';
+    case 84532:
+      return 'base-sepolia';
+    case 11155111:
+      return 'sepolia';
+    default:
+      return 'ethereum';
+  }
+}

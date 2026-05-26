@@ -58,6 +58,18 @@ const getDomainsByOwnerInputSchema = z.object({
     .transform((value) => value.trim()),
 });
 
+const getDomainDetailsByTokenIdsInputSchema = z.object({
+  chainId: z.number().int().positive(),
+  /**
+   * NFT contract address. Used to short-circuit non-Namefi tokens — the
+   * handler only resolves details when this matches the singleton
+   * `NAMEFI_NFT_CONTRACT_ADDRESS`. Lower/upper case both accepted.
+   */
+  contractAddress: z.string().min(2),
+  /** Decimal-string tokenIds (uint256). Batch sized to keep one query small. */
+  tokenIds: z.array(z.string().min(1)).min(1).max(100),
+});
+
 // ---------------------------------------------------------------------------
 // Outputs
 // ---------------------------------------------------------------------------
@@ -131,6 +143,32 @@ const getDomainsByOwnerOutputSchema = z.object({
   ),
 });
 
+/**
+ * One result per input `tokenIds[i]`, in the same order. `null` means the
+ * token isn't a Namefi domain on the requested chain (either the contract
+ * address didn't match or the indexer has no row for that `(chainId, tokenId)`
+ * pair). Image / metadata URLs are stable CDN URLs derivable from the
+ * normalized domain name + chain.
+ */
+const getDomainDetailsByTokenIdsOutputSchema = z.object({
+  results: z.array(
+    z
+      .object({
+        tokenId: z.string(),
+        chainId: z.number(),
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        expirationTime: z.date().nullable(),
+        ownerAddress: z.string(),
+        isLocked: z.boolean(),
+        /** Direct SVG image — safe to render in `<img>` without follow-up fetch. */
+        imageUrl: z.string(),
+        /** OpenSea-style metadata JSON URL (returns `name`, `image`, traits). */
+        metadataUrl: z.string(),
+      })
+      .nullable(),
+  ),
+});
+
 // `checksumWalletAddressSchema` is unused in this contract for now but is
 // imported to keep parity with how the router validates incoming
 // identifiers. Re-exported as a type for any downstream consumer that
@@ -165,6 +203,11 @@ export const registryContract = createContract(
       type: 'query',
       input: getDomainsByOwnerInputSchema,
       output: getDomainsByOwnerOutputSchema,
+    },
+    getDomainDetailsByTokenIds: {
+      type: 'query',
+      input: getDomainDetailsByTokenIdsInputSchema,
+      output: getDomainDetailsByTokenIdsOutputSchema,
     },
     queryDomain: {
       type: 'query',

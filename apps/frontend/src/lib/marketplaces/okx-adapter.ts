@@ -32,6 +32,8 @@ import { marketplaceProxyClient } from './proxy/trpc-client';
 import { SeaportCancelAbi } from './seaport/abi';
 import { SEAPORT_V1_6_ADDRESS } from './seaport/constants';
 import type {
+  CollectionListingsQuery,
+  CollectionOffersQuery,
   Listing,
   ListingCurrency,
   ListingFees,
@@ -39,6 +41,9 @@ import type {
   ListingPrice,
   ListingsQuery,
   ListingType,
+  MakerListingsQuery,
+  MakerOffersQuery,
+  MarketplaceCapabilities,
   Offer,
   OffersQuery,
   OrderStatus,
@@ -104,6 +109,14 @@ export class OkxAdapter implements MarketPlace {
   getAvailableListingCurrency(): readonly ListingCurrency[] {
     // v1: native asset only, for parity with the OpenSea / Rarible adapters.
     return getListingCurrenciesForChain(this.chainId).filter((c) => c.isNative);
+  }
+
+  getCapabilities(): MarketplaceCapabilities {
+    // The OKX backend proxy only exposes per-NFT endpoints today; there are no
+    // by-maker or by-collection listing/offer endpoints. Until the proxy grows
+    // those routes, the maker-/collection-scoped query methods on this adapter
+    // throw and the UI hides OKX from cross-token panels via these flags.
+    return { byMaker: false, byCollection: false };
   }
 
   async calculateListingFees(input: {
@@ -338,6 +351,40 @@ export class OkxAdapter implements MarketPlace {
       'okx',
       'reject an offer',
       "Seaport orderbooks don't support active rejection — offers expire, get filled, or the bidder cancels them.",
+    );
+  }
+
+  // -------- maker- / collection-scoped queries --------
+
+  getListingsByMaker(_query: MakerListingsQuery): Promise<Listing[]> {
+    throw new MarketplaceUnsupportedOperationError(
+      'okx',
+      'list listings by maker',
+      'The OKX backend proxy only exposes per-NFT endpoints today.',
+    );
+  }
+
+  getOffersByMaker(_query: MakerOffersQuery): Promise<Offer[]> {
+    throw new MarketplaceUnsupportedOperationError(
+      'okx',
+      'list offers by maker',
+      'The OKX backend proxy only exposes per-NFT endpoints today.',
+    );
+  }
+
+  getListingsByCollection(_query: CollectionListingsQuery): Promise<Listing[]> {
+    throw new MarketplaceUnsupportedOperationError(
+      'okx',
+      'list listings by collection',
+      'The OKX backend proxy only exposes per-NFT endpoints today.',
+    );
+  }
+
+  getOffersByCollection(_query: CollectionOffersQuery): Promise<Offer[]> {
+    throw new MarketplaceUnsupportedOperationError(
+      'okx',
+      'list offers by collection',
+      'The OKX backend proxy only exposes per-NFT endpoints today.',
     );
   }
 

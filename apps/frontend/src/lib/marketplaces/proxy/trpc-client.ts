@@ -16,8 +16,12 @@ import { getAccessToken } from '@privy-io/react-auth';
  *
  * The proxy's reads (`getListings` etc.) are `publicProcedure`, but the
  * writes (`createListing` / `submitListing` / `buy`) are
- * `protectedProcedure` — `credentials: 'include'` forwards the session
- * cookie so the authenticated mutations work. Keeping this self-contained
+ * `protectedProcedure`. Authentication uses two complementary mechanisms:
+ * `credentials: 'include'` forwards the session cookie, and `getHeaders`
+ * attaches `Authorization: Bearer <token>` when `getAccessToken()` returns
+ * a Privy token. Either path is sufficient on its own; both are sent so
+ * the mutation works in cookieless contexts (e.g. embedded surfaces) as
+ * well as the standard session-cookie flow. Keeping this self-contained
  * means the marketplace hooks, the panel, and `getMarketplace()` need no
  * changes to support proxied adapters — the adapter just imports this
  * client like any other transport.

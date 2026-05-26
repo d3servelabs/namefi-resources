@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { differenceInDays } from 'date-fns';
@@ -16,12 +17,42 @@ import { MyPreviouslyOwnedDomainsContent } from '@/components/my-previously-owne
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useTRPC } from '@/lib/trpc';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
+import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { MyDomainsEmptyPlaceholder } from './empty-placeholder';
 import { MyDomainsTable } from './table';
 import { OtherWalletOrdersTable } from './other-wallet-orders-table';
 import { isDomainPossiblyRenewable } from './utils';
 
+// Heavy: pulls the marketplace adapter factory + every adapter via dynamic
+// imports. Keep it out of the /domains app-shell bundle.
+const MarketplaceOrdersTab = dynamic(
+  () =>
+    import('./marketplace-orders/marketplace-orders-tab').then(
+      (m) => m.MarketplaceOrdersTab,
+    ),
+  { ssr: false },
+);
+
+const MY_DOMAINS_FLAG_DEFINITIONS: FeatureFlagDefinition[] = [
+  {
+    key: 'marketplace_orders',
+    label: 'Marketplace Orders',
+    description:
+      'show the "My Listings & Offers" tab on /domains (cross-marketplace order view)',
+    scope: 'page',
+    pageKey: 'users',
+    defaultValue: false,
+  },
+];
+
 export const MyDomainsContent = () => {
+  useRegisterAdminFlags(MY_DOMAINS_FLAG_DEFINITIONS);
+  const [marketplaceOrdersEnabled] = useAdminFeatureFlag(
+    MY_DOMAINS_FLAG_DEFINITIONS[0],
+  );
+
   const trpc = useTRPC();
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
@@ -106,7 +137,11 @@ export const MyDomainsContent = () => {
     activeDomains.length === 0 &&
     inactiveDomains.length === 0 &&
     processingOrderItems.length === 0 &&
-    otherWalletOrderItems.length === 0
+    otherWalletOrderItems.length === 0 &&
+    // Don't show the global empty placeholder when the marketplace-orders tab
+    // is enabled — a buyer-only user (no owned domains) still has meaningful
+    // outgoing offers to see.
+    !marketplaceOrdersEnabled
   ) {
     return <MyDomainsEmptyPlaceholder />;
   }
@@ -138,6 +173,11 @@ export const MyDomainsContent = () => {
           </TabsTrigger>
           {hasOtherWalletOrders && (
             <TabsTrigger value="other-wallets">On Other Wallets</TabsTrigger>
+          )}
+          {marketplaceOrdersEnabled && (
+            <TabsTrigger value="marketplace-orders">
+              My Listings & Offers
+            </TabsTrigger>
           )}
         </TabsList>
 
@@ -172,6 +212,12 @@ export const MyDomainsContent = () => {
         <TabsContent value="previously-owned" className="mt-4">
           <MyPreviouslyOwnedDomainsContent />
         </TabsContent>
+
+        {marketplaceOrdersEnabled && (
+          <TabsContent value="marketplace-orders" className="mt-4">
+            <MarketplaceOrdersTab />
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );

@@ -1,10 +1,15 @@
 import type {
+  CollectionListingsQuery,
+  CollectionOffersQuery,
   Listing,
   ListingCurrency,
   ListingFees,
   ListingInput,
   ListingType,
   ListingsQuery,
+  MakerListingsQuery,
+  MakerOffersQuery,
+  MarketplaceCapabilities,
   MarketplaceId,
   Offer,
   OffersQuery,
@@ -31,6 +36,15 @@ export interface MarketPlace {
 
   getAvailableListingTypes(): readonly ListingType[];
   getAvailableListingCurrency(): readonly ListingCurrency[];
+  /**
+   * Per-adapter capability flags for the maker-/collection-scoped query
+   * methods below. Callers should gate `getListingsByMaker` etc. on these
+   * instead of try/catching `MarketplaceUnsupportedOperationError`.
+   *
+   * `byToken` (the existing `getExistingListings` / `getOffersForListing`)
+   * is implicit — every adapter supports it — so it isn't part of the shape.
+   */
+  getCapabilities(): MarketplaceCapabilities;
 
   /**
    * Estimate fees for a hypothetical listing at the given price.
@@ -68,6 +82,22 @@ export interface MarketPlace {
    * error so the UI can surface the limitation.
    */
   rejectOffer(offer: Offer): Promise<never>;
+
+  // -------- maker- / collection-scoped queries --------
+  //
+  // Powers cross-collection / cross-domain panels (e.g. "My listings &
+  // offers"). Adapters that can't serve a scope throw
+  // `MarketplaceUnsupportedOperationError` and report `false` for the
+  // matching `getCapabilities()` flag; the UI gates on the flag.
+
+  /** Listings the maker has open on this chain. */
+  getListingsByMaker(query: MakerListingsQuery): Promise<Listing[]>;
+  /** Outgoing offers the maker has open on this chain. */
+  getOffersByMaker(query: MakerOffersQuery): Promise<Offer[]>;
+  /** All active listings in a single collection on this chain. */
+  getListingsByCollection(query: CollectionListingsQuery): Promise<Listing[]>;
+  /** All active offers in a single collection on this chain. */
+  getOffersByCollection(query: CollectionOffersQuery): Promise<Offer[]>;
 }
 
 export class MarketplaceNotImplementedError extends Error {

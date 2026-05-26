@@ -1,0 +1,198 @@
+'use client';
+
+import { useMemo } from 'react';
+import type { Address } from 'viem';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import { EmptyPlaceholder } from '@/components/empty-placeholder';
+import { MyListingCard } from './my-listing-card';
+import { MyOfferCard } from './my-offer-card';
+import {
+  domainDetailsKey,
+  useDomainDetailsByTokenIds,
+} from './use-domain-details';
+import { useMyMakerListings, useMyMakerOffers } from './use-maker-orders';
+
+/**
+ * Copy used for the "some upstream marketplaces failed" footnote in both
+ * sections. Neutral phrasing — the panel still surfaces every listing /
+ * offer it could load; this just acknowledges that the result may be
+ * incomplete during marketplace outages or rate-limit windows.
+ */
+const PARTIAL_LOAD_NOTE =
+  'Some listings may not appear as their markets maybe busy.';
+
+/**
+ * Cross-marketplace view of the user's open orders:
+ *   - "My listings" — every active listing they have across OpenSea + Rarible
+ *     (OKX is hidden via `getCapabilities().byMaker === false`), with the
+ *     incoming bids on each listing nested inside the card.
+ *   - "My offers on other domains" — every outgoing offer the user has on
+ *     someone else's domain on any marketplace they're not the seller of.
+ *
+ * Domain details (name, image, expiry) for the rendered cards are resolved
+ * in a single batch tRPC call at this level — cards just look up their own
+ * entry by `(chainId, tokenAddress, tokenId)` in the resulting map.
+ */
+export function MarketplaceOrdersTab() {
+  const { linkedWalletAddresses, linkedWalletsReady } =
+    useLinkedWalletAddresses();
+  const walletAddresses = linkedWalletAddresses as Address[];
+
+  const listingsQuery = useMyMakerListings({
+    walletAddresses,
+    enabled: linkedWalletsReady,
+  });
+  const offersQuery = useMyMakerOffers({
+    walletAddresses,
+    enabled: linkedWalletsReady,
+  });
+
+  // Collect every unique (chainId, tokenAddress, tokenId) the rendered cards
+  // need so the batch hook fires one tRPC call per (chainId, contract).
+  const detailTuples = useMemo(() => {
+    const seen = new Set<string>();
+    const out: Array<{
+      chainId: number;
+      tokenAddress: Address;
+      tokenId: string;
+    }> = [];
+    for (const row of listingsQuery.data) {
+      const key = `${row.chainId}:${row.listing.tokenAddress.toLowerCase()}:${row.listing.tokenId}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({
+        chainId: row.chainId,
+        tokenAddress: row.listing.tokenAddress,
+        tokenId: row.listing.tokenId,
+      });
+    }
+    for (const row of offersQuery.data) {
+      const key = `${row.chainId}:${row.offer.tokenAddress.toLowerCase()}:${row.offer.tokenId}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({
+        chainId: row.chainId,
+        tokenAddress: row.offer.tokenAddress,
+        tokenId: row.offer.tokenId,
+      });
+    }
+    return out;
+  }, [listingsQuery.data, offersQuery.data]);
+
+  const detailsQuery = useDomainDetailsByTokenIds(detailTuples);
+
+  if (!linkedWalletsReady) {
+    return (
+      <div className="space-y-2">
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+      </div>
+    );
+  }
+
+  if (walletAddresses.length === 0) {
+    return (
+      <EmptyPlaceholder>
+        <EmptyPlaceholder.Title>No linked wallets</EmptyPlaceholder.Title>
+        <EmptyPlaceholder.Description>
+          Link a wallet to your account to see your marketplace orders.
+        </EmptyPlaceholder.Description>
+      </EmptyPlaceholder>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      <section className="space-y-3">
+        <header>
+          <h3 className="text-base font-semibold text-zinc-100">My listings</h3>
+          <p className="text-sm text-zinc-400">
+            Active sale listings you've posted across OpenSea and Rarible. Each
+            card shows incoming bids underneath.
+          </p>
+        </header>
+        {listingsQuery.isLoading && listingsQuery.data.length === 0 ? (
+          <div className="space-y-2">
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-24 w-full" />
+          </div>
+        ) : listingsQuery.data.length === 0 ? (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Title>No active listings</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              Listings you create on a domain detail page will show up here.
+            </EmptyPlaceholder.Description>
+          </EmptyPlaceholder>
+        ) : (
+          <div className="space-y-3">
+            {listingsQuery.data.map((row) => (
+              <MyListingCard
+                key={`${row.marketplaceId}:${row.listing.id}`}
+                chainId={row.chainId}
+                marketplaceId={row.marketplaceId}
+                listing={row.listing}
+                details={detailsQuery.byKey.get(
+                  domainDetailsKey(
+                    row.chainId,
+                    row.listing.tokenAddress,
+                    row.listing.tokenId,
+                  ),
+                )}
+              />
+            ))}
+          </div>
+        )}
+        {listingsQuery.errors.length > 0 ? (
+          <p className="text-xs text-muted-foreground">{PARTIAL_LOAD_NOTE}</p>
+        ) : null}
+      </section>
+
+      <section className="space-y-3">
+        <header>
+          <h3 className="text-base font-semibold text-zinc-100">
+            My offers on other domains
+          </h3>
+          <p className="text-sm text-zinc-400">
+            Bids you've placed on domains you don't own. Sorted by highest price
+            first.
+          </p>
+        </header>
+        {offersQuery.isLoading && offersQuery.data.length === 0 ? (
+          <div className="space-y-2">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        ) : offersQuery.data.length === 0 ? (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Title>No outgoing offers</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              Offers you place on other domains will show up here.
+            </EmptyPlaceholder.Description>
+          </EmptyPlaceholder>
+        ) : (
+          <div className="space-y-3">
+            {offersQuery.data.map((row) => (
+              <MyOfferCard
+                key={`${row.marketplaceId}:${row.offer.id}`}
+                chainId={row.chainId}
+                marketplaceId={row.marketplaceId}
+                offer={row.offer}
+                details={detailsQuery.byKey.get(
+                  domainDetailsKey(
+                    row.chainId,
+                    row.offer.tokenAddress,
+                    row.offer.tokenId,
+                  ),
+                )}
+              />
+            ))}
+          </div>
+        )}
+        {offersQuery.errors.length > 0 ? (
+          <p className="text-xs text-muted-foreground">{PARTIAL_LOAD_NOTE}</p>
+        ) : null}
+      </section>
+    </div>
+  );
+}
