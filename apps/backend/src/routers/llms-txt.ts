@@ -8,7 +8,6 @@ const LLMS_TXT = `# Namefi API
 
 ## Docs
 
-- [Interactive OpenAPI (Scalar)](https://api.namefi.io/v-next/openapi/doc): Live, auto-generated reference for every endpoint, schema, and auth requirement.
 - [TypeScript SDK docs](https://docs.namefi.io): Guides for \`@namefi/api-client\` — installation, authentication, domain registration, DNS management.
 - [npm: @namefi/api-client](https://www.npmjs.com/package/@namefi/api-client): Install with \`npm install @namefi/api-client\`.
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
