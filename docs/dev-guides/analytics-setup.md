@@ -9,11 +9,11 @@ It covers browser Google Analytics, c15t consent handling, backend GA4 Measureme
 This repo has four analytics surfaces:
 
 1. Browser-side GA events in the frontend and resources apps.
-2. Backend GA4 Measurement Protocol events for checkout and search behavior.
+2. Backend GA4 Measurement Protocol events for checkout, search, and completed ecommerce purchases.
 3. Admin analytics reports that read GA4 through the GA Data API.
 4. Email open/click counters and selected email-open GA events.
 
-The checkout analytics path is intentionally separate from the browser ecommerce events. Browser events such as `add_to_cart`, `begin_checkout`, and `purchase` are interaction telemetry emitted by the frontend. The admin checkout dashboard reads the backend checkout event sequence described below.
+The checkout funnel analytics path is intentionally separate from ecommerce revenue reporting. Browser events such as `add_to_cart` and `begin_checkout` are interaction telemetry emitted by the frontend. The standard GA4 ecommerce `purchase` event is emitted by the backend after order processing has at least one succeeded item. The admin checkout dashboard reads the backend checkout event sequence described below and does not include `purchase` in that funnel.
 
 ## Configuration
 
@@ -144,12 +144,11 @@ Important examples:
 - `add_to_cart`
 - `remove_from_cart`
 - `begin_checkout`
-- `purchase`
 - `submit_order_failure`
 - hunt voting and sharing events
 - marketplace/list-for-sale clicks
 
-Local anonymous cart adds now emit `add_to_cart` browser events, matching authenticated cart adds. These browser ecommerce events are useful for GA browser reporting, but they are not the source of truth for the admin checkout funnel.
+Local anonymous cart adds now emit `add_to_cart` browser events, matching authenticated cart adds. These browser interaction events are useful for GA browser reporting, but they are not the source of truth for the admin checkout funnel or completed purchase reporting.
 
 ## Backend Request Context
 
@@ -229,13 +228,13 @@ Primary checkout event sequence:
 | Event | Main source | Purpose |
 | --- | --- | --- |
 | `user_begin_search` | `search.trackUserBeginSearch` | Search entry into checkout intent. |
-| `order_placed` | Order routers, MPP, x402 | Order was accepted and workflow was started. |
+| `order_placed` | Order routers, MPP, x402 | Order was accepted and workflow was started. This is not a completed purchase. |
 | `payment_processed` | `processOrderWorkflow` | Payment succeeded or failed. |
 | `domain_acquisition_started` | `processOrderItemWorkflow` | Domain registration/import started. |
 | `domain_acquisition_finished` | `processOrderItemWorkflow` | Domain registration/import succeeded or failed. |
 | `dns_records_propagated` | `domainParkingTrackingWorkflow` | DNS propagation checkpoint finished. |
 | `parking_finished` | `domainParkingTrackingWorkflow` | Parking setup or opt-out checkpoint finished. |
-| `payment_refunded` | Refund activities | Partial or full refund was processed. |
+| `payment_refunded` | `processOrderWorkflow` / `multiChargeWorkflow` after `multiRefundWorkflow` | Partial or full refund was processed. |
 | `order_finished_email_sent` | `processOrderWorkflow` notification stage | Processed order email was sent. |
 | `order_finished_email_opened` | Email analytics router | Processed order email pixel was opened. |
 
@@ -247,6 +246,19 @@ Additional diagnostic events:
 - `order_processing_finished`
 - `order_item_processing_started`
 - `order_item_processing_finished`
+
+Standard ecommerce events:
+
+- `purchase`: emitted by `processOrderWorkflow` only after processing finishes with one or more succeeded domain or NFSC top-up items. The event uses the order id as `transaction_id`, includes only succeeded items, and is excluded from the admin checkout funnel sequence.
+
+Order item handling:
+
+- Send one `purchase` event per completed order, not one event per domain.
+- Include only order items that actually succeeded. Failed or cancelled items are represented by backend checkout diagnostics such as `domain_acquisition_finished` or `order_item_processing_finished`, not by ecommerce `purchase.items`.
+- `purchase.value` must equal the sum of the purchased item prices. For domains, each item uses `quantity: 1` and `price` equal to the item's USD amount.
+- NFSC top-up orders emit the same backend lifecycle events as domain orders (`order_processing_started`, `payment_processed`, `order_items_processing_started`, `order_items_processing_finished`, `order_processing_finished`, `purchase`, and `payment_refunded` when applicable). Their initial `order_placed` event uses `order_source: nfsc_topup`.
+- If the business wants GA ecommerce refund reports to mirror gross payment collection, the alternative model is to send `purchase` for all charged items and then a standard `refund` for failed/refunded items. This repo instead reports net fulfilled purchases in GA ecommerce and keeps refund/failure detail in the backend checkout funnel.
+- Actual refund completions emit the custom `payment_refunded` funnel event with the amount actually refunded. This includes item-failure refunds after order processing and charge rollback refunds when a multi-payment charge partially succeeds before failing. They do not emit GA4's standard ecommerce `refund` event for failed items because those failed items were never included in the GA4 ecommerce `purchase`.
 
 Common event params:
 
@@ -424,16 +436,16 @@ Status handling:
 Summary metrics:
 
 - `beginSearchCount`: `user_begin_search`.
-- `orderPlacedCount`: `order_placed`.
+- `orderPlacedCount`: `order_placed` accepted orders, not completed purchases.
 - `domainAcquisitionFinishedSuccessCount`: success-equivalent `domain_acquisition_finished`.
 - `refundedCount`: `payment_refunded`.
-- `conversionRatePercent`: `order_placed / user_begin_search`.
+- `conversionRatePercent`: `order_placed / user_begin_search`; this is an order-start rate, not purchase conversion.
 - `completionRatePercent`: successful domain acquisition / `order_placed`.
 
 Primary funnel:
 
 1. Begin Search
-2. Order Placed
+2. Order Accepted
 3. Payment Processed (Success)
 4. Order Email Sent
 5. Order Email Opened

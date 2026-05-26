@@ -56,7 +56,6 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
         },
       };
     }
-    case InteractionLoggingEventName.Purchase: // fallthrough
     case InteractionLoggingEventName.SubmitOrderFailure: {
       const { cartItems, totalAmountInUsdCents, transactionId } =
         event.properties;

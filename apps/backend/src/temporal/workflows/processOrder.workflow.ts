@@ -189,7 +189,9 @@ const {
   logGaEventOrderItemsProcessingStarted,
   logGaEventOrderItemsProcessingFinished,
   logGaEventOrderProcessingFinished,
+  logGaEventPurchase,
   logGaEventPaymentProcessed,
+  logGaEventPaymentRefunded,
   logGaEventOrderFinishedEmailSent,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -417,6 +419,29 @@ export async function processOrderWorkflow(
     updateOrderStatus(orderStatusSchema.enum.PROCESSING);
     setStepStatus('order-details', 'COMPLETED');
 
+    const logNfscTopupGaEventIfTracked = async (
+      eventName: string,
+      track: () => Promise<void>,
+    ) => {
+      if (!workflow.patched('track-ga-nfsc-topup-events-v1')) {
+        return;
+      }
+      if (!trackGaEvents) {
+        logGaEventSkipped(eventName);
+        return;
+      }
+
+      try {
+        await track();
+      } catch (error) {
+        workflow.log.warn(
+          `Failed to track ${eventName} event for NFSC top-up order ${
+            input.orderId
+          }: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      }
+    };
+
     if (orderDetails.payments.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
@@ -431,30 +456,52 @@ export async function processOrderWorkflow(
       setPhase('FAILED');
       throw new workflow.ApplicationFailure('No payment found');
     }
+    await logNfscTopupGaEventIfTracked('order_processing_started', () =>
+      logGaEventOrderProcessingStarted({
+        userId: orderDetails.order.userId,
+        orderId: input.orderId,
+        ...gaEventIdentity,
+      }),
+    );
 
     // ---- Charge ----
     try {
       setPhase('CHARGING');
       setStepStatus('payments', 'IN_PROGRESS');
       updatePayment('CHARGING');
+      const multiChargeInput = {
+        orderId: input.orderId,
+        userId: orderDetails.order.userId,
+        paymentsData: orderDetails.payments.map((p) => ({
+          paymentId: p.id,
+          amountInUSDCents: p.amountInUSDCents,
+          metadata: input.paymentsMetadata[p.id],
+        })),
+        ...(workflow.patched('pass-ga-tracking-to-multi-charge-v1')
+          ? { gaEventTracking: input.gaEventTracking }
+          : {}),
+      } satisfies Parameters<typeof multiChargeWorkflow>[0];
       await workflow.executeChild(multiChargeWorkflow, {
-        args: [
-          {
-            orderId: input.orderId,
-            userId: orderDetails.order.userId,
-            paymentsData: orderDetails.payments.map((p) => ({
-              paymentId: p.id,
-              amountInUSDCents: p.amountInUSDCents,
-              metadata: input.paymentsMetadata[p.id],
-            })),
-          },
-        ],
+        args: [multiChargeInput],
         workflowId: `multi-charge-order-[${input.orderId}]`,
         taskQueue: TEMPORAL_QUEUES.DEFAULT,
         retry: { maximumAttempts: 1 },
       });
       updatePayment('CHARGED');
       setStepStatus('payments', 'COMPLETED');
+      await logNfscTopupGaEventIfTracked('payment_processed', () =>
+        logGaEventPaymentProcessed({
+          userId: orderDetails.order.userId,
+          orderId: input.orderId,
+          amountInUsdCents: orderDetails.order.amountInUSDCents,
+          paymentCount: orderDetails.payments.length,
+          paymentProviders: orderDetails.payments.map(
+            (payment) => payment.paymentProvider,
+          ),
+          status: 'SUCCESS',
+          ...gaEventIdentity,
+        }),
+      );
     } catch (error) {
       for (const item of nfscItems) {
         const [updateStatusError] = await resolve(
@@ -488,12 +535,33 @@ export async function processOrderWorkflow(
       );
       setStepStatus('payments', 'FAILED', 'Payment attempt failed');
       setPhase('FAILED');
+      await logNfscTopupGaEventIfTracked('payment_processed', () =>
+        logGaEventPaymentProcessed({
+          userId: orderDetails.order.userId,
+          orderId: input.orderId,
+          amountInUsdCents: orderDetails.order.amountInUSDCents,
+          paymentCount: orderDetails.payments.length,
+          paymentProviders: orderDetails.payments.map(
+            (payment) => payment.paymentProvider,
+          ),
+          status: 'FAILURE',
+          ...gaEventIdentity,
+        }),
+      );
       throw error instanceof Error ? error : new Error(String(error));
     }
 
     // ---- Mint NFSC items ----
     setPhase('PROCESSING_ITEMS');
     setStepStatus('items', 'IN_PROGRESS');
+    await logNfscTopupGaEventIfTracked('order_items_processing_started', () =>
+      logGaEventOrderItemsProcessingStarted({
+        userId: orderDetails.order.userId,
+        orderId: input.orderId,
+        itemsCount: nfscItems.length,
+        ...gaEventIdentity,
+      }),
+    );
 
     const nfscItemPromises = nfscItems.map((item) => {
       updateItem(item.id, { status: 'PROCESSING', message: undefined });
@@ -545,6 +613,50 @@ export async function processOrderWorkflow(
         : succeededNfscItems.length === 0
           ? orderStatusSchema.enum.FAILED
           : orderStatusSchema.enum.PARTIALLY_COMPLETED;
+    const derivedRefundType: 'NONE' | 'FULL' | 'PARTIAL' =
+      failedNfscItems.length === 0
+        ? 'NONE'
+        : succeededNfscItems.length === 0
+          ? 'FULL'
+          : 'PARTIAL';
+    const derivedRefundNeeded = derivedRefundType !== 'NONE';
+
+    await logNfscTopupGaEventIfTracked('order_items_processing_finished', () =>
+      logGaEventOrderItemsProcessingFinished({
+        userId: orderDetails.order.userId,
+        orderId: input.orderId,
+        itemsCount: nfscItems.length,
+        successItemsCount: succeededNfscItems.length,
+        failedItemsCount: failedNfscItems.length,
+        ...gaEventIdentity,
+      }),
+    );
+    await logNfscTopupGaEventIfTracked('order_processing_finished', () =>
+      logGaEventOrderProcessingFinished({
+        userId: orderDetails.order.userId,
+        orderId: input.orderId,
+        orderStatus: derivedOrderStatus,
+        refundNeeded: derivedRefundNeeded,
+        refundType: derivedRefundType,
+        ...gaEventIdentity,
+      }),
+    );
+    if (succeededNfscItems.length > 0) {
+      await logNfscTopupGaEventIfTracked('purchase', () =>
+        logGaEventPurchase({
+          userId: orderDetails.order.userId,
+          orderId: input.orderId,
+          items: succeededNfscItems.map((item) => ({
+            itemId: `nfsc_topup_${item.chainId}`,
+            itemName: 'NFSC Top-up',
+            amountInUSDCents: item.amountInUSDCents,
+          })),
+          ...gaEventIdentity,
+        }),
+      );
+    } else if (workflow.patched('track-ga-nfsc-topup-events-v1')) {
+      logGaEventSkipped('purchase');
+    }
 
     if (failedNfscItems.length === 0) {
       setStepStatus('items', 'COMPLETED', 'NFSC credited successfully');
@@ -597,7 +709,7 @@ export async function processOrderWorkflow(
       });
       setStepStatus('refund', 'IN_PROGRESS');
       try {
-        await workflow.executeChild(multiRefundWorkflow, {
+        const refundResult = await workflow.executeChild(multiRefundWorkflow, {
           args: [
             {
               orderId: input.orderId,
@@ -610,6 +722,13 @@ export async function processOrderWorkflow(
           retry: { maximumAttempts: 1 },
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
           parentClosePolicy: 'REQUEST_CANCEL',
+        });
+        await logPaymentRefundedIfTracked({
+          orderDetails,
+          refundAmountInUsdCents: refundResult.totalRefundedInUsdCents,
+          successfulRefundPaymentIds: refundResult.successfulRefunds.map(
+            (refund) => refund.paymentId,
+          ),
         });
         updateRefund({ status: 'COMPLETED' });
         setStepStatus('refund', 'COMPLETED');
@@ -670,6 +789,64 @@ export async function processOrderWorkflow(
       eventName,
       gaEventTrackingReason: gaEventTrackingReason ?? 'DEFAULT',
     });
+  };
+
+  const logPaymentRefundedIfTracked = async ({
+    orderDetails,
+    refundAmountInUsdCents,
+    successfulRefundPaymentIds,
+  }: {
+    orderDetails: OrderWithPayments;
+    refundAmountInUsdCents: number;
+    successfulRefundPaymentIds: string[];
+  }) => {
+    if (!workflow.patched('track-ga-payment-refunded-v1')) {
+      return;
+    }
+    if (
+      refundAmountInUsdCents <= 0 ||
+      successfulRefundPaymentIds.length === 0
+    ) {
+      workflow.log.info(
+        'Skipping payment_refunded GA event because no completed refund amount was recorded',
+        {
+          orderId: input.orderId,
+          refundAmountInUsdCents,
+          successfulRefundPayments: successfulRefundPaymentIds.length,
+        },
+      );
+      return;
+    }
+    if (!trackGaEvents) {
+      logGaEventSkipped('payment_refunded');
+      return;
+    }
+
+    try {
+      const refundedPaymentIds = new Set(successfulRefundPaymentIds);
+      const effectiveRefundType: 'FULL' | 'PARTIAL' =
+        refundAmountInUsdCents >= orderDetails.order.amountInUSDCents
+          ? 'FULL'
+          : 'PARTIAL';
+      await logGaEventPaymentRefunded({
+        userId: orderDetails.order.userId,
+        orderId: input.orderId,
+        amountInUsdCents: orderDetails.order.amountInUSDCents,
+        refundAmountInUsdCents,
+        refundType: effectiveRefundType,
+        paymentCount: successfulRefundPaymentIds.length,
+        paymentProviders: orderDetails.payments
+          .filter((payment) => refundedPaymentIds.has(payment.id))
+          .map((payment) => payment.paymentProvider),
+        ...gaEventIdentity,
+      });
+    } catch (error) {
+      workflow.log.warn(
+        `Failed to track payment_refunded event for order ${input.orderId}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
   };
 
   try {
@@ -797,18 +974,20 @@ export async function processOrderWorkflow(
       setPhase('CHARGING');
       setStepStatus('payments', 'IN_PROGRESS');
       updatePayment('CHARGING');
+      const multiChargeInput = {
+        orderId: input.orderId,
+        userId: orderDetails.order.userId,
+        paymentsData: orderDetails.payments.map((p) => ({
+          paymentId: p.id,
+          amountInUSDCents: p.amountInUSDCents,
+          metadata: input.paymentsMetadata[p.id],
+        })),
+        ...(workflow.patched('pass-ga-tracking-to-multi-charge-v1')
+          ? { gaEventTracking: input.gaEventTracking }
+          : {}),
+      } satisfies Parameters<typeof multiChargeWorkflow>[0];
       await workflow.executeChild(multiChargeWorkflow, {
-        args: [
-          {
-            orderId: input.orderId,
-            userId: orderDetails.order.userId,
-            paymentsData: orderDetails.payments.map((p) => ({
-              paymentId: p.id,
-              amountInUSDCents: p.amountInUSDCents,
-              metadata: input.paymentsMetadata[p.id],
-            })),
-          },
-        ],
+        args: [multiChargeInput],
         workflowId: `multi-charge-order-[${input.orderId}]`,
         taskQueue: TEMPORAL_QUEUES.DEFAULT,
         retry: { maximumAttempts: 1 },
@@ -1105,6 +1284,30 @@ export async function processOrderWorkflow(
         logGaEventSkipped('order_processing_finished');
       }
     }
+    if (workflow.patched('track-ga-purchase-on-completed-order-v1')) {
+      if (trackGaEvents && succeededItems.length > 0) {
+        try {
+          await logGaEventPurchase({
+            userId: orderDetails.order.userId,
+            orderId: input.orderId,
+            items: succeededItems.map((item) => ({
+              itemId: item.normalizedDomainName as NamefiNormalizedDomain,
+              itemName: item.normalizedDomainName as NamefiNormalizedDomain,
+              amountInUSDCents: item.amountInUSDCents,
+            })),
+            ...gaEventIdentity,
+          });
+        } catch (error) {
+          workflow.log.warn(
+            `Failed to track purchase event for order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      } else {
+        logGaEventSkipped('purchase');
+      }
+    }
     if (failedItems.length === 0) {
       setStepStatus('items', 'COMPLETED', 'All domains secured successfully');
     } else if (succeededItems.length === 0) {
@@ -1255,7 +1458,7 @@ export async function processOrderWorkflow(
       });
       setStepStatus('refund', 'IN_PROGRESS');
       try {
-        await workflow.executeChild(multiRefundWorkflow, {
+        const refundResult = await workflow.executeChild(multiRefundWorkflow, {
           args: [
             {
               orderId: input.orderId,
@@ -1268,6 +1471,13 @@ export async function processOrderWorkflow(
           retry: { maximumAttempts: 1 },
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
           parentClosePolicy: 'REQUEST_CANCEL',
+        });
+        await logPaymentRefundedIfTracked({
+          orderDetails,
+          refundAmountInUsdCents: refundResult.totalRefundedInUsdCents,
+          successfulRefundPaymentIds: refundResult.successfulRefunds.map(
+            (refund) => refund.paymentId,
+          ),
         });
         updateRefund({
           status: 'COMPLETED',

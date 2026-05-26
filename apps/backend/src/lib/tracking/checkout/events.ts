@@ -93,6 +93,14 @@ type LogGaEventOrderItemProcessingFinishedInput =
   LogGaEventOrderItemProcessingStartedInput & {
     itemStatus: 'SUCCEEDED' | 'FAILED';
   };
+type LogGaEventPurchaseInput = CheckoutAnalyticsBaseInput & {
+  orderId: string;
+  items: Array<{
+    itemId: string;
+    itemName: string;
+    amountInUSDCents: number;
+  }>;
+};
 
 type CheckoutAnalyticsPaymentsBaseInput = CheckoutAnalyticsBaseInput & {
   amountUsdCents?: number;
@@ -377,6 +385,49 @@ export async function gaEventOrderItemProcessingFinished(
       orderId: input.orderId,
       orderItemId: input.orderItemId,
       domainName: input.domainName,
+    },
+  });
+}
+
+export async function gaEventPurchase(
+  input: LogGaEventPurchaseInput,
+): Promise<void> {
+  if (input.items.length === 0) {
+    logger.info(
+      { orderId: input.orderId },
+      'Skipping GA purchase event because no items were provided',
+    );
+    return;
+  }
+
+  const totalAmountInUSDCents = input.items.reduce(
+    (sum, item) => sum + item.amountInUSDCents,
+    0,
+  );
+
+  return sendCheckoutEvent({
+    userId: input.userId,
+    identity: input.identity,
+    event: {
+      name: 'purchase',
+      params: {
+        ...baseEventParams(input),
+        order_id: input.orderId,
+        // transaction_id is the canonical order key, set directly from input.orderId.
+        transaction_id: input.orderId,
+        currency: 'USD',
+        value: totalAmountInUSDCents / 100,
+        items: input.items.map((item) => ({
+          item_id: item.itemId,
+          item_name: item.itemName,
+          price: item.amountInUSDCents / 100,
+          quantity: 1,
+        })),
+      },
+    },
+    metadata: {
+      orderId: input.orderId,
+      itemCount: input.items.length,
     },
   });
 }

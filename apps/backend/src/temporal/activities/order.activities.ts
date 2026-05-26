@@ -44,7 +44,9 @@ import {
   gaEventOrderProcessingFinished,
   gaEventOrderProcessingStarted,
   gaEventPaymentFailed,
+  gaEventPaymentRefunded,
   gaEventPaymentSuccess,
+  gaEventPurchase,
 } from '#lib/tracking/checkout/events';
 import type { CheckoutTrackingIdentity } from '#lib/tracking/checkout/context';
 import { getPreferredEvmWalletAddressToBeCharged } from './payment.activities';
@@ -196,6 +198,61 @@ export async function logGaEventPaymentProcessed(
   }
 }
 
+export async function logGaEventPaymentRefunded(
+  input: {
+    userId: string;
+    orderId: string;
+    amountInUsdCents: number;
+    refundAmountInUsdCents: number;
+    refundType: 'PARTIAL' | 'FULL';
+    paymentCount: number;
+    paymentProviders: PaymentProvider[];
+  } & CheckoutTrackingIdentity,
+) {
+  const {
+    userId,
+    orderId,
+    amountInUsdCents,
+    refundAmountInUsdCents,
+    refundType,
+    paymentCount,
+    paymentProviders,
+  } = input;
+  if (refundAmountInUsdCents <= 0) {
+    logger.info(
+      { orderId, userId, refundAmountInUsdCents, refundType, paymentCount },
+      'Skipping GA payment_refunded event because refund amount is non-positive',
+    );
+    return;
+  }
+
+  const identity = pickCheckoutTrackingIdentity(input);
+  const uniqueProviders = Array.from(new Set(paymentProviders));
+  const paymentProvider =
+    uniqueProviders.length === 1 ? uniqueProviders[0] : undefined;
+  const paymentProvidersParam =
+    uniqueProviders.length > 1 ? uniqueProviders.join(',') : undefined;
+
+  try {
+    await gaEventPaymentRefunded({
+      userId,
+      identity,
+      orderId,
+      amountUsdCents: amountInUsdCents,
+      paymentCount,
+      paymentProvider,
+      paymentProviders: paymentProvidersParam,
+      refundAmountUsdCents: refundAmountInUsdCents,
+      refundType,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId, refundAmountInUsdCents, refundType },
+      'Failed to send GA payment_refunded event',
+    );
+  }
+}
+
 export async function logGaEventOrderProcessingStarted(
   input: {
     userId: string;
@@ -302,6 +359,35 @@ export async function logGaEventOrderProcessingFinished(
     logger.warn(
       { error, orderId, userId, orderStatus, refundNeeded, refundType },
       'Failed to send GA order_processing_finished event',
+    );
+  }
+}
+
+export async function logGaEventPurchase(
+  input: {
+    userId: string;
+    orderId: string;
+    items: Array<{
+      itemId: string;
+      itemName: string;
+      amountInUSDCents: number;
+    }>;
+  } & CheckoutTrackingIdentity,
+) {
+  const { userId, orderId, items } = input;
+  const identity = pickCheckoutTrackingIdentity(input);
+
+  try {
+    await gaEventPurchase({
+      userId,
+      identity,
+      orderId,
+      items,
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId, itemCount: items.length },
+      'Failed to send GA purchase event',
     );
   }
 }
@@ -980,9 +1066,11 @@ export type OrderActivities = {
   logGaEventOrderItemsProcessingStarted: typeof logGaEventOrderItemsProcessingStarted;
   logGaEventOrderItemsProcessingFinished: typeof logGaEventOrderItemsProcessingFinished;
   logGaEventOrderProcessingFinished: typeof logGaEventOrderProcessingFinished;
+  logGaEventPurchase: typeof logGaEventPurchase;
   logGaEventOrderItemProcessingStarted: typeof logGaEventOrderItemProcessingStarted;
   logGaEventOrderItemProcessingFinished: typeof logGaEventOrderItemProcessingFinished;
   logGaEventPaymentProcessed: typeof logGaEventPaymentProcessed;
+  logGaEventPaymentRefunded: typeof logGaEventPaymentRefunded;
   logGaEventDomainAcquisitionStarted: typeof logGaEventDomainAcquisitionStarted;
   logGaEventDomainAcquisitionFinished: typeof logGaEventDomainAcquisitionFinished;
   logGaEventOrderFinishedEmailSent: typeof logGaEventOrderFinishedEmailSent;

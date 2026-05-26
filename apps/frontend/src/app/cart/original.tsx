@@ -157,12 +157,11 @@ export default function CartPage() {
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
         setIsRedirecting(true);
-        logSubmitOrder({ success: true, transactionId: data.id });
         requestFeedback(feedbackTriggerSchema.enum.CHECKOUT_SUCCESS);
         router.push(`/orders/${data.id}`);
       },
       onError: (error) => {
-        logSubmitOrder({ success: false });
+        logSubmitOrderFailure();
         setErrorMessage(error.message);
         setIsErrorDialogOpen(true);
       },
@@ -175,12 +174,11 @@ export default function CartPage() {
       ...trpc.orders.createOrderV2.mutationOptions({
         onSuccess: (data) => {
           setIsRedirecting(true);
-          logSubmitOrder({ success: true, transactionId: data.id });
           requestFeedback(feedbackTriggerSchema.enum.CHECKOUT_SUCCESS);
           router.push(`/orders/${data.id}`);
         },
         onError: (error) => {
-          logSubmitOrder({ success: false });
+          logSubmitOrderFailure();
           setErrorMessage(error.message);
           setIsErrorDialogOpen(true);
         },
@@ -474,36 +472,13 @@ export default function CartPage() {
     multiPayment,
   ]);
 
-  const logSubmitOrder = useCallback(
-    ({
-      success,
-      transactionId,
-    }:
-      | {
-          success: true;
-          transactionId: string;
-        }
-      | {
-          success: false;
-          transactionId?: string;
-        }) => {
+  const logSubmitOrderFailure = useCallback(
+    ({ transactionId }: { transactionId?: string } = {}) => {
       if (!items) {
         return;
       }
 
       const cartItems = cartItemsToInteractionLoggingCartItems(items);
-
-      if (success) {
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Purchase,
-          properties: {
-            transactionId,
-            totalAmountInUsdCents,
-            cartItems,
-          },
-        });
-        return;
-      }
 
       logEventWithInteractionLoggers({
         name: InteractionLoggingEventName.SubmitOrderFailure,

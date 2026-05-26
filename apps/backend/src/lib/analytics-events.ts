@@ -21,6 +21,7 @@ export interface BackendAnalyticsEventMap {
   order_processing_finished: OrderProcessingFinishedParams;
   order_item_processing_started: OrderItemProcessingStartedParams;
   order_item_processing_finished: OrderItemProcessingFinishedParams;
+  purchase: PurchaseParams;
 
   payment_processed: PaymentProcessedParams;
   payment_refunded: PaymentRefundedParams;
@@ -306,6 +307,26 @@ type OrderItemProcessingStartedParams = CheckoutAnalyticsBaseParams & {
 
 type OrderItemProcessingFinishedParams = OrderItemProcessingStartedParams & {
   item_status: 'SUCCEEDED' | 'FAILED';
+};
+
+type PurchaseItem = {
+  /** GA4 item identifier. Domain purchases use the normalized domain name. */
+  item_id?: string;
+  /** Human-readable item name shown in GA ecommerce reports. */
+  item_name?: string;
+  /** Item price in major currency units, e.g. USD dollars, not cents. */
+  price?: number;
+  quantity?: number;
+};
+
+type PurchaseParams = CheckoutAnalyticsBaseParams & {
+  /** Canonical order id used directly as GA4 transaction_id; no extra normalization is applied here. */
+  transaction_id: string;
+  /** ISO 4217 currency code for `value` and item `price` fields. */
+  currency: string;
+  /** Total purchase value in major currency units, e.g. USD dollars, not cents. */
+  value: number;
+  items: PurchaseItem[];
 };
 
 type PaymentProcessedParams = CheckoutAnalyticsBaseParams & {

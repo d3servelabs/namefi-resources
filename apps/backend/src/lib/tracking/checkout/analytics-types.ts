@@ -25,7 +25,7 @@ export type CheckoutFlowEventName =
 export const CHECKOUT_FLOW_EVENT_LABELS: Record<CheckoutFlowEventName, string> =
   {
     user_begin_search: 'Begin Search',
-    order_placed: 'Order Placed',
+    order_placed: 'Order Accepted',
     payment_processed: 'Payment Processed',
     domain_acquisition_started: 'Domain Acquisition Started',
     domain_acquisition_finished: 'Domain Acquisition Finished',
@@ -73,7 +73,7 @@ export interface CheckoutFlowSummary {
   /** Number of `user_begin_search` events. */
   beginSearchCount: number;
 
-  /** Number of `order_placed` events. */
+  /** Number of accepted `order_placed` events. */
   orderPlacedCount: number;
 
   /** Number of successful `domain_acquisition_finished` events. */
@@ -82,7 +82,7 @@ export interface CheckoutFlowSummary {
   /** Number of `payment_refunded` events. */
   refundedCount: number;
 
-  /** `order_placed / user_begin_search`, represented as percent. */
+  /** Accepted `order_placed / user_begin_search`, represented as percent. */
   conversionRatePercent: number | null;
 
   /**

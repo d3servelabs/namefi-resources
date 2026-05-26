@@ -20,13 +20,30 @@ const convertedTracking = {
   eventSource: 'web',
 } as const;
 
-const loggerMocks = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  fatal: vi.fn(),
-  info: vi.fn(),
-  trace: vi.fn(),
-  warn: vi.fn(),
+type CheckoutTrackingLoggerMocks = {
+  debug: ReturnType<typeof vi.fn>;
+  error: ReturnType<typeof vi.fn>;
+  fatal: ReturnType<typeof vi.fn>;
+  info: ReturnType<typeof vi.fn>;
+  trace: ReturnType<typeof vi.fn>;
+  warn: ReturnType<typeof vi.fn>;
+};
+const loggerMockGlobal = globalThis as typeof globalThis & {
+  __checkoutTrackingLoggerMocks?: CheckoutTrackingLoggerMocks;
+};
+if (!loggerMockGlobal.__checkoutTrackingLoggerMocks) {
+  loggerMockGlobal.__checkoutTrackingLoggerMocks = {
+    debug: vi.fn(),
+    error: vi.fn(),
+    fatal: vi.fn(),
+    info: vi.fn(),
+    trace: vi.fn(),
+    warn: vi.fn(),
+  };
+}
+const loggerMocks = loggerMockGlobal.__checkoutTrackingLoggerMocks;
+const ga4Mocks = {
+  sendGA4Event: vi.fn(),
 };
 const dbMocks = {
   query: {
@@ -66,7 +83,6 @@ const instantBuyMocks = {
   validateDomainForInstantPurchaseOrThrow: vi.fn(),
 };
 const trackingMocks = {
-  emitOrderPlacedIfTracked: vi.fn(),
   resolveWebCheckoutTracking: vi.fn(),
   toGaEventTracking: vi.fn(),
 };
@@ -86,6 +102,10 @@ vi.mock('../../base', async () => {
     withAudit: (procedure: unknown) => procedure,
   };
 });
+
+vi.mock('#lib/ga4-measurement', () => ({
+  sendGA4Event: ga4Mocks.sendGA4Event,
+}));
 
 vi.mock('#lib/logger', () => ({
   logger: loggerMocks,
@@ -227,10 +247,6 @@ vi.mock('../../utils', () => ({
   privyClient: privyMocks.privyClient,
 }));
 
-vi.mock('#lib/tracking/checkout/events', () => ({
-  emitOrderPlacedIfTracked: trackingMocks.emitOrderPlacedIfTracked,
-}));
-
 vi.mock('#lib/tracking/checkout/context', () => ({
   resolveWebCheckoutTracking: trackingMocks.resolveWebCheckoutTracking,
   toGaEventTracking: trackingMocks.toGaEventTracking,
@@ -322,9 +338,9 @@ beforeEach(() => {
     id: 'payment-1',
     amountInUsdCents: 1200,
   });
+  ga4Mocks.sendGA4Event.mockResolvedValue(undefined);
   trackingMocks.resolveWebCheckoutTracking.mockResolvedValue(resolvedTracking);
   trackingMocks.toGaEventTracking.mockReturnValue(convertedTracking);
-  trackingMocks.emitOrderPlacedIfTracked.mockResolvedValue(undefined);
   cartMocks.validateCartItems.mockResolvedValue(undefined);
   instantBuyMocks.validateDomainForInstantPurchaseOrThrow.mockResolvedValue({
     priceInUsdCents: 1200,
@@ -375,12 +391,20 @@ describe('ordersRouter checkout analytics propagation', () => {
         ],
       }),
     );
-    expect(trackingMocks.emitOrderPlacedIfTracked).toHaveBeenCalledWith({
-      tracking: resolvedTracking,
+    expect(ga4Mocks.sendGA4Event).toHaveBeenCalledWith({
       userId: 'user-1',
-      order,
-      paymentCount: 1,
-      orderSource: 'checkout',
+      clientId: gaClientId,
+      event: {
+        name: 'order_placed',
+        params: expect.objectContaining({
+          order_id: order.id,
+          amount_usd_cents: 1200,
+          item_count: 1,
+          payment_count: 1,
+          order_source: 'checkout',
+          session_id: gaSessionId,
+        }),
+      },
     });
   });
 
@@ -407,12 +431,20 @@ describe('ordersRouter checkout analytics propagation', () => {
         ],
       }),
     );
-    expect(trackingMocks.emitOrderPlacedIfTracked).toHaveBeenCalledWith({
-      tracking: resolvedTracking,
+    expect(ga4Mocks.sendGA4Event).toHaveBeenCalledWith({
       userId: 'user-1',
-      order,
-      paymentCount: 1,
-      orderSource: 'checkout',
+      clientId: gaClientId,
+      event: {
+        name: 'order_placed',
+        params: expect.objectContaining({
+          order_id: order.id,
+          amount_usd_cents: 1200,
+          item_count: 1,
+          payment_count: 1,
+          order_source: 'checkout',
+          session_id: gaSessionId,
+        }),
+      },
     });
   });
 
@@ -440,12 +472,20 @@ describe('ordersRouter checkout analytics propagation', () => {
         ],
       }),
     );
-    expect(trackingMocks.emitOrderPlacedIfTracked).toHaveBeenCalledWith({
-      tracking: resolvedTracking,
+    expect(ga4Mocks.sendGA4Event).toHaveBeenCalledWith({
       userId: 'user-1',
-      order,
-      paymentCount: 1,
-      orderSource: 'instant_buy',
+      clientId: gaClientId,
+      event: {
+        name: 'order_placed',
+        params: expect.objectContaining({
+          order_id: order.id,
+          amount_usd_cents: 1200,
+          item_count: 1,
+          payment_count: 1,
+          order_source: 'instant_buy',
+          session_id: gaSessionId,
+        }),
+      },
     });
   });
 
@@ -475,12 +515,20 @@ describe('ordersRouter checkout analytics propagation', () => {
         ],
       }),
     );
-    expect(trackingMocks.emitOrderPlacedIfTracked).toHaveBeenCalledWith({
-      tracking: resolvedTracking,
+    expect(ga4Mocks.sendGA4Event).toHaveBeenCalledWith({
       userId: 'user-1',
-      order,
-      paymentCount: 1,
-      orderSource: 'nfsc_topup',
+      clientId: gaClientId,
+      event: {
+        name: 'order_placed',
+        params: expect.objectContaining({
+          order_id: order.id,
+          amount_usd_cents: 1200,
+          item_count: 1,
+          payment_count: 1,
+          order_source: 'nfsc_topup',
+          session_id: gaSessionId,
+        }),
+      },
     });
   });
 });

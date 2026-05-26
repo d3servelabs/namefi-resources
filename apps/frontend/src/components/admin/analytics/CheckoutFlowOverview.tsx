@@ -34,8 +34,8 @@ const FUNNEL_COLORS = [
 
 const SUMMARY_SKELETON_KEYS = [
   'begin-search',
-  'order-placed',
-  'conversion-rate',
+  'order-accepted',
+  'order-start-rate',
   'completion-rate',
 ] as const;
 
@@ -237,7 +237,9 @@ export function CheckoutFlowOverview({
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Order Placed</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Order Accepted
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -250,7 +252,7 @@ export function CheckoutFlowOverview({
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
-              Conversion Rate
+              Order Start Rate
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -260,7 +262,7 @@ export function CheckoutFlowOverview({
                 : `${data.summary.conversionRatePercent.toFixed(1)}%`}
             </div>
             <p className="text-xs text-muted-foreground">
-              Order Placed / Begin Search
+              Accepted orders / Begin Search
             </p>
           </CardContent>
         </Card>

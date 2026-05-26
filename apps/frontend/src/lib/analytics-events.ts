@@ -4,7 +4,6 @@ export enum InteractionLoggingEventName {
   // GoogleAnalytics-recommended events
   AddToCart = 'add_to_cart',
   BeginCheckout = 'begin_checkout',
-  Purchase = 'purchase',
   RemoveFromCart = 'remove_from_cart',
   SignUp = 'sign_up',
 
@@ -56,14 +55,6 @@ export type InteractionLoggingEvent =
       {
         totalAmountInUsdCents?: number;
         cartItems?: InteractionLoggingCartItem[];
-      }
-    >
-  | BaseEvent<
-      InteractionLoggingEventName.Purchase,
-      {
-        transactionId: string;
-        totalAmountInUsdCents: number;
-        cartItems: InteractionLoggingCartItem[];
       }
     >
   | BaseEvent<

@@ -4,16 +4,36 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const ga4Mocks = {
   sendGA4Event: vi.fn(),
 };
-const loggerMocks = {
-  info: vi.fn(),
-  warn: vi.fn(),
+
+type CheckoutTrackingLoggerMocks = {
+  debug: ReturnType<typeof vi.fn>;
+  error: ReturnType<typeof vi.fn>;
+  fatal: ReturnType<typeof vi.fn>;
+  info: ReturnType<typeof vi.fn>;
+  trace: ReturnType<typeof vi.fn>;
+  warn: ReturnType<typeof vi.fn>;
 };
+const loggerMockGlobal = globalThis as typeof globalThis & {
+  __checkoutTrackingLoggerMocks?: CheckoutTrackingLoggerMocks;
+};
+if (!loggerMockGlobal.__checkoutTrackingLoggerMocks) {
+  loggerMockGlobal.__checkoutTrackingLoggerMocks = {
+    debug: vi.fn(),
+    error: vi.fn(),
+    fatal: vi.fn(),
+    info: vi.fn(),
+    trace: vi.fn(),
+    warn: vi.fn(),
+  };
+}
+const loggerMocks = loggerMockGlobal.__checkoutTrackingLoggerMocks;
 
 vi.mock('#lib/ga4-measurement', () => ({
   sendGA4Event: ga4Mocks.sendGA4Event,
 }));
 
 vi.mock('#lib/logger', () => ({
+  logger: loggerMocks,
   createLogger: vi.fn(() => loggerMocks),
 }));
 
@@ -22,7 +42,9 @@ const {
   gaEventDomainAcquisitionStarted,
   gaEventOrderFinishedEmailOpened,
   gaEventOrderPlaced,
+  gaEventPaymentRefunded,
   gaEventPaymentSuccess,
+  gaEventPurchase,
   gaEventUserBeginSearch,
 } = await import('./events');
 
@@ -181,6 +203,113 @@ describe('checkout GA events', () => {
           item_count: 2,
           payment_count: 1,
           order_source: 'instant_buy',
+        }),
+      },
+    });
+  });
+
+  it('sends standard ecommerce purchase only for completed items', async () => {
+    await gaEventPurchase({
+      userId: 'user-1',
+      identity: {
+        clientId: '12345.67890',
+        sessionId: 1716012345,
+      },
+      orderId: 'order-1',
+      items: [
+        {
+          itemId: 'example.com',
+          itemName: 'example.com',
+          amountInUSDCents: 1500,
+        },
+        {
+          itemId: 'example.xyz',
+          itemName: 'example.xyz',
+          amountInUSDCents: 1210,
+        },
+      ],
+    });
+
+    expect(ga4Mocks.sendGA4Event).toHaveBeenCalledWith({
+      userId: 'user-1',
+      clientId: '12345.67890',
+      event: {
+        name: 'purchase',
+        params: expect.objectContaining({
+          user_id: 'user-1',
+          order_id: 'order-1',
+          transaction_id: 'order-1',
+          session_id: 1716012345,
+          engagement_time_msec: 1,
+          currency: 'USD',
+          value: 27.1,
+          items: [
+            {
+              item_id: 'example.com',
+              item_name: 'example.com',
+              price: 15,
+              quantity: 1,
+            },
+            {
+              item_id: 'example.xyz',
+              item_name: 'example.xyz',
+              price: 12.1,
+              quantity: 1,
+            },
+          ],
+        }),
+      },
+    });
+  });
+
+  it('skips purchase when no completed items are provided', async () => {
+    await gaEventPurchase({
+      userId: 'user-1',
+      identity: {
+        clientId: '12345.67890',
+        sessionId: 1716012345,
+      },
+      orderId: 'order-1',
+      items: [],
+    });
+
+    expect(loggerMocks.info).toHaveBeenCalledWith(
+      { orderId: 'order-1' },
+      'Skipping GA purchase event because no items were provided',
+    );
+    expect(ga4Mocks.sendGA4Event).not.toHaveBeenCalled();
+  });
+
+  it('sends custom payment_refunded for actual refund completion', async () => {
+    await gaEventPaymentRefunded({
+      userId: 'user-1',
+      identity: {
+        clientId: '12345.67890',
+        sessionId: 1716012345,
+      },
+      orderId: 'order-1',
+      amountUsdCents: 3000,
+      paymentCount: 1,
+      paymentProvider: 'STRIPE',
+      refundAmountUsdCents: 1500,
+      refundType: 'PARTIAL',
+    });
+
+    expect(ga4Mocks.sendGA4Event).toHaveBeenCalledWith({
+      userId: 'user-1',
+      clientId: '12345.67890',
+      event: {
+        name: 'payment_refunded',
+        params: expect.objectContaining({
+          user_id: 'user-1',
+          order_id: 'order-1',
+          session_id: 1716012345,
+          engagement_time_msec: 1,
+          amount_usd_cents: 3000,
+          payment_count: 1,
+          payment_provider: 'STRIPE',
+          refund_amount_usd_cents: 1500,
+          refund_type: 'PARTIAL',
         }),
       },
     });

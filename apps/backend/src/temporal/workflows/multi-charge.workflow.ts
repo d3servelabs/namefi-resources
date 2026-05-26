@@ -1,6 +1,5 @@
 import {
   paymentStatusSchema,
-  type PaymentProvider,
   type PaymentStatus,
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
@@ -14,13 +13,18 @@ import {
 } from './multi-refund.workflow';
 import type { PaymentExtraMetadata } from './chargeUser.workflow';
 import type { PaymentPriority } from '../shared/workflow-helpers/payment-priority';
+import {
+  resolveWorkflowCheckoutTracking,
+  type WorkflowCheckoutTrackingInput,
+} from '../shared/workflow-helpers/checkout-tracking';
 
-const { getMultiplePaymentsDetails } = typedProxyActivities({
-  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-  options: {
-    ...shortRunningOpts,
-  },
-});
+const { getMultiplePaymentsDetails, logGaEventPaymentRefunded } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
 
 export interface MultiChargeWorkflowInput {
   orderId?: string; // Made optional for multi-payment scenarios
@@ -42,6 +46,7 @@ export interface MultiChargeWorkflowInput {
    * @default true
    */
   failOnNotAllCharged?: boolean;
+  gaEventTracking?: WorkflowCheckoutTrackingInput;
 }
 
 export interface MultiChargeWorkflowOutput {
@@ -61,7 +66,9 @@ export async function multiChargeWorkflow(
     orderId,
     chargePriority,
     failOnNotAllCharged = true,
+    gaEventTracking,
   } = input;
+  const gaTracking = resolveWorkflowCheckoutTracking(gaEventTracking);
   const succeeded: string[] = [];
   const failed: string[] = [];
   let totalCharged = 0;
@@ -159,6 +166,42 @@ export async function multiChargeWorkflow(
           retry: { maximumAttempts: 1 },
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
         });
+        if (
+          workflow.patched('track-ga-payment-refunded-on-charge-rollback-v1') &&
+          orderId &&
+          gaTracking.trackGaEvents
+        ) {
+          try {
+            const refundedPaymentIds = new Set(
+              refundResult.successfulRefunds.map((refund) => refund.paymentId),
+            );
+            await logGaEventPaymentRefunded({
+              userId,
+              orderId,
+              amountInUsdCents: totalCharged,
+              refundAmountInUsdCents: refundResult.totalRefundedInUsdCents,
+              refundType:
+                refundResult.totalRefundedInUsdCents >= totalCharged
+                  ? 'FULL'
+                  : 'PARTIAL',
+              paymentCount: refundResult.successfulRefunds.length,
+              paymentProviders: Object.values(details)
+                .filter((payment) => refundedPaymentIds.has(payment.id))
+                .map((payment) => payment.paymentProvider),
+              ...gaTracking.identity,
+            });
+          } catch (trackingError) {
+            workflow.log.warn(
+              `Failed to track payment_refunded event for charge rollback${
+                orderId ? ` on order ${orderId}` : ''
+              }: ${
+                trackingError instanceof Error
+                  ? trackingError.message
+                  : String(trackingError)
+              }`,
+            );
+          }
+        }
       }
       if (failOnNotAllCharged) {
         throw workflow.ApplicationFailure.create({
