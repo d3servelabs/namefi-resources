@@ -1,6 +1,9 @@
 // this needs to be the first import
 import { config, secrets } from './lib/env';
 import '../global';
+// Side-effect: apply backend config overrides to the lazy RDAP/WHOIS clients
+// in `@namefi-astra/registrars/lib/rdap-whois` before any caller resolves them.
+import './lib/external-api/rdap-whois-init';
 
 // other imports
 import { serve } from '@hono/node-server';

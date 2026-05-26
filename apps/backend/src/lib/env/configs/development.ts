@@ -81,6 +81,19 @@ const developmentConfig: ConfigInput = {
   PONDER_INDEXER_URL: 'https://indexer.namefi.io',
   // Listmonk email service
   LISTMONK_URL: 'https://marketing.namefi.io',
+
+  // Default to the backend's own RDAP route so dev queries hit the local
+  // CentralNic OTE fallback wiring in `routers/rdap.ts` instead of the public
+  // `rdap.org` mirror. Backend serves plain HTTP and mounts the router at
+  // `v1/rdap`; the RDAP client appends `/domain/${name}` to this base.
+  RDAP_BASE_URL:
+    process.env.RDAP_BASE_URL ||
+    `http://localhost:${process.env.PORT || 3000}/v1/rdap`,
+  // WHOIS is env-only: the local `/v1/whois/:domain` route returns plain-text
+  // WHOIS format, but `WhoisJsonApiClient` expects the whoisjsonapi.com JSON
+  // shape, so loopback would parse-fail. Leave unset to fall through to the
+  // client's built-in default (`https://whoisjsonapi.com/v1`).
+  WHOIS_BASE_URL: process.env.WHOIS_BASE_URL,
 };
 
 export default developmentConfig;

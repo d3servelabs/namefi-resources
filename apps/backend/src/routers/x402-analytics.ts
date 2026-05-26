@@ -89,7 +89,13 @@ const paywall = createPaywall()
     testnet: config.X402_NETWORK === 'eip155:84532',
   })
   .build();
-const x402ResourceServer = await getX402ResourceServer();
+
+// The resource server is resolved per-request via `getX402ResourceServer()`,
+// which is itself a memoized async singleton. We intentionally do NOT await it
+// at module top-level: that would block backend startup on x402 facilitator
+// initialization even when this router is gated off (`config.X402_ENABLED`
+// false, or non-x402 paths), and a transient init failure would crash the
+// whole router instead of returning the intended 503 only on x402 paths.
 
 /**
  * Build x402 payment option for exact scheme
@@ -416,6 +422,7 @@ async function handlePaidRequest(
 
   // Build payment requirements
   const paymentOption = buildExactPaymentOption();
+  const x402ResourceServer = await getX402ResourceServer();
   const paymentRequirements =
     await x402ResourceServer.buildPaymentRequirementsFromOptions(
       [paymentOption],
@@ -580,6 +587,7 @@ async function handlePaymentRequired(
 
   // Use middleware to generate 402 response with paywall
   const nextPromise = Promise.withResolvers<Response>();
+  const x402ResourceServer = await getX402ResourceServer();
 
   return Promise.race([
     nextPromise.promise,

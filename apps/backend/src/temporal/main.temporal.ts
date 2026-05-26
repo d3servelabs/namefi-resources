@@ -1,5 +1,9 @@
 // this needs to be the first import
 import '../../global';
+// Side-effect: apply backend config overrides to the lazy RDAP/WHOIS clients
+// in `@namefi-astra/registrars/lib/rdap-whois` before any worker activity
+// resolves them.
+import '../lib/external-api/rdap-whois-init';
 // other imports
 import { initWorkers } from './workers';
 

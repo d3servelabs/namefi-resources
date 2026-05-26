@@ -330,6 +330,20 @@ export const configSchema = z.object({
     ])
     .optional(),
   RDAP_ENABLE_DUMMY_OBJECTS: z.boolean().default(true),
+  /**
+   * Optional override for the upstream RDAP endpoint used by
+   * `@namefi-astra/registrars/lib/rdap-whois/rdap_client`. When unset, the
+   * client falls back to its built-in default (`https://rdap.org`).
+   * Useful for dev/test pointing at a local mock server.
+   */
+  RDAP_BASE_URL: z.string().url().optional(),
+  /**
+   * Optional override for the upstream WHOIS JSON API endpoint used by
+   * `@namefi-astra/registrars/lib/rdap-whois/whois_client`. When unset, the
+   * client falls back to its built-in default (`https://whoisjsonapi.com/v1`).
+   * Useful for dev/test pointing at a local mock server.
+   */
+  WHOIS_BASE_URL: z.string().url().optional(),
   DNS_CACHE_SERVERS: z
     .array(
       z.object({

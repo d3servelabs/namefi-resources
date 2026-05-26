@@ -6,7 +6,10 @@ import {
   toUnicodeDomainName,
   type PunycodeDomainName,
 } from '@namefi-astra/registrars/lib/data/validations';
+import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import { EppStatuses } from '@namefi-astra/utils';
+import axios from 'axios';
 import { Hono, type Context } from 'hono';
 import { z } from 'zod';
 
@@ -148,6 +151,79 @@ rdapRouter.get('/:type/:handle', async (c) => {
   }
 
   return handleRdapObjectLookup(c, typeParse.data, handle);
+});
+
+/**
+ * Debug-only endpoint that proxies the request through the configurable RDAP
+ * client (`@namefi-astra/registrars/lib/rdap-whois/rdap_client`) instead of
+ * serving from CentralNic directly. Use it to verify that `RDAP_BASE_URL`
+ * overrides (including the local loopback) actually route as expected.
+ *
+ * Gated to non-production environments: it would otherwise be an
+ * unauthenticated probe surface, and the diagnostic headers it sets
+ * (`x-rdap-loopback-target`, `x-rdap-loopback-test`) reveal internal config.
+ * In production it returns 404 to match the catch-all behaviour.
+ */
+const LOOPBACK_DIAGNOSTIC_HEADERS =
+  'x-rdap-loopback-target, x-rdap-loopback-test';
+
+rdapRouter.get('/_loopback-test/domain/:domain', async (c) => {
+  //  disable in production after the initial testing period, to avoid exposing internal config and an unauthenticated probe endpoint long-term. The date is arbitrary but gives a few months after launch for testing and any necessary fixes.
+  if (
+    process.env.ENVIRONMENT === 'production' &&
+    new Date().getTime() > new Date('2026-05-28').getTime()
+  ) {
+    return rdapError(c, {
+      errorCode: 404,
+      title: 'Not Found',
+      description: 'The requested RDAP endpoint does not exist.',
+    });
+  }
+
+  const rawDomain = c.req.param('domain')?.trim();
+  if (!rawDomain) {
+    return rdapError(c, {
+      errorCode: 400,
+      title: 'Bad Request',
+      description: 'The domain handle is required.',
+    });
+  }
+
+  const domainName = validateDomainHandle(rawDomain);
+  if (!domainName) {
+    return rdapError(c, {
+      errorCode: 400,
+      title: 'Bad Request',
+      description:
+        'Invalid domain handle. Provide a valid domain with at least one dot.',
+    });
+  }
+
+  const loopbackTarget = config.RDAP_BASE_URL ?? 'https://rdap.org (default)';
+  c.header('x-rdap-loopback-target', loopbackTarget);
+  c.header('x-rdap-loopback-test', '1');
+  // Cross-origin browser callers (e.g. local frontend hitting the local
+  // backend) can only read custom response headers we explicitly expose.
+  c.header('access-control-expose-headers', LOOPBACK_DIAGNOSTIC_HEADERS);
+
+  try {
+    const upstream = await RDAP.queryDomain(domainName);
+    return rdapResponse(c, upstream);
+  } catch (error) {
+    const status = axios.isAxiosError(error) ? error.response?.status : null;
+    _logger.warn(
+      { domainName, loopbackTarget, status, error },
+      'RDAP loopback test query failed',
+    );
+    return rdapError(c, {
+      errorCode: status === 404 ? 404 : 502,
+      title: status === 404 ? 'Not Found' : 'Bad Gateway',
+      description:
+        status === 404
+          ? 'The requested domain object does not exist upstream.'
+          : 'Failed to retrieve domain data from the configured RDAP upstream.',
+    });
+  }
 });
 
 rdapRouter.use('/*', async (c) => {
@@ -476,7 +552,36 @@ function getConfiguredCentralnicRegistrar() {
   if (!config.CENTRALNIC_KEY) {
     return null;
   }
-  return getCentralnicRegistrar(config.CENTRALNIC_KEY, undefined);
+  if (config.CENTRALNIC_KEY === Registrars.CentralNic) {
+    return getCentralnicRegistrar(config.CENTRALNIC_KEY, undefined);
+  }
+  const ote1 = getCentralnicRegistrar(Registrars.CentralNic_OTE_01, undefined);
+  const ote2 = getCentralnicRegistrar(Registrars.CentralNic_OTE_02, undefined);
+  return {
+    ...ote1,
+    getDomainDetails: async (domainName: PunycodeDomainName) => {
+      try {
+        return await ote1.getDomainDetails(domainName);
+      } catch (error) {
+        _logger.warn(
+          { domainName, error },
+          'CentralNic OTE 01 failed, falling back to OTE 02',
+        );
+        return await ote2.getDomainDetails(domainName);
+      }
+    },
+    getDomainStatus: async (domainName: PunycodeDomainName) => {
+      try {
+        return await ote1.getDomainStatus(domainName);
+      } catch (error) {
+        _logger.warn(
+          { domainName, error },
+          'CentralNic OTE 01 failed, falling back to OTE 02',
+        );
+        return await ote2.getDomainStatus(domainName);
+      }
+    },
+  };
 }
 
 function isDummyRdapObjectsEnabled() {
