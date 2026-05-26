@@ -20,6 +20,7 @@ import {
   type AuthMethodResult,
 } from '#lib/auth/auth-registry';
 import { dnsRecordsRouterOrpc } from '#trpc/routers/orpc/dnsRecordsRouter.orpc';
+import { domainConfigRouterOrpc } from '#trpc/routers/orpc/domainConfigRouter.orpc';
 import { userDataRouterOrpc } from '#trpc/routers/orpc/userDataRouter.orpc';
 import { ordersRouterOrpc } from '#trpc/routers/orpc/ordersRouter.orpc';
 import { balanceRouterOrpc } from '#trpc/routers/orpc/balanceRouter.orpc';
@@ -131,6 +132,7 @@ const base = os.errors({
 export const orpcRouter = toORPCRouter(
   createTRPCRouter({
     dnsRecords: dnsRecordsRouterOrpc,
+    domainConfig: domainConfigRouterOrpc,
     user: userDataRouterOrpc,
     orders: ordersRouterOrpc,
     balance: balanceRouterOrpc,
@@ -181,6 +183,7 @@ const openApiDocument = await openAPIGenerator.generate(
     ],
     tags: [
       { name: 'dns' },
+      { name: 'domain-config' },
       { name: 'orders' },
       { name: 'user' },
       { name: 'balance' },

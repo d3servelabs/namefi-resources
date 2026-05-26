@@ -63,52 +63,9 @@ Works for **all operations** including DNS record creation, updates, and deletes
       -H "Content-Type: application/json" \\
       -d '{"zoneName":"yourdomain.com","type":"A","name":"@","rdata":"1.2.3.4","ttl":300}'
 
-**SDK usage:** The SDK handles EIP-712 envelope signing automatically when configured with \`type: 'API_KEY'\`.
-
-### EIP-712 Typed Data Signature (EOA wallets)
-
-For programmatic use without a stored key, sign each request with your Ethereum wallet.
-See https://docs.namefi.io/docs/02a-eip712-signing for the manual signing flow.
-
-Required headers:
-- \`x-namefi-signer\`: Your wallet address (checksummed)
-- \`x-namefi-signature\`: Hex-encoded EIP-712 signature (\`0x\`-prefixed)
-- \`x-namefi-eip712-type\`: The EIP-712 primary type for the operation
-
-Fetch live EIP-712 metadata from these endpoints (do NOT hardcode types):
-- \`GET /v-next/eip712/domain\` — signing domain (\`{ name: 'Namefi', version: '1' }\`, chain-agnostic)
-- \`GET /v-next/eip712/types-for-method?method=<operationId>\` — accepted primary types and type map for a specific operation
-- \`GET /v-next/eip712/types\` — full EIP-712 type registry
-
-Every signed request wraps the payload in an envelope:
-
-    {
-      "payloadType": "<PrimaryTypeWithoutEnvelopeSuffix>",
-      "payload": { ... },
-      "timestamp": <unix-seconds>,
-      "nonce": "<unique-random-string>"
-    }
-
-Signatures expire after 300 seconds. Nonces are single-use.
-
-### EIP-712 with Smart Contract Wallets (ERC-1271 / EIP-7702)
-
-If the domain-owning address is a smart contract (e.g. a multisig or smart account), the contract cannot sign directly. Instead:
-
-1. An approved EOA signer signs the EIP-712 typed data on behalf of the contract.
-2. The contract must implement \`approvedSigners(address signer) view returns (bool)\` — the API calls this on-chain to verify delegation.
-3. Include one of these headers to indicate the delegating contract address:
-   - \`x-namefi-eip7702-account\`: Preferred header for EIP-7702 delegated accounts
-   - \`x-namefi-erc1271-account\`: Preferred header for ERC-1271 smart contract wallets
-   - \`x-namefi-eip1271-account\`: Legacy alias (same behavior as erc1271)
-
-When multiple delegation headers are present, precedence is: eip7702 > erc1271 > eip1271.
-
-The API verifies that \`x-namefi-signer\` is an approved signer for the contract address across supported chains, then authenticates the request as the contract (domain owner).
-
-### SIWE (Sign-In with Ethereum)
-
-For protected reads that do not require EIP-712. See https://docs.namefi.io/docs/02b-siwe-authentication
+### Crypto wallet signature (EIP-712)
+- Not needed for API key users, but available as an alternative for programmatic use without a stored key.
+- For Web3 Users And Agentic Wallets, [visit](https://api.namefi.io/llms.txt/web3) for details on signing requests with EIP-712, including support for smart contract wallets (ERC-1271 / EIP-7702) and SIWE authentication.
 
 ## Domain Registration
 
@@ -145,6 +102,33 @@ All DNS write operations require domain ownership (verified via on-chain NFT own
 | PUT | \`/v-next/dns/auto-ens\` | API Key or EIP-712 | Toggle auto ENS records |
 | PUT | \`/v-next/dns/vercel-anycast\` | API Key or EIP-712 | Toggle Vercel anycast records |
 | GET | \`/v-next/dns/parked?normalizedDomainName=example.com\` | None | Check if parked |
+
+## Domain Configuration
+
+Manage domain-level preferences that aren't tied to a specific DNS record. All write operations require domain ownership (verified via on-chain NFT ownership).
+
+### Endpoints
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | \`/v-next/domain-config/auto-renew?normalizedDomainName=example.com\` | API Key or EIP-712 | Check whether auto-renewal is enabled |
+| PUT | \`/v-next/domain-config/auto-renew\` | API Key or EIP-712 | Enable or disable auto-renewal |
+
+### Toggle auto-renewal via curl
+
+    # Enable auto-renewal
+    curl -X PUT https://api.namefi.io/v-next/domain-config/auto-renew \\
+      -H "x-api-key: YOUR_API_KEY" \\
+      -H "Content-Type: application/json" \\
+      -d '{"normalizedDomainName":"example.com","enableAutoRenew":true}'
+
+    # Disable auto-renewal
+    curl -X PUT https://api.namefi.io/v-next/domain-config/auto-renew \\
+      -H "x-api-key: YOUR_API_KEY" \\
+      -H "Content-Type: application/json" \\
+      -d '{"normalizedDomainName":"example.com","enableAutoRenew":false}'
+
+When auto-renewal is enabled, the domain will be renewed automatically before expiration using the payment methods available on the owner wallet.
 
 ### Record format
 
@@ -208,6 +192,56 @@ Buy a domain or sign in using the MPP payment-challenge flow. The first request 
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json)
 `;
 
+const LLMS_TXT_WALLETS = `
+### Crypto wallet signature (EIP-712)
+  **SDK usage:** The SDK handles EIP-712 envelope signing automatically when configured with \`type: 'API_KEY'\`.
+
+  ### EIP-712 Typed Data Signature (EOA wallets)
+
+  For programmatic use without a stored key, sign each request with your Ethereum wallet.
+  See https://docs.namefi.io/docs/02a-eip712-signing for the manual signing flow.
+
+  Required headers:
+  - \`x-namefi-signer\`: Your wallet address (checksummed)
+  - \`x-namefi-signature\`: Hex-encoded EIP-712 signature (\`0x\`-prefixed)
+  - \`x-namefi-eip712-type\`: The EIP-712 primary type for the operation
+
+  Fetch live EIP-712 metadata from these endpoints (do NOT hardcode types):
+  - \`GET /v-next/eip712/domain\` — signing domain (\`{ name: 'Namefi', version: '1' }\`, chain-agnostic)
+  - \`GET /v-next/eip712/types-for-method?method=<operationId>\` — accepted primary types and type map for a specific operation
+  - \`GET /v-next/eip712/types\` — full EIP-712 type registry
+
+  Every signed request wraps the payload in an envelope:
+
+      {
+        "payloadType": "<PrimaryTypeWithoutEnvelopeSuffix>",
+        "payload": { ... },
+        "timestamp": <unix-seconds>,
+        "nonce": "<unique-random-string>"
+      }
+
+  Signatures expire after 300 seconds. Nonces are single-use.
+
+  ### EIP-712 with Smart Contract Wallets (ERC-1271 / EIP-7702)
+
+  If the domain-owning address is a smart contract (e.g. a multisig or smart account), the contract cannot sign directly. Instead:
+
+  1. An approved EOA signer signs the EIP-712 typed data on behalf of the contract.
+  2. The contract must implement \`approvedSigners(address signer) view returns (bool)\` — the API calls this on-chain to verify delegation.
+  3. Include one of these headers to indicate the delegating contract address:
+     - \`x-namefi-eip7702-account\`: Preferred header for EIP-7702 delegated accounts
+     - \`x-namefi-erc1271-account\`: Preferred header for ERC-1271 smart contract wallets
+     - \`x-namefi-eip1271-account\`: Legacy alias (same behavior as erc1271)
+
+  When multiple delegation headers are present, precedence is: eip7702 > erc1271 > eip1271.
+
+  The API verifies that \`x-namefi-signer\` is an approved signer for the contract address across supported chains, then authenticates the request as the contract (domain owner).
+
+  ### SIWE (Sign-In with Ethereum)
+
+  For protected reads that do not require EIP-712. See https://docs.namefi.io/docs/02b-siwe-authentication
+`;
+
 function serveLlmsTxt(c: {
   text: (
     body: string,
@@ -222,6 +256,13 @@ function serveLlmsTxt(c: {
 }
 
 llmsTxtRouter.get('/', (c) => serveLlmsTxt(c));
+
+llmsTxtRouter.get('/web3', (c) => {
+  return c.text(LLMS_TXT_WALLETS, 200, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'public, max-age=3600',
+  });
+});
 // Also handle trailing-slash requests (/llms.txt/)
 llmsTxtRouter.get('/*', (c) => {
   if (c.req.path.endsWith('/')) return serveLlmsTxt(c);
