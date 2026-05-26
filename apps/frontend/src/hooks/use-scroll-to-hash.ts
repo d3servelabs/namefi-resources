@@ -1,18 +1,27 @@
 import { useEffect } from 'react';
 
+const OBSERVER_TIMEOUT_MS = 5000;
+
 /**
  * Scrolls to `#<id>` after React has hydrated the page.
  *
- * The browser's native hash-scroll runs on initial document load — *before*
- * client-rendered sections (e.g. the homepage newsletter block inside the
- * landing client tree) exist in the DOM — so a fresh hit to `/#newsletter`
- * or a 308 redirect ending in `/#newsletter` typically lands at the top of
- * the page instead of the anchor. Two `requestAnimationFrame` hops let
- * React commit + the first paint settle before we look for the element.
+ * Two phases:
  *
- * Clears the hash after a successful scroll so refreshes don't re-trigger
- * and so other in-page hash logic (e.g. `useSearchModeFromHash`) isn't
- * seeing stale state on later renders.
+ *   1. Deferred RAF attempt — two `requestAnimationFrame` hops let React commit
+ *      and the first paint settle before we look up the element. This handles
+ *      the common case where the browser's native hash-scroll ran on initial
+ *      document load (before client-rendered sections existed).
+ *
+ *   2. MutationObserver fallback — if the element still isn't in the DOM after
+ *      the RAF chain, watch `document.body` for additions and retry on each
+ *      mutation. This covers races with sibling hooks that conditionally hide
+ *      sections (e.g. `useSearchFromQuery` populating search results, which
+ *      temporarily hides `MarketingSections` containing `#newsletter`).
+ *
+ * The observer self-cancels on success and is force-cleaned after a 5s
+ * timeout so we never leak it. Hash is cleared via `replaceState` on a
+ * successful scroll so refreshes don't re-trigger and sibling hooks
+ * (e.g. `useSearchModeFromHash`) aren't seeing stale state on later renders.
  */
 export const useScrollToHash = () => {
   useEffect(() => {
@@ -21,22 +30,45 @@ export const useScrollToHash = () => {
     const id = window.location.hash.slice(1);
     if (!id) return;
 
+    let innerFrame = 0;
     let outerFrame = 0;
-    const innerFrame = requestAnimationFrame(() => {
+    let observer: MutationObserver | null = null;
+    let timeoutId = 0;
+    let done = false;
+
+    const cleanup = () => {
+      if (innerFrame !== 0) cancelAnimationFrame(innerFrame);
+      if (outerFrame !== 0) cancelAnimationFrame(outerFrame);
+      if (observer) observer.disconnect();
+      if (timeoutId !== 0) window.clearTimeout(timeoutId);
+    };
+
+    const tryScroll = (): boolean => {
+      if (done) return true;
+      const el = document.getElementById(id);
+      if (!el) return false;
+
+      done = true;
+      el.scrollIntoView({ block: 'start' });
+
+      const { pathname, search } = window.location;
+      window.history.replaceState(null, '', `${pathname}${search}`);
+      return true;
+    };
+
+    innerFrame = requestAnimationFrame(() => {
       outerFrame = requestAnimationFrame(() => {
-        const el = document.getElementById(id);
-        if (!el) return;
+        if (tryScroll()) return;
 
-        el.scrollIntoView({ block: 'start' });
+        observer = new MutationObserver(() => {
+          if (tryScroll()) cleanup();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
 
-        const { pathname, search } = window.location;
-        window.history.replaceState(null, '', `${pathname}${search}`);
+        timeoutId = window.setTimeout(cleanup, OBSERVER_TIMEOUT_MS);
       });
     });
 
-    return () => {
-      cancelAnimationFrame(innerFrame);
-      if (outerFrame !== 0) cancelAnimationFrame(outerFrame);
-    };
+    return cleanup;
   }, []);
 };
