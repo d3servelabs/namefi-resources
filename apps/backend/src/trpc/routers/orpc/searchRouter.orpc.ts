@@ -57,6 +57,25 @@ const domainAvailabilityInfoSchema = z.object({
   supported: z.boolean(),
 });
 
+// Domain availability info schema (matches DomainAvailabilityInfo type)
+const bulkDomainAvailabilityInfoSchema = z.array(
+  z.object({
+    domain: namefiNormalizedDomainSchema,
+    availability: z.boolean(),
+    pricingDetails: domainPricingDetailsSchema.optional(),
+    currentOwner: z.string().optional(),
+    registrarKey: z.string().optional(),
+    durationValidationInYears: z
+      .object({
+        min: z.number(),
+        max: z.number(),
+      })
+      .optional(),
+    importable: z.boolean(),
+    supported: z.boolean(),
+  }),
+);
+
 // Domain suggestions result schema (matches DomainSuggestionsResult type)
 const domainSuggestionsResultSchema = z.object({
   domains: z.array(namefiNormalizedDomainSchema),
@@ -111,6 +130,50 @@ export const searchRouterOrpc = createTRPCRouter({
         } satisfies DomainAvailabilityInfo;
       }
       return availability[0];
+    }),
+  /**
+   * Check if a domain is available for registration
+   */
+  checkBulkAvailability: authedOrPublicProcedure
+    .meta({
+      route: {
+        path: '/search/bulk-availability',
+        method: 'GET',
+        tags: ['search'],
+        operationId: 'checkBulkAvailability',
+        summary: 'Check bulk domain availability',
+        description:
+          'Check if a list of domains are available for registration. Returns availability status, pricing details, current owner (if any), and registration constraints.',
+      },
+    })
+    .input(
+      z.object({
+        domains: z
+          .array(namefiNormalizedDomainSchema)
+          .describe('The domains to check availability for'),
+      }),
+    )
+    .output(bulkDomainAvailabilityInfoSchema)
+    .query(async ({ input, ctx }) => {
+      const { domains } = input;
+
+      const availability = await getDomainListInfo(domains, ctx.user);
+
+      if (availability.length !== domains.length) {
+        return domains.map(
+          (domain) =>
+            ({
+              domain: domain,
+              availability: false,
+              pricingDetails: undefined,
+              currentOwner: undefined,
+              durationValidationInYears: undefined,
+              importable: false,
+              supported: true,
+            }) satisfies DomainAvailabilityInfo,
+        );
+      }
+      return availability;
     }),
 
   /**

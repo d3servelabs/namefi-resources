@@ -116,6 +116,7 @@ See https://docs.namefi.io/docs/03-getting-started/01-your-first-domain
 
 Key operations:
 - \`GET /v-next/search/availability?domain=example.com\` — check availability
+- \`GET /v-next/search/bulk-availability?domains[]=example.com&domains[]=example2.com\` — check bulk availability
 - \`POST /v-next/orders/register\` — register a domain (EIP-712 signed)
 - \`POST /v-next/orders/register-with-records\` — register with initial DNS records
 - \`GET /v-next/orders/{orderId}\` — poll order status (async processing)
