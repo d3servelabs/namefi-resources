@@ -58,6 +58,7 @@
     "@rarible/sdk-wallet": "^0.13.119",
     "@rarible/types": "^0.10.7",
     "@samyx/drizzler-filters-sorters": "^0.0.5",
+    "@samyx/react-async-hooks": "^0.0.1",
     "@samyx/trpc-utils": "^0.0.2",
     "@stripe/react-stripe-js": "^3.5.1",
     "@stripe/stripe-js": "^6.1.0",

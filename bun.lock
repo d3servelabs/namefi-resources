@@ -219,6 +219,7 @@
         "@rarible/sdk-wallet": "^0.13.119",
         "@rarible/types": "^0.10.7",
         "@samyx/drizzler-filters-sorters": "^0.0.5",
+        "@samyx/react-async-hooks": "^0.0.1",
         "@samyx/trpc-utils": "^0.0.2",
         "@stripe/react-stripe-js": "^3.5.1",
         "@stripe/stripe-js": "^6.1.0",
@@ -2512,6 +2513,8 @@
     "@samyx/drizzler-filters-sorters": ["@samyx/drizzler-filters-sorters@0.0.5", "", { "dependencies": { "date-fns": "^4.1.0", "ramda": "^0.32.0" }, "peerDependencies": { "@standard-schema/spec": "^1.0.0", "drizzle-orm": "^0.44.7", "zod": "^4.1.12" } }, "sha512-CeT2jkJFjIWDqRPUiTNHqQscXZ+PGvvh1xFxDJZbqhTLXjYqRgEAAGc9XhEafh3+24AyyeHw35dh4Mt1JxVBMQ=="],
 
     "@samyx/drizzler-utils": ["@samyx/drizzler-utils@0.0.1", "", { "dependencies": { "type-fest": "^5.1.0" }, "peerDependencies": { "drizzle-orm": "^0.44.7" } }, "sha512-mLtCsvOlxYpNO8MHPBnpWdbSUu4N9pmcoIn2TH8Fym/1oF58QZCeZCVeuSLWjilNNWlRFJvlSYhoS4C1+5ZIrg=="],
+
+    "@samyx/react-async-hooks": ["@samyx/react-async-hooks@0.0.1", "", { "peerDependencies": { "react": ">=16.8.0" } }, "sha512-Ti4rdxOWnw/iMUo9oJ2VlbWRYcg8f4G7gzSQxv+5KyLBblZUDoHD2hHUou3urzxs8C37We9CCPm62mdUE+ECew=="],
 
     "@samyx/trpc-utils": ["@samyx/trpc-utils@0.0.2", "", { "peerDependencies": { "@trpc/client": "^10.0.0 || ^11.0.0", "@trpc/server": "^10.0.0 || ^11.0.0" } }, "sha512-dOTiGrTqUm0oLZz2gYoYZfLQtKDjQNeWv6YmFaJ09R0SCeQ2HXZ8R0japuLSYDsukXnAsOQUkyGE43g2Td1eow=="],
 

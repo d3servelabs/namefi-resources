@@ -1,0 +1,78 @@
+# useRequestWalletConnection
+
+> Imperative React hook + dialog that gates an action on a `[chainId, walletAddress]` combo. The caller `await`s `request(...)`, which resolves once wagmi reports the target wallet *and* target chain as active. Built on `@samyx/react-async-hooks` (`usePromiseCallback`).
+
+Use this instead of the legacy ref-based `<RequestWalletConnection ref={...} onRequestedWalletConnected={...} />` (`./request-wallet-connection.tsx`) when you (a) need to gate on chain in addition to wallet, or (b) prefer an awaitable promise over storing "what to do after connect" in component state. Both files coexist; the legacy one is not deprecated.
+
+## Quick reference
+
+```ts
+import {
+  useRequestWalletConnection,
+  RequestWalletConnectionDialog,
+  bind,
+  type RequestCancelledError,
+} from '@/components/dialogs/use-request-wallet-connection';
+
+const walletDialog = useRequestWalletConnection({
+  actionDescription: 'to sign the listing', // hook-level default
+});
+
+// Gate any async action:
+try {
+  await walletDialog.request({
+    chainId: 1,
+    walletAddress: '0xabc…',
+    actionDescription: 'to sign the listing', // optional per-call override
+  });
+} catch (err) {
+  if ((err as RequestCancelledError).code === 'cancelled') return; // user dismissed
+  throw err;
+}
+await doTheGatedThing(); // wagmi state is guaranteed to match here
+
+// Render once near the root of the consuming component:
+<RequestWalletConnectionDialog {...bind(walletDialog)} />
+```
+
+## Behavior an LLM must not get wrong
+
+- **`request()` resolves only when BOTH match.** `state.activeAddress.toLowerCase() === walletAddress.toLowerCase()` *and* `state.activeChainId === chainId`. Wallet-only is not enough.
+- **Sync short-circuit.** If wagmi already reports both matching when `request()` is called, the promise resolves immediately and the dialog never opens. Do not assume the dialog always renders — it's purely a fallback UI for "user needs to do something."
+- **Cancel rejects with `code: 'cancelled'`.** Internally the library throws `code: 'failed'` via `hasFailedReachingTargetState`; the hook remaps it. Always `try/catch` and silently swallow the cancelled case — don't toast it as an error.
+- **Concurrent calls reject with `code: 'blocked'`.** Configured with `concurrency: 'block'`. A second `request()` while one is in flight does NOT queue or replace — it rejects. Wrap callers in the same try/catch.
+- **`bind(hookData)` is a plain function**, not a hook. It picks the dialog-facing fields off the hook return. Call it inline in JSX: `<RequestWalletConnectionDialog {...bind(walletDialog)} />`. Don't memoize it; the dialog is a small leaf.
+- **One hook instance per consumer.** With `concurrency: 'block'`, sharing one instance across siblings means only one wallet request can be in flight site-wide. If you need parallel gates, call `useRequestWalletConnection()` more than once.
+- **`actionDescription` is layered.** Hook-level default (from options) → per-call override (from the `request()` target). The dialog renders whichever is currently active; both `null` falls back to `'to complete this action'`.
+- **The dialog is presentational.** It owns no state beyond what `bind()` gives it. All effects (connect / set-active / switch-chain) are triggered via the handlers the hook exposes. Don't try to "open" the dialog by mutating its `open` prop directly — call `request()`.
+- **`cancel()` does NOT close the dialog synchronously.** It bumps an internal counter; the failure predicate flips on the next render and the awaited promise rejects; the wrapper's `finally` closes the dialog. ~1 tick later. If you need the dialog gone instantly for some reason, that's a regression — file it.
+- **Wallet flow is staged.** First wallet (connect via Privy `connectWallet`, or set-active for an already-connected wallet), THEN chain switch (wagmi `useSwitchChain`). The dialog renders distinct states for each phase plus a `Wallet → Network` step indicator.
+
+## Why the cancel-counter dance exists
+
+`@samyx/react-async-hooks` v0.0.x does not expose an `AbortController`-based cancel for `usePromiseCallback`. To make `request()` rejectable on user dismiss, we:
+
+1. Keep a `cancelGeneration` counter in component state, mirrored into a ref read by the stable `request` callback.
+2. Snapshot the counter into `capturedCancelGenAtCallTimeRef` *at the start of each `request()` call*, BEFORE `rawRequest` runs (the library's failure predicate runs synchronously before `action`).
+3. `cancel()` bumps the counter. `watchedState` includes the counter, so the failure predicate re-fires and `rawRequest` rejects with `code: 'failed'`. The wrapper remaps it.
+
+When the library ships an AbortController API (see the TODO at the top of the hook), this collapses to: `cancel()` calls `controller.abort()`, the library rejects natively, no counter/ref/remap. Plan to delete that block as soon as it lands.
+
+## Documentation
+
+- [README — @samyx/react-async-hooks](../react-async-hooks/llms.txt): full docs for the underlying `usePromiseCallback`, including the sync short-circuit, concurrency modes, and error-code semantics this hook relies on.
+- [./request-wallet-connection.tsx](./request-wallet-connection.tsx): the legacy ref-based dialog. Wallet-only gating (no chain). Still used by domain panels, API-key dialogs, and a few other callers — do NOT remove it. Migrate one caller at a time when chain gating is genuinely useful.
+
+## Source
+
+- [./use-request-wallet-connection.tsx](./use-request-wallet-connection.tsx): the hook (`useRequestWalletConnection`), the `bind` helper, and the `RequestWalletConnectionDialog` presentational component, all co-located in one file because they share types and have no useful split.
+
+## Example call site
+
+- [../payment-method/payment-methods-manager.tsx](../payment-method/payment-methods-manager.tsx): the "Show in Wallet" and "Add Funds" buttons on each linked-wallet card. This was the original "bad usage" of the legacy API (stored `walletConnectionRequest = { walletAddress, action }` + `setTimeout(..., 100)` + dispatcher callback) and is now the canonical example of the new awaitable shape.
+
+## Notes & gotchas
+
+- **Chain ID source.** Callers pass `chainId` explicitly per call. There is no default. If you have a card that aggregates balances across chains, pick a sensible one (`balances[0]?.chainId ?? 1`) at the call site.
+- **`useSafeConfig`** wraps `wagmi.useConfig` in a `try/catch` so the dialog renders `null` (instead of crashing) when used in Storybook stories that don't provide a wagmi config. Same pattern as `./request-wallet-connection.tsx`.
+- **Unmounting during a pending request** rejects with the library's `code: 'unmounted'`. The wrapper does NOT remap this — callers should treat it as a normal abort, not a user cancellation.

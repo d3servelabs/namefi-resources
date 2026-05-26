@@ -30,14 +30,7 @@ import type { SetupIntent } from '@stripe/stripe-js';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
 import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
-import {
-  Suspense,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
 import { useQueryState, parseAsBoolean } from 'nuqs';
@@ -63,9 +56,11 @@ import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { useActiveWallet } from '@/hooks/use-active-wallet';
 import NfscSwapDialog from '../dialogs/nfsc-swap-dialog';
 import {
-  RequestWalletConnection,
-  type RequestWalletConnectionRef,
-} from '../dialogs/request-wallet-connection';
+  bind,
+  RequestWalletConnectionDialog,
+  useRequestWalletConnection,
+  type RequestCancelledError,
+} from '../dialogs/use-request-wallet-connection';
 import {
   Tooltip,
   TooltipContent,
@@ -413,33 +408,12 @@ function UserWalletCardsGrid(props: {}) {
 
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [isSwapDialogOpen, setIsSwapDialogOpen] = useState(false);
-  const [walletConnectionRequest, setWalletConnectionRequest] = useState<{
-    walletAddress: string;
-    action: 'addAssets' | 'chargeWallet';
-  } | null>(null);
-  const requestWalletConnectionRef = useRef<RequestWalletConnectionRef | null>(
-    null,
-  );
+
+  const walletDialog = useRequestWalletConnection();
 
   const { privyUser } = useAuth();
   const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
   const { switchToWallet, activeWalletAddress } = useActiveWallet();
-
-  // Request wallet connection and set pending action
-  const requestWalletConnection = useCallback(
-    (walletAddress: string, action: 'addAssets' | 'chargeWallet') => {
-      setWalletConnectionRequest({
-        walletAddress,
-        action,
-      });
-      setTimeout(() => {
-        requestWalletConnectionRef.current?.requestWalletConnection(
-          walletAddress,
-        );
-      }, 100);
-    },
-    [],
-  );
 
   const handleAddAssets = useCallback(async () => {
     try {
@@ -460,30 +434,57 @@ function UserWalletCardsGrid(props: {}) {
     }
   }, [watchNfscInWallet]);
 
-  const handleChargeWallet = useCallback(async (walletAddress?: string) => {
-    try {
-      setIsSwapDialogOpen(true);
-    } catch (error) {
-      toast('Failed to switch wallet', {
-        description: error instanceof Error ? error.message : 'Unknown error',
-      });
-    }
+  const handleChargeWallet = useCallback(async () => {
+    setIsSwapDialogOpen(true);
   }, []);
 
-  // Handle when wallet is successfully connected via modal
-  const handleWalletConnected = useCallback(
-    async (walletAddress: string) => {
-      if (!walletConnectionRequest) return;
-
-      // Execute the requested action based on what was requested
-      if (walletConnectionRequest.action === 'addAssets') {
-        await handleAddAssets();
-      } else if (walletConnectionRequest.action === 'chargeWallet') {
-        await handleChargeWallet(walletAddress);
+  const onShowInWalletClicked = useCallback(
+    async (walletAddress: string, chainId: number) => {
+      try {
+        await walletDialog.request({
+          chainId,
+          walletAddress,
+          actionDescription: 'to add NFSC token to your wallet',
+        });
+      } catch (err) {
+        console.log(err);
+        if (
+          err &&
+          typeof err === 'object' &&
+          'code' in err &&
+          (err as RequestCancelledError).code === 'cancelled'
+        ) {
+          return;
+        }
+        throw err;
       }
-      setWalletConnectionRequest(null);
+      await handleAddAssets();
     },
-    [walletConnectionRequest, handleAddAssets, handleChargeWallet],
+    [walletDialog, handleAddAssets],
+  );
+
+  const onAddFundsClicked = useCallback(
+    async (walletAddress: string, chainId: number) => {
+      try {
+        await walletDialog.request({
+          chainId,
+          walletAddress,
+          actionDescription: 'to charge your wallet',
+        });
+      } catch (err) {
+        if (
+          err &&
+          typeof err === 'object' &&
+          'code' in err &&
+          (err as RequestCancelledError).code === 'cancelled'
+        ) {
+          return;
+        }
+        throw err;
+      }
+      await handleChargeWallet();
+    },
+    [walletDialog, handleChargeWallet],
   );
 
   const { chainBalances, isLoadingBalance } = useUserChainBalances({
@@ -584,7 +585,10 @@ function UserWalletCardsGrid(props: {}) {
                     <div className="flex gap-2">
                       <Button
                         onClick={() =>
-                          requestWalletConnection(walletAddress, 'addAssets')
+                          onShowInWalletClicked(
+                            walletAddress,
+                            balances[0]?.chainId ?? 1,
+                          )
                         }
                         size="sm"
                         variant="secondary"
@@ -594,7 +598,10 @@ function UserWalletCardsGrid(props: {}) {
                       </Button>
                       <Button
                         onClick={() =>
-                          requestWalletConnection(walletAddress, 'chargeWallet')
+                          onAddFundsClicked(
+                            walletAddress,
+                            balances[0]?.chainId ?? 1,
+                          )
                         }
                         size="sm"
                         variant="secondary"
@@ -652,7 +659,8 @@ function UserWalletCardsGrid(props: {}) {
     walletToUnlink,
     hoveredCardId,
     handleUnlinkWalletClicked,
-    requestWalletConnection,
+    onShowInWalletClicked,
+    onAddFundsClicked,
   ]);
 
   if (isLoadingBalance || !linkedWalletsReady) {
@@ -684,15 +692,7 @@ function UserWalletCardsGrid(props: {}) {
         onOpenChange={setIsSwapDialogOpen}
         walletAddress={activeWalletAddress}
       />
-      <RequestWalletConnection
-        ref={requestWalletConnectionRef}
-        onRequestedWalletConnected={handleWalletConnected}
-        actionDescription={
-          walletConnectionRequest?.action === 'addAssets'
-            ? 'to add NFSC token to your wallet'
-            : 'to charge your wallet'
-        }
-      />
+      <RequestWalletConnectionDialog {...bind(walletDialog)} />
     </div>
   );
 }
