@@ -6,7 +6,7 @@ tags: ['hiring', 'culture', 'career']
 authors: ['namefiteam']
 draft: false
 type: page
-description: We evaluate candidates on six dimensions — Potential, Resource, Intelligence, Communication, Expertise, and Values. No resume gatekeeping, no pedigree filters — just what you can do and who you are.
+description: We evaluate candidates on six dimensions — Values, Expertise, Communication, Intelligence, Resource, and Potential. No resume gatekeeping, no pedigree filters — just what you can do and who you are.
 ---
 
 We do not filter by resume, school, or pedigree. We evaluate every candidate on six dimensions that actually predict success on our team.
@@ -17,29 +17,11 @@ We do not filter by resume, school, or pedigree. We evaluate every candidate on 
 
 Every candidate — engineer, designer, PM, creator, business developer — is evaluated on the same six pillars. The weight shifts by role, but the dimensions are universal.
 
-### Potential
+### Values
 
-**How fast and how far will you grow?**
+**Do you love what you do and what we do?**
 
-We look at your trajectory — past growth, recent leaps, appetite for learning. We hire for where you are headed, not just where you have been.
-
-### Resource
-
-**How resourceful are you?**
-
-Great people know great people, curate great tools, and spot opportunities. We value the networks, technologies, and unconventional assets you bring to the table.
-
-### Intelligence
-
-**Can you solve problems you have never seen before?**
-
-First-principles thinking, cross-discipline knowledge, and an out-of-the-box mindset. When you hit something new, you dissect it with logic, revisit assumptions, and find creative paths forward.
-
-### Communication
-
-**Can you amplify the team's total intelligence?**
-
-We call it "TCP" communication: listen carefully and ask for clarification, express yourself clearly and ask for confirmation, and always set expectations for the next touchpoint. Quality means clarity, empathy, and being compelling.
+You build, create, and ship even when nobody requires it. You publish your work and welcome contributions. You proactively learn about our vision, product, and people — and on audit projects, you go beyond what we asked. Plus the fundamentals: integrity, kindness, and curiosity.
 
 ### Expertise
 
@@ -47,11 +29,29 @@ We call it "TCP" communication: listen carefully and ask for clarification, expr
 
 Proficiency in the skills and tools the role demands. But expertise is not just what you know today — it is also domain depth that lets you identify and propose problems and solutions we have not thought of yet.
 
-### Values
+### Communication
 
-**Do you love what you do and what we do?**
+**Can you amplify the team's total intelligence?**
 
-You build, create, and ship even when nobody requires it. You publish your work and welcome contributions. You proactively learn about our vision, product, and people — and on audit projects, you go beyond what we asked. Plus the fundamentals: integrity, kindness, and curiosity.
+We call it "TCP" communication: listen carefully and ask for clarification, express yourself clearly and ask for confirmation, and always set expectations for the next touchpoint. Quality means clarity, empathy, and being compelling.
+
+### Intelligence
+
+**Can you solve problems you have never seen before?**
+
+First-principles thinking, cross-discipline knowledge, and an out-of-the-box mindset. When you hit something new, you dissect it with logic, revisit assumptions, and find creative paths forward.
+
+### Resource
+
+**How resourceful are you?**
+
+Great people know great people, curate great tools, and spot opportunities. We value the networks, technologies, and unconventional assets you bring to the table.
+
+### Potential
+
+**How fast and how far will you grow?**
+
+We look at your trajectory — past growth, recent leaps, appetite for learning. We hire for where you are headed, not just where you have been.
 
 ---
 
