@@ -57,7 +57,7 @@ You build, create, and ship even when nobody requires it. You publish your work 
 
 ## What We Offer
 
-- **Competitive pay** with token equity — we pay well and align incentives.
+- **Competitive pay** with equity — we pay well and align incentives. Intern positions are generally unpaid, with exceptions based on circumstance.
 - **Fully remote** — we do not care about where you are or what timezone you are in. Work from anywhere in the world, so long as you are passionate about the work and can join core meetings and schedule time with teammates when needed.
 - **AI-first tooling** — AI agents and the latest generative tools are a core part of how we work, not a side experiment.
 
