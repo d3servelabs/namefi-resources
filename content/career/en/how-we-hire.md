@@ -3,7 +3,7 @@ title: 'How We Hire at Namefi'
 date: '2026-05-26'
 language: en
 tags: ['hiring', 'culture', 'career']
-authors: ['victorzhou']
+authors: ['namefiteam']
 draft: false
 type: page
 description: We evaluate candidates on six dimensions — Potential, Resource, Intelligence, Communication, Expertise, and Values. No resume gatekeeping, no pedigree filters — just what you can do and who you are.

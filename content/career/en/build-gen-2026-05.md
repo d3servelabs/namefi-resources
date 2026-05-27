@@ -3,7 +3,7 @@ title: 'AI Empowered Builder: General Full Stack Engineer'
 date: '2026-05-26'
 language: en
 tags: ['engineering', 'full-stack', 'ai']
-authors: ['victorzhou']
+authors: ['namefiteam']
 draft: false
 type: job
 description: Deliver end-to-end product features across the entire stack, leveraging AI agents and the latest AI tooling to ship faster and smarter.
