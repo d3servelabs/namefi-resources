@@ -14,10 +14,6 @@ location: Remote (Worldwide)
 compensation: Competitive pay with equity
 ---
 
-## About Namefi
-
-Namefi is an ICANN-accredited registrar tokenizing internet domain names for trading, DeFi, and the future of the Internet. We are backed by leading investors including Orange DAO, Google Cloud, AWS, and more. Our engineering is accelerated by AI agents and the latest generative tooling across every layer of the stack.
-
 ## What You Will Do
 
 - Design, build, and ship full-stack features end-to-end — from data modeling to interactive UI — using AI coding agents to accelerate every step.
@@ -40,17 +36,3 @@ Namefi is an ICANN-accredited registrar tokenizing internet domain names for tra
 - Track record of building and shipping personal projects, open source contributions, or side products.
 - Experience building or integrating AI-powered features into production applications.
 - Familiarity with distributed systems, event-driven architecture, or blockchain concepts.
-
-## Compensation and Benefits
-
-- Competitive pay with equity.
-- Fully remote — we do not care about where you are or what timezone you are in, so long as you are passionate about the work and can join core meetings and schedule time with teammates when needed.
-- Work with cutting-edge AI tools and agents as a core part of your job, not a side experiment.
-
-## How to Apply
-
-Send your resume, a link to your GitHub/portfolio, and a brief note about why you are excited about this role to [careers@namefi.io](mailto:careers@namefi.io). We read every application.
-
-## Equal Opportunity
-
-We do not hire based on gender, age, race, ability, or where you come from. We do not restrict schools or prior career paths. We evaluate every candidate on what they can do and who they are — learn more about [how we hire](/r/en/career/how-we-hire).
