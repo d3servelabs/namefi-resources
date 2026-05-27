@@ -2,9 +2,15 @@ import type { MetadataRoute } from 'next';
 import { config } from '@/lib/env';
 
 // Hunt campaign keys to exclude from the sitemap. The campaign pages remain
-// reachable via direct links and existing UI surfaces, but are no longer
-// announced to search engines.
-const SITEMAP_EXCLUDED_CAMPAIGN_KEYS = new Set<string>(['cv-2025-07-16']);
+// reachable via direct links and existing UI surfaces (e.g. PBNS `.cv` and
+// `.today` landing pages), but are no longer announced to search engines.
+// The date suffix in each key (YYYY-MM-DD) is the campaign launch date, not
+// an expiry — both 2025-07-16 campaigns are kept live for in-app surfaces
+// but treated as legacy for crawl/indexing purposes.
+const SITEMAP_EXCLUDED_CAMPAIGN_KEYS = new Set<string>([
+  'cv-2025-07-16',
+  'cta-2025-07-16',
+]);
 
 // Legal / compliance pages (/abuse, /registration-agreement, /tos) are
 // intentionally omitted: they have no organic-search value and consume
