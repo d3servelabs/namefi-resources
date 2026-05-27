@@ -1,5 +1,5 @@
 ---
-title: 'How We Hire at Namefi — The PRICE-V Framework'
+title: 'How We Hire at Namefi'
 date: '2026-05-26'
 language: en
 tags: ['hiring', 'culture', 'career']
@@ -9,45 +9,45 @@ type: page
 description: We evaluate candidates on six dimensions — Potential, Resource, Intelligence, Communication, Expertise, and Values. No resume gatekeeping, no pedigree filters — just what you can do and who you are.
 ---
 
-We do not filter by resume, school, or pedigree. We evaluate every candidate on six dimensions that actually predict success on our team. We call it **PRICE-V**.
+We do not filter by resume, school, or pedigree. We evaluate every candidate on six dimensions that actually predict success on our team.
 
 ---
 
-## The PRICE-V Framework
+## Our Hiring Framework
 
 Every candidate — engineer, designer, PM, creator, business developer — is evaluated on the same six pillars. The weight shifts by role, but the dimensions are universal.
 
-### P — Potential
+### Potential
 
 **How fast and how far will you grow?**
 
 We look at your trajectory — past growth, recent leaps, appetite for learning. We hire for where you are headed, not just where you have been.
 
-### R — Resource
+### Resource
 
 **How resourceful are you?**
 
 Great people know great people, curate great tools, and spot opportunities. We value the networks, technologies, and unconventional assets you bring to the table.
 
-### I — Intelligence
+### Intelligence
 
 **Can you solve problems you have never seen before?**
 
 First-principles thinking, cross-discipline knowledge, and an out-of-the-box mindset. When you hit something new, you dissect it with logic, revisit assumptions, and find creative paths forward.
 
-### C — Communication
+### Communication
 
 **Can you amplify the team's total intelligence?**
 
 We call it "TCP" communication: listen carefully and ask for clarification, express yourself clearly and ask for confirmation, and always set expectations for the next touchpoint. Quality means clarity, empathy, and being compelling.
 
-### E — Expertise
+### Expertise
 
 **Can you be productive from day one on our known problems?**
 
 Proficiency in the skills and tools the role demands. But expertise is not just what you know today — it is also domain depth that lets you identify and propose problems and solutions we have not thought of yet.
 
-### V — Values
+### Values
 
 **Do you love what you do and what we do?**
 
@@ -82,5 +82,5 @@ We require professional fluency in English. A second language of any kind is a p
 1. **Application** — Send your resume, a link to your work (GitHub, portfolio, anything you have built), and a brief note about why you are excited.
 2. **Initial conversation** — A casual video call to get to know each other. We want to understand your story, not grill you on algorithms.
 3. **Audit project** — A take-home or pair-programming project that mirrors real work you would do on the team. We look for people who go beyond what we asked.
-4. **Team interviews** — Meet the people you would work with. We evaluate across all six PRICE-V dimensions.
+4. **Team interviews** — Meet the people you would work with. We evaluate across all six dimensions of our hiring framework.
 5. **Offer** — If it is a mutual fit, we move fast.

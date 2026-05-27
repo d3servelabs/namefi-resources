@@ -53,4 +53,4 @@ Send your resume, a link to your GitHub/portfolio, and a brief note about why yo
 
 ## Equal Opportunity
 
-We do not hire based on gender, age, race, ability, or where you come from. We do not restrict schools or prior career paths. We evaluate every candidate on what they can do and who they are — using our [PRICE-V framework](/r/en/career/how-we-hire).
+We do not hire based on gender, age, race, ability, or where you come from. We do not restrict schools or prior career paths. We evaluate every candidate on what they can do and who they are — learn more about [how we hire](/r/en/career/how-we-hire).
