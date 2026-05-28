@@ -19,7 +19,6 @@
       "!**/.turbo",
       "!**/db/src/migrations",
       "!**/apps/listmonk",
-      "!**/apps/frontend/public/dnsviz",
       "!.claude",
       "!.agents"
     ],

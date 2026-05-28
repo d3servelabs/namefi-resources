@@ -1,448 +1,118 @@
-/**
- * Thin wrapper around the `dnsviz` CLI. Intentionally has no Temporal, DB,
- * or HTTP dependencies so it can be unit-tested in isolation.
- *
- * `dnsviz` reads input from stdin via `-r -` and writes binary output to
- * stdout via `-o -` (verified on macOS local + Debian runtime image).
- */
-
-import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { randomInt } from 'node:crypto';
-import type { Readable } from 'node:stream';
+import { Readable } from 'node:stream';
+import {
+  DoHResolver,
+  RecordingResolver,
+  TYPE,
+  type CapturedEntry,
+  type WalkResult,
+  type WalkStep,
+  walk,
+} from '@namefi/dnssec-audit';
 
-const DEFAULT_BIN = process.env.DNSVIZ_BIN ?? 'dnsviz';
-
-/**
- * Path to a DNSSEC root trust-anchor file (DNSKEY records in zone-file
- * format). When set, passed to `dnsviz grok` and `dnsviz graph` as
- * `-t <file>` so validation chains back to the trusted root key.
- *
- * - In the deployed Docker image: defaults to `/usr/share/dns/root.key`,
- *   provided by Debian's `dns-root-data` package (set via ENV in the
- *   Dockerfile). That package ships the IANA-signed root key and is
- *   updated through normal apt channels when the root key rotates.
- * - For local dev on Homebrew dnsviz: leave unset — the Homebrew formula
- *   bundles a TA at a path dnsviz finds via its own default lookup.
- *
- * Without a trust anchor, `delegation.status` from dnsviz can mislead:
- * it'll say SECURE based on local chain integrity but won't actually
- * have validated up to the root.
- */
-const TRUSTED_KEYS_FILE = process.env.DNSVIZ_TRUSTED_KEYS_FILE;
-
-/**
- * Append `--trusted-keys-file <file>` to the command line. dnsviz overloads
- * the short flag `-t`: it means `--threads` for `probe` but
- * `--trusted-keys-file` for `grok` and `graph`. We use the long form here
- * to remove that ambiguity at the call site.
- */
-function withTrustAnchor(args: string[]): string[] {
-  if (!TRUSTED_KEYS_FILE) return args;
-  return [...args, '--trusted-keys-file', TRUSTED_KEYS_FILE];
-}
+const DNSSEC_AUDIT_VERSION = 1;
+const DEFAULT_QUERY_TYPE = TYPE.A;
 
 export class DnsvizError extends Error {
   constructor(
     message: string,
-    public readonly stderr: string,
-    public readonly exitCode: number | null,
+    public readonly stderr: string = '',
+    public readonly exitCode: number | null = null,
   ) {
     super(message);
     this.name = 'DnsvizError';
   }
 }
 
+interface DnssecAuditPayload {
+  tool: '@namefi/dnssec-audit';
+  version: number;
+  domain: string;
+  qtype: number;
+  resolverUrl: string;
+  capturedAt: string;
+  result: WalkResult;
+  responses: CapturedEntry[];
+}
+
 interface RunOptions {
-  timeoutMs: number;
-  abortSignal?: AbortSignal;
-}
-
-/**
- * Spawn dnsviz with optional stdin and collect stdout/stderr. Used by the
- * one-shot probe/grok callers; the streaming `runDnsvizGraphStream` does its
- * own spawn because it returns a stream rather than an awaited string.
- */
-async function runWithBufferedOutput(
-  args: string[],
-  stdin: string | null,
-  { timeoutMs, abortSignal }: RunOptions,
-): Promise<{ stdout: string; stderr: string }> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(DEFAULT_BIN, args, {
-      stdio: ['pipe', 'pipe', 'pipe'],
-    });
-
-    let stdout = '';
-    let stderr = '';
-    let settled = false;
-
-    const settle = (fn: () => void) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      abortSignal?.removeEventListener('abort', onAbort);
-      fn();
-    };
-
-    const timer = setTimeout(() => {
-      child.kill('SIGKILL');
-      settle(() =>
-        reject(
-          new DnsvizError(
-            `dnsviz timed out after ${timeoutMs}ms (${args.join(' ')})`,
-            stderr,
-            null,
-          ),
-        ),
-      );
-    }, timeoutMs);
-
-    const onAbort = () => {
-      child.kill('SIGTERM');
-      settle(() => reject(new DnsvizError('dnsviz aborted', stderr, null)));
-    };
-    abortSignal?.addEventListener('abort', onAbort, { once: true });
-
-    child.stdout.setEncoding('utf8');
-    child.stderr.setEncoding('utf8');
-    child.stdout.on('data', (d: string) => {
-      stdout += d;
-    });
-    child.stderr.on('data', (d: string) => {
-      stderr += d;
-    });
-
-    child.on('error', (err) => {
-      settle(() =>
-        reject(
-          new DnsvizError(
-            `failed to spawn dnsviz: ${err.message}`,
-            stderr,
-            null,
-          ),
-        ),
-      );
-    });
-
-    child.on('close', (code) => {
-      settle(() => {
-        if (code === 0) {
-          resolve({ stdout, stderr });
-          return;
-        }
-        reject(
-          new DnsvizError(
-            `dnsviz exited with code ${code} (${args.join(' ')})`,
-            stderr,
-            code,
-          ),
-        );
-      });
-    });
-
-    if (stdin !== null) {
-      child.stdin.write(stdin);
-    }
-    child.stdin.end();
-  });
-}
-
-export interface RunDnsvizProbeOptions {
   timeoutMs?: number;
-  threads?: number;
   abortSignal?: AbortSignal;
 }
 
-/**
- * Run `dnsviz probe -t <threads> <domain>` and return the parsed JSON
- * (the diagnostic queries blob that `grok` and `graph` consume).
- */
+export interface RunDnsvizProbeOptions extends RunOptions {
+  threads?: number;
+}
+
 export async function runDnsvizProbe(
   domain: string,
   config: { index?: number; opts?: RunDnsvizProbeOptions } = {},
 ): Promise<unknown> {
   const { opts = {}, index } = config;
+  const resolverUrl = pickResolverUrl(index);
+  const resolver = new RecordingResolver(new DoHResolver(resolverUrl));
+  const normalizedDomain = ensureTrailingDot(domain);
 
-  const dnsResolvers = [
-    //Google
-    '8.8.8.8,8.8.4.4',
+  const result = await withTimeout(
+    () => walk(normalizedDomain, DEFAULT_QUERY_TYPE, resolver),
+    {
+      timeoutMs: opts.timeoutMs ?? 120_000,
+      abortSignal: opts.abortSignal,
+      label: `DNSSEC audit timed out for ${domain}`,
+    },
+  );
 
-    //Quad9
-    '9.9.9.9,149.112.112.112',
-
-    '9.9.9.10,149.112.112.10',
-
-    '9.9.9.11,149.112.112.11',
-
-    //Cloudflare
-    '1.1.1.1,1.0.0.1',
-
-    '1.1.1.2,1.0.0.2',
-
-    '1.1.1.3,1.0.0.3',
-
-    //OpenDNS
-    '208.67.222.222,208.67.220.220',
-    '208.67.222.123,208.67.220.123',
-
-    // //AdGuard
-    // '94.140.14.14,94.140.15.15',
-    // '94.140.14.15,94.140.15.16',
-
-    // //MullvadDns
-    // '194.242.2.2,193.19.108.2',
-    //NextDns
-    '45.90.28.0,45.90.30.0',
-  ];
-  const serverIdx =
-    (index ?? randomInt(0, dnsResolvers.length)) % dnsResolvers.length;
-
-  const args = [
-    'probe',
-    '-s',
-    dnsResolvers[serverIdx],
-    '--rr-types',
-    'A,AAAA,TXT,PTR,MX,NS,SOA,CNAME,CAA', //'SRV,NAPTR,TLSA,NSEC3PARAM,CDNSKEY,CDS',
-    '--threads',
-    String(opts.threads ?? 1),
-    domain,
-  ];
-  const { stdout } = await runWithBufferedOutput(args, null, {
-    timeoutMs: opts.timeoutMs ?? 120_000,
-    abortSignal: opts.abortSignal,
-  });
-  return parseJsonOrThrow(stdout, 'probe');
+  return {
+    tool: '@namefi/dnssec-audit',
+    version: DNSSEC_AUDIT_VERSION,
+    domain: normalizedDomain,
+    qtype: DEFAULT_QUERY_TYPE,
+    resolverUrl,
+    capturedAt: new Date().toISOString(),
+    result,
+    responses: resolver.entries,
+  } satisfies DnssecAuditPayload;
 }
 
-export interface RunDnsvizGrokOptions {
-  timeoutMs?: number;
-  abortSignal?: AbortSignal;
-  /** dnsviz log level; defaults to 'info' which yields warnings + errors. */
+export interface RunDnsvizGrokOptions extends RunOptions {
   logLevel?: 'error' | 'warning' | 'info';
 }
 
-/**
- * Run `dnsviz grok -l info -c -r -` against a probe JSON and return the
- * parsed (minimized) assessment JSON.
- *
- * `-c` (minimize-output) keeps the JSON compact, which keeps the row size
- * in the dnsviz_analyses jsonb column small.
- */
 export async function runDnsvizGrok(
   probeJson: unknown,
   opts: RunDnsvizGrokOptions = {},
 ): Promise<unknown> {
-  const args = withTrustAnchor([
-    'grok',
-    '-l',
-    opts.logLevel ?? 'info',
-    '-c',
-    '-r',
-    '-',
-  ]);
-  const { stdout } = await runWithBufferedOutput(
-    args,
-    JSON.stringify(probeJson),
-    {
-      timeoutMs: opts.timeoutMs ?? 30_000,
-      abortSignal: opts.abortSignal,
-    },
-  );
-  return parseJsonOrThrow(stdout, 'grok');
+  return await withTimeout(async () => validateAuditPayload(probeJson), {
+    timeoutMs: opts.timeoutMs ?? 30_000,
+    abortSignal: opts.abortSignal,
+    label: 'DNSSEC audit result validation timed out',
+  });
 }
 
-export type DnsvizGraphType = 'png' | 'svg' | 'html';
+export type DnsvizGraphType = 'svg' | 'html';
 
 export interface RunDnsvizGraphStreamOptions {
   timeoutMs?: number;
 }
 
-/**
- * Spawn `dnsviz graph -T <type> -r - -o -`, feed `probeJson` to stdin,
- * and return the child's stdout as a Node `Readable`. The caller is
- * responsible for piping/consuming the stream; the child is killed if the
- * timeout elapses before stdout closes.
- *
- * `type='html'` returns a self-contained XHTML document with embedded SVG
- * — dnsviz uses this for its interactive web viewer; the bytes are text
- * but we still treat the channel as binary so the encoding stays untouched.
- *
- * Returns the stream synchronously (not a Promise) so the HTTP layer can
- * stream the bytes through to the client without buffering the whole image.
- */
 export function runDnsvizGraphStream(
   probeJson: unknown,
   format: DnsvizGraphType,
-  opts: RunDnsvizGraphStreamOptions = {},
+  _opts: RunDnsvizGraphStreamOptions = {},
 ): Readable {
-  const timeoutMs = opts.timeoutMs ?? 30_000;
-  const args = withTrustAnchor(['graph', '-T', format, '-r', '-', '-o', '-']);
-  const child: ChildProcessWithoutNullStreams = spawn(DEFAULT_BIN, args, {
-    stdio: ['pipe', 'pipe', 'pipe'],
-  });
-
-  const timer = setTimeout(() => {
-    child.kill('SIGKILL');
-  }, timeoutMs);
-  child.on('close', () => clearTimeout(timer));
-
-  // Surface stderr/spawn errors on the returned stream so consumers see them.
-  let stderr = '';
-  child.stderr.setEncoding('utf8');
-  child.stderr.on('data', (d: string) => {
-    stderr += d;
-  });
-  child.on('error', (err) => {
-    child.stdout.destroy(
-      new DnsvizError(
-        `failed to spawn dnsviz graph: ${err.message}`,
-        stderr,
-        null,
-      ),
-    );
-  });
-  child.on('close', (code) => {
-    if (code !== 0) {
-      child.stdout.destroy(
-        new DnsvizError(`dnsviz graph exited with code ${code}`, stderr, code),
-      );
-    }
-  });
-
-  child.stdin.write(JSON.stringify(probeJson));
-  child.stdin.end();
-
-  return child.stdout;
+  return Readable.from([renderAuditGraph(probeJson, format)]);
 }
 
-/**
- * Buffered variant of `runDnsvizGraphStream` for callers that need the
- * complete output before sending (e.g. a tRPC procedure that returns
- * base64). For html the buffered output is also post-processed by
- * `rewriteDnsvizHtmlAssets` so the doc loads correctly in an iframe;
- * streaming + html would ship a doc with broken `file://` refs, so use
- * this buffered call for html.
- */
 export async function runDnsvizGraphBuffered(
   probeJson: unknown,
   type: DnsvizGraphType,
-  opts: RunDnsvizGraphStreamOptions = {},
+  _opts: RunDnsvizGraphStreamOptions = {},
 ): Promise<Buffer> {
-  const stream = runDnsvizGraphStream(probeJson, type, opts);
-  const chunks: Array<Uint8Array<ArrayBuffer>> = [];
-  let byteLength = 0;
-  for await (const c of stream) {
-    const buffer = Buffer.from(c);
-    const chunk = new Uint8Array(buffer.byteLength);
-    chunk.set(buffer);
-    chunks.push(chunk);
-    byteLength += chunk.byteLength;
-  }
-  const raw = Buffer.allocUnsafe(byteLength);
-  let offset = 0;
-  for (const chunk of chunks) {
-    raw.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-  if (type !== 'html') return raw;
-  const rewritten = rewriteDnsvizHtmlAssets(raw.toString('utf8'));
-  return Buffer.from(rewritten, 'utf8');
-}
-
-/**
- * dnsviz's HTML output hard-codes absolute `file://` paths to its CSS, JS,
- * and the bundled jQuery/jQuery-UI/Raphael libraries — those paths can't
- * be loaded by a browser embedding the doc in an iframe (or by anyone
- * downloading the file). This rewriter swaps each known `file://` ref for
- * a same-origin URL on our `raw.githubusercontent.com` proxy
- * (`apps/backend/src/routers/raw-github-proxy.ts`), which fetches the
- * dnsviz v0.11.1 release file from GitHub and rewrites the Content-Type
- * (GitHub serves everything as `text/plain` + `nosniff`, which the
- * browser refuses to apply as CSS or run as JS).
- *
- * Mapping (Debian apt path → dnsviz v0.11.1 file path inside the repo):
- *
- *   /usr/share/javascript/jquery-ui-themes/redmond/jquery-ui.css
- *     → external/jquery-ui/jquery-ui-1.11.4.custom.min.css
- *   /usr/share/dnsviz/css/dnsviz.css
- *     → share/css/dnsviz.css
- *   /usr/share/javascript/jquery/jquery.min.js
- *     → external/jquery/jquery-1.11.3.min.js
- *   /usr/share/javascript/jquery-ui/jquery-ui.min.js
- *     → external/jquery-ui/jquery-ui-1.11.4.custom.min.js
- *   /usr/share/javascript/raphael/raphael.min.js
- *     → external/raphael/raphael-min.js
- *   /usr/share/dnsviz/js/dnsviz.js
- *     → share/js/dnsviz.js
- *
- * Matched by path-suffix so the same table works on Debian
- * (`/usr/share/...`) and Homebrew (`/opt/homebrew/.../share/dnsviz/...`)
- * without per-distro branching.
- */
-const DNSVIZ_PROXY_BASE =
-  '/proxy/raw.githubusercontent.com/dnsviz/dnsviz/refs/tags/v0.11.1';
-
-const DNSVIZ_ASSET_URL_MAP: ReadonlyArray<{
-  /** Path suffix used to recognise the asset across distros. */
-  suffix: string;
-  /** Same-origin proxy URL serving the same file (dnsviz v0.11.1). */
-  url: string;
-}> = [
-  {
-    suffix: '/dnsviz/css/dnsviz.css',
-    // url: `${DNSVIZ_PROXY_BASE}/share/css/dnsviz.css`,
-    url: `${process.env.DNSVIZ_NFI_BASEURL ?? ''}/dnsviz/v0.11.1/dnsviz.css`,
-  },
-  {
-    suffix: '/dnsviz/js/dnsviz.js',
-    // url: `${DNSVIZ_PROXY_BASE}/share/js/dnsviz.js`,
-    url: `${process.env.DNSVIZ_NFI_BASEURL ?? ''}/dnsviz/v0.11.1/dnsviz.js`,
-  },
-  {
-    suffix: '/jquery-ui-themes/redmond/jquery-ui.css',
-    // url: `${DNSVIZ_PROXY_BASE}/external/jquery-ui/jquery-ui-1.11.4.custom.min.css`,
-    url: 'https://code.jquery.com/ui/1.11.4/themes/redmond/jquery-ui.css',
-  },
-  {
-    suffix: '/jquery/jquery.min.js',
-    // url: `${DNSVIZ_PROXY_BASE}/external/jquery/jquery-1.11.3.min.js`,
-    url: 'https://code.jquery.com/jquery-1.11.3.min.js',
-  },
-  {
-    suffix: '/jquery-ui/jquery-ui.min.js',
-    // url: `${DNSVIZ_PROXY_BASE}/external/jquery-ui/jquery-ui-1.11.4.custom.min.js`,
-    url: 'https://code.jquery.com/ui/1.11.4/jquery-ui.min.js',
-  },
-  {
-    suffix: '/raphael/raphael.min.js',
-    // url: `${DNSVIZ_PROXY_BASE}/external/raphael/raphael-min.js`,
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js',
-  },
-];
-
-function urlForFilePath(filePath: string): string | null {
-  for (const { suffix, url } of DNSVIZ_ASSET_URL_MAP) {
-    if (filePath.endsWith(suffix)) return url;
-  }
-  return null;
-}
-
-function rewriteDnsvizHtmlAssets(html: string): string {
-  // Match every `file://...` reference (single or double-quoted) and, if
-  // the path matches a known dnsviz asset, swap it for the public URL.
-  // Anything that doesn't match the asset map is left alone so we don't
-  // accidentally rewrite unrelated `file://` references that might appear
-  // in the doc.
-  return html.replace(/(["'])file:\/\/([^"']+)\1/g, (orig, quote, path) => {
-    const url = urlForFilePath(path);
-    return url ? `${quote}${url}${quote}` : orig;
-  });
+  return Buffer.from(renderAuditGraph(probeJson, type), 'utf8');
 }
 
 export function dnsvizGraphContentType(type: DnsvizGraphType): string {
   switch (type) {
-    case 'png':
-      return 'image/png';
     case 'svg':
       return 'image/svg+xml';
     case 'html':
@@ -450,14 +120,184 @@ export function dnsvizGraphContentType(type: DnsvizGraphType): string {
   }
 }
 
-function parseJsonOrThrow(text: string, stage: 'probe' | 'grok'): unknown {
-  try {
-    return JSON.parse(text);
-  } catch (err) {
-    throw new DnsvizError(
-      `failed to parse ${stage} JSON: ${(err as Error).message}`,
-      text.slice(0, 500),
-      0,
-    );
+function pickResolverUrl(index: number | undefined): string {
+  const resolvers = [
+    'https://cloudflare-dns.com/dns-query',
+    'https://dns.google/dns-query',
+    'https://dns.quad9.net/dns-query',
+  ];
+  const serverIdx =
+    (index ?? randomInt(0, resolvers.length)) % resolvers.length;
+  return resolvers[serverIdx];
+}
+
+async function withTimeout<T>(
+  fn: () => Promise<T>,
+  options: { timeoutMs: number; abortSignal?: AbortSignal; label: string },
+): Promise<T> {
+  if (options.abortSignal?.aborted) {
+    throw new DnsvizError('DNSSEC audit aborted');
   }
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let abortListener: (() => void) | undefined;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(
+      () => reject(new DnsvizError(options.label)),
+      options.timeoutMs,
+    );
+    abortListener = () => reject(new DnsvizError('DNSSEC audit aborted'));
+    options.abortSignal?.addEventListener('abort', abortListener, {
+      once: true,
+    });
+  });
+
+  try {
+    return await Promise.race([fn(), timeoutPromise]);
+  } finally {
+    if (timer) clearTimeout(timer);
+    if (abortListener) {
+      options.abortSignal?.removeEventListener('abort', abortListener);
+    }
+  }
+}
+
+function validateAuditPayload(input: unknown): DnssecAuditPayload {
+  if (!isRecord(input)) {
+    throw new DnsvizError('DNSSEC audit payload is not an object');
+  }
+  const result = input.result;
+  if (!isRecord(result) || typeof result.verdict !== 'string') {
+    throw new DnsvizError('DNSSEC audit payload is missing a result verdict');
+  }
+  return input as unknown as DnssecAuditPayload;
+}
+
+function renderAuditGraph(input: unknown, type: DnsvizGraphType): string {
+  const payload = validateAuditPayload(input);
+  const svg = renderSvg(payload);
+  if (type === 'svg') return svg;
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(payload.domain)} DNSSEC audit</title>
+  <style>
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f8fafc; color: #172033; }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    svg { width: 100%; height: auto; display: block; border: 1px solid #d7dde7; border-radius: 8px; background: white; }
+    ol { padding-left: 24px; }
+    li { margin: 10px 0; }
+    code { background: #eef2f7; border-radius: 4px; padding: 2px 4px; }
+  </style>
+</head>
+<body>
+  <main>
+    ${svg}
+    <h2>Audit steps</h2>
+    <ol>
+      ${payload.result.steps
+        .map(
+          (step) =>
+            `<li><strong>${escapeHtml(step.kind)}</strong> ${escapeHtml(step.zone ?? step.qname ?? '')}<br />${escapeHtml(step.detail)}</li>`,
+        )
+        .join('\n      ')}
+    </ol>
+  </main>
+</body>
+</html>`;
+}
+
+function renderSvg(payload: DnssecAuditPayload): string {
+  const result = payload.result;
+  const steps = result.steps.length > 0 ? result.steps : [fallbackStep(result)];
+  const width = 1000;
+  const rowHeight = 64;
+  const height = 174 + steps.length * rowHeight;
+  const verdict = result.verdict;
+  const color = colorForVerdict(verdict);
+
+  const rows = steps
+    .map((step, index) => {
+      const y = 132 + index * rowHeight;
+      const stateColor = step.ok ? '#166534' : '#b42318';
+      const label = step.zone ?? step.qname ?? payload.domain;
+      return `
+  <g transform="translate(32 ${y})">
+    <circle cx="16" cy="16" r="12" fill="${stateColor}" />
+    <text x="40" y="10" fill="#172033" font-size="16" font-weight="700">${escapeXml(step.kind)} ${escapeXml(label)}</text>
+    <text x="40" y="34" fill="#475467" font-size="13">${escapeXml(truncate(step.detail, 128))}</text>
+  </g>`;
+    })
+    .join('');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="DNSSEC audit graph for ${escapeXml(payload.domain)}">
+  <rect width="${width}" height="${height}" fill="#f8fafc" />
+  <rect x="24" y="24" width="${width - 48}" height="84" rx="8" fill="#ffffff" stroke="#d7dde7" />
+  <text x="44" y="58" fill="#172033" font-size="24" font-weight="700">${escapeXml(payload.domain)}</text>
+  <text x="44" y="84" fill="#475467" font-size="14">DNSSEC audit generated from @namefi/dnssec-audit</text>
+  <rect x="${width - 260}" y="44" width="216" height="36" rx="18" fill="${color}" />
+  <text x="${width - 152}" y="67" fill="#ffffff" font-size="14" font-weight="700" text-anchor="middle">${escapeXml(verdict)}</text>
+${rows}
+</svg>`;
+}
+
+function fallbackStep(result: WalkResult): WalkStep {
+  return {
+    kind: 'note',
+    ok: result.verdict !== 'bogus',
+    detail: result.detail,
+    qname: result.qname,
+  };
+}
+
+function colorForVerdict(verdict: WalkResult['verdict']): string {
+  switch (verdict) {
+    case 'secure-positive':
+    case 'secure-nodata':
+    case 'secure-nxdomain':
+      return '#15803d';
+    case 'insecure':
+      return '#667085';
+    case 'bogus':
+      return '#b42318';
+  }
+}
+
+function ensureTrailingDot(domain: string): string {
+  const trimmed = domain.trim().toLowerCase();
+  return trimmed.endsWith('.') ? trimmed : `${trimmed}.`;
+}
+
+function truncate(input: string, maxLength: number): string {
+  if (input.length <= maxLength) return input;
+  return `${input.slice(0, maxLength - 3)}...`;
+}
+
+function escapeHtml(input: string): string {
+  return escapeXml(input);
+}
+
+function escapeXml(input: string): string {
+  return input.replace(/[&<>"']/g, (ch) => {
+    switch (ch) {
+      case '&':
+        return '&amp;';
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '"':
+        return '&quot;';
+      case "'":
+        return '&#39;';
+      default:
+        return ch;
+    }
+  });
+}
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v);
 }

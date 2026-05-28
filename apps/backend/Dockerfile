@@ -18,11 +18,8 @@ ARG BASE_IMAGE=node:jod-bullseye-slim
 ENV NODE_ENV=production
 ENV ENVIRONMENT=production
 
-# `dns-root-data` is the Debian-maintained IANA root trust anchor —
-# `/usr/share/dns/root.key` (DNSKEY in zone-file format).
 RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
         apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils dns-root-data; \
-        apt-get install -y dnsviz; \
         rm -rf /var/lib/apt/lists/*; \
     else \
         echo "USING CACHED IMAGE"; \

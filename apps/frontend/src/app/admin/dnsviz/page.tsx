@@ -520,7 +520,7 @@ function DnsvizAnalysesPanel() {
         <CardTitle>DNSViz Analyses</CardTitle>
         <p className="text-xs text-muted-foreground">
           Per-domain DNSSEC verdict + reasoning. Open the graph for any row to
-          see the chain-of-trust diagram, or download as PNG / SVG / HTML.
+          see the chain-of-trust diagram, or download as SVG / HTML.
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -1063,11 +1063,6 @@ function RowActions({
             <DropdownMenuLabel>Graph</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => downloadGraph.run({ id: row.id, type: 'png' })}
-            >
-              PNG (raster)
-            </DropdownMenuItem>
-            <DropdownMenuItem
               onClick={() => downloadGraph.run({ id: row.id, type: 'svg' })}
             >
               SVG (vector)
@@ -1121,15 +1116,14 @@ function GraphPreviewDialog({
   const trpc = useTRPC();
   const open = target !== null;
 
-  // Render the interactive XHTML viewer — same output as the "HTML" download
-  // option, embedded SVG with hover/click interactions for the chain of trust.
+  // Render the generated HTML viewer from the stored audit artifact.
   const query = useQuery(
     trpc.admin.dnsviz.getAnalysisGraph.queryOptions(
       target ? { id: target.id, type: 'html' } : { id: '', type: 'html' },
       {
         enabled: open,
-        // Cache rendered graphs briefly so reopening the same row doesn't
-        // re-spawn `dnsviz graph`.
+        // Cache rendered graphs briefly so reopening the same row does not
+        // regenerate the same HTML.
         staleTime: 60_000,
       },
     ),
@@ -1145,14 +1139,14 @@ function GraphPreviewDialog({
       <DialogContent className="!max-w-[85vw] !min-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {target?.domainName ?? 'DNSViz graph'}{' '}
+            {target?.domainName ?? 'DNSSEC graph'}{' '}
             <span className="font-mono text-xs text-muted-foreground">
               {target?.analysisDate}
             </span>
           </DialogTitle>
           <DialogDescription>
-            Chain-of-trust diagram rendered by <code>dnsviz graph</code> from
-            the stored probe blob — hover the nodes for details.
+            Temporary chain-of-trust diagram rendered from the stored DNSSEC
+            audit artifact.
           </DialogDescription>
         </DialogHeader>
         <div className="flex min-h-[400px] items-center justify-center rounded border bg-muted/30">
@@ -1168,12 +1162,9 @@ function GraphPreviewDialog({
             </div>
           ) : html ? (
             <iframe
-              // `srcDoc` keeps the doc inline (no Blob URL lifecycle) and
-              // works with the trusted dnsviz-generated XHTML. Sandbox
-              // allow-scripts because the viewer's tooltips are JS-driven.
               srcDoc={html}
-              title={`DNSViz graph for ${target?.domainName ?? ''}`}
-              sandbox="allow-scripts"
+              title={`DNSSEC graph for ${target?.domainName ?? ''}`}
+              sandbox=""
               className="h-[70vh] w-full rounded bg-white"
             />
           ) : null}
@@ -1476,7 +1467,7 @@ function useGraphDownload() {
 }
 
 /**
- * Per-row Download → "probe.json" / "grok.json" handler. Fetches the
+ * Per-row Download -> "probe.json" / "grok.json" handler. Fetches the
  * stored jsonb blob via tRPC, wraps the (already pretty-printed) string in
  * a Blob, and triggers the browser's native download via a hidden `<a>`.
  */
@@ -1527,7 +1518,7 @@ function base64ToBlob(base64: string, contentType: string): Blob {
 
 /**
  * Decode a base64 payload to a UTF-8 string. `atob` returns binary bytes; for
- * text payloads (XHTML from dnsviz) we route through `TextDecoder` so
+ * text payloads we route through `TextDecoder` so
  * non-ASCII content survives.
  */
 function base64ToUtf8(base64: string): string {

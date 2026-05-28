@@ -1,17 +1,16 @@
 /**
- * Admin endpoint that streams a chain-of-trust diagram (PNG, SVG, or HTML)
- * for a stored dnsviz analysis. Auth: matches the existing diagnostic-route
+ * Admin endpoint that streams a chain-of-trust diagram (SVG or HTML)
+ * for a stored DNSSEC analysis. Auth: matches the existing diagnostic-route
  * convention (`x-namefi-key` / `?key=` checked against `secrets.API_AUTH_KEY`),
  * same as `apps/backend/src/routers/log-level.ts`.
  *
- *   GET /v1/dnsviz/analysis/:analysisId/graph?type=png|svg|html
+ *   GET /v1/dnsviz/analysis/:analysisId/graph?type=svg|html
  *
  *   `type` is the preferred query param; `format` is accepted as an alias
  *   for backwards compatibility.
  *
- * The probe.json blob persists in the `dnsviz_analyses` jsonb column; we
- * pipe it through `dnsviz graph -T <type> -r - -o -` and stream the bytes
- * straight to the client.
+ * The audit artifact persists in the `dnsviz_analyses` jsonb column; this
+ * route renders a temporary graph from that stored JSON.
  */
 
 import { Readable } from 'node:stream';
@@ -52,12 +51,12 @@ dnsvizRouter.get('/analysis/:analysisId/graph', async (c) => {
   const rawType = (
     c.req.query('type') ??
     c.req.query('format') ??
-    'png'
+    'svg'
   ).toLowerCase();
-  if (rawType !== 'png' && rawType !== 'svg' && rawType !== 'html') {
+  if (rawType !== 'svg' && rawType !== 'html') {
     return c.json(
       {
-        error: 'Unsupported type. Use ?type=png, ?type=svg, or ?type=html',
+        error: 'Unsupported type. Use ?type=svg or ?type=html',
       },
       400,
     );
@@ -85,15 +84,8 @@ dnsvizRouter.get('/analysis/:analysisId/graph', async (c) => {
     'x-dnsviz-status': row.status,
   };
 
-  // For html we MUST go through the buffered path because that's where the
-  // file:// asset inliner / GitHub-fallback rewriter runs — streaming would
-  // ship a doc with broken `file://` refs the browser can't load. PNG and
-  // SVG are pure binary output with no asset rewriting needed, so we keep
-  // the streaming path for them (faster TTFB, no in-memory buffering).
   if (type === 'html') {
     const buffer = await runDnsvizGraphBuffered(row.probeData, type);
-    // dnsviz html output is UTF-8 text — send as a string so the
-    // `Response` body is `BodyInit`-compatible (Buffer isn't directly).
     return new Response(buffer.toString('utf8'), { status: 200, headers });
   }
 

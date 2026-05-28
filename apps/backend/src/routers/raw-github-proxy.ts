@@ -7,10 +7,6 @@
  * as a script module. This proxy streams the upstream bytes unchanged and
  * overrides the Content-Type based on the file extension.
  *
- * Today the only consumer is the dnsviz HTML graph output (see
- * `apps/backend/src/lib/dnsviz/runner.ts`), which embeds <link>/<script>
- * tags that point at dnsviz's own CSS/JS plus a few bundled vendor libs.
- *
  * The route is unauthenticated and effectively a public CORS-friendly
  * mirror, so the allowlist is intentionally tight — only repos we ship UI
  * assets from belong here.
@@ -28,10 +24,7 @@ const RAW_GITHUB_HOST = 'raw.githubusercontent.com';
  *  without having to keep the prefix in sync in two places. */
 export const RAW_GITHUB_PROXY_MOUNT = `/proxy/${RAW_GITHUB_HOST}`;
 
-const ALLOWED_REPOS: ReadonlySet<string> = new Set([
-  // dnsviz HTML output references its own CSS/JS plus bundled vendor libs.
-  'dnsviz/dnsviz',
-]);
+const ALLOWED_REPOS: ReadonlySet<string> = new Set();
 
 const EXT_TO_MIME: Record<string, string> = {
   css: 'text/css; charset=utf-8',

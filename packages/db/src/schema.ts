@@ -1277,7 +1277,7 @@ export type DnsvizAnalysisSummary = {
  *
  * `probe_data` and `grok_data` hold the raw dnsviz JSON outputs as jsonb;
  * `probe_data` is required by the `/v1/dnsviz/analyses/:id/graph` endpoint
- * which streams it through `dnsviz graph`.
+ * which renders a temporary chain-of-trust visualization.
  */
 export const dnsvizAnalysesTable = pgTable(
   'dnsviz_analyses',

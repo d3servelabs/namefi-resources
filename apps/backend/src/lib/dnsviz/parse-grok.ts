@@ -15,6 +15,7 @@ import type {
   DnsvizAnalysisStatus,
   DnsvizAnalysisSummary,
 } from '@namefi-astra/db/schema';
+import type { WalkResult, WalkStep } from '@namefi/dnssec-audit';
 
 const MAX_TOP_MESSAGES = 3;
 
@@ -67,6 +68,11 @@ export function deriveDnsvizStatus(
     return errorResult('grok output is not an object', {});
   }
 
+  const auditResult = getDnssecAuditResult(grok);
+  if (auditResult) {
+    return deriveDnssecAuditStatus(auditResult);
+  }
+
   const leafKey = `${normalizedDomain.toLowerCase()}.`;
   const parentChainStatuses = extractParentChainStatuses(grok);
 
@@ -109,6 +115,67 @@ export function deriveDnsvizStatus(
 
   const status = mapDelegationStatusToEnum(delegationStatus);
   return { status, errorsCount, warningsCount, summary };
+}
+
+function deriveDnssecAuditStatus(result: WalkResult): DeriveResult {
+  const failedSteps = result.steps.filter((step) => !step.ok);
+  const topErrors =
+    failedSteps.length > 0
+      ? failedSteps.slice(0, MAX_TOP_MESSAGES).map(formatAuditStep)
+      : result.verdict === 'bogus'
+        ? [result.detail]
+        : [];
+
+  const parentChainStatuses: Record<string, string> = {};
+  for (const step of result.steps) {
+    if (!step.zone) continue;
+    parentChainStatuses[step.zone] = step.ok ? 'SECURE' : 'BOGUS';
+  }
+
+  return {
+    status: mapAuditVerdictToEnum(result.verdict),
+    errorsCount: failedSteps.length,
+    warningsCount: 0,
+    summary: {
+      delegationStatus: mapAuditVerdictToDelegationStatus(result.verdict),
+      zoneStatus: result.verdict,
+      parentChainStatuses,
+      topErrors,
+      topWarnings: [],
+      ignoredErrorsCount: 0,
+      ignoredWarningsCount: 0,
+    },
+  };
+}
+
+function mapAuditVerdictToEnum(
+  verdict: WalkResult['verdict'],
+): DnsvizAnalysisStatus {
+  switch (verdict) {
+    case 'secure-positive':
+    case 'secure-nodata':
+    case 'secure-nxdomain':
+      return 'SECURE';
+    case 'insecure':
+      return 'INSECURE';
+    case 'bogus':
+      return 'BOGUS';
+  }
+}
+
+function mapAuditVerdictToDelegationStatus(
+  verdict: WalkResult['verdict'],
+): string {
+  switch (verdict) {
+    case 'secure-positive':
+    case 'secure-nodata':
+    case 'secure-nxdomain':
+      return 'SECURE';
+    case 'insecure':
+      return 'INSECURE';
+    case 'bogus':
+      return 'BOGUS';
+  }
 }
 
 function mapDelegationStatusToEnum(
@@ -291,6 +358,21 @@ export function extractAllDnsvizMessages(
     options.ignoredErrorCodes ?? DEFAULT_IGNORED_DNSVIZ_ERROR_CODES;
   if (!isRecord(grok)) return [];
 
+  const auditResult = getDnssecAuditResult(grok);
+  if (auditResult) {
+    return auditResult.steps
+      .map((step, index) => ({ step, index }))
+      .filter(({ step }) => !step.ok)
+      .map(({ step, index }) => ({
+        zone: step.zone ?? step.qname ?? auditResult.qname,
+        path: `steps[${index}]`,
+        code: step.kind,
+        description: formatAuditStep(step),
+        ignored: false,
+        severity: 'error' as const,
+      }));
+  }
+
   const out: DnsvizMessageEntry[] = [];
   for (const [zoneName, zoneVal] of Object.entries(grok)) {
     if (!isRecord(zoneVal)) continue;
@@ -316,6 +398,29 @@ export function extractAllDnsvizMessages(
     }
   }
   return out;
+}
+
+function getDnssecAuditResult(
+  input: Record<string, unknown>,
+): WalkResult | null {
+  const result = input.result;
+  if (!isRecord(result) || typeof result.verdict !== 'string') return null;
+  if (
+    result.verdict !== 'secure-positive' &&
+    result.verdict !== 'secure-nodata' &&
+    result.verdict !== 'secure-nxdomain' &&
+    result.verdict !== 'insecure' &&
+    result.verdict !== 'bogus'
+  ) {
+    return null;
+  }
+  if (!Array.isArray(result.steps)) return null;
+  return result as unknown as WalkResult;
+}
+
+function formatAuditStep(step: WalkStep): string {
+  const scope = step.zone ?? step.qname ?? step.qtype;
+  return scope ? `${scope}: ${step.detail}` : step.detail;
 }
 
 function walkMessageArrays(

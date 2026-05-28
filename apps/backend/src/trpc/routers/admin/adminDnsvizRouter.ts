@@ -604,7 +604,7 @@ export const adminDnsvizRouter = createContractTRPCRouter<
           bytes: buffer.length,
           domain: row.normalizedDomainName,
         },
-        'rendered dnsviz graph',
+        'rendered DNSSEC audit graph',
       );
 
       return {

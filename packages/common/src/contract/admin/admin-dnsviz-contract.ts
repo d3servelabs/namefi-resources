@@ -6,10 +6,9 @@ import { createContract } from '../create-contract';
  * Contract for the admin dnsviz sub-router.
  *
  * Backs the `/admin/dnsviz` page. `listAnalyses` is a paginated read of the
- * `dnsviz_analyses` table; `getAnalysisGraph` invokes the dnsviz CLI
- * (`runDnsvizGraphBuffered`) on the stored probe blob and returns the
- * rendered output as base64 so the frontend can build a Blob URL for the
- * modal preview + download dropdown.
+ * `dnsviz_analyses` table; `getAnalysisGraph` renders a temporary
+ * visualization from the stored audit artifact and returns it as base64 so
+ * the frontend can build a Blob URL for the modal preview + download dropdown.
  */
 
 /**
@@ -41,7 +40,7 @@ const dnsvizAnalysisStatusSchema = z.enum([
   'WARN',
 ]);
 
-const dnsvizGraphTypeSchema = z.enum(['png', 'svg', 'html']);
+const dnsvizGraphTypeSchema = z.enum(['svg', 'html']);
 
 const dnsvizAnalysisSummarySchema = z
   .object({

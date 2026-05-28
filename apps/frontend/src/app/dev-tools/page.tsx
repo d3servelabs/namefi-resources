@@ -151,7 +151,7 @@ const DEV_TOOLS_SECTIONS: AdminSection[] = [
       {
         title: 'DNSSEC Analyses',
         description:
-          'Browse DNSViz daily-digest results, run on-demand probes for specific domains, and download chain-of-trust graphs.',
+          'Browse DNSSEC audit results, run on-demand probes for specific domains, and download chain-of-trust graphs.',
         href: '/admin/dnsviz',
         icon: ShieldCheck,
         iconBgColor: 'bg-teal-100',

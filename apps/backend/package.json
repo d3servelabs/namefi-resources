@@ -93,6 +93,7 @@
     "@namefi-astra/utils": "workspace:*",
     "@namefi-astra/zod-dns": "workspace:*",
     "@namefi/cat": "^1.0.0-beta.8",
+    "@namefi/dnssec-audit": "^2.1.1",
     "@neondatabase/serverless": "^0.10.4",
     "@orpc/contract": "^1.13.2",
     "@orpc/json-schema": "^1.13.2",
