@@ -65,7 +65,7 @@ We look at your trajectory — past growth, recent leaps, appetite for learning.
 
 ## Equal Opportunity
 
-We do not hire based on your gender, age, race, ability or physical challenge, or where you come from. Period.
+We do not hire based on your gender, sex, age, race, ability or physical challenge, or where you come from — and many other factors (see [Know Your Rights: Workplace Discrimination is Illegal](https://www.eeoc.gov/poster)). Period.
 
 We do not restrict schools or prior career paths. We take candidates from non-traditional backgrounds, career switchers, self-taught builders, and anyone who can demonstrate they have what it takes.
 
