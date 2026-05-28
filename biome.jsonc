@@ -20,8 +20,8 @@
       "!**/db/src/migrations",
       "!**/apps/listmonk",
       "!**/apps/frontend/public/dnsviz",
-      "!**/.claude",
-      "!**/.agents"
+      "!.claude",
+      "!.agents"
     ],
     "maxSize": 1536000
   },
