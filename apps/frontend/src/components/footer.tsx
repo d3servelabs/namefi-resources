@@ -88,6 +88,13 @@ const FOOTER_SECTIONS: Array<{
   {
     title: 'Resources',
     links: [
+      { label: 'Blog', href: '/r/en/blog' },
+      { label: 'Watch', href: '/r/en/watch' },
+      { label: 'Careers', href: '/r/en/careers' },
+      { label: 'TLDs', href: '/r/en/tld' },
+      { label: 'Partners', href: '/r/en/partners' },
+      { label: 'Glossary', href: '/r/en/glossary' },
+      { label: 'How We Hire', href: '/r/en/careers/how-we-hire' },
       { label: 'Abuse Reporting', href: '/abuse' },
       { label: 'Education Hub', href: '/education' },
       { label: 'Registration Agreement', href: '/registration-agreement' },
@@ -96,7 +103,37 @@ const FOOTER_SECTIONS: Array<{
         href: 'mailto:support@namefi.io',
         external: true,
       },
-      { label: 'Careers', href: '/r/en/careers' },
+    ],
+  },
+  {
+    title: 'FAQ',
+    links: [
+      { label: 'About Namefi', href: '/r/en' },
+      { label: 'What is a Domain?', href: '/r/en/blog/what-is-domain' },
+      {
+        label: 'What are Tokenized Domains?',
+        href: '/r/en/blog/what-are-tokenized-domains',
+      },
+      {
+        label: 'Why Tokenize Domains?',
+        href: '/r/en/blog/why-tokenize-domains',
+      },
+      {
+        label: 'DNS on Tokenize Domains',
+        href: '/r/en/blog/dns-on-tokenized-domains',
+      },
+      {
+        label: 'DNS is the Control Plane',
+        href: '/r/en/blog/dns-is-the-control-plane',
+      },
+      {
+        label: 'How to Tokenize Your .com',
+        href: '/r/en/blog/how-to-tokenize-your-com',
+      },
+      {
+        label: 'Tokenized Domain vs Web3 Domain',
+        href: '/r/en/blog/tokenized-domain-vs-web3-domain',
+      },
     ],
   },
 ];
@@ -138,7 +175,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
       {...rest}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 sm:px-10 lg:px-12">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.6fr_repeat(3,minmax(0,1fr))]">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,minmax(0,1fr))]">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <Image

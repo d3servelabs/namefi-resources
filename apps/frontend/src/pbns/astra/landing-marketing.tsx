@@ -7,22 +7,12 @@ import {
   useRef,
   type RefObject,
   type ReactNode,
-  type ErrorInfo,
 } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { motion, useInView } from 'motion/react';
-import { ErrorBoundary } from '@suspensive/react';
-import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Card } from '@namefi-astra/ui/components/shadcn/card';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@namefi-astra/ui/components/shadcn/accordion';
-import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
 import BaseNetwork from '@/components/chains/base-network';
@@ -311,157 +301,6 @@ const BACKER_FILTERS: Array<{ label: string; value: BackerFilter }> = [
   { label: 'Investors', value: 'investor' },
   { label: 'Partners', value: 'partner' },
   { label: 'Grants', value: 'grant' },
-];
-
-const FAQS: Array<{ question: string; answer: ReactNode }> = [
-  {
-    question: 'What can I use Namefi for?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          Register or import more than 800 TLDs, tokenize them into NFTs, and
-          take them to any NFT marketplace.
-        </p>
-        <p>
-          AutoENS lets you route crypto payments to your DNS names via gasless
-          DNSSEC.{' '}
-          <Link
-            href="https://namefi.medium.com/dnssec-a-good-security-protocol-to-domain-name-service-system-028c1dc6a700"
-            target="_blank"
-            rel="noreferrer"
-            className="text-brand-primary underline-offset-4 hover:underline"
-          >
-            Learn more
-          </Link>{' '}
-          or read the{' '}
-          <Link
-            href="https://blog.ens.domains/post/gasless-dnssec"
-            target="_blank"
-            rel="noreferrer"
-            className="text-brand-primary underline-offset-4 hover:underline"
-          >
-            ENS announcement
-          </Link>
-          .
-        </p>
-        <p>
-          Namefi AI surfaces naming insights so you can register with
-          data-backed conviction.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'What TLDs does Namefi support?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          We currently support over 800 TLDs. Some premium or
-          registry-restricted names may require extra time while we expand
-          coverage.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'Does Namefi support ENS, Handshake, or other web3 names?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          For now we focus on tokenizing web2 domains. We do not issue ENS,
-          Handshake, or Unstoppable names, but we integrate features like
-          AutoENS so your DNS domains work seamlessly onchain.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'Why choose Namefi?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          We operate the first and largest domain tokenization protocol on
-          Ethereum, making transfers 100× faster, safer, and more liquid than
-          legacy escrow.
-        </p>
-        <p>
-          We are led by one of the few Ethereum Improvement Proposal editors and
-          backed by OrangeDAO plus 14 other funds.
-        </p>
-        <p>
-          Our smart contract is open source:
-          0x0000000000cf80E7Cf8Fa4480907f692177f8e06.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'How can I get $NFSC service credits?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          $NFSC is currently available to eligible airdrop recipients. We will
-          open wider distribution soon—stay tuned.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'How do I qualify for future airdrops?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          Tell us how you plan to use Namefi via our{' '}
-          <Link
-            href="https://tally.so/r/w5xl1M?utm_campaign=www.namefi.io"
-            target="_blank"
-            rel="noreferrer"
-            className="text-brand-primary underline-offset-4 hover:underline"
-          >
-            signup form
-          </Link>
-          , engage with the community, and share feedback. Contributors and
-          ecosystem partners receive priority.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'Will Namefi open to more users soon?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          We are gradually expanding the beta. Early testers with $NFSC credits
-          gain first access before general availability.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'Is Namefi ICANN-accredited?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          Yes. Namefi is operated by D3Serve Labs Inc., an ICANN Accredited
-          Registrar. We register and manage domains directly under ICANN
-          policies and optionally tokenize the resulting DNS ownership as NFTs.
-        </p>
-      </div>
-    ),
-  },
-  {
-    question: 'Which blockchains does Namefi support?',
-    answer: (
-      <div className="space-y-3 text-muted-foreground">
-        <p>
-          Namefi&apos;s domain tokenization is based on the ERC-721 NFT
-          standard. Its contracts are deployed on Ethereum mainnet and Base
-          mainnet. AutoENS lets you route crypto payments to your DNS names via
-          gasless DNSSEC, working with ENS-compatible wallets.
-        </p>
-      </div>
-    ),
-  },
 ];
 
 const COMMUNITY_LINKS = [
@@ -945,40 +784,6 @@ const BackersSection = () => {
   );
 };
 
-const logFaqError = (error: Error, info: ErrorInfo) => {
-  reportReactBoundaryError('LandingMarketing:FaqSection', error, info);
-};
-
-const FaqSection = () => (
-  <section className="space-y-10">
-    <SectionHeading
-      title="FAQs"
-      description="Answers to the most common questions about Namefi."
-    />
-    <Accordion multiple className="space-y-4">
-      {FAQS.map((faq, index) => (
-        <ErrorBoundary
-          key={faq.question}
-          fallback={<></>}
-          onError={logFaqError}
-        >
-          <AccordionItem
-            value={`faq-${index}`}
-            className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur"
-          >
-            <AccordionTrigger className="px-6 py-5 text-left text-lg font-medium">
-              {faq.question}
-            </AccordionTrigger>
-            <AccordionContent className="px-6 pb-6 text-base">
-              {faq.answer}
-            </AccordionContent>
-          </AccordionItem>
-        </ErrorBoundary>
-      ))}
-    </Accordion>
-  </section>
-);
-
 const CommunitySection = ({
   newsletterRef,
 }: {
@@ -1161,15 +966,6 @@ export const MarketingSections = ({
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
     >
       <BackersSection />
-    </motion.div>
-
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <FaqSection />
     </motion.div>
 
     <motion.div
