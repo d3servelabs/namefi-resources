@@ -31,9 +31,9 @@ export function JobPostingJsonLd({
     datePosted,
     employmentType,
     jobLocationType: 'TELECOMMUTE',
-    applicantLocationRequirements: HIRING_REGIONS.map((region) => ({
+    applicantLocationRequirements: HIRING_REGIONS.map((code) => ({
       '@type': 'Country',
-      name: region.name,
+      name: code,
     })),
     hiringOrganization: {
       '@type': 'Organization',
