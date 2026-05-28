@@ -103,6 +103,7 @@ export function buildSitemapIndexXml(): string {
     new URL('/sitemap/sitemap.xml', baseOrigin).toString(),
     new URL('/r/sitemap-pages.xml', baseOrigin).toString(),
     new URL('/r/sitemap-videos.xml', baseOrigin).toString(),
+    new URL('/r/sitemap-careers.xml', baseOrigin).toString(),
   ];
   const sitemapsXml = sitemapUrls
     .map(

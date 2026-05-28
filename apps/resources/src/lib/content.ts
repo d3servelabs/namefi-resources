@@ -7,7 +7,13 @@ import matter from 'gray-matter';
 import { cache } from 'react';
 import { i18n, type Locale } from '@/i18n-config';
 
-type Collection = 'blog' | 'authors' | 'tld' | 'partners' | 'glossary';
+type Collection =
+  | 'blog'
+  | 'authors'
+  | 'tld'
+  | 'partners'
+  | 'glossary'
+  | 'careers';
 
 type PostFrontmatter = {
   title: string;
@@ -109,6 +115,32 @@ type GlossaryEntry = {
   publishedAt: Date;
 };
 
+type CareerFrontmatter = {
+  title: string;
+  summary?: string;
+  description?: string;
+  tags: string[];
+  authors: string[];
+  date: string;
+  draft: boolean;
+  language: Locale;
+  type: 'job' | 'page';
+  employmentType?: string;
+  validThrough?: string;
+  team?: string;
+  location?: string;
+  compensation?: string;
+};
+
+type CareerEntry = {
+  slug: string;
+  frontmatter: CareerFrontmatter;
+  sourceLanguage: Locale;
+  requestedLanguage: Locale;
+  relativePath: string;
+  publishedAt: Date;
+};
+
 // Content lives inside the data submodule under /data/content.
 const DATA_ROOT = path.join(process.cwd(), 'data', 'content');
 const BLOG_ROOT = path.join(DATA_ROOT, 'blog');
@@ -116,18 +148,21 @@ const AUTHOR_ROOT = path.join(DATA_ROOT, 'authors');
 const TLD_ROOT = path.join(DATA_ROOT, 'tld');
 const PARTNER_ROOT = path.join(DATA_ROOT, 'partners');
 const GLOSSARY_ROOT = path.join(DATA_ROOT, 'glossary');
+const CAREER_ROOT = path.join(DATA_ROOT, 'careers');
 
 const postDirectoryCache = new Map<string, string[]>();
 const authorDirectoryCache = new Map<string, string[]>();
 const tldDirectoryCache = new Map<string, string[]>();
 const partnerDirectoryCache = new Map<string, string[]>();
 const glossaryDirectoryCache = new Map<string, string[]>();
+const careerDirectoryCache = new Map<string, string[]>();
 
 const postEntryCache = new Map<string, PostEntry | undefined>();
 const authorEntryCache = new Map<string, AuthorEntry | undefined>();
 const tldEntryCache = new Map<string, TldEntry | undefined>();
 const partnerEntryCache = new Map<string, PartnerEntry | undefined>();
 const glossaryEntryCache = new Map<string, GlossaryEntry | undefined>();
+const careerEntryCache = new Map<string, CareerEntry | undefined>();
 
 const isProduction = process.env.NODE_ENV === 'production';
 const MARKDOWN_EXTENSION = /\.(md|mdx)$/;
@@ -145,6 +180,8 @@ function getCacheForCollection(collection: Collection) {
       return partnerDirectoryCache;
     case 'glossary':
       return glossaryDirectoryCache;
+    case 'careers':
+      return careerDirectoryCache;
     default:
       return postDirectoryCache;
   }
@@ -162,6 +199,8 @@ function getRootForCollection(collection: Collection) {
       return PARTNER_ROOT;
     case 'glossary':
       return GLOSSARY_ROOT;
+    case 'careers':
+      return CAREER_ROOT;
     default:
       return BLOG_ROOT;
   }
@@ -1131,6 +1170,211 @@ export function getAvailableLocalesForPartner(slug: string): Locale[] {
   return locales;
 }
 
+// ---------------------------------------------------------------------------
+// Career collection
+// ---------------------------------------------------------------------------
+
+function normaliseCareerFrontmatter(
+  data: Record<string, unknown>,
+  slug: string,
+  sourceLanguage: Locale,
+): CareerFrontmatter {
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) {
+    throw new Error(`Career "${slug}" is missing a valid "title" field.`);
+  }
+
+  const rawDate =
+    typeof data.date === 'string'
+      ? data.date
+      : data.date instanceof Date
+        ? data.date.toISOString()
+        : undefined;
+
+  if (!rawDate) {
+    throw new Error(`Career "${slug}" is missing a valid "date" field.`);
+  }
+
+  const tags = toStringArray(data.tags);
+  const authors = toStringArray(data.authors);
+  const language = sourceLanguage;
+  const description =
+    typeof data.description === 'string' && data.description.trim().length > 0
+      ? data.description.trim()
+      : undefined;
+  const summary =
+    typeof data.summary === 'string' && data.summary.trim().length > 0
+      ? data.summary.trim()
+      : description;
+  const draftValue = toBoolean(data.draft);
+  const contentType =
+    typeof data.type === 'string' &&
+    (data.type === 'page' || data.type === 'job')
+      ? data.type
+      : 'page';
+
+  return {
+    title: data.title,
+    summary,
+    description,
+    tags,
+    authors,
+    date: rawDate,
+    draft: draftValue,
+    language,
+    type: contentType,
+    employmentType:
+      typeof data.employmentType === 'string'
+        ? data.employmentType.trim()
+        : undefined,
+    validThrough:
+      typeof data.validThrough === 'string'
+        ? data.validThrough.trim()
+        : undefined,
+    team: typeof data.team === 'string' ? data.team.trim() : undefined,
+    location:
+      typeof data.location === 'string' ? data.location.trim() : undefined,
+    compensation:
+      typeof data.compensation === 'string'
+        ? data.compensation.trim()
+        : undefined,
+  };
+}
+
+function resolveCareerFilePath(
+  locale: Locale,
+  slug: string,
+): string | undefined {
+  for (const extension of POST_EXTENSIONS) {
+    const candidate = path.join(CAREER_ROOT, locale, `${slug}${extension}`);
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return undefined;
+}
+
+function parseCareerEntry({
+  slug,
+  locale,
+  filePath,
+}: {
+  slug: string;
+  locale: Locale;
+  filePath: string;
+}): CareerEntry {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const parsed = matter(fileContents);
+  const frontmatter = normaliseCareerFrontmatter(parsed.data, slug, locale);
+  const publishedAt = new Date(frontmatter.date);
+
+  if (Number.isNaN(publishedAt.getTime())) {
+    throw new Error(
+      `Career "${slug}" has an invalid "date": ${frontmatter.date}`,
+    );
+  }
+
+  return {
+    slug,
+    frontmatter,
+    sourceLanguage: locale,
+    requestedLanguage: locale,
+    relativePath: toRelativeDataPath(filePath),
+    publishedAt,
+  };
+}
+
+function loadCareerEntry(
+  locale: Locale,
+  slug: string,
+): CareerEntry | undefined {
+  const cacheKey = `${locale}:${slug}`;
+  if (careerEntryCache.has(cacheKey)) {
+    return careerEntryCache.get(cacheKey);
+  }
+
+  const filePath = resolveCareerFilePath(locale, slug);
+  if (filePath) {
+    const entry = parseCareerEntry({ slug, locale, filePath });
+    careerEntryCache.set(cacheKey, entry);
+    return entry;
+  }
+
+  if (locale !== i18n.defaultLocale) {
+    const fallback = loadCareerEntry(i18n.defaultLocale, slug);
+    if (fallback) {
+      const derived: CareerEntry = {
+        ...fallback,
+        requestedLanguage: locale,
+      };
+      careerEntryCache.set(cacheKey, derived);
+      return derived;
+    }
+  }
+
+  careerEntryCache.set(cacheKey, undefined);
+  return undefined;
+}
+
+function getAllCareerSlugs(): Set<string> {
+  const slugs = new Set<string>();
+  for (const locale of i18n.locales) {
+    for (const slug of listSlugs('careers', locale)) {
+      slugs.add(slug);
+    }
+  }
+  return slugs;
+}
+
+function isCareerDraft(entry: CareerEntry) {
+  return entry.frontmatter.draft;
+}
+
+export function getCareerParams(): Array<{ lang: Locale; slug: string }> {
+  const params: Array<{ lang: Locale; slug: string }> = [];
+  const slugs = getAllCareerSlugs();
+
+  for (const locale of i18n.locales) {
+    for (const slug of slugs) {
+      const entry = loadCareerEntry(locale, slug);
+      if (!entry) continue;
+      if (isProduction && isCareerDraft(entry)) continue;
+      params.push({ lang: locale, slug: entry.slug });
+    }
+  }
+
+  return params;
+}
+
+export function getCareerEntriesForLocale(locale: Locale): CareerEntry[] {
+  const slugs = getAllCareerSlugs();
+  const entries: CareerEntry[] = [];
+
+  for (const slug of slugs) {
+    const entry = loadCareerEntry(locale, slug);
+    if (!entry) continue;
+    if (isProduction && isCareerDraft(entry)) continue;
+    entries.push(entry);
+  }
+
+  return entries.sort(
+    (a, b) => b.publishedAt.getTime() - a.publishedAt.getTime(),
+  );
+}
+
+export function getCareerEntry(
+  locale: Locale,
+  slug: string,
+): CareerEntry | undefined {
+  const entry = loadCareerEntry(locale, slug);
+  if (!entry) return undefined;
+  if (isProduction && isCareerDraft(entry)) return undefined;
+  return entry;
+}
+
+export const getCareerCached = cache((locale: Locale, slug: string) =>
+  getCareerEntry(locale, slug),
+);
+
 export type {
   PostEntry,
   PostFrontmatter,
@@ -1142,4 +1386,6 @@ export type {
   PartnerFrontmatter,
   GlossaryEntry,
   GlossaryFrontmatter,
+  CareerEntry,
+  CareerFrontmatter,
 };

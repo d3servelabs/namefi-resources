@@ -24,7 +24,11 @@ export async function GET() {
     console.error('[sitemap-index] Failed to compute watch lastmod:', error);
   }
   const xml = renderSitemapIndexXml(
-    [`${baseUrl}/r/sitemap-pages.xml`, `${baseUrl}/r/sitemap-videos.xml`],
+    [
+      `${baseUrl}/r/sitemap-pages.xml`,
+      `${baseUrl}/r/sitemap-videos.xml`,
+      `${baseUrl}/r/sitemap-careers.xml`,
+    ],
     latestVideoDate,
   );
   return new Response(xml, {
