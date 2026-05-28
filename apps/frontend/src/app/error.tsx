@@ -179,8 +179,6 @@ export default function ErrorPage({
   const pathname = usePathname();
   const statusCode = getStatusCode(error);
   const requestId = getRequestId(error) ?? error.digest;
-  const is4xx = statusCode >= 400 && statusCode < 500;
-  const is5xx = statusCode >= 500 && statusCode < 600;
 
   useEffect(() => {
     reportAppRouterError('app/error.tsx', error, {
@@ -189,20 +187,21 @@ export default function ErrorPage({
     });
   }, [error, pathname]);
 
+  const renderContent = () => {
+    if (statusCode === 403) return <ErrorContent403 requestId={requestId} />;
+    if (statusCode === 404) return <ErrorContent404 requestId={requestId} />;
+    if (statusCode >= 400 && statusCode < 500)
+      return <ErrorContent400 requestId={requestId} />;
+    return <ErrorContent500 requestId={requestId} reset={reset} />;
+  };
+
   return (
     <PageShell
       padding="none"
       shellClassName="px-4 py-6 sm:px-8 sm:py-8"
       className="flex min-h-[50svh] flex-col items-center justify-center"
     >
-      {statusCode === 403 && <ErrorContent403 requestId={requestId} />}
-      {statusCode === 404 && <ErrorContent404 requestId={requestId} />}
-      {is4xx && statusCode !== 403 && statusCode !== 404 && (
-        <ErrorContent400 requestId={requestId} />
-      )}
-      {(is5xx || statusCode < 400 || statusCode >= 600) && (
-        <ErrorContent500 requestId={requestId} reset={reset} />
-      )}
+      {renderContent()}
     </PageShell>
   );
 }
