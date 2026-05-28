@@ -386,11 +386,12 @@ export const t = initTRPC
   .meta<TrpcMeta>()
   .create({
     transformer: superjson,
-    errorFormatter({ shape, error }) {
+    errorFormatter({ shape, error, ctx }) {
       return {
         ...shape,
         data: {
           ...shape.data,
+          requestId: ctx?.honoVars?.requestId,
           zodError:
             error.cause instanceof ZodError ? error.cause.flatten() : null,
         },

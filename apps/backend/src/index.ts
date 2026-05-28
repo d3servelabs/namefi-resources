@@ -177,7 +177,8 @@ app.use(async (c, next) => {
     connInfo,
     requestId,
   });
-  return next();
+  await next();
+  c.header('x-request-id', requestId);
 });
 // app.use(pinoLoggerHono(logger as any));
 

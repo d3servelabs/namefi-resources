@@ -1,16 +1,137 @@
 'use client';
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from '@namefi-astra/ui/components/shadcn/alert';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { reportAppRouterError } from '@/lib/datadog-react-error';
-import { TriangleIcon } from 'lucide-react';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { PageShell } from '@/components/page-shell';
+import { TRPCClientError } from '@trpc/client';
+import Link from 'next/link';
+
+function getStatusCode(error: Error): number {
+  if (error instanceof TRPCClientError) {
+    const httpStatus = error.data?.httpStatus;
+    if (typeof httpStatus === 'number') return httpStatus;
+  }
+  return 500;
+}
+
+function getRequestId(error: Error): string | undefined {
+  if (error instanceof TRPCClientError) {
+    return error.data?.requestId as string | undefined;
+  }
+  return undefined;
+}
+
+function ErrorContent403({ requestId }: { requestId: string | undefined }) {
+  return (
+    <>
+      <Image
+        src="/assets/errors/error-403-v3.svg"
+        alt=""
+        width={200}
+        height={200}
+        className="mb-6"
+      />
+      <h1 className="mb-2 text-5xl font-bold tracking-tight">403</h1>
+      <h2 className="mb-2 text-xl font-semibold">Access Denied</h2>
+      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+        This door is locked. Try your key.
+      </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <Button render={<Link href="/login" />} nativeButton={false}>
+          Log In
+        </Button>
+        <Button
+          render={<Link href="/" />}
+          nativeButton={false}
+          variant="outline"
+        >
+          Go to Homepage
+        </Button>
+      </div>
+      {requestId && (
+        <p className="mt-8 text-xs text-muted-foreground/60">
+          Reference: {requestId}
+        </p>
+      )}
+    </>
+  );
+}
+
+function ErrorContent404({ requestId }: { requestId: string | undefined }) {
+  return (
+    <>
+      <Image
+        src="/assets/errors/error-404-v3.svg"
+        alt=""
+        width={200}
+        height={200}
+        className="mb-6"
+      />
+      <h1 className="mb-2 text-5xl font-bold tracking-tight">404</h1>
+      <h2 className="mb-2 text-xl font-semibold">Not Found</h2>
+      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+        We looked everywhere. Under the couch too.
+      </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <Button render={<Link href="/" />} nativeButton={false}>
+          Go to Homepage
+        </Button>
+        <Button
+          render={<Link href="/search" />}
+          nativeButton={false}
+          variant="outline"
+        >
+          Search Domains
+        </Button>
+      </div>
+      {requestId && (
+        <p className="mt-8 text-xs text-muted-foreground/60">
+          Reference: {requestId}
+        </p>
+      )}
+    </>
+  );
+}
+
+function ErrorContent500({
+  requestId,
+  reset,
+}: {
+  requestId: string | undefined;
+  reset: () => void;
+}) {
+  const router = useRouter();
+  return (
+    <>
+      <Image
+        src="/assets/errors/error-500-v3.svg"
+        alt=""
+        width={200}
+        height={200}
+        className="mb-6"
+      />
+      <h1 className="mb-2 text-5xl font-bold tracking-tight">500</h1>
+      <h2 className="mb-2 text-xl font-semibold">Server Error</h2>
+      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+        Our hamsters need a coffee break.
+      </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <Button onClick={() => reset()}>Try Again</Button>
+        <Button onClick={() => router.push('/')} variant="outline">
+          Go to Homepage
+        </Button>
+      </div>
+      {requestId && (
+        <p className="mt-8 text-xs text-muted-foreground/60">
+          Reference: {requestId}
+        </p>
+      )}
+    </>
+  );
+}
 
 export default function ErrorPage({
   error,
@@ -19,8 +140,9 @@ export default function ErrorPage({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
+  const statusCode = getStatusCode(error);
+  const requestId = getRequestId(error) ?? error.digest;
 
   useEffect(() => {
     reportAppRouterError('app/error.tsx', error, {
@@ -33,35 +155,13 @@ export default function ErrorPage({
     <PageShell
       padding="none"
       shellClassName="px-4 py-6 sm:px-8 sm:py-8"
-      className="flex min-h-[50svh] flex-col items-center justify-center gap-6"
+      className="flex min-h-[50svh] flex-col items-center justify-center"
     >
-      <Alert variant="destructive" className="w-full max-w-md">
-        <TriangleIcon className="size-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>
-          {error.message || 'Something went wrong!'}
-        </AlertDescription>
-      </Alert>
-      <div className="text-center">
-        <h2 className="mb-2 text-2xl font-bold">Oops! An error occurred</h2>
-        <div className="mb-4 text-muted-foreground">
-          Don&#39;t worry, we&#39;re on it. In the meantime, you can try again
-          or go back to the homepage.
-        </div>
-        {error.digest && (
-          <div className="text-sm text-muted-foreground">
-            Error ID: {error.digest}
-          </div>
-        )}
-      </div>
-      <div className="flex w-full max-w-md flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:gap-4">
-        <Button onClick={() => reset()} variant="default">
-          Try again
-        </Button>
-        <Button onClick={() => router.push('/')} variant="outline">
-          Go to Homepage
-        </Button>
-      </div>
+      {statusCode === 403 && <ErrorContent403 requestId={requestId} />}
+      {statusCode === 404 && <ErrorContent404 requestId={requestId} />}
+      {statusCode !== 403 && statusCode !== 404 && (
+        <ErrorContent500 requestId={requestId} reset={reset} />
+      )}
     </PageShell>
   );
 }

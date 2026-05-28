@@ -19,33 +19,32 @@ export default function GlobalError({
   return (
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <main className="flex min-h-screen items-center justify-center px-4">
-          <section className="w-full max-w-md rounded-lg border border-destructive/20 bg-card p-6 shadow-sm">
-            <h1 className="mb-2 text-xl font-semibold">Something went wrong</h1>
-            <p className="mb-4 text-sm text-muted-foreground">
-              A fatal error occurred and we captured diagnostics.
+        <main className="flex min-h-screen flex-col items-center justify-center px-4">
+          <h1 className="mb-2 text-5xl font-bold tracking-tight">500</h1>
+          <h2 className="mb-2 text-xl font-semibold">Server Error</h2>
+          <p className="mb-8 max-w-sm text-center text-sm text-muted-foreground">
+            Our hamsters need a coffee break.
+          </p>
+          {error.digest && (
+            <p className="mb-6 text-xs text-muted-foreground/60">
+              Reference: {error.digest}
             </p>
-            {error.digest && (
-              <p className="mb-6 text-xs text-muted-foreground">
-                Error ID: {error.digest}
-              </p>
-            )}
-            <div className="flex gap-3">
-              <button
-                className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
-                onClick={() => reset()}
-                type="button"
-              >
-                Try again
-              </button>
-              <a
-                className="inline-flex h-10 items-center justify-center rounded-md border border-input px-4 text-sm font-medium"
-                href="/"
-              >
-                Go to Homepage
-              </a>
-            </div>
-          </section>
+          )}
+          <div className="flex gap-3">
+            <button
+              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
+              onClick={() => reset()}
+              type="button"
+            >
+              Try Again
+            </button>
+            <a
+              className="inline-flex h-10 items-center justify-center rounded-md border border-input px-4 text-sm font-medium"
+              href="/"
+            >
+              Go to Homepage
+            </a>
+          </div>
         </main>
       </body>
     </html>
