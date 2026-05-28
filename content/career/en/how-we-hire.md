@@ -84,3 +84,5 @@ We require professional fluency in English. A second language of any kind is a p
 3. **Audit project** — A take-home or pair-programming project that mirrors real work you would do on the team. We look for people who go beyond what we asked.
 4. **Team interviews** — Meet the people you would work with. We evaluate across all six dimensions of our hiring framework.
 5. **Offer** — If it is a mutual fit, we move fast.
+
+Ready to apply? Reach us at **careers [at] namefi.io**.
