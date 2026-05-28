@@ -96,6 +96,7 @@ const FOOTER_SECTIONS: Array<{
         href: 'mailto:support@namefi.io',
         external: true,
       },
+      { label: 'Careers', href: '/r/en/careers' },
     ],
   },
 ];

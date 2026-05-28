@@ -1,5 +1,6 @@
 import type { Locale } from '@/i18n-config';
 import { JsonLd } from '@/components/json-ld';
+import { HIRING_COUNTRIES_AND_REGIONS } from './countries';
 
 interface JobPostingJsonLdProps {
   title: string;
@@ -30,6 +31,10 @@ export function JobPostingJsonLd({
     datePosted,
     employmentType,
     jobLocationType: 'TELECOMMUTE',
+    applicantLocationRequirements: HIRING_COUNTRIES_AND_REGIONS.map((code) => ({
+      '@type': 'Country',
+      name: code,
+    })),
     hiringOrganization: {
       '@type': 'Organization',
       name: 'Namefi',

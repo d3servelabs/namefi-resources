@@ -153,9 +153,9 @@ export default async function CareerSlugPage({
         )}
       </header>
 
-      {AboutNamefi && <AboutNamefi components={proseComponents} />}
-
       <Content components={proseComponents} />
+
+      {AboutNamefi && <AboutNamefi components={proseComponents} />}
 
       <HowWeHireFooter locale={locale} currentSlug={slug} />
     </div>

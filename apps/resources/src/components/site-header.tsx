@@ -94,6 +94,7 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
     { label: nav.glossary, href: `/${locale}/glossary` },
     { label: nav.tld, href: `/${locale}/tld` },
     { label: nav.partners, href: `/${locale}/partners` },
+    { label: nav.careers, href: `/${locale}/careers` },
   ];
 
   return (
