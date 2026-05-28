@@ -96,6 +96,42 @@ function ErrorContent404({ requestId }: { requestId: string | undefined }) {
   );
 }
 
+function ErrorContent400({ requestId }: { requestId: string | undefined }) {
+  return (
+    <>
+      <Image
+        src="/assets/errors/error-400-v1.svg"
+        alt=""
+        width={200}
+        height={200}
+        className="mb-6"
+      />
+      <h1 className="mb-2 text-5xl font-bold tracking-tight">400</h1>
+      <h2 className="mb-2 text-xl font-semibold">Bad Request</h2>
+      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+        Something got lost in translation.
+      </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <Button render={<Link href="/login" />} nativeButton={false}>
+          Log In
+        </Button>
+        <Button
+          render={<Link href="/" />}
+          nativeButton={false}
+          variant="outline"
+        >
+          Go to Homepage
+        </Button>
+      </div>
+      {requestId && (
+        <p className="mt-8 text-xs text-muted-foreground/60">
+          Reference: {requestId}
+        </p>
+      )}
+    </>
+  );
+}
+
 function ErrorContent500({
   requestId,
   reset,
@@ -143,6 +179,8 @@ export default function ErrorPage({
   const pathname = usePathname();
   const statusCode = getStatusCode(error);
   const requestId = getRequestId(error) ?? error.digest;
+  const is4xx = statusCode >= 400 && statusCode < 500;
+  const is5xx = statusCode >= 500 && statusCode < 600;
 
   useEffect(() => {
     reportAppRouterError('app/error.tsx', error, {
@@ -159,7 +197,10 @@ export default function ErrorPage({
     >
       {statusCode === 403 && <ErrorContent403 requestId={requestId} />}
       {statusCode === 404 && <ErrorContent404 requestId={requestId} />}
-      {statusCode !== 403 && statusCode !== 404 && (
+      {is4xx && statusCode !== 403 && statusCode !== 404 && (
+        <ErrorContent400 requestId={requestId} />
+      )}
+      {(is5xx || statusCode < 400 || statusCode >= 600) && (
         <ErrorContent500 requestId={requestId} reset={reset} />
       )}
     </PageShell>
