@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import MyDomainsPage from '@/app/domains/page';
+import MyDomains from '@/components/my-domains';
 import type { OriginRuntime } from '@/lib/origin/types';
 import { FreeMintsGuidanceProvider } from '@/components/providers/free-mints-guidance';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
@@ -9,6 +9,7 @@ import { CartProvider } from '@/components/providers/cart';
 import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
+import { OpenFeatureProvider } from '@openfeature/react-sdk';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import {
   type ReactNode,
@@ -328,19 +329,21 @@ function StoryProviders({
             <MockTrpcProvider mockState={mockState}>
               <NuqsAdapter>
                 <ConsentManagerProvider options={{ mode: 'offline' }}>
-                  <PreAuthSignalsProvider>
-                    <InteractionLoggersProvider>
-                      <WishlistProvider>
-                        <CartProvider>
-                          <SidebarProvider defaultOpen={false}>
-                            <FreeMintsGuidanceProvider>
-                              {children}
-                            </FreeMintsGuidanceProvider>
-                          </SidebarProvider>
-                        </CartProvider>
-                      </WishlistProvider>
-                    </InteractionLoggersProvider>
-                  </PreAuthSignalsProvider>
+                  <OpenFeatureProvider>
+                    <PreAuthSignalsProvider>
+                      <InteractionLoggersProvider>
+                        <WishlistProvider>
+                          <CartProvider>
+                            <SidebarProvider defaultOpen={false}>
+                              <FreeMintsGuidanceProvider>
+                                {children}
+                              </FreeMintsGuidanceProvider>
+                            </SidebarProvider>
+                          </CartProvider>
+                        </WishlistProvider>
+                      </InteractionLoggersProvider>
+                    </PreAuthSignalsProvider>
+                  </OpenFeatureProvider>
                 </ConsentManagerProvider>
               </NuqsAdapter>
             </MockTrpcProvider>
@@ -366,7 +369,7 @@ type StoryArgs = {
 
 const meta: Meta<StoryArgs> = {
   title: 'Pages/My Domains',
-  component: MyDomainsPage,
+  component: MyDomains,
   parameters: {
     layout: 'fullscreen',
     nextjs: {
@@ -388,7 +391,7 @@ const meta: Meta<StoryArgs> = {
       mockState={args.mockState ?? defaultMockState}
     >
       <ReactQueryDevtoolsWrapper />
-      <MyDomainsPage />
+      <MyDomains />
     </StoryProviders>
   ),
 };
@@ -478,7 +481,7 @@ export const ErrorState: Story = {
           </div>
         }
       >
-        <MyDomainsPage />
+        <MyDomains />
       </StoryErrorBoundary>
     </StoryProviders>
   ),
