@@ -1,5 +1,4 @@
 import { randomInt } from 'node:crypto';
-import { Readable } from 'node:stream';
 import {
   DoHResolver,
   RecordingResolver,
@@ -24,7 +23,7 @@ export class DnsvizError extends Error {
   }
 }
 
-interface DnssecAuditPayload {
+interface DnssecAuditAssessmentPayload {
   tool: '@namefi/dnssec-audit';
   version: number;
   domain: string;
@@ -32,6 +31,9 @@ interface DnssecAuditPayload {
   resolverUrl: string;
   capturedAt: string;
   result: WalkResult;
+}
+
+interface DnssecAuditPayload extends DnssecAuditAssessmentPayload {
   responses: CapturedEntry[];
 }
 
@@ -82,11 +84,25 @@ export async function runDnsvizGrok(
   probeJson: unknown,
   opts: RunDnsvizGrokOptions = {},
 ): Promise<unknown> {
-  return await withTimeout(async () => validateAuditPayload(probeJson), {
-    timeoutMs: opts.timeoutMs ?? 30_000,
-    abortSignal: opts.abortSignal,
-    label: 'DNSSEC audit result validation timed out',
-  });
+  return await withTimeout(
+    async () => {
+      const payload = validateAuditPayload(probeJson);
+      return {
+        tool: payload.tool,
+        version: payload.version,
+        domain: payload.domain,
+        qtype: payload.qtype,
+        resolverUrl: payload.resolverUrl,
+        capturedAt: payload.capturedAt,
+        result: payload.result,
+      } satisfies DnssecAuditAssessmentPayload;
+    },
+    {
+      timeoutMs: opts.timeoutMs ?? 30_000,
+      abortSignal: opts.abortSignal,
+      label: 'DNSSEC audit result validation timed out',
+    },
+  );
 }
 
 export type DnsvizGraphType = 'svg' | 'html';
@@ -95,20 +111,84 @@ export interface RunDnsvizGraphStreamOptions {
   timeoutMs?: number;
 }
 
-export function runDnsvizGraphStream(
-  probeJson: unknown,
-  format: DnsvizGraphType,
-  _opts: RunDnsvizGraphStreamOptions = {},
-): Readable {
-  return Readable.from([renderAuditGraph(probeJson, format)]);
-}
-
 export async function runDnsvizGraphBuffered(
   probeJson: unknown,
   type: DnsvizGraphType,
   _opts: RunDnsvizGraphStreamOptions = {},
 ): Promise<Buffer> {
   return Buffer.from(renderAuditGraph(probeJson, type), 'utf8');
+}
+
+/**
+ * Renders a small standalone placeholder graph for analyses whose stored
+ * `probe_data` predates the `@namefi/dnssec-audit` migration (legacy dnsviz
+ * JSON has no audit `result.verdict`). Lets the admin graph endpoint degrade
+ * gracefully instead of failing when it encounters an old row.
+ */
+export function renderUnsupportedGraph(
+  type: DnsvizGraphType,
+  domain: string,
+): string {
+  const message =
+    'No DNSSEC-audit graph: this analysis predates the dnssec-audit migration. Re-run the analysis to generate one.';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="160" viewBox="0 0 1000 160" role="img" aria-label="No DNSSEC audit graph for ${escapeXml(domain)}">
+  <rect width="1000" height="160" fill="#f8fafc" />
+  <rect x="24" y="24" width="952" height="112" rx="8" fill="#ffffff" stroke="#d7dde7" />
+  <text x="44" y="64" fill="#172033" font-size="22" font-weight="700">${escapeXml(domain)}</text>
+  <text x="44" y="98" fill="#475467" font-size="14">${escapeXml(message)}</text>
+</svg>`;
+  if (type === 'svg') return svg;
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(domain)} DNSSEC audit</title>
+  <style>
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f8fafc; color: #172033; }
+    main { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    svg { width: 100%; height: auto; display: block; }
+  </style>
+</head>
+<body>
+  <main>
+    ${svg}
+  </main>
+</body>
+</html>`;
+}
+
+export interface DnsvizGraphRender {
+  /** Rendered svg/html document. */
+  body: string;
+  /**
+   * True when `probeJson` could not be rendered as a dnssec-audit graph (e.g.
+   * legacy dnsviz probe rows that predate the migration) and `body` is the
+   * placeholder rather than a real graph.
+   */
+  legacy: boolean;
+}
+
+/**
+ * Renders the graph for stored `probe_data`, falling back to a placeholder
+ * (instead of throwing) when the payload predates the `@namefi/dnssec-audit`
+ * migration. Call this from request handlers so the raw route and the admin
+ * tRPC procedure degrade identically on old rows.
+ */
+export async function renderDnsvizGraphWithFallback(
+  probeJson: unknown,
+  type: DnsvizGraphType,
+  domain: string,
+): Promise<DnsvizGraphRender> {
+  try {
+    const buffer = await runDnsvizGraphBuffered(probeJson, type);
+    return { body: buffer.toString('utf8'), legacy: false };
+  } catch (error) {
+    if (error instanceof DnsvizError) {
+      return { body: renderUnsupportedGraph(type, domain), legacy: true };
+    }
+    throw error;
+  }
 }
 
 export function dnsvizGraphContentType(type: DnsvizGraphType): string {
@@ -162,15 +242,32 @@ async function withTimeout<T>(
   }
 }
 
-function validateAuditPayload(input: unknown): DnssecAuditPayload {
+function validateAuditPayload(input: unknown): DnssecAuditAssessmentPayload {
   if (!isRecord(input)) {
     throw new DnsvizError('DNSSEC audit payload is not an object');
   }
-  const result = input.result;
-  if (!isRecord(result) || typeof result.verdict !== 'string') {
+  validateAuditResult(input.result);
+  return input as unknown as DnssecAuditAssessmentPayload;
+}
+
+function validateAuditResult(input: unknown): WalkResult {
+  if (!isRecord(input) || !isAuditVerdict(input.verdict)) {
     throw new DnsvizError('DNSSEC audit payload is missing a result verdict');
   }
-  return input as unknown as DnssecAuditPayload;
+  if (!Array.isArray(input.steps)) {
+    throw new DnsvizError('DNSSEC audit payload result is missing steps');
+  }
+  return input as unknown as WalkResult;
+}
+
+function isAuditVerdict(input: unknown): input is WalkResult['verdict'] {
+  return (
+    input === 'secure-positive' ||
+    input === 'secure-nodata' ||
+    input === 'secure-nxdomain' ||
+    input === 'insecure' ||
+    input === 'bogus'
+  );
 }
 
 function renderAuditGraph(input: unknown, type: DnsvizGraphType): string {
@@ -197,7 +294,7 @@ function renderAuditGraph(input: unknown, type: DnsvizGraphType): string {
     ${svg}
     <h2>Audit steps</h2>
     <ol>
-      ${payload.result.steps
+      ${stepsForResult(payload.result)
         .map(
           (step) =>
             `<li><strong>${escapeHtml(step.kind)}</strong> ${escapeHtml(step.zone ?? step.qname ?? '')}<br />${escapeHtml(step.detail)}</li>`,
@@ -209,9 +306,9 @@ function renderAuditGraph(input: unknown, type: DnsvizGraphType): string {
 </html>`;
 }
 
-function renderSvg(payload: DnssecAuditPayload): string {
+function renderSvg(payload: DnssecAuditAssessmentPayload): string {
   const result = payload.result;
-  const steps = result.steps.length > 0 ? result.steps : [fallbackStep(result)];
+  const steps = stepsForResult(result);
   const width = 1000;
   const rowHeight = 64;
   const height = 174 + steps.length * rowHeight;
@@ -241,6 +338,10 @@ function renderSvg(payload: DnssecAuditPayload): string {
   <text x="${width - 152}" y="67" fill="#ffffff" font-size="14" font-weight="700" text-anchor="middle">${escapeXml(verdict)}</text>
 ${rows}
 </svg>`;
+}
+
+function stepsForResult(result: WalkResult): WalkStep[] {
+  return result.steps.length > 0 ? result.steps : [fallbackStep(result)];
 }
 
 function fallbackStep(result: WalkResult): WalkStep {

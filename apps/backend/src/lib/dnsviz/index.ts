@@ -2,13 +2,15 @@ export {
   DnsvizError,
   runDnsvizProbe,
   runDnsvizGrok,
-  runDnsvizGraphStream,
   runDnsvizGraphBuffered,
+  renderUnsupportedGraph,
+  renderDnsvizGraphWithFallback,
   dnsvizGraphContentType,
   type RunDnsvizProbeOptions,
   type RunDnsvizGrokOptions,
   type RunDnsvizGraphStreamOptions,
   type DnsvizGraphType,
+  type DnsvizGraphRender,
 } from './runner';
 export {
   deriveDnsvizStatus,

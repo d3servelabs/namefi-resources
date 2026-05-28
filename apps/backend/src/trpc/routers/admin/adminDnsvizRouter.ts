@@ -33,7 +33,7 @@ import { adminDnsvizContract } from '@namefi-astra/common/contract/admin/admin-d
 import {
   dnsvizGraphContentType,
   extractAllDnsvizMessages,
-  runDnsvizGraphBuffered,
+  renderDnsvizGraphWithFallback,
 } from '#lib/dnsviz';
 import { dnsvizEffectiveStatusSql as effectiveStatusSql } from '#lib/dnsviz-effective-status-sql';
 import { createLogger } from '#lib/logger';
@@ -595,14 +595,19 @@ export const adminDnsvizRouter = createContractTRPCRouter<
         });
       }
 
-      const buffer = await runDnsvizGraphBuffered(row.probeData, input.type);
+      const { body, legacy } = await renderDnsvizGraphWithFallback(
+        row.probeData,
+        input.type,
+        row.normalizedDomainName,
+      );
 
       logger.debug(
         {
           id: input.id,
           type: input.type,
-          bytes: buffer.length,
+          bytes: body.length,
           domain: row.normalizedDomainName,
+          legacy,
         },
         'rendered DNSSEC audit graph',
       );
@@ -610,7 +615,7 @@ export const adminDnsvizRouter = createContractTRPCRouter<
       return {
         contentType: dnsvizGraphContentType(input.type),
         fileName: `${row.normalizedDomainName}-${row.analysisDate}.${input.type}`,
-        base64: buffer.toString('base64'),
+        base64: Buffer.from(body, 'utf8').toString('base64'),
       };
     }),
 });

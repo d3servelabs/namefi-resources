@@ -13,7 +13,6 @@
  * route renders a temporary graph from that stored JSON.
  */
 
-import { Readable } from 'node:stream';
 import { eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { db as database } from '@namefi-astra/db';
@@ -23,8 +22,7 @@ import { createLogger } from '#lib/logger';
 import { validateApiKey } from '#lib/validate-api-key';
 import {
   dnsvizGraphContentType,
-  runDnsvizGraphBuffered,
-  runDnsvizGraphStream,
+  renderDnsvizGraphWithFallback,
   type DnsvizGraphType,
 } from '#lib/dnsviz';
 
@@ -84,13 +82,23 @@ dnsvizRouter.get('/analysis/:analysisId/graph', async (c) => {
     'x-dnsviz-status': row.status,
   };
 
-  if (type === 'html') {
-    const buffer = await runDnsvizGraphBuffered(row.probeData, type);
-    return new Response(buffer.toString('utf8'), { status: 200, headers });
+  // Both svg and html bodies are rendered to a string; undici encodes the
+  // response as UTF-8. (A string-yielding Node stream is rejected by undici,
+  // which crashed the previous svg path.) Legacy pre-migration rows fall back
+  // to a placeholder instead of 500-ing — see `renderDnsvizGraphWithFallback`.
+  const { body, legacy } = await renderDnsvizGraphWithFallback(
+    row.probeData,
+    type,
+    row.normalizedDomainName,
+  );
+  if (legacy) {
+    logger.debug(
+      { analysisId },
+      'Serving placeholder graph for legacy probe data',
+    );
+    const placeholderHeaders = new Headers(headers);
+    placeholderHeaders.set('x-dnsviz-graph', 'legacy-unsupported');
+    return new Response(body, { status: 200, headers: placeholderHeaders });
   }
-
-  const nodeStream = runDnsvizGraphStream(row.probeData, type);
-  // Hono's Response accepts a Web ReadableStream; convert from Node stream.
-  const webStream = Readable.toWeb(nodeStream) as unknown as ReadableStream;
-  return new Response(webStream, { status: 200, headers });
+  return new Response(body, { status: 200, headers });
 });

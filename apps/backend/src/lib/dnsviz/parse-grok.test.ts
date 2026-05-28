@@ -49,6 +49,36 @@ describe('deriveDnsvizStatus', () => {
     expect(result.summary.topErrors[0]).toMatch(/NSEC3/);
   });
 
+  it('maps a dnssec-audit insecure delegation to INSECURE, not SECURE', () => {
+    // dnssec-audit reports an insecure (no-DS) delegation as a step with
+    // `ok: true` (the no-DS proof validated). The per-zone status must still
+    // read INSECURE — keying off `ok` alone would mislabel it SECURE.
+    const auditGrok = {
+      result: {
+        qname: 'unsigned.example.',
+        qtype: 1,
+        verdict: 'insecure',
+        detail: 'insecure delegation at example.',
+        steps: [
+          { kind: 'ds', zone: 'example.', ok: true, detail: 'DS ok' },
+          {
+            kind: 'insecure',
+            zone: 'unsigned.example.',
+            ok: true,
+            detail: 'no DS — delegation is insecure',
+          },
+        ],
+      },
+    };
+
+    const result = deriveDnsvizStatus(auditGrok, 'unsigned.example');
+    expect(result.status).toBe('INSECURE');
+    expect(result.summary.parentChainStatuses['example.']).toBe('SECURE');
+    expect(result.summary.parentChainStatuses['unsigned.example.']).toBe(
+      'INSECURE',
+    );
+  });
+
   it('counts EXISTING_TYPE_NOT_IN_BITMAP when the filter is overridden to empty', () => {
     const result = deriveDnsvizStatus(samyxGrok, 'samyx.net', {
       ignoredErrorCodes: new Set(),

@@ -25,10 +25,6 @@ RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
         echo "USING CACHED IMAGE"; \
     fi
 
-# Picked up by `runDnsvizGrok` / `runDnsvizGraphStream` in
-# apps/backend/src/lib/dnsviz/runner.ts. Override per-environment if a
-# different anchor file is preferred.
-# ENV DNSVIZ_TRUSTED_KEYS_FILE=/usr/share/dns/root.key
 FROM base_runner AS base
 ENV NODE_OPTIONS="${NODE_OPTIONS} --max-semi-space-size=256 --max-old-space-size=8192"
 ENV CI="true"

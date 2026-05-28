@@ -129,15 +129,22 @@ function deriveDnssecAuditStatus(result: WalkResult): DeriveResult {
   const parentChainStatuses: Record<string, string> = {};
   for (const step of result.steps) {
     if (!step.zone) continue;
-    parentChainStatuses[step.zone] = step.ok ? 'SECURE' : 'BOGUS';
+    // An insecure delegation (no DS) is reported with `ok: true` because the
+    // no-DS proof itself validated — but the zone is INSECURE, not SECURE.
+    parentChainStatuses[step.zone] = !step.ok
+      ? 'BOGUS'
+      : step.kind === 'insecure'
+        ? 'INSECURE'
+        : 'SECURE';
   }
 
+  const status = mapAuditVerdictToEnum(result.verdict);
   return {
-    status: mapAuditVerdictToEnum(result.verdict),
+    status,
     errorsCount: failedSteps.length,
     warningsCount: 0,
     summary: {
-      delegationStatus: mapAuditVerdictToDelegationStatus(result.verdict),
+      delegationStatus: status,
       zoneStatus: result.verdict,
       parentChainStatuses,
       topErrors,
@@ -151,21 +158,6 @@ function deriveDnssecAuditStatus(result: WalkResult): DeriveResult {
 function mapAuditVerdictToEnum(
   verdict: WalkResult['verdict'],
 ): DnsvizAnalysisStatus {
-  switch (verdict) {
-    case 'secure-positive':
-    case 'secure-nodata':
-    case 'secure-nxdomain':
-      return 'SECURE';
-    case 'insecure':
-      return 'INSECURE';
-    case 'bogus':
-      return 'BOGUS';
-  }
-}
-
-function mapAuditVerdictToDelegationStatus(
-  verdict: WalkResult['verdict'],
-): string {
   switch (verdict) {
     case 'secure-positive':
     case 'secure-nodata':
