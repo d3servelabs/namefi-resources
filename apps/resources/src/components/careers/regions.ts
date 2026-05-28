@@ -125,6 +125,7 @@ const ALL_COUNTRIES_AND_REGIONS = [
   'KP',
   'KR',
   'KW',
+  'KY',
   'KZ',
   'LA',
   'LB',
@@ -266,6 +267,13 @@ const US_SANCTIONED_COUNTRIES_AND_REGIONS = new Set([
   'RU',
 ]);
 
-export const HIRING_COUNTRIES_AND_REGIONS = ALL_COUNTRIES_AND_REGIONS.filter(
+const hiringCodes = ALL_COUNTRIES_AND_REGIONS.filter(
   (code) => !US_SANCTIONED_COUNTRIES_AND_REGIONS.has(code),
 );
+
+const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+export const HIRING_REGIONS = hiringCodes.map((code) => ({
+  code,
+  name: regionNames.of(code) ?? code,
+}));
