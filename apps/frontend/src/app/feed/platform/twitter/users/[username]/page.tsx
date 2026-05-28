@@ -2,16 +2,18 @@ import type { Metadata } from 'next';
 import { MlsHandleFeed } from '@/components/mls/mls-handle-feed';
 
 export const metadata: Metadata = {
-  title: 'Seller Listings | Namefi Feed',
+  title: 'Twitter User Listings | Namefi Feed',
   description:
-    'Browse domains listed by a specific seller from the Namefi Feed.',
+    'Browse domains listed by a specific Twitter user from the Namefi Feed.',
 };
 
-interface MlsSellerPageProps {
+interface MlsTwitterUserPageProps {
   params: Promise<{ username: string }>;
 }
 
-export default async function MlsSellerPage({ params }: MlsSellerPageProps) {
+export default async function MlsTwitterUserPage({
+  params,
+}: MlsTwitterUserPageProps) {
   const { username } = await params;
   return <MlsHandleFeed username={username} />;
 }

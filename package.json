@@ -69,6 +69,8 @@
     "webpack": "5.99.9"
   },
   "overrides": {
+    "@ethersproject/hash": "5.8.0",
+    "@reown/appkit": "1.8.14",
     "date-fns": "4.1.0",
     "webpack": "5.99.9"
   },

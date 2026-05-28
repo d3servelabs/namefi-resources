@@ -4,6 +4,9 @@ import {
   type MlsDomainSearchResponse,
   type MlsFeedPage,
   type MlsListing,
+  type MlsSellerDirectoryRow,
+  type MlsSellerDirectorySortBy,
+  type MlsSellerDirectorySortOrder,
   mlsContract,
   mlsDomainSearchResponseSchema,
   mlsFeedPageSchema,
@@ -11,17 +14,30 @@ import {
   mlsReportResponseSchema,
 } from '@namefi-astra/common/contract/mls-contract';
 import { config } from '#lib/env';
-import { publicProcedure } from '../base';
+import { adminProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 
 const REQUEST_TIMEOUT_MS = 5_000;
 const MAX_FILTERED_FEED_UPSTREAM_PAGES = 8;
+const MAX_SELLER_DIRECTORY_UPSTREAM_PAGES = 100;
+const SELLER_DIRECTORY_SOURCE_CACHE_TTL_MS = 5 * 60 * 1_000;
 const TRAILING_SLASHES_PATTERN = /\/+$/;
 const LEADING_AT_SYMBOL = /^@/;
 const HANDLE_PATTERN = /^[a-z0-9_]+$/i;
 const EDGE_DOTS_PATTERN = /^\.+|\.+$/g;
 const TLD_FILTER_PATTERN =
   /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+const DAY_MS = 24 * 60 * 60 * 1_000;
+
+let sellerDirectorySourceCache: {
+  rows: MlsListing[];
+  fetchedAt: number;
+} | null = null;
+
+interface SellerDirectoryCursor {
+  offset: number;
+  snapshotId: number;
+}
 
 export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
   getFeed: publicProcedure
@@ -83,6 +99,79 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
         nextCursor: lastPage?.nextCursor ?? null,
         hasMore: Boolean(lastPage?.hasMore && lastPage.nextCursor),
         limit,
+      };
+    }),
+
+  getSellers: adminProcedure
+    .input(mlsContract.getSellers.input)
+    .output(mlsContract.getSellers.output)
+    .query(async ({ input }) => {
+      const limit = clamp(input.limit, 1, MAX_MLS_FEED_LIMIT);
+      const minSalePosts = clamp(input.minSalePosts, 1, 500);
+      const query = normalizeFeedSearchQuery(input.query);
+      const requestedTld = input.tld?.trim() ?? '';
+      const tld = normalizeTldFilter(input.tld);
+      const cursor = decodeSellerDirectoryCursor(input.cursor);
+      const sortBy = input.sortBy ?? 'salePosts';
+      const sortOrder = input.sortOrder ?? 'desc';
+
+      if (cursor === null) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid seller directory cursor.',
+        });
+      }
+
+      if (requestedTld && !tld) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid TLD filter.',
+        });
+      }
+
+      const source = await fetchSellerDirectorySourceRows(
+        cursor?.snapshotId ?? null,
+      );
+
+      if (!source) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Seller directory cursor has expired.',
+        });
+      }
+
+      const filteredRows = source.rows.filter(
+        (row) =>
+          (!tld || domainMatchesTld(row.domain, tld)) &&
+          listingMatchesSellerDirectoryQuery(row, query),
+      );
+      const generatedAt = new Date().toISOString();
+      const sellers = aggregateSellerDirectoryRows(filteredRows, generatedAt)
+        .filter(
+          (seller) =>
+            seller.salePostCount >= minSalePosts &&
+            (!input.activeWithinDays ||
+              seller.daysSinceLastPost <= input.activeWithinDays),
+        )
+        .sort((left, right) =>
+          compareSellerDirectoryRows(left, right, sortBy, sortOrder),
+        );
+
+      const start = cursor?.offset ?? 0;
+      const end = start + limit;
+      const rows = sellers.slice(start, end);
+      const nextCursor =
+        end < sellers.length
+          ? encodeSellerDirectoryCursor(end, source.fetchedAt)
+          : null;
+
+      return {
+        rows,
+        nextCursor,
+        hasMore: Boolean(nextCursor),
+        limit,
+        total: sellers.length,
+        generatedAt,
       };
     }),
 
@@ -370,6 +459,18 @@ function normalizeMlsHandleSlug(value: string) {
   return normalized.toLowerCase();
 }
 
+function normalizeMlsSellerHandle(value: string | null | undefined) {
+  const rawHandle = value?.trim().replace(LEADING_AT_SYMBOL, '');
+  if (!rawHandle || !HANDLE_PATTERN.test(rawHandle)) {
+    return null;
+  }
+
+  return {
+    handle: `@${rawHandle}`,
+    slug: rawHandle.toLowerCase(),
+  };
+}
+
 function normalizeFeedSearchQuery(value?: string | null) {
   const normalized = value?.trim().replace(/\s+/g, ' ');
   return normalized ? normalized : null;
@@ -397,6 +498,355 @@ function uniqueLowercaseStrings(values: string[]) {
   return Array.from(
     new Set(values.map((value) => value.trim().toLowerCase()).filter(Boolean)),
   );
+}
+
+async function fetchSellerDirectorySourceRows(snapshotId: number | null) {
+  if (snapshotId !== null) {
+    return sellerDirectorySourceCache?.fetchedAt === snapshotId
+      ? sellerDirectorySourceCache
+      : null;
+  }
+
+  const now = Date.now();
+  if (
+    sellerDirectorySourceCache &&
+    now - sellerDirectorySourceCache.fetchedAt <
+      SELLER_DIRECTORY_SOURCE_CACHE_TTL_MS
+  ) {
+    return sellerDirectorySourceCache;
+  }
+
+  const rows: MlsListing[] = [];
+  let cursor: string | null = null;
+  let fetchedPages = 0;
+
+  do {
+    const page = await fetchUpstreamFeedPage({
+      cursor,
+      limit: MAX_MLS_FEED_LIMIT,
+      query: null,
+      tld: null,
+    });
+    rows.push(...page.rows);
+    cursor = page.nextCursor;
+    fetchedPages += 1;
+
+    if (!page.hasMore || !cursor) {
+      break;
+    }
+  } while (fetchedPages < MAX_SELLER_DIRECTORY_UPSTREAM_PAGES);
+
+  sellerDirectorySourceCache = {
+    rows,
+    fetchedAt: now,
+  };
+
+  return sellerDirectorySourceCache;
+}
+
+function listingMatchesSellerDirectoryQuery(
+  listing: MlsListing,
+  query: string | null,
+) {
+  if (!query) {
+    return true;
+  }
+
+  const normalizedQuery = query.toLowerCase();
+  const sellerHandle = normalizeMlsSellerHandle(listing.seller.username);
+  const searchableValues = [
+    listing.domain,
+    listing.messageText,
+    listing.seller.username,
+    listing.seller.displayName,
+    sellerHandle?.handle,
+    sellerHandle?.slug,
+  ];
+
+  return searchableValues.some((value) =>
+    value?.toLowerCase().includes(normalizedQuery),
+  );
+}
+
+interface SellerDirectoryAggregate {
+  handle: string;
+  slug: string;
+  displayName: string | null;
+  domainSet: Set<string>;
+  sourceTweetSet: Set<string>;
+  sourceTweetUrls: string[];
+  sampleDomains: string[];
+  purchaseUrlCount: number;
+  firstPostedAt: string;
+  firstPostedTime: number;
+  lastPostedAt: string;
+  lastPostedTime: number;
+  latestSourceTweetUrl: string;
+}
+
+function aggregateSellerDirectoryRows(
+  listings: MlsListing[],
+  generatedAt: string,
+): MlsSellerDirectoryRow[] {
+  const generatedTime = parseDateTime(generatedAt) ?? Date.now();
+  const aggregates = new Map<string, SellerDirectoryAggregate>();
+
+  for (const listing of listings) {
+    const sellerHandle = normalizeMlsSellerHandle(listing.seller.username);
+    if (!sellerHandle) {
+      continue;
+    }
+
+    const postedTime =
+      parseDateTime(listing.postedAt) ??
+      parseDateTime(listing.listedAt) ??
+      generatedTime;
+    const normalizedDomain = listing.domain.trim().toLowerCase();
+    const aggregate =
+      aggregates.get(sellerHandle.slug) ??
+      createSellerDirectoryAggregate(
+        listing,
+        sellerHandle,
+        normalizedDomain,
+        postedTime,
+      );
+
+    aggregates.set(sellerHandle.slug, aggregate);
+    updateSellerDirectoryAggregate(
+      aggregate,
+      listing,
+      normalizedDomain,
+      postedTime,
+    );
+  }
+
+  return Array.from(aggregates.values()).map((aggregate) =>
+    toSellerDirectoryRow(aggregate, generatedTime),
+  );
+}
+
+function createSellerDirectoryAggregate(
+  listing: MlsListing,
+  sellerHandle: { handle: string; slug: string },
+  normalizedDomain: string,
+  postedTime: number,
+): SellerDirectoryAggregate {
+  return {
+    handle: sellerHandle.handle,
+    slug: sellerHandle.slug,
+    displayName: normalizeNullableText(listing.seller.displayName),
+    domainSet: new Set([normalizedDomain]),
+    sourceTweetSet: new Set([listing.sourceTweetUrl]),
+    sourceTweetUrls: [listing.sourceTweetUrl],
+    sampleDomains: [normalizedDomain],
+    purchaseUrlCount: 0,
+    firstPostedAt: listing.postedAt,
+    firstPostedTime: postedTime,
+    lastPostedAt: listing.postedAt,
+    lastPostedTime: postedTime,
+    latestSourceTweetUrl: listing.sourceTweetUrl,
+  };
+}
+
+function updateSellerDirectoryAggregate(
+  aggregate: SellerDirectoryAggregate,
+  listing: MlsListing,
+  normalizedDomain: string,
+  postedTime: number,
+) {
+  aggregate.displayName ??= normalizeNullableText(listing.seller.displayName);
+  addUniqueValue(
+    aggregate.domainSet,
+    aggregate.sampleDomains,
+    normalizedDomain,
+    10,
+  );
+  addUniqueValue(
+    aggregate.sourceTweetSet,
+    aggregate.sourceTweetUrls,
+    listing.sourceTweetUrl,
+    5,
+  );
+
+  if (listing.purchaseUrl) {
+    aggregate.purchaseUrlCount += 1;
+  }
+
+  if (postedTime < aggregate.firstPostedTime) {
+    aggregate.firstPostedAt = listing.postedAt;
+    aggregate.firstPostedTime = postedTime;
+  }
+
+  if (postedTime > aggregate.lastPostedTime) {
+    aggregate.lastPostedAt = listing.postedAt;
+    aggregate.lastPostedTime = postedTime;
+    aggregate.latestSourceTweetUrl = listing.sourceTweetUrl;
+  }
+}
+
+function addUniqueValue<T>(
+  valueSet: Set<T>,
+  samples: T[],
+  value: T,
+  sampleLimit: number,
+) {
+  if (valueSet.has(value)) {
+    return;
+  }
+
+  valueSet.add(value);
+  if (samples.length < sampleLimit) {
+    samples.push(value);
+  }
+}
+
+function toSellerDirectoryRow(
+  aggregate: SellerDirectoryAggregate,
+  generatedTime: number,
+): MlsSellerDirectoryRow {
+  const salePostCount = aggregate.sourceTweetSet.size;
+  const domainCount = aggregate.domainSet.size;
+  const activeDays = Math.max(
+    1,
+    Math.ceil((aggregate.lastPostedTime - aggregate.firstPostedTime) / DAY_MS) +
+      1,
+  );
+  const daysSinceLastPost = Math.max(
+    0,
+    Math.floor((generatedTime - aggregate.lastPostedTime) / DAY_MS),
+  );
+
+  return {
+    priority: resolveSellerPriority(salePostCount, daysSinceLastPost),
+    handle: aggregate.handle,
+    displayName: aggregate.displayName,
+    profileUrl: `https://x.com/${aggregate.slug}`,
+    listingUrl: `/feed/platform/twitter/users/${encodeURIComponent(aggregate.slug)}`,
+    salePostCount,
+    domainCount,
+    postsPerWeek: round(salePostCount / (activeDays / 7), 2),
+    domainsPerPost: round(domainCount / salePostCount, 2),
+    purchaseUrlCount: aggregate.purchaseUrlCount,
+    daysSinceLastPost,
+    activeDays,
+    firstPostedAt: aggregate.firstPostedAt,
+    lastPostedAt: aggregate.lastPostedAt,
+    latestSourceTweetUrl: aggregate.latestSourceTweetUrl,
+    sampleDomains: aggregate.sampleDomains,
+    sourceTweetUrls: aggregate.sourceTweetUrls,
+  };
+}
+
+function resolveSellerPriority(
+  salePostCount: number,
+  daysSinceLastPost: number,
+) {
+  const activeWithin7Days = daysSinceLastPost <= 7;
+  const activeWithin30Days = daysSinceLastPost <= 30;
+
+  if (
+    (activeWithin7Days && salePostCount >= 5) ||
+    (activeWithin30Days && salePostCount >= 10)
+  ) {
+    return 'P0';
+  }
+
+  if (salePostCount >= 10 || (activeWithin30Days && salePostCount >= 3)) {
+    return 'P1';
+  }
+
+  return 'P2';
+}
+
+function compareSellerDirectoryRows(
+  left: MlsSellerDirectoryRow,
+  right: MlsSellerDirectoryRow,
+  sortBy: MlsSellerDirectorySortBy,
+  sortOrder: MlsSellerDirectorySortOrder,
+) {
+  const direction = sortOrder === 'asc' ? 1 : -1;
+  const primaryComparison =
+    getSellerDirectorySortValue(left, sortBy) -
+    getSellerDirectorySortValue(right, sortBy);
+
+  if (primaryComparison !== 0) {
+    return primaryComparison * direction;
+  }
+
+  return (
+    right.salePostCount - left.salePostCount ||
+    right.domainCount - left.domainCount ||
+    getSellerDirectorySortValue(right, 'recent') -
+      getSellerDirectorySortValue(left, 'recent') ||
+    left.handle.localeCompare(right.handle)
+  );
+}
+
+function getSellerDirectorySortValue(
+  row: MlsSellerDirectoryRow,
+  sortBy: MlsSellerDirectorySortBy,
+) {
+  switch (sortBy) {
+    case 'domains':
+      return row.domainCount;
+    case 'recent':
+      return parseDateTime(row.lastPostedAt) ?? 0;
+    case 'cadence':
+      return row.postsPerWeek;
+    case 'salePosts':
+      return row.salePostCount;
+  }
+}
+
+function encodeSellerDirectoryCursor(offset: number, snapshotId: number) {
+  return Buffer.from(JSON.stringify({ offset, snapshotId }), 'utf8').toString(
+    'base64url',
+  );
+}
+
+function decodeSellerDirectoryCursor(value: string | null | undefined) {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    const payload = JSON.parse(
+      Buffer.from(value, 'base64url').toString('utf8'),
+    ) as { offset?: unknown; snapshotId?: unknown };
+
+    if (
+      typeof payload.offset !== 'number' ||
+      !Number.isInteger(payload.offset) ||
+      payload.offset < 0 ||
+      typeof payload.snapshotId !== 'number' ||
+      !Number.isSafeInteger(payload.snapshotId) ||
+      payload.snapshotId < 0
+    ) {
+      return null;
+    }
+
+    return {
+      offset: payload.offset,
+      snapshotId: payload.snapshotId,
+    } satisfies SellerDirectoryCursor;
+  } catch {
+    return null;
+  }
+}
+
+function parseDateTime(value: string) {
+  const time = Date.parse(value);
+  return Number.isNaN(time) ? null : time;
+}
+
+function normalizeNullableText(value: string | null | undefined) {
+  const normalized = value?.trim();
+  return normalized ? normalized : null;
+}
+
+function round(value: number, decimals: number) {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
 }
 
 function normalizeDomainSearchResponse(

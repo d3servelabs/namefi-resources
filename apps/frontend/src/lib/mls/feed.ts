@@ -43,8 +43,46 @@ export interface MlsSalesByHandlePage {
   totalDomains: number;
 }
 
+export type MlsSellerPriority = 'P0' | 'P1' | 'P2';
+export type MlsSellerDirectorySortBy =
+  | 'salePosts'
+  | 'domains'
+  | 'recent'
+  | 'cadence';
+export type MlsSellerDirectorySortOrder = 'asc' | 'desc';
+
+export interface MlsSellerDirectoryRow {
+  priority: MlsSellerPriority;
+  handle: string;
+  displayName: string | null;
+  profileUrl: string;
+  listingUrl: string;
+  salePostCount: number;
+  domainCount: number;
+  postsPerWeek: number;
+  domainsPerPost: number;
+  purchaseUrlCount: number;
+  daysSinceLastPost: number;
+  activeDays: number;
+  firstPostedAt: string;
+  lastPostedAt: string;
+  latestSourceTweetUrl: string;
+  sampleDomains: string[];
+  sourceTweetUrls: string[];
+}
+
+export interface MlsSellerDirectoryPage {
+  rows: MlsSellerDirectoryRow[];
+  nextCursor: string | null;
+  hasMore: boolean;
+  limit: number;
+  total: number;
+  generatedAt: string;
+}
+
 export const DEFAULT_MLS_FEED_LIMIT = 20;
 export const MAX_MLS_FEED_LIMIT = 50;
+export const DEFAULT_MLS_SELLER_MIN_POSTS = 10;
 const TRAILING_SLASHES_PATTERN = /\/+$/;
 export const MLS_FEED_RSS_PATH = buildMlsFeedRssUrl();
 

@@ -8,9 +8,11 @@ import {
   RefreshCcw,
   Rss,
   Search,
+  Users,
   X,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
 import {
@@ -280,6 +282,14 @@ function MlsFeedHeader({
           </h1>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/feed/platform/twitter/users"
+            className={buttonVariants({ variant: 'secondary' })}
+          >
+            <Users data-icon="inline-start" />
+            Users
+          </Link>
+
           <a
             href={MLS_FEED_RSS_PATH}
             target="_blank"
@@ -363,6 +373,13 @@ function MlsFeedControls({
               Namefi Feed
             </p>
             <div className="flex shrink-0 items-center gap-2">
+              <Link
+                href="/feed/platform/twitter/users"
+                className={buttonVariants({ variant: 'secondary', size: 'sm' })}
+              >
+                <Users data-icon="inline-start" />
+                Users
+              </Link>
               <a
                 href={MLS_FEED_RSS_PATH}
                 target="_blank"

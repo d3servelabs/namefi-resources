@@ -25,6 +25,7 @@ import { createContract } from './create-contract';
 
 export const DEFAULT_MLS_FEED_LIMIT = 20;
 export const MAX_MLS_FEED_LIMIT = 50;
+export const DEFAULT_MLS_SELLER_MIN_POSTS = 10;
 
 export const mlsListingReportReasons = [
   'already_sold',
@@ -83,6 +84,85 @@ export const mlsFeedPageSchema = z.object({
 });
 
 export type MlsFeedPage = z.infer<typeof mlsFeedPageSchema>;
+
+// ---------------------------------------------------------------------------
+// getSellers
+// ---------------------------------------------------------------------------
+
+export const mlsSellerDirectorySortBySchema = z.enum([
+  'salePosts',
+  'domains',
+  'recent',
+  'cadence',
+]);
+
+export const mlsSellerDirectorySortOrderSchema = z.enum(['asc', 'desc']);
+
+export const mlsSellerPrioritySchema = z.enum(['P0', 'P1', 'P2']);
+
+export const mlsSellerDirectoryInputSchema = z.object({
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(MAX_MLS_FEED_LIMIT)
+    .optional()
+    .default(DEFAULT_MLS_FEED_LIMIT),
+  cursor: z.string().trim().min(1).nullish(),
+  query: z.string().trim().max(120).nullish(),
+  tld: z.string().trim().max(191).nullish(),
+  minSalePosts: z
+    .number()
+    .int()
+    .min(1)
+    .max(500)
+    .optional()
+    .default(DEFAULT_MLS_SELLER_MIN_POSTS),
+  activeWithinDays: z.number().int().min(1).max(365).nullish(),
+  sortBy: mlsSellerDirectorySortBySchema.optional().default('salePosts'),
+  sortOrder: mlsSellerDirectorySortOrderSchema.optional().default('desc'),
+});
+
+export const mlsSellerDirectoryRowSchema = z.object({
+  priority: mlsSellerPrioritySchema,
+  handle: z.string().min(1),
+  displayName: z.string().nullable(),
+  profileUrl: z.string().min(1),
+  listingUrl: z.string().min(1),
+  salePostCount: z.number().int().nonnegative(),
+  domainCount: z.number().int().nonnegative(),
+  postsPerWeek: z.number().nonnegative(),
+  domainsPerPost: z.number().nonnegative(),
+  purchaseUrlCount: z.number().int().nonnegative(),
+  daysSinceLastPost: z.number().int().nonnegative(),
+  activeDays: z.number().int().positive(),
+  firstPostedAt: z.string().min(1),
+  lastPostedAt: z.string().min(1),
+  latestSourceTweetUrl: z.string().min(1),
+  sampleDomains: z.array(z.string().min(1)),
+  sourceTweetUrls: z.array(z.string().min(1)),
+});
+
+export const mlsSellerDirectoryPageSchema = z.object({
+  rows: z.array(mlsSellerDirectoryRowSchema),
+  nextCursor: z.string().nullable(),
+  hasMore: z.boolean(),
+  limit: z.number().int().positive(),
+  total: z.number().int().nonnegative(),
+  generatedAt: z.string().min(1),
+});
+
+export type MlsSellerDirectorySortBy = z.infer<
+  typeof mlsSellerDirectorySortBySchema
+>;
+export type MlsSellerDirectorySortOrder = z.infer<
+  typeof mlsSellerDirectorySortOrderSchema
+>;
+export type MlsSellerPriority = z.infer<typeof mlsSellerPrioritySchema>;
+export type MlsSellerDirectoryRow = z.infer<typeof mlsSellerDirectoryRowSchema>;
+export type MlsSellerDirectoryPage = z.infer<
+  typeof mlsSellerDirectoryPageSchema
+>;
 
 // ---------------------------------------------------------------------------
 // getHandleListings
@@ -161,6 +241,12 @@ export const mlsContract = createContract(
       type: 'query',
       input: mlsFeedInputSchema,
       output: mlsFeedPageSchema,
+    },
+
+    getSellers: {
+      type: 'query',
+      input: mlsSellerDirectoryInputSchema,
+      output: mlsSellerDirectoryPageSchema,
     },
 
     getHandleListings: {
