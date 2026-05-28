@@ -119,7 +119,7 @@ const FOOTER_SECTIONS: Array<{
         href: '/r/en/blog/why-tokenize-domains',
       },
       {
-        label: 'DNS on Tokenize Domains',
+        label: 'DNS on Tokenized Domains',
         href: '/r/en/blog/dns-on-tokenized-domains',
       },
       {
