@@ -103,7 +103,7 @@ const animationFormSchema = baseFormSchema
       if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Choose a sheet-guided animation model',
+          message: 'Choose a Seedance model',
           path: ['model'],
         });
       }
@@ -122,7 +122,7 @@ const animationFormSchema = baseFormSchema
     if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Choose a looped animation model',
+        message: 'Choose a looped model',
         path: ['model'],
       });
     }

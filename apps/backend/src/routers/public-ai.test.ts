@@ -53,7 +53,6 @@ vi.mock('@namefi-astra/ai', () => ({
   DIGEST_ANIMATION_MODEL_IDS: [
     'bytedance/seedance-2.0',
     'bytedance/seedance-2.0-fast',
-    'gemini-omni-flash',
   ],
   DIGEST_ANIMATION_SHEET_MODEL_IDS: ['gpt-image-2'],
   LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
@@ -227,37 +226,6 @@ describe('publicAiRouter digest animation workflow lifecycle', () => {
           sourceImageMimeType: 'image/png',
           sourceImageStoragePath: 'animations/sales-digest/source-new',
         }),
-      }),
-    );
-  });
-
-  it('accepts Gemini Omni for public digest animation workflows', async () => {
-    mockTemporalHandle({
-      describe: vi
-        .fn()
-        .mockRejectedValue(
-          workflowNotFound('public-digest-animation-request-gemini'),
-        ),
-    });
-
-    const response = await postDigestAnimation(
-      createRouterApp('request-gemini'),
-      {
-        ...validDigestBody,
-        model: 'gemini-omni-flash',
-      },
-    );
-
-    expect(response.status).toBe(202);
-    expect(mockWorkflowStart).toHaveBeenCalledWith(
-      expect.any(Function),
-      expect.objectContaining({
-        args: [
-          expect.objectContaining({
-            model: 'gemini-omni-flash',
-            sheetModel: 'gpt-image-2',
-          }),
-        ],
       }),
     );
   });

@@ -63,7 +63,6 @@ const productionConfig: ConfigInput = {
       models: {
         'veo-3.1-generate-preview': 8,
         'veo-3.1-fast-generate-preview': 4,
-        'gemini-omni-flash': 8,
         'bytedance/seedance-2.0': 3,
         'bytedance/seedance-2.0-fast': 2,
         'bytedance/seedance-v1.0-pro': 3,
@@ -75,7 +74,6 @@ const productionConfig: ConfigInput = {
           models: {
             'bytedance/seedance-2.0': 7,
             'bytedance/seedance-2.0-fast': 6,
-            'gemini-omni-flash': 8,
             'bytedance/seedance-v1.0-pro': 6,
             'bytedance/seedance-v1.5-pro': 6,
           },

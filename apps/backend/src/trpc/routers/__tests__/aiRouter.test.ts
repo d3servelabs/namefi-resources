@@ -53,7 +53,6 @@ vi.mock('#lib/env', () => ({
         models: {
           'veo-3.1-generate-preview': 8,
           'veo-3.1-fast-generate-preview': 4,
-          'gemini-omni-flash': 8,
           'bytedance/seedance-2.0': 3,
           'bytedance/seedance-2.0-fast': 2,
           'bytedance/seedance-v1.0-pro': 3,
@@ -65,7 +64,6 @@ vi.mock('#lib/env', () => ({
             models: {
               'bytedance/seedance-2.0': 7,
               'bytedance/seedance-2.0-fast': 6,
-              'gemini-omni-flash': 8,
             },
           },
         },
@@ -117,7 +115,6 @@ vi.mock('@namefi-astra/ai', () => ({
   CINEMATIC_ANIMATION_MODEL_IDS: [
     'veo-3.1-generate-preview',
     'veo-3.1-fast-generate-preview',
-    'gemini-omni-flash',
   ],
   CINEMATIC_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'orbital-reveal'],
   LOGO_STYLE_INPUT_IDS: ['let-ai-choose'],
@@ -127,7 +124,6 @@ vi.mock('@namefi-astra/ai', () => ({
   LOOPED_ANIMATION_MODEL_IDS: [
     'bytedance/seedance-2.0',
     'bytedance/seedance-2.0-fast',
-    'gemini-omni-flash',
     'bytedance/seedance-v1.5-pro',
     'bytedance/seedance-v1.0-pro',
   ],
@@ -348,37 +344,6 @@ describe('generateAnimationInputSchema', () => {
     );
   });
 
-  it('accepts Gemini Omni for cinematic and sheet-guided animation inputs', () => {
-    expect(
-      generateAnimationInputSchema.parse({
-        mode: 'cinematic',
-        domain: 'example.com',
-        referenceLogoGenerationId: 'logo-1',
-        model: 'gemini-omni-flash',
-      }),
-    ).toEqual(
-      expect.objectContaining({
-        mode: 'cinematic',
-        model: 'gemini-omni-flash',
-      }),
-    );
-
-    expect(
-      generateAnimationInputSchema.parse({
-        mode: 'sheet-guided',
-        domain: 'example.com',
-        referenceLogoGenerationId: 'logo-1',
-        model: 'gemini-omni-flash',
-      }),
-    ).toEqual(
-      expect.objectContaining({
-        mode: 'sheet-guided',
-        model: 'gemini-omni-flash',
-        sheetModel: 'gpt-image-2',
-      }),
-    );
-  });
-
   it('rejects cross-mode field combinations', () => {
     expect(() =>
       generateAnimationInputSchema.parse({
@@ -509,13 +474,6 @@ describe('AI generation credit costs', () => {
         type: 'animation',
         mode: 'cinematic',
         model: 'veo-3.1-generate-preview',
-      }),
-    ).toBe(8);
-    expect(
-      getAiGenerationCreditCost({
-        type: 'animation',
-        mode: 'sheet-guided',
-        model: 'gemini-omni-flash',
       }),
     ).toBe(8);
   });

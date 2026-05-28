@@ -28,7 +28,6 @@ const creditCosts = {
     default: 3,
     models: {
       'veo-3.1-generate-preview': 8,
-      'gemini-omni-flash': 8,
       'bytedance/seedance-2.0': 3,
       'bytedance/seedance-2.0-fast': 2,
     },
@@ -38,7 +37,6 @@ const creditCosts = {
         models: {
           'bytedance/seedance-2.0': 7,
           'bytedance/seedance-2.0-fast': 6,
-          'gemini-omni-flash': 8,
         },
       },
     },
@@ -119,14 +117,6 @@ describe('getAiGenerationCreditCost', () => {
         creditCosts,
         type: 'animation',
         model: 'veo-3.1-generate-preview',
-      }),
-    ).toBe(8);
-    expect(
-      getAiGenerationCreditCost({
-        creditCosts,
-        type: 'animation',
-        mode: 'sheet-guided',
-        model: 'gemini-omni-flash',
       }),
     ).toBe(8);
   });

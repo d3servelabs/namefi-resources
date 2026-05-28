@@ -1,5 +1,4 @@
 import { createOpenAI } from '@ai-sdk/openai';
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createGateway, experimental_generateVideo, ToolLoopAgent } from 'ai';
 import type { LanguageModelUsage } from 'ai';
 import {
@@ -11,7 +10,6 @@ import {
 import { z } from 'zod';
 import { secrets } from '../env';
 import { createRunId } from '../utils/files';
-import { isGeminiOmniAnimationModel } from '../types/generation';
 
 const IMAGE_GENERATION_TOOL = 'image_generation' as const;
 const DIGEST_ANIMATION_DURATION_SECONDS = 8;
@@ -23,7 +21,6 @@ const DATA_URL_PATTERN =
 export const DIGEST_ANIMATION_MODEL_IDS = [
   'bytedance/seedance-2.0',
   'bytedance/seedance-2.0-fast',
-  'gemini-omni-flash',
 ] as const;
 
 export const DIGEST_ANIMATION_SHEET_MODEL_IDS = ['gpt-image-2'] as const;
@@ -33,10 +30,6 @@ const digestAnimationSheetModelEnum = z.enum(DIGEST_ANIMATION_SHEET_MODEL_IDS);
 
 const openai = createOpenAI({
   apiKey: secrets.OPENAI_API_KEY,
-});
-
-const google = createGoogleGenerativeAI({
-  apiKey: secrets.GEMINI_API_KEY,
 });
 
 const gateway = createGateway({
@@ -180,34 +173,6 @@ function normalizeBase64Data(value: string): string {
 function normalizeImageBase64(value: string): string {
   const match = value.trim().match(DATA_URL_PATTERN);
   return normalizeBase64Data(match?.[2] ?? value);
-}
-
-function buildGoogleReferenceImage(input: {
-  image: Buffer | string;
-  mediaType?: string;
-  referenceType?: 'asset' | 'style';
-}) {
-  return {
-    image: {
-      bytesBase64Encoded:
-        typeof input.image === 'string'
-          ? normalizeImageBase64(input.image)
-          : input.image.toString('base64'),
-      mimeType: input.mediaType ?? 'image/png',
-    },
-    referenceType: input.referenceType ?? 'asset',
-  };
-}
-
-function buildGoogleVideoProviderOptions(input: {
-  referenceImages?: Array<ReturnType<typeof buildGoogleReferenceImage>>;
-}) {
-  return {
-    pollTimeoutMs: DIGEST_ANIMATION_VIDEO_POLL_TIMEOUT_MS,
-    ...(input.referenceImages?.length
-      ? { referenceImages: input.referenceImages }
-      : {}),
-  };
 }
 
 function buildDomainLine(domains: ReadonlyArray<string>): string {
@@ -487,32 +452,14 @@ async function runDigestAnimationWorkflowWithSource({
     summary: input.summary,
   });
   const referenceImages = [uploadedSource.url, uploadedSheet.url];
-  const usesGoogleVideo = isGeminiOmniAnimationModel(input.model);
   const generated = await experimental_generateVideo({
-    model: usesGoogleVideo
-      ? google.video(input.model)
-      : gateway.video(input.model),
+    model: gateway.video(input.model),
     prompt,
     aspectRatio: DIGEST_ANIMATION_ASPECT_RATIO,
     duration: DIGEST_ANIMATION_DURATION_SECONDS,
-    providerOptions: usesGoogleVideo
-      ? {
-          google: buildGoogleVideoProviderOptions({
-            referenceImages: [
-              buildGoogleReferenceImage({
-                image: sourceImage.bytes,
-                mediaType: sourceImage.mimeType,
-              }),
-              buildGoogleReferenceImage({
-                image: generatedSheet.imageBase64,
-                mediaType: 'image/png',
-              }),
-            ],
-          }),
-        }
-      : {
-          bytedance: buildSeedanceProviderOptions({ referenceImages }),
-        },
+    providerOptions: {
+      bytedance: buildSeedanceProviderOptions({ referenceImages }),
+    },
     abortSignal: options.abortSignal,
   }).catch((error) => {
     const generationError = new Error(

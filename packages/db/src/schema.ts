@@ -1029,15 +1029,13 @@ type LeadgenMetadata = Record<string, unknown>;
 
 type CinematicAnimationModel =
   | 'veo-3.1-generate-preview'
-  | 'veo-3.1-fast-generate-preview'
-  | 'gemini-omni-flash';
+  | 'veo-3.1-fast-generate-preview';
 
 type LoopedAnimationModel =
   | 'bytedance/seedance-2.0'
   | 'bytedance/seedance-2.0-fast'
   | 'bytedance/seedance-v1.5-pro'
-  | 'bytedance/seedance-v1.0-pro'
-  | 'gemini-omni-flash';
+  | 'bytedance/seedance-v1.0-pro';
 
 type AnimationModel = CinematicAnimationModel | LoopedAnimationModel;
 
