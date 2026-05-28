@@ -69,6 +69,10 @@ We do not hire based on your gender, age, race, ability or physical challenge, o
 
 We do not restrict schools or prior career paths. We take candidates from non-traditional backgrounds, career switchers, self-taught builders, and anyone who can demonstrate they have what it takes.
 
+## Legal and Compliance
+
+Namefi is a Delaware-incorporated company. All hiring is conducted in accordance with US federal and Delaware state law. We hire globally — we do not care where you are located, so long as your engagement is compliant with applicable regulations.
+
 ---
 
 ## Language
