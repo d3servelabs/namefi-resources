@@ -4,10 +4,10 @@ Namefi is an ICANN-accredited registrar tokenizing internet domain names for tra
 
 ### Learn about our industry
 
-- [What is a Domain?](/r/en/blog/what-is-domain)
-- [What are Tokenized Domains?](/r/en/blog/what-are-tokenized-domains)
-- [Why Tokenize Domains?](/r/en/blog/why-tokenize-domains)
-- [DNS on Tokenized Domains](/r/en/blog/dns-on-tokenized-domains)
-- [DNS is the Control Plane](/r/en/blog/dns-is-the-control-plane)
-- [How to Tokenize Your .com](/r/en/blog/how-to-tokenize-your-com)
-- [Tokenized Domain vs Web3 Domain](/r/en/blog/tokenized-domain-vs-web3-domain)
+- [What is a Domain?](/en/blog/what-is-domain)
+- [What are Tokenized Domains?](/en/blog/what-are-tokenized-domains)
+- [Why Tokenize Domains?](/en/blog/why-tokenize-domains)
+- [DNS on Tokenized Domains](/en/blog/dns-on-tokenized-domains)
+- [DNS is the Control Plane](/en/blog/dns-is-the-control-plane)
+- [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com)
+- [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain)
