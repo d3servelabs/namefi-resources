@@ -721,7 +721,7 @@ function toSellerDirectoryRow(
     handle: aggregate.handle,
     displayName: aggregate.displayName,
     profileUrl: `https://x.com/${aggregate.slug}`,
-    listingUrl: `/feed/platform/twitter/users/${encodeURIComponent(aggregate.slug)}`,
+    listingUrl: `/feed/users/${encodeURIComponent(aggregate.slug)}`,
     salePostCount,
     domainCount,
     postsPerWeek: round(salePostCount / (activeDays / 7), 2),

@@ -27,7 +27,6 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Button,
   buttonVariants,
@@ -58,7 +57,6 @@ import {
   type MlsSellerDirectoryRow,
   type MlsSellerDirectorySortBy,
   type MlsSellerDirectorySortOrder,
-  type MlsSellerPriority,
 } from '@/lib/mls/feed';
 import { useTRPCClient } from '@/lib/trpc';
 
@@ -71,11 +69,12 @@ const SKELETON_KEYS = [
 ] as const;
 const DEFAULT_USERS_MIN_POSTS = 1;
 const DEFAULT_USERS_ACTIVE_WITHIN_DAYS: number | null = null;
-const SELLER_TABLE_ROW_HEIGHT = 88;
+const SELLER_TABLE_ROW_HEIGHT = 72;
 const VIRTUAL_OVERSCAN_ROWS = 4;
 const MIN_POST_OPTIONS = [1, 3, 5, 10, 20] as const;
+const DEFAULT_USERS_SORT_BY: MlsSellerDirectorySortBy = 'domains';
+const DEFAULT_USERS_SORT_ORDER: MlsSellerDirectorySortOrder = 'desc';
 const CSV_HEADERS = [
-  'priority',
   'handle',
   'display_name',
   'profile_url',
@@ -181,9 +180,9 @@ export function MlsSellersDirectory() {
     try {
       const rows = await fetchAllMatchingSellerRows(trpcClient, filters);
       downloadMlsSellerDirectoryCsv(rows, filters);
-      toast.success('Twitter users CSV exported');
+      toast.success('Users CSV exported');
     } catch (csvError) {
-      toast.error('Could not export Twitter users CSV', {
+      toast.error('Could not export users CSV', {
         description:
           csvError instanceof Error ? csvError.message : 'Please try again.',
       });
@@ -242,9 +241,12 @@ function useMlsSellerDirectoryFilters() {
   const [activeWithinDays, setActiveWithinDays] = useState<number | null>(
     DEFAULT_USERS_ACTIVE_WITHIN_DAYS,
   );
-  const [sortBy, setSortBy] = useState<MlsSellerDirectorySortBy>('salePosts');
-  const [sortOrder, setSortOrder] =
-    useState<MlsSellerDirectorySortOrder>('desc');
+  const [sortBy, setSortBy] = useState<MlsSellerDirectorySortBy>(
+    DEFAULT_USERS_SORT_BY,
+  );
+  const [sortOrder, setSortOrder] = useState<MlsSellerDirectorySortOrder>(
+    DEFAULT_USERS_SORT_ORDER,
+  );
   const debouncedSearchInput = useDebouncedValue(
     searchInput,
     SELLER_FILTER_DEBOUNCE_MS,
@@ -268,8 +270,8 @@ function useMlsSellerDirectoryFilters() {
         typeof updater === 'function' ? updater(sorting) : updater;
       const nextSort = nextSorting[0];
       if (!nextSort) {
-        setSortBy('salePosts');
-        setSortOrder('desc');
+        setSortBy(DEFAULT_USERS_SORT_BY);
+        setSortOrder(DEFAULT_USERS_SORT_ORDER);
         return;
       }
 
@@ -287,15 +289,15 @@ function useMlsSellerDirectoryFilters() {
     setSearchInput('');
     setMinSalePosts(DEFAULT_USERS_MIN_POSTS);
     setActiveWithinDays(DEFAULT_USERS_ACTIVE_WITHIN_DAYS);
-    setSortBy('salePosts');
-    setSortOrder('desc');
+    setSortBy(DEFAULT_USERS_SORT_BY);
+    setSortOrder(DEFAULT_USERS_SORT_ORDER);
   }, []);
   const hasVisibleFilters = Boolean(
     searchInput.trim() ||
       minSalePosts !== DEFAULT_USERS_MIN_POSTS ||
       activeWithinDays !== DEFAULT_USERS_ACTIVE_WITHIN_DAYS ||
-      sortBy !== 'salePosts' ||
-      sortOrder !== 'desc',
+      sortBy !== DEFAULT_USERS_SORT_BY ||
+      sortOrder !== DEFAULT_USERS_SORT_ORDER,
   );
 
   return {
@@ -350,9 +352,7 @@ function MlsSellersHeader({
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <Users className="size-5 text-primary" />
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Twitter users
-            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
           </div>
           <p className="text-sm text-muted-foreground">
             {isLoading
@@ -459,7 +459,7 @@ function MlsSellersControls({
             <SelectTrigger
               size="sm"
               className="w-[8.75rem] bg-background"
-              aria-label="Minimum sale posts"
+              aria-label="Minimum posts"
             >
               <SelectValue>{getMinPostsLabel(minSalePosts)}</SelectValue>
             </SelectTrigger>
@@ -587,7 +587,7 @@ function MlsSellersTable({
         ref={virtualRows.containerRef}
         className="h-[min(44rem,calc(100vh-17rem))] min-h-[26rem] overflow-auto"
       >
-        <Table className="min-w-[68rem]">
+        <Table className="min-w-[56rem]">
           <TableHeader className="sticky top-0 z-10 bg-background">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-transparent">
@@ -647,7 +647,7 @@ function MlsSellersTable({
             {visibleRows.map((row) => (
               <TableRow
                 key={row.id}
-                className="h-[88px]"
+                className="h-[72px]"
                 style={{ height: SELLER_TABLE_ROW_HEIGHT }}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -718,32 +718,6 @@ function useMlsSellerColumns() {
         header: 'User',
         cell: ({ row }) => <SellerIdentityCell seller={row.original} />,
         enableSorting: false,
-      },
-      {
-        accessorKey: 'priority',
-        header: 'Priority',
-        cell: ({ row }) => (
-          <Badge
-            variant="outline"
-            className={getPriorityBadgeClassName(row.original.priority)}
-          >
-            {row.original.priority}
-          </Badge>
-        ),
-        enableSorting: false,
-      },
-      {
-        id: 'salePosts',
-        accessorFn: (seller) => seller.salePostCount,
-        header: ({ column }) => (
-          <SellerSortableHeader column={column} label="Sale posts" />
-        ),
-        cell: ({ row }) => (
-          <SellerMetricCell
-            value={row.original.salePostCount}
-            detail={`${row.original.sourceTweetUrls.length.toLocaleString()} posts`}
-          />
-        ),
       },
       {
         id: 'domains',
@@ -824,41 +798,19 @@ function SellerSortableHeader({
 }
 
 function SellerIdentityCell({ seller }: { seller: MlsSellerDirectoryRow }) {
-  const sampleDomains = seller.sampleDomains.slice(0, 3);
-  const remainingDomains = Math.max(
-    0,
-    seller.domainCount - sampleDomains.length,
-  );
-
   return (
-    <div className="flex min-w-0 flex-col gap-1.5">
-      <div className="flex min-w-0 items-center gap-2">
-        <Link
-          href={seller.listingUrl as Route}
-          className="min-w-0 truncate font-medium text-foreground transition-colors hover:text-primary hover:underline"
-        >
-          {seller.handle}
-        </Link>
-        {seller.displayName ? (
-          <span className="min-w-0 truncate text-xs text-muted-foreground">
-            {seller.displayName}
-          </span>
-        ) : null}
-      </div>
-
-      <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
-        {sampleDomains.map((domain) => (
-          <span
-            key={domain}
-            className="max-w-32 truncate rounded border border-border/70 bg-muted/30 px-1.5 py-0.5 font-mono"
-          >
-            {domain}
-          </span>
-        ))}
-        {remainingDomains > 0 ? (
-          <span className="shrink-0">+{remainingDomains.toLocaleString()}</span>
-        ) : null}
-      </div>
+    <div className="flex min-w-0 flex-col gap-1">
+      <Link
+        href={seller.listingUrl as Route}
+        className="min-w-0 truncate font-medium text-foreground transition-colors hover:text-primary hover:underline"
+      >
+        {seller.handle}
+      </Link>
+      {seller.displayName ? (
+        <span className="min-w-0 truncate text-xs text-muted-foreground">
+          {seller.displayName}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -914,8 +866,7 @@ function getSellerTableHeadClassName(columnId: string) {
   return cn(
     'bg-background px-3 text-xs text-muted-foreground uppercase',
     columnId === 'seller' && 'min-w-[22rem] pl-4',
-    columnId === 'priority' && 'w-[7rem]',
-    ['salePosts', 'domains', 'cadence', 'recent'].includes(columnId) &&
+    ['domains', 'cadence', 'recent'].includes(columnId) &&
       'w-[8.5rem] text-right',
     columnId === 'actions' && 'w-[13rem] pr-4 text-right',
   );
@@ -923,10 +874,9 @@ function getSellerTableHeadClassName(columnId: string) {
 
 function getSellerTableCellClassName(columnId: string) {
   return cn(
-    'h-[88px] px-3 py-2',
+    'h-[72px] px-3 py-2',
     columnId === 'seller' && 'max-w-[24rem] pl-4',
-    ['salePosts', 'domains', 'cadence', 'recent'].includes(columnId) &&
-      'text-right',
+    ['domains', 'cadence', 'recent'].includes(columnId) && 'text-right',
     columnId === 'actions' && 'pr-4 text-right',
   );
 }
@@ -1017,21 +967,15 @@ function MlsSellersSkeletonRows({ columnCount }: { columnCount: number }) {
       {SKELETON_KEYS.map((key) => (
         <TableRow
           key={key}
-          className="h-[88px]"
+          className="h-[72px]"
           style={{ height: SELLER_TABLE_ROW_HEIGHT }}
         >
           <TableCell colSpan={columnCount} className="px-4 py-3">
-            <div className="grid grid-cols-[minmax(16rem,1fr)_5rem_repeat(4,7rem)_11rem] items-center gap-4">
+            <div className="grid grid-cols-[minmax(16rem,1fr)_repeat(3,7rem)_11rem] items-center gap-4">
               <div className="flex min-w-0 flex-col gap-2">
                 <Skeleton className="h-4 w-36" />
-                <div className="flex gap-1.5">
-                  <Skeleton className="h-5 w-20" />
-                  <Skeleton className="h-5 w-24" />
-                  <Skeleton className="h-5 w-16" />
-                </div>
+                <Skeleton className="h-3 w-28" />
               </div>
-              <Skeleton className="h-6 w-10 rounded-full" />
-              <Skeleton className="h-8 w-16 justify-self-end" />
               <Skeleton className="h-8 w-16 justify-self-end" />
               <Skeleton className="h-8 w-16 justify-self-end" />
               <Skeleton className="h-8 w-16 justify-self-end" />
@@ -1125,8 +1069,6 @@ function getMlsSellerDirectoryCsvValue(
   header: (typeof CSV_HEADERS)[number],
 ) {
   switch (header) {
-    case 'priority':
-      return row.priority;
     case 'handle':
       return row.handle;
     case 'display_name':
@@ -1178,7 +1120,7 @@ function buildMlsSellerDirectoryCsvFilename(
   filters: AppliedMlsSellerDirectoryFilters,
 ) {
   const parts = [
-    'namefi-twitter-users',
+    'namefi-feed-users',
     `sort-${filters.sortBy}-${filters.sortOrder}`,
     `minposts-${filters.minSalePosts}`,
     `active-${filters.activeWithinDays ?? 'any'}`,
@@ -1234,15 +1176,4 @@ function formatGeneratedAt(value: string) {
     hour: 'numeric',
     minute: '2-digit',
   });
-}
-
-function getPriorityBadgeClassName(priority: MlsSellerPriority) {
-  switch (priority) {
-    case 'P0':
-      return 'border-emerald-400/40 bg-emerald-500/10 text-emerald-300';
-    case 'P1':
-      return 'border-amber-400/40 bg-amber-500/10 text-amber-300';
-    case 'P2':
-      return 'border-sky-400/40 bg-sky-500/10 text-sky-300';
-  }
 }

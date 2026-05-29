@@ -34,5 +34,5 @@ export function getMlsHandlePath(handle: string | null): string | null {
     return null;
   }
 
-  return `/feed/platform/twitter/users/${encodeURIComponent(slug)}`;
+  return `/feed/users/${encodeURIComponent(slug)}`;
 }

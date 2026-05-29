@@ -3,14 +3,13 @@ import { AdminGuard } from '@/components/admin/admin-guard';
 import { MlsSellersDirectory } from '@/components/mls/mls-sellers-directory';
 
 export const metadata: Metadata = {
-  title: 'Twitter Users | Namefi Feed',
-  description:
-    'Rank, filter, and export Twitter users who post domains for sale.',
+  title: 'Users | Namefi Feed',
+  description: 'Rank, filter, and export users who post domains for sale.',
 };
 
-export default function MlsTwitterUsersPage() {
+export default function MlsFeedUsersPage() {
   return (
-    <AdminGuard accessDeniedMessage="Admin access is required for the Twitter users index.">
+    <AdminGuard accessDeniedMessage="Admin access is required for the users index.">
       <MlsSellersDirectory />
     </AdminGuard>
   );

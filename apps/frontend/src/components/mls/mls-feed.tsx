@@ -14,6 +14,8 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Permission } from '@namefi-astra/utils/permissions';
+import { PermissionGate } from '@/components/access/PermissionGate';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
 import {
   Button,
@@ -282,13 +284,15 @@ function MlsFeedHeader({
           </h1>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href="/feed/platform/twitter/users"
-            className={buttonVariants({ variant: 'secondary' })}
-          >
-            <Users data-icon="inline-start" />
-            Users
-          </Link>
+          <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
+            <Link
+              href="/feed/users"
+              className={buttonVariants({ variant: 'secondary' })}
+            >
+              <Users data-icon="inline-start" />
+              Users
+            </Link>
+          </PermissionGate>
 
           <a
             href={MLS_FEED_RSS_PATH}
@@ -373,13 +377,18 @@ function MlsFeedControls({
               Namefi Feed
             </p>
             <div className="flex shrink-0 items-center gap-2">
-              <Link
-                href="/feed/platform/twitter/users"
-                className={buttonVariants({ variant: 'secondary', size: 'sm' })}
-              >
-                <Users data-icon="inline-start" />
-                Users
-              </Link>
+              <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
+                <Link
+                  href="/feed/users"
+                  className={buttonVariants({
+                    variant: 'secondary',
+                    size: 'sm',
+                  })}
+                >
+                  <Users data-icon="inline-start" />
+                  Users
+                </Link>
+              </PermissionGate>
               <a
                 href={MLS_FEED_RSS_PATH}
                 target="_blank"
