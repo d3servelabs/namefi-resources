@@ -535,7 +535,6 @@ const trafficSurgeStyles = {
     padding: '0 15px',
     textAlign: 'center',
     textDecoration: 'none',
-    textTransform: 'uppercase',
     whiteSpace: 'nowrap',
   },
   footer: {
@@ -1172,8 +1171,8 @@ function LeadgenSection({
         Buyers to approach for {leadgen.sourceDomain}
       </Text>
       <Text style={trafficSurgeStyles.leadIntro}>
-        Astra found companies that could have a practical reason to upgrade to
-        this domain. Open any lead to review the saved run and tailor the draft.
+        Namefi Outbound found companies that could have a practical reason to
+        upgrade to this domain.
       </Text>
       <div>
         {leads.map((lead, index) => (
@@ -1221,7 +1220,7 @@ function LeadgenSection({
                           style={trafficSurgeStyles.leadActionCell}
                         >
                           <a
-                            aria-label={`Open leadgen draft for ${lead.businessDomain}`}
+                            aria-label={`View outbound lead for ${lead.businessDomain}`}
                             className="traffic-surge-lead-action"
                             href={NamefiEmailLinks.leadgenRun({
                               runId: leadgen.runId,
@@ -1233,7 +1232,7 @@ function LeadgenSection({
                             })}
                             style={trafficSurgeStyles.leadAction}
                           >
-                            {lead.hasDraft ? 'Open draft' : 'Open lead'}
+                            View
                           </a>
                         </td>
                       </tr>

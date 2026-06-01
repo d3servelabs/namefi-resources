@@ -139,7 +139,7 @@ describe('domain traffic surge formatting', () => {
     expect(html).toContain('/m/cart?add_to_cart=brightlabshq.com');
   });
 
-  it('renders leadgen buyer leads with draft CTAs', async () => {
+  it('renders outbound buyer leads with view CTAs', async () => {
     const html = await render(
       createElement(DomainTrafficSurgeTemplate, {
         recipientName: 'Jordan',
@@ -167,7 +167,12 @@ describe('domain traffic surge formatting', () => {
     expect(normalizedHtml).toContain(
       'Clear brand fit for growth software teams.',
     );
-    expect(normalizedHtml).toContain('Open draft');
+    expect(normalizedHtml).toContain(
+      'Namefi Outbound found companies that could have a practical reason to upgrade to this domain.',
+    );
+    expect(normalizedHtml).not.toContain('Open any lead');
+    expect(normalizedHtml).not.toContain('Open draft');
+    expect(normalizedHtml).toContain('View');
     expect(normalizedHtml).toContain(
       '/leadgen/00000000-0000-4000-8000-000000000000',
     );
