@@ -41,7 +41,7 @@ export type ProcessedOrderItem = {
   normalizedDomainName: string;
   duration: number; // in years
   priceInUsdCents: number; // in USD cents
-  status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
+  status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING' | 'CANCELLED';
   failureReason?: string;
   type: 'IMPORT' | 'RENEW' | 'REGISTER';
   mintTxHash?: string;

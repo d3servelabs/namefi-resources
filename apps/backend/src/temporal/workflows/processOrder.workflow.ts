@@ -179,7 +179,12 @@ const { triggerUpdateDomainIndex } = typedProxyActivities({
     ...shortRunningOpts,
   },
 });
-
+type ProcessOrderItemSettledPromiseResult = {
+  orderItemId: string;
+  status: 'SUCCEEDED' | 'FAILED';
+  error: Error | undefined;
+  result: void;
+};
 const {
   getOrderDetailsOrThrow,
   updateOrderItemStatusOrThrow,
@@ -1183,55 +1188,81 @@ export async function processOrderWorkflow(
       }
     }
 
-    const orderItemPromises = orderDetails.items.map((item) => {
-      updateItem(item.id, {
-        status: 'PROCESSING',
-        message: undefined,
-      });
-
-      return workflow
-        .executeChild(processOrderItemWorkflow, {
-          args: [
-            {
-              itemId: item.id,
-              orderId: input.orderId,
-              normalizedDomainName:
-                item.normalizedDomainName as NamefiNormalizedDomain,
-              durationInYears: item.durationInYears,
-              recipientWalletAddress: nftWalletAddress as ChecksumWalletAddress,
-              chainId: nftChainId,
-              userId: orderDetails.order.userId,
-              operationType: item.type as 'REGISTER' | 'IMPORT' | 'RENEW',
-              registrarKey: item.registrar,
-              encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
-              encryptionKeyId: item.encryptionKeyId,
-              gaEventTracking: input.gaEventTracking,
-            },
-          ],
-          workflowId: `process-order-item-[${item.id}]`,
-          taskQueue: TEMPORAL_QUEUES.DEFAULT,
-          retry: {
-            maximumAttempts: 1,
-          },
-          workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-          parentClosePolicy: 'REQUEST_CANCEL',
-        })
-        .then(() => {
-          updateItem(item.id, {
-            status: 'SUCCEEDED',
-            message: undefined,
-          });
-        })
-        .catch((error) => {
-          updateItem(item.id, {
-            status: 'FAILED',
-            message: error instanceof Error ? error.message : String(error),
-          });
-          throw error;
+    const orderItemPromises = orderDetails.items.map(async (item) => {
+      try {
+        updateItem(item.id, {
+          status: 'PROCESSING',
+          message: undefined,
         });
+      } catch (error) {
+        workflow.log.error(
+          `Failed to update order item ${item.id} status to PROCESSING: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+        // Don't fail the workflow if we fail to update the item status, continue processing the item
+      }
+
+      const response = await resolve(
+        workflow
+          .executeChild(processOrderItemWorkflow, {
+            args: [
+              {
+                itemId: item.id,
+                orderId: input.orderId,
+                normalizedDomainName:
+                  item.normalizedDomainName as NamefiNormalizedDomain,
+                durationInYears: item.durationInYears,
+                recipientWalletAddress:
+                  nftWalletAddress as ChecksumWalletAddress,
+                chainId: nftChainId,
+                userId: orderDetails.order.userId,
+                operationType: item.type as 'REGISTER' | 'IMPORT' | 'RENEW',
+                registrarKey: item.registrar,
+                encryptedEppAuthorizationCode:
+                  item.encryptedEppAuthorizationCode,
+                encryptionKeyId: item.encryptionKeyId,
+                gaEventTracking: input.gaEventTracking,
+              },
+            ],
+            workflowId: `process-order-item-[${item.id}]`,
+            taskQueue: TEMPORAL_QUEUES.DEFAULT,
+            retry: {
+              maximumAttempts: 1,
+            },
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+            parentClosePolicy: 'REQUEST_CANCEL',
+          })
+          .then(() => {
+            updateItem(item.id, {
+              status: 'SUCCEEDED',
+              message: undefined,
+            });
+          })
+          .catch((error) => {
+            updateItem(item.id, {
+              status: 'FAILED',
+              message: error instanceof Error ? error.message : String(error),
+            });
+            throw error;
+          }),
+      );
+
+      return {
+        orderItemId: item.id,
+        status: response.failed ? 'FAILED' : 'SUCCEEDED',
+        error: response.failed ? response.error : undefined,
+        result: response.failed ? undefined : response.result,
+      } satisfies ProcessOrderItemSettledPromiseResult;
     });
 
-    const orderItemResults = await Promise.allSettled(orderItemPromises);
+    const _orderItemsResults = await Promise.all(orderItemPromises);
+    const orderItemsResultsById: Record<
+      string,
+      ProcessOrderItemSettledPromiseResult
+    > = Object.fromEntries(
+      _orderItemsResults.map((item, index) => [item.orderItemId, item]),
+    );
     recomputeSummary();
 
     const {
@@ -1242,7 +1273,7 @@ export async function processOrderWorkflow(
       succeededItems,
     } = _deriveOrderStatusAndRefundFromItemsResults(
       orderDetails,
-      orderItemResults,
+      orderItemsResultsById,
     );
 
     if (workflow.patched('track-new-events-for-order-v1')) {
@@ -1507,7 +1538,7 @@ export async function processOrderWorkflow(
     const updatedOrder = await getOrderDetailsOrThrow(input.orderId);
     const notificationSummary = await _notifyUserOrderProcessed(
       updatedOrder,
-      orderItemResults,
+      orderItemsResultsById,
       amountToRefundInUsdCents,
     );
     updateNotification({
@@ -1539,7 +1570,10 @@ export async function processOrderWorkflow(
     // Send Slack notification for order completion (non-blocking)
     await catchAndAlertLocally(
       async () => {
-        await _sendOrderCompletionSlackAlert(orderDetails, orderItemResults);
+        await _sendOrderCompletionSlackAlert(
+          orderDetails,
+          orderItemsResultsById,
+        );
       },
       {
         message: `Failed to send Slack order completion alert for order ${input.orderId}`,
@@ -1671,7 +1705,7 @@ async function postProcessOrder() {
 
 async function _notifyUserOrderProcessed(
   orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
-  orderItemsResults: PromiseSettledResult<void>[],
+  orderItemsResultsById: Record<string, ProcessOrderItemSettledPromiseResult>,
   amountToRefundInUsdCents: number,
 ): Promise<NotificationResult> {
   const { notifyUserOrderProcessed, maybeGetUserEmail } = typedProxyActivities({
@@ -1716,9 +1750,12 @@ async function _notifyUserOrderProcessed(
         duration: item.durationInYears,
         priceInUsdCents: item.amountInUSDCents,
         status:
-          orderItemsResults[index].status === 'fulfilled'
-            ? 'SUCCEEDED'
-            : 'FAILED',
+          !item.status ||
+          item.status === 'CREATED' ||
+          item.status === 'PROCESSING' ||
+          item.status === 'PARTIALLY_COMPLETED'
+            ? 'PROCESSING'
+            : item.status,
         type: item.type,
       })),
       chargedAmountInUsdCents: orderDetails.order.amountInUSDCents,
@@ -1931,7 +1968,7 @@ async function _notifyUserImportOrderSubmitted(
 
 async function _sendOrderCompletionSlackAlert(
   orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
-  orderItemsResults: PromiseSettledResult<void>[],
+  orderItemsResultsById: Record<string, ProcessOrderItemSettledPromiseResult>,
 ): Promise<void> {
   const { sendOrderCompletionSlackAlert } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -1957,10 +1994,7 @@ async function _sendOrderCompletionSlackAlert(
   const domains = orderDetails.items.map((item, index) => ({
     normalizedDomainName: item.normalizedDomainName,
     type: item.type,
-    status:
-      orderItemsResults[index].status === 'fulfilled'
-        ? ('SUCCEEDED' as const)
-        : ('FAILED' as const),
+    status: orderItemsResultsById[item.id].status,
   }));
 
   await sendOrderCompletionSlackAlert({
@@ -1976,13 +2010,13 @@ async function _sendOrderCompletionSlackAlert(
 
 function _deriveOrderStatusAndRefundFromItemsResults(
   orderDetails: OrderWithPayments,
-  orderItemResults: PromiseSettledResult<void>[],
+  orderItemResults: Record<string, ProcessOrderItemSettledPromiseResult>,
 ) {
   const failedItems = orderDetails.items.filter(
-    (_, index) => orderItemResults[index].status === 'rejected',
+    (item) => orderItemResults[item.id].status === 'FAILED',
   );
   const succeededItems = orderDetails.items.filter(
-    (_, index) => orderItemResults[index].status === 'fulfilled',
+    (item) => orderItemResults[item.id].status === 'SUCCEEDED',
   );
   const derivedOrderStatus =
     failedItems.length === 0

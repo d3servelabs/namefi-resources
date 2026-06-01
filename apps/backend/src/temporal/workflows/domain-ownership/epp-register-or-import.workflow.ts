@@ -50,6 +50,7 @@ type NextActionSignal = {
 export const eppRegisterOrImportProceed =
   workflow.defineSignal<[NextActionSignal]>('nextAction');
 
+// #region Activities
 const {
   generalAlertNamefi,
   setOrderItemRequiredAction,
@@ -109,12 +110,6 @@ const hourlyPoll = typedProxyActivities({
   },
 });
 
-const TIMEOUT_BY_REQUIRED_ACTION = {
-  EPP_UNLOCK_REQUIRED: 7 * 24 * 60 * 60 * 1000, // 7 days
-  EPP_AUTH_CODE_UPDATE_REQUIRED: 7 * 24 * 60 * 60 * 1000, // 7 days
-  UNDETERMINED: undefined,
-} as const;
-
 const { criticalAlertNamefi } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -124,6 +119,13 @@ const { criticalAlertNamefi } = typedProxyActivities({
     },
   },
 });
+// #endregion Activities
+
+const TIMEOUT_BY_REQUIRED_ACTION = {
+  EPP_UNLOCK_REQUIRED: 7 * 24 * 60 * 60 * 1000, // 7 days
+  EPP_AUTH_CODE_UPDATE_REQUIRED: 7 * 24 * 60 * 60 * 1000, // 7 days
+  UNDETERMINED: undefined,
+} as const;
 
 export async function eppRegisterOrImportWorkflow(
   input: EppRegisterOrImportWorkflowInput,
@@ -161,9 +163,10 @@ export async function eppRegisterOrImportWorkflow(
     const { operationDetails } = await submitRequestOrFail({
       input,
     });
-    let registrarOperationResult = operationDetails;
 
+    let registrarOperationResult = operationDetails;
     let registrarOperationStatus = registrarOperationResult.status;
+
     // Loop until the registrar no longer requires user action.
     if (registrarOperationStatus === OperationStatus.REQUIRES_ACTION) {
       registrarOperationResult = await handleOperationRequiresFurtherAction({
@@ -171,6 +174,10 @@ export async function eppRegisterOrImportWorkflow(
         registrarOperationResult,
       });
     } else if (registrarOperationResult.operationId) {
+      // If the initial request didn't require action but is still in progress, poll for completion.
+      // We can only poll if we have an operationId to check the status of -
+      // if not, we'll rely on the initial status and message returned from
+      // the registrar to determine success or failure, most likely failure if we don't have an operationId.
       registrarOperationResult =
         await pollRegisterOrImportDomainOperationStatus(
           input.normalizedDomainName,
@@ -178,6 +185,8 @@ export async function eppRegisterOrImportWorkflow(
           input.registrarKey,
         );
     }
+
+    // After handling required actions, if any, check the final status of the registrar operation.
     registrarOperationStatus = registrarOperationResult.status;
 
     if (registrarOperationStatus === OperationStatus.ERROR) {
@@ -235,25 +244,47 @@ async function requireUnlockBeforeImportOrFail({
   input: EppRegisterOrImportWorkflowInput;
 }) {
   const nextActionManager = createNextActionManager();
-  let lockState: GetLockStateResponse;
+  let lockState: GetLockStateResponse | null = null;
   let count = 0;
 
   do {
-    lockState = await getEppLockState(
-      input.normalizedDomainName as PunycodeDomainName,
-    );
-    if (!lockState.locked) break;
+    let notifyUser = true;
+    try {
+      lockState = await getEppLockState(
+        input.normalizedDomainName as PunycodeDomainName,
+      );
+    } catch (error) {
+      workflow.log.error(
+        `Failed to get EPP lock state for ${input.normalizedDomainName} during pre-import check`,
+        { error },
+      );
+      // Alert admins but allow the workflow to proceed - we don't want transient issues with the lock state check to block imports.
+      await criticalAlertNamefi({
+        message: 'Failed to get EPP lock state during pre-import check',
+        extraData: {
+          normalizedDomainName: input.normalizedDomainName,
+          error: error instanceof Error ? error.message : String(error),
+        },
+        level: 'error',
+      });
+      // If we can't determine the lock state
+      notifyUser = false;
+    }
+
+    if (lockState && !lockState.locked) break;
 
     const requiredAction: OrderRequiredAction = 'EPP_UNLOCK_REQUIRED';
 
-    await notifyUserRequiredAction({
-      input,
-      requiredAction: 'EPP_UNLOCK_REQUIRED',
-      extraMessage:
-        count > 0
-          ? 'The domain is still locked. Please unlock the domain before proceeding with the import.'
-          : 'Please unlock the domain before proceeding with the import.',
-    });
+    if (notifyUser) {
+      await notifyUserRequiredAction({
+        input,
+        requiredAction: 'EPP_UNLOCK_REQUIRED',
+        extraMessage:
+          count > 0
+            ? 'The domain is still locked. Please unlock the domain before proceeding with the import.'
+            : 'Please unlock the domain before proceeding with the import.',
+      });
+    }
 
     await waitForRequiredActionSignal({
       input,
@@ -296,7 +327,7 @@ async function requireUnlockBeforeImportOrFail({
     nextActionManager.resetNextAction();
 
     count++;
-  } while (lockState.locked);
+  } while (!lockState || lockState.locked);
 
   await clearRequiredAction({
     input,
