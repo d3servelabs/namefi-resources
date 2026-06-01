@@ -60,7 +60,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
   buildLeadgenCrmCsv,
@@ -423,6 +423,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
               activeRunId={activeRunId}
               isLoading={runsQuery.isLoading}
               exportingRunId={exportingRunId}
+              scrollActiveRunIntoView={Boolean(initialRunId)}
               onExportRun={exportRunCsv}
             />
           )}
@@ -1377,14 +1378,58 @@ function PastRuns({
   activeRunId,
   isLoading,
   exportingRunId,
+  scrollActiveRunIntoView,
   onExportRun,
 }: {
   runs: LeadgenRunSummary[];
   activeRunId: string | null;
   isLoading: boolean;
   exportingRunId: string | null;
+  scrollActiveRunIntoView: boolean;
   onExportRun: (runId: string) => Promise<void>;
 }) {
+  const runListRef = useRef<HTMLDivElement | null>(null);
+  const selectedRunRef = useRef<HTMLDivElement | null>(null);
+  const scrolledRunIdRef = useRef<string | null>(null);
+  const activeRunListKey =
+    activeRunId && runs.some((run) => run.id === activeRunId)
+      ? activeRunId
+      : null;
+
+  useEffect(() => {
+    if (
+      !scrollActiveRunIntoView ||
+      !activeRunId ||
+      !activeRunListKey ||
+      isLoading ||
+      scrolledRunIdRef.current === activeRunId
+    ) {
+      return;
+    }
+
+    const runList = runListRef.current;
+    const selectedRun = selectedRunRef.current;
+    if (!runList || !selectedRun) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      const listRect = runList.getBoundingClientRect();
+      const runRect = selectedRun.getBoundingClientRect();
+      const targetScrollTop =
+        runList.scrollTop +
+        runRect.top -
+        listRect.top -
+        (runList.clientHeight - runRect.height) / 2;
+
+      runList.scrollTo({
+        top: Math.max(0, targetScrollTop),
+        behavior: 'auto',
+      });
+      scrolledRunIdRef.current = activeRunId;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeRunId, activeRunListKey, isLoading, scrollActiveRunIntoView]);
+
   return (
     <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
       <div className="mb-3 flex items-center justify-between">
@@ -1408,7 +1453,10 @@ function PastRuns({
           Your buyer searches will stay here.
         </p>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div
+          ref={runListRef}
+          className="flex max-h-[24rem] flex-col gap-2 overflow-y-auto pr-1"
+        >
           {runs.map((run) => {
             const canExport = isLeadgenCrmCsvExportAvailable(run);
             const isExporting = exportingRunId === run.id;
@@ -1416,6 +1464,7 @@ function PastRuns({
             return (
               <div
                 key={run.id}
+                ref={run.id === activeRunId ? selectedRunRef : undefined}
                 className={cn(
                   'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
                   run.id === activeRunId
