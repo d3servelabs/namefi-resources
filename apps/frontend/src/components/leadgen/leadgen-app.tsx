@@ -2,8 +2,10 @@
 
 import { AuthRequired } from '@/components/auth-required';
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
+import { DomainSearchCombobox } from '@/components/domain-search-combobox';
 import { PageShell } from '@/components/page-shell';
 import { useAuth } from '@/hooks/use-auth';
+import { useDomainSearchOptions } from '@/hooks/use-domain-search-options';
 import {
   getCurrentReturnPath,
   usePostAuthIntentExecutor,
@@ -26,7 +28,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
-import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   RadioGroup,
   RadioGroupItem,
@@ -153,6 +154,12 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     ...trpc.users.getCurrentUserDomains.queryOptions(),
     enabled: isAuthenticated,
     staleTime: 60_000,
+  });
+  const {
+    options: outboundDomainOptions,
+    isLoading: isOutboundDomainOptionsLoading,
+  } = useDomainSearchOptions({
+    includeGeneratedDomains: false,
   });
   const usageQuery = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
@@ -348,19 +355,16 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 >
                   Domain to sell
                 </label>
-                <Input
+                <DomainSearchCombobox
                   id={DOMAIN_INPUT_ID}
                   value={domain}
-                  onChange={(event) => setDomain(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' && canSubmit) {
-                      handleSubmit();
-                    }
-                  }}
+                  onValueChange={setDomain}
+                  options={outboundDomainOptions}
                   placeholder="example.com"
-                  autoCapitalize="none"
-                  autoCorrect="off"
-                  spellCheck={false}
+                  searchPlaceholder="Search or enter a domain"
+                  emptyMessage="No matching domains."
+                  isLoading={isOutboundDomainOptionsLoading}
+                  allowCustomValue
                 />
               </div>
 

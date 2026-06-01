@@ -240,6 +240,25 @@ export type MlsDomainSearchResponse = z.infer<
 >;
 
 // ---------------------------------------------------------------------------
+// getCurrentUserListedDomains
+// ---------------------------------------------------------------------------
+
+export const mlsCurrentUserListedDomainSchema = z.object({
+  domain: z.string().min(1),
+  sourceTweetUrl: z.string().min(1).nullable(),
+  listedAt: z.string().min(1).nullable(),
+});
+
+export const mlsCurrentUserListedDomainsResponseSchema = z.object({
+  twitterHandle: z.string().min(1).nullable(),
+  domains: z.array(mlsCurrentUserListedDomainSchema),
+});
+
+export type MlsCurrentUserListedDomainsResponse = z.infer<
+  typeof mlsCurrentUserListedDomainsResponseSchema
+>;
+
+// ---------------------------------------------------------------------------
 // The contract
 // ---------------------------------------------------------------------------
 
@@ -274,6 +293,12 @@ export const mlsContract = createContract(
       type: 'query',
       input: mlsDomainSearchInputSchema,
       output: mlsDomainSearchResponseSchema,
+    },
+
+    getCurrentUserListedDomains: {
+      type: 'query',
+      input: z.void(),
+      output: mlsCurrentUserListedDomainsResponseSchema,
     },
   },
 );

@@ -6,21 +6,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@namefi-astra/ui/components/shadcn/form';
-import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from '@namefi-astra/ui/components/shadcn/select';
-import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@/hooks/use-auth';
-import { useResizeObserver } from 'usehooks-ts';
-import { useCallback, useMemo, useRef } from 'react';
-import { cn } from '@namefi-astra/ui/lib/cn';
+import { DomainSearchCombobox } from '@/components/domain-search-combobox';
+import { useDomainSearchOptions } from '@/hooks/use-domain-search-options';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
@@ -93,107 +82,37 @@ function DomainFieldWithSuggestions({
   selectOnly?: boolean;
   onlyDomainsWithLogos?: boolean;
 }) {
-  const trpc = useTRPC();
-  const { isAuthenticated } = useAuth();
-
-  const { data: userDomains } = useQuery({
-    ...trpc.users.getCurrentUserDomains.queryOptions(),
-    enabled: isAuthenticated,
-    staleTime: 60_000,
-  });
-
-  const { data: generationDomains } = useQuery({
-    ...trpc.ai.getUserDomains.queryOptions(),
-    enabled: isAuthenticated,
-    staleTime: 60_000,
-  });
-
-  const domainOptions = useMemo(() => {
-    if (onlyDomainsWithLogos) {
-      const generatedWithLogos = (generationDomains ?? [])
-        .filter((d) => (d.logoCount ?? 0) > 0)
-        .map((d) => d.domain);
-      const seen = new Set<string>();
-      return generatedWithLogos.filter((d) => {
-        if (seen.has(d)) return false;
-        seen.add(d);
-        return true;
-      });
-    }
-    const owned = (userDomains ?? []).map((d) => d.normalizedDomainName);
-    const generated = (generationDomains ?? []).map((d) => d.domain);
-    const list = [...owned, ...generated];
-    // Deduplicate while preserving order
-    const seen = new Set<string>();
-    return list.filter((d) => {
-      if (seen.has(d)) return false;
-      seen.add(d);
-      return true;
+  const { options: domainOptions, isLoading: isDomainOptionsLoading } =
+    useDomainSearchOptions({
+      onlyDomainsWithLogos,
     });
-  }, [userDomains, generationDomains, onlyDomainsWithLogos]);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { width = 0 } = useResizeObserver({
-    // @ts-expect-error - upstream lib typing issue
-    ref: inputRef,
-    box: 'border-box',
-  });
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (selectOnly) return;
-      onChange(e.target.value);
-    },
-    [onChange, selectOnly],
-  );
-
-  const handleSelectChange = useCallback(
-    (newValue: string | null) => {
-      if (!newValue) return;
-      onChange(newValue);
-    },
-    [onChange],
-  );
 
   return (
     <FormItem className="mb-6">
       <FormControl>
-        <div className="relative">
-          <Input
-            name={name}
-            value={value}
-            onChange={handleInputChange}
-            onBlur={onBlur}
-            type="text"
-            placeholder={placeholder}
-            ref={inputRef}
-            className={cn(
-              'w-full h-14 px-6 text-lg rounded-2xl',
-              domainOptions.length > 0 && 'pr-10',
-            )}
-            required={required}
-            disabled={selectOnly}
-          />
-          {domainOptions.length > 0 && (
-            <Select value="" onValueChange={handleSelectChange}>
-              <SelectTrigger className="absolute right-3 top-1/2 -translate-y-1/2 border-none dark:bg-transparent" />
-              <SelectContent
-                align="end"
-                alignOffset={-12}
-                alignItemWithTrigger={false}
-                side="bottom"
-                sideOffset={16}
-                style={{ width: width ? `${width}px` : undefined }}
-              >
-                {domainOptions.map((domain) => (
-                  <SelectItem key={domain} value={domain}>
-                    {domain}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        </div>
+        <DomainSearchCombobox
+          name={name}
+          value={value}
+          onValueChange={onChange}
+          onBlur={onBlur}
+          options={domainOptions}
+          placeholder={placeholder}
+          searchPlaceholder={
+            selectOnly ? 'Search brand domains...' : 'Search or enter a domain'
+          }
+          emptyMessage={
+            selectOnly
+              ? 'No generated logo domains found.'
+              : 'No matching domains.'
+          }
+          allowCustomValue={!selectOnly}
+          isLoading={isDomainOptionsLoading}
+          required={required}
+          disabled={
+            selectOnly && !isDomainOptionsLoading && domainOptions.length === 0
+          }
+          triggerClassName="h-14 rounded-2xl px-6 text-lg"
+        />
       </FormControl>
 
       <FormMessage />

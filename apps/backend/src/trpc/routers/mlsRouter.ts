@@ -13,6 +13,7 @@ import {
   type MlsSellerDirectorySortBy,
   type MlsSellerDirectorySortOrder,
   mlsContract,
+  mlsCurrentUserListedDomainsResponseSchema,
   mlsDomainSearchResponseSchema,
   mlsFeedPageSchema,
   mlsHandleListingsPageSchema,
@@ -23,12 +24,14 @@ import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { inArray, sql } from 'drizzle-orm';
 import { config } from '#lib/env';
 import { ensurePrivyTableFresh } from '../../services/admin/privy-user-cache';
-import { adminProcedure, publicProcedure } from '../base';
+import { adminProcedure, protectedProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
+import { privyClient } from '../utils';
 
 const REQUEST_TIMEOUT_MS = 5_000;
 const MAX_FILTERED_FEED_UPSTREAM_PAGES = 8;
 const MAX_SELLER_DIRECTORY_UPSTREAM_PAGES = 100;
+const MAX_CURRENT_USER_LISTED_DOMAIN_PAGES = 10;
 const SELLER_DIRECTORY_SOURCE_CACHE_TTL_MS = 5 * 60 * 1_000;
 const TRAILING_SLASHES_PATTERN = /\/+$/;
 const LEADING_AT_SYMBOL = /^@/;
@@ -204,57 +207,13 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
         });
       }
 
-      const upstreamUrl = buildUpstreamHandleUrl(normalizedHandle);
-      upstreamUrl.searchParams.set(
-        'limit',
-        String(clamp(input.limit, 1, MAX_MLS_FEED_LIMIT)),
-      );
-      if (input.cursor) {
-        upstreamUrl.searchParams.set('cursor', input.cursor);
-      }
+      const page = await fetchUpstreamHandleListingsPage({
+        handle: normalizedHandle,
+        cursor: input.cursor ?? null,
+        limit: input.limit,
+      });
 
-      const upstreamResponse = await fetch(upstreamUrl.toString(), {
-        cache: 'no-store',
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-        headers: {
-          Accept: 'application/json',
-        },
-      }).catch(() => null);
-
-      if (!upstreamResponse) {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Unable to load MLS handle listings right now.',
-        });
-      }
-
-      if (!upstreamResponse.ok) {
-        const errorMessage = await extractErrorMessage(upstreamResponse);
-
-        if (upstreamResponse.status === 400) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: errorMessage ?? 'Invalid MLS handle.',
-          });
-        }
-
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message:
-            errorMessage ?? 'Failed to fetch upstream MLS handle listings.',
-        });
-      }
-
-      const payload = await upstreamResponse.json();
-      const parsed = mlsHandleListingsPageSchema.safeParse(payload);
-      if (!parsed.success) {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Upstream MLS handle listings returned an invalid payload.',
-        });
-      }
-
-      return enrichMlsHandleListingsPageSellerPortfolio(parsed.data);
+      return enrichMlsHandleListingsPageSellerPortfolio(page);
     }),
 
   reportListing: publicProcedure
@@ -366,6 +325,31 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       }
 
       return normalizeDomainSearchResponse(parsed.data);
+    }),
+
+  getCurrentUserListedDomains: protectedProcedure
+    .input(mlsContract.getCurrentUserListedDomains.input)
+    .output(mlsContract.getCurrentUserListedDomains.output)
+    .query(async ({ ctx }) => {
+      const privyUser = await privyClient
+        .getUserById(ctx.user.privyUserId)
+        .catch(() => null);
+      const twitterHandle = normalizeMlsHandleSlug(
+        privyUser?.twitter?.username ?? '',
+      );
+
+      if (!twitterHandle) {
+        return { twitterHandle: null, domains: [] };
+      }
+
+      const response = await fetchCurrentUserListedDomains(twitterHandle).catch(
+        () => ({
+          twitterHandle,
+          domains: [],
+        }),
+      );
+
+      return mlsCurrentUserListedDomainsResponseSchema.parse(response);
     }),
 });
 
@@ -612,6 +596,111 @@ function countSetIntersection(left: Set<string>, right: Set<string>) {
 
 function normalizePortfolioDomain(domain: string) {
   return domain.trim().toLowerCase();
+}
+
+async function fetchUpstreamHandleListingsPage({
+  handle,
+  cursor,
+  limit,
+}: {
+  handle: string;
+  cursor: string | null;
+  limit: number;
+}) {
+  const upstreamUrl = buildUpstreamHandleUrl(handle);
+  upstreamUrl.searchParams.set(
+    'limit',
+    String(clamp(limit, 1, MAX_MLS_FEED_LIMIT)),
+  );
+  if (cursor) {
+    upstreamUrl.searchParams.set('cursor', cursor);
+  }
+
+  const upstreamResponse = await fetch(upstreamUrl.toString(), {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    headers: {
+      Accept: 'application/json',
+    },
+  }).catch(() => null);
+
+  if (!upstreamResponse) {
+    throw new TRPCError({
+      code: 'BAD_GATEWAY',
+      message: 'Unable to load MLS handle listings right now.',
+    });
+  }
+
+  if (!upstreamResponse.ok) {
+    const errorMessage = await extractErrorMessage(upstreamResponse);
+
+    if (upstreamResponse.status === 400) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: errorMessage ?? 'Invalid MLS handle.',
+      });
+    }
+
+    throw new TRPCError({
+      code: 'BAD_GATEWAY',
+      message: errorMessage ?? 'Failed to fetch upstream MLS handle listings.',
+    });
+  }
+
+  const payload = await upstreamResponse.json();
+  const parsed = mlsHandleListingsPageSchema.safeParse(payload);
+  if (!parsed.success) {
+    throw new TRPCError({
+      code: 'BAD_GATEWAY',
+      message: 'Upstream MLS handle listings returned an invalid payload.',
+    });
+  }
+
+  return parsed.data;
+}
+
+async function fetchCurrentUserListedDomains(twitterHandle: string) {
+  const domainsByName = new Map<
+    string,
+    {
+      domain: string;
+      sourceTweetUrl: string | null;
+      listedAt: string | null;
+    }
+  >();
+  let cursor: string | null = null;
+
+  for (
+    let pageIndex = 0;
+    pageIndex < MAX_CURRENT_USER_LISTED_DOMAIN_PAGES;
+    pageIndex += 1
+  ) {
+    const page = await fetchUpstreamHandleListingsPage({
+      handle: twitterHandle,
+      cursor,
+      limit: MAX_MLS_FEED_LIMIT,
+    });
+
+    for (const listing of page.rows) {
+      const domain = listing.domain.trim().toLowerCase();
+      if (!domain || domainsByName.has(domain)) continue;
+      domainsByName.set(domain, {
+        domain,
+        sourceTweetUrl: listing.sourceTweetUrl,
+        listedAt: listing.listedAt,
+      });
+    }
+
+    if (!page.hasMore || !page.nextCursor) {
+      break;
+    }
+    cursor = page.nextCursor;
+  }
+
+  return {
+    twitterHandle,
+    domains: Array.from(domainsByName.values()),
+  };
 }
 
 function buildUpstreamHandleUrl(handle: string) {
