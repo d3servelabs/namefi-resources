@@ -2,6 +2,7 @@ import {
   ArrowRight,
   AtSign,
   CheckCircle2,
+  Download,
   ExternalLink,
   Eye,
   Link2,
@@ -19,9 +20,9 @@ import type { ReactNode } from 'react';
 import { MLS_FEED_RSS_PATH } from '@/lib/mls/feed';
 import { cn } from '@namefi-astra/ui/lib/cn';
 
-export type FeatureKey = 'brand-studio' | 'feed';
+export type FeatureKey = 'brand-studio' | 'feed' | 'outbound';
 
-type FeatureTone = 'studio' | 'feed';
+type FeatureTone = 'studio' | 'feed' | 'outbound';
 
 type FeatureBeat = {
   title: string;
@@ -65,6 +66,89 @@ type FeaturePageContent = {
 };
 
 export const FEATURE_PAGES = {
+  outbound: {
+    key: 'outbound',
+    tone: 'outbound',
+    eyebrow: 'For domain sellers',
+    title: 'Find possible buyers for your domain.',
+    description:
+      'Start with a name you own or represent. Namefi helps you explore who it may fit, why they might care, and how to prepare a first message.',
+    primaryCta: {
+      label: 'Start buyer research',
+      href: '/outbound',
+    },
+    beats: [
+      {
+        title: 'Start with fit',
+        body: 'Explore buyer types and use cases that may make sense for the name.',
+        icon: Search,
+      },
+      {
+        title: 'Review possible matches',
+        body: 'Look through company suggestions instead of starting from a blank spreadsheet.',
+        icon: AtSign,
+      },
+      {
+        title: 'Prepare a first message',
+        body: 'Use editable outreach drafts when there is enough context.',
+        icon: Send,
+      },
+      {
+        title: 'Take useful results with you',
+        body: 'Export research notes and public contacts when available.',
+        icon: Download,
+      },
+    ],
+    useCases: [
+      'Researching buyer fit before outreach',
+      'Comparing possible company matches',
+      'Drafting a first message to review',
+      'Exporting useful research for your process',
+    ],
+    workflow: [
+      {
+        label: 'Research',
+        body: 'Start with a domain and explore buyer types, industries, and use cases that may fit.',
+      },
+      {
+        label: 'Review',
+        body: 'Look through possible company matches and public contacts when they are available.',
+      },
+      {
+        label: 'Prepare',
+        body: 'Turn the useful context into an editable first message you can review before taking action.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Can Outbound promise a buyer?',
+        answer:
+          'No. Outbound helps you research possible buyers and fit. You should review the results before deciding what to do next.',
+      },
+      {
+        question: 'Where do contacts come from?',
+        answer:
+          'Outbound may show public contacts when available. It does not mean every company has a contact, or that Namefi has confirmed the contact.',
+      },
+      {
+        question: 'Can I edit the outreach drafts?',
+        answer:
+          'Yes. Treat drafts as a starting point. Review the context, adjust the tone, and send only what represents you well.',
+      },
+      {
+        question: 'Should I use this for domains I do not represent?',
+        answer:
+          'Use Outbound for domains you own or represent, and make sure your outreach follows the rules and expectations that apply to you.',
+      },
+    ],
+    metadata: {
+      title: 'Namefi Outbound | Possible Buyer Research',
+      description:
+        'Explore possible buyers, use cases, public contacts when available, and editable outreach drafts for domains you own or represent.',
+      image: '/assets/outbound/opengraph-image.png',
+      imageAlt: 'Namefi Outbound feature page',
+    },
+  },
   feed: {
     key: 'feed',
     tone: 'feed',
@@ -252,6 +336,19 @@ const toneClasses: Record<
     panelTint: string;
   }
 > = {
+  outbound: {
+    accent: 'text-brand-primary',
+    accentSoft: 'bg-brand-primary/10',
+    accentBorder: 'border-brand-primary/25',
+    accentStrongBorder: 'border-brand-primary/55',
+    line: 'from-emerald-200 via-brand-primary to-teal-100',
+    button:
+      'bg-brand-primary text-black hover:bg-brand-primary/90 focus-visible:ring-brand-primary/50',
+    buttonGhost:
+      'border-brand-primary/30 text-brand-primary hover:border-brand-primary/70 hover:bg-brand-primary/10',
+    glow: 'shadow-[0_0_80px_rgba(72,229,155,0.13)]',
+    panelTint: 'bg-brand-primary/8',
+  },
   feed: {
     accent: 'text-brand-primary',
     accentSoft: 'bg-brand-primary/10',
@@ -354,6 +451,119 @@ export function FeatureLandingPage({
       <FeatureFaqs feature={feature} tone={tone} />
       <ClosingCta feature={feature} tone={tone} />
       <style>{`
+        .outbound-signal {
+          --outbound-signal-accent: var(--brand-primary, #00e676);
+          --outbound-signal-accent-soft: color-mix(in srgb, var(--outbound-signal-accent) 15%, transparent);
+          --outbound-signal-accent-faint: color-mix(in srgb, var(--outbound-signal-accent) 7%, transparent);
+          --outbound-signal-accent-border: color-mix(in srgb, var(--outbound-signal-accent) 42%, transparent);
+        }
+
+        .outbound-signal__stage {
+          background:
+            radial-gradient(ellipse at 18% 18%, rgba(255, 255, 255, 0.045), transparent 34%),
+            radial-gradient(ellipse at 76% 28%, var(--outbound-signal-accent-soft), transparent 42%),
+            linear-gradient(180deg, #0e0e0e 0%, #070707 100%);
+          box-shadow:
+            0 34px 90px rgba(0, 0, 0, 0.45),
+            0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+        }
+
+        .outbound-signal__typed {
+          display: inline-block;
+          max-width: max-content;
+          overflow: hidden;
+          white-space: nowrap;
+          width: 0;
+          animation: outbound-signal-type 9s steps(11, end) infinite;
+        }
+
+        .outbound-signal__cursor {
+          animation:
+            outbound-signal-cursor 9s linear infinite,
+            outbound-signal-blink 0.8s steps(1) infinite;
+          background: var(--outbound-signal-accent);
+        }
+
+        .outbound-signal__scan {
+          animation: outbound-signal-scan 4.8s linear infinite;
+          background: linear-gradient(180deg, transparent 0%, var(--outbound-signal-accent-faint) 50%, transparent 100%);
+        }
+
+        .outbound-signal__node {
+          animation: outbound-signal-node 6.6s ease-in-out infinite;
+        }
+
+        .outbound-signal__node:nth-child(2) {
+          animation-delay: 0.24s;
+        }
+
+        .outbound-signal__node:nth-child(3) {
+          animation-delay: 0.48s;
+        }
+
+        .outbound-signal__match {
+          animation: outbound-signal-match 7.2s ease-in-out infinite;
+        }
+
+        .outbound-signal__match:nth-child(2) {
+          animation-delay: 0.26s;
+        }
+
+        .outbound-signal__match:nth-child(3) {
+          animation-delay: 0.52s;
+        }
+
+        .outbound-signal__draft-line {
+          transform-origin: left;
+          animation: outbound-signal-draft-line 7.2s ease-in-out infinite;
+        }
+
+        .outbound-signal__pulse {
+          animation: outbound-signal-pulse 2.2s ease-in-out infinite;
+          background: var(--outbound-signal-accent);
+          box-shadow: 0 0 14px var(--outbound-signal-accent);
+        }
+
+        @keyframes outbound-signal-type {
+          0%, 6% { width: 0; }
+          24%, 92% { width: 11ch; }
+          100% { width: 0; }
+        }
+
+        @keyframes outbound-signal-cursor {
+          0%, 24% { opacity: 1; }
+          25%, 92% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+
+        @keyframes outbound-signal-scan {
+          0% { top: -5rem; opacity: 0; }
+          12% { opacity: 1; }
+          86% { opacity: 1; }
+          100% { top: 100%; opacity: 0; }
+        }
+
+        @keyframes outbound-signal-node {
+          0%, 100% { border-color: #242424; transform: translateY(0); }
+          42%, 62% { border-color: var(--outbound-signal-accent-border); transform: translateY(-0.25rem); }
+        }
+
+        @keyframes outbound-signal-match {
+          0%, 100% { border-color: #242424; background: #101010; transform: translateX(0); }
+          44%, 62% { border-color: var(--outbound-signal-accent-border); background: color-mix(in srgb, var(--outbound-signal-accent) 8%, #101010); transform: translateX(0.25rem); }
+        }
+
+        @keyframes outbound-signal-draft-line {
+          0%, 38% { transform: scaleX(0.18); opacity: 0.34; }
+          56%, 86% { transform: scaleX(1); opacity: 1; }
+          100% { transform: scaleX(0.18); opacity: 0.34; }
+        }
+
+        @keyframes outbound-signal-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.34; transform: scale(0.74); }
+        }
+
         .feed-signal {
           --feed-signal-accent: var(--brand-primary, #00e676);
           --feed-signal-accent-soft: color-mix(in srgb, var(--feed-signal-accent) 14%, transparent);
@@ -898,6 +1108,16 @@ export function FeatureLandingPage({
             animation-iteration-count: 1 !important;
           }
 
+          .outbound-signal *,
+          .outbound-signal *::before,
+          .outbound-signal *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+          }
+
+          .outbound-signal__typed {
+            width: 11ch;
+          }
         }
       `}</style>
       <script
@@ -948,6 +1168,7 @@ function Hero({
       </div>
 
       <div className="relative z-10 mt-12 min-w-0 lg:mt-0">
+        {feature.tone === 'outbound' ? <OutboundSignalVisual /> : null}
         {feature.tone === 'feed' ? <FeedSignalVisual /> : null}
         {feature.tone === 'studio' ? <BrandAssetGeneratorVisual /> : null}
       </div>
@@ -1000,6 +1221,167 @@ function SystemLabel({
       <span className={cn('text-sm leading-none', tone.accent)}>-&gt;</span>
       <span>{children}</span>
     </p>
+  );
+}
+
+const outboundMatches = [
+  {
+    company: 'CreatorDesk',
+    fit: 'creator commerce',
+    note: 'May fit a marketplace or creator tool positioning.',
+    contact: 'public contact when available',
+  },
+  {
+    company: 'Marketlane',
+    fit: 'seller tools',
+    note: 'Could be relevant for teams that help people sell online.',
+    contact: 'research note',
+  },
+] as const;
+
+function OutboundSignalVisual() {
+  return (
+    <figure
+      aria-label="Animated example showing a domain turned into buyer fit research, possible matches, and an editable outreach draft"
+      className="outbound-signal relative mx-auto w-full max-w-[42.5rem] font-mono text-[#f3f3f3]"
+    >
+      <div className="outbound-signal__stage relative overflow-hidden border border-[#252525] p-3 sm:p-4">
+        <div className="relative grid gap-3">
+          <section className="relative overflow-hidden border border-[#242424] bg-[#0b0b0b] p-4">
+            <div
+              className="outbound-signal__scan pointer-events-none absolute inset-x-0 h-20"
+              aria-hidden={true}
+            />
+            <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 border-[#242424] border-b pb-3">
+              <div className="min-w-0">
+                <p className="truncate text-[0.625rem] uppercase tracking-[0.14em] text-[#777777]">
+                  Domain research
+                </p>
+                <p className="mt-1 truncate text-xs text-[#444444]">
+                  start with a name you own or represent
+                </p>
+              </div>
+              <span className="flex shrink-0 items-center gap-2 text-[0.5625rem] uppercase tracking-[0.12em] text-brand-primary">
+                <span className="outbound-signal__pulse size-1.5" />
+                Research
+              </span>
+            </div>
+
+            <div className="relative z-10 mt-4 flex min-w-0 items-center overflow-hidden border border-[#222222] bg-[#090909] px-3 py-3">
+              <span className="shrink-0 text-[0.8125rem] tracking-[0.02em] text-[#444444]">
+                https://
+              </span>
+              <span className="outbound-signal__typed text-[0.8125rem] tracking-[0.04em] text-[#eeeeee]">
+                luma.market
+              </span>
+              <span className="outbound-signal__cursor ml-0.5 h-3.5 w-1.5 shrink-0" />
+            </div>
+          </section>
+
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.25fr)]">
+            <section className="border border-[#242424] bg-[#0b0b0b] p-4">
+              <div className="flex items-center justify-between gap-3 border-[#242424] border-b pb-3">
+                <p className="text-[0.625rem] uppercase tracking-[0.14em] text-[#777777]">
+                  Fit map
+                </p>
+                <span className="text-[0.5625rem] uppercase tracking-[0.12em] text-brand-primary">
+                  use cases
+                </span>
+              </div>
+              <div className="mt-4 grid gap-2">
+                {[
+                  'creator storefronts',
+                  'marketplace software',
+                  'commerce analytics',
+                ].map((label, index) => (
+                  <div
+                    key={label}
+                    className="outbound-signal__node flex items-center justify-between gap-3 border border-[#242424] bg-[#101010] p-3"
+                  >
+                    <span className="min-w-0 truncate text-sm text-[#eeeeee]">
+                      {label}
+                    </span>
+                    <span className="shrink-0 font-mono text-[0.5625rem] uppercase tracking-[0.1em] text-[#666666]">
+                      0{index + 1}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="border border-brand-primary/35 bg-[#0b0f0d] p-4">
+              <div className="flex min-w-0 items-center justify-between gap-3 border-brand-primary/20 border-b pb-3">
+                <div className="min-w-0">
+                  <p className="truncate text-[0.625rem] uppercase tracking-[0.14em] text-brand-primary">
+                    Possible matches
+                  </p>
+                  <p className="mt-1 truncate text-xs text-[#777777]">
+                    suggestions to review
+                  </p>
+                </div>
+                <span className="shrink-0 text-[0.5625rem] uppercase tracking-[0.12em] text-[#666666]">
+                  review first
+                </span>
+              </div>
+
+              <div className="mt-4 grid gap-2">
+                {outboundMatches.map((match) => (
+                  <article
+                    key={match.company}
+                    className="outbound-signal__match border border-[#242424] bg-[#101010] p-3"
+                  >
+                    <div className="flex min-w-0 items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-base text-white">
+                          {match.company}
+                        </p>
+                        <p className="mt-1 truncate text-[0.625rem] uppercase tracking-[0.12em] text-[#666666]">
+                          {match.fit}
+                        </p>
+                      </div>
+                      <span className="shrink-0 border border-brand-primary/45 px-2 py-1 text-[0.5625rem] uppercase tracking-[0.1em] text-brand-primary">
+                        possible
+                      </span>
+                    </div>
+                    <p className="mt-3 line-clamp-2 text-xs leading-5 text-[#777777]">
+                      {match.note}
+                    </p>
+                    <p className="mt-3 truncate border-[#222222] border-t pt-3 text-[0.5625rem] uppercase tracking-[0.1em] text-[#666666]">
+                      {match.contact}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          <section className="grid gap-3 border border-[#242424] bg-[#090909] p-4 sm:grid-cols-[minmax(0,1fr)_11rem]">
+            <div className="min-w-0">
+              <p className="text-[0.625rem] uppercase tracking-[0.14em] text-[#777777]">
+                Editable draft
+              </p>
+              <div className="mt-4 grid gap-2">
+                {[92, 78, 86, 54].map((width) => (
+                  <span
+                    key={width}
+                    className="outbound-signal__draft-line h-1.5 bg-brand-primary/55"
+                    style={{ width: `${width}%` }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-2 text-[0.5625rem] uppercase tracking-[0.1em]">
+              <div className="border border-[#242424] bg-[#101010] p-2 text-[#777777]">
+                review copy
+              </div>
+              <div className="border border-[#242424] bg-[#101010] p-2 text-[#777777]">
+                export notes
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </figure>
   );
 }
 
@@ -1793,6 +2175,21 @@ const capabilityPaneContent: Record<
     };
   }
 > = {
+  outbound: {
+    heading: 'Built for careful buyer research.',
+    primary: {
+      title: 'Start with the domain.',
+      description:
+        'Use a name you own or represent, then explore possible buyer types and use cases before you reach out.',
+      value: 'luma.market',
+      buttonLabel: 'Research',
+    },
+    secondary: {
+      title: 'Review context before action.',
+      description:
+        'Use company suggestions, public contacts when available, and editable drafts as research inputs, not final answers.',
+    },
+  },
   feed: {
     heading: 'Built for focused market watching.',
     primary: {
@@ -1918,6 +2315,12 @@ const closingCtaContent: Record<
     description: string;
   }
 > = {
+  outbound: {
+    label: 'Next step',
+    title: 'Start with fit before you reach out.',
+    description:
+      'Explore possible buyer types, review suggested matches, and shape a first message you can edit before taking action.',
+  },
   feed: {
     label: 'Next step',
     title: 'Open the feed when you want a clearer market view.',

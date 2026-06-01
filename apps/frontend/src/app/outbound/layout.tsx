@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 
-const title = 'Namefi Outbound | Find Domain Buyers';
+const title = 'Namefi Outbound | Possible Buyer Research';
 const description =
-  'Research likely domain buyers, discover public contacts, and draft outreach for domain sales with Namefi Outbound.';
+  'Research possible buyers, public contacts when available, and editable outreach drafts for domains you own or represent.';
 const canonicalPath = '/outbound';
 const openGraphImagePath = '/assets/outbound/opengraph-image.png';
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: openGraphImagePath,
         width: 1200,
         height: 630,
-        alt: 'Namefi Outbound buyer discovery and outreach workflow',
+        alt: 'Namefi Outbound possible buyer research and outreach workflow',
       },
     ],
   },
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
         url: openGraphImagePath,
         width: 1200,
         height: 630,
-        alt: 'Namefi Outbound buyer discovery and outreach workflow',
+        alt: 'Namefi Outbound possible buyer research and outreach workflow',
       },
     ],
   },

@@ -32,16 +32,6 @@ const SITEMAP_EXCLUDED_CAMPAIGN_KEYS = new Set<string>([
 // sitelinks; demoted so it stops crowding out the targets above.
 const PUBLIC_STATIC_ROUTES = [
   { path: '/', priority: 1, changeFrequency: 'daily' },
-  {
-    path: '/features/brand-studio',
-    priority: 0.8,
-    changeFrequency: 'weekly',
-  },
-  {
-    path: '/features/feed',
-    priority: 0.8,
-    changeFrequency: 'weekly',
-  },
   // Promoted — sitelink targets
   { path: '/gallery', priority: 0.9, changeFrequency: 'daily' },
   { path: '/manage', priority: 0.9, changeFrequency: 'weekly' },
