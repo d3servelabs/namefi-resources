@@ -1,9 +1,13 @@
 import {
   ArrowRight,
+  AtSign,
   CheckCircle2,
   ExternalLink,
   Eye,
+  Link2,
   Palette,
+  Rss,
+  Search,
   Send,
   Sparkles,
   type LucideIcon,
@@ -12,13 +16,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { Route } from 'next';
 import type { ReactNode } from 'react';
+import { MLS_FEED_RSS_PATH } from '@/lib/mls/feed';
 import { cn } from '@namefi-astra/ui/lib/cn';
 
-export const FEATURE_KEYS = ['brand-studio'] as const;
+export type FeatureKey = 'brand-studio' | 'feed';
 
-export type FeatureKey = (typeof FEATURE_KEYS)[number];
-
-type FeatureTone = 'studio';
+type FeatureTone = 'studio' | 'feed';
 
 type FeatureBeat = {
   title: string;
@@ -62,6 +65,94 @@ type FeaturePageContent = {
 };
 
 export const FEATURE_PAGES = {
+  feed: {
+    key: 'feed',
+    tone: 'feed',
+    eyebrow: 'For market watchers',
+    title: 'Follow domain sale posts in one feed.',
+    description:
+      'Namefi Feed brings public domain sale posts indexed from X into a searchable view, with seller handles, source links, TLD filters, and asking prices when available.',
+    primaryCta: {
+      label: 'Open the feed',
+      href: '/feed',
+    },
+    secondaryCta: {
+      label: 'Subscribe by RSS',
+      href: MLS_FEED_RSS_PATH,
+      external: true,
+    },
+    beats: [
+      {
+        title: 'Search by name or TLD',
+        body: 'Follow the parts of the market you care about.',
+        icon: Search,
+      },
+      {
+        title: 'Check the source',
+        body: 'Open the original post before you act.',
+        icon: Link2,
+      },
+      {
+        title: 'Review seller pages',
+        body: 'See other indexed listings tied to a seller handle.',
+        icon: AtSign,
+      },
+      {
+        title: 'Watch quietly',
+        body: 'Use RSS when you want updates without another tab.',
+        icon: Rss,
+      },
+    ],
+    useCases: [
+      'Tracking public sale posts by TLD',
+      'Checking asking prices when available',
+      'Opening source posts before taking action',
+      'Following indexed listings by seller handle',
+    ],
+    workflow: [
+      {
+        label: 'Scan',
+        body: 'Start with a searchable feed of public sale posts indexed by Namefi.',
+      },
+      {
+        label: 'Filter',
+        body: 'Narrow the view by domain text or TLD so the feed matches what you follow.',
+      },
+      {
+        label: 'Verify',
+        body: 'Open the source post, review the seller handle, and decide what is worth your attention.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Where do Feed listings come from?',
+        answer:
+          'Namefi Feed shows public sale posts indexed by Namefi from X. Open the source link before you act on a listing.',
+      },
+      {
+        question: 'Are asking prices always available?',
+        answer:
+          'No. Feed shows asking prices when they are available in the indexed post or listing data.',
+      },
+      {
+        question: 'Is this every domain for sale?',
+        answer:
+          'No. Feed is a searchable view of public sale posts indexed by Namefi, not a complete view of every listing online.',
+      },
+      {
+        question: 'Can I follow updates without opening the page?',
+        answer:
+          'Yes. You can subscribe by RSS when you want a quieter way to keep an eye on new indexed posts.',
+      },
+    ],
+    metadata: {
+      title: 'Namefi Feed | Public Domain Sale Posts',
+      description:
+        'Search public domain sale posts indexed by Namefi, with seller handles, source links, TLD filters, and asking prices when available.',
+      image: '/assets/mls/opengraph-image.png',
+      imageAlt: 'Namefi Feed feature page',
+    },
+  },
   'brand-studio': {
     key: 'brand-studio',
     tone: 'studio',
@@ -161,6 +252,19 @@ const toneClasses: Record<
     panelTint: string;
   }
 > = {
+  feed: {
+    accent: 'text-brand-primary',
+    accentSoft: 'bg-brand-primary/10',
+    accentBorder: 'border-brand-primary/25',
+    accentStrongBorder: 'border-brand-primary/55',
+    line: 'from-cyan-100 via-brand-primary to-emerald-200',
+    button:
+      'bg-brand-primary text-black hover:bg-brand-primary/90 focus-visible:ring-brand-primary/50',
+    buttonGhost:
+      'border-brand-primary/30 text-brand-primary hover:border-brand-primary/70 hover:bg-brand-primary/10',
+    glow: 'shadow-[0_0_80px_rgba(72,229,155,0.13)]',
+    panelTint: 'bg-brand-primary/8',
+  },
   studio: {
     accent: 'text-brand-primary',
     accentSoft: 'bg-brand-primary/10',
@@ -181,14 +285,6 @@ const linkButtonClassName =
 
 const outlineLinkButtonClassName =
   'inline-flex h-11 shrink-0 select-none items-center justify-center gap-2 border border-white/16 bg-white/[0.025] bg-clip-padding px-4 font-mono text-xs font-semibold uppercase text-white whitespace-nowrap outline-none transition-all hover:bg-white/[0.07] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=size-])]:size-4';
-
-export function isFeatureKey(value: unknown): value is FeatureKey {
-  if (typeof value !== 'string') {
-    return false;
-  }
-
-  return FEATURE_KEYS.includes(value as FeatureKey);
-}
 
 export function getFeatureMetadata(feature: FeaturePageContent): Metadata {
   const canonicalPath = `/features/${feature.key}`;
@@ -258,6 +354,123 @@ export function FeatureLandingPage({
       <FeatureFaqs feature={feature} tone={tone} />
       <ClosingCta feature={feature} tone={tone} />
       <style>{`
+        .feed-signal {
+          --feed-signal-accent: var(--brand-primary, #00e676);
+          --feed-signal-accent-soft: color-mix(in srgb, var(--feed-signal-accent) 14%, transparent);
+          --feed-signal-accent-faint: color-mix(in srgb, var(--feed-signal-accent) 6%, transparent);
+          --feed-signal-accent-border: color-mix(in srgb, var(--feed-signal-accent) 42%, transparent);
+        }
+
+        .feed-signal__stage {
+          background:
+            radial-gradient(ellipse at 20% 18%, color-mix(in srgb, #ffffff 5%, transparent), transparent 34%),
+            radial-gradient(ellipse at 82% 18%, var(--feed-signal-accent-soft), transparent 38%),
+            linear-gradient(180deg, #0e0e0e 0%, #070707 100%);
+          box-shadow:
+            0 34px 90px rgba(0, 0, 0, 0.45),
+            0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+        }
+
+        .feed-signal__source::before,
+        .feed-signal__feed::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 36%);
+        }
+
+        .feed-signal__timeline {
+          animation: feed-signal-timeline 13s linear infinite;
+        }
+
+        .feed-signal__post {
+          animation: feed-signal-post 7.2s ease-in-out infinite;
+        }
+
+        .feed-signal__post:nth-child(2n) {
+          animation-delay: 0.4s;
+        }
+
+        .feed-signal__post:nth-child(3n) {
+          animation-delay: 0.8s;
+        }
+
+        .feed-signal__pipe-line {
+          background: linear-gradient(90deg, transparent, #2a2a2a 18%, var(--feed-signal-accent-border) 50%, #2a2a2a 82%, transparent);
+        }
+
+        .feed-signal__packet {
+          animation: feed-signal-packet 3.2s ease-in-out infinite;
+          background: var(--feed-signal-accent);
+          box-shadow: 0 0 14px var(--feed-signal-accent);
+        }
+
+        .feed-signal__packet:nth-child(3) {
+          animation-delay: 0.55s;
+        }
+
+        .feed-signal__packet:nth-child(4) {
+          animation-delay: 1.1s;
+        }
+
+        .feed-signal__search-sweep {
+          animation: feed-signal-search-sweep 4.4s linear infinite;
+          background: linear-gradient(90deg, transparent 0%, var(--feed-signal-accent) 50%, transparent 100%);
+        }
+
+        .feed-signal__result {
+          animation: feed-signal-result 6.8s ease-in-out infinite;
+        }
+
+        .feed-signal__result:nth-child(2) {
+          animation-delay: 0.28s;
+        }
+
+        .feed-signal__result:nth-child(3) {
+          animation-delay: 0.56s;
+        }
+
+        .feed-signal__pulse {
+          animation: feed-signal-pulse 2.2s ease-in-out infinite;
+          background: var(--feed-signal-accent);
+          box-shadow: 0 0 14px var(--feed-signal-accent);
+        }
+
+        @keyframes feed-signal-timeline {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+
+        @keyframes feed-signal-post {
+          0%, 100% { border-color: #242424; opacity: 0.72; transform: translateX(0); }
+          38%, 56% { border-color: var(--feed-signal-accent-border); opacity: 1; transform: translateX(0.25rem); }
+        }
+
+        @keyframes feed-signal-packet {
+          0% { left: 0; opacity: 0; transform: translateY(-50%) scale(0.65); }
+          12% { opacity: 1; }
+          70% { opacity: 1; }
+          100% { left: calc(100% - 0.5rem); opacity: 0; transform: translateY(-50%) scale(1); }
+        }
+
+        @keyframes feed-signal-search-sweep {
+          0% { transform: translateX(-115%); opacity: 0; }
+          15% { opacity: 0.72; }
+          84% { opacity: 0.72; }
+          100% { transform: translateX(115%); opacity: 0; }
+        }
+
+        @keyframes feed-signal-result {
+          0%, 100% { border-color: #242424; background: #101010; }
+          44%, 62% { border-color: var(--feed-signal-accent-border); background: color-mix(in srgb, var(--feed-signal-accent) 8%, #101010); }
+        }
+
+        @keyframes feed-signal-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.34; transform: scale(0.74); }
+        }
+
         .brand-generator {
           --brand-generator-accent: var(--brand-primary, #00e676);
           --brand-generator-accent-soft: color-mix(in srgb, var(--brand-generator-accent) 18%, transparent);
@@ -677,6 +890,14 @@ export function FeatureLandingPage({
           .brand-generator__bar-fill {
             width: 100% !important;
           }
+
+          .feed-signal *,
+          .feed-signal *::before,
+          .feed-signal *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+          }
+
         }
       `}</style>
       <script
@@ -727,7 +948,8 @@ function Hero({
       </div>
 
       <div className="relative z-10 mt-12 min-w-0 lg:mt-0">
-        <BrandAssetGeneratorVisual />
+        {feature.tone === 'feed' ? <FeedSignalVisual /> : null}
+        {feature.tone === 'studio' ? <BrandAssetGeneratorVisual /> : null}
       </div>
     </section>
   );
@@ -778,6 +1000,201 @@ function SystemLabel({
       <span className={cn('text-sm leading-none', tone.accent)}>-&gt;</span>
       <span>{children}</span>
     </p>
+  );
+}
+
+const feedTimelinePosts = [
+  {
+    domain: 'atlas.ai',
+    seller: '@domaindesk',
+    ask: '$4,800 ask',
+    tld: '.ai',
+    copy: 'Atlas.ai is available. Asking price in the public post.',
+  },
+  {
+    domain: 'northstar.io',
+    seller: '@nameseller',
+    ask: 'price in post',
+    tld: '.io',
+    copy: 'Northstar.io posted with seller handle and source link.',
+  },
+  {
+    domain: 'signal.xyz',
+    seller: '@brandnames',
+    ask: '$1,950 ask',
+    tld: '.xyz',
+    copy: 'Signal.xyz public sale post indexed for review.',
+  },
+  {
+    domain: 'rivet.app',
+    seller: '@marketnames',
+    ask: '$2,200 ask',
+    tld: '.app',
+    copy: 'Rivet.app shared publicly with domain and asking price.',
+  },
+] as const;
+
+function FeedSignalVisual() {
+  const timelinePosts = [...feedTimelinePosts, ...feedTimelinePosts];
+  const searchRows = feedTimelinePosts.slice(0, 3);
+
+  return (
+    <figure
+      aria-label="Animated example showing public posts from X indexed into Namefi Feed and used for search"
+      className="feed-signal relative mx-auto w-full max-w-[42.5rem] font-mono text-[#f3f3f3]"
+    >
+      <div className="feed-signal__stage relative overflow-hidden border border-[#252525] p-3 sm:p-4">
+        <div className="relative grid gap-3 lg:grid-cols-[minmax(0,1fr)_4.5rem_minmax(0,1.08fr)]">
+          <section className="feed-signal__source relative min-h-[20rem] overflow-hidden border border-[#242424] bg-[#0b0b0b] p-3 sm:p-4">
+            <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 border-[#242424] border-b pb-3">
+              <div className="min-w-0">
+                <p className="truncate text-[0.625rem] uppercase tracking-[0.14em] text-[#777777]">
+                  Public posts on X
+                </p>
+                <p className="mt-1 truncate text-xs text-[#444444]">
+                  sale posts as they appear
+                </p>
+              </div>
+              <span className="shrink-0 border border-[#333333] px-2 py-1 text-[0.5625rem] uppercase tracking-[0.12em] text-[#666666]">
+                Timeline
+              </span>
+            </div>
+
+            <div className="relative z-10 mt-4 h-64 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)] sm:h-72">
+              <div className="feed-signal__timeline grid gap-3">
+                {timelinePosts.map((post, index) => (
+                  <article
+                    key={`${post.domain}-${index}`}
+                    className="feed-signal__post border border-[#242424] bg-[#101010] p-3"
+                  >
+                    <div className="flex min-w-0 items-center justify-between gap-3 text-[0.5625rem] uppercase tracking-[0.12em]">
+                      <span className="min-w-0 truncate text-[#777777]">
+                        {post.seller}
+                      </span>
+                      <span className="shrink-0 text-[#555555]">
+                        Public post
+                      </span>
+                    </div>
+                    <p className="mt-3 truncate text-base text-white">
+                      {post.domain}
+                    </p>
+                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#777777]">
+                      {post.copy}
+                    </p>
+                    <div className="mt-3 flex min-w-0 items-center justify-between gap-3 border-[#222222] border-t pt-3 text-[0.5625rem] uppercase tracking-[0.1em]">
+                      <span className="truncate text-[#666666]">
+                        {post.ask}
+                      </span>
+                      <span className="shrink-0 text-brand-primary">
+                        {post.tld}
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div
+            className="relative min-h-16 overflow-hidden border border-[#242424] bg-[#090909] lg:min-h-0"
+            aria-hidden={true}
+          >
+            <div className="feed-signal__pipe-line absolute inset-x-3 top-1/2 h-px" />
+            <span className="feed-signal__packet absolute top-1/2 size-2" />
+            <span className="feed-signal__packet absolute top-1/2 size-2" />
+            <span className="feed-signal__packet absolute top-1/2 size-2" />
+            <div className="relative flex h-full min-h-16 items-center justify-center lg:min-h-full">
+              <div className="grid gap-1 text-center">
+                <span className="text-[0.5625rem] uppercase tracking-[0.16em] text-brand-primary">
+                  Ingest
+                </span>
+                <span className="text-[0.5rem] uppercase tracking-[0.14em] text-[#444444]">
+                  Index
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <section className="feed-signal__feed relative overflow-hidden border border-brand-primary/35 bg-[#0b0f0d] p-3 sm:p-4">
+            <div className="relative z-10 flex min-w-0 items-center justify-between gap-3 border-brand-primary/20 border-b pb-3">
+              <div className="min-w-0">
+                <p className="truncate text-[0.625rem] uppercase tracking-[0.14em] text-brand-primary">
+                  Namefi Feed
+                </p>
+                <p className="mt-1 truncate text-xs text-[#777777]">
+                  indexed posts power search
+                </p>
+              </div>
+              <span className="flex shrink-0 items-center gap-2 text-[0.5625rem] uppercase tracking-[0.12em] text-brand-primary">
+                <span className="feed-signal__pulse size-1.5" />
+                Search
+              </span>
+            </div>
+
+            <div className="relative z-10 mt-4 overflow-hidden border border-[#202020] bg-[#070707] px-3 py-2.5">
+              <div
+                className="feed-signal__search-sweep absolute inset-y-0 left-0 w-24"
+                aria-hidden={true}
+              />
+              <div className="relative flex min-w-0 items-center gap-3">
+                <Search className="size-4 shrink-0 text-brand-primary" />
+                <span className="min-w-0 flex-1 truncate text-sm text-[#eeeeee]">
+                  .ai
+                </span>
+                <span className="shrink-0 text-[0.5625rem] uppercase tracking-[0.12em] text-[#666666]">
+                  Filter TLD
+                </span>
+              </div>
+            </div>
+
+            <div className="relative z-10 mt-3 grid gap-2">
+              {searchRows.map((row) => (
+                <article
+                  key={row.domain}
+                  className="feed-signal__result border border-[#242424] bg-[#101010] p-3"
+                >
+                  <div className="flex min-w-0 items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-base text-white">
+                        {row.domain}
+                      </p>
+                      <p className="mt-1 truncate text-[0.625rem] uppercase tracking-[0.12em] text-[#666666]">
+                        {row.seller}
+                      </p>
+                    </div>
+                    <span className="shrink-0 border border-brand-primary/45 px-2 py-1 text-[0.5625rem] uppercase tracking-[0.1em] text-brand-primary">
+                      {row.tld}
+                    </span>
+                  </div>
+                  <div className="mt-3 flex min-w-0 items-center justify-between gap-3 text-[0.5625rem] uppercase tracking-[0.1em]">
+                    <span className="truncate text-[#777777]">{row.ask}</span>
+                    <span className="inline-flex shrink-0 items-center gap-1 text-brand-primary">
+                      <Link2 className="size-3" />
+                      Source
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="relative z-10 mt-3 grid grid-cols-2 gap-2 text-[0.5625rem] uppercase tracking-[0.1em]">
+              <div className="border border-[#242424] bg-[#090909] p-2 text-[#777777]">
+                seller pages
+              </div>
+              <div className="border border-[#242424] bg-[#090909] p-2 text-[#777777]">
+                RSS updates
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div className="relative mt-3 grid gap-2 border border-[#242424] bg-[#090909] p-3 text-[0.5625rem] uppercase tracking-[0.12em] text-[#666666] sm:grid-cols-3">
+          <span>1. public posts</span>
+          <span className="text-brand-primary">2. indexed by Namefi</span>
+          <span>3. searchable feed</span>
+        </div>
+      </div>
+    </figure>
   );
 }
 
@@ -1119,7 +1536,8 @@ function FeatureBeats({
           visual={
             <MockInput
               buttonLabel={panes.primary.buttonLabel}
-              domain={panes.primary.domain}
+              value={panes.primary.value}
+              prefix={panes.primary.prefix}
               tone={tone}
             />
           }
@@ -1129,7 +1547,13 @@ function FeatureBeats({
         <CapabilityPane
           title={panes.secondary.title}
           description={panes.secondary.description}
-          visual={<CascadeCards feature={feature} tone={tone} />}
+          visual={
+            feature.tone === 'feed' ? (
+              <FeedSourceStack tone={tone} />
+            ) : (
+              <CascadeCards feature={feature} tone={tone} />
+            )
+          }
           isLast={true}
         />
       </div>
@@ -1201,21 +1625,23 @@ function CapabilityPane({
 }
 
 function MockInput({
-  domain,
+  value,
   buttonLabel,
+  prefix = 'https://',
   tone,
 }: {
-  domain: string;
+  value: string;
   buttonLabel: string;
+  prefix?: string;
   tone: (typeof toneClasses)[FeatureTone];
 }) {
   return (
     <div className="relative z-10 flex w-full max-w-md items-center overflow-hidden border border-[#333333] bg-[#050505] p-2 shadow-2xl shadow-black/35">
       <span className="shrink-0 px-3 font-mono text-xs uppercase text-[#777777] sm:px-4">
-        https://
+        {prefix}
       </span>
       <span className="min-w-0 flex-1 truncate px-1 text-base text-[#f3f3f3]">
-        {domain}
+        {value}
       </span>
       <span
         className={cn(
@@ -1225,6 +1651,62 @@ function MockInput({
       >
         {buttonLabel}
       </span>
+    </div>
+  );
+}
+
+function FeedSourceStack({
+  tone,
+}: {
+  tone: (typeof toneClasses)[FeatureTone];
+}) {
+  return (
+    <div className="relative z-10 grid w-full max-w-md gap-3">
+      {[
+        {
+          title: 'Source post',
+          body: 'Open the original public post before you act.',
+          meta: 'source link',
+        },
+        {
+          title: 'Seller handle',
+          body: 'Review other indexed listings tied to the same handle.',
+          meta: '@nameseller',
+        },
+        {
+          title: 'RSS watch',
+          body: 'Follow updates quietly from your reader.',
+          meta: 'feed/rss.xml',
+        },
+      ].map((item, index) => (
+        <div
+          key={item.title}
+          className={cn(
+            'border bg-[#0b0b0b] p-4 shadow-2xl shadow-black/25',
+            index === 1 ? tone.accentStrongBorder : 'border-[#333333]',
+          )}
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-lg font-medium text-[#f3f3f3]">{item.title}</p>
+              <p className="mt-2 text-sm leading-6 text-[#777777]">
+                {item.body}
+              </p>
+            </div>
+            <span
+              className={cn(
+                'shrink-0 font-mono text-[0.625rem] uppercase tracking-[0.12em]',
+                index === 1 ? tone.accent : 'text-[#555555]',
+              )}
+            >
+              0{index + 1}
+            </span>
+          </div>
+          <p className="mt-5 truncate border-[#242424] border-t pt-3 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-[#666666]">
+            {item.meta}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
@@ -1301,8 +1783,9 @@ const capabilityPaneContent: Record<
     primary: {
       title: string;
       description: string;
-      domain: string;
+      value: string;
       buttonLabel: string;
+      prefix?: string;
     };
     secondary: {
       title: string;
@@ -1310,13 +1793,29 @@ const capabilityPaneContent: Record<
     };
   }
 > = {
+  feed: {
+    heading: 'Built for focused market watching.',
+    primary: {
+      title: 'Search the parts of the feed you care about.',
+      description:
+        'Filter public sale posts by name or TLD, then keep source links close when something looks relevant.',
+      value: '.ai',
+      prefix: 'TLD',
+      buttonLabel: 'Filter',
+    },
+    secondary: {
+      title: 'Keep the original post in reach.',
+      description:
+        'Feed is designed for scanning, but the source post stays one step away so you can review context before acting.',
+    },
+  },
   studio: {
     heading: 'Built for visual exploration.',
     primary: {
       title: 'Start from the domain.',
       description:
         'Keep the name at the center while you explore logo, poster, and motion concepts around it.',
-      domain: 'luma.market',
+      value: 'luma.market',
       buttonLabel: 'Create',
     },
     secondary: {
@@ -1419,6 +1918,12 @@ const closingCtaContent: Record<
     description: string;
   }
 > = {
+  feed: {
+    label: 'Next step',
+    title: 'Open the feed when you want a clearer market view.',
+    description:
+      'Search indexed public sale posts, check source links, and keep an eye on new posts by RSS when that fits your workflow.',
+  },
   studio: {
     label: 'Next step',
     title: 'Present your domains with a clearer visual direction.',

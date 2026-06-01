@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { MlsFeed } from '@/components/mls/mls-feed';
 import { MLS_FEED_RSS_PATH } from '@/lib/mls/feed';
 
-const title = 'Domains For Sale On Twitter | Namefi Feed';
+const title = 'Public Domain Sale Posts | Namefi Feed';
 const description =
-  'Browse a live feed that aggregates domains listed for sale on Twitter, with prices, seller handles, and source tweets.';
+  'Search public domain sale posts indexed by Namefi, with seller handles, source links, TLD filters, and asking prices when available.';
 const canonicalPath = '/feed';
 const openGraphImagePath = '/assets/mls/opengraph-image.png';
 
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
         url: openGraphImagePath,
         width: 1200,
         height: 630,
-        alt: 'Domains for sale on Twitter aggregated by Namefi Feed',
+        alt: 'Public domain sale posts indexed by Namefi Feed',
       },
     ],
   },
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
         url: openGraphImagePath,
         width: 1200,
         height: 630,
-        alt: 'Domains for sale on Twitter aggregated by Namefi Feed',
+        alt: 'Public domain sale posts indexed by Namefi Feed',
       },
     ],
   },
