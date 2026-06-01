@@ -13,6 +13,7 @@ import { adminExportTrackingContract } from './admin-export-tracking-contract';
 import { adminFinancialAnalyticsContract } from './admin-financial-analytics-contract';
 import { adminFreeClaimsContract } from './admin-free-claims-contract';
 import { adminLoginHistoryContract } from './admin-login-history-contract';
+import { adminNamefiFeedContract } from './admin-namefi-feed-contract';
 import { adminNfscContract } from './admin-nfsc-contract';
 import { adminNftContract } from './admin-nft-contract';
 import { adminNsAndDnssecContract } from './admin-ns-and-dnssec-contract';
@@ -68,6 +69,7 @@ export const adminContract = {
   exportTracking: adminExportTrackingContract,
   bigQueryAudit: adminBigQueryAuditContract,
   loginHistory: adminLoginHistoryContract,
+  namefiFeed: adminNamefiFeedContract,
   dnsviz: adminDnsvizContract,
   nsAndDnssec: adminNsAndDnssecContract,
   emails: adminEmailsContract,

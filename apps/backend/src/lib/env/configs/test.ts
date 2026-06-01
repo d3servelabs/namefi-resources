@@ -7,8 +7,6 @@ const testConfig: ConfigInput = {
   TEMPORAL_API_URL: 'http://test-temporal-api-url:7233',
   TEMPORAL_NAMESPACE: 'test-temporal-namespace',
   APP_URL: '',
-  MLS_PUBLIC_SALES_LISTINGS_URL:
-    'https://outbound.labs.namefi.io/api/public/sales/listings',
   GA_MEASUREMENT_ID: 'G-XXXXXXXXXX',
   SMTP_HOST: '',
   SMTP_PORT: 25,

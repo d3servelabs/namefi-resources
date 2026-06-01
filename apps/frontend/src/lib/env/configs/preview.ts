@@ -45,8 +45,6 @@ const previewFirstPartyHostnames = (() => {
 const previewConfig: ConfigInput = {
   TYPE: 'preview',
   BACKEND_URL: process.env.BACKEND_URL || 'https://backend.astra.namefi.dev',
-  MLS_PUBLIC_SALES_LISTINGS_URL:
-    'https://outbound.labs.namefi.io/api/public/sales/listings',
   RESOURCES_URL: process.env.RESOURCES_URL || 'https://r.namefi.dev',
   DOCS_URL: process.env.DOCS_URL || 'https://docs.namefi.dev',
   FIRST_PARTY_DEPLOYMENT_URL: previewDeploymentUrl,

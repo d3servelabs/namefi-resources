@@ -5,7 +5,6 @@ import {
 } from '@namefi-astra/common/mls-seller-tiers';
 import {
   MAX_MLS_FEED_LIMIT,
-  type MlsDomainSearchResponse,
   type MlsFeedPage,
   type MlsHandleListingsPage,
   type MlsListing,
@@ -14,31 +13,35 @@ import {
   type MlsSellerDirectorySortOrder,
   mlsContract,
   mlsCurrentUserListedDomainsResponseSchema,
-  mlsDomainSearchResponseSchema,
-  mlsFeedPageSchema,
-  mlsHandleListingsPageSchema,
-  mlsReportResponseSchema,
 } from '@namefi-astra/common/contract/mls-contract';
 import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { inArray, sql } from 'drizzle-orm';
-import { config } from '#lib/env';
+import {
+  createNamefiFeedListingReport,
+  getNamefiFeedListingsForSellerDirectory,
+  getPublicNamefiFeedListings,
+  getPublicNamefiFeedListingsByHandle,
+  NamefiFeedInvalidCursorError,
+  NamefiFeedInvalidHandleError,
+  NamefiFeedListingConflictError,
+  NamefiFeedListingNotFoundError,
+  searchNamefiFeedListingsByDomain,
+} from '../../services/namefi-feed/listings.service';
+import {
+  clamp,
+  domainMatchesTld,
+  normalizeTldFilter,
+} from '../../services/namefi-feed/normalization';
 import { ensurePrivyTableFresh } from '../../services/admin/privy-user-cache';
 import { adminProcedure, protectedProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { privyClient } from '../utils';
 
-const REQUEST_TIMEOUT_MS = 5_000;
-const MAX_FILTERED_FEED_UPSTREAM_PAGES = 8;
-const MAX_SELLER_DIRECTORY_UPSTREAM_PAGES = 100;
 const MAX_CURRENT_USER_LISTED_DOMAIN_PAGES = 10;
 const SELLER_DIRECTORY_SOURCE_CACHE_TTL_MS = 5 * 60 * 1_000;
-const TRAILING_SLASHES_PATTERN = /\/+$/;
 const LEADING_AT_SYMBOL = /^@/;
 const HANDLE_PATTERN = /^[a-z0-9_]+$/i;
-const EDGE_DOTS_PATTERN = /^\.+|\.+$/g;
-const TLD_FILTER_PATTERN =
-  /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
 const DAY_MS = 24 * 60 * 60 * 1_000;
 
 let sellerDirectorySourceCache: {
@@ -68,50 +71,18 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
         });
       }
 
-      if (!tld) {
-        return fetchUpstreamFeedPage({
-          cursor: input.cursor ?? null,
-          limit,
-          query,
-          tld,
-        });
+      try {
+        return await enrichMlsFeedPageSellerPortfolio(
+          await getPublicNamefiFeedListings({
+            cursor: input.cursor ?? null,
+            limit,
+            search: query,
+            tld,
+          }),
+        );
+      } catch (error) {
+        throw mapNamefiFeedError(error, 'Unable to load MLS feed right now.');
       }
-
-      const rows: MlsListing[] = [];
-      let cursor = input.cursor ?? null;
-      let lastPage: MlsFeedPage | null = null;
-      let fetchedPages = 0;
-
-      while (
-        rows.length < limit &&
-        fetchedPages < MAX_FILTERED_FEED_UPSTREAM_PAGES
-      ) {
-        const page = await fetchUpstreamFeedPage({
-          cursor,
-          limit: limit - rows.length,
-          query,
-          tld,
-        });
-        fetchedPages += 1;
-        lastPage = page;
-        // Upstream TLD filtering narrows the page; this suffix check keeps the response exact.
-        const matchingRows = page.rows
-          .filter((listing) => domainMatchesTld(listing.domain, tld))
-          .slice(0, limit - rows.length);
-        rows.push(...matchingRows);
-        cursor = page.nextCursor;
-
-        if (!page.hasMore || !cursor) {
-          break;
-        }
-      }
-
-      return {
-        rows,
-        nextCursor: lastPage?.nextCursor ?? null,
-        hasMore: Boolean(lastPage?.hasMore && lastPage.nextCursor),
-        limit,
-      };
     }),
 
   getSellers: adminProcedure
@@ -207,13 +178,20 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
         });
       }
 
-      const page = await fetchUpstreamHandleListingsPage({
-        handle: normalizedHandle,
-        cursor: input.cursor ?? null,
-        limit: input.limit,
-      });
-
-      return enrichMlsHandleListingsPageSellerPortfolio(page);
+      try {
+        return await enrichMlsHandleListingsPageSellerPortfolio(
+          await getPublicNamefiFeedListingsByHandle({
+            handle: normalizedHandle,
+            cursor: input.cursor ?? null,
+            limit: input.limit,
+          }),
+        );
+      } catch (error) {
+        throw mapNamefiFeedError(
+          error,
+          'Unable to load MLS handle listings right now.',
+        );
+      }
     }),
 
   reportListing: publicProcedure
@@ -221,110 +199,26 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
     .output(mlsContract.reportListing.output)
     .mutation(async ({ input }) => {
       const details = input.details?.trim();
-      const upstreamBody = {
-        listingId: input.listingId,
-        reason: input.reason,
-        ...(details ? { details } : {}),
-      };
-      const upstreamUrl = buildUpstreamListingReportUrl();
-
-      const upstreamResponse = await fetch(upstreamUrl.toString(), {
-        method: 'POST',
-        cache: 'no-store',
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(upstreamBody),
-      }).catch(() => null);
-
-      if (!upstreamResponse) {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Unable to submit MLS listing report right now.',
+      try {
+        return await createNamefiFeedListingReport({
+          listingId: input.listingId,
+          reason: input.reason,
+          ...(details ? { details } : {}),
         });
+      } catch (error) {
+        throw mapNamefiFeedError(
+          error,
+          'Unable to submit MLS listing report right now.',
+        );
       }
-
-      if (!upstreamResponse.ok) {
-        const errorMessage = await extractErrorMessage(upstreamResponse);
-        if (upstreamResponse.status === 400) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: errorMessage ?? 'Invalid MLS listing report payload.',
-          });
-        }
-        if (upstreamResponse.status === 404) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: errorMessage ?? 'MLS listing not found.',
-          });
-        }
-        if (upstreamResponse.status === 409) {
-          throw new TRPCError({
-            code: 'CONFLICT',
-            message: errorMessage ?? 'MLS listing is already suppressed.',
-          });
-        }
-
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message:
-            errorMessage ?? 'Failed to submit MLS listing report upstream.',
-        });
-      }
-
-      const upstreamPayload = await upstreamResponse.json();
-      const parsedUpstreamPayload =
-        mlsReportResponseSchema.safeParse(upstreamPayload);
-
-      if (!parsedUpstreamPayload.success) {
-        throw new TRPCError({
-          code: 'BAD_GATEWAY',
-          message: 'Upstream MLS report API returned an invalid payload.',
-        });
-      }
-
-      return parsedUpstreamPayload.data;
     }),
 
   searchDomainOffers: publicProcedure
     .input(mlsContract.searchDomainOffers.input)
     .output(mlsContract.searchDomainOffers.output)
     .query(async ({ input }) => {
-      const upstreamUrl = buildUpstreamListingSearchUrl();
       const domains = uniqueLowercaseStrings(input.domains);
-
-      const upstreamResponse = await fetch(upstreamUrl.toString(), {
-        method: 'POST',
-        cache: 'no-store',
-        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          domains,
-        }),
-      }).catch(() => null);
-
-      if (!upstreamResponse?.ok) {
-        return {
-          offersByDomain: {},
-          generatedAt: new Date().toISOString(),
-        };
-      }
-
-      const payload = await upstreamResponse.json();
-      const parsed = mlsDomainSearchResponseSchema.safeParse(payload);
-      if (!parsed.success) {
-        return {
-          offersByDomain: {},
-          generatedAt: new Date().toISOString(),
-        };
-      }
-
-      return normalizeDomainSearchResponse(parsed.data);
+      return searchNamefiFeedListingsByDomain(domains);
     }),
 
   getCurrentUserListedDomains: protectedProcedure
@@ -352,70 +246,6 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       return mlsCurrentUserListedDomainsResponseSchema.parse(response);
     }),
 });
-
-async function fetchUpstreamFeedPage({
-  cursor,
-  enrichSellerPortfolio = true,
-  limit,
-  query,
-  tld,
-}: {
-  cursor: string | null;
-  enrichSellerPortfolio?: boolean;
-  limit: number;
-  query: string | null;
-  tld: string | null;
-}) {
-  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
-  upstreamUrl.searchParams.set(
-    'limit',
-    String(clamp(limit, 1, MAX_MLS_FEED_LIMIT)),
-  );
-  if (cursor) {
-    upstreamUrl.searchParams.set('cursor', cursor);
-  }
-  if (query) {
-    upstreamUrl.searchParams.set('q', query);
-  }
-  if (tld) {
-    upstreamUrl.searchParams.set('tld', tld);
-  }
-
-  const upstreamResponse = await fetch(upstreamUrl.toString(), {
-    cache: 'no-store',
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-    headers: {
-      Accept: 'application/json',
-    },
-  }).catch(() => null);
-
-  if (!upstreamResponse) {
-    throw new TRPCError({
-      code: 'BAD_GATEWAY',
-      message: 'Unable to load MLS feed right now.',
-    });
-  }
-
-  if (!upstreamResponse.ok) {
-    throw new TRPCError({
-      code: 'BAD_GATEWAY',
-      message: 'Failed to fetch the upstream MLS feed.',
-    });
-  }
-
-  const payload = await upstreamResponse.json();
-  const parsed = mlsFeedPageSchema.safeParse(payload);
-  if (!parsed.success) {
-    throw new TRPCError({
-      code: 'BAD_GATEWAY',
-      message: 'Upstream MLS feed returned an invalid payload.',
-    });
-  }
-
-  return enrichSellerPortfolio
-    ? enrichMlsFeedPageSellerPortfolio(parsed.data)
-    : parsed.data;
-}
 
 async function enrichMlsFeedPageSellerPortfolio(
   page: MlsFeedPage,
@@ -598,67 +428,6 @@ function normalizePortfolioDomain(domain: string) {
   return domain.trim().toLowerCase();
 }
 
-async function fetchUpstreamHandleListingsPage({
-  handle,
-  cursor,
-  limit,
-}: {
-  handle: string;
-  cursor: string | null;
-  limit: number;
-}) {
-  const upstreamUrl = buildUpstreamHandleUrl(handle);
-  upstreamUrl.searchParams.set(
-    'limit',
-    String(clamp(limit, 1, MAX_MLS_FEED_LIMIT)),
-  );
-  if (cursor) {
-    upstreamUrl.searchParams.set('cursor', cursor);
-  }
-
-  const upstreamResponse = await fetch(upstreamUrl.toString(), {
-    cache: 'no-store',
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-    headers: {
-      Accept: 'application/json',
-    },
-  }).catch(() => null);
-
-  if (!upstreamResponse) {
-    throw new TRPCError({
-      code: 'BAD_GATEWAY',
-      message: 'Unable to load MLS handle listings right now.',
-    });
-  }
-
-  if (!upstreamResponse.ok) {
-    const errorMessage = await extractErrorMessage(upstreamResponse);
-
-    if (upstreamResponse.status === 400) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: errorMessage ?? 'Invalid MLS handle.',
-      });
-    }
-
-    throw new TRPCError({
-      code: 'BAD_GATEWAY',
-      message: errorMessage ?? 'Failed to fetch upstream MLS handle listings.',
-    });
-  }
-
-  const payload = await upstreamResponse.json();
-  const parsed = mlsHandleListingsPageSchema.safeParse(payload);
-  if (!parsed.success) {
-    throw new TRPCError({
-      code: 'BAD_GATEWAY',
-      message: 'Upstream MLS handle listings returned an invalid payload.',
-    });
-  }
-
-  return parsed.data;
-}
-
 async function fetchCurrentUserListedDomains(twitterHandle: string) {
   const domainsByName = new Map<
     string,
@@ -675,7 +444,7 @@ async function fetchCurrentUserListedDomains(twitterHandle: string) {
     pageIndex < MAX_CURRENT_USER_LISTED_DOMAIN_PAGES;
     pageIndex += 1
   ) {
-    const page = await fetchUpstreamHandleListingsPage({
+    const page = await getPublicNamefiFeedListingsByHandle({
       handle: twitterHandle,
       cursor,
       limit: MAX_MLS_FEED_LIMIT,
@@ -701,44 +470,6 @@ async function fetchCurrentUserListedDomains(twitterHandle: string) {
     twitterHandle,
     domains: Array.from(domainsByName.values()),
   };
-}
-
-function buildUpstreamHandleUrl(handle: string) {
-  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
-  const normalizedPath = upstreamUrl.pathname.replace(
-    TRAILING_SLASHES_PATTERN,
-    '',
-  );
-  const withoutListings = normalizedPath.endsWith('/listings')
-    ? normalizedPath.slice(0, -'/listings'.length)
-    : normalizedPath;
-
-  upstreamUrl.pathname = `${withoutListings}/handles/${encodeURIComponent(handle)}/listings`;
-  return upstreamUrl;
-}
-
-function buildUpstreamListingReportUrl() {
-  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
-  const normalizedPath = upstreamUrl.pathname.replace(
-    TRAILING_SLASHES_PATTERN,
-    '',
-  );
-
-  upstreamUrl.pathname = normalizedPath.endsWith('/listings')
-    ? `${normalizedPath}/report`
-    : `${normalizedPath}/listings/report`;
-
-  return upstreamUrl;
-}
-
-function buildUpstreamListingSearchUrl() {
-  const upstreamUrl = new URL(config.MLS_PUBLIC_SALES_LISTINGS_URL);
-  const normalizedPath = upstreamUrl.pathname.replace(
-    TRAILING_SLASHES_PATTERN,
-    '',
-  );
-  upstreamUrl.pathname = `${normalizedPath}/search`;
-  return upstreamUrl;
 }
 
 function normalizeMlsHandleSlug(value: string) {
@@ -767,24 +498,6 @@ function normalizeFeedSearchQuery(value?: string | null) {
   return normalized ? normalized : null;
 }
 
-function normalizeTldFilter(value?: string | null) {
-  const normalized = value?.trim().toLowerCase().replace(EDGE_DOTS_PATTERN, '');
-
-  if (!normalized || !TLD_FILTER_PATTERN.test(normalized)) {
-    return null;
-  }
-
-  return normalized;
-}
-
-function domainMatchesTld(domain: string, tld: string) {
-  return domain
-    .trim()
-    .toLowerCase()
-    .replace(EDGE_DOTS_PATTERN, '')
-    .endsWith(`.${tld}`);
-}
-
 function uniqueLowercaseStrings(values: string[]) {
   return Array.from(
     new Set(values.map((value) => value.trim().toLowerCase()).filter(Boolean)),
@@ -807,29 +520,8 @@ async function fetchSellerDirectorySourceRows(snapshotId: number | null) {
     return sellerDirectorySourceCache;
   }
 
-  const rows: MlsListing[] = [];
-  let cursor: string | null = null;
-  let fetchedPages = 0;
-
-  do {
-    const page = await fetchUpstreamFeedPage({
-      cursor,
-      enrichSellerPortfolio: false,
-      limit: MAX_MLS_FEED_LIMIT,
-      query: null,
-      tld: null,
-    });
-    rows.push(...page.rows);
-    cursor = page.nextCursor;
-    fetchedPages += 1;
-
-    if (!page.hasMore || !cursor) {
-      break;
-    }
-  } while (fetchedPages < MAX_SELLER_DIRECTORY_UPSTREAM_PAGES);
-
   sellerDirectorySourceCache = {
-    rows,
+    rows: await getNamefiFeedListingsForSellerDirectory({}),
     fetchedAt: now,
   };
 
@@ -1159,38 +851,34 @@ function round(value: number, decimals: number) {
   return Math.round(value * factor) / factor;
 }
 
-function normalizeDomainSearchResponse(
-  payload: MlsDomainSearchResponse,
-): MlsDomainSearchResponse {
-  const offersByDomain: Record<string, MlsListing> = {};
-  for (const [domain, offer] of Object.entries(payload.offersByDomain)) {
-    const normalizedDomain = domain.toLowerCase();
-    offersByDomain[normalizedDomain] = {
-      ...offer,
-      domain: offer.domain.toLowerCase(),
-    };
+function mapNamefiFeedError(
+  error: unknown,
+  fallbackMessage: string,
+): TRPCError {
+  if (
+    error instanceof NamefiFeedInvalidCursorError ||
+    error instanceof NamefiFeedInvalidHandleError
+  ) {
+    return new TRPCError({
+      code: 'BAD_REQUEST',
+      message: error.message,
+    });
+  }
+  if (error instanceof NamefiFeedListingNotFoundError) {
+    return new TRPCError({
+      code: 'NOT_FOUND',
+      message: error.message,
+    });
+  }
+  if (error instanceof NamefiFeedListingConflictError) {
+    return new TRPCError({
+      code: 'CONFLICT',
+      message: error.message,
+    });
   }
 
-  return {
-    offersByDomain,
-    generatedAt: payload.generatedAt,
-  };
-}
-
-function clamp(value: number, min: number, max: number) {
-  if (Number.isNaN(value)) {
-    return min;
-  }
-
-  return Math.min(Math.max(value, min), max);
-}
-
-async function extractErrorMessage(response: Response) {
-  try {
-    const payload = (await response.json()) as { error?: string };
-    const normalized = payload.error?.trim();
-    return normalized && normalized.length > 0 ? normalized : null;
-  } catch {
-    return null;
-  }
+  return new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    message: fallbackMessage,
+  });
 }

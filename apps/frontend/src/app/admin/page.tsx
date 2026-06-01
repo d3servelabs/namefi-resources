@@ -27,6 +27,7 @@ import {
   AlertTriangle,
   DollarSign,
   Sparkles,
+  Rss,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -272,6 +273,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-sky-600',
         permissions: [Permission.READ_USERS, Permission.READ_ORDERS],
         permissionsMode: 'every',
+      },
+      {
+        title: 'Namefi Feed',
+        description:
+          'Manage domain sale feed ingestion, X scan settings, and listing moderation.',
+        href: '/admin/namefi-feed',
+        icon: Rss,
+        iconBgColor: 'bg-lime-100',
+        iconTextColor: 'text-lime-700',
+        permissions: [Permission.READ_NAMEFI_FEED],
       },
       {
         title: 'Email Engagement',

@@ -23,6 +23,7 @@ import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-d
 import { cartDomainsPopularSchedule } from './cart-domains-popular';
 import { dreamDomainAwaitsSchedule } from './dream-domain-awaits';
 import { domainTrafficSurgeSchedule } from './domain-traffic-surge';
+import { namefiFeedIngestionSchedule } from './namefi-feed-ingestion';
 import { campaignAwardSchedule } from './hunt/campaign-award';
 import { campaignStatusSchedule } from './hunt/campaign-status';
 import {
@@ -79,6 +80,13 @@ export const SCHEDULE_GROUP_REGISTRY: Record<string, ScheduleGroup> = {
       'Schedules that enhance domains with AI analysis and categorization',
     category: 'indexer',
     priority: 3,
+  },
+  'namefi-feed': {
+    groupId: 'namefi-feed',
+    name: 'Namefi Feed',
+    description: 'Schedules that discover and process public domain sale posts',
+    category: 'indexer',
+    priority: 4,
   },
   'hunt-campaigns': {
     groupId: 'hunt-campaigns',
@@ -143,6 +151,7 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [cartDomainsPopularSchedule.config.scheduleId]: cartDomainsPopularSchedule,
   [dreamDomainAwaitsSchedule.config.scheduleId]: dreamDomainAwaitsSchedule,
   [domainTrafficSurgeSchedule.config.scheduleId]: domainTrafficSurgeSchedule,
+  [namefiFeedIngestionSchedule.config.scheduleId]: namefiFeedIngestionSchedule,
   [campaignAwardSchedule.config.scheduleId]: campaignAwardSchedule,
   [campaignStatusSchedule.config.scheduleId]: campaignStatusSchedule,
   [dailyAwardSchedule.config.scheduleId]: dailyAwardSchedule,

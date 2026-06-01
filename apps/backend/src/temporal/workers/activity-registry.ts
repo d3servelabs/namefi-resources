@@ -15,6 +15,8 @@ import {
   StudioGenerationActivities,
   PublicDigestAnimationActivities,
   LeadgenActivities,
+  NamefiFeedActivities,
+  NamefiFeedLogoActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import { TEMPORAL_ENUMS } from '../shared';
@@ -47,6 +49,8 @@ export const ACTIVITIES = {
     ...StudioGenerationActivities,
     ...PublicDigestAnimationActivities,
     ...LeadgenActivities,
+    ...NamefiFeedActivities,
+    ...NamefiFeedLogoActivities,
 
     ...FreeClaimActivities,
     ...FreeClaimsCorrectionActivities,

@@ -1793,6 +1793,286 @@ export const leadgenEmailDraftsTable = pgTable(
   ],
 );
 
+export const namefiFeedPostSourceEnum = pgEnum('namefi_feed_post_source', [
+  'auto_scan',
+  'manual',
+]);
+
+export const namefiFeedPostStatusEnum = pgEnum('namefi_feed_post_status', [
+  'pending',
+  'processing',
+  'processed',
+  'skipped',
+  'failed',
+]);
+
+export const namefiFeedIngestionRunTriggerEnum = pgEnum(
+  'namefi_feed_ingestion_run_trigger',
+  ['scheduled', 'manual'],
+);
+
+export const namefiFeedIngestionRunStatusEnum = pgEnum(
+  'namefi_feed_ingestion_run_status',
+  ['running', 'completed', 'failed', 'skipped'],
+);
+
+export const namefiFeedListingReportReasonEnum = pgEnum(
+  'namefi_feed_listing_report_reason',
+  [
+    'already_sold',
+    'inaccurate_price',
+    'not_for_sale',
+    'duplicate_listing',
+    'other',
+  ],
+);
+
+export const namefiFeedListingReportStatusEnum = pgEnum(
+  'namefi_feed_listing_report_status',
+  ['active', 'resolved'],
+);
+
+export const namefiFeedListingReportResolutionEnum = pgEnum(
+  'namefi_feed_listing_report_resolution',
+  ['suppressed_listing', 'dismissed'],
+);
+
+export type NamefiFeedListingLogo = {
+  url?: string | null;
+  [key: string]: Json | undefined;
+};
+
+export const namefiFeedSettingsTable = pgTable(
+  'namefi_feed_settings',
+  {
+    id: text('id').primaryKey().notNull().default('default'),
+    autoScanEnabled: boolean('auto_scan_enabled').notNull().default(false),
+    searchQueries: jsonb('search_queries')
+      .$type<string[]>()
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    maxQueries: integer('max_queries').notNull().default(3),
+    maxPagesPerQuery: integer('max_pages_per_query').notNull().default(1),
+    maxTweetsPerQuery: integer('max_tweets_per_query').notNull().default(10),
+    maxTweetAgeMinutes: integer('max_tweet_age_minutes')
+      .notNull()
+      .default(1440),
+    overlapMinutes: integer('overlap_minutes').notNull().default(5),
+    lastAutoScanCursorAt: timestamp('last_auto_scan_cursor_at'),
+    lastRunAt: timestamp('last_run_at'),
+    metadata: jsonb('metadata')
+      .$type<Record<string, Json>>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    ...timestamps,
+  },
+  (table) => [
+    check(
+      'namefi_feed_settings_singleton_id_check',
+      sql`${table.id} = 'default'`,
+    ),
+    check(
+      'namefi_feed_settings_max_queries_check',
+      sql`${table.maxQueries} > 0`,
+    ),
+    check(
+      'namefi_feed_settings_max_pages_per_query_check',
+      sql`${table.maxPagesPerQuery} > 0`,
+    ),
+    check(
+      'namefi_feed_settings_max_tweets_per_query_check',
+      sql`${table.maxTweetsPerQuery} > 0`,
+    ),
+    check(
+      'namefi_feed_settings_max_tweet_age_minutes_check',
+      sql`${table.maxTweetAgeMinutes} > 0`,
+    ),
+    check(
+      'namefi_feed_settings_overlap_minutes_check',
+      sql`${table.overlapMinutes} >= 0`,
+    ),
+  ],
+);
+
+export const namefiFeedIngestionRunsTable = pgTable(
+  'namefi_feed_ingestion_runs',
+  {
+    ...randomUuid,
+    workflowId: text('workflow_id'),
+    trigger: namefiFeedIngestionRunTriggerEnum('trigger').notNull(),
+    requestedByUserId: uuid('requested_by_user_id').references(
+      () => usersTable.id,
+      { onDelete: 'set null' },
+    ),
+    status: namefiFeedIngestionRunStatusEnum('status')
+      .notNull()
+      .default('running'),
+    startedAt: timestamp('started_at').notNull().defaultNow(),
+    finishedAt: timestamp('finished_at'),
+    scannedPostCount: integer('scanned_post_count').notNull().default(0),
+    queuedPostCount: integer('queued_post_count').notNull().default(0),
+    processedPostCount: integer('processed_post_count').notNull().default(0),
+    listingUpsertedCount: integer('listing_upserted_count')
+      .notNull()
+      .default(0),
+    skippedPostCount: integer('skipped_post_count').notNull().default(0),
+    failedPostCount: integer('failed_post_count').notNull().default(0),
+    errorMessage: text('error_message'),
+    metadata: jsonb('metadata')
+      .$type<Record<string, Json>>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    ...timestamps,
+  },
+  (table) => [
+    check(
+      'namefi_feed_runs_scanned_post_count_nonnegative',
+      sql`${table.scannedPostCount} >= 0`,
+    ),
+    check(
+      'namefi_feed_runs_queued_post_count_nonnegative',
+      sql`${table.queuedPostCount} >= 0`,
+    ),
+    check(
+      'namefi_feed_runs_processed_post_count_nonnegative',
+      sql`${table.processedPostCount} >= 0`,
+    ),
+    check(
+      'namefi_feed_runs_listing_upserted_count_nonnegative',
+      sql`${table.listingUpsertedCount} >= 0`,
+    ),
+    check(
+      'namefi_feed_runs_skipped_post_count_nonnegative',
+      sql`${table.skippedPostCount} >= 0`,
+    ),
+    check(
+      'namefi_feed_runs_failed_post_count_nonnegative',
+      sql`${table.failedPostCount} >= 0`,
+    ),
+    index('namefi_feed_runs_workflow_idx').on(table.workflowId),
+    index('namefi_feed_runs_status_started_idx').on(
+      table.status,
+      table.startedAt.desc(),
+    ),
+    index('namefi_feed_runs_trigger_started_idx').on(
+      table.trigger,
+      table.startedAt.desc(),
+    ),
+  ],
+);
+
+export const namefiFeedPostsTable = pgTable(
+  'namefi_feed_posts',
+  {
+    ...randomUuid,
+    ingestionRunId: uuid('ingestion_run_id').references(
+      () => namefiFeedIngestionRunsTable.id,
+      { onDelete: 'set null' },
+    ),
+    externalSource: text('external_source').notNull().default('x'),
+    externalPostId: text('external_post_id').notNull(),
+    externalConversationId: text('external_conversation_id'),
+    externalAuthorId: text('external_author_id').notNull(),
+    authorUsername: text('author_username'),
+    authorDisplayName: text('author_display_name'),
+    text: text('text').notNull(),
+    source: namefiFeedPostSourceEnum('source').notNull(),
+    status: namefiFeedPostStatusEnum('status').notNull().default('pending'),
+    rawPayload: jsonb('raw_payload')
+      .$type<Json>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    postedAt: timestamp('posted_at').notNull(),
+    processedAt: timestamp('processed_at'),
+    failureReason: text('failure_reason'),
+    skipReason: text('skip_reason'),
+    ...timestamps,
+  },
+  (table) => [
+    unique('namefi_feed_posts_external_unique').on(
+      table.externalSource,
+      table.externalPostId,
+    ),
+    index('namefi_feed_posts_status_created_idx').on(
+      table.status,
+      table.createdAt,
+    ),
+    index('namefi_feed_posts_run_idx').on(table.ingestionRunId),
+    index('namefi_feed_posts_author_idx').on(table.externalAuthorId),
+    index('namefi_feed_posts_posted_idx').on(table.postedAt.desc()),
+  ],
+);
+
+export const namefiFeedListingsTable = pgTable(
+  'namefi_feed_listings',
+  {
+    ...randomUuid,
+    postId: uuid('post_id')
+      .notNull()
+      .references(() => namefiFeedPostsTable.id, { onDelete: 'cascade' }),
+    domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
+    logo: jsonb('logo').$type<NamefiFeedListingLogo | null>(),
+    askingPrice: text('asking_price'),
+    askingCurrency: text('asking_currency'),
+    purchaseUrl: text('purchase_url'),
+    sellerUsername: text('seller_username'),
+    sellerDisplayName: text('seller_display_name'),
+    sourceUrl: text('source_url').notNull(),
+    messageText: text('message_text'),
+    listedAt: timestamp('listed_at').notNull().defaultNow(),
+    postedAt: timestamp('posted_at').notNull(),
+    suppressedAt: timestamp('suppressed_at'),
+    ...timestamps,
+  },
+  (table) => [
+    check(
+      'namefi_feed_listings_domain_lowercase_check',
+      sql`${table.domain} = lower(${table.domain})`,
+    ),
+    check(
+      'namefi_feed_listings_domain_nonempty_check',
+      sql`length(trim(${table.domain})) > 0`,
+    ),
+    unique('namefi_feed_listings_domain_unique').on(table.domain),
+    unique('namefi_feed_listings_post_domain_unique').on(
+      table.postId,
+      table.domain,
+    ),
+    index('namefi_feed_listings_domain_idx').on(table.domain),
+    index('namefi_feed_listings_posted_idx').on(table.postedAt.desc()),
+    index('namefi_feed_listings_listed_idx').on(table.listedAt.desc()),
+    index('namefi_feed_listings_seller_idx').on(table.sellerUsername),
+    index('namefi_feed_listings_unsuppressed_idx')
+      .on(table.postedAt.desc())
+      .where(sql`${table.suppressedAt} IS NULL`),
+  ],
+);
+
+export const namefiFeedListingReportsTable = pgTable(
+  'namefi_feed_listing_reports',
+  {
+    ...randomUuid,
+    listingId: uuid('listing_id')
+      .notNull()
+      .references(() => namefiFeedListingsTable.id, { onDelete: 'cascade' }),
+    reason: namefiFeedListingReportReasonEnum('reason').notNull(),
+    details: text('details'),
+    status: namefiFeedListingReportStatusEnum('status')
+      .notNull()
+      .default('active'),
+    resolution: namefiFeedListingReportResolutionEnum('resolution'),
+    resolvedAt: timestamp('resolved_at'),
+    ...timestamps,
+  },
+  (table) => [
+    index('namefi_feed_reports_listing_idx').on(table.listingId),
+    index('namefi_feed_reports_status_created_idx').on(
+      table.status,
+      table.createdAt.desc(),
+    ),
+  ],
+);
+
 /**
  * Free claims table
  * Stores rows that determine whether users qualify for free domain claims

@@ -9,6 +9,10 @@ import {
   leadgenLeadSignalsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
+  namefiFeedIngestionRunsTable,
+  namefiFeedListingReportsTable,
+  namefiFeedListingsTable,
+  namefiFeedPostsTable,
   linkSharesTable,
   orderItemsTable,
   orderNfscItemsTable,
@@ -28,6 +32,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   aiGenerations: many(aiGenerationsTable),
   aiCreditAwards: many(aiCreditAwardsTable),
   leadgenRuns: many(leadgenRunsTable),
+  namefiFeedIngestionRuns: many(namefiFeedIngestionRunsTable),
   wishlistedDomains: many(wishlistedDomainsTable),
   linkShares: many(linkSharesTable),
   feedbackResponses: many(feedbackResponsesTable),
@@ -184,6 +189,49 @@ export const leadgenEmailDraftsRelations = relations(
     contact: one(leadgenContactsTable, {
       fields: [leadgenEmailDraftsTable.contactId],
       references: [leadgenContactsTable.id],
+    }),
+  }),
+);
+
+export const namefiFeedIngestionRunsRelations = relations(
+  namefiFeedIngestionRunsTable,
+  ({ one, many }) => ({
+    requestedByUser: one(usersTable, {
+      fields: [namefiFeedIngestionRunsTable.requestedByUserId],
+      references: [usersTable.id],
+    }),
+    posts: many(namefiFeedPostsTable),
+  }),
+);
+
+export const namefiFeedPostsRelations = relations(
+  namefiFeedPostsTable,
+  ({ one, many }) => ({
+    ingestionRun: one(namefiFeedIngestionRunsTable, {
+      fields: [namefiFeedPostsTable.ingestionRunId],
+      references: [namefiFeedIngestionRunsTable.id],
+    }),
+    listings: many(namefiFeedListingsTable),
+  }),
+);
+
+export const namefiFeedListingsRelations = relations(
+  namefiFeedListingsTable,
+  ({ one, many }) => ({
+    post: one(namefiFeedPostsTable, {
+      fields: [namefiFeedListingsTable.postId],
+      references: [namefiFeedPostsTable.id],
+    }),
+    reports: many(namefiFeedListingReportsTable),
+  }),
+);
+
+export const namefiFeedListingReportsRelations = relations(
+  namefiFeedListingReportsTable,
+  ({ one }) => ({
+    listing: one(namefiFeedListingsTable, {
+      fields: [namefiFeedListingReportsTable.listingId],
+      references: [namefiFeedListingsTable.id],
     }),
   }),
 );

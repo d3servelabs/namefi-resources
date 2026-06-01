@@ -6,7 +6,6 @@ export const configSchema = z.object({
   APP_VERSION: z.string().default('unknown'),
   DEPLOY_COMMIT_SHA: z.string().default('unknown'),
   BACKEND_URL: z.url(),
-  MLS_PUBLIC_SALES_LISTINGS_URL: z.url(),
   RESOURCES_URL: z.url(),
   DOCS_URL: z.url(),
   FIRST_PARTY_DEPLOYMENT_URL: z.url(),

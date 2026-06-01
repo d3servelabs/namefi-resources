@@ -799,6 +799,13 @@
       "when": 1780494575818,
       "tag": "0113_wooden_luckman",
       "breakpoints": true
+    },
+    {
+      "idx": 114,
+      "version": "7",
+      "when": 1780551226898,
+      "tag": "0114_chief_senator_kelly",
+      "breakpoints": true
     }
   ]
 }

@@ -9,8 +9,6 @@ const frontendPort = process.env.FRONTEND_PORT || '5050';
 const localConfig: ConfigInput = {
   TYPE: 'local',
   BACKEND_URL: process.env.BACKEND_URL || `http://localhost:${backendPort}`,
-  MLS_PUBLIC_SALES_LISTINGS_URL:
-    'https://outbound.labs.namefi.io/api/public/sales/listings',
   RESOURCES_URL: 'https://localhost:3002',
   FIRST_PARTY_DEPLOYMENT_URL: `https://localhost:${frontendPort}`,
   DOCS_URL: 'https://localhost:3003',

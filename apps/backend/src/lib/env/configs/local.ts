@@ -19,9 +19,6 @@ const localConfig: ConfigInput = {
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
-  MLS_PUBLIC_SALES_LISTINGS_URL:
-    process.env.MLS_PUBLIC_SALES_LISTINGS_URL ||
-    'https://outbound.labs.namefi.io/api/public/sales/listings',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   /**
    * When testing with domains other than `localhost`, privy will fail because it will require https

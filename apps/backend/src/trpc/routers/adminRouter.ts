@@ -26,6 +26,7 @@ import { nsAndDnssecRouter } from './admin/nsAndDnssecRouter';
 import { emailsRouter } from './admin/adminEmailsRouter';
 import { adminNotificationsRouter } from './admin/adminNotificationsRouter';
 import { adminAnnouncementsRouter } from './admin/adminAnnouncementsRouter';
+import { namefiFeedRouter } from './admin/namefiFeedRouter';
 
 export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   isUserAdmin: protectedProcedure
@@ -55,6 +56,7 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   exportTracking: exportTrackingRouter,
   bigQueryAudit: bigQueryAuditRouter,
   loginHistory: adminLoginHistoryRouter,
+  namefiFeed: namefiFeedRouter,
   dnsviz: adminDnsvizRouter,
   nsAndDnssec: nsAndDnssecRouter,
   emails: emailsRouter,

@@ -45,6 +45,7 @@ export const secretsSchema = z.object({
   GITHUB_WORKFLOWS_TOKEN: z.string().optional(),
   DEEPSEEK_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
+  NAMEFI_FEED_X_BEARER_TOKEN: z.string().optional(),
 
   AWS_ACCESS_KEY_ID: z.string(),
   AWS_SECRET_ACCESS_KEY: z.string(),
@@ -194,7 +195,6 @@ export const configSchema = z.object({
   SMTP_PORT: z.number().default(465),
   SMTP_HOST: z.string(),
   APP_URL: z.string(),
-  MLS_PUBLIC_SALES_LISTINGS_URL: z.string().url(),
   /**
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */

@@ -19,3 +19,5 @@ export * as PublicDigestAnimationActivities from './public-digest-animation.acti
 export * as PbnIssuanceReservationsActivities from './pbn-issuance-reservations.activities';
 export * as X402Activities from './x402.activities';
 export * as LeadgenActivities from './leadgen.activities';
+export * as NamefiFeedActivities from './namefi-feed.activities';
+export * as NamefiFeedLogoActivities from './namefi-feed-logo.activities';
