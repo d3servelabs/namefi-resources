@@ -27,6 +27,8 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { MlsSellerTierBadge } from '@/components/mls/mls-seller-tier-badge';
+import { getMlsSellerTier } from '@namefi-astra/common/mls-seller-tiers';
 import {
   Button,
   buttonVariants,
@@ -81,6 +83,8 @@ const CSV_HEADERS = [
   'listing_url',
   'sale_post_count',
   'domain_count',
+  'namefi_domains_count',
+  'tier_domain_count',
   'posts_per_week',
   'domains_per_post',
   'purchase_url_count',
@@ -798,17 +802,32 @@ function SellerSortableHeader({
 }
 
 function SellerIdentityCell({ seller }: { seller: MlsSellerDirectoryRow }) {
+  const namefiDomainsCount = seller.namefiDomainsCount ?? 0;
+  const sellerTier = getMlsSellerTier(
+    seller.tierDomainCount ?? seller.domainCount,
+  );
+
   return (
     <div className="flex min-w-0 flex-col gap-1">
-      <Link
-        href={seller.listingUrl as Route}
-        className="min-w-0 truncate font-medium text-foreground transition-colors hover:text-primary hover:underline"
-      >
-        {seller.handle}
-      </Link>
-      {seller.displayName ? (
+      <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+        <Link
+          href={seller.listingUrl as Route}
+          className="min-w-0 truncate font-medium text-foreground transition-colors hover:text-primary hover:underline"
+        >
+          {seller.handle}
+        </Link>
+        {sellerTier ? <MlsSellerTierBadge tier={sellerTier} /> : null}
+      </div>
+      {seller.displayName || namefiDomainsCount > 0 ? (
         <span className="min-w-0 truncate text-xs text-muted-foreground">
-          {seller.displayName}
+          {[
+            seller.displayName,
+            namefiDomainsCount > 0
+              ? `${namefiDomainsCount.toLocaleString()} Namefi-owned`
+              : null,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
         </span>
       ) : null}
     </div>
@@ -1081,6 +1100,10 @@ function getMlsSellerDirectoryCsvValue(
       return String(row.salePostCount);
     case 'domain_count':
       return String(row.domainCount);
+    case 'namefi_domains_count':
+      return String(row.namefiDomainsCount ?? 0);
+    case 'tier_domain_count':
+      return String(row.tierDomainCount ?? row.domainCount);
     case 'posts_per_week':
       return String(row.postsPerWeek);
     case 'domains_per_post':

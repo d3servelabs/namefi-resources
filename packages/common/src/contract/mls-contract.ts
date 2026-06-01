@@ -39,6 +39,11 @@ export const mlsListingReportReasons = [
 // Shared row schema
 // ---------------------------------------------------------------------------
 
+const mlsSellerPortfolioFieldsSchema = {
+  namefiDomainsCount: z.number().int().nonnegative().optional().default(0),
+  tierDomainCount: z.number().int().nonnegative().optional().default(0),
+};
+
 export const mlsListingSchema = z.object({
   id: z.string().min(1),
   domain: z.string().min(1),
@@ -50,6 +55,7 @@ export const mlsListingSchema = z.object({
   seller: z.object({
     username: z.string().nullable(),
     displayName: z.string().nullable(),
+    ...mlsSellerPortfolioFieldsSchema,
   }),
   otherDomainsCount: z.number().int().nonnegative().optional().default(0),
   sourceTweetUrl: z.string().min(1),
@@ -131,6 +137,8 @@ export const mlsSellerDirectoryRowSchema = z.object({
   listingUrl: z.string().min(1),
   salePostCount: z.number().int().nonnegative(),
   domainCount: z.number().int().nonnegative(),
+  namefiDomainsCount: z.number().int().nonnegative().default(0),
+  tierDomainCount: z.number().int().nonnegative().default(0),
   postsPerWeek: z.number().nonnegative(),
   domainsPerPost: z.number().nonnegative(),
   purchaseUrlCount: z.number().int().nonnegative(),
@@ -186,6 +194,7 @@ export const mlsHandleListingsPageSchema = z.object({
     authorId: z.string().nullable(),
     username: z.string().nullable(),
     displayName: z.string().nullable(),
+    ...mlsSellerPortfolioFieldsSchema,
   }),
   rows: z.array(mlsListingSchema),
   nextCursor: z.string().nullable(),

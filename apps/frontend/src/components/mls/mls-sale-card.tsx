@@ -18,6 +18,13 @@ import {
   extractDominantColorFromImage,
   type MlsSaleCardTheme,
 } from '@/components/mls/mls-sale-card-theme';
+import { MlsSellerTierBadge } from '@/components/mls/mls-seller-tier-badge';
+import {
+  getMlsListingSellerDomainCount,
+  getMlsSellerTier,
+  type MlsSellerTier,
+  getMlsSellerTierDomainCount,
+} from '@namefi-astra/common/mls-seller-tiers';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { MlsSaleListing } from '@/lib/mls/feed';
@@ -36,11 +43,13 @@ const mlsSaleCardThemeCache = new Map<string, MlsSaleCardTheme>();
 interface MlsSaleCardProps {
   listing: MlsSaleListing;
   showOtherDomainsCount?: boolean;
+  showSellerTierBadge?: boolean;
 }
 
 export function MlsSaleCard({
   listing,
   showOtherDomainsCount = true,
+  showSellerTierBadge = true,
 }: MlsSaleCardProps) {
   const sellerHandle = normalizeMlsHandle(listing.seller.username);
   const sellerLabel = sellerHandle ?? '@unknown';
@@ -58,6 +67,11 @@ export function MlsSaleCard({
   const excerpt = formatExcerpt(listing.messageText);
   const domainParts = getMlsDomainDisplayParts(listing.domain);
   const otherDomainsCount = Math.max(0, listing.otherDomainsCount);
+  const sellerTier = getListingSellerTier({
+    listing,
+    sellerHandle,
+    showSellerTierBadge,
+  });
   const theme = useMlsSaleCardTheme(
     logoUrl,
     `${listing.domain}:${sellerLabel}`,
@@ -99,6 +113,7 @@ export function MlsSaleCard({
               {sellerLabel}
             </p>
           )}
+          <MlsSaleCardSellerTierBadge tier={sellerTier} />
           <span aria-hidden={true}>•</span>
           <time className="shrink-0" dateTime={listing.postedAt}>
             {postedLabel}
@@ -257,6 +272,36 @@ function MlsSaleCardLogo({
       </span>
     </div>
   );
+}
+
+function MlsSaleCardSellerTierBadge({ tier }: { tier: MlsSellerTier | null }) {
+  return tier ? <MlsSellerTierBadge tier={tier} /> : null;
+}
+
+function getListingSellerTier({
+  listing,
+  sellerHandle,
+  showSellerTierBadge,
+}: {
+  listing: MlsSaleListing;
+  sellerHandle: string | null;
+  showSellerTierBadge: boolean;
+}) {
+  if (!showSellerTierBadge || !sellerHandle) {
+    return null;
+  }
+
+  const feedDomainsCount = getMlsListingSellerDomainCount(
+    listing.otherDomainsCount,
+  );
+  const tierDomainCount =
+    listing.seller.tierDomainCount ||
+    getMlsSellerTierDomainCount({
+      feedDomainsCount,
+      namefiDomainsCount: listing.seller.namefiDomainsCount,
+    });
+
+  return getMlsSellerTier(tierDomainCount);
 }
 
 function useMlsSaleCardTheme(logoUrl: string | null, seed: string) {

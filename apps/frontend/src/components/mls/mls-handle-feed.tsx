@@ -5,6 +5,11 @@ import { ArrowLeft, Loader2, RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
 import { type RefObject, useEffect, useMemo, useRef } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
+import { MlsSellerTierBadge } from '@/components/mls/mls-seller-tier-badge';
+import {
+  getMlsSellerTier,
+  type MlsSellerTier,
+} from '@namefi-astra/common/mls-seller-tiers';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
@@ -76,6 +81,9 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
   );
   const sellerLabel = sellerHandle ?? fallbackHandle;
   const totalDomains = firstPage?.totalDomains ?? 0;
+  const namefiDomainsCount = firstPage?.seller.namefiDomainsCount ?? 0;
+  const tierDomainCount = firstPage?.seller.tierDomainCount ?? totalDomains;
+  const sellerTier = hasValidHandle ? getMlsSellerTier(tierDomainCount) : null;
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -101,7 +109,12 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
     <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
       <MlsHandleHeader
         sellerLabel={sellerLabel}
-        subtitle={getSellerSubtitle(hasValidHandle, totalDomains)}
+        sellerTier={sellerTier}
+        subtitle={getSellerSubtitle(
+          hasValidHandle,
+          totalDomains,
+          namefiDomainsCount,
+        )}
         hasValidHandle={hasValidHandle}
         isLoading={isLoading}
         isRefetching={isRefetching}
@@ -129,6 +142,7 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
 
 interface MlsHandleHeaderProps {
   sellerLabel: string;
+  sellerTier: MlsSellerTier | null;
   subtitle: string;
   hasValidHandle: boolean;
   isLoading: boolean;
@@ -138,6 +152,7 @@ interface MlsHandleHeaderProps {
 
 function MlsHandleHeader({
   sellerLabel,
+  sellerTier,
   subtitle,
   hasValidHandle,
   isLoading,
@@ -157,9 +172,12 @@ function MlsHandleHeader({
 
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              {sellerLabel}
-            </h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                {sellerLabel}
+              </h1>
+              {sellerTier ? <MlsSellerTierBadge tier={sellerTier} /> : null}
+            </div>
             <p
               className={
                 hasValidHandle
@@ -242,6 +260,7 @@ function MlsHandleListingsSection({
           key={listing.id}
           listing={listing}
           showOtherDomainsCount={false}
+          showSellerTierBadge={false}
         />
       ))}
 
@@ -352,16 +371,24 @@ function MlsHandleCompletionState({
   return null;
 }
 
-function getSellerSubtitle(hasValidHandle: boolean, totalDomains: number) {
+function getSellerSubtitle(
+  hasValidHandle: boolean,
+  totalDomains: number,
+  namefiDomainsCount: number,
+) {
   if (!hasValidHandle) {
     return 'Invalid seller handle.';
   }
 
-  if (totalDomains === 0) {
+  if (totalDomains === 0 && namefiDomainsCount === 0) {
     return 'No domains listed by this seller yet.';
   }
 
-  return `${totalDomains.toLocaleString()} ${totalDomains === 1 ? 'domain' : 'domains'} listed by this seller.`;
+  if (namefiDomainsCount > 0) {
+    return `${totalDomains.toLocaleString()} feed ${totalDomains === 1 ? 'domain' : 'domains'} and ${namefiDomainsCount.toLocaleString()} Namefi-owned ${namefiDomainsCount === 1 ? 'domain' : 'domains'}.`;
+  }
+
+  return `${totalDomains.toLocaleString()} feed ${totalDomains === 1 ? 'domain' : 'domains'} listed by this seller.`;
 }
 
 interface MlsHandleFeedSkeletonProps {

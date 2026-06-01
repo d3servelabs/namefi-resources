@@ -1,8 +1,13 @@
 import { TRPCError } from '@trpc/server';
 import {
+  getMlsListingSellerDomainCount,
+  getMlsSellerTierDomainCount,
+} from '@namefi-astra/common/mls-seller-tiers';
+import {
   MAX_MLS_FEED_LIMIT,
   type MlsDomainSearchResponse,
   type MlsFeedPage,
+  type MlsHandleListingsPage,
   type MlsListing,
   type MlsSellerDirectoryRow,
   type MlsSellerDirectorySortBy,
@@ -13,7 +18,11 @@ import {
   mlsHandleListingsPageSchema,
   mlsReportResponseSchema,
 } from '@namefi-astra/common/contract/mls-contract';
+import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
+import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
+import { inArray, sql } from 'drizzle-orm';
 import { config } from '#lib/env';
+import { ensurePrivyTableFresh } from '../../services/admin/privy-user-cache';
 import { adminProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 
@@ -146,7 +155,15 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
           listingMatchesSellerDirectoryQuery(row, query),
       );
       const generatedAt = new Date().toISOString();
-      const sellers = aggregateSellerDirectoryRows(filteredRows, generatedAt)
+      const sellerPortfolios = await getNamefiPortfoliosBySellerHandles(
+        filteredRows.map((row) => row.seller.username),
+      );
+      const sellersWithPortfolio = aggregateSellerDirectoryRows(
+        filteredRows,
+        generatedAt,
+        sellerPortfolios,
+      );
+      const sellers = sellersWithPortfolio
         .filter(
           (seller) =>
             seller.salePostCount >= minSalePosts &&
@@ -237,7 +254,7 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
         });
       }
 
-      return parsed.data;
+      return enrichMlsHandleListingsPageSellerPortfolio(parsed.data);
     }),
 
   reportListing: publicProcedure
@@ -354,11 +371,13 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
 
 async function fetchUpstreamFeedPage({
   cursor,
+  enrichSellerPortfolio = true,
   limit,
   query,
   tld,
 }: {
   cursor: string | null;
+  enrichSellerPortfolio?: boolean;
   limit: number;
   query: string | null;
   tld: string | null;
@@ -409,7 +428,190 @@ async function fetchUpstreamFeedPage({
     });
   }
 
-  return parsed.data;
+  return enrichSellerPortfolio
+    ? enrichMlsFeedPageSellerPortfolio(parsed.data)
+    : parsed.data;
+}
+
+async function enrichMlsFeedPageSellerPortfolio(
+  page: MlsFeedPage,
+): Promise<MlsFeedPage> {
+  const portfolios = await getNamefiPortfoliosBySellerHandles(
+    page.rows.map((row) => row.seller.username),
+  );
+
+  return {
+    ...page,
+    rows: page.rows.map((listing) =>
+      enrichMlsListingSellerPortfolio(listing, portfolios),
+    ),
+  };
+}
+
+async function enrichMlsHandleListingsPageSellerPortfolio(
+  page: MlsHandleListingsPage,
+): Promise<MlsHandleListingsPage> {
+  const sellerHandle =
+    normalizeMlsSellerHandle(page.seller.username ?? page.handle) ??
+    normalizeMlsSellerHandle(page.handle);
+  const portfolios = await getNamefiPortfoliosBySellerHandles([
+    sellerHandle?.slug ?? page.handle,
+  ]);
+  const namefiPortfolio = sellerHandle
+    ? getSellerNamefiPortfolio(portfolios, sellerHandle.slug)
+    : null;
+  const namefiDomainsCount = namefiPortfolio?.count ?? 0;
+  const tierDomainCount = getMlsSellerTierDomainCount({
+    feedDomainsCount: page.totalDomains,
+    namefiDomainsCount,
+    overlappingDomainsCount: countMlsListingNamefiOverlaps(
+      page.rows,
+      namefiPortfolio?.domains,
+    ),
+  });
+
+  return {
+    ...page,
+    seller: {
+      ...page.seller,
+      namefiDomainsCount,
+      tierDomainCount,
+    },
+    rows: page.rows.map((listing) =>
+      enrichMlsListingSellerPortfolio(listing, portfolios),
+    ),
+  };
+}
+
+function enrichMlsListingSellerPortfolio(
+  listing: MlsListing,
+  portfolios: Map<string, SellerNamefiPortfolio>,
+): MlsListing {
+  const sellerHandle = normalizeMlsSellerHandle(listing.seller.username);
+  const namefiPortfolio = sellerHandle
+    ? getSellerNamefiPortfolio(portfolios, sellerHandle.slug)
+    : null;
+  const namefiDomainsCount = namefiPortfolio?.count ?? 0;
+  const feedDomainsCount = getMlsListingSellerDomainCount(
+    listing.otherDomainsCount,
+  );
+
+  return {
+    ...listing,
+    seller: {
+      ...listing.seller,
+      namefiDomainsCount,
+      tierDomainCount: getMlsSellerTierDomainCount({
+        feedDomainsCount,
+        namefiDomainsCount,
+        overlappingDomainsCount: namefiPortfolio?.domains.has(
+          normalizePortfolioDomain(listing.domain),
+        )
+          ? 1
+          : 0,
+      }),
+    },
+  };
+}
+
+async function getNamefiPortfoliosBySellerHandles(
+  handles: Array<string | null | undefined>,
+): Promise<Map<string, SellerNamefiPortfolio>> {
+  const normalizedHandles = Array.from(
+    new Set(
+      handles
+        .map((handle) => normalizeMlsSellerHandle(handle)?.slug)
+        .filter((handle): handle is string => Boolean(handle)),
+    ),
+  );
+
+  if (normalizedHandles.length === 0) {
+    return new Map();
+  }
+
+  try {
+    await ensurePrivyTableFresh();
+
+    const rows = await db
+      .with(namefiNftOwnersCte)
+      .select({
+        handle: sql<string>`LOWER(${privyUsersTableSchema.twitterUsername})`,
+        domain: sql<string>`LOWER(${namefiNftOwnersView.normalizedDomainName})`,
+      })
+      .from(privyUsersTableSchema)
+      .innerJoin(
+        namefiNftOwnersView,
+        sql`LOWER(${namefiNftOwnersView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+      )
+      .where(
+        inArray(
+          sql<string>`LOWER(${privyUsersTableSchema.twitterUsername})`,
+          normalizedHandles,
+        ),
+      );
+
+    const portfolios = new Map<string, SellerNamefiPortfolio>();
+    for (const row of rows) {
+      const handle = row.handle?.trim().toLowerCase();
+      const domain = row.domain?.trim().toLowerCase();
+      if (!handle || !domain) {
+        continue;
+      }
+
+      const portfolio = portfolios.get(handle) ?? {
+        domains: new Set<string>(),
+        count: 0,
+      };
+
+      portfolio.domains.add(domain);
+      portfolio.count = portfolio.domains.size;
+      portfolios.set(handle, portfolio);
+    }
+
+    return portfolios;
+  } catch {
+    return new Map();
+  }
+}
+
+function getSellerNamefiPortfolio(
+  portfolios: Map<string, SellerNamefiPortfolio>,
+  sellerSlug: string,
+) {
+  return portfolios.get(sellerSlug.toLowerCase()) ?? null;
+}
+
+function countMlsListingNamefiOverlaps(
+  listings: MlsListing[],
+  namefiDomains: Set<string> | null | undefined,
+) {
+  if (!namefiDomains?.size) {
+    return 0;
+  }
+
+  const overlappingDomains = new Set<string>();
+  for (const listing of listings) {
+    const domain = normalizePortfolioDomain(listing.domain);
+    if (namefiDomains.has(domain)) {
+      overlappingDomains.add(domain);
+    }
+  }
+
+  return overlappingDomains.size;
+}
+
+function countSetIntersection(left: Set<string>, right: Set<string>) {
+  let count = 0;
+  for (const value of left) {
+    if (right.has(value)) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+function normalizePortfolioDomain(domain: string) {
+  return domain.trim().toLowerCase();
 }
 
 function buildUpstreamHandleUrl(handle: string) {
@@ -523,6 +725,7 @@ async function fetchSellerDirectorySourceRows(snapshotId: number | null) {
   do {
     const page = await fetchUpstreamFeedPage({
       cursor,
+      enrichSellerPortfolio: false,
       limit: MAX_MLS_FEED_LIMIT,
       query: null,
       tld: null,
@@ -584,9 +787,15 @@ interface SellerDirectoryAggregate {
   latestSourceTweetUrl: string;
 }
 
+interface SellerNamefiPortfolio {
+  domains: Set<string>;
+  count: number;
+}
+
 function aggregateSellerDirectoryRows(
   listings: MlsListing[],
   generatedAt: string,
+  portfolios: Map<string, SellerNamefiPortfolio> = new Map(),
 ): MlsSellerDirectoryRow[] {
   const generatedTime = parseDateTime(generatedAt) ?? Date.now();
   const aggregates = new Map<string, SellerDirectoryAggregate>();
@@ -621,7 +830,7 @@ function aggregateSellerDirectoryRows(
   }
 
   return Array.from(aggregates.values()).map((aggregate) =>
-    toSellerDirectoryRow(aggregate, generatedTime),
+    toSellerDirectoryRow(aggregate, generatedTime, portfolios),
   );
 }
 
@@ -703,9 +912,15 @@ function addUniqueValue<T>(
 function toSellerDirectoryRow(
   aggregate: SellerDirectoryAggregate,
   generatedTime: number,
+  portfolios: Map<string, SellerNamefiPortfolio>,
 ): MlsSellerDirectoryRow {
   const salePostCount = aggregate.sourceTweetSet.size;
   const domainCount = aggregate.domainSet.size;
+  const namefiPortfolio = getSellerNamefiPortfolio(portfolios, aggregate.slug);
+  const namefiDomainsCount = namefiPortfolio?.count ?? 0;
+  const overlappingDomainsCount = namefiPortfolio
+    ? countSetIntersection(aggregate.domainSet, namefiPortfolio.domains)
+    : 0;
   const activeDays = Math.max(
     1,
     Math.ceil((aggregate.lastPostedTime - aggregate.firstPostedTime) / DAY_MS) +
@@ -724,6 +939,12 @@ function toSellerDirectoryRow(
     listingUrl: `/feed/users/${encodeURIComponent(aggregate.slug)}`,
     salePostCount,
     domainCount,
+    namefiDomainsCount,
+    tierDomainCount: getMlsSellerTierDomainCount({
+      feedDomainsCount: domainCount,
+      namefiDomainsCount,
+      overlappingDomainsCount,
+    }),
     postsPerWeek: round(salePostCount / (activeDays / 7), 2),
     domainsPerPost: round(domainCount / salePostCount, 2),
     purchaseUrlCount: aggregate.purchaseUrlCount,

@@ -3,6 +3,8 @@ import { config } from '@/lib/env';
 export interface MlsSaleSeller {
   username: string | null;
   displayName: string | null;
+  namefiDomainsCount?: number;
+  tierDomainCount?: number;
 }
 
 export interface MlsSaleListing {
@@ -31,6 +33,8 @@ export interface MlsSalesByHandleSeller {
   authorId: string | null;
   username: string | null;
   displayName: string | null;
+  namefiDomainsCount?: number;
+  tierDomainCount?: number;
 }
 
 export interface MlsSalesByHandlePage {
@@ -59,6 +63,8 @@ export interface MlsSellerDirectoryRow {
   listingUrl: string;
   salePostCount: number;
   domainCount: number;
+  namefiDomainsCount?: number;
+  tierDomainCount?: number;
   postsPerWeek: number;
   domainsPerPost: number;
   purchaseUrlCount: number;
