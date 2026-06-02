@@ -1,36 +1,26 @@
 name: Chromatic
 
 on:
+  # Baseline build on main to keep Chromatic baselines current.
+  # NOTE: no trigger-level `paths` filter here on purpose — the `changes` job
+  # below is the single source of truth for "could this change affect visuals?",
+  # so push and merge_group share identical, drift-free filtering logic.
   push:
     branches:
       - main
-    paths:
-      # Broad coverage on main to keep baselines current
-      - "packages/ui/**"
-      - "apps/frontend/src/**/*.ts"
-      - "apps/frontend/src/**/*.tsx"
-      - "apps/frontend/src/**/*.css"
-      # Exclude non-code files
-      - "!**/*.md"
-      - "!**/*.json"
-      - "!**/*.test.ts"
-      - "!**/*.test.tsx"
-      - "!**/*.spec.ts"
-      - "!**/*.spec.tsx"
-  pull_request:
-    branches-ignore:
-      - prod
-    paths:
-      # Restrictive for PRs - only components and UI
-      - "packages/ui/**"
-      - "apps/frontend/src/components/**"
-      - "apps/frontend/src/stories/**"
-      - "apps/frontend/src/pbns/**"
-      - "apps/frontend/src/app/globals.css"
+  # Pre-merge visual check: runs ONCE per merge on the final combined state.
+  # This replaces per-PR builds and collapses the O(N) stack-restack amplification
+  # (restacking N branches used to fire N full builds via `synchronize`).
+  # NOTE: only fires once the GitHub merge queue is enabled in repo settings
+  # (Settings -> Branches -> require merge queue). Until then, Chromatic runs on
+  # main pushes only.
+  merge_group:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Never cancel: main pushes set baselines and each merge_group is a distinct
+  # pre-merge gate — cancelling either would skip a needed snapshot.
+  cancel-in-progress: false
 
 env:
   NODE_OPTIONS: --max-old-space-size=8192
@@ -38,7 +28,55 @@ env:
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
+  # Cheap gate: skip the expensive Storybook build entirely when a change cannot
+  # affect visuals. Denylist semantics — `**` matches everything, then `!`
+  # subtracts the provably-non-visual paths; `visual` is true only if at least one
+  # changed file survives. Backend/db are excluded because stories never render
+  # them (any imports are type-only and tree-shaken). When uncertain, we keep the
+  # path IN (err toward running) so we never miss a real regression.
+  # Caveat this cannot catch: a comment-only edit to a *story* file still counts as
+  # changed — TurboSnap then keeps it to just that one story, not all ~200.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      visual: ${{ steps.filter.outputs.visual }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+        id: filter
+        with:
+          # v4 natively detects the diff base for both push and merge_group events.
+          # (v3 had no merge_group support and needed a manual base+ref workaround.)
+          # 'every' = a path counts as `visual` only if it matches ALL patterns,
+          # i.e. matches `**` AND none of the `!` exclusions. With the default
+          # 'some', the leading `**` alone would make every change match and the
+          # denylist would be silently ignored.
+          predicate-quantifier: 'every'
+          filters: |
+            visual:
+              - '**'
+              - '!**/*.md'
+              - '!**/*.mdx'
+              - '!docs/**'
+              - '!**/*.test.ts'
+              - '!**/*.test.tsx'
+              - '!**/*.spec.ts'
+              - '!**/*.spec.tsx'
+              - '!**/*.testing.ts'
+              - '!apps/backend/**'
+              - '!packages/db/**'
+              - '!**/*.sql'
+              - '!.github/**'
+
   chromatic:
+    needs: changes
+    # Fail-safe: run unless the gate explicitly returned 'false'. `!cancelled()`
+    # is a status-check function, so GitHub evaluates this `if` even when the
+    # `changes` job FAILS (it does not auto-skip dependents in that case) — a
+    # paths-filter hiccup then yields visual='' and Chromatic still runs. Better
+    # to pay for a build than to silently disable the visual gate. We use
+    # `!cancelled()` rather than `always()` so a cancelled run won't spawn a build.
+    if: ${{ !cancelled() && needs.changes.outputs.visual != 'false' }}
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     steps:
       - uses: actions/checkout@v5
@@ -65,15 +103,21 @@ jobs:
 
       - name: Run Chromatic
         run: |
-          CHROMATIC_FLAGS="--exit-once-uploaded"
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # Auto-accept on main to update baselines
-            # Higher diff threshold (0.2 = 20% tolerance) for noise on main
+          # --only-changed enables TurboSnap: snapshot only stories affected by the
+          # changed files (vs the Chromatic baseline), instead of all ~200 every time.
+          CHROMATIC_FLAGS="--exit-once-uploaded --only-changed"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # main: auto-accept to update baselines for the next merge group.
+            # Higher diff threshold (0.2 = 20% tolerance) for noise on main.
             CHROMATIC_FLAGS="$CHROMATIC_FLAGS --auto-accept-changes --diff-threshold 0.2"
           else
-            # Allow changes on PRs without failing CI
-            # Stricter threshold for PRs to catch real changes
-            CHROMATIC_FLAGS="$CHROMATIC_FLAGS --exit-zero-on-changes --diff-threshold 0.05"
+            # merge_group: pre-merge visual check, stricter threshold.
+            # NON-BLOCKING: the base --exit-once-uploaded exits 0 right after upload,
+            # before the visual verdict is known, so this never fails the merge.
+            # To make Chromatic BLOCK a bad merge, remove --exit-once-uploaded from the
+            # base flags above (so the CLI waits for the verdict and exits non-zero on
+            # changes) AND mark this job a required check on the merge queue.
+            CHROMATIC_FLAGS="$CHROMATIC_FLAGS --diff-threshold 0.05"
           fi
           ../../node_modules/.bin/infisical run --token=$INFISICAL_SERVICE_TOKEN --env=dev -- bun run chromatic $CHROMATIC_FLAGS
         working-directory: apps/frontend
