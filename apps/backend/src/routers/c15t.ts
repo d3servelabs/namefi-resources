@@ -76,6 +76,7 @@ const c15t = c15tInstance({
   },
   telemetry: { enabled: false },
   adapter: drizzleAdapter({ db, provider: 'postgresql' }),
+  tablePrefix: 'c15t_',
 });
 
 export async function isC15tMeasurementConsentAutoGranted(

@@ -11,7 +11,7 @@ import { relations } from 'drizzle-orm';
 
 // c15t v2 tenant columns are nullable while existing rows stay single-tenant.
 // Keep upstream ID-scoped FKs until a tenant backfill can make tenantId required.
-export const subject = pgTable('subject', {
+export const subject = pgTable('c15t_subject', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   isIdentified: boolean('isIdentified').notNull().default(false),
   externalId: text('externalId'),
@@ -35,7 +35,7 @@ export const subjectRelations = relations(subject, ({ many }) => ({
   }),
 }));
 
-export const domain = pgTable('domain', {
+export const domain = pgTable('c15t_domain', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   name: text('name').unique().notNull(),
   description: text('description'),
@@ -53,7 +53,7 @@ export const domainRelations = relations(domain, ({ many }) => ({
   }),
 }));
 
-export const consentPolicy = pgTable('consentPolicy', {
+export const consentPolicy = pgTable('c15t_consentPolicy', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   version: text('version').notNull(),
   type: text('type').notNull(),
@@ -78,7 +78,7 @@ export const consentPolicyRelations = relations(consentPolicy, ({ many }) => ({
 }));
 
 export const runtimePolicyDecision = pgTable(
-  'runtimePolicyDecision',
+  'c15t_runtimePolicyDecision',
   {
     id: varchar('id', { length: 255 }).notNull().primaryKey(),
     tenantId: text('tenantId'),
@@ -125,7 +125,7 @@ export const runtimePolicyDecisionRelations = relations(
   }),
 );
 
-export const consentPurpose = pgTable('consentPurpose', {
+export const consentPurpose = pgTable('c15t_consentPurpose', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   code: text('code').notNull(),
   name: text('name'),
@@ -140,7 +140,7 @@ export const consentPurpose = pgTable('consentPurpose', {
 });
 
 export const consent = pgTable(
-  'consent',
+  'c15t_consent',
   {
     id: varchar('id', { length: 255 }).notNull().primaryKey(),
     subjectId: text('subjectId').notNull(),
@@ -223,7 +223,7 @@ export const consentRelations = relations(consent, ({ one, many }) => ({
 }));
 
 export const auditLog = pgTable(
-  'auditLog',
+  'c15t_auditLog',
   {
     id: varchar('id', { length: 255 }).notNull().primaryKey(),
     entityType: text('entityType').notNull(),
@@ -258,7 +258,7 @@ export const auditLogRelations = relations(auditLog, ({ one }) => ({
 }));
 
 export const consentRecord = pgTable(
-  'consentRecord',
+  'c15t_consentRecord',
   {
     id: varchar('id', { length: 255 }).notNull().primaryKey(),
     subjectId: text('subjectId').notNull(),
@@ -298,7 +298,7 @@ export const consentRecordRelations = relations(consentRecord, ({ one }) => ({
   }),
 }));
 
-export const private_c15t_settings = pgTable('private_c15t_settings', {
+export const private_c15t_settings = pgTable('c15t_private_c15t_settings', {
   id: varchar('id', { length: 255 }).primaryKey().notNull(),
   version: varchar('version', { length: 255 }).notNull().default('1.0.0'),
 });

@@ -26,7 +26,7 @@ import {
   Network,
   Wallet2,
 } from 'lucide-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
   type Config,
@@ -397,6 +397,24 @@ export function RequestWalletConnectionDialog(
   } = props;
 
   const state = deriveState(props);
+  useEffect(() => {
+    const {
+      required,
+      activeAddress,
+      activeChainId,
+      isRequestedWalletInConnectedList,
+      phase,
+    } = props;
+
+    console.log({
+      required,
+      activeAddress,
+      activeChainId,
+      isRequestedWalletInConnectedList,
+      phase,
+      state,
+    });
+  }, [state, props]);
 
   const checksummedRequired = useMemo(
     () =>
