@@ -8,7 +8,6 @@ import {
   leadgenLeadSignalsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
-  huntEdgesTable,
   linkSharesTable,
   orderItemsTable,
   orderNfscItemsTable,
@@ -19,6 +18,7 @@ import {
   usersTable,
   wishlistedDomainsTable,
 } from './schema';
+import { huntEdgesTable } from './schemas/hunt';
 
 // User relations
 export const usersRelations = relations(usersTable, ({ many }) => ({
