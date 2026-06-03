@@ -946,6 +946,8 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
   return counts;
 }
 
+// `reason` is explicit so future completion paths can add separate audit
+// triggers without changing the persisted event shape.
 export async function finalizeUntriagedLeadgenLeads({
   runId,
   reason,

@@ -63,7 +63,7 @@ export function canPrepareLeadgenOutreach({
   runStatus: LeadgenSnapshot['status'];
 }) {
   if (lead.status === 'suppressed') return false;
-  if (lead.status === 'checking') return isTerminalLeadgenRunStatus(runStatus);
+  if (lead.status === 'checking') return isTerminalLeadgenStatus(runStatus);
   return true;
 }
 
@@ -98,7 +98,7 @@ function getBuyerSummary(lead: LeadgenLead) {
   return cleanText(lead.rationale) ?? 'Potential buyer fit found.';
 }
 
-function isTerminalLeadgenRunStatus(status: LeadgenSnapshot['status']) {
+export function isTerminalLeadgenStatus(status: LeadgenSnapshot['status']) {
   return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
 }
 

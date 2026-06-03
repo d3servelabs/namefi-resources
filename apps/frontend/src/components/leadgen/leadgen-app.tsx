@@ -70,6 +70,7 @@ import { buildMailtoHref } from './leadgen-mailto';
 import {
   buildLeadPresentationModel,
   canPrepareLeadgenOutreach,
+  isTerminalLeadgenStatus,
   type LeadPresentation,
   type LeadPresentationModel,
 } from './leadgen-presentation';
@@ -2774,10 +2775,6 @@ function isInitialDraftEvent(event: LeadgenEvent) {
     (hasPayloadString(event.payload, 'draftId') ||
       hasPayloadString(event.payload, 'contactEmail'))
   );
-}
-
-function isTerminalLeadgenStatus(status: LeadgenSnapshot['status']) {
-  return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
 }
 
 function downloadLeadgenCrmCsv(run: LeadgenSnapshot) {

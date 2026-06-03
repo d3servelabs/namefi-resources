@@ -163,13 +163,26 @@ describe('canPrepareLeadgenOutreach', () => {
     ).toBe(false);
   });
 
-  it('allows leftover checking leads after the run reaches a terminal state', () => {
+  it.each([
+    'SUCCEEDED',
+    'FAILED',
+    'CANCELED',
+  ] as const)('allows leftover checking leads after the run reaches %s', (runStatus) => {
     expect(
       canPrepareLeadgenOutreach({
         lead: lead({ status: 'checking' }),
-        runStatus: 'SUCCEEDED',
+        runStatus,
       }),
     ).toBe(true);
+  });
+
+  it('keeps checking leads gated while the run is queued', () => {
+    expect(
+      canPrepareLeadgenOutreach({
+        lead: lead({ status: 'checking' }),
+        runStatus: 'QUEUED',
+      }),
+    ).toBe(false);
   });
 
   it('never allows suppressed leads to receive outreach', () => {
