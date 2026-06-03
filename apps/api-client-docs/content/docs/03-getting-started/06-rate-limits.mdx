@@ -1,0 +1,164 @@
+---
+title: Rate Limits
+description: How the v-next API is rate limited and how to read the RateLimit-* headers
+---
+
+Every endpoint under `https://api.namefi.io/v-next` is rate limited per account.
+The limit is shared across all backend instances, so it holds no matter which
+server handles your request.
+
+## The limit
+
+- **60 requests per minute, per account.**
+- The window is a rolling 60 second window.
+- The limit applies to the whole v-next surface combined, not per endpoint.
+
+## Response headers
+
+Every response (including `429`s) carries these headers so you can pace your
+requests without guessing:
+
+| Header                | Meaning                                              |
+| --------------------- | ---------------------------------------------------- |
+| `RateLimit-Limit`     | How many requests you get in the 1 minute window.    |
+| `RateLimit-Remaining` | How many requests are remaining in the current window. |
+| `RateLimit-Reset`     | Seconds until the current window resets.             |
+
+When you are over the limit, the API also returns a standard `Retry-After`
+header (in seconds) alongside the `429`.
+
+## When you exceed the limit
+
+A request over the limit responds with HTTP `429 Too Many Requests`:
+
+```json
+{ "error": "Too Many Requests" }
+```
+
+Read `Retry-After` (or `RateLimit-Reset`) and wait that many seconds before
+retrying.
+
+## Reading the headers
+
+The SDK abstracts raw responses away, so read the `RateLimit-*` headers from a
+direct `fetch`/`requests` call (or inspect them with cURL).
+
+<CodeTabs items={["Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch('https://api.namefi.io/v-next/balance', {
+  headers: { 'x-api-key': process.env.NAMEFI_API_KEY! },
+});
+
+console.log('Limit', res.headers.get('RateLimit-Limit'));
+console.log('Remaining', res.headers.get('RateLimit-Remaining'));
+console.log('Reset (s)', res.headers.get('RateLimit-Reset'));
+
+if (res.status === 429) {
+  const retryAfter = Number(res.headers.get('Retry-After') ?? 1);
+  console.log(`Rate limited, retry in ${retryAfter}s`);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# -D - dumps the response headers (including RateLimit-*) to stdout
+curl -D - -o /dev/null -s "https://api.namefi.io/v-next/balance" \
+  -H "x-api-key: $NAMEFI_API_KEY"
+
+# Example response headers:
+#   RateLimit-Limit: 60
+#   RateLimit-Remaining: 59
+#   RateLimit-Reset: 47
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+res = requests.get(
+    "https://api.namefi.io/v-next/balance",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+)
+
+print("Limit", res.headers.get("RateLimit-Limit"))
+print("Remaining", res.headers.get("RateLimit-Remaining"))
+print("Reset (s)", res.headers.get("RateLimit-Reset"))
+
+if res.status_code == 429:
+    retry_after = int(res.headers.get("Retry-After", 1))
+    print(f"Rate limited, retry in {retry_after}s")
+```
+
+</Tab>
+</CodeTabs>
+
+## Backing off on `429`
+
+A small helper that retries once `Retry-After` has elapsed:
+
+<CodeTabs items={["Node.js fetch", "Python"]}>
+<Tab value="Node.js fetch">
+
+```ts
+import { setTimeout as sleep } from 'node:timers/promises';
+
+async function withRetry(url: string, init: RequestInit, maxRetries = 3) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const res = await fetch(url, init);
+
+    if (res.status !== 429) {
+      return res;
+    }
+
+    const retryAfter = Number(
+      res.headers.get('Retry-After') ?? res.headers.get('RateLimit-Reset') ?? 1,
+    );
+    await sleep(retryAfter * 1000);
+  }
+
+  throw new Error('Rate limit exceeded after retries');
+}
+
+const res = await withRetry('https://api.namefi.io/v-next/balance', {
+  headers: { 'x-api-key': process.env.NAMEFI_API_KEY! },
+});
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import time
+import requests
+
+
+def with_retry(url, headers, max_retries=3):
+    for _ in range(max_retries + 1):
+        res = requests.get(url, headers=headers)
+        if res.status_code != 429:
+            return res
+        retry_after = int(
+            res.headers.get("Retry-After")
+            or res.headers.get("RateLimit-Reset")
+            or 1
+        )
+        time.sleep(retry_after)
+    raise RuntimeError("Rate limit exceeded after retries")
+
+
+res = with_retry(
+    "https://api.namefi.io/v-next/balance",
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+)
+```
+
+</Tab>
+</CodeTabs>

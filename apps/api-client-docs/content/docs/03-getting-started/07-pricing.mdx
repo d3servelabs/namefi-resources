@@ -1,0 +1,249 @@
+---
+title: Pricing Model
+description: How multi-year pricing, operations, and currency units work
+---
+
+Domain prices are returned by the availability endpoints
+(`client.search.checkAvailability` / `/search/availability`) under
+`pricingDetails`. This page explains how to read those details and compute the
+charge for a given duration and operation.
+
+All amounts are in **USD**.
+
+## Where pricing comes from
+
+A successful availability check returns `pricingDetails` for the domain:
+
+```jsonc
+{
+  "domain": "example.com",
+  "availability": true,
+  "pricingDetails": {
+    "registrationPrice": { "type": "PER_YEAR", "price": { "amount": 12, "currency": "USD" } },
+    "renewalPrice":      { "type": "PER_YEAR", "price": { "amount": 12, "currency": "USD" } },
+    "importPrice":       { "type": "PER_YEAR", "price": { "amount": 8,  "currency": "USD" } }
+  },
+  "durationValidationInYears": { "min": 1, "max": 10 }
+}
+```
+
+`durationValidationInYears` tells you the valid duration range for that specific
+domain. Across the platform durations are always **integers between 1 and 10**.
+
+## Operations
+
+Each operation reads a different price from `pricingDetails`:
+
+| Operation  | Price used                                                            |
+| ---------- | -------------------------------------------------------------------- |
+| `REGISTER` | `registrationPrice` for every year.                                  |
+| `RENEW`    | `renewalPrice` for every year.                                       |
+| `IMPORT`   | `importPrice` for the **first year**, then `renewalPrice` for the rest. |
+
+The `IMPORT` split exists because an EPP transfer only adds a single year, so
+any additional years are charged at the renewal rate.
+
+## Pricing types
+
+Each price (`registrationPrice`, `renewalPrice`, `importPrice`) is one of two
+shapes.
+
+### `PER_YEAR`
+
+A flat per-year price. The total is simply the yearly amount times the duration.
+
+```jsonc
+{ "type": "PER_YEAR", "price": { "amount": 12, "currency": "USD" } }
+```
+
+```text
+total = price.amount * durationInYears
+```
+
+### `MULTI_YEAR`
+
+An explicit price map keyed by the number of years. Only the listed durations
+are valid — there is no interpolation, and a duration without an entry is
+rejected.
+
+```jsonc
+{
+  "type": "MULTI_YEAR",
+  "price": {
+    "1": { "amount": 12, "currency": "USD" },
+    "2": { "amount": 22, "currency": "USD" },
+    "3": { "amount": 30, "currency": "USD" }
+  }
+}
+```
+
+```text
+total = price[durationInYears].amount   // must be an exact key match
+```
+
+## Computing a charge
+
+The logic below mirrors how the backend computes charges from `pricingDetails`,
+including the `IMPORT` first-year split.
+
+<CodeTabs items={["Node.js", "Python"]}>
+<Tab value="Node.js">
+
+```ts
+type PriceWithCurrency = { amount: number; currency: 'USD' };
+type PricingDetails =
+  | { type: 'PER_YEAR'; price: PriceWithCurrency }
+  | { type: 'MULTI_YEAR'; price: Record<string, PriceWithCurrency> };
+
+function chargeForDuration(pricing: PricingDetails, years: number): number {
+  if (!Number.isInteger(years) || years < 1 || years > 10) {
+    throw new Error('Duration must be an integer between 1 and 10');
+  }
+
+  if (pricing.type === 'PER_YEAR') {
+    return pricing.price.amount * years;
+  }
+
+  const entry = pricing.price[String(years)];
+  if (!entry) {
+    throw new Error(`No multi-year price for ${years} year(s)`);
+  }
+  return entry.amount;
+}
+
+function computeCharge(
+  details: {
+    registrationPrice: PricingDetails;
+    renewalPrice: PricingDetails;
+    importPrice: PricingDetails;
+  },
+  years: number,
+  operation: 'REGISTER' | 'RENEW' | 'IMPORT',
+): number {
+  if (operation === 'REGISTER') {
+    return chargeForDuration(details.registrationPrice, years);
+  }
+  if (operation === 'RENEW') {
+    return chargeForDuration(details.renewalPrice, years);
+  }
+
+  // IMPORT: first year at importPrice, remaining years at renewalPrice.
+  const firstYear = chargeForDuration(details.importPrice, 1);
+  if (years === 1) {
+    return firstYear;
+  }
+  return firstYear + chargeForDuration(details.renewalPrice, years - 1);
+}
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+def charge_for_duration(pricing, years):
+    if not isinstance(years, int) or years < 1 or years > 10:
+        raise ValueError("Duration must be an integer between 1 and 10")
+
+    if pricing["type"] == "PER_YEAR":
+        return pricing["price"]["amount"] * years
+
+    entry = pricing["price"].get(str(years))
+    if entry is None:
+        raise ValueError(f"No multi-year price for {years} year(s)")
+    return entry["amount"]
+
+
+def compute_charge(details, years, operation):
+    if operation == "REGISTER":
+        return charge_for_duration(details["registrationPrice"], years)
+    if operation == "RENEW":
+        return charge_for_duration(details["renewalPrice"], years)
+
+    # IMPORT: first year at importPrice, remaining years at renewalPrice.
+    first_year = charge_for_duration(details["importPrice"], 1)
+    if years == 1:
+        return first_year
+    return first_year + charge_for_duration(details["renewalPrice"], years - 1)
+```
+
+</Tab>
+</CodeTabs>
+
+## Currency and units
+
+- All prices are in **USD**.
+- USD amounts can carry fractional dollars, so convert to integer cents for
+  payments or storage: `cents = round(usd * 100)` and back with `usd = cents / 100`.
+
+## End-to-end example
+
+Fetch availability, then compute the register charge for 2 years:
+
+<CodeTabs items={["Node.js SDK", "Node.js fetch", "cURL", "Python"]}>
+<Tab value="Node.js SDK">
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+const info = await client.search.checkAvailability({ domain: 'example.com' });
+
+if (info.availability && info.pricingDetails) {
+  const total = computeCharge(info.pricingDetails, 2, 'REGISTER');
+  console.log(`2-year registration: $${total}`);
+}
+```
+
+</Tab>
+<Tab value="Node.js fetch">
+
+```ts
+const res = await fetch(
+  'https://api.namefi.io/v-next/search/availability?domain=example.com',
+  { headers: { 'x-api-key': process.env.NAMEFI_API_KEY! } },
+);
+const info = await res.json();
+
+if (info.availability && info.pricingDetails) {
+  const total = computeCharge(info.pricingDetails, 2, 'REGISTER');
+  console.log(`2-year registration: $${total}`);
+}
+```
+
+</Tab>
+<Tab value="cURL">
+
+```bash
+# Inspect the pricingDetails returned for the domain
+curl -s "https://api.namefi.io/v-next/search/availability?domain=example.com" \
+  -H "x-api-key: $NAMEFI_API_KEY" \
+  | jq '.pricingDetails'
+```
+
+</Tab>
+<Tab value="Python">
+
+```python
+import os
+import requests
+
+info = requests.get(
+    "https://api.namefi.io/v-next/search/availability",
+    params={"domain": "example.com"},
+    headers={"x-api-key": os.environ["NAMEFI_API_KEY"]},
+).json()
+
+if info["availability"] and info.get("pricingDetails"):
+    total = compute_charge(info["pricingDetails"], 2, "REGISTER")
+    print(f"2-year registration: ${total}")
+```
+
+</Tab>
+</CodeTabs>

@@ -30,7 +30,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
         <h1 className="text-[1.75em] font-semibold">{page.data.title}</h1>
         <a
           className="text-sm font-normal text-brand-primary underline"
-          href="https://backend.astra.namefi.dev/v-next/doc"
+          href="https://api.namefi.io/v-next/openapi/doc"
         >
           <ExternalLink className="inline h-4 w-4" /> API Docs with browser
           client
