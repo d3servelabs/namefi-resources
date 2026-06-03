@@ -168,6 +168,9 @@ export type LeadgenEmailDraft = z.infer<typeof leadgenEmailDraftSchema>;
 
 export interface LeadgenEmailBrief {
   sourceDomain: string;
+  sender?: {
+    signature: string | null;
+  };
   prospect: {
     domain: string;
     content: string;

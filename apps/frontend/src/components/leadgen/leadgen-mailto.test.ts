@@ -13,12 +13,11 @@ describe('buildMailtoHref', () => {
         'Would you be open to a quick call?',
         '',
         'Best,',
-        'Domain Acquisition Team',
       ].join('\n'),
     });
 
     expect(href).toBe(
-      'mailto:buyer@example.com?subject=Acquiring%20weighttrainers.com&body=Hi%20there%2C%0A%0AWould%20you%20be%20open%20to%20a%20quick%20call%3F%0A%0ABest%2C%0ADomain%20Acquisition%20Team',
+      'mailto:buyer@example.com?subject=Acquiring%20weighttrainers.com&body=Hi%20there%2C%0A%0AWould%20you%20be%20open%20to%20a%20quick%20call%3F%0A%0ABest%2C',
     );
     expect(href).not.toContain('+');
   });

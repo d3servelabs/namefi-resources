@@ -664,15 +664,6 @@ function RunWorkspace({
             </div>
           </div>
         </div>
-
-        <div className="relative z-10 mt-4 h-1 overflow-hidden rounded-full bg-muted/50">
-          <div
-            className={cn(
-              'h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-300 to-amber-300',
-              isRunning ? 'w-2/3 opacity-100' : 'w-full opacity-0',
-            )}
-          />
-        </div>
       </div>
 
       <div className="grid flex-1 min-h-0 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -3023,7 +3014,6 @@ function buildFallbackEmailDraft({
     'Would you be open to a quick call to discuss acquiring this domain?',
     '',
     'Best,',
-    'Domain Acquisition Team',
   ]
     .filter(Boolean)
     .join('\n');

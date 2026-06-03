@@ -55,15 +55,10 @@ export function buildLeadPresentationModel(
   };
 }
 
-export function canPrepareLeadgenOutreach({
-  lead,
-  runStatus,
-}: {
+export function canPrepareLeadgenOutreach(_params: {
   lead: LeadgenLead;
   runStatus: LeadgenSnapshot['status'];
 }) {
-  if (lead.status === 'suppressed') return false;
-  if (lead.status === 'checking') return isTerminalLeadgenStatus(runStatus);
   return true;
 }
 

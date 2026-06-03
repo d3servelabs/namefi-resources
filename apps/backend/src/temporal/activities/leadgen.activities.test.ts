@@ -19,6 +19,13 @@ const mockLeadgenLeadsTable = {
   businessDomain: 'leadgen_leads.business_domain',
   updatedAt: 'leadgen_leads.updated_at',
 };
+const mockUserContactsTable = {
+  userId: 'user_contacts.user_id',
+  firstName: 'user_contacts.first_name',
+  lastName: 'user_contacts.last_name',
+  organizationName: 'user_contacts.organization_name',
+  updatedAt: 'user_contacts.updated_at',
+};
 
 vi.mock('#lib/logger', () => ({
   createLogger: () => mockLogger,
@@ -70,6 +77,7 @@ vi.mock('@namefi-astra/db', () => ({
   leadgenLeadSignalsTable: {},
   leadgenLeadsTable: mockLeadgenLeadsTable,
   leadgenRunsTable: {},
+  userContactsTable: mockUserContactsTable,
 }));
 
 const { finalizeUntriagedLeadgenLeads, heartbeatLeadgenWhile } = await import(

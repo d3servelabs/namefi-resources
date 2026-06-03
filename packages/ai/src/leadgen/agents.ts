@@ -68,6 +68,7 @@ const DEFAULT_REASONING_EFFORT: LeadgenReasoningEffort = 'medium';
 const ABSOLUTE_URL_RE = /^[a-z]+:\/\//i;
 const DOMAIN_URL_RE = /^[\w.-]+\.[a-z]{2,}(\/.*)?$/i;
 const SENTENCE_BOUNDARY_RE = /^(.{1,220}?[.!?])(?:\s|$)/;
+const EMAIL_SIGNATURE_BLOCK_RE = /(?:\r?\n){1,2}Best,\s*(?:\r?\n[\s\S]*)?$/i;
 const RECIPE_SIGNAL_LABELS: Record<LeadgenDiscoveryRecipe, string> = {
   exact_near_name_search: 'Name match',
   category_operator_search: 'Category fit',
@@ -606,9 +607,7 @@ Goal: Write a concise first-touch email that connects the seller-owned domain to
 Success criteria: The email is credible, buyer-specific, and easy to reply to.
 Evidence rules: Use only supplied prospect summary, signals, evidence, and contact context. Do not invent facts, urgency, price, traffic, or SEO claims.
 Tool budget: No tools.
-Constraints: Subject line must be no more than 9 words and 90 characters. Body must be at most three concise paragraphs under 170 words. Use this call to action exactly once: "Would you be open to a quick call to discuss acquiring this domain?" End with this signature block exactly:
-Best,
-Domain Acquisition Team
+Constraints: Subject line must be no more than 9 words and 90 characters. Body must be at most three concise paragraphs under 170 words. Use this call to action exactly once: "Would you be open to a quick call to discuss acquiring this domain?" End with "Best," and do not include a sender name, team, company, wallet, or email after it.
 Output: Return the structured email draft only, with plain text and no markdown.`;
 
 export async function generateLeadgenEmailDraft(
@@ -620,7 +619,7 @@ export async function generateLeadgenEmailDraft(
 ) {
   const reasoningEffort = options?.reasoningEffort ?? 'low';
 
-  return generateText({
+  const result = await generateText({
     model: openai(LEADGEN_EMAIL_MODEL),
     system: EMAIL_INSTRUCTIONS,
     messages: [{ role: 'user', content: formatEmailBrief(brief) }],
@@ -630,6 +629,17 @@ export async function generateLeadgenEmailDraft(
       schema: leadgenEmailDraftSchema,
     }),
   });
+
+  return {
+    ...result,
+    output: {
+      ...result.output,
+      fullEmail: normalizeEmailDraftSignature(
+        result.output.fullEmail,
+        brief.sender?.signature ?? null,
+      ),
+    },
+  };
 }
 
 function sanitizeContactResults(
@@ -720,4 +730,16 @@ function formatEmailBrief(brief: LeadgenEmailBrief) {
   ]
     .filter(Boolean)
     .join('\n');
+}
+
+function normalizeEmailDraftSignature(
+  fullEmail: string,
+  signature: string | null,
+) {
+  const bodyWithoutSignature = fullEmail
+    .trim()
+    .replace(EMAIL_SIGNATURE_BLOCK_RE, '')
+    .trimEnd();
+  const signoff = signature?.trim() ? `Best,\n${signature.trim()}` : 'Best,';
+  return [bodyWithoutSignature, signoff].filter(Boolean).join('\n\n');
 }

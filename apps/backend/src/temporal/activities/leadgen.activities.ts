@@ -27,6 +27,7 @@ import {
   discoverLeadgenContactsAndDraft,
   generateLeadgenLeadOutreach,
   getLeadgenErrorMessage,
+  loadLeadgenSenderForRun,
   persistLeadgenEvent,
   refreshLeadgenRunCounts,
 } from '../../services/leadgen/outreach.service';
@@ -899,6 +900,8 @@ async function discoverContactsForPromotedLeads(params: {
     },
   });
 
+  const sender = await loadLeadgenSenderForRun({ runId: params.runId });
+
   await runWithConcurrency(leads, 2, async (lead) => {
     throwIfLeadgenAborted(params.abortSignal);
     await discoverLeadgenContactsAndDraft({
@@ -906,6 +909,7 @@ async function discoverContactsForPromotedLeads(params: {
       sourceDomain: params.sourceDomain,
       lead,
       reasoningEffort: params.reasoningEffort,
+      sender,
       abortSignal: params.abortSignal,
     });
   });

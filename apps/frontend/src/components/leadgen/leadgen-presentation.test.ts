@@ -9,6 +9,7 @@ import {
 } from './leadgen-presentation';
 
 const sourceDomain = 'example.com' as NamefiNormalizedDomain;
+const baseDate = new Date('2026-05-18T00:00:00Z');
 
 const baseLead = {
   id: 'lead-1',
@@ -23,8 +24,8 @@ const baseLead = {
   rationale: 'Initial rationale.',
   content: 'Initial content.',
   rank: 1,
-  createdAt: new Date('2026-05-18T00:00:00Z'),
-  updatedAt: new Date('2026-05-18T00:00:00Z'),
+  createdAt: baseDate,
+  updatedAt: baseDate,
   signals: [],
   contacts: [],
   drafts: [],
@@ -154,13 +155,13 @@ describe('buildLeadPresentationModel', () => {
 });
 
 describe('canPrepareLeadgenOutreach', () => {
-  it('keeps checking leads gated while the run is still active', () => {
+  it('allows checking leads while the run is still active', () => {
     expect(
       canPrepareLeadgenOutreach({
         lead: lead({ status: 'checking' }),
         runStatus: 'RUNNING',
       }),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it.each([
@@ -176,21 +177,21 @@ describe('canPrepareLeadgenOutreach', () => {
     ).toBe(true);
   });
 
-  it('keeps checking leads gated while the run is queued', () => {
+  it('allows checking leads while the run is queued', () => {
     expect(
       canPrepareLeadgenOutreach({
         lead: lead({ status: 'checking' }),
         runStatus: 'QUEUED',
       }),
-    ).toBe(false);
+    ).toBe(true);
   });
 
-  it('never allows suppressed leads to receive outreach', () => {
+  it('allows suppressed leads to receive manual outreach', () => {
     expect(
       canPrepareLeadgenOutreach({
         lead: lead({ status: 'suppressed' }),
         runStatus: 'SUCCEEDED',
       }),
-    ).toBe(false);
+    ).toBe(true);
   });
 });

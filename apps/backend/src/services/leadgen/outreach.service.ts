@@ -15,6 +15,7 @@ import {
   leadgenLeadSignalsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
+  userContactsTable,
 } from '@namefi-astra/db';
 import { and, count, desc, eq, inArray, isNull, ne, or } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
@@ -23,6 +24,7 @@ import { appendLeadgenTokenUsageFromResult } from './token-usage';
 type LeadRow = typeof leadgenLeadsTable.$inferSelect;
 type ContactRow = typeof leadgenContactsTable.$inferSelect;
 type LeadgenOutreachTrigger = 'auto' | 'manual';
+export type LeadgenSender = { signature: string | null };
 
 const logger = createLogger({ module: 'leadgen-outreach' });
 const CONTACT_READINESS_RANK: Record<LeadRow['contactReadiness'], number> = {
@@ -47,6 +49,7 @@ export interface DiscoverLeadgenContactsAndDraftInput {
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
   draftEmails?: boolean;
+  sender?: LeadgenSender;
   abortSignal?: AbortSignal;
 }
 
@@ -66,10 +69,6 @@ export async function generateLeadgenLeadOutreach({
 
   if (!lead) {
     throw new Error('Lead not found for this run');
-  }
-
-  if (lead.status === 'suppressed') {
-    throw new Error('Lead was reviewed out and cannot receive outreach.');
   }
 
   await persistLeadgenEvent({
@@ -122,6 +121,8 @@ export async function discoverLeadgenContactsAndDraft({
   abortSignal = new AbortController().signal,
   ...params
 }: DiscoverLeadgenContactsAndDraftInput) {
+  const sender =
+    params.sender ?? (await loadLeadgenSenderForRun({ runId: params.runId }));
   const existingContacts = await loadCurrentContactsForLead({
     runId: params.runId,
     leadId: params.lead.id,
@@ -137,6 +138,7 @@ export async function discoverLeadgenContactsAndDraft({
 
     await draftForSavedContacts({
       ...params,
+      sender,
       contacts: existingContacts,
       abortSignal,
     });
@@ -151,13 +153,14 @@ export async function discoverLeadgenContactsAndDraft({
   if (cachedContacts.length > 0) {
     await persistCachedContactsAndDraft({
       ...params,
+      sender,
       cachedContacts,
       abortSignal,
     });
     return;
   }
 
-  await discoverNewContactsAndDraft({ ...params, abortSignal });
+  await discoverNewContactsAndDraft({ ...params, sender, abortSignal });
 }
 
 export async function refreshLeadgenRunCounts(runId: string) {
@@ -233,6 +236,56 @@ async function countLeadOutreach(params: {
   };
 }
 
+export async function loadLeadgenSenderForRun(params: {
+  runId: string;
+}): Promise<LeadgenSender> {
+  const [run] = await db
+    .select({ userId: leadgenRunsTable.userId })
+    .from(leadgenRunsTable)
+    .where(eq(leadgenRunsTable.id, params.runId))
+    .limit(1);
+  if (!run) return { signature: null };
+
+  const [contact] = await db
+    .select({
+      firstName: userContactsTable.firstName,
+      lastName: userContactsTable.lastName,
+      organizationName: userContactsTable.organizationName,
+    })
+    .from(userContactsTable)
+    .where(eq(userContactsTable.userId, run.userId))
+    .orderBy(desc(userContactsTable.updatedAt))
+    .limit(1);
+
+  return {
+    signature:
+      getFullName(contact) ??
+      cleanNullableString(contact?.organizationName) ??
+      null,
+  };
+}
+
+function getFullName(
+  contact:
+    | {
+        firstName: string | null;
+        lastName: string | null;
+      }
+    | null
+    | undefined,
+) {
+  const name = [contact?.firstName, contact?.lastName]
+    .map((part) => part?.trim())
+    .filter(Boolean)
+    .join(' ');
+  return name || null;
+}
+
+function cleanNullableString(value?: string | null) {
+  const trimmed = value?.trim();
+  return trimmed || null;
+}
+
 export async function persistLeadgenEvent(params: {
   runId: string;
   eventType: string;
@@ -257,6 +310,7 @@ async function draftForSavedContacts(params: {
   lead: LeadRow;
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
+  sender: LeadgenSender;
   abortSignal: AbortSignal;
   contacts: ContactRow[];
 }) {
@@ -270,6 +324,7 @@ async function draftForSavedContacts(params: {
         lead: params.lead,
         contact,
         reasoningEffort: params.reasoningEffort,
+        sender: params.sender,
         fromCache: contact.fromCache,
         trigger: params.trigger ?? 'auto',
         abortSignal: params.abortSignal,
@@ -311,6 +366,7 @@ async function persistCachedContactsAndDraft(params: {
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
   draftEmails?: boolean;
+  sender: LeadgenSender;
   abortSignal: AbortSignal;
   cachedContacts: ContactRow[];
 }) {
@@ -354,6 +410,7 @@ async function persistCachedContactsAndDraft(params: {
       lead: params.lead,
       contact,
       reasoningEffort: params.reasoningEffort,
+      sender: params.sender,
       fromCache: true,
       trigger: params.trigger ?? 'auto',
       abortSignal: params.abortSignal,
@@ -368,6 +425,7 @@ async function discoverNewContactsAndDraft(params: {
   reasoningEffort: LeadgenReasoningEffort;
   trigger?: LeadgenOutreachTrigger;
   draftEmails?: boolean;
+  sender: LeadgenSender;
   abortSignal: AbortSignal;
 }) {
   try {
@@ -563,6 +621,7 @@ async function draftForContact(params: {
   lead: LeadRow;
   contact: ContactRow;
   reasoningEffort: LeadgenReasoningEffort;
+  sender: LeadgenSender;
   fromCache: boolean;
   trigger: LeadgenOutreachTrigger;
   abortSignal: AbortSignal;
@@ -581,6 +640,7 @@ async function draftForContact(params: {
   const draft = await generateLeadgenEmailDraft(
     {
       sourceDomain: params.sourceDomain,
+      sender: params.sender,
       prospect: {
         domain: params.lead.businessDomain,
         content: params.lead.content,
