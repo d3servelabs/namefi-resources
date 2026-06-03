@@ -23,6 +23,7 @@ import { adminUsersContract } from './admin-users-contract';
 import type { RouterContract } from '../trpc-contract';
 import { adminEmailsContract } from './admin-emails-contract';
 import { adminNotificationsContract } from './admin-notifications-contract';
+import { adminAnnouncementsContract } from './admin-announcements-contract';
 
 /**
  * Top-level contract for the admin router.
@@ -69,6 +70,7 @@ export const adminContract = {
   nsAndDnssec: adminNsAndDnssecContract,
   emails: adminEmailsContract,
   notifications: adminNotificationsContract,
+  announcements: adminAnnouncementsContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;

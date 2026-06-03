@@ -44,7 +44,9 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       ref={ref}
       className={cn(
         'z-30 flex h-16 w-full shrink-0 items-center transition-[width,height,background-color] ease-linear',
-        isMobile ? 'fixed inset-x-0 top-0' : 'sticky top-0 lg:static',
+        isMobile
+          ? 'fixed inset-x-0 top-[var(--announcement-strip-height,0px)]'
+          : 'sticky top-0 lg:static',
         backgroundClass,
         isMobile ? 'px-3' : 'px-6',
         className,

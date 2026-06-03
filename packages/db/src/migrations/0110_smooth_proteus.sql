@@ -1,0 +1,1 @@
+ALTER TABLE "namefi_announcements"."announcements" ADD COLUMN "target_pbn_domain" text;

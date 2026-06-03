@@ -51,6 +51,7 @@ export const ResourceType = {
   EPP_TESTING: 'epp_testing',
   DOMAIN_EXPORT: 'domain_export',
   DNS_CACHE: 'dns_cache',
+  ANNOUNCEMENT: 'announcement',
   OTHER: 'other',
 } as const;
 

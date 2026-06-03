@@ -24,6 +24,7 @@ import { adminDnsvizRouter } from './admin/adminDnsvizRouter';
 import { nsAndDnssecRouter } from './admin/nsAndDnssecRouter';
 import { emailsRouter } from './admin/adminEmailsRouter';
 import { adminNotificationsRouter } from './admin/adminNotificationsRouter';
+import { adminAnnouncementsRouter } from './admin/adminAnnouncementsRouter';
 import { config, secrets } from '#lib/env';
 import { render } from '@react-email/components';
 import React from 'react';
@@ -63,4 +64,5 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   nsAndDnssec: nsAndDnssecRouter,
   emails: emailsRouter,
   notifications: adminNotificationsRouter,
+  announcements: adminAnnouncementsRouter,
 });

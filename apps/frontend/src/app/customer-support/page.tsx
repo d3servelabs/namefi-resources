@@ -26,6 +26,25 @@ import { PageShell } from '@/components/page-shell';
 
 const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
   {
+    title: 'General',
+    items: [
+      {
+        title: 'Announcements',
+        description:
+          'Create and manage the site-wide announcement banner, including conditional (TLD price) rules.',
+        href: '/admin/announcements',
+        icon: Megaphone,
+        iconBgColor: 'bg-amber-100',
+        iconTextColor: 'text-amber-600',
+        permissions: [
+          Permission.READ_ANNOUNCEMENTS,
+          Permission.WRITE_ANNOUNCEMENTS,
+        ],
+        permissionsMode: 'some',
+      },
+    ],
+  },
+  {
     title: 'Users and Orders',
     items: [
       {

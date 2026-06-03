@@ -3,6 +3,7 @@
 import type { adminContract } from '@namefi-astra/common/contract/admin/admin-contract';
 import type { aiContract } from '@namefi-astra/common/contract/ai-contract';
 import type { analyticsContract } from '@namefi-astra/common/contract/analytics-contract';
+import type { announcementsContract } from '@namefi-astra/common/contract/announcements-contract';
 import type { apiKeysContract } from '@namefi-astra/common/contract/api-keys-contract';
 import type { authContract } from '@namefi-astra/common/contract/auth-contract';
 import type { cartsContract } from '@namefi-astra/common/contract/carts-contract';
@@ -54,6 +55,7 @@ type ContractBackedRecord = {
   admin: ContractRouter<typeof adminContract>;
   ai: ContractRouter<typeof aiContract>;
   analytics: ContractRouter<typeof analyticsContract>;
+  announcements: ContractRouter<typeof announcementsContract>;
   apiKeys: ContractRouter<typeof apiKeysContract>;
   auth: ContractRouter<typeof authContract>;
   carts: ContractRouter<typeof cartsContract>;

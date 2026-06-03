@@ -29,6 +29,7 @@ import { mlsRouter } from './mlsRouter';
 import { leadgenRouter } from './leadgenRouter';
 import { notificationsRouter } from './notificationsRouter';
 import { nftMarketplacesRouter } from './nftMarketplacesRouter';
+import { announcementsRouter } from './announcementsRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -58,6 +59,7 @@ export const appRouter = createTRPCRouter({
   leadgen: leadgenRouter,
   notifications: notificationsRouter,
   nftMarketplaces: nftMarketplacesRouter,
+  announcements: announcementsRouter,
 
   version: publicProcedure
     .input(versionContract.input)

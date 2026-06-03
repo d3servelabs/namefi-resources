@@ -1,0 +1,1 @@
+ALTER TABLE "namefi_announcements"."announcements" ALTER COLUMN "title" DROP NOT NULL;
