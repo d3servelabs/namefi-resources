@@ -987,7 +987,7 @@ function LeadOutreachActions({
         <Button
           size="sm"
           onClick={onOpenEmailDialog}
-          className="w-full sm:w-auto"
+          className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 focus-visible:ring-brand-primary/50 sm:w-auto"
         >
           <Mail data-icon="inline-start" />
           Review outreach
