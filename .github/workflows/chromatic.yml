@@ -159,10 +159,13 @@ jobs:
             # changes) AND mark this job a required check on the merge queue.
             CHROMATIC_FLAGS="$CHROMATIC_FLAGS --diff-threshold 0.05"
           fi
-          # tee the CLI output so the next step can surface the TurboSnap counts
-          # in the run Summary. pipefail (GitHub's default) keeps Chromatic's exit
-          # code, so a real failure still fails the step.
+          # tee the CLI output so the next step can surface the TurboSnap counts in
+          # the run Summary. `shell: bash` below is REQUIRED: it runs the script with
+          # `-o pipefail`, so a Chromatic failure propagates through the pipe instead
+          # of being masked by tee's exit 0. (The implicit default shell is `bash -e`
+          # WITHOUT pipefail, which would swallow a real build error.)
           ../../node_modules/.bin/infisical run --token=$INFISICAL_SERVICE_TOKEN --env=dev -- bun run chromatic $CHROMATIC_FLAGS 2>&1 | tee "$RUNNER_TEMP/chromatic-output.log"
+        shell: bash
         working-directory: apps/frontend
         env:
           INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
