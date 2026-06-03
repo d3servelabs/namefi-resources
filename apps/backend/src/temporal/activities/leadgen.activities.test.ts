@@ -6,9 +6,35 @@ const mockLogger = {
   info: vi.fn(),
   warn: vi.fn(),
 };
+const mockDb = {
+  insert: vi.fn(),
+  update: vi.fn(),
+};
+const mockLeadgenLeadsTable = {
+  id: 'leadgen_leads.id',
+  runId: 'leadgen_leads.run_id',
+  status: 'leadgen_leads.status',
+  score: 'leadgen_leads.score',
+  rank: 'leadgen_leads.rank',
+  businessDomain: 'leadgen_leads.business_domain',
+  updatedAt: 'leadgen_leads.updated_at',
+};
 
 vi.mock('#lib/logger', () => ({
   createLogger: () => mockLogger,
+}));
+
+vi.mock('drizzle-orm', () => ({
+  and: vi.fn((...conditions) => ({ conditions, type: 'and' })),
+  asc: vi.fn((column) => ({ column, type: 'asc' })),
+  count: vi.fn(() => ({ type: 'count' })),
+  desc: vi.fn((column) => ({ column, type: 'desc' })),
+  eq: vi.fn((column, value) => ({ column, type: 'eq', value })),
+  inArray: vi.fn((column, values) => ({ column, type: 'inArray', values })),
+  isNull: vi.fn((column) => ({ column, type: 'isNull' })),
+  ne: vi.fn((column, value) => ({ column, type: 'ne', value })),
+  or: vi.fn((...conditions) => ({ conditions, type: 'or' })),
+  sql: vi.fn((strings, ...values) => ({ strings, type: 'sql', values })),
 }));
 
 vi.mock('@temporalio/activity', () => ({
@@ -37,16 +63,18 @@ vi.mock('@namefi-astra/ai', () => ({
 }));
 
 vi.mock('@namefi-astra/db', () => ({
-  db: {},
+  db: mockDb,
   leadgenContactsTable: {},
   leadgenEmailDraftsTable: {},
   leadgenEventsTable: {},
   leadgenLeadSignalsTable: {},
-  leadgenLeadsTable: {},
+  leadgenLeadsTable: mockLeadgenLeadsTable,
   leadgenRunsTable: {},
 }));
 
-const { heartbeatLeadgenWhile } = await import('./leadgen.activities');
+const { finalizeUntriagedLeadgenLeads, heartbeatLeadgenWhile } = await import(
+  './leadgen.activities'
+);
 
 describe('heartbeatLeadgenWhile', () => {
   beforeEach(() => {
@@ -134,5 +162,67 @@ describe('heartbeatLeadgenWhile', () => {
       { details: { stage: 'intent' }, error: heartbeatError },
       'Leadgen activity heartbeat failed; aborting in-flight work',
     );
+  });
+});
+
+describe('finalizeUntriagedLeadgenLeads', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('marks leftover checking leads as low priority before completion', async () => {
+    const returning = vi.fn().mockResolvedValue([
+      { id: 'lead-1', businessDomain: 'first.example' },
+      { id: 'lead-2', businessDomain: 'second.example' },
+    ]);
+    const where = vi.fn(() => ({ returning }));
+    const set = vi.fn(() => ({ where }));
+    const values = vi.fn().mockResolvedValue(undefined);
+
+    mockDb.update.mockReturnValue({ set });
+    mockDb.insert.mockReturnValue({ values });
+
+    await expect(
+      finalizeUntriagedLeadgenLeads({
+        runId: 'run-1',
+        reason: 'run-complete',
+      }),
+    ).resolves.toBe(2);
+
+    expect(set).toHaveBeenCalledWith({
+      status: 'low_priority',
+      score: 0,
+      rank: 3100,
+      updatedAt: expect.any(Date),
+    });
+    expect(values).toHaveBeenCalledWith({
+      runId: 'run-1',
+      eventType: 'status',
+      stage: 'triage',
+      message: 'Marked 2 prospects for manual review.',
+      payload: {
+        reason: 'run-complete',
+        finalizedLeadCount: 2,
+        businessDomains: ['first.example', 'second.example'],
+      },
+      transient: false,
+    });
+  });
+
+  it('does not write an event when no checking leads remain', async () => {
+    const returning = vi.fn().mockResolvedValue([]);
+    const where = vi.fn(() => ({ returning }));
+    const set = vi.fn(() => ({ where }));
+
+    mockDb.update.mockReturnValue({ set });
+
+    await expect(
+      finalizeUntriagedLeadgenLeads({
+        runId: 'run-1',
+        reason: 'run-complete',
+      }),
+    ).resolves.toBe(0);
+
+    expect(mockDb.insert).not.toHaveBeenCalled();
   });
 });

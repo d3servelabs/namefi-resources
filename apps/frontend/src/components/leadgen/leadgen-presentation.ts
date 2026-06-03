@@ -55,6 +55,18 @@ export function buildLeadPresentationModel(
   };
 }
 
+export function canPrepareLeadgenOutreach({
+  lead,
+  runStatus,
+}: {
+  lead: LeadgenLead;
+  runStatus: LeadgenSnapshot['status'];
+}) {
+  if (lead.status === 'suppressed') return false;
+  if (lead.status === 'checking') return isTerminalLeadgenRunStatus(runStatus);
+  return true;
+}
+
 export function buildLeadPresentation(lead: LeadgenLead): LeadPresentation {
   const group = getPresentationGroup(lead);
   const action = getPresentationAction(lead);
@@ -84,6 +96,10 @@ function getPresentationAction(lead: LeadgenLead): LeadPresentationAction {
 
 function getBuyerSummary(lead: LeadgenLead) {
   return cleanText(lead.rationale) ?? 'Potential buyer fit found.';
+}
+
+function isTerminalLeadgenRunStatus(status: LeadgenSnapshot['status']) {
+  return status === 'SUCCEEDED' || status === 'FAILED' || status === 'CANCELED';
 }
 
 function cleanText(value: string | null | undefined) {

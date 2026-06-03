@@ -359,7 +359,7 @@ export async function finalizeLeadgenOpportunitiesActivity(
         runId: params.runId,
         eventType: 'status',
         stage: 'triage',
-        message: 'Scoring ranked prospects.',
+        message: 'Scoring remaining prospects.',
       });
 
       await triageLeadgenCandidates({
@@ -368,6 +368,7 @@ export async function finalizeLeadgenOpportunitiesActivity(
         domainProfile: params.domainProfile,
         reasoningEffort: params.reasoningEffort,
         askingPriceUsd: params.askingPriceUsd,
+        statuses: ['checking'],
         limit: config.triageLeadLimit,
         abortSignal,
       });
@@ -738,6 +739,7 @@ async function triageLeadgenCandidates(params: {
   reasoningEffort: LeadgenReasoningEffort;
   askingPriceUsd?: number;
   domains?: string[];
+  statuses?: LeadRow['status'][];
   limit?: number;
   abortSignal: AbortSignal;
 }) {
@@ -746,6 +748,7 @@ async function triageLeadgenCandidates(params: {
   const leads = await loadTriageLeads({
     runId: params.runId,
     domains: params.domains,
+    statuses: params.statuses,
     limit: params.limit,
   });
   if (leads.length === 0) return;
@@ -910,6 +913,10 @@ async function discoverContactsForPromotedLeads(params: {
 }
 
 export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
+  await finalizeUntriagedLeadgenLeads({
+    runId,
+    reason: 'run-complete',
+  });
   const counts = await refreshLeadgenRunCounts(runId);
   const now = new Date();
   await db
@@ -937,6 +944,50 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
   });
 
   return counts;
+}
+
+export async function finalizeUntriagedLeadgenLeads({
+  runId,
+  reason,
+}: {
+  runId: string;
+  reason: 'run-complete';
+}) {
+  const finalizedAt = new Date();
+  const finalizedLeads = await db
+    .update(leadgenLeadsTable)
+    .set({
+      status: 'low_priority',
+      score: 0,
+      rank: getOpportunityRank('low_priority', 0),
+      updatedAt: finalizedAt,
+    })
+    .where(
+      and(
+        eq(leadgenLeadsTable.runId, runId),
+        eq(leadgenLeadsTable.status, 'checking'),
+      ),
+    )
+    .returning({
+      id: leadgenLeadsTable.id,
+      businessDomain: leadgenLeadsTable.businessDomain,
+    });
+
+  if (finalizedLeads.length === 0) return 0;
+
+  await persistLeadgenEvent({
+    runId,
+    eventType: 'status',
+    stage: 'triage',
+    message: `Marked ${finalizedLeads.length} ${finalizedLeads.length === 1 ? 'prospect' : 'prospects'} for manual review.`,
+    payload: {
+      reason,
+      finalizedLeadCount: finalizedLeads.length,
+      businessDomains: finalizedLeads.map((lead) => lead.businessDomain),
+    },
+  });
+
+  return finalizedLeads.length;
 }
 
 export async function failLeadgenRun({
@@ -1013,20 +1064,21 @@ async function persistDomainProfile(params: {
 async function loadTriageLeads(params: {
   runId: string;
   domains?: string[];
+  statuses?: LeadRow['status'][];
   limit?: number;
 }) {
-  const where =
-    params.domains && params.domains.length > 0
-      ? and(
-          eq(leadgenLeadsTable.runId, params.runId),
-          inArray(leadgenLeadsTable.businessDomain, params.domains),
-        )
-      : eq(leadgenLeadsTable.runId, params.runId);
+  const clauses = [eq(leadgenLeadsTable.runId, params.runId)];
+  if (params.domains && params.domains.length > 0) {
+    clauses.push(inArray(leadgenLeadsTable.businessDomain, params.domains));
+  }
+  if (params.statuses && params.statuses.length > 0) {
+    clauses.push(inArray(leadgenLeadsTable.status, params.statuses));
+  }
 
   return await db
     .select()
     .from(leadgenLeadsTable)
-    .where(where)
+    .where(and(...clauses))
     .orderBy(asc(leadgenLeadsTable.rank), asc(leadgenLeadsTable.createdAt))
     .limit(params.limit ?? 50);
 }

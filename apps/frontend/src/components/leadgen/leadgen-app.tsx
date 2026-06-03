@@ -69,6 +69,7 @@ import {
 import { buildMailtoHref } from './leadgen-mailto';
 import {
   buildLeadPresentationModel,
+  canPrepareLeadgenOutreach,
   type LeadPresentation,
   type LeadPresentationModel,
 } from './leadgen-presentation';
@@ -706,6 +707,7 @@ function RunWorkspace({
             leads={presentation.leads}
             emptyStateMessage="Prospects will appear here as search finds them."
             sourceDomain={run.domain}
+            runStatus={run.status}
             pendingOutreachLeadIds={pendingOutreachLeadIds}
             reviewOutreachLeadId={reviewOutreachLeadId}
             estimatedOutreachCredits={estimatedOutreachCredits}
@@ -735,6 +737,7 @@ function LeadList({
   leads,
   emptyStateMessage,
   sourceDomain,
+  runStatus,
   pendingOutreachLeadIds,
   reviewOutreachLeadId,
   estimatedOutreachCredits,
@@ -748,6 +751,7 @@ function LeadList({
   leads: LeadPresentation[];
   emptyStateMessage: string;
   sourceDomain: string;
+  runStatus: LeadgenSnapshot['status'];
   pendingOutreachLeadIds: string[];
   reviewOutreachLeadId: string | null;
   estimatedOutreachCredits?: number;
@@ -771,6 +775,7 @@ function LeadList({
       key={presentation.lead.id}
       presentation={presentation}
       sourceDomain={sourceDomain}
+      runStatus={runStatus}
       isPreparingOutreach={pendingOutreachLeadIds.includes(
         presentation.lead.id,
       )}
@@ -793,6 +798,7 @@ function LeadList({
 function LeadCard({
   presentation,
   sourceDomain,
+  runStatus,
   isPreparingOutreach,
   isReviewingOutreach,
   estimatedOutreachCredits,
@@ -805,6 +811,7 @@ function LeadCard({
 }: {
   presentation: LeadPresentation;
   sourceDomain: string;
+  runStatus: LeadgenSnapshot['status'];
   isPreparingOutreach: boolean;
   isReviewingOutreach: boolean;
   estimatedOutreachCredits?: number;
@@ -817,8 +824,7 @@ function LeadCard({
 }) {
   const { lead } = presentation;
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
-  const canPrepareOutreach =
-    lead.status !== 'checking' && lead.status !== 'suppressed';
+  const canPrepareOutreach = canPrepareLeadgenOutreach({ lead, runStatus });
   const hasEmailCta = recipients.length > 0 && lead.drafts.length > 0;
   const shouldPrepareOutreach =
     canPrepareOutreach &&
@@ -2217,8 +2223,8 @@ function getCompactTimelinePhases({
         presentation.counts.ranked > 0
           ? {
               id: 'ranked-prospects',
-              label: 'Ranked prospects',
-              value: `${presentation.counts.ranked} found`,
+              label: 'Scored prospects',
+              value: `${presentation.counts.ranked} ranked`,
               tone: 'prospects',
               icon: Search,
               status: getSubtaskStatus(
@@ -2281,13 +2287,12 @@ function getCompactTimelinePhases({
     },
   ];
 
-  const additionalOutreachPhase = getAdditionalOutreachPhase({
-    manualOutreach,
-    pendingOutreachLeads,
-  });
-  if (additionalOutreachPhase) {
-    phases.push(additionalOutreachPhase);
-  }
+  phases.push(
+    ...getAdditionalOutreachPhases({
+      manualOutreach,
+      pendingOutreachLeads,
+    }),
+  );
 
   return phases;
 }
@@ -2340,7 +2345,7 @@ function getCompletionTimelineState(
       run.status === 'SUCCEEDED' ? ('complete' as const) : ('pending' as const),
     badge:
       run.status === 'SUCCEEDED'
-        ? `${presentation.counts.ranked} prospects`
+        ? `${presentation.counts.prospects} prospects`
         : undefined,
   };
 }
@@ -2386,48 +2391,99 @@ function getInitialOutreachTimelineCounts({
   };
 }
 
-function getAdditionalOutreachPhase({
+function getAdditionalOutreachPhases({
   manualOutreach,
   pendingOutreachLeads,
 }: {
   manualOutreach: ReturnType<typeof getManualOutreachSummary>;
   pendingOutreachLeads: LeadgenLead[];
-}): TimelinePhase | null {
+}): TimelinePhase[] {
   if (!manualOutreach.hasEvents && pendingOutreachLeads.length === 0) {
-    return null;
+    return [];
   }
 
-  const active = pendingOutreachLeads.length > 0;
-  const primaryPendingLead = pendingOutreachLeads[0] ?? null;
-  const cardDomain = getAdditionalOutreachDomainLabel({
-    manualOutreach,
-    pendingOutreachLeads,
-  });
-  const domainSummary = primaryPendingLead
-    ? manualOutreach.domainSummaries.get(primaryPendingLead.businessDomain)
-    : cardDomain
-      ? manualOutreach.domainSummaries.get(cardDomain)
-      : null;
+  if (pendingOutreachLeads.length > 0) {
+    return pendingOutreachLeads.map((lead) => {
+      const domainSummary = manualOutreach.domainSummaries.get(
+        lead.businessDomain,
+      );
+
+      return buildAdditionalOutreachPhase({
+        id: `additional-outreach-${lead.id}`,
+        status: 'active',
+        timestamp: 'now',
+        domain: lead.businessDomain,
+        contactCount: Math.max(
+          domainSummary?.contactCount ?? 0,
+          lead.contacts.length,
+        ),
+        draftCount: Math.max(
+          domainSummary?.draftCount ?? 0,
+          lead.drafts.length,
+        ),
+        lastEventWasError: false,
+      });
+    });
+  }
+
+  const domainSummary = manualOutreach.domain
+    ? manualOutreach.domainSummaries.get(manualOutreach.domain)
+    : null;
   const lastEventWasError =
     domainSummary?.lastEventWasError ?? manualOutreach.lastEventWasError;
-  const status = getAdditionalOutreachStatus(active, lastEventWasError);
+  const status = getAdditionalOutreachStatus({
+    active: false,
+    lastEventWasError,
+  });
   const contactCount = Math.max(
     domainSummary?.contactCount ?? 0,
-    getPendingLeadContactCount(pendingOutreachLeads),
+    manualOutreach.contactCount,
   );
   const draftCount = Math.max(
     domainSummary?.draftCount ?? 0,
-    getPendingLeadDraftCount(pendingOutreachLeads),
+    manualOutreach.draftCount,
   );
   const lastEvent = domainSummary?.lastEvent ?? manualOutreach.lastEvent;
 
+  return [
+    buildAdditionalOutreachPhase({
+      id: 'additional-outreach-summary',
+      status,
+      timestamp: getAdditionalOutreachTimestamp(false, lastEvent),
+      domain: manualOutreach.domain,
+      contactCount,
+      draftCount,
+      lastEventWasError,
+    }),
+  ];
+}
+
+function buildAdditionalOutreachPhase({
+  id,
+  status,
+  timestamp,
+  domain,
+  contactCount,
+  draftCount,
+  lastEventWasError,
+}: {
+  id: string;
+  status: TimelinePhaseStatus;
+  timestamp?: string;
+  domain?: string;
+  contactCount: number;
+  draftCount: number;
+  lastEventWasError: boolean;
+}): TimelinePhase {
+  const active = status === 'active';
+
   return {
-    id: 'additional-outreach',
+    id,
     title: 'Additional outreach',
     status,
     icon: Sparkles,
-    timestamp: getAdditionalOutreachTimestamp(active, lastEvent),
-    domain: cardDomain,
+    timestamp,
+    domain,
     subtasks: [
       {
         id: 'additional-contacts',
@@ -2457,31 +2513,13 @@ function getAdditionalOutreachPhase({
   };
 }
 
-function getAdditionalOutreachDomainLabel({
-  manualOutreach,
-  pendingOutreachLeads,
+function getAdditionalOutreachStatus({
+  active,
+  lastEventWasError,
 }: {
-  manualOutreach: ReturnType<typeof getManualOutreachSummary>;
-  pendingOutreachLeads: LeadgenLead[];
-}) {
-  if (pendingOutreachLeads.length > 1) {
-    return `${pendingOutreachLeads.length} leads`;
-  }
-  return pendingOutreachLeads[0]?.businessDomain ?? manualOutreach.domain;
-}
-
-function getPendingLeadContactCount(leads: LeadgenLead[]) {
-  return leads.reduce((count, lead) => count + lead.contacts.length, 0);
-}
-
-function getPendingLeadDraftCount(leads: LeadgenLead[]) {
-  return leads.reduce((count, lead) => count + lead.drafts.length, 0);
-}
-
-function getAdditionalOutreachStatus(
-  active: boolean,
-  lastEventWasError: boolean,
-): TimelinePhaseStatus {
+  active: boolean;
+  lastEventWasError: boolean;
+}): TimelinePhaseStatus {
   if (active) return 'active';
   return lastEventWasError ? 'error' : 'complete';
 }

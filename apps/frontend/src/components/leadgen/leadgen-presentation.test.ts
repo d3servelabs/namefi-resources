@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildLeadPresentation,
   buildLeadPresentationModel,
+  canPrepareLeadgenOutreach,
   type LeadgenLead,
 } from './leadgen-presentation';
 
@@ -149,5 +150,34 @@ describe('buildLeadPresentationModel', () => {
     expect(presentation.buyerSummary).toBe(
       'Buyer has direct campaign demand for the seller domain. Keep this second sentence because card summaries are not truncated.',
     );
+  });
+});
+
+describe('canPrepareLeadgenOutreach', () => {
+  it('keeps checking leads gated while the run is still active', () => {
+    expect(
+      canPrepareLeadgenOutreach({
+        lead: lead({ status: 'checking' }),
+        runStatus: 'RUNNING',
+      }),
+    ).toBe(false);
+  });
+
+  it('allows leftover checking leads after the run reaches a terminal state', () => {
+    expect(
+      canPrepareLeadgenOutreach({
+        lead: lead({ status: 'checking' }),
+        runStatus: 'SUCCEEDED',
+      }),
+    ).toBe(true);
+  });
+
+  it('never allows suppressed leads to receive outreach', () => {
+    expect(
+      canPrepareLeadgenOutreach({
+        lead: lead({ status: 'suppressed' }),
+        runStatus: 'SUCCEEDED',
+      }),
+    ).toBe(false);
   });
 });
