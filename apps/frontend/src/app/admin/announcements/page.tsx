@@ -553,11 +553,13 @@ function AnnouncementFormDialog({
                   else next.delete(site);
                   field.onChange([...next]);
                 };
+                // Dedupe in case a PBN domain collides with the main-site sentinel.
+                const options = [...new Set([MAIN_SITE_VALUE, ...pbnDomains])];
                 return (
                   <FormItem>
                     <FormLabel>Show on</FormLabel>
                     <div className="max-h-44 space-y-2 overflow-auto rounded-md border p-3">
-                      {[MAIN_SITE_VALUE, ...pbnDomains].map((site) => (
+                      {options.map((site) => (
                         // biome-ignore lint/a11y/noLabelWithoutControl: the nested base-ui Checkbox is the control.
                         <label
                           key={site}
