@@ -206,7 +206,7 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className={className}>
-        <Card>
+        <Card className="overflow-visible">
           <CardContent>
             {/* Domain Input */}
             <DomainField

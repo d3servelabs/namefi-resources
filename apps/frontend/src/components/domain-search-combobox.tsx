@@ -6,7 +6,14 @@ import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { ChevronDown, Loader2 } from 'lucide-react';
 import type { FocusEvent, KeyboardEvent, ReactNode } from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 export type DomainSearchOptionSource = 'owned' | 'feed' | 'generated';
 
@@ -70,17 +77,62 @@ export function DomainSearchCombobox({
 }: DomainSearchComboboxProps) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(value);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const generatedId = useId();
+  const fieldsetRef = useRef<HTMLFieldSetElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listboxId = id ? `${id}-domain-options` : undefined;
+  const openRef = useRef(open);
+  const listboxId = id ? `${id}-domain-options` : `${generatedId}-options`;
   const inputValue = allowCustomValue ? value : searchValue;
   const selectedValue = normalizeDomainComboboxValue(value);
   const normalizedSearchValue = normalizeDomainComboboxValue(inputValue);
+
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   useEffect(() => {
     if (!allowCustomValue || !open) {
       setSearchValue(value);
     }
   }, [allowCustomValue, open, value]);
+
+  const openCombobox = useCallback(() => {
+    if (disabled) return;
+
+    openRef.current = true;
+    setOpen(true);
+  }, [disabled]);
+
+  const closeCombobox = useCallback(() => {
+    if (!openRef.current) return;
+
+    openRef.current = false;
+    setOpen(false);
+    setSearchValue(value);
+    onBlur?.();
+  }, [onBlur, value]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        fieldsetRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+
+      closeCombobox();
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown, true);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown, true);
+    };
+  }, [closeCombobox, open]);
 
   const filteredOptions = useMemo(() => {
     if (!normalizedSearchValue) return options;
@@ -99,6 +151,37 @@ export function DomainSearchCombobox({
     !hasExactMatch;
   const showEmptyMessage =
     !isLoading && !canUseCustomValue && filteredOptions.length === 0;
+  const suggestionCount = (canUseCustomValue ? 1 : 0) + filteredOptions.length;
+  const activeOptionId =
+    open && activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined;
+
+  useEffect(() => {
+    if (!open || suggestionCount === 0) {
+      setActiveIndex(-1);
+      return;
+    }
+
+    const selectedOptionIndex = filteredOptions.findIndex(
+      (option) => option.value === selectedValue,
+    );
+    setActiveIndex(
+      selectedOptionIndex >= 0
+        ? selectedOptionIndex + (canUseCustomValue ? 1 : 0)
+        : 0,
+    );
+  }, [
+    canUseCustomValue,
+    filteredOptions,
+    open,
+    selectedValue,
+    suggestionCount,
+  ]);
+
+  const getSuggestionValue = (index: number) => {
+    if (index < 0 || index >= suggestionCount) return undefined;
+    if (canUseCustomValue && index === 0) return normalizedSearchValue;
+    return filteredOptions[index - (canUseCustomValue ? 1 : 0)]?.value;
+  };
 
   const handleInputChange = (nextValue: string) => {
     if (allowCustomValue) {
@@ -106,46 +189,64 @@ export function DomainSearchCombobox({
     } else {
       setSearchValue(nextValue);
     }
-    setOpen(true);
+    openCombobox();
   };
 
   const handleBlur = (event: FocusEvent<HTMLFieldSetElement>) => {
     if (event.currentTarget.contains(event.relatedTarget as Node | null)) {
       return;
     }
-    setOpen(false);
-    setSearchValue(value);
-    onBlur?.();
+    closeCombobox();
   };
 
   const handleSelect = (nextValue: string) => {
     onValueChange(nextValue);
     setSearchValue(nextValue);
+    openRef.current = false;
     setOpen(false);
     onBlur?.();
     inputRef.current?.focus();
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Escape') {
-      setOpen(false);
-      setSearchValue(value);
-      return;
-    }
-
-    if (event.key === 'ArrowDown') {
-      setOpen(true);
-      return;
-    }
-
-    if (event.key === 'Enter' && open && canUseCustomValue) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      handleSelect(normalizedSearchValue);
+      openCombobox();
+
+      if (suggestionCount === 0) {
+        setActiveIndex(-1);
+        return;
+      }
+
+      setActiveIndex((currentIndex) => {
+        if (currentIndex < 0) {
+          return event.key === 'ArrowDown' ? 0 : suggestionCount - 1;
+        }
+
+        return event.key === 'ArrowDown'
+          ? (currentIndex + 1) % suggestionCount
+          : (currentIndex - 1 + suggestionCount) % suggestionCount;
+      });
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      closeCombobox();
+      return;
+    }
+
+    if (event.key === 'Enter' && open) {
+      const activeValue = getSuggestionValue(activeIndex);
+      if (activeValue) {
+        event.preventDefault();
+        handleSelect(activeValue);
+      }
     }
   };
 
   return (
     <fieldset
+      ref={fieldsetRef}
       className={cn('relative m-0 w-full min-w-0 border-0 p-0', className)}
       onBlur={handleBlur}
     >
@@ -162,7 +263,7 @@ export function DomainSearchCombobox({
         ref={inputRef}
         value={inputValue}
         onChange={(event) => handleInputChange(event.target.value)}
-        onFocus={() => setOpen(true)}
+        onFocus={openCombobox}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         disabled={disabled}
@@ -172,6 +273,7 @@ export function DomainSearchCombobox({
         spellCheck={false}
         role="combobox"
         aria-autocomplete="list"
+        aria-activedescendant={activeOptionId}
         aria-controls={open ? listboxId : undefined}
         aria-expanded={open}
         aria-label={searchPlaceholder}
@@ -190,14 +292,17 @@ export function DomainSearchCombobox({
         }
         onMouseDown={(event) => event.preventDefault()}
         onClick={() => {
-          setOpen((currentOpen) => !currentOpen);
+          setOpen((currentOpen) => {
+            openRef.current = !currentOpen;
+            return !currentOpen;
+          });
           inputRef.current?.focus();
         }}
         className="absolute top-1/2 right-1 -translate-y-1/2 text-muted-foreground hover:text-foreground"
       >
         <ChevronDown
           data-icon="inline-end"
-          className={cn('size-4 transition-transform', open && 'rotate-180')}
+          className={cn('transition-transform', open && 'rotate-180')}
         />
       </Button>
 
@@ -209,8 +314,10 @@ export function DomainSearchCombobox({
           customValue={normalizedSearchValue}
           options={filteredOptions}
           selectedValue={selectedValue}
+          activeIndex={activeIndex}
           emptyMessage={emptyMessage}
           showEmptyMessage={showEmptyMessage}
+          onActiveIndexChange={setActiveIndex}
           onSelect={handleSelect}
         />
       ) : null}
@@ -225,8 +332,10 @@ function DomainSearchListbox({
   customValue,
   options,
   selectedValue,
+  activeIndex,
   emptyMessage,
   showEmptyMessage,
+  onActiveIndexChange,
   onSelect,
 }: {
   id?: string;
@@ -235,10 +344,14 @@ function DomainSearchListbox({
   customValue: string;
   options: DomainSearchOption[];
   selectedValue: string;
+  activeIndex: number;
   emptyMessage: string;
   showEmptyMessage: boolean;
+  onActiveIndexChange: (index: number) => void;
   onSelect: (value: string) => void;
 }) {
+  const optionIndexOffset = canUseCustomValue ? 1 : 0;
+
   return (
     <div
       id={id}
@@ -248,7 +361,7 @@ function DomainSearchListbox({
       <div className="max-h-72 overflow-auto p-1">
         {isLoading ? (
           <div className="flex items-center gap-2 px-3 py-3 text-sm text-muted-foreground">
-            <Loader2 className="size-4 animate-spin" />
+            <Loader2 className="animate-spin" />
             Loading domains
           </div>
         ) : null}
@@ -258,8 +371,12 @@ function DomainSearchListbox({
               Use typed domain
             </div>
             <DomainOptionButton
+              id={`${id}-option-0`}
+              value={customValue}
               selected={false}
-              onSelect={() => onSelect(customValue)}
+              active={activeIndex === 0}
+              onActive={() => onActiveIndexChange(0)}
+              onSelect={onSelect}
             >
               <span className="min-w-0 truncate">Use {customValue}</span>
             </DomainOptionButton>
@@ -270,31 +387,39 @@ function DomainSearchListbox({
             <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
               Domains
             </div>
-            {options.map((option) => (
-              <DomainOptionButton
-                key={option.value}
-                selected={selectedValue === option.value}
-                onSelect={() => onSelect(option.value)}
-              >
-                <span className="min-w-0 flex-1 truncate font-mono text-sm">
-                  {option.value}
-                </span>
-                <span className="ml-2 flex shrink-0 items-center gap-1">
-                  {option.sources.map((source) => (
-                    <Badge
-                      key={`${option.value}-${source}`}
-                      variant="outline"
-                      className={cn(
-                        'px-1.5 py-0 text-[10px] font-medium',
-                        sourceBadgeClassNames[source],
-                      )}
-                    >
-                      {sourceLabels[source]}
-                    </Badge>
-                  ))}
-                </span>
-              </DomainOptionButton>
-            ))}
+            {options.map((option, optionIndex) => {
+              const itemIndex = optionIndex + optionIndexOffset;
+
+              return (
+                <DomainOptionButton
+                  key={option.value}
+                  id={`${id}-option-${itemIndex}`}
+                  value={option.value}
+                  selected={selectedValue === option.value}
+                  active={activeIndex === itemIndex}
+                  onActive={() => onActiveIndexChange(itemIndex)}
+                  onSelect={onSelect}
+                >
+                  <span className="min-w-0 flex-1 truncate font-mono text-sm">
+                    {option.value}
+                  </span>
+                  <span className="flex shrink-0 items-center gap-1">
+                    {option.sources.map((source) => (
+                      <Badge
+                        key={`${option.value}-${source}`}
+                        variant="outline"
+                        className={cn(
+                          'px-1.5 py-0 text-[10px] font-medium',
+                          sourceBadgeClassNames[source],
+                        )}
+                      >
+                        {sourceLabels[source]}
+                      </Badge>
+                    ))}
+                  </span>
+                </DomainOptionButton>
+              );
+            })}
           </div>
         ) : null}
         {showEmptyMessage ? (
@@ -309,21 +434,36 @@ function DomainSearchListbox({
 
 function DomainOptionButton({
   children,
+  id,
+  value,
   selected,
+  active,
+  onActive,
   onSelect,
 }: {
   children: ReactNode;
+  id?: string;
+  value: string;
   selected: boolean;
-  onSelect: () => void;
+  active: boolean;
+  onActive: () => void;
+  onSelect: (value: string) => void;
 }) {
   return (
     <button
       type="button"
+      id={id}
       role="option"
-      aria-selected={selected}
+      aria-selected={active}
+      data-checked={selected ? true : undefined}
       onMouseDown={(event) => event.preventDefault()}
-      onClick={onSelect}
-      className="relative flex w-full cursor-pointer select-none items-center justify-start rounded-sm px-2 py-1.5 text-left text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+      onMouseEnter={onActive}
+      onClick={() => onSelect(value)}
+      className={cn(
+        'relative flex w-full min-w-0 cursor-pointer select-none items-center justify-start gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
+        'hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground',
+        active && 'bg-muted text-foreground',
+      )}
     >
       {children}
     </button>

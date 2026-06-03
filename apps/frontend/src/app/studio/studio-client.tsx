@@ -49,7 +49,7 @@ export function NamefiBrandStudioClient() {
           className="lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden"
         >
           <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
-            <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
+            <div className="flex min-w-0 flex-col gap-6 px-1 pb-1 lg:min-h-0 lg:overflow-auto">
               <PageHeader />
               <AITabs
                 posterTabProps={{ domains }}
@@ -57,7 +57,7 @@ export function NamefiBrandStudioClient() {
               />
             </div>
 
-            <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
+            <div className="flex min-w-0 flex-col gap-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
               <GenerationsColumn domains={domains} className="flex-1" />
             </div>
           </div>
@@ -135,11 +135,11 @@ export function NamefiBrandStudioSkeleton() {
       className="lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden"
     >
       <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
-        <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
+        <div className="flex min-w-0 flex-col gap-6 px-1 pb-1 lg:min-h-0 lg:overflow-auto">
           <PageHeader />
           <LeftColumnSkeleton />
         </div>
-        <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
+        <div className="flex min-w-0 flex-col gap-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
           <GenerationsColumnSkeleton className="flex-1" />
         </div>
       </div>
