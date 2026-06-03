@@ -52,7 +52,7 @@
     },
     "apps/backend": {
       "name": "@namefi-astra/backend",
-      "version": "0.3.205-beta",
+      "version": "0.3.206-beta",
       "dependencies": {
         "@aws-sdk/client-kms": "^3.830.0",
         "@c15t/backend": "^2.1.0",
@@ -184,7 +184,7 @@
     },
     "apps/frontend": {
       "name": "@namefi-astra/frontend",
-      "version": "0.3.205-beta",
+      "version": "0.3.206-beta",
       "dependencies": {
         "@bprogress/next": "catalog:",
         "@c15t/nextjs": "catalog:",
