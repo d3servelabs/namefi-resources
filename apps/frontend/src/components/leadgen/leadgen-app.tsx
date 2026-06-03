@@ -339,10 +339,6 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
                 <h1 className="text-2xl font-semibold tracking-tight">
                   Find buyers for your domains
                 </h1>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Enter a domain and get buyer angles, public contacts, and
-                  ready-to-send outreach drafts.
-                </p>
               </div>
               <div className="rounded-md bg-emerald-500/10 p-2 text-emerald-300">
                 <UserRoundSearch className="size-5" />
