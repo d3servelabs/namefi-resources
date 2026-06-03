@@ -74,6 +74,7 @@ import {
   type LeadPresentation,
   type LeadPresentationModel,
 } from './leadgen-presentation';
+import { upsertLeadgenRunByCreatedDesc } from './leadgen-run-order';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
@@ -139,14 +140,21 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const [domain, setDomain] = useState('');
   const [reasoningEffort, setReasoningEffort] =
     useState<ReasoningEffort>('medium');
-  const [activeRunId, setActiveRunId] = useState<string | null>(
+  const [activeRunId, setActiveRunIdState] = useState<string | null>(
     initialRunId ?? null,
   );
   const [liveRun, setLiveRun] = useState<LeadgenSnapshot | null>(null);
+  const activeRunIdRef = useRef(activeRunId);
+
+  const selectActiveRunId = useCallback((runId: string | null) => {
+    activeRunIdRef.current = runId;
+    setActiveRunIdState(runId);
+    setLiveRun((currentRun) => (currentRun?.id === runId ? currentRun : null));
+  }, []);
 
   useEffect(() => {
-    setActiveRunId(initialRunId ?? null);
-  }, [initialRunId]);
+    selectActiveRunId(initialRunId ?? null);
+  }, [initialRunId, selectActiveRunId]);
 
   const runsQuery = useQuery({
     ...trpc.leadgen.listRuns.queryOptions(recentRunsQueryInput),
@@ -173,7 +181,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 
   const syncRunSnapshot = useCallback(
     (snapshot: LeadgenSnapshot) => {
-      setLiveRun(snapshot);
+      if (activeRunIdRef.current === snapshot.id) {
+        setLiveRun(snapshot);
+      }
       queryClient.setQueryData(
         trpc.leadgen.getRun.queryKey({ runId: snapshot.id }),
         snapshot,
@@ -188,20 +198,21 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   );
 
   useEffect(() => {
-    if (activeRunQuery.data) {
-      syncRunSnapshot(activeRunQuery.data);
-      setDomain(activeRunQuery.data.domain);
-      setReasoningEffort(activeRunQuery.data.reasoningEffort);
-    }
+    const snapshot = activeRunQuery.data;
+    if (!snapshot || snapshot.id !== activeRunIdRef.current) return;
+
+    syncRunSnapshot(snapshot);
+    setDomain(snapshot.domain);
+    setReasoningEffort(snapshot.reasoningEffort);
   }, [activeRunQuery.data, syncRunSnapshot]);
 
   useEffect(() => {
     if (isAuthLoading || isAuthenticated) return;
     setLiveRun(null);
     if (!initialRunId) {
-      setActiveRunId(null);
+      selectActiveRunId(null);
     }
-  }, [initialRunId, isAuthLoading, isAuthenticated]);
+  }, [initialRunId, isAuthLoading, isAuthenticated, selectActiveRunId]);
 
   useSubscription({
     ...trpc.leadgen.watchRun.subscriptionOptions(
@@ -223,7 +234,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const startRun = useMutation(
     trpc.leadgen.startRun.mutationOptions({
       onSuccess(snapshot) {
-        setActiveRunId(snapshot.id);
+        selectActiveRunId(snapshot.id);
         syncRunSnapshot(snapshot);
         router.push(getLeadgenRunHref(snapshot.id));
         void queryClient.invalidateQueries({
@@ -274,7 +285,10 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     return <AuthRequired />;
   }
 
-  const run = isAuthenticated ? (liveRun ?? activeRunQuery.data ?? null) : null;
+  const activeQueriedRun =
+    activeRunQuery.data?.id === activeRunId ? activeRunQuery.data : null;
+  const activeLiveRun = liveRun?.id === activeRunId ? liveRun : null;
+  const run = isAuthenticated ? (activeLiveRun ?? activeQueriedRun) : null;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
   const usageData = isAuthenticated ? usageQuery.data : undefined;
@@ -1512,11 +1526,11 @@ function upsertLeadgenRunSummary(
   snapshot: LeadgenSnapshot,
 ): LeadgenRunSummary[] {
   const summary = toLeadgenRunSummary(snapshot);
-  const currentRuns = runs ?? [];
-  return [
-    summary,
-    ...currentRuns.filter((run) => run.id !== snapshot.id),
-  ].slice(0, recentRunsQueryInput.limit);
+  return upsertLeadgenRunByCreatedDesc({
+    runs,
+    run: summary,
+    limit: recentRunsQueryInput.limit,
+  });
 }
 
 function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {

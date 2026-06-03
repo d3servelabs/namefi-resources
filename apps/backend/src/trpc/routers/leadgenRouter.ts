@@ -149,7 +149,7 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         })
         .from(leadgenRunsTable)
         .where(eq(leadgenRunsTable.userId, ctx.user.id))
-        .orderBy(desc(leadgenRunsTable.createdAt))
+        .orderBy(desc(leadgenRunsTable.createdAt), desc(leadgenRunsTable.id))
         .limit(input.limit);
     }),
 
