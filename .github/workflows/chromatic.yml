@@ -29,48 +29,47 @@ env:
 
 jobs:
   # Cheap gate: skip the expensive Storybook build entirely when a change cannot
-  # affect visuals. Denylist semantics — `**` matches everything, then `!`
-  # subtracts the provably-non-visual paths; `visual` is true only if at least one
-  # changed file survives. Backend/db are excluded because stories never render
-  # them (any imports are type-only and tree-shaken). When uncertain, we keep the
-  # path IN (err toward running) so we never miss a real regression.
-  # Caveat this cannot catch: a comment-only edit to a *story* file still counts as
-  # changed — TurboSnap then keeps it to just that one story, not all ~200.
+  # affect visuals. ALLOWLIST semantics — Storybook only renders the frontend app
+  # and the shared UI package, so a change can only move a snapshot if it touches
+  # one of those two. Everything else (other apps, db, infra, docs) is skipped.
+  # Tradeoff vs the old denylist: a change to a *shared package* that a story
+  # imports (e.g. packages/utils) now SKIPS the build, so a visual regression
+  # introduced purely there wouldn't be caught until a frontend/ui file also
+  # changes. Accepted for the build-minute savings; widen the allowlist below if a
+  # shared package starts feeding the rendered UI.
   changes:
     runs-on: ubuntu-latest
     outputs:
       visual: ${{ steps.filter.outputs.visual }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          # paths-filter needs the diff base in local history. Shallow (default)
+          # checkout made multi-commit pushes log "fatal: Not a valid object name
+          # <before>" and fall back; full history makes the diff base always resolvable.
+          fetch-depth: 0
       - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
         id: filter
         with:
           # v4 natively detects the diff base for both push and merge_group events.
           # (v3 had no merge_group support and needed a manual base+ref workaround.)
-          # 'every' = a path counts as `visual` only if it matches ALL patterns,
-          # i.e. matches `**` AND none of the `!` exclusions. With the default
-          # 'some', the leading `**` alone would make every change match and the
-          # denylist would be silently ignored.
+          # 'every' = a path counts as `visual` only if it matches ALL patterns:
+          # the positive allowlist AND none of the `!` exclusions. The allowlist is
+          # ONE brace-expansion pattern on purpose — two separate positives
+          # ('apps/frontend/**', 'packages/ui/**') could never both match the same
+          # file, so under 'every' `visual` would be permanently false.
           predicate-quantifier: 'every'
-          # Expose the exact files that survived the denylist so the gate decision
-          # below can show *why* it ran (which file(s) tripped 'visual'), not just
-          # the boolean. Empty when visual=false.
+          # Expose the exact files that matched so the gate decision below can show
+          # *why* it ran (which file(s) tripped 'visual'). Empty when visual=false.
           list-files: 'shell'
           filters: |
             visual:
-              - '**'
-              - '!**/*.md'
-              - '!**/*.mdx'
-              - '!docs/**'
-              - '!**/*.test.ts'
-              - '!**/*.test.tsx'
-              - '!**/*.spec.ts'
-              - '!**/*.spec.tsx'
+              - '{apps/frontend,packages/ui}/**'
+              - '!**/*.test.*'
+              - '!**/*.spec.*'
               - '!**/*.testing.ts'
-              - '!apps/backend/**'
-              - '!packages/db/**'
-              - '!**/*.sql'
-              - '!.github/**'
+              - '!**/*.stories.mdx'
+              - '!**/*.md'
 
       # Make the gate decision auditable from the Actions UI without digging:
       #  - a single greppable line in the raw log (`gh run view --log | grep CHROMATIC_GATE`)
@@ -88,7 +87,7 @@ jobs:
           if [ "$VISUAL" = "true" ]; then
             DECISION="RUN — visual-affecting file(s) changed"
           elif [ "$VISUAL" = "false" ]; then
-            DECISION="SKIP — only non-visual paths changed (docs/backend/db/test/sql/CI)"
+            DECISION="SKIP — no change under apps/frontend or packages/ui (only non-visual paths)"
           else
             # Empty/unknown => paths-filter failed; the chromatic job's !cancelled()
             # fail-safe will still run the build rather than silently skip it.
