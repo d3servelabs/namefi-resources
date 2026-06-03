@@ -160,9 +160,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const {
     options: outboundDomainOptions,
     isLoading: isOutboundDomainOptionsLoading,
-  } = useDomainSearchOptions({
-    includeGeneratedDomains: false,
-  });
+  } = useDomainSearchOptions();
   const usageQuery = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
     enabled: isAuthenticated,

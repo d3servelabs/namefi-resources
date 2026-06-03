@@ -1,28 +1,24 @@
-import type {
-  DomainSearchOption,
-  DomainSearchOptionSource,
-} from '@/components/domain-search-combobox';
-import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
+import { buildDomainSearchOptions } from '@/lib/domain-search-options';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useAuth } from './use-auth';
-
-type UserDomain = AppRouterOutput['users']['getCurrentUserDomains'][number];
-type GenerationDomain = AppRouterOutput['ai']['getUserDomains'][number];
-type FeedListedDomain =
-  AppRouterOutput['mls']['getCurrentUserListedDomains']['domains'][number];
 
 type UseDomainSearchOptionsParams = {
   enabled?: boolean;
   includeGeneratedDomains?: boolean;
   includeFeedListedDomains?: boolean;
+  includeOutboundDomains?: boolean;
   onlyDomainsWithLogos?: boolean;
 };
+
+const outboundDomainSearchRunsQueryInput = { limit: 50 };
 
 export function useDomainSearchOptions({
   enabled = true,
   includeGeneratedDomains = true,
   includeFeedListedDomains = true,
+  includeOutboundDomains = true,
   onlyDomainsWithLogos = false,
 }: UseDomainSearchOptionsParams = {}) {
   const trpc = useTRPC();
@@ -47,12 +43,19 @@ export function useDomainSearchOptions({
     staleTime: 60_000,
   });
 
+  const outboundRunsQuery = useQuery({
+    ...trpc.leadgen.listRuns.queryOptions(outboundDomainSearchRunsQueryInput),
+    enabled: queryEnabled && includeOutboundDomains && !onlyDomainsWithLogos,
+    staleTime: 60_000,
+  });
+
   const options = useMemo(
     () =>
       buildDomainSearchOptions({
         userDomains: userDomainsQuery.data ?? [],
         generationDomains: generationDomainsQuery.data ?? [],
         feedListedDomains: feedListedDomainsQuery.data?.domains ?? [],
+        outboundDomains: outboundRunsQuery.data ?? [],
         includeGeneratedDomains,
         onlyDomainsWithLogos,
       }),
@@ -61,6 +64,7 @@ export function useDomainSearchOptions({
       generationDomainsQuery.data,
       includeGeneratedDomains,
       onlyDomainsWithLogos,
+      outboundRunsQuery.data,
       userDomainsQuery.data,
     ],
   );
@@ -73,65 +77,13 @@ export function useDomainSearchOptions({
         (includeGeneratedDomains || onlyDomainsWithLogos)) ||
       (feedListedDomainsQuery.isLoading &&
         includeFeedListedDomains &&
+        !onlyDomainsWithLogos) ||
+      (outboundRunsQuery.isLoading &&
+        includeOutboundDomains &&
         !onlyDomainsWithLogos),
     userDomainsQuery,
     generationDomainsQuery,
     feedListedDomainsQuery,
+    outboundRunsQuery,
   };
-}
-
-function buildDomainSearchOptions({
-  userDomains,
-  generationDomains,
-  feedListedDomains,
-  includeGeneratedDomains,
-  onlyDomainsWithLogos,
-}: {
-  userDomains: UserDomain[];
-  generationDomains: GenerationDomain[];
-  feedListedDomains: FeedListedDomain[];
-  includeGeneratedDomains: boolean;
-  onlyDomainsWithLogos: boolean;
-}) {
-  const byDomain = new Map<string, DomainSearchOption>();
-
-  const addDomain = (value: string, source: DomainSearchOptionSource) => {
-    const domain = value.trim().toLowerCase();
-    if (!domain) return;
-
-    const existing = byDomain.get(domain);
-    if (existing) {
-      if (!existing.sources.includes(source)) {
-        existing.sources.push(source);
-      }
-      return;
-    }
-
-    byDomain.set(domain, { value: domain, sources: [source] });
-  };
-
-  if (onlyDomainsWithLogos) {
-    for (const domain of generationDomains) {
-      if ((domain.logoCount ?? 0) > 0) {
-        addDomain(domain.domain, 'generated');
-      }
-    }
-    return Array.from(byDomain.values());
-  }
-
-  for (const domain of userDomains) {
-    addDomain(domain.normalizedDomainName, 'owned');
-  }
-
-  for (const domain of feedListedDomains) {
-    addDomain(domain.domain, 'feed');
-  }
-
-  if (includeGeneratedDomains) {
-    for (const domain of generationDomains) {
-      addDomain(domain.domain, 'generated');
-    }
-  }
-
-  return Array.from(byDomain.values());
 }
