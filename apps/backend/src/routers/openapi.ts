@@ -45,6 +45,7 @@ import {
   EIP7702_ACCOUNT_HEADER,
 } from '#lib/auth/wallet-auth';
 import { X402PaymentRequiredError } from '#lib/x402/helpers';
+import { createRedisRateLimiter } from '#lib/rate-limit';
 
 const base = os.errors({
   BAD_REQUEST: {
@@ -215,6 +216,18 @@ const openApiDocument = await openAPIGenerator.generate(
 
 export const providersRouter = new Hono();
 const _logger = createLogger({ context: 'providersRouter' });
+
+// Limit each client IP to 60 requests per minute across the OpenAPI/oRPC
+// surface, enforced via the shared Redis store so the limit holds across all
+// backend instances. Registered first so it runs ahead of every route.
+providersRouter.use(
+  '/*',
+  createRedisRateLimiter({
+    points: 60,
+    duration: 60,
+    keyPrefix: 'rl:v-next:ip',
+  }),
+);
 
 const EIP7702_ACCOUNT_HEADER_PARAMETER_REF =
   '#/components/parameters/Eip7702AccountHeader';
