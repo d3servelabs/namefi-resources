@@ -7,7 +7,7 @@ export type UserDomainOptionInput = {
   normalizedDomainName: string;
 };
 
-export type GenerationDomainOptionInput = {
+export type StudioDomainOptionInput = {
   domain: string;
   logoCount?: number | null;
 };
@@ -22,17 +22,17 @@ export type OutboundDomainOptionInput = {
 
 export function buildDomainSearchOptions({
   userDomains,
-  generationDomains,
+  studioDomains,
   feedListedDomains,
   outboundDomains,
-  includeGeneratedDomains,
+  includeStudioDomains,
   onlyDomainsWithLogos,
 }: {
   userDomains: UserDomainOptionInput[];
-  generationDomains: GenerationDomainOptionInput[];
+  studioDomains: StudioDomainOptionInput[];
   feedListedDomains: FeedListedDomainOptionInput[];
   outboundDomains: OutboundDomainOptionInput[];
-  includeGeneratedDomains: boolean;
+  includeStudioDomains: boolean;
   onlyDomainsWithLogos: boolean;
 }) {
   const byDomain = new Map<string, DomainSearchOption>();
@@ -60,9 +60,9 @@ export function buildDomainSearchOptions({
   };
 
   if (onlyDomainsWithLogos) {
-    for (const domain of generationDomains) {
+    for (const domain of studioDomains) {
       if ((domain.logoCount ?? 0) > 0) {
-        addDomain(domain.domain, 'generated');
+        addDomain(domain.domain, 'studio');
       }
     }
     return Array.from(byDomain.values());
@@ -80,9 +80,9 @@ export function buildDomainSearchOptions({
     addDomain(domain.domain, 'outbound');
   }
 
-  if (includeGeneratedDomains) {
-    for (const domain of generationDomains) {
-      addDomain(domain.domain, 'generated');
+  if (includeStudioDomains) {
+    for (const domain of studioDomains) {
+      addDomain(domain.domain, 'studio');
     }
   }
 

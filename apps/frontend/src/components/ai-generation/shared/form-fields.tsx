@@ -102,7 +102,7 @@ function DomainFieldWithSuggestions({
           }
           emptyMessage={
             selectOnly
-              ? 'No generated logo domains found.'
+              ? 'No Studio logo domains found.'
               : 'No matching domains.'
           }
           allowCustomValue={!selectOnly}

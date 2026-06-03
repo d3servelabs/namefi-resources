@@ -7,8 +7,8 @@ describe('buildDomainSearchOptions', () => {
       userDomains: [{ normalizedDomainName: 'owned.com' }],
       feedListedDomains: [{ domain: 'feed.com' }],
       outboundDomains: [{ domain: 'outbound.com' }],
-      generationDomains: [{ domain: 'studio.com', logoCount: 1 }],
-      includeGeneratedDomains: true,
+      studioDomains: [{ domain: 'studio.com', logoCount: 1 }],
+      includeStudioDomains: true,
       onlyDomainsWithLogos: false,
     });
 
@@ -16,7 +16,7 @@ describe('buildDomainSearchOptions', () => {
       { value: 'owned.com', sources: ['owned'] },
       { value: 'feed.com', sources: ['feed'] },
       { value: 'outbound.com', sources: ['outbound'] },
-      { value: 'studio.com', sources: ['generated'] },
+      { value: 'studio.com', sources: ['studio'] },
     ]);
   });
 
@@ -25,8 +25,8 @@ describe('buildDomainSearchOptions', () => {
       userDomains: [{ normalizedDomainName: 'shared.com' }],
       feedListedDomains: [{ domain: 'shared.com' }],
       outboundDomains: [{ domain: 'shared.com' }],
-      generationDomains: [{ domain: 'shared.com', logoCount: 1 }],
-      includeGeneratedDomains: true,
+      studioDomains: [{ domain: 'shared.com', logoCount: 1 }],
+      includeStudioDomains: true,
       onlyDomainsWithLogos: false,
     });
 
@@ -38,13 +38,13 @@ describe('buildDomainSearchOptions', () => {
       userDomains: [],
       feedListedDomains: [{ domain: 'shared.com' }],
       outboundDomains: [{ domain: 'shared.com' }],
-      generationDomains: [{ domain: 'shared.com', logoCount: 1 }],
-      includeGeneratedDomains: true,
+      studioDomains: [{ domain: 'shared.com', logoCount: 1 }],
+      includeStudioDomains: true,
       onlyDomainsWithLogos: false,
     });
 
     expect(options).toEqual([
-      { value: 'shared.com', sources: ['feed', 'outbound', 'generated'] },
+      { value: 'shared.com', sources: ['feed', 'outbound', 'studio'] },
     ]);
   });
 
@@ -53,14 +53,14 @@ describe('buildDomainSearchOptions', () => {
       userDomains: [{ normalizedDomainName: 'owned.com' }],
       feedListedDomains: [{ domain: 'feed.com' }],
       outboundDomains: [{ domain: 'outbound.com' }],
-      generationDomains: [
+      studioDomains: [
         { domain: 'logo.com', logoCount: 1 },
         { domain: 'poster-only.com', logoCount: 0 },
       ],
-      includeGeneratedDomains: true,
+      includeStudioDomains: true,
       onlyDomainsWithLogos: true,
     });
 
-    expect(options).toEqual([{ value: 'logo.com', sources: ['generated'] }]);
+    expect(options).toEqual([{ value: 'logo.com', sources: ['studio'] }]);
   });
 });

@@ -15,11 +15,7 @@ import {
   useState,
 } from 'react';
 
-export type DomainSearchOptionSource =
-  | 'owned'
-  | 'feed'
-  | 'generated'
-  | 'outbound';
+export type DomainSearchOptionSource = 'owned' | 'feed' | 'studio' | 'outbound';
 
 export type DomainSearchOption = {
   value: string;
@@ -47,7 +43,7 @@ type DomainSearchComboboxProps = {
 const sourceLabels = {
   owned: 'Purchased',
   feed: 'Namefi Feed',
-  generated: 'Studio',
+  studio: 'Studio',
   outbound: 'Outbound',
 } satisfies Record<DomainSearchOptionSource, string>;
 
@@ -55,7 +51,7 @@ const sourceBadgeClassNames = {
   owned:
     'border-emerald-400/30 bg-emerald-400/10 text-emerald-600 dark:text-emerald-300',
   feed: 'border-sky-400/30 bg-sky-400/10 text-sky-600 dark:text-sky-300',
-  generated:
+  studio:
     'border-amber-400/30 bg-amber-400/10 text-amber-700 dark:text-amber-300',
   outbound:
     'border-fuchsia-400/30 bg-fuchsia-400/10 text-fuchsia-700 dark:text-fuchsia-300',

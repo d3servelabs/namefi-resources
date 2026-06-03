@@ -6,7 +6,7 @@ import { useAuth } from './use-auth';
 
 type UseDomainSearchOptionsParams = {
   enabled?: boolean;
-  includeGeneratedDomains?: boolean;
+  includeStudioDomains?: boolean;
   includeFeedListedDomains?: boolean;
   includeOutboundDomains?: boolean;
   onlyDomainsWithLogos?: boolean;
@@ -16,7 +16,7 @@ const outboundDomainSearchRunsQueryInput = { limit: 50 };
 
 export function useDomainSearchOptions({
   enabled = true,
-  includeGeneratedDomains = true,
+  includeStudioDomains = true,
   includeFeedListedDomains = true,
   includeOutboundDomains = true,
   onlyDomainsWithLogos = false,
@@ -31,9 +31,9 @@ export function useDomainSearchOptions({
     staleTime: 60_000,
   });
 
-  const generationDomainsQuery = useQuery({
+  const studioDomainsQuery = useQuery({
     ...trpc.ai.getUserDomains.queryOptions(),
-    enabled: queryEnabled && (includeGeneratedDomains || onlyDomainsWithLogos),
+    enabled: queryEnabled && (includeStudioDomains || onlyDomainsWithLogos),
     staleTime: 60_000,
   });
 
@@ -53,16 +53,16 @@ export function useDomainSearchOptions({
     () =>
       buildDomainSearchOptions({
         userDomains: userDomainsQuery.data ?? [],
-        generationDomains: generationDomainsQuery.data ?? [],
+        studioDomains: studioDomainsQuery.data ?? [],
         feedListedDomains: feedListedDomainsQuery.data?.domains ?? [],
         outboundDomains: outboundRunsQuery.data ?? [],
-        includeGeneratedDomains,
+        includeStudioDomains,
         onlyDomainsWithLogos,
       }),
     [
       feedListedDomainsQuery.data?.domains,
-      generationDomainsQuery.data,
-      includeGeneratedDomains,
+      studioDomainsQuery.data,
+      includeStudioDomains,
       onlyDomainsWithLogos,
       outboundRunsQuery.data,
       userDomainsQuery.data,
@@ -73,8 +73,8 @@ export function useDomainSearchOptions({
     options,
     isLoading:
       (userDomainsQuery.isLoading && !onlyDomainsWithLogos) ||
-      (generationDomainsQuery.isLoading &&
-        (includeGeneratedDomains || onlyDomainsWithLogos)) ||
+      (studioDomainsQuery.isLoading &&
+        (includeStudioDomains || onlyDomainsWithLogos)) ||
       (feedListedDomainsQuery.isLoading &&
         includeFeedListedDomains &&
         !onlyDomainsWithLogos) ||
@@ -82,7 +82,7 @@ export function useDomainSearchOptions({
         includeOutboundDomains &&
         !onlyDomainsWithLogos),
     userDomainsQuery,
-    generationDomainsQuery,
+    studioDomainsQuery,
     feedListedDomainsQuery,
     outboundRunsQuery,
   };
