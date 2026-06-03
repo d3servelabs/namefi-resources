@@ -12,12 +12,39 @@ import { type NextRequest, NextResponse } from 'next/server';
  * Unconditional because every host this app serves is non-indexable —
  * there's no allowlisted host on this Vercel project.
  */
-export function proxy(_request: NextRequest) {
+const ALLOWED_METHODS = 'GET, HEAD';
+
+function methodHeaders() {
+  return {
+    Allow: ALLOWED_METHODS,
+    'Access-Control-Allow-Methods': ALLOWED_METHODS,
+    'X-Robots-Tag': 'noindex, nofollow',
+  };
+}
+
+export function proxy(request: NextRequest) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new NextResponse(null, {
+      status: 405,
+      headers: methodHeaders(),
+    });
+  }
+
   const response = NextResponse.next();
+
   response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  response.headers.set('Allow', ALLOWED_METHODS);
+  response.headers.set('Access-Control-Allow-Methods', ALLOWED_METHODS);
+
   return response;
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    /*
+      Apply to pages, but skip Next internals/static assets.
+      Adjust this to your app.
+    */
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)',
+  ],
 };
