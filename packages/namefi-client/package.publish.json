@@ -3,9 +3,13 @@
   "author": "Namefi <dev-team@namefi.io>",
   "license": "MIT",
   "description": "API client for Namefi",
-  "version": "0.0.0-pre.12",
+  "version": "0.0.0-pre.13",
   "type": "module",
   "files": ["dist"],
+  "scripts": {
+    "prebuild": "./switch-config-copy.sh build",
+    "postpublish": "./switch-config-copy.sh build"
+  },
   "dependencies": {
     "@orpc/client": "^1.13.2",
     "@orpc/contract": "^1.13.2",

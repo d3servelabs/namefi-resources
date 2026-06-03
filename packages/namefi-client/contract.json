@@ -498,6 +498,71 @@
       }
     }
   },
+  "domainConfig": {
+    "toggleAutoRenew": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "eip712": {
+            "input": {
+              "acceptedPrimaryTypes": ["ToggleAutoRenewEnvelope"],
+              "types": {
+                "ToggleAutoRenew": [
+                  { "name": "normalizedDomainName", "type": "string" },
+                  { "name": "enableAutoRenew", "type": "bool" }
+                ],
+                "ToggleAutoRenewEnvelope": [
+                  { "name": "payloadType", "type": "string" },
+                  { "name": "payload", "type": "ToggleAutoRenew" },
+                  { "name": "timestamp", "type": "uint256" },
+                  { "name": "nonce", "type": "string" }
+                ]
+              }
+            }
+          },
+          "route": {
+            "path": "/domain-config/auto-renew",
+            "method": "PUT",
+            "tags": ["domain-config", "EIP712"],
+            "operationId": "toggleAutoRenew",
+            "summary": "Toggle domain auto-renewal",
+            "description": "Enable or disable automatic renewal for a domain. When enabled, the domain will be renewed automatically before expiration using the available payment methods on the owner wallet."
+          }
+        },
+        "route": {
+          "path": "/domain-config/auto-renew",
+          "method": "PUT",
+          "tags": ["domain-config", "EIP712"],
+          "operationId": "toggleAutoRenew",
+          "summary": "Toggle domain auto-renewal",
+          "description": "Enable or disable automatic renewal for a domain. When enabled, the domain will be renewed automatically before expiration using the available payment methods on the owner wallet."
+        }
+      }
+    },
+    "getAutoRenew": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/domain-config/auto-renew",
+            "method": "GET",
+            "tags": ["domain-config"],
+            "operationId": "getAutoRenew",
+            "summary": "Get domain auto-renewal status",
+            "description": "Check whether automatic renewal is enabled for a domain. Requires domain ownership."
+          }
+        },
+        "route": {
+          "path": "/domain-config/auto-renew",
+          "method": "GET",
+          "tags": ["domain-config"],
+          "operationId": "getAutoRenew",
+          "summary": "Get domain auto-renewal status",
+          "description": "Check whether automatic renewal is enabled for a domain. Requires domain ownership."
+        }
+      }
+    }
+  },
   "user": {
     "getUser": {
       "~orpc": {
@@ -903,6 +968,29 @@
           "operationId": "checkAvailability",
           "summary": "Check domain availability",
           "description": "Check if a domain is available for registration. Returns availability status, pricing details, current owner (if any), and registration constraints."
+        }
+      }
+    },
+    "checkBulkAvailability": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/search/bulk-availability",
+            "method": "GET",
+            "tags": ["search"],
+            "operationId": "checkBulkAvailability",
+            "summary": "Check bulk domain availability",
+            "description": "Check if a list of domains are available for registration. Returns availability status, pricing details, current owner (if any), and registration constraints."
+          }
+        },
+        "route": {
+          "path": "/search/bulk-availability",
+          "method": "GET",
+          "tags": ["search"],
+          "operationId": "checkBulkAvailability",
+          "summary": "Check bulk domain availability",
+          "description": "Check if a list of domains are available for registration. Returns availability status, pricing details, current owner (if any), and registration constraints."
         }
       }
     },

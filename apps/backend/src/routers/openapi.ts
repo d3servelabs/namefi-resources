@@ -129,7 +129,7 @@ const base = os.errors({
   // },
 });
 
-export const orpcRouter = toORPCRouter(
+const _orpcRouter = toORPCRouter(
   createTRPCRouter({
     dnsRecords: dnsRecordsRouterOrpc,
     domainConfig: domainConfigRouterOrpc,
@@ -141,6 +141,11 @@ export const orpcRouter = toORPCRouter(
     eip712: eip712Router,
   }),
 );
+export const orpcRouter = os
+  .$config({
+    initialOutputValidationIndex: Number.NaN,
+  })
+  .router(_orpcRouter as never) as unknown as typeof _orpcRouter;
 
 const openAPIGenerator = new OpenAPIGenerator({
   schemaConverters: [

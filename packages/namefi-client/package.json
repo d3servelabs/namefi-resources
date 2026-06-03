@@ -3,9 +3,11 @@
   "author": "Namefi <dev-team@namefi.io>",
   "license": "MIT",
   "description": "API client for Namefi",
-  "version": "0.0.0-pre.12",
+  "version": "0.0.0-pre.13",
   "type": "module",
   "scripts": {
+    "prebuild": "./switch-config-copy.sh build",
+    "prepublish": "./switch-config-copy.sh publish",
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "typecheck": "tsgo --noEmit",
     "build": "tsup",
@@ -19,14 +21,16 @@
     "@namefi-astra/backend": "workspace:*",
     "@orpc/client": "^1.13.2",
     "@orpc/contract": "^1.13.2",
-    "@orpc/openapi-client": "^1.13.2"
+    "@orpc/openapi-client": "^1.13.2",
+    "@types/node": "^22.13.14"
   },
   "exports": {
     ".": "./src/index.ts"
   },
   "peerDependencies": {
     "viem": "2.47.6",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
