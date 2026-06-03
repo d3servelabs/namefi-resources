@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import {
   aiGenerationsTable,
+  aiCreditAwardsTable,
   apiKeysTable,
   cartItemsTable,
   leadgenContactsTable,
@@ -25,6 +26,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   cartItems: many(cartItemsTable),
   orders: many(ordersTable),
   aiGenerations: many(aiGenerationsTable),
+  aiCreditAwards: many(aiCreditAwardsTable),
   leadgenRuns: many(leadgenRunsTable),
   wishlistedDomains: many(wishlistedDomainsTable),
   linkShares: many(linkSharesTable),
@@ -93,6 +95,20 @@ export const aiGenerationsRelations = relations(
   ({ one }) => ({
     user: one(usersTable, {
       fields: [aiGenerationsTable.userId],
+      references: [usersTable.id],
+    }),
+  }),
+);
+
+export const aiCreditAwardsRelations = relations(
+  aiCreditAwardsTable,
+  ({ one }) => ({
+    user: one(usersTable, {
+      fields: [aiCreditAwardsTable.userId],
+      references: [usersTable.id],
+    }),
+    awardedByAdmin: one(usersTable, {
+      fields: [aiCreditAwardsTable.awardedByAdminUserId],
       references: [usersTable.id],
     }),
   }),

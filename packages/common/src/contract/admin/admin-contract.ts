@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { adminAiCreditsContract } from './admin-ai-credits-contract';
 import { adminAutoRenewalContract } from './admin-auto-renewal-contract';
 import { adminBigQueryAuditContract } from './admin-big-query-audit-contract';
 import { adminBulkBurnContract } from './admin-bulk-burn-contract';
@@ -48,6 +49,7 @@ export const adminContract = {
     input: z.void(),
     output: isUserAdminOutputSchema,
   },
+  aiCredits: adminAiCreditsContract,
   schedules: adminSchedulesContract,
   poweredByNamefi: adminPoweredByNamefiContract,
   permissions: adminPermissionsContract,

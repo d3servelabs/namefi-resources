@@ -9,6 +9,8 @@ import {
 type UserGenerationUsage = AppRouterOutput['ai']['getUserGenerationUsage'];
 
 const usage = {
+  awardedCredits: 0,
+  baseMaxCredits: 10,
   currentCredits: 2,
   maxCredits: 10,
   remainingCredits: 8,

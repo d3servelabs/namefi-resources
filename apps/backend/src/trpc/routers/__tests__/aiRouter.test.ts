@@ -105,6 +105,7 @@ vi.mock('@namefi-astra/db', () => ({
 }));
 
 vi.mock('@namefi-astra/db/schema', () => ({
+  aiCreditAwardsTable: {},
   aiGenerationsTable: {},
   internalAiGenerationsTable: {},
 }));

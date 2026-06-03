@@ -27,6 +27,7 @@ import {
 import { z } from 'zod';
 import {
   aiGenerationsTable,
+  aiCreditAwardsTable,
   publicAiGenerationsTable,
   internalAiGenerationsTable,
   cartItemsTable,
@@ -298,6 +299,13 @@ export const aiGenerationInsertSchema = createInsertSchema(aiGenerationsTable);
 export const aiGenerationSelectSchema = createSelectSchema(aiGenerationsTable);
 export const aiGenerationUpdateSchema = createUpdateSchema(aiGenerationsTable);
 
+export const aiCreditAwardInsertSchema =
+  createInsertSchema(aiCreditAwardsTable);
+export const aiCreditAwardSelectSchema =
+  createSelectSchema(aiCreditAwardsTable);
+export const aiCreditAwardUpdateSchema =
+  createUpdateSchema(aiCreditAwardsTable);
+
 export const publicAiGenerationInsertSchema = createInsertSchema(
   publicAiGenerationsTable,
 );
@@ -416,6 +424,10 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
 export type AiGenerationInsert = z.infer<typeof aiGenerationInsertSchema>;
 export type AiGenerationSelect = z.infer<typeof aiGenerationSelectSchema>;
 export type AiGenerationUpdate = z.infer<typeof aiGenerationUpdateSchema>;
+
+export type AiCreditAwardInsert = z.infer<typeof aiCreditAwardInsertSchema>;
+export type AiCreditAwardSelect = z.infer<typeof aiCreditAwardSelectSchema>;
+export type AiCreditAwardUpdate = z.infer<typeof aiCreditAwardUpdateSchema>;
 
 export type AiInternalGenerationInsert = z.infer<
   typeof aiInternalGenerationInsertSchema

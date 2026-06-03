@@ -396,6 +396,8 @@ const getInternalGenerationsByDomainsOutputSchema = z.record(
 );
 
 const getUserGenerationUsageOutputSchema = z.object({
+  awardedCredits: z.number(),
+  baseMaxCredits: z.number(),
   currentCredits: z.number(),
   maxCredits: z.number(),
   remainingCredits: z.number(),

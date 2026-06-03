@@ -1,6 +1,7 @@
-import { adminProcedure, protectedProcedure } from '../base';
+import { protectedProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { adminContract } from '@namefi-astra/common/contract/admin/admin-contract';
+import { aiCreditsRouter } from './admin/aiCreditsRouter';
 import { canUserAccessAdminPanel } from '../utils';
 import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
@@ -25,13 +26,6 @@ import { nsAndDnssecRouter } from './admin/nsAndDnssecRouter';
 import { emailsRouter } from './admin/adminEmailsRouter';
 import { adminNotificationsRouter } from './admin/adminNotificationsRouter';
 import { adminAnnouncementsRouter } from './admin/adminAnnouncementsRouter';
-import { config, secrets } from '#lib/env';
-import { render } from '@react-email/components';
-import React from 'react';
-import { BaseEmailTemplate } from '../../mail/templates/base-email-template';
-import z from 'zod';
-import { TRPCError } from '@trpc/server';
-import { adminEmailsContract } from '@namefi-astra/common/contract/admin/admin-emails-contract';
 
 export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   isUserAdmin: protectedProcedure
@@ -42,6 +36,7 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
     }),
 
   // Subrouters
+  aiCredits: aiCreditsRouter,
   schedules: schedulesRouter,
   poweredByNamefi: poweredByNamefiRouter,
   permissions: permissionsRouter,

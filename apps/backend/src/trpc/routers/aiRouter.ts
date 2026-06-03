@@ -11,6 +11,7 @@ import {
   type AiGenerationCreditType,
 } from '@namefi-astra/common/ai-generation-credits';
 import {
+  aiCreditAwardsTable,
   aiGenerationsTable,
   internalAiGenerationsTable,
   leadgenEventsTable,
@@ -626,6 +627,24 @@ function getLeadgenCreditCostForRun(params: {
   return Math.max(estimatedCredits, actualCredits);
 }
 
+export async function getActiveAiCreditAwardCredits(
+  userId: string,
+): Promise<number> {
+  const [row] = await db
+    .select({
+      credits: sql<number>`COALESCE(SUM(${aiCreditAwardsTable.amountCredits}), 0)::int`,
+    })
+    .from(aiCreditAwardsTable)
+    .where(
+      and(
+        eq(aiCreditAwardsTable.userId, userId),
+        sql`${aiCreditAwardsTable.expiresAt} > now()`,
+      ),
+    );
+
+  return Number(row?.credits ?? 0);
+}
+
 function getEstimatedCreditsFromEventPayload(payload: unknown) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
     return 0;
@@ -638,12 +657,18 @@ function getEstimatedCreditsFromEventPayload(payload: unknown) {
 }
 
 async function getUserGenerationCreditUsage(userId: string) {
-  const currentCredits = await getCurrentMonthlyGenerationCreditUsage(userId);
-  const maxCredits = config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
+  const [currentCredits, awardedCredits] = await Promise.all([
+    getCurrentMonthlyGenerationCreditUsage(userId),
+    getActiveAiCreditAwardCredits(userId),
+  ]);
+  const baseMaxCredits = config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
+  const maxCredits = baseMaxCredits + awardedCredits;
   const remainingCredits = Math.max(0, maxCredits - currentCredits);
   const now = new Date();
 
   return {
+    awardedCredits,
+    baseMaxCredits,
     creditsRefreshAt: new Date(
       Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1),
     ),
@@ -1359,6 +1384,8 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
       const usage = await getUserGenerationCreditUsage(ctx.user.id);
 
       return {
+        awardedCredits: usage.awardedCredits,
+        baseMaxCredits: usage.baseMaxCredits,
         currentCredits: usage.currentCredits,
         maxCredits: usage.maxCredits,
         remainingCredits: usage.remainingCredits,

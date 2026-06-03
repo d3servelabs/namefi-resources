@@ -1519,6 +1519,34 @@ export const aiGenerationsTable = pgTable(
   ],
 );
 
+export const aiCreditAwardsTable = pgTable(
+  'ai_credit_awards',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    awardedByAdminUserId: uuid('awarded_by_admin_user_id').references(
+      () => usersTable.id,
+      { onDelete: 'set null' },
+    ),
+    amountCredits: integer('amount_credits').notNull(),
+    reason: text('reason').notNull(),
+    expiresAt: timestamp('expires_at').notNull(),
+    metadata: jsonb('metadata').default({}).$type<{
+      batchId?: string;
+    }>(),
+    ...timestamps,
+  },
+  (table) => [
+    index('ai_credit_awards_user_idx').on(table.userId),
+    index('ai_credit_awards_admin_idx').on(table.awardedByAdminUserId),
+    index('ai_credit_awards_expires_at_idx').on(table.expiresAt),
+    index('ai_credit_awards_created_at_idx').on(table.createdAt),
+    check('ai_credit_awards_amount_positive', sql`${table.amountCredits} > 0`),
+  ],
+);
+
 export const publicAiGenerationsTable = pgTable(
   'public_ai_generations',
   {

@@ -26,6 +26,7 @@ import {
   Megaphone,
   AlertTriangle,
   DollarSign,
+  Sparkles,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -213,6 +214,17 @@ const ADMIN_SECTIONS: AdminSection[] = [
           Permission.READ_FREE_CLAIMS,
           Permission.WRITE_FREE_CLAIMS,
         ],
+        permissionsMode: 'some',
+      },
+      {
+        title: 'AI Credits',
+        description:
+          'Award additive monthly AI credits to specific users and review each award row.',
+        href: '/admin/ai-credits',
+        icon: Sparkles,
+        iconBgColor: 'bg-fuchsia-100',
+        iconTextColor: 'text-fuchsia-600',
+        permissions: [Permission.READ_AI_CREDITS, Permission.WRITE_AI_CREDITS],
         permissionsMode: 'some',
       },
     ],
