@@ -656,7 +656,7 @@ function getEstimatedCreditsFromEventPayload(payload: unknown) {
     : 0;
 }
 
-async function getUserGenerationCreditUsage(userId: string) {
+export async function getUserGenerationCreditUsage(userId: string) {
   const [currentCredits, awardedCredits] = await Promise.all([
     getCurrentMonthlyGenerationCreditUsage(userId),
     getActiveAiCreditAwardCredits(userId),

@@ -10,6 +10,8 @@ const mockLogger = {
 
 const describeMock = vi.fn();
 const startMock = vi.fn();
+const dbSelectMock = vi.fn();
+const dbUpdateMock = vi.fn();
 const generateUrlFromStoragePathMock = vi.fn(
   (storagePath: string, cloudfrontDomain: string) =>
     `https://${cloudfrontDomain}/${storagePath}`,
@@ -101,13 +103,73 @@ vi.mock('#temporal/workflows/logo-animation.workflow', () => ({
 }));
 
 vi.mock('@namefi-astra/db', () => ({
-  db: {},
+  db: {
+    select: dbSelectMock,
+    update: dbUpdateMock,
+  },
 }));
 
+const mockColumn = (name: string) => ({ name });
+const mockSqlToken = { as: vi.fn(() => ({})) };
+
 vi.mock('@namefi-astra/db/schema', () => ({
-  aiCreditAwardsTable: {},
-  aiGenerationsTable: {},
-  internalAiGenerationsTable: {},
+  aiCreditAwardsTable: {
+    amountCredits: mockColumn('ai_credit_awards.amount_credits'),
+    expiresAt: mockColumn('ai_credit_awards.expires_at'),
+    userId: mockColumn('ai_credit_awards.user_id'),
+  },
+  aiGenerationsTable: {
+    createdAt: mockColumn('ai_generations.created_at'),
+    domain: mockColumn('ai_generations.domain'),
+    id: mockColumn('ai_generations.id'),
+    input: mockColumn('ai_generations.input'),
+    isDeleted: mockColumn('ai_generations.is_deleted'),
+    metadata: mockColumn('ai_generations.metadata'),
+    output: mockColumn('ai_generations.output'),
+    status: mockColumn('ai_generations.status'),
+    type: mockColumn('ai_generations.type'),
+    updatedAt: mockColumn('ai_generations.updated_at'),
+    userId: mockColumn('ai_generations.user_id'),
+  },
+  internalAiGenerationsTable: {
+    createdAt: mockColumn('internal_ai_generations.created_at'),
+    domain: mockColumn('internal_ai_generations.domain'),
+  },
+  leadgenEventsTable: {
+    createdAt: mockColumn('leadgen_events.created_at'),
+    eventType: mockColumn('leadgen_events.event_type'),
+    payload: mockColumn('leadgen_events.payload'),
+    runId: mockColumn('leadgen_events.run_id'),
+  },
+  leadgenRunsTable: {
+    createdAt: mockColumn('leadgen_runs.created_at'),
+    id: mockColumn('leadgen_runs.id'),
+    input: mockColumn('leadgen_runs.input'),
+    metadata: mockColumn('leadgen_runs.metadata'),
+    reasoningEffort: mockColumn('leadgen_runs.reasoning_effort'),
+    status: mockColumn('leadgen_runs.status'),
+    tokenUsage: mockColumn('leadgen_runs.token_usage'),
+    userId: mockColumn('leadgen_runs.user_id'),
+  },
+}));
+
+vi.mock('drizzle-orm', () => ({
+  and: vi.fn((...conditions: unknown[]) => ({ conditions, type: 'and' })),
+  count: vi.fn(() => mockSqlToken),
+  desc: vi.fn((column: unknown) => ({ column, type: 'desc' })),
+  eq: vi.fn((left: unknown, right: unknown) => ({ left, right, type: 'eq' })),
+  inArray: vi.fn((left: unknown, values: unknown[]) => ({
+    left,
+    type: 'inArray',
+    values,
+  })),
+  max: vi.fn(() => mockSqlToken),
+  ne: vi.fn((left: unknown, right: unknown) => ({ left, right, type: 'ne' })),
+  sql: vi.fn((strings: TemplateStringsArray, ...values: unknown[]) => ({
+    strings,
+    type: 'sql',
+    values,
+  })),
 }));
 
 vi.mock('@namefi-astra/ai', () => ({
@@ -150,11 +212,50 @@ const {
   getAiGenerationCreditCost,
   getAiGenerationCreditCostForRow,
   getAnimationStartStateAfterError,
+  getActiveAiCreditAwardCredits,
+  getUserGenerationCreditUsage,
   startLogoAnimationWorkflowWithRecovery,
 } = await import('../aiRouter');
 const { resolveLogoReferenceDetails } = await import(
   '../ai-generation-references'
 );
+
+type SelectResult = unknown[] | Promise<unknown[]>;
+
+function createSelectBuilder(result: SelectResult) {
+  const where = vi.fn(() => result);
+  const innerJoin = vi.fn(() => ({ where }));
+  const from = vi.fn(() => ({ innerJoin, where }));
+
+  return { from };
+}
+
+function queueDbSelectResults(...results: SelectResult[]) {
+  const queuedResults = [...results];
+  dbSelectMock.mockImplementation(() => {
+    const result = queuedResults.shift();
+    if (!result) {
+      throw new Error('Unexpected db.select call');
+    }
+    return createSelectBuilder(result);
+  });
+}
+
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((innerResolve) => {
+    resolve = innerResolve;
+  });
+  return { promise, resolve };
+}
+
+function createLogoGenerationRows(count: number) {
+  return Array.from({ length: count }, (_, index) => ({
+    input: { type: 'logo' },
+    output: { storagePath: `logos/${index}.png`, type: 'logo' },
+    type: 'logo',
+  }));
+}
 
 function expectTRPCErrorCode(action: () => unknown, code: string) {
   try {
@@ -166,6 +267,99 @@ function expectTRPCErrorCode(action: () => unknown, code: string) {
 
   throw new Error(`Expected TRPC error code ${code}`);
 }
+
+describe('getActiveAiCreditAwardCredits', () => {
+  beforeEach(() => {
+    dbSelectMock.mockReset();
+    dbUpdateMock.mockReset();
+  });
+
+  it('returns zero when the aggregate query has no row', async () => {
+    queueDbSelectResults([]);
+
+    await expect(getActiveAiCreditAwardCredits('user-1')).resolves.toBe(0);
+  });
+
+  it('returns the summed credits for active awards', async () => {
+    queueDbSelectResults([{ credits: 15 }]);
+
+    await expect(getActiveAiCreditAwardCredits('user-1')).resolves.toBe(15);
+  });
+
+  it('returns zero when expired awards are excluded by the query', async () => {
+    queueDbSelectResults([{ credits: 0 }]);
+
+    await expect(getActiveAiCreditAwardCredits('user-1')).resolves.toBe(0);
+  });
+
+  it('returns only active credits for mixed active and expired awards', async () => {
+    queueDbSelectResults([{ credits: 7 }]);
+
+    await expect(getActiveAiCreditAwardCredits('user-1')).resolves.toBe(7);
+  });
+
+  it('sums active awards regardless of which admin granted them', async () => {
+    queueDbSelectResults([{ credits: 18 }]);
+
+    await expect(getActiveAiCreditAwardCredits('user-1')).resolves.toBe(18);
+  });
+});
+
+describe('awarded credits integration', () => {
+  beforeEach(() => {
+    dbSelectMock.mockReset();
+    dbUpdateMock.mockReset();
+  });
+
+  it('adds awarded credits to the monthly limit and remaining balance', async () => {
+    queueDbSelectResults(
+      [], // pending unconfirmed animations to reconcile
+      [{ credits: 10 }],
+      createLogoGenerationRows(26),
+      [],
+      [],
+    );
+
+    await expect(getUserGenerationCreditUsage('user-1')).resolves.toMatchObject(
+      {
+        awardedCredits: 10,
+        baseMaxCredits: 25,
+        currentCredits: 26,
+        hasReachedLimit: false,
+        maxCredits: 35,
+        remainingCredits: 9,
+      },
+    );
+  });
+
+  it('starts the awarded-credit lookup before current usage has finished', async () => {
+    const pendingAnimations = createDeferred<unknown[]>();
+    const awardedCredits = createDeferred<unknown[]>();
+
+    queueDbSelectResults(
+      pendingAnimations.promise,
+      awardedCredits.promise,
+      createLogoGenerationRows(25),
+      [],
+      [],
+    );
+
+    const usagePromise = getUserGenerationCreditUsage('user-1');
+
+    expect(dbSelectMock).toHaveBeenCalledTimes(2);
+
+    pendingAnimations.resolve([]);
+    awardedCredits.resolve([{ credits: 10 }]);
+
+    await expect(usagePromise).resolves.toMatchObject({
+      awardedCredits: 10,
+      currentCredits: 25,
+      maxCredits: 35,
+      remainingCredits: 10,
+    });
+    expect(dbSelectMock).toHaveBeenCalledTimes(5);
+  });
+});
 
 describe('getAnimationStartStateAfterError', () => {
   beforeEach(() => {

@@ -226,6 +226,7 @@ export function AdminAiCreditAwards() {
           <div className="relative w-full md:w-80">
             <Search className="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
             <Input
+              aria-label="Search award ledger"
               value={searchTerm}
               onChange={(event) => {
                 setSearchTerm(event.target.value);

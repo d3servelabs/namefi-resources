@@ -89,6 +89,10 @@ function buildAwardSearchFilter(searchTerm: string): SQL | undefined {
 
   const likeTerm = `%${trimmed}%`;
 
+  // Keep ledger search broad without joining every list query: match award
+  // fields directly, then use an EXISTS lookup for recipient profile fields.
+  // Wallets are normalized through array_lowercase(...) and unnested so wallet
+  // fragments compare case-insensitively like email and display name.
   return or(
     sql`${aiCreditAwardsTable.reason} ILIKE ${likeTerm}`,
     sql`${aiCreditAwardsTable.userId}::text ILIKE ${likeTerm}`,
