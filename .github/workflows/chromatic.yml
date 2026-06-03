@@ -178,8 +178,10 @@ jobs:
         run: |
           LOG="$RUNNER_TEMP/chromatic-output.log"
           [ -f "$LOG" ] || { echo "No Chromatic output captured."; exit 0; }
-          TURBO=$(grep -iE "limited to [0-9]+ story files" "$LOG" | tail -1 | sed -e 's/^[[:space:]]*//' -e 's/^→[[:space:]]*//')
-          COUNT=$(grep -iE "Capturing [0-9]+ snapshots" "$LOG" | tail -1 | sed 's/^[[:space:]]*//')
+          # `|| true` so a no-match grep never fails this reporting step (robust
+          # regardless of whether the shell runs with pipefail).
+          TURBO=$(grep -iE "limited to [0-9]+ story files" "$LOG" | tail -1 | sed -e 's/^[[:space:]]*//' -e 's/^→[[:space:]]*//' || true)
+          COUNT=$(grep -iE "Capturing [0-9]+ snapshots" "$LOG" | tail -1 | sed 's/^[[:space:]]*//' || true)
           echo "CHROMATIC_SNAPSHOTS ${COUNT:-unknown}"
           {
             echo "### Chromatic snapshot usage"
