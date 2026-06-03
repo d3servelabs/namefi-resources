@@ -68,7 +68,8 @@ const DEFAULT_REASONING_EFFORT: LeadgenReasoningEffort = 'medium';
 const ABSOLUTE_URL_RE = /^[a-z]+:\/\//i;
 const DOMAIN_URL_RE = /^[\w.-]+\.[a-z]{2,}(\/.*)?$/i;
 const SENTENCE_BOUNDARY_RE = /^(.{1,220}?[.!?])(?:\s|$)/;
-const EMAIL_SIGNATURE_BLOCK_RE = /(?:\r?\n){1,2}Best,\s*(?:\r?\n[\s\S]*)?$/i;
+const EMAIL_SIGNATURE_BLOCK_RE =
+  /(?:\r?\n){1,2}Best,[ \t]*(?:(?:\r?\n[ \t]*[\p{L}\p{N}][\p{L}\p{N} .,'’&@:/+()#-]{0,119}[ \t]*){0,5})$/iu;
 const RECIPE_SIGNAL_LABELS: Record<LeadgenDiscoveryRecipe, string> = {
   exact_near_name_search: 'Name match',
   category_operator_search: 'Category fit',

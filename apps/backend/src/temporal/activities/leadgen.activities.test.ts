@@ -8,6 +8,7 @@ const mockLogger = {
 };
 const mockDb = {
   insert: vi.fn(),
+  select: vi.fn(),
   update: vi.fn(),
 };
 const mockLeadgenLeadsTable = {
@@ -19,11 +20,17 @@ const mockLeadgenLeadsTable = {
   businessDomain: 'leadgen_leads.business_domain',
   updatedAt: 'leadgen_leads.updated_at',
 };
+const mockLeadgenRunsTable = {
+  id: 'leadgen_runs.id',
+  userId: 'leadgen_runs.user_id',
+};
 const mockUserContactsTable = {
+  id: 'user_contacts.id',
   userId: 'user_contacts.user_id',
   firstName: 'user_contacts.first_name',
   lastName: 'user_contacts.last_name',
   organizationName: 'user_contacts.organization_name',
+  createdAt: 'user_contacts.created_at',
   updatedAt: 'user_contacts.updated_at',
 };
 
@@ -76,13 +83,30 @@ vi.mock('@namefi-astra/db', () => ({
   leadgenEventsTable: {},
   leadgenLeadSignalsTable: {},
   leadgenLeadsTable: mockLeadgenLeadsTable,
-  leadgenRunsTable: {},
+  leadgenRunsTable: mockLeadgenRunsTable,
   userContactsTable: mockUserContactsTable,
 }));
 
 const { finalizeUntriagedLeadgenLeads, heartbeatLeadgenWhile } = await import(
   './leadgen.activities'
 );
+const { loadLeadgenSenderForRun } = await import(
+  '../../services/leadgen/outreach.service'
+);
+
+function mockSelectResultOnce(
+  result: unknown[],
+  options: { orderBy?: boolean } = {},
+) {
+  const limit = vi.fn().mockResolvedValue(result);
+  const orderBy = vi.fn(() => ({ limit }));
+  const where = vi.fn(() => (options.orderBy ? { orderBy } : { limit }));
+  const from = vi.fn(() => ({ where }));
+
+  mockDb.select.mockReturnValueOnce({ from });
+
+  return { from, limit, orderBy, where };
+}
 
 describe('heartbeatLeadgenWhile', () => {
   beforeEach(() => {
@@ -232,5 +256,75 @@ describe('finalizeUntriagedLeadgenLeads', () => {
     ).resolves.toBe(0);
 
     expect(mockDb.insert).not.toHaveBeenCalled();
+  });
+});
+
+describe('loadLeadgenSenderForRun', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it.each([
+    [
+      {
+        firstName: ' Alice ',
+        lastName: ' Seller ',
+        organizationName: 'Example Org',
+      },
+      'Alice Seller',
+    ],
+    [
+      {
+        firstName: null,
+        lastName: null,
+        organizationName: ' Example Org ',
+      },
+      'Example Org',
+    ],
+    [
+      {
+        firstName: null,
+        lastName: null,
+        organizationName: null,
+      },
+      null,
+    ],
+  ])('derives sender signature from profile contact %#', async (contact, expected) => {
+    mockSelectResultOnce([{ userId: 'user-1' }]);
+    mockSelectResultOnce([contact], { orderBy: true });
+
+    await expect(loadLeadgenSenderForRun({ runId: 'run-1' })).resolves.toEqual({
+      signature: expected,
+    });
+  });
+
+  it('queries only usable profile rows with deterministic ordering', async () => {
+    mockSelectResultOnce([{ userId: 'user-1' }]);
+    const contactQuery = mockSelectResultOnce(
+      [
+        {
+          firstName: 'Alice',
+          lastName: null,
+          organizationName: null,
+        },
+      ],
+      { orderBy: true },
+    );
+
+    await loadLeadgenSenderForRun({ runId: 'run-1' });
+
+    const whereCalls = contactQuery.where.mock.calls as unknown as Array<
+      [unknown]
+    >;
+    const whereCondition = (whereCalls[0]?.[0] ?? null) as {
+      conditions: unknown[];
+      type: string;
+    } | null;
+    expect(whereCondition).toEqual(expect.objectContaining({ type: 'and' }));
+    expect(whereCondition?.conditions[1]).toEqual(
+      expect.objectContaining({ type: 'or' }),
+    );
+    const orderByCalls = contactQuery.orderBy.mock.calls as unknown[][];
+    expect(orderByCalls[0]).toHaveLength(3);
   });
 });

@@ -55,6 +55,10 @@ export function buildLeadPresentationModel(
   };
 }
 
+/**
+ * Manual outreach is intentionally available for any prospect status. Keep the
+ * lead/runStatus predicate shape so call sites stay stable if gating returns.
+ */
 export function canPrepareLeadgenOutreach(_params: {
   lead: LeadgenLead;
   runStatus: LeadgenSnapshot['status'];

@@ -17,7 +17,17 @@ import {
   leadgenRunsTable,
   userContactsTable,
 } from '@namefi-astra/db';
-import { and, count, desc, eq, inArray, isNull, ne, or } from 'drizzle-orm';
+import {
+  and,
+  count,
+  desc,
+  eq,
+  inArray,
+  isNull,
+  ne,
+  or,
+  sql,
+} from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import { appendLeadgenTokenUsageFromResult } from './token-usage';
 
@@ -253,8 +263,21 @@ export async function loadLeadgenSenderForRun(params: {
       organizationName: userContactsTable.organizationName,
     })
     .from(userContactsTable)
-    .where(eq(userContactsTable.userId, run.userId))
-    .orderBy(desc(userContactsTable.updatedAt))
+    .where(
+      and(
+        eq(userContactsTable.userId, run.userId),
+        or(
+          hasText(userContactsTable.firstName),
+          hasText(userContactsTable.lastName),
+          hasText(userContactsTable.organizationName),
+        ),
+      ),
+    )
+    .orderBy(
+      desc(userContactsTable.updatedAt),
+      desc(userContactsTable.createdAt),
+      desc(userContactsTable.id),
+    )
     .limit(1);
 
   return {
@@ -284,6 +307,15 @@ function getFullName(
 function cleanNullableString(value?: string | null) {
   const trimmed = value?.trim();
   return trimmed || null;
+}
+
+function hasText(
+  column:
+    | typeof userContactsTable.firstName
+    | typeof userContactsTable.lastName
+    | typeof userContactsTable.organizationName,
+) {
+  return sql<boolean>`NULLIF(TRIM(${column}), '') IS NOT NULL`;
 }
 
 export async function persistLeadgenEvent(params: {
