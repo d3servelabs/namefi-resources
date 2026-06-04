@@ -57,6 +57,16 @@ export enum Permission {
   READ_ORDERS = 'ORDERS;;READ',
 
   /**
+   * Inspect running workflows and their armed decision gates.
+   */
+  READ_WORKFLOWS = 'WORKFLOWS;;READ',
+  /**
+   * Send a decision (PROCEED/CANCEL/RETRY/RESPOND) to a workflow's decision
+   * gate. High blast radius — can re-run/cancel arbitrary workflows by id.
+   */
+  WRITE_WORKFLOWS = 'WORKFLOWS;;WRITE',
+
+  /**
    * Permission to use EPP testing tools (CentralNic OTE2 admin dashboard)
    */
   EPP_TESTING = 'EPP_TESTING;;WRITE',

@@ -20,12 +20,14 @@ import {
   createDecisionGateRegistry,
   runWithDecisionGate,
 } from '../shared/workflow-helpers/decision-gate';
+import { processOrderItemGateResponseSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 
 /**
  * How long an order item's decision gate waits for an admin decision before
- * timing out and failing the item.
+ * timing out and failing the item. Kept short because the user is already
+ * charged and the held item blocks the parent order's settlement/refund.
  */
-const PROCESS_ORDER_ITEM_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
+const PROCESS_ORDER_ITEM_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 1 day
 
 export interface ProcessOrderItemWorkflowInput
   extends Omit<AcquireDomainWorkflowInput, 'operationType'> {
@@ -142,12 +144,19 @@ export async function processOrderItemWorkflow(
       ? createDecisionGateRegistry()
       : undefined;
 
-    const runItemOperation = <T>(action: () => Promise<T>): Promise<T> =>
+    const runItemOperation = <T>(
+      action: () => Promise<T>,
+      // Validates/parses a RESPOND payload into the action's result type.
+      // The wire schema lives in the admin contract so the frontend uses the
+      // same shape (decision-gate-response-schemas.ts).
+      validateResponse?: (raw: unknown) => T,
+    ): Promise<T> =>
       decisionRegistry
         ? runWithDecisionGate({
             registry: decisionRegistry,
             interactionId: 'process-order-item',
             action,
+            validateResponse,
             alertMessage: `Order item processing failed for ${normalizedDomainName} (${operationType})`,
             alertSeverity: 'general',
             alertDetails: {
@@ -219,15 +228,18 @@ export async function processOrderItemWorkflow(
         orderItemId: input.itemId,
         gaEventTracking: input.gaEventTracking,
       };
-      // Register or import the domain
-      const acquireResult = await runItemOperation(() =>
-        workflow.executeChild(acquireDomainWorkflow, {
-          args: [workflowInput],
-          taskQueue: TEMPORAL_QUEUES.DOMAINS,
-          workflowId: acquireDomainWorkflow.generateId(workflowInput),
-          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-          parentClosePolicy: 'REQUEST_CANCEL',
-        }),
+      // Register or import the domain. The RESPOND payload mirrors the acquire
+      // output ({ mintTxHash? }) so an admin can complete it out-of-band.
+      const acquireResult = await runItemOperation(
+        () =>
+          workflow.executeChild(acquireDomainWorkflow, {
+            args: [workflowInput],
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            workflowId: acquireDomainWorkflow.generateId(workflowInput),
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+            parentClosePolicy: 'REQUEST_CANCEL',
+          }),
+        (raw) => processOrderItemGateResponseSchema.parse(raw),
       );
 
       if (acquireResult?.mintTxHash) {

@@ -2,6 +2,13 @@ import { z } from 'zod';
 
 import { createContract } from '../create-contract';
 
+export {
+  decisionGateResponseSchemas,
+  processOrderItemGateResponseSchema,
+  type DecisionGateInteractionId,
+  type ProcessOrderItemGateResponse,
+} from './decision-gate-response-schemas';
+
 /**
  * Contract for the admin workflow-decision sub-router.
  *
@@ -56,6 +63,30 @@ const armedGatesSnapshotSchema = z.object({
   ),
 });
 
+const listActiveDecisionGatesInputSchema = z.object({
+  /** Narrow the scan to one workflow type (recommended for large namespaces). */
+  workflowType: z.string().min(1).optional(),
+  /** Cap on running workflows scanned before stopping. Default 500. */
+  maxScan: z.number().int().positive().max(2000).optional(),
+});
+
+const decisionGateWorkflowSchema = z.object({
+  workflowId: z.string(),
+  runId: z.string(),
+  workflowType: z.string(),
+  /** ISO start time, when available. */
+  startedAt: z.string().optional(),
+  gates: armedGatesSnapshotSchema,
+});
+
+const listActiveDecisionGatesOutputSchema = z.object({
+  items: z.array(decisionGateWorkflowSchema),
+  /** How many running workflows were scanned. */
+  scanned: z.number(),
+  /** True when the scan hit `maxScan` before exhausting running workflows. */
+  capped: z.boolean(),
+});
+
 export const adminWorkflowDecisionContract = createContract(
   {},
   {
@@ -63,6 +94,11 @@ export const adminWorkflowDecisionContract = createContract(
       type: 'query',
       input: getArmedGatesInputSchema,
       output: armedGatesSnapshotSchema,
+    },
+    listActiveDecisionGates: {
+      type: 'query',
+      input: listActiveDecisionGatesInputSchema,
+      output: listActiveDecisionGatesOutputSchema,
     },
     sendDecision: {
       type: 'mutation',
