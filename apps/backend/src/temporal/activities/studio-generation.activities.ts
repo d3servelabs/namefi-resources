@@ -14,6 +14,11 @@ import {
   type LogoWorkflowInput,
   type MarketingWorkflowInput,
 } from '@namefi-astra/ai';
+import {
+  buildSlackErrorFields,
+  sendJustaingSlackAlert,
+} from '#lib/slack/justaing-alerts';
+import { getTemporalWorkflowRunUrl } from './default/get-workflow-url';
 
 const logger = createLogger({ module: 'studio-generation-activities' });
 
@@ -258,6 +263,101 @@ function buildStudioGenerationFailureMetadata(error: unknown, failedAt: Date) {
   };
 }
 
+function getStudioGenerationLabel(
+  generation: typeof aiGenerationsTable.$inferSelect,
+) {
+  if (generation.type === 'marketing') {
+    return 'poster';
+  }
+
+  if (generation.type === 'animation') {
+    return 'animation';
+  }
+
+  return 'logo';
+}
+
+function getStudioGenerationModel(
+  generation: typeof aiGenerationsTable.$inferSelect,
+) {
+  if (generation.input.type === 'logo') {
+    return generation.input.imageModel;
+  }
+
+  if (generation.input.type === 'marketing') {
+    return generation.input.imageModel;
+  }
+
+  return generation.input.model;
+}
+
+function getStudioGenerationMode(
+  generation: typeof aiGenerationsTable.$inferSelect,
+) {
+  if (generation.input.type === 'animation') {
+    return generation.input.mode;
+  }
+
+  if (generation.input.type === 'marketing') {
+    return generation.input.collateralType;
+  }
+
+  return generation.input.logoType;
+}
+
+async function getCurrentTemporalAction() {
+  try {
+    const info = Context.current().info;
+    const workflowId = info.workflowExecution.workflowId;
+    const runId = info.workflowExecution.runId;
+
+    return {
+      extraData: {
+        workflowType: info.workflowType,
+        workflowId,
+        runId,
+        taskQueue: info.taskQueue,
+      },
+      action: {
+        text: 'Go To Workflow',
+        url: await getTemporalWorkflowRunUrl(workflowId, runId),
+      },
+    };
+  } catch {
+    return { extraData: {}, action: undefined };
+  }
+}
+
+async function sendStudioGenerationFailureAlert({
+  generation,
+  error,
+  message,
+}: {
+  generation: typeof aiGenerationsTable.$inferSelect;
+  error: unknown;
+  message: string;
+}) {
+  const label = getStudioGenerationLabel(generation);
+  const temporal = await getCurrentTemporalAction();
+
+  await sendJustaingSlackAlert({
+    title: `[Studio] ${label} generation failed for ${generation.domain}`,
+    message,
+    extraData: {
+      generationId: generation.id,
+      generationType: generation.type,
+      userId: generation.userId,
+      domain: generation.domain,
+      model: getStudioGenerationModel(generation),
+      mode: getStudioGenerationMode(generation),
+      referenceGenerationId: generation.referenceGenerationId ?? 'none',
+      ...temporal.extraData,
+      ...buildSlackErrorFields(error, message),
+    },
+    action: temporal.action,
+  });
+}
+
 type ImageGenerationWorkflowResult =
   | Awaited<ReturnType<typeof runLogoWorkflow>>
   | Awaited<ReturnType<typeof runMarketingWorkflow>>;
@@ -490,6 +590,12 @@ export async function generateStudioLogo({
         ),
       );
 
+    await sendStudioGenerationFailureAlert({
+      generation: claimedGeneration,
+      error,
+      message,
+    });
+
     logger.error({ error, generationId }, 'Logo generation failed');
     throw error;
   }
@@ -690,6 +796,12 @@ export async function generateStudioPoster({
           eq(aiGenerationsTable.isDeleted, false),
         ),
       );
+
+    await sendStudioGenerationFailureAlert({
+      generation: claimedGeneration,
+      error,
+      message,
+    });
 
     logger.error({ error, generationId }, 'Poster generation failed');
     throw error;
@@ -955,6 +1067,12 @@ export async function generateStudioAnimation({
           eq(aiGenerationsTable.isDeleted, false),
         ),
       );
+
+    await sendStudioGenerationFailureAlert({
+      generation: claimedGeneration,
+      error,
+      message,
+    });
 
     logger.error({ error, generationId }, 'Logo animation generation failed');
     throw error;

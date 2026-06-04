@@ -44,6 +44,10 @@ import { aiContract } from '@namefi-astra/common/contract/ai-contract';
 import { protectedProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { resolveOwnedLogoReference } from './ai-generation-references';
+import {
+  buildSlackErrorFields,
+  sendJustaingSlackAlert,
+} from '#lib/slack/justaing-alerts';
 
 const logger = createLogger({ module: 'ai-router' });
 
@@ -123,6 +127,44 @@ function getGenerationWorkflowStartErrorMessage(
         : 'logo';
 
   return `Failed to start ${label} generation workflow`;
+}
+
+function getStudioGenerationLabel(
+  generationType: StudioGenerationWorkflowType,
+) {
+  if (generationType === 'marketing') {
+    return 'poster';
+  }
+
+  if (generationType === 'animation') {
+    return 'animation';
+  }
+
+  return 'logo';
+}
+
+function getStudioGenerationModel(generation: AiGenerationRow) {
+  if (generation.input.type === 'logo') {
+    return generation.input.imageModel;
+  }
+
+  if (generation.input.type === 'marketing') {
+    return generation.input.imageModel;
+  }
+
+  return generation.input.model;
+}
+
+function getStudioGenerationMode(generation: AiGenerationRow) {
+  if (generation.input.type === 'animation') {
+    return generation.input.mode;
+  }
+
+  if (generation.input.type === 'marketing') {
+    return generation.input.collateralType;
+  }
+
+  return generation.input.logoType;
 }
 
 function sleep(ms: number) {
@@ -352,6 +394,13 @@ async function reconcileUnconfirmedGenerationStart(
         ),
       )
       .returning();
+
+    await sendStudioWorkflowStartFailureAlert({
+      generation: updatedRow ?? generation,
+      workflowId,
+      message: getGenerationWorkflowStartErrorMessage(generation.type),
+      error: new Error(`Workflow ${workflowId} was not found`),
+    });
 
     return updatedRow ?? generation;
   }
@@ -826,7 +875,44 @@ async function startGenerationWorkflowForRecord(
     )
     .returning();
 
+  await sendStudioWorkflowStartFailureAlert({
+    generation: failedRow ?? generationRecord,
+    workflowId,
+    message: failedMessage,
+    error: startResult.error,
+  });
+
   return failedRow ?? generationRecord;
+}
+
+async function sendStudioWorkflowStartFailureAlert({
+  generation,
+  workflowId,
+  message,
+  error,
+}: {
+  generation: AiGenerationRow;
+  workflowId: string;
+  message: string;
+  error: unknown;
+}) {
+  const label = getStudioGenerationLabel(generation.type);
+
+  await sendJustaingSlackAlert({
+    title: `[Studio] ${label} workflow start failed for ${generation.domain}`,
+    message,
+    extraData: {
+      generationId: generation.id,
+      generationType: generation.type,
+      userId: generation.userId,
+      domain: generation.domain,
+      workflowId,
+      model: getStudioGenerationModel(generation),
+      mode: getStudioGenerationMode(generation),
+      referenceGenerationId: generation.referenceGenerationId ?? 'none',
+      ...buildSlackErrorFields(error, message),
+    },
+  });
 }
 
 const generateLogoInputSchema = z.object({
