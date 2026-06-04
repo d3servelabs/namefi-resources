@@ -23,7 +23,7 @@ export const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Domain</TableHead>
+          <TableHead>Domain ({items.length})</TableHead>
           <TableHead>NFT Wallet</TableHead>
           <TableHead className="w-[160px]">Order</TableHead>
         </TableRow>

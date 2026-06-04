@@ -30,6 +30,8 @@ export interface UseMyDomainsColumnsArgs {
   togglingAutoEns: Set<string>;
   renewalPriceUsdPerYearByTld: Map<string, number | null>;
   isMobile: boolean;
+  /** Total number of domains in this table, shown in the "Domain Name" header. */
+  domainCount: number;
   onToggleAllCurrentPage: (selectAll: boolean) => void;
   onRowSelectionChange: (
     domainName: NamefiNormalizedDomain,
@@ -52,6 +54,7 @@ export function useMyDomainsColumns({
   togglingAutoEns,
   renewalPriceUsdPerYearByTld,
   isMobile,
+  domainCount,
   onToggleAllCurrentPage,
   onRowSelectionChange,
   onToggleAutoRenew,
@@ -93,7 +96,7 @@ export function useMyDomainsColumns({
       },
       {
         accessorKey: 'normalizedDomainName',
-        header: 'Domain Name',
+        header: `Domain Name (${domainCount})`,
         cell: ({ row }) => (
           <DomainNameCell
             domainName={row.getValue('normalizedDomainName') as string}
@@ -268,6 +271,7 @@ export function useMyDomainsColumns({
       togglingAutoEns,
       renewalPriceUsdPerYearByTld,
       isMobile,
+      domainCount,
       onToggleAllCurrentPage,
       onRowSelectionChange,
       onToggleAutoRenew,

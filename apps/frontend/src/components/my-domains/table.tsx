@@ -763,6 +763,7 @@ export function MyDomainsTable(props: {
     togglingAutoEns,
     renewalPriceUsdPerYearByTld,
     isMobile,
+    domainCount: domains.length,
     onToggleAllCurrentPage: handleToggleAllCurrentPage,
     onRowSelectionChange: handleRowSelectionChange,
     onToggleAutoRenew: handleToggleAutoRenew,

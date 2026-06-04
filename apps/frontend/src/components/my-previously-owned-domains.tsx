@@ -183,7 +183,7 @@ function MyPreviouslyOwnedDomainsTable() {
     () => [
       {
         accessorKey: 'normalizedDomainName',
-        header: 'Domain Name',
+        header: `Domain Name (${domains.length})`,
         cell: ({ row }) => (
           <span className="font-medium">
             {row.getValue('normalizedDomainName')}
@@ -335,7 +335,7 @@ function MyPreviouslyOwnedDomainsTable() {
         enableSorting: false,
       },
     ],
-    [],
+    [domains.length],
   );
 
   const {
