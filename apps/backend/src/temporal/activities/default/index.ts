@@ -20,6 +20,10 @@ import { temporalClient } from '#temporal/client';
 import type { monitorIncidentTicketWorkflow } from '../../workflows/monitor-incident-ticket.workflow';
 import { parseDomainName } from '@namefi-astra/utils';
 
+const SLACK_TEXT_LIMIT = 3000;
+const SLACK_FIELD_LIMIT = 1800;
+const SLACK_SECTION_FIELD_LIMIT = 10;
+
 type AsyncReturningFunction<A extends any[], R> = (...args: A) => Promise<R>;
 type ReturningFunction<A extends any[], R> = (...args: A) => Promise<R> | R;
 type AsyncifyReturningFunction<F extends ReturningFunction<any, any>> =
@@ -84,6 +88,7 @@ export const defaultTaskQueueActivities = {
       return { ticket: null, monitoringStarted: false };
     }
   },
+  sendOutboundWorkflowFailureAlertToSlack,
   getConfig: async <K extends keyof typeof config>(key: K) => config[key],
   updateNamefiNftIndex,
   triggerUpdateNamefiNftIndex,
@@ -112,6 +117,103 @@ export interface SendTemporalAlertResult {
   ticket: { taskId: string; taskUrl: string } | null;
   /** Whether a monitoring workflow was started */
   monitoringStarted: boolean;
+}
+
+export interface SendOutboundWorkflowFailureAlertToSlackInput {
+  title: string;
+  message: string;
+  extraData?: Record<string, unknown>;
+}
+
+export async function sendOutboundWorkflowFailureAlertToSlack(
+  input: SendOutboundWorkflowFailureAlertToSlackInput,
+): Promise<void> {
+  const webhookUrl = secrets.NAMEFI_JUSTAING_ALERT_SLACK_WEBHOOK_URL;
+  const ctx = Context.current();
+
+  if (!webhookUrl) {
+    ctx.log.warn(
+      'No Justaing Slack webhook URL configured, skipping outbound failure alert',
+    );
+    return;
+  }
+
+  const { workflowId, runId } = ctx.info.workflowExecution;
+  const workflowType = ctx.info.workflowType;
+  const taskQueue = ctx.info.taskQueue;
+  const temporalUrl = await getTemporalWorkflowRunUrl(workflowId, runId);
+  const fields = [
+    { key: 'Workflow', value: workflowType },
+    { key: 'WorkflowId', value: workflowId },
+    { key: 'Run', value: runId },
+    { key: 'Task Queue', value: taskQueue },
+    ...Object.entries(input.extraData ?? {}).map(([key, value]) => ({
+      key,
+      value,
+    })),
+  ];
+
+  const fieldSections = chunkArray(
+    fields.map(({ key, value }) => ({
+      type: 'mrkdwn',
+      text: `*${key}:*\n${formatSlackValue(value)}`,
+    })),
+    SLACK_SECTION_FIELD_LIMIT,
+  ).map((sectionFields) => ({
+    type: 'section',
+    fields: sectionFields,
+  }));
+
+  const slackMessage = {
+    blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: truncateSlackText(`[Outbound] ${input.title}`, 150),
+          emoji: true,
+        },
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `*Message:*\n${truncateSlackText(input.message, SLACK_TEXT_LIMIT)}`,
+        },
+      },
+      ...fieldSections,
+      {
+        type: 'actions',
+        elements: [
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Go To Workflow',
+            },
+            url: temporalUrl,
+            style: 'primary',
+          },
+        ],
+      },
+    ],
+  };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(slackMessage),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+  } catch (error) {
+    logger.error({ error }, 'Failed to send outbound failure alert to Slack');
+  }
 }
 
 export async function sendTemporalAlertToSlack(
@@ -291,6 +393,38 @@ export async function sendTemporalAlertToSlack(
   }
 
   return { ticket, monitoringStarted };
+}
+
+function formatSlackValue(value: unknown) {
+  if (value == null) {
+    return 'not provided';
+  }
+
+  if (typeof value === 'string') {
+    return truncateSlackText(value, SLACK_FIELD_LIMIT);
+  }
+
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+
+  return truncateSlackText(JSON.stringify(value), SLACK_FIELD_LIMIT);
+}
+
+function truncateSlackText(value: string, limit: number) {
+  if (value.length <= limit) {
+    return value;
+  }
+
+  return `${value.slice(0, limit - 24)}... [truncated]`;
+}
+
+function chunkArray<T>(items: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
 }
 
 async function createIncidentTicket(args: {

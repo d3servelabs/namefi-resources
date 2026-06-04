@@ -1,6 +1,6 @@
-import { workflowInfo } from '@temporalio/workflow';
+import * as workflow from '@temporalio/workflow';
 
-import { TEMPORAL_ENUMS } from '../shared/enums';
+import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 export interface LeadgenWorkflowInput {
@@ -20,6 +20,27 @@ export interface LeadgenWorkflowResult {
   contactCount: number;
   draftCount: number;
 }
+
+interface WorkflowErrorSummary {
+  name: string;
+  message: string;
+  stack?: string;
+  cause?: WorkflowErrorSummary;
+}
+
+const SLACK_FIELD_LIMIT = 1800;
+
+const { sendOutboundWorkflowFailureAlertToSlack } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    ...shortRunningOpts,
+    retry: {
+      ...shortRunningOpts.retry,
+      maximumInterval: '1 minute',
+      maximumAttempts: 10,
+    },
+  },
+});
 
 function resolveLeadgenRunLimits(input: LeadgenWorkflowInput) {
   const isCampaignShortRun = input.runProfile === 'campaign_short';
@@ -126,7 +147,7 @@ export async function runLeadgenWorkflow(
   try {
     await initializeLeadgenRun({
       runId: input.runId,
-      workflowId: workflowInfo().workflowId,
+      workflowId: workflow.workflowInfo().workflowId,
     });
 
     const profileTask = generateLeadgenDomainProfileActivity({
@@ -179,10 +200,119 @@ export async function runLeadgenWorkflow(
 
     return await completeLeadgenRun({ runId: input.runId });
   } catch (error) {
-    await failLeadgenRun({
-      runId: input.runId,
-      errorMessage: error instanceof Error ? error.message : String(error),
+    const failure = summarizeWorkflowError(error);
+    let statusUpdateFailure: WorkflowErrorSummary | null = null;
+
+    try {
+      await failLeadgenRun({
+        runId: input.runId,
+        errorMessage: failure.message,
+      });
+    } catch (statusError) {
+      statusUpdateFailure = summarizeWorkflowError(statusError);
+      workflow.log.error('Failed to mark leadgen run as failed', {
+        runId: input.runId,
+        error: statusUpdateFailure,
+      });
+    }
+
+    await alertOutboundWorkflowFailure({
+      input,
+      failure,
+      statusUpdateFailure,
     });
+
     throw error;
   }
+}
+
+async function alertOutboundWorkflowFailure({
+  input,
+  failure,
+  statusUpdateFailure,
+}: {
+  input: LeadgenWorkflowInput;
+  failure: WorkflowErrorSummary;
+  statusUpdateFailure: WorkflowErrorSummary | null;
+}) {
+  const info = workflow.workflowInfo();
+
+  try {
+    await sendOutboundWorkflowFailureAlertToSlack({
+      title: `Leadgen workflow failed for ${input.domain}`,
+      message: `Outbound workflow failed for ${input.domain}: ${failure.message}`,
+      extraData: {
+        outboundRunId: input.runId,
+        userId: input.userId,
+        domain: input.domain,
+        workflowId: info.workflowId,
+        runId: info.runId,
+        reasoningEffort: input.reasoningEffort,
+        runProfile: input.runProfile ?? 'full',
+        askingPriceUsd: input.askingPriceUsd ?? 'not provided',
+        selectedRecipeLimit: input.selectedRecipeLimit ?? 'default',
+        rawCandidateLimit: input.rawCandidateLimit ?? 'default',
+        contactDiscoveryLimit: input.contactDiscoveryLimit ?? 'default',
+        error: truncateSlackField(formatWorkflowErrorChain(failure)),
+        errorStack: failure.stack ?? 'not available',
+        statusUpdateError: statusUpdateFailure
+          ? truncateSlackField(formatWorkflowErrorChain(statusUpdateFailure))
+          : 'none',
+      },
+    });
+  } catch (alertError) {
+    workflow.log.warn('Failed to send outbound workflow failure Slack alert', {
+      runId: input.runId,
+      error: summarizeWorkflowError(alertError),
+    });
+  }
+}
+
+function summarizeWorkflowError(
+  error: unknown,
+  depth = 0,
+): WorkflowErrorSummary {
+  if (depth > 4) {
+    return {
+      name: 'Error',
+      message: 'Nested error depth limit reached',
+    };
+  }
+
+  if (error instanceof Error) {
+    const errorWithCause = error as Error & { cause?: unknown };
+    return {
+      name: error.name || 'Error',
+      message: error.message || String(error),
+      ...(error.stack ? { stack: truncateSlackField(error.stack) } : {}),
+      ...(errorWithCause.cause
+        ? { cause: summarizeWorkflowError(errorWithCause.cause, depth + 1) }
+        : {}),
+    };
+  }
+
+  return {
+    name: typeof error,
+    message: String(error),
+  };
+}
+
+function formatWorkflowErrorChain(error: WorkflowErrorSummary): string {
+  const chain: string[] = [];
+  let current: WorkflowErrorSummary | undefined = error;
+
+  while (current) {
+    chain.push(`${current.name}: ${current.message}`);
+    current = current.cause;
+  }
+
+  return chain.join('\nCaused by: ');
+}
+
+function truncateSlackField(value: string) {
+  if (value.length <= SLACK_FIELD_LIMIT) {
+    return value;
+  }
+
+  return `${value.slice(0, SLACK_FIELD_LIMIT - 24)}... [truncated]`;
 }
