@@ -75,6 +75,27 @@ import { namefiNftView } from '@namefi-astra/db';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import type { PrepareMultiPaymentsOutput } from '#temporal/workflows/prepare-multi-payments.workflow';
 import { setTimeout } from 'node:timers/promises';
+import { createHash } from 'node:crypto';
+
+/**
+ * Build a stable, content-derived dedup key for a recurring auto-renew
+ * notification. The daily auto-renew workflow re-runs every day, so without a
+ * dedup key a user who doesn't open the inbox accumulates one near-identical
+ * notification per day. Folding the domain set into the key means an identical
+ * day collapses (suppressed by `notifications_active_dedup_key_unique` while
+ * the prior notification is still active) while a changed domain set produces a
+ * fresh notification.
+ *
+ * Domains are sorted so ordering never affects the key, and hashed (rather than
+ * joined verbatim) to keep the key bounded for large domain sets.
+ */
+function autoRenewDedupKey(prefix: string, domainNames: string[]): string {
+  const digest = createHash('sha256')
+    .update([...domainNames].sort().join(','))
+    .digest('hex')
+    .slice(0, 16);
+  return `${prefix}:${digest}`;
+}
 
 export type DomainRenewInfo = {
   normalizedDomainName: NamefiNormalizedDomain;
@@ -687,6 +708,10 @@ export async function sendEmailNotificationForUpcomingRenew(
       identifier: d.normalizedDomainName,
     })),
     metadata: { source: 'activity:sendEmailNotificationForUpcomingRenew' },
+    dedupKey: autoRenewDedupKey(
+      'autorenew-upcoming',
+      domains.map((d) => d.normalizedDomainName),
+    ),
   });
 }
 
@@ -868,6 +893,12 @@ export async function sendEmailNotificationForRenewResult({
       ...(orderId ? [{ type: 'order' as const, identifier: orderId }] : []),
     ],
     metadata: { source: 'activity:sendEmailNotificationForRenewResult' },
+    // A renewal result is per-execution; the order id is its natural identity.
+    // Fall back to the result domain set when there's no order so a retry of
+    // the same outcome still dedups.
+    dedupKey: orderId
+      ? `autorenew-result:${orderId}`
+      : autoRenewDedupKey('autorenew-result', allResultDomains),
   });
 }
 
@@ -941,6 +972,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
     metadata: {
       source: 'activity:sendEmailNotificationForRenewFailedToCharge',
     },
+    dedupKey: autoRenewDedupKey('autorenew-failed-charge', domainsToRenew),
   });
 }
 

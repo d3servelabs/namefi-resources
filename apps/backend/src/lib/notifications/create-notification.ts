@@ -3,6 +3,7 @@ import {
   notificationsTable,
   type NotificationMetadata,
 } from '@namefi-astra/db';
+import { sql } from 'drizzle-orm';
 import type {
   NotificationBodyType,
   NotificationPriority,
@@ -41,6 +42,14 @@ export type CreateNotificationInput = {
   priority?: NotificationPriority;
   relatedResources?: NotificationRelatedResource[];
   metadata?: NotificationMetadata;
+  /**
+   * Optional deterministic dedup key. When set, the row is suppressed if an
+   * **active** (unseen AND unarchived) notification with the same
+   * `(userId, dedupKey)` already exists — `createNotification` returns `null`
+   * instead of inserting. Once the prior notification is seen/archived the
+   * same key inserts again. Omit it for one-off notifications.
+   */
+  dedupKey?: string | null;
 };
 
 export type NotificationRow = typeof notificationsTable.$inferSelect;
@@ -60,7 +69,7 @@ function stripBrandPrefix(title: string): string {
 
 export async function createNotification(
   input: CreateNotificationInput,
-): Promise<NotificationRow> {
+): Promise<NotificationRow | null> {
   const [row] = await db
     .insert(notificationsTable)
     .values({
@@ -72,11 +81,34 @@ export async function createNotification(
       priority: input.priority ?? 'normal',
       relatedResources: input.relatedResources ?? [],
       metadata: input.metadata ?? {},
+      dedupKey: input.dedupKey ?? null,
+    })
+    // Suppress duplicates of the same active dedup key. The arbiter matches
+    // `notifications_active_dedup_key_unique`, so only active (unseen AND
+    // unarchived) rows with a non-null key collide — a seen/archived prior
+    // notification never blocks a fresh insert. Null keys never enter the
+    // index, so non-dedup callers are unaffected.
+    .onConflictDoNothing({
+      target: [notificationsTable.userId, notificationsTable.dedupKey],
+      where: sql`${notificationsTable.dedupKey} IS NOT NULL AND ${notificationsTable.seenAt} IS NULL AND ${notificationsTable.archivedAt} IS NULL`,
     })
     .returning();
 
   if (!row) {
-    // Defensive: a returning() on a successful insert should always yield a
+    if (input.dedupKey) {
+      // Deduped: an active notification with this key already exists. Nothing
+      // changed, so there's no cache to invalidate.
+      logger.debug(
+        {
+          userId: input.userId,
+          dedupKey: input.dedupKey,
+          source: input.metadata?.source,
+        },
+        'Skipped duplicate active notification (dedupKey conflict)',
+      );
+      return null;
+    }
+    // Defensive: a returning() on a non-dedup insert should always yield a
     // row; if it ever doesn't, something is very wrong upstream.
     throw new Error('notification insert returned no row');
   }
@@ -135,7 +167,7 @@ export async function createNotificationFromTemplate<P>(args: {
   userId: string;
   props: P;
   extraMetadata?: Omit<NotificationMetadata, 'source'> & { source?: string };
-}): Promise<NotificationRow> {
+}): Promise<NotificationRow | null> {
   const { template, userId, props, extraMetadata } = args;
   const subtitle = template.subtitle?.(props) ?? undefined;
   const priority =

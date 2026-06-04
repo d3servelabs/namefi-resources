@@ -69,6 +69,16 @@ export const adminNotificationsRouter = createContractTRPCRouter<
         },
       });
 
+      if (!row) {
+        // Admin creates never set a `dedupKey`, so `createNotification` only
+        // returns null in its defensive no-row path — treat it as a server
+        // error rather than silently returning an undefined id.
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to create notification',
+        });
+      }
+
       return { id: row.id };
     }),
 

@@ -50,6 +50,7 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
@@ -2833,6 +2834,21 @@ export const notificationsTable = pgTable(
       .default(sql`'{}'::jsonb`),
     seenAt: timestamp('seen_at'),
     archivedAt: timestamp('archived_at'),
+    /**
+     * Optional deterministic dedup key. Callers that fire the same logical
+     * event repeatedly (e.g. the daily auto-renew reminder) set a stable,
+     * content-derived key so we don't pile up duplicates while the user
+     * hasn't opened the inbox.
+     *
+     * Creation: caller-supplied, deterministic for a given logical event +
+     *   content (see the auto-renew helpers in `renew.activities.ts`).
+     * Normalization: caller's responsibility — keys are compared verbatim.
+     * Uniqueness is enforced ONLY while the notification is active (unseen
+     * AND unarchived) via `notifications_active_dedup_key_unique`, so once
+     * every notification for a key is seen/archived the key may be reused
+     * and the user is notified again.
+     */
+    dedupKey: text('dedup_key'),
     ...timestamps,
   },
   (table) => [
@@ -2847,5 +2863,10 @@ export const notificationsTable = pgTable(
       'gin',
       table.relatedResources,
     ),
+    uniqueIndex('notifications_active_dedup_key_unique')
+      .on(table.userId, table.dedupKey)
+      .where(
+        sql`${table.dedupKey} IS NOT NULL AND ${table.seenAt} IS NULL AND ${table.archivedAt} IS NULL`,
+      ),
   ],
 );

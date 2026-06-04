@@ -1,0 +1,2 @@
+ALTER TABLE "notifications" ADD COLUMN "dedup_key" text;--> statement-breakpoint
+CREATE UNIQUE INDEX "notifications_active_dedup_key_unique" ON "notifications" USING btree ("user_id","dedup_key") WHERE "notifications"."dedup_key" IS NOT NULL AND "notifications"."seen_at" IS NULL AND "notifications"."archived_at" IS NULL;

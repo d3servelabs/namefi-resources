@@ -26,7 +26,9 @@ import {
 
 export async function createInAppNotification(
   input: CreateNotificationInput,
-): Promise<NotificationRow> {
+): Promise<NotificationRow | null> {
+  // Returns `null` when an `input.dedupKey` matches an already-active
+  // notification (see `createNotification`); callers treat that as a no-op.
   return createNotification(input);
 }
 
