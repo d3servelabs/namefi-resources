@@ -14,6 +14,7 @@ import {
   RefreshCw,
   AlertTriangle,
   Server,
+  GitPullRequestArrow,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -45,6 +46,16 @@ const DEV_TOOLS_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-blue-600',
         permissions: [Permission.READ_SCHEDULES, Permission.WRITE_SCHEDULES],
         permissionsMode: 'some',
+      },
+      {
+        title: 'Decision Gates',
+        description:
+          'Resolve workflows awaiting an operator decision — PROCEED / RETRY / CANCEL / RESPOND on stuck registrations, nameserver changes, and exports.',
+        href: '/admin/decision-gates',
+        icon: GitPullRequestArrow,
+        iconBgColor: 'bg-indigo-100',
+        iconTextColor: 'text-indigo-600',
+        permissions: [Permission.READ_WORKFLOWS],
       },
     ],
   },
