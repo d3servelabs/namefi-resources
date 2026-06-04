@@ -406,20 +406,23 @@ export async function generateStudioLogo({
   try {
     const logoInput = generation.input;
     const logoResult = await heartbeatWhile(
-      () =>
-        runLogoWorkflow({
-          domain: generation.domain,
-          description: logoInput.description,
-          preferredType:
-            logoInput.logoType as LogoWorkflowInput['preferredType'],
-          preferredStyle:
-            logoInput.logoStyle as LogoWorkflowInput['preferredStyle'],
-          textTreatment:
-            logoInput.textTreatment as LogoWorkflowInput['textTreatment'],
-          typography: logoInput.typography as LogoWorkflowInput['typography'],
-          imageModel: logoInput.imageModel as LogoWorkflowInput['imageModel'],
-          storage: getStorage(config.AI_BUCKET_FOLDERS.LOGOS),
-        }),
+      (abortSignal) =>
+        runLogoWorkflow(
+          {
+            domain: generation.domain,
+            description: logoInput.description,
+            preferredType:
+              logoInput.logoType as LogoWorkflowInput['preferredType'],
+            preferredStyle:
+              logoInput.logoStyle as LogoWorkflowInput['preferredStyle'],
+            textTreatment:
+              logoInput.textTreatment as LogoWorkflowInput['textTreatment'],
+            typography: logoInput.typography as LogoWorkflowInput['typography'],
+            imageModel: logoInput.imageModel as LogoWorkflowInput['imageModel'],
+            storage: getStorage(config.AI_BUCKET_FOLDERS.LOGOS),
+          },
+          { abortSignal },
+        ),
       {
         stage: 'logo-workflow',
         generationId,
@@ -613,16 +616,19 @@ export async function generateStudioPoster({
     );
 
     const marketingResult = await heartbeatWhile(
-      () =>
-        runMarketingWorkflow({
-          domain: generation.domain,
-          description: posterInput.description,
-          collateralType: posterInput.collateralType,
-          imageModel:
-            posterInput.imageModel as MarketingWorkflowInput['imageModel'],
-          storage: getStorage(config.AI_BUCKET_FOLDERS.SOCIAL),
-          referenceLogoUrl,
-        }),
+      (abortSignal) =>
+        runMarketingWorkflow(
+          {
+            domain: generation.domain,
+            description: posterInput.description,
+            collateralType: posterInput.collateralType,
+            imageModel:
+              posterInput.imageModel as MarketingWorkflowInput['imageModel'],
+            storage: getStorage(config.AI_BUCKET_FOLDERS.SOCIAL),
+            referenceLogoUrl,
+          },
+          { abortSignal },
+        ),
       {
         stage: 'poster-workflow',
         generationId,

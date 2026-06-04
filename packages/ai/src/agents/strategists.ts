@@ -296,6 +296,10 @@ type StructuredGenerationResult<T> = {
   modelId?: string;
 };
 
+interface StrategyGenerationOptions {
+  abortSignal?: AbortSignal;
+}
+
 export interface LogoStrategyInput {
   domain: NamefiNormalizedDomain;
   description?: string;
@@ -307,6 +311,7 @@ export interface LogoStrategyInput {
 
 export async function generateLogoStrategy(
   input: LogoStrategyInput,
+  options: StrategyGenerationOptions = {},
 ): Promise<StructuredGenerationResult<LogoConceptSchema>> {
   const result = await logoStrategistAgent.generate({
     prompt: logoAnalysisUserPrompt({
@@ -317,6 +322,7 @@ export async function generateLogoStrategy(
       textTreatment: input.preferredTextTreatment,
       typography: input.preferredTypography,
     }),
+    abortSignal: options.abortSignal,
   });
 
   return {
@@ -336,6 +342,7 @@ type CollateralAnalysis = z.infer<typeof collateralAnalysisSchema>;
 
 export async function generatePosterStrategy(
   input: PosterStrategyInput,
+  options: StrategyGenerationOptions = {},
 ): Promise<StructuredGenerationResult<CollateralAnalysis>> {
   const allowedCollateralTypes =
     input.collateralType && input.collateralType !== 'let_ai_choose'
@@ -354,6 +361,7 @@ Description: ${input.description || 'N/A'}
 Requested number of collateral types: 1
 Allowed types (if constrained): ${allowedCollateralTypes}
 `,
+    abortSignal: options.abortSignal,
   });
 
   return {

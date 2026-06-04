@@ -2,7 +2,11 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { DerivativeSource } from '../derivative-flow-context';
 import type { Generation } from './types';
-import { isReadyLogoGeneration } from './logo-readiness';
+import {
+  filterReadyLogoGenerations,
+  isReadyLogoGeneration,
+  type ReadyLogoSource,
+} from './logo-readiness';
 
 type UseDerivativeGenerationStateParams = {
   brandDomain?: NamefiNormalizedDomain;
@@ -37,8 +41,8 @@ export function useDerivativeGenerationState<TFormData>({
     setFocusedLogoId(focusedLogo?.id ?? null);
   }, [focusedLogo?.id]);
 
-  const logosWithFocus = useMemo<Generation[]>(() => {
-    const readyLogoGenerations = logoGenerations.filter(isReadyLogoGeneration);
+  const logosWithFocus = useMemo<ReadyLogoSource[]>(() => {
+    const readyLogoGenerations = filterReadyLogoGenerations(logoGenerations);
 
     if (!isReadyLogoGeneration(focusedLogo)) {
       return readyLogoGenerations;

@@ -57,10 +57,27 @@ export const logoWorkflowOutputSchema = z.object({
 export type LogoWorkflowInput = z.input<typeof logoWorkflowInputSchema>;
 export type LogoWorkflowOutput = z.output<typeof logoWorkflowOutputSchema>;
 
+export interface LogoWorkflowOptions {
+  abortSignal?: AbortSignal;
+}
+
+function throwIfAborted(abortSignal?: AbortSignal) {
+  if (!abortSignal?.aborted) {
+    return;
+  }
+
+  throw abortSignal.reason instanceof Error
+    ? abortSignal.reason
+    : new Error('logo-workflow-aborted');
+}
+
 export async function runLogoWorkflow(
   rawInput: LogoWorkflowInput,
+  options: LogoWorkflowOptions = {},
 ): Promise<LogoWorkflowOutput> {
   const input = logoWorkflowInputSchema.parse(rawInput);
+  throwIfAborted(options.abortSignal);
+
   const preferredType =
     input.preferredType && input.preferredType !== 'let-ai-choose'
       ? input.preferredType
@@ -78,15 +95,19 @@ export async function runLogoWorkflow(
       ? input.typography
       : undefined;
 
-  const strategy = await generateLogoStrategy({
-    domain: input.domain,
-    description: input.description,
-    preferredType,
-    preferredStyle,
-    preferredTextTreatment,
-    preferredTypography,
-  });
+  const strategy = await generateLogoStrategy(
+    {
+      domain: input.domain,
+      description: input.description,
+      preferredType,
+      preferredStyle,
+      preferredTextTreatment,
+      preferredTypography,
+    },
+    { abortSignal: options.abortSignal },
+  );
 
+  throwIfAborted(options.abortSignal);
   const concept = logoConceptSchema.parse(strategy.object);
 
   const generated = await generateLogoImage({
@@ -95,12 +116,14 @@ export async function runLogoWorkflow(
     model: input.imageModel,
     textTreatment: concept.logoConcept.textTreatment,
     typography: concept.logoConcept.typography,
+    abortSignal: options.abortSignal,
   });
 
   if (!generated.imageBase64) {
     throw new Error('Image generation did not return image data');
   }
 
+  throwIfAborted(options.abortSignal);
   const buffer = Buffer.from(generated.imageBase64, 'base64');
   const folder = [input.storage.baseFolder, 'logos', input.domain]
     .filter(Boolean)
@@ -113,6 +136,7 @@ export async function runLogoWorkflow(
     contentType: 'image/png',
     folder,
     fileName: `${createRunId(concept.logoConcept.type)}.png`,
+    abortSignal: options.abortSignal,
   });
 
   const url = generateCloudFrontUrl({

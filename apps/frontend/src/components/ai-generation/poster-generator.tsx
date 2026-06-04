@@ -21,7 +21,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import type { Generation } from './shared/types';
-import { isReadyLogoGeneration } from './shared/logo-readiness';
+import {
+  filterReadyLogoGenerations,
+  type ReadyLogoSource,
+} from './shared/logo-readiness';
 import type { UseFormReturn } from 'react-hook-form';
 import {
   Select,
@@ -70,7 +73,7 @@ interface PosterGeneratorProps {
   onGenerate: (data: PosterFormData) => void;
   isLoading?: boolean;
   fixedDomain?: NamefiNormalizedDomain;
-  availableLogos?: Generation[];
+  availableLogos?: ReadyLogoSource[];
   latestGeneration?: Generation;
   onGenerateMore?: () => void;
   initialSelectedLogoId?: string;
@@ -113,20 +116,17 @@ export function PosterGenerator({
     staleTime: 10_000,
   });
 
-  const logosToShow = useMemo<Generation[]>(() => {
-    const filterReadyLogos = (logos: Generation[]) =>
-      logos.filter(isReadyLogoGeneration);
-
+  const logosToShow = useMemo<ReadyLogoSource[]>(() => {
     if (selectedDomain) {
-      const fallback = filterReadyLogos(
-        availableLogos.filter((l) => l.domain === selectedDomain),
+      const fallback = availableLogos.filter(
+        (logo) => logo.domain === selectedDomain,
       );
-      const fetched = filterReadyLogos(
-        (domainLogos as unknown as Generation[]) || [],
+      const fetched = filterReadyLogoGenerations(
+        domainLogos as unknown as Generation[],
       );
       return fetched.length > 0 ? fetched : fallback;
     }
-    return filterReadyLogos([...availableLogos]);
+    return [...availableLogos];
   }, [selectedDomain, domainLogos, availableLogos]);
 
   useEffect(() => {
@@ -144,7 +144,7 @@ export function PosterGenerator({
   useEffect(() => {
     const form = formRef.current;
     if (!form) return;
-    const logos = (logosToShow as Generation[]) || [];
+    const logos = logosToShow;
     const currentId = form.getValues('selectedLogoId');
     const currentExists = logos.some((logo) => logo.id === currentId);
 
@@ -171,7 +171,7 @@ export function PosterGenerator({
       onDomainChange={(d) => setSelectedDomain(d)}
       onFormReady={(form) => {
         formRef.current = form;
-        const logos = (logosToShow as Generation[]) || [];
+        const logos = logosToShow;
         if (initialSelectedLogoId) {
           form.setValue('selectedLogoId', initialSelectedLogoId, {
             shouldDirty: false,
@@ -197,12 +197,12 @@ export function PosterGenerator({
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedLogoId = form.watch('selectedLogoId');
-        const selectedLogo = (logosToShow as Generation[]).find(
-          (logo: Generation) => logo.id === selectedLogoId,
+        const selectedLogo = logosToShow.find(
+          (logo) => logo.id === selectedLogoId,
         );
-        const logosForPanel: Generation[] = logosToShow as Generation[];
+        const logosForPanel: ReadyLogoSource[] = logosToShow;
 
-        const renderLogoCard = (logo: Generation) => (
+        const renderLogoCard = (logo: ReadyLogoSource) => (
           <Card
             key={logo.id}
             className={cn(

@@ -59,17 +59,37 @@ export type MarketingWorkflowOutput = z.output<
   typeof marketingWorkflowOutputSchema
 >;
 
+export interface MarketingWorkflowOptions {
+  abortSignal?: AbortSignal;
+}
+
+function throwIfAborted(abortSignal?: AbortSignal) {
+  if (!abortSignal?.aborted) {
+    return;
+  }
+
+  throw abortSignal.reason instanceof Error
+    ? abortSignal.reason
+    : new Error('marketing-workflow-aborted');
+}
+
 export async function runMarketingWorkflow(
   rawInput: MarketingWorkflowInput,
+  options: MarketingWorkflowOptions = {},
 ): Promise<MarketingWorkflowOutput> {
   const input = marketingWorkflowInputSchema.parse(rawInput);
+  throwIfAborted(options.abortSignal);
 
-  const strategy = await generatePosterStrategy({
-    domain: input.domain,
-    description: input.description,
-    collateralType: input.collateralType,
-  });
+  const strategy = await generatePosterStrategy(
+    {
+      domain: input.domain,
+      description: input.description,
+      collateralType: input.collateralType,
+    },
+    { abortSignal: options.abortSignal },
+  );
 
+  throwIfAborted(options.abortSignal);
   const analysis = collateralAnalysisSchema.parse(strategy.object);
   const pick = analysis.picks[0];
 
@@ -84,21 +104,27 @@ export async function runMarketingWorkflow(
 
   let referenceLogo: { image: Uint8Array; mediaType: string };
   try {
-    referenceLogo = await fetchImageAsReferenceInput(input.referenceLogoUrl);
+    referenceLogo = await fetchImageAsReferenceInput(
+      input.referenceLogoUrl,
+      options.abortSignal,
+    );
   } catch (error) {
     throw new Error('Failed to fetch reference logo');
   }
 
+  throwIfAborted(options.abortSignal);
   const generated = await generatePosterImage({
     prompt,
     model: input.imageModel,
     referenceLogo,
+    abortSignal: options.abortSignal,
   });
 
   if (!generated.imageBase64) {
     throw new Error('Image generation did not return image data');
   }
 
+  throwIfAborted(options.abortSignal);
   const buffer = Buffer.from(generated.imageBase64, 'base64');
   const folder = [
     input.storage.baseFolder,
@@ -116,6 +142,7 @@ export async function runMarketingWorkflow(
     contentType: 'image/png',
     folder,
     fileName: `${createRunId(resolvedCollateralType)}.png`,
+    abortSignal: options.abortSignal,
   });
 
   const url = generateCloudFrontUrl({

@@ -45,6 +45,7 @@ export interface UploadFileToS3Params extends BaseStorageParams {
   contentType: string;
   fileName?: string;
   folder?: string;
+  abortSignal?: AbortSignal;
 }
 
 export interface UploadFileToS3Result {
@@ -60,6 +61,7 @@ export const uploadFileToS3 = async ({
   fileName,
   contentType,
   folder,
+  abortSignal,
 }: UploadFileToS3Params): Promise<UploadFileToS3Result> => {
   try {
     const uniqueFileName = randomUUID();
@@ -76,7 +78,10 @@ export const uploadFileToS3 = async ({
       },
     });
 
-    const result = await s3Client.send(command);
+    const result = await s3Client.send(
+      command,
+      abortSignal ? { abortSignal } : undefined,
+    );
 
     if (!result.ETag) {
       throw new Error('Upload failed: No ETag returned');

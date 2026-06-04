@@ -117,6 +117,10 @@ type ReferenceLogoInput = {
   mediaType: string;
 };
 
+interface ImageGenerationOptions {
+  abortSignal?: AbortSignal;
+}
+
 const openaiPosterAgents = {
   'gpt-image-1': new ToolLoopAgent({
     model: openai('gpt-4.1'),
@@ -272,6 +276,7 @@ async function generateOpenAiImage(
   model: 'gpt-image-1' | 'gpt-image-1.5' | 'gpt-image-2',
   prompt: string,
   referenceLogo?: ReferenceLogoInput,
+  options: ImageGenerationOptions = {},
 ): Promise<ImageGenerationResult> {
   const result = await getOpenAiAgent(task, model).generate({
     messages: [
@@ -291,6 +296,7 @@ async function generateOpenAiImage(
         ],
       },
     ],
+    abortSignal: options.abortSignal,
   });
 
   const toolResult = result.staticToolResults.find(
@@ -313,6 +319,7 @@ async function generateGeminiImage(
   model: 'gemini-2.5-flash-image' | 'gemini-3-pro-image-preview',
   prompt: string,
   referenceLogo?: ReferenceLogoInput,
+  options: ImageGenerationOptions = {},
 ): Promise<ImageGenerationResult> {
   const result = await getGeminiAgent(task, model).generate({
     messages: [
@@ -332,6 +339,7 @@ async function generateGeminiImage(
         ],
       },
     ],
+    abortSignal: options.abortSignal,
   });
 
   const base64Image = result.files[0]?.base64;
@@ -351,15 +359,16 @@ async function createImage(
   model: ImageModel,
   prompt: string,
   referenceLogo?: ReferenceLogoInput,
+  options: ImageGenerationOptions = {},
 ) {
   if (
     model === 'gpt-image-1' ||
     model === 'gpt-image-1.5' ||
     model === 'gpt-image-2'
   ) {
-    return generateOpenAiImage(task, model, prompt, referenceLogo);
+    return generateOpenAiImage(task, model, prompt, referenceLogo, options);
   }
-  return generateGeminiImage(task, model, prompt, referenceLogo);
+  return generateGeminiImage(task, model, prompt, referenceLogo, options);
 }
 
 export interface LogoGenerationInput {
@@ -368,6 +377,7 @@ export interface LogoGenerationInput {
   model: ImageModel;
   textTreatment?: LogoTextTreatmentInput;
   typography?: LogoTypographyInput;
+  abortSignal?: AbortSignal;
 }
 
 export async function generateLogoImage(input: LogoGenerationInput) {
@@ -381,7 +391,9 @@ export async function generateLogoImage(input: LogoGenerationInput) {
     model: input.model,
   });
 
-  const result = await createImage('logo', input.model, prompt);
+  const result = await createImage('logo', input.model, prompt, undefined, {
+    abortSignal: input.abortSignal,
+  });
 
   return {
     prompt,
@@ -394,6 +406,7 @@ export interface PosterGenerationInput {
   prompt: string;
   model: ImageModel;
   referenceLogo?: ReferenceLogoInput;
+  abortSignal?: AbortSignal;
 }
 
 export async function generatePosterImage(input: PosterGenerationInput) {
@@ -402,6 +415,7 @@ export async function generatePosterImage(input: PosterGenerationInput) {
     input.model,
     input.prompt,
     input.referenceLogo,
+    { abortSignal: input.abortSignal },
   );
 }
 
@@ -409,6 +423,7 @@ export interface AnimationSheetGenerationInput {
   prompt: string;
   model: 'gpt-image-2';
   referenceLogo: ReferenceLogoInput;
+  abortSignal?: AbortSignal;
 }
 
 export async function generateAnimationSheetImage(
@@ -419,5 +434,6 @@ export async function generateAnimationSheetImage(
     input.model,
     input.prompt,
     input.referenceLogo,
+    { abortSignal: input.abortSignal },
   );
 }

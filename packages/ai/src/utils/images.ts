@@ -12,11 +12,14 @@ export async function fetchImageAsDataUrl(url: string): Promise<string> {
   return `data:${contentType};base64,${base64}`;
 }
 
-export async function fetchImageAsReferenceInput(url: string): Promise<{
+export async function fetchImageAsReferenceInput(
+  url: string,
+  signal?: AbortSignal,
+): Promise<{
   image: Uint8Array;
   mediaType: string;
 }> {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal });
   if (!response.ok) {
     throw new Error(
       `Failed to fetch image: ${response.status} ${response.statusText}`,

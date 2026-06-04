@@ -33,7 +33,7 @@ export default defineConfig({
       { find: /^#lib\/(.*)$/, replacement: `${srcRoot}/lib/$1` },
       { find: /^#services\/(.*)$/, replacement: `${srcRoot}/services/$1` },
       {
-        find: '#temporal/shared',
+        find: /^#temporal\/shared$/,
         replacement: resolve(srcRoot, 'temporal/shared/index.ts'),
       },
       {
@@ -41,7 +41,7 @@ export default defineConfig({
         replacement: `${srcRoot}/temporal/shared/$1`,
       },
       { find: /^#temporal\/(.*)$/, replacement: `${srcRoot}/temporal/$1` },
-      { find: '#trpc', replacement: resolve(srcRoot, 'trpc/index.ts') },
+      { find: /^#trpc$/, replacement: resolve(srcRoot, 'trpc/index.ts') },
       { find: /^#trpc\/(.*)$/, replacement: `${srcRoot}/trpc/$1` },
     ],
   },

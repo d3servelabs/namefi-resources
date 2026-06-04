@@ -6,7 +6,7 @@ import {
 } from '@namefi-astra/ai/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './types';
-import { isReadyLogoGeneration } from './logo-readiness';
+import { isReadyLogoGeneration, type ReadyLogoSource } from './logo-readiness';
 
 interface LogoAction {
   label: string;
@@ -24,11 +24,11 @@ interface BaseGenerationTabProps {
   title: string;
   convertToGeneratedItems: (
     generations: Generation[],
-    availableLogos?: Generation[],
+    availableLogos?: readonly ReadyLogoSource[],
   ) => GeneratedItem[];
 
   // Optional additional data for the conversion
-  availableLogos?: Generation[];
+  availableLogos?: readonly ReadyLogoSource[];
   logoActions?: LogoAction[];
 }
 
@@ -108,7 +108,7 @@ export const convertLogoGenerations = (
 
 export const convertPosterGenerations = (
   generations: Generation[],
-  availableLogos: Generation[] = [],
+  availableLogos: readonly ReadyLogoSource[] = [],
 ): GeneratedItem[] => {
   return generations.map((gen) => ({
     id: gen.id,
@@ -156,7 +156,7 @@ export const convertPosterGenerations = (
 
 const resolveReferenceLogoPreviewUrl = (
   generation: Generation,
-  availableLogos: Generation[],
+  availableLogos: readonly ReadyLogoSource[],
 ) => {
   if (!generation.referenceGenerationId) {
     return undefined;
@@ -170,7 +170,7 @@ const resolveReferenceLogoPreviewUrl = (
 
 const resolveAnimationGenerationPreviewUrl = (
   generation: Generation,
-  availableLogos: Generation[],
+  availableLogos: readonly ReadyLogoSource[],
 ) => {
   const referenceLogoPreviewUrl = resolveReferenceLogoPreviewUrl(
     generation,
@@ -192,7 +192,7 @@ const resolveAnimationGenerationPreviewUrl = (
 
 export const convertAnimationGenerations = (
   generations: Generation[],
-  availableLogos: Generation[] = [],
+  availableLogos: readonly ReadyLogoSource[] = [],
 ): GeneratedItem[] => {
   const resolveMotionLabel = (generation: Generation) => {
     if (generation.input?.type !== 'animation') {

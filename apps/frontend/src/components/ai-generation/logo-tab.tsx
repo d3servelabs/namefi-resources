@@ -50,11 +50,11 @@ export function LogoTab({
       result: Generation,
       nextMode: RequestedDerivativeMode | null = requestedMode,
     ) => {
-      setLatestGeneration(result);
       if (!isReadyLogoGeneration(result)) {
         return;
       }
 
+      setLatestGeneration(result);
       requestFeedback(feedbackTriggerSchema.enum.MILESTONE_LOGO_GENERATED);
 
       if (nextMode === 'poster') {
@@ -124,7 +124,7 @@ export function LogoTab({
           latestGeneration={latestGeneration || undefined}
           onGenerateMore={handleGenerateMore}
           onPosterRequest={(generation) => {
-            if (generation && generation.type === 'logo') {
+            if (isReadyLogoGeneration(generation)) {
               openPoster(generation);
             }
           }}

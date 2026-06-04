@@ -230,6 +230,9 @@ describe('generateStudioLogo', () => {
         description: 'Premium data brand',
         imageModel: 'gpt-image-2',
       }),
+      expect.objectContaining({
+        abortSignal: expect.any(AbortSignal),
+      }),
     );
     expect(updateSetMock).toHaveBeenNthCalledWith(
       1,
@@ -355,6 +358,9 @@ describe('generateStudioPoster', () => {
         collateralType: 'billboard',
         imageModel: 'gpt-image-2',
         referenceLogoUrl: 'https://cdn.test/logo.png',
+      }),
+      expect.objectContaining({
+        abortSignal: expect.any(AbortSignal),
       }),
     );
     expect(updateSetMock).toHaveBeenLastCalledWith(

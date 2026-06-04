@@ -49,7 +49,10 @@ import { useTRPC } from '@/lib/trpc';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { Generation } from './shared/types';
-import { isReadyLogoGeneration } from './shared/logo-readiness';
+import {
+  filterReadyLogoGenerations,
+  type ReadyLogoSource,
+} from './shared/logo-readiness';
 import { useAuth } from '@/hooks/use-auth';
 
 const DEFAULT_ANIMATION_MODE = 'sheet-guided' satisfies AnimationMode;
@@ -148,7 +151,7 @@ interface AnimationGeneratorProps {
   onGenerate: (data: AnimationFormData) => void;
   isLoading?: boolean;
   fixedDomain?: NamefiNormalizedDomain;
-  availableLogos?: Generation[];
+  availableLogos?: ReadyLogoSource[];
   latestGeneration?: Generation;
   onGenerateMore?: () => void;
   initialSelectedLogoId?: string;
@@ -270,7 +273,7 @@ function buildControlPanelButtons(params: {
   mode: AnimationMode;
   openPanel: string | null;
   setOpenPanel: (panel: string | null) => void;
-  selectedLogo: Generation | undefined;
+  selectedLogo: ReadyLogoSource | undefined;
   resolvedSourceMode: AnimationSourceMode;
   resolvedMotionPreset: AnimationMotionPresetInput;
   resolvedMotionIntensity: AnimationMotionIntensity;
@@ -351,7 +354,7 @@ function buildControlPanelButtons(params: {
 }
 
 function AnimationLogoCard(props: {
-  logo: Generation;
+  logo: ReadyLogoSource;
   isSelected: boolean;
   onSelect: (logoId: string) => void;
 }) {
@@ -406,7 +409,7 @@ function AnimationLogoCard(props: {
 
 interface AnimationGeneratorPanelsProps {
   form: AnimationFormHandle;
-  logosToShow: Generation[];
+  logosToShow: ReadyLogoSource[];
   openPanel: string | null;
   setOpenPanel: (panel: string | null) => void;
 }
@@ -741,21 +744,18 @@ export function AnimationGenerator({
     staleTime: 10_000,
   });
 
-  const logosToShow = useMemo<Generation[]>(() => {
-    const filterReadyLogos = (logos: Generation[]) =>
-      logos.filter(isReadyLogoGeneration);
-
+  const logosToShow = useMemo<ReadyLogoSource[]>(() => {
     if (activeDomain) {
-      const fallback = filterReadyLogos(
-        availableLogos.filter((logo) => logo.domain === activeDomain),
+      const fallback = availableLogos.filter(
+        (logo) => logo.domain === activeDomain,
       );
-      const fetched = filterReadyLogos(
-        (domainLogos as unknown as Generation[]) || [],
+      const fetched = filterReadyLogoGenerations(
+        domainLogos as unknown as Generation[],
       );
       return fetched.length > 0 ? fetched : fallback;
     }
 
-    return filterReadyLogos([...availableLogos]);
+    return [...availableLogos];
   }, [activeDomain, availableLogos, domainLogos]);
 
   useEffect(() => {
