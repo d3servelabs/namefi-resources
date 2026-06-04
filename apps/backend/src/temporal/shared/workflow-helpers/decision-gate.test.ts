@@ -29,6 +29,7 @@ import {
   raceHarnessWorkflow,
   routingHarnessWorkflow,
   runWithGateHarnessWorkflow,
+  runWithTestHarnessHarnessWorkflow,
 } from '../../workflows/test-workflows/decision-gate-harness.workflow';
 
 /**
@@ -560,6 +561,122 @@ describe('runWithDecisionGate (time-skipping)', () => {
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
     expect(result).toMatchObject({ ok: true, attempts: 2 });
+  });
+});
+
+describe('runWithTestHarness (time-skipping)', () => {
+  it('forces a failure on the fail-signal, opening the gate, then RESPOND resolves it', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithTestHarnessHarnessWorkflow,
+      {
+        workflowId: nextId('th-fail-respond'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            enabled: true,
+            signalName: 'th-fail',
+            // The inner action blocks so the fail-signal reliably wins.
+            hangMs: 600_000,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    // Force the in-flight action to fail (buffered until the handler is armed).
+    await handle.signal('th-fail');
+    await waitUntilReady(handle);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { verified: 'SUCCESSFUL' },
+    });
+    const { result, attempts } = await handle.result();
+    // Inner action ran once (incremented) before the forced cancel.
+    expect(attempts).toBe(1);
+    expect(result).toEqual({ verified: 'SUCCESSFUL' });
+    expect(generalAlertNamefi).toHaveBeenCalled();
+  });
+
+  it('returns normally when no fail-signal is sent', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithTestHarnessHarnessWorkflow,
+      {
+        workflowId: nextId('th-no-signal'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          { enabled: true, signalName: 'th-fail', allowedActors: ['ADMIN'] },
+        ],
+      },
+    );
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(1);
+    expect(result).toMatchObject({ ok: true, attempts: 1 });
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
+  });
+
+  it('is a passthrough when disabled (no handler, no gate)', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithTestHarnessHarnessWorkflow,
+      {
+        workflowId: nextId('th-disabled'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          { enabled: false, signalName: 'th-fail', allowedActors: ['ADMIN'] },
+        ],
+      },
+    );
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(1);
+    expect(result).toMatchObject({ ok: true, attempts: 1 });
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
+  });
+
+  it('fails during the delay window when signalled (inner action never runs)', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithTestHarnessHarnessWorkflow,
+      {
+        workflowId: nextId('th-delay-fail'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            enabled: true,
+            signalName: 'th-fail',
+            delayMs: 60_000,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await handle.signal('th-fail');
+    await waitUntilReady(handle);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { verified: 'SUCCESSFUL' },
+    });
+    const { result, attempts } = await handle.result();
+    // Failed mid-delay, before the inner action ran.
+    expect(attempts).toBe(0);
+    expect(result).toEqual({ verified: 'SUCCESSFUL' });
+  });
+
+  it('runs the action after the delay when not signalled', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithTestHarnessHarnessWorkflow,
+      {
+        workflowId: nextId('th-delay-run'),
+        taskQueue: TASK_QUEUE,
+        args: [{ enabled: true, signalName: 'th-fail', delayMs: 60_000 }],
+      },
+    );
+    // Fast-forward past the delay so the action runs and returns.
+    await testEnv.sleep(120_000);
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(1);
+    expect(result).toMatchObject({ ok: true, attempts: 1 });
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
   });
 });
 

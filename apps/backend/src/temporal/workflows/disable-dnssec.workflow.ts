@@ -15,6 +15,7 @@ import {
   createDecisionGateRegistry,
   runWithDecisionGate,
 } from '../shared/workflow-helpers/decision-gate';
+import { runWithTestHarness } from '../shared/workflow-helpers/test-harness';
 import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 
 /**
@@ -116,6 +117,7 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
     disassociateDelegationSigner,
     associateDelegationSignerWithDefaultKey,
     setZoneSigningFlag,
+    isNonProductionEnvironment,
   } = standardActivities;
 
   const { pollDsRecordRemovalStatus, pollDsRecordRemovalPropagation } =
@@ -179,6 +181,18 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
   const pollGateRegistry = workflow.patched('disable-dnssec-poll-decision-gate')
     ? createDecisionGateRegistry({ prefix: 'disable-dnssec' })
     : undefined;
+
+  // In non-production only, allow an operator to force a gated poll to fail via a
+  // signal (to exercise the decision gate without waiting for a real timeout).
+  // Computed once, on the gated path only, so pre-patch runs add no history.
+  let testHarnessEnabled = false;
+  try {
+    if (pollGateRegistry) {
+      testHarnessEnabled = await isNonProductionEnvironment();
+    }
+  } catch (error) {
+    workflow.log.warn('isNonProductionEnvironment failed', { data: { error } });
+  }
 
   // Track whether DS was removed (for rollback on cancellation)
   let dsWasRemoved = false;
@@ -245,7 +259,12 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
         dsRemovalStatus = await runWithDecisionGate({
           registry: pollGateRegistry,
           interactionId: 'ds-removal-status-poll',
-          action: pollDsRemoval,
+          action: () =>
+            runWithTestHarness(pollDsRemoval, {
+              enabled: testHarnessEnabled,
+              signalName: 'test-harness:disable-dnssec:ds-removal-status',
+              delayMs: 300_000,
+            }),
           actionTimeoutMs: DNSSEC_POLL_ACTION_TIMEOUT_MS,
           allowedActors: ['ADMIN'],
           allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
@@ -296,7 +315,12 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
         dsPropagationStatus = await runWithDecisionGate({
           registry: pollGateRegistry,
           interactionId: 'ds-removal-propagation-poll',
-          action: pollDsPropagation,
+          action: () =>
+            runWithTestHarness(pollDsPropagation, {
+              enabled: testHarnessEnabled,
+              signalName: 'test-harness:disable-dnssec:ds-removal-propagation',
+              delayMs: 300_000,
+            }),
           actionTimeoutMs: DNSSEC_POLL_ACTION_TIMEOUT_MS,
           allowedActors: ['ADMIN'],
           allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],

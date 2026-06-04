@@ -15,6 +15,7 @@ import {
   createDecisionGateRegistry,
   runWithDecisionGate,
 } from '../shared/workflow-helpers/decision-gate';
+import { runWithTestHarness } from '../shared/workflow-helpers/test-harness';
 import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 
 /**
@@ -116,6 +117,7 @@ export async function enableDnssecWorkflow(
     getDnssecStatusDetails,
     associateDelegationSignerWithDefaultKey,
     setZoneSigningFlag,
+    isNonProductionEnvironment,
   } = standardActivities;
 
   const { pollDsRecordAssociationStatus } = longRunningActivities;
@@ -178,6 +180,18 @@ export async function enableDnssecWorkflow(
   const pollGateRegistry = workflow.patched('enable-dnssec-poll-decision-gate')
     ? createDecisionGateRegistry({ prefix: 'enable-dnssec' })
     : undefined;
+
+  // In non-production only, allow an operator to force the gated poll to fail via
+  // a signal (to exercise the decision gate without waiting for a real timeout).
+  // Computed once, on the gated path only, so pre-patch runs add no history.
+  let testHarnessEnabled = false;
+  try {
+    if (pollGateRegistry) {
+      testHarnessEnabled = await isNonProductionEnvironment();
+    }
+  } catch (error) {
+    workflow.log.warn('isNonProductionEnvironment failed', { data: { error } });
+  }
 
   try {
     // Step 1: Check if domain supports DNSSEC
@@ -265,7 +279,11 @@ export async function enableDnssecWorkflow(
       dsAssociationStatus = await runWithDecisionGate({
         registry: pollGateRegistry,
         interactionId: 'ds-association-poll',
-        action: pollDsAssociation,
+        action: () =>
+          runWithTestHarness(pollDsAssociation, {
+            enabled: testHarnessEnabled,
+            signalName: 'test-harness:enable-dnssec:ds-association',
+          }),
         actionTimeoutMs: DNSSEC_POLL_ACTION_TIMEOUT_MS,
         allowedActors: ['ADMIN'],
         allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],

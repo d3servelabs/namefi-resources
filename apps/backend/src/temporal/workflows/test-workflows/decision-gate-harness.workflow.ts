@@ -11,6 +11,7 @@ import {
   type PollPhase,
   PollInterrupted,
 } from '../../shared/workflow-helpers/escalating-poller';
+import { runWithTestHarness } from '../../shared/workflow-helpers/test-harness';
 
 /**
  * Test-only harness workflows that exercise the decision-gate and
@@ -222,6 +223,54 @@ export async function runWithGateHarnessWorkflow(
       input.onTimeoutReturn !== undefined
         ? { kind: 'return', value: input.onTimeoutReturn }
         : { kind: 'throw' },
+  });
+  return { result, attempts };
+}
+
+export interface RunWithTestHarnessHarnessInput {
+  /** Forwarded to `runWithTestHarness` — the master non-prod switch. */
+  enabled?: boolean;
+  /** Forwarded — the signal that forces a failure. */
+  signalName?: string;
+  /** Forwarded — leading sleep before the inner action runs. */
+  delayMs?: number;
+  /** The inner action sleeps this long before returning (so a fail-signal can win). */
+  hangMs?: number;
+  allowedActors?: Actor[];
+}
+
+/**
+ * Drives `runWithDecisionGate` whose action is wrapped in `runWithTestHarness`,
+ * so a test can fire the harness fail-signal and assert the gate opens. Uses the
+ * default registry, so the existing `decisionGateSignal` / `decisionGateArmedQuery`
+ * helpers drive the opened gate. `attempts` counts inner-action invocations (it
+ * stays 0 if the failure happens during `delayMs`, before the inner action runs).
+ */
+export async function runWithTestHarnessHarnessWorkflow(
+  input: RunWithTestHarnessHarnessInput,
+): Promise<{ result: unknown; attempts: number }> {
+  const registry = createDecisionGateRegistry();
+  let attempts = 0;
+  const result = await runWithDecisionGate<
+    { ok: true; attempts: number },
+    unknown
+  >({
+    registry,
+    action: () =>
+      runWithTestHarness(
+        async () => {
+          attempts++;
+          if (input.hangMs) await workflow.sleep(input.hangMs);
+          return { ok: true, attempts };
+        },
+        {
+          enabled: input.enabled,
+          signalName: input.signalName,
+          delayMs: input.delayMs,
+        },
+      ),
+    alertMessage: 'test-harness guarded action failed',
+    allowedActors: input.allowedActors,
   });
   return { result, attempts };
 }

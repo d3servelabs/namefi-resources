@@ -18,6 +18,7 @@ import { isDomainParked, parkDomain } from '#services/dns/parking';
 import * as DnsActivities from './dns.activities';
 import * as ParkingActivities from './parking-tracking.activities';
 import * as DnssecActivities from './dnssec.activities';
+import * as DeploymentEnvironmentActivities from './deployment-environment.activities';
 import * as RegistrarActivities from './registrar.activities';
 import { getDomainDurationConstraints } from '#lib/domains/duration-constraints/index';
 import {
@@ -42,6 +43,7 @@ export const DomainsActivities = {
   ...NameserversLib,
   ...DnssecLib,
   ...DnssecActivities,
+  ...DeploymentEnvironmentActivities,
   ...RegistrarActivities,
   ...DnsActivities,
   getPoweredByNamefi3PDomains,

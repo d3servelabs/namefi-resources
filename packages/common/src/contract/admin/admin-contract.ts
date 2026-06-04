@@ -27,6 +27,7 @@ import { adminEmailsContract } from './admin-emails-contract';
 import { adminNotificationsContract } from './admin-notifications-contract';
 import { adminAnnouncementsContract } from './admin-announcements-contract';
 import { adminWorkflowDecisionContract } from './admin-workflow-decision-contract';
+import { adminWorkflowSignalContract } from './admin-workflow-signal-contract';
 
 /**
  * Top-level contract for the admin router.
@@ -77,6 +78,7 @@ export const adminContract = {
   notifications: adminNotificationsContract,
   announcements: adminAnnouncementsContract,
   workflowDecision: adminWorkflowDecisionContract,
+  workflowSignal: adminWorkflowSignalContract,
 } as const satisfies RouterContract;
 
 export type AdminContract = typeof adminContract;

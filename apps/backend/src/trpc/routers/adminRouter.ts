@@ -28,6 +28,7 @@ import { adminNotificationsRouter } from './admin/adminNotificationsRouter';
 import { adminAnnouncementsRouter } from './admin/adminAnnouncementsRouter';
 import { namefiFeedRouter } from './admin/namefiFeedRouter';
 import { workflowDecisionRouter } from './admin/workflowDecisionRouter';
+import { workflowSignalRouter } from './admin/workflowSignalRouter';
 
 export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   isUserAdmin: protectedProcedure
@@ -64,4 +65,5 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
   notifications: adminNotificationsRouter,
   announcements: adminAnnouncementsRouter,
   workflowDecision: workflowDecisionRouter,
+  workflowSignal: workflowSignalRouter,
 });

@@ -435,6 +435,9 @@ export function createDecisionGateRegistry(opts?: {
           const signalled = await workflow.condition(
             () => gate.received !== null,
             options.timeoutMs,
+            {
+              summary: `decision-gate:waiting-for-interaction:${interactionId}`,
+            },
           );
           if (!signalled) return { action: 'TIMEOUT', signal: null };
         }
@@ -652,7 +655,9 @@ export async function runWithDecisionGate<T, R = T>(
     try {
       return await scope.run(() => {
         void workflow
-          .sleep(actionTimeoutMs)
+          .sleep(actionTimeoutMs, {
+            summary: `decision-gate:timeout:${interactionId ?? DEFAULT_GATE_INTERACTION_ID}`,
+          })
           .then(() => {
             timedOut = true;
             scope.cancel();
@@ -675,6 +680,8 @@ export async function runWithDecisionGate<T, R = T>(
         });
       }
       throw error;
+    } finally {
+      scope.cancel();
     }
   };
 

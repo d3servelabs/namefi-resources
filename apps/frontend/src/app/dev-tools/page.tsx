@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Server,
   GitPullRequestArrow,
+  Send,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -100,6 +101,20 @@ const DEV_TOOLS_SECTIONS: AdminSection[] = [
   {
     title: 'Developer Tools',
     items: [
+      ...(config.TYPE !== 'production'
+        ? [
+            {
+              title: 'Send Workflow Signal',
+              description:
+                'Send a signal to a running workflow by id + name. Fire a test-harness signal to force a DNSSEC poll to fail and exercise its decision gate. Local/development only.',
+              href: '/admin/send-signal',
+              icon: Send,
+              iconBgColor: 'bg-fuchsia-100',
+              iconTextColor: 'text-fuchsia-600',
+              permissions: [Permission.WRITE_WORKFLOWS],
+            },
+          ]
+        : []),
       ...(config.TYPE === 'preview'
         ? [
             {
