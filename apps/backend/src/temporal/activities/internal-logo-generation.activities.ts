@@ -17,9 +17,9 @@ import {
 } from '@namefi-astra/ai';
 import { Context } from '@temporalio/activity';
 
-const logger = createLogger({ module: 'logo-generation-activities' });
+const logger = createLogger({ module: 'internal-logo-generation-activities' });
 
-export interface GenerateLogosForDomainsParams {
+export interface GenerateInternalLogosForDomainsParams {
   domains: NamefiNormalizedDomain[];
   model:
     | 'gpt-image-1'
@@ -34,19 +34,26 @@ export interface GenerateLogosForDomainsParams {
   logoStyle?: LogoStyleInput;
 }
 
-export interface ListAliveNftDomainsParams {
+export type GenerateLogosForDomainsParams =
+  GenerateInternalLogosForDomainsParams;
+
+export interface ListInternalLogoCandidateDomainsParams {
   limit?: number;
   offset?: number;
   afterDomain?: NamefiNormalizedDomain;
   skipExisting?: boolean; // if true, only list domains without an existing internal logo
 }
 
-export async function listAliveNftDomains({
+export type ListAliveNftDomainsParams = ListInternalLogoCandidateDomainsParams;
+
+export async function listInternalLogoCandidateDomains({
   limit = 500,
   offset = 0,
   afterDomain,
   skipExisting = false,
-}: ListAliveNftDomainsParams = {}): Promise<NamefiNormalizedDomain[]> {
+}: ListInternalLogoCandidateDomainsParams = {}): Promise<
+  NamefiNormalizedDomain[]
+> {
   const now = new Date();
   const whereConditions = [gt(namefiNftView.expirationTime, now)];
   if (afterDomain) {
@@ -119,8 +126,8 @@ async function heartbeatWhile<T>(
   });
 }
 
-export async function generateLogosForDomains(
-  params: GenerateLogosForDomainsParams,
+export async function generateInternalLogosForDomains(
+  params: GenerateInternalLogosForDomainsParams,
 ) {
   const ctx = Context.current();
   const {
@@ -220,3 +227,6 @@ export async function generateLogosForDomains(
   const failures = results.length - successes;
   return { processed: results.length, successes, failures };
 }
+
+export const listAliveNftDomains = listInternalLogoCandidateDomains;
+export const generateLogosForDomains = generateInternalLogosForDomains;

@@ -6,6 +6,7 @@ import {
 } from '@namefi-astra/ai/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './types';
+import { isReadyLogoGeneration } from './logo-readiness';
 
 interface LogoAction {
   label: string;
@@ -66,10 +67,7 @@ export function BaseGenerationTab({
       onClick: (item: GeneratedItem) => {
         if (!item.id || item.kind !== 'logo') return;
         const generation = generationMap.get(item.id);
-        if (!generation) return;
-        if (generation.type !== 'logo' && generation.output?.type !== 'logo') {
-          return;
-        }
+        if (!isReadyLogoGeneration(generation)) return;
         action.onRequest(generation);
       },
     }));

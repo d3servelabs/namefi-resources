@@ -21,6 +21,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import type { Generation } from './shared/types';
+import { isReadyLogoGeneration } from './shared/logo-readiness';
 import type { UseFormReturn } from 'react-hook-form';
 import {
   Select,
@@ -113,14 +114,19 @@ export function PosterGenerator({
   });
 
   const logosToShow = useMemo<Generation[]>(() => {
+    const filterReadyLogos = (logos: Generation[]) =>
+      logos.filter(isReadyLogoGeneration);
+
     if (selectedDomain) {
-      const fallback = availableLogos.filter(
-        (l) => l.domain === selectedDomain,
+      const fallback = filterReadyLogos(
+        availableLogos.filter((l) => l.domain === selectedDomain),
       );
-      const fetched = (domainLogos as unknown as Generation[]) || [];
+      const fetched = filterReadyLogos(
+        (domainLogos as unknown as Generation[]) || [],
+      );
       return fetched.length > 0 ? fetched : fallback;
     }
-    return availableLogos;
+    return filterReadyLogos([...availableLogos]);
   }, [selectedDomain, domainLogos, availableLogos]);
 
   useEffect(() => {

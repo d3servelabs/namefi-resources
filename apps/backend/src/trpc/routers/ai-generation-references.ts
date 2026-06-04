@@ -9,7 +9,8 @@ type AiGenerationRow = typeof aiGenerationsTable.$inferSelect;
 type LogoReferenceGeneration = Pick<
   AiGenerationRow,
   'domain' | 'id' | 'output'
->;
+> &
+  Partial<Pick<AiGenerationRow, 'status'>>;
 type LogoGenerationOutput = Extract<
   AiGenerationRow['output'],
   { type: 'logo' }
@@ -47,11 +48,13 @@ export function validateOwnedLogoReference(params: {
 
   if (
     !referenceLogoGeneration ||
-    referenceLogoGeneration.output.type !== 'logo'
+    referenceLogoGeneration.output.type !== 'logo' ||
+    referenceLogoGeneration.status !== 'SUCCEEDED' ||
+    !referenceLogoGeneration.output.storagePath
   ) {
     throw new TRPCError({
       code: 'NOT_FOUND',
-      message: 'Reference logo generation not found',
+      message: 'Reference logo generation is not ready',
     });
   }
 

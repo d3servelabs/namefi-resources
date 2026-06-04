@@ -49,6 +49,7 @@ import { useTRPC } from '@/lib/trpc';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { Generation } from './shared/types';
+import { isReadyLogoGeneration } from './shared/logo-readiness';
 import { useAuth } from '@/hooks/use-auth';
 
 const DEFAULT_ANIMATION_MODE = 'sheet-guided' satisfies AnimationMode;
@@ -741,15 +742,20 @@ export function AnimationGenerator({
   });
 
   const logosToShow = useMemo<Generation[]>(() => {
+    const filterReadyLogos = (logos: Generation[]) =>
+      logos.filter(isReadyLogoGeneration);
+
     if (activeDomain) {
-      const fallback = availableLogos.filter(
-        (logo) => logo.domain === activeDomain,
+      const fallback = filterReadyLogos(
+        availableLogos.filter((logo) => logo.domain === activeDomain),
       );
-      const fetched = (domainLogos as unknown as Generation[]) || [];
+      const fetched = filterReadyLogos(
+        (domainLogos as unknown as Generation[]) || [],
+      );
       return fetched.length > 0 ? fetched : fallback;
     }
 
-    return availableLogos;
+    return filterReadyLogos([...availableLogos]);
   }, [activeDomain, availableLogos, domainLogos]);
 
   useEffect(() => {

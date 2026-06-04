@@ -7,11 +7,25 @@ import {
   generateUrlFromStoragePath,
   createS3Client,
 } from '@namefi-astra/storage';
-import { runLogoAnimationWorkflow } from '@namefi-astra/ai';
+import {
+  runLogoAnimationWorkflow,
+  runLogoWorkflow,
+  runMarketingWorkflow,
+  type LogoWorkflowInput,
+  type MarketingWorkflowInput,
+} from '@namefi-astra/ai';
 
-const logger = createLogger({ module: 'logo-animation-activities' });
+const logger = createLogger({ module: 'studio-generation-activities' });
 
-export interface GenerateLogoAnimationParams {
+export interface GenerateStudioAnimationParams {
+  generationId: string;
+}
+
+export interface GenerateStudioLogoParams {
+  generationId: string;
+}
+
+export interface GenerateStudioPosterParams {
   generationId: string;
 }
 
@@ -219,6 +233,52 @@ function buildAnimationFailureMetadata(error: unknown, failedAt: Date) {
   };
 }
 
+function buildStudioGenerationFailureMetadata(error: unknown, failedAt: Date) {
+  const message =
+    error instanceof Error ? error.message : 'AI generation failed';
+  const providerFailure = parseProviderFailurePayload(message);
+
+  return {
+    failedAt: failedAt.toISOString(),
+    message,
+    ...(error instanceof Error
+      ? {
+          name: error.name,
+          stack: error.stack,
+        }
+      : {}),
+    ...(getStringErrorProperty(error, 'type')
+      ? { type: getStringErrorProperty(error, 'type') }
+      : {}),
+    ...(getNumberErrorProperty(error, 'statusCode') != null
+      ? { statusCode: getNumberErrorProperty(error, 'statusCode') }
+      : {}),
+    ...buildProviderFailureMetadata(providerFailure),
+    ...buildErrorCauseMetadata(getErrorProperty(error, 'cause')),
+  };
+}
+
+type ImageGenerationWorkflowResult =
+  | Awaited<ReturnType<typeof runLogoWorkflow>>
+  | Awaited<ReturnType<typeof runMarketingWorkflow>>;
+
+function buildImageGenerationTokenUsageEntries(
+  result: ImageGenerationWorkflowResult,
+) {
+  return [
+    {
+      model: result.analysis.model,
+      inputTokens: result.analysis.tokenUsage?.inputTokens ?? 0,
+      outputTokens: result.analysis.tokenUsage?.outputTokens ?? 0,
+    },
+    {
+      model: result.image.model,
+      inputTokens: result.image.tokenUsage?.inputTokens ?? 0,
+      outputTokens: result.image.tokenUsage?.outputTokens ?? 0,
+    },
+  ];
+}
+
 function buildAnimationTokenUsageEntries(
   result: Awaited<ReturnType<typeof runLogoAnimationWorkflow>>,
 ) {
@@ -259,9 +319,380 @@ function buildAnimationTokenUsageEntries(
   return entries;
 }
 
-export async function generateLogoAnimation({
+export async function generateStudioLogo({
   generationId,
-}: GenerateLogoAnimationParams) {
+}: GenerateStudioLogoParams) {
+  const now = new Date();
+  const generation = await db
+    .select()
+    .from(aiGenerationsTable)
+    .where(eq(aiGenerationsTable.id, generationId))
+    .then((rows) => rows[0]);
+
+  if (!generation) {
+    throw new Error(`AI generation ${generationId} not found`);
+  }
+
+  if (
+    generation.type !== 'logo' ||
+    generation.input.type !== 'logo' ||
+    generation.output.type !== 'logo'
+  ) {
+    throw new Error(`AI generation ${generationId} is not a logo job`);
+  }
+
+  if (generation.isDeleted) {
+    logger.info({ generationId }, 'Skipping deleted logo generation');
+    return {
+      generationId,
+      status: generation.status,
+    };
+  }
+
+  if (generation.status !== 'PENDING') {
+    logger.info(
+      { generationId, status: generation.status },
+      'Skipping logo generation in status %s',
+      generation.status,
+    );
+    return {
+      generationId,
+      status: generation.status,
+    };
+  }
+
+  const [claimedGeneration] = await db
+    .update(aiGenerationsTable)
+    .set({
+      status: 'PROCESSING',
+      startedAt: generation.startedAt ?? now,
+      errorMessage: null,
+      updatedAt: now,
+    })
+    .where(
+      and(
+        eq(aiGenerationsTable.id, generationId),
+        eq(aiGenerationsTable.status, 'PENDING'),
+        eq(aiGenerationsTable.isDeleted, false),
+      ),
+    )
+    .returning();
+
+  if (!claimedGeneration) {
+    const latestGeneration = await db
+      .select({
+        status: aiGenerationsTable.status,
+        isDeleted: aiGenerationsTable.isDeleted,
+      })
+      .from(aiGenerationsTable)
+      .where(eq(aiGenerationsTable.id, generationId))
+      .then((rows) => rows[0]);
+
+    logger.warn(
+      {
+        generationId,
+        status: latestGeneration?.status,
+        isDeleted: latestGeneration?.isDeleted,
+      },
+      'Skipping logo generation because the pending claim no longer succeeded',
+    );
+
+    return {
+      generationId,
+      status: latestGeneration?.status ?? generation.status,
+    };
+  }
+
+  try {
+    const logoInput = generation.input;
+    const logoResult = await heartbeatWhile(
+      () =>
+        runLogoWorkflow({
+          domain: generation.domain,
+          description: logoInput.description,
+          preferredType:
+            logoInput.logoType as LogoWorkflowInput['preferredType'],
+          preferredStyle:
+            logoInput.logoStyle as LogoWorkflowInput['preferredStyle'],
+          textTreatment:
+            logoInput.textTreatment as LogoWorkflowInput['textTreatment'],
+          typography: logoInput.typography as LogoWorkflowInput['typography'],
+          imageModel: logoInput.imageModel as LogoWorkflowInput['imageModel'],
+          storage: getStorage(config.AI_BUCKET_FOLDERS.LOGOS),
+        }),
+      {
+        stage: 'logo-workflow',
+        generationId,
+      },
+    );
+
+    const resolvedConcept = logoResult.concept.logoConcept;
+    const metadata = asMetadataRecord(generation.metadata);
+
+    await db
+      .update(aiGenerationsTable)
+      .set({
+        status: 'SUCCEEDED',
+        finishedAt: new Date(),
+        errorMessage: null,
+        output: {
+          type: 'logo',
+          storagePath: logoResult.image.storagePath,
+          logoType: resolvedConcept.type ?? logoInput.logoType,
+          logoStyle: resolvedConcept.style ?? logoInput.logoStyle,
+          textTreatment:
+            resolvedConcept.textTreatment ?? logoInput.textTreatment,
+          typography: resolvedConcept.typography ?? logoInput.typography,
+          imageModel: logoResult.image.model,
+        },
+        metadata,
+        tokenUsage: buildImageGenerationTokenUsageEntries(logoResult),
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(aiGenerationsTable.id, generationId),
+          eq(aiGenerationsTable.status, 'PROCESSING'),
+          eq(aiGenerationsTable.isDeleted, false),
+        ),
+      );
+
+    return {
+      generationId,
+      status: 'SUCCEEDED' as const,
+    };
+  } catch (error) {
+    const failedAt = new Date();
+    const message =
+      error instanceof Error ? error.message : 'Logo generation failed';
+    const metadata = asMetadataRecord(claimedGeneration.metadata);
+
+    await db
+      .update(aiGenerationsTable)
+      .set({
+        status: 'FAILED',
+        finishedAt: failedAt,
+        errorMessage: message,
+        metadata: {
+          ...metadata,
+          logoFailure: buildStudioGenerationFailureMetadata(error, failedAt),
+        },
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(aiGenerationsTable.id, generationId),
+          eq(aiGenerationsTable.status, 'PROCESSING'),
+          eq(aiGenerationsTable.isDeleted, false),
+        ),
+      );
+
+    logger.error({ error, generationId }, 'Logo generation failed');
+    throw error;
+  }
+}
+
+export async function generateStudioPoster({
+  generationId,
+}: GenerateStudioPosterParams) {
+  const now = new Date();
+  const generation = await db
+    .select()
+    .from(aiGenerationsTable)
+    .where(eq(aiGenerationsTable.id, generationId))
+    .then((rows) => rows[0]);
+
+  if (!generation) {
+    throw new Error(`AI generation ${generationId} not found`);
+  }
+
+  if (
+    generation.type !== 'marketing' ||
+    generation.input.type !== 'marketing' ||
+    generation.output.type !== 'marketing'
+  ) {
+    throw new Error(`AI generation ${generationId} is not a poster job`);
+  }
+
+  if (!generation.referenceGenerationId) {
+    throw new Error(
+      `Poster generation ${generationId} is missing a reference logo`,
+    );
+  }
+
+  if (generation.isDeleted) {
+    logger.info({ generationId }, 'Skipping deleted poster generation');
+    return {
+      generationId,
+      status: generation.status,
+    };
+  }
+
+  if (generation.status !== 'PENDING') {
+    logger.info(
+      { generationId, status: generation.status },
+      'Skipping poster generation in status %s',
+      generation.status,
+    );
+    return {
+      generationId,
+      status: generation.status,
+    };
+  }
+
+  const [claimedGeneration] = await db
+    .update(aiGenerationsTable)
+    .set({
+      status: 'PROCESSING',
+      startedAt: generation.startedAt ?? now,
+      errorMessage: null,
+      updatedAt: now,
+    })
+    .where(
+      and(
+        eq(aiGenerationsTable.id, generationId),
+        eq(aiGenerationsTable.status, 'PENDING'),
+        eq(aiGenerationsTable.isDeleted, false),
+      ),
+    )
+    .returning();
+
+  if (!claimedGeneration) {
+    const latestGeneration = await db
+      .select({
+        status: aiGenerationsTable.status,
+        isDeleted: aiGenerationsTable.isDeleted,
+      })
+      .from(aiGenerationsTable)
+      .where(eq(aiGenerationsTable.id, generationId))
+      .then((rows) => rows[0]);
+
+    logger.warn(
+      {
+        generationId,
+        status: latestGeneration?.status,
+        isDeleted: latestGeneration?.isDeleted,
+      },
+      'Skipping poster generation because the pending claim no longer succeeded',
+    );
+
+    return {
+      generationId,
+      status: latestGeneration?.status ?? generation.status,
+    };
+  }
+
+  try {
+    const referenceLogo = await db
+      .select()
+      .from(aiGenerationsTable)
+      .where(
+        and(
+          eq(aiGenerationsTable.id, generation.referenceGenerationId),
+          eq(aiGenerationsTable.type, 'logo'),
+          eq(aiGenerationsTable.status, 'SUCCEEDED'),
+          eq(aiGenerationsTable.isDeleted, false),
+        ),
+      )
+      .then((rows) => rows[0]);
+
+    if (
+      !referenceLogo ||
+      referenceLogo.output.type !== 'logo' ||
+      !referenceLogo.output.storagePath
+    ) {
+      throw new Error(
+        `Reference logo ${generation.referenceGenerationId} was not found`,
+      );
+    }
+
+    const posterInput = generation.input;
+    const referenceLogoUrl = generateUrlFromStoragePath(
+      referenceLogo.output.storagePath,
+      config.CLOUD_FRONT_DOMAIN,
+    );
+
+    const marketingResult = await heartbeatWhile(
+      () =>
+        runMarketingWorkflow({
+          domain: generation.domain,
+          description: posterInput.description,
+          collateralType: posterInput.collateralType,
+          imageModel:
+            posterInput.imageModel as MarketingWorkflowInput['imageModel'],
+          storage: getStorage(config.AI_BUCKET_FOLDERS.SOCIAL),
+          referenceLogoUrl,
+        }),
+      {
+        stage: 'poster-workflow',
+        generationId,
+      },
+    );
+
+    const metadata = asMetadataRecord(generation.metadata);
+
+    await db
+      .update(aiGenerationsTable)
+      .set({
+        status: 'SUCCEEDED',
+        finishedAt: new Date(),
+        errorMessage: null,
+        output: {
+          type: 'marketing',
+          storagePath: marketingResult.image.storagePath,
+          collateralType: marketingResult.analysis.resolvedCollateralType,
+          imageModel: marketingResult.image.model,
+        },
+        metadata,
+        tokenUsage: buildImageGenerationTokenUsageEntries(marketingResult),
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(aiGenerationsTable.id, generationId),
+          eq(aiGenerationsTable.status, 'PROCESSING'),
+          eq(aiGenerationsTable.isDeleted, false),
+        ),
+      );
+
+    return {
+      generationId,
+      status: 'SUCCEEDED' as const,
+    };
+  } catch (error) {
+    const failedAt = new Date();
+    const message =
+      error instanceof Error ? error.message : 'Poster generation failed';
+    const metadata = asMetadataRecord(claimedGeneration.metadata);
+
+    await db
+      .update(aiGenerationsTable)
+      .set({
+        status: 'FAILED',
+        finishedAt: failedAt,
+        errorMessage: message,
+        metadata: {
+          ...metadata,
+          posterFailure: buildStudioGenerationFailureMetadata(error, failedAt),
+        },
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(aiGenerationsTable.id, generationId),
+          eq(aiGenerationsTable.status, 'PROCESSING'),
+          eq(aiGenerationsTable.isDeleted, false),
+        ),
+      );
+
+    logger.error({ error, generationId }, 'Poster generation failed');
+    throw error;
+  }
+}
+
+export async function generateStudioAnimation({
+  generationId,
+}: GenerateStudioAnimationParams) {
   const now = new Date();
   const generation = await db
     .select()
@@ -362,12 +793,17 @@ export async function generateLogoAnimation({
         and(
           eq(aiGenerationsTable.id, generation.referenceGenerationId),
           eq(aiGenerationsTable.type, 'logo'),
+          eq(aiGenerationsTable.status, 'SUCCEEDED'),
           eq(aiGenerationsTable.isDeleted, false),
         ),
       )
       .then((rows) => rows[0]);
 
-    if (!referenceLogo || referenceLogo.output.type !== 'logo') {
+    if (
+      !referenceLogo ||
+      referenceLogo.output.type !== 'logo' ||
+      !referenceLogo.output.storagePath
+    ) {
       throw new Error(
         `Reference logo ${generation.referenceGenerationId} was not found`,
       );
@@ -518,3 +954,5 @@ export async function generateLogoAnimation({
     throw error;
   }
 }
+
+export const generateLogoAnimation = generateStudioAnimation;

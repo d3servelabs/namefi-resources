@@ -10,7 +10,7 @@ import type {
   PublicDigestAnimationActivityResult,
   PublicDigestAnimationWorkflowInput,
 } from '../shared/public-digest-animation';
-import { heartbeatWhile } from './logo-animation.activities';
+import { heartbeatWhile } from './studio-generation.activities';
 
 const logger = createLogger({ module: 'public-digest-animation-activities' });
 

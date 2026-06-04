@@ -8,7 +8,7 @@ import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure, defineQuery } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
-import { generateLogosForAliveNftsWorkflow } from './logo-generation.workflow';
+import { generateLogosForAliveNftsWorkflow as generateInternalLogosForAliveNftsWorkflow } from './internal-logo-generation.workflow';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import type { ChargeUserWorkflowInput } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
@@ -1103,18 +1103,21 @@ export async function processOrderWorkflow(
       if (orderDomainsForLogoPreview.length > 0) {
         await catchAndAlertLocally(
           async () => {
-            await workflow.startChild(generateLogosForAliveNftsWorkflow, {
-              args: [
-                {
-                  model: 'gpt-image-2',
-                  domains: orderDomainsForLogoPreview,
-                },
-              ],
-              workflowId: `logo-gen-after-order-[${input.orderId}]`,
-              taskQueue: TEMPORAL_QUEUES.DEFAULT,
-              retry: { maximumAttempts: 1 },
-              parentClosePolicy: 'ABANDON',
-            });
+            await workflow.startChild(
+              generateInternalLogosForAliveNftsWorkflow,
+              {
+                args: [
+                  {
+                    model: 'gpt-image-2',
+                    domains: orderDomainsForLogoPreview,
+                  },
+                ],
+                workflowId: `logo-gen-after-order-[${input.orderId}]`,
+                taskQueue: TEMPORAL_QUEUES.DEFAULT,
+                retry: { maximumAttempts: 1 },
+                parentClosePolicy: 'ABANDON',
+              },
+            );
           },
           {
             message: `Failed to start logo generation for order ${input.orderId}`,
@@ -1375,18 +1378,21 @@ export async function processOrderWorkflow(
             (item) => item.normalizedDomainName,
           );
           if (purchasedDomains.length > 0) {
-            await workflow.startChild(generateLogosForAliveNftsWorkflow, {
-              args: [
-                {
-                  model: 'gpt-image-2',
-                  domains: purchasedDomains,
-                },
-              ],
-              workflowId: `logo-gen-after-order-[${input.orderId}]`,
-              taskQueue: TEMPORAL_QUEUES.DEFAULT,
-              retry: { maximumAttempts: 1 },
-              parentClosePolicy: 'ABANDON',
-            });
+            await workflow.startChild(
+              generateInternalLogosForAliveNftsWorkflow,
+              {
+                args: [
+                  {
+                    model: 'gpt-image-2',
+                    domains: purchasedDomains,
+                  },
+                ],
+                workflowId: `logo-gen-after-order-[${input.orderId}]`,
+                taskQueue: TEMPORAL_QUEUES.DEFAULT,
+                retry: { maximumAttempts: 1 },
+                parentClosePolicy: 'ABANDON',
+              },
+            );
           }
         }
       }

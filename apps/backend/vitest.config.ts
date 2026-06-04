@@ -1,5 +1,10 @@
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
+
+const backendRoot = fileURLToPath(new URL('.', import.meta.url));
+const srcRoot = resolve(backendRoot, 'src');
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
@@ -23,10 +28,21 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: {
-      '#lib/env': './src/lib/env/index.ts',
-      '#lib': './src/lib',
-      '#services': './src/services',
-    },
+    alias: [
+      { find: '#lib/env', replacement: resolve(srcRoot, 'lib/env/index.ts') },
+      { find: /^#lib\/(.*)$/, replacement: `${srcRoot}/lib/$1` },
+      { find: /^#services\/(.*)$/, replacement: `${srcRoot}/services/$1` },
+      {
+        find: '#temporal/shared',
+        replacement: resolve(srcRoot, 'temporal/shared/index.ts'),
+      },
+      {
+        find: /^#temporal\/shared\/(.*)$/,
+        replacement: `${srcRoot}/temporal/shared/$1`,
+      },
+      { find: /^#temporal\/(.*)$/, replacement: `${srcRoot}/temporal/$1` },
+      { find: '#trpc', replacement: resolve(srcRoot, 'trpc/index.ts') },
+      { find: /^#trpc\/(.*)$/, replacement: `${srcRoot}/trpc/$1` },
+    ],
   },
 });

@@ -10,6 +10,8 @@ const dbMock = {
   select: vi.fn(),
   update: vi.fn(),
 };
+const runLogoWorkflowMock = vi.fn();
+const runMarketingWorkflowMock = vi.fn();
 const runLogoAnimationWorkflowMock = vi.fn();
 const generateUrlFromStoragePathMock = vi.fn();
 const temporalContextMock = {
@@ -31,6 +33,8 @@ vi.mock('#lib/env', () => ({
   config: {
     AI_BUCKET_FOLDERS: {
       ANIMATIONS: 'animations',
+      LOGOS: 'logos',
+      SOCIAL: 'social',
     },
     AWS_REGION: 'us-east-1',
     CLOUD_FRONT_DOMAIN: 'cdn.test',
@@ -72,14 +76,17 @@ vi.mock('@namefi-astra/ai', () => ({
   ],
   LOOPED_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'light-sweep'],
   MARKETING_COLLATERAL_TYPE_INPUT_IDS: ['let_ai_choose'],
-  runLogoWorkflow: vi.fn(),
-  runMarketingWorkflow: vi.fn(),
+  runLogoWorkflow: runLogoWorkflowMock,
+  runMarketingWorkflow: runMarketingWorkflowMock,
   runLogoAnimationWorkflow: runLogoAnimationWorkflowMock,
 }));
 
-const { generateLogoAnimation, heartbeatWhile } = await import(
-  './logo-animation.activities'
-);
+const {
+  generateStudioAnimation,
+  generateStudioLogo,
+  generateStudioPoster,
+  heartbeatWhile,
+} = await import('./studio-generation.activities');
 
 describe('heartbeatWhile', () => {
   beforeEach(() => {
@@ -139,7 +146,231 @@ describe('heartbeatWhile', () => {
   });
 });
 
-describe('generateLogoAnimation', () => {
+describe('generateStudioLogo', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    dbMock.select.mockReset();
+    dbMock.update.mockReset();
+    runLogoWorkflowMock.mockReset();
+  });
+
+  it('claims a pending logo generation and stores the generated output', async () => {
+    const generation = {
+      id: 'logo-1',
+      type: 'logo',
+      status: 'PENDING',
+      isDeleted: false,
+      startedAt: null,
+      updatedAt: new Date('2026-03-25T00:00:00.000Z'),
+      domain: 'brand.xyz',
+      metadata: {},
+      input: {
+        type: 'logo',
+        logoType: 'let-ai-choose',
+        logoStyle: 'let-ai-choose',
+        description: 'Premium data brand',
+        imageModel: 'gpt-image-2',
+        textTreatment: 'let-ai-choose',
+        typography: 'let-ai-choose',
+      },
+      output: {
+        type: 'logo',
+        storagePath: '',
+      },
+    };
+
+    const selectWhereMock = vi.fn().mockResolvedValueOnce([generation]);
+    const selectFromMock = vi.fn(() => ({ where: selectWhereMock }));
+    dbMock.select.mockImplementation(() => ({ from: selectFromMock }));
+
+    const returningMock = vi
+      .fn()
+      .mockResolvedValueOnce([{ ...generation, status: 'PROCESSING' }])
+      .mockResolvedValueOnce([]);
+    const updateWhereMock = vi.fn(() => ({ returning: returningMock }));
+    const updateSetMock = vi.fn(() => ({ where: updateWhereMock }));
+    dbMock.update.mockImplementation(() => ({ set: updateSetMock }));
+
+    runLogoWorkflowMock.mockResolvedValue({
+      concept: {
+        logoConcept: {
+          type: 'wordmark',
+          style: 'trust',
+          textTreatment: 'tld-subtle',
+          typography: 'sans-serif',
+        },
+      },
+      analysis: {
+        model: 'gpt-5.2',
+        tokenUsage: {
+          inputTokens: 7,
+          outputTokens: 11,
+        },
+      },
+      image: {
+        storagePath: 'logos/brand.xyz/logo.png',
+        model: 'gpt-image-2',
+        tokenUsage: {
+          inputTokens: 13,
+          outputTokens: 17,
+        },
+      },
+    });
+
+    await expect(
+      generateStudioLogo({ generationId: generation.id }),
+    ).resolves.toEqual({
+      generationId: generation.id,
+      status: 'SUCCEEDED',
+    });
+
+    expect(runLogoWorkflowMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        domain: 'brand.xyz',
+        description: 'Premium data brand',
+        imageModel: 'gpt-image-2',
+      }),
+    );
+    expect(updateSetMock).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        errorMessage: null,
+        status: 'PROCESSING',
+      }),
+    );
+    expect(updateSetMock).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        output: expect.objectContaining({
+          storagePath: 'logos/brand.xyz/logo.png',
+          logoType: 'wordmark',
+          logoStyle: 'trust',
+          imageModel: 'gpt-image-2',
+        }),
+        status: 'SUCCEEDED',
+        tokenUsage: [
+          {
+            model: 'gpt-5.2',
+            inputTokens: 7,
+            outputTokens: 11,
+          },
+          {
+            model: 'gpt-image-2',
+            inputTokens: 13,
+            outputTokens: 17,
+          },
+        ],
+      }),
+    );
+  });
+});
+
+describe('generateStudioPoster', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    dbMock.select.mockReset();
+    dbMock.update.mockReset();
+    runMarketingWorkflowMock.mockReset();
+    generateUrlFromStoragePathMock.mockReset();
+    generateUrlFromStoragePathMock.mockReturnValue('https://cdn.test/logo.png');
+  });
+
+  it('claims a pending poster generation and stores the generated output', async () => {
+    const generation = {
+      id: 'poster-1',
+      type: 'marketing',
+      status: 'PENDING',
+      isDeleted: false,
+      startedAt: null,
+      updatedAt: new Date('2026-03-25T00:00:00.000Z'),
+      referenceGenerationId: 'logo-1',
+      domain: 'brand.xyz',
+      metadata: {},
+      input: {
+        type: 'marketing',
+        description: 'Launch poster',
+        collateralType: 'billboard',
+        imageModel: 'gpt-image-2',
+      },
+      output: {
+        type: 'marketing',
+        storagePath: '',
+        collateralType: 'billboard',
+      },
+    };
+    const referenceLogo = {
+      id: 'logo-1',
+      type: 'logo',
+      status: 'SUCCEEDED',
+      isDeleted: false,
+      output: {
+        type: 'logo',
+        storagePath: 'logos/brand.xyz/logo.png',
+      },
+    };
+
+    const selectWhereMock = vi
+      .fn()
+      .mockResolvedValueOnce([generation])
+      .mockResolvedValueOnce([referenceLogo]);
+    const selectFromMock = vi.fn(() => ({ where: selectWhereMock }));
+    dbMock.select.mockImplementation(() => ({ from: selectFromMock }));
+
+    const returningMock = vi
+      .fn()
+      .mockResolvedValueOnce([{ ...generation, status: 'PROCESSING' }])
+      .mockResolvedValueOnce([]);
+    const updateWhereMock = vi.fn(() => ({ returning: returningMock }));
+    const updateSetMock = vi.fn(() => ({ where: updateWhereMock }));
+    dbMock.update.mockImplementation(() => ({ set: updateSetMock }));
+
+    runMarketingWorkflowMock.mockResolvedValue({
+      analysis: {
+        resolvedCollateralType: 'billboard',
+        model: 'gpt-5.2',
+        tokenUsage: {
+          inputTokens: 19,
+          outputTokens: 23,
+        },
+      },
+      image: {
+        storagePath: 'social/marketing/billboard/brand.xyz/poster.png',
+        model: 'gpt-image-2',
+        tokenUsage: {
+          inputTokens: 29,
+          outputTokens: 31,
+        },
+      },
+    });
+
+    await expect(
+      generateStudioPoster({ generationId: generation.id }),
+    ).resolves.toEqual({
+      generationId: generation.id,
+      status: 'SUCCEEDED',
+    });
+
+    expect(runMarketingWorkflowMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        domain: 'brand.xyz',
+        collateralType: 'billboard',
+        imageModel: 'gpt-image-2',
+        referenceLogoUrl: 'https://cdn.test/logo.png',
+      }),
+    );
+    expect(updateSetMock).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        output: expect.objectContaining({
+          storagePath: 'social/marketing/billboard/brand.xyz/poster.png',
+          collateralType: 'billboard',
+          imageModel: 'gpt-image-2',
+        }),
+        status: 'SUCCEEDED',
+      }),
+    );
+  });
+});
+
+describe('generateStudioAnimation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     dbMock.select.mockReset();
@@ -193,7 +424,7 @@ describe('generateLogoAnimation', () => {
     dbMock.update.mockImplementation(() => ({ set: updateSetMock }));
 
     await expect(
-      generateLogoAnimation({ generationId: generation.id }),
+      generateStudioAnimation({ generationId: generation.id }),
     ).rejects.toThrow('Reference logo logo-1 was not found');
 
     expect(runLogoAnimationWorkflowMock).not.toHaveBeenCalled();
@@ -304,7 +535,7 @@ describe('generateLogoAnimation', () => {
     });
 
     await expect(
-      generateLogoAnimation({ generationId: generation.id }),
+      generateStudioAnimation({ generationId: generation.id }),
     ).resolves.toEqual({
       generationId: generation.id,
       status: 'SUCCEEDED',
@@ -443,7 +674,7 @@ describe('generateLogoAnimation', () => {
     });
 
     await expect(
-      generateLogoAnimation({ generationId: generation.id }),
+      generateStudioAnimation({ generationId: generation.id }),
     ).resolves.toEqual({
       generationId: generation.id,
       status: 'SUCCEEDED',

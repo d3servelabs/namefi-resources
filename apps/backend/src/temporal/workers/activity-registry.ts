@@ -11,7 +11,8 @@ import {
   LinkSharesExternalIdentifierMigrationActivities,
   TwitterLinkSharesValidationActivities,
   GreetActivities,
-  LogoAnimationActivities,
+  InternalLogoGenerationActivities,
+  StudioGenerationActivities,
   PublicDigestAnimationActivities,
   LeadgenActivities,
 } from '../activities';
@@ -19,7 +20,6 @@ import { DomainsActivities } from '../activities/domain';
 import { TEMPORAL_ENUMS } from '../shared';
 import { IndexersActivities } from '../activities/indexers';
 import { defaultTaskQueueActivities } from '../activities/default';
-import { LogoGenerationActivities } from '../activities';
 import { mintTaskQueueActivities } from '../activities/mint';
 
 // Detect silent activity-name collisions in the merged NOTIFY namespace
@@ -43,8 +43,8 @@ export const ACTIVITIES = {
     ...TwitterLinkSharesValidationActivities,
     ...OrderActivities,
     ...PaymentActivities,
-    ...LogoGenerationActivities,
-    ...LogoAnimationActivities,
+    ...InternalLogoGenerationActivities,
+    ...StudioGenerationActivities,
     ...PublicDigestAnimationActivities,
     ...LeadgenActivities,
 

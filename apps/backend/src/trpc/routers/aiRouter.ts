@@ -1,8 +1,12 @@
-import { config, secrets } from '#lib/env';
+import { config } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared';
-import { generateLogoAnimationWorkflow } from '#temporal/workflows/logo-animation.workflow';
+import {
+  generateStudioAnimationWorkflow,
+  generateStudioLogoWorkflow,
+  generateStudioPosterWorkflow,
+} from '#temporal/workflows/studio-generation.workflow';
 import { db } from '@namefi-astra/db';
 import {
   getAiTokenUsageCreditCost,
@@ -29,13 +33,8 @@ import {
   LOOPED_ANIMATION_MODEL_IDS,
   LOOPED_ANIMATION_MOTION_PRESET_IDS,
   getLeadgenPrimaryResearchModel,
-  runLogoWorkflow,
-  runMarketingWorkflow,
 } from '@namefi-astra/ai';
-import {
-  createS3Client,
-  generateUrlFromStoragePath,
-} from '@namefi-astra/storage';
+import { generateUrlFromStoragePath } from '@namefi-astra/storage';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { WorkflowNotFoundError } from '@temporalio/common';
 import { TRPCError } from '@trpc/server';
@@ -47,18 +46,6 @@ import { createContractTRPCRouter } from '../contract';
 import { resolveOwnedLogoReference } from './ai-generation-references';
 
 const logger = createLogger({ module: 'ai-router' });
-
-const s3Client = createS3Client({
-  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
-  AWS_REGION: config.AWS_REGION,
-});
-
-const storageBaseConfig = {
-  bucketName: config.STORAGE_BUCKET,
-  cloudfrontDomain: config.CLOUD_FRONT_DOMAIN,
-  s3Client,
-};
 
 const imageModelIds = [
   'gpt-image-1',
@@ -78,22 +65,14 @@ type LeadgenRunCreditRow = Pick<
   typeof leadgenRunsTable.$inferSelect,
   'id' | 'input' | 'metadata' | 'reasoningEffort' | 'tokenUsage'
 >;
-type AnimationWorkflowStartResult =
+type StudioGenerationWorkflowType = 'animation' | 'logo' | 'marketing';
+type StudioGenerationWorkflowStartResult =
   | { state: 'started' }
   | { state: 'not-found' | 'unknown'; error: unknown };
 
-const ANIMATION_WORKFLOW_START_STATE_UNCONFIRMED = 'UNCONFIRMED';
-const ANIMATION_WORKFLOW_START_STATE_CONFIRMED = 'CONFIRMED';
-const ANIMATION_WORKFLOW_START_RECONCILIATION_INTERVAL_MS = 30_000;
-const ANIMATION_WORKFLOW_START_ERROR_MESSAGE =
-  'Failed to start logo animation workflow';
-
-function createStorageConfig(baseFolder: string) {
-  return {
-    ...storageBaseConfig,
-    baseFolder,
-  };
-}
+const GENERATION_WORKFLOW_START_STATE_UNCONFIRMED = 'UNCONFIRMED';
+const GENERATION_WORKFLOW_START_STATE_CONFIRMED = 'CONFIRMED';
+const GENERATION_WORKFLOW_START_RECONCILIATION_INTERVAL_MS = 30_000;
 
 function createInsufficientGenerationCreditsError(params: {
   maxCredits: number;
@@ -119,8 +98,31 @@ function asMetadataRecord(value: unknown): Record<string, unknown> {
     : {};
 }
 
-function buildLogoAnimationWorkflowId(generationId: string) {
-  return `logo-animation-${generationId}`;
+function buildAiGenerationWorkflowId(
+  generationType: StudioGenerationWorkflowType,
+  generationId: string,
+) {
+  const prefix =
+    generationType === 'marketing'
+      ? 'poster-generation'
+      : generationType === 'logo'
+        ? 'logo-generation'
+        : 'logo-animation';
+
+  return `${prefix}-${generationId}`;
+}
+
+function getGenerationWorkflowStartErrorMessage(
+  generationType: StudioGenerationWorkflowType,
+) {
+  const label =
+    generationType === 'marketing'
+      ? 'poster'
+      : generationType === 'animation'
+        ? 'logo animation'
+        : 'logo';
+
+  return `Failed to start ${label} generation workflow`;
 }
 
 function sleep(ms: number) {
@@ -129,14 +131,14 @@ function sleep(ms: number) {
   });
 }
 
-function getAnimationWorkflowStartState(metadata: unknown) {
+function getGenerationWorkflowStartState(metadata: unknown) {
   const record = asMetadataRecord(metadata);
   return typeof record.workflowStartState === 'string'
     ? record.workflowStartState
     : undefined;
 }
 
-function getAnimationWorkflowStartCheckedAt(metadata: unknown) {
+function getGenerationWorkflowStartCheckedAt(metadata: unknown) {
   const record = asMetadataRecord(metadata);
   if (typeof record.workflowStartCheckedAt !== 'string') {
     return undefined;
@@ -146,49 +148,66 @@ function getAnimationWorkflowStartCheckedAt(metadata: unknown) {
   return Number.isNaN(checkedAt.getTime()) ? undefined : checkedAt;
 }
 
-function isPendingUnconfirmedAnimationGeneration(generation: AiGenerationRow) {
+function isPendingUnconfirmedStudioGeneration(generation: AiGenerationRow) {
   return (
-    generation.type === 'animation' &&
     generation.status === 'PENDING' &&
     !generation.isDeleted &&
-    getAnimationWorkflowStartState(generation.metadata) ===
-      ANIMATION_WORKFLOW_START_STATE_UNCONFIRMED
+    getGenerationWorkflowStartState(generation.metadata) ===
+      GENERATION_WORKFLOW_START_STATE_UNCONFIRMED
   );
 }
 
-function shouldReconcileUnconfirmedAnimationStart(
+function shouldReconcileUnconfirmedGenerationStart(
   generation: AiGenerationRow,
   now = new Date(),
 ) {
-  if (!isPendingUnconfirmedAnimationGeneration(generation)) {
+  if (!isPendingUnconfirmedStudioGeneration(generation)) {
     return false;
   }
 
   const lastCheckedAt =
-    getAnimationWorkflowStartCheckedAt(generation.metadata) ??
+    getGenerationWorkflowStartCheckedAt(generation.metadata) ??
     generation.updatedAt ??
     generation.createdAt;
 
   return (
     now.getTime() - lastCheckedAt.getTime() >=
-    ANIMATION_WORKFLOW_START_RECONCILIATION_INTERVAL_MS
+    GENERATION_WORKFLOW_START_RECONCILIATION_INTERVAL_MS
   );
 }
 
-export async function startLogoAnimationWorkflowWithRecovery(params: {
+function getGenerationWorkflowForType(
+  generationType: StudioGenerationWorkflowType,
+) {
+  if (generationType === 'logo') {
+    return generateStudioLogoWorkflow;
+  }
+
+  if (generationType === 'marketing') {
+    return generateStudioPosterWorkflow;
+  }
+
+  return generateStudioAnimationWorkflow;
+}
+
+export async function startAiGenerationWorkflowWithRecovery(params: {
   generationId: string;
+  generationType: StudioGenerationWorkflowType;
   workflowId: string;
-}): Promise<AnimationWorkflowStartResult> {
+}): Promise<StudioGenerationWorkflowStartResult> {
   const startWorkflow = async (
     workflowIdConflictPolicy: 'FAIL' | 'USE_EXISTING',
   ) =>
-    await temporalClient.workflow.start(generateLogoAnimationWorkflow, {
-      args: [{ generationId: params.generationId }],
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
-      workflowId: params.workflowId,
-      workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-      workflowIdConflictPolicy,
-    });
+    await temporalClient.workflow.start(
+      getGenerationWorkflowForType(params.generationType),
+      {
+        args: [{ generationId: params.generationId }],
+        taskQueue: TEMPORAL_QUEUES.DEFAULT,
+        workflowId: params.workflowId,
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+        workflowIdConflictPolicy,
+      },
+    );
 
   try {
     await startWorkflow('FAIL');
@@ -197,10 +216,11 @@ export async function startLogoAnimationWorkflowWithRecovery(params: {
     logger.warn(
       {
         error,
+        generationType: params.generationType,
         generationId: params.generationId,
         workflowId: params.workflowId,
       },
-      'Animation workflow start failed; retrying with workflow reconciliation',
+      'AI generation workflow start failed; retrying with workflow reconciliation',
     );
 
     for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -208,7 +228,7 @@ export async function startLogoAnimationWorkflowWithRecovery(params: {
         await startWorkflow('USE_EXISTING');
         return { state: 'started' };
       } catch (retryError) {
-        const startState = await getAnimationStartStateAfterError(
+        const startState = await getGenerationStartStateAfterError(
           params.workflowId,
         );
 
@@ -233,7 +253,16 @@ export async function startLogoAnimationWorkflowWithRecovery(params: {
   }
 }
 
-async function markAnimationWorkflowStartUnconfirmed(
+export const startLogoAnimationWorkflowWithRecovery = (params: {
+  generationId: string;
+  workflowId: string;
+}) =>
+  startAiGenerationWorkflowWithRecovery({
+    ...params,
+    generationType: 'animation',
+  });
+
+async function markGenerationWorkflowStartUnconfirmed(
   generation: AiGenerationRow,
   errorMessage: string,
 ) {
@@ -247,7 +276,7 @@ async function markAnimationWorkflowStartUnconfirmed(
         ...metadata,
         workflowStartErrorMessage: errorMessage,
         workflowStartCheckedAt: now.toISOString(),
-        workflowStartState: ANIMATION_WORKFLOW_START_STATE_UNCONFIRMED,
+        workflowStartState: GENERATION_WORKFLOW_START_STATE_UNCONFIRMED,
       },
       updatedAt: now,
     })
@@ -263,17 +292,20 @@ async function markAnimationWorkflowStartUnconfirmed(
   return updatedRow ?? generation;
 }
 
-async function reconcileUnconfirmedAnimationGeneration(
+async function reconcileUnconfirmedGenerationStart(
   generation: AiGenerationRow,
 ) {
-  if (!shouldReconcileUnconfirmedAnimationStart(generation)) {
+  if (!shouldReconcileUnconfirmedGenerationStart(generation)) {
     return generation;
   }
 
   const now = new Date();
   const metadata = asMetadataRecord(generation.metadata);
-  const workflowId = buildLogoAnimationWorkflowId(generation.id);
-  const startState = await getAnimationStartStateAfterError(workflowId);
+  const workflowId = buildAiGenerationWorkflowId(
+    generation.type,
+    generation.id,
+  );
+  const startState = await getGenerationStartStateAfterError(workflowId);
 
   if (startState === 'started') {
     const [updatedRow] = await db
@@ -282,7 +314,7 @@ async function reconcileUnconfirmedAnimationGeneration(
         metadata: {
           ...metadata,
           workflowStartCheckedAt: now.toISOString(),
-          workflowStartState: ANIMATION_WORKFLOW_START_STATE_CONFIRMED,
+          workflowStartState: GENERATION_WORKFLOW_START_STATE_CONFIRMED,
         },
         updatedAt: now,
       })
@@ -304,7 +336,7 @@ async function reconcileUnconfirmedAnimationGeneration(
       .set({
         status: 'FAILED',
         finishedAt: now,
-        errorMessage: ANIMATION_WORKFLOW_START_ERROR_MESSAGE,
+        errorMessage: getGenerationWorkflowStartErrorMessage(generation.type),
         metadata: {
           ...metadata,
           workflowStartCheckedAt: now.toISOString(),
@@ -345,21 +377,20 @@ async function reconcileUnconfirmedAnimationGeneration(
   return updatedRow ?? generation;
 }
 
-async function reconcileUnconfirmedAnimationGenerationsForUser(userId: string) {
-  const pendingAnimations = await db
+async function reconcileUnconfirmedGenerationStartsForUser(userId: string) {
+  const pendingGenerations = await db
     .select()
     .from(aiGenerationsTable)
     .where(
       and(
         eq(aiGenerationsTable.userId, userId),
-        eq(aiGenerationsTable.type, 'animation'),
         eq(aiGenerationsTable.status, 'PENDING'),
         eq(aiGenerationsTable.isDeleted, false),
       ),
     );
 
-  const staleRows = pendingAnimations.filter((generation) =>
-    shouldReconcileUnconfirmedAnimationStart(generation),
+  const staleRows = pendingGenerations.filter((generation) =>
+    shouldReconcileUnconfirmedGenerationStart(generation),
   );
 
   if (staleRows.length === 0) {
@@ -368,7 +399,7 @@ async function reconcileUnconfirmedAnimationGenerationsForUser(userId: string) {
 
   const results = await Promise.allSettled(
     staleRows.map(async (generation) => {
-      await reconcileUnconfirmedAnimationGeneration(generation);
+      await reconcileUnconfirmedGenerationStart(generation);
     }),
   );
 
@@ -376,7 +407,7 @@ async function reconcileUnconfirmedAnimationGenerationsForUser(userId: string) {
     if (result.status === 'rejected') {
       logger.warn(
         { error: result.reason, generationId: staleRows[index]?.id },
-        'Failed to reconcile unconfirmed animation workflow start',
+        'Failed to reconcile unconfirmed AI generation workflow start',
       );
     }
   }
@@ -390,6 +421,10 @@ function getGenerationUrl(output: AssetOutput) {
           config.CLOUD_FRONT_DOMAIN,
         )
       : null;
+  }
+
+  if (!output.storagePath) {
+    return null;
   }
 
   return generateUrlFromStoragePath(
@@ -501,7 +536,7 @@ export function getAiGenerationCreditCostForRow(
 export async function getCurrentMonthlyGenerationCreditUsage(
   userId: string,
 ): Promise<number> {
-  await reconcileUnconfirmedAnimationGenerationsForUser(userId);
+  await reconcileUnconfirmedGenerationStartsForUser(userId);
 
   const [generations, leadgenCredits] = await Promise.all([
     db
@@ -517,9 +552,8 @@ export async function getCurrentMonthlyGenerationCreditUsage(
           sql`${aiGenerationsTable.createdAt} >= date_trunc('month', now())`,
           ne(aiGenerationsTable.status, 'FAILED'),
           sql`NOT (
-          ${aiGenerationsTable.type} = 'animation'
-          AND ${aiGenerationsTable.status} = 'PENDING'
-          AND COALESCE(${aiGenerationsTable.metadata}->>'workflowStartState', '') = ${ANIMATION_WORKFLOW_START_STATE_UNCONFIRMED}
+          ${aiGenerationsTable.status} = 'PENDING'
+          AND COALESCE(${aiGenerationsTable.metadata}->>'workflowStartState', '') = ${GENERATION_WORKFLOW_START_STATE_UNCONFIRMED}
         )`,
         ),
       ),
@@ -694,7 +728,7 @@ export async function assertUserCanSpendGenerationCredits(params: {
   }
 }
 
-export async function getAnimationStartStateAfterError(
+export async function getGenerationStartStateAfterError(
   workflowId: string,
 ): Promise<'started' | 'not-found' | 'unknown'> {
   const handle = temporalClient.workflow.getHandle(workflowId);
@@ -715,13 +749,84 @@ export async function getAnimationStartStateAfterError(
 
       logger.warn(
         { error, workflowId, attempt: attempt + 1 },
-        'Unable to verify animation workflow existence after start failure',
+        'Unable to verify AI generation workflow existence after start failure',
       );
       return 'unknown';
     }
   }
 
   return 'unknown';
+}
+
+export const getAnimationStartStateAfterError =
+  getGenerationStartStateAfterError;
+
+async function startGenerationWorkflowForRecord(
+  generationRecord: AiGenerationRow,
+) {
+  const workflowId = buildAiGenerationWorkflowId(
+    generationRecord.type,
+    generationRecord.id,
+  );
+  const startResult = await startAiGenerationWorkflowWithRecovery({
+    generationId: generationRecord.id,
+    generationType: generationRecord.type,
+    workflowId,
+  });
+
+  if (startResult.state === 'started') {
+    return generationRecord;
+  }
+
+  const failedMessage = normalizeErrorMessage(
+    startResult.error,
+    getGenerationWorkflowStartErrorMessage(generationRecord.type),
+  );
+
+  if (startResult.state === 'unknown') {
+    logger.warn(
+      {
+        error: startResult.error,
+        generationId: generationRecord.id,
+        generationType: generationRecord.type,
+        workflowId,
+      },
+      'Leaving AI generation pending because workflow existence could not be confirmed',
+    );
+
+    return await markGenerationWorkflowStartUnconfirmed(
+      generationRecord,
+      failedMessage,
+    );
+  }
+
+  logger.error(
+    {
+      error: startResult.error,
+      generationId: generationRecord.id,
+      generationType: generationRecord.type,
+      workflowId,
+    },
+    'Failed to start AI generation workflow',
+  );
+
+  const [failedRow] = await db
+    .update(aiGenerationsTable)
+    .set({
+      status: 'FAILED',
+      finishedAt: new Date(),
+      errorMessage: failedMessage,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(aiGenerationsTable.id, generationRecord.id),
+        eq(aiGenerationsTable.status, 'PENDING'),
+      ),
+    )
+    .returning();
+
+  return failedRow ?? generationRecord;
 }
 
 const generateLogoInputSchema = z.object({
@@ -795,7 +900,6 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
           userId: ctx.user.id,
         });
 
-        const now = new Date();
         const {
           domain,
           description,
@@ -806,46 +910,13 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
           typography,
         } = input;
 
-        const logoResult = await runLogoWorkflow({
-          domain,
-          description,
-          preferredType: type,
-          preferredStyle: style,
-          textTreatment,
-          typography,
-          imageModel: model,
-          storage: createStorageConfig(config.AI_BUCKET_FOLDERS.LOGOS),
-        });
-
-        const resolvedConcept = logoResult.concept.logoConcept;
-        const resolvedLogoType = resolvedConcept.type ?? type;
-        const resolvedLogoStyle = resolvedConcept.style ?? style;
-        const resolvedTextTreatment =
-          resolvedConcept.textTreatment ?? textTreatment;
-        const resolvedTypography = resolvedConcept.typography ?? typography;
-
-        const aggregateTokenUsage = [
-          {
-            model: logoResult.analysis.model,
-            inputTokens: logoResult.analysis.tokenUsage?.inputTokens ?? 0,
-            outputTokens: logoResult.analysis.tokenUsage?.outputTokens ?? 0,
-          },
-          {
-            model: logoResult.image.model,
-            inputTokens: logoResult.image.tokenUsage?.inputTokens ?? 0,
-            outputTokens: logoResult.image.tokenUsage?.outputTokens ?? 0,
-          },
-        ];
-
         const [generationRecord] = await db
           .insert(aiGenerationsTable)
           .values({
             userId: ctx.user.id,
             domain,
             type: 'logo',
-            status: 'SUCCEEDED',
-            startedAt: now,
-            finishedAt: now,
+            status: 'PENDING',
             input: {
               type: 'logo',
               logoType: type,
@@ -857,18 +928,21 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
             },
             output: {
               type: 'logo',
-              storagePath: logoResult.image.storagePath,
-              logoType: resolvedLogoType,
-              logoStyle: resolvedLogoStyle,
-              textTreatment: resolvedTextTreatment,
-              typography: resolvedTypography,
-              imageModel: logoResult.image.model,
+              storagePath: '',
+              logoType: type,
+              logoStyle: style,
+              textTreatment,
+              typography,
+              imageModel: model,
             },
-            tokenUsage: aggregateTokenUsage,
+            tokenUsage: [],
           })
           .returning();
 
-        return mapAiGenerationRecord(generationRecord);
+        const latestRow =
+          await startGenerationWorkflowForRecord(generationRecord);
+
+        return mapAiGenerationRecord(latestRow);
       } catch (error) {
         logger.error({ error }, 'Logo generation error');
 
@@ -888,7 +962,6 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .output(aiContract.generatePoster.output)
     .mutation(async ({ input, ctx }) => {
       try {
-        const now = new Date();
         const {
           domain,
           description,
@@ -897,14 +970,12 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
           collateralType,
         } = input;
 
-        const {
-          referenceLogoGeneration: verifiedReferenceLogoGeneration,
-          referenceLogoPublicUrl,
-        } = await resolveOwnedLogoReference({
-          domain,
-          generationId: referenceLogoGenerationId,
-          userId: ctx.user.id,
-        });
+        const { referenceLogoGeneration: verifiedReferenceLogoGeneration } =
+          await resolveOwnedLogoReference({
+            domain,
+            generationId: referenceLogoGenerationId,
+            userId: ctx.user.id,
+          });
 
         await assertUserCanSpendGenerationCredits({
           requestedCredits: getAiGenerationCreditCost({
@@ -914,38 +985,13 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
           userId: ctx.user.id,
         });
 
-        const marketingResult = await runMarketingWorkflow({
-          domain,
-          description,
-          collateralType,
-          imageModel: model,
-          storage: createStorageConfig(config.AI_BUCKET_FOLDERS.SOCIAL),
-          referenceLogoUrl: referenceLogoPublicUrl,
-        });
-
-        const aggregateTokenUsage = [
-          {
-            model: marketingResult.analysis.model,
-            inputTokens: marketingResult.analysis.tokenUsage?.inputTokens ?? 0,
-            outputTokens:
-              marketingResult.analysis.tokenUsage?.outputTokens ?? 0,
-          },
-          {
-            model: marketingResult.image.model,
-            inputTokens: marketingResult.image.tokenUsage?.inputTokens ?? 0,
-            outputTokens: marketingResult.image.tokenUsage?.outputTokens ?? 0,
-          },
-        ];
-
         const [generationRecord] = await db
           .insert(aiGenerationsTable)
           .values({
             userId: ctx.user.id,
             domain,
             type: 'marketing',
-            status: 'SUCCEEDED',
-            startedAt: now,
-            finishedAt: now,
+            status: 'PENDING',
             input: {
               type: 'marketing',
               description,
@@ -954,16 +1000,19 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
             },
             output: {
               type: 'marketing',
-              storagePath: marketingResult.image.storagePath,
-              collateralType: marketingResult.analysis.resolvedCollateralType,
-              imageModel: marketingResult.image.model,
+              storagePath: '',
+              collateralType,
+              imageModel: model,
             },
-            tokenUsage: aggregateTokenUsage,
+            tokenUsage: [],
             referenceGenerationId: verifiedReferenceLogoGeneration.id,
           })
           .returning();
 
-        return mapAiGenerationRecord(generationRecord);
+        const latestRow =
+          await startGenerationWorkflowForRecord(generationRecord);
+
+        return mapAiGenerationRecord(latestRow);
       } catch (error) {
         logger.error({ error }, 'Poster generation error');
 
@@ -1043,72 +1092,17 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
         })
         .returning();
 
-      const workflowId = buildLogoAnimationWorkflowId(generationRecord.id);
-      const startResult = await startLogoAnimationWorkflowWithRecovery({
-        generationId: generationRecord.id,
-        workflowId,
-      });
+      const latestRow =
+        await startGenerationWorkflowForRecord(generationRecord);
 
-      if (startResult.state === 'started') {
-        return mapAiGenerationRecord(generationRecord);
-      }
-
-      const failedMessage = normalizeErrorMessage(
-        startResult.error,
-        ANIMATION_WORKFLOW_START_ERROR_MESSAGE,
-      );
-
-      if (startResult.state === 'unknown') {
-        logger.warn(
-          {
-            error: startResult.error,
-            generationId: generationRecord.id,
-            workflowId,
-          },
-          'Leaving animation generation pending because workflow existence could not be confirmed',
-        );
-
-        const latestRow = await markAnimationWorkflowStartUnconfirmed(
-          generationRecord,
-          failedMessage,
-        );
-
-        return mapAiGenerationRecord(latestRow);
-      }
-
-      logger.error(
-        {
-          error: startResult.error,
-          generationId: generationRecord.id,
-          workflowId,
-        },
-        'Failed to start logo animation workflow',
-      );
-
-      const [failedRow] = await db
-        .update(aiGenerationsTable)
-        .set({
-          status: 'FAILED',
-          finishedAt: new Date(),
-          errorMessage: failedMessage,
-          updatedAt: new Date(),
-        })
-        .where(
-          and(
-            eq(aiGenerationsTable.id, generationRecord.id),
-            eq(aiGenerationsTable.status, 'PENDING'),
-          ),
-        )
-        .returning();
-
-      return mapAiGenerationRecord(failedRow ?? generationRecord);
+      return mapAiGenerationRecord(latestRow);
     }),
 
   getGenerationsByDomain: protectedProcedure
     .input(aiContract.getGenerationsByDomain.input)
     .output(aiContract.getGenerationsByDomain.output)
     .query(async ({ input, ctx }) => {
-      await reconcileUnconfirmedAnimationGenerationsForUser(ctx.user.id);
+      await reconcileUnconfirmedGenerationStartsForUser(ctx.user.id);
 
       const generations = await db
         .select()
@@ -1162,7 +1156,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .input(aiContract.getUserGenerationsFiltered.input)
     .output(aiContract.getUserGenerationsFiltered.output)
     .query(async ({ ctx, input }) => {
-      await reconcileUnconfirmedAnimationGenerationsForUser(ctx.user.id);
+      await reconcileUnconfirmedGenerationStartsForUser(ctx.user.id);
 
       const whereConds = [
         eq(aiGenerationsTable.userId, ctx.user.id),
@@ -1191,7 +1185,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
     .input(aiContract.getGenerationsByType.input)
     .output(aiContract.getGenerationsByType.output)
     .query(async ({ input, ctx }) => {
-      await reconcileUnconfirmedAnimationGenerationsForUser(ctx.user.id);
+      await reconcileUnconfirmedGenerationStartsForUser(ctx.user.id);
 
       const generations = await db
         .select()
@@ -1290,7 +1284,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
       }
 
       const reconciledGeneration =
-        await reconcileUnconfirmedAnimationGeneration(generation);
+        await reconcileUnconfirmedGenerationStart(generation);
 
       return mapAiGenerationRecord(reconciledGeneration);
     }),

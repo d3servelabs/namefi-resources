@@ -75,6 +75,7 @@ import { usePendingGenerationProgress } from './shared/use-gallery-progress';
 import { useGenerationsGalleryData } from './shared/use-gallery-data';
 import { GenerationActionButtons } from './shared/generation-action-buttons';
 import { useDeleteGeneration } from './shared/generation-hooks';
+import { isReadyLogoGeneration } from './shared/logo-readiness';
 import { useAuth } from '@/hooks/use-auth';
 import type {
   DomainPreview,
@@ -684,7 +685,7 @@ function ReadyGenerationTile({
   isDeleting,
 }: ReadyGenerationTileProps) {
   const ctaActions =
-    item.type === 'logo' && item.generation
+    item.type === 'logo' && isReadyLogoGeneration(item.generation)
       ? [
           {
             label: 'Create Poster',
@@ -830,7 +831,7 @@ function AsyncGenerationTile({
   }, [item.domain, item.errorMessage, item.id, item.status, item.type]);
 
   const ctaActions =
-    item.type === 'logo' && item.generation
+    item.type === 'logo' && isReadyLogoGeneration(item.generation)
       ? [
           {
             label: 'Create Poster',

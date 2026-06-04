@@ -4,7 +4,7 @@ import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-act
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoStyleInput, LogoTypeInput } from '@namefi-astra/ai';
 
-export interface GenerateLogosWorkflowInput {
+export interface InternalLogoGenerationWorkflowInput {
   // model provider selection
   model:
     | 'gpt-image-1'
@@ -29,15 +29,21 @@ export interface GenerateLogosWorkflowInput {
   skipExisting?: boolean;
 }
 
-export interface GenerateLogosWorkflowResult {
+export type GenerateLogosWorkflowInput = InternalLogoGenerationWorkflowInput;
+
+export interface InternalLogoGenerationWorkflowResult {
   totalProcessed: number;
   totalSuccesses: number;
   totalFailures: number;
 }
 
+export type GenerateLogosWorkflowResult = InternalLogoGenerationWorkflowResult;
+
+// Keep the historical export name so existing Temporal workflow histories and
+// child workflow starts continue to resolve the same workflow type.
 export async function generateLogosForAliveNftsWorkflow(
-  input: GenerateLogosWorkflowInput,
-): Promise<GenerateLogosWorkflowResult> {
+  input: InternalLogoGenerationWorkflowInput,
+): Promise<InternalLogoGenerationWorkflowResult> {
   const {
     model,
     domains: explicitDomains,
@@ -52,21 +58,22 @@ export async function generateLogosForAliveNftsWorkflow(
     skipExisting = false,
   } = input;
 
-  const { listAliveNftDomains, generateLogosForDomains } = typedProxyActivities(
-    {
-      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-      options: {
-        startToCloseTimeout: '1 hour',
-        heartbeatTimeout: '30 seconds',
-        retry: {
-          initialInterval: '5 seconds',
-          backoffCoefficient: 2,
-          maximumInterval: '1 minute',
-          maximumAttempts: 5,
-        },
+  const {
+    listAliveNftDomains: listInternalLogoCandidateDomains,
+    generateLogosForDomains: generateInternalLogosForDomains,
+  } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      startToCloseTimeout: '1 hour',
+      heartbeatTimeout: '30 seconds',
+      retry: {
+        initialInterval: '5 seconds',
+        backoffCoefficient: 2,
+        maximumInterval: '1 minute',
+        maximumAttempts: 5,
       },
     },
-  );
+  });
 
   let offset = startOffset;
   let afterDomain: NamefiNormalizedDomain | undefined;
@@ -77,15 +84,16 @@ export async function generateLogosForAliveNftsWorkflow(
 
   // If explicit domains provided, process them directly and return
   if (explicitDomains && explicitDomains.length > 0) {
-    const { processed, successes, failures } = await generateLogosForDomains({
-      domains: explicitDomains,
-      model,
-      concurrency: perPageConcurrency,
-      description,
-      logoType,
-      logoStyle,
-      batchId,
-    });
+    const { processed, successes, failures } =
+      await generateInternalLogosForDomains({
+        domains: explicitDomains,
+        model,
+        concurrency: perPageConcurrency,
+        description,
+        logoType,
+        logoStyle,
+        batchId,
+      });
     return {
       totalProcessed: processed,
       totalSuccesses: successes,
@@ -97,7 +105,7 @@ export async function generateLogosForAliveNftsWorkflow(
   while (true) {
     if (maxPages !== undefined && page >= maxPages) break;
 
-    const domains = await listAliveNftDomains({
+    const domains = await listInternalLogoCandidateDomains({
       limit: pageSize,
       offset: skipExisting ? 0 : offset,
       afterDomain: skipExisting ? afterDomain : undefined,
@@ -105,15 +113,16 @@ export async function generateLogosForAliveNftsWorkflow(
     });
     if (!domains.length) break;
 
-    const { processed, successes, failures } = await generateLogosForDomains({
-      domains,
-      model,
-      concurrency: perPageConcurrency,
-      description,
-      logoType,
-      logoStyle,
-      batchId,
-    });
+    const { processed, successes, failures } =
+      await generateInternalLogosForDomains({
+        domains,
+        model,
+        concurrency: perPageConcurrency,
+        description,
+        logoType,
+        logoStyle,
+        batchId,
+      });
 
     totalProcessed += processed;
     totalSuccesses += successes;

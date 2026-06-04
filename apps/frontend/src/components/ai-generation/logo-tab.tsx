@@ -12,6 +12,7 @@ import {
   createLogoGenerationPayload,
 } from './shared/generation-hooks';
 import type { Generation } from './shared/types';
+import { isReadyLogoGeneration } from './shared/logo-readiness';
 import {
   type RequestedDerivativeMode,
   useDerivativeFlow,
@@ -50,6 +51,10 @@ export function LogoTab({
       nextMode: RequestedDerivativeMode | null = requestedMode,
     ) => {
       setLatestGeneration(result);
+      if (!isReadyLogoGeneration(result)) {
+        return;
+      }
+
       requestFeedback(feedbackTriggerSchema.enum.MILESTONE_LOGO_GENERATED);
 
       if (nextMode === 'poster') {

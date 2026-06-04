@@ -98,9 +98,103 @@ vi.mock('#temporal/shared', () => ({
   },
 }));
 
-vi.mock('#temporal/workflows/logo-animation.workflow', () => ({
-  generateLogoAnimationWorkflow: vi.fn(),
+vi.mock('#temporal/workflows/studio-generation.workflow', () => ({
+  generateStudioAnimationWorkflow: vi.fn(),
+  generateStudioLogoWorkflow: vi.fn(),
+  generateStudioPosterWorkflow: vi.fn(),
 }));
+
+vi.mock('@namefi-astra/common/ai-generation-credits', async () => {
+  const { z } = await import('zod');
+  const aiGenerationCreditCostSchema = z.number().int().min(0).max(1_000);
+  const aiGenerationModeCreditCostsSchema = z.object({
+    default: aiGenerationCreditCostSchema.optional(),
+    models: z.record(z.string(), aiGenerationCreditCostSchema).default({}),
+  });
+  const aiGenerationTypeCreditCostsSchema = z.object({
+    default: aiGenerationCreditCostSchema.optional(),
+    models: z.record(z.string(), aiGenerationCreditCostSchema).default({}),
+    modes: z.record(z.string(), aiGenerationModeCreditCostsSchema).default({}),
+  });
+
+  function getAiGenerationCreditCost(params: {
+    mode?: string;
+    model?: string;
+    type: 'animation' | 'logo' | 'marketing';
+  }) {
+    const costs = {
+      default: 1,
+      logo: {
+        default: 1,
+        models: {
+          'gpt-image-2': 2,
+        },
+      },
+      marketing: {
+        default: 1,
+        models: {
+          'gpt-image-2': 2,
+        },
+      },
+      animation: {
+        default: 3,
+        models: {
+          'veo-3.1-generate-preview': 8,
+          'veo-3.1-fast-generate-preview': 4,
+          'bytedance/seedance-2.0': 3,
+          'bytedance/seedance-2.0-fast': 2,
+          'bytedance/seedance-v1.0-pro': 3,
+          'bytedance/seedance-v1.5-pro': 3,
+        },
+        modes: {
+          'sheet-guided': {
+            default: 7,
+            models: {
+              'bytedance/seedance-2.0': 7,
+              'bytedance/seedance-2.0-fast': 6,
+            },
+          },
+        },
+      },
+    } as const;
+    const typeCosts = costs[params.type] as {
+      default: number;
+      models: Record<string, number>;
+      modes?: Record<
+        string,
+        { default?: number; models: Record<string, number> }
+      >;
+    };
+    const modeCosts =
+      params.type === 'animation' && params.mode
+        ? typeCosts.modes?.[params.mode]
+        : undefined;
+
+    if (modeCosts && params.model) {
+      return modeCosts.models[params.model] ?? modeCosts.default;
+    }
+
+    if (params.model) {
+      return typeCosts.models[params.model] ?? typeCosts.default;
+    }
+
+    return typeCosts.default;
+  }
+
+  return {
+    aiGenerationCreditCostsSchema: z.object({
+      default: aiGenerationCreditCostSchema,
+      logo: aiGenerationTypeCreditCostsSchema,
+      marketing: aiGenerationTypeCreditCostsSchema,
+      animation: aiGenerationTypeCreditCostsSchema,
+      leadgen: aiGenerationTypeCreditCostsSchema,
+      leadgenOutreach: aiGenerationTypeCreditCostsSchema,
+    }),
+    getAiGenerationCreditCost,
+    getAiTokenUsageCreditCost: vi.fn(() => 0),
+    getLeadgenRunCreditEstimate: vi.fn(() => 0),
+  };
+});
 
 vi.mock('@namefi-astra/db', () => ({
   db: {
@@ -201,6 +295,14 @@ vi.mock('@namefi-astra/storage', () => ({
   generateUrlFromStoragePath: generateUrlFromStoragePathMock,
 }));
 
+vi.mock('@namefi-astra/utils', async () => {
+  const { z } = await import('zod');
+
+  return {
+    namefiNormalizedDomainSchema: z.string(),
+  };
+});
+
 vi.mock('../../base', () => ({
   createTRPCRouter: (router: unknown) => router,
   protectedProcedure: procedureBuilder,
@@ -214,6 +316,7 @@ const {
   getAnimationStartStateAfterError,
   getActiveAiCreditAwardCredits,
   getUserGenerationCreditUsage,
+  startAiGenerationWorkflowWithRecovery,
   startLogoAnimationWorkflowWithRecovery,
 } = await import('../aiRouter');
 const { resolveLogoReferenceDetails } = await import(
@@ -402,12 +505,12 @@ describe('getAnimationStartStateAfterError', () => {
 
     expect(mockLogger.warn).toHaveBeenCalledWith(
       { attempt: 1, error: describeError, workflowId: 'wid-3' },
-      'Unable to verify animation workflow existence after start failure',
+      'Unable to verify AI generation workflow existence after start failure',
     );
   });
 });
 
-describe('startLogoAnimationWorkflowWithRecovery', () => {
+describe('startAiGenerationWorkflowWithRecovery', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     describeMock.mockReset();
@@ -445,10 +548,31 @@ describe('startLogoAnimationWorkflowWithRecovery', () => {
     expect(mockLogger.warn).toHaveBeenCalledWith(
       {
         error: startError,
+        generationType: 'animation',
         generationId: 'generation-1',
         workflowId: 'logo-animation-generation-1',
       },
-      'Animation workflow start failed; retrying with workflow reconciliation',
+      'AI generation workflow start failed; retrying with workflow reconciliation',
+    );
+  });
+
+  it('can start a logo generation workflow through the shared helper', async () => {
+    startMock.mockResolvedValueOnce({});
+
+    await expect(
+      startAiGenerationWorkflowWithRecovery({
+        generationId: 'generation-3',
+        generationType: 'logo',
+        workflowId: 'logo-generation-generation-3',
+      }),
+    ).resolves.toEqual({ state: 'started' });
+
+    expect(startMock).toHaveBeenCalledWith(
+      expect.any(Function),
+      expect.objectContaining({
+        workflowId: 'logo-generation-generation-3',
+        workflowIdConflictPolicy: 'FAIL',
+      }),
     );
   });
 
@@ -614,6 +738,7 @@ describe('resolveLogoReferenceDetails', () => {
           referenceLogoGeneration: {
             id: 'logo-1',
             domain: 'other.com',
+            status: 'SUCCEEDED',
             output: { type: 'logo', storagePath: 'logos/logo.png' },
           } as any,
         }),
@@ -627,6 +752,7 @@ describe('resolveLogoReferenceDetails', () => {
       referenceLogoGeneration: {
         id: 'logo-1',
         domain: 'example.com',
+        status: 'SUCCEEDED',
         output: { type: 'logo', storagePath: 'logos/logo.png' },
       } as any,
     });
@@ -639,6 +765,22 @@ describe('resolveLogoReferenceDetails', () => {
       'https://cdn.test/logos/logo.png',
     );
     expect(result.referenceLogoGeneration.id).toBe('logo-1');
+  });
+
+  it('rejects a logo reference that is not ready', () => {
+    expectTRPCErrorCode(
+      () =>
+        resolveLogoReferenceDetails({
+          domain: 'example.com',
+          referenceLogoGeneration: {
+            id: 'logo-1',
+            domain: 'example.com',
+            status: 'PENDING',
+            output: { type: 'logo', storagePath: '' },
+          } as any,
+        }),
+      'NOT_FOUND',
+    );
   });
 });
 

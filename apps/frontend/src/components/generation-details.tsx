@@ -57,6 +57,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { collateralLabels } from './ai-generation/poster-generator';
 import { useAuth } from '@/hooks/use-auth';
 import { useDeleteGeneration } from './ai-generation/shared/generation-hooks';
+import { isReadyLogoGeneration } from './ai-generation/shared/logo-readiness';
 import {
   buildDownloadFilename,
   downloadGenerationAsset,
@@ -520,6 +521,7 @@ export function GenerationDetailsClient({
     !!user?.id &&
     !!generation?.userId &&
     user.id === generation.userId;
+  const canUseAsLogoReference = isReadyLogoGeneration(generation);
 
   const handleCopyLink = useCallback(async () => {
     try {
@@ -536,7 +538,7 @@ export function GenerationDetailsClient({
   }, [currentUrl]);
 
   const handleCreatePoster = useCallback(() => {
-    if (generation?.type !== 'logo') return;
+    if (!isReadyLogoGeneration(generation)) return;
     if (!generation?.id || !generation?.domain) return;
     const params = new URLSearchParams();
     if (canDelete) {
@@ -546,10 +548,10 @@ export function GenerationDetailsClient({
       params.set('domain', generation.domain);
     }
     router.push(`/studio?${params.toString()}`);
-  }, [canDelete, generation?.domain, generation?.id, generation?.type, router]);
+  }, [canDelete, generation, router]);
 
   const handleCreateAnimation = useCallback(() => {
-    if (generation?.type !== 'logo') return;
+    if (!isReadyLogoGeneration(generation)) return;
     if (!generation?.id || !generation?.domain) return;
     const params = new URLSearchParams();
     if (canDelete) {
@@ -559,7 +561,7 @@ export function GenerationDetailsClient({
       params.set('domain', generation.domain);
     }
     router.push(`/studio?${params.toString()}`);
-  }, [canDelete, generation?.domain, generation?.id, generation?.type, router]);
+  }, [canDelete, generation, router]);
 
   // Create brand name from domain
   const brandName = domain
@@ -695,7 +697,7 @@ export function GenerationDetailsClient({
           <div className="space-y-6">
             {/* Actions */}
             <div className="space-y-3">
-              {generation.type === 'logo' && (
+              {canUseAsLogoReference && (
                 <div className="grid gap-2">
                   <Button
                     className={logoCtaButtonClassName}

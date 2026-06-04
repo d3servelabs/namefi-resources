@@ -16,6 +16,7 @@ import {
   type RequestedDerivativeMode,
 } from './derivative-flow-context';
 import type { DomainPreview } from './shared/gallery-types';
+import { isReadyLogoGeneration } from './shared/logo-readiness';
 
 function parseNextDerivativeMode(
   value: string | null,
@@ -177,10 +178,7 @@ export function StudioDerivativeRouteInitializer({
 
     if (!sourceGeneration || isAuthLoading) return;
 
-    if (
-      sourceGeneration.type !== 'logo' &&
-      sourceGeneration.output?.type !== 'logo'
-    ) {
+    if (!isReadyLogoGeneration(sourceGeneration)) {
       handledRef.current = activeKey;
       clearDerivativeRoute();
       return;
