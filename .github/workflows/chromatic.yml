@@ -15,6 +15,12 @@ on:
   # (Settings -> Branches -> require merge queue). Until then, Chromatic runs on
   # main pushes only.
   merge_group:
+  # On-demand run for any branch via `gh workflow run chromatic.yml --ref <branch>`
+  # or the Actions "Run workflow" button — useful now that per-PR builds are gone.
+  # The chromatic job force-runs on this event (see its `if`), bypassing the
+  # `changes` gate, because a manual run has no reliable diff base for
+  # dorny/paths-filter. Must live on the default branch to be dispatchable.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -116,7 +122,13 @@ jobs:
     # paths-filter hiccup then yields visual='' and Chromatic still runs. Better
     # to pay for a build than to silently disable the visual gate. We use
     # `!cancelled()` rather than `always()` so a cancelled run won't spawn a build.
-    if: ${{ !cancelled() && needs.changes.outputs.visual != 'false' }}
+    #
+    # `workflow_dispatch` ALWAYS builds, bypassing the gate: a manual run has no
+    # reliable diff base, so dorny/paths-filter may diff only the latest commit
+    # and set visual='false' (skipping Chromatic) when that commit happens not to
+    # touch apps/frontend or packages/ui. Since the whole point of a manual run is
+    # to force a snapshot on demand, we never let the gate skip it.
+    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || needs.changes.outputs.visual != 'false') }}
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     steps:
       - uses: actions/checkout@v5
