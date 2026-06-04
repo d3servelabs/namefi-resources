@@ -181,6 +181,7 @@
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
     "@react-email/preview-server": "4.3.2",
+    "@temporalio/testing": "catalog:",
     "@types/bcryptjs": "^3.0.0",
     "@types/handlebars": "^4.1.0",
     "@types/node": "^22.13.14",
