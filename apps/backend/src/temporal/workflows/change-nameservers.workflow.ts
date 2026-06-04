@@ -8,6 +8,10 @@ import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
+import {
+  createDecisionGateRegistry,
+  runWithDecisionGate,
+} from '../shared/workflow-helpers/decision-gate';
 
 import {
   createWorkflowProgress,
@@ -32,6 +36,12 @@ export type ChangeNameserversStepId =
 export const getChangeNameserversProgressQuery = defineQuery<
   WorkflowProgressState<ChangeNameserversStepId>
 >('getChangeNameserversProgress');
+
+/**
+ * How long the nameserver-change decision gate waits for an admin decision
+ * before timing out and failing the workflow.
+ */
+const NAMESERVER_CHANGE_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
 export interface ChangeNameserversWorkflowInput {
   domainName: PunycodeDomainName;
@@ -172,51 +182,75 @@ export async function changeNameserversWorkflow({
       );
     }
 
-    // Step 2: Set nameservers
-    progress.startStep('set-nameservers');
-    const registrarOperation = await setNameserversForDomain({
-      domainName,
-      nameservers,
-    });
-
-    if (!registrarOperation.operationId) {
-      progress.failStep('set-nameservers', 'No operation ID returned');
-      progress.fail('Nameservers change failed, no operation ID returned');
-      throw workflow.ApplicationFailure.create({
-        message: 'Nameservers change failed, no operation ID returned',
+    // Steps 2 & 3: set the nameservers and verify the registrar operation.
+    // Throws on failure; the outer catch finalizes progress + notifies. (It
+    // reproduces the same failure messages the inline branches used to set, so
+    // the user-facing outcome is unchanged.)
+    const setNameserversAndVerify = async (): Promise<void> => {
+      // Step 2: Set nameservers
+      progress.startStep('set-nameservers');
+      const registrarOperation = await setNameserversForDomain({
+        domainName,
+        nameservers,
       });
-    }
-    progress.completeStep('set-nameservers');
 
-    // Step 3: Verify change
-    progress.startStep('verify-change');
-    const nameserversChangeStatus = hasCancellationSupport
-      ? await pollWithTimeoutAlert(
-          pollRegistrarOperationStatus({
+      if (!registrarOperation.operationId) {
+        progress.failStep('set-nameservers', 'No operation ID returned');
+        throw workflow.ApplicationFailure.create({
+          message: 'Nameservers change failed, no operation ID returned',
+        });
+      }
+      progress.completeStep('set-nameservers');
+
+      // Step 3: Verify change
+      progress.startStep('verify-change');
+      const nameserversChangeStatus = hasCancellationSupport
+        ? await pollWithTimeoutAlert(
+            pollRegistrarOperationStatus({
+              domainName,
+              registrarOperationId: registrarOperation.operationId,
+            }),
+            {
+              domainName,
+              operationLabel: 'Nameservers change verification',
+            },
+          )
+        : await pollRegistrarOperationStatus({
             domainName,
             registrarOperationId: registrarOperation.operationId,
-          }),
-          {
-            domainName,
-            operationLabel: 'Nameservers change verification',
-          },
-        )
-      : await pollRegistrarOperationStatus({
-          domainName,
-          registrarOperationId: registrarOperation.operationId,
-        });
+          });
 
-    if (matchAny(nameserversChangeStatus, 'FAILED', 'ERROR')) {
-      progress.failStep(
-        'verify-change',
-        'Nameservers change verification failed',
-      );
-      progress.fail('Nameservers change failed');
-      throw workflow.ApplicationFailure.create({
-        message: 'Nameservers change failed',
+      if (matchAny(nameserversChangeStatus, 'FAILED', 'ERROR')) {
+        progress.failStep(
+          'verify-change',
+          'Nameservers change verification failed',
+        );
+        throw workflow.ApplicationFailure.create({
+          message: 'Nameservers change failed',
+        });
+      }
+      progress.completeStep('verify-change');
+    };
+
+    // New runs wrap the attempt in a decision gate: on failure, alert the team
+    // and wait for an admin to PROCEED/RETRY (re-attempt) or CANCEL. Resolved
+    // via the generic admin endpoint (admin.workflowDecision.sendDecision) on
+    // workflowId `change-nameservers-[<domain>]`. In-flight (pre-patch) runs
+    // keep the original direct path so their replay is unaffected.
+    if (workflow.patched('change-nameservers-decision-gate')) {
+      const decisionRegistry = createDecisionGateRegistry();
+      await runWithDecisionGate({
+        registry: decisionRegistry,
+        interactionId: 'nameserver-change',
+        action: setNameserversAndVerify,
+        alertMessage: `Nameserver change failed for ${domainName}`,
+        alertSeverity: 'general',
+        timeoutMs: NAMESERVER_CHANGE_DECISION_TIMEOUT_MS,
+        onTimeout: { kind: 'throw' },
       });
+    } else {
+      await setNameserversAndVerify();
     }
-    progress.completeStep('verify-change');
 
     progress.complete();
   } catch (e) {

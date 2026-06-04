@@ -16,6 +16,16 @@ import {
   resolveWorkflowCheckoutTracking,
   type WorkflowCheckoutTrackingInput,
 } from '../shared/workflow-helpers/checkout-tracking';
+import {
+  createDecisionGateRegistry,
+  runWithDecisionGate,
+} from '../shared/workflow-helpers/decision-gate';
+
+/**
+ * How long an order item's decision gate waits for an admin decision before
+ * timing out and failing the item.
+ */
+const PROCESS_ORDER_ITEM_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
 export interface ProcessOrderItemWorkflowInput
   extends Omit<AcquireDomainWorkflowInput, 'operationType'> {
@@ -116,6 +126,43 @@ export async function processOrderItemWorkflow(
       }
     }
 
+    // Each item type runs under a decision gate (new runs only): on failure,
+    // alert the team and wait for an admin to CANCEL (fail the item → refund) or
+    // RESPOND (the admin completed it out-of-band; the item resolves as done).
+    // RETRY/PROCEED are intentionally NOT offered: re-running acquire/renew is
+    // not idempotent — the child uses `workflowIdReusePolicy: ALLOW_DUPLICATE`,
+    // so a retry could launch a second registrar run. Resolved via
+    // admin.workflowDecision.sendDecision targeting this workflow's id (default
+    // `decisionGate` signal — this is the only registry in the execution; the
+    // acquire/renew children run as separate executions). In-flight (pre-patch)
+    // runs take the original direct path so their replay is unaffected.
+    const decisionRegistry = workflow.patched(
+      'process-order-item-decision-gate',
+    )
+      ? createDecisionGateRegistry()
+      : undefined;
+
+    const runItemOperation = <T>(action: () => Promise<T>): Promise<T> =>
+      decisionRegistry
+        ? runWithDecisionGate({
+            registry: decisionRegistry,
+            interactionId: 'process-order-item',
+            action,
+            alertMessage: `Order item processing failed for ${normalizedDomainName} (${operationType})`,
+            alertSeverity: 'general',
+            alertDetails: {
+              orderId: input.orderId,
+              orderItemId: input.itemId,
+              operationType,
+              normalizedDomainName,
+            },
+            allowedActors: ['ADMIN'],
+            allowedActions: ['CANCEL', 'RESPOND'],
+            timeoutMs: PROCESS_ORDER_ITEM_DECISION_TIMEOUT_MS,
+            onTimeout: { kind: 'throw' },
+          })
+        : action();
+
     if (operationType === 'RENEW') {
       const workflowInput: ExtendDomainRegistrationWorkflowInput = {
         ownerAddress: recipientWalletAddress,
@@ -124,13 +171,16 @@ export async function processOrderItemWorkflow(
         userId,
       };
       // Extend/renew the domain registration
-      await workflow.executeChild(extendDomainRegistrationWorkflow, {
-        args: [workflowInput],
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: extendDomainRegistrationWorkflow.generateId(workflowInput),
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        parentClosePolicy: 'REQUEST_CANCEL',
-      });
+      await runItemOperation(() =>
+        workflow.executeChild(extendDomainRegistrationWorkflow, {
+          args: [workflowInput],
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          workflowId:
+            extendDomainRegistrationWorkflow.generateId(workflowInput),
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        }),
+      );
     } else {
       if (trackGaEvents) {
         try {
@@ -170,13 +220,15 @@ export async function processOrderItemWorkflow(
         gaEventTracking: input.gaEventTracking,
       };
       // Register or import the domain
-      const acquireResult = await workflow.executeChild(acquireDomainWorkflow, {
-        args: [workflowInput],
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: acquireDomainWorkflow.generateId(workflowInput),
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        parentClosePolicy: 'REQUEST_CANCEL',
-      });
+      const acquireResult = await runItemOperation(() =>
+        workflow.executeChild(acquireDomainWorkflow, {
+          args: [workflowInput],
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          workflowId: acquireDomainWorkflow.generateId(workflowInput),
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        }),
+      );
 
       if (acquireResult?.mintTxHash) {
         const [mintMetadataError] = await resolve(
