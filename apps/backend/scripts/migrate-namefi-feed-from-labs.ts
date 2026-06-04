@@ -48,7 +48,7 @@ interface LabsPostRow extends QueryResultRow {
   message_source: string;
   external_chat_id: string;
   external_message_id: string;
-  external_author_id: string;
+  author_id: string;
   author_metadata: unknown;
   text: string | null;
   raw_payload: unknown;
@@ -75,7 +75,7 @@ interface LabsListingRow extends QueryResultRow {
   created_at: Date | string | null;
   updated_at: Date | string | null;
   external_message_id: string;
-  external_author_id: string;
+  author_id: string;
   author_metadata: unknown;
   message_text: string | null;
   posted_at: Date | string | null;
@@ -393,13 +393,10 @@ async function countRows(pool: Pick<Pool, 'query'>, query: string) {
 
 const sourcePostsWhereSql = `
   m.channel = 'twitter'
-  AND (
-    m.message_source = 'sale'
-    OR EXISTS (
-      SELECT 1
-      FROM domain_sale_listings listing
-      WHERE listing.channel_message_id = m.id
-    )
+  AND EXISTS (
+    SELECT 1
+    FROM domain_sale_listings listing
+    WHERE listing.channel_message_id = m.id
   )
 `;
 
@@ -523,7 +520,7 @@ async function migratePosts(input: {
           selected.message_source,
           selected.external_chat_id,
           selected.external_message_id,
-          selected.external_author_id,
+          selected.author_id,
           selected.author_metadata,
           selected.text,
           selected.raw_payload,
@@ -644,7 +641,7 @@ async function migratePosts(input: {
 function buildPostValue(row: LabsPostRow, runId: string) {
   const externalPostId = normalizeRequiredString(row.external_message_id);
   const externalAuthorId =
-    normalizeRequiredString(row.external_author_id) ??
+    normalizeRequiredString(row.author_id) ??
     normalizeRequiredString(row.external_chat_id) ??
     externalPostId;
 
@@ -769,7 +766,7 @@ async function migrateListings(input: {
           listing.created_at,
           listing.updated_at,
           message.external_message_id,
-          message.external_author_id,
+          message.author_id,
           message.author_metadata,
           message.text AS message_text,
           COALESCE(message.external_created_at, listing.created_at) AS posted_at
