@@ -1748,8 +1748,6 @@ function getRunningOperationStatus(response?: {
     : OperationStatus.FAILED;
 }
 
-Error.stackTraceLimit = 100;
-
 class DynadotRegistrarError extends Error {
   constructor(
     public key: string,

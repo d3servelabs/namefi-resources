@@ -17,7 +17,7 @@ ARG BASE_IMAGE=node:jod-bullseye-slim
 # Set to production environment
 ENV NODE_ENV=production
 ENV ENVIRONMENT=production
-ENV NODE_OPTIONS="--max-old-space-size=2048"
+ENV NODE_OPTIONS="--max-semi-space-size=256 --max-old-space-size=2048 --stack-size=1024 --stack-trace-limit=1000 --enable-source-maps"
 ENV CI="true"
 
 # `dns-root-data` is the Debian-maintained IANA root trust anchor —

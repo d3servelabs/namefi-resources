@@ -27,8 +27,6 @@ function _bindLogData(bindings: Record<string, any>) {
   });
 }
 
-Error.stackTraceLimit = 100;
-
 if (process.env.INSPECTOR_PORT) {
   inspector.open(Number(process.env.INSPECTOR_PORT));
 }

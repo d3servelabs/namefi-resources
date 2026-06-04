@@ -42,7 +42,7 @@
     "bundle:workflows": "bun scripts/bundle-workflows.ts",
     "validate:workflow-exports": "tsx scripts/validate-workflow-exports.ts",
     "debug:workflows": "tsx scripts/workflow-debug-helper.ts",
-    "start": "node --enable-source-maps dist/index.js",
+    "start": "node --stack-size=1024 --stack-trace-limit=1000 --enable-source-maps dist/index.js",
     "start:bun": "bun dist/index.js",
     "start:temporal": "node --enable-source-maps dist/temporal/main.temporal.js",
     "validate:secrets": "bun run src/lib/env/index.ts",

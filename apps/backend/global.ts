@@ -1,5 +1,6 @@
 import superjson from 'superjson';
 import { logger as loggerInstance } from '#lib/logger';
+Error.stackTraceLimit = 1000;
 
 const tryOrNull = (fn: (...args: any[]) => any, ...args: any[]) => {
   try {
