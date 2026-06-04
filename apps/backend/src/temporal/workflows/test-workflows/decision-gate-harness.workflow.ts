@@ -204,7 +204,13 @@ export async function runWithGateHarnessWorkflow(
     action: async () => {
       attempts++;
       if (attempts <= input.failTimes) {
-        throw new Error(`harness action failure #${attempts}`);
+        // Non-retryable (like the production poll failures) so PROCEED's
+        // passthrough re-throw fails the workflow terminally instead of looping
+        // as a retryable workflow-task failure.
+        throw workflow.ApplicationFailure.create({
+          message: `harness action failure #${attempts}`,
+          nonRetryable: true,
+        });
       }
       if (attempts <= input.failTimes + hangTimes) {
         // Hangs past the action deadline; withTimeout cancels this sleep.

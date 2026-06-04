@@ -1,15 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { z } from 'zod';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  decisionGateResponseSchemas,
-  expirationIsoSchema,
-  operationStatusSchema,
-  processOrderItemGateResponseSchema,
-  TERMINAL_OPERATION_STATUSES,
-} from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+import { decisionGateResponseSchemas } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 import {
   Card,
   CardContent,
@@ -54,6 +49,7 @@ type SendDecisionInput = {
   action: 'PROCEED' | 'CANCEL' | 'RETRY' | 'RESPOND';
   interactionId: string;
   response?: unknown;
+  cancelError?: { message?: string; type?: string };
 };
 
 const ACTION_ICON = {
@@ -75,18 +71,69 @@ function responseSchemaFor(interactionId: string) {
   ];
 }
 
-type ResolvedResponse =
-  | { ok: true; value: unknown }
-  | { ok: false; message: string };
+/**
+ * One form field derived from a gate's RESPOND zod schema. `name === ''` is the
+ * single field for a scalar (non-object) schema.
+ */
+type SchemaField = {
+  name: string;
+  label: string;
+  optional: boolean;
+} & ({ kind: 'enum'; options: readonly string[] } | { kind: 'string' });
 
-/** Folds a zod `safeParse` result into a {@link ResolvedResponse}. */
-function toResolvedResponse(
-  parsed: { success: true; data: unknown } | { success: false },
-  message: string,
-): ResolvedResponse {
-  return parsed.success
-    ? { ok: true, value: parsed.data }
-    : { ok: false, message };
+/**
+ * Classifies a leaf zod schema into a form field using only stable public API
+ * (`instanceof` + `safeParse(undefined)` for optionality), so it works across
+ * zod versions without touching internals.
+ */
+function classifyLeaf(
+  schema: z.ZodType,
+  name: string,
+  label: string,
+): SchemaField {
+  const optional = schema.safeParse(undefined).success;
+  if (schema instanceof z.ZodEnum) {
+    return {
+      name,
+      label,
+      optional,
+      kind: 'enum',
+      options: [...schema.options] as readonly string[],
+    };
+  }
+  return { name, label, optional, kind: 'string' };
+}
+
+/**
+ * Describes the form fields for a gate's RESPOND schema by introspecting the
+ * shared zod schema — so a new gate works in this UI with no extra state/branch.
+ */
+function describeSchemaFields(schema: z.ZodType | undefined): SchemaField[] {
+  if (!schema) return [];
+  if (schema instanceof z.ZodObject) {
+    const shape = schema.shape as Record<string, z.ZodType>;
+    return Object.entries(shape).map(([key, field]) =>
+      classifyLeaf(field, key, key),
+    );
+  }
+  return [classifyLeaf(schema, '', 'Value')];
+}
+
+/** Builds the RESPOND payload from the form values for a schema. */
+function buildCandidate(
+  schema: z.ZodType,
+  fields: SchemaField[],
+  values: Record<string, string>,
+): unknown {
+  if (schema instanceof z.ZodObject) {
+    const candidate: Record<string, string> = {};
+    for (const field of fields) {
+      const value = values[field.name]?.trim();
+      if (value) candidate[field.name] = value;
+    }
+    return candidate;
+  }
+  return values[''] ?? '';
 }
 
 export default withAdminGuard(function DecisionGatesPage() {
@@ -225,14 +272,22 @@ export default withAdminGuard(function DecisionGatesPage() {
                               />
                             );
                           }
+                          if (action === 'CANCEL') {
+                            return (
+                              <CancelDialog
+                                key={action}
+                                workflowId={workflow.workflowId}
+                                gate={gate}
+                                onSend={send}
+                              />
+                            );
+                          }
                           const Icon = ACTION_ICON[action];
                           return (
                             <AsyncButton
                               key={action}
                               size="sm"
-                              variant={
-                                action === 'CANCEL' ? 'destructive' : 'outline'
-                              }
+                              variant="outline"
                               onClick={() =>
                                 send({
                                   workflowId: workflow.workflowId,
@@ -260,6 +315,49 @@ export default withAdminGuard(function DecisionGatesPage() {
   );
 });
 
+function SchemaFieldInput({
+  field,
+  value,
+  onChange,
+}: {
+  field: SchemaField;
+  value: string;
+  onChange: (next: string) => void;
+}) {
+  const id = `respond-${field.name || 'value'}`;
+  return (
+    <div className="space-y-2">
+      <label className="text-sm font-medium" htmlFor={id}>
+        {field.label}
+        {field.optional ? ' (optional)' : ''}
+      </label>
+      {field.kind === 'enum' ? (
+        <select
+          id={id}
+          className="border-input bg-transparent flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-sm"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="" disabled>
+            Select a value…
+          </option>
+          {field.options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <Input
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
+    </div>
+  );
+}
+
 function RespondDialog({
   workflowId,
   gate,
@@ -270,64 +368,34 @@ function RespondDialog({
   onSend: (input: SendDecisionInput) => Promise<boolean>;
 }) {
   const [open, setOpen] = useState(false);
-  const [mintTxHash, setMintTxHash] = useState('');
-  // No default: the admin must explicitly pick a status (empty fails the schema
-  // parse below) so the happy path can't be sent by accident in a recovery flow.
-  const [status, setStatus] = useState<string>('');
-  const [expirationIso, setExpirationIso] = useState('');
+  // One generic value map keyed by field name — driven entirely by the gate's
+  // RESPOND zod schema, so a new gate needs no new state or branch here.
+  const [values, setValues] = useState<Record<string, string>>({});
 
   const schema = responseSchemaFor(gate.interactionId);
-  const isProcessOrderItem = gate.interactionId === 'process-order-item';
-  const isOperationStatus = schema === operationStatusSchema;
-  const isExpirationIso = schema === expirationIsoSchema;
-
-  // Validate + build the RESPOND payload for the gate's declared schema. Kept
-  // separate so `submit` stays a thin orchestration step.
-  const resolveResponse = (): ResolvedResponse => {
-    if (isProcessOrderItem) {
-      const candidate = mintTxHash.trim()
-        ? { mintTxHash: mintTxHash.trim() }
-        : {};
-      return toResolvedResponse(
-        processOrderItemGateResponseSchema.safeParse(candidate),
-        'Invalid response payload',
-      );
-    }
-    if (isOperationStatus) {
-      return toResolvedResponse(
-        operationStatusSchema.safeParse(status),
-        'Pick a verified status',
-      );
-    }
-    if (isExpirationIso) {
-      return toResolvedResponse(
-        expirationIsoSchema.safeParse(expirationIso.trim()),
-        'Enter the new expiration as an ISO-8601 timestamp',
-      );
-    }
-    // Gate takes no payload — RESPOND just resolves it as done.
-    return { ok: true, value: undefined };
-  };
+  const fields = describeSchemaFields(schema);
 
   const submit = async () => {
-    const resolved = resolveResponse();
-    if (!resolved.ok) {
-      toast.error(resolved.message);
-      return;
+    let response: unknown;
+    if (schema) {
+      const parsed = schema.safeParse(buildCandidate(schema, fields, values));
+      if (!parsed.success) {
+        toast.error('Invalid response — check the fields and try again.');
+        return;
+      }
+      response = parsed.data;
     }
     const sent = await onSend({
       workflowId,
       signalName: gate.signalName,
       action: 'RESPOND',
       interactionId: gate.interactionId,
-      response: resolved.value,
+      response,
     });
     // Keep the dialog (and the typed payload) on failure — onError already toasted.
     if (sent) {
       setOpen(false);
-      setMintTxHash('');
-      setExpirationIso('');
-      setStatus('');
+      setValues({});
     }
   };
 
@@ -347,69 +415,23 @@ function RespondDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {isProcessOrderItem ? (
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="mintTxHash">
-              Mint transaction hash (optional)
-            </label>
-            <Input
-              id="mintTxHash"
-              placeholder="0x… (leave blank if none)"
-              value={mintTxHash}
-              onChange={(e) => setMintTxHash(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">
-              Use this when the registration/mint was completed out-of-band. The
-              item is recorded and marked SUCCEEDED.
-            </p>
-          </div>
-        ) : isOperationStatus ? (
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="opStatus">
-              Verified registrar operation status
-            </label>
-            <select
-              id="opStatus"
-              className="border-input bg-transparent flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-sm"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="" disabled>
-                Select a verified status…
-              </option>
-              {TERMINAL_OPERATION_STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-            <p className="text-xs text-muted-foreground">
-              The poll timed out but the operation is still queued. Verify the
-              registrar's real state, then send the status the workflow should
-              continue with.
-            </p>
-          </div>
-        ) : isExpirationIso ? (
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="expirationIso">
-              Verified new expiration (ISO-8601)
-            </label>
-            <Input
-              id="expirationIso"
-              placeholder="2027-06-03T00:00:00.000Z"
-              value={expirationIso}
-              onChange={(e) => setExpirationIso(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">
-              The renewal already succeeded; this poll waits for the new
-              expiration to propagate. Verify the registrar's expiration and
-              send it as an ISO-8601 timestamp (e.g. 2027-06-03T00:00:00.000Z).
-            </p>
-          </div>
-        ) : (
+        {fields.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             This gate takes no payload — responding resolves it as done.
           </p>
+        ) : (
+          <div className="space-y-4">
+            {fields.map((field) => (
+              <SchemaFieldInput
+                key={field.name || '__value'}
+                field={field}
+                value={values[field.name] ?? ''}
+                onChange={(next) =>
+                  setValues((prev) => ({ ...prev, [field.name]: next }))
+                }
+              />
+            ))}
+          </div>
         )}
 
         <DialogFooter>
@@ -417,6 +439,75 @@ function RespondDialog({
             Cancel
           </Button>
           <AsyncButton onClick={submit}>Send RESPOND</AsyncButton>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function CancelDialog({
+  workflowId,
+  gate,
+  onSend,
+}: {
+  workflowId: string;
+  gate: Gate;
+  onSend: (input: SendDecisionInput) => Promise<boolean>;
+}) {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const submit = async () => {
+    const trimmed = message.trim();
+    const sent = await onSend({
+      workflowId,
+      signalName: gate.signalName,
+      action: 'CANCEL',
+      interactionId: gate.interactionId,
+      cancelError: trimmed ? { message: trimmed } : undefined,
+    });
+    if (sent) {
+      setOpen(false);
+      setMessage('');
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger render={<Button size="sm" variant="destructive" />}>
+        <Ban className="h-3.5 w-3.5 mr-1.5" />
+        CANCEL
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Cancel gate</DialogTitle>
+          <DialogDescription>
+            Fail <span className="font-mono">{gate.interactionId}</span> on{' '}
+            <span className="font-mono break-all">{workflowId}</span>.
+            Optionally supply a custom failure message the workflow throws
+            instead of the generic one.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="cancelMessage">
+            Failure message (optional)
+          </label>
+          <Input
+            id="cancelMessage"
+            placeholder="Leave blank for the default cancellation error"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setOpen(false)}>
+            Back
+          </Button>
+          <AsyncButton variant="destructive" onClick={submit}>
+            Send CANCEL
+          </AsyncButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

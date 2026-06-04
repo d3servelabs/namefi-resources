@@ -37,6 +37,16 @@ const sendDecisionInputSchema = z.object({
   interactionId: z.string().optional(),
   /** JSON payload — only meaningful when `action === 'RESPOND'`. */
   response: z.unknown().optional(),
+  /**
+   * Custom failure to throw — only meaningful when `action === 'CANCEL'`.
+   * Overrides the generic `decision-gate/cancelled` message/type.
+   */
+  cancelError: z
+    .object({
+      message: z.string().optional(),
+      type: z.string().optional(),
+    })
+    .optional(),
 });
 
 const sendDecisionOutputSchema = z.object({

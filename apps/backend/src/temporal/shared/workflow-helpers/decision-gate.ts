@@ -11,8 +11,11 @@ export type Actor = 'USER' | 'ADMIN';
 
 /**
  * The set of decisions a gate can receive.
- * - `PROCEED` / `RETRY` re-run the guarded action.
- * - `CANCEL` aborts with a non-retryable failure.
+ * - `RETRY` re-runs the guarded action.
+ * - `PROCEED` is a passthrough — it re-throws the original failure that opened
+ *   the gate, exactly as if the gate had not been there.
+ * - `CANCEL` aborts with a non-retryable failure (optionally a caller-supplied
+ *   message/type via {@link DecisionSignalPayload.cancelError}).
  * - `RESPOND` resolves the gate with a caller-supplied JSON payload.
  */
 export type GateAction = 'PROCEED' | 'CANCEL' | 'RETRY' | 'RESPOND';
@@ -31,6 +34,12 @@ export interface DecisionSignalPayload<R = unknown> {
   interactionId?: string;
   /** Meaningful only when `action === 'RESPOND'`; becomes the gate's result. */
   response?: R;
+  /**
+   * Meaningful only when `action === 'CANCEL'`; overrides the failure the gate
+   * throws so an operator can supply a specific message/type instead of the
+   * generic `decision-gate/cancelled`.
+   */
+  cancelError?: { message?: string; type?: string };
 }
 
 /** Default routing bucket for gates that do not specify an `interactionId`. */
@@ -490,7 +499,7 @@ export interface RunWithDecisionGateOptions<T, R = T> {
   registry: DecisionGateRegistry;
   /** Stable, deterministic wait-point key. */
   interactionId?: string;
-  /** The guarded action. Re-invoked on PROCEED/RETRY. */
+  /** The guarded action. Re-invoked on RETRY. */
   action: () => Promise<T>;
 
   /** Message woven into the failure alert. */
@@ -525,7 +534,7 @@ export interface RunWithDecisionGateOptions<T, R = T> {
    * {@link WaitForDecisionOptions.raceWith}.
    */
   raceWith?: () => Promise<GateResolution<R>>;
-  /** Caps the PROCEED/RETRY loop (number of action attempts). Defaults to 10. */
+  /** Caps the RETRY loop (number of action attempts). Defaults to 10. */
   maxRetries?: number;
 
   /** Maps a successful action result into the return value. */
@@ -607,9 +616,11 @@ async function emitFailureAlert(args: {
  * team with detailed context, runs `onAwaitingDecision`, then opens a decision
  * gate and branches on the resolution — from an operator signal or, if `raceWith`
  * wins first, from the external resolver:
- * - `PROCEED` / `RETRY` → re-run `action`, bounded by `maxRetries`.
+ * - `RETRY` → re-run `action`, bounded by `maxRetries`.
+ * - `PROCEED` → passthrough: re-throw the original failure that opened the gate.
  * - `RESPOND` → return the validated payload.
- * - `CANCEL` → run `onTerminate('CANCEL')`, then throw a non-retryable failure.
+ * - `CANCEL` → run `onTerminate('CANCEL')`, then throw a non-retryable failure
+ *   (optionally the operator-supplied `cancelError`).
  * - `TIMEOUT` → run `onTerminate('TIMEOUT')`, then throw (or return the sentinel).
  */
 export async function runWithDecisionGate<T, R = T>(
@@ -718,27 +729,37 @@ export async function runWithDecisionGate<T, R = T>(
         return outcome.response;
       }
 
+      if (outcome.action === 'PROCEED') {
+        // Passthrough: behave as if the gate weren't there — re-throw the
+        // failure that opened it. (RETRY re-runs the action instead.)
+        throw error;
+      }
+
       if (outcome.action === 'CANCEL' || outcome.action === 'TIMEOUT') {
         const reason = outcome.action;
         if (onTerminate) await onTerminate({ reason, signal: outcome.signal });
         if (reason === 'TIMEOUT' && onTimeout.kind === 'return') {
           return onTimeout.value;
         }
+        // CANCEL may carry an operator-supplied custom failure.
+        const cancelError =
+          reason === 'CANCEL' ? outcome.signal?.cancelError : undefined;
         throw workflow.ApplicationFailure.create({
           nonRetryable: true,
           type:
             reason === 'TIMEOUT'
               ? 'decision-gate/timeout'
-              : 'decision-gate/cancelled',
+              : (cancelError?.type ?? 'decision-gate/cancelled'),
           message:
             reason === 'TIMEOUT'
               ? `Decision gate timed out${idSuffix}: ${alertMessage}`
-              : `Operation cancelled${idSuffix}: ${alertMessage}`,
+              : (cancelError?.message ??
+                `Operation cancelled${idSuffix}: ${alertMessage}`),
           details: [{ interactionId, signal: outcome.signal, attempt }],
         });
       }
 
-      // PROCEED / RETRY → re-run the action, bounded by maxRetries.
+      // RETRY → re-run the action, bounded by maxRetries.
       if (attempt >= maxRetries) {
         throw workflow.ApplicationFailure.create({
           nonRetryable: true,

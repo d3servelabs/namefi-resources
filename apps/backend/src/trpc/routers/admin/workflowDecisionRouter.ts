@@ -160,6 +160,7 @@ export const workflowDecisionRouter = createContractTRPCRouter<
     .output(adminWorkflowDecisionContract.sendDecision.output)
     .mutation(async ({ ctx, input }) => {
       const { workflowId, signalName, action, interactionId, response } = input;
+      const { cancelError } = input;
 
       try {
         await temporalClient.connection.ensureConnected();
@@ -211,6 +212,7 @@ export const workflowDecisionRouter = createContractTRPCRouter<
           action,
           interactionId,
           response,
+          cancelError,
         });
 
         logger.info(

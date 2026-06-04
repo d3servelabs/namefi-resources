@@ -354,11 +354,11 @@ describe('decision gate registry isolation (time-skipping)', () => {
 });
 
 describe('runWithDecisionGate (time-skipping)', () => {
-  it('re-runs the action on PROCEED until it succeeds', async () => {
+  it('re-runs the action on RETRY until it succeeds', async () => {
     const handle = await testEnv.client.workflow.start(
       runWithGateHarnessWorkflow,
       {
-        workflowId: nextId('run-proceed'),
+        workflowId: nextId('run-retry'),
         taskQueue: TASK_QUEUE,
         args: [{ failTimes: 1, allowedActors: ['ADMIN'] }],
       },
@@ -367,12 +367,42 @@ describe('runWithDecisionGate (time-skipping)', () => {
     await handle.signal(decisionGateSignal, {
       actor: 'ADMIN',
       actorId: 'admin',
-      action: 'PROCEED',
+      action: 'RETRY',
     });
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
     expect(result).toMatchObject({ ok: true, attempts: 2 });
     expect(generalAlertNamefi).toHaveBeenCalled();
+  });
+
+  it('passes through the original failure on PROCEED (gate acts as if absent)', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-proceed-passthrough'),
+        taskQueue: TASK_QUEUE,
+        // Action always throws; PROCEED must re-throw that original error, not
+        // re-run and not a generic decision-gate failure.
+        args: [{ failTimes: 5, maxRetries: 5, allowedActors: ['ADMIN'] }],
+      },
+    );
+    await waitUntilReady(handle);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'PROCEED',
+    });
+    const error = await handle.result().catch((err: unknown) => err);
+    expect(error).toBeInstanceOf(WorkflowFailedError);
+    const cause = (error as WorkflowFailedError).cause;
+    expect(cause).toBeInstanceOf(ApplicationFailure);
+    // The original action failure, not the gate's own CANCEL/timeout failure.
+    expect((cause as ApplicationFailure).message).toMatch(
+      /harness action failure #1/,
+    );
+    expect((cause as ApplicationFailure).type).not.toBe(
+      'decision-gate/cancelled',
+    );
   });
 
   it('returns the RESPOND payload as the result', async () => {
@@ -438,7 +468,7 @@ describe('runWithDecisionGate (time-skipping)', () => {
     await handle.signal(decisionGateSignal, {
       actor: 'ADMIN',
       actorId: 'admin',
-      action: 'PROCEED',
+      action: 'RETRY',
     });
     await handle.result();
     expect(criticalAlertNamefi).toHaveBeenCalled();
@@ -556,7 +586,7 @@ describe('runWithDecisionGate (time-skipping)', () => {
     await handle.signal(decisionGateSignal, {
       actor: 'ADMIN',
       actorId: 'admin',
-      action: 'PROCEED',
+      action: 'RETRY',
     });
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
