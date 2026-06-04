@@ -10,15 +10,13 @@ ARG DEPS_BUILD=oven/bun:1.3.12-slim
 # Stage 1: Setup base with Node.js 22 Debian Bullseye
 # ##############################################################################
 #
-FROM ${BASE_IMAGE} AS base
+FROM ${BASE_IMAGE} AS base_runner
 WORKDIR /app
 
 ARG BASE_IMAGE=node:jod-bullseye-slim
 # Set to production environment
 ENV NODE_ENV=production
 ENV ENVIRONMENT=production
-ENV NODE_OPTIONS="--max-semi-space-size=256 --max-old-space-size=2048 --stack-size=1024 --stack-trace-limit=1000 --enable-source-maps"
-ENV CI="true"
 
 # `dns-root-data` is the Debian-maintained IANA root trust anchor —
 # `/usr/share/dns/root.key` (DNSKEY in zone-file format).
@@ -34,7 +32,9 @@ RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
 # apps/backend/src/lib/dnsviz/runner.ts. Override per-environment if a
 # different anchor file is preferred.
 # ENV DNSVIZ_TRUSTED_KEYS_FILE=/usr/share/dns/root.key
-
+FROM base_runner AS base
+ENV NODE_OPTIONS="${NODE_OPTIONS} --max-semi-space-size=256 --max-old-space-size=8192"
+ENV CI="true"
 
 #
 # ##############################################################################
@@ -113,7 +113,7 @@ RUN bun run bundle:workflows
 #
 FROM base AS runner
 WORKDIR /app
-
+ENV NODE_OPTIONS="${NODE_OPTIONS} --max-semi-space-size=256 --max-old-space-size=4096"
 # Copy only the runtime dependency trees needed under isolated installs.
 COPY --from=deps_prod /app/node_modules ./node_modules
 COPY --from=deps_prod /app/apps/backend/node_modules ./apps/backend/node_modules
