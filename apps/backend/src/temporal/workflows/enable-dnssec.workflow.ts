@@ -1,5 +1,5 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { matchAny } from '@namefi-astra/utils';
+import type { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
@@ -11,6 +11,19 @@ import {
 } from '../shared/workflow-helpers/workflow-progress';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
+import {
+  createDecisionGateRegistry,
+  runWithDecisionGate,
+} from '../shared/workflow-helpers/decision-gate';
+import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+
+/**
+ * Decision-gate timeouts for the DS-record poll. `ACTION_TIMEOUT` bounds the
+ * (unbounded) poll — the gate cancels it on deadline and opens for an admin;
+ * `DECISION_TIMEOUT` is the admin window once the gate is open.
+ */
+const DNSSEC_POLL_ACTION_TIMEOUT_MS = 3 * 60 * 60 * 1000; // 3 hours
+const DNSSEC_POLL_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
 /**
  * Step IDs for the enable DNSSEC workflow.
@@ -152,7 +165,19 @@ export async function enableDnssecWorkflow(
     }
   };
 
-  const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
+  // The `cancellation-and-timeout` patch is fully rolled out; deprecate it so
+  // new runs unconditionally take the cancellation-aware path (the old unbounded
+  // poll branch is gone).
+  workflow.deprecatePatch('cancellation-and-timeout');
+  // New runs wrap the (timeout-bounded) DS poll in a decision gate: if the poll
+  // times out, the operation is still queued at the registrar — alert + wait for
+  // an admin to verify and RETRY (re-poll) / RESPOND (verified status) / CANCEL,
+  // instead of dead-ending. In-flight (pre-patch) runs keep the original path.
+  // Explicit prefix so this never collides with a host workflow's own registry
+  // when enable-dnssec runs embedded (e.g. inside reset/change-nameservers).
+  const pollGateRegistry = workflow.patched('enable-dnssec-poll-decision-gate')
+    ? createDecisionGateRegistry({ prefix: 'enable-dnssec' })
+    : undefined;
 
   try {
     // Step 1: Check if domain supports DNSSEC
@@ -219,37 +244,64 @@ export async function enableDnssecWorkflow(
         message: 'DS record association failed, no operation ID returned',
       });
     }
+    const registrarOperationId = registrarOperation.operationId;
 
     progress.completeStep('associate-ds-record');
 
     // Step 4: Wait for DS record propagation
     progress.startStep('verify-propagation', 'Waiting for DNS propagation...');
 
-    const dsAssociationStatus = hasCancellationSupport
-      ? await pollWithTimeoutAlert(
-          pollDsRecordAssociationStatus({
-            registrarOperationId: registrarOperation.operationId,
-            domainName: input.domainName,
-          }),
-          {
-            domainName: input.domainName,
-            operationLabel: 'DS record association propagation',
-          },
-        )
-      : await pollDsRecordAssociationStatus({
-          registrarOperationId: registrarOperation.operationId,
-          domainName: input.domainName,
-        });
+    // `pollDsRecordAssociationStatus` is an unbounded poll (retries forever).
+    const pollDsAssociation = () =>
+      pollDsRecordAssociationStatus({
+        registrarOperationId,
+        domainName: input.domainName,
+      });
 
-    if (matchAny(dsAssociationStatus, 'FAILED', 'ERROR')) {
-      progress.failStep('verify-propagation', 'DS record propagation failed');
+    let dsAssociationStatus: OperationStatus;
+    if (pollGateRegistry) {
+      // Newest runs: the gate bounds the poll by its own action deadline,
+      // cancels it on expiry, and opens for an admin to verify / RETRY / RESPOND.
+      dsAssociationStatus = await runWithDecisionGate({
+        registry: pollGateRegistry,
+        interactionId: 'ds-association-poll',
+        action: pollDsAssociation,
+        actionTimeoutMs: DNSSEC_POLL_ACTION_TIMEOUT_MS,
+        allowedActors: ['ADMIN'],
+        allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+        validateResponse: (raw) => operationStatusSchema.parse(raw),
+        timeoutMs: DNSSEC_POLL_DECISION_TIMEOUT_MS,
+        onTimeout: { kind: 'throw' },
+        alertMessage: `DS association poll exceeded its deadline for ${input.domainName} (operationId=${registrarOperationId}); verify registrar state`,
+        alertDetails: {
+          domainName: input.domainName,
+          registrarOperationId,
+        },
+      });
+    } else {
+      // Intermediate runs (cancellation patch, pre-gate): bounded poll that
+      // throws on timeout. Kept for replay determinism of in-flight runs.
+      dsAssociationStatus = await pollWithTimeoutAlert(pollDsAssociation(), {
+        domainName: input.domainName,
+        operationLabel: 'DS record association propagation',
+      });
+    }
+
+    // Only a SUCCESSFUL terminal status means propagation is done. Anything else
+    // — FAILED/ERROR, or a non-terminal SUBMITTED/IN_PROGRESS/REQUIRES_ACTION
+    // (which an admin RESPOND can supply) — must NOT mark DNSSEC enabled.
+    if (dsAssociationStatus !== 'SUCCESSFUL') {
+      progress.failStep(
+        'verify-propagation',
+        `DS record association not complete (status: ${dsAssociationStatus})`,
+      );
 
       // Rollback: Disable zone DNSSEC
       await setZoneSigningFlag(input.domainName, false);
 
       progress.fail('DS record association failed');
       throw workflow.ApplicationFailure.create({
-        message: 'DS record association failed',
+        message: `DS record association failed (status: ${dsAssociationStatus})`,
       });
     }
 
@@ -282,7 +334,7 @@ export async function enableDnssecWorkflow(
     await notify('success');
   } catch (e) {
     // On cancellation during polling/activities, rollback zone signing
-    if (hasCancellationSupport && workflow.isCancellation(e)) {
+    if (workflow.isCancellation(e)) {
       await workflow.CancellationScope.nonCancellable(async () => {
         try {
           await setZoneSigningFlag(input.domainName, false);

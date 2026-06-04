@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { processOrderItemGateResponseSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+import {
+  decisionGateResponseSchemas,
+  expirationIsoSchema,
+  operationStatusSchema,
+  processOrderItemGateResponseSchema,
+  TERMINAL_OPERATION_STATUSES,
+} from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 import {
   Card,
   CardContent,
@@ -40,10 +46,11 @@ import { withAdminGuard } from '@/components/admin/admin-guard';
 type ActiveGatesOutput =
   AppRouterOutput['admin']['workflowDecision']['listActiveDecisionGates'];
 type GateWorkflow = ActiveGatesOutput['items'][number];
-type Gate = GateWorkflow['gates']['gates'][number];
+type Gate = GateWorkflow['gates'][number];
 
 type SendDecisionInput = {
   workflowId: string;
+  signalName: string;
   action: 'PROCEED' | 'CANCEL' | 'RETRY' | 'RESPOND';
   interactionId: string;
   response?: unknown;
@@ -59,6 +66,27 @@ const ACTION_ICON = {
 function formatStartedAt(iso?: string): string {
   if (!iso) return '—';
   return new Date(iso).toISOString().slice(0, 19).replace('T', ' ');
+}
+
+/** The RESPOND payload schema declared for a gate, if any. */
+function responseSchemaFor(interactionId: string) {
+  return decisionGateResponseSchemas[
+    interactionId as keyof typeof decisionGateResponseSchemas
+  ];
+}
+
+type ResolvedResponse =
+  | { ok: true; value: unknown }
+  | { ok: false; message: string };
+
+/** Folds a zod `safeParse` result into a {@link ResolvedResponse}. */
+function toResolvedResponse(
+  parsed: { success: true; data: unknown } | { success: false },
+  message: string,
+): ResolvedResponse {
+  return parsed.success
+    ? { ok: true, value: parsed.data }
+    : { ok: false, message };
 }
 
 export default withAdminGuard(function DecisionGatesPage() {
@@ -99,7 +127,7 @@ export default withAdminGuard(function DecisionGatesPage() {
 
   const items = listQuery.data?.items ?? [];
   const rows = items.flatMap((workflow) =>
-    workflow.gates.gates.map((gate) => ({ workflow, gate })),
+    workflow.gates.map((gate) => ({ workflow, gate })),
   );
 
   return (
@@ -159,7 +187,7 @@ export default withAdminGuard(function DecisionGatesPage() {
               <TableBody>
                 {rows.map(({ workflow, gate }) => (
                   <TableRow
-                    key={`${workflow.workflowId}:${gate.interactionId}`}
+                    key={`${workflow.workflowId}:${gate.signalName}:${gate.interactionId}`}
                   >
                     <TableCell className="align-top">
                       <div className="font-medium">{workflow.workflowType}</div>
@@ -208,6 +236,7 @@ export default withAdminGuard(function DecisionGatesPage() {
                               onClick={() =>
                                 send({
                                   workflowId: workflow.workflowId,
+                                  signalName: gate.signalName,
                                   action,
                                   interactionId: gate.interactionId,
                                 })
@@ -242,33 +271,63 @@ function RespondDialog({
 }) {
   const [open, setOpen] = useState(false);
   const [mintTxHash, setMintTxHash] = useState('');
+  // No default: the admin must explicitly pick a status (empty fails the schema
+  // parse below) so the happy path can't be sent by accident in a recovery flow.
+  const [status, setStatus] = useState<string>('');
+  const [expirationIso, setExpirationIso] = useState('');
 
-  // Only `process-order-item` carries a typed RESPOND payload today.
+  const schema = responseSchemaFor(gate.interactionId);
   const isProcessOrderItem = gate.interactionId === 'process-order-item';
+  const isOperationStatus = schema === operationStatusSchema;
+  const isExpirationIso = schema === expirationIsoSchema;
 
-  const submit = async () => {
-    let response: unknown;
+  // Validate + build the RESPOND payload for the gate's declared schema. Kept
+  // separate so `submit` stays a thin orchestration step.
+  const resolveResponse = (): ResolvedResponse => {
     if (isProcessOrderItem) {
       const candidate = mintTxHash.trim()
         ? { mintTxHash: mintTxHash.trim() }
         : {};
-      const parsed = processOrderItemGateResponseSchema.safeParse(candidate);
-      if (!parsed.success) {
-        toast.error('Invalid response payload');
-        return;
-      }
-      response = parsed.data;
+      return toResolvedResponse(
+        processOrderItemGateResponseSchema.safeParse(candidate),
+        'Invalid response payload',
+      );
+    }
+    if (isOperationStatus) {
+      return toResolvedResponse(
+        operationStatusSchema.safeParse(status),
+        'Pick a verified status',
+      );
+    }
+    if (isExpirationIso) {
+      return toResolvedResponse(
+        expirationIsoSchema.safeParse(expirationIso.trim()),
+        'Enter the new expiration as an ISO-8601 timestamp',
+      );
+    }
+    // Gate takes no payload — RESPOND just resolves it as done.
+    return { ok: true, value: undefined };
+  };
+
+  const submit = async () => {
+    const resolved = resolveResponse();
+    if (!resolved.ok) {
+      toast.error(resolved.message);
+      return;
     }
     const sent = await onSend({
       workflowId,
+      signalName: gate.signalName,
       action: 'RESPOND',
       interactionId: gate.interactionId,
-      response,
+      response: resolved.value,
     });
     // Keep the dialog (and the typed payload) on failure — onError already toasted.
     if (sent) {
       setOpen(false);
       setMintTxHash('');
+      setExpirationIso('');
+      setStatus('');
     }
   };
 
@@ -302,6 +361,49 @@ function RespondDialog({
             <p className="text-xs text-muted-foreground">
               Use this when the registration/mint was completed out-of-band. The
               item is recorded and marked SUCCEEDED.
+            </p>
+          </div>
+        ) : isOperationStatus ? (
+          <div className="space-y-2">
+            <label className="text-sm font-medium" htmlFor="opStatus">
+              Verified registrar operation status
+            </label>
+            <select
+              id="opStatus"
+              className="border-input bg-transparent flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-sm"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="" disabled>
+                Select a verified status…
+              </option>
+              {TERMINAL_OPERATION_STATUSES.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-muted-foreground">
+              The poll timed out but the operation is still queued. Verify the
+              registrar's real state, then send the status the workflow should
+              continue with.
+            </p>
+          </div>
+        ) : isExpirationIso ? (
+          <div className="space-y-2">
+            <label className="text-sm font-medium" htmlFor="expirationIso">
+              Verified new expiration (ISO-8601)
+            </label>
+            <Input
+              id="expirationIso"
+              placeholder="2027-06-03T00:00:00.000Z"
+              value={expirationIso}
+              onChange={(e) => setExpirationIso(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              The renewal already succeeded; this poll waits for the new
+              expiration to propagate. Verify the registrar's expiration and
+              send it as an ISO-8601 timestamp (e.g. 2027-06-03T00:00:00.000Z).
             </p>
           </div>
         ) : (

@@ -1,6 +1,21 @@
-import { processOrderItemGateResponseSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
-import type { ProcessOrderItemGateResponse } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+import {
+  decisionGateResponseSchemas,
+  expirationIsoSchema,
+  operationStatusSchema,
+  processOrderItemGateResponseSchema,
+} from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+import type {
+  ExpirationIsoResponse,
+  OperationStatusResponse,
+  ProcessOrderItemGateResponse,
+} from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+import type { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
 import { describe, expect, it } from 'vitest';
+import type {
+  pollAndExpectExpirationChange,
+  pollEppExtendRegistrationStatus,
+  pollRegisterOrImportDomainOperationStatus,
+} from '../activities/domain/registrar.activities';
 import type { AcquireDomainWorkflowOutput } from './domain-ownership/acquire-domain.workflow';
 
 /**
@@ -24,10 +39,44 @@ function assertMutuallyAssignable<A, B>(_ok: IsMutuallyAssignable<A, B>): void {
   // Type-level assertion only — no runtime behavior.
 }
 
+type IsAssignable<A, B> = [A] extends [B] ? true : false;
+
+/** One-directional: every value of `A` is a valid `B` (A ⊆ B). */
+function assertAssignable<A, B>(_ok: IsAssignable<A, B>): void {
+  // Type-level assertion only — no runtime behavior.
+}
+
 // `process-order-item` gate ⇔ AcquireDomainWorkflowOutput
 assertMutuallyAssignable<
   ProcessOrderItemGateResponse,
   AcquireDomainWorkflowOutput
+>(true);
+
+// poll-wrapping gates' RESPOND payload ⇔ registrar OperationStatus (the type
+// returned by pollRegistrarOperationStatus / pollDsRecord* / pollEppExtend...)
+assertMutuallyAssignable<OperationStatusResponse, OperationStatus>(true);
+
+// register/import poll gate: the synthesized result the admin RESPONDs feeds the
+// `.status` of pollRegisterOrImportDomainOperationStatus's result.
+assertMutuallyAssignable<
+  OperationStatusResponse,
+  Awaited<
+    ReturnType<typeof pollRegisterOrImportDomainOperationStatus>
+  >['status']
+>(true);
+
+// extend-epp-status-poll gate: the gate maps the activity's `{ status }` result
+// to a bare OperationStatus. The activity narrows status to its terminal cases,
+// so it is a subset of the RESPOND value space (one-directional).
+assertAssignable<
+  Awaited<ReturnType<typeof pollEppExtendRegistrationStatus>>['status'],
+  OperationStatusResponse
+>(true);
+
+// extend-expiration-poll gate ⇔ pollAndExpectExpirationChange's ISO-string result
+assertMutuallyAssignable<
+  ExpirationIsoResponse,
+  Awaited<ReturnType<typeof pollAndExpectExpirationChange>>
 >(true);
 
 describe('decision-gate RESPOND payload contracts', () => {
@@ -41,5 +90,28 @@ describe('decision-gate RESPOND payload contracts', () => {
     expect(() =>
       processOrderItemGateResponseSchema.parse({ mintTxHash: 123 }),
     ).toThrow();
+  });
+
+  it('validates OperationStatus RESPOND payloads for the registrar poll gates', () => {
+    expect(operationStatusSchema.parse('SUCCESSFUL')).toBe('SUCCESSFUL');
+    expect(operationStatusSchema.parse('FAILED')).toBe('FAILED');
+    expect(() => operationStatusSchema.parse('NOPE')).toThrow();
+    // The registrar register/import + EPP-extend gates all use this schema.
+    expect(decisionGateResponseSchemas['register-or-import-poll']).toBe(
+      operationStatusSchema,
+    );
+    expect(decisionGateResponseSchemas['extend-epp-status-poll']).toBe(
+      operationStatusSchema,
+    );
+  });
+
+  it('validates the ISO-8601 expiration RESPOND payload', () => {
+    const iso = '2027-06-03T00:00:00.000Z';
+    expect(expirationIsoSchema.parse(iso)).toBe(iso);
+    expect(() => expirationIsoSchema.parse('2027-06-03')).toThrow();
+    expect(() => expirationIsoSchema.parse('not-a-date')).toThrow();
+    expect(decisionGateResponseSchemas['extend-expiration-poll']).toBe(
+      expirationIsoSchema,
+    );
   });
 });

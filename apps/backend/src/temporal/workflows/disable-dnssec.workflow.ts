@@ -1,5 +1,5 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { matchAny } from '@namefi-astra/utils';
+import type { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
@@ -11,6 +11,19 @@ import {
 } from '../shared/workflow-helpers/workflow-progress';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
+import {
+  createDecisionGateRegistry,
+  runWithDecisionGate,
+} from '../shared/workflow-helpers/decision-gate';
+import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+
+/**
+ * Decision-gate timeouts for the DS-record polls. `ACTION_TIMEOUT` bounds the
+ * (unbounded) poll — the gate cancels it on deadline and opens for an admin;
+ * `DECISION_TIMEOUT` is the admin window once the gate is open.
+ */
+const DNSSEC_POLL_ACTION_TIMEOUT_MS = 3 * 60 * 60 * 1000; // 3 hours
+const DNSSEC_POLL_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
 /**
  * Step IDs for the disable DNSSEC workflow.
@@ -153,7 +166,19 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
     }
   };
 
-  const hasCancellationSupport = workflow.patched('cancellation-and-timeout');
+  // The `cancellation-and-timeout` patch is fully rolled out; deprecate it so
+  // new runs unconditionally take the cancellation-aware path (the old unbounded
+  // poll branches are gone).
+  workflow.deprecatePatch('cancellation-and-timeout');
+  // New runs wrap the (timeout-bounded) DS polls in a decision gate: a poll
+  // timeout means the operation is still queued at the registrar, so alert +
+  // wait for an admin to verify and RETRY (re-poll) / RESPOND (verified status) /
+  // CANCEL. In-flight (pre-patch) runs keep the original path.
+  // Explicit prefix so this never collides with a host workflow's own registry
+  // when disable-dnssec runs embedded (e.g. inside change-nameservers step 1).
+  const pollGateRegistry = workflow.patched('disable-dnssec-poll-decision-gate')
+    ? createDecisionGateRegistry({ prefix: 'disable-dnssec' })
+    : undefined;
 
   // Track whether DS was removed (for rollback on cancellation)
   let dsWasRemoved = false;
@@ -205,29 +230,53 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
           message: 'DS record removal failed, no operation ID returned',
         });
       }
+      const registrarOperationId = registrarOperation.operationId;
 
-      // Wait for DS record removal at registrar
-      const dsRemovalStatus = hasCancellationSupport
-        ? await pollWithTimeoutAlert(
-            pollDsRecordRemovalStatus({
-              registrarOperationId: registrarOperation.operationId,
-              domainName: input.domainName,
-            }),
-            {
-              domainName: input.domainName,
-              operationLabel: 'DS record removal at registrar',
-            },
-          )
-        : await pollDsRecordRemovalStatus({
-            registrarOperationId: registrarOperation.operationId,
+      // Wait for DS record removal at registrar. The poll is unbounded.
+      const pollDsRemoval = () =>
+        pollDsRecordRemovalStatus({
+          registrarOperationId,
+          domainName: input.domainName,
+        });
+
+      let dsRemovalStatus: OperationStatus;
+      if (pollGateRegistry) {
+        // Newest runs: the gate bounds the poll by its own action deadline.
+        dsRemovalStatus = await runWithDecisionGate({
+          registry: pollGateRegistry,
+          interactionId: 'ds-removal-status-poll',
+          action: pollDsRemoval,
+          actionTimeoutMs: DNSSEC_POLL_ACTION_TIMEOUT_MS,
+          allowedActors: ['ADMIN'],
+          allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+          validateResponse: (raw) => operationStatusSchema.parse(raw),
+          timeoutMs: DNSSEC_POLL_DECISION_TIMEOUT_MS,
+          onTimeout: { kind: 'throw' },
+          alertMessage: `DS removal poll exceeded its deadline for ${input.domainName} (operationId=${registrarOperationId}); verify registrar state`,
+          alertDetails: {
             domainName: input.domainName,
-          });
+            registrarOperationId,
+          },
+        });
+      } else {
+        // Intermediate runs (cancellation patch, pre-gate): bounded poll that
+        // throws on timeout. Kept for replay determinism of in-flight runs.
+        dsRemovalStatus = await pollWithTimeoutAlert(pollDsRemoval(), {
+          domainName: input.domainName,
+          operationLabel: 'DS record removal at registrar',
+        });
+      }
 
-      if (matchAny(dsRemovalStatus, 'FAILED', 'ERROR')) {
-        progress.failStep('remove-ds-record', 'DS record removal failed');
+      // Only a SUCCESSFUL terminal status means removal is done; a non-terminal
+      // status (which an admin RESPOND can supply) must NOT count as removed.
+      if (dsRemovalStatus !== 'SUCCESSFUL') {
+        progress.failStep(
+          'remove-ds-record',
+          `DS record removal not complete (status: ${dsRemovalStatus})`,
+        );
         progress.fail('DS record removal failed');
         throw workflow.ApplicationFailure.create({
-          message: 'DS record removal failed',
+          message: `DS record removal failed (status: ${dsRemovalStatus})`,
         });
       }
 
@@ -237,21 +286,43 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
       // Step 3: Verify DS record removal propagation
       progress.startStep('verify-removal', 'Waiting for DNS propagation...');
 
-      const dsPropagationStatus = hasCancellationSupport
-        ? await pollWithTimeoutAlert(
-            pollDsRecordRemovalPropagation(input.domainName),
-            {
-              domainName: input.domainName,
-              operationLabel: 'DS record removal propagation',
-            },
-          )
-        : await pollDsRecordRemovalPropagation(input.domainName);
+      // Unbounded poll waiting for the DS record removal to propagate.
+      const pollDsPropagation = () =>
+        pollDsRecordRemovalPropagation(input.domainName);
 
-      if (matchAny(dsPropagationStatus, 'FAILED', 'ERROR')) {
-        progress.failStep('verify-removal', 'DS record propagation failed');
+      let dsPropagationStatus: OperationStatus;
+      if (pollGateRegistry) {
+        // Newest runs: the gate bounds the poll by its own action deadline.
+        dsPropagationStatus = await runWithDecisionGate({
+          registry: pollGateRegistry,
+          interactionId: 'ds-removal-propagation-poll',
+          action: pollDsPropagation,
+          actionTimeoutMs: DNSSEC_POLL_ACTION_TIMEOUT_MS,
+          allowedActors: ['ADMIN'],
+          allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+          validateResponse: (raw) => operationStatusSchema.parse(raw),
+          timeoutMs: DNSSEC_POLL_DECISION_TIMEOUT_MS,
+          onTimeout: { kind: 'throw' },
+          alertMessage: `DS removal propagation poll exceeded its deadline for ${input.domainName}; verify DS record is gone`,
+          alertDetails: { domainName: input.domainName },
+        });
+      } else {
+        // Intermediate runs (cancellation patch, pre-gate): bounded poll that
+        // throws on timeout. Kept for replay determinism of in-flight runs.
+        dsPropagationStatus = await pollWithTimeoutAlert(pollDsPropagation(), {
+          domainName: input.domainName,
+          operationLabel: 'DS record removal propagation',
+        });
+      }
+
+      if (dsPropagationStatus !== 'SUCCESSFUL') {
+        progress.failStep(
+          'verify-removal',
+          `DS record removal not propagated (status: ${dsPropagationStatus})`,
+        );
         progress.fail('DS record propagation failed');
         throw workflow.ApplicationFailure.create({
-          message: 'DS record propagation failed',
+          message: `DS record propagation failed (status: ${dsPropagationStatus})`,
         });
       }
 
@@ -299,7 +370,7 @@ export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
     return progress.state;
   } catch (e) {
     // On cancellation, rollback: re-associate DS if it was removed
-    if (hasCancellationSupport && workflow.isCancellation(e)) {
+    if (workflow.isCancellation(e)) {
       await workflow.CancellationScope.nonCancellable(async () => {
         if (dsWasRemoved) {
           try {

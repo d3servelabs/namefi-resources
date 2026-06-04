@@ -169,10 +169,20 @@ export async function raceHarnessWorkflow(
 export interface RunWithGateHarnessInput {
   /** Number of leading action invocations that throw before one succeeds. */
   failTimes: number;
+  /**
+   * Number of action invocations (after the throwing ones) that hang past
+   * `actionTimeoutMs` before one succeeds — exercises the gate-owned action
+   * deadline (the hanging poll is cancelled and the gate opens).
+   */
+  hangTimes?: number;
+  /** How long a hanging action sleeps; should exceed `actionTimeoutMs`. */
+  hangMs?: number;
   alertSeverity?: 'general' | 'critical';
   allowedActors?: Actor[];
   allowedActions?: GateAction[];
   timeoutMs?: number;
+  /** Per-attempt action deadline forwarded to `runWithDecisionGate`. */
+  actionTimeoutMs?: number;
   maxRetries?: number;
   /** When set, TIMEOUT returns this sentinel instead of throwing. */
   onTimeoutReturn?: unknown;
@@ -183,6 +193,7 @@ export async function runWithGateHarnessWorkflow(
   input: RunWithGateHarnessInput,
 ): Promise<{ result: unknown; attempts: number }> {
   const registry = createDecisionGateRegistry();
+  const hangTimes = input.hangTimes ?? 0;
   let attempts = 0;
   const result = await runWithDecisionGate<
     { ok: true; attempts: number },
@@ -194,6 +205,10 @@ export async function runWithGateHarnessWorkflow(
       if (attempts <= input.failTimes) {
         throw new Error(`harness action failure #${attempts}`);
       }
+      if (attempts <= input.failTimes + hangTimes) {
+        // Hangs past the action deadline; withTimeout cancels this sleep.
+        await workflow.sleep(input.hangMs ?? 60_000);
+      }
       return { ok: true, attempts };
     },
     alertMessage: 'harness guarded action failed',
@@ -201,6 +216,7 @@ export async function runWithGateHarnessWorkflow(
     allowedActors: input.allowedActors,
     allowedActions: input.allowedActions,
     timeoutMs: input.timeoutMs,
+    actionTimeoutMs: input.actionTimeoutMs,
     maxRetries: input.maxRetries,
     onTimeout:
       input.onTimeoutReturn !== undefined

@@ -3,7 +3,15 @@ import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { type Worker, Worker as TemporalWorker } from '@temporalio/worker';
 import { type WorkflowHandle, WorkflowFailedError } from '@temporalio/client';
 import { ApplicationFailure } from '@temporalio/common';
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { TEMPORAL_QUEUES } from '../enums';
 import {
   decisionGateArmedQuery,
@@ -40,6 +48,13 @@ const criticalAlertNamefi = vi.fn(async () => ({
   ticket: null,
   monitoringStarted: false,
 }));
+
+// The alert mocks are shared across the suite and some tests assert NOT-called;
+// clear their call history before each test so assertions are order-independent.
+beforeEach(() => {
+  generalAlertNamefi.mockClear();
+  criticalAlertNamefi.mockClear();
+});
 
 let testEnv: TestWorkflowEnvironment;
 let worker: Worker;
@@ -426,6 +441,125 @@ describe('runWithDecisionGate (time-skipping)', () => {
     });
     await handle.result();
     expect(criticalAlertNamefi).toHaveBeenCalled();
+  });
+
+  it('opens the gate when the action exceeds actionTimeoutMs, then RESPOND resolves it', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-action-timeout-respond'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            failTimes: 0,
+            // First attempt hangs 10 min; the 1 min action deadline cancels it.
+            hangTimes: 1,
+            hangMs: 600_000,
+            actionTimeoutMs: 60_000,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    // Advance past the 1 min action deadline so the hanging poll is cancelled
+    // and the gate opens (a query-loop would stall the server's auto-skip).
+    await testEnv.sleep(90_000);
+    await waitUntilReady(handle);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { verified: 'SUCCESSFUL' },
+    });
+    const { result, attempts } = await handle.result();
+    // The hanging attempt was cancelled, so the action ran exactly once.
+    expect(attempts).toBe(1);
+    expect(result).toEqual({ verified: 'SUCCESSFUL' });
+    expect(generalAlertNamefi).toHaveBeenCalled();
+  });
+
+  it('re-runs the action on RETRY after an action-timeout until it succeeds', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-action-timeout-retry'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            failTimes: 0,
+            hangTimes: 1,
+            hangMs: 600_000,
+            actionTimeoutMs: 60_000,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await testEnv.sleep(90_000);
+    await waitUntilReady(handle);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RETRY',
+    });
+    const { result, attempts } = await handle.result();
+    // Attempt 1 hung (cancelled); attempt 2 (post-RETRY) does not hang and wins.
+    expect(attempts).toBe(2);
+    expect(result).toMatchObject({ ok: true, attempts: 2 });
+  });
+
+  it('returns the result without opening a gate when the action finishes within actionTimeoutMs', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-action-within-deadline'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            failTimes: 0,
+            // Action sleeps 1 min, well within the 10 min deadline → it succeeds.
+            hangTimes: 1,
+            hangMs: 60_000,
+            actionTimeoutMs: 600_000,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    // Advance past the in-action sleep so it completes before the deadline.
+    await testEnv.sleep(120_000);
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(1);
+    expect(result).toMatchObject({ ok: true, attempts: 1 });
+    // No deadline fired → no gate, no failure alert.
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
+  });
+
+  it('opens the gate on a normal action throw even with actionTimeoutMs set (not mislabeled as a timeout)', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-throw-with-timeout'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            // Throws immediately on attempt 1 (a real error, not a deadline).
+            failTimes: 1,
+            actionTimeoutMs: 60_000,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await waitUntilReady(handle);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'PROCEED',
+    });
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(2);
+    expect(result).toMatchObject({ ok: true, attempts: 2 });
   });
 });
 

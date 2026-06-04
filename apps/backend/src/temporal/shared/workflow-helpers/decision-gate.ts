@@ -503,8 +503,18 @@ export interface RunWithDecisionGateOptions<T, R = T> {
   allowedActors?: Actor[];
   /** Actions the gate accepts. Defaults to all four. */
   allowedActions?: GateAction[];
-  /** Gate timeout in ms. `undefined` waits forever. */
+  /** Admin-decision window in ms once the gate opens. `undefined` waits forever. */
   timeoutMs?: number;
+  /**
+   * Deadline for each `action()` attempt, in ms. When set, the action runs in a
+   * `CancellationScope.withTimeout` — if it does not settle in time the in-flight
+   * work (e.g. a long-poll activity) is cancelled and the gate opens, exactly as
+   * if the action had thrown. This lets the gate itself bound an otherwise
+   * unbounded poll, so no external timeout wrapper is needed. `undefined` (the
+   * default) leaves the action unbounded, preserving prior behavior for callers
+   * whose action throws on its own (e.g. a retry-bounded poll).
+   */
+  actionTimeoutMs?: number;
   /**
    * Optional external resolver raced against each wait (re-created per attempt).
    * When it wins, its {@link GateResolution} drives the loop just like a signal
@@ -585,9 +595,15 @@ async function emitFailureAlert(args: {
 /**
  * Runs `action`; on success returns `onResult(result)` (or the result itself).
  *
- * On failure it alerts the team with detailed context, runs `onAwaitingDecision`,
- * then opens a decision gate and branches on the resolution — from an operator
- * signal or, if `raceWith` wins first, from the external resolver:
+ * When `actionTimeoutMs` is set the action is bounded by a cancellable timeout:
+ * if it does not settle in time the in-flight work is cancelled and the deadline
+ * is treated as a failure (so an unbounded long-poll can open the gate without
+ * an external timeout wrapper).
+ *
+ * On failure (an action throw OR its `actionTimeoutMs` deadline) it alerts the
+ * team with detailed context, runs `onAwaitingDecision`, then opens a decision
+ * gate and branches on the resolution — from an operator signal or, if `raceWith`
+ * wins first, from the external resolver:
  * - `PROCEED` / `RETRY` → re-run `action`, bounded by `maxRetries`.
  * - `RESPOND` → return the validated payload.
  * - `CANCEL` → run `onTerminate('CANCEL')`, then throw a non-retryable failure.
@@ -607,6 +623,7 @@ export async function runWithDecisionGate<T, R = T>(
     allowedActors,
     allowedActions,
     timeoutMs,
+    actionTimeoutMs,
     raceWith,
     maxRetries = 10,
     onResult,
@@ -621,11 +638,51 @@ export async function runWithDecisionGate<T, R = T>(
 
   const idSuffix = interactionId ? ` [${interactionId}]` : '';
 
+  // Runs the action, optionally bounding it by `actionTimeoutMs`. The deadline is
+  // our own timer inside a cancellable scope: when it fires we cancel the
+  // in-flight work (no orphaned poll) and surface a non-retryable failure, which
+  // the gate loop below treats like any action throw — i.e. it opens the gate.
+  // A cancellation we did NOT trigger (the whole workflow, or a parent scope,
+  // being cancelled) is re-thrown so it keeps propagating instead of wrongly
+  // opening the gate — `timedOut` is set only when our own timer fired.
+  const runAction = async (): Promise<T> => {
+    if (actionTimeoutMs === undefined) return action();
+    let timedOut = false;
+    const scope = new workflow.CancellationScope({ cancellable: true });
+    try {
+      return await scope.run(() => {
+        void workflow
+          .sleep(actionTimeoutMs)
+          .then(() => {
+            timedOut = true;
+            scope.cancel();
+          })
+          .catch(() => {
+            // Timer cancelled because the action settled first — nothing to do.
+          });
+        return action();
+      });
+    } catch (error) {
+      if (timedOut && workflow.isCancellation(error)) {
+        const human =
+          actionTimeoutMs >= 60_000
+            ? `${Math.round(actionTimeoutMs / 60_000)} min`
+            : `${Math.round(actionTimeoutMs / 1000)} s`;
+        throw workflow.ApplicationFailure.create({
+          nonRetryable: true,
+          type: 'decision-gate/action-timeout',
+          message: `Action exceeded its ${human} deadline${idSuffix}`,
+        });
+      }
+      throw error;
+    }
+  };
+
   let attempt = 0;
   while (true) {
     attempt++;
     try {
-      return mapResult(await action());
+      return mapResult(await runAction());
     } catch (error) {
       await emitFailureAlert({
         alertSeverity,

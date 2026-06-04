@@ -70,13 +70,23 @@ const listActiveDecisionGatesInputSchema = z.object({
   maxScan: z.number().int().positive().max(2000).optional(),
 });
 
+/** One armed gate plus the signal name to target when resolving it. */
+const activeGateSchema = z.object({
+  /** The signal name to pass to `sendDecision` (prefixed for non-default registries). */
+  signalName: z.string(),
+  interactionId: z.string(),
+  allowedActors: z.array(z.string()),
+  allowedActions: z.array(z.string()),
+  requiresResponseValidation: z.boolean(),
+});
+
 const decisionGateWorkflowSchema = z.object({
   workflowId: z.string(),
   runId: z.string(),
   workflowType: z.string(),
   /** ISO start time, when available. */
   startedAt: z.string().optional(),
-  gates: armedGatesSnapshotSchema,
+  gates: z.array(activeGateSchema),
 });
 
 const listActiveDecisionGatesOutputSchema = z.object({

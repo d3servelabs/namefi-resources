@@ -90,12 +90,13 @@ export const workflowDecisionRouter = createContractTRPCRouter<
 
       await temporalClient.connection.ensureConnected();
 
+      type ActiveGate = ArmedSnapshot['gates'][number] & { signalName: string };
       const items: Array<{
         workflowId: string;
         runId: string;
         workflowType: string;
         startedAt?: string;
-        gates: ArmedSnapshot;
+        gates: ActiveGate[];
       }> = [];
       let scanned = 0;
       let capped = false;
@@ -113,14 +114,17 @@ export const workflowDecisionRouter = createContractTRPCRouter<
         }
 
         const handle = temporalClient.workflow.getHandle(wf.workflowId);
-        const gates: ArmedSnapshot['gates'] = [];
+        const gates: ActiveGate[] = [];
         for (const signalName of registryNames) {
           if (typeof signalName !== 'string') continue;
           try {
             const snapshot = (await handle.query(
               armedQueryNameForSignal(signalName),
             )) as ArmedSnapshot;
-            if (snapshot?.gates?.length) gates.push(...snapshot.gates);
+            // Each gate carries the signal name to target when resolving it.
+            for (const gate of snapshot?.gates ?? []) {
+              gates.push({ ...gate, signalName });
+            }
           } catch {
             // Gate handler gone / workflow advanced — skip.
           }
@@ -132,7 +136,7 @@ export const workflowDecisionRouter = createContractTRPCRouter<
             runId: wf.runId,
             workflowType: wf.type,
             startedAt: wf.startTime?.toISOString(),
-            gates: { count: gates.length, gates },
+            gates,
           });
         }
       }
