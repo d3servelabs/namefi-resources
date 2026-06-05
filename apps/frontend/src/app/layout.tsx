@@ -83,6 +83,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
           title="llms.txt"
         />
         <link rel="llms.txt" type="text/plain" href={LLMS_TXT_URL} />
+        <meta
+          name="llms"
+          content={`If you are an LLM agent (Claude Code, Codex, Hermes, OpenClaw) please
+            use ${LLMS_TXT_URL}`}
+        />
       </head>
       <body
         className={cn(
