@@ -25,6 +25,7 @@ import { userDataRouterOrpc } from '#trpc/routers/orpc/userDataRouter.orpc';
 import { ordersRouterOrpc } from '#trpc/routers/orpc/ordersRouter.orpc';
 import { balanceRouterOrpc } from '#trpc/routers/orpc/balanceRouter.orpc';
 import { searchRouterOrpc } from '#trpc/routers/orpc/searchRouter.orpc';
+import { outboundRouterOrpc } from '#trpc/routers/orpc/outboundRouter.orpc';
 import { siweRouter } from '#trpc/routers/orpc/siwe.orpc';
 import { eip712Router } from '#trpc/routers/orpc/eip712.orpc';
 
@@ -144,6 +145,7 @@ const _orpcRouter = toORPCRouter(
     orders: ordersRouterOrpc,
     balance: balanceRouterOrpc,
     search: searchRouterOrpc,
+    outbound: outboundRouterOrpc,
     siwe: siweRouter,
     eip712: eip712Router,
   }),
@@ -200,6 +202,7 @@ const openApiDocument = await openAPIGenerator.generate(
       { name: 'user' },
       { name: 'balance' },
       { name: 'search' },
+      { name: 'outbound' },
       { name: 'eip712' },
     ],
     security: [{ apiKeyAuth: [] }, { bearerAuth: [] }],
@@ -253,7 +256,31 @@ type OpenApiMethod = {
   responses?: unknown;
   operationId?: string;
   'x-badges'?: Array<{ name: string; color: string }>;
+  'x-openai-isConsequential'?: boolean;
 };
+
+const CONSEQUENTIAL_OPERATION_IDS = new Set([
+  'startOutboundRun',
+  'prepareOutboundOutreach',
+  'registerDomain',
+  'registerWithRecords',
+]);
+
+const AGENT_OUTBOUND_PATHS = new Set([
+  '/outbound/runs',
+  '/outbound/runs/{runId}',
+  '/outbound/runs/{runId}/leads',
+  '/outbound/runs/{runId}/leads/{leadId}',
+  '/outbound/runs/{runId}/leads/{leadId}/outreach',
+  '/user/domains',
+  '/search/availability',
+  '/search/bulk-availability',
+  '/orders/{orderId}',
+  '/orders/register-domain',
+  '/orders/register-domain/records',
+]);
+
+const AGENT_OUTBOUND_TAGS = new Set(['outbound', 'user', 'search', 'orders']);
 
 function isOpenApiMethod(method: unknown): method is OpenApiMethod {
   return !!method && typeof method === 'object' && !Array.isArray(method);
@@ -320,14 +347,22 @@ function mapOpenApiMethod(method: unknown) {
   if (!isOpenApiMethod(nextMethod)) {
     return nextMethod;
   }
+  const methodWithConsequentialFlag = CONSEQUENTIAL_OPERATION_IDS.has(
+    nextMethod.operationId ?? '',
+  )
+    ? {
+        ...nextMethod,
+        'x-openai-isConsequential': true,
+      }
+    : nextMethod;
 
-  if (!nextMethod?.tags?.includes('EIP712')) {
-    return nextMethod;
+  if (!methodWithConsequentialFlag?.tags?.includes('EIP712')) {
+    return methodWithConsequentialFlag;
   }
 
   return {
-    ...nextMethod,
-    tags: nextMethod.tags?.filter((tag) => tag !== 'EIP712'),
+    ...methodWithConsequentialFlag,
+    tags: methodWithConsequentialFlag.tags?.filter((tag) => tag !== 'EIP712'),
     'x-badges': [{ name: 'EIP712', color: '#b5f5ce' }],
   };
 }
@@ -383,6 +418,29 @@ function buildOpenApiDocument() {
   };
 }
 
+function buildAgentOutboundOpenApiDocument() {
+  const fullDocument = buildOpenApiDocument();
+  const paths = Object.fromEntries(
+    Object.entries(fullDocument.paths ?? {}).filter(([path]) =>
+      AGENT_OUTBOUND_PATHS.has(path),
+    ),
+  );
+
+  return {
+    ...fullDocument,
+    info: {
+      ...fullDocument.info,
+      title: 'Namefi Outbound Agent API',
+      description:
+        'A focused OpenAPI document for agents that list owned domains, start outbound lead-finding runs, poll status, inspect leads, prepare outreach drafts, and optionally purchase/register domains.',
+    },
+    tags: (fullDocument.tags ?? []).filter((tag) =>
+      AGENT_OUTBOUND_TAGS.has(tag.name),
+    ),
+    paths,
+  };
+}
+
 /**
  * Decide whether `/openapi/doc` should render the Scalar HTML reference or
  * return the raw OpenAPI JSON. HTML is reserved for human/browser traffic:
@@ -429,6 +487,10 @@ providersRouter.get('/openapi/doc', (c, next) => {
             ? '/v-next'
             : 'http://localhost:3300/v-next',
   })(c, next) as Promise<Response>;
+});
+
+providersRouter.get('/openapi/agent-outbound.json', (c) => {
+  return c.json(buildAgentOutboundOpenApiDocument());
 });
 
 const handler = new OpenAPIHandler(orpcRouter, {

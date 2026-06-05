@@ -50,7 +50,7 @@ import {
   rawGithubProxyRouter,
   RAW_GITHUB_PROXY_MOUNT,
 } from './routers/raw-github-proxy';
-import { llmsTxtRouter } from './routers/llms-txt';
+import { llmsTxtRouter, serveOutboundLlmsTxt } from './routers/llms-txt';
 import { auditLogsTestRouter } from './routers/audit-logs-test';
 import {
   BROWSER_FINGERPRINT_HEADER,
@@ -92,6 +92,15 @@ const TRACKING_HEADERS = [
   GA_CLIENT_ID_HEADER,
   GA_SESSION_ID_HEADER,
 ].map((header) => header.toLowerCase());
+
+const AGENT_DISCOVERY_PATHS = new Set([
+  '/llms.txt',
+  '/llms.txt/',
+  '/outbound/llms.txt',
+  '/outbound/llms.txt/',
+  '/v-next/openapi/doc.json',
+  '/v-next/openapi/agent-outbound.json',
+]);
 
 async function resolveCorsOrigin(origin: string | undefined, path: string) {
   if (config.ALLOW_ALL_ORIGINS) {
@@ -153,13 +162,26 @@ app.use(async (...args) => {
 // or stray crawls is marked non-indexable. Paired with /robots.txt below.
 app.use(async (c, next) => {
   await next();
-  c.header('X-Robots-Tag', 'noindex, nofollow');
+  c.header(
+    'X-Robots-Tag',
+    AGENT_DISCOVERY_PATHS.has(c.req.path) ? 'noindex' : 'noindex, nofollow',
+  );
 });
 
-// Disallow crawling entirely. Backend is an API; no surfaces should be crawled.
+// Disallow normal API crawling, but keep machine-readable agent docs reachable.
 app.get('/robots.txt', (c) => {
   c.header('Content-Type', 'text/plain; charset=utf-8');
-  return c.body('User-agent: *\nDisallow: /\n');
+  return c.body(
+    [
+      'User-agent: *',
+      'Allow: /llms.txt',
+      'Allow: /outbound/llms.txt',
+      'Allow: /v-next/openapi/doc.json',
+      'Allow: /v-next/openapi/agent-outbound.json',
+      'Disallow: /',
+      '',
+    ].join('\n'),
+  );
 });
 
 app.use(prettyJSON());
@@ -222,6 +244,8 @@ app.route('mpp', mppRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
 app.route(RAW_GITHUB_PROXY_MOUNT, rawGithubProxyRouter);
+app.get('/outbound/llms.txt', serveOutboundLlmsTxt);
+app.get('/outbound/llms.txt/', serveOutboundLlmsTxt);
 app.route('llms.txt', llmsTxtRouter);
 app.route('audit-logs-test', auditLogsTestRouter);
 

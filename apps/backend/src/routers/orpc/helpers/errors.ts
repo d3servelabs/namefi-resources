@@ -9,6 +9,7 @@ import {
 } from '@trpc/server/unstable-core-do-not-import';
 import { ORPCError } from '@orpc/server';
 import { z, ZodError } from 'zod';
+import { isOutboundApiErrorPayload } from '#lib/outbound/errors';
 
 // ============ Zod Schemas ============
 
@@ -72,6 +73,17 @@ export function toOrpcError(trpcError: TRPCError): ORPCError<string, unknown> {
     });
   }
 
+  if (isOutboundApiErrorPayload(trpcError.cause)) {
+    return new ORPCError(trpcError.code, {
+      status,
+      message: trpcError.message,
+      data: {
+        error: trpcError.cause.error,
+      },
+      cause: trpcError,
+    });
+  }
+
   return new ORPCError(trpcError.code, {
     status,
     message: trpcError.message,
@@ -99,7 +111,7 @@ export function toTrpcError(orpcError: ORPCError<string, unknown>): TRPCError {
   return new TRPCError({
     code,
     message: orpcError.message,
-    cause: (orpcError as any).cause,
+    cause: getOrpcErrorCause(orpcError),
   });
 }
 
@@ -108,7 +120,7 @@ export function toTrpcError(orpcError: ORPCError<string, unknown>): TRPCError {
  * Catches ORPCErrors that wrap TRPCErrors and re-throws them as properly mapped ORPCErrors.
  */
 export function createTrpcToOrpcErrorInterceptor() {
-  return (error: any) => {
+  return (error: unknown) => {
     if (
       error instanceof ORPCError &&
       'cause' in error &&
@@ -117,4 +129,8 @@ export function createTrpcToOrpcErrorInterceptor() {
       throw toOrpcError(error.cause);
     }
   };
+}
+
+function getOrpcErrorCause(orpcError: ORPCError<string, unknown>) {
+  return (orpcError as { cause?: unknown }).cause;
 }

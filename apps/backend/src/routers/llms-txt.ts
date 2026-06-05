@@ -11,9 +11,11 @@ const LLMS_TXT = `# Namefi API
 - [TypeScript SDK docs](https://docs.namefi.io): Guides for \`@namefi/api-client\` — installation, authentication, domain registration, DNS management.
 - [npm: @namefi/api-client](https://www.npmjs.com/package/@namefi/api-client): Install with \`npm install @namefi/api-client\`.
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
+- [Outbound agent guide](https://api.namefi.io/outbound/llms.txt): Focused instructions for finding domain buyer leads and preparing outreach.
+- [Outbound-focused OpenAPI JSON](https://api.namefi.io/v-next/openapi/agent-outbound.json): Smaller OpenAPI 3 spec for agent lead-finding workflows.
 - [namefi-api-skills (GitHub)](https://github.com/d3servelabs/namefi-api-skills): Signer-neutral helper scripts for preparing auth payloads.
 - Buy domain (X402): https://api.namefi.io/x402/domain/{domainName}
-- Buy domain (MPP): https://api.namefi.io/x402/domain/{domainName}?nftReceivingWalletAddress={nftReceivingWalletAddress}
+- Buy domain (MPP): https://api.namefi.io/mpp/domain/{domainName}?nftReceivingWalletAddress={nftReceivingWalletAddress}
 
 ## Base URLs
 
@@ -73,11 +75,15 @@ See https://docs.namefi.io/docs/03-getting-started/01-your-first-domain
 Key operations:
 - \`GET /v-next/search/availability?domain=example.com\` — check availability
 - \`GET /v-next/search/bulk-availability?domains[]=example.com&domains[]=example2.com\` — check bulk availability
-- \`POST /v-next/orders/register\` — register a domain (EIP-712 signed)
-- \`POST /v-next/orders/register-with-records\` — register with initial DNS records
+- \`POST /v-next/orders/register-domain\` — register a domain
+- \`POST /v-next/orders/register-domain/records\` — register with initial DNS records
 - \`GET /v-next/orders/{orderId}\` — poll order status (async processing)
 
 Registration requires NFSC (Namefi Service Credits). Request test tokens via the faucet: https://docs.namefi.io/docs/03-getting-started/02-your-balance
+
+## Outbound Lead Finding
+
+Use https://api.namefi.io/outbound/llms.txt for the full agent workflow. It covers listing owned domains, starting an outbound lead-finding run, polling run status, listing ranked leads, inspecting lead detail, and preparing outreach drafts.
 
 ## DNS Record Management
 
@@ -241,6 +247,154 @@ const LLMS_TXT_WALLETS = `
   For protected reads that do not require EIP-712. See https://docs.namefi.io/docs/02b-siwe-authentication
 `;
 
+const LLMS_TXT_OUTBOUND = `# Namefi Outbound Agent API
+
+> Use this API to find likely buyer leads for domains owned by the authenticated Namefi user, inspect lead details, and prepare outreach drafts.
+
+## Base URLs
+
+- Production: \`https://api.namefi.io/v-next/\`
+- Development: \`https://api.namefi.dev/v-next/\`
+
+## Machine-Readable Spec
+
+- Focused OpenAPI JSON: https://api.namefi.io/v-next/openapi/agent-outbound.json
+- Full OpenAPI JSON: https://api.namefi.io/v-next/openapi/doc.json
+
+## Authentication
+
+Use the same auth methods as the rest of \`/v-next\`.
+
+Recommended for agents:
+
+    x-api-key: <your-api-key>
+
+Bearer JWT also works:
+
+    Authorization: Bearer <jwt>
+
+Do not invent outbound-specific auth. If an operation returns \`401\`, get a valid API key or JWT. If it returns \`403\`, the authenticated user is valid but cannot access the requested resource.
+
+## Recommended Agent Flow
+
+1. List domains the user owns:
+
+       GET /v-next/user/domains
+
+2. Choose one domain to sell or research. If needed, check whether another domain is available before buying it:
+
+       GET /v-next/search/availability?domain=example.com
+       GET /v-next/search/bulk-availability?domains[]=example.com&domains[]=example.net
+
+3. Start an outbound lead-finding run. The request body intentionally matches the Astra outbound UI and has no asking price field:
+
+       POST /v-next/outbound/runs
+       Content-Type: application/json
+
+       {
+         "domain": "example.com",
+         "reasoningEffort": "medium"
+       }
+
+   \`reasoningEffort\` is optional and can be \`low\`, \`medium\`, or \`high\`. If an active run already exists for the same domain, the API returns that run instead of creating duplicate work.
+
+4. Poll the run while \`pollAfterSeconds\` is present:
+
+       GET /v-next/outbound/runs/{runId}
+
+   Active statuses are \`QUEUED\` and \`RUNNING\`. Terminal statuses are \`SUCCEEDED\`, \`FAILED\`, and \`CANCELED\`.
+
+5. List leads in ranked order:
+
+       GET /v-next/outbound/runs/{runId}/leads?limit=20
+
+   Response order is the ranking. Internal rank, score, and model details are intentionally not exposed.
+
+6. Inspect a lead:
+
+       GET /v-next/outbound/runs/{runId}/leads/{leadId}
+
+   Lead detail includes the public rationale, content, contacts, and any existing drafts.
+
+7. Prepare outreach for a lead:
+
+       POST /v-next/outbound/runs/{runId}/leads/{leadId}/outreach
+
+   Existing drafts are returned without spending more generation credits. If no draft exists, the API performs contact research and draft generation, then returns the updated lead detail.
+
+## Response Shapes
+
+Run responses include:
+
+- \`id\`
+- \`domain\`
+- \`status\`
+- \`reasoningEffort\`
+- \`leadCount\`
+- \`contactCount\`
+- \`draftCount\`
+- \`summary\`
+- \`latestMessage\`
+- \`errorMessage\`
+- \`pollAfterSeconds\`
+- timestamps
+
+Lead list items include:
+
+- \`id\`
+- \`businessDomain\`
+- \`status\`
+- \`contactReadiness\`
+- \`buyerSummary\`
+- \`contactCount\`
+- \`draftCount\`
+
+Lead detail adds:
+
+- \`rationale\`
+- \`content\`
+- \`contacts[]\` with \`email\`, \`name\`, \`title\`, \`sourceUrl\`, \`context\`
+- \`drafts[]\` with \`contactEmail\`, \`subject\`, \`fullEmail\`
+
+## Pagination
+
+List endpoints return:
+
+    {
+      "items": [],
+      "nextCursor": null
+    }
+
+When \`nextCursor\` is non-null, pass it back as \`cursor\`. Treat cursors as opaque strings.
+
+## Errors
+
+Validation errors use \`422 INPUT_VALIDATION_FAILED\`. Outbound-specific errors include a public error payload with:
+
+- \`code\`: stable outbound error code
+- \`message\`: human-readable fix or next step
+- \`retryable\`: whether retrying later may help
+- \`details\`: optional structured context
+
+Common cases:
+
+- \`401 UNAUTHORIZED\`: missing or invalid API key/JWT.
+- \`402 PAYMENT_REQUIRED\`: not enough generation credits or payment is required.
+- \`403 FORBIDDEN\`: authenticated user cannot access the run, lead, or domain.
+- \`404 OUTBOUND_NOT_FOUND\`: run or lead does not exist for the authenticated user.
+- \`400 OUTBOUND_BAD_REQUEST\`: invalid cursor or malformed input.
+- \`500 OUTBOUND_TEMPORARILY_UNAVAILABLE\`: backend service could not start or finish the requested work; retry later.
+
+## Consequential Operations
+
+These operations start paid or externally meaningful work and should be treated as consequential:
+
+- \`POST /v-next/outbound/runs\`
+- \`POST /v-next/outbound/runs/{runId}/leads/{leadId}/outreach\`
+- \`POST /v-next/orders/register-domain\`
+- \`POST /v-next/orders/register-domain/records\`
+`;
+
 function serveLlmsTxt(c: {
   text: (
     body: string,
@@ -267,3 +421,16 @@ llmsTxtRouter.get('/*', (c) => {
   if (c.req.path.endsWith('/')) return serveLlmsTxt(c);
   return c.notFound();
 });
+
+export function serveOutboundLlmsTxt(c: {
+  text: (
+    body: string,
+    status: number,
+    headers: Record<string, string>,
+  ) => Response;
+}) {
+  return c.text(LLMS_TXT_OUTBOUND, 200, {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'public, max-age=3600',
+  });
+}
