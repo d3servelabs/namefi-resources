@@ -154,6 +154,14 @@ const nextConfig = {
         destination: '/domains',
       },
       {
+        source: '/api-auth',
+        destination: '/profile?tab=security',
+      },
+      {
+        source: '/api-key',
+        destination: '/profile?tab=security',
+      },
+      {
         source: '/domain/:path*',
         destination: '/domains/:path*',
       },

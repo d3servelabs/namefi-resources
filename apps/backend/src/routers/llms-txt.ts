@@ -50,7 +50,7 @@ Three auth methods are supported. See https://docs.namefi.io/docs/02-authenticat
 
 ### API Key (simplest — recommended for agents)
 
-Generate a key at https://namefi.io/profile?tab=api-keys, then pass it as:
+Generate a key at https://namefi.io/api-key, then pass it as:
 
     x-api-key: <your-key>
 
