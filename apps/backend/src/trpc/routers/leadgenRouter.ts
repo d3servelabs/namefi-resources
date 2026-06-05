@@ -1,4 +1,10 @@
-import { leadgenContract } from '@namefi-astra/common/contract/leadgen-contract';
+import {
+  LEADGEN_USER_SIGNAL_RECIPE,
+  leadgenContract,
+  leadgenUserSignalEvidenceByState,
+  leadgenUserSignalTypeByState,
+  type LeadgenUserSignalState,
+} from '@namefi-astra/common/contract/leadgen-contract';
 import {
   getLeadgenOutreachCreditEstimate,
   getLeadgenRunCreditEstimate,
@@ -124,6 +130,48 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
       });
     }),
 
+  setLeadUserSignal: protectedProcedure
+    .input(leadgenContract.setLeadUserSignal.input)
+    .output(leadgenContract.setLeadUserSignal.output)
+    .mutation(async ({ input, ctx }) => {
+      const run = await getLeadgenRunForUser({
+        runId: input.runId,
+        userId: ctx.user.id,
+      });
+
+      const [lead] = await db
+        .select({ id: leadgenLeadsTable.id })
+        .from(leadgenLeadsTable)
+        .where(
+          and(
+            eq(leadgenLeadsTable.id, input.leadId),
+            eq(leadgenLeadsTable.runId, run.id),
+          ),
+        )
+        .limit(1);
+
+      if (!lead) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Leadgen prospect not found',
+        });
+      }
+
+      const signal = await persistLeadgenUserSignal({
+        runId: run.id,
+        leadId: lead.id,
+        state: input.state,
+        userId: ctx.user.id,
+      });
+
+      return {
+        runId: run.id,
+        leadId: lead.id,
+        state: input.state,
+        signal,
+      };
+    }),
+
   listRuns: protectedProcedure
     .input(leadgenContract.listRuns.input)
     .output(leadgenContract.listRuns.output)
@@ -178,6 +226,71 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
       }
     }),
 });
+
+async function persistLeadgenUserSignal(params: {
+  runId: string;
+  leadId: string;
+  state: LeadgenUserSignalState;
+  userId: string;
+}) {
+  const now = new Date();
+  const signalType = leadgenUserSignalTypeByState[params.state];
+  const evidenceSnippet = leadgenUserSignalEvidenceByState[params.state];
+
+  const [signal] = await db
+    .insert(leadgenLeadSignalsTable)
+    .values({
+      runId: params.runId,
+      leadId: params.leadId,
+      recipe: LEADGEN_USER_SIGNAL_RECIPE,
+      signalType,
+      query: LEADGEN_USER_SIGNAL_RECIPE,
+      evidenceUrl: null,
+      evidenceSnippet,
+      metadata: {
+        source: 'outbound-prospect-organizer',
+        state: params.state,
+        userId: params.userId,
+      },
+    })
+    .onConflictDoUpdate({
+      target: [
+        leadgenLeadSignalsTable.leadId,
+        leadgenLeadSignalsTable.recipe,
+        leadgenLeadSignalsTable.signalType,
+        leadgenLeadSignalsTable.evidenceSnippet,
+      ],
+      set: {
+        query: LEADGEN_USER_SIGNAL_RECIPE,
+        evidenceUrl: null,
+        metadata: {
+          source: 'outbound-prospect-organizer',
+          state: params.state,
+          userId: params.userId,
+        },
+        updatedAt: now,
+      },
+    })
+    .returning({
+      id: leadgenLeadSignalsTable.id,
+      runId: leadgenLeadSignalsTable.runId,
+      leadId: leadgenLeadSignalsTable.leadId,
+      signalType: leadgenLeadSignalsTable.signalType,
+      evidenceUrl: leadgenLeadSignalsTable.evidenceUrl,
+      evidenceSnippet: leadgenLeadSignalsTable.evidenceSnippet,
+      createdAt: leadgenLeadSignalsTable.createdAt,
+      updatedAt: leadgenLeadSignalsTable.updatedAt,
+    });
+
+  if (!signal) {
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Could not save prospect signal',
+    });
+  }
+
+  return signal;
+}
 
 export async function getLeadgenRunSnapshotForUser(params: {
   runId: string;

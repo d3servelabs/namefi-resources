@@ -21,6 +21,11 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@namefi-astra/ui/components/shadcn/collapsible';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -34,33 +39,55 @@ import {
 } from '@namefi-astra/ui/components/shadcn/radio-group';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import type { LeadgenUserSignalState } from '@namefi-astra/common/contract/leadgen-contract';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import {
   ArrowUpRight,
   Building2,
+  ChevronDown,
   CheckCircle2,
   Clock3,
   Copy,
   Download,
+  EyeOff,
   ExternalLink,
   FileText,
+  ListChecks,
   Loader2,
   Mail,
   Play,
   Search,
   Sparkles,
+  Star,
   Target,
   UserRoundSearch,
   XCircle,
   type LucideIcon,
 } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import {
+  AnimatePresence,
+  LayoutGroup,
+  motion,
+  useReducedMotion,
+} from 'motion/react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { toast } from 'sonner';
 import {
   buildLeadgenCrmCsv,
@@ -78,6 +105,8 @@ import { upsertLeadgenRunByCreatedDesc } from './leadgen-run-order';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
+type LeadgenUserSignal =
+  AppRouterOutput['leadgen']['setLeadUserSignal']['signal'];
 type UserDomain = AppRouterOutput['users']['getCurrentUserDomains'][number];
 type LeadgenStartSuggestion = {
   domain: string;
@@ -129,6 +158,12 @@ const negativeTimelineMessageRe =
   /\b(?:no|not|failed|failure|error|without|couldn['\u2019]?t|could not|didn['\u2019]?t|did not|unable|invalid|canceled|cancelled)\b/i;
 const skeletonRows = ['first', 'second', 'third'];
 const recentRunsQueryInput = { limit: 12 };
+const leadLayoutTransition = {
+  type: 'spring',
+  stiffness: 520,
+  damping: 42,
+  mass: 0.8,
+} as const;
 
 export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -546,11 +581,33 @@ function RunWorkspace({
   const [pendingOutreachLeadIds, setPendingOutreachLeadIds] = useState<
     string[]
   >([]);
+  const [pendingUserSignalLeadIds, setPendingUserSignalLeadIds] = useState<
+    string[]
+  >([]);
+  const [
+    optimisticUserSignalStateByLeadId,
+    setOptimisticUserSignalStateByLeadId,
+  ] = useState<Partial<Record<string, LeadgenUserSignalState>>>({});
   const [reviewOutreachLeadId, setReviewOutreachLeadId] = useState<
     string | null
   >(null);
-  const presentation = useMemo(() => buildLeadPresentationModel(run), [run]);
+  const previousRunIdRef = useRef(run.id);
+  const presentation = useMemo(
+    () =>
+      buildLeadPresentationModel(run, {
+        userSignalStateByLeadId: optimisticUserSignalStateByLeadId,
+      }),
+    [optimisticUserSignalStateByLeadId, run],
+  );
   const buyerAngles = getBuyerAngles(run);
+
+  useEffect(() => {
+    if (previousRunIdRef.current === run.id) return;
+
+    previousRunIdRef.current = run.id;
+    setOptimisticUserSignalStateByLeadId({});
+    setPendingUserSignalLeadIds([]);
+  }, [run.id]);
 
   const generateLeadOutreach = useMutation(
     trpc.leadgen.generateLeadOutreach.mutationOptions({
@@ -596,6 +653,45 @@ function RunWorkspace({
     }),
   );
 
+  const setLeadUserSignal = useMutation(
+    trpc.leadgen.setLeadUserSignal.mutationOptions({
+      onSuccess(result) {
+        const queryKey = trpc.leadgen.getRun.queryKey({ runId: result.runId });
+        const currentRun =
+          queryClient.getQueryData<LeadgenSnapshot>(queryKey) ?? run;
+        onRunUpdated(
+          applyLeadgenUserSignalToRun({
+            run: currentRun,
+            leadId: result.leadId,
+            signal: result.signal,
+          }),
+        );
+        setOptimisticUserSignalStateByLeadId((states) =>
+          omitLeadSignalState(states, result.leadId),
+        );
+
+        if (result.state === 'hidden') {
+          toast('Prospect hidden', {
+            description: 'Moved to the Hidden section.',
+          });
+        }
+      },
+      onError(error, variables) {
+        setOptimisticUserSignalStateByLeadId((states) =>
+          omitLeadSignalState(states, variables.leadId),
+        );
+        toast.error('Could not update prospect', {
+          description: error.message,
+        });
+      },
+      onSettled(_result, _error, variables) {
+        setPendingUserSignalLeadIds((leadIds) =>
+          leadIds.filter((leadId) => leadId !== variables.leadId),
+        );
+      },
+    }),
+  );
+
   const estimatedOutreachCredits = usageQuery.data
     ? getLeadgenOutreachCreditEstimate({
         creditCosts: usageQuery.data.creditCosts,
@@ -624,6 +720,22 @@ function RunWorkspace({
       leadIds.includes(leadId) ? leadIds : [...leadIds, leadId],
     );
     generateLeadOutreach.mutate({ runId: run.id, leadId });
+  };
+
+  const handleSetLeadUserSignal = (
+    leadId: string,
+    state: LeadgenUserSignalState,
+  ) => {
+    if (pendingUserSignalLeadIds.includes(leadId)) return;
+
+    setPendingUserSignalLeadIds((leadIds) =>
+      leadIds.includes(leadId) ? leadIds : [...leadIds, leadId],
+    );
+    setOptimisticUserSignalStateByLeadId((states) => ({
+      ...states,
+      [leadId]: state,
+    }));
+    setLeadUserSignal.mutate({ runId: run.id, leadId, state });
   };
 
   const headerSubtitle = getRunHeaderSubtitle(run);
@@ -698,11 +810,6 @@ function RunWorkspace({
             </div>
           )}
 
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              Prospects ({presentation.counts.prospects})
-            </p>
-          </div>
           <LeadList
             leads={presentation.leads}
             emptyStateMessage="Prospects will appear here as search finds them."
@@ -715,8 +822,10 @@ function RunWorkspace({
             isOutreachCreditLoading={usageQuery.isLoading}
             isOutreachCreditError={usageQuery.isError}
             isOutreachCreditBlocked={hasInsufficientOutreachCredits}
+            pendingUserSignalLeadIds={pendingUserSignalLeadIds}
             onGenerateLeadOutreach={handleGenerateLeadOutreach}
             onReviewOutreachLead={setReviewOutreachLeadId}
+            onSetLeadUserSignal={handleSetLeadUserSignal}
           />
         </section>
 
@@ -745,8 +854,10 @@ function LeadList({
   isOutreachCreditLoading,
   isOutreachCreditError,
   isOutreachCreditBlocked,
+  pendingUserSignalLeadIds,
   onGenerateLeadOutreach,
   onReviewOutreachLead,
+  onSetLeadUserSignal,
 }: {
   leads: LeadPresentation[];
   emptyStateMessage: string;
@@ -759,9 +870,20 @@ function LeadList({
   isOutreachCreditLoading: boolean;
   isOutreachCreditError: boolean;
   isOutreachCreditBlocked: boolean;
+  pendingUserSignalLeadIds: string[];
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachLead: (leadId: string | null) => void;
+  onSetLeadUserSignal: (leadId: string, state: LeadgenUserSignalState) => void;
 }) {
+  const shouldReduceMotion = useReducedMotion();
+  const [openSections, setOpenSections] = useState<
+    Record<LeadOrganizationSectionId, boolean>
+  >({
+    bookmarked: true,
+    prospects: true,
+    hidden: false,
+  });
+
   if (leads.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
@@ -770,10 +892,25 @@ function LeadList({
     );
   }
 
+  const transition = shouldReduceMotion
+    ? { duration: 0 }
+    : leadLayoutTransition;
+  const bookmarkedLeads = leads.filter(
+    (presentation) => presentation.organizationState === 'bookmarked',
+  );
+  const visibleProspectLeads = leads.filter(
+    (presentation) => presentation.organizationState === 'none',
+  );
+  const hiddenLeads = leads.filter(
+    (presentation) => presentation.organizationState === 'hidden',
+  );
+
   const renderLeadCard = (presentation: LeadPresentation) => (
     <LeadCard
       key={presentation.lead.id}
+      layoutId={`leadgen-lead-${presentation.lead.id}`}
       presentation={presentation}
+      transition={transition}
       sourceDomain={sourceDomain}
       runStatus={runStatus}
       isPreparingOutreach={pendingOutreachLeadIds.includes(
@@ -785,18 +922,91 @@ function LeadList({
       isOutreachCreditLoading={isOutreachCreditLoading}
       isOutreachCreditError={isOutreachCreditError}
       isOutreachCreditBlocked={isOutreachCreditBlocked}
+      isUserSignalPending={pendingUserSignalLeadIds.includes(
+        presentation.lead.id,
+      )}
       onGenerateLeadOutreach={onGenerateLeadOutreach}
       onReviewOutreachChange={(open) =>
         onReviewOutreachLead(open ? presentation.lead.id : null)
       }
+      onSetUserSignal={(state) =>
+        onSetLeadUserSignal(presentation.lead.id, state)
+      }
     />
   );
 
-  return <div className="grid gap-3">{leads.map(renderLeadCard)}</div>;
+  const setSectionOpen = (
+    sectionId: LeadOrganizationSectionId,
+    open: boolean,
+  ) => {
+    setOpenSections((sections) => ({
+      ...sections,
+      [sectionId]: open,
+    }));
+  };
+
+  return (
+    <LayoutGroup id={`leadgen-list-${sourceDomain}`}>
+      <motion.div
+        layout
+        className="flex flex-col gap-3"
+        transition={transition}
+      >
+        <AnimatePresence initial={false} mode="popLayout">
+          {bookmarkedLeads.length > 0 && (
+            <LeadOrganizationSection
+              key="bookmarked"
+              sectionId="bookmarked"
+              title="Bookmarks"
+              count={bookmarkedLeads.length}
+              icon={Star}
+              open={openSections.bookmarked}
+              emptyStateMessage="Bookmarked prospects will stay pinned here."
+              transition={transition}
+              onOpenChange={(open) => setSectionOpen('bookmarked', open)}
+            >
+              {bookmarkedLeads.map(renderLeadCard)}
+            </LeadOrganizationSection>
+          )}
+
+          <LeadOrganizationSection
+            key="prospects"
+            sectionId="prospects"
+            title="Prospects"
+            count={visibleProspectLeads.length}
+            icon={ListChecks}
+            open={openSections.prospects}
+            emptyStateMessage="No unmarked prospects right now."
+            transition={transition}
+            onOpenChange={(open) => setSectionOpen('prospects', open)}
+          >
+            {visibleProspectLeads.map(renderLeadCard)}
+          </LeadOrganizationSection>
+
+          <LeadOrganizationSection
+            key="hidden"
+            sectionId="hidden"
+            title="Hidden"
+            count={hiddenLeads.length}
+            icon={EyeOff}
+            open={openSections.hidden}
+            emptyStateMessage="Crossed-out prospects move here."
+            muted
+            transition={transition}
+            onOpenChange={(open) => setSectionOpen('hidden', open)}
+          >
+            {hiddenLeads.map(renderLeadCard)}
+          </LeadOrganizationSection>
+        </AnimatePresence>
+      </motion.div>
+    </LayoutGroup>
+  );
 }
 
 function LeadCard({
+  layoutId,
   presentation,
+  transition,
   sourceDomain,
   runStatus,
   isPreparingOutreach,
@@ -806,10 +1016,14 @@ function LeadCard({
   isOutreachCreditLoading,
   isOutreachCreditError,
   isOutreachCreditBlocked,
+  isUserSignalPending,
   onGenerateLeadOutreach,
   onReviewOutreachChange,
+  onSetUserSignal,
 }: {
+  layoutId: string;
   presentation: LeadPresentation;
+  transition: typeof leadLayoutTransition | { duration: number };
   sourceDomain: string;
   runStatus: LeadgenSnapshot['status'];
   isPreparingOutreach: boolean;
@@ -819,8 +1033,10 @@ function LeadCard({
   isOutreachCreditLoading: boolean;
   isOutreachCreditError: boolean;
   isOutreachCreditBlocked: boolean;
+  isUserSignalPending: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachChange: (open: boolean) => void;
+  onSetUserSignal: (state: LeadgenUserSignalState) => void;
 }) {
   const { lead } = presentation;
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
@@ -831,9 +1047,18 @@ function LeadCard({
     (lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length);
   const showOutreachPanel =
     canPrepareOutreach && (hasEmailCta || shouldPrepareOutreach);
+  const isHidden = presentation.organizationState === 'hidden';
 
   return (
-    <article className="rounded-lg border border-border/70 bg-background/60 p-4">
+    <motion.article
+      layout
+      layoutId={layoutId}
+      transition={transition}
+      className={cn(
+        'rounded-lg border border-border/70 bg-background/60 p-4 shadow-xs',
+        isHidden && 'border-dashed bg-muted/20 opacity-75',
+      )}
+    >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -841,7 +1066,10 @@ function LeadCard({
               href={`https://${lead.businessDomain}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-lg font-semibold hover:text-primary"
+              className={cn(
+                'inline-flex items-center gap-1 text-lg font-semibold hover:text-primary',
+                isHidden && 'text-muted-foreground line-through',
+              )}
             >
               {lead.businessDomain}
               <ExternalLink className="size-3.5" />
@@ -851,7 +1079,14 @@ function LeadCard({
             {presentation.buyerSummary}
           </p>
         </div>
-        <LeadContactCountBadge contactCount={lead.contacts.length} />
+        <div className="flex shrink-0 items-center gap-2">
+          <ProspectSignalActions
+            state={presentation.organizationState}
+            isPending={isUserSignalPending}
+            onSetState={onSetUserSignal}
+          />
+          <LeadContactCountBadge contactCount={lead.contacts.length} />
+        </div>
       </div>
 
       {showOutreachPanel && (
@@ -876,7 +1111,151 @@ function LeadCard({
         sourceDomain={sourceDomain}
         onOpenChange={onReviewOutreachChange}
       />
-    </article>
+    </motion.article>
+  );
+}
+
+type LeadOrganizationSectionId = 'bookmarked' | 'prospects' | 'hidden';
+
+function LeadOrganizationSection({
+  sectionId,
+  title,
+  count,
+  icon: Icon,
+  open,
+  emptyStateMessage,
+  muted = false,
+  transition,
+  onOpenChange,
+  children,
+}: {
+  sectionId: LeadOrganizationSectionId;
+  title: string;
+  count: number;
+  icon: LucideIcon;
+  open: boolean;
+  emptyStateMessage: string;
+  muted?: boolean;
+  transition: typeof leadLayoutTransition | { duration: number };
+  onOpenChange: (open: boolean) => void;
+  children: ReactNode;
+}) {
+  return (
+    <motion.section
+      layout
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={transition}
+      className={cn(
+        'overflow-hidden rounded-lg border border-border/70 bg-background/45',
+        muted && 'bg-muted/10',
+      )}
+    >
+      <Collapsible open={open} onOpenChange={onOpenChange}>
+        <CollapsibleTrigger
+          render={
+            <button
+              type="button"
+              className="group flex min-h-11 w-full items-center gap-2 px-3 text-left transition-colors hover:bg-muted/40"
+              aria-label={`${open ? 'Collapse' : 'Expand'} ${title}`}
+            />
+          }
+        >
+          <ChevronDown className="-rotate-90 size-4 text-muted-foreground transition-transform group-data-[panel-open]:rotate-0" />
+          <Icon className="size-4 text-muted-foreground" />
+          <span className="text-sm font-semibold">{title}</span>
+          <Badge variant={muted ? 'outline' : 'secondary'}>{count}</Badge>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="grid gap-3 px-3 pb-3">
+            <AnimatePresence initial={false} mode="popLayout">
+              {count > 0 ? (
+                children
+              ) : (
+                <motion.div
+                  key={`${sectionId}-empty`}
+                  layout
+                  className="rounded-md border border-dashed border-border/70 p-4 text-sm text-muted-foreground"
+                >
+                  {emptyStateMessage}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    </motion.section>
+  );
+}
+
+function ProspectSignalActions({
+  state,
+  isPending,
+  onSetState,
+}: {
+  state: LeadgenUserSignalState;
+  isPending: boolean;
+  onSetState: (state: LeadgenUserSignalState) => void;
+}) {
+  const isBookmarked = state === 'bookmarked';
+  const isHidden = state === 'hidden';
+
+  return (
+    <fieldset className="flex items-center gap-1 border-0 p-0">
+      <legend className="sr-only">Organize prospect</legend>
+      <ProspectSignalButton
+        label={isBookmarked ? 'Remove bookmark' : 'Bookmark prospect'}
+        pressed={isBookmarked}
+        disabled={isPending}
+        onClick={() => onSetState(isBookmarked ? 'none' : 'bookmarked')}
+      >
+        <Star data-icon="inline-start" />
+      </ProspectSignalButton>
+      <ProspectSignalButton
+        label={isHidden ? 'Restore prospect' : 'Hide prospect'}
+        pressed={isHidden}
+        disabled={isPending}
+        onClick={() => onSetState(isHidden ? 'none' : 'hidden')}
+      >
+        <EyeOff data-icon="inline-start" />
+      </ProspectSignalButton>
+    </fieldset>
+  );
+}
+
+function ProspectSignalButton({
+  label,
+  pressed,
+  disabled,
+  onClick,
+  children,
+}: {
+  label: string;
+  pressed: boolean;
+  disabled: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            variant={pressed ? 'secondary' : 'ghost'}
+            size="icon-sm"
+            aria-label={label}
+            aria-pressed={pressed}
+            disabled={disabled}
+            onClick={onClick}
+          />
+        }
+      >
+        {children}
+      </TooltipTrigger>
+      <TooltipContent sideOffset={6}>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -1552,6 +1931,53 @@ function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
     createdAt: snapshot.createdAt,
     updatedAt: snapshot.updatedAt,
   };
+}
+
+function applyLeadgenUserSignalToRun({
+  run,
+  leadId,
+  signal,
+}: {
+  run: LeadgenSnapshot;
+  leadId: string;
+  signal: LeadgenUserSignal;
+}): LeadgenSnapshot {
+  return {
+    ...run,
+    leads: run.leads.map((lead) =>
+      lead.id === leadId
+        ? {
+            ...lead,
+            signals: upsertLeadgenSignal(lead.signals, signal),
+          }
+        : lead,
+    ),
+  };
+}
+
+function upsertLeadgenSignal(
+  signals: LeadgenLead['signals'],
+  signal: LeadgenUserSignal,
+) {
+  const existingSignalIndex = signals.findIndex(
+    (item) => item.id === signal.id,
+  );
+  if (existingSignalIndex === -1) {
+    return [...signals, signal];
+  }
+
+  return signals.map((item, index) =>
+    index === existingSignalIndex ? signal : item,
+  );
+}
+
+function omitLeadSignalState(
+  states: Partial<Record<string, LeadgenUserSignalState>>,
+  leadId: string,
+) {
+  const nextStates = { ...states };
+  delete nextStates[leadId];
+  return nextStates;
 }
 
 function getStartSuggestions({

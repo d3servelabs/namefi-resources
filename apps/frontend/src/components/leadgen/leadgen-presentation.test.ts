@@ -2,9 +2,15 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { describe, expect, it } from 'vitest';
 
 import {
+  leadgenUserSignalEvidenceByState,
+  leadgenUserSignalTypeByState,
+  type LeadgenUserSignalState,
+} from '@namefi-astra/common/contract/leadgen-contract';
+import {
   buildLeadPresentation,
   buildLeadPresentationModel,
   canPrepareLeadgenOutreach,
+  getLeadUserSignalState,
   type LeadgenLead,
 } from './leadgen-presentation';
 
@@ -36,6 +42,22 @@ function lead(overrides: Partial<LeadgenLead>) {
     ...baseLead,
     ...overrides,
   } satisfies LeadgenLead;
+}
+
+function userSignal(
+  state: LeadgenUserSignalState,
+  updatedAt: Date,
+): LeadgenLead['signals'][number] {
+  return {
+    id: `${state}-signal`,
+    runId: 'run-1',
+    leadId: 'lead-1',
+    signalType: leadgenUserSignalTypeByState[state],
+    evidenceUrl: null,
+    evidenceSnippet: leadgenUserSignalEvidenceByState[state],
+    createdAt: baseDate,
+    updatedAt,
+  };
 }
 
 describe('buildLeadPresentation', () => {
@@ -135,6 +157,64 @@ describe('buildLeadPresentationModel', () => {
       prospects: 4,
       ranked: 3,
       checking: 1,
+      bookmarked: 0,
+      visibleProspects: 4,
+      hidden: 0,
+    });
+  });
+
+  it('groups bookmarked and hidden prospects from the latest user signal', () => {
+    const model = buildLeadPresentationModel({
+      id: 'run-1',
+      userId: 'user-1',
+      domain: sourceDomain,
+      status: 'SUCCEEDED',
+      reasoningEffort: 'medium',
+      workflowId: null,
+      startedAt: new Date('2026-05-18T00:00:00Z'),
+      finishedAt: new Date('2026-05-18T00:01:00Z'),
+      errorMessage: null,
+      summary: null,
+      leadCount: 3,
+      contactCount: 0,
+      draftCount: 0,
+      tokenUsage: [],
+      createdAt: new Date('2026-05-18T00:00:00Z'),
+      updatedAt: new Date('2026-05-18T00:01:00Z'),
+      intentQueries: [],
+      events: [],
+      leads: [
+        lead({
+          id: 'bookmarked',
+          signals: [userSignal('bookmarked', new Date('2026-05-18T00:02:00Z'))],
+        }),
+        lead({
+          id: 'normal',
+          signals: [userSignal('none', new Date('2026-05-18T00:03:00Z'))],
+        }),
+        lead({
+          id: 'hidden',
+          signals: [
+            userSignal('bookmarked', new Date('2026-05-18T00:02:00Z')),
+            userSignal('hidden', new Date('2026-05-18T00:04:00Z')),
+          ],
+        }),
+      ],
+    });
+
+    expect(
+      model.organizationGroups.bookmarked.map(({ lead }) => lead.id),
+    ).toEqual(['bookmarked']);
+    expect(
+      model.organizationGroups.prospects.map(({ lead }) => lead.id),
+    ).toEqual(['normal']);
+    expect(model.organizationGroups.hidden.map(({ lead }) => lead.id)).toEqual([
+      'hidden',
+    ]);
+    expect(model.counts).toMatchObject({
+      bookmarked: 1,
+      visibleProspects: 1,
+      hidden: 1,
     });
   });
 
@@ -151,6 +231,22 @@ describe('buildLeadPresentationModel', () => {
     expect(presentation.buyerSummary).toBe(
       'Buyer has direct campaign demand for the seller domain. Keep this second sentence because card summaries are not truncated.',
     );
+  });
+});
+
+describe('getLeadUserSignalState', () => {
+  it('returns the newest user organization signal by updatedAt', () => {
+    expect(
+      getLeadUserSignalState(
+        lead({
+          signals: [
+            userSignal('hidden', new Date('2026-05-18T00:02:00Z')),
+            userSignal('bookmarked', new Date('2026-05-18T00:04:00Z')),
+            userSignal('none', new Date('2026-05-18T00:03:00Z')),
+          ],
+        }),
+      ),
+    ).toBe('bookmarked');
   });
 });
 

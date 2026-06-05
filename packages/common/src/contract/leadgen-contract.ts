@@ -31,6 +31,30 @@ export const leadgenContactReadinessSchema = z.enum([
   'not_found',
 ]);
 
+export const leadgenUserSignalStateSchema = z.enum([
+  'none',
+  'bookmarked',
+  'hidden',
+]);
+
+export type LeadgenUserSignalState = z.infer<
+  typeof leadgenUserSignalStateSchema
+>;
+
+export const LEADGEN_USER_SIGNAL_RECIPE = 'user-prospect-organization';
+
+export const leadgenUserSignalTypeByState = {
+  none: 'user_cleared',
+  bookmarked: 'user_bookmarked',
+  hidden: 'user_hidden',
+} as const satisfies Record<LeadgenUserSignalState, string>;
+
+export const leadgenUserSignalEvidenceByState = {
+  none: 'User returned this prospect to the regular prospect list.',
+  bookmarked: 'User bookmarked this prospect.',
+  hidden: 'User hid this prospect.',
+} as const satisfies Record<LeadgenUserSignalState, string>;
+
 const leadgenContactSchema = z.object({
   id: z.string(),
   runId: z.string(),
@@ -143,6 +167,18 @@ const generateLeadOutreachInputSchema = runIdInputSchema.extend({
   leadId: z.string().uuid(),
 });
 
+const setLeadUserSignalInputSchema = runIdInputSchema.extend({
+  leadId: z.string().uuid(),
+  state: leadgenUserSignalStateSchema,
+});
+
+const setLeadUserSignalOutputSchema = z.object({
+  runId: z.string(),
+  leadId: z.string(),
+  state: leadgenUserSignalStateSchema,
+  signal: leadgenSignalSchema,
+});
+
 const listRunsInputSchema = z
   .object({
     limit: z.number().int().min(1).max(50).default(12),
@@ -166,6 +202,11 @@ export const leadgenContract = createContract(
       type: 'mutation',
       input: generateLeadOutreachInputSchema,
       output: leadgenRunSnapshotSchema,
+    },
+    setLeadUserSignal: {
+      type: 'mutation',
+      input: setLeadUserSignalInputSchema,
+      output: setLeadUserSignalOutputSchema,
     },
     listRuns: {
       type: 'query',
