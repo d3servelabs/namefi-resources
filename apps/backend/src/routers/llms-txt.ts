@@ -306,15 +306,9 @@ Do not invent outbound-specific auth. If an operation returns \`401\`, get a val
 
        GET /v-next/outbound/runs/{runId}/leads?limit=20
 
-   Response order is the ranking. Internal rank, score, and model details are intentionally not exposed.
+   Response order is the ranking. Each lead includes the public rationale, content, contacts, and any existing drafts. Internal rank, score, status, readiness, and model details are intentionally not exposed.
 
-6. Inspect a lead:
-
-       GET /v-next/outbound/runs/{runId}/leads/{leadId}
-
-   Lead detail includes the public rationale, content, contacts, and any existing drafts.
-
-7. Prepare outreach for a lead:
+6. Prepare outreach for a lead:
 
        POST /v-next/outbound/runs/{runId}/leads/{leadId}/outreach
 
@@ -344,13 +338,21 @@ Lead list items include:
 - \`buyerSummary\`
 - \`contactCount\`
 - \`draftCount\`
-
-Lead detail adds:
-
 - \`rationale\`
 - \`content\`
 - \`contacts[]\` with \`email\`, \`name\`, \`title\`, \`sourceUrl\`, \`context\`
 - \`drafts[]\` with \`contactEmail\`, \`subject\`, \`fullEmail\`
+
+## Presentation Guidance
+
+When summarizing results for a user:
+
+- Preserve the API response order and number rows starting at 1.
+- Show a concise table with these columns: rank, domain, why it may fit, contact found, draft available.
+- Use \`buyerSummary\` or \`rationale\` for the "why it may fit" column.
+- For contact found, show yes/no and include the best email when one exists.
+- For draft available, show yes/no.
+- Do not mention raw internal statuses, suppressed/priority labels, rank scores, model details, command logs, JSON fixes, or file aggregation mechanics.
 
 ## Pagination
 

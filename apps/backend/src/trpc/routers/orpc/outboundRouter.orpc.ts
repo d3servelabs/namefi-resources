@@ -41,8 +41,9 @@ import {
 } from '#lib/outbound/pagination';
 import {
   serializeOutboundLeadDetail,
-  serializeOutboundLeadSummary,
   serializeOutboundRun,
+  type OutboundContactSource,
+  type OutboundDraftSource,
   type OutboundLeadSource,
   type OutboundRunSource,
 } from '#lib/outbound/serialization';
@@ -55,6 +56,11 @@ import { assertUserCanSpendGenerationCredits } from '../aiRouter';
 import { getLeadgenRunSnapshotForUser } from '../leadgenRouter';
 
 const logger = createLogger({ module: 'outbound-api-router' });
+
+type LeadAssets = {
+  contacts: OutboundContactSource[];
+  drafts: OutboundDraftSource[];
+};
 
 const outboundRunSchema = z.object({
   id: z.string().uuid(),
@@ -118,7 +124,7 @@ const outboundPaginatedRunsSchema = z.object({
 });
 
 const outboundPaginatedLeadsSchema = z.object({
-  items: z.array(outboundLeadSummarySchema),
+  items: z.array(outboundLeadDetailSchema),
   nextCursor: z.string().nullable(),
 });
 
@@ -292,7 +298,7 @@ export const outboundRouterOrpc = createTRPCRouter({
         operationId: 'listOutboundLeads',
         summary: 'List outbound leads',
         description:
-          'List discovered leads for a run in ranked order. The ranking is represented by response order; internal score and rank fields are intentionally not exposed.',
+          'List discovered leads for a run in ranked order with public rationale, contacts, and generated outreach drafts when available. The ranking is represented by response order; internal score and rank fields are intentionally not exposed.',
       },
     })
     .input(runIdInputSchema.merge(outboundPaginationObjectSchema))
@@ -303,68 +309,40 @@ export const outboundRouterOrpc = createTRPCRouter({
         runId: input.runId,
         userId: ctx.user.id,
       });
-      const [leads, contacts, drafts] = await Promise.all([
-        db
-          .select(selectOutboundLeadFields)
-          .from(leadgenLeadsTable)
-          .where(eq(leadgenLeadsTable.runId, run.id))
-          .orderBy(
-            asc(leadgenLeadsTable.rank),
-            desc(leadgenLeadsTable.score),
-            asc(leadgenLeadsTable.createdAt),
-            asc(leadgenLeadsTable.id),
-          )
-          .limit(input.limit + 1)
-          .offset(offset),
-        db
-          .select({
-            leadId: leadgenContactsTable.leadId,
-            businessDomain: leadgenContactsTable.businessDomain,
-          })
-          .from(leadgenContactsTable)
-          .where(eq(leadgenContactsTable.runId, run.id)),
-        db
-          .select({
-            leadId: leadgenEmailDraftsTable.leadId,
-            businessDomain: leadgenEmailDraftsTable.businessDomain,
-          })
-          .from(leadgenEmailDraftsTable)
-          .where(eq(leadgenEmailDraftsTable.runId, run.id)),
-      ]);
-      const leadCounts = countLeadAssets({ leads, contacts, drafts });
+      const leads = await db
+        .select(selectOutboundLeadFields)
+        .from(leadgenLeadsTable)
+        .where(eq(leadgenLeadsTable.runId, run.id))
+        .orderBy(
+          asc(leadgenLeadsTable.rank),
+          desc(leadgenLeadsTable.score),
+          asc(leadgenLeadsTable.createdAt),
+          asc(leadgenLeadsTable.id),
+        )
+        .limit(input.limit + 1)
+        .offset(offset);
+      const pageLeads = leads.slice(0, input.limit);
+      const { contacts, drafts } = await listLeadAssetsForLeads({
+        runId: run.id,
+        leads: pageLeads,
+      });
+      const leadAssets = groupLeadAssets({ leads, contacts, drafts });
 
       return paginateOutboundRows(
-        leads.map((lead) =>
-          serializeOutboundLeadSummary({
+        leads.map((lead) => {
+          const assets = leadAssets.get(lead.id) ?? {
+            contacts: [],
+            drafts: [],
+          };
+
+          return serializeOutboundLeadDetail({
             lead,
-            contactCount: leadCounts.get(lead.id)?.contactCount ?? 0,
-            draftCount: leadCounts.get(lead.id)?.draftCount ?? 0,
-          }),
-        ),
+            contacts: assets.contacts,
+            drafts: assets.drafts,
+          });
+        }),
         input,
       );
-    }),
-
-  getLead: protectedProcedure
-    .meta({
-      route: {
-        path: '/outbound/runs/{runId}/leads/{leadId}',
-        method: 'GET',
-        tags: ['outbound'],
-        operationId: 'getOutboundLead',
-        summary: 'Get outbound lead detail',
-        description:
-          'Get one lead with the public rationale, contact options, and generated outreach drafts when available.',
-      },
-    })
-    .input(leadIdInputSchema)
-    .output(outboundLeadDetailSchema)
-    .query(async ({ input, ctx }) => {
-      return getOutboundLeadDetailForUser({
-        runId: input.runId,
-        leadId: input.leadId,
-        userId: ctx.user.id,
-      });
     }),
 
   prepareOutreach: protectedProcedure
@@ -482,6 +460,24 @@ const selectOutboundLeadFields = {
   content: leadgenLeadsTable.content,
 };
 
+const selectOutboundContactFields = {
+  leadId: leadgenContactsTable.leadId,
+  businessDomain: leadgenContactsTable.businessDomain,
+  email: leadgenContactsTable.email,
+  name: leadgenContactsTable.name,
+  title: leadgenContactsTable.title,
+  sourceUrl: leadgenContactsTable.sourceUrl,
+  context: leadgenContactsTable.context,
+};
+
+const selectOutboundDraftFields = {
+  leadId: leadgenEmailDraftsTable.leadId,
+  businessDomain: leadgenEmailDraftsTable.businessDomain,
+  contactEmail: leadgenEmailDraftsTable.contactEmail,
+  subject: leadgenEmailDraftsTable.subject,
+  fullEmail: leadgenEmailDraftsTable.fullEmail,
+};
+
 async function findActiveRunForDomain(params: {
   userId: string;
   domain: NamefiNormalizedDomain;
@@ -592,17 +588,59 @@ async function getOutboundLeadDetailForUser(params: {
   });
 }
 
-function countLeadAssets({
+async function listLeadAssetsForLeads({
+  runId,
+  leads,
+}: {
+  runId: string;
+  leads: OutboundLeadSource[];
+}) {
+  const businessDomains = [
+    ...new Set(leads.map((lead) => lead.businessDomain)),
+  ];
+  if (businessDomains.length === 0) {
+    return { contacts: [], drafts: [] };
+  }
+
+  const [contacts, drafts] = await Promise.all([
+    db
+      .select(selectOutboundContactFields)
+      .from(leadgenContactsTable)
+      .where(
+        and(
+          eq(leadgenContactsTable.runId, runId),
+          inArray(leadgenContactsTable.businessDomain, businessDomains),
+        ),
+      ),
+    db
+      .select(selectOutboundDraftFields)
+      .from(leadgenEmailDraftsTable)
+      .where(
+        and(
+          eq(leadgenEmailDraftsTable.runId, runId),
+          inArray(leadgenEmailDraftsTable.businessDomain, businessDomains),
+        ),
+      ),
+  ]);
+
+  return { contacts, drafts };
+}
+
+function groupLeadAssets({
   leads,
   contacts,
   drafts,
 }: {
   leads: OutboundLeadSource[];
-  contacts: Array<{ leadId: string | null; businessDomain: string }>;
-  drafts: Array<{ leadId: string | null; businessDomain: string }>;
-}): Map<string, { contactCount: number; draftCount: number }> {
-  const counts = new Map(
-    leads.map((lead) => [lead.id, { contactCount: 0, draftCount: 0 }]),
+  contacts: Array<
+    { leadId: string | null; businessDomain: string } & OutboundContactSource
+  >;
+  drafts: Array<
+    { leadId: string | null; businessDomain: string } & OutboundDraftSource
+  >;
+}): Map<string, LeadAssets> {
+  const assetsByLeadId = new Map(
+    leads.map((lead) => [lead.id, { contacts: [], drafts: [] }]),
   );
   const leadIds = new Set(leads.map((lead) => lead.id));
   const leadIdByDomain = new Map(
@@ -610,50 +648,61 @@ function countLeadAssets({
   );
 
   for (const contact of contacts) {
-    incrementLeadAssetCount({
+    const assets = getLeadAssets({
       asset: contact,
-      counts,
+      assetsByLeadId,
       leadIds,
       leadIdByDomain,
-      field: 'contactCount',
     });
+
+    if (assets) {
+      assets.contacts.push({
+        email: contact.email,
+        name: contact.name,
+        title: contact.title,
+        sourceUrl: contact.sourceUrl,
+        context: contact.context,
+      });
+    }
   }
 
   for (const draft of drafts) {
-    incrementLeadAssetCount({
+    const assets = getLeadAssets({
       asset: draft,
-      counts,
+      assetsByLeadId,
       leadIds,
       leadIdByDomain,
-      field: 'draftCount',
     });
+
+    if (assets) {
+      assets.drafts.push({
+        contactEmail: draft.contactEmail,
+        subject: draft.subject,
+        fullEmail: draft.fullEmail,
+      });
+    }
   }
 
-  return counts;
+  return assetsByLeadId;
 }
 
-function incrementLeadAssetCount({
+function getLeadAssets({
   asset,
-  counts,
+  assetsByLeadId,
   leadIds,
   leadIdByDomain,
-  field,
 }: {
   asset: { leadId: string | null; businessDomain: string };
-  counts: Map<string, { contactCount: number; draftCount: number }>;
+  assetsByLeadId: Map<string, LeadAssets>;
   leadIds: Set<string>;
   leadIdByDomain: Map<string, string>;
-  field: 'contactCount' | 'draftCount';
-}) {
+}): LeadAssets | undefined {
   const leadId =
     asset.leadId && leadIds.has(asset.leadId)
       ? asset.leadId
       : leadIdByDomain.get(asset.businessDomain);
-  const count = leadId ? counts.get(leadId) : undefined;
 
-  if (count) {
-    count[field] += 1;
-  }
+  return leadId ? assetsByLeadId.get(leadId) : undefined;
 }
 
 function decodeOutboundCursorOrThrow(cursor: string | undefined): number {
