@@ -46,6 +46,12 @@ import {
 } from '#lib/auth/wallet-auth';
 import { X402PaymentRequiredError } from '#lib/x402/helpers';
 import { createRedisRateLimiter } from '#lib/rate-limit';
+import {
+  parseAcceptMediaTypes,
+  acceptIncludesHtml,
+  acceptOnlyHtml,
+  isBrowserUserAgent,
+} from '#lib/content-negotiation';
 
 const base = os.errors({
   BAD_REQUEST: {
@@ -326,7 +332,90 @@ function mapOpenApiMethod(method: unknown) {
   };
 }
 
+function buildOpenApiDocument() {
+  return {
+    ...openApiDocument,
+    components: {
+      ...openApiDocument.components,
+      parameters: {
+        ...(openApiDocument.components?.parameters ?? {}),
+        Eip7702AccountHeader: {
+          name: EIP7702_ACCOUNT_HEADER,
+          in: 'header',
+          required: false,
+          schema: {
+            type: 'string',
+          },
+          description:
+            'Optional delegated account address to authenticate as when the signer is an approved signer. Preferred header name.',
+        },
+        Eip1271AccountHeader: {
+          name: EIP1271_ACCOUNT_HEADER,
+          in: 'header',
+          required: false,
+          schema: {
+            type: 'string',
+          },
+          description:
+            'Legacy alias for x-namefi-erc1271-account. When multiple delegated account headers are present, x-namefi-eip7702-account takes precedence, then x-namefi-erc1271-account.',
+        },
+        Erc1271AccountHeader: {
+          name: ERC1271_ACCOUNT_HEADER,
+          in: 'header',
+          required: false,
+          schema: {
+            type: 'string',
+          },
+          description:
+            'Optional delegated account address to authenticate as when the signer is an approved signer. Preferred ERC-1271 header name.',
+        },
+      },
+    },
+    paths: mapObjIndexed(
+      (path) => {
+        return mapObjIndexed(
+          (method) => mapOpenApiMethod(method),
+          path as Record<string, unknown>,
+        );
+      },
+      openApiDocument.paths as Record<string, Record<string, unknown>>,
+    ),
+  };
+}
+
+/**
+ * Decide whether `/openapi/doc` should render the Scalar HTML reference or
+ * return the raw OpenAPI JSON. HTML is reserved for human/browser traffic:
+ * either a browser user-agent that explicitly accepts HTML, or a request whose
+ * Accept header asks for HTML and nothing else. Everything else (API clients,
+ * curl, programmatic fetch without an HTML Accept) receives JSON.
+ */
+function shouldServeHtmlReference(
+  userAgent: string | undefined,
+  acceptHeader: string | undefined,
+): boolean {
+  const mediaTypes = parseAcceptMediaTypes(acceptHeader);
+
+  return (
+    (isBrowserUserAgent(userAgent) && acceptIncludesHtml(mediaTypes)) ||
+    acceptOnlyHtml(mediaTypes)
+  );
+}
+
 providersRouter.get('/openapi/doc', (c, next) => {
+  // The representation depends on both Accept and User-Agent, so tell caches to
+  // key on them and avoid serving HTML to an API client (or vice versa).
+  c.header('Vary', 'Accept, User-Agent');
+
+  if (
+    !shouldServeHtmlReference(
+      c.req.header('user-agent'),
+      c.req.header('accept'),
+    )
+  ) {
+    return c.json(buildOpenApiDocument());
+  }
+
   const path = `${c.req.routePath}.json`;
   return Scalar({
     url: path,
@@ -339,7 +428,7 @@ providersRouter.get('/openapi/doc', (c, next) => {
           : process.env.ENVIRONMENT === 'preview'
             ? '/v-next'
             : 'http://localhost:3300/v-next',
-  })(c, next);
+  })(c, next) as Promise<Response>;
 });
 
 const handler = new OpenAPIHandler(orpcRouter, {
@@ -526,53 +615,5 @@ providersRouter.get('/eip712/types', (c) => {
 });
 
 providersRouter.get('/openapi/doc.json', (c) => {
-  const overridenOpenApiDocument = {
-    ...openApiDocument,
-    components: {
-      ...openApiDocument.components,
-      parameters: {
-        ...(openApiDocument.components?.parameters ?? {}),
-        Eip7702AccountHeader: {
-          name: EIP7702_ACCOUNT_HEADER,
-          in: 'header',
-          required: false,
-          schema: {
-            type: 'string',
-          },
-          description:
-            'Optional delegated account address to authenticate as when the signer is an approved signer. Preferred header name.',
-        },
-        Eip1271AccountHeader: {
-          name: EIP1271_ACCOUNT_HEADER,
-          in: 'header',
-          required: false,
-          schema: {
-            type: 'string',
-          },
-          description:
-            'Legacy alias for x-namefi-erc1271-account. When multiple delegated account headers are present, x-namefi-eip7702-account takes precedence, then x-namefi-erc1271-account.',
-        },
-        Erc1271AccountHeader: {
-          name: ERC1271_ACCOUNT_HEADER,
-          in: 'header',
-          required: false,
-          schema: {
-            type: 'string',
-          },
-          description:
-            'Optional delegated account address to authenticate as when the signer is an approved signer. Preferred ERC-1271 header name.',
-        },
-      },
-    },
-    paths: mapObjIndexed(
-      (path) => {
-        return mapObjIndexed(
-          (method) => mapOpenApiMethod(method),
-          path as Record<string, unknown>,
-        );
-      },
-      openApiDocument.paths as Record<string, Record<string, unknown>>,
-    ),
-  };
-  return c.json(overridenOpenApiDocument);
+  return c.json(buildOpenApiDocument());
 });
