@@ -1405,6 +1405,11 @@ export async function sendOrderCompletionSlackAlert(
 
   const temporalUrl = `https://cloud.temporal.io/namespaces/${encodeURIComponent(config.TEMPORAL_NAMESPACE)}/workflows/${encodeURIComponent(input.workflowId)}/${encodeURIComponent(input.runId)}/history`;
 
+  // `config.APP_URL` is a bare hostname (e.g. `astra.namefi.io` or
+  // `localhost:3001`); localhost is served over http, everything else https.
+  const appBaseUrl = `http${config.APP_URL.includes('localhost') ? '' : 's'}://${config.APP_URL}`;
+  const userDetailsUrl = `${appBaseUrl}/admin/users/${encodeURIComponent(input.userId)}`;
+
   const userIdentifier = input.userEmail
     ? input.userEmail
     : input.walletAddress
@@ -1458,6 +1463,10 @@ export async function sendOrderCompletionSlackAlert(
             {
               type: 'mrkdwn',
               text: `<${temporalUrl}|View workflow details>`,
+            },
+            {
+              type: 'mrkdwn',
+              text: `<${userDetailsUrl}|View user details>`,
             },
           ],
         },
