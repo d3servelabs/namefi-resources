@@ -341,8 +341,6 @@ Lead list items include:
 
 - \`id\`
 - \`businessDomain\`
-- \`status\`
-- \`contactReadiness\`
 - \`buyerSummary\`
 - \`contactCount\`
 - \`draftCount\`

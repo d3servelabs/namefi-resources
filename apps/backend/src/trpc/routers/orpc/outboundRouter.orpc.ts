@@ -1,6 +1,4 @@
 import {
-  leadgenContactReadinessSchema,
-  leadgenOpportunityStatusSchema,
   leadgenReasoningEffortSchema,
   leadgenRunStatusSchema,
 } from '@namefi-astra/common/contract/leadgen-contract';
@@ -79,8 +77,6 @@ const outboundRunSchema = z.object({
 const outboundLeadSummarySchema = z.object({
   id: z.string().uuid(),
   businessDomain: z.string().min(1),
-  status: leadgenOpportunityStatusSchema,
-  contactReadiness: leadgenContactReadinessSchema,
   buyerSummary: z.string().nullable(),
   contactCount: z.number().int().min(0),
   draftCount: z.number().int().min(0),
@@ -482,8 +478,6 @@ const selectOutboundRunFields = {
 const selectOutboundLeadFields = {
   id: leadgenLeadsTable.id,
   businessDomain: leadgenLeadsTable.businessDomain,
-  status: leadgenLeadsTable.status,
-  contactReadiness: leadgenLeadsTable.contactReadiness,
   rationale: leadgenLeadsTable.rationale,
   content: leadgenLeadsTable.content,
 };

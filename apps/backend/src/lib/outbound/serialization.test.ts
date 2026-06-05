@@ -59,8 +59,6 @@ describe('outbound serialization', () => {
       lead: {
         id: '3b38d860-b397-4f63-b719-9c8773403948',
         businessDomain: 'buyer.example',
-        status: 'contact_now',
-        contactReadiness: 'contact_found',
         rationale: '  Uses a similar brand and may benefit from the domain. ',
         content: 'fallback content',
       },
@@ -71,14 +69,14 @@ describe('outbound serialization', () => {
     expect(summary).toEqual({
       id: '3b38d860-b397-4f63-b719-9c8773403948',
       businessDomain: 'buyer.example',
-      status: 'contact_now',
-      contactReadiness: 'contact_found',
       buyerSummary: 'Uses a similar brand and may benefit from the domain.',
       contactCount: 2,
       draftCount: 1,
     });
     expect(summary).not.toHaveProperty('rank');
     expect(summary).not.toHaveProperty('score');
+    expect(summary).not.toHaveProperty('status');
+    expect(summary).not.toHaveProperty('contactReadiness');
   });
 
   it('normalizes detail text without exposing contact or draft internals', () => {
@@ -86,8 +84,6 @@ describe('outbound serialization', () => {
       lead: {
         id: '3b38d860-b397-4f63-b719-9c8773403948',
         businessDomain: 'buyer.example',
-        status: 'validate_first',
-        contactReadiness: 'generic_fallback',
         rationale: '  Strong buyer rationale. ',
         content: ' Long context. ',
       },

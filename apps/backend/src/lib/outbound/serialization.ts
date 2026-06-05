@@ -1,15 +1,11 @@
 import type { z } from 'zod';
 import type {
-  leadgenContactReadinessSchema,
-  leadgenOpportunityStatusSchema,
   leadgenReasoningEffortSchema,
   leadgenRunStatusSchema,
 } from '@namefi-astra/common/contract/leadgen-contract';
 
 type LeadgenRunStatus = z.infer<typeof leadgenRunStatusSchema>;
 type LeadgenReasoningEffort = z.infer<typeof leadgenReasoningEffortSchema>;
-type LeadgenOpportunityStatus = z.infer<typeof leadgenOpportunityStatusSchema>;
-type LeadgenContactReadiness = z.infer<typeof leadgenContactReadinessSchema>;
 
 export type OutboundRunSource = {
   id: string;
@@ -30,8 +26,6 @@ export type OutboundRunSource = {
 export type OutboundLeadSource = {
   id: string;
   businessDomain: string;
-  status: LeadgenOpportunityStatus;
-  contactReadiness: LeadgenContactReadiness;
   rationale: string | null;
   content: string | null;
 };
@@ -71,8 +65,6 @@ export type OutboundRun = {
 export type OutboundLeadSummary = {
   id: string;
   businessDomain: string;
-  status: LeadgenOpportunityStatus;
-  contactReadiness: LeadgenContactReadiness;
   buyerSummary: string | null;
   contactCount: number;
   draftCount: number;
@@ -123,8 +115,6 @@ export function serializeOutboundLeadSummary({
   return {
     id: lead.id,
     businessDomain: lead.businessDomain,
-    status: lead.status,
-    contactReadiness: lead.contactReadiness,
     buyerSummary: buildBuyerSummary(lead),
     contactCount,
     draftCount,
