@@ -24,7 +24,10 @@ type ChangeNameserversStepId =
   | 'set-nameservers'
   | 'verify-change';
 
-type ResetNameserversStepId = 'change-nameservers' | 'enable-dnssec';
+type ResetNameserversStepId =
+  | 'change-nameservers'
+  | 'verify-ns-propagation'
+  | 'enable-dnssec';
 
 /**
  * Display information for each change nameservers workflow step.
@@ -57,6 +60,10 @@ export const resetNameserversStepDisplayInfo: Record<
   'change-nameservers': {
     label: 'Changing nameservers',
     helper: 'Updating nameserver configuration to Namefi defaults.',
+  },
+  'verify-ns-propagation': {
+    label: 'Verifying propagation',
+    helper: 'Waiting for the new nameservers to resolve in public DNS.',
   },
   'enable-dnssec': {
     label: 'Enabling DNSSEC',

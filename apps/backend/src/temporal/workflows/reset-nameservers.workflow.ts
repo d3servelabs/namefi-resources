@@ -2,10 +2,17 @@ import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/valid
 import { WorkflowIdReusePolicy } from '@temporalio/common';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
-import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import {
+  TEMPORAL_ENUMS,
+  TEMPORAL_QUEUES,
+  pollingOpts,
+  shortRunningOpts,
+} from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { pollWithTimeoutAlert } from '../shared/workflow-helpers/poll-with-timeout-alert';
 import {
   createWorkflowProgress,
+  type WorkflowProgressManager,
   type WorkflowProgressState,
 } from '../shared/workflow-helpers/workflow-progress';
 import {
@@ -20,7 +27,10 @@ import {
 /**
  * Step IDs for the reset nameservers workflow.
  */
-export type ResetNameserversStepId = 'change-nameservers' | 'enable-dnssec';
+export type ResetNameserversStepId =
+  | 'change-nameservers'
+  | 'verify-ns-propagation'
+  | 'enable-dnssec';
 
 /**
  * Query to get the current progress state of the reset nameservers workflow.
@@ -40,6 +50,43 @@ export interface ResetNameserversWorkflowInput {
 }
 
 /**
+ * Poll public DNS until the freshly-set Namefi nameservers resolve, so a DS
+ * record is never published against nameservers that aren't serving the zone
+ * yet (which would break DNSSEC validation). Tracks the `verify-ns-propagation`
+ * progress step. Skips the wait when DNSSEC won't be enabled — there's nothing
+ * downstream that requires propagation in that case.
+ *
+ * The poll itself is unbounded; `pollWithTimeoutAlert` alerts the team after the
+ * default threshold and hard-fails the workflow if propagation never completes.
+ */
+async function verifyNameserverPropagation({
+  progress,
+  pollDefaultNsPropagated,
+  domainName,
+  willEnableDnssec,
+}: {
+  progress: WorkflowProgressManager<ResetNameserversStepId>;
+  pollDefaultNsPropagated: (domainName: PunycodeDomainName) => Promise<void>;
+  domainName: PunycodeDomainName;
+  willEnableDnssec: boolean;
+}): Promise<void> {
+  if (!willEnableDnssec) {
+    progress.skipStep('verify-ns-propagation', 'DNSSEC not being enabled');
+    return;
+  }
+
+  progress.startStep(
+    'verify-ns-propagation',
+    'Waiting for nameserver propagation...',
+  );
+  await pollWithTimeoutAlert(pollDefaultNsPropagated(domainName), {
+    domainName,
+    operationLabel: 'Nameserver propagation',
+  });
+  progress.completeStep('verify-ns-propagation', 'Nameservers propagated');
+}
+
+/**
  * This workflow is used to reset the nameservers for a domain.
  * It will disable dnssec, set the nameservers to the ones from Namefi, and enable dnssec if supported.
  */
@@ -47,9 +94,18 @@ export async function resetNameserversWorkflow({
   domainName,
   enableDnssec,
 }: ResetNameserversWorkflowInput) {
+  // New runs add an explicit nameserver-propagation poll between changing the
+  // nameservers and enabling DNSSEC. Guarded by a patch so in-flight (pre-patch)
+  // runs keep the original two-step shape and replay deterministically.
+  const verifyNsPropagation = workflow.patched(
+    'reset-nameservers-verify-ns-propagation',
+  );
+
   // Initialize progress tracking
   const progress = createWorkflowProgress<ResetNameserversStepId>(
-    ['change-nameservers', 'enable-dnssec'],
+    verifyNsPropagation
+      ? ['change-nameservers', 'verify-ns-propagation', 'enable-dnssec']
+      : ['change-nameservers', 'enable-dnssec'],
     { workflowType: 'resetNameservers' },
   );
 
@@ -68,6 +124,13 @@ export async function resetNameserversWorkflow({
     options: {
       ...shortRunningOpts,
     },
+  });
+
+  // Unbounded poll (retries forever under `pollingOpts`); bounded at the call
+  // site by `pollWithTimeoutAlert`.
+  const { pollDefaultNsPropagated } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+    options: pollingOpts,
   });
 
   try {
@@ -95,6 +158,20 @@ export async function resetNameserversWorkflow({
 
     // Step 2: Enable DNSSEC (child workflow - optional)
     const domainDetails = await getDomainDetails(domainName);
+
+    // Wait for the freshly-set nameservers to resolve in public DNS before
+    // enabling DNSSEC (new runs only). Skipped for in-flight runs via the patch.
+    const willEnableDnssec =
+      enableDnssec !== false && domainDetails.supportsDnssec;
+    if (verifyNsPropagation) {
+      await verifyNameserverPropagation({
+        progress,
+        pollDefaultNsPropagated,
+        domainName,
+        willEnableDnssec,
+      });
+    }
+
     if (enableDnssec === false) {
       progress.skipStep('enable-dnssec', 'DNSSEC disabled for this domain');
     } else if (domainDetails.supportsDnssec) {
