@@ -20,6 +20,7 @@ import { resolve } from '../../../utils/resolve';
 import { eppRegisterOrImportWorkflow } from './epp-register-or-import.workflow';
 import { domainParkingTrackingWorkflow } from '../domain-parking-tracking.workflow';
 import type { WorkflowCheckoutTrackingInput } from '../../shared/workflow-helpers/checkout-tracking';
+import type { OrderItemDomainSetupOptions } from '@namefi-astra/common/contract/entity-schemas';
 
 export interface AcquireDomainWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -34,6 +35,8 @@ export interface AcquireDomainWorkflowInput {
   orderId?: string;
   orderItemId?: string;
   gaEventTracking?: WorkflowCheckoutTrackingInput;
+  /** Per-item domain setup overrides; defaults applied when omitted. */
+  domainSetupOptions?: OrderItemDomainSetupOptions;
 }
 
 export type AcquireDomainWorkflowOutput = {
@@ -137,6 +140,7 @@ export async function acquireDomainWorkflow(
             registrarKey: input.registrarKey,
             options: {
               autoPark: true,
+              ...input.domainSetupOptions,
             },
           },
         ],

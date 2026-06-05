@@ -227,6 +227,7 @@ export async function processOrderItemWorkflow(
         orderId: input.orderId,
         orderItemId: input.itemId,
         gaEventTracking: input.gaEventTracking,
+        domainSetupOptions: input.domainSetupOptions,
       };
       // Register or import the domain. The RESPOND payload mirrors the acquire
       // output ({ mintTxHash? }) so an admin can complete it out-of-band.

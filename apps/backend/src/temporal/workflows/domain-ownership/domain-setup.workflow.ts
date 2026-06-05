@@ -12,6 +12,7 @@ import {
   shortRunningOpts,
 } from '../../shared';
 import { resetNameserversWorkflow } from '../reset-nameservers.workflow';
+import type { OrderItemDomainSetupOptions } from '@namefi-astra/common/contract/entity-schemas';
 
 export interface DomainSetupWorkflowInput {
   operationType: 'IMPORT' | 'REGISTER';
@@ -19,9 +20,7 @@ export interface DomainSetupWorkflowInput {
   userId: string;
   recipientWalletAddress: ChecksumWalletAddress;
   registrarKey: Registrars;
-  options: {
-    autoPark: boolean;
-  };
+  options: OrderItemDomainSetupOptions;
 }
 
 const { generalAlertNamefi, parseDomainName } = typedProxyActivities({
@@ -39,10 +38,18 @@ export async function domainSetupWorkflow(
 ): Promise<void> {
   try {
     const parseResult = await parseDomainName(input.normalizedDomainName);
+    const { autoPark, autoEns, autoRenew, dnssec, keepExistingNameservers } =
+      input.options;
 
     try {
+      // Only include explicitly-provided overrides so unset options keep
+      // fillDefaultDomainConfig's own defaults (and we never write `undefined`
+      // over a NOT NULL column).
       await fillDefaultDomainConfig(input.normalizedDomainName, input.userId, {
-        autoParkEnabled: input.options.autoPark,
+        ...(autoPark !== undefined && { autoParkEnabled: autoPark }),
+        ...(autoEns !== undefined && { autoEnsEnabled: autoEns }),
+        ...(autoRenew !== undefined && { autoRenewEnabled: autoRenew }),
+        ...(dnssec !== undefined && { dnssecEnabled: dnssec }),
       });
     } catch (e: any) {
       workflow.log.error(
@@ -51,18 +58,30 @@ export async function domainSetupWorkflow(
       );
     }
     if (parseResult.valid && parseResult.registryType === 'traditional') {
-      await workflow.executeChild(resetNameserversWorkflow, {
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        args: [
-          {
-            domainName: input.normalizedDomainName as PunycodeDomainName, // TODO: Add validation or type guard
-          },
-        ],
-        workflowId: resetNameserversWorkflow.generateId({
-          domainName: input.normalizedDomainName as PunycodeDomainName,
-        }),
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-      });
+      if (keepExistingNameservers) {
+        // Import-only: keep the domain's current DNS provider by skipping the
+        // nameserver reset entirely. The flag is only ever set for IMPORT items
+        // (enforced at order-item / cart-item creation).
+        workflow.log.info(
+          `Keeping existing nameservers for ${input.normalizedDomainName}; skipping reset`,
+        );
+      } else {
+        await workflow.executeChild(resetNameserversWorkflow, {
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          args: [
+            {
+              domainName: input.normalizedDomainName as PunycodeDomainName, // TODO: Add validation or type guard
+              // Skip enabling DNSSEC when the item opted out (dnssec === false);
+              // undefined keeps the default behavior (enable if supported).
+              enableDnssec: dnssec,
+            },
+          ],
+          workflowId: resetNameserversWorkflow.generateId({
+            domainName: input.normalizedDomainName as PunycodeDomainName,
+          }),
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        });
+      }
     } else if (parseResult.valid && parseResult.registryType === 'subdomain') {
       // TODO: Implement domain setup for 3 levels
       return;

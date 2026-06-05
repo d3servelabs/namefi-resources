@@ -23,11 +23,12 @@ import type {
   PaymentMethodDetails,
 } from '@namefi-astra/common/orders-shared-types';
 import type { OrderStatus } from '@namefi-astra/common/shared-schemas';
-import type {
-  OrderItemSelect,
-  OrderNfscItemSelect,
-  PaymentSelect,
-  UserSelect,
+import {
+  stripNonImportDomainSetupOptions,
+  type OrderItemSelect,
+  type OrderNfscItemSelect,
+  type PaymentSelect,
+  type UserSelect,
 } from '@namefi-astra/common/contract/entity-schemas';
 import type { NfscPaymentProviderDetails } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
@@ -193,6 +194,8 @@ export async function createOrderWithExistingMultiplePayments(
         .values(
           items.map((it) => ({
             ...it,
+            // keepExistingNameservers is import-only; drop it for other types.
+            metadata: stripNonImportDomainSetupOptions(it.type, it.metadata),
             orderId: order.id,
           })),
         )

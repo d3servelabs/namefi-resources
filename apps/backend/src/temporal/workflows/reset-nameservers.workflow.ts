@@ -31,6 +31,12 @@ export const getResetNameserversProgressQuery = defineQuery<
 
 export interface ResetNameserversWorkflowInput {
   domainName: PunycodeDomainName;
+  /**
+   * When explicitly `false`, skip enabling DNSSEC even if the domain supports
+   * it. Defaults to enabling (current behavior) when omitted, so existing
+   * callers and in-flight runs are unaffected.
+   */
+  enableDnssec?: boolean;
 }
 
 /**
@@ -39,6 +45,7 @@ export interface ResetNameserversWorkflowInput {
  */
 export async function resetNameserversWorkflow({
   domainName,
+  enableDnssec,
 }: ResetNameserversWorkflowInput) {
   // Initialize progress tracking
   const progress = createWorkflowProgress<ResetNameserversStepId>(
@@ -88,7 +95,9 @@ export async function resetNameserversWorkflow({
 
     // Step 2: Enable DNSSEC (child workflow - optional)
     const domainDetails = await getDomainDetails(domainName);
-    if (domainDetails.supportsDnssec) {
+    if (enableDnssec === false) {
+      progress.skipStep('enable-dnssec', 'DNSSEC disabled for this domain');
+    } else if (domainDetails.supportsDnssec) {
       progress.startStep('enable-dnssec');
       const childWorkflowId = `enable-dnssec-${domainName}`;
       // For child workflows, use the child's workflowId

@@ -15,6 +15,7 @@ import {
   parseDomainName,
 } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
+import { orderItemDomainSetupOptionsSchema } from '@namefi-astra/common/contract/entity-schemas';
 import { TRPCError } from '@trpc/server';
 import { and, eq } from 'drizzle-orm';
 import { isNil } from 'ramda';
@@ -140,6 +141,11 @@ export const instantBuyDefaultWalletInputSchema = z
   .object({
     normalizedDomainName: namefiNormalizedDomainSchema,
     durationInYears: z.number().int().min(0).max(10).default(1),
+    domainSetupOptions: orderItemDomainSetupOptionsSchema
+      .optional()
+      .describe(
+        'Per-item domain setup overrides (autoPark, autoEns, autoRenew, dnssec, keepExistingNameservers). Defaults applied when omitted.',
+      ),
   })
   .meta({
     name: 'InstantRegisterDomainDefaultWallet',
@@ -168,6 +174,11 @@ export const instantBuyInputSchema = z
 export const registerTrialDomainInputSchema = z
   .object({
     normalizedDomainName: namefiNormalizedDomainSchema,
+    domainSetupOptions: orderItemDomainSetupOptionsSchema
+      .optional()
+      .describe(
+        'Per-item domain setup overrides (autoPark, autoEns, autoRenew, dnssec, keepExistingNameservers). Defaults applied when omitted.',
+      ),
   })
   .meta({
     name: 'RegisterTrialDomain',
@@ -320,7 +331,15 @@ const registerDomainWithRecords = async ({
         durationInYears,
         type: itemTypeSchema.enum.REGISTER,
         registrar: validation.registrar,
-        metadata: postProcessOrderItem ? { postProcessOrderItem } : undefined,
+        metadata:
+          postProcessOrderItem || input.domainSetupOptions
+            ? {
+                ...(postProcessOrderItem ? { postProcessOrderItem } : {}),
+                ...(input.domainSetupOptions
+                  ? { domainSetupOptions: input.domainSetupOptions }
+                  : {}),
+              }
+            : undefined,
       } satisfies CreateOrderItemInput,
     ],
     cartCleanup: {
@@ -690,6 +709,7 @@ export const ordersRouterOrpc = createTRPCRouter({
           normalizedDomainName: input.normalizedDomainName,
           durationInYears: input.durationInYears,
           nftReceivingWallet: input.nftReceivingWallet,
+          domainSetupOptions: input.domainSetupOptions,
         },
         postProcessOrderItem,
         gaEventTracking,

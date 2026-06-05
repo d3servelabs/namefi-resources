@@ -1226,6 +1226,7 @@ export async function processOrderWorkflow(
                   item.encryptedEppAuthorizationCode,
                 encryptionKeyId: item.encryptionKeyId,
                 gaEventTracking: input.gaEventTracking,
+                domainSetupOptions: item.metadata?.domainSetupOptions,
               },
             ],
             workflowId: `process-order-item-[${item.id}]`,

@@ -1,5 +1,6 @@
 import { cartItemsTable, db, itemTypeSchema } from '@namefi-astra/db';
 import { cartsContract } from '@namefi-astra/common/contract/carts-contract';
+import { stripNonImportDomainSetupOptions } from '@namefi-astra/common/contract/entity-schemas';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
@@ -134,7 +135,11 @@ export const cartsRouter = createContractTRPCRouter<typeof cartsContract>({
             durationInYears: item.durationInYears,
             type: item.type,
             registrar: item.registrar,
-            metadata: item.metadata ?? undefined,
+            // keepExistingNameservers is import-only; drop it for other types.
+            metadata: stripNonImportDomainSetupOptions(
+              item.type,
+              item.metadata,
+            ),
           };
 
           // For import items, encrypt the EPP authorization code

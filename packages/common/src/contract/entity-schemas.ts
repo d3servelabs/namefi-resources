@@ -34,6 +34,48 @@ const claimMetadataShape = {
   claimId: z.string().optional(),
 };
 
+/**
+ * Per-item domain setup overrides applied during REGISTER/IMPORT processing.
+ * Each option is optional; when omitted, `fillDefaultDomainConfig` applies its
+ * built-in defaults (autoEns/autoPark/autoRenew = true, dnssec = false).
+ */
+export const orderItemDomainSetupOptionsSchema = z.object({
+  autoPark: z.boolean().optional(),
+  autoEns: z.boolean().optional(),
+  autoRenew: z.boolean().optional(),
+  dnssec: z.boolean().optional(),
+  /**
+   * Import-only: keep the domain's current nameservers by skipping the
+   * nameserver reset during setup. Stripped for non-IMPORT items at creation
+   * (see {@link stripNonImportDomainSetupOptions}).
+   */
+  keepExistingNameservers: z.boolean().optional(),
+});
+export type OrderItemDomainSetupOptions = z.infer<
+  typeof orderItemDomainSetupOptionsSchema
+>;
+
+/**
+ * `keepExistingNameservers` only makes sense for IMPORT items — it keeps a
+ * domain's current DNS by skipping the nameserver reset. For any other item
+ * type it's meaningless, so strip it at order-item / cart-item creation to keep
+ * the stored metadata honest. Returns the metadata unchanged when there's
+ * nothing to strip.
+ */
+export function stripNonImportDomainSetupOptions<
+  M extends { domainSetupOptions?: OrderItemDomainSetupOptions },
+>(itemType: string, metadata: M | null | undefined): M | undefined {
+  if (
+    itemType === itemTypeSchema.enum.IMPORT ||
+    metadata?.domainSetupOptions?.keepExistingNameservers === undefined
+  ) {
+    return metadata ?? undefined;
+  }
+  const { keepExistingNameservers: _drop, ...domainSetupOptions } =
+    metadata.domainSetupOptions;
+  return { ...metadata, domainSetupOptions };
+}
+
 export const orderMintTransactionMetadataSchema = z.object({
   txHash: z.string(),
   recordedAt: z.string(),
@@ -42,7 +84,12 @@ export type OrderMintTransactionMetadata = z.infer<
   typeof orderMintTransactionMetadataSchema
 >;
 
-export const cartItemMetadataSchema = z.object(claimMetadataShape).loose();
+export const cartItemMetadataSchema = z
+  .object({
+    ...claimMetadataShape,
+    domainSetupOptions: orderItemDomainSetupOptionsSchema.optional(),
+  })
+  .loose();
 export type CartItemMetadata = z.infer<typeof cartItemMetadataSchema>;
 
 const postProcessDnsRecordSchema = z.object({
@@ -94,6 +141,7 @@ export const orderItemFailureDetailsSchema = z.object({
 });
 
 export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
+  domainSetupOptions: orderItemDomainSetupOptionsSchema.optional(),
   mintTransaction: orderMintTransactionMetadataSchema.optional(),
   postProcessOrderItem: postProcessOrderItemSchema.optional(),
   requiredAction: orderItemRequiredActionSchema.optional(),
