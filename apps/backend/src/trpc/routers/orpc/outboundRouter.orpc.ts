@@ -326,7 +326,11 @@ export const outboundRouterOrpc = createTRPCRouter({
         runId: run.id,
         leads: pageLeads,
       });
-      const leadAssets = groupLeadAssets({ leads, contacts, drafts });
+      const leadAssets = groupLeadAssets({
+        leads: pageLeads,
+        contacts,
+        drafts,
+      });
 
       return paginateOutboundRows(
         leads.map((lead) => {
