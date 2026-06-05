@@ -1,6 +1,6 @@
 {
   "name": "@namefi-astra/backend",
-  "version": "3.3.214-beta",
+  "version": "3.3.215-beta",
   "type": "module",
   "exports": {
     "./trpc": "./src/trpc/index.ts",
