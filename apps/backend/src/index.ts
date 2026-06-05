@@ -50,7 +50,6 @@ import {
   rawGithubProxyRouter,
   RAW_GITHUB_PROXY_MOUNT,
 } from './routers/raw-github-proxy';
-import { llmsTxtRouter, serveOutboundLlmsTxt } from './routers/llms-txt';
 import { auditLogsTestRouter } from './routers/audit-logs-test';
 import {
   BROWSER_FINGERPRINT_HEADER,
@@ -242,9 +241,21 @@ app.route('mpp', mppRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
 app.route(RAW_GITHUB_PROXY_MOUNT, rawGithubProxyRouter);
-app.get('/outbound/llms.txt', serveOutboundLlmsTxt);
-app.get('/outbound/llms.txt/', serveOutboundLlmsTxt);
-app.route('llms.txt', llmsTxtRouter);
+app.get('llms.txt', (c) => {
+  return c.redirect('https://namefi.io/llms.txt');
+});
+app.get('llms-web3.txt', (c) => {
+  return c.redirect('https://namefi.io/llms-web3.txt');
+});
+app.get('llms-outbound.txt', (c) => {
+  return c.redirect('https://namefi.io/llms-outbound.txt');
+});
+app.get('outbound/llms.txt', (c) => {
+  return c.redirect('https://namefi.io/llms-outbound.txt');
+});
+app.get('outbound/llms.txt/', (c) => {
+  return c.redirect('https://namefi.io/llms-outbound.txt');
+});
 app.route('audit-logs-test', auditLogsTestRouter);
 
 app.get('/configfi', (c) => {

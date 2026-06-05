@@ -134,10 +134,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/llms.txt',
-        destination: `${appConfig.BACKEND_URL}/llms.txt`,
-      },
-      {
         source: '/api/c15t/:path*',
         destination: `${appConfig.BACKEND_URL}/c15t/:path*`,
       },
@@ -164,10 +160,6 @@ const nextConfig = {
       {
         source: '/domain/:path*',
         destination: '/domains/:path*',
-      },
-      {
-        source: '/llms.txt',
-        destination: `${appConfig.BACKEND_URL}/llms.txt`,
       },
     ];
   },

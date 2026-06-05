@@ -1,0 +1,145 @@
+# Namefi Outbound Agent API
+
+> Use this API to find likely buyer leads for domains owned by the authenticated Namefi user, inspect lead details, and prepare outreach drafts.
+
+## Base URLs
+
+- Production: `https://api.namefi.io/v-next/`
+- Development: `https://api.namefi.dev/v-next/`
+
+## Machine-Readable Spec
+
+- OpenAPI JSON: https://api.namefi.io/v-next/openapi/doc.json
+
+## Authentication
+
+Use the same auth methods as the rest of `/v-next`.
+
+Recommended for agents:
+
+    x-api-key: <your-api-key>
+
+Bearer JWT also works:
+
+    Authorization: Bearer <jwt>
+
+Do not invent outbound-specific auth. If an operation returns `401`, get a valid API key or JWT. If it returns `403`, the authenticated user is valid but cannot access the requested resource.
+
+## Recommended Agent Flow
+
+1. List domains the user owns:
+
+       GET /v-next/user/domains
+
+2. Choose one domain to sell or research. If needed, check whether another domain is available before buying it:
+
+       GET /v-next/search/availability?domain=example.com
+       GET /v-next/search/bulk-availability?domains[]=example.com&domains[]=example.net
+
+3. Start an outbound lead-finding run. The request body intentionally matches the Astra outbound UI and has no asking price field:
+
+       POST /v-next/outbound/runs
+       Content-Type: application/json
+
+       {
+         "domain": "example.com",
+         "reasoningEffort": "medium"
+       }
+
+   `reasoningEffort` is optional and can be `low`, `medium`, or `high`. If an active run already exists for the same domain, the API returns that run instead of creating duplicate work.
+
+4. Poll the run while `pollAfterSeconds` is present:
+
+       GET /v-next/outbound/runs/{runId}
+
+   Active statuses are `QUEUED` and `RUNNING`. Terminal statuses are `SUCCEEDED`, `FAILED`, and `CANCELED`.
+
+5. List leads in ranked order:
+
+       GET /v-next/outbound/runs/{runId}/leads?limit=20
+
+   Response order is the ranking. Each lead includes the public rationale, content, contacts, and any existing drafts. Internal rank, score, status, readiness, and model details are intentionally not exposed.
+
+6. Prepare outreach for a lead:
+
+       POST /v-next/outbound/runs/{runId}/leads/{leadId}/outreach
+
+   Existing drafts are returned without spending more generation credits. If no draft exists, the API performs contact research and draft generation, then returns the updated lead detail.
+
+## Response Shapes
+
+Run responses include:
+
+- `id`
+- `domain`
+- `status`
+- `reasoningEffort`
+- `leadCount`
+- `contactCount`
+- `draftCount`
+- `summary`
+- `latestMessage`
+- `errorMessage`
+- `pollAfterSeconds`
+- timestamps
+
+Lead list items include:
+
+- `id`
+- `businessDomain`
+- `buyerSummary`
+- `contactCount`
+- `draftCount`
+- `rationale`
+- `content`
+- `contacts[]` with `email`, `name`, `title`, `sourceUrl`, `context`
+- `drafts[]` with `contactEmail`, `subject`, `fullEmail`
+
+## Presentation Guidance
+
+When summarizing results for a user:
+
+- Preserve the API response order and number rows starting at 1.
+- Show a concise table with these columns: rank, domain, why it may fit, contact found, draft available.
+- Use `buyerSummary` or `rationale` for the "why it may fit" column.
+- For contact found, show yes/no and include the best email when one exists.
+- For draft available, show yes/no.
+- Do not mention raw internal statuses, suppressed/priority labels, rank scores, model details, command logs, JSON fixes, or file aggregation mechanics.
+
+## Pagination
+
+List endpoints return:
+
+    {
+      "items": [],
+      "nextCursor": null
+    }
+
+When `nextCursor` is non-null, pass it back as `cursor`. Treat cursors as opaque strings.
+
+## Errors
+
+Validation errors use `422 INPUT_VALIDATION_FAILED`. Outbound-specific errors include a public error payload with:
+
+- `code`: stable outbound error code
+- `message`: human-readable fix or next step
+- `retryable`: whether retrying later may help
+- `details`: optional structured context
+
+Common cases:
+
+- `401 UNAUTHORIZED`: missing or invalid API key/JWT.
+- `402 PAYMENT_REQUIRED`: not enough generation credits or payment is required.
+- `403 FORBIDDEN`: authenticated user cannot access the run, lead, or domain.
+- `404 OUTBOUND_NOT_FOUND`: run or lead does not exist for the authenticated user.
+- `400 OUTBOUND_BAD_REQUEST`: invalid cursor or malformed input.
+- `500 OUTBOUND_TEMPORARILY_UNAVAILABLE`: backend service could not start or finish the requested work; retry later.
+
+## Consequential Operations
+
+These operations start paid or externally meaningful work and should be treated as consequential:
+
+- `POST /v-next/outbound/runs`
+- `POST /v-next/outbound/runs/{runId}/leads/{leadId}/outreach`
+- `POST /v-next/orders/register-domain`
+- `POST /v-next/orders/register-domain/records`
