@@ -28,12 +28,14 @@ function isExternalLink(url: string): boolean {
 function AnnouncementStrip({
   current,
   hasMultiple,
+  collapsed,
   onPrev,
   onNext,
   onDismiss,
 }: {
   current: AnnouncementDto;
   hasMultiple: boolean;
+  collapsed: boolean;
   onPrev: () => void;
   onNext: () => void;
   onDismiss: () => void;
@@ -43,8 +45,11 @@ function AnnouncementStrip({
   const safeLinkUrl =
     current.linkUrl && isSafeHref(current.linkUrl) ? current.linkUrl : null;
 
-  // Publish the strip height so the viewport-fixed header/trigger can offset
-  // below it; reset to 0 on unmount (i.e. when no announcement is shown).
+  // Publish the *rendered* strip height so the viewport-fixed header/trigger can
+  // offset below it; reset to 0 on unmount (i.e. when no announcement is shown).
+  // `stripRef` wraps the collapsing inner box, so as the strip animates closed
+  // the height reported here shrinks to 0 and the pinned header/trigger slide up
+  // in lockstep.
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure when the shown announcement changes.
   useEffect(() => {
     const root = document.documentElement;
@@ -82,76 +87,110 @@ function AnnouncementStrip({
   };
 
   return (
-    <section
-      ref={stripRef}
-      aria-label={current.title || 'Announcement'}
-      style={style}
+    // Collapse to 0 height when scrolled (animating grid-template-rows keeps the
+    // height transition smooth without measuring the content). `inert` removes
+    // the hidden controls from the tab order while collapsed.
+    <div
+      data-testid="announcement-banner"
       className={cn(
-        'relative z-50 w-full shrink-0',
-        !backgroundColor && 'bg-brand-primary',
-        !current.textColor && 'text-white',
+        'relative z-50 grid w-full shrink-0 transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none',
+        collapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]',
       )}
     >
-      <div className="mx-auto flex min-h-9 max-w-6xl items-center justify-center gap-2 px-10 py-1.5 text-center text-sm">
-        {hasMultiple ? (
-          <button
-            type="button"
-            aria-label="Previous announcement"
-            onClick={onPrev}
-            className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-        ) : null}
-
-        <p className="min-w-0 leading-5">
-          {current.title ? (
-            <strong className="mr-1 font-semibold">{current.title}</strong>
-          ) : null}
-          {renderInlineMarkdown(current.body, {
-            linkClassName: 'font-medium',
-            codeClassName: 'bg-white/15',
-          })}
-          {safeLinkUrl ? (
-            <a
-              href={safeLinkUrl}
-              {...(external
-                ? { target: '_blank', rel: 'noopener noreferrer' }
-                : {})}
-              className="ml-2 font-semibold underline underline-offset-2 hover:opacity-80"
-            >
-              {current.linkLabel ?? 'Learn more'}
-            </a>
-          ) : null}
-        </p>
-
-        {hasMultiple ? (
-          <button
-            type="button"
-            aria-label="Next announcement"
-            onClick={onNext}
-            className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-        ) : null}
-      </div>
-
-      {current.dismissible ? (
-        <button
-          type="button"
-          aria-label="Dismiss announcement"
-          onClick={onDismiss}
-          className="absolute inset-y-0 right-2 my-auto flex size-6 items-center justify-center rounded-full opacity-80 hover:opacity-100"
+      <div
+        ref={stripRef}
+        inert={collapsed || undefined}
+        className="overflow-hidden"
+      >
+        <section
+          aria-label={current.title || 'Announcement'}
+          data-testid="announcement-strip"
+          style={style}
+          className={cn(
+            'relative w-full',
+            !backgroundColor && 'bg-brand-primary',
+            !current.textColor && 'text-white',
+          )}
         >
-          <X className="size-4" />
-        </button>
-      ) : null}
-    </section>
+          <div
+            data-testid="announcement-content"
+            className="mx-auto flex min-h-9 max-w-6xl items-center justify-center gap-2 px-10 py-1.5 text-center text-sm"
+          >
+            {hasMultiple ? (
+              <button
+                type="button"
+                data-testid="announcement-prev-button"
+                aria-label="Previous announcement"
+                onClick={onPrev}
+                className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
+              >
+                <ChevronLeft className="size-4" />
+              </button>
+            ) : null}
+
+            <p data-testid="announcement-body" className="min-w-0 leading-5">
+              {current.title ? (
+                <strong
+                  data-testid="announcement-title"
+                  className="mr-1 font-semibold"
+                >
+                  {current.title}
+                </strong>
+              ) : null}
+              {renderInlineMarkdown(current.body, {
+                linkClassName: 'font-medium',
+                codeClassName: 'bg-white/15',
+              })}
+              {safeLinkUrl ? (
+                <a
+                  href={safeLinkUrl}
+                  data-testid="announcement-link"
+                  {...(external
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
+                  className="ml-2 font-semibold underline underline-offset-2 hover:opacity-80"
+                >
+                  {current.linkLabel ?? 'Learn more'}
+                </a>
+              ) : null}
+            </p>
+
+            {hasMultiple ? (
+              <button
+                type="button"
+                data-testid="announcement-next-button"
+                aria-label="Next announcement"
+                onClick={onNext}
+                className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
+              >
+                <ChevronRight className="size-4" />
+              </button>
+            ) : null}
+          </div>
+
+          {current.dismissible ? (
+            <button
+              type="button"
+              data-testid="announcement-dismiss-button"
+              aria-label="Dismiss announcement"
+              onClick={onDismiss}
+              className="absolute inset-y-0 right-2 my-auto flex size-6 items-center justify-center rounded-full opacity-80 hover:opacity-100"
+            >
+              <X className="size-4" />
+            </button>
+          ) : null}
+        </section>
+      </div>
+    </div>
   );
 }
 
-export function AnnouncementsBanner() {
+export function AnnouncementsBanner({
+  collapsed = false,
+}: {
+  /** When true, the strip animates closed (height 0) but stays mounted. */
+  collapsed?: boolean;
+}) {
   const trpc = useTRPC();
   const { data } = useQuery(
     trpc.announcements.getActive.queryOptions(undefined, {
@@ -207,6 +246,7 @@ export function AnnouncementsBanner() {
     <AnnouncementStrip
       current={current}
       hasMultiple={count > 1}
+      collapsed={collapsed}
       onPrev={goPrev}
       onNext={goNext}
       onDismiss={() => dismiss(current.id, current.updatedAt)}

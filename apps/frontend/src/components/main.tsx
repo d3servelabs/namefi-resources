@@ -3,7 +3,7 @@
 import { cn } from '@namefi-astra/ui/lib/cn';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
-import type { ReactNode } from 'react';
+import { type ReactNode, type UIEvent, useCallback, useState } from 'react';
 import { Footer } from './footer';
 import { Header } from './header';
 import { LeaderCoordinator } from './notifications/leader/leader-coordinator-loader';
@@ -31,11 +31,26 @@ export const Main = ({ children }: { children: ReactNode }) => {
       ? 'calc(var(--sidebar-width-icon) + 1.25rem)'
       : 'calc(var(--sidebar-width) + 1.25rem)';
 
+  // Collapse the announcement strip once the page is scrolled away from the
+  // top so it reads as part of the page (not a permanently floating bar). The
+  // band between the two thresholds adds hysteresis to avoid flicker right at
+  // the edge.
+  const [collapsed, setCollapsed] = useState(false);
+  const handleScroll = useCallback((event: UIEvent<HTMLDivElement>) => {
+    const y = event.currentTarget.scrollTop;
+    setCollapsed((prev) => (prev ? y > 4 : y > 16));
+  }, []);
+
   return (
     <SidebarInset className="relative flex h-svh min-h-0 flex-col overflow-hidden bg-transparent">
-      {/* Pinned announcement strip above the header; scrolls nothing. */}
-      <AnnouncementsBanner />
-      <div className="relative grid min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr_auto] overflow-y-auto">
+      {/* Announcement strip above the header; collapses to 0 height as the page
+          scrolls (see handleScroll), sliding the pinned header/trigger up with
+          it via --announcement-strip-height. */}
+      <AnnouncementsBanner collapsed={collapsed} />
+      <div
+        onScroll={handleScroll}
+        className="relative grid min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr_auto] overflow-y-auto"
+      >
         <Header className="row-start-1 col-start-1 z-40 pointer-events-auto" />
         <div
           className={cn(
