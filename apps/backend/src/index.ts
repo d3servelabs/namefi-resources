@@ -245,16 +245,21 @@ app.get('llms.txt', (c) => {
   return c.redirect('https://namefi.io/llms.txt');
 });
 app.get('llms-web3.txt', (c) => {
-  return c.redirect('https://namefi.io/llms-web3.txt');
+  //deprecated
+  return c.redirect('https://namefi.io/web3/llms.txt');
+});
+app.get('web3/llms.txt', (c) => {
+  return c.redirect('https://namefi.io/web3/llms.txt');
 });
 app.get('llms-outbound.txt', (c) => {
-  return c.redirect('https://namefi.io/llms-outbound.txt');
+  //deprecated
+  return c.redirect('https://namefi.io/outbound/llms.txt');
 });
 app.get('outbound/llms.txt', (c) => {
-  return c.redirect('https://namefi.io/llms-outbound.txt');
+  return c.redirect('https://namefi.io/outbound/llms.txt');
 });
 app.get('outbound/llms.txt/', (c) => {
-  return c.redirect('https://namefi.io/llms-outbound.txt');
+  return c.redirect('https://namefi.io/outbound/llms.txt');
 });
 app.route('audit-logs-test', auditLogsTestRouter);
 
