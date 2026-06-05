@@ -6,6 +6,7 @@ import * as DnssecLib from '#lib/domains/dnssec';
 import * as NameserversLib from '#lib/domains/nameservers';
 import {
   getNonUserSpecificDomainPreferencesAndConfig,
+  getUserDefaultDomainsPreferences,
   updateDomainPreferencesAndConfig,
   type UpdateDomainPreferencesAndConfig,
 } from '#lib/domains/domain-preferences';
@@ -99,14 +100,19 @@ export async function fillDefaultDomainConfig(
   userId: string,
   overrides: UpdateDomainPreferencesAndConfig = {},
 ) {
+  // Precedence: per-item override > the user's global preference > system
+  // default. `getUserPreferences` already folds in the system defaults
+  // (autoEns/autoRenew = true), so unset per-item options fall back to the
+  // user's chosen defaults.
+  const userPreferences = await getUserDefaultDomainsPreferences(userId);
   return updateDomainPreferencesAndConfig(normalizedDomainName, userId, {
     /**
      * autoEns flag value should be either user or wallet specific.
      * Because user might transfer it to another wallet(his own or another user), and the reciever may not want autoEns for that wallet.
      */
-    autoEnsEnabled: true,
+    autoEnsEnabled: userPreferences.defaultAutoEns,
     autoParkEnabled: true,
-    autoRenewEnabled: true,
+    autoRenewEnabled: userPreferences.defaultAutoRenew,
     dnssecEnabled: false,
     ...overrides,
   });

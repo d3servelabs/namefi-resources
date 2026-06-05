@@ -76,6 +76,7 @@ const mockUser: UserSelect = {
   lastAccessedSessionAt: new Date('2026-01-28T17:20:55.411Z'),
   createdAt: new Date('2025-05-02T14:18:18.531Z'),
   updatedAt: new Date('2026-01-28T17:22:15.729Z'),
+  preferences: { defaultAutoEns: true, defaultAutoRenew: true },
 };
 
 type OrderDetails = {

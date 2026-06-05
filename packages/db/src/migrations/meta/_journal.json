@@ -813,6 +813,13 @@
       "when": 1780610348964,
       "tag": "0115_glamorous_gladiator",
       "breakpoints": true
+    },
+    {
+      "idx": 116,
+      "version": "7",
+      "when": 1780652026435,
+      "tag": "0116_purple_red_ghost",
+      "breakpoints": true
     }
   ]
 }

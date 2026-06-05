@@ -261,6 +261,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     subscribeToEmails: true,
     lastSignInAt: null,
     lastAccessedSessionAt: null,
+    preferences: { defaultAutoEns: true, defaultAutoRenew: true },
   };
   const testNormalizedDomainName = 'netizen1.0x.city';
 
@@ -564,6 +565,7 @@ describe('getManagerPageEntrypointViewable', () => {
     subscribeToEmails: true,
     lastSignInAt: null,
     lastAccessedSessionAt: null,
+    preferences: { defaultAutoEns: true, defaultAutoRenew: true },
   };
 
   it('should return false for null user', async () => {
@@ -608,6 +610,7 @@ describe('getManagerPageEntrypointViewable', () => {
           subscribeToEmails: true,
           lastSignInAt: null,
           lastAccessedSessionAt: null,
+          preferences: { defaultAutoEns: true, defaultAutoRenew: true },
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -634,6 +637,7 @@ describe('getManagerPageEntrypointViewable', () => {
           subscribeToEmails: true,
           lastSignInAt: null,
           lastAccessedSessionAt: null,
+          preferences: { defaultAutoEns: true, defaultAutoRenew: true },
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -660,6 +664,7 @@ describe('getManagerPageEntrypointViewable', () => {
           subscribeToEmails: true,
           lastSignInAt: null,
           lastAccessedSessionAt: null,
+          preferences: { defaultAutoEns: true, defaultAutoRenew: true },
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -1028,6 +1033,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     updatedAt: new Date(),
     lastSignInAt: null,
     lastAccessedSessionAt: null,
+    preferences: { defaultAutoEns: true, defaultAutoRenew: true },
   };
 
   it('should return qualifying domain name for testUserWithQualifyingEmail', async () => {
@@ -1312,6 +1318,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           subscribeToEmails: true,
           lastSignInAt: null,
           lastAccessedSessionAt: null,
+          preferences: { defaultAutoEns: true, defaultAutoRenew: true },
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -1338,6 +1345,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           subscribeToEmails: true,
           lastSignInAt: null,
           lastAccessedSessionAt: null,
+          preferences: { defaultAutoEns: true, defaultAutoRenew: true },
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -1402,6 +1410,7 @@ describe('resolveEnsName', () => {
     subscribeToEmails: true,
     lastSignInAt: null,
     lastAccessedSessionAt: null,
+    preferences: { defaultAutoEns: true, defaultAutoRenew: true },
   };
 
   const createCaller = () =>

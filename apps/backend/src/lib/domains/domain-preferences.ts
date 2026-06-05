@@ -6,6 +6,10 @@ import {
   namefiNftOwnersCte,
   usersTable,
 } from '@namefi-astra/db';
+import {
+  DEFAULT_USER_PREFERENCES,
+  type UserPreferences,
+} from '@namefi-astra/common/contract/entity-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { matchAny } from '@namefi-astra/utils/match';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
@@ -50,6 +54,46 @@ export const updateDomainConfig = async (
       target: [domainConfigTable.normalizedDomainName],
       set: config,
     });
+};
+
+// #endregion
+
+// #region User Preferences
+
+/**
+ * Read a user's GLOBAL preferences (autoEns / autoRenew). The `users.preferences`
+ * column is NOT NULL with a backfilled default, but we still merge over
+ * DEFAULT_USER_PREFERENCES so any newly added preference field is
+ * forward-compatible for rows written before it existed.
+ */
+export const getUserDefaultDomainsPreferences = async (
+  userId: string,
+): Promise<UserPreferences> => {
+  const [row] = await db
+    .select({ preferences: usersTable.preferences })
+    .from(usersTable)
+    .where(eq(usersTable.id, userId))
+    .limit(1);
+  return { ...DEFAULT_USER_PREFERENCES, ...(row?.preferences ?? {}) };
+};
+
+/**
+ * Merge a partial update into a user's GLOBAL preferences and persist it.
+ * Returns the resulting preferences.
+ */
+export const updateUserDefaultDomainsPreferences = async (
+  userId: string,
+  partial: Partial<UserPreferences>,
+): Promise<UserPreferences> => {
+  const next = {
+    ...(await getUserDefaultDomainsPreferences(userId)),
+    ...partial,
+  };
+  await db
+    .update(usersTable)
+    .set({ preferences: next })
+    .where(eq(usersTable.id, userId));
+  return next;
 };
 
 // #endregion

@@ -12,11 +12,13 @@ import {
   orderMetadataSchema,
   orderNfscItemMetadataSchema,
   paymentMetadataSchema,
+  DEFAULT_USER_PREFERENCES,
   type CartItemMetadata,
   type OrderItemMetadata,
   type OrderMetadata,
   type OrderNfscItemMetadata,
   type PaymentMetadata,
+  type UserPreferences,
 } from '@namefi-astra/common/contract/entity-schemas';
 import {
   itemTypeValues,
@@ -75,6 +77,7 @@ export {
   orderNfscItemMetadataSchema,
   paymentMetadataSchema,
   postProcessOrderItemSchema,
+  userPreferencesSchema,
 } from '@namefi-astra/common/contract/entity-schemas';
 export type {
   CartItemMetadata,
@@ -85,6 +88,7 @@ export type {
   OrderNfscItemMetadata,
   PaymentMetadata,
   PostProcessOrderItem,
+  UserPreferences,
 } from '@namefi-astra/common/contract/entity-schemas';
 
 /**
@@ -134,6 +138,14 @@ export const usersTable = pgTable('users', {
   subscribeToEmails: boolean('subscribe_to_emails').notNull().default(true),
   lastSignInAt: timestamp('last_sign_in_at'),
   lastAccessedSessionAt: timestamp('last_accessed_session_at'),
+  /**
+   * Global per-user domain defaults. Adding the column with a NOT NULL default
+   * backfills every existing user with {@link DEFAULT_USER_PREFERENCES}.
+   */
+  preferences: jsonb('preferences')
+    .$type<UserPreferences>()
+    .notNull()
+    .default(DEFAULT_USER_PREFERENCES),
   ...timestamps,
 });
 

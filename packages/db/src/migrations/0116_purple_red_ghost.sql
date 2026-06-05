@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "preferences" jsonb DEFAULT '{"defaultAutoEns":true,"defaultAutoRenew":true}'::jsonb NOT NULL;

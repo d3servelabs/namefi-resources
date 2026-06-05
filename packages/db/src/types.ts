@@ -48,6 +48,7 @@ import {
   orderMetadataSchema,
   orderItemMetadataSchema,
   orderNfscItemMetadataSchema,
+  userPreferencesSchema,
   x402PurchasesTable,
   x402PurchaseStatusEnum,
 } from './schema';
@@ -184,9 +185,15 @@ export function isMppPayment(
 /**
  * Zod schemas for type-safe operations
  */
-export const userInsertSchema = createInsertSchema(usersTable);
-export const userSelectSchema = createSelectSchema(usersTable);
-export const userUpdateSchema = createUpdateSchema(usersTable);
+export const userInsertSchema = createInsertSchema(usersTable, {
+  preferences: userPreferencesSchema.optional(),
+});
+export const userSelectSchema = createSelectSchema(usersTable, {
+  preferences: userPreferencesSchema,
+});
+export const userUpdateSchema = createUpdateSchema(usersTable, {
+  preferences: userPreferencesSchema.optional(),
+});
 
 export const feedbackInsertSchema = createInsertSchema(feedbackResponsesTable, {
   rating: z.number().int().min(1).max(5),

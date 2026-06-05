@@ -9,7 +9,12 @@ import {
   orderItemsTable,
   ordersTable,
   freeClaimSelectSchema,
+  userPreferencesSchema,
 } from '@namefi-astra/db';
+import {
+  getUserDefaultDomainsPreferences,
+  updateUserDefaultDomainsPreferences,
+} from '#lib/domains/domain-preferences';
 import {
   checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
@@ -184,6 +189,46 @@ export const userDataRouterOrpc = createTRPCRouter({
 
       return user;
     }),
+
+  /**
+   * Get the current user's global domain defaults (autoEns, autoRenew).
+   */
+  getPreferences: protectedProcedure
+    .meta({
+      route: {
+        path: '/user/preferences',
+        method: 'GET',
+        tags: ['user'],
+        operationId: 'getUserPreferences',
+        summary: 'Get user preferences',
+        description:
+          "Retrieve the current user's global domain defaults (autoEns, autoRenew). These apply to new domains when an order item doesn't override them.",
+      },
+    })
+    .output(userPreferencesSchema)
+    .query(async ({ ctx }) => getUserDefaultDomainsPreferences(ctx.user.id)),
+
+  /**
+   * Update the current user's global domain defaults. Omitted fields are
+   * left unchanged.
+   */
+  updatePreferences: protectedProcedure
+    .meta({
+      route: {
+        path: '/user/preferences',
+        method: 'PUT',
+        tags: ['user'],
+        operationId: 'updateUserPreferences',
+        summary: 'Update user preferences',
+        description:
+          "Update the current user's global domain defaults (autoEns, autoRenew). Omitted fields are left unchanged.",
+      },
+    })
+    .input(userPreferencesSchema.partial())
+    .output(userPreferencesSchema)
+    .mutation(async ({ ctx, input }) =>
+      updateUserDefaultDomainsPreferences(ctx.user.id, input),
+    ),
 
   /**
    * Get current user's domains

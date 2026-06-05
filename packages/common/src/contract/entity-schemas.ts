@@ -76,6 +76,24 @@ export function stripNonImportDomainSetupOptions<
   return { ...metadata, domainSetupOptions };
 }
 
+/**
+ * A user's GLOBAL domain defaults, stored in the `users.preferences` jsonb
+ * column. These back per-item domain setup options: when an order/cart item
+ * doesn't specify `autoEns` / `autoRenew`, the user's preference applies (and
+ * only then the system default). Every user row is backfilled with
+ * {@link DEFAULT_USER_PREFERENCES}.
+ */
+export const userPreferencesSchema = z.object({
+  defaultAutoEns: z.boolean(),
+  defaultAutoRenew: z.boolean(),
+});
+export type UserPreferences = z.infer<typeof userPreferencesSchema>;
+
+export const DEFAULT_USER_PREFERENCES: UserPreferences = {
+  defaultAutoEns: true,
+  defaultAutoRenew: true,
+};
+
 export const orderMintTransactionMetadataSchema = z.object({
   txHash: z.string(),
   recordedAt: z.string(),
@@ -279,6 +297,7 @@ export const userSchema = z.object({
   subscribeToEmails: z.boolean(),
   lastSignInAt: z.date().nullable(),
   lastAccessedSessionAt: z.date().nullable(),
+  preferences: userPreferencesSchema,
   ...timestampFieldsSchema,
 });
 export type UserSelect = z.infer<typeof userSchema>;
