@@ -218,6 +218,55 @@ describe('buildLeadPresentationModel', () => {
     });
   });
 
+  it('uses optimistic user signal overrides before persisted signals', () => {
+    const model = buildLeadPresentationModel(
+      {
+        id: 'run-1',
+        userId: 'user-1',
+        domain: sourceDomain,
+        status: 'SUCCEEDED',
+        reasoningEffort: 'medium',
+        workflowId: null,
+        startedAt: new Date('2026-05-18T00:00:00Z'),
+        finishedAt: new Date('2026-05-18T00:01:00Z'),
+        errorMessage: null,
+        summary: null,
+        leadCount: 1,
+        contactCount: 0,
+        draftCount: 0,
+        tokenUsage: [],
+        createdAt: new Date('2026-05-18T00:00:00Z'),
+        updatedAt: new Date('2026-05-18T00:01:00Z'),
+        intentQueries: [],
+        events: [],
+        leads: [
+          lead({
+            id: 'optimistic',
+            signals: [
+              userSignal('bookmarked', new Date('2026-05-18T00:02:00Z')),
+            ],
+          }),
+        ],
+      },
+      {
+        userSignalStateByLeadId: {
+          optimistic: 'hidden',
+        },
+      },
+    );
+
+    expect(model.organizationGroups.bookmarked).toEqual([]);
+    expect(model.organizationGroups.prospects).toEqual([]);
+    expect(model.organizationGroups.hidden.map(({ lead }) => lead.id)).toEqual([
+      'optimistic',
+    ]);
+    expect(model.counts).toMatchObject({
+      bookmarked: 0,
+      visibleProspects: 0,
+      hidden: 1,
+    });
+  });
+
   it('uses the discovery rationale as the full stable card summary', () => {
     const presentation = buildLeadPresentation(
       lead({

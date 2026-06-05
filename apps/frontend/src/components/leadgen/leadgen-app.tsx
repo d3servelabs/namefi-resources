@@ -929,9 +929,10 @@ function LeadList({
       onReviewOutreachChange={(open) =>
         onReviewOutreachLead(open ? presentation.lead.id : null)
       }
-      onSetUserSignal={(state) =>
-        onSetLeadUserSignal(presentation.lead.id, state)
-      }
+      onSetUserSignal={(state) => {
+        setSectionOpen(getUserSignalDestinationSectionId(state), true);
+        onSetLeadUserSignal(presentation.lead.id, state);
+      }}
     />
   );
 
@@ -1116,6 +1117,20 @@ function LeadCard({
 }
 
 type LeadOrganizationSectionId = 'bookmarked' | 'prospects' | 'hidden';
+
+function getUserSignalDestinationSectionId(
+  state: LeadgenUserSignalState,
+): LeadOrganizationSectionId {
+  if (state === 'bookmarked') {
+    return 'bookmarked';
+  }
+
+  if (state === 'hidden') {
+    return 'hidden';
+  }
+
+  return 'prospects';
+}
 
 function LeadOrganizationSection({
   sectionId,
