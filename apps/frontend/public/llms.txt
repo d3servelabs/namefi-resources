@@ -23,7 +23,7 @@ Works for **all operations** including DNS record creation, updates, and deletes
 
 ### Crypto wallet signature
 - Not needed for API key users, but available as an alternative for programmatic use without a stored key.
-- For Web3 users and agentic wallets, [visit](https://namefi.io/llms-web3.txt) for wallet-signature signing, smart contract wallets, SIWE, and crypto payment options.
+- For Web3 users and agentic wallets, [visit](https://namefi.io/web3/llms.txt) for wallet-signature signing, smart contract wallets, SIWE, and crypto payment options.
 - Two auth methods are supported. See https://docs.namefi.io/docs/02-authentication.mdx for full details.
 
 ## Domain Registration
@@ -81,7 +81,7 @@ Apply DNS records as part of registration with `POST /v-next/orders/register-dom
 ### Other options
 
 - `GET /v-next/search/bulk-availability?domains[]=example.com&domains[]=example2.com` — check availability for multiple domains.
-- Crypto-wallet payment — buy a domain without a Namefi account: https://api.namefi.io/llms-web3.txt/
+- Crypto-wallet payment — buy a domain without a Namefi account: https://namefi.io/web3/llms.txt
 
 ## Outbound Lead Finding
 
