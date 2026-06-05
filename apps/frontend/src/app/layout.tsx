@@ -21,6 +21,7 @@ import dynamic from 'next/dynamic';
 import './globals.css';
 
 const C15T_BROWSER_BACKEND_URL = '/api/c15t';
+const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
 
 // `NEXT_PUBLIC_PREVIEW_GATE_BUNDLED` is statically inlined by `compiler.define`
 // in next.config.mjs (set to '0' for production builds, '1' otherwise). The
@@ -63,6 +64,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(origin ?? 'https://namefi.io'),
     ...metadata,
+    other: {
+      ...metadata.other,
+      'llms.txt': LLMS_TXT_URL,
+    },
   };
 }
 
@@ -71,6 +76,13 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <head>
         <C15tPrefetch backendURL={C15T_BROWSER_BACKEND_URL} />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href={LLMS_TXT_URL}
+          title="llms.txt"
+        />
+        <link rel="llms.txt" type="text/plain" href={LLMS_TXT_URL} />
       </head>
       <body
         className={cn(

@@ -25,6 +25,7 @@ import {
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
 const YEAR = new Date().getFullYear();
+const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
 
 const SOCIAL_LINKS = [
   {
@@ -61,7 +62,12 @@ const SOCIAL_LINKS = [
 
 const FOOTER_SECTIONS: Array<{
   title: string;
-  links: Array<{ label: string; href: Route | string; external?: boolean }>;
+  links: Array<{
+    label: string;
+    href: Route | string;
+    external?: boolean;
+    description?: string;
+  }>;
 }> = [
   {
     title: 'Explore',
@@ -99,6 +105,12 @@ const FOOTER_SECTIONS: Array<{
       { label: 'Abuse Reporting', href: '/abuse' },
       { label: 'Education Hub', href: '/education' },
       { label: 'Registration Agreement', href: '/registration-agreement' },
+      {
+        label: '/llms.txt',
+        href: LLMS_TXT_URL,
+        external: true,
+        description: `For LLMS visit ${LLMS_TXT_URL}`,
+      },
       {
         label: 'Support',
         href: 'mailto:support@namefi.io',
@@ -214,7 +226,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                 {section.title}
               </h3>
               <ul className="space-y-3 text-sm">
-                {section.links.map(({ label, href, external }) => (
+                {section.links.map(({ label, href, external, description }) => (
                   <li key={label}>
                     {external ? (
                       <a
@@ -222,6 +234,9 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                         target="_blank"
                         rel="noreferrer noopener"
                         className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
+                        {...(description
+                          ? { 'aria-description': description }
+                          : {})}
                       >
                         <span>{label}</span>
                         <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition group-hover:opacity-100" />
