@@ -266,22 +266,6 @@ const CONSEQUENTIAL_OPERATION_IDS = new Set([
   'registerWithRecords',
 ]);
 
-const AGENT_OUTBOUND_PATHS = new Set([
-  '/outbound/runs',
-  '/outbound/runs/{runId}',
-  '/outbound/runs/{runId}/leads',
-  '/outbound/runs/{runId}/leads/{leadId}',
-  '/outbound/runs/{runId}/leads/{leadId}/outreach',
-  '/user/domains',
-  '/search/availability',
-  '/search/bulk-availability',
-  '/orders/{orderId}',
-  '/orders/register-domain',
-  '/orders/register-domain/records',
-]);
-
-const AGENT_OUTBOUND_TAGS = new Set(['outbound', 'user', 'search', 'orders']);
-
 function isOpenApiMethod(method: unknown): method is OpenApiMethod {
   return !!method && typeof method === 'object' && !Array.isArray(method);
 }
@@ -418,29 +402,6 @@ function buildOpenApiDocument() {
   };
 }
 
-function buildAgentOutboundOpenApiDocument() {
-  const fullDocument = buildOpenApiDocument();
-  const paths = Object.fromEntries(
-    Object.entries(fullDocument.paths ?? {}).filter(([path]) =>
-      AGENT_OUTBOUND_PATHS.has(path),
-    ),
-  );
-
-  return {
-    ...fullDocument,
-    info: {
-      ...fullDocument.info,
-      title: 'Namefi Outbound Agent API',
-      description:
-        'A focused OpenAPI document for agents that list owned domains, start outbound lead-finding runs, poll status, inspect leads, prepare outreach drafts, and optionally purchase/register domains.',
-    },
-    tags: (fullDocument.tags ?? []).filter((tag) =>
-      AGENT_OUTBOUND_TAGS.has(tag.name),
-    ),
-    paths,
-  };
-}
-
 /**
  * Decide whether `/openapi/doc` should render the Scalar HTML reference or
  * return the raw OpenAPI JSON. HTML is reserved for human/browser traffic:
@@ -487,10 +448,6 @@ providersRouter.get('/openapi/doc', (c, next) => {
             ? '/v-next'
             : 'http://localhost:3300/v-next',
   })(c, next) as Promise<Response>;
-});
-
-providersRouter.get('/openapi/agent-outbound.json', (c) => {
-  return c.json(buildAgentOutboundOpenApiDocument());
 });
 
 const handler = new OpenAPIHandler(orpcRouter, {

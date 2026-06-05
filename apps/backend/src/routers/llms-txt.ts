@@ -12,7 +12,6 @@ const LLMS_TXT = `# Namefi API
 - [npm: @namefi/api-client](https://www.npmjs.com/package/@namefi/api-client): Install with \`npm install @namefi/api-client\`.
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
 - [Outbound agent guide](https://api.namefi.io/outbound/llms.txt): Focused instructions for finding domain buyer leads and preparing outreach.
-- [Outbound-focused OpenAPI JSON](https://api.namefi.io/v-next/openapi/agent-outbound.json): Smaller OpenAPI 3 spec for agent lead-finding workflows.
 - [namefi-api-skills (GitHub)](https://github.com/d3servelabs/namefi-api-skills): Signer-neutral helper scripts for preparing auth payloads.
 - Buy domain (X402): https://api.namefi.io/x402/domain/{domainName}
 - Buy domain (MPP): https://api.namefi.io/mpp/domain/{domainName}?nftReceivingWalletAddress={nftReceivingWalletAddress}
@@ -258,8 +257,7 @@ const LLMS_TXT_OUTBOUND = `# Namefi Outbound Agent API
 
 ## Machine-Readable Spec
 
-- Focused OpenAPI JSON: https://api.namefi.io/v-next/openapi/agent-outbound.json
-- Full OpenAPI JSON: https://api.namefi.io/v-next/openapi/doc.json
+- OpenAPI JSON: https://api.namefi.io/v-next/openapi/doc.json
 
 ## Authentication
 

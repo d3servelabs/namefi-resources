@@ -99,7 +99,6 @@ const AGENT_DISCOVERY_PATHS = new Set([
   '/outbound/llms.txt',
   '/outbound/llms.txt/',
   '/v-next/openapi/doc.json',
-  '/v-next/openapi/agent-outbound.json',
 ]);
 
 async function resolveCorsOrigin(origin: string | undefined, path: string) {
@@ -177,7 +176,6 @@ app.get('/robots.txt', (c) => {
       'Allow: /llms.txt',
       'Allow: /outbound/llms.txt',
       'Allow: /v-next/openapi/doc.json',
-      'Allow: /v-next/openapi/agent-outbound.json',
       'Disallow: /',
       '',
     ].join('\n'),
