@@ -113,6 +113,16 @@ export async function acquireDomainWorkflow(
     });
   }
 
+  // New runs let domain-setup outlive this workflow: acquire returns once mint
+  // resolves and domain-setup has merely *started* (it runs fire-and-forget via
+  // startChild), so the default TERMINATE policy would kill domain-setup — and
+  // its nested nameserver-reset / DNSSEC decision gates — the moment acquire
+  // completes. Patched so in-flight runs keep the original TERMINATE behavior
+  // and replay deterministically.
+  const abandonDomainSetup = workflow.patched(
+    'acquire-abandon-domain-setup-child',
+  );
+
   const results = await Promise.all([
     resolve(
       workflow.executeChild(mintNamefiNFT, {
@@ -145,6 +155,9 @@ export async function acquireDomainWorkflow(
           },
         ],
         workflowId: `domain-setup-${input.normalizedDomainName}`,
+        // Survive acquire's completion so domain-setup's nested reset / DNSSEC
+        // decision gates can still resolve (default is TERMINATE).
+        ...(abandonDomainSetup && { parentClosePolicy: 'ABANDON' as const }),
       }),
     ),
   ]);

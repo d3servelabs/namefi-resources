@@ -101,6 +101,16 @@ export async function resetNameserversWorkflow({
     'reset-nameservers-verify-ns-propagation',
   );
 
+  // New runs let the enable-dnssec child outlive this workflow if an ancestor
+  // closes early — e.g. the REGISTER domain-setup path, which spawns this
+  // workflow as a child and closes at ~4h. With the default TERMINATE policy
+  // that close would kill the child's multi-day DS-association decision gate
+  // before it can resolve. Patched so in-flight runs keep the original
+  // TERMINATE behavior and replay deterministically.
+  const abandonEnableDnssecChild = workflow.patched(
+    'reset-nameservers-abandon-enable-dnssec-child',
+  );
+
   // Initialize progress tracking
   const progress = createWorkflowProgress<ResetNameserversStepId>(
     verifyNsPropagation
@@ -188,6 +198,11 @@ export async function resetNameserversWorkflow({
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
         workflowId: childWorkflowId,
         workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
+        // Survive an early-closing ancestor so the child's decision gate can
+        // still resolve (default is TERMINATE). Guarded for replay determinism.
+        ...(abandonEnableDnssecChild && {
+          parentClosePolicy: 'ABANDON' as const,
+        }),
         args: [
           {
             domainName,
