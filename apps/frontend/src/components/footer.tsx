@@ -26,6 +26,7 @@ export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
 const YEAR = new Date().getFullYear();
 const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
+const NAMEFI_API_DOCS_URL = 'https://api.namefi.io/v-next/openapi/doc';
 
 const SOCIAL_LINKS = [
   {
@@ -106,10 +107,16 @@ const FOOTER_SECTIONS: Array<{
       { label: 'Education Hub', href: '/education' },
       { label: 'Registration Agreement', href: '/registration-agreement' },
       {
-        label: '/llms.txt',
+        label: 'Namefi API Docs',
+        href: NAMEFI_API_DOCS_URL,
+        external: true,
+        description: `Namefi API reference ${NAMEFI_API_DOCS_URL}`,
+      },
+      {
+        label: 'API for LLM AI Agents',
         href: LLMS_TXT_URL,
         external: true,
-        description: `For LLMS visit ${LLMS_TXT_URL}`,
+        description: `For LLM AI agents visit ${LLMS_TXT_URL}`,
       },
       {
         label: 'Support',
@@ -256,25 +263,40 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           ))}
         </div>
 
-        <div className="flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-white/60 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
-            <span>© {YEAR} D3SERVE LABS, Inc. All rights reserved.</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-4">
-            <button
-              type="button"
-              className="text-white/70 transition hover:text-white"
-              aria-label="Open cookie settings dialog"
-              onClick={() => setActiveUI('dialog', { force: true })}
+        <div className="flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-white/60">
+          <p className="text-white/70">
+            Use{' '}
+            <a
+              href={LLMS_TXT_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-medium text-white underline underline-offset-4 transition hover:text-white/80"
             >
-              Cookie Settings
-            </button>
-            <Link
-              href="/tos"
-              className="text-white/70 transition hover:text-white"
-            >
-              Terms &amp; Conditions
-            </Link>
+              llms.txt
+            </a>{' '}
+            if you are an LLM agent such as Claude Code, Codex, OpenClaw,
+            Hermes, Cursor, OpenCode and any other AI agent.
+          </p>
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+              <span>© {YEAR} D3SERVE LABS, Inc. All rights reserved.</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                className="text-white/70 transition hover:text-white"
+                aria-label="Open cookie settings dialog"
+                onClick={() => setActiveUI('dialog', { force: true })}
+              >
+                Cookie Settings
+              </button>
+              <Link
+                href="/tos"
+                className="text-white/70 transition hover:text-white"
+              >
+                Terms &amp; Conditions
+              </Link>
+            </div>
           </div>
         </div>
       </div>

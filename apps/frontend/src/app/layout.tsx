@@ -22,6 +22,7 @@ import './globals.css';
 
 const C15T_BROWSER_BACKEND_URL = '/api/c15t';
 const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
+const LLMS_TXT_AGENT_CALLOUT = `Use llms.txt if you are an LLM agent such as Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode and any other AI agent ${LLMS_TXT_URL}`;
 
 // `NEXT_PUBLIC_PREVIEW_GATE_BUNDLED` is statically inlined by `compiler.define`
 // in next.config.mjs (set to '0' for production builds, '1' otherwise). The
@@ -66,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ...metadata,
     other: {
       ...metadata.other,
-      'llms.txt': LLMS_TXT_URL,
+      'llms.txt': LLMS_TXT_AGENT_CALLOUT,
     },
   };
 }
