@@ -24,12 +24,11 @@ Works for **all operations** including DNS record creation, updates, and deletes
 ### Crypto wallet signature
 - Not needed for API key users, but available as an alternative for programmatic use without a stored key.
 - For Web3 users and agentic wallets, [visit](https://namefi.io/llms-web3.txt) for wallet-signature signing, smart contract wallets, SIWE, and crypto payment options.
-- Three auth methods are supported. See https://docs.namefi.io/docs/02-authentication for full details.
+- Two auth methods are supported. See https://docs.namefi.io/docs/02-authentication.mdx for full details.
 
 ## Domain Registration
 
-Register a domain with an API key in three steps. Full guide: https://docs.namefi.io/docs/03-getting-started/01-your-first-domain
-
+Register a domain with an API key in three steps.
     # 1. Check availability
     curl "https://api.namefi.io/v-next/search/availability?domain=example.com"
 
@@ -49,7 +48,7 @@ Request body fields for `POST /v-next/orders/register-domain`:
 - `nftReceivingWallet` (optional): `{ "walletAddress": "0x...", "chainId": 8453 }`. Defaults to the buyer's wallet on Base.
 - `domainSetupOptions` (optional): per-domain overrides — autoPark, autoEns, autoRenew, dnssec, keepExistingNameservers.
 
-Registration is asynchronous: the POST returns an order object with an `id`; poll `GET /v-next/orders/{orderId}` until the order reaches a terminal status. Registration requires NFSC (Namefi Service Credits) on the paying wallet — request test tokens via the faucet: https://docs.namefi.io/docs/03-getting-started/02-your-balance
+Registration is asynchronous: the POST returns an order object with an `id`; poll `GET /v-next/orders/{orderId}` until the order reaches a terminal status. Registration requires NFSC (Namefi Service Credits) on the paying wallet — request test tokens via the faucet: https://docs.namefi.io/docs/03-getting-started/02-your-balance.mdx
 
 ### Register with initial DNS records
 
@@ -89,10 +88,6 @@ Apply DNS records as part of registration with `POST /v-next/orders/register-dom
 Use https://namefi.io/llms-outbound.txt for the full agent workflow. It covers listing owned domains, starting an outbound lead-finding run, polling run status, listing ranked leads, inspecting lead detail, and preparing outreach drafts.
 
 ## DNS Record Management
-
-See https://docs.namefi.io/docs/03-getting-started/03-manage-dns-records and https://docs.namefi.io/docs/03-getting-started/05-dns-operations
-
-All DNS write operations require domain ownership (verified via on-chain NFT ownership). The API key must belong to the wallet that owns the domain.
 
 ### Endpoints
 
@@ -185,3 +180,7 @@ Supported types: A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV, CAA, DS, TLSA, SSHF
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
 - [Outbound agent guide](https://api.namefi.io/outbound/llms.txt): Focused instructions for finding domain buyer leads and preparing outreach.
 - [namefi-api-skills (GitHub)](https://github.com/d3servelabs/namefi-api-skills): Signer-neutral helper scripts for preparing auth payloads.
+- For extra details: (optional)
+  - https://docs.namefi.io/docs/03-getting-started/03-manage-dns-records.mdx
+  - https://docs.namefi.io/docs/03-getting-started/05-dns-operations.mdx
+  - https://docs.namefi.io/docs/03-getting-started/01-your-first-domain.mdx
