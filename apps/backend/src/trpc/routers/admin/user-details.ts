@@ -623,6 +623,7 @@ export async function getAdminUserDetails({
       twitterUsername: cachedPrivyDetails?.twitterUsername ?? null,
       twitterDetails: cachedPrivyDetails?.twitterDetails ?? null,
       matchedWalletAddress: matchedWalletAddress ?? null,
+      preferences: user.preferences,
     },
     contactInfo: {
       primaryEmail: user.primaryEmail ?? privyUser.email?.address ?? null,

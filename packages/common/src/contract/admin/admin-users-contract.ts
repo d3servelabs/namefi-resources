@@ -1,5 +1,6 @@
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
+import { userPreferencesSchema } from '../entity-schemas';
 
 import { createContract } from '../create-contract';
 import type { RouterContract } from '../trpc-contract';
@@ -168,6 +169,7 @@ const getUserDetailsOutputSchema = z.object({
       })
       .nullable(),
     matchedWalletAddress: z.string().nullable(),
+    preferences: userPreferencesSchema,
   }),
   contactInfo: z.any().nullable(),
   credentials: z.object({
@@ -317,6 +319,17 @@ export const adminUsersContract = createContract(
       type: 'mutation',
       input: z.void(),
       output: privyCacheStatusSchema,
+    },
+    updateUserPreferences: {
+      type: 'mutation',
+      input: z.object({
+        userId: z.string().uuid(),
+        preferences: userPreferencesSchema,
+      }),
+      output: z.object({
+        success: z.boolean(),
+        preferences: userPreferencesSchema,
+      }),
     },
   },
 );

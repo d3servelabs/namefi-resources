@@ -22,6 +22,8 @@ import {
   Globe,
   KeyRound,
   Mail,
+  Pencil,
+  Settings2,
   ShoppingCart,
   UserRound,
   VenetianMask,
@@ -51,10 +53,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Switch } from '@namefi-astra/ui/components/shadcn/switch';
+import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
   Tabs,
   TabsContent,
@@ -781,6 +786,211 @@ export function AdminWalletDetailsDialog({
   );
 }
 
+type AdminUserPreferences = AdminUserDetails['user']['preferences'];
+
+function PreferenceStat({
+  label,
+  enabled,
+}: {
+  label: string;
+  enabled: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between rounded-xl border p-3">
+      <div className="flex items-center gap-2 text-sm">
+        <Settings2 className="h-4 w-4 text-muted-foreground" />
+        <span>{label}</span>
+      </div>
+      <Badge variant={enabled ? 'default' : 'secondary'}>
+        {enabled ? 'Enabled' : 'Disabled'}
+      </Badge>
+    </div>
+  );
+}
+
+function PreferenceToggleRow({
+  id,
+  label,
+  description,
+  checked,
+  onCheckedChange,
+}: {
+  id: string;
+  label: string;
+  description: string;
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 rounded-xl border p-3">
+      <div className="space-y-0.5">
+        <Label htmlFor={id} className="text-sm font-medium">
+          {label}
+        </Label>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </div>
+      <Switch
+        id={id}
+        checked={checked}
+        onCheckedChange={(value) => onCheckedChange(value)}
+      />
+    </div>
+  );
+}
+
+function AdminUserPreferencesDialog({
+  open,
+  onOpenChange,
+  userId,
+  preferences,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  userId: string;
+  preferences: AdminUserPreferences;
+}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const updatePreferences = useMutation(
+    trpc.admin.users.updateUserPreferences.mutationOptions(),
+  );
+
+  const [defaultAutoEns, setDefaultAutoEns] = useState(
+    preferences.defaultAutoEns,
+  );
+  const [defaultAutoRenew, setDefaultAutoRenew] = useState(
+    preferences.defaultAutoRenew,
+  );
+
+  // Re-sync the form whenever the dialog is (re)opened or the source changes,
+  // so a cancelled edit doesn't leak into the next open.
+  useEffect(() => {
+    if (open) {
+      setDefaultAutoEns(preferences.defaultAutoEns);
+      setDefaultAutoRenew(preferences.defaultAutoRenew);
+    }
+  }, [open, preferences.defaultAutoEns, preferences.defaultAutoRenew]);
+
+  const isDirty =
+    defaultAutoEns !== preferences.defaultAutoEns ||
+    defaultAutoRenew !== preferences.defaultAutoRenew;
+
+  const handleSave = useCallback(async () => {
+    try {
+      await updatePreferences.mutateAsync({
+        userId,
+        preferences: { defaultAutoEns, defaultAutoRenew },
+      });
+      await queryClient.invalidateQueries({
+        queryKey: trpc.admin.users.getUserDetails.queryKey(),
+      });
+      toast.success('Domain defaults updated');
+      onOpenChange(false);
+    } catch (error) {
+      toast.error('Failed to update domain defaults', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }, [
+    updatePreferences.mutateAsync,
+    userId,
+    defaultAutoEns,
+    defaultAutoRenew,
+    queryClient,
+    trpc.admin.users.getUserDetails,
+    onOpenChange,
+  ]);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="!max-w-md">
+        <DialogHeader>
+          <DialogTitle>Edit domain defaults</DialogTitle>
+          <DialogDescription>
+            Global defaults applied to this user&apos;s new domains when an
+            order item doesn&apos;t override them.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3 py-2">
+          <PreferenceToggleRow
+            id="pref-default-auto-ens"
+            label="Auto ENS"
+            description="Set up ENS automatically for newly acquired domains."
+            checked={defaultAutoEns}
+            onCheckedChange={setDefaultAutoEns}
+          />
+          <PreferenceToggleRow
+            id="pref-default-auto-renew"
+            label="Auto Renew"
+            description="Renew domains automatically before they expire."
+            checked={defaultAutoRenew}
+            onCheckedChange={setDefaultAutoRenew}
+          />
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <AsyncButton
+            onClick={handleSave}
+            disabled={!isDirty}
+            loadingText="Saving..."
+          >
+            Save changes
+          </AsyncButton>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function AdminUserPreferencesCard({
+  userId,
+  preferences,
+}: {
+  userId: string;
+  preferences: AdminUserPreferences;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <CardTitle>Domain Defaults</CardTitle>
+          <CardDescription>
+            Global defaults seeded onto this user&apos;s new domains
+          </CardDescription>
+        </div>
+        <PermissionGate permissions={[Permission.WRITE_USERS]}>
+          <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+            <Pencil className="h-4 w-4" />
+            Edit
+          </Button>
+        </PermissionGate>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <PreferenceStat
+            label="Auto ENS"
+            enabled={preferences.defaultAutoEns}
+          />
+          <PreferenceStat
+            label="Auto Renew"
+            enabled={preferences.defaultAutoRenew}
+          />
+        </div>
+      </CardContent>
+      <AdminUserPreferencesDialog
+        open={open}
+        onOpenChange={setOpen}
+        userId={userId}
+        preferences={preferences}
+      />
+    </Card>
+  );
+}
+
 function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
   return (
     <div className="space-y-6">
@@ -879,6 +1089,11 @@ function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
           />
         </CardContent>
       </Card>
+
+      <AdminUserPreferencesCard
+        userId={data.user.id}
+        preferences={data.user.preferences}
+      />
 
       <div className="grid gap-4 xl:grid-cols-2">
         <CompactWalletsCard data={data} />
@@ -1855,6 +2070,11 @@ function UserDetailsPageContentView({ data }: { data: AdminUserDetails }) {
           </div>
         </CardContent>
       </Card>
+
+      <AdminUserPreferencesCard
+        userId={data.user.id}
+        preferences={data.user.preferences}
+      />
 
       <Tabs defaultValue="domains" className="w-full">
         <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-xl p-1 lg:grid-cols-5">

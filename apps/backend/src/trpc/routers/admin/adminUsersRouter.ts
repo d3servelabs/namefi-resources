@@ -3,9 +3,13 @@ import { checksumWalletAddressSchema, Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, notInArray, or, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { adminProcedureWithPermissions } from '../../base';
+import {
+  adminProcedureWithPermissions,
+  auditedAdminProcedureWithPermissions,
+} from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { adminUsersContract } from '@namefi-astra/common/contract/admin/admin-users-contract';
+import { updateUserDefaultDomainsPreferences } from '#lib/domains/domain-preferences';
 import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 import {
   getAdminUserDetails,
@@ -379,6 +383,28 @@ export const adminUsersRouter = createContractTRPCRouter<
     .output(adminUsersContract.getUserDetails.output)
     .query(async ({ input }) => {
       return await getAdminUserDetails(input);
+    }),
+
+  updateUserPreferences: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_USERS,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'user',
+      resourceId: (input as { userId: string }).userId,
+      action: 'update_user_preferences',
+      extraInput: input,
+    }),
+  )
+    .input(adminUsersContract.updateUserPreferences.input)
+    .output(adminUsersContract.updateUserPreferences.output)
+    .mutation(async ({ input }) => {
+      const preferences = await updateUserDefaultDomainsPreferences(
+        input.userId,
+        input.preferences,
+      );
+      return { success: true, preferences };
     }),
 
   getWalletDetails: adminProcedureWithPermissions(Permission.READ_USERS)
