@@ -124,6 +124,40 @@ export interface WaitForDecisionOptions<R> {
    * — wrap it in a {@link workflow.CancellationScope} if that matters.
    */
   raceWith?: () => Promise<GateResolution<R>>;
+  /** Operator-facing context surfaced via the armed-gates query (see {@link ArmedGateContext}). */
+  context?: ArmedGateContext;
+}
+
+/** Serialized failure that opened a gate, for operator display. */
+export interface GateErrorInfo {
+  /** The failure message. */
+  message: string;
+  /** ApplicationFailure type or error name, when available. */
+  type?: string;
+  /** Best-effort structured detail (e.g. ApplicationFailure.details). */
+  details?: unknown;
+}
+
+/**
+ * Operator-facing context about why a gate opened and how long it will wait,
+ * surfaced through the armed-gates query so the admin UI can show the error,
+ * the alert description/details, and timing.
+ */
+export interface ArmedGateContext {
+  /** Operator-facing description of why the gate opened (the alert message). */
+  alertMessage?: string;
+  /** Serialized failure that opened the gate. */
+  error?: GateErrorInfo;
+  /** Structured alert details supplied by the caller. */
+  alertDetails?: Record<string, unknown>;
+  /** ISO time the gate opened (deterministic workflow clock). */
+  openedAt?: string;
+  /** Admin-decision window (ms); the gate auto-fails this long after `openedAt`. */
+  decisionTimeoutMs?: number;
+  /** Per-attempt action deadline (ms), when the action was timeout-bounded. */
+  actionTimeoutMs?: number;
+  /** Which action attempt failed (1-based). */
+  attempt?: number;
 }
 
 /** Serializable description of a single currently-armed gate. */
@@ -133,6 +167,8 @@ export interface ArmedGateInfo {
   allowedActions: GateAction[];
   /** True when a RESPOND payload must pass a validator to resolve the gate. */
   requiresResponseValidation: boolean;
+  /** Why the gate opened + timing, for operator display. */
+  context?: ArmedGateContext;
 }
 
 /** Snapshot of every gate a workflow is currently awaiting a decision on. */
@@ -214,6 +250,7 @@ interface OpenGate {
   allowedActions: ReadonlySet<GateAction>;
   validateResponse?: (raw: unknown) => unknown;
   received: DecisionSignalPayload | null;
+  context?: ArmedGateContext;
 }
 
 const ALL_ACTIONS: readonly GateAction[] = [
@@ -344,6 +381,7 @@ export function createDecisionGateRegistry(opts?: {
       allowedActors: Array.from(gate.allowedActors),
       allowedActions: Array.from(gate.allowedActions),
       requiresResponseValidation: gate.validateResponse !== undefined,
+      context: gate.context,
     }));
     return { count: gates.length, gates };
   };
@@ -421,6 +459,7 @@ export function createDecisionGateRegistry(opts?: {
           | ((raw: unknown) => unknown)
           | undefined,
         received: null,
+        context: options.context,
       };
 
       // Reject a second concurrent wait on the same interactionId: it would
@@ -604,6 +643,21 @@ async function emitFailureAlert(args: {
   }
 }
 
+/** Serializes the failure that opened a gate for operator display. */
+function serializeGateError(error: unknown): GateErrorInfo {
+  if (error instanceof workflow.ApplicationFailure) {
+    return {
+      message: error.message,
+      type: error.type ?? undefined,
+      details: error.details,
+    };
+  }
+  if (error instanceof Error) {
+    return { message: error.message, type: error.name };
+  }
+  return { message: String(error) };
+}
+
 /**
  * Runs `action`; on success returns `onResult(result)` (or the result itself).
  *
@@ -723,6 +777,16 @@ export async function runWithDecisionGate<T, R = T>(
         timeoutMs,
         validateResponse,
         raceWith,
+        context: {
+          alertMessage,
+          error: serializeGateError(error),
+          alertDetails,
+          // `Date` is the deterministic workflow clock inside a Temporal workflow.
+          openedAt: new Date().toISOString(),
+          decisionTimeoutMs: timeoutMs,
+          actionTimeoutMs,
+          attempt,
+        },
       });
 
       if (outcome.action === 'RESPOND') {

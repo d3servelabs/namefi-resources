@@ -32,7 +32,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
-import { Ban, Play, Reply, RefreshCw, RotateCw } from 'lucide-react';
+import {
+  Ban,
+  ExternalLink,
+  Play,
+  Reply,
+  RefreshCw,
+  RotateCw,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { PageShell } from '@/components/page-shell';
@@ -62,6 +69,69 @@ const ACTION_ICON = {
 function formatStartedAt(iso?: string): string {
   if (!iso) return '—';
   return new Date(iso).toISOString().slice(0, 19).replace('T', ' ');
+}
+
+/** UI-only: CANCEL is shown to operators as FAIL (the action value stays CANCEL). */
+function actionLabel(action: string): string {
+  return action === 'CANCEL' ? 'FAIL' : action;
+}
+
+function formatDuration(ms: number): string {
+  if (ms >= 86_400_000) return `${Math.round(ms / 86_400_000)}d`;
+  if (ms >= 3_600_000) return `${Math.round(ms / 3_600_000)}h`;
+  if (ms >= 60_000) return `${Math.round(ms / 60_000)}min`;
+  return `${Math.round(ms / 1000)}s`;
+}
+
+/** The deadline = openedAt + window, formatted. */
+function formatDeadline(
+  openedAt: string | undefined,
+  windowMs: number,
+): string {
+  if (!openedAt) return '—';
+  return formatStartedAt(
+    new Date(new Date(openedAt).getTime() + windowMs).toISOString(),
+  );
+}
+
+/** Why the gate opened + timing, with a collapsible JSON of the error/details. */
+function GateContextDetails({ context }: { context: Gate['context'] }) {
+  if (!context) return null;
+  const {
+    alertMessage,
+    error,
+    alertDetails,
+    openedAt,
+    decisionTimeoutMs,
+    actionTimeoutMs,
+  } = context;
+  const hasJson = error !== undefined || alertDetails !== undefined;
+  return (
+    <div className="mt-1.5 space-y-1">
+      {alertMessage ? (
+        <p className="text-xs text-muted-foreground">{alertMessage}</p>
+      ) : null}
+      <p className="text-[11px] text-muted-foreground">
+        {openedAt ? `opened ${formatStartedAt(openedAt)}` : null}
+        {decisionTimeoutMs != null
+          ? ` · auto-fails ${formatDeadline(openedAt, decisionTimeoutMs)}`
+          : null}
+        {actionTimeoutMs != null
+          ? ` · action deadline ${formatDuration(actionTimeoutMs)}`
+          : null}
+      </p>
+      {hasJson ? (
+        <details className="text-xs">
+          <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+            Error / details
+          </summary>
+          <pre className="mt-1 max-h-64 overflow-auto whitespace-pre-wrap break-all rounded bg-muted/50 p-2 text-[11px]">
+            {JSON.stringify({ error, alertDetails }, null, 2)}
+          </pre>
+        </details>
+      ) : null}
+    </div>
+  );
 }
 
 /** The RESPOND payload schema declared for a gate, if any. */
@@ -148,7 +218,9 @@ export default withAdminGuard(function DecisionGatesPage() {
   const sendDecision = useMutation({
     ...trpc.admin.workflowDecision.sendDecision.mutationOptions(),
     onSuccess: (_data, variables) => {
-      toast.success(`Sent ${variables.action} to ${variables.workflowId}`);
+      toast.success(
+        `Sent ${actionLabel(variables.action)} to ${variables.workflowId}`,
+      );
       queryClient.invalidateQueries({
         queryKey: trpc.admin.workflowDecision.listActiveDecisionGates.queryKey(
           {},
@@ -184,7 +256,7 @@ export default withAdminGuard(function DecisionGatesPage() {
           <h1 className="text-3xl font-bold mb-2">Decision Gates</h1>
           <p className="text-muted-foreground">
             Running workflows awaiting an operator decision. Resolve a gate by
-            sending PROCEED / RETRY / CANCEL, or RESPOND with a payload.
+            sending PROCEED / RETRY / FAIL, or RESPOND with a payload.
           </p>
         </div>
         <Button
@@ -241,15 +313,27 @@ export default withAdminGuard(function DecisionGatesPage() {
                       <div className="text-xs text-muted-foreground break-all">
                         {workflow.workflowId}
                       </div>
+                      {workflow.temporalUiUrl ? (
+                        <a
+                          href={workflow.temporalUiUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-1 inline-flex items-center gap-1 text-xs text-blue-500 hover:underline"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          View in Temporal
+                        </a>
+                      ) : null}
                     </TableCell>
-                    <TableCell className="align-top font-mono text-xs">
-                      {gate.interactionId}
+                    <TableCell className="align-top text-xs">
+                      <div className="font-mono">{gate.interactionId}</div>
+                      <GateContextDetails context={gate.context} />
                     </TableCell>
                     <TableCell className="align-top">
                       <div className="flex flex-wrap gap-1">
                         {gate.allowedActions.map((a) => (
                           <Badge key={a} variant="secondary">
-                            {a}
+                            {actionLabel(a)}
                           </Badge>
                         ))}
                       </div>
@@ -476,11 +560,11 @@ function CancelDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button size="sm" variant="destructive" />}>
         <Ban className="h-3.5 w-3.5 mr-1.5" />
-        CANCEL
+        FAIL
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Cancel gate</DialogTitle>
+          <DialogTitle>Fail gate</DialogTitle>
           <DialogDescription>
             Fail <span className="font-mono">{gate.interactionId}</span> on{' '}
             <span className="font-mono break-all">{workflowId}</span>.
@@ -506,7 +590,7 @@ function CancelDialog({
             Back
           </Button>
           <AsyncButton variant="destructive" onClick={submit}>
-            Send CANCEL
+            Send FAIL
           </AsyncButton>
         </DialogFooter>
       </DialogContent>

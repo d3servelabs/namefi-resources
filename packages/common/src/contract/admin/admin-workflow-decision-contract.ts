@@ -60,6 +60,23 @@ const getArmedGatesInputSchema = z.object({
   armedQueryName: z.string().min(1).default('decisionGateArmed'),
 });
 
+/** Mirrors `ArmedGateContext` from the decision-gate helper. */
+const gateContextSchema = z.object({
+  alertMessage: z.string().optional(),
+  error: z
+    .object({
+      message: z.string(),
+      type: z.string().optional(),
+      details: z.unknown().optional(),
+    })
+    .optional(),
+  alertDetails: z.record(z.string(), z.unknown()).optional(),
+  openedAt: z.string().optional(),
+  decisionTimeoutMs: z.number().optional(),
+  actionTimeoutMs: z.number().optional(),
+  attempt: z.number().optional(),
+});
+
 /** Mirrors `ArmedGatesSnapshot` from the decision-gate helper. */
 const armedGatesSnapshotSchema = z.object({
   count: z.number(),
@@ -69,6 +86,7 @@ const armedGatesSnapshotSchema = z.object({
       allowedActors: z.array(z.string()),
       allowedActions: z.array(z.string()),
       requiresResponseValidation: z.boolean(),
+      context: gateContextSchema.optional(),
     }),
   ),
 });
@@ -88,6 +106,8 @@ const activeGateSchema = z.object({
   allowedActors: z.array(z.string()),
   allowedActions: z.array(z.string()),
   requiresResponseValidation: z.boolean(),
+  /** Why the gate opened + timing, for operator display. */
+  context: gateContextSchema.optional(),
 });
 
 const decisionGateWorkflowSchema = z.object({
@@ -96,6 +116,8 @@ const decisionGateWorkflowSchema = z.object({
   workflowType: z.string(),
   /** ISO start time, when available. */
   startedAt: z.string().optional(),
+  /** Deep link to this run in the Temporal Web UI, when derivable. */
+  temporalUiUrl: z.string().optional(),
   gates: z.array(activeGateSchema),
 });
 
