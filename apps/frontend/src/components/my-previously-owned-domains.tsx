@@ -5,6 +5,8 @@ import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { PageShell } from '@/components/page-shell';
 import { AddressWithChain } from '@/components/address-with-chain';
+import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
+import type { IFilterStrategy } from '@/components/table/filters/types';
 import {
   Table,
   TableBody,
@@ -14,7 +16,6 @@ import {
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -34,27 +35,10 @@ import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { CHAINS, getChain } from '@namefi-astra/utils/chains';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import {
-  ChevronDown,
-  Copy,
-  ExternalLink,
-  Flame,
-  Search,
-  ArrowDownWideNarrowIcon,
-  ArrowUpDownIcon,
-  ArrowUpNarrowWideIcon,
-} from 'lucide-react';
+import type { ColumnDef, SortingState } from '@tanstack/react-table';
+import { ChevronDown, ExternalLink, Flame } from 'lucide-react';
 import Link from 'next/link';
 import {
   type FC,
@@ -62,6 +46,7 @@ import {
   Suspense,
   useCallback,
   useMemo,
+  useState,
 } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { config } from '@/lib/env';
@@ -72,6 +57,11 @@ import { format } from 'date-fns';
 type PreviouslyOwnedDomainRow =
   AppRouterOutput['users']['getCurrentUserBurnedDomains'][number];
 type RemovalType = PreviouslyOwnedDomainRow['removalType'];
+
+// ExtensibleDataTable owns pagination/sorting/filtering (all manual), so the
+// parent feeds it the already filtered + sorted rows. This table has no
+// pagination, so a single page holds every row.
+const noop = () => undefined;
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -141,11 +131,6 @@ const MyPreviouslyOwnedDomainsEmptyPlaceholder: FC<
   );
 };
 
-const formatWalletAddress = (address: string) => {
-  const parsed = checksumWalletAddressSchema.safeParse(address);
-  return parsed.success ? parsed.data : address;
-};
-
 const removalReasonMeta: Record<RemovalType, { label: string }> = {
   domain_expired: {
     label: 'Domain Expired',
@@ -179,6 +164,11 @@ function MyPreviouslyOwnedDomainsTable() {
     trpc.users.getCurrentUserBurnedDomains.queryOptions(),
   );
 
+  const [domainSearch, setDomainSearch] = useState('');
+  const [chainFilter, setChainFilter] = useState<number | undefined>(undefined);
+  const [reasonFilter, setReasonFilter] = useState<RemovalType[]>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const columns: ColumnDef<PreviouslyOwnedDomainRow>[] = useMemo(
     () => [
       {
@@ -189,7 +179,6 @@ function MyPreviouslyOwnedDomainsTable() {
             {row.getValue('normalizedDomainName')}
           </span>
         ),
-        filterFn: 'includesString',
       },
       {
         id: 'account',
@@ -210,7 +199,6 @@ function MyPreviouslyOwnedDomainsTable() {
         cell: () => null,
         size: 0,
         enableSorting: false,
-        filterFn: 'equals',
       },
       {
         accessorKey: 'removedAt',
@@ -228,11 +216,6 @@ function MyPreviouslyOwnedDomainsTable() {
           );
         },
         size: 150,
-        sortingFn: (rowA, rowB) => {
-          const a = rowA.getValue('removedAt') as Date;
-          const b = rowB.getValue('removedAt') as Date;
-          return new Date(a).getTime() - new Date(b).getTime();
-        },
       },
       {
         accessorKey: 'removalReason',
@@ -269,13 +252,6 @@ function MyPreviouslyOwnedDomainsTable() {
         },
         size: 220,
         enableSorting: false,
-        filterFn: (row, _columnId, filterValue) => {
-          const filters = filterValue as RemovalType[] | undefined;
-          if (!filters || filters.length === 0) {
-            return true;
-          }
-          return filters.includes(row.original.removalType);
-        },
       },
       {
         id: 'receivingWallet',
@@ -341,6 +317,7 @@ function MyPreviouslyOwnedDomainsTable() {
   const {
     preferences: { columnVisibility },
     setColumnVisibility,
+    resetToDefaults,
   } = useTablePreferences({
     tableId: 'previously-owned-domains',
     defaultPreferences: {
@@ -350,257 +327,188 @@ function MyPreviouslyOwnedDomainsTable() {
     },
   });
 
-  const table = useReactTable({
-    data: domains,
-    columns,
-    getRowId: (row) => row.eventId,
-    state: { columnVisibility },
-    onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    columnResizeMode: 'onChange',
-  });
-  const reasonFilterValue =
-    (table.getColumn('removalReason')?.getFilterValue() as RemovalType[]) ?? [];
+  const filteredDomains = useMemo(() => {
+    let result = domains;
+    if (chainFilter !== undefined) {
+      result = result.filter((domain) => domain.chainId === chainFilter);
+    }
+    if (reasonFilter.length > 0) {
+      result = result.filter((domain) =>
+        reasonFilter.includes(domain.removalType),
+      );
+    }
+    const needle = domainSearch.trim().toLowerCase();
+    if (needle) {
+      result = result.filter((domain) =>
+        domain.normalizedDomainName.toLowerCase().includes(needle),
+      );
+    }
+    return result;
+  }, [domains, chainFilter, reasonFilter, domainSearch]);
 
-  const handleReasonFilterChange = useCallback(
-    (next: RemovalType[]) => {
-      table
-        .getColumn('removalReason')
-        ?.setFilterValue(next.length === 0 ? undefined : next);
-    },
-    [table],
-  );
+  const sortedDomains = useMemo(() => {
+    if (sorting.length === 0) {
+      return filteredDomains;
+    }
+    const next = [...filteredDomains];
+    next.sort((a, b) => {
+      for (const sort of sorting) {
+        let result = 0;
+        if (sort.id === 'normalizedDomainName') {
+          result = a.normalizedDomainName.localeCompare(
+            b.normalizedDomainName,
+            undefined,
+            { sensitivity: 'base' },
+          );
+        } else if (sort.id === 'removedAt') {
+          result =
+            new Date(a.removedAt).getTime() - new Date(b.removedAt).getTime();
+        }
+        if (result !== 0) {
+          return sort.desc ? -result : result;
+        }
+      }
+      return 0;
+    });
+    return next;
+  }, [filteredDomains, sorting]);
+
+  const handleReasonFilterChange = useCallback((next: RemovalType[]) => {
+    setReasonFilter(next);
+  }, []);
 
   const reasonFilterSummary =
-    reasonFilterValue.length === 0
-      ? 'All'
-      : `${reasonFilterValue.length} selected`;
+    reasonFilter.length === 0 ? 'All' : `${reasonFilter.length} selected`;
 
   if (domains.length === 0) {
     return <MyPreviouslyOwnedDomainsEmptyPlaceholder />;
   }
 
-  return (
+  const toolbarActions = (
     <>
-      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative w-full sm:w-72">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Filter domains..."
-            value={
-              (table
-                .getColumn('normalizedDomainName')
-                ?.getFilterValue() as string) ?? ''
-            }
-            onChange={(e) =>
-              table
-                .getColumn('normalizedDomainName')
-                ?.setFilterValue(e.target.value)
-            }
-            className="pl-8"
-          />
-        </div>
-
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          <Select
-            value={
-              table.getColumn('chainId')?.getFilterValue()?.toString() ?? '-1'
-            }
-            onValueChange={(value) =>
-              table
-                .getColumn('chainId')
-                ?.setFilterValue(
-                  !value || value === '-1' ? undefined : Number.parseInt(value),
-                )
-            }
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select chain">
-                {(() => {
-                  const selectedValue =
-                    table.getColumn('chainId')?.getFilterValue()?.toString() ??
-                    '-1';
-                  if (selectedValue === '-1') {
-                    return 'All chains';
-                  }
-                  const chain = getChain(Number.parseInt(selectedValue));
-                  return chain ? (
-                    <div className="flex items-center gap-2">
-                      <NetworkLogo network={chain.id} className="w-4 h-4" />
-                      {chain.name}
-                    </div>
-                  ) : (
-                    'Select chain'
-                  );
-                })()}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={'-1'}>All chains</SelectItem>
-              {(config.TYPE === 'local' || config.TYPE === 'development') && (
-                <SelectItem value={CHAINS.sepolia.id.toString()}>
-                  <div className="flex items-center gap-2">
-                    <NetworkLogo
-                      network={CHAINS.sepolia.id}
-                      className="w-4 h-4"
-                    />
-                    {CHAINS.sepolia.name}
-                  </div>
-                </SelectItem>
-              )}
-              <SelectItem value={CHAINS.base.id.toString()}>
-                <div className="flex items-center gap-2">
-                  <NetworkLogo network={CHAINS.base.id} className="w-4 h-4" />
-                  {CHAINS.base.name}
-                </div>
-              </SelectItem>
-              <SelectItem value={CHAINS.mainnet.id.toString()}>
-                <div className="flex items-center gap-2">
-                  <NetworkLogo
-                    network={CHAINS.mainnet.id}
-                    className="w-4 h-4"
-                  />
-                  {CHAINS.mainnet.name}
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  variant="outline"
-                  className="min-w-[220px] justify-between text-left"
-                />
+      <Select
+        value={chainFilter?.toString() ?? '-1'}
+        onValueChange={(value) =>
+          setChainFilter(
+            !value || value === '-1' ? undefined : Number.parseInt(value, 10),
+          )
+        }
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select chain">
+            {(() => {
+              const selectedValue = chainFilter?.toString() ?? '-1';
+              if (selectedValue === '-1') {
+                return 'All chains';
               }
-            >
-              <span className="text-sm font-medium">Reason</span>
-              <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                {reasonFilterSummary}
-                <ChevronDown className="h-4 w-4 opacity-60" />
-              </span>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64">
-              {reasonFilterOptions.map((option) => {
-                const checked = reasonFilterValue.includes(option.value);
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={option.value}
-                    checked={checked}
-                    onCheckedChange={(nextChecked) => {
-                      const next = nextChecked
-                        ? [...reasonFilterValue, option.value]
-                        : reasonFilterValue.filter(
-                            (value) => value !== option.value,
-                          );
-                      handleReasonFilterChange(Array.from(new Set(next)));
-                    }}
-                  >
-                    {option.label}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleReasonFilterChange([])}
-                className="text-xs text-muted-foreground"
-              >
-                Clear filters
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+              const chain = getChain(Number.parseInt(selectedValue, 10));
+              return chain ? (
+                <div className="flex items-center gap-2">
+                  <NetworkLogo network={chain.id} className="w-4 h-4" />
+                  {chain.name}
+                </div>
+              ) : (
+                'Select chain'
+              );
+            })()}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={'-1'}>All chains</SelectItem>
+          {(config.TYPE === 'local' || config.TYPE === 'development') && (
+            <SelectItem value={CHAINS.sepolia.id.toString()}>
+              <div className="flex items-center gap-2">
+                <NetworkLogo network={CHAINS.sepolia.id} className="w-4 h-4" />
+                {CHAINS.sepolia.name}
+              </div>
+            </SelectItem>
+          )}
+          <SelectItem value={CHAINS.base.id.toString()}>
+            <div className="flex items-center gap-2">
+              <NetworkLogo network={CHAINS.base.id} className="w-4 h-4" />
+              {CHAINS.base.name}
+            </div>
+          </SelectItem>
+          <SelectItem value={CHAINS.mainnet.id.toString()}>
+            <div className="flex items-center gap-2">
+              <NetworkLogo network={CHAINS.mainnet.id} className="w-4 h-4" />
+              {CHAINS.mainnet.name}
+            </div>
+          </SelectItem>
+        </SelectContent>
+      </Select>
 
-      <div className="rounded-md border">
-        <Table style={{ tableLayout: 'fixed' }}>
-          <TableHeader className="bg-muted/50">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b border-border">
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    style={{ width: header.getSize() }}
-                    className="p-0"
-                  >
-                    {header.column.getCanSort() ? (
-                      <button
-                        type="button"
-                        className={cn(
-                          'w-full px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider',
-                          'cursor-pointer select-none hover:text-foreground transition-colors',
-                        )}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        <span className="flex items-center gap-2">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                          {header.column.getIsSorted() === 'asc' ? (
-                            <ArrowUpNarrowWideIcon className="h-3 w-3 text-primary" />
-                          ) : header.column.getIsSorted() === 'desc' ? (
-                            <ArrowDownWideNarrowIcon className="h-3 w-3 text-primary" />
-                          ) : (
-                            <ArrowUpDownIcon className="h-3 w-3 opacity-50" />
-                          )}
-                        </span>
-                      </button>
-                    ) : (
-                      <div className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </div>
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="bg-background divide-y divide-border">
-            {table.getRowModel().rows?.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="hover:bg-muted/50 transition-colors"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={{ width: cell.column.getSize() }}
-                      className="px-4 py-3 overflow-hidden"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              className="min-w-[220px] justify-between text-left"
+            />
+          }
+        >
+          <span className="text-sm font-medium">Reason</span>
+          <span className="flex items-center gap-1 text-sm text-muted-foreground">
+            {reasonFilterSummary}
+            <ChevronDown className="h-4 w-4 opacity-60" />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-64">
+          {reasonFilterOptions.map((option) => {
+            const checked = reasonFilter.includes(option.value);
+            return (
+              <DropdownMenuCheckboxItem
+                key={option.value}
+                checked={checked}
+                onCheckedChange={(nextChecked) => {
+                  const next = nextChecked
+                    ? [...reasonFilter, option.value]
+                    : reasonFilter.filter((value) => value !== option.value);
+                  handleReasonFilterChange(Array.from(new Set(next)));
+                }}
+              >
+                {option.label}
+              </DropdownMenuCheckboxItem>
+            );
+          })}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => handleReasonFilterChange([])}
+            className="text-xs text-muted-foreground"
+          >
+            Clear filters
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
+  );
+
+  return (
+    <ExtensibleDataTable<
+      PreviouslyOwnedDomainRow,
+      IFilterStrategy<PreviouslyOwnedDomainRow>
+    >
+      columns={columns}
+      data={sortedDomains}
+      isLoading={false}
+      page={1}
+      pageSize={Math.max(sortedDomains.length, 1)}
+      totalPages={1}
+      totalCount={sortedDomains.length}
+      onPageChange={noop}
+      onPageSizeChange={noop}
+      paginationVisibility="hidden"
+      sorting={sorting}
+      onSortingChange={setSorting}
+      searchTerm={domainSearch}
+      onSearchChange={setDomainSearch}
+      searchPlaceholder="Filter domains..."
+      columnVisibility={columnVisibility}
+      onColumnVisibilityChange={setColumnVisibility}
+      onResetPreferences={resetToDefaults}
+      toolbarActions={toolbarActions}
+      emptyMessage="No results."
+    />
   );
 }
 

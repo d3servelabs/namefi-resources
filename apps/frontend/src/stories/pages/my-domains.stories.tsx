@@ -187,6 +187,60 @@ const mockDomains: DomainRow[] = [
   },
 ];
 
+type BurnedDomainRow =
+  AppRouterOutput['users']['getCurrentUserBurnedDomains'][number];
+
+const mockBurnedDomains: BurnedDomainRow[] = [
+  {
+    eventId: 'burned-event-1',
+    tokenId: '12345678901234567890',
+    normalizedDomainName: 'expired-domain.com',
+    chainId: 1,
+    fromAddress: '0x1234567890abcdef1234567890abcdef12345678',
+    toAddress: null,
+    removalType: 'domain_expired',
+    removalReason: 'Domain Expired',
+    removedAt: new Date('2026-04-15T00:00:00Z'),
+    removalTimestamp: 1744675200n,
+    removalBlock: 19500000n,
+    transactionHash:
+      '0xaaaa000000000000000000000000000000000000000000000000000000000001',
+    expirationTimeAtRemoval: new Date('2026-04-15T00:00:00Z'),
+  },
+  {
+    eventId: 'burned-event-2',
+    tokenId: '98765432109876543210',
+    normalizedDomainName: 'transferred-away.io',
+    chainId: 8453,
+    fromAddress: '0x1234567890abcdef1234567890abcdef12345678',
+    toAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+    removalType: 'transferred_to_another_wallet',
+    removalReason: 'Transferred To Another Wallet',
+    removedAt: new Date('2026-03-02T00:00:00Z'),
+    removalTimestamp: 1740873600n,
+    removalBlock: 12000000n,
+    transactionHash:
+      '0xbbbb000000000000000000000000000000000000000000000000000000000002',
+    expirationTimeAtRemoval: null,
+  },
+  {
+    eventId: 'burned-event-3',
+    tokenId: '11111111111111111111',
+    normalizedDomainName: 'exported-name.xyz',
+    chainId: 1,
+    fromAddress: '0x1234567890abcdef1234567890abcdef12345678',
+    toAddress: null,
+    removalType: 'domain_exported',
+    removalReason: 'Domain Exported',
+    removedAt: new Date('2026-01-20T00:00:00Z'),
+    removalTimestamp: 1737331200n,
+    removalBlock: 19000000n,
+    transactionHash:
+      '0xcccc000000000000000000000000000000000000000000000000000000000003',
+    expirationTimeAtRemoval: null,
+  },
+];
+
 const mockOrderItems: OrderItemSelect[] = [
   {
     id: '1',
@@ -280,6 +334,12 @@ function MockTrpcProvider({
           }
           if (options.op.path === 'registry.getTldPricing') {
             return Promise.resolve([null, mockTldPricing] as const);
+          }
+          if (options.op.path === 'users.getCurrentUserBurnedDomains') {
+            if (mockState.isDomainsLoading || mockState.isLoading) {
+              return new Promise<never>(() => {});
+            }
+            return Promise.resolve([null, mockBurnedDomains] as const);
           }
           return Promise.resolve([
             {
