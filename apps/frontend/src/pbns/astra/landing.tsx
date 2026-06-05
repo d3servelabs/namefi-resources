@@ -1,6 +1,13 @@
 'use client';
 
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  type RefObject,
+} from 'react';
 import Link from 'next/link';
 import {
   motion,
@@ -33,7 +40,9 @@ import {
 } from '@/components/search/types';
 import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Loader2, SearchIcon, Sparkles } from 'lucide-react';
+import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { MarketingSections } from './landing-marketing';
 import { FloatingCart } from '@/components/floating-cart';
 
@@ -55,6 +64,8 @@ const HeroSection = ({
   showScrollIndicator = true,
   onScrollIndicatorClick,
   onV3BetaClick,
+  isSearchActive = false,
+  searchAnchorRef,
 }: {
   searchMode: SearchMode;
   onSearchModeChange: (mode: SearchMode) => void;
@@ -68,6 +79,19 @@ const HeroSection = ({
   showScrollIndicator?: boolean;
   onScrollIndicatorClick?: () => void;
   onV3BetaClick?: () => void;
+  /**
+   * When a search is active (results are being shown), the hero collapses from
+   * its full-viewport landing height to a compact header so the results panel
+   * that follows can render directly below the search input instead of being
+   * pulled up over it. See the results container in `Landing` below.
+   */
+  isSearchActive?: boolean;
+  /**
+   * Anchor for the hero search input. `Landing` observes it to decide when the
+   * compact floating search bar should take over (once this scrolls out of view
+   * while results are showing).
+   */
+  searchAnchorRef?: RefObject<HTMLDivElement | null>;
 }) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -81,7 +105,14 @@ const HeroSection = ({
   return (
     <section
       ref={heroRef}
-      className="relative flex min-h-[95vh] items-center justify-center overflow-hidden"
+      className={
+        isSearchActive
+          ? // Compact hero: just enough height for the search controls, with top
+            // padding to clear the fixed/overlaying header (h-16). The results
+            // panel renders right below in normal flow.
+            'relative flex min-h-0 items-start justify-center overflow-hidden pt-20 pb-4 md:pt-24'
+          : 'relative flex min-h-[95vh] items-center justify-center overflow-hidden'
+      }
     >
       <motion.div
         className="absolute inset-0 -z-10"
@@ -206,7 +237,7 @@ const HeroSection = ({
                 ease: 'easeInOut',
               }}
             />
-            <div className="relative z-20 w-full">
+            <div ref={searchAnchorRef} className="relative z-20 w-full">
               <SearchInput
                 query={query}
                 setQuery={setQuery}
@@ -251,10 +282,12 @@ const HeroSection = ({
           </div>
         </motion.div>
 
-        <ScrollIndicator
-          visible={showScrollIndicator}
-          onClick={onScrollIndicatorClick}
-        />
+        {!isSearchActive && (
+          <ScrollIndicator
+            visible={showScrollIndicator}
+            onClick={onScrollIndicatorClick}
+          />
+        )}
       </div>
     </section>
   );
@@ -308,12 +341,77 @@ const ScrollIndicator = ({
   </div>
 );
 
+/**
+ * Compact search bar that floats at the top of the viewport while results are
+ * showing and the user has scrolled the hero search out of view. It is a
+ * lightweight controlled input (not a second `SearchInput`) bound to the same
+ * `query`/`runSearch`, so a new name can be searched without scrolling back up.
+ *
+ * Positioned `fixed` (escapes the hero's `overflow-hidden` ancestors) flush
+ * beneath the app header, mirroring its pinned bottom edge at each breakpoint:
+ * - mobile (<md): header is `fixed top-[--announcement-strip-height]` + h-16,
+ *   so the bar sits at `calc(var(--announcement-strip-height) + 4rem)`.
+ * - tablet (md–lg): header is `sticky top-0` + h-16 → `md:top-16`.
+ * - desktop (lg+): header is `static` (scrolls away) → `lg:top-0`.
+ * The strip var collapses to 0 when no announcement is shown.
+ */
+const FloatingSearchBar = ({
+  query,
+  setQuery,
+  onSearch,
+  isLoading,
+}: {
+  query: string;
+  setQuery: (value: string) => void;
+  onSearch: () => void;
+  isLoading: boolean;
+}) => (
+  <motion.div
+    initial={{ y: -72, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    exit={{ y: -72, opacity: 0 }}
+    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+    className="fixed inset-x-0 top-[calc(var(--announcement-strip-height,0px)+4rem)] z-30 border-b border-white/10 bg-[#04050A]/85 backdrop-blur md:top-16 lg:top-0"
+  >
+    <div className="mx-auto flex w-full max-w-3xl items-center px-4 py-2.5">
+      <div className="flex flex-1 items-center gap-2 rounded-full border border-white/14 bg-[#14161D] py-1.5 pl-4 pr-2 text-white transition-[border-color,box-shadow] focus-within:border-brand-primary/60 focus-within:ring-2 focus-within:ring-brand-primary/35">
+        {isLoading ? (
+          <Loader2 className="h-4 w-4 shrink-0 animate-spin text-white/70" />
+        ) : (
+          <SearchIcon className="h-4 w-4 shrink-0 text-white/60" />
+        )}
+        <Input
+          name="floating-search-input"
+          placeholder="Search for a domain..."
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              onSearch();
+            }
+          }}
+          className="h-9 min-w-0 flex-1 border-0 bg-transparent! px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+        <NamefiButton
+          onClick={onSearch}
+          className="h-9 shrink-0 rounded-full px-5 text-sm font-semibold text-primary-foreground shadow-none"
+          title="Search"
+        >
+          Search
+        </NamefiButton>
+      </div>
+    </div>
+  </motion.div>
+);
+
 export const Landing: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(
     undefined,
   );
   const newsletterRef = useRef<HTMLDivElement>(null);
   const marketingSectionsRef = useRef<HTMLDivElement>(null);
+  const searchAnchorRef = useRef<HTMLDivElement>(null);
   const [hasSeenStorylineThisCycle, setHasSeenStorylineThisCycle] =
     useState(false);
   const [isNewsletterVisible, setNewsletterVisible] = useQueryState(
@@ -475,6 +573,15 @@ export const Landing: LandingComponent = ({ origin }) => {
   const showSearchResults =
     query.length > 0 && (isLoading || hasData || isError);
 
+  // The hero search is considered "visible" until its bottom scrolls within the
+  // header band (~72px). Once results are showing and it scrolls past, the
+  // compact floating search bar takes over so a new name can be searched
+  // without scrolling back to the top.
+  const isHeroSearchVisible = useInView(searchAnchorRef, {
+    margin: '-72px 0px 0px 0px',
+  });
+  const showFloatingSearch = showSearchResults && !isHeroSearchVisible;
+
   useEffect(() => {
     if (showSearchResults) {
       setHasSeenStorylineThisCycle(false);
@@ -527,7 +634,20 @@ export const Landing: LandingComponent = ({ origin }) => {
           showScrollIndicator={shouldShowScrollIndicator}
           onScrollIndicatorClick={handleScrollIndicatorClick}
           onV3BetaClick={handleV3BetaClick}
+          isSearchActive={showSearchResults}
+          searchAnchorRef={searchAnchorRef}
         />
+
+        <AnimatePresence>
+          {showFloatingSearch && (
+            <FloatingSearchBar
+              query={query}
+              setQuery={setQuery}
+              onSearch={runSearch}
+              isLoading={isLoading}
+            />
+          )}
+        </AnimatePresence>
 
         <div className="relative z-10">
           <AnimatePresence mode="wait">
@@ -538,7 +658,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                className="mx-auto -mt-48 md:-mt-62 max-w-6xl px-6 pb-16 pt-10"
+                className="mx-auto max-w-6xl px-6 pb-16 pt-2 md:pt-4"
               >
                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
                   <SearchResults
