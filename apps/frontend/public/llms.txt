@@ -9,8 +9,9 @@
 ### API Key (simplest — recommended for agents)
 
 Generate a key at https://namefi.io/api-key, then pass it as:
-
-    x-api-key: <your-key>
+```
+x-api-key: <your-key>
+```
 
 Works for **all operations** including DNS record creation, updates, and deletes. The API key must be generated from the wallet that owns the domain.
 
@@ -85,7 +86,7 @@ Apply DNS records as part of registration with `POST /v-next/orders/register-dom
 
 ## Outbound Lead Finding
 
-Use https://namefi.io/llms-outbound.txt for the full agent workflow. It covers listing owned domains, starting an outbound lead-finding run, polling run status, listing ranked leads, inspecting lead detail, and preparing outreach drafts.
+Use https://namefi.io/outbound/llms.txt for the full agent workflow. It covers listing owned domains, starting an outbound lead-finding run, polling run status, listing ranked leads, inspecting lead detail, and preparing outreach drafts.
 
 ## DNS Record Management
 
