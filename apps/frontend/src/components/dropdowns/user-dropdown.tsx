@@ -46,6 +46,7 @@ import {
   LayoutListIcon,
   Globe,
   RefreshCwIcon,
+  PlusCircleIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Route } from 'next';
@@ -423,7 +424,7 @@ export const UserDropdown = ErrorBoundary.with(
 );
 UserDropdown.displayName = 'UserDropdown';
 
-type BalanceBreakdownDialogProps = {
+export type BalanceBreakdownDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   chainBalances: ChainBalance[];
@@ -432,7 +433,7 @@ type BalanceBreakdownDialogProps = {
   walletAddresses: `0x${string}`[];
 };
 
-function BalanceBreakdownDialog({
+export function BalanceBreakdownDialog({
   open,
   onOpenChange,
   chainBalances,
@@ -444,9 +445,14 @@ function BalanceBreakdownDialog({
   const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
   // The swap dialog is opened from inside this dialog; rendered as a sibling
   // and keyed by wallet so closing the balance dialog doesn't unmount it.
+  // `isSwapDialogOpen` is tracked separately from the target wallet so the
+  // dialog-level "Top Up" can open the swap flow even with no wallet to target
+  // (e.g. at a zero balance), where the swap dialog falls back to the connected
+  // wallet.
   const [swapDialogWalletAddress, setSwapDialogWalletAddress] = useState<
     string | null
   >(null);
+  const [isSwapDialogOpen, setIsSwapDialogOpen] = useState(false);
 
   const walletGroups = useMemo(() => {
     const addressMap = walletAddresses.map((walletAddress) => {
@@ -482,14 +488,29 @@ function BalanceBreakdownDialog({
     }
   }, [watchNfscInWallet]);
 
-  const handleAddFunds = useCallback(
-    (walletAddress: string) => {
+  const openSwapDialog = useCallback(
+    (walletAddress: string | null) => {
       // Close this dialog first, then open the swap dialog. Stacking two
       // modals is visually noisy.
       onOpenChange(false);
       setSwapDialogWalletAddress(walletAddress);
+      setIsSwapDialogOpen(true);
     },
     [onOpenChange],
+  );
+
+  // Per-wallet entry point: top up a specific linked wallet.
+  const handleAddFunds = useCallback(
+    (walletAddress: string) => openSwapDialog(walletAddress),
+    [openSwapDialog],
+  );
+
+  // Dialog-level entry point: always available, even at a zero balance. Targets
+  // the first linked wallet when there is one; the swap dialog otherwise falls
+  // back to the connected wallet.
+  const handleTopUp = useCallback(
+    () => openSwapDialog(walletAddresses[0] ?? null),
+    [openSwapDialog, walletAddresses],
   );
 
   return (
@@ -519,6 +540,11 @@ function BalanceBreakdownDialog({
                   {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
                 </div>
               </div>
+
+              <Button className="w-full" onClick={handleTopUp}>
+                <PlusCircleIcon className="mr-2 h-4 w-4" />
+                Top Up
+              </Button>
 
               {isAnyWalletConnected && (
                 <Button
@@ -626,8 +652,9 @@ function BalanceBreakdownDialog({
 
       <NfscSwapDialog
         key={swapDialogWalletAddress ?? 'no-wallet'}
-        open={Boolean(swapDialogWalletAddress)}
+        open={isSwapDialogOpen}
         onOpenChange={(nextOpen) => {
+          setIsSwapDialogOpen(nextOpen);
           if (!nextOpen) setSwapDialogWalletAddress(null);
         }}
         walletAddress={swapDialogWalletAddress ?? undefined}
