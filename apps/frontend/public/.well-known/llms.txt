@@ -1,0 +1,6 @@
+# Namefi
+
+> Namefi registers traditional domains as NFTs and manages their DNS via an API built for AI agents.
+
+The canonical, full machine-readable guide lives at https://namefi.io/llms.txt
+OpenAPI 3 spec: https://api.namefi.io/v-next/openapi/doc.json

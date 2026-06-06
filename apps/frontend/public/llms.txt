@@ -30,8 +30,10 @@ Works for **all operations** including DNS record creation, updates, and deletes
 ## Domain Registration
 
 Register a domain with an API key in three steps.
-    # 1. Check availability
+    # 1. Check availability (one name)
     curl "https://api.namefi.io/v-next/search/availability?domain=example.com"
+    #    …or screen many names at once:
+    curl "https://api.namefi.io/v-next/search/bulk-availability?domains[]=example.com&domains[]=example2.com"
 
     # 2. Submit a registration order (requires NFSC balance on the paying wallet)
     curl -X POST https://api.namefi.io/v-next/orders/register-domain \
@@ -81,7 +83,6 @@ Apply DNS records as part of registration with `POST /v-next/orders/register-dom
 
 ### Other options
 
-- `GET /v-next/search/bulk-availability?domains[]=example.com&domains[]=example2.com` — check availability for multiple domains.
 - Crypto-wallet payment — buy a domain without a Namefi account: https://namefi.io/web3/llms.txt
 
 ## Outbound Lead Finding

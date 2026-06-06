@@ -286,6 +286,25 @@ app.get('/secretsfi', (c) => {
   });
 });
 
+// Agent-friendly catch-all 404. Unmatched routes — including the API root `/` —
+// return a small JSON breadcrumb pointing AI agents and crawlers at the
+// machine-readable docs, instead of Hono's default empty 404 body. Pointers
+// mirror AGENT_DISCOVERY_PATHS above. Routers that emit their own 404 (whois,
+// rdap, public-ai, …) are unaffected — this only fires when nothing matches.
+app.notFound((c) =>
+  c.json(
+    {
+      error: 'not_found',
+      message:
+        'No matching route. Namefi exposes a machine-readable API for AI agents.',
+      docs: 'https://namefi.io/llms.txt',
+      openapi: 'https://api.namefi.io/v-next/openapi/doc.json',
+      baseUrl: 'https://api.namefi.io/v-next/',
+    },
+    404,
+  ),
+);
+
 async function main() {
   if (config.AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES) {
     try {
