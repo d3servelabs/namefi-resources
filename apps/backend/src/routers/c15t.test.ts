@@ -49,6 +49,26 @@ vi.mock('@namefi-astra/db', () => ({
 }));
 
 const { isC15tMeasurementConsentAutoGranted } = await import('./c15t');
+const c15tInstanceCalls = mocks.c15tInstance.mock.calls as unknown as Array<
+  [Record<string, unknown>]
+>;
+const c15tOptions = c15tInstanceCalls[0]?.[0];
+
+describe('c15t instance configuration', () => {
+  it('uses Drizzle schema names without applying a second table prefix', () => {
+    expect(c15tOptions).toBeDefined();
+    expect(c15tOptions).toMatchObject({
+      basePath: '/c15t',
+      policyPacks: [
+        { id: 'europe' },
+        { id: 'california' },
+        { id: 'quebec' },
+        { id: 'world' },
+      ],
+    });
+    expect(c15tOptions).not.toHaveProperty('tablePrefix');
+  });
+});
 
 describe('isC15tMeasurementConsentAutoGranted', () => {
   beforeEach(() => {

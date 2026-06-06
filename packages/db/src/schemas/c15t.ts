@@ -72,53 +72,33 @@ export const consentPolicyRelations = relations(consentPolicy, ({ many }) => ({
   consents: many(consent, {
     relationName: 'consent_consentPolicy',
   }),
-  runtimePolicyDecisions: many(runtimePolicyDecision, {
-    relationName: 'runtimePolicyDecision_consentPolicy',
-  }),
 }));
 
-export const runtimePolicyDecision = pgTable(
-  'c15t_runtimePolicyDecision',
-  {
-    id: varchar('id', { length: 255 }).notNull().primaryKey(),
-    tenantId: text('tenantId'),
-    policyId: text('policyId').notNull(),
-    fingerprint: text('fingerprint').notNull(),
-    matchedBy: text('matchedBy').notNull(),
-    countryCode: text('countryCode'),
-    regionCode: text('regionCode'),
-    jurisdiction: text('jurisdiction').notNull(),
-    language: text('language'),
-    model: text('model').notNull(),
-    policyI18n: json('policyI18n'),
-    uiMode: text('uiMode'),
-    bannerUi: json('bannerUi'),
-    dialogUi: json('dialogUi'),
-    categories: json('categories'),
-    preselectedCategories: json('preselectedCategories'),
-    proofConfig: json('proofConfig'),
-    dedupeKey: text('dedupeKey').notNull().unique(),
-    createdAt: timestamp('createdAt').notNull().defaultNow(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.policyId],
-      foreignColumns: [consentPolicy.id],
-      name: 'runtimePolicyDecision_consentPolicy_policy_fk',
-    })
-      .onUpdate('restrict')
-      .onDelete('restrict'),
-  ],
-);
+export const runtimePolicyDecision = pgTable('c15t_runtimePolicyDecision', {
+  id: varchar('id', { length: 255 }).notNull().primaryKey(),
+  tenantId: text('tenantId'),
+  policyId: text('policyId').notNull(),
+  fingerprint: text('fingerprint').notNull(),
+  matchedBy: text('matchedBy').notNull(),
+  countryCode: text('countryCode'),
+  regionCode: text('regionCode'),
+  jurisdiction: text('jurisdiction').notNull(),
+  language: text('language'),
+  model: text('model').notNull(),
+  policyI18n: json('policyI18n'),
+  uiMode: text('uiMode'),
+  bannerUi: json('bannerUi'),
+  dialogUi: json('dialogUi'),
+  categories: json('categories'),
+  preselectedCategories: json('preselectedCategories'),
+  proofConfig: json('proofConfig'),
+  dedupeKey: text('dedupeKey').notNull().unique(),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+});
 
 export const runtimePolicyDecisionRelations = relations(
   runtimePolicyDecision,
-  ({ one, many }) => ({
-    policy: one(consentPolicy, {
-      relationName: 'runtimePolicyDecision_consentPolicy',
-      fields: [runtimePolicyDecision.policyId],
-      references: [consentPolicy.id],
-    }),
+  ({ many }) => ({
     consents: many(consent, {
       relationName: 'consent_runtimePolicyDecision',
     }),
