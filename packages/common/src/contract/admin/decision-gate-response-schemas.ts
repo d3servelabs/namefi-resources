@@ -80,7 +80,13 @@ export type ExpirationIsoResponse = z.infer<typeof expirationIsoSchema>;
  * provider reference and marks the payment SUCCEEDED. Mirrors the tx hash string
  * `chargeNfscWorkflow` returns.
  */
-export const txHashSchema = z.string().min(1);
+export const txHashSchema = z
+  .string()
+  .trim()
+  .regex(
+    /^0x[0-9a-fA-F]{64}$/,
+    'Must be a 0x-prefixed 32-byte transaction hash',
+  );
 export type TxHashResponse = z.infer<typeof txHashSchema>;
 
 /** interactionId → RESPOND payload schema. */

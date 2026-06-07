@@ -283,15 +283,31 @@ function evidenceSuggestsPresent(evidence: Record<string, unknown>): boolean {
   return registrarKnown || inSystem?.inSystem === true || publiclyRegistered;
 }
 
-/** True when the payment evidence suggests the NFSC charge already landed. */
-function paymentSuggestsCharged(evidence: Record<string, unknown>): boolean {
+type PaymentChargeState = 'charged' | 'not-charged' | 'unknown';
+
+/**
+ * Classify NFSC charge evidence: `charged` (tx ref / SUCCEEDED), `not-charged`
+ * (found but neither), or `unknown` (missing / errored / not found) — so a
+ * missing record never steers the operator to CANCEL on incomplete evidence.
+ */
+function paymentChargeState(
+  evidence: Record<string, unknown>,
+): PaymentChargeState {
   const payment = evidence.payment as
-    | { status?: string; paymentProviderReferenceId?: string | null }
+    | {
+        found?: boolean;
+        error?: unknown;
+        status?: string;
+        paymentProviderReferenceId?: string | null;
+      }
     | undefined;
-  return (
-    payment?.status === 'SUCCEEDED' ||
-    Boolean(payment?.paymentProviderReferenceId)
-  );
+  if (!payment || payment.error !== undefined || payment.found === false) {
+    return 'unknown';
+  }
+  if (payment.status === 'SUCCEEDED' || payment.paymentProviderReferenceId) {
+    return 'charged';
+  }
+  return 'not-charged';
 }
 
 /** Operator guidance per known gate kind — what each response means and when. */
@@ -348,10 +364,16 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
         'The charge actually landed on-chain — supply its tx hash and the payment is marked SUCCEEDED.',
       CANCEL: 'Fail the payment when the charge did not go through.',
     },
-    evidenceHint: (evidence) =>
-      paymentSuggestsCharged(evidence)
-        ? 'The payment shows a tx reference / SUCCEEDED status — the charge likely landed. RESPOND with the tx hash.'
-        : 'No tx reference and the payment is not SUCCEEDED — the charge likely did not land. CANCEL to fail the payment.',
+    evidenceHint: (evidence) => {
+      const state = paymentChargeState(evidence);
+      if (state === 'charged') {
+        return 'The payment shows a tx reference / SUCCEEDED status — the charge likely landed. RESPOND with the tx hash.';
+      }
+      if (state === 'not-charged') {
+        return 'No tx reference and the payment is not SUCCEEDED — the charge likely did not land. CANCEL to fail the payment.';
+      }
+      return 'Payment evidence is unavailable or incomplete — verify the DB + on-chain state manually before deciding.';
+    },
   },
 };
 
