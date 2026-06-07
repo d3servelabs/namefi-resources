@@ -185,6 +185,20 @@ export interface RunWithGateHarnessInput {
   /** Per-attempt action deadline forwarded to `runWithDecisionGate`. */
   actionTimeoutMs?: number;
   maxRetries?: number;
+  /** Forwarded — auto-retry the action this many times before opening the gate. */
+  autoRetry?: { maxAttempts?: number };
+  /**
+   * Builds `autoRetry.shouldRetry` from a serializable descriptor (a function
+   * can't cross the workflow boundary): auto-retry only if the failure message
+   * includes this substring.
+   */
+  retryIfErrorIncludes?: string;
+  /** When true, `autoRetry.shouldRetry` throws — to assert it never bypasses the gate. */
+  retryPredicateThrows?: boolean;
+  /** Forwarded — tags the armed gate so its context carries the kind. */
+  gateKind?: string;
+  /** Forwarded — evidence params surfaced in the armed-gate context. */
+  evidenceParams?: Record<string, unknown>;
   /** When set, TIMEOUT returns this sentinel instead of throwing. */
   onTimeoutReturn?: unknown;
 }
@@ -225,6 +239,22 @@ export async function runWithGateHarnessWorkflow(
     timeoutMs: input.timeoutMs,
     actionTimeoutMs: input.actionTimeoutMs,
     maxRetries: input.maxRetries,
+    autoRetry: input.autoRetry && {
+      maxAttempts: input.autoRetry.maxAttempts,
+      shouldRetry: input.retryPredicateThrows
+        ? () => {
+            throw new Error('shouldRetry predicate boom');
+          }
+        : input.retryIfErrorIncludes === undefined
+          ? undefined
+          : ({ error }) => {
+              const message =
+                error instanceof Error ? error.message : String(error);
+              return message.includes(input.retryIfErrorIncludes as string);
+            },
+    },
+    gateKind: input.gateKind,
+    evidenceParams: input.evidenceParams,
     onTimeout:
       input.onTimeoutReturn !== undefined
         ? { kind: 'return', value: input.onTimeoutReturn }

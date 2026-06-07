@@ -145,6 +145,30 @@ export interface GateErrorInfo {
 }
 
 /**
+ * One entry in a gate's per-run history: a time the gate opened plus how it was
+ * resolved. Accumulated in-memory for the life of the workflow run and surfaced
+ * via the armed-gates query; not persisted (the resolved decision itself lives
+ * durably in the audit log + Temporal event history).
+ */
+export interface GateAttempt {
+  /** Which action attempt opened the gate (1-based; matches {@link ArmedGateContext.attempt}). */
+  attempt: number;
+  /** ISO time the gate opened (deterministic workflow clock). */
+  openedAt: string;
+  /** Serialized failure that opened the gate this time. */
+  error: GateErrorInfo;
+  /** How this open was resolved; absent while the gate is still awaiting a decision. */
+  resolution?: {
+    /** The resolving action — a {@link GateAction}, or `'TIMEOUT'` when the decision window elapsed. */
+    action: GateAction | 'TIMEOUT';
+    actor?: Actor;
+    actorId?: string;
+    /** ISO time the decision landed. */
+    at: string;
+  };
+}
+
+/**
  * Operator-facing context about why a gate opened and how long it will wait,
  * surfaced through the armed-gates query so the admin UI can show the error,
  * the alert description/details, and timing.
@@ -164,6 +188,18 @@ export interface ArmedGateContext {
   actionTimeoutMs?: number;
   /** Which action attempt failed (1-based). */
   attempt?: number;
+  /**
+   * Stable class-of-gate id (e.g. `'register-or-import-poll'`). Opaque to the
+   * helper; the admin side keys decision-support evidence gathering off this.
+   */
+  gateKind?: string;
+  /**
+   * Minimal params the admin side needs to gather evidence for this gate
+   * (e.g. `{ normalizedDomainName }`). Set by the caller / known-gates wrapper.
+   */
+  evidenceParams?: Record<string, unknown>;
+  /** Per-run log of every time this gate opened, oldest first. */
+  history?: GateAttempt[];
 }
 
 /** Serializable description of a single currently-armed gate. */
@@ -581,6 +617,30 @@ export interface RunWithDecisionGateOptions<T, R = T> {
   raceWith?: () => Promise<GateResolution<R>>;
   /** Caps the RETRY loop (number of action attempts). Defaults to 10. */
   maxRetries?: number;
+  /**
+   * Auto-retry the action before opening the gate for a human. The budget is
+   * consumed only BEFORE the first gate open — once a human is involved (the
+   * gate has opened at least once), failures go straight back to the gate.
+   * `undefined`/`maxAttempts: 0` (the default) preserves today's behavior: any
+   * failure opens the gate immediately. Each auto-retry reuses the same
+   * `actionTimeoutMs`.
+   *
+   * `shouldRetry` optionally restricts auto-retry to failures worth retrying
+   * (e.g. a transient/timeout error but not a permanent one); when it returns
+   * `false` the budget is not consumed and the gate opens. Defaults to always.
+   */
+  autoRetry?: {
+    maxAttempts?: number;
+    shouldRetry?: (ctx: { attempt: number; error: unknown }) => boolean;
+  };
+  /**
+   * Stable class-of-gate id surfaced in the armed-gate context so the admin side
+   * can gather decision-support evidence for this kind of gate (see the
+   * `runWithKnownGate` wrapper). Opaque to the helper.
+   */
+  gateKind?: string;
+  /** Minimal params the admin side needs to gather evidence (e.g. the domain). */
+  evidenceParams?: Record<string, unknown>;
 
   /** Maps a successful action result into the return value. */
   onResult?: (result: T) => R;
@@ -630,17 +690,26 @@ async function emitFailureAlert(args: {
         priority: args.alertPriority,
       });
     } else {
-      const { generalAlertNamefi } = typedProxyActivities({
-        temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-        options: {
-          ...shortRunningOpts,
-          retry: { maximumInterval: '1 minute', maximumAttempts: 10 },
-        },
-      });
-      await generalAlertNamefi({
+      //TODO make generalAlert send an Alert to Slack uncomment this code
+      // const { generalAlertNamefi } = typedProxyActivities({
+      //   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      //   options: {
+      //     ...shortRunningOpts,
+      //     retry: { maximumInterval: '1 minute', maximumAttempts: 10 },
+      //   },
+      // });
+      // await generalAlertNamefi({
+      //   title: `Decision gate awaiting action (${info.workflowId})`,
+      //   message: args.alertMessage,
+      //   ...detail,
+      // });
+      await criticalAlertWithTicket({
         title: `Decision gate awaiting action (${info.workflowId})`,
         message: args.alertMessage,
-        ...detail,
+        extraData: detail,
+        priority: args.alertPriority,
+        createIncident: true,
+        monitorIncident: false,
       });
     }
   } catch (alertError) {
@@ -719,6 +788,9 @@ export async function runWithDecisionGate<T, R = T>(
     actionTimeoutMs,
     raceWith,
     maxRetries = 10,
+    autoRetry,
+    gateKind,
+    evidenceParams,
     onResult,
     validateResponse,
     onAwaitingDecision,
@@ -775,12 +847,48 @@ export async function runWithDecisionGate<T, R = T>(
     }
   };
 
+  // Per-run history of every gate open + resolution, surfaced via the armed-gates
+  // query. The same array reference is threaded into each cycle's context, so a
+  // snapshot always reflects the full history. Not persisted beyond the run.
+  const history: GateAttempt[] = [];
+  let autoRetriesLeft = autoRetry?.maxAttempts ?? 0;
   let attempt = 0;
   while (true) {
     attempt++;
     try {
       return mapResult(await runAction());
     } catch (error) {
+      // Auto-retry before bothering a human, but only before the gate has ever
+      // opened (history empty). A throwing `shouldRetry` predicate must NOT
+      // escape this catch and bypass the gate — treat it as "do not auto-retry"
+      // so the failure still alerts and opens the gate.
+      if (autoRetriesLeft > 0 && history.length === 0) {
+        let shouldAutoRetry = true;
+        if (autoRetry?.shouldRetry) {
+          try {
+            shouldAutoRetry = autoRetry.shouldRetry({ attempt, error });
+          } catch (predicateError) {
+            shouldAutoRetry = false;
+            workflow.log.warn(
+              `decision-gate: shouldRetry predicate threw${idSuffix}; opening gate`,
+              { attempt, predicateError },
+            );
+          }
+        }
+        if (shouldAutoRetry) {
+          autoRetriesLeft--;
+          workflow.log.debug(
+            `decision-gate: auto-retrying after failure${idSuffix} (attempt ${attempt})`,
+          );
+          continue;
+        }
+      }
+
+      const serializedError = serializeGateError(error);
+      // `Date` is the deterministic workflow clock inside a Temporal workflow.
+      const openedAt = new Date().toISOString();
+      history.push({ attempt, openedAt, error: serializedError });
+
       await emitFailureAlert({
         alertSeverity,
         alertMessage,
@@ -804,15 +912,28 @@ export async function runWithDecisionGate<T, R = T>(
         raceWith,
         context: {
           alertMessage,
-          error: serializeGateError(error),
+          error: serializedError,
           alertDetails,
-          // `Date` is the deterministic workflow clock inside a Temporal workflow.
-          openedAt: new Date().toISOString(),
+          openedAt,
           decisionTimeoutMs: timeoutMs,
           actionTimeoutMs,
           attempt,
+          gateKind,
+          evidenceParams,
+          history,
         },
       });
+
+      // Stamp how this open was resolved onto its history entry.
+      const latest = history[history.length - 1];
+      if (latest) {
+        latest.resolution = {
+          action: outcome.action,
+          actor: outcome.signal?.actor,
+          actorId: outcome.signal?.actorId,
+          at: new Date().toISOString(),
+        };
+      }
 
       if (outcome.action === 'RESPOND') {
         return outcome.response;

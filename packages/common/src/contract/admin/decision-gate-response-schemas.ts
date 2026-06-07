@@ -84,6 +84,11 @@ export const decisionGateResponseSchemas = {
   // registrar's state and RESPONDs with the terminal status; the workflow
   // synthesizes the operation result it continues with.
   'register-or-import-poll': operationStatusSchema,
+  // Registrar register/import SUBMIT (epp). When a submit fails, an admin who
+  // verified the real registrar state RESPONDs with the status the workflow
+  // should continue from (typically SUCCESSFUL); the workflow synthesizes the
+  // operation result from it.
+  'register-or-import-submit': operationStatusSchema,
   // EPP renewal status poll. The gate maps the activity's `{ status }` result to
   // a bare OperationStatus, so the RESPOND payload is the status alone.
   'extend-epp-status-poll': operationStatusSchema,

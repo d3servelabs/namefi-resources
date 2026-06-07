@@ -118,6 +118,22 @@ async function waitForSignalNames(handle: WorkflowHandle): Promise<string[]> {
   throw new Error('harness never published signal names');
 }
 
+// Polls the armed-gate query until the (re-opened) gate's history reaches `len`
+// entries — used to observe a gate that closed on RETRY and opened again.
+async function waitForHistoryLength(handle: WorkflowHandle, len: number) {
+  for (let i = 0; i < 600; i++) {
+    try {
+      const armed = await handle.query(decisionGateArmedQuery);
+      const history = armed.gates[0]?.context?.history;
+      if (history && history.length >= len) return armed;
+    } catch {
+      // Gate momentarily closed between opens — keep polling.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  throw new Error(`gate history never reached length ${len}`);
+}
+
 describe('decision gate (time-skipping)', () => {
   it('resolves to TIMEOUT when no decision arrives before the deadline', async () => {
     const handle = await testEnv.client.workflow.start(
@@ -591,6 +607,216 @@ describe('runWithDecisionGate (time-skipping)', () => {
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
     expect(result).toMatchObject({ ok: true, attempts: 2 });
+  });
+});
+
+describe('decision gate auto-retry / history / evidence (time-skipping)', () => {
+  it('auto-retries before opening the gate and succeeds without a human', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-auto-retry-ok'),
+        taskQueue: TASK_QUEUE,
+        // attempt 1 throws → auto-retry → attempt 2 succeeds; gate never opens.
+        args: [
+          {
+            failTimes: 1,
+            autoRetry: { maxAttempts: 1 },
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(2);
+    expect(result).toMatchObject({ ok: true, attempts: 2 });
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
+  });
+
+  it('opens the gate once the single auto-retry is exhausted, then RESPOND resolves it', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-auto-retry-exhausted'),
+        taskQueue: TASK_QUEUE,
+        // Fails twice: attempt 1 auto-retries, attempt 2 opens the gate.
+        args: [
+          {
+            failTimes: 2,
+            autoRetry: { maxAttempts: 1 },
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await waitUntilReady(handle);
+    const armed = await handle.query(decisionGateArmedQuery);
+    expect(armed.gates[0]?.context?.attempt).toBe(2);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { manual: 'override' },
+    });
+    const { result } = await handle.result();
+    expect(result).toEqual({ manual: 'override' });
+    expect(generalAlertNamefi).toHaveBeenCalled();
+  });
+
+  it('accumulates per-open history and records each resolution', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-history'),
+        taskQueue: TASK_QUEUE,
+        // Always throws so each RETRY re-opens the gate; capped so a stray loop ends.
+        args: [{ failTimes: 5, maxRetries: 5, allowedActors: ['ADMIN'] }],
+      },
+    );
+    await waitUntilReady(handle);
+    const first = await handle.query(decisionGateArmedQuery);
+    expect(first.gates[0]?.context?.history).toHaveLength(1);
+
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RETRY',
+    });
+    // RETRY closes the first open, re-runs (fails), and re-opens with 2 entries.
+    const second = await waitForHistoryLength(handle, 2);
+    const history = second.gates[0]?.context?.history ?? [];
+    expect(history).toHaveLength(2);
+    expect(history[0]?.resolution?.action).toBe('RETRY');
+    expect(history[0]?.resolution?.actor).toBe('ADMIN');
+    expect(history[1]?.attempt).toBe(2);
+    expect(history[1]?.resolution).toBeUndefined();
+
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { done: true },
+    });
+    await handle.result();
+  });
+
+  it('surfaces gateKind and evidenceParams in the armed-gate context', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-evidence-tags'),
+        taskQueue: TASK_QUEUE,
+        args: [
+          {
+            failTimes: 1,
+            gateKind: 'register-or-import-poll',
+            evidenceParams: { normalizedDomainName: 'example.com' },
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await waitUntilReady(handle);
+    const armed = await handle.query(decisionGateArmedQuery);
+    expect(armed.gates[0]?.context?.gateKind).toBe('register-or-import-poll');
+    expect(armed.gates[0]?.context?.evidenceParams).toEqual({
+      normalizedDomainName: 'example.com',
+    });
+
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RETRY',
+    });
+    await handle.result();
+  });
+
+  it('auto-retries when the shouldRetry predicate matches the failure', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-auto-retry-predicate-match'),
+        taskQueue: TASK_QUEUE,
+        // The failure message "harness action failure #1" includes "harness",
+        // so the predicate allows the single auto-retry → attempt 2 succeeds.
+        args: [
+          {
+            failTimes: 1,
+            autoRetry: { maxAttempts: 1 },
+            retryIfErrorIncludes: 'harness',
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    const { result, attempts } = await handle.result();
+    expect(attempts).toBe(2);
+    expect(result).toMatchObject({ ok: true, attempts: 2 });
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
+  });
+
+  it('skips auto-retry and opens the gate when the predicate rejects the failure', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-auto-retry-predicate-miss'),
+        taskQueue: TASK_QUEUE,
+        // The predicate never matches, so the auto-retry budget is not consumed
+        // and the gate opens on the very first failure (attempt 1).
+        args: [
+          {
+            failTimes: 1,
+            autoRetry: { maxAttempts: 1 },
+            retryIfErrorIncludes: 'never-matches-this',
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await waitUntilReady(handle);
+    const armed = await handle.query(decisionGateArmedQuery);
+    expect(armed.gates[0]?.context?.attempt).toBe(1);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { manual: 'override' },
+    });
+    const { result } = await handle.result();
+    expect(result).toEqual({ manual: 'override' });
+    expect(generalAlertNamefi).toHaveBeenCalled();
+  });
+
+  it('opens the gate (never bypasses it) when the shouldRetry predicate throws', async () => {
+    const handle = await testEnv.client.workflow.start(
+      runWithGateHarnessWorkflow,
+      {
+        workflowId: nextId('run-predicate-throws'),
+        taskQueue: TASK_QUEUE,
+        // A throwing predicate must be treated as "do not auto-retry": the gate
+        // opens on the first failure rather than the throw escaping the catch.
+        args: [
+          {
+            failTimes: 1,
+            autoRetry: { maxAttempts: 1 },
+            retryPredicateThrows: true,
+            allowedActors: ['ADMIN'],
+          },
+        ],
+      },
+    );
+    await waitUntilReady(handle);
+    const armed = await handle.query(decisionGateArmedQuery);
+    expect(armed.gates[0]?.context?.attempt).toBe(1);
+    await handle.signal(decisionGateSignal, {
+      actor: 'ADMIN',
+      actorId: 'admin',
+      action: 'RESPOND',
+      response: { manual: 'override' },
+    });
+    const { result } = await handle.result();
+    expect(result).toEqual({ manual: 'override' });
+    expect(generalAlertNamefi).toHaveBeenCalled();
   });
 });
 

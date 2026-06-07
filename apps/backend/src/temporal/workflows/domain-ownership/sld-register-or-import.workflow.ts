@@ -16,7 +16,7 @@ import {
 } from '../../shared';
 import {
   createDecisionGateRegistry,
-  runWithDecisionGate,
+  runWithKnownGate,
   typedProxyActivities,
 } from '../../shared/workflow-helpers';
 import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
@@ -86,7 +86,10 @@ const { sendRegisterOrImportRequestToNamefiRegistrar } = typedProxyActivities({
     },
   },
 });
-
+/**
+ *
+ * @deprecated please user eppRegisterOrImportWorkflow
+ */
 export async function sldRegisterOrImportWorkflow(
   input: SldRegisterOrImportWorkflowInput,
 ): ReturnType<typeof getDomainDetails> {
@@ -176,12 +179,25 @@ export async function sldRegisterOrImportWorkflow(
         input.registrarKey,
       );
     const polledResult = pollGateRegistry
-      ? await runWithDecisionGate<
+      ? await runWithKnownGate<
           LongRunningOperationResult,
           LongRunningOperationResult
         >({
           registry: pollGateRegistry,
+          gateKind: 'register-or-import-poll',
           interactionId: 'register-or-import-poll',
+          // Lets the admin side gather evidence (registrar details, is-it-in-our-
+          // system, RDAP/WHOIS) for this domain when the gate opens.
+          evidenceParams: {
+            normalizedDomainName: input.normalizedDomainName,
+            registrarKey: input.registrarKey,
+          },
+          // Auto-retry the poll once before opening the gate — but only for
+          // IMPORT (21-day run timeout has room for a second poll window).
+          // REGISTER's 4 h child run timeout can't absorb another full
+          // actionTimeoutMs, so it gets no auto-retry (mirrors the RETRY split
+          // below).
+          autoRetry: isImport ? { maxAttempts: 1 } : undefined,
           // The poll retries unboundedly; the gate's own action deadline cancels
           // it and opens the gate so an admin can verify the registrar.
           action: poll,

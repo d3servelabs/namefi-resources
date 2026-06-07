@@ -11,6 +11,7 @@ import {
   auditedAdminProcedureWithPermissions,
 } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
+import { GATE_EVIDENCE_GATHERERS } from './gate-evidence/registry';
 
 /**
  * Generic operator path for resolving a Temporal decision gate
@@ -156,6 +157,71 @@ export const workflowDecisionRouter = createContractTRPCRouter<
       }
 
       return { items, scanned, capped };
+    }),
+
+  /**
+   * Gathers decision-support evidence for an armed gate, in the API process
+   * (outside Temporal). Reads the gate's `gateKind` + `evidenceParams` from its
+   * armed-gate context server-side (so the params come from the workflow, not
+   * the client), then dispatches the matching gatherer in
+   * {@link GATE_EVIDENCE_GATHERERS}. Returns `evidence: null` when the gate has
+   * no kind or no gatherer is registered.
+   */
+  gatherGateEvidence: adminProcedureWithPermissions(Permission.READ_WORKFLOWS)
+    .input(adminWorkflowDecisionContract.gatherGateEvidence.input)
+    .output(adminWorkflowDecisionContract.gatherGateEvidence.output)
+    .query(async ({ input }) => {
+      const { workflowId, interactionId, armedQueryName } = input;
+      let armed: ArmedSnapshot;
+      try {
+        await temporalClient.connection.ensureConnected();
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        armed = (await handle.query(armedQueryName)) as ArmedSnapshot;
+      } catch (error) {
+        logger.error(
+          { workflowId, armedQueryName, interactionId, error },
+          'Failed to read armed gate for evidence on %s',
+          workflowId,
+        );
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Could not read the decision gate — the workflow may have finished or has no decision gate.',
+          cause: error,
+        });
+      }
+
+      const gate = armed?.gates.find((g) => g.interactionId === interactionId);
+      if (!gate) {
+        // Distinguish "gate gone / wrong registry" from "gate has no gatherer"
+        // (which legitimately returns evidence: null below).
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'This decision gate is no longer armed on the queried registry.',
+        });
+      }
+      const gateKind = gate.context?.gateKind;
+      const gatherer = gateKind ? GATE_EVIDENCE_GATHERERS[gateKind] : undefined;
+      if (!gateKind || !gatherer) {
+        return { gateKind, evidence: null };
+      }
+
+      try {
+        const evidence = await gatherer(gate.context?.evidenceParams ?? {});
+        return { gateKind, evidence };
+      } catch (error) {
+        logger.error(
+          { workflowId, interactionId, gateKind, error },
+          'Failed to gather gate evidence for %s',
+          workflowId,
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to gather decision-support evidence for this gate.',
+          cause: error,
+        });
+      }
     }),
 
   sendDecision: auditedAdminProcedureWithPermissions(

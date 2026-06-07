@@ -1,4 +1,5 @@
 import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
+import { OperationType } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-type';
 import type { LongRunningOperationResult } from '@namefi-astra/registrars/lib/abstract-registrar/registrar-service';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
@@ -19,7 +20,7 @@ import {
 import {
   catchAndAlertLocally,
   createDecisionGateRegistry,
-  runWithDecisionGate,
+  runWithKnownGate,
   typedProxyActivities,
 } from '../../shared/workflow-helpers';
 import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
@@ -191,6 +192,17 @@ export async function eppRegisterOrImportWorkflow(
     ? createDecisionGateRegistry({ prefix: 'epp-register-or-import' })
     : undefined;
 
+  // The submit step gets its own gate behind a DISTINCT patch: a run that already
+  // adopted the poll gate may have ALREADY executed the (ungated) submit, so
+  // gating the submit on the poll patch would diverge on replay. This separate
+  // marker keeps those in-flight runs on the direct-submit path while new runs
+  // gate both. Reuses the same registry (the two gates are sequential).
+  const submitGateRegistry =
+    pollGateRegistry !== undefined &&
+    workflow.patched('epp-register-or-import-submit-decision-gate')
+      ? pollGateRegistry
+      : undefined;
+
   // Polls the registrar operation status. With a gate armed, the gate bounds the
   // poll by `actionTimeoutMs`; on deadline it cancels the poll and pauses for
   // admin verification (RETRY = re-poll, RESPOND = verified status, CANCEL =
@@ -207,12 +219,24 @@ export async function eppRegisterOrImportWorkflow(
       );
     if (!pollGateRegistry) return poll();
 
-    return runWithDecisionGate<
+    return runWithKnownGate<
       LongRunningOperationResult,
       LongRunningOperationResult
     >({
       registry: pollGateRegistry,
+      gateKind: 'register-or-import-poll',
       interactionId: 'register-or-import-poll',
+      // Lets the admin side gather evidence (registrar details, is-it-in-our-
+      // system, RDAP/WHOIS) for this domain when the gate opens.
+      evidenceParams: {
+        normalizedDomainName: input.normalizedDomainName,
+        registrarKey: input.registrarKey,
+      },
+      // Auto-retry the poll once before opening the gate — but only for IMPORT
+      // (21-day run timeout has room for a second poll window). REGISTER's 4 h
+      // child run timeout can't absorb another full actionTimeoutMs, so it gets
+      // no auto-retry (mirrors the RETRY split below).
+      autoRetry: isImport ? { maxAttempts: 1 } : undefined,
       action: poll,
       actionTimeoutMs: isImport
         ? IMPORT_POLL_ACTION_TIMEOUT_MS
@@ -253,11 +277,76 @@ export async function eppRegisterOrImportWorkflow(
       input,
     });
 
-    const { operationDetails } = await submitRequestOrFail({
-      input,
-    });
+    const submit = async (): Promise<LongRunningOperationResult> => {
+      const { operationDetails } = await submitRequestOrFail({ input });
+      return operationDetails;
+    };
 
-    let registrarOperationResult = operationDetails;
+    // On a submit failure (a registrar error or an invalid status) the request
+    // may or may not have reached the registrar, so instead of dead-ending we
+    // open a gate: an admin gathers evidence (is it already registered / already
+    // in our system?) and chooses RETRY (re-submit), RESPOND (the submit really
+    // went through — continue with the verified status), or CANCEL (fail).
+    // Re-submit is non-idempotent, so RETRY is admin-initiated and evidence-
+    // informed, never automatic — hence no `autoRetry`, and no `actionTimeoutMs`
+    // (the submit activity is already bounded by its own retry policy).
+    let registrarOperationResult: LongRunningOperationResult =
+      submitGateRegistry
+        ? await runWithKnownGate<
+            LongRunningOperationResult,
+            LongRunningOperationResult
+          >({
+            registry: submitGateRegistry,
+            gateKind: 'register-or-import-submit',
+            interactionId: 'register-or-import-submit',
+            evidenceParams: {
+              normalizedDomainName: input.normalizedDomainName,
+              registrarKey: input.registrarKey,
+            },
+            action: submit,
+            // The admin verifies the registrar's real state and RESPONDs with the
+            // status to continue from (typically SUCCESSFUL); we synthesize the
+            // operation result from it (no prior result exists — the submit threw).
+            // The synthetic result has no operationId, so accept only TERMINAL
+            // statuses: a non-terminal one (IN_PROGRESS/SUBMITTED) would skip the
+            // poll path and look done, and REQUIRES_ACTION needs metadata we don't
+            // have. A rejected payload keeps the gate open.
+            validateResponse: (raw) => {
+              const status = operationStatusSchema.parse(raw);
+              if (
+                status !== OperationStatus.SUCCESSFUL &&
+                status !== OperationStatus.FAILED &&
+                status !== OperationStatus.ERROR
+              ) {
+                throw new Error(
+                  `Submit gate RESPOND requires a terminal status (SUCCESSFUL/FAILED/ERROR), got ${status}`,
+                );
+              }
+              return {
+                type: isImport
+                  ? OperationType.TRANSFER_IN_DOMAIN
+                  : OperationType.REGISTER_DOMAIN,
+                status,
+                operationId: null,
+                response: null,
+              } as LongRunningOperationResult;
+            },
+            allowedActors: ['ADMIN'],
+            allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+            // Bound the re-submit cycles like the poll gate does.
+            maxRetries: POLL_GATE_MAX_RETRIES,
+            timeoutMs: isImport
+              ? IMPORT_POLL_DECISION_TIMEOUT_MS
+              : REGISTER_POLL_DECISION_TIMEOUT_MS,
+            onTimeout: { kind: 'throw' },
+            alertMessage: `${isImport ? 'Import' : 'Register'} submit failed for ${input.normalizedDomainName}; verify registrar state before retrying`,
+            alertDetails: {
+              normalizedDomainName: input.normalizedDomainName,
+              registrarKey: input.registrarKey,
+              operationType: input.operationType,
+            },
+          })
+        : await submit();
     let registrarOperationStatus = registrarOperationResult.status;
 
     // Loop until the registrar no longer requires user action.

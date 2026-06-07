@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type CSSProperties, useState } from 'react';
 import { z } from 'zod';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -35,11 +35,15 @@ import {
 import {
   Ban,
   ExternalLink,
+  Info,
   Play,
   Reply,
   RefreshCw,
   RotateCw,
+  Search,
 } from 'lucide-react';
+import JsonView from '@uiw/react-json-view';
+import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { PageShell } from '@/components/page-shell';
@@ -49,6 +53,9 @@ type ActiveGatesOutput =
   AppRouterOutput['admin']['workflowDecision']['listActiveDecisionGates'];
 type GateWorkflow = ActiveGatesOutput['items'][number];
 type Gate = GateWorkflow['gates'][number];
+type GateHistoryEntry = NonNullable<
+  NonNullable<Gate['context']>['history']
+>[number];
 
 type SendDecisionInput = {
   workflowId: string;
@@ -116,59 +123,455 @@ function deepestError(error: unknown): { message?: string; type?: string } {
   return deepest;
 }
 
-/** Why the gate opened + timing, with a collapsible JSON of the error/details. */
-function GateContextDetails({ context }: { context: Gate['context'] }) {
-  if (!context) return null;
-  const {
-    alertMessage,
-    error,
-    alertDetails,
-    openedAt,
-    decisionTimeoutMs,
-    actionTimeoutMs,
-  } = context;
-  const hasJson = error !== undefined || alertDetails !== undefined;
+/** CSS-variable theme for `@uiw/react-json-view` matching the admin dashboard. */
+function jsonViewStyle(theme: string | undefined): CSSProperties {
+  const dark = theme === 'dark';
+  return {
+    '--w-rjv-background-color': 'transparent',
+    '--w-rjv-border-left-width': '0px',
+    '--w-rjv-color': dark ? '#e5e7eb' : '#1f2937',
+    '--w-rjv-key-string': dark ? '#93c5fd' : '#2563eb',
+    '--w-rjv-string-color': dark ? '#86efac' : '#16a34a',
+    '--w-rjv-info-color': dark ? '#9ca3af' : '#6b7280',
+    '--w-rjv-line-color': dark ? '#4b5563' : '#d1d5db',
+    '--w-rjv-arrow-color': dark ? '#9ca3af' : '#6b7280',
+    '--w-rjv-copied-color': dark ? '#34d399' : '#10b981',
+  } as unknown as CSSProperties;
+}
+
+/** Renders any value as themed, collapsible JSON (the shared admin JSON viewer). */
+function JsonBlock({
+  value,
+  collapsed = 2,
+}: {
+  value: unknown;
+  collapsed?: number | boolean;
+}) {
+  const { theme } = useTheme();
+  if (value === null || typeof value !== 'object') {
+    return (
+      <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-all rounded-md bg-muted/50 p-3 text-xs">
+        {String(value)}
+      </pre>
+    );
+  }
+  return (
+    <div className="max-h-72 overflow-auto rounded-md bg-muted/50 p-3 text-xs">
+      <JsonView
+        value={value as object}
+        collapsed={collapsed}
+        displayDataTypes={false}
+        style={jsonViewStyle(theme)}
+      />
+    </div>
+  );
+}
+
+/** The failure that opened the gate, shown prominently (not muted) in the row. */
+function GateErrorSummary({ context }: { context: Gate['context'] }) {
+  const error = context?.error;
+  const alertMessage = context?.alertMessage;
+  if (!error && !alertMessage) return null;
   const root = error ? deepestError(error) : undefined;
   const showRoot = root?.message && root.message !== error?.message;
   return (
     <div className="mt-1.5 space-y-1">
-      {alertMessage ? (
-        <p className="text-xs text-muted-foreground">{alertMessage}</p>
-      ) : null}
       {error ? (
-        <p className="text-xs text-red-500">
-          <span className="font-medium">
-            {error.type ? `${error.type}: ` : ''}
-            {error.message}
-          </span>
-          {showRoot ? (
-            <span className="block text-muted-foreground">
-              ↳ {root?.type ? `${root.type}: ` : ''}
-              {root?.message}
-            </span>
+        <p className="break-words text-sm font-semibold text-red-600 dark:text-red-400">
+          {error.type ? (
+            <span className="font-mono text-xs opacity-80">{error.type}: </span>
           ) : null}
+          {error.message}
         </p>
       ) : null}
-      <p className="text-[11px] text-muted-foreground">
-        {openedAt ? `opened ${formatStartedAt(openedAt)}` : null}
-        {decisionTimeoutMs != null
-          ? ` · auto-fails ${formatDeadline(openedAt, decisionTimeoutMs)}`
-          : null}
-        {actionTimeoutMs != null
-          ? ` · action deadline ${formatDuration(actionTimeoutMs)}`
-          : null}
-      </p>
-      {hasJson ? (
-        <details className="text-xs">
-          <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
-            Error / details
-          </summary>
-          <pre className="mt-1 max-h-64 overflow-auto whitespace-pre-wrap break-all rounded bg-muted/50 p-2 text-[11px]">
-            {JSON.stringify({ error, alertDetails }, null, 2)}
-          </pre>
-        </details>
+      {showRoot ? (
+        <p className="break-words text-xs text-red-500/90 dark:text-red-400/90">
+          ↳ {root?.type ? `${root.type}: ` : ''}
+          {root?.message}
+        </p>
+      ) : null}
+      {alertMessage ? (
+        <p className="break-words text-xs text-foreground/70">{alertMessage}</p>
       ) : null}
     </div>
+  );
+}
+
+/** All timestamps for a gate in one dedicated column: started / opened / deadlines. */
+function GateTimingCell({
+  startedAt,
+  context,
+}: {
+  startedAt?: string;
+  context: Gate['context'];
+}) {
+  const rows: Array<{ label: string; value: string }> = [];
+  if (startedAt)
+    rows.push({ label: 'Started', value: formatStartedAt(startedAt) });
+  if (context?.openedAt) {
+    rows.push({ label: 'Opened', value: formatStartedAt(context.openedAt) });
+  }
+  if (context?.openedAt && context.decisionTimeoutMs != null) {
+    rows.push({
+      label: 'Auto-fails',
+      value: formatDeadline(context.openedAt, context.decisionTimeoutMs),
+    });
+  }
+  if (context?.actionTimeoutMs != null) {
+    rows.push({
+      label: 'Action deadline',
+      value: formatDuration(context.actionTimeoutMs),
+    });
+  }
+  if (rows.length === 0)
+    return <span className="text-muted-foreground">—</span>;
+  return (
+    <div className="space-y-1 text-xs">
+      {rows.map((row) => (
+        <div key={row.label} className="whitespace-nowrap">
+          <span className="text-muted-foreground">{row.label}: </span>
+          <span className="font-mono text-foreground">{row.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** One armed-gate history entry as a readable timeline row. */
+function GateHistoryItem({ entry }: { entry: GateHistoryEntry }) {
+  const entryRoot = deepestError(entry.error);
+  return (
+    <li className="break-words text-xs text-muted-foreground">
+      <span className="font-mono text-foreground">#{entry.attempt}</span>{' '}
+      {formatStartedAt(entry.openedAt)} —{' '}
+      <span className="text-foreground">
+        {entryRoot.message ?? entry.error.message}
+      </span>
+      {entry.resolution ? (
+        <span className="text-foreground">
+          {' → '}
+          {actionLabel(entry.resolution.action)}
+          {entry.resolution.actor ? ` by ${entry.resolution.actor}` : ''}{' '}
+          {formatStartedAt(entry.resolution.at)}
+        </span>
+      ) : (
+        <span className="italic"> · awaiting decision</span>
+      )}
+    </li>
+  );
+}
+
+type GateActionName = 'PROCEED' | 'RETRY' | 'RESPOND' | 'CANCEL';
+
+interface GateGuidance {
+  /** One line on why this kind of gate opens. */
+  summary: string;
+  /** Per-action advice; only shown for actions the gate actually allows. */
+  actions: Partial<Record<GateActionName, string>>;
+  /** Evidence-derived recommendation, shown once evidence is gathered. */
+  evidenceHint?: (evidence: Record<string, unknown>) => string;
+}
+
+/** True when the gathered evidence suggests the domain already exists somewhere. */
+function evidenceSuggestsPresent(evidence: Record<string, unknown>): boolean {
+  const registrar = evidence.registrar as Record<string, unknown> | undefined;
+  const inSystem = evidence.inSystem as { inSystem?: boolean } | undefined;
+  const rdapWhois = evidence.rdapWhois as Record<string, unknown> | undefined;
+  const registrarKnown = Boolean(registrar) && !('error' in (registrar ?? {}));
+  const publiclyRegistered =
+    Boolean(rdapWhois) && !('error' in (rdapWhois ?? {}));
+  return registrarKnown || inSystem?.inSystem === true || publiclyRegistered;
+}
+
+/** Operator guidance per known gate kind — what each response means and when. */
+const GATE_GUIDANCE: Record<string, GateGuidance> = {
+  'register-or-import-poll': {
+    summary:
+      'The registrar register/import status poll exceeded its deadline. The operation is usually still queued at the registrar — verify its real state (registrar details, RDAP/WHOIS) before deciding.',
+    actions: {
+      RESPOND:
+        'You verified the terminal status at the registrar — supply it (e.g. SUCCESSFUL once the domain shows registered, FAILED if rejected) and the workflow continues from there.',
+      RETRY:
+        'Re-poll the registrar when the operation may still be completing (offered for IMPORT only).',
+      CANCEL:
+        'Fail the workflow when the operation cannot recover (optionally with a custom message).',
+    },
+    evidenceHint: (evidence) =>
+      evidenceSuggestsPresent(evidence)
+        ? 'The domain appears registered (registrar / RDAP / WHOIS) — you can RESPOND SUCCESSFUL.'
+        : 'No sign the domain is registered yet — RETRY to keep polling (IMPORT) or verify at the registrar before deciding.',
+  },
+  'register-or-import-submit': {
+    summary:
+      'The submit request to the registrar failed. It may or may not have reached the registrar, and re-submitting is NOT idempotent — check the evidence (already registered / already in our accounts?) before choosing RETRY.',
+    actions: {
+      RESPOND:
+        'Evidence shows the submit actually went through — supply the verified terminal status (SUCCESSFUL / FAILED / ERROR) and the workflow continues.',
+      RETRY:
+        'Evidence shows the request did NOT land (not registered, not in our accounts) — safe to re-submit.',
+      CANCEL: 'Fail the workflow when the submit cannot succeed.',
+    },
+    evidenceHint: (evidence) =>
+      evidenceSuggestsPresent(evidence)
+        ? 'The domain appears already present (registrar / our accounts / RDAP) — re-submitting could create a DUPLICATE. Prefer RESPOND with the verified status over RETRY.'
+        : 'No sign the request landed — RETRY (re-submit) is likely safe.',
+  },
+};
+
+/** "What to do" panel: gate-kind summary + advice for each allowed action. */
+function GateGuidanceSection({ gate }: { gate: Gate }) {
+  const gateKind = gate.context?.gateKind;
+  const guidance = gateKind ? GATE_GUIDANCE[gateKind] : undefined;
+  if (!guidance) return null;
+  return (
+    <section className="space-y-2 rounded-md border border-blue-500/30 bg-blue-500/5 p-3">
+      <h3 className="text-sm font-semibold">What to do</h3>
+      <p className="text-xs text-foreground/80">{guidance.summary}</p>
+      <ul className="space-y-1">
+        {gate.allowedActions.map((action) => {
+          const tip = guidance.actions[action as GateActionName];
+          if (!tip) return null;
+          return (
+            <li key={action} className="text-xs">
+              <span className="font-semibold">{actionLabel(action)}</span>{' '}
+              <span className="text-muted-foreground">— {tip}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+/** A labeled block of gathered evidence rendered as themed JSON. */
+function EvidenceJson({ label, value }: { label: string; value: unknown }) {
+  if (value === undefined) return null;
+  return (
+    <div className="space-y-1">
+      <div className="text-xs font-medium text-muted-foreground">{label}</div>
+      <JsonBlock value={value} collapsed={false} />
+    </div>
+  );
+}
+
+/** Summary chips + per-source JSON for gathered decision-support evidence. */
+function GateEvidenceView({
+  evidence,
+  gateKind,
+}: {
+  evidence: Record<string, unknown> | null | undefined;
+  gateKind?: string;
+}) {
+  if (!evidence) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        No evidence available for this gate.
+      </p>
+    );
+  }
+  const inSystem = evidence.inSystem as
+    | { inSystem?: boolean; chainId?: number }
+    | undefined;
+  const rdapWhois = evidence.rdapWhois as
+    | { locked?: boolean; source?: string }
+    | undefined;
+  const hint = gateKind
+    ? GATE_GUIDANCE[gateKind]?.evidenceHint?.(evidence)
+    : undefined;
+  return (
+    <div className="space-y-3">
+      {hint ? (
+        <p className="rounded-md border border-amber-500/30 bg-amber-500/10 p-2 text-xs font-medium text-foreground/90">
+          {hint}
+        </p>
+      ) : null}
+      <div className="flex flex-wrap gap-2">
+        {inSystem?.inSystem !== undefined ? (
+          <Badge variant={inSystem.inSystem ? 'default' : 'outline'}>
+            {inSystem.inSystem
+              ? `In our accounts in 3rd party registrars${inSystem.chainId != null ? ` · chain ${inSystem.chainId}` : ''}`
+              : 'Not in our accounts in 3rd party registrars'}
+          </Badge>
+        ) : null}
+        {rdapWhois?.locked !== undefined ? (
+          <Badge variant="outline">
+            {rdapWhois.locked ? 'Locked' : 'Unlocked'}
+            {rdapWhois.source ? ` · ${rdapWhois.source}` : ''}
+          </Badge>
+        ) : null}
+      </div>
+      <EvidenceJson label="Registrar" value={evidence.registrar} />
+      <EvidenceJson
+        label="In our accounts in 3rd party registrars"
+        value={evidence.inSystem}
+      />
+      <EvidenceJson label="RDAP / WHOIS" value={evidence.rdapWhois} />
+    </div>
+  );
+}
+
+/**
+ * Lazy decision-support panel: gathers evidence (registrar / in-system / RDAP-
+ * WHOIS) on demand, server-side, only when an operator asks — so a slow lookup
+ * never blocks the gate list.
+ */
+function GateEvidencePanel({
+  workflowId,
+  interactionId,
+  gateKind,
+  armedQueryName,
+}: {
+  workflowId: string;
+  interactionId: string;
+  gateKind?: string;
+  armedQueryName: string;
+}) {
+  const trpc = useTRPC();
+  const [enabled, setEnabled] = useState(false);
+  const evidenceQuery = useQuery({
+    ...trpc.admin.workflowDecision.gatherGateEvidence.queryOptions({
+      workflowId,
+      interactionId,
+      armedQueryName,
+    }),
+    enabled,
+    staleTime: 60_000,
+  });
+
+  if (!gateKind) return null;
+
+  if (!enabled) {
+    return (
+      <Button
+        size="sm"
+        variant="outline"
+        className="mt-1.5 h-6 px-2 text-[11px]"
+        onClick={() => setEnabled(true)}
+      >
+        <Search className="h-3 w-3 mr-1" />
+        Gather evidence
+      </Button>
+    );
+  }
+
+  return (
+    <div className="mt-1.5">
+      {evidenceQuery.isLoading ? (
+        <p className="text-[11px] text-muted-foreground">Gathering evidence…</p>
+      ) : evidenceQuery.isError ? (
+        <p className="text-[11px] text-red-500">
+          Failed: {evidenceQuery.error.message}{' '}
+          <button
+            type="button"
+            className="underline"
+            onClick={() => evidenceQuery.refetch()}
+          >
+            retry
+          </button>
+        </p>
+      ) : (
+        <GateEvidenceView
+          evidence={evidenceQuery.data?.evidence}
+          gateKind={gateKind}
+        />
+      )}
+    </div>
+  );
+}
+
+/**
+ * Modal with the full gate context — prominent error + themed JSON, alert
+ * details, lazily-gathered decision-support evidence, and the attempt history —
+ * so the table row stays compact.
+ */
+function GateDetailsDialog({
+  workflow,
+  gate,
+}: {
+  workflow: GateWorkflow;
+  gate: Gate;
+}) {
+  const context = gate.context;
+  const error = context?.error;
+  const root = error ? deepestError(error) : undefined;
+  const showRoot = root?.message && root.message !== error?.message;
+  const history = context?.history ?? [];
+  const armedQueryName = gate.signalName.replace(
+    /^decisionGate/,
+    'decisionGateArmed',
+  );
+  return (
+    <Dialog>
+      <DialogTrigger
+        render={<Button size="sm" variant="outline" className="mt-2 h-7" />}
+      >
+        <Info className="mr-1.5 h-3.5 w-3.5" />
+        Details
+      </DialogTrigger>
+      <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Gate details</DialogTitle>
+          <DialogDescription>
+            <span className="font-mono">{gate.interactionId}</span> on{' '}
+            <span className="break-all font-mono">{workflow.workflowId}</span>
+          </DialogDescription>
+        </DialogHeader>
+
+        <GateGuidanceSection gate={gate} />
+
+        {error ? (
+          <section className="space-y-2">
+            <h3 className="text-sm font-semibold">Error</h3>
+            <p className="break-words text-sm font-semibold text-red-600 dark:text-red-400">
+              {error.type ? `${error.type}: ` : ''}
+              {error.message}
+            </p>
+            {showRoot ? (
+              <p className="break-words text-xs text-red-500/90 dark:text-red-400/90">
+                ↳ {root?.type ? `${root.type}: ` : ''}
+                {root?.message}
+              </p>
+            ) : null}
+            <JsonBlock value={error} />
+          </section>
+        ) : null}
+
+        {context?.alertDetails ? (
+          <section className="space-y-2">
+            <h3 className="text-sm font-semibold">Alert details</h3>
+            <JsonBlock value={context.alertDetails} />
+          </section>
+        ) : null}
+
+        {context?.gateKind ? (
+          <section className="space-y-2">
+            <h3 className="text-sm font-semibold">Decision support</h3>
+            <GateEvidencePanel
+              workflowId={workflow.workflowId}
+              interactionId={gate.interactionId}
+              gateKind={context.gateKind}
+              armedQueryName={armedQueryName}
+            />
+          </section>
+        ) : null}
+
+        {history.length > 1 ? (
+          <section className="space-y-2">
+            <h3 className="text-sm font-semibold">
+              History ({history.length})
+            </h3>
+            <ul className="space-y-1">
+              {history.map((entry) => (
+                <GateHistoryItem
+                  key={`${entry.attempt}-${entry.openedAt}`}
+                  entry={entry}
+                />
+              ))}
+            </ul>
+          </section>
+        ) : null}
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -336,8 +739,8 @@ export default withAdminGuard(function DecisionGatesPage() {
                 <TableRow>
                   <TableHead>Workflow</TableHead>
                   <TableHead>Gate</TableHead>
+                  <TableHead>Timing</TableHead>
                   <TableHead>Allowed</TableHead>
-                  <TableHead>Started</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -363,9 +766,23 @@ export default withAdminGuard(function DecisionGatesPage() {
                         </a>
                       ) : null}
                     </TableCell>
-                    <TableCell className="align-top text-xs">
-                      <div className="font-mono">{gate.interactionId}</div>
-                      <GateContextDetails context={gate.context} />
+                    <TableCell className="align-top">
+                      <div className="font-mono text-xs">
+                        {gate.interactionId}
+                      </div>
+                      {gate.context?.gateKind ? (
+                        <Badge variant="secondary" className="mt-1">
+                          {gate.context.gateKind}
+                        </Badge>
+                      ) : null}
+                      <GateErrorSummary context={gate.context} />
+                      <GateDetailsDialog workflow={workflow} gate={gate} />
+                    </TableCell>
+                    <TableCell className="align-top">
+                      <GateTimingCell
+                        startedAt={workflow.startedAt}
+                        context={gate.context}
+                      />
                     </TableCell>
                     <TableCell className="align-top">
                       <div className="flex flex-wrap gap-1">
@@ -375,9 +792,6 @@ export default withAdminGuard(function DecisionGatesPage() {
                           </Badge>
                         ))}
                       </div>
-                    </TableCell>
-                    <TableCell className="align-top text-xs text-muted-foreground whitespace-nowrap">
-                      {formatStartedAt(workflow.startedAt)}
                     </TableCell>
                     <TableCell className="align-top">
                       <div className="flex flex-wrap justify-end gap-2">

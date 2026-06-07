@@ -8,6 +8,7 @@ export * from './catch-and-escalate-locally';
 export * from './critical-alert-with-ticket';
 export * from './poll-with-timeout-alert';
 export * from './decision-gate';
+export * from './known-gates';
 export * from './test-harness';
 export * from './escalating-poller';
 export * from './workflow-progress';
