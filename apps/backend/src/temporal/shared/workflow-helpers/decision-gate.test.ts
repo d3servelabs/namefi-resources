@@ -388,7 +388,9 @@ describe('runWithDecisionGate (time-skipping)', () => {
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
     expect(result).toMatchObject({ ok: true, attempts: 2 });
-    expect(generalAlertNamefi).toHaveBeenCalled();
+    // The gate routes its awaiting-action alert through criticalAlertWithTicket
+    // (→ criticalAlertNamefi), not generalAlertNamefi.
+    expect(criticalAlertNamefi).toHaveBeenCalled();
   });
 
   it('passes through the original failure on PROCEED (gate acts as if absent)', async () => {
@@ -522,7 +524,9 @@ describe('runWithDecisionGate (time-skipping)', () => {
     // The hanging attempt was cancelled, so the action ran exactly once.
     expect(attempts).toBe(1);
     expect(result).toEqual({ verified: 'SUCCESSFUL' });
-    expect(generalAlertNamefi).toHaveBeenCalled();
+    // The gate routes its awaiting-action alert through criticalAlertWithTicket
+    // (→ criticalAlertNamefi), not generalAlertNamefi.
+    expect(criticalAlertNamefi).toHaveBeenCalled();
   });
 
   it('re-runs the action on RETRY after an action-timeout until it succeeds', async () => {
@@ -579,7 +583,7 @@ describe('runWithDecisionGate (time-skipping)', () => {
     expect(attempts).toBe(1);
     expect(result).toMatchObject({ ok: true, attempts: 1 });
     // No deadline fired → no gate, no failure alert.
-    expect(generalAlertNamefi).not.toHaveBeenCalled();
+    expect(criticalAlertNamefi).not.toHaveBeenCalled();
   });
 
   it('opens the gate on a normal action throw even with actionTimeoutMs set (not mislabeled as a timeout)', async () => {
@@ -630,7 +634,7 @@ describe('decision gate auto-retry / history / evidence (time-skipping)', () => 
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
     expect(result).toMatchObject({ ok: true, attempts: 2 });
-    expect(generalAlertNamefi).not.toHaveBeenCalled();
+    expect(criticalAlertNamefi).not.toHaveBeenCalled();
   });
 
   it('opens the gate once the single auto-retry is exhausted, then RESPOND resolves it', async () => {
@@ -660,7 +664,9 @@ describe('decision gate auto-retry / history / evidence (time-skipping)', () => 
     });
     const { result } = await handle.result();
     expect(result).toEqual({ manual: 'override' });
-    expect(generalAlertNamefi).toHaveBeenCalled();
+    // The gate routes its awaiting-action alert through criticalAlertWithTicket
+    // (→ criticalAlertNamefi), not generalAlertNamefi.
+    expect(criticalAlertNamefi).toHaveBeenCalled();
   });
 
   it('accumulates per-open history and records each resolution', async () => {
@@ -752,7 +758,7 @@ describe('decision gate auto-retry / history / evidence (time-skipping)', () => 
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(2);
     expect(result).toMatchObject({ ok: true, attempts: 2 });
-    expect(generalAlertNamefi).not.toHaveBeenCalled();
+    expect(criticalAlertNamefi).not.toHaveBeenCalled();
   });
 
   it('skips auto-retry and opens the gate when the predicate rejects the failure', async () => {
@@ -784,7 +790,9 @@ describe('decision gate auto-retry / history / evidence (time-skipping)', () => 
     });
     const { result } = await handle.result();
     expect(result).toEqual({ manual: 'override' });
-    expect(generalAlertNamefi).toHaveBeenCalled();
+    // The gate routes its awaiting-action alert through criticalAlertWithTicket
+    // (→ criticalAlertNamefi), not generalAlertNamefi.
+    expect(criticalAlertNamefi).toHaveBeenCalled();
   });
 
   it('opens the gate (never bypasses it) when the shouldRetry predicate throws', async () => {
@@ -816,7 +824,9 @@ describe('decision gate auto-retry / history / evidence (time-skipping)', () => 
     });
     const { result } = await handle.result();
     expect(result).toEqual({ manual: 'override' });
-    expect(generalAlertNamefi).toHaveBeenCalled();
+    // The gate routes its awaiting-action alert through criticalAlertWithTicket
+    // (→ criticalAlertNamefi), not generalAlertNamefi.
+    expect(criticalAlertNamefi).toHaveBeenCalled();
   });
 });
 
@@ -851,7 +861,9 @@ describe('runWithTestHarness (time-skipping)', () => {
     // Inner action ran once (incremented) before the forced cancel.
     expect(attempts).toBe(1);
     expect(result).toEqual({ verified: 'SUCCESSFUL' });
-    expect(generalAlertNamefi).toHaveBeenCalled();
+    // The gate routes its awaiting-action alert through criticalAlertWithTicket
+    // (→ criticalAlertNamefi), not generalAlertNamefi.
+    expect(criticalAlertNamefi).toHaveBeenCalled();
   });
 
   it('returns normally when no fail-signal is sent', async () => {
@@ -868,7 +880,7 @@ describe('runWithTestHarness (time-skipping)', () => {
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(1);
     expect(result).toMatchObject({ ok: true, attempts: 1 });
-    expect(generalAlertNamefi).not.toHaveBeenCalled();
+    expect(criticalAlertNamefi).not.toHaveBeenCalled();
   });
 
   it('is a passthrough when disabled (no handler, no gate)', async () => {
@@ -885,7 +897,7 @@ describe('runWithTestHarness (time-skipping)', () => {
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(1);
     expect(result).toMatchObject({ ok: true, attempts: 1 });
-    expect(generalAlertNamefi).not.toHaveBeenCalled();
+    expect(criticalAlertNamefi).not.toHaveBeenCalled();
   });
 
   it('fails during the delay window when signalled (inner action never runs)', async () => {
@@ -932,7 +944,7 @@ describe('runWithTestHarness (time-skipping)', () => {
     const { result, attempts } = await handle.result();
     expect(attempts).toBe(1);
     expect(result).toMatchObject({ ok: true, attempts: 1 });
-    expect(generalAlertNamefi).not.toHaveBeenCalled();
+    expect(criticalAlertNamefi).not.toHaveBeenCalled();
   });
 });
 

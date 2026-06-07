@@ -283,6 +283,17 @@ function evidenceSuggestsPresent(evidence: Record<string, unknown>): boolean {
   return registrarKnown || inSystem?.inSystem === true || publiclyRegistered;
 }
 
+/** True when the payment evidence suggests the NFSC charge already landed. */
+function paymentSuggestsCharged(evidence: Record<string, unknown>): boolean {
+  const payment = evidence.payment as
+    | { status?: string; paymentProviderReferenceId?: string | null }
+    | undefined;
+  return (
+    payment?.status === 'SUCCEEDED' ||
+    Boolean(payment?.paymentProviderReferenceId)
+  );
+}
+
 /** Operator guidance per known gate kind — what each response means and when. */
 const GATE_GUIDANCE: Record<string, GateGuidance> = {
   'register-or-import-poll': {
@@ -315,6 +326,32 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
       evidenceSuggestsPresent(evidence)
         ? 'The domain appears already present (registrar / our accounts / RDAP) — re-submitting could create a DUPLICATE. Prefer RESPOND with the verified status over RETRY.'
         : 'No sign the request landed — RETRY (re-submit) is likely safe.',
+  },
+  'process-order-item': {
+    summary:
+      'Processing this order item failed (acquire / register / import / renew). Re-running is not idempotent, so verify the domain’s real state before deciding.',
+    actions: {
+      RESPOND:
+        'You completed the operation out-of-band (the domain is registered / minted) — supply the result (the mint tx hash, if any) and the item resolves as done.',
+      CANCEL: 'Fail the item (it is refunded) when it cannot be completed.',
+    },
+    evidenceHint: (evidence) =>
+      evidenceSuggestsPresent(evidence)
+        ? 'The domain appears registered / in our accounts — it may already be done. RESPOND to mark the item complete.'
+        : 'No sign the domain landed — CANCEL to fail and refund, or complete it manually then RESPOND.',
+  },
+  'nfsc-charge': {
+    summary:
+      'The on-chain NFSC charge failed. It may or may not have landed — check the payment status and tx reference before deciding. Re-charging is not offered (double-charge risk).',
+    actions: {
+      RESPOND:
+        'The charge actually landed on-chain — supply its tx hash and the payment is marked SUCCEEDED.',
+      CANCEL: 'Fail the payment when the charge did not go through.',
+    },
+    evidenceHint: (evidence) =>
+      paymentSuggestsCharged(evidence)
+        ? 'The payment shows a tx reference / SUCCEEDED status — the charge likely landed. RESPOND with the tx hash.'
+        : 'No tx reference and the payment is not SUCCEEDED — the charge likely did not land. CANCEL to fail the payment.',
   },
 };
 

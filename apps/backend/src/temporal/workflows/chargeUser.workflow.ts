@@ -10,11 +10,17 @@ import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import {
   catchAndAlertLocally,
+  createDecisionGateRegistry,
   isNfscProvider,
+  runWithKnownGate,
 } from '../shared/workflow-helpers';
+import { txHashSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 import { chargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
 import type { SettleX402PaymentInput } from '../activities/x402.activities';
+
+/** Admin decision window once an NFSC-charge gate opens (7 days). */
+const CHARGE_NFSC_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000;
 
 export type PaymentExtraMetadata = Pick<
   CreateStripePaymentIntentInput,
@@ -145,8 +151,17 @@ export async function chargeUserWorkflow({
         extra: '' as `0x${string}`,
       };
 
-      try {
-        const txHash = await workflow.executeChild(chargeNfscWorkflow, {
+      // New runs wrap the NFSC charge in a decision gate: on failure, alert and
+      // wait for an admin to RESPOND (the charge landed on-chain — here is the tx
+      // hash) or CANCEL (mark the payment FAILED) instead of silently failing.
+      // Re-charging is NOT idempotent (double-charge), so RETRY is not offered.
+      // In-flight (pre-patch) runs keep the original direct path.
+      const chargeGateRegistry = workflow.patched('charge-nfsc-decision-gate')
+        ? createDecisionGateRegistry()
+        : undefined;
+
+      const chargeNfsc = () =>
+        workflow.executeChild(chargeNfscWorkflow, {
           args: [
             input.chainId,
             input.chargee,
@@ -160,6 +175,39 @@ export async function chargeUserWorkflow({
             maximumAttempts: 1,
           },
         });
+
+      try {
+        const txHash = chargeGateRegistry
+          ? await runWithKnownGate<string, string>({
+              registry: chargeGateRegistry,
+              gateKind: 'nfsc-charge',
+              interactionId: 'nfsc-charge',
+              action: chargeNfsc,
+              // The admin verifies the charge landed on-chain and RESPONDs with
+              // its tx hash; we record it as the payment's provider reference.
+              validateResponse: (raw) => txHashSchema.parse(raw),
+              evidenceParams: {
+                paymentId,
+                userId,
+                chainId: input.chainId,
+                walletAddress: input.chargee,
+                amountInUsd: input.amountInUSD,
+                paymentProvider,
+              },
+              allowedActors: ['ADMIN'],
+              allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+              timeoutMs: CHARGE_NFSC_DECISION_TIMEOUT_MS,
+              onTimeout: { kind: 'throw' },
+              alertMessage: `NFSC charge failed for payment ${paymentId}; verify the wallet's on-chain state before deciding`,
+              alertDetails: {
+                paymentId,
+                userId,
+                chainId: input.chainId,
+                walletAddress: input.chargee,
+                amountInUsd: input.amountInUSD,
+              },
+            })
+          : await chargeNfsc();
         paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
         paymentProviderReferenceId = txHash;
       } catch (error) {

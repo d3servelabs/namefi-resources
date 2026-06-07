@@ -1,4 +1,9 @@
-import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
+import {
+  db,
+  namefiNftOwnersCte,
+  namefiNftOwnersView,
+  paymentsTable,
+} from '@namefi-astra/db';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
@@ -95,10 +100,49 @@ async function gatherDomainEvidence(
   return evidence;
 }
 
+/**
+ * Evidence for an NFSC-charge gate: the payment record — whether it already
+ * shows a tx reference / SUCCEEDED status tells the admin if the charge actually
+ * landed (RESPOND) or not (CANCEL).
+ */
+async function gatherNfscChargeEvidence(
+  params: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const paymentId = params.paymentId as string | undefined;
+  if (!paymentId) {
+    return { error: 'missing paymentId in evidenceParams' };
+  }
+
+  const evidence: Record<string, unknown> = {};
+  try {
+    const payment = await db.query.paymentsTable.findFirst({
+      where: eq(paymentsTable.id, paymentId),
+    });
+    evidence.payment = payment
+      ? {
+          found: true,
+          status: payment.status,
+          paymentProvider: payment.paymentProvider,
+          paymentProviderReferenceId: payment.paymentProviderReferenceId,
+          amountInUSDCents: payment.amountInUSDCents,
+          nfscPaymentDetails: payment.nfscPaymentDetails,
+        }
+      : { found: false };
+  } catch (error) {
+    evidence.payment = { error: errorMessage(error) };
+  }
+  return evidence;
+}
+
 /** GateKind → gatherer. Add an entry when a new known gate needs evidence. */
 export const GATE_EVIDENCE_GATHERERS: Record<string, GateEvidenceGatherer> = {
   'register-or-import-poll': gatherDomainEvidence,
   // Same domain evidence helps an admin decide whether to re-submit (e.g. is the
-  // domain already registered / already in our system?).
+  // domain already registered / already in our accounts?).
   'register-or-import-submit': gatherDomainEvidence,
+  // An order item wraps an acquire/register/import/renew — the same domain
+  // evidence shows whether it already completed.
+  'process-order-item': gatherDomainEvidence,
+  // NFSC charge: the payment record shows whether the charge already landed.
+  'nfsc-charge': gatherNfscChargeEvidence,
 };

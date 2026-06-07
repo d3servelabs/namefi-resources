@@ -19,7 +19,11 @@ import {
  * is what the admin evidence registry keys off. `interactionId` defaults to the
  * `gateKind` unless the caller overrides it.
  */
-export type GateKind = 'register-or-import-poll' | 'register-or-import-submit';
+export type GateKind =
+  | 'register-or-import-poll'
+  | 'register-or-import-submit'
+  | 'process-order-item'
+  | 'nfsc-charge';
 
 interface KnownGateDefaults {
   /** Auto-retry policy applied unless the caller overrides {@link RunWithDecisionGateOptions.autoRetry}. */

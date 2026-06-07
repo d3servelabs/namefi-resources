@@ -73,6 +73,16 @@ export const TERMINAL_OPERATION_STATUSES = [
 export const expirationIsoSchema = z.string().datetime();
 export type ExpirationIsoResponse = z.infer<typeof expirationIsoSchema>;
 
+/**
+ * On-chain transaction hash — the RESPOND payload for the `nfsc-charge` gate.
+ * When an NFSC charge fails ambiguously, an admin who verified the charge landed
+ * on-chain RESPONDs with its tx hash; the workflow records it as the payment's
+ * provider reference and marks the payment SUCCEEDED. Mirrors the tx hash string
+ * `chargeNfscWorkflow` returns.
+ */
+export const txHashSchema = z.string().min(1);
+export type TxHashResponse = z.infer<typeof txHashSchema>;
+
 /** interactionId → RESPOND payload schema. */
 export const decisionGateResponseSchemas = {
   'process-order-item': processOrderItemGateResponseSchema,
@@ -95,6 +105,9 @@ export const decisionGateResponseSchemas = {
   // Post-renewal expiration-propagation poll. RESPOND with the verified new
   // expiration as an ISO-8601 timestamp.
   'extend-expiration-poll': expirationIsoSchema,
+  // NFSC on-chain charge. RESPOND with the verified charge tx hash; the workflow
+  // records it and marks the payment SUCCEEDED.
+  'nfsc-charge': txHashSchema,
 } as const;
 
 export type DecisionGateInteractionId =

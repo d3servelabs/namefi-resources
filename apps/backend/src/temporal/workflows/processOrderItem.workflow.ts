@@ -16,10 +16,8 @@ import {
   resolveWorkflowCheckoutTracking,
   type WorkflowCheckoutTrackingInput,
 } from '../shared/workflow-helpers/checkout-tracking';
-import {
-  createDecisionGateRegistry,
-  runWithDecisionGate,
-} from '../shared/workflow-helpers/decision-gate';
+import { createDecisionGateRegistry } from '../shared/workflow-helpers/decision-gate';
+import { runWithKnownGate } from '../shared/workflow-helpers/known-gates';
 import { processOrderItemGateResponseSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 
 /**
@@ -152,11 +150,18 @@ export async function processOrderItemWorkflow(
       validateResponse?: (raw: unknown) => T,
     ): Promise<T> =>
       decisionRegistry
-        ? runWithDecisionGate({
+        ? runWithKnownGate({
             registry: decisionRegistry,
+            gateKind: 'process-order-item',
             interactionId: 'process-order-item',
             action,
             validateResponse,
+            // Lets the admin side gather domain evidence (registered / minted /
+            // in our registrar accounts?) for this order item when the gate opens.
+            evidenceParams: {
+              normalizedDomainName,
+              registrarKey,
+            },
             alertMessage: `Order item processing failed for ${normalizedDomainName} (${operationType})`,
             alertSeverity: 'general',
             alertDetails: {
