@@ -150,13 +150,13 @@ function JsonBlock({
   const { theme } = useTheme();
   if (value === null || typeof value !== 'object') {
     return (
-      <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-all rounded-md bg-muted/50 p-3 text-xs">
+      <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-all rounded-md bg-muted/50 p-3 text-sm">
         {String(value)}
       </pre>
     );
   }
   return (
-    <div className="max-h-72 overflow-auto rounded-md bg-muted/50 p-3 text-xs">
+    <div className="max-h-72 overflow-auto rounded-md bg-muted/50 p-3 text-sm">
       <JsonView
         value={value as object}
         collapsed={collapsed}
@@ -177,21 +177,21 @@ function GateErrorSummary({ context }: { context: Gate['context'] }) {
   return (
     <div className="mt-1.5 space-y-1">
       {error ? (
-        <p className="break-words text-sm font-semibold text-red-600 dark:text-red-400">
+        <p className="break-words text-base font-semibold text-red-600 dark:text-red-400">
           {error.type ? (
-            <span className="font-mono text-xs opacity-80">{error.type}: </span>
+            <span className="font-mono text-sm opacity-80">{error.type}: </span>
           ) : null}
           {error.message}
         </p>
       ) : null}
       {showRoot ? (
-        <p className="break-words text-xs text-red-500/90 dark:text-red-400/90">
+        <p className="break-words text-sm text-red-500/90 dark:text-red-400/90">
           ↳ {root?.type ? `${root.type}: ` : ''}
           {root?.message}
         </p>
       ) : null}
       {alertMessage ? (
-        <p className="break-words text-xs text-foreground/70">{alertMessage}</p>
+        <p className="break-words text-sm text-foreground/70">{alertMessage}</p>
       ) : null}
     </div>
   );
@@ -226,9 +226,9 @@ function GateTimingCell({
   if (rows.length === 0)
     return <span className="text-muted-foreground">—</span>;
   return (
-    <div className="space-y-1 text-xs">
+    <div className="space-y-1 text-sm">
       {rows.map((row) => (
-        <div key={row.label} className="whitespace-nowrap">
+        <div key={row.label}>
           <span className="text-muted-foreground">{row.label}: </span>
           <span className="font-mono text-foreground">{row.value}</span>
         </div>
@@ -241,7 +241,7 @@ function GateTimingCell({
 function GateHistoryItem({ entry }: { entry: GateHistoryEntry }) {
   const entryRoot = deepestError(entry.error);
   return (
-    <li className="break-words text-xs text-muted-foreground">
+    <li className="break-words text-sm text-muted-foreground">
       <span className="font-mono text-foreground">#{entry.attempt}</span>{' '}
       {formatStartedAt(entry.openedAt)} —{' '}
       <span className="text-foreground">
@@ -384,14 +384,14 @@ function GateGuidanceSection({ gate }: { gate: Gate }) {
   if (!guidance) return null;
   return (
     <section className="space-y-2 rounded-md border border-blue-500/30 bg-blue-500/5 p-3">
-      <h3 className="text-sm font-semibold">What to do</h3>
-      <p className="text-xs text-foreground/80">{guidance.summary}</p>
+      <h3 className="text-base font-semibold">What to do</h3>
+      <p className="text-sm text-foreground/80">{guidance.summary}</p>
       <ul className="space-y-1">
         {gate.allowedActions.map((action) => {
           const tip = guidance.actions[action as GateActionName];
           if (!tip) return null;
           return (
-            <li key={action} className="text-xs">
+            <li key={action} className="text-sm">
               <span className="font-semibold">{actionLabel(action)}</span>{' '}
               <span className="text-muted-foreground">— {tip}</span>
             </li>
@@ -407,7 +407,7 @@ function EvidenceJson({ label, value }: { label: string; value: unknown }) {
   if (value === undefined) return null;
   return (
     <div className="space-y-1">
-      <div className="text-xs font-medium text-muted-foreground">{label}</div>
+      <div className="text-sm font-medium text-muted-foreground">{label}</div>
       <JsonBlock value={value} collapsed={false} />
     </div>
   );
@@ -423,7 +423,7 @@ function GateEvidenceView({
 }) {
   if (!evidence) {
     return (
-      <p className="text-sm text-muted-foreground">
+      <p className="text-base text-muted-foreground">
         No evidence available for this gate.
       </p>
     );
@@ -440,7 +440,7 @@ function GateEvidenceView({
   return (
     <div className="space-y-3">
       {hint ? (
-        <p className="rounded-md border border-amber-500/30 bg-amber-500/10 p-2 text-xs font-medium text-foreground/90">
+        <p className="rounded-md border border-amber-500/30 bg-amber-500/10 p-2 text-sm font-medium text-foreground/90">
           {hint}
         </p>
       ) : null}
@@ -504,10 +504,10 @@ function GateEvidencePanel({
       <Button
         size="sm"
         variant="outline"
-        className="mt-1.5 h-6 px-2 text-[11px]"
+        className="mt-1.5 h-7 px-2 text-sm"
         onClick={() => setEnabled(true)}
       >
-        <Search className="h-3 w-3 mr-1" />
+        <Search className="h-3.5 w-3.5 mr-1" />
         Gather evidence
       </Button>
     );
@@ -516,9 +516,9 @@ function GateEvidencePanel({
   return (
     <div className="mt-1.5">
       {evidenceQuery.isLoading ? (
-        <p className="text-[11px] text-muted-foreground">Gathering evidence…</p>
+        <p className="text-sm text-muted-foreground">Gathering evidence…</p>
       ) : evidenceQuery.isError ? (
-        <p className="text-[11px] text-red-500">
+        <p className="text-sm text-red-500">
           Failed: {evidenceQuery.error.message}{' '}
           <button
             type="button"
@@ -567,7 +567,7 @@ function GateDetailsDialog({
         <Info className="mr-1.5 h-3.5 w-3.5" />
         Details
       </DialogTrigger>
-      <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto">
+      <DialogContent className="!max-w-xl max-h-[85vh] overflow-y-auto text-base">
         <DialogHeader>
           <DialogTitle>Gate details</DialogTitle>
           <DialogDescription>
@@ -580,13 +580,13 @@ function GateDetailsDialog({
 
         {error ? (
           <section className="space-y-2">
-            <h3 className="text-sm font-semibold">Error</h3>
-            <p className="break-words text-sm font-semibold text-red-600 dark:text-red-400">
+            <h3 className="text-base font-semibold">Error</h3>
+            <p className="break-words text-base font-semibold text-red-600 dark:text-red-400">
               {error.type ? `${error.type}: ` : ''}
               {error.message}
             </p>
             {showRoot ? (
-              <p className="break-words text-xs text-red-500/90 dark:text-red-400/90">
+              <p className="break-words text-sm text-red-500/90 dark:text-red-400/90">
                 ↳ {root?.type ? `${root.type}: ` : ''}
                 {root?.message}
               </p>
@@ -597,14 +597,14 @@ function GateDetailsDialog({
 
         {context?.alertDetails ? (
           <section className="space-y-2">
-            <h3 className="text-sm font-semibold">Alert details</h3>
+            <h3 className="text-base font-semibold">Alert details</h3>
             <JsonBlock value={context.alertDetails} />
           </section>
         ) : null}
 
         {context?.gateKind ? (
           <section className="space-y-2">
-            <h3 className="text-sm font-semibold">Decision support</h3>
+            <h3 className="text-base font-semibold">Decision support</h3>
             <GateEvidencePanel
               workflowId={workflow.workflowId}
               interactionId={gate.interactionId}
@@ -616,7 +616,7 @@ function GateDetailsDialog({
 
         {history.length > 1 ? (
           <section className="space-y-2">
-            <h3 className="text-sm font-semibold">
+            <h3 className="text-base font-semibold">
               History ({history.length})
             </h3>
             <ul className="space-y-1">
@@ -785,22 +785,22 @@ export default withAdminGuard(function DecisionGatesPage() {
         </CardHeader>
         <CardContent>
           {listQuery.isError ? (
-            <p className="text-sm text-red-600">
+            <p className="text-base text-red-600">
               Failed to load: {listQuery.error.message}
             </p>
           ) : rows.length === 0 && !listQuery.isLoading ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               No workflows are currently awaiting a decision.
             </p>
           ) : (
-            <Table>
+            <Table className="table-fixed text-base">
               <TableHeader>
                 <TableRow>
-                  <TableHead>Workflow</TableHead>
-                  <TableHead>Gate</TableHead>
-                  <TableHead>Timing</TableHead>
-                  <TableHead>Allowed</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="w-[18%]">Workflow</TableHead>
+                  <TableHead className="w-[32%]">Gate</TableHead>
+                  <TableHead className="w-[16%]">Timing</TableHead>
+                  <TableHead className="w-[14%]">Allowed</TableHead>
+                  <TableHead className="w-[20%] text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -808,9 +808,11 @@ export default withAdminGuard(function DecisionGatesPage() {
                   <TableRow
                     key={`${workflow.workflowId}:${gate.signalName}:${gate.interactionId}`}
                   >
-                    <TableCell className="align-top">
-                      <div className="font-medium">{workflow.workflowType}</div>
-                      <div className="text-xs text-muted-foreground break-all">
+                    <TableCell className="align-top whitespace-normal">
+                      <div className="font-medium break-words">
+                        {workflow.workflowType}
+                      </div>
+                      <div className="text-sm text-muted-foreground break-all">
                         {workflow.workflowId}
                       </div>
                       {workflow.temporalUiUrl ? (
@@ -818,15 +820,15 @@ export default withAdminGuard(function DecisionGatesPage() {
                           href={workflow.temporalUiUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="mt-1 inline-flex items-center gap-1 text-xs text-blue-500 hover:underline"
+                          className="mt-1 inline-flex items-center gap-1 text-sm text-blue-500 hover:underline"
                         >
                           <ExternalLink className="h-3 w-3" />
                           View in Temporal
                         </a>
                       ) : null}
                     </TableCell>
-                    <TableCell className="align-top">
-                      <div className="font-mono text-xs">
+                    <TableCell className="align-top whitespace-normal">
+                      <div className="break-all font-mono text-sm">
                         {gate.interactionId}
                       </div>
                       {gate.context?.gateKind ? (
@@ -837,7 +839,7 @@ export default withAdminGuard(function DecisionGatesPage() {
                       <GateErrorSummary context={gate.context} />
                       <GateDetailsDialog workflow={workflow} gate={gate} />
                     </TableCell>
-                    <TableCell className="align-top">
+                    <TableCell className="align-top whitespace-normal">
                       <GateTimingCell
                         startedAt={workflow.startedAt}
                         context={gate.context}
@@ -922,14 +924,14 @@ function SchemaFieldInput({
   const id = `respond-${field.name || 'value'}`;
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium" htmlFor={id}>
+      <label className="text-base font-medium" htmlFor={id}>
         {field.label}
         {field.optional ? ' (optional)' : ''}
       </label>
       {field.kind === 'enum' ? (
         <select
           id={id}
-          className="border-input bg-transparent flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-sm"
+          className="border-input bg-transparent flex h-9 w-full rounded-md border px-3 py-1 text-base shadow-sm"
           value={value}
           onChange={(e) => onChange(e.target.value)}
         >
@@ -1011,7 +1013,7 @@ function RespondDialog({
         </DialogHeader>
 
         {fields.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-base text-muted-foreground">
             This gate takes no payload — responding resolves it as done.
           </p>
         ) : (
@@ -1085,7 +1087,7 @@ function CancelDialog({
         </DialogHeader>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="cancelMessage">
+          <label className="text-base font-medium" htmlFor="cancelMessage">
             Failure message (optional)
           </label>
           <Input
