@@ -434,6 +434,13 @@ function GateEvidenceView({
   const rdapWhois = evidence.rdapWhois as
     | { locked?: boolean; source?: string }
     | undefined;
+  const payment = evidence.payment as
+    | {
+        found?: boolean;
+        status?: string;
+        paymentProviderReferenceId?: string | null;
+      }
+    | undefined;
   const hint = gateKind
     ? GATE_GUIDANCE[gateKind]?.evidenceHint?.(evidence)
     : undefined;
@@ -458,7 +465,21 @@ function GateEvidenceView({
             {rdapWhois.source ? ` · ${rdapWhois.source}` : ''}
           </Badge>
         ) : null}
+        {payment ? (
+          <Badge
+            variant={
+              paymentChargeState(evidence) === 'charged' ? 'default' : 'outline'
+            }
+          >
+            {payment.found === false
+              ? 'Payment not found'
+              : `Payment${payment.status ? ` · ${payment.status}` : ''}${
+                  payment.paymentProviderReferenceId ? ' · has tx' : ''
+                }`}
+          </Badge>
+        ) : null}
       </div>
+      <EvidenceJson label="Payment" value={evidence.payment} />
       <EvidenceJson label="Registrar" value={evidence.registrar} />
       <EvidenceJson
         label="In our accounts in 3rd party registrars"
