@@ -68,6 +68,8 @@ const gateContextSchema = z.object({
       message: z.string(),
       type: z.string().optional(),
       details: z.unknown().optional(),
+      /** Wrapped cause chain (e.g. the real failure under a ChildWorkflowFailure). */
+      cause: z.unknown().optional(),
     })
     .optional(),
   alertDetails: z.record(z.string(), z.unknown()).optional(),

@@ -132,10 +132,16 @@ export interface WaitForDecisionOptions<R> {
 export interface GateErrorInfo {
   /** The failure message. */
   message: string;
-  /** ApplicationFailure type or error name, when available. */
+  /** ApplicationFailure type or error name (e.g. `ChildWorkflowFailure`). */
   type?: string;
   /** Best-effort structured detail (e.g. ApplicationFailure.details). */
   details?: unknown;
+  /**
+   * The wrapped cause, when present. Temporal wrappers like
+   * `ChildWorkflowFailure` / `ActivityFailure` carry a generic message and the
+   * real failure in their `cause`, so the chain is walked here.
+   */
+  cause?: GateErrorInfo;
 }
 
 /**
@@ -643,17 +649,36 @@ async function emitFailureAlert(args: {
   }
 }
 
-/** Serializes the failure that opened a gate for operator display. */
-function serializeGateError(error: unknown): GateErrorInfo {
+/** Max depth walked through the `cause` chain when serializing a gate failure. */
+const MAX_GATE_ERROR_DEPTH = 5;
+
+/**
+ * Serializes the failure that opened a gate for operator display, walking the
+ * `cause` chain so the real error is surfaced even when wrapped by a generic
+ * `ChildWorkflowFailure` / `ActivityFailure`.
+ */
+function serializeGateError(error: unknown, depth = 0): GateErrorInfo {
+  const withCause = (info: GateErrorInfo, cause: unknown): GateErrorInfo => {
+    if (cause != null && depth < MAX_GATE_ERROR_DEPTH) {
+      info.cause = serializeGateError(cause, depth + 1);
+    }
+    return info;
+  };
   if (error instanceof workflow.ApplicationFailure) {
-    return {
-      message: error.message,
-      type: error.type ?? undefined,
-      details: error.details,
-    };
+    return withCause(
+      {
+        message: error.message,
+        type: error.type ?? error.name,
+        details: error.details,
+      },
+      error.cause,
+    );
   }
   if (error instanceof Error) {
-    return { message: error.message, type: error.name };
+    return withCause(
+      { message: error.message, type: error.name },
+      (error as { cause?: unknown }).cause,
+    );
   }
   return { message: String(error) };
 }

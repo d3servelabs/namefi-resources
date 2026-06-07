@@ -94,6 +94,28 @@ function formatDeadline(
   );
 }
 
+/** Walks the serialized error's `cause` chain to its deepest (root) failure. */
+function deepestError(error: unknown): { message?: string; type?: string } {
+  let current: unknown = error;
+  let deepest: { message?: string; type?: string } = {};
+  for (let guard = 0; current && typeof current === 'object' && guard < 10; ) {
+    const node = current as {
+      message?: unknown;
+      type?: unknown;
+      cause?: unknown;
+    };
+    if (typeof node.message === 'string') {
+      deepest = {
+        message: node.message,
+        type: typeof node.type === 'string' ? node.type : undefined,
+      };
+    }
+    current = node.cause;
+    guard += 1;
+  }
+  return deepest;
+}
+
 /** Why the gate opened + timing, with a collapsible JSON of the error/details. */
 function GateContextDetails({ context }: { context: Gate['context'] }) {
   if (!context) return null;
@@ -106,10 +128,26 @@ function GateContextDetails({ context }: { context: Gate['context'] }) {
     actionTimeoutMs,
   } = context;
   const hasJson = error !== undefined || alertDetails !== undefined;
+  const root = error ? deepestError(error) : undefined;
+  const showRoot = root?.message && root.message !== error?.message;
   return (
     <div className="mt-1.5 space-y-1">
       {alertMessage ? (
         <p className="text-xs text-muted-foreground">{alertMessage}</p>
+      ) : null}
+      {error ? (
+        <p className="text-xs text-red-500">
+          <span className="font-medium">
+            {error.type ? `${error.type}: ` : ''}
+            {error.message}
+          </span>
+          {showRoot ? (
+            <span className="block text-muted-foreground">
+              ↳ {root?.type ? `${root.type}: ` : ''}
+              {root?.message}
+            </span>
+          ) : null}
+        </p>
       ) : null}
       <p className="text-[11px] text-muted-foreground">
         {openedAt ? `opened ${formatStartedAt(openedAt)}` : null}
