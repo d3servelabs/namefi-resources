@@ -18,13 +18,39 @@ import {
 } from '../../shared';
 import {
   catchAndAlertLocally,
+  createDecisionGateRegistry,
+  runWithDecisionGate,
   typedProxyActivities,
 } from '../../shared/workflow-helpers';
+import { operationStatusSchema } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
 import {
   extendDomainRegistrationWorkflow,
   extendEppDomainRegistrationPostImportWorkflow,
   type ExtendDomainRegistrationWorkflowInput,
 } from './extend-registration.workflow';
+
+/**
+ * Decision-gate timeouts for the register/import status poll, sized to stay
+ * under the child run timeouts set in `acquire-domain.workflow.ts` (REGISTER
+ * `4 hours`, IMPORT `21 days`). The `ACTION_TIMEOUT` bounds the poll itself —
+ * the gate cancels the (unbounded) poll after it and opens for an admin; the
+ * `DECISION_TIMEOUT` is the admin window once the gate is open.
+ *
+ * REGISTER: 90 min poll deadline + 2 h admin window = 3.5 h, inside the 4 h run
+ * timeout. IMPORT: 24 h poll deadline + 3-day admin window, well inside 21 days.
+ */
+const REGISTER_POLL_ACTION_TIMEOUT_MS = 90 * 60 * 1000; // 90 minutes
+const REGISTER_POLL_DECISION_TIMEOUT_MS = 2 * 60 * 60 * 1000; // 2 hours
+const IMPORT_POLL_ACTION_TIMEOUT_MS = 24 * 60 * 60 * 1000; // 24 hours
+const IMPORT_POLL_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
+
+/**
+ * Caps the IMPORT poll gate's RETRY cycles. Each cycle costs up to
+ * `ACTION_TIMEOUT` (24 h re-poll) + `DECISION_TIMEOUT` (3-day admin wait) ≈ 4
+ * days, so 3 cycles (~12 days) stays under the 21-day IMPORT child run timeout
+ * with room for the other import steps. The default (10) would not.
+ */
+const POLL_GATE_MAX_RETRIES = 3;
 
 interface EppRegisterOrImportWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -155,6 +181,73 @@ export async function eppRegisterOrImportWorkflow(
     },
   });
 
+  // New runs wrap the (otherwise unbounded) status poll in a decision gate. The
+  // gate's own action deadline cancels a stuck poll and opens it for an admin
+  // instead of dead-ending. In-flight (pre-patch) runs keep the original
+  // direct-poll path. Explicit prefix avoids any collision when this runs embedded.
+  const pollGateRegistry = workflow.patched(
+    'epp-register-or-import-poll-decision-gate',
+  )
+    ? createDecisionGateRegistry({ prefix: 'epp-register-or-import' })
+    : undefined;
+
+  // Polls the registrar operation status. With a gate armed, the gate bounds the
+  // poll by `actionTimeoutMs`; on deadline it cancels the poll and pauses for
+  // admin verification (RETRY = re-poll, RESPOND = verified status, CANCEL =
+  // fail). Used for both the initial poll and the requires-action loop.
+  const pollOperationStatus = (
+    prePoll: LongRunningOperationResult,
+  ): Promise<LongRunningOperationResult> => {
+    const operationId = prePoll.operationId;
+    const poll = () =>
+      pollRegisterOrImportDomainOperationStatus(
+        input.normalizedDomainName,
+        operationId as string,
+        input.registrarKey,
+      );
+    if (!pollGateRegistry) return poll();
+
+    return runWithDecisionGate<
+      LongRunningOperationResult,
+      LongRunningOperationResult
+    >({
+      registry: pollGateRegistry,
+      interactionId: 'register-or-import-poll',
+      action: poll,
+      actionTimeoutMs: isImport
+        ? IMPORT_POLL_ACTION_TIMEOUT_MS
+        : REGISTER_POLL_ACTION_TIMEOUT_MS,
+      // The admin verifies the registrar and supplies the terminal status; the
+      // workflow continues with the prior operation result carrying that status.
+      validateResponse: (raw) =>
+        ({
+          ...prePoll,
+          status: operationStatusSchema.parse(raw),
+        }) as LongRunningOperationResult,
+      allowedActors: ['ADMIN'],
+      // RETRY re-polls (~90 min) — only offered for IMPORT (21-day run timeout).
+      // A REGISTER child has a 4 h run timeout that a re-poll after the gate wait
+      // can't fit, so REGISTER offers only RESPOND (verified status) / CANCEL.
+      allowedActions: isImport
+        ? ['RETRY', 'RESPOND', 'CANCEL']
+        : ['RESPOND', 'CANCEL'],
+      // Bound IMPORT's RETRY cycles so they can't outlast the 21-day run timeout
+      // (REGISTER offers no RETRY, so this is inert there).
+      maxRetries: POLL_GATE_MAX_RETRIES,
+      timeoutMs: isImport
+        ? IMPORT_POLL_DECISION_TIMEOUT_MS
+        : REGISTER_POLL_DECISION_TIMEOUT_MS,
+      onTimeout: { kind: 'throw' },
+      alertMessage: `${isImport ? 'Import' : 'Register'} operation poll exceeded its deadline for ${input.normalizedDomainName} (operationId=${operationId}); verify registrar state`,
+      alertDetails: {
+        normalizedDomainName: input.normalizedDomainName,
+        operationId,
+        registrarKey: input.registrarKey,
+        operationType: input.operationType,
+      },
+    });
+  };
+
   try {
     await preSubmitRequirements({
       input,
@@ -172,18 +265,16 @@ export async function eppRegisterOrImportWorkflow(
       registrarOperationResult = await handleOperationRequiresFurtherAction({
         input,
         registrarOperationResult,
+        pollOperationStatus,
       });
     } else if (registrarOperationResult.operationId) {
       // If the initial request didn't require action but is still in progress, poll for completion.
       // We can only poll if we have an operationId to check the status of -
       // if not, we'll rely on the initial status and message returned from
       // the registrar to determine success or failure, most likely failure if we don't have an operationId.
-      registrarOperationResult =
-        await pollRegisterOrImportDomainOperationStatus(
-          input.normalizedDomainName,
-          registrarOperationResult.operationId,
-          input.registrarKey,
-        );
+      registrarOperationResult = await pollOperationStatus(
+        registrarOperationResult,
+      );
     }
 
     // After handling required actions, if any, check the final status of the registrar operation.
@@ -469,32 +560,21 @@ async function resubmitImportWithLatestAuthCode({
 async function handleOperationRequiresFurtherAction({
   input,
   registrarOperationResult: _registrarOperationResult,
+  pollOperationStatus,
 }: {
   input: EppRegisterOrImportWorkflowInput;
   registrarOperationResult: Awaited<
     ReturnType<typeof sendRegisterOrImportRequestToNamefiRegistrar>
   >;
+  /**
+   * Polls the registrar operation status (gated when the workflow armed a
+   * decision gate). Shared with the initial-poll path so both honor the gate.
+   */
+  pollOperationStatus: (
+    prePoll: LongRunningOperationResult,
+  ) => Promise<LongRunningOperationResult>;
 }) {
   const isImport = input.operationType === 'IMPORT';
-
-  const { pollRegisterOrImportDomainOperationStatus } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-    options: {
-      startToCloseTimeout: '30 seconds',
-      retry: isImport
-        ? {
-            initialInterval: '1 minute',
-            backoffCoefficient: 4,
-            maximumInterval: '4 hours',
-            // no max attempts
-          }
-        : {
-            initialInterval: '5 seconds',
-            backoffCoefficient: 2,
-            maximumInterval: '15 minutes',
-          },
-    },
-  });
 
   let registrarOperationResult = _registrarOperationResult;
   let registrarOperationStatus = registrarOperationResult.status;
@@ -575,12 +655,9 @@ async function handleOperationRequiresFurtherAction({
     }
 
     if (registrarOperationResult.operationId) {
-      registrarOperationResult =
-        await pollRegisterOrImportDomainOperationStatus(
-          input.normalizedDomainName,
-          registrarOperationResult.operationId,
-          input.registrarKey,
-        );
+      registrarOperationResult = await pollOperationStatus(
+        registrarOperationResult,
+      );
     }
 
     registrarOperationStatus = registrarOperationResult.status;

@@ -9,6 +9,14 @@ import { addYears, fromUnixTime, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import {
+  createDecisionGateRegistry,
+  runWithDecisionGate,
+} from '../../shared/workflow-helpers/decision-gate';
+import {
+  expirationIsoSchema,
+  operationStatusSchema,
+} from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
+import {
   TEMPORAL_ENUMS,
   TEMPORAL_QUEUES,
   pollingOpts,
@@ -16,6 +24,14 @@ import {
 } from '../../shared';
 import { setExpirationForNamefiNft } from '../mint.workflow';
 import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/determine-renew-duration-limits';
+
+/**
+ * How long an extend-registration poll's decision gate waits for an admin to
+ * verify registrar state after the (already-bounded) poll exhausts its retries,
+ * before failing the workflow. Extend runs with no hard run-timeout (only
+ * `parentClosePolicy: REQUEST_CANCEL`), so a multi-day window is safe.
+ */
+const EXTEND_POLL_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
 
 export type ExtendDomainRegistrationWorkflowOutput = {
   /** Status of the EPP (Extensible Provisioning Protocol) operation - either SUCCESS or FAILURE */
@@ -366,6 +382,18 @@ async function _extendSldDomainAndReturnNewExpirationTime({
     },
   });
 
+  // New runs wrap each (already-bounded) poll in a decision gate: when a poll
+  // exhausts its retry budget the operation is still queued at the registrar, so
+  // alert + wait for an admin to verify and RETRY (re-poll) / RESPOND (verified
+  // value) / CANCEL, instead of dead-ending. In-flight (pre-patch) runs keep the
+  // original throw-on-exhaustion path. Explicit prefix keeps the registry from
+  // colliding with a host workflow's own registry if extend ever runs embedded.
+  const pollGateRegistry = workflow.patched(
+    'extend-registration-poll-decision-gate',
+  )
+    ? createDecisionGateRegistry({ prefix: 'extend-registration' })
+    : undefined;
+
   const previousExpirationTime = await getEppExpirationTime({
     normalizedDomainName,
   });
@@ -380,11 +408,38 @@ async function _extendSldDomainAndReturnNewExpirationTime({
       message: 'Failed to submit operation to extend registration',
     });
   }
-  // This will keep polling until status is either SUCCESS or FAILURE
-  const { status } = await pollEppExtendRegistrationStatus({
-    normalizedDomainName,
-    externalOperationId,
-  });
+
+  // `pollEppExtendRegistrationStatus` is a retry-bounded poll (20 attempts): it
+  // keeps polling until the status is terminal, then throws if it exhausts the
+  // budget. That throw opens the gate, so no extra action deadline is needed.
+  const status = pollGateRegistry
+    ? await runWithDecisionGate<{ status: OperationStatus }, OperationStatus>({
+        registry: pollGateRegistry,
+        interactionId: 'extend-epp-status-poll',
+        action: () =>
+          pollEppExtendRegistrationStatus({
+            normalizedDomainName,
+            externalOperationId,
+          }),
+        onResult: (result) => result.status,
+        validateResponse: (raw) => operationStatusSchema.parse(raw),
+        allowedActors: ['ADMIN'],
+        allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+        timeoutMs: EXTEND_POLL_DECISION_TIMEOUT_MS,
+        onTimeout: { kind: 'throw' },
+        alertMessage: `EPP extend-registration status poll exhausted its retries for ${normalizedDomainName} (operationId=${externalOperationId}); verify registrar state`,
+        alertDetails: {
+          normalizedDomainName,
+          externalOperationId,
+          durationInYears,
+        },
+      })
+    : (
+        await pollEppExtendRegistrationStatus({
+          normalizedDomainName,
+          externalOperationId,
+        })
+      ).status;
 
   if (status !== OperationStatus.SUCCESSFUL) {
     throw workflow.ApplicationFailure.create({
@@ -401,11 +456,34 @@ async function _extendSldDomainAndReturnNewExpirationTime({
       ],
     });
   }
-  const nextExpirationTime = await pollAndExpectExpirationChange({
-    normalizedDomainName,
-    durationInYears,
-    previousExpirationTime,
-  });
+
+  // Renewal succeeded at the registrar; `pollAndExpectExpirationChange` is a
+  // retry-bounded poll (30 attempts) that waits for the new expiration to
+  // propagate. If it exhausts its budget the renewal is already done — an admin
+  // can RESPOND with the verified ISO expiration so NFT expiry still gets updated.
+  const nextExpirationTime = pollGateRegistry
+    ? await runWithDecisionGate<string, string>({
+        registry: pollGateRegistry,
+        interactionId: 'extend-expiration-poll',
+        action: () =>
+          pollAndExpectExpirationChange({
+            normalizedDomainName,
+            durationInYears,
+            previousExpirationTime,
+          }),
+        validateResponse: (raw) => expirationIsoSchema.parse(raw),
+        allowedActors: ['ADMIN'],
+        allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
+        timeoutMs: EXTEND_POLL_DECISION_TIMEOUT_MS,
+        onTimeout: { kind: 'throw' },
+        alertMessage: `Expiration-change poll exhausted its retries for ${normalizedDomainName} after a successful renewal; verify the registrar's new expiration`,
+        alertDetails: { normalizedDomainName, durationInYears },
+      })
+    : await pollAndExpectExpirationChange({
+        normalizedDomainName,
+        durationInYears,
+        previousExpirationTime,
+      });
   return nextExpirationTime;
 }
 

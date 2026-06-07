@@ -8,6 +8,16 @@ import { pollingOpts } from '../../shared';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { isNil } from 'ramda';
 import { criticalAlertWithTicket } from '#temporal/shared/workflow-helpers/critical-alert-with-ticket';
+import {
+  createDecisionGateRegistry,
+  runWithDecisionGate,
+} from '../../shared/workflow-helpers/decision-gate';
+
+/**
+ * How long the EPP-unlock decision gate waits for an admin before failing the
+ * export prep (which leaves the domain in the stuck state it alerts on).
+ */
+const PREPARE_EXPORT_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
 
 const { parseDomainName } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -103,8 +113,9 @@ export async function prepareDomainForExportWorkflow({
       nftLockedByThisRun = true;
     }
 
-    const eppLockState = await getEppLockState(domainName);
-    if (eppLockState.locked) {
+    const ensureDomainUnlocked = async (): Promise<void> => {
+      const eppLockState = await getEppLockState(domainName);
+      if (!eppLockState.locked) return;
       // unlock the domain
       const res = await unlockEppDomain(domainName);
       let status: OperationStatus;
@@ -130,6 +141,32 @@ export async function prepareDomainForExportWorkflow({
 
       // confirm that the domain is unlocked
       await pollAndExpectEppLockStateChange(domainName, { locked: false });
+    };
+
+    // On unlock failure, alert + wait for an admin instead of dead-ending in the
+    // stuck state (NFT locked + EPP locked). RETRY re-checks the lock first, so
+    // it self-resolves if the domain was unlocked out-of-band; RESPOND lets the
+    // admin confirm a manual unlock; CANCEL gives up. In-flight (pre-patch) runs
+    // keep the original direct path so their replay is unaffected.
+    if (workflow.patched('prepare-export-decision-gate')) {
+      const decisionRegistry = createDecisionGateRegistry();
+      await runWithDecisionGate({
+        registry: decisionRegistry,
+        interactionId: 'epp-unlock',
+        action: ensureDomainUnlocked,
+        alertMessage: `EPP unlock failed while preparing ${domainName} for export${
+          nftLockedByThisRun ? ' (NFT locked → stuck state)' : ''
+        }`,
+        alertSeverity: 'general',
+        alertDetails: { domainName, chainId, nftLockedByThisRun },
+        allowedActors: ['ADMIN'],
+        allowedActions: ['PROCEED', 'RETRY', 'CANCEL', 'RESPOND'],
+        timeoutMs: PREPARE_EXPORT_DECISION_TIMEOUT_MS,
+        maxRetries: 10,
+        onTimeout: { kind: 'throw' },
+      });
+    } else {
+      await ensureDomainUnlocked();
     }
 
     try {
