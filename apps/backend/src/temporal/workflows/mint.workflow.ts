@@ -3,104 +3,59 @@ import * as workflow from '@temporalio/workflow';
 import type {
   PreparedTxOnlySerializableParams,
   TxPrepareResult,
-  TxSendResult,
 } from '../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS } from '../shared/enums';
+import { shortRunningOpts } from '../shared';
+import { staggeredSendRace } from '../shared/workflow-helpers/staggered-send-race';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
-const TIMEOUT_IN_MS = 120_000;
-const GAS_PRICE_MULTIPLIER_INCREMENT = 0.05;
-
-function incrementGasPriceMultiplier(
-  gasPriceMultiplier: number,
-  maxGasPriceMultiplier = 1.25,
-) {
-  return Math.min(
-    gasPriceMultiplier + GAS_PRICE_MULTIPLIER_INCREMENT,
-    maxGasPriceMultiplier,
-  );
-}
-
+/**
+ * Sends a prepared transaction using the pinned-nonce staggered-parallel race.
+ *
+ * Splits sign+send from wait/confirm and reuses ONE nonce for every escalating-gas
+ * replacement, so the chain can mine at most one — no double-mint. See
+ * {@link staggeredSendRace}. Signature is preserved for all existing callers.
+ */
 async function _signAndSendTransactionWithRetry(
   tx: PreparedTxOnlySerializableParams,
   chainId: number,
   maxAttempts = 5,
 ) {
   const {
-    signAndSendTransaction,
-    getMaxGasPriceMultiplier,
+    getSignerNonce,
+    sendPreparedTransaction,
     getInitalGasPriceMultiplier,
+    getMaxGasPriceMultiplier,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
     options: {
-      startToCloseTimeout: TIMEOUT_IN_MS,
-      retry: {
-        maximumAttempts: 1, // Not using activity retry. We will retry at flow level
-      },
+      startToCloseTimeout: '30 seconds',
+      retry: { maximumAttempts: 1 },
     },
   });
+  const { getTransactionConfirmation } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: { ...shortRunningOpts },
+  });
 
-  let gasPriceMultiplier = await getInitalGasPriceMultiplier(chainId);
+  const initialGasPriceMultiplier = await getInitalGasPriceMultiplier(chainId);
   const maxGasPriceMultiplier = await getMaxGasPriceMultiplier(chainId);
 
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    let sendResult: TxSendResult;
-    try {
-      sendResult = await signAndSendTransaction(
-        tx,
-        chainId,
-        TIMEOUT_IN_MS,
-        gasPriceMultiplier,
-      );
-    } catch (error) {
-      if (error instanceof workflow.TimeoutFailure) {
-        gasPriceMultiplier = incrementGasPriceMultiplier(
-          gasPriceMultiplier,
-          maxGasPriceMultiplier,
-        );
-        workflow.log.info(
-          `Activity Timeout, increasing multiplier to ${gasPriceMultiplier} and retrying...`,
-        );
-        continue;
-      }
-
-      workflow.log.error(`Failed to sign and send transaction: ${error}`);
-      await workflow.sleep('15 seconds');
-
-      continue;
-    }
-    switch (sendResult.status) {
-      case 'SUCCESS':
-        return sendResult.txHash;
-      // --------------------------------------------------------
-      // -----------------Retriable errors-----------------------
-      // --------------------------------------------------------
-      //    Gas Increase
-      case 'GAS_PRICE_TOO_LOW': //fallthrough
-      case 'REPLACEMENT_UNDERPRICED': // fallthrough
-        gasPriceMultiplier = incrementGasPriceMultiplier(gasPriceMultiplier);
-        workflow.log.info(
-          `Gas price too low, increasing multiplier to ${gasPriceMultiplier} and retrying...`,
-        );
-        continue;
-      case 'NONCE_EXPIRED':
-        workflow.log.info(
-          `Transaction failed ${sendResult.status}, retrying...`,
-        );
-        await workflow.sleep('15 seconds');
-        continue;
-      default:
-        // TODO(Victor): use sentio.xyz to simulate the error and get the reason. NFI-2934
-        throw new workflow.ApplicationFailure(
-          `Sign and send transaction failed with status: ${sendResult.status} and error: ${JSON.stringify(
-            sendResult.error,
-          )}`,
-        );
-    }
-  }
-  throw new workflow.ApplicationFailure(
-    'Max retries exceeded within mintNfsc workflow',
-  );
+  return staggeredSendRace({
+    preparedTx: tx,
+    chainId,
+    label: `mint:${workflow.workflowInfo().workflowType}`,
+    activities: {
+      getSignerNonce,
+      sendPreparedTransaction,
+      getTransactionConfirmation,
+    },
+    config: {
+      lanes: maxAttempts,
+      initialGasPriceMultiplier,
+      maxGasPriceMultiplier,
+    },
+  });
 }
 
 export async function mintNamefiNFT({

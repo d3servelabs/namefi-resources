@@ -9,94 +9,52 @@ import * as workflow from '@temporalio/workflow';
 import type {
   PreparedTxOnlySerializableParams,
   TxPrepareResult,
-  TxSendResult,
 } from '../../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS } from '../../shared/enums';
+import { shortRunningOpts } from '../../shared';
+import { staggeredSendRace } from '../../shared/workflow-helpers/staggered-send-race';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 
-const TIMEOUT_IN_MS = 120_000;
-const MAX_GAS_PRICE_MULTIPLIER = 1.25;
-const GAS_PRICE_MULTIPLIER_INCREMENT = 0.05;
-
-function incrementGasPriceMultiplier(gasPriceMultiplier: number) {
-  return Math.min(
-    gasPriceMultiplier + GAS_PRICE_MULTIPLIER_INCREMENT,
-    MAX_GAS_PRICE_MULTIPLIER,
-  );
-}
-
+/**
+ * Sends a prepared USDC transfer using the pinned-nonce staggered-parallel race.
+ *
+ * Same idempotency guarantee as the mint path: one pinned nonce reused across
+ * escalating-gas replacements, so the chain mines at most one. See
+ * {@link staggeredSendRace}. Signature preserved for existing callers.
+ */
 async function _signAndSendX402TransactionWithRetry(
   tx: PreparedTxOnlySerializableParams,
   chainId: number,
   maxAttempts = 5,
 ) {
-  // Use MINT queue for blockchain transactions
-  const { signAndSendX402Transaction } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.MINT,
-    options: {
-      startToCloseTimeout: TIMEOUT_IN_MS,
-      retry: {
-        maximumAttempts: 1, // Not using activity retry. We will retry at flow level
+  const { getX402SignerNonce, sendX402PreparedTransaction } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.MINT,
+      options: {
+        startToCloseTimeout: '30 seconds',
+        retry: { maximumAttempts: 1 },
       },
-    },
+    });
+  const { getX402TransactionConfirmation } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: { ...shortRunningOpts },
   });
 
-  let gasPriceMultiplier = 1.05;
-
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    let sendResult: TxSendResult;
-    try {
-      sendResult = await signAndSendX402Transaction(
-        tx,
-        chainId,
-        TIMEOUT_IN_MS,
-        gasPriceMultiplier,
-      );
-    } catch (error) {
-      if (error instanceof workflow.TimeoutFailure) {
-        gasPriceMultiplier = incrementGasPriceMultiplier(gasPriceMultiplier);
-        workflow.log.info(
-          `Activity Timeout, increasing multiplier to ${gasPriceMultiplier} and retrying...`,
-        );
-        continue;
-      }
-
-      workflow.log.error(`Failed to sign and send transaction: ${error}`);
-      await workflow.sleep('15 seconds');
-
-      continue;
-    }
-    switch (sendResult.status) {
-      case 'SUCCESS':
-        return sendResult.txHash;
-      // --------------------------------------------------------
-      // -----------------Retriable errors-----------------------
-      // --------------------------------------------------------
-      //    Gas Increase
-      case 'GAS_PRICE_TOO_LOW': //fallthrough
-      case 'REPLACEMENT_UNDERPRICED': // fallthrough
-        gasPriceMultiplier = incrementGasPriceMultiplier(gasPriceMultiplier);
-        workflow.log.info(
-          `Gas price too low, increasing multiplier to ${gasPriceMultiplier} and retrying...`,
-        );
-        continue;
-      case 'NONCE_EXPIRED':
-        workflow.log.info(
-          `Transaction failed ${sendResult.status}, retrying...`,
-        );
-        await workflow.sleep('15 seconds');
-        continue;
-      default:
-        throw new workflow.ApplicationFailure(
-          `Sign and send transaction failed with status: ${sendResult.status} and error: ${JSON.stringify(
-            sendResult.error,
-          )}`,
-        );
-    }
-  }
-  throw new workflow.ApplicationFailure(
-    'Max retries exceeded within x402 USDC transfer workflow',
-  );
+  return staggeredSendRace({
+    preparedTx: tx,
+    chainId,
+    label: 'x402-usdc-transfer',
+    activities: {
+      getSignerNonce: getX402SignerNonce,
+      sendPreparedTransaction: sendX402PreparedTransaction,
+      getTransactionConfirmation: getX402TransactionConfirmation,
+    },
+    config: {
+      lanes: maxAttempts,
+      initialGasPriceMultiplier: 1.05,
+      maxGasPriceMultiplier: 1.2,
+    },
+  });
 }
 
 export interface TransferUsdcX402Input {

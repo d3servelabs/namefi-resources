@@ -21,6 +21,11 @@ import type { monitorIncidentTicketWorkflow } from '../../workflows/monitor-inci
 import { parseDomainName } from '@namefi-astra/utils';
 import { getExecutionContext } from '#lib/execution-context/context';
 import type { ExecutionContext } from '#lib/execution-context/types';
+// Read-only tx confirmation pollers for the staggered-send race. These run on
+// the DEFAULT queue so confirmation polling is never blocked by the single MINT
+// activity slot.
+import { getTransactionConfirmation } from '../mint/mint-tx.activities';
+import { getX402TransactionConfirmation } from '../x402-tx.activities';
 
 const SLACK_TEXT_LIMIT = 3000;
 const SLACK_FIELD_LIMIT = 1800;
@@ -103,6 +108,9 @@ export const defaultTaskQueueActivities = {
   getIncidentTicketStatus,
   sendIncidentEscalationToSlack,
   ...mapConvertSyncFnToActivity({ parseDomainName }),
+  // Read-only confirmation pollers for the pinned-nonce staggered-send race.
+  getTransactionConfirmation,
+  getX402TransactionConfirmation,
 };
 
 export interface SendTemporalAlertOptions {
