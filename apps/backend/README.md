@@ -27,6 +27,34 @@ bun test:watch
 bun test:coverage
 ```
 
+### Debugging Temporal Workflow Bundling
+
+The Temporal worker bundles every `*.workflow.ts` together. A single bad import
+(Node built-in, non-webpack-safe package, dynamic `require`, circular dep) fails
+the whole bundle without naming the culprit. `test:workflows` bundles each
+workflow **in isolation** (one `bun` subprocess each) and reports which fail,
+surfacing the `Module not found` lines that point at the offending import.
+
+```bash
+# Bundle every workflow individually (exits non-zero if any fail — CI-friendly)
+bun run test:workflows
+
+# Narrow to suspects (comma-separated, matches the filename)
+bun run test:workflows --filter mint,charge
+
+# Tune parallelism / per-workflow timeout, or emit machine-readable JSON
+bun run test:workflows --concurrency 4 --timeout 90000 --json
+```
+
+Full per-failure logs are written to `apps/backend/workflow-bundle-logs/`
+(git-ignored). To run it against a specific PR or branch in CI, trigger the
+**Debug Temporal Workflows** workflow:
+
+```bash
+gh workflow run debug-temporal-workflows.yml -f pr_number=1234
+gh workflow run debug-temporal-workflows.yml -f branch=my-feature-branch -f filter=mint
+```
+
 ### Running GitHub Actions Tests
 
 You can run GitHub Actions tests locally using [Act](https://github.com/nektos/act) or trigger them remotely:

@@ -40,6 +40,7 @@
     "build": "tsdown",
     "build:prod": "NODE_ENV=production tsdown",
     "bundle:workflows": "bun scripts/bundle-workflows.ts",
+    "test:workflows": "bun scripts/test-individual-workflows.ts",
     "validate:workflow-exports": "tsx scripts/validate-workflow-exports.ts",
     "debug:workflows": "tsx scripts/workflow-debug-helper.ts",
     "start": "node --stack-size=1024 --stack-trace-limit=1000 --enable-source-maps dist/index.js",

@@ -1,0 +1,135 @@
+name: Debug Temporal Workflows
+
+# Manually bundle each Temporal workflow in isolation to pinpoint which one
+# breaks the worker bundle. Unlike `validate-workflows.yml` (which runs the
+# all-at-once bundle on every PR), this is an on-demand tool you point at a
+# specific PR or branch when the combined bundle fails and you need the culprit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to test (checks out its head; overrides branch)"
+        required: false
+        type: string
+      branch:
+        description: "Branch/ref to test (used when pr_number is empty; defaults to this ref)"
+        required: false
+        type: string
+      filter:
+        description: "Only bundle workflows whose filename matches (comma-separated)"
+        required: false
+        type: string
+      concurrency:
+        description: "Parallel bundles (default: CPU count - 1)"
+        required: false
+        type: string
+      timeout:
+        description: "Per-workflow bundle timeout in ms (default: 60000)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.pr_number || inputs.branch || github.ref }}
+  cancel-in-progress: true
+
+env:
+  ENVIRONMENT: test
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+jobs:
+  resolve-ref:
+    name: Resolve target ref
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.resolve.outputs.ref }}
+      label: ${{ steps.resolve.outputs.label }}
+    steps:
+      - name: Resolve ref from inputs
+        id: resolve
+        uses: actions/github-script@v8
+        env:
+          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            // Read inputs from env (never interpolate ${{ }} into the script body,
+            // which would allow code injection via crafted input values).
+            const prNumber = (process.env.INPUT_PR_NUMBER || '').trim();
+            const branch = (process.env.INPUT_BRANCH || '').trim();
+
+            if (prNumber) {
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: Number(prNumber),
+              });
+              core.setOutput('ref', pr.head.sha);
+              core.setOutput(
+                'label',
+                `PR #${prNumber} — ${pr.head.ref} @ ${pr.head.sha.slice(0, 7)}`,
+              );
+            } else if (branch) {
+              core.setOutput('ref', branch);
+              core.setOutput('label', `branch ${branch}`);
+            } else {
+              core.setOutput('ref', context.ref);
+              core.setOutput('label', context.ref);
+            }
+
+  debug-bundling:
+    name: Bundle workflows individually
+    needs: resolve-ref
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    steps:
+      - name: Checkout (${{ needs.resolve-ref.outputs.label }})
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.resolve-ref.outputs.ref }}
+          # This job only reads code; don't leave the token in .git/config where
+          # the uploaded artifact step could inadvertently expose it.
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install # && bun install # this is intentional because of an issue with bun linking binaries and infisical #infisical-clean
+
+      - name: Bundle workflows individually
+        env:
+          MAX_CONCURRENT_PROCESSES: ${{ inputs.concurrency }}
+          INPUT_FILTER: ${{ inputs.filter }}
+          INPUT_TIMEOUT: ${{ inputs.timeout }}
+          LABEL: ${{ needs.resolve-ref.outputs.label }}
+        run: |
+          cd apps/backend
+          echo "🧪 Bundling $LABEL"
+          args=()
+          if [ -n "$INPUT_FILTER" ]; then args+=(--filter "$INPUT_FILTER"); fi
+          if [ -n "$INPUT_TIMEOUT" ]; then args+=(--timeout "$INPUT_TIMEOUT"); fi
+          bun run test:workflows "${args[@]}"
+
+      - name: Upload bundle logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: workflow-bundle-logs
+          path: apps/backend/workflow-bundle-logs/
+          if-no-files-found: ignore
+          retention-days: 14
