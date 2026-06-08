@@ -1,0 +1,2 @@
+ALTER TABLE "sales_digest_animations" ADD CONSTRAINT "sales_digest_animations_window_bounds_check" CHECK ("sales_digest_animations"."window_end" >= "sales_digest_animations"."window_start");--> statement-breakpoint
+ALTER TABLE "sales_digest_target_deliveries" ADD CONSTRAINT "sales_digest_target_deliveries_window_bounds_check" CHECK ("sales_digest_target_deliveries"."window_end" >= "sales_digest_target_deliveries"."window_start");

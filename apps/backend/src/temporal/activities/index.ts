@@ -20,4 +20,5 @@ export * as PbnIssuanceReservationsActivities from './pbn-issuance-reservations.
 export * as X402Activities from './x402.activities';
 export * as LeadgenActivities from './leadgen.activities';
 export * as NamefiFeedActivities from './namefi-feed.activities';
+export * as NamefiFeedDigestActivities from './namefi-feed-digest.activities';
 export * as NamefiFeedLogoActivities from './namefi-feed-logo.activities';

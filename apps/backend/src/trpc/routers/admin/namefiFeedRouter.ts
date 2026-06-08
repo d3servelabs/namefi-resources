@@ -6,11 +6,18 @@ import { ResourceType } from '#lib/auditor';
 import { secrets } from '#lib/env';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
+import { namefiFeedSalesDigestWorkflow } from '#temporal/workflows/namefi-feed-digest.workflow';
 import { namefiFeedIngestionWorkflow } from '#temporal/workflows/namefi-feed-ingestion.workflow';
 import {
   getNamefiFeedAdminOverview,
   updateNamefiFeedSettings,
 } from '../../../services/namefi-feed/admin.service';
+import {
+  createNamefiFeedSalesDigestTarget,
+  deleteNamefiFeedSalesDigestTarget,
+  SalesDigestTargetInputError,
+  updateNamefiFeedSalesDigestTarget,
+} from '../../../services/namefi-feed/digest-targets.service';
 import {
   NamefiFeedListingConflictError,
   NamefiFeedListingNotFoundError,
@@ -33,6 +40,11 @@ export const namefiFeedRouter = createContractTRPCRouter<
     .query(async () => {
       return getNamefiFeedAdminOverview(
         Boolean(secrets.NAMEFI_FEED_X_BEARER_TOKEN),
+        {
+          slack: Boolean(secrets.SLACK_BOT_TOKEN),
+          telegram: Boolean(secrets.TELEGRAM_BOT_TOKEN),
+          discord: Boolean(secrets.DISCORD_BOT_TOKEN),
+        },
       );
     }),
 
@@ -102,6 +114,155 @@ export const namefiFeedRouter = createContractTRPCRouter<
       return { workflowId };
     }),
 
+  runDigest: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NAMEFI_FEED,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.WORKFLOW,
+      resourceId: 'namefi-feed-digest',
+      action: 'start_namefi_feed_sales_digest',
+      extraInput: input,
+    }),
+  )
+    .input(adminNamefiFeedContract.runDigest.input)
+    .output(adminNamefiFeedContract.runDigest.output)
+    .mutation(async ({ ctx, input }) => {
+      const workflowId = `namefi-feed-digest-${Date.now()}-${randomUUID()}`;
+      try {
+        await temporalClient.workflow.start(namefiFeedSalesDigestWorkflow, {
+          args: [
+            {
+              trigger: 'manual',
+              requestedByUserId: ctx.user.id,
+              includeImage: input.includeImage,
+              includeAnimation: input.includeAnimation,
+              enabledOnly: input.enabledOnly,
+              dryRun: input.dryRun,
+              targetIds: input.targetIds,
+            },
+          ],
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          workflowId,
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          workflowIdConflictPolicy: 'USE_EXISTING',
+        });
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message:
+            error instanceof Error
+              ? error.message
+              : 'Failed to start Namefi feed digest.',
+        });
+      }
+
+      return { workflowId };
+    }),
+
+  createDigestTarget: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NAMEFI_FEED,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.OTHER,
+      resourceId: `namefi-feed-digest-target-${input.targetType}`,
+      action: 'create_namefi_feed_digest_target',
+      extraInput: input,
+    }),
+  )
+    .input(adminNamefiFeedContract.createDigestTarget.input)
+    .output(adminNamefiFeedContract.createDigestTarget.output)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await createNamefiFeedSalesDigestTarget({
+          ...input,
+          createdByUserId: ctx.user.id,
+        });
+      } catch (error) {
+        throw mapNamefiFeedAdminError(
+          error,
+          'Failed to create Namefi feed digest target.',
+        );
+      }
+    }),
+
+  updateDigestTarget: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NAMEFI_FEED,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.OTHER,
+      resourceId: input.id,
+      action: 'update_namefi_feed_digest_target',
+      extraInput: input,
+    }),
+  )
+    .input(adminNamefiFeedContract.updateDigestTarget.input)
+    .output(adminNamefiFeedContract.updateDigestTarget.output)
+    .mutation(async ({ input }) => {
+      try {
+        const updated = await updateNamefiFeedSalesDigestTarget(
+          input.id,
+          input,
+        );
+        if (!updated) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Namefi feed digest target not found.',
+          });
+        }
+        return updated;
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        throw mapNamefiFeedAdminError(
+          error,
+          'Failed to update Namefi feed digest target.',
+        );
+      }
+    }),
+
+  deleteDigestTarget: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NAMEFI_FEED,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.OTHER,
+      resourceId: input.targetId,
+      action: 'delete_namefi_feed_digest_target',
+      extraInput: input,
+    }),
+  )
+    .input(adminNamefiFeedContract.deleteDigestTarget.input)
+    .output(adminNamefiFeedContract.deleteDigestTarget.output)
+    .mutation(async ({ input }) => {
+      try {
+        const deleted = await deleteNamefiFeedSalesDigestTarget(input.targetId);
+        if (!deleted) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Namefi feed digest target not found.',
+          });
+        }
+
+        return { id: input.targetId, deleted };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        throw mapNamefiFeedAdminError(
+          error,
+          'Failed to delete Namefi feed digest target.',
+        );
+      }
+    }),
+
   setListingSuppressed: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NAMEFI_FEED,
     ({ ctx, input, auditActorExtraInfo }) => ({
@@ -168,6 +329,12 @@ function mapNamefiFeedAdminError(error: unknown, fallbackMessage: string) {
   if (error instanceof NamefiFeedListingConflictError) {
     return new TRPCError({
       code: 'CONFLICT',
+      message: error.message,
+    });
+  }
+  if (error instanceof SalesDigestTargetInputError) {
+    return new TRPCError({
+      code: 'BAD_REQUEST',
       message: error.message,
     });
   }

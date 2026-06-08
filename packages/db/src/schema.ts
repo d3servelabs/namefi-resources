@@ -2086,6 +2086,166 @@ export const namefiFeedListingReportsTable = pgTable(
   ],
 );
 
+export const salesDigestTargetTypeEnum = pgEnum('sales_digest_target_type', [
+  'slack',
+  'telegram_group',
+  'discord_channel',
+]);
+
+export const salesDigestTargetDeliveryStatusEnum = pgEnum(
+  'sales_digest_target_delivery_status',
+  ['pending', 'sent', 'failed', 'skipped', 'partial'],
+);
+
+export type SalesDigestTargetConfig = {
+  channelId?: string;
+  guildId?: string | null;
+  chatId?: string;
+  messageThreadId?: number | null;
+  [key: string]: Json | undefined;
+};
+
+export const salesDigestTargetsTable = pgTable(
+  'sales_digest_targets',
+  {
+    ...randomUuid,
+    targetType: salesDigestTargetTypeEnum('target_type').notNull(),
+    label: text('label').notNull(),
+    enabled: boolean('enabled').notNull().default(true),
+    config: jsonb('config').$type<SalesDigestTargetConfig>().notNull(),
+    createdByUserId: uuid('created_by_user_id').references(
+      () => usersTable.id,
+      { onDelete: 'set null' },
+    ),
+    ...timestamps,
+  },
+  (table) => [
+    index('sales_digest_targets_type_enabled_idx').on(
+      table.targetType,
+      table.enabled,
+    ),
+    index('sales_digest_targets_created_by_idx').on(table.createdByUserId),
+    uniqueIndex('sales_digest_targets_slack_channel_unique')
+      .on(sql.raw(`("config"->>'channelId')`))
+      .where(sql`${table.targetType} = 'slack'`),
+    uniqueIndex('sales_digest_targets_discord_channel_unique')
+      .on(sql.raw(`("config"->>'channelId')`))
+      .where(sql`${table.targetType} = 'discord_channel'`),
+    uniqueIndex('sales_digest_targets_telegram_chat_thread_unique')
+      .on(
+        sql.raw(`("config"->>'chatId')`),
+        sql`COALESCE(${table.config}->>'messageThreadId', '')`,
+      )
+      .where(sql`${table.targetType} = 'telegram_group'`),
+  ],
+);
+
+export const salesDigestTargetDeliveriesTable = pgTable(
+  'sales_digest_target_deliveries',
+  {
+    ...randomUuid,
+    targetId: uuid('target_id').references(() => salesDigestTargetsTable.id, {
+      onDelete: 'set null',
+    }),
+    targetKey: text('target_key').notNull(),
+    status: salesDigestTargetDeliveryStatusEnum('status')
+      .notNull()
+      .default('pending'),
+    createdByUserId: uuid('created_by_user_id').references(
+      () => usersTable.id,
+      { onDelete: 'set null' },
+    ),
+    windowStart: timestamp('window_start').notNull(),
+    windowEnd: timestamp('window_end').notNull(),
+    generatedAt: timestamp('generated_at').notNull().defaultNow(),
+    digestTextHash: text('digest_text_hash').notNull(),
+    externalMessageId: text('external_message_id'),
+    externalMessageUrl: text('external_message_url'),
+    error: text('error'),
+    response: jsonb('response').$type<Record<string, Json> | null>(),
+    ...timestamps,
+  },
+  (table) => [
+    unique('sales_digest_deliveries_target_window_digest_unique').on(
+      table.targetKey,
+      table.windowStart,
+      table.digestTextHash,
+    ),
+    check(
+      'sales_digest_target_deliveries_window_bounds_check',
+      sql`${table.windowEnd} >= ${table.windowStart}`,
+    ),
+    index('sales_digest_deliveries_target_created_idx').on(
+      table.targetId,
+      table.createdAt.desc(),
+    ),
+    index('sales_digest_deliveries_status_created_idx').on(
+      table.status,
+      table.createdAt.desc(),
+    ),
+  ],
+);
+
+export const salesDigestAnimationsTable = pgTable(
+  'sales_digest_animations',
+  {
+    ...randomUuid,
+    windowStart: timestamp('window_start').notNull(),
+    windowEnd: timestamp('window_end').notNull(),
+    generatedAt: timestamp('generated_at').notNull(),
+    domains: jsonb('domains')
+      .$type<string[]>()
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    digestTextHash: text('digest_text_hash').notNull(),
+    sourceImageDataUrlHash: text('source_image_data_url_hash').notNull(),
+    externalUserId: text('external_user_id').notNull(),
+    title: text('title').notNull(),
+    model: text('model').notNull(),
+    sheetModel: text('sheet_model').notNull(),
+    astraGenerationId: text('astra_generation_id').notNull(),
+    url: text('url').notNull(),
+    storagePath: text('storage_path').notNull(),
+    mimeType: text('mime_type').notNull().default('video/mp4'),
+    sourceImageUrl: text('source_image_url').notNull(),
+    sourceImageStoragePath: text('source_image_storage_path').notNull(),
+    sourceImageMimeType: text('source_image_mime_type').notNull(),
+    sheetUrl: text('sheet_url').notNull(),
+    sheetStoragePath: text('sheet_storage_path').notNull(),
+    sheetPrompt: text('sheet_prompt').notNull(),
+    videoPrompt: text('video_prompt').notNull(),
+    animationCreatedAt: timestamp('animation_created_at').notNull(),
+    tokenUsage: jsonb('token_usage')
+      .$type<Array<Record<string, Json>>>()
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    providerMetadata: jsonb('provider_metadata').$type<Record<
+      string,
+      Json
+    > | null>(),
+    warnings: jsonb('warnings')
+      .$type<Json[]>()
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    ...timestamps,
+  },
+  (table) => [
+    unique('sales_digest_animations_window_text_image_unique').on(
+      table.windowStart,
+      table.digestTextHash,
+      table.externalUserId,
+      table.model,
+      table.sheetModel,
+      table.sourceImageDataUrlHash,
+    ),
+    check(
+      'sales_digest_animations_window_bounds_check',
+      sql`${table.windowEnd} >= ${table.windowStart}`,
+    ),
+    index('sales_digest_animations_generated_idx').on(table.generatedAt.desc()),
+  ],
+);
+
 /**
  * Free claims table
  * Stores rows that determine whether users qualify for free domain claims

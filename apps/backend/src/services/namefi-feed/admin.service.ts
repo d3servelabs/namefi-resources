@@ -13,6 +13,10 @@ import {
   buildTweetUrl,
   DEFAULT_NAMEFI_FEED_SEARCH_QUERIES,
 } from './normalization';
+import {
+  listNamefiFeedSalesDigestTargets,
+  listRecentNamefiFeedSalesDigestDeliveries,
+} from './digest-targets.service';
 
 type AdminNamefiFeedOutputs = InferContractOutputs<AdminNamefiFeedContract>;
 export type AdminNamefiFeedSettings = AdminNamefiFeedOutputs['updateSettings'];
@@ -117,6 +121,11 @@ export async function updateNamefiFeedLastAutoScanCursorAt(date: Date) {
 
 export async function getNamefiFeedAdminOverview(
   xBearerTokenConfigured: boolean,
+  digestPublisherConfigured: {
+    slack: boolean;
+    telegram: boolean;
+    discord: boolean;
+  },
 ): Promise<AdminNamefiFeedOverview> {
   const settings = await getNamefiFeedSettingsRow();
   const [
@@ -131,6 +140,8 @@ export async function getNamefiFeedAdminOverview(
     recentPosts,
     recentListings,
     recentReports,
+    digestTargets,
+    recentDigestDeliveries,
   ] = await Promise.all([
     countNamefiFeedPosts(),
     countNamefiFeedPosts(eq(namefiFeedPostsTable.status, 'pending')),
@@ -143,11 +154,14 @@ export async function getNamefiFeedAdminOverview(
     listRecentPosts(),
     listRecentListings(),
     listRecentReports(),
+    listNamefiFeedSalesDigestTargets(),
+    listRecentNamefiFeedSalesDigestDeliveries(),
   ]);
 
   return {
     settings: toAdminSettings(settings),
     xBearerTokenConfigured,
+    digestPublisherConfigured,
     stats: {
       totalPosts,
       pendingPosts,
@@ -156,11 +170,16 @@ export async function getNamefiFeedAdminOverview(
       suppressedListings,
       activeReports,
       runningRuns,
+      digestTargets: digestTargets.length,
+      enabledDigestTargets: digestTargets.filter((target) => target.enabled)
+        .length,
     },
     recentRuns,
     recentPosts,
     recentListings,
     recentReports,
+    digestTargets,
+    recentDigestDeliveries,
   };
 }
 

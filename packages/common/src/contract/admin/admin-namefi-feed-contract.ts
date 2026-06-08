@@ -78,9 +78,89 @@ export const adminNamefiFeedReportSchema = z.object({
   sourceUrl: z.string(),
 });
 
+export const adminNamefiFeedDigestTargetTypeSchema = z.enum([
+  'slack',
+  'telegram_group',
+  'discord_channel',
+]);
+
+export const adminNamefiFeedSlackDigestTargetConfigSchema = z
+  .object({
+    channelId: z.string().trim().min(1).max(128),
+  })
+  .strict();
+
+export const adminNamefiFeedTelegramDigestTargetConfigSchema = z
+  .object({
+    chatId: z.string().trim().min(1).max(128),
+    messageThreadId: z.number().int().positive().nullable().optional(),
+  })
+  .strict();
+
+export const adminNamefiFeedDiscordDigestTargetConfigSchema = z
+  .object({
+    channelId: z.string().trim().min(1).max(128),
+    guildId: z.string().trim().min(1).max(128).nullable().optional(),
+  })
+  .strict();
+
+export const adminNamefiFeedDigestTargetConfigSchema = z.union([
+  adminNamefiFeedSlackDigestTargetConfigSchema,
+  adminNamefiFeedTelegramDigestTargetConfigSchema,
+  adminNamefiFeedDiscordDigestTargetConfigSchema,
+]);
+
+const adminNamefiFeedDigestTargetBaseSchema = z.object({
+  id: z.string().uuid(),
+  targetKey: z.string(),
+  label: z.string(),
+  enabled: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export const adminNamefiFeedDigestTargetSchema = z.discriminatedUnion(
+  'targetType',
+  [
+    adminNamefiFeedDigestTargetBaseSchema.extend({
+      targetType: z.literal('slack'),
+      config: adminNamefiFeedSlackDigestTargetConfigSchema,
+    }),
+    adminNamefiFeedDigestTargetBaseSchema.extend({
+      targetType: z.literal('telegram_group'),
+      config: adminNamefiFeedTelegramDigestTargetConfigSchema,
+    }),
+    adminNamefiFeedDigestTargetBaseSchema.extend({
+      targetType: z.literal('discord_channel'),
+      config: adminNamefiFeedDiscordDigestTargetConfigSchema,
+    }),
+  ],
+);
+
+export const adminNamefiFeedDigestDeliverySchema = z.object({
+  id: z.string().uuid(),
+  targetId: z.string().uuid().nullable(),
+  targetKey: z.string(),
+  targetLabel: z.string().nullable(),
+  targetType: adminNamefiFeedDigestTargetTypeSchema.nullable(),
+  status: z.enum(['pending', 'sent', 'failed', 'skipped', 'partial']),
+  windowStart: z.string(),
+  windowEnd: z.string(),
+  generatedAt: z.string(),
+  externalMessageId: z.string().nullable(),
+  externalMessageUrl: z.string().nullable(),
+  error: z.string().nullable(),
+  createdAt: z.string(),
+});
+
 export const adminNamefiFeedOverviewSchema = z.object({
   settings: adminNamefiFeedSettingsSchema,
   xBearerTokenConfigured: z.boolean(),
+  digestPublisherConfigured: z.object({
+    slack: z.boolean(),
+    telegram: z.boolean(),
+    discord: z.boolean(),
+  }),
   stats: z.object({
     totalPosts: z.number().int().nonnegative(),
     pendingPosts: z.number().int().nonnegative(),
@@ -89,11 +169,15 @@ export const adminNamefiFeedOverviewSchema = z.object({
     suppressedListings: z.number().int().nonnegative(),
     activeReports: z.number().int().nonnegative(),
     runningRuns: z.number().int().nonnegative(),
+    digestTargets: z.number().int().nonnegative(),
+    enabledDigestTargets: z.number().int().nonnegative(),
   }),
   recentRuns: z.array(adminNamefiFeedRunSchema),
   recentPosts: z.array(adminNamefiFeedPostSchema),
   recentListings: z.array(adminNamefiFeedListingSchema),
   recentReports: z.array(adminNamefiFeedReportSchema),
+  digestTargets: z.array(adminNamefiFeedDigestTargetSchema),
+  recentDigestDeliveries: z.array(adminNamefiFeedDigestDeliverySchema),
 });
 
 const updateSettingsInputSchema = z.object({
@@ -127,6 +211,59 @@ const startIngestionInputSchema = z.discriminatedUnion('mode', [
   }),
 ]);
 
+const runDigestInputSchema = z.object({
+  includeImage: z.boolean().optional().default(true),
+  includeAnimation: z.boolean().optional().default(true),
+  enabledOnly: z.boolean().optional().default(true),
+  dryRun: z.boolean().optional().default(false),
+  targetIds: z.array(z.string().uuid()).max(25).optional(),
+});
+
+const createDigestTargetInputSchema = z.discriminatedUnion('targetType', [
+  z.object({
+    targetType: z.literal('slack'),
+    label: z.string().trim().min(1).max(120).optional(),
+    enabled: z.boolean().optional().default(true),
+    config: adminNamefiFeedSlackDigestTargetConfigSchema,
+  }),
+  z.object({
+    targetType: z.literal('telegram_group'),
+    label: z.string().trim().min(1).max(120).optional(),
+    enabled: z.boolean().optional().default(true),
+    config: adminNamefiFeedTelegramDigestTargetConfigSchema,
+  }),
+  z.object({
+    targetType: z.literal('discord_channel'),
+    label: z.string().trim().min(1).max(120).optional(),
+    enabled: z.boolean().optional().default(true),
+    config: adminNamefiFeedDiscordDigestTargetConfigSchema,
+  }),
+]);
+
+const updateDigestTargetInputSchema = z.discriminatedUnion('targetType', [
+  z.object({
+    id: z.string().uuid(),
+    targetType: z.literal('slack'),
+    label: z.string().trim().min(1).max(120).optional(),
+    enabled: z.boolean().optional(),
+    config: adminNamefiFeedSlackDigestTargetConfigSchema.optional(),
+  }),
+  z.object({
+    id: z.string().uuid(),
+    targetType: z.literal('telegram_group'),
+    label: z.string().trim().min(1).max(120).optional(),
+    enabled: z.boolean().optional(),
+    config: adminNamefiFeedTelegramDigestTargetConfigSchema.optional(),
+  }),
+  z.object({
+    id: z.string().uuid(),
+    targetType: z.literal('discord_channel'),
+    label: z.string().trim().min(1).max(120).optional(),
+    enabled: z.boolean().optional(),
+    config: adminNamefiFeedDiscordDigestTargetConfigSchema.optional(),
+  }),
+]);
+
 export const adminNamefiFeedContract = createContract(
   { softOutput: true },
   {
@@ -145,6 +282,33 @@ export const adminNamefiFeedContract = createContract(
       input: startIngestionInputSchema,
       output: z.object({
         workflowId: z.string(),
+      }),
+    },
+    runDigest: {
+      type: 'mutation',
+      input: runDigestInputSchema,
+      output: z.object({
+        workflowId: z.string(),
+      }),
+    },
+    createDigestTarget: {
+      type: 'mutation',
+      input: createDigestTargetInputSchema,
+      output: adminNamefiFeedDigestTargetSchema,
+    },
+    updateDigestTarget: {
+      type: 'mutation',
+      input: updateDigestTargetInputSchema,
+      output: adminNamefiFeedDigestTargetSchema,
+    },
+    deleteDigestTarget: {
+      type: 'mutation',
+      input: z.object({
+        targetId: z.string().uuid(),
+      }),
+      output: z.object({
+        id: z.string().uuid(),
+        deleted: z.boolean(),
       }),
     },
     setListingSuppressed: {

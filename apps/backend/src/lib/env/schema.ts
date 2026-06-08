@@ -46,6 +46,9 @@ export const secretsSchema = z.object({
   DEEPSEEK_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   NAMEFI_FEED_X_BEARER_TOKEN: z.string().optional(),
+  SLACK_BOT_TOKEN: z.string().optional(),
+  TELEGRAM_BOT_TOKEN: z.string().optional(),
+  DISCORD_BOT_TOKEN: z.string().optional(),
 
   AWS_ACCESS_KEY_ID: z.string(),
   AWS_SECRET_ACCESS_KEY: z.string(),

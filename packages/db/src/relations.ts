@@ -13,6 +13,8 @@ import {
   namefiFeedListingReportsTable,
   namefiFeedListingsTable,
   namefiFeedPostsTable,
+  salesDigestTargetDeliveriesTable,
+  salesDigestTargetsTable,
   linkSharesTable,
   orderItemsTable,
   orderNfscItemsTable,
@@ -33,6 +35,8 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   aiCreditAwards: many(aiCreditAwardsTable),
   leadgenRuns: many(leadgenRunsTable),
   namefiFeedIngestionRuns: many(namefiFeedIngestionRunsTable),
+  salesDigestTargets: many(salesDigestTargetsTable),
+  salesDigestTargetDeliveries: many(salesDigestTargetDeliveriesTable),
   wishlistedDomains: many(wishlistedDomainsTable),
   linkShares: many(linkSharesTable),
   feedbackResponses: many(feedbackResponsesTable),
@@ -232,6 +236,31 @@ export const namefiFeedListingReportsRelations = relations(
     listing: one(namefiFeedListingsTable, {
       fields: [namefiFeedListingReportsTable.listingId],
       references: [namefiFeedListingsTable.id],
+    }),
+  }),
+);
+
+export const salesDigestTargetsRelations = relations(
+  salesDigestTargetsTable,
+  ({ one, many }) => ({
+    createdByUser: one(usersTable, {
+      fields: [salesDigestTargetsTable.createdByUserId],
+      references: [usersTable.id],
+    }),
+    deliveries: many(salesDigestTargetDeliveriesTable),
+  }),
+);
+
+export const salesDigestTargetDeliveriesRelations = relations(
+  salesDigestTargetDeliveriesTable,
+  ({ one }) => ({
+    target: one(salesDigestTargetsTable, {
+      fields: [salesDigestTargetDeliveriesTable.targetId],
+      references: [salesDigestTargetsTable.id],
+    }),
+    createdByUser: one(usersTable, {
+      fields: [salesDigestTargetDeliveriesTable.createdByUserId],
+      references: [usersTable.id],
     }),
   }),
 );

@@ -56,6 +56,7 @@ export * from './internal-logo-generation.workflow';
 export * from './studio-generation.workflow';
 export * from './public-digest-animation.workflow';
 export * from './leadgen.workflow';
+export * from './namefi-feed-digest.workflow';
 export * from './namefi-feed-ingestion.workflow';
 export * from './namefi-feed-listing-logo.workflow';
 export * from './cart-domains-popular.workflow';

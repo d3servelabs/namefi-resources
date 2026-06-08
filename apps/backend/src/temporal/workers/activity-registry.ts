@@ -16,6 +16,7 @@ import {
   PublicDigestAnimationActivities,
   LeadgenActivities,
   NamefiFeedActivities,
+  NamefiFeedDigestActivities,
   NamefiFeedLogoActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
@@ -50,6 +51,7 @@ export const ACTIVITIES = {
     ...PublicDigestAnimationActivities,
     ...LeadgenActivities,
     ...NamefiFeedActivities,
+    ...NamefiFeedDigestActivities,
     ...NamefiFeedLogoActivities,
 
     ...FreeClaimActivities,

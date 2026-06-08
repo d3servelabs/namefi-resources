@@ -48,6 +48,7 @@ export * from './leadgen/agents';
 export * from './leadgen/domain';
 export * from './leadgen/types';
 export * from './namefi-feed/domain-sale-classifier';
+export * from './namefi-feed/sales-digest';
 export * from './types/generation';
 export * from './types/logo-options';
 export * from './workflows/digest-animation-workflow';

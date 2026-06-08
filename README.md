@@ -42,6 +42,16 @@ The dev runner will automatically allocate an available port block and display t
 
 Ports are dynamically assigned to allow multiple dev instances to run concurrently (3000-3005, 3100-3105, etc.).
 
+### Namefi Feed Digest Channel Tokens
+
+Namefi Feed digest publishing supports Slack, Telegram, and Discord targets. These backend secrets are optional at process startup, but the matching token is required when an enabled digest target uses that channel:
+
+- `SLACK_BOT_TOKEN`: Slack bot token for posting digest messages and uploaded media.
+- `TELEGRAM_BOT_TOKEN`: Telegram bot token for sending digest messages and media to configured chats.
+- `DISCORD_BOT_TOKEN`: Discord bot token for posting digest messages and uploaded media.
+
+For example, enabling a Slack digest target requires `SLACK_BOT_TOKEN` to be present; enabling Telegram or Discord targets similarly requires `TELEGRAM_BOT_TOKEN` or `DISCORD_BOT_TOKEN`.
+
 ## Installing the prerequisites and dependencies
 
 You would likely need to install the following prerequisites:
