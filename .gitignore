@@ -322,3 +322,4 @@ scripts/.gsc-oauth-*.json
 scripts/.gsc-deps/
 out/
 .gstack/
+.opencode/
