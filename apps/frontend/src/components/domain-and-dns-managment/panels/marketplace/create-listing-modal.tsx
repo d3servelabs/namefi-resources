@@ -58,6 +58,10 @@ interface Props {
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  showTrigger?: boolean;
+  triggerLabel?: string;
 }
 
 export function CreateListingModal({
@@ -65,8 +69,12 @@ export function CreateListingModal({
   chainId,
   tokenAddress,
   tokenId,
+  defaultOpen = false,
+  onOpenChange,
+  showTrigger = true,
+  triggerLabel = 'Create listing',
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenState] = useState(defaultOpen);
   const { address: connectedAddress } = useAccount();
   const activeChainId = useChainId();
   const { switchChainAsync } = useSwitchChain();
@@ -74,7 +82,12 @@ export function CreateListingModal({
 
   // Existing listings — a marketplace that already has an active listing for this
   // token is disabled in the selector (OpenSea allows only one listing per NFT).
-  const listingsQuery = useListings({ chainId, tokenAddress, tokenId });
+  const listingsQuery = useListings({
+    chainId,
+    tokenAddress,
+    tokenId,
+    enabled: open,
+  });
   const marketplacesWithListings = useMemo(
     () => new Set((listingsQuery.data ?? []).map((l) => l.marketplace)),
     [listingsQuery.data],
@@ -163,6 +176,10 @@ export function CreateListingModal({
   }, [priceInput, currency]);
 
   const fees = useEstimatedFees(priceWei);
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpenState(nextOpen);
+    onOpenChange?.(nextOpen);
+  };
 
   const createMutation = useCreateListing({
     chainId,
@@ -190,7 +207,7 @@ export function CreateListingModal({
           },
         },
       );
-      setOpen(false);
+      handleOpenChange(false);
     },
   });
 
@@ -201,10 +218,15 @@ export function CreateListingModal({
     (d) => d.seconds === durationSeconds,
   );
   const selectedMarketplaceListed = selectedMarketplace?.alreadyListed ?? false;
+  const isListingStatusLoading = open && listingsQuery.isLoading;
 
   const handleSubmit = async () => {
     if (!connectedAddress) {
       toast.error('Connect a wallet to list this domain.');
+      return;
+    }
+    if (isListingStatusLoading) {
+      toast('Still checking active listings');
       return;
     }
     if (selectedMarketplaceListed) {
@@ -252,18 +274,20 @@ export function CreateListingModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button
-            size="sm"
-            className="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
-          />
-        }
-      >
-        <Plus className="h-4 w-4 mr-1.5" />
-        Create listing
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {showTrigger ? (
+        <DialogTrigger
+          render={
+            <Button
+              size="sm"
+              className="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
+            />
+          }
+        >
+          <Plus className="h-4 w-4 mr-1.5" />
+          {triggerLabel}
+        </DialogTrigger>
+      ) : null}
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-zinc-100">
@@ -304,7 +328,11 @@ export function CreateListingModal({
                   ))}
                 </SelectContent>
               </Select>
-              {allMarketplacesListed ? (
+              {isListingStatusLoading ? (
+                <p className="text-xs text-zinc-500">
+                  Checking active listings...
+                </p>
+              ) : allMarketplacesListed ? (
                 <p className="text-xs text-amber-300">
                   This domain is already listed on every supported marketplace.
                   Cancel an existing listing to relist.
@@ -386,6 +414,7 @@ export function CreateListingModal({
               !priceWei ||
               !connectedAddress ||
               !currency ||
+              isListingStatusLoading ||
               selectedMarketplaceListed ||
               allMarketplacesListed
             }

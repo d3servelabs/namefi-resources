@@ -12,11 +12,13 @@ import {
   useRequirePostAuthIntent,
   type PostAuthIntentFor,
 } from '@/hooks/use-post-auth-intent';
+import { isChainSupportedByAnyMarketplace } from '@/lib/marketplaces/chains';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import {
   getLeadgenOutreachCreditEstimate,
   getLeadgenRunCreditEstimate,
 } from '@namefi-astra/common/ai-generation-credits';
+import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -46,6 +48,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { LeadgenUserSignalState } from '@namefi-astra/common/contract/leadgen-contract';
+import { useFlag } from '@openfeature/react-sdk';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import {
@@ -64,6 +67,7 @@ import {
   Mail,
   Play,
   Search,
+  ShoppingBag,
   Sparkles,
   Star,
   Target,
@@ -78,6 +82,7 @@ import {
   useReducedMotion,
 } from 'motion/react';
 import type { Route } from 'next';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -147,6 +152,13 @@ const PROTOCOL_RE = /^https?:\/\//;
 const TRAILING_DOT_RE = /\.$/;
 const WHITESPACE_RE = /\s+/g;
 const getLeadgenRunHref = (runId: string) => `/outbound/${runId}` as Route;
+const CreateListingModal = dynamic(
+  () =>
+    import(
+      '@/components/domain-and-dns-managment/panels/marketplace/create-listing-modal'
+    ).then((m) => m.CreateListingModal),
+  { ssr: false },
+);
 const leadgenStatusLabels = {
   QUEUED: 'Queued',
   RUNNING: 'Searching',
@@ -324,6 +336,12 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     activeRunQuery.data?.id === activeRunId ? activeRunQuery.data : null;
   const activeLiveRun = liveRun?.id === activeRunId ? liveRun : null;
   const run = isAuthenticated ? (activeLiveRun ?? activeQueriedRun) : null;
+  const normalizedRunDomain = run ? normalizeDomainInput(run.domain) : null;
+  const ownedDomainForRun = normalizedRunDomain
+    ? userDomainsQuery.data?.find(
+        (domain) => domain.normalizedDomainName === normalizedRunDomain,
+      )
+    : undefined;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
   const usageData = isAuthenticated ? usageQuery.data : undefined;
@@ -479,6 +497,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
             isRunLoading={isRunLoading}
             isRunning={isRunning}
             run={run}
+            ownedDomain={ownedDomainForRun}
             startSuggestions={startSuggestions}
             isStartSuggestionsLoading={isStartSuggestionsLoading}
             onSelectStartSuggestion={handleSelectStartSuggestion}
@@ -528,6 +547,7 @@ function LeadgenWorkspacePanel({
   isRunLoading,
   isRunning,
   run,
+  ownedDomain,
   startSuggestions,
   isStartSuggestionsLoading,
   onSelectStartSuggestion,
@@ -536,6 +556,7 @@ function LeadgenWorkspacePanel({
   isRunLoading: boolean;
   isRunning: boolean;
   run: LeadgenSnapshot | null;
+  ownedDomain?: UserDomain;
   startSuggestions: LeadgenStartSuggestion[];
   isStartSuggestionsLoading: boolean;
   onSelectStartSuggestion: (suggestion: LeadgenStartSuggestion) => void;
@@ -550,6 +571,7 @@ function LeadgenWorkspacePanel({
       <RunWorkspace
         run={run}
         isRunning={isRunning}
+        ownedDomain={ownedDomain}
         onRunUpdated={onRunUpdated}
       />
     );
@@ -567,14 +589,36 @@ function LeadgenWorkspacePanel({
 function RunWorkspace({
   run,
   isRunning,
+  ownedDomain,
   onRunUpdated,
 }: {
   run: LeadgenSnapshot;
   isRunning: boolean;
+  ownedDomain?: UserDomain;
   onRunUpdated: (run: LeadgenSnapshot) => void;
 }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { value: marketplaceListingEnabled } = useFlag(
+    'marketplace-listings',
+    false,
+  );
+  const marketplaceChainSupported = ownedDomain
+    ? isChainSupportedByAnyMarketplace(ownedDomain.chainId)
+    : false;
+  const domainExportDetailsQuery = useQuery(
+    trpc.domainConfig.getDomainExportDetails.queryOptions(
+      {
+        domainName: ownedDomain?.normalizedDomainName ?? run.domain,
+      },
+      {
+        enabled:
+          marketplaceListingEnabled &&
+          Boolean(ownedDomain) &&
+          marketplaceChainSupported,
+      },
+    ),
+  );
   const usageQuery = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
   });
@@ -740,6 +784,12 @@ function RunWorkspace({
 
   const headerSubtitle = getRunHeaderSubtitle(run);
   const canExport = isLeadgenCrmCsvExportAvailable(run);
+  const canListOnMarketplace =
+    marketplaceListingEnabled &&
+    Boolean(ownedDomain) &&
+    marketplaceChainSupported &&
+    !domainExportDetailsQuery.isLoading &&
+    !(domainExportDetailsQuery.data?.readyToExport ?? false);
 
   const handleExportCrmCsv = () => {
     if (!canExport) {
@@ -766,17 +816,22 @@ function RunWorkspace({
             <p className="mt-2 min-h-10 max-w-2xl text-sm leading-5 text-muted-foreground line-clamp-2">
               {headerSubtitle}
             </p>
-            {canExport && (
-              <div className="mt-3 flex">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={handleExportCrmCsv}
-                >
-                  <Download data-icon="inline-start" />
-                  Export CRM CSV
-                </Button>
+            {(canExport || (canListOnMarketplace && ownedDomain)) && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {canExport && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportCrmCsv}
+                  >
+                    <Download data-icon="inline-start" />
+                    Export CRM CSV
+                  </Button>
+                )}
+                {canListOnMarketplace && ownedDomain ? (
+                  <OutboundMarketplaceListingCta domain={ownedDomain} />
+                ) : null}
               </div>
             )}
           </div>
@@ -839,6 +894,50 @@ function RunWorkspace({
         </aside>
       </div>
     </div>
+  );
+}
+
+function OutboundMarketplaceListingCta({ domain }: { domain: UserDomain }) {
+  const [modalMounted, setModalMounted] = useState(false);
+
+  const handleOpen = () => {
+    setModalMounted(true);
+  };
+
+  const handleModalOpenChange = (open: boolean) => {
+    if (!open) {
+      setModalMounted(false);
+    }
+  };
+
+  return (
+    <>
+      <Button
+        type="button"
+        size="sm"
+        className="shrink-0 bg-emerald-500 text-emerald-950 hover:bg-emerald-400"
+        onClick={handleOpen}
+        disabled={modalMounted}
+      >
+        {modalMounted ? (
+          <Loader2 className="animate-spin" />
+        ) : (
+          <ShoppingBag data-icon="inline-start" />
+        )}
+        List on marketplace
+      </Button>
+      {modalMounted ? (
+        <CreateListingModal
+          domain={domain.normalizedDomainName}
+          chainId={domain.chainId}
+          tokenAddress={NAMEFI_NFT_CONTRACT_ADDRESS}
+          tokenId={domain.tokenId.toString()}
+          defaultOpen
+          showTrigger={false}
+          onOpenChange={handleModalOpenChange}
+        />
+      ) : null}
+    </>
   );
 }
 
