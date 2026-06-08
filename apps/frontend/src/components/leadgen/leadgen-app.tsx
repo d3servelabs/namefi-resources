@@ -1134,6 +1134,7 @@ function OutboundMarketplaceListingCta({ domain }: { domain: UserDomain }) {
           defaultOpen
           showTrigger={false}
           onOpenChange={handleModalOpenChange}
+          ownerAddress={domain.ownerAddress as unknown as `0x${string}`}
         />
       ) : null}
     </>

@@ -166,6 +166,7 @@ function MarketplacePanelStory({
                       <MarketplacePanel
                         domain={MOCK_DOMAIN}
                         nftChainId={nftChainId}
+                        ownerAddress={MOCK_WALLET_ADDRESS as `0x${string}`}
                         isReadyForExport={isReadyForExport}
                       />
                     </div>

@@ -39,6 +39,7 @@ interface Props {
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
+  ownerAddress: Address;
 }
 
 export function CurrentListingsCard({
@@ -46,6 +47,7 @@ export function CurrentListingsCard({
   chainId,
   tokenAddress,
   tokenId,
+  ownerAddress,
 }: Props) {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const listingsQuery = useListings({ chainId, tokenAddress, tokenId });
@@ -112,6 +114,7 @@ export function CurrentListingsCard({
               chainId={chainId}
               tokenAddress={tokenAddress}
               tokenId={tokenId}
+              ownerAddress={ownerAddress}
             />
           </div>
         </div>

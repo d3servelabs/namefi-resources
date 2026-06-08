@@ -4,6 +4,7 @@ import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { getTokenIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { useMemo } from 'react';
+import type { Address } from 'viem';
 import { MARKETPLACE_SUPPORTED_CHAINS } from '@/lib/marketplaces/chains';
 import { CurrentListingsCard } from './current-listings-card';
 import { ExportBlockedCard } from './export-blocked-card';
@@ -21,6 +22,8 @@ interface Props {
   domain: string;
   /** Chain ID the NFT lives on. Comes from `trpc.domainConfig.getDomainOwnerWallet`. */
   nftChainId: number | bigint;
+  /** On-chain holder of the NFT. Comes from `trpc.domainConfig.getDomainOwnerWallet`. */
+  ownerAddress: Address;
   /**
    * Whether the domain is exportable to another registrar (`readyToExport` from
    * `trpc.domainConfig.getDomainExportDetails`). An exportable domain can't be
@@ -39,6 +42,7 @@ interface Props {
 export function MarketplacePanel({
   domain,
   nftChainId,
+  ownerAddress,
   isReadyForExport = false,
   isExportStatusLoading = false,
 }: Props) {
@@ -64,6 +68,7 @@ export function MarketplacePanel({
         chainId={chainId}
         tokenAddress={NAMEFI_NFT_CONTRACT_ADDRESS}
         tokenId={tokenId}
+        ownerAddress={ownerAddress}
       />
       <OffersCard
         chainId={chainId}

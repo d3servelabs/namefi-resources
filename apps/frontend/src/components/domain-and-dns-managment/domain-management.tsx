@@ -50,6 +50,7 @@ import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useFlag } from '@openfeature/react-sdk';
 import dynamic from 'next/dynamic';
+import type { Address } from 'viem';
 
 const MarketplacePanel = dynamic(
   () =>
@@ -329,6 +330,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                   <MarketplacePanel
                     domain={domain}
                     nftChainId={nft.chainId}
+                    ownerAddress={nft.ownerAddress as Address}
                     isReadyForExport={
                       domainExportDetailsQuery.data?.readyToExport ?? false
                     }

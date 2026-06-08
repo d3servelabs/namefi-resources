@@ -27,11 +27,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
-import { Plus, ShoppingBag } from 'lucide-react';
+import { Plus, ShoppingBag, Wallet2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { type Address, formatUnits, getAddress, parseUnits } from 'viem';
 import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import {
+  bind,
+  type RequestCancelledError,
+  RequestWalletConnectionDialog,
+  useRequestWalletConnection,
+} from '@/components/dialogs/use-request-wallet-connection';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { getMarketplacesSupportedOnChain } from '@/lib/marketplaces/chains';
@@ -62,6 +68,8 @@ interface Props {
   onOpenChange?: (open: boolean) => void;
   showTrigger?: boolean;
   triggerLabel?: string;
+  /** On-chain holder of the domain NFT — the wallet that must sign the listing. */
+  ownerAddress: Address;
 }
 
 export function CreateListingModal({
@@ -73,12 +81,24 @@ export function CreateListingModal({
   onOpenChange,
   showTrigger = true,
   triggerLabel = 'Create listing',
+  ownerAddress,
 }: Props) {
   const [open, setOpenState] = useState(defaultOpen);
   const { address: connectedAddress } = useAccount();
   const activeChainId = useChainId();
   const { switchChainAsync } = useSwitchChain();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const walletDialog = useRequestWalletConnection({
+    actionDescription: 'to sign the listing',
+  });
+
+  // A listing is signed by the wallet that holds the NFT, on the chain the NFT
+  // lives on. Until both match, the primary action prompts the user to connect
+  // and switch instead of sitting disabled.
+  const walletReady =
+    !!connectedAddress &&
+    connectedAddress.toLowerCase() === ownerAddress.toLowerCase() &&
+    activeChainId === chainId;
 
   // Existing listings — a marketplace that already has an active listing for this
   // token is disabled in the selector (OpenSea allows only one listing per NFT).
@@ -219,6 +239,29 @@ export function CreateListingModal({
   );
   const selectedMarketplaceListed = selectedMarketplace?.alreadyListed ?? false;
   const isListingStatusLoading = open && listingsQuery.isLoading;
+
+  const handleConnectWallet = async () => {
+    try {
+      await walletDialog.request({
+        chainId,
+        walletAddress: ownerAddress,
+        actionDescription: 'to sign the listing',
+      });
+    } catch (err) {
+      // User dismissed the dialog, or a request was already in flight — both
+      // are silent no-ops, not errors to surface.
+      if (
+        err &&
+        typeof err === 'object' &&
+        'code' in err &&
+        ((err as RequestCancelledError).code === 'cancelled' ||
+          (err as { code?: string }).code === 'blocked')
+      ) {
+        return;
+      }
+      throw err;
+    }
+  };
 
   const handleSubmit = async () => {
     if (!connectedAddress) {
@@ -407,24 +450,40 @@ export function CreateListingModal({
         )}
 
         <DialogFooter>
-          <AsyncButton
-            size="lg"
-            onClick={handleSubmit}
-            disabled={
-              !priceWei ||
-              !connectedAddress ||
-              !currency ||
-              isListingStatusLoading ||
-              selectedMarketplaceListed ||
-              allMarketplacesListed
-            }
-            className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
-          >
-            <ShoppingBag className="h-4 w-4 mr-2" />
-            List on {selectedMarketplace?.label ?? marketplaceId}
-          </AsyncButton>
+          {walletReady ? (
+            <AsyncButton
+              size="lg"
+              onClick={handleSubmit}
+              disabled={
+                !priceWei ||
+                !connectedAddress ||
+                !currency ||
+                isListingStatusLoading ||
+                selectedMarketplaceListed ||
+                allMarketplacesListed
+              }
+              className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
+            >
+              <ShoppingBag className="h-4 w-4 mr-2" />
+              List on {selectedMarketplace?.label ?? marketplaceId}
+            </AsyncButton>
+          ) : (
+            <AsyncButton
+              size="lg"
+              onClick={handleConnectWallet}
+              disabled={
+                allMarketplacesListed ||
+                availableMarketplaceOptions.length === 0
+              }
+              className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
+            >
+              <Wallet2 className="h-4 w-4 mr-2" />
+              Connect wallet
+            </AsyncButton>
+          )}
         </DialogFooter>
       </DialogContent>
+      <RequestWalletConnectionDialog {...bind(walletDialog)} />
     </Dialog>
   );
 }
