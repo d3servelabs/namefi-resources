@@ -69,7 +69,6 @@ const FOOTER_SECTIONS: Array<{
       { label: 'My Wishlist', href: 'https://namefi.io/wishlist' },
       { label: 'My Orders', href: 'https://namefi.io/orders' },
       { label: 'Payment Methods', href: 'https://namefi.io/payment-methods' },
-      { label: 'Manage DNS', href: 'https://namefi.io/manage' },
     ],
   },
   {

@@ -108,7 +108,6 @@ const FOOTER_SECTIONS: Array<{
       { label: 'My Wishlist', href: '/wishlist' },
       { label: 'My Orders', href: '/orders' },
       { label: 'Payment Methods', href: '/payment-methods' },
-      { label: 'Manage DNS', href: '/manage' },
     ],
   },
   {
