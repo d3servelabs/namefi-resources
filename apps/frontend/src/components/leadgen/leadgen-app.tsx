@@ -949,7 +949,7 @@ function LeadList({
   return (
     <LayoutGroup id={`leadgen-list-${sourceDomain}`}>
       <motion.div
-        layout
+        layout="position"
         className="flex flex-col gap-3"
         transition={transition}
       >
@@ -1157,7 +1157,7 @@ function LeadOrganizationSection({
 }) {
   return (
     <motion.section
-      layout
+      layout="position"
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -6 }}
