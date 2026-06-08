@@ -124,6 +124,14 @@ type DisplayableLeadgenEvent = LeadgenEvent & { message: string };
 type LeadgenContact = LeadgenLead['contacts'][number];
 type UserGenerationUsage = AppRouterOutput['ai']['getUserGenerationUsage'];
 type ReasoningEffort = LeadgenSnapshot['reasoningEffort'];
+type LeadgenStartRunPayload = {
+  domain: string;
+  reasoningEffort: ReasoningEffort;
+};
+type UnownedDomainRunConfirmation = {
+  payload: LeadgenStartRunPayload;
+  estimatedCredits?: number;
+};
 type OutreachRecipient = {
   email: string;
   name: string | null;
@@ -188,6 +196,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const [domain, setDomain] = useState('');
   const [reasoningEffort, setReasoningEffort] =
     useState<ReasoningEffort>('medium');
+  const [pendingUnownedDomainRun, setPendingUnownedDomainRun] =
+    useState<UnownedDomainRunConfirmation | null>(null);
+  const [isOwnershipCheckPending, setIsOwnershipCheckPending] = useState(false);
   const [activeRunId, setActiveRunIdState] = useState<string | null>(
     initialRunId ?? null,
   );
@@ -231,6 +242,11 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const usageQuery = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
     enabled: isAuthenticated,
+  });
+  const usageData = isAuthenticated ? usageQuery.data : undefined;
+  const estimatedRunCredits = getEstimatedRunCredits({
+    usage: usageData,
+    reasoningEffort,
   });
 
   const activeRunQuery = useQuery({
@@ -310,17 +326,70 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       },
     }),
   );
+
+  const getUserOwnsNamefiDomain = useCallback(
+    async (normalizedDomain: string) => {
+      const userDomains =
+        userDomainsQuery.data ??
+        (await queryClient.fetchQuery({
+          ...trpc.users.getCurrentUserDomains.queryOptions(),
+          staleTime: 60_000,
+        }));
+
+      return userDomains.some(
+        (userDomain) =>
+          normalizeDomainInput(userDomain.normalizedDomainName) ===
+          normalizedDomain,
+      );
+    },
+    [queryClient, trpc, userDomainsQuery.data],
+  );
+
+  const startRunWithOwnershipGuard = useCallback(
+    async (payload: LeadgenStartRunPayload) => {
+      setIsOwnershipCheckPending(true);
+
+      try {
+        const ownsDomain = await getUserOwnsNamefiDomain(payload.domain);
+        if (!ownsDomain) {
+          setPendingUnownedDomainRun({
+            payload,
+            estimatedCredits: getEstimatedRunCredits({
+              usage: usageData,
+              reasoningEffort: payload.reasoningEffort,
+            }),
+          });
+          return;
+        }
+
+        startRun.mutate(payload);
+      } catch (error) {
+        toast.error('Could not confirm domain ownership', {
+          description:
+            error instanceof Error ? error.message : 'Please try again.',
+        });
+      } finally {
+        setIsOwnershipCheckPending(false);
+      }
+    },
+    [getUserOwnsNamefiDomain, startRun, usageData],
+  );
+
   const postAuthHandlers = useMemo(
     () => ({
       'leadgen.run.start': async (
         intent: PostAuthIntentFor<'leadgen.run.start'>,
       ) => {
-        setDomain(intent.payload.domain);
-        setReasoningEffort(intent.payload.reasoningEffort);
-        await startRun.mutateAsync(intent.payload);
+        const payload = {
+          ...intent.payload,
+          domain: normalizeDomainInput(intent.payload.domain),
+        };
+        setDomain(payload.domain);
+        setReasoningEffort(payload.reasoningEffort);
+        await startRunWithOwnershipGuard(payload);
       },
     }),
-    [startRun],
+    [startRunWithOwnershipGuard],
   );
 
   usePostAuthIntentExecutor(postAuthHandlers);
@@ -356,20 +425,16 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     : undefined;
   const isRunning = run?.status === 'QUEUED' || run?.status === 'RUNNING';
   const isRunLoading = Boolean(activeRunId) && activeRunQuery.isLoading && !run;
-  const usageData = isAuthenticated ? usageQuery.data : undefined;
-  const estimatedRunCredits = getEstimatedRunCredits({
-    usage: usageData,
-    reasoningEffort,
-  });
+  const isSubmittingRun = startRun.isPending || isOwnershipCheckPending;
   const { canSubmit } = getLeadgenSubmitState({
     domain,
     estimatedRunCredits,
     isCreditLoading: isAuthenticated && usageQuery.isLoading,
-    isSubmitting: startRun.isPending,
+    isSubmitting: isSubmittingRun,
     usage: usageData,
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const normalized = normalizeDomainInput(domain);
     if (!isLikelyDomain(normalized)) {
       toast.error('Enter a domain', {
@@ -390,7 +455,21 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       return;
     }
 
-    startRun.mutate(payload);
+    await startRunWithOwnershipGuard(payload);
+  };
+
+  const handleConfirmUnownedDomainRun = () => {
+    const pendingRun = pendingUnownedDomainRun;
+    if (!pendingRun) return;
+
+    setPendingUnownedDomainRun(null);
+    startRun.mutate(pendingRun.payload);
+  };
+
+  const handleUnownedDomainDialogOpenChange = (open: boolean) => {
+    if (!open && !startRun.isPending) {
+      setPendingUnownedDomainRun(null);
+    }
   };
 
   const handleSelectStartSuggestion = (suggestion: LeadgenStartSuggestion) => {
@@ -470,9 +549,11 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
               <Button
                 className="w-full"
                 disabled={!canSubmit}
-                onClick={handleSubmit}
+                onClick={() => {
+                  void handleSubmit();
+                }}
               >
-                {startRun.isPending ? (
+                {isSubmittingRun ? (
                   <Loader2 className="animate-spin" />
                 ) : (
                   <Play />
@@ -517,6 +598,12 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
           />
         </main>
       </div>
+      <UnownedDomainRunDialog
+        pendingRun={pendingUnownedDomainRun}
+        isSubmitting={startRun.isPending}
+        onConfirm={handleConfirmUnownedDomainRun}
+        onOpenChange={handleUnownedDomainDialogOpenChange}
+      />
     </PageShell>
   );
 }
@@ -556,6 +643,59 @@ function useLeadgenDomainPrefill({
     });
     return () => cancelAnimationFrame(frame);
   }, [initialRunId, isAuthLoading, onPrefill, requestedDomain]);
+}
+
+function UnownedDomainRunDialog({
+  pendingRun,
+  isSubmitting,
+  onConfirm,
+  onOpenChange,
+}: {
+  pendingRun: UnownedDomainRunConfirmation | null;
+  isSubmitting: boolean;
+  onConfirm: () => void;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const domain = pendingRun?.payload.domain ?? '';
+  const creditEstimate =
+    pendingRun?.estimatedCredits !== undefined
+      ? `Estimated cost: ${formatAiCredits(pendingRun.estimatedCredits)}.`
+      : 'This buyer search will spend AI credits.';
+
+  return (
+    <Dialog open={Boolean(pendingRun)} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[460px]">
+        <DialogHeader>
+          <DialogTitle>Continue with this domain?</DialogTitle>
+          <DialogDescription>
+            Namefi does not show {domain} in your owned domains.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="rounded-md border border-amber-400/30 bg-amber-400/10 p-3 text-sm leading-6 text-amber-900 dark:text-amber-100">
+          Starting outbound lead generation for this domain will burn AI
+          credits. Proceed only if you own or represent this domain and are okay
+          spending those credits.
+          <span className="mt-2 block font-medium">{creditEstimate}</span>
+        </div>
+
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isSubmitting}
+            onClick={() => onOpenChange(false)}
+          >
+            Cancel
+          </Button>
+          <Button type="button" disabled={isSubmitting} onClick={onConfirm}>
+            {isSubmitting ? <Loader2 className="animate-spin" /> : <Play />}
+            Proceed
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function useLeadgenRunCsvExport() {
