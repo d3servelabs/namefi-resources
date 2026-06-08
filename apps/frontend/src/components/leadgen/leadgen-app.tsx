@@ -204,6 +204,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   );
   const [liveRun, setLiveRun] = useState<LeadgenSnapshot | null>(null);
   const activeRunIdRef = useRef(activeRunId);
+  const startRunInFlightRef = useRef(false);
 
   const selectActiveRunId = useCallback((runId: string | null) => {
     activeRunIdRef.current = runId;
@@ -309,6 +310,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const startRun = useMutation(
     trpc.leadgen.startRun.mutationOptions({
       onSuccess(snapshot) {
+        setPendingUnownedDomainRun(null);
         selectActiveRunId(snapshot.id);
         syncRunSnapshot(snapshot);
         router.push(getLeadgenRunHref(snapshot.id));
@@ -323,6 +325,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
         toast.error('Could not start buyer search', {
           description: error.message,
         });
+      },
+      onSettled() {
+        startRunInFlightRef.current = false;
       },
     }),
   );
@@ -347,6 +352,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 
   const startRunWithOwnershipGuard = useCallback(
     async (payload: LeadgenStartRunPayload) => {
+      if (startRunInFlightRef.current) return;
+
+      startRunInFlightRef.current = true;
       setIsOwnershipCheckPending(true);
 
       try {
@@ -359,11 +367,13 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
               reasoningEffort: payload.reasoningEffort,
             }),
           });
+          startRunInFlightRef.current = false;
           return;
         }
 
         startRun.mutate(payload);
       } catch (error) {
+        startRunInFlightRef.current = false;
         toast.error('Could not confirm domain ownership', {
           description:
             error instanceof Error ? error.message : 'Please try again.',
@@ -460,9 +470,9 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
 
   const handleConfirmUnownedDomainRun = () => {
     const pendingRun = pendingUnownedDomainRun;
-    if (!pendingRun) return;
+    if (!pendingRun || startRunInFlightRef.current) return;
 
-    setPendingUnownedDomainRun(null);
+    startRunInFlightRef.current = true;
     startRun.mutate(pendingRun.payload);
   };
 
