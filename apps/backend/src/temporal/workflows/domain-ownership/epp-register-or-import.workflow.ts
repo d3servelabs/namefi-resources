@@ -41,9 +41,9 @@ import {
  * timeout. IMPORT: 24 h poll deadline + 3-day admin window, well inside 21 days.
  */
 const REGISTER_POLL_ACTION_TIMEOUT_MS = 90 * 60 * 1000; // 90 minutes
-const REGISTER_POLL_DECISION_TIMEOUT_MS = 2 * 60 * 60 * 1000; // 2 hours
+const REGISTER_POLL_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
 const IMPORT_POLL_ACTION_TIMEOUT_MS = 24 * 60 * 60 * 1000; // 24 hours
-const IMPORT_POLL_DECISION_TIMEOUT_MS = 3 * 24 * 60 * 60 * 1000; // 3 days
+const IMPORT_POLL_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 3 days
 
 /**
  * Caps the IMPORT poll gate's RETRY cycles. Each cycle costs up to

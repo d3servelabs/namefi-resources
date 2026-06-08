@@ -20,7 +20,7 @@ import { chargeNfscWorkflow } from './mint.workflow';
 import type { SettleX402PaymentInput } from '../activities/x402.activities';
 
 /** Admin decision window once an NFSC-charge gate opens (7 days). */
-const CHARGE_NFSC_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000;
+const CHARGE_NFSC_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000;
 
 export type PaymentExtraMetadata = Pick<
   CreateStripePaymentIntentInput,

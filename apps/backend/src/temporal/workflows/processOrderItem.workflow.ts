@@ -25,7 +25,7 @@ import { processOrderItemGateResponseSchema } from '@namefi-astra/common/contrac
  * timing out and failing the item. Kept short because the user is already
  * charged and the held item blocks the parent order's settlement/refund.
  */
-const PROCESS_ORDER_ITEM_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 1 day
+const PROCESS_ORDER_ITEM_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
 
 export interface ProcessOrderItemWorkflowInput
   extends Omit<AcquireDomainWorkflowInput, 'operationType'> {
