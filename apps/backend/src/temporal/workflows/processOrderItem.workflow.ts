@@ -183,6 +183,10 @@ export async function processOrderItemWorkflow(
         normalizedDomainName,
         durationInYears,
         userId,
+        // Link the order item so the deferred NFT expiration update records the
+        // extend tx on it (metadata.extendTransaction).
+        orderId: input.orderId,
+        orderItemId: input.itemId,
       };
       // Extend/renew the domain registration
       await runItemOperation(() =>

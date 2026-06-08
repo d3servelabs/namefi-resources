@@ -1,8 +1,8 @@
 import { Gauge } from 'prom-client';
 import {
   indexedDomainsTable,
-  namefiNftCte,
-  namefiNftView,
+  committedNamefiNftCte,
+  committedNamefiNftView,
 } from '@namefi-astra/db';
 import { and, eq, isNull, sql, inArray } from 'drizzle-orm';
 import { register } from '../registry';
@@ -21,21 +21,21 @@ export async function collectDomainsInRegistrarMissingNft(
   ctx: MetricsContext,
 ): Promise<void> {
   const [row] = await ctx.db
-    .with(namefiNftCte)
+    .with(committedNamefiNftCte)
     .select({ count: sql<number>`COUNT(*)` })
     .from(indexedDomainsTable)
     .leftJoin(
-      namefiNftView,
+      committedNamefiNftView,
       eq(
         indexedDomainsTable.normalizedDomainName,
-        namefiNftView.normalizedDomainName,
+        committedNamefiNftView.normalizedDomainName,
       ),
     )
     .where(
       and(
-        inArray(namefiNftView.chainId, getAllowedChainsForNft()),
+        inArray(committedNamefiNftView.chainId, getAllowedChainsForNft()),
         eq(indexedDomainsTable.isMissingFromRegistrar, false),
-        isNull(namefiNftView.normalizedDomainName),
+        isNull(committedNamefiNftView.normalizedDomainName),
       ),
     );
 

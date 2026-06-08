@@ -160,7 +160,11 @@ export const orderItemFailureDetailsSchema = z.object({
 
 export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
   domainSetupOptions: orderItemDomainSetupOptionsSchema.optional(),
+  // On-chain tx that minted the NFT (REGISTER/IMPORT). Recorded out-of-band by
+  // the deferred mint, so it may appear after the item is already SUCCEEDED.
   mintTransaction: orderMintTransactionMetadataSchema.optional(),
+  // On-chain tx that updated the NFT expiration (RENEW). Same deferred shape.
+  extendTransaction: orderMintTransactionMetadataSchema.optional(),
   postProcessOrderItem: postProcessOrderItemSchema.optional(),
   requiredAction: orderItemRequiredActionSchema.optional(),
   failureDetails: orderItemFailureDetailsSchema.optional(),
@@ -241,6 +245,9 @@ export const orderMetadataSchema = z
   .object({
     ...claimMetadataShape,
     mintTransactions: z
+      .record(z.string(), orderMintTransactionMetadataSchema)
+      .optional(),
+    extendTransactions: z
       .record(z.string(), orderMintTransactionMetadataSchema)
       .optional(),
     backfilled_started_finished_at: z.boolean().optional(),

@@ -1,8 +1,8 @@
 import { Gauge } from 'prom-client';
 import {
   indexedDomainsTable,
-  namefiNftCte,
-  namefiNftView,
+  committedNamefiNftCte,
+  committedNamefiNftView,
 } from '@namefi-astra/db';
 import { and, eq, isNotNull, sql } from 'drizzle-orm';
 import { register } from '../registry';
@@ -21,24 +21,24 @@ const DATE_MISMATCH_THRESHOLD_SECONDS = 86_400;
 export async function collectDomainsWithExpirationMismatch(
   ctx: MetricsContext,
 ): Promise<void> {
-  const mismatchExpr = sql<boolean>`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}`;
+  const mismatchExpr = sql<boolean>`ABS(EXTRACT(EPOCH FROM (${committedNamefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}`;
 
   const [row] = await ctx.db
-    .with(namefiNftCte)
+    .with(committedNamefiNftCte)
     .select({ count: sql<number>`COUNT(*)` })
     .from(indexedDomainsTable)
     .innerJoin(
-      namefiNftView,
+      committedNamefiNftView,
       eq(
         indexedDomainsTable.normalizedDomainName,
-        namefiNftView.normalizedDomainName,
+        committedNamefiNftView.normalizedDomainName,
       ),
     )
     .where(
       and(
         eq(indexedDomainsTable.isMissingFromRegistrar, false),
         isNotNull(indexedDomainsTable.expirationTime),
-        isNotNull(namefiNftView.expirationTime),
+        isNotNull(committedNamefiNftView.expirationTime),
         mismatchExpr,
       ),
     );

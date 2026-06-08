@@ -732,6 +732,87 @@ export async function recordOrderMintTransaction({
 }
 
 /**
+ * Record the on-chain expiration-update (extend) tx on a RENEW order item, the
+ * renew analogue of {@link recordOrderMintTransaction}. Writes both
+ * `orderItems.metadata.extendTransaction` and the aggregate
+ * `orders.metadata.extendTransactions[orderItemId]`. Used by the deferred
+ * expiration update so the tx surfaces on the item after it's already SUCCEEDED.
+ */
+export async function recordOrderExtendTransaction({
+  orderId,
+  orderItemId,
+  txHash,
+}: {
+  orderId: string;
+  orderItemId: string;
+  txHash: string;
+}) {
+  const recordedAt = new Date().toISOString();
+
+  await db.transaction(async (tx) => {
+    const details: OrderMintTransactionMetadata = {
+      txHash,
+      recordedAt,
+    };
+
+    const [updatedOrderItem] = await tx
+      .update(orderItemsTable)
+      .set({
+        metadata: sql`jsonb_set(
+          coalesce(${orderItemsTable.metadata}, '{}'::jsonb),
+          '{extendTransaction}',
+          ${JSON.stringify(details)}::jsonb,
+          true
+        )`,
+      })
+      .where(
+        and(
+          eq(orderItemsTable.id, orderItemId),
+          eq(orderItemsTable.orderId, orderId),
+        ),
+      )
+      .returning({ id: orderItemsTable.id });
+
+    if (!updatedOrderItem) {
+      throw new Error(
+        `Order item not found when recording extend metadata (orderId=${orderId}, orderItemId=${orderItemId})`,
+      );
+    }
+
+    const extendedEntry = {
+      [orderItemId]: details,
+    };
+
+    const [updatedOrder] = await tx
+      .update(ordersTable)
+      .set({
+        metadata: sql`jsonb_set(
+          coalesce(${ordersTable.metadata}, '{}'::jsonb),
+          '{extendTransactions}',
+          coalesce(${ordersTable.metadata} -> 'extendTransactions', '{}'::jsonb) || ${JSON.stringify(extendedEntry)}::jsonb,
+          true
+        )`,
+      })
+      .where(eq(ordersTable.id, orderId))
+      .returning({ id: ordersTable.id });
+
+    if (!updatedOrder) {
+      throw new Error(
+        `Order not found when recording extend metadata (orderId=${orderId})`,
+      );
+    }
+  });
+
+  logger.debug(
+    { orderId, orderItemId, txHash },
+    'Recorded extend transaction metadata for order %s item %s',
+    orderId,
+    orderItemId,
+    txHash,
+  );
+}
+
+/**
  * Record the NFSC mint transaction hash on an `order_nfsc_items` row: both the
  * dedicated `mint_tx_hash` column and `metadata.mintTransaction`, plus an
  * aggregate entry on the order's `metadata.mintTransactions` map. Mirrors
@@ -1077,6 +1158,7 @@ export type OrderActivities = {
   logGaEventOrderFinishedEmailOpened: typeof logGaEventOrderFinishedEmailOpened;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
+  recordOrderExtendTransaction: typeof recordOrderExtendTransaction;
   recordNfscMintTransaction: typeof recordNfscMintTransaction;
   reconcileNfscMint: typeof reconcileNfscMint;
   setOrderItemRequiredAction: typeof setOrderItemRequiredAction;

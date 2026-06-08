@@ -1,4 +1,8 @@
-import { db, namefiNftCte, namefiNftView } from '@namefi-astra/db';
+import {
+  db,
+  committedNamefiNftCte,
+  committedNamefiNftView,
+} from '@namefi-astra/db';
 import { userContactsTable, usersTable } from '@namefi-astra/db/schema';
 import { and, eq, isNotNull, sql } from 'drizzle-orm';
 import { config, secrets } from '#lib/env';
@@ -649,19 +653,19 @@ export async function getNftWalletUserBackfillCandidatesActivity(): Promise<NftW
     _logger.debug('Ensuring Privy cache is fresh before wallet scan');
     await ensurePrivyTableFresh();
 
-    const walletAddressExpr = sql<string>`LOWER(${namefiNftView.ownerAddress})`;
+    const walletAddressExpr = sql<string>`LOWER(${committedNamefiNftView.ownerAddress})`;
 
     const rows = await db
-      .with(namefiNftCte)
+      .with(committedNamefiNftCte)
       .select({
         walletAddress: walletAddressExpr.as('wallet_address'),
         privyUserId: privyUsersTableSchema.privyUserId,
         userId: usersTable.id,
       })
-      .from(namefiNftView)
+      .from(committedNamefiNftView)
       .leftJoin(
         privyUsersTableSchema,
-        sql`LOWER(${namefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
+        sql`LOWER(${committedNamefiNftView.ownerAddress}) = ANY( array_lowercase(${privyUsersTableSchema.wallets}))`,
       )
       .leftJoin(
         usersTable,

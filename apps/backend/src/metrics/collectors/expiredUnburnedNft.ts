@@ -2,8 +2,8 @@ import { Gauge } from 'prom-client';
 import {
   burnedNamefiNftCte,
   indexedDomainsTable,
-  namefiNftCte,
-  namefiNftView,
+  committedNamefiNftCte,
+  committedNamefiNftView,
 } from '@namefi-astra/db';
 import { and, eq, isNull, lt, sql } from 'drizzle-orm';
 import { register } from '../registry';
@@ -21,14 +21,14 @@ export async function collectExpiredDomainsWithUnburnedNft(
   ctx: MetricsContext,
 ): Promise<void> {
   const [row] = await ctx.db
-    .with(namefiNftCte, burnedNamefiNftCte)
+    .with(committedNamefiNftCte, burnedNamefiNftCte)
     .select({ count: sql<number>`COUNT(*)` })
     .from(indexedDomainsTable)
     .innerJoin(
-      namefiNftView,
+      committedNamefiNftView,
       eq(
         indexedDomainsTable.normalizedDomainName,
-        namefiNftView.normalizedDomainName,
+        committedNamefiNftView.normalizedDomainName,
       ),
     )
     .leftJoin(
@@ -36,9 +36,9 @@ export async function collectExpiredDomainsWithUnburnedNft(
       and(
         eq(
           burnedNamefiNftCte.normalizedDomainName,
-          namefiNftView.normalizedDomainName,
+          committedNamefiNftView.normalizedDomainName,
         ),
-        eq(burnedNamefiNftCte.chainId, namefiNftView.chainId),
+        eq(burnedNamefiNftCte.chainId, committedNamefiNftView.chainId),
       ),
     )
     .where(

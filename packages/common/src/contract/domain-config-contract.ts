@@ -4,6 +4,10 @@ import { z } from 'zod';
 import { createContract } from './create-contract';
 import type { RouterContract } from './trpc-contract';
 import {
+  nftPendingChangeTypeSchema,
+  nftPendingStateSchema,
+} from './users-contract';
+import {
   DnssecAlgorithms,
   DnssecDigestType,
   DnssecFlags,
@@ -187,6 +191,10 @@ const nftOwnerRowSchema = z.custom<{
 const getDomainOwnerWalletOutputSchema = z.object({
   ownerWalletAddress: z.string(),
   nft: nftOwnerRowSchema,
+  // Optimistic NFT state so the domain-management page can show a minting
+  // indicator and gate export while the mint is in flight.
+  nftState: nftPendingStateSchema.default('IDLE'),
+  pendingNftStates: z.array(nftPendingChangeTypeSchema).default([]),
 });
 
 /**

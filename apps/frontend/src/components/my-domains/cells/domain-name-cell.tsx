@@ -2,17 +2,23 @@
 
 import Link from 'next/link';
 import { safeToUnicode } from '../utils';
+import type { DomainRow } from '../types';
 import {
   DropdownDomainActionsMenu,
   type ActionsCellProps,
 } from './actions-cell';
+import { NftPendingBadge } from './nft-pending-badge';
 
 export function DomainNameCell({
   domainName,
   actionMenuProps,
+  nftState,
+  pendingNftStates,
 }: {
   domainName: string;
   actionMenuProps?: ActionsCellProps;
+  nftState?: DomainRow['nftState'];
+  pendingNftStates?: DomainRow['pendingNftStates'];
 }) {
   const unicodeName = safeToUnicode(domainName);
   const isPunycode = unicodeName !== domainName;
@@ -32,6 +38,12 @@ export function DomainNameCell({
           </span>
         )}
       </div>
+      {nftState ? (
+        <NftPendingBadge
+          nftState={nftState}
+          pendingNftStates={pendingNftStates}
+        />
+      ) : null}
       {actionMenuProps ? (
         <DropdownDomainActionsMenu {...actionMenuProps} />
       ) : (

@@ -891,6 +891,9 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           `,
           dateTokenized: mintEventLateral.dateTokenized,
           orderId: firstSucceededOrderLateral.orderId,
+          nftState: namefiNftView.state,
+          pendingNftStates: namefiNftView.pendingStates,
+          pendingNftTxHash: namefiNftView.txHash,
         })
         .from(namefiNftView)
         .leftJoin(
@@ -938,6 +941,9 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         dnssecEnabled: row.dnssecEnabled ?? false,
         dateTokenized: row.dateTokenized ?? null,
         orderId: row.orderId ?? null,
+        nftState: row.nftState ?? 'IDLE',
+        pendingNftStates: row.pendingNftStates ?? [],
+        pendingNftTxHash: row.pendingNftTxHash ?? null,
         dnsStatus: {
           nameservers: row.nameservers ?? [],
           isUsingNamefiNameservers: row.isUsingNamefiNameservers ?? false,

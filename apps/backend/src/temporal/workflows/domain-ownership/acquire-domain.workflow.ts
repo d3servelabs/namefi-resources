@@ -14,6 +14,7 @@ import {
 } from '../../shared';
 import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { mintNamefiNFT } from '../mint.workflow';
+import { optimisticMintNamefiNftWorkflow } from '../optimistic-nft-tx.workflow';
 import { domainSetupWorkflow } from './domain-setup.workflow';
 import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
 import { resolve } from '../../../utils/resolve';
@@ -123,21 +124,51 @@ export async function acquireDomainWorkflow(
     'acquire-abandon-domain-setup-child',
   );
 
+  // Traditional-domain mints now run NON-BLOCKING: acquire starts an optimistic
+  // mint wrapper (ABANDON) that mints in the background behind an in-flight NFT
+  // overlay, so the registrar flow / order settles immediately while the user
+  // sees the domain in a "Minting…" state. Subdomains keep the blocking mint
+  // (failOnMintingError) since their NFT is critical. Patched so in-flight runs
+  // replay on the original awaited-mint path.
+  const deferMint =
+    workflow.patched('acquire-nonblocking-mint') && !failOnMintingError;
+
   const results = await Promise.all([
-    resolve(
-      workflow.executeChild(mintNamefiNFT, {
-        taskQueue: TEMPORAL_QUEUES.MINT,
-        args: [
-          {
-            chainId: input.chainId,
-            toAddress: input.recipientWalletAddress,
-            normalizedDomainName: input.normalizedDomainName,
-            expirationTimeInSeconds,
-          },
-        ],
-        workflowId: `mint-namefi-nft-${input.normalizedDomainName}`,
-      }),
-    ),
+    deferMint
+      ? resolve(
+          workflow.startChild(optimisticMintNamefiNftWorkflow, {
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            args: [
+              {
+                chainId: input.chainId,
+                toAddress: input.recipientWalletAddress,
+                normalizedDomainName: input.normalizedDomainName,
+                expirationTimeInSeconds,
+                orderId: input.orderId,
+                orderItemId: input.orderItemId,
+              },
+            ],
+            workflowId: optimisticMintNamefiNftWorkflow.generateId({
+              normalizedDomainName: input.normalizedDomainName,
+            }),
+            parentClosePolicy: 'ABANDON',
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          }),
+        )
+      : resolve(
+          workflow.executeChild(mintNamefiNFT, {
+            taskQueue: TEMPORAL_QUEUES.MINT,
+            args: [
+              {
+                chainId: input.chainId,
+                toAddress: input.recipientWalletAddress,
+                normalizedDomainName: input.normalizedDomainName,
+                expirationTimeInSeconds,
+              },
+            ],
+            workflowId: `mint-namefi-nft-${input.normalizedDomainName}`,
+          }),
+        ),
     resolve(
       workflow.startChild(domainSetupWorkflow, {
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
@@ -226,7 +257,13 @@ export async function acquireDomainWorkflow(
     });
   }
 
-  const mintTxHash = mintResult.success ? mintResult.result : undefined;
+  // On the deferred path `mintResult.result` is the optimistic-mint child handle
+  // (not a tx hash) and the wrapper records the mint tx + triggers the index
+  // sync out-of-band, so leave mintTxHash undefined here.
+  const mintTxHash: string | undefined =
+    deferMint || !mintResult.success
+      ? undefined
+      : (mintResult.result as string);
   if (workflow.patched('trigger-managed-index-update')) {
     const isManagedIndexEnabled = await getConfig('PONDER_INDEXER_URL');
     if (isManagedIndexEnabled && mintTxHash) {

@@ -147,6 +147,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const orderMintTransactions = order?.metadata?.mintTransactions;
+  const orderExtendTransactions = order?.metadata?.extendTransactions;
 
   const requiredActionItems = useMemo(() => {
     if (!items || items.length === 0) return [] as OrderItemSelect[];
@@ -518,6 +519,9 @@ export function OrderDetailsContent({ id }: { id: string }) {
               const mintTransaction =
                 item.metadata?.mintTransaction ??
                 orderMintTransactions?.[item.id];
+              const extendTransaction =
+                item.metadata?.extendTransaction ??
+                orderExtendTransactions?.[item.id];
               const tokenId = getTokenIdFromDomainName(
                 item.normalizedDomainName,
               );
@@ -577,6 +581,44 @@ export function OrderDetailsContent({ id }: { id: string }) {
                         chainId={chainId}
                         tokenId={tokenId}
                       />
+                    ) : tokenId &&
+                      (item.type === 'REGISTER' || item.type === 'IMPORT') &&
+                      (item.status === 'SUCCEEDED' ||
+                        item.status === 'PROCESSING') ? (
+                      // Deferred mint: the registrar step is done but the on-chain
+                      // mint hasn't been recorded yet. Show an optimistic
+                      // "Minting…" state until the real mint tx lands.
+                      <div className="flex items-center justify-between gap-3 py-1">
+                        <span className="text-sm text-muted-foreground">
+                          NFT
+                        </span>
+                        <span className="inline-flex items-center gap-2 text-xs text-amber-300">
+                          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
+                          Minting…
+                        </span>
+                      </div>
+                    ) : null}
+                    {item.type === 'RENEW' && extendTransaction && tokenId ? (
+                      <MintTokenRow
+                        label="Renewal tx"
+                        chainId={chainId}
+                        tokenId={tokenId}
+                      />
+                    ) : item.type === 'RENEW' &&
+                      tokenId &&
+                      (item.status === 'SUCCEEDED' ||
+                        item.status === 'PROCESSING') ? (
+                      // Deferred expiration update: registrar renewal succeeded but
+                      // the on-chain expiration tx hasn't been recorded yet.
+                      <div className="flex items-center justify-between gap-3 py-1">
+                        <span className="text-sm text-muted-foreground">
+                          NFT
+                        </span>
+                        <span className="inline-flex items-center gap-2 text-xs text-amber-300">
+                          <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
+                          Updating expiration…
+                        </span>
+                      </div>
                     ) : null}
                   </div>
                 </button>

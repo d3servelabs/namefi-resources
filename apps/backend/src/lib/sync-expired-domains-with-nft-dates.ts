@@ -2,10 +2,10 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { db } from '@namefi-astra/db';
 import {
   indexedDomainsTable,
-  namefiNftView,
-  namefiNftCte,
+  committedNamefiNftView,
+  committedNamefiNftCte,
 } from '@namefi-astra/db';
-import { eq, sql } from 'drizzle-orm';
+import { eq, inArray, sql } from 'drizzle-orm';
 import { logger } from '#lib/logger';
 import { indexBy, prop } from 'ramda';
 import type { WithRegistrar } from '@namefi-astra/registrars/registrars/main-registrar';
@@ -62,24 +62,22 @@ async function syncExpiredDomainsWithNftDates(
       const batch = expiredDomainNames.slice(i, i + batchSize);
 
       const batchResults = await db
-        .with(namefiNftCte)
+        .with(committedNamefiNftCte)
         .select({
-          normalizedDomainName: namefiNftView.normalizedDomainName,
+          normalizedDomainName: committedNamefiNftView.normalizedDomainName,
           currentExpirationTime: indexedDomainsTable.expirationTime,
-          nftExpirationTime: namefiNftView.expirationTime,
-          chainId: namefiNftView.chainId,
+          nftExpirationTime: committedNamefiNftView.expirationTime,
+          chainId: committedNamefiNftView.chainId,
         })
-        .from(namefiNftView)
+        .from(committedNamefiNftView)
         .leftJoin(
           indexedDomainsTable,
           eq(
-            namefiNftView.normalizedDomainName,
+            committedNamefiNftView.normalizedDomainName,
             indexedDomainsTable.normalizedDomainName,
           ),
         )
-        .where(
-          sql`${namefiNftView.normalizedDomainName} = ANY(${sql.raw(`ARRAY[${batch.map((d) => `'${d}'`).join(',')}]`)})`,
-        );
+        .where(inArray(committedNamefiNftView.normalizedDomainName, batch));
 
       allDomainsWithNftData.push(...batchResults);
 

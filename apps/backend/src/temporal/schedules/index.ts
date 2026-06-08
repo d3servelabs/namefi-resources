@@ -44,6 +44,7 @@ import {
 import { syncPonderIndexSchedule } from './sync-ponder-index';
 import { dnsvizDailyDigestSchedule } from './dnsviz-daily-digest';
 import { dnsvizCleanupSchedule } from './dnsviz-cleanup';
+import { inFlightNftTxCleanupSchedule } from './in-flight-nft-tx-cleanup';
 
 const logger = createLogger({ name: 'schedules' });
 
@@ -175,6 +176,8 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [syncPonderIndexSchedule.config.scheduleId]: syncPonderIndexSchedule,
   [dnsvizDailyDigestSchedule.config.scheduleId]: dnsvizDailyDigestSchedule,
   [dnsvizCleanupSchedule.config.scheduleId]: dnsvizCleanupSchedule,
+  [inFlightNftTxCleanupSchedule.config.scheduleId]:
+    inFlightNftTxCleanupSchedule,
 };
 
 /**
@@ -301,7 +304,11 @@ export async function getAllScheduleStatuses() {
 }
 
 // Export individual schedules for backward compatibility and direct access
-export { dnsvizDailyDigestSchedule, dnsvizCleanupSchedule };
+export {
+  dnsvizDailyDigestSchedule,
+  dnsvizCleanupSchedule,
+  inFlightNftTxCleanupSchedule,
+};
 export {
   submitScheduleForDnsvizDailyDigest,
   triggerDnsvizDailyDigest,
@@ -318,6 +325,14 @@ export {
   getDnsvizCleanupScheduleStatus,
   deleteDnsvizCleanupSchedule,
 } from './dnsviz-cleanup';
+export {
+  submitScheduleForInFlightNftTxCleanup,
+  triggerInFlightNftTxCleanup,
+  pauseInFlightNftTxCleanupSchedule,
+  unpauseInFlightNftTxCleanupSchedule,
+  getInFlightNftTxCleanupScheduleStatus,
+  deleteInFlightNftTxCleanupSchedule,
+} from './in-flight-nft-tx-cleanup';
 export { updateDomainIndexSchedule };
 export { updatePrivyCacheSchedule };
 export { backfillNftWalletUsersSchedule };

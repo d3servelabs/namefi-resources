@@ -112,6 +112,9 @@ const mockDomains: DomainRow[] = [
     dnssecEnabled: false,
     orderId: null,
     dateTokenized: new Date('2025-06-15T10:30:00Z'),
+    nftState: 'IDLE',
+    pendingNftStates: [],
+    pendingNftTxHash: null,
     dnsStatus: {
       nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
       isUsingNamefiNameservers: true,
@@ -133,6 +136,9 @@ const mockDomains: DomainRow[] = [
     dnssecEnabled: false,
     orderId: null,
     dateTokenized: new Date('2025-03-20T14:00:00Z'),
+    nftState: 'IDLE',
+    pendingNftStates: [],
+    pendingNftTxHash: null,
     dnsStatus: {
       nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
       isUsingNamefiNameservers: true,
@@ -154,6 +160,9 @@ const mockDomains: DomainRow[] = [
     dnssecEnabled: false,
     orderId: null,
     dateTokenized: new Date('2025-12-01T08:15:00Z'),
+    nftState: 'IDLE',
+    pendingNftStates: [],
+    pendingNftTxHash: null,
     dnsStatus: {
       nameservers: ['ns1.external.com', 'ns2.external.com'],
       isUsingNamefiNameservers: false,
@@ -175,6 +184,9 @@ const mockDomains: DomainRow[] = [
     dnssecEnabled: false,
     orderId: null,
     dateTokenized: new Date('2026-01-25T16:45:00Z'),
+    nftState: 'IDLE',
+    pendingNftStates: [],
+    pendingNftTxHash: null,
     dnsStatus: {
       nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
       isUsingNamefiNameservers: true,
@@ -579,6 +591,9 @@ export const PunycodeDomains: Story = {
           dnssecEnabled: false,
           orderId: null,
           dateTokenized: new Date('2025-06-15T10:30:00Z'),
+          nftState: 'IDLE',
+          pendingNftStates: [],
+          pendingNftTxHash: null,
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
             isUsingNamefiNameservers: true,
@@ -601,6 +616,9 @@ export const PunycodeDomains: Story = {
           dnssecEnabled: false,
           orderId: null,
           dateTokenized: new Date('2025-08-20T14:00:00Z'),
+          nftState: 'IDLE',
+          pendingNftStates: [],
+          pendingNftTxHash: null,
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
             isUsingNamefiNameservers: true,
@@ -623,6 +641,9 @@ export const PunycodeDomains: Story = {
           dnssecEnabled: false,
           orderId: null,
           dateTokenized: new Date('2026-01-10T08:15:00Z'),
+          nftState: 'IDLE',
+          pendingNftStates: [],
+          pendingNftTxHash: null,
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
             isUsingNamefiNameservers: true,
@@ -644,6 +665,9 @@ export const PunycodeDomains: Story = {
           dnssecEnabled: false,
           orderId: null,
           dateTokenized: new Date('2026-03-01T16:45:00Z'),
+          nftState: 'IDLE',
+          pendingNftStates: [],
+          pendingNftTxHash: null,
           dnsStatus: {
             nameservers: ['ns1.namefi.io', 'ns2.namefi.io'],
             isUsingNamefiNameservers: true,

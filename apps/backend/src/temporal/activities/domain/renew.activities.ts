@@ -25,11 +25,11 @@ import { sendMail } from '../../../mail/mail-client';
 import { tryCreateInAppNotification } from '#lib/notifications/try-create-notification';
 import {
   db,
-  namefiNftOwnersView,
+  committedNamefiNftOwnersView,
   domainUserPreferencesTable,
   type PaymentProvider,
-  namefiNftOwnersCte,
-  namefiNftCte,
+  committedNamefiNftOwnersCte,
+  committedNamefiNftCte,
 } from '@namefi-astra/db';
 import { sldRegistrar } from '#lib/namefi-registry';
 import React from 'react';
@@ -71,7 +71,7 @@ import { TEMPORAL_QUEUES } from '../../../temporal/shared/enums';
 import { temporalClient } from '../../../temporal/client';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import pMap from 'p-map';
-import { namefiNftView } from '@namefi-astra/db';
+import { committedNamefiNftView } from '@namefi-astra/db';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import type { PrepareMultiPaymentsOutput } from '#temporal/workflows/prepare-multi-payments.workflow';
 import { setTimeout } from 'node:timers/promises';
@@ -135,13 +135,15 @@ export async function getDomainsUpForRenewal(input?: {
   // Get 3LD domains from NFT table
   logger.debug('Fetching NFTs from database');
   const allNfts = await db
-    .with(namefiNftOwnersCte)
+    .with(committedNamefiNftOwnersCte)
     .select({
-      normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
-      chainId: namefiNftOwnersView.chainId,
+      normalizedDomainName: committedNamefiNftOwnersView.normalizedDomainName,
+      chainId: committedNamefiNftOwnersView.chainId,
     })
-    .from(namefiNftOwnersView)
-    .where(inArray(namefiNftOwnersView.chainId, getAllowedChainsForNft()));
+    .from(committedNamefiNftOwnersView)
+    .where(
+      inArray(committedNamefiNftOwnersView.chainId, getAllowedChainsForNft()),
+    );
   logger.debug({ nftCount: allNfts.length }, 'Found NFTs');
 
   const allNftsMap = new Map<NamefiNormalizedDomain, number>(
@@ -373,16 +375,16 @@ export async function getDomainsUpForRenewalGroupedByOwner(input?: {
   // Fetch NFT domain details for all domains up for renewal
   logger.debug('Fetching NFT domain details for all domains up for renewal');
   const nftDomains = await db
-    .with(namefiNftOwnersCte)
+    .with(committedNamefiNftOwnersCte)
     .select({
-      normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
-      ownerAddress: namefiNftOwnersView.ownerAddress,
-      chainId: namefiNftOwnersView.chainId,
+      normalizedDomainName: committedNamefiNftOwnersView.normalizedDomainName,
+      ownerAddress: committedNamefiNftOwnersView.ownerAddress,
+      chainId: committedNamefiNftOwnersView.chainId,
     })
-    .from(namefiNftOwnersView)
+    .from(committedNamefiNftOwnersView)
     .where(
       inArray(
-        namefiNftOwnersView.normalizedDomainName,
+        committedNamefiNftOwnersView.normalizedDomainName,
         filteredDomainsUpForRenewal.map(
           (domain) => domain.normalizedDomainName,
         ),
@@ -578,28 +580,28 @@ async function _getUserDomainsWithAutoRenewOption(
     .filter(isNotNil);
 
   const userDomains = await db
-    .with(namefiNftOwnersCte)
+    .with(committedNamefiNftOwnersCte)
     .select({
-      normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
+      normalizedDomainName: committedNamefiNftOwnersView.normalizedDomainName,
       autoRenewEnabled:
         sql<boolean>`coalesce(${domainUserPreferencesTable.autoRenewEnabled}, false)`.as(
           'autoRenewEnabled',
         ),
-      chainId: namefiNftOwnersView.chainId,
-      ownerAddress: namefiNftOwnersView.ownerAddress,
+      chainId: committedNamefiNftOwnersView.chainId,
+      ownerAddress: committedNamefiNftOwnersView.ownerAddress,
     })
-    .from(namefiNftOwnersView)
+    .from(committedNamefiNftOwnersView)
     .leftJoin(
       domainUserPreferencesTable,
       and(
         eq(
-          namefiNftOwnersView.normalizedDomainName,
+          committedNamefiNftOwnersView.normalizedDomainName,
           domainUserPreferencesTable.normalizedDomainName,
         ),
         eq(domainUserPreferencesTable.userId, userId),
       ),
     )
-    .where(inArray(namefiNftOwnersView.ownerAddress, evmWallets));
+    .where(inArray(committedNamefiNftOwnersView.ownerAddress, evmWallets));
 
   const userDomainsWithAutoRenewOption = userDomains.map((domain) => ({
     ...domain,
@@ -1203,15 +1205,20 @@ export async function getExpirationDateForDomainListFromNftIndex(
   normalizedDomainNames: NamefiNormalizedDomain[],
 ) {
   const nfts = await db
-    .with(namefiNftCte)
+    .with(committedNamefiNftCte)
     .select({
-      tokenId: namefiNftView.tokenId,
-      normalizedDomainName: namefiNftView.normalizedDomainName,
-      expirationTime: namefiNftView.expirationTime,
-      chainId: namefiNftView.chainId,
+      tokenId: committedNamefiNftView.tokenId,
+      normalizedDomainName: committedNamefiNftView.normalizedDomainName,
+      expirationTime: committedNamefiNftView.expirationTime,
+      chainId: committedNamefiNftView.chainId,
     })
-    .from(namefiNftView)
-    .where(inArray(namefiNftView.normalizedDomainName, normalizedDomainNames));
+    .from(committedNamefiNftView)
+    .where(
+      inArray(
+        committedNamefiNftView.normalizedDomainName,
+        normalizedDomainNames,
+      ),
+    );
   const nftsByDomainName = indexBy(prop('normalizedDomainName'), nfts);
 
   return normalizedDomainNames.map((domainName) => {

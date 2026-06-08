@@ -1,10 +1,10 @@
 import {
   db,
-  namefiNftOwnersView,
-  namefiNftView,
+  committedNamefiNftOwnersView,
+  committedNamefiNftView,
   indexedDomainsTable,
-  namefiNftCte,
-  namefiNftOwnersCte,
+  committedNamefiNftCte,
+  committedNamefiNftOwnersCte,
 } from '@namefi-astra/db';
 import { type NamefiNormalizedDomain, Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
@@ -125,13 +125,16 @@ export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
 
       // Verify the NFT exists
       const nft = await db
-        .with(namefiNftOwnersCte)
+        .with(committedNamefiNftOwnersCte)
         .select()
-        .from(namefiNftOwnersView)
+        .from(committedNamefiNftOwnersView)
         .where(
           and(
-            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
-            eq(namefiNftOwnersView.chainId, chainId),
+            eq(
+              committedNamefiNftOwnersView.normalizedDomainName,
+              normalizedDomainName,
+            ),
+            eq(committedNamefiNftOwnersView.chainId, chainId),
           ),
         )
         .limit(1);
@@ -432,13 +435,16 @@ export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
 
       // Verify the NFT exists
       const nft = await db
-        .with(namefiNftOwnersCte)
+        .with(committedNamefiNftOwnersCte)
         .select()
-        .from(namefiNftOwnersView)
+        .from(committedNamefiNftOwnersView)
         .where(
           and(
-            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
-            eq(namefiNftOwnersView.chainId, chainId),
+            eq(
+              committedNamefiNftOwnersView.normalizedDomainName,
+              normalizedDomainName,
+            ),
+            eq(committedNamefiNftOwnersView.chainId, chainId),
           ),
         )
         .limit(1);
@@ -523,13 +529,16 @@ export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
 
       // Verify the NFT exists
       const nft = await db
-        .with(namefiNftOwnersCte)
+        .with(committedNamefiNftOwnersCte)
         .select()
-        .from(namefiNftOwnersView)
+        .from(committedNamefiNftOwnersView)
         .where(
           and(
-            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
-            eq(namefiNftOwnersView.chainId, chainId),
+            eq(
+              committedNamefiNftOwnersView.normalizedDomainName,
+              normalizedDomainName,
+            ),
+            eq(committedNamefiNftOwnersView.chainId, chainId),
           ),
         )
         .limit(1);
@@ -543,40 +552,46 @@ export const nftRouter = createContractTRPCRouter<typeof adminNftContract>({
 
       // Check if there's actually a date mismatch by querying the computed field
       const nftWithMismatchInfo = await db
-        .with(namefiNftOwnersCte, namefiNftCte)
+        .with(committedNamefiNftOwnersCte, committedNamefiNftCte)
         .select({
           hasDateMismatch: sql<boolean>`
             CASE
-              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+              WHEN ${committedNamefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
               THEN false
-              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+              ELSE ABS(EXTRACT(EPOCH FROM (${committedNamefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
             END
           `.as('has_date_mismatch'),
-          nftExpirationTime: namefiNftView.expirationTime,
+          nftExpirationTime: committedNamefiNftView.expirationTime,
           domainExpirationTime: indexedDomainsTable.expirationTime,
         })
-        .from(namefiNftOwnersView)
+        .from(committedNamefiNftOwnersView)
         .leftJoin(
-          namefiNftView,
+          committedNamefiNftView,
           and(
             eq(
-              namefiNftOwnersView.normalizedDomainName,
-              namefiNftView.normalizedDomainName,
+              committedNamefiNftOwnersView.normalizedDomainName,
+              committedNamefiNftView.normalizedDomainName,
             ),
-            eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
+            eq(
+              committedNamefiNftOwnersView.chainId,
+              committedNamefiNftView.chainId,
+            ),
           ),
         )
         .leftJoin(
           indexedDomainsTable,
           eq(
-            namefiNftOwnersView.normalizedDomainName,
+            committedNamefiNftOwnersView.normalizedDomainName,
             indexedDomainsTable.normalizedDomainName,
           ),
         )
         .where(
           and(
-            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
-            eq(namefiNftOwnersView.chainId, chainId),
+            eq(
+              committedNamefiNftOwnersView.normalizedDomainName,
+              normalizedDomainName,
+            ),
+            eq(committedNamefiNftOwnersView.chainId, chainId),
           ),
         )
         .limit(1);

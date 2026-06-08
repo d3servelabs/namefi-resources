@@ -176,6 +176,26 @@ const currentUserDomainV1Schema = z.object({
   }),
 });
 
+/**
+ * Optimistic NFT operation states exposed alongside a domain. `IDLE` means no
+ * deferred on-chain operation is in flight; the others mirror an in-flight
+ * mint / expiration change / lock change shown before the indexer reflects it.
+ */
+export const nftPendingChangeTypeSchema = z.enum([
+  'MINTING',
+  'CHANGING_EXPIRATION',
+  'CHANGING_LOCK',
+]);
+export type NftPendingChangeType = z.infer<typeof nftPendingChangeTypeSchema>;
+
+export const nftPendingStateSchema = z.enum([
+  'IDLE',
+  'MINTING',
+  'CHANGING_EXPIRATION',
+  'CHANGING_LOCK',
+]);
+export type NftPendingState = z.infer<typeof nftPendingStateSchema>;
+
 const currentUserDomainSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
   chainId: z.number(),
@@ -185,6 +205,14 @@ const currentUserDomainSchema = z.object({
   autoRenewEnabled: z.boolean(),
   autoEnsEnabled: z.boolean(),
   dnssecEnabled: z.boolean(),
+  // Dominant in-flight NFT operation for this domain (IDLE when none). When a
+  // deferred mint/expiration/lock op is pending, the row's expirationDate /
+  // ownership reflect the optimistic state and `pendingNftTxHash` is '0x0'.
+  nftState: nftPendingStateSchema.default('IDLE'),
+  // Full set of concurrently in-flight operations (empty when none).
+  pendingNftStates: z.array(nftPendingChangeTypeSchema).default([]),
+  // '0x0' placeholder while any NFT op is pending, else null.
+  pendingNftTxHash: z.string().nullable().default(null),
   // Earliest mint event blockTime for this token, sourced from
   // managed_indexer_data.TransferLog. Null when the indexer hasn't seen the
   // mint yet.

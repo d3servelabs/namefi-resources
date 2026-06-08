@@ -2,6 +2,7 @@
 export * from './chargeStripe.workflow';
 export * from './hello-world.workflow';
 export * from './mint.workflow';
+export * from './optimistic-nft-tx.workflow';
 export * from './mint-dev-signup-nfsc.workflow';
 export * from './mint-nfsc-by-user-id.workflow';
 export * from './processOrder.workflow';
@@ -34,6 +35,7 @@ export * from './update-domain-index.workflow';
 export * from './dnsviz-daily-digest.workflow';
 export * from './dnsviz-on-demand.workflow';
 export * from './dnsviz-cleanup.workflow';
+export * from './in-flight-nft-tx-cleanup.workflow';
 export * from './domain-ownership/prepare-domain-for-export.workflow';
 export * from './test-workflows/test-charge-and-refund.workflow';
 export * from './fix-nft-expiration.workflow';

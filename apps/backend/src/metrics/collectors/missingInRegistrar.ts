@@ -1,8 +1,8 @@
 import { Gauge } from 'prom-client';
 import {
   indexedDomainsTable,
-  namefiNftCte,
-  namefiNftView,
+  committedNamefiNftCte,
+  committedNamefiNftView,
 } from '@namefi-astra/db';
 import { eq, isNull, or, sql, not, and, inArray } from 'drizzle-orm';
 import { register } from '../registry';
@@ -29,22 +29,22 @@ export async function collectDomainsWithNftMissingInRegistrar(
   ];
 
   // Extract the powered-by-namefi condition to avoid repetition
-  const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+  const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${committedNamefiNftView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
   const [row] = await ctx.db
-    .with(namefiNftCte)
+    .with(committedNamefiNftCte)
     .select({ count: sql<number>`COUNT(*)` })
-    .from(namefiNftView)
+    .from(committedNamefiNftView)
     .leftJoin(
       indexedDomainsTable,
       eq(
         indexedDomainsTable.normalizedDomainName,
-        namefiNftView.normalizedDomainName,
+        committedNamefiNftView.normalizedDomainName,
       ),
     )
     .where(
       and(
-        inArray(namefiNftView.chainId, getAllowedChainsForNft()),
+        inArray(committedNamefiNftView.chainId, getAllowedChainsForNft()),
 
         or(
           and(

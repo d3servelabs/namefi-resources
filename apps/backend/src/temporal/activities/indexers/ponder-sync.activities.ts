@@ -21,6 +21,7 @@ import { createLogger } from '#lib/logger';
 import { config, secrets } from '#lib/env';
 import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import { PonderSqlClient } from '#lib/ponder-client';
+import { reconcileInFlightNftTxRows } from './in-flight-nft-tx.activities';
 import type {
   PonderNamefiNft,
   PonderBurnedNamefiNftLog,
@@ -326,6 +327,22 @@ export async function syncNamefiNftsFromPonder(
     }
 
     const totals = aggregatePerChainResults(perChain);
+
+    // Event-driven cleanup of the optimistic overlay: now that real NFT state is
+    // updated, remove any in-flight rows whose expected change is reflected
+    // (primary removal path; the per-op timer + TTL sweep are backstops). Never
+    // let reconciliation failure fail the sync.
+    if (totals.recordsSynced > 0) {
+      try {
+        await reconcileInFlightNftTxRows();
+      } catch (reconcileError) {
+        logger.warn(
+          { error: reconcileError },
+          'Failed to reconcile in-flight NFT tx rows after NamefiNft sync',
+        );
+      }
+    }
+
     logger.info({ tableName, ...totals, perChain }, 'NamefiNft sync completed');
 
     return {

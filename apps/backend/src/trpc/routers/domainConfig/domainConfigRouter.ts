@@ -35,7 +35,10 @@ import {
 } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { domainConfigContract } from '@namefi-astra/common/contract/domain-config-contract';
-import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
+import {
+  assertAuthenticatedUserIsDomainOwner,
+  assertAuthenticatedUserIsCommittedDomainOwner,
+} from '../../guards/assert-domain-owner';
 import { domainDnssecRouter } from './domainDnssecRouter';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { prepareDomainForExportWorkflow } from '#temporal/workflows/domain-ownership/prepare-domain-for-export.workflow';
@@ -63,8 +66,6 @@ import {
   db,
   domainExportTrackingTable,
   namefiNftCte,
-  namefiNftOwnersCte,
-  namefiNftOwnersView,
   orderItemsTable,
   ordersTable,
 } from '@namefi-astra/db';
@@ -359,6 +360,8 @@ export const domainConfigRouter = createContractTRPCRouter<
     .input(domainConfigContract.changeDomainNameservers.input)
     .output(domainConfigContract.changeDomainNameservers.output)
     .mutation(async ({ input, ctx }) => {
+      // Nameserver changes don't affect ownership and are EIP712-gated, so allow
+      // during in-flight mints via the pending-aware guard.
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
         ctx.user,
@@ -408,6 +411,8 @@ export const domainConfigRouter = createContractTRPCRouter<
     .input(domainConfigContract.resetDomainNameservers.input)
     .output(domainConfigContract.resetDomainNameservers.output)
     .mutation(async ({ input, ctx }) => {
+      // Nameserver resets don't affect ownership and are EIP712-gated, so allow
+      // during in-flight mints via the pending-aware guard.
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
         ctx.user,
@@ -588,7 +593,8 @@ export const domainConfigRouter = createContractTRPCRouter<
     .input(domainConfigContract.requestDomainExport.input)
     .output(domainConfigContract.requestDomainExport.output)
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
+      // Strict: export requires the NFT to actually exist on-chain.
+      await assertAuthenticatedUserIsCommittedDomainOwner(
         input.payload.domainName,
         ctx.user,
       );
@@ -708,7 +714,8 @@ export const domainConfigRouter = createContractTRPCRouter<
     .input(domainConfigContract.getAuthCode.input)
     .output(domainConfigContract.getAuthCode.output)
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
+      // Strict: export requires the NFT to actually exist on-chain.
+      await assertAuthenticatedUserIsCommittedDomainOwner(
         input.payload.domainName,
         ctx.user,
       );
@@ -749,14 +756,18 @@ export const domainConfigRouter = createContractTRPCRouter<
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
 
+      // Query the overlay CTE so a still-minting domain resolves to its optimistic
+      // owner/state (the page needs the minting indicator + export gate).
       const nft = await db
-        .with(namefiNftOwnersCte)
+        .with(namefiNftCte)
         .select({
-          ownerAddress: namefiNftOwnersView.ownerAddress,
-          chainId: namefiNftOwnersView.chainId,
+          ownerAddress: namefiNftCte.ownerAddress,
+          chainId: namefiNftCte.chainId,
+          nftState: namefiNftCte.state,
+          pendingNftStates: namefiNftCte.pendingStates,
         })
-        .from(namefiNftOwnersView)
-        .where(eq(namefiNftOwnersView.normalizedDomainName, input.domainName))
+        .from(namefiNftCte)
+        .where(eq(namefiNftCte.normalizedDomainName, input.domainName))
         .limit(1);
 
       if (!nft[0]) {
@@ -768,7 +779,9 @@ export const domainConfigRouter = createContractTRPCRouter<
 
       return {
         ownerWalletAddress: nft[0].ownerAddress,
-        nft: nft[0],
+        nft: { ownerAddress: nft[0].ownerAddress, chainId: nft[0].chainId },
+        nftState: nft[0].nftState ?? 'IDLE',
+        pendingNftStates: nft[0].pendingNftStates ?? [],
       };
     }),
 
@@ -824,7 +837,8 @@ export const domainConfigRouter = createContractTRPCRouter<
     .mutation(async ({ input, ctx }) => {
       const domainName = toPunycodeDomainName(input.payload.domainName);
 
-      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+      // Strict: the export/transfer flow needs the NFT to exist on-chain.
+      await assertAuthenticatedUserIsCommittedDomainOwner(domainName, ctx.user);
 
       // Get the owner address from the NFT
       const nfts = await db
@@ -923,7 +937,8 @@ export const domainConfigRouter = createContractTRPCRouter<
     .input(domainConfigContract.rejectTransfer.input)
     .output(domainConfigContract.rejectTransfer.output)
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
+      // Strict: export requires the NFT to actually exist on-chain.
+      await assertAuthenticatedUserIsCommittedDomainOwner(
         input.payload.domainName,
         ctx.user,
       );

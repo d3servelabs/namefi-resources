@@ -22,7 +22,7 @@ const qb = new QueryBuilder();
  * Note: View is created manually in SQL, this is just the Drizzle type definition.
  */
 
-export const namefiNftCte = qb.$with('namefi_nft_cte').as((qb) => {
+export const committedNamefiNftCte = qb.$with('namefi_nft_cte').as((qb) => {
   return qb
     .select({
       tokenId: sql<bigint>`token_id`.as('token_id'),
@@ -61,17 +61,17 @@ export const namefiNftCte = qb.$with('namefi_nft_cte').as((qb) => {
  * This is a workaround because drizzle does not handle column disambiguation correctly with CTEs.
  * We need to create a view to avoid column name conflicts.
  * @deprecated This view is deprecated and will be removed in the future.
- * @see namefiNftCte for the new CTE.
+ * @see committedNamefiNftCte for the new CTE.
  * you still need to include the CTE in the query like this:
  * ```typescript
  * const result = await db
- *   .with(namefiNftCte)
+ *   .with(committedNamefiNftCte)
  *   .select()
- *   .from(namefiNftView)
+ *   .from(committedNamefiNftView)
  *   .limit(1);
  * ```
  */
-export const namefiNftView = pgView('namefi_nft_cte', {
+export const committedNamefiNftView = pgView('namefi_nft_cte', {
   tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
   normalizedDomainName: text('normalized_domain_name')
     .notNull()
@@ -94,40 +94,43 @@ export const namefiNftView = pgView('namefi_nft_cte', {
  * NamefiNftOwnersView - Simplified view for owner-based queries
  * This view provides the essential NFT ownership data that replaces most
  * namefiNftTable queries, providing a stable interface during schema migrations.
- * Based on namefiNftView with only the essential columns for ownership queries.
+ * Based on committedNamefiNftView with only the essential columns for ownership queries.
  *
  * Note: View is created manually in SQL, this is just the Drizzle type definition.
  */
-export const namefiNftOwnersCte = qb.$with('namefi_nft_owners_cte').as((qb) => {
-  return qb
-    .with(namefiNftCte)
-    .select({
-      normalizedDomainName: namefiNftView.normalizedDomainName,
-      chainId: namefiNftView.chainId,
-      ownerAddress: namefiNftView.ownerAddress,
-      asOfBlockNumber: sql<bigint>`${namefiNftView.lastUpdatedBlock}`.as(
-        'as_of_block_number',
-      ),
-    })
-    .from(namefiNftView);
-});
+export const committedNamefiNftOwnersCte = qb
+  .$with('namefi_nft_owners_cte')
+  .as((qb) => {
+    return qb
+      .with(committedNamefiNftCte)
+      .select({
+        normalizedDomainName: committedNamefiNftView.normalizedDomainName,
+        chainId: committedNamefiNftView.chainId,
+        ownerAddress: committedNamefiNftView.ownerAddress,
+        asOfBlockNumber:
+          sql<bigint>`${committedNamefiNftView.lastUpdatedBlock}`.as(
+            'as_of_block_number',
+          ),
+      })
+      .from(committedNamefiNftView);
+  });
 
 /**
  * [REPLACED WITH CTE] (deprecated view)
  * This is a workaround because drizzle does not handle column disambiguation correctly with CTEs.
  * We need to create a view to avoid column name conflicts.
  * @deprecated This view is deprecated and will be removed in the future.
- * @see namefiNftOwnersCte for the new CTE.
+ * @see committedNamefiNftOwnersCte for the new CTE.
  * you still need to include the CTE in the query like this:
  * ```typescript
  * const result = await db
- *   .with(namefiNftOwnersCte)
+ *   .with(committedNamefiNftOwnersCte)
  *   .select()
- *   .from(namefiNftOwnersView)
+ *   .from(committedNamefiNftOwnersView)
  *   .limit(1);
  * ```
  */
-export const namefiNftOwnersView = pgView('namefi_nft_owners_cte', {
+export const committedNamefiNftOwnersView = pgView('namefi_nft_owners_cte', {
   normalizedDomainName: text('normalized_domain_name')
     .notNull()
     .$type<NamefiNormalizedDomain>(),
@@ -137,15 +140,19 @@ export const namefiNftOwnersView = pgView('namefi_nft_owners_cte', {
 }).existing();
 
 async function _selectFromNamefiNftView() {
-  const res = await db.with(namefiNftCte).select().from(namefiNftCte).limit(1);
+  const res = await db
+    .with(committedNamefiNftCte)
+    .select()
+    .from(committedNamefiNftCte)
+    .limit(1);
   return res[0];
 }
 
 async function _selectFromNamefiNftOwnersView() {
   const res = await db
-    .with(namefiNftOwnersCte)
+    .with(committedNamefiNftOwnersCte)
     .select()
-    .from(namefiNftOwnersCte)
+    .from(committedNamefiNftOwnersCte)
     .limit(1);
   return res[0];
 }

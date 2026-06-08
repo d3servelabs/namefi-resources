@@ -46,6 +46,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import { NetworkLogo } from '@/components/network-logo';
+import { NftPendingBadge } from '@/components/my-domains/cells/nft-pending-badge';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { getShortAddress } from '@/lib/string';
@@ -577,6 +578,8 @@ export const DomainOverviewPanel = ({
   const tokenId = getTokenIdFromDomainName(domain);
   const explorerUrl = getNftExplorerUrl(chainIdNumber, tokenId);
   const ownerAddress = ownerWalletData?.ownerWalletAddress ?? null;
+  const nftState = ownerWalletData?.nftState ?? 'IDLE';
+  const pendingNftStates = ownerWalletData?.pendingNftStates ?? [];
 
   return (
     <div className="space-y-6">
@@ -607,12 +610,18 @@ export const DomainOverviewPanel = ({
                     </p>
                   </div>
                 </div>
-                {expirationDate && !isDomainDetailsLoading && (
-                  <ExpirationBadge
-                    date={expirationDate}
-                    status={expirationStatus}
+                <div className="flex items-center gap-2">
+                  <NftPendingBadge
+                    nftState={nftState}
+                    pendingNftStates={pendingNftStates}
                   />
-                )}
+                  {expirationDate && !isDomainDetailsLoading && (
+                    <ExpirationBadge
+                      date={expirationDate}
+                      status={expirationStatus}
+                    />
+                  )}
+                </div>
               </div>
             </CardHeader>
 
@@ -1055,11 +1064,18 @@ export const DomainExportCard = ({
   const [authCode, setAuthCode] = useState<string | null>(null);
   const authCodeWalletConnectionRef = useRef<RequestWalletConnectionRef>(null);
 
-  const { data: ownerWalletData } = useQuery(
-    trpc.domainConfig.getDomainOwnerWallet.queryOptions({
-      domainName: domain,
-    }),
-  );
+  const { data: ownerWalletData, isLoading: isOwnerWalletDataLoading } =
+    useQuery(
+      trpc.domainConfig.getDomainOwnerWallet.queryOptions({
+        domainName: domain,
+      }),
+    );
+
+  // Export needs the NFT to exist on-chain; block it while the mint is in flight,
+  // and also while the owner/state query is still loading so it can't flash as
+  // available before we know.
+  const isNftMinting =
+    isOwnerWalletDataLoading || ownerWalletData?.nftState === 'MINTING';
 
   const handleRequestExportInner = async () => {
     try {
@@ -1247,7 +1263,33 @@ export const DomainExportCard = ({
               'Export not available for this domain')
         }
       >
-        {!domainExportDetails.supportsExport ? (
+        {isNftMinting ? (
+          // Disabled <Button> swallows hover, so the span is the tooltip trigger
+          // (the codebase idiom) and the button is pointer-events-none.
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                render={<span className="inline-flex cursor-help" />}
+              >
+                <Button
+                  disabled
+                  size="sm"
+                  variant="secondary"
+                  className="pointer-events-none opacity-50"
+                >
+                  <Info className="h-3.5 w-3.5 mr-1.5" />
+                  Request Export
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  NFT not minted yet. Export will be available once minting
+                  completes.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : !domainExportDetails.supportsExport ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger

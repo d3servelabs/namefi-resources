@@ -100,6 +100,8 @@ export function useMyDomainsColumns({
         cell: ({ row }) => (
           <DomainNameCell
             domainName={row.getValue('normalizedDomainName') as string}
+            nftState={row.original.nftState}
+            pendingNftStates={row.original.pendingNftStates}
             actionMenuProps={{
               domainName: row.getValue('normalizedDomainName') as string,
               expirationDate: row.getValue('expirationDate') as

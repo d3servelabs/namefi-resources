@@ -1,11 +1,11 @@
 import {
   db,
-  namefiNftOwnersView,
-  namefiNftView,
+  committedNamefiNftOwnersView,
+  committedNamefiNftView,
   indexedDomainsTable,
   usersTable,
-  namefiNftCte,
-  namefiNftOwnersCte,
+  committedNamefiNftCte,
+  committedNamefiNftOwnersCte,
   domainUserPreferencesTable,
 } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
@@ -351,9 +351,9 @@ export const bulkBurnRouter = createContractTRPCRouter<
       // Join chain: nftView → privyUsersCache (on wallet) → usersTable (on privyUserId)
       // Then use the resolved userId to look up domainUserPreferences for the current owner
       const rows = await db
-        .with(namefiNftCte)
-        .selectDistinctOn([namefiNftView.normalizedDomainName], {
-          normalizedDomainName: namefiNftView.normalizedDomainName,
+        .with(committedNamefiNftCte)
+        .selectDistinctOn([committedNamefiNftView.normalizedDomainName], {
+          normalizedDomainName: committedNamefiNftView.normalizedDomainName,
           autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
           userId: usersTable.id,
           privyUserId: usersTable.privyUserId,
@@ -363,10 +363,10 @@ export const bulkBurnRouter = createContractTRPCRouter<
             'user_email',
           ),
         })
-        .from(namefiNftView)
+        .from(committedNamefiNftView)
         .leftJoin(
           privyUsersTableSchema,
-          sql`LOWER(${namefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+          sql`LOWER(${committedNamefiNftView.ownerAddress}) = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
         )
         .leftJoin(
           usersTable,
@@ -377,18 +377,18 @@ export const bulkBurnRouter = createContractTRPCRouter<
           and(
             eq(
               domainUserPreferencesTable.normalizedDomainName,
-              namefiNftView.normalizedDomainName,
+              committedNamefiNftView.normalizedDomainName,
             ),
             sql`${domainUserPreferencesTable.userId}::text = ${usersTable.id}::text`,
           ),
         )
         .where(
-          sql`${namefiNftView.normalizedDomainName} = ANY(ARRAY[${sql.join(
+          sql`${committedNamefiNftView.normalizedDomainName} = ANY(ARRAY[${sql.join(
             domainNames.map((v) => sql`${v}`),
             sql.raw(', '),
           )}])`,
         )
-        .orderBy(namefiNftView.normalizedDomainName);
+        .orderBy(committedNamefiNftView.normalizedDomainName);
 
       const result: Record<
         string,
@@ -453,19 +453,23 @@ export const bulkBurnRouter = createContractTRPCRouter<
 
         // Step 3: Get NFT data for expired domains to determine burn eligibility
         const expiredDomainNames = expiredDomains.map((d) => d.domainName);
-        const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+        const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${committedNamefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(ARRAY[${sql.join(
+          poweredByNamefiDomains.map((d) => sql`${d}`),
+          sql.raw(', '),
+        )}])`;
 
         // Build filters to exclude sepolia and test domains (same as reporting)
-        const isSepoliaCondition = sql<boolean>`${namefiNftOwnersView.chainId} = 11155111`;
-        const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+        const isSepoliaCondition = sql<boolean>`${committedNamefiNftOwnersView.chainId} = 11155111`;
+        const isTestDomainCondition = sql<boolean>`split_part(${committedNamefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
 
         const nftDataQuery = db
-          .with(namefiNftOwnersCte, namefiNftCte)
+          .with(committedNamefiNftOwnersCte, committedNamefiNftCte)
           .select({
-            normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
-            chainId: namefiNftOwnersView.chainId,
-            ownerAddress: namefiNftOwnersView.ownerAddress,
-            nftExpirationTime: namefiNftView.expirationTime,
+            normalizedDomainName:
+              committedNamefiNftOwnersView.normalizedDomainName,
+            chainId: committedNamefiNftOwnersView.chainId,
+            ownerAddress: committedNamefiNftOwnersView.ownerAddress,
+            nftExpirationTime: committedNamefiNftView.expirationTime,
             domainExpirationTime: indexedDomainsTable.expirationTime,
             registrarKey: indexedDomainsTable.registrarKey,
             // Computed fields
@@ -476,12 +480,12 @@ export const bulkBurnRouter = createContractTRPCRouter<
               CASE
                 WHEN ${isPoweredByNamefiCondition}
                 THEN false
-                WHEN ${indexedDomainsTable.expirationTime} IS NULL OR ${namefiNftView.expirationTime} IS NULL
+                WHEN ${indexedDomainsTable.expirationTime} IS NULL OR ${committedNamefiNftView.expirationTime} IS NULL
                 THEN true
-                WHEN ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+                WHEN ABS(EXTRACT(EPOCH FROM (${committedNamefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
                 THEN false
                 ELSE (
-                  ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, ${namefiNftView.expirationTime}) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days'
+                  ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, ${committedNamefiNftView.expirationTime}) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days'
                 )
               END
             `.as('can_burn'),
@@ -489,40 +493,46 @@ export const bulkBurnRouter = createContractTRPCRouter<
               CASE
                 WHEN ${isPoweredByNamefiCondition}
                 THEN false
-                WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+                WHEN ${committedNamefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
                 THEN false
-                ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+                ELSE ABS(EXTRACT(EPOCH FROM (${committedNamefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
               END
             `.as('has_date_mismatch'),
             hasMissingData: sql<boolean>`
               CASE
                 WHEN ${isPoweredByNamefiCondition}
-                THEN ${namefiNftView.expirationTime} IS NULL
-                ELSE (${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL)
+                THEN ${committedNamefiNftView.expirationTime} IS NULL
+                ELSE (${committedNamefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL)
               END
             `.as('has_missing_data'),
           })
-          .from(namefiNftOwnersView)
+          .from(committedNamefiNftOwnersView)
           .leftJoin(
-            namefiNftView,
+            committedNamefiNftView,
             and(
               eq(
-                namefiNftOwnersView.normalizedDomainName,
-                namefiNftView.normalizedDomainName,
+                committedNamefiNftOwnersView.normalizedDomainName,
+                committedNamefiNftView.normalizedDomainName,
               ),
-              eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
+              eq(
+                committedNamefiNftOwnersView.chainId,
+                committedNamefiNftView.chainId,
+              ),
             ),
           )
           .leftJoin(
             indexedDomainsTable,
             eq(
-              namefiNftOwnersView.normalizedDomainName,
+              committedNamefiNftOwnersView.normalizedDomainName,
               indexedDomainsTable.normalizedDomainName,
             ),
           )
           .where(
             and(
-              sql`${namefiNftOwnersView.normalizedDomainName} = ANY(${sql.raw(`ARRAY[${expiredDomainNames.map((d) => `'${d}'`).join(',')}]`)})`,
+              sql`${committedNamefiNftOwnersView.normalizedDomainName} = ANY(ARRAY[${sql.join(
+                expiredDomainNames.map((d) => sql`${d}`),
+                sql.raw(', '),
+              )}])`,
               sql`NOT ${isSepoliaCondition}`,
               sql`NOT ${isTestDomainCondition}`,
             ),

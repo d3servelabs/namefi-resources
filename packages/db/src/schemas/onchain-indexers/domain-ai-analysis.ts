@@ -2,7 +2,9 @@ import { eq, sql } from 'drizzle-orm';
 import { pgView, QueryBuilder } from 'drizzle-orm/pg-core';
 import { domainAiAnalysisTable } from '../../schema';
 import { db } from '../../client';
-import { namefiNftCte, namefiNftView } from './namefi-nft';
+// Uses the DEFAULT (overlay) NFT view — AI/logo/content generation is display-
+// oriented, so showing in-flight domains is fine.
+import { namefiNftCte, namefiNftView } from './namefi-nft-with-pending';
 
 const qb = new QueryBuilder();
 

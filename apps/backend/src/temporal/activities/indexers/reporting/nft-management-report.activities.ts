@@ -9,11 +9,11 @@ import { differenceInSeconds, format, subHours } from 'date-fns';
 import { Context } from '@temporalio/activity';
 import {
   db,
-  namefiNftView,
+  committedNamefiNftView,
   indexedDomainsTable,
   orderItemsTable,
   ordersTable,
-  namefiNftCte,
+  committedNamefiNftCte,
 } from '@namefi-astra/db';
 import { and, eq, sql, gte, isNull } from 'drizzle-orm';
 import { temporalClient } from '../../../client';
@@ -146,20 +146,20 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
     ];
 
     // Build the powered-by-namefi condition
-    const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+    const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${committedNamefiNftView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
     // Build filters to exclude sepolia and test domains
-    const isSepoliaCondition = sql<boolean>`${namefiNftView.chainId} = 11155111`;
-    const isTestDomainCondition = sql<boolean>`split_part(${namefiNftView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+    const isSepoliaCondition = sql<boolean>`${committedNamefiNftView.chainId} = 11155111`;
+    const isTestDomainCondition = sql<boolean>`split_part(${committedNamefiNftView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
 
     // Fetch all NFT data with computed fields, excluding sepolia and test domains
     const nftDataQuery = db
-      .with(namefiNftCte)
+      .with(committedNamefiNftCte)
       .select({
-        normalizedDomainName: namefiNftView.normalizedDomainName,
-        chainId: namefiNftView.chainId,
-        ownerAddress: namefiNftView.ownerAddress,
-        nftExpirationTime: namefiNftView.expirationTime,
+        normalizedDomainName: committedNamefiNftView.normalizedDomainName,
+        chainId: committedNamefiNftView.chainId,
+        ownerAddress: committedNamefiNftView.ownerAddress,
+        nftExpirationTime: committedNamefiNftView.expirationTime,
         domainExpirationTime: indexedDomainsTable.expirationTime,
         registrarKey: indexedDomainsTable.registrarKey,
         // Computed fields
@@ -169,7 +169,7 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
         effectiveDomainExpirationTime: sql<Date | null>`
           CASE
             WHEN ${isPoweredByNamefiCondition}
-            THEN ${namefiNftView.expirationTime}
+            THEN ${committedNamefiNftView.expirationTime}
             ELSE ${indexedDomainsTable.expirationTime}
           END
         `.as('effective_domain_expiration_time'),
@@ -187,7 +187,7 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
             ELSE (
               ( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
               OR
-              ( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
+              ( ( NOW() - ${committedNamefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
               OR
               ${indexedDomainsTable.expirationTime} IS NULL
             )
@@ -197,17 +197,17 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
           CASE
             WHEN ${isPoweredByNamefiCondition}
             THEN false
-            WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+            WHEN ${committedNamefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
             THEN false
-            ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+            ELSE ABS(EXTRACT(EPOCH FROM (${committedNamefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
           END
         `.as('has_date_mismatch'),
       })
-      .from(namefiNftView)
+      .from(committedNamefiNftView)
       .leftJoin(
         indexedDomainsTable,
         eq(
-          namefiNftView.normalizedDomainName,
+          committedNamefiNftView.normalizedDomainName,
           indexedDomainsTable.normalizedDomainName,
         ),
       )
@@ -353,7 +353,7 @@ async function collectRecentOrdersMetrics(ctx: Context) {
 }
 
 /**
- * Collects metrics for domains that exist in indexedDomainsTable but NOT in namefiNftView
+ * Collects metrics for domains that exist in indexedDomainsTable but NOT in committedNamefiNftView
  * These are "unminted" domains - registered with registrar but no NFT exists
  *
  * @param ctx - Temporal activity context for logging
@@ -374,10 +374,10 @@ async function collectUnmintedDomainsMetrics(ctx: Context) {
     // Exclude domains with TLD starting with 'test'
     const isTestDomainCondition = sql<boolean>`split_part(${indexedDomainsTable.normalizedDomainName}, '.', -1) LIKE 'test%'`;
 
-    // Query: LEFT JOIN indexedDomainsTable with namefiNftView
-    // WHERE namefiNftView.normalizedDomainName IS NULL (no matching NFT)
+    // Query: LEFT JOIN indexedDomainsTable with committedNamefiNftView
+    // WHERE committedNamefiNftView.normalizedDomainName IS NULL (no matching NFT)
     const unmintedDomainsQuery = db
-      .with(namefiNftCte)
+      .with(committedNamefiNftCte)
       .select({
         normalizedDomainName: indexedDomainsTable.normalizedDomainName,
         registrarKey: indexedDomainsTable.registrarKey,
@@ -387,15 +387,15 @@ async function collectUnmintedDomainsMetrics(ctx: Context) {
       })
       .from(indexedDomainsTable)
       .leftJoin(
-        namefiNftView,
+        committedNamefiNftView,
         eq(
           indexedDomainsTable.normalizedDomainName,
-          namefiNftView.normalizedDomainName,
+          committedNamefiNftView.normalizedDomainName,
         ),
       )
       .where(
         and(
-          isNull(namefiNftView.normalizedDomainName), // No matching NFT
+          isNull(committedNamefiNftView.normalizedDomainName), // No matching NFT
           sql`NOT ${isTestDomainCondition}`, // Exclude test domains
         ),
       );
@@ -1223,7 +1223,7 @@ export async function formatNftManagementReport(
 
     '## System Information',
     `**Report Generated:** ${new Date().toISOString()}`,
-    '**Data Source:** Direct database queries (namefiNftOwnersView, indexedDomainsTable)',
+    '**Data Source:** Direct database queries (committedNamefiNftOwnersView, indexedDomainsTable)',
     `**Admin Panel:** ${NFT_MANAGEMENT_ADMIN_URL}`,
     `**GitHub Actions:** ${githubActionsUrl}`,
     '',

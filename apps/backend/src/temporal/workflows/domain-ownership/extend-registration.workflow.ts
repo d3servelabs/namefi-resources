@@ -23,6 +23,7 @@ import {
   shortRunningOpts,
 } from '../../shared';
 import { setExpirationForNamefiNft } from '../mint.workflow';
+import { optimisticSetExpirationForNamefiNftWorkflow } from '../optimistic-nft-tx.workflow';
 import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/determine-renew-duration-limits';
 
 /**
@@ -53,6 +54,12 @@ export type ExtendDomainRegistrationWorkflowInput = {
   userId: string;
   /** Whether to update the domain index after extension */
   updateDomainIndex?: boolean;
+  /**
+   * Optional order linkage. When present, the deferred NFT expiration update
+   * records the extend tx on the order item (`metadata.extendTransaction`).
+   */
+  orderId?: string;
+  orderItemId?: string;
 };
 
 const { submitOperationToExtendRegistrationToRegistrar } = typedProxyActivities(
@@ -131,6 +138,8 @@ export async function extendDomainRegistrationWorkflow({
   ownerAddress,
   userId,
   updateDomainIndex = true,
+  orderId,
+  orderItemId,
 }: ExtendDomainRegistrationWorkflowInput): Promise<ExtendDomainRegistrationWorkflowOutput> {
   //#region Activities Defs
   const { getDomainChain, getPoweredByNamefi3PDomains } = typedProxyActivities({
@@ -194,6 +203,66 @@ export async function extendDomainRegistrationWorkflow({
     });
   }
   const nextExpirationTimeInSeconds = getUnixTime(nextExpirationTime);
+
+  // NON-BLOCKING NFT expiration update: the registrar renewal has already
+  // succeeded above. New runs kick off the on-chain expiration update in the
+  // background (ABANDON) behind an optimistic CHANGING_EXPIRATION overlay, so the
+  // renewal flow / order settles immediately while My Domains shows the new
+  // expiration right away. The wrapper handles NFT-update failure + alerting.
+  // Patched so in-flight runs replay on the original awaited path below.
+  if (workflow.patched('extend-optimistic-expiration')) {
+    try {
+      await workflow.startChild(optimisticSetExpirationForNamefiNftWorkflow, {
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        args: [
+          {
+            chainId,
+            normalizedDomainName,
+            expirationTimeInSeconds: nextExpirationTimeInSeconds,
+            orderId,
+            orderItemId,
+          },
+        ],
+        workflowId: optimisticSetExpirationForNamefiNftWorkflow.generateId({
+          normalizedDomainName,
+          chainId,
+          expirationTimeInSeconds: nextExpirationTimeInSeconds,
+        }),
+        parentClosePolicy: 'ABANDON',
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+      });
+    } catch (error: any) {
+      // Couldn't even start the background NFT update; the renewal still stands.
+      await catchAndAlertLocally(
+        () =>
+          criticalAlertNamefi({
+            title: `Failed to start deferred NFT expiration update for ${normalizedDomainName}`,
+            message: `Domain ${normalizedDomainName} was renewed at the registrar but the optimistic NFT expiration update could not be started. The NFT expiry may be stale until reconciled.`,
+            normalizedDomainName,
+            nextExpirationTimeInSeconds,
+            operation: 'DOMAIN_RENEW',
+            error: error?.message ?? String(error),
+          }),
+        {
+          message:
+            'Failed to alert about deferred NFT expiration update start failure',
+          details: { normalizedDomainName },
+        },
+      );
+    }
+
+    if (updateDomainIndex) {
+      await _updateDomainIndexAfterExtension({
+        normalizedDomainName,
+        nextExpirationTime,
+      });
+    }
+
+    return {
+      eppOperationStatus: 'SUCCESS',
+      txStatus: 'SUCCESS',
+    };
+  }
 
   try {
     const txHash = await workflow.executeChild(setExpirationForNamefiNft, {
