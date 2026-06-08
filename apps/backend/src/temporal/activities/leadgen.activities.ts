@@ -10,7 +10,6 @@ import {
   type LeadgenCandidateSignal,
   type LeadgenDiscoveryRecipe,
   type LeadgenDomainProfile,
-  type LeadgenOpportunityStatus,
   type LeadgenOpportunityTriage,
   type LeadgenReasoningEffort,
   type LeadgenTriageCandidate,
@@ -21,7 +20,19 @@ import {
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
-import { and, asc, count, eq, inArray, ne, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  inArray,
+  isNotNull,
+  isNull,
+  sql,
+} from 'drizzle-orm';
+import { getLeadgenLeadPriorityOrder } from '#lib/leadgen/ordering';
+import { getLeadgenRunCounts } from '#lib/leadgen/snapshot';
 import { createLogger } from '#lib/logger';
 import {
   discoverLeadgenContactsAndDraft,
@@ -29,7 +40,6 @@ import {
   getLeadgenErrorMessage,
   loadLeadgenSenderForRun,
   persistLeadgenEvent,
-  refreshLeadgenRunCounts,
 } from '../../services/leadgen/outreach.service';
 import { appendLeadgenTokenUsageFromResult } from '../../services/leadgen/token-usage';
 
@@ -47,13 +57,6 @@ const RECIPE_ORDER: LeadgenDiscoveryRecipe[] = [
   'domain_weakness_check',
   'local_business_search',
 ];
-const STATUS_RANK: Record<LeadgenOpportunityStatus, number> = {
-  contact_now: 0,
-  checking: 2_000,
-  low_priority: 3_000,
-  suppressed: 4_000,
-};
-
 export interface InitializeLeadgenRunParams {
   runId: string;
   workflowId: string;
@@ -71,7 +74,6 @@ export interface LeadgenSeedDiscoveryActivityParams {
   sourceDomain: string;
   reasoningEffort: LeadgenReasoningEffort;
   rawCandidateLimit?: number;
-  askingPriceUsd?: number;
 }
 
 export interface LeadgenRecipeDiscoveryActivityParams {
@@ -81,7 +83,6 @@ export interface LeadgenRecipeDiscoveryActivityParams {
   reasoningEffort: LeadgenReasoningEffort;
   selectedRecipeLimit?: number;
   rawCandidateLimit?: number;
-  askingPriceUsd?: number;
 }
 
 export interface FinalizeLeadgenOpportunitiesParams {
@@ -89,7 +90,6 @@ export interface FinalizeLeadgenOpportunitiesParams {
   sourceDomain: string;
   domainProfile: LeadgenDomainProfile;
   reasoningEffort: LeadgenReasoningEffort;
-  askingPriceUsd?: number;
   contactDiscoveryLimit?: number;
 }
 
@@ -137,14 +137,12 @@ type DiscoveryRuntime = {
   sourceDomain: string;
   domainProfile?: LeadgenDomainProfile | null;
   reasoningEffort: LeadgenReasoningEffort;
-  askingPriceUsd?: number;
   abortSignal: AbortSignal;
   config: LeadgenEffortConfig;
   pendingTriageDomains: Set<string>;
   emittedLeadDomains: Set<string>;
   persistedSignalKeys: Set<string>;
   persistedSignalCount: number;
-  nextRank: number;
 };
 
 export async function heartbeatLeadgenWhile<T>(
@@ -295,7 +293,6 @@ export async function generateLeadgenDomainProfileActivity({
         : 'Buyer angles ready.',
     payload: {
       queries: angleTitles,
-      buyerAngles: angleTitles,
     },
   });
 
@@ -368,7 +365,6 @@ export async function finalizeLeadgenOpportunitiesActivity(
         sourceDomain: params.sourceDomain,
         domainProfile: params.domainProfile,
         reasoningEffort: params.reasoningEffort,
-        askingPriceUsd: params.askingPriceUsd,
         statuses: ['checking'],
         limit: config.triageLeadLimit,
         abortSignal,
@@ -382,7 +378,7 @@ export async function finalizeLeadgenOpportunitiesActivity(
         abortSignal,
       });
 
-      return await refreshLeadgenRunCounts(params.runId);
+      return await getLeadgenRunCounts(params.runId);
     },
     {
       stage: 'contacts',
@@ -395,7 +391,7 @@ export async function discoverLeadgenEarlyContactsActivity(
   params: DiscoverLeadgenEarlyContactsParams,
 ) {
   if (params.contactDiscoveryLimit <= 0) {
-    return await refreshLeadgenRunCounts(params.runId);
+    return await getLeadgenRunCounts(params.runId);
   }
 
   return await heartbeatLeadgenWhile(
@@ -408,7 +404,7 @@ export async function discoverLeadgenEarlyContactsActivity(
         abortSignal,
       });
 
-      return await refreshLeadgenRunCounts(params.runId);
+      return await getLeadgenRunCounts(params.runId);
     },
     {
       stage: 'contacts',
@@ -423,7 +419,6 @@ async function discoverLeadgenSignals(params: {
   sourceDomain: string;
   domainProfile?: LeadgenDomainProfile | null;
   reasoningEffort: LeadgenReasoningEffort;
-  askingPriceUsd?: number;
   rawCandidateLimit?: number;
   abortSignal: AbortSignal;
   jobs: DiscoveryRecipeJob[];
@@ -440,14 +435,12 @@ async function discoverLeadgenSignals(params: {
     sourceDomain: params.sourceDomain,
     domainProfile: params.domainProfile,
     reasoningEffort: params.reasoningEffort,
-    askingPriceUsd: params.askingPriceUsd,
     abortSignal: params.abortSignal,
     config,
     pendingTriageDomains: new Set<string>(),
     emittedLeadDomains: new Set<string>(),
     persistedSignalKeys: new Set<string>(),
     persistedSignalCount: 0,
-    nextRank: await getNextLeadgenRank(params.runId),
   };
 
   await persistLeadgenEvent({
@@ -486,7 +479,6 @@ async function discoverLeadgenSignals(params: {
     runtime,
     force: true,
   });
-  await refreshLeadgenRunCounts(params.runId);
 
   return { inserted: runtime.emittedLeadDomains.size };
 }
@@ -601,7 +593,6 @@ async function persistCandidateSignals(params: {
         ...signal,
         recipe: params.recipe,
       },
-      rank: params.runtime.nextRank++,
     });
     if (!lead) continue;
 
@@ -610,16 +601,14 @@ async function persistCandidateSignals(params: {
 
     if (!params.runtime.emittedLeadDomains.has(lead.businessDomain)) {
       params.runtime.emittedLeadDomains.add(lead.businessDomain);
-      await refreshLeadgenRunCounts(params.runId);
       await persistLeadgenEvent({
         runId: params.runId,
         eventType: 'lead',
         stage: 'search',
-        message: `Checking ${lead.companyName ?? lead.businessDomain}.`,
+        message: `Checking ${lead.businessDomain}.`,
         payload: {
           leadId: lead.id,
           businessDomain: lead.businessDomain,
-          companyName: lead.companyName,
           status: lead.status,
           signalType: signal.signalType,
         },
@@ -637,7 +626,6 @@ async function persistCandidateSignals(params: {
 async function persistCandidateSignal(params: {
   runId: string;
   signal: LeadgenCandidateSignal;
-  rank: number;
 }) {
   const businessDomain = normalizeLeadgenDomain(params.signal.domain);
   if (!businessDomain) return null;
@@ -648,21 +636,14 @@ async function persistCandidateSignal(params: {
     .values({
       runId: params.runId,
       businessDomain,
-      companyName: params.signal.companyName ?? null,
       status: 'checking',
       score: 0,
-      riskLevel: 'low',
-      contactReadiness: 'not_searched',
-      query: params.signal.query,
       rationale: params.signal.candidateReason,
       content: params.signal.evidenceSnippet,
-      rank: params.rank,
     })
     .onConflictDoUpdate({
       target: [leadgenLeadsTable.runId, leadgenLeadsTable.businessDomain],
       set: {
-        companyName: sql`coalesce(${leadgenLeadsTable.companyName}, ${params.signal.companyName ?? null})`,
-        query: params.signal.query,
         updatedAt: now,
       },
     })
@@ -673,7 +654,6 @@ async function persistCandidateSignal(params: {
   await db
     .insert(leadgenLeadSignalsTable)
     .values({
-      runId: params.runId,
       leadId: lead.id,
       recipe: params.signal.recipe,
       signalType: params.signal.signalType,
@@ -682,7 +662,6 @@ async function persistCandidateSignal(params: {
       evidenceSnippet: params.signal.evidenceSnippet,
       metadata: {
         candidateReason: params.signal.candidateReason,
-        companyName: params.signal.companyName,
       },
     })
     .onConflictDoUpdate({
@@ -697,7 +676,6 @@ async function persistCandidateSignal(params: {
         evidenceUrl: params.signal.evidenceUrl ?? null,
         metadata: {
           candidateReason: params.signal.candidateReason,
-          companyName: params.signal.companyName,
         },
         updatedAt: now,
       },
@@ -727,7 +705,6 @@ async function triagePendingDomains(params: {
     sourceDomain: params.runtime.sourceDomain,
     domainProfile: params.runtime.domainProfile,
     reasoningEffort: params.runtime.reasoningEffort,
-    askingPriceUsd: params.runtime.askingPriceUsd,
     domains,
     abortSignal: params.runtime.abortSignal,
   });
@@ -738,7 +715,6 @@ async function triageLeadgenCandidates(params: {
   sourceDomain: string;
   domainProfile?: LeadgenDomainProfile | null;
   reasoningEffort: LeadgenReasoningEffort;
-  askingPriceUsd?: number;
   domains?: string[];
   statuses?: LeadRow['status'][];
   limit?: number;
@@ -764,7 +740,6 @@ async function triageLeadgenCandidates(params: {
 
       return {
         domain: lead.businessDomain,
-        companyName: lead.companyName,
         existingStatus: lead.status,
         existingScore: lead.score,
         signals: signals.slice(0, 8).map((signal) => ({
@@ -785,7 +760,6 @@ async function triageLeadgenCandidates(params: {
     candidates,
     options: {
       abortSignal: params.abortSignal,
-      askingPriceUsd: params.askingPriceUsd,
       domainProfile: params.domainProfile,
       reasoningEffort: params.reasoningEffort,
     },
@@ -810,8 +784,6 @@ async function triageLeadgenCandidates(params: {
       triage,
     });
   }
-
-  await refreshLeadgenRunCounts(params.runId);
 }
 
 async function updateLeadFromTriage(params: {
@@ -825,10 +797,6 @@ async function updateLeadFromTriage(params: {
     .set({
       status: params.triage.status,
       score: params.triage.score,
-      riskLevel: 'low',
-      riskNote: null,
-      contactReadiness: params.lead.contactReadiness,
-      rank: getOpportunityRank(params.triage.status, params.triage.score),
       updatedAt: now,
     })
     .where(eq(leadgenLeadsTable.id, params.lead.id));
@@ -859,33 +827,11 @@ async function discoverContactsForPromotedLeads(params: {
   contactDiscoveryLimit: number;
   abortSignal: AbortSignal;
 }) {
-  const [searchedCountRow] = await db
-    .select({ value: count() })
-    .from(leadgenLeadsTable)
-    .where(
-      and(
-        eq(leadgenLeadsTable.runId, params.runId),
-        ne(leadgenLeadsTable.contactReadiness, 'not_searched'),
-      ),
-    );
-  const remainingContactSearches = Math.max(
-    0,
-    params.contactDiscoveryLimit - (searchedCountRow?.value ?? 0),
-  );
-  if (remainingContactSearches === 0) return;
-
-  const leads = await db
-    .select()
-    .from(leadgenLeadsTable)
-    .where(
-      and(
-        eq(leadgenLeadsTable.runId, params.runId),
-        eq(leadgenLeadsTable.status, 'contact_now'),
-        eq(leadgenLeadsTable.contactReadiness, 'not_searched'),
-      ),
-    )
-    .orderBy(asc(leadgenLeadsTable.rank), asc(leadgenLeadsTable.createdAt))
-    .limit(remainingContactSearches);
+  const { leads, remainingContactSearches } =
+    await claimLeadgenContactDiscoveryLeads({
+      runId: params.runId,
+      contactDiscoveryLimit: params.contactDiscoveryLimit,
+    });
 
   if (leads.length === 0) return;
 
@@ -913,7 +859,65 @@ async function discoverContactsForPromotedLeads(params: {
       abortSignal: params.abortSignal,
     });
   });
-  await refreshLeadgenRunCounts(params.runId);
+}
+
+export async function claimLeadgenContactDiscoveryLeads(params: {
+  runId: string;
+  contactDiscoveryLimit: number;
+}) {
+  return await db.transaction(async (tx) => {
+    const lockKey = `leadgen-contact-discovery:${params.runId}`;
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext(${lockKey}))`);
+
+    const [searchedCountRow] = await tx
+      .select({ value: count() })
+      .from(leadgenLeadsTable)
+      .where(
+        and(
+          eq(leadgenLeadsTable.runId, params.runId),
+          isNotNull(leadgenLeadsTable.contactDiscoveryAttemptedAt),
+        ),
+      );
+    const remainingContactSearches = Math.max(
+      0,
+      params.contactDiscoveryLimit - (searchedCountRow?.value ?? 0),
+    );
+    if (remainingContactSearches === 0) {
+      return { leads: [] as LeadRow[], remainingContactSearches };
+    }
+
+    const claimTime = new Date();
+    const leads = await tx
+      .update(leadgenLeadsTable)
+      .set({
+        contactDiscoveryAttemptedAt: claimTime,
+        updatedAt: claimTime,
+      })
+      .where(
+        inArray(
+          leadgenLeadsTable.id,
+          tx
+            .select({ id: leadgenLeadsTable.id })
+            .from(leadgenLeadsTable)
+            .where(
+              and(
+                eq(leadgenLeadsTable.runId, params.runId),
+                eq(leadgenLeadsTable.status, 'contact_now'),
+                isNull(leadgenLeadsTable.contactDiscoveryAttemptedAt),
+              ),
+            )
+            .orderBy(
+              desc(leadgenLeadsTable.score),
+              asc(leadgenLeadsTable.createdAt),
+              asc(leadgenLeadsTable.id),
+            )
+            .limit(remainingContactSearches),
+        ),
+      )
+      .returning();
+
+    return { leads, remainingContactSearches };
+  });
 }
 
 export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
@@ -921,7 +925,7 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
     runId,
     reason: 'run-complete',
   });
-  const counts = await refreshLeadgenRunCounts(runId);
+  const counts = await getLeadgenRunCounts(runId);
   const now = new Date();
   await db
     .update(leadgenRunsTable)
@@ -929,10 +933,6 @@ export async function completeLeadgenRun({ runId }: CompleteLeadgenRunParams) {
       status: 'SUCCEEDED',
       finishedAt: now,
       updatedAt: now,
-      summary:
-        counts.leadCount > 0
-          ? `Found ${counts.leadCount} prospects, ${counts.contactCount} contacts, and ${counts.draftCount} drafts.`
-          : 'Research complete.',
     })
     .where(eq(leadgenRunsTable.id, runId));
 
@@ -965,7 +965,6 @@ export async function finalizeUntriagedLeadgenLeads({
     .set({
       status: 'low_priority',
       score: 0,
-      rank: getOpportunityRank('low_priority', 0),
       updatedAt: finalizedAt,
     })
     .where(
@@ -1085,7 +1084,12 @@ async function loadTriageLeads(params: {
     .select()
     .from(leadgenLeadsTable)
     .where(and(...clauses))
-    .orderBy(asc(leadgenLeadsTable.rank), asc(leadgenLeadsTable.createdAt))
+    .orderBy(
+      getLeadgenLeadPriorityOrder(),
+      desc(leadgenLeadsTable.score),
+      asc(leadgenLeadsTable.createdAt),
+      asc(leadgenLeadsTable.id),
+    )
     .limit(params.limit ?? 50);
 }
 
@@ -1109,17 +1113,6 @@ async function loadSignalsByLeadId(leadIds: string[]) {
   }
 
   return signalsByLeadId;
-}
-
-async function getNextLeadgenRank(runId: string) {
-  const [row] = await db
-    .select({
-      value: sql<number>`coalesce(max(${leadgenLeadsTable.rank}), 0)`,
-    })
-    .from(leadgenLeadsTable)
-    .where(eq(leadgenLeadsTable.runId, runId));
-
-  return (row?.value ?? 0) + 1;
 }
 
 function buildSeedRecipeJobs(sourceDomain: string): DiscoveryRecipeJob[] {
@@ -1256,7 +1249,7 @@ function getLeadgenEffortConfig(
       maxTheses: 2,
       rawCandidateLimit: 20,
       triageLeadLimit: 12,
-      contactDiscoveryLimit: 2,
+      contactDiscoveryLimit: 5,
       selectedRecipeLimit: 1,
       discoveryMaxResults: 8,
       recipeConcurrency: 1,
@@ -1295,21 +1288,17 @@ function getLeadgenEffortConfig(
   };
 }
 
-function getOpportunityRank(status: LeadgenOpportunityStatus, score: number) {
-  return STATUS_RANK[status] + (100 - score);
-}
-
 function getTriageEventMessage(
   lead: LeadRow,
   triage: LeadgenOpportunityTriage,
 ) {
   if (triage.status === 'contact_now') {
-    return `${lead.companyName ?? lead.businessDomain} is ready for contact research.`;
+    return `${lead.businessDomain} is ready for contact research.`;
   }
   if (triage.status === 'suppressed') {
-    return `${lead.companyName ?? lead.businessDomain} was filtered from outreach.`;
+    return `${lead.businessDomain} was filtered from outreach.`;
   }
-  return `${lead.companyName ?? lead.businessDomain} was ranked.`;
+  return `${lead.businessDomain} was ranked.`;
 }
 
 function getDomainCore(domain: string) {

@@ -238,7 +238,6 @@ vi.mock('@namefi-astra/db/schema', () => ({
   leadgenRunsTable: {
     createdAt: mockColumn('leadgen_runs.created_at'),
     id: mockColumn('leadgen_runs.id'),
-    input: mockColumn('leadgen_runs.input'),
     metadata: mockColumn('leadgen_runs.metadata'),
     reasoningEffort: mockColumn('leadgen_runs.reasoning_effort'),
     status: mockColumn('leadgen_runs.status'),
@@ -286,6 +285,7 @@ vi.mock('@namefi-astra/ai', () => ({
   ],
   LOOPED_ANIMATION_MOTION_PRESET_IDS: ['let-ai-choose', 'light-sweep'],
   MARKETING_COLLATERAL_TYPE_INPUT_IDS: ['let_ai_choose'],
+  getLeadgenPrimaryResearchModel: vi.fn(() => 'gpt-5-mini'),
   runLogoWorkflow: vi.fn(),
   runMarketingWorkflow: vi.fn(),
 }));

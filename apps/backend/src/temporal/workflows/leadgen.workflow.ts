@@ -8,11 +8,6 @@ export interface LeadgenWorkflowInput {
   userId: string;
   domain: string;
   reasoningEffort: 'low' | 'medium' | 'high';
-  askingPriceUsd?: number;
-  runProfile?: 'full' | 'campaign_short';
-  selectedRecipeLimit?: number;
-  rawCandidateLimit?: number;
-  contactDiscoveryLimit?: number;
 }
 
 export interface LeadgenWorkflowResult {
@@ -26,6 +21,13 @@ interface WorkflowErrorSummary {
   message: string;
   stack?: string;
   cause?: WorkflowErrorSummary;
+}
+
+interface LegacyLeadgenWorkflowLimitInput {
+  runProfile?: 'full' | 'campaign_short';
+  selectedRecipeLimit?: number;
+  rawCandidateLimit?: number;
+  contactDiscoveryLimit?: number;
 }
 
 const SLACK_FIELD_LIMIT = 1800;
@@ -43,6 +45,42 @@ const { sendOutboundWorkflowFailureAlertToSlack } = typedProxyActivities({
 });
 
 function resolveLeadgenRunLimits(input: LeadgenWorkflowInput) {
+  // Keep the old limit derivation for histories that started before limits were
+  // derived solely from reasoning effort; otherwise Temporal replay can diverge.
+  if (!workflow.patched('leadgen-reasoning-effort-limits-v1')) {
+    return resolveLegacyLeadgenRunLimits(input);
+  }
+
+  const effortDefaults = {
+    low: {
+      maxTheses: 2,
+      rawCandidateLimit: 20,
+      contactDiscoveryLimit: 5,
+      earlyContactDiscoveryLimit: 2,
+      selectedRecipeLimit: 1,
+    },
+    medium: {
+      maxTheses: 3,
+      rawCandidateLimit: 45,
+      contactDiscoveryLimit: 5,
+      earlyContactDiscoveryLimit: 2,
+      selectedRecipeLimit: 3,
+    },
+    high: {
+      maxTheses: 5,
+      rawCandidateLimit: 90,
+      contactDiscoveryLimit: 8,
+      earlyContactDiscoveryLimit: 3,
+      selectedRecipeLimit: 5,
+    },
+  }[input.reasoningEffort];
+
+  return effortDefaults;
+}
+
+function resolveLegacyLeadgenRunLimits(
+  input: LeadgenWorkflowInput & LegacyLeadgenWorkflowLimitInput,
+) {
   const isCampaignShortRun = input.runProfile === 'campaign_short';
   const toLimit = (value: number | undefined, fallback: number) =>
     value == null ? fallback : Math.max(0, Math.floor(value));
@@ -162,7 +200,6 @@ export async function runLeadgenWorkflow(
       sourceDomain: input.domain,
       reasoningEffort: input.reasoningEffort,
       rawCandidateLimit: seedCandidateLimit,
-      askingPriceUsd: input.askingPriceUsd,
     });
 
     const { domainProfile } = await profileTask;
@@ -175,7 +212,6 @@ export async function runLeadgenWorkflow(
             reasoningEffort: input.reasoningEffort,
             selectedRecipeLimit,
             rawCandidateLimit: recipeCandidateLimit,
-            askingPriceUsd: input.askingPriceUsd,
           })
         : Promise.resolve({ inserted: 0 });
 
@@ -194,7 +230,6 @@ export async function runLeadgenWorkflow(
       sourceDomain: input.domain,
       domainProfile,
       reasoningEffort: input.reasoningEffort,
-      askingPriceUsd: input.askingPriceUsd,
       contactDiscoveryLimit,
     });
 
@@ -248,11 +283,6 @@ async function alertOutboundWorkflowFailure({
         workflowId: info.workflowId,
         runId: info.runId,
         reasoningEffort: input.reasoningEffort,
-        runProfile: input.runProfile ?? 'full',
-        askingPriceUsd: input.askingPriceUsd ?? 'not provided',
-        selectedRecipeLimit: input.selectedRecipeLimit ?? 'default',
-        rawCandidateLimit: input.rawCandidateLimit ?? 'default',
-        contactDiscoveryLimit: input.contactDiscoveryLimit ?? 'default',
         error: truncateSlackField(formatWorkflowErrorChain(failure)),
         errorStack: failure.stack ?? 'not available',
         statusUpdateError: statusUpdateFailure

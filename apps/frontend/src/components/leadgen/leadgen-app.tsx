@@ -101,7 +101,6 @@ import {
 import { buildMailtoHref } from './leadgen-mailto';
 import {
   buildLeadPresentationModel,
-  canPrepareLeadgenOutreach,
   isTerminalLeadgenStatus,
   type LeadPresentation,
   type LeadPresentationModel,
@@ -110,8 +109,6 @@ import { upsertLeadgenRunByCreatedDesc } from './leadgen-run-order';
 
 type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 type LeadgenRunSummary = AppRouterOutput['leadgen']['listRuns'][number];
-type LeadgenUserSignal =
-  AppRouterOutput['leadgen']['setLeadUserSignal']['signal'];
 type UserDomain = AppRouterOutput['users']['getCurrentUserDomains'][number];
 type LeadgenStartSuggestion = {
   domain: string;
@@ -185,7 +182,13 @@ const leadLayoutTransition = {
   mass: 0.8,
 } as const;
 
-export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
+export function LeadgenApp({
+  initialRunId,
+  initialLeadId,
+}: {
+  initialRunId?: string;
+  initialLeadId?: string;
+}) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const requirePostAuthIntent = useRequirePostAuthIntent();
   const trpc = useTRPC();
@@ -601,6 +604,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
             isRunning={isRunning}
             run={run}
             ownedDomain={ownedDomainForRun}
+            initialLeadId={initialLeadId}
             startSuggestions={startSuggestions}
             isStartSuggestionsLoading={isStartSuggestionsLoading}
             onSelectStartSuggestion={handleSelectStartSuggestion}
@@ -747,6 +751,7 @@ function LeadgenWorkspacePanel({
   isRunning,
   run,
   ownedDomain,
+  initialLeadId,
   startSuggestions,
   isStartSuggestionsLoading,
   onSelectStartSuggestion,
@@ -756,6 +761,7 @@ function LeadgenWorkspacePanel({
   isRunning: boolean;
   run: LeadgenSnapshot | null;
   ownedDomain?: UserDomain;
+  initialLeadId?: string;
   startSuggestions: LeadgenStartSuggestion[];
   isStartSuggestionsLoading: boolean;
   onSelectStartSuggestion: (suggestion: LeadgenStartSuggestion) => void;
@@ -771,6 +777,7 @@ function LeadgenWorkspacePanel({
         run={run}
         isRunning={isRunning}
         ownedDomain={ownedDomain}
+        initialLeadId={initialLeadId}
         onRunUpdated={onRunUpdated}
       />
     );
@@ -789,11 +796,13 @@ function RunWorkspace({
   run,
   isRunning,
   ownedDomain,
+  initialLeadId,
   onRunUpdated,
 }: {
   run: LeadgenSnapshot;
   isRunning: boolean;
   ownedDomain?: UserDomain;
+  initialLeadId?: string;
   onRunUpdated: (run: LeadgenSnapshot) => void;
 }) {
   const trpc = useTRPC();
@@ -835,6 +844,7 @@ function RunWorkspace({
     string | null
   >(null);
   const previousRunIdRef = useRef(run.id);
+  const appliedInitialLeadRef = useRef<string | null>(null);
   const presentation = useMemo(
     () =>
       buildLeadPresentationModel(run, {
@@ -851,6 +861,27 @@ function RunWorkspace({
     setOptimisticUserSignalStateByLeadId({});
     setPendingUserSignalLeadIds([]);
   }, [run.id]);
+
+  useEffect(() => {
+    if (!initialLeadId) {
+      appliedInitialLeadRef.current = null;
+      return;
+    }
+
+    const initialLeadKey = `${run.id}:${initialLeadId}`;
+    if (appliedInitialLeadRef.current === initialLeadKey) return;
+    const initialLead = run.leads.find((lead) => lead.id === initialLeadId);
+    if (!initialLead) return;
+
+    appliedInitialLeadRef.current = initialLeadKey;
+    document
+      .getElementById(getLeadCardDomId(initialLeadId))
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    if (hasReviewableOutreach(initialLead)) {
+      setReviewOutreachLeadId(initialLeadId);
+    }
+  }, [initialLeadId, run.id, run.leads]);
 
   const generateLeadOutreach = useMutation(
     trpc.leadgen.generateLeadOutreach.mutationOptions({
@@ -906,7 +937,7 @@ function RunWorkspace({
           applyLeadgenUserSignalToRun({
             run: currentRun,
             leadId: result.leadId,
-            signal: result.signal,
+            state: result.state,
           }),
         );
         setOptimisticUserSignalStateByLeadId((states) =>
@@ -1068,7 +1099,6 @@ function RunWorkspace({
             leads={presentation.leads}
             emptyStateMessage="Prospects will appear here as search finds them."
             sourceDomain={run.domain}
-            runStatus={run.status}
             pendingOutreachLeadIds={pendingOutreachLeadIds}
             reviewOutreachLeadId={reviewOutreachLeadId}
             estimatedOutreachCredits={estimatedOutreachCredits}
@@ -1145,7 +1175,6 @@ function LeadList({
   leads,
   emptyStateMessage,
   sourceDomain,
-  runStatus,
   pendingOutreachLeadIds,
   reviewOutreachLeadId,
   estimatedOutreachCredits,
@@ -1161,7 +1190,6 @@ function LeadList({
   leads: LeadPresentation[];
   emptyStateMessage: string;
   sourceDomain: string;
-  runStatus: LeadgenSnapshot['status'];
   pendingOutreachLeadIds: string[];
   reviewOutreachLeadId: string | null;
   estimatedOutreachCredits?: number;
@@ -1211,7 +1239,6 @@ function LeadList({
       presentation={presentation}
       transition={transition}
       sourceDomain={sourceDomain}
-      runStatus={runStatus}
       isPreparingOutreach={pendingOutreachLeadIds.includes(
         presentation.lead.id,
       )}
@@ -1308,7 +1335,6 @@ function LeadCard({
   presentation,
   transition,
   sourceDomain,
-  runStatus,
   isPreparingOutreach,
   isReviewingOutreach,
   estimatedOutreachCredits,
@@ -1325,7 +1351,6 @@ function LeadCard({
   presentation: LeadPresentation;
   transition: typeof leadLayoutTransition | { duration: number };
   sourceDomain: string;
-  runStatus: LeadgenSnapshot['status'];
   isPreparingOutreach: boolean;
   isReviewingOutreach: boolean;
   estimatedOutreachCredits?: number;
@@ -1340,22 +1365,20 @@ function LeadCard({
 }) {
   const { lead } = presentation;
   const recipients = useMemo(() => getOutreachRecipients(lead), [lead]);
-  const canPrepareOutreach = canPrepareLeadgenOutreach({ lead, runStatus });
   const hasEmailCta = recipients.length > 0 && lead.drafts.length > 0;
   const shouldPrepareOutreach =
-    canPrepareOutreach &&
-    (lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length);
-  const showOutreachPanel =
-    canPrepareOutreach && (hasEmailCta || shouldPrepareOutreach);
+    lead.contacts.length === 0 || lead.drafts.length < lead.contacts.length;
+  const showOutreachPanel = hasEmailCta || shouldPrepareOutreach;
   const isHidden = presentation.organizationState === 'hidden';
 
   return (
     <motion.article
+      id={getLeadCardDomId(lead.id)}
       layout
       layoutId={layoutId}
       transition={transition}
       className={cn(
-        'rounded-lg border border-border/70 bg-background/60 p-4 shadow-xs',
+        'scroll-mt-6 rounded-lg border border-border/70 bg-background/60 p-4 shadow-xs',
         isHidden && 'border-dashed bg-muted/20 opacity-75',
       )}
     >
@@ -1580,6 +1603,10 @@ function LeadContactCountBadge({ contactCount }: { contactCount: number }) {
       {contactCount} {contactCount === 1 ? 'contact' : 'contacts'}
     </span>
   );
+}
+
+function getLeadCardDomId(leadId: string) {
+  return `leadgen-lead-${leadId}`;
 }
 
 function LeadOutreachPanel({
@@ -2229,11 +2256,9 @@ function upsertLeadgenRunSummary(
 function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
   return {
     id: snapshot.id,
-    userId: snapshot.userId,
     domain: snapshot.domain,
     status: snapshot.status,
     reasoningEffort: snapshot.reasoningEffort,
-    workflowId: snapshot.workflowId,
     startedAt: snapshot.startedAt,
     finishedAt: snapshot.finishedAt,
     errorMessage: snapshot.errorMessage,
@@ -2241,7 +2266,6 @@ function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
     leadCount: snapshot.leadCount,
     contactCount: snapshot.contactCount,
     draftCount: snapshot.draftCount,
-    tokenUsage: snapshot.tokenUsage,
     createdAt: snapshot.createdAt,
     updatedAt: snapshot.updatedAt,
   };
@@ -2250,11 +2274,11 @@ function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
 function applyLeadgenUserSignalToRun({
   run,
   leadId,
-  signal,
+  state,
 }: {
   run: LeadgenSnapshot;
   leadId: string;
-  signal: LeadgenUserSignal;
+  state: LeadgenUserSignalState;
 }): LeadgenSnapshot {
   return {
     ...run,
@@ -2262,27 +2286,11 @@ function applyLeadgenUserSignalToRun({
       lead.id === leadId
         ? {
             ...lead,
-            signals: upsertLeadgenSignal(lead.signals, signal),
+            organizationState: state,
           }
         : lead,
     ),
   };
-}
-
-function upsertLeadgenSignal(
-  signals: LeadgenLead['signals'],
-  signal: LeadgenUserSignal,
-) {
-  const existingSignalIndex = signals.findIndex(
-    (item) => item.id === signal.id,
-  );
-  if (existingSignalIndex === -1) {
-    return [...signals, signal];
-  }
-
-  return signals.map((item, index) =>
-    index === existingSignalIndex ? signal : item,
-  );
 }
 
 function omitLeadSignalState(
@@ -2874,11 +2882,15 @@ function getCompactTimelinePhases({
   const visibleLeadCount =
     presentation.counts.ranked + presentation.counts.checking;
   const triageStarted = Boolean(scoringStartedEvent);
+  const contactAttemptedLeadIds = getInitialContactAttemptedLeadIds({
+    run,
+    events: orderedEvents,
+  });
   const contactPendingCount = presentation.groups.ranked.filter(
     (lead) =>
-      lead.lead.status === 'contact_now' &&
-      lead.lead.contactReadiness === 'not_searched' &&
-      lead.lead.contacts.length < 3,
+      lead.lead.initialOutreachCandidate &&
+      lead.lead.contacts.length < 3 &&
+      !contactAttemptedLeadIds.has(lead.lead.id),
   ).length;
   const initialOutreachCounts = getInitialOutreachTimelineCounts({
     run,
@@ -3105,18 +3117,12 @@ function getInitialOutreachTimelineCounts({
   const contactEventCount = countUniqueLeadgenEvents(
     orderedEvents,
     isInitialContactEvent,
-    (event) =>
-      getPayloadString(event.payload, 'contactId') ??
-      getPayloadString(event.payload, 'email') ??
-      event.id,
+    (event) => getLeadPayloadDedupeKey(event, 'email'),
   );
   const draftEventCount = countUniqueLeadgenEvents(
     orderedEvents,
     isInitialDraftEvent,
-    (event) =>
-      getPayloadString(event.payload, 'draftId') ??
-      getPayloadString(event.payload, 'contactEmail') ??
-      event.id,
+    (event) => getLeadPayloadDedupeKey(event, 'contactEmail'),
   );
 
   return {
@@ -3129,6 +3135,39 @@ function getInitialOutreachTimelineCounts({
       Math.max(0, run.draftCount - manualOutreach.draftCount),
     ),
   };
+}
+
+function getInitialContactAttemptedLeadIds({
+  run,
+  events,
+}: {
+  run: LeadgenSnapshot;
+  events: LeadgenSnapshot['events'];
+}) {
+  const leadIds = new Set(
+    run.leads
+      .filter((lead) => lead.contacts.length > 0 || lead.drafts.length > 0)
+      .map((lead) => lead.id),
+  );
+
+  for (const event of events) {
+    if (!isInitialContactAttemptEvent(event)) continue;
+
+    const leadId = getPayloadString(event.payload, 'leadId');
+    if (leadId) leadIds.add(leadId);
+  }
+
+  return leadIds;
+}
+
+function isInitialContactAttemptEvent(event: LeadgenEvent) {
+  return (
+    !isManualOutreachEvent(event) &&
+    (event.stage === 'contacts' ||
+      event.stage === 'drafts' ||
+      event.eventType === 'contact' ||
+      event.eventType === 'draft')
+  );
 }
 
 function getAdditionalOutreachPhases({
@@ -3342,24 +3381,15 @@ function getManualOutreachCounts(events: LeadgenEvent[]) {
   const contactEventCount = countUniqueLeadgenEvents(
     events,
     (event) =>
-      event.eventType === 'contact' &&
-      (hasPayloadString(event.payload, 'contactId') ||
-        hasPayloadString(event.payload, 'email')),
-    (event) =>
-      getPayloadString(event.payload, 'contactId') ??
-      getPayloadString(event.payload, 'email') ??
-      event.id,
+      event.eventType === 'contact' && hasPayloadString(event.payload, 'email'),
+    (event) => getLeadPayloadDedupeKey(event, 'email'),
   );
   const draftEventCount = countUniqueLeadgenEvents(
     events,
     (event) =>
       event.eventType === 'draft' &&
-      (hasPayloadString(event.payload, 'draftId') ||
-        hasPayloadString(event.payload, 'contactEmail')),
-    (event) =>
-      getPayloadString(event.payload, 'draftId') ??
-      getPayloadString(event.payload, 'contactEmail') ??
-      event.id,
+      hasPayloadString(event.payload, 'contactEmail'),
+    (event) => getLeadPayloadDedupeKey(event, 'contactEmail'),
   );
   const leadContactCount = latestManualStatus
     ? getPayloadNumber(latestManualStatus.payload, 'leadContactCount')
@@ -3502,8 +3532,7 @@ function isInitialContactEvent(event: LeadgenEvent) {
   return (
     event.eventType === 'contact' &&
     !isManualOutreachEvent(event) &&
-    (hasPayloadString(event.payload, 'contactId') ||
-      hasPayloadString(event.payload, 'email'))
+    hasPayloadString(event.payload, 'email')
   );
 }
 
@@ -3511,8 +3540,7 @@ function isInitialDraftEvent(event: LeadgenEvent) {
   return (
     event.eventType === 'draft' &&
     !isManualOutreachEvent(event) &&
-    (hasPayloadString(event.payload, 'draftId') ||
-      hasPayloadString(event.payload, 'contactEmail'))
+    hasPayloadString(event.payload, 'contactEmail')
   );
 }
 
@@ -3592,7 +3620,6 @@ function isDisplayableLeadgenEvent(
   const message = event.message?.trim();
   if (
     !message ||
-    event.transient ||
     event.eventType === 'error' ||
     negativeTimelineMessageRe.test(message)
   ) {
@@ -3611,15 +3638,9 @@ function isDisplayableLeadgenEvent(
         hasPayloadString(event.payload, 'businessDomain')
       );
     case 'contact':
-      return (
-        hasPayloadString(event.payload, 'contactId') ||
-        hasPayloadString(event.payload, 'email')
-      );
+      return hasPayloadString(event.payload, 'email');
     case 'draft':
-      return (
-        hasPayloadString(event.payload, 'draftId') ||
-        hasPayloadString(event.payload, 'contactEmail')
-      );
+      return hasPayloadString(event.payload, 'contactEmail');
     case 'error':
       return true;
     default:
@@ -3668,6 +3689,14 @@ function hasPayloadString(payload: unknown, key: string) {
   return Boolean(getPayloadString(payload, key));
 }
 
+function getLeadPayloadDedupeKey(event: LeadgenEvent, valueKey: string) {
+  const value = getPayloadString(event.payload, valueKey);
+  const leadId = getPayloadString(event.payload, 'leadId');
+
+  if (leadId && value) return `${leadId}:${value}`;
+  return value ?? leadId ?? event.id;
+}
+
 function isDuplicateLeadText(primary: string, secondary: string) {
   const normalizedPrimary = normalizeComparableText(primary);
   const normalizedSecondary = normalizeComparableText(secondary);
@@ -3712,6 +3741,10 @@ function getOutreachRecipients(lead: LeadgenLead) {
   }
 
   return [...recipients.values()];
+}
+
+function hasReviewableOutreach(lead: LeadgenLead) {
+  return lead.drafts.length > 0 && getOutreachRecipients(lead).length > 0;
 }
 
 function mapContactToRecipient(contact: LeadgenContact): OutreachRecipient {

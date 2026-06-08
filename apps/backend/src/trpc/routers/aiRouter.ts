@@ -67,7 +67,7 @@ type AssetOutput =
 type AiGenerationCreditRow = Pick<AiGenerationRow, 'input' | 'output' | 'type'>;
 type LeadgenRunCreditRow = Pick<
   typeof leadgenRunsTable.$inferSelect,
-  'id' | 'input' | 'metadata' | 'reasoningEffort' | 'tokenUsage'
+  'id' | 'metadata' | 'reasoningEffort' | 'tokenUsage'
 >;
 type StudioGenerationWorkflowType = 'animation' | 'logo' | 'marketing';
 type StudioGenerationWorkflowStartResult =
@@ -622,7 +622,6 @@ async function getCurrentMonthlyLeadgenCreditUsage(userId: string) {
   const runs = await db
     .select({
       id: leadgenRunsTable.id,
-      input: leadgenRunsTable.input,
       metadata: leadgenRunsTable.metadata,
       reasoningEffort: leadgenRunsTable.reasoningEffort,
       tokenUsage: leadgenRunsTable.tokenUsage,
@@ -634,7 +633,7 @@ async function getCurrentMonthlyLeadgenCreditUsage(userId: string) {
         sql`${leadgenRunsTable.createdAt} >= date_trunc('month', now())`,
         ne(leadgenRunsTable.status, 'FAILED'),
         ne(leadgenRunsTable.status, 'CANCELED'),
-        sql`COALESCE(${leadgenRunsTable.metadata}->>'source', ${leadgenRunsTable.input}->>'source', 'leadgen') = 'leadgen'`,
+        sql`COALESCE(${leadgenRunsTable.metadata}->>'source', 'leadgen') IN ('leadgen', 'outbound-api')`,
       ),
     );
 
@@ -653,7 +652,7 @@ async function getCurrentMonthlyLeadgenCreditUsage(userId: string) {
         eq(leadgenRunsTable.userId, userId),
         eq(leadgenEventsTable.eventType, 'credit-estimate'),
         sql`${leadgenEventsTable.createdAt} >= date_trunc('month', now())`,
-        sql`COALESCE(${leadgenRunsTable.metadata}->>'source', ${leadgenRunsTable.input}->>'source', 'leadgen') = 'leadgen'`,
+        sql`COALESCE(${leadgenRunsTable.metadata}->>'source', 'leadgen') IN ('leadgen', 'outbound-api')`,
       ),
     );
 
@@ -691,15 +690,10 @@ function getLeadgenCreditCostForRun(params: {
   run: LeadgenRunCreditRow;
   additionalEstimatedCredits: number;
 }) {
-  const runProfile =
-    params.run.input.runProfile === 'campaign_short'
-      ? 'campaign_short'
-      : 'full';
   const estimatedCredits =
     getLeadgenRunCreditEstimate({
       creditCosts: config.AI_GENERATION_CREDIT_COSTS,
       reasoningEffort: params.run.reasoningEffort,
-      runProfile,
       model: getLeadgenPrimaryResearchModel(params.run.reasoningEffort),
     }) + params.additionalEstimatedCredits;
   const actualCredits = getAiTokenUsageCreditCost({

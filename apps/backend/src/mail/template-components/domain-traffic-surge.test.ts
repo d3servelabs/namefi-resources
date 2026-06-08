@@ -174,7 +174,7 @@ describe('domain traffic surge formatting', () => {
     expect(normalizedHtml).not.toContain('Open draft');
     expect(normalizedHtml).toContain('View');
     expect(normalizedHtml).toContain(
-      '/leadgen/00000000-0000-4000-8000-000000000000',
+      '/outbound/00000000-0000-4000-8000-000000000000',
     );
     expect(normalizedHtml).toContain(
       'lead=00000000-0000-4000-8000-000000000001',

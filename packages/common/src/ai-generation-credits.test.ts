@@ -48,32 +48,25 @@ const creditCosts = {
       'gpt-5.5': 8,
     },
     modes: {
-      'full:low': {
+      low: {
         default: 3,
         models: {
           'gpt-5.4-mini': 3,
           'gpt-5.5': 5,
         },
       },
-      'full:medium': {
+      medium: {
         default: 4,
         models: {
           'gpt-5.4-mini': 4,
           'gpt-5.5': 8,
         },
       },
-      'full:high': {
+      high: {
         default: 12,
         models: {
           'gpt-5.4-mini': 6,
           'gpt-5.5': 12,
-        },
-      },
-      'campaign_short:medium': {
-        default: 3,
-        models: {
-          'gpt-5.4-mini': 3,
-          'gpt-5.5': 4,
         },
       },
     },
@@ -162,7 +155,7 @@ describe('getAiGenerationCreditCost', () => {
     ).toBe(1);
   });
 
-  it('supports leadgen estimates by run profile and reasoning effort', () => {
+  it('supports leadgen estimates by reasoning effort', () => {
     expect(
       getLeadgenRunCreditEstimate({
         creditCosts,
@@ -172,8 +165,7 @@ describe('getAiGenerationCreditCost', () => {
     expect(
       getLeadgenRunCreditEstimate({
         creditCosts,
-        reasoningEffort: 'medium',
-        runProfile: 'campaign_short',
+        reasoningEffort: 'low',
       }),
     ).toBe(3);
     expect(

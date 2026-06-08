@@ -35,28 +35,6 @@ export type LeadgenOpportunityStatus = z.infer<
   typeof leadgenOpportunityStatusSchema
 >;
 
-export const leadgenContactReadinessSchema = z.enum([
-  'not_searched',
-  'contact_found',
-  'generic_fallback',
-  'not_found',
-]);
-
-export type LeadgenContactReadiness = z.infer<
-  typeof leadgenContactReadinessSchema
->;
-
-export const leadgenRecommendedActionSchema = z.enum([
-  'ready_to_contact',
-  'finding_contact',
-  'defer_contact',
-  'filtered',
-]);
-
-export type LeadgenRecommendedAction = z.infer<
-  typeof leadgenRecommendedActionSchema
->;
-
 export const leadgenDomainTraitSchema = z
   .object({
     key: z.string().trim().min(1).max(80),
@@ -101,7 +79,6 @@ export const leadgenCandidateSignalSchema = z
       .string()
       .min(1)
       .describe('Bare registrable business domain, without protocol or path.'),
-    companyName: z.string().trim().min(1).max(200).nullable(),
     signalType: z.string().trim().min(1).max(80),
     query: z.string().trim().min(1).max(400),
     evidenceUrl: z.string().trim().min(1).max(700).nullable(),
@@ -122,14 +99,12 @@ export const leadgenOpportunityTriageModelSchema = z
   .object({
     domain: z.string().trim().min(1).max(255),
     score: z.number().int().min(0).max(100),
-    recommendedAction: leadgenRecommendedActionSchema,
+    status: z.enum(['contact_now', 'low_priority', 'suppressed']),
   })
   .strict();
 
 export const leadgenOpportunityTriageSchema =
-  leadgenOpportunityTriageModelSchema.extend({
-    status: leadgenOpportunityStatusSchema,
-  });
+  leadgenOpportunityTriageModelSchema;
 
 export type LeadgenOpportunityTriageModel = z.infer<
   typeof leadgenOpportunityTriageModelSchema

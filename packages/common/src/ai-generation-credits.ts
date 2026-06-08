@@ -94,46 +94,25 @@ export const defaultAiGenerationCreditCosts = {
       'gpt-5.5': 8,
     },
     modes: {
-      'full:low': {
+      low: {
         default: 3,
         models: {
           'gpt-5.4-mini': 3,
           'gpt-5.5': 5,
         },
       },
-      'full:medium': {
+      medium: {
         default: 4,
         models: {
           'gpt-5.4-mini': 4,
           'gpt-5.5': 8,
         },
       },
-      'full:high': {
+      high: {
         default: 12,
         models: {
           'gpt-5.4-mini': 6,
           'gpt-5.5': 12,
-        },
-      },
-      'campaign_short:low': {
-        default: 2,
-        models: {
-          'gpt-5.4-mini': 2,
-          'gpt-5.5': 3,
-        },
-      },
-      'campaign_short:medium': {
-        default: 3,
-        models: {
-          'gpt-5.4-mini': 3,
-          'gpt-5.5': 4,
-        },
-      },
-      'campaign_short:high': {
-        default: 6,
-        models: {
-          'gpt-5.4-mini': 4,
-          'gpt-5.5': 6,
         },
       },
     },
@@ -255,17 +234,15 @@ export function getAiGenerationCreditCost(params: {
 export function getLeadgenRunCreditEstimate(params: {
   creditCosts: AiGenerationCreditCosts;
   reasoningEffort: 'low' | 'medium' | 'high';
-  runProfile?: 'full' | 'campaign_short';
   model?: string;
 }) {
-  const runProfile = params.runProfile ?? 'full';
   const primaryModel =
     params.model ?? getDefaultLeadgenPrimaryModel(params.reasoningEffort);
 
   return getAiGenerationCreditCost({
     creditCosts: params.creditCosts,
     type: 'leadgen',
-    mode: `${runProfile}:${params.reasoningEffort}`,
+    mode: params.reasoningEffort,
     model: primaryModel,
   });
 }

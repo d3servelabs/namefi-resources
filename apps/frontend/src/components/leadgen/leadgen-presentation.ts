@@ -1,25 +1,16 @@
 import type { AppRouterOutput } from '@/lib/trpc';
-import {
-  leadgenUserSignalTypeByState,
-  type LeadgenUserSignalState,
-} from '@namefi-astra/common/contract/leadgen-contract';
+import type { LeadgenUserSignalState } from '@namefi-astra/common/contract/leadgen-contract';
 
 export type LeadgenSnapshot = AppRouterOutput['leadgen']['getRun'];
 export type LeadgenLead = LeadgenSnapshot['leads'][number];
 
 export type LeadPresentationGroup = 'ranked' | 'checking';
 export type LeadOrganizationGroup = 'bookmarked' | 'prospects' | 'hidden';
-export type LeadPresentationAction =
-  | 'ready_to_contact'
-  | 'finding_contact'
-  | 'ranked'
-  | 'checking';
 
 export type LeadPresentation = {
   lead: LeadgenLead;
   group: LeadPresentationGroup;
   organizationState: LeadgenUserSignalState;
-  action: LeadPresentationAction;
   buyerSummary: string;
 };
 
@@ -46,12 +37,6 @@ export type BuildLeadPresentationModelOptions = {
 };
 
 const whitespaceRe = /\s+/g;
-const userSignalStateBySignalType = new Map<string, LeadgenUserSignalState>(
-  Object.entries(leadgenUserSignalTypeByState).map(([state, signalType]) => [
-    signalType,
-    state as LeadgenUserSignalState,
-  ]),
-);
 
 export function buildLeadPresentationModel(
   run: LeadgenSnapshot,
@@ -94,57 +79,22 @@ export function buildLeadPresentationModel(
   };
 }
 
-/**
- * Manual outreach is intentionally available for any prospect status. Keep the
- * lead/runStatus predicate shape so call sites stay stable if gating returns.
- */
-export function canPrepareLeadgenOutreach(_params: {
-  lead: LeadgenLead;
-  runStatus: LeadgenSnapshot['status'];
-}) {
-  return true;
-}
-
 export function buildLeadPresentation(
   lead: LeadgenLead,
   options: { userSignalState?: LeadgenUserSignalState } = {},
 ): LeadPresentation {
   const group = getPresentationGroup(lead);
-  const action = getPresentationAction(lead);
 
   return {
     lead,
     group,
-    organizationState: options.userSignalState ?? getLeadUserSignalState(lead),
-    action,
+    organizationState: options.userSignalState ?? lead.organizationState,
     buyerSummary: getBuyerSummary(lead),
   };
 }
 
-export function getLeadUserSignalState(
-  lead: LeadgenLead,
-): LeadgenUserSignalState {
-  let latestUserSignal: {
-    state: LeadgenUserSignalState;
-    timestamp: number;
-  } | null = null;
-
-  for (const signal of lead.signals) {
-    const state = userSignalStateBySignalType.get(signal.signalType);
-    if (!state) continue;
-
-    const timestamp = signal.updatedAt.getTime();
-    if (!latestUserSignal || timestamp >= latestUserSignal.timestamp) {
-      latestUserSignal = { state, timestamp };
-    }
-  }
-
-  return latestUserSignal?.state ?? 'none';
-}
-
 function getPresentationGroup(lead: LeadgenLead): LeadPresentationGroup {
-  if (lead.status === 'checking') return 'checking';
-  return 'ranked';
+  return lead.rankingState;
 }
 
 function getOrganizationGroup(
@@ -153,16 +103,6 @@ function getOrganizationGroup(
   if (state === 'bookmarked') return 'bookmarked';
   if (state === 'hidden') return 'hidden';
   return 'prospects';
-}
-
-function getPresentationAction(lead: LeadgenLead): LeadPresentationAction {
-  if (lead.status === 'checking') return 'checking';
-  if (lead.status !== 'contact_now') return 'ranked';
-  return lead.contacts.length > 0 ||
-    lead.contactReadiness === 'contact_found' ||
-    lead.contactReadiness === 'generic_fallback'
-    ? 'ready_to_contact'
-    : 'finding_contact';
 }
 
 function getBuyerSummary(lead: LeadgenLead) {

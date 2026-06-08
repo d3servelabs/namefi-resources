@@ -1,16 +1,22 @@
 import { randomUUID } from 'node:crypto';
 import {
   db,
+  leadgenContactsTable,
   leadgenEmailDraftsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
+import { EMAIL_CAMPAIGN_KEYS } from '@namefi-astra/common/email-campaigns';
 import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 
+import {
+  getLeadgenLeadPriorityOrder,
+  getLeadgenLeadStatusPriority,
+} from '#lib/leadgen/ordering';
 import { createLogger } from '#lib/logger';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared';
@@ -21,7 +27,6 @@ const FIRST_SENTENCE_RE = /^.*?[.!?](?:\s|$)/;
 
 type LeadgenRunRow = typeof leadgenRunsTable.$inferSelect;
 type LeadgenReasoningEffort = 'low' | 'medium' | 'high';
-type LeadgenRunProfile = 'full' | 'campaign_short';
 
 export type LeadgenEmailLead = {
   leadId: string;
@@ -34,38 +39,19 @@ export async function startLeadgenRunForUser({
   userId,
   domain,
   reasoningEffort = 'medium',
-  runProfile = 'full',
   source,
   metadata = {},
-  askingPriceUsd,
-  selectedRecipeLimit,
-  rawCandidateLimit,
-  contactDiscoveryLimit,
 }: {
   userId: string;
   domain: string;
   reasoningEffort?: LeadgenReasoningEffort;
-  runProfile?: LeadgenRunProfile;
   source?: string;
   metadata?: Record<string, unknown>;
-  askingPriceUsd?: number;
-  selectedRecipeLimit?: number;
-  rawCandidateLimit?: number;
-  contactDiscoveryLimit?: number;
 }): Promise<LeadgenRunRow> {
   const normalizedDomain = namefiNormalizedDomainSchema.parse(domain);
   const runId = randomUUID();
   const workflowId = `leadgen-${runId}`;
-  const input = buildLeadgenRunInput({
-    domain: normalizedDomain,
-    reasoningEffort,
-    runProfile,
-    source,
-    askingPriceUsd,
-    selectedRecipeLimit,
-    rawCandidateLimit,
-    contactDiscoveryLimit,
-  });
+  const sourceName = source ?? 'leadgen';
 
   const [run] = await db
     .insert(leadgenRunsTable)
@@ -76,11 +62,9 @@ export async function startLeadgenRunForUser({
       reasoningEffort,
       workflowId,
       status: 'QUEUED',
-      input,
       metadata: {
         ...metadata,
-        source: source ?? 'leadgen',
-        runProfile,
+        source: sourceName,
       },
     })
     .returning();
@@ -95,7 +79,8 @@ export async function startLeadgenRunForUser({
         {
           runId,
           userId,
-          ...input,
+          domain: normalizedDomain,
+          reasoningEffort,
         },
       ],
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
@@ -122,34 +107,28 @@ export async function startLeadgenRunForUser({
   return getLeadgenRunOrThrow(runId);
 }
 
-function buildLeadgenRunInput(params: {
-  domain: NamefiNormalizedDomain;
-  reasoningEffort: LeadgenReasoningEffort;
-  runProfile: LeadgenRunProfile;
-  source?: string;
-  askingPriceUsd?: number;
-  selectedRecipeLimit?: number;
-  rawCandidateLimit?: number;
-  contactDiscoveryLimit?: number;
+export async function findActiveLeadgenRunForUserDomain({
+  userId,
+  domain,
+}: {
+  userId: string;
+  domain: string;
 }) {
-  return {
-    domain: params.domain,
-    reasoningEffort: params.reasoningEffort,
-    ...(params.runProfile !== 'full' ? { runProfile: params.runProfile } : {}),
-    ...(params.source ? { source: params.source } : {}),
-    ...(params.askingPriceUsd != null
-      ? { askingPriceUsd: params.askingPriceUsd }
-      : {}),
-    ...(params.selectedRecipeLimit != null
-      ? { selectedRecipeLimit: params.selectedRecipeLimit }
-      : {}),
-    ...(params.rawCandidateLimit != null
-      ? { rawCandidateLimit: params.rawCandidateLimit }
-      : {}),
-    ...(params.contactDiscoveryLimit != null
-      ? { contactDiscoveryLimit: params.contactDiscoveryLimit }
-      : {}),
-  };
+  const normalizedDomain = namefiNormalizedDomainSchema.parse(domain);
+  const [run] = await db
+    .select()
+    .from(leadgenRunsTable)
+    .where(
+      and(
+        eq(leadgenRunsTable.userId, userId),
+        eq(leadgenRunsTable.domain, normalizedDomain),
+        inArray(leadgenRunsTable.status, ['QUEUED', 'RUNNING']),
+      ),
+    )
+    .orderBy(desc(leadgenRunsTable.createdAt), desc(leadgenRunsTable.id))
+    .limit(1);
+
+  return run ?? null;
 }
 
 export async function ensureDomainTrafficSurgeLeadgenRun({
@@ -181,12 +160,8 @@ export async function ensureDomainTrafficSurgeLeadgenRun({
   const run = await startLeadgenRunForUser({
     userId,
     domain,
-    reasoningEffort: 'medium',
-    runProfile: 'campaign_short',
-    source: 'domain-traffic-surge',
-    selectedRecipeLimit: 3,
-    rawCandidateLimit: 5,
-    contactDiscoveryLimit: 5,
+    reasoningEffort: 'low',
+    source: EMAIL_CAMPAIGN_KEYS.DOMAIN_TRAFFIC_SURGE,
     metadata: {
       sourceKey,
       campaignSendId,
@@ -213,50 +188,60 @@ export async function getLeadgenEmailLeads({
         rationale: leadgenLeadsTable.rationale,
         status: leadgenLeadsTable.status,
         score: leadgenLeadsTable.score,
-        rank: leadgenLeadsTable.rank,
         createdAt: leadgenLeadsTable.createdAt,
       })
       .from(leadgenLeadsTable)
       .where(eq(leadgenLeadsTable.runId, runId))
       .orderBy(
-        leadgenLeadsTable.rank,
-        sql`${leadgenLeadsTable.score} desc`,
+        getLeadgenLeadPriorityOrder(),
+        desc(leadgenLeadsTable.score),
         leadgenLeadsTable.createdAt,
+        leadgenLeadsTable.id,
       )
       .limit(limit * 3),
     db
       .select({
-        leadId: leadgenEmailDraftsTable.leadId,
-        businessDomain: leadgenEmailDraftsTable.businessDomain,
+        leadId: leadgenContactsTable.leadId,
       })
       .from(leadgenEmailDraftsTable)
-      .where(eq(leadgenEmailDraftsTable.runId, runId)),
+      .innerJoin(
+        leadgenContactsTable,
+        eq(leadgenEmailDraftsTable.contactId, leadgenContactsTable.id),
+      )
+      .innerJoin(
+        leadgenLeadsTable,
+        eq(leadgenContactsTable.leadId, leadgenLeadsTable.id),
+      )
+      .where(eq(leadgenLeadsTable.runId, runId)),
   ]);
-  const draftedLeadIds = new Set(
-    drafts.map((draft) => draft.leadId).filter((id): id is string => !!id),
-  );
-  const draftedDomains = new Set(
-    drafts.map((draft) => draft.businessDomain.toLowerCase()),
-  );
+  const draftedLeadIds = new Set(drafts.map((draft) => draft.leadId));
 
-  return leads
-    .map((lead) => ({
-      ...lead,
-      hasDraft:
-        draftedLeadIds.has(lead.id) ||
-        draftedDomains.has(lead.businessDomain.toLowerCase()),
-    }))
-    .sort((a, b) => {
-      if (a.hasDraft !== b.hasDraft) return a.hasDraft ? -1 : 1;
-      return a.rank - b.rank || a.createdAt.getTime() - b.createdAt.getTime();
-    })
-    .slice(0, limit)
-    .map((lead) => ({
-      leadId: lead.id,
-      businessDomain: lead.businessDomain,
-      rationale: crispRationale(lead.rationale),
-      hasDraft: lead.hasDraft,
-    }));
+  return (
+    leads
+      .map((lead) => ({
+        ...lead,
+        hasDraft: draftedLeadIds.has(lead.id),
+      }))
+      // Draft presence is only known after loading drafts, so the DB query
+      // over-fetches leads and this final pass promotes drafted leads before slicing.
+      .sort((a, b) => {
+        if (a.hasDraft !== b.hasDraft) return a.hasDraft ? -1 : 1;
+        return (
+          getLeadgenLeadStatusPriority(a.status) -
+            getLeadgenLeadStatusPriority(b.status) ||
+          b.score - a.score ||
+          a.createdAt.getTime() - b.createdAt.getTime() ||
+          a.id.localeCompare(b.id)
+        );
+      })
+      .slice(0, limit)
+      .map((lead) => ({
+        leadId: lead.id,
+        businessDomain: lead.businessDomain,
+        rationale: crispRationale(lead.rationale),
+        hasDraft: lead.hasDraft,
+      }))
+  );
 }
 
 async function findReusableCampaignRun({

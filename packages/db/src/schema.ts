@@ -969,27 +969,8 @@ export const leadgenReasoningEffortEnum = pgEnum('leadgen_reasoning_effort', [
 
 export const leadgenOpportunityStatusEnum = pgEnum(
   'leadgen_opportunity_status',
-  [
-    'checking',
-    'contact_now',
-    'validate_first',
-    'low_priority',
-    'suppressed',
-  ] as const,
+  ['checking', 'contact_now', 'low_priority', 'suppressed'] as const,
 );
-
-export const leadgenRiskLevelEnum = pgEnum('leadgen_risk_level', [
-  'low',
-  'medium',
-  'high',
-] as const);
-
-export const leadgenContactReadinessEnum = pgEnum('leadgen_contact_readiness', [
-  'not_searched',
-  'contact_found',
-  'generic_fallback',
-  'not_found',
-] as const);
 
 type AiGenerationTokenUsage = Array<{
   model: string;
@@ -998,21 +979,6 @@ type AiGenerationTokenUsage = Array<{
 }>;
 
 type LeadgenTokenUsage = AiGenerationTokenUsage;
-
-type LeadgenRunInput = {
-  domain: NamefiNormalizedDomain;
-  reasoningEffort: 'low' | 'medium' | 'high';
-  runProfile?: 'full' | 'campaign_short';
-  source?: string;
-  // Optional seller ask in USD; forwarded to triage only as deal context.
-  askingPriceUsd?: number;
-  // Optional cap for selected discovery recipes; 0 disables recipe expansion.
-  selectedRecipeLimit?: number;
-  // Optional cap for raw candidate signals before filtering; 0 disables discovery.
-  rawCandidateLimit?: number;
-  // Optional cap for public-contact searches; early and final passes share it.
-  contactDiscoveryLimit?: number;
-};
 
 type LeadgenMetadata = Record<string, unknown>;
 
@@ -1631,15 +1597,10 @@ export const leadgenRunsTable = pgTable(
       .default('medium'),
     workflowId: text('workflow_id').unique(),
     errorMessage: text('error_message'),
-    summary: text('summary'),
-    leadCount: integer('lead_count').notNull().default(0),
-    contactCount: integer('contact_count').notNull().default(0),
-    draftCount: integer('draft_count').notNull().default(0),
     tokenUsage: jsonb('token_usage')
       .$type<LeadgenTokenUsage>()
       .notNull()
       .default([]),
-    input: jsonb('input').notNull().$type<LeadgenRunInput>(),
     metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
     ...lifecycleTimestamps,
     ...timestamps,
@@ -1662,7 +1623,6 @@ export const leadgenEventsTable = pgTable(
     stage: text('stage'),
     message: text('message'),
     payload: jsonb('payload').default({}).$type<LeadgenMetadata>(),
-    transient: boolean('transient').notNull().default(false),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
   (table) => [
@@ -1678,28 +1638,22 @@ export const leadgenLeadsTable = pgTable(
       .notNull()
       .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
     businessDomain: text('business_domain').notNull(),
-    companyName: text('company_name'),
     status: leadgenOpportunityStatusEnum('status')
       .notNull()
       .default('checking'),
     score: integer('score').notNull().default(0),
-    riskLevel: leadgenRiskLevelEnum('risk_level').notNull().default('low'),
-    riskNote: text('risk_note'),
-    contactReadiness: leadgenContactReadinessEnum('contact_readiness')
-      .notNull()
-      .default('not_searched'),
-    query: text('query').notNull(),
+    contactDiscoveryAttemptedAt: timestamp('contact_discovery_attempted_at'),
     rationale: text('rationale').notNull(),
     content: text('content').notNull(),
-    rank: integer('rank').notNull().default(0),
     metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
     ...timestamps,
   },
   (table) => [
-    index('leadgen_leads_run_status_rank_idx').on(
+    index('leadgen_leads_run_status_score_created_idx').on(
       table.runId,
       table.status,
-      table.rank,
+      table.score,
+      table.createdAt,
     ),
     unique('leadgen_leads_run_domain_unique').on(
       table.runId,
@@ -1712,9 +1666,6 @@ export const leadgenLeadSignalsTable = pgTable(
   'leadgen_lead_signals',
   {
     ...randomUuid,
-    runId: uuid('run_id')
-      .notNull()
-      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
     leadId: uuid('lead_id')
       .notNull()
       .references(() => leadgenLeadsTable.id, { onDelete: 'cascade' }),
@@ -1727,7 +1678,10 @@ export const leadgenLeadSignalsTable = pgTable(
     ...timestamps,
   },
   (table) => [
-    index('leadgen_lead_signals_run_lead_idx').on(table.runId, table.leadId),
+    index('leadgen_lead_signals_lead_created_idx').on(
+      table.leadId,
+      table.createdAt,
+    ),
     unique('leadgen_lead_signals_lead_signal_unique').on(
       table.leadId,
       table.recipe,
@@ -1741,34 +1695,20 @@ export const leadgenContactsTable = pgTable(
   'leadgen_contacts',
   {
     ...randomUuid,
-    runId: uuid('run_id')
+    leadId: uuid('lead_id')
       .notNull()
-      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
-    leadId: uuid('lead_id').references(() => leadgenLeadsTable.id, {
-      onDelete: 'set null',
-    }),
-    businessDomain: text('business_domain').notNull(),
+      .references(() => leadgenLeadsTable.id, { onDelete: 'cascade' }),
     email: text('email').notNull(),
     name: text('name'),
     title: text('title'),
     sourceUrl: text('source_url'),
     context: text('context'),
-    notes: text('notes'),
-    errorMessage: text('error_message'),
-    fromCache: boolean('from_cache').notNull().default(false),
     metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
     ...timestamps,
   },
   (table) => [
-    index('leadgen_contacts_run_domain_idx').on(
-      table.runId,
-      table.businessDomain,
-    ),
-    unique('leadgen_contacts_run_domain_email_unique').on(
-      table.runId,
-      table.businessDomain,
-      table.email,
-    ),
+    index('leadgen_contacts_lead_idx').on(table.leadId),
+    unique('leadgen_contacts_lead_email_unique').on(table.leadId, table.email),
   ],
 );
 
@@ -1776,33 +1716,16 @@ export const leadgenEmailDraftsTable = pgTable(
   'leadgen_email_drafts',
   {
     ...randomUuid,
-    runId: uuid('run_id')
+    contactId: uuid('contact_id')
       .notNull()
-      .references(() => leadgenRunsTable.id, { onDelete: 'cascade' }),
-    leadId: uuid('lead_id').references(() => leadgenLeadsTable.id, {
-      onDelete: 'set null',
-    }),
-    contactId: uuid('contact_id').references(() => leadgenContactsTable.id, {
-      onDelete: 'set null',
-    }),
-    businessDomain: text('business_domain').notNull(),
-    contactEmail: text('contact_email').notNull(),
+      .references(() => leadgenContactsTable.id, { onDelete: 'cascade' }),
     subject: text('subject').notNull(),
     fullEmail: text('full_email').notNull(),
-    fromCache: boolean('from_cache').notNull().default(false),
     metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),
     ...timestamps,
   },
   (table) => [
-    index('leadgen_email_drafts_run_domain_idx').on(
-      table.runId,
-      table.businessDomain,
-    ),
-    unique('leadgen_email_drafts_run_domain_email_unique').on(
-      table.runId,
-      table.businessDomain,
-      table.contactEmail,
-    ),
+    unique('leadgen_email_drafts_contact_unique').on(table.contactId),
   ],
 );
 

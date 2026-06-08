@@ -18,16 +18,23 @@ import {
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { asc, and, desc, eq, inArray } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { config } from '#lib/env';
-import { startLeadgenRunForUser } from '#lib/leadgen/runs';
+import { getLeadgenLeadPriorityOrder } from '#lib/leadgen/ordering';
+import {
+  findActiveLeadgenRunForUserDomain,
+  startLeadgenRunForUser,
+} from '#lib/leadgen/runs';
+import {
+  deriveLeadgenRunSummary,
+  getLeadgenLeadSnapshotForRun,
+  getLeadgenRunCountsByRunId,
+  hasCompleteLeadgenOutreach,
+} from '#lib/leadgen/snapshot';
 import { createLogger } from '#lib/logger';
 import {
   createOutboundApiError,
@@ -35,6 +42,7 @@ import {
 } from '#lib/outbound/errors';
 import {
   decodeOutboundCursor,
+  encodeOutboundCursor,
   outboundCursorSchema,
   outboundLimitSchema,
   paginateOutboundRows,
@@ -53,7 +61,6 @@ import {
 } from '../../../services/leadgen/outreach.service';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertUserCanSpendGenerationCredits } from '../aiRouter';
-import { getLeadgenRunSnapshotForUser } from '../leadgenRouter';
 
 const logger = createLogger({ module: 'outbound-api-router' });
 
@@ -61,6 +68,10 @@ type LeadAssets = {
   contacts: OutboundContactSource[];
   drafts: OutboundDraftSource[];
 };
+type OutboundRunRecord = Omit<
+  OutboundRunSource,
+  'leadCount' | 'contactCount' | 'draftCount' | 'summary'
+>;
 
 const outboundRunSchema = z.object({
   id: z.string().uuid(),
@@ -171,9 +182,10 @@ export const outboundRouterOrpc = createTRPCRouter({
         .orderBy(desc(leadgenRunsTable.createdAt), desc(leadgenRunsTable.id))
         .limit(input.limit + 1)
         .offset(offset);
+      const rowsWithCounts = await attachOutboundRunCounts(rows);
 
       return paginateOutboundRows(
-        rows.map((run) => serializeOutboundRun({ run })),
+        rowsWithCounts.map((run) => serializeOutboundRun({ run })),
         input,
       );
     }),
@@ -193,14 +205,14 @@ export const outboundRouterOrpc = createTRPCRouter({
     .input(startOutboundRunInputSchema)
     .output(outboundRunSchema)
     .mutation(async ({ input, ctx }) => {
-      const activeRun = await findActiveRunForDomain({
+      const activeRun = await findActiveLeadgenRunForUserDomain({
         userId: ctx.user.id,
         domain: input.domain,
       });
 
       if (activeRun) {
         return serializeOutboundRun({
-          run: activeRun,
+          run: await attachOutboundRunCount(activeRun),
           latestMessage: await getLatestPublicRunMessage(activeRun.id),
         });
       }
@@ -241,7 +253,7 @@ export const outboundRouterOrpc = createTRPCRouter({
         }
 
         return serializeOutboundRun({
-          run,
+          run: await attachOutboundRunCount(run),
           latestMessage: await getLatestPublicRunMessage(run.id),
         });
       } catch (error) {
@@ -305,7 +317,7 @@ export const outboundRouterOrpc = createTRPCRouter({
     .output(outboundPaginatedLeadsSchema)
     .query(async ({ input, ctx }) => {
       const offset = decodeOutboundCursorOrThrow(input.cursor);
-      const run = await getOutboundRunForUser({
+      const run = await getOutboundRunRecordForUser({
         runId: input.runId,
         userId: ctx.user.id,
       });
@@ -314,7 +326,7 @@ export const outboundRouterOrpc = createTRPCRouter({
         .from(leadgenLeadsTable)
         .where(eq(leadgenLeadsTable.runId, run.id))
         .orderBy(
-          asc(leadgenLeadsTable.rank),
+          getLeadgenLeadPriorityOrder(),
           desc(leadgenLeadsTable.score),
           asc(leadgenLeadsTable.createdAt),
           asc(leadgenLeadsTable.id),
@@ -322,6 +334,8 @@ export const outboundRouterOrpc = createTRPCRouter({
         .limit(input.limit + 1)
         .offset(offset);
       const pageLeads = leads.slice(0, input.limit);
+      // Lead assets are loaded after page selection, so this route computes
+      // nextCursor locally instead of using the generic row paginator.
       const { contacts, drafts } = await listLeadAssetsForLeads({
         runId: run.id,
         leads: pageLeads,
@@ -332,8 +346,8 @@ export const outboundRouterOrpc = createTRPCRouter({
         drafts,
       });
 
-      return paginateOutboundRows(
-        leads.map((lead) => {
+      return {
+        items: pageLeads.map((lead) => {
           const assets = leadAssets.get(lead.id) ?? {
             contacts: [],
             drafts: [],
@@ -345,8 +359,11 @@ export const outboundRouterOrpc = createTRPCRouter({
             drafts: assets.drafts,
           });
         }),
-        input,
-      );
+        nextCursor:
+          leads.length > input.limit
+            ? encodeOutboundCursor(offset + input.limit)
+            : null,
+      };
     }),
 
   prepareOutreach: protectedProcedure
@@ -370,11 +387,11 @@ export const outboundRouterOrpc = createTRPCRouter({
         userId: ctx.user.id,
       });
 
-      if (existingDetail.drafts.length > 0) {
+      if (hasCompleteLeadgenOutreach(existingDetail)) {
         return existingDetail;
       }
 
-      const run = await getOutboundRunForUser({
+      const run = await getOutboundRunRecordForUser({
         runId: input.runId,
         userId: ctx.user.id,
       });
@@ -449,10 +466,6 @@ const selectOutboundRunFields = {
   startedAt: leadgenRunsTable.startedAt,
   finishedAt: leadgenRunsTable.finishedAt,
   errorMessage: leadgenRunsTable.errorMessage,
-  summary: leadgenRunsTable.summary,
-  leadCount: leadgenRunsTable.leadCount,
-  contactCount: leadgenRunsTable.contactCount,
-  draftCount: leadgenRunsTable.draftCount,
   createdAt: leadgenRunsTable.createdAt,
   updatedAt: leadgenRunsTable.updatedAt,
 };
@@ -466,7 +479,6 @@ const selectOutboundLeadFields = {
 
 const selectOutboundContactFields = {
   leadId: leadgenContactsTable.leadId,
-  businessDomain: leadgenContactsTable.businessDomain,
   email: leadgenContactsTable.email,
   name: leadgenContactsTable.name,
   title: leadgenContactsTable.title,
@@ -475,37 +487,25 @@ const selectOutboundContactFields = {
 };
 
 const selectOutboundDraftFields = {
-  leadId: leadgenEmailDraftsTable.leadId,
-  businessDomain: leadgenEmailDraftsTable.businessDomain,
-  contactEmail: leadgenEmailDraftsTable.contactEmail,
+  leadId: leadgenContactsTable.leadId,
+  contactEmail: leadgenContactsTable.email,
   subject: leadgenEmailDraftsTable.subject,
   fullEmail: leadgenEmailDraftsTable.fullEmail,
 };
-
-async function findActiveRunForDomain(params: {
-  userId: string;
-  domain: NamefiNormalizedDomain;
-}): Promise<OutboundRunSource | null> {
-  const [run] = await db
-    .select(selectOutboundRunFields)
-    .from(leadgenRunsTable)
-    .where(
-      and(
-        eq(leadgenRunsTable.userId, params.userId),
-        eq(leadgenRunsTable.domain, params.domain),
-        inArray(leadgenRunsTable.status, ['QUEUED', 'RUNNING']),
-      ),
-    )
-    .orderBy(desc(leadgenRunsTable.createdAt), desc(leadgenRunsTable.id))
-    .limit(1);
-
-  return run ?? null;
-}
 
 async function getOutboundRunForUser(params: {
   runId: string;
   userId: string;
 }): Promise<OutboundRunSource> {
+  return await attachOutboundRunCount(
+    await getOutboundRunRecordForUser(params),
+  );
+}
+
+async function getOutboundRunRecordForUser(params: {
+  runId: string;
+  userId: string;
+}): Promise<OutboundRunRecord> {
   const [run] = await db
     .select(selectOutboundRunFields)
     .from(leadgenRunsTable)
@@ -530,6 +530,66 @@ async function getOutboundRunForUser(params: {
   return run;
 }
 
+async function attachOutboundRunCount<
+  T extends { id: string; status: OutboundRunSource['status'] },
+>(
+  run: T,
+): Promise<
+  T &
+    Pick<
+      OutboundRunSource,
+      'leadCount' | 'contactCount' | 'draftCount' | 'summary'
+    >
+> {
+  const [runWithCounts] = await attachOutboundRunCounts([run]);
+  if (!runWithCounts) {
+    return {
+      ...run,
+      leadCount: 0,
+      contactCount: 0,
+      draftCount: 0,
+      summary: null,
+    };
+  }
+
+  return runWithCounts;
+}
+
+async function attachOutboundRunCounts<
+  T extends { id: string; status: OutboundRunSource['status'] },
+>(
+  runs: T[],
+): Promise<
+  Array<
+    T &
+      Pick<
+        OutboundRunSource,
+        'leadCount' | 'contactCount' | 'draftCount' | 'summary'
+      >
+  >
+> {
+  const countsByRunId = await getLeadgenRunCountsByRunId(
+    runs.map((run) => run.id),
+  );
+
+  return runs.map((run) => {
+    const counts = countsByRunId.get(run.id) ?? {
+      leadCount: 0,
+      contactCount: 0,
+      draftCount: 0,
+    };
+
+    return {
+      ...run,
+      ...counts,
+      summary: deriveLeadgenRunSummary({
+        status: run.status,
+        ...counts,
+      }),
+    };
+  });
+}
+
 async function getLatestPublicRunMessage(
   runId: string,
 ): Promise<string | null> {
@@ -537,16 +597,16 @@ async function getLatestPublicRunMessage(
     .select({
       eventType: leadgenEventsTable.eventType,
       message: leadgenEventsTable.message,
-      transient: leadgenEventsTable.transient,
     })
     .from(leadgenEventsTable)
     .where(eq(leadgenEventsTable.runId, runId))
     .orderBy(desc(leadgenEventsTable.createdAt))
     .limit(25);
 
+  // latestMessage can surface transient progress, but error details stay internal.
   const event = events.find((item) => {
     const message = item.message?.trim();
-    return !!message && !item.transient && item.eventType !== 'error';
+    return !!message && item.eventType !== 'error';
   });
 
   return event?.message ?? null;
@@ -557,13 +617,15 @@ async function getOutboundLeadDetailForUser(params: {
   leadId: string;
   userId: string;
 }) {
-  await getOutboundRunForUser({
+  await getOutboundRunRecordForUser({
     runId: params.runId,
     userId: params.userId,
   });
 
-  const snapshot = await getLeadgenRunSnapshotForUser(params);
-  const lead = snapshot.leads.find((item) => item.id === params.leadId);
+  const lead = await getLeadgenLeadSnapshotForRun({
+    runId: params.runId,
+    leadId: params.leadId,
+  });
 
   if (!lead) {
     throwOutboundError({
@@ -599,10 +661,8 @@ async function listLeadAssetsForLeads({
   runId: string;
   leads: OutboundLeadSource[];
 }) {
-  const businessDomains = [
-    ...new Set(leads.map((lead) => lead.businessDomain)),
-  ];
-  if (businessDomains.length === 0) {
+  const leadIds = leads.map((lead) => lead.id);
+  if (leadIds.length === 0) {
     return { contacts: [], drafts: [] };
   }
 
@@ -610,19 +670,31 @@ async function listLeadAssetsForLeads({
     db
       .select(selectOutboundContactFields)
       .from(leadgenContactsTable)
+      .innerJoin(
+        leadgenLeadsTable,
+        eq(leadgenContactsTable.leadId, leadgenLeadsTable.id),
+      )
       .where(
         and(
-          eq(leadgenContactsTable.runId, runId),
-          inArray(leadgenContactsTable.businessDomain, businessDomains),
+          eq(leadgenLeadsTable.runId, runId),
+          inArray(leadgenContactsTable.leadId, leadIds),
         ),
       ),
     db
       .select(selectOutboundDraftFields)
       .from(leadgenEmailDraftsTable)
+      .innerJoin(
+        leadgenContactsTable,
+        eq(leadgenEmailDraftsTable.contactId, leadgenContactsTable.id),
+      )
+      .innerJoin(
+        leadgenLeadsTable,
+        eq(leadgenContactsTable.leadId, leadgenLeadsTable.id),
+      )
       .where(
         and(
-          eq(leadgenEmailDraftsTable.runId, runId),
-          inArray(leadgenEmailDraftsTable.businessDomain, businessDomains),
+          eq(leadgenLeadsTable.runId, runId),
+          inArray(leadgenContactsTable.leadId, leadIds),
         ),
       ),
   ]);
@@ -636,28 +708,15 @@ function groupLeadAssets({
   drafts,
 }: {
   leads: OutboundLeadSource[];
-  contacts: Array<
-    { leadId: string | null; businessDomain: string } & OutboundContactSource
-  >;
-  drafts: Array<
-    { leadId: string | null; businessDomain: string } & OutboundDraftSource
-  >;
+  contacts: Array<{ leadId: string } & OutboundContactSource>;
+  drafts: Array<{ leadId: string } & OutboundDraftSource>;
 }): Map<string, LeadAssets> {
-  const assetsByLeadId = new Map(
+  const assetsByLeadId = new Map<string, LeadAssets>(
     leads.map((lead) => [lead.id, { contacts: [], drafts: [] }]),
-  );
-  const leadIds = new Set(leads.map((lead) => lead.id));
-  const leadIdByDomain = new Map(
-    leads.map((lead) => [lead.businessDomain, lead.id]),
   );
 
   for (const contact of contacts) {
-    const assets = getLeadAssets({
-      asset: contact,
-      assetsByLeadId,
-      leadIds,
-      leadIdByDomain,
-    });
+    const assets = assetsByLeadId.get(contact.leadId);
 
     if (assets) {
       assets.contacts.push({
@@ -671,12 +730,7 @@ function groupLeadAssets({
   }
 
   for (const draft of drafts) {
-    const assets = getLeadAssets({
-      asset: draft,
-      assetsByLeadId,
-      leadIds,
-      leadIdByDomain,
-    });
+    const assets = assetsByLeadId.get(draft.leadId);
 
     if (assets) {
       assets.drafts.push({
@@ -688,25 +742,6 @@ function groupLeadAssets({
   }
 
   return assetsByLeadId;
-}
-
-function getLeadAssets({
-  asset,
-  assetsByLeadId,
-  leadIds,
-  leadIdByDomain,
-}: {
-  asset: { leadId: string | null; businessDomain: string };
-  assetsByLeadId: Map<string, LeadAssets>;
-  leadIds: Set<string>;
-  leadIdByDomain: Map<string, string>;
-}): LeadAssets | undefined {
-  const leadId =
-    asset.leadId && leadIds.has(asset.leadId)
-      ? asset.leadId
-      : leadIdByDomain.get(asset.businessDomain);
-
-  return leadId ? assetsByLeadId.get(leadId) : undefined;
 }
 
 function decodeOutboundCursorOrThrow(cursor: string | undefined): number {

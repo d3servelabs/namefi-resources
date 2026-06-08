@@ -74,17 +74,17 @@ describe('leadgenDomainProfileSchema', () => {
 });
 
 describe('leadgenOpportunityTriageSchema', () => {
-  it('keeps model triage output free of derived status and prose fields', () => {
+  it('keeps model triage output free of duplicate action and prose fields', () => {
     const parsed = leadgenOpportunityTriageModelSchema.parse({
       domain: 'buyer.com',
       score: 86,
-      recommendedAction: 'ready_to_contact',
+      status: 'contact_now',
     });
 
     expect(parsed).toEqual({
       domain: 'buyer.com',
       score: 86,
-      recommendedAction: 'ready_to_contact',
+      status: 'contact_now',
     });
   });
 
@@ -93,10 +93,9 @@ describe('leadgenOpportunityTriageSchema', () => {
       domain: 'buyer.com',
       status: 'contact_now',
       score: 86,
-      recommendedAction: 'ready_to_contact',
     });
 
-    expect(parsed.recommendedAction).toBe('ready_to_contact');
+    expect(parsed.status).toBe('contact_now');
     expect(parsed.score).toBe(86);
   });
 });

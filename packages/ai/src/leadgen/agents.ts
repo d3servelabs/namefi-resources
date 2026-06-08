@@ -18,7 +18,6 @@ import {
   type LeadgenEmailBrief,
   type LeadgenOpportunityTriage,
   type LeadgenOpportunityTriageModel,
-  type LeadgenRecommendedAction,
   type LeadgenReasoningEffort,
 } from './types';
 
@@ -46,14 +45,12 @@ export interface LeadgenDiscoveryOptions {
 
 export interface LeadgenTriageOptions {
   abortSignal?: AbortSignal;
-  askingPriceUsd?: number;
   domainProfile?: LeadgenDomainProfile | null;
   reasoningEffort?: LeadgenReasoningEffort;
 }
 
 export type LeadgenTriageCandidate = {
   domain: string;
-  companyName?: string | null;
   existingStatus?: string;
   existingScore?: number;
   signals: Array<{
@@ -394,7 +391,7 @@ Goal: Rank canonical buyer opportunities for one seller-owned domain.
 Success criteria: Promote only buyers with a buyer-specific reason to care. Same-vibe, same-industry, or generic budget alone cannot become a ready-to-contact opportunity.
 Evidence rules: Use only supplied evidence and the domain evidence standards. Do not browse, invent facts, infer contacts, or add claims not in signals.
 Tool budget: No tools.
-Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Do not emit list-tier labels, copy, rationales, evidence recaps, theses, or action-label prose. Use recommendedAction only to indicate whether contact research should run now.
+Constraints: Score sale likelihood from fit + buyer pain + timing + capacity + contactability - adoption friction. Suppress invalid, noisy, or weak-evidence opportunities. Do not emit list-tier labels, copy, rationales, evidence recaps, theses, or action-label prose. Use status only to indicate whether contact research should run now: contact_now for immediate outreach, low_priority for keep-but-wait, suppressed for invalid/noisy/weak-evidence opportunities.
 Output: Return structured opportunity triage records only.`;
 }
 
@@ -417,9 +414,6 @@ export async function generateLeadgenOpportunityTriages(params: {
         role: 'user',
         content: [
           `Seller-owned domain: ${params.sourceDomain}`,
-          params.options?.askingPriceUsd
-            ? `Seller asking price: $${params.options.askingPriceUsd}`
-            : 'Seller asking price: unknown',
           formatDomainProfileForPrompt(params.options?.domainProfile),
           'Canonical buyer candidates:',
           JSON.stringify(params.candidates, null, 2),
@@ -491,7 +485,6 @@ export function sanitizeCandidateSignals(
       ...signal,
       recipe: signalRecipe,
       domain: normalizedDomain,
-      companyName: cleanNullableString(signal.companyName) ?? null,
       signalType: cleanSignalType(signal.signalType, signalRecipe),
       query: signal.query.trim(),
       evidenceUrl: normalizeSourceUrl(signal.evidenceUrl) ?? null,
@@ -514,27 +507,14 @@ function sanitizeTriages(
     if (!domain || seen.has(domain)) continue;
     seen.add(domain);
 
-    const recommendedAction = triage.recommendedAction;
-    const status = getStatusForRecommendedAction(recommendedAction);
-
     sanitized.push({
       ...triage,
       domain: String(domain),
-      status,
       score: Math.max(0, Math.min(100, Math.trunc(triage.score))),
-      recommendedAction,
     });
   }
 
   return sanitized;
-}
-
-function getStatusForRecommendedAction(
-  action: LeadgenRecommendedAction,
-): LeadgenOpportunityTriage['status'] {
-  if (action === 'filtered') return 'suppressed';
-  if (action === 'defer_contact') return 'low_priority';
-  return 'contact_now';
 }
 
 function uniqueNonEmpty(values: string[]) {

@@ -17,17 +17,8 @@ import {
   leadgenRunsTable,
   userContactsTable,
 } from '@namefi-astra/db';
-import {
-  and,
-  count,
-  desc,
-  eq,
-  inArray,
-  isNull,
-  ne,
-  or,
-  sql,
-} from 'drizzle-orm';
+import { and, count, desc, eq, isNull, ne, or, sql } from 'drizzle-orm';
+import { getLeadgenRunCounts } from '#lib/leadgen/snapshot';
 import { createLogger } from '#lib/logger';
 import { appendLeadgenTokenUsageFromResult } from './token-usage';
 
@@ -37,13 +28,18 @@ type LeadgenOutreachTrigger = 'auto' | 'manual';
 export type LeadgenSender = { signature: string | null };
 
 const logger = createLogger({ module: 'leadgen-outreach' });
-const CONTACT_READINESS_RANK: Record<LeadRow['contactReadiness'], number> = {
-  not_searched: 0,
-  not_found: 1,
-  generic_fallback: 2,
-  contact_found: 3,
+const selectLeadgenContactFields = {
+  id: leadgenContactsTable.id,
+  leadId: leadgenContactsTable.leadId,
+  email: leadgenContactsTable.email,
+  name: leadgenContactsTable.name,
+  title: leadgenContactsTable.title,
+  sourceUrl: leadgenContactsTable.sourceUrl,
+  context: leadgenContactsTable.context,
+  metadata: leadgenContactsTable.metadata,
+  createdAt: leadgenContactsTable.createdAt,
+  updatedAt: leadgenContactsTable.updatedAt,
 };
-
 export interface GenerateLeadgenLeadOutreachInput {
   runId: string;
   leadId: string;
@@ -102,11 +98,9 @@ export async function generateLeadgenLeadOutreach({
     abortSignal,
   });
 
-  const counts = await refreshLeadgenRunCounts(runId);
+  const counts = await getLeadgenRunCounts(runId);
   const leadOutreachCounts = await countLeadOutreach({
-    runId,
     leadId: lead.id,
-    businessDomain: lead.businessDomain,
   });
 
   await persistLeadgenEvent({
@@ -134,16 +128,11 @@ export async function discoverLeadgenContactsAndDraft({
   const sender =
     params.sender ?? (await loadLeadgenSenderForRun({ runId: params.runId }));
   const existingContacts = await loadCurrentContactsForLead({
-    runId: params.runId,
     leadId: params.lead.id,
-    businessDomain: params.lead.businessDomain,
   });
 
   if (existingContacts.length > 0) {
-    await updateLeadContactReadiness({
-      leadId: params.lead.id,
-      readiness: getContactReadiness(existingContacts),
-    });
+    await markLeadContactDiscoveryAttempted({ leadId: params.lead.id });
     if (params.draftEmails === false) return;
 
     await draftForSavedContacts({
@@ -173,71 +162,20 @@ export async function discoverLeadgenContactsAndDraft({
   await discoverNewContactsAndDraft({ ...params, sender, abortSignal });
 }
 
-export async function refreshLeadgenRunCounts(runId: string) {
-  const [[leadCountRow], [contactCountRow], [draftCountRow]] =
-    await Promise.all([
-      db
-        .select({ value: count() })
-        .from(leadgenLeadsTable)
-        .where(eq(leadgenLeadsTable.runId, runId)),
-      db
-        .select({ value: count() })
-        .from(leadgenContactsTable)
-        .where(eq(leadgenContactsTable.runId, runId)),
-      db
-        .select({ value: count() })
-        .from(leadgenEmailDraftsTable)
-        .where(eq(leadgenEmailDraftsTable.runId, runId)),
-    ]);
-
-  const counts = {
-    leadCount: leadCountRow?.value ?? 0,
-    contactCount: contactCountRow?.value ?? 0,
-    draftCount: draftCountRow?.value ?? 0,
-  };
-
-  await db
-    .update(leadgenRunsTable)
-    .set({ ...counts, updatedAt: new Date() })
-    .where(eq(leadgenRunsTable.id, runId));
-
-  return counts;
-}
-
-async function countLeadOutreach(params: {
-  runId: string;
-  leadId: string;
-  businessDomain: string;
-}) {
-  // Mirror loadCurrentContactsForLead: NULL leadId rows are domain-level
-  // cached outreach items that should count with this lead's assigned rows.
+async function countLeadOutreach(params: { leadId: string }) {
   const [[contactCountRow], [draftCountRow]] = await Promise.all([
     db
       .select({ value: count() })
       .from(leadgenContactsTable)
-      .where(
-        and(
-          eq(leadgenContactsTable.runId, params.runId),
-          eq(leadgenContactsTable.businessDomain, params.businessDomain),
-          or(
-            eq(leadgenContactsTable.leadId, params.leadId),
-            isNull(leadgenContactsTable.leadId),
-          ),
-        ),
-      ),
+      .where(eq(leadgenContactsTable.leadId, params.leadId)),
     db
       .select({ value: count() })
       .from(leadgenEmailDraftsTable)
-      .where(
-        and(
-          eq(leadgenEmailDraftsTable.runId, params.runId),
-          eq(leadgenEmailDraftsTable.businessDomain, params.businessDomain),
-          or(
-            eq(leadgenEmailDraftsTable.leadId, params.leadId),
-            isNull(leadgenEmailDraftsTable.leadId),
-          ),
-        ),
-      ),
+      .innerJoin(
+        leadgenContactsTable,
+        eq(leadgenEmailDraftsTable.contactId, leadgenContactsTable.id),
+      )
+      .where(eq(leadgenContactsTable.leadId, params.leadId)),
   ]);
 
   return {
@@ -324,7 +262,6 @@ export async function persistLeadgenEvent(params: {
   stage?: string;
   message?: string;
   payload?: Record<string, unknown>;
-  transient?: boolean;
 }) {
   await db.insert(leadgenEventsTable).values({
     runId: params.runId,
@@ -332,7 +269,6 @@ export async function persistLeadgenEvent(params: {
     stage: params.stage ?? null,
     message: params.message ?? null,
     payload: params.payload ?? {},
-    transient: params.transient ?? false,
   });
 }
 
@@ -357,7 +293,7 @@ async function draftForSavedContacts(params: {
         contact,
         reasoningEffort: params.reasoningEffort,
         sender: params.sender,
-        fromCache: contact.fromCache,
+        fromCache: isLeadgenFromCacheMetadata(contact.metadata),
         trigger: params.trigger ?? 'auto',
         abortSignal: params.abortSignal,
       });
@@ -418,18 +354,14 @@ async function persistCachedContactsAndDraft(params: {
         sourceUrl: cached.sourceUrl ?? null,
         context: cached.context ?? null,
       },
-      notes: cached.notes ?? undefined,
+      notes: getLeadgenContactDiscoveryNotesMetadata(cached.metadata),
       fromCache: true,
       trigger: params.trigger ?? 'auto',
     });
     savedContacts.push(contact);
   }
 
-  await refreshLeadgenRunCounts(params.runId);
-  await updateLeadContactReadiness({
-    leadId: params.lead.id,
-    readiness: getContactReadiness(savedContacts),
-  });
+  await markLeadContactDiscoveryAttempted({ leadId: params.lead.id });
 
   if (params.draftEmails === false) return;
 
@@ -477,10 +409,7 @@ async function discoverNewContactsAndDraft(params: {
     const contacts = contactResult?.contacts ?? [];
 
     if (contacts.length === 0) {
-      await updateLeadContactReadiness({
-        leadId: params.lead.id,
-        readiness: 'not_found',
-      });
+      await markLeadContactDiscoveryAttempted({ leadId: params.lead.id });
       await persistLeadgenEvent({
         runId: params.runId,
         eventType: 'contact',
@@ -509,11 +438,7 @@ async function discoverNewContactsAndDraft(params: {
       ),
     );
 
-    await refreshLeadgenRunCounts(params.runId);
-    await updateLeadContactReadiness({
-      leadId: params.lead.id,
-      readiness: getContactReadiness(savedContacts),
-    });
+    await markLeadContactDiscoveryAttempted({ leadId: params.lead.id });
 
     if (params.draftEmails === false) return;
 
@@ -524,6 +449,7 @@ async function discoverNewContactsAndDraft(params: {
   } catch (error) {
     throwIfLeadgenAborted(params.abortSignal);
 
+    await markLeadContactDiscoveryAttempted({ leadId: params.lead.id });
     await persistLeadgenEvent({
       runId: params.runId,
       eventType: 'error',
@@ -538,24 +464,11 @@ async function discoverNewContactsAndDraft(params: {
   }
 }
 
-async function loadCurrentContactsForLead(params: {
-  runId: string;
-  leadId: string;
-  businessDomain: string;
-}) {
+async function loadCurrentContactsForLead(params: { leadId: string }) {
   return await db
-    .select()
+    .select(selectLeadgenContactFields)
     .from(leadgenContactsTable)
-    .where(
-      and(
-        eq(leadgenContactsTable.runId, params.runId),
-        eq(leadgenContactsTable.businessDomain, params.businessDomain),
-        or(
-          eq(leadgenContactsTable.leadId, params.leadId),
-          isNull(leadgenContactsTable.leadId),
-        ),
-      ),
-    )
+    .where(eq(leadgenContactsTable.leadId, params.leadId))
     .orderBy(desc(leadgenContactsTable.createdAt));
 }
 
@@ -564,12 +477,16 @@ async function loadCachedContactsForDomain(params: {
   businessDomain: string;
 }) {
   return await db
-    .select()
+    .select(selectLeadgenContactFields)
     .from(leadgenContactsTable)
+    .innerJoin(
+      leadgenLeadsTable,
+      eq(leadgenContactsTable.leadId, leadgenLeadsTable.id),
+    )
     .where(
       and(
-        eq(leadgenContactsTable.businessDomain, params.businessDomain),
-        ne(leadgenContactsTable.runId, params.runId),
+        eq(leadgenLeadsTable.businessDomain, params.businessDomain),
+        ne(leadgenLeadsTable.runId, params.runId),
       ),
     )
     .orderBy(desc(leadgenContactsTable.createdAt))
@@ -593,31 +510,40 @@ async function upsertContact(params: {
   const [saved] = await db
     .insert(leadgenContactsTable)
     .values({
-      runId: params.runId,
       leadId: params.leadId,
-      businessDomain: params.businessDomain,
       email,
       name: params.contact.name ?? null,
       title: params.contact.title ?? null,
       sourceUrl: params.contact.sourceUrl ?? null,
       context: params.contact.context ?? null,
-      notes: params.notes ?? null,
-      fromCache: params.fromCache,
+      metadata: buildLeadgenContactMetadata({
+        fromCache: params.fromCache,
+        notes: params.notes,
+      }),
     })
     .onConflictDoUpdate({
-      target: [
-        leadgenContactsTable.runId,
-        leadgenContactsTable.businessDomain,
-        leadgenContactsTable.email,
-      ],
+      target: [leadgenContactsTable.leadId, leadgenContactsTable.email],
       set: {
-        leadId: params.leadId,
-        name: params.contact.name ?? null,
-        title: params.contact.title ?? null,
-        sourceUrl: params.contact.sourceUrl ?? null,
-        context: params.contact.context ?? null,
-        notes: params.notes ?? null,
-        fromCache: params.fromCache,
+        name: coalesceIncomingContactField(
+          params.contact.name,
+          leadgenContactsTable.name,
+        ),
+        title: coalesceIncomingContactField(
+          params.contact.title,
+          leadgenContactsTable.title,
+        ),
+        sourceUrl: coalesceIncomingContactField(
+          params.contact.sourceUrl,
+          leadgenContactsTable.sourceUrl,
+        ),
+        context: coalesceIncomingContactField(
+          params.contact.context,
+          leadgenContactsTable.context,
+        ),
+        metadata: mergeLeadgenContactMetadata(leadgenContactsTable.metadata, {
+          fromCache: params.fromCache,
+          notes: params.notes,
+        }),
         updatedAt: new Date(),
       },
     })
@@ -661,11 +587,7 @@ async function draftForContact(params: {
   throwIfLeadgenAborted(params.abortSignal);
 
   const existing = await db.query.leadgenEmailDraftsTable.findFirst({
-    where: and(
-      eq(leadgenEmailDraftsTable.runId, params.runId),
-      eq(leadgenEmailDraftsTable.businessDomain, params.lead.businessDomain),
-      eq(leadgenEmailDraftsTable.contactEmail, params.contact.email),
-    ),
+    where: eq(leadgenEmailDraftsTable.contactId, params.contact.id),
   });
   if (existing) return existing;
 
@@ -702,25 +624,20 @@ async function draftForContact(params: {
   const [saved] = await db
     .insert(leadgenEmailDraftsTable)
     .values({
-      runId: params.runId,
-      leadId: params.lead.id,
       contactId: params.contact.id,
-      businessDomain: params.lead.businessDomain,
-      contactEmail: params.contact.email,
       subject: draft.output.subject.trim(),
       fullEmail: draft.output.fullEmail.trim(),
-      fromCache: params.fromCache,
+      metadata: buildLeadgenFromCacheMetadata(params.fromCache),
     })
     .onConflictDoUpdate({
-      target: [
-        leadgenEmailDraftsTable.runId,
-        leadgenEmailDraftsTable.businessDomain,
-        leadgenEmailDraftsTable.contactEmail,
-      ],
+      target: [leadgenEmailDraftsTable.contactId],
       set: {
         subject: draft.output.subject.trim(),
         fullEmail: draft.output.fullEmail.trim(),
-        fromCache: params.fromCache,
+        metadata: mergeLeadgenFromCacheMetadata(
+          leadgenEmailDraftsTable.metadata,
+          params.fromCache,
+        ),
         updatedAt: new Date(),
       },
     })
@@ -747,9 +664,86 @@ async function draftForContact(params: {
     },
   });
 
-  await refreshLeadgenRunCounts(params.runId);
-
   return saved;
+}
+
+function isLeadgenFromCacheMetadata(metadata: unknown): boolean {
+  return metadata && typeof metadata === 'object' && 'fromCache' in metadata
+    ? (metadata as { fromCache?: unknown }).fromCache === true
+    : false;
+}
+
+function getLeadgenContactDiscoveryNotesMetadata(metadata: unknown) {
+  if (
+    !metadata ||
+    typeof metadata !== 'object' ||
+    !('contactDiscoveryNotes' in metadata)
+  ) {
+    return undefined;
+  }
+
+  const notes = (metadata as { contactDiscoveryNotes?: unknown })
+    .contactDiscoveryNotes;
+  return typeof notes === 'string'
+    ? (cleanNullableString(notes) ?? undefined)
+    : undefined;
+}
+
+function buildLeadgenContactMetadata(params: {
+  fromCache: boolean;
+  notes?: string;
+}) {
+  return {
+    ...buildLeadgenFromCacheMetadata(params.fromCache),
+    ...buildLeadgenContactDiscoveryNotesMetadata(params.notes),
+  };
+}
+
+function buildLeadgenContactDiscoveryNotesMetadata(notes?: string) {
+  const cleanNotes = cleanNullableString(notes);
+  return cleanNotes ? { contactDiscoveryNotes: cleanNotes } : {};
+}
+
+function coalesceIncomingContactField<TColumn>(
+  value: string | null | undefined,
+  column: TColumn,
+) {
+  const cleanValue = cleanNullableString(value);
+  return cleanValue ? sql`coalesce(${cleanValue}, ${column})` : column;
+}
+
+function buildLeadgenFromCacheMetadata(fromCache: boolean) {
+  return fromCache ? { fromCache: true } : {};
+}
+
+function mergeLeadgenContactMetadata(
+  column: typeof leadgenContactsTable.metadata,
+  params: { fromCache: boolean; notes?: string },
+) {
+  const fromCacheExpression = mergeLeadgenFromCacheMetadata(
+    column,
+    params.fromCache,
+  );
+  const notesMetadata = buildLeadgenContactDiscoveryNotesMetadata(params.notes);
+
+  if ('contactDiscoveryNotes' in notesMetadata) {
+    return sql`${fromCacheExpression} || ${JSON.stringify(notesMetadata)}::jsonb`;
+  }
+
+  return fromCacheExpression;
+}
+
+function mergeLeadgenFromCacheMetadata(
+  column:
+    | typeof leadgenContactsTable.metadata
+    | typeof leadgenEmailDraftsTable.metadata,
+  fromCache: boolean,
+) {
+  if (fromCache) {
+    return sql`coalesce(${column}, '{}'::jsonb) || '{"fromCache": true}'::jsonb`;
+  }
+
+  return sql`coalesce(${column}, '{}'::jsonb) - 'fromCache'`;
 }
 
 async function loadLeadSignalsForDraft(leadId: string) {
@@ -767,55 +761,20 @@ async function loadLeadSignalsForDraft(leadId: string) {
   return signals;
 }
 
-async function updateLeadContactReadiness(params: {
-  leadId: string;
-  readiness: LeadRow['contactReadiness'];
-}) {
-  const allowedExistingValues = (
-    Object.entries(CONTACT_READINESS_RANK) as Array<
-      [LeadRow['contactReadiness'], number]
-    >
-  )
-    .filter(([, rank]) => rank <= CONTACT_READINESS_RANK[params.readiness])
-    .map(([readiness]) => readiness);
-
+async function markLeadContactDiscoveryAttempted(params: { leadId: string }) {
+  const attemptedAt = new Date();
   await db
     .update(leadgenLeadsTable)
     .set({
-      contactReadiness: params.readiness,
-      updatedAt: new Date(),
+      contactDiscoveryAttemptedAt: attemptedAt,
+      updatedAt: attemptedAt,
     })
     .where(
       and(
         eq(leadgenLeadsTable.id, params.leadId),
-        inArray(leadgenLeadsTable.contactReadiness, allowedExistingValues),
+        isNull(leadgenLeadsTable.contactDiscoveryAttemptedAt),
       ),
     );
-}
-
-function getContactReadiness(
-  contacts: Array<{ email: string }>,
-): LeadRow['contactReadiness'] {
-  if (contacts.length === 0) return 'not_found';
-  return contacts.some((contact) => !isGenericEmail(contact.email))
-    ? 'contact_found'
-    : 'generic_fallback';
-}
-
-function isGenericEmail(email: string) {
-  const localPart = email.split('@')[0]?.toLowerCase() ?? '';
-  return [
-    'admin',
-    'contact',
-    'hello',
-    'hi',
-    'info',
-    'marketing',
-    'partnerships',
-    'sales',
-    'support',
-    'team',
-  ].includes(localPart);
 }
 
 function throwIfLeadgenAborted(abortSignal: AbortSignal) {

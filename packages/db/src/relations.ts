@@ -131,9 +131,6 @@ export const leadgenRunsRelations = relations(
       references: [usersTable.id],
     }),
     leads: many(leadgenLeadsTable),
-    leadSignals: many(leadgenLeadSignalsTable),
-    contacts: many(leadgenContactsTable),
-    emailDrafts: many(leadgenEmailDraftsTable),
   }),
 );
 
@@ -146,17 +143,12 @@ export const leadgenLeadsRelations = relations(
     }),
     signals: many(leadgenLeadSignalsTable),
     contacts: many(leadgenContactsTable),
-    emailDrafts: many(leadgenEmailDraftsTable),
   }),
 );
 
 export const leadgenLeadSignalsRelations = relations(
   leadgenLeadSignalsTable,
   ({ one }) => ({
-    run: one(leadgenRunsTable, {
-      fields: [leadgenLeadSignalsTable.runId],
-      references: [leadgenRunsTable.id],
-    }),
     lead: one(leadgenLeadsTable, {
       fields: [leadgenLeadSignalsTable.leadId],
       references: [leadgenLeadsTable.id],
@@ -167,10 +159,6 @@ export const leadgenLeadSignalsRelations = relations(
 export const leadgenContactsRelations = relations(
   leadgenContactsTable,
   ({ one, many }) => ({
-    run: one(leadgenRunsTable, {
-      fields: [leadgenContactsTable.runId],
-      references: [leadgenRunsTable.id],
-    }),
     lead: one(leadgenLeadsTable, {
       fields: [leadgenContactsTable.leadId],
       references: [leadgenLeadsTable.id],
@@ -182,14 +170,6 @@ export const leadgenContactsRelations = relations(
 export const leadgenEmailDraftsRelations = relations(
   leadgenEmailDraftsTable,
   ({ one }) => ({
-    run: one(leadgenRunsTable, {
-      fields: [leadgenEmailDraftsTable.runId],
-      references: [leadgenRunsTable.id],
-    }),
-    lead: one(leadgenLeadsTable, {
-      fields: [leadgenEmailDraftsTable.leadId],
-      references: [leadgenLeadsTable.id],
-    }),
     contact: one(leadgenContactsTable, {
       fields: [leadgenEmailDraftsTable.contactId],
       references: [leadgenContactsTable.id],
