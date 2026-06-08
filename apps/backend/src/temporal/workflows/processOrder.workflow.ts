@@ -1998,10 +1998,11 @@ async function _sendOrderCompletionSlackAlert(
   const workflowId = info.workflowId;
   const runId = info.runId;
 
-  const domains = orderDetails.items.map((item, index) => ({
+  const domains = orderDetails.items.map((item) => ({
     normalizedDomainName: item.normalizedDomainName,
     type: item.type,
     status: orderItemsResultsById[item.id].status,
+    amountInUSDCents: item.amountInUSDCents,
   }));
 
   await sendOrderCompletionSlackAlert({
@@ -2010,6 +2011,7 @@ async function _sendOrderCompletionSlackAlert(
     userEmail: userEmail ?? undefined,
     walletAddress: walletAddress ?? undefined,
     domains,
+    totalAmountInUSDCents: orderDetails.order.amountInUSDCents,
     workflowId,
     runId,
   });

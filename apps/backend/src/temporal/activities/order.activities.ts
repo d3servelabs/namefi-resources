@@ -1378,10 +1378,16 @@ export interface SendOrderCompletionSlackAlertInput {
     normalizedDomainName: NamefiNormalizedDomain;
     type: 'REGISTER' | 'IMPORT' | 'RENEW';
     status: 'SUCCEEDED' | 'FAILED';
+    amountInUSDCents: number;
   }>;
+  /** Total amount charged for the order, in USD cents. */
+  totalAmountInUSDCents: number;
   workflowId: string;
   runId: string;
 }
+
+const formatUsdCents = (amountInUsdCents: number) =>
+  `$${(amountInUsdCents / 100).toFixed(2)}`;
 
 export async function sendOrderCompletionSlackAlert(
   input: SendOrderCompletionSlackAlertInput,
@@ -1425,8 +1431,11 @@ export async function sendOrderCompletionSlackAlert(
     }
 
     const first5Text = list
-      .map((d) => d.normalizedDomainName)
       .slice(0, 5)
+      .map(
+        (d) =>
+          `${d.normalizedDomainName} (${formatUsdCents(d.amountInUSDCents)})`,
+      )
       .join(', ');
 
     const additionalCount = list.length - 5;
@@ -1443,6 +1452,7 @@ export async function sendOrderCompletionSlackAlert(
     buildDomainListMessage('REGISTER'),
     buildDomainListMessage('IMPORT'),
     buildDomainListMessage('RENEW'),
+    `*Total order charge: ${formatUsdCents(input.totalAmountInUSDCents)}*`,
   ]
     .filter(Boolean)
     .join('\n');
