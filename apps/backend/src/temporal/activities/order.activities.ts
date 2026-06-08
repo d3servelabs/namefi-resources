@@ -1380,8 +1380,6 @@ export interface SendOrderCompletionSlackAlertInput {
     status: 'SUCCEEDED' | 'FAILED';
     amountInUSDCents: number;
   }>;
-  /** Total amount charged for the order, in USD cents. */
-  totalAmountInUSDCents: number;
   workflowId: string;
   runId: string;
 }
@@ -1447,12 +1445,17 @@ export async function sendOrderCompletionSlackAlert(
     return `- "${operationType.toLowerCase()}": ${domainDisplay}`;
   };
 
+  const succeededTotalInUsdCents = succeededDomains.reduce(
+    (sum, d) => sum + d.amountInUSDCents,
+    0,
+  );
+
   const message = [
     `:tada: ${userIdentifier} has just made an order to:`,
     buildDomainListMessage('REGISTER'),
     buildDomainListMessage('IMPORT'),
     buildDomainListMessage('RENEW'),
-    `*Total order charge: ${formatUsdCents(input.totalAmountInUSDCents)}*`,
+    `*Total order charge: ${formatUsdCents(succeededTotalInUsdCents)}*`,
   ]
     .filter(Boolean)
     .join('\n');

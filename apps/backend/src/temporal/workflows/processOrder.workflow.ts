@@ -2011,7 +2011,6 @@ async function _sendOrderCompletionSlackAlert(
     userEmail: userEmail ?? undefined,
     walletAddress: walletAddress ?? undefined,
     domains,
-    totalAmountInUSDCents: orderDetails.order.amountInUSDCents,
     workflowId,
     runId,
   });
