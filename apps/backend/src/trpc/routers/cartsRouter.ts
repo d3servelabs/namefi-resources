@@ -254,6 +254,20 @@ export const cartsRouter = createContractTRPCRouter<typeof cartsContract>({
         updateSet.durationInYears = input.durationInYears;
       }
 
+      // If per-item domain setup options are being updated, merge them into the
+      // existing metadata. `stripNonImportDomainSetupOptions` drops the
+      // import-only `keepExistingNameservers` flag for non-IMPORT items
+      // (defense in depth — the UI only exposes it for imports).
+      if (input.domainSetupOptions) {
+        updateSet.metadata = stripNonImportDomainSetupOptions(
+          currentItem.type,
+          {
+            ...currentItem.metadata,
+            domainSetupOptions: input.domainSetupOptions,
+          },
+        );
+      }
+
       // If EPP authorization code is being updated for import items
       if (
         currentItem.type === itemTypeSchema.enum.IMPORT &&

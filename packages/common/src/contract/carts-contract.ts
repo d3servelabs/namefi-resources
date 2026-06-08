@@ -6,6 +6,7 @@ import { createContract } from './create-contract';
 import {
   cartItemMetadataSchema,
   cartItemSchema,
+  orderItemDomainSetupOptionsSchema,
   type CartItemSelect,
 } from './entity-schemas';
 import type { RouterContract } from './trpc-contract';
@@ -45,14 +46,19 @@ const updateItemInputSchema = z
     id: z.string(),
     durationInYears: z.number().int().positive().optional(),
     eppAuthorizationCode: z.string().optional(),
+    // Per-item domain setup flags (autoRenew/autoPark/autoEns/dnssec and the
+    // import-only keepExistingNameservers). The backend merges this into the
+    // cart item's metadata.domainSetupOptions.
+    domainSetupOptions: orderItemDomainSetupOptionsSchema.optional(),
   })
   .refine(
     (data) =>
       data.durationInYears !== undefined ||
-      data.eppAuthorizationCode !== undefined,
+      data.eppAuthorizationCode !== undefined ||
+      data.domainSetupOptions !== undefined,
     {
       message:
-        'At least one of durationInYears or eppAuthorizationCode must be provided',
+        'At least one of durationInYears, eppAuthorizationCode, or domainSetupOptions must be provided',
     },
   );
 

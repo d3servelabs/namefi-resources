@@ -2,7 +2,9 @@
 
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
+import { useFlag } from '@openfeature/react-sdk';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
+import { CartItemSetupOptions } from '@/components/cart-item-setup-options';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -46,6 +48,16 @@ export function CartItem({
   const { cart, inCart, removingBusy, updatingBusy } = useCartRow(
     item.normalizedDomainName,
   );
+
+  const { value: setupOptionsEnabled } = useFlag(
+    'cart-item-domain-setup-options',
+    false,
+  );
+
+  const showSetupOptions =
+    setupOptionsEnabled &&
+    (item.type === itemTypeSchema.enum.REGISTER ||
+      item.type === itemTypeSchema.enum.IMPORT);
 
   const displayName = useMemo(() => {
     try {
@@ -175,6 +187,9 @@ export function CartItem({
             </span>
           )}
         </div>
+        {showSetupOptions && (
+          <CartItemSetupOptions item={item} readOnly={readOnly} />
+        )}
       </div>
       {showSeparator && (
         <div className="my-6">

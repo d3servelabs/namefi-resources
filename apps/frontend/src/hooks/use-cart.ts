@@ -15,6 +15,7 @@ import {
   type DomainAvailabilityInfo,
 } from '@namefi-astra/common/domain-availability';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
+import type { OrderItemDomainSetupOptions } from '@namefi-astra/common/contract/entity-schemas';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
@@ -56,13 +57,19 @@ export type AddToCartParams = {
   eppAuthorizationCode?: string;
 };
 
+/**
+ * A cart-item update. At least one of `durationInYears`, `eppAuthorizationCode`,
+ * or `domainSetupOptions` must be provided (enforced by the server contract).
+ * `domainAvailabilityInfo` is only needed to recompute price on a duration
+ * change, so it's optional for setup-options-only updates.
+ */
 export type UpdateItemParams = {
   id: string;
-  domainAvailabilityInfo: DomainAvailabilityInfo;
-} & (
-  | { durationInYears: number; eppAuthorizationCode?: string }
-  | { eppAuthorizationCode: string; durationInYears?: number }
-);
+  domainAvailabilityInfo?: DomainAvailabilityInfo;
+  durationInYears?: number;
+  eppAuthorizationCode?: string;
+  domainSetupOptions?: OrderItemDomainSetupOptions;
+};
 
 type Optimistic<T> = T & OptimisticTag;
 type MaybeOptimistic<T> = T & Partial<OptimisticTag>;
@@ -538,12 +545,18 @@ export function useCartServerSync() {
     onMutate: async (payload: ServerUpdateCartItem) => {
       await queryClient.cancelQueries({ queryKey: CartKey, exact: true });
       const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey) ?? [];
+      // `domainSetupOptions` lives under `metadata.domainSetupOptions` on a
+      // cart row, so nest it rather than spreading it at the top level.
+      const { domainSetupOptions, ...rest } = payload;
       queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
         old.map((item) =>
           item.id === payload.id
             ? {
                 ...item,
-                ...payload,
+                ...rest,
+                ...(domainSetupOptions !== undefined && {
+                  metadata: { ...item.metadata, domainSetupOptions },
+                }),
                 [OPTIMISTIC]: true,
               }
             : item,
@@ -692,6 +705,9 @@ export function useCartServerSync() {
         if (p.eppAuthorizationCode !== undefined) {
           payload.eppAuthorizationCode = p.eppAuthorizationCode;
         }
+        if (p.domainSetupOptions !== undefined) {
+          payload.domainSetupOptions = p.domainSetupOptions;
+        }
         return payload;
       },
       [],
@@ -699,6 +715,9 @@ export function useCartServerSync() {
     calculateOptimisticPrice: useCallback(
       (p: UpdateItemParams): number | undefined => {
         if (p.durationInYears === undefined) return undefined;
+        // Without availability info we can't recompute price (e.g. a
+        // setup-options-only update); skip the optimistic price.
+        if (!p.domainAvailabilityInfo) return undefined;
         const existingItem = cartData?.find((i) => i.id === p.id);
         if (!existingItem) {
           throw new Error('Cart item not found');
@@ -933,13 +952,23 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
           const updatePayload = sync.buildServerUpdateCartItem(input);
           const optimisticPrice = sync.calculateOptimisticPrice(input);
 
+          // `domainSetupOptions` is nested under `metadata` (merged with any
+          // existing metadata) rather than stored top-level on the row.
+          const { domainSetupOptions, ...restUpdate } = updatePayload;
+          const existingMetadata = sync.cartData?.find(
+            (i) => i.id === input.id,
+          )?.metadata;
+
           const localUpdatePayload = {
-            ...updatePayload,
+            ...restUpdate,
             ...(optimisticPrice !== undefined && {
               amountInUSDCents: optimisticPrice,
             }),
             ...(input.eppAuthorizationCode !== undefined && {
               eppAuthorizationCode: input.eppAuthorizationCode,
+            }),
+            ...(domainSetupOptions !== undefined && {
+              metadata: { ...existingMetadata, domainSetupOptions },
             }),
           };
 
