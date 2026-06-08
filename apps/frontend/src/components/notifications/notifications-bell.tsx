@@ -79,7 +79,7 @@ export const NotificationsBell = forwardRef<
   // while `justIncreased` is true (~2.5s) when the parent passes an
   // unstable inline `filter` object — the effect would otherwise scroll
   // / open the modal repeatedly per single notification increase.
-  const lastAutoSurfacedCountRef = useRef<number>(0);
+  const lastAutoSurfacedCountRef = useRef<number>(-1);
   const { count, justIncreased } = useUnreadCount({ filter });
 
   useImperativeHandle(forwardedRef, () => ({
@@ -100,8 +100,11 @@ export const NotificationsBell = forwardRef<
   useEffect(() => {
     if (!autoSurfaceOnIncrease) return;
     if (!justIncreased) return;
-    if (count <= 0) return;
     if (lastAutoSurfacedCountRef.current === count) return;
+    if (count <= 0 || lastAutoSurfacedCountRef.current === -1) {
+      lastAutoSurfacedCountRef.current = 0;
+      return;
+    }
     lastAutoSurfacedCountRef.current = count;
     wrapperRef.current?.scrollIntoView({
       behavior: 'smooth',
