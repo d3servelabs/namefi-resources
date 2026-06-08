@@ -9,6 +9,7 @@ import {
   MoreVertical,
   MoreHorizontal,
   ReceiptText,
+  UserRoundSearch,
   Wallet,
 } from 'lucide-react';
 import { useCallback } from 'react';
@@ -26,6 +27,7 @@ import {
   getNftExplorerUrl,
 } from '@namefi-astra/utils/nft-hash';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
+import { getLeadgenStartHref } from '@/lib/leadgen-url';
 import { ActionTooltip } from '../action-tooltip';
 
 const ACTION_BUTTON_BASE_CLASSES =
@@ -89,6 +91,24 @@ export function ActionsCell({
     </Button>
   ) : null;
 
+  const leadgenButton = (
+    <Button
+      variant="outline"
+      size="sm"
+      className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-emerald-400')}
+      render={
+        <Link
+          href={getLeadgenStartHref(domainName)}
+          aria-label={`Find buyers for ${domainName}`}
+          className="flex justify-start items-center"
+        />
+      }
+      nativeButton={false}
+    >
+      <UserRoundSearch className="w-4 h-4" />
+    </Button>
+  );
+
   const explorerButton =
     !isExpired && explorerUrl ? (
       <Button
@@ -130,6 +150,7 @@ export function ActionsCell({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>{listForSaleButton}</DropdownMenuItem>
+          <DropdownMenuItem>{leadgenButton}</DropdownMenuItem>
           {orderButton && <DropdownMenuItem>{orderButton}</DropdownMenuItem>}
           {explorerButton && (
             <DropdownMenuItem>{explorerButton}</DropdownMenuItem>
@@ -149,6 +170,7 @@ export function ActionsCell({
   return (
     <div className="flex gap-2">
       <ActionTooltip label="List for sale">{listForSaleButton}</ActionTooltip>
+      <ActionTooltip label="Find buyers">{leadgenButton}</ActionTooltip>
       {orderButton ? (
         <ActionTooltip label="View order">{orderButton}</ActionTooltip>
       ) : null}
@@ -284,6 +306,22 @@ export function DropdownDomainActionsMenu({
     </DropdownMenuItem>
   ) : null;
 
+  const leadgenButton = (
+    <DropdownMenuItem
+      className={cn('hover:!text-emerald-400')}
+      render={(props) => (
+        <Link
+          {...props}
+          href={getLeadgenStartHref(domainName)}
+          aria-label={`Find buyers for ${domainName}`}
+          className={cn('flex justify-start items-center', props.className)}
+        />
+      )}
+    >
+      <UserRoundSearch className="w-4 h-4" /> Find buyers
+    </DropdownMenuItem>
+  );
+
   const explorerButton =
     !isExpired && nftUrl ? (
       <DropdownMenuItem
@@ -342,6 +380,7 @@ export function DropdownDomainActionsMenu({
       <DropdownMenuContent className={'min-w-fit !max-w-lg'} align={'start'}>
         {visitDomain}
         {listForSaleButton}
+        {leadgenButton}
         {orderButton}
         {explorerButton}
         <WatchNftButton

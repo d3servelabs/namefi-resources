@@ -2,6 +2,7 @@
 
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
@@ -18,13 +19,15 @@ import {
   TableHeader,
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
-import { ExternalLink, Tag, X } from 'lucide-react';
+import { ExternalLink, Tag, UserRoundSearch, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { Address } from 'viem';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { getLeadgenStartHref } from '@/lib/leadgen-url';
 import { MARKETPLACE_ICONS } from '@/lib/marketplaces/factory';
 import type { Listing } from '@/lib/marketplaces/types';
 import { CreateListingModal } from './create-listing-modal';
@@ -78,8 +81,8 @@ export function CurrentListingsCard({
   return (
     <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1.5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 space-y-1.5">
             <CardTitle className="flex items-center gap-2 text-zinc-100">
               <Tag className="h-4 w-4 text-brand-primary" />
               Current listings
@@ -88,12 +91,29 @@ export function CurrentListingsCard({
               Active sale listings across supported marketplaces.
             </CardDescription>
           </div>
-          <CreateListingModal
-            domain={domain}
-            chainId={chainId}
-            tokenAddress={tokenAddress}
-            tokenId={tokenId}
-          />
+          <div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-emerald-500/30 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 hover:text-emerald-100"
+              render={
+                <Link
+                  href={getLeadgenStartHref(domain)}
+                  aria-label={`Find buyers for ${domain}`}
+                />
+              }
+              nativeButton={false}
+            >
+              <UserRoundSearch className="h-4 w-4" />
+              Find buyers
+            </Button>
+            <CreateListingModal
+              domain={domain}
+              chainId={chainId}
+              tokenAddress={tokenAddress}
+              tokenId={tokenId}
+            />
+          </div>
         </div>
       </CardHeader>
       <CardContent>

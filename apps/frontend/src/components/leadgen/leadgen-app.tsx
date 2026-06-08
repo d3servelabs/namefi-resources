@@ -84,7 +84,7 @@ import {
 import type { Route } from 'next';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   useCallback,
   useEffect,
@@ -182,6 +182,7 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
   const requirePostAuthIntent = useRequirePostAuthIntent();
   const trpc = useTRPC();
   const router = useRouter();
+  const requestedDomain = useRequestedLeadgenDomain();
   const queryClient = useQueryClient();
   const { exportingRunId, exportRunCsv } = useLeadgenRunCsvExport();
   const [domain, setDomain] = useState('');
@@ -198,10 +199,21 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
     setActiveRunIdState(runId);
     setLiveRun((currentRun) => (currentRun?.id === runId ? currentRun : null));
   }, []);
+  const applyDomainPrefill = useCallback((nextDomain: string) => {
+    setDomain(nextDomain);
+    setReasoningEffort('medium');
+  }, []);
 
   useEffect(() => {
     selectActiveRunId(initialRunId ?? null);
   }, [initialRunId, selectActiveRunId]);
+
+  useLeadgenDomainPrefill({
+    initialRunId,
+    isAuthLoading,
+    requestedDomain,
+    onPrefill: applyDomainPrefill,
+  });
 
   const runsQuery = useQuery({
     ...trpc.leadgen.listRuns.queryOptions(recentRunsQueryInput),
@@ -507,6 +519,43 @@ export function LeadgenApp({ initialRunId }: { initialRunId?: string }) {
       </div>
     </PageShell>
   );
+}
+
+function useRequestedLeadgenDomain() {
+  const searchParams = useSearchParams();
+  const requestedDomainParam = searchParams.get('domain');
+
+  return useMemo(() => {
+    if (!requestedDomainParam) return null;
+
+    const normalized = normalizeDomainInput(requestedDomainParam);
+    return isLikelyDomain(normalized) ? normalized : null;
+  }, [requestedDomainParam]);
+}
+
+function useLeadgenDomainPrefill({
+  initialRunId,
+  isAuthLoading,
+  requestedDomain,
+  onPrefill,
+}: {
+  initialRunId?: string;
+  isAuthLoading: boolean;
+  requestedDomain: string | null;
+  onPrefill: (domain: string) => void;
+}) {
+  useEffect(() => {
+    if (initialRunId || !requestedDomain) return;
+
+    onPrefill(requestedDomain);
+
+    if (isAuthLoading) return;
+
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(DOMAIN_INPUT_ID)?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [initialRunId, isAuthLoading, onPrefill, requestedDomain]);
 }
 
 function useLeadgenRunCsvExport() {
