@@ -7,6 +7,10 @@ import { PageShell } from '@/components/page-shell';
 import { useAuth } from '@/hooks/use-auth';
 import { useDomainSearchOptions } from '@/hooks/use-domain-search-options';
 import {
+  MARKETPLACE_LISTINGS_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
+import {
   getCurrentReturnPath,
   usePostAuthIntentExecutor,
   useRequirePostAuthIntent,
@@ -84,7 +88,6 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useFlag } from '@openfeature/react-sdk';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import {
@@ -1421,9 +1424,8 @@ function RunWorkspace({
 }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const { value: marketplaceListingEnabled } = useFlag(
-    'marketplace-listings',
-    false,
+  const marketplaceListingEnabled = useBooleanOpenFeatureFlag(
+    MARKETPLACE_LISTINGS_FLAG,
   );
   const marketplaceChainSupported = ownedDomain
     ? isChainSupportedByAnyMarketplace(ownedDomain.chainId)

@@ -11,7 +11,7 @@ Built for GitHub issue [#4120](https://github.com/d3servelabs/namefi-astra/issue
 Replaces the previous "List for Sale" Coming-Soon dialog on the My Domains page (the icon
 there now route-pushes to `/domains/<name>?tab=marketplace`).
 
-Gated behind the `marketplace_listing` admin feature flag in `domain-management.tsx`.
+Gated behind the OpenFeature `marketplace-listings` flag, backed by LaunchDarkly.
 Off by default.
 
 ## Scope

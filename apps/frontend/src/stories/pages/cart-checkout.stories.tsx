@@ -26,7 +26,6 @@ import { WagmiProvider } from 'wagmi';
 import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia, base } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
-import { OpenFeatureProvider } from '@openfeature/react-sdk';
 
 const MOCK_WALLET_ADDRESS = '0x1234567890123456789012345678901234567890';
 
@@ -244,23 +243,21 @@ function StoryProviders({
           <OriginProvider originInfo={origin}>
             <MockTrpcProvider mockState={mockState}>
               <NuqsAdapter>
-                <OpenFeatureProvider>
-                  <ConsentManagerProvider options={{ mode: 'offline' }}>
-                    <PreAuthSignalsProvider>
-                      <InteractionLoggersProvider>
-                        <WishlistProvider>
-                          <CartContext.Provider value={mockCartValue}>
-                            <SidebarProvider defaultOpen={false}>
-                              <FreeMintsGuidanceProvider>
-                                <FeedbackProvider>{children}</FeedbackProvider>
-                              </FreeMintsGuidanceProvider>
-                            </SidebarProvider>
-                          </CartContext.Provider>
-                        </WishlistProvider>
-                      </InteractionLoggersProvider>
-                    </PreAuthSignalsProvider>
-                  </ConsentManagerProvider>
-                </OpenFeatureProvider>
+                <ConsentManagerProvider options={{ mode: 'offline' }}>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      <WishlistProvider>
+                        <CartContext.Provider value={mockCartValue}>
+                          <SidebarProvider defaultOpen={false}>
+                            <FreeMintsGuidanceProvider>
+                              <FeedbackProvider>{children}</FeedbackProvider>
+                            </FreeMintsGuidanceProvider>
+                          </SidebarProvider>
+                        </CartContext.Provider>
+                      </WishlistProvider>
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
+                </ConsentManagerProvider>
               </NuqsAdapter>
             </MockTrpcProvider>
           </OriginProvider>

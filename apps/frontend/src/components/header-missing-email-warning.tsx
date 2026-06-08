@@ -20,23 +20,14 @@ import { AlertCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { useRegisterAdminFlags } from './admin/feature-flags/register';
-import { useAdminFeatureFlag } from './admin/feature-flags/use-flag';
-import type { FeatureFlagDefinition } from '@/types/feature-flags';
-
-const FEATURE_FLAGS: FeatureFlagDefinition[] = [
-  {
-    key: 'force_header_missing_email_warning',
-    label: 'Force Header Missing Email Warning',
-    scope: 'global',
-    defaultValue: false,
-  },
-];
+import {
+  FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 
 export function HeaderMissingEmailWarning() {
-  useRegisterAdminFlags(FEATURE_FLAGS);
-  const [forceHeaderMissingEmailWarning] = useAdminFeatureFlag(
-    FEATURE_FLAGS[0],
+  const forceHeaderMissingEmailWarning = useBooleanOpenFeatureFlag(
+    FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG,
   );
   const { privyUser, ready, isAuthenticated } = useAuth();
   const canShowPrompt =

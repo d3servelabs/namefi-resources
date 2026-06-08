@@ -171,9 +171,6 @@ const [forceWarning] = useAdminFeatureFlag(FEATURE_FLAGS[0]);
 const canShow = forceWarning || (ready && isAuthenticated && !email);
 ```
 
-See `apps/frontend/src/components/header-missing-email-warning.tsx` for the
-full call site.
-
 ---
 
 ## Do / Don't

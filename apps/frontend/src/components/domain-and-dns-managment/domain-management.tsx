@@ -48,7 +48,10 @@ import { useAuth } from '@/hooks/use-auth';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
-import { useFlag } from '@openfeature/react-sdk';
+import {
+  MARKETPLACE_LISTINGS_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 import dynamic from 'next/dynamic';
 import type { Address } from 'viem';
 
@@ -85,9 +88,8 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   useRegisterAdminFlags(DOMAIN_FLAG_DEFINITION);
 
   const [newOverviewComponent] = useAdminFeatureFlag(DOMAIN_FLAG_DEFINITION[0]);
-  const { value: marketplaceListingEnabled } = useFlag(
-    'marketplace-listings',
-    false,
+  const marketplaceListingEnabled = useBooleanOpenFeatureFlag(
+    MARKETPLACE_LISTINGS_FLAG,
   );
 
   const searchParams = useSearchParams();

@@ -11,9 +11,10 @@ import {
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
-import type { FeatureFlagDefinition } from '@/types/feature-flags';
-import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
+import {
+  INSTANT_BUY_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 
 export interface InstantBuyButtonProps {
   domainAvailabilityInfo: DomainAvailabilityInfo;
@@ -37,19 +38,8 @@ function loadInstantBuyModalRuntime(): Promise<InstantBuyModalRuntimeComponent> 
 
   return instantBuyModalRuntimePromise;
 }
-
-const FLAG_DEFINITION: FeatureFlagDefinition[] = [
-  {
-    key: 'instant_buy',
-    label: 'Instant Buy',
-    description: 'Show the instant buy button',
-    scope: 'global',
-    defaultValue: false,
-  },
-];
 export function InstantBuyButton(props: InstantBuyButtonProps) {
-  useRegisterAdminFlags(FLAG_DEFINITION);
-  const [instantBuy] = useAdminFeatureFlag(FLAG_DEFINITION[0]);
+  const instantBuy = useBooleanOpenFeatureFlag(INSTANT_BUY_FLAG);
   if (!instantBuy) return null;
   return <InstantBuyButtonInner {...props} />;
 }

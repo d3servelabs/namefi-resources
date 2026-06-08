@@ -72,13 +72,14 @@ import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
-import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
-import { useRegisterAdminFlags } from '../admin/feature-flags/register';
-import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { ErrorBoundary } from '@suspensive/react';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import type { AdminUserLookupReference } from '@/components/admin/user-details';
 import { useDebounceValue } from 'usehooks-ts';
+import {
+  SHOW_BALANCE_IN_USER_DROPDOWN_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 
 import {
   flatten,
@@ -88,15 +89,6 @@ import {
   isNotNil,
   both,
 } from 'ramda';
-
-const FEATURE_FLAGS_ITEMS: FeatureFlagDefinition[] = [
-  {
-    key: 'show_balance_in_user_dropdown',
-    label: 'Show Balance in User Dropdown',
-    scope: 'global',
-    defaultValue: true,
-  },
-];
 
 type BalanceBreakdownDialogComponent =
   typeof import('@/components/payment-method/nfsc-balance-dialog').BalanceBreakdownDialog;
@@ -145,9 +137,8 @@ export const UserDropdownMenu = ErrorBoundary.with(
     ),
   },
   function UserDropdownMenu() {
-    useRegisterAdminFlags(FEATURE_FLAGS_ITEMS);
-    const [showBalanceInUserDropdown] = useAdminFeatureFlag(
-      FEATURE_FLAGS_ITEMS[0],
+    const showBalanceInUserDropdown = useBooleanOpenFeatureFlag(
+      SHOW_BALANCE_IN_USER_DROPDOWN_FLAG,
     );
 
     const { isAuthenticated } = useAuth();

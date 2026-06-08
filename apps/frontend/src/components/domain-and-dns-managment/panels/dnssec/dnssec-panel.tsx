@@ -72,14 +72,10 @@ import { CustomDelegationSignerSimplePanel } from './custom-delegation-signer-si
 import { DnssecModeToggle } from './dnssec-mode-toggle';
 import { useDnssecModePreference } from './use-dnssec-mode-preference';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
-
-const CANCEL_WORKFLOW_FLAG: FeatureFlagDefinition = {
-  key: 'cancel_dns_workflow',
-  label: 'Cancel Workflow',
-  description: 'Show cancel button for active DNS/DNSSEC workflows',
-  scope: 'global',
-  defaultValue: false,
-};
+import {
+  CANCEL_DNS_WORKFLOW_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 
 const CUSTOM_DELEGATION_SIGNER_FLAG: FeatureFlagDefinition = {
   key: 'dnssec_custom_delegation_signer',
@@ -526,7 +522,7 @@ function DnssecProgressModal({
   const [open, setOpen] = useState(false);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const [canCancel] = useAdminFeatureFlag(CANCEL_WORKFLOW_FLAG);
+  const canCancel = useBooleanOpenFeatureFlag(CANCEL_DNS_WORKFLOW_FLAG);
 
   const enableProgress = useEnableDnssecProgress(domainName, {
     enabled: open && operation === 'ENABLE_DNSSEC',

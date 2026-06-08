@@ -16,8 +16,11 @@ import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { MyPreviouslyOwnedDomainsContent } from '@/components/my-previously-owned-domains';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useTRPC } from '@/lib/trpc';
+import {
+  MARKETPLACE_LISTINGS_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
-import { useFlag } from '@openfeature/react-sdk';
 import { MyDomainsEmptyPlaceholder } from './empty-placeholder';
 import { MyDomainsTable } from './table';
 import { OtherWalletOrdersTable } from './other-wallet-orders-table';
@@ -34,9 +37,8 @@ const MarketplaceOrdersTab = dynamic(
 );
 
 export const MyDomainsContent = () => {
-  const { value: marketplaceOrdersEnabled } = useFlag(
-    'marketplace-listings',
-    false,
+  const marketplaceOrdersEnabled = useBooleanOpenFeatureFlag(
+    MARKETPLACE_LISTINGS_FLAG,
   );
 
   const trpc = useTRPC();

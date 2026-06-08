@@ -262,7 +262,7 @@ sequenceDiagram
 
 `MarketplacePanel` (`panels/marketplace/marketplace-panel.tsx`) renders the
 Marketplace tab. It is rendered from `domain-management.tsx` behind the
-`marketplace_listing` admin feature flag, and chooses one of four states:
+OpenFeature `marketplace-listings` flag, backed by LaunchDarkly, and chooses one of four states:
 
 | Condition | Renders |
 |---|---|

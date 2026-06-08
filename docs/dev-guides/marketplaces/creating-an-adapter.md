@@ -202,7 +202,7 @@ bun run check          # biome (run from repo root)
 
 Add an arg/story to `apps/frontend/src/stories/pages/marketplace-panel.stories.tsx`
 so the new marketplace has visual-regression coverage. Then test live behind the
-`marketplace_listing` feature flag (`?skip_auth=1` for local auth bypass).
+OpenFeature `marketplace-listings` flag (`?skip_auth=1` for local auth bypass).
 
 ## Reference Implementations
 

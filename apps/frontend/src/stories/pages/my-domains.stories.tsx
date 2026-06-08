@@ -9,7 +9,6 @@ import { CartProvider } from '@/components/providers/cart';
 import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
-import { OpenFeatureProvider } from '@openfeature/react-sdk';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import {
   type ReactNode,
@@ -401,21 +400,19 @@ function StoryProviders({
             <MockTrpcProvider mockState={mockState}>
               <NuqsAdapter>
                 <ConsentManagerProvider options={{ mode: 'offline' }}>
-                  <OpenFeatureProvider>
-                    <PreAuthSignalsProvider>
-                      <InteractionLoggersProvider>
-                        <WishlistProvider>
-                          <CartProvider>
-                            <SidebarProvider defaultOpen={false}>
-                              <FreeMintsGuidanceProvider>
-                                {children}
-                              </FreeMintsGuidanceProvider>
-                            </SidebarProvider>
-                          </CartProvider>
-                        </WishlistProvider>
-                      </InteractionLoggersProvider>
-                    </PreAuthSignalsProvider>
-                  </OpenFeatureProvider>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      <WishlistProvider>
+                        <CartProvider>
+                          <SidebarProvider defaultOpen={false}>
+                            <FreeMintsGuidanceProvider>
+                              {children}
+                            </FreeMintsGuidanceProvider>
+                          </SidebarProvider>
+                        </CartProvider>
+                      </WishlistProvider>
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
                 </ConsentManagerProvider>
               </NuqsAdapter>
             </MockTrpcProvider>

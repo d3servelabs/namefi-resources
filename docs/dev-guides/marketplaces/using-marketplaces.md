@@ -159,9 +159,9 @@ interface MarketplacePanelProps {
 }
 ```
 
-It is mounted in `domain-management.tsx` behind the **`marketplace_listing`**
-admin feature flag (`scope: 'page'`, `pageKey: 'users'`, default `false`). When
-the flag is off, the tab doesn't render.
+It is mounted in `domain-management.tsx` behind the OpenFeature
+**`marketplace-listings`** flag, backed by LaunchDarkly. When the flag is off,
+the tab doesn't render.
 
 `isReadyForExport` / `isExportStatusLoading` are passed down by
 `domain-management.tsx` from `trpc.domainConfig.getDomainExportDetails`

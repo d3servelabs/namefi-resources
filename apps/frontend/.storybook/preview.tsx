@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/nextjs-vite';
+import { OpenFeatureTestProvider } from '@openfeature/react-sdk';
 import isChromatic from 'chromatic/isChromatic';
 import { MotionConfig } from 'motion/react';
 import React from 'react';
@@ -43,16 +44,17 @@ const preview: Preview = {
   },
 
   /**
-   * Global decorator to disable Framer Motion (motion/react) JS animations
-   * during Chromatic snapshots. This ensures consistent snapshots by preventing
-   * non-deterministic CSS transform values from in-progress animations.
-   * Animations remain enabled for local Storybook development.
+   * Global decorators keep stories deterministic: OpenFeature uses its SDK test
+   * provider so flags resolve from each flag's default unless a story overrides
+   * them, while MotionConfig disables animation during Chromatic snapshots.
    */
   decorators: [
     (Story) => (
-      <MotionConfig reducedMotion={isChromatic() ? 'always' : 'never'}>
-        <Story />
-      </MotionConfig>
+      <OpenFeatureTestProvider>
+        <MotionConfig reducedMotion={isChromatic() ? 'always' : 'never'}>
+          <Story />
+        </MotionConfig>
+      </OpenFeatureTestProvider>
     ),
   ],
 };

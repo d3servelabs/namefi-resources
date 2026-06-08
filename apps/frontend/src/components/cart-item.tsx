@@ -3,7 +3,6 @@
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { useFlag } from '@openfeature/react-sdk';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
 import { CartItemRegistrationRequirement } from '@/components/cart-item-registration-requirement';
@@ -13,6 +12,10 @@ import {
 } from '@/components/cart-item-setup-options';
 import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirements';
 import { CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG } from '@/lib/cart-setup-options';
+import {
+  CART_ITEM_DOMAIN_SETUP_OPTIONS_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
@@ -57,9 +60,8 @@ export function CartItem({
     item.normalizedDomainName,
   );
 
-  const { value: setupOptionsEnabled } = useFlag(
-    'cart-item-domain-setup-options',
-    false,
+  const setupOptionsEnabled = useBooleanOpenFeatureFlag(
+    CART_ITEM_DOMAIN_SETUP_OPTIONS_FLAG,
   );
 
   const showSetupOptions =

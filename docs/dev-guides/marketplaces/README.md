@@ -77,5 +77,5 @@ separately under `docs/marketplaces/` — those are *not* this module.
 - **Marketplaces:** OpenSea + Rarible (client-side); OKX + LooksRare (backend-proxied — see [creating-an-adapter.md](./creating-an-adapter.md#proxied-adapters-server-held-secrets)).
 - **Chains:** Ethereum mainnet (`1`), Base (`8453`), Base Sepolia (`84532`) — see `MARKETPLACE_SUPPORTED_CHAINS` in `apps/frontend/src/lib/marketplaces/chains.ts`. Per-marketplace coverage varies: OpenSea + Rarible on all three; OKX on Ethereum + Base; LooksRare on Ethereum mainnet only.
 - **v1 limits:** fixed-price listings only (no Dutch/English auctions); the chain's **native asset** only (ETH) — no ERC-20-denominated listings yet.
-- **Gating:** the Marketplace tab is behind the `marketplace_listing` admin feature flag.
+- **Gating:** the Marketplace tab is behind the OpenFeature `marketplace-listings` flag, backed by LaunchDarkly.
 - **Source of truth:** this guide. The in-code `apps/frontend/src/lib/marketplaces/README.md` is a short pointer here.
