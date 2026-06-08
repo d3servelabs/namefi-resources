@@ -1183,7 +1183,7 @@ function LeadOrganizationSection({
           <Badge variant={muted ? 'outline' : 'secondary'}>{count}</Badge>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="grid gap-3 px-3 pb-3">
+          <div className="grid gap-3 p-3">
             <AnimatePresence initial={false} mode="popLayout">
               {count > 0 ? (
                 children
