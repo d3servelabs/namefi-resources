@@ -1,9 +1,8 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useMemo, type ReactNode } from 'react';
 import { Permission } from '@namefi-astra/utils/permissions';
-import { useTRPC } from '@/lib/trpc';
+import { useMyPermissions } from '@/hooks/use-auth';
 
 type PermissionGateMode = 'normal' | 'inverted';
 type PermissionsMode = 'some' | 'every';
@@ -27,12 +26,7 @@ export function useHasPermissions(
   permissions: Permission[],
   mode: PermissionsMode = 'every',
 ) {
-  const trpc = useTRPC();
-  const { data, isLoading, isError } = useQuery(
-    trpc.users.getMyPermissions.queryOptions(void 0, {
-      trpc: { context: { skipBatch: true } },
-    }),
-  );
+  const { data, isLoading, isError } = useMyPermissions();
   const userPermissions = useMemo(() => new Set(data ?? []), [data]);
   const hasPermissions = useMemo(() => {
     if (userPermissions.has(Permission.SUPER_ADMIN)) return true;

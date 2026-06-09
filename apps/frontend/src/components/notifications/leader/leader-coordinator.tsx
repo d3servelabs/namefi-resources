@@ -11,6 +11,7 @@ import {
 } from '@namefi-astra/common/shared-schemas';
 import { useEffect, useRef, useState } from 'react';
 import { useTRPC } from '@/lib/trpc';
+import { useAuth } from '@/hooks/use-auth';
 
 import {
   NAMEFI_NOTIF_OPEN_EVENT,
@@ -145,7 +146,15 @@ async function inspectRise(args: {
   return { anyAudible };
 }
 
-export function LeaderCoordinator(): null {
+export function LeaderCoordinator() {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading || !isAuthenticated) return null;
+
+  return <LeaderCoordinatorInner />;
+}
+
+function LeaderCoordinatorInner(): null {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const pollInterval = useNotificationsPollInterval();

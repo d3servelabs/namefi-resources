@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AdminGuard } from '@/components/admin/admin-guard';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
+import { useMyPermissions } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -309,9 +310,7 @@ function PermissionEditor({
   const { data: allPerms } = useQuery(
     trpc.admin.permissions.listAvailablePermissions.queryOptions(),
   );
-  const { data: myPerms } = useQuery(
-    trpc.users.getMyPermissions.queryOptions(),
-  );
+  const { data: myPerms } = useMyPermissions();
   const isSuperAdmin = useMemo(
     () => (myPerms ?? []).includes(Permission.SUPER_ADMIN),
     [myPerms],

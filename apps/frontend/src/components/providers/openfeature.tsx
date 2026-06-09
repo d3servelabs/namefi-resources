@@ -1,11 +1,9 @@
 'use client';
 
 import { config } from '@/lib/env';
-import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/lib/trpc';
+import { useAuth, useMyPermissions } from '@/hooks/use-auth';
 import { LaunchDarklyClientProvider } from '@openfeature/launchdarkly-client-provider';
 import { OpenFeature, OpenFeatureProvider } from '@openfeature/react-sdk';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, type FC, type PropsWithChildren } from 'react';
 
 let providerRegistered = false;
@@ -46,14 +44,7 @@ export const OpenFeatureClientProvider: FC<PropsWithChildren> = ({
     isSkipAuthActive,
   } = useAuth();
 
-  const trpc = useTRPC();
-  const permissionsQuery = useQuery(
-    trpc.users.getMyPermissions.queryOptions(void 0, {
-      enabled: isAuthenticated && !isSkipAuthActive,
-      staleTime: 60_000,
-      trpc: { context: { skipBatch: true } },
-    }),
-  );
+  const permissionsQuery = useMyPermissions();
 
   const namefiUserId = user?.id;
   const privyUserId = privyUser?.id;

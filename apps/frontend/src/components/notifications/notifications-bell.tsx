@@ -2,6 +2,7 @@
 
 import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 import { HeaderActionButton } from '@/components/header-action-button';
+import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Popover,
@@ -70,7 +71,18 @@ const TOOLTIP_AUTOSHOW_DELAY_MS = 1500;
 export const NotificationsBell = forwardRef<
   NotificationsBellHandle,
   NotificationsBellProps
->(function NotificationsBell(
+>(function NotificationsBell(props, forwardedRef) {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading || !isAuthenticated) return null;
+
+  return <NotificationsBellInner {...props} ref={forwardedRef} />;
+});
+
+const NotificationsBellInner = forwardRef<
+  NotificationsBellHandle,
+  NotificationsBellProps
+>(function NotificationsBellInner(
   { variant, filter, className, autoSurfaceOnIncrease = false },
   forwardedRef,
 ) {
@@ -220,6 +232,7 @@ export const NotificationsBell = forwardRef<
 });
 
 NotificationsBell.displayName = 'NotificationsBell';
+NotificationsBellInner.displayName = 'NotificationsBellInner';
 
 function PermissionPromptTooltip({ children }: { children: ReactNode }) {
   const capability = useBrowserNotificationCapability();

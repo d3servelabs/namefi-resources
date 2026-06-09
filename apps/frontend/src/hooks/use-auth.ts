@@ -21,21 +21,17 @@ type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
 
 export function useAuth() {
-  const mockPrivy = useMockPrivy();
-  const privy = usePrivy();
-  const { authenticated, ready, user: originalPrivyUser } = mockPrivy ?? privy;
-  const { isSkipAuthActive } = useSkipAuth();
+  const {
+    authenticated,
+    ready,
+    originalPrivyUser,
+    isSkipAuthActive,
+    definitelyNotAuthenticated,
+    canPrefetchOrShouldFetch,
+    isPrefetch,
+  } = useAuthenticatedQueryState();
 
   const trpc = useTRPC();
-
-  const definitelyNotAuthenticated = useMemo(() => {
-    return ready && !authenticated;
-  }, [authenticated, ready]);
-
-  // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
-  const canPrefetchOrShouldFetch =
-    !definitelyNotAuthenticated && !isSkipAuthActive;
-  const isPrefetch = canPrefetchOrShouldFetch && !ready;
 
   const userQuery = useQuery(
     handlePrefetchQueryKey(
@@ -159,6 +155,62 @@ export function useAuth() {
       originalPrivyUser,
       targetPrivyUser: impersonationTargetPrivyUser,
     },
+  };
+}
+
+export function useMyPermissions() {
+  const { definitelyNotAuthenticated, canPrefetchOrShouldFetch, isPrefetch } =
+    useAuthenticatedQueryState();
+
+  const trpc = useTRPC();
+
+  return useQuery(
+    handlePrefetchQueryKey(
+      isPrefetch,
+      trpc.users.getMyPermissions.queryOptions(void 0, {
+        enabled: canPrefetchOrShouldFetch,
+        retry(failureCount, error) {
+          if (definitelyNotAuthenticated || failureCount > 1) {
+            return false;
+          }
+          if (
+            error instanceof TRPCClientError &&
+            error.data?.code === 'UNAUTHORIZED'
+          ) {
+            return false;
+          }
+          return failureCount < 3;
+        },
+        staleTime: 60_000,
+        trpc: { context: { skipBatch: true } },
+      }),
+    ),
+  );
+}
+
+function useAuthenticatedQueryState() {
+  const mockPrivy = useMockPrivy();
+  const privy = usePrivy();
+  const { authenticated, ready, user: originalPrivyUser } = mockPrivy ?? privy;
+  const { isSkipAuthActive } = useSkipAuth();
+
+  const definitelyNotAuthenticated = useMemo(() => {
+    return ready && !authenticated;
+  }, [authenticated, ready]);
+
+  // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
+  const canPrefetchOrShouldFetch =
+    !definitelyNotAuthenticated && !isSkipAuthActive;
+  const isPrefetch = canPrefetchOrShouldFetch && !ready;
+
+  return {
+    authenticated,
+    ready,
+    originalPrivyUser,
+    isSkipAuthActive,
+    definitelyNotAuthenticated,
+    canPrefetchOrShouldFetch,
+    isPrefetch,
   };
 }
 
