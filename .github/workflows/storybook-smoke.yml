@@ -74,7 +74,11 @@ jobs:
         working-directory: apps/frontend
 
       - name: Build Storybook
-        run: bun run build-storybook --quiet
+        env:
+          STORYBOOK_SKIP_STATIC_COPY: "1"
+        run: |
+          bun run build-storybook --quiet
+          cp -R public/. storybook-static/
         working-directory: apps/frontend
 
       - name: Run Storybook smoke tests

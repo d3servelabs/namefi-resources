@@ -27,7 +27,7 @@ import {
 } from '@namefi-astra/common/mls-seller-tiers';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import type { MlsSaleListing } from '@/lib/mls/feed';
+import { resolveMlsListingSource, type MlsSaleListing } from '@/lib/mls/feed';
 import { getMlsHandlePath, normalizeMlsHandle } from '@/lib/mls/handles';
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -52,7 +52,8 @@ export function MlsSaleCard({
   showSellerTierBadge = true,
 }: MlsSaleCardProps) {
   const sellerHandle = normalizeMlsHandle(listing.seller.username);
-  const sellerLabel = sellerHandle ?? '@unknown';
+  const sellerDisplayName = listing.seller.displayName?.trim() || null;
+  const sellerLabel = sellerHandle ?? sellerDisplayName ?? '@unknown';
   const sellerDetailsPath = sellerHandle
     ? getMlsHandlePath(sellerHandle)
     : null;
@@ -65,6 +66,7 @@ export function MlsSaleCard({
   );
   const postedLabel = formatPostedLabel(listing.postedAt);
   const excerpt = formatExcerpt(listing.messageText);
+  const source = resolveMlsListingSource(listing);
   const domainParts = getMlsDomainDisplayParts(listing.domain);
   const otherDomainsCount = Math.max(0, listing.otherDomainsCount);
   const sellerTier = getListingSellerTier({
@@ -189,12 +191,13 @@ export function MlsSaleCard({
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/6 pt-4">
           <a
-            href={listing.sourceTweetUrl}
+            href={source.url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-w-0 max-w-full items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60 sm:max-w-[58%]"
-            aria-label={`Open source post for ${domainParts.full}`}
+            aria-label={`Open ${source.label} source for ${domainParts.full}`}
           >
+            <span className="shrink-0 text-white/55">{source.label}</span>
             <span className="truncate">{excerpt}</span>
             <ExternalLink className="size-3.5 shrink-0" />
           </a>

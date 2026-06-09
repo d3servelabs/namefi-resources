@@ -14,7 +14,6 @@ import {
 } from '@namefi-astra/db';
 import {
   and,
-  count,
   desc,
   eq,
   gte,
@@ -28,7 +27,6 @@ import {
   type SQL,
 } from 'drizzle-orm';
 import {
-  buildTweetUrl,
   clamp,
   coerceDate,
   decodeListingCursor,
@@ -43,6 +41,11 @@ import {
   normalizeTldFilter,
   trimLeadingAt,
 } from './normalization';
+import {
+  getActiveNamefiFeedListingWhereClauses,
+  isNamefiFeedListingActive,
+} from './listing-visibility';
+import { resolveNamefiFeedSource } from './sources';
 
 type ListingRow = {
   listingId: string;
@@ -57,6 +60,7 @@ type ListingRow = {
   messageText: string | null;
   listedAt: Date | string | null;
   postedAt: Date | string | null;
+  externalSource: string;
   externalPostId: string;
   externalAuthorId: string;
 };
@@ -85,6 +89,7 @@ export interface HandleListingsQuery {
 }
 
 const SELLER_DIRECTORY_LISTING_PAGE_SIZE = 1_000;
+const FALLBACK_LISTING_CURRENCY_PATTERN = /^[A-Z0-9]{2,24}$/;
 
 export class NamefiFeedInvalidCursorError extends Error {
   constructor(message = 'Invalid cursor') {
@@ -125,12 +130,13 @@ export async function getPublicNamefiFeedListings(
   query: PublicListingsQuery = {},
 ): Promise<MlsFeedPage> {
   const pageSize = clamp(query.limit ?? 20, 1, MAX_MLS_FEED_LIMIT);
+  const activeAt = new Date();
   const cursor = decodeListingCursor(query.cursor);
   if (query.cursor && !cursor) {
     throw new NamefiFeedInvalidCursorError();
   }
 
-  const whereClauses = buildBasePublicListingWhereClauses();
+  const whereClauses = buildBasePublicListingWhereClauses(activeAt);
   appendPublicListingFilters(whereClauses, query);
 
   if (cursor) {
@@ -168,7 +174,8 @@ export async function getNamefiFeedListingsForSellerDirectory({
 }: Pick<PublicListingsQuery, 'search' | 'tld'> & {
   limit?: number | null;
 }): Promise<MlsListing[]> {
-  const whereClauses = buildBasePublicListingWhereClauses();
+  const activeAt = new Date();
+  const whereClauses = buildBasePublicListingWhereClauses(activeAt);
   appendPublicListingFilters(whereClauses, { search, tld });
   const rows: NormalizedListingRow[] = [];
   const maxRows = typeof limit === 'number' ? Math.max(1, limit) : null;
@@ -221,6 +228,7 @@ export async function getPublicNamefiFeedListingsByHandle(
   }
 
   const pageSize = clamp(query.limit ?? 20, 1, MAX_MLS_FEED_LIMIT);
+  const activeAt = new Date();
   const cursor = decodeListingCursor(query.cursor);
   if (query.cursor && !cursor) {
     throw new NamefiFeedInvalidCursorError();
@@ -254,7 +262,7 @@ export async function getPublicNamefiFeedListingsByHandle(
   }
 
   const whereClauses = [
-    ...buildBasePublicListingWhereClauses(),
+    ...buildBasePublicListingWhereClauses(activeAt),
     eq(namefiFeedPostsTable.externalAuthorId, sellerAuthorId),
   ];
   if (cursor) {
@@ -308,13 +316,15 @@ export async function searchNamefiFeedListingsByDomain(
     return { offersByDomain: {}, generatedAt: new Date().toISOString() };
   }
 
+  const activeAt = new Date();
   const rows = normalizeListingRows(
     await selectListingRows(
       [
-        ...buildBasePublicListingWhereClauses(),
+        ...buildBasePublicListingWhereClauses(activeAt),
         inArray(namefiFeedListingsTable.domain, normalizedDomains),
+        latestActiveListingPerDomainClause(activeAt),
       ],
-      normalizedDomains.length * 4,
+      normalizedDomains.length,
     ),
   );
 
@@ -369,6 +379,8 @@ export async function createNamefiFeedListingReport(input: {
       .select({
         id: namefiFeedListingsTable.id,
         suppressedAt: namefiFeedListingsTable.suppressedAt,
+        endedAt: namefiFeedListingsTable.endedAt,
+        expiresAt: namefiFeedListingsTable.expiresAt,
       })
       .from(namefiFeedListingsTable)
       .where(eq(namefiFeedListingsTable.id, input.listingId))
@@ -378,8 +390,10 @@ export async function createNamefiFeedListingReport(input: {
     if (!listing) {
       throw new NamefiFeedListingNotFoundError();
     }
-    if (listing.suppressedAt) {
-      throw new NamefiFeedListingConflictError();
+    if (!isNamefiFeedListingActive(listing)) {
+      throw new NamefiFeedListingConflictError(
+        'Namefi feed listing is no longer active',
+      );
     }
 
     const [report] = await tx
@@ -534,8 +548,13 @@ export async function resolveNamefiFeedListingReport(input: {
   });
 }
 
-function buildBasePublicListingWhereClauses(): SQL[] {
-  return [isNull(namefiFeedListingsTable.suppressedAt)];
+function buildBasePublicListingWhereClauses(
+  activeAt: Date = new Date(),
+): SQL[] {
+  return [
+    ...getActiveNamefiFeedListingWhereClauses(activeAt),
+    latestActiveListingPerSourceDomainClause(activeAt),
+  ];
 }
 
 function appendPublicListingFilters(
@@ -595,6 +614,7 @@ async function selectListingRows(
       messageText: namefiFeedListingsTable.messageText,
       listedAt: namefiFeedListingsTable.listedAt,
       postedAt: namefiFeedListingsTable.postedAt,
+      externalSource: namefiFeedPostsTable.externalSource,
       externalPostId: namefiFeedPostsTable.externalPostId,
       externalAuthorId: namefiFeedPostsTable.externalAuthorId,
     })
@@ -636,7 +656,7 @@ async function getDomainCountsByAuthorId(
   const rows = await db
     .select({
       authorId: namefiFeedPostsTable.externalAuthorId,
-      listingCount: count(),
+      listingCount: sql<number>`count(distinct ${namefiFeedListingsTable.domain})`,
     })
     .from(namefiFeedListingsTable)
     .innerJoin(
@@ -682,12 +702,18 @@ function toMlsListing(
   row: NormalizedListingRow,
   otherDomainsCount: number,
 ): MlsListing {
+  const source = resolveNamefiFeedSource({
+    externalSource: row.externalSource,
+    sourceUrl: row.sourceUrl,
+    externalPostId: row.externalPostId,
+  });
+
   return {
     id: row.listingId,
     domain: row.domain,
     logoUrl: normalizeOptionalText(row.logo?.url),
     askingPrice: normalizeOptionalText(row.askingPrice),
-    askingCurrency: normalizeCurrencyCode(row.askingCurrency),
+    askingCurrency: normalizeListingCurrency(row.askingCurrency),
     purchaseUrl: normalizePublicHttpUrl(row.purchaseUrl),
     messageText: normalizeOptionalText(row.messageText),
     seller: {
@@ -697,9 +723,8 @@ function toMlsListing(
       tierDomainCount: 0,
     },
     otherDomainsCount,
-    sourceTweetUrl:
-      normalizePublicHttpUrl(row.sourceUrl) ??
-      buildTweetUrl(row.externalPostId),
+    source,
+    sourceTweetUrl: source.url,
     postedAt: row.postedAt.toISOString(),
     listedAt: row.listedAt.toISOString(),
   };
@@ -707,4 +732,57 @@ function toMlsListing(
 
 export function listingMatchesTld(listing: MlsListing, tld: string | null) {
   return domainMatchesTld(listing.domain, tld);
+}
+
+function latestActiveListingPerSourceDomainClause(
+  activeAt: Date = new Date(),
+): SQL {
+  return sql`NOT EXISTS (
+    SELECT 1
+    FROM "namefi_feed_listings" AS "newer_listing"
+    INNER JOIN "namefi_feed_posts" AS "newer_post"
+      ON "newer_post"."id" = "newer_listing"."post_id"
+    WHERE "newer_listing"."domain" = ${namefiFeedListingsTable.domain}
+      AND "newer_post"."external_source" = ${namefiFeedPostsTable.externalSource}
+      AND "newer_listing"."suppressed_at" IS NULL
+      AND "newer_listing"."ended_at" IS NULL
+      AND ("newer_listing"."expires_at" IS NULL OR "newer_listing"."expires_at" > ${activeAt})
+      AND (
+        "newer_listing"."posted_at" > ${namefiFeedListingsTable.postedAt}
+        OR (
+          "newer_listing"."posted_at" = ${namefiFeedListingsTable.postedAt}
+          AND "newer_listing"."id" > ${namefiFeedListingsTable.id}
+        )
+      )
+  )`;
+}
+
+function latestActiveListingPerDomainClause(activeAt: Date = new Date()): SQL {
+  return sql`NOT EXISTS (
+    SELECT 1
+    FROM "namefi_feed_listings" AS "newer_listing"
+    WHERE "newer_listing"."domain" = ${namefiFeedListingsTable.domain}
+      AND "newer_listing"."suppressed_at" IS NULL
+      AND "newer_listing"."ended_at" IS NULL
+      AND ("newer_listing"."expires_at" IS NULL OR "newer_listing"."expires_at" > ${activeAt})
+      AND (
+        "newer_listing"."posted_at" > ${namefiFeedListingsTable.postedAt}
+        OR (
+          "newer_listing"."posted_at" = ${namefiFeedListingsTable.postedAt}
+          AND "newer_listing"."id" > ${namefiFeedListingsTable.id}
+        )
+      )
+  )`;
+}
+
+function normalizeListingCurrency(value: string | null | undefined) {
+  const normalized = normalizeCurrencyCode(value);
+  if (normalized) {
+    return normalized;
+  }
+
+  const fallback = normalizeOptionalText(value)?.toUpperCase() ?? null;
+  return fallback && FALLBACK_LISTING_CURRENCY_PATTERN.test(fallback)
+    ? fallback
+    : null;
 }

@@ -862,6 +862,13 @@
       "when": 1780997790973,
       "tag": "0122_woozy_cable",
       "breakpoints": true
+    },
+    {
+      "idx": 123,
+      "version": "7",
+      "when": 1781003708857,
+      "tag": "0123_melted_shriek",
+      "breakpoints": true
     }
   ]
 }

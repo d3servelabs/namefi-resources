@@ -8,11 +8,10 @@ import {
   namefiFeedPostsTable,
   namefiFeedSettingsTable,
 } from '@namefi-astra/db';
-import { count, desc, eq, isNotNull, isNull } from 'drizzle-orm';
-import {
-  buildTweetUrl,
-  DEFAULT_NAMEFI_FEED_SEARCH_QUERIES,
-} from './normalization';
+import { and, count, desc, eq, isNotNull, type SQL } from 'drizzle-orm';
+import { getActiveNamefiFeedListingWhereClauses } from './listing-visibility';
+import { DEFAULT_NAMEFI_FEED_SEARCH_QUERIES } from './normalization';
+import { resolveNamefiFeedSource } from './sources';
 import {
   listNamefiFeedSalesDigestTargets,
   listRecentNamefiFeedSalesDigestDeliveries,
@@ -146,9 +145,9 @@ export async function getNamefiFeedAdminOverview(
     countNamefiFeedPosts(),
     countNamefiFeedPosts(eq(namefiFeedPostsTable.status, 'pending')),
     countNamefiFeedPosts(eq(namefiFeedPostsTable.status, 'failed')),
-    countNamefiFeedListings(isNull(namefiFeedListingsTable.suppressedAt)),
+    countNamefiFeedListings(and(...getActiveNamefiFeedListingWhereClauses())),
     countNamefiFeedListings(isNotNull(namefiFeedListingsTable.suppressedAt)),
-    countNamefiFeedReports(eq(namefiFeedListingReportsTable.status, 'active')),
+    countActiveNamefiFeedListingReports(),
     countNamefiFeedRuns(eq(namefiFeedIngestionRunsTable.status, 'running')),
     listRecentRuns(),
     listRecentPosts(),
@@ -191,9 +190,7 @@ async function countNamefiFeedPosts(where?: ReturnType<typeof eq>) {
   return Number(row?.value ?? 0);
 }
 
-async function countNamefiFeedListings(
-  where?: ReturnType<typeof isNull> | ReturnType<typeof isNotNull>,
-) {
+async function countNamefiFeedListings(where?: SQL) {
   const [row] = await db
     .select({ value: count() })
     .from(namefiFeedListingsTable)
@@ -201,11 +198,21 @@ async function countNamefiFeedListings(
   return Number(row?.value ?? 0);
 }
 
-async function countNamefiFeedReports(where?: ReturnType<typeof eq>) {
+async function countActiveNamefiFeedListingReports() {
   const [row] = await db
     .select({ value: count() })
     .from(namefiFeedListingReportsTable)
-    .where(where);
+    .innerJoin(
+      namefiFeedListingsTable,
+      eq(namefiFeedListingsTable.id, namefiFeedListingReportsTable.listingId),
+    )
+    .where(
+      and(
+        eq(namefiFeedListingReportsTable.status, 'active'),
+        ...getActiveNamefiFeedListingWhereClauses(),
+      ),
+    );
+
   return Number(row?.value ?? 0);
 }
 
@@ -264,8 +271,34 @@ async function listRecentPosts(): Promise<
     processedAt: row.processedAt?.toISOString() ?? null,
     failureReason: row.failureReason,
     skipReason: row.skipReason,
-    sourceUrl: buildTweetUrl(row.externalPostId),
+    sourceUrl: resolveAdminPostSourceUrl(row),
   }));
+}
+
+function resolveAdminPostSourceUrl(
+  row: Pick<
+    typeof namefiFeedPostsTable.$inferSelect,
+    'externalSource' | 'externalPostId' | 'rawPayload'
+  >,
+) {
+  return resolveNamefiFeedSource({
+    externalSource: row.externalSource,
+    externalPostId: row.externalPostId,
+    sourceUrl: extractRawPayloadListingUrl(row.rawPayload),
+  }).url;
+}
+
+function extractRawPayloadListingUrl(rawPayload: unknown) {
+  if (
+    !rawPayload ||
+    typeof rawPayload !== 'object' ||
+    Array.isArray(rawPayload)
+  ) {
+    return null;
+  }
+
+  const listingUrl = (rawPayload as { listingUrl?: unknown }).listingUrl;
+  return typeof listingUrl === 'string' ? listingUrl : null;
 }
 
 async function listRecentListings(): Promise<
@@ -284,9 +317,13 @@ async function listRecentListings(): Promise<
     askingCurrency: row.askingCurrency,
     purchaseUrl: row.purchaseUrl,
     sellerUsername: row.sellerUsername,
+    sellerDisplayName: row.sellerDisplayName,
     sourceUrl: row.sourceUrl,
     postedAt: row.postedAt.toISOString(),
     listedAt: row.listedAt.toISOString(),
+    endedAt: row.endedAt?.toISOString() ?? null,
+    endReason: row.endReason,
+    expiresAt: row.expiresAt?.toISOString() ?? null,
     suppressed: Boolean(row.suppressedAt),
   }));
 }
@@ -310,7 +347,12 @@ async function listRecentReports(): Promise<
       namefiFeedListingsTable,
       eq(namefiFeedListingsTable.id, namefiFeedListingReportsTable.listingId),
     )
-    .where(eq(namefiFeedListingReportsTable.status, 'active'))
+    .where(
+      and(
+        eq(namefiFeedListingReportsTable.status, 'active'),
+        ...getActiveNamefiFeedListingWhereClauses(),
+      ),
+    )
     .orderBy(desc(namefiFeedListingReportsTable.createdAt))
     .limit(15);
 

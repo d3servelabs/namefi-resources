@@ -202,6 +202,7 @@ export function CreateListingModal({
   };
 
   const createMutation = useCreateListing({
+    domain,
     chainId,
     tokenAddress,
     tokenId,

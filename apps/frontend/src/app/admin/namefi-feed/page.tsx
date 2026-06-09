@@ -989,7 +989,8 @@ function ListingsTable({
       {
         accessorKey: 'sellerUsername',
         header: 'Seller',
-        cell: ({ row }) => row.original.sellerUsername ?? '-',
+        cell: ({ row }) =>
+          row.original.sellerUsername ?? row.original.sellerDisplayName ?? '-',
       },
       {
         id: 'asking',
@@ -1005,13 +1006,17 @@ function ListingsTable({
         cell: ({ row }) => formatDate(row.original.postedAt),
       },
       {
-        accessorKey: 'suppressed',
+        accessorKey: 'expiresAt',
+        header: 'Expires',
+        cell: ({ row }) => formatDate(row.original.expiresAt),
+      },
+      {
+        id: 'status',
         header: 'Status',
-        cell: ({ row }) => (
-          <Badge variant={row.original.suppressed ? 'destructive' : 'outline'}>
-            {row.original.suppressed ? 'Suppressed' : 'Visible'}
-          </Badge>
-        ),
+        cell: ({ row }) => {
+          const status = getListingLifecycleStatus(row.original);
+          return <Badge variant={status.variant}>{status.label}</Badge>;
+        },
       },
       {
         id: 'actions',
@@ -1054,17 +1059,20 @@ function ListingsTable({
       defaultSorting={[{ id: 'postedAt', desc: true }]}
       fieldAccessors={{
         domain: (row) => row.domain,
-        sellerUsername: (row) => row.sellerUsername,
+        sellerUsername: (row) => row.sellerUsername ?? row.sellerDisplayName,
         asking: (row) => `${row.askingPrice ?? ''} ${row.askingCurrency ?? ''}`,
         postedAt: (row) => new Date(row.postedAt),
-        suppressed: (row) => row.suppressed,
+        expiresAt: (row) => (row.expiresAt ? new Date(row.expiresAt) : null),
+        status: (row) => getListingLifecycleStatus(row).label,
       }}
       searchText={(row) =>
         [
           row.domain,
           row.sellerUsername,
+          row.sellerDisplayName,
           row.askingPrice,
           row.askingCurrency,
+          row.endReason,
           row.sourceUrl,
         ].join(' ')
       }
@@ -1997,6 +2005,33 @@ function formatDate(value: string | null) {
     return '-';
   }
   return format(date, 'yyyy-MM-dd HH:mm');
+}
+
+function getListingLifecycleStatus(
+  listing: NamefiFeedOverview['recentListings'][number],
+): {
+  label: string;
+  variant: 'default' | 'secondary' | 'destructive' | 'outline';
+} {
+  if (listing.suppressed) {
+    return { label: 'Suppressed', variant: 'destructive' };
+  }
+
+  if (listing.endedAt) {
+    return {
+      label: listing.endReason ? formatEnumLabel(listing.endReason) : 'Ended',
+      variant: 'secondary',
+    };
+  }
+
+  if (listing.expiresAt) {
+    const expiresAt = Date.parse(listing.expiresAt);
+    if (Number.isFinite(expiresAt) && expiresAt <= Date.now()) {
+      return { label: 'Expired', variant: 'secondary' };
+    }
+  }
+
+  return { label: 'Visible', variant: 'outline' };
 }
 
 function formatDigestWindow(start: string, end: string) {

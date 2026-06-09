@@ -7,6 +7,13 @@ export interface MlsSaleSeller {
   tierDomainCount?: number;
 }
 
+export interface MlsSaleListingSource {
+  id: string;
+  label: string;
+  kind: 'social' | 'internal_marketplace' | 'external';
+  url: string;
+}
+
 export interface MlsSaleListing {
   id: string;
   domain: string;
@@ -17,6 +24,7 @@ export interface MlsSaleListing {
   messageText: string | null;
   seller: MlsSaleSeller;
   otherDomainsCount: number;
+  source?: MlsSaleListingSource;
   sourceTweetUrl: string;
   postedAt: string;
   listedAt: string;
@@ -102,6 +110,19 @@ export const MLS_LISTING_REPORT_REASONS = [
 
 export type MlsListingReportReason =
   (typeof MLS_LISTING_REPORT_REASONS)[number];
+
+export function resolveMlsListingSource(
+  listing: Pick<MlsSaleListing, 'source' | 'sourceTweetUrl'>,
+): MlsSaleListingSource {
+  return (
+    listing.source ?? {
+      id: 'x',
+      label: 'X',
+      kind: 'social',
+      url: listing.sourceTweetUrl,
+    }
+  );
+}
 
 export interface MlsCreateListingReportInput {
   listingId: string;

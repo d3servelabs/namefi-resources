@@ -1,11 +1,17 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { Address, PublicClient, WalletClient } from 'viem';
+import {
+  formatUnits,
+  type Address,
+  type PublicClient,
+  type WalletClient,
+} from 'viem';
 import { useConfig, usePublicClient } from 'wagmi';
 import { getPublicClient, getWalletClient } from 'wagmi/actions';
 import { getMarketplacesSupportedOnChain } from '@/lib/marketplaces/chains';
 import { getMarketplace } from '@/lib/marketplaces/factory';
+import { marketplaceProxyClient } from '@/lib/marketplaces/proxy/trpc-client';
 import type {
   Listing,
   ListingInput,
@@ -141,6 +147,7 @@ interface CreateListingArgs {
 }
 
 export function useCreateListing(args: {
+  domain?: string;
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
@@ -165,7 +172,13 @@ export function useCreateListing(args: {
         publicClient,
         walletClient,
       });
-      return adapter.createListing(input);
+      const listing = await adapter.createListing(input);
+      void syncCreatedListingWithNamefiFeed({
+        domain: args.domain,
+        chainId: args.chainId,
+        listing,
+      });
+      return listing;
     },
     onSuccess: (listing) => {
       queryClient.invalidateQueries({ queryKey: listingsQueryKey(args) });
@@ -179,6 +192,7 @@ interface CancelListingArgs {
 }
 
 export function useCancelListing(args: {
+  domain?: string;
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
@@ -201,6 +215,11 @@ export function useCancelListing(args: {
         walletClient,
       });
       await adapter.cancelListing(listing);
+      void syncCancelledListingWithNamefiFeed({
+        domain: args.domain,
+        chainId: args.chainId,
+        listing,
+      });
       return listing;
     },
     onSuccess: (listing) => {
@@ -208,6 +227,85 @@ export function useCancelListing(args: {
       args.onSuccess?.(listing);
     },
   });
+}
+
+async function syncCreatedListingWithNamefiFeed({
+  domain,
+  chainId,
+  listing,
+}: {
+  domain: string | undefined;
+  chainId: number;
+  listing: Listing;
+}) {
+  if (!domain) {
+    return;
+  }
+
+  try {
+    await marketplaceProxyClient.mls.recordNamefiMarketplaceListingCreated.mutate(
+      {
+        domainName: domain,
+        marketplaceId: listing.marketplace,
+        chainId,
+        tokenAddress: listing.tokenAddress,
+        tokenId: listing.tokenId,
+        listingId: listing.id,
+        sellerAddress: listing.seller,
+        priceRaw: listing.price.raw,
+        priceDecimal: formatListingPriceDecimal(listing),
+        currencySymbol: listing.price.currency.symbol,
+        currencyAddress: listing.price.currency.contract,
+        listingUrl: listing.externalUrl,
+        listedAt: listing.createdAt,
+        expiresAt: listing.expirationTime,
+      },
+    );
+  } catch {
+    // Namefi feed sync is best-effort and must not roll back marketplace success.
+  }
+}
+
+async function syncCancelledListingWithNamefiFeed({
+  domain,
+  chainId,
+  listing,
+}: {
+  domain: string | undefined;
+  chainId: number;
+  listing: Listing;
+}) {
+  if (!domain) {
+    return;
+  }
+
+  try {
+    await marketplaceProxyClient.mls.recordNamefiMarketplaceListingCancelled.mutate(
+      {
+        domainName: domain,
+        marketplaceId: listing.marketplace,
+        chainId,
+        tokenAddress: listing.tokenAddress,
+        tokenId: listing.tokenId,
+        listingId: listing.id,
+        sellerAddress: listing.seller,
+        listingUrl: listing.externalUrl,
+      },
+    );
+  } catch {
+    // Namefi feed sync is best-effort and must not roll back marketplace success.
+  }
+}
+
+function formatListingPriceDecimal(listing: Listing) {
+  try {
+    return formatUnits(
+      BigInt(listing.price.raw),
+      listing.price.currency.decimals,
+    );
+  } catch {
+    return String(listing.price.decimal);
+  }
 }
 
 interface AcceptOfferArgs {

@@ -55,11 +55,9 @@ function buildItemXml(row: MlsListing): string {
   const publishedAt = coerceDate(row.postedAt) ?? new Date();
   const askingLabel = formatAsking(row.askingPrice, row.askingCurrency);
   const sellerLabel = resolveSellerLabel(row);
-  const sourceTweetUrl = normalizeAbsoluteUrl(row.sourceTweetUrl);
+  const sourceUrl = normalizeAbsoluteUrl(row.source.url);
   const itemLink =
-    normalizeAbsoluteUrl(row.purchaseUrl) ??
-    sourceTweetUrl ??
-    'https://namefi.io';
+    normalizeAbsoluteUrl(row.purchaseUrl) ?? sourceUrl ?? 'https://namefi.io';
   const titleParts = [row.domain.trim()];
 
   if (askingLabel) {
@@ -93,7 +91,7 @@ function buildDescription(
     askingLabel ? `Asking: ${askingLabel}` : null,
     `Seller: ${sellerLabel ?? 'unknown'}`,
     purchaseUrl ? `Purchase URL: ${purchaseUrl}` : null,
-    `Source tweet: ${normalizeAbsoluteUrl(row.sourceTweetUrl) ?? '-'}`,
+    `Source: ${row.source.label} (${normalizeAbsoluteUrl(row.source.url) ?? '-'})`,
     messageText
       ? `Source text: ${truncateText(messageText, MAX_MESSAGE_DESCRIPTION_LENGTH)}`
       : null,

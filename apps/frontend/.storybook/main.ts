@@ -14,9 +14,9 @@ function getAbsolutePath(value: string) {
 
 function moveStorybookStylesBeforeEntryScript(html: string) {
   const entryScriptPattern =
-    /\n\s*<script type="module"[^>]*src="\.\/assets\/iframe-[^"]+\.js"[^>]*><\/script>/;
+    /\n\s*<script type="module"[^>]*src="\.\/[^/]+\/iframe-[^"]+\.js"[^>]*><\/script>/;
   const stylesheetPattern =
-    /\n\s*<link rel="stylesheet"[^>]*href="\.\/assets\/iframe-[^"]+\.css"[^>]*>/;
+    /\n\s*<link rel="stylesheet"[^>]*href="\.\/[^/]+\/iframe-[^"]+\.css"[^>]*>/;
   const entryScriptMatch = html.match(entryScriptPattern);
   const stylesheetMatch = html.match(stylesheetPattern);
 
@@ -36,6 +36,8 @@ function moveStorybookStylesBeforeEntryScript(html: string) {
     .replace(entryScriptPattern, `${stylesheetMatch[0]}$&`);
 }
 
+const shouldCopyStaticDirs = process.env.STORYBOOK_SKIP_STATIC_COPY !== '1';
+
 const config: StorybookConfig = {
   stories: [
     '../src/stories/**/*.mdx',
@@ -49,7 +51,7 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-onboarding'),
   ],
   framework: getAbsolutePath('@storybook/nextjs-vite'),
-  staticDirs: ['../public'],
+  staticDirs: shouldCopyStaticDirs ? ['../public'] : [],
   build: {
     test: {
       disableSourcemaps: false,
@@ -58,6 +60,7 @@ const config: StorybookConfig = {
   viteFinal: async (config) => {
     config.build = {
       ...(config.build ?? {}),
+      assetsDir: 'storybook-assets',
       minify: false,
       cssMinify: false,
       sourcemap: 'inline',

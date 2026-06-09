@@ -19,7 +19,7 @@ import {
   salesDigestAnimationsTable,
 } from '@namefi-astra/db';
 import { createS3Client } from '@namefi-astra/storage';
-import { and, asc, eq, gte, isNull, lt } from 'drizzle-orm';
+import { and, asc, eq, gte, lt } from 'drizzle-orm';
 import type { Json } from 'drizzle-zod';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
@@ -30,6 +30,7 @@ import type {
   PublicDigestAnimationWorkflowResult,
 } from '#temporal/shared/public-digest-animation';
 import { generatePublicDigestAnimationWorkflow } from '#temporal/workflows/public-digest-animation.workflow';
+import { getActiveNamefiFeedListingWhereClauses } from './listing-visibility';
 
 const DIGEST_WINDOW_MS = 24 * 60 * 60 * 1000;
 const DIGEST_RUN_SLOT_UTC_HOUR = 12;
@@ -203,7 +204,7 @@ export async function getNamefiFeedSalesDigestEntries(
     .from(namefiFeedListingsTable)
     .where(
       and(
-        isNull(namefiFeedListingsTable.suppressedAt),
+        ...getActiveNamefiFeedListingWhereClauses(end),
         gte(namefiFeedListingsTable.postedAt, start),
         lt(namefiFeedListingsTable.postedAt, end),
       ),

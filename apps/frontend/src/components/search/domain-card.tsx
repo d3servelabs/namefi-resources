@@ -12,7 +12,7 @@ import { useCartRow } from '@/hooks/use-cart-row';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import type { MlsSaleListing } from '@/lib/mls/feed';
+import { resolveMlsListingSource, type MlsSaleListing } from '@/lib/mls/feed';
 import { normalizeMlsHandle } from '@/lib/mls/handles';
 import { formatAmountInUSD } from '@/lib/number';
 import { useInteractionLoggers } from '@/components/providers/analytics';
@@ -419,13 +419,20 @@ export const DomainCard: FC<{
     hasOwnerInfo && availabilityInfo?.currentOwner
       ? availabilityInfo.currentOwner
       : '';
+  const mlsOfferSource = mlsOffer ? resolveMlsListingSource(mlsOffer) : null;
   const mlsSellerHandle = normalizeMlsHandle(mlsOffer?.seller.username ?? null);
-  const mlsOfferUrl = mlsOffer?.sourceTweetUrl.trim() ?? '';
+  const mlsOfferUrl =
+    mlsOffer?.purchaseUrl?.trim() ||
+    mlsOfferSource?.url.trim() ||
+    mlsOffer?.sourceTweetUrl.trim() ||
+    '';
+  const mlsOfferSourceLabel = mlsOfferSource?.label ?? 'marketplace';
+  const shouldShowSourceIcon = mlsOfferSource?.id === 'x';
   const isUnavailableForDirectBuy = Boolean(
     availabilityInfo && !availabilityInfo.availability && !isUnsupported,
   );
   const shouldShowMlsOfferCta = Boolean(
-    isUnavailableForDirectBuy && mlsSellerHandle && mlsOfferUrl.length,
+    isUnavailableForDirectBuy && mlsOfferUrl.length,
   );
   const shouldShowImportHint = Boolean(
     showImportUi && availabilityInfo?.availability,
@@ -444,19 +451,27 @@ export const DomainCard: FC<{
     <Button
       onClick={goToMlsOffer}
       aria-label={
-        mlsSellerHandle ? `Buy on X from ${mlsSellerHandle}` : 'Buy on X'
+        mlsSellerHandle
+          ? `Buy on ${mlsOfferSourceLabel} from ${mlsSellerHandle}`
+          : `Buy on ${mlsOfferSourceLabel}`
       }
       className="h-8 max-w-full shrink-0 gap-1.5 border border-white/15 bg-black px-2.5 text-[11px] text-white shadow-sm hover:bg-zinc-900 hover:text-white sm:h-9 sm:px-3 sm:text-xs"
     >
       <span className="sm:hidden">Buy</span>
       <span className="hidden sm:inline">Buy on</span>
-      <Image
-        src="/assets/social/x-logo.svg"
-        alt="X"
-        width={12}
-        height={12}
-        className="size-3 shrink-0"
-      />
+      {shouldShowSourceIcon ? (
+        <Image
+          src="/assets/social/x-logo.svg"
+          alt="X"
+          width={12}
+          height={12}
+          className="size-3 shrink-0"
+        />
+      ) : (
+        <span className="max-w-16 truncate sm:max-w-24">
+          {mlsOfferSourceLabel}
+        </span>
+      )}
     </Button>
   ) : null;
 

@@ -155,6 +155,12 @@ function createMlsOffer(domain: string, username: string): MlsSaleListing {
       displayName: username,
     },
     otherDomainsCount: 4,
+    source: {
+      id: 'x',
+      label: 'X',
+      kind: 'social',
+      url: `https://x.com/${username}/status/1935600000000000000`,
+    },
     sourceTweetUrl: `https://x.com/${username}/status/1935600000000000000`,
     postedAt: '2026-03-17T09:30:00.000Z',
     listedAt: '2026-03-17T09:30:00.000Z',

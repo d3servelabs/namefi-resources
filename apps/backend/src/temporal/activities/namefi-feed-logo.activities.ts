@@ -20,6 +20,7 @@ import { and, asc, desc, eq, inArray, isNull } from 'drizzle-orm';
 import pMap from 'p-map';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
+import { getActiveNamefiFeedListingWhereClauses } from '../../services/namefi-feed/listing-visibility';
 
 const logger = createLogger({ module: 'namefi-feed-logo-activities' });
 const NAMEFI_FEED_LISTING_LOGO_IMAGE_MODEL = 'gpt-image-1.5';
@@ -111,7 +112,7 @@ async function listEligibleNamefiFeedListingLogoTargets(
       and(
         inArray(namefiFeedListingsTable.domain, domains),
         isNull(namefiFeedListingsTable.logo),
-        isNull(namefiFeedListingsTable.suppressedAt),
+        ...getActiveNamefiFeedListingWhereClauses(),
       ),
     )
     .orderBy(asc(namefiFeedListingsTable.domain));
@@ -304,7 +305,7 @@ async function updateListingLogoIfEligible(input: {
       and(
         eq(namefiFeedListingsTable.domain, input.domain),
         isNull(namefiFeedListingsTable.logo),
-        isNull(namefiFeedListingsTable.suppressedAt),
+        ...getActiveNamefiFeedListingWhereClauses(),
       ),
     )
     .returning({ id: namefiFeedListingsTable.id });
@@ -348,7 +349,9 @@ async function heartbeatWhile<T>(
       }
       try {
         ctx.heartbeat(details);
-      } catch {}
+      } catch {
+        // Heartbeat failures are reported by the activity promise itself.
+      }
     }, intervalMs);
 
     promise

@@ -39,7 +39,7 @@ export const adminNamefiFeedPostSchema = z.object({
   authorUsername: z.string().nullable(),
   authorDisplayName: z.string().nullable(),
   status: z.enum(['pending', 'processing', 'processed', 'skipped', 'failed']),
-  source: z.enum(['auto_scan', 'manual']),
+  source: z.enum(['auto_scan', 'manual', 'system']),
   postedAt: z.string(),
   createdAt: z.string(),
   processedAt: nullableIsoDateSchema,
@@ -55,9 +55,13 @@ export const adminNamefiFeedListingSchema = z.object({
   askingCurrency: z.string().nullable(),
   purchaseUrl: z.string().nullable(),
   sellerUsername: z.string().nullable(),
+  sellerDisplayName: z.string().nullable(),
   sourceUrl: z.string(),
   postedAt: z.string(),
   listedAt: z.string(),
+  endedAt: nullableIsoDateSchema,
+  endReason: z.string().nullable(),
+  expiresAt: nullableIsoDateSchema,
   suppressed: z.boolean(),
 });
 

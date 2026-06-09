@@ -16,6 +16,7 @@ import {
 } from '@namefi-astra/common/contract/mls-contract';
 import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
+import { ResourceType } from '#lib/auditor';
 import { inArray, sql } from 'drizzle-orm';
 import {
   createNamefiFeedListingReport,
@@ -29,14 +30,29 @@ import {
   searchNamefiFeedListingsByDomain,
 } from '../../services/namefi-feed/listings.service';
 import {
+  NamefiFeedMarketplaceListingDomainNotFoundError,
+  NamefiFeedMarketplaceListingForbiddenError,
+  NamefiFeedMarketplaceListingValidationError,
+  recordNamefiMarketplaceListingCancelled,
+  recordNamefiMarketplaceListingCreated,
+} from '../../services/namefi-feed/marketplace-lifecycle.service';
+import {
   clamp,
   domainMatchesTld,
   normalizeTldFilter,
 } from '../../services/namefi-feed/normalization';
 import { ensurePrivyTableFresh } from '../../services/admin/privy-user-cache';
-import { adminProcedure, protectedProcedure, publicProcedure } from '../base';
+import {
+  adminProcedure,
+  protectedProcedure,
+  publicProcedure,
+  withAudit,
+} from '../base';
 import { createContractTRPCRouter } from '../contract';
-import { privyClient } from '../utils';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../utils';
 
 const MAX_CURRENT_USER_LISTED_DOMAIN_PAGES = 10;
 const SELLER_DIRECTORY_SOURCE_CACHE_TTL_MS = 5 * 60 * 1_000;
@@ -221,6 +237,72 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       return searchNamefiFeedListingsByDomain(domains);
     }),
 
+  recordNamefiMarketplaceListingCreated: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.DOMAIN,
+      resourceId: input.domainName,
+      action: 'namefi_feed.marketplace_listing_created',
+      extraInput: {
+        marketplaceId: input.marketplaceId,
+        chainId: input.chainId,
+        tokenAddress: input.tokenAddress,
+        tokenId: input.tokenId,
+        listingId: input.listingId,
+      },
+    }),
+  )
+    .input(mlsContract.recordNamefiMarketplaceListingCreated.input)
+    .output(mlsContract.recordNamefiMarketplaceListingCreated.output)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await recordNamefiMarketplaceListingCreated({
+          input,
+          linkedWalletAddresses: await getCurrentUserLinkedWalletAddresses(
+            ctx.user.privyUserId,
+          ),
+        });
+      } catch (error) {
+        throw mapNamefiMarketplaceLifecycleError(error);
+      }
+    }),
+
+  recordNamefiMarketplaceListingCancelled: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.DOMAIN,
+      resourceId: input.domainName,
+      action: 'namefi_feed.marketplace_listing_cancelled',
+      extraInput: {
+        marketplaceId: input.marketplaceId,
+        chainId: input.chainId,
+        tokenAddress: input.tokenAddress,
+        tokenId: input.tokenId,
+        listingId: input.listingId,
+      },
+    }),
+  )
+    .input(mlsContract.recordNamefiMarketplaceListingCancelled.input)
+    .output(mlsContract.recordNamefiMarketplaceListingCancelled.output)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        return await recordNamefiMarketplaceListingCancelled({
+          input,
+          linkedWalletAddresses: await getCurrentUserLinkedWalletAddresses(
+            ctx.user.privyUserId,
+          ),
+        });
+      } catch (error) {
+        throw mapNamefiMarketplaceLifecycleError(error);
+      }
+    }),
+
   getCurrentUserListedDomains: protectedProcedure
     .input(mlsContract.getCurrentUserListedDomains.input)
     .output(mlsContract.getCurrentUserListedDomains.output)
@@ -246,6 +328,11 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       return mlsCurrentUserListedDomainsResponseSchema.parse(response);
     }),
 });
+
+async function getCurrentUserLinkedWalletAddresses(privyUserId: string) {
+  const privyUser = await privyClient.getUserById(privyUserId);
+  return getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser });
+}
 
 async function enrichMlsFeedPageSellerPortfolio(
   page: MlsFeedPage,
@@ -880,5 +967,37 @@ function mapNamefiFeedError(
   return new TRPCError({
     code: 'INTERNAL_SERVER_ERROR',
     message: fallbackMessage,
+  });
+}
+
+function mapNamefiMarketplaceLifecycleError(error: unknown): TRPCError {
+  if (error instanceof TRPCError) {
+    return error;
+  }
+
+  if (error instanceof NamefiFeedMarketplaceListingValidationError) {
+    return new TRPCError({
+      code: 'BAD_REQUEST',
+      message: error.message,
+    });
+  }
+
+  if (error instanceof NamefiFeedMarketplaceListingForbiddenError) {
+    return new TRPCError({
+      code: 'FORBIDDEN',
+      message: error.message,
+    });
+  }
+
+  if (error instanceof NamefiFeedMarketplaceListingDomainNotFoundError) {
+    return new TRPCError({
+      code: 'NOT_FOUND',
+      message: error.message,
+    });
+  }
+
+  return new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'Unable to sync marketplace listing with Namefi feed right now.',
   });
 }

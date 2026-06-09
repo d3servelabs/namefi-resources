@@ -804,9 +804,8 @@ async function upsertListingsFromOpportunity({
     .insert(namefiFeedListingsTable)
     .values(values)
     .onConflictDoUpdate({
-      target: [namefiFeedListingsTable.domain],
+      target: [namefiFeedListingsTable.postId, namefiFeedListingsTable.domain],
       set: {
-        postId: sql`excluded.post_id`,
         askingPrice: sql`excluded.asking_price`,
         askingCurrency: sql`excluded.asking_currency`,
         purchaseUrl: sql`excluded.purchase_url`,
@@ -816,6 +815,8 @@ async function upsertListingsFromOpportunity({
         messageText: sql`excluded.message_text`,
         listedAt: sql`excluded.listed_at`,
         postedAt: sql`excluded.posted_at`,
+        endedAt: null,
+        endReason: null,
         updatedAt: now,
       },
     })

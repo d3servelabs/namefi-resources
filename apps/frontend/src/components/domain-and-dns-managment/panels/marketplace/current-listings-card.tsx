@@ -52,6 +52,7 @@ export function CurrentListingsCard({
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const listingsQuery = useListings({ chainId, tokenAddress, tokenId });
   const cancelMutation = useCancelListing({
+    domain,
     chainId,
     tokenAddress,
     tokenId,

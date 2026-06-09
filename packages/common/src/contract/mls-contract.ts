@@ -1,3 +1,7 @@
+import {
+  checksumWalletAddressSchema,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
 import { z } from 'zod';
 
 import { createContract } from './create-contract';
@@ -44,6 +48,13 @@ const mlsSellerPortfolioFieldsSchema = {
   tierDomainCount: z.number().int().nonnegative().optional().default(0),
 };
 
+export const mlsListingSourceSchema = z.object({
+  id: z.string().trim().min(1),
+  label: z.string().trim().min(1),
+  kind: z.enum(['social', 'internal_marketplace', 'external']),
+  url: z.string().trim().min(1),
+});
+
 export const mlsListingSchema = z.object({
   id: z.string().min(1),
   domain: z.string().min(1),
@@ -58,11 +69,13 @@ export const mlsListingSchema = z.object({
     ...mlsSellerPortfolioFieldsSchema,
   }),
   otherDomainsCount: z.number().int().nonnegative().optional().default(0),
+  source: mlsListingSourceSchema,
   sourceTweetUrl: z.string().min(1),
   postedAt: z.string().min(1),
   listedAt: z.string().min(1),
 });
 
+export type MlsListingSource = z.infer<typeof mlsListingSourceSchema>;
 export type MlsListing = z.infer<typeof mlsListingSchema>;
 
 // ---------------------------------------------------------------------------
@@ -259,6 +272,51 @@ export type MlsCurrentUserListedDomainsResponse = z.infer<
 >;
 
 // ---------------------------------------------------------------------------
+// Marketplace listing feed lifecycle
+// ---------------------------------------------------------------------------
+
+const mlsMarketplaceIdSchema = z.enum(['opensea', 'rarible', 'okx']);
+
+const mlsMarketplaceListingIdentitySchema = z.object({
+  domainName: namefiNormalizedDomainSchema,
+  marketplaceId: mlsMarketplaceIdSchema,
+  chainId: z.number().int().positive(),
+  tokenAddress: checksumWalletAddressSchema,
+  tokenId: z.string().trim().min(1),
+  listingId: z.string().trim().min(1).max(512),
+  sellerAddress: checksumWalletAddressSchema,
+});
+
+export const mlsRecordNamefiMarketplaceListingCreatedInputSchema =
+  mlsMarketplaceListingIdentitySchema.extend({
+    priceRaw: z.string().trim().regex(/^\d+$/),
+    priceDecimal: z.string().trim().min(1).max(64),
+    currencySymbol: z.string().trim().min(1).max(24),
+    currencyAddress: checksumWalletAddressSchema,
+    listingUrl: z.string().trim().url().max(2048),
+    listedAt: z.string().datetime().optional(),
+    expiresAt: z.string().datetime().optional(),
+  });
+
+export const mlsRecordNamefiMarketplaceListingCancelledInputSchema =
+  mlsMarketplaceListingIdentitySchema.extend({
+    listingUrl: z.string().trim().url().max(2048).optional(),
+    cancelledAt: z.string().datetime().optional(),
+  });
+
+export const mlsRecordNamefiMarketplaceListingLifecycleResponseSchema =
+  z.object({
+    synced: z.boolean(),
+  });
+
+export type MlsRecordNamefiMarketplaceListingCreatedInput = z.infer<
+  typeof mlsRecordNamefiMarketplaceListingCreatedInputSchema
+>;
+export type MlsRecordNamefiMarketplaceListingCancelledInput = z.infer<
+  typeof mlsRecordNamefiMarketplaceListingCancelledInputSchema
+>;
+
+// ---------------------------------------------------------------------------
 // The contract
 // ---------------------------------------------------------------------------
 
@@ -299,6 +357,18 @@ export const mlsContract = createContract(
       type: 'query',
       input: z.void(),
       output: mlsCurrentUserListedDomainsResponseSchema,
+    },
+
+    recordNamefiMarketplaceListingCreated: {
+      type: 'mutation',
+      input: mlsRecordNamefiMarketplaceListingCreatedInputSchema,
+      output: mlsRecordNamefiMarketplaceListingLifecycleResponseSchema,
+    },
+
+    recordNamefiMarketplaceListingCancelled: {
+      type: 'mutation',
+      input: mlsRecordNamefiMarketplaceListingCancelledInputSchema,
+      output: mlsRecordNamefiMarketplaceListingLifecycleResponseSchema,
     },
   },
 );

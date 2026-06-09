@@ -1737,6 +1737,7 @@ export const leadgenEmailDraftsTable = pgTable(
 export const namefiFeedPostSourceEnum = pgEnum('namefi_feed_post_source', [
   'auto_scan',
   'manual',
+  'system',
 ]);
 
 export const namefiFeedPostStatusEnum = pgEnum('namefi_feed_post_status', [
@@ -1962,7 +1963,10 @@ export const namefiFeedListingsTable = pgTable(
     messageText: text('message_text'),
     listedAt: timestamp('listed_at').notNull().defaultNow(),
     postedAt: timestamp('posted_at').notNull(),
+    expiresAt: timestamp('expires_at'),
     suppressedAt: timestamp('suppressed_at'),
+    endedAt: timestamp('ended_at'),
+    endReason: text('end_reason'),
     ...timestamps,
   },
   (table) => [
@@ -1974,10 +1978,21 @@ export const namefiFeedListingsTable = pgTable(
       'namefi_feed_listings_domain_nonempty_check',
       sql`length(trim(${table.domain})) > 0`,
     ),
-    unique('namefi_feed_listings_domain_unique').on(table.domain),
     unique('namefi_feed_listings_post_domain_unique').on(
       table.postId,
       table.domain,
+    ),
+    check(
+      'namefi_feed_listings_end_reason_check',
+      sql`${table.endReason} IS NULL OR ${table.endReason} IN ('cancelled', 'expired', 'sold', 'superseded')`,
+    ),
+    check(
+      'namefi_feed_listings_end_state_check',
+      sql`(${table.endedAt} IS NULL AND ${table.endReason} IS NULL) OR (${table.endedAt} IS NOT NULL AND ${table.endReason} IS NOT NULL)`,
+    ),
+    check(
+      'namefi_feed_listings_expires_after_listed_check',
+      sql`${table.expiresAt} IS NULL OR ${table.expiresAt} > ${table.listedAt}`,
     ),
     index('namefi_feed_listings_domain_idx').on(table.domain),
     index('namefi_feed_listings_posted_idx').on(table.postedAt.desc()),
@@ -1985,7 +2000,15 @@ export const namefiFeedListingsTable = pgTable(
     index('namefi_feed_listings_seller_idx').on(table.sellerUsername),
     index('namefi_feed_listings_unsuppressed_idx')
       .on(table.postedAt.desc())
-      .where(sql`${table.suppressedAt} IS NULL`),
+      .where(sql`${table.suppressedAt} IS NULL AND ${table.endedAt} IS NULL`),
+    index('namefi_feed_listings_active_domain_posted_idx')
+      .on(table.domain, table.postedAt.desc(), table.id.desc())
+      .where(sql`${table.suppressedAt} IS NULL AND ${table.endedAt} IS NULL`),
+    index('namefi_feed_listings_active_expires_idx')
+      .on(table.expiresAt)
+      .where(
+        sql`${table.suppressedAt} IS NULL AND ${table.endedAt} IS NULL AND ${table.expiresAt} IS NOT NULL`,
+      ),
   ],
 );
 
