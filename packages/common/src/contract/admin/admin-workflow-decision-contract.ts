@@ -86,6 +86,8 @@ const gateAttemptSchema = z.object({
 
 /** Mirrors `ArmedGateContext` from the decision-gate helper. */
 const gateContextSchema = z.object({
+  /** User-centric headline used as the alert/card title. */
+  alertTitle: z.string().optional(),
   alertMessage: z.string().optional(),
   error: gateErrorSchema.optional(),
   alertDetails: z.record(z.string(), z.unknown()).optional(),

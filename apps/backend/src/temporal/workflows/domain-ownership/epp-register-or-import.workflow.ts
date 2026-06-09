@@ -42,8 +42,11 @@ import {
  */
 const REGISTER_POLL_ACTION_TIMEOUT_MS = 90 * 60 * 1000; // 90 minutes
 const REGISTER_POLL_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
-const IMPORT_POLL_ACTION_TIMEOUT_MS = 24 * 60 * 60 * 1000; // 24 hours
+const REGISTER_SUBMIT_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
+
+const IMPORT_POLL_ACTION_TIMEOUT_MS = 5 * 24 * 60 * 60 * 1000; // 24 hours
 const IMPORT_POLL_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 3 days
+const IMPORT_SUBMIT_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 3 days
 
 /**
  * Caps the IMPORT poll gate's RETRY cycles. Each cycle costs up to
@@ -262,12 +265,15 @@ export async function eppRegisterOrImportWorkflow(
         ? IMPORT_POLL_DECISION_TIMEOUT_MS
         : REGISTER_POLL_DECISION_TIMEOUT_MS,
       onTimeout: { kind: 'throw' },
-      alertMessage: `${isImport ? 'Import' : 'Register'} operation poll exceeded its deadline for ${input.normalizedDomainName} (operationId=${operationId}); verify registrar state`,
+      alertTitle: `We're ${isImport ? 'importing' : 'registering'} ${input.normalizedDomainName} via ${input.registrarKey}, but it's taking longer than expected`,
+      alertMessage: `The registrar operation poll exceeded its deadline (operationId=${operationId}). Verify the registrar's state.`,
       alertDetails: {
         normalizedDomainName: input.normalizedDomainName,
         operationId,
         registrarKey: input.registrarKey,
         operationType: input.operationType,
+        userId: input.userId,
+        orderId: input.orderId,
       },
     });
   };
@@ -336,14 +342,17 @@ export async function eppRegisterOrImportWorkflow(
             // Bound the re-submit cycles like the poll gate does.
             maxRetries: POLL_GATE_MAX_RETRIES,
             timeoutMs: isImport
-              ? IMPORT_POLL_DECISION_TIMEOUT_MS
-              : REGISTER_POLL_DECISION_TIMEOUT_MS,
+              ? IMPORT_SUBMIT_DECISION_TIMEOUT_MS
+              : REGISTER_SUBMIT_DECISION_TIMEOUT_MS,
             onTimeout: { kind: 'throw' },
-            alertMessage: `${isImport ? 'Import' : 'Register'} submit failed for ${input.normalizedDomainName}; verify registrar state before retrying`,
+            alertTitle: `We attempted to ${isImport ? 'import' : 'register'} ${input.normalizedDomainName} from ${input.registrarKey}, but received an unexpected response`,
+            alertMessage: 'Verify the registrar state before retrying.',
             alertDetails: {
               normalizedDomainName: input.normalizedDomainName,
               registrarKey: input.registrarKey,
               operationType: input.operationType,
+              userId: input.userId,
+              orderId: input.orderId,
             },
           })
         : await submit();

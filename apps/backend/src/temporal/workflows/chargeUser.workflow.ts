@@ -198,7 +198,9 @@ export async function chargeUserWorkflow({
               allowedActions: ['RETRY', 'RESPOND', 'CANCEL'],
               timeoutMs: CHARGE_NFSC_DECISION_TIMEOUT_MS,
               onTimeout: { kind: 'throw' },
-              alertMessage: `NFSC charge failed for payment ${paymentId}; verify the wallet's on-chain state before deciding`,
+              alertTitle: `We couldn't charge the user's wallet for payment ${paymentId}`,
+              alertMessage:
+                "The on-chain NFSC charge failed. Verify the wallet's balance and on-chain state.",
               alertDetails: {
                 paymentId,
                 userId,

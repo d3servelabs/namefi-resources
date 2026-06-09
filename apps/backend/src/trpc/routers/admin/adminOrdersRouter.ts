@@ -533,4 +533,19 @@ export const adminOrdersRouter = createContractTRPCRouter<
         });
       }
     }),
+
+  /**
+   * Resolve an order's owner. Used by the decision-gates admin UI to show the
+   * affected user when a gate carries an `orderId` but no `userId`.
+   */
+  getOrderUserId: adminProcedureWithPermissions(Permission.READ_ORDERS)
+    .input(adminOrdersContract.getOrderUserId.input)
+    .output(adminOrdersContract.getOrderUserId.output)
+    .query(async ({ input }) => {
+      const order = await db.query.ordersTable.findFirst({
+        where: eq(ordersTable.id, input.orderId),
+        columns: { userId: true },
+      });
+      return { userId: order?.userId ?? null };
+    }),
 });

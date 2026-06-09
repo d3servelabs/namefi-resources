@@ -225,12 +225,15 @@ export async function sldRegisterOrImportWorkflow(
             ? IMPORT_POLL_DECISION_TIMEOUT_MS
             : REGISTER_POLL_DECISION_TIMEOUT_MS,
           onTimeout: { kind: 'throw' },
-          alertMessage: `${isImport ? 'Import' : 'Register'} operation poll exceeded its deadline for ${input.normalizedDomainName} (operationId=${registrarOperationId}); verify registrar state`,
+          alertTitle: `We're ${isImport ? 'importing' : 'registering'} ${input.normalizedDomainName} via ${input.registrarKey}, but it's taking longer than expected`,
+          alertMessage: `The registrar operation poll exceeded its deadline (operationId=${registrarOperationId}). Verify the registrar's state.`,
           alertDetails: {
             normalizedDomainName: input.normalizedDomainName,
             operationId: registrarOperationId,
             registrarKey: input.registrarKey,
             operationType: input.operationType,
+            userId: input.userId,
+            orderId: input.orderId,
           },
         })
       : await poll();

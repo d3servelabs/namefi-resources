@@ -176,28 +176,23 @@ function JsonBlock({
 /** The failure that opened the gate, shown prominently (not muted) in the row. */
 function GateErrorSummary({ context }: { context: Gate['context'] }) {
   const error = context?.error;
-  const alertMessage = context?.alertMessage;
-  if (!error && !alertMessage) return null;
-  const root = error ? deepestError(error) : undefined;
+  // The alert message is the card subtitle now; show only the underlying error.
+  if (!error) return null;
+  const root = deepestError(error);
   const showRoot = root?.message && root.message !== error?.message;
   return (
     <div className="mt-1.5 space-y-1">
-      {error ? (
-        <p className="break-words text-base font-semibold text-red-600 dark:text-red-400">
-          {error.type ? (
-            <span className="font-mono text-sm opacity-80">{error.type}: </span>
-          ) : null}
-          {error.message}
-        </p>
-      ) : null}
+      <p className="break-words text-base font-semibold text-red-600 dark:text-red-400">
+        {error.type ? (
+          <span className="font-mono text-sm opacity-80">{error.type}: </span>
+        ) : null}
+        {error.message}
+      </p>
       {showRoot ? (
         <p className="break-words text-sm text-red-500/90 dark:text-red-400/90">
           ↳ {root?.type ? `${root.type}: ` : ''}
           {root?.message}
         </p>
-      ) : null}
-      {alertMessage ? (
-        <p className="break-words text-sm text-foreground/70">{alertMessage}</p>
       ) : null}
     </div>
   );
@@ -808,6 +803,44 @@ function buildCandidate(
   return values[''] ?? '';
 }
 
+/**
+ * The affected user, taken from the gate context (`userId`) or resolved from its
+ * `orderId` via the order. Renders nothing when no user can be determined.
+ */
+function GateUserField({ context }: { context: Gate['context'] }) {
+  const trpc = useTRPC();
+  const details = context?.alertDetails;
+  const params = context?.evidenceParams;
+  const asId = (value: unknown): string | undefined =>
+    typeof value === 'string' && value.length > 0 ? value : undefined;
+  const directUserId = asId(details?.userId) ?? asId(params?.userId);
+  const orderId = asId(details?.orderId) ?? asId(params?.orderId);
+  const needsFetch = !directUserId && orderId !== undefined;
+  const orderQuery = useQuery({
+    ...trpc.admin.orders.getOrderUserId.queryOptions({
+      orderId: orderId ?? '',
+    }),
+    enabled: needsFetch,
+    staleTime: 5 * 60_000,
+  });
+  const userId = directUserId ?? orderQuery.data?.userId ?? undefined;
+  if (!userId && !needsFetch) return null;
+  return (
+    <MobileTableItemField
+      label="User"
+      value={
+        userId ? (
+          <span className="break-all font-mono">{userId}</span>
+        ) : orderQuery.isLoading ? (
+          <span className="text-muted-foreground">resolving…</span>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        )
+      }
+    />
+  );
+}
+
 /** One gate rendered as a card (orders-page style); titled by its alert message. */
 function GateCard({
   workflow,
@@ -818,19 +851,34 @@ function GateCard({
   gate: Gate;
   onSend: (input: SendDecisionInput) => Promise<boolean>;
 }) {
+  const context = gate.context;
   const title =
-    gate.context?.alertMessage ??
-    gate.context?.gateKind ??
+    context?.alertTitle ??
+    context?.alertMessage ??
+    context?.gateKind ??
     workflow.workflowType;
+  const subtitle =
+    context?.alertTitle &&
+    context?.alertMessage &&
+    context.alertMessage !== context.alertTitle
+      ? context.alertMessage
+      : undefined;
   return (
     <MobileTableItem>
       <MobileTableItemHeader>
-        <MobileTableItemTitle className="break-words">
-          {title}
-        </MobileTableItemTitle>
-        {gate.context?.gateKind ? (
+        <div className="min-w-0 space-y-0.5">
+          <MobileTableItemTitle className="break-words">
+            {title}
+          </MobileTableItemTitle>
+          {subtitle ? (
+            <p className="break-words text-sm text-muted-foreground">
+              {subtitle}
+            </p>
+          ) : null}
+        </div>
+        {context?.gateKind ? (
           <Badge variant="secondary" className="shrink-0">
-            {gate.context.gateKind}
+            {context.gateKind}
           </Badge>
         ) : null}
       </MobileTableItemHeader>
@@ -865,6 +913,7 @@ function GateCard({
             <span className="break-all font-mono">{gate.interactionId}</span>
           }
         />
+        <GateUserField context={gate.context} />
         <MobileTableItemField
           label="Allowed"
           className="items-start"

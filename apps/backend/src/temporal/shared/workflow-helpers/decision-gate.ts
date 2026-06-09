@@ -174,7 +174,12 @@ export interface GateAttempt {
  * the alert description/details, and timing.
  */
 export interface ArmedGateContext {
-  /** Operator-facing description of why the gate opened (the alert message). */
+  /**
+   * Short, user-centric headline for the gate (what we tried + what happened),
+   * used as the alert/card title. Falls back to a generic title when unset.
+   */
+  alertTitle?: string;
+  /** Operator-facing description of why the gate opened (the alert message / subtitle). */
   alertMessage?: string;
   /** Serialized failure that opened the gate. */
   error?: GateErrorInfo;
@@ -583,7 +588,12 @@ export interface RunWithDecisionGateOptions<T, R = T> {
   /** The guarded action. Re-invoked on RETRY. */
   action: () => Promise<T>;
 
-  /** Message woven into the failure alert. */
+  /**
+   * Short, user-centric alert/card title (what we tried + what happened). Falls
+   * back to a generic `Decision gate awaiting action (<workflowId>)` when unset.
+   */
+  alertTitle?: string;
+  /** Message woven into the failure alert (the subtitle / next-step). */
   alertMessage: string;
   /** `'general'` (default) → generalAlertNamefi; `'critical'` → criticalAlertWithTicket. */
   alertSeverity?: 'general' | 'critical';
@@ -662,6 +672,7 @@ export interface RunWithDecisionGateOptions<T, R = T> {
 
 async function emitFailureAlert(args: {
   alertSeverity: 'general' | 'critical';
+  alertTitle?: string;
   alertMessage: string;
   alertPriority?: 1 | 2 | 3 | 4;
   alertDetails?: Record<string, unknown>;
@@ -681,7 +692,8 @@ async function emitFailureAlert(args: {
     ...(args.alertDetails ?? {}),
   };
 
-  const title = `Decision gate awaiting action (${info.workflowId})`;
+  const title =
+    args.alertTitle ?? `Decision gate awaiting action (${info.workflowId})`;
 
   try {
     if (args.alertSeverity === 'critical') {
@@ -775,6 +787,7 @@ export async function runWithDecisionGate<T, R = T>(
     registry,
     action,
     interactionId,
+    alertTitle,
     alertMessage,
     alertSeverity = 'general',
     alertPriority,
@@ -888,6 +901,7 @@ export async function runWithDecisionGate<T, R = T>(
 
       await emitFailureAlert({
         alertSeverity,
+        alertTitle,
         alertMessage,
         alertPriority,
         alertDetails,
@@ -908,6 +922,7 @@ export async function runWithDecisionGate<T, R = T>(
         validateResponse,
         raceWith,
         context: {
+          alertTitle,
           alertMessage,
           error: serializedError,
           alertDetails,

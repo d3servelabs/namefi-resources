@@ -52,6 +52,15 @@ const paginatedOrdersOutputSchema = z.object({
   totalPages: z.number(),
 });
 
+const getOrderUserIdInputSchema = z.object({
+  orderId: z.string().min(1),
+});
+
+const getOrderUserIdOutputSchema = z.object({
+  /** The order's owner, or `null` when the order can't be found. */
+  userId: z.string().nullable(),
+});
+
 export const adminOrdersContract = createContract(
   { softOutput: true },
   {
@@ -64,6 +73,11 @@ export const adminOrdersContract = createContract(
       type: 'query',
       input: listOrdersInputSchema,
       output: paginatedOrdersOutputSchema,
+    },
+    getOrderUserId: {
+      type: 'query',
+      input: getOrderUserIdInputSchema,
+      output: getOrderUserIdOutputSchema,
     },
   },
 );

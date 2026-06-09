@@ -162,13 +162,16 @@ export async function processOrderItemWorkflow(
               normalizedDomainName,
               registrarKey,
             },
-            alertMessage: `Order item processing failed for ${normalizedDomainName} (${operationType})`,
+            alertTitle: `We couldn't ${operationType.toLowerCase()} ${normalizedDomainName} for an order`,
+            alertMessage:
+              'Order item processing failed; review the domain and registrar state before deciding.',
             alertSeverity: 'general',
             alertDetails: {
               orderId: input.orderId,
               orderItemId: input.itemId,
               operationType,
               normalizedDomainName,
+              userId,
             },
             allowedActors: ['ADMIN'],
             allowedActions: ['CANCEL', 'RESPOND'],
