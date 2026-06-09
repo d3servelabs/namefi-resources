@@ -17,6 +17,8 @@
     "indexEmpty": "尚未发布任何文章。",
     "detailBack": "返回全部文章",
     "detailPublishedOn": "发表于",
+    "detailUpdatedOn": "最近更新",
+    "detailOriginallyOn": "最初发布于",
     "detailBy": "作者",
     "detailAuthorsHeading": "关于作者",
     "detailSourceLanguage": "原始语言"

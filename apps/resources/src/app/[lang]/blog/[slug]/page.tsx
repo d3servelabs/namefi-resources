@@ -148,6 +148,23 @@ export default async function BlogPostPage({
 
   const authorNames = authorEntries.map((author) => author.frontmatter.name);
   const formattedDate = dateFormatter.format(entry.publishedAt);
+  const updatedAt = entry.frontmatter.updated
+    ? new Date(entry.frontmatter.updated)
+    : undefined;
+  const formattedUpdated =
+    updatedAt && !Number.isNaN(updatedAt.getTime())
+      ? dateFormatter.format(updatedAt)
+      : undefined;
+  // Derive the bare host (e.g. "hackmd.io") from the original publication URL so
+  // the link can read "Originally on hackmd.io".
+  let originalUrlHost: string | undefined;
+  if (entry.frontmatter.originalUrl) {
+    try {
+      originalUrlHost = new URL(entry.frontmatter.originalUrl).hostname;
+    } catch {
+      originalUrlHost = undefined;
+    }
+  }
   const showSourceLanguage = entry.requestedLanguage !== entry.sourceLanguage;
   const { default: PostContent } = await loadMdxModule(entry.relativePath);
   const authorModules = await Promise.all(
@@ -192,9 +209,27 @@ export default async function BlogPostPage({
           <span>
             {dictionary.blog.detailPublishedOn} {formattedDate}
           </span>
+          {formattedUpdated && (
+            <span>
+              {dictionary.blog.detailUpdatedOn} {formattedUpdated}
+            </span>
+          )}
           {authorNames.length > 0 && (
             <span>
               {dictionary.blog.detailBy} {authorNames.join(', ')}
+            </span>
+          )}
+          {entry.frontmatter.originalUrl && originalUrlHost && (
+            <span>
+              {dictionary.blog.detailOriginallyOn}{' '}
+              <a
+                href={entry.frontmatter.originalUrl}
+                className="font-semibold text-brand-primary underline-offset-4 transition hover:underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {originalUrlHost}
+              </a>
             </span>
           )}
         </div>

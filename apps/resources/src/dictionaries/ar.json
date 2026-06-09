@@ -17,6 +17,8 @@
     "indexEmpty": "لم يتم نشر أي مقالات بعد.",
     "detailBack": "العودة إلى جميع المقالات",
     "detailPublishedOn": "نُشر في",
+    "detailUpdatedOn": "آخر تحديث",
+    "detailOriginallyOn": "نُشر أصلاً على",
     "detailBy": "بقلم",
     "detailAuthorsHeading": "عن الكاتب/الكاتبة",
     "detailSourceLanguage": "اللغة الأصلية"

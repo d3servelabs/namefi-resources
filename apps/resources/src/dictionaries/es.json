@@ -17,6 +17,8 @@
     "indexEmpty": "Todavía no hay publicaciones.",
     "detailBack": "Volver a todas las publicaciones",
     "detailPublishedOn": "Publicado el",
+    "detailUpdatedOn": "Última actualización",
+    "detailOriginallyOn": "Publicado originalmente en",
     "detailBy": "Por",
     "detailAuthorsHeading": "Sobre quienes escriben",
     "detailSourceLanguage": "Idioma original"

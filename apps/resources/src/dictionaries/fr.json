@@ -17,6 +17,8 @@
     "indexEmpty": "Aucun article publié pour le moment.",
     "detailBack": "Retour à tous les articles",
     "detailPublishedOn": "Publié le",
+    "detailUpdatedOn": "Dernière mise à jour",
+    "detailOriginallyOn": "Publié à l'origine sur",
     "detailBy": "Par",
     "detailAuthorsHeading": "À propos de l’auteur·rice",
     "detailSourceLanguage": "Langue d’origine"

@@ -17,6 +17,8 @@
     "indexEmpty": "अभी तक कोई लेख प्रकाशित नहीं हुआ है।",
     "detailBack": "सभी लेखों पर वापस जाएँ",
     "detailPublishedOn": "प्रकाशित तारीख",
+    "detailUpdatedOn": "अंतिम अद्यतन",
+    "detailOriginallyOn": "मूल रूप से प्रकाशित",
     "detailBy": "द्वारा",
     "detailAuthorsHeading": "लेखक के बारे में",
     "detailSourceLanguage": "मूल भाषा"

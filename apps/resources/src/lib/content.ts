@@ -21,6 +21,12 @@ type PostFrontmatter = {
   tags: string[];
   authors: string[];
   date: string;
+  // ISO date of the most recent revision, when a post has been updated after
+  // its original publication. Surfaced as a "Last updated" line on the post page.
+  updated?: string;
+  // Canonical URL of the original publication (e.g. a HackMD note). Surfaced as
+  // an "Originally on <domain>" link on the post page.
+  originalUrl?: string;
   draft: boolean;
   language: Locale;
 };
@@ -299,12 +305,25 @@ function normalisePostFrontmatter(
       : summaryFromDescription;
   const draftValue = toBoolean(data.draft);
 
+  const updated =
+    typeof data.updated === 'string'
+      ? data.updated
+      : data.updated instanceof Date
+        ? data.updated.toISOString()
+        : undefined;
+  const originalUrl =
+    typeof data.originalUrl === 'string' && data.originalUrl.trim().length > 0
+      ? data.originalUrl.trim()
+      : undefined;
+
   return {
     title: data.title,
     summary,
     tags,
     authors,
     date: rawDate,
+    updated,
+    originalUrl,
     draft: draftValue,
     language,
   };

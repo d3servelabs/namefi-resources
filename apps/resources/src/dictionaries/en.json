@@ -17,6 +17,8 @@
     "indexEmpty": "No posts published yet.",
     "detailBack": "Back to all posts",
     "detailPublishedOn": "Published on",
+    "detailUpdatedOn": "Last updated",
+    "detailOriginallyOn": "Originally on",
     "detailBy": "By",
     "detailAuthorsHeading": "About the author(s)",
     "detailSourceLanguage": "Original language"
