@@ -31,28 +31,27 @@ import {
 } from './extend-registration.workflow';
 
 /**
- * Decision-gate timeouts for the register/import status poll, sized to stay
- * under the child run timeouts set in `acquire-domain.workflow.ts` (REGISTER
- * `4 hours`, IMPORT `21 days`). The `ACTION_TIMEOUT` bounds the poll itself —
- * the gate cancels the (unbounded) poll after it and opens for an admin; the
- * `DECISION_TIMEOUT` is the admin window once the gate is open.
- *
- * REGISTER: 90 min poll deadline + 2 h admin window = 3.5 h, inside the 4 h run
- * timeout. IMPORT: 24 h poll deadline + 3-day admin window, well inside 21 days.
+ * Decision-gate timeouts for the register/import status poll. `ACTION_TIMEOUT`
+ * bounds the poll itself — the gate cancels the (unbounded) poll after it and
+ * opens for an admin; `DECISION_TIMEOUT` is the admin window once the gate is
+ * open. The child run timeouts in `acquire-domain.workflow.ts` (REGISTER
+ * `4 hours`, IMPORT `21 days`) are the hard cap: a gate wait that would outlast
+ * the run timeout is cut short when the workflow run itself times out.
  */
 const REGISTER_POLL_ACTION_TIMEOUT_MS = 90 * 60 * 1000; // 90 minutes
 const REGISTER_POLL_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
 const REGISTER_SUBMIT_DECISION_TIMEOUT_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
 
-const IMPORT_POLL_ACTION_TIMEOUT_MS = 5 * 24 * 60 * 60 * 1000; // 24 hours
-const IMPORT_POLL_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 3 days
-const IMPORT_SUBMIT_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 3 days
+const IMPORT_POLL_ACTION_TIMEOUT_MS = 5 * 24 * 60 * 60 * 1000; // 5 days
+const IMPORT_POLL_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const IMPORT_SUBMIT_DECISION_TIMEOUT_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 /**
- * Caps the IMPORT poll gate's RETRY cycles. Each cycle costs up to
- * `ACTION_TIMEOUT` (24 h re-poll) + `DECISION_TIMEOUT` (3-day admin wait) ≈ 4
- * days, so 3 cycles (~12 days) stays under the 21-day IMPORT child run timeout
- * with room for the other import steps. The default (10) would not.
+ * Caps the IMPORT poll gate's RETRY cycles (RETRY is only offered for IMPORT).
+ * Each cycle re-polls (up to `IMPORT_POLL_ACTION_TIMEOUT_MS`) then reopens the
+ * gate (up to `IMPORT_POLL_DECISION_TIMEOUT_MS`); the 21-day IMPORT run timeout
+ * is the ultimate backstop, and this cap keeps the gate from re-polling
+ * indefinitely. The default (10) would be too many.
  */
 const POLL_GATE_MAX_RETRIES = 3;
 
@@ -252,9 +251,10 @@ export async function eppRegisterOrImportWorkflow(
           status: operationStatusSchema.parse(raw),
         }) as LongRunningOperationResult,
       allowedActors: ['ADMIN'],
-      // RETRY re-polls (~90 min) — only offered for IMPORT (21-day run timeout).
-      // A REGISTER child has a 4 h run timeout that a re-poll after the gate wait
-      // can't fit, so REGISTER offers only RESPOND (verified status) / CANCEL.
+      // RETRY re-polls (up to IMPORT_POLL_ACTION_TIMEOUT_MS) — only offered for
+      // IMPORT (21-day run timeout). A REGISTER child has a 4 h run timeout that a
+      // re-poll after the gate wait can't fit, so REGISTER offers only RESPOND
+      // (verified status) / CANCEL.
       allowedActions: isImport
         ? ['RETRY', 'RESPOND', 'CANCEL']
         : ['RESPOND', 'CANCEL'],

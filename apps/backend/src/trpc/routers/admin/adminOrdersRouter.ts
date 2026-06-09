@@ -542,10 +542,18 @@ export const adminOrdersRouter = createContractTRPCRouter<
     .input(adminOrdersContract.getOrderUserId.input)
     .output(adminOrdersContract.getOrderUserId.output)
     .query(async ({ input }) => {
-      const order = await db.query.ordersTable.findFirst({
-        where: eq(ordersTable.id, input.orderId),
-        columns: { userId: true },
-      });
-      return { userId: order?.userId ?? null };
+      try {
+        const order = await db.query.ordersTable.findFirst({
+          where: eq(ordersTable.id, input.orderId),
+          columns: { userId: true },
+        });
+        return { userId: order?.userId ?? null };
+      } catch (error) {
+        logger.error(
+          { error, orderId: input.orderId },
+          'Failed to resolve order userId',
+        );
+        return { userId: null };
+      }
     }),
 });
