@@ -1,6 +1,7 @@
 import {
   MAX_MLS_FEED_LIMIT,
   type MlsDomainSearchResponse,
+  type MlsFeedSourceFilter,
   type MlsFeedPage,
   type MlsHandleListingsPage,
   type MlsListing,
@@ -77,6 +78,7 @@ export interface PublicListingsQuery {
   cursor?: string | null;
   search?: string | null;
   tld?: string | null;
+  source?: MlsFeedSourceFilter | null;
   hasPurchaseUrl?: HasPurchaseUrlFilter;
   dateFrom?: Date;
   dateTo?: Date;
@@ -580,6 +582,10 @@ function appendPublicListingFilters(
     whereClauses.push(
       sql`(${namefiFeedListingsTable.domain} = ${normalizedTld} OR ${namefiFeedListingsTable.domain} LIKE ${`%.${normalizedTld}`})`,
     );
+  }
+
+  if (query.source) {
+    whereClauses.push(eq(namefiFeedPostsTable.externalSource, query.source));
   }
 
   if (query.hasPurchaseUrl === 'yes') {

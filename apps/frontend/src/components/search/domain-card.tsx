@@ -12,7 +12,11 @@ import { useCartRow } from '@/hooks/use-cart-row';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { resolveMlsListingSource, type MlsSaleListing } from '@/lib/mls/feed';
+import {
+  resolveMlsListingSource,
+  toSafeMlsListingUrl,
+  type MlsSaleListing,
+} from '@/lib/mls/feed';
 import { normalizeMlsHandle } from '@/lib/mls/handles';
 import { formatAmountInUSD } from '@/lib/number';
 import { useInteractionLoggers } from '@/components/providers/analytics';
@@ -422,9 +426,9 @@ export const DomainCard: FC<{
   const mlsOfferSource = mlsOffer ? resolveMlsListingSource(mlsOffer) : null;
   const mlsSellerHandle = normalizeMlsHandle(mlsOffer?.seller.username ?? null);
   const mlsOfferUrl =
-    mlsOffer?.purchaseUrl?.trim() ||
-    mlsOfferSource?.url.trim() ||
-    mlsOffer?.sourceTweetUrl.trim() ||
+    toSafeMlsListingUrl(mlsOffer?.purchaseUrl) ??
+    toSafeMlsListingUrl(mlsOfferSource?.url) ??
+    toSafeMlsListingUrl(mlsOffer?.sourceTweetUrl) ??
     '';
   const mlsOfferSourceLabel = mlsOfferSource?.label ?? 'marketplace';
   const shouldShowSourceIcon = mlsOfferSource?.id === 'x';

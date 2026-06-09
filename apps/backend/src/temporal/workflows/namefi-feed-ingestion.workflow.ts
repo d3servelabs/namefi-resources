@@ -1,5 +1,6 @@
 import * as workflow from '@temporalio/workflow';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiFeedAutoScanSource } from '../../services/namefi-feed/ingestion.service';
 import { longRunningOpts, TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
@@ -9,10 +10,12 @@ export type NamefiFeedIngestionWorkflowInput =
   | {
       trigger: 'scheduled';
       requestedByUserId?: string | null;
+      sources?: NamefiFeedAutoScanSource[];
     }
   | {
       trigger: 'manual';
       requestedByUserId?: string | null;
+      sources?: NamefiFeedAutoScanSource[];
       tweets?: string[];
       includeReplies?: boolean;
       ignoreAutoScanEnabled?: boolean;
@@ -28,6 +31,7 @@ const MAX_PROCESS_BATCHES = 200;
 const {
   startNamefiFeedIngestionRun,
   scanNamefiFeedXPosts,
+  scanNamefiFeedAutoPosts,
   ingestManualNamefiFeedPosts,
   processNamefiFeedPosts,
   completeNamefiFeedRun,
@@ -54,6 +58,7 @@ export async function namefiFeedIngestionWorkflow(
     });
     runId = run.runId;
 
+    const isXOnlyScan = input.sources?.length === 1 && input.sources[0] === 'x';
     const enqueueResult =
       input.trigger === 'manual' && (input.tweets?.length ?? 0) > 0
         ? await ingestManualNamefiFeedPosts({
@@ -61,11 +66,22 @@ export async function namefiFeedIngestionWorkflow(
             tweets: input.tweets ?? [],
             includeReplies: input.includeReplies,
           })
-        : await scanNamefiFeedXPosts({
-            runId,
-            ignoreAutoScanEnabled:
-              input.trigger === 'manual' ? input.ignoreAutoScanEnabled : false,
-          });
+        : isXOnlyScan
+          ? await scanNamefiFeedXPosts({
+              runId,
+              ignoreAutoScanEnabled:
+                input.trigger === 'manual'
+                  ? input.ignoreAutoScanEnabled
+                  : false,
+            })
+          : await scanNamefiFeedAutoPosts({
+              runId,
+              sources: input.sources,
+              ignoreAutoScanEnabled:
+                input.trigger === 'manual'
+                  ? input.ignoreAutoScanEnabled
+                  : false,
+            });
 
     if ('skipped' in enqueueResult && enqueueResult.skipped) {
       await completeNamefiFeedRun({

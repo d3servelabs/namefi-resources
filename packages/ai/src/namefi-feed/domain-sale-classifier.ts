@@ -193,7 +193,7 @@ export async function analyseNamefiFeedPostForDomainSale(
 const DOMAIN_SALE_CLASSIFIER_INSTRUCTIONS = `You are the Namefi Feed domain sale classifier.
 
 Goal:
-- Decide whether an X post currently advertises one or more domain names for sale.
+- Decide whether a public post currently advertises one or more domain names for sale.
 - Extract every sale-positive domain and the listing details needed for a public domain sales feed.
 - If the post does not clearly advertise a current sale, return status "uncertain" and an empty domains array.
 

@@ -31,6 +31,14 @@ import {
   touchNamefiFeedLastRunAt,
   updateNamefiFeedLastAutoScanCursorAt,
 } from './admin.service';
+import {
+  NAMEFI_FEED_MARKETPLACE_RSS_FEEDS,
+  parseNamefiFeedMarketplaceRss,
+  shouldQueueNamefiFeedMarketplaceRssItem,
+  type NamefiFeedMarketplaceRssFeed,
+  type NamefiFeedMarketplaceRssItem,
+  type NamefiFeedMarketplaceRssSource,
+} from './marketplace-rss';
 
 const logger = createLogger({ module: 'namefi-feed-ingestion' });
 
@@ -41,6 +49,11 @@ const X_RETRYABLE_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
 const X_DEFAULT_RETRY_DELAY_MS = 1_000;
 const X_MAX_RETRY_DELAY_MS = 30_000;
 const X_MANUAL_REPLIES_MAX_PAGES = 10;
+const MARKETPLACE_RSS_REQUEST_TIMEOUT_MS = 15_000;
+const MARKETPLACE_RSS_MAX_REQUEST_ATTEMPTS = 3;
+const MARKETPLACE_RSS_DEFAULT_RETRY_DELAY_MS = 1_000;
+const MARKETPLACE_RSS_MAX_RETRY_DELAY_MS = 15_000;
+const MARKETPLACE_RSS_MAX_POST_AGE_MINUTES = 7 * 24 * 60;
 const PROCESSING_POST_STALE_MS = 45 * 60 * 1000;
 const X_TWEET_FIELDS = [
   'author_id',
@@ -53,6 +66,8 @@ const X_TWEET_FIELDS = [
 const X_USER_FIELDS = ['username', 'name', 'profile_image_url'].join(',');
 const REQUEUEABLE_POST_STATUSES = ['processed', 'skipped', 'failed'] as const;
 
+export type NamefiFeedAutoScanSource = 'x' | NamefiFeedMarketplaceRssSource;
+
 export interface NamefiFeedScanResult {
   skipped: boolean;
   reason: string | null;
@@ -60,6 +75,21 @@ export interface NamefiFeedScanResult {
   queuedPostCount: number;
   alreadyExistingCount: number;
   latestCursorAt: string | null;
+  sourceResults?: NamefiFeedScanSourceResult[];
+}
+
+export interface NamefiFeedScanSourceResult {
+  source: 'x' | NamefiFeedMarketplaceRssSource;
+  feedId?: string;
+  feedUrl?: string;
+  skipped: boolean;
+  reason: string | null;
+  scannedPostCount: number;
+  queuedPostCount: number;
+  alreadyExistingCount: number;
+  skippedPostCount: number;
+  latestCursorAt: string | null;
+  errorMessage?: string;
 }
 
 export interface NamefiFeedManualIngestResult {
@@ -127,8 +157,11 @@ interface ScanCounters {
   scannedPostCount: number;
   queuedPostCount: number;
   alreadyExistingCount: number;
+  skippedPostCount: number;
   latestCursorAt: Date | null;
 }
+
+type NamefiFeedPostQueueSource = 'auto_scan' | 'manual' | 'system';
 
 interface ManualIngestState {
   seenTweetIds: Set<string>;
@@ -174,6 +207,92 @@ export async function createNamefiFeedIngestionRun(input: {
   return { runId: run.id };
 }
 
+export async function scanAndQueueNamefiFeedAutoPosts(input: {
+  runId: string;
+  bearerToken?: string | null;
+  ignoreAutoScanEnabled?: boolean;
+  sources?: NamefiFeedAutoScanSource[];
+}): Promise<NamefiFeedScanResult> {
+  const settings = await getNamefiFeedSettingsRow();
+  if (!settings.autoScanEnabled && !input.ignoreAutoScanEnabled) {
+    const result: NamefiFeedScanResult = {
+      skipped: true,
+      reason: 'auto_scan_disabled',
+      scannedPostCount: 0,
+      queuedPostCount: 0,
+      alreadyExistingCount: 0,
+      latestCursorAt: null,
+      sourceResults: [],
+    };
+    await persistScanCounts(input.runId, result);
+    return result;
+  }
+
+  const sources = new Set<NamefiFeedAutoScanSource>(
+    input.sources ?? ['x', 'namepros', 'dnforum'],
+  );
+  const counters = createScanCounters();
+  const sourceResults: NamefiFeedScanSourceResult[] = [];
+
+  if (sources.has('x')) {
+    if (input.bearerToken) {
+      const xResult = await scanAndQueueNamefiFeedXPostsForSettings({
+        runId: input.runId,
+        bearerToken: input.bearerToken,
+        settings,
+      });
+      mergeScanCounters(counters, xResult.counters);
+      sourceResults.push(xResult.sourceResult);
+      if (xResult.counters.latestCursorAt) {
+        await updateNamefiFeedLastAutoScanCursorAt(
+          xResult.counters.latestCursorAt,
+        );
+      }
+    } else {
+      sourceResults.push({
+        source: 'x',
+        skipped: true,
+        reason: 'x_bearer_token_missing',
+        scannedPostCount: 0,
+        queuedPostCount: 0,
+        alreadyExistingCount: 0,
+        skippedPostCount: 0,
+        latestCursorAt: null,
+      });
+    }
+  }
+
+  const marketplaceRssSources = Array.from(sources).filter(
+    (source): source is NamefiFeedMarketplaceRssSource =>
+      source === 'namepros' || source === 'dnforum',
+  );
+  if (marketplaceRssSources.length > 0) {
+    const marketplaceRssResult =
+      await scanAndQueueNamefiFeedMarketplaceRssPosts({
+        runId: input.runId,
+        maxPostAgeMinutes: Math.max(
+          settings.maxTweetAgeMinutes,
+          MARKETPLACE_RSS_MAX_POST_AGE_MINUTES,
+        ),
+        sources: marketplaceRssSources,
+      });
+    mergeScanCounters(counters, marketplaceRssResult.counters);
+    sourceResults.push(...marketplaceRssResult.sourceResults);
+  }
+
+  const result: NamefiFeedScanResult = {
+    skipped: false,
+    reason: null,
+    scannedPostCount: counters.scannedPostCount,
+    queuedPostCount: counters.queuedPostCount,
+    alreadyExistingCount: counters.alreadyExistingCount,
+    latestCursorAt: counters.latestCursorAt?.toISOString() ?? null,
+    sourceResults,
+  };
+  await persistScanCounts(input.runId, result);
+  return result;
+}
+
 export async function scanAndQueueNamefiFeedXPosts(input: {
   runId: string;
   bearerToken?: string | null;
@@ -195,6 +314,38 @@ export async function scanAndQueueNamefiFeedXPosts(input: {
   if (!input.bearerToken) {
     throw new NamefiFeedXConfigurationError();
   }
+
+  const xResult = await scanAndQueueNamefiFeedXPostsForSettings({
+    runId: input.runId,
+    bearerToken: input.bearerToken,
+    settings,
+  });
+  if (xResult.counters.latestCursorAt) {
+    await updateNamefiFeedLastAutoScanCursorAt(xResult.counters.latestCursorAt);
+  }
+
+  const result: NamefiFeedScanResult = {
+    skipped: false,
+    reason: null,
+    scannedPostCount: xResult.counters.scannedPostCount,
+    queuedPostCount: xResult.counters.queuedPostCount,
+    alreadyExistingCount: xResult.counters.alreadyExistingCount,
+    latestCursorAt: xResult.counters.latestCursorAt?.toISOString() ?? null,
+    sourceResults: [xResult.sourceResult],
+  };
+  await persistScanCounts(input.runId, result);
+  return result;
+}
+
+async function scanAndQueueNamefiFeedXPostsForSettings(input: {
+  runId: string;
+  bearerToken: string;
+  settings: Awaited<ReturnType<typeof getNamefiFeedSettingsRow>>;
+}): Promise<{
+  counters: ScanCounters;
+  sourceResult: NamefiFeedScanSourceResult;
+}> {
+  const { settings } = input;
 
   const startTime = resolveStartTime({
     sinceAt: settings.lastAutoScanCursorAt,
@@ -227,20 +378,224 @@ export async function scanAndQueueNamefiFeedXPosts(input: {
     );
   }
 
-  if (counters.latestCursorAt) {
-    await updateNamefiFeedLastAutoScanCursorAt(counters.latestCursorAt);
+  return {
+    counters,
+    sourceResult: {
+      source: 'x',
+      skipped: false,
+      reason: null,
+      scannedPostCount: counters.scannedPostCount,
+      queuedPostCount: counters.queuedPostCount,
+      alreadyExistingCount: counters.alreadyExistingCount,
+      skippedPostCount: counters.skippedPostCount,
+      latestCursorAt: counters.latestCursorAt?.toISOString() ?? null,
+    },
+  };
+}
+
+async function scanAndQueueNamefiFeedMarketplaceRssPosts(input: {
+  runId: string;
+  maxPostAgeMinutes: number;
+  sources: NamefiFeedMarketplaceRssSource[];
+}): Promise<{
+  counters: ScanCounters;
+  sourceResults: NamefiFeedScanSourceResult[];
+}> {
+  const counters = createScanCounters();
+  const sourceResults: NamefiFeedScanSourceResult[] = [];
+  const sources = new Set(input.sources);
+
+  for (const feed of NAMEFI_FEED_MARKETPLACE_RSS_FEEDS) {
+    if (!sources.has(feed.source)) {
+      continue;
+    }
+
+    const feedCounters = createScanCounters();
+    try {
+      const xml = await fetchMarketplaceRssXml(feed);
+      const items = parseNamefiFeedMarketplaceRss(xml, feed);
+
+      for (const item of items) {
+        feedCounters.scannedPostCount += 1;
+        feedCounters.latestCursorAt = resolveLatestDate(
+          feedCounters.latestCursorAt,
+          item.postedAt.toISOString(),
+        );
+
+        if (!isPostDateFresh(item.postedAt, input.maxPostAgeMinutes)) {
+          feedCounters.skippedPostCount += 1;
+          continue;
+        }
+        if (!shouldQueueNamefiFeedMarketplaceRssItem(item)) {
+          feedCounters.skippedPostCount += 1;
+          continue;
+        }
+
+        const result = await queueMarketplaceRssItem({
+          runId: input.runId,
+          item,
+        });
+        if (result.status === 'inserted') {
+          feedCounters.queuedPostCount += 1;
+        } else if (result.status === 'existing') {
+          feedCounters.alreadyExistingCount += 1;
+        } else {
+          feedCounters.skippedPostCount += 1;
+        }
+      }
+
+      mergeScanCounters(counters, feedCounters);
+      sourceResults.push({
+        source: feed.source,
+        feedId: feed.id,
+        feedUrl: feed.url,
+        skipped: false,
+        reason: null,
+        scannedPostCount: feedCounters.scannedPostCount,
+        queuedPostCount: feedCounters.queuedPostCount,
+        alreadyExistingCount: feedCounters.alreadyExistingCount,
+        skippedPostCount: feedCounters.skippedPostCount,
+        latestCursorAt: feedCounters.latestCursorAt?.toISOString() ?? null,
+      });
+    } catch (error) {
+      const message = describeError(
+        error,
+        'Failed to scan marketplace RSS feed.',
+      );
+      logger.warn({ error, feed }, 'Namefi feed marketplace RSS scan failed');
+      sourceResults.push({
+        source: feed.source,
+        feedId: feed.id,
+        feedUrl: feed.url,
+        skipped: true,
+        reason: 'feed_scan_failed',
+        scannedPostCount: feedCounters.scannedPostCount,
+        queuedPostCount: feedCounters.queuedPostCount,
+        alreadyExistingCount: feedCounters.alreadyExistingCount,
+        skippedPostCount: feedCounters.skippedPostCount,
+        latestCursorAt: feedCounters.latestCursorAt?.toISOString() ?? null,
+        errorMessage: message,
+      });
+    }
   }
 
-  const result: NamefiFeedScanResult = {
-    skipped: false,
-    reason: null,
-    scannedPostCount: counters.scannedPostCount,
-    queuedPostCount: counters.queuedPostCount,
-    alreadyExistingCount: counters.alreadyExistingCount,
-    latestCursorAt: counters.latestCursorAt?.toISOString() ?? null,
+  return { counters, sourceResults };
+}
+
+async function queueMarketplaceRssItem(input: {
+  runId: string;
+  item: NamefiFeedMarketplaceRssItem;
+}): Promise<PostInsertResult> {
+  const { item } = input;
+
+  return insertNamefiFeedPostRecord({
+    runId: input.runId,
+    externalSource: item.feed.source,
+    externalPostId: item.externalPostId,
+    externalConversationId: item.guid || item.externalPostId,
+    externalAuthorId:
+      item.authorRaw ?? item.authorUsername ?? `${item.feed.source}:unknown`,
+    authorUsername: item.authorUsername,
+    authorDisplayName: item.authorDisplayName,
+    text: item.text,
+    source: 'auto_scan',
+    rawPayload: buildMarketplaceRssRawPayload(item) as Json,
+    postedAt: item.postedAt,
+    requeueExistingContentHash: item.contentHash,
+  });
+}
+
+async function fetchMarketplaceRssXml(
+  feed: NamefiFeedMarketplaceRssFeed,
+): Promise<string> {
+  for (
+    let attempt = 1;
+    attempt <= MARKETPLACE_RSS_MAX_REQUEST_ATTEMPTS;
+    attempt += 1
+  ) {
+    const response = await fetch(feed.url, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(MARKETPLACE_RSS_REQUEST_TIMEOUT_MS),
+      headers: {
+        Accept:
+          'application/rss+xml, application/xml;q=0.9, text/xml;q=0.8, */*;q=0.7',
+        'User-Agent': 'NamefiFeedBot/1.0 (+https://namefi.io)',
+      },
+    }).catch((error) => {
+      if (attempt < MARKETPLACE_RSS_MAX_REQUEST_ATTEMPTS) {
+        return null;
+      }
+      throw error;
+    });
+
+    if (!response) {
+      await sleep(resolveMarketplaceRssRetryDelayMs(null, attempt));
+      continue;
+    }
+
+    if (response.ok) {
+      return await response.text();
+    }
+
+    const body = await response.text().catch(() => '');
+    if (
+      attempt < MARKETPLACE_RSS_MAX_REQUEST_ATTEMPTS &&
+      X_RETRYABLE_STATUS_CODES.has(response.status)
+    ) {
+      await sleep(resolveMarketplaceRssRetryDelayMs(response, attempt));
+      continue;
+    }
+
+    throw new Error(
+      `Marketplace RSS request for ${feed.id} failed with ${response.status}: ${body.slice(
+        0,
+        500,
+      )}`,
+    );
+  }
+
+  throw new Error(`Marketplace RSS request for ${feed.id} failed.`);
+}
+
+function resolveMarketplaceRssRetryDelayMs(
+  response: Response | null,
+  attempt: number,
+): number {
+  const retryAfter = response?.headers.get('retry-after') ?? null;
+  const retryAfterSeconds = retryAfter ? Number(retryAfter) : Number.NaN;
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0) {
+    return clamp(
+      retryAfterSeconds * 1_000,
+      0,
+      MARKETPLACE_RSS_MAX_RETRY_DELAY_MS,
+    );
+  }
+
+  return clamp(
+    MARKETPLACE_RSS_DEFAULT_RETRY_DELAY_MS * 2 ** (attempt - 1),
+    MARKETPLACE_RSS_DEFAULT_RETRY_DELAY_MS,
+    MARKETPLACE_RSS_MAX_RETRY_DELAY_MS,
+  );
+}
+
+function buildMarketplaceRssRawPayload(item: NamefiFeedMarketplaceRssItem) {
+  return {
+    source: item.feed.source,
+    feedId: item.feed.id,
+    feedTitle: item.feed.title,
+    feedUrl: item.feed.url,
+    guid: item.guid,
+    link: item.link,
+    sourceUrl: item.sourceUrl,
+    category: item.category,
+    title: item.title,
+    description: item.description,
+    contentHtml: item.contentHtml,
+    author: item.authorRaw,
+    candidateUrls: item.candidateUrls,
+    domains: item.domains,
+    contentHash: item.contentHash,
   };
-  await persistScanCounts(input.runId, result);
-  return result;
 }
 
 async function scanNamefiFeedQueryPages(input: {
@@ -301,6 +656,7 @@ async function queueSearchResponseTweets(input: {
       tweet.created_at,
     );
     if (!isTweetFresh(tweet, input.maxTweetAgeMinutes)) {
+      counters.skippedPostCount += 1;
       continue;
     }
 
@@ -313,6 +669,8 @@ async function queueSearchResponseTweets(input: {
       counters.queuedPostCount += 1;
     } else if (result.status === 'existing') {
       counters.alreadyExistingCount += 1;
+    } else {
+      counters.skippedPostCount += 1;
     }
   }
 
@@ -345,6 +703,7 @@ function createScanCounters(): ScanCounters {
     scannedPostCount: 0,
     queuedPostCount: 0,
     alreadyExistingCount: 0,
+    skippedPostCount: 0,
     latestCursorAt: null,
   };
 }
@@ -353,6 +712,7 @@ function mergeScanCounters(target: ScanCounters, source: ScanCounters) {
   target.scannedPostCount += source.scannedPostCount;
   target.queuedPostCount += source.queuedPostCount;
   target.alreadyExistingCount += source.alreadyExistingCount;
+  target.skippedPostCount += source.skippedPostCount;
   if (
     source.latestCursorAt &&
     (!target.latestCursorAt || source.latestCursorAt > target.latestCursorAt)
@@ -725,8 +1085,9 @@ async function insertNamefiFeedPost(input: {
     return { status: 'skipped', reason: 'Tweet has an invalid created_at.' };
   }
 
-  const values = {
-    ingestionRunId: input.runId,
+  return insertNamefiFeedPostRecord({
+    runId: input.runId,
+    externalSource: 'x',
     externalPostId: input.tweet.id,
     externalConversationId: input.tweet.conversation_id ?? null,
     externalAuthorId: resolveTweetExternalAuthorId(input.tweet),
@@ -736,20 +1097,61 @@ async function insertNamefiFeedPost(input: {
     source: input.source,
     rawPayload: buildRawPayload(input) as Json,
     postedAt,
+    requeueExisting: input.requeueExisting,
+  });
+}
+
+async function insertNamefiFeedPostRecord(input: {
+  runId: string;
+  externalSource: 'x' | NamefiFeedMarketplaceRssSource;
+  externalPostId: string;
+  externalConversationId: string | null;
+  externalAuthorId: string;
+  authorUsername: string | null;
+  authorDisplayName: string | null;
+  text: string;
+  source: NamefiFeedPostQueueSource;
+  rawPayload: Json;
+  postedAt: Date;
+  requeueExisting?: boolean;
+  requeueExistingContentHash?: string | null;
+}): Promise<PostInsertResult> {
+  const postText = normalizeOptionalText(input.text);
+  if (!postText) {
+    return { status: 'skipped', reason: 'Post has no text.' };
+  }
+  if (Number.isNaN(input.postedAt.getTime())) {
+    return { status: 'skipped', reason: 'Post has an invalid postedAt.' };
+  }
+
+  const values = {
+    ingestionRunId: input.runId,
+    externalSource: input.externalSource,
+    externalPostId: input.externalPostId,
+    externalConversationId: input.externalConversationId,
+    externalAuthorId: input.externalAuthorId,
+    authorUsername: input.authorUsername,
+    authorDisplayName: input.authorDisplayName,
+    text: postText,
+    source: input.source,
+    rawPayload: input.rawPayload,
+    postedAt: input.postedAt,
   };
 
   const insertBuilder = db.insert(namefiFeedPostsTable).values(values);
-  const [inserted] = input.requeueExisting
+  const conflictUpdateWhere = input.requeueExistingContentHash
+    ? sql`${namefiFeedPostsTable.rawPayload}->>'contentHash' IS DISTINCT FROM ${input.requeueExistingContentHash}`
+    : input.requeueExisting
+      ? inArray(namefiFeedPostsTable.status, REQUEUEABLE_POST_STATUSES)
+      : null;
+  const [inserted] = conflictUpdateWhere
     ? await insertBuilder
         .onConflictDoUpdate({
           target: [
             namefiFeedPostsTable.externalSource,
             namefiFeedPostsTable.externalPostId,
           ],
-          setWhere: inArray(
-            namefiFeedPostsTable.status,
-            REQUEUEABLE_POST_STATUSES,
-          ),
+          setWhere: conflictUpdateWhere,
           set: {
             ingestionRunId: input.runId,
             externalConversationId: values.externalConversationId,
@@ -768,9 +1170,9 @@ async function insertNamefiFeedPost(input: {
           },
         })
         .returning({ id: namefiFeedPostsTable.id })
-    : await insertBuilder
-        .onConflictDoNothing()
-        .returning({ id: namefiFeedPostsTable.id });
+    : await insertBuilder.onConflictDoNothing().returning({
+        id: namefiFeedPostsTable.id,
+      });
 
   return inserted
     ? { status: 'inserted', id: inserted.id }
@@ -858,7 +1260,7 @@ function buildListingUpsertValues({
       purchaseUrl: normalizePublicHttpUrl(domain.purchaseUrl),
       sellerUsername: post.authorUsername,
       sellerDisplayName: post.authorDisplayName,
-      sourceUrl: buildTweetUrl(post.externalPostId),
+      sourceUrl: resolvePostSourceUrl(post),
       messageText: post.text,
       listedAt: new Date(),
       postedAt: post.postedAt,
@@ -878,6 +1280,22 @@ function buildListingUpsertValues({
   }
 
   return Array.from(valuesByDomain.values());
+}
+
+function resolvePostSourceUrl(
+  post: typeof namefiFeedPostsTable.$inferSelect,
+): string {
+  if (post.externalSource === 'x') {
+    return buildTweetUrl(post.externalPostId);
+  }
+
+  const sourceUrl = extractStringFromRawPayload(post.rawPayload, 'sourceUrl');
+  const link = extractStringFromRawPayload(post.rawPayload, 'link');
+  return (
+    normalizePublicHttpUrl(sourceUrl) ??
+    normalizePublicHttpUrl(link) ??
+    'https://namefi.io/feed'
+  );
 }
 
 async function markPostSkipped(postId: string, reason: string) {
@@ -1089,6 +1507,22 @@ function extractCandidateUrlsFromRawPayload(rawPayload: Json): string[] {
   return value.filter((url): url is string => typeof url === 'string');
 }
 
+function extractStringFromRawPayload(
+  rawPayload: Json,
+  key: string,
+): string | null {
+  if (
+    !rawPayload ||
+    typeof rawPayload !== 'object' ||
+    Array.isArray(rawPayload)
+  ) {
+    return null;
+  }
+
+  const value = (rawPayload as Record<string, unknown>)[key];
+  return typeof value === 'string' && value.trim() ? value : null;
+}
+
 async function searchRecentTweets(input: {
   bearerToken: string;
   query: string;
@@ -1269,6 +1703,10 @@ function isTweetFresh(tweet: XTweet, maxTweetAgeMinutes: number): boolean {
     Date.now() - new Date(tweet.created_at).getTime() <=
     maxTweetAgeMinutes * 60 * 1000
   );
+}
+
+function isPostDateFresh(postedAt: Date, maxPostAgeMinutes: number): boolean {
+  return Date.now() - postedAt.getTime() <= maxPostAgeMinutes * 60 * 1000;
 }
 
 function resolveLatestDate(

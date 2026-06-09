@@ -24,7 +24,11 @@ import { cartDomainsPopularSchedule } from './cart-domains-popular';
 import { dreamDomainAwaitsSchedule } from './dream-domain-awaits';
 import { domainTrafficSurgeSchedule } from './domain-traffic-surge';
 import { namefiFeedDigestSchedule } from './namefi-feed-digest';
-import { namefiFeedIngestionSchedule } from './namefi-feed-ingestion';
+import {
+  namefiFeedDnforumIngestionSchedule,
+  namefiFeedIngestionSchedule,
+  namefiFeedNameprosIngestionSchedule,
+} from './namefi-feed-ingestion';
 import { campaignAwardSchedule } from './hunt/campaign-award';
 import { campaignStatusSchedule } from './hunt/campaign-status';
 import {
@@ -156,6 +160,10 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [domainTrafficSurgeSchedule.config.scheduleId]: domainTrafficSurgeSchedule,
   [namefiFeedDigestSchedule.config.scheduleId]: namefiFeedDigestSchedule,
   [namefiFeedIngestionSchedule.config.scheduleId]: namefiFeedIngestionSchedule,
+  [namefiFeedNameprosIngestionSchedule.config.scheduleId]:
+    namefiFeedNameprosIngestionSchedule,
+  [namefiFeedDnforumIngestionSchedule.config.scheduleId]:
+    namefiFeedDnforumIngestionSchedule,
   [campaignAwardSchedule.config.scheduleId]: campaignAwardSchedule,
   [campaignStatusSchedule.config.scheduleId]: campaignStatusSchedule,
   [dailyAwardSchedule.config.scheduleId]: dailyAwardSchedule,

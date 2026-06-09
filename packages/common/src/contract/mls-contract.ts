@@ -55,6 +55,14 @@ export const mlsListingSourceSchema = z.object({
   url: z.string().trim().min(1),
 });
 
+export const mlsFeedSourceFilterSchema = z.enum([
+  'x',
+  'namepros',
+  'dnforum',
+  'namefi_marketplace',
+]);
+export type MlsFeedSourceFilter = z.infer<typeof mlsFeedSourceFilterSchema>;
+
 export const mlsListingSchema = z.object({
   id: z.string().min(1),
   domain: z.string().min(1),
@@ -93,6 +101,7 @@ export const mlsFeedInputSchema = z.object({
   cursor: z.string().trim().min(1).nullish(),
   query: z.string().trim().max(120).nullish(),
   tld: z.string().trim().max(191).nullish(),
+  source: mlsFeedSourceFilterSchema.nullish(),
 });
 
 export const mlsFeedPageSchema = z.object({

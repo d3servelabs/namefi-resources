@@ -297,7 +297,12 @@ function extractRawPayloadListingUrl(rawPayload: unknown) {
     return null;
   }
 
-  const listingUrl = (rawPayload as { listingUrl?: unknown }).listingUrl;
+  const payload = rawPayload as {
+    listingUrl?: unknown;
+    sourceUrl?: unknown;
+    link?: unknown;
+  };
+  const listingUrl = payload.listingUrl ?? payload.sourceUrl ?? payload.link;
   return typeof listingUrl === 'string' ? listingUrl : null;
 }
 

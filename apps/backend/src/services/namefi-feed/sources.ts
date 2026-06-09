@@ -3,6 +3,10 @@ import { buildTweetUrl, normalizePublicHttpUrl } from './normalization';
 
 export const X_FEED_SOURCE_ID = 'x';
 export const NAMEFI_MARKETPLACE_FEED_SOURCE_ID = 'namefi_marketplace';
+export const NAMEPROS_FEED_SOURCE_ID = 'namepros';
+export const DNFORUM_FEED_SOURCE_ID = 'dnforum';
+
+const SOURCE_ID_SPLIT_PATTERN = /[_\s-]+/;
 
 export function resolveNamefiFeedSource(input: {
   externalSource: string;
@@ -33,6 +37,26 @@ export function resolveNamefiFeedSource(input: {
     };
   }
 
+  if (sourceId === NAMEPROS_FEED_SOURCE_ID) {
+    return {
+      id: NAMEPROS_FEED_SOURCE_ID,
+      label: 'NamePros',
+      kind: 'external',
+      url:
+        normalizedSourceUrl ??
+        'https://www.namepros.com/marketplace/buy-domains/',
+    };
+  }
+
+  if (sourceId === DNFORUM_FEED_SOURCE_ID) {
+    return {
+      id: DNFORUM_FEED_SOURCE_ID,
+      label: 'DNForum',
+      kind: 'external',
+      url: normalizedSourceUrl ?? 'https://www.dnforum.com/forums/',
+    };
+  }
+
   return {
     id: sourceId,
     label: humanizeSourceId(sourceId),
@@ -48,7 +72,7 @@ function normalizeSourceId(value: string | null | undefined) {
 
 function humanizeSourceId(value: string) {
   const label = value
-    .split(/[_\s-]+/)
+    .split(SOURCE_ID_SPLIT_PATTERN)
     .filter(Boolean)
     .map((part) => part[0]?.toUpperCase() + part.slice(1))
     .join(' ');

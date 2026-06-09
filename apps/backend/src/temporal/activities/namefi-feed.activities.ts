@@ -4,8 +4,10 @@ import {
   createNamefiFeedIngestionRun,
   failNamefiFeedIngestionRun,
   ingestManualNamefiFeedXPosts,
+  scanAndQueueNamefiFeedAutoPosts,
   processPendingNamefiFeedPosts,
   scanAndQueueNamefiFeedXPosts,
+  type NamefiFeedAutoScanSource,
 } from '../../services/namefi-feed/ingestion.service';
 
 export async function startNamefiFeedIngestionRun(input: {
@@ -24,6 +26,19 @@ export async function scanNamefiFeedXPosts(input: {
     runId: input.runId,
     ignoreAutoScanEnabled: input.ignoreAutoScanEnabled,
     bearerToken: getNamefiFeedXBearerToken(),
+  });
+}
+
+export async function scanNamefiFeedAutoPosts(input: {
+  runId: string;
+  ignoreAutoScanEnabled?: boolean;
+  sources?: NamefiFeedAutoScanSource[];
+}) {
+  return scanAndQueueNamefiFeedAutoPosts({
+    runId: input.runId,
+    ignoreAutoScanEnabled: input.ignoreAutoScanEnabled,
+    sources: input.sources,
+    bearerToken: getOptionalNamefiFeedXBearerToken(),
   });
 }
 
@@ -70,4 +85,8 @@ function getNamefiFeedXBearerToken() {
     );
   }
   return token;
+}
+
+function getOptionalNamefiFeedXBearerToken() {
+  return secrets.NAMEFI_FEED_X_BEARER_TOKEN?.trim() || null;
 }

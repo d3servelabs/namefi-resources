@@ -94,6 +94,7 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
             limit,
             search: query,
             tld,
+            source: input.source ?? null,
           }),
         );
       } catch (error) {
